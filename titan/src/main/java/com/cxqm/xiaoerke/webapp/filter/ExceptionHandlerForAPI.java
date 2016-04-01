@@ -27,7 +27,7 @@ public class ExceptionHandlerForAPI {
 	@ExceptionHandler(value = Exception.class)
 	@ResponseBody
 	public Map<String, Object> defaultErrorHandler(HttpServletRequest request, Exception ex) throws Exception {
-        if (AnnotationUtils.findAnnotation(echangshix.getClass(), ResponseStatus.class) != null)
+        if (AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class) != null)
             throw ex;
          
         ModelAndView mav = new ModelAndView();

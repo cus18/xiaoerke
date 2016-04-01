@@ -32,7 +32,7 @@ import java.util.Map;
  * @version 2015-11-04
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "sys/doctor")
 public class DoctorGroupController extends BaseController {
 
     @Autowired
@@ -54,7 +54,7 @@ public class DoctorGroupController extends BaseController {
      *    ]
      * ]
      * */
-    @RequestMapping(value = "/sys/doctor/group", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/group", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     @SystemControllerLog(description = "00000073")
@@ -76,7 +76,7 @@ public class DoctorGroupController extends BaseController {
      *  [doctorGroupId:1,doctorGroupName:北大口腔医院医生集团,description:fajklfewf,expertise:fewfioifew]
      *
      * */
-    @RequestMapping(value = "/sys/doctor/group/info", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/group/info", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     @SystemControllerLog(description = "00000073")
@@ -86,7 +86,7 @@ public class DoctorGroupController extends BaseController {
         return response;
     }
 
-    @RequestMapping(value = "/sys/doctor/group/doctorList", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/group/doctorList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     @SystemControllerLog(description = "00000073")

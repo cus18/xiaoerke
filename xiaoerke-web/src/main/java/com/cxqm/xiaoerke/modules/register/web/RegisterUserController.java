@@ -27,7 +27,7 @@ import java.util.*;
  * @version 2013-10-17
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "")
 public class RegisterUserController extends BaseController {
 
     @Autowired

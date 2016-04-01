@@ -25,7 +25,7 @@ import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 
 @Controller
-@RequestMapping(value = "${xiaoerkePath}/insurance")
+@RequestMapping(value = "insurance")
 public class InsuranceController {
 
 	@Autowired

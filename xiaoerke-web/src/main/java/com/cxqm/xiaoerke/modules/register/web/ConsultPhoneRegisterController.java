@@ -15,7 +15,7 @@ import java.util.Map;
  * Created by wangbaowei on 16/3/16.
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}/consultPhone/phoneRegister/")
+@RequestMapping(value = "consultPhone/phoneRegister/")
 public class ConsultPhoneRegisterController {
 
   @Autowired

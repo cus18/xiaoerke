@@ -28,7 +28,7 @@ import com.cxqm.xiaoerke.modules.wechat.service.WeChatInfoService;
  * @version 2015-11-04
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "order/doctor")
 public class OrderDoctorController extends BaseController {
 
 	@Autowired
@@ -37,7 +37,7 @@ public class OrderDoctorController extends BaseController {
 	@Autowired
 	private WeChatInfoService weChatInfoService;
 	
-    @RequestMapping(value = "/order/doctor/reminderOrder", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/reminderOrder", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> getReminderOrder(@RequestBody Map<String, Object> params) throws Exception {
@@ -58,7 +58,7 @@ public class OrderDoctorController extends BaseController {
 	 *
 	 * @return 返回信息
 	 */
-	@RequestMapping(value = "/order/doctor/settlementInfo", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/settlementInfo", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	HashMap<String, Object> SettlementInfo(@RequestBody Map<String, Object> params) {

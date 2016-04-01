@@ -20,7 +20,7 @@ import com.cxqm.xiaoerke.modules.marketing.entity.MarketingActivities;
 import com.cxqm.xiaoerke.modules.marketing.service.MarketingActivitiesService;
 
 @Controller
-@RequestMapping(value = "${xiaoerkePath}/marketing")
+@RequestMapping(value = "marketing")
 public class MarketingActivitiesController {
 
 	@Autowired

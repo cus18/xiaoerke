@@ -1055,12 +1055,10 @@
 		<module>xiaoerke-operation</module>
 		<module>xiaoerke-collector</module>
 		<module>xiaoerke-plan</module>
-		<module>xiaoerke-knowledge</module>
 		<module>xiaoerke-healthRecords</module>
 		<module>xiaoerke-consult</module>
 		<module>xiaoerke-marketing</module>
 		<module>xiaoerke-insurance</module>
-		<module>xiaoerke-runTimeTask</module>
 	</modules>
 
 </project>

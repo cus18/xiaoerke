@@ -45,7 +45,7 @@ import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 
 
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "plan")
 public class ConstipationManagementController {
 
 	@Autowired
@@ -71,6 +71,7 @@ public class ConstipationManagementController {
 	
 	@Autowired
 	private PlanMessageService planMessageService;
+
 	@Autowired
 	private SystemService systemService;
 	
@@ -81,7 +82,7 @@ public class ConstipationManagementController {
 	 * @param params(openid;userid;planinfoid)
 	 * @return
 	 */
-	@RequestMapping(value = "/plan/pushTicket", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/pushTicket", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  pushTicket(@RequestBody Map<String, Object> params){
 		Map<String ,Object> map=new HashMap<String, Object>();
@@ -115,7 +116,7 @@ public class ConstipationManagementController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/plan/cancelPlan", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/cancelPlan", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	HashMap<String, Object> cancelPlan(@RequestParam long id, HttpServletRequest request) {
@@ -141,7 +142,7 @@ public class ConstipationManagementController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/plan/confirmDetail", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/confirmDetail", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	HashMap<String, Object> confirmDetail(@RequestParam long planInfoId,@RequestParam String type, HttpServletRequest request) {
@@ -167,7 +168,7 @@ public class ConstipationManagementController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/plan/taskListConfirm", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/taskListConfirm", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	HashMap<String, Object> taskListConfirm(@RequestParam long planInfoId, HttpServletRequest request) {
@@ -190,7 +191,7 @@ public class ConstipationManagementController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/plan/getConfirmSituation", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/getConfirmSituation", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	HashMap<String, Object> getConfirmSituation(@RequestParam long planId, HttpServletRequest request) {
@@ -216,7 +217,7 @@ public class ConstipationManagementController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/plan/appraisal/saveAppraisal", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/appraisal/saveAppraisal", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	HashMap<String, Object> saveAppraisal(@RequestBody Map<String, Object> params,  HttpServletRequest request,HttpSession session) {
@@ -260,7 +261,7 @@ public class ConstipationManagementController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/plan/appraisal/appraisalList", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/appraisal/appraisalList", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	HashMap<String, Object> appraisalList(@RequestParam short id, @RequestParam int pageNo,@RequestParam int pageSize,HttpServletRequest request) {
@@ -298,7 +299,7 @@ public class ConstipationManagementController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/plan/getTasksInfo", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/getTasksInfo", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	HashMap<String, Object> getTasksInfo(@RequestParam String type,HttpServletRequest request) {
@@ -321,7 +322,7 @@ public class ConstipationManagementController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/plan/updatePlanTask", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/updatePlanTask", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	HashMap<String, Object> updatePlanTask(@RequestBody List<Map<String, Object>> params,HttpServletRequest request,HttpSession session) {
@@ -431,7 +432,7 @@ public class ConstipationManagementController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/plan/updatePlanInfoForCycleTip", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/updatePlanInfoForCycleTip", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	HashMap<String, Object> updatePlanInfoForCycleTip(@RequestParam long planInfoId,HttpServletRequest request,HttpSession session) {
@@ -459,7 +460,7 @@ public class ConstipationManagementController {
 	 * @return
 	 */
 	@SystemServiceLog(description = "00000065")
-	@RequestMapping(value = "plan/getTasksList", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/getTasksList", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  getTasksList(){
 		Map<String ,Object> map=new HashMap<String, Object>();
@@ -485,7 +486,6 @@ public class ConstipationManagementController {
 					String planInfoTaskId=planInfoTask.get("id").toString();
 					plan.put("id", planInfoTaskId);
 					plan.put("timeHappen", planInfoTask.get("time_happen"));
-					//plan.put("isConfirmed", !(planInfoTaskConfirmService.getPlanInfoTaskConfirmByPlanInfoTaskId(planInfoTaskId)==null));
 					plan.put("remindMe", planInfoTask.get("remind_me").toString().equals("0")?false:true);
 					plan.put("type",planInfoTask.get("type").toString());
 					planList.add(plan);
@@ -516,7 +516,7 @@ public class ConstipationManagementController {
 	 * @return
 	 */
 	@SystemServiceLog(description = "00000066")////获取任务模板列表
-	@RequestMapping(value = "plan/getTemplateTasks", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/getTemplateTasks", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  getTemplateTasks(@RequestBody Map<String, Object> params){
 		Map<String ,Object> map=new HashMap<String, Object>();
@@ -561,7 +561,7 @@ public class ConstipationManagementController {
 	 * @return
 	 */
 	@SystemServiceLog(description = "获取食材列表")
-	@RequestMapping(value = "plan/getFoodList", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/getFoodList", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  getFoodList(){
 		Map<String ,Object> map=new HashMap<String, Object>();
@@ -591,7 +591,7 @@ public class ConstipationManagementController {
 	 * @return
 	 */
 	@SystemServiceLog(description = "00000069")//保存食材
-	@RequestMapping(value = "plan/saveFoodList", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/saveFoodList", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  saveFoodList(@RequestBody Map<String, Object> params){
 		Map<String ,Object> map=new HashMap<String, Object>();
@@ -622,7 +622,7 @@ public class ConstipationManagementController {
 	 * @param
 	 * @return
 	 */
-	@RequestMapping(value = "plan/getDietList", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/getDietList", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  getDietList(@RequestBody Map<String, Object> params){
 		Map<String ,Object> map=new HashMap<String, Object>();
@@ -664,7 +664,7 @@ public class ConstipationManagementController {
 	 * @param
 	 * @return
 	 */
-	@RequestMapping(value = "plan/SendSMS", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/SendSMS", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  SendSMS() {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -689,7 +689,7 @@ public class ConstipationManagementController {
 	 * @param
 	 * @return
 	 */
-	@RequestMapping(value = "plan/saveShopping", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/saveShopping", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	void saveShopping(@RequestBody Map<String, Object> params){
 		String userId = UserUtils.getUser().getId();
@@ -730,7 +730,7 @@ public class ConstipationManagementController {
 	 * @param
 	 * @return
 	 */
-	@RequestMapping(value = "plan/getquestion", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/getquestion", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	void getQuestion(@RequestBody Map<String, Object> params){
 		String userId = UserUtils.getUser().getId();

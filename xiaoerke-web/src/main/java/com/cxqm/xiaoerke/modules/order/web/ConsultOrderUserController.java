@@ -19,7 +19,7 @@ import java.util.Map;
  * 电话咨询订单
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}/consultPhone/")
+@RequestMapping(value = "consultPhone/")
 public class ConsultOrderUserController {
 
     @Autowired

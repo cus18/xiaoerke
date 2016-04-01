@@ -44,7 +44,7 @@ import java.util.*;
  * @version 2013-10-17
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "")
 public class UserInfoController extends BaseController {
 
     @Autowired
@@ -55,9 +55,6 @@ public class UserInfoController extends BaseController {
     
     @Autowired
 	private AccountService accountService;
-    
-    @Autowired
-	private MessageService messageService;
 
 	@Autowired
 	private MemberService memberService;

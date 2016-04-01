@@ -32,7 +32,7 @@ import java.util.Map;
  * @version 2015-11-04
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "")
 public class DoctorInfoController extends BaseController {
 
     @Autowired

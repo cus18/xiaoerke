@@ -32,7 +32,7 @@ import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
  */
 
 @Controller
-@RequestMapping(value = "${xiaoerkePath}/nutrition")
+@RequestMapping(value = "nutrition")
 public class NutritionManagementController {
 
 	@Autowired
@@ -246,7 +246,6 @@ public class NutritionManagementController {
 	/**
 	 * 获取一天的食谱
 	 * sunxiao
-	 * @param params
 	 * @return
 	 */
 	@RequestMapping(value = "/getRecipes", method = {RequestMethod.POST, RequestMethod.GET})

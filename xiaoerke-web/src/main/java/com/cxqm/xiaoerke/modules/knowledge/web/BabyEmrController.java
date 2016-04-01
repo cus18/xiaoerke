@@ -34,7 +34,7 @@ import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
  * 2015-11-26
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "knowledge")
 public class BabyEmrController extends BaseController {
 
 	@Autowired
@@ -66,7 +66,7 @@ public class BabyEmrController extends BaseController {
 	 * @return Map<String,Object>
 	 * @author sunxiao
 	 */
-	@RequestMapping(value = "/knowledge/babyEmr/save", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/babyEmr/save", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> save(@RequestBody Map<String, Object> params,
@@ -117,7 +117,7 @@ public class BabyEmrController extends BaseController {
 	 * @return Map<String,Object>
 	 * @author sunxiao
 	 */
-	@RequestMapping(value = "/knowledge/babyEmr/updateBabyEmr", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/babyEmr/updateBabyEmr", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> updateBabyEmr(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) throws Exception {
@@ -141,7 +141,7 @@ public class BabyEmrController extends BaseController {
 	 * @return Map<String,Object>
 	 * @author sunxiao
 	 */
-	@RequestMapping(value = "/knowledge/babyEmr/updatePic", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/babyEmr/updatePic", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> updatePic(@RequestParam String mediaId,HttpServletRequest request,HttpSession session) throws Exception {
@@ -168,7 +168,7 @@ public class BabyEmrController extends BaseController {
 	 * @return Map<String,Object>
 	 * @author sunxiao
 	 */
-	@RequestMapping(value = "/knowledge/babyEmr/getBabyEmrList", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/babyEmr/getBabyEmrList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> getBabyEmrList(HttpServletRequest request,HttpSession session) throws Exception {

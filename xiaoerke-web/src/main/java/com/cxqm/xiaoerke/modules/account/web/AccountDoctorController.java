@@ -22,7 +22,7 @@ import java.util.*;
  * @date 2015-10-14
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "account/doctor/")
 public class AccountDoctorController {
 
     @Autowired
@@ -34,7 +34,7 @@ public class AccountDoctorController {
 	@Autowired
 	private SystemService systemService;
 
-    @RequestMapping(value = "account/doctor/withDrawList", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "withDrawList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> getWithDrawlList(@RequestParam Integer pageSize, @RequestParam Integer pageNo) {
@@ -56,7 +56,7 @@ public class AccountDoctorController {
         return response;
     }
     
-    @RequestMapping(value = "/account/doctor/withdraw", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "withdraw", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> withdraw(@RequestParam Float money) {

@@ -20,7 +20,7 @@ import java.util.*;
  * @version 2013-10-17
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "interaction")
 public class ConcernDoctorController extends BaseController {
 
     @Autowired
@@ -39,7 +39,7 @@ public class ConcernDoctorController extends BaseController {
      * }
      * //available_time为0表示今日可约，为1代表明日可约，为2，代表2天后可约，依次类推7天以内的即可
      */
-    @RequestMapping(value = "/interaction/user/myselfConcern", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/user/myselfConcern", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> listSearchConcern(@RequestBody Map<String, Object> params) {
@@ -52,7 +52,7 @@ public class ConcernDoctorController extends BaseController {
      * 关注医生
      * params:{"doctorId":"1"}
      */
-    @RequestMapping(value = "/interaction/user/doctorConcern", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/user/doctorConcern", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> doctorConcern(@RequestBody Map<String, Object> params) {
@@ -65,7 +65,7 @@ public class ConcernDoctorController extends BaseController {
      * params:{"doctorId":"1"}
      * response：{"isConcerned"：true}
      */
-    @RequestMapping(value = "/interaction/user/isConcerned", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/user/isConcerned", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> doctorConcernYesOrFalse(@RequestBody Map<String, Object> params) {

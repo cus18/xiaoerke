@@ -37,7 +37,7 @@ import java.util.*;
  * @version 2013-10-17
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "order/user")
 public class OrderUserController extends BaseController {
 
     @Autowired
@@ -65,7 +65,7 @@ public class OrderUserController extends BaseController {
     ConsultPhoneOrderService consultPhoneOrderService;
     
     //用户进行预约操作，并等待支付
-    @RequestMapping(value = "/order/user/orderAppointOperation", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/orderAppointOperation", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> orderAppointOperation(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) throws Exception {
@@ -73,7 +73,7 @@ public class OrderUserController extends BaseController {
     }
 
     //用户进行预约支付操作
-    @RequestMapping(value = "/order/user/orderPayOperation", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/orderPayOperation", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> orderPayOperation(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) throws Exception {
@@ -94,7 +94,7 @@ public class OrderUserController extends BaseController {
     }
 
     //status:为0表示待支付，1表示待就诊，2表示待评价，3表示待分享，4表示待建档,6表示已取消，显示不同状态的预订
-    @RequestMapping(value = "/order/user/orderPraiseOperation", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/orderPraiseOperation", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> orderPraiseOperation(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) throws Exception {
@@ -102,7 +102,7 @@ public class OrderUserController extends BaseController {
     }
 
     //status:为0表示待支付，1表示待就诊，2表示待评价，3表示待分享，4表示待建档,6表示已取消，显示不同状态的预订
-    @RequestMapping(value = "/order/user/info/orderShareOperation", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/info/orderShareOperation", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> orderShareOperation(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) throws Exception {
@@ -110,7 +110,7 @@ public class OrderUserController extends BaseController {
     }
 
     //status:为0表示待支付，1表示待就诊，2表示待评价，3表示待分享，4表示待建档,6表示已取消，显示不同状态的预订,用户取消操作
-    @RequestMapping(value = "/order/user/info/orderCancelOperation", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/info/orderCancelOperation", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> orderCancelOperation(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) throws Exception {
@@ -130,7 +130,7 @@ public class OrderUserController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/order/user/msgAppointment", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/msgAppointment", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> msgAppointment(@RequestBody Map<String, Object> params) {
@@ -140,21 +140,21 @@ public class OrderUserController extends BaseController {
         return resultMap;
     }
 
-    @RequestMapping(value = "/order/user/msgAppointmentStatus", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/msgAppointmentStatus", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     String msgAppointmentStatus(@RequestBody Map<String, Object> params) {
         return messageService.getMsgAppointmentStatus(params);
     }
 
-    @RequestMapping(value = "/order/user/checkUserAppointment", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/checkUserAppointment", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> checkUserAppointment(@RequestBody Map<String, Object> params,HttpSession session) {
         return patientRegisterService.checkUserAppointment(params, session);
     }
 
-    @RequestMapping(value = "/order/user/insertUserAppointmentNum", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/insertUserAppointmentNum", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     void insertUserAppointmentNum(@RequestBody Map<String, Object> params, HttpSession session) {
@@ -176,7 +176,7 @@ public class OrderUserController extends BaseController {
      * //status为0表示进行了预约，等待支付，1表示完成支付，等待就诊，2表示取消了预约，
      * 3表示完成了就诊，等待评价， 3表示完成了评价等待分享， 4表示完成了分享等待建档
      */
-    @RequestMapping(value = "/order/user/orderDetail", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/orderDetail", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> myselfInfoAppointmentDetail(@RequestBody Map<String, Object> params) {
@@ -201,7 +201,7 @@ public class OrderUserController extends BaseController {
      * "failure":"0"
      * }
      */
-    @RequestMapping(value = "/order/user/orderList", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/orderList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> myselfInfoAppointment(@RequestBody Map<String, Object> params) {
@@ -213,7 +213,7 @@ public class OrderUserController extends BaseController {
      * @param
      * @return
      */
-    @RequestMapping(value = "/order/user/orderListAll", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/orderListAll", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     HashMap<String, Object> myselfInfoOrderListAll(String type) {
@@ -226,7 +226,7 @@ public class OrderUserController extends BaseController {
     /**
      *判断用户的订单信息
      */
-    @RequestMapping(value = "/order/user/checkOrderInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/checkOrderInfo", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> checkOrderInfo(@RequestBody Map<String, Object> params,HttpServletRequest request,
@@ -237,7 +237,7 @@ public class OrderUserController extends BaseController {
     /**
      *用户的账户信息
      */
-    @RequestMapping(value = "/order/user/appointmentByPhone", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/appointmentByPhone", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> appointmentByPhone(@RequestBody Map<String, Object> params,HttpServletRequest request,
@@ -245,14 +245,14 @@ public class OrderUserController extends BaseController {
         return patientRegisterService.getOrderListByUserPhone(params, request, httpResponse);
     }
 
-    @RequestMapping(value = "/order/user/getUnNormalCheckOrder", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/getUnNormalCheckOrder", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> getUnNormalCheckOrder(@RequestBody Map<String, Object> params) throws Exception {
         return patientRegisterService.getUnNormalCheckOrder(params);
     }
 
-    @RequestMapping(value = "/order/user/checkIfAppointmentNeedPay", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/checkIfAppointmentNeedPay", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     @SystemControllerLog(description = "00000062")//扫码来预约
@@ -297,7 +297,7 @@ public class OrderUserController extends BaseController {
         return m;
     }
 
-    @RequestMapping(value = "/order/user/getOrderPayInfo", method = {RequestMethod.POST})
+    @RequestMapping(value = "/getOrderPayInfo", method = {RequestMethod.POST})
     public
     @ResponseBody
     Map<String, Object> getOrderPayInfo(@RequestBody Map<String, Object> params,HttpSession session,HttpServletRequest request) {
@@ -359,7 +359,7 @@ public class OrderUserController extends BaseController {
      * }
      * //service_type的0表示公立特需，1表示私立单独问诊
      */
-    @RequestMapping(value = "/order/user/doctor/time/detail", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/doctor/time/detail", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> DoctorAppointmentInfoDetail(@RequestBody Map<String, Object> params) {

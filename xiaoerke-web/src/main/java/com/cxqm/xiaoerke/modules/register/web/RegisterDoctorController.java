@@ -31,7 +31,7 @@ import com.cxqm.xiaoerke.modules.order.service.RegisterService;
  * @version 2015-11-04
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "register/doctor")
 public class RegisterDoctorController extends BaseController {
 	
 	@Autowired
@@ -40,7 +40,7 @@ public class RegisterDoctorController extends BaseController {
 	@Autowired
 	private PatientRegisterService patientRegisterService;
 	
-    @RequestMapping(value = "/register/doctor/date", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/date", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> getDatesHasRegisters(@RequestParam String doctorId, String locationId,
@@ -52,7 +52,7 @@ public class RegisterDoctorController extends BaseController {
         return response;
     }
 	
-	@RequestMapping(value = "/register/doctor/arrange", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/arrange", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> arrangeRegister(@RequestBody Map<String, Object> params) throws Exception {
@@ -94,7 +94,7 @@ public class RegisterDoctorController extends BaseController {
         return response;
     }
 	
-	@RequestMapping(value = "/register/doctor/remove", method = {RequestMethod.POST})
+	@RequestMapping(value = "/remove", method = {RequestMethod.POST})
     public
     @ResponseBody
     Map<String, Object> removeRegister(@RequestBody List<Map<String, Object>> params) throws Exception {
@@ -159,14 +159,14 @@ public class RegisterDoctorController extends BaseController {
      * }
      * //status的0表示可约，1表示已被人约走
      */
-    @RequestMapping(value = "/register/doctor", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> getDoctorAppointments4Doctor(@RequestBody Map<String, Object> params) throws Exception {
         return registerService.getDoctorAppointments4Doctor(params);
     }
 
-    @RequestMapping(value = "/register/doctor/saveDoctorAppointmentInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/saveDoctorAppointmentInfo", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     HashMap<String, Object> saveDoctorAppointmentInfo(@RequestBody Map<String, Object> params) {
@@ -183,7 +183,7 @@ public class RegisterDoctorController extends BaseController {
         return response;
     }
 
-	@RequestMapping(value = "/register/doctor/bookedNum", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/bookedNum", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	Map<String, Object> getBookedRegisters(@RequestBody List<Map<String, Object>> params) throws Exception {
@@ -225,7 +225,7 @@ public class RegisterDoctorController extends BaseController {
 	 *
 	 * @return 返回信息
 	 */
-	@RequestMapping(value = "/register/doctor/appointmentInfo", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/appointmentInfo", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	HashMap<String, Object> getDoctorTimeInfo(@RequestBody Map<String, Object> params) {

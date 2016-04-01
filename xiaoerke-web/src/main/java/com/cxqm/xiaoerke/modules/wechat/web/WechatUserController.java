@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "")
 public class WechatUserController extends BaseController {
 
     @Autowired

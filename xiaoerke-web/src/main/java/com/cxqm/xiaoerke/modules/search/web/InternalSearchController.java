@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "search")
 public class InternalSearchController {
 	
 	@Autowired
@@ -91,7 +91,7 @@ public class InternalSearchController {
         "pageSize": 10
     }
 	 */
-    @RequestMapping(value = "/search/searchDoctors", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "Doctors", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> listSearchDoctor(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpServletResponse httpResponse) {
@@ -149,7 +149,7 @@ public class InternalSearchController {
 		return response;
     }
     
-    @RequestMapping(value = "/search/import", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/import", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> keywordsIllnessRelImportt() {
@@ -158,7 +158,7 @@ public class InternalSearchController {
         return response;
     }
 
-    @RequestMapping(value = "/search/user/PatientSearchList", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/user/PatientSearchList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> getPatientSearchList(HttpServletRequest request) {
@@ -169,7 +169,7 @@ public class InternalSearchController {
         return response;
     }
 
-    @RequestMapping(value = "/search/user/RemoveAllSearchHistory", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/user/RemoveAllSearchHistory", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     String removeAllSearchHistory(HttpServletRequest request, HttpServletResponse response) {
@@ -177,7 +177,7 @@ public class InternalSearchController {
         return "";
     }
 
-    @RequestMapping(value = "/search/user/autoPrompting", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/user/autoPrompting", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object>  autoPrompting(@RequestBody Map<String, Object> params) throws Exception{

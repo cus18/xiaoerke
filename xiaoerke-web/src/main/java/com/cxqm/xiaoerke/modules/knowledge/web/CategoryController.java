@@ -27,7 +27,7 @@ import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
  * @version 2015-10-21
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "knowledge")
 public class CategoryController extends BaseController {
 
 	@Autowired
@@ -48,7 +48,7 @@ public class CategoryController extends BaseController {
 	 * @return Map<String,Object>
 	 * @author sunxiao
 	 */
-	@RequestMapping(value = "/knowledge/category/categoryList", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/category/categoryList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> categoryList(@RequestBody Map<String, Object> params) throws Exception {
@@ -61,7 +61,7 @@ public class CategoryController extends BaseController {
 	 * @return Map<String,Object>
 	 * @author sunxiao
 	 */
-	@RequestMapping(value = "/knowledge/category/findByParentId", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/category/findByParentId", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> findByParentId(@RequestBody Map<String, Object> params) throws Exception {

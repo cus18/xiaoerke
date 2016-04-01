@@ -31,7 +31,7 @@ import java.util.*;
  * @version 2013-10-17
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "util")
 public class UtilController extends BaseController {
 
     @Autowired
@@ -55,7 +55,7 @@ public class UtilController extends BaseController {
      * }
      * //status为1表示用户已经绑定注册，0表示用户没有绑定注册
      */
-    @RequestMapping(value = "/util/checkBind", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/checkBind", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> checkBind(@RequestBody Map<String, Object> params) {
@@ -105,7 +105,7 @@ public class UtilController extends BaseController {
      * }
      * //status为1表示获取验证码成功，为0表示获取验证码失败
      */
-    @RequestMapping(value = "/util/user/getCode", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/user/getCode", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> getUserCode(@RequestBody Map<String, Object> params) {
@@ -113,7 +113,7 @@ public class UtilController extends BaseController {
         return utilService.sendIdentifying(userPhone);
     }
 
-    @RequestMapping(value = "/util/user/recordHealthPlanAddItem", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/user/recordHealthPlanAddItem", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> recordHealthPlanAddItem(@RequestBody Map<String, Object> params,
@@ -140,7 +140,7 @@ public class UtilController extends BaseController {
         return response;
     }
 
-    @RequestMapping(value = "/util/user/findHealthPlanAddItem", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/user/findHealthPlanAddItem", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     List<HealthPlanAddItemVo> findHealthPlanAddItem(HttpServletRequest request,HttpSession session) throws Exception {
@@ -173,7 +173,7 @@ public class UtilController extends BaseController {
      * }
      * //status为1表示获取验证码成功，为0表示获取验证码失败
      */
-    @RequestMapping(value = "/util/doctor/getCode", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/doctor/getCode", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> getDoctorCode(@RequestBody Map<String, Object> params) {
@@ -185,7 +185,7 @@ public class UtilController extends BaseController {
     /**
      * 用户登出操作
      */
-    @RequestMapping(value = "/util/logOut", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/logOut", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     String logOut() {
@@ -197,7 +197,7 @@ public class UtilController extends BaseController {
      * 供前台调用 保存页面点击的日志文件
      */
     @SystemControllerLog(description = "")
-    @RequestMapping(value = "/util/recordLogs", method = {RequestMethod.GET, RequestMethod.POST},
+    @RequestMapping(value = "/recordLogs", method = {RequestMethod.GET, RequestMethod.POST},
             produces = "text/plain;charset=UTF-8")
     public
     @ResponseBody

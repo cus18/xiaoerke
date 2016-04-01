@@ -22,7 +22,6 @@
         <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="xiaoerke-knowledge" />
       </profile>
       <profile default="false" name="Annotation profile for xiaoerke-authcenter" enabled="true">
         <sourceOutputDir name="target\generated-sources\annotations" />
@@ -297,7 +296,6 @@
         <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="xiaoerke-runTimeTask" />
       </profile>
       <profile default="false" name="Annotation profile for xiaoerke-interaction-api" enabled="true">
         <sourceOutputDir name="target\generated-sources\annotations" />

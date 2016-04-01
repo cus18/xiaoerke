@@ -49,7 +49,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
  * @version 2015-11-04
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "consult")
 public class ConsultPatientController extends BaseController {
 
     @Autowired
@@ -70,7 +70,7 @@ public class ConsultPatientController extends BaseController {
      *      }
      */
 
-    @RequestMapping(value = "/consult/sessionEnd", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/sessionEnd", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     String sessionEnd(@RequestBody Map<String, Object> params,HttpServletRequest request,
@@ -93,7 +93,7 @@ public class ConsultPatientController extends BaseController {
      }
      */
 
-    @RequestMapping(value = "/consult/waitJoinList/operation", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/waitJoinList/operation", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     String operation(@RequestBody Map<String, Object> params,
@@ -102,7 +102,7 @@ public class ConsultPatientController extends BaseController {
             return consultConversationService.removeSessionById(request,params);
     }
 
-    @RequestMapping(value = "/consult/getSessionId", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/getSessionId", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> getSessionId(@RequestParam(required=true) String userId) {
@@ -118,7 +118,7 @@ public class ConsultPatientController extends BaseController {
         return response;
     }
 
-    @RequestMapping(value = "/consult/getCurrentSessions", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/getCurrentSessions", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> getCurrentSessions(@RequestParam(required=true) String csUserId) {
@@ -139,7 +139,7 @@ public class ConsultPatientController extends BaseController {
         return response;
     }
 
-    @RequestMapping(value="/consult/uploadMediaFile",method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value="/uploadMediaFile",method = {RequestMethod.POST, RequestMethod.GET})
     public HashMap<String,Object> UploadFile(@RequestParam("file") MultipartFile file,
                            @RequestParam("data") String data) throws UnsupportedEncodingException {
 
@@ -159,7 +159,7 @@ public class ConsultPatientController extends BaseController {
     /**
      * 获取客户列表(或咨询过某个医生的客户)详细信息,按照时间降序排序
      */
-    @RequestMapping(value = "/consult/getUserList", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/getUserList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> getUserList(@RequestBody Map<String, Object> params) {
@@ -233,7 +233,7 @@ public class ConsultPatientController extends BaseController {
      }
      */
 
-    @RequestMapping(value = "/consult/recordSearchList", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/recordSearchList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> recordSearchList(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {

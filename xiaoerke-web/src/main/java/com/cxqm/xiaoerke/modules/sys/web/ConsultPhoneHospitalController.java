@@ -22,7 +22,7 @@ import java.util.Map;
  */
 
 @Controller
-@RequestMapping(value = "${xiaoerkePath}/consultPhone/")
+@RequestMapping(value = "consultPhone/")
 public class ConsultPhoneHospitalController {
 
     @Autowired
