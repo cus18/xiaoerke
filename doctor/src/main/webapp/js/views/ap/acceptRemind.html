@@ -1,0 +1,30 @@
+<ion-spinner ng-show="pageLoading"  class="loadPic"></ion-spinner>
+<ion-view view-title="接诊提醒" ng-init="doRefresh()">
+    <ion-spinner ng-show="dataLoading"></ion-spinner>
+    <div class="tog-date">
+        <span ng-click="togDate('today')" ng-style="(tog=='today')?{'background-color':'#88d9dd','color':'#fff'}:{'background-color':'#fff','color':'#88d9dd'}">今天</span>
+        <span ng-click="togDate('tomorrow')" ng-style="(tog=='tomorrow')?{'background-color':'#88d9dd','color':'#fff'}:{'background-color':'#fff','color':'#88d9dd'}">明天</span>
+    </div>
+    <ion-content class="acceptRemind" style="top:60px;">
+        <ion-scroll direction="y" has-bouncing="true">
+           <dl class="" ng-repeat="item in location">
+               <dt class=" " >
+                  <span>{{$index+1}}</span> {{item.hospitalName}} &nbsp;&nbsp;{{item.location}}
+               </dt>
+               <dd class=" " ng-repeat="item2 in item.orders">
+                    <div class="name">
+                         <span>
+                           {{item2.babyName}}&nbsp;&nbsp;{{item2.phone}}
+                        </span>
+                        <span class="r">
+                            {{item2.beginTimeStr }}
+                        </span>
+                     </div>
+                    <div>
+                        症状：{{item2.illness}}
+                    </div>
+               </dd>
+           </dl>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

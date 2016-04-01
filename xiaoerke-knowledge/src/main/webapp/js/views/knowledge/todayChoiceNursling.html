@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="styles/knowledge/knowledgeCommon.less?ver='0.9'" type="text/css" />
+<link rel="stylesheet" href="styles/knowledge/todayChoiceNursling.less?ver='0.9'" type="text/css" />
+<ion-spinner ng-show="pageLoading" icon="bubbles" class="loadPic"></ion-spinner>
+<ion-view view-title="郑玉巧育儿经">
+    <ion-content class="todayChoiceNursling" overflow-scroll="true" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <div class="myTitle">
+               {{title}}
+            </div>
+            <div class="mySearch">
+                <div class="search1 " >
+                    <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fsearch_left_icon.png" width="14.5" height="14.5">
+                    <input type="search" placeholder="搜索" ng-model="info.content">
+                    <span class="go-search" ng-click="search()">搜索</span>
+                </div>
+            </div>
+            <div class="allItem" ng-if="no=='true'">
+                <div class="cir">
+                    <span></span>
+                </div>
+                <a ng-if="$index<12" ng-repeat="item in ageGroupList" ui-sref="todayChoiceNurslingList({id:item.categoryId,zhutitle:title,houtitle:item.categoryName})">
+                    {{item.categoryName}}
+                </a>
+                <a ng-if="$index>12&&showMoreLock" ng-repeat="item in ageGroupList" ui-sref="todayChoiceNurslingList({id:item.categoryId,zhutitle:title,houtitle:item.categoryName})">
+                    {{item.categoryName}}
+                </a>
+                <a class="more" ng-click="showMore()" ng-if="!showMoreLock">更多</a>
+            </div>
+        </ion-scroll>
+    </ion-content>
+
+</ion-view>

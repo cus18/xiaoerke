@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="authcenter:war">
+    <output-path>$PROJECT_DIR$/authcenter/target</output-path>
+    <root id="archive" name="authcenter.war">
+      <element id="artifact" artifact-name="authcenter:war exploded" />
+    </root>
+  </artifact>
+</component>

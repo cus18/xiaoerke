@@ -1,0 +1,48 @@
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title={{title0}} ng-init="doRefresh()">
+    <ion-spinner ng-show="dataLoading" class="loadPic"></ion-spinner>
+    <div bdf-head="title"></div>
+    <ion-content class="evaluateList">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <div class="item item-thumbnail-left  waitInfo" style="margin:0;height:100px;">
+                <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{appointmentDataDetail.doctorId}}" class="doctorPhoto"/>
+                <h2>{{appointmentDataDetail.doctorName}}&nbsp;&nbsp;<span>{{appointmentDataDetail.position2}}</span></h2>
+                <p>{{appointmentDataDetail.hospitalName}}</p>
+                <p>{{appointmentDataDetail.departmentName}}</p>
+            </div>
+            <div class="item workInfo item-borderless" >
+                <ul class="">
+                    <li class="l">时间</li>
+                    <li class="r">
+                        <span>{{appointmentDataDetail.date}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <span>{{week}}&nbsp;</span>
+                        <span>{{time}}</span>
+                    </li>
+                </ul>
+                <ul class="">
+                    <li class="l">地点</li>
+                    <li class="r word-break">
+                        {{appointmentDataDetail.location}}<br>
+                        {{appointmentDataDetail.position}}
+                        <span class="route-btn" ui-sref = "route({sys_regist_id:appointmentDataDetail.sys_regist_id})"> 详细路线</span>
+                      </li>
+                </ul>
+                <ul class="orderNum">
+                    <li class="l">
+                        订单
+                    </li>
+                    <li class="r">
+                        {{appointmentDataDetail.appointmentNo}} 预约成功（待评价）
+                    </li>
+
+                </ul>
+            </div>
+                <button class="button foot-btn" ui-sref="evaluateDoctor({patient_register_service_id:patientRegisterId,
+                date:appointmentDataDetail.date,beginTime:appointmentDataDetail.beginTime,endTime:appointmentDataDetail.endTime})">
+                    立即评价
+                </button>
+            </div>
+            <div bdf-footer></div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,58 @@
+<ion-view view-title={{title0}} ng-init="doRefresh()">
+    <ion-spinner ng-show="dataLoading" class="loadPic"></ion-spinner>
+    <ion-content class="userEvaluate" style="top:0;">
+
+        <ion-scroll direction="y" has-bouncing="true" style="top:0px;">
+           <div class="pic">
+               <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/other%2Fuser_evaluate.png" width="99" height="106">
+                <p>
+                    满意度评价
+                </p>
+           </div>
+            <ul class="list">
+                <li class="item">
+                    <span>
+                        医生的服务态度
+                    </span>
+                    <div class=" star-list1" >
+                        <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Frank_star_select.png" width="23" height="23" ng-click="selectStar1('0')" >
+                        <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Frank_star_select.png" width="23" height="23" ng-click="selectStar1('1')" >
+                        <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Frank_star_select.png" width="23" height="23" ng-click="selectStar1('2')" >
+                        <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Frank_star_select.png" width="23" height="23" ng-click="selectStar1('3')" >
+                        <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Frank_star_select.png" width="23" height="23" ng-click="selectStar1('4')" >
+                    </div>
+                </li>
+                <li class="item">
+                    <span>
+                        医生服务的专业性
+                    </span>
+                    <div class=" star-list2" >
+                        <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Frank_star_select.png" width="23" height="23" ng-click="selectStar2('0')" >
+                        <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Frank_star_select.png" width="23" height="23" ng-click="selectStar2('1')" >
+                        <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Frank_star_select.png" width="23" height="23" ng-click="selectStar2('2')" >
+                        <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Frank_star_select.png" width="23" height="23" ng-click="selectStar2('3')" >
+                        <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Frank_star_select.png" width="23" height="23" ng-click="selectStar2('4')" >
+
+                    </div>
+                </li>
+                <li class="item">
+                    <span>
+                       对您问题的解决程度
+                    </span>
+                    <div class=" star-list3" >
+                        <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Frank_star_select.png" width="23" height="23" ng-click="selectStar3('0')" >
+                        <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Frank_star_select.png" width="23" height="23" ng-click="selectStar3('1')" >
+                        <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Frank_star_select.png" width="23" height="23" ng-click="selectStar3('2')" >
+                        <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Frank_star_select.png" width="23" height="23" ng-click="selectStar3('3')" >
+                        <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Frank_star_select.png" width="23" height="23" ng-click="selectStar3('4')" >
+
+                    </div>
+                </li>
+            </ul>
+            <div >
+                <textarea placeholder="请输入您的评价......" maxlength="200" onfocus="skip()" id="pp" ng-model="info.content"></textarea>
+            </div>
+            <button class="button foot-btn" ng-click="submitEvaluation()">提交评价</button>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

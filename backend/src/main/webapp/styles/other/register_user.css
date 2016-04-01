@@ -1,0 +1,124 @@
+#b-2 {
+    width: 100%;
+    padding-top: 59px;
+}
+
+#b-2 .b-1 {
+    margin-bottom: 26px;
+    color: #f9a920;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#b-2 .b-2 {
+    position: relative;
+    margin-left: 296px;
+    margin-bottom: 20px;
+}
+
+.b-2 .b-3 {
+    position: absolute;
+    top: 10px;
+    width: 80px;
+    font-weight: bold;
+    text-align: right;
+}
+
+.b-2 input[type=text] {
+    width: 280px;
+    height: 40px;
+    margin-left: 91px;
+}
+
+.b-3 .b-4 {
+    color: #f9a920;
+}
+
+.b-2 .b-5 {
+    position: absolute;
+    top: 7px;
+    left: 385px;
+}
+
+.b-2 .b-5 span {
+    position: relative;
+    top: 2px;
+    margin-left: 2px;
+    font-weight: bold;
+}
+
+.b-2 input[type=text].b-6 {
+    width: 162px;
+}
+
+.b-2 .b-7 {
+    position: absolute;
+    top: 0;
+    left: 264px;
+    width: 107px;
+    height: 40px;
+    padding-top: 13px;
+    color: #fff;
+    font-size: 14px;
+    line-height: 14px;
+    cursor: pointer;
+    text-align: center;
+    background: #f9a920;
+}
+
+#b-2 .b-2.b-8 {
+    margin-bottom: 24px;
+}
+
+.b-2 input[type=checkbox] {
+    position: relative;
+    top: 2px;
+    margin-left: 90px;
+}
+
+.b-2 .b-9 {
+    margin-left: 4px;
+}
+
+.b-2 .b-9 a {
+    color: #faa820;
+}
+
+#b-2 .b-2.b-10 {
+    margin-bottom: 36px;
+}
+
+.b-2 .b-11 {
+    width: 280px;
+    margin-left: 66px;
+    padding: 8px 0;
+    cursor: pointer;
+    text-align: center;
+    background: #faa820;
+}
+
+.b-2 .b-11 img {
+    width: 21px;
+}
+
+.b-2 .b-11 span {
+    position: relative;
+    top: 1px;
+    margin-left: 7px;
+    color: #fff;
+    font-size: 16px;
+}
+
+#b-2 .b-2.b-12 {
+    margin-bottom: 14px;
+}
+
+.b-2 .b-13 {
+    margin-left: 66px;
+}
+
+.b-2 .b-13 a{
+    margin-left: 27px;
+    color: #faa820;
+}

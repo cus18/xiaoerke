@@ -1,0 +1,286 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
+	xmlns:sec="http://www.springframework.org/schema/security"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+http://www.springframework.org/schema/security
+http://www.springframework.org/schema/security/spring-security-4.0.xsd 
+http://www.springframework.org/schema/security/oauth2
+http://www.springframework.org/schema/security/spring-security-oauth2-2.0.xsd">
+    
+	<!-- get token -->
+    <security:http auto-config="true" use-expressions="true"
+                   pattern="/oauth/token" create-session="stateless"
+                   authentication-manager-ref="oauth2ClientAuthenticationManager">
+        <security:intercept-url pattern="/oauth/token" access="isFullyAuthenticated()" />
+        <security:anonymous enabled="false"/>
+        <security:http-basic entry-point-ref="clientAuthenticationEntryPoint"/>
+        <security:custom-filter ref="clientCredentialsTokenEndpointFilter" before="BASIC_AUTH_FILTER"/>
+    </security:http>
+    
+    <bean id="exceptionTranslator" class="com.cxqm.xiaoerke.authentication.assistant.MyWebResponseExceptionTranslator"></bean>
+    
+    <bean id="oauth2ClientDetails" class="com.cxqm.xiaoerke.authentication.service.MyClientDetailsService">
+        <property name="list">
+        	<list>
+        		<map>
+        			<entry key="id" value="android" />
+                	<entry key="secretKey" value="xiaoerke123456" />
+        		</map>
+        		<map>
+        			<entry key="id" value="web" />
+                	<entry key="secretKey" value="xiaoerke123456" />
+        		</map>
+        		<map>
+        			<entry key="id" value="ios" />
+                	<entry key="secretKey" value="xiaoerke123456" />
+        		</map>
+        	</list>
+        </property>
+    </bean>
+    
+    <bean id="oauth2ClientDetailsUserService" class="org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService">
+        <constructor-arg ref="oauth2ClientDetails"/>
+    </bean>
+    
+    <security:authentication-manager id="oauth2ClientAuthenticationManager" >
+        <security:authentication-provider user-service-ref="oauth2ClientDetailsUserService" />
+    </security:authentication-manager>
+    
+    <bean id="clientAuthenticationEntryPoint" class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
+        <property name="realmName" value="springsec/client" />
+        <property name="typeName" value="Basic" />
+        <property name="exceptionTranslator" ref="exceptionTranslator"/>
+    </bean>
+
+	<bean id="clientAuthenticationEntryPoint2" class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
+        <property name="exceptionTranslator" ref="exceptionTranslator"/>
+    </bean>
+    
+	<bean id="clientCredentialsTokenEndpointFilter" class="org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter">
+		<constructor-arg name="path" value="/oauth/token"/>
+		<property name="authenticationManager" ref="oauth2ClientAuthenticationManager" />
+		<property name="authenticationEntryPoint" ref="clientAuthenticationEntryPoint2"/>
+	</bean>
+
+	<bean id="defaultAccessTokenConverter" class="org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter">
+		<property name="userTokenConverter" ref="myUserAuthenticationConverter"/>
+	</bean>
+
+	<bean id="myUserAuthenticationConverter" class="com.cxqm.xiaoerke.authentication.assistant.MyUserAuthenticationConverter">
+	</bean>
+	
+	<bean id="tokenStore" class="org.springframework.security.oauth2.provider.token.store.JdbcTokenStore">
+        <constructor-arg index="0" ref="dataSource"/>
+    </bean>
+    
+	<bean id="tokenServices" class="org.springframework.security.oauth2.provider.token.DefaultTokenServices">
+        <property name="tokenStore" ref="tokenStore" />
+        <property name="supportRefreshToken" value="true" />
+        <property name="accessTokenValiditySeconds" value="8640000"/>
+        <property name="clientDetailsService" ref="oauth2ClientDetails" />
+    </bean>
+    
+	<bean id="customUserAuthenticationProvider" class="com.cxqm.xiaoerke.authentication.assistant.UserAuthenticationProvider">
+    </bean>
+
+	<sec:authentication-manager id="userAuthenticationManager">
+        <sec:authentication-provider ref="customUserAuthenticationProvider" />
+    </sec:authentication-manager>
+
+	<!-- =============================================================== WEB =============================================================== -->
+	
+	<sec:http pattern="${ssoPath}/login" security="none" />
+	<sec:http pattern="${ssoPath}/logout" security="none" />
+	<sec:http pattern="${ssoPath}/token/**" security="none" />
+	<sec:http pattern="${ssoPath}/checklogin*" security="none" />
+	<sec:http pattern="/oauth/check_token" security="none"/>
+	
+	<!-- 拦截请求，未登录跳转登录页 -->
+	<sec:http pattern="${ssoPath}/**" use-expressions="true" entry-point-ref="authenticationProcessingFilterEntryPoint" authentication-manager-ref="userAuthenticationManager">
+        <sec:anonymous enabled="false" />
+        <sec:intercept-url pattern="${ssoPath}/**" access="isAuthenticated()"/>
+        <sec:csrf disabled="true"/>
+      	<sec:custom-filter ref="myAuthenticationFilter" position="FORM_LOGIN_FILTER" />
+      	<sec:http-basic entry-point-ref="oauthAuthenticationEntryPoint"/>
+    </sec:http>
+    
+    <!-- 确认授权 -->
+    <sec:http use-expressions="true" authentication-manager-ref="userAuthenticationManager">
+    	<sec:anonymous enabled="false"/>
+    	<sec:intercept-url pattern="/oauth/authorize" access="isAuthenticated()" method="POST"/>
+    	<sec:csrf disabled="true"/>
+    	<sec:http-basic entry-point-ref="oauthAuthenticationEntryPoint"/>
+    </sec:http>
+    
+    
+    <bean id="oauthAuthenticationEntryPoint" class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
+        <property name="realmName" value="test" />
+    </bean>
+    
+    <!-- 登录验证器 -->
+	<beans:bean id="myAuthenticationFilter" class="com.cxqm.xiaoerke.authentication.filter.MyAuthenticationProcessingFilter">
+		<!-- 处理登录的action -->
+		<beans:property name="filterProcessesUrl" value="/sso/auth_center/form" />
+		<!-- 验证成功后的处理 -->
+		<beans:property name="authenticationSuccessHandler" ref="loginLogAuthenticationSuccessHandler" />
+		<!-- 验证失败后的处理 -->
+		<beans:property name="authenticationFailureHandler" ref="simpleUrlAuthenticationFailureHandler" />
+		<beans:property name="authenticationManager" ref="userAuthenticationManager" />
+	</beans:bean>
+
+	<beans:bean id="loginLogAuthenticationSuccessHandler" class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+		<beans:property name="alwaysUseDefaultTargetUrl" value="false" />
+		<beans:property name="redirectStrategy" ref="redirectStrategy"/>
+	</beans:bean>
+	
+	<beans:bean id="redirectStrategy" class="com.cxqm.xiaoerke.authentication.assistant.MyRedirectStrategy">
+	</beans:bean>
+	
+	<beans:bean id="simpleUrlAuthenticationFailureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+		<!-- 可以配置相应的跳转方式。属性forwardToDestination为true采用forward false为sendRedirect -->
+		<beans:property name="defaultFailureUrl" value="${ssoPath}/login" />
+		<beans:property name="redirectStrategy" ref="redirectStrategy"/>
+	</beans:bean>
+	
+		<!-- 未登录的切入点 -->
+	<beans:bean id="authenticationProcessingFilterEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+		<constructor-arg name="loginFormUrl" value="${ssoPath}/login"/>
+	</beans:bean>
+	
+	
+	<!-- Explains the implementation for OAuth 2.0 Authorization Server -->
+
+    <!-- authorization-server defines all the attributes needed for token management-->
+
+    <!-- PART :1 Authorization Service -->
+    <oauth:authorization-server user-approval-page="forward:/ap/oauthconfirm" client-details-service-ref="oauth2ClientDetails" token-services-ref="tokenServices">
+        <oauth:authorization-code />
+         <!-- a way for clients to obtain an access token by obtaining an authorization code. -->
+        <oauth:implicit />
+        <!-- client credentials grant type -->
+        <oauth:refresh-token />
+        <oauth:client-credentials/>
+        <oauth:password authentication-manager-ref="userAuthenticationManager" />
+    </oauth:authorization-server>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+        <!--<beans:bean id="tokenStore" class="org.springframework.security.oauth2.provider.token.InMemoryTokenStore"/>-->
+    <!-- <beans:bean id="tokenStore" class="org.springframework.security.oauth2.provider.token.store.JdbcTokenStore">
+        <beans:constructor-arg index="0" ref="dataSource"/>
+    </beans:bean>
+    
+    <beans:bean id="tokenServices" class="org.springframework.security.oauth2.provider.token.DefaultTokenServices">
+        <beans:property name="tokenStore" ref="tokenStore"/>
+        <beans:property name="supportRefreshToken" value="true"/>
+    </beans:bean>
+    
+    <beans:bean id="clientDetailsService" class="org.springframework.security.oauth2.provider.client.JdbcClientDetailsService">
+        <beans:constructor-arg index="0" ref="dataSource"/>
+    </beans:bean>
+    
+    <beans:bean id="oauth2ClientDetailsUserService"
+                class="org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService">
+        <beans:constructor-arg ref="oauth2ClientDetails"/>
+    </beans:bean>
+    
+    
+    Class with the real Implementation for the Clients services
+    <bean id="oauth2ClientDetails" class="com.cxqm.xiaoerke.authentication.service.MyClientDetailsService">
+        <property name="list">
+        	<list>
+        		<map>
+        			<entry key="id" value="androidClient" />
+                	<entry key="secretKey" value="12345678" />
+        		</map>
+        		<map>
+        			<entry key="id" value="web" />
+                	<entry key="secretKey" value="12345678" />
+        		</map>
+        		<map>
+        			<entry key="id" value="iosClient" />
+                	<entry key="secretKey" value="12345678" />
+        		</map>
+        	</list>
+        </property>
+    </bean>
+    
+    
+    <beans:bean id="oauth2AuthenticationEntryPoint"
+                class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint"/>
+    
+    <security:authentication-manager id="oauth2AuthenticationManager">
+        <security:authentication-provider user-service-ref="oauth2ClientDetailsUserService"/>
+    </security:authentication-manager>
+    
+    <beans:bean id="userAuthenticationProvider"
+                class="com.cxqm.xiaoerke.authentication.UserAuthenticationProvider"/>
+                
+    <security:authentication-manager alias="authenticationManager">
+        <security:authentication-provider ref="userAuthenticationProvider" />
+    </security:authentication-manager>
+    
+    <beans:bean id="oauth2AccessDeniedHandler"
+                class="org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler"/>
+    
+    <beans:bean id="oauthUserApprovalHandler" class="org.springframework.security.oauth2.provider.approval.DefaultUserApprovalHandler">
+    </beans:bean>
+    
+    <oauth2:authorization-server client-details-service-ref="clientDetailsService" token-services-ref="tokenServices"
+                                 user-approval-handler-ref="oauthUserApprovalHandler">
+        <oauth2:authorization-code/>
+        <oauth2:implicit/>
+        <oauth2:refresh-token/>
+        <oauth2:client-credentials/>
+        <oauth2:password/>
+    </oauth2:authorization-server>
+    
+    <beans:bean id="oauth2AccessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased">
+        <beans:constructor-arg>
+            <beans:list>
+                <beans:bean class="org.springframework.security.oauth2.provider.vote.ScopeVoter"/>
+                <beans:bean class="org.springframework.security.access.vote.RoleVoter"/>
+                <beans:bean class="org.springframework.security.access.vote.AuthenticatedVoter"/>
+            </beans:list>
+        </beans:constructor-arg>
+    </beans:bean>
+    
+    unity resource server filter
+    <oauth2:resource-server id="unityResourceServer" resource-id="unity-resource" token-services-ref="tokenServices"/>
+
+    mobile resource server filter
+    <oauth2:resource-server id="mobileResourceServer" resource-id="mobile-resource" token-services-ref="tokenServices"/>
+    
+    <beans:bean id="clientCredentialsTokenEndpointFilter"
+                class="org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter">
+        <beans:property name="authenticationManager" ref="oauth2AuthenticationManager"/>
+    </beans:bean>
+    
+    <security:http pattern="/oauth/token" create-session="stateless" authentication-manager-ref="oauth2AuthenticationManager"
+          entry-point-ref="oauth2AuthenticationEntryPoint">
+        <security:intercept-url pattern="/oauth/token" access="IS_AUTHENTICATED_FULLY"/>
+        <security:anonymous enabled="false"/>
+        <security:http-basic entry-point-ref="oauth2AuthenticationEntryPoint"/>
+
+        <security:custom-filter ref="clientCredentialsTokenEndpointFilter" before="BASIC_AUTH_FILTER"/>
+        <security:access-denied-handler ref="oauth2AccessDeniedHandler"/>
+    </security:http>
+    
+    <security:http pattern="${ssoPath}/**" authentication-manager-ref="authenticationManager">
+        <security:anonymous enabled="false" />
+        <security:intercept-url pattern="${ssoPath}/**" access="isAuthenticated()"/>
+      	<security:http-basic entry-point-ref="oauth2AuthenticationEntryPoint"/>
+    </security:http> -->
+    
+</beans>

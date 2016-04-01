@@ -1,0 +1,189 @@
+<link rel="stylesheet" href="/xiaoerke-appoint/styles/ap/appointmentFirst.less?ver='1.5'" type="text/css" />
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫（400-623-7120）" ng-init="doRefresh()">
+    <!--特惠浮层-->
+  <!--  <div ng-if="PreferenceLock" class="c-sha"  ng-click="cancelPreference()" ></div>
+    <div ng-if="PreferenceLock" class="hospital-preference">
+        <span ng-click="cancelPreference()" class="cancel"></span>
+        &lt;!&ndash; 点击三里分院&ndash;&gt;
+        <span ng-click="goToCooperationHospital('faa875abfe9748438111aa208151f1ed')" class="look-hospital look-hospital1"></span>
+        &lt;!&ndash; 点击定福庄分院&ndash;&gt;
+        <span ng-click="goToCooperationHospital('626487c34f954abd90e188bb40341995')" class="look-hospital look-hospital2"></span>
+        <img src="images/appointment/preference.png" width="100%" height="auto" >
+    </div>-->
+    <!--头部-->
+    <div class="head">
+        <div class="left" ><span class="city">北京</span> </div>
+        <h1 class="title find" ng-click="seaHis()">
+            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fa_search_keyWord.png" width="15" height="15">
+            <input type="text" id="searchBox" ng-change="autoPrompt()" ng-model="info.search" placeholder="疾病/医生/医院" required="required"/>
+        </h1>
+        <div class="right">
+            <a class= my" ui-sref="myselfFirst" ng-if="(his=='false')">
+                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fmy1.png" width="22" height="22" ng-if="!haveOrder">
+                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fmy2.png" width="22" height="22" ng-if="haveOrder">
+            </a>
+            <a class="ss" ng-if="(his=='true')&&(searchObj.length>0)" ng-click="searchDoc()">
+               搜索
+            </a>
+            <a class="ss" ng-if="(his=='true')&&(searchObj.length==0|| searchObj ==null)" ng-click="cancel()">
+                取消
+            </a>
+        </div>
+    </div>
+    <!--搜索-->
+    <ion-item class="sea-his" ng-if="(his=='true')">
+        <div class="hot">
+              <h3>
+                  <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fa_search_hotWord.gif" width="13" height="15">
+                  热词搜索
+              </h3>
+              <ul class="hot-w">
+                  <li class="" ng-repeat="item in patientList">
+                    <a ng-click="searchInPatientList($index)">{{item}}</a>
+                  </li>
+              </ul>
+          </div>
+        <div style="height:10px;background-color: #f1f4f5;" ng-if="patientSearchList.length>0"></div>
+        <div class="history" ng-if="patientSearchList.length>0">
+            <h3>
+                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fa_search_time.gif" width="13" height="13">
+                搜索历史
+            </h3>
+            <ul class=" list"  >
+                <li class="item" ng-click="searchInPatientSearchList($index)" ng-repeat="item in patientSearchList">
+                    {{item.idurlname}}
+                    <i class="ion-ios-arrow-right"></i>
+                </li>
+            </ul>
+            <div class="cl" ng-click="removeAllSearchHistory()">
+                清空搜索历史
+            </div>
+        </div>
+    </ion-item>
+    <!--  快速登录入口-->
+    <div class="fast-entry">
+        <div class="" ng-click="light()">
+            <img ng-src="{{lightImg}}" width="51.5" height="52.5" class="deng">
+        </div>
+        <div class="" ng-if="lightLock=='true'">
+            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fa_fastEntry_bg.png" width="101.5" height="137.5" class="bg">
+            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fa_fastEntry_myAppointment.png" width="53" height="53" class="yuyue"  ng-click="myAppointment()">
+            <a href="tel:4006237120" ng-click="contactCustomer()">
+                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fa_fastEntry_lianxi.png" width="53" height="53" class="lianxi" ng-click="contactCustomer()">
+            </a>
+            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fa_fastEntry_zixun.png" width="53" height="53" class="zixun" ng-click="consultDoc('button')">
+            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fa_fastEntry_feedback.png" width="53" height="53" class="feedback"  ng-click="opinionFeedback()">
+        </div>
+    </div>
+    <!--banner轮播图-->
+    <ion-slide-box
+            auto-play="true"
+            does-continue="true"
+            slide-interval=5000
+            show-pager="true"
+            active-slide="model.activeIndex"
+            delegate-handle="delegateHandler">
+        <ion-slide>
+            <div class="box yellow" ng-click="goToMemberService()">
+                <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/member-banner.png"
+                     style="width:100%;height:75px">
+            </div>
+        </ion-slide>
+        <ion-slide>
+            <div class="box yellow" ng-click="goToCooperationHospital('626487c34f954abd90e188bb40341995')">
+                <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/dingfuzhuang-banner.png" style="width:100%;height:75px">
+            </div>
+        </ion-slide>
+        <ion-slide>
+            <div class="box yellow" ng-click="goToCooperationHospital('faa875abfe9748438111aa208151f1ed')">
+                <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/jialisan-banner.png"  style="width:100%;height:75px">
+            </div>
+        </ion-slide>
+        <ion-slide>
+            <div class="box yellow" ng-click="consultDoc('home')">
+                <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/consult-banner.png"  style="width:100%;height:75px">
+            </div>
+        </ion-slide>
+        <!--<ion-slide>-->
+            <!--<div class="box yellow" ng-click="toKnowledgeIndex()">-->
+                <!--<img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/zhengyuqiao-banner.png"  style="width:100%;height:75px">-->
+            <!--</div>-->
+        <!--</ion-slide>-->
+    </ion-slide-box>
+    <!--医院、疾病、时间-->
+    <div class="subhead" style="top:118.5px;">
+        <div>
+            <span ng-class="{'cur':choiceItem=='hospitalList'}" ng-click="choiceList('hospitalList')">医院</span>
+            <span ng-class="{'cur':choiceItem=='illnessList'}" ng-click="choiceList('illnessList')" style="width:98px;border-left:1px solid #88d9dd;border-right:1px solid #88d9dd;box-sizing: border-box;">疾病</span>
+            <span ng-class="{'cur':choiceItem=='timeList'}" ng-click="choiceList('timeList')" >时间</span>
+        </div>
+    </div>
+    <div ng-if="hospitalList=='true'" >
+        <ion-content class="" style="top:168.5px" on-swipe="onSwipe()">
+            <ion-scroll direction="y" has-bouncing="true" style="top:7px;">
+                <ul class="list hospitalItem">
+                    <li ng-repeat="item in hospitalData" class=" item"
+                        ng-click = "goToHospitalList(item.hospitalId,'searchDoctorByHospitalName',item.hospitalName)">
+                        <div ng-if="item.hospitalName.length<=14">{{item.hospitalName}}
+                            <img ng-if="item.hospitalType=='2'" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fpreference_warn.png"
+                                 width="61" height="15" style="margin-top:-20px;margin-left:-5px;">
+                        </div>
+                        <div ng-if="item.hospitalName.length>14">{{item.hospitalName | limitTo:14}}...
+                            <img ng-if="item.hospitalType=='2'" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fpreference_warn.png"
+                                 width="61" height="15" style="margin-top:-20px;margin-left:-5px;">
+                        </div>
+                        <span>{{item.hospitalLocation}}</span>
+                    </li>
+                </ul>
+                <div bdf-footer></div>
+            </ion-scroll>
+        </ion-content>
+    </div>
+    <div ng-if="illnessList=='true'" class="ill" on-swipe="onSwipe()" style="top:165.5px;">
+        <div>
+            <div class="ill-left" on-swipe="onSwipe()">
+                <ion-item>
+                    <li ng-repeat="item in illnessData"
+                        ng-style="selectItemName==item.illnessName?{'background':'#f6f6f6
+                        url(http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fa_illness_bg.png) no-repeat 2px center'}:{'background-color':'#fff'}"
+                        ng-click="selectIllnessDetail(item.illnessName)">
+                        <a ng-click="selectIllnessDetail(item.illnessName)">
+                            {{item.illnessName}}
+                        </a>
+                    </li>
+                </ion-item>
+            </div>
+            <div class="ill-right" on-swipe="onSwipe()">
+                <ion-item>
+                    <li>
+                        <ul>
+                            <li ng-repeat="item in illnessSecondData" >
+                                <a ui-sref="searchList({searchName:item.illnessSecondId,
+                                           action:'searchDoctorByIllnessSecondId',
+                                           titleName:searchIcon+item.illnessSecondName})">
+                                    {{item.illnessSecondName}}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ion-item>
+            </div>
+        </div>
+    </div>
+    <div ng-if="timeList=='true'">
+        <ion-content style="top:168.5px" on-swipe="onSwipe()">
+            <ion-scroll direction="y" has-bouncing="true" style="top:7px;">
+                <ul class="dateItem list" >
+                    <li ng-repeat="item in timeData" class="item"
+                        ui-sref="searchList({searchName:item.date,action:'searchDoctorByDate',titleName:item.date})">
+                        {{item.date}}&nbsp;&nbsp;{{item.week}}
+                        <span ng-if="$index<3">{{item.desc}}</span>
+                        <i ng-if="$index>=3" class="ion-ios-arrow-right"></i>
+                    </li>
+                </ul>
+                <div bdf-footer></div>
+            </ion-scroll>
+        </ion-content>
+    </div>
+</ion-view>

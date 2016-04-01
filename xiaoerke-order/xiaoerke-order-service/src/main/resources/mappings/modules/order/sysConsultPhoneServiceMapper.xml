@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.order.dao.SysConsultPhoneServiceDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="sys_doctor_id" property="sysDoctorId" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="TIMESTAMP" />
+    <result column="beginTime" property="begintime" jdbcType="TIMESTAMP" />
+    <result column="endTime" property="endtime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="createDate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="updateDate" property="updatedate" jdbcType="TIMESTAMP" />
+    <result column="serviceType" property="servicetype" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, sys_doctor_id, price, date, beginTime, endTime, state, createDate, updateDate,
+    serviceType
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_consultPhone_service
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectConsultList" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select * from sys_consultPhone_service scs
+    where scs.sys_doctor_id = #{doctorId,jdbcType=VARCHAR}
+    and scs.state = #{state,jdbcType=VARCHAR}
+    and (DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>now()
+    and date_sub(now(),interval -1 month) >= (DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))
+    order by scs.createDate desc
+  </select>
+
+
+    <select id="finCountOfService" resultType="Integer">
+        select count(*) from sys_consultphone_service scs
+
+    </select>
+
+    <select id="getConsultDateList" resultType="java.util.HashMap">
+        select DISTINCT(DATE_FORMAT(scs.date, '%Y-%m-%d')) as date
+        from
+        sys_consultphone_service scs
+        WHERE
+        scs.sys_doctor_id = #{doctorId}
+
+        <if test="state != null">
+            and scs.state=#{state}
+        </if>
+        AND (DATE_FORMAT(CONCAT(DATE_FORMAT(scs.DATE,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>NOW()
+        GROUP BY scs.date
+        ORDER BY (DATE_FORMAT(CONCAT(DATE_FORMAT(scs.DATE,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s')) ASC
+    </select>
+
+    <select id="findConsultPhoneTimeListByDoctorAndDate" resultType="java.util.HashMap">
+        select scs.id,scs.price,
+        DATE_FORMAT(scs.beginTime, '%H:%i') AS begin_time,
+        DATE_FORMAT(scs.endTime, '%H:%i') AS end_time,
+        scs.state,
+        scs.serviceType
+        FROM
+        sys_consultphone_service scs
+        WHERE 1=1
+        and scs.sys_doctor_id = #{doctorId}
+
+        <if test="date != null">
+            AND date = #{date}
+        </if>
+
+        ORDER BY scs.beginTime asc
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_consultPhone_service
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo" >
+    insert into sys_consultPhone_service (id, sys_doctor_id, price,
+      date, beginTime, endTime, 
+      state, createDate, updateDate, 
+      serviceType)
+    values (#{id,jdbcType=INTEGER}, #{sysDoctorId,jdbcType=VARCHAR}, #{price,jdbcType=VARCHAR}, 
+      #{date,jdbcType=TIMESTAMP}, #{begintime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, 
+      #{state,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, #{updatedate,jdbcType=TIMESTAMP}, 
+      #{servicetype,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo" >
+    insert into sys_consultPhone_service
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sysDoctorId != null" >
+        sys_doctor_id,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="date != null" >
+        date,
+      </if>
+      <if test="begintime != null" >
+        beginTime,
+      </if>
+      <if test="endtime != null" >
+        endTime,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="createdate != null" >
+        createDate,
+      </if>
+      <if test="updatedate != null" >
+        updateDate,
+      </if>
+      <if test="servicetype != null" >
+        serviceType,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sysDoctorId != null" >
+        #{sysDoctorId,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="begintime != null" >
+        #{begintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null" >
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedate != null" >
+        #{updatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="servicetype != null" >
+        #{servicetype,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo" >
+    update sys_consultPhone_service
+    <set >
+      <if test="sysDoctorId != null" >
+        sys_doctor_id = #{sysDoctorId,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        date = #{date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="begintime != null" >
+        beginTime = #{begintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null" >
+        endTime = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null" >
+        createDate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedate != null" >
+        updateDate = #{updatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="servicetype != null" >
+        serviceType = #{servicetype,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo" >
+    update sys_consultPhone_service
+    set sys_doctor_id = #{sysDoctorId,jdbcType=VARCHAR},
+      price = #{price,jdbcType=VARCHAR},
+      date = #{date,jdbcType=TIMESTAMP},
+      beginTime = #{begintime,jdbcType=TIMESTAMP},
+      endTime = #{endtime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=VARCHAR},
+      createDate = #{createdate,jdbcType=TIMESTAMP},
+      updateDate = #{updatedate,jdbcType=TIMESTAMP},
+      serviceType = #{servicetype,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="cancelOrder">
+    update sys_consultPhone_service
+    set state = #{state,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

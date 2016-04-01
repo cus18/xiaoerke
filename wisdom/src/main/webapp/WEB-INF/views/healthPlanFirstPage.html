@@ -1,0 +1,101 @@
+<html>
+<head>
+</head>
+<base href="/xiaoerke-healthPlan/"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<title>健康管理首页</title>
+<link rel="stylesheet" href="/xiaoerke-healthPlan/styles/health/healthCommon.less" type="text/css" />
+<link rel="stylesheet" href="/xiaoerke-healthPlan/styles/healthPlanFirstPage.less" type="text/css" />
+<body onload="healthPlanFirstPageInit()">
+<div class="healthPlanFirstPage-weChat">
+    <div class="healthIndex">
+        <dl class="manage-list">
+            <dt class="titleLine">
+                <span class="line"></span>
+                轻松告别便秘苦
+                <span class="line"></span>
+            </dt>
+            <dd >
+                <img onclick="selectManage('0')"  class="my-img-block" width="100%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/common%2Fhealth_constipation.png">
+                <div onclick="selectManage('0')" class="add-text" >
+                    便秘管理
+                </div>
+                <div class="add-pic">
+                    <img  onclick="addDetail('0')" width="32" height="32" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/common%2Fadd_manage.png">
+                </div>
+                <div class="enter-manage" onclick="selectManage('0')">
+                    <a>进入管理</a>
+                </div>
+            </dd>
+        </dl>
+        <dl class="manage-list">
+            <dt class="titleLine">
+                <span class="line"></span>
+                最强宝贝养成记
+                <span class="line"></span>
+            </dt>
+            <dd >
+                <img onclick="selectManage('1')"  class="my-img-block" width="100%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/common%2Fhealth_nutrition.png">
+                <div onclick="selectManage('1')" class="add-text" >
+                    营养管理
+                </div>
+                <div class="add-pic">
+                    <img onclick="addDetail('1')"  width="32" height="32" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/common%2Fadd_manage.png">
+                </div>
+                <div class="enter-manage" onclick="selectManage('1')">
+                    <a>进入管理</a>
+                </div>
+            </dd>
+        </dl>
+        <div class="add-detail">
+            <ul>
+                <li>
+                    <span>1</span> 及时快速缓解便秘痛楚的良方
+                </li>
+                <li>
+                    <span>2</span> 良好习惯的养成彻底摆脱便秘
+                </li>
+            </ul>
+            <div class="tag">
+                <span>便前治疗按摩</span>
+                <span>排便习惯养成</span>
+                <span>饮食治疗攻略</span>
+                <span>运动缓解攻略</span>
+            </div>
+            <div>
+                <button class="button foot-btn" onclick="addManage('0')">参加管理</button>
+            </div>
+        </div>
+        <div class="add-detail" >
+            <ul>
+                <li>
+                    <span>1</span> 1岁到3岁的营养食谱
+                </li>
+                <li>
+                    <span>2</span> 专业营养师评估建议
+                </li>
+            </ul>
+            <div class="tag">
+                <span>专业营养食谱</span>
+                <span>营养评估建议</span>
+                <span>饮食习惯养成</span>
+                <span>饮食安全注意</span>
+            </div>
+            <div>
+                <button class="button foot-btn" onclick="addManage('1')">参加管理</button>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br><br><br><br><br><br>
+</body>
+<link rel="stylesheet" href="styles/lib/ionic.min.css"/>
+<link rel="stylesheet" href="styles/lib/ionicons.min.css"/>
+<link rel="stylesheet" href="styles/lib/animate.min.css"/>
+<link rel="stylesheet" href="styles/main.less"/>
+<script src="js/healthPlanFirstPage.js"></script>
+<script src="js/libs/jquery.scrollstop.min.js"></script>
+</html>

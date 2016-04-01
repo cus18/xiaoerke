@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxqm.xiaoerke.modules.task.dao.ScheduledTaskDao">
+    <!--监听就诊结束时间，就诊时间结束的话更新sys_register_service表status字段和patient_register_service表status字段 @author zdl-->
+    <update id="updatePatRegSerStatusExecute">
+        UPDATE sys_register_service SET STATUS='2'
+        WHERE NOW()>(DATE_FORMAT(CONCAT(DATE_FORMAT(DATE,'%Y:%c:%d'),DATE_FORMAT(end_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))  and  STATUS!='2'
+    </update>
+
+    <update id="updateSrSAndPrsStatusExecute">
+      UPDATE patient_register_service prs,  sys_doctor d, sys_register_service r 
+      SET prs.STATUS='2', prs.allowance = d.subsidy WHERE d.id = r.sys_doctor_id 
+      and r.id = prs.sys_register_service_id and 
+      prs.sys_register_service_id IN
+      (SELECT id FROM sys_register_service WHERE NOW()>(DATE_FORMAT(CONCAT(DATE_FORMAT(DATE,'%Y:%c:%d'),
+      DATE_FORMAT(end_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))) 
+      AND prs.status='1'
+    </update>
+
+    <!--订单生成30分钟内未支付,则取消订单(更新patient_register_service中的status，并且更新sys_register_service中的状态) @author zdl-->
+    <update id="CancelAppointNoPayExecute_2">
+        UPDATE patient_register_service prs SET prs.status='6'
+        WHERE prs.status='0' AND
+        NOW()>(DATE_ADD((DATE_FORMAT(prs.create_date,'%Y-%m-%d %k:%i:%s')), INTERVAL 30 MINUTE))
+    </update>
+
+    <update id="CancelAppointNoPayExecute_1">
+      UPDATE sys_register_service srs SET srs.status='0'
+      WHERE srs.id IN (SELECT prs.sys_register_service_id FROM patient_register_service prs WHERE prs.status='0' AND
+      NOW()>(DATE_ADD((DATE_FORMAT(prs.create_date,'%Y-%m-%d %k:%i:%s')), INTERVAL 30 MINUTE)))
+    </update>
+
+    <select id="getOrderInfoToDoc" resultType="java.util.HashMap">
+        SELECT
+	    srs.begin_time,
+	    srs.date,
+	    prs.id AS patient_register_service_id,
+	    prs.sys_patient_id AS patientid,
+	    prs.register_no,
+	    prs.phone as userPhone,
+	    su. NAME AS doctorName,
+	    su.phone,
+	    prs.babyName,
+        case when shc.contact_phone is null then "" else shc.contact_phone end hospitalContactPhone,
+	    sm.id,
+	    su.openid,
+	    sh.`name` as hospitalName
+        FROM sys_register_service srs
+        INNER JOIN patient_register_service prs ON prs.sys_register_service_id = srs.id
+		LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = srs.sys_hospital_id
+        RIGHT JOIN sys_doctor sd ON sd.id = srs.sys_doctor_id
+        LEFT JOIN sys_user su ON su.id = sd.sys_user_id
+        LEFT JOIN sys_monitor sm ON sm.patient_register_service_id = prs.id
+        LEFT JOIN sys_hospital sh on srs.sys_hospital_id = sh.id
+        WHERE DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(prs.create_date,"%Y-%m-%d")
+        AND DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(srs.date,"%Y-%m-%d")
+        AND DATE_SUB(NOW(), INTERVAL 5 MINUTE) > prs.create_date
+        AND prs.STATUS = '1'
+        AND sm.types = '1'
+        AND sm.status = '7'
+    </select>
+
+    <update id="updateOrderInfoToDoc" >
+        update sys_monitor SET types='0'
+        where id IN
+        <foreach collection="list" item="classList"  open="(" separator="," close=")">
+            #{classList}
+        </foreach>
+    </update>
+
+    <select id="getOrderInfoToday" resultType="java.util.HashMap">
+        select prs.babyName,
+        case when shc.contact_phone is null then "" else shc.contact_phone end hospitalContactPhone,
+        case when shc.sys_hospital_name is null then "" else shc.sys_hospital_name end hospitalName,
+        DATE_FORMAT(srs.begin_time,"%H:%i") begin_time,su.name AS doctorName,
+        su.phone,sm.id,
+        case when su.openid is null then "" else su.openid end
+        from patient_register_service prs
+        INNER JOIN sys_register_service srs on prs.sys_register_service_id = srs.id
+        RIGHT JOIN sys_doctor sd ON sd.id = srs.sys_doctor_id
+        LEFT JOIN sys_user su ON su.id = sd.sys_user_id
+        LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = srs.sys_hospital_id
+        LEFT JOIN sys_monitor sm ON sm.patient_register_service_id = prs.id
+        where prs. STATUS = '1'
+        AND DATE_FORMAT(DATE_SUB(srs.date,INTERVAL 1 DAY),"%Y-%m-%d") = DATE_FORMAT(now(),"%Y-%m-%d")
+        AND sm.`status` = '7'
+        AND sm.`types` = '1'
+        ORDER  BY  srs.begin_time
+    </select>
+
+    <select id="getOrderDoctorToday" resultType="java.util.HashMap">
+        select DISTINCT(su.name) AS doctorName,
+        case when shc.sys_hospital_name is null then "" else shc.sys_hospital_name end hospitalName,
+        case when shc.contact_phone is null then "" else shc.contact_phone end hospitalContactPhone,
+        su.phone phone
+        from patient_register_service prs
+        INNER JOIN sys_register_service srs on prs.sys_register_service_id = srs.id
+        RIGHT JOIN sys_doctor sd ON sd.id = srs.sys_doctor_id
+        LEFT JOIN sys_user su ON su.id = sd.sys_user_id
+        LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = srs.sys_hospital_id
+        LEFT JOIN sys_monitor sm ON sm.patient_register_service_id = prs.id
+        where prs. STATUS = '1'
+        AND DATE_FORMAT(DATE_SUB(srs.date,INTERVAL 1 DAY),"%Y-%m-%d") = DATE_FORMAT(now(),"%Y-%m-%d")
+        AND sm.`status` = '7'
+        AND sm.`types` = '1'
+        ORDER  BY  srs.begin_time
+    </select>
+
+    <select id="getSettlementDocToday" resultType="java.util.HashMap">
+        select su.openid openid,sd.* FROM
+        sys_user su,
+        sys_doctor sd,
+        sys_register_service srs,
+        patient_register_service prs
+        WHERE
+        su.id=sd.sys_user_id
+        AND
+        sd.id = srs.sys_doctor_id
+        AND
+        srs.id = prs.sys_register_service_id
+        AND
+        prs.status!="0"
+        AND
+        prs.status!="1"
+        and
+        prs.status!="6"
+        AND
+        srs.date=#{date}
+        GROUP BY sd.id
+    </select>
+
+    <select id="getOrderInfoAtMorning" resultType="java.util.HashMap">
+        select prs.babyName,
+        case when shc.contact_phone is null then "" else shc.contact_phone end hospitalContactPhone,
+        case when shc.sys_hospital_name is null then "" else shc.sys_hospital_name end hospitalName,
+        DATE_FORMAT(srs.begin_time,"%H:%i") begin_time,su.name AS doctorName,
+        su.phone,sm.id,
+        case when su.openid is null then "" else su.openid end
+        from patient_register_service prs
+        INNER JOIN sys_register_service srs on prs.sys_register_service_id = srs.id
+        RIGHT JOIN sys_doctor sd ON sd.id = srs.sys_doctor_id
+        LEFT JOIN sys_user su ON su.id = sd.sys_user_id
+        LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = srs.sys_hospital_id
+        LEFT JOIN sys_monitor sm ON sm.patient_register_service_id = prs.id
+        where prs. STATUS = '1'
+        AND   DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(srs.date,"%Y-%m-%d")
+        AND  sm.types = '1'
+        AND  sm.`status` = '7'
+        ORDER  BY  srs.begin_time
+    </select>
+
+    <select id="getOrderDoctorAtMorning" resultType="java.util.HashMap">
+        select DISTINCT(su.name) AS doctorName,
+        case when shc.sys_hospital_name is null then "" else shc.sys_hospital_name end hospitalName,
+        case when shc.contact_phone is null then "" else shc.contact_phone end hospitalContactPhone,
+        su.phone phone
+        from patient_register_service prs
+        INNER JOIN sys_register_service srs on prs.sys_register_service_id = srs.id
+        RIGHT JOIN sys_doctor sd ON sd.id = srs.sys_doctor_id
+        LEFT JOIN sys_user su ON su.id = sd.sys_user_id
+        LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = srs.sys_hospital_id
+        LEFT JOIN sys_monitor sm ON sm.patient_register_service_id = prs.id
+        where prs. STATUS = '1'
+        AND   DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(srs.date,"%Y-%m-%d")
+        AND  sm.types = '1'
+        AND  sm.`status` = '7'
+        ORDER  BY  srs.begin_time
+    </select>
+
+    <!--将取消原因插入到patient_register_praise表中-->
+    <insert id="insertCancelReason">
+        INSERT INTO patient_register_praise(id,patient_register_service_id,sys_patient_id,phone,praise,star,praise_date,symptom,impression,zan,sys_doctor_id,reason)
+        VALUES
+        (#{praiseId},#{patientRegisterServiceId},#{patientId},#{phone},#{appraise},#{star},#{praise_date},#{symptom},#{impression},#{zan},#{sys_doctor_id},#{reason});
+    </insert>
+
+    <update id="updateWechatParameter">
+        UPDATE  sys_wechatparameter sw
+        <set>
+            sw.token=#{token},
+            sw.ticket=#{ticket},
+            sw.updateTime = now()
+        </set>
+        where  sw.id=#{id};
+    </update>
+
+    <insert id="saveWechatRecoder" >
+        INSERT INTO sys_wechat_record(id,opercode,openid,worker,text,infoTime)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id,jdbcType=VARCHAR}, #{item.opercode,jdbcType=VARCHAR},#{item.openid,jdbcType=VARCHAR},
+            #{item.worker,jdbcType=VARCHAR}, #{item.text,jdbcType=VARCHAR},#{item.infoTime,jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+
+    <select id="getUserOrderNestWeek" resultType="java.util.HashMap">
+        SELECT
+        prs.babyName,
+        srs.date visiteDate,
+        DATE_FORMAT(srs.begin_time, "%H:%i") beginTime,
+        su. NAME AS doctorName,
+        su.phone,
+        su.openid
+        FROM
+        patient_register_service prs
+        INNER JOIN sys_register_service srs ON prs.sys_register_service_id = srs.id
+        RIGHT JOIN sys_doctor sd ON sd.id = srs.sys_doctor_id
+        LEFT JOIN sys_user su ON su.id = sd.sys_user_id
+        LEFT JOIN sys_hospital_contact shc ON shc.sys_hospital_id = srs.sys_hospital_id
+
+        WHERE
+        prs. STATUS = '1'
+        AND
+
+        DATE_FORMAT(srs.date, "%Y-%m-%d") > now()
+        and   DATE_FORMAT(now(),"%Y-%m-%d") > DATE_FORMAT(DATE_SUB(srs.date,INTERVAL 8 DAY),"%Y-%m-%d")
+
+
+        ORDER BY
+        srs.date
+    </select>
+
+</mapper>

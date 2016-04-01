@@ -1,0 +1,129 @@
+/* 左边的小盒子 */
+
+/*
+.m-left {float: left;width: 160px;background-color: #F0F0F0;border-right: 1px solid #333;}
+*/
+
+.m-left-header {height: 66px;background-color: #08b7c2;cursor: pointer;}
+
+.m-left-top div.tab-content-chat {float: left;text-align: center;padding: 10px 17px;}
+.tab-content-chat h3{font: 24px/24px 'Microsoft Yahei';color:#fff;}
+.tab-content-chat p {margin-top: 10px; font: 12px/12px 'Microsoft Yahei';color:#fff;}
+#ddjr{background-color: #acacac;}
+
+/*右边的盒子*/
+.bdf-dkf-sever {background-color: #eee;font: 12px/50px 'Microsoft Yahei';}
+.bdf-dkf-sever a{display: inline-block;width: 199px;line-height: 50px;cursor: pointer;text-align: center;}
+.bdf-dkf-sever a:nth-child(1){background-color: #fff;}
+.reply-content .myreply{cursor: pointer;font: 12px/35px 'Microsoft Yahei';color:#333;}
+.reply-content .pubilcreply{cursor: pointer;font: 12px/35px 'Microsoft Yahei';color:#333;}
+.myreply .rtitle img {margin-left: 10px;}
+.pubilcreply .rtitle img {margin-left: 10px;}
+.myreply ul li img,.pubilcreply ul li img {margin-left: 25px;}
+.rcontent {margin-left: 25px; height:35px;width: 350px;overflow: hidden;text-overflow: ellipsis;color:#666;}
+/*聊天对话框的图片*/
+.consultNowList{line-height: 40px;}
+.consultNowList img{margin-top: 3%;margin-left: 3%;width: 13%;height: 3%;}
+
+[scroll-glue-bottom],{height: 340px;overflow-y: scroll;/*border: 1px solid gray;*/}
+
+
+
+.close {float: right;cursor: pointer;}
+
+/* 等待接入 */
+
+.ddjr-up .ddjr-content {padding: 0 20px;}
+
+.ddjr-up .ddjr-content span {color: #000;display: block;float: left;margin: 10px 10px 10px 0;font: 20px/30px 'Microsoft Yahei';}
+
+.ddjr-content .light {width: 540px;height: 20px;padding: 0 4px;background-color: #EFEFEF;float: left;border-radius: 2px;}
+
+.ddjr-content .light div {border-right: 1px solid #C3CBD8;height: 20px;float: left;width: 80px;}
+
+.ddjr-content .light .check {width: 20px;}
+
+.ddjr-content .light .lz {border: none;}
+
+.ddjr-content-list {width: 547px;height: 329px;background-color: #FBFBFF;float: left;}
+
+.footer {width: 610px;height: 40px;border-top: 1px solid #aaa;float: left;line-height: 40px;position: absolute;bottom: 0;}
+
+.ddjr-content-list .light {background-color: #FBFBFF;}
+
+.jrhhpm {position: absolute;top: 65px;left: 160px;background-color: #fff;border: 1px solid #333;padding: 10px;}
+
+.jrhhpm-tb {margin:10px 0;background: #aaa;width: 210px;}
+
+.jrhhpm ul li span {display: block;width: 80px;height: 20px;float: left;margin:5px 0;background: #eee;}
+
+.getdata {margin-bottom: 20px;}
+
+/* 系统设置 */
+
+.xtsz-up {position: absolute;width: 610px;height: 470px;top: 50%;left: 50%;margin-top: -250px;margin-left: -315px;border-radius: 5px;background-color: #fff;box-shadow: 1px 1px 1px 1px #ccc;   }
+
+.hd {height: 35px;
+    background-color: #2A2A2F;
+    border-radius: 5px 5px 0 0;
+    line-height: 40px;
+    color: #fff;
+    font-size: 13px;
+    padding: 0 10px;
+}
+.xtsz-up-left {float: left;width: 150px;height: 394px;cursor: pointer;background-color: #f2f2f2;}
+
+.xtsz-up-left h3 {font: 14px/40px 'Microsoft Yahei';color:#08b7c2;margin: 0 10px;
+    }
+.xtsz-up-left a {display: block;}
+
+.xtsz-up-left a span {display: block;padding: 0 20px 0 30px;font: 12px/40px 'Microsoft Yahei';}
+
+.xtsz-up-left a span.current {color: #333;background-color: #fff;}
+
+.ddjr-footer {padding: 0;}
+
+.footer button {width: 45px;height: 25px;margin-top: 5px;margin-right: 10px;float: right;}
+
+.xtsz-up-middle ul li {display: none;}
+
+.xtsz-up-middle ul li.show {display: block;}
+.xtsz-up-middle .xtsz-up-right {width: 350px;height: 382px;margin-left: 155px;background-color: #fff;padding: 12px 45px 0 45px;}
+.zhhftop{text-align: center;}
+.zhhftop span {display: inline-block;width: 80px;height: 1px;background-color: #f0f0f0;}
+.zhhftop span:nth-child(2){width: 100px;font: 12px/20px 'Microsoft Yahei';height: 20px;margin: 0 10px;background-color: #fff;}
+.zhhfcontent p {margin: 12px 0;}
+.zhhfcontent {font: 12px/20px 'Microsoft Yahei';}
+input[type="number"] {width: 36px;}
+/*qq表情*/
+span.emotion{width:42px; height:20px; background:url(icon.gif) no-repeat 2px 2px; padding-left:20px; cursor:pointer}
+span.emotion:hover{background-position:2px -28px}
+.qqFace{margin-top:4px;background:#fff;padding:2px;border:1px #dfe6f6 solid;}
+.qqFace table td{padding:0;}
+.qqFace table td img{cursor:pointer;border:1px #fff solid;}
+.qqFace table td img:hover{border:1px #0066cc solid;}
+/*聊天框的头部*/
+.chatlist{height: 338px;overflow-y:scroll;overflow-x:hidden;background-color: #f8f8f8;}
+.facebox{border-bottom: 1px solid #acacac;font: 12px/38px 'Microsoft Yahei';border-top: 1px solid #acacac;background-color: #f2f2f2;height: 38px;}
+.facebox p {margin:0 10px;}
+.nametop div.fr {line-height: 50px;margin-right: 20px;}
+.headimg {
+    float: left;width: 40px;margin: 5px 10px 5px 20px;}
+.nametop span {
+    display: inline-block;
+    line-height: 50px;
+}
+/*快捷回复*/
+.chatinstall{border-bottom: 1px solid #acacac;background-color: #fff;}
+.chatinstall span:nth-child(1){margin: 0 15px 0 20px;}
+.chatinstall span {display: inline-block;margin-right: 15px;font: 12px/50px 'Microsoft Yahei';color:#333;cursor:pointer;}
+.chatinstall span img {margin-right: 5px;}
+/*textarea输入框*/
+.inputcontent{padding-left: 166px;padding-right: 405px;}
+textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 100%;height: 100px;box-sizing: border-box;border: 1px solid #dcdcdc;vertical-align: top;resize: none;}
+.sendbtn {height: 39px;border-top:1px solid #acacac;background-color: #f8f8f8;}
+.sendbtn div {cursor: pointer;margin:10px;display: inline-block;color:#fff;float: right;font: 12px/20px 'Microsoft Yahei';padding: 0 15px;border-radius: 4px;}
+.sendbtn div:nth-child(1){background-color: #fe717b;}
+.sendbtn div:nth-child(2){background-color: #08b7c2;}
+.historymessage {float: right;}
+.historymessage img{margin:0 10px;}

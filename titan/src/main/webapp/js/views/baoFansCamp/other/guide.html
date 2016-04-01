@@ -1,0 +1,36 @@
+<ion-view view-title={{title0}} >
+	<ion-spinner ng-show="dataLoading" class="loadPic"></ion-spinner>
+	<ion-content class="guide" style="top:0px;">
+		<ion-scroll direction="y" has-bouncing="true">
+			<div class="box1">
+				如何在宝大夫平台<br>
+				向医生咨询？
+				<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fbaodf_logo.jpg" width="58.5" height="58.5">
+			</div>
+			<dl>
+				<dt>1、点击微信底栏“咨询大夫”按钮，便可查看免费咨询的时间段和具体方式。
+				</dt>
+				<dd>
+					<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/other%2Fguide_ques1.png" width="230" height="409">
+				</dd>
+				<dt>2、点击微信底栏左下方的小键盘，直接输入文字或发送语音，就可即时免费咨询。
+				</dt>
+				<dd>
+					<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/other%2Fguide_ques2.png" width="230" height="409">
+				</dd>
+				<dt>3、编辑完成，便可点击发送按钮。耐心等待一下，就会有专业的医师及时为您一一解答。
+				</dt>
+				<dd style="margin-bottom:50px;">
+					<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/other%2Fguide_ques3.png" width="230" height="409">
+				</dd>
+			</dl>
+
+		</ion-scroll>
+
+	</ion-content>
+	<div class="myFooter " ng-click="consultDoc()">
+		<button class="button">立即咨询</button>
+	</div>
+
+</ion-view>
+

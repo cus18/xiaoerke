@@ -1,0 +1,14 @@
+<link rel="stylesheet" href="/xiaoerke-doctor/styles/other/state.less" type="text/css" />
+<link rel="stylesheet" href="styles/lib/common.css"/>
+<ion-view view-title={{title0}} ng-init="doRefresh()">
+    <ion-spinner ng-show="dataLoading"></ion-spinner>
+    <ion-content class="state">
+        <ion-scroll direction="y" has-bouncing="true" style="background-color: #fff;">
+            <div class="item item-borderless">
+                <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Fstate_pic.png" width="330" height="182">
+                <p class="p1">{{info1}}</p>
+                <p class="p2">{{info2}}</p>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

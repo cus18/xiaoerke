@@ -1,0 +1,176 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="健康报告" ng-init="doRefresh()">
+    <!--修改身高-->
+    <div class="shadow" ng-if="heightLock" ng-click="cancelUpdate()"></div>
+    <div class="update-info" ng-if="heightLock">
+        <div class="title">
+            <span>修改身高</span>
+            <a ng-click="finishUpdateHeight()">
+                完成
+                <img class="my-img" width="16" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Fassess_finish.png" >
+            </a>
+        </div>
+        <div class="fill">
+            <div>
+                <input type="number" ng-model="info.updateHeightValue" placeholder="请输入宝宝身高（cm）">
+            </div>
+        </div>
+    </div>
+    <!--修改体重-->
+    <div class="shadow" ng-if="weightLock" ng-click="cancelUpdate()"></div>
+    <div class="update-info" ng-if="weightLock">
+        <div class="title">
+            <span>修改体重</span>
+            <a ng-click="finishUpdateWeight()">
+                完成
+                <img class="my-img" width="16" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Fassess_finish.png" >
+            </a>
+        </div>
+        <div class="fill">
+            <div>
+                <input type="number" ng-model="info.updateWeightValue" placeholder="请输入宝宝体重（kg）">
+            </div>
+        </div>
+    </div>
+    <!--修改性别-->
+    <div class="shadow" ng-if="sexLock" ng-click="cancelUpdate()"></div>
+    <div class="update-info" ng-if="sexLock">
+        <div class="title">
+            <span>修改性别</span>
+            <a ng-click="finishUpdateSex()">
+                完成
+                <img class="my-img" width="16" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Fassess_finish.png" >
+            </a>
+        </div>
+        <ul class="sex">
+            <li ng-click="selectSex('boy')">
+                <img  width="90" height="90" src="{{sexBoy}}">
+                男
+            </li>
+            <li ng-click="selectSex('girl')">
+                <img  width="90" height="90" src="{{sexGirl}}">
+                女
+            </li>
+        </ul>
+    </div>
+
+    <ion-content class="nutritionReport " style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="report-value">
+               <div class="kaup-wheel">
+                  <img class="kuap-circle" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Fkaup_circle.png" width="292" height="292">
+                  <div class="kuap-arrow">
+                      <img  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Fkaup_arrow.png" width="105.5" height="112">
+                      <div class="kuap-value">
+                          您的kuap是
+                          <span>{{kuap}}</span>
+                      </div>
+                  </div>
+              </div>
+                <div class="what-kuap" ui-sref="nutritionKuap">
+                    <img style="display: block;" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Fkaup_value_bg.png" width="100%" height="auto">
+                    <div>
+                        <img class="" width="15.5" height="15.5" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Ficon_ask.png" >
+                        什么是kuap 指数
+                    </div>
+                </div>
+
+            </div>
+            <div class="value-compare">
+                <ul>
+                    <li>
+                        <div class="key">
+                            <img width="16.5" height="16.5" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Ficon_age.png" >
+                            &nbsp;年龄：
+                        </div>
+                        <input readonly="readonly" type="text" id="birthday" ng-model="birthday">
+                        <div class="value">
+                            &nbsp;<img width="7" height="12.5" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2FbanbyInfo_detail.png" >
+                        </div>
+
+                    </li>
+                    <li ng-click="updateSex()">
+                        <div class="key">
+                            <img width="16.5" height="16.5" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Ficon_sex.png" >
+                            &nbsp;性别：
+                        </div>
+                        <div class="value">
+                            {{sex}}
+                            &nbsp;<img width="7" height="12.5" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2FbanbyInfo_detail.png" >
+
+                        </div>
+
+                    </li>
+                    <li ng-click="updateHeight()">
+                        <div class="key">
+                            <img width="16.5" height="16.5" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Ficon_height.png" >
+                            &nbsp;身高：
+                        </div>
+                        <div class="value">
+                            {{height}}cm
+                            &nbsp;<img width="7" height="12.5" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2FbanbyInfo_detail.png" >
+
+                        </div>
+
+                    </li>
+                    <li ng-click="updateWeight()">
+                        <div class="key">
+                            <img width="16.5" height="16.5" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Ficon_weight.png" >
+                            &nbsp;体重：
+                        </div>
+                        <div class="value">
+                            {{weight}}kg
+                            &nbsp;<img width="7" height="12.5" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2FbanbyInfo_detail.png" >
+                        </div>
+
+                    </li>
+                    <li ng-if="sethide=='false'">
+                        <div class="key">
+                            <img width="16.5" height="16.5" src=" http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Ficon_warn.png" >
+                            &nbsp;消息提醒
+                        </div>
+                        <div class="value">
+                            <label class="toggle toggle1  " >
+                                <input type="checkbox" ng-checked="setMe" ng-click="setMessage()" >
+                                <div class="track">
+                                    <div class="handle"></div>
+                                </div>
+                            </label>
+                        </div>
+
+                    </li>
+
+                </ul>
+                <p ng-if="sethide=='false'">
+                    当您更新宝宝的信息后，<br>
+                    宝宝的健康报告也会更新哦
+                </p>
+            </div>
+            <div class="advise" ng-if="sethide=='true'">
+                <div class="titleLine">
+                    <span class="line"></span>
+                    <span class="line"></span>
+                    营养师建议
+                </div>
+                <p>
+                {{getKuapExplain}}
+                </p>
+            </div>
+            <br><br><br><br><br><br>
+        </ion-scroll>
+    </ion-content>
+    <div class="button foot-btn foot-btn1" ng-if="sethide=='true'" ng-click="goIndex()">学习如何喂养</div>
+    <div class="my-footer">
+        <a class="tab-item"  ng-class="{'activated':footerNum==0}" ng-click="menuSelect(0)"><i class="icon ">
+            <img width="28" height="25" ng-src="{{homeImg}}"> </i> 首页</a>
+        <a class="tab-item"  ng-class="{'activated':footerNum==1}" ng-click="menuSelect(1)"><i class="icon ">
+            <img width="25.5" height="25"  ng-src="{{assessImg}}"></i> 评估</a>
+        <a class="tab-item consult"  ng-class="{'activated':footerNum==4}" ng-click="menuSelect(4)"><i class="icon ">
+            <img width="67.7" height="60"  ng-src="{{commentImg}}"></i> 咨询</a>
+        <a class="tab-item"  ng-class="{'activated':footerNum==3}" ng-click="menuSelect(3)"><i class="icon ">
+            <img width="27.5" height="25" ng-src="{{necessaryImg}}" ></i> 必备</a>
+        <a class="tab-item"  ng-class="{'activated':footerNum==2}" ng-click="menuSelect(2)"><i class="icon ">
+            <img width="23" height="25" ng-src="{{reportImg}}"></i> 我的</a>
+    </div>
+    <!--<div nutrition-footer="my-footer  tabs tabs-icon-top "></div>-->
+</ion-view>

@@ -1,0 +1,96 @@
+﻿<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title={{title}}>
+    <ion-spinner ng-show="dataLoading" class="loadPic"></ion-spinner>
+    <div bdf-head="title"></div>
+    <ion-content class="doctorGroupList">
+        <ion-scroll direction="y" has-bouncing="true" style="top:0px;">
+            <div class="doctorInfo doctorGroup" style="margin-bottom:0;">
+                <img  align="left" ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{doctorId}}?ver={{picVer}}" class="doctorPhoto"/>
+                <h2 >{{doctorGroupName}}</h2>
+                <p class="text" ng-class="{'less':openMoreLock}">
+                    {{description}}
+                </p>
+                <div class="open-img" ng-click="openMore()">
+                    <img width="10" height="6" ng-src="{{openImg}}">
+                </div>
+            </div>
+            <div class="skilled">
+                <span>擅长：</span>
+                <div id="expertise">
+                </div>
+            </div>
+            <div class="team-member">
+                <span class="line fl"></span>
+                团队成员（4）
+                <span class="line "></span>
+            </div>
+            <div class="member-list">
+                <div class="list" ng-if="!isBlank">
+                    <div class="item item-wrap" ng-repeat="item in doctorData" ng-style="($first)?{'margin-top':'0'}:{'margin-top':'10px'}">
+                        <div class="item item-thumbnail-left doctorInfo item-borderless"
+                             ng-click="doctorAppointment(item.doctorId,item.visitInfo[0].available_time,
+                                    item.visitInfo[0].name,item.visitInfo[0].location,item.visitInfo[0].position,
+                                    item.visitInfo[0].location_id,'')">
+                            <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.doctorId}}?ver={{picVer}}" class="doctorPhoto"/>
+                            <h2>{{item.doctorName}}&nbsp;<a ng-if="doctorId==item.doctorId">首席专家</a>
+                                <span>{{item.position1}}&nbsp;{{item.position2}}&nbsp;({{item.career_time}}年)</span>
+                            </h2>
+                            <p>{{item.hospitalName}}</p>
+                            <p ng-if="item.doctorName=='郑玉巧'">科室擅长：儿科 儿内科疾病 疑难杂症 儿童保健</p>
+                            <p ng-if="item.doctorName!='郑玉巧'">科室擅长：{{item.expertise}}</p>
+                        </div>
+                        <ul class="item item-borderless"
+                            ng-if="item.visitInfo.length!=0&&
+                                (!(item.visitInfo[0].available_time<7)||!($index>0&&ite.available_time>6))"
+                            ng-repeat="ite in item.visitInfo"
+                            ng-click="doctorAppointment(item.doctorId,
+                                ite.available_time,
+                                ite.name,
+                                ite.location,
+                                ite.position,
+                                ite.location_id,
+                                '')">
+                            <li>
+                                <span class="circle">{{$index+1}}</span>
+                                {{ite.position}}（{{ite.name}}）&nbsp;&nbsp;{{ite.location}}
+                            </li>
+                                <span class="button1" ng-if="searchDoctorByDate=='searchDoctorByDate'"
+                                      style="margin-left:7px">
+                                    {{ite.latest_time}}可约
+                                 </span>
+                                 <span class="button1" ng-if="searchDoctorByDate!='searchDoctorByDate'&&ite.available_time<7"
+                                       style="margin-left:7px">
+                                    {{week[ite.available_time]}}{{ite.latest_time}}可约
+                                 </span>
+                                 <span class="button1" ng-if="searchDoctorByDate!='searchDoctorByDate'&&ite.available_time>=7"
+                                       style="margin-left:7px">
+                                    {{ite.available_time}}天后{{ite.latest_time}}可约
+                                 </span>
+                            <span style="color:#666;">|</span>
+                                <span class="button1" style="margin-left:0px">
+                                    平均等待时间{{ite.shot_time}}分钟
+                                 </span>
+                            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Farr_r_blue.png" width="9" height="16" class="arrow-r">
+                        </ul>
+                        <ul ng-if="item.visitInfo.length == 0"
+                            ng-click="doctorAppointment(item.doctorId,item.visitInfo[0].available_time,
+                                    item.hospitalName,item.visitInfo[0].location,item.visitInfo[0].position,
+                                    item.visitInfo[0].location_id,'')">
+                              <span class="button2">
+                                   暂无时间地址预约
+                              </span>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <ion-infinite-scroll on-infinite="loadMore()" distance="1%"
+                                 immediate-check="false" ng-show="scrollLoading" >
+            </ion-infinite-scroll>
+            <div class="noContent" ng-if="isBlank">
+                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fsearchlist_no.png" width="124" height="106">
+                <p style="font-size:15px;">{{care1}}</p>
+            </div>
+            <div bdf-footer></div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

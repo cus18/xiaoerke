@@ -1,0 +1,45 @@
+/*初始化*/
+* {margin: 0;padding: 0;}
+ul {list-style: none;}
+a {text-decoration: none;color: #000;}
+header{position: relative;}
+.bdf-dkf-nav span {color: #fff;float: left;font: 13px/55px 'Microsoft Yahei';}
+.bdf-dkf-nav span:nth-child(1) img{margin: 6px 30px;}
+.bdf-dkf-nav span:nth-child(2){width: 1px;height: 40px;background-color: #646465;margin:6px 25px 0 0;}
+.bdf-dkf-nav span:nth-child(3){margin-right: 20px;}
+.bdf-dkf-nav span img{margin-left: -44px;margin-bottom: -5px;}
+.bdf-dkf-content-right .kjrk {float: right;}
+.bdf-dkf-content-right div {float: right;color: #fff;margin-right: 30px;cursor: pointer;font: 13px/55px 'Microsoft Yahei';}
+.xtsz img{margin-right: 10px;}
+/*总体布局的样式*/
+.fl {float: left;}
+.fr {float: right;}
+.w10 {width: 100%;}
+.w5 {width: 50%;}
+.w6 {width: 60%;}
+.w4 {width: 40%;}
+.h4 {height: 55px;}
+.h5 {height: 45px;}
+.h6{height: 40px;}
+.h7{height: 35px;}
+.h20 {height: 427px;}
+.h30 {height: 565px;}
+.cl {color:#fff;}
+.br1{border-right: 1px solid #ccc;}
+.tab div a span {display: inline-block; padding: 13px 0 14px 0;cursor: pointer;}
+.messageList {width: 100%;min-width: 1024px;height: auto;}
+.qf:after {content:'';display:table;clear:both;}
+.tac{text-align: center;}
+.bg-h1 {background: #2a2a2f;}
+.bg-m {background: #4f4f4f;}
+.bg-b {background: #00c20b;}
+
+/*聊天窗口*/
+.msg {border-top: 1px solid #acacac;border-bottom: 1px solid #acacac;background-color: #fff;}
+.msg-l {background: #08b7c2;width: 166px;}
+.msg-m {background: #fff;min-width: 452px;}
+.msg-r {width: 403px;border-left: 2px solid #acacac;background-color: #fff;}
+
+/* h5下拉列表的样式修改 */
+select {border-radius:2px;width: 75px;margin:0 20px 0 5px;color:#fff;overflow: hidden;background:transparent;}
+select option {color:#333;}

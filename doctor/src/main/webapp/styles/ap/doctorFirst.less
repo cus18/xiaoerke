@@ -1,0 +1,527 @@
+.overflow-scroll .scroll{
+  height:auto;
+}
+/*提示宝宝信息*/
+.remind-babyInfo{
+  position: absolute;
+  top:35%;
+  z-index:15;
+  width:100%;
+
+}
+.remind-babyInfo .main{
+  width:285px;
+  margin:0 auto;
+  background-color: #fff;
+  border-radius: 15px;
+  position: relative;
+}
+.remind-babyInfo .close{
+  width:50px;
+  height:50px;
+  text-align: center;
+  position: absolute;
+  top:-25px;
+  right:-20px;
+}
+.remind-babyInfo .close img{
+  margin-top:12.5px;
+}
+.remind-babyInfo h3{
+  height:44px;
+  line-height:44px;
+  text-align: center;
+  background-color: #88d9dd;
+  color:#fff;
+  font-size:18px;
+  border-radius: 15px 15px 0 0;
+}
+.remind-babyInfo ul{
+  margin:20px 17.5px;
+
+}
+.remind-babyInfo ul li{
+  position: relative;
+  padding-left:68px;
+  padding-bottom: 20px;
+  color:#666;
+  font-size:14px;
+  min-height:20px;
+}
+.remind-babyInfo ul li.li01{
+  color:#fe717b;
+}
+.remind-babyInfo ul li span{
+  position: absolute;
+  top:0;
+  left:0;
+}
+
+/*遮罩层阴影*/
+.delete-sha,.success-sha,.remind-sha{
+  position:absolute;
+  left:0;
+  top:0;
+  z-index: 14;
+  width:100%;
+  height:100%;
+  background: #000;
+  filter:alpha(Opacity=50);
+  -moz-opacity:0.5;
+  opacity: 0.5;
+}
+/*页面正中间的删除*/
+.delete{
+  position:absolute;
+  width:100%;
+  left:0;
+  top:50%;
+  z-index: 15;
+  margin-top:-66px;
+}
+
+.delete ul{
+  padding:5px 15px;
+  margin:0 auto;
+  width:70%;
+  background-color: #fff;
+  border-radius: 5px;
+}
+.delete ul li{
+  margin:0 20px;
+  padding:10px 0;
+  font-size:16px;
+  color:#333;
+  text-align: center;
+  border-bottom: 1px solid #88d9dd;
+}
+/*删除时影响预约患者时提示*/
+.del-sure{
+  position:absolute;
+  width:100%;
+  left:0;
+  top:50%;
+  z-index: 15;
+  margin-top:-66px;
+}
+.del-sure  .tip-del{
+  margin:0 auto;
+  width:80%;
+  background-color: #fff;
+  border-radius: 5px;
+}
+.del-sure   .tip-del p{
+  text-align: center;
+  color:#666;
+  font-size:15px;
+  line-height:25px;
+  padding:30px 15px 40px;
+
+}
+.del-sure  .tip-del div{
+  overflow: hidden;
+}
+.del-sure  .tip-del span{
+  display: inline-block;
+  width:49.8%;
+  height:40px;
+  line-height:40px;
+  background-color: #88d9dd;
+  color:#fff;
+  font-size:18px;
+  text-align: center;
+}
+.del-sure  .tip-del span.fl{
+  border-radius: 0 0 0 5px;
+}
+.del-sure   .tip-del span.fr{
+  border-radius:0 0 5px 0 ;
+}
+.del-sure  .tip-del span.activated{
+  background-color: #ccc;
+}
+/*删除成功*/
+.cancel-success{
+  position:absolute;
+  width:100%;
+  left:0;
+  top:50%;
+  z-index: 16;
+  margin-top:-36px;
+}
+/*.cancel-success div.ng-enter{
+  opacity: 0;
+}
+.cancel-success div.ng-enter-active{
+  opacity: 1;
+}
+.cancel-success div.ng-leave{
+  opacity: 1;
+}
+.cancel-success div.ng-leave-active{
+  opacity: 0;
+}*/
+.cancel-success div{
+  width:70%;
+  margin:0 auto;
+  color:#333;
+  font-size:16px;
+  padding:25px 0;
+  background-color: #fff;
+  border-radius: 5px;
+  text-align: center;
+
+}
+.cancel-success div img{
+  vertical-align: middle;
+  margin-top:-3px;
+}
+
+
+/*顶部日期 年月日和上周下周*/
+.df-t{
+  width:100%;
+  position: absolute;
+  z-index:2;
+  height:70px;
+  color:#fff;
+  background-color: #88d9dd;
+  overflow: hidden;
+  box-shadow: 1px 1px 5px #999;
+}
+.df-t ul{
+
+  height:70px;
+  overflow: hidden;
+}
+.df-t .fl{
+  float: left;
+ text-align: center;
+}
+.df-t .fl li{
+  float:left ;
+  display: inline-block;
+
+}
+.df-t .fl .fl-l{
+  margin-left:10px;
+  font-size:35px;
+  padding-top:22px;
+}
+.df-t .fl .fl-r{
+  padding-top:15px;
+  font-size:13px;
+  text-align: left;
+}
+.df-t .fr{
+  /* float: right;*/
+  position: absolute;
+  right:0;
+  top:0;
+
+}
+.df-t .fr li{
+  /* width:100%;*/
+  display: inline-block;
+  text-align: right;
+}
+.df-t .fr button{
+  margin:22px 15px 0 0;
+  display: inline-block;
+  padding:0 5px;
+  width:56px;
+  min-width:56px;
+  min-height:28px;
+  height:28px;
+  line-height:28px;
+  border:1px solid #fff;
+  border-radius: 3px;
+  text-align: center;
+  font-size:15px;
+}
+.df-t .fr button.activated{
+  box-shadow: none;
+}
+
+.doctorFirst{
+  background-color: #fff;
+}
+//.doctorFirst .scroll-view{
+//}
+  /*一周七天*/
+.doctorFirst .date{
+  margin:15px 20px;
+}
+.doctorFirst .date li{
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+
+}
+.doctorFirst .date li.time{
+  border-bottom: none;
+  height:71px;
+
+}
+.doctorFirst .date li span{
+  display: inline-block;
+  width:14.2857143%;
+  color:#333;
+  font-size:16px;
+
+
+}
+.doctorFirst .date li.time span {
+  padding-top:10px;
+  position:relative;
+  height:71px;
+  vertical-align: middle;
+}
+
+.doctorFirst .date li.time .cir{
+  /*position:relative;
+  top:30px;
+  left:50%;*/
+  margin-left:2.5px;
+  display: inline-block;
+  width:5px;
+  height:5px;
+  background-color: #fe717b;
+  border-radius: 50%;
+}
+/*医院诊室预约时间*/
+.doctorFirst .place{
+  margin:10px 20px 50px;
+  font-size:15px;
+  color:#333;
+}
+.doctorFirst .place dt{
+  position: relative;
+  font-weight:normal;
+  padding:0 0 15px 25px; ;
+}
+.doctorFirst .place dt span{
+  display: inline-block;
+  width:14px;
+  height:21px;
+  line-height: 19px;
+  text-align: center;
+  font-size:10px;
+  background:url("http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Ficon_add.png") no-repeat;
+  background-size: 14px 21px;
+  color:#fff;
+  position: absolute;
+  top:1px;
+  left:0;
+}
+.doctorFirst .place dd{
+  display: inline-block;
+  margin:5px 0;
+  padding:10px 0;
+  width:50%;
+  border-bottom: 1px solid #88d9dd;
+  position: relative;
+
+}
+.doctorFirst .place dd:nth-child(3){
+  border-top: 1px solid #88d9dd;
+}
+.doctorFirst .place dd:nth-child(2){
+  border-top: 1px solid #88d9dd;
+}
+.doctorFirst .place dd:nth-child(even) span{
+  width:1px;
+  display:inline-block;
+  height:24px;
+  background-color: #88d9dd;
+  float: right;
+}
+.doctorFirst .place dd:nth-child(odd) span{
+  width:1px;
+  display:inline-block;
+  height:24px;
+  background-color: #fff;
+  float: right;
+}
+.doctorFirst .place dd:nth-child(odd){
+  padding-left:10px;
+}
+.doctorFirst .place dd:nth-child(odd) .checkbox{
+  right:5px;
+}
+.doctorFirst .place dd img{
+  vertical-align: middle;
+  margin-left:2px;
+  margin-top:-2px;
+}
+.doctorFirst .place dd a{
+  margin-right:3px;
+}
+/*底部 增加和删除按钮*/
+ .myFoot{
+  width:100%;
+  height:44px;
+  position: absolute;
+  z-index:10;
+  left:0;
+  bottom:0;
+  background-color: #fff;
+}
+.myFoot ul{
+  overflow: hidden;
+  height:44px;
+}
+ .myFoot li{
+   width:49.9%;
+   height:44px;
+   line-height:44px;
+   text-align: center;
+   background-color: #88d9dd;
+   color:#fff;
+   font-size:16px;
+   padding:0;
+   border:none;
+ }
+ .myFoot li.activated{
+  background-color: #ccc;
+}
+.myFoot li.add{
+  float:left;
+
+
+}
+ .myFoot li.del{
+  float:right;
+
+}
+ .myFoot li img{
+  vertical-align: middle;
+  margin-top:-3px;
+}
+/*底部 删除时下弹框*/
+.del-layer{
+  width:100%;
+  height:150px;
+  position: absolute;
+  z-index:12;
+  left:0;
+  bottom:0;
+  background-color: #fff;
+  border-top:1px solid #ddd;
+  box-shadow:0px 0px 1px #ccc;
+}
+
+.del-layer ul{
+  margin:0 15px;
+
+}
+.del-layer li{
+  width:100%;
+  height:50px;
+  line-height:50px;
+  text-align: center;
+  color:#333;
+  font-size:18px;
+  border-bottom:1px solid #88d9dd;
+
+}
+.del-layer li img{
+  vertical-align: middle;
+  margin-top:-3px;
+}
+
+
+
+
+/*多选框样式*/
+.doctorFirst .checkbox{
+  display: inline-block;
+  padding:3px 0 0 0;
+  position: absolute;
+  top:6px;
+  right:11px;
+
+}
+.doctorFirst .checkbox input{
+  //margin-top:2px;
+  //margin-left:5px;
+}
+.checkbox input, .checkbox-icon {
+
+  width: 22px;
+  height: 22px;
+  display: inline-block;
+  border: 0;
+  background: 0 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+.checkbox input:checked+.checkbox-icon:before, .checkbox input:checked:before {
+  background: #88d9dd;
+  border-color: #88d9dd;
+}
+.checkbox input:before, .checkbox-icon:before {
+  display: table;
+  width: 100%;
+  height: 100%;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 28px;
+  background: #fff;
+  content: ' ';
+  -webkit-transition: background-color 20ms ease-in-out;
+  transition: background-color 20ms ease-in-out;
+}
+.checkbox .checkbox-icon:before, .checkbox input:before {
+  border-color: #ddd;
+  border-radius: 0;
+}
+.checkbox input:after, .checkbox-icon:after {
+  -webkit-transition: opacity .05s ease-in-out;
+  transition: opacity .05s ease-in-out;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  position: absolute;
+  top: 33%;
+  left: 25%;
+  display: table;
+  width: 10px;
+  height: 5px;
+  border: 1px solid #fff;
+  border-top: 0;
+  border-right: 0;
+  content: ' ';
+  opacity: 0;
+}
+.doctorFirst .no-plan{
+  text-align: center;
+  margin-top:55px;
+  margin-bottom: 130px;
+}
+.doctorFirst .no-plan img{
+  margin-bottom:40px;
+}
+.doctorFirst .no-plan p{
+  font-size:15px;
+  color:#ccc;
+}
+.platform-ios .popover-arrow:after {
+ display: none;
+}
+.platform-ios .popover {
+  border-radius: 15px;
+}
+.platform-ios .popover .bar-header {
+  border-radius: 15px 15px 0 0;
+  height:44px;
+  line-height:44px;
+
+  background-color: #88d9dd;
+
+
+}
+h3{
+  width:100%;
+  color:#fff;
+  font-size:18px;
+}

@@ -1,0 +1,119 @@
+<link rel="stylesheet" href="styles/knowledge/knowledgeCommon.less?ver='0.9'" type="text/css" />
+<link rel="stylesheet" href="styles/knowledge/knowledgeArticleContent.less?ver='0.9'" type="text/css" />
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫营养管理">
+    <div class="edit">
+        <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fedit_comment.png" width="15.5" height="15.5">
+        <input type="text" placeholder="写评论(最多可输入50字)..." readonly="readonly"  ng-click="editComment()">
+    </div>
+    <div class="attention-shadow" ng-if="editLock=='true'" ng-click="cancel()"></div>
+    <div class="real-edit" ng-if="editLock=='true'">
+        <textarea autofocus placeholder="写评论(最多可输入50字)..." maxlength="50" ng-model="info.content"></textarea>
+        <span ng-click="save()">发布</span>
+    </div>
+    <div class="attention-shadow" ng-if="attentionLock=='true'" ng-click="cancel()"></div>
+    <div class="bdf-attention" ng-if="attentionLock=='true'" ng-click="cancel()">
+        <div style="text-align: center;width:100%;margin:0 auto;">
+            <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fremind_appointment_word.png" width="90%" height="auto" ng-if="lockyuyue=='true'">
+            <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fremind_consult_word.png" width="90%" height="auto"  ng-if="lockzixun=='true'">
+        </div>
+        <dl>
+            <dt>
+                <span class="ll"></span>
+                关注宝大夫
+                <span class="rr"></span>
+            </dt>
+            <dd>
+                <span class="cir"></span>&nbsp;&nbsp;
+                1.&nbsp;打开微信，搜索“宝大夫”<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关注公众号</dd>
+            <dd>
+                <span class="cir"></span>&nbsp;&nbsp;
+                2.&nbsp;扫描下方二维码，关注宝大夫<br>
+                <img  data-tap-disabled="true"  src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Farticle_code_remind_weChat.png" width="212.5" height="125" >
+            </dd>
+        </dl>
+    </div>
+    <ion-content class="knowledgeArticleContent" overflow-scroll="true" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <div class="art-de" id="top">
+                <h2 class="title">
+                    {{contentTitle}}
+                </h2>
+                <h4 class="author" ng-if="Author=='true'">
+                    {{author}}
+                </h4>
+                <div class="sub-t">
+                <span class="" style="">
+                    <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Farticle_read.png" width="17" height="11" style="margin-top:-3px;">
+                    &nbsp;{{contentHits}}
+                </span>
+                 <span class="">
+                     <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Farticle_share.png" width="13.5" height="15" style="margin-top:-2px;">
+                    &nbsp;{{contentShare}}
+                </span>
+                 <span class="parenting" ng-click="attentionBdf()">
+                     宝大夫
+                </span>
+                <!--<span class="parenting" ui-sref="knowledgeIndex">
+                     郑玉巧育儿经
+                </span>-->
+
+                </div>
+                <div class="code-top-out">
+                    <div class="code-top">
+                        <img data-tap-disabled="true" src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Farticle_code_attentionTop.png" width="100%" height="auto" style="">
+                    </div>
+                </div>
+                <div ng-bind-html="info.articleContent"></div>
+                <div class="zan">
+                    <span class="line-l"></span>
+                    <span class="line-r"></span>
+                    <a ng-click="zan()" ng-style="(lock1=='0')?{'color':'#999'}:{'color':'#ff7d86'}">
+                        <img ng-src={{zanImg}}  width="33" height="33" class="dianzan"><br>
+                        {{num}}
+                    </a>
+                </div>
+                <div class="related-article" ng-if="articleNum=='true'">
+                    <h3>相关推荐</h3>
+                    <ul>
+                        <li ng-click="article(item.id)" ng-repeat="item in relationList">
+                            {{$index+1}}.{{item.title}}
+                        </li>
+                    </ul>
+                    <p ui-sref="knowledgeIndex">查看更多文章  >></p>
+                </div>
+                <dl class="comment" ng-if="comm=='true'">
+                    <dt ui-sref="knowledgeComment({id:contentId})">
+                        累计评论 {{comment}}
+                        <img src="images/knowledge/comment_more.png" width="61.5" height="34.5">
+                    </dt>
+                    <dd class="item item-avatar item-borderless" ng-repeat="item in commentList">
+                        <img ng-src={{item.picUrl}}>
+                        <h2 ng-if="item.nickName!=''||item.nickName!=null">{{item.nickName}}</h2>
+                        <h2 ng-if="item.nickName==''||item.nickName==null">宝粉</h2>
+                        <p>{{item.commentContent}}</p>
+                    </dd>
+                </dl>
+                <dl class="consult-book">
+                    <dt>妈妈还有什么不懂的可以随时点击下方按钮立即咨询：</dt>
+                    <dd ng-click="zixun()">
+                        <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Farticle_icon_consult.png" width="55" height="55"><br>
+                        <span class="text1">咨询大夫</span><br>
+                        <span class="text2">（免费极速回复）</span><br>
+                    </dd>
+                    <dd ui-sref="appointmentFirst">
+                        <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Farticle_icon_appointment.png" width="55" height="55"><br>
+                        <span class="text1" style="background-color: #efa4ff;">预约大夫</span><br>
+                        <span class="text2">（预约专家号源）</span><br>
+                    </dd>
+                </dl>
+                <div class="s-code" style="text-align: center;">
+                    <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Farticle_code_attentionBottomBg.png" width="100%" height="auto">
+                    <img data-tap-disabled="true" src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Farticle_code_attentionBottom.png" width="80%" height="auto" class="code_bottom1">
+                </div>
+            </div>
+           <div style="height:54px;"></div>
+        </ion-scroll>
+    </ion-content>
+
+</ion-view>

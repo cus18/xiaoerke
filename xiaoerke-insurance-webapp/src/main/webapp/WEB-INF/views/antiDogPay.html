@@ -1,0 +1,106 @@
+<html>
+<head>
+</head>
+<base href="/xiaoerke-insurance-webapp/"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<title>填写信息</title>
+<script src="js/libs/jquery-2.1.3.min.js"></script>
+<script src="js/antiDogPay.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="js/libs/mobiscroll.custom-2.17.0.min.js"></script>
+<link rel="stylesheet" href="/xiaoerke-insurance-webapp/styles/lib/mobiscroll.custom-2.17.0.min.css" type="text/css" />
+<link rel="stylesheet" href="/xiaoerke-insurance-webapp/styles/antiDog/antiDogCommon.less" type="text/css" />
+<link rel="stylesheet" href="/xiaoerke-insurance-webapp/styles/antiDogPay.less" type="text/css" />
+<body onload="doRefresh()" >
+<!--一年购买过此服务，再次购买提醒 -->
+<div class="c-shadow"  onclick="cancelRemind()"> </div>
+<div class="c-remind" >
+    <div class="remind-main">
+        <img class="close" onclick="cancelRemind()" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fclose.png" width="31" height="31">
+        <p >
+            该宝宝已经购买过此服务<br>
+            可去查看订单信息
+        </p>
+        <div class="remind-bottom">
+            <a onclick="lookOrderInfo()">查看订单</a>
+            <a onclick="cancelRemind()">重新填写</a>
+            <span class="line"></span>
+        </div>
+    </div>
+</div>
+
+<div class="baby-list" >
+    <dl>
+        <dt id="selectBabyTitle">
+            <i class="line"></i>
+            <span>选择宝宝</span>
+        </dt>
+<!--         <dd class="select" click="selectedBaby($index)" ><span >{{item.name}}</span></dd> -->
+    </dl>
+    <div onclick="addBaby()" class="select" style="background-color: #88d9dd">添加宝宝</div>
+    <div onclick="cancelSelectBaby()" class="select">取消</div>
+</div>
+    <div class="antiDogFillInfo">
+        <div class="info">
+            <dl>
+                <dt>宝宝信息</dt>
+                <dd>
+                    <span>姓名：</span>
+                    <input type="hidden" id="babyId"/>
+                    <input type="text" id="babyName" placeholder="宝宝的真实姓名" >
+                    <a onclick="selectBaby()" class="selectBaby">选择宝宝</a>
+                </dd>
+                <dd>
+                    <span>性别：</span>
+                    <div class="selectItem sex" >
+                        <a  onclick="selectSex('boy')"  class="select">男</a>
+                        <a  onclick="selectSex('girl')" >女</a>
+                    </div>
+
+                </dd>
+                <dd>
+                    <span>出生日期：</span>
+                    <input type="text" readonly="readonly" id="birthday" placeholder="选择宝宝的出生日期" >
+                </dd>
+
+            </dl>
+            <dl>
+                <dt>家长信息</dt>
+                <dd>
+                    <span>姓名：</span>
+                    <input type="text" id="parentName"  placeholder="家长的真实姓名" >
+
+                </dd>
+                <dd>
+                    <span>您是孩子的：</span>
+                    <div class="selectItem parent" >
+                        <a onclick="selectParent('father')">宝爸</a>
+                        <a onclick="selectParent('mother')" class="select">宝妈</a>
+                    </div>
+
+                </dd>
+                <dd>
+                    <span>手机号：</span>
+                    <input type="text" id="phone"  disabled="true" placeholder="" maxlength="11"  onblur="checkPhone();" >
+                </dd>
+                <dd style="margin-bottom: 10px;">
+                    <span>身份证号：</span>
+                    <input type="text" id="IdCard" placeholder="填写正确的身份证号" maxlength="18"  onblur="checkIdCard();"  >
+                </dd>
+
+            </dl>
+            <div class="tips" ng-hide="IdCardLock">
+                <img class="my-img" width="12.5" height="auto" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fremind_icon.png">
+               <span>身份证号有误</span>
+            </div>
+        </div>
+    </div>
+    <br><br><br><br>
+    <div onclick="payInsurance()" id="payButton" class="button btn-bottom" >
+        微信支付  ￥19.8
+    </div>
+</body>
+</html>

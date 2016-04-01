@@ -1,0 +1,464 @@
+/*选择宝宝列表*/
+.baby-list1{
+  position: absolute;
+  left:0;
+  bottom:0;
+  z-index:3;
+  width:100%;
+  background-color: #fff;
+  padding:25px 0;
+  box-shadow: 0 -1px 3px #ccc;
+}
+.baby-list1 dl{
+  height:300px;
+  overflow-y: scroll;
+}
+.baby-list1 dt{
+  text-align: center;
+  position: relative;
+  font-weight: normal;
+  margin-bottom: 22.5px;
+}
+.baby-list1 dt .line{
+  display: inline-block;
+  width:60%;
+  height:1px;
+  background-color: #ccc;
+}
+.baby-list1 dt span{
+  display: inline-block;
+  width:82px;
+  height:18px;
+  line-height:18px;
+  font-size:13px;
+  color:#666;
+  position: absolute;
+  left:50%;
+  top:2px;
+  margin-left:-41px;
+  background-color: #fff;
+}
+.baby-list1 dd{
+  width:80%;
+  height:34px;
+  line-height:34px;
+  text-align: center;
+  border-radius: 5px;
+  border:1px solid #88d9dd;
+  margin:0 auto 15px;
+  color:#88d9dd;
+  font-size:16px;
+}
+.baby-list1 .select{
+  width:80%;
+  height:34px;
+  line-height:34px;
+  text-align: center;
+  border-radius: 5px;
+  border:1px solid #88d9dd;
+  margin:0 auto 15px;
+  color:#88d9dd;
+  font-size:16px;
+}
+.baby-list1 div.select{
+  background-color: #fe717b;
+  color:#fff;
+  border:none;
+}
+/*非微信公众号预约提示*/
+.attention-shadow{
+  position:absolute;
+  left:0;
+  top:0;
+  z-index: 9;
+  width:100%;
+  height:100%;
+  background: #000;
+  filter:alpha(Opacity=80);
+  -moz-opacity:0.8;
+  opacity: 0.8;
+}
+.bdf-attention{
+  position: absolute;
+  z-index:15;
+  width:100%;
+  margin:70px 0;
+}
+.bdf-attention div img{
+  display: inline-block;
+  margin:0 5%;
+}
+
+.bdf-attention dl{
+  width:70%;
+  position: relative;
+  color:#fff;
+  margin:0 15%;
+}
+
+
+.bdf-attention dt{
+  color:#fff;
+  font-size:17px;
+  font-weight: normal;
+  margin-bottom:22.5px;
+  text-align: center;
+  position: relative;
+}
+
+.bdf-attention dt span{
+  display: inline-block;
+  width:28%;
+  height:1px;
+  background-color: #fff;
+  position: absolute;
+  top:11px;
+}
+.bdf-attention dt span.ll{
+  left:0;
+}
+.bdf-attention dt span.rr{
+  right:0;
+}
+.bdf-attention dd{
+  font-size:14px;
+  margin-bottom:22.5px;
+  line-height: 26px;
+}
+.bdf-attention dd img{
+  margin-top:20px;
+}
+.bdf-attention dd .cir{
+  display: inline-block;
+  width:5px;
+  height:5px;
+  background-color: #fff;
+  vertical-align: middle;
+  border-radius: 5px;
+  margin-top:-3px;
+}
+//点击服务弹出框
+.ap-shadow{
+  position:absolute;
+  left:0;
+  top:0;
+  z-index: 4;
+  width:100%;
+  height:100%;
+  background: #000;
+  filter:alpha(Opacity=80);
+  -moz-opacity:0.8;
+  opacity: 0.8;
+}
+.ap-service{
+  width:90%;
+  position: absolute;
+  bottom:25%;
+  margin:0 ; ;
+  left:5%;
+  background-color:#fff;
+  border-radius: 15px;
+  z-index:5;
+  padding:0 15px 44px;
+  text-align: center;
+}
+.ap-service h3{
+  font-size:15px;
+  font-weight: normal;
+  color:#fe717b;
+  margin: 30px 0;
+}
+.ap-service p {
+  font-size:12px;
+  color:#666;
+  margin-bottom:17.5px;
+}
+
+.ap-service .know{
+  width:100%;
+  height:44px;
+  line-height:44px;
+  text-align: center;
+  border-radius: 0 0 15px 15px;
+  color:#fff;
+  font-size:16px;
+  background-color: #88d9dd;
+  position: absolute;
+  left:0;
+  bottom: 0;
+}
+
+
+.appointmentConfirm .item {
+  margin-bottom: 0;
+  white-space: normal;
+  position:relative;
+}
+.appointmentConfirm .doctorInfo .doctorPhoto{
+  left:22px;
+  margin-bottom: 20px;
+}
+.appointmentConfirm .doctorInfo h2,.appointmentConfirm .doctorInfo p{
+  margin-left:20px;
+  white-space: normal;
+}
+.appointmentConfirm .doctorInfo h2{
+  margin-top:15px;
+
+}
+.appointmentConfirm .workInfo div{
+  padding-left:10px;
+  border-top:1px solid #ddd;
+  margin-top:10px;
+}
+.appointmentConfirm .workInfo div ul{
+  margin-top:0;
+  margin-left:0;
+  margin-bottom:0;
+  border-top:none;
+}
+.appointmentConfirm .workInfo li{
+  padding-top:10px;
+  padding-bottom:10px;
+  color:#333;
+  font-size:15px;
+  padding-left:10px;
+}
+.appointmentConfirm .babyInfo{
+  background-color: #fff;
+  padding:0 10px;
+  border-bottom: 1px solid #ccc;
+}
+.appointmentConfirm .babyInfo li{
+  border-bottom: 1px solid #ccc;
+  padding:10px;
+  line-height: 30px;
+  position: relative;
+  font-size:15px;
+  color:#333;
+}
+.appointmentConfirm .babyInfo li:last-of-type{
+  border-bottom: none;
+}
+.appointmentConfirm .babyInfo input{
+  display: inline-block;
+  padding:0;
+  font-size:15px;
+  height:auto;
+  margin-top:-2px;
+
+}
+.appointmentConfirm .babyInfo li.case{
+ /* margin-top:12.5px;*/
+  margin-bottom:20px;
+  background-color: #f9f9f9;
+  padding:10px;
+  border-radius: 10px;
+}
+.appointmentConfirm .babyInfo li.case a{
+  float: right;
+  font-size: 13px;
+  color:#666;
+}
+.appointmentConfirm .babyInfo li.case textarea{
+  margin-top:10px;
+  width:100%;
+  height:100px;
+  resize: none;
+  background: none;
+  font-size: 13px;
+  color:#333;
+}
+.appointmentConfirm .babyInfo li.case textarea::-moz-placeholder { /* Mozilla Firefox 19+ */
+  color: #ccc;
+}
+.appointmentConfirm .babyInfo li.case textarea::-webkit-input-placeholder {
+  color: #ccc;
+}
+
+.appointmentConfirm .babyInfo li.case textarea:-ms-input-placeholder {
+  color: #ccc;
+}
+.appointmentConfirm  .select-baby{
+  position: absolute;
+  z-index:3;
+  top:10px;
+  right:0;
+  width:56px;
+  height:26px;
+  line-height:26px;
+  background-color: #88d9dd;
+  border-radius: 3px;
+  text-align: center;
+  font-size:12px;
+  color:#fff;
+}
+a:hover {
+  color: #fff;
+  text-decoration: none;
+}
+.appointmentConfirm .apart{
+  width:100%;
+  background-color: #f9f9f9;
+  height:5px;
+  border-top:1px solid #f0f0f0;
+  border-bottom:1px solid #f0f0f0;
+}
+.appointmentConfirm .service1-tip{
+  margin-top:-1px;
+  padding:0 0;
+  border-bottom: none;
+}
+
+.appointmentConfirm .service1-tip h2{
+  height: 50px;
+  line-height: 50px;
+  font-size:15px;
+  color:#88d9dd;
+  font-weight:normal;
+  margin:10px 0;
+  border-bottom: 1px solid #ccc;
+  padding:0 20px;
+}
+.appointmentConfirm .service1-tip h2 .detail{
+  color:#999;
+  font-size:13px;
+  float: right;
+  position: relative;
+  padding-right:8px;
+}
+.appointmentConfirm .service1-tip h2 .detail i{
+  font-size:20px;
+  margin-top:-3px;
+  vertical-align: middle;
+  position: absolute;
+  right:0;
+  top:3px;
+}
+
+.appointmentConfirm .service1-tip dl{
+  padding: 0;
+  margin: 0 10px 0;
+}
+.appointmentConfirm .service1-tip dt{
+  padding:0 10px;
+  color:#333;
+  font-size:14px;
+  font-weight: normal;
+  margin: 17.5px 0;
+}
+.appointmentConfirm .service1-tip dt .notice{
+  float: right;
+  color:#333;
+  font-size: 13px;
+}
+.appointmentConfirm .service1-tip dt .notice span{
+  display: inline-block;
+  width:12.5px;
+  height:12.5px;
+  border:1px solid #ccc;
+  vertical-align: middle;
+  margin-top:-2px;
+}
+.appointmentConfirm .service1-tip dt .notice img{
+  vertical-align: middle;
+  margin-top:-2px;
+}
+.appointmentConfirm .service1-tip dd{
+  padding:17.5px 10px;
+  background-color: #f9f9f9;
+  border:1px solid #ccc;
+  border-radius: 3px;
+  margin-bottom: 22.5px;
+
+}
+.appointmentConfirm .service1-tip dd p{
+  color:#666;
+  font-size: 13px;
+  white-space: normal;
+  position: relative;
+  padding-left:13px;
+  margin-bottom: 17.5px;
+}
+.appointmentConfirm .service1-tip dd p .deal{
+  color:#88d9dd;
+  border-bottom: 1px solid #88d9dd;
+}
+.appointmentConfirm .service1-tip dd p span{
+  position: absolute;
+  left:0;
+  top:0;
+}
+.appointmentConfirm .service1-tip  ul{
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+}
+.appointmentConfirm .service1-tip dd li{
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+.appointmentConfirm .service1-tip dd li:last-of-type{
+  margin-bottom: 17.5px;
+}
+.appointmentConfirm .service1-tip li .fl{
+  float: left;
+  font-size:13px;
+  color:#666;
+}
+.appointmentConfirm .service1-tip li .fl a{
+  display: inline-block;
+  width:15px;
+  height:15px;
+  line-height:15px;
+  text-align: center;
+  color:#fff;
+  background-color: #88d9dd;
+  border-radius: 50%;
+}
+.appointmentConfirm .service1-tip  li .fr{
+  float: right;
+  font-size:13px;
+  color:#fe717b;
+}
+
+.appointmentConfirm .service1-tip .tips11{
+  font-size: 12px;
+  color:#fe717b;
+  white-space: normal;
+  margin:0 15px 20px!important;
+  position: relative;
+  padding-left:20px;
+}
+.appointmentConfirm .service1-tip .tips11 span{
+  position: absolute;
+  left:0;
+  top:0;
+}
+
+.appointmentConfirm  .button.btn{
+  width: 100%;
+  height:30px;
+  line-height:28px;
+  margin-top: 60px;
+  color:#fff;
+  font-size:18px;
+  background-color: #88d9dd;
+  border-radius: 0;
+}
+
+
+
+input::-moz-placeholder { /* Mozilla Firefox 19+ */
+  color: #333;
+}
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: #333;
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+  color: #333;
+}
+

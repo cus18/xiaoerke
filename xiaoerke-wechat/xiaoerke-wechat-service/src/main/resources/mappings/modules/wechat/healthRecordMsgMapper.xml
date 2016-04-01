@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.wechat.dao.HealthRecordMsgDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.wechat.entity.HealthRecordMsgVo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="meg_type" property="megType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, open_id, meg_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from health_record_msg
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from health_record_msg
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.wechat.entity.HealthRecordMsgVo" >
+    insert into health_record_msg (id, open_id, meg_type
+      )
+    values (#{id,jdbcType=BIGINT}, #{openId,jdbcType=VARCHAR}, #{megType,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.wechat.entity.HealthRecordMsgVo" >
+    insert into health_record_msg
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="openId != null" >
+        open_id,
+      </if>
+      <if test="megType != null" >
+        meg_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="openId != null" >
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="megType != null" >
+        #{megType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.wechat.entity.HealthRecordMsgVo" >
+    update health_record_msg
+    <set >
+      <if test="openId != null" >
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="megType != null" >
+        meg_type = #{megType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.wechat.entity.HealthRecordMsgVo" >
+    update health_record_msg
+    set open_id = #{openId,jdbcType=VARCHAR},
+      meg_type = #{megType,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

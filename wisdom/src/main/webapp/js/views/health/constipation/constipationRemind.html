@@ -1,0 +1,150 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫" ng-init="doRefresh()">
+    <div class="c-shadow" ng-if="timeLock" ng-click="CancelSelectTime()"> </div>
+    <div class="select-time" ng-if="timeLock">
+        <div class="time">
+            <ion-item class="t">
+                <ul>
+                    <li ng-repeat="item in timeList" class="item item-borderless" ng-click="updateTime(item)">
+                        {{item}}
+                    </li>
+                </ul>
+            </ion-item>
+        </div>
+    </div>
+    <ion-content class="constipationRemind" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="box1" >
+                <ul class="">
+                    <li class="" ng-repeat="item in task" >
+                        <img class="clock" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fclock.png" width="20" height="20">
+                        <img class="triangle" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Ftriangle.png" width="6.5" height="12.5">
+                         <div>
+                               <a class="time"  ng-click="selectTime(item.id)">
+                                   {{ item.timeHappen | limitTo : 5}}
+                                   <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fedit_time.png" width="8" height="8">
+                               </a>
+                             <span class="project-name"> {{item.name}}</span>
+                         </div>
+                        <label class="toggle toggle1  " >
+                            <input type="checkbox" ng-checked="item.remindMe" ng-click="mychecked(item.id)">
+                            <div class="track">
+                                <div class="handle"></div>
+                            </div>
+                        </label>
+                    </li>
+                    <li class="" >
+                        <img class="clock" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fclock.png" width="20" height="20">
+                        <img class="triangle" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Ftriangle.png " width="6.5" height="12.5">
+                        <div ng-click="open('food')">
+                            <a class="time" ng-repeat="item in taskFood" style="color:#666;">
+                                {{ item.timeHappen | limitTo : 5}}
+                            </a>
+                        </div>
+                        <div class="big-project" ng-click="open('food')">
+                            <span class="project-name">饮食治疗攻略</span>&nbsp;&nbsp;
+                            <i ng-class="{'ion-ios-arrow-down': !openLock1, 'ion-ios-arrow-up': openLock1}" ></i>
+                        </div>
+                        <div class="big-project-detail" ng-repeat="item in taskFood" ng-if="openLock1">
+                            <p>
+                                <a  ng-click="selectTime(item.id)">
+                                    {{ item.timeHappen | limitTo : 5}}
+                                    <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fedit_time.png" width="8" height="8">
+                                </a>
+                                <span class="project-name" > {{item.name}}</span>
+                            </p>
+                            <label class="toggle toggle2  " >
+                                <input type="checkbox" ng-checked="item.remindMe" ng-click="mychecked(item.id)">
+                                <div class="track">
+                                    <div class="handle"></div>
+                                </div>
+                            </label>
+                        </div>
+
+                    </li>
+                    <li class=""  style="margin-bottom: 15px;">
+                        <img class="clock" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fclock.png" width="20" height="20">
+                        <img class="triangle" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Ftriangle.png"  width="6.5" height="12.5">
+                        <div ng-click="open('sport')">
+                            <a class="time" ng-repeat="item in taskSport" style="color:#666;">
+                                {{ item.timeHappen | limitTo : 5}}
+                            </a>
+                        </div>
+                        <div class="big-project" ng-click="open('sport')">
+                            <span class="project-name">运动缓解攻略</span>&nbsp;&nbsp;
+                            <i ng-class="{'ion-ios-arrow-down': !openLock2, 'ion-ios-arrow-up': openLock2}" ></i>
+                        </div>
+                        <div class="big-project-detail" ng-repeat="item in taskSport" ng-if="openLock2">
+                            <p>
+                                <a  ng-click="selectTime(item.id)">
+                                    {{ item.timeHappen | limitTo : 5}}
+                                    <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fedit_time.png" width="8" height="8">
+                                </a>
+                                <span class="project-name"> {{item.name}}</span>
+                            </p>
+                            <label class="toggle toggle2">
+                                <input type="checkbox" ng-checked="item.remindMe" ng-click="mychecked(item.id)">
+                                <div class="track">
+                                    <div class="handle"></div>
+                                </div>
+                            </label>
+                        </div>
+                    </li>
+                    <li class=""  >
+                        <img class="clock" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fclock.png" width="20" height="20">
+                        <img class="triangle" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Ftriangle.png" width="6.5" height="12.5">
+                        <div>
+                            <a class="time"  ng-click="selectTime(tasks[7].id)">
+                                {{ tasks[7].timeHappen | limitTo : 5}}
+                                <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fedit_time.png" width="8" height="8">
+                            </a>
+                            <span class="project-name">必备物品</span>
+                        </div>
+                        <label class="toggle toggle1  " >
+                            <input type="checkbox" ng-checked="tasks[7].remindMe" ng-click="mychecked(tasks[7].id)">
+                            <div class="track">
+                                <div class="handle"></div>
+                            </div>
+                        </label>
+                    </li>
+                </ul>
+                <div class="all">
+                    <div class="cancel-plan" ng-click="cancelPlan()" ng-if="result">
+                        <img class=""  ng-src="{{cancelPlanImg}}" width="16" height="16">
+                        <span>取消计划</span>
+                    </div>
+                    <div class="open-remind" ng-click="openRemind()">
+                        <img class=""  ng-src="{{openRemindImg}}" width="16" height="16">
+                        <span>打开全部提醒</span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="mother-necessary">
+                <dl>
+                    <dt ng-click="necessary()">
+                        <span class="line"></span>
+                        妈妈必备
+                        <a>
+                            查看全部
+                            <img src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fmore_right_d.png" width="22" height="22">
+                        </a>
+                    </dt>
+                    <dd>
+                        <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fnecessary1.png" width="60" height="60">
+                        <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fnecessary2.png" width="60" height="60">
+                        <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fnecessary3.png" width="60" height="60">
+                    </dd>
+                </dl>
+            </div>
+            <p class="member">
+                连续打卡一周，宝大夫送您《便便大象》绘本!
+            </p>
+            <div >
+                <button class="button  foot-btn" ng-click="save()" ng-disabled="saveResult">完成</button>
+            </div>
+        </ion-scroll>
+    </ion-content>
+
+</ion-view>
+

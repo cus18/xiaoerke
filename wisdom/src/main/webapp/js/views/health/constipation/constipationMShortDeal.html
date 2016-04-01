@@ -1,0 +1,80 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫" ng-init="doRefresh()">
+    <ion-content class="constipationMShortDeal" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="title2">
+                短期处理方法
+            </div>
+            <div class="">
+                <dl >
+                    <dt>
+                    第一步
+                     </dt>
+                    <dd class="dd-text">
+                        <p>
+                            用温热水给宝宝洗屁股，用手指刺激宝宝肛门皱褶处，引导宝宝排便。如果仍未排便，可切下一条透明皂，搓成圆柱状（0.5厘米粗），沾温水用后，慢慢塞入肛门1厘米，停留3-5分钟，让宝宝坐便盆
+                        </p>
+                    </dd>
+                    <dt>
+                        第二步
+                    </dt>
+                    <dd class="dd-text">
+                        <div>如果仍未排便，使用开塞露肛注</div>
+                       <p>
+                           剪开开塞露开口后，用手摸一下，是否有毛刺，如果不光滑，用指甲钳上的锉搓平，然后挤出一点，用棉签涂抹开塞露开口处，再缓慢塞入肛门1厘米后挤入液体。
+                       </p>
+                    </dd>
+                    <dt>
+                        开塞露使用图例
+                    </dt>
+                    <dd>
+                        <ion-slide-box active-slide="myActiveSlide" >
+                            <ion-slide ng-repeat="item in useImg">
+                                <img   ng-src={{item}} width="100%" height="auto">
+                            </ion-slide>
+
+                        </ion-slide-box>
+
+                    </dd>
+                </dl>
+            </div>
+            <div class="recommend">
+                <h4>为您推荐</h4>
+                <div class="recommend-medicine">
+                    <a href="http://item.yhd.com/item/48136305?tc=3.0.5.48136305.3&tp=51.开塞露儿童.124.3.3.L7aYnno-10-Cj9ef&abtest=1.8_565_83&ti=F7VN">
+                        <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmedicine3_1.jpg" width="68" height="68"><br>
+                        开塞露
+                    </a>
+                    <a href="http://item.yhd.com/item/48644531?tc=3.0.5.48644531.7&tp=51.开塞露儿童.124.7.1.L7aYnno-10-Cj9ef&abtest=1.8_565_83&ti=GGWU">
+                        <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmedicine3_2.jpg" width="68" height="68"><br>
+                        开塞露
+                    </a>
+                    <a style="" href="http://item.yhd.com/item/47789596?tc=3.0.5.47789596.1&tp=51.开塞露儿童.124.1.1.L7aYnno-10-Cj9ef&abtest=1.8_565_83&ti=G23G">
+                        <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmedicine3_3.jpg" width="68" height="68"><br>
+                        开塞露
+                    </a>
+
+                </div>
+
+
+            </div>
+            <div class="mother-help">
+                <p>
+                    妈妈如果遇到什么问题或者还有什么不明白的
+                </p>
+                <p>
+                    随时可以<span ng-click="consultDoc()">咨询医生</span> 也可直接<span ui-sref="appointmentFirst">预约大夫 </span>哦
+                </p>
+
+            </div>
+            <div class="plan" ng-click="remind()">
+                <p>
+                    宝大夫从<span>便秘按摩、按时排便、食疗、运动</span>四方面<br>
+                    为妈妈和宝宝制定了一套便秘管理方案<br>
+                    和宝大夫一起帮宝宝摆脱便秘吧
+                </p>
+                <button class="button foot-btn">快来制定计划吧</button>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

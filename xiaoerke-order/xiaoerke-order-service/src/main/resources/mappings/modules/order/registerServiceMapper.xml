@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxqm.xiaoerke.modules.order.dao.RegisterServiceDao">
+	<resultMap id="registerServiceVo" type="com.cxqm.xiaoerke.modules.order.entity.RegisterServiceVo">
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="sys_doctor_id" property="sysDoctorId" jdbcType="VARCHAR" />
+        <result column="location" property="location" jdbcType="VARCHAR" />
+        <result column="doctorName" property="doctorName" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <resultMap id="patientRegisterVO" type="com.cxqm.xiaoerke.modules.order.entity.PatientRegisterServiceVo">
+        <result column="date" property="date" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--插入号源信息-->
+    <insert id="insertSysRegisterServiceExecute">
+        INSERT INTO sys_register_service(id,sys_doctor_id,sys_hospital_id,DATE,price,begin_time,end_time,location,desc_info,STATUS,deposit,service_type,root,create_date,location_id,repeatFlag)
+        VALUES(#{id},#{doctorId},#{sys_hospital_id},#{date},#{price},#{begin_time},#{end_time},#{location},#{desc},#{status},#{deposit},#{service_type},#{root},#{create_date},#{locationId},#{repeatFlag});
+    </insert>
+
+    <!--查询某个医生的最晚可预约日期-->
+    <select id="findrecentlyDateAppDateExcute"  resultType="java.util.Map">
+        SELECT MIN(DATE) as availableDate FROM sys_register_service
+        WHERE STATUS=0  AND (DATE_FORMAT(CONCAT(DATE_FORMAT(DATE,'%Y:%c:%d'),DATE_FORMAT(begin_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>NOW()
+        AND sys_doctor_id=#{doctorId}
+    </select>
+
+    <!--插入号源信息测试-->
+    <insert id="insertSysRegisterServiceTest">
+        INSERT INTO sys_register_service(id,sys_doctor_id,sys_patient_id,sys_hospital_id,DATE,price,begin_time,end_time,location,
+            desc_info,STATUS,deposit,service_type,create_date,update_date,trafficInfo,root,appointmentNo,location_id)
+            VALUES(#{id},#{sys_doctor_id},#{sys_patient_id},#{sys_hospital_id},#{date},#{price},#{begin_time},#{end_time},
+        #{location},#{desc_info},#{status},#{deposit},#{service_type},#{create_date},#{update_date},#{trafficInfo},#{root},#{appointmentNo},#{location_id});
+    </insert>
+
+    <update id="cancelRegisters">
+        update sys_register_service srs
+        set status = "2" 
+        WHERE srs.sys_doctor_id=#{sysDoctorId}
+        <if test="sysHospitalId != null">
+           and srs.sys_hospital_id=#{sysHospitalId}
+        </if>
+        <if test="date != null">
+           and srs.date=#{date}
+        </if>
+        <if test="status != null">
+           and srs.status=#{status}
+        </if>
+        <if test="locationId != null">
+           and srs.location_id=#{locationId}
+        </if>
+        <if test="times != null">
+	     	 and srs.begin_time in 
+			 <foreach item="item" index="index" collection="times" open="(" separator="," close=")">  
+	 			#{item}
+			 </foreach>
+     	</if>
+     	<if test="fromTime != null">
+           and srs.begin_time >= #{fromTime}
+        </if>
+        <if test="toTime != null">
+           and srs.begin_time &lt; #{toTime}
+        </if>
+     	order by date desc
+    </update>
+    
+    <update id="updateRegisterService">
+		UPDATE sys_register_service SET 
+			price = #{price}, 
+			service_type = #{serverType},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateSysRegisterServiceStatusUsed">
+        update sys_register_service
+        SET status="1"
+        where id=#{registerId}
+    </update>
+    
+    <update id="updateSysRegisterServiceStatusCancel">
+        update sys_register_service
+        SET status="0"
+        where id=#{registerId}
+    </update>
+    
+    <update id="updateSysRegisterStatusCancel">
+        update sys_register_service srs
+        SET status="2",update_date=#{updateDate},begin_time=#{beginTime}
+        where srs.id=#{registerId}
+    </update>
+
+
+    <!--根据location_id删除号源信息-->
+    <update id="deleteRegisterServiceBySysDoctorId">
+        update sys_register_service srs
+        SET srs.status="2"
+        where  srs.sys_doctor_id=#{sysDoctorId}
+    </update>
+    
+    <update id="UpdateSysRegisterService">
+        update sys_register_service srs
+        <set>
+           srs.status='1'
+            <if test="sys_patient_id != null">
+                ,srs.sys_patient_id=#{sys_patient_id}
+            </if>
+            <if test="register_no != null">
+                ,srs.appointmentNo=#{register_no}
+            </if>
+        </set>
+        where srs.id=#{sys_register_service_id};
+    </update>
+
+	<!--对预约的状态进行操作（取消预约） @author 14_zdl-->
+    <update id="CancelSysRegisterService">
+        update sys_register_service srs
+        <set>
+            srs.status='0'
+        </set>
+        where srs.appointmentNo=#{register_no};
+    </update>
+    
+   	<select id="getOrderCheckEverydaySpaceOneHoursOfRegisterTime" resultType="java.util.HashMap">
+		SELECT
+			date AS redate,
+			begin_time AS retime
+		FROM
+			sys_register_service
+		WHERE
+			id = #{reid}
+	</select>
+
+    <!--获取号源状态-->
+    <select id="findSysRegisterServiceStatusExecute"  resultType="java.util.HashMap">
+        SELECT id AS register_service_id,status, begin_time, sys_doctor_id FROM sys_register_service WHERE id=#{sys_register_service_id}
+    </select>
+
+	<select id="getRegisterListByInfo" resultMap="registerServiceVo">
+        SELECT srs.*         
+        FROM sys_register_service srs
+        inner join sys_doctor_location sdl on sdl.id=srs.location_id
+        WHERE 1=1
+        <if test="sysDoctorId != null and sysDoctorId != ''">
+           and srs.sys_doctor_id=#{sysDoctorId}
+        </if>
+        <if test="sysHospitalId != null and sysHospitalId != ''">
+           and srs.sys_hospital_id=#{sysHospitalId}
+        </if>
+        <if test="date != null and date != ''">
+           and srs.date=#{date}
+        </if>
+        <if test="location != null and location != ''">
+           and sdl.location=#{location}
+        </if>
+        <if test="status != null and status != ''">
+           and srs.status=#{status}
+        </if>
+        <if test="locationId != null and locationId != ''">
+           and srs.location_id=#{locationId}
+        </if>
+        <if test="dateList != null">
+	     	 and srs.date in 
+			 <foreach item="item" index="index" collection="dateList" open="(" separator="," close=")">  
+	 			#{item}
+			 </foreach>
+     	</if>
+     	<if test="time != null and time != ''">
+	     	 and srs.begin_time=#{time}
+     	</if>
+     	<if test="times != null">
+	     	 and srs.begin_time in 
+			 <foreach item="item" index="index" collection="times" open="(" separator="," close=")">  
+	 			#{item}
+			 </foreach>
+     	</if>
+     	<if test="statusList != null">
+	     	 and srs.status in 
+			 <foreach item="item" index="index" collection="statusList" open="(" separator="," close=")">  
+	 			#{item}
+			 </foreach>
+     	</if>
+     	<if test="repeatFlagList != null">
+	     	 and srs.repeatFlag in 
+			 <foreach item="item" index="index" collection="repeatFlagList" open="(" separator="," close=")">  
+	 			#{item}
+			 </foreach>
+     	</if>
+     	<if test="fromTime != null and fromTime != ''">
+           and srs.begin_time >= #{fromTime}
+        </if>
+        <if test="toTime != null and toTime != ''">
+           and srs.begin_time &lt; #{toTime}
+        </if>
+     	order by date desc
+    </select>
+    
+    <select id="findRegisterList" resultType="com.cxqm.xiaoerke.modules.order.entity.RegisterServiceVo">
+    	SELECT
+			srs.id,
+			srs.price,
+			srs.date,
+			srs.begin_time,
+			srs.sys_hospital_id,
+			sdl.hospitalName,
+			su.name doctorName,
+			su.phone,
+			srs.status,
+			sdl.location,
+			dhr.department_level1 AS department,
+			dhr.relation_type AS relationType
+		FROM
+			sys_register_service srs
+		LEFT JOIN sys_doctor sd ON srs.sys_doctor_id = sd.id
+		left JOIN doctor_hospital_relation dhr ON dhr.sys_doctor_id = srs.sys_doctor_id
+		LEFT JOIN sys_user su ON su.id = sd.sys_user_id
+		LEFT JOIN sys_doctor_location sdl ON sdl.id = srs.location_id
+		where
+    	(DATE_FORMAT(CONCAT(DATE_FORMAT(srs.date,'%Y:%c:%d'),DATE_FORMAT(srs.begin_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>now()
+    	and date_sub(now(),interval -1 month) >= (DATE_FORMAT(CONCAT(DATE_FORMAT(srs.date,'%Y:%c:%d'),DATE_FORMAT(srs.begin_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))
+    	<if test="sysDoctorId != null and sysDoctorId != ''">
+			AND srs.sys_doctor_id=#{sysDoctorId}
+		</if>
+		<if test="sysHospitalId != null and sysHospitalId != ''">
+			AND srs.sys_hospital_id=#{sysHospitalId}
+		</if>
+		<if test="status != null and status != ''">
+			AND srs.status=#{status}
+		</if>
+		<if test="doctorName != null and doctorName != ''">
+			AND su.name like CONCAT('%',#{doctorName},'%')
+		</if>
+		<if test="priceRange != null and priceRange != ''">
+			<if test="priceRange == '100'">
+				AND #{priceRange} > srs.price
+			</if>
+			<if test="priceRange == '100-300'">
+				AND srs.price >= 100 AND 300 >= srs.price
+			</if>
+			<if test="priceRange == '300'">
+				AND srs.price > #{priceRange}
+			</if>
+		</if>
+		<if test="location != null and location != ''">
+			AND sd.hospitalName=#{location}
+		</if>
+		<if test="fromDate != null and fromDate != ''">
+			AND srs.date >= #{fromDate}
+		</if>
+		<if test="toDate != null and toDate != ''">
+			AND #{toDate} >= srs.date
+		</if>
+		<if test="department != null and department != ''">
+			AND srs.sys_doctor_id  in (SELECT distinct sys_doctor_id FROM doctor_illness_relation where sys_illness_id in (SELECT id  FROM sys_illness where level_1=#{department}))
+		</if>
+		<if test="relationType != null and relationType != ''">
+			AND dhr.relation_type=#{relationType}
+		</if>
+		group by srs.id
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				order by (DATE_FORMAT(CONCAT(DATE_FORMAT(srs.date,'%Y:%c:%d'),DATE_FORMAT(srs.begin_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s')) asc
+			</otherwise>
+		</choose>
+    </select>
+    
+    <select id="findWillNoRegisterList" resultType="com.cxqm.xiaoerke.modules.order.entity.RegisterServiceVo">
+    	select DISTINCT sd.name doctorName,sd.hospitalName,srs.sys_doctor_id,srs.date,dhr.department_level1 department
+    		from sys_doctor sd RIGHT JOIN 
+			(select MAX(date) date,sys_doctor_id from sys_register_service  GROUP BY sys_doctor_id )srs 
+			ON sd.id=srs.sys_doctor_id LEFT join doctor_hospital_relation dhr 
+			ON sd.id=dhr.sys_doctor_id
+			where DATE_ADD(DATE_FORMAT(NOW(),'%Y:%c:%d'), INTERVAL 2 DAY) > srs.date ;
+    </select>
+    
+    <select id="getRegisterByInfo" resultType="com.cxqm.xiaoerke.modules.order.entity.RegisterServiceVo">
+    	select  srs.price,srs.date,srs.begin_time,sdl.location,su.name doctorName,su.phone from sys_register_service srs
+    	left join sys_doctor sd on srs.sys_doctor_id=sd.id  
+    	left join sys_user su on su.id=sd.sys_user_id 
+        inner join sys_doctor_location sdl on sdl.id=srs.location_id
+        where srs.status='0'
+    	<if test="sysDoctorId != null and sysDoctorId != ''">
+			AND srs.sys_doctor_id=#{sysDoctorId}
+		</if>
+		<if test="sysRegisterId != null and sysRegisterId != ''">
+			AND srs.id=#{sysRegisterId}
+		</if>
+		<if test="doctorName != null and doctorName != ''">
+			AND su.name=#{doctorName}
+		</if>
+		<if test="location != null and location != ''">
+			AND sd.hospitalName=#{location}
+		</if>
+    </select>
+    
+    <select id="getRegisterById" resultType="com.cxqm.xiaoerke.modules.order.entity.RegisterServiceVo">
+    	select  * from sys_register_service srs
+        where srs.id=#{id}
+    </select>
+    
+    <!--获取号源信息，用于回访信息-->
+    <select id="getSysRegisterServiceInfo"  resultType="java.util.HashMap">
+        select srs.id,su.name,su.phone,srs.date, srs.begin_time,srs.price,
+        	sdl.route root,sdl.hospitalName,sdl.location,sh.position,sh.medical_process,sa.nickname
+			from sys_register_service srs 
+			left join sys_doctor sd on srs.sys_doctor_id=sd.id 
+			left join sys_user su on su.id=sd.sys_user_id 
+			left join sys_doctor_location sdl on sdl.id=srs.location_id
+            left join sys_hospital sh on sh.id = sdl.sys_hospital_id
+            left join sys_attention sa on sa.openid = su.openid 
+            where 1=1
+            <if test="registerId != null and registerId != ''">
+                AND srs.id=#{registerId}
+            </if>
+    </select>
+
+    <!--根据doctorId查询这一段时间该医生“号源总数”-->
+    <select id="findDoctorRegisterServiceByData" resultType="Integer">
+        SELECT count(*) FROM sys_register_service WHERE sys_doctor_id=#{id} and date BETWEEN #{startDate} and #{endDate}
+    </select>
+    
+    <select id="getDoctorVisitInfoById" resultType="java.util.HashMap">
+       SELECT MIN(srs.DATE) AS availableDate ,DATE_FORMAT(srs.begin_time,'%H:%i') AS begin_time,sh.name,sh.position,srs.date,sdl.location,
+       srs.location_id as location_id,
+       TIMESTAMPDIFF(DAY,DATE_FORMAT(NOW(),'%Y:%c:%d'),DATE_FORMAT(MIN(srs.date),'%Y:%c:%d')) available_time,
+       MIN(STR_TO_DATE(CONCAT(srs.date, ' ', srs.begin_time),'%Y-%m-%d %H:%i:%s')) AS latest_time,srs.service_type,sdl.shot_visit_time AS shot_time
+       FROM sys_register_service srs
+       INNER JOIN sys_hospital sh ON srs.sys_hospital_id = sh.id
+       INNER JOIN sys_doctor_location sdl ON sdl.id=srs.location_id
+       WHERE srs.sys_doctor_id= #{id}
+       AND ( srs.date > CURDATE() OR (srs.date = CURDATE() and srs.begin_time >= CURTIME()) )
+	   AND srs.status=0
+       GROUP BY srs.location_id,srs.sys_hospital_id
+       ORDER BY latest_time ASC
+    </select>
+
+    <select id="getDoctorVisitInfoByLocation" resultType="java.util.HashMap">
+        select srs.date,sdl.kindly_reminder as kindlyReminder
+        from
+        sys_register_service srs
+        inner join sys_hospital sh on srs.sys_hospital_id = sh.id
+        inner join sys_doctor_location sdl on sdl.id=srs.location_id
+        WHERE
+        sh.name = #{hospitalName}
+        AND
+        srs.sys_doctor_id = #{doctorId}
+        and srs.status='0'
+        AND
+        srs.location_id = #{location_id}
+        <if test="status != null">
+            and srs.status=#{status}
+        </if>
+        AND (DATE_FORMAT(CONCAT(DATE_FORMAT(srs.DATE,'%Y:%c:%d'),DATE_FORMAT(srs.begin_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>NOW()
+        GROUP BY srs.date
+        ORDER BY (DATE_FORMAT(CONCAT(DATE_FORMAT(srs.DATE,'%Y:%c:%d'),DATE_FORMAT(srs.begin_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s')) ASC
+    </select>
+
+    <!--查询用户扫医生码个数 deliang-->
+    <select id="judgeUserScanCode"  resultType="Integer">
+        SELECT
+			count(*)
+		FROM
+			sys_register_service srs
+		INNER JOIN scan_code_no_charge scnc ON scnc.sys_doctor_id = srs.sys_doctor_id
+		WHERE
+			scnc.marketer IN (
+				SELECT
+					doctor_marketer
+				FROM
+					sys_attention sa
+				WHERE
+					openid = #{openid} AND DATE_ADD(update_time, INTERVAL 1 HOUR) > NOW())
+				and scnc.sys_doctor_id = (select sys_doctor_id from sys_register_service where id=#{register_service_id})
+    </select>
+
+    <select id="getDoctorVisitInfoByIdAndDate" resultType="java.util.HashMap">
+        SELECT MIN(srs.DATE) AS availableDate ,DATE_FORMAT(srs.begin_time,'%H:%i') AS begin_time,sh.name,sh.position,srs.date,sdl.location,
+        srs.location_id as location_id,
+        TIMESTAMPDIFF(DAY,DATE_FORMAT(NOW(),'%Y:%c:%d'),DATE_FORMAT(MIN(srs.date),'%Y:%c:%d')) available_time,
+        MIN(STR_TO_DATE(CONCAT(srs.date, ' ', srs.begin_time),'%Y-%m-%d %H:%i:%s')) AS latest_time,srs.service_type,
+        sdl.shot_visit_time AS shot_time
+        FROM sys_register_service srs
+        INNER JOIN sys_hospital sh ON srs.sys_hospital_id = sh.id
+        inner join sys_doctor_location sdl on sdl.id=srs.location_id
+        WHERE STATUS=0
+        AND (DATE_FORMAT(CONCAT(DATE_FORMAT(srs.DATE,'%Y:%c:%d'),DATE_FORMAT(srs.begin_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>NOW()
+        AND srs.sys_doctor_id= #{doctorId} and srs.DATE=#{date}
+        GROUP BY sdl.location,srs.sys_hospital_id
+        ORDER BY latest_time ASC
+    </select>
+
+    <select id="getDoctorVisitInfo" resultType="java.util.HashMap">
+          SELECT
+		  DATE_FORMAT(srs.begin_time,'%H:%i')begin_time,
+		  sh.`name` as hospitalName,
+		  sh.position as position,
+		  min(srs.date) as date,
+		  sdl.location as location,
+		  srs.location_id as location_id,
+		  TIMESTAMPDIFF(DAY,DATE_FORMAT(now(),'%Y:%c:%d'),DATE_FORMAT(min(srs.date),'%Y:%c:%d')) as available_time ,
+		  min(STR_TO_DATE(CONCAT(srs.date, ' ', srs.begin_time),'%Y-%m-%d %H:%i:%s')) as latest_time,
+		  sh.id as sys_hospital_id
+          FROM sys_register_service srs
+          INNER JOIN sys_hospital sh ON srs.sys_hospital_id = sh.id
+          INNER JOIN sys_doctor_location sdl ON sdl.id=srs.location_id
+          WHERE STATUS=0
+          AND (DATE_FORMAT(CONCAT(DATE_FORMAT(srs.DATE,'%Y:%c:%d'),DATE_FORMAT(srs.begin_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>NOW()
+          AND srs.sys_doctor_id= #{doctorId}
+          GROUP BY srs.location_id,srs.sys_hospital_id
+          ORDER BY latest_time ASC
+    </select>
+
+    <select id="findAllAppointmentInfoByDoctor"  resultType="java.util.HashMap">
+        SELECT
+        DATE_FORMAT(srs.date, '%Y/%m/%d') AS DATE,
+        srs.id,
+        srs.sys_doctor_id,
+        srs.sys_patient_id,
+        srs.sys_hospital_id,
+        srs.location_id,
+        srs.repeatFlag,
+        sdl.hospitalName,
+        srs.price,
+        DATE_FORMAT(srs.date, '%m-%d') AS DATE,
+        DATE_FORMAT(srs.begin_time, '%H:%i') AS begin_time,
+        DATE_FORMAT(srs.end_time, '%H:%i') AS end_time,
+        sdl.location,
+        sdl.route AS root,
+        srs.status,
+        srs.service_type
+        FROM
+        sys_register_service srs
+        INNER JOIN sys_hospital shs on shs.id = srs.sys_hospital_id
+        INNER JOIN sys_doctor_location sdl ON sdl.id = srs.location_id
+        WHERE 1=1
+        <if test="user == 'doctor'">
+            and shs.hospital_type!='2'
+        </if>
+        and srs.sys_doctor_id = #{doctorId}
+        <if test="date != null">
+           AND date = #{date}
+       </if>
+        and (status = "0" or status = "1")
+       <if test="location_id!=null">
+           AND srs.location_id  = #{location_id}
+       </if>
+        ORDER BY srs.begin_time asc
+    </select>
+
+	<select id="findDatesWithRegisters"  resultType="java.util.HashMap">
+        SELECT distinct(srs.date) date
+        from
+        sys_register_service srs,
+        sys_hospital shs
+        WHERE
+        shs.hospital_type!='2'
+        and srs.sys_doctor_id = #{doctorId}
+        and shs.id = srs.sys_hospital_id
+        and (srs.status = "0" or srs.status = "1")
+        <if test="from !=null">
+            AND srs.date >= #{from}
+        </if>
+        <if test="to !=null">
+            AND srs.date &lt; #{to}
+        </if>
+        ORDER BY srs.date asc
+    </select>
+    
+    <!--查询某个医生的最晚可预约日期-->
+    <select id="findRecentlyDateAppDateExecute"  resultType="java.util.Map">
+        SELECT MIN(DATE) as availableDate FROM sys_register_service
+        WHERE STATUS=0  AND (DATE_FORMAT(CONCAT(DATE_FORMAT(DATE,'%Y:%c:%d'),DATE_FORMAT(begin_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>NOW()
+        AND sys_doctor_id=#{doctorId}
+    </select>
+
+    <select id="getVisitTimeById" resultType="java.lang.String">
+        select  DATE_FORMAT(CONCAT(DATE_FORMAT(DATE,'%Y:%c:%d'),DATE_FORMAT(end_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s') as  visitTime from sys_register_service srs
+        left join patient_register_service prs
+        on srs.id = prs.sys_register_service_id
+        where prs.id=#{id}
+    </select>
+
+
+    <select id="getNeedPayStatusByRegisterServiceId"  resultType="java.util.HashMap">
+        select anp.* from
+        sys_register_service srs,
+        appointment_need_pay anp
+        WHERE
+        srs.sys_hospital_id = anp.sys_hospital_id
+        and
+        srs.id=#{register_service_id}
+    </select>
+
+    <select id="getAppointmentDoctorNum"  resultType="Integer">
+        select count(prs.id) FROM
+        patient_register_service prs,
+        sys_register_service srs,
+        sys_user su,
+        sys_patient sp
+        where
+        sp.sys_user_id = su.id
+        AND
+        prs.sys_patient_id = sp.id
+        AND
+        su.openid = #{openid}
+        AND
+        prs.sys_register_service_id = srs.id
+        AND
+        srs.sys_doctor_id = #{doctorId}
+        AND
+        srs.sys_hospital_id in
+        (select anp_1.sys_hospital_id sys_hospital_id from
+        sys_register_service srs_1,
+        appointment_need_pay anp_1
+        WHERE
+        srs_1.sys_hospital_id = anp_1.sys_hospital_id
+        and
+        srs_1.id=#{register_service_id})
+        AND
+        prs.status!='6'
+    </select>
+
+    <select id="getAppointmentNum"  resultType="Integer">
+        select count(prs.id) FROM
+        patient_register_service prs,
+        sys_register_service srs,
+        sys_user su,
+        sys_patient sp
+        where
+        sp.sys_user_id = su.id
+        AND
+        prs.sys_patient_id = sp.id
+        AND
+        su.openid = #{openid}
+        AND
+        prs.sys_register_service_id = srs.id
+        AND
+        prs.status!='6'
+    </select>
+
+    <select id="getCooperationHospitalTypeBySrsId" resultType="java.util.HashMap">
+        select
+        shs.hospital_type hospitalType
+        from
+        sys_register_service srs,
+        sys_hospital_contact shc,
+        sys_hospital shs
+        WHERE
+        shc.sys_hospital_id = shs.id
+        AND
+        srs.sys_hospital_id = shc.sys_hospital_id
+        AND
+        srs.id=#{register_service_id}
+    </select>
+
+    <insert id="batchInsertRegister" parameterType="java.util.Map">
+        INSERT INTO sys_register_service(id,sys_doctor_id,sys_hospital_id,DATE,price,begin_time,end_time,STATUS,deposit,service_type,create_date,location_id,repeatFlag)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id},#{item.doctorId},#{item.sys_hospital_id},#{item.date},#{item.price},#{item.begin_time},#{item.end_time},#{item.status},#{item.deposit},#{item.service_type},#{item.create_date},#{item.locationId},#{item.repeatFlag})
+        </foreach>
+    </insert>
+</mapper>

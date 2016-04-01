@@ -1,0 +1,30 @@
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title={{title0}} ng-init="doRefresh()">
+    <div class="iknow-shadow" ng-if="(status=='true')">
+    </div>
+    <div style="margin:0 auto" class="iknowContent" ng-if="(status=='true')">
+        <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fremind_share_arrow.png" class="arrow1" width="31" height="55">
+        <div class="item item-borderless">
+            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fremind_success.png" width="97" height="97" class="success"/>
+            <p style="margin-bottom: 20px;">评价成功</p>
+            <p style="margin-top:0;">{{doctorData.doctorName}}&nbsp;&nbsp;<span>{{doctorData.position1}}&nbsp;{{doctorData.position2}}</span></p>
+            <p>{{doctorData.hospitalName}}-{{doctorData.departmentName}}</p>
+            <p ng-if="returnpay!=''">{{returnpay}}元保证金已返还到宝大夫账户</p>
+            <p style="margin-top:25px;color:#999;">点击右上角分享到朋友圈</p>
+            <button class="know button" ng-click="IKnow()">我知道了</button>
+        </div>
+    </div>
+
+    <ion-content class="sharedDetail" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true" style="top:2px;">
+            <div class="box-out">
+                <div class="box">
+                    <img data-tap-disabled="true"  ng-src="{{imgUrl}}" width="127.5" height="129" class="ma">
+                    <h2>{{doctorData.doctorName}}&nbsp;<span>{{doctorData.position1}}&nbsp;{{doctorData.position2}}</span></h2>
+                    <p>{{doctorData.hospitalName}}&nbsp; {{doctorData.departmentName}}</p>
+                </div>
+                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fshared_hand.png" width="100%" height="151.5" class="hand">
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

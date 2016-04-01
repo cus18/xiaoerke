@@ -1,0 +1,34 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="初步营养" ng-init="doRefresh()">
+    <ion-content class="nutritionPyramid" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="pyramid">
+                 <!--原点提示-->
+                <ol class="circle">
+                    <li >
+                        过量<span class="line"></span>
+                    </li>
+                    <li >
+                        正常<span class="line"></span>
+                    </li>
+                    <li >
+                        不够<span class="line"></span>
+                    </li>
+                </ol>
+                <!--膳食宝塔-->
+                <ul class="classify">
+                    <li ng-repeat="item in pyramidList">
+                        <img class="food" ng-src="{{item.img}}">
+                        <span>{{item.classify}}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="from remind-text">
+                中国营养学会妇幼分会幼儿平衡膳食宝塔调整
+            </div>
+
+            <button ng-click="nutritionIndex()" class="button foot-btn">去做最强宝宝</button>
+
+        </ion-scroll>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,84 @@
+<ion-view view-title={{title0}}>
+    <ion-spinner ng-show="dataLoading" class="loadPic"></ion-spinner>
+    <div bdf-head="title"></div>
+    <ion-content class="memberService" style="top:44px;">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <div ng-if="extendMember=='true'">
+                <div class="myTop">
+                    <!--  周会员、月会员、季会员分不同情况显示-->
+                    <div ng-if="memberType=='week'">周会员 ￥50 / 周</div>
+                    <div ng-if="memberType=='month'">月会员 ￥150 / 月</div>
+                    <div ng-if="memberType=='quarter'">季会员 ￥168/ 季</div>
+                    <p>（包括以下服务及平台技术服务费）</p>
+                    <p>{{startDate}}—{{endDate}}</p>
+                    <span class="cir"></span>
+                </div>
+            </div>
+            <div ng-if="extendMember=='false'">
+                <div class="myTop">
+                    <div>月会员 ￥150 / 月</div>
+                    <p>（包括以下服务及平台技术服务费）</p>
+                    <p  ng-if="extendMember=='true'">{{startDate}}—{{endDate}}</p>
+                    <span class="cir"></span>
+                </div>
+            </div>
+            <dl style="margin-bottom: 20px">
+                <dt>资深儿科医生 随时线上咨询 为健康保驾护航</dt>
+                <dd><span class="cir"></span>我们的平台医生7x18小时在线，及时答复健康咨询</dd>
+                <dd><span class="cir"></span>服务专员按需为宝宝转诊</dd>
+                <dd><span class="cir"></span>平台医生跟踪院外病况，指导合理用药</dd>
+                <dt>专属个人档案 专家健康指导 让宝宝健康成长</dt>
+                <dd><span class="cir"></span>我们为宝宝建立专属健康档案</dd>
+                <dd><span class="cir"></span>提供个性化育儿保健知识和健康指导</dd>
+                <dt>享受特惠医院的特殊优惠</dt>
+                <dd><span class="cir"></span>可无限次预约特惠医院的医生</dd>
+                <dd><span class="cir"></span>更多优惠信息可进入特惠医院查看</dd>
+                <dd class="free-hospital" ng-if="extendMember!='showInfo'">
+                    <h3>特惠医院</h3>
+                    <p ng-repeat="item in hospitalData"
+                       ng-if="item.hospitalType=='2'"
+                       ui-sref="cooperationHospital({hospitalId:item.hospitalId})">
+                        {{item.hospitalName}} <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fright_detail.png" width="22" height="22">
+                    </p>
+                </dd>
+                <dd class="free-hospital" ng-if="extendMember=='showInfo'">
+                    <h3>特惠医院</h3>
+                    <p ng-repeat="item in hospitalData"
+                       ng-if="item.hospitalType=='2'">
+                        {{item.hospitalName}}
+                    </p>
+                </dd>
+            </dl>
+            <p class="remind" style="color:#88d9dd;" ng-if="extendMember == 'true'">
+                剩余免费预约次数{{leftTimes}}次（ {{endDate}} 前有效）
+            </p>
+            <!--  根据周会员、月会员、季会员分不同情况显示-->
+            <div style="margin-top:10px"></div>
+            <div  class="three-member" ng-if="extendMember=='true'">
+                <p  ng-if="memberType=='week'"><span>赠送：</span>免费预约名医门诊一次（1个月内有效）<br>需要到医院支付相应挂号费用</p>
+                <p  ng-if="memberType=='month'"><span>赠送：</span>免费预约名医门诊一次（1个月内有效）<br>需要到医院支付相应挂号费用</p>
+                <p  ng-if="memberType=='quarter'"><span>赠送：</span>免费预约名医门诊两次（3个月内有效）<br> 需要到医院支付相应挂号费用</p>
+            </div>
+            <div  class="three-member" ng-if="extendMember=='false'">
+                <p><span>赠送：</span>免费预约名医门诊一次（一个月内有效）<br>需要到医院支付相应挂号费用</p>
+            </div>
+
+            <p class="remind remind2" style="color:#fe717b">
+                <span>注：</span>非会员也可享受宝大夫健康咨询服务；如遇咨询量较大时，医生会优先回复宝大夫会员，尽请谅解。
+            </p>
+           <!-- 立即预约和立即购买分不同情况显示-->
+            <button class="button foot-btn" ng-if="extendMember=='false'" ng-click="buttonAction('charge')">
+                立即购买
+            </button>
+            <button class="button foot-btn"  ng-if="extendMember=='true'" ui-sref="appointmentFirst">
+                立即预约
+            </button>
+            <button class="button foot-btn"  ng-if="extendMember=='showInfo'" ng-click="buttonAction('IKnow')">
+                我知道了
+            </button>
+            <div class="look-memberService" ui-sref="myService">
+                查看已购买服务
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

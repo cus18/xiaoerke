@@ -1,0 +1,35 @@
+<ion-view view-title={{title0}} ng-init="doRefresh()" >
+	<div bdf-head="title"></div>
+	<ion-content class="healthRecordUpdateBaby" style="top:45px;">
+		<ion-scroll direction="y" has-bouncing="true">
+			<div class="baby-info">
+				<ul>
+					<li>
+						<span class="key">姓名：</span>
+						<input type="text"  ng-model='baby.name' >
+						<input type="hidden"  ng-model='baby.id' >
+					</li>
+					<li>
+						<span class="key">性别：</span>
+						<span class="sex">
+							<a ng-class="{'cur':boyLock}" ng-click="selectSex('boy')">男</a>
+							<a ng-class="{'cur':girlLock}" ng-click="selectSex('girl')">女</a>
+						</span>
+					</li>
+					<li>
+						<span class="key">出生日期：</span>
+						<input type="text" placeholder='选择宝宝出生日期' value="{{babyInfo.birthday | date: 'yyyy-MM-dd'}}" id="birthday" name="birthday" readonly="true"   >
+
+					</li>
+				</ul>
+			</div>
+			<div class="two-btn">
+				<button class="button foot-btn" ng-click="deleteBabyInfo()">删除</button>
+				<button class="button foot-btn" ng-click="saveBabyInfo()">保存</button>
+
+			</div>
+
+		</ion-scroll>
+	</ion-content>
+</ion-view>
+

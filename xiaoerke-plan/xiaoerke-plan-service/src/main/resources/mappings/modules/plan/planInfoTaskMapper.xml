@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.plan.dao.PlanInfoTaskDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.plan.entity.PlanInfoTask" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="plan_info_id" property="planInfoId" jdbcType="BIGINT" />
+    <result column="time_happen" property="timeHappen" jdbcType="TIME" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="remind_me" property="remindMe" jdbcType="CHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="notice" property="notice" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, plan_info_id, time_happen, type, remind_me, create_time, update_time, create_by, 
+    update_by, notice
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from plan_info_task
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByInfo" resultType="com.cxqm.xiaoerke.modules.plan.entity.PlanInfoTask" parameterType="com.cxqm.xiaoerke.modules.plan.entity.PlanInfoTask" >
+    select 
+    <include refid="Base_Column_List" />
+    from plan_info_task
+    where 1=1
+    <if test="type != null and type != ''">
+       and type=#{type}
+    </if>
+    <if test="planInfoId != null and planInfoId != ''">
+       and plan_info_id=#{planInfoId}
+    </if>
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from plan_info_task
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.plan.entity.PlanInfoTask" >
+    insert into plan_info_task (id, plan_info_id, time_happen, 
+      type, remind_me, create_time, 
+      update_time, create_by, update_by, 
+      notice)
+    values (#{id,jdbcType=BIGINT}, #{planInfoId,jdbcType=BIGINT}, #{timeHappen,jdbcType=TIME}, 
+      #{type,jdbcType=VARCHAR}, #{remindMe,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR}, 
+      #{notice,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="java.util.Map" >
+    insert into plan_info_task
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="planInfoId != null" >
+        plan_info_id,
+      </if>
+      <if test="timeHappen != null" >
+        time_happen,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="remindMe != null" >
+        remind_me,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="notice != null" >
+        notice,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="planInfoId != null" >
+        #{planInfoId,jdbcType=BIGINT},
+      </if>
+      <if test="timeHappen != null" >
+        #{timeHappen,jdbcType=TIME},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="remindMe != null" >
+        #{remindMe,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="notice != null" >
+        #{notice,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="java.util.Map" >
+    update plan_info_task
+    <set >
+      <if test="planInfoId != null" >
+        plan_info_id = #{planInfoId,jdbcType=BIGINT},
+      </if>
+      <if test="timeHappen != null" >
+        time_happen = #{timeHappen,jdbcType=TIME},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="remindMe != null" >
+        remind_me = #{remindMe,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="notice != null" >
+        notice = #{notice,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.plan.entity.PlanInfoTask" >
+    update plan_info_task
+    set plan_info_id = #{planInfoId,jdbcType=BIGINT},
+      time_happen = #{timeHappen,jdbcType=TIME},
+      type = #{type,jdbcType=VARCHAR},
+      remind_me = #{remindMe,jdbcType=CHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      notice = #{notice,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+    <select id="getPlanInfoTaskListByPlanInfoId" resultType="java.util.HashMap" >
+    SELECT
+		*
+	FROM
+		plan_info_task
+	WHERE
+		plan_info_id =#{planInfoId}
+  </select>
+</mapper>

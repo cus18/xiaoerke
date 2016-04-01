@@ -1,0 +1,381 @@
+var byList = [];
+
+//进入页面对日期插件以及微信支付进行初始化
+var doRefresh = function(){
+    //loadDate();//调用日期插件
+    var timestamp;//时间戳
+    var nonceStr;//随机字符串
+    var signature;//得到的签名
+    var appid;//得到的签名
+    $.ajax({
+        url:"ap/wechatInfo/getConfig",// 跳转到 action
+        async:true,
+        type:'get',
+        data:{url:location.href.split('#')[0]},//得到需要分享页面的url
+        cache:false,
+        dataType:'json',
+        success:function(data) {
+            if(data!=null ){
+                timestamp = data.timestamp;//得到时间戳
+                nonceStr = data.nonceStr;//得到随机字符串
+                signature = data.signature;//得到签名
+                appid = data.appid;//appid
+                //微信配置
+                wx.config({
+                    debug: false,
+                    appId: appid,
+                    timestamp:timestamp,
+                    nonceStr: nonceStr,
+                    signature: signature,
+                    jsApiList: [
+                        'chooseWXPay'
+                    ] // 功能列表
+                });
+                wx.ready(function () {
+                    // config信息验证后会执行ready方法，
+                    // 所有接口调用都必须在config接口获得结果之后，
+                    // config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，
+                    // 则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，
+                    // 则可以直接调用，不需要放在ready函数中。
+                })
+            }else{
+            }
+        },
+        error : function() {
+        }
+    });
+
+//获取医生个人信息
+    $.ajax({
+        url:"ap/consultPhone/consultPhoneDoctor/doctorDetail",// 跳转到 action
+        async:true,
+        type:'get',
+        data:{doctorId:"0084dbde22af4078bc9cc189f5b9a282"},
+        cache:false,
+        dataType:'json',
+        success:function(data) {
+            //console.log("data",data);
+            $('#doctorName').html(data.doctorName);
+            $('#position').html(data.position1+data.position2);
+            $('#hospitalName').html(data.hospitalName);
+            $('#department').html(data.doctor_expert_desc);
+            $('#ServerLength').html(data.ServerLength);
+            $('#price').html(data.price);
+        },
+        error : function() {
+        }
+    });
+
+
+    //预约时间
+    var param = {consultPhoneServiceId:2221};
+    $.ajax({
+        url:"ap/consultPhone/phoneRegister/getRegisterInfo",// 跳转到 action
+        async:true,
+        type:'post',
+        data:param,
+        success:function(data) {
+            //var time = moment(data.date).format('YYYY/MM/DD');
+            $('#time').html(moment(data.date).format('YYYY/MM/DD'));
+            $('#begintime').html(moment(data.date).format('h:mm'));
+            $('#endtime').html(moment(data.date).format('h:mm'));
+            //alert(time);
+        },
+        error : function() {
+        }
+    });
+
+    //获取宝宝信息
+
+        $.ajax({
+            type: 'POST',
+            url: "/xiaoerke-appoint/ap/healthRecord/getBabyinfoList",
+            data: "{'openid':''}",
+            contentType: "application/json; charset=utf-8",
+            success: function(result){
+                console.log(result)
+                babyInfo=result.babyInfoList;
+                var userPhone=result.userPhone;
+                $('#connectphone').val(userPhone);
+                var option="";
+                if(babyInfo==""){
+                    $("#addBaby").hide();
+                    loadDate();
+                    return;
+                }else{
+                    $("#babyName").attr("disabled","disabled");
+                    $(".sex a").removeAttr("onclick");
+                }
+                for(var i=0;i<babyInfo.length;i++){
+                    option+="<dd class=\"select\" onclick=\"selectedBaby("+i+")\" ><span >"+babyInfo[i].name+"</span></dd>";
+                }
+                $("#selectBabyTitle").after(option);
+                var babyId=GetQueryString("babyId");
+                if(babyId!=null&&babyId!=""){
+                    for(var j=0;j<babyInfo.length;j++){
+                        var bid=babyInfo[j].id;
+                        if(bid==babyId){
+                            selectedBaby(j);
+                        }
+                    }
+                }else{
+                    selectedBaby(0);
+                }
+            },
+            dataType: "json"
+        });
+
+
+    function selectedBaby(index){
+        var baby=babyInfo[index];
+        $("#babyName").val(baby.name);
+        $("#birthday").val(new Date(baby.birthday).Format("yyyy-MM-dd"));
+        var sex=baby.sex;
+        if(sex=="1"){
+            selectSex('boy');
+        }else {
+            selectSex('girl');
+        }
+        $(".sex a").removeAttr("onclick");
+        $("#babyId").val(baby.id);
+        $(".baby-list").hide();
+    }
+
+
+    //$.ajax({
+    //    url:"/xiaoerke-appoint/ap/healthRecord/getBabyinfoList",// 跳转到 action
+    //    async:true,
+    //    type:'post',
+    //    data:"{'openid':''}",
+    //    contentType: "application/json; charset=utf-8",
+    //    cache:false,
+    //    dataType:'json',
+    //    success:function(data) {
+    //        //console.log("获取宝宝信息",data);
+    //        $('#connectphone').val(data.userPhone);
+    //        byList = data.babyInfoList;
+    //        var babyList = "";
+    //        $.each(a,function(index1,value1){
+    //            babyList = babyList+'<dd onclick="choiceBaby('+index1+')">'+'<span>'+value1.name+'</span>'+'</dd>';
+    //        });
+    //        $('#selBaby').html(babyList);
+    //    },
+    //    error : function() {
+    //    }
+    //});
+
+
+
+
+    //检测当前页面是否绑定
+    //var param = '{routePath:"/phoneConsultPay/patientPay.do?phoneConDoctorDetail="3123"}';
+    //$.ajax({
+    //    type: "POST",
+    //    url: "ap/info/loginStatus",
+    //    contentType: 'application/json',
+    //    data: param,
+    //    success: function (data) {
+    //        if(data.status=="9"){
+    //            window.location.href = data.redirectURL;
+    //        }else if(data.status=="8"){
+    //            window.location.href = data.redirectURL;
+    //        }
+    //    }
+    //})
+
+
+
+    //var paramValue = '{routePath:"/phoneConsultPay/patientPay.do?phoneConDoctorDetail="3123"}';
+    //$.ajaxSetup({
+    //    contentType : 'application/json',
+    //});
+    //$.post('ap/info/loginStatus',paramValue,
+    //    function(data) {
+    //        if(data.status=="9"){
+    //            window.location.href = data.redirectURL;
+    //        }else if(data.status=="8"){
+    //            window.location.href = data.redirectURL;
+    //        }
+    //    })
+
+
+
+
+
+
+    //生产订单
+    /*$.ajax({
+        url:"ap/consulPhone/consultOrder/createOrder",// 跳转到 action
+        async:true,
+        type:'post',
+        data:{babyId:"1",babyName:"2",phoneNum:"3",illnessDesc:"4",sysConsultPhoneId:"5",birthDay:"6"},
+        contentType: "application/json; charset=utf-8",
+        cache:false,
+        dataType:'json',
+        success:function(data) {
+            console.log("生产订单",data);
+        },
+        error : function() {
+        }
+    });*/
+}
+
+//  日期插件
+function loadDate(){
+    var date = new Date(+new Date()+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'');
+    $("#birthday").mobiscroll().date();
+    //初始化日期控件
+    var opt = {
+        preset: 'date', //日期，可选：date\datetime\time\tree_list\image_text\select
+        theme: 'default', //皮肤样式，可选：default\android\android-ics light\android-ics\ios\jqm\sense-ui\wp light\wp
+        display: 'modal', //显示方式 ，可选：modal\inline\bubble\top\bottom
+        mode: 'scroller', //日期选择模式，可选：scroller\clickpick\mixed
+        lang:'zh',
+        dateFormat: 'yyyy-mm-dd', // 日期格式
+        setText: '确定', //确认按钮名称
+        cancelText: '取消',//取消按钮名籍我
+        dateOrder: 'yyyymmdd', //面板中日期排列格式
+        dayText: '日', monthText: '月', yearText: '年', //面板中年月日文字
+        showNow: false,
+        nowText: "今",
+        // startYear:1980, //开始年份
+        // endYear:currYear //结束年份
+        minDate: new Date(1980,0,1),
+        maxDate: new Date(date.substring(0,4), date.substring(5,7)-1, date.substring(8,10)),
+        onSelect: function (valueText) {
+            //console.log("value",valueText);
+            bodBirthday = valueText;
+        },
+        onCancel: function () {
+        }
+    };
+    $("#birthday").mobiscroll(opt);
+}
+// 点击选择宝宝按钮
+var selectBaby=function(){
+    $(".baby-list").show();
+}
+// 从宝宝列表中选择宝宝
+var choiceBaby=function(index){
+    $(".baby-list").hide();
+    $('#connectname').val(byList[index].name);
+    $("#birthday").val(byList[index].birthday);
+}
+// 添加宝宝
+var addBaby=function(){
+    window.location.href = "ap/phoneConsult#/phoneConAddBaby";
+}
+// 取消选择宝宝
+var cancelSelectBaby=function(){
+    $(".baby-list").hide();
+}
+// 点击已阅读
+var readLock=true;
+var read = function(){
+    if(readLock){
+        $("#readLock").show();
+        readLock =false;
+    } else{
+        $("#readLock").hide();
+        readLock = true;
+    }
+};
+//监听 病情描述的长度
+var caseLength=function(){
+    $('#case').bind('input propertychange',function(){
+        $(".case a").html($('#case').val().length+"/200")
+    })
+}
+
+/****
+   以下是以前支付代码
+*****/
+
+
+// 订单单价,账户余额,订单id,微信需支付
+var chargePrice,patient_register_service_id,needPayMoney;
+
+//页面初始化执行,用户初始化页面参数信息以及微信的支付接口
+var bodBirthday = "";
+
+var pay = function(){
+    console.log("Dd",$('#connectphone').val()+$('#connectname').val()+bodBirthday+$('#case').val());
+    if($('#connectphone').val()==""||$('#connectphone').val()==undefined||
+        $('#babyName').val()==""||$('#babyName').val()==undefined||
+        bodBirthday==""||bodBirthday==undefined
+    ){
+      alert("信息不能为空");
+    }else if($('#case').val().length<10){
+      alert("病情不能少于10个字！");
+    }else{
+        //wxPay();
+        alert("可以预约了");
+        window.location.href="ap/phoneConsult#/phoneConPaySuccess/,"
+    }
+
+
+}
+
+var wxPay = function () {
+    $('#payButton').attr('disabled',"true");//添加disabled属性
+    $.ajax({
+        url:"ap/account/user/userPay",// 跳转到 action
+        async:true,
+        type:'get',
+        data:{patientRegisterId:patient_register_service_id,payPrice:needPayMoney*100},
+        cache:false,
+        success:function(data) {
+            $('#payButton').removeAttr("disabled");
+            var obj = eval('(' + data + ')');
+            if(parseInt(obj.agent)<5){
+                alert("您的微信版本低于5.0无法使用微信支付");
+                return;
+            }
+            if(obj.false == 'false'){
+                if(obj.agent == "6"){
+                    alert("支付失败,请重新支付");
+                }else if(obj.agent == "7"){
+                    alert("该订单已支付,请到我的预约中进行查看");
+                }
+                return;
+            }
+            wx.chooseWXPay({
+                appId:obj.appId,
+                timestamp:obj.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                nonceStr:obj.nonceStr,  // 支付签名随机串，不长于 32 位
+                package:obj.package,// 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+                signType:obj.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                paySign:obj.paySign,  // 支付签名
+                success: function (res) {
+                    if(res.errMsg == "chooseWXPay:ok" ) {
+                        window.location.href = "ap/appoint#/memberServiceSuccess/"+patient_register_service_id;
+                    }else{
+                        alert("支付失败,请重新支付")
+                    }
+                },
+                fail: function (res) {
+                    alert(res.errMsg)
+                }
+            });
+        },
+        error : function() {
+        }
+    });
+}
+
+var getCookie = function(name)
+{
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+    if(arr=document.cookie.match(reg))
+        return unescape(arr[2]);
+    else
+        return null;
+}
+
+var GetQueryString = function(name)
+{
+    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if(r!=null)return  unescape(r[2]); return null;
+}
+

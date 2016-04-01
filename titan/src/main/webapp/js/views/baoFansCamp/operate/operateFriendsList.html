@@ -1,0 +1,51 @@
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<div class="layer" ng-click="know()" ng-if="lock=='true'"></div>
+<div class="share-friend" ng-if="lock=='true'">
+    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fremind_share_arrow.png" width="31" height="50.5">
+    <p>
+        <span>点击右上角</span><br>
+        分享到朋友圈或发送给朋友
+    </p>
+    <button ng-click="know()">我知道了</button>
+</div>
+
+<ion-view view-title="宝大夫" ng-init="doRefresh()">
+    <ion-content class="operateFriendsList" overflow-scroll="true" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true" >
+
+            <div class="banner">
+                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/operate%2Fope_banner.png" width="100%" height="132.5">
+                <span>活动时间：2015.11.19-2015.12.04</span>
+            </div>
+            <!--好友数大于0时-->
+            <dl class="friendList friendList-have" ng-if="NoNum=='true'">
+               <dt>
+                   <span class="fl">已加入的好友</span>
+                   <span class="fr">共<a>{{shareNum}}</a>人</span>
+               </dt>
+                <dd ng-repeat="item in userList | orderBy:'time':true">
+                    <img ng-src="{{item.headImage}}" width="42.5" height="42.5">
+
+                    <div>
+                        <span class="name">{{item.name}}</span>
+                        <span class="date ">{{item.time}}</span>
+                        <!--<span class="time" ></span>-->
+                    </div>
+                </dd>
+            </dl>
+            <!-- 好友数为零时-->
+            <dl class="friendList friendList-no" ng-if="NoNum=='false'">
+                <dt>
+                    <span class="fl">已加入的好友</span>
+                    <span class="fr">共<a>{{shareNum}}</a>人</span>
+                </dt>
+                <dd>
+                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/operate%2Fope_nofriend.png" width="135.5" height="134.5"><br>
+                    很遗憾，您还没有好友加入，赶快邀请吧~
+                </dd>
+            </dl>
+        </ion-scroll>
+    </ion-content>
+    <button ng-if="NoNum=='true'" class="bottom-button"  ng-click="share()">推荐给好友</button>
+    <button ng-if="NoNum=='false'" class="bottom-button bottom-button1" ng-click="share()">推荐给好友</button>
+</ion-view>

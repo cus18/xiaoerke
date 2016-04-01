@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.cxqm</groupId>
+    <artifactId>xiaoerke-healthRecords</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>xiaoerke-healthRecords-service</artifactId>
+  <name>xiaoerke-healthRecords-service</name>
+  <description>xiaoerke-healthRecords-service</description>
+  
+  <dependencies>
+       <dependency>
+           <groupId>com.cxqm</groupId> 
+           <artifactId>xiaoerke-healthRecords-api</artifactId>
+           <version>0.0.1-SNAPSHOT</version>
+       </dependency>
+      <dependency>
+          <groupId>com.cxqm</groupId>
+          <artifactId>xiaoerke-consult-api</artifactId>
+          <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+  </dependencies>
+</project>

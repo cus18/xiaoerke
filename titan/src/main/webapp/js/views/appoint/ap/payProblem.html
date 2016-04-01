@@ -1,0 +1,37 @@
+<ion-view view-title={{title0}} >
+    <div bdf-head="title"></div>
+    <div class="submit-success" ng-if="submitLock">
+        提交成功
+    </div>
+    <ion-content class="payProblem">
+        <ion-scroll direction="y" has-bouncing="true" style="">
+            <div class="noPayReason">
+                <p class="p1">如需帮助请帮拨打客服电话：400-623-7120</p>
+                <h4>为改进服务，请告知我们您遇到的困难和建议：</h4>
+                <ul class="list">
+                    <li class="item item-borderless" ng-repeat="item in payList">
+                        <ion-checkbox  ng-model="item.checked" ng-checked="item.checked" class="item-borderless">
+                            {{ item.text }}
+                        </ion-checkbox>
+                        <div ng-if="($index=='1')&&(item.checked)" class="item-content item-borderless"  style="padding:0;" >
+                            <textarea  id="reason2"   placeholder="请填写方便的支付方式" ng-model="item.reason" maxlength="50"  onfocus="skip()">
+                            </textarea>
+                        </div>
+                        <div ng-if="($index=='3')&&(item.checked)" class="item-content item-borderless"  style="padding:0;" >
+                           <textarea  id="reason4"   placeholder="请填写建议价格" ng-model="item.reason" maxlength="50"  onfocus="skip()">
+                            </textarea>
+                        </div>
+                        <div ng-if="($index=='4')&&(item.checked)"  class="item-content item-borderless"  style="padding:0;">
+                            <textarea   id="reason5"   placeholder="请填写意见或建议" ng-model="item.reason" maxlength="50"  onfocus="skip()">
+                            </textarea>
+                        </div>
+                    </li>
+                </ul>
+                <p class="p2">感谢您的意见和建议，我们将会继续完善服务</p>
+                <button class="button foot-btn" ng-click="payAdvise()" ng-disabled="!payList[0].checked&&!payList[1].checked&&!payList[2].checked&&!payList[3].checked&&!payList[4].checked  ">
+                    提交
+                </button>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

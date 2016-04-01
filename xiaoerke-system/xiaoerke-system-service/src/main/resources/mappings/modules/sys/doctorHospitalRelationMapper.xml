@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxqm.xiaoerke.modules.sys.dao.DoctorHospitalRelationDao">
+    <resultMap id="DoctorVoMap" type="HashMap">
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+        <result column="sys_hospital_id" property="sysHospitalId" jdbcType="VARCHAR" />
+        <result column="hospital" property="hospital" jdbcType="VARCHAR" />
+        <result column="career_time" property="careerTime" jdbcType="TIMESTAMP" />
+        <result column="personal_details" property="personDetails" jdbcType="VARCHAR" />
+        <result column="position1" property="position1" jdbcType="VARCHAR" />
+        <result column="position2" property="position2" jdbcType="VARCHAR" />
+        <result column="comment_number" property="commentNumber" jdbcType="INTEGER" />
+        <result column="fans_number" property="fansNumber" jdbcType="INTEGER" />
+        <result column="availableDate" property="availableDate" jdbcType="TIMESTAMP" />
+        <result column="doctorName" property="doctorName" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="doctorDataVo" type="com.cxqm.xiaoerke.modules.sys.entity.DoctorDataVo"
+               extends="DoctorVoMap">
+        <result column="availableDate" property="availableDate" jdbcType="TIMESTAMP" />
+        <result column="doctorName" property="doctorName" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="findPageAllDoctorByHospital" resultMap="DoctorVoMap"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        select dr_hos.*,dr_ser.date availableDate,dr_ser.hospitalName as ascriptionHospitalName from
+        (SELECT dr.id,dr.sys_user_id,dr.hospitalName AS hospital,dr.career_time,dr.position1,dr.position2,
+        dr.fans_number,dr.personal_details,dr.experince,dr.card_experince,dr.img_url,
+        dr.name doctorName,dr_hos_rel.sys_hospital_id, dr_hos_rel.department_level1, dr_hos_rel.department_level2 FROM
+        sys_doctor as dr,
+        sys_hospital as hos, doctor_hospital_relation as dr_hos_rel
+        where dr_hos_rel.sys_doctor_id = dr.id
+        and hos.id = dr_hos_rel.sys_hospital_id and dr.is_display = 'display' and hos.id=#{sysHospitalId}
+        <if test="department_level1 != null">
+            and dr_hos_rel.department_level1=#{department_level1}
+        </if>
+        ) dr_hos
+        LEFT JOIN
+        (select sd.hospitalName,srs.sys_doctor_id, min(srs.date) date ,srs.sys_hospital_id,
+        min(CONCAT(srs.date, ' ', srs.begin_time)) as latest_time
+        from sys_register_service srs
+        left join doctor_hospital_relation dhr on srs.sys_doctor_id = dhr.sys_doctor_id
+        left join sys_doctor sd on sd.id = dhr.sys_doctor_id
+        where ( srs.date > CURDATE() OR (srs.date = CURDATE() and srs.begin_time >= CURTIME()) )
+        and srs.status=0
+
+        GROUP BY srs.sys_doctor_id having latest_time = min(CONCAT(srs.date, ' ', srs.begin_time)) ) as dr_ser
+        on dr_ser.sys_doctor_id = dr_hos.id
+        <if test="orderBy==0">
+            order by dr_ser.latest_time is null,UNIX_TIMESTAMP(dr_ser.latest_time), id ASC
+        </if>
+        <if test="orderBy==1">
+            ORDER BY dr_hos.fans_number DESC ,dr_hos.fans_number IS null, id
+        </if>
+        <if test="orderBy==2">
+            ORDER BY career_time , id asc
+        </if>
+    </select>
+    
+    <select id="findPageAllDoctorByDoctorIds" resultMap="DoctorVoMap"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        select dr_hos.*,dr_ser.date availableDate from
+        (SELECT dr.id,dr.sys_user_id,dr.hospitalName AS hospital,dr.career_time,dr.position1,dr.position2,
+        dr.fans_number,dr.personal_details,dr.experince,dr.card_experince,dr.img_url,
+        dr.name doctorName,  dr_hos_rel.sys_hospital_id, dr_hos_rel.relation_type FROM
+        sys_doctor as dr, sys_hospital as hos, doctor_hospital_relation as dr_hos_rel
+        where dr_hos_rel.sys_doctor_id = dr.id
+        and hos.id = dr_hos_rel.sys_hospital_id and dr_hos_rel.relation_type = '1' 
+        <if test="hospitalId != null">
+            and hos.id=#{hospitalId}
+        </if>
+		<if test="doctorIds != null and doctorIds.length>0">
+            and dr.id in
+            <foreach item="item" index="index" collection="doctorIds" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        ) dr_hos
+        LEFT JOIN
+        (select sys_doctor_id, min(date) date ,sys_hospital_id,
+        min(CONCAT(date, ' ', begin_time)) as latest_time
+        from sys_register_service
+        where status=0
+        and (DATE_FORMAT(CONCAT(DATE_FORMAT(date,'%Y:%c:%d'),DATE_FORMAT(begin_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>NOW()
+        GROUP BY sys_doctor_id having latest_time = min(CONCAT(date, ' ', begin_time)) ) as dr_ser
+        on dr_ser.sys_doctor_id = dr_hos.id
+        <if test="orderBy==0">
+            order by dr_ser.latest_time is null,UNIX_TIMESTAMP(dr_ser.latest_time), id ASC
+        </if>
+        <if test="orderBy==1">
+            ORDER BY dr_hos.fans_number DESC ,dr_hos.fans_number IS null, id
+        </if>
+        <if test="orderBy==2">
+            ORDER BY career_time, id asc
+        </if>
+    </select>
+
+    <select id="getDepartmentName" resultType="java.util.HashMap">
+        select * from doctor_hospital_relation
+        WHERE
+        sys_doctor_id=#{doctorId}
+        <if test="hospitalId != null">
+            AND sys_hospital_id=#{hospitalId}
+        </if>
+    </select>
+
+    <select id="getDoctorHospitalRelationVo" resultType="com.cxqm.xiaoerke.modules.sys.entity.DoctorHospitalRelationVo">
+        select * from doctor_hospital_relation
+        WHERE sys_doctor_id=#{doctorId}
+        <if test="relationType != null">
+            AND relation_type=#{relationType}
+        </if>
+    </select>
+
+    <!--插入关系表数据-->
+    <insert id="insertDoctorAndHospitalRelation">
+        INSERT INTO doctor_hospital_relation(id,sys_doctor_id,sys_hospital_id,place_detail,relation_type,department_level1,department_level2,contact_person,contact_person_phone)
+        VALUES (#{id},#{sys_doctor_id},#{hospitalId},#{place_detail},#{relation_type},#{department_level1},#{department_level2},#{contact_person},#{contact_person_phone});
+    </insert>
+
+
+    <!--=============================================以下部分属于运维系统=================================================-->
+    <!--查询当前医生与当前医院的关联信息-->
+    <select id="findDoctorHospitalRelation" resultType="com.cxqm.xiaoerke.modules.sys.entity.DoctorHospitalRelationVo">
+        select sd.id AS doctorId,dhr.id,dhr.sys_doctor_id as sysDoctorId,dhr.sys_hospital_id as sysHospitalId ,dhr.place_detail as placeDetail,sh.name as hospitalName,
+        dhr.relation_type as relationType,dhr.department_level1 as departmentLevel1,dhr.department_level2 as departmentLevel2,
+        dhr.contact_person as contactPerson,dhr.contact_person_phone as contactPersonPhone ,su.name AS doctorName
+        from doctor_hospital_relation dhr
+        INNER JOIN sys_hospital sh on sh.id= dhr.sys_hospital_id
+        INNER JOIN sys_doctor sd on sd.id = dhr.sys_doctor_id
+        INNER JOIN sys_user su on su.id = sd.sys_user_id
+        WHERE 1=1
+        <if test="doctorId != null">
+             and sys_doctor_id=#{doctorId}
+        </if>
+        <if test="hospitalId != null">
+            and sys_hospital_id=#{hospitalId}
+        </if>
+        <if test="id != null">
+            and dhr.id=#{id}
+        </if>
+    </select>
+
+    <!--“当前医生与当前医院的关联信息”修改后保存操作-->
+    <update id="saveDoctorHospitalRelation">
+        UPDATE doctor_hospital_relation dhr SET dhr.place_detail=#{placeDetail},dhr.relation_type=#{relationType},
+        dhr.department_level1=#{departmentLevel1},dhr.department_level2=#{departmentLevel2},dhr.contact_person=#{contactPerson},
+        dhr.contact_person_phone=#{contactPersonPhone}
+        where id=#{id}
+    </update>
+
+
+    <!--删除医生与医院的关联关系-->
+    <delete id="deleteDoctorHospitalRelation"  >
+        DELETE FROM doctor_hospital_relation where 1=1
+        <if test="id != null">
+            and id=#{id}
+        </if>
+        <if test="sysHospitalId != null">
+            and sys_hospital_id=#{sysHospitalId}
+        </if>
+        <if test="sysDoctorId != null">
+            and sys_doctor_id=#{sysDoctorId}
+        </if>
+    </delete>
+
+</mapper>

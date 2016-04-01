@@ -1,0 +1,78 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="上传图片" ng-init="doRefresh()">
+    <ion-content class="antiDogUpload" style="top:0;" on-swipe-up="onSwipeUp()" >
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="title">
+                <div class="text">
+                    请上传以下图片
+                </div>
+            </div>
+            <div class="info">
+                <div class="upload-wrap">
+                    <h3>北京地区医疗机构就诊票据</h3>
+                    <div class="pic">
+                        <div class="example" ng-click="previewPic(1)">
+                            <img data-tap-disabled="true" width="90" height="90" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Fhospital_bill1.png">
+                            <a>查看示例</a>
+                        </div>
+                        <img class="arrow-two" width="28" height="27.5" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Farrow_two.png">
+                        <div class="upload">
+                            <img class="" width="36" height="36" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Fpic_add.png">
+                        </div>
+                    </div>
+                </div>
+                <ion-item class="user-pic">
+                    <ul >
+                        <li>
+                            <img data-tap-disabled="true" class="" width="60" height="60" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Fhospital_bill2.png">
+                            <img class="delete" width="20" height="20" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fclose.png">
+                        </li>
+                        <li>
+                            <img data-tap-disabled="true" class="" width="60" height="60" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Fhospital_bill2.png">
+                            <img class="delete" width="20" height="20" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fclose.png">
+                        </li>
+                        <li>
+                            <img data-tap-disabled="true" class="" width="60" height="60" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Fhospital_bill2.png">
+                            <img class="delete" width="20" height="20" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fclose.png">
+                        </li>
+                        <li>
+                            <img data-tap-disabled="true" class="" width="60" height="60" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Fhospital_bill2.png">
+                            <img class="delete" width="20" height="20" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fclose.png">
+                        </li>
+
+                    </ul>
+                </ion-item>
+            </div>
+            <div class="info">
+                <div class="upload-wrap">
+                    <h3>清晰的购买人的身份证照片</h3>
+                    <div class="pic">
+                        <div class="example" ng-click="previewPic(2)">
+                            <img data-tap-disabled="true" width="90" height="90" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2FIDCard1.png">
+                            <a>查看示例</a>
+                        </div>
+                        <img class="arrow-two" width="28" height="27.5" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Farrow_two.png">
+                        <div class="upload">
+                            <img class="" width="36" height="36" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Fpic_add.png">
+                        </div>
+                    </div>
+                </div>
+                <ion-item class="user-pic">
+                    <ul >
+                        <li>
+                            <img data-tap-disabled="true" class="" width="60" height="60" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2FIDCard2.png">
+                            <img class="delete" width="20" height="20" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fclose.png">
+                        </li>
+                        <li>
+                            <img data-tap-disabled="true" class="" width="60" height="60" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2FIDCard2.png">
+                            <img class="delete" width="20" height="20" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fclose.png">
+                        </li>
+
+                    </ul>
+                </ion-item>
+            </div>
+            <br><br><br><br><br>
+        </ion-scroll>
+    </ion-content>
+    <div class="button btn-bottom " style="background-color: #88d9dd;">立即申请</div>
+</ion-view>

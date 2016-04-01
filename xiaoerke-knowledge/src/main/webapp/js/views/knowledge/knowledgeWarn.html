@@ -1,0 +1,38 @@
+<link rel="stylesheet" href="styles/knowledge/knowledgeWarn.less?ver='0.9'" type="text/css" />
+<!--<ion-spinner ng-show="pageLoading" icon="bubbles" class="loadPic"></ion-spinner>-->
+<ion-view view-title="郑玉巧育儿经">
+    <ion-content class="knowledgeWarn" overflow-scroll="true" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <ion-slide-box active-slide="myActiveSlide" >
+                <ion-slide>
+                    <div class="box box1">
+                        <h3>
+                            今日提醒
+                            <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fwarn_star.png" width="15" height="15" class="img-l">
+                            <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fwarn_star.png" width="15" height="15" class="img-r">
+                        </h3>
+                        <p >
+                            {{dailytodayTip}}
+                        </p>
+                        <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fwarn_bg.png" width="100%" height="30.5" class="warn-bg">
+                    </div>
+
+                </ion-slide>
+                <ion-slide>
+                    <div class="box box2">
+                        <h3>
+                            亲子游戏
+                            <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fwarn_star.png" width="15" height="15" class="img-l">
+                            <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fwarn_star.png" width="15" height="15" class="img-r">
+                        </h3>
+                        <p>
+                            {{dailyRemind_game}}
+                        </p>
+                        <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fwarn_bg.png" width="100%" height="30.5" class="warn-bg">
+                    </div>
+                </ion-slide>
+            </ion-slide-box>
+        </ion-scroll>
+    </ion-content>
+
+</ion-view>

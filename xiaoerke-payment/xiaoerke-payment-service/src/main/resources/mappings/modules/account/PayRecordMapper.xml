@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.account.dao.PayRecordDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.account.entity.PayRecord" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="REAL" />
+    <result column="pay_type" property="payType" jdbcType="VARCHAR" />
+    <result column="fee_type" property="feeType" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="pay_date" property="payDate" jdbcType="TIMESTAMP" />
+    <result column="receive_date" property="receiveDate" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="doctor_id" property="doctorId" jdbcType="VARCHAR" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="operate_type" property="operateType" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="reason" property="reason" jdbcType="VARCHAR" />
+    <result column="memberservicerel_itemservicerel_relation_id" property="memberservicerel_itemservicerel_relation_id" jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, user_id,memberservicerel_itemservicerel_relation_id, order_id, amount, pay_type, status,
+    pay_date, receive_date, created_by,doctor_id,operate_type,open_id,fee_type,reason
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from account_pay_record
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from account_pay_record
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.account.entity.PayRecord" >
+    insert into account_pay_record (id, user_id, memberservicerel_itemservicerel_relation_id,order_id,
+    amount, pay_type, status,
+    pay_date, receive_date, created_by,doctor_id,open_id,reason)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},#{memberservicerel_itemservicerel_relation_id,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR},
+    #{amount,jdbcType=REAL}, #{payType,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
+    #{payDate,jdbcType=TIMESTAMP}, #{receiveDate,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR},
+    #{doctorId,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR},#{reason,jdbcType=VARCHAR}
+    )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.account.entity.PayRecord" >
+    insert into account_pay_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="memberservicerel_itemservicerel_relation_id != null" >
+        memberservicerel_itemservicerel_relation_id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="payType != null" >
+        pay_type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="payDate != null" >
+        pay_date,
+      </if>
+      <if test="receiveDate != null" >
+        receive_date,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="doctorId != null" >
+        doctor_id,
+      </if>
+      <if test="openId != null" >
+        open_id,
+      </if>
+      <if test="reason != null" >
+        reason,
+      </if>
+		<if test="feeType != null" >
+        fee_type,
+      </if>
+		
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="memberservicerel_itemservicerel_relation_id != null" >
+        #{memberservicerel_itemservicerel_relation_id,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=REAL},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="payDate != null" >
+        #{payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receiveDate != null" >
+        #{receiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorId != null" >
+        #{doctorId,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null" >
+        #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="feeType != null" >
+        #{feeType,jdbcType=VARCHAR},
+      </if>
+
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.account.entity.PayRecord" >
+    update account_pay_record
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="memberservicerel_itemservicerel_relation_id != null" >
+        memberservicerel_itemservicerel_relation_id = #{memberservicerel_itemservicerel_relation_id,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=REAL},
+      </if>
+      <if test="payType != null" >
+        pay_type = #{payType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="payDate != null" >
+        pay_date = #{payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receiveDate != null" >
+        receive_date = #{receiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null" >
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
+
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.account.entity.PayRecord" >
+    update account_pay_record
+    set user_id = #{userId,jdbcType=VARCHAR},
+    memberservicerel_itemservicerel_relation_id = #{memberservicerel_itemservicerel_relation_id},
+    order_id = #{orderId,jdbcType=VARCHAR},
+    amount = #{amount,jdbcType=REAL},
+    pay_type = #{payType,jdbcType=VARCHAR},
+    status = #{status,jdbcType=VARCHAR},
+    pay_date = #{payDate,jdbcType=TIMESTAMP},
+    receive_date = #{receiveDate,jdbcType=TIMESTAMP},
+    created_by = #{createdBy,jdbcType=VARCHAR},
+    doctor_id = #{doctorId,jdbcType=VARCHAR},
+    opne_id = #{openId,jdbcType=VARCHAR},
+    reason = #{reason,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectPayRecordByUserId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    apr.amount,  apr.status, apr.pay_date, apr.receive_date, apr.operate_type,sd.name,apr.pay_type
+    from account_pay_record apr
+    left JOIN sys_doctor sd on  apr.doctor_id = sd.id
+    where apr.user_id = #{orderId,jdbcType=VARCHAR} and apr.status !='wait'
+  </select>
+
+  <select id="selectSuccessOrderByOrderId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    id, user_id, order_id,sum(amount) as amount , pay_type, status,
+    pay_date, receive_date, created_by,doctor_id,operate_type,open_id,fee_type
+    from account_pay_record
+    where order_id = #{orderId,jdbcType=VARCHAR} and status ='success'
+  </select>
+
+  <select id="selectNewestOrderByOrderId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    id, user_id, order_id,sum(amount) as amount , pay_type, status, pay_date, receive_date,
+    created_by,doctor_id,operate_type,open_id,fee_type
+    from account_pay_record
+    where order_id = #{orderId,jdbcType=VARCHAR}
+    and pay_date = (select MAX(pay_date) from account_pay_record where order_id=#{orderId,jdbcType=VARCHAR} )
+  </select>
+
+  <select id="selectByOrder" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    id, user_id, order_id,sum(amount) as amount , pay_type, status, pay_date, receive_date, created_by,doctor_id,operate_type,open_id,fee_type
+    from account_pay_record
+    where order_id = #{orderId,jdbcType=VARCHAR} and status ='success'
+  </select>
+
+
+  <update id="updateByOrderId" parameterType="com.cxqm.xiaoerke.modules.account.entity.PayRecord" >
+    update account_pay_record
+    set memberservicerel_itemservicerel_relation_id=#{memberservicerel_itemservicerel_relation_id}
+    <if test="status != null" >
+      ,status = #{status}
+    </if>
+    where order_id=#{orderId}
+  </update>
+
+
+
+</mapper>

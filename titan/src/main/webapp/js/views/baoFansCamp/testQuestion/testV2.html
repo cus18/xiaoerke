@@ -1,0 +1,132 @@
+<ion-view view-title={{title0}} ng-init="doRefresh()">
+	<ion-spinner ng-show="dataLoading" class="loadPic"></ion-spinner>
+	<ion-content class="testV2 first"   ng-if="first" >
+		<ion-scroll direction="y" has-bouncing="true" >
+			<div ng-if="first">
+				<div class="banner">
+                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/testV2%2Ftest_v2_banner1.png" width="100%" height="auto" style="display: block;"/>
+                    <p>最具安全感的</p>
+                    <p>育儿健康服务平台</p>
+                </div>
+				<div class="main">
+					<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/testV2%2Ftest_v2_remindWord.png" width="300.5" height="61"class="" />
+					<p style="" class="slogan">
+						懂营养学的妈妈能够把握宝宝营养平衡的法则，<br>
+                        合理喂养，使宝宝健康成长。	<br>
+						下面的小测试，是关于婴儿营养的，懂营养的好妈妈，<br>
+                        快来试试看吧！ <br>
+                    </p>
+
+					<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/testV2%2Ftest_hand1.gif" width="25" height="14" >
+					<button ng-click="begin()" class="start">开始测试</button>
+					<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/testV2%2Ftest_hand2.gif" width="25" height="14" >
+
+				</div>
+			</div>
+
+		</ion-scroll>
+	</ion-content>
+	<div class="s-shadow" ng-if="userAnswerRight || userAnswerWrong " ng-click="cancel()">
+	</div>
+	<div class="next" ng-if="userAnswerRight || userAnswerWrong ">
+		<div ng-if="userAnswerRight">
+			<h4>
+				回答正确
+				<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/testV2%2Ftest_back.png" width="25" height="25" class="back" ng-click="cancel()">
+			</h4>
+			<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/testV2%2Ftest_answer_y.png" width="87.5" height="87.5" >
+			<p>恭喜你，答对了！ </p>
+		</div>
+		<div ng-if="userAnswerWrong">
+            <h4>
+				回答错误
+				<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/testV2%2Ftest_back.png" width="25" height="25" class="back"  ng-click="cancel()">
+			</h4>
+            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/testV2%2Ftest_answer_n.png" width="87.5" height="87.5" >
+            <p>要加强学习啊，正确答案是：{{ inits[questionNum].result}}</p>
+		</div>
+
+	</div>
+	<div class="next">
+
+	</div>
+	<ion-content class="testV2 ques"  ng-if="!first">
+		<ion-scroll direction="y" has-bouncing="true" >
+            <div class="list" style="">
+                <img ng-src={{imgs[questionNum].img}} width="100%" height="auto"/>
+                <div class="question">
+                    <div class="question-num">
+                        <span class="q-num">{{inits[questionNum].num}}</span>
+                        <h3 style="text-align: left;">{{inits[questionNum].title}}</h3>
+                    </div>
+                    <label class="item item-radio item-borderless" ng-repeat="item in inits[questionNum].questionList" id="reason">
+                        <div class="item-content" ng-style="(index==$index)?{'color':'#88d9dd'}:{'color':'#fff'}">
+                            <img ng-if="index!=$index" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/testV2%2Ftest_v2_click1.png" width="17.5" height="17.5" >
+                            <img  ng-if="index==$index"src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/testV2%2Ftest_v2_click_select.png" width="17.5" height="17.5" >
+                            {{item.select}}
+                        </div>
+                        <input type="radio" name="group" ng-click="selectradio(item.select,$index)" >
+                        <!--	<i class="radio-icon ion-checkmark"></i>-->
+                    </label>
+                    <div ng-click="pre(questionNum)" class="pre-or-next pre-or-next1">
+                        <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/testV2%2Ftest_ques_pre.png"  width="22" height="22" />&nbsp;上一题
+                    </div>
+                    <div ng-click="next(questionNum)" class="pre-or-next pre-or-next2">
+                       下一题&nbsp; <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/testV2%2Ftest_ques_next.png"  width="22" height="22" />
+                    </div>
+                </div>
+            </div>
+		</ion-scroll>
+	</ion-content>
+	<ion-content class="testV2 end" ng-if="end">
+		<ion-scroll direction="y" has-bouncing="true" >
+			<div  class="item item-borderless">
+				<div class="hh" ng-if="scoreAll==0">
+					<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/testV2%2Ftest_score1.png"  width="92" height="92" />
+					<p>
+						天啊，您一道题都没答对哦，赶紧到宝大夫跟着郑玉巧老师好好学习一下吧~
+					</p>
+				</div>
+				<div class="hh" ng-if="scoreAll==40||scoreAll==20">
+					<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/testV2%2Ftest_score2.png"  width="92" height="92" />
+					<p >
+						哎呀，您没有及格哦，营养是健康的保证，您还需更加努力哦~
+					</p>
+				</div>
+				<div class="hh" ng-if="scoreAll==60">
+					<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/testV2%2Ftest_score3.png"  width="92" height="92" />
+					<p >
+						呃，您得了60分，勉强及格哦，需要继续努力，宝宝的健康来不得半点马虎！
+					</p>
+				</div>
+				<div class="hh" ng-if="scoreAll==80">
+					<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/testV2%2Ftest_score4.png"  width="92" height="92" />
+					<p >
+						还不错，您得了80分，加油哦，宝宝的健康来不得半点马虎!
+					</p>
+				</div>
+				<div class="hh" ng-if="scoreAll==100">
+					<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/testV2%2Ftest_score5.png"  width="58" height="64" />
+					<p >
+						恭喜您，满分通过，宝大夫鉴定您是个无微不至的好妈妈！
+					</p>
+				</div>
+                <div class="word">
+                    <p >
+                        “宝大夫”微信公众号是为宝爸宝妈们提供育儿知识搜索<br>
+                        儿科在线咨询及预约挂号为一体的一站式宝宝健康服务平台<br>
+                        欢迎各位宝爸宝妈们加入<br>
+                        宝大夫已签约数百名一线专家为您和您的宝宝保驾护航<br>
+                        提供满意服务<br>
+                    </p>
+					<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/testV2%2Ftest_baodf_code.png"  width="150" height="150" class="baodf_code"/>
+					<div class="fm-attention">
+						爸爸妈妈赶快关注一下吧
+					</div>
+					<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/testV2%2Ftest_bg_bottom.png"  width="100%" height="auto" />
+                </div>
+			</div>
+		</ion-scroll>
+	</ion-content>
+</ion-view>
+

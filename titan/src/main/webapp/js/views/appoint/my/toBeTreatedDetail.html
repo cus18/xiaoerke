@@ -1,0 +1,80 @@
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title={{title0}} ng-init="doRefresh()">
+    <div bdf-head="title"></div>
+    <ion-content class="toBeTreatedDetail">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <div class="item item-thumbnail-left item-borderless waitInfo" style="margin-top:0;height:100px;">
+                <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{appointmentDataDetail.doctorId}}" class="doctorPhoto"/>
+                <h2>{{appointmentDataDetail.doctorName}}&nbsp;&nbsp;<span>{{appointmentDataDetail.position2}}</span></h2>
+                <p>{{appointmentDataDetail.hospitalName}}</p>
+                <p>{{appointmentDataDetail.departmentName}}</p>
+            </div>
+            <div class="item workInfo item-borderless">
+                <ul >
+                    <li class="l">时间</li>
+                    <li class="r">
+                        <span>{{appointmentDataDetail.date}}&nbsp;&nbsp;</span>
+                        <span>{{week}}&nbsp;&nbsp;</span>
+                        <span>{{time}}</span>
+                    </li>
+                </ul>
+                <ul class="">
+                    <li class="l">地点</li>
+                    <li class="r word-break">{{appointmentDataDetail.location}}<br>
+                        <span class="route-btn" ui-sref = "route({sys_regist_id:appointmentDataDetail.sys_regist_id})"> 详细路线</span>
+                        <span class="route-btn" ui-sref="seeDoctorProcess({hospitalId:appointmentDataDetail.hospitalId})">见医生流程</span>
+                    </li>
+                </ul>
+                <div class="apart"></div>
+                <ul class="myUl">
+                    <li class="line">
+                        <span ></span>订单详情
+                    </li>
+                </ul>
+                <ul class="myUl">
+                    <li class="l">
+                        订单号：
+                    </li>
+                    <li class="r">
+                        {{appointmentDataDetail.appointmentNo}}
+                    </li>
+                </ul>
+                <ul class="myUl">
+                    <li class="l">
+                        姓名：
+                    </li>
+                    <li class="r">
+                        {{appointmentDataDetail.babyName}}
+                    </li>
+                </ul>
+                <ul class="myUl">
+                    <li class="l">
+                        手机：
+                    </li>
+                    <li class="r">
+                        {{appointmentDataDetail.phone}}
+                    </li>
+                </ul>
+                <ul class="myUl" style="border:none;">
+                    <li class="l" style="width:28%;">
+                        下单时间：
+                    </li>
+                    <li class="r" style="width:72%;">
+                        {{appointmentDataDetail.create_date}}
+                    </li>
+                </ul>
+            </div>
+            <button style="width:90%;margin-left:5%;" class="button foot-btn" ng-if="(appointmentDataDetail.status=='1')"
+                    ui-sref="appointmentCancel({patient_register_service_id:registerId})">
+                取消预约
+            </button>
+            <div class="footer">
+                <p>
+                    <a ng-click="appointmentFirst()">首页</a>
+                    <a ui-sref="questions">常见问题</a>
+                </p>
+                <a href="tel:4006237120">客服电话：400-623-7120</a>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

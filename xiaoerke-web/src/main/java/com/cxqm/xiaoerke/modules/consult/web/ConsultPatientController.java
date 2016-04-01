@@ -1,0 +1,288 @@
+/**
+ * Copyright &copy; 2012-2014 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.cxqm.xiaoerke.modules.consult.web;
+
+import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.utils.FrontUtils;
+import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONException;
+import com.cxqm.xiaoerke.common.persistence.Page;
+import com.cxqm.xiaoerke.common.web.BaseController;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
+import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
+import net.sf.json.JSONObject;
+import org.apache.commons.fileupload.FileItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.cxqm.xiaoerke.modules.order.entity.PatientRegisterServiceVo;
+import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.*;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+
+
+/**
+ * 会员Controller
+ *
+ * @author deliang
+ * @version 2015-11-04
+ */
+@Controller
+@RequestMapping(value = "${xiaoerkePath}")
+public class ConsultPatientController extends BaseController {
+
+    @Autowired
+    private ConsultSessionService consultConversationService;
+
+    @Autowired
+    private ConsultRecordService consultRecordService;
+
+    @Autowired
+    private ConsultSessionForwardRecordsService consultSessionForwardRecordsService;
+    /***
+     * 用户在咨询完毕后，主动请求终止会话（医生和患者都可操作）
+     * @param
+     *        params:{"sessionId": 432432}
+     * @return
+     *     {
+     *        "result":"success"(失败返回failure)
+     *      }
+     */
+
+    @RequestMapping(value = "/consult/sessionEnd", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    String sessionEnd(@RequestBody Map<String, Object> params,HttpServletRequest request,
+                      HttpServletResponse httpResponse) {
+        return consultConversationService.removeSessionById(request, params);
+    }
+
+    /***
+     * 用户删除会话
+     *
+     * @param
+     * {
+        "sessionId": "dafdsaf",
+        "patientId":"fdsafew",
+        "operation":"confirm" (delete删除操作)
+        }
+     @return
+     {
+     "result":"success"
+     }
+     */
+
+    @RequestMapping(value = "/consult/waitJoinList/operation", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    String operation(@RequestBody Map<String, Object> params,
+                     HttpServletRequest request,
+                     HttpServletResponse httpResponse) {
+            return consultConversationService.removeSessionById(request,params);
+    }
+
+    @RequestMapping(value = "/consult/getSessionId", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> getSessionId(@RequestParam(required=true) String userId) {
+        Integer sessionId = ConsultSessionManager.getSessionManager().getSessionIdByUser(userId);
+        Map<String, Object> response = new HashMap<String, Object>();
+        response.put("status", 0);
+        response.put("msg", "OK");
+        response.put("sessionId", sessionId);
+
+        if(null == sessionId){
+            response.put("status", 1);
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "/consult/getCurrentSessions", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> getCurrentSessions(@RequestParam(required=true) String csUserId) {
+        ConsultSession consultSession = new ConsultSession();
+        consultSession.setCsUserId(csUserId);
+        consultSession.setStatus(ConsultSession.STATUS_ONGOING);
+        List<ConsultSession> consultSessions = consultConversationService.selectBySelective(consultSession);
+        List<Object> sessionIds = new ArrayList<Object>();
+        for(ConsultSession session : consultSessions) {
+            sessionIds.add(session.getId());
+        }
+
+        List<Object> sessions = ConsultSessionManager.getSessionManager().getCurrentSessions(sessionIds);
+        Map<String, Object> response = new HashMap<String, Object>();
+        response.put("status", 0);
+        response.put("msg", "OK");
+        response.put("sessions", sessions);
+        return response;
+    }
+
+    @RequestMapping(value="/consult/uploadMediaFile",method = {RequestMethod.POST, RequestMethod.GET})
+    public HashMap<String,Object> UploadFile(@RequestParam("file") MultipartFile file,
+                           @RequestParam("data") String data) throws UnsupportedEncodingException {
+
+        String fileName = file.getOriginalFilename();
+        Map<String, Object> msgMap = null;
+        try {
+            msgMap = (Map<String, Object>) JSON.parse(URLDecoder.decode(data, "utf-8"));
+            System.out.println(msgMap);
+            System.out.println((String) msgMap.get("fileType"));
+            System.out.println((String) msgMap.get("senderId"));
+            return null;
+        } catch (JSONException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * 获取客户列表(或咨询过某个医生的客户)详细信息,按照时间降序排序
+     */
+    @RequestMapping(value = "/consult/getUserList", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> getUserList(@RequestBody Map<String, Object> params) {
+        Map<String,Object> response = new HashMap<String, Object>();
+
+        //分页获取最近会话记录
+        String pageNo = (String) params.get("pageNo");
+        String pageSize = (String) params.get("pageSize");
+        Integer dateNum = (Integer)params.get("dateNum");
+        String CSDoctorId = (String)params.get("CSDoctorId");
+
+        HashMap<String,Object> searchMap = new HashMap<String, Object>();
+        if(dateNum != null){
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE,-dateNum);
+            Long timeMillis = calendar.getTimeInMillis();
+            String searchDate = DateUtils.formatDateTime(timeMillis);
+            searchMap.put("searchDate",searchDate);
+        }
+
+        searchMap.put("CSDoctorId",CSDoctorId);
+
+        Page<ConsultSessionForwardRecordsVo> userPage  = FrontUtils.generatorPage(pageNo, pageSize);
+        Page<ConsultSessionForwardRecordsVo> resultPage = consultSessionForwardRecordsService.getConsultUserListRecently(userPage,searchMap);
+
+        //根据会话记录查询客户列表的详细信息
+        List<ConsultRecordMongoVo> consultSessionForwardRecordsVos = new ArrayList<ConsultRecordMongoVo>();
+        for(ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo : resultPage.getList()){
+            Query query = new Query(where("openid").is(consultSessionForwardRecordsVo.getOpenid())).with(new Sort(Sort.Direction.DESC, "createDate"));
+            ConsultRecordMongoVo oneConsultRecord = consultRecordService.findOneConsultRecord(query);
+            if(oneConsultRecord!=null && StringUtils.isNotNull(oneConsultRecord.getOpenid())){
+                consultSessionForwardRecordsVos.add(oneConsultRecord);
+            }
+
+        }
+
+        response.put("userList",consultSessionForwardRecordsVos);
+        response.put("status", "success");
+        return response;
+    }
+
+
+    /***
+     * 聊天记录查询接口（UserInfo 根据客户查找  message 根据聊天记录查找  分页
+     *
+     * @param
+     @return
+     {
+         "pageNo":"2",
+         "pageSize":"20",
+         "records": [
+             {
+             "id":123
+             "session_id": 456,
+             "openid": "3Wisdfsdflaksjfsd234234j",
+             "message":"聊天内容"
+             "message_type": "yuyin",
+             "toUserId": "fdasfa",
+             "fromUserId": "liutao"
+             },
+             {
+             "id":456
+             "session_id": 345534,
+             "openid": "3Wisdfsdsdfsfjfsd234234j",
+             "message":"聊天内容"
+             "message_type": "yuyin",
+             "toUserId": "fdasfa",
+             "fromUserId": "liutao"
+             }
+         ]
+     }
+     */
+
+    @RequestMapping(value = "/consult/recordSearchList", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> recordSearchList(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
+
+        int pageNo = 0;
+        int pageSize = 1;
+        Map<String,Object> response = new HashMap<String, Object>();
+        if(null != params.get("pageNo") && null != params.get("pageSize")){
+            pageNo = Integer.parseInt((String)params.get("pageNo"));
+            pageSize = Integer.parseInt((String)params.get("pageSize"));
+        }
+
+        PaginationVo<ConsultRecordMongoVo> pagination = null;
+        String searchType = String.valueOf(params.get("searchType"));  //user 根据客户查找  message 根据聊天记录查找
+        String searchInfo = String.valueOf(params.get("searchInfo"));
+
+        if(searchType.equals("user")){
+            Criteria cr = new Criteria();
+            Query query = new Query();
+            query.addCriteria(cr.orOperator(
+                    Criteria.where("nickName").regex(searchInfo)
+                    ,Criteria.where("openid").regex(searchInfo)
+            ));
+            pagination = consultRecordService.getPage(pageNo, pageSize, query);
+        }else if(searchType.equals("message")){
+            Query query = new Query(where("message").regex(searchInfo)).with(new Sort(Sort.Direction.DESC, "create_date"));
+            pagination = consultRecordService.getPage(pageNo, pageSize, query);
+        }
+        //根据咨询记录查询对应的用户
+        HashSet<String> openidSet = new HashSet<String>();
+        for(ConsultRecordMongoVo consultRecordMongoVo :pagination.getDatas()){
+            openidSet.add(consultRecordMongoVo.getOpenid());
+        }
+
+        List<ConsultRecordMongoVo> consultSessionForwardRecordsVos = new ArrayList<ConsultRecordMongoVo>();
+        Iterator iterator = openidSet.iterator();
+        if(iterator.hasNext()){
+            Query query = new Query(where("openid").is(iterator.next())).with(new Sort(Sort.Direction.DESC, "createDate"));
+            ConsultRecordMongoVo oneConsultRecord = consultRecordService.findOneConsultRecord(query);
+            if(oneConsultRecord!=null && StringUtils.isNotNull(oneConsultRecord.getOpenid())){
+                consultSessionForwardRecordsVos.add(oneConsultRecord);
+            }
+        }
+
+        response.put("userList",consultSessionForwardRecordsVos);
+        response.put("records", pagination!=null?pagination.getDatas():"");
+        response.put("pageNo",pageNo);
+        response.put("pageSize",pageSize);
+        return response;
+    }
+
+}

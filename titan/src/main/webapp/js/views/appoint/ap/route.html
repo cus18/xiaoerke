@@ -1,0 +1,32 @@
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title={{title0}} ng-init="doRefresh()">
+    <ion-spinner ng-show="dataLoading" class="loadPic"></ion-spinner>
+    <div bdf-head="title"></div>
+    <ion-content class="route">
+        <ion-scroll direction="y" has-bouncing="true" style="top:0px;">
+            <div class="list">
+                <dl class="item item-borderless">
+                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fhospital_addresss.png" width="25" height="25">
+                    <dt>地点</dt>
+                    <dd>{{routeInfo.location}}</dd>
+                </dl>
+                <dl class="item item-borderless">
+                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fhospital_park.png" width="25" height="25">
+                    <dt>交通/停车</dt>
+                    <dd>1、停车</dd>
+                    <dd>{{routeInfo.car}}</dd>
+                    <dd>2、地铁</dd>
+                    <dd>{{routeInfo.subway}}</dd>
+                    <dd>3、公交</dd>
+                    <dd>{{routeInfo.bus}}</dd>
+                </dl>
+                <dl class="item item-borderless">
+                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fhospital_route.png" width="25" height="25">
+                    <dt>医院内路线</dt>
+                    <dd>{{routeInfo.internal_route}}</dd>
+                </dl>
+            </div>
+            <div bdf-footer></div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

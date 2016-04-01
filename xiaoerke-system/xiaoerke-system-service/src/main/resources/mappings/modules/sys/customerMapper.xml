@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.sys.dao.CustomerDao" >
+
+	<insert id="saveBabyInfo"   parameterType="com.cxqm.xiaoerke.modules.sys.entity.CustomerBabyInfo" >
+		INSERT INTO `xiaoerke`.`sys_customer_babyinfo`
+			(`babyName`,`babyBirthday`,`phone`,`sex`,`openid`,`remark`)
+			VALUES
+			(#{babyName},#{babyBirthday},#{phone},#{sex},#{openid},#{remark})
+	</insert>
+
+	<select id="selectByPrimaryKey" resultType="java.util.Map" >
+	 SELECT `sys_customer_babyinfo`.`babyName`,
+	    `sys_customer_babyinfo`.`babyBirthday`,
+	    `sys_customer_babyinfo`.`phone`,
+	    `sys_customer_babyinfo`.`sex`,
+	    `sys_customer_babyinfo`.`id`,
+	    `sys_customer_babyinfo`.`openid`,
+	    `sys_customer_babyinfo`.`remark`
+		FROM `sys_customer_babyinfo`
+	 	where `sys_customer_babyinfo`.id=#{babyId}
+	</select>
+
+	<select id="getBabyInfoList" resultType="java.util.Map" >
+<!-- 	      SELECT `sys_customer_babyinfo`.`babyName` as name , -->
+<!-- 	    `sys_customer_babyinfo`.`babyBirthday` as birthday, -->
+<!-- 	    `sys_customer_babyinfo`.`phone`, -->
+<!-- 	    `sys_customer_babyinfo`.`sex`, -->
+<!-- 	    `sys_customer_babyinfo`.`id`, -->
+<!-- 	    `sys_customer_babyinfo`.`openid`, -->
+<!-- 	    `sys_customer_babyinfo`.`remark` -->
+<!-- 		FROM `sys_customer_babyinfo`  -->
+<!-- 	 	where `sys_customer_babyinfo`.openid=#{openid} -->
+			SELECT * FROM sys_baby_baseInfo where openid=#{openid} and state!=6
+  </select>
+
+		<select id="getBabyInfoListNew" resultType="java.util.Map" >
+			SELECT
+				sbb.*,su.phone,su.id
+			FROM
+				sys_baby_baseInfo sbb
+			INNER JOIN sys_user su ON su.id = sbb.userid
+			WHERE
+				su.id = #{openid} 
+				and state!=6
+			ORDER BY su.create_date 
+		  </select>
+		  <select id="getUserid" resultType="java.lang.String" >
+			SELECT
+				id
+			FROM
+				sys_user su
+			WHERE
+				su.openid = #{openid} 
+			AND phone IS NOT NULL
+			AND phone != ''
+			ORDER BY create_date desc LIMIT 1
+		  </select>
+	<insert id="saveCustomerLog"   parameterType="com.cxqm.xiaoerke.modules.sys.entity.CustomerLog" >
+		INSERT INTO `xiaoerke`.`sys_customer_log`
+			(
+				`customerID`,
+				`create_date`,
+				`sys_customer_illness_id`,
+				`sections`,
+				`sys_customer_babyinfo_id`,
+				`show`,
+				`result`,
+				`baby_openid`
+			)
+			VALUES
+			(
+			#{customerID},
+			now(),
+			#{illnessID},
+			#{sections},
+			#{babyInfoID},
+			#{show},
+			#{result},
+			#{openid}
+			);
+		
+	</insert>
+
+	<insert id="saveIllness"   parameterType="java.lang.String" >
+		INSERT INTO `sys_customer_illness`
+		(
+		`illness`)
+		VALUES
+		(#{illness})
+	</insert>
+
+	<select id="getIllnessList" resultType="java.util.HashMap">
+		SELECT `sys_customer_illness`.`id`,
+   		 `sys_customer_illness`.`illness`
+		FROM `sys_customer_illness`
+	</select>
+
+	<update id="updateBabyInfo" parameterType="com.cxqm.xiaoerke.modules.sys.entity.CustomerBabyInfo" >
+		  UPDATE `xiaoerke`.`sys_customer_babyinfo`
+		SET
+		`babyBirthday` = #{babyBirthday},
+		`phone` = #{phone},
+		`sex` = #{sex},
+		`openid` = #{openid},
+		`remark` = #{remark}
+		WHERE `id` = #{id};
+  </update>
+
+	<select id="getNickName" resultType="java.lang.String">
+		SELECT DISTINCT sa.nickname from sys_attention sa  where sa.openid=#{openid} and nickname is not null
+	</select>
+
+	<select id="getOrderInfoByOpenid" resultType="java.util.HashMap">
+		SELECT *,COUNT(pr.babyName) from (
+			SELECT
+				pr.babyName,
+				pr.birthday,
+				pr.phone,
+				pr.illness,
+				sd.hospitalName,
+				sd.`name` as dname,
+				pr.create_date,
+				apr.pay_date,
+				op.charge as `status`
+			FROM
+				patient_register_service pr
+				LEFT JOIN sys_register_service srs ON pr.sys_register_service_id = srs.id
+				LEFT JOIN sys_doctor sd  ON srs.sys_doctor_id=sd.id
+				LEFT JOIN sys_patient sp ON pr.sys_patient_id = sp.id
+				LEFT JOIN sys_user su ON su.id = sp.sys_user_id
+				LEFT JOIN account_pay_record apr ON apr.order_id=pr.id
+				LEFT JOIN order_property op ON op.patient_register_service_id=pr.id
+			WHERE
+				su.openid =#{openid}
+				<if test="babyName!=null">
+				 AND pr.babyName =#{babyName}
+				</if>
+			  AND pr.`status`!=6
+				ORDER BY pr.create_date desc
+			)  pr
+				GROUP BY  pr.babyName
+				order by pr.create_date desc
+	</select>
+	
+	<select id="getCustomerLogByOpenID" resultType="java.util.HashMap">
+	SELECT
+	sys_customer_log.*
+	FROM
+		sys_customer_log
+	INNER JOIN sys_customer_babyinfo ON sys_customer_log.sys_customer_babyinfo_id = sys_customer_babyinfo.id
+	where openid=#{openid}
+	order by sys_customer_log.create_date desc
+	</select>
+
+	<select id="getCustomerLogByBabyId" resultType="java.util.HashMap">
+		SELECT
+		sys_customer_log.*
+		FROM
+		sys_customer_log
+		where sys_customer_baby_info_id=#{babyId}
+		order by sys_customer_log.create_date desc
+	</select>
+
+	<select id="getCustomerLogByBabyOpenID" resultType="java.util.HashMap">
+	SELECT
+	sys_customer_log.*
+	FROM
+		sys_customer_log
+	where baby_openid=#{openid}
+	order by sys_customer_log.create_date desc
+	</select>
+
+	<select id="onIllnessKeydown" resultType="java.util.HashMap">
+	SELECT
+		ca.id,
+		ca.title
+	FROM
+		cms_article ca
+	WHERE
+		ca.title LIKE CONCAT('%',#{illness},'%') 
+	or  ca.keywords	like CONCAT('%',#{illness},'%') 
+	ORDER BY
+		create_date
+	LIMIT 1
+	</select>
+	<insert id="saveOpenidKeywords"   parameterType="java.lang.String" >
+	INSERT INTO `sys_customers_keywords` (`openid`, `keyword`)
+	VALUES
+		(
+			#{openid},
+			#{keywords}
+		)
+	</insert>
+	
+	<select id="getKeywordsByOpenID" resultType="java.lang.Integer">
+		SELECT
+			COUNT(id)
+		FROM
+			sys_customers_keywords sck
+		WHERE
+			sck.openid = #{openid}
+		AND sck.keyword = #{keywords}
+	</select>
+	
+	<select id="getLastOrderDate" resultType="java.lang.String">
+		SELECT MAX(pr.create_date) FROM patient_register_service pr
+		INNER JOIN sys_patient sp ON pr.sys_patient_id = sp.id
+		INNER JOIN sys_user su ON su.id = sp.sys_user_id
+		WHERE
+			su.openid=#{openid}
+		and pr.babyName=#{babyname}
+	</select>
+	
+		<select id="getVIPEndDate" resultType="java.lang.String">
+			SELECT
+		DATE_ADD(mir.activate_date,INTERVAL mmr.period DAY) end_date
+	FROM
+		memberservicerel_itemservicerel_relation mir
+	INNER JOIN sys_user su ON su.id = mir.sys_user_id
+	INNER JOIN member_itemservice_relation mmr ON mmr.id=mir.member_itemservice_relation_id
+	where su.openid=#{openid}
+	ORDER BY end_date DESc LIMIT 1
+	</select>
+	
+</mapper>

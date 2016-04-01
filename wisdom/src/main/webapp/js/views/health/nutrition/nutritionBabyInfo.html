@@ -1,0 +1,43 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="基本信息" ng-init="doRefresh()">
+    <ion-content class="nutritionBabyInfo " style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="baby-info">
+                <div class="sex ">
+                    <div class="titleLine">
+                        <span class="line"></span>
+                        请选择性别
+                        <span class="line"></span>
+                    </div>
+                    <ul>
+                        <li ng-click="selectSex('boy')">
+                            <img  width="90" height="90" src="{{sexBoy}}">
+                            男
+                        </li>
+                        <li ng-click="selectSex('girl')">
+                            <img  width="90" height="90" src="{{sexGirl}}">
+                            女
+                        </li>
+                    </ul>
+                </div>
+                <div class="other">
+                    <ul>
+                        <li>
+                          年龄：  <input type="text" id="birthday" ng-model="info.birthday" readonly="readonly">
+                        </li>
+                        <li>
+                            身高：  <input type="number" ng-model="info.height" ><span>cm</span>
+                        </li>
+                        <li>
+                            体重：  <input type="number" ng-model="info.weight" ><span>kg</span>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="button foot-btn" ng-click="nutritionReport()">
+                完成
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

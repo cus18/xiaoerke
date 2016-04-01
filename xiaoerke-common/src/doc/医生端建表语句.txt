@@ -1,0 +1,123 @@
+
+/*==============================================================*/
+/* Table: account_binding                                       */
+/*==============================================================*/
+create table account_binding 
+(
+   id                   varchar(64)                    not null,
+   user_id              varchar(64)                    not null,
+   account              varchar(64)                    not null,
+   mobile               varchar(16)                    null,
+   owner_name           varchar(32)                    null,
+   account_type         varchar(8)                     null,
+   belong_to            varchar(64)                    null,
+   created_date         timestamp                      not null,
+   updated_date         timestamp                      null,
+   created_by           varchar(64)                    null,
+   constraint PK_ACCOUNT_BINDING primary key (id)
+);
+
+/*==============================================================*/
+/* Index: account_binding_PK                                    */
+/*==============================================================*/
+create unique index account_binding_PK on account_binding (
+id ASC
+);
+
+/*==============================================================*/
+/* Table: account_withdraw                                      */
+/*==============================================================*/
+create table account_withdraw 
+(
+   id                   varchar(64)                    not null,
+   user_id              varchar(64)                    null,
+   account_binding_id   varchar(64)                    not null,
+   money_amount         float(16)                      not null,
+   status               varchar(8)                     not null,
+   created_date         timestamp                      not null,
+   received_date        timestamp                      null,
+   created_by           varchar(64)                    null,
+   constraint PK_ACCOUNT_WITHDRAW primary key (id)
+);
+
+/*==============================================================*/
+/* Index: account_withdraw_PK                                   */
+/*==============================================================*/
+create unique index account_withdraw_PK on account_withdraw (
+id ASC
+);
+
+/*==============================================================*/
+/* Table: share_record                                          */
+/*==============================================================*/
+create table share_record 
+(
+   id                   varchar(64)                    not null,
+   user_id              varchar(64)                    null,
+   target               varchar(32)                    not null,
+   content              varchar(256)                   not null,
+   created_date         timestamp                      null,
+   updated_date         timestamp                      null,
+   created_by           varchar(64)                    null,
+   constraint PK_SHARE_RECORD primary key (id)
+);
+
+/*==============================================================*/
+/* Index: share_record_PK                                       */
+/*==============================================================*/
+create unique index share_record_PK on share_record (
+id ASC
+);
+
+/*==============================================================*/
+/* Table: sys_recommend_doctor                                  */
+/*==============================================================*/
+create table sys_recommend_doctor
+(
+   id                   varchar(64)                    not null,
+   recommender          varchar(64)                    not null,
+   recommended          varchar(64)                    not null,
+   recommend_reason     varchar(128)                   null,
+   comments             varchar(128)                   null,
+   created_date         timestamp                      null,
+   updated_date         timestamp                      null,
+   created_by           varchar(64)                    null,
+   constraint PK_SYS_RECOMMEND_DOCTOR primary key (id)
+);
+
+/*==============================================================*/
+/* Index: sys_recommend_doctor_PK                               */
+/*==============================================================*/
+create unique index sys_recommend_doctor_PK on sys_recommend_doctor (
+id ASC
+);
+
+alter table account_withdraw
+   add constraint FK_ACCOUNT__RELATIONS_ACCOUNT_ foreign key (id)
+      references account_binding (id)
+      on update restrict
+      on delete restrict;
+
+
+
+
+create table account_pay_record 
+(
+   id                   varchar(64)                    not null,
+   user_id              varchar(64)                    null,
+   order_id             varchar(64)                    not null,
+   amount               float(16)                      not null,
+   pay_type             varchar(8)                     null,
+   status               varchar(8)                     null,
+   pay_date             timestamp                      null,
+   receive_date         timestamp                      null,
+   created_by           varchar(64)                    null,
+   constraint PK_ACCOUNT_PAY_RECORD primary key (id)
+);
+
+/*==============================================================*/
+/* Index: account_pay_record_PK                                 */
+/*==============================================================*/
+create unique index account_pay_record_PK on account_pay_record (
+id ASC
+);

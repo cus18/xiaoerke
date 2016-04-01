@@ -1,0 +1,108 @@
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫">
+	<div bdf-head="title"></div>
+	<!--点击选择  科室、医院、 排序 -->
+	<div class="category tc border2 f5 c4" ng-if="!isBlank">
+		<div class="fl" ng-click="selectAllDepartment()" ng-class="{'c1':department=='1'}">
+			<span ng-if="remark=='department'">{{departmentSelectName}}</span>
+			<span ng-if="remark=='hospital'">{{hospitalSelectName}}</span>
+			&nbsp;
+			<!--<img class="my-img1" ng-src="{{arrowImg}}" width="16" height="9" >-->
+		    <img class="my-img1" width="14.5" height="auto"  ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Ficon_list.png" >
+		</div>
+		<div class="fl" ng-click="selectAllRank()" ng-class="{'c1':rank=='1'}" >
+			{{rankTitle}}&nbsp;
+			<!--<img class="my-img1" ng-src="{{rankImg}}" width="22" height="14" >-->
+			<img class="my-img1"  ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Ficon_rank.png" width="15.5" height="auto" >
+		</div>
+	</div>
+	<!--医院、科室、排序列表-->
+	<div class="c-shadow" ng-if="shadow=='1'"></div>
+	<div ng-if="selectType!=''">
+		<!--医院、科室列表-->
+		<ion-content ng-if="lock1=='1'" class="mySeek "  ng-class="{'show':mySeek=='1'}" overflow-scroll="true">
+			<ion-scroll direction="y" has-bouncing="true" >
+				<dl class="c5 bg1" ng-if="selectType=='department'" >
+					<dt class="f6 c6 fw0 border2"  ng-click="init()" ng-if="(lock3=='1')">全部科室</dt>
+					<dd class="f5 border2" ng-repeat="item in departmentData"  ng-click="reloadDoctorInDepartment(item.hospitalId,item.departmentLevel1Name)">
+						{{item.departmentLevel1Name}}
+					</dd>
+				</dl>
+				<dl ng-if="selectType=='hospital'" class="c9 bg1">
+					<dt class="f6  c6 fw0 border2" ng-click="init()" ng-if="(lock3=='1')">全部医院</dt>
+					<dd class="f5 border2" ng-repeat="item in hospitalData" ng-click="reloadDoctorInHospital(item.hospitalId,item.hospitalName)">
+						{{item.hospitalName}}
+					</dd>
+				</dl>
+			</ion-scroll>
+		</ion-content>
+		<!--排序列表-->
+		<ion-content ng-if="(selectType=='rank')&&(lock2=='1')" class="mySeek "  ng-class="{'show':mySeek=='1'}" overflow-scroll="true">
+			<ion-scroll direction="y" has-bouncing="true" >
+				<dl class="c5 bg1" >
+					<dd class="f5  border2" ng-click="timeRank()">时间最近</dd>
+					<dd class="f5 border2 " ng-click="fansRank()">粉丝最多</dd>
+					<dd class="f5 border2"  ng-click="workTimeRank()">从业时间</dd>
+				</dl>
+			</ion-scroll>
+		</ion-content>
+
+	</div>
+
+	<!--医生列表-->
+	<div id="searchListShow">
+		<ion-content class="searchList doctorList" overflow-scroll="true"  ng-style="!isBlank?{'top':'90px'}:{'top':'45px'}">
+			<ion-scroll direction="y" has-bouncing="true" >
+				<ion-list>
+					<div  ng-if="!isBlank" class="bg1">
+						<div class="border2 apart1" ng-class="{'border1':!$first}"  ng-repeat="item in doctorData" ng-click="doctorAppointment(item.doctorId,item.available_time,item.visitInfo[0].name,item.visitInfo[0].location,item.visitInfo[0].position,item.visitInfo[0].location_id,'')">
+							<!--医生信息-->
+							<div class="doctor-info bg1"  >
+								<div  class="pic">
+									<img class="photo" width="62.5" height="62.5" ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.doctorId}}?ver={{picVer}}" >
+									<div class="rank">
+										<img class="my-img1" ng-repeat="item in [1,2,3,4,5]" width="9.5" height="auto" ng-src="{{starImg1}}">
+									</div>
+								</div>
+								<div class="intro">
+									<div class="name s"><span>{{item.doctorName}}</span>{{item.position1}}&nbsp;{{item.position2}}&nbsp;({{item.career_time}}年)</div>
+									<div class="hospital s">{{item.hospitalName}}</div>
+									<div class="department">擅长：{{item.expertise}}</div>
+									<div class="icon">
+										<span class="f3 c5" >
+											<img class="my-img1" width="20" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Ficon_classify_ap.png">
+											预约挂号
+										</span>
+										<span class="f3 c5">
+											<img class="my-img1" width="20" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Ficon_classify_phone.png">
+											预约挂号
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class="time tc border3" ><!--ng-click="doctorAppointment(item.doctorId,item.available_time, ite.name, ite.location, ite.position,ite.location_id,'')"-->
+                                 <a class=" f2">
+									  {{week[item.available_time]}}{{item.latestTime}}可约
+                                 </a>
+								<img class="my-img1 fr" width="9" height="16" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Farr_r_blue.png"  >
+							</div>
+							<!--<div class="time tc border3" ng-if="item.visitInfo.length == 0" ng-click="doctorAppointment(item.doctorId,item.visitInfo[0].available_time,item.hospitalName,item.visitInfo[0].location,item.visitInfo[0].position,item.visitInfo[0].location_id,'')">
+                              <a class=" f2">
+                                   暂无时间地址预约
+                              </a>
+							</div>-->
+						</div>
+					</div>
+				</ion-list>
+				<ion-infinite-scroll on-infinite="loadMore()" distance="1%"
+									 immediate-check="false" ng-show="scrollLoading" >
+				</ion-infinite-scroll>
+				<div class="noContent tc" ng-if="isBlank">
+					<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fsearchlist_no.png" width="124" height="106">
+					<p class="f5 c4 lh">{{care1}}</p>
+				</div>
+				<div bdf-footer></div>
+			</ion-scroll>
+		</ion-content>
+	</div>
+</ion-view>

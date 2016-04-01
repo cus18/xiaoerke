@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="xiaoerke-marketing-webapp:war">
+    <output-path>$PROJECT_DIR$/xiaoerke-marketing-webapp/target</output-path>
+    <root id="archive" name="xiaoerke-marketing-webapp.war">
+      <element id="artifact" artifact-name="xiaoerke-marketing-webapp:war exploded" />
+    </root>
+  </artifact>
+</component>

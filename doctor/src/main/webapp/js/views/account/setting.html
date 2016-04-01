@@ -1,0 +1,13 @@
+<ion-spinner ng-show="pageLoading" style="color:#139fff;position: relative;top: 301px;left:148px;z-index:999;"></ion-spinner>
+<ion-view view-title="我的账单" style="background-color:silver">
+    <ion-spinner ng-show="dataLoading"></ion-spinner>
+    <ion-content class="setting" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <div class="us dj-r" ng-click="aboutUs()">
+                &nbsp;&nbsp;关于宝大夫
+                <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Farr_gray_right.png" width="22" height="22" >
+            </div>
+            <button ng-click="outOfBind()" class="foot-btn button" style="background-color: #fe717b;margin-top:60px;">退出当前帐号</button>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.cms.dao.BabyEmrDao" >
+
+
+	<!--保存登陆知识库宝宝信息-->
+	<insert id="saveBabyEmr"   parameterType="com.cxqm.xiaoerke.modules.cms.entity.BabyEmrVo" >
+		INSERT into patient_baby_emr (id,create_date,babyname,openid,gender,birthday,status) 
+			VALUES (#{id},#{createDate},#{babyName},#{openid},#{gender},#{birthday},#{status})
+	</insert> 
+
+	<!--修改宝宝信息-->
+    <update id="updateBabyEmr" parameterType="com.cxqm.xiaoerke.modules.cms.entity.BabyEmrVo" >
+       update patient_baby_emr 
+       <set >
+	      <if test="birthday != null" >
+	        birthday = #{birthday},
+	      </if>
+	      <if test="updateDate != null" >
+	        update_date=#{updateDate},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status},
+	      </if>
+	      <if test="babyName != null" >
+			babyname = #{babyName},
+		  </if>
+		  <if test="gender != null" >
+			gender = #{gender},
+		  </if>
+	      <if test="id != null" >
+	        id = #{id}
+	      </if>
+       </set>
+       where id=#{id}
+    </update>
+    
+    <!--查询登陆知识库宝宝信息-->
+    <select id="getBabyEmrList" resultType="com.cxqm.xiaoerke.modules.cms.entity.BabyEmrVo" parameterType="java.lang.String">
+        SELECT * from patient_baby_emr
+		 	WHERE openid=#{openid}
+    </select>
+</mapper>

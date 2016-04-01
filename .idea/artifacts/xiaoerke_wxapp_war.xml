@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="xiaoerke-wxapp:war">
+    <output-path>$PROJECT_DIR$/xiaoerke-wxapp/target</output-path>
+    <root id="archive" name="xiaoerke-wxapp.war">
+      <element id="artifact" artifact-name="xiaoerke-wxapp:war exploded" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.order.dao.OrderPropertyDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.order.entity.OrderPropertyVo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="patient_register_service_id" property="patientRegisterServiceId" jdbcType="VARCHAR" />
+    <result column="yellow_cattle" property="yellowCattle" jdbcType="VARCHAR" />
+    <result column="first_order" property="firstOrder" jdbcType="VARCHAR" />
+    <result column="scan_code" property="scanCode" jdbcType="VARCHAR" />
+    <result column="charge" property="charge" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="VARCHAR" />
+    <result column="openid" property="openid" jdbcType="VARCHAR" />
+    <result column="order_source" property="orderSource" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, patient_register_service_id, yellow_cattle, first_order, scan_code, charge, create_date,
+    update_time,openid,order_source
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from order_property
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from order_property
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.order.entity.OrderPropertyVo" >
+    insert into order_property (id, patient_register_service_id, yellow_cattle,
+      first_order, scan_code, charge,
+      create_date, update_time,openid,order_source)
+    values (#{id,jdbcType=VARCHAR}, #{patientRegisterServiceId,jdbcType=VARCHAR}, #{yellowCattle,jdbcType=VARCHAR},
+      #{firstOrder,jdbcType=VARCHAR}, #{scanCode,jdbcType=VARCHAR}, #{charge,jdbcType=VARCHAR},
+      #{createDate,jdbcType=TIME}, #{updateTime,jdbcType=TIMESTAMP},#{openid,jdbcType=TIMESTAMP},#{orderSource,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.order.entity.OrderPropertyVo" >
+    insert into order_property
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="patientRegisterServiceId != null" >
+        patient_register_service_id,
+      </if>
+      <if test="yellowCattle != null" >
+        yellow_cattle,
+      </if>
+      <if test="firstOrder != null" >
+        first_order,
+      </if>
+      <if test="scanCode != null" >
+        scan_code,
+      </if>
+      <if test="charge != null" >
+        charge,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="openid != null" >
+        openid,
+      </if>
+      <if test="orderSource != null" >
+        order_source,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="patientRegisterServiceId != null" >
+        #{patientRegisterServiceId,jdbcType=VARCHAR},
+      </if>
+      <if test="yellowCattle != null" >
+        #{yellowCattle,jdbcType=VARCHAR},
+      </if>
+      <if test="firstOrder != null" >
+        #{firstOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="scanCode != null" >
+        #{scanCode,jdbcType=VARCHAR},
+      </if>
+      <if test="charge != null" >
+        #{charge,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIME},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="openid != null" >
+        #{openid,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderSource != null" >
+        #{orderSource,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.order.entity.OrderPropertyVo" >
+    update order_property
+    <set >
+      <if test="patientRegisterServiceId != null" >
+        patient_register_service_id = #{patientRegisterServiceId,jdbcType=VARCHAR},
+      </if>
+      <if test="yellowCattle != null" >
+        yellow_cattle = #{yellowCattle,jdbcType=VARCHAR},
+      </if>
+      <if test="firstOrder != null" >
+        first_order = #{firstOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="scanCode != null" >
+        scan_code = #{scanCode,jdbcType=VARCHAR},
+      </if>
+      <if test="charge != null" >
+        charge = #{charge,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIME},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="openid != null" >
+        openid = #{openid,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderSource != null" >
+        order_source = #{orderSource,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.order.entity.OrderPropertyVo" >
+    update order_property
+    set patient_register_service_id = #{patientRegisterServiceId,jdbcType=VARCHAR},
+      yellow_cattle = #{yellowCattle,jdbcType=VARCHAR},
+      first_order = #{firstOrder,jdbcType=VARCHAR},
+      scan_code = #{scanCode,jdbcType=VARCHAR},
+      charge = #{charge,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIME},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      openid = #{openid,jdbcType=TIMESTAMP},
+      order_source = #{orderSource,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

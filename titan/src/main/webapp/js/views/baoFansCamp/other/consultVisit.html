@@ -1,0 +1,46 @@
+<ion-view view-title={{title0}} ng-init="doRefresh()" >
+	<div class="shadow1" ng-if="getTicketLock"></div>
+	<div class="remind4" ng-if="getTicketLock">
+		<span>提交成功，代金券码将通过微信发送，注意查收！</span>
+	</div>
+	<ion-content class="consultVisit" style="top:0;">
+		<ion-scroll direction="y" has-bouncing="true">
+			<div class="title2">
+				<div>
+					<h3>
+						宝大夫<br>
+						<span>给宝宝最好的呵护</span>
+					</h3>
+				</div>
+				<p>
+					告诉我们原因，<br>
+					即可领取<span>20元爱鲜蜂代金券</span>一张！
+				</p>
+			</div>
+			<div class="box2">
+				<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/other%2FconsultVisit_banner.jpg" width="100%" height="auto">
+				<p>宝爸萌妈，为啥好久没在宝大夫咨询平台上看到您了呢？</p>
+			</div>
+			<div class="box3">
+				<dl>
+					<dd ng-repeat="item in visitList">
+						<ion-radio   class="item-borderless" ng-click="select($index)">
+							{{ item.text }}
+						</ion-radio>
+					</dd>
+				</dl>
+				<div class="other">
+					  <textarea   id="other"   placeholder="回个话儿鞭策一下宝大夫" ng-model="info.otherReason" maxlength="40"  onfocus="skip()">
+					  </textarea>
+					<span>其他</span>
+				</div>
+			</div>
+			<div class="box4">
+				<button class="button "  ng-disabled="clickLock&&!info.otherReason" ng-click="getTicket()">
+					点击领券
+				</button>
+			</div>
+		</ion-scroll>
+	</ion-content>
+</ion-view>
+

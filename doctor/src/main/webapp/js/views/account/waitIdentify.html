@@ -1,0 +1,25 @@
+<link rel="stylesheet" href="/xiaoerke-doctor/styles/account/waitIdentify.less" type="text/css" />
+<link rel="stylesheet" href="styles/lib/common.css"/>
+<ion-view view-title="等待认证" ng-init="doRefresh()">
+    <ion-spinner ng-show="dataLoading"></ion-spinner>
+    <ion-content class="waitIdentify">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <div class="pic1">
+                <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2FwaitIdentify1.png" width="130" height="130"><br>
+                <span class="bc cir">
+                </span><br>
+                <span class="sc cir">
+                </span>
+                <p>
+                    <span>15200000000</span>
+                    等待认证中
+                </p>
+            </div>
+            <button class="button foot-btn">我知道了</button>
+            <p class="service">
+                宝大夫客服会尽快与您联系，感谢您的支持！
+            </p>
+
+        </ion-scroll>
+    </ion-content>
+</ion-view>

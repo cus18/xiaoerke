@@ -1,0 +1,23 @@
+<ion-spinner ng-show="pageLoading" style="color:#139fff;position: relative;top: 301px;left:148px;z-index:999;"></ion-spinner>
+<ion-view view-title="关于我们" style="background-color:silver">
+    <ion-spinner ng-show="dataLoading"></ion-spinner>
+    <ion-content class="aboutUs" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <ul class=""  >
+                <li class="dj-r" ng-click="userDeal()">
+                    &nbsp;&nbsp;用户协议
+                    <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Farr_gray_right.png" width="22" height="22" style="right:10px;">
+                </li>
+                <li class="dj-r" >
+                    &nbsp;&nbsp;微信服务号
+                    <span>BaodfDoc</span>
+                </li>
+                <li class="dj-r">
+                    &nbsp;&nbsp;客服电话
+                    <a href="tel:4006237120"><span>400-623-7120</span></a>
+
+                </li>
+            </ul>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

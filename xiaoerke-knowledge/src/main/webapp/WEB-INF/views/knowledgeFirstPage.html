@@ -1,0 +1,78 @@
+<html>
+    <head>
+    </head>
+    <base href="/xiaoerke-knowledge/"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+    <title>郑玉巧育儿经</title>
+    <link rel="stylesheet" href="styles/knowledge/knowledgeCommon.less?ver='0.9'" type="text/css" />
+    <link rel="stylesheet" href="styles/knowledge/knowledgeFirstPage.less?ver='0.9'" type="text/css" />
+    <link href="styles/lib/mobiscroll.custom-2.5.0.min.css" rel="stylesheet" type="text/css" />
+    <body onload="knowledgeFirstPageInit()">
+    <div class="knowledgeFirstPage">
+        <div class="search-photo">
+            <div class="mySearch">
+                <div class="search1" hidden>
+                    <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fsearch_left_icon.png" width="17.5" height="17.5" >
+                    <input type="text" placeholder="搜索" id="searchValue">
+                    <span class="go-search" onclick="searchTitle()" >搜索</span>
+                </div>
+                <div class="search2" onclick="showSearch()">
+                    <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fsearch_right.png" width="37.5" height="29">
+                </div>
+            </div>
+    </div>
+    <div direction="y" id="searchHide">
+        <div style="text-align: center;">
+            <img width="100%" height="300" id="babyPhoto" onclick="chooseImage()">
+        </div>
+        <div class="content">
+            <div class="babyInfo">
+                <ul>
+                    <li class="font-c1"></li>
+                    <li class="font-c2"></li>
+                </ul>
+            </div>
+            <div class="remind" hidden>
+                <h3 id="remind1"></h3>
+                <ul id="remind2"></ul>
+            </div>
+            <div class="today-read today" id="todayReadIndex" >
+                <h3>
+                    <span class="line"></span>
+                    今日必读
+                </h3>
+                <ul class="list" id="todayRead"></ul>
+                <dl class="classify">
+                    <dt>
+                        <span class="line"></span>
+                        &nbsp;育儿宝典
+                    </dt>
+                    <dd style="padding-top:20px;" id="yuer">
+                    </dd>
+                </dl>
+            </div>
+            <div class="today-choice today">
+                <h3>
+                    <span class="line"></span>
+                    今日精选
+                </h3>
+                <ul class="list" id="todayJingXuan1"></ul>
+                <ul class="list" id="todayJingXuan2"></ul>
+                <dl class="classify" id="todayJingXuan3"></dl>
+            </div>
+            <br/><br/>
+        </div>
+    </div>
+</div>
+</body>
+<link rel="stylesheet" href="styles/lib/ionic.min.css"/>
+<link rel="stylesheet" href="styles/lib/ionicons.min.css"/>
+<link rel="stylesheet" href="styles/lib/animate.min.css"/>
+<link rel="stylesheet" href="styles/main.less"/>
+<script src="js/knowledgeFirstPage.js"></script>
+<script src="js/libs/jquery.scrollstop.min.js"></script>
+<script src="js/libs/mobiscroll.custom-2.5.0.min.js"></script>
+</html>

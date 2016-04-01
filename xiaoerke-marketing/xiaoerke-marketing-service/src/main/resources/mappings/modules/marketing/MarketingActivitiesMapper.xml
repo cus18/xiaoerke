@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.marketing.dao.MarketingActivitiesDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.marketing.entity.MarketingActivities" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="openid" property="openid" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="VARCHAR" />
+ 	<result column="result" property="result" jdbcType="VARCHAR" />
+ 	<result column="ifShsre" property="ifShsre" jdbcType="VARCHAR" />
+ 	<result column="score" property="score" jdbcType="VARCHAR" />
+  </resultMap>
+  
+
+  <select id="getMarketingActivitiesByOpenid" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    *
+    from sys_marketingactivities
+     <if test="openid != null" >
+       where
+       openid = #{openid,jdbcType=VARCHAR}
+     </if>
+      <if test="score != null" >
+        where
+        score &lt; #{score,jdbcType=VARCHAR}
+     </if>
+     ORDER BY create_date desc 
+  </select>
+
+
+    <insert id="saveMarketingActivities" parameterType="com.cxqm.xiaoerke.modules.marketing.entity.MarketingActivities" useGeneratedKeys="true" keyProperty="id">
+      insert sys_marketingactivities ( openid,create_date, result,ifShare,score)
+      values (#{openid,jdbcType=VARCHAR}, #{createDate,jdbcType=VARCHAR},#{result,jdbcType=VARCHAR},#{ifShare,jdbcType=VARCHAR},#{score,jdbcType=VARCHAR})
+    </insert>
+
+
+  <update id="updateMarketingActivities" parameterType="com.cxqm.xiaoerke.modules.marketing.entity.MarketingActivities" >
+    update sys_marketingactivities
+    set 
+      ifShare = #{ifShare,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+    
+</mapper>

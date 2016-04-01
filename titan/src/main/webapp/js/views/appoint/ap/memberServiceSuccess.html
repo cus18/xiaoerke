@@ -1,0 +1,61 @@
+<ion-view view-title={{title0}} ng-init="doRefresh()">
+    <ion-spinner ng-show="dataLoading" class="loadPic"></ion-spinner>
+    <div bdf-head="title"></div>
+    <ion-content class="memberServiceSuccess" style="top:44px;">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <div class="myTop">
+                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fmember_service_success.png" width="61.5" height="61.5" >
+                <div>您已成功购买月会员服务</div>
+                <p>（自购买之日起一月内可享受以下待遇：）</p>
+                <span class="cir"></span>
+            </div>
+            <dl class="box2">
+                <dt>资深儿科医生 随时线上咨询 为健康保驾护航</dt>
+                <dd><span class="cir"></span>我们的平台医生7x18小时在线，及时答复健康咨询</dd>
+                <dd><span class="cir"></span>服务专员按需为宝宝转诊</dd>
+                <dd><span class="cir"></span>平台医生跟踪院外病况，指导合理用药</dd>
+                <dt>专属个人档案 专家健康指导 让宝宝健康成长</dt>
+                <dd><span class="cir"></span>我们为宝宝建立专属健康档案</dd>
+                <dd><span class="cir"></span>提供个性化育儿保健知识和健康指导</dd>
+                <dt>享受特惠医院的特殊优惠</dt>
+                <dd><span class="cir"></span>可无限次预约特惠医院的医生</dd>
+                <dd><span class="cir"></span>更多优惠信息可进入特惠医院查看</dd>
+            </dl>
+            <div class="apart"></div>
+            <div class="box3" ng-if="patient_register_service_id!='noData'">
+                <h3><span></span>您已成功使用免费预约名医门诊1次： </h3>
+                <ul>
+                    <li>
+                        <span class="li-fl">医生</span>
+                        <span class="li-fr">{{appointmentDataDetail.doctorName}}</span>
+                    </li>
+                    <li>
+                        <span class="li-fl">时间</span>
+                        <span class="li-fr">{{appointmentDataDetail.create_date}}</span>
+                    </li>
+                    <li>
+                        <span class="li-fl">地点</span>
+                        <span class="li-fr" >{{appointmentDataDetail.hospitalName}}&nbsp;{{appointmentDataDetail.location}}</span>
+                    </li>
+                </ul>
+            </div>
+            <button class="button foot-btn" style="margin-left:38px;width:30%;"
+                    ng-if="patient_register_service_id!='noData'"
+                    ui-sref="route({sys_regist_id:appointmentDataDetail.sys_regist_id})">
+                详细路线
+            </button >
+            <button class="button foot-btn"
+                    style="margin-left:10px;width: 40%;"
+                    ng-if="patient_register_service_id!='noData'"
+                    ui-sref="seeDoctorProcess({hospitalId:appointmentDataDetail.hospitalId})">
+                见医生流程
+            </button >
+            <button class="button foot-btn" ng-if="patient_register_service_id=='noData'" ui-sref="appointmentFirst">
+                立即预约
+            </button>
+            <div class="skip-myService">
+                注：可在<a ui-sref="myService">我的服务</a>页面查看已购买的服务
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,34 @@
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title={{title}} ng-init="doRefresh()">
+    <ion-spinner ng-show="dataLoading" class="loadPic"></ion-spinner>
+    <div bdf-head="title"></div>
+    <ion-content class="appointmentUseMember">
+        <ion-scroll direction="y" has-bouncing="true" style="top:0px;">
+            <div class="box1">
+                <ul >
+                    <li class="l">医生</li>
+                    <li class="r">
+                        <span>{{appointmentDataDetail.doctorName}}&nbsp;&nbsp;</span>
+                    </li>
+                </ul>
+                <ul >
+                    <li class="l">时间</li>
+                    <li class="r">
+                        <span>{{appointmentDataDetail.date}}&nbsp;&nbsp;</span>
+                        <span>{{appointmentDataDetail.week}}&nbsp;&nbsp;</span>
+                        <span>{{appointmentDataDetail.time}}</span>
+                    </li>
+                </ul>
+                <ul class="">
+                    <li class="l">地点</li>
+                    <li class="r word-break">{{appointmentDataDetail.location}}
+                    </li>
+                </ul>
+            </div>
+            <div class="use-free" >
+                使用免费预约：免费预约券x1
+            </div>
+            <button class="button foot-btn" ng-click="appoint()" ng-disabled="info.buttonLock">立即使用</button>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,74 @@
+<link rel="stylesheet" href="styles/knowledge/knowledgeCommon.less?ver='0.9'" type="text/css" />
+<link rel="stylesheet" href="styles/knowledge/todayReadMore.less?ver='0.9'" type="text/css" />
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫">
+    <div class="myGroup">
+        <div class="myTitle" ng-class="{'myBg1': title=='生长发育', 'myBg2': title=='行为能力','myBg3': title=='膳食喂养','myBg4': title=='生活护理','myBg5': title=='症状护理','myBg6': title=='疾病预防','myBg7': title=='安全防护','myBg8': title=='月龄相关'}">
+            育儿 · {{title}}
+            <img id="imghead" width="36" height="36">
+        </div>
+        <ion-item class="baby-age item-borderless" ng-class="{'myBorder1': title=='生长发育',
+         'myBorder2': title=='行为能力','myBorder3': title=='膳食喂养',
+         'myBorder4': title=='生活护理','myBorder5': title=='症状护理',
+         'myBorder6': title=='疾病预防','mBorder7': title=='安全防护',
+         'myBorder8': title=='月龄相关'}">
+            <div class="ap" ng-repeat="item in ageNewList"
+                 ng-click="getNext(item.categoryId,$index)" >
+                <div ng-if="$index==choiceItem" class="cur"
+                     ng-class="{'myBg1': title=='生长发育',
+                     'myBg2': title=='行为能力',
+                     'myBg3': title=='膳食喂养',
+                     'myBg4': title=='生活护理',
+                     'myBg5': title=='症状护理',
+                     'myBg6': title=='疾病预防',
+                     'myBg7': title=='安全防护',
+                     'myBg8': title=='月龄相关'}">
+                    {{item.categoryName}}
+                </div>
+                <div ng-if="$index!=choiceItem" ng-class="{'myColor1': title=='生长发育',
+                'myColor2': title=='行为能力',
+                'myColor3': title=='膳食喂养',
+                'myColor4': title=='生活护理',
+                'myColor5': title=='症状护理',
+                'myColor6': title=='疾病预防',
+                'myColor7': title=='安全防护',
+                'myColor8': title=='月龄相关'}">
+                    {{item.categoryName}}
+                </div>
+            </div>
+        </ion-item>
+    </div>
+    <ion-content class="todayReadMore" overflow-scroll="true" style="top:100px;">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <ul class="myList" ng-if="noContent=='false'">
+                <li class="item item-thumbnail-left item-borderless"
+                    ng-repeat="item in articleList"
+                    ui-sref="knowledgeArticleContent({contentId:item.id,generalize:'WX'})">
+                    <img ng-src="http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/{{item.id}}">
+                    <h2 >{{item.title}}</h2>
+                    <p class="text">
+                        {{item.description|limitTo:30}}...
+                    </p>
+                    <p class="sub-info">
+                        <a  class=" info-read">
+                            <img src="ihttp://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fitem_read.png" width="12.5" height="8.5">&nbsp;
+                            {{item.articleReadCount}}
+                        </a>
+                        <a class="info-comment">
+                            <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fitem_comment.png" width="12.5" height="11.5">&nbsp;
+                            {{item.articleCommentCount}}
+                        </a>
+                        <a  class="info-share">
+                            <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fitem_share.png" width="12.5" height="12.5">&nbsp;
+                            {{item.articleShareCount}}
+                        </a>
+                    </p>
+                </li>
+            </ul>
+            <br> <br>
+            <div class="noArticle" ng-if="noContent=='true'">
+                部分内容正在建设中
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,23 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="妈妈必备" ng-init="doRefresh()">
+    <ion-content class="nutritionNecessaryList " style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="my-list">
+                <div class="titleLine">
+                    <span class="line"></span>
+                    <span class="line"></span>
+                    必备{{title}}
+                </div>
+                <ul >
+                    <li ng-repeat="item in necessaryList" ng-click="goDetail(item.title,item.introduce,item.jingdong,item.jingdongprice,
+                    item.oneshop,item.oneshopprice,item.tianmao,item.tianmaoprice,item.img)">
+                        <img class="my-img" width="92" height="97" src="{{item.img}}">
+                        <h2>{{item.title}}</h2>
+                        <p>{{item.introduce}}</p>
+                        <a class="price">最低价：￥{{item.price}}</a>
+                    </li>
+                </ul>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

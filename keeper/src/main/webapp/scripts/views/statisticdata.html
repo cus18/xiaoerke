@@ -1,0 +1,2143 @@
+<link rel="stylesheet" href="/xiaoerke-wxapp/scripts/styles/statisticdata.less?ver='0.9'" type="text/css" />
+<div ui-view class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+            <ul class="nav nav-tabs">
+                <!--<li ng-class="(zhAnalyse=='true')?'active':'disabled'" ng-click="select('zhAnalyse')">-->
+                    <!--<a>业务综合统计分析(慢)</a>-->
+                <!--</li>-->
+                <li ng-class="(sAnalyse=='true')?'active':'disabled'" ng-click="select('sAnalyse')">
+                    <a>业务综合统计分析(老)</a>
+                </li>
+                <li ng-class="(ysAnalyse=='true')?'active':'disabled'" ng-click="select('ysAnalyse')">
+                    <a>医生信息统计</a>
+                </li>
+                <li ng-class="(yyAnalyse=='true')?'active':'disabled'" ng-click="select('yyAnalyse')">
+                    <a>用户预约统计信息</a>
+                </li>
+                <li ng-class="(zxAnalyse=='true')?'active':'disabled'" ng-click="select('zxAnalyse')">
+                    <a>用户咨询统计信息</a>
+                </li>
+                <li ng-class="(xwtjAnalyse=='true')?'active':'disabled'" ng-click="select('xwtjAnalyse')">
+                    <a>用户行为统计分析</a>
+                </li>
+                <li ng-class="(xwxxAnalyse=='true')?'active':'disabled'" ng-click="select('xwxxAnalyse')">
+                    <a>用户行为详细记录</a>
+                </li>
+                <li ng-class="(jsAnalyse=='true')?'active':'disabled'" ng-click="select('jsAnalyse')">
+                    <a>预约号源结算统计</a>
+                </li>
+                <li ng-class="(qdAnalyse=='true')?'active':'disabled'" ng-click="select('qdAnalyse')">
+                    <a>按渠道统计</a>
+                </li>
+                 <!--<li ng-class="(userAnalyse=='true')?'active':'disabled'" ng-click="select('userAnalyse')">-->
+                    <!--<a>用户分析</a>-->
+                <!--</li>-->
+                 <li ng-class="(userBaseAnalyse=='true')?'active':'disabled'" ng-click="select('userBaseAnalyse')">
+                    <a>基础数据统计</a>
+                </li>
+                <li>
+                    <input placeholder="具有权限的用户输入手机号查看" style="margin-top:5px;width:205px" ng-model="info.userPhone"/>
+                </li>
+            </ul>
+            <div ng-if="(xwtjAnalyse=='true')">
+                <div class="date">
+                    <h3>
+                        宝大夫用户访问统计数据：{{info.startDate}}至{{info.endDate}}
+                        <br/>共{{statistic.totalNum}}人使用了业务;
+                        <br/>其中访问预约业务{{statistic.totalAppNum}}人，新关注用户{{statistic.totalNewAppNum}}人访问预约业务，
+                        老关注用户{{statistic.totalOldAppNum}}人访问预约业务;
+                        <br/>{{statistic.totalConsultNum}}人使用了咨询业务，新关注用户{{statistic.totalNewConsultNum}}人进行了咨询，
+                        老关注用户{{statistic.totalOldConsultNum}}人进行了咨询;
+                        <br/>共预约成功{{statistic.apdocNum}}个号;
+                    </h3>
+                    <div class="start-d">
+                        <label>起始时间：</label>
+                        <input ng-model="info.startDate"/>
+                    </div>
+                    <div class="end-d">
+                        <label>结束时间：</label>
+                        <input ng-model="info.endDate"/>
+
+                </div>
+                    <button id="tijiao" ng-click="checkData()">提交</button>
+                </div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>
+                            编号
+                        </th>
+                        <th>
+                            日期
+                        </th>
+                        <th>
+                            用户
+                        </th>
+                        <th>
+                            来源
+                        </th>
+                        <th>
+                            关注时间
+                        </th>
+                        <th>
+                            咨询次数
+                        </th>
+                        <th>
+                            用户预约医生
+                        </th>
+                        <th>
+                           所有医院
+                        </th>
+                        <th>
+                            所有医生
+                        </th>
+                        <th>
+                            所有科室
+                        </th>
+                        <th>
+                           某医院某科室医生
+                        </th>
+                        <th>
+                           一类疾病
+                        </th>
+                        <th>
+                          一类疾病下的二类疾病
+                        </th>
+                        <th>
+                           二类疾病医生
+                        </th>
+                        <th>
+                            二类疾病关联医生
+                        </th>
+                        <th>
+                            二级疾病关联医院
+                        </th>
+                        <th>
+                            某日期可预约医院
+                        </th>
+                        <th>
+                            某日期可预约医生
+                        </th>
+                        <th>
+                            某日期可预约某医院医生
+                        </th>
+                        <th>
+                           某医生信息
+                        </th>
+                        <th>
+                            某医生某天加号信息
+                        </th>
+                        <th>
+                            某医生某个号信息
+                        </th>
+                        <th>
+                            用户取消预约
+                        </th>
+                        <th>
+                            用户评价医生
+                        </th>
+                        <th>
+                            用户分享
+                        </th>
+                        <th>
+                            用户预约挂号提醒
+                        </th>
+                        <th>
+                            我的关注医生信息
+                        </th>
+                        <th>
+                            号源交通信息
+                        </th>
+                        <th>
+                            号源的状态
+                        </th>
+                        <th>
+                           医生就诊信息
+                        </th>
+                        <th>
+                            医生7天内的出诊位置
+                        </th>
+                        <th>
+                            某出诊地点7天内的出诊信息
+                        </th>
+                        <th>
+                           个人主页
+                        </th>
+                        <th>
+                            我的预约
+                        </th>
+                        <th>
+                            预约信息详情
+                        </th>
+                        <th>
+                            获取个人信息
+                        </th>
+                        <th>
+                            关注医生
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr  ng-repeat="item in statistic.statisticData">
+                        <td>
+                            {{$index+1}}
+                        </td>
+                        <td>
+                            {{item.date}}
+                        </td>
+                        <td>
+                            {{item.name}}
+                        </td>
+                        <td>
+                            {{item.marketid}}
+                        </td>
+                        <td>
+                            {{item.attentiondate}}
+                        </td>
+                        <td>
+                            {{item.consultTimes}}
+                        </td>
+                        <td>
+                            {{item.apdoc}}
+                        </td>
+                        <td>
+                            {{item.alhos}}
+                        </td>
+                        <td>
+                            {{item.ahosaldoc}}
+                        </td>
+                        <td>
+                            {{item.ahosaldep}}
+                        </td>
+                        <td>
+                            {{item.ahosadepaldoc}}
+                        </td>
+                        <td>
+                            {{item.alfirstill}}
+                        </td>
+                        <td>
+                            {{item.afirstalsecill}}
+                        </td>
+                        <td>
+                            {{item.asecillaldoc}}
+                        </td>
+                        <td>
+                            {{item.asecillahosaldoc}}
+                        </td>
+                        <td>
+                            {{item.asecillalhos}}
+                        </td>
+                        <td>
+                            {{item.adatealhos}}
+                        </td>
+                        <td>
+                            {{item.adatealdoc}}
+                        </td>
+                        <td>
+                            {{item.adateahosaldoc}}
+                        </td>
+                        <td>
+                            {{item.adocdetail}}
+                        </td>
+                        <td>
+                            {{item.adocadateserv}}
+                        </td>
+                        <td>
+                            {{item.adocaservdetail}}
+                        </td>
+                        <td>
+                            {{item.canceldoc}}
+                        </td>
+                        <td>
+                            {{item.appraisedoc}}
+                        </td>
+                        <td>
+                            {{item.sharedoc}}
+                        </td>
+                        <td>
+                            {{item.servattention}}
+                        </td>
+                        <td>
+                            {{item.attentiondoc}}
+                        </td>
+                        <td>
+                            {{item.checkservroute}}
+                        </td>
+                        <td>
+                            {{item.checkservstatus}}
+                        </td>
+                        <td>
+                            {{item.checkdocaplocation}}
+                        </td>
+                        <td>
+                            {{item.checkdoc7daylocation}}
+                        </td>
+                        <td>
+                            {{item.checkdoc7dayapbylocation}}
+                        </td>
+                        <td>
+                            {{item.myfirstpage}}
+                        </td>
+                        <td>
+                            {{item.myappointment}}
+                        </td>
+                        <td>
+                            {{item.myapdetail}}
+                        </td>
+                        <td>
+                            {{item.myselfinfo}}
+                        </td>
+                        <td>
+                            {{item.attdoc}}
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!--医生信息统计 1111 zdl-->
+            <div ng-if="(ysAnalyse=='true')">
+                <div class="date">
+                    <div class="end-d">
+                        <label>开始时间：</label>
+                        <input ng-model="info.startDate"/>
+                    </div>
+                    <div class="end-d" style="margin-left:9px">
+                        <label>结束时间：</label>
+                        <input ng-model="info.endDate"/>
+                    </div>
+                    <button id="tijiao" ng-click="doctorAnalyData()">提交</button>
+                </div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>
+                            微信名
+                        </th>
+                        <th>
+                            OpenID
+                        </th>
+                        <th>
+                            医生电话
+                        </th>
+                        <th>
+                            来源（BD）
+                        </th>
+                        <th>
+                            关注时间
+                        </th>
+                        <th>
+                            医生姓名
+                        </th>
+                        <th>
+                            医院
+                        </th>
+                        <th>
+                            科室
+                        </th>
+                        <th>
+                            累计号源总数
+                        </th>
+                        <th>
+                            已预约号源数
+                        </th>
+                        <th>
+                            剩余预约号源数
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in doctorStatistic">
+                        <td>
+                            {{item.nickname}}
+                        </td>
+                        <td>
+                            {{item.openid}}
+                        </td>
+                        <td>
+                            {{item.phone}}
+                        </td>
+                        <td>
+                            {{item.marketer}}
+                        </td>
+                        <td>
+                            {{item.dateDisplay}}
+                        </td>
+                        <td>
+                            {{item.doctorName}}
+                        </td>
+                        <td>
+                            {{item.hospitalName}}
+                        </td>
+                        <td>
+                            {{item.department}}
+                        </td>
+                        <td>
+                            {{item.registerServiceCount}}
+                        </td>
+                        <td>
+                            {{item.appointNumberAlready}}
+                        </td>
+                        <td>
+                            {{item.appointNumber}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div ng-if="(sAnalyse=='true')">
+                <div class="date">
+                    <div class="end-d">
+                        <label>开始时间：</label>
+                        <input ng-model="info.startDate"/>
+                    </div>
+                    <div class="end-d" style="margin-left:9px">
+                        <label>结束时间：</label>
+                        <input ng-model="info.endDate"/>
+                    </div>
+                    <button id="tijiao" ng-click="analyData()">提交</button>
+                </div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>
+                           日期
+                        </th>
+                        <th>
+                            新关注数
+                        </th>
+                        <th>
+                            取消关注数
+                        </th>
+                        <th>
+                            净关注数
+                        </th>
+                        <th>
+                            累计关注数
+                        </th>
+                        <th>
+                            新增医生数
+                        </th>
+                        <th>
+                            医生总数
+                        </th>
+                        <th>
+                            新增订单数
+                        </th>
+                        <th>
+                            取消订单数
+                        </th>
+                        <th>
+                            成功订单数
+                        </th>
+                        <th>
+                            成功订单总数
+                        </th>
+                        <th>
+                            净增咨询数
+                        </th>
+                        <th>
+                            已咨询总人数
+                        </th>
+                        <th>
+                            新关注咨询人数
+                        </th>
+                        <th>
+                            新关注预约人数
+                        </th>
+
+                        <th>
+                            <!--新关注活跃数-->
+                            郑玉巧说（新关注）
+                        </th>
+                        <th>
+                            老用户咨询人数
+                        </th>
+                        <th>
+                            老用户预约人数
+                        </th>
+
+                        <th>
+                            <!--老用户活跃数-->
+                            郑玉巧说（老关注）
+                        </th>
+                        <th>
+                            当天总活跃总数
+                        </th>
+                        <th>
+                            累计活跃总数
+                        </th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in statisticOverall.listAnalyData">
+                        <td>
+                            {{item.date}}<!--得良 日期 -->
+                        </td>
+                        <td>
+                            {{item.new_add_users}}<!--得良 新关注数 -->
+                        </td>
+                        <td>
+                            {{item.cancel_new_users}}<!--取消关注数 -->
+                        </td>
+                        <td>
+                            {{item.actual_new_user}}<!--净关注数-->
+                        </td>
+                        <td>
+                            {{item.sum_user}}<!--累计关注数-->
+                        </td>
+                        <td>
+                            {{item.new_add_doctor}}<!--新增医生数-->
+                        </td>
+                        <td>
+                            {{item.total_doctor}}<!--医生总数-->
+                        </td>
+                        <td>
+                            {{item.new_order_number}}<!--新增订单数-->
+                        </td>
+                        <td>
+                            {{item.unsuccessful_order}}<!--不成功订单数-->
+                        </td>
+                        <td>
+                            {{item.successful_order}}<!--成功订单数-->
+                        </td>
+                        <td>
+                            {{item.account_success_order}}<!--累计成功订单数-->
+                        </td>
+                        <td>
+                            {{item.new_add_consultation_number}}<!--净增咨询数-->
+                        </td>
+                        <td>
+                            {{item.count_consultation_number}}<!--已咨询人数-->
+                        </td>
+                        <td>
+                            {{item.activate_new_user}}<!--新关注咨询-->
+                        </td>
+                        <td>
+                            {{item.activate_order}}<!--新关注预约-->
+                        </td>
+                        <td>
+                            <!--{{item.appoint}}&lt;!&ndash;新用户活跃数&ndash;&gt;-->
+                            {{item.newZhengYuQiao}}<!--新增郑玉巧说-->
+                        </td>
+                        <td>
+                            {{item.consultation}}<!--老用户咨询人数-->
+                        </td>
+                        <td>
+                            {{item.activate_order_consultation_number}}<!--老用户预约人数-->
+                        </td>
+
+                        <td>
+                            <!--{{item.sumcon}}&lt;!&ndash;老用户活跃数&ndash;&gt;-->
+                            {{item.oldZhengYuQiao}}<!--老用户郑玉巧说-->
+                        </td>
+                        <td>
+                            {{item.alreadyCon}}<!--当天总用户数-->
+                        </td>
+                        <td>
+                            {{item.sumAccount}}<!--累计活跃总数-->
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!--<div ng-if="(zhAnalyse=='true')">-->
+                <!--<div class="date">-->
+                    <!--<div class="end-d">-->
+                        <!--<label>开始时间：</label>-->
+                        <!--<input ng-model="info.startDate"/>-->
+                    <!--</div>-->
+                    <!--<div class="end-d" style="margin-left:9px">-->
+                        <!--<label>结束时间：</label>-->
+                        <!--<input ng-model="info.endDate"/>-->
+                    <!--</div>-->
+                    <!--<button id="tijiao" ng-click="checkzhData()">提交</button>-->
+                <!--</div>-->
+                <!--<br/>-->
+                <!--<div style="margin-left:2px;-->
+                     <!--margin-top: 61px;font-size: 18px" ng-click="select('xwtjAnalyse')"><a>咨询信息</a></div>-->
+                <!--<table class="table">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th>-->
+                            <!--关注用户数-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--取消关注用户数-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--净增关注用户数-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--累计用户数-->
+                        <!--</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.newAddNum}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.cancelNum}}-->
+                        <!--</td>-->
+                        <!--<td width="5px">-->
+                            <!--{{statisticzhData.jinAddNum}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.leiJiNum}}-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+
+                <!--<br/>-->
+                <!--<div style="margin-left:2px;font-size:18px"><a href="#">医生信息</a></div>-->
+                <!--<table class="table">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th>-->
+                            <!--新增医生数-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--累计医生数-->
+                        <!--</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.doctorNewNum}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.doctorAllNum}}-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+
+                <!--<br/>-->
+                <!--<div style="margin-left:2px;font-size:18px"><a href="#">预约信息</a></div>-->
+                <!--<table class="table">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th>-->
+                            <!--新增订单数-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--取消订单数-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--净增成功订单数-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--累计成功订单数-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--新关注用户成功订单数-->
+                        <!--</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.appointmentNum}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.cancelAppointmentNum}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.appointmentJinNum}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.appointmentAllJinNum}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.newUserAppointmentNum}}-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+
+                <!--<br/>-->
+                <!--<div style="margin-left:2px;font-size:18px"><a href="#">咨询信息</a></div>-->
+                <!--<table class="table">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th>-->
+                            <!--新增咨询数（人次）-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--新增无效咨询（人次）-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--净增有效咨询（人次）-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--累计有效咨询（人次）-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--新关注用户有效咨询（人次）-->
+                        <!--</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.allConsult}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.noUseConsult}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.jinConsult}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.leiJiUseConsult}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.newUserAllUseConsult}}-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+
+                <!--<br/>-->
+                <!--<div style="margin-left:2px;font-size:18px">-->
+                    <!--<a href="#">访问预约大夫模块（目前系统内，总关注用户{{statisticzhData.allUserNum}}）-->
+                    <!--</a>-->
+                <!--</div>-->
+                <!--<table class="table">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th>-->
+                            <!--在这个时间段内总人数-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--最近一天-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--最近一周-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--最近一月-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--最近一季度-->
+                        <!--</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.activeUserNormalStatistic}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.activeUserNormalStatistic1day}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.activeUserNormalStatistic7day}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.activeUserNormalStatistic1month}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.activeUserNormalStatistic1quarter}}-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+
+                <!--<br/>-->
+                <!--<div style="margin-left:2px;font-size:18px">-->
+                    <!--<a href="#">整体活跃用户（目前系统内，总关注用户{{statisticzhData.allUserNum}}）-->
+                    <!--</a>-->
+                <!--</div>-->
+                <!--<table class="table">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th>-->
+                            <!--总体人数-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--最近一天-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--最近一周-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--最近一月-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--最近一季度-->
+                        <!--</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.activeUserStatistic}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.activeUserStatistic1day}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.activeUserStatistic7day}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.activeUserStatistic1month}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.activeUserStatistic1quarter}}-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+
+                <!--<div style="margin-left:2px;font-size:18px">-->
+                    <!--<a href="#">有效咨询用户-->
+                    <!--</a>-->
+                <!--</div>-->
+                <!--<table class="table">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th>-->
+                            <!--总体有效咨询人数（人）-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--最近一天-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--最近一周-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--最近一月-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--最近一季度-->
+                        <!--</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getConsultStatistic}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getConsultStatistic1day}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getConsultStatistic7day}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getConsultStatistic1month}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.activeUserStatistic1quarter}}-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+
+                <!--<div style="margin-left:2px;font-size:18px">-->
+                    <!--<a href="#">有效咨询频次-->
+                    <!--</a>-->
+                <!--</div>-->
+                <!--<table class="table">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th>-->
+                            <!--有效咨询频次-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--总体频次-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--最近一天-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--最近一周-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--最近一月-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--最近一季度-->
+                        <!--</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--最少-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getConsultStatisticMin}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getConsultStatistic1dayMin}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getConsultStatistic7dayMin}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getConsultStatistic1monthMin}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.activeUserStatistic1quarterMin}}-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--最多-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getConsultStatisticMax}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getConsultStatistic1dayMax}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getConsultStatistic7dayMax}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getConsultStatistic1monthMax}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.activeUserStatistic1quarterMax}}-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--平均-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getConsultStatisticAverage}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getConsultStatistic1dayAverage}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getConsultStatistic7dayAverage}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getConsultStatistic1monthAverage}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.activeUserStatistic1quarterAverage}}-->
+                        <!--</td>-->
+                    <!--</tr>-->
+
+                    <!--</tbody>-->
+                <!--</table>-->
+
+
+                <!--<div style="margin-left:2px;font-size:18px">-->
+                    <!--<a href="#">咨询激活时长-->
+                    <!--</a>-->
+                <!--</div>-->
+                <!--<table class="table">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th>-->
+                            <!--激活时长（天）-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--注：针对该时段内首次激活咨询业务的用户，自关注日期到激活的天数-->
+                        <!--</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--最少-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getConsultStatisticMin}}-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--最多-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getConsultStatisticMax}}-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--平均-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getConsultStatisticAverage}}-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+
+                <!--<div style="margin-left:2px;font-size:18px">-->
+                    <!--<a href="#">有效预约用户-->
+                    <!--</a>-->
+                <!--</div>-->
+                <!--<table class="table">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th>-->
+                            <!--总体人数-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--最近一天-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--最近一周-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--最近一月-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--最近一季度-->
+                        <!--</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getcountValidReserve}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getcountValidReserve1day}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getcountValidReserve7day}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getcountValidReserve1month}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getcountValidReserve1quarter}}-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+				  <!--<div style="margin-left:2px;font-size:18px">-->
+                    <!--<a href="#">有效订单频次-->
+                    <!--</a>-->
+                <!--</div>-->
+                <!--<table class="table">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th>-->
+                            <!--有效订单频次-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--总体频次-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--最近一天-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--最近一周-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--最近一月-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--最近一季度-->
+                        <!--</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--最少-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getValidReserveConsultCountMin}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getValidReserveConsultCount1dayMin}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getValidReserveConsultCount7dayMin}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getValidReserveConsultCount1monthMin}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getValidReserveConsultCount1quarterMin}}-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--最多-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getValidReserveConsultCountMax}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getValidReserveConsultCount1dayMax}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getValidReserveConsultCount7dayMax}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getValidReserveConsultCount1monthMax}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getValidReserveConsultCount1quarterMax}}-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--平均-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getValidReserveConsultCountAvg}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getValidReserveConsultCount1dayAvg}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getValidReserveConsultCount7dayAvg}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getValidReserveConsultCount1monthAvg}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getValidReserveConsultCount1quarterAvg}}-->
+                        <!--</td>-->
+                    <!--</tr>-->
+
+                    <!--</tbody>-->
+                <!--</table>-->
+
+
+                <!--<div style="margin-left:2px;font-size:18px">-->
+                    <!--<a href="#">订单激活时长-->
+                    <!--</a>-->
+                <!--</div>-->
+                <!--<table class="table">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th>-->
+                            <!--激活时长（天）-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--注：针对该时段内首次激活订单业务的用户，自关注日期到激活的天数-->
+                        <!--</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--最少-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getValidReserveConsultMin}}-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--最多-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getValidReserveConsultMax}}-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--平均-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getValidReserveConsultAvg}}-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+            <!--<div style="margin-left:2px;font-size:18px">-->
+                    <!--<a href="#">沉寂用户-->
+                    <!--</a>-->
+                <!--</div>-->
+                <!--<table class="table">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th>-->
+                            <!--总体人数-->
+                        <!--</th>-->
+                        <!--<th>-->
+                        <!--</th>-->
+                        <!--<th>-->
+                        <!--</th>-->
+                        <!--<th>-->
+                        <!--</th>-->
+                        <!--<th>-->
+                        <!--</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--{{statisticzhData.getcountStillnessUser}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                        <!--{{statisticzhData.getcountStillnessUserLog}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                        <!--{{statisticzhData.getcountStillnessUserWeChat}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                        <!--{{statisticzhData.getcountStillnessUserList}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!-- -->
+              
+            <div ng-if="(yyAnalyse=='true')">
+                <div class="date">
+                    <div class="end-d">
+                        <label>开始时间：</label>
+                        <input ng-model="info.startDate"/>
+                    </div>
+                    <div class="end-d" style="margin-left:9px">
+                        <label>结束时间：</label>
+                        <input ng-model="info.endDate"/>
+                    </div>
+                    <button id="tijiao" ng-click="checkyyData()">提交</button>
+                </div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>
+                            编号
+                        </th>
+                        <th>
+                            用户名（微信）
+                        </th>
+                        <th>
+                            OpenID
+                        </th>
+                        <th>
+                            电话
+                        </th>
+                        <th>
+                            来源
+                        </th>
+                        <th>
+                            关注时间
+                        </th>
+                        <th>
+                            取消关注时间
+                        </th>
+                        <th>
+                            预约医院
+                        </th>
+                        <th>
+                            预约医生
+                        </th>
+                        <th>
+                            所属科室
+                        </th>
+                        <th>
+                            预约时间
+                        </th>
+                        <th>
+                            就诊时间
+                        </th>
+                        <th>
+                            宝宝姓名
+                        </th>
+                        <th>
+                            家长手机号
+                        </th>
+                        <th>
+                            疾病描述
+                        </th>
+                        <th>
+                            预约状态
+                        </th>
+                        <th>
+                            取消预约时间
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in statisticyyData">
+                        <td>
+                            {{$index+1}}
+                        </td>
+                        <td>
+                            {{item.nickName}}<!--得良 新关注数 -->
+                        </td>
+                        <td width="5px">
+                            {{item.openId}}<!--取消关注数 -->
+                        </td>
+                        <td>
+                            {{item.userPhone}}<!--净关注数-->
+                        </td>
+                        <td>
+                            {{item.marketer}}<!--累计关注数-->
+                        </td>
+                        <td>
+                            {{item.attentionDate}}<!--新增医生数-->
+                        </td>
+                        <td>
+                            {{item.cancelDate}}<!--医生总数-->
+                        </td>
+                        <td>
+                            {{item.appointmentHospital}}<!--新增订单数-->
+                        </td>
+                        <td>
+                            {{item.appointmentDoctor}}<!--不成功订单数-->
+                        </td>
+                        <td>
+                            {{item.departmentName}}<!--成功订单数-->
+                        </td>
+                        <td>
+                            {{item.appointmentTime}}<!--累计成功订单数-->
+                        </td>
+                        <td>
+                            {{item.visitTime}}<!--净增咨询数-->
+                        </td>
+                        <td>
+                            {{item.babyName}}<!--已咨询人数-->
+                        </td>
+                        <td>
+                            {{item.parentPhone}}<!--新关注咨询-->
+                        </td>
+                        <td>
+                            {{item.illness}}<!--新关注咨询-->
+                        </td>
+                        <td>
+                            {{item.status}}<!--新关注预约-->
+                        </td>
+                        <td>
+                            {{item.appointmentCancelTime}}<!--新关注预约-->
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!--<div ng-if="(xwtjAnalyse=='true')">-->
+                <!--<div class="date">-->
+                    <!--<div class="end-d">-->
+                        <!--<label>开始时间：</label>-->
+                        <!--<input ng-model="info.startDate"/>-->
+                    <!--</div>-->
+                    <!--<div class="end-d" style="margin-left:9px">-->
+                        <!--<label>结束时间：</label>-->
+                        <!--<input ng-model="info.endDate"/>-->
+                    <!--</div>-->
+                    <!--<button id="tijiao" ng-click="checkxwtjData()">提交</button>-->
+                <!--</div>-->
+                <!--<table class="table">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th>-->
+                            <!--编号-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--用户名（微信）-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--OpenID-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--电话-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--来源-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--关注时间-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--取消关注时间-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--咨询次数-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--用户预约医生次数-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--所有医院-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--所有医生-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--所有科室-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--某医院某科室医生-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--一类疾病-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--一类疾病下的二类疾病-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--二类疾病医生-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--二类疾病关联医生-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--二类疾病关联医院-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--某日期可预约医院-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--某日期可预约医生-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--某日期可预约某医院医生-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--某医生信息-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--某医生某天加号信息-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--某医生某个号信息-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--用户取消预约-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--用户评价医生-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--用户分享-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--用户预约挂号提醒-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--我的关注医生信息-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--号源交通信息-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--号源的状态-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--医生的就诊信息-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--医生7天内的出诊位置-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--某出诊地点7天内的出诊信息-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--个人主页-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--我的预约-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--预约信息详情-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--获取个人信息-->
+                        <!--</th>-->
+                        <!--<th>-->
+                            <!--关注医生-->
+                        <!--</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr ng-repeat="item in statisticyyData">-->
+                        <!--<td>-->
+                            <!--{{$index+1}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{item.nickName}}&lt;!&ndash;得良 新关注数 &ndash;&gt;-->
+                        <!--</td>-->
+                        <!--<td width="5px">-->
+                            <!--{{item.openId}}&lt;!&ndash;取消关注数 &ndash;&gt;-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{item.userPhone}}&lt;!&ndash;净关注数&ndash;&gt;-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{item.marketer}}&lt;!&ndash;累计关注数&ndash;&gt;-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{item.attentionDate}}&lt;!&ndash;新增医生数&ndash;&gt;-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{item.cancelDate}}&lt;!&ndash;医生总数&ndash;&gt;-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{item.appointmentHospital}}&lt;!&ndash;新增订单数&ndash;&gt;-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{item.appointmentDoctor}}&lt;!&ndash;不成功订单数&ndash;&gt;-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{item.departmentName}}&lt;!&ndash;成功订单数&ndash;&gt;-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{item.appointmentTime}}&lt;!&ndash;累计成功订单数&ndash;&gt;-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{item.visitTime}}&lt;!&ndash;净增咨询数&ndash;&gt;-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{item.babyName}}&lt;!&ndash;已咨询人数&ndash;&gt;-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{item.parentPhone}}&lt;!&ndash;新关注咨询&ndash;&gt;-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{item.illness}}&lt;!&ndash;新关注咨询&ndash;&gt;-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{item.status}}&lt;!&ndash;新关注预约&ndash;&gt;-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--{{item.appointmentCancelTime}}&lt;!&ndash;新关注预约&ndash;&gt;-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+            <!--</div>-->
+            <div ng-if="(xwxxAnalyse=='true')">
+                <div class="date">
+                    <div class="end-d">
+                        <label>开始时间：</label>
+                        <input ng-model="info.startDate"/>
+                    </div>
+                    <div class="end-d" style="margin-left:9px">
+                        <label>结束时间：</label>
+                        <input ng-model="info.endDate"/>
+                    </div>
+                      <div class="end-d" style="margin-left:9px">
+                        <label>openid(快)：</label>
+                        <input ng-model="info.openid"/>
+                    </div>
+                    <button id="tijiao" ng-click="checkUserFullTodoList()">提交</button>
+                </div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>
+                            步骤
+                        </th>
+                        <th>
+                            操作时间
+                        </th>
+                        <th>
+                            点击链接
+                        </th>
+                        <th>
+                            点击链接名称
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in userFullTodoList">
+                        <td>
+                            {{$index+1}}
+                        </td>
+                        <td >
+                            {{item.create_date}} 
+                        </td>
+                        <td>
+                            {{item.request_uri}} 
+                        </td>
+                        <td>
+                            {{item.title}} 
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div ng-if="(jsAnalyse=='true')">
+                <div class="date">
+                    <div class="start-d">
+                        <label>起始时间：</label>
+                        <input ng-model="info.startDate"/>
+                    </div>
+                    <div class="end-d">
+                        <label>结束时间：</label>
+                        <input ng-model="info.endDate"/>
+                    </div>
+                    <button id="tijiao" ng-click="checkjsData()">提交</button>
+                </div>
+            </div>
+            <div ng-if="(jsAnalyse=='true')" style="margin-top:100px;font-size:21px;margin-left:26px;">
+                <div ng-repeat="item in statisticjsData.orderData" style="margin-top:20px">
+                    <div ng-repeat="item1 in item.hospitalList" style="margin-left: 29px;font-size: 20px;margin-top:7px;">
+                        <a>{{item.name}}—{{item1.name}}（{{item1.doctorList.length}}个预约）</a>
+                        <table class="table" style="margin-top:5px">
+                            <thead>
+                            <tr>
+                                <th>
+                                    所属科室
+                                </th>
+                                <th>
+                                    医生手机号
+                                </th>
+                                <th>
+                                    预约时间
+                                </th>
+                                <th>
+                                    就诊时间
+                                </th>
+                                <th>
+                                    宝宝姓名
+                                </th>
+                                <th>
+                                    家长手机号
+                                </th>
+                                <th>
+                                    疾病描述
+                                </th>
+                                <th>
+                                    预约状态
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="item2 in item1.doctorList">
+                                <td>
+                                    {{item2.departmentLevel1}}
+                                </td>
+                                <td>
+                                    {{item2.doctorPhone}}
+                                </td>
+                                <td>
+                                    {{item2.orderCreateDate}}
+                                </td>
+                                <td>
+                                    {{item2.visitDate}}
+                                </td>
+                                <td>
+                                    {{item2.babyName}}
+                                </td>
+                                <td>
+                                    {{item2.phone}}
+                                </td>
+                                <td>
+                                    {{item2.illness}}
+                                </td>
+                                <td>
+                                    {{item2.status}}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="(qdAnalyse=='true')">
+                <div class="date">
+                    <div class="end-d">
+                        <label>开始时间：</label>
+                        <input ng-model="info.startDate"/>
+                    </div>
+                    <div class="end-d" style="margin-left:9px">
+                        <label>结束时间：</label>
+                        <input ng-model="info.endDate"/>
+                    </div>
+                    <button id="tijiao" ng-click="checkqdData()">提交</button>
+                </div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>
+                            日期
+                        </th>
+                        <th>
+                            推广渠道
+                        </th>
+                        <th>
+                            新关注用户数
+                        </th>
+                        <th>
+                            取消关注用户数
+                        </th>
+                        <th>
+                            净关注用户数
+                        </th>
+                        <th>
+                            累计用户数
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in statistictQdData">
+                        <td>
+                            {{info.startDate}}—{{info.endDate}}
+                        </td>
+                        <td>
+                           {{item.marketer}}
+                        </td>
+                        <td>
+                            {{item.newAddNum}}
+                        </td>
+                        <td>
+                            {{item.cancelNum}}
+                        </td>
+                        <td>
+                            {{item.jinAddNum}}
+                        </td>
+                        <td>
+                            {{item.leijiNum}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!--咨询统计  zdl-->
+            <div ng-if="(zxAnalyse=='true')">
+                <div class="date">
+                    <div class="end-d">
+                        <label>开始时间：</label>
+                        <input ng-model="info.startDate"/>
+                    </div>
+                    <div class="end-d" style="margin-left:9px">
+                        <label>结束时间：</label>
+                        <input ng-model="info.endDate"/>
+                    </div>
+                    <button id="tijiao" ng-click="consultData()">提交</button>
+                </div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>
+                            微信名
+                        </th>
+                        <th>
+                            OpenID
+                        </th>
+                        <th>
+                            来源
+                        </th>
+                        <th>
+                            关注时间
+                        </th>
+                        <th>
+                            咨询开始时间
+                        </th>
+                        <th>
+                            是否有效咨询
+                        </th>
+                        <th>
+                            提问次数
+                        </th>
+                        <th>
+                            咨询关闭时间
+                        </th>
+                        <th>
+                           使用预约频道次数
+                        </th>
+                        <th>
+                            成功预约次数
+                        </th>
+                       <th>
+                            约单次数
+                        </th>
+                        <th>
+                            访问页面数
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in statisticConsultData">
+                        <td>
+                            {{item.nickname}}
+                        </td>
+                        <td>
+                            {{item.openid}}
+                        </td>
+                        <td>
+                            {{item.marketer}}
+                        </td>
+                        <td>
+                            {{item.date}}
+                        </td>
+                        <td>
+                            {{item.openWindow}}
+                        </td>
+                        <td>
+                            {{item.nullity}}
+                        </td>
+                        <td>
+                            {{item.consult_count}}
+                        </td>
+                        <td>
+                            {{item.closeWindow}}
+                        </td>
+                         <td>
+                            {{item.validRNum}}
+                        </td>
+                         <td>
+                            {{item.victoryRNum}}
+                        </td>
+                         <td>
+                            {{item.validNum}}
+                        </td>
+                         <td>
+                            {{item.visitRNum}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+<!--             页面统计  张博-->
+			<!--<div ng-if="(userAnalyse=='true')">-->
+                <!--<div class="date">-->
+                    <!--<div class="end-d">-->
+                        <!--<label>开始时间：</label>-->
+                        <!--<input ng-model="info.startDate"/>-->
+                    <!--</div>-->
+                    <!--<div class="end-d" style="margin-left:9px">-->
+                        <!--<label>结束时间：</label>-->
+                        <!--<input ng-model="info.endDate"/>-->
+                    <!--</div>-->
+                    <!--<button id="tijiao" ng-click="userconsultData()">提交</button>-->
+                <!--</div>-->
+                <!--<table class="table">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                    <!--<th>-->
+                           <!-- -->
+                        <!--</th>-->
+                           <!--<th>-->
+                           <!--访问总页面数-->
+                        <!--</th>-->
+                               <!--<th>-->
+                           <!--咨询大夫-->
+                        <!--</th>-->
+                               <!--<th>-->
+                           <!--预约大夫频道-->
+                        <!--</th>-->
+                               <!--<th>-->
+                           <!--郑玉巧说频道-->
+                        <!--</th>-->
+                               <!--<th>-->
+                           <!--医院首页-->
+                        <!--</th>-->
+                               <!--<th>-->
+                           <!--疾病首页-->
+                        <!--</th>-->
+                               <!--<th>-->
+                          <!--时间首页-->
+                        <!--</th>-->
+                               <!--<th>-->
+                           <!--医院首页-医院医生列表页面-->
+                        <!--</th>-->
+                               <!--<th>-->
+                           <!--疾病首页二类疾病医生列表页面-->
+                        <!--</th>-->
+                               <!--<th>-->
+                           <!--获取某个预约日期下的可预约医生-->
+                        <!--</th>-->
+                               <!--<th>-->
+                           <!--医生详情页面-->
+                        <!--</th>-->
+                               <!--<th>-->
+                           <!--订单填写页面-->
+                        <!--</th>-->
+                               <!--<th>-->
+                           <!--预约成功页面-->
+                        <!--</th>-->
+                        <!--<th>-->
+                           <!--详细路线页面-->
+                        <!--</th>-->
+                        <!--<th>-->
+                           <!--取消预约页面-->
+                        <!--</th>-->
+                        <!--<th>-->
+                           <!--取消预约成功页面-->
+                        <!--</th>-->
+                        <!--<th>-->
+                           <!--我的页面-->
+                        <!--</th>-->
+                        <!--<th>-->
+                           <!--我的关注列表页面-->
+                        <!--</th>-->
+                        <!--<th>-->
+                          <!--我的预约页面 -->
+                        <!--</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<td>-->
+                    <!--人数-->
+                        <!--</td>-->
+                         <!--<td>-->
+                        <!--{{userData.sumUser}}-->
+                        <!--</td> <td>-->
+                        <!--{{userData.consultUser}}-->
+                        <!--</td> <td>-->
+                        <!--{{userData.appointUser}}-->
+                        <!--</td> <td>-->
+                        <!--{{userData.zhengYuQiaoUser}}-->
+                        <!--</td> <td>-->
+                        <!--{{userData.hospitalSize}}-->
+                        <!--</td> <td>-->
+                        <!--{{userData.illnessCountUser}}-->
+                        <!--</td> <td>-->
+                        <!--{{userData.dateCountUser}}-->
+                        <!--</td> <td>-->
+                        <!--{{userData.hospitalDoctorList}}-->
+                        <!--</td> <td>-->
+                        <!--{{userData.illnessLevel2DoctorList}}-->
+                        <!--</td> <td>-->
+                        <!--{{userData.appointDoctorList}}-->
+                        <!--</td> <td>-->
+                        <!--{{userData.doctorDetail}}-->
+                        <!--</td> <td>-->
+                        <!--{{userData.orderSave}}-->
+                        <!--</td> <td>-->
+                        <!--{{userData.appointSuccess}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                        <!--{{userData.mapLine}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                        <!--{{userData.cancelOrder}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                        <!--{{userData.cancelOrderVictory}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                        <!--{{userData.myPage}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                        <!--{{userData.myFollowerPage}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                        <!--{{userData.myOrder}}-->
+                        <!--</td>-->
+                        <!--<tr>-->
+                             <!--<td>-->
+                    <!--次数-->
+                        <!--</td>-->
+                         <!--<td>-->
+                        <!--</td> <td>-->
+                        <!--{{userData.visvitDoctorNums}}-->
+                        <!--</td> <td>-->
+                        <!--{{userData.orderDoctorNums}}-->
+                        <!--</td> <td>-->
+                        <!--{{userData.zyqUserNums}}-->
+                        <!--</td> <td>-->
+                        <!--{{userData.hospitalNums}}-->
+                        <!--</td> <td>-->
+                        <!--{{userData.illnessNums}}-->
+                        <!--</td> <td>-->
+                        <!--{{userData.visitTimeNums}}-->
+                        <!--</td> <td>-->
+                        <!--{{userData.hospitalDoctorListNums}}-->
+                        <!--</td> <td>-->
+                        <!--{{userData.illnessLevel2DoctorListNums}}-->
+                        <!--</td> <td>-->
+                        <!--{{userData.appointDoctorListNums}}-->
+                        <!--</td> <td>-->
+                        <!--{{userData.doctorDetailNums}}-->
+                        <!--</td> <td>-->
+                        <!--{{userData.orderSaveNums}}-->
+                        <!--</td> <td>-->
+                        <!--{{userData.appointSuccessNums}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                        <!--{{userData.routeDetailNums}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                        <!--{{userData.cancelNums}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                        <!--{{userData.cancelVictoryNums}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                        <!--{{userData.myPageNums}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                        <!--{{userData.myFollowerPageNums}}-->
+                        <!--</td>-->
+                        <!--<td>-->
+                        <!--{{userData.myOrderNums}}-->
+                        <!--</td>-->
+                        <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+            <!--</div>-->
+            
+            <!--             基础数据统计  张博-->
+			<div ng-if="(userBaseAnalyse=='true')">
+                <div class="date">
+                    <div class="end-d">
+                        <label>开始时间：</label>
+                        <input ng-model="info.startDate"/>
+                    </div>
+                    <div class="end-d" style="margin-left:9px">
+                        <label>结束时间：</label>
+                        <input ng-model="info.endDate"/>
+                    </div>
+                    <button id="tijiao" ng-click="getBaseData()">提交</button>
+                     <!--<button id="tijiao" ng-click="addBaseData()">测试</button>-->
+                </div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                    <th>
+                        时间\指标  
+                        </th>
+                           <th>
+                           预约大夫
+                        </th>
+                               <th>
+                           新增订单
+                        </th>
+                               <th>
+                           取消订单
+                        </th>
+                               <th>
+                           净增订单
+                        </th>
+                               <th>
+                           累计有效订单
+                        </th>
+                               <th>
+                           当天就诊订单
+                        </th>
+                               <th>
+                         累计已就诊订单
+                        </th>
+                               <th>
+                           咨询大夫
+                        </th>
+                               <th>
+                           有效咨询人数
+                        </th>
+                               <th>
+                           累计有效咨询人数
+                        </th>
+                               <th>
+                          郑玉巧说
+                        </th>
+                               <th>
+                           新增阅读人数
+                        </th>
+                               <th>
+                          累计阅读人数
+                        </th>
+                        <th>
+                           新增阅读人次
+                        </th>
+                        <th>
+                           累计阅读人次
+                        </th>
+                        <th>
+                           转发分享人次
+                        </th>
+                         <th>
+                          按Cookie统计人数
+                        </th>
+                        <th>
+                           用户数
+                        </th>
+                        <th>
+                           新增
+                        </th>
+                        <th>
+                          取消
+                        </th>
+                        <th>
+                          净增
+                        </th>
+                        <th>
+                          累计用户
+                        </th>
+                        <th>
+                          医生数
+                        </th>
+                        <th>
+                          新增
+                        </th>
+                        <th>
+                          累计
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="userData in statisticBaseData">
+                             <td>
+                    {{userData.CREATED}}
+                        </td>
+                         <td>
+                        </td> <td>
+                        {{userData.addOrder}}
+                        </td> <td>
+                        {{userData.cancelOrder}}
+                        </td> <td>
+                        {{userData.netOrder}}
+                        </td> <td>
+                        {{userData.totalAddOrder}}
+                        </td> <td>
+                        {{userData.thatdayOrder}}
+                        </td> <td>
+                        {{userData.totalVictoryOrder}}
+                        </td> <td></td><td>
+                        {{userData.victorynums}}
+                        </td> <td>
+                        {{userData.totalvictorynums}}
+                        </td> <td></td><td>
+                        {{userData.addreadnums}}
+                        </td> <td>
+                        {{userData.totalreadnums}}
+                        </td> <td>
+                        {{userData.addsecreadnums}}
+                        </td> <td>
+                        {{userData.totalsecreadnums}}
+                        </td>
+                        <td>
+                        {{userData.sharenums}}
+                        </td>
+                         <td>
+                        {{userData.cookieTotal}}
+                        </td>
+                        <td></td><td>
+                        {{userData.addusernum}}
+                        </td>
+                        <td>
+                        {{userData.cancelnum}}
+                        </td>
+                        <td>
+                        {{userData.netusernum}}
+                        </td>
+                        <td>
+                        {{userData.totalusernum}}
+                        </td>
+                        <td></td><td>
+                        {{userData.adddoctornum}}
+                        </td>
+                         <td>
+                        {{userData.netdoctornum}}
+                        </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>

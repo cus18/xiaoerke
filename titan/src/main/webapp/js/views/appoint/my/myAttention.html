@@ -1,0 +1,60 @@
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title={{title0}} ng-init="doRefresh()">
+    <ion-spinner ng-show="dataLoading"class="loadPic"></ion-spinner>
+    <div bdf-head="title"></div>
+    <ion-content class="myAttention">
+        <ion-scroll direction="y" has-bouncing="true">
+                <div  ng-repeat="item in departmentData" ng-if="!isBlank" class="item-wrap">
+                    <div class="item item-thumbnail-left doctorInfo item-borderless"
+                         ng-click="doctorAppointment(item.doctorId,item.visitInfo[0].available_time,
+                                    item.visitInfo[0].name,item.visitInfo[0].location,item.visitInfo[0].position,
+                                    item.visitInfo[0].location_id,'')">
+                        <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.doctorId}}" class="doctorPhoto"/>
+                        <h2>{{item.doctorName}}&nbsp;&nbsp;<span>{{item.position1}}&nbsp;{{item.position2}}</span></h2>
+                        <p>{{item.hospitalName}}-{{item.departmentFullName}}</p>
+                        <p>擅长：{{item.expertise}}</p>
+                    </div>
+                    <ul class="item item-borderless add-list"
+                        ng-repeat="ite in item.visitInfo"
+                        ng-if="ite.available_time>=0"
+                        ng-click="doctorAppointment(item.doctorId,
+                                ite.available_time,
+                                ite.name,
+                                ite.location,
+                                ite.position,
+                                ite.location_id,
+                                '')">
+                         <li>
+                             <span class="circle">{{$index+1}}</span>
+                             {{ite.name}}&nbsp;&nbsp;{{ite.location}} &nbsp;&nbsp;{{ite.position}}
+                             <!--<span style="color:#fe717b" ng-if="ite.service_type ==3 ||ite.service_type ==4 ">&nbsp;&nbsp;( 特需 )</span>-->
+                         </li>
+                        <span class="button1" ng-if="ite.available_time>=0&&ite.available_time<7">
+                          {{week[ite.available_time]}}{{ite.latest_time}}可约
+                        </span>
+                        <span class="button1" ng-if="ite.available_time>6">
+                          {{ite.available_time}}天后{{ite.latest_time}}可约
+                        </span>
+                        |
+                        <span class="button1" style="margin-left:0px">
+                            平均等待时间{{ite.shot_time}}分钟
+                        </span>
+                        <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Farrow_gray_r.png" width="9" height="16" class="arrow-r">
+                    </ul>
+                    <ul  ng-if="item.visitInfo.length == 0"
+                         ng-click="doctorAppointment(item.doctorId,item.visitInfo[0].available_time,
+                                    item.hospitalName,item.visitInfo[0].location,item.visitInfo[0].position,
+                                    item.visitInfo[0].location_id,'')">
+                       <span class="button2">
+                              暂不可约
+                       </span>
+                    </ul>
+                </div>
+            <div class="noContent" ng-if="isBlank">
+                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fno_attention.png" width="121" height="121">
+                <p>{{care1}}</p>
+            </div>
+            <div bdf-footer></div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

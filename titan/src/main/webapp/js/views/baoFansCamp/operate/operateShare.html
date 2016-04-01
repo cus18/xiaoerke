@@ -1,0 +1,56 @@
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫">
+    <ion-item class="operateShare-out">
+        <div class="operateShare">
+            <div class="box1">
+                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/operate%2Fope_share1.png" width="95%" height="auto">
+                <p>活动进行中，快来帮好友赢取与郑玉巧见面的机会吧</p>
+                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/operate%2Fope_share2.png" width="147" height="13">
+            </div>
+            <div class="box2">
+                <img ng-src={{url}} width="213" height="213" class="code">
+                <ul>
+                    <li>
+                        <span class="cir"></span>1. 添加关注：长按上图二维码，识别二维码，关注“宝大夫”
+                    </li>
+                    <li>
+                    <li>
+                        <span class="cir"></span>2. 转发文章：进入宝大夫的【郑玉巧育儿经】，转发任意一篇文章到朋友圈即可
+                    </li>
+                    <li>
+                        <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/operate%2Fope_share3.png" width="100%" height="auto" style="margin-bottom:7px;">
+                    </li>
+                </ul>
+            </div>
+            <div class="box3">
+                <div class="upPic">
+                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/operate%2Fope_up.png" width="10.5" height="13.5" ng-repeat="item in [1,2,3,4]">
+                </div>
+                <dl>
+                    <dt>宝大夫为您提供以下贴心服务</dt>
+                    <dd>
+                        <h5>咨询医生</h5>
+                        <p>
+                            权威儿科专家实时在线咨询，3分钟内急速回复
+                            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/operate%2Fope_sharePBg.png" width="3" height="56">
+                        </p>
+                    </dd>
+                    <dd>
+                        <h5>预约医生</h5>
+                        <p>
+                            最专业的医院的儿科专家点名挂号，快捷省力
+                            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/operate%2Fope_sharePBg.png" width="3" height="56">
+                        </p>
+                    </dd>
+                    <dd>
+                        <h5 >郑玉巧育儿经</h5>
+                        <p style="background: none;">
+                            名医郑玉巧多年倾力之作“郑玉巧育儿经”等5部著作免费查阅
+
+                        </p>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </ion-item>
+</ion-view>

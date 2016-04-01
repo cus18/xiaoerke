@@ -1,0 +1,86 @@
+<link rel="stylesheet" href="/xiaoerke-healthPlan/styles/health/constipation/constipationCommon.less" type="text/css" />
+<link rel="stylesheet" href="/xiaoerke-healthPlan/styles/health/constipation/constipationIndex.less" type="text/css" />
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫" ng-init="doRefresh()">
+    <ion-content class="constipationIndex" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="addManage" ng-click="goManagement()">
+                添加管理
+            </div>
+            <ion-slide-box
+                    auto-play="true"
+                    does-continue="true"
+                    slide-interval=3000
+                    show-pager="true"
+                    active-slide="model.activeIndex"
+                    delegate-handle="delegateHandler">
+                <ion-slide ng-repeat="item in bannerImg">
+                    <div class=" ">
+                        <img ng-src="{{item}}" width="100%" height="150">
+                    </div>
+                </ion-slide>
+
+            </ion-slide-box>
+            <div class="box2">
+                <ul>
+                    <li ng-click="zixun()">
+                        <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Findex_icon1.png" width="49" height="49"><br>
+                        咨询大夫
+                    </li>
+                    <li ng-click="yuyue()">
+                        <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Findex_icon2.png" width="49" height="49"><br>
+                        预约大夫
+                    </li>
+                    <li ui-sref="constipationRemind({flag:'next'})">
+                        <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Findex_icon3.png" width="49" height="49"><br>
+                        提醒设置
+                    </li>
+                    <li ui-sref="constipationEmergency">
+                        <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Findex_icon4.png" width="49" height="49"><br>
+                        应急处理
+                    </li>
+                </ul>
+            </div>
+            <div class="box3" ui-sref="constipationComment">
+                <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Findex_news.png" width="15.5" height="16.5">
+                <ul id="comment">
+                    <li ng-repeat="item in commentList">
+                       {{item.appraisalContent}}
+                    </li>
+                </ul>
+            </div>
+            <div class="box4">
+                <dl>
+                    <dt class="title-line">
+                        <span class="line"></span>
+                        <span class="text">我的任务</span>
+                    </dt>
+                    <dd ng-repeat="item in planTasks">
+                        <i class=""></i>
+                       <div class="main">
+                           <h4>{{ item.timeHappen | limitTo : 5}}{{item.head}}</h4>
+                           <div class="pic" >
+                               <img  ng-repeat="img in imgList[$index].images" ng-src="{{img}}" width="49" height="49">
+                           </div>
+                           <p ng-hide="item.type=='motherMust'">已坚持<span>{{item.days}}</span>天</p>
+
+                       </div>
+                        <span class="click-card" ng-class="{'click-card-finish':item.status=='完成'}" ng-click="playCard(item.id,item.type,$index)"> {{item.status}}</span>
+                        <a ng-click="selectTask($index,item.type)">
+                            {{item.detail}}
+                            <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2FindexTask_detail.png" width="22" height="22">
+                        </a>
+                    </dd>
+                </dl>
+            </div>
+            <div class="box5">
+               <ul>
+                   <li ui-sref="cMotherMistakes">
+                       <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Findex_mother2.png" width="100%" height="auto" >
+                   </li>
+               </ul>
+                <br> <br>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

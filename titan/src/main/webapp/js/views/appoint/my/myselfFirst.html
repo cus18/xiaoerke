@@ -1,0 +1,98 @@
+<ion-spinner ng-show="pageLoading"  class="loadPic"></ion-spinner>
+<ion-view view-title={{title0}} ng-init="doRefresh()">
+    <ion-spinner ng-show="dataLoading"></ion-spinner>
+    <div bdf-head="title"></div>
+    <div class="bind" ng-if="myslefBindStatus=='false'">
+        <ul class="bind-no" ng-click="bindUserPhone()">
+            <li >
+                您还未登录
+            </li>
+            <li>
+                快速登录&nbsp;&nbsp;<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Farrow_gray_r.png" width="9" height="16" class="arrow-r">
+            </li>
+        </ul>
+    </div>
+    <div class="bind" ng-if="myslefBindStatus=='true'">
+        <ul class="bind-yes" ui-sref="myInfo({userPhoneNum:myselfInfo.userPhoneNum})">
+            <li>
+                {{myselfInfo.userPhoneNum}}<br>
+                {{userName}}
+                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Farrow_gray_r.png" width="9" height="16" class="arrow-r"
+                     ui-sref="myInfo({userName:userName,userPhoneNum:myselfInfo.userPhoneNum})">
+            </li>
+        </ul>
+    </div>
+    <ul class="item wait-item" id="itemList">
+        <li ng-click="pendPayment()" ng-if="myselfInfo.waitPay> 0">
+            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fwait_pay_no.png" width="26" height="25" ng-if="!(myselfInfo.waitPay> 0)">
+            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fwait_pay_have.png" width="26" height="25" ng-if="myselfInfo.waitPay> 0">
+            <br>待支付
+        </li>
+        <li ng-click="toBeTreated()">
+            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fwait_treat_no.png" width="26" height="25" ng-if="!(myselfInfo.waitTreat> 0)">
+            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fwait_treat_have.png" width="26" height="25" ng-if="myselfInfo.waitTreat> 0">
+            <br>待就诊
+        </li>
+        <li ng-click="toBeEvaluated()">
+            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fwait_evaluate_no.png" width="26" height="25" ng-if="!(myselfInfo.waitAppraise> 0)">
+            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fwait_evaluate_have.png" width="26" height="25" ng-if="myselfInfo.waitAppraise> 0">
+            <br>待评价
+        </li>
+    </ul>
+    <ion-content class="myselfFirst">
+        <ion-scroll direction="y" has-bouncing="true"  style="top:146px;">
+           <ul class="list my-list">
+               <li class="item">
+                   <div nav-direction="forward" ng-click="myAppointment()">
+                       <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fmy_appointment.png" width="25" height="25">&nbsp;&nbsp;
+                       <span>我的预约</span>
+                       <span class="all-order">查看我所有的订单</span>
+                       <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Farrow_gray_r.png" width="9" height="16" class="arrow-r">
+                   </div>
+               </li>
+               <li class="item">
+                   <div nav-direction="forward" ng-click="healthRecord()">
+                       <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/healthManage%2Fmy_healthManage.png" width="25" height="25">&nbsp;&nbsp;
+                       <span>健康档案<img class="my-new-info" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/healthManage%2Fmy_new.png" width="37" height="14.5"></span>
+                       <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Farrow_gray_r.png" width="9" height="16" class="arrow-r">
+                   </div>
+               </li>
+               <li class="item">
+                   <div nav-direction="forward" ng-click="myService()">
+                       <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fmy_service.png" width="25" height="25">&nbsp;&nbsp;
+                       <span>我的服务</span>
+                       <span class="all-order" style="color:#fe717b;" ng-if="myslefBindStatus=='true'">
+                           <div ng-if="memberNum>=0">
+                              剩余免费预约次数:{{memberNum}}次
+                           </div>
+                       </span>
+                       <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Farrow_gray_r.png" width="9" height="16" class="arrow-r" ng-if="myslefBindStatus=='true'">
+                   </div>
+               </li>
+               <li class="item" ng-if="bondSwitch">
+                   <div nav-direction="forward" ng-click="accountBalance()">
+                       <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fmy_account.png" width="25" height="25">&nbsp;&nbsp;
+                       <span>账户余额</span>
+                       <span class="all-order">{{accountFund}}</span>
+                       <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Farrow_gray_r.png" width="9" height="16" class="arrow-r">
+                   </div>
+               </li>
+               <li class="item">
+                   <div nav-direction="forward" ng-click="myAttention()">
+                       <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fmy_attention.png" width="25" height="25">&nbsp;&nbsp;
+                       <span>我的关注</span>
+                       <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Farrow_gray_r.png" width="9" height="16" class="arrow-r">
+                   </div>
+               </li>
+               <li class="item">
+                   <div nav-direction="forward" ng-click="toBeShared()">
+                       <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fmy_share.png" width="25" height="25">&nbsp;&nbsp;
+                       <span>友情分享</span>
+                       <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Farrow_gray_r.png" width="9" height="16" class="arrow-r">
+                   </div>
+               </li>
+           </ul>
+            <div bdf-footer></div>
+         </ion-scroll>
+        </ion-content>
+</ion-view>

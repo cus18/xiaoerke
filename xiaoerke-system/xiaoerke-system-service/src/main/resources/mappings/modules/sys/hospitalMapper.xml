@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxqm.xiaoerke.modules.sys.dao.HospitalDao">
+    <resultMap id="HospitalVo" type="HashMap">
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="position" property="position" jdbcType="VARCHAR" />
+        <result column="detail" property="detail" jdbcType="VARCHAR" />
+        <result column="cityName" property="cityName" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="DepartmentVo" type="HashMap">
+        <result column="hospitalId" property="hospitalId" jdbcType="VARCHAR" />
+        <result column="hospitalName" property="hospitalName" jdbcType="VARCHAR" />
+        <result column="departmentLevel1Name" property="departmentLevel1Name" jdbcType="VARCHAR" />
+        <result column="departmentLevel2Name" property="departmentLevel2Name" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="BaseResultVo" type="com.cxqm.xiaoerke.modules.sys.entity.HospitalVo">
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="position" property="position" jdbcType="VARCHAR" />
+        <result column="detail" property="detail" jdbcType="VARCHAR" />
+        <result column="cityName" property="cityName" jdbcType="VARCHAR" />
+        <result column="medicalProcess" property="medicalProcess" jdbcType="VARCHAR" />
+        <result column="contact_name" property="contactName" jdbcType="VARCHAR" />
+        <result column="contact_phone" property="contactPhone" jdbcType="VARCHAR" />
+        <result column="is_display" property="isDisplay" jdbcType="VARCHAR" />
+    </resultMap>
+
+	<resultMap id="hospitalVO" type="com.cxqm.xiaoerke.modules.sys.entity.HospitalVo">
+        <result column="sys_hospital_id" property="id" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="location" property="position" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <!--获取所有的医院分页信息  @author zdl-->
+    <select id="findPageAllHospital" resultMap="HospitalVo" resultType="com.cxqm.xiaoerke.common.persistence.Page">
+       SELECT  * FROM sys_hospital sh  where is_display='display'  ORDER BY sh.sort
+    </select>
+
+    <select id="findAllHospitalByConsulta" resultMap="HospitalVo" resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        SELECT  * FROM sys_hospital sh
+        where is_display='display' and is_consultPhone = '1'  ORDER BY sh.sort
+    </select>
+    <!--获取与医生相关联的医院-->
+    <select id="findPageHospitalByIllnessSecond" resultMap="HospitalVo"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        select hos.* FROM
+        sys_illness ill,
+        doctor_illness_relation dr_ill,
+        doctor_hospital_relation dr_hos,
+        sys_hospital hos
+        where dr_ill.sys_illness_id = #{illnessSecondId}
+        and dr_ill.sys_doctor_id = dr_hos.sys_doctor_id
+        and hos.id = dr_hos.sys_hospital_id
+        <if test="consultPhone != null">
+            and hos.is_consultPhone = '1'
+        </if>
+        GROUP BY hos.id
+    </select>
+
+    <!--获取医院下面的科室-->
+    <select id="findPageDepartmentByHospital" resultMap="DepartmentVo"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        select hos.id hospitalId, hos.name hospitalName, hos_rel.department_level1 departmentLevel1Name
+        FROM
+        sys_hospital hos,
+        doctor_hospital_relation hos_rel
+        WHERE
+        hos_rel.sys_hospital_id=hos.id
+        AND
+        hos.id = #{hospitalId}
+        <if test="consultPhone != null">
+        and hos.is_consultPhone = '1'
+        </if>
+        GROUP BY hos_rel.department_level1
+    </select>
+
+    <select id="findPageHospitalByTime" resultMap="HospitalVo"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        select hos.* FROM
+        sys_hospital hos,
+        sys_register_service ser
+        WHERE
+        hos.id = ser.sys_hospital_id
+        and ser.status=0
+        and ser.date =  #{date}
+        <if test="consultPhone != null">
+            and hos.is_consultPhone = '1'
+        </if>
+        GROUP BY hos.id
+        <if test="orderBy=1">
+            ORDER BY count(ser.sys_hospital_id) DESC
+        </if>
+    </select>
+
+    <!--批量插入医院信息-->
+    <insert id="insertHospitalListExecute" >
+        INSERT INTO sys_hospital(id,name,position,details,cityName,medical_process)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id},#{item.name},#{item.position},#{item.details},#{item.cityName},#{item.medicalProcess})
+        </foreach>
+    </insert>
+
+    <!--根据医院名称获取医院-->
+    <select id="findHospitalIdByHospitalName" resultType="java.util.Map">
+        SELECT  id as hospitalId FROM sys_hospital where name=#{hospitalName}
+    </select>
+
+    <!--==============================以下部分属于运维系统==============================================-->
+    <!--插入医院信息(单条) zdl-->
+    <insert id="insertHospital">
+        INSERT INTO sys_hospital(id,name,position,details,cityName,medical_process,contact_name,contact_phone,special_discount,charge_standard,medical_examination,hospital_type,create_date,create_by)
+        VALUES (#{id},#{name},#{position},#{details},#{cityName},#{medicalProcess},#{contactName},#{contactPhone},#{specialDiscount},#{chargeStandard},#{medicalExamination},#{hospitalType},#{createDate},#{createBy})
+    </insert>
+
+    <!--根据医院id查询医院-->
+    <select id="getHospital" resultType="com.cxqm.xiaoerke.modules.sys.entity.HospitalVo">
+        SELECT
+            sh.*,
+            shc.contact_name businessContactName,
+            shc.contact_phone businessContactPhone
+        FROM
+            sys_hospital sh
+        LEFT JOIN sys_hospital_contact shc ON shc.sys_hospital_id = sh.id
+        WHERE
+            sh.id = #{id}
+    </select>
+
+    <!--获取系统内的所有医院-->
+    <select id="findAllHospital" resultMap="BaseResultVo"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        SELECT
+        sh.id,
+        sh.position,
+        sh. NAME,
+        sh.details,
+        sh.cityName,
+        sh.sort,
+        sh.medical_process AS medicalProcess,
+        shc.contact_name,
+        shc.contact_phone,
+        sh.is_display
+        FROM
+        sys_hospital sh
+        LEFT  JOIN sys_hospital_contact shc ON shc.sys_hospital_id = sh.id
+        WHERE
+        1 = 1
+        <if test="name != null and name != ''">
+            AND  sh.name like '%${name}%'
+        </if>
+        order by sort asc
+    </select>
+
+
+    <!--医院信息修改后保存操作-->
+    <update id="saveEditHospital">
+        update sys_hospital set position=#{position},name=#{name},details=#{details},cityName=#{cityName},
+        sort=#{sort},medical_process=#{medicalProcess},is_display = #{isDisplay}
+		where id=#{id};
+    </update>
+
+
+    <!--根据医院id删除医院-->
+    <delete id="deleteHospitalByHospitalId" parameterType="java.lang.String" >
+        delete from sys_hospital where id=#{id}
+    </delete>
+
+
+    <!--获取所有有订单存在的医院 seachFlag 为jiesuan 查询号源，为yuyue 查询订单-->
+    <select id="findAllOrderHospital" resultType="com.cxqm.xiaoerke.modules.sys.entity.HospitalVo">
+      select srs.sys_hospital_id as id,sh.name from sys_register_service srs
+        INNER JOIN sys_hospital sh on sh.id = srs.sys_hospital_id
+        INNER JOIN patient_register_service prs on prs.sys_register_service_id = srs.id
+        where 1=1
+        <if test="searchFlag=='jiesuan'">
+          AND DATE_FORMAT(srs.date,'%Y-%m-%d')  &lt;= DATE_FORMAT(#{end_time},'%Y-%m-%d') and DATE_FORMAT(srs.date,'%Y-%m-%d')  >= DATE_FORMAT(#{begin_time},'%Y-%m-%d') and prs.status != '6' and prs.status != '1'
+        </if>
+        <if test="searchFlag=='yuyue'">
+          AND DATE_FORMAT(prs.create_date,'%Y-%m-%d')  &lt;= DATE_FORMAT(#{end_time},'%Y-%m-%d')  and DATE_FORMAT(prs.create_date,'%Y-%m-%d')  &gt;= DATE_FORMAT(#{begin_time},'%Y-%m-%d') 
+        </if>
+        GROUP BY sys_hospital_id
+    </select>
+
+	<select id="findHospitalsByDoctorIds" resultMap="BaseResultVo">
+        select DISTINCT(h.id) as id, h.name
+        from sys_hospital h, doctor_hospital_relation dhr 
+        where h.id = dhr.sys_hospital_id 
+        <if test="doctorIds != null and doctorIds.length>0">
+            and dhr.sys_doctor_id in
+            <foreach item="item" index="index" collection="doctorIds" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        order by h.name asc
+    </select>
+
+    <!--查询所有与该医生有关的医院（非所属关系）-->
+    <select id="findAllHospitalByDoctorId" resultType="com.cxqm.xiaoerke.modules.sys.entity.DoctorVo">
+      SELECT sh.name as hospital
+	  from doctor_hospital_relation dhr
+      INNER JOIN sys_hospital sh where sh.id=dhr.sys_hospital_id
+        <if test="relationType != null and relationType != ''">
+            and (dhr.relation_type =  '0' or dhr.relation_type =  '2')
+        </if>
+      and dhr.sys_doctor_id = #{id}
+    </select>
+	<!--激活医生电话咨询后修改sys_hospital表，sunxiao-->
+    <update id="updateSysHospital" parameterType="java.util.Map">
+        update sys_hospital 
+        <set>
+            <if test="isConsultPhone != null">
+                is_consultPhone = #{isConsultPhone,jdbcType=VARCHAR},
+            </if>
+        </set>
+		where id=#{id};
+    </update>
+</mapper>
+

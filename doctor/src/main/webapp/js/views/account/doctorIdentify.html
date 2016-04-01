@@ -1,0 +1,30 @@
+<ion-view view-title="信息录入" ng-init="doRefresh()">
+    <ion-spinner ng-show="dataLoading"></ion-spinner>
+    <ion-content class="doctorIdentify">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <div class="pic1">
+                <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2FdoctorIdentify.png" width="130" height="130">
+                <p>
+                    资料完善后经过宝大夫审核就可以开放预约呦！
+                </p>
+            </div>
+            <div class="list" >
+                <label class="item item-input item-borderless">
+                    <span class="input-label">姓名</span>
+                    <input type="text" placeholder="真实姓名（必填）">
+
+                </label>
+                <label class="item item-input item-borderless" style=" border-bottom: 1px solid #ddd;">
+                    <span class="input-label">医院</span>
+                    <input type="text" placeholder="医院名称（必填）">
+                </label>
+                <label class="item item-input item-borderless">
+                    <span class="input-label">科室</span>
+                    <input type="text" placeholder="医院科室名称（必填）">
+                </label>
+                <div ng-click="sendMsg()" class="getCode light" ng-disabled="info.disable">{{info.userGetCode}}</div>
+            </div>
+            <button class="button foot-btn">录入完成</button>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

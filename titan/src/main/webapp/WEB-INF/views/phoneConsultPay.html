@@ -1,0 +1,122 @@
+<html>
+<head>
+</head>
+<base href="/xiaoerke-appoint/"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<title>宝大夫</title>
+<script src="js/libs/jquery-2.1.3.min.js"></script>
+<script src="js/libs/moment.min.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="js/libs/mobiscroll.custom-2.17.0.min.js"></script>
+<script src="js/phoneConsultPay.js"></script>
+<link rel="stylesheet" href="/xiaoerke-appoint/styles/lib/mobiscroll.custom-2.17.0.min.css" type="text/css" />
+<link rel="stylesheet" href="/xiaoerke-appoint/styles/commonMain.less" type="text/css" />
+<link rel="stylesheet" href="/xiaoerke-appoint/styles/mainPhoneConsult.less" type="text/css" />
+<link rel="stylesheet" href="/xiaoerke-appoint/styles/commonDoctor/doctorInfo.less" type="text/css" />
+<link rel="stylesheet" href="/xiaoerke-appoint/styles/commonDoctor/orderInfo.less" type="text/css" />
+<link rel="stylesheet" href="/xiaoerke-appoint/styles/commonDoctor/babyInfo.less" type="text/css" />
+<link rel="stylesheet" href="/xiaoerke-appoint/styles/commonDoctor/remindInfo.less" type="text/css" />
+<link rel="stylesheet" href="/xiaoerke-appoint/styles/phoneConsult/phoneConsultPay.less" type="text/css" />
+<body onload="doRefresh()">
+<div class="phoneConsultPay">
+    <div class="head tc bg1 border2">
+        <div class="left fl f6" href="/xiaoerke-appoint/ap/phoneConsult">首页</div>
+        <div class="title fl f8" >订单填写</div>
+        <div class="right fl">
+            <a class= my" href="ap/phoneConsult#/myselfFirst/," >
+                <img class="my-img1" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fmy1.png" width="22" height="22" ng-if="!haveOrder">
+            </a>
+        </div>
+    </div>
+    <div class="doctor-info bg1">
+        <div  class="pic">
+            <img class="photo" width="62.5" height="62.5" src="images/a1.png">
+        </div>
+        <div class="intro">
+            <div class="name"><span id="doctorName"></span><span id="position"></span></div>
+            <div class="hospital" id="hospitalName"></div>
+            <div class="department" id="department"></div>
+        </div>
+    </div>
+    <div class="order-info">
+        <ul>
+            <li class="f4 c5">
+                <span class="f4 c3">服务价格：</span> <span id="price"></span>元/<span id="ServerLength"></span>分钟
+            </li>
+            <li class="f4 c5">
+                <span class="f4 c3">服务时间：</span> <span id="time"></span>&nbsp;&nbsp;<span id="begintime"></span>-<span id="endtime"></span>
+            </li>
+        </ul>
+    </div>
+    <div class="apart border0"></div>
+    <div class="order-info">
+        <ul style="border-bottom:none;">
+            <li class="f4 c5">
+                <span class="f4 c3">接听电话：</span>
+                <input id="connectphone" type="text" placeholder="15211111111">
+            </li>
+            <li class="f4 c5">
+                <span class="f4 c3">宝宝姓名：</span>
+                <input type="hidden" id="babyId"/>
+                <input id="babyName" type="text" placeholder="填写宝宝姓名（必填）">
+                <a onclick="selectBaby()" class="selectBabyBtn" id="addBaby">选择宝宝</a>
+            </li>
+            <li class="f4 c5 border0">
+                <span class="f4 c3">出生年月：</span>
+                <input id="birthday" type="text" placeholder="选择出生年月（必填）" readonly="readonly">
+            </li>
+            <li class="case f4 c5" >
+                <span class="f4 c3">病情描述：</span>
+                <a>0/200</a>
+                <textarea id="case" onfocus="caseLength()" placeholder="尽可能详细描述病情，治疗情况以及想要获得的帮助（至少10个字）"></textarea>
+            </li>
+        </ul>
+    </div>
+    <div class="remind-text">
+        <div class="title f4 c3">
+            预约须知
+            <div class="read" onclick="read()">
+                已阅读
+                <a>
+                    <img id="readLock" width="18" height="auto"
+                         src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Fread.png">
+                </a>
+            </div>
+        </div>
+        <ul>
+            <li class="f3 c5">
+                <span>1、</span>保持手机信号畅通，以免电话中途中断；
+            </li>
+            <li class="f3 c5">
+                <span>2、</span>电话一经接通，将不允许退款；
+            </li>
+            <li class="f3 c5">
+                <span>3、</span>若咨询期间意外中断，请在5分钟内根据短信提示申请继续咨询，否则本次咨询结束。
+            </li>
+        </ul>
+    </div>
+
+    <br><br><br><br><br>
+    <button class="button bottom-btn" onclick="pay()"  id="payButton">
+        立即预约（200元）
+    </button>
+   <!--  选择宝宝列表-->
+    <div class="baby-list">
+        <dl>
+            <dt id="selectBabyTitle">
+                <i class="line"></i>
+                <span>选择宝宝</span>
+            </dt>
+            <div class="select" id="selBaby">
+
+            </div>
+        </dl>
+        <div onclick="addBaby()" class="select" style="background-color: #88d9dd">添加宝宝</div>
+        <div onclick="cancelSelectBaby()" class="select">取消</div>
+    </div>
+</div>
+</body>
+</html>

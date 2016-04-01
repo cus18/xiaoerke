@@ -1,0 +1,29 @@
+<ion-view view-title={{title0}} ng-init="doRefresh()">
+    <div bdf-head="title"></div>
+    <ion-content class="withdraw">
+        <ion-scroll direction="y" has-bouncing="true" style="">
+            <div class="money">
+                金额&nbsp;&nbsp;&nbsp;
+                <input type="text"  ng-model="info.takeCash" placeholder="可提现余额{{accountFund}}元（至少1元）">
+            </div>
+           <div class="way-time">
+               <p style="font-size:15px;color:#fe717b;margin-top:30px;">
+                  提现到微信钱包
+               </p>
+               <p>
+                    预计到账：2015/10/27 &nbsp;星期三&nbsp; 10:30
+               </p>
+           </div>
+            <button class="button foot-btn" ng-click="withdrawSuccess()" ng-disabled="(accountFund-info.takeCash<0)||(info.takeCash==null||info.takeCash<1||info.isDraw)">
+                申请提现
+            </button>
+            <div class="footer" style="margin-top:200px;">
+                <p>
+                    <a ng-click="appointmentFirst()">首页</a>
+                    <a ui-sref="questions">常见问题</a>
+                </p>
+                <a href="tel:4006237120">客服电话：400-623-7120</a>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

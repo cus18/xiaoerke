@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxqm.xiaoerke.modules.sys.dao.DoctorIllnessRelationDao">
+    <resultMap id="ExpertiseMap" type="HashMap">
+        <result column="illExpertise" property="illExpertise" jdbcType="VARCHAR" />
+    </resultMap>
+
+     <!--删除所有医生与该疾病的关联关系-->
+    <delete id="deleteDoctorAndIllnessRelationByIllnessId">
+         delete from doctor_illness_relation
+        where sys_illness_id=#{id}
+    </delete>
+
+    <!--获取医生的从业经历-->
+    <select id="getDoctorCardExpertise" resultType="java.util.Map">
+        SELECT experince as illExpertise FROM sys_doctor sd WHERE sd.id=#{doctorId}
+    </select>
+
+    <!--批量插入医生与疾病关联信息表数据-->
+    <select id="findHospitalIdByHospitalName" resultType="java.util.Map">
+        SELECT  id as hospitalId FROM sys_hospital where name=#{hospitalName}
+    </select>
+
+    <!--批量插入医生与疾病关联信息表数据-->
+    <insert id="insertIllnessRelationExecute" parameterType="java.util.Map">
+        INSERT INTO doctor_illness_relation(id,sys_doctor_id,sys_illness_id)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id},#{item.doctorId},#{item.sys_illness_id})
+        </foreach>
+    </insert>
+
+    <!--==============================以下部分属于运维系统==============================================-->
+
+    <insert id="insertDoctorIllnessRelationData">
+        INSERT INTO doctor_illness_relation(id,sys_doctor_id,sys_illness_id)
+        VALUES (#{id},#{sys_doctor_id},#{sys_illness_id})
+    </insert>
+
+    <!--校验，根据医生的主键和疾病主键查询此该医生是否已经关联了该疾病-->
+    <select id="findDoctorIllnessRelationInfo" resultType="com.cxqm.xiaoerke.modules.sys.entity.DoctorIllnessRelationVo">
+       SELECT  * FROM doctor_illness_relation dir where dir.sys_doctor_id = #{sys_doctor_id} and dir.sys_illness_id=#{sys_illness_id};
+    </select>
+
+    <!--根据doctorId删除医生与疾病的所有关联信息-->
+    <delete id="deleteDoctorAndIllnessRelation">
+        delete from doctor_illness_relation
+        where  sys_doctor_id =  #{sys_doctor_id}
+    </delete>
+
+</mapper>

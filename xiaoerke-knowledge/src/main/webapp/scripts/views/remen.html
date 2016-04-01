@@ -1,0 +1,59 @@
+<div ui-view>
+<div class="header">
+    <div id="top">
+        <div class="top">
+            <span class="weibo">官方新浪微博：宝大夫</span>
+            <span class="weixin">官方微信号：BaodfWX</span>
+        </div>
+    </div>
+    <div class="nav">
+        <div class="logo"><a ui-sref="baodaifuIndex">宝大夫</a></div>
+        <ul>
+            <li class="on"><a ui-sref="baodaifuIndex">首页</a></li>
+            <li><a ui-sref="zixundaifu">咨询大夫</a></li>
+            <li><a ui-sref="yuyuedaifu">预约大夫</a></li>
+            <li><a ui-sref="shuo">健康管理</a></li>
+            <li><a ui-sref="zixun">媒体资讯</a></li>
+            <li><a ui-sref="about">关于我们</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="rmzs wenda">
+    <div class="bar">
+        <h3>热门知识</h3>
+    </div>
+    <div class="newslist">
+        <ul id="loadmore">
+            <li ng-repeat="item in articleList">
+                <img class="litpic" ng-src="http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/{{item.id}}" alt="">
+                <div>
+                    <a ng-click="goContent(item.id)"><h4>{{item.title}}</h4></a>
+                    <p class="des">{{item.description}}</p>
+                    <div class="tubiao">
+                        <div class="tag">
+                            <a>{{item.keywords}}</a>
+                        </div>
+                        <div class="right">
+                            <div class="share"><a></a>{{item.articleShareCount}}</div>
+                            <div class="click"><a></a>{{item.articleReadCount}}</div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<!-- 底部开始 -->
+<div id="footer">
+    <div class="footer">
+        <p><a ui-sref="fuwutiaokuan" class="pianyi">服务条款</a><a ui-sref="yinsibaohu">隐私保护</a></p>
+        <p><a target="_blank">京ICP备15035618号-1</a></p>
+        <p>版权所有：北京晨星启明科技有限公司</p>
+    </div>
+</div>
+</div>

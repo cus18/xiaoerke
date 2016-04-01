@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.operation.dao.StatisticsTitleDao" >
+  <insert id="insertStatisticsTitle" parameterType="com.cxqm.xiaoerke.modules.operation.entity.StatisticsTitle" >
+    INSERT INTO `sys_statistics_title` (`addOrder`, `cancelOrder`, `netOrder`, 
+    									`totalAddOrder`, `thatdayOrder`, `totalVictoryOrder`, 
+    									`create_date`, `victorynums`, `totalvictorynums`, 
+   										`addreadnums`, `totalreadnums`, `addsecreadnums`, 
+   										`totalsecreadnums`, `sharenums`, `addusernum`, 
+    									`cancelnum`, `totalusernum`, `netusernum`,
+    									`adddoctornum`, `netdoctornum`, `update_date`,
+    									`cookieTotal`,`truthorder`,`payorder`,`addZYQPbe`,
+    									`totalZYQPbe`,`visiteNum`,`addVIP`,`diffVIP`,`netVIP`,`totalVIP`)
+    VALUES 
+   		   (#{addOrder,jdbcType=VARCHAR}, #{cancelOrder,jdbcType=VARCHAR}, #{netOrder,jdbcType=VARCHAR}, 
+      		#{totalAddOrder,jdbcType=VARCHAR}, #{thatDayOrder,jdbcType=VARCHAR}, #{totalVictoryOrder,jdbcType=VARCHAR},
+      		#{createDate,jdbcType=DATE}, #{victoryNums,jdbcType=VARCHAR}, #{totalVictoryNums,jdbcType=VARCHAR},
+      		#{addReadNums,jdbcType=VARCHAR}, #{totalReadNums,jdbcType=VARCHAR}, #{addSecReadNums,jdbcType=VARCHAR}, 
+      		#{totalSecReadNums,jdbcType=VARCHAR}, #{shareNums,jdbcType=VARCHAR}, #{addUserNum,jdbcType=VARCHAR},
+      		#{cancelNum,jdbcType=VARCHAR}, #{totalUserNum,jdbcType=VARCHAR}, #{netUserNum,jdbcType=VARCHAR},
+      		#{addDoctorNum,jdbcType=VARCHAR}, #{netDoctorNum,jdbcType=VARCHAR}, #{updateDate,jdbcType=DATE},
+      		#{cookieTotal,jdbcType=DATE}, #{truthOrder,jdbcType=VARCHAR}, #{payOrder,jdbcType=VARCHAR},
+      		#{addZYQPbe,jdbcType=VARCHAR},#{totalZYQPbe,jdbcType=VARCHAR},#{visiteNum,jdbcType=VARCHAR},
+      		#{addVIP,jdbcType=VARCHAR},#{diffVIP,jdbcType=VARCHAR},#{netVIP,jdbcType=VARCHAR},
+      		#{totalVIP,jdbcType=VARCHAR})
+  </insert>
+    <select id="findStatisticsTitleList" resultType="java.util.Map" parameterType="java.util.Map">
+    select 
+     *,DATE_FORMAT(create_date,'%Y-%m-%d') AS CREATED
+    from sys_statistics_title
+    where create_date BETWEEN DATE_FORMAT(#{startDate},'%Y-%m-%d') and DATE_FORMAT(#{endDate},'%Y-%m-%d')
+        order by create_date  DESC
+  </select>
+<!--   基础数据统计订单和咨询部分 -->
+  <select id="selectIntoOrder" resultType="java.util.HashMap" parameterType="java.lang.String">
+    SELECT
+	*
+FROM
+	(
+		SELECT
+			COUNT(*) AS count,
+			CASE
+		WHEN 1 THEN
+			'1'
+		END AS `type`
+		FROM
+			patient_register_service prs
+		where DATE_FORMAT(prs.create_date, '%Y-%m-%d')=DATE_FORMAT(#{create_date}, '%Y-%m-%d')
+		and babyName not like '%测试%'
+		UNION ALL
+			SELECT
+				COUNT(*),
+				CASE
+			WHEN 1 THEN
+				'2'
+			END AS `status`
+			FROM
+				patient_register_service prs
+			WHERE
+				prs.`status` = 6
+		and DATE_FORMAT(prs.update_date, '%Y-%m-%d')=DATE_FORMAT(#{create_date}, '%Y-%m-%d')
+		and babyName not like '%测试%'
+			UNION ALL
+SELECT
+						COUNT(*),
+						CASE
+					WHEN 1 THEN
+						'4'
+					END AS `status`
+					FROM
+						patient_register_service prs
+INNER JOIN sys_register_service srs ON prs.sys_register_service_id = srs.id
+					WHERE
+						(prs.`status` = 1
+					OR
+						prs.`status` = 2
+					OR prs.`status` = 3
+					OR prs.`status` = 4)
+				and babyName not like '%测试%'
+		and DATE_FORMAT(srs.date, '%Y-%m-%d')=DATE_FORMAT(#{create_date}, '%Y-%m-%d')
+	) a
+ORDER BY
+	type
+  </select>
+   <select id="selectIntoDayToDaytotalOrder" resultType="java.util.HashMap" parameterType="java.lang.String">
+   		select * from (SELECT
+						COUNT(*)as count,
+						CASE
+						WHEN 1 THEN
+							'1'
+						END AS `type`
+					FROM
+						patient_register_service prs
+					WHERE
+					(prs.`status` = 1
+					OR
+						prs.`status` = 2
+					OR prs.`status` = 3
+					OR prs.`status` = 4)
+					and babyName not like '%测试%'
+					AND DATE_FORMAT(prs.create_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{create_date}, '%Y-%m-%d')
+					union all
+					SELECT
+						COUNT(*)as count,
+						CASE
+						WHEN 1 THEN
+							'2'
+						END AS `type`
+					FROM
+						patient_register_service prs
+					WHERE
+					(
+						prs.`status` = 2
+					OR prs.`status` = 3
+					OR prs.`status` = 4)
+					AND babyName NOT LIKE '%测试%'
+					AND DATE_FORMAT(prs.create_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{create_date}, '%Y-%m-%d')
+					) a order by type
+   </select>
+      <select id="selectIntoDayToDaytotalRecord" resultType="java.util.HashMap" >
+			SELECT
+				DISTINCT openid   
+			FROM
+				sys_wechat_record SR
+			WHERE
+				DATE_FORMAT(SR.infoTime, '%Y-%m-%d') = DATE_FORMAT(#{create_date}, '%Y-%m-%d')
+			AND SR.text like '%/:share%' and SR.opercode = 2002;
+      </select>
+<!--       十一月三号以后使用此SQL查询 -->
+      <select id="selectIntoDayToDaytotalRecordAfterNov" resultType="java.util.HashMap" >
+			SELECT
+				DISTINCT openid   
+			FROM
+				sys_wechat_record SR
+			WHERE
+				DATE_FORMAT(SR.infoTime, '%Y-%m-%d') = DATE_FORMAT(#{create_date}, '%Y-%m-%d')
+			AND SR.text like '%谢谢您的支持/:share%' and SR.opercode = 2002;
+      </select>
+      <select id="selectRecord" resultType="java.util.HashMap" >
+			SELECT
+			DISTINCT swr.openid
+			FROM
+				sys_wechat_record swr
+			WHERE
+				 DATE_FORMAT(swr.infoTime, '%Y-%m-%d') = DATE_FORMAT(#{create_date}, '%Y-%m-%d')
+				 and
+				 openid is not null and openid!=''  
+	   </select>
+        <select id="selectLastDayTotalRecord" resultType="java.util.HashMap" >
+			SELECT
+				sst.totalvictorynums
+			FROM
+				sys_statistics_title sst
+			WHERE
+				DATE_FORMAT(sst.create_date, '%Y-%m-%d') =DATE_ADD(DATE_FORMAT(#{create_date}, '%Y-%m-%d'),INTERVAL -1 DAY) 
+	   </select>
+        <select id="selectLastDayTotalOrder" resultType="java.util.HashMap" >
+			SELECT
+				sst.totalvictoryorder
+			FROM
+				sys_statistics_title sst
+			WHERE
+				DATE_FORMAT(sst.create_date, '%Y-%m-%d') =DATE_ADD(DATE_FORMAT(#{create_date}, '%Y-%m-%d'),INTERVAL -1 DAY) 
+	   </select>
+<!--       郑玉巧说统计部分 -->
+      <select id="selectIntoZYQSayStatistics" resultType="java.util.HashMap" parameterType="java.util.Map">
+      SELECT
+	*
+	FROM
+	(
+		SELECT
+			COUNT(DISTINCT open_id) AS count,
+			CASE
+		WHEN 1 THEN
+			'1'
+		END AS `type`
+		FROM
+			sys_log
+		WHERE
+			title LIKE '00000052%'
+		and create_date like '${create_date}%'
+		UNION ALL
+			SELECT
+				COUNT(*) AS count,
+				CASE
+			WHEN 1 THEN
+				'2'
+			END AS `type`
+			FROM
+				sys_log
+			WHERE
+				title LIKE '00000052%'
+		and create_date like '${create_date}%'
+			UNION ALL
+				SELECT
+					COUNT(*) AS count,
+					CASE
+				WHEN 1 THEN
+					'3'
+				END AS `type`
+				FROM
+					sys_log
+				WHERE
+					title LIKE '00000053%'
+		and create_date like '${create_date}%' 
+	) a
+GROUP BY
+	type
+      </select>
+<!--       郑玉巧说累计部分 -->
+ <select id="selectIntoZYQSayTotal" resultType="java.util.HashMap" parameterType="java.lang.String">
+ SELECT * from (
+SELECT
+			COUNT(DISTINCT open_id) AS count,
+			CASE
+		WHEN 1 THEN
+			'1'
+		END AS `type`
+		FROM
+			sys_log
+		WHERE
+			title LIKE '00000052%'
+	  and DATE_FORMAT(create_date, '%Y-%m-%d')&lt;=DATE_FORMAT(#{create_date}, '%Y-%m-%d')
+UNION all
+SELECT
+			COUNT(*) AS count,
+			CASE
+		WHEN 1 THEN
+			'2'
+		END AS `type`
+		FROM
+			sys_log
+		WHERE
+			title LIKE '00000052%'
+	  and DATE_FORMAT(create_date, '%Y-%m-%d')&lt;=DATE_FORMAT(#{create_date}, '%Y-%m-%d')
+	  UNION all
+	  SELECT count(DISTINCT ddd)  AS count,
+			CASE
+		WHEN 1 THEN
+			'3'
+		END AS `type` from 
+			(select SUBSTRING_INDEX(sl.title, 'CookieID:', -1) as ddd 
+							from sys_log sl
+							where sl.title  like '00000052%' 
+							and DATE_FORMAT(create_date, '%Y-%m-%d')&lt;=DATE_FORMAT(#{create_date}, '%Y-%m-%d')
+							ORDER BY create_date desc)a where a.ddd not like '00000052%'
+)a
+ </select>
+<!--  郑玉巧说累计人数 -->
+         <select id="selectLastDayTotalReadNums" resultType="java.util.HashMap" >
+			SELECT
+				sst.totalreadnums
+			FROM
+				sys_statistics_title sst
+			WHERE
+				DATE_FORMAT(sst.create_date, '%Y-%m-%d') =DATE_ADD(DATE_FORMAT(#{create_date}, '%Y-%m-%d'),INTERVAL -1 DAY) 
+	   </select>
+<!--  用户数和医生数统计 -->
+ <select id="selectIntoUserAndDoctorNumsStatistics"  resultType="java.util.HashMap" parameterType="java.util.Map">
+ SELECT * FROM(
+	SELECT
+		COUNT(*) AS count,
+		CASE
+	WHEN 1 THEN
+		'3'
+	END AS `type`
+	FROM
+		sys_doctor
+where 
+		 DATE_FORMAT(create_date, '%Y-%m-%d')=DATE_FORMAT(#{create_date}, '%Y-%m-%d') 
+)a ORDER BY 
+type
+ </select>
+ <select id="selectIntoUserAndDoctorTotalStatistics" resultType="java.util.HashMap" parameterType="java.lang.String">
+ SELECT * FROM(
+	SELECT
+		COUNT(*) AS count,
+		CASE
+	WHEN 1 THEN
+		'2'
+	END AS `type`
+	FROM
+		sys_doctor
+where create_date is  null
+or DATE_FORMAT(create_date, '%Y-%m-%d')&lt;=DATE_FORMAT(#{create_date}, '%Y-%m-%d')
+)a ORDER BY type
+ </select>
+ 
+ 
+  <select id="findWeChatToken" resultType="String" >
+ 	SELECT token from sys_wechatparameter where id='1'
+ </select>
+ 
+  <select id="getTruthOrderAndPayOrder" resultType="java.util.HashMap" parameterType="java.lang.String">
+SELECT
+	COUNT(*) AS count,
+						CASE
+					WHEN 1 THEN
+						'1'
+					END AS `status`
+FROM
+	patient_register_service prs
+INNER JOIN order_property op ON prs.id = op.patient_register_service_id
+WHERE
+	(
+		prs.`status` = 1
+		OR prs.`status` = 2
+		OR prs.`status` = 3
+		OR prs.`status` = 4
+		OR prs.`status` = 5
+	)
+and op.yellow_cattle='no' AND babyName NOT LIKE '%测试%'
+and DATE_FORMAT(prs.create_date,'%Y-%m-%d')=DATE_FORMAT(#{create_date},'%Y-%m-%d')
+union ALL
+SELECT
+	COUNT(*) AS count,
+						CASE
+					WHEN 1 THEN
+						'2'
+					END AS `status`
+FROM
+	patient_register_service prs
+INNER JOIN account_pay_record apr ON apr.order_id = prs.id
+where (
+		prs.`status` = 1
+		OR prs.`status` = 2
+		OR prs.`status` = 3
+		OR prs.`status` = 4
+		OR prs.`status` = 5
+	)AND babyName NOT LIKE '%测试%'
+and apr.`status`='success' and DATE_FORMAT(prs.create_date,'%Y-%m-%d')=DATE_FORMAT(#{create_date},'%Y-%m-%d')
+ </select>
+     
+<!--     知识库统计 -->
+	<select id="getPatienBabyNum" resultType="java.util.HashMap">
+	SELECT DISTINCT
+		openid,
+		babyName
+	FROM
+		patient_baby_emr pbe
+	WHERE
+		DATE_FORMAT(pbe.create_date, '%Y-%m-%d')=DATE_FORMAT(#{create_date}, '%Y-%m-%d')
+	</select>
+	
+	<select id="getPatienBabyNumLastday" resultType="java.util.HashMap">
+		SELECT
+			sat.totalZYQPbe
+		FROM
+			sys_statistics_title sat
+		WHERE
+			sat.create_date = DATE_ADD(DATE_FORMAT(#{create_date}, '%Y-%m-%d'), INTERVAL - 1 DAY)
+	</select>
+
+	<select id="getVisiteUserNum" resultType="Integer">
+		SELECT count(DISTINCT(sl.create_by) ) from sys_log sl where create_date like '${create_date}%'
+		and sl.title = '00000043'
+	</select>
+	
+	<select id="getAddVipNum" resultType="Integer">
+		SELECT
+			 COUNT(*)
+		FROM
+			account_pay_record apr
+		WHERE
+			DATE_FORMAT(apr.pay_date, '%Y-%m-%d') = DATE_FORMAT(#{create_date}, '%Y-%m-%d')
+		AND apr.`status`='success'
+	</select>	
+	
+	<select id="getDiffVipNum" resultType="Integer">
+		SELECT
+			 COUNT(*)
+		FROM
+			account_pay_record apr
+		WHERE
+			DATE_FORMAT(apr.pay_date, '%Y-%m-%d') = DATE_FORMAT(#{create_date}, '%Y-%m-%d')
+		AND apr.`status`='return'
+	</select>	
+	
+	<select id="getTotalVipNum" resultType="Integer">
+		SELECT
+			 IFNULL(sst.totalVIP,1070)
+		FROM
+			sys_statistics_title sst
+		WHERE
+			DATE_FORMAT(sst.create_date, '%Y-%m-%d') =DATE_ADD(DATE_FORMAT(#{create_date}, '%Y-%m-%d'),INTERVAL -1 DAY) 
+	</select>	
+
+</mapper>

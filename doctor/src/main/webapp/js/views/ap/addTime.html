@@ -1,0 +1,129 @@
+<ion-spinner ng-show="pageLoading"  class="loadPic"></ion-spinner>
+<link rel="stylesheet" href="styles/lib/common.css"/>
+<ion-view view-title="出诊安排" ng-init="doRefresh()">
+    <ion-spinner ng-show="dataLoading"></ion-spinner>
+    <div class="select-time-sha" ng-if="(TimeLock=='true')||(appointmentRepeat=='true')" ng-click="selectClose()"> </div>
+    <div class="select-time" ng-if="TimeLock=='true'">
+           <div class="time">
+               <ion-item class="t">
+                   <ul>
+                       <li ng-repeat="item in appointmentResultTime" class="item item-borderless" ng-click="selectHM(item)">
+                        {{item}}
+                       </li>
+                   </ul>
+               </ion-item>
+           </div>
+    </div>
+    <div class="select-time" ng-if="appointmentRepeat=='true'">
+        <div class="time" style="height:160px;">
+            <ion-item class="t">
+                <ul >
+                    <li ng-repeat="item in repeatItem" class="item item-borderless" ng-click="selectRepeatItem(item)">
+                        {{item}}
+                    </li>
+                </ul>
+            </ion-item>
+        </div>
+    </div>
+    <div class="addTitle">
+        <div class="time">
+            <span class="l">
+                出诊时间
+            </span>
+            <span class="r">
+                {{newMon}}月{{newDa}}日（{{newWeek}}）
+            </span>
+        </div>
+    </div>
+    <ion-content class="addTime">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <!--医院和诊室-->
+            <div class="add-tips">
+                <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Fcaution.png" width="13" height="13">以下出诊地点由您提供，若地点有误请联系客服。
+            </div>
+            <div class="list" style="margin-top:0;">
+                <ul class="item item-borderless" >
+                   <!-- 选择医院-->
+                    <li ng-click="selectHospital()">
+                        <span class="l">选择医院</span>
+                        <span class="r">{{hospitalName}}</span>
+                        <div style="clear:both;"></div>
+                        <i class="ion-ios-arrow-down" ng-if="hospitalLock=='false'"></i>
+                        <i class="ion-ios-arrow-up" ng-if="hospitalLock=='true'"></i>
+                    </li>
+                   <div>
+                       <ul class="sha"  ng-if="hospitalLock=='true'"></ul>
+                       <ul ng-if="hospitalLock=='true'">
+                           <li ng-repeat="item in hospital" ng-click="selectHospitalName(item.hospitalId)">
+                               {{item.hospitalName}}
+                           </li>
+                       </ul>
+                   </div>
+                   <!-- 选择诊室-->
+                    <li ng-click="selectClinic()">
+                        <span class="l">诊室安排</span>
+                        <span class="r">{{location}}</span>
+                        <div style="clear:both;"></div>
+                        <i  class="ion-ios-arrow-down" ng-if="clinicLock=='false'"></i>
+                        <i  class="ion-ios-arrow-up" ng-if="clinicLock=='true'"></i>
+                    </li>
+                   <div>
+                       <ul class="sha"  ng-if="clinicLock=='true'"></ul>
+                       <ul ng-if="clinicLock=='true'">
+                           <li ng-repeat="item in clinic" ng-click="selectClinicName(item.locationId)">
+                               {{item.location}}
+                           </li>
+                       </ul>
+                   </div>
+                </ul>
+            </div>
+            <!--开始时间和结束时间-->
+            <div class="list">
+                <ul class="item item-borderless" >
+                    <li ng-click="selectTime('start')" >
+                        <span class="l">开始时间</span>
+                        <span class="r">{{begin_time}}</span>
+                        <div style="clear:both;"></div>
+                        <i  class="ion-ios-arrow-down" ng-if="startTimeLock=='false'"></i>
+                        <i  class="ion-ios-arrow-up" ng-if="startTimeLock=='true'"></i>
+                    </li>
+                    <li ng-click="selectTime('end')">
+                        <span class="l">结束时间</span>
+                        <span class="r">{{end_time}}</span>
+                        <div style="clear:both;"></div>
+                        <i  class="ion-ios-arrow-down" ng-if="endTimeLock=='false'"></i>
+                        <i  class="ion-ios-arrow-up" ng-if="endTimeLock=='true'"></i>
+                    </li>
+                </ul>
+            </div>
+            <!--出诊价格和周重复-->
+            <div class="list">
+                <ul class="item item-borderless" >
+                    <li ng-click="selectRepeat()">
+                        <span class="l">重复</span>
+                        <span class="r">{{repeatFlag}}</span>
+                        <div style="clear:both;"></div>
+                        <i class="ion-ios-arrow-right"></i>
+                    </li>
+                  <!--  <ul class="sha"  ng-if="hospitalLock=='true'"></ul>
+                    <div class="" >
+                        <ul class="sha"  ng-if="appointmentRepeat=='true'"></ul>
+                        <ul ng-if="appointmentRepeat=='true'">
+                            <li ng-repeat="item in repeatItem" class="" ng-click="selectRepeatItem(item)">
+                                {{item}}
+                            </li>
+                        </ul>
+                    </div>-->
+                    <li>
+                        <span class="l guaHao">挂号费</span>
+                        <span class="r guaHao-fee" ><input type="text" ng-model="info.price" style="display: inline-block;"/>&nbsp;元</span>
+                        <div style="clear:both;"></div>
+                    </li>
+                </ul>
+            </div>
+            <div style="clear: both;height:300px;"></div>
+        </ion-scroll>
+        <button class="button foot-btn btn" ng-click="save()">确定</button>
+    </ion-content>
+
+</ion-view>

@@ -1,0 +1,48 @@
+<ion-view view-title={{title}} >
+	<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+	<ion-content class="evaluateList bg1" style="top:0;">
+		<ion-scroll direction="y" has-bouncing="true">
+			<div class="score">
+				<div class="f8 c2 fl">
+					5分<img class="star" ng-repeat="item in [1,2,3,4,5]" width="19" height="auto" ng-src="{{starImg1}}">
+				</div>
+				<span class="fr f5 c4">50条评价</span>
+			</div>
+			<div class="evaluate-classify f4 c4 bg4 border1 ">
+				<div class="fl border2 " ng-class="{'cur':classifyItem=='all'}" ng-click="evaluateClassify('all')">
+					全部评价
+					<i></i>
+				</div>
+				<div class="fl border2" ng-class="{'cur':classifyItem=='ap'}" ng-click="evaluateClassify('ap')">
+					预约评价
+					<i></i>
+				</div>
+				<div class="fl border2"  ng-class="{'cur':classifyItem=='phone'}" ng-click="evaluateClassify('phone')">
+					咨询评价
+					<i></i>
+				</div>
+			</div>
+			<div class="evaluate">
+				<div class="user border4" ng-repeat="item in evaluateList" ng-class="{'border0':$last}">
+					<img class="photo" width="35" height="35" src="images/a2.png" >
+					<div class="info">
+						<div style="overflow: hidden;">
+							<div class="fl">
+								<span class="name c3">{{item.name}}</span>
+								<img class="star" ng-repeat="item in [1,2,3,4,5]" width="9.5" height="auto" ng-src="{{starImg1}}">
+							</div>
+							<div class="fr date c5">{{item.date}}&nbsp;({{item.week}})&nbsp;{{item.time}}</div>
+						</div>
+						<span class="phone c4 ">{{item.phone}}</span>
+					</div>
+					<div class="text c3">{{item.impression}}</div>
+				</div>
+			</div>
+
+
+		</ion-scroll>
+
+	</ion-content>
+
+</ion-view>
+

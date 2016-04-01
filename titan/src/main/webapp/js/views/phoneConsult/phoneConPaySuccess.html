@@ -1,0 +1,35 @@
+<ion-view view-title={{title}} >
+	<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+	<div bdf-head="title"></div>
+	<ion-content class="phoneConPaySuccess" >
+		<ion-scroll direction="y" has-bouncing="true">
+			<div class="remind-pic c4">
+				<img class="my-img2" width="97.5" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fappointment_success.png">
+				<div class="text f5">电话咨询预约成功！</div>
+				<div class="text f3">请在预约时间内等待电话，确保电话可接通。</div>
+			</div>
+			<div class="apart"></div>
+			<div class="order-info">
+				<ul>
+					<li class="f4 c5">
+						<span class="f4 c3">就诊医生：</span> {{appointData.price}}元/{{appointData.server_length}}分钟
+					</li>
+					<li class="f4 c5">
+						<span class="f4 c3">服务时间：</span> {{appointData.date}}&nbsp;&nbsp;{{appointData.beginTime}}-{{appointData.endTime}}
+					</li>
+					<li class="f4 c5">
+						<span class="f4 c3">接听电话：</span> {{appointData.phone}}
+					</li>
+				</ul>
+			</div>
+			<div class="myWarn1 c2 f2">
+				温馨提示：电话咨询前有疑问，可免费咨询宝大夫医生
+			</div>
+			<button ng-click="consultDoc()" class="button foot-btn">免费咨询宝大夫医生</button>
+
+		</ion-scroll>
+
+	</ion-content>
+
+</ion-view>
+

@@ -1,0 +1,17 @@
+<ion-spinner ng-show="pageLoading" style="color:#139fff;position: relative;top: 301px;left:148px;z-index:999;"></ion-spinner>
+<ion-view view-title="提现" style="">
+    <ion-spinner ng-show="dataLoading"></ion-spinner>
+    <ion-content  style="top:0;" class="withDrawls">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <div class="dj-r" >
+              金额：&nbsp;&nbsp;
+                <input placeholder="当前余额{{balance}}元" ng-model="info.money">
+            </div>
+            <div class="tips">
+                提现到您的微信钱包
+            </div>
+            <button class="button foot-btn" ng-click="withDrawlsConfirm()">提交</button>
+        </ion-scroll>
+    </ion-content>
+
+</ion-view>

@@ -1,0 +1,122 @@
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫">
+    <div bdf-head="title"></div>
+    <div class="searchList-shadow" ng-style="shadow=='1'?{'display':'block'}:{'display':'none'}"></div>
+    <div ng-if="selectType!=''">
+        <ion-content class="mySeek" overflow-scroll="true"
+                     style="overflow:hidden" ng-style="mySeek=='1'?{'z-index':'5'}:{'z-index':'4'}">
+            <ion-scroll direction="y" has-bouncing="true" style="margin-top:0;">
+                <dl class="list" ng-if="(selectType=='department')&&(lock1=='1')">
+                    <dt class="hd item"  ng-click="init()" ng-if="(lock3=='1')">全部科室</dt>
+                    <dd class="bd item" ng-repeat="item in departmentData" >
+                        <div ng-click="reloadDoctorInDepartment(item.hospitalId,item.departmentLevel1Name)">
+                            {{item.departmentLevel1Name}}
+                        </div>
+                    </dd>
+                </dl>
+                <dl class="list" ng-if="(selectType=='hospital')&&(lock1=='1')">
+                    <dt class="hd item" ng-click="init()" ng-if="(lock3=='1')">全部医院</dt>
+                    <dd class="bd item" ng-repeat="item in hospitalData" >
+                        <div ng-click="reloadDoctorInHospital(item.hospitalId,item.hospitalName)">
+                            {{item.hospitalName}}
+                        </div>
+                    </dd>
+                </dl>
+                <dl class="list list2" ng-if="(selectType=='rank')&&(lock2=='1')">
+                    <dd class="bd item" ng-click="timeRank()">时间最近</dd>
+                    <dd class="bd item" ng-click="fansRank()">粉丝最多</dd>
+                    <dd class="bd item" ng-click="workTimeRank()">从业时间</dd>
+                </dl>
+            </ion-scroll>
+        </ion-content>
+    </div>
+    <div class="Category button-bar shadow" ng-if="!isBlank">
+        <div ng-if="remark=='department'" class="button button-light"
+             ng-click="selectAllDepartment()" style="border-right:1px solid #eee;"
+                ng-style="department=='1'?{'color':'#88d9dd'}:{'color':'#999'}">
+            {{departmentSelectName}}&nbsp;&nbsp;<img ng-src="{{arrowImg}}" width="16" height="9" >
+        </div>
+        <div ng-if="remark=='hospital'" class="button button-light"
+             ng-click="selectAllDepartment()" style="border-right:1px solid #eee;"
+             ng-style="department=='1'?{'color':'#88d9dd'}:{'color':'#999'}">
+            {{hospitalSelectName}}&nbsp;&nbsp;<img ng-src="{{arrowImg}}" width="16" height="9">
+        </div>
+        <div class="button button-light" nav-direction="none" ng-click="selectAllRank()"
+             ng-style="rank=='1'?{'color':'#88d9dd'}:{'color':'#999'}">
+            {{rankTitle}}&nbsp;&nbsp;<img ng-src="{{rankImg}}" width="22" height="14" >
+        </div>
+    </div>
+
+    <div id="searchListShow">
+        <ion-content class="searchList" overflow-scroll="true" style="overflow:hidden"
+                     ng-style="!isBlank?{'top':'90px'}:{'top':'45px'}">
+            <ion-scroll direction="y" has-bouncing="true" >
+                <ion-list>
+                    <div class="list" ng-if="!isBlank">
+                        <div class="item item-wrap" ng-repeat="item in doctorData">
+                            <div class="item item-thumbnail-left doctorInfo item-borderless"
+                                    ng-click="doctorAppointment(item.doctorId,item.visitInfo[0].available_time,
+                                    item.visitInfo[0].name,item.visitInfo[0].location,item.visitInfo[0].position,
+                                    item.visitInfo[0].location_id,'')">
+                                <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.doctorId}}?ver={{picVer}}" class="doctorPhoto"/>
+                                <h2>{{item.doctorName}}&nbsp;<span>{{item.position1}}&nbsp;{{item.position2}}&nbsp;({{item.career_time}}年)</span></h2>
+                                <p>{{item.hospitalName}}</p>
+                                <p ng-if="item.doctorName=='郑玉巧'">科室擅长：儿科 儿内科疾病 疑难杂症 儿童保健</p>
+                                <p ng-if="item.doctorName!='郑玉巧'">科室擅长：{{item.expertise}}</p>
+                            </div>
+                            <ul class="item item-borderless"
+                                ng-if="item.visitInfo.length!=0&&
+                                (!(item.visitInfo[0].available_time<7)||!($index>0&&ite.available_time>6))"
+                                ng-repeat="ite in item.visitInfo"
+                                ng-click="doctorAppointment(item.doctorId,
+                                ite.available_time,
+                                ite.name,
+                                ite.location,
+                                ite.position,
+                                ite.location_id,
+                                '')">
+                                <li>
+                                    <span class="circle">{{$index+1}}</span>
+                                    {{ite.position}}（{{ite.name}}）&nbsp;&nbsp;{{ite.location}}
+                                </li>
+                                <span class="button1" ng-if="searchDoctorByDate=='searchDoctorByDate'"
+                                      style="margin-left:7px">
+                                    {{ite.latest_time}}可约
+                                 </span>
+                                 <span class="button1" ng-if="searchDoctorByDate!='searchDoctorByDate'&&ite.available_time<7"
+                                       style="margin-left:7px">
+                                    {{week[ite.available_time]}}{{ite.latest_time}}可约
+                                 </span>
+                                 <span class="button1" ng-if="searchDoctorByDate!='searchDoctorByDate'&&ite.available_time>=7"
+                                       style="margin-left:7px">
+                                    {{ite.available_time}}天后{{ite.latest_time}}可约
+                                 </span>
+                                <span style="color:#666;">|</span>
+                                <span class="button1" style="margin-left:0px">
+                                    平均等待时间{{ite.shot_time}}分钟
+                                 </span>
+                                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Farr_r_blue.png" width="9" height="16" class="arrow-r">
+                            </ul>
+                            <ul ng-if="item.visitInfo.length == 0"
+                                ng-click="doctorAppointment(item.doctorId,item.visitInfo[0].available_time,
+                                    item.hospitalName,item.visitInfo[0].location,item.visitInfo[0].position,
+                                    item.visitInfo[0].location_id,'')">
+                              <span class="button2">
+                                   暂无时间地址预约
+                              </span>
+                            </ul>
+                        </div>
+                    </div>
+                </ion-list>
+                <ion-infinite-scroll on-infinite="loadMore()" distance="1%"
+                                     immediate-check="false" ng-show="scrollLoading" >
+                </ion-infinite-scroll>
+                <div class="noContent" ng-if="isBlank">
+                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fsearchlist_no.png" width="124" height="106">
+                    <p style="font-size:15px;">{{care1}}</p>
+                </div>
+                <div bdf-footer></div>
+            </ion-scroll>
+        </ion-content>
+    </div>
+</ion-view>

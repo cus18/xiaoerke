@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxqm.xiaoerke.modules.sys.dao.PatientDao">
+
+    <!-- 插入用户 -->
+    <insert id="insert">
+        INSERT INTO sys_patient(
+        id,
+        sys_user_id,
+        name,
+        gender,
+        birthday,
+        accountNumber,
+        status
+        ) VALUES (
+        #{id},
+        #{sysUserId},
+        #{name},
+        #{gender},
+        #{birthday},
+        #{accountNumber},
+        #{status}
+        )
+    </insert>
+    
+    <!-- 更新用户 -->
+    <update id="update">
+        UPDATE sys_patient SET
+        sys_user_id = #{sysUserId},
+        name = #{name},
+        gender = #{gender},
+        birthday = #{birthday},
+        status = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <select id="getPatientIdByUserIdExecute" resultType="java.util.Map">
+        SELECT
+        sp.id
+        FROM
+        sys_patient sp
+        RIGHT JOIN sys_user su ON sp.sys_user_id = su.id
+        WHERE  1=1
+        <if test="sysUserId != null">
+            AND su.id=#{sysUserId}
+        </if>
+    </select>
+
+    <!--获取个人信息  @author 11_zdl-->
+    <select id="findPersonInfoExecute" resultType="java.util.Map">
+        SELECT su.login_name,su.name,su.id FROM sys_patient sp,sys_user su
+        WHERE sp.sys_user_id=su.id
+        AND sp.id=#{patientId}
+    </select>
+
+    <select id="getUserIdByPatient" resultType="java.lang.String">
+        select sp.sys_user_id from patient_register_service prs left join sys_patient sp on prs.sys_patient_id = sp.id
+        where prs.id = #{patientRegisterId}
+    </select>
+</mapper>

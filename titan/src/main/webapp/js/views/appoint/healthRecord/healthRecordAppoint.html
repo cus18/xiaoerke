@@ -1,0 +1,48 @@
+<ion-view view-title={{title0}} ng-init="doRefresh()" >
+	<div bdf-head="title"></div>
+	<ion-content class="healthRecordAppoint" style="top:44px;">
+		<ion-scroll direction="y" has-bouncing="true">
+			<div class="detail">
+				<dl >
+					<dt>
+						<span>{{orderInfo.beginTime}}</span>
+					</dt>
+					<dd>
+						<ul>
+							<li>
+								<span>病情诊断：</span>
+								<p>
+									<a class='no-condition' ng-if="orderInfo.doctor_case_name==null"  ng-click='fillDisease(orderInfo.id)' >请填写病情诊断</a>
+									{{orderInfo.doctor_case_name}}
+								</p>
+							</li>
+							<li>
+								<span>病情描述：</span>
+								<p>
+									{{orderInfo.illness}}
+								</p>
+							</li>
+						</ul>
+						<ul>
+							<li>
+								<span>下单时间：</span>
+								<p>{{orderInfo.create_date | date: 'yyyy-MM-dd HH:mm:ss '}}</p>
+							</li>
+							<li>
+								<span>就诊医院：</span>
+								<p>{{orderInfo.hospitalName}}</p>
+							</li>
+							<li>
+								<span>看诊医生：</span>
+								<p> {{orderInfo.doctorName}}</p>
+							</li>
+						</ul>
+					</dd>
+				</dl>
+				<br><br><br>
+			</div>
+
+		</ion-scroll>
+	</ion-content>
+</ion-view>
+

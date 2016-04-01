@@ -1,0 +1,105 @@
+/*sharedDetail*/
+@height: `document.documentElement.clientHeight`;
+@unit: unit((@height-96), px);
+.sharedDetail {
+  background: url("http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fshared_bg.png") center bottom no-repeat  #fe717b;
+  background-size: 100% 150px;
+}
+.iknowContent .item{
+  margin-left:5%;
+  width:90%;
+  background:#fff;
+  text-align: center;
+  border-radius: 5px;
+}
+.iknowContent .success{
+  margin-top:15px;
+  margin-bottom:15px;
+  border:none;
+}
+.iknowContent p{
+  color:#333;
+  font-size:17px;
+  margin-bottom: 15px;
+}
+.iknowContent .know{
+  width:150px;
+  margin-top:10px;
+  margin-bottom:30px;
+  background-color: #88d9dd;
+}
+.iknow-shadow{
+  position:absolute;
+  left:0;
+  top:0;
+  z-index: 9;
+  width:100%;
+  height:100%;
+  background: #000;
+  filter:alpha(Opacity=80);
+  -moz-opacity:0.8;
+  opacity: 0.8;
+}
+
+.iknowContent{
+  width:100%;
+  height:100%;
+  position: absolute;
+  z-index:99;
+  text-align: left;
+  color:#119eff;
+  padding-top:44px;
+}
+
+.arrow1{
+  width:22px;
+  height:49px;
+  position: absolute;
+  right:15px;
+  top:0px;
+  z-index:0;
+}
+.sharedDetail .box-out{
+  position: absolute;
+  z-index:5;
+}
+.sharedDetail .box{
+  margin: 20% 7% 0;
+  width:86%;
+  height:240px;
+  border-radius: 14px;
+  color:#333;
+  background: url("http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fshared_card.png") left top no-repeat  #fff;
+  background-size: 86% 47px;
+
+}
+.sharedDetail .hand{
+  margin-top:10px;
+}
+.box {
+  padding-top:20px;
+  text-align: center;
+}
+.box img.ma{
+  margin-top:8px;
+}
+.box h2{
+  font-size:14px;
+  color:#333;
+  margin-top:15px;
+  margin-bottom: 0;
+}
+.box h2 span{
+  font-size:11px;
+  color:#666;
+}
+.box p{
+  margin-top:10px;
+  margin-bottom: 5px;
+  font-size:12px;
+  color:#999;
+}
+.foot-pic{
+  position: absolute;
+  top: 1 *@unit;
+}

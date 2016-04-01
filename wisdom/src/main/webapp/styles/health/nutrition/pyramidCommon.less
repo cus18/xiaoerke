@@ -1,0 +1,153 @@
+.pyramid{
+  margin:10px 12px;
+}
+.pyramid .circle{
+  position: absolute;
+  left:30px;
+  top:28px;
+}
+.pyramid .circle li{
+  font-size:12px;
+  color:#666;
+  margin-bottom:15px;
+}
+.pyramid .circle li span{
+  display: inline-block;
+  width:12px;
+  height:13px;
+  border-radius: 50%;
+  background-color: #ff798f;
+  margin-left:8px;
+}
+.pyramid .circle li:nth-of-type(2) span{
+  background-color: #cdef7d;
+}
+.pyramid .circle li:nth-of-type(3) span{
+  background-color: #5ca9ea;
+}
+.pyramid .classify li{
+  width:10%;
+  height:0;
+  margin:0 auto 8px;
+  line-height: 82px;
+  border-bottom: 60px solid #cdef7d;
+  border-left:20px solid transparent;
+  border-right:20px solid transparent;
+  text-align: center;
+  position: relative;
+}
+.pyramid .classify li.less1{
+  border-bottom: 60px solid #5ca9ea;
+}
+.pyramid .classify li.more1{
+  border-bottom: 60px solid #ff798f;
+}
+/*动画*/
+.pyramid .classify li.less{
+   animation: myLess 5s;
+   -webkit-animation: myLess 5s; /* Safari and Chrome */
+  border-bottom: 60px solid #5ca9ea;
+ }
+@keyframes myLess
+{
+  from {border-bottom: 60px solid #cdef7d;}
+  to {border-bottom: 60px solid #5ca9ea;}
+}
+
+@-webkit-keyframes myLess /* Safari and Chrome */
+{
+  from {border-bottom: 60px solid #cdef7d;}
+  to {border-bottom: 60px solid #5ca9ea;}
+}
+
+.pyramid .classify li.more{
+  animation: myMore 5s;
+  -webkit-animation: myMore 5s; /* Safari and Chrome */
+  border-bottom: 60px solid #ff798f;
+}
+@keyframes myMore
+{
+  from {border-bottom: 60px solid #cdef7d;}
+  to {border-bottom: 60px solid #ff798f;}
+}
+
+@-webkit-keyframes myMore /* Safari and Chrome */
+{
+  from {border-bottom: 60px solid #cdef7d;}
+  to {border-bottom: 60px solid #ff798f;}
+}
+
+.pyramid .classify li.noAssess{
+  border-bottom: 60px solid rgba(0, 0, 0, 0.2);
+}
+.pyramid .classify li .food{
+  width:66%;
+  height:auto;
+  margin-top:5px;
+}
+
+.pyramid .classify li:nth-of-type(2){
+  width:25%;
+}
+.pyramid .classify li:nth-of-type(3){
+  width:40%;
+}
+
+.pyramid .classify li:nth-of-type(4){
+  width:55%;
+}
+
+.pyramid .classify li:nth-of-type(5){
+  width:70%;
+}
+
+.pyramid .classify li:nth-of-type(6){
+  width:85%;
+}
+
+.pyramid .classify li:nth-of-type(7){
+  width:100%;
+}
+.pyramid .classify li:first-of-type .food{
+  width:16px;
+  margin-left:-8px;
+}
+.pyramid .classify li:last-of-type .food{
+  width:44%;
+  margin-top:5px;
+}
+.pyramid .classify li span{
+  position: absolute;
+  width:60px;
+  height:20px;
+  line-height:20px;
+  text-align: left;
+  right:-75px;
+  top:20px;
+  color:#333;
+  font-size:12px;
+ /* transform-origin: left top;*/
+  /*transform: rotate(75deg);
+  -ms-transform: rotate(75deg); /!* IE 9 *!/
+  -webkit-transform: rotate(75deg); /!* Safari and Chrome *!/*/
+}
+.pyramid .classify li::nth-of-type(2) span{
+  width:25%;
+ /* margin-right: 0px;*/
+}
+.pyramid .classify li::nth-of-type(3) span{
+  width:40%;
+/*  margin-right: 2px;*/
+}
+
+.remind-text{
+  color:#333;
+  font-size:13px;
+  text-align: center;
+  margin:15px auto;
+}
+.remind-text img{
+  margin-top:-3px;
+}
+
+

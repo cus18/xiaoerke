@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.account.dao.AccountBindingDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.account.entity.AccountBinding" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="account" property="account" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="INTEGER" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="owner_name" property="ownerName" jdbcType="VARCHAR" />
+    <result column="account_type" property="accountType" jdbcType="VARCHAR" />
+    <result column="belong_to" property="belongTo" jdbcType="VARCHAR" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="updated_date" property="updatedDate" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, user_id, account, mobile, owner_name, account_type, belong_to, created_date, 
+    updated_date, created_by
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from account_binding
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from account_binding
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.account.entity.AccountBinding" >
+    insert into account_binding (id, user_id, account, 
+      mobile, owner_name, account_type, 
+      belong_to, created_date, updated_date, 
+      created_by)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{ownerName,jdbcType=VARCHAR}, #{accountType,jdbcType=VARCHAR}, 
+      #{belongTo,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedDate,jdbcType=TIMESTAMP}, 
+      #{createdBy,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.account.entity.AccountBinding" >
+    insert into account_binding
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="account != null" >
+        account,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="ownerName != null" >
+        owner_name,
+      </if>
+      <if test="accountType != null" >
+        account_type,
+      </if>
+      <if test="belongTo != null" >
+        belong_to,
+      </if>
+      <if test="createdDate != null" >
+        created_date,
+      </if>
+      <if test="updatedDate != null" >
+        updated_date,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null" >
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerName != null" >
+        #{ownerName,jdbcType=VARCHAR},
+      </if>
+      <if test="accountType != null" >
+        #{accountType,jdbcType=VARCHAR},
+      </if>
+      <if test="belongTo != null" >
+        #{belongTo,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null" >
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedDate != null" >
+        #{updatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.account.entity.AccountBinding" >
+    update account_binding
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null" >
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerName != null" >
+        owner_name = #{ownerName,jdbcType=VARCHAR},
+      </if>
+      <if test="accountType != null" >
+        account_type = #{accountType,jdbcType=VARCHAR},
+      </if>
+      <if test="belongTo != null" >
+        belong_to = #{belongTo,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null" >
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedDate != null" >
+        updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.account.entity.AccountBinding" >
+    update account_binding
+    set user_id = #{userId,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      owner_name = #{ownerName,jdbcType=VARCHAR},
+      account_type = #{accountType,jdbcType=VARCHAR},
+      belong_to = #{belongTo,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+</mapper>

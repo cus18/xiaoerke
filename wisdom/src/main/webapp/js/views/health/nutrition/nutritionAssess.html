@@ -1,0 +1,83 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="营养评估" ng-init="doRefresh()">
+    <!--七大类的评估-->
+    <div class="shadow" ng-if="assessLock&&pyramidList[classifyNum]"></div>
+    <div class="classify-assess" ng-if="assessLock&&pyramidList[classifyNum]">
+        <div class="handle">
+            <img ng-click="cancelAssess()"  width="20" height="20.5" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fclose.png">
+            <img  ng-click="assessFinish()" width="21.5" height="22" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Fassess_finish.png">
+        </div>
+        <div class="pic">
+            <img  width="100%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Findex_necessary.png">
+        </div>
+        <dl>
+            <dt class="titleLine">
+                <span class="line"></span>
+                <span class="line"></span>
+                {{pyramidList[classifyNum].classifyText}}类
+            <p>宝宝一天吃/喝的{{pyramidList[classifyNum].classifyText}}总量</p>
+            </dt>
+            <dd ng-click="goWeight()">
+                <img  width="20.5" height="21" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Fassess_weight.png"><br>
+                估算重量
+            </dd>
+            <dd ng-click="goTrait()">
+                <img  width="21.5" height="19" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Fassess_nutrition_effect.png"><br>
+                营养特点
+            </dd>
+        </dl>
+        <div class="fill">
+            <input type="number" placeholder="请输入您吃的重量（单位g或者ml）" ng-model="info.weights">
+        </div>
+    </div>
+    <ion-content class="nutritionAssess " style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="pyramid">
+                <!--原点提示-->
+                <ol class="circle">
+                    <li >
+                        过量<span class="line"></span>
+                    </li>
+                    <li >
+                        正常<span class="line"></span>
+                    </li>
+                    <li >
+                        不够<span class="line"></span>
+                    </li>
+                </ol>
+          <!--膳食宝塔-->
+                <ul class="classify">
+                    <li ng-class="{'noAssess':!pyramidList[$index].assessLock}" ng-repeat="item in pyramidList">
+                        <img class="food" ng-src="{{item.img}}">
+                        <span>{{item.classify}}</span>
+                        <div class="add-assess" ng-click="classifyAssess($index)">
+                            <img  width="26" height="26" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Fassess_add.png">
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="remind-text" ng-click="lookFood()">
+               查看当天食谱
+                &nbsp;<img class="my-img" width="11.5" height="12" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Farrow_right_gray.png">
+            </div>
+           <div class="two-btn">
+               <a  ng-click="goPyramid()">照食谱吃哒</a>
+               <a  ng-click="addFinish()">添加完毕</a>
+           </div>
+            <br><br><br><br><br><br>
+        </ion-scroll>
+    </ion-content>
+    <div class="my-footer">
+        <a class="tab-item"  ng-class="{'activated':footerNum==0}" ng-click="menuSelect(0)"><i class="icon ">
+            <img width="28" height="25" ng-src="{{homeImg}}"> </i> 首页</a>
+        <a class="tab-item"  ng-class="{'activated':footerNum==1}" ng-click="menuSelect(1)"><i class="icon ">
+            <img width="25.5" height="25"  ng-src="{{assessImg}}"></i> 评估</a>
+        <a class="tab-item consult"  ng-class="{'activated':footerNum==4}" ng-click="menuSelect(4)"><i class="icon ">
+            <img width="67.7" height="60"  ng-src="{{commentImg}}"></i> 咨询</a>
+        <a class="tab-item"  ng-class="{'activated':footerNum==3}" ng-click="menuSelect(3)"><i class="icon ">
+            <img width="27.5" height="25" ng-src="{{necessaryImg}}" ></i> 必备</a>
+        <a class="tab-item"  ng-class="{'activated':footerNum==2}" ng-click="menuSelect(2)"><i class="icon ">
+            <img width="23" height="25" ng-src="{{reportImg}}"></i> 我的</a>
+    </div>
+
+</ion-view>

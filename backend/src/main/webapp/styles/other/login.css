@@ -1,0 +1,123 @@
+#b-2 {
+    width: 620px;
+    height: 400px;
+    background: url("../../images/s-yhdl-doctor.jpg") no-repeat;
+    background-position: 73px 30px;
+}
+
+#b-3 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 320px;
+    height: 400px;
+    padding-top: 55px;
+    background: url("../../images/10.png");
+}
+
+#b-3 .b-1 {
+    font-size: 19px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#b-3 .b-2 {
+    position: relative;
+    width: 280px;
+    height: 40px;
+    margin: 42px auto 0 auto;
+    border: 1px solid #ccc;
+}
+
+.b-2 .b-3 {
+    width: 40px;
+    height: 100%;
+    border-right: 1px solid #ccc;
+}
+
+.b-2 .b-3 img {
+    width: 12px;
+    margin-top: 12px;
+    margin-left: 14px;
+}
+
+.b-2 input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 238px;
+    height: 100%;
+    border: 1px solid transparent;
+}
+
+.b-2 .b-4 {
+    position: absolute;
+    top: 14px;
+    right: 10px;
+    width: 9px;
+    height: 9px;
+    background: url("../../images/41.png");
+    background-size: 100% 100%;
+    cursor: pointer;
+    z-index: 9999;
+}
+
+.b-2 .b-4:hover {
+    background: url("../../images/42.png");
+    background-size: 100% 100%;
+}
+
+#b-3 .b-2.b-5 {
+    margin-top: 12px;
+}
+
+#b-3 .b-6 {
+    position: relative;
+    width: 280px;
+    margin: 6px auto 0 auto;
+}
+
+.b-6 input {
+    position: relative;
+    top: 2px;
+}
+
+.b-6 span {
+    font-size: 15px;
+}
+
+.b-6 .b-7 {
+    margin-left: 1px;
+}
+
+.b-6 .b-8 {
+    position: absolute;
+    top: 1px;
+    right: 0;
+    color: #faa820;
+    cursor: pointer;
+}
+
+#b-3 .b-9 {
+    width: 280px;
+    margin: 46px auto 0 auto;
+    padding: 10px 0;
+    cursor: pointer;
+    text-align: center;
+    background: #f9a920;
+}
+
+#b-3 .b-9 span {
+    color: #fff;
+    font-size: 16px;
+}
+
+#b-3 .b-10 {
+    margin-top: 15px;
+    padding-left: 20px;
+}
+
+#b-3 .b-11 {
+    margin-left: 9px;
+    color: #25ab3a;
+}

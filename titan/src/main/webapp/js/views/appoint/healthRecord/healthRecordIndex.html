@@ -1,0 +1,154 @@
+<ion-view view-title={{title0}} ng-init="doRefresh()" >
+	<!--宝宝信息未完善时提醒-->
+	<div class="c-shadow" ng-if="fillInfoLock" ng-click="cancel()"> </div>
+	<div class="c-remind" ng-if="fillInfoLock">
+		<div class="remind-main">
+			<h4>宝宝信息还没完善哦！</h4>
+			<p>
+				完善宝宝信息，<br>
+				建立宝宝档案，育儿更方便！
+			</p>
+			<div class="remind-bottom">
+				<a ng-click="cancel()">稍后完善</a>
+				<a ng-click="updateBaby()">立即完善</a>
+				<span class="line"></span>
+			</div>
+		</div>
+	</div>
+	<!--头部-->
+	<div bdf-head="title"></div>
+	<!--宝宝信息部分-->
+	<div class="healthManage-babyInfo" ng-if="nothingBabyInfoLock">
+		<div class="photo">
+			<img src="images/a_baby.png" width="77" height="77">
+			<a class="select-baby" ng-click="selectBaby()">选择宝宝</a>
+		</div>
+		<div class="info">
+			<div >
+				<input type="hidden"  ng-model='babyId' value={{babyId}}>
+				<span id='babyName'>{{babyName}}</span>
+				<span ng-if="babySex!=null">{{babySex}}</span>
+				<span ng-if="babySex==null" ng-click="updateBaby()">性别<img width="11" height="11.5" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Ficon_edit.png"></span>
+				<span ng-if="babyBirthday!=null">{{babyBirthday}}</span>
+				<span ng-if="babyBirthday==null" ng-click="updateBaby()">出生日期<img ng-click="updateBirthday()" width="11" height="11.5" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Ficon_edit.png"></span>
+			</div>
+		</div>
+	</div>
+	<!--选择预约记录和咨询记录-->
+	<div  class="healthRecord" ng-if="nothingBabyInfoLock">
+		<ul>
+			<li ng-click="selectRecord('appoint')" ng-class="{'cur':recordAppointLock}">预约记录</li>
+			<li ng-click="selectRecord('consult')" ng-class="{'cur':recordConsultLock}">咨询记录</li>
+		</ul>
+	</div>
+	<ion-content class="healthRecordIndex"  ng-style="nothingBabyInfoPageLock?{'top':'45px'}:{'top':'265px'}">
+		<ion-scroll direction="y" has-bouncing="true">
+			<!--预约记录-->
+			<div class="health-appoint" ng-if="recordAppointLock">
+				<div class="health-record" ng-if="orderInfoListLock">
+					<dl ng-repeat="items in orderList">
+						<dt>
+							<img class="record-time" width="15" height="15" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/healthManage%2Frecord_time.png">
+							{{items.beginTime}}
+						</dt>
+						<dd >
+							<div>
+								<span>病情诊断：</span>
+								<p>
+								<a class='no-condition' ng-if="items.doctor_case_name==null"  ng-click='fillDisease(items.id)' >请填写病情诊断</a>
+									{{items.doctor_case_name}}
+								</p>
+							</div>
+							<div>
+								<span>看诊医生：</span>
+								<p>{{items.doctorName}}</p>
+							</div>
+							<div>
+								<span>病情描述：</span>
+								<p> {{items.illness}}</p>
+							</div>
+							<a class="detail" ng-click="appointDetail($index)">
+								详情
+								<img  width="9" height="9" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fdetail_right.png">
+							</a>
+						</dd>
+					</dl>
+				</div>
+				<!--无预约记录时显示-->
+				<div class="no-record" ng-if="!orderInfoListLock">
+					<p>
+						随时预约北京三甲儿科医院专家<br>
+						为宝宝的健康保驾护
+					</p>
+					<!--<button class="button foot-btn" ng-click="appointmentFirst()">-->
+						<!--立即预约-->
+					<!--</button>-->
+				</div>
+			</div>
+			<!--咨询记录-->
+			<div  class="health-consult" ng-if="recordConsultLock">
+				<div class="health-record" ng-if="CustomerInfoLock">
+					<dl ng-repeat="item in logList">
+
+						<dt>
+							<img class="record-time" width="15" height="15" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/healthManage%2Frecord_time.png">
+							{{item.create_date | date: 'yyyy-MM-dd HH:mm:ss '}}
+						</dt>
+						<dd >
+							<div>
+								<span>病情诊断：</span>
+								<p>{{item.sys_customer_illness_id}}</p>
+							</div>
+							<div>
+								<span>症状表现：</span>
+								<p>{{item.show}}</p>
+							</div>
+							<div>
+								<span>医生建议：</span>
+								<p> {{item.result}}</p>
+							</div>
+							<!--<a class="detail" ng-click="consultDetail()">
+								详情
+								<img  width="9" height="9" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fdetail_right.png">
+							</a>-->
+						</dd>
+					</dl>
+				</div>
+				<!--无咨询记录时显示-->
+				<div class="no-record" ng-if="!CustomerInfoLock">
+					<p>
+						随时随地咨询宝宝健康问题<br>
+						育儿不再愁<br>
+					</p>
+					<!--<button class="button foot-btn" ng-click="consultDoc()">-->
+						<!--立即咨询-->
+					<!--</button>-->
+				</div>
+			</div>
+			<!--没有宝宝信息时显示-->
+			<div class="no-baby" ng-if="nothingBabyInfoPageLock">
+				<div class="">
+					<img width="82" height="84.5" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/healthManage%2Fno-babyInfo.png">
+					<p>
+						宝宝健康，用心呵护
+					</p>
+				</div>
+				<button class="button foot-btn" ng-click="addBaby()">
+					添加宝宝
+				</button>
+			</div>
+			<div>
+
+			</div>
+			<br><br><br><br>
+
+		</ion-scroll>
+	</ion-content>
+	<div class="foot-btn footBtn-bottom" ng-if="recordAppointLock" ng-click="appointmentFirst()">
+		立即预约
+	</div>
+	<div class="foot-btn footBtn-bottom" ng-if="recordConsultLock" ng-click="consultDoc()">
+		立即咨询
+	</div>
+</ion-view>
+

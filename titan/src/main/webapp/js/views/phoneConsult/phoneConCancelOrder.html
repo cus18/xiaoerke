@@ -1,0 +1,29 @@
+<ion-view view-title={{title}} >
+	<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+	<div bdf-head="title"></div>
+	<ion-content class="phoneConCancelOrder" >
+		<ion-scroll direction="y" has-bouncing="true">
+			<div class="cancel">
+				<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fappointment_cancel.png" width="94" height="94"/>
+			</div>
+			<dl>
+				<dt class="fw f4 c3">取消原因</dt>
+				<dd class="f3 c4" ng-repeat="item in cancelList" ng-click="select($index)">
+					<img width="12" height="auto" src="{{item.img}}">{{item.content}}
+					<textarea class="bg4" ng-if="lock&&$index==2" placeholder="请填写原因" maxlength="50" ng-model="info.reason"></textarea>
+				</dd>
+			</dl>
+
+		<!--	<div class="cancel_text" ng-if="lock">
+				<textarea placeholder="请填写原因"  maxlength="50"></textarea>
+			</div>-->
+			<button class="button foot-btn " ng-click="Cancel()" ng-disabled="false">
+				确认取消
+			</button>
+			<br/><br/>
+		</ion-scroll>
+
+	</ion-content>
+
+</ion-view>
+

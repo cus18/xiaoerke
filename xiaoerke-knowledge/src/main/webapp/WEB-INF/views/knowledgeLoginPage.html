@@ -1,0 +1,67 @@
+<html>
+<head>
+</head>
+<base href="/xiaoerke-knowledge/"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<title>郑玉巧育儿经</title>
+<link rel="stylesheet" href="styles/knowledge/knowledgeCommon.less?ver='0.9'" type="text/css" />
+<link rel="stylesheet" href="styles/knowledge/knowledgeLoginPage.less?ver='0.9'" type="text/css" />
+<link href="styles/lib/mobiscroll.custom-2.5.0.min.css" rel="stylesheet" type="text/css" />
+<body onload="knowledgeLoginPageInit()" style="background:#88d9dd">
+<div id="mention" onclick="mentionCancel()">
+    <div class="shadow"></div>
+    <div class="login-default">
+        <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Flogin_default.png" width="94%" height="auto">
+    </div>
+</div>
+<div class="knowledgeLoginPage" style="top:0;">
+    <div class="myTitle">
+        宝宝信息卡
+    </div>
+    <div class="my-baby-info">
+        <p>根据您的信息卡，将为您提供更精准的相关内容</p>
+        <div id="preview" onclick="chooseImage()">
+            <img id="imghead"  width="99" height="99"
+                 src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Flogin_upload_photo.png">
+        </div>
+        <div id="uploadImg" >
+            <a >点击上传宝宝照片</a>
+        </div>
+        <div class="enter-info">
+            <input type="text" placeholder="宝宝昵称（6-20个合法字符）" maxlength="6" id="babyName">
+            <input id="birthday" type="text" readonly="readonly" placeholder="宝宝生日" >
+        </div>
+        <div class="sex">
+            <label class="item item-radio item-borderless" onclick="chooseSex('boy')" style="margin-top:-12px;margin-left:10%;height:11%;">
+                <div class="item-content" style="background:#88d9dd;">
+                    <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Flogin_boy.png" width="38" height="35"><br>
+                    <div id="boycir"><span class="cir"></span></div>
+                </div>
+            </label>
+            <label class="item item-radio item-borderless" onclick="chooseSex('girl')" style="margin-left:-10%;margin-top:-12px;height:11%;">
+                <div class="item-content" style="background:#88d9dd;">
+                    <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Flogin_girl.png" width="48" height="35"><br>
+                    <div id="girlcir" hidden><span class="cir"></span></div>
+                </div>
+            </label>
+        </div>
+        <div class="submit">
+            <buttonl class="button foot-btn" onclick="babyInfoSave()">
+                提交
+            </buttonl>
+        </div>
+    </div>
+</div>
+</body>
+<link rel="stylesheet" href="styles/lib/.min.css"/>
+<link rel="stylesheet" href="styles/lib/iioniconicons.min.css"/>
+<link rel="stylesheet" href="styles/lib/animate.min.css"/>
+<link rel="stylesheet" href="styles/main.less"/>
+<script src="js/knowledgeLoginPage.js"></script>
+<script src="js/libs/jquery.scrollstop.min.js"></script>
+<script src="js/libs/mobiscroll.custom-2.5.0.min.js"></script>
+<script src="js/libs/img2.js"></script>
+</html>

@@ -1,0 +1,72 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫" ng-init="doRefresh()">
+    <div class="title-card">
+        <div class="card-num" style="margin-right:25px;">
+            <p>
+               连续打卡 {{continue}}
+            </p>
+
+        </div>
+        <div class="card-time">
+            <img ng-src="{{heartImg}}" width="61.5" height="58"><br>
+            {{momtime}}
+        </div>
+        <div class="card-num" style="margin-left:25px;">
+            <p>
+               打卡总计 {{total}}
+            </p>
+        </div>
+        <div class="mother-num">
+            83位妈妈正在坚持
+        </div>
+    </div>
+    <ion-content class="constipationKnead" style="top:150px;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="task-deal box-s1">
+                <dl>
+                    <dd>
+                        <span class="task-name">按摩功效</span>
+                        <p class="text" >
+                            每天坚持5分钟小儿推拿，就可改善宝宝胃肠道功能，缓解便秘。
+                        </p>
+                    </dd>
+                    <dd>
+                        <span class="task-name">图片示例</span>
+                        <p >
+                            <ion-slide-box active-slide="myActiveSlide" >
+                                <ion-slide ng-repeat="item in useImg">
+                                    <img class="play"  ng-src={{item}} width="100%" height="auto">
+                                </ion-slide>
+                            </ion-slide-box>
+                        </p>
+                    </dd>
+                </dl>
+            </div>
+            <div class="comment-wrap">
+               <dl>
+                   <dt class="comment-head" ui-sref="constipationComment">
+                       妈妈心得<span>&nbsp;&nbsp;{{commenttotal}}</span>
+                       <a>
+                           更多<img src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fmore_right_d.png" width="22" height="22">
+                       </a>
+                   </dt>
+                   <dd class="comment-list item-avatar item-borderless" ng-repeat="item in commentList |orderBy:'createDate':true">
+                       <img ng-src={{item.picUrl}}>
+                       <span>{{ item.createDate | limitTo : 10}}</span>
+                       <h2 ng-if="item.nickName==''||item.nickName==null">宝粉</h2>
+                       <h2 ng-if="item.nickName!=''">{{item.nickName}}</h2>
+                       <p>{{item.appraisalContent}}</p>
+                   </dd>
+               </dl>
+            </div>
+
+        </ion-scroll>
+    </ion-content>
+    <div class="check-card" ng-click="checkCard()" ng-if="checkCardLock">
+        <a >
+            点我打卡
+            <img  ng-src="{{checkCardImg}}"  width="55" height="75.5">
+        </a>
+
+    </div>
+</ion-view>

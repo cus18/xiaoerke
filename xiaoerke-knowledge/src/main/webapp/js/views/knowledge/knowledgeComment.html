@@ -1,0 +1,30 @@
+<link rel="stylesheet" href="styles/knowledge/knowledgeCommon.less?ver='0.9'" type="text/css" />
+<link rel="stylesheet" href="styles/knowledge/knowledgeComment.less?ver='0.9'" type="text/css" />
+<ion-spinner ng-show="pageLoading" icon="bubbles" class="loadPic"></ion-spinner>
+<ion-view view-title="郑玉巧育儿经" ng-init="doRefresh()">
+    <div class="edit" ng-click="editComment()" ng-if="editLock=='false'">
+        <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fedit_comment.png" width="15.5" height="15.5">
+        <input type="text" placeholder="写评论(最多可输入50字)..." readonly="readonly" >
+    </div>
+    <div class="shadow" ng-if="editLock=='true'" ng-click="cancel()"></div>
+    <div class="real-edit" ng-if="editLock=='true'">
+        <textarea  placeholder="写评论(最多可输入50字)..." maxlength="50" ng-model="info.content" ></textarea>
+        <span ng-click="save()">发布</span>
+    </div>
+    <ion-content class="knowledgeComment" overflow-scroll="true" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <div class="myTitle">
+                全部评论
+            </div>
+            <dl class="myAvatar ">
+                <dd class="item item-avatar item-borderless" ng-repeat="item in commentList">
+                    <img ng-src={{item.picUrl}}>
+                    <h2 ng-if="item.nickName!=''||item.nickName!=null">{{item.nickName}}</h2>
+                    <h2 ng-if="item.nickName==''||item.nickName==null">宝粉</h2>
+                    <p>{{item.commentContent}}</p>
+                    <span>{{ item.createDate | date : 'yyyy-MM-dd'}}</span>
+                </dd>
+            </dl>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

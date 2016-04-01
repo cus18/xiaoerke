@@ -1,0 +1,25 @@
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title={{title0}} ng-init="doRefresh()">
+    <div bdf-head="title"></div>
+    <ion-content class="toBeTreated">
+        <ion-scroll direction="y" has-bouncing="true" style="">
+            <div class="list" ng-if="!isBlank">
+                <div class="item item-thumbnail-left waitInfo" ng-repeat="item in appointmentData| orderBy:'date':true"
+                   ui-sref="toBeTreatedDetail({patient_register_service_id:item.patient_register_service_id,status:'1'})">
+                    <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.doctorId}}" class="doctorPhoto"/>
+                    <h2 class="word-break">{{item.doctorName}}</h2>
+                    <p>{{item.hospitalName}}</p>
+                    <p>{{item.date}}&nbsp;&nbsp;{{item.startTime}}-{{item.endTime}}</p>
+                    <span class="wait-status" >待就诊</span>
+                    <span class="btn" ui-sref="toBeTreatedDetail({patient_register_service_id:item.patient_register_service_id})" >查看详情</span>
+                </div>
+            </div>
+            <div class="noContent" ng-if="isBlank">
+                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fno_treated.png" width="103" height="81">
+                <p>{{care1}}</p>
+                <p>{{care2}}</p>
+            </div>
+            <div bdf-footer></div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,245 @@
+body{min-width: 1084px;}
+.header{width: 100%;max-width: 1600px; margin: 0 auto; background: #fff;border-bottom: 1px solid #46c0c6;}
+#top{width: 100%;height: 40px;background: #666;}
+.top{width: 1084px;margin: 0 auto; height: 40px;line-height: 40px;font-size: 12px; color: #fff; text-align: right;}
+.weibo{padding-right: 30px;}
+.nav{width: 1084px; margin: 0 auto;height: 87px;line-height: 87px;position: relative;}
+.logo{position: absolute;top: -40px;left: -260px;width: 633px;height: 165px;background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Flogo.png) no-repeat;z-index: 999;}
+.logo a{position: absolute; display: block;width: 200px;height: 125px;left: 370px;text-indent: -9999em;}
+.nav ul{height: 100%;margin-left: 399px;}
+.nav ul li{float: left; width: 110px;text-align: center;cursor: pointer;}
+.nav ul li a{display: block;font-size: 18px;color: #46c0c6;text-decoration: none;}
+.nav ul li.on a,.nav ul li:hover a{color: #fff;zoom:1;
+    filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#46c0c6',EndColorStr='#a0f4f8');  /*IE 6 7 8*/
+    background: -ms-linear-gradient(top, #46c0c6,  #a0f4f8);        /* IE 10 */
+    background:-moz-linear-gradient(top,#46c0c6,#a0f4f8);/*火狐*/
+    background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#46c0c6), to(#a0f4f8));/*谷歌*/
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#46c0c6), to(#a0f4f8));      /* Safari 4-5, Chrome 1-9*/
+    background: -webkit-linear-gradient(top, #46c0c6, #a0f4f8);   /*Safari5.1 Chrome 10+*/
+    background: -o-linear-gradient(top, #46c0c6, #a0f4f8);  /*Opera 11.10+*/
+}
+.banner .contain{width: 1084px;height:100%; margin: 0 auto;position: relative;}
+.banner{position: relative;width: 100%;height: 572px;background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fbanner.png) center center no-repeat;}
+.zjzx{position: absolute;top: 110px;left: 400px;}
+.zjzx a{display: inline-block;height: 35px;font-size: 14px;padding: 0 15px;border: 1px solid #46c0c6; border-radius: 50px; color: #46c0c6;line-height: 35px;}
+.zjzx span.dian{width: 5px;height: 5px;line-height: 5px; display: inline-block; background: #46c0c6;border-radius: 5px;margin:15px 5px 15px 8px;}
+.xuanchuan{position: absolute; top:110px;right: 360px;}
+.xuanchuan {color: #46c0c6;font-size: 40px;}
+.search{position: absolute;top: 245px;right: 360px; height: 342px; height: 33px;}
+.search input.text{text-indent: 25px; width: 290px; outline:none;font-size: 14px;color: #999; height: 33px; border: 0;padding: 0;vertical-align: top;margin-right: -4px;border-top-left-radius:25px;border-bottom-left-radius:25px; }
+.search .submit{width: 50px;height: 33px; background: #46c0c6 url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fsearch.png) center center no-repeat; display: inline-block;border-top-right-radius:25px;border-bottom-right-radius:25px;bottom: 0;}
+
+.qr{position: absolute; top: 50px;left: 806px;width: 210px;height: 267px;}
+.qr .wenzi{background: #46c0c6;color: #fff;border-top-left-radius:25px;border-top-right-radius:25px; text-align: center; height: 50px;}
+.qr .ewm{width:100%;text-align: center; height:217px;line-height: 217px;border-bottom-left-radius:15px;border-bottom-right-radius:15px;  background-color:rgba(255,255,255,0.5);}
+.qr .ewm img{width: 175px; margin: 20px;}
+.yyzx{position: absolute; left: 60px;bottom: 0;}
+.yyzx div{width: 298px;height: 242px;margin-right: 35px;float: left;}
+.yyzx .zixun{background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fa_03.png)no-repeat;}
+.yyzx .yuyue{background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fb_03.png)no-repeat;}
+.yyzx .yuerjing{background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fw_02.png)no-repeat;margin-right: 0!important;}
+.yyzx div a{width: 115px;height: 35px;line-height:35px;text-align: center;  margin: 100px auto 0;display: block; font-size: 18px; background: #fff;border-radius: 25px;}
+.yyzx div a+p{line-height: 24px;font-size: 14px;color: #fff;margin: 10px auto 0;text-align: center;}
+.yyzx div.zixun a{color: #ffd400;}
+.yyzx div.zixun a:hover{color: #fff;background: #FFB100;}
+.yyzx div.yuyue a{color: #ba94ff;}
+.yyzx div.yuyue a:hover{color: #fff;background: #966ee0;}
+.yyzx div.yuerjing a{width: 135px;color: #ff8fb4;}
+.yyzx div.yuerjing a:hover{color: #fff;background: #F778A2;}
+
+#main{width: 100%;max-width: 1600px; margin: 0 auto;position: relative;}
+.lbnav_bg{height: 50px;width:100%;position: absolute; background: #46c0c6; left: 0px;z-index: -1;}
+.main{width: 1084px;margin: 0 auto;}
+.lbnav{width: 100%;height: 50px;position: relative;z-index: 99999;}
+.lbnav_sx{width: 6px;height: 100%;background: #fff; position: absolute;left: -6px;z-index: -1;}
+.lbnav_top{position: absolute;z-index: 2; width: 108px;height: 26px;top: -26px;left: 40px; background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Flbnav_top.png) no-repeat;}
+.lbnav .w-nav{height: 50px;line-height: 50px;}
+.lbnav .w-nav>li{display: inline-block;*display: inline;zoom: 1; margin-left: 55px; margin-right: -4px;}
+.lbnav .w-nav>li>a{font-size: 16px;color: #fff;}
+.lbnav .w-nav li.typename{font-size: 22px;color: #fff;margin: 0 20px 0 30px;}
+.lbnav .w-nav li.typename a{font-size: 22px;color: #fff;}
+
+.sub-nav{display: none;text-align: center; width: 889px; height: 50px;background: #fff;position: absolute;left: 193px;top: 50px;}
+.lbnav .w-nav>li span{display: none;width:0;position: relative; top: -10px;left: 50%; margin-left: -2.5px;
+    height:0;
+    border-width:0 5px 5px;
+    border-style:solid;
+    border-color:transparent transparent #fff;/*透明 透明  灰*/
+    position:relative;}
+.lbnav .w-nav>li:hover span{display: block;}
+.sub-nav li{display: inline-block;margin-right: -3px; margin:0 30px; *display: inline;zoom: 1;}
+.sub-nav li a{font-size: 14px;color: #46c0c6;}
+.lbnav .w-nav li:hover .sub-nav{display: block;}
+.h-nav{width: 193px;float: left;height: 400px;background: #46c0c6;}
+.h-nav li{width: 100%;height: 60px;line-height: 60px;}
+.h-nav li a{display: block;width: 145px;height: 60px;text-align: center;color: #fff;font-size: 16px;margin: 0 auto; border-bottom: 1px #fff dashed;}
+.h-nav li:hover{background: #39a6ab;}
+.h-nav li:hover a{border-bottom: 0;}
+.lunbo{width: 889px;float: left;height: 400px;position: relative;}
+.lunbo>li{width: 100%;height: 400px;}
+.lunbo li img{width: 100%;height: 400px;}
+.flex-direction-nav {*height: 0;display: none;}
+
+
+.flex-control-nav {width: 889px; height:11px;position: absolute; bottom: 20px; text-align: center;z-index: 2;}
+.flex-control-nav:nth-of-type(2),.flex-control-nav:nth-of-type(3){display: none;}
+.flex-control-nav li {height:11px;margin: 0 6px; display: inline-block; zoom: 1; *display: inline;}
+.flex-control-paging li a {width: 11px; height: 11px; display: block; background: #fff; cursor: pointer; text-indent: -9999px; -webkit-border-radius: 20px; -moz-border-radius: 20px; -o-border-radius: 20px; border-radius: 20px; -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,0.3); -moz-box-shadow: inset 0 0 3px rgba(0,0,0,0.3); -o-box-shadow: inset 0 0 3px rgba(0,0,0,0.3); box-shadow: inset 0 0 3px rgba(0,0,0,0.3); }
+.flex-control-paging li a:hover { background: #46c0c6; }
+.flex-control-paging li a.flex-active { background: #46c0c6;  cursor: default; }
+.article{width: 100%;overflow: hidden;margin: 30px 0 60px;}
+.rmzs{width: 714px;float: left;margin-right: 140px;height: 330px;}
+.rmzs .bar,.article_article.rmzs .bar{width: 100%;height: 32px;position: relative;border-bottom: 1px solid #ff4261;}
+.bar h3{display: inline-block; position: relative;top: 1px; width: 140px; font-size: 18px;font-weight: 500;height: 32px; line-height: 32px;text-indent: 28px;color: #fff;}
+.bar .more{position: absolute;top: 0;right: 0;line-height: 32px;font-size: 12px;}
+.rmzs .bar h3,.article_article.rmzs .bar h3{width: 160px;background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Frmzs_bar.png) left center no-repeat;}
+.rmzs  .more{color: #ff4261;}
+.jchd{width: 230px;float: left;height: 330px;}
+.jchd .bar,.article_article.jchd .bar{width: 100%;height: 32px;position: relative;border-bottom: 1px solid #37d279;}
+.jchd .bar h3,.article_article.jchd .bar h3{width: 140px;height: 32px;background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fjchd_bar.jpg) left center no-repeat;}
+.jchd  .more{color: #37d279;}
+.newslist{margin-top: 30px;}
+.newslist li{margin-bottom: 25px;height: 122px;}
+.newslist li .litpic{width: 160px;height: 122px;margin-right: 25px;float: left;}
+.newslist li h4{font-size: 16px;line-height: 18px; font-weight: 500; color: #333;margin-bottom: 8px;overflow: hidden;text-overflow:ellipsis; white-space: nowrap;}
+.newslist li h4:hover{color: #46c0c6;}
+.newslist li p.des{font-size: 15px;height: 50px; overflow: hidden;text-overflow:ellipsis; margin-right: 10px; line-height: 25px;color: #666;}
+.tubiao{position: relative;margin-top: 14px;overflow: hidden;}
+.tag{background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Ftag.png) left center no-repeat;float: left;text-indent: 27px;}
+.tag a{font-size: 14px;margin: 0 5px;color: #999;}
+.right{float: right;}
+.share,.click{float: left; text-indent: 22px;font-size: 14px; color: #999;}
+.share{background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fshare.png) left center no-repeat; margin-right: 30px;}
+.click{background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fclick.png) left center no-repeat; }
+.jchd ul{margin-top: 25px;}
+.jchd li{margin-bottom: 10px;margin-left: 22px;}
+.jchd li h4{font-size: 16px;margin-left: -22px;font-weight: 500;text-indent: 22px; color: #333;margin-bottom: 5px;overflow: hidden;text-overflow:ellipsis; white-space: nowrap;background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fdian.jpg) left center no-repeat;}
+.jchd li p{font-size: 15px;color: #666;line-height: 50px;}
+.wenda,.remen,.shuo,.searched,.article_article,.yuyuedaifu,.zixundaifu{width: 1084px;margin: 60px auto;float: none;height: auto;}
+
+/*热门问答*/
+
+/*郑玉巧育儿经*/
+.shuo {margin: 60px auto 30px;}
+#shuo{padding-bottom: 130px;}
+.shuo .bar{width: 100%;height: 32px;position: relative;border-bottom: 1px solid #ff8fb4;}
+.shuo .bar h3{width: 280px; height: 32px; background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fshuo_bar.jpg) left center no-repeat;}
+.shuo .bar h3 span{font-size: 16px;}
+.shuo li h4{font: 16px/1.5 微软雅黑,tahoma,arial,\5b8b\4f53,sans-serif;cursor: pointer;padding: 10px 0; background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fhongdian.jpg) left center no-repeat;}
+.zixun li h4{font: 16px/1.5 微软雅黑,tahoma,arial,\5b8b\4f53,sans-serif;cursor: pointer;padding: 10px 0; background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fld.png) left center no-repeat;}
+.shuo li:hover h4{color: #46c0c6;}
+.shuo .yyzx_weixin .head{background-color: #FF8FB4;}
+.shuo .yyzx_weixin {margin-top: 30px;}
+/*媒体咨讯*/
+.zixun .more{color:#46c0c6;}
+.zixun .bar{border-bottom: 1px solid #46C0C6;}
+.ssyw{margin: 0 auto 60px;}
+.ssyw .more{color: #FF4E78;}
+.ssyw .bar{border-bottom: 1px solid #FF4E78;}
+.zixun .bar h3{width: 180px; height: 32px; background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fb_000.png) left center no-repeat;}
+.ssyw .bar1 h3{height: 32px; background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Frmzs_bar.png) left center no-repeat;}
+
+    /*新闻详情*/
+.article_article{}
+.article_article .bar{width: 100%;height: 32px;	position: relative;border-bottom: 1px solid #46C0C6;}
+.article_article .bar h3{display: inline-block; position: relative;top: 1px; width: 183px; font-size: 18px;font-weight: 500;height: 32px; line-height: 32px;text-indent: 28px;color: #fff;background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fb_000.png) left center no-repeat;}
+.article_article .bar span{position: absolute;right: 0;top: 4px;font-size: 18px;font-weight: 500;color: #ff8fb4;}
+/*新闻内容*/
+.article_article .content{border: 1px solid #f0f0f0;border-top: none;margin-top:0px; padding: 0 120px;border-bottom-left-radius: 20px;border-bottom-right-radius: 20px;margin-left: 21px;box-shadow:0px 0px 1px #ccc; -moz-box-shadow:0px 0px 1px #ccc;-webkit-box-shadow:0px 0px 1px #ccc;}
+.article_article .content h3{padding: 65px 0 58px;font-size: 24px;font-weight: 500; color: #333;text-align: center;}
+.article_article .content h3.title span{padding-left: 20px;font-size: 14px;color: #666;}
+.article_article .content p,.article_article .content div{font-size: 14px;line-height: 40px;color: #999;margin-bottom: 18px;text-indent: 2em;}
+
+/*文章列表加载更多*/
+.loadmore{clear: both;}
+.loadmore span{color: #999;text-decoration: underline;}
+
+.article_share{margin: 26px -90px 20px -90px;position: relative;overflow: hidden;}
+.article_share a{float: left;width: 20px;height: 20px;margin-right: 20px;}
+.article_share a.qqzone{background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fqqzone.png) left center no-repeat;}
+.article_share a.douban{background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fdouban.png) left center no-repeat;}
+.article_share a.baidu{background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fbaidu.png) left center no-repeat;}
+.article_share a.weibo{background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fweibo.png) left center no-repeat;padding-right: 0;}
+.article_share a.weixin{background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fweixin.png) left center no-repeat;}
+.article_share a.click{background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fclick.png) left center no-repeat;float: right;width: 55px;line-height: 20px;margin-right: 0; }
+/*相关新闻*/
+
+.like_article{margin: 30px 0 90px;width: 100%;}
+.like_article ul li{float: left;}
+.like_article h4{font-size: 14px;color: #999;font-weight: 500;margin-bottom: 26px;
+}
+.like_article a{font-size: 14px;line-height: 28px; color: #999;display: inline-block;*display: inline;zoom: 1;margin-right: 26px; color: #46c0c6; text-decoration: underline;cursor: pointer;}
+.like_article a:hover{color: #ff8fb4;}
+
+.wz_gzwx{width: 100%;max-width: 1600px;margin: 0 auto; height: 270px;background: #46c0c6;color: #fff;font-size: 14px;text-align: center;}
+.wz_gzwx .ewm{width: 140px;position: relative;margin: 0 auto 15px;text-align: center;left: -6px;top: 0;}
+.wz_gzwx .ewm .arrow{margin-bottom: 25px;width: 34px;}
+.wz_gzwx .ewm .ewmimg{background: #fff;}
+.wz_gzwx .ewm .ewmimg img{width: 126px;margin: 5px auto;}
+.wz_gzwx p{line-height: 2;}
+/*预约大夫*/
+.yuyuedaifu #loadmore li img {display: block;width: 250px;}
+.yuyuedaifu #loadmore li p {font-size: 15px; padding: 0 35px; color:#666;}
+.yuyuedaifu .bar{width: 100%;height: 32px;	position: relative;border-bottom: 1px solid #ba94ff;}
+.yuyuedaifu .bar h3{display: inline-block; position: relative;top: 1px; width: 160px; font-size: 18px;font-weight: 500;height: 32px; line-height: 32px;text-indent: 28px;color: #fff;background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fyuyuedaifu_bar.jpg) left center no-repeat;}
+.yuyuedaifu #loadmore li a h4{display: inline-block;padding: 10px; cursor: pointer;font: 16px/1.5 微软雅黑,tahoma,arial,\5b8b\4f53,sans-serif;}
+.yyzx_list{padding-top: 30px;overflow: hidden;}
+.yyzx_weixin{float: right;width: 235px;margin-left: 30px;}
+.yyzx_weixin .head{height: 48px;background: #ba94ff;position: relative;font-size: 12px;color: #fff;line-height: 20px;border-top-left-radius:25px;border-top-right-radius:25px;text-align: center;padding-top: 7px;}
+.yyzx_weixin .head .top{position: absolute;width: 49px; height: 16px;left: 95px; top: -15px;background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fyy_weixin.png) no-repeat;}
+.yyzx_weixin .ewm{border:1px solid #f0f0f0;text-align: center;  border-top: 0;height: 242px; line-height: 242px;border-bottom-left-radius:20px;border-bottom-right-radius:20px;}
+
+.yyzx_list ul li{margin: 4px 0; line-height: 50px; text-align: left;}
+.yyzx_list ul li.six{width: 818px;}
+.yyzx_list ul li a{color: #666;display: block; font-size: 18px;}
+.yyzx_list ul li a .dian{width: 10px; height: 10px;display: inline-block;margin: 0 6px 0 10px;background: #ba94ff;border-radius: 10px;}
+.yyzx_weixin .ewm img{margin: 24px 0;}
+.yyzx_list ul li:hover a{color: #46c0c6;}
+.yyzx_list ul li a{color: #333;}
+/*咨询大夫*/
+
+.zixundaifu #loadmore li a h4{display: inline-block;cursor: pointer;}
+.zx .bar{width: 100%;height: 32px;	position: relative;border-bottom: 1px solid #ffd400;}
+.zx .bar h3{display: inline-block; position: relative;top: 1px; width: 160px; font-size: 18px;font-weight: 500;height: 32px; line-height: 32px;text-indent: 28px;color: #fff;background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fzixundaifu_bar.jpg) left center no-repeat;}
+.zx .yyzx_list .head .top{background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fzx_weixin.png) no-repeat;}
+.zx .yyzx_list .head{background: #ffd400;}
+.zx .yyzx_list ul li:hover a{color: #46c0c6;}
+.zx .yyzx_list ul li a .dian{background: #ffd400;}
+
+#footer{width: 100%;max-width: 1600px;height: 100px;background: #666; margin: 0 auto;}
+.footer{width: 1084px;margin: 0 auto;padding-top: 20px;}
+.footer p{line-height: 26px;font-size: 16px;    color: rgb(245, 240, 240);text-align: center;}
+.footer p a{font-size: 16px;    color: rgb(245, 240, 240);}
+
+.about{width: 1084px;margin: 60px auto 0px;padding-bottom: 175px; overflow: hidden;}
+.about_left{margin-top: 55px;margin-left: 54px; width: 90px; float: left;}
+.about_left a{display:block;height: 53px;line-height: 53px; text-indent: 16px;font-size: 16px;margin-bottom: 30px;color: #fff;}
+.about_left a.a1{background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fa1.png)left no-repeat;}
+.about_left a.a2{background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fa2.png)left no-repeat;}
+.about_left a.a3{background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fa3.png)left no-repeat;}
+.about_right{width: 940px;float: left;}
+.about_bar{height: 15px;background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fabout_bar.png)no-repeat;}
+.contact_bar{height: 15px;background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fcontact_bar.png)no-repeat;}
+.cp_bar{height: 15px;background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fcp_bar.png)no-repeat;}
+.about_con{min-height: 270px; padding-top: 20px;border: 1px solid #f0f0f0;box-shadow:0px 0px 1px #ccc; -moz-box-shadow:0px 0px 1px #ccc;-webkit-box-shadow:0px 0px 1px #ccc;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;}
+.about_con p{font-size: 15px;color: #666;line-height:50px;text-align: center;}
+.drop-down{margin-top: 13px;}
+/*隐私保护*/
+
+.fuwutiaokuan .content{width:100%;margin-top:50px;position: absolute;}
+.fuwutiaokuan .content .wrap{width:920px;margin: 0 auto;}
+.fuwutiaokuan .content h3{height:24px; line-height:20px; font-size:24px; color:#00cccb;border-left:5px solid #00cccd;padding-left:10px;margin-bottom:40px;font-weight:500;}
+.fuwutiaokuan .content dl{margin-top:35px; text-align:left;}
+.fuwutiaokuan .content dl.mb{margin-bottom:35px; text-align:left;}
+
+.fuwutiaokuan .content dt{color:#666;font-size:18px;margin-bottom:18px;font-weight:500;}
+.fuwutiaokuan .content dd{}
+.fuwutiaokuan .content dd p{color:#999;font-size:16px;line-height:30px;}
+#footer .foot {margin-top: 1370px;}
+#footer .foote {margin-top: 800px;}
+.footer p .pianyi {margin: 0 20px 0 0;}
+h4{cursor: pointer;}
+.article_article .bar2{border-bottom: 1px solid #ff4261;}
+.article_article .bar .bg-m{background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Frmzs_bar.png)no-repeat;}

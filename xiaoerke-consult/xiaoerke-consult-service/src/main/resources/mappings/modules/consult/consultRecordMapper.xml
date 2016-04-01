@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.consult.dao.ConsultRecordDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordVo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="session_id" property="sessionId" jdbcType="BIGINT" />
+    <result column="openid" property="openid" jdbcType="VARCHAR" />
+    <result column="message" property="message" jdbcType="VARCHAR" />
+    <result column="worker" property="worker" jdbcType="VARCHAR" />
+    <result column="attention_date" property="attentionDate" jdbcType="TIMESTAMP" />
+    <result column="attention_marketer" property="attentionMarketer" jdbcType="VARCHAR" />
+    <result column="attention_nickName" property="attentionNickname" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="message_type" property="messageType" jdbcType="VARCHAR" />
+    <result column="opercode" property="opercode" jdbcType="VARCHAR" />
+    <result column="from_user_id" property="fromUserId" jdbcType="VARCHAR" />
+    <result column="to_user_id" property="toUserId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, session_id, openid, message, worker, attention_date, attention_marketer, attention_nickName,
+    create_date, update_date, message_type, opercode, from_user_id, to_user_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from consult_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from consult_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordVo" >
+    insert into consult_record (id, session_id, openid,
+    message, worker, attention_date,
+    attention_marketer, attention_nickName, create_date,
+    update_date, message_type, opercode,
+    from_user_id, to_user_id)
+    values (#{id,jdbcType=BIGINT}, #{sessionId,jdbcType=BIGINT}, #{openid,jdbcType=VARCHAR},
+    #{message,jdbcType=VARCHAR}, #{worker,jdbcType=VARCHAR}, #{attentionDate,jdbcType=TIMESTAMP},
+    #{attentionMarketer,jdbcType=VARCHAR}, #{attentionNickname,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+    #{updateDate,jdbcType=TIMESTAMP}, #{messageType,jdbcType=VARCHAR}, #{opercode,jdbcType=VARCHAR},
+    #{fromUserId,jdbcType=VARCHAR}, #{toUserId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordVo" >
+    insert into consult_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sessionId != null" >
+        session_id,
+      </if>
+      <if test="openid != null" >
+        openid,
+      </if>
+      <if test="message != null" >
+        message,
+      </if>
+      <if test="worker != null" >
+        worker,
+      </if>
+      <if test="attentionDate != null" >
+        attention_date,
+      </if>
+      <if test="attentionMarketer != null" >
+        attention_marketer,
+      </if>
+      <if test="attentionNickname != null" >
+        attention_nickName,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="messageType != null" >
+        message_type,
+      </if>
+      <if test="opercode != null" >
+        opercode,
+      </if>
+      <if test="fromUserId != null" >
+        from_user_id,
+      </if>
+      <if test="toUserId != null" >
+        to_user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="sessionId != null" >
+        #{sessionId,jdbcType=BIGINT},
+      </if>
+      <if test="openid != null" >
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="message != null" >
+        #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="worker != null" >
+        #{worker,jdbcType=VARCHAR},
+      </if>
+      <if test="attentionDate != null" >
+        #{attentionDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="attentionMarketer != null" >
+        #{attentionMarketer,jdbcType=VARCHAR},
+      </if>
+      <if test="attentionNickname != null" >
+        #{attentionNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="messageType != null" >
+        #{messageType,jdbcType=VARCHAR},
+      </if>
+      <if test="opercode != null" >
+        #{opercode,jdbcType=VARCHAR},
+      </if>
+      <if test="fromUserId != null" >
+        #{fromUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="toUserId != null" >
+        #{toUserId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordVo" >
+    update consult_record
+    <set >
+      <if test="sessionId != null" >
+        session_id = #{sessionId,jdbcType=BIGINT},
+      </if>
+      <if test="openid != null" >
+        openid = #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="message != null" >
+        message = #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="worker != null" >
+        worker = #{worker,jdbcType=VARCHAR},
+      </if>
+      <if test="attentionDate != null" >
+        attention_date = #{attentionDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="attentionMarketer != null" >
+        attention_marketer = #{attentionMarketer,jdbcType=VARCHAR},
+      </if>
+      <if test="attentionNickname != null" >
+        attention_nickName = #{attentionNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="messageType != null" >
+        message_type = #{messageType,jdbcType=VARCHAR},
+      </if>
+      <if test="opercode != null" >
+        opercode = #{opercode,jdbcType=VARCHAR},
+      </if>
+      <if test="fromUserId != null" >
+        from_user_id = #{fromUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="toUserId != null" >
+        to_user_id = #{toUserId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordVo" >
+    update consult_record
+    set session_id = #{sessionId,jdbcType=BIGINT},
+      openid = #{openid,jdbcType=VARCHAR},
+      message = #{message,jdbcType=VARCHAR},
+      worker = #{worker,jdbcType=VARCHAR},
+      attention_date = #{attentionDate,jdbcType=TIMESTAMP},
+      attention_marketer = #{attentionMarketer,jdbcType=VARCHAR},
+      attention_nickName = #{attentionNickname,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      message_type = #{messageType,jdbcType=VARCHAR},
+      opercode = #{opercode,jdbcType=VARCHAR},
+      from_user_id = #{fromUserId,jdbcType=VARCHAR},
+      to_user_id = #{toUserId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

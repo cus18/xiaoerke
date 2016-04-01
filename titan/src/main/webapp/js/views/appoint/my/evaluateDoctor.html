@@ -1,0 +1,53 @@
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title={{title0}} ng-init="doRefresh(rankData,pageCurrent,'')" ng-show="!pageLoading">
+    <ion-spnner ng-show="dataLoading" class="loadPic"></ion-spnner>
+    <div bdf-head="title"></div>
+    <div class="sha" ng-click="toggleIllnessCancel()" ng-if="illnessLock=='true'"></div>
+    <ion-item class="illnessList" ng-if="illnessLock=='true'">
+        <p class="item item-borderless" ng-repeat="item in illnessList" ng-click="selectIllness(item)">{{item.doctor_case_name}}</p>
+    </ion-item>
+    <ion-content class="evaluateDoctor">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <div class="list" style="background-color:#fff;">
+                <ul class=" symptom">
+                    <li class="l">疾病</li>
+                    <li class="r" ng-click="toggleIllness()">
+                        <div class=""placeholder="请选择疾病" >{{itemIllness}}</div>
+                        <span class="ion-ios-arrow-down"></span>
+                    </li>
+                    <li class="other r" ng-if="otherLock=='true'">
+                        <input placeholder="请输入其他疾病（选填）" ng-model="info.symptom">
+                    </li>
+                </ul>
+                <ul class=" time">
+                    <li class="l">时间</li>
+                    <li class="r">
+                        您预约的时间是{{date}}&nbsp;{{beginTime}}-{{endTime}}<br>
+                        医生在
+                        <input  id="treatTime" readonly="readonly" placeholder="{{beginTime}}" />
+                        帮你看病
+                    </li>
+                </ul>
+                <dl>
+                    <dt>评价医生</dt>
+                    <dd class="l">服务态度</dd>
+                    <dd class="r col star-list star-list1">
+                        <img ng-src="{{imgs1[$index]}}"  ng-click="selectStar1($index)" ng-repeat="item in [1,2,3,4,5]" width="23" height="23"  >
+                    </dd>
+                    <dd class="l">专业水平</dd>
+                    <dd class="r col star-list star-list2">
+                        <img ng-src="{{imgs2[$index]}}"  ng-click="selectStar2($index)" ng-repeat="item in [1,2,3,4,5]" width="23" height="23"  >
+                    </dd>
+                    </dd>
+                    <dd style="padding:5px;">
+                        <textarea id="eva-con" onfocus="skip()" ng-model="info.context"  ng-minlength="1" maxlength="150" placeholder="请您对就医体验提出宝贵意见和建议（选填）"></textarea>
+                    </dd>
+                </dl>
+                <div class="item item-borderless" style="padding:0;">
+                    <button class="submit button" ng-click="evaluateUser()">提交</button>
+                </div>
+            </div>
+            <div bdf-footer></div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

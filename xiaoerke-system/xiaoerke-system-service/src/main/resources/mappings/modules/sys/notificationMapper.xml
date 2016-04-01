@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.sys.dao.NotificationDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.sys.entity.Notification" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="message" property="message" jdbcType="VARCHAR" />
+    <result column="related_id" property="relatedId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="comments" property="comments" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="RemovedOrderNotification" type="com.cxqm.xiaoerke.modules.sys.entity.RemovedOrderNotification" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="message" property="message" jdbcType="VARCHAR" />
+    <result column="related_id" property="relatedId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="comments" property="comments" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="sys_register_service_id" property="sysRegisterServiceId" jdbcType="VARCHAR" />
+    <result column="sys_patient_register_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="order_status" property="orderStatus" jdbcType="VARCHAR" />
+    <result column="register_no" property="registerNo" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="babyName" property="babyName" jdbcType="VARCHAR" />
+    <result column="illness" property="illness" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="VARCHAR" />
+    <result column="begin_time" property="beginTime" jdbcType="VARCHAR" />
+    <result column="end_time" property="endTime" jdbcType="VARCHAR" />
+    <result column="sys_doctor_id" property="doctorId" jdbcType="VARCHAR" />
+	<result column="doctorName" property="doctorName" jdbcType="VARCHAR" />
+	<result column="service_type" property="serviceType" jdbcType="VARCHAR" /> 
+	<result column="delete_by" property="deleteBy" jdbcType="VARCHAR" /> 
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, type, message, related_id, status, comments, created_time, updated_time, created_by
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_notification
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="findRemovedOrderNotifications" resultMap="RemovedOrderNotification" >
+       SELECT n.*, pr.sys_register_service_id, pr.id sys_patient_register_id, pr.status order_status, pr.register_no, 
+       pr.phone, pr.babyName, pr.illness,pr.delete_by, sr.sys_doctor_id, sr.service_type, sdl.doctorName,
+       sr.date, sr.begin_time, sdl.hospitalName, sdl.location, sr.location_id
+       FROM 
+       patient_register_service pr, sys_register_service sr, sys_doctor_location sdl, sys_notification n 
+       WHERE pr.sys_register_service_id = sr.id and sr.location_id = sdl.id and n.related_id = pr.id 
+       and n.type = "orderRemoved" order by n.created_time desc
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_notification
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.sys.entity.Notification" >
+    insert into sys_notification (id, type, message, 
+      related_id, status, comments, 
+      created_time, updated_time, created_by
+      )
+    values (#{id,jdbcType=BIGINT}, #{type,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, 
+      #{relatedId,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{comments,jdbcType=VARCHAR}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.sys.entity.Notification" >
+    insert into sys_notification
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="message != null" >
+        message,
+      </if>
+      <if test="relatedId != null" >
+        related_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="comments != null" >
+        comments,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="updatedTime != null" >
+        updated_time,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="message != null" >
+        #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="relatedId != null" >
+        #{relatedId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="comments != null" >
+        #{comments,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.sys.entity.Notification" >
+    update sys_notification
+    <set >
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="message != null" >
+        message = #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="relatedId != null" >
+        related_id = #{relatedId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="comments != null" >
+        comments = #{comments,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.sys.entity.Notification" >
+    update sys_notification
+    set type = #{type,jdbcType=VARCHAR},
+      message = #{message,jdbcType=VARCHAR},
+      related_id = #{relatedId,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      comments = #{comments,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <insert id="insertByBatch" parameterType="java.util.List">
+	  insert into sys_notification (id, type, message, 
+	      related_id, status, comments, 
+	      created_time, updated_time, created_by
+	      )
+	  values 
+	  <foreach collection="list"  item="item" index="index" separator=",">
+	  	  (
+	  	   #{item.id,jdbcType=BIGINT}, #{item.type,jdbcType=VARCHAR}, #{item.message,jdbcType=VARCHAR}, 
+	       #{item.relatedId,jdbcType=INTEGER}, #{item.status,jdbcType=VARCHAR}, #{item.comments,jdbcType=VARCHAR}, 
+	       #{item.createdTime,jdbcType=TIMESTAMP}, #{item.updatedTime,jdbcType=TIMESTAMP}, #{item.createdBy,jdbcType=VARCHAR}
+	      )
+      </foreach>
+  </insert>
+    
+</mapper>

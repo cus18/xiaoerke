@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxqm.xiaoerke.modules.sys.dao.AccountDao">
+
+    <resultMap id="accountMap" type="com.cxqm.xiaoerke.modules.sys.entity.AccountVo">
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="sys_patient_id" property="sysPatientId" jdbcType="VARCHAR" />
+        <result column="account_number" property="accountNumber" jdbcType="FLOAT" />
+        <result column="deposit_number" property="depositNumber" jdbcType="FLOAT" />
+        <result column="take_number" property="takeNumber" jdbcType="FLOAT" />
+        <result column="create_ime" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_ime" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <!--查询用户余额  13_zdl-->
+    <select id="getPerCenterPageCountInfoByPatientIdExecute" resultType="java.lang.Float">
+        SELECT account_number as COUNT FROM sys_account WHERE sys_patient_id=#{patientId}
+    </select>
+</mapper>

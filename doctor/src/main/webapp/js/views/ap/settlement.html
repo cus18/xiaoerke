@@ -1,0 +1,29 @@
+<ion-spinner ng-show="pageLoading"  class="loadPic"></ion-spinner>
+<ion-view view-title="{{date}}">
+    <ion-spinner ng-show="dataLoading"></ion-spinner>
+    <ion-content class="settlement" style="top:0px;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <dl>
+               <dt>
+                   今日就诊患者列表详情 &nbsp;&nbsp;（共{{appNum}}人就诊，总结算金额{{totalAppPrice}}元）
+               </dt>
+               <dd ng-repeat="item in settlementAppointment">
+                   <div class="name">
+                       <span>
+                           就诊补贴
+                       </span>
+                       <span class="r">
+                           {{item.price}}元
+                       </span>
+                   </div>
+                   <div>
+                       {{item.babyName}}&nbsp;&nbsp;{{item.beginTime}}
+                   </div>
+                   <div>
+                       {{item.illness}}
+                   </div>
+               </dd>
+            </dl>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

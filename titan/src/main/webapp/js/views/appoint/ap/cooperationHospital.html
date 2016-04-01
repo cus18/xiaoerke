@@ -1,0 +1,465 @@
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫（400-623-7120）">
+    <ion-content class="cooperationHospital" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true" style="">
+            <ion-slide-box
+                    auto-play="true"
+                    does-continue="true"
+                    slide-interval=5000
+                    show-pager="true"
+                    active-slide="model.activeIndex"
+                    delegate-handle="delegateHandler"
+                    >
+                <ion-slide ng-repeat="item in hospitalBannerImg">
+                    <div class="box yellow">
+                        <img ng-src="{{item}}" style="width:100%;height:150px;display: block;">
+                    </div>
+                </ion-slide>
+            </ion-slide-box>
+            <div class="hospital-name">
+                {{hospitalInfo.hospitalName}}
+            </div>
+            <div ng-if="hospitalId=='faa875abfe9748438111aa208151f1ed' || hospitalId=='626487c34f954abd90e188bb40341995'" class="main">
+                <dl>
+                    <dt ng-if="memberFunction=='true'">
+                        宝大夫会员特别优惠
+                    </dt>
+                    <dt ng-if="memberFunction=='false'">
+                        宝大夫特别优惠
+                    </dt>
+                    <dd class="dd1">
+                        <span  style="color:#ff0000;">
+                           <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2FcooperationHospital_free.png" width="15" height="15">
+                            费用减免：
+                        </span>
+                        免收挂号费、就诊成功赠送15元代金券
+                        （可用于支付检查费）
+                    </dd>
+                    <dd class="dd1">
+                        <span style="color:#11cd6e;">
+                           <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2FcooperationHospital_way.png" width="15" height="15">
+                               绿色通道：
+                        </span>
+                     前台专人接诊、不少于15分钟诊疗时间、
+                        优先化验检查、取药及输液等
+                    </dd>
+                    <dd class="limit-price">
+                        <div >
+                            单次就诊最高花费<span class="rr">500元</span>（只限三类疾病）
+                            <span class="look-detail" ui-sref="cooperationHospitalPrice">查看限价疾病&nbsp;&nbsp;<i class="ion-ios-arrow-right"></i></span>
+                        </div>
+                    </dd>
+                </dl>
+
+                <dl>
+                    <dt>
+                        医院简介
+                    </dt>
+                    <dd class="dd2">
+                      <p>
+                          北京幸福嘉园儿童医院（连锁）是由近百名来自北京儿童医院的资深特需专家联手组建，旨在以优质的医疗质量、优惠的医疗价格，为广大患儿及家长提供优良的医疗服务。
+                      </p>
+                        <p >
+                            不必承受大型儿童专科医院的拥挤、候诊时间过长，不需担心因病患过多造成患儿交叉感染，在家门口如幼儿园般的就诊环境中享受顶级儿童医疗专家的诊断、治疗，是幸福嘉园儿童医院自建院起始终坚持的方向。
+                        </p>
+                        <p >
+                            由于专家均来自北京儿童医院，幸福嘉园儿童医院各项诊疗标准均与北京儿童医院相同，优质的诊疗却始终坚持平价原则，绝大多数专家挂号费为15元/次，远远低于公立三甲医院特需号费用。此外，再加上化验、输液、雾化、药品等费用，人均门诊费用一直保持在300元/次以下，大大降低了家长的医疗负担。
+                        </p>
+                        <p >
+                            目前，幸福嘉园儿童医院已相继在丰台区嘉园路玺萌公馆18号楼、朝阳区定福庄北街23号院金福家园开诊，每天8-20时接诊，惠及北京城南、城东儿童，今后还将进一步扩大门诊规模、增加门诊数量，从根本上破解儿童诊疗看病难、看病贵的难题。
+                        </p>
+                    </dd>
+                    <div class="more">
+                            <span ng-click="hospitalMore()">
+                                {{hospitalMoreText}} <img ng-src={{hospitalMoreImg}} width="22" height="22">
+                            </span>
+                    </div>
+                </dl>
+                <dl>
+                    <dt>开药及检查</dt>
+                    <dd>
+                        <span>中药：</span>
+                        中成药
+                    </dd>
+                    <dd>
+                        <span>西药：</span>
+                        常见药
+                    </dd>
+                    <dd class="dd1" style="padding-left:68px;">
+                        <span>检查项目：</span>
+                       血常规、轮状病毒腺病毒、肝功能、微量元
+                        素、过敏源、尿便常规、乙肝、C反应蛋白
+                    </dd>
+
+                </dl>
+                <dl>
+                    <dt>收费标准</dt>
+                    <dd>
+                        <span> 药费：</span>
+                      与公立医院类似
+                    </dd>
+                    <dd>
+                        <span> 检查费：</span>
+                       与公立医院类似
+                    </dd>
+                </dl>
+            </div>
+            <div ng-if="hospitalId=='508c345c3ddb4d25b1551cf7ff55031f'" class="main">
+                <dl>
+                    <dt ng-if="memberFunction=='true'">
+                        宝大夫会员特别优惠
+                    </dt>
+                    <dt ng-if="memberFunction=='false'">
+                        宝大夫特别优惠
+                    </dt>
+                    <dd class="dd1">
+                        <span  style="color:#ff0000;">
+                           <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2FcooperationHospital_free.png" width="15" height="15">
+                            费用减免：
+                        </span>
+                        就诊成功可获赠22.5元代金券一张（可凭代金券直接挂号）
+                    </dd>
+
+                </dl>
+
+                <dl>
+                    <dt>
+                        医院简介
+                    </dt>
+                    <dd class="dd2 ">
+                        <p>
+                            北京市朝阳区八里庄第二社区卫生服务中心是政府规划内的社区卫生服务中心，下设四个社区卫生服务站，辖区服务面积3.77平方公里，服务总人口约10万余人。中心的服务理念为“防保优先、质量第一、诚信服务、构建和谐社区”，医院开设了儿童医院专家门诊，每天均有来自儿童医院的副高以上职称的高年资医生出诊，确保疾病诊疗质量，争做最人性化的儿童医院！
+                        </p>
+
+                    </dd>
+                    <div class="more">
+                            <span ng-click="hospitalMore()">
+                                {{hospitalMoreText}} <img ng-src={{hospitalMoreImg}} width="22" height="22">
+                            </span>
+                    </div>
+                </dl>
+                <dl>
+                    <dt>开药及检查</dt>
+                    <dd>
+                        <span>中药：</span>
+                        中成药
+                    </dd>
+                    <dd>
+                        <span>西药：</span>
+                        儿童常用药
+                    </dd>
+                    <dd class="dd1" style="padding-left:68px;">
+                        <span>检查项目：</span>
+                        血常规、心电图、X光、CT、尿便常规、B超
+                    </dd>
+
+                </dl>
+                <dl>
+                    <dt>收费标准</dt>
+                    <dd>
+                        <span> 药费：</span>
+                        与公立医院国际医疗部类似
+                    </dd>
+                    <dd>
+                        <span> 检查费：</span>
+                        与公立医院国际医疗部类似
+                    </dd>
+                    <dd>
+                        <span> 医疗机构编码：</span>
+                      05111005
+                    </dd>
+                </dl>
+            </div>
+            <div ng-if="hospitalId=='dda909f2fd79403b9a47b63ce11fd5a4'" class="main">
+                <dl>
+                    <dt ng-if="memberFunction=='true'">
+                        宝大夫会员特别优惠
+                    </dt>
+                    <dt ng-if="memberFunction=='false'">
+                        宝大夫特别优惠
+                    </dt>
+                    <dd class="dd1">
+                        <span  style="color:#ff0000;">
+                           <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2FcooperationHospital_free.png" width="15" height="15">
+                            费用减免：
+                        </span>
+                        就诊成功可获赠100元代金券一张（可用于支付检查费）
+                    </dd>
+                    <dd class="dd1">
+                        <span style="color:#11cd6e;">
+                           <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2FcooperationHospital_way.png" width="15" height="15">
+                               绿色通道：
+                        </span>
+                        前台专人接诊、不少于15分钟诊疗时间、优先化验检查、取药及输液等
+                    </dd>
+                </dl>
+
+                <dl>
+                    <dt>
+                        医院简介
+                    </dt>
+                    <dd class="dd2">
+                        <p>
+                            北京东区儿童医院，是一所集临床医疗、预防保健、教学科研为一体，服务于中、高端消费群体的现代化儿童医院，是北京儿童医院集团的成员单位。医院服务对象为0-18岁儿童、少年，服务方式以会员制、预约挂号为主，门诊时间上午八点至晚上九点，节假日不休。医院专业设置齐全，设有小儿内科、外科、中医科、皮肤科、口腔科、眼科、耳鼻咽喉科、儿童保健科、检验科、药剂科、医学影像科（彩超、DR、CT）心电图检测等。东区儿童医院除了开展儿童疾病诊治、儿童健康体检、筛查，儿童疾病预防保健等常规项目外，还将着力拓展儿童健康管理中心，对儿童成长发育的心理、生理问题，早发现、早干预，将疾病诊治、心理疏导、行为矫正、教育培训融为一体。
+                        </p>
+                    </dd>
+                    <div class="more">
+                            <span ng-click="hospitalMore()">
+                                {{hospitalMoreText}} <img ng-src={{hospitalMoreImg}} width="22" height="22">
+                            </span>
+                    </div>
+                </dl>
+                <dl>
+                    <dt>开药及检查</dt>
+                    <dd>
+                        <span>中药：</span>
+                        中成药
+                    </dd>
+                    <dd>
+                        <span>西药：</span>
+                        儿童常用药
+                    </dd>
+                    <dd class="dd1" style="padding-left:68px;">
+                        <span>检查项目：</span>
+                        血常规、心电图、X光、CT、听力筛查、皮肤检查、尿便常规、B超
+                    </dd>
+
+                </dl>
+                <dl>
+                    <dt>收费标准</dt>
+                    <dd>
+                        <span> 药费：</span>
+                        与公立医院类似
+                    </dd>
+                    <dd>
+                        <span> 检查费：</span>
+                        与公立医院类似
+                    </dd>
+                </dl>
+            </div>
+            <div ng-if="hospitalId=='c1e4456b874d44208b58f1fa72e24e96'" class="main">
+                <dl>
+                    <dt ng-if="memberFunction=='true'">
+                        宝大夫会员特别优惠
+                    </dt>
+                    <dt ng-if="memberFunction=='false'">
+                        宝大夫特别优惠
+                    </dt>
+                    <dd class="dd1">
+                        <span  style="color:#ff0000;">
+                           <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2FcooperationHospital_free.png" width="15" height="15">
+                            费用减免：
+                        </span>
+                        就诊免收检查费，并免费赠送涂氟卡一张
+                    </dd>
+                    <dd class="dd1">
+                        <span style="color:#11cd6e;">
+                           <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2FcooperationHospital_way.png" width="15" height="15">
+                               绿色通道：
+                        </span>
+                        前台专人接诊、不少于15分钟诊疗时间、优先化验检查、取药及输液等
+                    </dd>
+
+                </dl>
+
+                <dl>
+                    <dt>
+                        医院简介
+                    </dt>
+                    <dd class="dd2">
+                        <p>
+                            青苗口腔是一家为5—12岁儿童提供护齿、美齿、美形、美心全方位、高品质服务的儿童口腔健康医疗机构，特别针对5-12岁儿童换牙期的错颌畸形的病症，采用独特的治疗技术——罗慕咬合诱导进行早期干预，避免儿童12岁后采用传统牙齿正畸所带来的痛苦。青苗口腔所采用的罗慕齿美康矫治器，是由世界上最大的口腔医疗器械公司普兰梅卡（planmeca）集团研制。集多种儿童错颌畸形矫治功能于一体，简单实用的一种新型口腔牙齿诱导器，其材料是食用级硅胶，具有无毒、无气味、透明度高、弹性好、耐寒耐高温、使用寿命长等特点。同时结合儿童5-12岁阶段发育不稳定的特性，能够有效地打开儿童牙齿发育时期的牙弓，让恒牙在诱导器的牵引下，沿着正常生理位置生长发育。
+                        </p>
+
+                    </dd>
+                    <div class="more">
+                            <span ng-click="hospitalMore()">
+                                {{hospitalMoreText}} <img ng-src={{hospitalMoreImg}} width="22" height="22">
+                            </span>
+                    </div>
+                </dl>
+                <dl>
+                    <dt>检查</dt>
+                    <dd class="dd1" style="padding-left:68px;">
+                        <span>检查项目：</span>
+                        口腔X光片等
+                    </dd>
+
+                </dl>
+                <dl>
+                    <dt>收费标准</dt>
+                    <dd>
+                        与其他高端口腔医疗诊所类似
+                    </dd>
+                </dl>
+            </div>
+            <div ng-if="hospitalId=='e6845738a532467d8257a0f69a18903c'" class="main">
+                <dl>
+                    <dt ng-if="memberFunction=='true'">
+                        宝大夫会员特别优惠
+                    </dt>
+                    <dt ng-if="memberFunction=='false'">
+                        宝大夫特别优惠
+                    </dt>
+                    <dd class="dd1">
+                        <span style="color:#11cd6e;">
+                           <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2FcooperationHospital_way.png" width="15" height="15">
+                               绿色通道：
+                        </span>
+                        前台专人接诊、不少于15分钟诊疗时间、优先化验检查、取药及输液等
+                    </dd>
+                    <dd class="limit-price">
+                        <div >
+                            单次就诊最高花费<span class="rr">500元</span>（只限二类疾病）
+                        </div>
+                    </dd>
+                    <dd class="dd1">
+                        <span  style="color:#ff0000;">
+                           <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2FcooperationHospital_limit.png" width="15" height="15">
+                            限价范围：
+                        </span>
+                        ① 根管治疗1颗<br>
+                        ② 龋齿填充：树脂填充2颗；玻璃填充4颗
+
+                    </dd>
+
+                </dl>
+
+                <dl>
+                    <dt>
+                        医院简介
+                    </dt>
+                    <dd class="dd2">
+                        <p>
+                            北京精艺吉美医疗美容诊所不同其它私立医院的资本控股，是一家医生开的医院。以我国整形界极具影响力的十大杰出人物陈保利、谢双灵、褚健等为学科带头人，以在各自专业享受绝技的国内外著名整形专家为中坚力量，他们放弃了在大医院里的名利追逐，用近几十年临床的深厚积累，实现自己作为一名医师的理想追求。因为内行，所以眼光独到，精艺吉美医疗美容诊所所挑选的每一位专业医生都是行内德才兼备的佼佼者，以此构成了精艺吉美医疗美容诊所精英荟萃的技术团队，沉稳踏实而又积极向上。汇聚中、日、韩、台湾等地区首屈一指强大团队，致力于非手术美容、整形美容、皮肤美容、口腔美容等领域。
+                        </p>
+                    </dd>
+                    <div class="more">
+                            <span ng-click="hospitalMore()">
+                                {{hospitalMoreText}} <img ng-src={{hospitalMoreImg}} width="22" height="22">
+                            </span>
+                    </div>
+                </dl>
+                <dl>
+                    <dt>检查</dt>
+
+                    <dd class="dd1" style="padding-left:68px;">
+                        <span>检查项目：</span>口腔X光片
+                    </dd>
+
+                </dl>
+                <dl>
+                    <dt>诊疗项目</dt>
+                    <table>
+                       <tr class="head1">
+                           <td>
+                               <div> 诊疗项目</div>
+                           </td>
+                           <td> 原价(元)</td>
+                           <td>
+                               宝大夫<br>
+                               <span class="special">特惠价(元)</span>
+                           </td>
+                       </tr>
+                        <tr>
+                            <td>
+                                <div>窝沟封闭</div>
+                            </td>
+                            <td>150</td>
+                            <td>50</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>乳牙龋洞填充</div>
+                                <div class="more1">(玻璃离子)</div>
+                            </td>
+                            <td>180 /颗</td>
+                            <td>80 /颗</td>
+                        </tr>
+                        <tr ng-if="projectMoreLock">
+                            <td>
+                                <div>乳牙龋洞填充</div>
+                                <div class="more1">(树脂)</div>
+                            </td>
+                            <td>380/颗</td>
+                            <td> 180/颗</td>
+                        </tr>
+                        <tr ng-if="projectMoreLock">
+                            <td>
+                                <div>乳牙拔除</div>
+
+                            </td>
+                            <td>100/颗</td>
+                            <td>40/颗</td>
+                        </tr>
+                        <tr ng-if="projectMoreLock">
+                            <td>
+                                <div>乳牙根管治疗</div>
+                                <div class="more1">(前牙)</div>
+                            </td>
+                            <td>400/颗 </td>
+                            <td>200/颗</td>
+                        </tr>
+                        <tr ng-if="projectMoreLock">
+                            <td>
+                                <div>乳牙根管治疗</div>
+                                <div class="more1">(后牙)</div>
+                            </td>
+                            <td>500/颗</td>
+                            <td>300/颗</td>
+                        </tr>
+                        <tr ng-if="projectMoreLock">
+                            <td>
+                                <div>乳牙矫正</div>
+                            </td>
+                            <td>8800</td>
+                            <td>2800-6800</td>
+                        </tr>
+
+                    </table>
+                    <div ng-if="!projectMoreLock" class="project">
+                            <span ng-click="projectMore()">
+                                查看全部 <img ng-src={{projectMorImg}} width="22" height="22">
+                            </span>
+                    </div>
+                </dl>
+            </div>
+            <div class="doctor-list" ng-if="doctorList.length>0">
+                <div class="headline">
+                    <span class="line"></span>
+                    <a> 出诊医生列表</a>
+                </div>
+                <ul>
+                    <li class="item-avatar-left"
+                        ng-repeat="item in doctorList"
+                        style="margin-top: 15px;"
+                        ng-click="doctorAppointment(item.doctorId,item.visitInfo[0].available_time,
+                                    item.visitInfo[0].name,item.visitInfo[0].location,item.visitInfo[0].position,
+                                    item.visitInfo[0].location_id,'')"    >
+                        <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.doctorId}}">
+                        <h2>
+                            {{item.doctorName}}
+                            <span>{{item.position2}}</span>
+                        </h2>
+                        <p>
+                            {{item.hospitalName}}
+                        </p>
+                        <p>
+                            科室擅长：{{item.expertise}}
+                        </p>
+                        <span class="time" ng-if="item.visitInfo[0].available_time<7&&
+                        item.visitInfo[0].available_time>=0">
+                            {{week[item.visitInfo[0].available_time]}}{{item.visitInfo[0].latest_time}}可约
+                        </span>
+                    </li>
+                </ul>
+                <a class="more-doctor"
+                   ui-sref="searchList({searchName:hospitalId,action:'searchDoctorByHospitalName',
+                        titleName:hospitalInfo.hospitalName})">
+                    查看更多医生 <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fmore_right_d.png" width="22" height="22">
+                </a>
+            </div>
+            <br/><br/><br/><br/>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

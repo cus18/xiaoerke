@@ -1,0 +1,62 @@
+<link rel="stylesheet" href="styles/sheOnline/sheOnQuestionsDetail.less?ver='0.9'" type="text/css" />
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title="郑玉巧在线" ng-init="doRefresh()">
+    <ion-content class="sheOnQuestionsDetail" overflow-scroll="true" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <div class="box1">
+                问题互动
+            </div>
+            <div class="question-list">
+                <dl ng-repeat="item in [1,2,3,4]">
+                    <dt>
+                       <h4>
+                             <img src="images/sheOnline/user_photo.png" width="39" height="39" />&nbsp;
+                              云彩
+                             <a>09:30</a>
+                        </h4>
+                        <p>
+                            上了幼儿园三天两头的感冒，这刚好
+                            几天又感冒了，抵抗力差。怎么办？
+                        </p>
+                    </dt>
+                    <dd>
+                        <h4>
+                            <img src="images/sheOnline/zhengyq_photo.png" width="39" height="39" />&nbsp;
+                            郑玉巧
+                            <span ng-if="!$first">回复：</span>
+                            <a>09:40</a>
+                        </h4>
+                        <p>
+                            您好，宝宝妈妈，确实刚上幼儿园宝宝容易生病，尤
+                            其赶上气候逐渐变冷换季的时候，因为外界气温的变
+                            化忽冷忽热，宝宝体温调节中枢不稳定，适应不过来
+                            所以建议给宝宝穿的不要过多，比家长少一件衣服合适，鼓励
+                            宝宝多喝水，周末空时间带宝宝到绿地公园玩耍，天气好时积
+                            极户外活动，饮食上做到不偏食，不挑食，蔬菜水果多样化，
+                            减少糖分的摄入，糖摄入过多降低免疫力，胡萝卜丁煮粥，蘑
+                            菇等都有提高免疫力的作用，另外保证宝宝充足的睡眠。逐渐
+                            调整，宝宝会慢慢好一些。
+                        </p>
+                        <div class="info" ng-if="$first">
+                            <div class="info-l">
+                                2015/11/07
+                            </div>
+                            <div class="info-r">
+                                <span class="zan">
+                                    <img src="images/sheOnline/on_zan.png" width="22" height="22" />&nbsp;21
+                                </span>
+                                <span class="share">
+                                    <img src="images/sheOnline/on_share.png" width="22" height="22" />&nbsp;34
+                                </span>
+                                <span class="read">
+                                    <img src="images/sheOnline/on_read.png" width="22" height="22" />&nbsp;45
+                                </span>
+                            </div>
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+        </ion-scroll>
+    </ion-content>
+
+</ion-view>

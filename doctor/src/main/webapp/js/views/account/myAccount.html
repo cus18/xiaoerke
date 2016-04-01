@@ -1,0 +1,89 @@
+<ion-spinner ng-show="pageLoading" style="color:#139fff;position: relative;top: 301px;left:148px;z-index:999;"></ion-spinner>
+<ion-view view-title="我的账单" ng-init="doRefresh()">
+    <ion-spinner ng-show="dataLoading"></ion-spinner>
+        <ion-content class="myAccount" style="top:0;">
+            <ion-scroll direction="y" has-bouncing="true"  >
+                <div  class="date">
+                   <div>
+                       <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Fdate_clock.png" width="15" height="15">&nbsp;日期
+                   </div>
+                    <div class="time">
+                        <input type="text" id="dateTime" name="dateTime"
+                               readonly="readonly" placeholder="{{settlementDate}}" />&nbsp;
+                    </div>
+                </div>
+              <!--  接诊补贴-->
+                <dl class="" ng-if="checkAvailable=='true'">
+                    <dt ng-click="toggle1()">
+                        <span class="left">接诊补贴</span>
+                        <a>共{{settlementInfoData.appointment.length}}位</a>
+                        <span  class="right">收入：{{settlementInfoData.totalAppPrice}}元</span>
+                        <img  ng-if="acceptLock=='true'" src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2FmyAccount_bg.png" width="100%" height="13">
+                    </dt>
+                    <dd  ng-if="acceptLock=='true'" ng-repeat="item in settlementInfoData.appointment">
+                        <h5>{{item.babyName}}</h5>
+                        <p >{{item.beginTime}}</p>
+                        <span>{{item.price}}元</span>
+                    </dd>
+                </dl>
+                <dl class="" ng-if="checkAvailable=='false'">
+                    <dt>
+                        <span class="left">医生您好，每晚20：00更新当日账单。<br/>如需查看历史记录请切换右上方日期，谢谢支持！</span>
+                    </dt>
+                </dl>
+               <!-- 扫码关注
+                <dl class="">
+                    <dt ng-click="toggle2()">
+                        <span class="left">扫码关注</span>
+                        <a>共{{settlementInfoData.attention.length}}位</a>
+                        <span  class="right">收入：{{settlementInfoData.attentionTotal}}元</span>
+                        <img  ng-if="codeLock=='true'"  src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2FmyAccount_bg.png" width="100%" height="13">
+                    </dt>
+                    <dd ng-if="codeLock=='true'" ng-repeat="item in settlementInfoData.attention" >
+                        <h5>{{item.nickName}}</h5>
+                        <p >{{item.attentionTime}}</p>
+                        <span>{{item.price}}元</span>
+                    </dd>
+                  <!--  已关注用户扫面
+                    <dd  ng-if="codeLock=='true'">
+                        <h5>叶良辰<a style="font-size:12px;">&nbsp;(已关注用户)</a></h5>
+                        <p >9:45</p>
+                        <span>0.0元</span>
+                    </dd>
+                </dl>-->
+                <!--患者违约金-->
+                <!--<dl class="">-->
+                    <!--<dt ng-click="toggle3()">-->
+                        <!--<span class="left">患者违约金</span>-->
+                        <!--<a>共1位</a>-->
+                        <!--<span  class="right">收入：{{settlementInfoData.totalAppPrice}}元</span>-->
+                        <!--<img ng-if="fineLock=='true'" src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2FmyAccount_bg.png" width="100%" height="13">-->
+                    <!--</dt>-->
+                    <!--<dd  ng-if="fineLock=='true'" ng-repeat="item in [1]" >-->
+                        <!--<h5>朱飞灿</h5>-->
+                        <!--<p >10:30</p>-->
+                        <!--<span>120.00元</span>-->
+                    <!--</dd>-->
+                <!--</dl>-->
+            </ion-scroll>
+        </ion-content>
+    </div>
+    <div ng-if="choice=='withDrawlsList'">
+        <ion-content class="myAccount"  style="top:0;">
+            <ion-scroll direction="y" has-bouncing="true" >
+                <ul class="">
+                    <li class="" ng-repeat="item in withDrawList">
+                        <h5>提现到微信红包</h5>
+                         <p >{{item.date}}</p>
+                        <span class="all-order" style="margin-top:-5px">{{item.money}}元</span>
+                        <div ng-if="item.status=='processing'" style="margin-left:247px;margin-top:-22px;color:red">审核中</div>
+                        <div ng-if="item.status=='success'" style="margin-left:247px;margin-top:-22px;color:red">提现成功</div>
+                    </li>
+                </ul>
+            </ion-scroll>
+            <ion-infinite-scroll on-infinite="loadMoreWithDrawlsList()" distance="1%"
+                                 immediate-check="false" ng-show="scrollLoading" >
+            </ion-infinite-scroll>
+        </ion-content>
+    </div>
+</ion-view>

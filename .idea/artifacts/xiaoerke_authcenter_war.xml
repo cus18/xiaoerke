@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="xiaoerke-authcenter:war">
+    <output-path>$PROJECT_DIR$/xiaoerke-authcenter/target</output-path>
+    <root id="archive" name="xiaoerke-authcenter.war">
+      <element id="artifact" artifact-name="xiaoerke-authcenter:war exploded" />
+    </root>
+  </artifact>
+</component>

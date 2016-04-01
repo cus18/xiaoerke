@@ -1,0 +1,37 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="评估完成" ng-init="doRefresh()">
+    <ion-content class="nutritionAssessResult " style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="pyramid">
+                <!--原点提示-->
+                <ol class="circle">
+                    <li >
+                        过量<span class="line"></span>
+                    </li>
+                    <li >
+                        正常<span class="line"></span>
+                    </li>
+                    <li >
+                        不够<span class="line"></span>
+                    </li>
+                </ol>
+                <!--膳食宝塔-->
+                <ul class="classify">
+                    <li ng-repeat="item in pyramidList">
+                        <img class="food" ng-src="{{item.img}}">
+                        <span>{{item.classify}}</span>
+                    </li>
+                </ul>
+            </div>
+            <div ng-click="nutritionAssessAgain()" class="remind-text">
+                信息填错了？重新评测
+                &nbsp;<img class="my-img" width="11.5" height="12" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Farrow_right_gray.png">
+            </div>
+            <div class="two-btn">
+                <a  ng-click="lookAdvice()">营养师建议</a>
+                <a  ng-click="lookFood()">营养师食谱</a>
+            </div>
+            <!--<button ng-click="lookAdvice()" class="button foot-btn">查看营养师建议</button>-->
+        </ion-scroll>
+    </ion-content>
+</ion-view>

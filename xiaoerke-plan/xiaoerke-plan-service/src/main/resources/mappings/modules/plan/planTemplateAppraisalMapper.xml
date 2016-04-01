@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.plan.dao.PlanTemplateAppraisalDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.plan.entity.PlanTemplateAppraisal" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="plan_template_id" property="planTemplateId" jdbcType="SMALLINT" />
+    <result column="appraisal" property="appraisal" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="headimgurl" property="headImgUrl" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, plan_template_id, appraisal, create_time, update_time, create_by, update_by, 
+    open_id, user_id,name,headimgurl
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from plan_template_appraisal
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="findAppraisalListByInfo" resultType="com.cxqm.xiaoerke.modules.plan.entity.PlanTemplateAppraisal" >
+    select 
+    <include refid="Base_Column_List" />
+    from plan_template_appraisal pta
+    where 1=1
+    <if test="planTemplateId != null">
+        and pta.plan_template_id=#{planTemplateId}
+    </if>
+    ORDER BY pta.create_time desc
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from plan_template_appraisal
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.plan.entity.PlanTemplateAppraisal" >
+    insert into plan_template_appraisal (id, plan_template_id, appraisal, 
+      create_time, update_time, create_by, 
+      update_by, open_id, user_id,name,headimgurl
+      )
+    values (#{id,jdbcType=BIGINT}, #{planTemplateId,jdbcType=SMALLINT}, #{appraisal,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
+      #{updateBy,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{headImgUrl,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.plan.entity.PlanTemplateAppraisal" >
+    insert into plan_template_appraisal
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="planTemplateId != null" >
+        plan_template_id,
+      </if>
+      <if test="appraisal != null" >
+        appraisal,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="openId != null" >
+        open_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="headImgUrl != null" >
+        headimgurl,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="planTemplateId != null" >
+        #{planTemplateId,jdbcType=SMALLINT},
+      </if>
+      <if test="appraisal != null" >
+        #{appraisal,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="headImgUrl != null" >
+        #{headImgUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.plan.entity.PlanTemplateAppraisal" >
+    update plan_template_appraisal
+    <set >
+      <if test="planTemplateId != null" >
+        plan_template_id = #{planTemplateId,jdbcType=SMALLINT},
+      </if>
+      <if test="appraisal != null" >
+        appraisal = #{appraisal,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="headImgUrl != null" >
+        headimgurl = #{headImgUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.plan.entity.PlanTemplateAppraisal" >
+    update plan_template_appraisal
+    set plan_template_id = #{planTemplateId,jdbcType=SMALLINT},
+      appraisal = #{appraisal,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      open_id = #{openId,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      headimgurl = #{headImgUrl,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

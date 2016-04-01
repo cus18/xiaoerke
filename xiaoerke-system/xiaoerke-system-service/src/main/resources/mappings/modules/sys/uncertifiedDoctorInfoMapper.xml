@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.sys.dao.UnCertifiedDoctorInfoDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.sys.entity.UnCertifiedDoctorInfo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="hospital" property="hospital" jdbcType="VARCHAR" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, hospital, department, created_time, updated_time, created_by, mobile
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_uncertified_doctor
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_uncertified_doctor
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.sys.entity.UnCertifiedDoctorInfo" >
+    insert into sys_uncertified_doctor (id, name, hospital, 
+      department, created_time, updated_time, 
+      created_by, mobile)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{hospital,jdbcType=VARCHAR}, 
+      #{department,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}, 
+      #{createdBy,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.sys.entity.UnCertifiedDoctorInfo" >
+    insert into sys_uncertified_doctor
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="hospital != null" >
+        hospital,
+      </if>
+      <if test="department != null" >
+        department,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="updatedTime != null" >
+        updated_time,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="hospital != null" >
+        #{hospital,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.sys.entity.UnCertifiedDoctorInfo" >
+    update sys_uncertified_doctor
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="hospital != null" >
+        hospital = #{hospital,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        department = #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.sys.entity.UnCertifiedDoctorInfo" >
+    update sys_uncertified_doctor
+    set name = #{name,jdbcType=VARCHAR},
+      hospital = #{hospital,jdbcType=VARCHAR},
+      department = #{department,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="findPageUnCertifiedDoctorInfo" resultMap="BaseResultMap"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page" >
+    select 
+     id, name, hospital, department, DATE_FORMAT(created_time, '%Y-%m-%d %T') as cdate , DATE_FORMAT(updated_time, '%Y-%m-%d %T') as udate, created_by, mobile
+    from sys_uncertified_doctor
+    where 1=1
+        <if test="name != null and name != '' and mobile != null and mobile != ''">
+            AND  name = '${name}' AND mobile = '${mobile}'
+        </if>
+        <if test="name != null and name != ''">
+            AND  name like '${name}'
+        </if>
+        order by created_time asc
+  </select>
+</mapper>

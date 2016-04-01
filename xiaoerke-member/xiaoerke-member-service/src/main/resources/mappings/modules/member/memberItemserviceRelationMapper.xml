@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.member.dao.MemberItemserviceRelationDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.member.entity.MemberItemserviceRelationVo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="member_service_id" property="memberServiceId" jdbcType="INTEGER" />
+    <result column="member_service_item_id" property="memberServiceItemId" jdbcType="INTEGER" />
+    <result column="times" property="times" jdbcType="INTEGER" />
+    <result column="period" property="period" jdbcType="INTEGER" />
+    <result column="period_unit" property="periodUnit" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, member_service_id, member_service_item_id, times, period, period_unit, create_date, 
+    update_date, create_by
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from member_itemservice_relation
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from member_itemservice_relation
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.member.entity.MemberItemserviceRelationVo" >
+    insert into member_itemservice_relation (id, member_service_id, member_service_item_id, 
+      times, period, period_unit, 
+      create_date, update_date, create_by
+      )
+    values (#{id,jdbcType=INTEGER}, #{memberServiceId,jdbcType=INTEGER}, #{memberServiceItemId,jdbcType=INTEGER}, 
+      #{times,jdbcType=INTEGER}, #{period,jdbcType=INTEGER}, #{periodUnit,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.member.entity.MemberItemserviceRelationVo" >
+    insert into member_itemservice_relation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="memberServiceId != null" >
+        member_service_id,
+      </if>
+      <if test="memberServiceItemId != null" >
+        member_service_item_id,
+      </if>
+      <if test="times != null" >
+        times,
+      </if>
+      <if test="period != null" >
+        period,
+      </if>
+      <if test="periodUnit != null" >
+        period_unit,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="memberServiceId != null" >
+        #{memberServiceId,jdbcType=INTEGER},
+      </if>
+      <if test="memberServiceItemId != null" >
+        #{memberServiceItemId,jdbcType=INTEGER},
+      </if>
+      <if test="times != null" >
+        #{times,jdbcType=INTEGER},
+      </if>
+      <if test="period != null" >
+        #{period,jdbcType=INTEGER},
+      </if>
+      <if test="periodUnit != null" >
+        #{periodUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.member.entity.MemberItemserviceRelationVo" >
+    update member_itemservice_relation
+    <set >
+      <if test="memberServiceId != null" >
+        member_service_id = #{memberServiceId,jdbcType=INTEGER},
+      </if>
+      <if test="memberServiceItemId != null" >
+        member_service_item_id = #{memberServiceItemId,jdbcType=INTEGER},
+      </if>
+      <if test="times != null" >
+        times = #{times,jdbcType=INTEGER},
+      </if>
+      <if test="period != null" >
+        period = #{period,jdbcType=INTEGER},
+      </if>
+      <if test="periodUnit != null" >
+        period_unit = #{periodUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.member.entity.MemberItemserviceRelationVo" >
+    update member_itemservice_relation
+    set member_service_id = #{memberServiceId,jdbcType=INTEGER},
+      member_service_item_id = #{memberServiceItemId,jdbcType=INTEGER},
+      times = #{times,jdbcType=INTEGER},
+      period = #{period,jdbcType=INTEGER},
+      period_unit = #{periodUnit,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

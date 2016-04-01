@@ -1,0 +1,71 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫" ng-init="doRefresh()">
+    <div class="title-card">
+        <div class="card-num" style="margin-right:25px;">
+            <p>
+                连续打卡 {{continue}}
+            </p>
+
+        </div>
+        <div class="card-time">
+            <img ng-src="{{heartImg}}" width="61.5" height="58"><br>
+            {{momtime}}
+        </div>
+        <div class="card-num" style="margin-left:25px;">
+            <p>
+                打卡总计 {{total}}
+            </p>
+        </div>
+        <div class="mother-num">
+            55位妈妈正在坚持
+        </div>
+    </div>
+    <ion-content class="constipationFood" style="top:150px;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="task-deal2" >
+                <dl class="box-s1" ng-repeat="item in foodList">
+                    <a ng-click="playCard($index,item.mid)" class="click-card" ng-class="{'click-card-finish':item.status=='完成'}">{{item.status}}</a>
+                    <dt>{{item.time}}{{item.meal}}</dt>
+                    <dd class="name">
+                       <span>饮食结构：</span>
+                        <a >{{item.description}}</a>
+                    </dd>
+                    <dd class="pic">
+                        <span>饮食搭配：</span>
+                        <div class="pic-list">
+                            <img ng-src="http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/{{prop}}" width="67" height="67" ng-repeat="prop in item.food">
+                        </div>
+                    </dd>
+                    <dd class="effect ">
+                        <span>饮食功效：</span>
+                        <a class="open" ng-click="openMore($index)">
+                            {{item.openText}}<img src="{{item.openImg}}" width="14" height="7.5">
+                        </a>
+                        <p class="select" ng-bind-html="item.content">
+
+                        </p>
+
+                    </dd>
+                </dl>
+            </div>
+            <div class="comment-wrap">
+                <dl>
+                    <dt class="comment-head" ui-sref="constipationComment">
+                        妈妈心得<span>&nbsp;&nbsp;{{commenttotal}}</span>
+                        <a>
+                            更多<img src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fmore_right_d.png" width="22" height="22">
+                        </a>
+                    </dt>
+                    <dd class="comment-list item-avatar item-borderless" ng-repeat="item in commentList |orderBy:'createDate':true">
+                        <img ng-src={{item.picUrl}}>
+                        <span>{{ item.createDate | limitTo : 10}}</span>
+                        <h2 ng-if="item.nickName==''||item.nickName==null">宝粉</h2>
+                        <h2 ng-if="item.nickName!=''">{{item.nickName}}</h2>
+                        <p>{{item.appraisalContent}}</p>
+                    </dd>
+                </dl>
+            </div>
+        </ion-scroll>
+    </ion-content>
+
+</ion-view>

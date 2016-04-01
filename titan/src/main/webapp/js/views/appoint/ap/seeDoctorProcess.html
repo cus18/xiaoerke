@@ -1,0 +1,17 @@
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title={{title}} ng-init="doRefresh()">
+    <ion-spinner ng-show="dataLoading" class="loadPic"></ion-spinner>
+    <div bdf-head="title"></div>
+    <ion-content class="seeDoctorProcess">
+        <ion-scroll direction="y" has-bouncing="true" style="top:0px;">
+            <div class="box1">
+                <ul >
+                    <li ng-repeat="item in processText">
+                        <span>{{$index+1}}</span>
+                       {{item}}
+                    </li>
+                </ul>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

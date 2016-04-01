@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxqm.xiaoerke.modules.operation.dao.DataStatisticsDao">
+
+    <select id="findStatistics" resultType="java.util.HashMap">
+        select sl.title,count(DISTINCT sl.open_id) countNumber from sys_log sl
+        LEFT JOIN sys_attention sa
+        on sl.open_id = sa.openid
+        where DATE_FORMAT(sa.date,'%Y-%m-%d')  = DATE_FORMAT(#{statisticsData},'%Y-%m-%d')
+        GROUP BY sl.title
+    </select>
+
+
+    <!--获取所有的预约人数-->
+    <select id="findStatisticsConcern" resultType="Integer">
+        select COUNT(DISTINCT openid) from sys_attention where status != '1' or status is null
+    </select>
+
+    <!--获取取消关注人数-->
+    <select id="findStatisticsCancelConcern" resultType="Integer">
+        select COUNT(DISTINCT openid) from sys_attention where status = '1'
+    </select>
+
+    <!--获取所有当天所有预约信息（包括openId）-->
+    <select id="findAllAppointByDate" resultType="java.util.HashMap">
+       select * from sys_log where title like '%00000019%'
+         and DATE_FORMAT(create_date,'%Y-%m-%d')  = DATE_FORMAT(#{statisticsData},'%Y-%m-%d')
+    </select>
+
+
+    <!--获取所有当天所有咨询信息(包括openId)-->
+    <select id="findAllConsultByDate" resultType="java.util.HashMap">
+        select DISTINCT(openid) from sys_wechat_record where DATE_FORMAT(infoTime,'%Y-%m-%d')  = DATE_FORMAT(#{statisticsData},'%Y-%m-%d')
+    </select>
+
+    <!--查询是否是新关注用户-->
+    <select id="judgeAppIsNew" resultType="Integer">
+        select count(*) from sys_attention where openid=#{open_id} and  DATE_FORMAT(date,'%Y-%m-%d')  = DATE_FORMAT(#{date},'%Y-%m-%d')
+    </select>
+
+    <!--判断此用户之前是否咨询过-->
+    <select id="judgeNewConIsExistWeChat" resultType="Integer">
+        select count(*) from sys_attention where openid=#{openid} and  DATE_FORMAT(date,'%Y-%m-%d')  = DATE_FORMAT(#{date},'%Y-%m-%d')
+    </select>
+
+    <!--查询总活跃用户数 zdl-->
+    <select id="findSumActive" resultType="Integer">
+        select count(*) from (
+        select open_id as openid from sys_log where (title like '00000019%' or title like '00000006%') and open_id is not null
+        <if test="date !=null">
+        and  DATE_FORMAT(create_date,'%Y-%m-%d') = #{date}
+        </if>
+        UNION
+        select openid  from sys_wechat_record where openid is not null
+        <if test="date !=null">
+            and  DATE_FORMAT(infoTime,'%Y-%m-%d') = #{date}
+        </if>
+        ) a
+   </select>
+
+    <!--获取已经咨询人数-->
+    <select id="alreadyConNumber" resultType="Integer">
+        select count(DISTINCT openid) from sys_wechat_record
+    </select>
+
+    <!--获取访问郑玉巧说的所有用户的openid/create_date deliang-->
+    <select id="findAllReaderZhengYuQiao" resultType="java.util.Map">
+         select sl.open_id,sa.date
+         from (select open_id from sys_log where title like '00000006%' GROUP BY open_id ORDER BY NULL) sl,
+              (select date,openid from sys_attention GROUP BY openid ORDER BY null) sa
+         where sl.open_id = sa.openid
+         GROUP BY sl.open_id ORDER BY null
+    </select>
+
+    <!--保存统计数据-->
+    <insert id="saveDataStatistics">
+        INSERT INTO sys_statistics(id, new_add_users, cancel_new_users, actual_new_user, sum_user,
+        new_add_doctor, total_doctor, new_order_number, unsuccessful_order, successful_order
+        , account_success_order, new_add_consultation_number
+        , count_consultation_number, activate_new_user, activate_order, activate_order_consultation_number
+        , consultation, appoint, alreadyCon, sumcon,create_date,newZhengYuQiao,oldZhengYuQiao,sumAccount) VALUES(#{id},#{new_add_users},#{cancel_new_users},#{actual_new_user},#{sum_user},
+        #{new_add_doctor},#{total_doctor},#{new_order_number},#{unsuccessful_order},#{successful_order},
+        #{account_success_order},#{new_add_consultation_number},#{count_consultation_number},#{activate_new_user},#{activate_order},#{activate_order_consultation_number},
+        #{consultation},#{appoint},#{alreadyCon},#{sumcon},#{create_date},#{newZhengYuQiao},#{oldZhengYuQiao},#{sumAccount})
+    </insert>
+
+
+    <!--判断此用户是否既预约又咨询-->
+    <select id="judgeNewOrOldAppCon" resultType="Integer">
+       select count(*) from sys_log where  title='00000019' and open_id =#{open_id} and create_date = DATE_FORMAT(#{date},'%Y-%m-%d')
+    </select>
+
+    <!--用户行为统计-->
+    <select id="findUserActionStatistic" resultType="java.util.HashMap">
+        SELECT sa.nickname,sl.title,COUNT(sl.open_id) count,sa.marketer,sa.date
+        FROM sys_log sl
+        LEFT JOIN (select date,marketer,openid,nickname from sys_attention GROUP BY openid) sa ON sl.open_id = sa.openid
+        where sa.openid=#{openid}
+        GROUP BY sl.title
+    </select>
+
+    <!--获取访问咨询频道总人数-->
+    <select id="getConsultUser" resultType="Integer">
+        select count(DISTINCT open_id) from sys_log where title like '%00000003%'  and DATE_FORMAT(create_date,'%Y-%m-%d') BETWEEN #{startDate} and #{endDate};
+    </select>
+
+    <!--获取郑玉巧说的总人数 zdl-->
+    <select id="getZhengYuQiaoShuoUser" resultType="String">
+        select open_id
+        from sys_log
+        where title like '${searchlist}%'
+        and DATE_FORMAT(create_date,'%Y-%m-%d') BETWEEN DATE_FORMAT('${startDate}','%Y-%m-%d') and DATE_FORMAT('${endDate}','%Y-%m-%d')
+        and open_id is not null
+        GROUP BY open_id ORDER BY null
+    </select>
+    
+        <!--统计页面总次数-->
+    <select id="getTotalNum" resultType="Integer">
+        select count(open_id)
+        from sys_log
+        where title like '%${searchtitle}%'
+        and DATE_FORMAT(create_date,'%Y-%m-%d') BETWEEN DATE_FORMAT('${startDate}','%Y-%m-%d') and DATE_FORMAT('${endDate}','%Y-%m-%d')
+        and open_id is not null
+    </select>
+</mapper>

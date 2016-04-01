@@ -1,0 +1,85 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫小儿防犬宝" ng-init="doRefresh()">
+
+    <ion-content class="antiDogIndex" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="banner">
+                <img class="my-img-block"  width="100%" height="auto"
+                     src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Findex_banner.png">
+                <div class="text">
+                    邻居的狗打过疫苗吗？小区总有人遛狗不牵着，怎么办？
+                </div>
+            </div>
+            <div class="intro">
+                <dl class="">
+                    <dt>
+                        <span class="line"></span>服务内容
+                    </dt>
+                    <dd class="num">
+                        <span >1、</span>0-14岁儿童因被狗咬伤就诊，可领取400元狂犬疫苗互助补贴，服务期内仅限一次。
+                    </dd>
+                    <dd  class="num">
+                        <span >2、</span>0-14岁儿童因被狗咬伤导致狂犬病，可领取10万元治疗互助补贴，服务期内仅限一次。
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        <span class="line"></span>服务生效
+                    </dt>
+                    <dd>
+                        完成付款24小时之后，服务生效；服务有效期为一年。
+                    </dd>
+
+                </dl>
+                <dl>
+                    <dt>
+                        <span class="line"></span>服务区域
+                    </dt>
+                    <dd>
+                       北京
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        <span class="line"></span>补偿申请流程
+                    </dt>
+                    <dd class="num">
+                        <span >1、</span>关注宝大夫微信公众号：BaodfWX
+                    </dd>
+                    <dd  class="num">
+                        <span >2、</span>点击公众号“宝粉之家”中“小儿防犬宝”专区，使用“赔”功能按钮
+                    </dd>
+                    <dd  class="num">
+                        <span >3、</span>拍照上传以下资料：北京地区医疗机构票据（必须显示孩子姓名与年龄，以及注射狂犬病疫苗）照片；服务购买人本人身份证。
+                    </dd>
+                    <dd  class="num">
+                        <span >4、</span>宝大夫平台在收齐提交资料后，两个工作日内进行审核，若通过审核，将在三个工作日内发放互助补贴至用户的账户余额；若未通过审核，客服人员会进一步联系用户补充资料。
+                    </dd>
+                </dl>
+
+            </div>
+            <div class="apart"></div>
+            <div class="intro declare">
+                <dt>
+                    <span class="line"></span>重要声明
+                    <div class="read" ng-click="read()">
+                        已阅读
+                         <a>
+                            <img ng-if="readLock" width="18" height="auto"
+                                 src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Fread.png">
+                         </a>
+                    </div>
+                </dt>
+                <dd >宝大夫平台拥有对本服务的最终解释权。任何骗取补偿
+                    的行为将承担非常严重的法律责任。宝大夫平台将保留
+                    向相关当事人实施追偿的权利。</dd>
+            </div>
+            <br><br><br><br> <br><br> <br><br>
+        </ion-scroll>
+    </ion-content>
+    <img ng-click="goPay()" id="payOut" class="icon-pay"  width="56" height="auto"
+         src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Ficon_pay.png">
+    <div ng-click="goBuy()" class="button btn-bottom" ng-disabled="!readLock">
+        立即购买  ￥9.9（一年）
+    </div>
+</ion-view>

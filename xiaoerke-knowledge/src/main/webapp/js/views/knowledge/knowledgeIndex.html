@@ -1,0 +1,185 @@
+<link rel="stylesheet" href="styles/knowledge/knowledgeCommon.less?ver='0.9'" type="text/css" />
+<link rel="stylesheet" href="styles/knowledge/knowledgeIndex.less?ver='0.9'" type="text/css" />
+<link href="styles/lib/mobiscroll.custom-2.5.0.min.css" rel="stylesheet" type="text/css" />
+<ion-spinner ng-show="pageLoading" icon="bubbles" class="loadPic"></ion-spinner>
+<ion-view view-title="郑玉巧育儿经" ng-init="doRefresh()">
+    <ion-content class="knowledgeIndex" overflow-scroll="true" style="top:0;">
+        <div class="search-photo">
+            <div class="mySearch">
+                <div class=" search1" ng-if="showSearchAllLock=='true'">
+                    <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fsearch_left_icon.png" width="17.5" height="17.5" >
+                    <input type="text" placeholder="搜索" ng-model="info.search">
+                    <span class="go-search" ng-click="searchTitle()">搜索</span>
+                </div>
+                <div class="search2" ng-if="showSearchLock=='true'" ng-click="showSearch()">
+                    <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fsearch_right.png" width="37.5" height="29">
+                </div>
+            </div>
+        </div>
+        <ion-scroll direction="y" has-bouncing="true" style="" on-swipe-up="onSwipeUp()" on-swipe-down="onSwipeDown()">
+            <div style="text-align: center;">
+                <img width="100%" height="300" id="babyPhoto" ng-click="chooseImage()">
+             </div>
+             <div class="content">
+                 <div class="babyInfo">
+                     <ul>
+                        <li class="font-c1">
+                            <span>
+                                {{babyname}}
+                            </span>
+                             <span>
+                                 {{info.bir}}
+                                  <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fedit_birthday.png" width="10" height="10.5">
+                                 <input id="birthday" name="birthday" type="text" readonly="readonly">
+                             </span>
+                        </li>
+                         <li class="font-c2" ng-if="jing=='true'">
+                             <span >{{standard[0]}}<a class="line"></a></span>
+                             <span>{{standard[1]}}</span>
+                         </li>
+                     </ul>
+                 </div>
+                 <div class="remind" ng-if="jing=='true'">
+                     <h3 >
+                         <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fzheng_remind.png" width="17.5" height="18">
+                         郑老师提醒
+                         <a class="more" ng-click="getWarn()">
+                             更多&nbsp;<img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fzheng_remind_detail.png" width="9.5" height="10.5">
+                         </a>
+                     </h3>
+                     <ul>
+                         <li ng-repeat="item in dailyList" ng-click="getWarn($index)">
+                             <span class="cir"></span>{{item}}
+                             <i class="ion-ios-arrow-right"></i>
+                         </li>
+                     </ul>
+                 </div>
+                <div class="today-read today" >
+                    <h3 ng-if="jing=='true'">
+                        <span class="line"></span>
+                        今日必读
+                    </h3>
+                    <ul class="list" ng-if="jing=='true'">
+                        <li class="item item-borderless" ng-repeat="item in todayReadArticleList">
+                            <div class="item-thumbnail-left" ui-sref="knowledgeArticleContent({contentId:item.id,generalize:'WX'})">
+                                <img ng-src="http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/{{item.id}}">
+                                <h2 >{{item.title}}</h2>
+                                <p>
+                                    {{ item.description | limitTo  : 30 }}...
+                                </p>
+                                <div class="sub-info">
+                                    <a  class="info info-read">
+                                        <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fitem_read.png" width="12.5" height="8.5">&nbsp;{{item.hits}}
+                                    </a>
+                                    <a class="info info-comment">
+                                        <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fitem_comment.png" width="12.5" height="11.5">&nbsp;{{item.comment}}
+                                    </a>
+                                    <a  class="info info-share">
+                                        <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fitem_share.png" width="12.5" height="12.5">&nbsp;{{item.share}}
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="belong ">
+                                <span>{{item.category.name}}</span>
+                                <a ng-click="linshi(item.category.name,item.category.id)" >查看更多</a>
+                            </div>
+                        </li>
+                    </ul>
+                    <dl class="classify">
+                        <dt>
+                            <span class="line"></span>
+                            &nbsp;育儿宝典
+                        </dt>
+                        <dd style="padding-top:20px;">
+                            <a class="myCol"  ng-repeat="item in babyClassify" ui-sref="todayReadMore({secondMenuId:item.secondMenuId,title:item.secondMenuName})">
+                                <img ng-src={{babyClassifyImg[$index]}} width="52" height="52"><br>
+                                 <span >{{item.secondMenuName}}</span>
+                            </a>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="today-choice today">
+                    <h3>
+                        <span class="line"></span>
+                        今日精选
+                    </h3>
+                    <ul class="list" ng-if="jing=='true'">
+                        <li class="item item-borderless" ng-repeat="item in todaySelectArticleList" ng-if="jing=='true'">
+                            <div class="item-thumbnail-left" ui-sref="knowledgeArticleContent({contentId:item.id,generalize:'WX'})">
+                                <img ng-src="http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/{{item.id}}">
+                                <h2 >{{item.title}}</h2>
+                                <p>
+                                    {{ item.description | limitTo  : 30 }}...
+                                </p>
+                                <p class="sub-info">
+                                    <a  class="info info-read">
+                                        <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fitem_read.png" width="12.5" height="8.5">&nbsp;
+                                        {{item.hits}}
+                                    </a>
+                                    <a class="info info-comment">
+                                        <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fitem_comment.png" width="12.5" height="11.5">&nbsp;
+                                        {{item.comment}}
+                                    </a>
+                                    <a  class="info info-share">
+                                        <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fitem_share.png" width="12.5" height="12.5">&nbsp;
+                                        {{item.share}}
+                                    </a>
+                                </p>
+                            </div>
+                            <div class="belong " ng-if="jing=='true'">
+                                <span >{{item.category.name}}</span>
+                                <a  ng-click="lookMore(item.category.id,item.category.name)">查看更多</a>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="list"  ng-if="jing=='false'">
+                        <li class="item item-borderless" ng-repeat="item in jingList" ng-if="jing=='false'">
+                            <div class="item-thumbnail-left" ui-sref="knowledgeArticleContent({contentId:item.id,generalize:'WX'})">
+                                <img ng-src="http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/{{item.id}}">
+                                <h2 >{{item.title}}</h2>
+                                <p>
+                                    {{ item.description | limitTo  : 30 }}...
+                                </p>
+                                <p class="sub-info">
+                                    <a  class="info info-read">
+                                        <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fitem_read.png" width="12.5" height="8.5">&nbsp;
+                                        {{item.articleReadCount}}
+                                    </a>
+                                    <a class="info info-comment">
+                                        <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fitem_comment.png" width="12.5" height="11.5">&nbsp;
+                                        {{item.articleCommentCount}}
+                                    </a>
+                                    <a  class="info info-share">
+                                        <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fitem_share.png" width="12.5" height="12.5">&nbsp;
+                                        {{item.articleShareCount}}
+                                    </a>
+                                </p>
+                            </div>
+                        </li>
+
+                        <a  class="jingMore" ng-click="jingMore()">加载更多</a>
+                    </ul>
+                    <dl class="classify" ng-if="jing=='true'">
+                        <dt>
+                            <span class="line"></span>
+                            &nbsp;给宝宝看病
+                        </dt>
+                        <dd>
+                            <h5>常见疾病症状</h5>
+                           <div class="myCol2">
+                               <a  ui-sref="todayChoiceNewborn({id:syndromeClassify[0].secondMenuId,title:syndromeClassify[0].secondMenuName})" style="margin-right:35px;">
+                                 {{syndromeClassify[0].secondMenuName}}
+                               </a>
+                               <a ui-sref="todayChoiceNursling({id:syndromeClassify[1].secondMenuId,title:syndromeClassify[1].secondMenuName})">
+                                   {{syndromeClassify[1].secondMenuName}}
+                               </a>
+                           </div>
+                        </dd>
+                    </dl>
+                </div>
+                <div class=""></div>
+                <br/><br/>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

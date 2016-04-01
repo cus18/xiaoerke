@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.consult.dao.ConsultSessionForwardRecordsDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="conversation_id" property="conversationId" jdbcType="BIGINT" />
+    <result column="from_user_id" property="fromUserId" jdbcType="VARCHAR" />
+    <result column="to_user_id" property="toUserId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="openid" property="openid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, conversation_id, from_user_id, to_user_id, create_time, create_by, remark,status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from consult_conversation_forward_records
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from consult_conversation_forward_records
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo" >
+    insert into consult_conversation_forward_records (id, conversation_id, from_user_id, 
+      to_user_id, create_time, create_by, 
+      remark,status)
+    values (#{id,jdbcType=BIGINT}, #{conversationId,jdbcType=BIGINT}, #{fromUserId,jdbcType=VARCHAR}, 
+      #{toUserId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo" >
+    insert into consult_conversation_forward_records
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="conversationId != null" >
+        conversation_id,
+      </if>
+      <if test="fromUserId != null" >
+        from_user_id,
+      </if>
+      <if test="toUserId != null" >
+        to_user_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="status != null" >
+        status
+      </if>
+
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="conversationId != null" >
+        #{conversationId,jdbcType=BIGINT},
+      </if>
+      <if test="fromUserId != null" >
+        #{fromUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="toUserId != null" >
+        #{toUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo" >
+    update consult_conversation_forward_records
+    <set >
+      <if test="conversationId != null" >
+        conversation_id = #{conversationId,jdbcType=BIGINT},
+      </if>
+      <if test="fromUserId != null" >
+        from_user_id = #{fromUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="toUserId != null" >
+        to_user_id = #{toUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        remark = #{status,jdbcType=VARCHAR},
+      </if>
+
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo" >
+    update consult_conversation_forward_records
+    set conversation_id = #{conversationId,jdbcType=BIGINT},
+      from_user_id = #{fromUserId,jdbcType=VARCHAR},
+      to_user_id = #{toUserId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+	<update id="cancelTransfer" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo" >
+    update consult_conversation_forward_records
+    set 
+      status = #{status,jdbcType=VARCHAR}
+    where conversation_id = #{conversationId,jdbcType=BIGINT} 
+    and from_user_id = #{fromUserId,jdbcType=VARCHAR}
+    and to_user_id = #{toUserId,jdbcType=VARCHAR}
+    and status = 'waiting' 
+  </update>
+  
+
+  <select id="findConversationRankList" resultType="java.util.HashMap" >
+    SELECT
+        su.id,
+        su.name,
+        count(*) consultNum
+    FROM
+        consult_conversation_forward_records ccfr
+    INNER JOIN sys_user su ON su.id = ccfr.to_user_id
+    WHERE
+        create_time LIKE '${rankDate}%'
+    GROUP BY
+        ccfr.to_user_id
+    ORDER BY
+        consultNum desc
+  </select>
+
+
+  <select id="getConsultUserListRecently" resultMap="BaseResultMap"
+          resultType="com.cxqm.xiaoerke.common.persistence.Page">
+    SELECT ccfr.*,su.openid from consult_conversation_forward_records ccfr
+    INNER JOIN sys_user su on su.id = ccfr.from_user_id
+    where 1=1
+    <if test="searchDate != null" >
+      and create_time BETWEEN #{searchDate} and NOW()
+    </if>
+    <if test="CSDoctorId != null">
+      and to_user_id=#{CSDoctorId}
+    </if>
+    ORDER BY ccfr.create_time desc
+  </select>
+
+</mapper>

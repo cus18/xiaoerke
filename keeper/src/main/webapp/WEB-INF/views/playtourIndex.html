@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/xiaoerke-wxapp/"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+    <title>咨询打赏</title>
+    <script src="js/libs/jquery-2.1.3.min.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script src="js/playtourIndex.js"></script>
+    <link rel="stylesheet" href="/xiaoerke-wxapp/styles/playtour/playtourIndex.less" type="text/css" />
+</head>
+<body onload="doRefresh()">
+<div class="playtourdoctor">
+    <div class="playtourdoctorimg">
+        <img src="images/a1.png" width="62.5px" height="62.5px">
+    </div>
+    <div class="playtourdoctorright">
+        <div class="playtourdoctorright_1">
+            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fgeren.png" width="13px" height="14px"/>
+            <span>梁平</span>
+        </div>
+        <div class="playtourdoctorright_2">
+            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fchengjiu.png" width="10.5px" height="14px"/>
+            <span class="xinyi">收到心意<span id="redPacket">32</span></span>
+            <span class="haoping">好评率<span id="starInfo">100%</span></span>
+        </div>
+    </div>
+</div>
+<div class="playtourpingjie">
+    <div class="playtourpj_1" onclick="setEvaluate(0)">
+        <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fbumanyi_weixuanzhong.png" width="37px" height="37px"/>
+        <div>
+            不满意
+        </div>
+    </div>
+    <div class="playtourpj_2" onclick="setEvaluate(1)">
+        <div class="line left1"></div>
+        <div class="center1">
+            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fmanyiweixuanzhong.png" width="37px" height="37px"/>
+            <div class="manyi">
+                满意
+            </div>
+        </div>
+        <div class="line right1"></div>
+    </div>
+    <div class="playtourpj_3" onclick="setEvaluate(2)">
+        <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Ffeichangmanyiweixuanzhong.png" width="37px" height="37px"/>
+        <div>
+            非常满意
+        </div>
+    </div>
+</div>
+<div class="playtourmoney">
+    <div class="ptmdoc" >
+        <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fxinyi_png.png" width="144px" height="17px"/>
+    </div>
+    <div class="ptm">
+        <img onclick="setMoney(0)" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png" width="43px" height="44px">
+
+            <input  text="number" maxlength="4" id="getMoney" placeholder="0元" onclick="moreMoney()"/>
+
+        <img onclick="setMoney(1)" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjia_xuanzhong.png" width="43px" height="44px">
+    </div>
+    <div class="ptmfu">
+        <span>金额不可以为负哦~</span>
+    </div>
+</div>
+<div class="playtourno">
+    <div class="ptntitle">哪里不满意?</div>
+    <ul class="ptn_1">
+        <li>
+            <span class="com ptn_1_1" onclick="setNo(0)">服务态度</span>
+        </li>
+        <li>
+            <span class="com ptn_1_1" onclick="setNo(1)">专业水平</span>
+        </li>
+        <li>
+            <span class="com ptn_1_1" onclick="setNo(2)">响应速度</span>
+        </li>
+        <li>
+            <span class="com ptn_1_1" onclick="setNo(3)">其它</span>
+        </li>
+    </ul>
+</div>
+<div class="playtourjianyi">
+    <textarea placeholder="大胆说出对医生的建议" maxlength="100" id="content"></textarea>
+</div>
+<div class="playtourwenti">
+    亲，支付出现问题哦~
+</div>
+<button onclick="sumEval()" >提交评价</button>
+</body>
+</html>

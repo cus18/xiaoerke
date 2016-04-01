@@ -1,0 +1,63 @@
+<link rel="stylesheet" href="styles/sheOnline/sheOnlineDetail.less?ver='0.9'" type="text/css" />
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title="郑玉巧在线" ng-init="doRefresh()">
+    <ion-item class="sheOnlineDetail-out">
+        <div class="sheOnlineDetail">
+            <div class="box1">
+                <div class="ques-head" style="font-weight:bold;">
+                    {{title}}
+                </div>
+                <div class="info" >
+                    <div class="info-l">
+                        {{time}}
+                    </div>
+                    <div class="info-r">
+                                <span class="zan" ng-click="zan()">
+                                    <img ng-src={{zanImg}} width="22" height="22" />&nbsp;{{num}}
+                                </span>
+                                <span class="share">
+                                    <img src="images/sheOnline/on_share.png" width="22" height="22" />&nbsp;{{share}}
+                                </span>
+                                <span class="read">
+                                    <img src="images/sheOnline/on_read.png" width="22" height="22" />&nbsp;{{hits}}
+                                </span>
+                    </div>
+                </div>
+            </div>
+            <div class="box2" ng-bind-html="info.articleContent">
+
+
+            </div>
+            <div class="related-article" ng-if="articleNum=='true'">
+                <h2>相关文章</h2>
+                <ul>
+                    <li ng-repeat="item in relationList" ng-click="article(item.id,item.title)">
+                       {{$index+1}}.{{item.title}}
+                    </li>
+                </ul>
+                <p ui-sref="saidFirst">查看更多文章  >></p>
+            </div>
+            <div class="box3">
+                <h4>更多郑玉巧亲授知识及在线咨询问答<br>请关注&nbsp;<i>"宝大夫"</i> &nbsp;微信服务号</h4>
+                <div class="code">
+                    <img class="code-pic" src="images/operate/baodf_share_code.png" width="100" height="100" />
+                    <div class="code-word">
+                        免费在线咨询<br>
+                        预约儿科挂号<br>
+                        育儿知识大全<br>
+                        尽在宝大夫一站式育儿平台<br>
+                        <img class="fingerprints" src="images/sheOnline/fingerprints.png" width="61" height="63.5" />
+                    </div>
+
+                </div>
+                <p>
+                    长按二维码&nbsp;<img  src="images/sheOnline/on6.png" width="5" height="9" />
+                    识别二维码&nbsp;<img  src="images/sheOnline/on6.png" width="5" height="9" />
+                    关注并进入“宝大夫”微信服务号
+
+                </p>
+            </div>
+        </div>
+    </ion-item>
+
+</ion-view>

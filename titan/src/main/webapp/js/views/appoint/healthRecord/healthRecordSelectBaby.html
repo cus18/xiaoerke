@@ -1,0 +1,34 @@
+<ion-view view-title={{title0}} ng-init="doRefresh()" >
+	<div bdf-head="title" ng-if="notChangeLock"></div>
+	<ion-content class="healthRecordSelectBaby" style="top:44px;">
+		<ion-scroll direction="y" has-bouncing="true">
+			<div class="baby-list">
+				<div class="" ng-class="{'select':$index==babyNum}"  ng-repeat="item in babyInfoList">
+					<i ng-if="$index==babyNum" class="triangle"></i>
+					<ul ng-click="selectBaby($index)">
+						<li >
+							<span class="key">姓名：</span>
+							<span class="value">{{item.name}}</span>
+						</li>
+						<li>
+							<span class="key">性别：</span>
+							<span class="value">{{item.sex=='1'?'男':'女'}}</span>
+						</li>
+						<li>
+							<span class="key">出生日期：</span>
+							<span class="value">{{item.birthday | date: 'yyyy-MM-dd '}}</span>
+						</li>
+					</ul>
+					<a ng-click="updateBaby($index)" ng-if="notChangeLock" class="update-baby" >
+						<img width="15" height="16.5" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/healthManage%2Fedit_baby.png">
+					</a>
+				</div>
+			</div>
+			<div>
+				<button class="button foot-btn" ng-click="addBaby()">添加宝宝</button>
+			</div>
+
+		</ion-scroll>
+	</ion-content>
+</ion-view>
+

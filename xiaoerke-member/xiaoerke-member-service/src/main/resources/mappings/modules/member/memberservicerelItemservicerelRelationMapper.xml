@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.member.dao.MemberservicerelItemservicerelRelationDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.member.entity.MemberservicerelItemservicerelRelationVo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="member_service_relation_id" property="memberServiceRelationId" jdbcType="INTEGER" />
+    <result column="member_itemservice_relation_id" property="memberItemserviceRelationId" jdbcType="INTEGER" />
+    <result column="left_times" property="leftTimes" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="activate_date" property="activateDate" jdbcType="TIMESTAMP" />
+    <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="qrCode" property="qrCode" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+
+    <result column="times" property="times" jdbcType="INTEGER" />
+    <result column="period" property="period" jdbcType="INTEGER" />
+    <result column="period_unit" property="periodUnit" jdbcType="VARCHAR" />
+
+    <result column="desc" property="desc" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+
+
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, member_service_relation_id,sys_user_id, member_itemservice_relation_id, left_times, create_date,
+    update_date, create_by, activate_date, end_date ,status,desc,remark
+  </sql>
+
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select * from memberservicerel_itemservicerel_relation mirn
+    left JOIN member_itemservice_relation mir on mir.id = mirn.member_itemservice_relation_id
+    left JOIN member_service_relation msr on msr.id = mirn.member_service_relation_id
+    where mirn.id = #{id,jdbcType=INTEGER}  ORDER BY mirn.end_date desc
+  </select>
+
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.member.entity.MemberservicerelItemservicerelRelationVo" >
+    select * from memberservicerel_itemservicerel_relation mirn
+    left JOIN member_itemservice_relation mir on mir.id = mirn.member_itemservice_relation_id
+    left JOIN member_service_relation msr on msr.id = mirn.member_service_relation_id
+    where mirn.sys_user_id = #{sysUserId,jdbcType=VARCHAR} and (mirn.status='youxiao' or  mirn.status='yituikuan') ORDER BY mirn.end_date desc
+  </select>
+
+  <select id="selectAvailableListByUserId" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.member.entity.MemberservicerelItemservicerelRelationVo" >
+    select * from memberservicerel_itemservicerel_relation mirn
+    left JOIN member_itemservice_relation mir on mir.id = mirn.member_itemservice_relation_id
+    left JOIN member_service_relation msr on msr.id = mirn.member_service_relation_id
+    where mirn.sys_user_id = #{sysUserId,jdbcType=VARCHAR}  and mirn.end_date> now() and mirn.left_times > 0 and (mirn.status='youxiao' or  mirn.status='yituikuan') ORDER BY mirn.end_date desc
+  </select>
+
+  <!--查询服务信息-->
+  <select id="getMemberServiceInfo" resultMap="BaseResultMap"
+          parameterType="com.cxqm.xiaoerke.modules.member.entity.MemberservicerelItemservicerelRelationVo" >
+    select * from memberservicerel_itemservicerel_relation mirn
+    left JOIN member_itemservice_relation mir on mir.id = mirn.member_itemservice_relation_id
+    left JOIN member_service_relation msr on msr.id = mirn.member_service_relation_id
+    <if test="openid != null" >
+      LEFT JOIN sys_user su on su.id = mirn.sys_user_id
+    </if>
+    where 1=1
+    <if test="sysUserId != null" >
+      and mirn.sys_user_id = #{sysUserId,jdbcType=VARCHAR}
+    </if>
+    <if test="openid != null" >
+      and su.openid = #{openid} GROUP BY su.openid
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from memberservicerel_itemservicerel_relation
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.member.entity.MemberservicerelItemservicerelRelationVo" useGeneratedKeys="true" keyProperty="id">
+    insert into memberservicerel_itemservicerel_relation (id,sys_user_id, member_service_relation_id, member_itemservice_relation_id,
+      left_times, create_date, update_date, 
+      create_by, activate_date, end_date ,status ,remark
+      )
+    values (#{id,jdbcType=INTEGER},#{sysUserId,jdbcType=VARCHAR}, #{memberServiceRelationId,jdbcType=INTEGER}, #{memberItemserviceRelationId,jdbcType=INTEGER},
+      #{leftTimes,jdbcType=INTEGER}, #{createDate,jdbcType=DATE}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{createBy,jdbcType=VARCHAR}, #{activateDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP},#{status},#{remark}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.member.entity.MemberservicerelItemservicerelRelationVo" >
+    insert into memberservicerel_itemservicerel_relation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sysUserId != null" >
+        sys_user_id,
+      </if>
+      <if test="memberServiceRelationId != null" >
+        member_service_relation_id,
+      </if>
+      <if test="memberItemserviceRelationId != null" >
+        member_itemservice_relation_id,
+      </if>
+      <if test="leftTimes != null" >
+        left_times,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="activateDate != null" >
+        activate_date,
+      </if>
+      <if test="endDate != null" >
+        end_date,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+
+
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sysUserId != null" >
+        #{sysUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="memberServiceRelationId != null" >
+        #{memberServiceRelationId,jdbcType=INTEGER},
+      </if>
+      <if test="memberItemserviceRelationId != null" >
+        #{memberItemserviceRelationId,jdbcType=INTEGER},
+      </if>
+      <if test="leftTimes != null" >
+        #{leftTimes,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=DATE},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="activateDate != null" >
+        #{activateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.member.entity.MemberservicerelItemservicerelRelationVo" >
+    update memberservicerel_itemservicerel_relation
+    <set >
+      <if test="memberServiceRelationId != null" >
+        member_service_relation_id = #{memberServiceRelationId,jdbcType=INTEGER},
+      </if>
+      <if test="sysUserId != null" >
+        sys_user_id = #{sysUserId,jdbcType=INTEGER},
+      </if>
+
+      <if test="memberItemserviceRelationId != null" >
+        member_itemservice_relation_id = #{memberItemserviceRelationId,jdbcType=INTEGER},
+      </if>
+      <if test="leftTimes != null" >
+        left_times = #{leftTimes,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=DATE},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="activateDate != null" >
+        activate_date = #{activateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        end_date = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.member.entity.MemberservicerelItemservicerelRelationVo" >
+    update memberservicerel_itemservicerel_relation
+    set member_service_relation_id = #{memberServiceRelationId,jdbcType=INTEGER},
+      sys_user_id = #{sysUserId,jdbcType=INTEGER},
+      member_itemservice_relation_id = #{memberItemserviceRelationId,jdbcType=INTEGER},
+      left_times = #{leftTimes,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=DATE},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      activate_date = #{activateDate,jdbcType=TIMESTAMP},
+      end_date = #{endDate,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR},
+      remark =  #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByMemberServiceRelationId" parameterType="com.cxqm.xiaoerke.modules.member.entity.MemberservicerelItemservicerelRelationVo" >
+    update memberservicerel_itemservicerel_relation
+    set sys_user_id = #{sysUserId,jdbcType=VARCHAR},
+    create_by = #{createBy,jdbcType=VARCHAR}
+    where member_itemservice_relation_id = #{memberServiceRelationId,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateLeftTimesSubtractByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.member.entity.MemberservicerelItemservicerelRelationVo" >
+    update memberservicerel_itemservicerel_relation
+    set
+    left_times = left_times - #{leftTimes,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+    and left_times>0
+  </update>
+
+  <update id="updatePhone" parameterType="com.cxqm.xiaoerke.modules.member.entity.MemberservicerelItemservicerelRelationVo" >
+    update memberservicerel_itemservicerel_relation
+    set
+    left_times = left_times - #{leftTimes,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateLeftTimesAddByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.member.entity.MemberservicerelItemservicerelRelationVo" >
+    update memberservicerel_itemservicerel_relation
+    set
+    left_times = left_times + #{leftTimes,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="findMemberServiceList" resultType="com.cxqm.xiaoerke.modules.member.entity.MemberservicerelItemservicerelRelationVo" >
+    select mirs.id,mirs.activate_date,mirs.end_date,mirs.left_times,mirs.status,mir.period,mir.period_unit,sat.name,sat.source,sa.nickName,su.phone from memberservicerel_itemservicerel_relation mirs
+    LEFT JOIN member_itemservice_relation mir on mir.id = mirs.member_itemservice_relation_id
+    LEFT JOIN member_service_relation msr on msr.id = mirs.member_service_relation_id
+    LEFT JOIN sys_user su on su.id = mirs.sys_user_id
+    LEFT JOIN sys_attention sa on sa.openid = su.openid
+    LEFT JOIN sys_activity sat on sat.id = msr.sys_activity_id
+    where 1=1
+    <if test="nickName != null and nickName != ''" >
+      and sa.nickName = #{nickName,jdbcType=VARCHAR}
+    </if>
+    <if test="phone != null and phone != ''" >
+      and su.phone = #{phone,jdbcType=VARCHAR}
+    </if>
+    <if test="status != null and status != ''" >
+      and mirs.status = #{status,jdbcType=VARCHAR}
+    </if>
+    GROUP BY mirs.id
+    order by mirs.activate_date desc
+  </select>
+  
+  <select id="getAllMemberServiceList" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.member.entity.MemberservicerelItemservicerelRelationVo" >
+    select mirs.id,mirs.activate_date,mirs.end_date,mirs.left_times,mirs.status,mir.period,mir.period_unit,sat.name,sat.source,sa.nickName,su.phone from memberservicerel_itemservicerel_relation mirs
+    LEFT JOIN member_itemservice_relation mir on mir.id = mirs.member_itemservice_relation_id
+    LEFT JOIN member_service_relation msr on msr.id = mirs.member_service_relation_id
+    LEFT JOIN sys_user su on su.id = mirs.sys_user_id
+    LEFT JOIN sys_attention sa on sa.openid = su.openid
+    LEFT JOIN sys_activity sat on sat.id = msr.sys_activity_id
+    where 1=1
+    <if test="nickName != null and nickName != ''" >
+      and sa.nickName = #{nickName,jdbcType=VARCHAR}
+    </if>
+    <if test="phone != null and phone != ''" >
+      and su.phone = #{phone,jdbcType=VARCHAR}
+    </if>
+    <if test="status != null and status != ''" >
+      and mirs.status = #{status,jdbcType=VARCHAR}
+    </if>
+    GROUP BY mirs.id
+    order by mirs.activate_date desc
+  </select>
+  <select id="getMemberUsageDetail" resultType="java.util.Map" parameterType="java.lang.Integer" >
+	SELECT
+			prs.register_no,
+			prs.babyName,
+			prs.cancelReason,
+			prs.keepChance,
+			prs.status,
+			srs.date,
+			srs.begin_time,
+			sd.name
+		FROM
+			patient_register_service prs
+		LEFT JOIN sys_register_service srs ON prs.sys_register_service_id = srs.id
+		LEFT JOIN sys_doctor sd ON srs.sys_doctor_id = sd.id
+		WHERE
+			prs.member_service_id = #{id}
+	</select>
+</mapper>

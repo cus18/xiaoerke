@@ -1,0 +1,343 @@
+<link rel="stylesheet" href="scripts/styles/doctorConsultFirst.css?ver=1.0.1" type="text/css"/>
+<div ui-view ng-init="doctorConsultFirst()" class="messageList">
+    <!--头部-->
+    <header class="head w10">
+        <div class="head-t w10 qf">
+            <div class="bdf-dkf-nav w5 fl h4 bg-h1">
+                <span><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png" alt=""/></span>
+                <span></span>
+                <span>宝大夫</span>
+                <span>自动回复
+                <select>
+                    <option>无</option>
+                    <option>外出就餐，请稍候</option>
+                    <option>不在电脑旁边，请稍候</option>
+                    <option>接听电话中</option>
+                    <option>无自动回复</option>
+                    <option>马上回来</option>
+                </select>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>
+                </span>
+                <span>自动接入
+                <select>
+                    <option>关闭</option>
+                    <option>打开</option>
+                </select>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>
+                </span>
+            </div>
+            <div class="w5 fr h4 bg-h1">
+                <div class="bdf-dkf-content-right">
+                    <div class="cjgl">退出</div>
+                    <div class="xtsz" ng-click="systemsetup1()">
+                        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_06.png" alt=""/>
+                        系统设置</div>
+                </div>
+            </div>
+        </div>
+        <div class="head-m wid1 qf tab">
+            <div class="w5 fl h5 tac"><a ui-sref="doctorConsultFirst"><span>聊天窗口</span></a></div>
+            <div class="w5 fr h5 tac bg-m"><a ui-sref="messageList"><span class="cl">消息列表</span></a></div>
+        </div>
+    </header>
+    <div class="msg">
+      <div class="msg-l h30 fl">
+          <div class="m-left-header">
+                <div class="m-left-top">
+                    <div class="tab-content-chat" id="ddjr" ng-click="waitprocess1()">
+                        <h3>0</h3>
+                        <p>等待接入</p>
+                    </div>
+                    <div class="tab-content-chat " ng-click="toggleRankList()">
+                        <h3>5</h3>
+                        <p>已接会话</p>
+                    </div>
+                </div>
+            </div>
+          <div class="consultNowList" ng-style="chooseAlreadyJoinConsultPatientId==item.patientId?{'background':'#00a1ab'}:{'background':'#08b7c2'}"
+               ng-repeat="item in alreadyJoinPatientConversationContent"
+               ng-click="chooseAlreadyJoinConsultPatient(item.patientId,item.patientName)"
+               alt="">
+              <img src="images/consultPatient.png">{{item.patientName}}
+              {{item.dateTime}}&nbsp;&nbsp;
+              <img ng-if="item.messageNotSee" style="margin-left:-35px;" src="images/messageNotSee.png">
+          </div>
+      </div>
+      <div class="msg-r h30 fr">
+          <div class="bdf-dkf-sever">
+              <a class="reply"><span>快捷回复</span></a>
+              <a class="advisory"><span>咨询服务</span></a>
+          </div>
+          <div class="reply-content">
+              <div class="chatinstall">
+                  <span>
+                      <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(11).png" alt=""/>添加</span>
+                  <span>
+                      <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(12).png" alt=""/>
+                      编辑</span>
+                  <span>
+                      <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(3).png" alt=""/>
+                      删除</span>
+                  <span>
+                      <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(13).png" alt=""/>
+                      向上</span>
+                  <span>
+                      <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(1).png" alt=""/>
+                      向下</span>
+                  <span>
+                      <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(2).png" alt=""/>
+                      同步</span>
+              </div>
+              <div class="myreply">
+                  <div ng-click="myreplyList1()" class="rtitle">
+                      <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(4).png" alt=""/>
+                      我的回复（{{myAnswer.length}}）</div>
+                  <ul ng-show="myreplyList.show">
+                      <li ng-repeat="item in myAnswer">
+                          <div ng-click="mreplyContent1($index)">
+                              <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(4).png" alt=""/>
+                              {{item.name}}（{{item.secondAnswer.length}}）</div>
+                          <ul ng-show="mreplayindex==$index">
+                              <li ng-repeat="item2 in item.secondAnswer" class="rcontent"><nobr>{{item2.name}}</nobr></li>
+                          </ul>
+                      </li>
+                  </ul>
+              </div>
+              <div class="pubilcreply">
+                  <div ng-click="pubilcreplyList1()"  class="rtitle">
+                      <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(4).png" alt=""/>
+                      公共回复（{{commonAnswer.length}}）</div>
+                  <ul ng-show='pubilcreplyList.show'>
+                      <li ng-repeat="item in commonAnswer">
+                          <div ng-click="pubilcreplyContent1($index)">
+                              <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(4).png" alt=""/>
+                              {{item.name}}（{{item.secondAnswer.length}}）</div>
+                          <ul ng-show='pubilcreplyindex==$index'>
+                              <li ng-repeat="item2 in item.secondAnswer" class="rcontent"><nobr>{{item2.name}}</nobr></li>
+                          </ul>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+      <div class="msg-m h30" ng-if="chooseAlreadyJoinConsultPatientId!=''">
+            <div class="headportrait">
+                    <div class="nametop">
+                    <img class="headimg" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png">
+                    <span>{{chooseAlreadyJoinConsultPatientName}}</span>
+                    <div class="fr">
+                        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(10).png" alt=""/>
+                        转接</divcla></div>
+                </div>
+                    <div scroll-glue-bottom="glued" class="chatlist">
+                <div ng-repeat="item in currentUserConsultRecordDetail">
+                    <div ng-if="item.senderId==doctorId">
+                        <div>
+                            {{doctorName}} {{item.dateTime}}</div>
+                        <div ng-if="item.messageType=='0'" id="show">
+                            {{item.message}}
+                        </div>
+                    </div>
+                    <div ng-if="item.senderId!=doctorId">
+                        <div>
+                            {{item.senderName}} {{item.createDate}}</div>
+                        <div ng-if="item.messageType=='0'">
+                            {{item.message}}
+                        </div>
+                        <div ng-if="item.messageType=='1'">
+                            <a target="_blank" ng-href="{{item.message}}">
+                                <img width="100" height="100" ng-src="{{item.message}}">
+                            </a>
+                        </div>
+                        <div ng-if="item.messageType=='2'">
+                            <audio ng-src="{{item.message}}" controls="controls"/>
+                        </div>
+                        <div ng-if="item.messageType=='3'">
+                            <video width="500" height="250" ng-src="{{item.message}}" controls="controls"/>
+                        </div>
+                    </div>
+                    <br/>
+                </div>
+                    </div>
+                    <div class="facebox">
+                <p class="fl"><span class="emotion" ng-click="getQQExpression()">表情</span></p>
+                <p class="historymessage"><span>
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(7).png" alt=""/>
+                    消息记录
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(8).png" alt=""/>
+                </span></p>
+            </div>
+                    <div class="inputcontent"><textarea ng-model="info.consultMessage" placeholder="请在此处进行咨询" id="saytext"></textarea>
+            </div>
+                    <div class="sendbtn">
+                        <div class="sub_btn" ng-click="sendConsultMessage()">发送消息Ctrl+Enter</div>
+                        <div ng-click="closeConsult()">
+                            <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(9).png" alt=""/>
+                            关闭咨询</div>
+                    </div>
+            </div>
+      </div>
+      </div>
+    <!--等待接入会话-->
+    <div class="jrhhpm" ng-show='rankList.show'>
+        <div class="jrhhpm-top">今日接入会话排名 <a href="#">刷新</a></div>
+        <div class="jrhhpm-tb">
+            <span>排名</span>
+            <span>接入工号</span>
+            <span>接入会话</span>
+        </div>
+        <div class="getdata">
+            <ul>
+                <li ng-repeat="item in rankListValue"><span>{{item.consultNum}}</span><span>{{item.id}}</span><span>{{item.name}}</span></li>
+            </ul>
+        </div>
+    </div>
+    <!--系统设置的弹出框-->
+    <div class="xtsz-up" id="xtsz_up" ng-show='systemsetup.show'>
+        <div class="hd" id="drop">系统设置
+            <span class="close" ng-click="systemsetup1()">【关闭】</span>
+        </div>
+        <!-- 系统设置的tab切换 -->
+        <div class="xtsz-up-middle">
+            <div class="xtsz-up-left">
+                <h3>
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fxtsz%20(2).png"
+                         alt=""/>
+                    业务设置</h3>
+                <div>
+                    <a href="#"><span class="current">主号自动回复</span></a>
+                    <a href="#"><span>工号自动回复</span></a>
+                    <a href="#"><span>接入语设置</span></a>
+                    <a href="#"><span>会话自动关闭设置</span></a>
+                </div>
+                <!--
+                <h3>个人设置</h3>
+                <div>
+                    <a href="#"><span>常规</span></a>
+                    <a href="#"><span>热键</span></a>
+                    <a href="#"><span>声音</span></a>
+                    <a href="#"><span>网络连接</span></a>
+                </div>-->
+            </div>
+            <div class="xtsz-up-right">
+                <ul>
+                    <li>
+                        <div class="zhhf">
+                            <div class="zhhftop">
+                                <span></span><span>主号自动回复</span><span></span>
+                            </div>
+                            <div class="zhhfcontent">
+                                <p>主号自动回复</p>
+                                <p>主号自动回复</p>
+                                <p>主号自动回复</p>
+                                <p>主号自动回复</p>
+                                <p>主号自动回复</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="zhhf">
+                            <div class="zhhftop">
+                                <span></span><span>工号自动回复</span><span></span>
+                            </div>
+                            <div class="zhhfcontent">
+                                <p>工号自动回复针对工号已经接入客户。对未接客户请设置<a href="#">主号自动回复</a></p>
+                                <p><input type="checkbox">工号自动回复设置</p>
+                                <textarea placeholder="请在此处进行编辑"></textarea>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="show">
+                        <div class="zhhf">
+                            <div class="zhhftop">
+                                <span></span><span>接入语设置</span><span></span>
+                            </div>
+                            <div class="zhhfcontent">
+                                <p>接入语是指在接入客户时自动发送的信息</p>
+                                <p><input type="checkbox">启动接入语（150个汉字、300个英文字符以内）</p>
+                                <p>注意：[昵称]会被动态替换成该工号的昵称</p>
+                                <p>注意：[账号]会被动态替换成该工号的账号</p>
+                                <textarea placeholder="请在此处进行编辑"></textarea>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="zhhf">
+                            <div class="zhhftop">
+                                <span></span><span>会话自动关闭设置</span><span></span>
+                            </div>
+                            <div class="zhhfcontent">
+                                <p>会话自动关闭设置指的是在人工接入的状态下，当客户超过一定时间没有回复时，会话自动关闭。（当前正在聊天的会话不会被自动关闭）</p>
+                                <p><input type="checkbox">启动会话自动关闭</p>
+                                <p>设置会话自动关闭事件<input type="number" name="points" min="0" max="10" />分钟</p>
+                                <p><input type="checkbox">会话自动关闭前发送一条信息给客户（100个汉字、200个英文字符以内）</p>
+                                <textarea placeholder="请在此处进行编辑"></textarea>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer ddjr-footer">
+            <button>应用</button>
+            <button>取消</button>
+            <button>确定</button>
+        </div>
+    </div>
+    <!--等待接入的弹出框-->
+    <div class="xtsz-up  ddjr-up" id="ddjr_up" ng-show='waitprocess.show'>
+        <div class="hd" id="drop2">未接入客户信息
+            <span class="close" ng-click="waitprocess1()">【关闭】</span>
+        </div>
+        <div class="ddjr-content" id="ddjr_content">
+            <span>接入</span>
+            <span>删除</span>
+            <span>刷新</span>
+            <div class="light">
+                <div class="check">
+                    <input type="checkbox">
+                </div>
+                <div class="nc">昵称</div>
+                <div class="xx">消息</div>
+                <div class="xxs">消息数</div>
+                <div class="sj">时间</div>
+                <div class="lz">来自</div>
+            </div>
+            <!--input标签获取总值-->
+            <div class="ddjr-content-list">
+                <div class="light">
+                    <div class="check">
+                        <input type="checkbox">
+                    </div>
+                    <div class="nc">aaaaa</div>
+                    <div class="xx">cccc</div>
+                    <div class="xxs">cccc</div>
+                    <div class="sj">ccc</div>
+                    <div class="lz">ccccc</div>
+                </div>
+                <div class="light">
+                    <div class="check">
+                        <input type="checkbox">
+                    </div>
+                    <div class="nc">aaaaa</div>
+                    <div class="xx">cccc</div>
+                    <div class="xxs">cccc</div>
+                    <div class="sj">ccc</div>
+                    <div class="lz">ccccc</div>
+                </div>
+                <div class="light">
+                    <div class="check">
+                        <input type="checkbox">
+                    </div>
+                    <div class="nc">aaaaa</div>
+                    <div class="xx">cccc</div>
+                    <div class="xxs">cccc</div>
+                    <div class="sj">ccc</div>
+                    <div class="lz">ccccc</div>
+                </div>
+            </div>
+        </div>
+        <div class="footer ddjr-footer" id="ddjr_footer">已选中：<span id="add1">0</span>/<span id="add2">0</span>
+        </div>
+    </div>
+</div>

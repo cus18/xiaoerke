@@ -1,0 +1,864 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.operation.dao.PlanStatisticsDao" >
+	
+	<select id="visitPlanNums" resultType="Integer">
+	SELECT
+		COUNT(*)
+	FROM
+		sys_log
+	WHERE
+		title = '00000065'
+	AND DATE_FORMAT(create_date, '%Y-%m-%d') = DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+	AND open_id NOT IN (
+		'o3_NPwiC8csuNqCFgPfujbJrqxFM',
+		'o3_NPwlv4U3kZQcXTfAtZDA6ePB0',
+		'o3_NPwmURoiCGRcQ8mXq7odkJqsU',
+		'o3_NPwnpYevGPIQU4uXAK3RqNRe8',
+		'o3_NPwn_aC788QddceSHrfFBhPhk',
+		'o3_NPwo7FN3-L3Vnl_P4J63FWri8',
+		'o3_NPwokwQXVZKvNnbx4Yc8Xt70U',
+		'o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y',
+		'o3_NPwqejmkEvS2pVtcSDpxaJCNg',
+		'o3_NPwqranZIs-hNjl-B2LjV39oQ',
+		'o3_NPwrAbEa1WEAOMrLtSVXXgjqE',
+		'o3_NPwrnCy46ZytBuE1p6FrZ2k7M',
+		'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk',
+		'o3_NPwruJcgAGDQr-PaQthTJ7pC4',
+		'o3_NPwsnm69zdjkDSZBSgNJwcecM',
+		'o3_NPwtUBRR0OoU660-XUgxOUNeE',
+		'o3_NPwuv8oAz2Q_OXB8M5-0wBnEA',
+		'o3_NPwvfPyTth6oTkUMewGazatPk',
+		'o3_NPwptTo6Ryp0piMKjsn2-xQcY'
+	)
+	</select>	
+
+	<select id="visitPlanPeoples" resultType="Integer">
+	SELECT
+		COUNT(DISTINCT open_id)
+	FROM
+		sys_log
+	WHERE
+		title = '00000065'
+	AND DATE_FORMAT(create_date, '%Y-%m-%d') = DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+	AND open_id NOT IN (
+		'o3_NPwiC8csuNqCFgPfujbJrqxFM',
+		'o3_NPwlv4U3kZQcXTfAtZDA6ePB0',
+		'o3_NPwmURoiCGRcQ8mXq7odkJqsU',
+		'o3_NPwnpYevGPIQU4uXAK3RqNRe8',
+		'o3_NPwn_aC788QddceSHrfFBhPhk',
+		'o3_NPwo7FN3-L3Vnl_P4J63FWri8',
+		'o3_NPwokwQXVZKvNnbx4Yc8Xt70U',
+		'o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y',
+		'o3_NPwqejmkEvS2pVtcSDpxaJCNg',
+		'o3_NPwqranZIs-hNjl-B2LjV39oQ',
+		'o3_NPwrAbEa1WEAOMrLtSVXXgjqE',
+		'o3_NPwrnCy46ZytBuE1p6FrZ2k7M',
+		'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk',
+		'o3_NPwruJcgAGDQr-PaQthTJ7pC4',
+		'o3_NPwsnm69zdjkDSZBSgNJwcecM',
+		'o3_NPwtUBRR0OoU660-XUgxOUNeE',
+		'o3_NPwuv8oAz2Q_OXB8M5-0wBnEA',
+		'o3_NPwvfPyTth6oTkUMewGazatPk',
+		'o3_NPwptTo6Ryp0piMKjsn2-xQcY'
+	)
+	</select>	
+	
+	<select id="newUsers" resultType="Integer">
+	SELECT
+		count(*)
+	FROM
+		plan_info pi
+	WHERE
+		DATE_FORMAT(create_time, '%Y-%m-%d') = DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+	AND open_id NOT IN (
+		'o3_NPwiC8csuNqCFgPfujbJrqxFM',
+		'o3_NPwlv4U3kZQcXTfAtZDA6ePB0',
+		'o3_NPwmURoiCGRcQ8mXq7odkJqsU',
+		'o3_NPwnpYevGPIQU4uXAK3RqNRe8',
+		'o3_NPwn_aC788QddceSHrfFBhPhk',
+		'o3_NPwo7FN3-L3Vnl_P4J63FWri8',
+		'o3_NPwokwQXVZKvNnbx4Yc8Xt70U',
+		'o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y',
+		'o3_NPwqejmkEvS2pVtcSDpxaJCNg',
+		'o3_NPwqranZIs-hNjl-B2LjV39oQ',
+		'o3_NPwrAbEa1WEAOMrLtSVXXgjqE',
+		'o3_NPwrnCy46ZytBuE1p6FrZ2k7M',
+		'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk',
+		'o3_NPwruJcgAGDQr-PaQthTJ7pC4',
+		'o3_NPwsnm69zdjkDSZBSgNJwcecM',
+		'o3_NPwtUBRR0OoU660-XUgxOUNeE',
+		'o3_NPwuv8oAz2Q_OXB8M5-0wBnEA',
+		'o3_NPwvfPyTth6oTkUMewGazatPk',
+		'o3_NPwptTo6Ryp0piMKjsn2-xQcY'
+	)
+	</select>	
+	
+	<select id="findPlanOpenids" resultType="java.lang.String">
+	SELECT DISTINCT
+		open_id
+	FROM
+		plan_info pi
+	WHERE
+		DATE_FORMAT(pi.create_time, '%Y-%m-%d') &gt;= DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+	<if test="endDate != null">
+        AND DATE_FORMAT(pi.create_time, '%Y-%m-%d') &lt;= DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+    </if>
+	AND open_id NOT IN (
+		'o3_NPwiC8csuNqCFgPfujbJrqxFM',
+		'o3_NPwlv4U3kZQcXTfAtZDA6ePB0',
+		'o3_NPwmURoiCGRcQ8mXq7odkJqsU',
+		'o3_NPwnpYevGPIQU4uXAK3RqNRe8',
+		'o3_NPwn_aC788QddceSHrfFBhPhk',
+		'o3_NPwo7FN3-L3Vnl_P4J63FWri8',
+		'o3_NPwokwQXVZKvNnbx4Yc8Xt70U',
+		'o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y',
+		'o3_NPwqejmkEvS2pVtcSDpxaJCNg',
+		'o3_NPwqranZIs-hNjl-B2LjV39oQ',
+		'o3_NPwrAbEa1WEAOMrLtSVXXgjqE',
+		'o3_NPwrnCy46ZytBuE1p6FrZ2k7M',
+		'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk',
+		'o3_NPwruJcgAGDQr-PaQthTJ7pC4',
+		'o3_NPwsnm69zdjkDSZBSgNJwcecM',
+		'o3_NPwtUBRR0OoU660-XUgxOUNeE',
+		'o3_NPwuv8oAz2Q_OXB8M5-0wBnEA',
+		'o3_NPwvfPyTth6oTkUMewGazatPk',
+		'o3_NPwptTo6Ryp0piMKjsn2-xQcY'
+	)
+	</select>	
+	
+	<select id="punchNums" resultType="Integer">
+	SELECT
+		count(DISTINCT open_id) AS count
+	FROM
+		plan_info_task_confirm pitc
+	WHERE
+	
+		DATE_FORMAT(
+			pitc.create_time,
+			'%Y-%m-%d'
+		) &lt;= DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+	<if test="endDate != null">
+	AND DATE_FORMAT(
+		pitc.create_time,
+		'%Y-%m-%d'
+	) &gt;= DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+	</if>
+	AND open_id = #{openid}
+	</select>
+	
+	<select id="saveCommentNums" resultType="Integer">
+		SELECT
+			count(*) AS count
+		FROM
+			sys_log sl
+		WHERE
+			sl.open_id = #{openid}
+		AND sl.title LIKE '00000068%'
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &gt;= DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+		<if test="endDate != null">
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+		</if>
+		AND open_id NOT IN (
+		'o3_NPwiC8csuNqCFgPfujbJrqxFM',
+		'o3_NPwlv4U3kZQcXTfAtZDA6ePB0',
+		'o3_NPwmURoiCGRcQ8mXq7odkJqsU',
+		'o3_NPwnpYevGPIQU4uXAK3RqNRe8',
+		'o3_NPwn_aC788QddceSHrfFBhPhk',
+		'o3_NPwo7FN3-L3Vnl_P4J63FWri8',
+		'o3_NPwokwQXVZKvNnbx4Yc8Xt70U',
+		'o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y',
+		'o3_NPwqejmkEvS2pVtcSDpxaJCNg',
+		'o3_NPwqranZIs-hNjl-B2LjV39oQ',
+		'o3_NPwrAbEa1WEAOMrLtSVXXgjqE',
+		'o3_NPwrnCy46ZytBuE1p6FrZ2k7M',
+		'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk',
+		'o3_NPwruJcgAGDQr-PaQthTJ7pC4',
+		'o3_NPwsnm69zdjkDSZBSgNJwcecM',
+		'o3_NPwtUBRR0OoU660-XUgxOUNeE',
+		'o3_NPwuv8oAz2Q_OXB8M5-0wBnEA',
+		'o3_NPwvfPyTth6oTkUMewGazatPk',
+		'o3_NPwptTo6Ryp0piMKjsn2-xQcY'
+	)
+	</select>
+	
+	<select id="cancelPlanNums" resultType="Integer">
+		SELECT
+			count(*) AS count
+		FROM
+			sys_log sl
+		WHERE
+			sl.open_id = #{openid}
+		AND sl.title LIKE '取消计划id:%'
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &gt;= DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+		<if test="endDate != null">
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+		</if>
+		AND open_id NOT IN (
+		'o3_NPwiC8csuNqCFgPfujbJrqxFM',
+		'o3_NPwlv4U3kZQcXTfAtZDA6ePB0',
+		'o3_NPwmURoiCGRcQ8mXq7odkJqsU',
+		'o3_NPwnpYevGPIQU4uXAK3RqNRe8',
+		'o3_NPwn_aC788QddceSHrfFBhPhk',
+		'o3_NPwo7FN3-L3Vnl_P4J63FWri8',
+		'o3_NPwokwQXVZKvNnbx4Yc8Xt70U',
+		'o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y',
+		'o3_NPwqejmkEvS2pVtcSDpxaJCNg',
+		'o3_NPwqranZIs-hNjl-B2LjV39oQ',
+		'o3_NPwrAbEa1WEAOMrLtSVXXgjqE',
+		'o3_NPwrnCy46ZytBuE1p6FrZ2k7M',
+		'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk',
+		'o3_NPwruJcgAGDQr-PaQthTJ7pC4',
+		'o3_NPwsnm69zdjkDSZBSgNJwcecM',
+		'o3_NPwtUBRR0OoU660-XUgxOUNeE',
+		'o3_NPwuv8oAz2Q_OXB8M5-0wBnEA',
+		'o3_NPwvfPyTth6oTkUMewGazatPk',
+		'o3_NPwptTo6Ryp0piMKjsn2-xQcY'
+	)
+	</select>
+	
+	<select id="savePlanNums" resultType="Integer">
+		SELECT
+			count(*) AS count
+		FROM
+			sys_log sl
+		WHERE
+			sl.open_id = #{openid}
+		AND sl.title LIKE '00000070%'
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &gt;= DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+		<if test="endDate != null">
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+		</if>
+		AND open_id NOT IN (
+		'o3_NPwiC8csuNqCFgPfujbJrqxFM',
+		'o3_NPwlv4U3kZQcXTfAtZDA6ePB0',
+		'o3_NPwmURoiCGRcQ8mXq7odkJqsU',
+		'o3_NPwnpYevGPIQU4uXAK3RqNRe8',
+		'o3_NPwn_aC788QddceSHrfFBhPhk',
+		'o3_NPwo7FN3-L3Vnl_P4J63FWri8',
+		'o3_NPwokwQXVZKvNnbx4Yc8Xt70U',
+		'o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y',
+		'o3_NPwqejmkEvS2pVtcSDpxaJCNg',
+		'o3_NPwqranZIs-hNjl-B2LjV39oQ',
+		'o3_NPwrAbEa1WEAOMrLtSVXXgjqE',
+		'o3_NPwrnCy46ZytBuE1p6FrZ2k7M',
+		'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk',
+		'o3_NPwruJcgAGDQr-PaQthTJ7pC4',
+		'o3_NPwsnm69zdjkDSZBSgNJwcecM',
+		'o3_NPwtUBRR0OoU660-XUgxOUNeE',
+		'o3_NPwuv8oAz2Q_OXB8M5-0wBnEA',
+		'o3_NPwvfPyTth6oTkUMewGazatPk',
+		'o3_NPwptTo6Ryp0piMKjsn2-xQcY'
+	)
+	</select>
+	
+	<select id="updatePlanRemindNums" resultType="Integer">
+		SELECT
+			count(*) AS count
+		FROM
+			sys_log sl
+		WHERE
+			sl.open_id = #{openid}
+		AND sl.title LIKE '00000105%'
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &gt;= DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+		<if test="endDate != null">
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+		</if>
+		AND open_id NOT IN (
+		'o3_NPwiC8csuNqCFgPfujbJrqxFM',
+		'o3_NPwlv4U3kZQcXTfAtZDA6ePB0',
+		'o3_NPwmURoiCGRcQ8mXq7odkJqsU',
+		'o3_NPwnpYevGPIQU4uXAK3RqNRe8',
+		'o3_NPwn_aC788QddceSHrfFBhPhk',
+		'o3_NPwo7FN3-L3Vnl_P4J63FWri8',
+		'o3_NPwokwQXVZKvNnbx4Yc8Xt70U',
+		'o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y',
+		'o3_NPwqejmkEvS2pVtcSDpxaJCNg',
+		'o3_NPwqranZIs-hNjl-B2LjV39oQ',
+		'o3_NPwrAbEa1WEAOMrLtSVXXgjqE',
+		'o3_NPwrnCy46ZytBuE1p6FrZ2k7M',
+		'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk',
+		'o3_NPwruJcgAGDQr-PaQthTJ7pC4',
+		'o3_NPwsnm69zdjkDSZBSgNJwcecM',
+		'o3_NPwtUBRR0OoU660-XUgxOUNeE',
+		'o3_NPwuv8oAz2Q_OXB8M5-0wBnEA',
+		'o3_NPwvfPyTth6oTkUMewGazatPk',
+		'o3_NPwptTo6Ryp0piMKjsn2-xQcY'
+	)
+	</select>
+	
+	<select id="getPlanListNums" resultType="Integer">
+		SELECT
+			count(*) AS count
+		FROM
+			sys_log sl
+		WHERE
+			sl.open_id = #{openid}
+		AND sl.title LIKE '00000065%'
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &gt;= DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+		<if test="endDate != null">
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+		</if>
+		AND open_id NOT IN (
+		'o3_NPwiC8csuNqCFgPfujbJrqxFM',
+		'o3_NPwlv4U3kZQcXTfAtZDA6ePB0',
+		'o3_NPwmURoiCGRcQ8mXq7odkJqsU',
+		'o3_NPwnpYevGPIQU4uXAK3RqNRe8',
+		'o3_NPwn_aC788QddceSHrfFBhPhk',
+		'o3_NPwo7FN3-L3Vnl_P4J63FWri8',
+		'o3_NPwokwQXVZKvNnbx4Yc8Xt70U',
+		'o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y',
+		'o3_NPwqejmkEvS2pVtcSDpxaJCNg',
+		'o3_NPwqranZIs-hNjl-B2LjV39oQ',
+		'o3_NPwrAbEa1WEAOMrLtSVXXgjqE',
+		'o3_NPwrnCy46ZytBuE1p6FrZ2k7M',
+		'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk',
+		'o3_NPwruJcgAGDQr-PaQthTJ7pC4',
+		'o3_NPwsnm69zdjkDSZBSgNJwcecM',
+		'o3_NPwtUBRR0OoU660-XUgxOUNeE',
+		'o3_NPwuv8oAz2Q_OXB8M5-0wBnEA',
+		'o3_NPwvfPyTth6oTkUMewGazatPk',
+		'o3_NPwptTo6Ryp0piMKjsn2-xQcY'
+	)
+	</select>	
+	
+	<select id="getPlanTemplateListNums" resultType="Integer">
+		SELECT
+			count(*) AS count
+		FROM
+			sys_log sl
+		WHERE
+			sl.open_id = #{openid}
+		AND sl.title LIKE '00000066%'
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &gt;= DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+		<if test="endDate != null">
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+		</if>
+		AND open_id NOT IN (
+		'o3_NPwiC8csuNqCFgPfujbJrqxFM',
+		'o3_NPwlv4U3kZQcXTfAtZDA6ePB0',
+		'o3_NPwmURoiCGRcQ8mXq7odkJqsU',
+		'o3_NPwnpYevGPIQU4uXAK3RqNRe8',
+		'o3_NPwn_aC788QddceSHrfFBhPhk',
+		'o3_NPwo7FN3-L3Vnl_P4J63FWri8',
+		'o3_NPwokwQXVZKvNnbx4Yc8Xt70U',
+		'o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y',
+		'o3_NPwqejmkEvS2pVtcSDpxaJCNg',
+		'o3_NPwqranZIs-hNjl-B2LjV39oQ',
+		'o3_NPwrAbEa1WEAOMrLtSVXXgjqE',
+		'o3_NPwrnCy46ZytBuE1p6FrZ2k7M',
+		'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk',
+		'o3_NPwruJcgAGDQr-PaQthTJ7pC4',
+		'o3_NPwsnm69zdjkDSZBSgNJwcecM',
+		'o3_NPwtUBRR0OoU660-XUgxOUNeE',
+		'o3_NPwuv8oAz2Q_OXB8M5-0wBnEA',
+		'o3_NPwvfPyTth6oTkUMewGazatPk',
+		'o3_NPwptTo6Ryp0piMKjsn2-xQcY'
+	)
+	</select>
+	
+	<select id="getFoodListNums" resultType="Integer">
+		SELECT
+			count(*) AS count
+		FROM
+			sys_log sl
+		WHERE
+			sl.open_id = #{openid}
+		AND sl.title LIKE '获取食材列表%'
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &gt;= DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+		<if test="endDate != null">
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+		</if>
+		AND open_id NOT IN (
+		'o3_NPwiC8csuNqCFgPfujbJrqxFM',
+		'o3_NPwlv4U3kZQcXTfAtZDA6ePB0',
+		'o3_NPwmURoiCGRcQ8mXq7odkJqsU',
+		'o3_NPwnpYevGPIQU4uXAK3RqNRe8',
+		'o3_NPwn_aC788QddceSHrfFBhPhk',
+		'o3_NPwo7FN3-L3Vnl_P4J63FWri8',
+		'o3_NPwokwQXVZKvNnbx4Yc8Xt70U',
+		'o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y',
+		'o3_NPwqejmkEvS2pVtcSDpxaJCNg',
+		'o3_NPwqranZIs-hNjl-B2LjV39oQ',
+		'o3_NPwrAbEa1WEAOMrLtSVXXgjqE',
+		'o3_NPwrnCy46ZytBuE1p6FrZ2k7M',
+		'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk',
+		'o3_NPwruJcgAGDQr-PaQthTJ7pC4',
+		'o3_NPwsnm69zdjkDSZBSgNJwcecM',
+		'o3_NPwtUBRR0OoU660-XUgxOUNeE',
+		'o3_NPwuv8oAz2Q_OXB8M5-0wBnEA',
+		'o3_NPwvfPyTth6oTkUMewGazatPk',
+		'o3_NPwptTo6Ryp0piMKjsn2-xQcY'
+	)
+	</select>
+	
+	<select id="saveFoodNums" resultType="Integer">
+		SELECT
+			count(*) AS count
+		FROM
+			sys_log sl
+		WHERE
+			sl.open_id = #{openid}
+		AND sl.title LIKE '00000069%'
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &gt;= DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+		<if test="endDate != null">
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+		</if>
+		AND open_id NOT IN (
+		'o3_NPwiC8csuNqCFgPfujbJrqxFM',
+		'o3_NPwlv4U3kZQcXTfAtZDA6ePB0',
+		'o3_NPwmURoiCGRcQ8mXq7odkJqsU',
+		'o3_NPwnpYevGPIQU4uXAK3RqNRe8',
+		'o3_NPwn_aC788QddceSHrfFBhPhk',
+		'o3_NPwo7FN3-L3Vnl_P4J63FWri8',
+		'o3_NPwokwQXVZKvNnbx4Yc8Xt70U',
+		'o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y',
+		'o3_NPwqejmkEvS2pVtcSDpxaJCNg',
+		'o3_NPwqranZIs-hNjl-B2LjV39oQ',
+		'o3_NPwrAbEa1WEAOMrLtSVXXgjqE',
+		'o3_NPwrnCy46ZytBuE1p6FrZ2k7M',
+		'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk',
+		'o3_NPwruJcgAGDQr-PaQthTJ7pC4',
+		'o3_NPwsnm69zdjkDSZBSgNJwcecM',
+		'o3_NPwtUBRR0OoU660-XUgxOUNeE',
+		'o3_NPwuv8oAz2Q_OXB8M5-0wBnEA',
+		'o3_NPwvfPyTth6oTkUMewGazatPk',
+		'o3_NPwptTo6Ryp0piMKjsn2-xQcY'
+	)
+	</select>
+	
+	<select id="getFoodPunchNums" resultType="Integer">
+		SELECT
+			count(*) AS count
+		FROM
+			sys_log sl
+		WHERE
+			sl.open_id = #{openid}
+		AND sl.title LIKE '获取饮食打卡%'
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &gt;= DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+		<if test="endDate != null">
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+		</if>
+		AND open_id NOT IN (
+		'o3_NPwiC8csuNqCFgPfujbJrqxFM',
+		'o3_NPwlv4U3kZQcXTfAtZDA6ePB0',
+		'o3_NPwmURoiCGRcQ8mXq7odkJqsU',
+		'o3_NPwnpYevGPIQU4uXAK3RqNRe8',
+		'o3_NPwn_aC788QddceSHrfFBhPhk',
+		'o3_NPwo7FN3-L3Vnl_P4J63FWri8',
+		'o3_NPwokwQXVZKvNnbx4Yc8Xt70U',
+		'o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y',
+		'o3_NPwqejmkEvS2pVtcSDpxaJCNg',
+		'o3_NPwqranZIs-hNjl-B2LjV39oQ',
+		'o3_NPwrAbEa1WEAOMrLtSVXXgjqE',
+		'o3_NPwrnCy46ZytBuE1p6FrZ2k7M',
+		'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk',
+		'o3_NPwruJcgAGDQr-PaQthTJ7pC4',
+		'o3_NPwsnm69zdjkDSZBSgNJwcecM',
+		'o3_NPwtUBRR0OoU660-XUgxOUNeE',
+		'o3_NPwuv8oAz2Q_OXB8M5-0wBnEA',
+		'o3_NPwvfPyTth6oTkUMewGazatPk',
+		'o3_NPwptTo6Ryp0piMKjsn2-xQcY'
+	)
+	</select>
+	
+	<select id="updatePlanIDNums" resultType="Integer">
+		SELECT
+			count(*) AS count
+		FROM
+			sys_log sl
+		WHERE
+			sl.open_id = #{openid}
+		AND sl.title LIKE '00000100%'
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &gt;= DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+		<if test="endDate != null">
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+		</if>
+		AND open_id NOT IN (
+		'o3_NPwiC8csuNqCFgPfujbJrqxFM',
+		'o3_NPwlv4U3kZQcXTfAtZDA6ePB0',
+		'o3_NPwmURoiCGRcQ8mXq7odkJqsU',
+		'o3_NPwnpYevGPIQU4uXAK3RqNRe8',
+		'o3_NPwn_aC788QddceSHrfFBhPhk',
+		'o3_NPwo7FN3-L3Vnl_P4J63FWri8',
+		'o3_NPwokwQXVZKvNnbx4Yc8Xt70U',
+		'o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y',
+		'o3_NPwqejmkEvS2pVtcSDpxaJCNg',
+		'o3_NPwqranZIs-hNjl-B2LjV39oQ',
+		'o3_NPwrAbEa1WEAOMrLtSVXXgjqE',
+		'o3_NPwrnCy46ZytBuE1p6FrZ2k7M',
+		'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk',
+		'o3_NPwruJcgAGDQr-PaQthTJ7pC4',
+		'o3_NPwsnm69zdjkDSZBSgNJwcecM',
+		'o3_NPwtUBRR0OoU660-XUgxOUNeE',
+		'o3_NPwuv8oAz2Q_OXB8M5-0wBnEA',
+		'o3_NPwvfPyTth6oTkUMewGazatPk',
+		'o3_NPwptTo6Ryp0piMKjsn2-xQcY'
+	)
+	</select>
+	
+	<select id="updatePlanRemindIDNums" resultType="Integer">
+		SELECT
+			count(*) AS count
+		FROM
+			sys_log sl
+		WHERE
+			sl.open_id = #{openid}
+		AND sl.title LIKE '00000101%'
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &gt;= DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+		<if test="endDate != null">
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+		</if>
+		AND open_id NOT IN (
+		'o3_NPwiC8csuNqCFgPfujbJrqxFM',
+		'o3_NPwlv4U3kZQcXTfAtZDA6ePB0',
+		'o3_NPwmURoiCGRcQ8mXq7odkJqsU',
+		'o3_NPwnpYevGPIQU4uXAK3RqNRe8',
+		'o3_NPwn_aC788QddceSHrfFBhPhk',
+		'o3_NPwo7FN3-L3Vnl_P4J63FWri8',
+		'o3_NPwokwQXVZKvNnbx4Yc8Xt70U',
+		'o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y',
+		'o3_NPwqejmkEvS2pVtcSDpxaJCNg',
+		'o3_NPwqranZIs-hNjl-B2LjV39oQ',
+		'o3_NPwrAbEa1WEAOMrLtSVXXgjqE',
+		'o3_NPwrnCy46ZytBuE1p6FrZ2k7M',
+		'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk',
+		'o3_NPwruJcgAGDQr-PaQthTJ7pC4',
+		'o3_NPwsnm69zdjkDSZBSgNJwcecM',
+		'o3_NPwtUBRR0OoU660-XUgxOUNeE',
+		'o3_NPwuv8oAz2Q_OXB8M5-0wBnEA',
+		'o3_NPwvfPyTth6oTkUMewGazatPk',
+		'o3_NPwptTo6Ryp0piMKjsn2-xQcY'
+	)
+	</select>
+	
+	<select id="cilckShopURLNums" resultType="Integer">
+		SELECT
+			count(*) AS count
+		FROM
+			sys_log sl
+		WHERE
+			sl.open_id = #{openid}
+		AND sl.title LIKE '00000102%'
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &gt;= DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+		<if test="endDate != null">
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+		</if>
+		AND open_id NOT IN (
+		'o3_NPwiC8csuNqCFgPfujbJrqxFM',
+		'o3_NPwlv4U3kZQcXTfAtZDA6ePB0',
+		'o3_NPwmURoiCGRcQ8mXq7odkJqsU',
+		'o3_NPwnpYevGPIQU4uXAK3RqNRe8',
+		'o3_NPwn_aC788QddceSHrfFBhPhk',
+		'o3_NPwo7FN3-L3Vnl_P4J63FWri8',
+		'o3_NPwokwQXVZKvNnbx4Yc8Xt70U',
+		'o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y',
+		'o3_NPwqejmkEvS2pVtcSDpxaJCNg',
+		'o3_NPwqranZIs-hNjl-B2LjV39oQ',
+		'o3_NPwrAbEa1WEAOMrLtSVXXgjqE',
+		'o3_NPwrnCy46ZytBuE1p6FrZ2k7M',
+		'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk',
+		'o3_NPwruJcgAGDQr-PaQthTJ7pC4',
+		'o3_NPwsnm69zdjkDSZBSgNJwcecM',
+		'o3_NPwtUBRR0OoU660-XUgxOUNeE',
+		'o3_NPwuv8oAz2Q_OXB8M5-0wBnEA',
+		'o3_NPwvfPyTth6oTkUMewGazatPk',
+		'o3_NPwptTo6Ryp0piMKjsn2-xQcY'
+	)
+	</select>
+	
+	<select id="cilckDefecateNums" resultType="Integer">
+		SELECT
+			count(*) AS count
+		FROM
+			sys_log sl
+		WHERE
+			sl.open_id = #{openid}
+		AND sl.title LIKE '00000103%'
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &gt;= DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+		<if test="endDate != null">
+		AND DATE_FORMAT(create_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+		</if>
+		AND open_id NOT IN (
+		'o3_NPwiC8csuNqCFgPfujbJrqxFM',
+		'o3_NPwlv4U3kZQcXTfAtZDA6ePB0',
+		'o3_NPwmURoiCGRcQ8mXq7odkJqsU',
+		'o3_NPwnpYevGPIQU4uXAK3RqNRe8',
+		'o3_NPwn_aC788QddceSHrfFBhPhk',
+		'o3_NPwo7FN3-L3Vnl_P4J63FWri8',
+		'o3_NPwokwQXVZKvNnbx4Yc8Xt70U',
+		'o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y',
+		'o3_NPwqejmkEvS2pVtcSDpxaJCNg',
+		'o3_NPwqranZIs-hNjl-B2LjV39oQ',
+		'o3_NPwrAbEa1WEAOMrLtSVXXgjqE',
+		'o3_NPwrnCy46ZytBuE1p6FrZ2k7M',
+		'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk',
+		'o3_NPwruJcgAGDQr-PaQthTJ7pC4',
+		'o3_NPwsnm69zdjkDSZBSgNJwcecM',
+		'o3_NPwtUBRR0OoU660-XUgxOUNeE',
+		'o3_NPwuv8oAz2Q_OXB8M5-0wBnEA',
+		'o3_NPwvfPyTth6oTkUMewGazatPk',
+		'o3_NPwptTo6Ryp0piMKjsn2-xQcY'
+	)
+	</select>
+	
+	<select id="continuousPunchUsersForMassage" resultType="Integer">
+		SELECT COUNT(*) from( SELECT
+			COUNT(*) AS count,
+			pit.type,
+			pitc.open_id
+		FROM
+			plan_info_task_confirm pitc
+		INNER JOIN plan_info_task pit ON pitc.plan_info_task_id = pit.id
+		WHERE
+			(
+				DATE_FORMAT(
+					pitc.create_time,
+					'%Y-%m-%d'
+				) = DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+				OR DATE_FORMAT(
+					pitc.create_time,
+					'%Y-%m-%d'
+				) = DATE_FORMAT(date_add(#{startDate},interval -1 day), '%Y-%m-%d')
+			)
+		AND pit.type = 'massage'
+		AND open_id NOT IN (
+		'o3_NPwiC8csuNqCFgPfujbJrqxFM',
+		'o3_NPwlv4U3kZQcXTfAtZDA6ePB0',
+		'o3_NPwmURoiCGRcQ8mXq7odkJqsU',
+		'o3_NPwnpYevGPIQU4uXAK3RqNRe8',
+		'o3_NPwn_aC788QddceSHrfFBhPhk',
+		'o3_NPwo7FN3-L3Vnl_P4J63FWri8',
+		'o3_NPwokwQXVZKvNnbx4Yc8Xt70U',
+		'o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y',
+		'o3_NPwqejmkEvS2pVtcSDpxaJCNg',
+		'o3_NPwqranZIs-hNjl-B2LjV39oQ',
+		'o3_NPwrAbEa1WEAOMrLtSVXXgjqE',
+		'o3_NPwrnCy46ZytBuE1p6FrZ2k7M',
+		'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk',
+		'o3_NPwruJcgAGDQr-PaQthTJ7pC4',
+		'o3_NPwsnm69zdjkDSZBSgNJwcecM',
+		'o3_NPwtUBRR0OoU660-XUgxOUNeE',
+		'o3_NPwuv8oAz2Q_OXB8M5-0wBnEA',
+		'o3_NPwvfPyTth6oTkUMewGazatPk',
+		'o3_NPwptTo6Ryp0piMKjsn2-xQcY'
+	)
+		GROUP BY
+			pit.type,
+			pitc.open_id
+		HAVING
+			count = 2) a 
+	</select>
+	
+	<select id="continuousPunchUsersForDefecate" resultType="Integer">
+		SELECT COUNT(*) from( SELECT
+			COUNT(*) AS count,
+			pit.type,
+			pitc.open_id
+		FROM
+			plan_info_task_confirm pitc
+		INNER JOIN plan_info_task pit ON pitc.plan_info_task_id = pit.id
+		WHERE
+			(
+				DATE_FORMAT(
+					pitc.create_time,
+					'%Y-%m-%d'
+				) = DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+				OR DATE_FORMAT(
+					pitc.create_time,
+					'%Y-%m-%d'
+				) = DATE_FORMAT(date_add(#{startDate},interval -1 day), '%Y-%m-%d')
+			)
+		AND pit.type = 'defecate'
+		AND open_id NOT IN (
+		'o3_NPwiC8csuNqCFgPfujbJrqxFM',
+		'o3_NPwlv4U3kZQcXTfAtZDA6ePB0',
+		'o3_NPwmURoiCGRcQ8mXq7odkJqsU',
+		'o3_NPwnpYevGPIQU4uXAK3RqNRe8',
+		'o3_NPwn_aC788QddceSHrfFBhPhk',
+		'o3_NPwo7FN3-L3Vnl_P4J63FWri8',
+		'o3_NPwokwQXVZKvNnbx4Yc8Xt70U',
+		'o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y',
+		'o3_NPwqejmkEvS2pVtcSDpxaJCNg',
+		'o3_NPwqranZIs-hNjl-B2LjV39oQ',
+		'o3_NPwrAbEa1WEAOMrLtSVXXgjqE',
+		'o3_NPwrnCy46ZytBuE1p6FrZ2k7M',
+		'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk',
+		'o3_NPwruJcgAGDQr-PaQthTJ7pC4',
+		'o3_NPwsnm69zdjkDSZBSgNJwcecM',
+		'o3_NPwtUBRR0OoU660-XUgxOUNeE',
+		'o3_NPwuv8oAz2Q_OXB8M5-0wBnEA',
+		'o3_NPwvfPyTth6oTkUMewGazatPk',
+		'o3_NPwptTo6Ryp0piMKjsn2-xQcY'
+	)
+		GROUP BY
+			pit.type,
+			pitc.open_id
+		HAVING
+			count = 2) a 
+	</select>
+	
+	<select id="continuousPunchUsersForFood" resultType="Integer">
+		SELECT COUNT(*) from( SELECT
+			COUNT(*) AS count,
+			pit.type,
+			pitc.open_id
+		FROM
+			plan_info_task_confirm pitc
+		INNER JOIN plan_info_task pit ON pitc.plan_info_task_id = pit.id
+		WHERE
+			(
+				DATE_FORMAT(
+					pitc.create_time,
+					'%Y-%m-%d'
+				) = DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+				OR DATE_FORMAT(
+					pitc.create_time,
+					'%Y-%m-%d'
+				) = DATE_FORMAT(date_add(#{startDate},interval -1 day), '%Y-%m-%d')
+			)
+		AND pit.type = 'food'
+		AND open_id NOT IN (
+		'o3_NPwiC8csuNqCFgPfujbJrqxFM',
+		'o3_NPwlv4U3kZQcXTfAtZDA6ePB0',
+		'o3_NPwmURoiCGRcQ8mXq7odkJqsU',
+		'o3_NPwnpYevGPIQU4uXAK3RqNRe8',
+		'o3_NPwn_aC788QddceSHrfFBhPhk',
+		'o3_NPwo7FN3-L3Vnl_P4J63FWri8',
+		'o3_NPwokwQXVZKvNnbx4Yc8Xt70U',
+		'o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y',
+		'o3_NPwqejmkEvS2pVtcSDpxaJCNg',
+		'o3_NPwqranZIs-hNjl-B2LjV39oQ',
+		'o3_NPwrAbEa1WEAOMrLtSVXXgjqE',
+		'o3_NPwrnCy46ZytBuE1p6FrZ2k7M',
+		'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk',
+		'o3_NPwruJcgAGDQr-PaQthTJ7pC4',
+		'o3_NPwsnm69zdjkDSZBSgNJwcecM',
+		'o3_NPwtUBRR0OoU660-XUgxOUNeE',
+		'o3_NPwuv8oAz2Q_OXB8M5-0wBnEA',
+		'o3_NPwvfPyTth6oTkUMewGazatPk',
+		'o3_NPwptTo6Ryp0piMKjsn2-xQcY'
+	)
+		GROUP BY
+			pit.type,
+			pitc.open_id
+		HAVING
+			count = 6) a 
+	</select>
+	
+	<select id="continuousPunchUsersForSport" resultType="Integer">
+		SELECT COUNT(*) from( SELECT
+			COUNT(*) AS count,
+			pit.type,
+			pitc.open_id
+		FROM
+			plan_info_task_confirm pitc
+		INNER JOIN plan_info_task pit ON pitc.plan_info_task_id = pit.id
+		WHERE
+			(
+				DATE_FORMAT(
+					pitc.create_time,
+					'%Y-%m-%d'
+				) = DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+				OR DATE_FORMAT(
+					pitc.create_time,
+					'%Y-%m-%d'
+				) = DATE_FORMAT(date_add(#{startDate},interval -1 day), '%Y-%m-%d')
+			)
+		AND pit.type = 'sport'
+		AND open_id NOT IN (
+		'o3_NPwiC8csuNqCFgPfujbJrqxFM',
+		'o3_NPwlv4U3kZQcXTfAtZDA6ePB0',
+		'o3_NPwmURoiCGRcQ8mXq7odkJqsU',
+		'o3_NPwnpYevGPIQU4uXAK3RqNRe8',
+		'o3_NPwn_aC788QddceSHrfFBhPhk',
+		'o3_NPwo7FN3-L3Vnl_P4J63FWri8',
+		'o3_NPwokwQXVZKvNnbx4Yc8Xt70U',
+		'o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y',
+		'o3_NPwqejmkEvS2pVtcSDpxaJCNg',
+		'o3_NPwqranZIs-hNjl-B2LjV39oQ',
+		'o3_NPwrAbEa1WEAOMrLtSVXXgjqE',
+		'o3_NPwrnCy46ZytBuE1p6FrZ2k7M',
+		'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk',
+		'o3_NPwruJcgAGDQr-PaQthTJ7pC4',
+		'o3_NPwsnm69zdjkDSZBSgNJwcecM',
+		'o3_NPwtUBRR0OoU660-XUgxOUNeE',
+		'o3_NPwuv8oAz2Q_OXB8M5-0wBnEA',
+		'o3_NPwvfPyTth6oTkUMewGazatPk',
+		'o3_NPwptTo6Ryp0piMKjsn2-xQcY'
+	)
+		GROUP BY
+			pit.type,
+			pitc.open_id
+		HAVING
+			count = 4) a 
+	</select>
+	
+	<select id="clickShopNums" resultType="java.util.HashMap">
+	SELECT
+		COUNT(*) as  count,
+		substring_index(parameters, ':', 1) AS para
+	FROM
+		sys_log
+	WHERE
+		title = '00000102'
+	AND DATE_FORMAT(create_date, '%Y-%m-%d') = DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+	AND open_id NOT IN (
+		'o3_NPwiC8csuNqCFgPfujbJrqxFM',
+		'o3_NPwlv4U3kZQcXTfAtZDA6ePB0',
+		'o3_NPwmURoiCGRcQ8mXq7odkJqsU',
+		'o3_NPwnpYevGPIQU4uXAK3RqNRe8',
+		'o3_NPwn_aC788QddceSHrfFBhPhk',
+		'o3_NPwo7FN3-L3Vnl_P4J63FWri8',
+		'o3_NPwokwQXVZKvNnbx4Yc8Xt70U',
+		'o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y',
+		'o3_NPwqejmkEvS2pVtcSDpxaJCNg',
+		'o3_NPwqranZIs-hNjl-B2LjV39oQ',
+		'o3_NPwrAbEa1WEAOMrLtSVXXgjqE',
+		'o3_NPwrnCy46ZytBuE1p6FrZ2k7M',
+		'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk',
+		'o3_NPwruJcgAGDQr-PaQthTJ7pC4',
+		'o3_NPwsnm69zdjkDSZBSgNJwcecM',
+		'o3_NPwtUBRR0OoU660-XUgxOUNeE',
+		'o3_NPwuv8oAz2Q_OXB8M5-0wBnEA',
+		'o3_NPwvfPyTth6oTkUMewGazatPk',
+		'o3_NPwptTo6Ryp0piMKjsn2-xQcY'
+	)
+	GROUP BY
+		para
+	</select>
+	
+	<select id="feedBackNums" resultType="java.util.HashMap">
+	SELECT
+		COUNT(*) as  count,
+		left(parameters, 1) as para 
+	FROM
+		sys_log
+	WHERE
+		title = '00000103'
+	AND DATE_FORMAT(create_date, '%Y-%m-%d') = DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+	AND open_id NOT IN (
+		'o3_NPwiC8csuNqCFgPfujbJrqxFM',
+		'o3_NPwlv4U3kZQcXTfAtZDA6ePB0',
+		'o3_NPwmURoiCGRcQ8mXq7odkJqsU',
+		'o3_NPwnpYevGPIQU4uXAK3RqNRe8',
+		'o3_NPwn_aC788QddceSHrfFBhPhk',
+		'o3_NPwo7FN3-L3Vnl_P4J63FWri8',
+		'o3_NPwokwQXVZKvNnbx4Yc8Xt70U',
+		'o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y',
+		'o3_NPwqejmkEvS2pVtcSDpxaJCNg',
+		'o3_NPwqranZIs-hNjl-B2LjV39oQ',
+		'o3_NPwrAbEa1WEAOMrLtSVXXgjqE',
+		'o3_NPwrnCy46ZytBuE1p6FrZ2k7M',
+		'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk',
+		'o3_NPwruJcgAGDQr-PaQthTJ7pC4',
+		'o3_NPwsnm69zdjkDSZBSgNJwcecM',
+		'o3_NPwtUBRR0OoU660-XUgxOUNeE',
+		'o3_NPwuv8oAz2Q_OXB8M5-0wBnEA',
+		'o3_NPwvfPyTth6oTkUMewGazatPk',
+		'o3_NPwptTo6Ryp0piMKjsn2-xQcY'
+	)
+	GROUP BY
+		para		
+	</select>
+</mapper>

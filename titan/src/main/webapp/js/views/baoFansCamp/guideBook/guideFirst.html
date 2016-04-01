@@ -1,0 +1,97 @@
+<ion-view view-title={{title0}} >
+	<ion-spinner ng-show="dataLoading" class="loadPic"></ion-spinner>
+	<ion-content class="guideFirst" style="top:0px;">
+		<ion-scroll direction="y" has-bouncing="true">
+			<dl class="box1">
+				<dt style="font-size:16px;">
+					<span></span><!--文段装饰-->
+					宝大夫产品简介
+				</dt>
+				<dd >
+					宝大夫是一个专注于育儿健康的一站式服务平台，<br>
+					两大服务功能包括【咨询大夫】、【预约大夫】<br>
+					让宝爸宝妈带娃更轻松、看病更简单、育儿更科学！<br>
+				</dd>
+				<dt>
+					<span></span><!--文段装饰-->
+					合作医院
+				</dt>
+				<dd >
+					<span class="hospital" ng-repeat="item in allHospital">{{item}}</span>
+				</dd>
+			</dl>
+
+			<div class=" box2">
+				<div class="three-service">
+					<div class="left">
+						<span>
+							问<br>题<br>分<br>类
+						</span>
+
+					</div>
+					<div class="right">
+						<ul>
+							<li ui-sref="guideConsult">
+								<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/guideBook%2Fguide_con.png" width="55" height="55"><br>
+								咨询大夫
+							</li>
+							<li ui-sref="guideAppointment">
+								<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/guideBook%2Fguide_book.png" width="55" height="55"><br>
+								预约大夫
+							</li>
+							<!--<li ui-sref="guideSheSaid">
+								<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/guideBook%2Fguide_said.png" width="55" height="55"><br>
+								郑玉巧育儿经
+							</li>-->
+						</ul>
+					</div>
+				</div>
+				<div class="hot-question">
+					<div class="left">
+						<span >
+							热<br>门<br>问<br>题
+						</span>
+					</div>
+					<div class="right">
+						<ul>
+							<li ng-repeat="item in hotQuestions">
+								<div class="ask" ng-click="selectHotQues($index)">
+									<a>{{item.ask}}</a>
+									<i ng-if="!(quesNum==$index)||!(quesNumLock0||quesNumLock1||quesNumLock2)" class="ion-ios-arrow-right"></i>
+									<i ng-if="(quesNum==$index)&&(quesNumLock0||quesNumLock1||quesNumLock2)" class="ion-ios-arrow-down"></i>
+								</div>
+								<p class="answer" ng-if="(quesNum==$index)&&(quesNumLock0||quesNumLock1||quesNumLock2)">
+									<span class="line"></span>
+									{{item.answer}}
+								</p>
+							</li>
+							<!--<li>
+								<div class="ask">
+									<a>2.挂号后，现场如何就医操作？</a>
+									<i class="ion-ios-arrow-right"></i>
+								</div>
+								<p class="answer">
+									<span class="line"></span>
+									挂号成功后，应在预约时间半小时前到达就诊地点，并将预约成功短信出示给预约大夫，即可按医生引导完成就诊。
+								</p>
+							</li>
+							<li>
+								<div class="ask">
+									<a>3.这里的内容都是出自郑玉巧本人吗？</a>
+									<i class="ion-ios-arrow-right"></i>
+								</div>
+								<p class="answer">
+									<span class="line"></span>
+
+								</p>
+							</li>-->
+						</ul>
+					</div>
+				</div>
+			</div>
+		</ion-scroll>
+
+	</ion-content>
+
+</ion-view>
+

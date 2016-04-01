@@ -1,0 +1,110 @@
+<div ui-view class="container-fluid">
+    <div class="header">
+        <div id="top">
+            <div class="top">
+                <span class="weibo">官方新浪微博：宝大夫</span>
+                <span class="weixin">官方微信号：BaodfWX</span>
+            </div>
+        </div>
+        <div class="nav">
+            <div class="logo"><a  ui-sref="baodaifuIndex">宝大夫</a></div>
+            <ul>
+                <li class="on"><a ui-sref="baodaifuIndex">首页</a></li>
+                <li><a ui-sref="zixundaifu">咨询大夫</a></li>
+                <li><a ui-sref="yuyuedaifu">预约大夫</a></li>
+                <li><a ui-sref="shuo">健康管理</a></li>
+                <li><a ui-sref="zixun">媒体资讯</a></li>
+                <li><a ui-sref="about">关于我们</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="banner">
+        <div class="contain">
+            <div class="xuanchuan">
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fee_03.png" alt=""/>
+            </div>
+            <div class="qr">
+                <div class="wenzi">
+                    <p style="font-size:14px;line-height:28px;">扫描二维码</p>
+                    <p style="font-size:12px;">即可微信关注“宝大夫”服务号</p>
+                </div>
+                <div class="ewm">
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fewm.jpg" alt="">
+                </div>
+            </div>
+            <div class="yyzx">
+                <div class="zixun">
+                    <a ui-sref="zixundaifu">咨询大夫</a>
+                    <p>权威儿科专家线上坐诊<br>支持文字、语音、图片时时问诊<br>一分钟内极速回复</p>
+                </div>
+                <div class="yuyue">
+                    <a ui-sref="yuyuedaifu">预约大夫</a>
+                    <p>拥有全北京最专业的医院和儿科专家<br>线上准时预约，线下准时就诊<br>免去排队时间</p>
+                </div>
+                <div class="yuerjing">
+                    <a ui-sref="shuo">健康管理</a>
+                    <p>资深医生与专业营养师亲历指导<br>制定个性化健康管理方案<br>轻松实现科学育儿</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div id="main">
+        <div class="main">
+            <div class="clear"></div>
+            <div class="article">
+                <!-- 热门知识 -->
+                <div class="rmzs">
+                    <div class="bar">
+                        <h3>热门知识</h3>
+                        <a ui-sref="remen" class="more">更多&nbsp;&nbsp;&gt;&gt;</a>
+                    </div>
+                    <div class="newslist">
+                        <ul>
+                            <li ng-repeat="item in articleList1">
+                                <img class="litpic" ng-src="http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/{{item.id}}" alt="">
+                                <div>
+                                    <a ng-click="goContent1(item.id)"><h4>{{item.title}}</h4></a>
+                                    <p class="des">{{item.description}}</p>
+                                    <div class="tubiao">
+                                        <div class="tag">
+                                            <a >{{item.keywords}}</a>
+                                        </div>
+                                        <div class="right">
+                                            <div class="share"><a></a>{{item.articleShareCount}}</div>
+                                            <div class="click"><a></a>{{item.articleReadCount}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 精彩回答 -->
+                <div class="jchd">
+                    <div class="bar">
+                        <h3>精彩回答</h3>
+                        <a ui-sref="wenda" class="more">更多&nbsp;&nbsp;&gt;&gt;</a>
+                    </div>
+                    <ul>
+                        <li ng-repeat="item in articleList">
+                            <a ng-click="goContent(item.id)" ><h4>{{item.title}}</h4></a>
+                            <p>{{item.description}}</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 中间结束 -->
+
+    <!-- 底部开始 -->
+    <div id="footer">
+        <div class="footer">
+            <p><a ui-sref="fuwutiaokuan" class="pianyi">服务条款</a><a ui-sref="yinsibaohu">隐私保护</a></p>
+            <p><a target="_blank">京ICP备15035618号-1</a></p>
+            <p>版权所有：北京晨星启明科技有限公司</p>
+        </div>
+    </div>
+</div>

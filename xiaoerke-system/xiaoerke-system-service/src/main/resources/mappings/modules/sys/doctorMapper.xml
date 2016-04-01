@@ -1,0 +1,687 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxqm.xiaoerke.modules.sys.dao.DoctorDao">
+    <resultMap id="DoctorVoMap" type="HashMap">
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+        <result column="sys_hospital_id" property="sysHospitalId" jdbcType="VARCHAR" />
+        <result column="hospitalName" property="hospital" jdbcType="VARCHAR" />
+        <result column="career_time" property="careerTime" jdbcType="TIMESTAMP" />
+        <result column="personal_details" property="personDetails" jdbcType="VARCHAR" />
+        <result column="position1" property="position1" jdbcType="VARCHAR" />
+        <result column="position2" property="position2" jdbcType="VARCHAR" />
+        <result column="comment_number" property="commentNumber" jdbcType="INTEGER" />
+        <result column="fans_number" property="fansNumber" jdbcType="INTEGER" />
+        <result column="availableDate" property="availableDate" jdbcType="TIMESTAMP" />
+        <result column="doctorName" property="doctorName" jdbcType="VARCHAR" />
+        <result column="begin_time" property="begin_time" jdbcType="TIMESTAMP" />
+        <result column="experince" property="experience" jdbcType="VARCHAR" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+    </resultMap>
+
+	<resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.sys.entity.DoctorVo" >
+	    <id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+        <result column="hospitalName" property="hospital" jdbcType="VARCHAR" />
+	    <result column="career_time" property="careerTime" jdbcType="DATE" />
+	    <result column="position1" property="position1" jdbcType="VARCHAR" />
+	    <result column="position2" property="position2" jdbcType="VARCHAR" />
+	    <result column="comment_number" property="commentNumber" jdbcType="INTEGER" />
+	    <result column="fans_number" property="fansNumber" jdbcType="INTEGER" />
+	    <result column="personal_details" property="personDetails" jdbcType="VARCHAR" />
+	    <result column="experince" property="experience" jdbcType="VARCHAR" />
+	    <result column="card_experince" property="cardExperience" jdbcType="VARCHAR" />
+	    <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+	    <result column="name" property="name" jdbcType="VARCHAR" />
+	    <result column="latest_time" property="latestTime" jdbcType="TIMESTAMP" />
+	    <result column="location" property="location" jdbcType="VARCHAR" />
+        <result column="doctorName" property="doctorName" jdbcType="VARCHAR" />
+	</resultMap>
+
+    <resultMap id="IllnessVoMap" type="com.cxqm.xiaoerke.modules.sys.entity.IllnessVo">
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="level_1" property="level_1" jdbcType="VARCHAR" />
+        <result column="level_2" property="level_2" jdbcType="VARCHAR" />
+        <result column="details" property="details" jdbcType="VARCHAR" />
+        <result column="doctorNum" property="doctorNum" jdbcType="VARCHAR" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
+        <result column="sort_level_1" property="sort_level_1" jdbcType="VARCHAR" />
+    </resultMap>
+
+	<sql id="Base_Column_List" >
+	    id, sys_user_id, hospitalName, career_time, position1, position2, comment_number,
+	    fans_number, personal_details, experince, card_experince, img_url, name
+	</sql>
+
+    <!-- 插入用户 -->
+    <insert id="insert">
+        INSERT INTO sys_doctor(
+        id,
+        sys_user_id,
+        hospitalName,
+        career_time,
+        position1,
+        position2,
+        comment_number,
+        fans_number,
+        personal_details,
+        experience
+        ) VALUES (
+        #{id},
+        #{sysUserId},
+        #{hospital},
+        #{careerTime},
+        #{position1},
+        #{position2},
+        #{commentNumber},
+        #{fansNumber},
+        #{personDetails},
+        #{experience}
+        )
+    </insert>
+
+    <!--跟据userid获取医生表所有信息-->
+    <select id="getDoctorIdByUserId" resultType="java.util.Map">
+        SELECT sd.* FROM sys_doctor sd
+        WHERE 1=1
+        <if test="id!=null">
+            and sd.sys_user_id=#{id}
+        </if>
+        <if test="name!=null">
+            and sd.name=#{doctorName}
+        </if>
+    </select>
+
+    <select id="findPageDoctorByDepartment"  resultMap="DoctorVoMap"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        select dr_hos.*,dr_ser.date availableDate from
+        (select dr.*,ur.name doctorName,dr_hos_rel.sys_hospital_id,hos_rel.department_level1 FROM
+        sys_doctor as dr,
+        sys_user as ur,
+        sys_hospital as hos,
+        doctor_hospital_relation as hos_rel,
+        doctor_hospital_relation as dr_hos_rel
+        where
+        dr.sys_user_id = ur.id
+        and hos_rel.sys_doctor_id = dr.id
+        and hos.id=hos_rel.sys_hospital_id
+        and hos_rel.relation_type='1'
+        and dr_hos_rel.sys_doctor_id = dr.id
+        and hos_rel.department_level1=#{departmentName}) as dr_hos,
+        (select sys_doctor_id, min(date) date,
+        min(DATE_FORMAT(CONCAT(DATE_FORMAT(date,'%Y:%c:%d'),DATE_FORMAT(begin_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s')) as latest_time
+        from sys_register_service where
+        status=0
+        and (DATE_FORMAT(CONCAT(DATE_FORMAT(date,'%Y:%c:%d'),DATE_FORMAT(begin_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>NOW()
+        GROUP BY sys_doctor_id) as dr_ser
+        where
+        dr_ser.sys_doctor_id = dr_hos.id
+        <if test="hospitalId!=null">
+            and  sys_hospital_id=#{hospitalId}
+        </if>
+        <if test="orderBy==0">
+            order by dr_ser.latest_time is null,UNIX_TIMESTAMP(dr_ser.latest_time) ASC
+        </if>
+        <if test="orderBy==1">
+            order by dr_hos.fans_number desc, dr_hos.fans_number is null
+        </if>
+    </select>
+
+    <select id="findPageConsultaDoctorByDepartment"  resultMap="DoctorVoMap"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+
+        select sd.id, sd.name,sd.position2,sd.career_time,sd.hospitalName,FORMAT(avg(prp.star+prp.major_star)/2, 2) star ,min(DATE_FORMAT(scs.beginTime,' %k:%i')) as latest_time,
+        TIMESTAMPDIFF(DAY,DATE_FORMAT(NOW(),'%Y:%c:%d'),DATE_FORMAT(MIN(scs.date),'%Y:%c:%d')) available_time
+        from sys_doctor sd
+        left join doctor_hospital_relation dhr
+        on dhr.sys_doctor_id = sd.id
+        left join patient_register_praise prp
+        on sd.id = prp.sys_doctor_id
+        left join sys_consultphone_service scs
+        on scs.sys_doctor_id = sd.id
+        where dhr.relation_type = '1'
+        and scs.state = '0'
+        <if test="hospitalId!=null">
+            and  dhr.sys_hospital_id = #{hospitalId}
+        </if>
+        <if test="departmentName!=null">
+            and dhr.department_level1 = #{departmentName}
+        </if>
+        and (DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>NOW()
+        group by sd.id
+        <if test="orderBy==0">
+            order by min(
+            DATE_FORMAT(
+            CONCAT(
+            DATE_FORMAT(scs.date, '%Y:%c:%d'),
+            DATE_FORMAT(scs.beginTime, ' %k:%i:%s')
+            ),
+            '%Y-%m-%d %k:%i:%s'
+            )
+            )  is null,UNIX_TIMESTAMP(min(
+            DATE_FORMAT(
+            CONCAT(
+            DATE_FORMAT(scs.date, '%Y:%c:%d'),
+            DATE_FORMAT(scs.beginTime, ' %k:%i:%s')
+            ),
+            '%Y-%m-%d %k:%i:%s'
+            )
+            ) ) ASC
+        </if>
+        <if test="orderBy==1">
+            order by sd.fans_number desc, sd.fans_number is null
+        </if>
+
+    </select>
+
+    <select id="findPageDoctorByRecommend"  resultMap="DoctorVoMap"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        select dr.*,dr_ser.date availableDate,ur.name doctorName FROM
+        (select sys_doctor_id, min(date) date from sys_register_service where
+        status=0
+        GROUP BY sys_doctor_id) as dr_ser,
+        sys_doctor as dr, sys_user as ur
+        where dr_ser.sys_doctor_id = dr.id
+        and dr.sys_user_id = ur.id
+        <if test="orderBy==0">
+            order by dr_ser.date ASC
+        </if>
+        <if test="orderBy==1">
+            order by dr.fans_number desc
+        </if>
+    </select>
+
+    <select id="findPageDoctorByIllnessSecond"  resultMap="DoctorVoMap"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        select dr_hos.*,dr_ser.date availableDate from
+        (select dr.*,ur.name doctorName,dr_hos_rel.sys_hospital_id FROM
+        sys_doctor as dr,
+        sys_user as ur,
+        doctor_illness_relation ill_rel,
+        doctor_hospital_relation as dr_hos_rel
+        where
+        dr.sys_user_id = ur.id
+        and ill_rel.sys_doctor_id = dr.id
+        <if test="department_level1!=null">
+            AND dr_hos_rel.department_level1=#{department_level1}
+        </if>
+        <if test="hospitalId!=null">
+            and  sys_hospital_id=#{hospitalId}
+        </if>
+        and dr_hos_rel.sys_doctor_id = dr.id
+        and dr.is_display = 'display'
+        and ill_rel.sys_illness_id = #{illnessSecondId}) as dr_hos
+        left JOIN
+        (select sys_doctor_id, min(date) date,
+        min(DATE_FORMAT(CONCAT(DATE_FORMAT(date,'%Y:%c:%d'),DATE_FORMAT(begin_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s')) as latest_time
+        from sys_register_service where
+        status=0
+        and (DATE_FORMAT(CONCAT(DATE_FORMAT(date,'%Y:%c:%d'),DATE_FORMAT(begin_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>NOW()
+        GROUP BY sys_doctor_id) as dr_ser on
+        dr_ser.sys_doctor_id = dr_hos.id
+        group by dr_ser.sys_doctor_id
+        <if test="orderBy==0">
+            order by dr_ser.latest_time is null,UNIX_TIMESTAMP(dr_ser.latest_time) ASC
+        </if>
+        <if test="orderBy==1">
+            order by dr_hos.fans_number desc, dr_hos.fans_number is null
+        </if>
+        <if test="orderBy==2">
+            ORDER BY career_time asc
+        </if>
+    </select>
+
+    <select id="findPageDoctorByIllnessSecond4Consult"  resultMap="DoctorVoMap"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+
+        select
+        sd.id, sd.name,sd.position2,sd.career_time,sd.hospitalName,
+        FORMAT(avg(prp.star+prp.major_star)/2, 2) star ,
+        min(DATE_FORMAT(scs.beginTime,' %k:%i')) as latest_time,
+        TIMESTAMPDIFF(DAY,DATE_FORMAT(NOW(),'%Y:%c:%d'),
+        DATE_FORMAT(MIN(scs.date),'%Y:%c:%d')) available_time
+
+        from sys_doctor sd
+        left join doctor_illness_relation dir
+        on sd.id = dir.sys_doctor_id
+        left join patient_register_praise prp
+        on sd.id = prp.sys_doctor_id
+        left join sys_consultphone_service scs
+        on scs.sys_doctor_id = sd.id
+        left join doctor_hospital_relation dhr
+        on dhr.sys_doctor_id = sd.id
+        where dir.sys_illness_id = #{illnessSecondId}
+        and sd.is_display = 'display'
+        and sd.is_consultPhone = '1'
+        and scs.state = '0'
+        and (DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>NOW()
+        <if test="hospitalId!=null">
+            and  dhr.sys_hospital_id = #{hospitalId}
+        </if>
+        group by sd.id
+        <if test="orderBy==0">
+            order by scs.endTime is null,UNIX_TIMESTAMP(scs.endTime) ASC
+        </if>
+        <if test="orderBy==1">
+            order by sd.fans_number desc, sd.fans_number is null
+        </if>
+        <if test="orderBy==2">
+            ORDER BY sd.career_time asc
+        </if>
+    </select>
+
+    <select id="findPageDoctorByIllnessSecondAndHospital"  resultMap="DoctorVoMap"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        select dr_hos.*,dr_ser.date availableDate from
+        (select dr.*,ur.name doctorName,hos_rel.sys_hospital_id FROM
+        sys_doctor as dr,
+        sys_user as ur,
+        doctor_illness_relation ill_rel,
+        doctor_hospital_relation hos_rel
+        where
+        dr.sys_user_id = ur.id
+        and ill_rel.sys_doctor_id = hos_rel.sys_doctor_id
+        and ill_rel.sys_illness_id = #{illnessSecondId}
+        and hos_rel.sys_hospital_id = #{hospitalId}) as dr_hos
+        LEFT JOIN
+        (select sys_doctor_id, min(date) date,
+        min(DATE_FORMAT(CONCAT(DATE_FORMAT(date,'%Y:%c:%d'),DATE_FORMAT(begin_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s')) as latest_time
+        from sys_register_service where
+        status=0
+        and (DATE_FORMAT(CONCAT(DATE_FORMAT(date,'%Y:%c:%d'),DATE_FORMAT(begin_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>NOW()
+        GROUP BY sys_doctor_id) as dr_ser
+        on
+        dr_ser.sys_doctor_id = dr_hos.id
+        <if test="orderBy==0">
+            order by dr_ser.latest_time is null,UNIX_TIMESTAMP(dr_ser.latest_time) ASC
+        </if>
+        <if test="orderBy==1">
+            order by dr_hos.fans_number desc, dr_hos.fans_number is null
+        </if>
+    </select>
+
+    <select id="findPageDoctorByTime"  resultMap="DoctorVoMap"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        SELECT
+        dr_hos.sys_hospital_id AS sysHospitalId,
+        dr.*, dr_ser.date availableDate,
+        ur. NAME doctorName,
+        DATE_FORMAT(CONCAT(DATE_FORMAT(dr_ser.DATE,'%Y:%c:%d'),DATE_FORMAT(dr_ser.begin_time,' %k:%i:%s')), '%k:%i') begin_time
+        FROM
+        (SELECT sys_doctor_id, DATE,begin_time FROM sys_register_service WHERE
+        date = #{date} AND  STATUS=0 ORDER BY begin_time ASC) AS dr_ser,
+        sys_doctor AS dr, sys_user AS ur,
+        doctor_hospital_relation dr_hos
+        WHERE dr_ser.sys_doctor_id = dr.id
+        AND dr_hos.sys_doctor_id=dr.id
+        AND dr.sys_user_id = ur.id
+        and dr.is_display = 'display'
+        <if test="department_level1 != null">
+            AND dr_hos.department_level1=#{department_level1}
+        </if>
+        <if test="hospitalId!=null">
+            AND dr_hos.sys_doctor_id = dr_ser.sys_doctor_id
+            AND  dr_hos.sys_hospital_id=#{hospitalId}
+        </if>
+        and DATE_FORMAT(CONCAT(DATE_FORMAT(dr_ser.DATE,'%Y:%c:%d'),DATE_FORMAT(dr_ser.begin_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s')>NOW()
+        GROUP BY dr_ser.sys_doctor_id
+        <if test="orderBy==0">
+            order by UNIX_TIMESTAMP(DATE_FORMAT(CONCAT(DATE_FORMAT(dr_ser.DATE,'%Y:%c:%d'),DATE_FORMAT(dr_ser.begin_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s')) asc
+        </if>
+        <if test="orderBy==1">
+            order by dr.fans_number desc
+        </if>
+        <if test="orderBy==2">
+            order by career_time asc
+        </if>
+    </select>
+
+    <select id="findPageDoctorByTime4Consult"  resultMap="DoctorVoMap"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        select
+        sd.id, sd.name,sd.position2,sd.career_time,sd.hospitalName,
+        FORMAT(avg(prp.star+prp.major_star)/2, 2) star ,
+        min(DATE_FORMAT(scs.beginTime,' %k:%i')) as latest_time,
+        TIMESTAMPDIFF(DAY,DATE_FORMAT(NOW(),'%Y:%c:%d'),
+        DATE_FORMAT(MIN(scs.date),'%Y:%c:%d')) available_time
+
+        from sys_doctor sd
+        left join doctor_illness_relation dir
+        on sd.id = dir.sys_doctor_id
+        left join patient_register_praise prp
+        on sd.id = prp.sys_doctor_id
+        left join sys_consultphone_service scs
+        on scs.sys_doctor_id = sd.id
+        left join doctor_hospital_relation dhr
+        on dhr.sys_doctor_id = sd.id
+        where
+        date = #{date}
+        and sd.is_display = 'display'
+        and sd.is_consultPhone = '1'
+        and scs.state = '0'
+        and (DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>NOW()
+        <if test="hospitalId!=null">
+            and  dhr.sys_hospital_id = #{hospitalId}
+        </if>
+        group by sd.id
+        <if test="orderBy==0">
+            order by scs.endTime is null,UNIX_TIMESTAMP(scs.endTime) ASC
+        </if>
+        <if test="orderBy==1">
+            order by sd.fans_number desc, sd.fans_number is null
+        </if>
+        <if test="orderBy==2">
+            ORDER BY scs.begin_time ASC
+        </if>
+    </select>
+
+    <select id="findPageDoctorByTimeAndHospital"  resultMap="DoctorVoMap"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        select dr.*,dr_ser.date availableDate,ur.name doctorName FROM
+        (select sys_doctor_id, date from sys_register_service where
+        sys_hospital_id=#{hospitalId} and
+        status=0) as dr_ser,
+        sys_doctor as dr, sys_user as ur
+        where dr_ser.sys_doctor_id = dr.id
+        and dr.sys_user_id = ur.id
+        and dr_ser.date = #{date}
+        GROUP BY dr_ser.sys_doctor_id
+        <if test="orderBy==2">
+            order by dr.fans_number desc
+        </if>
+    </select>
+
+    <select id="findAppointmentInfoDetail"  resultType="java.util.HashMap">
+        SELECT sdl.location,srs.price,srs.deposit,srs.service_type,sdl.route as root,DATE_FORMAT(srs.begin_time,'%H:%i')
+         AS begin_time,DATE_FORMAT(srs.end_time,'%H:%i') AS end_time
+        FROM sys_register_service srs
+        inner join sys_doctor_location sdl on sdl.id=srs.location_id
+        LEFT JOIN patient_register_service prs
+        ON prs.sys_register_service_id=srs.id
+        WHERE 1=1
+        <if test="patient_register_service_id != null">
+           and prs.id=#{patient_register_service_id}
+        </if>
+        <if test="sys_register_service_id != null">
+            and srs.id=#{sys_register_service_id}
+        </if>
+
+    </select>
+
+    <!--获取某个医生的详细信息 @author 09_zdl-->
+    <select id="findDoctorDetailInfo" resultType="java.util.Map"
+            parameterType="com.cxqm.xiaoerke.modules.sys.entity.DoctorDetailInfoVo">
+         SELECT dr.id AS doctorId,dr.personal_details AS doctor_normal_desc, dr.hospitalName AS hospitalName,
+        sh.id AS hospitalId,su.name AS doctorName ,dr.position1,dr.position2,
+        ROUND((UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(career_time))/(60*60*24*365)) AS career_time,dr.fans_number
+        FROM sys_doctor dr
+        INNER JOIN sys_user su ON  dr.sys_user_id=su.id
+        LEFT JOIN doctor_hospital_relation dhr ON dhr.sys_doctor_id=dr.id
+        LEFT JOIN sys_hospital sh ON dhr.sys_hospital_id=sh.id
+        WHERE 1=1
+        and dr.id = #{doctorId}
+        GROUP BY dr.id
+    </select>
+
+
+    <select id="findDoctorDetailInfoAndType" resultType="java.util.Map"
+            parameterType="com.cxqm.xiaoerke.modules.sys.entity.DoctorDetailInfoVo">
+        SELECT dr.id AS doctorId,dr.personal_details AS doctor_normal_desc, dr.hospitalName AS hospitalName,
+        sh.id AS hospitalId,su.name AS doctorName ,dr.position1,dr.position2,
+        ROUND((UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(career_time))/(60*60*24*365)) AS career_time,dr.fans_number,
+        srs.service_type AS hospital_type,srs.desc_info
+        FROM sys_doctor dr
+        INNER JOIN sys_user su ON  dr.sys_user_id=su.id
+        INNER JOIN sys_register_service srs ON dr.id=srs.sys_doctor_id
+        LEFT JOIN doctor_hospital_relation dhr ON dhr.sys_doctor_id=dr.id
+        LEFT JOIN sys_hospital sh ON dhr.sys_hospital_id=sh.id
+        WHERE 1=1
+        <if test="doctorId != null">
+            and dr.id = #{doctorId}
+        </if>
+        <if test="register_service_id != null">
+            and srs.id = #{register_service_id}
+        </if>
+        GROUP BY dr.id
+    </select>
+
+    <!--关注某个医生-->
+    <update id="updateDoctorFansExecute">
+        UPDATE sys_doctor SET fans_number=fans_number+1 WHERE id=#{doctorId};
+    </update>
+
+    <select id="findDoctorByInfo" parameterType="java.lang.String" resultMap="DoctorVoMap">
+        select dr.*, ur.`name` doctorName,ur.phone
+        from sys_doctor dr, sys_user ur
+        WHERE
+        dr.sys_user_id = ur.id
+        <if test="name != null">
+            and name = #{name}
+        </if>
+        <if test="hospitalName != null">
+            and hospitalName = #{hospitalName}
+        </if>
+        <if test="career_time != null">
+            and career_time = #{careerTime}
+        </if>
+        <if test="position1 != null">
+            and position1 = #{position1}
+        </if>
+        <if test="position2 != null">
+            and position2 = #{position2}
+        </if>
+        <if test="doctorId != null">
+            and dr.id = #{doctorId}
+        </if>
+    </select>
+
+    <select id="findDoctorByDoctorId" parameterType="java.lang.String" resultType="java.util.Map">
+        select dr.*, ur.name doctorName,ur.openid,ur.phone,ur.id as userId
+        from sys_doctor dr, sys_user ur
+        WHERE
+        dr.sys_user_id = ur.id
+        <if test="doctorId != null">
+            and dr.id = #{doctorId}
+        </if>
+    </select>
+
+
+    <select id="getDoctorHospitalInfo" parameterType="java.lang.String" resultType="java.util.HashMap">
+        select sdl.sys_hospital_id hospitalId,sdl.hospitalName,sdl.id locationId,
+        sdl.location location,sdl.price,dhr.relation_type relationType
+          from
+        sys_doctor_location sdl,
+        doctor_hospital_relation dhr,
+        sys_hospital shs
+        WHERE
+        shs.hospital_type!='2'
+        and shs.id = sdl.sys_hospital_id
+        and sdl.sys_doctor_id=#{doctorId}
+        and dhr.sys_hospital_id = sdl.sys_hospital_id
+        GROUP BY sdl.id
+    </select>
+
+    <select id="getDoctorAppointmentTime" parameterType="java.lang.String" resultType="java.util.HashMap">
+        select * from sys_register_service where
+        location_id=#{locationId}
+        and
+        date=#{date}
+        <if test="statusList != null">
+            and status in
+            <foreach item="item" index="index" collection="statusList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <insert id="insertDoctor">
+        INSERT INTO sys_doctor(id,sys_user_id,name,hospitalName,career_time,personal_details,position1,position2,fans_number,experince,card_experince,qrcode,create_date,extensionQrcode,subsidy)
+        VALUES (#{sysDoctorId},#{sys_user_id},#{doctorName},#{hospitalName},#{career_time},#{personal_details},#{position1},#{position2},#{fans_number},#{experince},#{card_experince},#{ticket},#{create_date},#{extensionQrcode},#{subsidy});
+    </insert>
+
+    <!--根据手机号查询doctorId-->
+    <select id="findDoctorIdByPhoneExecute" resultType="java.util.Map">
+        SELECT sd.id AS doctorId FROM sys_user su,sys_doctor sd
+        WHERE su.id=sd.sys_user_id
+        AND su.login_name=#{phone}
+    </select>
+
+    <!--新增医生数-->
+    <select id="findCountDoctorNumber" resultType="Integer">
+       SELECT COUNT(*) FROM sys_doctor WHERE DATE_FORMAT(create_date,'%Y-%m-%d')=DATE_FORMAT(#{statisticsData},'%Y-%m-%d');
+    </select>
+
+    <!--系统内总的医生数-->
+    <select id="findCountDoctorCountNmuber" resultType="Integer">
+        SELECT COUNT(*) FROM sys_doctor;
+    </select>
+
+    <!--==============================以下部分属于运维系统==============================================-->
+
+    <!--查询医生信息-->
+    <select id="findDoctorByNameOrByHospitalName"  resultMap="BaseResultMap"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        SELECT dr.*,dr.hospitalName as hospital, ur.name doctorname,dr_hos_rel.sys_hospital_id,ur.phone FROM
+        sys_doctor AS dr,sys_user AS ur,
+        sys_hospital AS hos, doctor_hospital_relation AS dr_hos_rel
+        WHERE dr.sys_user_id = ur.id AND dr_hos_rel.sys_doctor_id = dr.id
+        AND hos.id = dr_hos_rel.sys_hospital_id
+        <if test="hospital != null and hospital != ''">
+            AND  dr.hospitalName like '%${hospital}%'
+        </if>
+        <if test="doctorName != null and doctorName != ''">
+            AND  ur.name like '%${doctorName}%'
+        </if>
+        GROUP BY dr.id
+    </select>
+
+    <!--获取某个医生的详细信息 @author 09_zdl-->
+    <select id="findDoctorVoDetailInfo" resultType="com.cxqm.xiaoerke.modules.sys.entity.DoctorVo">
+        SELECT
+        dr.id,
+        dr.subsidy,
+        dr.personal_details AS personDetails,
+        sh.name AS hospital,
+        su.phone,
+        sh.id AS hospitalId,
+        su. NAME AS doctorName,
+        dr.position1,
+        dr.position2,
+        dr.sys_user_id AS sysUserId,
+        dr.career_time AS careerTime,
+        dr.experince AS experience,
+        dr.card_experince AS cardExperience,
+        dr.is_display isDisplay
+        FROM sys_doctor dr
+        INNER JOIN sys_user su ON  dr.sys_user_id=su.id
+        LEFT JOIN doctor_hospital_relation dhr ON dhr.sys_doctor_id=dr.id
+        LEFT JOIN sys_hospital sh ON dhr.sys_hospital_id=sh.id
+        WHERE 1=1
+        <if test="relationType != null and relationType != ''">
+            and dhr.relation_type =  #{relationType}
+        </if>
+        and dr.id = #{id}
+        GROUP BY dr.id
+    </select>
+
+    <!--根据医生id删除当前医生-->
+    <delete id="deleteDoctorByDoctorId" parameterType="java.lang.String" >
+        delete from sys_doctor
+        where  id = #{doctorId,jdbcType=VARCHAR}
+    </delete>
+
+    <!--根据医生姓名查询医生主键-->
+    <select id="findDoctorIdByname" resultType="java.util.HashMap">
+        select id from sys_doctor where name=#{doctorName}
+    </select>
+
+    <!--根据医院id删除当前医生-->
+    <delete id="deleteDoctorByHospitalId" parameterType="java.lang.String" >
+        delete from sys_doctor
+        where hospitalName = (select name from sys_hospital where id=#{hopitalId})
+    </delete>
+    <!--医生信息修改后保存操作-->
+    <update id="saveEditDoctor">
+       update sys_doctor set name=#{doctorName}, hospitalName=#{hospital},career_time=#{careerTimeForDisplay},position1=#{position1},position2=#{position2},
+       personal_details=#{personDetails},experince=#{experience},card_experince=#{cardExperience},subsidy=#{subsidy},is_display = #{isDisplay} where id=#{id};
+    </update>
+
+    <!--修改医生所属用户的信息-->
+    <update id="saveEditUser">
+       update sys_user set  login_name=#{phone},phone=#{phone},name=#{doctorName} where id=#{sysUserId}
+    </update>
+
+    <!--获取系统内的所有医生-->
+    <select id="findPageAllDoctor" resultMap="DoctorVoMap"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        SELECT  sd.id,su.name as doctorName,su.phone FROM sys_doctor sd
+        INNER JOIN sys_user su on su.id=sd.sys_user_id
+    </select>
+
+    <!-- 根据医院id查询该医院下有订单存在的所有医生 seachFlag 为0 查询号源，为1 查询订单-->
+    <select id="findAllOrderDoctorList" resultType="com.cxqm.xiaoerke.modules.sys.entity.DoctorVo">
+        select srs.sys_doctor_id as id, sd.name,sdl.hospitalName,dhr.department_level1 departmentLevel1,sdl.location
+        from sys_register_service srs
+        INNER JOIN sys_doctor sd on sd.id=srs.sys_doctor_id
+        INNER JOIN patient_register_service prs on prs.sys_register_service_id = srs.id
+        inner join doctor_hospital_relation dhr on dhr.sys_doctor_id=srs.sys_doctor_id
+        INNER JOIN sys_doctor_location sdl on sdl.id = srs.location_id
+        where srs.sys_hospital_id = #{hospitalId}
+        <if test="searchFlag=='jiesuan'">
+            and DATE_FORMAT(srs.date,'%Y-%m-%d')  &lt;=DATE_FORMAT(#{end_time},'%Y-%m-%d')  and DATE_FORMAT(srs.date,'%Y-%m-%d')>= DATE_FORMAT(#{begin_time},'%Y-%m-%d')
+            and prs.status != '6' and prs.status != '1'
+        </if>
+        <if test="searchFlag=='yuyue'">
+            AND DATE_FORMAT(prs.create_date,'%Y-%m-%d')  &lt;=DATE_FORMAT(#{end_time},'%Y-%m-%d') and DATE_FORMAT(prs.create_date,'%Y-%m-%d')>= DATE_FORMAT(#{begin_time},'%Y-%m-%d')
+        </if>
+        GROUP BY srs.sys_doctor_id
+    </select>
+
+    <!--根据doctorId查询“可预约号源数”-->
+    <select id="findDoctorCanAppointNumber" resultType="Integer">
+       select count(*) from sys_register_service srs
+       WHERE srs.sys_doctor_id=#{id}
+       and srs.STATUS='0'
+       and (DATE_FORMAT(CONCAT(DATE_FORMAT(srs.date,'%Y:%c:%d'),DATE_FORMAT(srs.begin_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>NOW()
+       and srs.date BETWEEN #{startDate} and #{endDate}
+    </select>
+
+    <!--根据doctorId查询“已预约号源数”-->
+    <select id="findDoctorAlreadyAppointNumber" resultType="Integer">
+        select count(*) from sys_register_service srs
+        RIGHT  JOIN patient_register_service prs on prs.sys_register_service_id = srs.id
+        where srs.sys_doctor_id=#{id} and
+        srs.date BETWEEN #{startDate} and #{endDate}
+    </select>
+
+    <select id="findDoctorScoreInfo" resultType="java.util.Map">
+      SELECT ROUND(AVG(prp.star),1) avgStar,ROUND(AVG(prp.major_star),1) avgMajorStar from patient_register_praise prp where sys_doctor_id = #{sys_doctor_id}
+    </select>
+
+    <select id="getDoctorName" resultType="java.lang.String">
+		SELECT sd.`name` FROM sys_doctor sd where sd.id=#{doctorId}
+   	</select>
+
+   	  <!--查询当前用户的所有信息(医生端) @author zdl-->
+    <select id="findDoctorDetailInfoByUserIdExecute"  resultType="java.util.HashMap">
+        SELECT u.*, d.id doctor_id,ai.id accountId, ai.balance balance, d.position1,
+        d.position2, d.hospitalName, dhr.department_level1,d.extensionQrcode FROM
+        sys_user u
+        INNER JOIN sys_doctor d on u.id = d.sys_user_id
+        LEFT JOIN account_info ai on u.id = ai.user_id
+        LEFT JOIN doctor_hospital_relation dhr ON dhr.sys_doctor_id = d.id
+        WHERE
+        u.id=#{userId}
+        and dhr.relation_type = "1"
+    </select>
+
+	<!-- 根据号源ID医生的详细信息 @author frank -->
+    <select id="findDoctorByRegisterId" resultMap="BaseResultMap">
+        SELECT d.*
+        from sys_doctor d, sys_register_service r WHERE d.id = r.sys_doctor_id
+        and r.id = #{registerId}
+    </select>
+
+
+
+</mapper>

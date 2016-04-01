@@ -1,0 +1,26 @@
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title={{title0}} ng-init="doRefresh()">
+    <div bdf-head="title"></div>
+    <ion-content class="pendPayment">
+        <ion-scroll direction="y" has-bouncing="true" style="top:2px;">
+            <!-- 内容为空的的时候显示内容-->
+            <div class="noContent" ng-if="isBlank">
+                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fno_waitPay_order.png" width="121" height="123">
+                <p>{{care1}}</p>
+                <p>{{care2}}</p>
+            </div>
+            <div class="list" ng-repeat="item in appointmentData">
+                <div class="item item-thumbnail-left waitInfo" style="height:135px;">
+                    <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.doctorId}}" class="doctorPhoto"/>
+                    <h2 class="word-break">{{item.doctorName}} {{item.position}}</h2>
+                    <p>{{item.hospitalName}}</p>
+                    <p>{{item.date}}&nbsp;&nbsp;{{item.startTime}}-{{item.endTime}}</p>
+                    <span class="wait-status" >待支付</span>
+                    <span class="btn"  style="margin-right:80px;" ng-click="showPopup($index)">删除订单</span>
+                    <span class="btn" ng-click="toPayAppointment(item.patient_register_service_id)" >去支付</span>
+                </div>
+            </div>
+            <div bdf-footer></div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

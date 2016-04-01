@@ -1,0 +1,35 @@
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title={{title0}} ng-init="doRefresh()">
+    <ion-spinner ng-show="dataLoading" class="loadPic"></ion-spinner>
+    <div bdf-head="title"></div>
+    <ion-content class="appointmentCancelSuccess" style="top:45px;">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <div class="box box1" ng-if="amount != ''">
+                <div class="main">
+                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fappointment_cancel_success.png" width="140" height="140" ng-click="appointmentFirst()">
+                    <p class="p1" >取消成功，<span >{{amount}}元</span>已返还到您的宝大夫账户<br>
+                        您可使用该余额支付其他订单或申请提现。</p>
+                </div>
+                <button class="button foot-btn" ui-sref="accountBalance">账户余额</button>
+            </div>
+
+            <div class="box box2"  ng-if="memberId == ''||relationType=='2'">
+                <div class="main" style="font-size:18px;" >
+                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fappointment_cancel_success.png" width="140" height="140">
+                    <h2 >您已成功取消预约，如需继续预约</h2>
+                    <p class="p2">请点击<span ng-click="appointmentFirst()" style="color:#88d9dd;">首页</span></p>
+                </div>
+            </div>
+
+            <!--返回免费预约券-->
+            <div class="box box3" ng-if="memberId != ''&&relationType!='2'">
+                <div class="main">
+                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fappointment_cancel_success.png" width="140" height="140">
+                    <p >您的预约已取消，您的“免费预约券”已返还到您的宝大夫账户，可继续预约。</p>
+                </div>
+                <button class="button foot-btn" ui-sref="myService">查看免费预约券</button>
+            </div>
+            <div bdf-footer></div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

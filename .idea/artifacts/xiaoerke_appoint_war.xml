@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="xiaoerke-appoint:war">
+    <output-path>$PROJECT_DIR$/xiaoerke-appoint/target</output-path>
+    <root id="archive" name="xiaoerke-appoint.war">
+      <element id="artifact" artifact-name="xiaoerke-appoint:war exploded" />
+    </root>
+  </artifact>
+</component>

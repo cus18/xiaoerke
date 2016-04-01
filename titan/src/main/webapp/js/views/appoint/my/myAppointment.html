@@ -1,0 +1,65 @@
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title={{title0}} ng-init="doRefresh()">
+    <div bdf-head="title"></div>
+    <ion-content class="myAppointment">
+        <ion-scroll direction="y" has-bouncing="true" style="top:2px;">
+            <div class="list"  ng-repeat="item in appointmentData | orderBy:'date':true" ng-if="!isBlank" >
+                <ul>
+                    <li class="item item-thumbnail-left waitInfo"
+                        ui-sref="toBeTreatedDetail({patient_register_service_id:item.patient_register_service_id,status:'1'})"
+                        ng-if="item.status==statusToBeTreat">
+                        <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.doctorId}}"/>
+                        <h2>{{item.doctorName}}&nbsp;&nbsp;<span>{{item.position}}</span></h2>
+                        <p>{{item.hospitalName}}</p>
+                        <p>{{item.date}}&nbsp;&nbsp;{{item.startTime}}-{{item.endTime}}</p>
+                        <span class="wait-status">{{item.status}}</span>
+                        <span class="btn">查看详情</span>
+                    </li>
+                    <li class="item item-thumbnail-left waitInfo"
+                        ui-sref="evaluateDoctor({patient_register_service_id:item.patient_register_service_id})"
+                        ng-if="item.status==statusToBeEvaluate" >
+                        <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.doctorId}}"/>
+                        <h2>{{item.doctorName}}&nbsp;&nbsp;<span>{{item.position}}</span></h2>
+                        <p>{{item.hospitalName}}</p>
+                        <p>{{item.date}}&nbsp;&nbsp;{{item.startTime}}-{{item.endTime}}</p>
+                        <span class="wait-status">{{item.status}}</span>
+                        <span class="btn" ui-sref="evaluateDoctor({patient_register_service_id:
+                        item.patient_register_service_id})">去评价</span>
+                    </li>
+                    <li class="item item-thumbnail-left waitInfo " ng-if="item.status==statusToBeShare"
+                        ui-sref="sharedDetail({patient_register_service_id:item.patient_register_service_id})">
+                        <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.doctorId}}"/>
+                        <h2>{{item.doctorName}}&nbsp;&nbsp;<span>{{item.position}}</span></h2>
+                        <p>{{item.hospitalName}}</p>
+                        <p>{{item.date}}&nbsp;&nbsp;{{item.startTime}}-{{item.endTime}}</p>
+                        <span class="wait-status">{{item.status}}</span>
+                        <span class="btn"  ui-sref="sharedDetail({patient_register_service_id:
+                        item.patient_register_service_id,status:'false'})">去分享</span>
+                    </li>
+                    <li class="item item-thumbnail-left waitInfo " ng-if="item.status==statusIsFinished"
+                        ui-sref="toBeTreatedDetail({patient_register_service_id:item.patient_register_service_id,status:'2'})">
+                        <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.doctorId}}"/>
+                        <h2>{{item.doctorName}}&nbsp;&nbsp;<span>{{item.position}}</span></h2>
+                        <p>{{item.hospitalName}}</p>
+                        <p>{{item.date}}&nbsp;&nbsp;{{item.startTime}}-{{item.endTime}}</p>
+                        <span class="wait-status">{{item.status}}</span>
+                    </li>
+                    <li class="item item-thumbnail-left waitInfo" ng-if="item.status==statusIsCancel"
+                        ui-sref="toBeTreatedDetail({patient_register_service_id:
+                        item.patient_register_service_id,status:'3'})">
+                        <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.doctorId}}"/>
+                        <h2>{{item.doctorName}}&nbsp;&nbsp;<span>{{item.position}}</span></h2>
+                        <p>{{item.hospitalName}}</p>
+                        <p>{{item.date}}&nbsp;&nbsp;{{item.startTime}}-{{item.endTime}}</p>
+                        <span class="wait-status">{{item.status}}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="noContent" ng-if="isBlank">
+                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fno_appointment.png" width="117" height="117">
+                <p style="font-size:15px;">{{care1}}</p>
+            </div>
+            <div bdf-footer></div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

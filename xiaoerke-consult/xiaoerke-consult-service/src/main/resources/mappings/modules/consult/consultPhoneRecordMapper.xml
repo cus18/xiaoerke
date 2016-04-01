@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.consult.dao.ConsultPhoneRecordDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="userData" property="userdata" jdbcType="VARCHAR" />
+    <result column="action" property="action" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="subtype" property="subtype" jdbcType="VARCHAR" />
+    <result column="orderid" property="orderid" jdbcType="VARCHAR" />
+    <result column="subid" property="subid" jdbcType="VARCHAR" />
+    <result column="caller" property="caller" jdbcType="VARCHAR" />
+    <result column="called" property="called" jdbcType="VARCHAR" />
+    <result column="callSid" property="callsid" jdbcType="VARCHAR" />
+    <result column="starttime" property="starttime" jdbcType="TIMESTAMP" />
+    <result column="byetype" property="byetype" jdbcType="VARCHAR" />
+    <result column="endtime" property="endtime" jdbcType="TIMESTAMP" />
+    <result column="talkDuration" property="talkduration" jdbcType="VARCHAR" />
+    <result column="alertingDuration" property="alertingduration" jdbcType="VARCHAR" />
+    <result column="billdata" property="billdata" jdbcType="VARCHAR" />
+    <result column="noAnswerEndtime" property="noAnswerEndtime" jdbcType="VARCHAR" />
+    <result column="recordurl" property="recordurl" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, userData, action, type, subtype, orderid, subid, caller, called, callSid, starttime, 
+    byetype, endtime, talkDuration, alertingDuration, billdata,noAnswerEndtime,recordurl
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from consultphonerecord
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from consultphonerecord
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo" >
+    insert into consultphonerecord (id, userData, action, 
+      type, subtype, orderid, 
+      subid, caller, called, 
+      callSid, starttime, byetype, 
+      endtime, talkDuration, alertingDuration, 
+      billdata,noAnswerEndtime,recordurl)
+    values (#{id,jdbcType=INTEGER}, #{userdata,jdbcType=VARCHAR}, #{action,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{subtype,jdbcType=VARCHAR}, #{orderid,jdbcType=VARCHAR}, 
+      #{subid,jdbcType=VARCHAR}, #{caller,jdbcType=VARCHAR}, #{called,jdbcType=VARCHAR}, 
+      #{callsid,jdbcType=VARCHAR}, #{starttime,jdbcType=TIMESTAMP}, #{byetype,jdbcType=VARCHAR}, 
+      #{endtime,jdbcType=TIMESTAMP}, #{talkduration,jdbcType=VARCHAR}, #{alertingduration,jdbcType=VARCHAR}, 
+      #{billdata,jdbcType=VARCHAR},#{noAnswerEndtime,jdbcType=VARCHAR},#{recordurl,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo" >
+    insert into consultphonerecord
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userdata != null" >
+        userData,
+      </if>
+      <if test="action != null" >
+        action,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="subtype != null" >
+        subtype,
+      </if>
+      <if test="orderid != null" >
+        orderid,
+      </if>
+      <if test="subid != null" >
+        subid,
+      </if>
+      <if test="caller != null" >
+        caller,
+      </if>
+      <if test="called != null" >
+        called,
+      </if>
+      <if test="callsid != null" >
+        callSid,
+      </if>
+      <if test="starttime != null" >
+        starttime,
+      </if>
+      <if test="byetype != null" >
+        byetype,
+      </if>
+      <if test="endtime != null" >
+        endtime,
+      </if>
+      <if test="talkduration != null" >
+        talkDuration,
+      </if>
+      <if test="alertingduration != null" >
+        alertingDuration,
+      </if>
+      <if test="billdata != null" >
+        billdata,
+      </if>
+
+      <if test="noAnswerEndtime != null" >
+        noAnswerEndtime,
+      </if>
+      <if test="recordurl != null" >
+        recordurl,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userdata != null" >
+        #{userdata,jdbcType=VARCHAR},
+      </if>
+      <if test="action != null" >
+        #{action,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="subtype != null" >
+        #{subtype,jdbcType=VARCHAR},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="subid != null" >
+        #{subid,jdbcType=VARCHAR},
+      </if>
+      <if test="caller != null" >
+        #{caller,jdbcType=VARCHAR},
+      </if>
+      <if test="called != null" >
+        #{called,jdbcType=VARCHAR},
+      </if>
+      <if test="callsid != null" >
+        #{callsid,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null" >
+        #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="byetype != null" >
+        #{byetype,jdbcType=VARCHAR},
+      </if>
+      <if test="endtime != null" >
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="talkduration != null" >
+        #{talkduration,jdbcType=VARCHAR},
+      </if>
+      <if test="alertingduration != null" >
+        #{alertingduration,jdbcType=VARCHAR},
+      </if>
+      <if test="billdata != null" >
+        #{billdata,jdbcType=VARCHAR},
+      </if>
+      <if test="noAnswerEndtime != null" >
+        #{noAnswerEndtime,jdbcType=VARCHAR},
+      </if>
+      <if test="recordurl != null" >
+        #{recordurl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo" >
+    update consultphonerecord
+    <set >
+      <if test="userdata != null" >
+        userData = #{userdata,jdbcType=VARCHAR},
+      </if>
+      <if test="action != null" >
+        action = #{action,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="subtype != null" >
+        subtype = #{subtype,jdbcType=VARCHAR},
+      </if>
+      <if test="orderid != null" >
+        orderid = #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="subid != null" >
+        subid = #{subid,jdbcType=VARCHAR},
+      </if>
+      <if test="caller != null" >
+        caller = #{caller,jdbcType=VARCHAR},
+      </if>
+      <if test="called != null" >
+        called = #{called,jdbcType=VARCHAR},
+      </if>
+      <if test="callsid != null" >
+        callSid = #{callsid,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null" >
+        starttime = #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="byetype != null" >
+        byetype = #{byetype,jdbcType=VARCHAR},
+      </if>
+      <if test="endtime != null" >
+        endtime = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="talkduration != null" >
+        talkDuration = #{talkduration,jdbcType=VARCHAR},
+      </if>
+      <if test="alertingduration != null" >
+        alertingDuration = #{alertingduration,jdbcType=VARCHAR},
+      </if>
+      <if test="billdata != null" >
+        billdata = #{billdata,jdbcType=VARCHAR},
+      </if>
+      <if test="noAnswerEndtime != null" >
+        noAnswerEndtime = #{noAnswerEndtime,jdbcType=VARCHAR},
+      </if>
+      <if test="recordurl != null" >
+        recordurl = #{recordurl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo" >
+    update consultphonerecord
+    set userData = #{userdata,jdbcType=VARCHAR},
+      action = #{action,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      subtype = #{subtype,jdbcType=VARCHAR},
+      orderid = #{orderid,jdbcType=VARCHAR},
+      subid = #{subid,jdbcType=VARCHAR},
+      caller = #{caller,jdbcType=VARCHAR},
+      called = #{called,jdbcType=VARCHAR},
+      callSid = #{callsid,jdbcType=VARCHAR},
+      starttime = #{starttime,jdbcType=TIMESTAMP},
+      byetype = #{byetype,jdbcType=VARCHAR},
+      endtime = #{endtime,jdbcType=TIMESTAMP},
+      talkDuration = #{talkduration,jdbcType=VARCHAR},
+      alertingDuration = #{alertingduration,jdbcType=VARCHAR},
+      billdata = #{billdata,jdbcType=VARCHAR},
+      noAnswerEndtime = #{noAnswerEndtime,jdbcType=VARCHAR},
+      recordurl = #{recordurl,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

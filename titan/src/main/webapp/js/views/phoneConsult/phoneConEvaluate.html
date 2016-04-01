@@ -1,0 +1,54 @@
+<ion-view view-title={{title}} >
+	<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+	<div bdf-head="title"></div>
+	<div class="c-shadow" ng-click="toggleIllnessCancel()" ng-if="illnessLock=='true'"></div>
+	<ion-item class="caseList border2 bg1" ng-if="illnessLock=='true'">
+		<p class=" f5 c4  margin0" ng-repeat="item in illnessList" ng-click="selectIllness(item)">{{item}}{{item.doctor_case_name}}</p>
+	</ion-item>
+	<ion-content class="phoneConEvaluate evaluateDoctor bg1" >
+		<ion-scroll direction="y" has-bouncing="true">
+			<div class="info" style="background-color:#fff;">
+				<ul class=" symptom border2">
+					<li class="l fl c3 f8">疾病</li>
+					<li class=" r fr c5 f3 " ng-click="toggleIllness()">
+						<div class="f5 c4 fl" placeholder="请选择疾病" >{{itemIllness}}</div>
+						<span class="fl bg2 c0 tc ion-ios-arrow-down"></span>
+					</li>
+					<li class="other r" ng-if="otherLock=='true'">
+						<input class="f3 c5" placeholder="请输入其他疾病（选填）" ng-model="info.symptom">
+					</li>
+				</ul>
+				<ul class=" time border2">
+					<li class="l fl c3 f8">时间</li>
+					<li class="r fr c5 f3">
+						您预约的时间是{{date}}&nbsp;{{beginTime}}-{{endTime}}<br>
+						医生在
+						<input  id="treatTime" class="bg1 tc c1 border5" readonly="readonly" placeholder="{{beginTime}}" />
+						帮你看病
+					</li>
+				</ul>
+				<dl class="f3 c4">
+					<dt class="f5 tc c3 fw0">评价</dt>
+					<dd class="l fl">服务态度：</dd>
+					<dd class="r fl col star-list star-list1">
+						<img class="my-img1" ng-src="{{imgs1[$index]}}"  ng-click="selectStar1($index)" ng-repeat="item in [1,2,3,4,5]" width="19" height="19"  >
+						<span class="f3 c5">{{starNum}} 分</span>
+					</dd>
+					<dd class="l fl">专业水平：</dd>
+					<dd class="r fl col star-list star-list2">
+						<img class="my-img1" ng-src="{{imgs2[$index]}}"  ng-click="selectStar2($index)" ng-repeat="item in [1,2,3,4,5]" width="19" height="19"  >
+						<span class="f3 c5">{{major_star}} 分</span>
+					</dd>
+					</dd>
+					<dd style="">
+						<textarea class="border6 f3 c4 bg4" id="eva-con" onfocus="skip()" ng-model="info.context"  ng-minlength="1" maxlength="150" placeholder="请您对就医体验提出宝贵意见和建议"></textarea>
+					</dd>
+				</dl>
+			</div>
+
+		</ion-scroll>
+	</ion-content>
+	<button class="submit button bottom-btn bg2" ng-click="evaluateUser()">提交</button>
+
+</ion-view>
+

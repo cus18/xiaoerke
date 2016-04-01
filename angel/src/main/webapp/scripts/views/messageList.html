@@ -1,0 +1,172 @@
+<link rel="stylesheet" href="scripts/styles/doctorConsultFirst.css?ver=1.0.1" type="text/css"/>
+<link rel="stylesheet" href="scripts/styles/messageList.css?ver=1.0.1" type="text/css"/>
+<div ui-view ng-init="userConsultList()" class="messageList">
+    <!--头部-->
+    <header class="head w10">
+        <div class="head-t w10 qf">
+            <div class="bdf-dkf-nav w5 fl h4 bg-h1">
+                <span><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png" alt=""/></span>
+                <span></span>
+                <span>宝大夫</span>
+                <span>自动回复
+                <select>
+                    <option>无</option>
+                    <option>外出就餐，请稍候</option>
+                    <option>不在电脑旁边，请稍候</option>
+                    <option>接听电话中</option>
+                    <option>无自动回复</option>
+                    <option>马上回来</option>
+                </select>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>
+                </span>
+                <span>自动接入
+                <select>
+                    <option>关闭</option>
+                    <option>打开</option>
+                </select>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>
+                </span>
+            </div>
+            <div class="w5 fr h4 bg-h1">
+                <div class="bdf-dkf-content-right">
+                    <div class="cjgl">退出</div>
+                    <div class="xtsz">
+                        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_06.png" alt=""/>
+                        系统设置</div>
+                </div>
+            </div>
+        </div>
+        <div class="head-m wid1 qf tab">
+            <div class="w5 fl h5 tac bg-m"><a ui-sref="doctorConsultFirst"><span class="cl">聊天窗口</span></a></div>
+            <div class="w5 fr h5 tac"><a ui-sref="messageList"><span>消息列表</span></a></div>
+        </div>
+    </header>
+    <div class="content qf">
+        <div class="head-b qf chatbox">
+            <div class="w5 fl h5">
+                <span>
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_11.png" alt=""/>
+                刷新消息
+            </span>
+            <span>
+               <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_13.png" alt=""/>
+                发起会话
+            </span>
+            </div>
+            <div class="w5 fr h5">
+                <div class="find">
+                    <div class="select">
+                        <select id="searchMessageTypeId" ng-model="info.searchMessageType">
+                            <option>查找客户</option>
+                            <option>查找消息</option>
+                        </select>
+                    </div>
+                    <input type="text" placeholder="搜索内容" ng-model="info.searchMessageContent">
+                    <img ng-click="searchMessage()" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_16.png" alt=""/>
+
+                </div>
+            </div>
+        </div>
+        <div class="content-l fl" style='width: 500px;'>
+            <div class='w10 h6 customerlist '>
+                <div class="fl">客户列表</div>
+                <div class="fr">
+                    <select id="searchDateId" ng-model="selected" ng-options="date.name for date in searchDate" ng-change="getCSInfoByUserId(selected.value)">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+                <div class="fr">
+                    <select id="CSDoctorListInfoId" ng-model="selected" ng-options="user.name for user in CSList" ng-change="getCSInfoByUserId(selected.id)">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+            </div>
+            <div class='w10 h7 nicknamelist '>
+                <div class="nickname">昵称</div>
+                <div class="recently">最近联系时间</div>
+                <div class="insert">接入客服</div>
+            </div>
+
+            <div  class='w10 h20 br1'>
+                <ul class="nicknamecontentlist">
+                    <div ng-repeat="item in userConsultListInfo" ng-click ="getUserRecordDetail(item.openid)">
+                        <li>
+                            <div class="nickname">{{item.nickName}}</div>
+                            <div class="recently">{{item.createDate}}</div>
+                            <div class="insert">{{item.doctorName}}</div>
+                        </li>
+                        <br/>
+                    </div>
+                </ul>
+                <a id="bottom"></a>
+            </div>
+
+            <!--</div>currentUserConsultRecordDetail-->
+
+        </div>
+        <div class="content-r" style='margin-left: 501px;'>
+            <div class='w10 h6 messagelistc'>
+                <div>消息记录</div>
+                <div class="fr">
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fb_03.png" alt=""/>
+                    刷新当前信息</div>
+            </div>
+            <div class='w10 h7 messagelistn'>
+                <div>
+                    <select ng-model="selected" ng-options="doctor.name for doctor in CSDoctorListInfo">
+                        <option value="">-- 请选择 --</option>
+                    </select>
+                </div>
+                <div>全部</div>
+                <div>图片</div>
+                <div>文件</div>
+                <div>其他</div>
+                <div>
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_27.png" alt=""/>
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_29.png" alt=""/>
+                    <input type="text"/>/5页
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_22.png" alt=""/>
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_24.png" alt=""/>
+
+                </div>
+            </div>
+            <div class='w10 h20 examinecontent'>
+                <ul>
+                    <div ng-repeat="item in currentUserConsultRecordDetail">
+                        <li>
+                            <div ng-if="item.senderId==doctorId">
+                                <div class="name">
+                                    {{doctorName}} {{item.dateTime}}
+                                </div>
+                                <div ng-if="item.messageType=='0'" id="show" class="chatcontent">
+                                    {{item.message}}
+                                </div>
+                            </div>
+                            <div ng-if="item.senderId!=doctorId">
+                                <div class="name">
+                                    {{item.senderName}} {{item.createDate}}
+                                </div>
+                                <div ng-if="item.messageType=='0'" class="chatcontent">
+                                    {{item.message}}
+                                </div>
+                                <div ng-if="item.messageType=='1'" class="chatcontent">
+                                    <a target="_blank" ng-href="{{item.message}}">
+                                        <img width="100" height="100" ng-src="{{item.message}}">
+                                    </a>
+                                </div>
+                                <div ng-if="item.messageType=='2'" class="chatcontent">
+                                    <audio ng-src="{{item.message}}" controls="controls"/>
+                                </div>
+                                <div ng-if="item.messageType=='3'" class="chatcontent">
+                                    <video width="500" height="250" ng-src="{{item.message}}" controls="controls"/>
+                                </div>
+                            </div>
+                        </li>
+                        <br/>
+                    </div>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxqm.xiaoerke.modules.wechat.dao.WechatInfoDao">
+
+	<resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.common.bean.WechatRecord" >
+	    <id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="openid" property="openid" jdbcType="VARCHAR" />
+	    <result column="opercode" property="opercode" jdbcType="VARCHAR" />
+	    <result column="infoTime" property="infotime" jdbcType="TIMESTAMP" />
+	    <result column="worker" property="worker" jdbcType="VARCHAR" />
+	    <result column="text" property="text" jdbcType="VARCHAR" />
+	</resultMap>
+  
+    <insert id="insertAttentionInfo">
+       insert into sys_attention(openid,marketer,id,date,status,nickname,is_pay,origin,update_time,doctor_marketer) values(#{openId},#{marketer},#{id},now(),#{status},#{nickname},#{ispay},#{origin},#{updateTime},#{doctorMarketer})
+    </insert>
+
+    <insert id="saveWechatRecoder" parameterType="java.util.List" >
+        INSERT INTO sys_wechat_record(id,opercode,openid,worker,text,infoTime)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+           (#{item.id}, #{item.opercode},#{item.openid}, #{item.worker}, #{item.text},#{item.infotime,jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+    <select id="getDoctorInfo" resultType="java.util.HashMap">
+       select sd.id, sd.`name`,sd.hospitalName from sys_doctor sd where sd.id = #{id}
+    </select>
+
+    <insert id="getCustomerOnlineTime" >
+        INSERT INTO sys_customer_onlinetime(id,customer,onlinetime,status,customserid,autoaccept,acceptedcase)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.kf_account},now(), #{item.status}, #{item.kf_id},#{item.kf_account},#{item.accepted_case})
+        </foreach>
+    </insert>
+
+    <insert id="insertCustomerLocation" >
+        INSERT INTO sys_customer_location(id,openid,createtime,latitude,precisions,longitude)
+        VALUES
+        (#{id},#{openid},now(),#{latitude,jdbcType=DOUBLE},#{precision,jdbcType=DOUBLE},#{longitude,jdbcType=DOUBLE})
+    </insert>
+
+    <!--new zdl-->
+    <update id="updateAttentionInfo">
+        update sys_attention set doctor_marketer = #{doctorMarketer},update_time = #{updateTime} where openid=#{openId}
+    </update>
+
+    <select id="selectAttentions" resultType="java.util.HashMap">
+       select sa.openid, sa.date attentionTime, sa.nickname nickName from 
+       sys_attention sa, sys_user su 
+       where su.id = #{userId} and sa.marketer = su.marketer and DATE_FORMAT(sa.date,'%Y-%m-%d') = #{date} and sa.status = "0" 
+    </select>
+
+    <select id="checkAttention" resultType="java.lang.Integer">
+        select count(sa.id) from sys_attention sa where sa.openid = #{openId}
+    </select>
+
+</mapper>

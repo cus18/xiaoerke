@@ -1,0 +1,80 @@
+<div ui-view>
+<div class="header">
+    <div id="top">
+        <div class="top">
+            <span class="weibo">官方新浪微博：宝大夫</span>
+            <span class="weixin">官方微信号：BaodfWX</span>
+        </div>
+    </div>
+    <div class="nav">
+        <div class="logo"><a ui-sref="baodaifuIndex">宝大夫</a></div>
+        <ul>
+            <li class="on"><a ui-sref="baodaifuIndex">首页</a></li>
+            <li><a ui-sref="zixundaifu">咨询大夫</a></li>
+            <li><a ui-sref="yuyuedaifu">预约大夫</a></li>
+            <li><a ui-sref="shuo">健康管理</a></li>
+            <li><a ui-sref="zixun">媒体资讯</a></li>
+            <li><a ui-sref="about">关于我们</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="article_article rmzs">
+    <div class="bar">
+        <a ui-sref="remen"><h3>热门知识</h3></a>
+    </div>
+    <div class="content">
+        <h3 class="title">{{contentTitle}}</h3>
+        <p ng-bind-html="articleContent"></p>
+        <div class="article_share bdsharebuttonbox" data-tag="share_1">
+            <a href="" class="qqzone" data-cmd="qzone"></a>
+            <a href="" class="douban" data-cmd="douban"></a>
+            <a href="" class="baidu"  data-cmd="baidu"></a>
+            <a href="" class="weibo" data-cmd="tsina"></a>
+            <a href="" class="weixin" data-cmd="weixin"></a>
+            <a href="" class="click">{{articleReadCount}}</a>
+        </div>
+        <style>
+            .bdshare-button-style0-16 a, .bdshare-button-style0-16 .bds_more{
+                float: left;
+                width: 20px;
+                height: 20px;
+                line-height: 20px;
+                margin: 0 20px 0 0;
+                padding-left: 0;
+            }
+        </style>
+        <script>
+            with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    </div>
+    <div class="like_article">
+    <h4>相关内容推荐：</h4>
+    <ul>
+
+        <li ng-repeat="item in articleList">
+            <a ng-click="goContent1(item.id)">{{item.title}}</a>
+        </li>
+    </ul>
+    </div>
+</div>
+<div class="wz_gzwx">
+    <div class="ewm">
+        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fxiala.png" alt="" class="arrow">
+        <div class="ewmimg">
+            <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fewm.jpg" alt="">
+        </div>
+    </div>
+    <p>找到你想要的答案了吗？</p>
+    <p>如果没有，可以关注宝大夫微信服务号，与儿科专家进行一对一回答</p>
+</div>
+
+<!-- 底部开始 -->
+<div id="footer">
+    <div class="footer">
+        <p><a ui-sref="fuwutiaokuan" class="pianyi">服务条款</a><a ui-sref="yinsibaohu">隐私保护</a></p>
+        <p><a target="_blank">京ICP备15035618号-1</a></p>
+        <p>版权所有：北京晨星启明科技有限公司</p>
+    </div>
+</div>
+</div>

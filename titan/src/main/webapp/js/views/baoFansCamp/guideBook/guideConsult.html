@@ -1,0 +1,28 @@
+<ion-view view-title={{title0}} >
+	<ion-spinner ng-show="dataLoading" class="loadPic"></ion-spinner>
+	<ion-content class="guideConsult" style="top:0px;">
+		<ion-scroll direction="y" has-bouncing="true">
+			<div class="three1-service">
+				<h3>咨询大夫</h3>
+				<dl ng-repeat="item in consultQuestions">
+					<dt ng-click="selectQuestion($index)">
+						<span class="cir"></span>
+						<a class="content">{{$index+1}}.{{item.ask}}</a>
+						<i ng-if="!(quesNum==$index)||!(item.lock)" class="ion-ios-arrow-right"></i>
+						<i ng-if="(quesNum==$index)&&(item.lock)" class="ion-ios-arrow-down"></i>
+					</dt>
+					<dd ng-if="(quesNum==$index)&&(item.lock)" >
+						<div class="line"></div>
+						<p ng-repeat="prop in item.answerList">
+							{{prop.step}}
+							<img ng-src="{{prop.img}}" width="80%" height="auto">
+						</p>
+					</dd>
+				</dl>
+			</div>
+		</ion-scroll>
+
+	</ion-content>
+
+</ion-view>
+

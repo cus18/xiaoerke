@@ -1,0 +1,28 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫" ng-init="doRefresh()">
+    <ion-content class="constipationLight" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+          <div class="level">
+              <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Flevel1.png" width="90" height="90">
+              <div class="text">
+                 <p>
+                     您的宝宝只有一些轻微的便秘症状<br>
+                    但妈妈都不要掉以轻心哦
+                 </p>
+             </div>
+              <img class="arrow-down" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Farrow_down_bold.png" width="16.5" height="18.5">
+          </div>
+           <div class="plan" ui-sref="constipationRemind({flag:'first'})">
+               <p>
+                   宝大夫从<span>便秘按摩、按时排便、食疗、运动</span>四方面<br>
+                   为妈妈和宝宝制定了一套便秘管理方案<br>
+                   和宝大夫一起帮宝宝摆脱便秘吧
+               </p>
+               <button class="button plan-btn">制定计划</button>
+               <div class="persist"> 坚持做好计划任务，宝宝三天就会有适当好转</div>
+           </div>
+
+        </ion-scroll>
+    </ion-content>
+    </div>
+</ion-view>

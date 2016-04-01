@@ -1,0 +1,31 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫" ng-init="doRefresh()">
+    <ion-content class="constipationFollowForget"  style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="warn">
+                <img  ng-src="{{forgetImg}}" width="282" height="282">
+                <p ng-if="show=='noDo'">
+                    只有按照计划执行任务<br>
+                    并且坚持下去宝宝才会好转<br>
+                    如果宝宝严重的话您需要咨询医生<br>
+                </p>
+                <p  ng-if="show=='do'">
+                    执行任务要按时打卡给我们反馈哦<br>
+                    宝大夫才能跟踪宝宝的健康情况<br>
+                    给您适当的处理<br>
+                </p>
+            </div>
+            <div class="select-case">
+                <ul>
+                    <li class="item"  ng-click="consultDoc()" ng-class="{'do':show=='do'}">
+                        咨询医生
+                    </li>
+                    <li class="item"  ng-click="doTask()" ng-class="{'do':show=='do'}">
+                        去做任务
+                    </li>
+                </ul>
+            </div>
+        </ion-scroll>
+    </ion-content>
+    <div class="foot-bg" ng-class="{'do':show=='do'}"></div>
+</ion-view>

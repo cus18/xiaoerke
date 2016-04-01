@@ -1,0 +1,20 @@
+<ion-view view-title={{title0}} ng-init="doRefresh()">
+    <div bdf-head="title"></div>
+    <ion-content class="withdrawSuccess">
+        <ion-scroll direction="y" has-bouncing="true" style="">
+            <div class="pic1">
+                <img src="images/pa_03.png" width="121.5" height="139.5">
+                <h3>
+                    您申请的提现金额为：<span class="rr">{{returnMoney}}元</span>
+                </h3>
+            </div>
+            <div class="footer" style="margin-top:200px;">
+                <p>
+                    <a ng-click="appointmentFirst()">首页</a>
+                    <a ui-sref="questions">常见问题</a>
+                </p>
+                <a href="tel:4006237120">客服电话：400-623-7120</a>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

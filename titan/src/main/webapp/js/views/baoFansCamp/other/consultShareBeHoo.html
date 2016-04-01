@@ -1,0 +1,88 @@
+<ion-view view-title={{title0}} ng-init="doRefresh()" >
+	<div class="shadow" ng-if="shareLock"></div>
+	<div class="share-out" ng-if="shareLock">
+		<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fremind_share_arrow.png" class="arrow1" width="31" height="55">
+		<div class="share">
+			<div class="content">
+				<h4>点击右上角</h4>
+				<h4>分享到朋友圈</h4>
+			</div>
+			<div class="bottom" ng-click="cancel()">
+				我知道了
+			</div>
+		</div>
+	</div>
+	<ion-content class="consultShareBeHoo consultShare" style="top:0;">
+		<ion-scroll direction="y" has-bouncing="true">
+			<div class="img-top">
+				<div class="img-sha"></div>
+				<img  src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/other%2FconsultShare_top_00.png" width="100%" height="auto">
+				<img  src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/other%2FconsultShare_top_01.png" width="100%" height="auto">
+				<img  src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/other%2FconsultShare_top_02.png" width="100%" height="auto">
+				<div class="code">
+					<img data-tap-disabled="true"  class="code-img" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/other%2FBeHoo.jpg" width="110" height="auto">
+					<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/other%2FconsultShare_top_03.png" width="100%" height="auto">
+				</div>
+
+			</div>
+			<!--<div class="img"></div>-->
+			<!--	<div class="box1">
+					<p>
+						长按识别二维码，关注宝大夫
+						<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/other%2FcustomerExtension.jpeg" width="137" height="137" data-tap-disabled="true">
+					</p>
+					<div class="bao">
+						<h3>
+							<span>宝大夫</span>
+							<p>
+								专注于育儿健康的一站式服务平台
+							</p>
+						</h3>
+						<div class="pic">
+							<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/other%2FconsultShare1.png"  >
+							<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/other%2FconsultShare2.png"  >
+							<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/other%2FconsultShare3.png"  >
+						</div>
+						<div class="gray"></div>&lt;!&ndash;灰色部分&ndash;&gt;
+					</div>
+
+				</div>-->
+				<div class="box2">
+					<dl>
+						<dt>
+						<h3><span>宝大夫特需专家</span></h3>
+						</dt>
+					<!--	<dd>
+							<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/other%2Fzhengyq.png" width="55" height="55" align="left">
+							<div>
+								<h3>
+									郑玉巧<span>著名儿科专家</span>
+								</h3>
+								<p>
+									现任中国人民解放军团第二炮兵总医院特需专家儿科主任医师，在儿科危急重症、妇产科合并内科的诊治方面有较深的造诣。著有《郑玉巧育儿经》，其科学翔实的育儿理念和方法深受众多妈妈的好评。
+								</p>
+							</div>
+						</dd>-->
+						<dd>
+							<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/other%2Fliangp.png" width="55" height="55" align="left">
+							<div>
+								<h3>
+									梁平<span>著名儿科专家</span>
+								</h3>
+								<p>
+									主要专业领域为小儿呼吸、小儿消化及新生儿疾病专业。曾就职于天津市儿童医院、北京新世纪儿童医院。现特聘为宝大夫首席医师。从事儿科专业近二十年，对医疗、保健有独到的见解，多次被患者推选为院服务明星，获得广大患者的信任和好评。
+
+								</p>
+							</div>
+						</dd>
+					</dl>
+				</div>
+
+				<div style="height:30px;"></div>
+		</ion-scroll>
+	</ion-content>
+	<div class=" foot-btn1" ng-click="share()">
+		<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/other%2FconsultShare_bottom.png" width="100%" height="auto">
+	</div>
+</ion-view>
+

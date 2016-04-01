@@ -1,0 +1,143 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫" ng-init="doRefresh()">
+    <!--第一种情况之忘记了-->
+    <div class="c-shadow" ng-if="forgetLock" ng-click="close()"> </div>
+    <div class="c-remind" ng-if="forgetLock">
+        <div class="remind-main">
+            <img class="close" ng-click="close()" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fclose.png" width="31" height="31">
+            <p>
+                您有没有按期<br>
+                执行任务呢？
+            </p>
+            <div class="remind-bottom">
+                <a ng-click="forgetNotDo()">没有执行</a>
+                <a ng-click="forgetDo()">执行了</a>
+                <span class="line"></span>
+            </div>
+        </div>
+    </div>
+    <!--第一种情况之好了了-->
+    <div class="c-shadow" ng-if="wellLock" ng-click="close()"> </div>
+    <div class="c-remind" ng-if="wellLock">
+        <div class="remind-main">
+            <img class="close" ng-click="close()" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fclose.png" width="31" height="31">
+            <p style="color:#fe717b;">
+                恭喜宝宝<br>
+                点个赞吧
+            </p>
+            <div class="remind-bottom">
+                <a ng-click="noPraise()">不了</a>
+                <a ng-click="praise()">赞一下</a>
+                <span class="line"></span>
+            </div>
+        </div>
+    </div>
+
+    <!--第三种情况之未见好转-->
+    <div class="c-shadow" ng-if="noBetterLock" ng-click="close()"> </div>
+    <div class="c-remind" ng-if="noBetterLock">
+        <div class="remind-main">
+            <img class="close" ng-click="close()" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fclose.png" width="31" height="31">
+            <p >
+                宝宝体质不同<br>
+                效果会有些差异<br>
+                详细咨询下医生吧
+            </p>
+            <div class="remind-bottom">
+                <a ng-click="noSet()">不了</a>
+                <a ng-click="consultDoc()">去咨询</a>
+                <span class="line"></span>
+            </div>
+        </div>
+    </div>
+
+    <!--点赞-->
+    <div class="c-shadow" ng-if="praiseLock" ng-click="close()"> </div>
+    <div ng-if="praiseLock" class="praise">
+        <img  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fzan.gif" width="90" height="90">
+    </div>
+    <!--关掉提醒-->
+    <div class="c-shadow" ng-if="setLock" ng-click="close()"> </div>
+    <div class="c-remind" ng-if="setLock">
+        <div class="remind-main">
+            <img class="close" ng-click="close()" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fclose.png" width="31" height="31">
+            <p style="color:#fe717b;">
+                去关掉提醒吧<br>
+                避免再次打扰您
+            </p>
+            <div class="remind-bottom">
+                <a ng-click="noSet()">不了</a>
+                <a ng-click="goSet()">去设置</a>
+                <span class="line"></span>
+            </div>
+        </div>
+    </div>
+    <ion-content class="constipationFollow" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <!--打卡的第一种情况：三天全部未打卡-->
+            <div class="forget-all" ng-if="plannone">
+                <div class="warn">
+                    <p class="warn-p" style="padding-top:135px;">
+                        您已经连续三天没有打卡了
+                    </p>
+                </div>
+                <div class="select-case">
+                    <ul style="padding-top:49px;">
+                        <li class="item" ng-repeat="item in follow" ng-click="forgetAllSelect($index)" >
+                            {{item.text}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!--打卡的第二种情况：三天部分未打卡-->
+            <div class="forget-part" ng-if="planpart">
+              <!--  没打开开关的情况-->
+                <div class="warn">
+                    <p class="warn-p" style="padding-top:120px;">
+                        您已经连续三天部分内容没有卡了<br>
+                        打开提醒，宝大夫提醒您?
+                    </p>
+                    <!--打开开关的情况-->
+                    <p class="warn" ng-if="forgetPartSetOpen" style="padding-top:120px;">
+                        您已经连续三天没有打按摩卡了 <br>
+                        觉得此项没有作用可以关掉此项提醒
+                    </p>
+                </div>
+                <div class="select-case">
+                    <ul>
+                        <li class="item"  ng-click="noSet()" >
+                            不用了
+                        </li>
+                        <li class="item"  ng-click="goSet()" >
+                            去设置
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+            <!--打卡的第三种情况：三天全部打卡-->
+            <div class="forget-no" ng-if="planall">
+                <div class="warn">
+                    <p class="warn-p" style="padding-top:90px;">
+                        <span>恭喜您</span><br>
+                        您已经坚持三天了<br>
+                        再坚持两天宝大夫送您免费会员<br>
+                        宝宝现在情况怎么样了
+                    </p>
+                </div>
+                <div class="select-case">
+                    <ul>
+                        <li class="item"  ng-click="noBetter()" >
+                            未见好转
+                        </li>
+                        <li class="item"  ng-click="better()" >
+                            有好转了
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

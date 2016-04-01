@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.insurance.dao.InsuranceRegisterServiceDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.insurance.entity.InsuranceRegisterService" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="parent_type" property="parentType" jdbcType="VARCHAR" />
+    <result column="Insurance_type" property="insuranceType" jdbcType="VARCHAR" />
+ 	<result column="parent_name" property="parentName" jdbcType="VARCHAR" />
+ 	<result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+ 	<result column="state" property="state" jdbcType="VARCHAR" />
+ 	<result column="parent_phone" property="parentPhone" jdbcType="VARCHAR" />
+ 	<result column="id_card" property="idCard" jdbcType="VARCHAR" />
+ 	<result column="create_time" property="createTime" jdbcType="VARCHAR" />
+ 	<result column="update_time" property="updateTime" jdbcType="VARCHAR" />
+ 	<result column="baby_id" property="babyId" jdbcType="VARCHAR" />
+ 	<result column="baby_name" property="babyName" jdbcType="VARCHAR" />
+ 	<result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+ 	<result column="source" property="source" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <insert id="saveInsuranceRegisterService" parameterType="com.cxqm.xiaoerke.modules.insurance.entity.InsuranceRegisterService" useGeneratedKeys="true" keyProperty="id">
+		    INSERT INTO `insurance_register_service` (
+		    id,
+			`parent_type`,
+			`Insurance_type`,
+			`parent_name`,
+			`state`,
+			`parent_phone`,
+			`id_card`,
+			`create_time`,
+			`update_time`,
+			`baby_id`,
+			start_time,
+			end_time,
+			update_by,
+			source
+		)
+		VALUES
+			(
+				#{id},
+				#{parentType,jdbcType=VARCHAR},
+				#{insuranceType,jdbcType=VARCHAR},
+				#{parentName,jdbcType=VARCHAR},
+				#{state,jdbcType=VARCHAR},
+				#{parentPhone,jdbcType=VARCHAR},
+				#{idCard,jdbcType=VARCHAR},
+				now(),
+				now(),
+				#{babyId,jdbcType=VARCHAR},
+				DATE_ADD(now(),INTERVAL 1 DAY),
+				DATE_ADD(DATE_ADD(now(),INTERVAL 1 DAY),INTERVAL 1 YEAR),
+				#{updateBy,jdbcType=VARCHAR},
+				#{source,jdbcType=VARCHAR}
+			)
+    </insert>
+  
+
+  <select id="getInsuranceRegisterServiceById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    SELECT irs.*,sbb.`name` as baby_name,sa.nickname,su.id as parent_id FROM insurance_register_service irs
+	INNER JOIN sys_baby_baseInfo sbb ON irs.baby_id=sbb.id
+	LEFT JOIN sys_user su ON irs.parent_phone = su.phone
+	LEFT JOIN sys_attention sa ON sa.openid = su.openid
+	where irs.id=#{id}
+	GROUP BY sa.openid,irs.id
+  </select>
+
+
+    <select id="getInsuranceRegisterServiceListByUserid" resultType="java.util.HashMap" parameterType="java.lang.String" >
+    SELECT * FROM insurance_register_service irs
+	INNER   JOIN sys_baby_baseInfo sbb ON irs.baby_id=sbb.id
+	where sbb.userid=#{userid}
+     ORDER BY create_time desc 
+  </select>
+
+
+   <select id="getInsuranceRegisterServiceIfValid" resultType="java.util.HashMap" parameterType="java.lang.String" >
+    SELECT
+		*
+	FROM
+		insurance_register_service
+	WHERE
+		baby_id = #{babyId}
+	AND (
+		start_time &gt; now()
+		OR end_time &lt; NOW()
+	) 
+	AND state != 6
+  </select>
+
+
+  <select id="findInsuranceServiceList" resultType="com.cxqm.xiaoerke.modules.insurance.entity.InsuranceRegisterService" >
+	SELECT
+		irs.id,
+		irs.parent_type,
+		irs.Insurance_type,
+		irs.parent_name,
+		irs.state,
+		irs.parent_phone,
+		irs.id_card,
+		irs.create_time,
+		irs.update_time,
+		irs.start_time,
+		irs.end_time,
+		irs.baby_id,
+		irs.update_by,
+		irs.source,
+		sa.nickName,
+		sbb.name
+	FROM
+		insurance_register_service irs
+	LEFT JOIN sys_user su ON irs.parent_phone = su.phone
+	LEFT JOIN sys_attention sa ON sa.openid = su.openid
+	LEFT JOIN sys_baby_baseInfo sbb ON sbb.id = irs.baby_id
+	where 1=1
+	<if test="state != null and state != ''">
+			AND irs.state=#{state}
+	</if>
+	<if test="parentPhone != null and parentPhone != ''">
+			AND irs.parent_phone=#{parentPhone}
+	</if>
+	<if test="fromOrderDate != null and fromOrderDate != ''">
+			AND irs.create_time >= #{fromOrderDate}
+	</if>
+	<if test="toOrderDate != null and toOrderDate != ''">
+			AND #{toOrderDate} >= irs.create_time
+	</if>
+	<if test="fromStartDate != null and fromStartDate != ''">
+			AND irs.start_time >= #{fromStartDate}
+	</if>
+	<if test="toStartDate != null and toStartDate != ''">
+			AND #{toStartDate} >= irs.start_time
+	</if>
+	<if test="babyName != null and babyName != ''">
+    	 and sbb.name = #{babyName}
+   	</if>
+   	group by irs.id ORDER BY irs.create_time desc
+  </select>
+
+    <select id="getInsuranceRegisterServiceVisitLeadPageLogByOpenid" resultType="java.util.HashMap" parameterType="java.lang.String" >
+	   SELECT * FROM sys_log sl where sl.title ='FQB_YDY' and open_id=#{openid}
+	  </select>
+    
+    <select id="getInsuranceRegisterServiceByOpenid" resultType="java.util.HashMap" parameterType="java.lang.String" >
+	   SELECT * FROM insurance_register_service irs 
+		INNER JOIN sys_baby_baseInfo sbb ON irs.baby_id=sbb.id
+		where sbb.openid=#{openid}
+	  </select>
+    
+    
+      <select id="getValidInsuranceRegisterServiceListByUserid" resultType="java.util.HashMap" parameterType="java.lang.String" >
+	       SELECT irs.*,sbb.`name` FROM insurance_register_service irs
+			INNER JOIN sys_baby_baseInfo sbb ON irs.baby_id=sbb.id
+			where sbb.userid=#{userid} and ( irs.state=1 or irs.state=2 or irs.state=0 )
+		     ORDER BY create_time desc 
+	  </select>
+	  <select id="getInvalidInsuranceRegisterServiceListByUserid" resultType="java.util.HashMap" parameterType="java.lang.String" >
+	       SELECT irs.*,sbb.`name` FROM insurance_register_service irs
+			INNER JOIN sys_baby_baseInfo sbb ON irs.baby_id=sbb.id
+			where sbb.userid=#{userid} and ( irs.state=3 or irs.state=4 or irs.state=5 )
+		     ORDER BY create_time desc 
+	  </select>
+
+ 	 <select id="getInsuranceRegisterServiceByState" resultType="java.util.HashMap" parameterType="java.lang.String" >
+	       SELECT
+				*
+			FROM
+				insurance_register_service irs
+			WHERE
+				(irs.state = 0 and DATE_FORMAT(irs.start_time,'%Y-%m-%d %h:%i')=DATE_FORMAT(now(),'%Y-%m-%d %h:%i'))
+			OR (irs.state = 1 and DATE_FORMAT(irs.end_time,'%Y-%m-%d %h:%i')=DATE_FORMAT(now(),'%Y-%m-%d %h:%i'))
+	  </select>
+    	
+   	 <update id="updateInsuranceOrder" >
+	  UPDATE insurance_register_service
+		SET state = 1
+		WHERE
+			state = 0
+		AND start_time &lt;= now()
+  </update>
+  
+   <update id="updateEndInsuranceOrder" >
+	  UPDATE insurance_register_service
+		SET state = 4
+		WHERE
+			state = 1
+		AND end_time &lt;= now()
+  </update>
+  
+  <update id="updateInsuranceRegisterService" parameterType="com.cxqm.xiaoerke.modules.insurance.entity.InsuranceRegisterService" >
+	   UPDATE insurance_register_service
+		  <set>
+		  	  <if test="state != null and state != ''">
+		        state = #{state},
+		      </if>
+		      <if test="auditReason != null and auditReason != ''">
+		        audit_reason = #{auditReason},
+		      </if>
+		      <if test="updateTime != null and updateTime != ''">
+		        update_time = #{updateTime},
+		      </if>
+		      <if test="updateBy != null and updateBy != ''">
+		        update_by = #{updateBy},
+		      </if>
+		      <if test="source != null and source != ''">
+		        source = #{source},
+		      </if>
+	      </set>
+		WHERE id = #{id}
+  </update>
+    <select id="getPayRecordById" resultType="java.util.HashMap" parameterType="java.lang.String" >
+	      SELECT * FROM account_pay_record apr where apr.id=#{aprid}
+	  </select>
+  <select id="getInsuranceRegisterServiceByInfo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.insurance.entity.InsuranceRegisterService" >
+	   SELECT
+			*
+		FROM
+			insurance_register_service irs
+		INNER JOIN sys_baby_baseInfo sbb ON irs.baby_id = sbb.id
+		WHERE 1=1
+		<if test="parentId != null and parentId != ''">
+           and sbb.userid = #{parentId}
+        </if>
+        <if test="babyId != null and babyId != ''">
+           and irs.baby_id = #{babyId}
+        </if>
+  </select>
+</mapper>

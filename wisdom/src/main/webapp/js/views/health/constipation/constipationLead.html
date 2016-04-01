@@ -1,0 +1,48 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫" ng-init="doRefresh()">
+    <ion-content class="constipationLead" style="top:0;"
+                 ng-class="{'bg1': index==0, 'bg2': index==1,'bg4': index==2,'bg5': index==3}">
+        <ion-scroll direction="y" has-bouncing="true">
+            <ion-slide-box active-slide="myActiveSlide"  on-slide-changed="slideHasChanged($index)">
+                <ion-slide >
+                    <div class="box" >
+                        <img   src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Flead11.png" width="100%" height="auto" >
+                        <img   src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Flead12.png"  width="100%" height="auto"  >
+                        <br>
+                    </div>
+                </ion-slide>
+                <ion-slide >
+                    <div class="box">
+                        <img   src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Flead21.png" width="100%" height="auto" >
+                        <img   src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Flead22.png"  width="100%" height="auto" >
+                        <br>
+                    </div>
+                </ion-slide>
+               <!-- <ion-slide >
+                    <div class="box">
+                        <img  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Flead31.png" width="100%" height="auto" >
+                        <img   src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Flead32.png"  width="100%" height="auto" >
+                        <br>
+                    </div>
+                </ion-slide>-->
+                <ion-slide >
+                    <div class="box">
+                        <img  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Flead41.png" width="100%" height="auto" >
+                        <img   src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Flead42.png"   width="100%" height="auto" >
+                        <br>
+                    </div>
+                </ion-slide>
+                <ion-slide >
+                    <div class="box">
+                        <img class=""  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Flead51.png" width="100%" height="auto" >
+                       <div>
+                           <img  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Flead52.png"  width="100%" height="auto" >
+                           <img ui-sref="constipationQuestions" on-touch="onTouch()" on-release="onRelease()" class="experience"  ng-src="{{experienceImg}}"  width="103" height="30.5" >
+                       </div>
+                        <br>
+                    </div>
+                </ion-slide>
+            </ion-slide-box>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

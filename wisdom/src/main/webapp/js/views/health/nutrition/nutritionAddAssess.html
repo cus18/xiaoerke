@@ -1,0 +1,32 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="营养评估" ng-init="doRefresh()">
+    <ion-content class="nutritionAddAssess " style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="titleLine">
+                <span class="line"></span>
+                <span class="line"></span>
+                {{title}}
+            </div>
+            <div class="assess-result">
+               <div class="balance-pic">
+                   <img class="balance-center" width="112" height="154" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Fbalance_center.png" >
+                   <img class="balance-pallet" width="286" height="67" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Fbalance_pallet.png" >
+               </div>
+                <p class="">
+                    {{talk}}<br>
+                    {{ping}}
+                </p>
+                <a ng-click="goJiangjie()">
+                    去看看营养师的讲解
+                    &nbsp;<img class="my-img" width="11.5" height="12" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Farrow_right_gray.png" >
+                </a>
+            </div>
+            <div class="next" ng-click="goAssess()" ng-if="noNext=='true'">
+                <button class="button foot-btn">下一项</button>
+            </div>
+            <div class="next" ng-click="goAssessResult()" ng-if="noNext=='false'">
+                <button class="button foot-btn">查看结果</button>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

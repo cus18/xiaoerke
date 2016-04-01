@@ -1,0 +1,129 @@
+<div ui-view>
+<div class="header">
+    <div id="top">
+        <div class="top">
+            <span class="weibo">官方新浪微博：宝大夫</span>
+            <span class="weixin">官方微信号：BaodfWX</span>
+        </div>
+    </div>
+    <div class="nav">
+        <div class="logo"><a ui-sref="baodaifuIndex">宝大夫</a></div>
+        <ul>
+            <li><a ui-sref="baodaifuIndex">首页</a></li>
+            <li><a ui-sref="zixundaifu">咨询大夫</a></li>
+            <li class="on"><a ui-sref="yuyuedaifu">预约大夫</a></li>
+            <li><a ui-sref="shuo">健康管理</a></li>
+            <li><a ui-sref="zixun">媒体资讯</a></li>
+            <li><a ui-sref="about">关于我们</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="yuyuedaifu"  id="yuyuedaifu">
+    <div class="bar">
+        <h3>预约大夫</h3>
+    </div>
+    <div class="yyzx_list">
+        <div class="yyzx_weixin">
+            <div class="head">
+                微信加入宝大夫服务号，<br>即可开始在线咨询
+                <div class="top"></div>
+            </div>
+            <div class="ewm">
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2Fimg%2Fewm.jpg" alt="">
+            </div>
+        </div>
+        <ul id="loadmore">
+            <li ng-repeat="item in yuyuedaifuList">
+                <a ng-click="yuyuedaifuClick($index)"><span class="dian zx"></span><h4>{{item.title}}</h4></a>
+                <p  ng-if="yuyuedaifuIndex==$index" ng-bind-html="content"></p>
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+
+<!-- 底部开始 -->
+<div id="footer">
+    <div class="footer">
+        <p><a ui-sref="fuwutiaokuan" class="pianyi">服务条款</a><a ui-sref="yinsibaohu">隐私保护</a></p>
+        <p><a target="_blank">京ICP备15035618号-1</a></p>
+        <p>版权所有：北京晨星启明科技有限公司</p>
+    </div>
+</div>
+<!-- 加载更多文章js -->
+<script>
+    var count=8;
+    var times=0;
+    var loaded = true;
+    function Add_Data()
+    {
+        var top = $(".loadmore").offset().top;
+        if(loaded && ($(window).scrollTop() + $(window).height() > top))
+        {
+            $(".loadmore").html("<span>更多...</span>");
+            //alert("aa");
+            times++;
+            $.ajax(
+                    {
+                        type: "POST",
+                        dataType: "text",
+                        url: "weibo.ashx",
+                        data: "",
+                        success: function(data)
+                        {
+                            //alert("第"+times+"次追加数据.");
+                            if(data == "没有数据")
+                            {
+                                $(".loadmore").css("display","none");
+                                loaded=false;
+                                AddEffect();
+                            }
+                            else if(data == "")
+                            {
+                                $(".loadmore").html("<span>更多...</span>");
+                                $(".loadmore").css("display","block");
+                                loaded=false;
+                                AddEffect();
+                            }
+                            else if(data != "")
+                            {
+                                $("#loadmore").append(data);
+                                AddEffect();
+                            }
+                        }
+                    }
+            );
+        }
+    }
+
+    $(window).scroll(function(){
+        if($("#loadmore li").length==8){Add_Data();}
+    });
+    //点击追加数据
+    $(".loadmore").click(function(){
+        $.ajax({
+            type: "POST",
+            dataType: "text",
+            url: "weibo.ashx",
+            data:"",
+            success: function(data){
+                if(data=="没有数据")
+                {
+                    $(".loadmore").css("display","none");
+                    AddEffect();
+                }
+                else
+                {
+                    $("#loadmore").append(data);
+                    $(".loadmore").html("<span>更多...</span>");
+                    AddEffect();
+                }
+            }
+        });
+
+    });
+
+</script>
+</div>

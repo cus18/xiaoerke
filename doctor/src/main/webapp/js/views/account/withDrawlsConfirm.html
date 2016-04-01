@@ -1,0 +1,20 @@
+<ion-spinner ng-show="pageLoading" style="color:#139fff;position: relative;top: 301px;left:148px;z-index:999;"></ion-spinner>
+<ion-view view-title="提现" style="">
+    <ion-spinner ng-show="dataLoading"></ion-spinner>
+    <ion-content class="withDrawlsConfirm" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <div class="pic1">
+                <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2FwithDrawlsConfirm.png" width="121.5" height="139.5">
+                <h3>
+                    您申请的提现金额为：<span class="rr">{{money}}元</span>
+                </h3>
+                <p>
+                    预计到账：{{arriveDate}}
+                </p>
+            </div>
+            <button  class="button foot-btn"
+                    ng-click="withDrawlsComplete()">确定</button>
+        </ion-scroll>
+    </ion-content>
+
+</ion-view>

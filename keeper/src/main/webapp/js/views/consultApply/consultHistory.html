@@ -1,0 +1,32 @@
+<ion-view view-title={{title0}} ng-init="doRefresh()" >
+	<ion-content class="consultHistory"  style="top:0;" >
+		<ion-scroll direction="y" has-bouncing="true">
+			<div class="remind">
+				<img width="12.5" height="12.5" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fremind_icon.png">
+				选择历史咨询，开启复诊！
+			</div>
+			<div class="history-list">
+				<dl ng-repeat="item in logList">
+					<span class="cir"></span>
+					<dt>
+						<span class="date">{{item.create_date | date: 'yyyy-MM-dd HH:mm:ss '}}</span>
+						<span class="des">{{item.show}}</span>
+					</dt>
+					<dd>
+						<p>
+							{{item.result}}
+						</p>
+						<a ng-click="startConsultHistory(item.id)" class="continue">继续咨询</a>
+					</dd>
+				</dl>
+			</div>
+<!-- 			<div class="load-more"> -->
+<!-- 				<a>查看更多</a> -->
+<!-- 			</div> -->
+
+			<br><br><br><br>
+
+		</ion-scroll>
+	</ion-content>
+</ion-view>
+

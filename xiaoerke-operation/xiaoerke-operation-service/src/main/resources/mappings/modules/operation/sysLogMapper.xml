@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.operation.dao.SyslogMapper" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.operation.entity.SysLog" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="remote_addr" property="remoteAddr" jdbcType="VARCHAR" />
+    <result column="user_agent" property="userAgent" jdbcType="VARCHAR" />
+    <result column="request_uri" property="requestUri" jdbcType="VARCHAR" />
+    <result column="method" property="method" jdbcType="VARCHAR" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.cxqm.xiaoerke.modules.operation.entity.SysLogWithBLOBs" extends="BaseResultMap" >
+    <result column="params" property="params" jdbcType="LONGVARCHAR" />
+    <result column="exception" property="exception" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, type, title, create_by, create_date, remote_addr, user_agent, request_uri, method, 
+    open_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    params, exception
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from sys_log
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_log
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.operation.entity.SysLogWithBLOBs" >
+    insert into sys_log (id, type, title, 
+      create_by, create_date, remote_addr, 
+      user_agent, request_uri, method, 
+      open_id, params, exception
+      )
+    values (#{id,jdbcType=VARCHAR}, #{type,jdbcType=CHAR}, #{title,jdbcType=VARCHAR}, 
+      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{remoteAddr,jdbcType=VARCHAR}, 
+      #{userAgent,jdbcType=VARCHAR}, #{requestUri,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, 
+      #{openId,jdbcType=VARCHAR}, #{params,jdbcType=LONGVARCHAR}, #{exception,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.operation.entity.SysLogWithBLOBs" >
+    insert into sys_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="remoteAddr != null" >
+        remote_addr,
+      </if>
+      <if test="userAgent != null" >
+        user_agent,
+      </if>
+      <if test="requestUri != null" >
+        request_uri,
+      </if>
+      <if test="method != null" >
+        method,
+      </if>
+      <if test="openId != null" >
+        open_id,
+      </if>
+      <if test="params != null" >
+        params,
+      </if>
+      <if test="exception != null" >
+        exception,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remoteAddr != null" >
+        #{remoteAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="userAgent != null" >
+        #{userAgent,jdbcType=VARCHAR},
+      </if>
+      <if test="requestUri != null" >
+        #{requestUri,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null" >
+        #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="params != null" >
+        #{params,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="exception != null" >
+        #{exception,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.operation.entity.SysLogWithBLOBs" >
+    update sys_log
+    <set >
+      <if test="type != null" >
+        type = #{type,jdbcType=CHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remoteAddr != null" >
+        remote_addr = #{remoteAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="userAgent != null" >
+        user_agent = #{userAgent,jdbcType=VARCHAR},
+      </if>
+      <if test="requestUri != null" >
+        request_uri = #{requestUri,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null" >
+        method = #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="params != null" >
+        params = #{params,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="exception != null" >
+        exception = #{exception,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.operation.entity.SysLog" >
+    update sys_log
+    set type = #{type,jdbcType=CHAR},
+      title = #{title,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      remote_addr = #{remoteAddr,jdbcType=VARCHAR},
+      user_agent = #{userAgent,jdbcType=VARCHAR},
+      request_uri = #{requestUri,jdbcType=VARCHAR},
+      method = #{method,jdbcType=VARCHAR},
+      open_id = #{openId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+      <select id="getUserListYesterday" resultType="java.util.HashMap">
+        select * from sys_log where date_format(create_date,'%Y-%m-%d') = #{date}
+        AND title NOT LIKE "00000001%"
+	    AND title NOT LIKE "00000002%"
+        GROUP BY open_id
+    </select>
+    
+      <select id="getUserOperationStatistic" resultType="java.util.HashMap">
+        select
+        sum(case when title LIKE CONCAT(#{alhos},'%') then 1 else 0 end) as alhos,
+        sum(case when title LIKE CONCAT(#{ahosaldoc},'%') then 1 else 0 end) as ahosaldoc,
+        sum(case when title LIKE CONCAT(#{ahosaldep},'%') then 1 else 0 end) as ahosaldep,
+        sum(case when title LIKE CONCAT(#{ahosadepaldoc},'%') then 1 else 0 end) as ahosadepaldoc,
+        sum(case when title LIKE CONCAT(#{alfirstill},'%') then 1 else 0 end) as alfirstill,
+        sum(case when title LIKE CONCAT(#{afirstalsecill},'%') then 1 else 0 end) as afirstalsecill,
+        sum(case when title LIKE CONCAT(#{asecillaldoc},'%') then 1 else 0 end) as asecillaldoc,
+        sum(case when title LIKE CONCAT(#{asecillahosaldoc},'%') then 1 else 0 end) as asecillahosaldoc,
+        sum(case when title LIKE CONCAT(#{asecillalhos},'%') then 1 else 0 end) as asecillalhos,
+        sum(case when title LIKE CONCAT(#{adatealhos},'%') then 1 else 0 end) as adatealhos,
+        sum(case when title LIKE CONCAT(#{adatealdoc},'%') then 1 else 0 end) as adatealdoc,
+        sum(case when title LIKE CONCAT(#{adateahosaldoc},'%') then 1 else 0 end) as adateahosaldoc,
+        sum(case when title LIKE CONCAT(#{adocdetail},'%') then 1 else 0 end) as adocdetail,
+        sum(case when title LIKE CONCAT(#{adocadateserv},'%') then 1 else 0 end) as adocadateserv,
+        sum(case when title LIKE CONCAT(#{adocaservdetail},'%') then 1 else 0 end) as adocaservdetail,
+        sum(case when title LIKE CONCAT(#{apdoc},'%') then 1 else 0 end) as apdoc,
+        sum(case when title LIKE CONCAT(#{canceldoc},'%') then 1 else 0 end) as canceldoc,
+        sum(case when title LIKE CONCAT(#{appraisedoc},'%') then 1 else 0 end) as appraisedoc,
+        sum(case when title LIKE CONCAT(#{sharedoc},'%') then 1 else 0 end) as sharedoc,
+        sum(case when title LIKE CONCAT(#{servattention},'%') then 1 else 0 end) as servattention,
+        sum(case when title LIKE CONCAT(#{attentiondoc},'%') then 1 else 0 end) as attentiondoc,
+        sum(case when title LIKE CONCAT(#{checkservroute},'%') then 1 else 0 end) as checkservroute,
+        sum(case when title LIKE CONCAT(#{checkservstatus},'%') then 1 else 0 end) as checkservstatus,
+        sum(case when title LIKE CONCAT(#{checkdocaplocation},'%') then 1 else 0 end) as checkdocaplocation,
+        sum(case when title LIKE CONCAT(#{checkdoc7daylocation},'%') then 1 else 0 end) as checkdoc7daylocation,
+        sum(case when title LIKE CONCAT(#{checkdoc7dayapbylocation},'%') then 1 else 0 end) as checkdoc7dayapbylocation,
+        sum(case when title LIKE CONCAT(#{myfirstpage},'%') then 1 else 0 end) as myfirstpage,
+        sum(case when title LIKE CONCAT(#{myappointment},'%') then 1 else 0 end) as myappointment,
+        sum(case when title LIKE CONCAT(#{myapdetail},'%') then 1 else 0 end) as myapdetail,
+        sum(case when title LIKE CONCAT(#{myselfinfo},'%') then 1 else 0 end) as myselfinfo,
+        sum(case when title LIKE CONCAT(#{attdoc},'%') then 1 else 0 end) as attdoc
+        from sys_log where open_id = #{open_id}
+        AND date_format(create_date, '%Y-%m-%d') = #{date}
+    </select>
+</mapper>

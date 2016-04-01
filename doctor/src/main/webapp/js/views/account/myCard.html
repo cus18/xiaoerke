@@ -1,0 +1,18 @@
+<ion-spinner ng-show="pageLoading" style="color:#139fff;position: relative;top: 301px;left:148px;z-index:999;"></ion-spinner>
+<ion-view view-title="我的账单" ng-init="doRefresh()">
+    <ion-spinner ng-show="dataLoading"></ion-spinner>
+        <ion-item class="my-box">
+            <div class="item item-borderless item-thumbnail-left">
+                <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{doctorId}}">
+                <h2>{{doctorName}}<span> &nbsp;{{position1}} &nbsp;{{position2}}</span></h2>
+                <p>{{hospitalName}}&nbsp;&nbsp;{{department}}</p>
+            </div>
+            <div class="doc-ma">
+                <img ng-src={{imgUrl}} width="214" height="214"><br/>
+                长按二维码可保存图片
+            </div>
+            <p class="p-doc-tip">
+                患者使用微信扫此二维码即可关注并快速预约您，此二维码属于宝大夫平台，不会泄露您的隐私。
+            </p>
+        </ion-item>
+</ion-view>

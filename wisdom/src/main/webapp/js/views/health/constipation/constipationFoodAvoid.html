@@ -1,0 +1,31 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫" ng-init="doRefresh()">
+    <ion-content class="constipationFoodAvoid" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="warn">
+               <p>
+                   为了给宝宝提供更精确的食谱<br>
+                   划掉宝宝<span>不能吃</span>的东西吧
+               </p>
+            </div>
+            <div class="food-avoid">
+                <div class="line">
+                    <span class="span1">
+                         <span class="cir"></span>
+                    </span>
+                </div>
+                <ul class="">
+                    <li class="avoid-list" ng-repeat="item in [1,2,3,4,5,6]" ng-click="deleteFood($index)">
+                        <a >
+                            火龙果
+                            <img  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Ffood_avoid.png" width="30" height="18.5">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="plan" ui-sref="constipationFood">
+                <button class="button foot-btn">确定</button>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

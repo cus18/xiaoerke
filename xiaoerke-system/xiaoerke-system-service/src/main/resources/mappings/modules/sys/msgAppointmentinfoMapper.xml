@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.sys.dao.MsgAppointmentInfoDao">
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.sys.entity.MsgAppointmentInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="doctorId" property="doctorId" jdbcType="VARCHAR" />
+    <result column="phoneNum" property="phonenum" jdbcType="VARCHAR" />
+    <result column="hospitalName" property="hospitalname" jdbcType="VARCHAR" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, doctorId, phoneNum, hospitalName, location, position
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_msg_appointmentinfo
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_msg_appointmentinfo
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.sys.entity.MsgAppointmentInfo" >
+    insert into sys_msg_appointmentinfo (id, doctorId, phoneNum, 
+      hospitalName, location, position
+      )
+    values (#{id,jdbcType=VARCHAR}, #{doctorId,jdbcType=VARCHAR}, #{phonenum,jdbcType=VARCHAR},
+      #{hospitalname,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{position,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.sys.entity.MsgAppointmentInfo" >
+    insert into sys_msg_appointmentinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="doctorId != null" >
+        doctorId,
+      </if>
+      <if test="phonenum != null" >
+        phoneNum,
+      </if>
+      <if test="hospitalname != null" >
+        hospitalName,
+      </if>
+      <if test="location != null" >
+        location,
+      </if>
+      <if test="position != null" >
+        position,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorId != null" >
+        #{doctorId,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenum != null" >
+        #{phonenum,jdbcType=VARCHAR},
+      </if>
+      <if test="hospitalname != null" >
+        #{hospitalname,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null" >
+        #{position,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.sys.entity.MsgAppointmentInfo" >
+    update sys_msg_appointmentinfo
+    <set >
+      <if test="doctorId != null" >
+        doctorId = #{doctorId,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenum != null" >
+        phoneNum = #{phonenum,jdbcType=VARCHAR},
+      </if>
+      <if test="hospitalname != null" >
+        hospitalName = #{hospitalname,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null" >
+        location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null" >
+        position = #{position,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.sys.entity.MsgAppointmentInfo" >
+    update sys_msg_appointmentinfo
+    set doctorId = #{doctorId,jdbcType=VARCHAR},
+      phoneNum = #{phonenum,jdbcType=VARCHAR},
+      hospitalName = #{hospitalname,jdbcType=VARCHAR},
+      location = #{location,jdbcType=VARCHAR},
+      position = #{position,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <insert id="addMsgAppointment"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_msg_appointmentinfo (id,doctorId,phoneNum,hospitalName,position,location)
+        VALUES (#{id},#{doctorId},#{phoneNum},#{hospitalName},#{position},#{location});
+  </insert>
+  
+  <select id="msgAppointmentStatus" resultType="java.util.HashMap">
+         select * from sys_msg_appointmentinfo sam
+         WHERE 1=1
+         <if test="phoneNum != null">
+             and sam.phoneNum=#{phoneNum}
+         </if>
+         <if test="doctorId != null">
+             and sam.doctorId=#{doctorId}
+         </if>
+         <if test="hospitalName != null">
+             and sam.hospitalName=#{hospitalName}
+         </if>
+         <if test="position != null">
+             and sam.position=#{position}
+         </if>
+         <if test="location != null">
+             and sam.location=#{location}
+         </if>
+    </select>
+    
+</mapper>

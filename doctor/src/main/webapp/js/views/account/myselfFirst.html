@@ -1,0 +1,33 @@
+<ion-view view-title="个人中心">
+    <ion-spinner ng-show="dataLoading"></ion-spinner>
+    <div class="doctorImg">
+        <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{doctorId}}"
+             width="105" height="105"/>
+        <br>{{doctorName}}
+    </div>
+    <ion-content class="myselfFirst" style="top:193px;">
+        <ion-scroll direction="y" has-bouncing="true"  >
+            <ul class="list my-list">
+                <li class="item item-borderless">
+                    <div nav-direction="forward" ng-click="myAccount()">
+                        <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Ficon_account.png" width="18" height="18">&nbsp;&nbsp;<span>我的账单</span>
+                        <!--<span class="all-order">{{balance}}元</span>-->
+                        <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Farr_gray_right.png" width="22" height="22" class="arrow-r">
+                    </div>
+                </li>
+                <li class="item item-borderless" style="" ng-click="myCard()">
+                    <div nav-direction="forward" >
+                        <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Ficon_card.png" width="18" height="14">&nbsp;&nbsp;<span>我的名片</span>
+                        <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Farr_gray_right.png" width="22" height="22" class="arrow-r">
+                    </div>
+                </li>
+                <li class="item item-borderless" >
+                    <div nav-direction="forward" ng-click="setting()">
+                        <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Ficon_setting.png"width="18" height="18">&nbsp;&nbsp;<span>设置</span>
+                        <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Farr_gray_right.png" width="22" height="22" class="arrow-r">
+                    </div>
+                </li>
+            </ul>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

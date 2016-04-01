@@ -1,0 +1,63 @@
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title={{title0}} ng-init="doRefresh()">
+    <ion-spinner ng-show="dataLoading" class="loadPic"></ion-spinner>
+    <div bdf-head="title"></div>
+    <ion-content class="pendPaymentDetail">
+
+        <ion-scroll direction="y" has-bouncing="true" style="top:2px;">
+            <div class="item item-thumbnail-left shadow waitInfo">
+                <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{appointmentDataDetail.doctorId}}" class="doctorPhoto"/>
+                <h2>{{appointmentDataDetail.doctorName}}&nbsp;&nbsp;</h2>
+                <p><!--{{appointmentDataDetail.position1}}
+                    &nbsp;&nbsp;-->{{appointmentDataDetail.position2}}</p>
+                <p>{{appointmentDataDetail.hospitalName}}</p>
+                <p>{{department}}{{doctorInfo2}}&nbsp;&nbsp;{{appointmentDataDetail.departmentName}}</p>
+            </div>
+            <div class="item shadow workInfo">
+                <ul class="workDate">
+                    <li class="l">{{workTime}}</li>
+                    <li class="r">
+                        <span>{{appointmentDataDetail.date}}&nbsp;</span>
+                        <span>{{week}}&nbsp;</span>
+                        <span>{{time}}</span>
+                    </li>
+                </ul>
+                <ul class="workAdd">
+                    <li class="l">{{workLocation}}</li>
+                    <li class="r word-break">{{appointmentDataDetail.location}}</li>
+                </ul>
+            </div>
+            <div class="item shadow orderInfo">
+                <ul class="orderNum">
+                    <li class="l">
+                        {{appointmentNumber}}
+                    </li>
+                    <li class="r">
+                        {{appointmentDataDetail.appointmentNo}}
+                    </li>
+
+                </ul>
+                <ul class="orderStatus">
+                    <li class="l">
+                        {{appointmentSuccess}}
+                    </li>
+                    <li class="r">
+                        {{appointmentStatus}}
+                    </li>
+                </ul>
+            </div>
+            <div class="tips">
+                <p >{{tips}}</p>
+                <p >{{tips1}}</p>
+                <p >{{tips2}}</p>
+
+            </div>
+                <button class="button foot-btn"
+                        ui-sref="appointmentPayment({doctorId:appointmentDataDetail.doctorId,
+                        appointmentNo:appointmentDataDetail.appointmentNo,register_service_id:appointmentDataDetail.patient_register_service_id,date:appointmentDataDetail.date,patient_register_service_id:appointmentDataDetail.patient_register_service_id})">
+                    {{status0}}
+                </button>
+            <div bdf-footer></div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

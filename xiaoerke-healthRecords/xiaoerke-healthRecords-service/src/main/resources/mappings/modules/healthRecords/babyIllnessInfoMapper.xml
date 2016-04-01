@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.healthRecords.dao.BabyIllnessInfoDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.healthRecords.entity.BabyIllnessInfoVo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="babyinfo_Id" property="babyinfoId" jdbcType="VARCHAR" />
+    <result column="illness" property="desc" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="conversation_id" property="conversationId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="caseImg" property="caseimg" jdbcType="VARCHAR" />
+    <result column="resultImg" property="resultimg" jdbcType="VARCHAR" />
+    <result column="otherImg" property="otherimg" jdbcType="VARCHAR" />
+    <result column="positionImg" property="positionimg" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, babyinfo_Id, illness, create_time, conversation_id, status, caseImg, resultImg,
+    otherImg, positionImg
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from healthRecord_illness_describe
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from healthRecord_illness_describe
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.healthRecords.entity.BabyIllnessInfoVo" >
+    insert into healthRecord_illness_describe (id, babyinfo_Id, illness,
+    create_time, conversation_id, status,
+    caseImg, resultImg, otherImg,
+    positionImg)
+    values (#{id,jdbcType=INTEGER}, #{babyinfoId,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR},
+    #{createTime,jdbcType=TIMESTAMP}, #{conversationId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
+    #{caseimg,jdbcType=VARCHAR}, #{resultimg,jdbcType=VARCHAR}, #{otherimg,jdbcType=VARCHAR},
+    #{positionimg,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.healthRecords.entity.BabyIllnessInfoVo" >
+    insert into healthRecord_illness_describe
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="babyinfoId != null" >
+        babyinfo_Id,
+      </if>
+      <if test="desc != null" >
+        illness,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="conversationId != null" >
+        conversation_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="caseimg != null" >
+        caseImg,
+      </if>
+      <if test="resultimg != null" >
+        resultImg,
+      </if>
+      <if test="otherimg != null" >
+        otherImg,
+      </if>
+      <if test="positionimg != null" >
+        positionImg,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="babyinfoId != null" >
+        #{babyinfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="desc != null" >
+        #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="conversationId != null" >
+        #{conversationId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="caseimg != null" >
+        #{caseimg,jdbcType=VARCHAR},
+      </if>
+      <if test="resultimg != null" >
+        #{resultimg,jdbcType=VARCHAR},
+      </if>
+      <if test="otherimg != null" >
+        #{otherimg,jdbcType=VARCHAR},
+      </if>
+      <if test="positionimg != null" >
+        #{positionimg,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.healthRecords.entity.BabyIllnessInfoVo" >
+    update healthRecord_illness_describe
+    <set >
+      <if test="babyinfoId != null" >
+        babyinfo_Id = #{babyinfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="desc != null" >
+        illness = #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="conversationId != null" >
+        conversation_id = #{conversationId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="caseimg != null" >
+        caseImg = #{caseimg,jdbcType=VARCHAR},
+      </if>
+      <if test="resultimg != null" >
+        resultImg = #{resultimg,jdbcType=VARCHAR},
+      </if>
+      <if test="otherimg != null" >
+        otherImg = #{otherimg,jdbcType=VARCHAR},
+      </if>
+      <if test="positionimg != null" >
+        positionImg = #{positionimg,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.healthRecords.entity.BabyIllnessInfoVo" >
+    update healthRecord_illness_describe
+    set babyinfo_Id = #{babyinfoId,jdbcType=VARCHAR},
+    illness = #{desc,jdbcType=VARCHAR},
+    create_time = #{createTime,jdbcType=TIMESTAMP},
+    conversation_id = #{conversationId,jdbcType=VARCHAR},
+    status = #{status,jdbcType=VARCHAR},
+    caseImg = #{caseimg,jdbcType=VARCHAR},
+    resultImg = #{resultimg,jdbcType=VARCHAR},
+    otherImg = #{otherimg,jdbcType=VARCHAR},
+    positionImg = #{positionimg,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

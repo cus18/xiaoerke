@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.interaction.dao.DoctorConcernDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.interaction.entity.DoctorConcern" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+    <result column="sys_doctor_id" property="sysDoctorId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="DoctorVoMap" type="HashMap">
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+        <result column="sys_hospital_id" property="sysHospitalId" jdbcType="VARCHAR" />
+        <result column="hospital" property="hospital" jdbcType="VARCHAR" />
+        <result column="career_time" property="careerTime" jdbcType="TIMESTAMP" />
+        <result column="personal_details" property="personDetails" jdbcType="VARCHAR" />
+        <result column="position1" property="position1" jdbcType="VARCHAR" />
+        <result column="position2" property="position2" jdbcType="VARCHAR" />
+        <result column="comment_number" property="commentNumber" jdbcType="INTEGER" />
+        <result column="fans_number" property="fansNumber" jdbcType="INTEGER" />
+        <result column="availableDate" property="availableDate" jdbcType="TIMESTAMP" />
+        <result column="doctorName" property="doctorName" jdbcType="VARCHAR" />
+    </resultMap>
+    
+  <sql id="Base_Column_List" >
+    id, sys_user_id, sys_doctor_id
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_concern
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+      delete from sys_concern
+      where id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.interaction.entity.DoctorConcern" >
+      insert into sys_concern (id, sys_user_id, sys_doctor_id)
+      values (#{id,jdbcType=VARCHAR}, #{sysUserId,jdbcType=VARCHAR}, #{sysDoctorId,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.interaction.entity.DoctorConcern" >
+    insert into sys_concern
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sysUserId != null" >
+        sys_user_id,
+      </if>
+      <if test="sysDoctorId != null" >
+        sys_doctor_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="sysUserId != null" >
+        #{sysUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysDoctorId != null" >
+        #{sysDoctorId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.interaction.entity.DoctorConcern" >
+    update sys_concern
+    <set >
+      <if test="sysUserId != null" >
+        sys_user_id = #{sysUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysDoctorId != null" >
+        sys_doctor_id = #{sysDoctorId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.interaction.entity.DoctorConcern" >
+    update sys_concern
+    set sys_user_id = #{sysUserId,jdbcType=VARCHAR},
+      sys_doctor_id = #{sysDoctorId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!--点击关注按钮后需往sys_concern插入数据-->
+  <insert id="insertSysConcernExecute">
+      INSERT INTO sys_concern(id,sys_user_id,sys_doctor_id,openid) VALUES(#{id},#{UserId},#{doctorId},#{openid});
+  </insert>
+
+  <!--判断该用户是否关注某个医生 @author zdl-->
+  <select id="JudgeUserConcernDoctor"  resultType="java.util.HashMap">
+      SELECT min(id) FROM sys_concern WHERE sys_user_id=#{sysUserId} AND sys_doctor_id=#{doctorId}
+  </select>
+  
+  <!--查询我关注的医生信息详情 @author zdl-->
+  <select id="findMyConcernDoctorInfo" resultMap="DoctorVoMap"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        SELECT  dr_hos.sys_hospital_id  AS sysHospitalId,
+        dr.id,dr.sys_user_id,dr.hospitalName hospital,dr.career_time,dr.position1,dr.position2,
+        dr.comment_number,dr.fans_number,dr.personal_details,dr.experince,dr.card_experince,dr.img_url, MIN(dr_ser.date) availableDate,
+        ur.name doctorName,MIN(DATE_FORMAT(dr_ser.begin_time,'%k:%i')) begin_time FROM
+        (SELECT r.sys_doctor_id, r.DATE, r.begin_time FROM sys_register_service r, sys_concern c WHERE
+        r.sys_doctor_id = c.sys_doctor_id and c.sys_user_id = #{sys_user_id} and STATUS=0 ORDER BY
+        UNIX_TIMESTAMP(DATE_FORMAT(CONCAT(DATE_FORMAT(date,'%Y:%c:%d'),DATE_FORMAT(begin_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s')) ASC) AS dr_ser,
+        sys_doctor AS dr, sys_user AS ur,
+        doctor_hospital_relation dr_hos
+        WHERE dr_ser.sys_doctor_id = dr.id
+        AND dr_hos.sys_doctor_id=dr.id
+        AND dr.sys_user_id = ur.id
+        AND (DATE_FORMAT(CONCAT(DATE_FORMAT(dr_ser.date,'%Y:%c:%d'),DATE_FORMAT(dr_ser.begin_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>NOW()
+        GROUP BY dr_ser.sys_doctor_id
+        <if test="orderBy==0">
+            ORDER BY UNIX_TIMESTAMP(DATE_FORMAT(CONCAT(DATE_FORMAT(dr_ser.date,'%Y:%c:%d'),
+            DATE_FORMAT(dr_ser.begin_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s')) ASC
+        </if>
+        <if test="orderBy==1">
+            ORDER BY dr.fans_number DESC
+        </if>
+    </select>
+    
+</mapper>

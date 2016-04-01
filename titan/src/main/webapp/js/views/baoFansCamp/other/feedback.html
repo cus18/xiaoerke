@@ -1,0 +1,29 @@
+<ion-view view-title={{title0}} >
+	<ion-spinner ng-show="dataLoading" class="loadPic"></ion-spinner>
+	<div class="tishi" ng-if="lock=='true'">
+		<a>提交成功</a>
+	</div>
+	<ion-content class="feedback" style="top:0px;">
+		<ion-scroll direction="y" has-bouncing="true">
+			<dl>
+				<dt>
+					请填写您的宝贵意见：
+				</dt>
+				<dd class="feed">
+					<textarea  ng-model="info.feedback"  ng-minlength="1" maxlength="200" placeholder="我们期待听到您的声音，您的宝贵意见是我们不断进步的源泉！">
+
+					</textarea>
+				</dd>
+				<dt >
+					请留下您的联系方式：
+				</dt>
+				<dd class="contact">
+					<input placeholder="QQ，微信，手机号，邮箱" ng-model="info.contact">
+				</dd>
+			</dl>
+			<button class="button foot-btn" ng-disabled="(info.feedback==null)||(info.feedback.length==0)" ng-click="submitAdvice()">提交反馈</button>
+			<div bdf-footer></div>
+		</ion-scroll>
+	</ion-content>
+</ion-view>
+

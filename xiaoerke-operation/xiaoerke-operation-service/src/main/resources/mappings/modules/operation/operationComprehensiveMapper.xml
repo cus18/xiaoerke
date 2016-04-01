@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.operation.dao.OperationComprehensiveDao" >
+ <insert id="insertBatchUserStatistic" parameterType="java.util.List">
+        insert into sys_operation_statistic_user
+        (id,openid,date,name,marketid,attentiondate,alhos,ahosaldoc,ahosaldep,ahosadepaldoc,
+         alfirstill,afirstalsecill,asecillaldoc,asecillahosaldoc,asecillalhos,adatealhos,adatealdoc,
+        adateahosaldoc,adocdetail,adocadateserv,adocaservdetail,apdoc,canceldoc,appraisedoc,sharedoc,
+        servattention,attentiondoc,checkservroute,checkservstatus,checkdocaplocation,checkdoc7daylocation,
+        checkdoc7dayapbylocation,myfirstpage,myappointment,myapdetail,myselfinfo,attdoc)
+        values
+        <foreach collection="list"  item="item" index="index" separator=",">
+            (#{item.id},#{item.openid},#{item.date},#{item.name},#{item.marketid},#{item.attentiondate},#{item.alhos},#{item.ahosaldoc},#{item.ahosaldep},#{item.ahosadepaldoc},
+            #{item.alfirstill},#{item.afirstalsecill},#{item.asecillaldoc},#{item.asecillahosaldoc},#{item.asecillalhos},#{item.adatealhos},#{item.adatealdoc},
+            #{item.adateahosaldoc},#{item.adocdetail},#{item.adocadateserv},#{item.adocaservdetail},#{item.apdoc},#{item.canceldoc},#{item.appraisedoc},#{item.sharedoc},
+            #{item.servattention},#{item.attentiondoc},#{item.checkservroute},#{item.checkservstatus},#{item.checkdocaplocation},#{item.checkdoc7daylocation},
+            #{item.checkdoc7dayapbylocation},#{item.myfirstpage},#{item.myappointment},#{item.myapdetail},#{item.myselfinfo},#{item.attdoc})
+        </foreach>
+    </insert>
+    
+    <select id="getStatisticData" resultType="java.util.HashMap">
+        select *
+        from sys_operation_statistic_user where date between #{startDate} and #{endDate}
+    </select>
+
+    <!--渠道统计deliang-->
+    <select id="getChannelStatisticData" resultType="java.util.HashMap">
+        SELECT
+            a.marketer,
+            a.newAddNum,
+            b.cancelNum,
+            a.newAddNum - b.cancelNum jinAddNum,
+            c.leijiAttention - d.leijiCancleAttention leijiNum
+        FROM
+            (
+                SELECT
+                    marketer,
+                    count(*) newAddNum
+                FROM
+                    sys_attention
+                WHERE
+                    date BETWEEN #{startDate} AND #{endDate}
+                AND STATUS = '0'
+                GROUP BY
+                    marketer
+                ORDER BY
+                    NULL
+            ) a
+        LEFT JOIN (
+            SELECT
+                marketer,
+                count(*) cancelNum
+            FROM
+                sys_attention
+            WHERE
+                date BETWEEN #{startDate} AND #{endDate}
+            AND STATUS = '1'
+            GROUP BY
+                marketer
+            ORDER BY
+                NULL
+        ) b ON a.marketer = b.marketer
+        LEFT JOIN (
+            SELECT
+                marketer,
+                count(*) leijiAttention
+            FROM
+                sys_attention
+            WHERE
+                date BETWEEN '2015-01-01 00:00:00'
+            AND #{endDate}
+            AND STATUS = '0'
+            GROUP BY
+                marketer
+            ORDER BY
+                NULL
+        ) c ON c.marketer = a.marketer
+        LEFT JOIN (
+            SELECT
+                marketer,
+                count(*) leijiCancleAttention
+            FROM
+                sys_attention
+            WHERE
+                date BETWEEN '2015-01-01 00:00:00'
+            AND #{endDate}
+            AND STATUS = '1'
+            GROUP BY
+                marketer
+            ORDER BY
+                NULL
+        ) d ON d.marketer = a.marketer
+    </select>
+
+
+    <select id="getAppUserListBetweenStartAndEndDate" resultType="java.util.HashMap">
+        select *
+        from sys_operation_statistic_user where date between #{startDate} and #{endDate} GROUP BY openid
+    </select>
+
+    <select id="getConsultUserListBetweenStartAndEndDate" resultType="java.util.HashMap">
+        select swr.*,date_format(sa.date,'%Y-%m-%d') date,sa.nickname name,sa.marketer
+        from sys_wechat_record swr ,sys_attention sa
+        where
+        swr.openid = sa.openid
+        and
+        DATE_FORMAT(swr.infoTime,'%Y-%m-%d') between #{startDate} and #{endDate}
+        GROUP BY openid ORDER by null
+    </select>
+
+    <select id="getOverallStatisticData" resultType="java.util.HashMap">
+        select *,DATE_FORMAT(create_date,'%Y-%m-%d') date
+        from sys_statistics where DATE_FORMAT(create_date,'%Y-%m-%d') between #{startDate} and #{endDate}
+        ORDER BY DATE_FORMAT(create_date,'%Y-%m-%d') DESC
+    </select>
+
+    <select id="getTuiStatisticData" resultType="java.util.HashMap">
+        SELECT
+            count(*) tuiNum,
+            marketer
+        FROM
+            sys_attention
+        WHERE
+            DATE_FORMAT(date, '%Y-%m-%d') BETWEEN #{startDate}
+        AND #{endDate}
+        AND STATUS = "0"
+        and marketer is NOT NULL and marketer!=""
+        GROUP BY
+        marketer
+        ORDER BY tuiNum DESC
+    </select>
+
+    <select id="getQDStatisticData" resultType="com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention">
+        SELECT
+            openid,marketer,status
+        FROM
+            sys_attention
+        WHERE
+            date &gt; #{startDate}
+        AND date &lt; #{endDate}
+    </select>
+
+    <select id="getQDCancelStatisticData" resultType="com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention">
+        SELECT
+            openid,marketer,status
+        FROM
+            sys_attention where status="1" and
+        date &gt; #{startDate}
+        AND date &lt; #{endDate}
+        GROUP BY openid
+    </select>
+
+    <select id="getQDMarketerData" resultType="com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention">
+       SELECT
+            openid,marketer,status
+        FROM
+            sys_attention
+        WHERE
+         date &gt; #{startDate}
+        AND date &lt; #{endDate}
+        GROUP BY marketer
+    </select>
+    
+    
+    <!--新增订单数-->
+    <select id="findNewAddOrderNmuber" resultType="Integer">
+        select count(*) from patient_register_service prs
+        where DATE_FORMAT(prs.create_date,'%Y-%m-%d') =DATE_FORMAT(#{statisticsData},'%Y-%m-%d')
+        and prs.babyName not like '%测试%'
+    </select>
+
+    <!--不成功订单数-->
+    <select id="findUnSuccessOrderNumber" resultType="Integer">
+        select count(*) from patient_register_service prs
+        where DATE_FORMAT(prs.update_date,'%Y-%m-%d') =DATE_FORMAT(#{statisticsData},'%Y-%m-%d')
+        and status='6'
+    </select>
+
+    <!--累计成功订单数-->
+    <select id="findCountOrderNumber" resultType="Integer">
+        select count(*) from patient_register_service prs where prs.status='2' or prs.status='3' or prs.status='4' or prs.status='5'
+        and babyName not like '%测试%'
+    </select>
+
+    <select id="getUserConsultTimes" resultType="Integer">
+        SELECT
+            count(*)
+        FROM
+            sys_wechat_record
+        WHERE
+            openid = #{openid}
+        AND DATE_FORMAT(infoTime, '%Y-%m-%d') BETWEEN #{startDate}
+        AND #{endDate}
+    </select>
+
+    <select id="getUserConsultListTimes" resultType="java.util.HashMap">
+        SELECT
+            openid,count(*) consultTimes
+        FROM
+            sys_wechat_record
+        WHERE
+         DATE_FORMAT(infoTime, '%Y-%m-%d') BETWEEN #{startDate}
+        AND #{endDate}
+        GROUP BY openid
+    </select>
+
+    <select id="getAppointmentNum" resultType="Integer">
+        select count(*) from patient_register_service
+        where 1=1
+        <if test="type == 'new'">
+            and status!="6"
+        </if>
+        <if test="type == 'cancel'">
+            and status="6"
+        </if>
+        and create_date
+        BETWEEN #{startDate} and #{endDate}
+    </select>
+
+    <select id="getUserAppointmentNum" resultType="Integer">
+        select count(*) from patient_register_service prs,
+        sys_wechat_appint_info swai
+        where status!="6"
+        AND
+        swai.patient_register_service_id = prs.id
+        and create_date
+        BETWEEN #{startDate} and #{endDate}
+    </select>
+
+    <select id="getDoctorStatisticInfo" resultType="com.cxqm.xiaoerke.modules.sys.entity.DoctorVo">
+        select * from
+        sys_doctor
+        where create_date
+        between #{startDate} and #{endDate}
+    </select>
+
+    <select id="getConsultStatisticInfo" resultType="Integer">
+        select count(*) from
+        sys_wechat_record swr
+        <if test="type == 'newUseAllConsult'">
+            inner JOIN
+            sys_attention sat
+            on swr.openid=sat.openid and sat.status="0"
+        </if>
+        <if test="type == 'newUseNoUseConsult'">
+            inner JOIN
+            sys_attention sat
+            on swr.openid=sat.openid and sat.status="0"
+        </if>
+        where 1=1
+        <if test="type == 'allConsult'">
+            and swr.opercode="1004"
+        </if>
+        <if test="type == 'noUseConsult'">
+            and swr.text like "%/:share%" and swr.opercode="2002"
+        </if>
+        <if test="type == 'newUseAllConsult'">
+            and swr.opercode="1004"
+        </if>
+        <if test="type == 'newUseNoUseConsult'">
+            and swr.text like "%/:share%" and swr.opercode="2002"
+        </if>
+        and swr.infoTime between #{startDate} and #{endDate}
+    </select>
+
+    <!-- 统计有效预约用户使用频次    张博-->
+     <select id="getValidReserveConsultCount" resultType="java.util.HashMap">
+       SELECT
+	MAX(t.id) as max,MIN(t.id) as min,ROUND(AVG(t.id)) as avg
+	FROM
+	(
+		SELECT
+			COUNT(id) AS id,
+			DATE_FORMAT(create_date, '%Y-%m-%d') AS date
+		FROM
+			patient_register_service
+		WHERE
+			status != 6
+		AND create_date BETWEEN #{startDate} and date_add(#{endDate}, INTERVAL 1 day)
+		GROUP BY
+			DATE_FORMAT(create_date, '%Y-%m-%d')
+	) t
+    </select>
+    
+    <select id="getValidReserveConsult" resultType="java.util.HashMap">
+        select MAX(t.id) as max,MIN(t.id) as min,ROUND(AVG(t.id)) as avg  from (SELECT
+			count(*)as id,DATE_FORMAT(pr.create_date,'%Y-%m-%d') as date
+		FROM
+			patient_register_service pr
+		INNER JOIN sys_patient sp ON pr.sys_patient_id = sp.id
+		INNER JOIN sys_user su ON su.id = sp.sys_user_id
+		WHERE
+			 pr.`status`!= 6
+		AND su.openid IN (
+			SELECT
+				openid
+			FROM
+				sys_attention
+			WHERE
+				date  BETWEEN #{startDate} and #{endDate}
+			AND `status` = '0'
+		)
+		GROUP BY  DATE_FORMAT(pr.create_date,'%Y-%m-%d')
+		)t
+    </select>
+    
+</mapper>

@@ -1,0 +1,326 @@
+﻿<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title={{title0}}>
+    <ion-spinner ng-show="dataLoading" class="loadPic"></ion-spinner>
+    <div bdf-head="title"></div>
+    <!--非微信公众号预约提示-->
+    <div class="attention-shadow"  ng-click="cancelRemind()" ng-if="bookRemindLock"></div>
+    <div class="bdf-attention"  ng-if="bookRemindLock" ng-click="cancelRemind()">
+        <div style="text-align: center;width:100%;margin:0 auto;">
+            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fappointment_remind.png" width="90%" height="auto">
+        </div>
+        <dl>
+            <dt>
+                <span class="ll"></span>
+                关注宝大夫
+                <span class="rr"></span>
+            </dt>
+            <dd>
+                <span class="cir"></span>&nbsp;&nbsp;
+                1.&nbsp;打开微信，搜索“宝大夫”<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关注公众号</dd>
+            <dd>
+                <span class="cir"></span>&nbsp;&nbsp;
+                2.&nbsp;扫描下方二维码，关注宝大夫<br>
+                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fattention_code_book.png" width="240.5" height="auto" >
+            </dd>
+        </dl>
+    </div>
+    <!-- 王强医生预约提示-->
+    <div class="shadow" ng-if="wangQiang"></div>
+    <div class="remind-wangQ"  ng-if="wangQiang">
+        <p>
+            王强主任接诊患者较多，需<span ng-if="begin_time_am>12">下午3点</span ><span ng-if="begin_time_am<=12">上午10点</span>前到诊室找医生，听从医生安排、按序就诊。由于候诊时间可能较长，请您耐心等待或预约其他医生。
+        </p>
+        <div class="button-two">
+            <div class="line"></div>
+            <button  ng-click="checkIfAppScanDoctor(item2.register_service_id,appointmentInfo.doctorDetail.doctorId,
+                                   appointmentInfo.choiceDate,item2.begin_time,item2.end_time,hospitalName,position)">继续预约</button>
+            <button ui-sref="appointmentFirst">预约其他医生</button>
+        </div>
+
+    </div>
+    <ion-content class="doctorAppointment">
+        <ion-scroll direction="y" has-bouncing="true" style="top:0px;">
+            <div class="item item-borderless item-thumbnail-left doctorInfo" style="margin-bottom:0;">
+                <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{doctorDetail.doctorId}}?ver={{picVer}}" class="doctorPhoto"/>
+                <h2>{{doctorDetail.doctorName}}&nbsp;<span>{{doctorDetail.position1}}
+                    {{doctorDetail.position2}}</span></h2>
+                <p >{{doctorDetail.hospitalName}}</p>
+                <p >{{doctorDetail.departmentName}}</p>
+                <div ng-if="!isAttention" class="focus" ng-click="attentionDoctor()">
+                    <div>{{doctorDetail.fans_number}}</div>
+                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fdoc_attention1.png" width="43" height="15"><br>
+                </div>
+                <div ng-if="isAttention" class="focus">
+                    <div>{{doctorDetail.fans_number}}</div>
+                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fdoc_attention2.png" width="43" height="15"><br>
+                </div>
+                <div class="doctorGroup" ng-click="doctorGroup()" ng-if="doctorDetail.doctorGroupName!=undefined">
+                    {{doctorDetail.doctorGroupName}} >
+                </div>
+            </div>
+            <div class=" attitude-profession">
+                <div>
+                    <span>
+                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fdoc_attitude.png" width="17" height="17">&nbsp;
+                    服务态度
+                    <a>{{avgStar}}分</a>
+                </span>
+                <span>
+                     <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fdoc_profession.png" width="17" height="17">&nbsp;
+                    专业水平
+                    <a>{{avgMajorStar}}分</a>
+                </span>
+                </div>
+            </div>
+            <div ng-if="mark=='dateAvailable'">
+                <table bgcolor="#88d9dd" style="color:#FFFFFF" width="100%">
+                    <td>
+                        <div ng-if="maxItem!='1'">
+                            <a ng-click="choiceLocation(-1)" style="display: inline-block;width:39px;height:70px;padding:19px 10px;">
+                                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fdoc_pre.png" width="19" height="32" style="vertical-align: middle;"></a>
+                        </div>
+                    </td>
+                    <td height="70" style="padding:10px 5px;">
+                        <div style="margin:-15px 5px 0">
+                            <br/>
+                            <span class="circle">{{infoItem}}</span>{{position}}（{{hospitalName}}）{{location}}
+                        </div>
+                    </td>
+                    <td>
+                        <div ng-if="maxItem!='1'">
+                            <a ng-click="choiceLocation(1)" style="display: inline-block;width:39px;height:70px;padding:19px 10px;">
+                                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fdoc_next.png" width="19" height="32" style="vertical-align: middle;"></a>
+                        </div>
+                    </td>
+                </table>
+                <div class="appInfo list">
+                    <div class="item item-borderless date">
+                        <ul class="row">
+                            <li class="col" ng-repeat="item in [0,1,2,3,4,5,6]" ng-if="choiceItem >=0&&choiceItem < 7">
+                                <a class="week">{{weekList[item]}}</a><br>
+                                <a class="time">
+                                    <span ng-if="choiceItem==item" class="circle-b"
+                                          ng-click="selectDate(timeListWithMonth[item],item)">{{timeList[item]}}</span>
+                                    <span ng-if="choiceItem!=item"
+                                          ng-click="selectDate(timeListWithMonth[item],item)">{{timeList[item]}}</span>
+                                    <i style="margin-top:-2px" ng-if="timeListStatus[item]!=-1"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <ul class="orderOpen" ng-if="appointmentList.length==0" style="" >
+                        <li class="item item-borderless" style="text-align:center;padding-top:0;">
+                            <span class="open-btn" ng-click="doRefresh()">最近可预约日期 {{minAvailableDate}}</span>
+                        </li>
+                    </ul>
+                    <!--<div style="color:#666;font-size:14px;padding:10px;" ng-if="appointmentList.length!=0">
+                        <strong> 服务流程 </strong> &nbsp;&nbsp;免费预约 > 准时报到 > 医生安排加号（需要等待）
+                    </div>-->
+                    <div class="time-list" ng-repeat="item in appointmentList">
+                        <ul class="row" ng-repeat="item1 in item.available_time" ng-if="choiceItem >=0&&choiceItem < 7">
+                            <li class="col col-33"  ng-repeat="item2 in item1">
+                                <a class="yes"
+                                   ng-if="item2.status=='0'&&(item.hospitalId==sys_hospital_id)&&
+                                   item.location==location&&(currentDateTime<(appointmentInfo.choiceDate+' '+item2.begin_time))"
+                                   ng-click="checkIfAppScanDoctor(item2.register_service_id,appointmentInfo.doctorDetail.doctorId,
+                                   appointmentInfo.choiceDate,item2.begin_time,item2.end_time,hospitalName,position)">
+                                    {{item2.begin_time}}</a>
+                                <a class="no" ng-if="(item2.status=='1'||item2.status=='2'||
+                                (currentDateTime>=(appointmentInfo.choiceDate+' '+item2.begin_time)))
+                                &&(item.hospitalId==sys_hospital_id)&&
+                                   item.location==location">{{item2.begin_time}}</a>
+                            </li>
+                        </ul>
+                        <div class="tip" style="margin-left:15px;margin-right:15px">
+                            <div ng-if="item.service_type==1&&(item.hospitalId==sys_hospital_id)&&
+                                   item.location==location">
+                                <span class="l"> 温馨提示：</span>
+                                <span class="r">专家门诊需到医院补交挂号费{{item.price}}元，请知悉！</span>
+                            </div>
+                            <div ng-if="item.service_type==2&&(item.hospitalId==sys_hospital_id)&&
+                                   item.location==location">
+                                <span class="l">温馨提示：</span>
+                                <span class="r">专家门诊需到医院补交挂号费{{item.price}}元，医生门诊量大，需耐心等待，请知悉！</span>
+                            </div>
+                            <div ng-if="item.service_type==3&&(item.hospitalId==sys_hospital_id)&&
+                                   item.location==location">
+                                <span class="l">温馨提示：</span>
+                                <span class="r">特需门诊需到医院补挂号费{{item.price}}元，请悉知！</span>
+                            </div>
+                            <div ng-if="item.service_type==4&&(item.hospitalId==sys_hospital_id)&&
+                                   item.location==location">
+                                <span class="l"> 温馨提示：</span>
+                                <span class="r">
+                                     特需门诊需到医院补挂号费{{item.price}}元，医生门诊量大，需耐心等待，请知悉！
+                                </span>
+
+                            </div>
+                            <div ng-if="specialPrompt !=''" style="color:#ffabab;">
+                                <span class="l"> 特别提示：</span>
+                                <span class="r">
+                                  {{specialPrompt}}
+                                </span>
+                            </div>
+                            <div ng-if="item.service_type==5&&(item.hospitalId==sys_hospital_id)&&
+                                   item.location==location">
+                                <span class="l"> 温馨提示：</span>
+                                <span class="r">该医生在非公立医院出诊，其服务标准优于公立医院，挂号费{{item.price}}元。</span>
+                            </div>
+                            <div style="clear:both;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="mark=='dateNoAvailable'">
+                <table bgcolor="#88d9dd" style="color:#FFFFFF" width="100%">
+                    <td>
+                        <div style="" ng-if="maxItem!='1'">
+                            <a id="arr-l" ng-click="choiceDoctorLocation(-1)"  style="display: inline-block;width:39px;height:70px;padding:19px 10px;">
+                                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fdoc_pre.png" width="19" height="32" style="vertical-align: middle;">
+                            </a>
+                        </div>
+                    </td>
+                    <td height="70" style="padding:10px 5px;">
+                        <div style="margin:-15px 5px 0">
+                            <br/>
+                            <span class="circle">{{infoItem}}</span>{{doctorLocation}}
+                        </div>
+                    </td>
+                    <td>
+                        <div style=""  ng-if="maxItem!='1'"><a id="arr-r" ng-click="choiceDoctorLocation(1)"  style="display: inline-block;width:39px;height:70px;padding:19px 10px;">
+                            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fdoc_next.png" width="19" height="32" style="vertical-align: middle;">
+                        </a>
+                        </div>
+                    </td>
+                </table>
+                <div class="appInfo list">
+                    <div class="item item-borderless date">
+                        <ul class="row">
+                            <li class="col" ng-repeat="item in [0,1,2,3,4,5,6]">
+                                <a class="week">{{weekList[item]}}</a><br>
+                                <a class="time">
+                                    <span ng-if="choiceItem==item" class="circle-b"
+                                          ng-click="selectDate(timeListWithMonth[item],item)">{{timeList[item]}}</span>
+                                    <span ng-if="choiceItem!=item"
+                                          ng-click="selectDate(timeListWithMonth[item],item)">{{timeList[item]}}</span>
+                                    <i style="margin-top:-2px" ng-if="timeListStatus[item]!=-1"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="time-list" ng-repeat="item in appointmentList">
+                        <ul class="row" ng-repeat="item1 in item.available_time">
+                            <li class="col col-33"  ng-repeat="item2 in item1">
+                                <a class="no">{{item2.begin_time}}</a>
+                            </li>
+                        </ul>
+                        <div class="tip" style="margin-left:15px;margin-right:15px">
+                            <div ng-if="item.service_type==1&&(item.hospitalId==sys_hospital_id)&&
+                                   item.location==location">
+                                <span class="l"> 温馨提示：</span>
+                                <span class="r">专家门诊需到医院补交挂号费{{item.price}}元，请知悉！</span>
+                            </div>
+                            <div ng-if="item.service_type==2&&(item.hospitalId==sys_hospital_id)&&
+                                   item.location==location">
+                                <span class="l">温馨提示：</span>
+                                <span class="r">专家门诊需到医院补交挂号费{{item.price}}元，医生门诊量大，需耐心等待，请知悉！</span>
+                            </div>
+                            <div ng-if="item.service_type==3&&(item.hospitalId==sys_hospital_id)&&
+                                   item.location==location">
+                                <span class="l">温馨提示：</span>
+                                <span class="r">特需门诊需到医院补挂号费{{item.price}}元，请悉知！</span>
+                            </div>
+                            <div ng-if="item.service_type==4&&(item.hospitalId==sys_hospital_id)&&
+                                   item.location==location">
+                                <span class="l"> 温馨提示：</span>
+                                <span class="r">
+                                     特需门诊需到医院补挂号费{{item.price}}元，医生门诊量大，需耐心等待，请知悉！
+                                </span>
+
+                            </div>
+                            <div ng-if="item.service_type==5&&(item.hospitalId==sys_hospital_id)&&
+                                   item.location==location">
+                                <span class="l"> 温馨提示：</span>
+                                <span class="r">该医生在非公立医院出诊，其服务标准优于公立医院，挂号费{{item.price}}元。</span>
+                            </div>
+
+                            <div ng-if="item.desc_info" style="color:#ffabab;">
+                                <span class="l"> 特别提示：</span>
+                                <span class="r">
+                                  {{item.desc_info}}
+                                </span>
+                            </div>
+                            <div style="clear:both;"></div>
+                        </div>
+                    </div>
+                    <ul class="orderOpen">
+                        <li class="item item-borderless" style="text-align:center;padding-top:0;">
+                            <span ng-if="latestAppointmentDate!=null" class="open-btn" style="height:40px;margin-bottom: 10px;">
+                                最近可预约时间：{{latestAppointmentDate}}</span><br/>
+                            <span ng-if="latestAppointmentDate!=null&&order[latestAppointmentDate]=='1'"
+                                  class="open-btn" style="height:40px" ng-click="showPopup()">预约开放通知成功</span>
+                            <span ng-if="latestAppointmentDate!=null&&order[latestAppointmentDate]!='1'"
+                                  class="open-btn" style="height:40px" ng-click="showPopup()">预约开放通知</span>
+                            <span ng-if="latestAppointmentDate==null&&order[0]=='1'" class="open-btn">预约开放通知成功</span>
+                            <span ng-if="latestAppointmentDate==null&&order[0]!='1'" class="open-btn" ng-click="showPopup()">预约开放通知</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info list">
+                <ul class="info-hd">
+                    <li style="border-right:1px solid #ccc;"><a ng-click="change('doc')" id="doc" class="cur" ng-style="du=='1'?{'color':'#88d9dd','border-bottom':'2px solid #88d9dd'}:{'color':'#333','border-bottom':'none'}">医生简介</a></li>
+                    <li><a  ng-click="change('user')" id="user" ng-style="du=='0'?{'color':'#88d9dd','border-bottom':'2px solid #88d9dd'}:{'color':'#333','border-bottom':'none'}">用户评价</a></li>
+                </ul>
+                <div class="doc-info" ng-if="(doc==true)">
+                    <ul>
+                        <li>
+                            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fdoc_intro.png" width="25" height="25">
+                            <p>{{doctorDetail.doctor_normal_desc}}</p>
+                        </li>
+                        <li>
+                            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fdoc_major.png" width="25" height="25">
+                            <p>{{doctorDetail.doctor_expert_desc}}</p>
+                        </li>
+                        <li ng-if="doctorDetail.doctorCaseList.length==0">
+                            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fdoc_case.png" width="25" height="25">
+                            <p>部分案例</p>
+                            <p style="color:#999;">此医生暂无案例</p>
+
+                        </li>
+                        <li ng-if="doctorDetail.doctorCaseList.length>0">
+                            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fdoc_case.png" width="25" height="25">
+                            <p>部分案例（概括{{doctorDetail.sumcase}}名宝宝的疾病症状）</p>
+                            <p class="case" ng-repeat="item in doctorDetail.doctorCaseList">
+                                <span class="case-name" >{{item.doctor_case_name}}</span>
+                                <span class="case-num" ng-style="(item.doctor_case_name!='其他')?{'background-color':caseColor[$index],'width':item.doctor_case_number/doctorDetail.sumcase*420+'px','max-width':'140px'}:{'background':'none','border-color':'#999','color':'#999','width':item.doctor_case_number/doctorDetail.sumcase*420+'px','max-width':'140px'}">{{item.doctor_case_number}}</span>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="user-info" ng-if="(user==true)">
+                    <ul>
+                        <li  ng-repeat="item in userEvaluate | orderBy:'date':true">
+                            <div>
+                                <span class="user-phone">{{item.phone}}</span>
+                                 <span class="star">
+                                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fdoc_attitude.png" width="17" height="17">&nbsp;{{item.star}}
+                                </span>
+                                 <span class="star">
+                                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fdoc_profession.png" width="17" height="17">&nbsp;{{item.star}}
+                                </span>
+                                <span class="time">
+                                   {{item.date}}
+                                </span>
+                            </div>
+                            <div class="evaluate">
+                                {{item.impression}}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div bdf-footer></div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

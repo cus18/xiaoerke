@@ -1,0 +1,25 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫" ng-init="doRefresh()">
+    <ion-content class="cMotherMistakes" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="title2">
+                妈妈误区
+            </div>
+            <div class="box1">
+                <dl ng-repeat="item in mistakeList">
+                    <dt>
+                        <img ng-src="{{item.img}}"{ width="100%" height="123.5">
+                        <p>{{item.title}}</p>
+                    </dt>
+                    <dd class="select">
+                        <p ng-repeat="prop in item.text">{{prop}}</p>
+                    </dd>
+                    <a class="more" ng-click="lookMore($index)">
+                        {{item.moreText}}
+                        <img src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Farr_blue_down.png" width="22" height="22">
+                    </a>
+                </dl>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

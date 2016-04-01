@@ -1,0 +1,33 @@
+<ion-view view-title={{title}} >
+	<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+	<ion-content class="phoneConConnectCall bg1" style="top:0;">
+		<ion-scroll direction="y" has-bouncing="true" >
+			<div class="title tc c0 bg2 f8">{{title}}</div>
+			<div class="text tc f3 c5">正在连接通话，请稍候...</div>
+			<div class="connect" >
+				<div class="main">
+					<img width="200" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fconnect_bg.png" />
+					<div class="tel f2 c3 tc">
+						<img class=" my-img2" width="60" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fconnect_tel.png" />
+						010-21234542
+					</div>
+					<span class="user bg1 f2 c3">
+						<img class="my-img2" width="70" height="auto" src="images/a2.png"  />
+						1521111111
+					</span>
+					<span class="doctor bg1 f2 c3">
+						<img  class="my-img2"width="70" height="auto" src="images/a1.png"  />
+						刘晓燕
+					</span>
+				</div>
+			</div>
+			<button class="foot-btn bg3">完成通话并关闭</button>
+			<div class="warn tc c6 f2">
+				注：若您未收到电话，请及时拨打客服电话<a class="f2 c1" href="tel:4006237120">400-623-7120</a>
+			</div>
+		</ion-scroll>
+
+	</ion-content>
+
+</ion-view>
+

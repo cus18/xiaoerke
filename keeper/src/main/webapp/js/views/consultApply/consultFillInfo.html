@@ -1,0 +1,72 @@
+<ion-view view-title={{title0}} ng-init="doRefresh()" >
+	<div class="select-classify" ng-if="selectClassifyLock">
+		<ul>
+			<li class="common" ng-click="chooseImage('caseImg')">病例</li>
+			<li class="common" ng-click="chooseImage('resultImg')">检查结果</li>
+			<li class="common" ng-click="chooseImage('positionImg')">患病部位</li>
+			<li class="other" ng-click="chooseImage('otherImg')">其他</li>
+			<li class="cancel" ng-click="cancel()">取消</li>
+		</ul>
+	</div>
+	<ion-content class="consultFillInfo"  style="top:0;" >
+		<ion-scroll direction="y" has-bouncing="true">
+			<div class="baby-info">
+				<div class="baby-name" ng-click="selectBaby()">
+					{{babyName==''?'宝宝姓名':babyName}}
+					<input type="hidden" ng-model="babyId">
+					<input type="hidden" ng-model="babyListIndex">
+					<img width="8" height="14.5" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fmore_right_s.png">
+				</div>
+				<div class="illness-des">
+					<textarea ng-model="illnessDescribe" id="illnessDescribe" placeholder="填写资料尽可能详细描述病情，治疗情况以及想要获得的帮助（至少10个字）"></textarea>
+				</div>
+				<div class="img-info">
+					<ul class="img-list">
+						<li >
+							<img class="delete" width="19"  ng-click="cancelUpLoad(1)" height="19" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fclose.png">
+							<img width="56" height="56" id="img1" src="images/aa.png" >
+							<input type="hidden" id="img1ServiceID" />
+							<input type="hidden" id="img1ServiceType" />
+						</li>
+						<li >
+							<img class="delete" width="19"  ng-click="cancelUpLoad(2)"  height="19" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fclose.png">
+							<img width="56" height="56" id="img2"  src="images/aa.png" >
+							<input type="hidden" id="img2ServiceID" />
+							<input type="hidden" id="img2ServiceType" />
+						</li>
+						<li >
+							<img class="delete" width="19"  ng-click="cancelUpLoad(3)" height="19" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fclose.png">
+							<img width="56" height="56" id="img3"  src="images/aa.png" >
+							<input type="hidden" id="img3ServiceID" />
+							<input type="hidden" id="img3ServiceType" />
+						</li>
+						<li >
+							<img class="delete" width="19"  ng-click="cancelUpLoad(4)"  height="19" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fclose.png">
+							<img width="56" height="56" id="img4"  src="images/aa.png" >
+							<input type="hidden" id="img4ServiceID" />
+							<input type="hidden" id="img4ServiceType" />
+						</li>
+					</ul>
+					<div class="uploadImg" >
+						<img ng-click="selectClassify()" width="60" height="60" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultApply%2Fadd_img.png" >
+						<div class="text">
+							<h4>添加图片（5M内）</h4>
+							<span>病历、检查结果、患病部位等</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="consult-history" ng-click="consultHistory()">
+				<img class="time" width="14.5" height="14.5" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fclock_icon.png">
+				开启历史咨询
+				<img class="detail" width="8" height="14.5" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fmore_right_s.png">
+			</div>
+			<div>
+				<button class="button foot-btn"  ng-click="modifyBabyIndfo()">开始咨询</button>
+			</div>
+			<br><br><br><br>
+
+		</ion-scroll>
+	</ion-content>
+</ion-view>
+

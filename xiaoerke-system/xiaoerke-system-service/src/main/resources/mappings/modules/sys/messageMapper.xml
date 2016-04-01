@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxqm.xiaoerke.modules.sys.dao.MessageDao">
+
+	<resultMap id="messageVO" type="com.cxqm.xiaoerke.modules.sys.entity.MessageVo">
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="message_title" property="messageTitle" jdbcType="VARCHAR" />
+        <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+        <result column="message_content" property="messageContent" jdbcType="VARCHAR" />
+        <result column="create_date" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_date" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <insert id="InsertMessageExecute">
+        INSERT INTO sys_message(id,sys_user_id,message_type,message_title,message_content,create_date,appointmentNo)
+        VALUES (#{id},#{sys_user_id},#{message_type},#{message_title},#{message_content},#{create_date},#{appointmentNo});
+    </insert>
+
+    <select id="findAppointMessageExecute" resultType="java.util.Map">
+        SELECT sdl.location,DATE_FORMAT(srs.begin_time,'%k:%i') AS begin_time,DATE_FORMAT(srs.end_time,'%k:%i') AS end_time,sdl.route as root
+        FROM sys_register_service srs
+        inner join sys_doctor_location sdl on sdl.id=srs.location_id
+        INNER JOIN patient_register_service prs ON prs.sys_register_service_id=srs.id
+        WHERE 1=1
+            and  prs.id=#{patientRegisterServiceId}
+    </select>
+
+    <!--查询插入评价提醒消息，所需要的信息,需求：当前时间大于预约三分钟发送短信 @author zdl-->
+    <select id="evaluateReminderExecute"  resultType="java.util.HashMap">
+        SELECT prs.id AS patient_register_service_id, prs.sys_patient_id AS patientid,prs.babyName,prs.register_no,prs.phone,
+         sd.name as doctorName,DATE_FORMAT(prs.create_date,'%Y-%m-%d') create_date,su.openid
+         FROM sys_register_service srs
+        INNER JOIN patient_register_service prs ON prs.sys_register_service_id=srs.id
+        RIGHT JOIN sys_doctor sd ON sd.id=srs.sys_doctor_id
+        LEFT JOIN sys_patient sp ON prs.sys_patient_id=sp.id
+        LEFT JOIN sys_user su ON su.id=sp.sys_user_id
+        LEFT JOIN sys_monitor sm ON sm.patient_register_service_id=prs.id
+        WHERE NOW()>(DATE_ADD((DATE_FORMAT(CONCAT(DATE_FORMAT(srs.date,'%Y:%c:%d'),DATE_FORMAT(srs.begin_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s')), INTERVAL 3 MINUTE))
+        AND sm.status='2' and prs.status = '2'
+    </select>
+
+    <!--根据订单号查询消息   @author zdl-->
+    <select id="findMessageByRegisterNoExecute"  resultType="java.util.Map">
+        SELECT  prs.id AS patient_register_service_id,sm.message_type AS messageType,DATE_FORMAT(sm.create_date,'%Y/%m/%d %k:%m')  AS TIME,sm.message_title AS messageTitle,sm.message_content AS messageContent
+        FROM sys_message sm,patient_register_service prs
+        WHERE  prs.register_no=sm.appointmentNo
+        <if test="appointmentNo != null">
+            and  appointmentNo=#{appointmentNo}
+        </if>
+        ORDER by sm.create_date DESC
+    </select>
+
+    <!--查询插入出发提醒消息，所需要的信息 只要在支付状态并且有订单则发送短信 @author zdl-->
+    <select id="LetsGoReminderExecute"  resultType="java.util.HashMap">
+        SELECT srs.begin_time,srs.end_time,srs.date,prs.id AS patient_register_service_id,prs.sys_patient_id AS patientid,prs.register_no,su.name AS doctorName,prs.phone,su.openid
+        FROM sys_register_service srs
+        INNER JOIN patient_register_service prs ON prs.sys_register_service_id=srs.id
+        RIGHT JOIN sys_doctor sd ON sd.id=srs.sys_doctor_id
+        LEFT JOIN sys_user su ON su.id=sd.sys_user_id
+        LEFT JOIN sys_monitor sm ON sm.patient_register_service_id=prs.id
+        WHERE DATE_ADD(NOW(), INTERVAL 3 HOUR)>(DATE_FORMAT(CONCAT(DATE_FORMAT(srs.date,'%Y:%c:%d'),DATE_FORMAT(srs.begin_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))
+        AND prs.status='1'
+        AND (sm.status='0' OR sm.status='1')
+    </select>
+
+    <!--订单生成30分钟内未支付  @author zdl-->
+    <select id="AppointNoPayExecute"  resultType="java.util.HashMap">
+        SELECT su.name AS doctorName,prs.phone,prs.id AS patient_register_service_id,prs.sys_patient_id AS patientid,prs.register_no
+        FROM sys_register_service srs
+        INNER JOIN patient_register_service prs ON prs.sys_register_service_id=srs.id
+        RIGHT JOIN sys_doctor sd ON sd.id=srs.sys_doctor_id
+        LEFT JOIN sys_user su ON su.id=sd.sys_user_id
+        INNER JOIN sys_monitor sm ON sm.patient_register_service_id=prs.id
+        WHERE NOW()>(DATE_ADD(prs.create_date, INTERVAL 30 MINUTE))
+        AND prs.status='0' AND sm.status='0'
+    </select>
+
+    <!--获取分享信息详情 @author zdl-->
+    <select id="findShareDetailInfoExecute"  resultType="java.util.HashMap">
+        SELECT
+        sd.id AS doctorId,
+        srs.sys_hospital_id AS hospitalId,
+        su.name AS doctorName,
+        sd.hospitalName,
+        sd.position1,
+        sd.position2,
+        sd.qrcode
+        from patient_register_service prs
+        LEFT JOIN sys_register_service srs on srs.id = prs.sys_register_service_id
+        LEFT JOIN sys_doctor sd ON sd.id=srs.sys_doctor_id
+        LEFT JOIN sys_user su ON su.id=sd.sys_user_id
+        where prs.id=#{patientRegisterServiceId}
+    </select>
+
+    <!--插入监听器-->
+    <insert id="insertMonitorExecute">
+        INSERT INTO sys_monitor(id,patient_register_service_id,status,types)
+        VALUES(#{id},(SELECT id FROM patient_register_service WHERE register_no=#{register_no}),#{status},#{types});
+    </insert>
+
+    <!--更新sys_monitor表状态-->
+    <update id="setMonitorStatusExecute">
+        UPDATE sys_monitor sm SET sm.STATUS=#{status} where sm.patient_register_service_id=#{patient_register_service_id}
+        and sm.STATUS != '7'
+    </update>
+
+    <insert id="saveAdvice">
+      INSERT INTO sys_advice (id,advice,contact_information,project,user,create_time)
+        VALUES(#{id},#{advice},#{contact},#{project},#{user},now());
+    </insert>
+
+    <select id="getCancelAppointmentDocNum" resultType="java.util.HashMap">
+		select DISTINCT(su.login_name),su.openid from sys_monitor sm
+		left join patient_register_service prs
+		on sm.patient_register_service_id = prs.id
+		left join sys_register_service srs on prs.sys_register_service_id = srs.id
+		left join sys_doctor sd on srs.sys_doctor_id = sd.id
+		left join sys_user su on su.id = sd.sys_user_id
+		where prs.id = #{patientRegisterServiceId}
+		and sm.status = '7'
+		and sm.types = '0'
+    </select>
+
+    <!--支付完成生成消息需要的数据-->
+    <select id="findMessageNeedToInsertExecute" resultType="java.util.Map">
+        SELECT prs.sys_patient_id AS patientid,
+        prs.babyName,prs.register_no,
+        DATE_FORMAT(srs.date,'%m月%d日') AS date,
+        srs.date AS date_week, su.name AS doctorName,
+        DATE_FORMAT(srs.begin_time,'%k:%i') AS begin_time,
+        DATE_FORMAT(srs.end_time,'%k:%i') AS end_time,
+        sd.hospitalName,sdl.route as root,prs.phone,prs.illness,
+        sh.medical_process as medicalProcess,
+        sh.position,sdl.location,srs.id sysRegisterId,
+        case when shc.contact_phone is null then "" else shc.contact_phone end hospitalContactPhone,
+        case when shc.sys_hospital_name is null then sd.hospitalName else shc.sys_hospital_name end contactHospitalName
+        FROM sys_register_service srs
+        INNER JOIN sys_hospital sh on sh.id = srs.sys_hospital_id
+        INNER JOIN patient_register_service prs ON prs.sys_register_service_id=srs.id
+        LEFT JOIN sys_doctor sd ON sd.id=srs.sys_doctor_id
+        LEFT JOIN sys_user su ON su.id=sd.sys_user_id
+        LEFT JOIN sys_doctor_location sdl ON sdl.id = srs.location_id
+        LEFT JOIN sys_hospital_contact shc on shc.sys_hospital_id = srs.sys_hospital_id
+        WHERE 1=1
+        <if test="patientRegisterServiceId != null">
+            and  prs.id=#{patientRegisterServiceId}
+        </if>
+    </select>
+
+
+    <select id="getTrackOrder" resultType="java.util.HashMap">
+        select prs.id as patient_register_service_id,prs.phone ,su.openid,sd.name as doctorName from patient_register_service prs
+        left join  sys_monitor smt
+        on prs.id = smt.patient_register_service_id
+        left join sys_register_service srs
+        on prs.sys_register_service_id = srs.id
+
+        left join sys_doctor sd on sd.id = srs.sys_doctor_id
+        left join sys_patient sp on  sp.id = prs.sys_patient_id
+       left join sys_user su on su.id = sp.sys_user_id
+        where smt.`status` = '3'
+        and NOW()> date_sub(DATE_FORMAT(CONCAT(DATE_FORMAT(srs.DATE,'%Y:%c:%d'),DATE_FORMAT(srs.end_time,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'), interval -24 hour)
+    </select>
+
+    <!--获取个人的预约信息详情，对预约的状态进行操作 0_zdl-->
+    <select id="fidPersonAppointDetailInfoExcut" parameterType="com.cxqm.xiaoerke.modules.sys.entity.PerAppDetInfoVo"
+            resultType="java.util.Map">
+        SELECT su.id as doctorId , su.name AS doctorName,sd.hospitalName AS hospitalName,sd.position1,sd.position2,sdl.location,dhr.department_level1,
+        department_level2,DATE_FORMAT(CONCAT(DATE_FORMAT(srs.date,'%Y:%c:%d'),DATE_FORMAT(begin_time,' %H:%i')),'%Y/%m/%d %H:%i') as date ,
+        prs.register_no AS appointmentNo ,prs.phone,prs.babyName,prs.status,srs.id,dhr.sys_doctor_id doctorId,sdl.route as root,srs.id sys_regist_id,sh.position,
+        DATE_FORMAT(srs.begin_time, '%H:%i') AS beginTime,DATE_FORMAT(srs.end_time,
+        '%H:%i') AS endTime
+        FROM sys_doctor sd
+        LEFT JOIN sys_user su ON su.id=sd.sys_user_id
+        LEFT JOIN doctor_hospital_relation dhr ON dhr.sys_doctor_id=sd.id
+        LEFT JOIN sys_register_service srs ON sd.id=srs.sys_doctor_id
+        INNER JOIN patient_register_service prs ON srs.id=prs.sys_register_service_id
+        INNER  JOIN  sys_hospital sh on sh.id = srs.sys_hospital_id
+        inner join sys_doctor_location sdl on sdl.id=srs.location_id
+        <if test="status != null">
+            INNER JOIN account_pay_record apr on apr.order_id = prs.id
+        </if>
+        where 1=1  and dhr.relation_type = '1'
+        <if test="id != null">
+            and  prs.id=#{id}
+        </if>
+        <if test="status != null">
+            and apr.id=#{status}<!--临时替换 待修复 deliang-->
+        </if>
+        group by prs.id
+    </select>
+</mapper>
+

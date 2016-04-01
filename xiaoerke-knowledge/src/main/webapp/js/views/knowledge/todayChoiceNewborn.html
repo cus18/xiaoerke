@@ -1,0 +1,51 @@
+<link rel="stylesheet" href="styles/knowledge/knowledgeCommon.less?ver='0.9'" type="text/css" />
+<link rel="stylesheet" href="styles/knowledge/todayChoiceNewborn.less?ver='0.9'" type="text/css" />
+<ion-spinner ng-show="pageLoading" icon="bubbles" class="loadPic"></ion-spinner>
+<ion-view view-title="郑玉巧育儿经">
+    <div class="myGroup1">
+        <div class="myTitle">
+            {{title}}
+        </div>
+        <div class="mySearch">
+            <div class="search1 " >
+                <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fsearch_left_icon.png" width="17.5" height="17.5">
+                <input type="search" placeholder="搜索" ng-model="info.content">
+                <span class="go-search" ng-click="search()">搜索</span>
+            </div>
+        </div>
+        <ion-item class="symptom-classify ">
+            <div ng-repeat="item in ageGroupList"  ng-click="getNext(item.categoryId,$index)" ng-style="(itemIndex==$index)?{'color':'#fff','background-color':'#88d9dd'}:{'color':'#88d9dd','background-color':'#fff'}">
+                <a >{{item.categoryName}}</a>
+            </div>
+        </ion-item>
+        <div class="apart1"></div>
+    </div>
+    <ion-content class="todayChoiceNewborn" overflow-scroll="true" style="top:190px;;">
+        <ion-scroll direction="y" has-bouncing="true" style="top:1px;">
+            <ul class="myList">
+                <li class="item item-thumbnail-left item-borderless" ng-repeat="item in articleList" ui-sref="knowledgeArticleContent({contentId:item.id,generalize:'WX'})">
+                    <img ng-src="http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/{{item.id}}">
+                    <h2 >{{item.title}}</h2>
+                    <p class="text">
+                        {{ item.description | limitTo  : 30 }}...
+                    </p>
+                    <div class="sub-info">
+                        <a  class=" info-read">
+                            <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fitem_read.png" width="12.5" height="8.5">&nbsp;
+                            {{item.articleReadCount}}
+                        </a>
+                        <a class="info-comment">
+                            <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fitem_comment.png" width="12.5" height="11.5">&nbsp;
+                            {{item.articleCommentCount}}
+                        </a>
+                        <a  class="info-share">
+                            <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fitem_share.png" width="12.5" height="12.5">&nbsp;
+                            {{item.articleShareCount}}
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </ion-scroll>
+    </ion-content>
+
+</ion-view>

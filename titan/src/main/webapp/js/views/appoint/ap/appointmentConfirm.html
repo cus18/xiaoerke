@@ -1,0 +1,178 @@
+<ion-spinner ng-show="pageLoading"  class="loadPic"></ion-spinner>
+<ion-view cache-view="false" view-title={{title0}} ng-init="doRefresh()">
+    <ion-spinner ng-show="dataLoading" class="loadPic"></ion-spinner>
+    <!--头部-->
+    <div bdf-head="title"></div>
+
+    <!--选择宝宝列表-->
+    <div class="baby-list1" ng-if="selectBabyLock">
+        <dl>
+            <dt>
+                <i class="line"></i>
+                <span>选择宝宝</span>
+            </dt>
+            <dd class="select" ng-click="selectedBaby($index)" ng-repeat="item in babyInfo"><span >{{item.name}}</span></dd>
+        </dl>
+        <div ng-click="cancelSelectBaby()" class="select">取消</div>
+    </div>
+
+    <!--非微信公众号预约提示-->
+    <div class="attention-shadow"  ng-click="cancelRemind()" ng-if="bookRemindLock"></div>
+    <div class="bdf-attention"  ng-if="bookRemindLock" ng-click="cancelRemind()">
+        <div style="text-align: center;width:100%;margin:0 auto;">
+            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fappointment_remind.png" width="90%" height="auto">
+        </div>
+        <dl>
+            <dt>
+                <span class="ll"></span>
+                关注宝大夫
+                <span class="rr"></span>
+            </dt>
+            <dd>
+                <span class="cir"></span>&nbsp;&nbsp;
+                1.&nbsp;打开微信，搜索“宝大夫”<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关注公众号</dd>
+            <dd>
+                <span class="cir"></span>&nbsp;&nbsp;
+                2.&nbsp;扫描下方二维码，关注宝大夫<br>
+                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fattention_code_book.png" width="240.5" height="auto" >
+            </dd>
+        </dl>
+    </div>
+
+    <!--点击服务弹出框-->
+    <div class="ap-shadow" ng-if="serviceTipsLock"  ng-click="serviceTipsCancel()"></div>
+    <div class="ap-service" ng-if="serviceTipsLock">
+        <h3>您好，您的免费预约机会已用完，如需继续预约，请再次购买会员按服务。</h3>
+        <p>
+            注：如您的当前会员服务还未到期，购买后原有会员服务的有限期将自动顺延
+        </p>
+        <div class="know"  ng-click="goToMemberService()">
+            查看详情
+        </div>
+    </div>
+    <div class="ap-service" ng-if="false">
+        <h3>您好，您的会员服务和免费预约券已过期，宝大夫免费赠送您周会员服务。</h3>
+        <div class="know"  >
+            立即使用
+        </div>
+    </div>
+    <ion-content class="appointmentConfirm">
+        <ion-scroll direction="y" has-bouncing="true" style="top:0px">
+            <div class="body">
+                <div class="item item-thumbnail-left doctorInfo item-borderless">
+                    <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{doctorDetail.doctorId}}" class="doctorPhoto"
+                         style="margin-top:4px;"/>
+                    <h2 style="margin-top:10px">{{doctorDetail.doctorName}}<span>
+                        &nbsp;&nbsp;{{doctorDetail.position1}}{{doctorDetail.position2}}</span></h2>
+                    <p>{{doctorDetail.hospitalName}}</p>
+                    <p>{{doctorDetail.departmentName}}</p>
+                </div>
+                <div class="item workInfo item-borderless">
+                    <div >
+                        <ul >
+                            <li style="border-bottom:1px solid #ccc;font-size:15px;color:#88d9dd;" ng-if="needPay=='true'">
+                                <span style="border-left:4px solid #88d9d8;"></span>&nbsp;&nbsp;&nbsp;免费预约大夫
+                            </li>
+                            <li style="border-bottom:1px solid #ccc;">
+                                时间：{{date | date : 'yyyy/MM/dd'}} {{week}}&nbsp;&nbsp;{{begin_time}}-{{end_time}}
+                            </li>
+                            <li>
+                                地点：{{appointmentDetail.location}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="babyInfo">
+                <ul >
+                    <li >
+                        <span >手机：</span>
+                        <input type="text" placeholder='用于接收短信（必填）'onfocus="skip('phone')"
+                               ng-model="info.userPhone" maxlength="11" ng-blur="checkPhone()"
+                               ng-if ="info.checkUserBind" readonly="true" style="background-color: #fff;">
+                        <input type="text" placeholder='用于接收短信（必填）'onfocus="skip('phone')"
+                               ng-model="info.userPhone" maxlength="11" ng-blur="checkPhone()" ng-if ="!info.checkUserBind">
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <p  ng-if="phoneErrorShow" class="errorTips">{{userPhoneError}}</p>
+                    </li>
+                    <li >
+                        <span >姓名：</span>
+                        <input type="hidden" ng-model="info.babyId"/>
+                        <input type="text"  class="name-input"  onfocus="skip('name')" id="name"
+                               placeholder='填写宝宝姓名（必填）' ng-model="info.babyName" maxlength="10">
+                        <div ng-click="selectBaby()" ng-if="selectBabyInfoLock" class="select-baby">选择宝宝</div>
+                    </li>
+                    <li style="border-bottom: 0;">
+                        <span >生日：</span>
+                        <input type="text" placeholder='选择出生年月（必填）' readonly="readonly" id="birthday" name="birthday"
+                                style="background-color:#fff;" ng-click="selectBirthday()" ng-model="info.birthday">
+                    </li>
+                    <li class="case">
+                        <span >病情：</span>
+                        <a ng-if="info.illness==null">0/200</a>
+                        <a ng-if="info.illness.length>=0">{{info.illness.length}}/200</a>
+                       <!-- <input type="text" onfocus="skip('case')" id="case" placeholder='描述宝宝病情（必填）' ng-model="info.illness" maxlength="20">-->
+                        <textarea  ng-focus="skip('case')" id="case" placeholder='尽可能详细描述病情，治疗情况以及想要获得的帮助（至少10个字）' ng-model="info.illness"  maxlength="200">
+
+                        </textarea>
+                    </li>
+                </ul>
+            </div>
+            <div  ng-if="needPay=='true'" class="apart" ng-if="memberFunction=='true'"></div><!--分割线-->
+            <div class="service1-tip item" ng-if="memberFunction=='true'">
+                <h2 style="" ng-click="goToMemberService()">
+                    <span style="border-left:4px solid #88d9d8;"></span>&nbsp;宝大夫仅对会员提供服务
+                    <span class="detail">详情&nbsp;<i class="ion-ios-arrow-right"></i></span>
+                </h2>
+                <dl >
+                    <dt>
+                        预约须知
+                        <a class="notice" ng-click="readDeal()">
+                            已阅读
+                            <span  ng-if="!readDealLock"></span>
+                            <img ng-if="readDealLock" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fdeal_read.png" width="12.5" height="12.5">
+                        </a>
+                    </dt>
+                    <dd>
+                        <p><span>1.</span>为保证其他会员权益，建议您合理安排预约时间和使用会员服务</p>
+                        <p style="margin-bottom: 12.5px;"><span>2.</span>取消规则</p>
+                        <ul class="secondUL">
+                            <li >
+                                <span class="fl" >
+                                    <a>1</a>  &nbsp;{{date | date : 'yyyy/MM/dd'}} &nbsp;&nbsp;{{begin_time_feeHour}}:{{begin_time_feeMin}}&nbsp;前
+                                </span>
+                                  <span ng-if="needPay!='tehui'" class="fr">
+                                   可以取消(预约券退回)
+                                </span>
+                                  <span ng-if="needPay=='tehui'" class="fr">
+                                   可以取消
+                                </span>
+                            </li>
+                            <li >
+                                <span class="fl" >
+                                    <a>2</a>  &nbsp;{{date | date : 'yyyy/MM/dd'}} &nbsp;&nbsp;{{begin_time_feeHour}}:{{begin_time_feeMin}}&nbsp;后
+                                </span>
+                                 <span ng-if="needPay!='tehui'" class="fr " >
+                                     不可取消(预约券不退)<!--扣取{{chargePrice/200}}元-->
+                                </span>
+                                 <span ng-if="needPay=='tehui'" class="fr ">
+                                     不可取消
+                                </span>
+                            </li>
+                        </ul>
+                        <p ng-if="needPay!='tehui'"><span>3.</span>下单即表示您同意<a class="deal" ui-sref="memberDeal">宝大夫协议</a></p>
+                        <p ng-if="needPay=='tehui'"><span>3.</span>此医院为宝大夫合作医院，会员可无限次预约挂号，且不占用预约券。</p>
+                        <p ng-if="needPay=='tehui'"><span>4.</span>下单即表示您同意<a class="deal" ui-sref="memberDeal">宝大夫协议</a></p>
+                    </dd>
+                </dl>
+            </div>
+            <div style="margin-top:-61px;">
+                <button class="button  button-clear btn"
+                        ng-disabled="(info.userPhone.length<11)||(info.babyName==null)||(info.illness==null)||(info.illness.length<10)
+                            ||info.disabled ||phoneErrorShow || !readDealLock  "  ng-click="appointment()">
+                    立即预约
+                </button>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxqm.xiaoerke.modules.sys.dao.IllnessDao">
+    <resultMap id="IllnessVoMap" type="com.cxqm.xiaoerke.modules.sys.entity.IllnessVo">
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="level_1" property="level_1" jdbcType="VARCHAR" />
+        <result column="level_2" property="level_2" jdbcType="VARCHAR" />
+        <result column="details" property="details" jdbcType="VARCHAR" />
+        <result column="doctorNum" property="doctorNum" jdbcType="VARCHAR" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
+        <result column="sort_level_1" property="sort_level_1" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="IllnessVo" type="java.util.HashMap">
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="level_1" property="level_1" jdbcType="VARCHAR" />
+        <result column="level_2" property="level_2" jdbcType="VARCHAR" />
+        <result column="details" property="details" jdbcType="VARCHAR" />
+        <result column="doctorNum" property="doctorNum" jdbcType="VARCHAR" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
+        <result column="sort_level_1" property="sort_level_1" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="findFirstIllness"  resultMap="IllnessVoMap"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        select ill.*,count(dr_rel.sys_doctor_id) doctorNum from
+        sys_illness ill,
+        sys_doctor dr,
+        doctor_illness_relation dr_rel
+        WHERE
+        dr.id = dr_rel.sys_doctor_id
+        AND
+        ill.id = dr_rel.sys_illness_id
+        GROUP BY ill.level_1
+        <if test="orderBy=1">
+            ORDER BY  sort_level_1 IS  NULL ,sort_level_1
+        </if>
+    </select>
+
+    <select id="findSecondIllnessByFirst" parameterType="java.lang.String" resultMap="IllnessVoMap">
+        SELECT distinct si.* FROM sys_illness si
+        WHERE si.level_1 = #{illnessName}
+        ORDER BY sort IS NULL ,sort
+    </select>
+
+    <!--批量插入疾病信息-->
+    <insert id="insertIllnessExecute" parameterType="java.util.Map">
+        INSERT INTO sys_illness(id,level_1,level_2)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id},#{item.level_1},#{item.level_2})
+        </foreach>
+    </insert>
+
+    <!--根据二类疾病查询illness表主键-->
+    <select id="findIllnessIdByLevel2Execute" resultType="java.util.Map">
+       SELECT id AS illnessId FROM sys_illness si WHERE si.level_2 =  #{level_2}
+    </select>
+
+	<select id="findSecondIllnessByName" parameterType="java.lang.String" resultMap="IllnessVoMap">
+        SELECT * FROM sys_illness 
+        WHERE level_2 = #{illnessName}
+    </select>
+
+    <!--==============================以下部分属于运维系统==============================================-->
+    <!--单条插入疾病信息-->
+    <insert id="insertIllness">
+       INSERT INTO sys_illness(id,level_1,level_2)
+        VALUES (#{id},#{level_1},#{level_2})
+    </insert>
+
+    <!--根据一类疾病和二类疾病查询疾病信息表主键-->
+    <select id="findSysIllnessInfo" resultType="com.cxqm.xiaoerke.modules.sys.entity.IllnessVo">
+        SELECT * FROM sys_illness si WHERE 1=1
+        <if test="level_2 != null">
+            and si.level_2 =  #{level_2}
+        </if>
+        <if test="level_1 != null">
+            and si.level_1=#{level_1}
+        </if>
+
+    </select>
+
+    <!--查询当前医生所关联的疾病信息-->
+    <select id="findSysIllnessBySysDoctorId" resultType="com.cxqm.xiaoerke.modules.sys.entity.IllnessVo">
+        select si.id,si.level_1,si.level_2 from sys_illness si
+        inner JOIN doctor_illness_relation dir on dir.sys_illness_id = si.id
+        where sys_doctor_id = #{sys_doctor_id}
+    </select>
+
+
+    <!--查询系统内部所有二级疾病-->
+    <select id="findPageAllLevel_2" resultMap="IllnessVo"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        SELECT si.id, si.level_2 FROM sys_illness si
+        where 1=1
+        <if test="illnessName != null">
+          and  level_1 = #{illnessName}
+        </if>
+        GROUP BY si.level_2
+    </select>
+
+
+    <!--查询系统内部所有一级疾病-->
+    <select id="findFirstIllnessVo" resultMap="IllnessVoMap"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        select * from sys_illness GROUP BY level_1
+    </select>
+
+    <!--获取疾病库列表-->
+    <select id="findAllIllnessList" resultMap="IllnessVoMap"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        select * from sys_illness
+        where 1=1
+        <if test="level_1 != null and level_1 !=''">
+            and  level_1 like '%${level_1}%'
+        </if>
+        <if test="level_2 != null and level_2 !=''">
+            and  level_2 like '%${level_2}%'
+        </if>
+        order BY level_1
+    </select>
+
+    <!--根据疾病表主键更新疾病信息-->
+    <update id="updateIllness">
+       update sys_illness set level_1 = #{level_1},level_2= #{level_2} where id=#{id}
+    </update>
+
+    <!--根据疾病表id删除当前疾病-->
+    <delete id="deleteIllnessById" parameterType="java.lang.String" >
+        delete from sys_illness
+        where  id = #{id}
+    </delete>
+
+    <!--查询系统内部所有一级疾病不分页-->
+    <select id="getFirstIllnessList" resultMap="IllnessVoMap">
+        select * from sys_illness GROUP BY level_1
+    </select>
+    
+    <!--查询当前医生所关联的一类疾病-->
+    <select id="findSysIllness_1BySysDoctorId" resultMap="IllnessVoMap">
+        select si.id,si.level_1,si.level_2 from sys_illness si
+        inner JOIN doctor_illness_relation dir on dir.sys_illness_id = si.id
+        where sys_doctor_id = #{doctorId}
+        group by si.level_1
+    </select>
+</mapper>

@@ -1,0 +1,32 @@
+.content{border-right: 1px solid #acacac;}
+.content .content-l {border-right: 1px solid #fff;}
+
+/*刷新*/
+.chatbox div span {display: inline-block; padding: 13px 0 14px 0;margin:0 0 0 20px;font: 14px/17px 'Microsoft Yahei';}
+.chatbox div span img{margin-right: 5px;}
+.find {width: 293px;height: 18px;padding: 5px 10px;border:1px solid #08b7c2;float: right;margin: 8px 20px 13px 0;border-radius: 20px;}
+.find select{border:none;border-right: 1px solid #000;color:#333;font: 12px/28px 'Microsoft Yahei';background:transparent;padding: 0;margin: 0;}
+.find img {float: right;margin-top: -15px;}
+.find input{border:none;float:left;margin-left: 80px;margin-top:-15px;}
+.customerlist,.messagelistc {background-color: #08b7c2;font: 14px/14px 'Microsoft Yahei'; color:#fff;}
+.customerlist div,.messagelistc div{float: left;margin: 12px 20px 0 20px;}
+.customerlist div.fr,.messagelistc div.fr {float: right;margin-right: 45px;margin-left: -10px;}
+.customerlist div select {border:none;width: 80px;margin: 0;}
+.nicknamelist{background-color: #f6f6f6;}
+.nicknamelist div,.messagelistn div{float: left;color:#acacac;font: 12px/35px 'Microsoft Yahei';margin: 0 20px;}
+.nicknamelist .recently{margin-left: 125px;}
+.nicknamelist .insert{margin-right: 45px;margin-left: 93px;}
+.messagelistn div select {border:none;height: 20px;color:#acacac;margin:10px 0 0 0;}
+.messagelistn {border-bottom: 1px solid #ccc;height: 34px;}
+.messagelistn input {width: 30px;}
+.messagelistn img{margin:0 10px;}
+.messagelistn div {margin: 0 20px 0 5px;}
+.nicknamecontentlist li{height: 32px;}
+.nicknamecontentlist li div {float: left;font: 12px/35px 'Microsoft Yahei';overflow: hidden;}
+.nicknamecontentlist li .nickname{width: 88px;margin-left: 20px;}
+.nicknamecontentlist li .recently{width: 110px;margin-left: 80px;}
+.nicknamecontentlist li .insert{width: 105px;margin-left: 75px;}
+
+.examinecontent ul li {margin: 20px 0 0 20px;}
+.examinecontent ul li .name{color:#08b7c2;font: 12px/12px 'Microsoft Yahei';}
+.examinecontent ul li .chatcontent{color:#666;font: 12px/12px 'Microsoft Yahei';margin-top: 15px;}

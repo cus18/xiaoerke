@@ -1,0 +1,30 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="专家答疑" ng-init="doRefresh()">
+    <ion-content class="nutritionAsk" overflow-scroll="true" style="top:0;">
+    <div class="comment" ng-if="true">
+        <div class="header" >
+           专家答疑
+        </div>
+        <div class="ask">
+            <p>
+                亲爱的宝妈，营养师和营养保健医生将在<span>24小时之内</span>答复您的问题！
+            </p>
+            <textarea  maxlength="50" placeholder="提问宝大夫营养师：" ng-model="info.content"></textarea>
+        </div>
+
+        <button ng-click="save()" class="button foot-btn">提交</button>
+
+
+    </div>
+    <div class="code " >
+        <p>
+            我们是通过宝大夫微信服务号为您答疑，
+        </p>
+        所以请您一定要关注<span>"宝大夫"</span>才能收到回复哦！
+
+        <img data-tap-disabled="true"  width="132.5" height="132.5" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Fcommenterweima.jpg"/>
+    </div>
+
+        <br><br><br><br>
+    </ion-content>
+</ion-view>

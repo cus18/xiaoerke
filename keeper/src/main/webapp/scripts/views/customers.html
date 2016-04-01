@@ -1,0 +1,1138 @@
+
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Content-Language" content="zh-cn" />
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+	<meta http-equiv="Access-Control-Allow-Origin" content="*">
+	<meta http-equiv="Expires" content="0">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-control" content="no-cache">
+	<meta http-equiv="Cache" content="no-cache">
+	<script language="javascript" type="text/javascript" src="/xiaoerke-wxapp/scripts/lib/My97DatePicker/WdatePicker.js"></script>
+
+	<title></title>
+
+</head>
+<style>
+	body {
+		font-family: "Microsoft Yahei", Arial, sans-serif;
+		font-size: 14px;
+		background: #fff;
+		overflow-x:hidden;
+	}
+	.title{
+		font-size: 15px;
+		margin-bottom:5px;
+	}
+	.content{
+		margin-bottom:10px;
+	}
+	.textarea{
+		background-color: #FFFCEC;
+	}
+	.module{
+		width:400px;
+		margin:10px auto ;
+		border: 1px solid #DDDDDD;
+		padding:5px;
+	}
+	.button {
+		display: inline-block;
+		position: relative;
+		margin: 0px;
+		padding: 0 20px;
+		text-align: center;
+		text-decoration: none;
+		font: bold 12px/25px Arial, sans-serif;
+
+		text-shadow: 1px 1px 1px rgba(255,255,255, .22);
+
+		-webkit-border-radius: 30px;
+		-moz-border-radius: 30px;
+		border-radius: 30px;
+
+		-webkit-box-shadow: 1px 1px 1px rgba(0,0,0, .29), inset 1px 1px 1px rgba(255,255,255, .44);
+		-moz-box-shadow: 1px 1px 1px rgba(0,0,0, .29), inset 1px 1px 1px rgba(255,255,255, .44);
+		box-shadow: 1px 1px 1px rgba(0,0,0, .29), inset 1px 1px 1px rgba(255,255,255, .44);
+
+		-webkit-transition: all 0.15s ease;
+		-moz-transition: all 0.15s ease;
+		-o-transition: all 0.15s ease;
+		-ms-transition: all 0.15s ease;
+		transition: all 0.15s ease;
+	}
+	.green {
+		color: #3e5706;
+		background: #a5cd4e;
+	}
+	table{
+		width:90%;
+		margin:10px auto;
+
+	}
+	table th{
+		text-align: left;
+	}
+	table tr{
+		margin-top:20px;
+		height:40px;
+	}
+	table tr td{
+		width:100%;
+	}
+	table tr .td-l {
+		text-align: left;
+	}
+	table tr .td-r {
+		text-align: left;
+	}
+	table .save{
+		height:40px;
+		text-align: left;
+	}
+	table .save input{
+		width:120px;
+		height:30px;
+		line-height:30px;
+		text-align: center;
+		background-color: #88d9dd;
+		color:#fff;
+		font-size:14px;
+		border:none;
+		margin-right:80px;
+	}
+	table .full-td td{
+		width:60%;
+	}
+	table .full-td td input{
+		width:200px;
+	}
+	table .full-td a{
+		display: inline-block;
+		font-size:14px;
+		color:#666;
+		margin:5px 0 0;
+	}
+	.table5 tr{
+		height:66px;
+	}
+	.table5 td{
+		border-bottom: 1px dashed #ddd;
+	}
+	.search-remind{
+		position: absolute;
+		border:1px solid #ddd;
+		width:200px;
+		margin: 0 0 0 90px;
+		padding:8px;
+		box-sizing: border-box;
+		background-color:white;
+		display:none;
+	}
+	.search-remind li{
+		list-style:none;
+		font-size:13px;
+	}
+</style>
+<body  style="" onclick='closeSelectAbout();'>
+<div>
+	<div id="backgroundColor"  style="display:none;position: absolute;width:100%;;z-index: 998;height:100%;background: #000;filter:alpha(Opacity=50);-moz-opacity:0.5;-webkit-opacity:0.5;-ms-opacity:0.5;opacity: 0.5;"></div>
+	<!--用户信息-->
+	<div class="module">
+		<table class="table1">
+			<th>
+				<h3>用户信息<span id='vip'>(VIP)</span></h3>
+
+			</th>
+			<tr>
+				<td class="td-l">
+					<span style="">宝宝姓名：</span>
+					<span id="babyNamespan"><select onchange="onchangeBaby()"  id="babyName"></select></span>
+				</td>
+			</tr>
+			<tr>
+				<td class="td-r">
+					<span style="">微信名：&nbsp;&nbsp;&nbsp;</span>
+					<span type="text" ><input type="text"   id="wechatName" /></span>
+					<input type="hidden" id="id"  value=""/>
+				</td>
+			</tr>
+
+			<tr>
+				<td class="td-l">
+					<span style="">生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：</span>
+					<span type="text" >
+						<input type="text"  id="babyBirthday"  onchange="dateDiff();"  class="Wdate"  onFocus="WdatePicker({lang:'zh-cn'})"/>
+						<span id="babyAge"></span>
+					</span>
+				</td>
+			</tr>
+
+			<tr>
+				<td class="td-r">
+					<span style="">联系电话：</span><span type="text" ><input type="text"   id="phone"/></span>
+				</td>
+			</tr>
+			<tr>
+				<td class="td-l">
+					<span style="">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</span><select type="text" id="sex"><option value="0">男</option><option value="1">女</option></select>
+				</td>
+
+			</tr>
+			<tr  valign="top">
+				<td style="vertical-align: top;" class="td-l">
+					备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：<textarea id="remark" rows="5" cols="30" style="vertical-align: top;"></textarea>
+				</td>
+
+			</tr>
+			<tr class="save" style="width:100%">
+				<td >
+					<input style="width:100px;margin-right:10px" type="submit" onClick="saveBabyInfo()" id="saveBabyInfo" value="保存档案"/>
+				</td>
+			</tr>
+			<tr class="save" style="width:100%">
+				<td >
+					<input style="width:100px;margin-right:10px" type="submit" onClick="cancelSaveBabyInfo()" id="cancelSaveBabyInfo" value="取消保存"/>
+				</td>
+			</tr>
+<!-- 			<tr class="save" style="width:100%"> -->
+<!-- 				<td > -->
+<!-- 					<input style="width:100px;margin-right:0px" type="submit" onClick="saveBabyInfo('update')" id="updateBabyInfo" value="修改档案"/> -->
+<!-- 				</td> -->
+<!-- 			</tr> -->
+
+		</table>
+	</div>
+	<!--咨询情况-->
+	<!-- 	<div class="module"> -->
+	<!-- 		<table class="table2"> -->
+	<!-- 			<th> -->
+	<!-- 				<h3>咨询情况</h3> -->
+	<!-- 			</td> -->
+
+	<!-- 			</th> -->
+	<!-- 			<tr> -->
+	<!-- 				<td class="td-l"> -->
+	<!-- 					<input type="text" id="openid"  value="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk" /> -->
+	<!-- 					<span style="">客服：</span><input type="text" id="costomerID" /> -->
+	<!-- 				</td> -->
+	<!-- 				<td class="td-r"> -->
+	<!-- 					<span style="">咨询日期：</span><span type="text" id="create_date"></span> -->
+	<!-- 				</td> -->
+	<!-- 			</tr> -->
+	<!-- 			<tr> -->
+	<!-- 				<td class="td-l"> -->
+	<!-- 					<span style="">症状/疾病：</span><input type="text" id="illness" /> -->
+	<!-- 				</td> -->
+	<!-- 				<td class="td-r"> -->
+	<!-- 					<span style="">科室/类别：</span> -->
+	<!-- 					<select  onchange="onchangeIllness()" id="sections"> -->
+	<!-- 						<option value="addIllness">添加</option> -->
+	<!-- 					</select> -->
+	<!-- 				</td> -->
+	<!-- 			</tr> -->
+	<!-- 			<tr class="save"> -->
+	<!-- 				<td> -->
+	<!-- 					<input type="submit" onClick="saveCustomer()" value="保存"/> -->
+	<!-- 					<input type="submit" onClick="cancel()" value="取消"/> -->
+	<!-- 				</td> -->
+	<!-- 			</tr> -->
+
+	<!-- 		</table> -->
+	<!-- 	</div> -->
+	<!--近期就诊记录-->
+	<div class="module">
+		<table class="table3">
+			<th>
+				<h3 style="float:left;margin:0px 0px 10px 0px;">近期就诊记录</h3>
+				<span class='save' style="float:right;margin:0px 0px 0px 40px;" ><input type="submit" id="displayOrderButton"  onClick="showTableOrder();"  value="查看更多"/></span>
+			</th>
+			<tr>
+				<td class="td-l">
+					<span style="">宝宝姓名：&nbsp;&nbsp;</span><select id="babyNameOrder" onchange="changeOrderInfo();" ></select>
+				</td>
+
+			</tr>
+			<tr>
+				<td class="td-r">
+					<span style="">医院/科室：</span>
+					<input type="text" id="hospitalNameOrder" />
+				</td>
+			</tr>
+			<tr>
+				<td class="td-l">
+					<span style="">生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：&nbsp;&nbsp;</span><input type="text" id="babyBirthdayOrder" />
+				</td>
+
+			</tr>
+			<tr>
+				<td class="td-r">
+					<span style="">医&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;生：&nbsp;&nbsp;</span><input type="text" id="doctorNameOrder" />
+				</td>
+			</tr>
+			<tr>
+				<td class="td-l">
+					<span style="">联系电话：&nbsp;&nbsp;&nbsp;</span><input type="text" id="phoneOrder" />
+				</td>
+
+			</tr>
+			<tr>
+				<td class="td-r">
+					<span style="">日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;期：&nbsp;&nbsp;</span><input type="text" id="dateOrder" />
+				</td>
+			</tr>
+			<tr  >
+				<td style="" class="td-l">
+					<span style="">症&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;状：&nbsp;&nbsp;</span><input type="text" id="illnessOrder" />
+				</td>
+			</tr>
+			<tr class="" >
+				<td style="" class="td-l">
+					<span style="">订单类型：&nbsp;&nbsp;</span><input type="text" id="typeOrder" />
+				</td>
+			</tr>
+			<tr class="save">
+				<td>
+					<input type="hidden"   value="查看更多"/>
+				</td>
+
+			</tr>
+
+		</table>
+	</div>
+	<!--添加咨询记录-->
+	<div class="module">
+		<table class="table4">
+			<th>
+				<h3>添加咨询记录</h3>
+			</th>
+			<tr class="full-td">
+				<td class="">
+					<span style="">客&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;服：</span><input type="hidden" id="openid"  value="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk" />
+					<input type="text" id="costomerID" />
+				</td>
+			</tr>
+			<tr class="full-td">
+				<td class="td-l">
+					<span style="">归档日期：</span><span type="text" id="create_date"></span>
+				</td>
+
+			</tr>
+			<tr class="full-td">
+				<td class="td-l" style="position: relative;">
+					<span style="">咨询标题：</span><input type="text" id="illness"   onkeyup="onIllnessKeydown(this.value);"/>
+					<ul id="illnessList"  class="search-remind">
+						<li>咨询咨询咨询咨询</li>
+						<li>咨询咨询咨询咨询</li>
+						<li>咨询咨询咨询咨询</li>
+						<li>咨询咨询咨询咨询</li>
+					</ul>
+				</td>
+
+			</tr>
+			<tr   class="full-td">
+				<td style="" class="td-l">
+					<span style="">咨询类别：</span><select  onchange="onchangeIllness()" id="sections">
+					<option value="addIllness">添加</option>
+				</select>
+				</td>
+			</tr>
+			<tr class="save">
+				<td>
+					<input type="submit" onClick="saveCustomer()" value="添加记录"/>
+				</td>
+
+			</tr>
+			<tr class="save">
+				<td>
+					<input type="submit" onClick="cancel()" value="取消保存"/>
+				</td>
+
+			</tr>
+			<tr class="save">
+				<td>
+					<input type="submit" id="recommend" onClick="recommendDoctor()" value="推荐医生"/>
+				</td>
+
+			</tr>
+		</table>
+	</div>
+	<!--历史咨询档案-->
+	<div class="module">
+		<table class="table5" id="historyLog">
+		 <tr >
+			<th>
+				<h3 style="float:left;margin:0px 0px 10px 0px; width:120px;">历史咨询档案</h3>
+				<span class='save' style="float:left;margin:0px 0px 0px 80px; width:30px;" ><input type="submit" id="displayCustomerButton"  onClick="showTableCustomer();"  value="查看更多"/></span>
+			</th>
+			</tr>
+			<tr class="full-td">
+				<td class="td-l">
+					<span style="">客服：</span><input type="text"  />
+					<br><a>发烧</a>
+				</td>
+				<td class="">
+					2015/11/28
+				</td>
+			</tr>
+			<tr class="full-td">
+				<td class="td-l">
+					<span style="">客服：</span><input type="text"  />
+					<br><a>发烧</a>
+				</td>
+				<td class="">
+					2015/11/28
+				</td>
+
+			</tr>
+			<tr class="full-td">
+				<td class="td-l">
+					<span style="">客服：</span><input type="text"  />
+					<br><a>发烧</a>
+				</td>
+				<td class="">
+					2015/11/28
+				</td>
+
+			</tr>
+			<tr   class="full-td">
+				<td class="td-l">
+					<span style="">客服：</span><input type="text"  />
+					<br><a>发烧</a>
+				</td>
+				<td class="">
+					2015/11/28
+				</td>
+			</tr>
+			<tr class="save" >
+				<td style="border:none;">
+					<input type="submit"  value="查看更多"/>
+				</td>
+
+			</tr>
+
+		</table>
+	</div>
+	<div id="addSec" style="display: none;z-index: 999;position: absolute;">
+		<span style="">科室/类别：</span><input type="text" id="addSections"/>
+		<br/>
+		<center>
+			<input type="submit" onClick="saveSections()" value="保存"/>
+			<input type="submit" onClick="cancelSaveSections()" value="取消"/>
+		</center>
+	</div>
+	<div id="alertDiv" style="display: none;z-index: 999;position: absolute;background-color: white;">
+		<br/>
+		<center>
+			<span width="30px"  height="30px"  id="alertTitle"  ></span>
+			<br/><br/><br/><br/>
+			<input type="submit" onClick="closeAlertD()" value="关闭"/>
+		</center>
+	</div>
+</div>
+<textarea type="text" name="messageData" id="messageData" class="textarea" style="display:none;"></textarea>
+</body>
+</html>
+<script type="text/javascript" src="http://o2o.gtimg.com/module/jquery.js" ></script>
+<script>
+	var babyInfo;
+	var openid="";
+	var ticket = getUrlParam('ticket');
+	var workerAccouont = '';
+	// 	获取客服账号
+	function getUrlParam(name)
+	{
+		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+		var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+		if (r!=null) return unescape(r[2]); return null; //返回参数值
+	}
+	$.getScript('http://crm1.dkf.qq.com/php/index.php/thirdapp/appdemo/get_workeraccount_by_sessionkey?callback=wokeraccountCallback&ticket='+ticket);
+	function wokeraccountCallback(data){
+		$("#costomerID").val($xss(data.workeraccount,"html"));
+	}
+	function $xss(str,type){
+		//空过滤
+		if(!str){
+			return str===0 ? "0" : "";
+		}
+		switch(type){
+			case "none": //过度方案
+				return str+"";
+				break;
+			case "html": //过滤html字符串中的XSS
+				return str.replace(/[&'"<>\/\\\-\x00-\x09\x0b-\x0c\x1f\x80-\xff]/g, function(r){
+					return "&#" + r.charCodeAt(0) + ";"
+				}).replace(/ /g, " ").replace(/\r\n/g, "<br />").replace(/\n/g,"<br />").replace(/\r/g,"<br />");
+				break;
+			case "htmlEp": //过滤DOM节点属性中的XSS
+				return str.replace(/[&'"<>\/\\\-\x00-\x1f\x80-\xff]/g, function(r){
+					return "&#" + r.charCodeAt(0) + ";"
+				});
+				break;
+			case "url": //过滤url
+				return escape(str).replace(/\+/g, "%2B");
+				break;
+			case "miniUrl":
+				return str.replace(/%/g, "%25");
+				break;
+			case "script":
+				return str.replace(/[\\"']/g, function(r){
+					return "\\" + r;
+				}).replace(/%/g, "\\x25").replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\x01/g, "\\x01");
+				break;
+			case "reg":
+				return str.replace(/[\\\^\$\*\+\?\{\}\.\(\)\[\]]/g, function(a){
+					return "\\" + a;
+				});
+				break;
+			default:
+				return escape(str).replace(/[&'"<>\/\\\-\x00-\x09\x0b-\x0c\x1f\x80-\xff]/g, function(r){
+					return "&#" + r.charCodeAt(0) + ";"
+				}).replace(/ /g, " ").replace(/\r\n/g, "<br />").replace(/\n/g,"<br />").replace(/\r/g,"<br />");
+				break;
+		}
+	}
+	function getOpenid(){
+		openid=$("#openid").val();
+	}
+	function alertD(str){
+		$("#alertTitle").html(str);
+		$("#alertDiv").show();
+		$("#alertDiv").css("left","50%");
+		$("#alertDiv").css("top","50%");
+		$("#backgroundColor").show();
+		center($("#alertDiv"));
+		center($("#alertTitle"));
+		center($("#backgroundColor"));
+	}
+	function closeAlertD(){
+		$("#backgroundColor").hide();
+		$("#alertDiv").hide();
+	}
+	function onchangeBaby(){
+		var i=$("#babyName").val();
+		if(i=="addBabyInfo"){
+			$("#babyNamespan").html("<input type='text' id='babyName' value=''/>");
+			$("#babyBirthday").val("");
+			$("#phone").val("");
+			$("#sex").val("");
+			$("#id").val("");
+			$("#remark").val("");
+			$("#babyAge").html("");
+		}else{
+			$("#id").val(babyInfo[i].id);
+			$("#babyBirthday").val(babyInfo[i].babyBirthday);
+			$("#phone").val(babyInfo[i].phone);
+			$("#sex").val(babyInfo[i].sex);
+			$("#remark").val(babyInfo[i].remark);
+			dateDiff();
+		}
+	}
+	function onchangeIllness(){
+		var sectionName=$("#sections").val();
+		if(sectionName=="addIllness"){
+			$("#addSec").show();
+			$("#backgroundColor").show();
+			$("#addSec").css("left","50%");
+			$("#addSec").css("top","50%");
+			center($("#addSec"));
+			center($("#backgroundColor"));
+		}
+// 		if(sectionName=="皮肤科"){
+// 			sendMessage("皮肤");
+// 		}
+		onChangeIllnessName(sectionName);
+	}
+	function cancelSaveSections(){
+		$("#addSec").hide();
+		$("#backgroundColor").hide();
+	}
+	$(function(){
+		loadData();
+	});
+	function dateDiff(){
+		var last=new Date();
+		var now=$("#babyBirthday").val();
+		now=new Date(Date.parse(now.replace(/-/g, "/")));
+		var yearDiff=last.getFullYear()-now.getFullYear();
+		var monthDiff=0;
+		var dayDiff=0;
+		if(yearDiff>=0){
+			monthDiff=last.getMonth()-now.getMonth();
+			if(monthDiff<0){
+				if(yearDiff>0){
+					yearDiff=0;
+					monthDiff=11-now.getMonth()+last.getMonth();
+				}else{
+					$("#babyBirthday").val('');
+					alertD("非法日期");
+					return;
+				}
+			}
+			dayDiff=last.getDate()-now.getDate();
+			monthDiff+=1;
+			if(dayDiff<0){
+				if(monthDiff>0){
+					monthDiff-=1;
+					dayDiff=31-now.getDate()+last.getDate();
+				}else{
+					$("#babyBirthday").val('');
+					alertD("非法日期");
+					return;
+				}
+			}
+		}
+		var age="";
+		$("#babyAge").html("");
+		if(yearDiff>0){
+			age+=yearDiff+"年";
+		}
+		if(monthDiff>0){
+			age+=monthDiff+"月";
+		}
+		if(dayDiff>=0){
+			if(dayDiff==0){
+				dayDiff=1;
+			}
+			age+=dayDiff+"天";
+		}
+		if(age==""){
+			return ;
+		}else{
+			$("#babyAge").html(age);
+		}
+
+	}
+	function loadData(){
+		hiddenTableOrder();
+		hiddenTableCustomer();
+		getIllness();
+		getOpenid();
+		getBabyInfo();
+		var d = new Date();
+		var str = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+		$("#create_date").html(str);
+		getCustomerLogByOpenID();
+		getOrderInfoByOpenid();
+	}
+	function getBabyInfo(){
+		$.ajax({
+			type: 'POST',
+			url: "../../ap/customer/searchBabyInfo",
+			contentType: "application/json; charset=utf-8",
+			data: "{'openid':'"+openid+"'}",
+			success: function(result){
+				babyInfo=result.babyList;
+				var bill=result.nickName;
+				$("#wechatName").val(result.nickName);
+				var option="";
+				if(babyInfo==""){
+					option+="<option value=\"addBabyInfo\">添加</option>";
+					$("#babyNamespan").html("<select onchange=\"onchangeBaby()\"  id=\"babyName\"></select>");
+					$("#babyName").html(option);
+					onchangeBaby();
+					return;
+				}
+				for(var i=0;i<babyInfo.length;i++){
+					option+="<option value=\'"+i+"'>"+babyInfo[i].babyName+"</option>";
+				}
+				option+="<option value=\"addBabyInfo\">添加</option>";
+				$("#babyNamespan").html("<select onchange=\"onchangeBaby()\"  id=\"babyName\"></select>");
+				$("#babyName").html(option);
+				onchangeBaby();
+			},
+			dataType: "json"
+		});
+	}
+	var date=/^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$/i;
+	function saveBabyInfo(){
+		var babyName=$("#babyName").val();
+		if(!isNaN(babyName)){
+			babyName=$("#babyName").html();
+		}
+		var wechatName=$("#wechatName").val();
+		var babyBirthday=$("#babyBirthday").val();
+		var remark=$("#remark").val();
+		if(babyName==""){
+			alertD("宝宝姓名不能为空");
+			return false;
+		}
+		if(!date.test(babyBirthday)){
+			alertD('日期格式不正确');
+			return false;
+		}
+		var phone=$("#phone").val();
+		var sex=$("#sex").val();
+		var openid=$("#openid").val();
+		var id=$("#id").val();
+		$.ajax({
+			type: 'POST',
+			url: "../../ap/customer/saveBaby",
+			contentType: "application/json; charset=utf-8",
+			data: "{'openid':'"+openid+"','babyName':'"+babyName+"','weChatName':'"+wechatName+"','babyBirthday':'"+babyBirthday+"','phone':'"+phone+"','sex':'"+sex+"','id':'"+id+"','remark':'"+remark+"'}",
+			success: function(result){
+				var type=result.type;
+				if(type==1){
+					alertD("保存成功");
+				}else if(type==2){
+					alertD("修改成功");
+					getBabyInfo();
+				}else{
+					alertD("保存失败,请联系技术人员");
+					getBabyInfo();
+				}
+			},
+			dataType: "json"
+		});
+	}
+
+	function cancelSaveBabyInfo(){
+		getBabyInfo();
+	}
+
+	function getIllness(){
+		$.post("../../ap/customer/searchIllnessList",
+				function(result){
+					result=eval("("+result+")");
+					var datas=result.illnessList;
+					var option="";
+					for(var i=0;i<datas.length;i++){
+						if(i==0){
+							onChangeIllnessName(datas[i].illness);
+						}
+						option+="<option id=\'"+datas[i].id+"'>"+datas[i].illness+"</option>";
+					}
+					option+="<option value=\"addIllness\">添加</option>";
+					$("#sections").html(option);
+				});
+	}
+
+	function saveCustomer(){
+		var costomerID=$("#costomerID").val();
+		var create_date=$("#create_date").html();
+		var illness=$("#illness").val();
+		var sections=$("#sections").val();
+		var id=$("#id").val();
+		if(illness==""){
+			alertD("疾病不能为空");
+			return false;
+		}
+		$.ajax({
+			type: 'POST',
+			url: "../../ap/customer/saveCustomerLog",
+			contentType: "application/json; charset=utf-8",
+			data: "{'create_date':'"+create_date+"','illness':'"+illness+"','sections':'"+sections+"','customerID':'"+costomerID+"','id':'"+id+"'}",
+			success: function(result){
+				var type=result.type;
+				if(type==1){
+					alertD("保存成功");
+					getCustomerLogByOpenID();
+				}else{
+					alertD("保存失败,请联系技术人员");
+				}
+			},
+			dataType: "json"
+		});
+	}
+
+	function saveSections(){
+		var costomerID=$("#addSections").val();
+		if(costomerID==""){
+			alertD("科室/类别 不能为空");
+			return false;
+		}
+		$.ajax({
+			type: 'POST',
+			url: "../../ap/customer/saveIllness",
+			contentType: "application/json; charset=utf-8",
+			async:false,
+			data: "{'illness':'"+costomerID+"'}",
+			success: function(results){
+				var type=results.type;
+				getIllness(1);
+				if(type==1){
+					cancelSaveSections();
+				}else{
+					alertD("保存失败,请联系技术人员");
+					cancelSaveSections();
+				}
+			},
+			dataType: "json"
+		});
+	}
+	// 获取用户的openid
+	function MCS_ClientNotify(EventData) {
+		EventData = strToJson(EventData);
+		switch(EventData['event']){
+			case 'OnUserChange':{
+				var openid=EventData['userid'];
+				$("#openid").val(openid);
+				loadData();
+				$("#illness").val('');
+				break;
+			}
+		}
+	}
+
+	function strToJson(str){
+		var json = (new Function("return " + str))();
+		return json;
+	}
+	var orderList;
+	//根据Openid获取历史订单
+	function getOrderInfoByOpenid(){
+		$.ajax({
+			type: 'POST',
+			url: "../../ap/customer/getOrderInfoByOpenid",
+			contentType: "application/json; charset=utf-8",
+			data: "{'openid':'"+openid+"'}",
+			success: function(result){
+				orderList=result.orderList;
+				var option;
+				var vip='no';
+				for(var i=0;i<orderList.length;i++){
+					option+="<option value='"+i+"'>"+orderList[i].babyName+"</option>";
+					if(orderList[i].status=='yes'){
+						vip='yes';
+					}
+				}
+				if(vip=='yes'){
+					$("#vip").show();
+				}else{
+					$("#vip").hide();
+				}
+				$("#babyNameOrder").html(option);
+				if(option===undefined){
+					$("#hospitalNameOrder").val("暂无");
+					$("#babyBirthdayOrder").val("暂无");
+					$("#doctorNameOrder").val("暂无");
+					$("#phoneOrder").val("暂无");
+					$("#dateOrder").val("暂无");
+					$("#illnessOrder").val("暂无");
+					$("#typeOrder").val("暂无");
+				}else{
+					changeOrderInfo();
+				}
+			},
+			dataType: "json"
+		});
+	}
+	function changeOrderInfo(){
+		var i=$("#babyNameOrder").val();
+		if(orderList[i].hospitalName===undefined){
+			$("#hospitalNameOrder").val("暂无");
+		}else{
+			$("#hospitalNameOrder").val(orderList[i].hospitalName);
+		}
+		if(orderList[i].birthday===undefined){
+			$("#babyBirthdayOrder").val("暂无");
+		}else{
+			$("#babyBirthdayOrder").val(new Date(orderList[i].birthday).Format("yyyy-MM-dd"));
+		}
+		if(orderList[i].dname===undefined){
+			$("#doctorNameOrder").val("暂无");
+		}else{
+			$("#doctorNameOrder").val(orderList[i].dname);
+		}
+		$("#phoneOrder").val(orderList[i].phone);
+		$("#dateOrder").val(new Date(orderList[i].create_date).Format("yyyy-MM-dd"));
+		$("#illnessOrder").val(orderList[i].illness);
+	}
+	//根据openid获取历史咨询
+	function getCustomerLogByOpenID(){
+		$.ajax({
+			type: 'POST',
+			url: "../../ap/customer/getCustomerLogByOpenID",
+			contentType: "application/json; charset=utf-8",
+			data: "{'openid':'"+openid+"'}",
+			success: function(result){
+				var logList=result.logList;
+				var html="<tbody><th>";
+				html+="<h3 style='float:left;margin:0px 0px 10px 0px; width:120px;'>历史咨询档案</h3>";
+				html+="<span class='save' style='float:left;margin:0px 0px 0px 80px; width:30px;' ><input type='submit' id='displayCustomerButton'  onClick='showTableCustomer();'";  html+="value='查看更多'/></span>";
+				html+="</th>";
+				for(var i=0;i<logList.length;i++){
+					html+="<tr class='full-td'>";
+					html+="<td class='td-l' style='width:85%'>";
+					html+="<span style=''>客服：</span><span>"+logList[i].customerID+"</span>";
+					html+="<br><a>"+logList[i].sys_customer_illness_id+"</a>";
+					html+="</td>";
+					html+="<td style='width:150px;'>";
+					html+="<span>"+new Date(logList[i].create_date).Format("yyyy-MM-dd")+"</span>";
+					html+="</td>";
+					html+="</tr>";
+				}
+				html+="<tr class='save' >";
+				html+="<td style='border:none;'>";
+				html+="<input type='hidden'  value='查看更多'/>";
+				html+="</td>";
+				html+="</tr></tbody>";
+				$("#historyLog").html(html);
+				hiddenTableCustomer();
+			},
+			dataType: "json"
+		});
+	}
+	Date.prototype.Format = function (fmt) { //author: meizz 
+		var o = {
+			"M+": this.getMonth() + 1, //月份
+			"d+": this.getDate(), //日
+			"h+": this.getHours(), //小时
+			"m+": this.getMinutes(), //分
+			"s+": this.getSeconds(), //秒
+			"q+": Math.floor((this.getMonth() + 3) / 3), //季度
+			"S": this.getMilliseconds() //毫秒
+		};
+		if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+		for (var k in o)
+			if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+		return fmt;
+	}
+
+	// 居中 
+	function center(obj) {
+		var screenWidth = $(window).width(), screenHeight = $(window).height(); //当前浏览器窗口的 宽高
+		var scrolltop = $(document).scrollTop();//获取当前窗口距离页面顶部高度
+		var objLeft = (screenWidth - obj.width())/2 ;
+		var objTop = (screenHeight - obj.height())/2 + scrolltop;
+		obj.css({left: objLeft + 'px', top: objTop + 'px','display': 'block'});
+//浏览器窗口大小改变时 
+		$(window).resize(function() {
+			screenWidth = $(window).width();
+			screenHeight = $(window).height();
+			scrolltop = $(document).scrollTop();
+			objLeft = (screenWidth - obj.width())/2 ;
+			objTop = (screenHeight - obj.height())/2 + scrolltop;
+			obj.css({left: objLeft + 'px', top: objTop + 'px'});
+		});
+//浏览器有滚动条时的操作、 
+		$(window).scroll(function() {
+			screenWidth = $(window).width();
+			screenHeight = $(window).height();
+			scrolltop = $(document).scrollTop();
+			objLeft = (screenWidth - obj.width())/2 ;
+			objTop = (screenHeight - obj.height())/2 + scrolltop;
+			obj.css({left: objLeft + 'px', top: objTop + 'px'});
+		});
+	}
+	function hiddenTableOrder(){
+		$(".table3").parent().css("height","50px");
+		$(".table3 td").css("display","none");
+		$("#displayOrderButton").val("查看更多");
+		$("#displayOrderButton").attr("onClick","showTableOrder()");
+	}
+	function showTableOrder(){
+		$(".table3").parent().css("height","460px");
+		$(".table3 td").css("display","");
+		$("#displayOrderButton").val("收起更多");
+		$("#displayOrderButton").attr("onClick","hiddenTableOrder()");
+	}
+	function hiddenTableCustomer(){
+		$(".table5").parent().css("height","60px");
+		$(".table5 td").css("display","none");
+		$("#displayCustomerButton").val("查看更多");
+		$("#displayCustomerButton").attr("onClick","showTableCustomer()");
+	}
+	function showTableCustomer(){
+		$(".table5").parent().css("height","460px");
+		$(".table5 td").css("display","");
+		$(".table5 th").css("width","500px");
+		$("#displayCustomerButton").val("收起更多");
+		$("#displayCustomerButton").attr("onClick","hiddenTableCustomer()");
+		$("#displayCustomerButton").css("margin:0px -10px 0px 0px");
+	}
+	function onIllnessKeydown(title){
+		showIllnessList(title);
+// 		if(title=="湿疹"||title=='尿布疹'||title=='荨麻疹'){
+		if(title=="湿疹"||title=='尿布疹'){
+// 			$.ajax({
+// 				type: 'POST',
+// 				url: "../../ap/customer/onIllnessKeydown",
+// 				contentType: "application/json; charset=utf-8",
+// 				data: "{'illness':'"+title+"'}",
+// 				success: function(result){
+// 					var obj=result.ZYQURI;
+					sendMessage(title);
+// 				},
+// 				dataType: "json"
+// 			});
+		}
+		
+	}
+	function showIllnessList(title){
+// 		var patt1=/[荨|麻]/g;
+		var patt2=/[尿|布]/g;
+		var patt3=/[湿]/g;
+		var patt4=/[疹]/g;
+		var liHTML="null";
+// 		if(patt1.test(title)){
+// 			 liHTML="<li onmouseover='changeBackgroundColorOver(this);' onmouseout='changeBackgroundColorOut(this);' onclick='illnessTitle(this);'>荨麻疹</li>";
+// 		}else
+			if(patt2.test(title)){
+			 liHTML="<li onmouseover='changeBackgroundColorOver(this);' onmouseout='changeBackgroundColorOut(this);' onclick='illnessTitle(this);'>尿布疹</li>";
+		}else if(patt3.test(title)){
+			 liHTML="<li onmouseover='changeBackgroundColorOver(this);' onmouseout='changeBackgroundColorOut(this);' onclick='illnessTitle(this);'>湿疹</li>";
+		}else if(patt4.test(title)){
+		    liHTML="<li onmouseover='changeBackgroundColorOver(this);' onmouseout='changeBackgroundColorOut(this);' onclick='illnessTitle(this);'>荨麻疹</li>";
+			liHTML+="<li onmouseover='changeBackgroundColorOver(this);' onmouseout='changeBackgroundColorOut(this);' onclick='illnessTitle(this);'>尿布疹</li>";
+			liHTML+="<li onmouseover='changeBackgroundColorOver(this);' onmouseout='changeBackgroundColorOut(this);' onclick='illnessTitle(this);'>湿疹</li>";
+		}
+		if(liHTML!="null"){
+			$("#illnessList").html(liHTML);
+			var top=$("#elem").offset().top;
+			var left=$("#elem").offset().left;
+			document.getElementById("illnessList").style.left=left-10;
+			document.getElementById("illnessList").style.top=top+30;
+			$("#illnessList").show();
+		}else{
+			$("#illnessList").hide();
+		}
+	}
+	function illnessTitle(htm){
+		$("#illness").val($(htm).html());
+		$("#illnessList").hide();
+		sendMessage($(htm).html());
+	}
+	function changeBackgroundColorOver(thies){
+		thies.style.backgroundColor='blue';
+	}
+	function changeBackgroundColorOut(thies){
+		thies.style.backgroundColor='white';
+	}
+	function sendMessage(obj){
+			$.ajax({
+			type: 'POST',
+			url: "../../ap/customer/getKeywordsByOpenID",
+			contentType: "application/json; charset=utf-8",
+			data: "{'openid':'"+openid+"','keywords':'"+obj+"'}",
+			success: function(result){
+				var sum=result.logList;
+				if(sum>0){
+					return false;
+				}else{
+					$.ajax({
+						type: 'POST',
+						url: "../../ap/customer/saveOpenidAndKeywords",
+						contentType: "application/json; charset=utf-8",
+						data: "{'openid':'"+openid+"','keywords':'"+obj+"'}",
+						success: function(result){
+							var typ=result.type;
+							if(typ==1){
+								var msg = '{"head":{"random":"{#random#}"}, "body":[{"type":7, "content":[{"title":"为您精选“#title#”相关的必备常识", "digest":"", "cover":"#image#", "url":"#url#"}]}]}';
+								msg=msg.replace("{#random#}",  Math.ceil(Math.random()*10000000));
+								msg=msg.replace("#title#", obj);
+								msg=msg.replace("#url#", "http://baodf.com/xiaoerke-appoint/ap/appoint#/knowledgeSearch/"+obj+",dkf");
+								msg=msg.replace("#image#", 'http://baodf.com/xiaoerke-appoint/images/MessageCover.png');
+								document.getElementById('messageData').value = msg;
+								var strReturn = window.external.PutMsg('{"msg":'+document.getElementById('messageData').value+'}');
+								document.getElementById('area').value += 'put msg return:' + strReturn +'\n';
+							}else{
+								return false;
+							}
+						},
+						dataType: "json"
+					});
+				}
+			},
+			dataType: "json"
+		});
+	}
+	function closeSelectAbout(){
+		$("#illnessList").hide();
+	}
+	var illnessName="";
+	function onChangeIllnessName(val){
+		switch(val){
+		case "呼吸系统":	
+			illnessName="小儿呼吸";
+			break;
+		case "消化系统":
+			illnessName="小儿消化";
+			break;
+		case "新生儿疾病":
+			illnessName="新生儿内科";
+			break;
+		case "心血管系统":
+			illnessName="小儿心内";
+			break;
+		case "泌尿系统":
+			illnessName="小儿肾内";
+			break;
+		case "血液系统":
+			illnessName="小儿血液肿瘤科";
+			break;
+		case "神经系统":
+			illnessName="小儿神经内";
+			break;
+		case "风湿免疫科":
+			illnessName="小儿免疫";
+			break;	
+		case "骨外科":
+			illnessName="小儿骨科";
+			break;	
+		case "皮肤科":
+			illnessName="小儿皮肤";
+			break;	
+		case "眼科":
+			illnessName="小儿眼科";
+			break;	
+		case "口腔科":
+			illnessName="口腔";
+			break;	
+//		case "预防接种":
+//			illnessName="";
+//			break;	
+		case "喂养问题":
+		case "微量元素缺乏":
+		case "免疫力低":
+		case "母乳喂养":	
+		case "睡眠不好":
+			illnessName="小儿营养保健";
+			break;	
+		case "耳鼻喉科":
+			illnessName="小儿耳鼻喉";
+			break;
+		case "外科":
+			illnessName="小而普通外科";
+			break;		
+		case "内分泌遗传代谢":
+			illnessName="内分泌遗传代谢科";
+			break;			
+		}
+		checkIllness();
+	}
+	function checkIllness(){
+	 			$.ajax({
+ 				type: 'POST',
+ 				url: "../../ap/customer/getDocotrByIllness",
+ 				contentType: "application/json; charset=utf-8",
+ 				data: "{'illness':'"+illnessName+"'}",
+ 				success: function(result){
+					var obj=result.values;
+					if(obj=='yes'){
+					 $("#recommend").css("background-color","blue");
+					 $("#recommend").removeAttr("disabled");
+					}else{
+						$("#recommend").css("background-color","gray");
+						 $("#recommend").attr("disabled","disabled");
+					}
+ 				},
+ 				dataType: "json"
+ 			});
+	}
+	function recommendDoctor(){
+	var msg = '{"head":{"random":"{#random#}"}, "body":[{"type":7, "content":[{"title":"宝大夫团队为您精选#title#名医,预约请点击", "digest":"", "cover":"#image#", "url":"#url#"}]}]}';
+		msg=msg.replace("{#random#}",  Math.ceil(Math.random()*10000000));
+		msg=msg.replace("#title#", illnessName);
+		msg=msg.replace("#url#", "http://baodf.com/xiaoerke-appoint/ap/appoint#/searchList/"+illnessName+",searchDoctorByOpenSearch,"+illnessName);
+		msg=msg.replace("#image#", 'http://baodf.com/xiaoerke-appoint/images/MessageCover.png');
+		alert(msg);
+		document.getElementById('messageData').value = msg;
+	var strReturn = window.external.PutMsg('{"msg":'+document.getElementById('messageData').value+'}');
+		document.getElementById('area').value += 'put msg return:' + strReturn +'\n';
+	}
+	function closeSelectAbout(){
+		$("#illnessList").hide();
+	}
+</script><!--[if !IE]>|xGv00|539017d66e4e60b1c82cbc86aa9a5d50<![endif]-->

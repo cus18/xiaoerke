@@ -1,0 +1,124 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="营养管理" ng-init="doRefresh()">
+    <ion-content class="nutritionIndex " style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="shadow" ng-if="firstIntro" ng-click="cancel()"></div>
+          <div class="main">
+              <div class="addManage" ng-click="goManagement()">
+                  添加管理
+              </div>
+              <div class="baby-info">
+                  <img width="100%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Findex_baby_info.png">
+                  <ul>
+                      <li>
+                          <div class="value">
+                              <span>{{height}}</span>cm
+                          </div>
+                          <div class="key">宝宝身高</div>
+                      </li>
+                      <li>
+                         <div class="value">
+                            <span>{{weight}}</span>kg
+                         </div>
+                         <div class="key">宝宝体重</div>
+
+                      </li>
+                  </ul>
+
+              </div>
+              <div class="remind" ng-click="goAssess()">
+                  <img class="my-img" width="20" height="20" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Ficon_warn.png">&nbsp;&nbsp;
+                  {{resultAssess}}
+              </div>
+              <div class="depart"></div>
+              <div class="food ">
+                  <h3 class="titleLine">
+                      <span class="line"></span>
+                      <span class="line"></span>
+                      {{foodTitle}}
+                  </h3>
+                  <div class="pic">
+                      <img class="my-img-block" width="100%" height="auto" src="http://oss-cn-beijing.aliyuncs.com/xiaoerke-article-pic/{{foodImg}}">
+                  </div>
+                  <div class="detail" ng-click="nutritionFood()">
+                      <a >饮食详细 </a>
+                  </div>
+                  <div ng-if="firstIntro" class="first-intro">
+                      点此进入营养师的食谱建议<br>
+                      也可对自己做的饭进行营养评估
+                      <img class="my-img-block" width="24.5" height="55" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Farrow_line.png">
+
+                  </div>
+
+              </div>
+              <div class="depart"></div>
+              <div class="article-list">
+                  <h3 class="titleLine">
+                      <span class="line"></span>
+                      <span class="line"></span>
+                      今日阅读
+                  </h3>
+                  <div class="article">
+                      <dl>
+                          <dt>宝宝的饮食贴士</dt>
+                          <dd>
+                              <img class="my-img-block" width="100%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Findex_read1.png">
+                              <div class="text">
+                                  <h3>{{safe}}</h3>
+                                  <a ng-click="readArticle(safeId)">阅读全文</a>
+                              </div>
+                          </dd>
+                      </dl>
+                      <div class="read-more" ng-click="lookMore(safeArticleCategoryId,0)">
+                          查看往期文章
+                          <img class="my-img" width="11.5" height="12" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Farrow_right_gray.png">
+                      </div>
+                  </div>
+                  <div class="article">
+                      <dl>
+                          <dt>宝宝的饮食习惯</dt>
+                          <dd>
+                              <img class="my-img-block" width="100%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Findex_read2.png">
+                              <div class="text">
+                                  <h3>{{habit}}</h3>
+                                  <a ng-click="readArticle(habitId)">阅读全文</a>
+                              </div>
+                          </dd>
+                      </dl>
+                      <div class="read-more" ng-click="lookMore(habitArticleCategoryId,1)">
+                          查看往期文章
+                          <img class="my-img" width="11.5" height="12o" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Farrow_right_gray.png">
+                      </div>
+                  </div>
+
+              </div>
+              <div class="depart"></div>
+              <div class="necessary" ng-click="nutritionNecessary()">
+                  <h3 class="titleLine">
+                      <span class="line"></span>
+                      <span class="line"></span>
+                      妈妈必备
+                  </h3>
+                  <div>
+                      <img class="my-img-block" width="100%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Findex_necessary.png">
+                  </div>
+
+              </div>
+          </div>
+
+            <br><br><br><br><br><br>
+        </ion-scroll>
+    </ion-content>
+    <div class="my-footer">
+        <a class="tab-item"  ng-class="{'activated':footerNum==0}" ng-click="menuSelect(0)"><i class="icon ">
+            <img width="28" height="25" ng-src="{{homeImg}}"> </i> 首页</a>
+        <a class="tab-item"  ng-class="{'activated':footerNum==1}" ng-click="menuSelect(1)"><i class="icon ">
+            <img width="25.5" height="25"  ng-src="{{assessImg}}"></i> 评估</a>
+        <a class="tab-item consult"  ng-class="{'activated':footerNum==4}" ng-click="menuSelect(4)"><i class="icon ">
+            <img width="67.7" height="60"  ng-src="{{commentImg}}"></i> 咨询</a>
+        <a class="tab-item"  ng-class="{'activated':footerNum==3}" ng-click="menuSelect(3)"><i class="icon ">
+            <img width="27.5" height="25" ng-src="{{necessaryImg}}" ></i> 必备</a>
+        <a class="tab-item"  ng-class="{'activated':footerNum==2}" ng-click="menuSelect(2)"><i class="icon ">
+            <img width="23" height="25" ng-src="{{reportImg}}"></i> 我的</a>
+    </div>
+</ion-view>

@@ -1,0 +1,46 @@
+<ion-spinner ng-show="pageLoading"  class="loadPic"></ion-spinner>
+<ion-view view-title={{title0}} ng-init="doRefresh()">
+    <div bdf-head="title"></div>
+    <ion-content class="appointmentSuccess">
+        <ion-scroll direction="y" has-bouncing="true" style="top:0px;">
+            <div class="body">
+               <div class="list">
+                   <div class="item pic" >
+                       <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fappointment_success.png" width="92" height="92"><br>
+                       <span>
+                           宝大夫预约成功<br>
+                       请按时就诊，祝您的宝宝健康！
+                       </span>
+                   </div>
+                   <div class="item workInfo ">
+                       <ul style="border:none">
+                           <li class="l">医生</li>
+                           <li class="r">{{appointmentDataDetail.doctorName}}</li>
+                       </ul>
+                       <ul>
+                           <li class="l">时间</li>
+                           <li class="r">{{appointmentDataDetail.date}} &nbsp;&nbsp;{{week}}</li>
+                       </ul>
+                       <ul style="border-top:1px solid #ddd">
+                           <li class="l">地点</li>
+                           <li class="r" style="word-break: normal;white-space: normal;word-wrap: break-word;"> {{appointmentDataDetail.position}}（{{appointmentDataDetail.hospitalName}}）
+                               &nbsp;&nbsp;{{appointmentDataDetail.location}}<br>
+                               <button class="button button-outline route"
+                                       ui-sref="route({sys_regist_id:appointmentDataDetail.sys_regist_id})">
+                                   详细路线
+                               </button>
+                           </li>
+                       </ul>
+
+                   </div>
+                   <div class="tips word-break" >
+                       <p class="word-break">{{tips}}</p>
+                       1、如遇专家停诊，我们会及时与您沟通，请保持手机畅通<br>
+                       2、爽约行为会影响到您今后的预约，请您谅解<br>
+                   </div>
+               </div>
+            </div>
+            <div bdf-footer></div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

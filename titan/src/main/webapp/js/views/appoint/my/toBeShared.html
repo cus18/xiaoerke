@@ -1,0 +1,27 @@
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title={{title0}} ng-init="doRefresh()">
+    <ion-spinner ng-show="dataLoading"></ion-spinner>
+    <div bdf-head="title"></div>
+    <ion-content class="toBeShared">
+        <ion-scroll direction="y" has-bouncing="true" style="">
+            <div class="list" ng-if="!isBlank">
+                <div class="item item-thumbnail-left waitInfo"  ng-repeat="item in appointmentData" >
+                    <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.doctorId}}"/>
+                    <h2 class="word-break">{{item.doctorName}}&nbsp;&nbsp;</h2>
+                    <p>{{item.hospitalName}}</p>
+                    <p>{{item.date}}&nbsp;&nbsp;{{item.startTime}}-{{item.endTime}}</p>
+                    <span class="wait-status" >待分享</span>
+                    <span class="btn" ui-sref="sharedDetail({patient_register_service_id:item.patient_register_service_id,status:'false'})">
+                       去分享
+                    </span>
+                </div>
+            </div>
+            <div class="noContent" ng-if="isBlank">
+                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fno_share.png" width="121" height="121">
+                <p>{{care1}}</p>
+                <p>{{care2}}</p>
+            </div>
+            <div bdf-footer></div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

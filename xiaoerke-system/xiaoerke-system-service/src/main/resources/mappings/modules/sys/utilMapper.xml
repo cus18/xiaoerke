@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxqm.xiaoerke.modules.sys.dao.UtilDao">
+
+  <insert id="saveOrUpdateIdentify" parameterType="com.cxqm.xiaoerke.modules.sys.entity.ValidateBean">
+        <selectKey keyProperty="count" resultType="int" order="BEFORE">
+            select count(*) from sys_validate_code where user_phone = #{userPhone}
+        </selectKey>
+        <if test="count > 0">
+            update sys_validate_code
+            set code = #{code},create_time = #{createTime} ,status =#{status}
+            where user_phone = #{userPhone}
+        </if>
+        <if test="count==0">
+            INSERT INTO sys_validate_code(
+            id,
+            user_phone,
+            code,
+            create_time,
+            status
+            ) VALUES (
+            #{id},
+            #{userPhone},
+            #{code},
+            #{createTime} ,
+            #{status})
+        </if>
+    </insert>
+    
+     <!-- 查询全部用户数目 -->
+    <select id="getIdentifying" resultType="com.cxqm.xiaoerke.modules.sys.entity.ValidateBean">
+        SELECT
+        id,
+        user_phone,
+        code,
+        create_time
+        FROM sys_validate_code a
+        WHERE a.user_phone = #{phoneNum}
+    </select>
+</mapper>

@@ -1,0 +1,41 @@
+<ion-view view-title={{title0}} ng-init="doRefresh()" >
+    <ion-content class="playtourEvaluate"  style="top:0;" >
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="playtourEvaluatedoctor">
+                <div class="playtourEvaluatedoctorimg">
+                    <img src="images/a1.png" width="62.5px" height="62.5px">
+                </div>
+                <div class="playtourEvaluatedoctorright">
+                    <div class="playtourEvaluatedoctorright_1">
+                        <img src="{doctorHeadImage.image}" width="13px" height="14px"/>
+                        <span>{{doctorHeadImage.name}}</span>
+                    </div>
+                    <div class="playtourEvaluatedoctorright_2">
+                        <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fchengjiu.png" width="10.5px" height="14px"/>
+                        <span class="xinyi">收到心意<span>{{star.redPacket}}</span></span>
+                        <span class="haoping">好评率<span>{{star.startNum}}%</span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="playtourEvaluatejieguo">
+                <div class="playtourEvaluatejieguotitle">您已完成此次评价</div>
+                <img ng-src="{{playtoutEvaluateImg[2]}}" width="37px" height="37px"/>
+                <div class="playtourEvaluatejieguocontent">非常满意</div>
+            </div>
+            <div class="com playtourEvaluatechengdu"><span>您的评价：</span>非常满意</div>
+            <div class="com playtourevaluatedoctorjianyi"><span>您的建议：</span>
+                dddfsfasfaffffffffffffffffffffffffffffffffffffffffffffffffffffsfdasfasfasffd
+            </div>
+            <div class="playtourEvaluatexinyi">
+                已送心意：100元
+            </div>
+            <div class="playtourEvaluatebut" ng-click="goShare()">
+                <button >分享给更多宝妈</button>
+            </div>
+
+
+            <br><br><br><br>
+
+        </ion-scroll>
+    </ion-content>
+</ion-view>

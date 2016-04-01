@@ -1,0 +1,459 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Content-Language" content="zh-cn" />
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+	<meta http-equiv="Access-Control-Allow-Origin" content="*">
+	<meta http-equiv="Expires" content="0">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-control" content="no-cache">
+	<meta http-equiv="Cache" content="no-cache">
+	<script language="javascript" type="text/javascript"
+			src="/xiaoerke-wxapp/scripts/lib/My97DatePicker/WdatePicker.js"></script>
+	<title></title>
+</head>
+<style>
+	body {
+		font-family: "Microsoft Yahei", Arial, sans-serif;
+		font-size: 14px;
+		background: #fff;
+		overflow-x:hidden;
+	}
+	.title{
+		font-size: 15px;
+		margin-bottom:5px;
+	}
+	.content{
+		margin-bottom:10px;
+	}
+	.textarea{
+		background-color: #FFFCEC;
+	}
+	.module{
+		border: 1px solid #DDDDDD; padding:5px; margin-bottom:10px;
+	}
+	.button {
+		display: inline-block;
+		position: relative;
+		margin: 0px;
+		padding: 0 20px;
+		text-align: center;
+		text-decoration: none;
+		font: bold 12px/25px Arial, sans-serif;
+
+		text-shadow: 1px 1px 1px rgba(255,255,255, .22);
+
+		-webkit-border-radius: 30px;
+		-moz-border-radius: 30px;
+		border-radius: 30px;
+
+		-webkit-box-shadow: 1px 1px 1px rgba(0,0,0, .29), inset 1px 1px 1px rgba(255,255,255, .44);
+		-moz-box-shadow: 1px 1px 1px rgba(0,0,0, .29), inset 1px 1px 1px rgba(255,255,255, .44);
+		box-shadow: 1px 1px 1px rgba(0,0,0, .29), inset 1px 1px 1px rgba(255,255,255, .44);
+
+		-webkit-transition: all 0.15s ease;
+		-moz-transition: all 0.15s ease;
+		-o-transition: all 0.15s ease;
+		-ms-transition: all 0.15s ease;
+		transition: all 0.15s ease;
+	}
+	.green {
+		color: #3e5706;
+		background: #a5cd4e;
+	}
+</style>
+<body  style="">
+<div>
+	<div id="backgroundColor"  style="display:none;position: absolute;width:100%;;z-index: 998;height:100%;background: #000;filter:alpha(Opacity=50);-moz-opacity:0.5;-webkit-opacity:0.5;-ms-opacity:0.5;opacity: 0.5;"></div>
+	<div class="module">
+		<div class="title">
+			<span>用户信息</span>
+		</div>
+		<div>
+			<span style="">宝宝姓名：</span><span id="babyNamespan"><select onchange="onchangeBaby()"  id="babyName"></select></span>
+			<br/><span style="">微信名：</span><span type="text" ><input type="text"   id="wechatName" /></span>
+			<input type="hidden" id="id"  value=""/>
+		</div>
+		<div>
+			<span style="">生日：</span><span type="text" ><input type="text"  id="babyBirthday"  onchange="dateDiff();"  class="Wdate"  onFocus="WdatePicker({lang:'zh-cn'})"/><span id="babyAge"></span></span>
+			<br/><span style="">联系电话：</span><span type="text" ><input type="text"   id="phone"/></span>
+		</div>
+		<div>
+			<span style="">性别：</span><select type="text" id="sex"><option value="0">男</option><option value="1">女</option></select>
+		</div>
+		<div>
+				<span >备注：</span>
+				<textarea id="remark" rows="5" cols="15"></textarea>
+			</div>
+		<input type="submit" onClick="saveBabyInfo()" id="saveBabyInfo" value="保存档案"/>
+		<input type="submit" onClick="cancelSaveBabyInfo()" id="cancelSaveBabyInfo" value="取消保存"/>
+	</div>
+	<div class="module">
+		<div class="title">
+			<span>咨询情况</span>
+		</div>
+		<div >
+			<div>
+				<input type="hidden" id="openid"  value="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk" />
+				<span style="">客服：</span><input type="text" id="customerID" />
+			</div>
+			<div>
+				<span style="">咨询日期：</span><span type="text" id="create_date"></span>
+			</div>
+			<div>
+				<span style="">症状/疾病：</span><input type="text" id="illness" />
+			</div>
+			<div>
+				<span style="">科室/类别：</span><select  onchange="onchangeIllness()" id="sections">
+
+				<option value="addIllness">添加</option>
+			</select>
+			</div>
+			<input type="submit" onClick="saveCustomer()" value="保存"/>
+			<input type="submit" onClick="cancel()" value="取消"/>
+		</div>
+	</div>
+	<div id="addSec" style="display: none;z-index: 999;position: absolute;">
+		<span style="">科室/类别：</span><input type="text" id="addSections"/>
+		<br/>
+		<center>
+			<input type="submit" onClick="saveSections()" value="保存"/>
+			<input type="submit" onClick="cancelSaveSections()" value="取消"/>
+		</center>
+	</div>
+	<div id="alertDiv" style="display: none;z-index: 999;position: absolute;background-color: white;">
+		<br/>
+		<center>
+			<span width="30px"  height="30px"  id="alertTitle"  ></span>
+			<br/><br/><br/><br/>
+			<input type="submit" onClick="closeAlertD()" value="关闭"/>
+		</center>
+	</div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="http://o2o.gtimg.com/module/jquery.js" ></script>
+<script>
+	var babyInfo;
+	var openid="";
+	var ticket = getUrlParam('ticket');
+	var workerAccouont = '';
+	// 	获取客服账号
+	function getUrlParam(name)
+	{
+		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+		var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+		if (r!=null) return unescape(r[2]); return null; //返回参数值
+	}
+	$.getScript('http://crm1.dkf.qq.com/php/index.php/thirdapp/appdemo/get_workeraccount_by_sessionkey?callback=wokeraccountCallback&ticket='+ticket);
+	function wokeraccountCallback(data){
+		$("#customerID").val($xss(data.workeraccount,"html"));
+	}
+	function $xss(str,type){
+		//空过滤
+		if(!str){
+			return str===0 ? "0" : "";
+		}
+		switch(type){
+			case "none": //过度方案
+				return str+"";
+				break;
+			case "html": //过滤html字符串中的XSS
+				return str.replace(/[&'"<>\/\\\-\x00-\x09\x0b-\x0c\x1f\x80-\xff]/g, function(r){
+					return "&#" + r.charCodeAt(0) + ";"
+				}).replace(/ /g, " ").replace(/\r\n/g, "<br />").replace(/\n/g,"<br />").replace(/\r/g,"<br />");
+				break;
+			case "htmlEp": //过滤DOM节点属性中的XSS
+				return str.replace(/[&'"<>\/\\\-\x00-\x1f\x80-\xff]/g, function(r){
+					return "&#" + r.charCodeAt(0) + ";"
+				});
+				break;
+			case "url": //过滤url
+				return escape(str).replace(/\+/g, "%2B");
+				break;
+			case "miniUrl":
+				return str.replace(/%/g, "%25");
+				break;
+			case "script":
+				return str.replace(/[\\"']/g, function(r){
+					return "\\" + r;
+				}).replace(/%/g, "\\x25").replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\x01/g, "\\x01");
+				break;
+			case "reg":
+				return str.replace(/[\\\^\$\*\+\?\{\}\.\(\)\[\]]/g, function(a){
+					return "\\" + a;
+				});
+				break;
+			default:
+				return escape(str).replace(/[&'"<>\/\\\-\x00-\x09\x0b-\x0c\x1f\x80-\xff]/g, function(r){
+					return "&#" + r.charCodeAt(0) + ";"
+				}).replace(/ /g, " ").replace(/\r\n/g, "<br />").replace(/\n/g,"<br />").replace(/\r/g,"<br />");
+				break;
+		}
+	}
+	function getOpenid(){
+		openid=$("#openid").val();
+	}
+	function alertD(str){
+		$("#alertTitle").html(str);
+		$("#alertDiv").show();
+		$("#alertDiv").css("left","50%");
+		$("#alertDiv").css("top","50%");
+		$("#backgroundColor").show();
+	}
+	function closeAlertD(){
+		$("#backgroundColor").hide();
+		$("#alertDiv").hide();
+	}
+	function onchangeBaby(){
+		var i=$("#babyName").val();
+		if(i=="addBabyInfo"){
+			$("#saveBabyInfo").removeAttr("disabled");
+			$("#babyNamespan").html("<input type='text' id='babyName' value=''/>");
+			$("#babyBirthday").val("");
+			$("#phone").val("");
+			$("#sex").val("");
+			$("#id").val("");
+			$("#remark").val("");
+			$("#babyAge").html("");
+		}else{
+			$("#saveBabyInfo").attr("disabled","disabled");
+			$("#id").val(babyInfo[i].id);
+			$("#babyBirthday").val(babyInfo[i].babyBirthday);
+			$("#phone").val(babyInfo[i].phone);
+			$("#sex").val(babyInfo[i].sex);
+			$("#remark").val(babyInfo[i].remark);
+			dateDiff();
+		}
+	}
+	function onchangeIllness(){
+		var sectionName=$("#sections").val();
+		if(sectionName=="addIllness"){
+			$("#addSec").show();
+			$("#backgroundColor").show();
+			$("#addSec").css("left","50%");
+			$("#addSec").css("top","50%");
+		}
+	}
+	function cancelSaveSections(){
+		$("#addSec").hide();
+		$("#backgroundColor").hide();
+	}
+	$(function(){
+		loadData();
+	});
+
+	function dateDiff(){
+		var last=new Date();
+		var now=$("#babyBirthday").val();
+		now=new Date(Date.parse(now.replace(/-/g, "/")));
+		var yearDiff=last.getFullYear()-now.getFullYear();
+		var monthDiff=0;
+		var dayDiff=0;
+		if(yearDiff>=0){
+			monthDiff=last.getMonth()-now.getMonth();
+			if(monthDiff<0){
+				if(yearDiff>0){
+				
+				monthDiff=11-now.getMonth()+last.getMonth();
+				}else{
+					$("#babyBirthday").val('');
+					alertD("非法日期");
+					return;
+				}
+			}
+			dayDiff=last.getDate()-now.getDate();
+			if(dayDiff<0){
+				if(yearDiff>0){
+					yearDiff=0;
+					dayDiff=31-now.getDate()+last.getDate();
+					}else{
+						$("#babyBirthday").val('');
+						alertD("非法日期");
+						return;
+					}
+			}
+		}
+		var age="";
+		if(yearDiff>0){
+			age+=yearDiff+"年";
+		}
+		if(monthDiff>0){
+			age+=monthDiff+"月";
+		}
+		if(dayDiff>0){
+			age+=dayDiff+"天";
+		}
+		if(age==""){
+			return ;
+		}else{
+			$("#babyAge").html(age);
+		}
+		
+	}
+
+	function loadData(){
+		getIllness();
+		getOpenid();
+		getBabyInfo();
+		var d = new Date();
+		var str = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+		$("#create_date").html(str);
+	}
+
+	function getBabyInfo(){
+		$.ajax({
+			type: 'POST',
+			url: "../../ap/customer/searchBabyInfo",
+			contentType: "application/json; charset=utf-8",
+			data: "{'openid':'"+openid+"'}",
+			success: function(result){
+				babyInfo=result.babyList;
+				var bill=result.nickName;
+				$("#wechatName").val(result.nickName);
+				var option="";
+				if(babyInfo==""){
+					option+="<option value=\"addBabyInfo\">添加</option>";
+					$("#babyNamespan").html("<select onchange=\"onchangeBaby()\"  id=\"babyName\"></select>");
+					$("#babyName").html(option);
+					onchangeBaby();
+					return;
+				}
+				for(var i=0;i<babyInfo.length;i++){
+					option+="<option value=\'"+i+"'>"+babyInfo[i].babyName+"</option>";
+				}
+				option+="<option value=\"addBabyInfo\">添加</option>";
+				$("#babyNamespan").html("<select onchange=\"onchangeBaby()\"  id=\"babyName\"></select>");
+				$("#babyName").html(option);
+				onchangeBaby();
+			},
+			dataType: "json"
+		});
+	}
+
+	var date=/^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$/i;
+	function saveBabyInfo(){
+		var babyName=$("#babyName").val();
+		var wechatName=$("#wechatName").val();
+		var babyBirthday=$("#babyBirthday").val();
+		var remark=$("#remark").val();
+		if(babyName==""){
+			alertD("宝宝姓名不能为空");
+			return false;
+		}
+		if(!date.test(babyBirthday)){
+			alertD('日期格式不正确');
+			return false;
+		}
+		var phone=$("#phone").val();
+		var sex=$("#sex").val();
+		var openid=$("#openid").val();
+		var id=$("#id").val();
+		$.ajax({
+			type: 'POST',
+			url: "../../ap/customer/saveBaby",
+			contentType: "application/json; charset=utf-8",
+			data: "{'openid':'"+openid+"','babyName':'"+babyName+"','weChatName':'"+wechatName+"','babyBirthday':'"+babyBirthday+"','phone':'"+phone+"','sex':'"+sex+"','id':'"+id+"','remark':'"+remark+"'}",
+			success: function(result){
+				var type=result.type;
+				if(type==1){
+					alertD("保存成功");
+				}else{
+					alertD("保存失败,请联系技术人员");
+					getBabyInfo();
+				}
+			},
+			dataType: "json"
+		});
+	}
+
+	function cancelSaveBabyInfo(){
+		getBabyInfo();
+	}
+
+	function getIllness(){
+		$.post("/xiaoerke-wxapp/ap/customer/searchIllnessList",
+				function(result){
+					result=eval("("+result+")");
+					var datas=result.illnessList;
+					var option="";
+					for(var i=0;i<datas.length;i++){
+						option+="<option id=\'"+datas[i].id+"'>"+datas[i].illness+"</option>";
+					}
+					option+="<option value=\"addIllness\">添加</option>";
+					$("#sections").html(option);
+				});
+	}
+
+	function saveCustomer(){
+		var customerID=$("#customerID").val();
+		var create_date=$("#create_date").html();
+		var illness=$("#illness").val();
+		var sections=$("#sections").val();
+		var id=$("#id").val();
+		if(illness==""){
+			alertD("疾病不能为空");
+			return false;
+		}
+		$.ajax({
+			type: 'POST',
+			url: "../../ap/customer/saveCustomerLog",
+			contentType: "application/json; charset=utf-8",
+			data: "{'create_date':'"+create_date+"','illness':'"+illness+"','sections':'"+sections+"','customerID':'"+customerID+"','id':'"+id+"'}",
+			success: function(result){
+				var type=result.type;
+				if(type==1){
+					alertD("保存成功"); 
+				}else{
+					alertD("保存失败,请联系技术人员");
+				}
+			},
+			dataType: "json"
+		});
+	}
+
+	function saveSections(){
+		var customerID=$("#addSections").val();
+		if(customerID==""){
+			alertD("科室/类别 不能为空");
+			return false;
+		}
+		$.ajax({
+			type: 'POST',
+			url: "../../ap/customer/saveIllness",
+			contentType: "application/json; charset=utf-8",
+			async:false,
+			data: "{'illness':'"+customerID+"'}",
+			success: function(results){
+				var type=results.type;
+				getIllness(1);
+				if(type==1){
+					cancelSaveSections();
+				}else{
+					alertD("保存失败,请联系技术人员");
+					cancelSaveSections();
+				}
+			},
+			dataType: "json"
+		});
+	}
+	// 获取用户的openid
+	function MCS_ClientNotify(EventData) {
+		EventData = strToJson(EventData);
+		switch(EventData['event']){
+			case 'OnUserChange':{
+				var openid=EventData['userid'];
+				$("#openid").val(openid);
+				loadData();
+				$("#illness").val('');
+				break;
+			}
+		}
+	}
+
+	function strToJson(str){
+		var json = (new Function("return " + str))();
+		return json;
+	}
+
+</script><!--[if !IE]>|xGv00|539017d66e4e60b1c82cbc86aa9a5d50<![endif]-->

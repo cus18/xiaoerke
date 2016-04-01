@@ -1,0 +1,26 @@
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title={{title0}} ng-init="doRefresh(rankData,pageCurrent,'')" ng-show="!pageLoading">
+<ion-spinner ng-show="dataLoading" class="loadPic"></ion-spinner>
+    <div bdf-head="title"></div>
+    <ion-content class="evaluateDoctorSuccess" >
+        <ion-scroll direction="y" has-bouncing="true"  style="top:1px;">
+            <div class="list">
+                <div class="item" style="text-align: center;">
+                    <img src="images/yaoqing.png" width="145" style="margin-top:40px;">
+                    <p class="info">{{info}}</p>
+                    <p class="code" style="color:#119eff;">{{code}}</p>
+                </div>
+                <div class="item item-borderless" style="padding-left:40px;">
+                    <p style="margin-bottom: 8px;">{{tips}}</p>
+                    <p>{{tips1}}</p>
+                    <p>{{tips2}}</p>
+                </div>
+               <div class="item item-borderless" style="text-align: center;">
+                   <button class="button share" ui-sref="sharedDetail({patientId:patientId})">{{share}}</button>
+               </div>
+            </div>
+            <div bdf-footer></div>
+        </ion-scroll>
+
+    </ion-content>
+</ion-view>

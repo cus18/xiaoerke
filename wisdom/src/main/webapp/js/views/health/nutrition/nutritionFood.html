@@ -1,0 +1,52 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="饮食详细" ng-init="doRefresh()">
+    <ion-content class="nutritionFood " style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="shadow" ng-if="buttonRemind1 || buttonRemind2" ng-click="cancelRemind()"></div>
+            <div class="food-list" ng-click="skip()" id="top">
+                <div class="task-deal2" ng-repeat="item in foodList" ng-class="{'even':$even,'odd':$odd,'last':$last}">
+                    <dl class="box-s1" >
+                        <div  class="line">
+                            <span></span>
+                        </div>
+                        <dt>{{item.title}}</dt>
+                        <dd class="name" ng-repeat="pro in item.mealName">
+                            <span >{{pro}}</span>
+                            <a >{{item.food[$index]}}</a>
+                        </dd>
+                        <dd class="pic">
+                            <span>搭配示例：</span>
+                            <div class="pic-list">
+                                <img ng-src="{{item.pic}}" width="100%" height="auto" >
+                            </div>
+                        </dd>
+                        <dd class="effect ">
+                            <span>饮食小贴士：</span>
+                            <a class="open" ng-click="openMore($index)">
+                              {{item.openText}} <img ng-src="{{item.openImg}}" width="10" height="6">
+                            </a>
+                            <p class="select" ng-bind-html="item.effect">
+
+                            </p>
+
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="assess">
+                <div class="remind" ng-if="buttonRemind1" >
+                    <p>点此进入按照食谱吃的评估结果哟~</p>
+                    <img style="left:8%;" width="24.5" height="55" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Farrow_line.png"  >
+                </div>
+                <div class="remind" ng-if="buttonRemind2">
+                    <p>点此进入按照自己做饭吃的营养评估哟~</p>
+                    <img style="right:8%;" width="24.5" height="55" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Farrow_line_r.png"  >
+                </div>
+
+                <a ng-click="nutritionAssessResult()" id="bottom">照做了食谱</a>
+                <a ng-click="nutritionAssess()">自己做的别的</a>
+            </div>
+            <br><br><br><br>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

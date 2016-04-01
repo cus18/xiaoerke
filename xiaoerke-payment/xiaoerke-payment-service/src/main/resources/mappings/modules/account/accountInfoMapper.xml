@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.account.dao.AccountInfoDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.account.entity.AccountInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="balance" property="balance" jdbcType="REAL" />
+    <result column="created_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, user_id, open_id, balance, created_time, status, type, updated_time, created_by
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from account_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from account_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.account.entity.AccountInfo" >
+    insert into account_info (id, user_id, open_id,
+      balance, created_time, status,
+      type, updated_time, created_by
+      )
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR},
+      #{balance,jdbcType=REAL}, #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR},
+      #{type,jdbcType=VARCHAR}, #{updatedTime,jdbcType=TIMESTAMP}#{createdBy,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.account.entity.AccountInfo" >
+    insert into account_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="openId != null" >
+        open_id,
+      </if>
+      <if test="balance != null" >
+        balance,
+      </if>
+      <if test="createTime != null" >
+        created_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="updatedTime != null" >
+        updated_time,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=REAL},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedTime != null" >
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.account.entity.PayRecord" >
+    update account_info
+    <set >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=REAL},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedTime != null" >
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.account.entity.AccountInfo" >
+    update account_info
+    <set >
+      <if test="id != null" >
+        id = #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null" >
+        balance = #{balance,jdbcType=REAL},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status =  #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedTime != null" >
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        createdBy = #{createdBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectAccountInfoByUserId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from account_info
+        where user_id = #{userId,jdbcType=VARCHAR}
+      </select>
+
+  <insert id="saveOrUpdate" parameterType="com.cxqm.xiaoerke.modules.account.entity.AccountInfo">
+    <selectKey keyProperty="count" resultType="int" order="BEFORE">
+      select count(*) from account_info where user_id = #{userId}
+    </selectKey>
+    <if test="count > 0">
+      update account_info
+      <set >
+        <if test="balance != null" >
+          balance = #{balance,jdbcType=REAL},
+        </if>
+        <if test="updatedTime != null" >
+          updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+        </if>
+      </set>
+      where user_id = #{userId,jdbcType=VARCHAR}
+    </if>
+    <if test="count==0">
+      insert into account_info (id, user_id, open_id,
+      balance, created_time, status,
+      type, updated_time, created_by
+      )
+      values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR},
+      #{balance,jdbcType=REAL}, #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR},
+      #{type,jdbcType=VARCHAR}, #{updatedTime,jdbcType=TIMESTAMP},#{createdBy,jdbcType=VARCHAR}
+      )
+    </if>
+  </insert>
+  
+  <update id="updateBalanceByUser">
+    update account_info
+    set balance = balance + #{balance}
+    where user_id = #{userId} and balance + #{balance} >= 0
+  </update>
+  
+  <delete id="deleteByUser" parameterType="java.lang.String" >
+    delete from account_info
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </delete>
+
+</mapper>

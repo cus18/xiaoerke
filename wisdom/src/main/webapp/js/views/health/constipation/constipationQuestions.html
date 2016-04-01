@@ -1,0 +1,33 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫" ng-init="doRefresh()">
+    <ion-content class="constipationQuestions" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+           <div class="box1">
+               <dl>
+                   <dt class="top">
+                       <img class="question1" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fquestion1.png" width="254.5" height="26.5">
+                       <img class="question2" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fquestion2.png" width="158" height="158">
+                   </dt>
+                   <dd >
+                       <ion-radio class="item-borderless" ng-repeat="item in questions" ng-model="item.checked" ng-checked="item.checked"
+                               ng-click="constipationSelect($index,item.text)" >
+                           <img ng-src="{{img1}}" width="16" height="16" ng-if="item.text!=text">
+                           <img ng-src="{{img2}}" width="16" height="16" ng-if="item.text==text">
+                           {{ item.text }}
+                       </ion-radio>
+                   </dd>
+               <!--    <dd>
+                       连续三天未排便（中）
+                   </dd>
+                   <dd>
+                       严重肛裂（重）
+                   </dd>-->
+               </dl>
+               </dl>
+
+               </dl>
+           </div>
+        </ion-scroll>
+    </ion-content>
+    <div class="foot-bg"></div>
+</ion-view>

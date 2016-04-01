@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxqm.xiaoerke.modules.sys.dao.DoctorGroupInfoDao">
+
+	<resultMap id="doctorGroupVo" type="com.cxqm.xiaoerke.modules.sys.entity.DoctorGroupVo">
+        <result column="id" property="doctorGroupId" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="description" property="description" jdbcType="VARCHAR" />
+        <result column="expertise" property="expertise" jdbcType="VARCHAR" />
+        <result column="sys_hospital_id" property="hospitalId" jdbcType="VARCHAR" />
+        <result column="sys_doctor_id" property="doctorId" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="doctorVo" type="com.cxqm.xiaoerke.modules.sys.entity.DoctorVo">
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+        <result column="sys_hospital_id" property="sysHospitalId" jdbcType="VARCHAR" />
+        <result column="hospitalName" property="hospital" jdbcType="VARCHAR" />
+        <result column="career_time" property="careerTime" jdbcType="TIMESTAMP" />
+        <result column="personal_details" property="personDetails" jdbcType="VARCHAR" />
+        <result column="position1" property="position1" jdbcType="VARCHAR" />
+        <result column="position2" property="position2" jdbcType="VARCHAR" />
+        <result column="comment_number" property="commentNumber" jdbcType="INTEGER" />
+        <result column="fans_number" property="fansNumber" jdbcType="INTEGER" />
+        <result column="availableDate" property="availableDate" jdbcType="TIMESTAMP" />
+        <result column="doctorName" property="doctorName" jdbcType="VARCHAR" />
+        <result column="begin_time" property="begin_time" jdbcType="TIMESTAMP" />
+        <result column="experince" property="experience" jdbcType="VARCHAR" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="DoctorVoMap" type="HashMap">
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+        <result column="sys_hospital_id" property="sysHospitalId" jdbcType="VARCHAR" />
+        <result column="hospitalName" property="hospital" jdbcType="VARCHAR" />
+        <result column="career_time" property="careerTime" jdbcType="TIMESTAMP" />
+        <result column="personal_details" property="personDetails" jdbcType="VARCHAR" />
+        <result column="position1" property="position1" jdbcType="VARCHAR" />
+        <result column="position2" property="position2" jdbcType="VARCHAR" />
+        <result column="comment_number" property="commentNumber" jdbcType="INTEGER" />
+        <result column="fans_number" property="fansNumber" jdbcType="INTEGER" />
+        <result column="availableDate" property="availableDate" jdbcType="TIMESTAMP" />
+        <result column="doctorName" property="doctorName" jdbcType="VARCHAR" />
+        <result column="begin_time" property="begin_time" jdbcType="TIMESTAMP" />
+        <result column="experince" property="experience" jdbcType="VARCHAR" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <!--获取所有的医院分页信息  @author zdl-->
+    <select id="findPageAllDoctorGroup" resultMap="doctorGroupVo" resultType="com.cxqm.xiaoerke.common.persistence.Page">
+       SELECT sdg.* FROM sys_doctor_group sdg
+        <if test="is_consultPhone != ''">
+            where sdg.is_consultPhone = #{is_consultPhone}
+        </if>
+       ORDER BY sdg.rank asc
+    </select>
+
+    <select id="findDoctorListInDoctorGroup" parameterType="java.lang.Integer" resultMap="doctorVo">
+        select dr.*, ur.`name` doctorName,ur.phone
+        from sys_doctor dr, sys_user ur
+        WHERE
+        dr.sys_user_id = ur.id
+        <if test="doctorGroupId != null">
+            and dr.sys_doctor_group_id = #{doctorGroupId}
+        </if>
+    </select>
+
+    <select id="getDoctorGroupInfo" parameterType="java.lang.Integer" resultMap="doctorGroupVo">
+        SELECT sdg.* FROM sys_doctor_group sdg
+        WHERE
+        1=1
+        <if test="doctorGroupId != null">
+            and sdg.id = #{doctorGroupId}
+        </if>
+    </select>
+
+    <select id="getDoctorGroupInfoByDoctor" parameterType="java.lang.String" resultMap="doctorGroupVo">
+        select sdg.* from sys_doctor_group sdg,sys_doctor sdc
+        WHERE
+        sdg.id = sdc.sys_doctor_group_id
+        and
+        1=1
+        <if test="doctorId != null">
+            and sdc.id = #{doctorId}
+        </if>
+    </select>
+
+    <select id="findDoctorByDoctorGroup" resultMap="DoctorVoMap"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        select dr_hos.*,dr_ser.date availableDate,dr_ser.hospitalName as ascriptionHospitalName from
+        (SELECT dr.id,dr.sys_doctor_group_id,dr.sys_user_id,hos.name AS hospital,dr.career_time,dr.position1,dr.position2,
+        dr.fans_number,dr.personal_details,dr.experince,dr.card_experince,dr.img_url,
+        dr.name doctorName,dr_hos_rel.sys_hospital_id, dr_hos_rel.department_level1, dr_hos_rel.department_level2 FROM
+        sys_doctor as dr,
+        sys_hospital as hos, doctor_hospital_relation as dr_hos_rel
+        where dr_hos_rel.sys_doctor_id = dr.id
+        and hos.id = dr_hos_rel.sys_hospital_id and dr.is_display = 'display'
+        and dr_hos_rel.relation_type='1'
+        and dr.sys_doctor_group_id = #{doctorGroupId}) dr_hos
+        LEFT JOIN
+        (select sd.hospitalName,srs.sys_doctor_id, min(srs.date) date ,srs.sys_hospital_id,
+        min(CONCAT(srs.date, ' ', srs.begin_time)) as latest_time
+        from sys_register_service srs
+        left join doctor_hospital_relation dhr on srs.sys_doctor_id = dhr.sys_doctor_id
+        left join sys_doctor sd on sd.id = dhr.sys_doctor_id
+        where ( srs.date > CURDATE() OR (srs.date = CURDATE() and srs.begin_time >= CURTIME()) )
+        and srs.status=0
+--         and dhr.relation_type = "1"
+        GROUP BY srs.sys_doctor_id having latest_time = min(CONCAT(srs.date, ' ', srs.begin_time)) ) as dr_ser
+        on dr_ser.sys_doctor_id = dr_hos.id
+        <if test="orderBy==0">
+            order by dr_ser.latest_time is null,UNIX_TIMESTAMP(dr_ser.latest_time), id ASC
+        </if>
+        <if test="orderBy==1">
+            ORDER BY dr_hos.fans_number DESC ,dr_hos.fans_number IS null, id
+        </if>
+        <if test="orderBy==2">
+            ORDER BY career_time , id asc
+        </if>
+    </select>
+
+</mapper>
+

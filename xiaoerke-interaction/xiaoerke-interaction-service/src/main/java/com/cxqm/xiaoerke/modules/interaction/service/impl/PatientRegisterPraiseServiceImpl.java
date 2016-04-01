@@ -1,0 +1,311 @@
+package com.cxqm.xiaoerke.modules.interaction.service.impl;
+
+
+import com.cxqm.xiaoerke.common.persistence.Page;
+import com.cxqm.xiaoerke.common.utils.FrontUtils;
+import com.cxqm.xiaoerke.common.utils.IdGen;
+import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.common.web.Servlets;
+import com.cxqm.xiaoerke.modules.interaction.dao.PatientRegisterPraiseDao;
+import com.cxqm.xiaoerke.modules.interaction.entity.PraiseVo;
+import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
+import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
+import com.cxqm.xiaoerke.modules.sys.interceptor.SystemServiceLog;
+import com.cxqm.xiaoerke.modules.sys.service.*;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
+import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
+import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import java.math.BigDecimal;
+import java.util.*;
+
+/**
+ * Created by wangbaowei on 15/11/5.
+ */
+@Service
+@Transactional(readOnly = false)
+public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseService {
+
+	@Autowired
+	private DoctorInfoService doctorInfoService;
+
+	@Autowired
+	private PatientRegisterService patientRegisterService;
+
+	@Autowired
+	private PatientRegisterPraiseDao patientRegisterPraiseDao;
+
+	@Autowired
+	private UserInfoService userInfoService;
+
+	@Autowired
+	private DoctorCaseService doctorCaseService;
+
+	@Autowired
+	private DoctorLocationService doctorLocationService;
+
+    @Autowired
+    private SystemService systemService;
+
+
+    //将取消原因插入到patient_register_praise表中
+	@Override
+    public void insertCancelReason(HashMap<String, Object> executeMap) {
+    	patientRegisterPraiseDao.insertCancelReason(executeMap);
+
+    }
+
+    @Override
+    public void getUserEvaluate(Map<String, Object> params,HashMap<String, Object> response)
+    {
+        response.put("userEvaluate", patientRegisterPraiseDao.getUserEvaluate((String) params.get("doctorId")));
+    }
+
+    @Override
+    public HashMap<String, Object> getConsultEvaluate(HashMap<String, Object> params)
+    {
+        HashMap<String, Object> response = new HashMap<String, Object>();
+
+        HashMap<String, Object> dataMap = new HashMap<String, Object>();
+        String doctorId = (String) params.get("doctorId");
+        String evaluateType = (String) params.get("evaluateType");
+        dataMap.put("doctorId",doctorId);
+        dataMap.put("evaluateType",evaluateType);
+
+        String currentPage = (String) params.get("pageNo");
+        String pageSize = (String) params.get("pageSize");
+        Page<HashMap<String, Object>> page = FrontUtils.generatorPage(currentPage, pageSize);
+
+        Page<HashMap<String, Object>> resultPage = patientRegisterPraiseDao.getConsultEvaluate(dataMap, page);
+
+        long tmp = FrontUtils.generatorTotalPage(resultPage);
+        response.put("pageTotal", tmp + "");
+        response.put("pageNo", resultPage.getPageNo());
+        response.put("pageSize", resultPage.getPageSize());
+
+        List<HashMap<String, Object>> evaluateList = new ArrayList<HashMap<String, Object>>();
+        List<HashMap<String, Object>> list = resultPage.getList();
+        HashMap<String, Object> hmap = new HashMap<String, Object>();
+        if(list != null && !list.isEmpty()) {
+            for (HashMap<String, Object> map : list) {
+                hmap.put("phone", (String) map.get("phone"));
+                hmap.put("impression", (String) map.get("impression"));
+                hmap.put("star", (String) map.get("star"));
+                hmap.put("majorStar", (String) map.get("majorStar"));
+                hmap.put("date", (String) map.get("date"));
+
+                evaluateList.add(hmap);
+            }
+        }
+        response.put("evaluateList",evaluateList);
+        return response;
+    }
+
+    public void saveCustomerEvaluation(Map<String, Object> params) {
+    	patientRegisterPraiseDao.saveCustomerEvaluation(params);
+    }
+
+    public void saveQuestionnaireSurvey(List<HashMap<String, Object>> li) {
+    	patientRegisterPraiseDao.saveQuestionnaireSurvey(li);
+    }
+
+    public HashMap<String, Object> findDoctorScoreInfo(String sys_doctor_id){
+        return doctorInfoService.findDoctorScoreInfo(sys_doctor_id);
+    }
+
+    /**
+     * 查询被评价医生的所有等待时间（根据sys_doctor_id）
+     *
+     * @param PraiseVo
+     * @return List<PraiseVo>
+     */
+    @Override
+    public List<HashMap<String, Object>> findAllPraiseByDoctorId(PraiseVo PraiseVo) {
+        List<HashMap<String, Object>> resultList = patientRegisterPraiseDao.findAllPraiseByDoctorId(PraiseVo);
+        return resultList;
+    }
+
+
+	@Override
+    public String customerEvaluation(Map<String, Object> params,String openId)
+    {
+        params.put("openid", openId);
+		System.out.print("----------------分享----------------");
+        params.put("uuid", UUID.randomUUID().toString().replaceAll("-", ""));
+        try {
+        	patientRegisterPraiseDao.saveCustomerEvaluation(params);;
+        	String st = "您已评价成功，为了让更多的宝爸宝妈体验到我们真诚的服务，您可将此次体验分享给您的朋友。【" +
+                    "<a href='http://xiaoxiaoerke.cn/xiaoerke-appoint/ap/appoint#/consultShare'>我要分享</a>】";
+        Map<String,Object> parameter = systemService.getWechatParameter();
+        String token = (String)parameter.get("token");
+			openId = "oogbDwCLH1_x-KLcQKqlrmUzG2ng";
+        WechatUtil.senMsgToWechat(token,openId,st);
+            return "true";
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return "false";
+    }
+
+    @Override
+	@SystemServiceLog(description = "00000012")//用户评价医生
+	public Map<String, Object> orderPraiseOperation(Map<String, Object> params, HttpSession session, HttpServletRequest request)
+	{
+		String path = request.getLocalAddr() + request.getContextPath();
+		HashMap<String, Object> action = (HashMap<String, Object>) params.get("action");
+		String openId = WechatUtil.getOpenId (session,request);
+		params.put("openId",openId);
+		String patientRegisterServiceId = (String) params.get("patient_register_service_id");
+		if (patientRegisterServiceId == null || "".equals(patientRegisterServiceId)) {
+			patientRegisterServiceId = IdGen.uuid();
+		}
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		HashMap<String, Object> excuteMap = new HashMap<String, Object>();
+
+		//返还用户所提交的保证金
+		Map<String, Object> executeMap = new HashMap<String, Object>();
+		executeMap.put("patientRegisterService", patientRegisterServiceId);
+		String doctorCaseId = (String)action.get("doctorCaseId");
+		if (StringUtils.isNotNull(doctorCaseId)) {
+			excuteMap.put("doctorCaseId", doctorCaseId);
+		}
+		//进行评价
+		praiseHandle(action, patientRegisterServiceId, excuteMap);
+		//分享消息推送
+		Map tokenMap = systemService.getWechatParameter();
+		String token = (String)tokenMap.get("token");
+		HashMap<String, Object> searchMap = new HashMap<String, Object>();
+		searchMap.put("id", patientRegisterServiceId);
+		HashMap<String, Object> resultMap  = patientRegisterService.getOrderInfoById(searchMap);
+
+		PatientMsgTemplate.shareRemind2Wechat(openId,token,(String)resultMap.get("babyName"),(String)resultMap.get("doctorName") ,"http://baodf.com/xiaoerke-appoint/ap/appoint#/sharedDetail/"+patientRegisterServiceId+",false,");
+
+		response.put("patient_register_service_id", patientRegisterServiceId);
+		response.put("status", '1');
+		return response;
+	}
+
+    private void praiseHandle(HashMap<String, Object> action, String patientRegisterServiceId, HashMap<String, Object> excuteMap) {
+		String userId = UserUtils.getUser().getId();
+		HashMap<String, Object> perInfo = new HashMap<String, Object>();
+		if (userId != null && !"".equals(userId)) {
+			perInfo = userInfoService.findPersonDetailInfoByUserId(userId);
+		}
+		excuteMap.put("id", patientRegisterServiceId);
+		excuteMap.put("patientRegisterPraiseId", IdGen.uuid());
+		//根据patientRegisterServiceId查询sys_register_service表信息
+		HashMap<String, Object> hashMap = patientRegisterService.findSysRegisterServiceByPRSIdExecute(excuteMap);
+		excuteMap.put("star", 1 + Integer.parseInt((String) action.get("star")));
+		excuteMap.put("major_star", 1 + Integer.parseInt((String) action.get("major_star")));
+		excuteMap.put("appraise", action.get("appraise"));
+		excuteMap.put("symptom", action.get("symptom"));
+		excuteMap.put("sys_doctor_id", hashMap.get("sys_doctor_id"));
+		excuteMap.put("impression", action.get("impression"));
+		excuteMap.put("zan", action.get("zan"));
+		excuteMap.put("phone", perInfo.get("phone"));
+		excuteMap.put("praise_date", new Date());
+		excuteMap.put("patientId", UserUtils.getUser().getId());
+		excuteMap.put("visit_endTime", action.get("visit_endTime"));
+
+		excuteMap.put("sys_patient_id", hashMap.get("sys_patient_id"));
+		excuteMap.put("sys_register_service_id", hashMap.get("sys_register_service_id"));
+		patientRegisterService.PatientRegisterServiceIsService(excuteMap);
+		patientRegisterPraiseDao.PatientRegisterServiceIsPraise(excuteMap);
+		//---保存案例---
+		String otherCase = (String)action.get("otherCase");//其他案例
+		if(StringUtils.isNotNull(otherCase)){
+			excuteMap.put("symptom", action.get("otherCase"));
+		}
+
+		excuteMap.put("display_status", "1");
+		String doctorCaseId = (String)excuteMap.get("doctorCaseId");
+		if( StringUtils.isNotNull(doctorCaseId) ){//案例不为空 原有案例数 +1
+			doctorCaseService.updateDoctorCaseInfo(excuteMap);
+		}else{//为空，插入新的案例
+			excuteMap.put("doctorCaseNumber",null);
+			doctorCaseService.saveDoctorCaseInfo(excuteMap);
+		}
+
+		if (StringUtils.isNotNull((String) action.get("visit_endTime"))) {
+			//计算平均等待时间
+			calculationWaitTime(patientRegisterServiceId, hashMap);
+		}
+
+	}
+
+	private void calculationWaitTime(String patientRegisterServiceId, HashMap<String, Object> hashMap) {
+		String visit_endTime = "";
+
+		//根据patientRegisterPraiseId查询用户的就诊地址 location_id
+		String location_id = doctorLocationService.findPatientLocationId(patientRegisterServiceId);
+		PraiseVo PraiseVo = new PraiseVo();
+		PraiseVo.setSys_doctor_id((String) hashMap.get("sys_doctor_id"));
+		PraiseVo.setLocation_id(location_id);
+
+		//查询被评价医生当前就诊地址的所有等待时间（根据sys_doctor_id，location_id）
+		List<HashMap<String, Object>> voList = this.findAllPraiseByDoctorId(PraiseVo);
+		int sumTime = 0;//单位分钟
+		for (HashMap map : voList) {
+			int waiteTime = 0;
+			if(null !=map.get("wait_time")){
+				BigDecimal bigDecimal = StringUtils.getBigDecimal(map.get("wait_time"));
+				waiteTime = bigDecimal.intValue();
+			}
+			sumTime = sumTime + waiteTime;
+		}
+		//该医生该地点的平均等待时间=该医生在当前就诊地点的所有等待时间相加/被评价次数
+		int waitTime = sumTime / voList.size();
+
+		//更新医生界面显示的平均等待时间（x<=0 平均等待时间为0 ； 0<=x<=60 平均等待时间为x分钟  ；x>60 平均等待时间为 60 分钟）
+		if (waitTime <= 0) {
+			visit_endTime = "0";
+		} else if (waitTime > 60) {
+			visit_endTime = "60";
+		} else {
+			visit_endTime = String.valueOf(waitTime);
+		}
+		HashMap<String, Object> updateMap = new HashMap<String, Object>();
+		updateMap.put("waitTime", String.valueOf(waitTime));
+		updateMap.put("visit_endTime", String.valueOf(visit_endTime));
+		updateMap.put("location_id", location_id);
+		//更新平均等待时间数据
+		doctorLocationService.updateWaiteTime(updateMap);
+	}
+
+	@Override
+	public List<PraiseVo> findDoctorDetailPraiseInfo(PraiseVo praisevo) {
+		return patientRegisterPraiseDao.findDoctorDetailPraiseInfo(praisevo);
+	}
+
+	@Override
+	public Integer updateCustomerEvaluation(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return patientRegisterPraiseDao.updateCustomerEvaluation(params);
+	}
+
+	@Override
+	public Map<String, Object> selectCustomerEvaluation(String id) {
+		// TODO Auto-generated method stub
+		return patientRegisterPraiseDao.selectCustomerEvaluation(id);
+	}
+
+	@Override
+	public Map<String, Object> getCustomerStarInfoById(String id) {
+		// TODO Auto-generated method stub
+		return patientRegisterPraiseDao.getCustomerStarInfoById(id);
+	}
+
+	@Override
+	public Map<String, Object> getDoctorHeadImageURIById(String id) {
+		// TODO Auto-generated method stub
+		return patientRegisterPraiseDao.getDoctorHeadImageURIById(id);
+	}
+}

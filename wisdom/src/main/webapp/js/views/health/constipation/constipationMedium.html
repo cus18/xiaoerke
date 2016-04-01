@@ -1,0 +1,31 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫" ng-init="doRefresh()">
+    <ion-content class="constipationMedium" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="level">
+                <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Flevel2.png" width="90" height="90">
+                <div class="text">
+                    <p>
+                        宝大夫分别为您制定了两套方案<br>
+                        您需要先给宝宝做短期的及时处理<br>
+                        之后要给宝宝养成良好的习惯长期坚持哦
+                    </p>
+                </div>
+                <img class="arrow-down" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Farrow_down_bold.png" width="16.5" height="18.5">
+            </div>
+            <div class="plan" >
+                <p>
+                    宝大夫从<span>便秘按摩、按时排便、食疗、运动</span>四方面<br>
+                    为妈妈和宝宝制定了一套便秘管理方案<br>
+                    和宝大夫一起帮宝宝摆脱便秘吧
+                </p>
+                <button class="button plan-btn" ui-sref="constipationMShortDeal({type:'first'})">短期及时处理</button>
+                <button class="button plan-btn" ui-sref="constipationRemind({flag:'first'})">长期计划管理</button>
+                <div class="persist"> 坚持做好计划任务，宝宝三天就会有适当好转</div>
+            </div>
+
+        </ion-scroll>
+    </ion-content>
+    <div class="level-foot">
+    </div>
+</ion-view>

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.order.dao.ConsultPhoneRegisterServiceDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="sys_phoneConsult_service_id" property="sysPhoneconsultServiceId" jdbcType="INTEGER" />
+    <result column="sys_patient_id" property="sysPatientId" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="register_no" property="registerNo" jdbcType="VARCHAR" />
+    <result column="phone" property="phoneNum" jdbcType="VARCHAR" />
+    <result column="illness_describe_id" property="illnessDescribeId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, sys_phoneConsult_service_id, sys_patient_id, state, create_time, update_time, 
+    register_no, illness_describe_id,phone
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from consultPhone_register_service
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="getPhoneConsultaServiceIndo" resultType="java.util.Map" parameterType="java.lang.Integer" >
+  select
+  sd.name doctorName,
+  sd.position1,
+  sd.position2,
+  sd.hospitalName,
+  dhr.department_level1 as departmentName,
+  case when crs.state ='0' then '待支付' when crs.state ='1' then '待接听' when crs.state ='2' then '待评价'
+    when crs.state ='3' then '待分享' when crs.state ='4' then '待建档'
+    when crs.state ='6' then '已取消' end state,
+  DATE_FORMAT(scs.beginTime,'%k:%i') beginTime,
+  DATE_FORMAT(scs.endTime,'%k:%i') endTime,
+  DATE_FORMAT(crs.create_time,'%Y/%m/%d  %k:%i') orderTime,
+  crs.register_no as orderNo,
+  crs.phone,
+  sbi.name babyName,
+  cdr.price,
+  cdr.server_length
+  from consultPhone_register_service crs
+  left join sys_consultPhone_service scs
+  on crs.sys_phoneConsult_service_id = scs.id
+  left join sys_doctor sd
+  on sd.id = scs.sys_doctor_id
+  LEFT JOIN doctor_hospital_relation dhr
+  ON dhr.sys_doctor_id=sd.id
+  left join sys_patient sp
+  on sp.id = crs.sys_patient_id
+  left join sys_baby_baseInfo sbi
+  on sp.sys_user_id = sbi.userid
+  LEFT join consultphone_doctor_relation cdr on cdr.doctor_id = sd.id
+  where crs.id =#{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="getPhoneConsultaList" resultType="java.util.Map" >
+    SELECT
+    sd.id as doctorId,
+    sd.name,
+    sd.position2,
+    sd.hospitalName,
+    crs.id,
+    crs.id as orderId,
+    crs.state,
+    case when crs.state ='0' then '待支付' when crs.state ='1' then '待接听' when crs.state ='2' then '待评价'
+    when crs.state ='3' then '待分享' when crs.state ='4' then '待建档'
+    when crs.state ='6' then '已取消' end status,
+    crs.create_time,
+    crs.register_no,
+    crs.illness_describe_id,
+    DATE_FORMAT(scp.date, '%Y-%m-%d') as date,
+    scp.createDate,
+    DATE_FORMAT(scp.beginTime,'%H:%i') as beginTime,
+    DATE_FORMAT(scp.endTime,'%H:%i') as endTime
+    FROM
+    consultPhone_register_service crs
+    LEFT JOIN sys_patient sp ON crs.sys_patient_id = sp.id
+    LEFT JOIN sys_consultPhone_service scp ON scp.id = crs.sys_phoneConsult_service_id
+    LEFT JOIN sys_doctor sd ON sd.id = scp.sys_doctor_id
+    WHERE
+	sp.sys_user_id = #{userId,jdbcType=VARCHAR}
+    <if test="state != null" >
+     and crs.state = #{state,VARCHAR}
+    </if>
+
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from consultPhone_register_service
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo" >
+    insert into consultPhone_register_service (id, sys_phoneConsult_service_id, sys_patient_id,
+      state, create_time, update_time, 
+      register_no, illness_describe_id,phone)
+    values (#{id,jdbcType=INTEGER}, #{sysPhoneconsultServiceId,jdbcType=INTEGER}, #{sysPatientId,jdbcType=VARCHAR}, 
+      #{state,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{registerNo,jdbcType=VARCHAR}, #{illnessDescribeId,jdbcType=INTEGER}, #{phoneNum,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo" >
+    insert into consultPhone_register_service
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sysPhoneconsultServiceId != null" >
+        sys_phoneConsult_service_id,
+      </if>
+      <if test="sysPatientId != null" >
+        sys_patient_id,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="registerNo != null" >
+        register_no,
+      </if>
+      <if test="illnessDescribeId != null" >
+        illness_describe_id,
+      </if>
+      <if test="phoneNum != null" >
+        phone,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sysPhoneconsultServiceId != null" >
+        #{sysPhoneconsultServiceId,jdbcType=INTEGER},
+      </if>
+      <if test="sysPatientId != null" >
+        #{sysPatientId,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="registerNo != null" >
+        #{registerNo,jdbcType=VARCHAR},
+      </if>
+      <if test="illnessDescribeId != null" >
+        #{illnessDescribeId,jdbcType=INTEGER},
+      </if>
+      <if test="phoneNum != null" >
+        #{phoneNum,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo" >
+    update consultPhone_register_service
+    <set >
+      <if test="sysPhoneconsultServiceId != null" >
+        sys_phoneConsult_service_id = #{sysPhoneconsultServiceId,jdbcType=INTEGER},
+      </if>
+      <if test="sysPatientId != null" >
+        sys_patient_id = #{sysPatientId,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="registerNo != null" >
+        register_no = #{registerNo,jdbcType=VARCHAR},
+      </if>
+      <if test="illnessDescribeId != null" >
+        illness_describe_id = #{illnessDescribeId,jdbcType=INTEGER},
+      </if>
+      <if test="phoneNum != null" >
+        phone = #{phoneNum,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo" >
+    update consultPhone_register_service
+    set sys_phoneConsult_service_id = #{sysPhoneconsultServiceId,jdbcType=INTEGER},
+      sys_patient_id = #{sysPatientId,jdbcType=VARCHAR},
+      state = #{state,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      register_no = #{registerNo,jdbcType=VARCHAR},
+      illness_describe_id = #{illnessDescribeId,jdbcType=INTEGER},
+      phone = #{phoneNum,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+	<!--   查询电话咨询订单列表，sunxiao -->
+  <select id="findConsultPhonePatientList" resultType="com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo" >
+    SELECT
+		crs.register_no,
+		crs.create_time,
+		crs.phone AS phoneNum,
+		crs.update_time,
+		crs.delete_by,
+		crs.state,
+		scs.date,
+		scs.beginTime,
+		cdr.server_length,
+		sd. NAME AS doctorName,
+		su.phone AS loginPhone,
+		sa.nickname,
+		sbb. NAME AS babyName
+	FROM
+		consultphone_register_service crs
+	LEFT JOIN sys_consultphone_service scs ON scs.id = crs.sys_phoneConsult_service_id
+	LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = scs.sys_doctor_id
+	LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
+	LEFT JOIN sys_patient sp ON sp.id = crs.sys_patient_id
+	LEFT JOIN sys_user su ON su.id = sp.sys_user_id
+	LEFT JOIN sys_attention sa ON sa.openid = su.openid
+	LEFT JOIN healthrecord_illness_describe hid ON hid.id = crs.illness_describe_id
+	LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
+    WHERE
+	1=1
+    <if test="state != null" >
+     and crs.state = #{state,VARCHAR}
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,22 @@
+<ion-view view-title={{title}} >
+	<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+	<div bdf-head="title"></div>
+	<ion-content class="phoneConCancelSuccess" >
+		<ion-scroll direction="y" has-bouncing="true">
+			<div class="pic">
+				<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fappointment_cancel_success.png" width="115" height="auto"/>
+			</div>
+			<div class=" f4 c5 tc">
+				<p class="lh">
+					您已成功取消预约电话咨询，<br>
+					咨询费用<span class="c2">200元</span>已返还到宝大夫账户。
+				</p>
+			</div>
+			<div class="text c6 tc">如需继续预约，请返回 <a class="c1 " ng-click="goFirst()">首页</a></div>
+
+		</ion-scroll>
+
+	</ion-content>
+
+</ion-view>
+

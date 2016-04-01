@@ -1,0 +1,44 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.cxqm</groupId>
+    <artifactId>xiaoerke-consult</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>xiaoerke-consult-service</artifactId>
+  <name>xiaoerke-consult-service</name>
+  <description>xiaoerke-consult-service</description>
+
+
+  <dependencies>
+    <dependency>
+      <groupId>com.cxqm</groupId>
+      <artifactId>xiaoerke-consult-api</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.cxqm</groupId>
+      <artifactId>xiaoerke-common</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+
+	<dependency>
+        <groupId>io.netty</groupId>
+		<artifactId>netty-all</artifactId>
+		<version>4.0.24.Final</version>
+	</dependency>
+
+    <dependency>
+      <groupId>com.cxqm</groupId>
+      <artifactId>xiaoerke-system-api</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.cxqm</groupId>
+      <artifactId>xiaoerke-order-api</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+</project>

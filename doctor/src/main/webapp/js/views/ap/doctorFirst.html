@@ -1,0 +1,163 @@
+<ion-spinner ng-show="pageLoading"  class="loadPic"></ion-spinner>
+<ion-view view-title="出诊安排" ng-init="doRefresh()">
+    <ion-spinner ng-show="dataLoading"></ion-spinner>
+   <!-- 当前时间没有患者预约！-->
+    <div class="success-sha" ng-if="noAppointmentLock=='true'">
+    </div>
+    <div class="cancel-success" ng-if="noAppointmentLock=='true'">
+        <div ng-if="noAppointmentLock=='true'">
+          当前时间没有患者预约！
+        </div>
+
+    </div>
+    <!--提示宝宝信息-->
+    <div class="remind-sha" ng-if="babyInfoLock=='true'">
+    </div>
+    <div class="remind-babyInfo" ng-if="babyInfoLock=='true'"><!-- -->
+        <div class="main">
+            <div class="close" ng-click="cancelBabyInfo()">
+                <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Ficon_close_blue.png" width="25" height="25" >
+            </div>
+            <h3>{{babyname}}</h3>
+            <ul>
+                <li class="li01">
+                    <span>病情描述：</span>{{illness}}
+
+                </li>
+                <li>
+                    <span>手机号码：</span><a href="tel:{{phone}}" style="color:#88d9d8;">{{phone}}</a>
+                </li>
+                <li ng-if="noPhone=='true'">
+                    <span>出生日期：</span>{{birthday}}
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--遮罩层阴影-->
+    <div class="delete-sha" ng-if="cancelDelLock=='true'" ng-click="cancelDel()">
+    </div>
+    <!--页面正中间的删除-->
+    <div class="delete" ng-if="cancelDelLock=='true'">
+        <ul>
+            <li ng-click="cancelSuccess(0)">仅删除今天</li>
+            <li ng-click="cancelSuccess(1)">删除所有重复</li>
+            <li style="border:none;" ng-click="cancelDel()">取消</li>
+        </ul>
+    </div>
+    <!--删除时影响预约患者时提示-->
+    <div class="delete-sha" ng-if="delSureLock=='true'"  ng-click="cancelDel()">
+    </div>
+    <div class="del-sure" ng-if="delSureLock=='true'" >
+        <div class="tip-del">
+            <p>本次取消影响到{{count}}位已预约患者的正常就诊，是否一定要取消？</p>
+            <div>
+                <span class="fl" ng-click="cancelDel()"  >再考虑一下</span>
+                <span class="fr" ng-click="deleteSuccess()">确定删除</span>
+            </div>
+        </div>
+    </div>
+  <!--  删除成功-->
+    <div class="success-sha"  ng-if="cancelSuccessLock=='true'"></div>
+    <div class="cancel-success" >
+       <div ng-if="Success=='true'">
+            <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Fdelete_success.png" width="24.5" height="24.5" >&nbsp;&nbsp;删除成功
+       </div>
+       <div ng-if="Fail=='true'">
+            <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Fdelete_fail.png" width="24.5" height="24.5" >&nbsp;&nbsp;删除失败
+       </div>
+    </div>
+    <!--顶部日期 年月日和上周下周-->
+    <div class="df-t">
+        <ul class="fl">
+            <li class="fl-l">
+                {{newMon}}月
+            </li>
+            <li class="fl-r">
+               <div>{{newDa}}日（{{newWeek}}）</div>
+               <div>{{newYear}}年</div>
+            </li>
+        </ul>
+        <ul class="fr">
+            <li>
+                <button  class="button" ng-click="selectWeek('prev')" ng-disabled="prevWeekDisable=='true'"
+                         ng-style="((prevWeek=='true'))?{'background-color':'#fff','color':'#88d9dd'}:
+                         {'background-color':'#88d9dd','color':'#fff'}">上周</button>
+                <button class="button" ng-click="selectWeek('next')" ng-disabled="nextWeekDisable=='true'"
+                        ng-style="(nextWeek=='true')?{'background-color':'#fff','color':'#88d9dd'}:
+                        {'background-color':'#88d9dd','color':'#fff'}">下周</button>
+            </li>
+        </ul>
+    </div>
+    <ion-content class="doctorFirst" style="top:72px;" >
+        <ion-scroll direction="y" has-bouncing="true" overflow-scroll="true">
+           <!-- 一周七天-->
+            <ul class="date">
+                <li class="week">
+                    <span ng-repeat="item in week">{{item}}</span>
+                </li>
+                <li class="time" >
+                    <span ng-repeat="item in date" ng-click="selectTime($index)" ng-style="(selectItem==item)?{'background':'
+                        url(images/icon_week.png) no-repeat center 0','background-size':'24px 33px','color':'#fff'}:{'background-color':'#fff'}">
+                       {{item}}<br>
+                        <i class="cir" ng-if="item==date[i[$index]]"></i>
+                    </span>
+                </li>
+            </ul>
+            <div style="clear: both;"></div>
+            <!--医院诊室预约时间-->
+            <dl class="place" ng-repeat="item in hospitalList" ng-if="noRegister=='false'"><!---->
+                <dt>
+                    <span>{{$index+1}}</span>{{item.hospitalName}} &nbsp;&nbsp;{{item.location}}
+                </dt>
+                <dd ng-repeat="item2 in item.available_time" ng-click="delogBaby(item2.status,item2.babyName,item2.birthday,item2.illness,item2.phone)" >
+                    <div>
+                        <a> {{item2.begin_time}}</a>
+                        <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Ficon_appointment.png" width="19" height="19" ng-if="item2.status==1">
+                        <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Ficon_repeat.png" width="17" height="17" style="" ng-if="item2.repeat==true">
+                        <div class="checkbox" ng-if="delLock=='true'"  >
+                            <input type="checkbox"  ng-checked="allLock=='true'" ng-click="deleteRegister(item.locationId,$index,delLock)"/>
+                        </div>
+                        <span></span><!--左右分割线-->
+                    </div>
+                </dd>
+            </dl>
+              <dl ng-if="delLock=='true'" style="height:300px">
+            </dl>
+            <div class="no-plan" ng-if="noRegister=='true'">
+                <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Fno_plan.png" width="116.5" height="117">
+                <p>今天还没有门诊安排噢！</p>
+            </div>
+
+        </ion-scroll>
+    </ion-content>
+    <!-- 底部 增加和删除按钮-->
+   <div class="myFoot" ng-show="pastDate=='true'">
+        <ul>
+            <li class="add item" ng-click="addTime()" >
+                <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Fplan_add.png" width="19.5" height="19.5">&nbsp;&nbsp;
+                增加
+            </li>
+            <li class="del item" ng-click="delTime()">
+                <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Fplan_del.png" width="19.5" height="19.5">&nbsp;&nbsp;
+                删除
+            </li>
+        </ul>
+   </div>
+    &lt;!&ndash;  底部 删除时下弹框&ndash;&gt;
+    <div class="del-layer" ng-if="delLock=='true'">
+        <ul>
+            <li ng-click="selectAll()">
+                <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Ficon_selectAll.png" width="22" height="21">&nbsp;&nbsp;
+                全选
+            </li>
+            <li ng-click="delete()" ng-if="deleteLock=='true'">
+                <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Ficon_delete.png" width="22.5" height="23">&nbsp;&nbsp;
+                删除
+            </li>
+            <li ng-click="cancel()">
+                <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Ficon_cancel.png" width="23" height="23">&nbsp;&nbsp;
+                取消
+            </li>
+        </ul>
+    </div>
+</ion-view>

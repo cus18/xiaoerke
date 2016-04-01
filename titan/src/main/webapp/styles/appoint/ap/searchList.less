@@ -1,0 +1,125 @@
+/*searchList*/
+.searchList{
+  top:90px
+}
+.searchList .scroll-view.ionic-scroll {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+.searchList .scroll{
+  z-index:4;
+}
+.Category.button-bar {
+  height: 49px;
+  position: absolute;
+  top:44px!important;
+  margin-bottom: 5px;
+  z-index:4;
+  color:#999;
+  border-bottom: 1px solid #ddd;
+}
+.Category.button-bar img{
+  vertical-align: middle;
+  margin-top:-2px;
+}
+.Category.button-bar > div.button {
+  width:50%;
+  font-size: 16px;
+  line-height: 49px;
+  color:#22252c;
+}
+.button-bar>.button:last-child {
+  border-right-width: 0px!important;
+  border-radius: 0 2px 2px 0;
+}
+.searchList .item {
+  margin-bottom: 0px;
+  padding:2px 0 10px 0;
+  position: relative;
+  /*border:none!important;*/
+}
+.searchList .doctorInfo h2{
+  margin-top:7px;
+}
+.searchList .doctorInfo h2,.searchList .doctorInfo p{
+  margin-left:120px;
+}
+.searchList .item1,.searchList .item2{
+  position: absolute;
+  z-index:99;
+  width:100%;
+
+}
+.searchList .item1{
+  left: 0;
+}
+.searchList .item2{
+  left:50%;
+}
+.searchList .item1 .rank,.searchList .item2 .rank{
+  width:50%;
+  text-align: center;
+  padding-left:5px;
+  padding-right:5px;
+}
+.searchList .doctorInfo{
+  padding-bottom: 15px;
+}
+.searchList .head {
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  -webkit-text-overflow:ellipsis;
+  -o-text-overflow:ellipsis;
+  font-weight:500;
+  text-align:center;
+  line-height:18px;
+  padding-top:5px;
+  font-size:12px;
+}
+.searchList-shadow{
+  width:100%;
+  height:200%;
+  background-color: #000;
+  display: none;
+  position:absolute;
+  filter:alpha(Opacity=50);
+  -moz-opacity:0.5;
+  -webkit-opacity:0.5;
+  pacity: 0.5;
+  top:90px;
+  z-index:5;
+}
+.mySeek{
+  position: absolute;
+  top:90px;
+  left:0;
+  width:100%;
+  height:80%
+  overflow-y: auto;
+  background-color: transparent;
+}
+.mySeek .list{
+  width:100%;
+}
+.mySeek .item{
+  padding-left: 50px;
+  color:#999;
+  font-size:16px;
+}
+.mySeek .hd{
+  font-size:16px;
+  font-weight:600;
+  color:#999;
+  padding-top:13px;
+  padding-bottom:13px;
+
+}
+.mySeek .bd{
+  white-space: normal;
+  padding-top:13px;
+  padding-bottom:13px;
+}
+.mySeek .list2 .item{
+}

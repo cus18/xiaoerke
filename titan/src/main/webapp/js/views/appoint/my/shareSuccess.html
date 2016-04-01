@@ -1,0 +1,21 @@
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title={{title0}} ng-init="doRefresh()">
+    <div bdf-head="title"></div>
+    <ion-content class="sharedSuccess">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <div class="box">
+                <img src="images/share-success.png" width="98" height="98" style="margin-top:20px;">
+                <p>
+                    您已成功分享，感谢您对宝大夫的支持。
+                </p>
+            </div>
+            <div class="footer" style="margin-top:200px;">
+                <p>
+                    <a ng-click="appointmentFirst()">首页</a>
+                    <a ui-sref="questions">常见问题</a>
+                </p>
+                <a href="tel:4006237120">客服电话：400-623-7120</a>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

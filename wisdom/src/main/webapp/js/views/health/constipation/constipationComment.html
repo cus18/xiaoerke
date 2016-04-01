@@ -1,0 +1,29 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫" ng-init="doRefresh()">
+    <div class="edit" ng-click="editComment()" ng-if="editLock=='false'">
+        <img src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fedit_comment.png" width="15.5" height="15.5">
+        <input type="text" placeholder="写评论(最多可输入50字)..." readonly="readonly" >
+    </div>
+    <div class="shadow" ng-if="editLock=='true'" ng-click="cancel()"></div>
+    <div class="real-edit" ng-if="editLock=='true'">
+        <textarea  placeholder="写评论(最多可输入50字)..." maxlength="50" ng-model="info.content" ></textarea>
+        <span ng-click="save()">发布</span>
+    </div>
+    <ion-content class="constipationComment" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="title2">
+                全部评论
+            </div>
+            <dl class="myAvatar ">
+                <dd class="item item-avatar item-borderless" ng-repeat="item in commentList |orderBy:'createDate':true" >
+                    <img ng-src={{item.picUrl}} width="30" height="30">
+                    <h2 ng-if="item.nickName==''||item.nickName==null">宝粉</h2>
+                    <h2 ng-if="item.nickName!=''">{{item.nickName}}</h2>
+                    <p>{{item.appraisalContent}}</p>
+                    <span>{{ item.createDate | limitTo : 10}}</span>
+                </dd>
+            </dl>
+            <br>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

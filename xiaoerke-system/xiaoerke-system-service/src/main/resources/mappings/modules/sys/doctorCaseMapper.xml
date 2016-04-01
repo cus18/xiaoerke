@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxqm.xiaoerke.modules.sys.dao.DoctorCaseDao">
+
+    <resultMap id="doctorCaseMap" type="com.cxqm.xiaoerke.modules.sys.entity.DoctorCaseVo">
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="sys_doctor_id" property="sys_doctor_id" jdbcType="VARCHAR" />
+        <result column="doctor_case_name" property="doctor_case_name" jdbcType="VARCHAR" />
+        <result column="patient_register_service_id" property="patient_register_service_id" jdbcType="VARCHAR" />
+        <result column="doctor_case_number" property="doctor_case_number" jdbcType="INTEGER" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
+        <result column="display_status" property="display_status" jdbcType="VARCHAR" />
+        <result column="doctorName" property="doctorName" jdbcType="VARCHAR" />
+        <result column="sys_register_service_id" property="sys_register_service_id" jdbcType="VARCHAR" />
+        <result column="sys_patient_id" property="sys_patient_id" jdbcType="VARCHAR" />
+    </resultMap>
+    <!--保存案例信息 @author zdl-->
+    <insert id="saveDoctorCaseInfo">
+        insert sys_doctor_case(id,sys_doctor_id,patient_register_service_id,doctor_case_name,doctor_case_number,sort,display_status,sys_patient_id,sys_register_service_id)
+        <if test="doctorCaseNumber == null">
+            VALUES(#{patientRegisterPraiseId},#{sys_doctor_id},#{id},#{symptom},'1',null,#{display_status},#{sys_patient_id},#{sys_register_service_id});
+        </if>
+        <if test="doctorCaseNumber != null">
+            VALUES(#{patientRegisterPraiseId},#{sys_doctor_id},#{id},#{symptom},#{doctorCaseNumber},null,#{display_status},#{sys_patient_id},#{sys_register_service_id});
+        </if>
+    </insert>
+
+    <!--获取医生案例信息-->
+    <select id="findDoctorCase" resultMap="doctorCaseMap">
+        select sdc.*,sd.name as doctorName
+        from sys_doctor_case sdc
+        inner JOIN sys_doctor sd on sd.id = sdc.sys_doctor_id
+        where sdc.sys_doctor_id=#{doctorId}
+        and sdc.doctor_case_number is not null
+        and sdc.doctor_case_name is not null
+        <if test="doctor_case_name != null ">
+            and doctor_case_name like '%${doctor_case_name}%'
+        </if>
+        <if test="display_status != null ">
+            and sdc.display_status=#{display_status}
+        </if>
+        <if test="display_status == null ">
+            and (sdc.display_status='0' or sdc.display_status='1')
+        </if>
+        ORDER BY sdc.display_status  asc,sdc.doctor_case_number desc
+    </select>
+
+    <!--获取医生案例总数-->
+    <select id="findDoctorCaseNumber" resultType="Integer">
+        select COALESCE(sum(doctor_case_number),0) from  sys_doctor_case where sys_doctor_id=#{doctorId}
+        <if test="caseName != null ">
+          and   doctor_case_name = #{caseName}
+        </if>
+    </select>
+
+    <!--根据案例主键更新案例数-->
+    <update id="updateDoctorCaseInfo">
+       update sys_doctor_case SET doctor_case_number=doctor_case_number+1 where id=#{doctorCaseId}
+    </update>
+
+    <!--删除案例-->
+    <delete id="deleteDoctorCaseById">
+        delete from sys_doctor_case
+        where  id = #{doctorCaseId}
+    </delete>
+
+    <!--更新案例信息-->
+    <update id="updateDoctorCase">
+      update sys_doctor_case SET doctor_case_number=#{doctor_case_number},doctor_case_name=#{doctor_case_name},display_status=#{display_status} where id=#{id}
+    </update>
+
+    <!--导医生案例数据-->
+    <insert id="saveDoctorCase">
+      insert sys_doctor_case(id,sys_doctor_id,doctor_case_name,doctor_case_number,display_status)
+      VALUES(#{id},#{sys_doctor_id},#{doctor_case_name},#{doctor_case_number},#{display_status});
+    </insert>
+
+</mapper>

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.plan.dao.NutritionManagementDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.plan.entity.NutritionEvaluate" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="oil_salt" property="oilSalt" jdbcType="VARCHAR" />
+    <result column="vegetables" property="vegetables" jdbcType="VARCHAR" />
+    <result column="millet" property="millet" jdbcType="VARCHAR" />
+    <result column="potato" property="potato" jdbcType="VARCHAR" />
+    <result column="milk" property="milk" jdbcType="VARCHAR" />
+    <result column="meat" property="meat" jdbcType="VARCHAR" />
+    <result column="fish_eggs" property="fishEggs" jdbcType="VARCHAR" />
+    <result column="water" property="water" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, oil_salt, vegetables, millet, potato, milk, meat, fish_eggs, 
+    water, create_time, update_time, create_by, update_by,user_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from healthmanagement_nutrition_evaluate
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.plan.entity.NutritionEvaluate" >
+    insert into healthmanagement_nutrition_evaluate (id, oil_salt, vegetables, millet, potato, milk, meat, fish_eggs, 
+    water, create_time, update_time, create_by, update_by,user_id)
+    values (#{id,jdbcType=BIGINT}, #{oil_salt,jdbcType=VARCHAR}, #{vegetables,jdbcType=VARCHAR}, 
+      #{millet,jdbcType=VARCHAR}, #{potato,jdbcType=VARCHAR}, #{milk,jdbcType=VARCHAR}, 
+      #{meat,jdbcType=VARCHAR}, #{fish_eggs,jdbcType=VARCHAR}, #{water,jdbcType=VARCHAR}, 
+      #{create_time,jdbcType=TIMESTAMP}, #{update_time,jdbcType=TIMESTAMP}, #{create_by,jdbcType=VARCHAR},
+      #{update_by,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.plan.entity.NutritionEvaluate" useGeneratedKeys="true" keyProperty="id">
+    insert into healthmanagement_nutrition_evaluate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="oilSalt != null" >
+        oil_salt,
+      </if>
+      <if test="vegetables != null" >
+        vegetables,
+      </if>
+      <if test="millet != null" >
+        millet,
+      </if>
+      <if test="potato != null" >
+        potato,
+      </if>
+      <if test="milk != null" >
+        milk,
+      </if>
+      <if test="meat != null" >
+        meat,
+      </if>
+      <if test="fishEggs != null" >
+        fish_eggs,
+      </if>
+      <if test="water != null" >
+        water,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="oilSalt != null" >
+        #{oilSalt,jdbcType=VARCHAR},
+      </if>
+      <if test="vegetables != null" >
+        #{vegetables,jdbcType=VARCHAR},
+      </if>
+      <if test="millet != null" >
+        #{millet,jdbcType=VARCHAR},
+      </if>
+      <if test="potato != null" >
+        #{potato,jdbcType=VARCHAR},
+      </if>
+      <if test="milk != null" >
+        #{milk,jdbcType=VARCHAR},
+      </if>
+      <if test="meat != null" >
+        #{meat,jdbcType=VARCHAR},
+      </if>
+      <if test="fishEggs != null" >
+        #{fishEggs,jdbcType=VARCHAR},
+      </if>
+      <if test="water != null" >
+        #{water,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.plan.entity.NutritionEvaluate" >
+    update healthmanagement_nutrition_evaluate
+    <set >
+      <if test="oilSalt != null" >
+        oil_salt = #{oilSalt,jdbcType=VARCHAR},
+      </if>
+      <if test="vegetables != null" >
+        vegetables = #{vegetables,jdbcType=VARCHAR},
+      </if>
+      <if test="millet != null" >
+        millet = #{millet,jdbcType=VARCHAR},
+      </if>
+      <if test="potato != null" >
+        potato = #{potato,jdbcType=VARCHAR},
+      </if>
+      <if test="milk != null" >
+        milk = #{milk,jdbcType=VARCHAR},
+      </if>
+      <if test="meat != null" >
+        meat = #{meat,jdbcType=VARCHAR},
+      </if>
+      <if test="fishEggs != null" >
+        fish_eggs = #{fishEggs,jdbcType=VARCHAR},
+      </if>
+      <if test="water != null" >
+        water = #{water,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+   <select id="getEvaluateListByInfo" resultMap="BaseResultMap" resultType="java.util.Map">
+ 	SELECT
+		*
+	FROM
+		healthmanagement_nutrition_evaluate
+	WHERE
+	1=1
+	<if test="id != null" >
+      AND id =#{id}
+    </if>
+ 	<if test="userId != null" >
+      AND user_id =#{userId}
+    </if>
+    <if test="createTime != null" >
+      AND DATE_FORMAT(create_Time,'%Y:%c:%d') =DATE_FORMAT(#{createTime},'%Y:%c:%d')
+    </if>
+    <if test="dateList != null">
+     	 and DATE_FORMAT(create_Time,'%Y:%c:%d') in 
+		 <foreach item="item" index="index" collection="dateList" open="(" separator="," close=")">  
+ 			DATE_FORMAT(#{item},'%Y:%c:%d')
+		 </foreach>
+   	</if>
+  </select>
+</mapper>

@@ -1,0 +1,31 @@
+<link rel="stylesheet" href="/xiaoerke-healthPlan/styles/health/nutrition/nutritionNecessaryDetail.less" type="text/css" />
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="详情" ng-init="doRefresh()">
+    <ion-content class="nutritionNecessaryDetail " style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="intro">
+                <div class="pic">
+                    <img width="60%"  height="auto"  src="{{img}}">
+                </div>
+                <div class="text">
+                    <h2>{{title}}</h2>
+                    <p>{{introduce}}</p>
+                </div>
+                <ul class="price-list">
+                    <li ng-repeat="item in shopList" ng-click="selectShop($index)">
+                        <div class="shop">
+                            <img width="59"  height="auto"  ng-src="{{item.shop}}">
+                        </div>
+                        <div class="price">
+                            <span>参考价：</span>
+                            <a>￥{{item.price}}</a>
+                            <img class="my-img" width="16"  height="16"  ng-src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2F{{index==$index ? 'cir2_cur': 'cir2'}}.png">
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+            <br> <br>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

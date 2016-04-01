@@ -1,0 +1,330 @@
+/**
+ * 取得实际位置
+ * 调用方式：geoFactory.getGeo();
+ */
+var user_h5 = '/xiaoerke-appoint/ap/'
+var wxChat = '/xiaoerke-appoint/ap/wechatInfo/'
+var healthRecord='/xiaoerke-appoint/ap/healthRecord/'
+
+define(['appBaoFansCamp'], function (app) {
+    app
+        .factory('AccountInfo',['$resource',function ($resource){
+            return $resource(user_h5 + 'account/user/accountInfo');
+        }])
+        .factory('ReturnPay',['$resource',function ($resource){
+            return $resource(user_h5 +'account/user/returnPay');
+        }])
+        //搜索下拉框自动提示
+        .factory('AutoPrompting',['$resource',function ($resource){
+            return $resource(user_h5 +'search/user/autoPrompting');
+        }])
+        .factory('UserPay',['$resource',function ($resource){
+            return $resource(user_h5 +'account/user/userPay');
+        }])
+        //查询二类疾病关联的医生
+        .factory('ListHospitalByIllnessSecond', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'sys/illness/second/hospital');
+        }])
+        //获取系统内所有医院
+        .factory('ListHospital', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'sys/hospital');
+        }])
+        //获取合作医院的相关信息
+        .factory('GetCooperationHospitalInfo', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'sys/hospital/cooperation');
+        }])
+        //获取医院医生
+        .factory('ListHospitalDoctor', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'sys/hospital/doctor');
+        }])
+        //获取医院下的所有科室
+        .factory('ListHospitalDepartment', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'sys/hospital/department');
+        }])
+        //获取医院的某个科室的医生
+        .factory('ListHospitalDepartmentDoctor', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'sys/hospital/department/doctor');
+        }])
+        //获取医生集团的信息
+        .factory('DoctorGroupInfo', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'sys/doctor/group/info');
+        }])
+        //获取医生集团的信息
+        .factory('DoctorListInDoctorGroup', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'sys/doctor/group/doctorList');
+        }])
+        //获取一类疾病的列表
+        .factory('ListFirstIllness', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'sys/illness/first');
+        }])
+        .factory('FindDoctorCaseEvaluation',['$resource',function ($resource){
+            return $resource(user_h5 + 'sys/user/findDoctorCaseEvaluation');
+        }])
+        //获取二类疾病的列表
+        .factory('ListSecondIllness', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'sys/illness/second');
+        }])
+        //根据二类疾病的ID，获取相关联的医生
+        .factory('ListSecondIllnessDoctor', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'sys/illness/second/doctor');
+        }])
+        .factory('GetHospitalInfoById',['$resource',function ($resource){
+            return $resource(user_h5 + 'sys/hospital/info');
+        }])
+        //获取个人中心的首页信息
+        .factory('MyselfInfo', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'info/user');
+        }])
+        //获取用户登陆状态
+        .factory('GetUserLoginStatus', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'info/loginStatus');
+        }])
+        //获取医生某个出诊地点的7天内的可预约时间
+        .factory('GetDoctorVisitInfoByLocation',['$resource',function ($resource){
+            return $resource(user_h5 + 'sys/user/DoctorVisitInfoByLocation');
+        }])
+        //获取医生所有的出诊地点
+        .factory('FindDoctorLocationByDoctorId',['$resource',function ($resource){
+            return $resource(user_h5 + 'sys/user/findDoctorLocationByDoctorId');
+        }])
+        //获取医生的7天内的出诊地点和位置信息
+        .factory('GetDoctorVisitInfo',['$resource',function ($resource){
+            return $resource(user_h5 + 'sys/user/doctorVisitInfo');
+        }])
+        //获取一个医生的详细信息
+        .factory('DoctorDetail', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'sys/user/doctorDetail');
+        }])
+        //获取预约时间
+        .factory('ListAppointmentTime', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'register/user/time');
+        }])
+        //获取某个预约日期下的可预约医生
+        .factory('ListAppointmentTimeDoctor', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'register/user/time/doctor');
+        }])
+        //获取某个预约日期下的可预约的医院
+        .factory('ListAppointmentTimeHospital', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'register/user/time/hospital');
+        }])
+        //获取一个医生的某天的加号信息
+        .factory('DoctorAppointmentInfo', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'register/user/doctor/time');
+        }])
+        //获取一个医生的某个加号的详情信息
+        .factory('DoctorAppointmentInfoDetail', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'order/user/doctor/time/detail');
+        }])
+        //获取医生某个出诊地点的预约时间详情
+        .factory('AppointmentStatus',['$resource',function ($resource){
+            return $resource(user_h5 + 'register/user/sourceRoute');
+        }])
+        //获取个人的各种预约信息列表
+        .factory('MyselfInfoAppointment', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'order/user/orderList');
+        }])
+        .factory('MyselfInfoAppointmentByPhone',['$resource',function ($resource){
+            return $resource(user_h5 + 'order/user/appointmentByPhone');
+        }])
+        .factory('checkUserOrder',['$resource',function ($resource){
+            return $resource(user_h5 + 'order/user/checkOrderInfo');
+        }])
+        //根据用户的业务注册号，获取预约信息详情
+        .factory('MyselfInfoAppointmentDetail', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'order/user/orderDetail');
+        }])
+        //对预约的状态进行操作
+        .factory('OrderAppointOperation', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'order/user/orderAppointOperation');
+        }])
+        .factory('OrderPayOperation', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'order/user/orderPayOperation');
+        }])
+        .factory('OrderPraiseOperation', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'order/user/orderPraiseOperation');
+        }])
+        .factory('OrderShareOperation', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'order/user/orderShareOperation');
+        }])
+        .factory('OrderCancelOperation', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'order/user/info/orderCancelOperation');
+        }])
+        //我的消息
+        .factory('MsgAppointment', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'order/user/msgAppointment');
+        }])
+        .factory('MsgAppointmentStatus', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'order/user/msgAppointmentStatus');
+        }])
+        //检查不正常约号的情况
+        .factory('GetCheckOrder',['$resource',function ($resource){
+            return $resource(user_h5 + 'order/getCheckOrder');
+        }])
+        //用户关注医生功能
+        .factory('AttentionDoctor', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'interaction/user/doctorConcern');
+        }])
+        //检测用户是否已经关注该医生
+        .factory('CheckAttentionDoctor', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'interaction/user/isConcerned');
+        }])
+        //我的关注
+        .factory('MyAttention', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'interaction/user/myselfConcern');
+        }])
+        //待分享
+        .factory('MyShare', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'interaction/user/share');
+        }])
+        //获取用户对某医生的评价
+        .factory('GetUserEvaluate',['$resource',function ($resource){
+            return $resource(user_h5 + 'interaction/user/getUserEvaluate');
+        }])
+        //用户对客服的评价
+        .factory('CustomerEvaluation',['$resource',function ($resource){
+            return $resource(user_h5 + 'interaction/user/customerEvaluation');
+        }])
+        //问卷调查
+        .factory('QuestionnaireSurvey',['$resource',function ($resource){
+            return $resource(user_h5 + 'interaction/user/questionnaireSurvey');
+        }])
+        //调用阿里云进行搜索查询
+        .factory('SearchDoctors',['$resource',function ($resource){
+            return $resource(user_h5 + 'search/searchDoctors');
+        }])
+        //用户coocik搜索记录
+        .factory('PatientSearchList',['$resource',function ($resource){
+            return $resource(user_h5 + 'search/user/PatientSearchList');
+        }])
+        // 清除所有的搜索记录
+        .factory('RemoveAllSearchHistory',['$resource',function ($resource){
+            return $resource(user_h5 + 'search/user/RemoveAllSearchHistory');
+        }])
+        //发送验证码
+        .factory('IdentifyUser', ['$resource', function ($resource) {
+            return $resource(user_h5 + 'util/user/getCode');
+        }])
+        .factory('RecordLogs',['$resource',function ($resource){
+            return $resource(user_h5 + 'util/recordLogs');
+        }])
+        //获取会员信息
+        .factory('ExtendMemberService',['$resource',function ($resource){
+            return $resource(user_h5 + 'member/user/extendMemberService');
+        }])
+        //获取用户会员购买情况
+        .factory('CheckIfAppScanDoctor',['$resource',function ($resource){
+            return $resource(user_h5 + 'member/user/checkIfAppScanDoctor');
+        }])
+        //扫描会员关注操作
+        .factory('OrderFreePayOperation',['$resource',function ($resource){
+            return $resource(user_h5 + 'member/user/orderFreePayOperation');
+        }])
+        //查看用户会员状态
+        .factory('GetMemberServiceStatus',['$resource',function ($resource){
+            return $resource(user_h5 + 'member/user/getMemberServiceStatus');
+        }])
+        //查看用户会员状态
+        .factory('GetUserMemberService',['$resource',function ($resource){
+            return $resource(user_h5 + 'member/user/getUserMemberService');
+        }])
+        //通过会员的预约卷，进行预约
+        .factory('OrderPayMemberServiceOperation',['$resource',function ($resource){
+            return $resource(user_h5 + 'member/user/orderPayMemberServiceOperation');
+        }])
+        .factory('MemberServiceDetail',['$resource',function ($resource){
+            return $resource(user_h5 + 'member/user/memberServiceDetail');
+        }])
+        .factory('SendAdvice',['$resource',function ($resource){
+            return $resource(user_h5 + 'feedback/user/sendAdvice');
+        }])
+        .factory('WxPayAdvice',['$resource',function ($resource){
+            return $resource(user_h5 + 'feedback/user/wxpayAdvice');
+        }])
+        .factory('GetQRCode',['$resource',function ($resource){
+            return $resource(user_h5 + 'marketingInfo/getQRCode');
+        }])
+        .factory('GetAttentionFromMarketer',['$resource',function ($resource){
+            return $resource(user_h5 + 'marketingInfo/getAttentionFromMarketer');
+        }])
+        .factory('ConsultVisit',['$resource',function ($resource){
+            return $resource(user_h5 + 'feedback/user/consultVisit');
+        }])
+        //send WechatMessage To User
+        .factory('SendWechatMessageToUser',['$resource',function ($resource){
+            return $resource(wxChat + 'postInfoToWechat');
+        }])
+
+        //获取用户下宝宝信息
+        .factory('getBabyinfoList',['$resource',function ($resource){
+            return $resource(healthRecord + 'getBabyinfoList');
+        }])
+        //获取用户下宝宝的订单信息
+        .factory('getAppointmentInfo',['$resource',function ($resource){
+            return $resource(healthRecord + 'getAppointmentInfo');
+        }])
+        //添加宝宝信息
+        .factory('saveBabyInfo',['$resource',function ($resource){
+            return $resource(healthRecord + 'saveBabyInfo');
+        }])
+        //修改宝宝信息
+        .factory('updateBabyInfo',['$resource',function ($resource){
+            return $resource(healthRecord + 'updateBabyInfo');
+        }])
+        //获取宝宝咨询详情记录
+        .factory('getConsultationInfo',['$resource',function ($resource){
+            return $resource(healthRecord + 'getConsultationInfo');
+        }])
+        //添加病情描述
+        .factory('modifyBabyIndfo',['$resource',function ($resource){
+            return $resource(healthRecord + 'modifyBabyIndfo');
+        }])
+        //查询用户下宝宝的就诊信息
+        .factory('getOrderInfoByOpenid',['$resource',function ($resource){
+            return $resource(user_h5 + 'customer/getOrderInfoByOpenid');
+        }])
+        .factory('getCustomerLogByOpenID',['$resource',function ($resource){
+            return $resource(user_h5 + 'customer/getCustomerLogByOpenID');
+        }])
+        .factory('deleteBabyInfo',['$resource',function ($resource){
+            return $resource(healthRecord + 'deleteBabyInfo');
+        }])
+        .factory('getLastOrderBabyInfo',['$resource',function ($resource){
+            return $resource(healthRecord + 'getLastOrderBabyInfo');
+        }])
+        .factory('addDoctorCase',['$resource',function ($resource){
+            return $resource(healthRecord + 'addDoctorCase');
+        }])
+        //根据用户的登陆状态，进行相应的操作
+        .factory('resolveUserLoginStatus', ['GetUserLoginStatus','$state',
+            function(GetUserLoginStatus,$state) {
+                var runFirstRequest = function(redirectParam,routeParam,goParam,hrefParam,action) {
+                    var routePath = "";
+                    if(action=="go"){
+                        routePath = "/ap/appointBBBBBB/"+redirectParam+"/"+routeParam;
+                    } else if(action=="notGo"){
+                        routePath = "/ap/appointBBBBBB/"+redirectParam;
+                    }
+                    GetUserLoginStatus.save({routePath:routePath},function(data){
+                        if(data.status=="9") {
+                            window.location.href = data.redirectURL;
+                        } else if(data.status=="8"){
+                            window.location.href = data.redirectURL+"?targeturl="+routePath;
+                        }else {
+                            if(action=="notGo"){
+                                if(hrefParam==""){
+                                    $state.go(redirectParam);
+                                }else{
+                                    window.location.href = hrefParam;
+                                }
+                            }else if(action=="go"){
+                                $state.go(redirectParam,goParam);
+                            }
+                        }
+                    });
+                };
+                return {
+                    events: function(redirectParam,routeParam,goParam,hrefParam,action) {
+                        return runFirstRequest(redirectParam,routeParam,goParam,hrefParam,action);
+                    }};
+            }])
+})

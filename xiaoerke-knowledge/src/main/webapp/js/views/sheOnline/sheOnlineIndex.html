@@ -1,0 +1,78 @@
+<link rel="stylesheet" href="styles/sheOnline/sheOnlineIndex.less?ver='0.9'" type="text/css" />
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title="郑玉巧在线" ng-init="doRefresh()">
+    <ion-content class="sheOnlineIndex" overflow-scroll="true" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <div class="box1">
+                <img src="images/sheOnline/on1.png" width="100%" height="auto" />
+                <ul>
+                    <li>
+                        著名儿科专家<span>郑玉巧</span>
+                    </li>
+                    <li>
+                        携手唯一官方合作互联网医疗平台-宝大夫
+                    </li>
+                    <li>
+                        打造最适合中国儿童的一站式育儿健康服务
+                    </li>
+                </ul>
+            </div>
+            <div class="box2">
+                <img src="images/sheOnline/zyq.png" width="69" height="69" />
+                <h3 style="font-weight:bold;">
+                    郑玉巧
+                    <span style="font-weight:bold;">著名儿科专家</span>
+                </h3>
+                <p>
+                    现任中国人民解放军第二炮兵总医院特需专家，
+                    儿科主任医师，在儿科危急重症、妇产科合并内科疾病的诊治方面有较深的造诣。
+                    著有《郑玉巧育儿经》系列丛书，是中国原创育儿书籍第一人。
+                </p>
+            </div>
+            <div class="box3">
+                <dl>
+                    <dt>在线咨询预告</dt>
+                    <dd>每周三下午&nbsp;14:00-16:00</dd>
+                    <span class="cir"></span>
+                    <span class="line"></span>
+                </dl>
+                <dl>
+                    <dt>就诊预约时间<span class="rr">（提前7天预约）</span></dt>
+                    <dd>每周二下午13:45</dd>
+                    <span class="cir"></span>
+                </dl>
+                <p class="aboutShe">
+                    <a class="" ng-click="zixun()">在线咨询</a>
+                    <span class="cir2"></span>
+                    <a class="" ng-click="yuyue()">预约挂号</a>
+                    <span class="cir2"></span>
+                    <a class="" ui-sref="knowledgeIndex" style="width:30%;">郑玉巧育儿经</a>
+                </p>
+            </div>
+            <div class="box4">
+                <dl>
+                    <dt>
+                        <img src="images/sheOnline/on4.png" width="11.5" height="11.5" />&nbsp;&nbsp;历史在线咨询
+                    </dt>
+                    <dd ng-repeat="item in questionList"
+                        ui-sref="sheOnlineDetail({contentId:item.id,contentTitle:item.title,ReadCount:item.articleReadCount,ShareCount:item.articleShareCount})">
+                       <a>
+                           <img src="images/sheOnline/on5.png" width="13" height="13" />&nbsp;&nbsp;{{item.title}}
+                       </a>
+                        <span>
+                            {{item.keywords}}
+                        </span>
+                    </dd>
+                </dl>
+                <div class="more" ng-click="more()" ng-if="lockMore=='true'">
+                    查看更多<img src="images/sheOnline/on_right.png" width="22" height="22" />
+
+                </div>
+                <ion-infinite-scroll on-infinite="loadMoreWithDrawlsList()" distance="1%"
+                                     immediate-check="false"
+                                     ng-if="lockMore2=='true'">
+                </ion-infinite-scroll>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

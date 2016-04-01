@@ -1,0 +1,59 @@
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title={{title}} ng-init="doRefresh()">
+    <div bdf-head="title"></div>
+    <ion-content class="myService">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <div class="two-select">
+            <span  ng-repeat="item in selectItemArr" ng-click="selectItem($index)" ng-class="{'cur':selectItemNum==$index}" >
+                {{item}}
+            </span>
+            </div>
+            <!-- 有会员服务时显示-->
+            <div class="main" hasService=='true'>
+                <!-- 当前服务-->
+                <div class="current" ng-if="selectItemNum=='0'">
+                    <!-- 周会员-->
+                    <dl ng-repeat="item in memberServiceList">
+                        <dt ng-if="item.period=='7'"><span class="line"></span>周会员（￥50元/周）</dt>
+                        <dt ng-if="item.period=='31'"><span class="line"></span>月会员（￥150元/月）</dt>
+                        <dt ng-if="item.period=='93'"><span class="line"></span>季会员（￥298元/季）</dt>
+                        <dd>
+                            <div class="text1">服务内容:</div>
+                            <div class="text1" style="margin-top:-15px;margin-left:10px">*随时健康咨询</div>
+                            <div class="text1" style="margin-left:10px">*专家健康指导</div>
+                            <div class="text1" style="margin-left:10px">*特惠医院无限次预约</div>
+                            <div class="text1" style="margin-top:10px">服务时间：{{item.startDate}}—{{item.endDate}}</div>
+                            <div class="text2">剩余免费预约次数：{{item.leftTimes}}次</div>
+                        </dd>
+                        <a class="more" ng-click="goToMemberServiceDetail($index)">
+                            查看
+                            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fmore_right_d.png" width="22" height="22" />
+                        </a>
+                    </dl>
+                </div>
+                <!-- 免费预约-->
+                <div class="free" ng-if="selectItemNum=='1'">
+                    <dl ng-repeat="item in memberServiceList">
+                        <dd>
+                            <div class="text2">剩余免费预约次数：{{item.leftTimes}}次</div>
+                            <div class="text1">服务时间：{{item.startDate}}—{{item.endDate}}</div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <!-- 无会员服务时显示-->
+            <div class="no-service" ng-if="hasService=='false'">
+                <div class="box1">
+                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fno_memberService.png" width="115.5" height="115.5">
+                    <p>
+                        关爱宝宝<br>宝大夫为您全程服务
+                    </p>
+                    <span class="circle circle1"></span>
+                    <span class="circle circle2"></span>
+                    <span class="circle circle3"></span>
+                </div>
+                <button class="button foot-btn" ng-click="goToMemberService()">立即购买</button>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

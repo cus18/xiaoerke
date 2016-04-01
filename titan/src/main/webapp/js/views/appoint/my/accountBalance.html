@@ -1,0 +1,35 @@
+<ion-spinner ng-show="pageLoading" class="loadPic" ></ion-spinner>
+<ion-view view-title={{title0}} ng-init="doRefresh()">
+    <div bdf-head="title"></div>
+    <div class="total-money">
+        <p>
+            账户余额：{{accountFund}}元可提现
+        </p>
+        <h3>
+            {{accountFund}}
+        </h3>
+    </div>
+    <ion-content class="accountBalance" style="top:151px;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="record">
+                <dl>
+                    <dt>
+                        账户记录：
+                    </dt>
+                    <dd ng-repeat ="item in itemizedAccountInfo">
+                        <p>{{item.title}}</p>
+                        <p class="pp">{{item.time}}</p>
+                        <span>
+                           {{item.amount}}元
+                        </span>
+                    </dd>
+                </dl>
+            </div>
+
+
+        </ion-scroll>
+    </ion-content>
+    <div class="myFooter " ui-sref="withdraw({accountFund:accountFund})">
+        <button class="button">提现</button>
+    </div>
+</ion-view>

@@ -1,0 +1,70 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫" ng-init="doRefresh()">
+    <ion-content class="constipationWShortDeal" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="title2">
+                短期处理方法
+            </div>
+            <div class="warn">
+                <dl>
+                    <dt>
+                        积极应对肛裂引起的排便疼痛。便秘可以引起肛裂和痔疮，由于排便导致肛门疼痛，宝宝不敢排便，两者互为因果，形成恶性循环。
+                    </dt>
+                    <dd class="deal">
+                        <h3>宝宝出现肛裂后，要给予积极处理</h3>
+                        <p>
+                            <span>1</span>首先要解决便秘问题，可给宝宝服用乳果糖口服液，使宝宝能排出软便，因为大便干燥问题不解决，肛裂不会愈合，大便后用清水清理臀部。
+                        </p>
+                        <p>
+                            <span>2</span>然后在肛裂处涂少许红霉素眼膏，预防肛周脓肿，加快肛裂愈合（如果有红肿需要去医院，看儿外科）。
+                        </p>
+                    </dd>
+                    <dd class="recommend">
+                        <h4>为您推荐</h4>
+                        <div class="recommend-medicine">
+                            <a href="http://item.yhd.com/item/44250923?tc=3.0.5.44250923.1&tp=51.%E4%B9%B3%E6%9E%9C%E7%B3%96%E5%8F%A3%E6%9C%8D%E6%B6%B2.124.1.1.L7aSd0S-10-Cj9ef&abtest=1.8_565_83&ti=SCBS">
+                                <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmedicine1_1.jpg" width="68" height="68"><br>
+                                乳果糖
+                            </a>
+                            <a href="http://item.yhd.com/item/45236408?tc=3.0.5.45236408.2&tp=51.乳果糖口服液.124.2.1.L7aSd0S-10-Cj9ef&abtest=1.8_565_83&ti=CEVS">
+                                <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmedicine1_2.jpg" width="68" height="68"><br>
+                                乳果糖
+                            </a>
+                            <br>
+                            <a style="" href="http://item.yhd.com/item/58292273?tc=3.0.5.58292273.3&tp=51.红霉素眼膏.124.3.1.L8ANi7Y-10-ApfQO&ti=Z3KY">
+                                <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmedicine2_1.jpg" width="68" height="68"><br>
+                                红霉素
+                            </a>
+                            <a  href="http://item.yhd.com/item/55895854?tc=3.0.5.55895854.7&tp=51.红霉素眼膏.124.7.1.L8ANi7Y-10-ApfQO&ti=QEF5">
+                                <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmedicine2_2.jpg" width="68" height="68"><br>
+                                红霉素
+                            </a>
+                        </div>
+
+
+                    </dd>
+                    <dd class="mother-help">
+                        <div >
+                            <p>
+                                妈妈如果遇到什么问题或者还有什么不明白的
+                            </p>
+                            <p>
+                                随时可以<span ng-click="consultDoc()">咨询医生</span> 也可直接<span ui-sref="appointmentFirst">预约大夫 </span>哦
+                            </p>
+
+                        </div>
+                    </dd>
+                </dl>
+
+            </div>
+            <div class="plan" ng-click="remind()">
+                <p>
+                    宝大夫从<span>便秘按摩、按时排便、食疗、运动</span>四方面<br>
+                    为妈妈和宝宝制定了一套便秘管理方案<br>
+                    和宝大夫一起帮宝宝摆脱便秘吧
+                </p>
+                <button class="button foot-btn">快来制定计划吧</button>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

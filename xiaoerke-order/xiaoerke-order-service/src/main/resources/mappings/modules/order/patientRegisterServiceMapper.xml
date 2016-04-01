@@ -1,0 +1,1003 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxqm.xiaoerke.modules.order.dao.PatientRegisterServiceDao">
+
+    <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.order.entity.PatientRegisterServiceVo">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="sys_register_service_id" property="sysRegisterServiceId" jdbcType="VARCHAR"/>
+        <result column="sys_patient_id" property="sysPatientId" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+        <result column="register_no" property="registerNo" jdbcType="VARCHAR"/>
+        <result column="praise" property="praise" jdbcType="VARCHAR"/>
+        <result column="star" property="star" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="babyName" property="babyName" jdbcType="VARCHAR"/>
+        <result column="illness" property="illness" jdbcType="VARCHAR"/>
+        <result column="birthday" property="birthday" jdbcType="TIMESTAMP"/>
+        <result column="pay_way" property="payWay" jdbcType="VARCHAR"/>
+        <result column="allowance" property="allowance" jdbcType="INTEGER"/>
+        <result column="member_service_id" property="memberServiceId" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="patientRegisterServiceVo" type="com.cxqm.xiaoerke.modules.order.entity.PatientRegisterServiceVo">
+        <result column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="register_no" property="registerNo" jdbcType="VARCHAR"/>
+        <result column="sys_register_service_id" property="sysRegisterServiceId" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="VARCHAR"/>
+        <result column="update_date" property="updateDate" jdbcType="VARCHAR"/>
+        <result column="babyName" property="babyName" jdbcType="VARCHAR"/>
+        <result column="name" property="doctorName" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="date" property="date" jdbcType="VARCHAR"/>
+        <result column="begin_time" property="beginTime" jdbcType="VARCHAR"/>
+        <result column="nickName" property="nickName" jdbcType="VARCHAR"/>
+        <result column="falseUser_reason" property="falseUserReason" jdbcType="VARCHAR"/>
+        <result column="department_level1" property="departmentLevel1" jdbcType="VARCHAR"/>
+        <result column="service_type" property="serviceType" jdbcType="VARCHAR"/>
+        <result column="overall_satisfy" property="overallSatisfy" jdbcType="VARCHAR"/>
+        <result column="user_feedback" property="userFeedBack" jdbcType="VARCHAR"/>
+        <result column="user_feedback_remarks" property="userFeedBackRemarks" jdbcType="VARCHAR"/>
+        <result column="cancelReason" property="cancelReason" jdbcType="VARCHAR"/>
+        <result column="end_time" property="endTime" jdbcType="VARCHAR"/>
+        <result column="visit_endTime" property="visitEndTime" jdbcType="VARCHAR"/>
+        <result column="delete_by" property="deleteBy" jdbcType="VARCHAR"/>
+        <result column="member_service_id" property="memberServiceId" jdbcType="INTEGER"/>
+        <result column="relation_type" property="relationType" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="patientRegisterServiceVoMap" type="com.cxqm.xiaoerke.modules.order.entity.PatientRegisterServiceVo">
+        <result column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="sys_user_id" property="sys_user_id" jdbcType="VARCHAR"/>
+        <result column="career_time" property="date" jdbcType="TIMESTAMP"/>
+        <result column="sys_hospital_id" property="sysPatientId" jdbcType="VARCHAR"/>
+        <result column="register_service_id" property="sysRegisterServiceId" jdbcType="VARCHAR"/>
+        <!-- -->
+        <result column="appointmentNo" property="registerNo" jdbcType="VARCHAR"/>
+        <!-- -->
+        <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP"/>
+        <result column="end_time" property="endTime" jdbcType="TIMESTAMP"/>
+        <result column="doctorId" property="doctorId" jdbcType="VARCHAR"/>
+        <result column="hospitalName" property="hospitalName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="PatientRegisterServiceMap" type="com.cxqm.xiaoerke.modules.order.entity.PatientRegisterServiceVo">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <id column="patientRegisterServiceId" property="patientRegisterServiceId" jdbcType="VARCHAR"/>
+        <id column="openid" property="openId" jdbcType="VARCHAR"/>
+        <id column="relation_type" property="relationType" jdbcType="VARCHAR"/>
+        <id column="marketer" property="marketer" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="DoctorHospitalRelationMap" type="com.cxqm.xiaoerke.modules.sys.entity.DoctorHospitalRelationVo">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <id column="relation_type" property="relationType" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, sys_register_service_id, sys_patient_id, status, create_date, update_date, register_no,
+        praise, star, phone, babyName, illness, birthday, pay_way, allowance ,member_service_id
+    </sql>
+
+    <!--根据订单主键查询该订单下的医生与医院的关系-->
+    <select id="getRegisterAttributeOfHospital" resultMap="DoctorHospitalRelationMap"
+            parameterType="com.cxqm.xiaoerke.modules.order.entity.PatientRegisterServiceVo">
+        select prs.id,dhr.*
+        from
+        patient_register_service prs,
+        sys_register_service srs,
+        doctor_hospital_relation dhr
+        WHERE
+        srs.id = prs.sys_register_service_id
+        and  dhr.sys_doctor_id = srs.sys_doctor_id
+        and dhr.sys_hospital_id = srs.sys_hospital_id
+        and prs.id = #{id}
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from patient_register_service
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from patient_register_service
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <update id="UpdatePatientRegisterServiceIsPay">
+        update patient_register_service prs
+        set
+        prs.status='1',
+        prs.pay_way=#{payWay}
+        where prs.id=#{patientRegisterServiceId};
+    </update>
+
+    <!--new zdl-->
+    <select id="findAttentionInfoByOpenIdLists" resultMap="PatientRegisterServiceMap">
+        SELECT
+        scnc.marketer
+        FROM
+        sys_register_service srs
+        INNER JOIN scan_code_no_charge scnc ON scnc.sys_doctor_id = srs.sys_doctor_id
+        WHERE
+        scnc.marketer IN (
+        SELECT
+        doctor_marketer
+        FROM
+        sys_attention sa
+        WHERE
+        openid = #{openId} AND DATE_ADD(update_time, INTERVAL 1 HOUR) > NOW())
+        AND scnc.sys_doctor_id = (
+        SELECT
+        srs.sys_doctor_id
+        FROM
+        sys_register_service srs
+        INNER JOIN patient_register_service prs ON prs.sys_register_service_id = srs.id
+        WHERE
+        prs.id = #{id}
+        )
+
+    </select>
+
+
+    <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.order.entity.PatientRegisterServiceVo">
+        insert into patient_register_service (id, sys_register_service_id, sys_patient_id,
+        status, create_date, update_date,
+        register_no, praise, star,
+        phone, babyName, illness,
+        birthday, pay_way, allowance
+        )
+        values (#{id,jdbcType=VARCHAR}, #{sysRegisterServiceId,jdbcType=VARCHAR}, #{sysPatientId,jdbcType=VARCHAR},
+        #{status,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP},
+        #{registerNo,jdbcType=VARCHAR}, #{praise,jdbcType=VARCHAR}, #{star,jdbcType=VARCHAR},
+        #{phone,jdbcType=VARCHAR}, #{babyName,jdbcType=VARCHAR}, #{illness,jdbcType=VARCHAR},
+        #{birthday,jdbcType=TIMESTAMP}, #{payWay,jdbcType=VARCHAR}, #{allowance,jdbcType=INTEGER}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.order.entity.PatientRegisterServiceVo">
+        insert into patient_register_service
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sysRegisterServiceId != null">
+                sys_register_service_id,
+            </if>
+            <if test="sysPatientId != null">
+                sys_patient_id,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="registerNo != null">
+                register_no,
+            </if>
+            <if test="praise != null">
+                praise,
+            </if>
+            <if test="star != null">
+                star,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="babyName != null">
+                babyName,
+            </if>
+            <if test="illness != null">
+                illness,
+            </if>
+            <if test="birthday != null">
+                birthday,
+            </if>
+            <if test="payWay != null">
+                pay_way,
+            </if>
+            <if test="allowance != null">
+                allowance,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="sysRegisterServiceId != null">
+                #{sysRegisterServiceId,jdbcType=VARCHAR},
+            </if>
+            <if test="sysPatientId != null">
+                #{sysPatientId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="registerNo != null">
+                #{registerNo,jdbcType=VARCHAR},
+            </if>
+            <if test="praise != null">
+                #{praise,jdbcType=VARCHAR},
+            </if>
+            <if test="star != null">
+                #{star,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="babyName != null">
+                #{babyName,jdbcType=VARCHAR},
+            </if>
+            <if test="illness != null">
+                #{illness,jdbcType=VARCHAR},
+            </if>
+            <if test="birthday != null">
+                #{birthday,jdbcType=TIMESTAMP},
+            </if>
+            <if test="payWay != null">
+                #{payWay,jdbcType=VARCHAR},
+            </if>
+            <if test="allowance != null">
+                #{allowance,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.cxqm.xiaoerke.modules.order.entity.PatientRegisterServiceVo">
+        update patient_register_service
+        <set>
+            <if test="sysRegisterServiceId != null">
+                sys_register_service_id = #{sysRegisterServiceId,jdbcType=VARCHAR},
+            </if>
+            <if test="sysPatientId != null">
+                sys_patient_id = #{sysPatientId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="registerNo != null">
+                register_no = #{registerNo,jdbcType=VARCHAR},
+            </if>
+            <if test="praise != null">
+                praise = #{praise,jdbcType=VARCHAR},
+            </if>
+            <if test="star != null">
+                star = #{star,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="babyName != null">
+                babyName = #{babyName,jdbcType=VARCHAR},
+            </if>
+            <if test="illness != null">
+                illness = #{illness,jdbcType=VARCHAR},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday,jdbcType=TIMESTAMP},
+            </if>
+            <if test="payWay != null">
+                pay_way = #{payWay,jdbcType=VARCHAR},
+            </if>
+            <if test="allowance != null">
+                allowance = #{allowance,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.order.entity.PatientRegisterServiceVo">
+        update patient_register_service
+        set sys_register_service_id = #{sysRegisterServiceId,jdbcType=VARCHAR},
+        sys_patient_id = #{sysPatientId,jdbcType=VARCHAR},
+        status = #{status,jdbcType=VARCHAR},
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+        register_no = #{registerNo,jdbcType=VARCHAR},
+        praise = #{praise,jdbcType=VARCHAR},
+        star = #{star,jdbcType=VARCHAR},
+        phone = #{phone,jdbcType=VARCHAR},
+        babyName = #{babyName,jdbcType=VARCHAR},
+        illness = #{illness,jdbcType=VARCHAR},
+        birthday = #{birthday,jdbcType=TIMESTAMP},
+        pay_way = #{payWay,jdbcType=VARCHAR},
+        allowance = #{allowance,jdbcType=INTEGER}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="getUnBindUserNum" resultType="java.util.HashMap">
+        select prs.`status` ,count(prs.id) num from patient_register_service prs
+        where 1=1
+        <if test="unBindUserPhoneNum != null and unBindUserPhoneNum != ''">
+            AND prs.phone = #{unBindUserPhoneNum} GROUP BY prs.`status`
+        </if>
+        <if test="phone != null and phone != ''">
+            AND ( prs.status='1' or prs.status='2' or prs.status='3' or prs.status='4' or prs.status='5')
+            AND prs.phone = #{phone} GROUP BY prs.`status`
+        </if>
+
+    </select>
+
+    <select id="selectOrderInfoById" resultMap="PatientRegisterServiceMap"
+            parameterType="com.cxqm.xiaoerke.modules.order.entity.PatientRegisterServiceVo">
+        select su.*,prs.id patientRegisterServiceId from patient_register_service prs
+        INNER JOIN sys_patient sp on sp.id = prs.sys_patient_id
+        INNER JOIN sys_user su on su.id = sp.sys_user_id
+        where 1=1
+        <if test="id != null ">
+            AND prs.id=#{id}
+        </if>
+        <if test="registerNo != null ">
+            AND prs.register_no=#{registerNo}
+        </if>
+
+    </select>
+
+    <!--获取个人中心主页的信息 @ author 13_zdl-->
+    <select id="getPerCenterPageInfo" resultType="Integer">
+        SELECT  COUNT(*) FROM  patient_register_service prs
+        WHERE STATUS=#{status} and sys_patient_id=#{patientId}
+    </select>
+
+    <!--对预约的状态进行操作 @author 14_zdl-->
+    <insert id="savePatientRegisterService"
+            useGeneratedKeys="true" keyProperty="planId">
+        INSERT INTO patient_register_service(register_no,id,status,babyName,illness,birthday,sys_register_service_id,sys_patient_id,phone,create_date)
+        VALUES (#{registerNo},#{id},#{status},#{babyName},#{illnessDesc},#{birthday},#{sysRegisterServiceId},
+        #{sysPatientId},#{phone},#{createDate});
+    </insert>
+
+    <!--对预约的状态进行操作 @author 14_zdl-->
+    <insert id="InsertOrUpdatePatientRegisterService"
+            useGeneratedKeys="true" keyProperty="planId">
+        INSERT INTO patient_register_service(register_no,id,status,babyName,illness,birthday,sys_register_service_id,sys_patient_id,phone,create_date,allowance,babyinfo_id)
+        VALUES (#{register_no},#{patient_register_service_id},#{status},#{babyName},#{illnessDesc},#{birthday},#{sys_register_service_id},
+        #{sys_patient_id},#{userPhone},#{create_date},#{allowance},#{babyinfo_id});
+    </insert>
+
+    <!--获取预约患者信息-->
+    <select id="getPatientRegisterInfo" resultType="java.util.HashMap">
+        SELECT * FROM patient_register_service prs
+        where 1=1
+        <if test="id != null and id != ''">
+            AND prs.id=#{id}
+        </if>
+        <if test="registerId != null and registerId != ''">
+            AND prs.sys_register_service_id=#{registerId} AND prs.status="1"
+        </if>
+        <if test="registerServiceId != null and registerServiceId != ''">
+            AND prs.sys_register_service_id=#{registerServiceId} AND prs.status!="6"
+        </if>
+    </select>
+
+    <update id="updatePatientRegisterStatusCancelById">
+        update patient_register_service prs
+        <set>
+            <if test="reason != null">
+                cancelReason = #{reason},
+            </if>
+            <if test="keep != null">
+                keepChance = #{keep},
+            </if>
+            <if test="deleteBy != null">
+                delete_by = #{deleteBy},
+            </if>
+            status="6"
+        </set>
+        where prs.id=#{id}
+    </update>
+
+    <select id="findPageRegisterServiceByPatient" parameterType="java.util.Map"
+            resultType="com.cxqm.xiaoerke.modules.order.entity.PatientRegisterServiceVo">
+        SELECT prs.* FROM patient_register_service prs
+        <if test="openid != null">
+            inner JOIN sys_patient sp on sp.id = prs.sys_patient_id
+            INNER JOIN sys_user su on su.id = sp.sys_user_id
+        </if>
+        WHERE 1=1
+        <if test="sys_patient_id != null">
+            and prs.sys_patient_id=#{sys_patient_id}
+        </if>
+        <if test="patientRegisterService != null">
+            and prs.id=#{patientRegisterService}
+        </if>
+        <if test="openid != null">
+            and su.openid=#{openid} and (prs.status='0' or prs.status='1' or prs.status='2' or prs.status='3' or
+            prs.status='4' or prs.status='5')
+        </if>
+        <if test="firstOrder == 'no'">
+            GROUP BY prs.babyName
+        </if>
+    </select>
+
+    <update id="UpdatePatientRegisterService">
+        update patient_register_service prs
+        set
+        prs.status='1',
+        prs.pay_way=#{payWay},
+        prs.member_service_id= #{memSrsItemSrsRelId}
+        where prs.id=#{patientRegisterServiceId};
+    </update>
+
+    <update id="CancelPatientRegisterService">
+        update patient_register_service prs
+
+        set   prs.status='6',prs.register_no=#{register_no}
+
+        where prs.status !='6'and prs.id=#{patientRegisterServiceId};
+    </update>
+
+    <!--分享完成更新状态 @author 14_zdl-->
+    <update id="completeShareExecute">
+        UPDATE patient_register_service prs SET  STATUS='4' WHERE prs.id=#{patientRegisterServiceId}
+    </update>
+
+    <update id="PatientRegisterServiceIsService">
+        update patient_register_service prs
+        <set>
+            prs.status='3'
+        </set>
+        where prs.id=#{id};
+    </update>
+
+
+    <select id="findPatientRegisterByInfo" resultType="java.util.HashMap">
+        select * from patient_register_service prs
+        where prs.sys_register_service_id=#{registerId} AND prs.status="1"
+    </select>
+
+    <!--订单防控 -->
+    <!--每天同一个手机号不能超过2个号-->
+    <select id="getOrderCheckEverydayForPhone" resultType="java.lang.Integer">
+		SELECT
+			COUNT(*)
+		FROM
+			patient_register_service prs
+		WHERE
+			DATE_FORMAT(prs.create_date, '%Y-%m-%d')=DATE_FORMAT(NOW(), '%Y-%m-%d')
+		AND prs.phone=#{phone}
+		AND prs.status!="6"
+    </select>
+
+    <!--每月同一个手机号不能超过5个号 -->
+    <select id="getOrderCheckEverymonthForPhone" resultType="java.lang.Integer">
+		SELECT
+			COUNT(*)
+		FROM
+			patient_register_service prs
+		WHERE
+			DATE_FORMAT(prs.create_date, '%Y-%m')=DATE_FORMAT(NOW(), '%Y-%m')
+		AND prs.phone=#{phone}
+		AND prs.status!="6"
+    </select>
+
+    <!--每天同一个手机号，同一个儿童不能预约同一医生的两个号(按就诊时间) -->
+    <select id="getOrderCheckEverydayForDoctor" resultType="java.util.HashMap">
+		SELECT
+			*
+		FROM
+		(
+			SELECT
+				srs.sys_doctor_id
+			FROM
+				patient_register_service prs
+			INNER JOIN sys_register_service srs ON srs.id = prs.sys_register_service_id
+			WHERE
+				DATE_FORMAT(srs.date, '%Y-%m-%d') = DATE_FORMAT((SELECT
+				srs.date
+				FROM
+					sys_register_service srs where srs.id=#{reid}), '%Y-%m-%d')
+			AND prs.phone =#{phone}
+			AND prs.babyName=#{babyname}
+			AND prs.status!="6"
+			UNION ALL
+				SELECT
+					srs.sys_doctor_id
+				FROM
+					sys_register_service srs
+				WHERE
+					srs.id =#{reid}
+		) a
+   	</select>
+
+    <select id="getDoctorName" resultType="java.lang.String">
+		SELECT sd.`name` FROM sys_doctor sd where sd.id=#{doctorid}
+   	</select>
+
+    <!--每天同一个手机号，同一个儿童不能预约同时间段的两个号。（就诊时间，间隔1小时） -->
+    <select id="getOrderCheckEverydaySpaceOneHoursOfRegisterID" resultType="java.util.HashMap">
+		SELECT
+			prs.sys_register_service_id
+		FROM
+			patient_register_service prs
+		WHERE
+			prs.phone =#{phone}
+		AND prs.babyName=#{babyname}
+		AND prs.status!="6"
+	</select>
+
+    <select id="getOrderCheckEverydaySpaceOneHoursOfRegisterTime" resultType="java.util.HashMap">
+		SELECT
+			date_format(date, '%Y-%m-%d') AS redate,
+			date_format(begin_time, '%h:%i:%s') AS retime
+		FROM
+			sys_register_service
+		WHERE
+			id = #{reid}
+	</select>
+
+    <!--订单防控结束 -->
+    <select id="getUnBindUserPhoneOrder" resultMap="patientRegisterServiceVoMap"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        SELECT prs.id,sd.sys_user_id,srs.date,prs.status,srs.begin_time as beginTime,srs.end_time as endTime,
+        prs.register_no as appointmentNo,srs.id register_service_id,srs.sys_doctor_id doctorId,sh.`name` hospitalName
+        FROM patient_register_service prs
+        INNER JOIN sys_register_service srs ON prs.sys_register_service_id=srs.id
+        INNER JOIN sys_hospital sh on sh.id = srs.sys_hospital_id
+        RIGHT JOIN sys_doctor sd ON sd.id=srs.sys_doctor_id
+        WHERE 1=1 and prs.status!="6" and prs.status!="4"
+        <if test="unBindUserPhoneNum!=null">
+            AND prs.phone =#{unBindUserPhoneNum}
+        </if>
+    </select>
+
+    <!--获取个人中的预约信息列表  @author 03_zdl-->
+    <select id="findPersonAppointDetailInfoListByPhone" resultMap="patientRegisterServiceVoMap"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        SELECT prs.id,sd.sys_user_id,srs.date,prs.status,srs.begin_time as beginTime,srs.end_time as endTime,
+        prs.register_no as appointmentNo,srs.id register_service_id,srs.sys_doctor_id doctorId,sh.`name`
+        hospitalName,sd.position2 as position
+        FROM patient_register_service prs
+        INNER JOIN sys_register_service srs ON prs.sys_register_service_id=srs.id
+        INNER JOIN sys_hospital sh on sh.id = srs.sys_hospital_id
+        RIGHT JOIN sys_doctor sd ON sd.id=srs.sys_doctor_id
+        WHERE 1=1 AND prs.status ='0'
+            AND prs.phone =#{phone}
+    </select>
+
+    <!--获取预约患者列表-->
+    <select id="findRegisterPatientList" resultMap="patientRegisterServiceVo"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        SELECT
+        prs.id,
+        prs.sys_register_service_id,
+        prs.babyName,
+        prs.birthday,
+        prs.illness,
+        prs.phone,
+        prs.register_no,
+        prs.create_date,
+        prs.status,
+        prs.member_service_id,
+        prs.delete_by,
+        srs.begin_time,
+        srs.date,
+        sa.nickName,
+        srv.isUser,
+        srv.falseUser_reason,
+        srv.falseUser_reason_remarks,
+        srv.update_date,
+        sd.name,
+		dhr.relation_type
+        FROM
+        patient_register_service prs
+        LEFT JOIN sys_register_service srs ON prs.sys_register_service_id = srs.id
+        LEFT JOIN sys_doctor sd ON srs.sys_doctor_id = sd.id
+        LEFT JOIN sys_return_visit srv ON srv.patient_register_id = prs.id
+        LEFT JOIN sys_patient sp ON prs.sys_patient_id = sp.id
+        LEFT JOIN sys_user su ON sp.sys_user_id = su.id
+        LEFT JOIN sys_attention sa ON su.openid = sa.openid
+        LEFT JOIN doctor_hospital_relation dhr on sd.id=dhr.sys_doctor_id
+        WHERE
+        1 = 1
+        <if test="phone != null and phone != ''">
+            AND prs.phone like CONCAT('%',#{phone},'%')
+        </if>
+        <if test="babyName != null and babyName != ''">
+            AND prs.babyName like CONCAT('%',#{babyName},'%')
+        </if>
+        <if test="doctorName != null and doctorName != ''">
+            AND sd.name like CONCAT('%',#{doctorName},'%')
+        </if>
+        <if test="status != null and status != ''">
+            AND prs.status=#{status}
+        </if>
+        <if test="OrderCreateDateFrom != null and OrderCreateDateFrom != ''">
+            AND DATE_FORMAT(prs.create_date,'%Y-%c-%d') >= DATE_FORMAT(#{OrderCreateDateFrom},'%Y-%c-%d')
+        </if>
+        <if test="OrderCreateDateTo != null and OrderCreateDateTo != ''">
+            AND DATE_FORMAT(#{OrderCreateDateTo},'%Y-%c-%d') >= DATE_FORMAT(prs.create_date,'%Y-%c-%d')
+        </if>
+        <if test="visitDateFrom != null and visitDateFrom != ''">
+            AND srs.date >= #{visitDateFrom}
+        </if>
+        <if test="visitDateTo != null and visitDateTo != ''">
+            AND #{visitDateTo} >= srs.date
+        </if>
+        <if test="warnFlag != null and warnFlag != ''">
+            AND
+            7200>TIMESTAMPDIFF(SECOND,NOW(),DATE_FORMAT(CONCAT(DATE_FORMAT(srs.date,'%Y:%c:%d'),DATE_FORMAT(srs.begin_time,'
+            %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))
+            AND
+            TIMESTAMPDIFF(SECOND,NOW(),DATE_FORMAT(CONCAT(DATE_FORMAT(srs.date,'%Y:%c:%d'),DATE_FORMAT(srs.begin_time,'
+            %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>0
+        </if>
+        <if test="relationType != null and relationType != ''">
+			AND dhr.relation_type=#{relationType}
+		</if>
+        GROUP BY prs.id
+        <if test="order != null and order != ''">
+            <if test="order == 'desc'">
+                order by (DATE_FORMAT(CONCAT(DATE_FORMAT(srs.date,'%Y:%c:%d'),DATE_FORMAT(srs.begin_time,'
+                %k:%i:%s')),'%Y-%m-%d %k:%i:%s')) desc
+            </if>
+            <if test="order == 'CreateDate'">
+                order by prs.create_date desc
+            </if>
+            <if test="order == 'asc'">
+                order by (DATE_FORMAT(CONCAT(DATE_FORMAT(srs.date,'%Y:%c:%d'),DATE_FORMAT(srs.begin_time,'
+                %k:%i:%s')),'%Y-%m-%d %k:%i:%s')) asc
+            </if>
+        </if>
+    </select>
+
+    <select id="findSysRegisterServiceByPRSIdExecute" resultType="java.util.Map">
+       SELECT srs.sys_doctor_id,prs.sys_patient_id,srs.id as sys_register_service_id from sys_register_service srs
+        INNER JOIN patient_register_service prs on prs.sys_register_service_id = srs.id
+        where prs.id=#{id}
+    </select>
+
+    <select id="findOrders" resultType="com.cxqm.xiaoerke.modules.order.entity.PatientRegisterServiceVo">
+        SELECT pr.*, sr.date, sr.begin_time, sdl.hospitalName, sdl.location, sr.location_id FROM
+        patient_register_service pr, sys_register_service sr, sys_doctor_location sdl,sys_hospital shs
+        WHERE pr.sys_register_service_id = sr.id and sr.location_id = sdl.id and pr.status!="6"
+        and sdl.sys_hospital_id = shs.id
+        and shs.hospital_type!='2'
+        <if test="doctorId != null">
+            and sr.sys_doctor_id = #{doctorId}
+        </if>
+        <if test="status != null">
+            and pr.status = #{status}
+        </if>
+        <if test="date != null">
+            and sr.date = #{date}
+        </if>
+        <if test="locationId != null">
+            and sr.location_id = #{locationId}
+        </if>
+        <if test="hospitalId != null">
+            and sr.sys_hospital_id = #{hospitalId}
+        </if>
+        <if test="sysRegisterServiceId != null">
+            and pr.sys_register_service_id = #{sysRegisterServiceId}
+        </if>
+        order by sr.location_id, sr.date, sr.begin_time
+    </select>
+
+    <select id="findDoctorSettlementAppointmentInfoByDate" resultType="java.util.HashMap">
+        SELECT srs.begin_time,srs.end_time,sd.position2 position,prs.babyName,prs.illness, sd.subsidy, prs.allowance FROM sys_register_service srs
+        RIGHT JOIN patient_register_service prs ON srs.id=prs.sys_register_service_id and prs.status!="6" and prs.status!="1" and prs.status!="0"
+        INNER JOIN sys_doctor sd ON sd.id = srs.sys_doctor_id
+        inner join sys_hospital shs on shs.id = srs.sys_hospital_id
+        AND srs.date=#{date}
+        and srs.sys_doctor_id=#{doctorId}
+        and shs.hospital_type!='2'
+        order BY srs.begin_time asc
+    </select>
+
+    <resultMap id="patientMessageVo" type="HashMap">
+        <result column="register_no" property="registerNo" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+        <result column="date" property="date" jdbcType="TIMESTAMP"/>
+        <result column="doctorName" property="doctorName" jdbcType="VARCHAR"/>
+        <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP"/>
+        <result column="end_time" property="endTime" jdbcType="TIMESTAMP"/>
+        <result column="id" property="id" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--根据patientId获取用户的订单号   @author 001_zdl-->
+    <select id="findPersonRegisterNoBypatientId" resultType="com.cxqm.xiaoerke.common.persistence.Page"
+            resultMap="patientMessageVo">
+        SELECT prs.status,prs.id, prs.register_no,prs.create_date,prs.update_date,date_format(srs.date,'%Y/%m/%d') as
+        date ,su.name AS doctorName,date_format(srs.begin_time,'%k:%i') as begin_time ,srs.end_time
+        FROM patient_register_service prs
+        LEFT JOIN sys_register_service srs ON prs.sys_register_service_id=srs.id
+        LEFT JOIN sys_doctor sd ON sd.id=srs.sys_doctor_id
+        LEFT JOIN sys_user su ON su.id=sd.sys_user_id
+        WHERE 1=1
+        <if test="patientId != null">
+            and prs.sys_patient_id=#{patientId}
+        </if>
+        ORDER BY prs.create_date DESC
+    </select>
+
+    <!--获取该医生这一段时间内的所有成功的订单  seachFlag 为0 查询号源，为1 查询订单-->
+    <select id="findAllPatientRegisterService"
+            resultType="com.cxqm.xiaoerke.modules.order.entity.PatientRegisterServiceVo">
+        select prs.id,prs.register_no registerNo,prs.babyName,prs.phone,sud.phone doctorPhone,
+        prs.illness,sd.name doctorName,sh.name hospitalName,dhr.department_level1 departmentLevel1,prs.create_date
+        createDate,srs.date date,
+        sa.nickname,DATE_FORMAT(sa.date,'%Y-%m-%d') falseUserReason,sa.marketer,su.openid openId,
+        case when prs.status ='0' then '待支付' when prs.status ='1' then '待就诊' when prs.status ='2' then '待评价'
+        when prs.status ='3' then '待分享' when prs.status ='4' then '带建档'
+        when prs.status ='6' then '已取消' end status
+        from patient_register_service prs
+        inner JOIN sys_register_service srs on srs.id = prs.sys_register_service_id
+        INNER JOIN sys_doctor sd on sd.id = srs.sys_doctor_id
+        INNER JOIN doctor_hospital_relation dhr on dhr.sys_doctor_id = sd.id
+        INNER JOIN sys_hospital sh on sh.id = srs.sys_hospital_id
+        LEFT JOIN sys_patient sp on sp.id = prs.sys_patient_id
+        left JOIN sys_user su on su.id = sp.sys_user_id
+        LEFT JOIN sys_user sud on sud.id = sd.sys_user_id
+        left JOIN sys_attention sa on su.openid = sa.openid
+        where srs.sys_hospital_id = #{hospitalId}
+        <if test="searchFlag=='jiesuan'">
+            and DATE_FORMAT(srs.date,'%Y-%m-%d') &lt;= #{end_time} and DATE_FORMAT(srs.date,'%Y-%m-%d') >= #{begin_time}
+            and srs.sys_doctor_id=#{doctorId} and prs.status != '6' and prs.status != '1' and prs.status != '0'
+        </if>
+        <if test="searchFlag=='yuyue'">
+            AND DATE_FORMAT(prs.create_date,'%Y-%m-%d') &lt;= #{end_time} and DATE_FORMAT(prs.create_date,'%Y-%m-%d') >=
+            #{begin_time}
+            and srs.sys_doctor_id=#{doctorId}
+        </if>
+        <if test="searchFlag=='jiezhen'">
+            and DATE_FORMAT(srs.date,'%Y-%m-%d') &lt;= #{end_time} and DATE_FORMAT(srs.date,'%Y-%m-%d') >= #{begin_time}
+            and srs.sys_doctor_id=#{doctorId} and prs.status != '6' and prs.status != '0'
+        </if>
+        GROUP BY prs.register_no ORDER by srs.date desc
+    </select>
+
+    <!--获取个人的预约信息详情，对预约的状态进行操作 0_zdl-->
+    <select id="findPersonAppointDetailInfo" parameterType="com.cxqm.xiaoerke.modules.sys.entity.PerAppDetInfoVo"
+            resultType="java.util.Map">
+        SELECT su.name AS doctorName,
+        sd.hospitalName AS hospitalName,
+        case when sh.hospital_type is null then "" else sh.hospital_type end hospitalType,
+        sd.position1,sd.position2,sdl.location,dhr.department_level1,
+        department_level2,DATE_FORMAT(CONCAT(DATE_FORMAT(srs.date,'%Y:%c:%d'),
+        DATE_FORMAT(srs.begin_time,'%H:%i')),'%Y/%m/%d %H:%i') as begin_time ,
+        srs.date,
+        DATE_FORMAT(prs.create_date,'%Y/%m/%d  %k:%i') as orderTime,
+        prs.register_no AS orderNo ,
+        case when prs.status ='0' then '待支付' when prs.status ='1' then '待就诊' when prs.status ='2' then '待评价'
+        when prs.status ='3' then '待分享' when prs.status ='4' then '待建档'
+        when prs.status ='6' then '已取消' end state,
+        prs.register_no AS appointmentNo ,prs.create_date,prs.phone,prs.babyName,prs.status,srs.id,dhr.sys_doctor_id
+        doctorId,sdl.route as root,srs.id sys_regist_id,sh.position,
+        DATE_FORMAT(srs.begin_time, '%H:%i') AS beginTime,DATE_FORMAT(srs.end_time,
+        '%H:%i') AS endTime,sh.id as hospitalId
+        FROM sys_doctor sd
+        LEFT JOIN sys_user su ON su.id=sd.sys_user_id
+        LEFT JOIN doctor_hospital_relation dhr ON dhr.sys_doctor_id=sd.id
+        LEFT JOIN sys_register_service srs ON sd.id=srs.sys_doctor_id
+        INNER JOIN patient_register_service prs ON srs.id=prs.sys_register_service_id
+        INNER JOIN sys_hospital sh on sh.id = srs.sys_hospital_id
+        inner join sys_doctor_location sdl on sdl.id=srs.location_id
+        <if test="status != null">
+            INNER JOIN account_pay_record apr on apr.order_id = prs.id
+        </if>
+        where 1=1
+        <if test="id != null">
+            and prs.id=#{id}
+        </if>
+        <if test="status != null">
+            and apr.id=#{status}<!--临时替换  deliang-->
+        </if>
+        group by prs.id
+    </select>
+
+    <!--获取个人中的预约信息列表  @author 03_zdl-->
+    <select id="findPersonAppointDetailInfoList" resultMap="patientRegisterServiceVoMap"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        SELECT prs.id,sd.sys_user_id,srs.date,prs.status,prs.babyName,
+        prs.create_date,
+        prs.phone,srs.begin_time as beginTime,srs.end_time as endTime,
+        prs.register_no as appointmentNo,srs.id register_service_id,srs.sys_doctor_id doctorId,sh.`name`
+        hospitalName,sd.position2 as position
+        FROM patient_register_service prs
+        INNER JOIN sys_register_service srs ON prs.sys_register_service_id=srs.id
+        INNER JOIN sys_hospital sh on sh.id = srs.sys_hospital_id
+        RIGHT JOIN sys_doctor sd ON sd.id=srs.sys_doctor_id
+        WHERE 1=1
+        <if test="status!=null">
+            AND prs.status =#{status}
+        </if>
+        <if test="patientId!=null">
+            AND prs.sys_patient_id =#{patientId}
+        </if>
+    </select>
+
+    <select id="getValidReserveList" resultType="java.util.HashMap">
+        SELECT
+        COUNT(id) AS id
+        FROM
+        sys_log
+        WHERE
+        title = '进入预约医生主页'
+        AND open_id = #{open_id}
+        UNION ALL
+        SELECT
+        count(*) AS id
+        FROM
+        patient_register_service pr
+        INNER JOIN sys_patient sp ON pr.sys_patient_id = sp.id
+        INNER JOIN sys_user su ON su.id = sp.sys_user_id
+        WHERE
+        su.openid = #{open_id}
+        AND pr.create_date BETWEEN #{startDate} and  #{endDate}
+        AND pr.`status` != 6
+        UNION ALL
+        SELECT
+        count(*) AS id
+        FROM
+        patient_register_service pr
+        INNER JOIN sys_patient sp ON pr.sys_patient_id = sp.id
+        INNER JOIN sys_user su ON su.id = sp.sys_user_id
+        WHERE
+        su.openid = #{open_id}
+        AND pr.create_date BETWEEN #{startDate} and #{endDate}
+        UNION ALL
+        SELECT
+        count(DISTINCT title) AS id
+        FROM
+        sys_log
+        WHERE
+        open_id = #{open_id}
+    </select>
+
+    <select id="getNeedPayStatusByRegisterServiceId" resultType="java.util.HashMap">
+        select anp.* from
+        sys_register_service srs,
+        appointment_need_pay anp
+        WHERE
+        srs.sys_hospital_id = anp.sys_hospital_id
+        and
+        srs.id=#{register_service_id}
+    </select>
+
+    <select id="checkCattleOrder" resultType="Integer">
+        SELECT count(DISTINCT(pr.babyName)) num FROM patient_register_service pr
+        INNER JOIN sys_patient sp ON pr.sys_patient_id = sp.id
+        INNER JOIN sys_user su ON su.id = sp.sys_user_id
+        WHERE su.openid = #{openid}
+        AND (DATE_ADD((DATE_FORMAT(pr.create_date,'%Y-%m-%d %k:%i:%s')), INTERVAL 3 MONTH))> NOW()
+    </select>
+    <select id="getPatientRegisterList" resultMap="patientRegisterServiceVo">
+        SELECT
+        sa.nickName,
+        sa.marketer,
+        sa.openid,
+        sd. NAME doctorName,
+        sdl.hospitalName,
+        dhr.department_level1,
+        dhr.relation_type,
+        srs.service_type,
+        srs.begin_time,
+        srs.date,
+        prs.babyName,
+        prs.phone,
+        prs.create_date,
+        prs.illness,
+        prs.id,
+        prs.sys_register_service_id,
+        prs.birthday,
+        prs.register_no,
+        prs. STATUS,
+        srv.overall_satisfy,
+        srv.user_feedback,
+        srv.user_feedback_remarks,
+        srv.isUser,
+        srv.cancel_reason,
+        srv.remarks,
+        srv.falseUser_reason,
+        srv.falseUser_reason_remarks,
+        srv.update_date,
+        srv.wait_time,
+        prp.praise
+        FROM
+        patient_register_service prs
+        LEFT JOIN sys_register_service srs ON prs.sys_register_service_id = srs.id
+        LEFT JOIN patient_register_praise prp ON prp.patient_register_service_id = prs.id
+        LEFT JOIN sys_doctor sd ON sd.id = srs.sys_doctor_id
+        LEFT JOIN doctor_hospital_relation dhr ON dhr.sys_doctor_id = sd.id
+        LEFT JOIN sys_return_visit srv ON srv.patient_register_id = prs.id
+        LEFT JOIN sys_patient sp ON prs.sys_patient_id = sp.id
+        LEFT JOIN sys_user su ON sp.sys_user_id = su.id
+        LEFT JOIN sys_attention sa ON su.openid = sa.openid
+        LEFT JOIN sys_doctor_location sdl on sdl.id = srs.location_id
+        WHERE 1 = 1
+        <if test="status != null and status != ''">
+            AND prs.status=#{status}
+        </if>
+        <if test="OrderCreateDateFrom != null and OrderCreateDateFrom != ''">
+            AND DATE_FORMAT(prs.create_date,'%Y-%m-%d') >= DATE_FORMAT(#{OrderCreateDateFrom},'%Y-%m-%d')
+        </if>
+        <if test="OrderCreateDateTo != null and OrderCreateDateTo != ''">
+            AND DATE_FORMAT(#{OrderCreateDateTo},'%Y-%m-%d') >= DATE_FORMAT(prs.create_date,'%Y-%m-%d')
+        </if>
+        <if test="visitDateFrom != null and visitDateFrom != ''">
+            AND srs.date >= #{visitDateFrom}
+        </if>
+        <if test="visitDateTo != null and visitDateTo != ''">
+            AND #{visitDateTo} >= srs.date
+        </if>
+        <if test="relationType != null and relationType != ''">
+			AND dhr.relation_type=#{relationType}
+		</if>
+        GROUP BY prs.id
+    </select>
+
+    <select id="getOrderInfoByPatientRegistId" resultType="java.util.HashMap">
+        select sd.name as doctorName, prs.babyName from patient_register_service prs
+        left join sys_register_service srs on prs.sys_register_service_id = srs.id
+        left join sys_doctor sd on sd.id = srs.sys_doctor_id
+        where prs.id = #{id}
+    </select>
+
+    <select id="getHealthRecordsAppointmentInfo" resultType="java.util.HashMap">
+         select prs.id, sdc.doctor_case_name,prs.illness ,prs.create_date , sd.`name` doctorName ,
+          sh.`name` hospitalName,srs.date,srs.begin_time,
+          DATE_FORMAT(CONCAT(DATE_FORMAT(srs.date,'%Y:%c:%d'),DATE_FORMAT(srs.begin_time,'
+            %k:%i:%s')),'%Y-%m-%d %k:%i:%s') beginTime
+        from patient_register_service prs
+        left join sys_register_service srs on prs.sys_register_service_id = srs.id
+        left join sys_doctor sd on srs.sys_doctor_id = sd.id
+        left join sys_hospital sh on sh.id = srs.sys_hospital_id
+		left join sys_doctor_case sdc on sdc.patient_register_service_id = prs.id
+		left join sys_baby_baseInfo sbi on prs.babyinfo_id = sbi.id
+         where sbi.id =#{babyId} and prs.`status` not in ('0','1','6');
+    </select>
+
+    <select id="getlastPatientRegisterInfo" resultType="java.util.HashMap">
+      select sbi.* from patient_register_service prs
+      left join sys_baby_baseInfo sbi on prs.babyinfo_id = sbi.id
+      where prs.phone =#{userPhone}
+      order by prs.create_date desc limit 1
+    </select>
+
+    <select id="getAppointOrderList" resultType="java.util.Map" >
+        SELECT
+        sd.id as doctorId,
+        sd.name,
+        sd.position2,
+        sd.hospitalName,
+        prs.id as orderId,
+        case when prs.status ='0' then '待支付' when prs.status ='1' then '待就诊' when prs.status ='2' then '待评价'
+        when prs.status ='3' then '待分享' when prs.status ='4' then '待建档'
+        when prs.status ='6' then '已取消' end status,
+        prs.create_date as create_time,
+        prs.register_no,
+        prs.illness as illness_describe_id,
+        DATE_FORMAT(srp.date, '%Y-%m-%d') as date,
+        srp.create_date as createDate,
+        DATE_FORMAT(srp.begin_time,'%H:%i') as beginTime,
+        DATE_FORMAT(srp.end_time,'%H:%i') as endTime
+        FROM
+        patient_register_service prs
+        LEFT JOIN sys_patient sp ON prs.sys_patient_id = sp.id
+        LEFT JOIN sys_register_service srp ON srp.id = prs.sys_register_service_id
+        LEFT JOIN sys_doctor sd ON sd.id = srp.sys_doctor_id
+        WHERE
+	      sp.sys_user_id = #{userId,jdbcType=VARCHAR}
+
+    </select>
+
+</mapper>
+

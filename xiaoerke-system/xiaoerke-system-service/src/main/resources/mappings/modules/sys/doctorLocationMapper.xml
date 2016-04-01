@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.sys.dao.DoctorLocationDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.sys.entity.DoctorLocationRef" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="sys_doctor_id" property="sysDoctorId" jdbcType="VARCHAR" />
+    <result column="doctorName" property="doctorname" jdbcType="VARCHAR" />
+    <result column="sys_hospital_id" property="sysHospitalId" jdbcType="VARCHAR" />
+    <result column="hospitalName" property="hospitalname" jdbcType="VARCHAR" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
+    <result column="shot_visit_time" property="shotVisitTime" jdbcType="VARCHAR" />
+    <result column="waitTime" property="waittime" jdbcType="VARCHAR" />
+    <result column="route" property="route" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="REAL" />
+  </resultMap>
+  
+  <resultMap id="doctorLocationVo" type="com.cxqm.xiaoerke.modules.sys.entity.DoctorLocationVo">
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="sys_doctor_id" property="sysDoctorId" jdbcType="VARCHAR" />
+        <result column="doctorName" property="doctorName" jdbcType="VARCHAR" />
+        <result column="sys_hospital_id" property="sysHospitalId" jdbcType="VARCHAR" />
+        <result column="hospitalName" property="hospitalName" jdbcType="VARCHAR" />
+        <result column="location" property="location" jdbcType="VARCHAR" />
+        <result column="hospital" property="hospital" jdbcType="VARCHAR" />
+        <result column="kindly_reminder" property="kindlyReminder" jdbcType="VARCHAR" />
+
+    </resultMap>
+    
+  <sql id="Base_Column_List" >
+    id, sys_doctor_id, doctorName, sys_hospital_id, hospitalName, location, shot_visit_time, 
+    waitTime, route, price
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_doctor_location
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_doctor_location
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.sys.entity.DoctorLocationRef" >
+    insert into sys_doctor_location (id, sys_doctor_id, doctorName, 
+      sys_hospital_id, hospitalName, location, 
+      shot_visit_time, waitTime, route, 
+      price)
+    values (#{id,jdbcType=VARCHAR}, #{sysDoctorId,jdbcType=VARCHAR}, #{doctorname,jdbcType=VARCHAR}, 
+      #{sysHospitalId,jdbcType=VARCHAR}, #{hospitalname,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, 
+      #{shotVisitTime,jdbcType=VARCHAR}, #{waittime,jdbcType=VARCHAR}, #{route,jdbcType=VARCHAR}, 
+      #{price,jdbcType=REAL})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.sys.entity.DoctorLocationRef" >
+    insert into sys_doctor_location
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sysDoctorId != null" >
+        sys_doctor_id,
+      </if>
+      <if test="doctorname != null" >
+        doctorName,
+      </if>
+      <if test="sysHospitalId != null" >
+        sys_hospital_id,
+      </if>
+      <if test="hospitalname != null" >
+        hospitalName,
+      </if>
+      <if test="location != null" >
+        location,
+      </if>
+      <if test="shotVisitTime != null" >
+        shot_visit_time,
+      </if>
+      <if test="waittime != null" >
+        waitTime,
+      </if>
+      <if test="route != null" >
+        route,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="sysDoctorId != null" >
+        #{sysDoctorId,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorname != null" >
+        #{doctorname,jdbcType=VARCHAR},
+      </if>
+      <if test="sysHospitalId != null" >
+        #{sysHospitalId,jdbcType=VARCHAR},
+      </if>
+      <if test="hospitalname != null" >
+        #{hospitalname,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="shotVisitTime != null" >
+        #{shotVisitTime,jdbcType=VARCHAR},
+      </if>
+      <if test="waittime != null" >
+        #{waittime,jdbcType=VARCHAR},
+      </if>
+      <if test="route != null" >
+        #{route,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=REAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.sys.entity.DoctorLocationRef" >
+    update sys_doctor_location
+    <set >
+      <if test="sysDoctorId != null" >
+        sys_doctor_id = #{sysDoctorId,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorname != null" >
+        doctorName = #{doctorname,jdbcType=VARCHAR},
+      </if>
+      <if test="sysHospitalId != null" >
+        sys_hospital_id = #{sysHospitalId,jdbcType=VARCHAR},
+      </if>
+      <if test="hospitalname != null" >
+        hospitalName = #{hospitalname,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null" >
+        location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="shotVisitTime != null" >
+        shot_visit_time = #{shotVisitTime,jdbcType=VARCHAR},
+      </if>
+      <if test="waittime != null" >
+        waitTime = #{waittime,jdbcType=VARCHAR},
+      </if>
+      <if test="route != null" >
+        route = #{route,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=REAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.sys.entity.DoctorLocationRef" >
+    update sys_doctor_location
+    set sys_doctor_id = #{sysDoctorId,jdbcType=VARCHAR},
+      doctorName = #{doctorname,jdbcType=VARCHAR},
+      sys_hospital_id = #{sysHospitalId,jdbcType=VARCHAR},
+      hospitalName = #{hospitalname,jdbcType=VARCHAR},
+      location = #{location,jdbcType=VARCHAR},
+      shot_visit_time = #{shotVisitTime,jdbcType=VARCHAR},
+      waitTime = #{waittime,jdbcType=VARCHAR},
+      route = #{route,jdbcType=VARCHAR},
+      price = #{price,jdbcType=REAL}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!--往sys_doctor_Location表里插入增加数据-->
+    <insert id="insertSysDoctorLocation">
+       INSERT into  sys_doctor_location(id,sys_doctor_id,doctorName,sys_hospital_id,hospitalName,location)
+        VALUES(#{location_id},#{sys_doctor_id},#{doctorName},#{sys_hospital_id},#{hospitalName},#{location});
+    </insert>
+
+    <!--查询当前地址在sys_doctor_location表中是否存在-->
+    <select id="findDoctorExistLocation"  resultType="java.util.HashMap">
+        SELECT id AS sysDoctorLocationId FROM sys_doctor_location sdl
+        WHERE  sdl.location=#{location} and sys_doctor_id=#{sys_doctor_id} and sys_hospital_id=#{sys_hospital_id};
+    </select>
+    
+    <!--获取医生的就诊地址信息-->
+    <select id="findDoctorLocationByDoctorId"  resultType="java.util.HashMap">
+        SELECT sdl.*,sh.position FROM
+        sys_doctor_location sdl
+        LEFT JOIN
+        sys_hospital sh
+        ON sdl.sys_hospital_id=sh.id
+        WHERE sys_doctor_id=#{sysDoctorId} GROUP BY sdl.location
+    </select>
+    
+        <!--更新平均等待时间-->
+    <update id="updateWaiteTime">
+       update sys_doctor_location set shot_visit_time=#{visit_endTime} ,waitTime=#{waitTime} where id=#{location_id}
+    </update>
+    
+    <select id="getDoctorLocationInfo" resultMap="doctorLocationVo">
+        SELECT sdl.id,sdl.sys_doctor_id,sdl.sys_hospital_id,sdl.hospitalName,
+        sdl.location,sdl.shot_visit_time,
+        sdl.waitTime,sdl.route,sdl.price,sd.hospitalName hospital,su.name doctorName,sdl.kindly_reminder
+        from sys_doctor_location sdl
+        left join sys_doctor sd on sdl.sys_doctor_id=sd.id
+        LEFT JOIN sys_user su on su.id=sd.sys_user_id
+        where 1=1
+        <if test="doctorId != null">
+           and sdl.sys_doctor_id=#{doctorId}
+        </if>
+        <if test="hospitalId != null">
+           and sdl.sys_hospital_id=#{hospitalId}
+        </if>
+    </select>
+    
+    <insert id="insertDoctorLocation">
+        INSERT INTO sys_doctor_location(id,sys_doctor_id,doctorName,sys_hospital_id,hospitalName,location,route,price,kindly_reminder)
+        VALUES (#{id},#{sysDoctorId},#{doctorName},#{sysHospitalId},#{hospitalName},#{location},#{route},#{price},#{kindlyReminder});
+    </insert>
+
+    <delete id="deleteDoctorLocation">
+        delete from sys_doctor_location
+        where 1=1
+        <if test="sysDoctorId != null">
+           and sys_doctor_id=#{sysDoctorId}
+        </if>
+        <if test="id != null">
+           and id=#{id}
+        </if>
+        <if test="sysHospitalId != null">
+           and sys_hospital_id=#{sysHospitalId}
+        </if>
+        <if test="location != null">
+           and location=#{location}
+        </if>
+    </delete>
+    
+    <update id="updateDoctorLocation">
+       update sys_doctor_location set route=#{route} ,location=#{location},price=#{price},kindly_reminder=#{kindlyReminder} where id=#{id}
+    </update>
+
+  <!--根据用户的订单主键获取用户的就诊地址-->
+  <select id="findPatientLocationId" resultType="java.util.Map">
+    SELECT srs.location_id from patient_register_service prs
+    inner join sys_register_service srs on srs.id = prs.sys_register_service_id
+    inner JOIN sys_doctor_location sdl on sdl.id = srs.location_id
+    where prs.id = #{patientRegisterServiceId}
+  </select>
+    
+</mapper>

@@ -1,0 +1,137 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫" ng-init="doRefresh()">
+    <div class="c-shadow" ng-click="cancel()" ng-if="videoLock"></div>
+    <div class="top-video" ng-if="videoLock">
+        <video width="100%" height="auto" id="videoId" controls  poster="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fvideo1.png"
+               preload="none">
+            <source src="http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/plan%2Fvideo%2FdefecateVideo.mp4" type="video/mp4">
+        </video>
+    </div>
+   <!--打卡记录-->
+    <div class="title-card">
+        <div class="card-num" style="margin-right:25px;">
+            <p>
+                连续打卡 {{continue}}
+            </p>
+
+        </div>
+        <div class="card-time">
+            <img ng-src="{{heartImg}}" width="61.5" height="58"><br>
+            {{momtime}}
+        </div>
+        <div class="card-num" style="margin-left:25px;">
+            <p>
+                打卡总计 {{total}}
+            </p>
+        </div>
+        <div class="mother-num">
+            92位妈妈正在坚持
+        </div>
+    </div>
+    <ion-content class="constipationDefecate" style="top:150px;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="task-deal box-s1">
+                <dl>
+                    <dd>
+                        <span class="task-name">音乐助力</span>
+                        <p class="text">
+                            鲜明的音乐节奏和动听的曲调会让宝宝心情舒畅，宝宝在放松的环境下会让便便更顺利。
+                        </p>
+                        <ion-slide-box active-slide="myActiveSlide" on-slide-changed="slideHasChanged($index)">
+                            <ion-slide >
+                                <div class="music"  ng-click="playMusic(0)">
+                                    <img class="music_mark"  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmusic.png" width="10" height="13">
+                                    <span>  小星星变奏曲 - 胎教音乐</span>
+                                    <audio src="http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/plan%2Fmusic%2F7.mp3"   preload="none"></audio>
+                                    <img class="play"  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmusic_on.png" width="22" height="22">
+                                </div>
+                                <div class="music"  ng-click="playMusic(1)">
+                                    <img class="music_mark"  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmusic.png" width="10" height="13">
+                                    <span>  月光水岸 - Bandari</span>
+                                    <audio src="http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/plan%2Fmusic%2F8.mp3"   preload="none"></audio>
+                                    <img class="play"  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmusic_on.png" width="22" height="22">
+                                </div>
+                            </ion-slide>
+                            <ion-slide >
+                                <div class="music"  ng-click="playMusic(2)">
+                                    <img class="music_mark"  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmusic.png" width="10" height="13">
+                                    <span>  梦中的婚礼 - 贵族乐团</span>
+                                    <audio src="http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/plan%2Fmusic%2F3.mp3"   preload="none"></audio>
+                                    <img class="play"  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmusic_on.png" width="22" height="22">
+                                </div>
+                                <div class="music"  ng-click="playMusic(3)">
+                                    <img class="music_mark"  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmusic.png" width="10" height="13">
+                                    <span>  亲亲小宝贝 - 胎教曲 - 轻音乐</span>
+                                    <audio src="http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/plan%2Fmusic%2F4.mp3"   preload="none"></audio>
+                                    <img class="play"  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmusic_on.png" width="22" height="22">
+                                </div>
+                            </ion-slide>
+                            <ion-slide >
+                                <div class="music"  ng-click="playMusic(4)">
+                                    <img class="music_mark"  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmusic.png" width="10" height="13">
+                                    <span> 天鹅 - 胎教音乐</span>
+                                    <audio src="http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/plan%2Fmusic%2F5.mp3"   preload="none"></audio>
+                                    <img class="play"  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmusic_on.png" width="22" height="22">
+                                </div>
+                                <div class="music"  ng-click="playMusic(5)">
+                                    <img class="music_mark"  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmusic.png" width="10" height="13">
+                                    <span>  天使小夜曲 - 胎教音乐</span>
+                                    <audio src="http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/plan%2Fmusic%2F6.mp3"   preload="none"></audio>
+                                    <img class="play"  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmusic_on.png" width="22" height="22">
+                                </div>
+                            </ion-slide>
+                            <ion-slide >
+                                <div class="music"  ng-click="playMusic(6)">
+                                    <img class="music_mark"  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmusic.png" width="10" height="13">
+                                    <span> Bandari - 安妮的仙境</span>
+                                    <audio src="http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/plan%2Fmusic%2F1.mp3"   preload="none"></audio>
+                                    <img class="play"  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmusic_on.png" width="22" height="22">
+                                </div>
+                                <div class="music"  ng-click="playMusic(7)">
+                                    <img class="music_mark"  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmusic.png" width="10" height="13">
+                                    <span>  贝多芬 致爱丽丝 (八音盒钢琴 The Best Classic) - 优雅的胎教</span>
+                                    <audio src="http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/plan%2Fmusic%2F2.mp3"   preload="none"></audio>
+                                    <img class="play"  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmusic_on.png" width="22" height="22">
+                                </div>
+                            </ion-slide>
+                        </ion-slide-box>
+                    </dd>
+                    <dd>
+                        <span class="task-name">视频助力</span>
+                        <p class="text">
+                            宝宝具有极大的模仿能力，让宝宝看到小哥哥小姐姐如何坐便盆完成排便过程，会更快的学会并乐意接受。
+                        </p>
+                        <div class="myVideo" ng-click="playVideo()">
+                            <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fvideo.png" width="100%" height="auto">
+                        </div>
+
+                    </dd>
+                </dl>
+            </div>
+            <div class="comment-wrap">
+                <dl>
+                    <dt class="comment-head" ui-sref="constipationComment">
+                        妈妈心得<span>&nbsp;&nbsp;{{commenttotal}}</span>
+                        <a>
+                            更多<img src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fmore_right_d.png" width="22" height="22">
+                        </a>
+                    </dt>
+                    <dd class="comment-list item-avatar item-borderless" ng-repeat="item in commentList |orderBy:'createDate':true">
+                        <img ng-src={{item.picUrl}}>
+                        <span>{{ item.createDate | limitTo : 10}}</span>
+                        <h2 ng-if="item.nickName==''||item.nickName==null">宝粉</h2>
+                        <h2 ng-if="item.nickName!=''">{{item.nickName}}</h2>
+                        <p>{{item.appraisalContent}}</p>
+                    </dd>
+                </dl>
+            </div>
+        </ion-scroll>
+    </ion-content>
+    <div class="check-card" ng-click="checkCard()" ng-if="checkCardLock">
+        <a >
+            点我打卡
+            <img  ng-src="{{checkCardImg}}"  width="55" height="75.5">
+        </a>
+
+    </div>
+</ion-view>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.sys.dao.CustomerReturnDao" >
+
+	<insert id="saveCustomerReturn"   parameterType="com.cxqm.xiaoerke.modules.sys.entity.CustomerReturn" >
+		INSERT INTO `sys_customer_return` (
+			`customer`,
+			`openID`,
+			`create_date`
+		)
+		VALUES
+			(
+				#{customer},
+				#{openID},
+				now()
+			)
+	</insert>
+
+	<select id="getCustomerReturn" resultType="java.util.Map" parameterType="java.lang.String">
+	 	SELECT
+			*
+		FROM
+			sys_customer_return
+		WHERE
+			DATE_FORMAT(create_date, '%Y-%m-%d %T') &gt;= DATE_ADD(
+				DATE_FORMAT(
+					#{startDate},
+					'%Y-%m-%d %T'
+				),
+				INTERVAL - 1 DAY
+			)
+		AND DATE_FORMAT(create_date, '%Y-%m-%d %T') &lt;= DATE_ADD(
+			DATE_FORMAT(
+				#{endDate},
+				'%Y-%m-%d %T'
+			),
+			INTERVAL - 1 DAY
+		)
+	</select>
+
+	
+</mapper>

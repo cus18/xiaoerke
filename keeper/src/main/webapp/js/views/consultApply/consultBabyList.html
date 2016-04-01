@@ -1,0 +1,30 @@
+<ion-view view-title={{title0}} ng-init="doRefresh()" >
+	<ion-content class="consultBabyList"  style="top:0;" >
+		<ion-scroll direction="y" has-bouncing="true">
+			<div class="baby-list">
+				<ul>
+					<li ng-repeat="item in babyInfoList"><!--ng-repeat="item in [1,2,3]"-->
+						<img class="bg" width="35" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultApply%2Fconsult_babyList_bg.png">
+						<div class="info">
+							<span class="key">姓名：</span>
+							<span class="value">{{item.name}}</span>
+						</div>
+						<div class="info">
+							<span class="key">性别：</span>
+							<span class="value">{{item.sex=='1'?'男':'女'}}</span>
+						</div>
+						<div class="info">
+							<span class="key">出生日期：</span>
+							<span class="value">{{item.birthday | date: 'yyyy-MM-dd '}}</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="remind-text">您已成功开启宝宝健康档案，点击开始咨询吧！</div>
+			<button class="button foot-btn" ng-click="startConsult()">开始咨询</button>
+			<br><br><br><br>
+
+		</ion-scroll>
+	</ion-content>
+</ion-view>
+

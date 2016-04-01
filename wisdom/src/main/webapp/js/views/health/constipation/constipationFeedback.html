@@ -1,0 +1,17 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫" ng-init="doRefresh()">
+    <ion-content class="constipationFeedback" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="warn">
+               制定计划3天了，宝宝有好转吗
+            </div>
+            <div class="select-case">
+                <ul>
+                    <li class="item" ng-repeat="item in feedback" ng-click="feedbackSelect($index)" >
+                        {{item.text}}
+                    </li>
+                </ul>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

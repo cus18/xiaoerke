@@ -1,0 +1,46 @@
+<ion-view view-title={{title0}}>
+    <ion-spinner ng-show="dataLoading" class="loadPic"></ion-spinner>
+    <div bdf-head="title"></div>
+    <ion-content class="memberServiceDetail" style="top:44px;">
+        <ion-scroll direction="y" has-bouncing="true" >
+                <div class="myTop">
+                    <!--  周会员、月会员、季会员分不同情况显示-->
+                    <div ng-if="memberVo.period=='7'">周会员 ￥50 / 周</div>
+                    <div ng-if="memberVo.period=='31'">月会员 ￥118 / 月</div>
+                    <div ng-if="memberVo.period=='93'">季会员 ￥168/ 季</div>
+                    <p>（包括以下服务及平台技术服务费）</p>
+                    <p>{{startDate}}—{{endDate}}</p>
+                    <span class="cir"></span>
+                </div>
+            <dl style="margin-bottom: 20px">
+                <dt>资深儿科医生 随时线上咨询 为健康保驾护航</dt>
+                <dd><span class="cir"></span>我们的平台医生7x18小时在线，及时答复健康咨询</dd>
+                <dd><span class="cir"></span>服务专员按需为宝宝转诊</dd>
+                <dd><span class="cir"></span>平台医生跟踪院外病况，指导合理用药</dd>
+                <dt>专属个人档案 专家健康指导 让宝宝健康成长</dt>
+                <dd><span class="cir"></span>我们为宝宝建立专属健康档案</dd>
+                <dd><span class="cir"></span>提供个性化育儿保健知识和健康指导</dd>
+                <dt>享受特惠医院的特殊优惠</dt>
+                <dd><span class="cir"></span>可无限次预约特惠医院的医生</dd>
+            </dl>
+            <p class="remind" style="color:#88d9dd;">
+                剩余免费预约次数{{memberVo.leftTimes}}次（{{endDate}}前有效）
+            </p>
+            <!--  根据周会员、月会员、季会员分不同情况显示-->
+            <div  class="three-member" ng-if="extendMember=='true'">
+                <p  ng-if="memberVo.period=='7'"><span>赠送：</span>免费预约名医门诊一次（一周内有效）<br>需要到医院支付相应挂号费用</p>
+                <p  ng-if="memberVo.period=='31'"><span>赠送：</span>免费预约名医门诊一次（1个月内有效）<br>需要到医院支付相应挂号费用</p>
+                <p  ng-if="memberVo.period=='93'"><span>赠送：</span>免费预约名医门诊两次（3个月内有效）<br> 需要到医院支付相应挂号费用</p>
+            </div>
+            <p class="remind" style="color:#fe717b">
+                注：非会员也可享受宝大夫健康咨询服务；如遇咨询量较大时，医生会优先回复宝大夫会员，尽请谅解
+            </p>
+           <!-- 立即预约和立即购买分不同情况显示-->
+            <button class="button foot-btn"  ng-click="buttonAction('charge')">
+                立即预约
+            </button>
+
+
+        </ion-scroll>
+    </ion-content>
+</ion-view>

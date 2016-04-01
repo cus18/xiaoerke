@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.account.dao.WithdrawRecordDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.account.entity.WithdrawRecord" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="account_binding_id" property="accountBindingId" jdbcType="VARCHAR" />
+    <result column="money_amount" property="amount" jdbcType="REAL" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="received_date" property="receiveDate" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="user_type" property="userType" jdbcType="VARCHAR" />
+    <result column="login_name" property="loginName" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="openid" property="openId" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, user_id, account_binding_id, money_amount, status, created_date, received_date, 
+    created_by
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from account_withdraw
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from account_withdraw
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.account.entity.WithdrawRecord" >
+    insert into account_withdraw (id, user_id, account_binding_id, 
+      money_amount, status, created_date, 
+      received_date, created_by)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{accountBindingId,jdbcType=VARCHAR}, 
+      #{amount,jdbcType=REAL}, #{status,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP},
+      #{receiveDate,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.account.entity.WithdrawRecord" >
+    insert into account_withdraw
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="accountBindingId != null" >
+        account_binding_id,
+      </if>
+      <if test="amount != null" >
+        money_amount,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createdDate != null" >
+        created_date,
+      </if>
+      <if test="receiveDate != null" >
+        received_date,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="accountBindingId != null" >
+        #{accountBindingId,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=REAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null" >
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receiveDate != null" >
+        #{receiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.account.entity.WithdrawRecord" >
+    update account_withdraw
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="accountBindingId != null" >
+        account_binding_id = #{accountBindingId,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        money_amount = #{amount,jdbcType=REAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null" >
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receiveDate != null" >
+        received_date = #{receiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.account.entity.WithdrawRecord" >
+    update account_withdraw
+    set user_id = #{userId,jdbcType=VARCHAR},
+      account_binding_id = #{accountBindingId,jdbcType=VARCHAR},
+      money_amount = #{amount,jdbcType=REAL},
+      status = #{status,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      received_date = #{receiveDate,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectWithDrawRecordByUserId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    id, user_id, account_binding_id, money_amount, status, created_date, received_date,
+    created_by
+    from account_withdraw
+    where user_id = #{id,jdbcType=VARCHAR} 
+    order by created_date
+  </select>
+
+  <select id="selectPageByUserId" resultMap="BaseResultMap" resultType="com.cxqm.xiaoerke.common.persistence.Page" >
+    select
+    <include refid="Base_Column_List" />
+    from account_withdraw
+    where user_id = #{userId,jdbcType=VARCHAR} 
+    order by created_date asc
+  </select>
+  
+  <select id="selectPage" resultMap="BaseResultMap" resultType="com.cxqm.xiaoerke.common.persistence.Page" >
+    select
+    aw.*, name, user_type, login_name, phone, openid
+    from account_withdraw aw 
+    left JOIN sys_user su on aw.user_id = su.id
+    where 1=1
+    <if test="phone != null and phone != ''">
+        and su.phone like CONCAT('%',#{phone},'%')
+    </if>
+    <if test="priceRange != null and priceRange != ''">
+        <if test="priceRange == '50'">
+        and #{priceRange} > aw.money_amount
+        </if>
+        <if test="priceRange == '50-100'">
+        and (aw.money_amount between 50 and 100)
+        </if>
+        <if test="priceRange == '100'">
+        and aw.money_amount > #{priceRange}
+        </if>
+    </if>
+    <if test="status != null and status != ''">
+        and aw.status = #{status,jdbcType=VARCHAR}
+    </if>
+    <if test="fromCreatedDate != null and fromCreatedDate != ''">
+        and DATE_FORMAT(aw.created_Date,'%Y-%m-%d %k:%i:%s') >= #{fromCreatedDate}
+    </if>
+    <if test="toCreatedDate != null and toCreatedDate != ''">
+        and #{toCreatedDate} >= DATE_FORMAT(aw.created_Date,'%Y-%m-%d')
+    </if>
+    <if test="fromReceivedDate != null and fromReceivedDate != ''">
+        and DATE_FORMAT(aw.received_Date,'%Y-%m-%d %k:%i:%s') >= #{fromReceivedDate}
+    </if>
+    <if test="toReceivedDate != null and toReceivedDate != ''">
+        and #{toReceivedDate} >= DATE_FORMAT(aw.received_Date,'%Y-%m-%d')
+    </if>
+    order by aw.created_date asc
+  </select>
+  
+  <select id="selectDataById" resultMap="BaseResultMap" resultType="com.cxqm.xiaoerke.common.persistence.Page" >
+    select 
+    aw.*, name, user_type, login_name, phone, openid
+    from account_withdraw aw 
+    left JOIN sys_user su on aw.user_id = su.id
+    where aw.id = #{id,jdbcType=VARCHAR} 
+  </select>
+
+  <select id="selectWithDrawRecordInfoByUserId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    id, user_id, account_binding_id, money_amount, status, created_date, received_date,
+    created_by
+    from account_withdraw
+    where user_id = #{id,jdbcType=VARCHAR}
+    order by created_date
+  </select>
+
+  <select id="getWithDrawRecordNumByUserId" resultType="Integer" parameterType="java.lang.String" >
+    select
+    count(id)
+    from account_withdraw
+    where user_id = #{id,jdbcType=VARCHAR}
+    and DATE_FORMAT(created_date,'%Y-%m-%d') = DATE_FORMAT(now(),'%Y-%m-%d') ;
+  </select>
+
+  <select id="checkUserPayRecod" resultType="Integer" parameterType="java.lang.String" >
+    select
+    count(id)
+    from account_pay_record
+    where user_id = #{id,jdbcType=VARCHAR}
+    and DATE_FORMAT(receive_date,'%Y-%m-%d') = DATE_FORMAT(now(),'%Y-%m-%d') ;
+  </select>
+</mapper>

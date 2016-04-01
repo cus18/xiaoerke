@@ -1,0 +1,18 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="估算重量" ng-init="doRefresh()">
+    <ul class="classifyLeft">
+        <li ng-class="{'cur':leftIndex==$index}" ng-repeat="item in classifyListText" ng-click="selectClassify($index)">{{item}}</li>
+    </ul>
+    <ion-content class="nutritionAssessWeight " style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="classify">
+                <ul class="right" ng-if="leftIndex==$index" ng-repeat="item in classifyListPic">
+                    <li ng-repeat="prop in item">
+                        <img class="my-img-block" width="100%" height="auto" ng-src="{{prop.img}}">
+                        <p>{{prop.text}}</p>
+                    </li>
+                </ul>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

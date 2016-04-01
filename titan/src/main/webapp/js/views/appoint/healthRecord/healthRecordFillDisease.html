@@ -1,0 +1,16 @@
+<ion-view view-title={{title0}} ng-init="doRefresh()" >
+	<div bdf-head="title"></div>
+	<ion-content class="healthRecordFillDisease" style="top: 45px;">
+		<ion-scroll direction="y" has-bouncing="true">
+			<div class="fill">
+				<span>病情诊断：</span>
+				<input type="text" id="parise" ng-model="parise" placeholder="">
+
+			</div>
+			<div>
+				<button class="button foot-btn" ng-click="addDoctorCase()">保存</button>
+			</div>
+		</ion-scroll>
+	</ion-content>
+</ion-view>
+

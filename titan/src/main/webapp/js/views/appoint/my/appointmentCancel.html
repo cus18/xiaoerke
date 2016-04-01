@@ -1,0 +1,66 @@
+<ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
+<ion-view view-title={{title0}} ng-init="doRefresh()">
+    <div bdf-head="title"></div>
+    <ion-content class="appointmentCancel">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="item item-borderless" style="text-align: center">
+                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2Fappointment_cancel.png" width="94" height="94">
+            </div>
+            <div class="list" style="border-bottom: 1px solid #ddd;">
+                <div class="item "><b>取消原因</b></div>
+                <label class="item item-radio" ng-click="select(1)">
+                    <input type="radio" name="group" checked="checked">
+                    <div class="item-content">临时有事，无法按时就诊</div>
+                    <i class="radio-icon ion-checkmark "></i>
+                </label>
+                <label class="item item-radio" ng-click="select(2)">
+                    <input type="radio" name="group">
+                    <div class="item-content">预约有误，重新预约</div>
+                    <i class="radio-icon ion-checkmark "></i>
+                </label>
+                <label class="item item-radio" ng-click="select(3)" style="border-bottom: none">
+                    <input type="radio" name="group" >
+                    <div class="item-content">其他原因</div>
+                    <i class="radio-icon ion-checkmark "></i>
+                    <div ng-if="(lock==true)" class="item-content"  style="padding:0;" >
+                        <textarea id="reason"   placeholder="请填写原因" ng-model="info.reason" maxlength="50"  onfocus="skip()">
+                     </textarea>
+                    </div>
+                </label>
+            </div>
+            <!--服务文字提示-->
+            <div class="service1-tip item" ng-if="isPayOrder">
+                <dl  >
+                    <dt>取消会员服务规则：</dt>
+                    <dd>
+                        <ul class="secondUL">
+                            <li >
+                            <span class="fl" >
+                                <a>1</a>  &nbsp;{{endTime}}&nbsp;前
+                            </span>
+                              <span class="fr">
+                               可以取消（预约券退回）
+                            </span>
+                            </li>
+                            <li >
+                            <span class="fl" >
+                                <a>2</a>  &nbsp;{{endTime}}&nbsp;后取消
+                            </span>
+                             <span class="fr ">
+                                 不可取消（预约券不退）
+                            </span>
+                            </li>
+                        </ul>
+                    </dd>
+                </dl>
+                <p class="tips11">
+                    注：为保证其他会员权益，建议您合理安排预约时间和使用会员服务
+                </p>
+            </div>
+            <button class="button foot-btn " ng-click="appointmentCancel()" ng-disabled="(cancelReason==null)&&(info.reason==null)||info.buttonLock">
+                确认取消
+            </button>
+            <div bdf-footer></div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

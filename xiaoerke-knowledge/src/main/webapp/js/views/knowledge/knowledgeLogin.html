@@ -1,0 +1,51 @@
+<link rel="stylesheet" href="styles/knowledge/knowledgeCommon.less?ver='0.9'" type="text/css" />
+<link rel="stylesheet" href="styles/knowledge/knowledgeLogin.less?ver='0.9'" type="text/css" />
+<link href="styles/lib/mobiscroll.custom-2.5.0.min.css" rel="stylesheet" type="text/css" />
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<div class="shadow" ng-if="defaultLock=='true'" ng-click="cancel()"></div>
+<div class="login-default" ng-if="defaultLock=='true'" ng-click="cancel()">
+    <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Flogin_default.png" width="94%" height="auto">
+</div>
+<ion-view view-title="郑玉巧育儿经" ng-init="doRefresh()">
+    <ion-content class="knowledgeLogin" overflow-scroll="true" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <div class="myTitle">
+                宝宝信息卡
+            </div>
+            <div class="my-baby-info">
+                <p>根据您的信息卡，将为您提供更精准的相关内容</p>
+                <div  id="preview" ng-click="chooseImage()">
+                    <img id="imghead"  width="99" height="99">
+                </div>
+                <div id="uploadImg" >
+                    <a >点击上传宝宝照片</a>
+                </div>
+               <div class="enter-info">
+                   <input type="text" placeholder="宝宝昵称（6-20个合法字符）" maxlength="6" ng-model="info.name">
+                   <input id="birthday" type="text" readonly="readonly" placeholder="宝宝生日" >
+               </div>
+               <div class="sex">
+                    <label class="item item-radio item-borderless" ng-click="chooseSex('man')">
+                        <input type="radio" name="sex" value="f" checked="checked" >
+                        <div class="item-content">
+                            <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Flogin_boy.png" width="38" height="35"><br>
+                            <span class="cir" ng-show="babysex=='1'"></span>
+                        </div>
+                    </label>
+                    <label class="item item-radio item-borderless" ng-click="chooseSex('women')">
+                        <input type="radio" name="sex" value="m"  >
+                        <div class="item-content">
+                            <img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Flogin_girl.png" width="48" height="35"><br>
+                            <span class="cir" ng-show="babysex=='0'"></span>
+                        </div>
+                    </label>
+                </div>
+                <div class="submit">
+                    <buttonl class="button foot-btn" ng-click="save()" ng-disabled="result=='true'">
+                        提交
+                    </buttonl>
+                </div>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

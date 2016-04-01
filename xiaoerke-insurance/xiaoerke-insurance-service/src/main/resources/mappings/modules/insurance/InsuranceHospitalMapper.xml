@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.insurance.dao.InsuranceHospitalDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.insurance.entity.InsuranceHospitalVo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="hospital_name" property="hospitalName" jdbcType="VARCHAR" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
+ 	<result column="district" property="district" jdbcType="VARCHAR" />
+ 	<result column="phone" property="phone" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <insert id="saveInsuranceHospital" parameterType="com.cxqm.xiaoerke.modules.insurance.entity.InsuranceHospitalVo" useGeneratedKeys="true" keyProperty="id">
+		    INSERT INTO insurance_hospital_list (
+			hospital_name,
+			location,
+			district,
+			phone
+		)
+		VALUES
+			(
+				#{hospitalName,jdbcType=VARCHAR},
+				#{location,jdbcType=VARCHAR},
+				#{district,jdbcType=VARCHAR},
+				#{phone,jdbcType=VARCHAR}
+			)
+    </insert>
+
+  <select id="getInsuranceHospitalListByInfo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.insurance.entity.InsuranceHospitalVo" >
+    SELECT * from insurance_hospital_list ihl
+    where 1=1
+    <if test="district != null and district != ''">
+       and ihl.district=#{district}
+    </if>
+  </select>
+  
+  <select id="findInsuranceHospitalListByInfo" resultType="com.cxqm.xiaoerke.modules.insurance.entity.InsuranceHospitalVo" >
+    SELECT * from insurance_hospital_list ihl
+    where 1=1
+    <if test="district != null and district != ''">
+       and ihl.district=#{district}
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,40 @@
+<ion-view view-title={{title}} >
+	<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+	<div bdf-head="title"></div>
+	<div class="order-classify f4 c4 ">
+		<div class="classifyItem classifyItem1 fl border2" ng-class="{'cur':classifyItem=='all'}" ng-click="selectClassify('all')">
+			全部
+			<i></i>
+		</div>
+		<div class="classifyItem classifyItem1 fl border2" ng-class="{'cur':classifyItem=='ap'}" ng-click="selectClassify('ap')">
+			预约挂号
+			<i></i>
+		</div>
+		<div class="classifyItem classifyItem1 fl border2"  ng-class="{'cur':classifyItem=='phone'}" ng-click="selectClassify('phone')">
+			电话咨询
+			<i></i>
+		</div>
+	</div>
+	<ion-content class="currentOrderList" style="top:90px;">
+		<ion-scroll direction="y" has-bouncing="true">
+				<div class="doctor-info apart1 bg1 border1 border2"  ng-repeat="item in orderInfo" ng-click="orderDerail(item)">
+					<div  class="pic">
+						<img class="photo" width="62.5" height="62.5" src="images/a1.png">
+					</div>
+					<div class="intro">
+						<div class="name s"><span>{{item.doctorName}}</span>{{item.position}}</div>
+						<div class="hospital s">{{item.hospital}}</div>
+						<div class="time">{{item.date}}&nbsp;{{item.time}}</div>
+					</div>
+					<img class="classify" ng-if="item.classify=='ap'" width="45" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/order%2Forder_ap.png">
+					<img class="classify" ng-if="item.classify=='phone'" width="45" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/order%2Forder_phone.png">
+					<span class="state f2 c2">{{item.status}}</span>
+				</div>
+			</div>
+
+		</ion-scroll>
+
+	</ion-content>
+
+</ion-view>
+
