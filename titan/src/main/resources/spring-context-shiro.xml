@@ -20,7 +20,7 @@
 				${adminPath}/login = authc
 				${adminPath}/logout = logout
 				${adminPath}/** = user
-				${xiaoerkePath}/account/** = user
+				/account/** = user
 				/act/rest/service/editor/** = perms[act:model:edit]
 				/act/rest/service/model/** = perms[act:model:edit]
 				/act/rest/service/** = user

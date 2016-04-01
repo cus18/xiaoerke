@@ -29,7 +29,7 @@ import java.util.*;
  * @version 2013-10-17
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "sys/illness")
 public class IllnessInfoController extends BaseController {
 
     @Autowired
@@ -58,7 +58,7 @@ public class IllnessInfoController extends BaseController {
      * ]
      * }
      */
-    @RequestMapping(value = "/sys/illness/first", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/first", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> listFirstIllness(@RequestBody Map<String, Object> params) {
@@ -77,7 +77,7 @@ public class IllnessInfoController extends BaseController {
      * ]
      * }
      */
-    @RequestMapping(value = "/sys/illness/second", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/second", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> listSecondIllness(@RequestBody Map<String, Object> params) {
@@ -98,7 +98,7 @@ public class IllnessInfoController extends BaseController {
      * ]
      * }
      */
-    @RequestMapping(value = "/sys/illness/second/hospital", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/second/hospital", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> listSecondIllnessHospital(@RequestBody Map<String, Object> params) {
@@ -122,7 +122,7 @@ public class IllnessInfoController extends BaseController {
      * }
      * //available_time为0表示今日可约，为1代表明日可约，为2，代表2天后可约，依次类推7天以内的即可
      */
-    @RequestMapping(value = "/sys/illness/second/doctor", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/second/doctor", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> listSecondIllnessDoctor(@RequestBody Map<String, Object> params) {

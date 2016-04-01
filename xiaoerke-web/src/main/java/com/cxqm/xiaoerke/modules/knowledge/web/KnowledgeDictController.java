@@ -34,7 +34,7 @@ import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
  * 2015-11-26
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "")
 public class KnowledgeDictController extends BaseController {
 
 	@Autowired

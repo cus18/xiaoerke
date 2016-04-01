@@ -114,7 +114,7 @@ public class LoginController extends BaseController{
 	 *  
 	 *  正常流程：显示授权确认页面，由用户操作是否授权
 	 *  */
-	@RequestMapping(value="${xiaoerkePath}/oauthconfirm")
+	@RequestMapping(value="oauthconfirm")
 	public String oauthconfirm(HttpServletRequest request, HttpServletResponse response){
 		return "modules/sso/ssoConfirm";
 	}
