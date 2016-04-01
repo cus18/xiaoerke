@@ -240,25 +240,26 @@
 		<property name="jobDetail" ref="insuranceUpdateQuarzTask"/>
 		<property name="cronExpression" value="0 */1 * * * ?"/>
 	</bean>
+
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
- 				<!--<ref bean="updateWechatInfoQuarzCronTrigger"/>-->
- 				<!--<ref bean="getWechatRecoderTrigger"/>-->
-				<!--<ref bean="sendMessageForCustomerReturnAMTrigger"/>-->
-				<!--<ref bean="sendMessageForCustomerReturnPMTrigger"/>-->
-				<!--<ref bean="letsGoReminderCronTrigger"/>-->
-				<!--<ref bean="updateSrSerStatusCronTrigger"/>-->
-				<!--<ref bean="repeatSettingRegisterCronTrigger"/>-->
-				<!--<ref bean="statisticsTrigger"/>-->
-				<!--<ref bean="prepareOperationStatisticDataTrigger"/>-->
-				<!--<ref bean="insertStatisticsTitleCronTrigger"/>-->
-				<!--<ref bean="sendMsgToDocAtNightCronTrigger"/>-->
-				<!--<ref bean="sendMsgToDocAtMorningCronTrigger"/>-->
-				<!--<ref bean="everyMorningSendMessageCronTrigger"/>-->
-				<!--<ref bean="everyMinuteSendWechatMessageCronTrigger"/>-->
-				<!--<ref bean="nutritionManagementSendWechatMessageCronTrigger"/>-->
-				<!--<ref bean="insuranceUpdateCronTrigger"/>-->
+ 				<ref bean="updateWechatInfoQuarzCronTrigger"/>
+ 				<ref bean="getWechatRecoderTrigger"/>
+				<ref bean="sendMessageForCustomerReturnAMTrigger"/>
+				<ref bean="sendMessageForCustomerReturnPMTrigger"/>
+				<ref bean="letsGoReminderCronTrigger"/>
+				<ref bean="updateSrSerStatusCronTrigger"/>
+				<ref bean="repeatSettingRegisterCronTrigger"/>
+				<ref bean="statisticsTrigger"/>
+				<ref bean="prepareOperationStatisticDataTrigger"/>
+				<ref bean="insertStatisticsTitleCronTrigger"/>
+				<ref bean="sendMsgToDocAtNightCronTrigger"/>
+				<ref bean="sendMsgToDocAtMorningCronTrigger"/>
+				<ref bean="everyMorningSendMessageCronTrigger"/>
+				<ref bean="everyMinuteSendWechatMessageCronTrigger"/>
+				<ref bean="nutritionManagementSendWechatMessageCronTrigger"/>
+				<ref bean="insuranceUpdateCronTrigger"/>
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>

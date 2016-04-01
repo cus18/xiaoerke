@@ -1060,7 +1060,6 @@
 		<module>xiaoerke-consult</module>
 		<module>xiaoerke-marketing</module>
 		<module>xiaoerke-insurance</module>
-		<module>xiaoerke-insurance-webapp</module>
 		<module>xiaoerke-runTimeTask</module>
 	</modules>
 

@@ -317,7 +317,6 @@
         <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="xiaoerke-insurance-webapp" />
       </profile>
       <profile default="false" name="Annotation profile for xiaoerke-appoint" enabled="true">
         <sourceOutputDir name="target\generated-sources\annotations" />
