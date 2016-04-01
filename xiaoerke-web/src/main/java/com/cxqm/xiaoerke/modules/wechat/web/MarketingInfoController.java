@@ -31,7 +31,7 @@ import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.wechat.service.WeChatInfoService;
 
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "")
 public class MarketingInfoController {
 
 	@Autowired

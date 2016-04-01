@@ -19,7 +19,7 @@ import java.util.Map;
  *
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}/consult")
+@RequestMapping(value = "consult")
 public class ConsultController {
 
 

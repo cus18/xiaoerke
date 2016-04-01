@@ -41,7 +41,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
  * @version 2015-03-14
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "consult")
 public class ConsultDoctorController extends BaseController {
 
     @Autowired
@@ -88,7 +88,7 @@ public class ConsultDoctorController extends BaseController {
      ]
      }
      */
-    @RequestMapping(value = "/consult/rankList", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/rankList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     HashMap<String, Object> findConversationRankList(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
@@ -128,7 +128,7 @@ public class ConsultDoctorController extends BaseController {
          ]
      }
      */
-    @RequestMapping(value = "/consult/doctorList", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/doctorList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     HashMap<String, Object> doctorList(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
@@ -170,7 +170,7 @@ public class ConsultDoctorController extends BaseController {
              "sessionId":"fwefewf"
          }
      */
-    @RequestMapping(value = "/consult/transfer", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/transfer", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> transfer(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
@@ -205,7 +205,7 @@ public class ConsultDoctorController extends BaseController {
          "result":"success",
          }
      */
-    @RequestMapping(value = "/consult/cancelTransfer", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/cancelTransfer", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> cancelTransferringSession(@RequestBody Map<String, Object> params) {
@@ -287,7 +287,7 @@ public class ConsultDoctorController extends BaseController {
      }）
      */
 
-    @RequestMapping(value = "/consult/commonAnswer", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/commonAnswer", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     String commonAnswer(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
@@ -315,7 +315,7 @@ public class ConsultDoctorController extends BaseController {
      "result":"success",
      }
      */
-    @RequestMapping(value = "/consult/myAnswer/modify", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/myAnswer/modify", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> modify(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
@@ -339,7 +339,7 @@ public class ConsultDoctorController extends BaseController {
      "result":"success",
      }
      */
-    @RequestMapping(value = "/consult/myAnswer/delete", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/myAnswer/delete", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     String delete(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
@@ -360,7 +360,7 @@ public class ConsultDoctorController extends BaseController {
       "result":"success",
      }
      */
-    @RequestMapping(value = "/consult/myAnswer/react2Transfer", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/myAnswer/react2Transfer", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     String react2Transfer(@RequestBody Map<String, Object> params) {
@@ -404,7 +404,7 @@ public class ConsultDoctorController extends BaseController {
          }
      */
 
-    @RequestMapping(value = "/consult/recordList", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/recordList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> recordList(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
@@ -443,7 +443,7 @@ public class ConsultDoctorController extends BaseController {
     /***
      * 生成聊天记录
      */
-    @RequestMapping(value = "/consult/produceRecord", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/produceRecord", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     void produceRecord(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
@@ -456,7 +456,7 @@ public class ConsultDoctorController extends BaseController {
     /**
      * 获取客服医生列表
      */
-    @RequestMapping(value = "/consult/getCSDoctorList", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/getCSDoctorList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> getCSDoctorList(Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {

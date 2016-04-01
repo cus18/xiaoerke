@@ -29,17 +29,16 @@ import java.util.Map;
  * @version 2013-10-17
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "interaction")
 public class PraiseCustomerController extends BaseController {
 
     @Autowired
     private PatientRegisterPraiseService patientRegisterPraiseService;
 
-    @RequestMapping(value = "/interaction/user/customerEvaluation", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/user/customerEvaluation", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     String customerEvaluation(@RequestBody Map<String, Object> params, HttpSession session) {
-//        String openId = (String) session.getAttribute("openId");
         String openId = UserUtils.getUser().getOpenid();
         return patientRegisterPraiseService.customerEvaluation(params, StringUtils.isNotNull(openId)?openId:"");
     }
@@ -48,10 +47,9 @@ public class PraiseCustomerController extends BaseController {
      * 新版评价
      * @author 张博
      * @param params
-     * @param session
      * @return
      */
-    @RequestMapping(value = "/interaction/user/updateCustomerEvaluation", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/user/updateCustomerEvaluation", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     String updateCustomerEvaluation(@RequestBody Map<String, Object> params) {
@@ -62,10 +60,9 @@ public class PraiseCustomerController extends BaseController {
      * 新版评价
      * @author 张博
      * @param params
-     * @param session
      * @return
      */
-    @RequestMapping(value = "/interaction/user/findCustomerEvaluation", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/user/findCustomerEvaluation", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> findCustomerEvaluation(@RequestBody Map<String, Object> params) {
@@ -75,7 +72,6 @@ public class PraiseCustomerController extends BaseController {
     	String doctorId=map.get("doctorId").toString();
     	result.put("evaluation", map);
     	result.put("starInfo", patientRegisterPraiseService.getCustomerStarInfoById(doctorId));
-//    	result.put("doctorHeadImage", patientRegisterPraiseService.getDoctorHeadImageURIById(doctorId));
         return result;
     }
     

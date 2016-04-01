@@ -38,7 +38,10 @@
         <option value="$PROJECT_DIR$/xiaoerke-consult-webapp/pom.xml" />
         <option value="$PROJECT_DIR$/xiaoerke-doctor/pom.xml" />
         <option value="$PROJECT_DIR$/xiaoerke-healthPlan/pom.xml" />
+        <option value="$PROJECT_DIR$/xiaoerke-insurance-webapp/pom.xml" />
+        <option value="$PROJECT_DIR$/xiaoerke-knowledge/pom.xml" />
         <option value="$PROJECT_DIR$/xiaoerke-marketing-webapp/pom.xml" />
+        <option value="$PROJECT_DIR$/xiaoerke-runTimeTask/pom.xml" />
         <option value="$PROJECT_DIR$/xiaoerke-wxapp/pom.xml" />
       </set>
     </option>

@@ -26,7 +26,7 @@ import java.util.Map;
  */
 
 @Controller
-@RequestMapping(value = "${xiaoerkePath}/wechatInfo")
+@RequestMapping(value = "wechatInfo")
 public class FieldworkWechatController {
 
     @Autowired

@@ -41,7 +41,6 @@ import java.util.concurrent.locks.ReentrantLock;
  * @date 2015-10-14
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
 public class AccountUserController {
 
 	@Autowired
@@ -54,9 +53,6 @@ public class AccountUserController {
 	private SystemService systemService;
 
 	@Autowired
-	private MemberService memberService;
-	
-	@Autowired
 	private InsuranceRegisterServiceService insuranceService;
 	
 	@Autowired
@@ -67,7 +63,7 @@ public class AccountUserController {
 	/**
 	 *用户的账户信息
 	 */
-	@RequestMapping(value = "/account/user/accountInfo", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "account/user/accountInfo", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	Map<String, Object> accountInfo() {
@@ -79,7 +75,7 @@ public class AccountUserController {
 	/**
 	 * 调用企业支付接口用户用户退款
 	 * */
-	@RequestMapping(value = "/account/user/returnPay",  method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "account/user/returnPay",  method = {RequestMethod.POST, RequestMethod.GET})
 	public synchronized
 	@ResponseBody
 	Map<String,Object>  returnPay(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session){
@@ -106,7 +102,7 @@ public class AccountUserController {
 	 * js支付
 	 *
 	 * */
-	@RequestMapping(value = "/account/user/userPay", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "account/user/userPay", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	String userPay(HttpServletRequest request,HttpSession session) throws Exception {
@@ -131,7 +127,7 @@ public class AccountUserController {
 	 * js支付
 	 *
 	 * */
-	@RequestMapping(value = "/account/user/antiDogPay", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "account/user/antiDogPay", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	String antiDogPay(HttpServletRequest request,HttpSession session) throws Exception {
@@ -152,7 +148,7 @@ public class AccountUserController {
 	 * js支付
 	 *
 	 * */
-	@RequestMapping(value = "/account/user/customerPay", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "account/user/customerPay", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	String customerPay(HttpServletRequest request,HttpSession session) throws Exception {
@@ -172,7 +168,7 @@ public class AccountUserController {
 	 * 接收支付成后微信notify_url参数中传来的参数
 	 * 支付完成 后服务器故障 事物无法回滚
 	 * */
-	@RequestMapping(value = "/user/getPayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "user/getPayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
 	public synchronized
 	@ResponseBody
 	String getPayNotifyInfo(HttpServletRequest request) {
@@ -216,7 +212,7 @@ public class AccountUserController {
 	 * 接收支付成后微信notify_url参数中传来的参数
 	 * 支付完成 后服务器故障 事物无法回滚
 	 * */
-	@RequestMapping(value = "/user/getInsurancePayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "user/getInsurancePayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
 	public synchronized
 	@ResponseBody
 	String getInsurancePayNotifyInfo(HttpServletRequest request) {
@@ -245,7 +241,6 @@ public class AccountUserController {
 				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
 				String insuranceId= insuranceMap.get("order_id").toString();
 				System.out.println("orderId:"+insuranceId);
-//				InsuranceRegisterService insurance = insuranceService.getInsuranceRegisterServiceById(orderId);
 				if(insuranceMap.get("fee_type").toString().equals("insurance")){
 					InsuranceRegisterService insurance=new InsuranceRegisterService();
 					insurance.setId(insuranceId);
@@ -272,7 +267,7 @@ public class AccountUserController {
 	 *检查订单的支付情况
 	 * 支付完成 后服务器故障 事物无法回滚
 	 * */
-	@RequestMapping(value = "/user/checkAppointment", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "user/checkAppointment", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	Map<String,Object> checkAppointment(){

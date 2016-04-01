@@ -21,13 +21,13 @@ import com.cxqm.xiaoerke.modules.sys.service.UnCertifiedDoctorInfoService;
  * @version 2015年9月23日
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "")
 public class UnCertifiedDoctorInfoController {
 
 	 @Autowired
 	 private UnCertifiedDoctorInfoService unCertifiedDoctorInfo;
 	
-	 @RequestMapping(value = "/unCertifiedDoctorInfo/save", method = {RequestMethod.POST, RequestMethod.GET})
+	 @RequestMapping(value = "unCertifiedDoctorInfo/save", method = {RequestMethod.POST, RequestMethod.GET})
 	 public @ResponseBody
 	    Map<String, Object>  saveUnCertifiedDoctorInfo(@RequestBody Map<String, Object> params){
 		 	UnCertifiedDoctorInfo  doctorInfo=new UnCertifiedDoctorInfo();

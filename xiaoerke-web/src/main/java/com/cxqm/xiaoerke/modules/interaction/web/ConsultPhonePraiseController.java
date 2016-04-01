@@ -13,6 +13,7 @@ import java.util.Map;
  */
 
 @Controller
+@RequestMapping(value = "interaction")
 public class ConsultPhonePraiseController {
 
     @Autowired
@@ -22,7 +23,7 @@ public class ConsultPhonePraiseController {
      * 医生评价
      * @return Map
      * */
-    @RequestMapping(value = "interaction/user/evaluateDoctor",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/user/evaluateDoctor",method = {RequestMethod.GET,RequestMethod.POST})
     public
     @ResponseBody
     Map<String,Object> evaluateDoctor(@RequestBody HashMap<String, Object> params){

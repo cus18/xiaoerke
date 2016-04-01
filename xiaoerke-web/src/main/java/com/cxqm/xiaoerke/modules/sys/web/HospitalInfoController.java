@@ -26,7 +26,7 @@ import java.util.Map;
  * @version 2015-11-04
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "sys/hospital")
 public class HospitalInfoController extends BaseController {
 
     @Autowired
@@ -51,14 +51,14 @@ public class HospitalInfoController extends BaseController {
      * ]
      * }
      */
-    @RequestMapping(value = "/sys/hospital", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> listHospital(@RequestBody Map<String, Object> params) {
         return hospitalInfoService.listAllHospital(params);
-    }
+	}
 
-	@RequestMapping(value = "/sys/hospital/cooperation", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/cooperation", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	HashMap<String, Object> getCooperationHospitalInfo(@RequestParam(required=true) String hospitalId) {
@@ -95,7 +95,7 @@ public class HospitalInfoController extends BaseController {
      * ]
      * }
      */
-    @RequestMapping(value = "/sys/hospital/department", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/department", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> listHospitalDepartment(@RequestBody Map<String, Object> params) {
@@ -120,7 +120,7 @@ public class HospitalInfoController extends BaseController {
      * //available_time为0表示今日可约，为1代表明日可约，为2，代表2天后可约，依次类推7天以内的即可
      * orderBy 0 按照时间最近排序 1 按照粉丝最多排序
      */
-    @RequestMapping(value = "/sys/hospital/doctor", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/doctor", method = {RequestMethod.GET, RequestMethod.POST})
     public
     @ResponseBody
     Map<String, Object> listHospitalDoctor(@RequestBody Map<String, Object> params) {
@@ -182,7 +182,7 @@ public class HospitalInfoController extends BaseController {
      * }
      * //available_time为0表示今日可约，为1代表明日可约，为2，代表2天后可约，依次类推7天以内的即可
      */
-    @RequestMapping(value = "/sys/hospital/department/doctor", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/department/doctor", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> listHospitalDepartmentDoctor(@RequestBody Map<String, Object> params) {
@@ -216,64 +216,11 @@ public class HospitalInfoController extends BaseController {
 		response.put("doctorDataVo", doctorDataVoList);
 		return response;
     }
-
-	/**
-	 * 获取医院的某个科室的医生
-	 * <p/>
-	 * params:{"pageNo":"2","pageSize":"10","orderBy":"0"，"hospitalId":"324xdksg234","departmentLevel1Name":"儿内"}
-	 * //0按照最近的出诊时间排序，1按照匹配最佳排序，2按照粉丝最多排序
-	 * <p/>
-	 * response:
-	 * {"pageNo":"2","pageSize":"10","pageTotal":"20",
-	 * "doctorDataVo":[
-	 * {"doctorId":"787xeieo234","doctorName":"甘晓庄","hospitalName":"北京儿童医院"，"departmentFullName":"儿内-重症医学科",
-	 * "expertise":"小儿呼吸","career_time":"32","fans_number":"40","available_time":"0"},
-	 * {"doctorId":"7xdwerd234","doctorName":"董庆华","hospitalName":"首都儿科研究所"，"departmentFullName":"儿内-呼吸内科",
-	 * "expertise":"小儿呼吸","career_time":"20"，"fans_number":"40","available_time":"0"}
-	 * ]
-	 * }
-	 * //available_time为0表示今日可约，为1代表明日可约，为2，代表2天后可约，依次类推7天以内的即可
-	 */
-//	@RequestMapping(value = "/sys/hospital/consulta/doctor", method = {RequestMethod.POST, RequestMethod.GET})
-//	public
-//	@ResponseBody
-//	Map<String, Object> findPageConsultaDoctorByDepartment(@RequestBody Map<String, Object> params) {
-//		HashMap<String, Object> response = new HashMap<String, Object>();
-//
-//		String hospitalId = (String) params.get("hospitalId");
-//		String departmentName = (String) params.get("departmentLevel1Name");
-//		String currentPage = ((String) params.get("pageNo"));
-//		String pageSize = ((String) params.get("pageSize"));
-//		String orderBy = (String) params.get("orderBy");
-//
-//		Page<HashMap<String, Object>> page = FrontUtils.generatorPage(currentPage,
-//				pageSize);
-//		HashMap<String, Object> hospitalInfo = new HashMap<String, Object>();
-//		hospitalInfo.put("hospitalId", hospitalId);
-//		hospitalInfo.put("departmentName", departmentName);
-//		hospitalInfo.put("orderBy", orderBy);
-//
-//		Page<HashMap<String, Object>> resultPage = doctorInfoService.findPageConsultaDoctorByDepartment(hospitalInfo, page);
-//
-//		// 记录日志
-//		LogUtils.saveLog(Servlets.getRequest(), "00000075" + departmentName);//获取医院的某个科室的医生
-//
-//		response.put("pageNo", resultPage.getPageNo());
-//		response.put("pageSize", resultPage.getPageSize());
-//		long tmp = FrontUtils.generatorTotalPage(resultPage);
-//		response.put("pageTotal", tmp + "");
-//		List<HashMap<String, Object>> list = resultPage.getList();
-//		List<HashMap<String, Object>> doctorDataVoList = new ArrayList<HashMap<String, Object>>();
-//		registerService.generateDoctorDataVoList(list, doctorDataVoList);
-//		response.put("doctorDataVo", doctorDataVoList);
-//		return response;
-//	}
-
-
+	
 	/**
 	 *根据医院名称获取医院信息
 	 * */
-	@RequestMapping(value = "/sys/hospital/info", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/info", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	Map<String, Object> getHospicalInfo(@RequestBody Map<String, Object> params){
@@ -283,26 +230,5 @@ public class HospitalInfoController extends BaseController {
 		resultMap.put("medicalProcess",medicalProcess);
 		return resultMap;
 	}
-
-
-	/**
-	 * 获取电话咨询的所有医院列表
-	 *@param pageSize 页面大小
-	 *@param pageNo 页面页数
-	 *@return page
-	 * */
-
-	public
-	@ResponseBody
-	Page<HashMap<String, Object>> getHospitalListByConsulta(String pageSize,String pageNo){
-		Page<HashMap<String, Object>> page = FrontUtils.generatorPage(pageNo,pageSize);
-		return hospitalInfoService.getHospitalListByConsulta(page);
-	}
-
-	public
-	@ResponseBody
-	Page<HashMap<String, Object>> getDoctorListByConsulta(String pageSize,String pageNo,String hospitalId){
-
-		return null;
-	}
+	
 }

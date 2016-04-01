@@ -37,7 +37,7 @@ import java.util.Map;
  * @version 2015-11-04
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "member/user")
 public class MemberController extends BaseController {
 
     @Autowired
@@ -49,7 +49,7 @@ public class MemberController extends BaseController {
     @Autowired
     private RegisterService registerService;
     @SystemControllerLog(description = "用户通过推广码来获取")
-    @RequestMapping(value = "/member/user/extendMemberService", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/extendMemberService", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     HashMap<String, Object> extendMemberService(@RequestParam(required = true) String memberType,
@@ -85,7 +85,7 @@ public class MemberController extends BaseController {
     }
 
     @SystemServiceLog(description = "00000062")//123
-    @RequestMapping(value = "/member/user/checkIfAppScanDoctor", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/checkIfAppScanDoctor", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> checkIfAppScanDoctor(@RequestBody Map<String, Object> params,
@@ -125,7 +125,7 @@ public class MemberController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/member/user/orderFreePayOperation", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/orderFreePayOperation", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> orderFreePayOperation(@RequestParam(required = true) String patient_register_service_id,
@@ -155,7 +155,7 @@ public class MemberController extends BaseController {
      * 状态10，会员已过期，免费卷已过期，免费卷没用完，且用户从没有过订单
      * 状态11，用户没有任何会员服务，且用户从没有过订单
      ***/
-    @RequestMapping(value = "/member/user/getMemberServiceStatus", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/getMemberServiceStatus", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> GetMemberServiceStatus(HttpSession session, HttpServletRequest request) {
@@ -191,7 +191,7 @@ public class MemberController extends BaseController {
         return response;
     }
 
-    @RequestMapping(value = "/member/user/getUserMemberService", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/getUserMemberService", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> getUserMemberService() {
@@ -214,7 +214,7 @@ public class MemberController extends BaseController {
         return response;
     }
 
-    @RequestMapping(value = "/member/user/orderPayMemberServiceOperation", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/orderPayMemberServiceOperation", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> OrderPayMemberServiceOperation(@RequestParam(required = true) String patient_register_service_id,
@@ -236,7 +236,7 @@ public class MemberController extends BaseController {
 
     }
 
-    @RequestMapping(value = "/member/user/checkUserFirstOrder", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/checkUserFirstOrder", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> checkUserFirstOrder(HttpSession session, HttpServletRequest request) {
@@ -253,7 +253,7 @@ public class MemberController extends BaseController {
 
     }
 
-    @RequestMapping(value = "/member/user/memberServiceDetail", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/memberServiceDetail", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> memberServiceDetail(@RequestParam(required = true) String memberServiceId) {

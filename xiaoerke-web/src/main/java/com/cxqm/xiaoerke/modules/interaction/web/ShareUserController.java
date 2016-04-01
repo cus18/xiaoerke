@@ -25,7 +25,7 @@ import java.util.*;
  * @version 2013-10-17
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "interaction")
 public class ShareUserController extends BaseController {
 
     @Autowired
@@ -42,7 +42,7 @@ public class ShareUserController extends BaseController {
      * "position2":"教授","date":"2015-07-03", "praise":"很好",
      * }
      */
-    @RequestMapping(value = "/interaction/user/share", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/user/share", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> myselfInfoShareDetail(@RequestBody Map<String, Object> params) {

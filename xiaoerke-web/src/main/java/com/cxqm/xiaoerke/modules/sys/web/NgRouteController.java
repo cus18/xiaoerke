@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
  * @version 2013-10-17
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "")
 public class NgRouteController extends BaseController {
 
     @RequestMapping(value = "patient/{routeURL}/{routeParam}", method = { RequestMethod.GET })
@@ -30,7 +30,7 @@ public class NgRouteController extends BaseController {
     @SystemControllerLog(description = "00000079")
     @RequestMapping(value ="/baodaifuFirst",method = {RequestMethod.POST, RequestMethod.GET})
     public String baodaifuIndex() {
-        return "baodaifuFirstPage";
+        return "angular/baodaifuFirstPage";
     }
 
     /**
@@ -39,7 +39,7 @@ public class NgRouteController extends BaseController {
     @SystemControllerLog(description = "00000079")
     @RequestMapping(value ="/appoint",method = {RequestMethod.POST, RequestMethod.GET})
     public String appointIndex() {
-        return "appointIndex";
+        return "angular/appointIndex";
     }
 
     /**
@@ -48,7 +48,7 @@ public class NgRouteController extends BaseController {
     @SystemControllerLog(description = "00000079")
     @RequestMapping(value ="/phoneConsult",method = {RequestMethod.POST, RequestMethod.GET})
     public String phoneConsultIndex() {
-        return "phoneConsultIndex";
+        return "angular/phoneConsultIndex";
     }
 
     /**
@@ -57,7 +57,7 @@ public class NgRouteController extends BaseController {
     @SystemControllerLog(description = "00000079")
     @RequestMapping(value ="/baoFansCamp",method = {RequestMethod.POST, RequestMethod.GET})
     public String baoFansIndex() {
-        return "baoFansCampIndex";
+        return "angular/baoFansCampIndex";
     }
 
 
@@ -67,7 +67,7 @@ public class NgRouteController extends BaseController {
     @SystemControllerLog(description = "00000079")
     @RequestMapping(value ="/knowledge",method = {RequestMethod.POST, RequestMethod.GET})
     public String knowledgeIndex() {
-        return "knowledgeIndex";
+        return "angular/knowledgeIndex";
     }
 
 
@@ -77,7 +77,7 @@ public class NgRouteController extends BaseController {
     @SystemControllerLog(description = "00000079")
     @RequestMapping(value ="/ctp",method = {RequestMethod.POST, RequestMethod.GET})
     public String constipationPlanIndex() {
-        return "constipationIndex";
+        return "angular/constipationIndex";
     }
 
     /**
@@ -86,7 +86,7 @@ public class NgRouteController extends BaseController {
     @SystemControllerLog(description = "00000079")
     @RequestMapping(value ="/ntr",method = {RequestMethod.POST, RequestMethod.GET})
     public String nutritionPlanIndex() {
-        return "nutritionIndex";
+        return "angular/nutritionIndex";
     }
 
     /**
@@ -95,7 +95,7 @@ public class NgRouteController extends BaseController {
     @SystemControllerLog(description = "00000079")
     @RequestMapping(value ="/doctor",method = {RequestMethod.POST, RequestMethod.GET})
     public String doctorIndex() {
-        return "doctorIndex";
+        return "angular/doctorIndex";
     }
 
     /**
@@ -104,7 +104,7 @@ public class NgRouteController extends BaseController {
     @SystemControllerLog(description = "00000079")
     @RequestMapping(value ="/health",method = {RequestMethod.POST, RequestMethod.GET})
     public String healthManageIndex() {
-        return "healthManage";
+        return "angular/healthManage";
     }
 
     /**
@@ -113,7 +113,7 @@ public class NgRouteController extends BaseController {
     @SystemControllerLog(description = "00000079")
     @RequestMapping(value ="/market",method = {RequestMethod.POST, RequestMethod.GET})
     public String marketIndex() {
-        return "marketIndex";
+        return "angular/marketIndex";
     }
 
     /**
@@ -122,7 +122,7 @@ public class NgRouteController extends BaseController {
     @SystemControllerLog(description = "00000079")
     @RequestMapping(value ="doctor/consult",method = {RequestMethod.POST, RequestMethod.GET})
     public String doctorConsult() {
-        return "doctorConsultIndex";
+        return "angular/doctorConsultIndex";
     }
 
     /**
@@ -131,7 +131,7 @@ public class NgRouteController extends BaseController {
     @SystemControllerLog(description = "00000079")
     @RequestMapping(value ="patient/consult",method = {RequestMethod.POST, RequestMethod.GET})
     public String patientConsult() {
-        return "patientConsultIndex";
+        return "angular/patientConsultIndex";
     }
 
     /**
@@ -140,7 +140,7 @@ public class NgRouteController extends BaseController {
     @SystemControllerLog(description = "00000079")
     @RequestMapping(value ="/insurance",method = {RequestMethod.POST, RequestMethod.GET})
     public String insuranceIndex() {
-        return "insuranceIndex";
+        return "angular/insuranceIndex";
     }
 
     /**
@@ -149,7 +149,7 @@ public class NgRouteController extends BaseController {
     @SystemControllerLog(description = "00000079")
     @RequestMapping(value ="/playtour",method = {RequestMethod.POST, RequestMethod.GET})
     public String playtourIndex() {
-        return "playtourManage";
+        return "angular/playtourManage";
     }
 }
 

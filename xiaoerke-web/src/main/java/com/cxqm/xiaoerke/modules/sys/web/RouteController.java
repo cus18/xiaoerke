@@ -33,58 +33,40 @@ import java.util.Map;
  * @version 2013-10-17
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}/firstPage")
+@RequestMapping(value = "firstPage")
 public class RouteController extends BaseController {
 
     @Autowired
     private BabyEmrService babyEmrService;
-
-    @Autowired
-    private PlanInfoService planInfoService;
-
-    @Autowired
-    private OperationHandleService operationHandleService;
 
     /**
      * appoint 预约 原生首页
      */
     @RequestMapping(value ="/appoint",method = {RequestMethod.POST, RequestMethod.GET})
     public String appointmentFirstPage() {
-        return "appointmentFirstPage";
+        return "native/appointmentFirstPage";
     }
     /**
      * phoneConsult 电话咨询 原生首页
      */
     @RequestMapping(value ="/phoneConsult",method = {RequestMethod.POST, RequestMethod.GET})
     public String phoneConsultFirstPage() {
-        return "phoneConsultFirstPage";
+        return "native/phoneConsultFirstPage";
     }
-    /**
-     * phoneConsult 电话咨询 原生首页 试验
-     */
-    @RequestMapping(value ="/phoneConsult1",method = {RequestMethod.POST, RequestMethod.GET})
-    public String phoneConsultFirstPage1() {
-        return "phoneConsultFirstPage1";
-    }
+
     /**
      * 应用首页
      */
     @RequestMapping(value ="/knowledge",method = {RequestMethod.POST, RequestMethod.GET})
     public String knowledgeFirstPage(HttpServletRequest request,HttpSession session) {
-        LogUtils.saveLog(Servlets.getRequest(), "00000079");//进入预约医生主页
         String openId = WechatUtil.getOpenId(session, request);
         List<BabyEmrVo> list = babyEmrService.getBabyEmrList(openId);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         if(list.size()!=0){
-            return "knowledgeFirstPage";
+            return "native/knowledgeFirstPage";
         }else{
-            return "knowledgeLoginPage";
+            return "native/knowledgeLoginPage";
         }
-    }
-
-    @RequestMapping(value ="/knowledgeLogin",method = {RequestMethod.POST, RequestMethod.GET})
-    public String knowledgeLoginPage() {
-        return "knowledgeLoginPage";
     }
 
     /**
@@ -92,57 +74,7 @@ public class RouteController extends BaseController {
      */
     @RequestMapping(value ="/healthPlan",method = {RequestMethod.POST, RequestMethod.GET})
     public String healthPlanIndex() {
-        return "healthPlanFirstPage";
-//        Map<String, Object> planInfoMap = new HashMap<String, Object>();
-//        if(UserUtils.getUser().getId()!=null){
-//            List<String> list = new ArrayList<String>();
-//            list.add("ongoing");
-//            planInfoMap.put("userId", UserUtils.getUser().getId());
-//            planInfoMap.put("statusList",list);
-//            List<Map<String,Object>> manageList = planInfoService.getPlanInfoByUserId(planInfoMap);
-//
-//            if(manageList.size()==0){
-//                return "healthPlanFirstPage";
-//            }else if(manageList.size()==1){
-//                if(manageList.get(0).get("name").equals("便秘计划")){
-////                    HashMap<String,Object> param = new HashMap<String,Object>();
-////                    param.put("logContent","healthPlanFirstPageAccess");
-////                    param.put("userId", UserUtils.getUser().getId());
-////                    Map result = operationHandleService.getLogInfoByLogContent(param);
-////                    if(result.size()!=0){
-////                        return "redirect:/ap/ctp#/constipationIndex";
-////                    }else{
-////                        return "healthPlanFirstPage";
-////                    }
-//                    return "redirect:/ap/ctp#/constipationIndex";
-//                }else if(manageList.get(0).get("name").equals("营养管理")){
-////                    HashMap<String,Object> param = new HashMap<String,Object>();
-////                    param.put("logContent","healthPlanFirstPageAccess");
-////                    param.put("userId", UserUtils.getUser().getId());
-////                    Map result = operationHandleService.getLogInfoByLogContent(param);
-////                    if(result.size()==0){
-////                        return "redirect:/ap/ntr#/nutritionIndex";
-////                    }else{
-////                        return "healthPlanFirstPage";
-////                    }
-//                    return "redirect:/ap/ntr#/nutritionIndex";
-//                }else{
-//                    return "healthPlanFirstPage";
-//                }
-//            }else{
-//                return "healthPlanFirstPage";
-//            }
-//        }else{
-//            return "healthPlanFirstPage";
-//        }
-    }
-
-    /**
-     * 应用首页
-     */
-    @RequestMapping(value ="/doctor",method = {RequestMethod.POST, RequestMethod.GET})
-    public String doctorIndex() {
-        return "doctorIndex";
+        return "native/healthPlanFirstPage";
     }
 
     /**
@@ -150,7 +82,7 @@ public class RouteController extends BaseController {
      */
     @RequestMapping(value ="/momNutritionTest",method = {RequestMethod.POST, RequestMethod.GET})
     public String momNutritionTestFirst() {
-        return "momNutritionTestFirst";
+        return "native/momNutritionTestFirst";
     }
 
     /**
@@ -158,15 +90,7 @@ public class RouteController extends BaseController {
      */
     @RequestMapping(value ="/antiDogFirst",method = {RequestMethod.POST, RequestMethod.GET})
     public String antiDogFirst() {
-        return "antiDogFirstPage";
-    }
-
-    /**
-     * 应用首页
-     */
-    @RequestMapping(value ="/antiDogLead",method = {RequestMethod.POST, RequestMethod.GET})
-    public String antiDogLead() {
-        return "antiDogFirstLead";
+        return "native/antiDogFirstPage";
     }
 
     /**

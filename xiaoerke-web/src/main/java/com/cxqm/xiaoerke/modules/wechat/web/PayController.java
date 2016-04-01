@@ -86,16 +86,11 @@ public class PayController {
     * 处理来自微信服务器的请求
     *
     */
-   @RequestMapping(value = "/cusomterPay/patientPay.do", method = {RequestMethod.POST, RequestMethod.GET})
-   public String cusomterPay(@RequestParam(required=false) String patient_register_service_id,
+   @RequestMapping(value = "/customerPay/patientPay.do", method = {RequestMethod.POST, RequestMethod.GET})
+   public String customerPay(@RequestParam(required=false) String patient_register_service_id,
                             @RequestParam(required=false) String chargePrice,
                             HttpServletResponse response) {
-//       if(!StringUtils.isNotNull(patient_register_service_id)){
-//           patient_register_service_id = "noData";
-//       }
-//       CookieUtils.setCookie(response,"patient_register_service_id", patient_register_service_id);
-//       CookieUtils.setCookie(response, "chargePrice", chargePrice);
-       return "cusomterPay";
+       return "customerPay";
    }
     
 }

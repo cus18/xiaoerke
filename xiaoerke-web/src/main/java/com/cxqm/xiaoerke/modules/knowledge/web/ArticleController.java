@@ -39,7 +39,7 @@ import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
  * @version 2015-10-23
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "knowledge")
 public class ArticleController extends BaseController {
 
 	@Autowired
@@ -67,7 +67,7 @@ public class ArticleController extends BaseController {
 	 * @return Map<String,Object>
 	 * @author sunxiao
 	 */
-	@RequestMapping(value = "/knowledge/article/articleList", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/article/articleList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> articleList(@RequestBody Map<String, Object> params) throws Exception {
@@ -80,7 +80,7 @@ public class ArticleController extends BaseController {
 	 * @return Map<String,Object>
 	 * @author sunxiao
 	 */
-	@RequestMapping(value = "/knowledge/article/todaySelectAndReadArticleList", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/article/todaySelectAndReadArticleList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> todaySelectAndReadArticleList(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) throws Exception {
@@ -107,7 +107,7 @@ public class ArticleController extends BaseController {
 		return map;
 	}
 	
-	@RequestMapping(value = "/knowledge/article/articleDetail", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/article/articleDetail", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> articleDetail(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpServletResponse respon) throws Exception {
@@ -146,7 +146,7 @@ public class ArticleController extends BaseController {
 		return response;
 	}
 
-	@RequestMapping(value = "/knowledge/ArticleShareRecord", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/ArticleShareRecord", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	String ArticleShareRecord(@RequestBody Map<String, Object> params, HttpServletRequest request) {
@@ -179,7 +179,7 @@ public class ArticleController extends BaseController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/knowledge/shortTermProcess", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/shortTermProcess", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	HashMap<String, Object> shortTermProcess(@RequestParam String type, HttpServletRequest request) {
@@ -203,7 +203,7 @@ public class ArticleController extends BaseController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/knowledge/motherError", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/motherError", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	HashMap<String, Object> motherError(@RequestParam String type, HttpServletRequest request) {

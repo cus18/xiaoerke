@@ -27,7 +27,7 @@ import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import freemarker.template.utility.StringUtil;
 
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "customer")
 public class CustomerController {
 
 	@Autowired
@@ -45,7 +45,7 @@ public class CustomerController {
 	 * @param params
 	 * @return
 	 */
-	@RequestMapping(value = "/customer/saveBaby", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/saveBaby", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  saveCustomerBaby(@RequestBody Map<String, Object> params){
 		Map<String ,Object> map=new HashMap<String, Object>();
@@ -78,35 +78,12 @@ public class CustomerController {
 		}
 	}
 
-//	/**
-//	 * 根据咨询者Openid查询历史宝宝信息
-//	 * @param params
-//	 * @return
-//	 */
-// 
-//	public  
-//	Map<String, Object>  searchBabyInfoOld(@RequestBody Map<String, Object> params){
-//		Map<String ,Object> map=new HashMap<String, Object>();
-//		try {
-//			String openid=params.get("openid").toString();
-//			List<Map<String, Object>> babyList=cs.getBabyInfoList(openid);
-//			map.put("babyList", babyList);
-//			map.put("nickName", cs.getNickName(openid));
-//			return map;
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			map.put("babyList", "");
-//			return map;
-//		}
-//	}
-
 	/**
 	 * 根据咨询者Openid查询历史宝宝信息
 	 * @param params
 	 * @return
 	 */
-	@RequestMapping(value = "/customer/searchBabyInfo", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/searchBabyInfo", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  searchBabyInfo(@RequestBody Map<String, Object> params){
 		Map<String ,Object> map=new HashMap<String, Object>();
@@ -128,7 +105,7 @@ public class CustomerController {
 	 * 查询历史咨询科室
 	 * @return
 	 */
-	@RequestMapping(value = "/customer/searchIllnessList", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/searchIllnessList", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  searchIllnessList(){
 		Map<String ,Object> map=new HashMap<String, Object>();
@@ -149,7 +126,7 @@ public class CustomerController {
 	 * @param params
 	 * @return
 	 */
-	@RequestMapping(value = "/customer/saveIllness", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/saveIllness", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  searchCustomer(@RequestBody Map<String, Object> params){
 		Map<String ,Object> map=new HashMap<String, Object>();
@@ -172,7 +149,7 @@ public class CustomerController {
 	 * @param params
 	 * @return
 	 */
-	@RequestMapping(value = "/customer/saveCustomerLog", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/saveCustomerLog", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  saveCustomerLog(@RequestBody Map<String, Object> params){
 		Map<String ,Object> map=new HashMap<String, Object>();
@@ -202,7 +179,7 @@ public class CustomerController {
 	 * 重定向（缓存）
 	 * @return
 	 */
-	@RequestMapping(value = "/customer/responseCustomer", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/responseCustomer", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  responseCustomer(HttpServletResponse response){
 		try {
@@ -214,7 +191,7 @@ public class CustomerController {
 		return null;
 	}
 
-	@RequestMapping(value = "/customer/getOrderInfoByOpenid", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/getOrderInfoByOpenid", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  getOrderInfoByOpenid(@RequestBody Map<String, Object> params){
 		Map<String ,Object> map=new HashMap<String, Object>();
@@ -227,13 +204,11 @@ public class CustomerController {
 		}else{
 			openid=params.get("openid").toString();
 		}
-		 
-//		String babyName=params.get("babyName").toString();
 		map.put("orderList", cs.getOrderInfoByOpenid(openid,null));
 		return map;
 	}
 
-	@RequestMapping(value = "/customer/getCustomerLogByOpenID", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/getCustomerLogByOpenID", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  getCustomerLogByOpenID(@RequestBody Map<String, Object> params){
 		Map<String ,Object> map=new HashMap<String, Object>();
@@ -246,16 +221,12 @@ public class CustomerController {
 		}else{
 			openid=params.get("openid").toString();
 		}
-//		List list=cs.getCustomerLogByOpenID(openid);
-//		if(list.size()==0){
-		//以Openid去获取用户的咨询历史记录
 		List list=cs.getCustomerLogByBabyOpenID(openid);
-//		}
 		map.put("logList", list);
 		return map;
 	}
 	
-	@RequestMapping(value = "/customer/onIllnessKeydown", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/onIllnessKeydown", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  onIllnessKeydown(@RequestBody Map<String, Object> params){
 		Map<String ,Object> map=new HashMap<String, Object>();
@@ -272,7 +243,7 @@ public class CustomerController {
 	 * @param params
 	 * @return
 	 */
-	@RequestMapping(value = "/customer/saveOpenidAndKeywords", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/saveOpenidAndKeywords", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  saveOpenidAndKeywords(@RequestBody Map<String, Object> params){
 		Map<String ,Object> map=new HashMap<String, Object>();
@@ -289,12 +260,13 @@ public class CustomerController {
 			return map;
 		}
 	}
+
 	/**
 	 * 根据疾病查询医生列表
 	 * @param params
 	 * @return
 	 */
-	@RequestMapping(value = "/customer/getDocotrByIllness", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/getDocotrByIllness", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  getDocotrByIllness(@RequestBody Map<String, Object> params){
 		Map<String ,Object> map=new HashMap<String, Object>();
@@ -313,7 +285,7 @@ public class CustomerController {
 		return map;
 	}
 	
-	@RequestMapping(value = "/customer/getKeywordsByOpenID", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/getKeywordsByOpenID", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  getKeywordsByOpenID(@RequestBody Map<String, Object> params){
 		Map<String ,Object> map=new HashMap<String, Object>();
@@ -329,7 +301,7 @@ public class CustomerController {
 		return map;
 	}
 	
-	@RequestMapping(value = "/customer/getLastOrderDate", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/getLastOrderDate", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  getLastOrderDate(@RequestBody Map<String, Object> params){
 		Map<String ,Object> map=new HashMap<String, Object>();
@@ -346,7 +318,7 @@ public class CustomerController {
 		return map;
 	}
 	
-	@RequestMapping(value = "/customer/getMemberInfo", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/getMemberInfo", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  getMemberInfo(@RequestBody Map<String, Object> params){
 		Map<String ,Object> map=new HashMap<String, Object>();
@@ -355,7 +327,7 @@ public class CustomerController {
 		return map;
 	}
 	
-	@RequestMapping(value = "/customer/saveReturnService", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/saveReturnService", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  saveReturnService(@RequestBody Map<String, Object> params){
 		Map<String ,Object> map=new HashMap<String, Object>();
@@ -366,7 +338,7 @@ public class CustomerController {
 		return map;
 	}
 	
-	@RequestMapping(value = "/customer/SendMessage", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/SendMessage", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  SendMessage(){
 		Map<String ,Object> map=new HashMap<String, Object>();

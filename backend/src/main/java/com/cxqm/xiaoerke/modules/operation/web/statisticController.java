@@ -28,7 +28,7 @@ import java.util.Map;
  * @version 2013-10-17
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "")
 public class statisticController extends BaseController {
 
     @Autowired

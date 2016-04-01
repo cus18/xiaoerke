@@ -28,7 +28,7 @@ import java.util.*;
  */
 
 @Controller
-@RequestMapping(value = "${xiaoerkePath}/healthRecord")
+@RequestMapping(value = "healthRecord")
 public class HealthRecordsController {
 
   @Autowired
@@ -69,7 +69,6 @@ public class HealthRecordsController {
   @ResponseBody
   Map<String, Object> getUserBabyInfolist(@RequestBody Map<String, Object> params){
     Map<String, Object> resultMap = new HashMap<String, Object>();
-
     List<BabyBaseInfoVo> babyInfoList = new ArrayList<BabyBaseInfoVo>();
     String openId = (String)params.get("openId");
     if(StringUtils.isNotNull(openId)){
@@ -94,17 +93,10 @@ public class HealthRecordsController {
   public
   @ResponseBody
   Map<String, Object> getAppointmentInfo(@RequestParam String babyId) throws UnsupportedEncodingException{
-	  Map<String, Object> map=new HashMap<String, Object>();
-//    Map<String,Object> beanInfo = customerService.selectByPrimaryKey(Integer.parseInt(babyId));
+
+    Map<String, Object> map=new HashMap<String, Object>();
     //根据上述两个参数查询预约详情记录
     List<Map<String, Object>> result = patientRegisterService.getHealthRecordsAppointmentInfo( babyId, UserUtils.getUser().getPhone());
-//    for(Map<String,Object> responseMap:result){
-//      Date createTime = (Date) responseMap.get("create_date");
-//      String week = DateUtils.getWeekOfDate(createTime);
-//      String year = DateUtils.formatDateToStr(createTime, "yyyy/MM/dd");
-//      String hour = (String) responseMap.get("beginTime");
-//      responseMap.put("date", year + " " + week + " " + hour);
-//    }
     map.put("orderInfoList", result);
     return map;
   }
@@ -173,7 +165,6 @@ public class HealthRecordsController {
     vo.setId(Integer.parseInt(id));
     vo.setState("6");
     int result =healthRecordsService.updateBabyInfo(vo);
-//    int result = healthRecordsService.deleteBabyInfo(Integer.parseInt(id));
     resultMap.put("resultCode",result);
     return resultMap;
   }
@@ -299,7 +290,6 @@ public class HealthRecordsController {
 
   /**
    * 宝宝病例
-   * @param openId
    * @return 病例,病例图片
    * */
   @RequestMapping(value = "/getConsultInfo",method = {RequestMethod.GET,RequestMethod.POST})

@@ -23,13 +23,13 @@ import java.util.Map;
  * @version 2013-10-17
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "interaction")
 public class QuestionnaireController extends BaseController {
 
     @Autowired
     private FeedbackService feedbackService;
 
-    @RequestMapping(value = "/interaction/user/questionnaireSurvey", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/user/questionnaireSurvey", method = {RequestMethod.GET, RequestMethod.POST})
     public String questionnaireSurvey(@RequestBody Map<String, Object> params, HttpSession session,
                                       HttpServletRequest request) {
         String openId = WechatUtil.getOpenId(session,request);

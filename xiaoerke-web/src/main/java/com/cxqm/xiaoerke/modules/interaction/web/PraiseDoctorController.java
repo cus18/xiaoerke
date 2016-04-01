@@ -24,13 +24,13 @@ import java.util.Map;
  * @version 2013-10-17
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "interaction")
 public class PraiseDoctorController extends BaseController {
 
     @Autowired
     private PatientRegisterPraiseService patientRegisterPraiseService;
 
-    @RequestMapping(value = "/interaction/user/getUserEvaluate", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/user/getUserEvaluate", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> getUserEvaluate(@RequestBody Map<String, Object> params) {

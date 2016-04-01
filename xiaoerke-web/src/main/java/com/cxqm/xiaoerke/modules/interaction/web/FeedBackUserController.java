@@ -31,7 +31,7 @@ import java.util.Map;
  * @version 2013-10-17
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "feedback")
 public class FeedBackUserController extends BaseController {
 
     @Autowired
@@ -40,7 +40,7 @@ public class FeedBackUserController extends BaseController {
     /**
      * 意见反馈
      */
-    @RequestMapping(value = "/feedback/user/sendAdvice", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/user/sendAdvice", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> sendAdvice(@RequestBody Map<String, Object> params,HttpSession session,HttpServletRequest request) {
@@ -54,7 +54,7 @@ public class FeedBackUserController extends BaseController {
     /**
      * 微信支付反馈
      */
-    @RequestMapping(value = "/feedback/user/wxpayAdvice", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/user/wxpayAdvice", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     String wxPayAdvice(@RequestBody Map<String, Object> params,HttpSession session,HttpServletRequest request) {
@@ -81,12 +81,10 @@ public class FeedBackUserController extends BaseController {
     /**
      * 长久没用宝大夫原因调研
      */
-    @RequestMapping(value = "/feedback/user/consultVisit", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/user/consultVisit", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     String consultVisit(@RequestBody Map<String, Object> params,HttpSession session,HttpServletRequest request) {
-//        String openId = WechatUtil.getOpenId(session, request);
-//         openId = (String)request.getParameter("openId");
         params.put("user",params.get("openId"));
         params.put("project", "consultVisit");
         feedbackService.sendAdvice(params);

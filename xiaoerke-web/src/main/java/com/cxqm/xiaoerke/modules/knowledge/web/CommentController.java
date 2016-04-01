@@ -43,7 +43,7 @@ import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
  * 2015-11-26
  */
 @Controller(value = "WebCommentController")
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "knowledge")
 public class CommentController extends BaseController {
 	
 	@Autowired
@@ -72,7 +72,7 @@ public class CommentController extends BaseController {
 	 * @return Map<String,Object>
 	 * @author sunxiao
 	 */
-	@RequestMapping(value = "/knowledge/comment/save", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/comment/save", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> save(@RequestBody Map<String, Object> params,HttpServletRequest request, HttpServletResponse response,HttpSession session) throws Exception {
@@ -108,7 +108,7 @@ public class CommentController extends BaseController {
 	 * @return Map<String,Object>
 	 * @author sunxiao
 	 */
-	@RequestMapping(value = "/knowledge/comment/list", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/comment/list", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> commentList(@RequestParam String articleId,@RequestParam Integer pageNo,@RequestParam Integer pageSize,HttpServletRequest request,HttpSession session) throws Exception {

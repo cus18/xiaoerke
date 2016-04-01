@@ -26,11 +26,9 @@
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-insurance/xiaoerke-insurance.iml" filepath="$PROJECT_DIR$/xiaoerke-insurance/xiaoerke-insurance.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-insurance/xiaoerke-insurance-api/xiaoerke-insurance-api.iml" filepath="$PROJECT_DIR$/xiaoerke-insurance/xiaoerke-insurance-api/xiaoerke-insurance-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-insurance/xiaoerke-insurance-service/xiaoerke-insurance-service.iml" filepath="$PROJECT_DIR$/xiaoerke-insurance/xiaoerke-insurance-service/xiaoerke-insurance-service.iml" />
-      <module fileurl="file://$PROJECT_DIR$/xiaoerke-insurance-webapp/xiaoerke-insurance-webapp.iml" filepath="$PROJECT_DIR$/xiaoerke-insurance-webapp/xiaoerke-insurance-webapp.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-interaction/xiaoerke-interaction.iml" filepath="$PROJECT_DIR$/xiaoerke-interaction/xiaoerke-interaction.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-interaction/xiaoerke-interaction-api/xiaoerke-interaction-api.iml" filepath="$PROJECT_DIR$/xiaoerke-interaction/xiaoerke-interaction-api/xiaoerke-interaction-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-interaction/xiaoerke-interaction-service/xiaoerke-interaction-service.iml" filepath="$PROJECT_DIR$/xiaoerke-interaction/xiaoerke-interaction-service/xiaoerke-interaction-service.iml" />
-      <module fileurl="file://$PROJECT_DIR$/xiaoerke-knowledge/xiaoerke-knowledge.iml" filepath="$PROJECT_DIR$/xiaoerke-knowledge/xiaoerke-knowledge.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-marketing/xiaoerke-marketing.iml" filepath="$PROJECT_DIR$/xiaoerke-marketing/xiaoerke-marketing.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-marketing/xiaoerke-marketing-api/xiaoerke-marketing-api.iml" filepath="$PROJECT_DIR$/xiaoerke-marketing/xiaoerke-marketing-api/xiaoerke-marketing-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-marketing/xiaoerke-marketing-service/xiaoerke-marketing-service.iml" filepath="$PROJECT_DIR$/xiaoerke-marketing/xiaoerke-marketing-service/xiaoerke-marketing-service.iml" />
@@ -49,7 +47,6 @@
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-plan/xiaoerke-plan.iml" filepath="$PROJECT_DIR$/xiaoerke-plan/xiaoerke-plan.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-plan/xiaoerke-plan-api/xiaoerke-plan-api.iml" filepath="$PROJECT_DIR$/xiaoerke-plan/xiaoerke-plan-api/xiaoerke-plan-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-plan/xiaoerke-plan-service/xiaoerke-plan-service.iml" filepath="$PROJECT_DIR$/xiaoerke-plan/xiaoerke-plan-service/xiaoerke-plan-service.iml" />
-      <module fileurl="file://$PROJECT_DIR$/xiaoerke-runTimeTask/xiaoerke-runTimeTask.iml" filepath="$PROJECT_DIR$/xiaoerke-runTimeTask/xiaoerke-runTimeTask.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-search/xiaoerke-search.iml" filepath="$PROJECT_DIR$/xiaoerke-search/xiaoerke-search.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-search/xiaoerke-search-api/xiaoerke-search-api.iml" filepath="$PROJECT_DIR$/xiaoerke-search/xiaoerke-search-api/xiaoerke-search-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-search/xiaoerke-search-service/xiaoerke-search-service.iml" filepath="$PROJECT_DIR$/xiaoerke-search/xiaoerke-search-service/xiaoerke-search-service.iml" />

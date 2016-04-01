@@ -1,0 +1,175 @@
+<html>
+<head>
+</head>
+<base href="/titan/"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<title>宝大夫</title>
+<script src="js/native/appointmentFirstPage.js"></script>
+<link rel="stylesheet" href="styles/commonMain.less" type="text/css" />
+<link rel="stylesheet" href="styles/commonDoctor/bannerSlide.less" type="text/css" />
+<link rel="stylesheet" href="styles/commonDoctor/firstPage.less" type="text/css" />
+<link rel="stylesheet" href="styles/native/appointmentFirstPage.less" type="text/css" />
+<body onload="appointmentFirstPageInit()">
+<div class="appointmentFirstPage-weChat firstPage">
+    <!--头部-->
+    <div class="head bg1 tc f8">
+        <div class="left fl" href="ap/firstPage/appoint">首页</div>
+        <div class="title fl f6 find" style="margin-top:2%">
+            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fa_search_keyWord.png" width="15" height="15">
+            <input class="border6" id="searchObj" placeholder="疾病/医生/医院" onfocus="seaHis()"/>
+        </div>
+        <div class="right fr">
+            <a class= my" href="appoint#/myselfFirst/," >
+                <img class="my-img1" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fmy1.png" width="22" height="22" ng-if="!haveOrder">
+            </a>
+        </div>
+    </div>
+    <!--轮播图-->
+    <div class="banner_visual">
+        <div class="flicking_con">
+            <a href="#">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+        </div>
+        <div class="banner_image">
+            <ul>
+                <li>
+                    <a href="ap/appoint#/cooperationHospital/626487c34f954abd90e188bb40341995">
+                    <img width="100%" height="75"
+                         src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/dingfuzhuang-banner.png?ver=1.0"></a>
+                </li>
+                <li>
+                    <a href="ap/appoint#/cooperationHospital/faa875abfe9748438111aa208151f1ed">
+                    <img width="100%" height="75" src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/jialisan-banner.png?ver=1.0">
+                    </a>
+                </li>
+                <li onclick="consultDoc()">
+                    <img width="100%" height="75" src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/consult-banner.png?ver=1.0">
+                </li>
+            </ul>
+            <a href="javascript:;" id="btn_prev"></a>
+            <a href="javascript:;" id="btn_next"></a>
+        </div>
+    </div>
+    <!--四个菜单-->
+    <div class="myMenu" id="menu">
+        <ul >
+            <li class="cur f5 c4 fl tc border2" id="hospital" onclick="chooseMenu('hospital',0)" >
+                <a >医&nbsp;院</a>
+                <i></i>
+            </li>
+            <li class="f5 c4 fl tc border2" id="illness" onclick="chooseMenu('illness',1)" >
+                <a>疾&nbsp;病</a>
+                <i></i>
+            </li>
+            <li class="f5 c4 fl tc border2"  id="time" onclick="chooseMenu('time',2)" >
+                <a>时&nbsp;间</a>
+                <i></i>
+            </li>
+            <li class="f5 c4 fl tc border2" id="group" onclick="chooseMenu('group',3)" >
+                <a>专家团</a>
+                <i></i>
+            </li>
+        </ul>
+    </div>
+
+    <!--菜单列表-->
+    <div class="main-list">
+        <!--医院列表-->
+        <div id="hospitalList" class="hospitalItem menuItem">
+            <ul id="hospitalItem"></ul>
+            <div class="footer tc" >
+                <p>
+                    <a class="f2 c1 home" href="firstPage/phoneConsult">首页</a>
+                    <a class="f2 c1" href="appoint#/questions/">常见问题</a>
+                </p>
+                <p>
+                    <a class="f2 c1" href="tel:4006237120">客服电话：400-623-7120</a>
+                </p>
+            </div>
+        </div>
+        <!--疾病列表-->
+        <div id="illnessList" class="illness menuItem"  hidden>
+            <div class="ill-left">
+            </div>
+            <div class="ill-right">
+            </div>
+        </div>
+        <!--时间列表-->
+        <div id="timeList" class="dateItem menuItem" hidden>
+            <ul id="dateItem"></ul>
+            <div class="footer tc" >
+                <p>
+                    <a class="f2 c1 home" href="firstPage/phoneConsult">首页</a>
+                    <a class="f2 c1" href="appoint#/questions/">常见问题</a>
+                </p>
+                <p>
+                    <a class="f2 c1" href="tel:4006237120">客服电话：400-623-7120</a>
+                </p>
+            </div>
+        </div>
+        <!--专家团-->
+        <div id="groupList" class="groupItem menuItem" hidden>
+            <ul id="groupItem">
+            </ul>
+            <div class="more-doctor  tc bg4 tc bg4" >
+                <img src="images/doctor_group_welcome.png" width="79" height="auto">
+                <p class="f2 c5 lh">"更多专家团队即将入驻，敬请期待"</p>
+            </div>
+        </div>
+    </div>
+
+
+    <!--搜索-->
+    <div class="sea-his" hidden>
+        <div class="hot">
+            <h3>
+                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fa_search_hotWord.gif" width="13" height="15">
+                热词搜索
+            </h3>
+            <ul class="hot-w">
+            </ul>
+        </div>
+        <div style="height:10px;background-color: #f1f4f5;" hidden id="searchHistoryItem"></div>
+        <div class="history" hidden>
+            <h3>
+                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fa_search_time.gif" width="13" height="13">
+                搜索历史
+            </h3>
+            <ul class="list" id="searchHistory"  >
+            </ul>
+            <div class="cl" onclick="removeAllSearchHistory()">
+                清空搜索历史
+            </div>
+        </div>
+    </div>
+    <!--  快速登录入口-->
+    <div class="fast-entry">
+        <div onclick="lightLock()">
+            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fa_fastEntry_light1.png" width="51.5" height="52.5" class="deng">
+        </div>
+        <div id="lightLock" hidden>
+            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fa_fastEntry_bg.png" width="101.5" height="137.5" class="bg">
+            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fa_fastEntry_myAppointment.png"
+                 width="53" height="53" class="yuyue" onclick="myAppointment()">
+            <a href="tel:4006237120">
+                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fa_fastEntry_lianxi.png"
+                     width="53" height="53" class="lianxi">
+            </a>
+            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fa_fastEntry_zixun.png"
+                 width="53" height="53" class="zixun" onclick="consultDoc()">
+            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fa_fastEntry_feedback.png"
+                 width="53" height="53" class="feedback"  onclick="opinionFeedback()">
+        </div>
+    </div>
+</div>
+</body>
+<link rel="stylesheet" href="styles/lib/ionic.min.css"/>
+<link rel="stylesheet" href="styles/lib/ionicons.min.css"/>
+<link rel="stylesheet" href="styles/lib/animate.min.css"/>
+<script src="js/libs/jquery.scrollstop.min.js"></script>
+<script src="js/libs/lodash.min.js"></script>
+</html>
