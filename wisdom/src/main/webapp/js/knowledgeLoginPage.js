@@ -37,7 +37,7 @@ var knowledgeLoginPageInit = function(){
     var signature;//得到的签名
     var appid;//得到的签名
     $.ajax({
-        url:"ap/wechatInfo/getConfig",// 跳转到 action
+        url:"wechatInfo/getConfig",// 跳转到 action
         async:true,
         type:'get',
         data:{url:location.href.split('#')[0]},//得到需要分享页面的url
@@ -127,7 +127,7 @@ var babyInfoSave = function(){
                     });
                     $.post('ap/knowledge/babyEmr/save',param,
                         function(data) {
-                            window.location.href ="ap/firstPage/knowledge?value=251314";
+                            window.location.href ="firstPage/knowledge?value=251314";
                         }, 'json');
                 }
             });
@@ -140,7 +140,7 @@ var babyInfoSave = function(){
             });
             $.post('ap/knowledge/babyEmr/save',param,
                 function(data) {
-                    window.location.href ="ap/firstPage/knowledge?value=251314";
+                    window.location.href ="firstPage/knowledge?value=251314";
                 }, 'json');
         }
     }

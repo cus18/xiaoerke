@@ -169,7 +169,7 @@ public class WebSSOController {
 	
 	@RequestMapping(value="appoint/logout")
 	public String logout(HttpServletRequest request, HttpServletResponse response){
-		return "redirect:" + Global.getConfig("authentication.basePath") + "/sso/logout?toUrl=" + WebUtil.getWebPath(request) + "/ap/firstPage/appoint";
+		return "redirect:" + Global.getConfig("authentication.basePath") + "/sso/logout?toUrl=" + WebUtil.getWebPath(request) + "/firstPage/appoint";
 	}
 	
 	private Cookie getCookie(HttpServletRequest request, String cookieName){

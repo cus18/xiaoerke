@@ -6,7 +6,7 @@ angular.module('controllers', ['ionic']).controller('constipationMediumCtrl', [
 
 
         var pData = {logContent:encodeURI("BMGL_43")};
-        $http({method:'post',url:'ap/util/recordLogs',params:pData});
+        $http({method:'post',url:'util/recordLogs',params:pData});
 
     }]);
 

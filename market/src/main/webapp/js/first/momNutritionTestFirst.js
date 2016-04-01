@@ -266,7 +266,7 @@ var lookResult = function(result,id){
 
 var recordLogs = function(val){
     $.ajax({
-        url:"ap/util/recordLogs",// 跳转到 action
+        url:"util/recordLogs",// 跳转到 action
         async:true,
         type:'get',
         data:{logContent:encodeURI(val)},
@@ -280,15 +280,15 @@ var recordLogs = function(val){
 }
 
 var Refresh = function(){
-    var share = "http://s22.baodf.com/xiaoerke-wxapp/ap/wechatInfo/fieldwork/wechat/author?url=http://s22.baodf.com/xiaoerke-wxapp/ap/wechatInfo/getUserWechatMenId?url=11&state='FXSY_PYQ'";
-    var share2 = "http://s22.baodf.com/xiaoerke-wxapp/ap/wechatInfo/fieldwork/wechat/author?url=http://s22.baodf.com/xiaoerke-wxapp/ap/wechatInfo/getUserWechatMenId?url=11&state='FXSY_PYXX'";
-    var share3 = "http://s11.baodf.com/xiaoerke-marketing-webapp/ap/firstPage/momNutritionTest";
+    var share = "http://s22.baodf.com/xiaoerke-wxapp/wechatInfo/fieldwork/wechat/author?url=http://s22.baodf.com/xiaoerke-wxapp/wechatInfo/getUserWechatMenId?url=11&state='FXSY_PYQ'";
+    var share2 = "http://s22.baodf.com/xiaoerke-wxapp/wechatInfo/fieldwork/wechat/author?url=http://s22.baodf.com/xiaoerke-wxapp/wechatInfo/getUserWechatMenId?url=11&state='FXSY_PYXX'";
+    var share3 = "http://s11.baodf.com/xiaoerke-marketing-webapp/firstPage/momNutritionTest";
     var timestamp;//时间戳
     var nonceStr;//随机字符串
     var signature;//得到的签名
     var appid;//得到的签名
     $.ajax({
-        url:"ap/wechatInfo/getConfig",// 跳转到 action
+        url:"wechatInfo/getConfig",// 跳转到 action
         async:true,
         type:'get',
         data:{url:location.href.split('#')[0]},//得到需要分享页面的url

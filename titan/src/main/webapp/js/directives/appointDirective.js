@@ -14,7 +14,7 @@ define(['appAppoint','jquery'], function (app,$) {
                     '</div> </div>',
                     link: function(scope,ele,attrs) {
                         scope.appointmentFirst = function(){
-                            window.location.href = "ap/firstPage/appoint";
+                            window.location.href = "firstPage/appoint";
                         }
                         scope.goBack = function(){
                             history.back();
@@ -38,7 +38,7 @@ define(['appAppoint','jquery'], function (app,$) {
                     '</p><a  class="f2 c1"href="tel:4006237120">客服电话：400-623-7120</a></p></div>',
                     link: function(scope) {
                         scope.appointmentFirst = function(){
-                            window.location.href = "ap/firstPage/appoint";
+                            window.location.href = "firstPage/appoint";
                         }
                     }
                 }

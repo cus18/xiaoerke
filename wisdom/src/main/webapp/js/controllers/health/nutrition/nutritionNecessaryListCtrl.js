@@ -7,7 +7,7 @@ angular.module('controllers', ['ionic']).controller('nutritionNecessaryListCtrl'
             $scope.title = $stateParams.type;
             if($stateParams.type=="工具"){
                 var pData = {logContent:encodeURI("YYGL_MMBB_GJ")};
-                $http({method:'post',url:'ap/util/recordLogs',params:pData});
+                $http({method:'post',url:'util/recordLogs',params:pData});
                 $scope.necessaryList = [
                     { title:"食物称",
                       introduce:"可用于称量各种食物，帮助宝妈控制宝宝的食量，让宝宝均衡饮食。",
@@ -145,7 +145,7 @@ angular.module('controllers', ['ionic']).controller('nutritionNecessaryListCtrl'
             }
             if($stateParams.type=="蔬菜"){
                 var pData = {logContent:encodeURI("YYGL_MMBB_SC")};
-                $http({method:'post',url:'ap/util/recordLogs',params:pData});
+                $http({method:'post',url:'util/recordLogs',params:pData});
                 $scope.necessaryList = [
                     { title:"西红柿",
                         introduce:"农场直供，新鲜安全，而且快速送达。西红柿可生吃可熟食，生吃能补充维生素C，煮熟后可补充西红柿素和抗氧化剂。",
@@ -241,7 +241,7 @@ angular.module('controllers', ['ionic']).controller('nutritionNecessaryListCtrl'
             }
             if($stateParams.type=="水果"){
                 var pData = {logContent:encodeURI("YYGL_MMBB_SG")};
-                $http({method:'post',url:'ap/util/recordLogs',params:pData});
+                $http({method:'post',url:'util/recordLogs',params:pData});
                 $scope.necessaryList = [
                     { title:"橘子",
                         introduce:"皮薄肉嫩、汁多香甜、味道独特甘香，气味绕齿绵绵不绝",
@@ -317,7 +317,7 @@ angular.module('controllers', ['ionic']).controller('nutritionNecessaryListCtrl'
             }
             if($stateParams.type=="图书"){
                 var pData = {logContent:encodeURI("YYGL_MMBB_TS")};
-                $http({method:'post',url:'ap/util/recordLogs',params:pData});
+                $http({method:'post',url:'util/recordLogs',params:pData});
                 $scope.necessaryList = [
                     { title:"好喜欢吃蔬菜",
                         introduce:"《好喜欢吃蔬菜》以孩童的视角看待常见的蔬菜。白萝卜、胡萝卜、黄瓜、番茄、土豆……轮番上场，都被作者赋予了生命，全都有五官，并表现出形式各异的种种表情。这样的可爱的蔬菜，以及书中小朋友的感叹“好喜欢吃蔬菜”，很容易让孩子获得对蔬菜的好感，养成不挑食的习惯。",

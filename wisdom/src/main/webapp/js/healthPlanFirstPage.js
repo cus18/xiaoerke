@@ -19,7 +19,7 @@ var healthPlanFirstPageInit = function() {
         data: {},
         complete: function(jqXHR){
             if(jqXHR.status=="404"){
-                window.location.href = "ap/firstPage/healthPlan";
+                window.location.href = "firstPage/healthPlan";
             }
         },
         success:function(data){
@@ -29,7 +29,7 @@ var healthPlanFirstPageInit = function() {
 }
 
 var healthPlanFirst = function(){
-    var paramValue = '{routePath:"/ap/firstPage/healthPlan"}';
+    var paramValue = '{routePath:"/firstPage/healthPlan"}';
     $.ajaxSetup({
         contentType : 'application/json',
     });
@@ -108,7 +108,7 @@ var healthPlanFirst = function(){
 
 var recordLogs = function(val){
     $.ajax({
-        url:"ap/util/recordLogs",// 跳转到 action
+        url:"util/recordLogs",// 跳转到 action
         async:true,
         type:'post',
         data:{logContent:val},

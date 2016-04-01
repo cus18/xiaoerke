@@ -14,10 +14,10 @@ define(['appPhoneConsult','jquery'], function (app,$) {
                     '</div> </div>',
                     link: function(scope,ele,attrs) {
                         scope.appointmentFirst = function(){
-                            window.location.href = "ap/firstPage/phoneConsult";
+                            window.location.href = "firstPage/phoneConsult";
                         };
                         scope.myself = function(){
-                            window.location.href = "ap/phoneConsult#/selfCenter";
+                            window.location.href = "phoneConsult#/selfCenter";
                         }
                         scope.goBack = function(){
                             history.back();
@@ -41,7 +41,7 @@ define(['appPhoneConsult','jquery'], function (app,$) {
                 '</p><a class="c1 f2" href="tel:4006237120">客服电话：400-623-7120</a></p></div>',
                 link: function(scope) {
                     scope.appointmentFirst = function(){
-                        window.location.href = "ap/firstPage/phoneConsult";
+                        window.location.href = "firstPage/phoneConsult";
                     }
                 }
             }

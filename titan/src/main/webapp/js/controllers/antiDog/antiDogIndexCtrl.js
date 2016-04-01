@@ -18,7 +18,7 @@ angular.module('controllers', ['ionic']).controller('antiDogIndexCtrl', [
         //点击页面右下角 赔
         $scope.goPay = function(){
             var pData = {logContent:encodeURI("FQB_FWXQ_PEI")};
-        	$http({method:'post',url:'ap/util/recordLogs',params:pData});
+        	$http({method:'post',url:'util/recordLogs',params:pData});
             $state.go('antiDogOrderList');
         };
 
@@ -26,13 +26,13 @@ angular.module('controllers', ['ionic']).controller('antiDogIndexCtrl', [
         //点击立即购买
         $scope.goBuy = function(){
         	var pData = {logContent:encodeURI("FQB_FWXQ_LJGM")};
-        	$http({method:'post',url:'ap/util/recordLogs',params:pData});
-            window.location.href = "/xiaoerke-insurance-webapp/antiDogPay/patientPay.do?" + "&chargePrice=15000";
+        	$http({method:'post',url:'util/recordLogs',params:pData});
+            window.location.href = "antiDogPay/patientPay.do?" + "&chargePrice=15000";
         };
 
         $scope.$on('$ionicView.enter', function(){
         	var pData = {logContent:encodeURI("FQB_FWXQ")};
-        	$http({method:'post',url:'ap/util/recordLogs',params:pData});
+        	$http({method:'post',url:'util/recordLogs',params:pData});
         	getInsuranceRegisterServiceByOpenid.get(function (data){
              	if(data.insurance=="0"){
                  	$("#payOut").hide();
@@ -46,7 +46,7 @@ angular.module('controllers', ['ionic']).controller('antiDogIndexCtrl', [
             var signature;//得到的签名
             var appid;//得到的签名
             $.ajax({
-                url:"ap/wechatInfo/getConfig",// 跳转到 action
+                url:"wechatInfo/getConfig",// 跳转到 action
                 async:true,
                 type:'get',
                 data:{url:location.href.split('#')[0]},//得到需要分享页面的url

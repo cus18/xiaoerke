@@ -19,7 +19,7 @@ var doRefresh = function(){
     var signature;//得到的签名
     var appid;//得到的签名
     $.ajax({
-        url:"ap/wechatInfo/getConfig",// 跳转到 action
+        url:"wechatInfo/getConfig",// 跳转到 action
         async:true,
         type:'get',
         data:{url:location.href.split('#')[0]},//得到需要分享页面的url
@@ -76,27 +76,11 @@ var doRefresh = function(){
         error : function() {
         }
     });
-
-//    $.ajax({
-//        url:"ap/insurance/getInsuranceRegisterServiceByOpenid",// 跳转到 action
-//        async:true,
-//        type:'get',
-//        data:{},
-//        cache:false,
-//        dataType:'json',
-//        success:function(data) {
-//            if(data.insurance==0){
-//                $("#payOut").hide();
-//            }
-//        },
-//        error : function() {
-//        }
-//    });
 }
 
 var recordLogs = function(val){
     $.ajax({
-        url:"ap/util/recordLogs",// 跳转到 action
+        url:"util/recordLogs",// 跳转到 action
         async:true,
         type:'get',
         data:{logContent:encodeURI(val)},
@@ -129,5 +113,5 @@ var read = function(){
 //点击页面右下角 赔
 var goPay = function(){
     recordLogs("FQB_FWXQ_PEI");
-    window.location.href = "ap/insurance#/antiDogOrderList";
+    window.location.href = "insurance#/antiDogOrderList";
 };

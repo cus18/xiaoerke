@@ -5,7 +5,7 @@ angular.module('controllers', ['ionic']).controller('constipationWeightCtrl', [
         $scope.num = [];
 
         var pData = {logContent:encodeURI("BMGL_46")};
-        $http({method:'post',url:'ap/util/recordLogs',params:pData});
+        $http({method:'post',url:'util/recordLogs',params:pData});
 
     }]);
 

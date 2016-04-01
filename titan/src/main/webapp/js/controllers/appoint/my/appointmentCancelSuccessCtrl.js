@@ -9,12 +9,12 @@
             $scope.relationType =  $stateParams.relationType;
 
             $scope.appointmentFirst = function(){
-                window.location.href = "ap/firstPage/appoint";
+                window.location.href = "firstPage/appoint";
             }
 
             $scope.$on('$ionicView.enter', function(){
                 $scope.pageLoading = true;
-                var routePath = "/ap/appointBBBBBB" + $location.path();
+                var routePath = "/appointBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath:routePath},function(data){
                     $scope.pageLoading = false;
                     if(data.status=="9") {

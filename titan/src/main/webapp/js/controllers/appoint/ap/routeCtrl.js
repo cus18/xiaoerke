@@ -8,7 +8,7 @@
 
             $scope.$on('$ionicView.enter', function(){
                 $scope.pageLoading = true;
-                var routePath = "/ap/appointBBBBBB" + $location.path();
+                var routePath = "/appointBBBBBB" + $location.path();
                 AppointmentStatus.save({register_service_id:$stateParams.sys_regist_id,
                     routePath:routePath},function(data){
                     $scope.pageLoading = false;

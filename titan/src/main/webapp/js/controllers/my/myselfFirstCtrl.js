@@ -43,7 +43,7 @@
                 $scope.myslefBindStatus="false";
 
                 $scope.pageLoading = true;
-                var routePath = "/ap/appointBBBBBB" + $location.path();
+                var routePath = "/appointBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath:routePath},function(data){
                     $scope.pageLoading = false;
                     if(data.status=="9") {

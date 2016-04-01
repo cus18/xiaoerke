@@ -14,7 +14,7 @@
             });
 
             $scope.buttonAction = function(){
-                window.location.href="ap/firstPage/appoint";
+                window.location.href="firstPage/appoint";
             }
 
     }])

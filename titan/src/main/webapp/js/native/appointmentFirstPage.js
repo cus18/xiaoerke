@@ -71,7 +71,7 @@ var roundPage = function(){
 
 var recordLogs = function(val){
     $.ajax({
-        url:"ap/util/recordLogs",// 跳转到 action
+        url:"util/recordLogs",// 跳转到 action
         async:true,
         type:'get',
         data:{logContent:encodeURI(val)},
@@ -112,7 +112,7 @@ var chooseHospital = function(){
     $.ajaxSetup({
         contentType : 'application/json'
     });
-    $.post('ap/sys/hospital',param,
+    $.post('sys/hospital',param,
         function(data) {
             if(data!=null ){
                 var hospitalList = "";
@@ -136,10 +136,10 @@ var directHospital = function(hospitalId,hospitalName,hospitalType){
 
     if( hospitalId=="626487c34f954abd90e188bb40341995"|| hospitalId=="faa875abfe9748438111aa208151f1ed"|| hospitalId=="dda909f2fd79403b9a47b63ce11fd5a4"|| hospitalId=="e6845738a532467d8257a0f69a18903c"|| hospitalId=="508c345c3ddb4d25b1551cf7ff55031f"|| hospitalId=="c1e4456b874d44208b58f1fa72e24e96")
     {
-        window.location.href = "ap/appoint#/cooperationHospital/" + hospitalId;
+        window.location.href = "appoint#/cooperationHospital/" + hospitalId;
     }
     else{
-        window.location.href = "ap/appoint#/searchList/" + hospitalId + ",searchDoctorByHospitalName," + hospitalName;
+        window.location.href = "appoint#/searchList/" + hospitalId + ",searchDoctorByHospitalName," + hospitalName;
     }
 }
 
@@ -150,7 +150,7 @@ var chooseIllness = function(){
     $.ajaxSetup({
         contentType : 'application/json'
     });
-    $.post('ap/sys/illness/first',param,
+    $.post('sys/illness/first',param,
         function(data) {
             if(data!=null ){
                 var illnessFirstList = "";
@@ -176,7 +176,7 @@ var selectIllnessDetail = function(chooseFirstIllnessName,firstIllnessItem){
     $.ajaxSetup({
         contentType : 'application/json'
     });
-    $.post('ap/sys/illness/second',param,
+    $.post('sys/illness/second',param,
         function(data) {
             if(data!=null ){
                 var illnessSecondList = "";
@@ -189,7 +189,7 @@ var selectIllnessDetail = function(chooseFirstIllnessName,firstIllnessItem){
         }, 'json');
 }
 var searchSecondIllness = function(illnessSecondId,illnessSecondName){
-    window.location.href = window.location.href = "ap/appoint#/searchList/" + illnessSecondId + ",searchDoctorByIllnessSecondId," + illnessSecondName;
+    window.location.href = window.location.href = "appoint#/searchList/" + illnessSecondId + ",searchDoctorByIllnessSecondId," + illnessSecondName;
 }
 
 /*时间列表*/
@@ -199,7 +199,7 @@ var chooseTime = function(){
     $.ajaxSetup({
         contentType : 'application/json'
     });
-    $.post('ap/register/user/time',param,
+    $.post('register/user/time',param,
         function(data) {
             if(data!=null ){
                 var timeList = "";
@@ -218,7 +218,7 @@ var chooseTime = function(){
 }
 var searchAppointmentByDate = function(searchDate){
     searchDate = searchDate.replace("/","%252F");
-    window.location.href = "ap/appoint#/searchList/" + searchDate + ",searchDoctorByDate," + searchDate;
+    window.location.href = "appoint#/searchList/" + searchDate + ",searchDoctorByDate," + searchDate;
 }
 /*专家团*/
 var chooseDoctorGroup = function(){
@@ -227,7 +227,7 @@ var chooseDoctorGroup = function(){
     $.ajaxSetup({
         contentType : 'application/json'
     });
-    $.post('ap/sys/doctor/group',param,
+    $.post('sys/doctor/group',param,
         function(data) {
             if(data!=null ){
                 var doctorGroupList = "";
@@ -273,7 +273,7 @@ var chooseDoctorGroup = function(){
     recordLogs("doctorGroupIndex");
 }
 var chooseDoctorGroupList = function(groupId){
-    window.location.href = "ap/appoint#/doctorGroupList/"+groupId;
+    window.location.href = "appoint#/doctorGroupList/"+groupId;
 }
 var getDoctorGroupDescription = function(val){
     return val.replace(/(.{22})/g,'$1<br/>')
@@ -326,7 +326,7 @@ var seaHis = function() {
     $.ajaxSetup({
         contentType : 'application/json'
     });
-    $.post('ap/search/user/PatientSearchList',param,
+    $.post('search/user/PatientSearchList',param,
         function(data) {
             if(data!=null ){
                 var searchHistoryList = "";
@@ -345,12 +345,12 @@ var seaHis = function() {
 }
 
 var searchByName = function(searchData){
-    window.location.href = "ap/appoint#/searchList/" + searchData + ",searchDoctorByOpenSearch," + searchData;
+    window.location.href = "appoint#/searchList/" + searchData + ",searchDoctorByOpenSearch," + searchData;
 }
 var cancelSearch = function(){
     $(".sea-his").hide();
     $(".banner_visual").show();
-    var myItem = '<a class= my" href="ap/appoint#/myselfFirst/,"><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fmy1.png" ' +
+    var myItem = '<a class= my" href="appoint#/myselfFirst/,"><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fmy1.png" ' +
         'width="22" height="22"> </a>'
     $(".head .right").html(myItem);
 }
@@ -362,7 +362,7 @@ var removeAllSearchHistory = function(){
     $.ajaxSetup({
         contentType : 'application/json'
     });
-    $.post('ap/search/user/RemoveAllSearchHistory',param,
+    $.post('search/user/RemoveAllSearchHistory',param,
         function(data) {
         }, 'json');
 }
@@ -389,12 +389,12 @@ var lightLock = function(){
 }
 var myAppointment = function(){
     recordLogs("快速入口-我的预约");
-    window.location.href="ap/appoint#/myAppointment";
+    window.location.href="appoint#/myAppointment";
 }
 var consultDoc = function(){
     recordLogs("快速入口-咨询医生");
     $.ajax({
-        url:"ap/wechatInfo/postInfoToWechat",// 跳转到 action
+        url:"wechatInfo/postInfoToWechat",// 跳转到 action
         async:true,
         type:'post',
         data:{},//得到需要分享页面的url
@@ -412,5 +412,5 @@ var consultDoc = function(){
     });
 }
 var opinionFeedback = function(){
-    window.location.href="ap/baoFansCamp#/feedback";
+    window.location.href="baoFansCamp#/feedback";
 }

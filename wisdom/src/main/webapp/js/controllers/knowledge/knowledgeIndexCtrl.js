@@ -254,14 +254,14 @@
             }
 
             $scope.doRefresh = function(){
-                var shareUrl ='http://baodf.com/xiaoerke-knowledge/ap/wechatInfo/fieldwork/wechat/' +
-                    'author?url=http://baodf.com/xiaoerke-knowledge/ap/wechatInfo/getZhengIndex';
+                var shareUrl ='http://baodf.com/xiaoerke-knowledge/wechatInfo/fieldwork/wechat/' +
+                    'author?url=http://baodf.com/xiaoerke-knowledge/wechatInfo/getZhengIndex';
                 var timestamp;//时间戳
                 var nonceStr;//随机字符串
                 var signature;//得到的签名
                 var appid;//得到的签名
                 $.ajax({
-                    url:"ap/wechatInfo/getConfig",// 跳转到 action
+                    url:"wechatInfo/getConfig",// 跳转到 action
                     async:true,
                     type:'get',
                     data:{url:location.href.split('#')[0]},//得到需要分享页面的url

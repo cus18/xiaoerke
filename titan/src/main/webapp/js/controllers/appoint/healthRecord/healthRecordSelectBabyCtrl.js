@@ -22,19 +22,19 @@ angular.module('controllers', ['ionic']).controller('healthRecordSelectBabyCtrl'
         //修改宝宝信息
         $scope.updateBaby = function(id){
             //$state.go("healthRecordUpdateBaby",{index:id});
-            window.location.href ="ap/appoint?value=251335#/healthRecordUpdateBaby/"+id+","+$stateParams.page+","+$scope.conid;
+            window.location.href ="appoint?value=251335#/healthRecordUpdateBaby/"+id+","+$stateParams.page+","+$scope.conid;
         };
         $scope.addBaby = function(){
             //$state.go("healthRecordAddBaby");
         	if($stateParams.page=="1"){
-            window.location.href ="ap/appoint?value=251334#/healthRecordAddBaby/"+$stateParams.page+","+$stateParams.conid;
+            window.location.href ="appoint?value=251334#/healthRecordAddBaby/"+$stateParams.page+","+$stateParams.conid;
         	}else{
-        		window.location.href ="ap/appoint?value=251334#/healthRecordAddBaby/"+$stateParams.page+",0";
+        		window.location.href ="appoint?value=251334#/healthRecordAddBaby/"+$stateParams.page+",0";
         	}
         	};
         
         $scope.$on('$ionicView.enter',function() {
-        	var routePath = "/ap/appointBBBBBB" + $location.path();
+        	var routePath = "/appointBBBBBB" + $location.path();
         	GetUserLoginStatus.save({routePath:routePath},function(data){
 	            if(data.status=="9") {
 	                window.location.href = data.redirectURL;

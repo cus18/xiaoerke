@@ -9,7 +9,7 @@
             });
 
             $scope.goFirst = function () {
-                window.location.href = "ap/firstPage/phoneConsult";
+                window.location.href = "firstPage/phoneConsult";
             }
 
     }])

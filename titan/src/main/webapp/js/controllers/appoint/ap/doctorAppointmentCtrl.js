@@ -29,7 +29,7 @@
         $scope.du = "1";
         $scope.order = {};
         $scope.bookRemindLock =false;
-        var routePath = encodeURI(encodeURI("/ap/appointBBBBBB" + $location.path()));
+        var routePath = encodeURI(encodeURI("/appointBBBBBB" + $location.path()));
 
         //默认的医生出诊地点位置
         $scope.doctorId = $stateParams.doctorId;

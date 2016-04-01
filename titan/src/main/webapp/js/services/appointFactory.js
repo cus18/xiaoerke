@@ -2,9 +2,9 @@
  * 取得实际位置
  * 调用方式：geoFactory.getGeo();
  */
-var user_h5 = '/xiaoerke-appoint/ap/'
-var wxChat = '/xiaoerke-appoint/ap/wechatInfo/'
-var healthRecord='/xiaoerke-appoint/ap/healthRecord/'
+var user_h5 = ''
+var wxChat = 'wechatInfo/'
+var healthRecord='healthRecord/'
 
 define(['appAppoint'], function (app) {
     app
@@ -300,9 +300,9 @@ define(['appAppoint'], function (app) {
                 var runFirstRequest = function(redirectParam,routeParam,goParam,hrefParam,action) {
                     var routePath = "";
                     if(action=="go"){
-                        routePath = "/ap/appointBBBBBB/"+redirectParam+"/"+routeParam;
+                        routePath = "/appointBBBBBB/"+redirectParam+"/"+routeParam;
                     } else if(action=="notGo"){
-                        routePath = "/ap/appointBBBBBB/"+redirectParam;
+                        routePath = "/appointBBBBBB/"+redirectParam;
                     }
                     GetUserLoginStatus.save({routePath:routePath},function(data){
                         if(data.status=="9") {

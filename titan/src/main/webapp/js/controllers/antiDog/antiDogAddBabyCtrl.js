@@ -45,7 +45,7 @@ angular.module('controllers', ['ionic']).controller('antiDogAddBabyCtrl', [
             });
         }
         $scope.$on('$ionicView.enter',function() {
-            var routePath = "/ap/insuranceBBBBBB" + $location.path();
+            var routePath = "/insuranceBBBBBB" + $location.path();
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 if(data.status=="9") {
                     window.location.href = data.redirectURL;

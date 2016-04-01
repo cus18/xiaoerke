@@ -19,7 +19,7 @@
 
             $scope.$on('$ionicView.enter', function(){
                 $scope.pageLoading = true;
-                var routePath = "/ap/appointBBBBBB" + $location.path();
+                var routePath = "/appointBBBBBB" + $location.path();
                 MyselfInfoAppointmentDetail.save({patient_register_service_id :
                     $stateParams.patient_register_service_id,
                     routePath:routePath

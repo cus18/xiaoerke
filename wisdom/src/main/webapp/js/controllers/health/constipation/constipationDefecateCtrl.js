@@ -11,7 +11,7 @@ angular.module('controllers', ['ionic']).controller('constipationDefecateCtrl', 
         var planTaskId = "";
 
         var pData = {logContent:encodeURI("BMGL_50")};
-        $http({method:'post',url:'ap/util/recordLogs',params:pData});
+        $http({method:'post',url:'util/recordLogs',params:pData});
 
         $scope.checkCard=function(){
             PushTicket.save({"plan_info_task_id":parseInt(planTaskId)},function (data) {

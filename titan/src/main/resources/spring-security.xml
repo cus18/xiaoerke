@@ -6,27 +6,27 @@
         http://www.springframework.org/schema/security 
         http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
-	<http pattern="consultPhone/**" security="none" />
-	<http pattern="register/**" security="none" />
-	<http pattern="sys/**" security="none" />
-	<http pattern="search/**" security="none" />
-	<http pattern="util/**" security="none" />
-	<http pattern="marketingInfo/**" security="none" />
-	<http pattern="feedback/**" security="none" />
-	<http pattern="member/user/checkIfAppScanDoctor" security="none" />
-	<http pattern="member/user/extendMemberService" security="none" />
-	<http pattern="appoint" security="none" />
-	<http pattern="phoneConsult" security="none" />
-	<http pattern="baoFansCamp" security="none" />
-	<http pattern="wechatInfo/**" security="none" />
-	<http pattern="user/getPayNotifyInfo" security="none" />
-	<http pattern="firstPage/**" security="none" />
-	<http pattern="info/user" security="none" />
-	<http pattern="wechatInfo/getCustomerEvaluation" security="none" />
+	<http pattern="**/consultPhone/**" security="none" />
+	<http pattern="**/register/**" security="none" />
+	<http pattern="**/sys/**" security="none" />
+	<http pattern="**/search/**" security="none" />
+	<http pattern="**/util/**" security="none" />
+	<http pattern="**/marketingInfo/**" security="none" />
+	<http pattern="**/feedback/**" security="none" />
+	<http pattern="**/member/user/checkIfAppScanDoctor" security="none" />
+	<http pattern="**/member/user/extendMemberService" security="none" />
+	<http pattern="**/appoint" security="none" />
+	<http pattern="**/phoneConsult" security="none" />
+	<http pattern="**/baoFansCamp" security="none" />
+	<http pattern="**/wechatInfo/**" security="none" />
+	<http pattern="**/user/getPayNotifyInfo" security="none" />
+	<http pattern="**/firstPage/**" security="none" />
+	<http pattern="**/info/user" security="none" />
+	<http pattern="**/wechatInfo/getCustomerEvaluation" security="none" />
 
-	<http pattern="/**" use-expressions="true" entry-point-ref="authenticationProcessingFilterEntryPoint" >
-		<intercept-url pattern="/**" access="isAuthenticated()" />
-		<logout logout-url="/logout" logout-success-url="/sso/appoint/logout" delete-cookies="JSESSIONID" />
+	<http pattern="**/**" use-expressions="true" entry-point-ref="authenticationProcessingFilterEntryPoint" >
+		<intercept-url pattern="**/**" access="isAuthenticated()" />
+		<logout logout-url="**/logout" logout-success-url="/sso/appoint/logout" delete-cookies="JSESSIONID" />
 		<!-- 实现免登陆验证 -->
 		<remember-me user-service-ref="myUserDetailsService" />
 		<session-management invalid-session-url="/">
@@ -43,7 +43,7 @@
 	<beans:bean id="myAuthenticationProcessingFilter"
 		class="com.cxqm.xiaoerke.webapp.security.MyAuthenticationProcessingFilter">
 		<!-- 处理登录的action -->
-		<beans:property name="filterProcessesUrl" value="/auth_center/form" />
+		<beans:property name="filterProcessesUrl" value="**/auth_center/form" />
 		<!-- 验证成功后的处理 -->
 		<beans:property name="authenticationSuccessHandler" ref="loginLogAuthenticationSuccessHandler" />
 		<!-- 验证失败后的处理 -->

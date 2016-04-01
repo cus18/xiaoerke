@@ -11,8 +11,7 @@
             };
             /*我的资料*/
             $scope.myInfo = function(){
-                window.location.href="ap/appoint#/myInfo/"+$scope.myselfInfo.userPhoneNum;
-               /* window.location.href = "/xiaoerke-appoint/ap/appoint#/healthRecordSelectBaby/"+index+",1,"+$stateParams.conid;*/
+                window.location.href="appoint#/myInfo/"+$scope.myselfInfo.userPhoneNum;
             };
             /* 当前订单*/
             $scope.currentOrder = function(){
@@ -33,9 +32,9 @@
             };
            /* 健康档案*/
             $scope.healthRecord = function(){
-                resolveUserLoginStatus.events("healthRecordIndex","","","ap/appoint#/healthRecordIndex/","notGo");
+                resolveUserLoginStatus.events("healthRecordIndex","","","appoint#/healthRecordIndex/","notGo");
             };
-            var routePath = "/ap/appointBBBBBB" + $location.path();
+            var routePath = "/appointBBBBBB" + $location.path();
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 $scope.pageLoading = false;
                 if(data.status=="9") {

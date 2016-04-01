@@ -19,7 +19,7 @@ angular.module('controllers', ['ionic']).controller('constipationFoodCtrl', [
         var num=0;
 
         var pData = {logContent:encodeURI("BMGL_51")};
-        $http({method:'post',url:'ap/util/recordLogs',params:pData});
+        $http({method:'post',url:'util/recordLogs',params:pData});
 
         $scope.$on('$ionicView.enter', function() {
             $scope.pageLoading = true;

@@ -21,7 +21,7 @@ angular.module('controllers', ['ionic']).controller('constipationFollowCtrl', [
 
 
         var pData = {logContent:encodeURI("BMGL_37")};
-        $http({method:'post',url:'ap/util/recordLogs',params:pData});
+        $http({method:'post',url:'util/recordLogs',params:pData});
 
 
 
@@ -51,14 +51,14 @@ angular.module('controllers', ['ionic']).controller('constipationFollowCtrl', [
             }
             else if(index==1){
                 var pData = {logContent:encodeURI("BMGL_38")};
-                $http({method:'post',url:'ap/util/recordLogs',params:pData});
+                $http({method:'post',url:'util/recordLogs',params:pData});
                 getQuestion("好了");
                 $scope.wellLock=true;
             }
             else if(index==2){
                 $scope.change();
                 var pData = {logContent:encodeURI("BMGL_39")};
-                $http({method:'post',url:'ap/util/recordLogs',params:pData});
+                $http({method:'post',url:'util/recordLogs',params:pData});
                 getQuestion("无好转");
                 $state.go('constipationWShortDeal',{type:"next"});
             }
@@ -95,13 +95,13 @@ angular.module('controllers', ['ionic']).controller('constipationFollowCtrl', [
         // 第三种情况之未见好转
         $scope.noBetter=function(){
             var pData = {logContent:encodeURI("BMGL_39")};
-            $http({method:'post',url:'ap/util/recordLogs',params:pData});
+            $http({method:'post',url:'util/recordLogs',params:pData});
             getQuestion("无好转");
             $scope.noBetterLock=true;
         }
         $scope.better=function(){
             var pData = {logContent:encodeURI("BMGL_38")};
-            $http({method:'post',url:'ap/util/recordLogs',params:pData});
+            $http({method:'post',url:'util/recordLogs',params:pData});
             getQuestion("好了");
             $scope.wellLock=true;
         }

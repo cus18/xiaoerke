@@ -8,7 +8,7 @@ var doRefresh = function(){
     var signature;//得到的签名
     var appid;//得到的签名
     $.ajax({
-        url:"ap/wechatInfo/getConfig",// 跳转到 action
+        url:"wechatInfo/getConfig",// 跳转到 action
         async:true,
         type:'get',
         data:{url:location.href.split('#')[0]},//得到需要分享页面的url
@@ -348,7 +348,7 @@ var wxPay = function () {
                 paySign:obj.paySign,  // 支付签名
                 success: function (res) {
                     if(res.errMsg == "chooseWXPay:ok" ) {
-                        window.location.href = "ap/appoint#/memberServiceSuccess/"+patient_register_service_id;
+                        window.location.href = "appoint#/memberServiceSuccess/"+patient_register_service_id;
                     }else{
                         alert("支付失败,请重新支付")
                     }

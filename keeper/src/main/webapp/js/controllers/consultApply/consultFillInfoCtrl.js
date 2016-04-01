@@ -24,7 +24,7 @@
         //选择宝宝
         $scope.selectBaby= function(){
         	var index=$scope.babyListIndex;
-            window.location.href = "/xiaoerke-appoint/ap/appoint#/healthRecordSelectBaby/"+index+",1,"+$stateParams.conid;
+            window.location.href = "/xiaoerke-appoint/appoint#/healthRecordSelectBaby/"+index+",1,"+$stateParams.conid;
         };
 
         $scope.consultHistory = function(){
@@ -214,7 +214,7 @@
             var signature;//得到的签名
             var appid;//得到的签名
             $.ajax({
-                url:"ap/wechatInfo/getConfig",// 跳转到 action
+                url:"wechatInfo/getConfig",// 跳转到 action
                 async:true,
                 type:'get',
                 data:{url:location.href.split('#')[0]},//得到需要分享页面的url

@@ -143,7 +143,7 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
         try {
         	patientRegisterPraiseDao.saveCustomerEvaluation(params);;
         	String st = "您已评价成功，为了让更多的宝爸宝妈体验到我们真诚的服务，您可将此次体验分享给您的朋友。【" +
-                    "<a href='http://xiaoxiaoerke.cn/xiaoerke-appoint/ap/appoint#/consultShare'>我要分享</a>】";
+                    "<a href='http://xiaoxiaoerke.cn/xiaoerke-appoint/appoint#/consultShare'>我要分享</a>】";
         Map<String,Object> parameter = systemService.getWechatParameter();
         String token = (String)parameter.get("token");
 			openId = "oogbDwCLH1_x-KLcQKqlrmUzG2ng";
@@ -186,7 +186,7 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 		searchMap.put("id", patientRegisterServiceId);
 		HashMap<String, Object> resultMap  = patientRegisterService.getOrderInfoById(searchMap);
 
-		PatientMsgTemplate.shareRemind2Wechat(openId,token,(String)resultMap.get("babyName"),(String)resultMap.get("doctorName") ,"http://baodf.com/xiaoerke-appoint/ap/appoint#/sharedDetail/"+patientRegisterServiceId+",false,");
+		PatientMsgTemplate.shareRemind2Wechat(openId,token,(String)resultMap.get("babyName"),(String)resultMap.get("doctorName") ,"http://baodf.com/xiaoerke-appoint/appoint#/sharedDetail/"+patientRegisterServiceId+",false,");
 
 		response.put("patient_register_service_id", patientRegisterServiceId);
 		response.put("status", '1');

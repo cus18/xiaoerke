@@ -271,7 +271,7 @@ angular.module('controllers', ['ionic']).controller('AppointmentConfirmCtrl', [
                             var patient_register_service_id = data.patient_register_service_id;
                             if (data.status == "0") {
                                 alert("亲，此号刚被人预约走，敬请谅解，还请另约其他号，谢谢");
-                                $state.go('ap/firstPage/appointment');
+                                $state.go('firstPage/appointment');
                             } else {
                                 $rootScope.unBindUserPhoneNum = $scope.info.userPhone
                                 if ($stateParams.needPay == "true") {
@@ -422,7 +422,7 @@ angular.module('controllers', ['ionic']).controller('AppointmentConfirmCtrl', [
              }
 
             $scope.pageLoading = true;
-            var routePath = "/ap/appointBBBBBB" + $location.path();
+            var routePath = "/appointBBBBBB" + $location.path();
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 $scope.pageLoading = false;
                 if(data.status=="9") {

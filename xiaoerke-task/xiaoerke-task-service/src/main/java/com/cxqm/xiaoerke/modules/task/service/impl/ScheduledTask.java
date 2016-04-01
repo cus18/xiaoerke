@@ -171,7 +171,7 @@ public class ScheduledTask {
                 String content = "亲爱的宝妈宝爸，目前宝宝已就诊24小时了，病情好些了吗？如果您对诊后病况、" +
                         "用药方法等还有疑问，请及时到宝大夫平台在线咨询，专业儿科医生将为您提供服务，祝宝宝早日康复。点击可查看如何咨询。";
                 PatientMsgTemplate.afterDiagnosisRemind2Wechat((String)map.get("openid"),token,(String)map.get("doctorName"),content,
-                        "http://baodf.com/xiaoerke-appoint/ap/appoint#/guideConsult");
+                        "http://baodf.com/xiaoerke-appoint/appoint#/guideConsult");
             }
             String status = "4";
             updateMonitorStatus(trackList, status);
@@ -685,7 +685,7 @@ public class ScheduledTask {
                 {
                     //消息修改
                     PatientMsgTemplate.evaluationRemind2Wechat((String) hashMap.get("openid"),
-                            (String) parameter.get("token"),"baodf.com/xiaoerke-appoint/ap/appoint#/evaluateList/"+
+                            (String) parameter.get("token"),"baodf.com/xiaoerke-appoint/appoint#/evaluateList/"+
                                     hashMap.get("patient_register_service_id"),"您的订单可以评价了哦!",
                             (String) hashMap.get("register_no"), (String) hashMap.get("create_date"),"");
                 }

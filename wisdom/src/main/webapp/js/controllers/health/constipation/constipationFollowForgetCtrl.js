@@ -6,7 +6,7 @@ angular.module('controllers', ['ionic']).controller('constipationFollowForgetCtr
         $scope.forgetImg="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fforget11.png";
 
         var pData = {logContent:encodeURI("BMGL_40")};
-        $http({method:'post',url:'ap/util/recordLogs',params:pData});
+        $http({method:'post',url:'util/recordLogs',params:pData});
 
         $scope.consultDoc = function(){
             $scope.change();

@@ -11,11 +11,11 @@ angular.module('controllers', ['ionic']).controller('constipationMShortDealCtrl'
             "http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2FmShortDeal5.jpg"
         ];
         var pData = {logContent:encodeURI("BMGL_44")};
-        $http({method:'post',url:'ap/util/recordLogs',params:pData});
+        $http({method:'post',url:'util/recordLogs',params:pData});
         //咨询医生
         $scope.consultDoc = function(){
             var pData = {logContent:encodeURI("BMGL_9")};
-            $http({method:'post',url:'ap/util/recordLogs',params:pData});
+            $http({method:'post',url:'util/recordLogs',params:pData});
             SendWechatMessageToUser.save({},function(data){
 
             });

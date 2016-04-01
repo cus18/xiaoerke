@@ -22,7 +22,7 @@
             "#3891cf","#69b3e4","#8b70b0","#ba81b6","#e179a8","#f0a7b3","#c8e6df","#c9e7f9","#f9d7e6",
             "#bdddf4","#e0cae2","#e0d5e9","#d5ece4","#fbe0e5","#fae4ee"];
 
-        var routePath = encodeURI(encodeURI("/ap/appointBBBBBB" + $location.path()));
+        var routePath = encodeURI(encodeURI("/appointBBBBBB" + $location.path()));
 
         //获取医生的信息
         DoctorDetail.get({"doctorId":$stateParams.doctorId},function(data){

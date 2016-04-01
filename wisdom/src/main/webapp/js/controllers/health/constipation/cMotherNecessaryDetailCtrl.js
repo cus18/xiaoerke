@@ -7,7 +7,7 @@ angular.module('controllers', ['ionic']).controller('cMotherNecessaryDetailCtrl'
             if($scope.necessaryNum==0){
 
                 var pData = {logContent:encodeURI("BMGL_32")};
-                $http({method:'post',url:'ap/util/recordLogs',params:pData});
+                $http({method:'post',url:'util/recordLogs',params:pData});
 
                 $scope.necessaryText= [
                     "宝宝便秘突然严重的时候",
@@ -57,7 +57,7 @@ angular.module('controllers', ['ionic']).controller('cMotherNecessaryDetailCtrl'
             if($scope.necessaryNum==1){
 
                 var pData = {logContent:encodeURI("BMGL_33")};
-                $http({method:'post',url:'ap/util/recordLogs',params:pData});
+                $http({method:'post',url:'util/recordLogs',params:pData});
 
                 $scope.necessaryText=[
                     "给宝宝做饭的这些食材是必须的",
@@ -121,7 +121,7 @@ angular.module('controllers', ['ionic']).controller('cMotherNecessaryDetailCtrl'
             if($scope.necessaryNum==2){
 
                 var pData = {logContent:encodeURI("BMGL_34")};
-                $http({method:'post',url:'ap/util/recordLogs',params:pData});
+                $http({method:'post',url:'util/recordLogs',params:pData});
 
                 $scope.necessaryText= [
                     "便盆要选宝宝专用的",
@@ -167,7 +167,7 @@ angular.module('controllers', ['ionic']).controller('cMotherNecessaryDetailCtrl'
             if($scope.necessaryNum==3){
 
                 var pData = {logContent:encodeURI("BMGL_35")};
-                $http({method:'post',url:'ap/util/recordLogs',params:pData});
+                $http({method:'post',url:'util/recordLogs',params:pData});
 
                 $scope.necessaryText=[
                     "宝宝通过看这些图书",
@@ -247,7 +247,7 @@ angular.module('controllers', ['ionic']).controller('cMotherNecessaryDetailCtrl'
 
         $scope.saveShopping = function(href){
             var pData = {logContent:encodeURI("BMGL_53")};
-            $http({method:'post',url:'ap/util/recordLogs',params:pData});
+            $http({method:'post',url:'util/recordLogs',params:pData});
             SaveShopping.save({"type":$stateParams.necessaryNum,"href":href},function(data){
 
             })

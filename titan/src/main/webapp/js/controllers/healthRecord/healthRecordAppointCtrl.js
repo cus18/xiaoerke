@@ -12,7 +12,7 @@
         }
 
         $scope.$on('$ionicView.enter',function() {
-        	var routePath = encodeURI(encodeURI("/ap/appointBBBBBB" + $location.path()));
+        	var routePath = encodeURI(encodeURI("/appointBBBBBB" + $location.path()));
         	GetUserLoginStatus.save({routePath:routePath},function(data){
 	            if(data.status=="9") {
 	                window.location.href = data.redirectURL;

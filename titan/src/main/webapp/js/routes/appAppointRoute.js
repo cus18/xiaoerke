@@ -102,13 +102,13 @@ define(['appAppoint'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.AppointmentConfirmCtrl',
-                                    ['js/controllers/appoint/ap/appointmentConfirmCtrl.js',
+                                    ['js/controllers/appoint/appointmentConfirmCtrl.js',
                                         'js/libs/moment.min.js',
                                         'js/libs/mobiscroll.custom-2.17.0.min.js',
                                         'js/libs/showBo.js',
-                                        'styles/lib/showBo.css','styles/appoint/ap/appointmentConfirm.less?ver'+appointVersion,
+                                        'styles/lib/showBo.css','styles/appoint/appointmentConfirm.less?ver'+appointVersion,
                                         'styles/lib/common.css','styles/lib/mobiscroll.custom-2.17.0.min.css'],
-                                    'js/views/appoint/ap/appointmentConfirm.html?ver='+appointVersion);
+                                    'js/views/appoint/appointmentConfirm.html?ver='+appointVersion);
                             }
                         }
                     })
@@ -132,10 +132,10 @@ define(['appAppoint'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.AppointmentSuccessCtrl',
-                                    ['js/controllers/appoint/ap/appointmentSuccessCtrl.js',
+                                    ['js/controllers/appoint/appointmentSuccessCtrl.js',
                                         'js/libs/moment.min.js',
-                                        'styles/appoint/ap/appointmentSuccess.less?ver'+appointVersion],
-                                    'js/views/appoint/ap/appointmentSuccess.html?ver='+appointVersion);
+                                        'styles/appoint/appointmentSuccess.less?ver'+appointVersion],
+                                    'js/views/appoint/appointmentSuccess.html?ver='+appointVersion);
                             }
                         }
                     })
@@ -201,9 +201,9 @@ define(['appAppoint'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.appointmentUseMemberCtrl',
-                                    ['js/controllers/appoint/ap/appointmentUseMemberCtrl.js',
-                                        'styles/appoint/ap/appointmentUseMember.less?ver'+appointVersion],
-                                    'js/views/appoint/ap/appointmentUseMember.html?ver='+appointVersion);
+                                    ['js/controllers/appoint/appointmentUseMemberCtrl.js',
+                                        'styles/appoint/appointmentUseMember.less?ver'+appointVersion],
+                                    'js/views/appoint/appointmentUseMember.html?ver='+appointVersion);
                             }
                         }
                     })

@@ -10,7 +10,7 @@
                 //送入type和action参数给后台接口，返回属性值
                 if($stateParams.action=="extend") {
                     $scope.pageLoading = true;
-                    var routePath = "/ap/appointBBBBBB/memberService/" +
+                    var routePath = "/appointBBBBBB/memberService/" +
                         $stateParams.memberType + "," +
                         $stateParams.action + "," + "";
                     GetUserLoginStatus.save({routePath:routePath},function(data){

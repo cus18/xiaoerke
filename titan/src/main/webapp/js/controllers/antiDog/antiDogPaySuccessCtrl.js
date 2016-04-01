@@ -10,13 +10,13 @@ angular.module('controllers', ['ionic']).controller('antiDogPaySuccessCtrl', [
 
         $scope.goFirstPage = function (){
         	var pData = {logContent:encodeURI("FQB_GMCC_FHSY")};
-            $http({method:'post',url:'ap/util/recordLogs',params:pData});
+            $http({method:'post',url:'util/recordLogs',params:pData});
         	/*$state.go('antiDogIndex');*/
-            window.location.href="/xiaoerke-insurance-webapp/ap/firstPage/antiDogFirst";
+            window.location.href="firstPage/antiDogFirst";
         };
         
         $scope.$on('$ionicView.enter', function(){
-        	var routePath = "/ap/insuranceBBBBBB" + $location.path();
+        	var routePath = "/insuranceBBBBBB" + $location.path();
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 if(data.status=="9") {
                     window.location.href = data.redirectURL;

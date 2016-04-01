@@ -15,7 +15,7 @@ angular.module('controllers', ['ionic']).controller('constipationKneadCtrl', [
         var planTaskId = "";
 
         var pData = {logContent:encodeURI("BMGL_49")};
-        $http({method:'post',url:'ap/util/recordLogs',params:pData});
+        $http({method:'post',url:'util/recordLogs',params:pData});
 
         $scope.$on('$ionicView.enter', function(){
             $scope.pageLoading = true;

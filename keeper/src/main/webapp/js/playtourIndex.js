@@ -162,7 +162,7 @@ var doRefresh = function(){
    var signature;//得到的签名
    var appid;//得到的签名
    $.ajax({
-       url:"/xiaoerke-wxapp/ap/wechatInfo/getConfig",// 跳转到 action
+       url:"/xiaoerke-wxapp/wechatInfo/getConfig",// 跳转到 action
        async:true,
        type:'get',
        data:{url:location.href.split('#')[0]},//得到需要分享页面的url

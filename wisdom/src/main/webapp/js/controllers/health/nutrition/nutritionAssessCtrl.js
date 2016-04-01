@@ -165,7 +165,7 @@ angular.module('controllers', ['ionic']).controller('nutritionAssessCtrl', [
                 }else{
                     $scope.commentImg = "http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Fdianjiqian_png_03.png";
                     var pData = {logContent:encodeURI("YYGL_PU")};
-                    $http({method:'post',url:'ap/util/recordLogs',params:pData});
+                    $http({method:'post',url:'util/recordLogs',params:pData});
                     if($stateParams.flag!="again"){
                         GetEvaluate.get({"flag":"evaluate"}, function (data) {
                             if(data.todayEvaluateMap.fishEggs!=undefined){
@@ -260,7 +260,7 @@ angular.module('controllers', ['ionic']).controller('nutritionAssessCtrl', [
 
         function setLog(item){
             var pData = {logContent:encodeURI(item)};
-            $http({method:'post',url:'ap/util/recordLogs',params:pData});
+            $http({method:'post',url:'util/recordLogs',params:pData});
         }
 
         function getLess(index){

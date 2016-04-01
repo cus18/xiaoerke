@@ -61,7 +61,7 @@ var roundPage = function(){
 }
 var recordLogs = function(val){
     $.ajax({
-        url:"ap/util/recordLogs",// 跳转到 action
+        url:"util/recordLogs",// 跳转到 action
         async:true,
         type:'get',
         data:{logContent:encodeURI(val)},
@@ -97,7 +97,7 @@ var chooseMenu=function(item,index){
 var chooseHospital = function(){
     var param = {pageNo: "1", pageSize: "200",orderBy:"1"};
     $.ajax({type : "POST",
-        url : "ap/consultPhone/getAllHospitalList",
+        url : "consultPhone/getAllHospitalList",
         data : param,
         success : function (data){
             if(data!=null ){
@@ -125,9 +125,9 @@ var chooseHospital = function(){
 }
 var directHospital = function(hospitalId,hospitalName){
     if(hospitalId=="626487c34f954abd90e188bb40341995"||hospitalId=="faa875abfe9748438111aa208151f1ed"){
-        window.location.href = "ap/phoneConsult#/cooperationHospital/" + hospitalId;
+        window.location.href = "phoneConsult#/cooperationHospital/" + hospitalId;
     }else{
-        window.location.href = "ap/phoneConsult#/phoneConDoctorList/" + hospitalId + ",searchDoctorByHospitalName," + hospitalName;
+        window.location.href = "phoneConsult#/phoneConDoctorList/" + hospitalId + ",searchDoctorByHospitalName," + hospitalName;
     }
 }
 /*疾病列表*/
@@ -135,7 +135,7 @@ var chooseIllness = function(){
 
     var param = '{"pageNo":"1","pageSize":"100","orderBy":"0"}';
     $.ajax({type : "POST",
-        url : "ap/sys/illness/first",
+        url : "sys/illness/first",
         contentType : 'application/json',
         data : param,
         success : function (data){
@@ -165,7 +165,7 @@ var selectIllnessDetail = function(chooseFirstIllnessName,firstIllnessItem){
     //    contentType : 'application/json'
     //});
     $.ajax({type : "POST",
-        url : "ap/sys/illness/second",
+        url : "sys/illness/second",
         contentType : 'application/json',
         data : param,
         success : function (data){
@@ -181,7 +181,7 @@ var selectIllnessDetail = function(chooseFirstIllnessName,firstIllnessItem){
 
 }
 var searchSecondIllness = function(illnessSecondId,illnessSecondName){
-    window.location.href = window.location.href = "ap/phoneConsult#/phoneConDoctorList/" + illnessSecondId + ",searchDoctorByIllnessSecondId," + illnessSecondName;
+    window.location.href = window.location.href = "phoneConsult#/phoneConDoctorList/" + illnessSecondId + ",searchDoctorByIllnessSecondId," + illnessSecondName;
 }
 
 /*时间列表*/
@@ -190,7 +190,7 @@ var chooseTime = function(){
     var param = '{"pageNo":"1","pageSize":"7","orderBy":"1"}';
 
     $.ajax({type : "POST",
-        url : "ap/register/user/time",
+        url : "register/user/time",
         contentType : 'application/json',
         data : param,
         success : function (data){
@@ -213,7 +213,7 @@ var chooseTime = function(){
 }
 var searchAppointmentByDate = function(searchDate){
     searchDate = searchDate.replace("/","%252F");
-    window.location.href = "ap/phoneConsult#/phoneConDoctorList/" + searchDate + ",searchDoctorByDate," + searchDate;
+    window.location.href = "phoneConsult#/phoneConDoctorList/" + searchDate + ",searchDoctorByDate," + searchDate;
 }
 
 /*专家团*/
@@ -221,7 +221,7 @@ var chooseDoctorGroup = function(){
 
     var param = {pageNo: "1", pageSize: "200",orderBy:"1"};
     $.ajax({type : "POST",
-        url : 'ap/consultPhone/getAllDoctorGroupList',
+        url : 'consultPhone/getAllDoctorGroupList',
         data : param,
         success : function (data){
             if(data!=null ){
@@ -269,7 +269,7 @@ var chooseDoctorGroup = function(){
     recordLogs("doctorGroupIndex");
 }
 var chooseDoctorGroupList = function(groupId){
-    window.location.href = "ap/phoneConsult#/doctorGroupList/"+groupId;
+    window.location.href = "phoneConsult#/doctorGroupList/"+groupId;
 }
 var getDoctorGroupDescription = function(val){
     return val.replace(/(.{22})/g,'$1<br/>')
@@ -289,7 +289,7 @@ var getLimitString = function(val){
 var consultDoc = function(){
     recordLogs("快速入口-咨询医生");
     $.ajax({
-        url:"ap/wechatInfo/postInfoToWechat",// 跳转到 action
+        url:"wechatInfo/postInfoToWechat",// 跳转到 action
         async:true,
         type:'post',
         data:{},//得到需要分享页面的url
@@ -308,7 +308,7 @@ var consultDoc = function(){
 }
 var myAppointment = function(){
     recordLogs("快速入口-我的预约");
-    window.location.href="ap/appoint#/myAppointment";
+    window.location.href="appoint#/myAppointment";
 }
 var lightLock = function(){
     $("#lightLock").toggle(10);
@@ -330,89 +330,6 @@ var initLight = function(){
         .on('scrollstop', configStop, function() {$(".fast-entry").show();});
 }
 var opinionFeedback = function(){
-    window.location.href="ap/baoFansCamp#/feedback";
+    window.location.href="baoFansCamp#/feedback";
 }
-
-/*顶部搜索*/
-/*var seaHis = function() {
- $(".sea-his").show();
- $(".banner_visual").hide();
- if($('#searchObj').val()!=""){
- var searchData = "'"+$('#searchObj').val()+"'";
- searchItem = '<a class="ss" onclick="searchByName(' + searchData + ')">搜索</a>'
- $(".head .right").html(searchItem);
- }else{
- searchItem = '<a class="ss" onclick="cancelSearch()">取消</a>'
- $(".head .right").html(searchItem);
- }
-
- var patientList = ['湿疹','咳嗽','发烧','过敏','感冒','鼻炎','眼科','腹泻','呕吐'];
-
- var phoneConDoctorList = "";
- $.each(patientList,function(index,value){
- var hotValue = "'" + value + "'";
- phoneConDoctorList = phoneConDoctorList + '<li onclick="searchByName(' + hotValue + ')"><a>'+ value + '</a> </li>';
- })
- $('.hot-w').html(phoneConDoctorListphoneConDoctorList);
-
- $('#searchObj').bind('input propertychange',function(){
- if($('#searchObj').val()!=""){
- var searchData = "'"+$('#searchObj').val()+"'";
- searchItem = '<a class="ss" onclick="searchByName(' + searchData + ')">搜索</a>'
- $(".head .right").html(searchItem);
- }else{
- searchItem = '<a class="ss" onclick="cancelSearch()">取消</a>'
- $(".head .right").html(searchItem);
- }
- });
-
- var param = '{}';
-
- $.ajax({type : "POST",
- url : "ap/search/user/RemoveAllSearchHistory",
- contentType : 'application/json',
- data : param,
- success : function (data){
- if(data!=null ){
- var searchHistoryList = "";
- if(data.patientSearchList.length>0){
- $("#searchHistoryItem").show();
- $(".history").show();
- }
- $.each(data.patientSearchList,function(index,value){
- var searchName = "'" +value.idurlname + "'";
- searchHistoryList = searchHistoryList + '<li class="item" onclick="searchByName('+searchName+')">'+
- value.idurlname +'<i class="ion-ios-arrow-right"></i> </li>';
- })
- $('#searchHistory').html(searchHistoryList);
- }
- }});
-
- }
-
- var searchByName = function(searchData){
- window.location.href = "ap/phoneConsult#/phoneConDoctorList/" + searchData + ",searchDoctorByOpenSearch," + searchData;
- }
-
- var cancelSearch = function(){
- $(".sea-his").hide();
- $(".banner_visual").show();
- var myItem = '<a class= my" href="ap/appoint#/myselfFirst/,"><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fmy1.png" ' +
- 'width="22" height="22"> </a>'
- $(".head .right").html(myItem);
- }
-
- var removeAllSearchHistory = function(){
- $("#searchHistoryItem").hide();
- $(".history").hide();
- var param = '{}';
-
- $.ajax({type : "POST",
- url : "ap/search/user/RemoveAllSearchHistory",
- contentType : 'application/json',
- data : param,
- success : function (data){
-
- }});
- }  */
 

@@ -38,7 +38,7 @@ angular.module('controllers', ['ionic']).controller('nutritionIndexCtrl', [
                                     window.location.href = "ap/ntr?value=251335#/nutritionBabyInfo";
                                 }else{
                                     var pData = {logContent:encodeURI("YYGL_SY")};
-                                    $http({method:'post',url:'ap/util/recordLogs',params:pData});
+                                    $http({method:'post',url:'util/recordLogs',params:pData});
                                     var babyInfo = data.babyInfo.split(";");
                                     $scope.height = babyInfo[2];
                                     $scope.weight = babyInfo[3];
@@ -82,7 +82,7 @@ angular.module('controllers', ['ionic']).controller('nutritionIndexCtrl', [
                             });
                         }
                         else{
-                            window.location.href = "ap/firstPage/healthPlan";
+                            window.location.href = "firstPage/healthPlan";
                         }
                     });
                 }
@@ -144,7 +144,7 @@ angular.module('controllers', ['ionic']).controller('nutritionIndexCtrl', [
          * 跳转到健康管理首页
          */
         $scope.goManagement = function(){
-            window.location.href = "ap/firstPage/healthPlan?type=second";
+            window.location.href = "firstPage/healthPlan?type=second";
         }
 
         /**
@@ -167,7 +167,7 @@ angular.module('controllers', ['ionic']).controller('nutritionIndexCtrl', [
          */
         $scope.readArticle = function (id) {
             var pData = {logContent:encodeURI("YYGL_WZ")};
-            $http({method:'post',url:'ap/util/recordLogs',params:pData});
+            $http({method:'post',url:'util/recordLogs',params:pData});
             window.location.href = "http://s22.baodf.com/xiaoerke-knowledge/ap/knowledge?value=251333#/" +
                 "knowledgeArticleContent/" +id+",yygl";
         }
@@ -220,7 +220,7 @@ angular.module('controllers', ['ionic']).controller('nutritionIndexCtrl', [
             var signature;//得到的签名
             var appid;//得到的签名
             $.ajax({
-                url:"ap/wechatInfo/getConfig",// 跳转到 action
+                url:"wechatInfo/getConfig",// 跳转到 action
                 async:true,
                 type:'get',
                 data:{url:location.href.split('#')[0]},//得到需要分享页面的url

@@ -3,7 +3,7 @@
  * 调用方式：geoFactory.getGeo();
  */
 var user_h5 = '/xiaoerke-marketing-webapp/ap/'
-var wxChat = '/xiaoerke-marketing-webapp/ap/wechatInfo/'
+var wxChat = '/xiaoerke-marketing-webapp/wechatInfo/'
 
 define(['appMarket'], function (app) {
     app

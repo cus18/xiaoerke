@@ -100,7 +100,7 @@ angular.module('controllers', ['ionic']).controller('nutritionBabyInfoCtrl', [
                         if(data.resultMsg=="OK"){
                             //$state.go("nutritionReport",{type:"first"});
                             var pData = {logContent:encodeURI("YYGL_TXXX")};
-                            $http({method:'post',url:'ap/util/recordLogs',params:pData});
+                            $http({method:'post',url:'util/recordLogs',params:pData});
                             window.location.href = "ap/ntr?value=251334#/nutritionReport/first";
                         }
                 });

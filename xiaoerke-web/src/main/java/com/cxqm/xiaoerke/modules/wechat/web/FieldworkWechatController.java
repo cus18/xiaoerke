@@ -83,22 +83,22 @@ public class FieldworkWechatController {
         String url = java.net.URLDecoder.decode(request.getParameter("url"), "utf-8");
         if ("1".equals(url)) {
             //引导页
-            url = ConstantUtil.S1_WEB_URL + "/xiaoerke-appoint/ap/appoint#/guide";
+            url = ConstantUtil.S1_WEB_URL + "/xiaoerke-appoint/appoint#/guide";
             LogUtils.saveLog("引导页");
         } else if ("2".equals(url)) {
             //预约首页
-            url = ConstantUtil.S1_WEB_URL + "/xiaoerke-appoint/ap/firstPage/appoint";
-//            url = ConstantUtil.WEB_URL + "/xiaoerke-appoint/ap/appoint#/appointmentFirst";
+            url = ConstantUtil.S1_WEB_URL + "/xiaoerke-appoint/firstPage/appoint";
+//            url = ConstantUtil.WEB_URL + "/xiaoerke-appoint/appoint#/appointmentFirst";
             LogUtils.saveLog("预约首页");
         } else if ("3".equals(url)) {
             String state = request.getParameter("state");
             //接诊提醒
-            url = ConstantUtil.S1_WEB_URL + "/xiaoerke-appoint/ap/appoint#/userEvaluate/" + state;
+            url = ConstantUtil.S1_WEB_URL + "/xiaoerke-appoint/appoint#/userEvaluate/" + state;
             LogUtils.saveLog("接诊提醒");
 
         } else if ("4".equals(url)) {
             //郑玉巧育儿经
-            url = ConstantUtil.S2_WEB_URL + "/xiaoerke-knowledge/ap/firstPage/knowledge";
+            url = ConstantUtil.S2_WEB_URL + "/xiaoerke-knowledge/firstPage/knowledge";
 //            url = ConstantUtil.WEB_URL + "/xiaoerke-knowledge/ap/knowledge#/knowledgeIndex";
             LogUtils.saveLog("郑玉巧育儿经");
         } else if ("5".equals(url)) {
@@ -108,34 +108,34 @@ public class FieldworkWechatController {
 
         } else if ("6".equals(url)) {
             //我的预约
-            url = ConstantUtil.S1_WEB_URL + "/xiaoerke-appoint/ap/appoint#/myAppointment";
+            url = ConstantUtil.S1_WEB_URL + "/xiaoerke-appoint/appoint#/myAppointment";
             LogUtils.saveLog("我的预约");
 
         } else if ("7".equals(url)) {
-            url = ConstantUtil.S1_WEB_URL + "/xiaoerke-appoint/ap/appoint#/operateIndex";
+            url = ConstantUtil.S1_WEB_URL + "/xiaoerke-appoint/appoint#/operateIndex";
         } else if ("8".equals(url)) {
-            url = ConstantUtil.S1_WEB_URL + "/xiaoerke-appoint/ap/appoint#/operateIndex";
+            url = ConstantUtil.S1_WEB_URL + "/xiaoerke-appoint/appoint#/operateIndex";
         } else if ("9".equals(url)) {
-            url = ConstantUtil.S1_WEB_URL + "/xiaoerke-appoint/ap/appoint#/myselfFirst/,";
+            url = ConstantUtil.S1_WEB_URL + "/xiaoerke-appoint/appoint#/myselfFirst/,";
         } else if ("20".equals(url)) {
             //扫码送周会员
-            url = ConstantUtil.S1_WEB_URL + "/xiaoerke-appoint/ap/appoint#/memberService/week,extend,";
+            url = ConstantUtil.S1_WEB_URL + "/xiaoerke-appoint/appoint#/memberService/week,extend,";
         } else if ("23".equals(url)) {
             //赠送周会员
-            url = ConstantUtil.S1_WEB_URL + "/xiaoerke-appoint/ap/appoint#/memberService/week,extend,";
+            url = ConstantUtil.S1_WEB_URL + "/xiaoerke-appoint/appoint#/memberService/week,extend,";
         } else if ("21".equals(url)) {
             //赠送月会员
-            url = ConstantUtil.S1_WEB_URL + "/xiaoerke-appoint/ap/appoint#/memberService/month,extend,";
+            url = ConstantUtil.S1_WEB_URL + "/xiaoerke-appoint/appoint#/memberService/month,extend,";
         } else if ("22".equals(url)) {
             //赠送季会员
-            url = ConstantUtil.S1_WEB_URL + "/xiaoerke-appoint/ap/appoint#/memberService/quarter,extend,";
+            url = ConstantUtil.S1_WEB_URL + "/xiaoerke-appoint/appoint#/memberService/quarter,extend,";
         }else if("10".equals(url)){
             //健康管理
-            url = ConstantUtil.S3_WEB_URL +"/xiaoerke-healthPlan/ap/firstPage/healthPlan";
+            url = ConstantUtil.S3_WEB_URL +"/xiaoerke-healthPlan/firstPage/healthPlan";
 //            url = ConstantUtil.S3_WEB_URL +"/xiaoerke-healthPlan/ap/ctp#/constipationIndex";
             LogUtils.saveLog("BMGL_36");
         }else if("23".equals(url)){
-            url = ConstantUtil.S2_WEB_URL + "/xiaoerke-appoint/ap/appoint#/healthRecordIndex/0";
+            url = ConstantUtil.S2_WEB_URL + "/xiaoerke-appoint/appoint#/healthRecordIndex/0";
         }else if("24".equals(url)){
             url = ConstantUtil.S2_WEB_URL + "/xiaoerke-wxapp/ap/health#/consultBabyList";
         }else if("25".equals(url)){
@@ -156,9 +156,9 @@ public class FieldworkWechatController {
             }else if("FXJG_PYXX".equals(state)){
                 LogUtils.saveLog("FXJG_PYXX");//从结果页朋友圈打开活动首页
             }
-            url = ConstantUtil.S1_WEB_URL +"xiaoerke-marketing-webapp/ap/firstPage/momNutritionTest";
+            url = ConstantUtil.S1_WEB_URL +"xiaoerke-marketing-webapp/firstPage/momNutritionTest";
         }else if("26".equals(url)){
-            url = ConstantUtil.S3_WEB_URL + "/xiaoerke-insurance-webapp/ap/firstPage/antiDogFirst";
+            url = ConstantUtil.S3_WEB_URL + "firstPage/antiDogFirst";
         }else if("27".equals(url)){
             url = ConstantUtil.S3_WEB_URL + "/xiaoerke-insurance-webapp/antiDogPay/patientPay.do";
         }
@@ -331,7 +331,7 @@ public class FieldworkWechatController {
 //            CookieUtils.setCookie(response, "openId", openid, 60 * 60 * 24 * 30,".baodf.com");
 //        }
         String state = request.getParameter("state");
-        return "redirect:" + "/ap/appoint#/userEvaluate/" + state;
+        return "redirect:" + "/appoint#/userEvaluate/" + state;
     }
 
     /**

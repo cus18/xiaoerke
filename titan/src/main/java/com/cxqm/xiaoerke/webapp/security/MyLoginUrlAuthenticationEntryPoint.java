@@ -65,17 +65,4 @@ public class MyLoginUrlAuthenticationEntryPoint extends
 		
 		return url;
 	}
-	
-	/*public static void main(String[] args){
-		String url = "http://localhost:8080/xiaoerke-appoint/ap/appoint#/myselfFirst/,";
-		
-		String s1 = url.substring(0, 7);
-		int index = url.indexOf("/",7);
-		String s2 = url.substring(index);
-		url = s1 + "www.baodf.com" + s2;
-		
-		
-		System.out.println(url);
-	}*/
-
 }

@@ -7,7 +7,7 @@ angular.module('controllers', ['ionic']).controller('constipationQuestionsCtrl',
         $scope.img2 ="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fcir1_cur.png" ;
 
         var pData = {logContent:encodeURI("BMGL_41")};
-        $http({method:'post',url:'ap/util/recordLogs',params:pData});
+        $http({method:'post',url:'util/recordLogs',params:pData});
 
         $scope.questions = [
             { text: "大便有点干", checked: false },

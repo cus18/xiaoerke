@@ -1,5 +1,5 @@
 var user_h5 = '/xiaoerke-wxapp/ap/'
-var wxChat = '/xiaoerke-wxapp/ap/wechatInfo/'
+var wxChat = '/xiaoerke-wxapp/wechatInfo/'
 
 define(['appPlayTour'], function (app) {
     app

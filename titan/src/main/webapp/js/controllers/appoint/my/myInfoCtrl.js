@@ -16,7 +16,7 @@
                         type: 'button-calm ',
                         onTap: function(e) {
                             $scope.pageLoading = true;
-                            window.location.href = "ap/logout";
+                            window.location.href = "logout";
                         }
                     },
                     { text: '取消',
@@ -28,7 +28,7 @@
 
         $scope.$on('$ionicView.enter', function(){
             $scope.pageLoading = true;
-            var routePath = "/ap/appointBBBBBB" + $location.path();
+            var routePath = "/appointBBBBBB" + $location.path();
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 $scope.pageLoading = false;
                 if(data.status=="9") {

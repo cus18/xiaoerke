@@ -10,7 +10,7 @@ var selectBaby=function(){
 }
 // 添加宝宝
 var addBaby=function(){
-    window.location.href = "/xiaoerke-insurance-webapp/ap/insurance#/antiDogAddBaby";
+    window.location.href = "insurance#/antiDogAddBaby";
 }
 // 取消选择宝宝
 var cancelSelectBaby=function(){
@@ -42,7 +42,7 @@ var selectParent=function(parent){
 }
 // 查看订单信息
 var lookOrderInfo=function(){
-    window.location.href = "/xiaoerke-insurance-webapp/ap/insurance#/antiDogOrderList";
+    window.location.href = "insurance#/antiDogOrderList";
 }
 var cancelRemind=function(){
     $(".c-shadow").hide();
@@ -121,7 +121,7 @@ var doRefresh = function(){
     var signature;//得到的签名
     var appid;//得到的签名
     $.ajax({
-        url:"/xiaoerke-insurance-webapp/ap/wechatInfo/getConfig",// 跳转到 action
+        url:"wechatInfo/getConfig",// 跳转到 action
         async:true,
         type:'get',
         data:{url:location.href.split('#')[0]},//得到需要分享页面的url
@@ -174,7 +174,7 @@ $(function(){
 function getBabyInfo(){
     $.ajax({
         type: 'POST',
-        url: "/xiaoerke-insurance-webapp/ap/healthRecord/getBabyinfoList",
+        url: "healthRecord/getBabyinfoList",
         data: "{'openid':''}",
         contentType: "application/json; charset=utf-8",
         success: function(result){
@@ -257,7 +257,7 @@ function payInsurance(){
         $.ajax({
             type: 'POST',
             async:false,
-            url: "/xiaoerke-insurance-webapp/ap/insurance/getInsuranceRegisterServiceIfValid",
+            url: "insurance/getInsuranceRegisterServiceIfValid",
             data: "{'babyId':'"+babyid+"'}",
             contentType: "application/json; charset=utf-8",
             success: function(result){
@@ -285,7 +285,7 @@ function payInsurance(){
                         $.ajax({
                             type: 'POST',
                             async:false,
-                            url: "/xiaoerke-insurance-webapp/ap/insurance/saveInsuranceRegisterService",
+                            url: "insurance/saveInsuranceRegisterService",
                             data: "{'babyId':'"+babyid+"','idCard':'"+idCard+"','parentPhone':'"+parentPhone+"','insuranceType':'1','parentName':'"+parentName+"','parentType':'"+parentType+"'}",
                             contentType: "application/json; charset=utf-8",
                             success: function(result){
@@ -315,7 +315,7 @@ function payInsurance(){
                                                         paySign:obj.paySign,  // 支付签名
                                                         success: function (res) {
                                                             if(res.errMsg == "chooseWXPay:ok" ) {
-                                                                window.location.href="/xiaoerke-insurance-webapp/ap/insurance#/antiDogPaySuccess/"+insuranceId;
+                                                                window.location.href="insurance#/antiDogPaySuccess/"+insuranceId;
                                                             }else{
                                                                 alert("支付失败,请重新支付")
                                                             }
@@ -361,7 +361,7 @@ function payInsurance(){
             $.ajax({
                 type: 'get',
                 async:false,
-                url: "/xiaoerke-insurance-webapp/ap/healthRecord/saveBabyInfo",
+                url: "healthRecord/saveBabyInfo",
                 data: {'name':encodeURI(name),'sex':sex,'birthDay':birthDay},
                 contentType: "application/json; charset=utf-8",
                 success: function(result){
@@ -371,7 +371,7 @@ function payInsurance(){
                         $.ajax({
                             type: 'POST',
                             async:false,
-                            url: "/xiaoerke-insurance-webapp/ap/insurance/saveInsuranceRegisterService",
+                            url: "insurance/saveInsuranceRegisterService",
                             data: "{'babyId':'"+babyid+"','idCard':'"+idCard+"','parentPhone':'"+parentPhone+"','insuranceType':'1','parentName':'"+parentName+"','parentType':'"+parentType+"'}",
                             contentType: "application/json; charset=utf-8",
                             success: function(result){
@@ -400,7 +400,7 @@ function payInsurance(){
                                                     paySign:obj.paySign,  // 支付签名
                                                     success: function (res) {
                                                         if(res.errMsg == "chooseWXPay:ok" ) {
-                                                        	window.location.href="/xiaoerke-insurance-webapp/ap/insurance#/antiDogPaySuccess/"+insuranceId;
+                                                        	window.location.href="insurance#/antiDogPaySuccess/"+insuranceId;
                                                         }else{
                                                             alert("支付失败,请重新支付")
                                                         }
@@ -475,7 +475,7 @@ function loadDate(){
 //记录日志
 var recordLogs = function(val){
     $.ajax({
-        url:"/xiaoerke-insurance-webapp/ap/util/recordLogs",// 跳转到 action
+        url:"util/recordLogs",// 跳转到 action
         async:true,
         type:'get',
         data:{logContent:encodeURI(val)},
@@ -511,9 +511,9 @@ function loginCheck(){
                     }else if(data.status=="20"){
                         alert(data.openId);
                         if(data.openId=="noOpenId"){
-                            window.location.href = "http://s22.baodf.com/xiaoerke-wxapp/ap/wechatInfo/" +
+                            window.location.href = "http://s22.baodf.com/xiaoerke-wxapp/wechatInfo/" +
                                 "fieldwork/wechat/author?url=http://s22.baodf.com/" +
-                                "xiaoerke-wxapp/ap/wechatInfo/getUserWechatMenId?url=26";
+                                "xiaoerke-wxapp/wechatInfo/getUserWechatMenId?url=26";
                         }else{
                             getBabyInfo();
                         }

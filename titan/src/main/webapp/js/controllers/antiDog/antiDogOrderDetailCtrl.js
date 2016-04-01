@@ -23,14 +23,14 @@ angular.module('controllers', ['ionic']).controller('antiDogOrderDetailCtrl', [
         $scope.receiveMoney=function(){
             $scope.parRemindLock =true;
         	var pData = {logContent:encodeURI("FQB_DDXQ_LBT")};
-            $http({method:'post',url:'ap/util/recordLogs',params:pData});
+            $http({method:'post',url:'util/recordLogs',params:pData});
         }
         //取消 补贴 提醒
         $scope.cancelPayRemind = function(){
             $scope.parRemindLock =false;
         };
         $scope.$on('$ionicView.enter', function(){
-        	var routePath = "/ap/insuranceBBBBBB" + $location.path();
+        	var routePath = "/insuranceBBBBBB" + $location.path();
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 if(data.status=="9") {
                     window.location.href = data.redirectURL;

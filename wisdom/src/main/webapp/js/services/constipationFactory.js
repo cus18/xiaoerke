@@ -3,7 +3,7 @@
  * 调用方式：geoFactory.getGeo();
  */
 var user_h5 = '/xiaoerke-healthPlan/ap/'
-var wxChat = '/xiaoerke-healthPlan/ap/wechatInfo/'
+var wxChat = '/xiaoerke-healthPlan/wechatInfo/'
 
 define(['appConstipation'], function (app) {
     app

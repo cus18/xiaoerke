@@ -19,10 +19,10 @@ angular.module('controllers', ['ionic']).controller('constipationIndexCtrl', [
         var Ids ="";
 
         var pData = {logContent:encodeURI("BMGL_1")};
-        $http({method:'post',url:'ap/util/recordLogs',params:pData});
+        $http({method:'post',url:'util/recordLogs',params:pData});
 
         $scope.goManagement = function(){
-            window.location.href = "ap/firstPage/healthPlan?type=second";
+            window.location.href = "firstPage/healthPlan?type=second";
         }
         //轮播图图片初始化
         $scope.bannerImg = [
@@ -95,7 +95,7 @@ angular.module('controllers', ['ionic']).controller('constipationIndexCtrl', [
                             $scope.getTaskList();
                         }
                         else{
-                            window.location.href = "ap/firstPage/healthPlan";
+                            window.location.href = "firstPage/healthPlan";
                         }
                     });
                 }
@@ -222,7 +222,7 @@ angular.module('controllers', ['ionic']).controller('constipationIndexCtrl', [
             var flag = 0;
             if(type == "motherMust"){
                 var pData = {logContent:encodeURI("BMGL_7")};
-                $http({method:'post',url:'ap/util/recordLogs',params:pData});
+                $http({method:'post',url:'util/recordLogs',params:pData});
                 $state.go('cMotherNecessary');
             }else{
                 if($scope.planTasks[index].status == "完成"){
@@ -253,11 +253,11 @@ angular.module('controllers', ['ionic']).controller('constipationIndexCtrl', [
                     if(type == "defecate"||type == "massage"){
                         $scope.planTasks[index].status ="完成";
                         var pData = {logContent:encodeURI("BMGL_3")};
-                        $http({method:'post',url:'ap/util/recordLogs',params:pData});
+                        $http({method:'post',url:'util/recordLogs',params:pData});
                     }else{
                         if(type == "food"){
                             var pData = {logContent:encodeURI("BMGL_5")};
-                            $http({method:'post',url:'ap/util/recordLogs',params:pData});
+                            $http({method:'post',url:'util/recordLogs',params:pData});
                             foodNum++;
                             if(foodNum ==3){
                                 $scope.planTasks[index].status = "完成";
@@ -268,7 +268,7 @@ angular.module('controllers', ['ionic']).controller('constipationIndexCtrl', [
                             }
                         }else if(type == "sport"){
                             var pData = {logContent:encodeURI("BMGL_6")};
-                            $http({method:'post',url:'ap/util/recordLogs',params:pData});
+                            $http({method:'post',url:'util/recordLogs',params:pData});
                             sportNum++;
                             if(sportNum ==2){
                                 $scope.planTasks[index].status = "完成";
@@ -309,14 +309,14 @@ angular.module('controllers', ['ionic']).controller('constipationIndexCtrl', [
 
         $scope.zixun = function(){
             var pData = {logContent:encodeURI("BMGL_9")};
-            $http({method:'post',url:'ap/util/recordLogs',params:pData});
+            $http({method:'post',url:'util/recordLogs',params:pData});
             SendWechatMessageToUser.save({},function(data){
             });
             WeixinJSBridge.call('closeWindow');
         }
 
         $scope.yuyue = function () {
-            window.location.href = "http://s11.baodf.com//xiaoerke-appoint/ap/firstPage/appoint";
+            window.location.href = "http://s11.baodf.com//xiaoerke-appoint/firstPage/appoint";
         }
 
 

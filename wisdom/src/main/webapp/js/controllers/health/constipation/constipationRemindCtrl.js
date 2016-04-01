@@ -22,7 +22,7 @@ angular.module('controllers', ['ionic']).controller('constipationRemindCtrl', [
         var planInfoId = "";//存放计划id
 
         var pData = {logContent:encodeURI("BMGL_11")};
-        $http({method:'post',url:'ap/util/recordLogs',params:pData});
+        $http({method:'post',url:'util/recordLogs',params:pData});
 
         $scope.$on('$ionicView.enter', function() {
             $scope.pageLoading = true;

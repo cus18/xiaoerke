@@ -28,7 +28,6 @@
     <file url="file://$PROJECT_DIR$/xiaoerke-interaction" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/xiaoerke-interaction/xiaoerke-interaction-api" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/xiaoerke-interaction/xiaoerke-interaction-service" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/xiaoerke-knowledge" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/xiaoerke-marketing" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/xiaoerke-marketing/xiaoerke-marketing-api" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/xiaoerke-marketing/xiaoerke-marketing-service" charset="UTF-8" />
@@ -47,7 +46,6 @@
     <file url="file://$PROJECT_DIR$/xiaoerke-plan" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/xiaoerke-plan/xiaoerke-plan-api" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/xiaoerke-plan/xiaoerke-plan-service" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/xiaoerke-runTimeTask" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/xiaoerke-search" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/xiaoerke-search/xiaoerke-search-api" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/xiaoerke-search/xiaoerke-search-service" charset="UTF-8" />

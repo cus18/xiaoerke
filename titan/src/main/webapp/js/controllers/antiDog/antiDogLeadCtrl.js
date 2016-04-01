@@ -19,7 +19,7 @@ angular.module('controllers', ['ionic']).controller('antiDogLeadCtrl', [
              		$state.go("antiDogIndex");
                  }else{
                     var pData = {logContent:encodeURI("FQB_YDY")};
-                 	$http({method:'post',url:'ap/util/recordLogs',params:pData});
+                 	$http({method:'post',url:'util/recordLogs',params:pData});
                  }
              });
            /* initLight()*/
@@ -31,7 +31,7 @@ var initLight = function(){
     var configStop = {latency: 10};
     $(".antiDogLead")
         .on('scrollstart', configStart, function() {
-            window.location.href = "/xiaoerke-insurance-webapp/ap/insurance#/antiDogIndex";
+            window.location.href = "insurance#/antiDogIndex";
         })
 
 }

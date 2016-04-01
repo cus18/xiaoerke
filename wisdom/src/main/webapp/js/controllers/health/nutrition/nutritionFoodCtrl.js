@@ -42,12 +42,12 @@ angular.module('controllers', ['ionic']).controller('nutritionFoodCtrl', [
         }
         $scope.nutritionAssessResult =function(){
             var pData = {logContent:encodeURI("YYGL_SY_ZSPZD")};
-            $http({method:'post',url:'ap/util/recordLogs',params:pData});
+            $http({method:'post',url:'util/recordLogs',params:pData});
             $state.go("nutritionPyramid");
         };
         $scope.nutritionAssess =function(){
             var pData = {logContent:encodeURI("YYGL_SY_ZJZD")};
-            $http({method:'post',url:'ap/util/recordLogs',params:pData});
+            $http({method:'post',url:'util/recordLogs',params:pData});
             $state.go("nutritionAssess",{flag:"noagain"});
         };
 
@@ -154,7 +154,7 @@ angular.module('controllers', ['ionic']).controller('nutritionFoodCtrl', [
 
         function setLog(item){
             var pData = {logContent:encodeURI(item)};
-            $http({method:'post',url:'ap/util/recordLogs',params:pData});
+            $http({method:'post',url:'util/recordLogs',params:pData});
         }
 
         $scope.Refresh = function(){
@@ -163,7 +163,7 @@ angular.module('controllers', ['ionic']).controller('nutritionFoodCtrl', [
             var signature;//得到的签名
             var appid;//得到的签名
             $.ajax({
-                url:"ap/wechatInfo/getConfig",// 跳转到 action
+                url:"wechatInfo/getConfig",// 跳转到 action
                 async:true,
                 type:'get',
                 data:{url:location.href.split('#')[0]},//得到需要分享页面的url

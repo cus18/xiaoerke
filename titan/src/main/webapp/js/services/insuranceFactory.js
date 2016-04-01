@@ -2,10 +2,10 @@
  * 取得实际位置
  * 调用方式：geoFactory.getGeo();
  */
-var user_h5 = '/xiaoerke-insurance-webapp/ap/'
-var wxChat = '/xiaoerke-insurance-webapp/ap/wechatInfo/'
-var antiDog='/xiaoerke-insurance-webapp/ap/insurance/'
-var healthRecord='/xiaoerke-insurance-webapp/ap/healthRecord/'
+var user_h5 = ''
+var wxChat = 'wechatInfo/'
+var antiDog='insurance/'
+var healthRecord='healthRecord/'
 
 define(['appInsurance'], function (app) {
     app

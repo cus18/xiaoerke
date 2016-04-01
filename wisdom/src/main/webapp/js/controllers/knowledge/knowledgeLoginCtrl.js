@@ -89,7 +89,7 @@
                                     saveBabyEmr.save({"mediaId":res.serverId,"babyName":$scope.info.name,"gender":$scope.babysex,
                                         "babyBirthday":$("#birthday").val()},function(data){
                                         $scope.pageLoading=false;
-                                        window.location.href ="ap/firstPage/knowledge?value=251314";
+                                        window.location.href ="firstPage/knowledge?value=251314";
                                     });
                                 }
                             });
@@ -100,7 +100,7 @@
                             saveBabyEmr.save({"babyName":$scope.info.name,"gender":$scope.babysex,
                                 "babyBirthday":$("#birthday").val()},function(data){
                                 $scope.pageLoading=false;
-                                window.location.href ="ap/firstPage/knowledge?value=251314";
+                                window.location.href ="firstPage/knowledge?value=251314";
                             });
                         }
                 }
@@ -115,7 +115,7 @@
                 saveBabyEmr.save({"babyName":"宝宝名字","gender":"1",
                     "babyBirthday":"2011-12-12"},function(data){
                     $scope.pageLoading=false;
-                    window.location.href ="ap/firstPage/knowledge?value=251314";
+                    window.location.href ="firstPage/knowledge?value=251314";
                 });
             }
 
@@ -126,7 +126,7 @@
                 var signature;//得到的签名
                 var appid;//得到的签名
                 $.ajax({
-                    url:"ap/wechatInfo/getConfig",// 跳转到 action
+                    url:"wechatInfo/getConfig",// 跳转到 action
                     async:true,
                     type:'get',
                     data:{url:location.href.split('#')[0]},//得到需要分享页面的url

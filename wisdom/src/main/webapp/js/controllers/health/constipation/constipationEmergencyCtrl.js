@@ -5,7 +5,7 @@ angular.module('controllers', ['ionic']).controller('constipationEmergencyCtrl',
         $scope.num = [11,22,33,44,55];
 
         var pData = {logContent:encodeURI("BMGL_12")};
-        $http({method:'post',url:'ap/util/recordLogs',params:pData});
+        $http({method:'post',url:'util/recordLogs',params:pData});
 
         $scope.emergencySelect1=function(){
             $state.go('constipationMShortDeal',{type:"next"});

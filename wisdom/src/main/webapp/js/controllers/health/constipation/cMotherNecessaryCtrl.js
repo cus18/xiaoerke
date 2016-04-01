@@ -3,7 +3,7 @@ angular.module('controllers', ['ionic']).controller('cMotherNecessaryCtrl', [
     function ($scope,$state,$stateParams,GetUserLoginStatus,$location,$http) {
 
         var pData = {logContent:encodeURI("BMGL_31")};
-        $http({method:'post',url:'ap/util/recordLogs',params:pData});
+        $http({method:'post',url:'util/recordLogs',params:pData});
 
         $scope.necessaryImg = [
             "http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmother_necessary1.png",

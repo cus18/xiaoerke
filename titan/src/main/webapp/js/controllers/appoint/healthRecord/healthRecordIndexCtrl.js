@@ -28,7 +28,7 @@ angular.module('controllers', ['ionic']).controller('healthRecordIndexCtrl', [
         //立即完善
         $scope.updateBaby = function(){
         	var id=index;
-        	window.location.href ="ap/appoint?value=251335#/healthRecordUpdateBaby/"+id+",0,0";
+        	window.location.href ="appoint?value=251335#/healthRecordUpdateBaby/"+id+",0,0";
         };
 
         /*选择宝宝*/
@@ -66,12 +66,12 @@ angular.module('controllers', ['ionic']).controller('healthRecordIndexCtrl', [
         /*添加宝宝*/
         $scope.addBaby = function(){
             //$state.go("healthRecordAddBaby");
-            window.location.href ="ap/appoint?value=251333#/healthRecordAddBaby/,";
+            window.location.href ="appoint?value=251333#/healthRecordAddBaby/,";
         };
         /*修改宝宝*/
         $scope.updateBirthday = function(){
             //$state.go("healthRecordAddBaby");
-            window.location.href ="ap/appoint?value=251335#/healthRecordUpdateBaby/"+babyListIndex+",2,0";
+            window.location.href ="appoint?value=251335#/healthRecordUpdateBaby/"+babyListIndex+",2,0";
         };
        /* 填写病情诊断*/
         $scope.fillDisease = function(id){
@@ -79,11 +79,11 @@ angular.module('controllers', ['ionic']).controller('healthRecordIndexCtrl', [
         }
 
         $scope.appointmentFirst = function(){
-            $location.href = "ap/firstPage/appoint";
+            $location.href = "firstPage/appoint";
         }
 
         $scope.$on('$ionicView.enter',function() {
-        	var routePath = "/ap/appointBBBBBB" + $location.path();
+        	var routePath = "/appointBBBBBB" + $location.path();
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 if(data.status=="9") {
                     window.location.href = data.redirectURL;

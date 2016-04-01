@@ -18,7 +18,7 @@
                 var signature;//得到的签名
                 var appid;//得到的签名
                 $.ajax({
-                    url:"ap/wechatInfo/getConfig",// 跳转到 action
+                    url:"wechatInfo/getConfig",// 跳转到 action
                     async:true,
                     type:'get',
                     data:{url:location.href.split('#')[0]},//得到需要分享页面的url
@@ -64,7 +64,7 @@
                     }
                 });
                 var pData = {logContent:encodeURI("我的壁虎互助咨询分享")};
-                $http({method:'post',url:'ap/util/recordLogs',params:pData});
+                $http({method:'post',url:'util/recordLogs',params:pData});
             }
 
     }])
