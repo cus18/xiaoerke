@@ -102,13 +102,13 @@ define(['appAppoint'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.AppointmentConfirmCtrl',
-                                    ['js/controllers/appoint/appointmentConfirmCtrl.js',
+                                    ['js/controllers/appoint/ap/appointmentConfirmCtrl.js',
                                         'js/libs/moment.min.js',
                                         'js/libs/mobiscroll.custom-2.17.0.min.js',
                                         'js/libs/showBo.js',
-                                        'styles/lib/showBo.css','styles/appoint/appointmentConfirm.less?ver'+appointVersion,
+                                        'styles/lib/showBo.css','styles/appoint/ap/appointmentConfirm.less?ver'+appointVersion,
                                         'styles/lib/common.css','styles/lib/mobiscroll.custom-2.17.0.min.css'],
-                                    'js/views/appoint/appointmentConfirm.html?ver='+appointVersion);
+                                    'js/views/appoint/ap/appointmentConfirm.html?ver='+appointVersion);
                             }
                         }
                     })

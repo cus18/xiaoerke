@@ -157,7 +157,7 @@ http://www.springframework.org/schema/security/spring-security-oauth2-2.0.xsd">
     <!-- authorization-server defines all the attributes needed for token management-->
 
     <!-- PART :1 Authorization Service -->
-    <oauth:authorization-server user-approval-page="forward:/ap/oauthconfirm" client-details-service-ref="oauth2ClientDetails" token-services-ref="tokenServices">
+    <oauth:authorization-server user-approval-page="forward:/oauthconfirm" client-details-service-ref="oauth2ClientDetails" token-services-ref="tokenServices">
         <oauth:authorization-code />
          <!-- a way for clients to obtain an access token by obtaining an authorization code. -->
         <oauth:implicit />

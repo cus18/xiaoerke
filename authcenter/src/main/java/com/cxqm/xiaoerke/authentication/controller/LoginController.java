@@ -26,7 +26,8 @@ public class LoginController extends BaseController{
 	
 	/** 认证中心登陆页 */
 	@RequestMapping(value = "${ssoPath}/login", method = RequestMethod.GET)
-	public String login(@RequestParam String toUrl, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String login(@RequestParam String toUrl, HttpServletRequest request,
+						HttpServletResponse response, Model model) {
 		
 		String authcenterUrl = request.getParameter("authcenterurl");
 		if(toUrl.indexOf("?") == -1)
@@ -41,7 +42,8 @@ public class LoginController extends BaseController{
 	
 	/** 检查认证中心是否已登录  */
 	@RequestMapping(value = "${ssoPath}/checklogin")
-	public String checkLogin(String toUrl, HttpServletRequest request, HttpServletResponse response, Model model){
+	public String checkLogin(String toUrl, HttpServletRequest request,
+							 HttpServletResponse response, Model model){
 		//认证中心在cookie中获取token，未取到则跳转登陆页登陆
 		
 		String ip = request.getLocalAddr();
@@ -86,7 +88,8 @@ public class LoginController extends BaseController{
 	}
 	
 	@RequestMapping(value="${ssoPath}/logout")
-	public String logout(String toUrl,HttpServletRequest request, HttpServletResponse response){
+	public String logout(String toUrl,HttpServletRequest request,
+						 HttpServletResponse response){
 		Cookie cookie = new Cookie("ssoToken",null);
 		cookie.setPath("/");
 		cookie.setDomain(".baodf.com");
@@ -99,7 +102,8 @@ public class LoginController extends BaseController{
 	 * 获取主题方案
 	 */
 	@RequestMapping(value = "/theme/{theme}")
-	public String getThemeInCookie(@PathVariable String theme, HttpServletRequest request, HttpServletResponse response){
+	public String getThemeInCookie(@PathVariable String theme, HttpServletRequest request,
+								   HttpServletResponse response){
 		if (StringUtils.isNotBlank(theme)){
 			CookieUtils.setCookie(response, "theme", theme);
 		}else{

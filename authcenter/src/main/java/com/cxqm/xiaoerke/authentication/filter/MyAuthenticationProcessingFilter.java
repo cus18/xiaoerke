@@ -29,9 +29,6 @@ public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProc
 	public static final String PASSWORD = "password";
 
 	@Autowired
-	private SystemService systemService;
-	
-	@Autowired
 	private UtilService utilService;
 	
 	public MyAuthenticationProcessingFilter() {
@@ -48,8 +45,7 @@ public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProc
 			throw new AuthenticationServiceException("empty_username");
 		if (password.length() <= 0)
 			throw new AuthenticationServiceException("empty_password");
-		
-//		String openId = CookieUtils.getCookie(request, "openId");
+
 		String openId = WechatUtil.getOpenId(request.getSession(), request);
 		
 		String toUrl = request.getParameter("toUrl");
