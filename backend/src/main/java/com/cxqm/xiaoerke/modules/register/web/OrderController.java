@@ -260,15 +260,15 @@ public class OrderController extends BaseController {
             OrderPropertyVo orderPropertyVo = new OrderPropertyVo();
             sysWechatAppintInfoVo.setOpen_id(orderPropertyVo.getOpenid());
             sysWechatAppintInfoVo.setPatient_register_service_id(orderPropertyVo.getPatientRegisterServiceId());
-            List<SysWechatAppintInfoVo> attentVos = wechatAttentionDao.findAttentionInfoByOpenIdLists(sysWechatAppintInfoVo);
-            System.out.println("判断是不是扫码用户？"+attentVos.size());
+            List<SysWechatAppintInfoVo> attendVos = wechatAttentionDao.findAttentionInfoByOpenIdLists(sysWechatAppintInfoVo);
+            System.out.println("判断是不是扫码用户？"+attendVos.size());
 
-            if (attentVos.size() > 0) {
+            if (attendVos.size() > 0) {
             	orderPropertyVo.setScanCode("yes");//是扫码关注的
-                System.out.println("是扫码用户"+attentVos.size());
+                System.out.println("是扫码用户"+attendVos.size());
             } else {
             	orderPropertyVo.setScanCode("no");
-                System.out.println("不是扫码用户"+attentVos.size());
+                System.out.println("不是扫码用户"+attendVos.size());
 
             }
             

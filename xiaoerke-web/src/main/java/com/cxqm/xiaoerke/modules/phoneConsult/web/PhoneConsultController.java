@@ -1,4 +1,4 @@
-package com.cxqm.xiaoerke.modules.phoneConsulta.web;
+package com.cxqm.xiaoerke.modules.phoneConsult.web;
 
 import com.cxqm.xiaoerke.common.bean.AccessToken;
 import com.cxqm.xiaoerke.common.utils.XMLUtil;
@@ -26,7 +26,7 @@ import java.util.*;
 
 @Controller
 @RequestMapping(value ="consultPhone/")
-public class PhoneConsultaController {
+public class PhoneConsultController {
 
     @Autowired
     private ConsultPhoneService consultPhoneService;

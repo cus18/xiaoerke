@@ -87,7 +87,7 @@ public class HealthRecordsController {
    *获取宝宝订单详情
    * @param babyId 宝宝id主见
    * @return Map map 预约详情的map集合
- * @throws UnsupportedEncodingException 
+   * * @throws UnsupportedEncodingException
    * */
   @RequestMapping(value = "/getAppointmentInfo", method = {RequestMethod.POST, RequestMethod.GET})
   public
@@ -105,7 +105,7 @@ public class HealthRecordsController {
   /**
    *添加宝宝信息
    * @return Map 宝宝信息集合
- * @throws UnsupportedEncodingException 
+   * @throws UnsupportedEncodingException
    * */
   @RequestMapping(value = "/saveBabyInfo", method = {RequestMethod.POST, RequestMethod.GET})
   public
@@ -130,7 +130,7 @@ public class HealthRecordsController {
   /**
    *修改宝宝信息
    * @return Map 宝宝信息集合
- * @throws UnsupportedEncodingException 
+   * @throws UnsupportedEncodingException
    * */
   @RequestMapping(value = "/updateBabyInfo", method = {RequestMethod.POST, RequestMethod.GET})
   public
@@ -188,7 +188,7 @@ public class HealthRecordsController {
    *
    * @param params  病情描述
    * @return Map map 修改结果
- * @throws UnsupportedEncodingException 
+   * * @throws UnsupportedEncodingException
    * */
   @RequestMapping(value = "/modifyBabyIndfo", method = {RequestMethod.POST, RequestMethod.GET})
   public
@@ -264,7 +264,7 @@ public class HealthRecordsController {
    *        订单主见
    * @param caseName
    *        案例名称
- * @throws UnsupportedEncodingException 
+   * @throws UnsupportedEncodingException
    * */
   @RequestMapping(value = "/addDoctorCase", method = {RequestMethod.POST, RequestMethod.GET})
   public

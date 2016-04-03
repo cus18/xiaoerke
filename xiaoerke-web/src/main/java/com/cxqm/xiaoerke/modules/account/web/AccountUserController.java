@@ -41,6 +41,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @date 2015-10-14
  */
 @Controller
+@RequestMapping(value = "account/patient/")
 public class AccountUserController {
 
 	@Autowired
@@ -49,21 +50,12 @@ public class AccountUserController {
 	@Autowired
 	private PatientRegisterService patientRegisterService;
 
-	@Autowired
-	private SystemService systemService;
-
-	@Autowired
-	private InsuranceRegisterServiceService insuranceService;
-	
-	@Autowired
-    private PayRecordService payRecordService;
-
 	private static Lock lock = new ReentrantLock();
 
 	/**
 	 *用户的账户信息
 	 */
-	@RequestMapping(value = "account/user/accountInfo", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "accountInfo", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	Map<String, Object> accountInfo() {
@@ -75,7 +67,7 @@ public class AccountUserController {
 	/**
 	 * 调用企业支付接口用户用户退款
 	 * */
-	@RequestMapping(value = "account/user/returnPay",  method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "returnPay",  method = {RequestMethod.POST, RequestMethod.GET})
 	public synchronized
 	@ResponseBody
 	Map<String,Object>  returnPay(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session){
@@ -102,7 +94,7 @@ public class AccountUserController {
 	 * js支付
 	 *
 	 * */
-	@RequestMapping(value = "account/user/userPay", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "userPay", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	String userPay(HttpServletRequest request,HttpSession session) throws Exception {
@@ -127,7 +119,7 @@ public class AccountUserController {
 	 * js支付
 	 *
 	 * */
-	@RequestMapping(value = "account/user/antiDogPay", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "antiDogPay", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	String antiDogPay(HttpServletRequest request,HttpSession session) throws Exception {
@@ -148,7 +140,7 @@ public class AccountUserController {
 	 * js支付
 	 *
 	 * */
-	@RequestMapping(value = "account/user/customerPay", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "customerPay", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	String customerPay(HttpServletRequest request,HttpSession session) throws Exception {
@@ -164,116 +156,4 @@ public class AccountUserController {
 		return payParameter;
 	}
 	
-	/**
-	 * 接收支付成后微信notify_url参数中传来的参数
-	 * 支付完成 后服务器故障 事物无法回滚
-	 * */
-	@RequestMapping(value = "user/getPayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
-	public synchronized
-	@ResponseBody
-	String getPayNotifyInfo(HttpServletRequest request) {
-		lock.lock();
-        InputStream inStream = null;
-        try {
-            inStream = request.getInputStream();
-            ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
-            int len = 0;
-            while ((len = inStream.read(buffer)) != -1) {
-                outSteam.write(buffer, 0, len);
-            }
-            outSteam.close();
-            inStream.close();
-            String result  = new String(outSteam.toByteArray(),"utf-8");
-            Map<String, Object> map = XMLUtil.doXMLParse(result);
-
-            //放入service层进行事物控制
-            if("SUCCESS".equals(map.get("return_code"))){
-				LogUtils.saveLog(Servlets.getRequest(), "00000048","用户微信支付完成:" + map.get("out_trade_no"));
-				String accountNeedPay = (String) map.get("attach");
-				PayRecord payRecord = new PayRecord();
-				payRecord.setId((String) map.get("out_trade_no"));
-				payRecord.setStatus("success");
-				payRecord.setReceiveDate(new Date());
-				Map wechatParameter = systemService.getWechatParameter();
-				patientRegisterService.handleWxMemberServiceNotifyInfo(accountNeedPay,payRecord,
-						(String) wechatParameter.get("token"));
-			}
-            return  XMLUtil.setXML("SUCCESS", "");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally {
-			lock.unlock();
-		}
-		return "";
-	}
-
-	/**
-	 * 接收支付成后微信notify_url参数中传来的参数
-	 * 支付完成 后服务器故障 事物无法回滚
-	 * */
-	@RequestMapping(value = "user/getInsurancePayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
-	public synchronized
-	@ResponseBody
-	String getInsurancePayNotifyInfo(HttpServletRequest request) {
-		lock.lock();
-		InputStream inStream = null;
-		try {
-			inStream = request.getInputStream();
-			ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
-			byte[] buffer = new byte[1024];
-			int len = 0;
-			while ((len = inStream.read(buffer)) != -1) {
-				outSteam.write(buffer, 0, len);
-			}
-			outSteam.close();
-			inStream.close();
-			String result  = new String(outSteam.toByteArray(),"utf-8");
-			Map<String, Object> map = XMLUtil.doXMLParse(result);
-
-			//放入service层进行事物控制
-			if("SUCCESS".equals(map.get("return_code"))){
-				LogUtils.saveLog(Servlets.getRequest(), "00000048","用户微信支付完成:" + map.get("out_trade_no"));
-				PayRecord payRecord = new PayRecord();
-				payRecord.setId((String) map.get("out_trade_no"));
-				payRecord.setStatus("success");
-				payRecord.setReceiveDate(new Date());
-				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
-				String insuranceId= insuranceMap.get("order_id").toString();
-				System.out.println("orderId:"+insuranceId);
-				if(insuranceMap.get("fee_type").toString().equals("insurance")){
-					InsuranceRegisterService insurance=new InsuranceRegisterService();
-					insurance.setId(insuranceId);
-					insurance.setState("0");
-					insuranceService.updateInsuranceRegisterService(insurance);
-					payRecord.getId();//修改pay_record表状态
-					payRecord.setStatus("success");
-					payRecord.setReceiveDate(new Date());
-					payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
-				}
-			}
-			return  XMLUtil.setXML("SUCCESS", "");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			lock.unlock();
-		}
-		return "";
-	}
-
-
-
-	/**
-	 *检查订单的支付情况
-	 * 支付完成 后服务器故障 事物无法回滚
-	 * */
-	@RequestMapping(value = "user/checkAppointment", method = {RequestMethod.POST, RequestMethod.GET})
-	public
-	@ResponseBody
-	Map<String,Object> checkAppointment(){
-		Map a = new HashMap();
-		Boolean result = accountService.checkAppointmentPayState("0ed32992422e4aafafd92b83b428531d");
-		System.out.print(result);
-		return a;
-	}
 }

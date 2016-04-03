@@ -83,8 +83,8 @@ public class OrderUserController extends BaseController {
         OrderPropertyVo orderPropertyVo = new OrderPropertyVo();
         sysWechatAppintInfoVo.setOpen_id(orderPropertyVo.getOpenid());
         sysWechatAppintInfoVo.setPatient_register_service_id(orderPropertyVo.getPatientRegisterServiceId());
-        List<SysWechatAppintInfoVo> attentVos = wechatAttentionService.findAttentionInfoByOpenIdLists(sysWechatAppintInfoVo);
-        if (attentVos.size() > 0) {
+        List<SysWechatAppintInfoVo> attendVos = wechatAttentionService.findAttentionInfoByOpenIdLists(sysWechatAppintInfoVo);
+        if (attendVos.size() > 0) {
         	orderPropertyVo.setScanCode("yes");//是扫码关注的
         } else {
         	orderPropertyVo.setScanCode("no");

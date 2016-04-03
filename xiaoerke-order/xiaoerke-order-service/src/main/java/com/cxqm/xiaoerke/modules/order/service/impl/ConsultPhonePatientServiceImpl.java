@@ -99,10 +99,10 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
 
 
 //    @Override
-    public int cancelOrder(Integer phoneConsultaServiceId,String cancelReason) {
+    public int cancelOrder(Integer phoneConsultServiceId,String cancelReason) {
         int sysOrderState = 0;
      //取消订单
-        ConsultPhoneRegisterServiceVo vo = consultPhoneRegisterServiceDao.selectByPrimaryKey(phoneConsultaServiceId);
+        ConsultPhoneRegisterServiceVo vo = consultPhoneRegisterServiceDao.selectByPrimaryKey(phoneConsultServiceId);
         vo.setState("6");
         vo.setUpdateTime(new Date());
         int state = consultPhoneRegisterServiceDao.updateByPrimaryKeySelective(vo);

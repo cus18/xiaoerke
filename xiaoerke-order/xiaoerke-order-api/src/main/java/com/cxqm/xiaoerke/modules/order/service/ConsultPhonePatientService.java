@@ -19,7 +19,7 @@ public interface ConsultPhonePatientService {
 
     List<HashMap<String,Object>> getOrderList(String userId);
 
-    int cancelOrder(Integer phoneConsultaServiceId,String cancelReason);
+    int cancelOrder(Integer phoneConsultServiceId,String cancelReason);
 
     int updateOrderInfoBySelect(ConsultPhoneRegisterServiceVo vo);
     

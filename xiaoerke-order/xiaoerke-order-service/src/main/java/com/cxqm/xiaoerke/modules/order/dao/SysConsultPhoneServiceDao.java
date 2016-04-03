@@ -26,7 +26,7 @@ public interface SysConsultPhoneServiceDao {
 
     List<SysConsultPhoneServiceVo> selectConsultList(@Param("doctorId") String doctorId, @Param("state") String state);
 
-    int cancelOrder(@Param("id")Integer phoneConsultaServiceId,@Param("state") String state);
+    int cancelOrder(@Param("id")Integer phoneConsultServiceId,@Param("state") String state);
 
     Integer finCountOfService();
 

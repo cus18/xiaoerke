@@ -109,15 +109,15 @@ public class OrderPropertyServiceImpl implements OrderPropertyService {
             PatientRegisterServiceVo patientRegisterServiceVo = new PatientRegisterServiceVo();
             patientRegisterServiceVo.setOpenId(propertyVo.getOpenid());
             patientRegisterServiceVo.setId(propertyVo.getPatientRegisterServiceId());
-            List<PatientRegisterServiceVo> attentVos = patientRegisterServiceDao.findAttentionInfoByOpenIdLists(patientRegisterServiceVo);
-            System.out.println("判断是不是扫码用户？" + attentVos.size());
+            List<PatientRegisterServiceVo> attendVos = patientRegisterServiceDao.findAttentionInfoByOpenIdLists(patientRegisterServiceVo);
+            System.out.println("判断是不是扫码用户？" + attendVos.size());
 
-            if (attentVos.size() > 0) {
+            if (attendVos.size() > 0) {
                 propertyVo.setScanCode("yes");//是扫码关注的
-                System.out.println("是扫码用户" + attentVos.size());
+                System.out.println("是扫码用户" + attendVos.size());
             } else {
                 propertyVo.setScanCode("no");
-                System.out.println("不是扫码用户" + attentVos.size());
+                System.out.println("不是扫码用户" + attendVos.size());
 
             }
 

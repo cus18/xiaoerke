@@ -49,8 +49,8 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
  * @version 2015-11-04
  */
 @Controller
-@RequestMapping(value = "consult")
-public class ConsultPatientController extends BaseController {
+@RequestMapping(value = "consult/user/")
+public class ConsultUserController extends BaseController {
 
     @Autowired
     private ConsultSessionService consultConversationService;

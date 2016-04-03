@@ -45,7 +45,7 @@ import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 
 
 @Controller
-@RequestMapping(value = "plan")
+@RequestMapping(value = "constipation")
 public class ConstipationManagementController {
 
 	@Autowired

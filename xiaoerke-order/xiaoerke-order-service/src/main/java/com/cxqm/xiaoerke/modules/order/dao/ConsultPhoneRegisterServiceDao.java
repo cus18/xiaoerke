@@ -26,7 +26,7 @@ public interface ConsultPhoneRegisterServiceDao {
 
     int updateByPrimaryKey(ConsultPhoneRegisterServiceVo record);
 
-    Map<String,Object> getPhoneConsultaServiceIndo(Integer phoneConsultaServiceId);
+    Map<String,Object> getPhoneConsultaServiceIndo(Integer phoneConsultServiceId);
 
     //电话咨询订单列表
     List<HashMap<String, Object>> getPhoneConsultaList(@Param("userId") String userId,@Param("state") String state);

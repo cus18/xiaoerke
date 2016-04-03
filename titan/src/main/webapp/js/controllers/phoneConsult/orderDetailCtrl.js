@@ -16,7 +16,7 @@
                 $scope.pageLoading = true;
                 //订单详情
                 if($scope.type == "phone"){
-                    PhoneConsultRegisterInfo.get({phoneConsultaServiceId:parseInt($scope.orderId)},function(data){
+                    PhoneConsultRegisterInfo.get({phoneConsultServiceId:parseInt($scope.orderId)},function(data){
                         $scope.pageLoading = false;
                         $scope.orderDetail = data;
                     });

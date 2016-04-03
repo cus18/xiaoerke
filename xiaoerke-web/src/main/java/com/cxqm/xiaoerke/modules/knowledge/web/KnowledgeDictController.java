@@ -34,7 +34,7 @@ import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
  * 2015-11-26
  */
 @Controller
-@RequestMapping(value = "")
+@RequestMapping(value = "knowledge/knowledgeDict/")
 public class KnowledgeDictController extends BaseController {
 
 	@Autowired
@@ -49,7 +49,7 @@ public class KnowledgeDictController extends BaseController {
 	 * @return Map<String,Object>
 	 * @author sunxiao
 	 */
-	@RequestMapping(value = "/knowledge/knowledgeDict/dailyRemind", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "dailyRemind", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     HashMap<String, Object> dailyRemind(@RequestParam Date birthDay) throws Exception {
@@ -77,7 +77,7 @@ public class KnowledgeDictController extends BaseController {
 	 * @return String
 	 * @author sunxiao
 	 */
-	@RequestMapping(value = "/knowledge/knowledgeDict/standardFigure", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "standardFigure", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     HashMap<String, Object> standardFigure(HttpServletRequest request,HttpSession session) throws Exception {

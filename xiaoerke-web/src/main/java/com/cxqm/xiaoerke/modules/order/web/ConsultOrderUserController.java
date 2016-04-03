@@ -28,19 +28,17 @@ public class ConsultOrderUserController {
     @Autowired
     private PatientRegisterPraiseService patientRegisterPraiseService;
 
-
-
     /**
      * 根据订单号查询订单详情
-     * @param phoneConsultaServiceId
+     * @param phoneConsultServiceId
      *
      * @return map{date:"2016-03-31",beginTime:"15:54:19",endTime:"15:54:21",phone:"131.."}
      * */
     @RequestMapping(value = "consultOrder/getOrderInfo",method = {RequestMethod.POST,RequestMethod.GET})
     public
     @ResponseBody
-    Map<String,Object> getConsultPhoneRegisterInfoById(@RequestParam Integer phoneConsultaServiceId){
-      return consultPhonePatientService.getPatientRegisterInfo(phoneConsultaServiceId);
+    Map<String,Object> getConsultPhoneRegisterInfoById(@RequestParam Integer phoneConsultServiceId){
+      return consultPhonePatientService.getPatientRegisterInfo(phoneConsultServiceId);
     }
 
 
@@ -96,20 +94,20 @@ public class ConsultOrderUserController {
 
     /**
      * 取消订单
-     * @param phoneConsultaServiceId
+     * @param phoneConsultServiceId
      * @return map
      * */
     @RequestMapping(value = "cancelOrder",method = {RequestMethod.POST,RequestMethod.GET})
     public
     @ResponseBody
-    Map<String,Object> cancelOrder(@RequestParam Integer phoneConsultaServiceId,@RequestParam String cancelReason){
+    Map<String,Object> cancelOrder(@RequestParam Integer phoneConsultServiceId,@RequestParam String cancelReason){
         HashMap<String,Object> resultMap = new HashMap<String, Object>();
-      int resultState = consultPhonePatientService.cancelOrder(phoneConsultaServiceId,cancelReason);
+      int resultState = consultPhonePatientService.cancelOrder(phoneConsultServiceId,cancelReason);
       resultMap.put("reultState",resultState);
       //插入取消原因
       resultMap.put("reason", cancelReason);
       resultMap.put("praiseId", IdGen.uuid());
-      resultMap.put("patientRegisterServiceId", phoneConsultaServiceId);
+      resultMap.put("patientRegisterServiceId", phoneConsultServiceId);
       resultMap.put("praise_date", new Date());
       if(resultState>0){
         patientRegisterPraiseService.insertCancelReason(resultMap);
