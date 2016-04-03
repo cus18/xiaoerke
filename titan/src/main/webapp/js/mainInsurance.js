@@ -12,6 +12,7 @@ require.config({
         "ocLazyLoad":"libs/ocLazyLoad.require.min",
         "jquery":"libs/jquery-2.1.3.min",
         "insuranceFactory" : "services/insuranceFactory",
+        "titanCommonFactory": "services/titanCommonFactory",
         "insuranceDirective" : "directives/insuranceDirective",
         "appInsuranceRoute" : "routes/appInsuranceRoute",
         "appInsurance" : "modules/appInsurance"
@@ -39,7 +40,7 @@ require.config({
 });
 
 require(['angular','angular-resource','angular-sanitize','angular-route',
-        'ocLazyLoad','jquery','insuranceFactory',
+        'ocLazyLoad','jquery','insuranceFactory','titanCommonFactory',
         'insuranceDirective','appInsuranceRoute','appInsurance'],
     function (angular){
         angular.bootstrap(document,["insuranceApp"]);

@@ -12,6 +12,7 @@ require.config({
         "ocLazyLoad":"libs/ocLazyLoad.require.min",
         "jquery":"libs/jquery-2.1.3.min",
         "appointFactory" : "services/appointFactory",
+        "titanCommonFactory": "services/titanCommonFactory",
         "appointDirective" : "directives/appointDirective",
         "appointRoute" : "routes/appAppointRoute",
         "appAppoint" : "modules/appAppoint"
@@ -39,7 +40,7 @@ require.config({
 });
 
 require(['angular','angular-resource','angular-sanitize','angular-route',
-        'ocLazyLoad','jquery','appointFactory',
+        'ocLazyLoad','jquery','appointFactory','titanCommonFactory',
         'appointDirective','appointRoute','appAppoint'],
     function (angular){
         angular.bootstrap(document,["appointApp"]);
