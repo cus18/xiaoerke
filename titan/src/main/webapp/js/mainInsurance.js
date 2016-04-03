@@ -39,7 +39,8 @@ require.config({
 });
 
 require(['angular','angular-resource','angular-sanitize','angular-route',
-    'ocLazyLoad','jquery','insuranceFactory','insuranceDirective','appInsuranceRoute','appInsurance'],
+        'ocLazyLoad','jquery','insuranceFactory',
+        'insuranceDirective','appInsuranceRoute','appInsurance'],
     function (angular){
         angular.bootstrap(document,["insuranceApp"]);
     });

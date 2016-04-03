@@ -39,7 +39,8 @@ require.config({
 });
 
 require(['angular','angular-resource','angular-sanitize','angular-route',
-    'ocLazyLoad','jquery','appointFactory','appointDirective','appointRoute','appAppoint'],
+        'ocLazyLoad','jquery','appointFactory',
+        'appointDirective','appointRoute','appAppoint'],
     function (angular){
         angular.bootstrap(document,["appointApp"]);
     });

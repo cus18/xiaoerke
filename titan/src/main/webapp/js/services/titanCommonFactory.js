@@ -6,7 +6,7 @@ var user_h5 = ''
 var wxChat = 'wechatInfo/'
 var healthRecord='healthRecord/'
 
-define(['app'], function (app) {
+define([appName], function (app) {
     app
         .factory('AccountInfo',['$resource',function ($resource){
             return $resource(user_h5 + 'account/user/accountInfo');
