@@ -81,5 +81,4 @@ public class AccountDoctorController {
 		response.put("message", "success");
         return response;
     }
-
 }
