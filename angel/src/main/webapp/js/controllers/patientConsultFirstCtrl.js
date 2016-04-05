@@ -26,7 +26,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             }
 
             $scope.patientConsultFirst = function(){
-                var routePath = "/ap/patient/consultBBBBBB" + $location.path();
+                var routePath = "/patient/consultBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath:routePath},function(data){
                     $scope.pageLoading = false;
                     if(data.status=="9") {
