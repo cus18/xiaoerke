@@ -14,14 +14,12 @@
         $scope.title0 = "宝大夫（400-623-7120）";
         $scope.rankData = '0';
         $scope.reloadMoreDataMark="";
-        $scope.lock1 = "0"
-        $scope.lock2 = "0"
-        $scope.lock3 = "0"
         $scope.isBlank = false;
         $scope.week = ['今天','明天','后天','3天后','4天后','5天后','6天后'];
         $scope.departmentSelectName="全部科室";
         $scope.hospitalSelectName="全部医院";
         $scope.rankTitle = "排序";
+        $scope.allItemLock = false;//选择列表中全部科室 或 全部医院 是否显示
         //获取更多列表信息
         $scope.infoPage = {};
         var infoParam = [];
@@ -31,147 +29,91 @@
         $scope.starImg2 ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fstar_part.png";
         $scope.starImg3 ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fstar_gray.png";
 
-        $scope.selectAllDepartment = function(){
-            $scope.selectType = $scope.remark;
-            if($scope.lock1 == "0")
-            {
-                $scope.lock1 = "1"
-                $scope.lock2 = "0"
-                $scope.arrowImg = "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Farr_blue_up.png";
-                $scope.rankImg = "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fs_doc_rank.png";
-                $scope.shadow = "1";
-                $scope.mySeek = "1"
-                $scope.department = "1"
-                $scope.rank = "0";
-            }
-            else
-            {
-                $scope.lock1 = "0"
-                $scope.lock2 = "0"
-                $scope.arrowImg = "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Farr_blue_d.png";
-                $scope.rankImg = "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fs_doc_rank.png";
-                $scope.shadow = "0";
-                $scope.mySeek = "0";
-                $scope.department="0";
-                $scope.rank = "0";
-            }
-        }
-
-        $scope.selectAllRank = function(){
-            $scope.selectType = "rank";
-            if($scope.lock2 == "0")
-            {
-                $scope.lock2 = "1"
-                $scope.lock1 = "0"
-                $scope.rankImg = "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fs_doc_rank_cur.png";
-                $scope.arrowImg = "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Farr_blue_d.png";
-                $scope.rank = "1";
-                $scope.department="0"
-                $scope.mySeek="1"
-                $scope.shadow = '1';
-            }
-            else
-            {
-                $scope.lock2 = "0"
-                $scope.lock1 = "0"
-                $scope.rankImg = "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fs_doc_rank.png";
-                $scope.arrowImg = "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Farr_blue_d.png";
-                $scope.rank = "0";
-                $scope.department="0"
-                $scope.mySeek="0"
-                $scope.shadow = '0';
-            }
-        }
-
         $scope.init = function () {
             $scope.dataLoading = true;
             $scope.reloadMoreDataMark="";
-            $scope.lock1 = "0";
-            $scope.lock2 = "0";
-            $scope.lock3 = "0";
-            $scope.shadow = '0';
+            $scope.shadowLock = false;
             $scope.orderBy = "0";
             $scope.departmentSelectName="全部科室";
             $scope.hospitalSelectName="全部医院";
-            $scope.arrowImg = "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Farr_blue_d.png";
-            $scope.rankImg = "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fs_doc_rank.png";
-            $scope.mySeek="0"
             $scope.doRefresh($scope.orderBy,1,'');
+            $scope.allItemLock = false;//选择列表中全部科室 或 全部医院 是否显示
         };
 
+        /*点击 全部医院或全部科室*/
+        $scope.selectAllDepartmentOrHospital = function(){
+            $scope.selectType = $scope.remark;
+            $scope.shadowLock = true;
+        };
+
+        /*点击 排序*/
+        $scope.selectAllRank = function(){
+            $scope.selectType = "rank";
+            $scope.shadowLock = true;
+        };
+        /*加载 某科室下 的医生列表*/
         $scope.reloadDoctorInDepartment = function(hospitalId,departmentLevel1Name){
             $scope.pageLoading = true;
-            $scope.selectType="";
             $scope.reloadMoreDataMark = "reloadDoctorInDepartment";
             infoParam.hospitalId = hospitalId;
             infoParam.departmentLevel1Name = departmentLevel1Name;
-            $scope.lock1=0;
-            $scope.lock2=0;
-            $scope.lock3 = "1";
-            $scope.shadow = '0';
-            $scope.arrowImg = "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Farr_blue_d.png";
+            $scope.shadowLock = false;
             $scope.orderBy= "0";
             $scope.departmentSelectName=departmentLevel1Name;
             $scope.doRefresh($scope.orderBy,1,infoParam);
-        }
+            $scope.allItemLock = true;//选择列表中全部科室 或 全部医院 是否显示
+        };
 
+        /*加载 某医院下 的医生列表*/
         $scope.reloadDoctorInHospital = function(hospitalId,hospitalName){
             $scope.pageLoading = true;
-            $scope.selectType="";
             $scope.reloadMoreDataMark = "reloadDoctorInHospital";
             infoParam.hospitalId = hospitalId;
             $scope.orderBy = "0";
-            $scope.doRefresh($scope.orderBy,1,infoParam);
-            $scope.shadow = '0';
-            $scope.arrowImg = "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Farr_blue_d.png";
-            $scope.lock1=0;
-            $scope.lock2=0;
-            $scope.lock3 = "1";
+            $scope.shadowLock = false;
             $scope.hospitalSelectName=hospitalName;
-        }
+            $scope.doRefresh($scope.orderBy,1,infoParam);
+            $scope.allItemLock = true;//选择列表中全部科室 或 全部医院 是否显示
+        };
 
+        /*按时间最近 排序*/
         $scope.timeRank = function(){
             $scope.pageLoading = true;
-            $scope.selectType="";
+            $scope.selectType="rank";
             $scope.orderBy = "0";
             $scope.pageCurrent = 1;
             $scope.reloadMoreDataMark="";
-            $scope.lock1=0;
-            $scope.lock2=0;
             $scope.doctorData="";
-            $scope.shadow = '0';
+            $scope.shadowLock = false;
             $scope.rankTitle = "时间最近";
             $scope.doRefresh($scope.orderBy,1,infoParam);
-        }
-
+        };
+        /*按粉丝数 排序*/
         $scope.fansRank = function(){
             $scope.pageLoading = true;
-            $scope.selectType="";
+            $scope.selectType="rank";
             $scope.pageCurrent = 1;
             $scope.reloadMoreDataMark="";
-            $scope.lock1=0;
-            $scope.lock2=0;
             $scope.doctorData="";
-            $scope.shadow = '0';
+            $scope.shadowLock = false;
             $scope.orderBy = "1";
             $scope.rankTitle = "粉丝最多";
             $scope.doRefresh($scope.orderBy,1,infoParam);
         }
-
+        /*按工作年限 排序*/
         $scope.workTimeRank = function(){
             $scope.pageLoading = true;
-            $scope.selectType="";
+            $scope.selectType="rank";
             $scope.pageCurrent = 1;
             $scope.reloadMoreDataMark="";
-            $scope.lock1=0;
-            $scope.lock2=0;
             $scope.doctorData="";
-            $scope.shadow = '0';
+            $scope.shadowLock = false;
             $scope.orderBy = "2";
             $scope.rankTitle = "从业时间";
             $scope.doRefresh($scope.orderBy,1,infoParam);
         }
 
+        /*下拉时加载更多医生 排序*/
         $scope.loadMore = function () {
             if ($scope.scrollLoading) {
                 $scope.pageLoading = true;
@@ -192,6 +134,10 @@
                     $scope.infoPage.page = page;
                     $scope.doctorData = page == 1 ? [] : $scope.doctorData;
                     $scope.doctorData = $scope.doctorData.concat(data.doctorDataVo || []);
+                    for(var i=0;i<$scope.doctorData.length;i++){
+                        console.log($scope.doctorData[i].star);
+                        /*     $(".doctor-info .pic").eq(i).children("img")*/
+                    }
                     $scope.allHospitalOrDepartment="hospital";
                     $scope.$broadcast('scroll.refreshComplete');
                     $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -206,7 +152,11 @@
                     $scope.infoPage.page = page;
                     $scope.doctorData = page == 1 ? [] : $scope.doctorData;
                     $scope.doctorData = $scope.doctorData.concat(data.doctorDataVo || []);
-                    console.log($scope.doctorData );
+                    /* console.log($scope.doctorData );*/
+                    for(var i=0;i<$scope.doctorData.length;i++){
+                        console.log($scope.doctorData[i].star);
+                        /*     $(".doctor-info .pic").eq(i).children("img")*/
+                    }
                     if( data.doctorDataVo.length==0){
                         $scope.care1 = "医生正在赶来的路上哦，请耐心等待！"
                         $scope.isBlank = true
@@ -222,17 +172,21 @@
                     if($scope.reloadMoreDataMark=="reloadDoctorInDepartment")
                     {
                         $scope.pageLoading = true;
-                        ListHospitalDoctor.save({"pageNo":page+"","pageSize":"10","orderBy":orderBy,
-                            "hospitalId":infoParam.hospitalId,"departmentLevel1Name":infoParam.departmentLevel1Name}, function (data) {
-                            $scope.pageLoading = false;
-                            $scope.scrollLoading = page < data.pageTotal;
-                            $scope.infoPage.page = page;
-                            $scope.doctorData = page == 1 ? [] : $scope.doctorData;
-                            $scope.doctorData = $scope.doctorData.concat(data.doctorDataVo || []);
-                            console.log(  $scope.doctorData)
-                            $scope.$broadcast('scroll.refreshComplete');
-                            $scope.$broadcast('scroll.infiniteScrollComplete');
-                        });
+                        ListHospitalDoctor.save({
+                                "pageNo":page+"",
+                                "pageSize":"10",
+                                "orderBy":orderBy,
+                                "hospitalId":infoParam.hospitalId,
+                                "departmentLevel1Name":infoParam.departmentLevel1Name},
+                            function (data) {
+                                $scope.pageLoading = false;
+                                $scope.scrollLoading = page < data.pageTotal;
+                                $scope.infoPage.page = page;
+                                $scope.doctorData = page == 1 ? [] : $scope.doctorData;
+                                $scope.doctorData = $scope.doctorData.concat(data.doctorDataVo || []);
+                                $scope.$broadcast('scroll.refreshComplete');
+                                $scope.$broadcast('scroll.infiniteScrollComplete');
+                            });
                     }
                     else
                     {
@@ -248,12 +202,11 @@
                             $scope.infoPage.page = page;
                             $scope.doctorData = page == 1 ? [] : $scope.doctorData;
                             $scope.doctorData = $scope.doctorData.concat(data.doctorDataVo || []);
-                            console.log(  $scope.doctorData)
                             $scope.$broadcast('scroll.refreshComplete');
                             $scope.$broadcast('scroll.infiniteScrollComplete');
                             if(data.doctorDataVo.length==0){
                                 $scope.title = $stateParams.titleName.length>8? $stateParams.titleName.substr(0,8)+"...": $stateParams.titleName
-                                $scope.care1 = "医生正在赶来的路上哦，请耐心等待！"
+                                $scope.care1 = "医生正在赶来的路上哦，请耐心等待！";
                                 $scope.isBlank = true
                             }
                         });
@@ -326,7 +279,7 @@
                         "pageSize": "100",
                         "orderBy": orderBy,
                         "illnessSecondId": $stateParams.searchName,
-                         "consultPhone":"1"
+                        "consultPhone":"1"
                     }, function (data) {
                         $scope.pageLoading = false;
                         $scope.hospitalData = data['hospitalData'];
@@ -452,6 +405,7 @@
             }
         }
 
+        /*点击可预约的时间信息*/
         $scope.doctorAppointment = function(doctorId,available_time,hospitalName,location,position,location_id){
             if(available_time>=0&&available_time<7)
             {
