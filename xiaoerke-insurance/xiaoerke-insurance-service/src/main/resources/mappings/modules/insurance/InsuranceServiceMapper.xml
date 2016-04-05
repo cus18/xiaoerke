@@ -224,4 +224,29 @@
            and irs.baby_id = #{babyId}
         </if>
   </select>
+  <select id="getInsuranceServiceList" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.insurance.entity.InsuranceRegisterService" >
+	   SELECT
+		irs.id,
+		irs.parent_type,
+		irs.Insurance_type,
+		irs.parent_name,
+		irs.state,
+		irs.parent_phone,
+		irs.id_card,
+		irs.create_time,
+		irs.update_time,
+		irs.start_time,
+		irs.end_time,
+		irs.baby_id,
+		irs.update_by,
+		irs.source,
+		sa.nickName,
+		sbb.name
+	FROM
+		insurance_register_service irs
+	LEFT JOIN sys_user su ON irs.parent_phone = su.phone
+	LEFT JOIN sys_attention sa ON sa.openid = su.openid
+	LEFT JOIN sys_baby_baseInfo sbb ON sbb.id = irs.baby_id
+	group by irs.id ORDER BY irs.create_time desc
+  </select>
 </mapper>
