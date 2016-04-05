@@ -34,7 +34,7 @@ angular.module('controllers', ['luegg.directives'])
             });
             getMyAnswerList.save({"type":"myAnswer"},function(data){
                 console.log("getMyAnswerList",data);
-                if(data.myAnswer.length==0){
+                if(data.myAnswer!=null && data.myAnswer.length==0){
                     $scope.lockScroll="false";
                     console.log("没有添加会话插件");
                 } else {
@@ -43,148 +43,12 @@ angular.module('controllers', ['luegg.directives'])
             });
             $scope.alreadyJoinPatientConversationContent = [
                 {
-                    "patientId":"aaaa","sessionId":4234234234,"fromServer": "120.25.161.33",
-                    "patientName": "frank","isOnline":true,"dateTime":"15:20","messageNotSee":true,
-                    "consultValue":[{
-                        "type": 0,
-                        "content": "医生，你好，我有些问题想请教下?",
-                        "dateTime": "2016/03/16 15:20:30",
-                        "senderId":"aaaa",
-                        "senderName":"冯涛",
-                        "sessionId": 4324234423
-                    },{
-                        "type": 0,
-                        "content": "你好，请问你现在的情况怎么样，有需要进行帮忙的吗?",
-                        "dateTime": "2016/03/16 15:20:31",
-                        "senderId":"007ed2077b9c46b7b3efc46470af3136",
-                        "senderName":"陈佳科",
-                        "sessionId": 4324234423
-                    },{
-                        "type": 0,
-                        "content": "医生，麻烦帮我看下情况，我的肚子很不舒服",
-                        "dateTime": "2016/03/16 15:20:32",
-                        "senderId":"aaaa",
-                        "senderName":"冯涛",
-                        "sessionId": 4324234423
-                    },{
-                        "type": 0,
-                        "content": "你好，请问你现在的情况怎么样，有需要进行帮忙的吗?",
-                        "dateTime": "2016/03/16 15:20:33",
-                        "senderId":"007ed2077b9c46b7b3efc46470af3136",
-                        "senderName":"陈佳科",
-                        "sessionId": 4324234423
-                    },{
-                        "type": 0,
-                        "content": "医生，麻烦帮我看下情况，我的肚子很不舒服,",
-                        "dateTime": "2016/03/16 15:20:34",
-                        "senderId":"007ed2077b9c46b7b3efc46470af3136",
-                        "senderName":"陈佳科",
-                        "sessionId": 4324234423
-                    }]
+                    "patientId":"aaaa",
+                    "patientName": "frank",
                 },
                 {
-                    "patientId":"wefedfwe","sessionId": 4234234234,"fromServer": "120.25.161.33",
-                    "patientName": "frank","isOnline":true,"dateTime":"15:20","messageNotSee":true,
-                    "consultValue":[{
-                        "type": 0,
-                        "content": "hello,my name is cjk",
-                        "dateTime": 894320432349,
-                        "senderId":"fewfewfwe",
-                        "senderName":"frank",
-                        "sessionId": 4324234423
-                    },{
-                        "type": 0,
-                        "content": "hello,my name is cjk",
-                        "dateTime": 894320432489,
-                        "senderId":"fewfewfwe",
-                        "senderName":"cjk",
-                        "sessionId": 4324234423
-                    },{
-                        "type": 0,
-                        "content": "hello,my name is cjk",
-                        "dateTime": 8943204932489,
-                        "senderId":"fewfewfwe",
-                        "senderName":"frank",
-                        "sessionId": 4324234423
-                    }]
-                },
-                {
-                    "patientId":"vewfewf","sessionId": 4234234234,"fromServer": "120.25.161.33",
-                    "patientName": "frank","isOnline":true,"dateTime":"15:20","messageNotSee":true,
-                    "consultValue":[{
-                        "type": 0,
-                        "content": "hello,my name is cjk",
-                        "dateTime": 8943204932489,
-                        "senderId":"fewfewfwe",
-                        "senderName":"frank",
-                        "sessionId": 4324234423
-                    },{
-                        "type": 0,
-                        "content": "hello,my name is cjk",
-                        "dateTime": 8943204932489,
-                        "senderId":"fewfewfwe",
-                        "senderName":"cjk",
-                        "sessionId": 4324234423
-                    },{
-                        "type": 0,
-                        "content": "hello,my name is cjk",
-                        "dateTime": 8943204932489,
-                        "senderId":"fewfewfwe",
-                        "senderName":"frank",
-                        "sessionId": 4324234423
-                    }]
-                },
-                {
-                    "patientId":"fwedsfwe","sessionId": 4234234234,"fromServer": "120.25.161.33",
-                    "patientName": "frank","isOnline":true,"dateTime":"15:20","messageNotSee":false,
-                    "consultValue":[{
-                        "type": 0,
-                        "content": "hello,my name is cjk",
-                        "dateTime": 8943204932489,
-                        "senderId":"fewfewfwe",
-                        "senderName":"frank",
-                        "sessionId": 4324234423
-                    },{
-                        "type": 0,
-                        "content": "hello,my name is cjk",
-                        "dateTime": 8943204932489,
-                        "senderId":"fewfewfwe",
-                        "senderName":"cjk",
-                        "sessionId": 4324234423
-                    },{
-                        "type": 0,
-                        "content": "hello,my name is cjk",
-                        "dateTime": 8943204932489,
-                        "senderId":"fewfewfwe",
-                        "senderName":"frank",
-                        "sessionId": 4324234423
-                    }]
-                },
-                {
-                    "patientId":"fwefdsfwe","sessionId": 4234234234,"fromServer": "120.25.161.33",
-                    "patientName": "frank","isOnline":true,"dateTime":"15:20","messageNotSee":true,
-                    "consultValue":[{
-                        "type": 0,
-                        "content": "hello,my name is cjk",
-                        "dateTime": 8943204932489,
-                        "senderId":"fewfewfwe",
-                        "senderName":"frank",
-                        "sessionId": 4324234423
-                    },{
-                        "type": 0,
-                        "content": "hello,my name is cjk",
-                        "dateTime": 8943204932489,
-                        "senderId":"fewfewfwe",
-                        "senderName":"cjk",
-                        "sessionId": 4324234423
-                    },{
-                        "type": 0,
-                        "content": "hello,my name is cjk",
-                        "dateTime": 8943204932489,
-                        "senderId":"fewfewfwe",
-                        "senderName":"frank",
-                        "sessionId": 4324234423
-                    }]
+                    "patientId":"wefedfwe",
+                    "patientName": "frank",
                 }
             ];
 
@@ -440,20 +304,53 @@ angular.module('controllers', ['luegg.directives'])
             $scope.waitprocess1 = function() {
                 $scope.waitprocess.show = !$scope.waitprocess.show;
             }
+            //转接
+            $scope.switchover = {
+                show: false
+            }
+            $scope.switchover1 = function() {
+                $scope.switchover.show = !$scope.switchover.show;
+            }
+            //添加分组
+            $scope.addgroup = {
+                show: false
+            }
+            $scope.addgroup1 = function() {
+                $scope.addgroup.show = !$scope.addgroup.show;
+            }
+            //添加内容
+            $scope.addcontent = {
+                show: false
+            }
+            $scope.addcontent1 = function() {
+                $scope.addcontent.show = !$scope.addcontent.show;
+            }
         }])
-    .controller('messageListCtrl', ['$scope', '$log', '$sce', 'userConsultListInfo', 'getUserRecordDetail', 'getCSdoctorList', 'CSInfoByUserId', 'getMessageRecordInfo',
-        function ($scope, $log, $sce, userConsultListInfo, getUserRecordDetail, getCSdoctorList, CSInfoByUserId, getMessageRecordInfo) {
+
+
+
+    .controller('messageListCtrl', ['$scope', '$log', '$sce', 'getUserConsultListInfo', 'getUserRecordDetail', 'getCSdoctorList', 'CSInfoByUserId', 'getMessageRecordInfo',
+        function ($scope, $log, $sce, getUserConsultListInfo, getUserRecordDetail, getCSdoctorList, CSInfoByUserId, getMessageRecordInfo) {
 
             $scope.info = {};
 
             $scope.searchMessageContent = "";
 
-            $scope.searchMessageType = "";
+            $scope.messageType = "";
+
+            $scope.currentClickUserName = "";
+
+            $scope.defaultClickUserOpenId = "";
+
+            $scope.searchMessageType = [{
+                searchType:"user",
+                searchContent: "查找客户"
+            },{
+                searchType:"message",
+                searchContent: "查找消息"
+            }];
 
             $scope.searchDate = [{
-                name: "所有时间",
-                value: 1000
-            }, {
                 name: "今天",
                 value: 1
             }, {
@@ -465,7 +362,7 @@ angular.module('controllers', ['luegg.directives'])
             }];
 
             //获取客户列表
-            userConsultListInfo.save({pageNo: "1", pageSize: "100"}, function (data) {
+            getUserConsultListInfo.save({pageNo: "1", pageSize: "20"}, function (data) {
                 console.log(data);
                 $scope.userConsultListInfo = data.userList;
             });
@@ -477,14 +374,19 @@ angular.module('controllers', ['luegg.directives'])
             });
 
             //获取用户的详细聊天记录
-            $scope.getUserRecordDetail = function (openid) {
-                getUserRecordDetail.save({recordType: "doctor", "openid": openid}, function (data) {
+            $scope.getUserRecordDetail = function (openid,senderName,fromUserId,toUserId) {
+                $scope.currentClickUserName = senderName;
+                getUserRecordDetail.save({pageNo:0,pageSize:100,fromUserId:fromUserId,toUserId:toUserId,recordType: "doctor", "openid": openid}, function (data) {
                     console.log(data);
+                    $scope.defaultClickUserOpenId = openid;
                     $scope.currentUserConsultRecordDetail = data.records;
                 });
             }
+
+
             //查询某个客服信息
             $scope.getCSInfoByUserId = function (Object) {
+
                 if (Object == 1000 || Object == 1 || Object == 7 || Object == 30) {
                     CSInfoByUserId.save({dateNum: Object, pageNo: "1", pageSize: "100"}, function (data) {
                         console.log(data);
@@ -499,16 +401,56 @@ angular.module('controllers', ['luegg.directives'])
             }
             //查找咨询记录（消息列表右上角的搜索功能）
             $scope.searchMessage = function () {
-                var messageType = "";
-                $scope.info.searchMessageType == "查找客户" ? messageType = "user" : messageType = "message";
-                getMessageRecordInfo.save({
-                    searchInfo: $scope.info.searchMessageContent,
-                    searchType: messageType,
+
+                if($scope.info.searchMessageContent == '' || $scope.info.searchMessageContent == null){
+                    alert('请选择查询内容！')
+                    return ;
+                }else if($scope.messageType == '' || $scope.messageType == null){
+                    alert('请选择查询类型！');
+                    return ;
+                }else{
+                    getMessageRecordInfo.save({
+                        searchInfo: $scope.info.searchMessageContent,
+                        searchType: $scope.messageType,
+                        pageNo: "1",
+                        pageSize: "100"
+                    }, function (data) {
+                        $scope.userConsultListInfo = data.userList;
+                        $scope.currentUserConsultRecordDetail = data.records;
+                    });
+                }
+            }
+
+            //查找咨询记录（消息列表右上角的搜索功能）
+            $scope.setSearchMessageType = function (searchType) {
+                $scope.messageType = searchType;
+            }
+
+            //查找消息记录（点击全部、图片等）
+            $scope.getRecordByOpenId = function (searchRecordType) {
+                getUserRecordDetail.save({
+                    recordType: searchRecordType,
+                    openId:$scope.defaultClickUserOpenId,
                     pageNo: "1",
                     pageSize: "100"
                 }, function (data) {
-                    $scope.userConsultListInfo = data.userList;
                     $scope.currentUserConsultRecordDetail = data.records;
                 });
             }
+            //左上角的刷新消息
+            $scope.refreshUserList = function () {
+                userConsultListInfo.save({pageNo: "1", pageSize: "100"}, function (data) {
+                    console.log(data);
+                    $scope.userConsultListInfo = data.userList;
+                });
+            }
+
+            //系统设置
+            $scope.systemsetup = {
+                show: false
+            }
+            $scope.systemsetup1 = function() {
+                $scope.systemsetup.show = !$scope.systemsetup.show;
+            }
+
         }])
