@@ -28,7 +28,7 @@ import com.cxqm.xiaoerke.modules.wechat.service.WeChatInfoService;
  * @version 2015-11-04
  */
 @Controller
-@RequestMapping(value = "order/doctor")
+@RequestMapping(value = "${xiaoerkePath}")
 public class OrderDoctorController extends BaseController {
 
 	@Autowired
@@ -36,13 +36,13 @@ public class OrderDoctorController extends BaseController {
 
 	@Autowired
 	private WeChatInfoService weChatInfoService;
-	
-    @RequestMapping(value = "/reminderOrder", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    Map<String, Object> getReminderOrder(@RequestBody Map<String, Object> params) throws Exception {
+
+	@RequestMapping(value = "/order/doctor/reminderOrder", method = {RequestMethod.POST, RequestMethod.GET})
+	public
+	@ResponseBody
+	Map<String, Object> getReminderOrder(@RequestBody Map<String, Object> params) throws Exception {
 		return patientRegisterService.getReminderOrder(params);
-    }
+	}
 
 	/**
 	 * 获取医生某天的出诊信息
@@ -58,7 +58,7 @@ public class OrderDoctorController extends BaseController {
 	 *
 	 * @return 返回信息
 	 */
-	@RequestMapping(value = "/settlementInfo", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/order/doctor/settlementInfo", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	HashMap<String, Object> SettlementInfo(@RequestBody Map<String, Object> params) {
@@ -69,20 +69,20 @@ public class OrderDoctorController extends BaseController {
 		if(params.get("type").equals("appointment"))
 		{
 			patientRegisterService.findDoctorSettlementAppointmentInfoByDate(doctorId,userId,date,response);
-			
+
 			String recommendedFee = Global.getConfig("sys.recommended.fee");
-	        int recommendedFeeInt =  Global.RECOMMENDED_FEE;
-	        try {
+			int recommendedFeeInt =  Global.RECOMMENDED_FEE;
+			try {
 				recommendedFeeInt = Integer.parseInt(recommendedFee);
 			} catch (NumberFormatException e) {}
-	        
+
 			List<Map<String, Object>> fanses = weChatInfoService.findAttentions(userId, date);
-	        for(Map<String, Object> fanes : fanses ) {
-	        	fanes.put("price", recommendedFeeInt);
-	        }
-	        
-	        response.put("attention",fanses);
-	        response.put("attentionTotal", fanses.size());
+			for(Map<String, Object> fanes : fanses ) {
+				fanes.put("price", recommendedFeeInt);
+			}
+
+			response.put("attention",fanses);
+			response.put("attentionTotal", fanses.size());
 		}
 		return response;
 	}
