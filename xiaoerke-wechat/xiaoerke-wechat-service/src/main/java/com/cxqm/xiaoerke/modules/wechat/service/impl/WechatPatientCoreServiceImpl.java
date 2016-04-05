@@ -4,6 +4,7 @@ import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
+import com.cxqm.xiaoerke.modules.consult.service.core.patientConsultWechatServiceThread;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
 import com.cxqm.xiaoerke.modules.interaction.dao.PatientRegisterPraiseDao;
 import com.cxqm.xiaoerke.modules.member.service.MemberService;
@@ -35,6 +36,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Service
 @Transactional(readOnly = false)
@@ -67,6 +70,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     @Autowired
     private MongoDBService<HealthRecordMsgVo> healthRecordMsgVoMongoDBService;
 
+	private static ExecutorService threadExecutor = Executors.newCachedThreadPool();
 
     @Autowired
 	private MemberService memberService;
@@ -122,7 +126,11 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			}
 		}
 		else {
-			respMessage = transferToCustomer(xmlEntity);
+			Runnable thread = new patientConsultWechatServiceThread(xmlEntity);
+			threadExecutor.execute(thread);
+			return "";
+
+			//respMessage = transferToCustomer(xmlEntity);
 		}
 		return respMessage;
 	}
@@ -162,8 +170,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			Map<String,Object> map = wechatInfoDao.getDoctorInfo(EventKey.replace("doc",""));
 			article.setTitle("您已经成功关注" + map.get("hospitalName") + map.get("name") + "医生，点击即可预约");
 			article.setDescription("");
-			article.setPicUrl(ConstantUtil.BAODF_URL+"/xiaoerke-appoint/images/attentionDoc.jpg");
-			article.setUrl(ConstantUtil.BAODF_URL+"/xiaoerke-appoint/appoint#/doctorAppointment/" + map.get("id") + ",,,,,doctorShare,,");
+			article.setPicUrl(ConstantUtil.BAODF_URL+"/titan/images/attentionDoc.jpg");
+			article.setUrl(ConstantUtil.BAODF_URL+"/titan/appoint#/doctorAppointment/" + map.get("id") + ",,,,,doctorShare,,");
 			articleList.add(article);
 		}else if(EventKey.indexOf("267")>-1){
 			article.setTitle("恭喜您,通过‘糖盒儿(tanghe2)’关注宝大夫,不仅可以随时免费咨询儿科专家,还可获赠一次预约名医的机会。");
@@ -172,8 +180,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		}else if(EventKey.indexOf("263")>-1){
 			article.setTitle("【郑玉巧育儿经】--宝大夫");
 			article.setDescription("智能匹配月龄，获取针对一对一育儿指导，建立宝宝专属健康档案，一路呵护，茁壮成长！");
-			article.setPicUrl(ConstantUtil.BAODF_URL+"/xiaoerke-appoint/images/Follow.jpg");
-			article.setUrl(ConstantUtil.BAODF_URL+"/xiaoerke-appoint/appoint#/knowledgeIndex");
+			article.setPicUrl(ConstantUtil.BAODF_URL+"/titan/images/Follow.jpg");
+			article.setUrl(ConstantUtil.BAODF_URL+"/titan/appoint#/knowledgeIndex");
 			articleList.add(article);
 		}
 		else if(EventKey.indexOf("month")>-1)
@@ -186,9 +194,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 					//推送赠送月会员URL消息
 					article.setTitle("月卡");
 					article.setDescription("感谢您关注宝大夫综合育儿服务平台，宝大夫现对新用户推出月卡服务。");
-					article.setPicUrl(ConstantUtil.BAODF_URL + "/xiaoerke-appoint/images/Follow.jpg");
-					article.setUrl(ConstantUtil.BAODF_URL + "/xiaoerke-appoint/wechatInfo/fieldwork/wechat/author?url="+
-							ConstantUtil.BAODF_URL + "/xiaoerke-appoint/wechatInfo/getUserWechatMenId?url=21");
+					article.setPicUrl(ConstantUtil.BAODF_URL + "/titan/images/Follow.jpg");
+					article.setUrl(ConstantUtil.BAODF_URL + "/titan/wechatInfo/fieldwork/wechat/author?url="+
+							ConstantUtil.BAODF_URL + "/titan/wechatInfo/getUserWechatMenId?url=21");
 					articleList.add(article);
 					memberService.insertMemberSendMessage(xmlEntity.getFromUserName(), "1");
 				}
@@ -196,9 +204,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				{
 					article.setTitle("活动已过期，赠送周会员");
 					article.setDescription("您好，此活动已过期，不过别担心，您仍可参加免费体验宝大夫短期会员服务");
-					article.setPicUrl(ConstantUtil.BAODF_URL + "/xiaoerke-appoint/images/Follow.jpg");
-					article.setUrl(ConstantUtil.BAODF_URL + "/xiaoerke-appoint/wechatInfo/fieldwork/wechat/author?url=" +
-							ConstantUtil.BAODF_URL + "/xiaoerke-appoint/wechatInfo/getUserWechatMenId?url=20");
+					article.setPicUrl(ConstantUtil.BAODF_URL + "/titan/images/Follow.jpg");
+					article.setUrl(ConstantUtil.BAODF_URL + "/titan/wechatInfo/fieldwork/wechat/author?url=" +
+							ConstantUtil.BAODF_URL + "/titan/wechatInfo/getUserWechatMenId?url=20");
 					articleList.add(article);
 				}
 			}
@@ -220,9 +228,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 					//推送赠送季会员URL消息
 					article.setTitle("季卡");
 					article.setDescription("感谢您关注宝大夫综合育儿服务平台，宝大夫现对新用户推出季卡服务。");
-					article.setPicUrl(ConstantUtil.BAODF_URL+"/xiaoerke-appoint/images/Follow.jpg");
-					article.setUrl(ConstantUtil.BAODF_URL+"/xiaoerke-appoint/wechatInfo/fieldwork/wechat/author?url="+
-							ConstantUtil.BAODF_URL+"/xiaoerke-appoint/wechatInfo/getUserWechatMenId?url=22");
+					article.setPicUrl(ConstantUtil.BAODF_URL+"/titan/images/Follow.jpg");
+					article.setUrl(ConstantUtil.BAODF_URL+"/titan/wechatInfo/fieldwork/wechat/author?url="+
+							ConstantUtil.BAODF_URL+"/titan/wechatInfo/getUserWechatMenId?url=22");
 					articleList.add(article);
 					memberService.insertMemberSendMessage(xmlEntity.getFromUserName(), "1");
 				}
@@ -230,9 +238,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				{
 					article.setTitle("活动已过期，赠送周会员");
 					article.setDescription("您好，此活动已过期，不过别担心，您仍可参加免费体验宝大夫短期会员服务");
-					article.setPicUrl(ConstantUtil.BAODF_URL + "/xiaoerke-appoint/images/Follow.jpg");
-					article.setUrl(ConstantUtil.BAODF_URL + "/xiaoerke-appoint/wechatInfo/fieldwork/wechat/author?url=" +
-							ConstantUtil.BAODF_URL + "/xiaoerke-appoint/wechatInfo/getUserWechatMenId?url=20");
+					article.setPicUrl(ConstantUtil.BAODF_URL + "/titan/images/Follow.jpg");
+					article.setUrl(ConstantUtil.BAODF_URL + "/titan/wechatInfo/fieldwork/wechat/author?url=" +
+							ConstantUtil.BAODF_URL + "/titan/wechatInfo/getUserWechatMenId?url=20");
 					articleList.add(article);
 				}
 			}
@@ -241,8 +249,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				article.setDescription("感谢您关注宝大夫综合育儿服务平台，本次活动只针对新关注用户，" +
 						"请把这份幸运分享给您身边的宝宝吧！再次感谢您对宝大夫的支持与信任！" +
 						"\n\n点击进入，全新郑玉巧玉儿经免费查阅");
-				article.setUrl("http://baodf.com/xiaoerke-appoint/wechatInfo/fieldwork/wechat/author?" +
-						"url=http://baodf.com/xiaoerke-appoint/wechatInfo/getUserWechatMenId?url=4");
+				article.setUrl("http://baodf.com/titan/wechatInfo/fieldwork/wechat/author?" +
+						"url=http://baodf.com/titan/wechatInfo/getUserWechatMenId?url=4");
 				articleList.add(article);
 			}
 		}
@@ -250,8 +258,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		{
 			article.setDescription("您好，欢迎关注！"+
 					"\n\n点击进入宝大夫-郑玉巧育儿经，一起交流学习育儿健康管理知识！");
-			article.setUrl("http://baodf.com/xiaoerke-appoint/wechatInfo/fieldwork/wechat/author?" +
-					"url=http://baodf.com/xiaoerke-appoint/wechatInfo/getUserWechatMenId?url=4");
+			article.setUrl("http://baodf.com/titan/wechatInfo/fieldwork/wechat/author?" +
+					"url=http://baodf.com/titan/wechatInfo/getUserWechatMenId?url=4");
 			articleList.add(article);
 		}else if(EventKey.indexOf("FQBTG")>-1){
 			article.setTitle("防犬宝,一份温馨的安全保障");
@@ -482,14 +490,12 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		 params.put("dissatisfied", null);
 		 params.put("redPacket", null);
 		 patientRegisterPraiseDao.saveCustomerEvaluation(params);
-//		String st = "感谢您对我们的信任与支持，为了以后能更好的为您服务，请对本次服务做出评价！【" +
-//				"<a href='http://s11.baodf.com/xiaoerke-appoint/appoint#/userEvaluate/"+xmlEntity.getKfAccount()+"'>我要评价</a>】";
-			String st = "感谢您对我们的信任与支持，为了以后能更好的为您服务，请对本次服务做出评价！【" +
-			"<a href='http://s11.baodf.com/xiaoerke-appoint/appoint#/userEvaluate/"+params.get("uuid")+"'>我要评价</a>】";
+		String st = "感谢您对我们的信任与支持，为了以后能更好的为您服务，请对本次服务做出评价！【" +
+			"<a href='http://s11.baodf.com/titan/appoint#/userEvaluate/"+params.get("uuid")+"'>我要评价</a>】";
 		 Map parameter = systemService.getWechatParameter();
-		String token = (String)parameter.get("token");
-		WechatUtil.senMsgToWechat(token, openId, st);
-		LogUtils.saveLog(request, "00000004");//注：00000004表示“客服评价”
+		 String token = (String)parameter.get("token");
+		 WechatUtil.senMsgToWechat(token, openId, st);
+		 LogUtils.saveLog(request, "00000004");//注：00000004表示“客服评价”
 	}
 
 	private void processGetLocationEvent(ReceiveXmlEntity xmlEntity,HttpServletRequest request)
