@@ -67,7 +67,7 @@
         }
         $scope.chooseTime = function(item){
             if(item.state == "1")return
-            var routePath = "/ap/appointBBBBBB/phoneConsultPay/patientPay.do?phoneConDoctorDetail="+ item.id
+            var routePath = "/appointBBBBBB/phoneConsultPay/patientPay.do?phoneConDoctorDetail="+ item.id
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 $scope.pageLoading = false;
                 if(data.status=="9") {
@@ -75,7 +75,7 @@
                 }else if(data.status=="8"){
                     window.location.href = data.redirectURL+"?targeturl="+routePath;
                 }else{
-                    window.location.href = "/xiaoerke-appoint/phoneConsultPay/patientPay.do?phoneConDoctorDetail="
+                    window.location.href = "/titan/phoneConsultPay/patientPay.do?phoneConDoctorDetail="
                         + item.id;
                 }})
         }
