@@ -1,6 +1,6 @@
 ﻿angular.module('controllers', ['ionic']).controller('phoneConDoctorDetailCtrl', [
-    '$scope','$state','$stateParams','DoctorDetail','DoctorVisitInfoByLocationInWeek','DoctorAppointmentInfoDetail',
-    function ($scope,$state,$stateParams,DoctorDetail,DoctorVisitInfoByLocationInWeek,DoctorAppointmentInfoDetail) {
+    '$scope','$state','$stateParams','DoctorDetail','DoctorVisitInfoByLocationInWeek','DoctorAppointmentInfoDetail','$location','CheckAttentionDoctor','GetUserLoginStatus',
+    function ($scope,$state,$stateParams,DoctorDetail,DoctorVisitInfoByLocationInWeek,DoctorAppointmentInfoDetail,$location,CheckAttentionDoctor,GetUserLoginStatus) {
         $scope.title = "医生详情页";
         $scope.pageLoading =false;
         $scope.toggleItem="phone";//默认的底部选择
@@ -22,7 +22,7 @@
             "#3891cf","#69b3e4","#8b70b0","#ba81b6","#e179a8","#f0a7b3","#c8e6df","#c9e7f9","#f9d7e6",
             "#bdddf4","#e0cae2","#e0d5e9","#d5ece4","#fbe0e5","#fae4ee"];
 
-        var routePath = encodeURI(encodeURI("/appointBBBBBB" + $location.path()));
+        var routePath = encodeURI(encodeURI("/ap/appointBBBBBB" + $location.path()));
 
         //获取医生的信息
         DoctorDetail.get({"doctorId":$stateParams.doctorId},function(data){
@@ -65,9 +65,19 @@
                 $scope.appointmentList= data.consultPhoneTimeList;
             });
         }
-        $scope.chooseTime = function(sysConsultServiceId){
-            window.location.href = "/xiaoerke-appoint/phoneConsultPay/patientPay.do?phoneConDoctorDetail="
-                + sysConsultServiceId;
+        $scope.chooseTime = function(item){
+            if(item.state == "1")return
+            var routePath = "/ap/appointBBBBBB/phoneConsultPay/patientPay.do?phoneConDoctorDetail="+ item.id
+            GetUserLoginStatus.save({routePath:routePath},function(data){
+                $scope.pageLoading = false;
+                if(data.status=="9") {
+                    window.location.href = data.redirectURL;
+                }else if(data.status=="8"){
+                    window.location.href = data.redirectURL+"?targeturl="+routePath;
+                }else{
+                    window.location.href = "/xiaoerke-appoint/phoneConsultPay/patientPay.do?phoneConDoctorDetail="
+                        + item.id;
+                }})
         }
 
         /*选择某一天的号源*/
