@@ -20,7 +20,7 @@ angular.module('services', ['ngResource'])
     }])
 
     //获取客户户列表
-    .factory('userConsultListInfo', ['$resource', function ($resource) {
+    .factory('getUserConsultListInfo', ['$resource', function ($resource) {
         return $resource(public + 'consult/getUserList');
     }])
     //获取在线用户列表

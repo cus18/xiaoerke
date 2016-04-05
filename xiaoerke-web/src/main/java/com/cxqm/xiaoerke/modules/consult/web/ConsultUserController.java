@@ -63,7 +63,7 @@ public class ConsultUserController extends BaseController {
     /***
      * 用户在咨询完毕后，主动请求终止会话（医生和患者都可操作）
      * @param
-     *        params:{"sessionId": 432432}
+     *        userId:{"userId": "124124"}
      * @return
      *     {
      *        "result":"success"(失败返回failure)
@@ -71,38 +71,6 @@ public class ConsultUserController extends BaseController {
      */
 
     @RequestMapping(value = "/sessionEnd", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    String sessionEnd(@RequestBody Map<String, Object> params,HttpServletRequest request,
-                      HttpServletResponse httpResponse) {
-        return consultConversationService.removeSessionById(request, params);
-    }
-
-    /***
-     * 用户删除会话
-     *
-     * @param
-     * {
-        "sessionId": "dafdsaf",
-        "patientId":"fdsafew",
-        "operation":"confirm" (delete删除操作)
-        }
-     @return
-     {
-     "result":"success"
-     }
-     */
-
-    @RequestMapping(value = "/waitJoinList/operation", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    String operation(@RequestBody Map<String, Object> params,
-                     HttpServletRequest request,
-                     HttpServletResponse httpResponse) {
-            return consultConversationService.removeSessionById(request,params);
-    }
-
-    @RequestMapping(value = "/getSessionId", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> getSessionId(@RequestParam(required=true) String userId) {
@@ -139,22 +107,21 @@ public class ConsultUserController extends BaseController {
         return response;
     }
 
-    @RequestMapping(value="/uploadMediaFile",method = {RequestMethod.POST, RequestMethod.GET})
+    /**
+     * 聊天咨询文件上传
+     * @param file
+     * @param data
+     * @return {"status","success"}
+     * @throws UnsupportedEncodingException
+     */
+    @RequestMapping(value="/consult/uploadMediaFile",method = {RequestMethod.POST, RequestMethod.GET})
     public HashMap<String,Object> UploadFile(@RequestParam("file") MultipartFile file,
-                           @RequestParam("data") String data) throws UnsupportedEncodingException {
-
-        String fileName = file.getOriginalFilename();
-        Map<String, Object> msgMap = null;
-        try {
-            msgMap = (Map<String, Object>) JSON.parse(URLDecoder.decode(data, "utf-8"));
-            System.out.println(msgMap);
-            System.out.println((String) msgMap.get("fileType"));
-            System.out.println((String) msgMap.get("senderId"));
-            return null;
-        } catch (JSONException ex) {
-            return null;
-        }
+                                             @RequestParam("data") String data) throws UnsupportedEncodingException {
+        HashMap<String, Object> response = consultRecordService.uploadMediaFile(file, data);
+        return response;
     }
+
+
 
     /**
      * 获取客户列表(或咨询过某个医生的客户)详细信息,按照时间降序排序
@@ -190,7 +157,10 @@ public class ConsultUserController extends BaseController {
         for(ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo : resultPage.getList()){
             Query query = new Query(where("openid").is(consultSessionForwardRecordsVo.getOpenid())).with(new Sort(Sort.Direction.DESC, "createDate"));
             ConsultRecordMongoVo oneConsultRecord = consultRecordService.findOneConsultRecord(query);
-            if(oneConsultRecord!=null && StringUtils.isNotNull(oneConsultRecord.getOpenid())){
+            Date date = oneConsultRecord.getCreateDate();
+            oneConsultRecord.setInfoDate(DateUtils.DateToStr(date));
+
+            if (oneConsultRecord != null && StringUtils.isNotNull(oneConsultRecord.getOpenid())){
                 consultSessionForwardRecordsVos.add(oneConsultRecord);
             }
 
@@ -285,4 +255,45 @@ public class ConsultUserController extends BaseController {
         return response;
     }
 
+    /***
+     * 用户在咨询完毕后，主动请求终止会话（医生和患者都可操作）
+     * @param
+     *        params:{"sessionId": 432432}
+     * @return
+     *     {
+     *        "result":"success"(失败返回failure)
+     *      }
+     */
+
+//    @RequestMapping(value = "/sessionEnd", method = {RequestMethod.POST, RequestMethod.GET})
+//    public
+//    @ResponseBody
+//    String sessionEnd(@RequestBody Map<String, Object> params,HttpServletRequest request,
+//                      HttpServletResponse httpResponse) {
+//        return consultConversationService.removeSessionById(request, params);
+//    }
+
+    /***
+     * 用户删除会话
+     *
+     * @param
+     * {
+    "sessionId": "dafdsaf",
+    "patientId":"fdsafew",
+    "operation":"confirm" (delete删除操作)
+    }
+     @return
+     {
+     "result":"success"
+     }
+     */
+
+    @RequestMapping(value = "/waitJoinList/operation", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    String operation(@RequestBody Map<String, Object> params,
+                     HttpServletRequest request,
+                     HttpServletResponse httpResponse) {
+        return consultConversationService.removeSessionById(request,params);
+    }
 }

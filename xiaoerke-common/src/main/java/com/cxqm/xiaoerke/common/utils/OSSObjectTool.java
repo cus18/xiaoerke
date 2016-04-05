@@ -18,17 +18,19 @@ import com.cxqm.xiaoerke.common.config.Global;
  * @author ft
  *
  */
-public class OSSObjectTool {  
+public class OSSObjectTool {
     private static  OSSClient ossClient = null;
     public static String BUCKET_DOCTOR_PIC = null;
     public static String BUCKET_ARTICLE_PIC = null;
+    public static String BUCKET_CONSULT_PIC = null;
     static {
-    	String accesskey = Global.getConfig("aliyun.accesskey");
-		String secret =  Global.getConfig("aliyun.secret");
-		String host =  Global.getConfig("oss.host");
-		BUCKET_DOCTOR_PIC = Global.getConfig("oss.bucket.doctor.pic");
-		BUCKET_ARTICLE_PIC = Global.getConfig("oss.bucket.article.pic");
-    	ossClient = new  OSSClient(host,accesskey, secret);
+        String accesskey = Global.getConfig("aliyun.accesskey");
+        String secret =  Global.getConfig("aliyun.secret");
+        String host =  Global.getConfig("oss.host");
+        BUCKET_DOCTOR_PIC = Global.getConfig("oss.bucket.doctor.pic");
+        BUCKET_ARTICLE_PIC = Global.getConfig("oss.bucket.article.pic");
+        BUCKET_CONSULT_PIC = Global.getConfig("oss.bucket.consult.pic");
+        ossClient = new  OSSClient(host,accesskey, secret);
     }
 
     /**
@@ -49,26 +51,25 @@ public class OSSObjectTool {
         ossClient.putObject(bucket, key , in, objectMeta);
         return key;
     }
-    
+
     /**
      * 获取医生头像的 base url, 注 base url + key = full url
      * @return
      */
     public static String getDoctorPicBaseUrl(){
-    	 return "http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/";
+        return "http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/";
     }
-    
+
     public static Map<String,String> getObject(String bucketName, String key)
             throws OSSException, ClientException, FileNotFoundException {
-    	//OSSObject ossObject = ossClient.getObject(bucketName, key);
+        //OSSObject ossObject = ossClient.getObject(bucketName, key);
         return null;
     }
-    
+
     public static void main(String[] args) throws Exception {
-		String file = "D:\\5.png";
-		File f = new File(file);
-		String bucket =  Global.getConfig("oss.bucket.doctor.pic");
-		uploadFileInputStream("123", f.length(), new FileInputStream(f), bucket);
+        String file = "D:\\5.png";
+        File f = new File(file);
+        String bucket =  Global.getConfig("oss.bucket.doctor.pic");
+        uploadFileInputStream("123", f.length(), new FileInputStream(f), bucket);
     }
-    
 }

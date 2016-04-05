@@ -16,7 +16,7 @@
     id, conversation_id, from_user_id, to_user_id, create_time, create_by, remark,status
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from consult_conversation_forward_records
     where id = #{id,jdbcType=BIGINT}
@@ -130,7 +130,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-	<update id="cancelTransfer" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo" >
+  <update id="cancelTransfer" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo" >
     update consult_conversation_forward_records
     set 
       status = #{status,jdbcType=VARCHAR}
@@ -139,7 +139,7 @@
     and to_user_id = #{toUserId,jdbcType=VARCHAR}
     and status = 'waiting' 
   </update>
-  
+
 
   <select id="findConversationRankList" resultType="java.util.HashMap" >
     SELECT
@@ -158,7 +158,7 @@
   </select>
 
 
-  <select id="getConsultUserListRecently" resultMap="BaseResultMap"
+  <select id="getConsultUserListRecently_bak" resultMap="BaseResultMap"
           resultType="com.cxqm.xiaoerke.common.persistence.Page">
     SELECT ccfr.*,su.openid from consult_conversation_forward_records ccfr
     INNER JOIN sys_user su on su.id = ccfr.from_user_id
@@ -169,7 +169,13 @@
     <if test="CSDoctorId != null">
       and to_user_id=#{CSDoctorId}
     </if>
+    group su.openid
     ORDER BY ccfr.create_time desc
+  </select>
+  <!--测试 测完删掉当前并给getConsultUserListRecently_bak改名字-->
+  <select id="getConsultUserListRecently" resultMap="BaseResultMap"
+          resultType="com.cxqm.xiaoerke.common.persistence.Page">
+    select openid from consult_record GROUP BY openid
   </select>
 
 </mapper>
