@@ -9,6 +9,9 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -74,16 +77,33 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
         // 记录日志 TODO：
 //		LogUtils.saveLog(Servlets.getRequest(), "00000030" ,"医生主键："+ doctorId
 //				+ "date:" + date);
-
+        DateFormat formart = new SimpleDateFormat("hh:mm");
         List<HashMap<String, Object>> consultPhoneTimeList = new LinkedList<HashMap<String, Object>>();
         if(resultList != null && !resultList.isEmpty()){
             for(HashMap<String, Object> map:resultList){
                 HashMap<String, Object> consultPhoneTime = new HashMap<String, Object>();
-                consultPhoneTime.put("price",(String)map.get("price"));
+                consultPhoneTime.put("price", (String) map.get("price"));
                 consultPhoneTime.put("id",(Integer)map.get("id"));
                 consultPhoneTime.put("begin_time",(String)map.get("begin_time"));
-                consultPhoneTime.put("end_time",(String)map.get("end_time"));
-                consultPhoneTime.put("state",(String)map.get("state"));
+                try {
+                    Date start = formart.parse((String)map.get("begin_time"));
+                    Date now = formart.parse(formart.format(new Date()));
+
+                    if(date.getTime()>=new Date().getTime()){
+                        consultPhoneTime.put("state",(String)map.get("state"));
+                    }else{
+                        if(start.getTime()>now.getTime()){
+                            consultPhoneTime.put("state",(String)map.get("state"));
+                        }else{
+                            consultPhoneTime.put("state","1");
+                        }
+
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                consultPhoneTime.put("end_time", (String) map.get("end_time"));
+
                 consultPhoneTime.put("serviceType",(String)map.get("serviceType"));
                 consultPhoneTimeList.add(consultPhoneTime);
             }
@@ -97,14 +117,14 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
     /**
      * 返回一个医生指定日期的号源
      */
-	@Override
-	public JSONObject getRegisterTime(String doctorId , String date) {
-		// TODO Auto-generated method stub
-		HashMap<String, Object> dataInfo = new HashMap<String, Object>();
+    @Override
+    public JSONObject getRegisterTime(String doctorId , String date) {
+        // TODO Auto-generated method stub
+        HashMap<String, Object> dataInfo = new HashMap<String, Object>();
         dataInfo.put("doctorId", doctorId);
         dataInfo.put("date", date);
-		List<HashMap<String, Object>> consultPhoneTimeList = sysConsultPhoneServiceDao.findConsultPhoneTimeListByDoctorAndDate(dataInfo);
+        List<HashMap<String, Object>> consultPhoneTimeList = sysConsultPhoneServiceDao.findConsultPhoneTimeListByDoctorAndDate(dataInfo);
 
-		return null;
-	}
+        return null;
+    }
 }
