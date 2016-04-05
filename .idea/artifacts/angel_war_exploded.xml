@@ -122,6 +122,7 @@
             <element id="module-output" name="xiaoerke-consult-service" />
           </element>
           <element id="library" level="project" name="Maven: io.netty:netty-all:4.0.24.Final" />
+          <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-core:7.0.47" />
           <element id="library" level="project" name="Maven: org.springframework:spring-core:4.0.8.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-beans:4.0.8.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context:4.0.8.RELEASE" />
@@ -277,7 +278,6 @@
           <element id="library" level="project" name="Maven: ch.qos.logback:logback-core:1.1.2" />
           <element id="library" level="project" name="Maven: org.yaml:snakeyaml:1.13" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-tomcat:1.0.2.RELEASE" />
-          <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-core:7.0.52" />
           <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-el:7.0.52" />
           <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-logging-juli:7.0.52" />
           <element id="library" level="project" name="Maven: org.quartz-scheduler:quartz:2.2.1" />
