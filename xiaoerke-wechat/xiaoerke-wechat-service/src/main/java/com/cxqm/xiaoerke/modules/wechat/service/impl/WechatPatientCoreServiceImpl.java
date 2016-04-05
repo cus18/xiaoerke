@@ -125,7 +125,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			}
 		}
 		else {
-			patientConsultWechatService.patientConsultService(xmlEntity);
+			patientConsultWechatService.patientWechatConsultService(xmlEntity);
 			return "";
 			//respMessage = transferToCustomer(xmlEntity);
 		}
