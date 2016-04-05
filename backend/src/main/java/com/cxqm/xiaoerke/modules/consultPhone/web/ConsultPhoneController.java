@@ -2,9 +2,7 @@ package com.cxqm.xiaoerke.modules.consultPhone.web;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cxqm.xiaoerke.common.persistence.Page;
-import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.order.entity.ConsulPhonetDoctorRelationVo;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
+import com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhoneOrderService;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PhoneConsultDoctorRelationService;
@@ -57,7 +55,6 @@ public class ConsultPhoneController extends BaseController {
 	 * sunxiao
 	 * @param
 	 * @param model
-	 * sunxiao
 	 */
 	@RequestMapping(value = "registerForm")
 	public String registerForm(HttpServletRequest request,HttpServletResponse response, Model model) {
@@ -67,46 +64,19 @@ public class ConsultPhoneController extends BaseController {
 			String doctorName = new String(request.getParameter("doctorName").getBytes("ISO-8859-1"),"utf-8");
 			String hospital = new String(request.getParameter("hospital").getBytes("ISO-8859-1"),"utf-8");
 			String phone = request.getParameter("phone");
-			List<String> dateList = new ArrayList<String>();
-			Calendar c = Calendar.getInstance();
-			c.setTime(new Date());
-			c.add(Calendar.DAY_OF_YEAR, 7 * Integer.parseInt(pageFlag));
-			Date firstDay = c.getTime();
-			for (int i = 0; i < 7; i++) {
-				Calendar calendar = new GregorianCalendar();
-				calendar.setTime(firstDay);
-				calendar.add(calendar.DATE, i);// 把日期往后增加一天.整数往后推,负数往前移动
-				Date date = calendar.getTime(); // 这个时间就是日期往后推一天的结果
-				int dayForWeek = 0;
-				if (calendar.get(Calendar.DAY_OF_WEEK) == 1) {
-					dayForWeek = 7;
-				} else {
-					dayForWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1;
-				}
-				String[] weekDays = { "一", "二", "三", "四", "五", "六", "日" };
-				String date_ = DateUtils.DateToStr(date, "date");
-				dateList.add(date_ + "(" + weekDays[dayForWeek - 1] + ")");
-			}
-			ConsulPhonetDoctorRelationVo param = new ConsulPhonetDoctorRelationVo();
-			param.setDoctorId(doctorId);
-			List<ConsulPhonetDoctorRelationVo> list = phoneConsultDoctorRelationService.getPhoneConsultDoctorRelationByInfo(param);
-			String phoneConsultFlag = "";
-			ConsulPhonetDoctorRelationVo cvo = new ConsulPhonetDoctorRelationVo();
-			if(list.size()==0){
-				phoneConsultFlag = "no";
-				cvo.setDoctorId(doctorId);
-			}else{
-				phoneConsultFlag = "yes";
-			}
+			Map<String, Object> resultMap = sysConsultPhoneService.getRegisterInfo(doctorId,pageFlag);
+			
 			model.addAttribute("repeatFlag", "1");
 			model.addAttribute("intervalFlag", "1");
-			model.addAttribute("consulPhonetDoctorRelationVo", list.size()==0?cvo:list.get(0));
 			model.addAttribute("pageFlag", pageFlag);
-			model.addAttribute("dateList", dateList);
 			model.addAttribute("doctorName", doctorName);
 			model.addAttribute("hospital", hospital);
 			model.addAttribute("phone", phone);
-			model.addAttribute("phoneConsultFlag", phoneConsultFlag);
+			model.addAttribute("consulPhonetDoctorRelationVo", resultMap.get("consulPhonetDoctorRelationVo"));
+			model.addAttribute("dateList", resultMap.get("dateList"));
+			model.addAttribute("phoneConsultFlag", resultMap.get("phoneConsultFlag"));
+			model.addAttribute("serverType", resultMap.get("serverType"));
+			model.addAttribute("beginTimeList", resultMap.get("beginTimeList"));
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -147,6 +117,42 @@ public class ConsultPhoneController extends BaseController {
 		vo.setState("1");
 		vo.setUpdateTime(new Date());
 		result = phoneConsultDoctorRelationService.openConsultPhone(vo);
+		return result.toString();
+	}
+	
+	/**
+	 * 添加电话咨询号源
+	 * sunxiao
+	 * @param
+	 * @param model
+	 * sunxiao
+	 */
+	@RequiresPermissions("user")
+	@ResponseBody
+	@RequestMapping(value = "addRegister")
+	public String addRegister(SysConsultPhoneServiceVo vo ,HttpServletRequest request,HttpServletResponse response, Model model) {
+		JSONObject result = new JSONObject();
+		SysConsultPhoneServiceVo svo = new SysConsultPhoneServiceVo();
+		String time = request.getParameter("time");
+		String times = request.getParameter("times");
+		vo.setSysDoctorId(request.getParameter("sysDoctorId"));
+		//vo.setSysHospitalId(request.getParameter("sysHospitalId"));
+		//vo.setPrice(Float.parseFloat(request.getParameter("price")));
+		//vo.setServiceType(request.getParameter("serverType"));
+		//vo.setLocationId(request.getParameter("locationId"));
+		List<String> timeList = new ArrayList<String>();
+		if(times!=null){
+			String[] timeArray = times.split(";");
+			for(String s : timeArray){
+				timeList.add(s);
+			}
+		}
+		if(time!=null){
+			timeList.add(time);
+		}
+		Map<String, String> ret = sysConsultPhoneService.addRegister(svo,timeList,request.getParameter("date"),request.getParameter("operInterval"));
+		result.put("suc", "suc");
+		result.put("reason", ret.get("backend"));
 		return result.toString();
 	}
 	
