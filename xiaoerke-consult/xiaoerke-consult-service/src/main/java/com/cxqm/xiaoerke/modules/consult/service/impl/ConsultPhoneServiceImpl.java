@@ -89,7 +89,7 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
         //如果有此条请求则说明用户已经摘机接通电话,电话订单转成待评价
         ConsultPhoneRegisterServiceVo consultPhonevo = new ConsultPhoneRegisterServiceVo();
         consultPhonevo.setId(Integer.parseInt(userDate));
-        consultPhonevo.setState("1");//带评价
+        consultPhonevo.setState("2");//带评价
         consultPhonevo.setUpdateTime(new Date());
         int state = consultPhonePatientService.updateOrderInfoBySelect(consultPhonevo);
         CallResponse response = new CallResponse();
