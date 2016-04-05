@@ -2,7 +2,7 @@
 .content .content-l {border-right: 1px solid #fff;}
 
 /*刷新*/
-.chatbox div span {cursor: pointer;display: inline-block; padding: 13px 0 14px 0;margin:0 0 0 20px;font: 14px/17px 'Microsoft Yahei';}
+.chatbox div span {display: inline-block; padding: 13px 0 14px 0;margin:0 0 0 20px;font: 14px/17px 'Microsoft Yahei';}
 .chatbox div span img{margin-right: 5px;}
 .find {width: 293px;height: 18px;padding: 5px 10px;border:1px solid #08b7c2;float: right;margin: 8px 20px 13px 0;border-radius: 20px;}
 .find select{border:none;border-right: 1px solid #000;color:#333;font: 12px/28px 'Microsoft Yahei';background:transparent;padding: 0;margin: 0;}
