@@ -15,11 +15,19 @@
           <artifactId>xiaoerke-wechat-api</artifactId>
           <version>0.0.1-SNAPSHOT</version>
       </dependency>
+
       <dependency>
           <groupId>com.cxqm</groupId>
           <artifactId>xiaoerke-consult-api</artifactId>
           <version>0.0.1-SNAPSHOT</version>
       </dependency>
+
+      <dependency>
+          <groupId>com.cxqm</groupId>
+          <artifactId>xiaoerke-consult-service</artifactId>
+          <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+
        <dependency>
           <groupId>com.cxqm</groupId>
           <artifactId>xiaoerke-interaction-service</artifactId>
