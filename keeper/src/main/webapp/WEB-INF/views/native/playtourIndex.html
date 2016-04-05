@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <base href="/xiaoerke-wxapp/"/>
+    <base href="/keeper/"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
     <meta content="yes" name="apple-mobile-web-app-capable">
@@ -10,17 +10,17 @@
     <script src="js/libs/jquery-2.1.3.min.js"></script>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script src="js/playtourIndex.js"></script>
-    <link rel="stylesheet" href="/xiaoerke-wxapp/styles/playtour/playtourIndex.less" type="text/css" />
+    <link rel="stylesheet" href="/keeper/styles/playtour/playtourIndex.less" type="text/css" />
 </head>
 <body onload="doRefresh()">
 <div class="playtourdoctor">
     <div class="playtourdoctorimg">
-        <img src="images/a1.png" width="62.5px" height="62.5px">
+        <img id="headImage" src="images/a1.png" width="62.5px" height="62.5px">
     </div>
     <div class="playtourdoctorright">
         <div class="playtourdoctorright_1">
-            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fgeren.png" width="13px" height="14px"/>
-            <span>梁平</span>
+            <img    src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fgeren.png" width="13px" height="14px"/>
+            <span id="doctorName">梁平</span>
         </div>
         <div class="playtourdoctorright_2">
             <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fchengjiu.png" width="10.5px" height="14px"/>
@@ -60,11 +60,11 @@
     <div class="ptm">
         <img onclick="setMoney(0)" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png" width="43px" height="44px">
 
-            <input  text="number" maxlength="4" id="getMoney" placeholder="0元" onclick="moreMoney()"/>
+        <input  type="number" maxlength="4" id="getMoney" placeholder="0元" onfocus="this.type='number'" onblur="this.type='text'" onclick="moreMoney()"/>
 
         <img onclick="setMoney(1)" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjia_xuanzhong.png" width="43px" height="44px">
     </div>
-    <div class="ptmfu">
+    <div id="moneyDiff" class="ptmfu">
         <span>金额不可以为负哦~</span>
     </div>
 </div>
@@ -88,9 +88,9 @@
 <div class="playtourjianyi">
     <textarea placeholder="大胆说出对医生的建议" maxlength="100" id="content"></textarea>
 </div>
-<div class="playtourwenti">
+<div class="playtourwenti" style="display:none">
     亲，支付出现问题哦~
 </div>
-<button onclick="sumEval()" >提交评价</button>
+<button onclick="updateCustomerInfo()" >提交评价</button>
 </body>
 </html>

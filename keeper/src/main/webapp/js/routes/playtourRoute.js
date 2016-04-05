@@ -25,7 +25,7 @@ define(['appPlayTour'], function(app){
                 $stateProvider
                     /* 咨询打赏*/
                     .state('playtourShare', {
-                        url: '/playtourShare',
+                        url: '/playtourShare/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'playtourShareCtrl',
                         resolve: {
