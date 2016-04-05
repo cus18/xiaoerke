@@ -17,6 +17,29 @@
     <result column="from_user_id" property="fromUserId" jdbcType="VARCHAR" />
     <result column="to_user_id" property="toUserId" jdbcType="VARCHAR" />
   </resultMap>
+
+  <resultMap id="BaseResultMongoMap" type="com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="session_id" property="sessionId" jdbcType="BIGINT" />
+    <result column="openid" property="openid" jdbcType="VARCHAR" />
+    <result column="message" property="message" jdbcType="VARCHAR" />
+    <result column="worker" property="worker" jdbcType="VARCHAR" />
+    <result column="attention_date" property="attentionDate" jdbcType="TIMESTAMP" />
+    <result column="attention_marketer" property="attentionMarketer" jdbcType="VARCHAR" />
+    <result column="attention_nickName" property="attentionNickname" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="message_type" property="messageType" jdbcType="VARCHAR" />
+    <result column="opercode" property="opercode" jdbcType="VARCHAR" />
+    <result column="from_user_id" property="fromUserId" jdbcType="VARCHAR" />
+    <result column="to_user_id" property="toUserId" jdbcType="VARCHAR" />
+
+    <result column="attention_nickName" property="nickName" jdbcType="VARCHAR" />
+    <result column="senderId" property="senderId" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="doctorName" property="doctorName" jdbcType="VARCHAR" />
+    <result column="senderName" property="senderName" jdbcType="VARCHAR" />
+  </resultMap>
   <sql id="Base_Column_List" >
     id, session_id, openid, message, worker, attention_date, attention_marketer, attention_nickName,
     create_date, update_date, message_type, opercode, from_user_id, to_user_id
@@ -26,6 +49,25 @@
     <include refid="Base_Column_List" />
     from consult_record
     where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="findUserConsultInfoBySessionId" resultMap="BaseResultMongoMap">
+    SELECT
+    sc.id AS session_id,
+    sc.openid,
+    sa.date AS attention_date,
+    sa.nickname AS attention_nickName,
+    sc.sys_user_id AS from_user_id,
+    sc.sys_user_id_cs AS to_user_id,
+    sd.name,
+    sa.marketer as doctorName,
+    sa.nickname AS senderName
+    FROM
+    consult_session sc
+    INNER JOIN sys_attention sa ON sa.openid = sc.openid
+    INNER JOIN sys_doctor sd ON sd.id = sc.sys_user_id_cs
+    where sc.id = #{sessionId}
+    GROUP BY sc.openid
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from consult_record
