@@ -51,7 +51,7 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
         phonepatientInfo.get("server_length");
         CallResponse response = new CallResponse();
         response.setStatuscode("1111");
-        if("0".equals(phonepatientInfo.get("state"))){
+        if("待接听".equals(phonepatientInfo.get("state"))){
           response.setStatuscode("0000");
         };
         response.setStatusmsg("");
