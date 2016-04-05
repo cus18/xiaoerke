@@ -42,7 +42,7 @@ define(['appPhoneConsult'], function (app) {
         }])
         //获取一个医生的某个加号的详情信息
         .factory('DoctorAppointmentInfoDetail', ['$resource', function ($resource) {
-            return $resource(user_appoint + '/consultPhone/user/doctor/time');
+            return $resource(user_appoint + 'consultPhone/user/doctor/time');
         }])
 
         //获取电话咨询订单详情
