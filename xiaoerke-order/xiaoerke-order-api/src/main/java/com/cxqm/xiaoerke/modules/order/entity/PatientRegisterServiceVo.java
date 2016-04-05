@@ -33,11 +33,11 @@ public class PatientRegisterServiceVo implements Serializable{
     private String registerNo;  //加号订购编号
     private String phone;  //用户手机号
     private String babyName;  //用户加号此业务的孩子名称
-	private String illness; //疾病相关描述
+    private String illness; //疾病相关描述
     private Date birthday; //孩子的生日
     private String praise;  //用户对于此次加号看病的评价
     private String star; //用户对于此次加号看病的打分
-	private String sys_user_id;//用户主键
+    private String sys_user_id;//用户主键
     private Date date;//医生加号表中的时间
     private Date beginTime;//开始时间
     private Date endTime;//结束时间
@@ -46,34 +46,34 @@ public class PatientRegisterServiceVo implements Serializable{
     private String showCreateDate;
     private String nickName;
     private String marketer;
-	private String falseUserReason;
+    private String falseUserReason;
     private String doctorId;
     private String hospitalName;//医院姓名
     private String warnFlag;
     private String doctorName;//医生姓名
     private String departmentLevel1;//医生所在的科室名称
-    
+
     private String OrderCreateDate;  //下单日期日期
     private String locationId;
-    
+
     private String location;
-    
+
     protected Page page;
-    
+
     private String showUpdateDate;
     private String visitDate;//就诊日期
-    
+
     private String OrderCreateDateFrom;
     private String OrderCreateDateTo;
     private String visitDateFrom;
     private String visitDateTo;
     private String doctorPhone;//医生手机号
-    
+
     private String hospitalId;
     private String falseUserReasonRemarks;
     private String position;
-    
-    
+
+
     private String openId;
     private String serviceType;
     private String overallSatisfy;
@@ -100,8 +100,8 @@ public class PatientRegisterServiceVo implements Serializable{
     }
 
     public String getDeleteBy() {
-		return deleteBy;
-	}
+        return deleteBy;
+    }
 
     public String getPatientRegisterServiceId() {
         return patientRegisterServiceId;
@@ -112,173 +112,173 @@ public class PatientRegisterServiceVo implements Serializable{
     }
 
     public void setDeleteBy(String deleteBy) {
-		this.deleteBy = deleteBy;
-	}
+        this.deleteBy = deleteBy;
+    }
 
-	public Integer getMemberServiceId() {
-		return memberServiceId;
-	}
+    public Integer getMemberServiceId() {
+        return memberServiceId;
+    }
 
-	public void setMemberServiceId(Integer memberServiceId) {
-		this.memberServiceId = memberServiceId;
-	}
+    public void setMemberServiceId(Integer memberServiceId) {
+        this.memberServiceId = memberServiceId;
+    }
 
-	@ExcelField(title="来源", align=2, sort=0)
+    @ExcelField(title="来源", align=2, sort=0)
     public String getMarketer() {
-		return marketer;
-	}
+        return marketer;
+    }
 
-	public void setMarketer(String marketer) {
-		this.marketer = marketer;
-	}
+    public void setMarketer(String marketer) {
+        this.marketer = marketer;
+    }
 
-	@ExcelField(title="成功（候诊时长）", align=2, sort=5)
-	public String getWaitTime() {
-		return waitTime;
-	}
+    @ExcelField(title="成功（候诊时长）", align=2, sort=5)
+    public String getWaitTime() {
+        return waitTime;
+    }
 
-	public void setWaitTime(String waitTime) {
-		this.waitTime = waitTime;
-	}
+    public void setWaitTime(String waitTime) {
+        this.waitTime = waitTime;
+    }
 
-	@ExcelField(title="openID", align=2, sort=2)
+    @ExcelField(title="openID", align=2, sort=2)
     public String getOpenId() {
-		return openId;
-	}
+        return openId;
+    }
 
-	public void setOpenId(String openId) {
-		this.openId = openId;
-	}
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
 
-	@ExcelField(title="出诊类别 专家门诊/特需门诊", align=2, sort=9)
-	public String getServiceType() {
-		return serviceType;
-	}
+    @ExcelField(title="出诊类别 专家门诊/特需门诊", align=2, sort=9)
+    public String getServiceType() {
+        return serviceType;
+    }
 
-	public void setServiceType(String serviceType) {
-		this.serviceType = serviceType;
-	}
-	
-	@ExcelField(title="整体满意度 是/否", align=2, sort=11)
-	public String getOverallSatisfy() {
-		return overallSatisfy;
-	}
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
+    }
 
-	public void setOverallSatisfy(String overallSatisfy) {
-		this.overallSatisfy = overallSatisfy;
-	}
-	
-	@ExcelField(title="用户反馈（满意的地方）", align=2, sort=12)
-	public String getUserFeedBack() {
-		return userFeedBack;
-	}
+    @ExcelField(title="整体满意度 是/否", align=2, sort=11)
+    public String getOverallSatisfy() {
+        return overallSatisfy;
+    }
 
-	public void setUserFeedBack(String userFeedBack) {
-		this.userFeedBack = userFeedBack;
-	}
+    public void setOverallSatisfy(String overallSatisfy) {
+        this.overallSatisfy = overallSatisfy;
+    }
 
-	@ExcelField(title="用户反馈（不满意和改进建议）", align=2, sort=13)
-	public String getUserFeedBackRemarks() {
-		return userFeedBackRemarks;
-	}
+    @ExcelField(title="用户反馈（满意的地方）", align=2, sort=12)
+    public String getUserFeedBack() {
+        return userFeedBack;
+    }
 
-	public void setUserFeedBackRemarks(String userFeedBackRemarks) {
-		this.userFeedBackRemarks = userFeedBackRemarks;
-	}
+    public void setUserFeedBack(String userFeedBack) {
+        this.userFeedBack = userFeedBack;
+    }
 
-	public String getIsUser() {
-		return isUser;
-	}
+    @ExcelField(title="用户反馈（不满意和改进建议）", align=2, sort=13)
+    public String getUserFeedBackRemarks() {
+        return userFeedBackRemarks;
+    }
 
-	public void setIsUser(String isUser) {
-		this.isUser = isUser;
-	}
+    public void setUserFeedBackRemarks(String userFeedBackRemarks) {
+        this.userFeedBackRemarks = userFeedBackRemarks;
+    }
 
-	@ExcelField(title="取消（原因及方式）", align=2, sort=16)
-	public String getCancelReason() {
-		return cancelReason;
-	}
+    public String getIsUser() {
+        return isUser;
+    }
 
-	public void setCancelReason(String cancelReason) {
-		this.cancelReason = cancelReason;
-	}
+    public void setIsUser(String isUser) {
+        this.isUser = isUser;
+    }
 
-	@ExcelField(title="备注", align=2, sort=18)
-	public String getRemarks() {
-		return remarks;
-	}
+    @ExcelField(title="取消（原因及方式）", align=2, sort=16)
+    public String getCancelReason() {
+        return cancelReason;
+    }
 
-	public void setRemarks(String remarks) {
-		this.remarks = remarks;
-	}
+    public void setCancelReason(String cancelReason) {
+        this.cancelReason = cancelReason;
+    }
 
-	public String getFalseUserReasonRemarks() {
-		return falseUserReasonRemarks;
-	}
+    @ExcelField(title="备注", align=2, sort=18)
+    public String getRemarks() {
+        return remarks;
+    }
 
-	public void setFalseUserReasonRemarks(String falseUserReasonRemarks) {
-		this.falseUserReasonRemarks = falseUserReasonRemarks;
-	}
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public String getFalseUserReasonRemarks() {
+        return falseUserReasonRemarks;
+    }
+
+    public void setFalseUserReasonRemarks(String falseUserReasonRemarks) {
+        this.falseUserReasonRemarks = falseUserReasonRemarks;
+    }
 
     public String getOrderCreateDateFrom() {
-		return OrderCreateDateFrom;
-	}
+        return OrderCreateDateFrom;
+    }
 
-	public void setOrderCreateDateFrom(String orderCreateDateFrom) {
-		OrderCreateDateFrom = orderCreateDateFrom;
-	}
+    public void setOrderCreateDateFrom(String orderCreateDateFrom) {
+        OrderCreateDateFrom = orderCreateDateFrom;
+    }
 
-	public String getOrderCreateDateTo() {
-		return OrderCreateDateTo;
-	}
+    public String getOrderCreateDateTo() {
+        return OrderCreateDateTo;
+    }
 
-	public void setOrderCreateDateTo(String orderCreateDateTo) {
-		OrderCreateDateTo = orderCreateDateTo;
-	}
+    public void setOrderCreateDateTo(String orderCreateDateTo) {
+        OrderCreateDateTo = orderCreateDateTo;
+    }
 
-	public String getVisitDateFrom() {
-		return visitDateFrom;
-	}
+    public String getVisitDateFrom() {
+        return visitDateFrom;
+    }
 
-	public void setVisitDateFrom(String visitDateFrom) {
-		this.visitDateFrom = visitDateFrom;
-	}
+    public void setVisitDateFrom(String visitDateFrom) {
+        this.visitDateFrom = visitDateFrom;
+    }
 
-	public String getVisitDateTo() {
-		return visitDateTo;
-	}
+    public String getVisitDateTo() {
+        return visitDateTo;
+    }
 
-	public void setVisitDateTo(String visitDateTo) {
-		this.visitDateTo = visitDateTo;
-	}
-    
+    public void setVisitDateTo(String visitDateTo) {
+        this.visitDateTo = visitDateTo;
+    }
+
     @ExcelField(title="微信用户名", align=2, sort=1)
     public String getNickName() {
-		return nickName;
-	}
+        return nickName;
+    }
 
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
-	}
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
 
-	@ExcelField(title="用户真假", align=1, sort=14)
-	public String getFalseUserReason() {
-		return falseUserReason;
-	}
+    @ExcelField(title="用户真假", align=1, sort=14)
+    public String getFalseUserReason() {
+        return falseUserReason;
+    }
 
-	public void setFalseUserReason(String falseUserReason) {
-		this.falseUserReason = falseUserReason;
-	}
+    public void setFalseUserReason(String falseUserReason) {
+        this.falseUserReason = falseUserReason;
+    }
 
     @ExcelField(title="最后操作时间", align=1, sort=17)
-	public String getShowUpdateDate() {
-		return showUpdateDate;
-	}
+    public String getShowUpdateDate() {
+        return showUpdateDate;
+    }
 
-	public void setShowUpdateDate(String showUpdateDate) {
-		this.showUpdateDate = showUpdateDate;
-	}
-    
+    public void setShowUpdateDate(String showUpdateDate) {
+        this.showUpdateDate = showUpdateDate;
+    }
+
     public String getVisitDate() {
         return visitDate;
     }
@@ -311,7 +311,7 @@ public class PatientRegisterServiceVo implements Serializable{
     public void setDepartmentLevel1(String departmentLevel1) {
         this.departmentLevel1 = departmentLevel1;
     }
-    
+
     @ExcelField(title="预约医生", align=1, sort=6)
     public String getDoctorName() {
         return doctorName;
@@ -323,41 +323,41 @@ public class PatientRegisterServiceVo implements Serializable{
 
     @ExcelField(title="预约日期", align=1, sort=9)
     public String getShowCreateDate() {
-		return showCreateDate;
-	}
-
-	public void setShowCreateDate(String showCreateDate) {
-		this.showCreateDate = showCreateDate;
-	}
-
-	public String getOrder() {
-    	return order;
+        return showCreateDate;
     }
-    
+
+    public void setShowCreateDate(String showCreateDate) {
+        this.showCreateDate = showCreateDate;
+    }
+
+    public String getOrder() {
+        return order;
+    }
+
     public void setOrder(String order) {
-    	this.order = order;
+        this.order = order;
     }
-    
+
     @ExcelField(title="就诊时间", align=2, sort=10)
     public String getShowTime() {
-		return showTime;
-	}
+        return showTime;
+    }
 
-	public void setShowTime(String showTime) {
-		this.showTime = showTime;
-	}
+    public void setShowTime(String showTime) {
+        this.showTime = showTime;
+    }
 
-	public String getWarnFlag() {
-		return warnFlag;
-	}
+    public String getWarnFlag() {
+        return warnFlag;
+    }
 
-	public void setWarnFlag(String warnFlag) {
-		this.warnFlag = warnFlag;
-	}
+    public void setWarnFlag(String warnFlag) {
+        this.warnFlag = warnFlag;
+    }
 
 
 
-	public String getDoctorId() {
+    public String getDoctorId() {
         return doctorId;
     }
 
@@ -379,13 +379,13 @@ public class PatientRegisterServiceVo implements Serializable{
     }
 
     public Date getEndTime() {
-		return endTime;
-	}
+        return endTime;
+    }
 
-	public void setEndTime(Date endTime) {
-		this.endTime = endTime;
-	}
-	
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
     public Date getBeginTime() {
         return beginTime;
     }
@@ -442,7 +442,7 @@ public class PatientRegisterServiceVo implements Serializable{
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
     }
-    
+
     @ExcelField(title="预约序号", align=2, sort=2)
     public String getRegisterNo() {
         return registerNo;
@@ -512,55 +512,55 @@ public class PatientRegisterServiceVo implements Serializable{
         this.hospitalName = hospitalName;
     }
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public String getHospitalId() {
-		return hospitalId;
-	}
+    public String getHospitalId() {
+        return hospitalId;
+    }
 
-	public void setHospitalId(String hospitalId) {
-		this.hospitalId = hospitalId;
-	}
+    public void setHospitalId(String hospitalId) {
+        this.hospitalId = hospitalId;
+    }
 
-	public String getLocationId() {
-		return locationId;
-	}
+    public String getLocationId() {
+        return locationId;
+    }
 
-	public void setLocationId(String locationId) {
-		this.locationId = locationId;
-	}
-	
-	@JsonIgnore
-	@XmlTransient
-	public Page getPage() {
-		if (page == null){
-			page = new Page();
-		}
-		return page;
-	}
-	
-	public Page setPage(Page page) {
-		this.page = page;
-		return page;
-	}
+    public void setLocationId(String locationId) {
+        this.locationId = locationId;
+    }
 
-	public String getLocation() {
-		return location;
-	}
+    @JsonIgnore
+    @XmlTransient
+    public Page getPage() {
+        if (page == null){
+            page = new Page();
+        }
+        return page;
+    }
 
-	public void setLocation(String location) {
-		this.location = location;
-	}
+    public Page setPage(Page page) {
+        this.page = page;
+        return page;
+    }
 
-	public String getBeginTimeStr() {
-		return beginTime == null ? "" : DateUtils.DateToStr(beginTime, "time");
-	}
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getBeginTimeStr() {
+        return beginTime == null ? "" : DateUtils.DateToStr(beginTime, "time");
+    }
 
     public String getPosition() {
         return position;
@@ -587,13 +587,13 @@ public class PatientRegisterServiceVo implements Serializable{
     }
 
     @ExcelField(title="支付状态", align=1, sort=20)
-	public String getPayStatus() {
-		return payStatus;
-	}
+    public String getPayStatus() {
+        return payStatus;
+    }
 
-	public void setPayStatus(String payStatus) {
-		this.payStatus = payStatus;
-	}
+    public void setPayStatus(String payStatus) {
+        this.payStatus = payStatus;
+    }
 
 }
 
