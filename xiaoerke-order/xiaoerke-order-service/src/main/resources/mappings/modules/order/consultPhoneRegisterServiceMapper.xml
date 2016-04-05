@@ -43,6 +43,26 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
+  <select id="getOrderPhoneConsultListByTime" resultType="java.util.Map" >
+    select crs.id,crs.phone userPhone,cdr.doctor_answer_phone doctorPhone,cdr.server_length conversationLength from consultPhone_register_service crs
+    left join sys_consultPhone_service scs on crs.sys_phoneConsult_service_id = scs.id
+    left join consultphone_doctor_relation cdr on cdr.doctor_id = scs.sys_doctor_id
+    where 1=1
+    <if test="state != null" >
+      and crs.state = #{state,jdbcType=VARCHAR}
+    </if>
+    AND (
+    now()>=DATE_FORMAT(
+    CONCAT(
+    DATE_FORMAT(scs.date, '%Y:%c:%d'),
+    DATE_FORMAT(scs.beginTime, ' %k:%i:%s')
+    ),
+    '%Y-%m-%d %k:%i:%s'
+    )
+    )
+
+  </select>
+
   <select id="getPhoneConsultaServiceIndo" resultType="java.util.Map" parameterType="java.lang.Integer" >
     select
     sd.name doctorName,
@@ -60,6 +80,7 @@
     crs.phone,
     sbi.name babyName,
     cdr.price,
+    crs.type,
     cdr.server_length
     from consultPhone_register_service crs
     left join sys_consultPhone_service scs
