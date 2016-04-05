@@ -26,7 +26,7 @@ public interface ConsultPhoneRegisterServiceDao {
 
     int updateByPrimaryKey(ConsultPhoneRegisterServiceVo record);
 
-    Map<String,Object> getPhoneConsultaServiceIndo(Integer phoneConsultServiceId);
+    Map<String,Object> getPhoneConsultaServiceIndo(Integer phoneConsultaServiceId);
 
     //电话咨询订单列表
     List<HashMap<String, Object>> getPhoneConsultaList(@Param("userId") String userId,@Param("state") String state);
@@ -36,4 +36,26 @@ public interface ConsultPhoneRegisterServiceDao {
      * sunxiao
      */
     Page<ConsultPhoneRegisterServiceVo> findConsultPhonePatientList(Page<ConsultPhoneRegisterServiceVo> page,ConsultPhoneRegisterServiceVo vo);
+
+    /**
+     *
+     * 电话咨询 -- 通过state和userId分页查询
+     * @param page
+     * @param hashMap
+     * @return
+     * @author chenxiaoqiong
+     */
+    Page<OrderServiceVo> getPhoneConsultPageList(Page<ConsultPhoneRegisterServiceVo> page, HashMap<String, Object> hashMap);
+
+    /**
+     *
+     * 预约挂号和电话咨询 -- 通过state和userId分页查询
+     * @param page
+     * @param hashMap
+     * @return
+     * @author chenxiaoqiong
+     */
+    Page<OrderServiceVo> getOrderAllPageList(Page<ConsultPhoneRegisterServiceVo> page, HashMap<String, Object> hashMap);
+
+
 }
