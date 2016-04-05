@@ -4,6 +4,7 @@ import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.sys.entity.ReceiveXmlEntity;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.websocket.*;
@@ -98,6 +99,10 @@ public class patientConsultWechatServiceThread extends Thread{
 		public void onMessage(String message) {
 			Map parameter = systemService.getWechatParameter();
 			String token = (String) parameter.get("token");
+
+			JSONObject messageObj = new JSONObject(message);
+			String type = messageObj.getString("type");
+
 			WechatUtil.senMsgToWechat(token, xmlEntity.getFromUserName(), message);
 			System.out.println("receive Message from" + xmlEntity.getFromUserName() + "===" + message);
 		}
