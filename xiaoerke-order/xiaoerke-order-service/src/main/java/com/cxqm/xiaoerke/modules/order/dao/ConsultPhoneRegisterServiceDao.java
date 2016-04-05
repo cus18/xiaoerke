@@ -57,5 +57,6 @@ public interface ConsultPhoneRegisterServiceDao {
      */
     Page<OrderServiceVo> getOrderAllPageList(Page<ConsultPhoneRegisterServiceVo> page, HashMap<String, Object> hashMap);
 
+    List<HashMap<String, Object>> getOrderPhoneConsultListByTime(@Param("state") String state);
 
 }
