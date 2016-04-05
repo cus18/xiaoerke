@@ -1,66 +1,53 @@
 <ion-view view-title={{title}} ng-init="doRefresh()">
     <ion-spinner ng-show="dataLoading" class="loadPic"></ion-spinner>
-    <div class="head">
-        <div class="left" ng-click="appointmentFirst()"><span class="city">首页</span> </div>
-        <h1 class="title" >常见问题</h1>
-        <div class="right">
-            <a class= my" ui-sref="myselfFirst">
-                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fmy1.png" width="22" height="22">
-                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fmy2.png" width="22" height="22" ng-if="false">
-            </a>
-        </div>
-    </div>
-    <ion-content class="questions" style="top:44px;">
-        <ul class="list">
-            <li class="item item-button-right">
-                <div class="item-head" ng-click="show(0)">1、如何使用宝大夫预约医生？</div>
-                <div class="content">
-                    <p>（1）关注“宝大夫”公众号后，进入宝大夫公众号首页；</p>
-                    <p> （2）点击“预约医生”进行预约医生首页；</p>
-                    <p>（3）找到符合自己要求的医生，在“医生详情页”选择需要预约的地点和时间；</p>
-                    <p>（4）在“填写订单页”填写宝宝的信息，点击“立即预约”即可成功预约医生。</p>
-                </div>
-                <i class="ion-ios-arrow-right button button-clear" ng-click="show(0)"></i>
-            </li>
-            <li class="item item-button-right">
-                <div class="item-head" ng-click="show(1)">2、如何便捷访问宝大夫公众号（Android版）？</div>
-                <div class="content">
-                    <p>（1）关注“宝大夫”公众号后，进入宝大夫公众号首页；</p>
-                    <p>（2）点击右上角的“小人头”标志，进入宝大夫公众号详情页；</p>
-                    <p>（3）点击右上角的“...”可看到“添加到桌面”字样，点击即可成功将宝大夫添加到手机桌面上，下次您就可以通过手机桌面上的图标快速访问宝大夫公众号了。</p>
-                </div>
-                <i class="ion-ios-arrow-right button button-clear" ng-click="show(1)"></i>
-            </li>
-            <li class="item item-button-right">
-                <div class="item-head" ng-click="show(2)">3、未绑定用户如何查看预约信息？</div>
-                <div class="content">
-                    <p>未绑定用户预约成功后，要想查看自己的订单信息，只需点击“我的”按钮，即可查看。</p>
-                </div>
-                <i class="ion-ios-arrow-right button button-clear" ng-click="show(2)"></i>
-            </li>
-            <li class="item item-button-right">
-                <div class="item-head" ng-click="show(3)">4、约定时间内无法联系上指定预约的医生怎么办？</div>
-                <div class="content">
-                    <p>若您在约定时间内无法联系上指定预约的医生，请第一时间联系宝大夫客服（400-623-7120）我们为您沟通和协调。</p>
+    <div bdf-head="title"></div>
+    <ion-content class="questions"  overflow-scroll="true"  style="top:45px;">
+        <ion-scroll>
+            <ul class="list">
+                <li class="item item-button-right">
+                    <div class="item-head" ng-click="show(0)">1、如何使用宝大夫预约医生？</div>
+                    <div class="content">
+                        <p>（1）关注“宝大夫”公众号后，进入宝大夫公众号首页；</p>
+                        <p> （2）点击“预约医生”进行预约医生首页；</p>
+                        <p>（3）找到符合自己要求的医生，在“医生详情页”选择需要预约的地点和时间；</p>
+                        <p>（4）在“填写订单页”填写宝宝的信息，点击“立即预约”即可成功预约医生。</p>
+                    </div>
+                    <i class="ion-ios-arrow-right button button-clear" ng-click="show(0)"></i>
+                </li>
+                <li class="item item-button-right">
+                    <div class="item-head" ng-click="show(1)">2、如何便捷访问宝大夫公众号（Android版）？</div>
+                    <div class="content">
+                        <p>（1）关注“宝大夫”公众号后，进入宝大夫公众号首页；</p>
+                        <p>（2）点击右上角的“小人头”标志，进入宝大夫公众号详情页；</p>
+                        <p>（3）点击右上角的“...”可看到“添加到桌面”字样，点击即可成功将宝大夫添加到手机桌面上，下次您就可以通过手机桌面上的图标快速访问宝大夫公众号了。</p>
+                    </div>
+                    <i class="ion-ios-arrow-right button button-clear" ng-click="show(1)"></i>
+                </li>
+                <li class="item item-button-right">
+                    <div class="item-head" ng-click="show(2)">3、未绑定用户如何查看预约信息？</div>
+                    <div class="content">
+                        <p>未绑定用户预约成功后，要想查看自己的订单信息，只需点击“我的”按钮，即可查看。</p>
+                    </div>
+                    <i class="ion-ios-arrow-right button button-clear" ng-click="show(2)"></i>
+                </li>
+                <li class="item item-button-right">
+                    <div class="item-head" ng-click="show(3)">4、约定时间内无法联系上指定预约的医生怎么办？</div>
+                    <div class="content">
+                        <p>若您在约定时间内无法联系上指定预约的医生，请第一时间联系宝大夫客服（400-623-7120）我们为您沟通和协调。</p>
 
-                </div>
-                <i class="ion-ios-arrow-right button button-clear" ng-click="show(3)"></i>
-            </li>
-            <!--<li class="item item-button-right">
-                <div class="item-head" ng-click="show(4)">{{question5}}</div>
-                <div class="content">
-                    <p>{{answer5}}</p>
+                    </div>
+                    <i class="ion-ios-arrow-right button button-clear" ng-click="show(3)"></i>
+                </li>
+                <!--<li class="item item-button-right">
+                    <div class="item-head" ng-click="show(4)">{{question5}}</div>
+                    <div class="content">
+                        <p>{{answer5}}</p>
 
-                </div>
-                <i class="ion-ios-arrow-right button button-clear" ng-click="show(4)"></i>
-            </li>-->
-            </ul>
-        <div class="footer" style="margin-top:50px;">
-            <p>
-                <a ng-click="appointmentFirst()">首页</a>
-                <a ui-sref="questions">常见问题</a>
-            </p>
-            <a href="tel:4006237120">客服电话：400-623-7120</a>
-        </div>
+                    </div>
+                    <i class="ion-ios-arrow-right button button-clear" ng-click="show(4)"></i>
+                </li>-->
+                </ul>
+            <div bdf-footer="title"></div>
+        </ion-scroll>
     </ion-content>
 </ion-view>

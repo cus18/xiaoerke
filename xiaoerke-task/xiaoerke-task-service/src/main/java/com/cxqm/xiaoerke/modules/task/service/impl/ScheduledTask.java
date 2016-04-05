@@ -4,10 +4,14 @@ import com.cxqm.xiaoerke.common.bean.CustomBean;
 import com.cxqm.xiaoerke.common.bean.WechatRecord;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.common.bean.WechatArticle;
+import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
 import com.cxqm.xiaoerke.modules.operation.service.BaseDataService;
 import com.cxqm.xiaoerke.modules.operation.service.OperationsComprehensiveService;
 import com.cxqm.xiaoerke.modules.operation.service.DataStatisticService;
+import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
+import com.cxqm.xiaoerke.modules.order.service.ConsultPhoneOrderService;
+import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
 import com.cxqm.xiaoerke.modules.plan.service.PlanMessageService;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
@@ -65,6 +69,9 @@ public class ScheduledTask {
     
     @Autowired
     private InsuranceRegisterServiceService insuranceService;
+
+    @Autowired
+    private ConsultPhoneOrderService consultPhoneOrderService;
 
     //将所有任务放到一个定时器里，减少并发
     //@Scheduled(cron = "0 */1 * * * ?")
@@ -948,5 +955,27 @@ public class ScheduledTask {
     public void insuranceUpdate() {
         System.out.print("进入定时器：");
         insuranceService.updateInsuranceRegisterServiceByState();
+    }
+
+    //建立患者与医生之间的通讯
+    public void getConnenct4doctorAndPatient(){
+      List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1");
+
+      CCPRestSDK sdk = new CCPRestSDK();
+        sdk.init("sandboxapp.cloopen.com", "8883");// 初始化服务器地址和端口，格式如下，服务器地址不需要写https://
+        sdk.setSubAccount("2fa43378da0a11e59288ac853d9f54f2", "0ad73d75ac5bcb7e68fb191830b06d6b");
+        sdk.setAppId("aaf98f8952f7367a0153084e29992035");
+      for(HashMap map:consultOrderList){
+          String doctorPhone =  (String)map.get("doctorPhone");
+          String userPhone =  (String)map.get("userPhone");
+          Integer orderId = (Integer)map.get("id");
+          Integer conversationLength =  Integer.valueOf((String)map.get("conversationLength"))*60;
+          HashMap<String, Object> result = sdk.callback(userPhone, doctorPhone,
+                  "4006237120", "4006237120", null,
+                  "true", null, orderId+"",
+                  conversationLength+"", null, "0",
+                  "1", "10", null);
+      }
+
     }
 }
