@@ -1,4 +1,4 @@
-var public = '/xiaoerke-consult-webapp/ap/'
+var public = ''
 
 angular.module('services', ['ngResource'])
     //获取医生管理下的患者列表数据和查找某个患者接口

@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 
-	<display-name>xiaoerke-consult-webapp</display-name>
+	<display-name>angel</display-name>
 
 	<!-- Context ConfigLocation -->
 	<context-param>

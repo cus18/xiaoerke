@@ -122,7 +122,7 @@ public class NgRouteController extends BaseController {
     @SystemControllerLog(description = "00000079")
     @RequestMapping(value ="doctor/consult",method = {RequestMethod.POST, RequestMethod.GET})
     public String doctorConsult() {
-        return "angular/doctorConsultIndex";
+        return "doctorConsultIndex";
     }
 
     /**
@@ -131,7 +131,7 @@ public class NgRouteController extends BaseController {
     @SystemControllerLog(description = "00000079")
     @RequestMapping(value ="patient/consult",method = {RequestMethod.POST, RequestMethod.GET})
     public String patientConsult() {
-        return "angular/patientConsultIndex";
+        return "patientConsultIndex";
     }
 
     /**

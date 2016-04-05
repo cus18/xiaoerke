@@ -1,6 +1,6 @@
 angular.module('doctorConsultApp', ['angularFileUpload', 'ui.router','controllers', 'directives', 'services'])
     .config(function ($httpProvider, $stateProvider, $urlRouterProvider) {
-        var root = '/xiaoerke-consult-webapp/scripts/views';
+        var root = '/angel/scripts/views';
         $stateProvider
             .state('doctorConsultFirst', {
                 url: '/doctorConsultFirst',
