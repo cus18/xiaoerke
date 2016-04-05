@@ -1,5 +1,5 @@
 var byList = [];
-
+var bodBirthday = "";
 //进入页面对日期插件以及微信支付进行初始化
 var doRefresh = function(){
     //loadDate();//调用日期插件
@@ -8,7 +8,7 @@ var doRefresh = function(){
     var signature;//得到的签名
     var appid;//得到的签名
     $.ajax({
-        url:"wechatInfo/getConfig",// 跳转到 action
+        url:"ap/wechatInfo/getConfig",// 跳转到 action
         async:true,
         type:'get',
         data:{url:location.href.split('#')[0]},//得到需要分享页面的url
@@ -54,7 +54,7 @@ var doRefresh = function(){
         cache:false,
         dataType:'json',
         success:function(data) {
-            //console.log("data",data);
+            console.log("data",data);
             $('#doctorName').html(data.doctorName);
             $('#position').html(data.position1+data.position2);
             $('#hospitalName').html(data.hospitalName);
@@ -87,84 +87,56 @@ var doRefresh = function(){
 
     //获取宝宝信息
 
-        $.ajax({
-            type: 'POST',
-            url: "/xiaoerke-appoint/ap/healthRecord/getBabyinfoList",
-            data: "{'openid':''}",
-            contentType: "application/json; charset=utf-8",
-            success: function(result){
-                console.log(result)
-                babyInfo=result.babyInfoList;
-                var userPhone=result.userPhone;
-                $('#connectphone').val(userPhone);
-                var option="";
-                if(babyInfo==""){
-                    $("#addBaby").hide();
-                    loadDate();
-                    return;
-                }else{
-                    $("#babyName").attr("disabled","disabled");
-                    $(".sex a").removeAttr("onclick");
-                }
-                for(var i=0;i<babyInfo.length;i++){
-                    option+="<dd class=\"select\" onclick=\"selectedBaby("+i+")\" ><span >"+babyInfo[i].name+"</span></dd>";
-                }
-                $("#selectBabyTitle").after(option);
-                var babyId=GetQueryString("babyId");
-                if(babyId!=null&&babyId!=""){
-                    for(var j=0;j<babyInfo.length;j++){
-                        var bid=babyInfo[j].id;
-                        if(bid==babyId){
-                            selectedBaby(j);
-                        }
+    $.ajax({
+        type: 'POST',
+        url: "/xiaoerke-appoint/ap/healthRecord/getBabyinfoList",
+        data: "{'openid':''}",
+        contentType: "application/json; charset=utf-8",
+        success: function(result){
+            console.log(result)
+            babyInfo=result.babyInfoList;
+            var userPhone=result.userPhone;
+            $('#connectphone').val(userPhone);
+            var option="";
+            if(babyInfo==""){
+                $("#addBaby").hide();
+                loadDate();
+                return;
+            }else{
+                $("#babyName").attr("disabled","disabled");
+                $(".sex a").removeAttr("onclick");
+            }
+            for(var i=0;i<babyInfo.length;i++){
+                option+="<dd class=\"select\" onclick=\"selectedBaby("+i+")\" ><span >"+babyInfo[i].name+"</span></dd>";
+            }
+            $("#selectBabyTitle").after(option);
+            var babyId=GetQueryString("babyId");
+            if(babyId!=null&&babyId!=""){
+                for(var j=0;j<babyInfo.length;j++){
+                    var bid=babyInfo[j].id;
+                    if(bid==babyId){
+                        selectedBaby(j);
                     }
-                }else{
-                    selectedBaby(0);
                 }
-            },
-            dataType: "json"
-        });
+            }else{
+                selectedBaby(0);
+            }
+        },
+        dataType: "json"
+    });
 
 
     function selectedBaby(index){
         var baby=babyInfo[index];
         $("#babyName").val(baby.name);
-        $("#birthday").val(new Date(baby.birthday).Format("yyyy-MM-dd"));
+        var time = moment(baby.birthday).format('YYYY/MM/DD');
+        $("#birthday").val(time);
+        bodBirthday = time;
         var sex=baby.sex;
-        if(sex=="1"){
-            selectSex('boy');
-        }else {
-            selectSex('girl');
-        }
         $(".sex a").removeAttr("onclick");
         $("#babyId").val(baby.id);
         $(".baby-list").hide();
     }
-
-
-    //$.ajax({
-    //    url:"/xiaoerke-appoint/ap/healthRecord/getBabyinfoList",// 跳转到 action
-    //    async:true,
-    //    type:'post',
-    //    data:"{'openid':''}",
-    //    contentType: "application/json; charset=utf-8",
-    //    cache:false,
-    //    dataType:'json',
-    //    success:function(data) {
-    //        //console.log("获取宝宝信息",data);
-    //        $('#connectphone').val(data.userPhone);
-    //        byList = data.babyInfoList;
-    //        var babyList = "";
-    //        $.each(a,function(index1,value1){
-    //            babyList = babyList+'<dd onclick="choiceBaby('+index1+')">'+'<span>'+value1.name+'</span>'+'</dd>';
-    //        });
-    //        $('#selBaby').html(babyList);
-    //    },
-    //    error : function() {
-    //    }
-    //});
-
-
 
 
     //检测当前页面是否绑定
@@ -183,41 +155,21 @@ var doRefresh = function(){
     //    }
     //})
 
-
-
-    //var paramValue = '{routePath:"/phoneConsultPay/patientPay.do?phoneConDoctorDetail="3123"}';
-    //$.ajaxSetup({
-    //    contentType : 'application/json',
-    //});
-    //$.post('ap/info/loginStatus',paramValue,
-    //    function(data) {
-    //        if(data.status=="9"){
-    //            window.location.href = data.redirectURL;
-    //        }else if(data.status=="8"){
-    //            window.location.href = data.redirectURL;
-    //        }
-    //    })
-
-
-
-
-
-
     //生产订单
     /*$.ajax({
-        url:"ap/consulPhone/consultOrder/createOrder",// 跳转到 action
-        async:true,
-        type:'post',
-        data:{babyId:"1",babyName:"2",phoneNum:"3",illnessDesc:"4",sysConsultPhoneId:"5",birthDay:"6"},
-        contentType: "application/json; charset=utf-8",
-        cache:false,
-        dataType:'json',
-        success:function(data) {
-            console.log("生产订单",data);
-        },
-        error : function() {
-        }
-    });*/
+     url:"ap/consulPhone/consultOrder/createOrder",// 跳转到 action
+     async:true,
+     type:'post',
+     data:{babyId:"1",babyName:"2",phoneNum:"3",illnessDesc:"4",sysConsultPhoneId:"5",birthDay:"6"},
+     contentType: "application/json; charset=utf-8",
+     cache:false,
+     dataType:'json',
+     success:function(data) {
+     console.log("生产订单",data);
+     },
+     error : function() {
+     }
+     });*/
 }
 
 //  日期插件
@@ -287,42 +239,56 @@ var caseLength=function(){
     })
 }
 
-/****
-   以下是以前支付代码
-*****/
 
 
 // 订单单价,账户余额,订单id,微信需支付
 var chargePrice,patient_register_service_id,needPayMoney;
 
 //页面初始化执行,用户初始化页面参数信息以及微信的支付接口
-var bodBirthday = "";
+
 
 var pay = function(){
-    console.log("Dd",$('#connectphone').val()+$('#connectname').val()+bodBirthday+$('#case').val());
+    console.log("Dd",$('#connectphone').val()+$('#babyName').val()+bodBirthday+$('#case').val()+bodBirthday);
     if($('#connectphone').val()==""||$('#connectphone').val()==undefined||
         $('#babyName').val()==""||$('#babyName').val()==undefined||
         bodBirthday==""||bodBirthday==undefined
     ){
-      alert("信息不能为空");
+        alert("信息不能为空");
     }else if($('#case').val().length<10){
-      alert("病情不能少于10个字！");
+        alert("病情不能少于10个字！");
+    }else if(!readLock){
+        alert("请勾选预约须知");
     }else{
         //wxPay();
-        alert("可以预约了");
-        window.location.href="ap/phoneConsult#/phoneConPaySuccess/,"
+        //alert("可以预约了");
+        //window.location.href="ap/phoneConsult#/phoneConPaySuccess/,"
+        alert($("#babyId").val()+$('#babyName').val()+$('#connectphone').val()+$('#case').val(),GetQueryString('phoneConDoctorDetail')+bodBirthday);
+        $.ajax({
+            url:"ap/consultPhone/consultOrder/createOrder",// 跳转到 action
+            async:true,
+            type:'post',
+            //data:{babyId:$("#babyId").val(),babyName:$('#babyName').val(),phoneNum:$('#connectphone').val(),illnessDesc:$('#case').val(),sysConsultPhoneId:GetQueryString('phoneConDoctorDetail'),birthDay:bodBirthday},
+            data: "{'babyId':'"+$("#babyId").val()+"','babyName':'"+$("#babyName").val()+"','phoneNum':'"+$("#connectphone").val()+"','illnessDesc':'"+$("#case").val()+"','sysConsultPhoneId':'"+GetQueryString('phoneConDoctorDetail')+"','birthDay':'"+bodBirthday+"'}",
+            contentType: "application/json; charset=utf-8",
+            cache:false,
+            dataType:'json',
+            success:function(data) {
+                console.log("生产订单",data);
+                wxPay(data.reultState);
+            },
+            error : function() {
+            }
+        });
     }
-
-
 }
 
-var wxPay = function () {
+var wxPay = function (consultPhoneServiceId) {
     $('#payButton').attr('disabled',"true");//添加disabled属性
     $.ajax({
-        url:"ap/account/user/userPay",// 跳转到 action
+        url:"ap/account/user/consultPhonePay",// 跳转到 action
         async:true,
         type:'get',
-        data:{patientRegisterId:patient_register_service_id,payPrice:needPayMoney*100},
+        data:{patientRegisterId:consultPhoneServiceId},
         cache:false,
         success:function(data) {
             $('#payButton').removeAttr("disabled");
@@ -348,7 +314,7 @@ var wxPay = function () {
                 paySign:obj.paySign,  // 支付签名
                 success: function (res) {
                     if(res.errMsg == "chooseWXPay:ok" ) {
-                        window.location.href = "appoint#/memberServiceSuccess/"+patient_register_service_id;
+                        window.location.href = "ap/phoneConsult#/phoneConPaySuccess/"+consultPhoneServiceId;
                     }else{
                         alert("支付失败,请重新支付")
                     }
