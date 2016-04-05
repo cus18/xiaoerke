@@ -21,8 +21,7 @@
 .messagelistn input {width: 30px;}
 .messagelistn img{margin:0 10px;}
 .messagelistn div {margin: 0 20px 0 5px;}
-.nicknamecontentlist li{height: 32px;}
-.nicknamecontentlist li div {float: left;font: 12px/35px 'Microsoft Yahei';overflow: hidden;}
+.nicknamecontentlist li div {overflow: hidden;height: 35px;float: left;font: 12px/35px 'Microsoft Yahei';overflow: hidden;}
 .nicknamecontentlist li .nickname{width: 88px;margin-left: 20px;}
 .nicknamecontentlist li .recently{width: 110px;margin-left: 80px;}
 .nicknamecontentlist li .insert{width: 105px;margin-left: 75px;}
