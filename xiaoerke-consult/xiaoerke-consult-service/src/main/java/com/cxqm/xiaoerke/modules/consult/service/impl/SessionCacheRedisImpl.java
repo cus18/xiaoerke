@@ -9,6 +9,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 
+import javax.websocket.Session;
+
 public class SessionCacheRedisImpl implements SessionCache {
 
 	private RedisTemplate<String, Object> redisTemplate = SpringContextHolder.getBean("redisTemplate");
@@ -16,6 +18,8 @@ public class SessionCacheRedisImpl implements SessionCache {
 	private static final String SESSIONID_CONSULTSESSION_KEY = "consult.sessionIdConsultSessionMapping";
 	
 	private static final String USER_SESSIONID_KEY = "consult.userSessionID";
+
+	private static final String USER_WECHATSESSION_KEY = "consult.wechatSession";
 	
 	@Override
 	public RichConsultSession getConsultSessionBySessionId(Integer sessionId) {
@@ -59,6 +63,17 @@ public class SessionCacheRedisImpl implements SessionCache {
 									   Integer sessionId) {
 		redisTemplate.opsForHash().put(USER_SESSIONID_KEY, openId, sessionId);
 	}
+
+	@Override
+	public void putWechatSessionByOpenId(String openId,Session wechatSession) {
+		redisTemplate.opsForHash().put(USER_WECHATSESSION_KEY, openId, wechatSession);
+	}
+
+	@Override
+	public Session getWechatSessionByOpenId(String openId) {
+		Object wechatSession = redisTemplate.opsForHash().get(USER_WECHATSESSION_KEY, openId);
+		return wechatSession == null ? null : (Session) wechatSession;
+	}
 	
 	@Override
 	public void removeSessionIdConsultSessionPair(Integer sessionId) {
@@ -70,4 +85,8 @@ public class SessionCacheRedisImpl implements SessionCache {
 		redisTemplate.opsForHash().delete(USER_SESSIONID_KEY, userId);
 	}
 
+	@Override
+	public void removeWechatSessionPair(String openId){
+		redisTemplate.opsForHash().delete(USER_WECHATSESSION_KEY, openId);
+	}
 }
