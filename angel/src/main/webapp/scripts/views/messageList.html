@@ -30,7 +30,7 @@
             <div class="w5 fr h4 bg-h1">
                 <div class="bdf-dkf-content-right">
                     <div class="cjgl">退出</div>
-                    <div class="xtsz">
+                    <div class="xtsz" ng-click="systemsetup1()">
                         <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_06.png" alt=""/>
                         系统设置</div>
                 </div>
@@ -45,7 +45,7 @@
         <div class="head-b qf chatbox">
             <div class="w5 fl h5">
                 <span>
-                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_11.png" alt=""/>
+                    <img ng-click="refreshUserList()" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_11.png" alt=""/>
                 刷新消息
             </span>
             <span>
@@ -56,9 +56,8 @@
             <div class="w5 fr h5">
                 <div class="find">
                     <div class="select">
-                        <select id="searchMessageTypeId" ng-model="info.searchMessageType">
-                            <option>查找客户</option>
-                            <option>查找消息</option>
+                        <select  ng-model="selected" ng-change="setSearchMessageType(selected.searchType)" ng-options="date.searchContent for date in searchMessageType">
+                            <option value="">-请选择-</option>
                         </select>
                     </div>
                     <input type="text" placeholder="搜索内容" ng-model="info.searchMessageContent">
@@ -72,12 +71,12 @@
                 <div class="fl">客户列表</div>
                 <div class="fr">
                     <select id="searchDateId" ng-model="selected" ng-options="date.name for date in searchDate" ng-change="getCSInfoByUserId(selected.value)">
-                        <option value="">请选择</option>
+                        <option value="">所有时间</option>
                     </select>
                 </div>
                 <div class="fr">
                     <select id="CSDoctorListInfoId" ng-model="selected" ng-options="user.name for user in CSList" ng-change="getCSInfoByUserId(selected.id)">
-                        <option value="">请选择</option>
+                        <option value="">所有客服</option>
                     </select>
                 </div>
             </div>
@@ -89,10 +88,10 @@
 
             <div  class='w10 h20 br1'>
                 <ul class="nicknamecontentlist">
-                    <div ng-repeat="item in userConsultListInfo" ng-click ="getUserRecordDetail(item.openid)">
+                    <div ng-repeat="item in userConsultListInfo" ng-click ="getUserRecordDetail(item.openid,item.senderName,item.fromUserId,item.toUserId)">
                         <li>
-                            <div class="nickname">{{item.nickName}}</div>
-                            <div class="recently">{{item.createDate}}</div>
+                            <div class="nickname">{{item.senderName}}</div>
+                            <div class="recently">{{item.infoDate}}</div>
                             <div class="insert">{{item.doctorName}}</div>
                         </li>
                         <br/>
@@ -113,14 +112,11 @@
             </div>
             <div class='w10 h7 messagelistn'>
                 <div>
-                    <select ng-model="selected" ng-options="doctor.name for doctor in CSDoctorListInfo">
-                        <option value="">-- 请选择 --</option>
-                    </select>
+                    消息记录-&nbsp;<font color="#228b22">{{currentClickUserName}}</font>
                 </div>
-                <div>全部</div>
-                <div>图片</div>
-                <div>文件</div>
-                <div>其他</div>
+                <div ng-click="getRecordByOpenId('user')">全部</div>
+                <div ng-click="getRecordByOpenId('image')">图片</div>
+                <div ng-click="getRecordByOpenId('voice')">语音</div>
                 <div>
                     <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_27.png" alt=""/>
                     <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_29.png" alt=""/>
@@ -134,19 +130,19 @@
                 <ul>
                     <div ng-repeat="item in currentUserConsultRecordDetail">
                         <li>
-                            <div ng-if="item.senderId==doctorId">
+                            <div ng-if="item.senderId==doctor">
                                 <div class="name">
-                                    {{doctorName}} {{item.dateTime}}
+                                    {{item.doctorName}} {{item.dateTime}}
                                 </div>
-                                <div ng-if="item.messageType=='0'" id="show" class="chatcontent">
+                                <div ng-if="item.messageType=='text'" id="show" class="chatcontent">
                                     {{item.message}}
                                 </div>
                             </div>
-                            <div ng-if="item.senderId!=doctorId">
+                            <div ng-if="item.senderId!=doctor">
                                 <div class="name">
                                     {{item.senderName}} {{item.createDate}}
                                 </div>
-                                <div ng-if="item.messageType=='0'" class="chatcontent">
+                                <div ng-if="item.messageType=='text'" class="chatcontent">
                                     {{item.message}}
                                 </div>
                                 <div ng-if="item.messageType=='1'" class="chatcontent">
@@ -167,6 +163,112 @@
                 </ul>
 
             </div>
+        </div>
+    </div>
+    <!--系统设置的弹出框-->
+    <div class="xtsz-up" id="xtsz_up" ng-show='systemsetup.show'>
+        <div class="hd" id="drop">系统设置
+            <span class="close" ng-click="systemsetup1()">【关闭】</span>
+        </div>
+        <!-- 系统设置的tab切换 -->
+        <div class="xtsz-up-middle">
+            <div class="xtsz-up-left">
+                <h3>
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fxtsz%20(2).png"
+                         alt=""/>
+                    业务设置</h3>
+                <div>
+                    <a href="#"><span class="current">主号自动回复</span></a>
+                    <a href="#"><span>工号自动回复</span></a>
+                    <a href="#"><span>接入语设置</span></a>
+                    <a href="#"><span>会话自动关闭设置</span></a>
+                </div>
+                <!--
+                <h3>个人设置</h3>
+                <div>
+                    <a href="#"><span>常规</span></a>
+                    <a href="#"><span>热键</span></a>
+                    <a href="#"><span>声音</span></a>
+                    <a href="#"><span>网络连接</span></a>
+                </div>-->
+            </div>
+            <div class="xtsz-up-right">
+                <ul>
+                    <li class="show">
+                        <div class="zhhf">
+                            <div class="zhhftop">
+                                <span></span><span>主号自动回复</span><span></span>
+                            </div>
+                            <div class="zhhfcontent">
+                                <div class="zhhfcontent">
+                                    <p>工号自动回复针对工号已经接入客户。对已接入用户请设置<a href="#">工号自动回复</a></p>
+                                    <p><input type="checkbox">客服均接入已满或关闭接入时的自动回复语。</p>
+                                    <div class="autoresponse commonbtn">
+                                        <div class="response">
+                                            <ul>
+                                                <li>您好吗？您好吗？您好吗？您好吗？</li>
+                                                <li>您好吗？您好吗？您好吗？您好吗？</li>
+                                                <li>您好吗？您好吗？您好吗？您好吗？</li>
+                                            </ul>
+                                        </div>
+                                        <div class="btns">
+                                            <button>添加</button>
+                                            <button>修改</button>
+                                            <button>删除</button>
+                                        </div>
+                                    </div>
+                                    <div class="noautoresponse commonbtn"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="zhhf">
+                            <div class="zhhftop">
+                                <span></span><span>工号自动回复</span><span></span>
+                            </div>
+                            <div class="zhhfcontent">
+                                <p>工号自动回复针对工号已经接入客户。对未接客户请设置<a href="#">主号自动回复</a></p>
+                                <p><input type="checkbox">工号自动回复设置</p>
+                                <textarea placeholder="请在此处进行编辑"></textarea>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="zhhf">
+                            <div class="zhhftop">
+                                <span></span><span>接入语设置</span><span></span>
+                            </div>
+                            <div class="zhhfcontent">
+                                <p>接入语是指在接入客户时自动发送的信息</p>
+                                <p><input type="checkbox">启动接入语（150个汉字、300个英文字符以内）</p>
+                                <p>注意：[昵称]会被动态替换成该工号的昵称</p>
+                                <p>注意：[账号]会被动态替换成该工号的账号</p>
+                                <textarea placeholder="请在此处进行编辑"></textarea>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="zhhf">
+                            <div class="zhhftop">
+                                <span></span><span>会话自动关闭设置</span><span></span>
+                            </div>
+                            <div class="zhhfcontent">
+                                <p>会话自动关闭设置指的是在人工接入的状态下，当客户超过一定时间没有回复时，会话自动关闭。（当前正在聊天的会话不会被自动关闭）</p>
+                                <p><input type="checkbox">启动会话自动关闭</p>
+                                <p>设置会话自动关闭事件<input type="number" name="points" min="0" max="10" />分钟</p>
+                                <p><input type="checkbox">会话自动关闭前发送一条信息给客户（100个汉字、200个英文字符以内）</p>
+                                <textarea placeholder="请在此处进行编辑"></textarea>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer ddjr-footer">
+            <button>应用</button>
+            <button>取消</button>
+            <button>确定</button>
         </div>
     </div>
 </div>

@@ -10,7 +10,7 @@
                 });
                 WeixinJSBridge.call('closeWindow');
             }
-            PhoneConsultRegisterInfo.get({phoneConsultServiceId:$stateParams.consultPhoneRegisterId},function(data){
+            PhoneConsultRegisterInfo.get({phoneConsultaServiceId:$stateParams.consultPhoneRegisterId},function(data){
                 console.log(data)
                 $scope.appointData = data;
             })

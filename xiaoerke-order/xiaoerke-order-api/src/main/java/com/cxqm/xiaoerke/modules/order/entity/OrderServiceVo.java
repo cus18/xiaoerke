@@ -1,24 +1,40 @@
 package com.cxqm.xiaoerke.modules.order.entity;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by cxq on 2016/3/29.
- * 用于当前订单页（包含预约就诊和电话咨询订单）
+ * 订单-用于订单列表页（包含预约就诊和电话咨询订单）
  */
 public class OrderServiceVo implements Comparable<OrderServiceVo>{
+
+    private String registerNo;//订单号
+
     private String doctorName; //医生姓名
     private String position; //医生职务
-    private String hospital; //医院名称
-    private String date; //就诊或咨询日期
-    private String beginTime; //就诊或咨询开始时间
-    private String endTime; //就诊或咨询结束时间
+    private String hospitalName; //医院名称
+
+    private Date date; //就诊或咨询日期
+
+    private Date beginTime; //就诊或咨询开始时间
+    private Date endTime; //就诊或咨询结束时间
+
+    private Date createTime; //下单时间
+
     private String status; //状态
     private String classify; //类别：预约就诊或电话咨询
 
-    private String doctorId;
-    private String orderId;
+    private String doctorId;//医生id
+    private String orderId;//就诊或咨询 订单id
+    private String illnessDescribeId;
+
+    public String getRegisterNo() {
+        return registerNo;
+    }
+
+    public void setRegisterNo(String registerNo) {
+        this.registerNo = registerNo;
+    }
 
     public String getDoctorName() {
         return doctorName;
@@ -36,36 +52,44 @@ public class OrderServiceVo implements Comparable<OrderServiceVo>{
         this.position = position;
     }
 
-    public String getHospital() {
-        return hospital;
+    public String getHospitalName() {
+        return hospitalName;
     }
 
-    public void setHospital(String hospital) {
-        this.hospital = hospital;
+    public void setHospitalName(String hospitalName) {
+        this.hospitalName = hospitalName;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
-    public String getBeginTime() {
+    public Date getBeginTime() {
         return beginTime;
     }
 
-    public void setBeginTime(String beginTime) {
+    public void setBeginTime(Date beginTime) {
         this.beginTime = beginTime;
     }
 
-    public String getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public String getStatus() {
@@ -100,20 +124,21 @@ public class OrderServiceVo implements Comparable<OrderServiceVo>{
         this.orderId = orderId;
     }
 
+    public String getIllnessDescribeId() {
+        return illnessDescribeId;
+    }
+
+    public void setIllnessDescribeId(String illnessDescribeId) {
+        this.illnessDescribeId = illnessDescribeId;
+    }
+
+    //按订单服务时间倒序
     @Override
     public int compareTo(OrderServiceVo o) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
-        String dateString = this.getDate() + " " + this.getBeginTime();
-        String dateString_o = o.getDate() + " " + o.getBeginTime();
-
         boolean flag = false;
-        try {
-            flag = format.parse(dateString).getTime() - format.parse(dateString_o).getTime() > 0;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
 
+        flag = this.getDate().getTime() + this.getBeginTime().getTime() -
+                o.getDate().getTime()+o.getBeginTime().getTime() > 0;
         if(flag){
             return -1;
         }

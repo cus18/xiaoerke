@@ -26,7 +26,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             }
 
             $scope.patientConsultFirst = function(){
-                var routePath = "/ap/patient/consultBBBBBB" + $location.path();
+                var routePath = "/patient/consultBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath:routePath},function(data){
                     $scope.pageLoading = false;
                     if(data.status=="9") {
@@ -57,6 +57,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     window.WebSocket = window.MozWebSocket;
                 }
                 if (window.WebSocket) {
+                    console.log($scope.patientId);
                     $scope.socketServer = new WebSocket("ws://120.25.161.33:2048/ws&user&"
                         + $scope.patientId);//cs,user,distributor
                     $scope.socketServer.onmessage = function(event) {

@@ -12,80 +12,182 @@
     <result column="phone" property="phoneNum" jdbcType="VARCHAR" />
     <result column="illness_describe_id" property="illnessDescribeId" jdbcType="INTEGER" />
   </resultMap>
+
+  <resultMap id="ConsultPhoneRegisterServiceVoMap" type="com.cxqm.xiaoerke.modules.order.entity.OrderServiceVo">
+    <result column="doctorId" property="doctorId" jdbcType="VARCHAR" />
+    <result column="name" property="doctorName" jdbcType="VARCHAR" />
+    <result column="position2" property="position" jdbcType="VARCHAR" />
+    <result column="hospitalName" property="hospitalName" jdbcType="VARCHAR" />
+
+    <result column="id" property="orderId" jdbcType="INTEGER" />
+    <result column="state" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="register_no" property="registerNo" jdbcType="VARCHAR" />
+    <result column="illness_describe_id" property="illnessDescribeId" jdbcType="VARCHAR" />
+
+    <result column="date" property="date" jdbcType="DATE" />
+    <result column="beginTime" property="beginTime" jdbcType="TIME" />
+    <result column="endTime" property="endTime" jdbcType="TIME" />
+
+    <result column="classify" property="classify" jdbcType="VARCHAR" />
+  </resultMap>
+
   <sql id="Base_Column_List" >
-    id, sys_phoneConsult_service_id, sys_patient_id, state, create_time, update_time, 
+    id, sys_phoneConsult_service_id, sys_patient_id, state, create_time, update_time,
     register_no, illness_describe_id,phone
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from consultPhone_register_service
     where id = #{id,jdbcType=INTEGER}
   </select>
 
   <select id="getPhoneConsultaServiceIndo" resultType="java.util.Map" parameterType="java.lang.Integer" >
-  select
-  sd.name doctorName,
-  sd.position1,
-  sd.position2,
-  sd.hospitalName,
-  dhr.department_level1 as departmentName,
-  case when crs.state ='0' then '待支付' when crs.state ='1' then '待接听' when crs.state ='2' then '待评价'
+    select
+    sd.name doctorName,
+    sd.position1,
+    sd.position2,
+    sd.hospitalName,
+    dhr.department_level1 as departmentName,
+    case when crs.state ='0' then '待支付' when crs.state ='1' then '待接听' when crs.state ='2' then '待评价'
     when crs.state ='3' then '待分享' when crs.state ='4' then '待建档'
     when crs.state ='6' then '已取消' end state,
-  DATE_FORMAT(scs.beginTime,'%k:%i') beginTime,
-  DATE_FORMAT(scs.endTime,'%k:%i') endTime,
-  DATE_FORMAT(crs.create_time,'%Y/%m/%d  %k:%i') orderTime,
-  crs.register_no as orderNo,
-  crs.phone,
-  sbi.name babyName,
-  cdr.price,
-  cdr.server_length
-  from consultPhone_register_service crs
-  left join sys_consultPhone_service scs
-  on crs.sys_phoneConsult_service_id = scs.id
-  left join sys_doctor sd
-  on sd.id = scs.sys_doctor_id
-  LEFT JOIN doctor_hospital_relation dhr
-  ON dhr.sys_doctor_id=sd.id
-  left join sys_patient sp
-  on sp.id = crs.sys_patient_id
-  left join sys_baby_baseInfo sbi
-  on sp.sys_user_id = sbi.userid
-  LEFT join consultphone_doctor_relation cdr on cdr.doctor_id = sd.id
-  where crs.id =#{id,jdbcType=INTEGER}
+    DATE_FORMAT(scs.beginTime,'%k:%i') beginTime,
+    DATE_FORMAT(scs.endTime,'%k:%i') endTime,
+    DATE_FORMAT(crs.create_time,'%Y/%m/%d  %k:%i') orderTime,
+    crs.register_no as orderNo,
+    crs.phone,
+    sbi.name babyName,
+    cdr.price,
+    cdr.server_length
+    from consultPhone_register_service crs
+    left join sys_consultPhone_service scs
+    on crs.sys_phoneConsult_service_id = scs.id
+    left join sys_doctor sd
+    on sd.id = scs.sys_doctor_id
+    LEFT JOIN doctor_hospital_relation dhr
+    ON dhr.sys_doctor_id=sd.id
+    left join sys_patient sp
+    on sp.id = crs.sys_patient_id
+    left join sys_baby_baseInfo sbi
+    on sp.sys_user_id = sbi.userid
+    LEFT join consultphone_doctor_relation cdr on cdr.doctor_id = sd.id
+    where crs.id =#{id,jdbcType=INTEGER}
+    group by crs.id
   </select>
-
   <select id="getPhoneConsultaList" resultType="java.util.Map" >
     SELECT
-    sd.id as doctorId,
-    sd.name,
+    sd.`name`,
     sd.position2,
     sd.hospitalName,
     crs.id,
-    crs.id as orderId,
     crs.state,
-    case when crs.state ='0' then '待支付' when crs.state ='1' then '待接听' when crs.state ='2' then '待评价'
-    when crs.state ='3' then '待分享' when crs.state ='4' then '待建档'
-    when crs.state ='6' then '已取消' end status,
     crs.create_time,
     crs.register_no,
     crs.illness_describe_id,
-    DATE_FORMAT(scp.date, '%Y-%m-%d') as date,
+    scp.date,
     scp.createDate,
-    DATE_FORMAT(scp.beginTime,'%H:%i') as beginTime,
-    DATE_FORMAT(scp.endTime,'%H:%i') as endTime
+    scp.endTime
     FROM
     consultPhone_register_service crs
     LEFT JOIN sys_patient sp ON crs.sys_patient_id = sp.id
     LEFT JOIN sys_consultPhone_service scp ON scp.id = crs.sys_phoneConsult_service_id
     LEFT JOIN sys_doctor sd ON sd.id = scp.sys_doctor_id
     WHERE
-	sp.sys_user_id = #{userId,jdbcType=VARCHAR}
+    sp.sys_user_id = #{userId,jdbcType=VARCHAR}
     <if test="state != null" >
-     and crs.state = #{state,VARCHAR}
+      and crs.state = #{state,VARCHAR}
     </if>
 
+  </select>
+
+  <!--获取个人中心的 电话咨询订单列表（带分页） @author cxq-->
+  <select id="getPhoneConsultPageList" resultMap="ConsultPhoneRegisterServiceVoMap" resultType="com.cxqm.xiaoerke.common.persistence.Page">
+    SELECT
+    sd.id as doctorId,
+    sd.name,
+    sd.position2,
+    sd.hospitalName,
+    crs.id,
+    case when crs.state ='0' then '待支付' when crs.state ='1' then '待接听' when crs.state ='2' then '待评价'
+    when crs.state ='3' then '待分享' when crs.state ='4' then '待建档'
+    when crs.state ='6' then '已取消' end state,
+    crs.create_time,
+    crs.register_no,
+    crs.illness_describe_id,
+    scp.date,
+    scp.beginTime,
+    scp.endTime,
+    'phone' as classify
+    FROM
+    consultPhone_register_service crs
+    LEFT JOIN sys_patient sp ON crs.sys_patient_id = sp.id
+    LEFT JOIN sys_consultPhone_service scp ON scp.id = crs.sys_phoneConsult_service_id
+    LEFT JOIN sys_doctor sd ON sd.id = scp.sys_doctor_id
+    WHERE
+    sp.sys_user_id = #{userId,jdbcType=VARCHAR}
+    <if test="state != null" >
+      and crs.state = #{state,VARCHAR}
+    </if>
+    order by scp.date,scp.beginTime desc
+  </select>
+
+  <!--获取当前订单All（带分页） @author cxq-->
+  <select id="getOrderAllPageList" resultMap="ConsultPhoneRegisterServiceVoMap" resultType="com.cxqm.xiaoerke.common.persistence.Page">
+    SELECT
+    sd.id as doctorId,
+    sd.name,
+    sd.position2,
+    sd.hospitalName,
+    crs.id,
+    case when crs.state ='0' then '待支付' when crs.state ='1' then '待接听' when crs.state ='2' then '待评价'
+    when crs.state ='3' then '待分享' when crs.state ='4' then '待建档'
+    when crs.state ='6' then '已取消' end state,
+    crs.create_time,
+    crs.register_no,
+    crs.illness_describe_id,
+    scp.date,
+    scp.beginTime,
+    scp.endTime,
+    'phone' as classify
+    FROM
+    consultPhone_register_service crs
+    LEFT JOIN sys_patient sp ON crs.sys_patient_id = sp.id
+    LEFT JOIN sys_consultPhone_service scp ON scp.id = crs.sys_phoneConsult_service_id
+    LEFT JOIN sys_doctor sd ON sd.id = scp.sys_doctor_id
+    WHERE
+    sp.sys_user_id = #{userId,jdbcType=VARCHAR}
+    <if test="state != null" >
+      and crs.state = #{state,VARCHAR}
+    </if>
+    UNION
+    SELECT
+    sd.id as doctorId,
+    sd.name,
+    sd.position2,
+    sd.hospitalName,
+    prs.id,
+    case when prs.status ='0' then '待支付' when prs.status ='1' then '待就诊' when prs.status ='2' then '待评价'
+    when prs.status ='3' then '待分享' when prs.status ='4' then '待建档'
+    when prs.status ='6' then '已取消' end state,
+    prs.create_date as create_time,
+    prs.register_no,
+    prs.illness as illness_describe_id,
+    srp.date,
+    srp.begin_time as beginTime,
+    srp.end_time as endTime,
+    'ap' as classify
+    FROM
+    patient_register_service prs
+    LEFT JOIN sys_patient sp ON prs.sys_patient_id = sp.id
+    LEFT JOIN sys_register_service srp ON srp.id = prs.sys_register_service_id
+    LEFT JOIN sys_doctor sd ON sd.id = srp.sys_doctor_id
+    WHERE
+    sp.sys_user_id = #{userId,jdbcType=VARCHAR}
+    <if test="state != null" >
+      and prs.status = #{state,VARCHAR}
+    </if>
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -94,13 +196,13 @@
   </delete>
   <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo" >
     insert into consultPhone_register_service (id, sys_phoneConsult_service_id, sys_patient_id,
-      state, create_time, update_time, 
-      register_no, illness_describe_id,phone)
-    values (#{id,jdbcType=INTEGER}, #{sysPhoneconsultServiceId,jdbcType=INTEGER}, #{sysPatientId,jdbcType=VARCHAR}, 
-      #{state,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{registerNo,jdbcType=VARCHAR}, #{illnessDescribeId,jdbcType=INTEGER}, #{phoneNum,jdbcType=VARCHAR})
+    state, create_time, update_time,
+    register_no, illness_describe_id,phone)
+    values (#{id,jdbcType=INTEGER}, #{sysPhoneconsultServiceId,jdbcType=INTEGER}, #{sysPatientId,jdbcType=VARCHAR},
+    #{state,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+    #{registerNo,jdbcType=VARCHAR}, #{illnessDescribeId,jdbcType=INTEGER}, #{phoneNum,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo" >
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo"  useGeneratedKeys="true" keyProperty="id" >
     insert into consultPhone_register_service
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -194,46 +296,46 @@
   <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo" >
     update consultPhone_register_service
     set sys_phoneConsult_service_id = #{sysPhoneconsultServiceId,jdbcType=INTEGER},
-      sys_patient_id = #{sysPatientId,jdbcType=VARCHAR},
-      state = #{state,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      register_no = #{registerNo,jdbcType=VARCHAR},
-      illness_describe_id = #{illnessDescribeId,jdbcType=INTEGER},
-      phone = #{phoneNum,jdbcType=VARCHAR}
+    sys_patient_id = #{sysPatientId,jdbcType=VARCHAR},
+    state = #{state,jdbcType=VARCHAR},
+    create_time = #{createTime,jdbcType=TIMESTAMP},
+    update_time = #{updateTime,jdbcType=TIMESTAMP},
+    register_no = #{registerNo,jdbcType=VARCHAR},
+    illness_describe_id = #{illnessDescribeId,jdbcType=INTEGER},
+    phone = #{phoneNum,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-	<!--   查询电话咨询订单列表，sunxiao -->
+  <!-- 查询电话咨询订单列表，sunxiao -->
   <select id="findConsultPhonePatientList" resultType="com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo" >
     SELECT
-		crs.register_no,
-		crs.create_time,
-		crs.phone AS phoneNum,
-		crs.update_time,
-		crs.delete_by,
-		crs.state,
-		scs.date,
-		scs.beginTime,
-		cdr.server_length,
-		sd. NAME AS doctorName,
-		su.phone AS loginPhone,
-		sa.nickname,
-		sbb. NAME AS babyName
-	FROM
-		consultphone_register_service crs
-	LEFT JOIN sys_consultphone_service scs ON scs.id = crs.sys_phoneConsult_service_id
-	LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = scs.sys_doctor_id
-	LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
-	LEFT JOIN sys_patient sp ON sp.id = crs.sys_patient_id
-	LEFT JOIN sys_user su ON su.id = sp.sys_user_id
-	LEFT JOIN sys_attention sa ON sa.openid = su.openid
-	LEFT JOIN healthrecord_illness_describe hid ON hid.id = crs.illness_describe_id
-	LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
+    crs.register_no,
+    crs.create_time,
+    crs.phone AS phoneNum,
+    crs.update_time,
+    crs.delete_by,
+    crs.state,
+    scs.date,
+    scs.beginTime,
+    cdr.server_length,
+    sd. NAME AS doctorName,
+    su.phone AS loginPhone,
+    sa.nickname,
+    sbb. NAME AS babyName
+    FROM
+    consultphone_register_service crs
+    LEFT JOIN sys_consultphone_service scs ON scs.id = crs.sys_phoneConsult_service_id
+    LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = scs.sys_doctor_id
+    LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
+    LEFT JOIN sys_patient sp ON sp.id = crs.sys_patient_id
+    LEFT JOIN sys_user su ON su.id = sp.sys_user_id
+    LEFT JOIN sys_attention sa ON sa.openid = su.openid
+    LEFT JOIN healthrecord_illness_describe hid ON hid.id = crs.illness_describe_id
+    LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
     WHERE
-	1=1
+    1=1
     <if test="state != null" >
-     and crs.state = #{state,VARCHAR}
+      and crs.state = #{state,VARCHAR}
     </if>
   </select>
 </mapper>

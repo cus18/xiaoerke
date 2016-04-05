@@ -140,7 +140,7 @@
             $("#treatTime").mobiscroll(opt);
 
             $scope.pageLoading = true;
-            var routePath = "/appointBBBBBB" + $location.path();
+            var routePath = "/ap/appointBBBBBB" + $location.path();
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 $scope.pageLoading = false;
                 if(data.status=="9") {

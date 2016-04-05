@@ -18,5 +18,8 @@ public interface SessionCache {
 	void removeUserIdSessionIdPair(String userId);
 
 	List<Object> getConsultSessionsBySessionIds(Collection<Object> sessionIds);
-	
+
+	Integer getSessionIdByOpenId(String openId);
+
+	void putOpenIdSessionIdPair(String openId, Integer sessionId);
 }

@@ -44,12 +44,12 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 
 	public ConsultRecordMongoVo findOneConsult(Query query) {
 		ConsultRecordMongoVo consultRecordMongoVo = new ConsultRecordMongoVo();
-		 consultRecordMongoVo = mongoTemplate.findOne(query,ConsultRecordMongoVo.class,"consultRecordVo");
+		consultRecordMongoVo = mongoTemplate.findOne(query,ConsultRecordMongoVo.class,"consultRecordVo");
 		return consultRecordMongoVo;
 	}
 
 
-	public int saveRecord(ConsultRecordMongoVo consultRecordMongoVo) {
+	public int saveConsultRecord(ConsultRecordMongoVo consultRecordMongoVo) {
 		return this.insert(consultRecordMongoVo);
 	}
 

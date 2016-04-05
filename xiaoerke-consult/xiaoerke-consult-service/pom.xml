@@ -9,7 +9,6 @@
   <name>xiaoerke-consult-service</name>
   <description>xiaoerke-consult-service</description>
 
-
   <dependencies>
     <dependency>
       <groupId>com.cxqm</groupId>

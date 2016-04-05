@@ -10,7 +10,7 @@
 
             //默认获取全部订单列表
             $scope.pageLoading = true;
-            getOrderList.get({type: $scope.classifyItem},function(data){
+            getOrderList.save({"pageNo": "1", "pageSize": "10", type: $scope.classifyItem},function(data){
                 $scope.pageLoading = false;
                 $scope.orderInfo=data.orderList;
             })
@@ -18,7 +18,7 @@
            /* 选择订单分类*/
             $scope.selectClassify = function(item){
                 $scope.classifyItem =item;
-                getOrderList.get({type:$scope.classifyItem},function(data){
+                getOrderList.save({"pageNo": "1", "pageSize": "10", type:$scope.classifyItem},function(data){
                     $scope.pageLoading = false;
                     $scope.orderInfo=data.orderList;
                 })

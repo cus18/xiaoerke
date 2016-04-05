@@ -41,7 +41,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
  * @version 2015-03-14
  */
 @Controller
-@RequestMapping(value = "consult/doctor/")
+@RequestMapping(value = "consult/doctor")
 public class ConsultDoctorController extends BaseController {
 
     @Autowired
@@ -410,25 +410,29 @@ public class ConsultDoctorController extends BaseController {
     Map<String, Object> recordList(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
 
 
-        String recordType = String.valueOf(params.get("recordType"));  //user 用户端获取记录  doctor 医生端获取记录
-        String toUserId = "5962a0ab127748c19e767c5808e7faa9" ;//String.valueOf(params.get("toUserId"))  便于前台测试临时
-        String fromUserId = "edaf87cfa0d94b9e87dfdcde0ca491b0";//String.valueOf(params.get("fromUserId"))
+        String recordType = String.valueOf(params.get("recordType"));
+        String toUserId = String.valueOf(params.get("toUserId"));
+        String fromUserId = String.valueOf(params.get("fromUserId"));
         int pageNo = 0;
         int pageSize = 1;
         PaginationVo<ConsultRecordMongoVo> pagination = null;
         Map<String,Object> response = new HashMap<String, Object>();
         if(null != params.get("pageNo") && null != params.get("pageSize")){
-            pageNo = Integer.parseInt((String)params.get("pageNo"));
-            pageSize = Integer.parseInt((String)params.get("pageSize"));
+            pageNo = (Integer)params.get("pageNo");
+            pageSize = (Integer)params.get("pageSize");
         }
 
         if(recordType.equals("user") && StringUtils.isNotNull(toUserId) && pageSize > 0){
-            Query query = new Query(where("toUserId").is(toUserId)).with(new Sort(Direction.DESC, "create_date"));
+            Query query = new Query(where("toUserId").is(toUserId)).with(new Sort(Direction.DESC, "create_date"));//用户端获取与平台的所有聊天记录
             pagination = consultRecordService.getPage(pageNo, pageSize, query);
-        }
-        else if (recordType.equals("doctor") && StringUtils.isNotNull(toUserId) && StringUtils.isNotNull(fromUserId)){
+        }else if (recordType.equals("doctor") && StringUtils.isNotNull(toUserId) && StringUtils.isNotNull(fromUserId)){//医生端获取与自己有关的所有聊天记录
             Query query = new Query(where("toUserId").is(toUserId).and("fromUserId")
                     .is(fromUserId)).with(new Sort(Direction.DESC, "create_date"));
+            pagination = consultRecordService.getPage(pageNo, pageSize, query);
+        }else if (recordType.equals("image") || recordType.equals("voice")){//查询语音、图片
+            String openId = String.valueOf(params.get("openId"));
+            Query query = new Query(where("openId").is(openId).and("messageType")
+                    .is(recordType)).with(new Sort(Direction.DESC, "create_date"));
             pagination = consultRecordService.getPage(pageNo, pageSize, query);
         }
 
@@ -441,7 +445,7 @@ public class ConsultDoctorController extends BaseController {
     }
 
     /***
-     * 生成聊天记录
+     * 生成聊天记录(咨询造数据)
      */
     @RequestMapping(value = "/produceRecord", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -449,7 +453,7 @@ public class ConsultDoctorController extends BaseController {
     void produceRecord(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
 
         ConsultRecordMongoVo consultRecordMongoVo = new ConsultRecordMongoVo();
-        int insertNumber = consultRecordService.saveRecord(consultRecordMongoVo);
+        int insertNumber = consultRecordService.saveConsultRecord(consultRecordMongoVo);
 
     }
 

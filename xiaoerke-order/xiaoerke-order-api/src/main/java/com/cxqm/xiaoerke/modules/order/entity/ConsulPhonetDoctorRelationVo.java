@@ -14,36 +14,36 @@ public class ConsulPhonetDoctorRelationVo {
     private Date updateTime;
 
     private Float price;
-    
+
     private int serverLength;
-    
+
     private String doctorAnswerPhone;
-    
+
     public String getDoctorAnswerPhone() {
-		return doctorAnswerPhone;
-	}
+        return doctorAnswerPhone;
+    }
 
-	public void setDoctorAnswerPhone(String doctorAnswerPhone) {
-		this.doctorAnswerPhone = doctorAnswerPhone;
-	}
+    public void setDoctorAnswerPhone(String doctorAnswerPhone) {
+        this.doctorAnswerPhone = doctorAnswerPhone;
+    }
 
-	public Float getPrice() {
-		return price;
-	}
+    public Float getPrice() {
+        return price;
+    }
 
-	public void setPrice(Float price) {
-		this.price = price;
-	}
+    public void setPrice(Float price) {
+        this.price = price;
+    }
 
-	public int getServerLength() {
-		return serverLength;
-	}
+    public int getServerLength() {
+        return serverLength;
+    }
 
-	public void setServerLength(int serverLength) {
-		this.serverLength = serverLength;
-	}
+    public void setServerLength(int serverLength) {
+        this.serverLength = serverLength;
+    }
 
-	public Integer getId() {
+    public Integer getId() {
         return id;
     }
 

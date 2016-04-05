@@ -21,122 +21,122 @@ public class ConsultPhoneRegisterServiceVo {
     private Integer illnessDescribeId;
 
     private String phoneNum;
-    
+
     private String loginPhone;
-    
+
     private String babyName;
 
     private String creat_by;
 
     private String type;
-    
-	private String nickName;//微信号
-    
+
+    private String nickName;//微信号
+
     private String deleteBy;//删除订单人
-    
+
     private String doctorName;//预约医生姓名
 
     private String orderTimeFromStr;//下单时间从
-    
+
     private String orderTimeToStr;//下单时间到
-    
+
     private String consultPhoneTimeFromStr;//咨询时间从
-    
+
     private String consultPhoneTimeToStr;//咨询时间到
-    
+
     private Date date;//医生加号表中的时间
-    
+
     private Date beginTime;//开始时间
-    
+
     public String getLoginPhone() {
-		return loginPhone;
-	}
+        return loginPhone;
+    }
 
-	public void setLoginPhone(String loginPhone) {
-		this.loginPhone = loginPhone;
-	}
+    public void setLoginPhone(String loginPhone) {
+        this.loginPhone = loginPhone;
+    }
 
-	public Date getDate() {
-		return date;
-	}
+    public Date getDate() {
+        return date;
+    }
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
-	public Date getBeginTime() {
-		return beginTime;
-	}
+    public Date getBeginTime() {
+        return beginTime;
+    }
 
-	public void setBeginTime(Date beginTime) {
-		this.beginTime = beginTime;
-	}
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
+    }
 
-	public String getOrderTimeFromStr() {
-		return orderTimeFromStr;
-	}
+    public String getOrderTimeFromStr() {
+        return orderTimeFromStr;
+    }
 
     public String getBabyName() {
-    	return babyName;
+        return babyName;
     }
-    
+
     public void setBabyName(String babyName) {
-    	this.babyName = babyName;
+        this.babyName = babyName;
     }
-    
+
     public String getNickName() {
-    	return nickName;
+        return nickName;
     }
-    
+
     public void setNickName(String nickName) {
-    	this.nickName = nickName;
+        this.nickName = nickName;
     }
-    
+
     public String getDeleteBy() {
-    	return deleteBy;
+        return deleteBy;
     }
-    
+
     public void setDeleteBy(String deleteBy) {
-    	this.deleteBy = deleteBy;
+        this.deleteBy = deleteBy;
     }
-    
-	public void setOrderTimeFromStr(String orderTimeFromStr) {
-		this.orderTimeFromStr = orderTimeFromStr;
-	}
 
-	public String getOrderTimeToStr() {
-		return orderTimeToStr;
-	}
+    public void setOrderTimeFromStr(String orderTimeFromStr) {
+        this.orderTimeFromStr = orderTimeFromStr;
+    }
 
-	public void setOrderTimeToStr(String orderTimeToStr) {
-		this.orderTimeToStr = orderTimeToStr;
-	}
+    public String getOrderTimeToStr() {
+        return orderTimeToStr;
+    }
 
-	public String getConsultPhoneTimeFromStr() {
-		return consultPhoneTimeFromStr;
-	}
+    public void setOrderTimeToStr(String orderTimeToStr) {
+        this.orderTimeToStr = orderTimeToStr;
+    }
 
-	public void setConsultPhoneTimeFromStr(String consultPhoneTimeFromStr) {
-		this.consultPhoneTimeFromStr = consultPhoneTimeFromStr;
-	}
+    public String getConsultPhoneTimeFromStr() {
+        return consultPhoneTimeFromStr;
+    }
 
-	public String getConsultPhoneTimeToStr() {
-		return consultPhoneTimeToStr;
-	}
+    public void setConsultPhoneTimeFromStr(String consultPhoneTimeFromStr) {
+        this.consultPhoneTimeFromStr = consultPhoneTimeFromStr;
+    }
 
-	public void setConsultPhoneTimeToStr(String consultPhoneTimeToStr) {
-		this.consultPhoneTimeToStr = consultPhoneTimeToStr;
-	}
+    public String getConsultPhoneTimeToStr() {
+        return consultPhoneTimeToStr;
+    }
 
-	public String getDoctorName() {
-		return doctorName;
-	}
+    public void setConsultPhoneTimeToStr(String consultPhoneTimeToStr) {
+        this.consultPhoneTimeToStr = consultPhoneTimeToStr;
+    }
 
-	public void setDoctorName(String doctorName) {
-		this.doctorName = doctorName;
-	}
+    public String getDoctorName() {
+        return doctorName;
+    }
 
-	public Integer getId() {
+    public void setDoctorName(String doctorName) {
+        this.doctorName = doctorName;
+    }
+
+    public Integer getId() {
         return id;
     }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cxqm.xiaoerke.modules.sys.dao.UserDao">
-	
+
 	<!-- <resultMap id="userResult" type="User">
 		<id property="id" column="id" />
 		<result property="company.id" column="company.id" />
@@ -57,14 +57,14 @@
 			</collection>
 		</collection>
 	</resultMap> -->
-	
-    <sql id="userColumns">
-    	a.id,
-    	a.company_id AS "company.id",
-    	a.office_id AS "office.id",
-    	a.login_name,
-    	a.password,
-    	a.no,
+
+	<sql id="userColumns">
+		a.id,
+		a.company_id AS "company.id",
+		a.office_id AS "office.id",
+		a.login_name,
+		a.password,
+		a.no,
 		a.name,
 		a.email,
 		a.phone,
@@ -81,37 +81,37 @@
 		a.update_date,
 		a.del_flag,
 		a.openid,
-    	c.name AS "company.name",
-    	c.parent_id AS "company.parent.id",
-    	c.parent_ids AS "company.parentIds",
-    	ca.id AS "company.area.id",
-    	ca.name AS "company.area.name",
-    	ca.parent_id AS "company.area.parent.id",
-    	ca.parent_ids AS "company.area.parentIds",
-    	o.name AS "office.name",
-    	o.parent_id AS "office.parent.id",
-    	o.parent_ids AS "office.parentIds",
-    	oa.id AS "office.area.id",
-    	oa.name AS "office.area.name",
-    	oa.parent_id AS "office.area.parent.id",
-    	oa.parent_ids AS "office.area.parentIds",
-    	cu.id AS "company.primaryPerson.id",
-    	cu.name AS "company.primaryPerson.name",
-    	cu2.id AS "company.deputyPerson.id",
-    	cu2.name AS "company.deputyPerson.name",
-    	ou.id AS "office.primaryPerson.id",
-    	ou.name AS "office.primaryPerson.name",
-    	ou2.id AS "office.deputyPerson.id",
-    	ou2.name AS "office.deputyPerson.name"<!-- ,
+		c.name AS "company.name",
+		c.parent_id AS "company.parent.id",
+		c.parent_ids AS "company.parentIds",
+		ca.id AS "company.area.id",
+		ca.name AS "company.area.name",
+		ca.parent_id AS "company.area.parent.id",
+		ca.parent_ids AS "company.area.parentIds",
+		o.name AS "office.name",
+		o.parent_id AS "office.parent.id",
+		o.parent_ids AS "office.parentIds",
+		oa.id AS "office.area.id",
+		oa.name AS "office.area.name",
+		oa.parent_id AS "office.area.parent.id",
+		oa.parent_ids AS "office.area.parentIds",
+		cu.id AS "company.primaryPerson.id",
+		cu.name AS "company.primaryPerson.name",
+		cu2.id AS "company.deputyPerson.id",
+		cu2.name AS "company.deputyPerson.name",
+		ou.id AS "office.primaryPerson.id",
+		ou.name AS "office.primaryPerson.name",
+		ou2.id AS "office.deputyPerson.id",
+		ou2.name AS "office.deputyPerson.name"<!-- ,
         r.id AS "roleList.id",
         r.office_id AS "roleList.office.id",
         r.name AS "roleList.name",
         r.enname AS "roleList.enname",
         r.role_type AS "roleList.roleType",
         r.data_scope AS "roleList.dataScope" -->
-    </sql>
-    
-    <sql id="userJoins">
+	</sql>
+
+	<sql id="userJoins">
 		JOIN sys_office c ON c.id = a.company_id
 		JOIN sys_area ca ON ca.id = c.area_id
 		JOIN sys_office o ON o.id = a.office_id
@@ -122,23 +122,23 @@
 		LEFT JOIN sys_user ou2 ON ou2.id = o.deputy_person<!-- 
 		LEFT JOIN sys_user_role ur ON ur.user_id = a.id
         LEFT JOIN sys_role r ON r.id = ur.role_id -->
-    </sql>
-	
+	</sql>
+
 	<!-- 根据编号获得用户 -->
 	<select id="get" resultType="User">
 		SELECT
-			<include refid="userColumns"/><!-- ,
+		<include refid="userColumns"/><!-- ,
 			ro.office_id AS "roleList.officeList.id" -->
 		FROM sys_user a
 		<include refid="userJoins"/><!-- 
 		LEFT JOIN sys_role_office ro ON ro.role_id = r.id -->
 		WHERE a.id = #{id}
 	</select>
-	
+
 	<!-- 根据登录名查询用户 -->
 	<select id="getByLoginName" resultType="User" parameterType="User">
 		SELECT
-			<include refid="userColumns"/><!-- ,
+		<include refid="userColumns"/><!-- ,
 			ro.office_id AS "roleList.officeList.id" -->
 		FROM sys_user a
 		<include refid="userJoins"/><!-- 
@@ -149,11 +149,11 @@
 	<select id="getUserByLoginName"  resultType="java.util.HashMap">
 		select * from sys_user where login_name=#{loginName}
 	</select>
-	
+
 	<!-- 分页查询用户信息 -->
 	<select id="findList" resultType="User">
 		SELECT
-			<include refid="userColumns"/>
+		<include refid="userColumns"/>
 		FROM sys_user a
 		<include refid="userJoins"/>
 		<if test="role != null and role.id != null and role.id != ''">
@@ -161,28 +161,28 @@
 		</if>
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
 		<if test="company != null and company.id != null and company.id != ''">
-			AND (c.id = #{company.id} OR c.parent_ids LIKE 
-					<if test="dbName == 'oracle'">'%,'||#{company.id}||',%')</if>
-					<if test="dbName == 'mysql'">CONCAT('%,', #{company.id}, ',%'))</if>
+			AND (c.id = #{company.id} OR c.parent_ids LIKE
+			<if test="dbName == 'oracle'">'%,'||#{company.id}||',%')</if>
+			<if test="dbName == 'mysql'">CONCAT('%,', #{company.id}, ',%'))</if>
 		</if>
 		<if test="office != null and office.id != null and office.id != ''">
-			AND (o.id = #{office.id} OR o.parent_ids LIKE 
-					<if test="dbName == 'oracle'">'%,'||#{office.id}||',%')</if>
-					<if test="dbName == 'mysql'">CONCAT('%,', #{office.id}, ',%'))</if>
+			AND (o.id = #{office.id} OR o.parent_ids LIKE
+			<if test="dbName == 'oracle'">'%,'||#{office.id}||',%')</if>
+			<if test="dbName == 'mysql'">CONCAT('%,', #{office.id}, ',%'))</if>
 		</if>
 		<!-- 如果不是超级管理员，则不显示超级管理员用户 -->
 		<if test="!currentUser.admin">
 			AND a.id != '1'
 		</if>
 		<if test="loginName != null and loginName != ''">
-			AND a.login_name like 
-					<if test="dbName == 'oracle'">'%'||#{loginName}||'%'</if>
-					<if test="dbName == 'mysql'">CONCAT('%', #{loginName}, '%')</if>
+			AND a.login_name like
+			<if test="dbName == 'oracle'">'%'||#{loginName}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{loginName}, '%')</if>
 		</if>
 		<if test="name != null and name != ''">
-			AND a.name like 
-					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
-					<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
+			AND a.name like
+			<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
 		</if>
 		<!-- 数据范围过滤 -->
 		${sqlMap.dsf}
@@ -195,7 +195,7 @@
 			</otherwise>
 		</choose>
 	</select>
-	
+
 	<!-- 根据OfficeId获取用户（树查询用户时用） -->
 	<select id="findUserByOfficeId" resultType="User" useCache="true">
 		SELECT
@@ -209,24 +209,24 @@
 	<!-- 根据type查询用户 -->
 	<select id="findUserByUserType" resultType="User" parameterType="User" >
 		SELECT * from sys_user where 1=1
-		<if test="id != ''">
-			AND u.id = #{user.id}
+		<if test="id != '' and id !=null">
+			AND id = #{id}
 		</if>
-		<if test="userType != ''">
+		<if test="userType != '' and userType != null">
 			and user_type = #{userType}
 		</if>
 	</select>
-	
+
 	<!-- 查询全部用户 -->
 	<select id="findAllList" resultType="User">
 		SELECT
-			<include refid="userColumns"/>
+		<include refid="userColumns"/>
 		FROM sys_user a
 		<include refid="userJoins"/>
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
 		ORDER BY c.code, o.code, a.name
 	</select>
-	
+
 	<!-- 查询全部用户数目 -->
 	<select id="findAllCount" resultType="long">
 		SELECT
@@ -234,7 +234,7 @@
 		FROM sys_user a
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
 	</select>
-	
+
 	<!-- 插入用户 -->
 	<insert id="insert">
 		INSERT INTO sys_user(
@@ -283,7 +283,7 @@
 			#{marketer}
 		)
 	</insert>
-	
+
 	<!-- 更新用户 -->
 	<update id="update">
 		UPDATE sys_user SET 
@@ -305,12 +305,12 @@
 			openid=#{openid}
 		WHERE id = #{id}
 	</update>
-	
+
 	<!-- 删除用户和角色关联表数据 -->
 	<delete id="deleteUserRole">
 		DELETE FROM sys_user_role WHERE user_id = #{id}
 	</delete>
-	
+
 	<!-- 插入用户和角色关联表数据 -->
 	<insert id="insertUserRole">
 		INSERT INTO sys_user_role(user_id, role_id)
@@ -318,7 +318,7 @@
 			SELECT #{id}, #{role.id} FROM dual
 		</foreach>
 	</insert>
-	
+
 	<!-- 更新用户信息  -->
 	<update id="updateUserInfo">
 		UPDATE sys_user SET 
@@ -331,14 +331,14 @@
 			photo = #{photo}
 		WHERE id = #{id}
 	</update>
-	
+
 	<!-- 更新用户密码 -->
 	<update id="updatePasswordById">
 		UPDATE sys_user SET 
 			password = #{password} 
 		WHERE id = #{id}
 	</update>
-	
+
 	<!-- 更新登录信息，如登录IP、登录时间 -->
 	<update id="updateLoginInfo">
 		UPDATE sys_user SET 
@@ -346,7 +346,7 @@
 			login_Date = #{loginDate} 
 		WHERE id = #{id}
 	</update>
-	
+
 	<!-- 逻辑删除用户 -->
 	<update id="delete">
 		UPDATE sys_user SET 
@@ -365,26 +365,26 @@
 			#{openid},
 			now())
 	</insert>
-	
+
 	<!--根据手机号获取患者id-->
-    <select id="findPatientIdByPhoneExecute"  resultType="java.util.HashMap">
+	<select id="findPatientIdByPhoneExecute"  resultType="java.util.HashMap">
         SELECT su.id AS uid,sp.id AS spid FROM sys_user su ,  sys_patient sp
         where  su.id=sp.sys_user_id and su.phone=#{phone}
     </select>
-    
-    <update id="insertUserElementsExecute">
-        update sys_user su
-        <set>
-            <if test="userPhone != null">
-                su.phone=#{userPhone}
-            </if>
-        </set>
-        where su.id=#{userId};
-    </update>
-    
-    <!--查询当前用户的所有信息(用户端) @author zdl-->
-    <select id="findUserDetailInfoByUserIdExecute"  resultType="java.util.HashMap">
+
+	<update id="insertUserElementsExecute">
+		update sys_user su
+		<set>
+			<if test="userPhone != null">
+				su.phone=#{userPhone}
+			</if>
+		</set>
+		where su.id=#{userId};
+	</update>
+
+	<!--查询当前用户的所有信息(用户端) @author zdl-->
+	<select id="findUserDetailInfoByUserIdExecute"  resultType="java.util.HashMap">
         SELECT * FROM sys_user WHERE id=#{userId}
     </select>
-    
+
 </mapper>

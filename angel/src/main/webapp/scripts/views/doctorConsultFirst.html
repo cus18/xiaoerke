@@ -41,8 +41,8 @@
         </div>
     </header>
     <div class="msg">
-      <div class="msg-l h30 fl">
-          <div class="m-left-header">
+        <div class="msg-l h30 fl">
+            <div class="m-left-header">
                 <div class="m-left-top">
                     <div class="tab-content-chat" id="ddjr" ng-click="waitprocess1()">
                         <h3>0</h3>
@@ -53,29 +53,33 @@
                         <p>已接会话</p>
                     </div>
                 </div>
+                <div class="insert">
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(1).png" alt=""/>
+                    已接入会话
+                </div>
             </div>
-          <div class="consultNowList" ng-style="chooseAlreadyJoinConsultPatientId==item.patientId?{'background':'#00a1ab'}:{'background':'#08b7c2'}"
-               ng-repeat="item in alreadyJoinPatientConversationContent"
-               ng-click="chooseAlreadyJoinConsultPatient(item.patientId,item.patientName)"
-               alt="">
-              <img src="images/consultPatient.png">{{item.patientName}}
-              {{item.dateTime}}&nbsp;&nbsp;
-              <img ng-if="item.messageNotSee" style="margin-left:-35px;" src="images/messageNotSee.png">
-          </div>
-      </div>
-      <div class="msg-r h30 fr">
-          <div class="bdf-dkf-sever">
-              <a class="reply"><span>快捷回复</span></a>
-              <a class="advisory"><span>咨询服务</span></a>
-          </div>
-          <div class="reply-content">
-              <div class="chatinstall">
-                  <span>
+            <div class="consultNowList" ng-style="chooseAlreadyJoinConsultPatientId==item.patientId?{'background':'#00a1ab'}:{'background':'#08b7c2'}"
+                 ng-repeat="item in alreadyJoinPatientConversationContent"
+                 ng-click="chooseAlreadyJoinConsultPatient(item.patientId,item.patientName)"
+                 alt="">
+                <img src="images/consultPatient.png">{{item.patientName}}
+                {{item.dateTime}}&nbsp;&nbsp;
+                <img ng-if="item.messageNotSee" style="margin-left:-35px;" src="images/messageNotSee.png">
+            </div>
+        </div>
+        <div class="msg-r h30 fr">
+            <div class="bdf-dkf-sever">
+                <a class="reply"><span>快捷回复</span></a>
+                <a class="advisory"><span>咨询服务</span></a>
+            </div>
+            <div class="reply-content">
+                <div class="chatinstall">
+                  <span ng-click="addgroup1()">
                       <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(11).png" alt=""/>添加</span>
                   <span>
                       <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(12).png" alt=""/>
                       编辑</span>
-                  <span>
+                  <span ng-click="addcontent1()">
                       <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(3).png" alt=""/>
                       删除</span>
                   <span>
@@ -87,97 +91,119 @@
                   <span>
                       <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(2).png" alt=""/>
                       同步</span>
-              </div>
-              <div class="myreply">
-                  <div ng-click="myreplyList1()" class="rtitle">
-                      <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(4).png" alt=""/>
-                      我的回复（{{myAnswer.length}}）</div>
-                  <ul ng-show="myreplyList.show">
-                      <li ng-repeat="item in myAnswer">
-                          <div ng-click="mreplyContent1($index)">
-                              <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(4).png" alt=""/>
-                              {{item.name}}（{{item.secondAnswer.length}}）</div>
-                          <ul ng-show="mreplayindex==$index">
-                              <li ng-repeat="item2 in item.secondAnswer" class="rcontent"><nobr>{{item2.name}}</nobr></li>
-                          </ul>
-                      </li>
-                  </ul>
-              </div>
-              <div class="pubilcreply">
-                  <div ng-click="pubilcreplyList1()"  class="rtitle">
-                      <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(4).png" alt=""/>
-                      公共回复（{{commonAnswer.length}}）</div>
-                  <ul ng-show='pubilcreplyList.show'>
-                      <li ng-repeat="item in commonAnswer">
-                          <div ng-click="pubilcreplyContent1($index)">
-                              <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(4).png" alt=""/>
-                              {{item.name}}（{{item.secondAnswer.length}}）</div>
-                          <ul ng-show='pubilcreplyindex==$index'>
-                              <li ng-repeat="item2 in item.secondAnswer" class="rcontent"><nobr>{{item2.name}}</nobr></li>
-                          </ul>
-                      </li>
-                  </ul>
-              </div>
-          </div>
-      </div>
-      <div class="msg-m h30" ng-if="chooseAlreadyJoinConsultPatientId!=''">
+                </div>
+                <div class="myreply">
+                    <div ng-click="myreplyList1()" class="rtitle">
+                        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(4).png" alt=""/>
+                        我的回复（{{myAnswer.length}}）</div>
+                    <ul ng-show="myreplyList.show">
+                        <li ng-repeat="item in myAnswer">
+                            <div ng-click="mreplyContent1($index)">
+                                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(4).png" alt=""/>
+                                {{item.name}}（{{item.secondAnswer.length}}）</div>
+                            <ul ng-show="mreplayindex==$index">
+                                <li ng-repeat="item2 in item.secondAnswer" class="rcontent"><nobr>{{item2.name}}</nobr></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="pubilcreply">
+                    <div ng-click="pubilcreplyList1()"  class="rtitle">
+                        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(4).png" alt=""/>
+                        公共回复（{{commonAnswer.length}}）</div>
+                    <ul ng-show='pubilcreplyList.show'>
+                        <li ng-repeat="item in commonAnswer">
+                            <div ng-click="pubilcreplyContent1($index)">
+                                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(4).png" alt=""/>
+                                {{item.name}}（{{item.secondAnswer.length}}）</div>
+                            <ul ng-show='pubilcreplyindex==$index'>
+                                <li ng-repeat="item2 in item.secondAnswer" class="rcontent"><nobr>{{item2.name}}</nobr></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!--添加分组-->
+            <div class="addgroup" ng-show='addgroup.show'>
+                <div class="addtop"><span>添加分组</span><span ng-click="addgroup1()">关闭</span></div>
+                <div class="addgroupname"><span>添加分组</span><input type="text"/></div>
+                <div class="addbtn">
+                    <input class="btn" type="submit" value="确定">
+                    <input class="btn" type="submit" value="取消">
+                    <!--                  <button>确定</button>
+                                      <button>取消</button>-->
+                </div>
+            </div>
+            <!--添加内容-->
+            <div class="addcontent" ng-show='addcontent.show'>
+                <div class="addtop"><span>添加回复</span><span ng-click="addcontent1()">关闭</span></div>
+                <div class="addgroupname"><span class="addkjhf">快捷回复内容：</span>
+                    <textarea placeholder="请在此处进行编辑"></textarea>
+                </div>
+                <div class="addbtn">
+                    <input class="btn" type="submit" value="确定">
+                    <input class="btn" type="submit" value="取消">
+                </div>
+            </div>
+        </div>
+        <div class="msg-m h30" ng-if="chooseAlreadyJoinConsultPatientId!=''">
             <div class="headportrait">
-                    <div class="nametop">
+                <div class="nametop">
                     <img class="headimg" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png">
                     <span>{{chooseAlreadyJoinConsultPatientName}}</span>
-                    <div class="fr">
+                    <div class="fr" ng-click="switchover1()">
                         <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(10).png" alt=""/>
-                        转接</divcla></div>
+                        转接</div>
                 </div>
-                    <div scroll-glue-bottom="glued" class="chatlist">
-                <div ng-repeat="item in currentUserConsultRecordDetail">
-                    <div ng-if="item.senderId==doctorId">
-                        <div>
-                            {{doctorName}} {{item.dateTime}}</div>
-                        <div ng-if="item.messageType=='0'" id="show">
-                            {{item.message}}
+                <div scroll-glue-bottom="glued" class="chatlist">
+                    <div ng-repeat="item in currentUserConsultRecordDetail">
+                        <div ng-if="item.senderId==doctorId">
+                            <div>
+                                {{doctorName}} {{item.dateTime}}</div>
+                            <div ng-if="item.messageType=='0'" id="show">
+                                {{item.message}}
+                            </div>
                         </div>
+                        <div ng-if="item.senderId!=doctorId">
+                            <div>
+                                {{item.senderName}} {{item.createDate}}</div>
+                            <div ng-if="item.messageType=='0'">
+                                {{item.message}}
+                            </div>
+                            <div ng-if="item.messageType=='1'">
+                                <a target="_blank" ng-href="{{item.message}}">
+                                    <img width="100" height="100" ng-src="{{item.message}}">
+                                </a>
+                            </div>
+                            <div ng-if="item.messageType=='2'">
+                                <audio ng-src="{{item.message}}" controls="controls"/>
+                            </div>
+                            <div ng-if="item.messageType=='3'">
+                                <video width="500" height="250" ng-src="{{item.message}}" controls="controls"/>
+                            </div>
+                        </div>
+                        <br/>
                     </div>
-                    <div ng-if="item.senderId!=doctorId">
-                        <div>
-                            {{item.senderName}} {{item.createDate}}</div>
-                        <div ng-if="item.messageType=='0'">
-                            {{item.message}}
-                        </div>
-                        <div ng-if="item.messageType=='1'">
-                            <a target="_blank" ng-href="{{item.message}}">
-                                <img width="100" height="100" ng-src="{{item.message}}">
-                            </a>
-                        </div>
-                        <div ng-if="item.messageType=='2'">
-                            <audio ng-src="{{item.message}}" controls="controls"/>
-                        </div>
-                        <div ng-if="item.messageType=='3'">
-                            <video width="500" height="250" ng-src="{{item.message}}" controls="controls"/>
-                        </div>
-                    </div>
-                    <br/>
                 </div>
-                    </div>
-                    <div class="facebox">
-                <p class="fl"><span class="emotion" ng-click="getQQExpression()">表情</span></p>
-                <p class="historymessage"><span>
+                <div class="facebox">
+                    <p class="fl"><span class="emotion" ng-click="getQQExpression()">表情</span></p>
+                    <p class="historymessage"><span>
                     <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(7).png" alt=""/>
                     消息记录
                     <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(8).png" alt=""/>
                 </span></p>
+                </div>
+                <div class="inputcontent"><textarea ng-model="info.consultMessage" placeholder="请在此处进行咨询" id="saytext"></textarea>
+                </div>
+                <div class="sendbtn">
+                    <div class="sub_btn" ng-click="sendConsultMessage()">发送消息Ctrl+Enter</div>
+                    <div ng-click="closeConsult()">
+                        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(9).png" alt=""/>
+                        关闭咨询</div>
+                </div>
             </div>
-                    <div class="inputcontent"><textarea ng-model="info.consultMessage" placeholder="请在此处进行咨询" id="saytext"></textarea>
-            </div>
-                    <div class="sendbtn">
-                        <div class="sub_btn" ng-click="sendConsultMessage()">发送消息Ctrl+Enter</div>
-                        <div ng-click="closeConsult()">
-                            <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(9).png" alt=""/>
-                            关闭咨询</div>
-                    </div>
-            </div>
-      </div>
-      </div>
+        </div>
+    </div>
     <!--等待接入会话-->
     <div class="jrhhpm" ng-show='rankList.show'>
         <div class="jrhhpm-top">今日接入会话排名 <a href="#">刷新</a></div>
@@ -221,17 +247,31 @@
             </div>
             <div class="xtsz-up-right">
                 <ul>
-                    <li>
+                    <li class="show">
                         <div class="zhhf">
                             <div class="zhhftop">
                                 <span></span><span>主号自动回复</span><span></span>
                             </div>
                             <div class="zhhfcontent">
-                                <p>主号自动回复</p>
-                                <p>主号自动回复</p>
-                                <p>主号自动回复</p>
-                                <p>主号自动回复</p>
-                                <p>主号自动回复</p>
+                                <div class="zhhfcontent">
+                                    <p>工号自动回复针对工号已经接入客户。对已接入用户请设置<a href="#">工号自动回复</a></p>
+                                    <p><input type="checkbox">客服均接入已满或关闭接入时的自动回复语。</p>
+                                    <div class="autoresponse commonbtn">
+                                        <div class="response">
+                                            <ul>
+                                                <li>您好吗？您好吗？您好吗？您好吗？</li>
+                                                <li>您好吗？您好吗？您好吗？您好吗？</li>
+                                                <li>您好吗？您好吗？您好吗？您好吗？</li>
+                                            </ul>
+                                        </div>
+                                        <div class="btns">
+                                            <button>添加</button>
+                                            <button>修改</button>
+                                            <button>删除</button>
+                                        </div>
+                                    </div>
+                                    <div class="noautoresponse commonbtn"></div>
+                                </div>
                             </div>
                         </div>
                     </li>
@@ -247,7 +287,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="show">
+                    <li>
                         <div class="zhhf">
                             <div class="zhhftop">
                                 <span></span><span>接入语设置</span><span></span>
@@ -289,55 +329,87 @@
         <div class="hd" id="drop2">未接入客户信息
             <span class="close" ng-click="waitprocess1()">【关闭】</span>
         </div>
-        <div class="ddjr-content" id="ddjr_content">
-            <span>接入</span>
-            <span>删除</span>
-            <span>刷新</span>
+        <div class="ddjr-content">
+            <div class="checktop">
+            <span>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(2).png" alt=""/>
+                接入</span>
+            <span>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(3).png" alt=""/>
+                删除</span>
+            <span>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(4).png" alt=""/>
+                刷新</span>
+            </div>
             <div class="light">
-                <div class="check">
-                    <input type="checkbox">
-                </div>
-                <div class="nc">昵称</div>
-                <div class="xx">消息</div>
-                <div class="xxs">消息数</div>
-                <div class="sj">时间</div>
-                <div class="lz">来自</div>
+                <ul>
+                    <li><input type="checkbox"></li>
+                    <li>昵称</li>
+                    <li>消息</li>
+                    <li>消息数</li>
+                    <li>时间</li>
+                    <li>来自</li>
+                </ul>
             </div>
             <!--input标签获取总值-->
-            <div class="ddjr-content-list">
-                <div class="light">
-                    <div class="check">
-                        <input type="checkbox">
-                    </div>
-                    <div class="nc">aaaaa</div>
-                    <div class="xx">cccc</div>
-                    <div class="xxs">cccc</div>
-                    <div class="sj">ccc</div>
-                    <div class="lz">ccccc</div>
-                </div>
-                <div class="light">
-                    <div class="check">
-                        <input type="checkbox">
-                    </div>
-                    <div class="nc">aaaaa</div>
-                    <div class="xx">cccc</div>
-                    <div class="xxs">cccc</div>
-                    <div class="sj">ccc</div>
-                    <div class="lz">ccccc</div>
-                </div>
-                <div class="light">
-                    <div class="check">
-                        <input type="checkbox">
-                    </div>
-                    <div class="nc">aaaaa</div>
-                    <div class="xx">cccc</div>
-                    <div class="xxs">cccc</div>
-                    <div class="sj">ccc</div>
-                    <div class="lz">ccccc</div>
-                </div>
+            <div class="light">
+                <ul>
+                    <li><input type="checkbox"></li>
+                    <li>昵称</li>
+                    <li>消息</li>
+                    <li>消息数</li>
+                    <li>时间</li>
+                    <li>来自</li>
+                </ul>
             </div>
         </div>
         <div class="footer ddjr-footer" id="ddjr_footer">已选中：<span id="add1">0</span>/<span id="add2">0</span>
+        </div>
+    </div>
+    <!--转接-->
+    <div class="xtsz-up  ddjr-up" ng-show='switchover.show'>
+        <div class="hd">转接客户
+            <span class="close" ng-click="switchover1()">【关闭】</span>
+        </div>
+        <div class="switchcontent">
+            <div class="switchbox">
+                <input type="text" placeholder="按员工、昵称查找工号">
+                <div class="refresh">
+                    <div class="refreshbox">
+                        <div class="refreshboxtop">
+                            <div>
+                                <span>状态</span><span>工号</span><span>昵称</span>
+                            </div>
+                            <ul>
+                                <li>
+                                <span>
+                                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(5).png" alt=""/>
+                                    状态</span><span>工号</span><span>昵称</span>
+                                </li>
+                                <li>
+                                <span>
+                                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(5).png" alt=""/>
+                                状态</span><span>工号</span><span>昵称</span>
+                                </li>
+                                <li>
+                                <span>
+                                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(5).png" alt=""/>
+                                    状态</span><span>工号</span><span>昵称</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="refreshbtn">刷新在线工号</div>
+                    <div class="postscript">
+                        <span>附言：</span>
+                        <textarea placeholder="请在此处进行编辑"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="footer ddjr-footer">
+                <button>取消</button>
+                <button>确定</button>
+            </div>
         </div>
     </div>
 </div>

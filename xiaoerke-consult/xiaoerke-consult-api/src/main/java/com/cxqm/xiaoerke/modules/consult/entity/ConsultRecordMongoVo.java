@@ -19,7 +19,9 @@ public class ConsultRecordMongoVo {
 
     private String attentionNickname;
 
-    private String createDate;
+    private Date createDate;
+
+    private String infoDate;
 
     private Date updateDate;
 
@@ -77,6 +79,14 @@ public class ConsultRecordMongoVo {
 
     public String getType() {
         return type;
+    }
+
+    public String getInfoDate() {
+        return infoDate;
+    }
+
+    public void setInfoDate(String infoDate) {
+        this.infoDate = infoDate;
     }
 
     public void setType(String type) {
@@ -155,11 +165,11 @@ public class ConsultRecordMongoVo {
         this.attentionNickname = attentionNickname;
     }
 
-    public String getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(String createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 
