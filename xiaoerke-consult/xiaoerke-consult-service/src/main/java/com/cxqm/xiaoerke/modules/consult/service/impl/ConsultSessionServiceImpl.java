@@ -41,24 +41,17 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
 
     @Override
     public int updateSessionInfo(ConsultSession consultSession) {
-
         return consultSessionDao.updateByPrimaryKeySelective(consultSession);
-
     }
 
     @Override
     public int updateSessionInfoByUserId(ConsultSession consultSession) {
-
         return consultSessionDao.updateSessionInfoByUserId(consultSession);
-
     }
-
-
 
     @Override
     public String removeSessionById(HttpServletRequest request, Map<String, Object> param) {
         String sessionId = (String) param.get("sessionId");
-
         if (StringUtils.isNotNull(sessionId)) {
             request.getSession().removeAttribute(sessionId);
             return "success";
