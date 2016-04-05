@@ -1,4 +1,4 @@
-var webpath = "/xiaoerke-knowledge";
+var webpath = "/wisdom";
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/ionic.bundle.min.js"></scr'+'ipt>');
 document.write('<scr'+'ipt src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></scr'+'ipt>');
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery-2.1.3.min.js?ver=1.0.7"></scr'+'ipt>');
@@ -35,7 +35,7 @@ var knowledgeFirstPageInit = function(){
     $.ajaxSetup({
         contentType : 'application/json'
     });
-    $.get('ap/knowledge/babyEmr/getBabyEmrList',param,
+    $.get('knowledge/babyEmr/getBabyEmrList',param,
         function(data) {
             if(data.name!=undefined){
                 babyName = data.name;
@@ -57,7 +57,7 @@ var getBirthDayContent = function(){
     $.ajaxSetup({
         contentType : 'application/json'
     });
-    $.get('ap/knowledge/knowledgeDict/standardFigure',param,
+    $.get('knowledge/knowledgeDict/standardFigure',param,
         function(data) {
             var paramValue = '<span>'+babyName+'</span> <span>'+data.age+'<img src="http://xiaoerke-knowledge-pic.oss-cn-beijing.aliyuncs.com/knowledge%2Fedit_birthday.png" width="10" height="10.5"> <input id="birthday" name="birthday" type="text" readonly="readonly"> </span>'
             $(".font-c1").html(paramValue);
@@ -68,7 +68,7 @@ var getBirthDayContent = function(){
                 $(".font-c2").html(paramValue);
 
                 $.ajax({
-                    url:"ap/knowledge/knowledgeDict/dailyRemind",// 跳转到 action
+                    url:"knowledge/knowledgeDict/dailyRemind",// 跳转到 action
                     async:true,
                     type:'get',
                     data:{birthDay:birthday},
@@ -98,7 +98,7 @@ var getBirthDayContent = function(){
                 $.ajaxSetup({
                     contentType : 'application/json'
                 });
-                $.post('ap/knowledge/article/todaySelectAndReadArticleList',param,
+                $.post('knowledge/article/todaySelectAndReadArticleList',param,
                     function(data) {
                         paramValue = "";
                         $.each(data.todayReadArticleList,function(index,value){
@@ -152,7 +152,7 @@ var getBirthDayContent = function(){
                 $.ajaxSetup({
                     contentType : 'application/json'
                 });
-                $.post('ap/knowledge/category/categoryList',param,
+                $.post('knowledge/category/categoryList',param,
                     function(data) {
                         babyClassify = data.categoryList[4].secondMenuData;//获取育儿宝典内容
                         syndromeClassify = data.categoryList[7].secondMenuData;//常见疾病
@@ -187,7 +187,7 @@ var getBirthDayContent = function(){
                 $.ajaxSetup({
                     contentType : 'application/json'
                 });
-                $.post('ap/knowledge/category/categoryList',param,
+                $.post('knowledge/category/categoryList',param,
                     function(data) {
                         jingId = data.categoryList[5].firstMenuId;
                         loadMoreArticle(jingId);
@@ -202,7 +202,7 @@ var loadMoreArticle = function(jingId){
     $.ajaxSetup({
         contentType : 'application/json'
     });
-    $.post('ap/knowledge/article/articleList',param,
+    $.post('knowledge/article/articleList',param,
         function(data) {
             var paramValue = "";
             $.each(data.articleList,function(index,value){
@@ -231,29 +231,29 @@ var loadMoreArticle = function(jingId){
 
 var lookMore = function(categoryId,categoryName){
     if(categoryName=="新生儿"){
-        window.location.href = "ap/knowledge#/todayChoiceNewborn/" + categoryId + "," + categoryName;
+        window.location.href = "knowledge#/todayChoiceNewborn/" + categoryId + "," + categoryName;
     }
     else if(categoryName=="婴幼儿"){
-        window.location.href = "ap/knowledge#/todayChoiceNursling/" + categoryId + "," + categoryName;
+        window.location.href = "knowledge#/todayChoiceNursling/" + categoryId + "," + categoryName;
     }
     else {
-        window.location.href = "ap/knowledge#/otherDisease/" + categoryId + "," + categoryName;
+        window.location.href = "knowledge#/otherDisease/" + categoryId + "," + categoryName;
     }
 }
 
 var todayReadMore = function(secondMenuId,secondMenuName){
-    window.location.href = "ap/knowledge#/todayReadMore/" + secondMenuId + "," + secondMenuName;
+    window.location.href = "knowledge#/todayReadMore/" + secondMenuId + "," + secondMenuName;
 }
 
 var knowledgeArticleContent = function(contentId,generalize){
-    window.location.href = "ap/knowledge#/knowledgeArticleContent/" + contentId + "," + generalize;
+    window.location.href = "knowledge#/knowledgeArticleContent/" + contentId + "," + generalize;
 }
 
 var linShi = function(categoryName,categoryId){
     if(categoryName=="精选"){
-        window.location.href = "ap/knowledge#/todayChoiceNurslingList/" + categoryName + ",文章," + categoryId;
+        window.location.href = "knowledge#/todayChoiceNurslingList/" + categoryName + ",文章," + categoryId;
     }else{
-        window.location.href = "ap/knowledge#/todayReadMore/" + categoryId + "," + categoryName;
+        window.location.href = "knowledge#/todayReadMore/" + categoryId + "," + categoryName;
     }
 }
 
@@ -281,7 +281,7 @@ var getBirthDayTime = function(){
             $.ajaxSetup({
                 contentType : 'application/json'
             });
-            $.post('ap/knowledge/babyEmr/updateBabyEmr',param,
+            $.post('knowledge/babyEmr/updateBabyEmr',param,
                 function(data) {
                     //birthday = valueText;
                     location.reload(); //getBirthDayContent();
@@ -314,7 +314,7 @@ var chooseImage = function(){
                     $.ajaxSetup({
                         contentType : 'application/json'
                     });
-                    $.post('ap/knowledge/babyEmr/updatePic',param,
+                    $.post('knowledge/babyEmr/updatePic',param,
                         function(data) {
                             knowledgeFirstPageInit();
                         }, 'json');
@@ -339,7 +339,7 @@ var getWarn = function(index){
     if(index==undefined){
         index="";
     }
-    window.location.href = "ap/knowledge#/knowledgeWarn/" + birthday + "," + index;
+    window.location.href = "knowledge#/knowledgeWarn/" + birthday + "," + index;
 }
 
 var getLimitString = function(val){
@@ -353,15 +353,15 @@ var getLimitString = function(val){
 
 var searchTitle = function(){
     if($("#searchValue").val()!=undefined){
-        window.location.href = "ap/knowledge#/knowledgeSearch/" + $("#searchValue").val() + ",WX" ;
+        window.location.href = "knowledge#/knowledgeSearch/" + $("#searchValue").val() + ",WX" ;
     }else{
         alert("请输入搜索内容！");
     }
 }
 
 var wxConfig = function(){
-    var shareUrl ='http://baodf.com/xiaoerke-knowledge/wechatInfo/fieldwork/wechat/' +
-        'author?url=http://baodf.com/xiaoerke-knowledge/wechatInfo/getZhengIndex';
+    var shareUrl ='http://s11.baodf.com/wisdom/wechatInfo/fieldwork/wechat/' +
+        'author?url=http://s11.baodf.com/wisdom/wechatInfo/getZhengIndex';
     var timestamp;//时间戳
     var nonceStr;//随机字符串
     var signature;//得到的签名
@@ -407,7 +407,7 @@ var wxConfig = function(){
                             $.ajaxSetup({
                                 contentType : 'application/json'
                             });
-                            $.post('ap/knowledge/ArticleShareRecord',param,
+                            $.post('knowledge/ArticleShareRecord',param,
                                 function(data) {
                                 }, 'json');
                         },
@@ -427,7 +427,7 @@ var wxConfig = function(){
                             $.ajaxSetup({
                                 contentType : 'application/json'
                             });
-                            $.post('ap/knowledge/ArticleShareRecord',param,
+                            $.post('knowledge/ArticleShareRecord',param,
                                 function(data) {
                                 }, 'json');
                         },

@@ -1,6 +1,7 @@
 package com.cxqm.xiaoerke.modules.insurance.service.Impl;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -192,4 +193,29 @@ public class InsuranceRegisterServiceServiceImpl implements
         return retStr;
 	}
 
+	/**
+	 * 查询所有订单
+	 * sunxiao
+	 * @param vo
+	 * @return
+	 */
+	@Override
+	public List<InsuranceRegisterService> getInsuranceServiceList(
+			InsuranceRegisterService vo) {
+		// TODO Auto-generated method stub
+		List<InsuranceRegisterService> list = insuranceRegisterServiceDao.getInsuranceServiceList(vo);
+		Map<String, Object> statusMap = new LinkedHashMap<String, Object>();
+		statusMap.put("0", "待生效");
+		statusMap.put("1", "有效");
+		statusMap.put("2", "待审核");
+		statusMap.put("3", "已赔付");
+		statusMap.put("4", "已到期");
+		statusMap.put("5", "审核失败");
+		statusMap.put("6", "待支付");
+		for(InsuranceRegisterService ivo : list){
+			ivo.setState((String)statusMap.get(ivo.getState()));
+			ivo.setSource("buy".equals(ivo.getSource())?"购买":"赠送");
+		}
+		return list;
+	}
 }

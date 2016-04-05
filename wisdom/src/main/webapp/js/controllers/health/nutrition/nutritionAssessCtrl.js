@@ -78,7 +78,7 @@ angular.module('controllers', ['ionic']).controller('nutritionAssessCtrl', [
                 $state.go("nutritionAssess");
             }
             else if(index==2){
-                window.location.href = "ap/ntr?value=251339#/nutritionReport/second";
+                window.location.href = "ntr?value=251339#/nutritionReport/second";
             }
             else if(index==3){
                 $state.go("nutritionNecessary");
@@ -143,7 +143,7 @@ angular.module('controllers', ['ionic']).controller('nutritionAssessCtrl', [
 
         $scope.addFinish = function () {
             setLog("YYGL_PG_TJWB");
-            window.location.href = "ap/ntr?value=251350#/nutritionAssessResult";
+            window.location.href = "ntr?value=251350#/nutritionAssessResult";
         }
 
         $scope.goWeight = function () {
@@ -155,7 +155,7 @@ angular.module('controllers', ['ionic']).controller('nutritionAssessCtrl', [
         }
 
         $scope.$on('$ionicView.enter', function(){
-            var routePath = "/ap/ntrBBBBBB" + $location.path();
+            var routePath = "/ntrBBBBBB" + $location.path();
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 $scope.pageLoading = false;
                 if(data.status=="9") {

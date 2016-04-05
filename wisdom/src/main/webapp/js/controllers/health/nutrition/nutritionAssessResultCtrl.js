@@ -40,7 +40,7 @@ angular.module('controllers', ['ionic']).controller('nutritionAssessResultCtrl',
             //$state.go("nutritionAssess",{flag:"again"});
             ReEvaluate.save({}, function (data) {
                 if(data.resultMsg=="OK"){
-                    window.location.href = "ap/ntr?value=251341#/nutritionAssess/again";
+                    window.location.href = "ntr?value=251341#/nutritionAssess/again";
                 }
 
             });

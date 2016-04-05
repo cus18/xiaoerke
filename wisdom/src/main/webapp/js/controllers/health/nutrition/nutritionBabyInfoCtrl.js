@@ -12,7 +12,7 @@ angular.module('controllers', ['ionic']).controller('nutritionBabyInfoCtrl', [
 
         $scope.$on('$ionicView.enter', function(){
             $scope.pageLoading = true;
-            var routePath = "/ap/ntrBBBBBB" + $location.path();
+            var routePath = "/ntrBBBBBB" + $location.path();
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 $scope.pageLoading = false;
                 if(data.status=="9") {
@@ -101,7 +101,7 @@ angular.module('controllers', ['ionic']).controller('nutritionBabyInfoCtrl', [
                             //$state.go("nutritionReport",{type:"first"});
                             var pData = {logContent:encodeURI("YYGL_TXXX")};
                             $http({method:'post',url:'util/recordLogs',params:pData});
-                            window.location.href = "ap/ntr?value=251334#/nutritionReport/first";
+                            window.location.href = "ntr?value=251334#/nutritionReport/first";
                         }
                 });
             }else{

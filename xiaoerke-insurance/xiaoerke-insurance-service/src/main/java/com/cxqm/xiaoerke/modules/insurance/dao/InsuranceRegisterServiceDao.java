@@ -124,4 +124,12 @@ public interface InsuranceRegisterServiceDao {
 	 * @param insuranceRegisterService
 	 */
 	List<InsuranceRegisterService> getInsuranceRegisterServiceByInfo(InsuranceRegisterService insuranceRegisterService);
+	
+	/**
+	 * 查询所有订单
+	 * sunxiao
+	 * @param vo
+	 * @return
+	 */
+	List<InsuranceRegisterService> getInsuranceServiceList(InsuranceRegisterService vo);
 }
