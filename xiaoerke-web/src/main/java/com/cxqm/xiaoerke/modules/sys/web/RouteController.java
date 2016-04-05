@@ -98,7 +98,7 @@ public class RouteController extends BaseController {
      */
     @RequestMapping(value ="/playtour",method = {RequestMethod.POST, RequestMethod.GET})
     public String playTour() {
-        return "playtourIndex";
+        return "native/playtourIndex";
     }
 
 }
