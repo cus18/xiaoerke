@@ -14,6 +14,19 @@ public interface ConsultPhoneOrderService {
     //根据号源id获取号源的基本详情
     SysConsultPhoneServiceVo getConsultServiceInfo(Integer consultServiceId);
 
-    //订单列表（电话咨询和预约就诊）
-    List<HashMap<String,Object>> getOrderList(String type);
+    /**
+     * 订单列表（电话咨询和预约就诊）
+     * @param params
+     * @return
+     * @author chenxiaoqiong
+     */
+    Map<String, Object> getOrderList(Map<String,Object> params);
+
+    /**
+     * 电话咨询（含分页）
+     * @param params
+     * @return
+     * @author chenxiaoqiong
+     */
+    Map<String, Object> getUserOrderPhoneConsultList(Map<String, Object> params);
 }
