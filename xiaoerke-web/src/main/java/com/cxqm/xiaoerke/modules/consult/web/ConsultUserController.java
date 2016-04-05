@@ -49,7 +49,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
  * @version 2015-11-04
  */
 @Controller
-@RequestMapping(value = "consult/user/")
+@RequestMapping(value = "consult/user")
 public class ConsultUserController extends BaseController {
 
     @Autowired
@@ -114,7 +114,7 @@ public class ConsultUserController extends BaseController {
      * @return {"status","success"}
      * @throws UnsupportedEncodingException
      */
-    @RequestMapping(value="/consult/uploadMediaFile",method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value="/uploadMediaFile",method = {RequestMethod.POST, RequestMethod.GET})
     public HashMap<String,Object> UploadFile(@RequestParam("file") MultipartFile file,
                                              @RequestParam("data") String data) throws UnsupportedEncodingException {
         HashMap<String, Object> response = consultRecordService.uploadMediaFile(file, data);
