@@ -17,7 +17,7 @@ import java.util.Map;
  * Created by wangbaowei on 16/3/16.
  */
 @Controller
-@RequestMapping(value = "consultPhone/")
+@RequestMapping(value = "${xiaoerkePath}/consultPhone/")
 public class ConsultPhoneDoctorGroupController {
 
 
