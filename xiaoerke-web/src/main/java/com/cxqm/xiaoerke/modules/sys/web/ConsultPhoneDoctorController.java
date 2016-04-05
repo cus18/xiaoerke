@@ -27,7 +27,7 @@ import java.util.*;
  */
 
 @Controller
-@RequestMapping(value = "${xiaoerkePath}/consultPhone/consultPhoneDoctor/")
+@RequestMapping(value = "consultPhone/consultPhoneDoctor/")
 public class ConsultPhoneDoctorController {
 
     @Autowired
