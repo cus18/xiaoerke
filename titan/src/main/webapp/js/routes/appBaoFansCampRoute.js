@@ -50,7 +50,7 @@ define(['appBaoFansCamp'], function(app){
                         }
                     })
                     .state('questions', {
-                        url: '/questions/',
+                        url: '/questions',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'QuestionsCtrl',
                         resolve: {
