@@ -159,12 +159,12 @@ angular.module('controllers', ['ionic']).controller('nutritionAddAssessCtrl', [
 
         $scope.goAssess = function () {
             //$state.go("nutritionAssess",{flag:"noagain"});
-            window.location.href = "ap/ntr?value=251343#/nutritionAssess/noagain";
+            window.location.href = "ntr?value=251343#/nutritionAssess/noagain";
         }
 
         $scope.goAssessResult = function () {
             //$state.go("nutritionAssessResult");
-            window.location.href = "ap/ntr?value=251345#/nutritionAssessResult";
+            window.location.href = "ntr?value=251345#/nutritionAssessResult";
         }
     }]);
 

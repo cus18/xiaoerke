@@ -3,7 +3,7 @@
  * 2014-11-30 mon
  */
 require.config({
-    baseUrl: "/xiaoerke-knowledge/js/",
+    baseUrl: "/wisdom/js/",
     paths: {
         "angular" : "libs/angular.min",
         "angular-resource" : "libs/angular-resource.min",

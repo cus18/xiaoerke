@@ -88,7 +88,7 @@ angular.module('controllers', ['ionic']).controller('nutritionReportCtrl', [
         var planId = "";
 
         $scope.$on('$ionicView.enter', function(){
-            var routePath = "/ap/ntrBBBBBB" + $location.path();
+            var routePath = "/ntrBBBBBB" + $location.path();
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 $scope.pageLoading = false;
                 if(data.status=="9") {
@@ -101,7 +101,7 @@ angular.module('controllers', ['ionic']).controller('nutritionReportCtrl', [
                     $stateParams.type=="first"?$scope.sethide="true":$scope.sethide="false";
                     GetBabyInfo.save({}, function (data){
                         if(data.babyInfo==undefined){
-                            window.location.href = "ap/ntr?value=251336#/nutritionBabyInfo";
+                            window.location.href = "ntr?value=251336#/nutritionBabyInfo";
                         }else{
                             planId = data.id;
                             babyInfo = data.babyInfo.split(";");

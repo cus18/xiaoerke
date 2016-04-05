@@ -2,8 +2,8 @@
  * 取得实际位置
  * 调用方式：geoFactory.getGeo();
  */
-var user_h5 = '/xiaoerke-healthPlan/ap/'
-var wxChat = '/xiaoerke-healthPlan/wechatInfo/'
+var user_h5 = ''
+var wxChat = '/wechatInfo/'
 
 define(['appNutrition'], function (app) {
     app
@@ -71,6 +71,6 @@ define(['appNutrition'], function (app) {
         }])
         //营养管理添加评论
         .factory('SaveAppraisal',['$resource',function ($resource){
-            return $resource(user_h5 + 'plan/appraisal/saveAppraisal');
+            return $resource(user_h5 + 'constipation/appraisal/saveAppraisal');
         }])
 })

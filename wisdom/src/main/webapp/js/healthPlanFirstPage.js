@@ -1,4 +1,4 @@
-var webpath = "/xiaoerke-healthPlan";
+var webpath = "/wisdom";
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/ionic.bundle.min.js"></scr'+'ipt>');
 document.write('<scr'+'ipt src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></scr'+'ipt>');
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery-2.1.3.min.js?ver=1.0.7"></scr'+'ipt>');
@@ -14,7 +14,7 @@ var constipationAdd = false;
 var healthPlanFirstPageInit = function() {
     recordLogs("healthPlanFirstPageAccess");
     $.ajax({
-        url: 'ap/info/loginStatus',
+        url: 'info/loginStatus',
         type: 'post',
         data: {},
         complete: function(jqXHR){
@@ -33,7 +33,7 @@ var healthPlanFirst = function(){
     $.ajaxSetup({
         contentType : 'application/json',
     });
-    $.post('ap/info/loginStatus',paramValue,
+    $.post('info/loginStatus',paramValue,
         function(data) {
              if(data.status=="9"){
                 window.location.href = data.redirectURL;
@@ -42,7 +42,7 @@ var healthPlanFirst = function(){
                 var type = GetRequest();
                 getAddStatus();
                 $.ajax({
-                    url:"ap/nutrition/judgeUserManage",// 跳转到 action
+                    url:"nutrition/judgeUserManage",// 跳转到 action
                     async:true,
                     type:'post',
                     data:{},
@@ -65,11 +65,11 @@ var healthPlanFirst = function(){
                                     if(judge[1]=="1"){
                                         setHide0();
                                         showManage(0);
-                                        window.location.href = "ap/ctp#/constipationIndex";
+                                        window.location.href = "ctp#/angular/constipationIndex";
                                     }else{
                                         setHide1();
                                         showManage(1);
-                                        window.location.href = "ap/ntr#/nutritionIndex";
+                                        window.location.href = "ntr#/angular/nutritionIndex";
                                     }
                                 }else if(judge.length==4){
                                     setHide0();
@@ -94,7 +94,7 @@ var healthPlanFirst = function(){
                                 }else if(judge[1]=="2"){
                                     setHide1();
                                     showManage(1);
-                                    window.location.href = "ap/ntr#/nutritionIndex";
+                                    window.location.href = "ntr#/angular/nutritionIndex";
                                 }
                             }
                         }
@@ -138,10 +138,10 @@ var showManage = function (id) {
 
 var selectManage=function(num){
     if(num=="0"){
-        window.location.href = "ap/ctp#/constipationIndex";
+        window.location.href = "ctp#/angular/constipationIndex";
     }
     else{
-       window.location.href = "ap/ntr#/nutritionIndex";
+       window.location.href = "ntr#/angular/nutritionIndex";
     }
 
  }
@@ -162,7 +162,7 @@ var setAddStatus = function(val){
     $.ajaxSetup({
         contentType : 'application/json'
     });
-    $.post('ap/util/user/recordHealthPlanAddItem',param,
+    $.post('util/user/recordHealthPlanAddItem',param,
         function(data) {
             if(data.result=="success"){
                 if(val=="constipation"){
@@ -180,7 +180,7 @@ var setAddStatus = function(val){
 
 var getAddStatus = function(){
     $.ajax({
-        url:"ap/util/user/findHealthPlanAddItem",// 跳转到 action
+        url:"util/user/findHealthPlanAddItem",// 跳转到 action
         async:true,
         type:'post',
         data:{},
