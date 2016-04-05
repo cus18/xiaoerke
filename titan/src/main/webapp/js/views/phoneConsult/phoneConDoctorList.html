@@ -54,8 +54,8 @@
 		<ion-content class="searchList doctorList" overflow-scroll="true"  ng-style="!isBlank?{'top':'90px'}:{'top':'45px'}">
 			<ion-scroll direction="y" has-bouncing="true" >
 				<ion-list>
-					<div  ng-if="!isBlank" class="bg1">
-						<div class="border2 apart1" ng-class="{'border1':!$first}"  ng-repeat="item in doctorData" ng-click="doctorAppointment(item.doctorId,item.available_time,item.visitInfo[0].name,item.visitInfo[0].location,item.visitInfo[0].position,item.visitInfo[0].location_id,'')">
+					<div  ng-if="!isBlank" >
+						<div class="border2 apart1 bg1" ng-class="{'border1':!$first}"  ng-repeat="item in doctorData" ng-click="doctorAppointment(item.doctorId,item.available_time,item.visitInfo[0].name,item.visitInfo[0].location,item.visitInfo[0].position,item.visitInfo[0].location_id,'')">
 							<!--医生信息-->
 							<div class="doctor-info bg1"  >
 								<div  class="pic">
