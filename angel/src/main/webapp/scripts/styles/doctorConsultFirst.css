@@ -23,9 +23,8 @@
 .myreply ul li img,.pubilcreply ul li img {margin-left: 25px;}
 .rcontent {margin-left: 25px; height:35px;width: 350px;overflow: hidden;text-overflow: ellipsis;color:#666;}
 /*聊天对话框的图片*/
-.consultNowList{line-height: 40px;cursor: pointer;
-    color: #fff;font-size: 12px;}
-.consultNowList img{margin-left: 20px;width: 13%;height: 3%;}
+.consultNowList{line-height: 40px;cursor: pointer;}
+.consultNowList img{margin-top: 3%;margin-left: 3%;width: 13%;height: 3%;}
 
 [scroll-glue-bottom],{height: 340px;overflow-y: scroll;/*border: 1px solid gray;*/}
 
@@ -105,12 +104,9 @@ span.emotion:hover{background-position:2px -28px}
 .facebox{border-bottom: 1px solid #acacac;font: 12px/38px 'Microsoft Yahei';border-top: 1px solid #acacac;background-color: #f2f2f2;height: 38px;}
 .facebox p {margin:0 10px;}
 .nametop div.fr {line-height: 50px;margin-right: 20px;cursor: pointer;}
-.headimg {
-    float: left;width: 40px;margin: 5px 10px 5px 20px;}
-.nametop span {
-    display: inline-block;
-    line-height: 50px;
-}
+.headimg {float: left;width: 40px;margin: 5px 10px 5px 20px;}
+.nametop span {display: inline-block;line-height: 50px;}
+.nametop {border-bottom: 1px solid #acacac;font-size:12px;}
 /*快捷回复*/
 .chatinstall{border-bottom: 1px solid #acacac;background-color: #fff;}
 .chatinstall span:nth-child(1){margin: 0 15px 0 20px;}
@@ -125,3 +121,40 @@ textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 10
 .sendbtn div:nth-child(2){background-color: #08b7c2;}
 .historymessage {float: right;}
 .historymessage img{margin:0 10px;}
+/*添加分组*/
+.addgroup,.addcontent {width: 360px;box-shadow: 1px 1px 1px 1px #eee;margin: 0 0 0 25px;border-radius: 5px;}
+.addtop span {
+    display: inline-block;
+    float: none;
+    margin: 0 10px;
+}
+.addtop span:nth-child(2) {
+    float: right;
+    margin-right: 10px;
+    cursor: pointer;
+}
+.addtop {
+    font-size: 12px;
+    line-height: 30px;
+    background-color: #2A2A2F;
+    color: #fff;border-radius: 5px 5px 0 0;
+}
+.addgroupname {
+    margin: 25px;
+    text-align: center;
+    font-size: 12px;
+    color: #333;
+}
+.addgroupname span {
+    display: inline-block;
+    margin-right: 10px;
+}
+.addbtn .btn {
+    width: 70px;
+    height: 30px;
+}
+.addbtn {
+    text-align: center;padding-bottom: 15px;
+}
+.addkjhf{margin-bottom: 10px;
+    float: left;}
