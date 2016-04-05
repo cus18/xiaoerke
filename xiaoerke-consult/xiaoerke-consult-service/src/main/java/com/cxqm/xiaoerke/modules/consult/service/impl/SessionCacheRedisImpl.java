@@ -28,7 +28,13 @@ public class SessionCacheRedisImpl implements SessionCache {
 		List<Object> sessions = redisTemplate.opsForHash().multiGet(SESSIONID_CONSULTSESSION_KEY, sessionIds);
 		return sessions;
 	}
-	
+
+	@Override
+	public Integer getSessionIdByOpenId(String openId) {
+		Object sessionId = redisTemplate.opsForHash().get(USER_SESSIONID_KEY, openId);
+		return sessionId == null ? null : (Integer) sessionId;
+	}
+
 
 	@Override
 	public Integer getSessionIdByUserId(String userId) {
@@ -46,6 +52,12 @@ public class SessionCacheRedisImpl implements SessionCache {
 	public void putUserIdSessionIdPair(String userId,
 			Integer sessionId) {
 		redisTemplate.opsForHash().put(USER_SESSIONID_KEY, userId, sessionId);
+	}
+
+	@Override
+	public void putOpenIdSessionIdPair(String openId,
+									   Integer sessionId) {
+		redisTemplate.opsForHash().put(USER_SESSIONID_KEY, openId, sessionId);
 	}
 	
 	@Override
