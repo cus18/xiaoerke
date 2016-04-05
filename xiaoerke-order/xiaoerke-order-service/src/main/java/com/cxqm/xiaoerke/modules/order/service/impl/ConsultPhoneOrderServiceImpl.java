@@ -28,10 +28,10 @@ public class ConsultPhoneOrderServiceImpl implements ConsultPhoneOrderService {
     private SysConsultPhoneServiceDao sysConsultPhoneServiceDao;
 
     @Autowired
-    ConsultPhoneRegisterServiceDao consultPhoneRegisterServiceDao;
+    private ConsultPhoneRegisterServiceDao consultPhoneRegisterServiceDao;
 
     @Autowired
-    PatientRegisterServiceDao patientRegisterServiceDao;
+    private PatientRegisterServiceDao patientRegisterServiceDao;
 
     //获取预约挂号的号源
     public Map findDoctorAppointmentInfo(String doctorId){
@@ -165,6 +165,11 @@ public class ConsultPhoneOrderServiceImpl implements ConsultPhoneOrderService {
         response.put("orderList",orderList);
 
         return response;
+    }
+
+    @Override
+    public List<HashMap<String, Object>> getOrderPhoneConsultListByTime(String state) {
+      return consultPhoneRegisterServiceDao.getOrderPhoneConsultListByTime(state);
     }
 
 
