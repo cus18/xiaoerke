@@ -76,33 +76,6 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.chooseAlreadyJoinConsultPatientId = "";
                 $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversationContent[0].patientId,
                     $scope.alreadyJoinPatientConversationContent[0].patientName);
-                var progress = 1;
-                var timeArray = ["2016/03/16 15:20:33",
-                    "2016/03/16 15:20:34",
-                    "2016/03/16 15:20:35",
-                    "2016/03/16 15:20:36",
-                    "2016/03/16 15:20:37",
-                    "2016/03/16 15:20:38",
-                    "2016/03/16 15:20:39",
-                    "2016/03/16 15:20:40",
-                    "2016/03/16 15:20:41",
-                    "2016/03/16 15:20:42"];
-
-                var timer = setTimeout(function(){
-                    var val = {
-                        "type": 0,
-                        "content": "我的测试项目"+progress,
-                        "dateTime": timeArray[progress],
-                        "senderId":"aaaa",
-                        "senderName":"陈佳科",
-                        "sessionId": 4324234423
-                    };
-                    progress++;
-                    filterMediaData(val);
-                    $scope.alreadyJoinPatientConversationContent[0].consultValue.push(val);
-                    $scope.chooseAlreadyJoinConsultPatient($scope.chooseAlreadyJoinConsultPatientId,$scope.chooseAlreadyJoinConsultPatientName);
-                    $scope.$apply();
-                },1000)
             }
 
             $scope.chooseAlreadyJoinConsultPatient = function (patientId, patientName, page) {

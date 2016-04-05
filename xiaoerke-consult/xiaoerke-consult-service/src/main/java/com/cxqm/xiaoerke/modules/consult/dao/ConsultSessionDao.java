@@ -5,6 +5,7 @@ import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.sys.entity.DoctorVo;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,5 +30,7 @@ public interface ConsultSessionDao {
     List<ConsultSession> selectBySelective(ConsultSession consultSession);
 
     Page<DoctorVo> getOnlineCsListInfo(Page<DoctorVo> page,List<String> userList);
+
+    HashMap<String,Object> getAttention(String openId);
     
 }
