@@ -22,7 +22,7 @@ import java.util.Map;
  */
 
 @Controller
-@RequestMapping(value = "consultPhone/")
+@RequestMapping(value = "${xiaoerkePath}/consultPhone/")
 public class ConsultPhoneHospitalController {
 
     @Autowired
@@ -36,8 +36,8 @@ public class ConsultPhoneHospitalController {
     public
     @ResponseBody
     Map<String,Object> getAllHospitalList(@RequestParam(value="pageNo", required=true) String pageNo,
-                                                     @RequestParam(value="pageSize", required=false) String pageSize,
-                                                     @RequestParam(value="orderBy", required=false) String orderBy){
+                                          @RequestParam(value="pageSize", required=false) String pageSize,
+                                          @RequestParam(value="orderBy", required=false) String orderBy){
         HashMap<String, Object> response = new HashMap<String, Object>();
         Page<HashMap<String, Object>> page = FrontUtils.generatorPage(pageNo, pageSize);
         Page<HashMap<String, Object>> resultPage = hospitalInfoService.getHospitalListByConsulta(page);

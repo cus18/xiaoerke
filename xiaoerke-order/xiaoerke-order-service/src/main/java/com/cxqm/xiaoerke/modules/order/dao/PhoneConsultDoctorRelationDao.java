@@ -21,11 +21,11 @@ public interface PhoneConsultDoctorRelationDao {
     int updateByPrimaryKeySelective(ConsulPhonetDoctorRelationVo record);
 
     int updateByPrimaryKey(ConsulPhonetDoctorRelationVo record);
-    
+
     /**
      * 根据条件查询医生电话咨询的信息
      * sunxiao
-     */ 
+     */
     List<ConsulPhonetDoctorRelationVo> getConsultPhoneDoctorRelationByInfo(ConsulPhonetDoctorRelationVo vo);
 
     ConsulPhonetDoctorRelationVo selectByDoctorId(@Param("doctorId") String doctorId);

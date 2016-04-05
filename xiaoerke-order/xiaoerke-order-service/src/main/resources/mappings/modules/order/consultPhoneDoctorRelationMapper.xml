@@ -15,7 +15,7 @@
     id, state, doctor_id, create_time, update_time,price,doctor_answer_phone,server_length
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from consultPhone_doctor_relation
     where id = #{id,jdbcType=INTEGER}
@@ -34,10 +34,10 @@
   </delete>
   <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.order.entity.ConsulPhonetDoctorRelationVo" >
     insert into consultPhone_doctor_relation (id, state, doctor_id,
-      create_time, update_time,price,doctor_answer_phone,server_length)
-    values (#{id,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR}, #{doctorId,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{price,jdbcType=FLOAT},
-      #{doctorAnswerPhone,jdbcType=VARCHAR}, #{serverLength,jdbcType=INTEGER})
+    create_time, update_time,price,doctor_answer_phone,server_length)
+    values (#{id,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR}, #{doctorId,jdbcType=VARCHAR},
+    #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{price,jdbcType=FLOAT},
+    #{doctorAnswerPhone,jdbcType=VARCHAR}, #{serverLength,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.order.entity.ConsulPhonetDoctorRelationVo" >
     insert into consultPhone_doctor_relation
@@ -124,18 +124,18 @@
   <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.order.entity.ConsulPhonetDoctorRelationVo" >
     update consultPhone_doctor_relation
     set state = #{state,jdbcType=VARCHAR},
-      doctor_id = #{doctorId,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    doctor_id = #{doctorId,jdbcType=VARCHAR},
+    create_time = #{createTime,jdbcType=TIMESTAMP},
+    update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="getConsultPhoneDoctorRelationByInfo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.order.entity.ConsulPhonetDoctorRelationVo" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from consultPhone_doctor_relation
     where 1=1
-      <if test="doctorId != null" >
-        and doctor_id = #{doctorId,jdbcType=TIMESTAMP}
-      </if>
+    <if test="doctorId != null" >
+      and doctor_id = #{doctorId,jdbcType=TIMESTAMP}
+    </if>
   </select>
 </mapper>

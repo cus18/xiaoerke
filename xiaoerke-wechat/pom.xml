@@ -9,8 +9,11 @@
   <packaging>pom</packaging>
   <name>xiaoerke-wechat</name>
   <description>xiaoerke-wechat</description>
+
   <modules>
   	<module>xiaoerke-wechat-api</module>
   	<module>xiaoerke-wechat-service</module>
   </modules>
+
+
 </project>
