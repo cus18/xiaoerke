@@ -120,5 +120,14 @@
         </if>
     </select>
 
+	<update id="updateSysDoctorGroup" parameterType="java.util.Map">
+		update sys_doctor_group 
+        <set>
+            <if test="isConsultPhone != null">
+                is_consultPhone = #{isConsultPhone,jdbcType=VARCHAR},
+            </if>
+        </set>
+		where id=#{id};
+	</update>
 </mapper>
 

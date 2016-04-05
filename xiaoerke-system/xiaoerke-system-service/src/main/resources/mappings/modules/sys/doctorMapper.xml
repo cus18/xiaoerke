@@ -682,6 +682,29 @@
         and r.id = #{registerId}
     </select>
 
-
+	<!--医生 开通 电话 咨询 修改 sys_doctor表 is_consultphone字段 sunxiao-->
+    <update id="updateDoctor">
+    	update sys_doctor 
+        <set>
+            <if test="isConsultPhone != null">
+                is_consultPhone = #{isConsultPhone,jdbcType=VARCHAR},
+            </if>
+        </set>
+		where id=#{id};
+    </update>
+    
+    <select id="getDoctorInfo" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT
+			sd.sys_doctor_group_id,
+			dhr.sys_hospital_id
+		FROM
+			sys_doctor sd
+		LEFT JOIN sys_doctor_group sdg ON sd.sys_doctor_group_id = sdg.id
+		LEFT JOIN doctor_hospital_relation dhr ON dhr.sys_doctor_id = sd.id
+		WHERE dhr.relation_type='1'
+			<if test="id != null">
+                and sd.id = #{id,jdbcType=VARCHAR}
+            </if>
+    </select>
 
 </mapper>
