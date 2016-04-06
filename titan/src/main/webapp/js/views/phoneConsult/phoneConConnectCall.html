@@ -1,7 +1,7 @@
 <ion-view view-title={{title}} >
 	<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
 	<ion-content class="phoneConConnectCall bg1" style="top:0;">
-		<ion-scroll direction="y" has-bouncing="true" >
+		<ion-scroll direction="y" has-bouncing="true"  overflow-scroll="true" >
 			<div class="title tc c0 bg2 f8">{{title}}</div>
 			<div class="text tc f3 c5">正在连接通话，请稍候...</div>
 			<div class="connect" >

@@ -5,7 +5,7 @@
 	<ion-item class="caseList border2 bg1" ng-if="illnessLock=='true'">
 		<p class=" f5 c4  margin0" ng-repeat="item in illnessList" ng-click="selectIllness(item)">{{item}}{{item.doctor_case_name}}</p>
 	</ion-item>
-	<ion-content class="phoneConEvaluate evaluateDoctor bg1" >
+	<ion-content class="phoneConEvaluate evaluateDoctor bg1"  overflow-scroll="true" >
 		<ion-scroll direction="y" has-bouncing="true">
 			<div class="info" style="background-color:#fff;">
 				<ul class=" symptom border2">

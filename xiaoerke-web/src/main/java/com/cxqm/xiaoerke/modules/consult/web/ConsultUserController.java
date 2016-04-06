@@ -124,7 +124,7 @@ public class ConsultUserController extends BaseController {
         consultSession.setCsUserId(csUserId);
         consultSession.setStatus(ConsultSession.STATUS_ONGOING);
 
-        List<ConsultSession> consultSessions = consultConversationService.getAlreadyAccessUsers(consultSession);
+        List<ConsultSession> consultSessions = null;//consultConversationService.getAlreadyAccessUsers(consultSession);
         if(consultSessions!=null && consultSessions.size()>0){
             response.put("alreadyAccessUsers",consultSessions);
         }

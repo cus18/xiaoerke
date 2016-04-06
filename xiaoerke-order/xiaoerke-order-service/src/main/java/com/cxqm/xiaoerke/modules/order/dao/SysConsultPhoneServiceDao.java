@@ -1,6 +1,11 @@
 package com.cxqm.xiaoerke.modules.order.dao;
 
 
+import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
+import com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +41,8 @@ public interface SysConsultPhoneServiceDao {
 
     //根据医生和日期获取可预约时间
     List<HashMap<String,Object>> findConsultPhoneTimeListByDoctorAndDate(HashMap<String, Object> hashMap);
+
+    Map<String,Object> getRegisterInfo(@Param("sysConsultPhoneServiceId") Integer sysConsultPhoneServiceId);
     
     /**
 	 * 根据条件查询电话咨询信息

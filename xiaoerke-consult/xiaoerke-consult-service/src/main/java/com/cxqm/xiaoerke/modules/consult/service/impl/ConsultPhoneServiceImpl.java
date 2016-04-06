@@ -48,7 +48,7 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
         //返回的数据,如果需要控制呼叫时长需要增加sessiontime
         //业务层 先查询该订单是否是带接听状态, 确认通话时间
         Map<String,Object> phonepatientInfo = consultPhonePatientService.getPatientRegisterInfo(Integer.parseInt((String)map.get("userData")));
-        phonepatientInfo.get("server_length");
+//        phonepatientInfo.get("server_length");
         CallResponse response = new CallResponse();
         response.setStatuscode("1111");
         if("待接听".equals(phonepatientInfo.get("state"))){
@@ -58,7 +58,7 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
         response.setRecord("1");//录音
         response.setRecordPoint("1");//录音方式
 
-        Integer serviceLength = Integer.parseInt((String) phonepatientInfo.get("server_length"))*60;
+        Integer serviceLength = (Integer) phonepatientInfo.get("server_length")*60;
         response.setSessiontime(serviceLength + "");//通话时长
         String result = getXmlFormObj(response);
         return result;
@@ -131,9 +131,9 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
         consultPhoneRecordDao.insertSelective(vo);
         //挂机请求 ,根据剩余时长给用户推送消息,让用户在意外挂断的情况下可以再次接通 判断订单状态是否已推送过 此消息
         Map<String,Object> phonepatientInfo = consultPhonePatientService.getPatientRegisterInfo(Integer.parseInt(userData));
-        String serviceLength = (String)phonepatientInfo.get("server_length");
+        Integer serviceLength = (Integer)phonepatientInfo.get("server_length");
         String talkDuration = vo.getTalkduration();
-        if(Integer.parseInt(talkDuration)<(Integer.parseInt(serviceLength)*60-10)&&"0".equals(phonepatientInfo.get("type"))){
+        if(Integer.parseInt(talkDuration)<serviceLength*60-10&&"0".equals(phonepatientInfo.get("type"))){
             //发消息 改状态
             ConsultPhoneRegisterServiceVo consultPhonevo = new ConsultPhoneRegisterServiceVo();
             consultPhonevo.setId(Integer.parseInt(userData));

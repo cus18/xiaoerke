@@ -1,6 +1,6 @@
 ﻿angular.module('controllers', ['ionic']).controller('phoneConsultOrderCtrl', [
-        '$scope','$state','PhoneConsultOrderList',
-        function ($scope,$state,PhoneConsultOrderList) {
+        '$scope','$state','MyselfInfoPhoneConsult',
+        function ($scope,$state,MyselfInfoPhoneConsult) {
             $scope.title = "电话咨询订单";
             $scope.pageLoading =false;
             $scope.classifyItem =0;
@@ -14,13 +14,13 @@
                 $scope.status = item -1;
                 $scope.pageLoading = true;
                 if($scope.status < 0){
-                    PhoneConsultOrderList.save({"pageNo": "1", "pageSize": "10"}, function (data) {
+                    MyselfInfoPhoneConsult.save({"pageNo": "1", "pageSize": "10"}, function (data) {
                         $scope.pageLoading = false;
                         $scope.orderInfo = data.appointmentData;
 
                     });
                 }else{
-                    PhoneConsultOrderList.save({"pageNo": "1", "pageSize": "10", "status": $scope.status+""}, function (data) {
+                    MyselfInfoPhoneConsult.save({"pageNo": "1", "pageSize": "10", "status": $scope.status+""}, function (data) {
                         $scope.pageLoading = false;
                         $scope.orderInfo = data.appointmentData;
                     });
@@ -34,7 +34,7 @@
 
 
             $scope.$on('$ionicView.enter', function(){
-                PhoneConsultOrderList.save({"pageNo": "1", "pageSize": "10"}, function (data) {
+                MyselfInfoPhoneConsult.save({"pageNo": "1", "pageSize": "10"}, function (data) {
                     $scope.pageLoading = false;
                     $scope.orderInfo = data.appointmentData;
 

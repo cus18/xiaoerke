@@ -255,7 +255,7 @@ define(['appPhoneConsult'], function(app){
                         }
                     })
                     .state('phoneConReconnection', {
-                        url: '/phoneConReconnection',
+                        url: '/phoneConReconnection/:consultPhoneServiceId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'phoneConReconnectionCtrl',
                         resolve: {
