@@ -8,7 +8,7 @@ var doRefresh = function(){
     var signature;//得到的签名
     var appid;//得到的签名
     $.ajax({
-        url:"ap/wechatInfo/getConfig",// 跳转到 action
+        url:"wechatInfo/getConfig",// 跳转到 action
         async:true,
         type:'get',
         data:{url:location.href.split('#')[0]},//得到需要分享页面的url
@@ -47,7 +47,7 @@ var doRefresh = function(){
 
 //获取医生个人信息
     $.ajax({
-        url:"ap/consultPhone/consultPhoneDoctor/doctorDetail",// 跳转到 action
+        url:"consultPhone/consultPhoneDoctor/doctorDetail",// 跳转到 action
         async:true,
         type:'get',
         data:{doctorId:"0084dbde22af4078bc9cc189f5b9a282"},
@@ -70,7 +70,7 @@ var doRefresh = function(){
     //预约时间
     var param = {consultPhoneServiceId:2221};
     $.ajax({
-        url:"ap/consultPhone/phoneRegister/getRegisterInfo",// 跳转到 action
+        url:"consultPhone/phoneRegister/getRegisterInfo",// 跳转到 action
         async:true,
         type:'post',
         data:param,
@@ -89,7 +89,7 @@ var doRefresh = function(){
 
     $.ajax({
         type: 'POST',
-        url: "/xiaoerke-appoint/ap/healthRecord/getBabyinfoList",
+        url: "healthRecord/getBabyinfoList",
         data: "{'openid':''}",
         contentType: "application/json; charset=utf-8",
         success: function(result){
@@ -215,7 +215,7 @@ var choiceBaby=function(index){
 }
 // 添加宝宝
 var addBaby=function(){
-    window.location.href = "ap/phoneConsult#/phoneConAddBaby";
+    window.location.href = "phoneConsult#/phoneConAddBaby";
 }
 // 取消选择宝宝
 var cancelSelectBaby=function(){
