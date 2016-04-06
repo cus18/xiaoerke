@@ -5,7 +5,6 @@ import com.cxqm.xiaoerke.common.utils.FrontUtils;
 import com.cxqm.xiaoerke.modules.order.dao.ConsultPhoneRegisterServiceDao;
 import com.cxqm.xiaoerke.modules.order.dao.PatientRegisterServiceDao;
 import com.cxqm.xiaoerke.modules.order.dao.SysConsultPhoneServiceDao;
-import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.entity.OrderServiceVo;
 import com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhoneOrderService;
@@ -57,7 +56,7 @@ public class ConsultPhoneOrderServiceImpl implements ConsultPhoneOrderService {
         String status = (String) params.get("status");//
         String type = (String) params.get("type");
 
-        Page<ConsultPhoneRegisterServiceVo> page = FrontUtils.generatorPage(pageNo, pageSize);
+        Page<OrderServiceVo> page = FrontUtils.generatorPage(pageNo, pageSize);
         HashMap<String, Object> searchMap = new HashMap<String, Object>();
         if (status == null) {
             searchMap.put("state", null);
@@ -69,49 +68,51 @@ public class ConsultPhoneOrderServiceImpl implements ConsultPhoneOrderService {
         Page<OrderServiceVo> resultPage = null;
         //取数据
         if(type != null && type.equals("ap")){
-            //TODO:cxq
+            resultPage = patientRegisterServiceDao.getAppointOrderPageList(page, searchMap);
         }else if(type != null && type.equals("phone")){
             resultPage = consultPhoneRegisterServiceDao.getPhoneConsultPageList(page, searchMap);
         }else{
             resultPage = consultPhoneRegisterServiceDao.getOrderAllPageList(page, searchMap);
         }
 
-        List<OrderServiceVo> list = resultPage.getList();
-        Collections.sort(list);
 
         //返回数据
         Map<String, Object> response = new HashMap<String, Object>();
-        //组装json数据
+
+        //分页信息
         response.put("pageNo", resultPage.getPageNo());
         response.put("pageSize", resultPage.getPageSize());
         long tmp = FrontUtils.generatorTotalPage(resultPage);
         response.put("pageTotal", tmp + "");
 
+        //订单信息
         List<HashMap<String, Object>> orderList = new ArrayList<HashMap<String, Object>>();
-        for(OrderServiceVo order:list){
-            HashMap<String,Object> map = new HashMap<String, Object>();
-            map.put("doctorName", order.getDoctorName());
-            map.put("position", order.getPosition());
-            map.put("hospital",order.getHospitalName());
+        List<OrderServiceVo> list = resultPage.getList();
+        if(list != null && !list.isEmpty()){
+            Collections.sort(list);
+            for(OrderServiceVo order:list){
+                HashMap<String,Object> map = new HashMap<String, Object>();
+                map.put("doctorName", order.getDoctorName());
+                map.put("position", order.getPosition());
+                map.put("hospital",order.getHospitalName());
 
-            SimpleDateFormat format = new SimpleDateFormat("MM/dd");
-            map.put("date",format.format(order.getDate()));
+                SimpleDateFormat format = new SimpleDateFormat("MM/dd");
+                map.put("date",format.format(order.getDate()));
 
-            SimpleDateFormat format1 = new SimpleDateFormat("HH:ss");
-            map.put("time",format1.format(order.getBeginTime()) + "-" + format1.format(order.getEndTime()));
+                SimpleDateFormat format1 = new SimpleDateFormat("HH:ss");
+                map.put("time",format1.format(order.getBeginTime()) + "-" + format1.format(order.getEndTime()));
 
-            map.put("status",order.getStatus());
-            map.put("classify",order.getClassify());
+                map.put("status",order.getStatus());
+                map.put("classify",order.getClassify());
 
-            map.put("doctorId", order.getDoctorId());
-            map.put("orderId", order.getOrderId());
-            orderList.add(map);
+                map.put("doctorId", order.getDoctorId());
+                map.put("orderId", order.getOrderId());
+                orderList.add(map);
+            }
         }
 
         response.put("orderList",orderList);
-
         return response;
-
     }
 
     @Override
@@ -123,7 +124,7 @@ public class ConsultPhoneOrderServiceImpl implements ConsultPhoneOrderService {
         String pageSize = (String) params.get("pageSize");
         String status = (String) params.get("status");//
 
-        Page<ConsultPhoneRegisterServiceVo> page = FrontUtils.generatorPage(pageNo, pageSize);
+        Page<OrderServiceVo> page = FrontUtils.generatorPage(pageNo, pageSize);
         HashMap<String, Object> searchMap = new HashMap<String, Object>();
         if (status == null) {
             searchMap.put("state", null);

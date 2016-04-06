@@ -173,4 +173,12 @@ public interface PatientRegisterServiceDao {
 
     //预约订单列表
     List<HashMap<String,Object>> getAppointOrderList(String userId);
+    /**
+     * 预约订单列表(带分页)
+     * @param page
+     * @param searchMap
+     * @return
+     * @author chenxiaoqiong
+     */
+    Page<OrderServiceVo> getAppointOrderPageList(Page<OrderServiceVo> page, HashMap<String, Object> searchMap);
 }

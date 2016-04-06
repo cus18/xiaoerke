@@ -75,6 +75,25 @@
         <id column="relation_type" property="relationType" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <resultMap id="OrderServiceVoMap" type="com.cxqm.xiaoerke.modules.order.entity.OrderServiceVo">
+        <result column="doctorId" property="doctorId" jdbcType="VARCHAR" />
+        <result column="name" property="doctorName" jdbcType="VARCHAR" />
+        <result column="position2" property="position" jdbcType="VARCHAR" />
+        <result column="hospitalName" property="hospitalName" jdbcType="VARCHAR" />
+
+        <result column="id" property="orderId" jdbcType="INTEGER" />
+        <result column="state" property="status" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="register_no" property="registerNo" jdbcType="VARCHAR" />
+        <result column="illness_describe_id" property="illnessDescribeId" jdbcType="VARCHAR" />
+
+        <result column="date" property="date" jdbcType="DATE" />
+        <result column="beginTime" property="beginTime" jdbcType="TIME" />
+        <result column="endTime" property="endTime" jdbcType="TIME" />
+
+        <result column="classify" property="classify" jdbcType="VARCHAR" />
+    </resultMap>
+
     <sql id="Base_Column_List">
         id, sys_register_service_id, sys_patient_id, status, create_date, update_date, register_no,
         praise, star, phone, babyName, illness, birthday, pay_way, allowance ,member_service_id
@@ -999,5 +1018,34 @@
 
     </select>
 
+    <select id="getAppointOrderPageList" resultMap="OrderServiceVoMap" resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        SELECT
+        sd.id as doctorId,
+        sd.name,
+        sd.position2,
+        sd.hospitalName,
+        prs.id,
+        case when prs.status ='0' then '待支付' when prs.status ='1' then '待就诊' when prs.status ='2' then '待评价'
+        when prs.status ='3' then '待分享' when prs.status ='4' then '待建档'
+        when prs.status ='6' then '已取消' end state,
+        prs.create_date as create_time,
+        prs.register_no,
+        prs.illness as illness_describe_id,
+        srp.date,
+        srp.begin_time as beginTime,
+        srp.end_time as endTime,
+        'ap' as classify
+        FROM
+        patient_register_service prs
+        LEFT JOIN sys_patient sp ON prs.sys_patient_id = sp.id
+        LEFT JOIN sys_register_service srp ON srp.id = prs.sys_register_service_id
+        LEFT JOIN sys_doctor sd ON sd.id = srp.sys_doctor_id
+        WHERE
+        sp.sys_user_id = #{userId,jdbcType=VARCHAR}
+        <if test="state != null" >
+            and prs.status = #{state,VARCHAR}
+        </if>
+
+    </select>
 </mapper>
 
