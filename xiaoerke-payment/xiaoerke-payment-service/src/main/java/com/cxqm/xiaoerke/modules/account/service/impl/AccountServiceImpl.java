@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -45,7 +46,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private WithdrawRecordDao withdrawRecordDao;
-    
+
     @Autowired
     private AccountInfoDao accountInfoDao;
 
@@ -201,7 +202,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Float accountFund(String userId)
     {
-    	AccountInfo payInfo = accountInfoDao.selectAccountInfoByUserId(userId);
+        AccountInfo payInfo = accountInfoDao.selectAccountInfoByUserId(userId);
         if(payInfo!=null)
         {
             return payInfo.getBalance();
@@ -300,9 +301,9 @@ public class AccountServiceImpl implements AccountService {
         payRecord.setReceiveDate(new Date());
         payRecord.setCreatedBy(user.getId());
 
-            LogUtils.saveLog(Servlets.getRequest(),"00000039" ,"用户自身余额支付:"+payRecordId);//用户自身余额支付
-            payRecord.setDoctorId(doctorId);
-            payRecordDao.insertSelective(payRecord);
+        LogUtils.saveLog(Servlets.getRequest(),"00000039" ,"用户自身余额支付:"+payRecordId);//用户自身余额支付
+        payRecord.setDoctorId(doctorId);
+        payRecordDao.insertSelective(payRecord);
     }
 
     @Override
@@ -352,7 +353,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public int createAccountInfo(String userId, Float amount){
-    	AccountInfo payInfo = new AccountInfo();
+        AccountInfo payInfo = new AccountInfo();
         payInfo.setId(IdGen.uuid());
         payInfo.setUserId(userId);
         payInfo.setOpenId("");
@@ -376,7 +377,6 @@ public class AccountServiceImpl implements AccountService {
      * */
     @Override
     public Map<String,String> getPrepayInfo(HttpServletRequest request,HttpSession session,String serviceType) {
-
         Map<String,String> resultMap = new HashMap<String, String>();
         String openId = (String)session.getAttribute("openId");
         if(!StringUtils.isNotNull(openId)){
@@ -384,7 +384,8 @@ public class AccountServiceImpl implements AccountService {
         }
 
         //获取需要支付的金额  单位(分)
-        String order_price =request.getParameter("payPrice");
+        int price = ((Float)request.getAttribute("payPrice")).intValue()*100;
+        String order_price =StringUtils.isNotNull(String.valueOf(price))?String.valueOf(price):request.getParameter("payPrice");
 
         //生成的商户订单号
         String out_trade_no = IdGen.uuid();//Sha1Util.getNonceStr();
@@ -403,7 +404,9 @@ public class AccountServiceImpl implements AccountService {
             parameters.put("notify_url", ConstantUtil.NOTIFY_INSURANCE_URL);//通知地址
         }else if(serviceType.equals("customerService")){
             parameters.put("notify_url", ConstantUtil.NOTIFY_CUSTOMER_URL);//通知地址
-        } 
+        } else if(serviceType.equals("consultPhone")){
+            parameters.put("notify_url", ConstantUtil.NOTIFY_CONSULTPHONE_URL);//通知地址
+        }
         parameters.put("trade_type", "JSAPI");//交易类型
         parameters.put("openid", openId);//用户标示
         //将上述参数进行签名
@@ -423,7 +426,11 @@ public class AccountServiceImpl implements AccountService {
         if(StringUtils.isNull(patientRegisterId) || "undefined".equals(patientRegisterId)){
             patientRegisterId = "noData";
         }
-        String orderPrice = request.getParameter("payPrice");
+//        String orderPrice = request.getParameter("payPrice");
+        int price = ((Float)request.getAttribute("payPrice")).intValue()*100;
+        String orderPrice =StringUtils.isNotNull(String.valueOf(price))?String.valueOf(price):request.getParameter("payPrice");
+
+
         String outTradeNo = PrepayInfo.get("out_trade_no");
         String openId = (String)session.getAttribute("openId");
         if(!StringUtils.isNotNull(openId)){
@@ -512,14 +519,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-	public AccountInfo findAccountInfoByUserId(String userId) {
-		return accountInfoDao.selectAccountInfoByUserId(userId);
-	}
-	
-	@Override
-	public int saveOrUpdateAccountInfo(AccountInfo record) {
-		return accountInfoDao.saveOrUpdate(record);
-	}
+    public AccountInfo findAccountInfoByUserId(String userId) {
+        return accountInfoDao.selectAccountInfoByUserId(userId);
+    }
+
+    @Override
+    public int saveOrUpdateAccountInfo(AccountInfo record) {
+        return accountInfoDao.saveOrUpdate(record);
+    }
 
     @Override
     public boolean checkAppointmentPayState(String out_trade_no){
@@ -547,5 +554,5 @@ public class AccountServiceImpl implements AccountService {
         }
         return false;
     }
-	
+
 }
