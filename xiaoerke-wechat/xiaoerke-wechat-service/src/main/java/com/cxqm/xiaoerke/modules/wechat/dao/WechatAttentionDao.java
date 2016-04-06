@@ -37,7 +37,7 @@ public interface WechatAttentionDao {
     //保存SysWechatAppintInfo表记录
     void saveSysWechatAppintInfo(SysWechatAppintInfoVo sysWechatAppintInfoVo);
     
-  //根据openid查询微信名、Openid、来源、关注时间、医生姓名、医生电话、医院、科室
+    //根据openid查询微信名、Openid、来源、关注时间、医生姓名、医生电话、医院、科室
     DoctorAttentionVo findDoctorAttentionVoInfo(HashMap<String,Object> hashMap);
 
     DoctorAttentionVo findDoctorAttentionVoInfoNoOpenId(HashMap<String,Object> hashMap);

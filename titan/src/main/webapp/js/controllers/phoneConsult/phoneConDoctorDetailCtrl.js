@@ -67,7 +67,8 @@
         }
         $scope.chooseTime = function(item){
             if(item.state == "1")return
-            var routePath = "/appointBBBBBB/phoneConsultPay/patientPay.do?phoneConDoctorDetail="+ item.id
+            var routePath = "/keeper/phoneConsultPay/patientPay.do?phoneConDoctorDetail="
+                + item.id;
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 $scope.pageLoading = false;
                 if(data.status=="9") {

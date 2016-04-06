@@ -183,6 +183,7 @@
   <select id="getAttention" resultType="java.util.HashMap">
       select marketer, nickname,date_format(min(date),'%Y-%m-%d') date from sys_attention where openid=#{open_id}
   </select>
+
   <!--用户最近关注的marketer-->
   <select id="findMarketerByOpeinid" resultMap="BaseResultMap">
     SELECT
