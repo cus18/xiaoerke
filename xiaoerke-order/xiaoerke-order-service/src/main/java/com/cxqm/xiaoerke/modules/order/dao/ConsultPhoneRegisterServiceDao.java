@@ -45,7 +45,7 @@ public interface ConsultPhoneRegisterServiceDao {
      * @return
      * @author chenxiaoqiong
      */
-    Page<OrderServiceVo> getPhoneConsultPageList(Page<ConsultPhoneRegisterServiceVo> page, HashMap<String, Object> hashMap);
+    Page<OrderServiceVo> getPhoneConsultPageList(Page<OrderServiceVo> page, HashMap<String, Object> hashMap);
 
     /**
      *
@@ -55,7 +55,7 @@ public interface ConsultPhoneRegisterServiceDao {
      * @return
      * @author chenxiaoqiong
      */
-    Page<OrderServiceVo> getOrderAllPageList(Page<ConsultPhoneRegisterServiceVo> page, HashMap<String, Object> hashMap);
+    Page<OrderServiceVo> getOrderAllPageList(Page<OrderServiceVo> page, HashMap<String, Object> hashMap);
 
     List<HashMap<String, Object>> getOrderPhoneConsultListByTime(@Param("state") String state);
 

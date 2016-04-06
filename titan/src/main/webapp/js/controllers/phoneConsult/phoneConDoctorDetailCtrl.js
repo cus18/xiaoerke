@@ -75,7 +75,7 @@
                 }else if(data.status=="8"){
                     window.location.href = data.redirectURL+"?targeturl="+routePath;
                 }else{
-                    window.location.href = "/titan/phoneConsultPay/patientPay.do?phoneConDoctorDetail="
+                    window.location.href = "/keeper/phoneConsultPay/patientPay.do?phoneConDoctorDetail="
                         + item.id;
                 }})
         }
