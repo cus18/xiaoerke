@@ -17,6 +17,8 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
+import com.cxqm.xiaoerke.modules.consult.service.core.RichConsultSession;
+import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import net.sf.json.JSONObject;
 import org.apache.commons.fileupload.FileItem;
 import org.slf4j.Logger;
@@ -104,6 +106,31 @@ public class ConsultUserController extends BaseController {
         response.put("status", 0);
         response.put("msg", "OK");
         response.put("sessions", sessions);
+        return response;
+    }
+
+
+
+    @RequestMapping(value = "/getCurrentUserByCSId", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> getCurrentUserByCSId(@RequestParam(required=true) String csUserId) {
+
+        Map<String, Object> response = new HashMap<String, Object>();
+        ConsultSession consultSession = new ConsultSession();
+        if(StringUtils.isNull(csUserId)){
+            csUserId = UserUtils.getUser().getId();
+        }
+        consultSession.setCsUserId(csUserId);
+        consultSession.setStatus(ConsultSession.STATUS_ONGOING);
+
+        List<ConsultSession> consultSessions = consultConversationService.getAlreadyAccessUsers(consultSession);
+        if(consultSessions!=null && consultSessions.size()>0){
+            response.put("alreadyAccessUsers",consultSessions);
+        }
+        response.put("status", 0);
+        response.put("msg", "OK");
+
         return response;
     }
 
@@ -224,9 +251,9 @@ public class ConsultUserController extends BaseController {
             Criteria cr = new Criteria();
             Query query = new Query();
             query.addCriteria(cr.orOperator(
-                    Criteria.where("nickName").regex(searchInfo)
-                    ,Criteria.where("openid").regex(searchInfo)
-            ));
+                    Criteria.where("attentionNickName").regex(searchInfo)
+//                    ,Criteria.where("openid").regex(searchInfo)
+            )).with(new Sort(Sort.Direction.DESC, "create_date"));
             pagination = consultRecordService.getPage(pageNo, pageSize, query);
         }else if(searchType.equals("message")){
             Query query = new Query(where("message").regex(searchInfo)).with(new Sort(Sort.Direction.DESC, "create_date"));
