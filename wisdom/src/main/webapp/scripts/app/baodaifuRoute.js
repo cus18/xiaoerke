@@ -1,6 +1,6 @@
 angular.module('app', ['angularFileUpload', 'ui.router', 'ui.bootstrap', 'controllers', 'directives', 'services'])
     .config(function ($httpProvider, $stateProvider, $urlRouterProvider) {
-        var root = '/xiaoerke-knowledge/scripts/views';
+        var root = '/wisdom/scripts/views';
         $stateProvider
             .state('baodaifuIndex', {
                 url: '/baodaifuIndex',

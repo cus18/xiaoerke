@@ -4,7 +4,7 @@ angular.module('controllers', ['ionic']).controller('constipationFoodCtrl', [
     function ($scope,$state,$stateParams,$location,$ionicScrollDelegate,ConfirmDetail,AppraisalList,
               PushTicket,GetTasksInfo,$sce,GetUserLoginStatus,$location,$http) {
 
-        $scope.heartImg ="ihttp://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fheart_card0.png";
+        $scope.heartImg ="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fheart_card0.png";
         //初始化一日三餐
         $scope.foodList = [];
         var amstatus = "";
@@ -23,7 +23,7 @@ angular.module('controllers', ['ionic']).controller('constipationFoodCtrl', [
 
         $scope.$on('$ionicView.enter', function() {
             $scope.pageLoading = true;
-            var routePath = "/ap/ctpBBBBBB" + $location.path();
+            var routePath = "/ctpBBBBBB" + $location.path();
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 $scope.pageLoading = false;
                 if(data.status=="9") {
