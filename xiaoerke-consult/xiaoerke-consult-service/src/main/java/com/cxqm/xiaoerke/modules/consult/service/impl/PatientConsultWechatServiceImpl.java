@@ -1,6 +1,5 @@
 package com.cxqm.xiaoerke.modules.consult.service.impl;
 
-import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.service.PatientConsultWechatService;
 import com.cxqm.xiaoerke.modules.consult.service.core.SessionCache;
 import com.cxqm.xiaoerke.modules.sys.entity.ReceiveXmlEntity;
@@ -10,9 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.websocket.*;
 import java.io.IOException;
-import java.net.URI;
+import javax.websocket.*;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -37,7 +35,73 @@ public class PatientConsultWechatServiceImpl implements PatientConsultWechatServ
 		threadExecutor.execute(thread);
 	}
 
+	public class MyClientApp {
+
+		public Session session;
+
+		private ReceiveXmlEntity xmlEntityApp;
+
+		public MyClientApp(ReceiveXmlEntity xmlEntity) {
+			this.xmlEntityApp = xmlEntity;
+		}
+
+		protected void start() {
+			System.out.println(xmlEntityApp.getFromUserName());
+			WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+			String uri = "ws://120.25.161.33:2048/ws&wechatUser&" + xmlEntityApp.getFromUserName();
+			System.out.println("Connecting to" + uri);
+//			try {
+//				session = container.connectToServer(MyClient.class, URI.create(uri));
+//				if (session != null) {
+//					sessionCache.putWechatSessionByOpenId(xmlEntityApp.getFromUserName(), session);
+//				}
+//			} catch (DeploymentException e) {
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+		}
+	}
+
+	@ClientEndpoint
+	public class MyClient {
+		@OnOpen
+		public void onOpen(Session session) {
+			System.out.println("Connected to endpoint:" + session.getBasicRemote());
+			Map parameter = systemService.getWechatParameter();
+			String token = (String) parameter.get("token");
+			String st = "尊敬的用户，正在帮您接通医生....";
+//			WechatUtil.senMsgToWechat(token, xmlEntity.getFromUserName(), st);
+		}
+
+		@OnMessage
+		public void onMessage(String message) {
+			Map parameter = systemService.getWechatParameter();
+			String token = (String) parameter.get("token");
+
+			JSONObject messageObj = new JSONObject(message);
+			String type = messageObj.getString("type");
+
+//			WechatUtil.senMsgToWechat(token, xmlEntity.getFromUserName(), message);
+//			System.out.println("receive Message from" + xmlEntity.getFromUserName() + "===" + message);
+		}
+
+		@OnClose
+		public void onClose(Session session, CloseReason closeReason) {
+//			sessionCache.removeWechatSessionPair(xmlEntity.getFromUserName());
+			sessionCloseFlag = true;
+		}
+
+		@OnError
+		public void onError(Throwable t) {
+//			sessionCache.removeWechatSessionPair(xmlEntity.getFromUserName());
+			sessionCloseFlag = true;
+			t.printStackTrace();
+		}
+	}
+
 	public class patientConsultWechatServiceThread extends Thread {
+
 		private ReceiveXmlEntity xmlEntity;
 
 		public patientConsultWechatServiceThread(ReceiveXmlEntity xmlEntity) {
@@ -52,7 +116,7 @@ public class PatientConsultWechatServiceImpl implements PatientConsultWechatServ
 				System.out.println(xmlEntity.getFromUserName());
 				Session wechatSession = sessionCache.getWechatSessionByOpenId(xmlEntity.getFromUserName());
 				if (wechatSession == null) {
-					MyClientApp client = new MyClientApp();
+					MyClientApp client = new MyClientApp(xmlEntity);
 					client.start();
 
 					try {
@@ -73,64 +137,7 @@ public class PatientConsultWechatServiceImpl implements PatientConsultWechatServ
 				}
 			}
 		}
-
-		public class MyClientApp {
-
-			public Session session;
-
-			protected void start() {
-				WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-				String uri = "ws://120.25.161.33:2048/ws&wechatUser&" + xmlEntity.getFromUserName();
-				System.out.println("Connecting to" + uri);
-				try {
-					session = container.connectToServer(MyClient.class, URI.create(uri));
-					if (session != null) {
-						sessionCache.putWechatSessionByOpenId(xmlEntity.getFromUserName(), session);
-					}
-				} catch (DeploymentException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-
-		@ClientEndpoint
-		public class MyClient {
-			@OnOpen
-			public void onOpen(Session session) {
-				System.out.println("Connected to endpoint:" + session.getBasicRemote());
-				Map parameter = systemService.getWechatParameter();
-				String token = (String) parameter.get("token");
-				String st = "尊敬的用户，正在帮您接通医生....";
-				WechatUtil.senMsgToWechat(token, xmlEntity.getFromUserName(), st);
-			}
-
-			@OnMessage
-			public void onMessage(String message) {
-				Map parameter = systemService.getWechatParameter();
-				String token = (String) parameter.get("token");
-
-				JSONObject messageObj = new JSONObject(message);
-				String type = messageObj.getString("type");
-
-				WechatUtil.senMsgToWechat(token, xmlEntity.getFromUserName(), message);
-				System.out.println("receive Message from" + xmlEntity.getFromUserName() + "===" + message);
-			}
-
-			@OnClose
-			public void onClose(Session session, CloseReason closeReason) {
-				sessionCache.removeWechatSessionPair(xmlEntity.getFromUserName());
-				sessionCloseFlag = true;
-			}
-
-			@OnError
-			public void onError(Throwable t) {
-				sessionCache.removeWechatSessionPair(xmlEntity.getFromUserName());
-				sessionCloseFlag = true;
-				t.printStackTrace();
-			}
-		}
 	}
+
 
 }
