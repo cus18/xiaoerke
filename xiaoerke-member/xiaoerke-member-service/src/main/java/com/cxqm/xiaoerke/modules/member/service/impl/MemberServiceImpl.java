@@ -691,8 +691,8 @@ public class MemberServiceImpl implements MemberService {
         //在此处根据openid给用户推送周会员推广消息
         String st = "感谢您对宝大夫的关注，宝大夫现对新用户推出周会员免费体验服务！\n" +
                 "点击后登录并领取\n" +
-                "【<a href='" + ConstantUtil.BAODF_URL + "/xiaoerke-appoint/wechatInfo/fieldwork/wechat/author?url=" + ConstantUtil.BAODF_URL
-                + "/xiaoerke-appoint/wechatInfo/getUserWechatMenId?url=23'>查看详情</a>】\n ";
+                "【<a href='" + ConstantUtil.BAODF_URL + "/titan/wechatInfo/fieldwork/wechat/author?url=" + ConstantUtil.BAODF_URL
+                + "/titan/wechatInfo/getUserWechatMenId?url=23'>查看详情</a>】\n ";
 //        WechatUtil.senMsgToWechat(token, openid, st);
     }
 

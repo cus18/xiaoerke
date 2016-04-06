@@ -81,7 +81,7 @@
                                 // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                                 wx.onMenuShareTimeline({
                                     title: '12.15-12.23 邀请好友关注宝大夫，赢取生鲜商城50元无门槛现金券！', // 分享标题
-                                    link: webname+'/xiaoerke-appoint/ap#/operateShare/'+$scope.ticket, // 分享链接
+                                    link: webname+'/titan/ap#/operateShare/'+$scope.ticket, // 分享链接
                                     imgUrl: webname+'http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fbaodf_logo.jpg', // 分享图标
                                     success: function (res) {
 
@@ -97,7 +97,7 @@
                                 wx.onMenuShareAppMessage({
                                     title: '12.15-12.23 邀请好友关注宝大夫，赢取生鲜商城50元无门槛现金券！', // 分享标题
                                     desc: '宝大夫为您提供儿科专家线上咨询，名院、名医就诊预约，郑玉巧育儿经服务，为宝宝健康保驾护航。', // 分享描述
-                                    link: webname+'/xiaoerke-appoint/ap#/operateShare/'+$scope.ticket, // 分享链接
+                                    link: webname+'/titan/ap#/operateShare/'+$scope.ticket, // 分享链接
                                     imgUrl: webname+'http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fbaodf_logo.jpg', // 分享图标
                                     success: function (res) {
                                         //记录用户分享文章
