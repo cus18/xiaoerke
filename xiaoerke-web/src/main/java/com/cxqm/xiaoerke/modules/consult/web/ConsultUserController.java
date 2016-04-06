@@ -252,7 +252,6 @@ public class ConsultUserController extends BaseController {
             Query query = new Query();
             query.addCriteria(cr.orOperator(
                     Criteria.where("attentionNickName").regex(searchInfo)
-//                    ,Criteria.where("openid").regex(searchInfo)
             )).with(new Sort(Sort.Direction.DESC, "create_date"));
             pagination = consultRecordService.getPage(pageNo, pageSize, query);
         }else if(searchType.equals("message")){
@@ -267,7 +266,7 @@ public class ConsultUserController extends BaseController {
 
         List<ConsultRecordMongoVo> consultSessionForwardRecordsVos = new ArrayList<ConsultRecordMongoVo>();
         Iterator iterator = openidSet.iterator();
-        if(iterator.hasNext()){
+        while(iterator.hasNext()){
             Query query = new Query(where("openid").is(iterator.next())).with(new Sort(Sort.Direction.DESC, "createDate"));
             ConsultRecordMongoVo oneConsultRecord = consultRecordService.findOneConsultRecord(query);
             if(oneConsultRecord!=null && StringUtils.isNotNull(oneConsultRecord.getOpenid())){
