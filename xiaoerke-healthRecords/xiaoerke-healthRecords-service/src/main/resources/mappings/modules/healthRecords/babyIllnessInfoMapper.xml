@@ -37,7 +37,7 @@
     #{caseimg,jdbcType=VARCHAR}, #{resultimg,jdbcType=VARCHAR}, #{otherimg,jdbcType=VARCHAR},
     #{positionimg,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.healthRecords.entity.BabyIllnessInfoVo" >
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.healthRecords.entity.BabyIllnessInfoVo" useGeneratedKeys="true" keyProperty="id" >
     insert into healthRecord_illness_describe
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
