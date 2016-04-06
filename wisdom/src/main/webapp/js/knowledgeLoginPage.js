@@ -1,4 +1,4 @@
-var webpath = "/xiaoerke-knowledge";
+var webpath = "/wisdom";
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/ionic.bundle.min.js"></scr'+'ipt>');
 document.write('<scr'+'ipt src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></scr'+'ipt>');
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery-2.1.3.min.js?ver=1.0.7"></scr'+'ipt>');
@@ -125,7 +125,7 @@ var babyInfoSave = function(){
                     $.ajaxSetup({
                         contentType : 'application/json'
                     });
-                    $.post('ap/knowledge/babyEmr/save',param,
+                    $.post('knowledge/babyEmr/save',param,
                         function(data) {
                             window.location.href ="firstPage/knowledge?value=251314";
                         }, 'json');
@@ -138,7 +138,7 @@ var babyInfoSave = function(){
             $.ajaxSetup({
                 contentType : 'application/json'
             });
-            $.post('ap/knowledge/babyEmr/save',param,
+            $.post('knowledge/babyEmr/save',param,
                 function(data) {
                     window.location.href ="firstPage/knowledge?value=251314";
                 }, 'json');

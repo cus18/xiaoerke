@@ -4,7 +4,7 @@ import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
-import com.cxqm.xiaoerke.modules.consult.service.core.patientConsultWechatServiceThread;
+import com.cxqm.xiaoerke.modules.consult.service.PatientConsultWechatService;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
 import com.cxqm.xiaoerke.modules.interaction.dao.PatientRegisterPraiseDao;
 import com.cxqm.xiaoerke.modules.member.service.MemberService;
@@ -34,7 +34,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -51,6 +50,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
 	@Autowired
 	private SystemService systemService;
+
+	@Autowired
+	private PatientConsultWechatService patientConsultWechatService;
 
 	@Autowired
 	private ConsultSessionService consultConversationService;
@@ -70,14 +72,11 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     @Autowired
     private MongoDBService<HealthRecordMsgVo> healthRecordMsgVoMongoDBService;
 
-	private static ExecutorService threadExecutor = Executors.newCachedThreadPool();
-
     @Autowired
 	private MemberService memberService;
 
 	private String mongoEnabled = Global.getConfig("mongo.enabled");
-	
-	
+
 	@Autowired
 	private PatientRegisterPraiseDao patientRegisterPraiseDao;
 
@@ -126,10 +125,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			}
 		}
 		else {
-			Runnable thread = new patientConsultWechatServiceThread(xmlEntity);
-			threadExecutor.execute(thread);
+			patientConsultWechatService.patientWechatConsultService(xmlEntity);
 			return "";
-
 			//respMessage = transferToCustomer(xmlEntity);
 		}
 		return respMessage;

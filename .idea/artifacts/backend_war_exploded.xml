@@ -26,6 +26,9 @@
           <element id="archive" name="xiaoerke-member-api-0.0.1-SNAPSHOT.jar">
             <element id="module-output" name="xiaoerke-member-api" />
           </element>
+          <element id="archive" name="xiaoerke-system-service-0.0.1-SNAPSHOT.jar">
+            <element id="module-output" name="xiaoerke-system-service" />
+          </element>
           <element id="archive" name="xiaoerke-payment-api-0.0.1-SNAPSHOT.jar">
             <element id="module-output" name="xiaoerke-payment-api" />
           </element>
@@ -44,6 +47,7 @@
           <element id="archive" name="xiaoerke-consult-api-0.0.1-SNAPSHOT.jar">
             <element id="module-output" name="xiaoerke-consult-api" />
           </element>
+          <element id="library" level="project" name="Maven: com.google.code.gson:gson:2.6" />
           <element id="archive" name="xiaoerke-search-api-0.0.1-SNAPSHOT.jar">
             <element id="module-output" name="xiaoerke-search-api" />
           </element>
@@ -52,9 +56,6 @@
           </element>
           <element id="archive" name="xiaoerke-collector-4service-0.0.1-SNAPSHOT.jar">
             <element id="module-output" name="xiaoerke-collector-4service" />
-          </element>
-          <element id="archive" name="xiaoerke-system-service-0.0.1-SNAPSHOT.jar">
-            <element id="module-output" name="xiaoerke-system-service" />
           </element>
           <element id="archive" name="xiaoerke-cms-service-0.0.1-SNAPSHOT.jar">
             <element id="module-output" name="xiaoerke-cms-service" />
@@ -91,11 +92,6 @@
           <element id="archive" name="xiaoerke-wechat-service-0.0.1-SNAPSHOT.jar">
             <element id="module-output" name="xiaoerke-wechat-service" />
           </element>
-          <element id="archive" name="xiaoerke-consult-service-0.0.1-SNAPSHOT.jar">
-            <element id="module-output" name="xiaoerke-consult-service" />
-          </element>
-          <element id="library" level="project" name="Maven: io.netty:netty-all:4.0.24.Final" />
-          <element id="library" level="project" name="Maven: org.java-websocket:Java-WebSocket:1.3.0" />
           <element id="archive" name="xiaoerke-operation-service-0.0.1-SNAPSHOT.jar">
             <element id="module-output" name="xiaoerke-operation-service" />
           </element>

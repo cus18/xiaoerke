@@ -68,11 +68,11 @@ angular.module('controllers', ['ionic']).controller('nutritionNecessaryCtrl', [
             }
             else if(index==1){
                // $state.go("nutritionAssess",{flag:"noagain"});
-                window.location.href = "ap/ntr?value=251349#/nutritionAssess/noagain";
+                window.location.href = "ntr?value=251349#/nutritionAssess/noagain";
             }
             else if(index==2){
                 //$state.go("nutritionReport",{type:"second"});
-                window.location.href = "ap/ntr?value=251337#/nutritionReport/second";
+                window.location.href = "ntr?value=251337#/nutritionReport/second";
             }
             else if(index==3){
                 $state.go("nutritionNecessary");

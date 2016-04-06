@@ -1,7 +1,7 @@
 package com.cxqm.xiaoerke.modules.consult.service.core;
 
+import com.cxqm.xiaoerke.modules.consult.dao.ConsultSessionDao;
 import com.cxqm.xiaoerke.modules.consult.service.impl.SessionCacheRedisImpl;
-import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;
@@ -65,8 +65,8 @@ public class ConsultSessionManager {
 	private static ConsultSessionManager sessionManager = new ConsultSessionManager();
 
 	@Autowired
-	private static WechatAttentionService wechatAttentionService;
-	
+	private ConsultSessionDao consultSessionDao;
+
 	private ConsultSessionManager(){
 		String distributorsStr = Global.getConfig("distributors.list");
 		distributorsList = Arrays.asList(distributorsStr.split(";"));
@@ -191,7 +191,7 @@ public class ConsultSessionManager {
 			consultSession = sessionCache.getConsultSessionBySessionId(sessionId);
 
 		if(consultSession == null) {
-			HashMap<String,Object> attentionUser = wechatAttentionService.getAttention(openId);
+			HashMap<String,Object> attentionUser = consultSessionDao.getAttention(openId);
 			consultSession = new RichConsultSession();
 			consultSession.setCreateTime(new Date());
 			InetSocketAddress address = (InetSocketAddress) channel.localAddress();

@@ -81,7 +81,7 @@ angular.module('controllers', ['ionic']).controller('constipationIndexCtrl', [
 
         $scope.$on('$ionicView.enter', function(){
             $scope.pageLoading = true;
-            var routePath = "/ap/ctpBBBBBB" + $location.path();
+            var routePath = "/ctpBBBBBB" + $location.path();
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 $scope.pageLoading = false;
                 if(data.status=="9") {

@@ -18,12 +18,6 @@
        
        <dependency>
            <groupId>com.cxqm</groupId> 
-           <artifactId>xiaoerke-system-api</artifactId>
-           <version>0.0.1-SNAPSHOT</version>
-       </dependency>
-       
-       <dependency>
-           <groupId>com.cxqm</groupId> 
            <artifactId>xiaoerke-payment-api</artifactId>
            <version>0.0.1-SNAPSHOT</version>
        </dependency>
@@ -33,11 +27,11 @@
           <artifactId>xiaoerke-member-api</artifactId>
           <version>0.0.1-SNAPSHOT</version>
       </dependency>
-       <!--<dependency>-->
-          <!--<groupId>com.cxqm</groupId>-->
-          <!--<artifactId>xiaoerke-consult-service</artifactId>-->
-          <!--<version>0.0.1-SNAPSHOT</version>-->
-      <!--</dependency>-->
+      <dependency>
+           <groupId>com.cxqm</groupId> 
+           <artifactId>xiaoerke-system-service</artifactId>
+           <version>0.0.1-SNAPSHOT</version>
+       </dependency>
   </dependencies>
   
 </project>

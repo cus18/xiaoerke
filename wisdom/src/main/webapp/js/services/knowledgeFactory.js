@@ -2,8 +2,8 @@
  * 取得实际位置
  * 调用方式：geoFactory.getGeo();
  */
-var user_h5 = '/xiaoerke-knowledge/ap/'
-var wxChat = '/xiaoerke-knowledge/wechatInfo/'
+var user_h5 = ''
+var wxChat = '/wechatInfo/'
 
 define(['app'], function (app) {
     app

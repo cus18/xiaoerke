@@ -84,7 +84,7 @@ public class DoctorGroupInfoServiceImpl implements DoctorGroupInfoService {
 	@Override
 	public void updateSysDoctorGroup(Map<String, Object> map) {
 		// TODO Auto-generated method stub
-		
+		doctorGroupInfoDao.updateSysDoctorGroup(map);
 	}
 
 }

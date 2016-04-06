@@ -12,7 +12,7 @@ angular.module('controllers', ['ionic']).controller('nutritionIndexCtrl', [
 
         $scope.$on('$ionicView.enter', function(){
             $scope.pageLoading = true;
-            var routePath = "/ap/ntrBBBBBB" + $location.path();
+            var routePath = "/ntrBBBBBB" + $location.path();
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 $scope.pageLoading = false;
                 if(data.status=="9") {
@@ -35,7 +35,7 @@ angular.module('controllers', ['ionic']).controller('nutritionIndexCtrl', [
                             GetBabyInfo.save({}, function (data){
                                 if(data.babyInfo==undefined){
                                     //$state.go("nutritionBabyInfo");
-                                    window.location.href = "ap/ntr?value=251335#/nutritionBabyInfo";
+                                    window.location.href = "ntr?value=251335#/nutritionBabyInfo";
                                 }else{
                                     var pData = {logContent:encodeURI("YYGL_SY")};
                                     $http({method:'post',url:'util/recordLogs',params:pData});
@@ -152,7 +152,7 @@ angular.module('controllers', ['ionic']).controller('nutritionIndexCtrl', [
          */
         $scope.goAssess = function(data){
             //$state.go("nutritionAssess",{flag:"noagain"});
-            window.location.href = "ap/ntr?value=251348#/nutritionAssess/noagain";
+            window.location.href = "ntr?value=251348#/nutritionAssess/noagain";
         }
 
         /**
@@ -200,11 +200,11 @@ angular.module('controllers', ['ionic']).controller('nutritionIndexCtrl', [
             }
             else if(index==1){
                 //$state.go("nutritionAssess",{flag:"noagain"});
-                window.location.href = "ap/ntr?value=251347#/nutritionAssess/noagain";
+                window.location.href = "ntr?value=251347#/nutritionAssess/noagain";
             }
             else if(index==2){
                 //$state.go("nutritionReport",{type:"second"});
-                window.location.href = "ap/ntr?value=251333#/nutritionReport/second";
+                window.location.href = "ntr?value=251333#/nutritionReport/second";
             }
             else if(index==3){
                 $state.go("nutritionNecessary");

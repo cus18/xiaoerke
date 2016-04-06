@@ -1,7 +1,11 @@
 package com.cxqm.xiaoerke.modules.order.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterTemplateVo;
+import com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo;
 
 import net.sf.json.JSONObject;
 
@@ -18,4 +22,23 @@ public interface SysConsultPhoneService {
     Map<String, Object> doctorConsultPhoneOfDay(Map<String, Object> params);
     
     JSONObject getRegisterTime(String doctorId , String date);
+    
+    Map<String, Object> getRegisterInfo(String doctorId,String pageFlag);
+    
+    Map<String, String> addRegister(SysConsultPhoneServiceVo Vo,List<String> timeList,
+			   String date,String operInterval);
+    
+    /**
+     * 获取电话咨询模板列表
+     * sunxiao
+     * @param executeMap
+     * @return
+     */
+    public List<ConsultPhoneRegisterTemplateVo> getRegisterTemplateList(Map<String, Object> executeMap);
+    
+    /**
+	 * 根据条件查询电话咨询信息
+	 * sunxiao
+	 */
+    List<SysConsultPhoneServiceVo> findSysConsultPhoneByInfo(Map<String, Object> map);
 }

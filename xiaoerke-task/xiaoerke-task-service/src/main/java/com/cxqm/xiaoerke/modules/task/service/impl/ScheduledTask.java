@@ -73,9 +73,6 @@ public class ScheduledTask {
     @Autowired
     private ConsultPhoneOrderService consultPhoneOrderService;
 
-    @Autowired
-    private ConsultPhonePatientService consultPhonePatientService;
-
     //将所有任务放到一个定时器里，减少并发
     //@Scheduled(cron = "0 */1 * * * ?")
     public void letsGoReminder() {
@@ -664,6 +661,14 @@ public class ScheduledTask {
     }
 
     /**
+     * 生成第五周号源，用于重复设置电话咨询号源
+     * sunxiao
+     */
+    public void repeatSettingConsultPhoneRegister() {
+    	scheduleTaskService.repeatSettingConsultPhoneRegister();
+    }
+    
+    /**
      * 插入信息 @author zdl
      *
      * @param list 信息
@@ -965,25 +970,19 @@ public class ScheduledTask {
       List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1");
 
       CCPRestSDK sdk = new CCPRestSDK();
-      sdk.init("sandboxapp.cloopen.com", "8883");// 初始化服务器地址和端口，格式如下，服务器地址不需要写https://
-      sdk.setSubAccount("aaf98f8952812e8d0152812ff0c5000d", "69cd25cccfec43769bf6370f3271aacc");
-      sdk.setAppId("aaf98f8952812e8d0152812ff07a000b");
+        sdk.init("sandboxapp.cloopen.com", "8883");// 初始化服务器地址和端口，格式如下，服务器地址不需要写https://
+        sdk.setSubAccount("2fa43378da0a11e59288ac853d9f54f2", "0ad73d75ac5bcb7e68fb191830b06d6b");
+        sdk.setAppId("aaf98f8952f7367a0153084e29992035");
       for(HashMap map:consultOrderList){
           String doctorPhone =  (String)map.get("doctorPhone");
           String userPhone =  (String)map.get("userPhone");
           Integer orderId = (Integer)map.get("id");
           Integer conversationLength =  Integer.valueOf((String)map.get("conversationLength"))*60;
           HashMap<String, Object> result = sdk.callback(userPhone, doctorPhone,
-                  null, null, null,
-                  "true", null, "userdate",
+                  "4006237120", "4006237120", null,
+                  "true", null, orderId+"",
                   conversationLength+"", null, "0",
                   "1", "10", null);
-
-          ConsultPhoneRegisterServiceVo vo = new ConsultPhoneRegisterServiceVo();
-          vo.setId(orderId);
-          vo.setUpdateTime(new Date());
-          vo.setState("2");
-          consultPhonePatientService.updateOrderInfoBySelect(vo);
       }
 
     }

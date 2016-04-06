@@ -12,7 +12,7 @@ angular.module('services', ['ngResource'])
     }])
     //获取聊天记录
     .factory('GetUserRecordList', ['$resource', function ($resource) {
-        return $resource(public + 'consult/recordList');
+        return $resource(public + 'consult/doctor/recordList');
     }])
     //获取在线医生列表
     .factory('getOnlineDoctorList', ['$resource', function ($resource) {

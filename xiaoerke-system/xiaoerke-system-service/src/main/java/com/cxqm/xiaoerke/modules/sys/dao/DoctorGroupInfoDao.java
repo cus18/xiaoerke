@@ -32,4 +32,11 @@ public interface DoctorGroupInfoDao extends CrudDao<DoctorVo> {
     Page<HashMap<String, Object>> findDoctorByDoctorGroup(HashMap<String, Object> doctorMap, Page<HashMap<String, Object>> page);
 
     DoctorGroupVo getDoctorGroupInfoByDoctor(@Param("doctorId") String doctorId);
+    
+    /**
+     * 开通电话咨询修改修改doctorGroup表 
+     * sunxiao
+     * @param map
+     */
+    void updateSysDoctorGroup(Map<String, Object> map);
 }

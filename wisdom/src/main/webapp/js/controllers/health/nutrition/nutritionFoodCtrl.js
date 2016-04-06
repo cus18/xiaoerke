@@ -59,7 +59,7 @@ angular.module('controllers', ['ionic']).controller('nutritionFoodCtrl', [
             var food2 = {};
             var food3 = {};
             var food4 = {};
-            var routePath = "/ap/ntrBBBBBB" + $location.path();
+            var routePath = "/ntrBBBBBB" + $location.path();
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 $scope.pageLoading = false;
                 if(data.status=="9") {
@@ -72,7 +72,7 @@ angular.module('controllers', ['ionic']).controller('nutritionFoodCtrl', [
                             if(data.babyInfo==undefined){
                                 SaveManagementInfo.get({"planTemplateId":2}, function (data) {
                                     if(data.resultMsg=="OK"){
-                                        window.location.href = "ap/ntr?value=251338#/nutritionBabyInfo";
+                                        window.location.href = "ntr?value=251338#/nutritionBabyInfo";
                                     }
                                 });
                             }else{

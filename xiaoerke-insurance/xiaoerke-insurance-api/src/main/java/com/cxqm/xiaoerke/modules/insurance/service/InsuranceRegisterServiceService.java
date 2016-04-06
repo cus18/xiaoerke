@@ -40,12 +40,20 @@ public interface InsuranceRegisterServiceService {
 	public List<Map<String,Object>> getInsuranceRegisterServiceListByUserid(String userid);
 	
 	/**
-	 * 查询列表
+	 * 分页查询列表
 	 * @param page
 	 * @param vo
 	 * @return
 	 */
 	public Page<InsuranceRegisterService> findInsuranceServiceList(Page<InsuranceRegisterService> page ,InsuranceRegisterService vo);
+	
+	/**
+	 * 查询所有订单
+	 * sunxiao
+	 * @param vo
+	 * @return
+	 */
+	List<InsuranceRegisterService> getInsuranceServiceList(InsuranceRegisterService vo);
 	
 	public List<Map<String,Object>> getInsuranceRegisterServiceIfValid(String babyId);
 	

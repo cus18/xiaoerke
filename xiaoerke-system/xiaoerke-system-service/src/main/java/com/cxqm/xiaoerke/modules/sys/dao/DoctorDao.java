@@ -135,4 +135,11 @@ public interface DoctorDao extends CrudDao<DoctorVo> {
     //查询电话咨询的医生列表
     Page<HashMap<String, Object>> findPageConsultaDoctorByDepartment(HashMap<String, Object> hospitalInfo, Page<HashMap<String, Object>> page);
     
+    /**
+     * 医生开通电话咨询时修改医生表 
+     * @param map
+     */
+    void updateDoctor(Map<String, Object> map);
+    
+    List<Map<String, Object>> getDoctorInfo(Map<String, Object> map);
 }

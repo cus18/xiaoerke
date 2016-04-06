@@ -23,6 +23,16 @@ public class SysConsultPhoneServiceVo {
 
     private String servicetype;
 
+    private String repeatFlag;
+
+    public String getRepeatFlag() {
+		return repeatFlag;
+	}
+
+	public void setRepeatFlag(String repeatFlag) {
+		this.repeatFlag = repeatFlag;
+	}
+	
     public Integer getId() {
         return id;
     }

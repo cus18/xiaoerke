@@ -4,8 +4,6 @@ package com.cxqm.xiaoerke.modules.consult.service.impl;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultSessionDao;
-
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
@@ -15,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -25,9 +22,6 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
 
     @Autowired
     private ConsultSessionDao consultSessionDao;
-
-
-
 
     @Override
     public List<Map<String, Object>> getConsultInfo(String openId) {
