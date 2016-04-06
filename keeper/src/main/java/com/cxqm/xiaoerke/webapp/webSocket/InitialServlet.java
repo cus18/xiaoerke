@@ -1,6 +1,6 @@
 package com.cxqm.xiaoerke.webapp.webSocket;
 
-import com.cxqm.xiaoerke.modules.consult.service.core.SessionCache;
+import com.cxqm.xiaoerke.modules.consult.service.SessionCache;
 import com.cxqm.xiaoerke.modules.consult.service.impl.SessionCacheRedisImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import org.json.JSONObject;
@@ -65,11 +65,11 @@ public class InitialServlet extends HttpServlet {
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
-		Session wechatSession = sessionCache.getWechatSessionByClientServerId(CLIENT_SERVER_ID);
-		if (wechatSession == null) {
-			MyClientApp client = new MyClientApp();
-			client.start();
-		}
+//		Session wechatSession = sessionCache.getWechatSessionByClientServerId(CLIENT_SERVER_ID);
+//		if (wechatSession == null) {
+//			MyClientApp client = new MyClientApp();
+//			client.start();
+//		}
 	}
 
 	public class MyClientApp {

@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.*;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -43,19 +44,16 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 @RequestMapping(value = "consult/wechat")
 public class ConsultWechatController extends BaseController {
 
-    @Autowired
-    private ConsultSessionService consultConversationService;
-
-    @Autowired
-    private ConsultRecordService consultRecordService;
-
-    @Autowired
-    private ConsultSessionForwardRecordsService consultSessionForwardRecordsService;
-
     @RequestMapping(value = "/conversation", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> conversation(@RequestParam(required=true) String userId) {
+    Map<String, Object> conversation(@RequestParam(required=true) String messageContent) {
+
+        try {
+            System.out.println(URLDecoder.decode(messageContent, "utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         Map<String, Object> response = new HashMap<String, Object>();
 

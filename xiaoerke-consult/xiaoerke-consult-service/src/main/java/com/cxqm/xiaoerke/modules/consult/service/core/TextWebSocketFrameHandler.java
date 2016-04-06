@@ -1,6 +1,9 @@
 package com.cxqm.xiaoerke.modules.consult.service.core;
 
 import java.util.Map;
+
+import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.service.SessionCache;
 import com.cxqm.xiaoerke.modules.consult.service.impl.SessionCacheRedisImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

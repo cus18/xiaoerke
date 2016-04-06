@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.consult.service.core;
 
+import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.service.SessionCache;
 import com.cxqm.xiaoerke.modules.consult.service.impl.SessionCacheRedisImpl;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;

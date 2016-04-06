@@ -17,7 +17,6 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
-import com.cxqm.xiaoerke.modules.consult.service.core.RichConsultSession;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import net.sf.json.JSONObject;
 import org.apache.commons.fileupload.FileItem;
