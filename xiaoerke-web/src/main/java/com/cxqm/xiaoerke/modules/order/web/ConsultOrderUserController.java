@@ -51,7 +51,7 @@ public class ConsultOrderUserController {
      * 电话咨询订单列表
      * @return Map
      * */
-    @RequestMapping(value = "getOrderList",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "consultOrder/getOrderList",method = {RequestMethod.GET,RequestMethod.POST})
     public
     @ResponseBody
     Map<String,Object> getConsultPhoneList(){
