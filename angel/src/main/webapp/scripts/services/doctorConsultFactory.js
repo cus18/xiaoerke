@@ -46,6 +46,10 @@ angular.module('services', ['ngResource'])
     .factory('CSInfoByUserId', ['$resource', function ($resource) {
         return $resource(public + 'consult/user/getUserList');
     }])
+    //修改回复
+    .factory('answerModify', ['$resource', function ($resource) {
+        return $resource(public + 'consult/doctor/Answer/modify');
+    }])
 
     //获取客户的聊天记录
     .factory('getUserRecordDetail', ['$resource', function ($resource) {
