@@ -24,7 +24,7 @@
         //选择宝宝
         $scope.selectBaby= function(){
         	var index=$scope.babyListIndex;
-            window.location.href = "/xiaoerke-appoint/appoint#/healthRecordSelectBaby/"+index+",1,"+$stateParams.conid;
+            window.location.href = "/titan/appoint#/healthRecordSelectBaby/"+index+",1,"+$stateParams.conid;
         };
 
         $scope.consultHistory = function(){

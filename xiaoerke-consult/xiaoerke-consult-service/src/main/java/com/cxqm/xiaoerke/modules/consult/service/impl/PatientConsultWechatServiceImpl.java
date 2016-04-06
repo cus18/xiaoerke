@@ -48,30 +48,30 @@ public class PatientConsultWechatServiceImpl implements PatientConsultWechatServ
 			/**根据openId，在redis中查询，此用户是否目前还存在有效的session，
 			 * 如果没有，则推送欢迎词，建立与在线接诊员的会话联系
 			 * */
-			System.out.println(xmlEntity.getFromUserName());
-			Session wechatSession = sessionCache.getWechatSessionByOpenId(xmlEntity.getFromUserName());
-			if (wechatSession == null) {
-				MyClientApp client = new MyClientApp();
-				client.start();
+			synchronized(this){
+				System.out.println(xmlEntity.getFromUserName());
+				Session wechatSession = sessionCache.getWechatSessionByOpenId(xmlEntity.getFromUserName());
+				if (wechatSession == null) {
+					MyClientApp client = new MyClientApp();
+					client.start();
 
-				try {
-					//此处保证开启的线程不死
-					do {
-						sleep(100);
-					} while (!sessionCloseFlag);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+					try {
+						//此处保证开启的线程不死
+						do {
+							sleep(100);
+						} while (!sessionCloseFlag);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+
+				} else {
+					try {
+						wechatSession.getBasicRemote().sendText(xmlEntity.getContent());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
-
-			} else {
-				try {
-					wechatSession.getBasicRemote().sendText(xmlEntity.getContent());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
 			}
-
 		}
 
 		public class MyClientApp {
