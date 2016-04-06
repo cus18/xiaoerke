@@ -256,6 +256,13 @@
       <if test="surplusTime != null" >
         surplusTime,
       </if>
+
+      <if test="creat_by != null" >
+        creat_by,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -288,6 +295,12 @@
 
       <if test="surplusTime != null" >
         #{surplusTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creat_by != null" >
+        #{creat_by,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
