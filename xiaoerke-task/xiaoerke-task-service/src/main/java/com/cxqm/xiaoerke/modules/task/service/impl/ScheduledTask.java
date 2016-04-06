@@ -977,7 +977,7 @@ public class ScheduledTask {
           String doctorPhone =  (String)map.get("doctorPhone");
           String userPhone =  (String)map.get("userPhone");
           Integer orderId = (Integer)map.get("id");
-          Integer conversationLength =  Integer.valueOf((String)map.get("conversationLength"))*60;
+          Integer conversationLength =  (Integer)map.get("conversationLength")*60;
           HashMap<String, Object> result = sdk.callback(userPhone, doctorPhone,
                   "4006237120", "4006237120", null,
                   "true", null, orderId+"",
