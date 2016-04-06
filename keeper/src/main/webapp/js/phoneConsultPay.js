@@ -138,22 +138,30 @@ var doRefresh = function(){
         $(".baby-list").hide();
     }
 
-
-    //检测当前页面是否绑定
-    var param = '{routePath:"phoneConsultPay/patientPay.do?phoneConDoctorDetail="3123"}';
     $.ajax({
-        type: "POST",
-        url: "info/loginStatus",
-        contentType: 'application/json',
-        data: param,
-        success: function (data) {
-            if(data.status=="9"){
-                window.location.href = data.redirectURL;
-            }else if(data.status=="8"){
-                window.location.href = data.redirectURL;
+        url: 'info/loginStatus',
+        type: 'post',
+        data: {},
+        complete: function(jqXHR){
+            if(jqXHR.status=="404"){
+                window.location.href = "phoneConsultPay/patientPay.do?phoneConDoctorDetail='3123'";
             }
+        },
+        success:function(data){
+            var param = '{routePath:"phoneConsultPay/patientPay.do?phoneConDoctorDetail="3123"}';
+            $.ajaxSetup({
+                contentType : 'application/json'
+            });
+            $.post('info/loginStatus',param,
+                function(data) {
+                    if(data.status=="9"){
+                        window.location.href = data.redirectURL;
+                    }else if(data.status=="8"){
+                        window.location.href = data.redirectURL;
+                    }
+                }, 'json');
         }
-    })
+    });
 
     ////生产订单
     //$.ajax({
