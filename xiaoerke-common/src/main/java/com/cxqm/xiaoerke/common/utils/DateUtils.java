@@ -331,25 +331,27 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @param str
      * @return date
      */
-    public static Date StrToDate(String str,String flag) {
-    	SimpleDateFormat format = null;
-    	if("time".equals(flag)){
-    		format = new SimpleDateFormat("HH:mm");
-    	}else if("date".equals(flag)) {
-    		format = new SimpleDateFormat("yyyy-MM-dd");
-    	}else if("datetime".equals(flag)){
-    		format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    	}else if("datetimesec".equals(flag)){
+	public static Date StrToDate(String str,String flag) {
+		SimpleDateFormat format = null;
+		if("time".equals(flag)){
+			format = new SimpleDateFormat("HH:mm");
+		}else if("date".equals(flag)) {
+			format = new SimpleDateFormat("yyyy-MM-dd");
+		}else if("datetime".equals(flag)){
+			format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		}else if("datetimesec".equals(flag)){
 			format = new SimpleDateFormat("yyyyMMddHHmmss");
+		}else{
+			format = new SimpleDateFormat(flag);
 		}
-        Date date = null;
-        try {
-            date = format.parse(str);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
-    }
+		Date date = null;
+		try {
+			date = format.parse(str);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return date;
+	}
     
     /**
      * 日期转换成字符串
