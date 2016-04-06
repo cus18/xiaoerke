@@ -191,6 +191,20 @@
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping> 
+    </filter-mapping>
+
+	<servlet>
+		<description></description>
+		<display-name>InitialServlet</display-name>
+		<servlet-name>initialServlet</servlet-name>
+		<servlet-class>
+			com.cxqm.xiaoerke.webapp.webSocket.DelegatingServletProxy
+		</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>initialServlet</servlet-name>
+		<url-pattern>/InitialServlet</url-pattern>
+	</servlet-mapping>
 
 </web-app>
