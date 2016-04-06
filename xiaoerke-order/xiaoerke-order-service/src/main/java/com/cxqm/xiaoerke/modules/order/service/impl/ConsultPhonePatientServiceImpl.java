@@ -9,10 +9,13 @@ import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.account.exception.BalanceNotEnoughException;
 import com.cxqm.xiaoerke.modules.healthRecords.entity.BabyIllnessInfoVo;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
+import com.cxqm.xiaoerke.modules.order.dao.PhoneConsultDoctorRelationDao;
+import com.cxqm.xiaoerke.modules.order.entity.ConsulPhonetDoctorRelationVo;
 import com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo;
 import com.cxqm.xiaoerke.modules.order.exception.CreateOrderException;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.entity.PatientVo;
+import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
@@ -47,6 +50,9 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
     @Autowired
     private HealthRecordsService healthRecordsService;
 
+    @Autowired
+    private PhoneConsultDoctorRelationDao phoneConsultDoctorRelationDao;
+
 
     /**
      * 查询电话咨询的订单
@@ -74,7 +80,8 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
             babyVo.setState("0");
             babyVo.setOpenid(openid);
             babyVo.setUserid(UserUtils.getUser().getId());
-            babyId = String.valueOf(healthRecordsService.insertBabyInfo(babyVo)) ; //!!!!!!!!!!!
+            healthRecordsService.insertBabyInfo(babyVo);
+            babyId = String.valueOf(babyVo.getId()) ; //!!!!!!!!!!!
         }
 
         BabyIllnessInfoVo illnessVo = new BabyIllnessInfoVo();
@@ -83,7 +90,11 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         illnessVo.setStatus("0");
         illnessVo.setBabyinfoId(babyId);
         int illnessInfoId = healthRecordsService.insertBabyIllnessInfo(illnessVo);
-        PatientVo PatientVo = utilService.CreateUser(UserUtils.getUser().getPhone(),"", "patient");
+        User U =  UserUtils.getUser();
+        PatientVo PatientVo = utilService.CreateUser(UserUtils.getUser().getPhone(), "", "patient");
+
+        SysConsultPhoneServiceVo sysConsultPhoneServiceVo = sysConsultPhoneServiceDao.selectByPrimaryKey(sysConsultPhoneId);
+        ConsulPhonetDoctorRelationVo consulPhonetDoctorRelationVo = phoneConsultDoctorRelationDao.selectByDoctorId(sysConsultPhoneServiceVo.getSysDoctorId());
         ConsultPhoneRegisterServiceVo vo = new ConsultPhoneRegisterServiceVo();
         vo.setIllnessDescribeId(illnessVo.getId());
         vo.setCreateTime(new Date());
@@ -93,6 +104,10 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         vo.setSysPatientId(PatientVo.getId());
         vo.setSysPhoneconsultServiceId(sysConsultPhoneId);
         vo.setPhoneNum(phoneNum);
+        Integer serviceLength = consulPhonetDoctorRelationVo.getServerLength()*60*100;
+        Date surplusTime = new Date();
+        surplusTime.setTime(serviceLength);
+        vo.setSurplusTime(surplusTime);
         int result = consultPhoneRegisterServiceDao.insertSelective(vo);
         if(result== 0){
             throw new CreateOrderException();
