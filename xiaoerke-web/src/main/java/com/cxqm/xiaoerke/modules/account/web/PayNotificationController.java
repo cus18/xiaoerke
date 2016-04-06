@@ -7,6 +7,8 @@ import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.account.service.PayRecordService;
 import com.cxqm.xiaoerke.modules.insurance.entity.InsuranceRegisterService;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
+import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
+import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
 import com.cxqm.xiaoerke.modules.sys.entity.PerAppDetInfoVo;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
@@ -42,6 +44,9 @@ public class PayNotificationController {
 
 	@Autowired
 	private PatientRegisterService patientRegisterService;
+
+	@Autowired
+	private ConsultPhonePatientService consultPhonePatientService;
 
 	@Autowired
 	private SystemService systemService;
@@ -130,7 +135,7 @@ public class PayNotificationController {
 				payRecord.setReceiveDate(new Date());
 				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
 				String insuranceId= insuranceMap.get("order_id").toString();
-				System.out.println("orderId:"+insuranceId);
+				System.out.println("orderId:" + insuranceId);
 				if(insuranceMap.get("fee_type").toString().equals("insurance")){
 					InsuranceRegisterService insurance=new InsuranceRegisterService();
 					insurance.setId(insuranceId);
@@ -139,6 +144,60 @@ public class PayNotificationController {
 					payRecord.getId();//修改pay_record表状态
 					payRecord.setStatus("success");
 					payRecord.setReceiveDate(new Date());
+					payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
+				}
+			}
+			return  XMLUtil.setXML("SUCCESS", "");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			lock.unlock();
+		}
+		return "";
+	}
+
+	/**
+	 * 接收支付成后微信notify_url参数中传来的参数
+	 * 支付完成 后服务器故障 事物无法回滚
+	 * */
+	@RequestMapping(value = "/user/getPhoneConsultPayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
+	public synchronized
+	@ResponseBody
+	String getConsultPhonePayNotifyInfo(HttpServletRequest request) {
+		lock.lock();
+		InputStream inStream = null;
+		try {
+			inStream = request.getInputStream();
+			ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
+			byte[] buffer = new byte[1024];
+			int len = 0;
+			while ((len = inStream.read(buffer)) != -1) {
+				outSteam.write(buffer, 0, len);
+			}
+			outSteam.close();
+			inStream.close();
+			String result  = new String(outSteam.toByteArray(),"utf-8");
+			Map<String, Object> map = XMLUtil.doXMLParse(result);
+
+			//放入service层进行事物控制
+			if("SUCCESS".equals(map.get("return_code"))){
+				LogUtils.saveLog(Servlets.getRequest(), "00000048","用户微信支付完成:" + map.get("out_trade_no"));
+				PayRecord payRecord = new PayRecord();
+				payRecord.setId((String) map.get("out_trade_no"));
+				payRecord.setStatus("success");
+				payRecord.setReceiveDate(new Date());
+
+				Map<String,Object> consultPhoneMap= insuranceService.getPayRecordById(payRecord.getId());
+				String consultPhoneId= consultPhoneMap.get("order_id").toString();
+				System.out.println("orderId:"+consultPhoneId);
+//				InsuranceRegisterService insurance = insuranceService.getInsuranceRegisterServiceById(orderId);
+				if(consultPhoneMap.get("fee_type").toString().equals("consultPhone")){
+					ConsultPhoneRegisterServiceVo consultPhoneVo = new ConsultPhoneRegisterServiceVo();
+					consultPhoneVo.setId(Integer.parseInt(consultPhoneId));
+					consultPhoneVo.setState("1");
+					consultPhoneVo.setUpdateTime(new Date());
+
+					consultPhonePatientService.updateOrderInfoBySelect(consultPhoneVo);
 					payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
 				}
 			}
