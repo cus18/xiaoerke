@@ -10,6 +10,8 @@
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="sys_user_id_cs" property="csUserId" jdbcType="VARCHAR"/>
         <result column="sys_user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="nickname" property="nickName" jdbcType="VARCHAR"/>
+
     </resultMap>
 
     <resultMap id="doctorResultMap" type="com.cxqm.xiaoerke.modules.sys.entity.DoctorVo" >
@@ -69,6 +71,23 @@
             and sys_user_id = #{userId,jdbcType=VARCHAR}
         </if>
     </select>
+
+
+    <select id="getAlreadyAccessUsers" resultMap="BaseResultMap"
+            parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession">
+        SELECT * from consult_conversation cc
+        INNER JOIN sys_attention sa on sa.openid = cc.openid
+        where 1=1
+        <if test="status != null">
+            and cc.state = #{status,jdbcType=VARCHAR}
+        </if>
+        <if test="csUserId != null">
+            and CC.sys_user_id_cs = #{csUserId,jdbcType=VARCHAR}
+        </if>
+        group by cc.openid
+    </select>
+
+
 
     <select id="selectByPrOpenid" resultType="java.util.Map" parameterType="java.lang.String">
     select  hc.id,hid.illness ,hid.caseImg,hid.otherImg,hid.positionImg,hid.resultImg,sbi.name,sbi.birthday,sbi.sex

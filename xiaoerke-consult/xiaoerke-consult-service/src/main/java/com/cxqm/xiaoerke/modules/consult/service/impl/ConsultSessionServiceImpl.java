@@ -68,4 +68,9 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
     public Page<DoctorVo> getOnlineCsListInfo(Page<DoctorVo> page,List<String> userList){
         return  consultSessionDao.getOnlineCsListInfo(page, userList);
     }
+
+    @Override
+    public List<ConsultSession> getAlreadyAccessUsers(ConsultSession richConsultSession) {
+        return null;
+    }
 }
