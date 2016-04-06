@@ -25,7 +25,7 @@
         $scope.patientList = ['湿疹', '咳嗽', '发烧', '过敏', '感冒', '鼻炎', '眼科', '腹泻', '呕吐'];
 
         $scope.appointmentFirst = function () {
-            window.location.href = "/xiaoerke-appoint/ap";
+            window.location.href = "/titan/firstPage/appoint";
         };
         //取消特惠医院浮层
         $scope.cancelPreference = function () {
@@ -107,7 +107,7 @@
         }
 
         $scope.appointmentFirst = function () {
-            window.location.href = "/xiaoerke-appoint/ap";
+            window.location.href = "/titan/firstPage/appoint";
         }
 
         $scope.searchDoc = function () {

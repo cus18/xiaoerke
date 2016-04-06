@@ -7,7 +7,7 @@
             $scope.registerId = $stateParams.patient_register_service_id
             $scope.status= $stateParams.status;
             $scope.appointmentFirst = function(){
-                window.location.href = "/xiaoerke-appoint/ap";
+                window.location.href = "/titan/firstPage/appoint";
             }
             $scope.$on('$ionicView.enter', function(){
                 $scope.pageLoading = true;

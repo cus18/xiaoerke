@@ -89,7 +89,7 @@ var doRefresh = function(){
 
     $.ajax({
         type: 'POST',
-        url: "healthRecord/getBabyinfoList",
+        url: "/titan/healthRecord/getBabyinfoList",
         data: "{'openid':''}",
         contentType: "application/json; charset=utf-8",
         success: function(result){
@@ -138,6 +138,30 @@ var doRefresh = function(){
         $(".baby-list").hide();
     }
 
+    $.ajax({
+        url: 'info/loginStatus',
+        type: 'post',
+        data: {},
+        complete: function(jqXHR){
+            if(jqXHR.status=="404"){
+                window.location.href = "phoneConsultPay/patientPay.do?phoneConDoctorDetail='3123'";
+            }
+        },
+        success:function(data){
+            var param = '{routePath:"phoneConsultPay/patientPay.do?phoneConDoctorDetail="3123"}';
+            $.ajaxSetup({
+                contentType : 'application/json'
+            });
+            $.post('info/loginStatus',param,
+                function(data) {
+                    if(data.status=="9"){
+                        window.location.href = data.redirectURL;
+                    }else if(data.status=="8"){
+                        window.location.href = data.redirectURL;
+                    }
+                }, 'json');
+        }
+    });
 
     //检测当前页面是否绑定
     //var param = '{routePath:"/phoneConsultPay/patientPay.do?phoneConDoctorDetail="3123"}';
@@ -264,7 +288,7 @@ var pay = function(){
         //window.location.href="ap/phoneConsult#/phoneConPaySuccess/,"
         alert($("#babyId").val()+$('#babyName').val()+$('#connectphone').val()+$('#case').val(),GetQueryString('phoneConDoctorDetail')+bodBirthday);
         $.ajax({
-            url:"ap/consultPhone/consultOrder/createOrder",// 跳转到 action
+            url:"consultPhone/consultOrder/createOrder",// 跳转到 action
             async:true,
             type:'post',
             //data:{babyId:$("#babyId").val(),babyName:$('#babyName').val(),phoneNum:$('#connectphone').val(),illnessDesc:$('#case').val(),sysConsultPhoneId:GetQueryString('phoneConDoctorDetail'),birthDay:bodBirthday},
@@ -285,7 +309,7 @@ var pay = function(){
 var wxPay = function (consultPhoneServiceId) {
     $('#payButton').attr('disabled',"true");//添加disabled属性
     $.ajax({
-        url:"ap/account/user/consultPhonePay",// 跳转到 action
+        url:"account/user/consultPhonePay",// 跳转到 action
         async:true,
         type:'get',
         data:{patientRegisterId:consultPhoneServiceId},
@@ -314,7 +338,7 @@ var wxPay = function (consultPhoneServiceId) {
                 paySign:obj.paySign,  // 支付签名
                 success: function (res) {
                     if(res.errMsg == "chooseWXPay:ok" ) {
-                        window.location.href = "ap/phoneConsult#/phoneConPaySuccess/"+consultPhoneServiceId;
+                        window.location.href = "phoneConsult#/phoneConPaySuccess/"+consultPhoneServiceId;
                     }else{
                         alert("支付失败,请重新支付")
                     }

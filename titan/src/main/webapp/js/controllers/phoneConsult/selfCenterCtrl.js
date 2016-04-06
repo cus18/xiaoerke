@@ -12,7 +12,7 @@
             /*我的资料*/
             $scope.myInfo = function(){
                 window.location.href="ap/appoint#/myInfo/"+$scope.myselfInfo.userPhoneNum;
-               /* window.location.href = "/xiaoerke-appoint/appoint#/healthRecordSelectBaby/"+index+",1,"+$stateParams.conid;*/
+               /* window.location.href = "/titan/appoint#/healthRecordSelectBaby/"+index+",1,"+$stateParams.conid;*/
             };
             /* 当前订单*/
             $scope.currentOrder = function(){

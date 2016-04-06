@@ -33,7 +33,7 @@
                                 hospitalName:"",
                                 position:""})
                         }else{
-                            window.location.href="/xiaoerke-appoint/pay/patientPay.do?patient_register_service_id="
+                            window.location.href="/titan/pay/patientPay.do?patient_register_service_id="
                                 + patient_register_service_id + "&chargePrice=15000";
                         }
 
