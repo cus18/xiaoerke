@@ -20,6 +20,8 @@ public interface ScheduleTaskService {
 	void CancelAppointNoPay();
 
 	void repeatSettingRegister();
+	
+	void repeatSettingConsultPhoneRegister();
 
 	void getCustomerOnlineTime(ArrayList<CustomBean> list);
 
