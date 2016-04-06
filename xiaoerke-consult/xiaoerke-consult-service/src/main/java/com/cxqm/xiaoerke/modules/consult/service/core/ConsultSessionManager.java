@@ -64,9 +64,6 @@ public class ConsultSessionManager {
 	
 	private static ConsultSessionManager sessionManager = new ConsultSessionManager();
 
-	@Autowired
-	private ConsultSessionDao consultSessionDao;
-
 	private ConsultSessionManager(){
 		String distributorsStr = Global.getConfig("distributors.list");
 		distributorsList = Arrays.asList(distributorsStr.split(";"));
@@ -81,16 +78,19 @@ public class ConsultSessionManager {
 		
 		String[] args = url.split("&");
 		String fromType = args[1];
-		String userId = args[2];
-		
+
 		if(fromType.equals("user")) {
+			String userId = args[2];
 			doCreateSessionInitiatedByUser(userId, channel);
 		}else if(fromType.equals("wechatUser")){
-			//此处的userId即为微信中的openId
-			doCreateSessionInitiatedByWX(userId, channel);
+			//此处的userId即为微信中的clientServerId
+			String clientServerId = args[2];
+			doCreateSessionInitiatedByWX(clientServerId, channel);
 		} else if(fromType.equals("cs")) {
+			String userId = args[2];
 			doCreateSessionInitiatedByCs(userId, channel);
 		} else if(fromType.equals("distributor")) {
+			String userId = args[2];
 			doCreateSessionInitiatedByDistributor(userId, channel);
 		}
 	}
@@ -182,22 +182,20 @@ public class ConsultSessionManager {
 		channelUserMapping.put(channel, userId);
 	}
 
-	public void doCreateSessionInitiatedByWX(String openId,Channel channel){
+	public void doCreateSessionInitiatedByWX(String clientServerId,Channel channel){
 
-		Integer sessionId = sessionCache.getSessionIdByOpenId(openId);
+		Integer sessionId = sessionCache.getSessionIdByClientServerId(clientServerId);
 
 		RichConsultSession consultSession = null;
 		if(sessionId != null)
 			consultSession = sessionCache.getConsultSessionBySessionId(sessionId);
 
 		if(consultSession == null) {
-//			HashMap<String,Object> attentionUser = consultSessionDao.getAttention(openId);
 			consultSession = new RichConsultSession();
 			consultSession.setCreateTime(new Date());
 			InetSocketAddress address = (InetSocketAddress) channel.localAddress();
 			consultSession.setServerAddress(address.getHostName());
-			consultSession.setOpenid(openId);
-//			consultSession.setUserName((String) attentionUser.get("nickname"));
+			consultSession.setOpenid(clientServerId);
 			consultSession.setUserName("胖胖");
 
 			int number = accessNumber.getAndDecrement();
@@ -237,7 +235,7 @@ public class ConsultSessionManager {
 
 			sessionId = consultSession.getId();
 			sessionCache.putSessionIdConsultSessionPair(sessionId, consultSession);
-			sessionCache.putUserIdSessionIdPair(openId, sessionId);
+			sessionCache.putUserIdSessionIdPair(clientServerId, sessionId);
 
 			//send user
 			JSONObject obj = new JSONObject();
@@ -248,8 +246,8 @@ public class ConsultSessionManager {
 			distributorChannel.writeAndFlush(frame.retain());
 		}
 
-		userChannelMapping.put(openId, channel);
-		channelUserMapping.put(channel, openId);
+		userChannelMapping.put(clientServerId, channel);
+		channelUserMapping.put(channel, clientServerId);
 	}
 	
 	public void transferSession(Integer sessionId, String toCsUserId, String remark){
@@ -337,13 +335,11 @@ public class ConsultSessionManager {
 	public Map<Channel, String> getChannelUserMapping() {
 		return channelUserMapping;
 	}
-	
-	//TODO service for getting sessionId
+
 	public Integer getSessionIdByUser(String userId) {
 		return sessionCache.getSessionIdByUserId(userId);
 	}
-	
-	//TODO service for getting sessionId
+
 	public List<Object> getCurrentSessions(List<Object> sessionIds) {
 		return sessionCache.getConsultSessionsBySessionIds(sessionIds);
 	}

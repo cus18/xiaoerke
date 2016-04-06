@@ -229,9 +229,4 @@
         </foreach>
     </select>
 
-    <select id="getAttention" resultType="java.util.HashMap" parameterType="java.lang.String" >
-        select marketer, nickname,date_format(min(date),'%Y-%m-%d') date from
-        sys_attention where openid=#{openId}
-    </select>
-
 </mapper>
