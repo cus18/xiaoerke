@@ -163,21 +163,37 @@ var doRefresh = function(){
         }
     });
 
-    ////生产订单
+    //检测当前页面是否绑定
+    //var param = '{routePath:"/phoneConsultPay/patientPay.do?phoneConDoctorDetail="3123"}';
     //$.ajax({
-    // url:"consulPhone/consultOrder/createOrder",// 跳转到 action
-    // async:true,
-    // type:'post',
-    // data:{babyId:"1",babyName:"2",phoneNum:"3",illnessDesc:"4",sysConsultPhoneId:"5",birthDay:"6"},
-    // contentType: "application/json; charset=utf-8",
-    // cache:false,
-    // dataType:'json',
-    // success:function(data) {
-    // console.log("生产订单",data);
-    // },
-    // error : function() {
-    // }
-    // });
+    //    type: "POST",
+    //    url: "ap/info/loginStatus",
+    //    contentType: 'application/json',
+    //    data: param,
+    //    success: function (data) {
+    //        if(data.status=="9"){
+    //            window.location.href = data.redirectURL;
+    //        }else if(data.status=="8"){
+    //            window.location.href = data.redirectURL;
+    //        }
+    //    }
+    //})
+
+    //生产订单
+    /*$.ajax({
+     url:"ap/consulPhone/consultOrder/createOrder",// 跳转到 action
+     async:true,
+     type:'post',
+     data:{babyId:"1",babyName:"2",phoneNum:"3",illnessDesc:"4",sysConsultPhoneId:"5",birthDay:"6"},
+     contentType: "application/json; charset=utf-8",
+     cache:false,
+     dataType:'json',
+     success:function(data) {
+     console.log("生产订单",data);
+     },
+     error : function() {
+     }
+     });*/
 }
 
 //  日期插件
@@ -269,7 +285,7 @@ var pay = function(){
     }else{
         //wxPay();
         //alert("可以预约了");
-        //window.location.href="phoneConsult#/phoneConPaySuccess/,"
+        //window.location.href="ap/phoneConsult#/phoneConPaySuccess/,"
         alert($("#babyId").val()+$('#babyName').val()+$('#connectphone').val()+$('#case').val(),GetQueryString('phoneConDoctorDetail')+bodBirthday);
         $.ajax({
             url:"consultPhone/consultOrder/createOrder",// 跳转到 action

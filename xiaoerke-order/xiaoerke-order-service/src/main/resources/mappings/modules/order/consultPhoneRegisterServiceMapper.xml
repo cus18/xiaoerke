@@ -253,6 +253,9 @@
       <if test="phoneNum != null" >
         phone,
       </if>
+      <if test="surplusTime != null" >
+        surplusTime,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -281,6 +284,10 @@
       </if>
       <if test="phoneNum != null" >
         #{phoneNum,jdbcType=VARCHAR},
+      </if>
+
+      <if test="surplusTime != null" >
+        #{surplusTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
