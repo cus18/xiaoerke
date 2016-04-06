@@ -124,9 +124,9 @@
                 <!--添加分组-->
                 <div class="addgroup" ng-show='addgroup.show'>
                     <div class="addtop"><span>添加分组</span><span ng-click="addgroup1()">关闭</span></div>
-                    <div class="addgroupname"><span>添加分组</span><input type="text"/></div>
+                    <div class="addgroupname"><span>添加分组</span><input id="addGroupFirstId" type="text"/></div>
                     <div class="addbtn">
-                        <input class="btn" type="submit" value="确定">
+                        <input class="btn" type="submit" ng-click="addGroupFirst()" value="确定">
                         <input class="btn" type="submit" value="取消">
                     </div>
                 </div>
@@ -316,7 +316,7 @@
         <div class="footer ddjr-footer">
             <button>应用</button>
             <button>取消</button>
-            <button>确定</button>
+            <button ng-click="">确定</button>
         </div>
     </div>
     <!--等待接入的弹出框-->

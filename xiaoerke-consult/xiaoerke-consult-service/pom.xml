@@ -46,23 +46,5 @@
       <version>7.0.47</version>
     </dependency>
 
-    <dependency>
-      <groupId>javax</groupId>
-      <artifactId>javaee-api</artifactId>
-      <version>7.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.glassfish.tyrus</groupId>
-      <artifactId>tyrus-client</artifactId>
-      <version>1.0-rc3</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.glassfish.tyrus</groupId>
-      <artifactId>tyrus-container-grizzly</artifactId>
-      <version>1.0-rc3</version>
-    </dependency>
-
   </dependencies>
 </project>

@@ -1,8 +1,8 @@
 angular.module('controllers', ['luegg.directives'])
     .controller('doctorConsultFirstCtrl', ['$scope', '$sce', 'getTodayRankingList', 'getOnlineDoctorList',
-        'getCommonAnswerList', 'getMyAnswerList', 'GetUserLoginStatus', '$location', 'GetUserRecordList',
+        'getCommonAnswerList', 'getMyAnswerList', 'GetUserLoginStatus', '$location', 'GetUserRecordList','answerModify',
         function ($scope, $sce, getTodayRankingList, getOnlineDoctorList, getCommonAnswerList,
-                  getMyAnswerList, GetUserLoginStatus, $location, GetUserRecordList) {
+                  getMyAnswerList, GetUserLoginStatus, $location, GetUserRecordList,answerModify) {
             $scope.test = "";
             $scope.info = {};
             $scope.socketServer1 = "";
@@ -298,6 +298,20 @@ angular.module('controllers', ['luegg.directives'])
             $scope.addcontent1 = function() {
                 $scope.addcontent.show = !$scope.addcontent.show;
             }
+
+            //保存公共回复
+            $scope.addGroupFirst = function () {
+                alert("sdf");
+                var addGroupFirst = {};
+                addGroupFirst.name = $("#addGroupFirstId").val();
+                $scope.commonAnswer.push(addGroupFirst);
+                alert(123);
+                answerModify.save({answer:$scope.commonAnswer,answerType:"commonAnswer"}, function (data) {
+
+                });
+
+            }
+
             //编辑分组
             $scope.editgroup = {
                 show: false

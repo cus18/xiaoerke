@@ -191,13 +191,14 @@ public class ConsultSessionManager {
 			consultSession = sessionCache.getConsultSessionBySessionId(sessionId);
 
 		if(consultSession == null) {
-			HashMap<String,Object> attentionUser = consultSessionDao.getAttention(openId);
+//			HashMap<String,Object> attentionUser = consultSessionDao.getAttention(openId);
 			consultSession = new RichConsultSession();
 			consultSession.setCreateTime(new Date());
 			InetSocketAddress address = (InetSocketAddress) channel.localAddress();
 			consultSession.setServerAddress(address.getHostName());
 			consultSession.setOpenid(openId);
-			consultSession.setUserName((String) attentionUser.get("nickname"));
+//			consultSession.setUserName((String) attentionUser.get("nickname"));
+			consultSession.setUserName("胖胖");
 
 			int number = accessNumber.getAndDecrement();
 			if(number < 10)
