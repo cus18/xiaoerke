@@ -30,7 +30,6 @@ angular.module('controllers', ['ionic']).controller('constipationKneadCtrl', [
                     $scope.momtime = moment().format('HH:mm');
                     //获取打卡详情
                     ConfirmDetail.get({"planInfoId":parseInt($stateParams.planInfoId),"type":$stateParams.planTaskType}, function (data) {
-                        console.log("查看打卡详情",data);
                         $scope.continue = data.continue;
                         $scope.total = data.total;
                         planTaskId = data.allid;

@@ -62,7 +62,7 @@
                 else if (action == "charge") {
                     resolveUserLoginStatus.events("memberService",
                         $stateParams.memberType + "," + $stateParams.action + "," + "",
-                        "","/xiaoerke-appoint/pay/patientPay.do?" +
+                        "","/titan/pay/patientPay.do?" +
                         "patient_register_service_id=" +
                         "noData" + "&chargePrice=15000","notGo");
                 }

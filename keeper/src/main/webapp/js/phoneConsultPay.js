@@ -8,7 +8,7 @@ var doRefresh = function(){
     var signature;//得到的签名
     var appid;//得到的签名
     $.ajax({
-        url:"ap/wechatInfo/getConfig",// 跳转到 action
+        url:"wechatInfo/getConfig",// 跳转到 action
         async:true,
         type:'get',
         data:{url:location.href.split('#')[0]},//得到需要分享页面的url
@@ -47,7 +47,7 @@ var doRefresh = function(){
 
 //获取医生个人信息
     $.ajax({
-        url:"ap/consultPhone/consultPhoneDoctor/doctorDetail",// 跳转到 action
+        url:"consultPhone/consultPhoneDoctor/doctorDetail",// 跳转到 action
         async:true,
         type:'get',
         data:{doctorId:"0084dbde22af4078bc9cc189f5b9a282"},
@@ -70,7 +70,7 @@ var doRefresh = function(){
     //预约时间
     var param = {consultPhoneServiceId:2221};
     $.ajax({
-        url:"ap/consultPhone/phoneRegister/getRegisterInfo",// 跳转到 action
+        url:"consultPhone/phoneRegister/getRegisterInfo",// 跳转到 action
         async:true,
         type:'post',
         data:param,
@@ -89,7 +89,7 @@ var doRefresh = function(){
 
     $.ajax({
         type: 'POST',
-        url: "/xiaoerke-appoint/healthRecord/getBabyinfoList",
+        url: "/titan/healthRecord/getBabyinfoList",
         data: "{'openid':''}",
         contentType: "application/json; charset=utf-8",
         success: function(result){
@@ -138,38 +138,46 @@ var doRefresh = function(){
         $(".baby-list").hide();
     }
 
+    $.ajax({
+        url: 'info/loginStatus',
+        type: 'post',
+        data: {},
+        complete: function(jqXHR){
+            if(jqXHR.status=="404"){
+                window.location.href = "phoneConsultPay/patientPay.do?phoneConDoctorDetail='3123'";
+            }
+        },
+        success:function(data){
+            var param = '{routePath:"phoneConsultPay/patientPay.do?phoneConDoctorDetail="3123"}';
+            $.ajaxSetup({
+                contentType : 'application/json'
+            });
+            $.post('info/loginStatus',param,
+                function(data) {
+                    if(data.status=="9"){
+                        window.location.href = data.redirectURL;
+                    }else if(data.status=="8"){
+                        window.location.href = data.redirectURL;
+                    }
+                }, 'json');
+        }
+    });
 
-    //检测当前页面是否绑定
-    //var param = '{routePath:"/phoneConsultPay/patientPay.do?phoneConDoctorDetail="3123"}';
+    ////生产订单
     //$.ajax({
-    //    type: "POST",
-    //    url: "ap/info/loginStatus",
-    //    contentType: 'application/json',
-    //    data: param,
-    //    success: function (data) {
-    //        if(data.status=="9"){
-    //            window.location.href = data.redirectURL;
-    //        }else if(data.status=="8"){
-    //            window.location.href = data.redirectURL;
-    //        }
-    //    }
-    //})
-
-    //生产订单
-    /*$.ajax({
-     url:"ap/consulPhone/consultOrder/createOrder",// 跳转到 action
-     async:true,
-     type:'post',
-     data:{babyId:"1",babyName:"2",phoneNum:"3",illnessDesc:"4",sysConsultPhoneId:"5",birthDay:"6"},
-     contentType: "application/json; charset=utf-8",
-     cache:false,
-     dataType:'json',
-     success:function(data) {
-     console.log("生产订单",data);
-     },
-     error : function() {
-     }
-     });*/
+    // url:"consulPhone/consultOrder/createOrder",// 跳转到 action
+    // async:true,
+    // type:'post',
+    // data:{babyId:"1",babyName:"2",phoneNum:"3",illnessDesc:"4",sysConsultPhoneId:"5",birthDay:"6"},
+    // contentType: "application/json; charset=utf-8",
+    // cache:false,
+    // dataType:'json',
+    // success:function(data) {
+    // console.log("生产订单",data);
+    // },
+    // error : function() {
+    // }
+    // });
 }
 
 //  日期插件
@@ -215,7 +223,7 @@ var choiceBaby=function(index){
 }
 // 添加宝宝
 var addBaby=function(){
-    window.location.href = "ap/phoneConsult#/phoneConAddBaby";
+    window.location.href = "phoneConsult#/phoneConAddBaby";
 }
 // 取消选择宝宝
 var cancelSelectBaby=function(){
@@ -261,10 +269,10 @@ var pay = function(){
     }else{
         //wxPay();
         //alert("可以预约了");
-        //window.location.href="ap/phoneConsult#/phoneConPaySuccess/,"
+        //window.location.href="phoneConsult#/phoneConPaySuccess/,"
         alert($("#babyId").val()+$('#babyName').val()+$('#connectphone').val()+$('#case').val(),GetQueryString('phoneConDoctorDetail')+bodBirthday);
         $.ajax({
-            url:"ap/consultPhone/consultOrder/createOrder",// 跳转到 action
+            url:"consultPhone/consultOrder/createOrder",// 跳转到 action
             async:true,
             type:'post',
             //data:{babyId:$("#babyId").val(),babyName:$('#babyName').val(),phoneNum:$('#connectphone').val(),illnessDesc:$('#case').val(),sysConsultPhoneId:GetQueryString('phoneConDoctorDetail'),birthDay:bodBirthday},
@@ -285,7 +293,7 @@ var pay = function(){
 var wxPay = function (consultPhoneServiceId) {
     $('#payButton').attr('disabled',"true");//添加disabled属性
     $.ajax({
-        url:"ap/account/user/consultPhonePay",// 跳转到 action
+        url:"account/user/consultPhonePay",// 跳转到 action
         async:true,
         type:'get',
         data:{patientRegisterId:consultPhoneServiceId},
@@ -314,7 +322,7 @@ var wxPay = function (consultPhoneServiceId) {
                 paySign:obj.paySign,  // 支付签名
                 success: function (res) {
                     if(res.errMsg == "chooseWXPay:ok" ) {
-                        window.location.href = "ap/phoneConsult#/phoneConPaySuccess/"+consultPhoneServiceId;
+                        window.location.href = "phoneConsult#/phoneConPaySuccess/"+consultPhoneServiceId;
                     }else{
                         alert("支付失败,请重新支付")
                     }

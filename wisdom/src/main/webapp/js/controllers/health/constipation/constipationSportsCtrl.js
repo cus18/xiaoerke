@@ -4,7 +4,7 @@ angular.module('controllers', ['ionic']).controller('constipationSportsCtrl', [
     function ($scope,$state,$stateParams,ConfirmDetail,AppraisalList,PushTicket,
               GetTasksInfo,$sce,GetUserLoginStatus,$location,$http) {
 
-        $scope.heartImg ="ihttp://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fheart_card0.png";
+        $scope.heartImg ="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fheart_card0.png";
         //初始化一日三餐
         $scope.sportsList =[];
         $scope.sportsImgList =[];
@@ -45,7 +45,7 @@ angular.module('controllers', ['ionic']).controller('constipationSportsCtrl', [
                         }else if(data.am=="no"&&data.pm=="no"){
                             $scope.heartImg ="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fheart_card0.png";
                         }else{
-                            $scope.heartImg ="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fheart_card_2_1.png";
+                            $scope.heartImg ="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fheart_card2_1.png";
                         }
                         if(data.am=="yes"){
                             amstatus="完成";
@@ -110,7 +110,7 @@ angular.module('controllers', ['ionic']).controller('constipationSportsCtrl', [
                         if(num==0){
                             $scope.heartImg ="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fheart_card0.png";
                         }else if(num==1){
-                            $scope.heartImg ="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fheart_card_2_1.png";
+                            $scope.heartImg ="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fheart_card2_1.png";
                         }else if(num==2){
                             $scope.heartImg ="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fheart_card_full.png";
                         }

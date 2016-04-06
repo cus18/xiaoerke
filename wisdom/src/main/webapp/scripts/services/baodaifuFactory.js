@@ -1,4 +1,4 @@
-var public = '/xiaoerke-knowledge/'
+var public = '/wisdom/'
 
 angular.module('services', ['ngResource'])
     //获得文章内容列表

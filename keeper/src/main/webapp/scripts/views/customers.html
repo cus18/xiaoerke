@@ -1011,8 +1011,8 @@
 								var msg = '{"head":{"random":"{#random#}"}, "body":[{"type":7, "content":[{"title":"为您精选“#title#”相关的必备常识", "digest":"", "cover":"#image#", "url":"#url#"}]}]}';
 								msg=msg.replace("{#random#}",  Math.ceil(Math.random()*10000000));
 								msg=msg.replace("#title#", obj);
-								msg=msg.replace("#url#", "http://baodf.com/xiaoerke-appoint/appoint#/knowledgeSearch/"+obj+",dkf");
-								msg=msg.replace("#image#", 'http://baodf.com/xiaoerke-appoint/images/MessageCover.png');
+								msg=msg.replace("#url#", "http://baodf.com/titan/appoint#/knowledgeSearch/"+obj+",dkf");
+								msg=msg.replace("#image#", 'http://baodf.com/titan/images/MessageCover.png');
 								document.getElementById('messageData').value = msg;
 								var strReturn = window.external.PutMsg('{"msg":'+document.getElementById('messageData').value+'}');
 								document.getElementById('area').value += 'put msg return:' + strReturn +'\n';
@@ -1114,8 +1114,8 @@
 	var msg = '{"head":{"random":"{#random#}"}, "body":[{"type":7, "content":[{"title":"宝大夫团队为您精选#title#名医,预约请点击", "digest":"", "cover":"#image#", "url":"#url#"}]}]}';
 		msg=msg.replace("{#random#}",  Math.ceil(Math.random()*10000000));
 		msg=msg.replace("#title#", illnessName);
-		msg=msg.replace("#url#", "http://baodf.com/xiaoerke-appoint/appoint#/searchList/"+illnessName+",searchDoctorByOpenSearch,"+illnessName);
-		msg=msg.replace("#image#", 'http://baodf.com/xiaoerke-appoint/images/MessageCover.png');
+		msg=msg.replace("#url#", "http://baodf.com/titan/appoint#/searchList/"+illnessName+",searchDoctorByOpenSearch,"+illnessName);
+		msg=msg.replace("#image#", 'http://baodf.com/titan/images/MessageCover.png');
 		alert(msg);
 		document.getElementById('messageData').value = msg;
 	var strReturn = window.external.PutMsg('{"msg":'+document.getElementById('messageData').value+'}');

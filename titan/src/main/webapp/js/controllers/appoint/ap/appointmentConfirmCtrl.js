@@ -222,7 +222,7 @@ angular.module('controllers', ['ionic']).controller('AppointmentConfirmCtrl', [
                                             else if ($scope.status == "1" || $scope.status == "2" || $scope.status == "3" ||
                                                 $scope.status == "5" || $scope.status == "6" || $scope.status == "7" || $scope.status == "cattle" || $scope.status == "22") {
                                                 alert("您好，您的免费预约机会已用完，如需继续预约，请再次购买会员服务。");
-                                                window.location.href = "/xiaoerke-appoint/pay/patientPay.do?patient_register_service_id="
+                                                window.location.href = "/titan/pay/patientPay.do?patient_register_service_id="
                                                     + patient_register_service_id + "&chargePrice=15000";
                                             }
                                         }
@@ -237,7 +237,7 @@ angular.module('controllers', ['ionic']).controller('AppointmentConfirmCtrl', [
                                             if ($scope.status == "1" || $scope.status == "2" || $scope.status == "5"
                                                 || $scope.status == "6" || $scope.status == "9" || $scope.status == "10") {
                                                 alert("您好，您的会员服务已过期，如需继续预约，请再次购买会员服务。");
-                                                window.location.href = "/xiaoerke-appoint/pay/patientPay.do?patient_register_service_id="
+                                                window.location.href = "/titan/pay/patientPay.do?patient_register_service_id="
                                                     + patient_register_service_id + "&chargePrice=15000";
                                             }
                                             else {
@@ -304,7 +304,7 @@ angular.module('controllers', ['ionic']).controller('AppointmentConfirmCtrl', [
                                     else if ($scope.status == "1" || $scope.status == "2" || $scope.status == "3" ||
                                         $scope.status == "5" || $scope.status == "6" || $scope.status == "7" || $scope.status == "cattle" || $scope.status == "22") {
                                         alert("您好，您的免费预约机会已用完，如需继续预约，请再次购买会员服务。");
-                                        window.location.href = "/xiaoerke-appoint/pay/patientPay.do?patient_register_service_id="
+                                        window.location.href = "/titan/pay/patientPay.do?patient_register_service_id="
                                             + patient_register_service_id + "&chargePrice=15000";
                                     }
                                 }
@@ -319,7 +319,7 @@ angular.module('controllers', ['ionic']).controller('AppointmentConfirmCtrl', [
                                     if ($scope.status == "1" || $scope.status == "2" || $scope.status == "5"
                                         || $scope.status == "6" || $scope.status == "9" || $scope.status == "10") {
                                         alert("您好，您的会员服务已过期，如需继续预约，请再次购买会员服务。");
-                                        window.location.href = "/xiaoerke-appoint/pay/patientPay.do?patient_register_service_id="
+                                        window.location.href = "/titan/pay/patientPay.do?patient_register_service_id="
                                             + patient_register_service_id + "&chargePrice=15000";
                                     }
                                     else {
