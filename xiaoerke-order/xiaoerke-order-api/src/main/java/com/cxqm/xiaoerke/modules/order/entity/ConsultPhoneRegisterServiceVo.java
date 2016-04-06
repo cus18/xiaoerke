@@ -48,6 +48,8 @@ public class ConsultPhoneRegisterServiceVo {
 
     private Date beginTime;//开始时间
 
+    private Date surplusTime; //通话剩余时长
+
     public String getLoginPhone() {
         return loginPhone;
     }
@@ -222,5 +224,13 @@ public class ConsultPhoneRegisterServiceVo {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Date getSurplusTime() {
+        return surplusTime;
+    }
+
+    public void setSurplusTime(Date surplusTime) {
+        this.surplusTime = surplusTime;
     }
 }
