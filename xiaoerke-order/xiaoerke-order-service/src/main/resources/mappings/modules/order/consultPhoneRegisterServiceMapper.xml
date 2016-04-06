@@ -258,7 +258,7 @@
       </if>
 
       <if test="creat_by != null" >
-        creat_by,
+        create_by,
       </if>
       <if test="type != null" >
         type,
