@@ -160,7 +160,7 @@ angular.module('controllers', ['luegg.directives'])
                     window.WebSocket = window.MozWebSocket;
                 }
                 if (window.WebSocket) {
-                    $scope.socketServer1 = new WebSocket("ws://120.25.161.33:2048/ws&distributor&" +
+                    $scope.socketServer1 = new WebSocket("ws://localhost:2048/ws&distributor&000a444a67b94ca0af513ab6aea5937d" +
                         $scope.doctorId);//cs,user,distributor
                     $scope.socketServer1.onmessage = function (event) {
                         console.log("onmessage" + event.data);
@@ -298,6 +298,20 @@ angular.module('controllers', ['luegg.directives'])
             $scope.addcontent1 = function() {
                 $scope.addcontent.show = !$scope.addcontent.show;
             }
+            //编辑分组
+            $scope.editgroup = {
+                show: false
+            }
+            $scope.editgroup1 = function() {
+                $scope.editgroup.show = !$scope.editgroup.show;
+            }
+            //编辑内容
+            $scope.editcontent = {
+                show: false
+            }
+            $scope.editcontent1 = function() {
+                $scope.editcontent.show = !$scope.editcontent.show;
+            }
         }])
 
 
@@ -394,7 +408,7 @@ angular.module('controllers', ['luegg.directives'])
                 }
             }
 
-            //查找咨询记录（消息列表右上角的搜索功能）
+            //查找咨询记录
             $scope.setSearchMessageType = function (searchType) {
                 $scope.messageType = searchType;
             }

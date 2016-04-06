@@ -75,13 +75,13 @@
                 <div class="chatinstall">
                   <span ng-click="addgroup1()">
                       <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(11).png" alt=""/>添加</span>
-                  <span>
+                  <span ng-click="editgroup1()">
                       <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(12).png" alt=""/>
-                      编辑</span>
+                      编辑组</span>
                   <span ng-click="addcontent1()">
                       <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(3).png" alt=""/>
                       删除</span>
-                  <span>
+                  <span ng-click="editcontent1()">
                       <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(13).png" alt=""/>
                       向上</span>
                   <span>
@@ -134,6 +134,26 @@
                 <div class="addcontent" ng-show='addcontent.show'>
                     <div class="addtop"><span>添加回复</span><span ng-click="addcontent1()">关闭</span></div>
                     <div class="addgroupname"><span class="addkjhf">快捷回复内容：</span>
+                        <textarea placeholder="请在此处进行编辑"></textarea>
+                    </div>
+                    <div class="addbtn">
+                        <input class="btn" type="submit" value="确定">
+                        <input class="btn" type="submit" value="取消">
+                    </div>
+                </div>
+                <!--编辑分组-->
+                <div class="editgroup" ng-show='editgroup.show'>
+                    <div class="addtop"><span>编辑分组</span><span ng-click="editgroup1()">关闭</span></div>
+                    <div class="addgroupname"><span>编辑分组</span><input type="text"/></div>
+                    <div class="addbtn">
+                        <input class="btn" type="submit" value="确定">
+                        <input class="btn" type="submit" value="取消">
+                    </div>
+                </div>
+                <!--添加内容-->
+                <div class="editcontent" ng-show='editcontent.show'>
+                    <div class="addtop"><span>编辑回复</span><span ng-click="editcontent1()">关闭</span></div>
+                    <div class="addgroupname"><span class="addkjhf">编辑回复内容：</span>
                         <textarea placeholder="请在此处进行编辑"></textarea>
                     </div>
                     <div class="addbtn">
@@ -233,14 +253,6 @@
                     <a href="#"><span>接入语设置</span></a>
                     <a href="#"><span>会话自动关闭设置</span></a>
                 </div>
-                <!--
-                <h3>个人设置</h3>
-                <div>
-                    <a href="#"><span>常规</span></a>
-                    <a href="#"><span>热键</span></a>
-                    <a href="#"><span>声音</span></a>
-                    <a href="#"><span>网络连接</span></a>
-                </div>-->
             </div>
             <div class="xtsz-up-right">
                 <ul>
