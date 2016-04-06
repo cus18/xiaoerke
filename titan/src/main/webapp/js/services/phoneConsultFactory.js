@@ -204,7 +204,7 @@ define(['appPhoneConsult'], function (app) {
         }])
         //检测用户是否已经关注该医生
         .factory('CheckAttentionDoctor', ['$resource', function ($resource) {
-            return $resource(user_h5 + 'interaction/user/isConcerned');
+            return $resource(user_appoint + 'interaction/user/isConcerned');
         }])
         //我的关注
         .factory('MyAttention', ['$resource', function ($resource) {
