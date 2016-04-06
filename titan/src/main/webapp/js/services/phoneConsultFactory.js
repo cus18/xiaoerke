@@ -47,11 +47,11 @@ define(['appPhoneConsult'], function (app) {
 
         //获取电话咨询订单详情
         .factory('PhoneConsultRegisterInfo', ['$resource', function ($resource) {
-            return $resource(user_appoint + '/consultPhone/getOrderInfo');
+            return $resource(user_h5 + 'consultOrder/getOrderInfo');
         }])
         //获取预约挂号订单详情
         .factory('AppointRegisterInfo', ['$resource', function ($resource) {
-            return $resource(user_appoint + '/order/user/orderDetail');
+            return $resource(user_appoint + '/titan/order/user/orderDetail');
         }])
 
 
