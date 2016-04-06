@@ -110,7 +110,7 @@ span.emotion:hover{background-position:2px -28px}
 /*快捷回复*/
 .chatinstall{border-bottom: 1px solid #acacac;background-color: #fff;}
 .chatinstall span:nth-child(1){margin: 0 15px 0 20px;}
-.chatinstall span {display: inline-block;margin-right: 15px;font: 12px/50px 'Microsoft Yahei';color:#333;cursor:pointer;}
+.chatinstall span {display: inline-block;margin-right: 10px;font: 12px/50px 'Microsoft Yahei';color:#333;cursor:pointer;}
 .chatinstall span img {margin-right: 5px;}
 /*textarea输入框*/
 .inputcontent{padding-left: 166px;padding-right: 405px;}
