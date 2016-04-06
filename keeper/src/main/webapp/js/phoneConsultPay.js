@@ -310,7 +310,7 @@ var wxPay = function (consultPhoneServiceId) {
                 paySign:obj.paySign,  // 支付签名
                 success: function (res) {
                     if(res.errMsg == "chooseWXPay:ok" ) {
-                        window.location.href = "phoneConsult#/phoneConPaySuccess/"+consultPhoneServiceId;
+                        window.location.href = "/titan/phoneConsult#/phoneConPaySuccess/"+consultPhoneServiceId;
                     }else{
                         alert("支付失败,请重新支付")
                     }
