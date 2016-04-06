@@ -4,7 +4,6 @@ import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
-import com.cxqm.xiaoerke.modules.consult.service.PatientConsultWechatService;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
 import com.cxqm.xiaoerke.modules.interaction.dao.PatientRegisterPraiseDao;
 import com.cxqm.xiaoerke.modules.member.service.MemberService;
@@ -50,9 +49,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
 	@Autowired
 	private SystemService systemService;
-
-	@Autowired
-	private PatientConsultWechatService patientConsultWechatService;
 
 	@Autowired
 	private ConsultSessionService consultConversationService;
@@ -125,7 +121,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			}
 		}
 		else {
-			patientConsultWechatService.patientWechatConsultService(xmlEntity);
+
 			return "";
 			//respMessage = transferToCustomer(xmlEntity);
 		}

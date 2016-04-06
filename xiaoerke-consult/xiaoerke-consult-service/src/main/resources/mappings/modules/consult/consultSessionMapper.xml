@@ -180,8 +180,6 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-
-
     <update id="updateSessionInfoByUserId" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession">
         update consult_conversation
         <set>
@@ -229,11 +227,6 @@
         <foreach collection="list" item="classIdList" open="(" separator="," close=")">
             #{classIdList}
         </foreach>
-    </select>
-
-    <select id="getAttention" resultType="java.util.HashMap">
-        select marketer, nickname,date_format(min(date),'%Y-%m-%d') date from
-        sys_attention where openid=#{openId}
     </select>
 
 </mapper>
