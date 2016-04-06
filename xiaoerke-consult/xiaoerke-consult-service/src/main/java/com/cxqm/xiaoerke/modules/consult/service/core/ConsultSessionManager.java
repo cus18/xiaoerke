@@ -1,21 +1,17 @@
 package com.cxqm.xiaoerke.modules.consult.service.core;
 
-import com.cxqm.xiaoerke.modules.consult.dao.ConsultSessionDao;
 import com.cxqm.xiaoerke.modules.consult.service.impl.SessionCacheRedisImpl;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
-
 import java.net.InetSocketAddress;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
@@ -24,7 +20,6 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsSer
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class ConsultSessionManager {
 	
@@ -184,70 +179,10 @@ public class ConsultSessionManager {
 
 	public void doCreateSessionInitiatedByWX(String clientServerId,Channel channel){
 
-		Integer sessionId = sessionCache.getSessionIdByClientServerId(clientServerId);
+		System.out.println(clientServerId);
+		System.out.println(channel);
 
-		RichConsultSession consultSession = null;
-		if(sessionId != null)
-			consultSession = sessionCache.getConsultSessionBySessionId(sessionId);
-
-		if(consultSession == null) {
-			consultSession = new RichConsultSession();
-			consultSession.setCreateTime(new Date());
-			InetSocketAddress address = (InetSocketAddress) channel.localAddress();
-			consultSession.setServerAddress(address.getHostName());
-			consultSession.setOpenid(clientServerId);
-			consultSession.setUserName("胖胖");
-
-			int number = accessNumber.getAndDecrement();
-			if(number < 10)
-				accessNumber.set(1000);
-
-			int distributorsListSize = distributorsList.size();
-			int index = number % distributorsListSize;
-			String distributorUserId = distributorsList.get(index);
-			Channel distributorChannel = distributors.get(distributorUserId);
-			if(distributorChannel != null) {
-				consultSession.setCsUserId(distributorUserId);
-			} else {
-				int length = index + distributorsListSize + 2;
-				for(int i = index + 1;  i < length; i ++) {
-					distributorUserId = distributorsList.get(i % distributorsListSize);
-					distributorChannel = distributors.get(distributorUserId);
-					if(distributorChannel != null) {
-						if(distributorChannel.isActive()) {
-							consultSession.setCsUserId(distributorUserId);
-							User csUser = systemService.getUser(distributorUserId);//chenjiakeQ&A，此处的userId，是否应该为distributorUserId
-							consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
-							break;
-						} else {
-							distributors.remove(distributorUserId);
-						}
-					}
-				}
-			}
-
-			if(distributorChannel == null) {
-				//TODO send msg to user that no distributor is available
-				return;
-			}
-
-			consultSessionService.saveConsultInfo(consultSession);
-
-			sessionId = consultSession.getId();
-			sessionCache.putSessionIdConsultSessionPair(sessionId, consultSession);
-			sessionCache.putUserIdSessionIdPair(clientServerId, sessionId);
-
-			//send user
-			JSONObject obj = new JSONObject();
-			obj.put("type", 4);
-			obj.put("notifyType", "0001");
-			obj.put("session", consultSession);
-			TextWebSocketFrame frame = new TextWebSocketFrame(obj.toJSONString());
-			distributorChannel.writeAndFlush(frame.retain());
-		}
-
-		userChannelMapping.put(clientServerId, channel);
-		channelUserMapping.put(channel, clientServerId);
+		return;
 	}
 	
 	public void transferSession(Integer sessionId, String toCsUserId, String remark){

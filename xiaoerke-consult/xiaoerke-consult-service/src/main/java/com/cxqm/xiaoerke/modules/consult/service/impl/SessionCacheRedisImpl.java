@@ -3,8 +3,8 @@ package com.cxqm.xiaoerke.modules.consult.service.impl;
 import java.util.Collection;
 import java.util.List;
 
-import com.cxqm.xiaoerke.modules.consult.service.core.RichConsultSession;
-import com.cxqm.xiaoerke.modules.consult.service.core.SessionCache;
+import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.service.SessionCache;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;

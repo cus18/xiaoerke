@@ -1,4 +1,6 @@
-package com.cxqm.xiaoerke.modules.consult.service.core;
+package com.cxqm.xiaoerke.modules.consult.service;
+
+import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 
 import javax.websocket.Session;
 import java.util.Collection;
@@ -26,7 +28,7 @@ public interface SessionCache {
 
 	void putClientServerIdSessionIdPair(String clientServerId, Integer sessionId);
 
-	void putWechatSessionByClientServerId(String clientServerId,Session wechatSession);
+	void putWechatSessionByClientServerId(String clientServerId, Session wechatSession);
 
 	Session getWechatSessionByClientServerId(String clientServerId);
 }

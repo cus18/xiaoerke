@@ -15,6 +15,7 @@
     <orderEntry type="module" module-name="xiaoerke-consult-api" />
     <orderEntry type="library" name="Maven: org.mongodb:mongo-java-driver:2.13.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.6" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-core:7.0.47" level="project" />
     <orderEntry type="module" module-name="xiaoerke-common" />
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore:4.4.1" level="project" />
     <orderEntry type="library" name="Maven: com.aliyun.oss:aliyun-sdk-oss:2.0.2" level="project" />
@@ -28,20 +29,6 @@
     <orderEntry type="module" module-name="xiaoerke-payment-api" />
     <orderEntry type="module" module-name="xiaoerke-member-api" />
     <orderEntry type="module" module-name="xiaoerke-system-service" />
-    <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-core:7.0.47" level="project" />
-    <orderEntry type="library" name="Maven: javax:javaee-api:7.0" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.mail:javax.mail:1.5.0" level="project" />
-    <orderEntry type="library" name="Maven: org.glassfish.tyrus:tyrus-client:1.0-rc3" level="project" />
-    <orderEntry type="library" name="Maven: org.glassfish.tyrus:tyrus-core:1.0-rc3" level="project" />
-    <orderEntry type="library" name="Maven: org.glassfish.tyrus:tyrus-spi:1.0-rc3" level="project" />
-    <orderEntry type="library" name="Maven: org.glassfish.tyrus:tyrus-websocket-core:1.0-rc3" level="project" />
-    <orderEntry type="library" name="Maven: org.glassfish.tyrus:tyrus-container-grizzly:1.0-rc3" level="project" />
-    <orderEntry type="library" name="Maven: org.glassfish.grizzly:grizzly-framework:2.3" level="project" />
-    <orderEntry type="library" name="Maven: org.glassfish.grizzly:grizzly-http-server:2.3" level="project" />
-    <orderEntry type="library" name="Maven: org.glassfish.grizzly:grizzly-http:2.3" level="project" />
-    <orderEntry type="library" name="Maven: org.glassfish.grizzly:grizzly-rcm:2.3" level="project" />
-    <orderEntry type="library" name="Maven: org.glassfish.tyrus:tyrus-server:1.0-rc3" level="project" />
-    <orderEntry type="library" name="Maven: javax.websocket:javax.websocket-api:1.0-rc5" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:4.0.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:4.0.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:4.0.8.RELEASE" level="project" />
