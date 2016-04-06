@@ -6,9 +6,12 @@ import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.IdGen;
 import com.cxqm.xiaoerke.modules.operation.service.SysLogService;
+import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterTemplateVo;
 import com.cxqm.xiaoerke.modules.order.entity.RegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.entity.RegisterTemplateServiceVo;
+import com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo;
 import com.cxqm.xiaoerke.modules.order.service.RegisterService;
+import com.cxqm.xiaoerke.modules.order.service.SysConsultPhoneService;
 import com.cxqm.xiaoerke.modules.sys.service.MessageService;
 import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
 import com.cxqm.xiaoerke.modules.task.dao.ScheduledTaskDao;
@@ -39,6 +42,9 @@ public class ScheduleTaskServiceImpl implements ScheduleTaskService {
 
 	@Autowired
 	private RegisterService registerService;
+	
+	@Autowired
+	private SysConsultPhoneService sysConsultPhoneService;
 
 	@Autowired
 	private WeChatInfoService weChatInfoService;
@@ -260,6 +266,70 @@ public class ScheduleTaskServiceImpl implements ScheduleTaskService {
 		return doctorInfo;
     }
 
+  	/**
+  	 * 重复设置电话咨询号源  sunxiao
+  	 */
+  	@Override
+  	public void repeatSettingConsultPhoneRegister() {
+    	Calendar c = new GregorianCalendar(); 
+		c.setTime(new Date());
+		String weekday = c.get(Calendar.DAY_OF_WEEK)+"";
+		c.add(Calendar.DAY_OF_YEAR, 28);  
+		Date date = c.getTime();  
+		String repeatDate = DateUtils.DateToStr(date, "date");
+    	Map<String, Object> map = new HashMap<String, Object>();
+    	map.put("status", 1);
+    	map.put("weekday", weekday);
+    	List<ConsultPhoneRegisterTemplateVo> list = sysConsultPhoneService.getRegisterTemplateList(map);
+    	List<HashMap<String, Object>> excuteList = new ArrayList<HashMap<String,Object>>();
+    	for(ConsultPhoneRegisterTemplateVo vo : list){
+    		String time = vo.getTime();
+    		SysConsultPhoneServiceVo registerServiceVo = new SysConsultPhoneServiceVo();
+    		registerServiceVo.setSysDoctorId(vo.getDoctorId());
+    		registerServiceVo.setPrice(vo.getPrice()+"");
+    		registerServiceVo.setServicetype(vo.getServerType());
+    		registerServiceVo.setRepeatFlag(vo.getRepeatInterval());
+			HashMap<String, Object> retMap = prepareConsultPhoneRegisterBatch(registerServiceVo, time, repeatDate);
+    		if(retMap!=null){
+    			excuteList.add(retMap);
+    		}
+    	}
+    	if(excuteList.size()!=0){
+			registerService.batchInsertRegister(excuteList);
+    	}
+    }
+  	
+  	/**
+  	 * 准备批量插入电话咨询号源数据
+  	 * sunxiao
+  	 */
+  	private HashMap<String, Object> prepareConsultPhoneRegisterBatch(SysConsultPhoneServiceVo registerServiceVo,String time,String date){
+		HashMap<String, Object> registerInfo = new HashMap<String, Object>();
+		Date begin_time= DateUtils.StrToDate(time,"time");
+
+		Date end_time = new Date(begin_time.getTime() + 900000);
+		registerInfo.put("id", IdGen.uuid());
+		registerInfo.put("doctorId", registerServiceVo.getSysDoctorId());
+		registerInfo.put("date", date);
+		registerInfo.put("begin_time", begin_time);
+		registerInfo.put("end_time", end_time);
+		registerInfo.put("price", registerServiceVo.getPrice());
+		registerInfo.put("deposit", "50");//鎵�渶鎶奸噾
+		registerInfo.put("service_type", registerServiceVo.getServicetype());//鏈嶅姟绫诲瀷
+		registerInfo.put("create_date", new Date());
+		registerInfo.put("status", "0");
+		registerInfo.put("repeatFlag", registerServiceVo.getRepeatFlag());
+		Map<String, Object> queryMap = new HashMap<String, Object>();
+		queryMap.put("date", date);
+		queryMap.put("time", begin_time);
+		queryMap.put("sysDoctorId", registerServiceVo.getSysDoctorId());
+		List<SysConsultPhoneServiceVo> rlist = sysConsultPhoneService.findSysConsultPhoneByInfo(queryMap);
+		if(rlist.size()!=0){
+			return null;
+		}
+		return registerInfo;
+    }
+  	
 	@Override
 	public HashMap<String,Object> getUserOperationStatistic(HashMap<String,Object> data) {
 		return sysLogService.getUserOperationStatistic(data);
