@@ -156,7 +156,7 @@ define(['appPhoneConsult'], function (app) {
             return $resource(user_appoint + 'order/user/orderList');
         }])
         .factory('MyselfInfoPhoneConsult',['$resource',function ($resource){
-            return $resource(user_h5 + 'order/user/appointmentByPhone');
+            return $resource(user_h5 + 'consultOrder/getOrderList');
         }])
 
         //获取所有订单列表
