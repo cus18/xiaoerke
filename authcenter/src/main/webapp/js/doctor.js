@@ -62,9 +62,5 @@ var deal = function(){
     $("#doctorButton").attr('disabled',buttonValue);
 }
 
-/*var userDeal = function(){
-    window.location.href = "/xiaoerke-doctor/ap/doctor#/userDeal";
-}*/
-
 
 

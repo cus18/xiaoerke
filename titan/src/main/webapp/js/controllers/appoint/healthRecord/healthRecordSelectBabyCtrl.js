@@ -14,7 +14,7 @@ angular.module('controllers', ['ionic']).controller('healthRecordSelectBabyCtrl'
             $scope.babyNum=index;
             var page=$stateParams.page;
             if(page==1){
-            	window.location.href="/xiaoerke-wxapp/ap/health#/consultFillInfo/"+index+","+$stateParams.conid;
+            	window.location.href="/xiaoerke-wxapp/health#/consultFillInfo/"+index+","+$stateParams.conid;
             }else{
             	$state.go("healthRecordIndex",{index:index});
             }

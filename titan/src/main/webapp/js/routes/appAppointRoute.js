@@ -30,10 +30,10 @@ define(['appAppoint'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.CooperationHospitalCtrl',
-                                    ['js/controllers/appoint/ap/cooperationHospitalCtrl.js',
+                                    ['js/controllers/appoint/cooperationHospitalCtrl.js',
                                         'js/libs/lodash.min.js',
-                                        'styles/appoint/ap/cooperationHospital.less?ver='+appointVersion],
-                                    'js/views/appoint/ap/cooperationHospital.html?ver='+appointVersion);
+                                        'styles/appoint/cooperationHospital.less?ver='+appointVersion],
+                                    'js/views/appoint/cooperationHospital.html?ver='+appointVersion);
                             }
                         }
                     })
@@ -44,10 +44,10 @@ define(['appAppoint'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.cooperationHospitalPriceCtrl',
-                                    ['js/controllers/appoint/ap/cooperationHospitalPriceCtrl.js',
+                                    ['js/controllers/appoint/cooperationHospitalPriceCtrl.js',
                                         'js/libs/lodash.min.js',
-                                        'styles/appoint/ap/cooperationHospitalPrice.less?ver='+appointVersion],
-                                    'js/views/appoint/ap/cooperationHospitalPrice.html?ver='+appointVersion);
+                                        'styles/appoint/cooperationHospitalPrice.less?ver='+appointVersion],
+                                    'js/views/appoint/cooperationHospitalPrice.html?ver='+appointVersion);
                             }
                         }
                     })
@@ -58,10 +58,10 @@ define(['appAppoint'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.SearchListCtrl',
-                                    ['js/controllers/appoint/ap/searchListCtrl.js',
+                                    ['js/controllers/appoint/searchListCtrl.js',
                                         'js/libs/moment.min.js','js/libs/jquery.textSearch-1.0.js',
-                                        'styles/appoint/ap/searchList.less?ver='+appointVersion],
-                                    'js/views/appoint/ap/searchList.html?ver='+appointVersion);
+                                        'styles/appoint/searchList.less?ver='+appointVersion],
+                                    'js/views/appoint/searchList.html?ver='+appointVersion);
                             }
                         }
                     })
@@ -73,10 +73,10 @@ define(['appAppoint'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.DoctorAppointmentCtrl',
-                                    ['js/controllers/appoint/ap/doctorAppointmentCtrl.js',
+                                    ['js/controllers/appoint/doctorAppointmentCtrl.js',
                                         'js/libs/moment.min.js','js/libs/lodash.min.js',
-                                        'styles/appoint/ap/doctorAppointment.less?ver'+appointVersion],
-                                    'js/views/appoint/ap/doctorAppointment.html?ver='+appointVersion);
+                                        'styles/appoint/doctorAppointment.less?ver'+appointVersion],
+                                    'js/views/appoint/doctorAppointment.html?ver='+appointVersion);
                             }
                         }
                     })
@@ -87,10 +87,10 @@ define(['appAppoint'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.DoctorGroupListCtrl',
-                                    ['js/controllers/appoint/ap/doctorGroupListCtrl.js',
+                                    ['js/controllers/appoint/doctorGroupListCtrl.js',
                                         'js/libs/moment.min.js','js/libs/lodash.min.js',
-                                        'styles/appoint/ap/doctorGroupList.less?ver'+appointVersion],
-                                    'js/views/appoint/ap/doctorGroupList.html?ver='+appointVersion);
+                                        'styles/appoint/doctorGroupList.less?ver'+appointVersion],
+                                    'js/views/appoint/doctorGroupList.html?ver='+appointVersion);
                             }
                         }
                     })
@@ -102,13 +102,13 @@ define(['appAppoint'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.AppointmentConfirmCtrl',
-                                    ['js/controllers/appoint/ap/appointmentConfirmCtrl.js',
+                                    ['js/controllers/appoint/appointmentConfirmCtrl.js',
                                         'js/libs/moment.min.js',
                                         'js/libs/mobiscroll.custom-2.17.0.min.js',
                                         'js/libs/showBo.js',
-                                        'styles/lib/showBo.css','styles/appoint/ap/appointmentConfirm.less?ver'+appointVersion,
+                                        'styles/lib/showBo.css','styles/appoint/appointmentConfirm.less?ver'+appointVersion,
                                         'styles/lib/common.css','styles/lib/mobiscroll.custom-2.17.0.min.css'],
-                                    'js/views/appoint/ap/appointmentConfirm.html?ver='+appointVersion);
+                                    'js/views/appoint/appointmentConfirm.html?ver='+appointVersion);
                             }
                         }
                     })
@@ -119,9 +119,9 @@ define(['appAppoint'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.payProblemCtrl',
-                                    ['js/controllers/appoint/ap/payProblemCtrl.js',
-                                        'styles/appoint/ap/payProblem.less?ver'+appointVersion],
-                                    'js/views/appoint/ap/payProblem.html?ver='+appointVersion);
+                                    ['js/controllers/appoint/payProblemCtrl.js',
+                                        'styles/appoint/payProblem.less?ver'+appointVersion],
+                                    'js/views/appoint/payProblem.html?ver='+appointVersion);
                             }
                         }
                     })
@@ -146,9 +146,9 @@ define(['appAppoint'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.RouteCtrl',
-                                    ['js/controllers/appoint/ap/routeCtrl.js',
-                                        'styles/appoint/ap/route.less?ver'+appointVersion],
-                                    'js/views/appoint/ap/route.html?ver='+appointVersion);
+                                    ['js/controllers/appoint/routeCtrl.js',
+                                        'styles/appoint/route.less?ver'+appointVersion],
+                                    'js/views/appoint/route.html?ver='+appointVersion);
                             }
                         }
                     })
@@ -159,10 +159,10 @@ define(['appAppoint'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.memberServiceCtrl',
-                                    ['js/controllers/appoint/ap/memberServiceCtrl.js',
+                                    ['js/controllers/appoint/memberServiceCtrl.js',
                                         'js/libs/showBo.js','js/libs/moment.min.js','styles/lib/showBo.css',
-                                        'styles/appoint/ap/memberService.less?ver'+appointVersion],
-                                    'js/views/appoint/ap/memberService.html?ver='+appointVersion);
+                                        'styles/appoint/memberService.less?ver'+appointVersion],
+                                    'js/views/appoint/memberService.html?ver='+appointVersion);
                             }
                         }
                     })
@@ -173,11 +173,11 @@ define(['appAppoint'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.memberServiceDetailCtrl',
-                                    ['js/controllers/appoint/ap/memberServiceDetailCtrl.js',
+                                    ['js/controllers/appoint/memberServiceDetailCtrl.js',
                                         'js/libs/showBo.js','js/libs/moment.min.js',
                                         'styles/lib/showBo.css',
-                                        'styles/appoint/ap/memberServiceDetail.less?ver'+appointVersion],
-                                    'js/views/appoint/ap/memberServiceDetail.html?ver='+appointVersion);
+                                        'styles/appoint/memberServiceDetail.less?ver'+appointVersion],
+                                    'js/views/appoint/memberServiceDetail.html?ver='+appointVersion);
                             }
                         }
                     })
@@ -188,9 +188,9 @@ define(['appAppoint'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.memberServiceSuccessCtrl',
-                                    ['js/controllers/appoint/ap/memberServiceSuccessCtrl.js',
-                                        'styles/appoint/ap/memberServiceSuccess.less?ver'+appointVersion],
-                                    'js/views/appoint/ap/memberServiceSuccess.html?ver='+appointVersion);
+                                    ['js/controllers/appoint/memberServiceSuccessCtrl.js',
+                                        'styles/appoint/memberServiceSuccess.less?ver'+appointVersion],
+                                    'js/views/appoint/memberServiceSuccess.html?ver='+appointVersion);
                             }
                         }
                     })
@@ -214,9 +214,9 @@ define(['appAppoint'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.seeDoctorProcessCtrl',
-                                    ['js/controllers/appoint/ap/seeDoctorProcessCtrl.js',
-                                        'styles/appoint/ap/seeDoctorProcess.less?ver'+appointVersion],
-                                    'js/views/appoint/ap/seeDoctorProcess.html?ver='+appointVersion);
+                                    ['js/controllers/appoint/seeDoctorProcessCtrl.js',
+                                        'styles/appoint/seeDoctorProcess.less?ver'+appointVersion],
+                                    'js/views/appoint/seeDoctorProcess.html?ver='+appointVersion);
                             }
                         }
                     })
@@ -227,9 +227,9 @@ define(['appAppoint'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.memberDealCtrl',
-                                    ['js/controllers/appoint/ap/memberDealCtrl.js',
-                                        'styles/appoint/ap/memberDeal.less?ver'+appointVersion],
-                                    'js/views/appoint/ap/memberDeal.html?ver='+appointVersion);
+                                    ['js/controllers/appoint/memberDealCtrl.js',
+                                        'styles/appoint/memberDeal.less?ver'+appointVersion],
+                                    'js/views/appoint/memberDeal.html?ver='+appointVersion);
                             }
                         }
                     })

@@ -38,7 +38,7 @@ angular.module('controllers', ['ionic']).controller('consultHistoryCtrl', [
         }
 
         $scope.$on('$ionicView.enter',function() {
-        	 var routePath = "/ap/healthBBBBBB" + $location.path();
+        	 var routePath = "/healthBBBBBB" + $location.path();
              GetUserLoginStatus.save({routePath:routePath},function(data){
                  $scope.pageLoading = false;
                  if(data.status=="9") {

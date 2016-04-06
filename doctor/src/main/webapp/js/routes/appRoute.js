@@ -55,9 +55,9 @@ define(['app'], function(app){
                        resolve: {
                            load: function($templateCache, $ocLazyLoad, $q, $http) {
                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.doctorFirstCtrl',
-                                   ['js/controllers/ap/doctorFirstCtrl.js','js/libs/moment.min.js',
-                                       'styles/ap/doctorFirst.less?ver='+version,'styles/lib/common.css','styles/showBo.css'],
-                                   'js/views/ap/doctorFirst.html?ver='+version);
+                                   ['js/controllers/doctorFirstCtrl.js','js/libs/moment.min.js',
+                                       'styles/doctorFirst.less?ver='+version,'styles/lib/common.css','styles/showBo.css'],
+                                   'js/views/doctorFirst.html?ver='+version);
                            }
                        }
                    })
@@ -68,9 +68,9 @@ define(['app'], function(app){
                        resolve: {
                            load: function($templateCache, $ocLazyLoad, $q, $http) {
                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.doctorFirstCtrl',
-                                   ['js/controllers/ap/addTimeCtrl.js','js/libs/mobiscroll.custom-2.5.0.min.js','js/libs/lodash.min.js',
-                                       'styles/ap/addTime.less?ver='+version,'styles/lib/mobiscroll.custom-2.5.0.min.css'],
-                                   'js/views/ap/addTime.html?ver='+version);
+                                   ['js/controllers/addTimeCtrl.js','js/libs/mobiscroll.custom-2.5.0.min.js','js/libs/lodash.min.js',
+                                       'styles/addTime.less?ver='+version,'styles/lib/mobiscroll.custom-2.5.0.min.css'],
+                                   'js/views/addTime.html?ver='+version);
                            }
                        }
                    })
@@ -81,8 +81,8 @@ define(['app'], function(app){
                        resolve: {
                            load: function($templateCache, $ocLazyLoad, $q, $http) {
                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.acceptRemindCtrl',
-                                   ['js/controllers/ap/acceptRemindCtrl.js','styles/ap/acceptRemind.less?ver='+version,'styles/lib/common.css',],
-                                   'js/views/ap/acceptRemind.html?ver='+version);
+                                   ['js/controllers/acceptRemindCtrl.js','styles/acceptRemind.less?ver='+version,'styles/lib/common.css',],
+                                   'js/views/acceptRemind.html?ver='+version);
                            }
                        }
                    })
@@ -93,9 +93,9 @@ define(['app'], function(app){
                        resolve: {
                            load: function($templateCache, $ocLazyLoad, $q, $http) {
                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.settlementCtrl',
-                                   ['js/controllers/ap/settlementCtrl.js', 'js/libs/moment.min.js',
-                                       'styles/ap/settlement.less?ver='+version,'styles/lib/common.css'],
-                                   'js/views/ap/settlement.html?ver='+version);
+                                   ['js/controllers/settlementCtrl.js', 'js/libs/moment.min.js',
+                                       'styles/settlement.less?ver='+version,'styles/lib/common.css'],
+                                   'js/views/settlement.html?ver='+version);
                            }
                        }
                    })

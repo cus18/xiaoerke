@@ -89,7 +89,7 @@ var doRefresh = function(){
 
     $.ajax({
         type: 'POST',
-        url: "/xiaoerke-appoint/ap/healthRecord/getBabyinfoList",
+        url: "/xiaoerke-appoint/healthRecord/getBabyinfoList",
         data: "{'openid':''}",
         contentType: "application/json; charset=utf-8",
         success: function(result){

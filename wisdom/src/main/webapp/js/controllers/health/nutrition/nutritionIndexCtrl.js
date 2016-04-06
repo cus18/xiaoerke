@@ -168,7 +168,7 @@ angular.module('controllers', ['ionic']).controller('nutritionIndexCtrl', [
         $scope.readArticle = function (id) {
             var pData = {logContent:encodeURI("YYGL_WZ")};
             $http({method:'post',url:'util/recordLogs',params:pData});
-            window.location.href = "http://s22.baodf.com/xiaoerke-knowledge/ap/knowledge?value=251333#/" +
+            window.location.href = "http://s22.baodf.com/xiaoerke-knowledge/knowledge?value=251333#/" +
                 "knowledgeArticleContent/" +id+",yygl";
         }
 
@@ -177,9 +177,9 @@ angular.module('controllers', ['ionic']).controller('nutritionIndexCtrl', [
          */
         $scope.lookMore = function (id,type) {
             if(type==1){
-                window.location.href = "http://s22.baodf.com/xiaoerke-knowledge/ap/knowledge#/todayChoiceNurslingList/"+id+",饮食,习惯";
+                window.location.href = "http://s22.baodf.com/xiaoerke-knowledge/knowledge#/todayChoiceNurslingList/"+id+",饮食,习惯";
             }else{
-                window.location.href = "http://s22.baodf.com/xiaoerke-knowledge/ap/knowledge#/todayChoiceNurslingList/"+id+",饮食,贴士";
+                window.location.href = "http://s22.baodf.com/xiaoerke-knowledge/knowledge#/todayChoiceNurslingList/"+id+",饮食,贴士";
             }
         }
 

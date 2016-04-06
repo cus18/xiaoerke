@@ -27,7 +27,7 @@
         $scope.begin_time="07:00";
         $scope.end_time="07:15";
         var doctorId="";//医生Id
-        var addDate="";//添加号源日期   http://localhost:8080/xiaoerke-doctor/ap/dc#/addTime
+        var addDate="";//添加号源日期   http://localhost:8080/xiaoerke-doctor/dc#/addTime
         var mo="";
         var repeatType="no";
 

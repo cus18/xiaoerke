@@ -624,7 +624,7 @@
 	function getBabyInfo(){
 		$.ajax({
 			type: 'POST',
-			url: "/xiaoerke-wxapp/ap/customer/searchBabyInfo",
+			url: "/xiaoerke-wxapp/customer/searchBabyInfo",
 			contentType: "application/json; charset=utf-8",
 			data: "{'openid':'"+openid+"'}",
 			success: function(result){
@@ -674,7 +674,7 @@
 		var userid=$("#userid").val();
 		$.ajax({
 			type: 'POST',
-			url: "/xiaoerke-wxapp/ap/customer/saveBaby",
+			url: "/xiaoerke-wxapp/customer/saveBaby",
 			contentType: "application/json; charset=utf-8",
 // 			data: "{'openid':'"+openid+"','babyName':'"+babyName+"','weChatName':'"+wechatName+"','babyBirthday':'"+babyBirthday+"','phone':'"+phone+"','sex':'"+sex+"','id':'"+id+"','remark':'"+remark+"'}",
 			data: "{'id':'"+id+"','openid':'"+openid+"','userid':'"+userid+"','babyName':'"+babyName+"','babyBirthday':'"+babyBirthday+"','sex':'"+sex+"'}",
@@ -700,7 +700,7 @@
 	}
 
 	function getIllness(){
-		$.post("/xiaoerke-wxapp/ap/customer/searchIllnessList",
+		$.post("/xiaoerke-wxapp/customer/searchIllnessList",
 				function(result){
 					result=eval("("+result+")");
 					var datas=result.illnessList;
@@ -730,7 +730,7 @@
 		}
 		$.ajax({
 			type: 'POST',
-			url: "/xiaoerke-wxapp/ap/customer/saveCustomerLog",
+			url: "/xiaoerke-wxapp/customer/saveCustomerLog",
 			contentType: "application/json; charset=utf-8",
 			data: "{'openid':'"+openid+"','create_date':'"+create_date+"','illness':'"+illness+"','sections':'"+sections+"','customerID':'"+costomerID+"','id':'"+id+"','show':'"+show+"','result':'"+result+"'}",
 			success: function(result){
@@ -755,7 +755,7 @@
 		}
 		$.ajax({
 			type: 'POST',
-			url: "/xiaoerke-wxapp/ap/customer/saveIllness",
+			url: "/xiaoerke-wxapp/customer/saveIllness",
 			contentType: "application/json; charset=utf-8",
 			async:false,
 			data: "{'illness':'"+costomerID+"'}",
@@ -801,7 +801,7 @@
 	function getOrderInfoByOpenid(){
 		$.ajax({
 			type: 'POST',
-			url: "/xiaoerke-wxapp/ap/customer/getOrderInfoByOpenid",
+			url: "/xiaoerke-wxapp/customer/getOrderInfoByOpenid",
 			contentType: "application/json; charset=utf-8",
 			data: "{'openid':'"+openid+"'}",
 			success: function(result){
@@ -866,7 +866,7 @@
 	function getCustomerLogByOpenID(){
 		$.ajax({
 			type: 'POST',
-			url: "/xiaoerke-wxapp/ap/customer/getCustomerLogByOpenID",
+			url: "/xiaoerke-wxapp/customer/getCustomerLogByOpenID",
 			contentType: "application/json; charset=utf-8",
 			data: "{'openid':'"+openid+"'}",
 			success: function(result){
@@ -975,7 +975,7 @@
 		if(title=="湿疹"||title=='尿布疹'){
 // 			$.ajax({
 // 				type: 'POST',
-// 				url: "../../ap/customer/onIllnessKeydown",
+// 				url: "../../customer/onIllnessKeydown",
 // 				contentType: "application/json; charset=utf-8",
 // 				data: "{'illness':'"+title+"'}",
 // 				success: function(result){
@@ -1030,7 +1030,7 @@
 	function sendMessage(obj){
 			$.ajax({
 			type: 'POST',
-			url: "/xiaoerke-wxapp/ap/customer/getKeywordsByOpenID",
+			url: "/xiaoerke-wxapp/customer/getKeywordsByOpenID",
 			contentType: "application/json; charset=utf-8",
 			data: "{'openid':'"+openid+"','keywords':'"+obj+"'}",
 			success: function(result){
@@ -1040,7 +1040,7 @@
 				}else{
 					$.ajax({
 						type: 'POST',
-						url: "/xiaoerke-wxapp/ap/customer/saveOpenidAndKeywords",
+						url: "/xiaoerke-wxapp/customer/saveOpenidAndKeywords",
 						contentType: "application/json; charset=utf-8",
 						data: "{'openid':'"+openid+"','keywords':'"+obj+"'}",
 						success: function(result){
@@ -1132,7 +1132,7 @@
 	function checkIllness(){
 	 			$.ajax({
  				type: 'POST',
- 				url: "/xiaoerke-wxapp/ap/customer/getDocotrByIllness",
+ 				url: "/xiaoerke-wxapp/customer/getDocotrByIllness",
  				contentType: "application/json; charset=utf-8",
  				data: "{'illness':'"+illnessName+"'}",
  				success: function(result){
@@ -1164,7 +1164,7 @@
 		function getLastOrderDate(babyame){
 	 			$.ajax({
  				type: 'POST',
- 				url: "/xiaoerke-wxapp/ap/customer/getLastOrderDate",
+ 				url: "/xiaoerke-wxapp/customer/getLastOrderDate",
  				contentType: "application/json; charset=utf-8",
  				data: "{'openid':'"+openid+"','babyname':'"+babyame+"'}",
  				success: function(result){
@@ -1207,7 +1207,7 @@
 		if(customer=="110@BaodfWX"){
 			$.ajax({
  				type: 'POST',
- 				url: "/xiaoerke-wxapp/ap/customer/getMemberInfo",
+ 				url: "/xiaoerke-wxapp/customer/getMemberInfo",
  				contentType: "application/json; charset=utf-8",
  				data: "{'openid':'"+openid+"','babyname':'"+babyName+"'}",
  				success: function(result){
@@ -1236,7 +1236,7 @@
 	    	 var costomerID=$("#costomerID").val();
 	    	 $.ajax({
 	 				type: 'POST',
-	 				url: "/xiaoerke-wxapp/ap/customer/saveReturnService",
+	 				url: "/xiaoerke-wxapp/customer/saveReturnService",
 	 				contentType: "application/json; charset=utf-8",
 	 				data: "{'openid':'"+openid+"','customerID':'"+costomerID+"'}",
 	 				success: function(result){

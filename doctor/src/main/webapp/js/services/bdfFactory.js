@@ -2,7 +2,7 @@
  * 取得实际位置
  * 调用方式：geoFactory.getGeo();
  */
-var doctor_h5 = '/xiaoerke-doctor/ap/'
+var doctor_h5 = '/xiaoerke-doctor/'
 
 define(['app'], function (app) {
     app

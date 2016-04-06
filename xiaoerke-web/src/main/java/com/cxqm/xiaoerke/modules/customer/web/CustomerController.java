@@ -183,7 +183,7 @@ public class CustomerController {
 	public @ResponseBody
 	Map<String, Object>  responseCustomer(HttpServletResponse response){
 		try {
-			response.sendRedirect("/xiaoerke-wxapp/ap/statistic/index#/customer");
+			response.sendRedirect("/xiaoerke-wxapp/statistic/index#/customer");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
