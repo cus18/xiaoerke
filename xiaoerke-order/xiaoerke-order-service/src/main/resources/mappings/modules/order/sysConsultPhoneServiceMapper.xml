@@ -33,6 +33,15 @@
     order by scs.createDate desc
   </select>
 
+  <select id="getRegisterInfo" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select * from sys_consultPhone_service scs
+    where scs.sys_doctor_id = #{doctorId,jdbcType=VARCHAR}
+    and scs.state = #{state,jdbcType=VARCHAR}
+    and (DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>now()
+    and date_sub(now(),interval -1 month) >= (DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))
+    order by scs.createDate desc
+  </select>
+
 
   <select id="finCountOfService" resultType="Integer">
     select count(*) from sys_consultphone_service scs
