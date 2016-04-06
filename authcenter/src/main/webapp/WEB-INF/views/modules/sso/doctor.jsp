@@ -34,7 +34,7 @@ inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
 			<div class="doc-deal" >
 				<img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Fdeal_y.png"
 					 width="15" height="15" onclick="deal()" id="dealImg">&nbsp;&nbsp;
-				<a href="/xiaoerke-doctor/ap/doctor#/userDeal">同意《宝大夫用户协议》</a>
+				<a href="/xiaoerke-doctor/doctor#/userDeal">同意《宝大夫用户协议》</a>
 			</div>
 			<%
 				Exception error = (Exception)request.getSession().getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);

@@ -40,7 +40,7 @@ angular.module('controllers', ['ionic']).controller('healthRecordUpdateBabyCtrl'
         	updateBabyInfo.get({"id":id,"sex":sex,"name":encodeURI(name),"birthDay":birthday}, function (data){
                 if(data.resultCode=='1'){
                 	if($stateParams.pageIndex=="1"){
-                	window.location.href="/xiaoerke-wxapp/ap/health#/consultFillInfo/"+$stateParams.index+","+$scope.conid;
+                	window.location.href="/xiaoerke-wxapp/health#/consultFillInfo/"+$stateParams.index+","+$scope.conid;
                 }else  if($stateParams.pageIndex=='2'){
                 	$state.go("healthRecordIndex",{index:$stateParams.index});
                 }else  {

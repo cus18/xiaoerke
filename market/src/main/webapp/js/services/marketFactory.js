@@ -2,7 +2,7 @@
  * 取得实际位置
  * 调用方式：geoFactory.getGeo();
  */
-var user_h5 = '/xiaoerke-marketing-webapp/ap/'
+var user_h5 = '/xiaoerke-marketing-webapp/'
 var wxChat = '/xiaoerke-marketing-webapp/wechatInfo/'
 
 define(['appMarket'], function (app) {

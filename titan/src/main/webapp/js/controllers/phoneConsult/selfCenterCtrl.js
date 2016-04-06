@@ -12,7 +12,7 @@
             /*我的资料*/
             $scope.myInfo = function(){
                 window.location.href="ap/appoint#/myInfo/"+$scope.myselfInfo.userPhoneNum;
-               /* window.location.href = "/xiaoerke-appoint/ap/appoint#/healthRecordSelectBaby/"+index+",1,"+$stateParams.conid;*/
+               /* window.location.href = "/xiaoerke-appoint/appoint#/healthRecordSelectBaby/"+index+",1,"+$stateParams.conid;*/
             };
             /* 当前订单*/
             $scope.currentOrder = function(){
@@ -35,7 +35,7 @@
             $scope.healthRecord = function(){
                 resolveUserLoginStatus.events("healthRecordIndex","","","ap/appoint#/healthRecordIndex/","notGo");
             };
-            var routePath = "/ap/appointBBBBBB" + $location.path();
+            var routePath = "/appointBBBBBB" + $location.path();
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 $scope.pageLoading = false;
                 if(data.status=="9") {

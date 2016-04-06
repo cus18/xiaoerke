@@ -1,4 +1,4 @@
-var public = '/xiaoerke-wxapp/ap/statistic/'
+var public = '/xiaoerke-wxapp/statistic/'
 
 angular.module('services', ['ngResource'])
     //获取医生管理下的患者列表数据和查找某个患者接口
