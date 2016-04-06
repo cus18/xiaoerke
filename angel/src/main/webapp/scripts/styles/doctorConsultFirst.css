@@ -123,38 +123,11 @@ textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 10
 .historymessage img{margin:0 10px;}
 /*添加分组*/
 .addgroup,.addcontent {width: 360px;box-shadow: 1px 1px 1px 1px #eee;margin: 0 0 0 25px;border-radius: 5px;}
-.addtop span {
-    display: inline-block;
-    float: none;
-    margin: 0 10px;
-}
-.addtop span:nth-child(2) {
-    float: right;
-    margin-right: 10px;
-    cursor: pointer;
-}
-.addtop {
-    font-size: 12px;
-    line-height: 30px;
-    background-color: #2A2A2F;
-    color: #fff;border-radius: 5px 5px 0 0;
-}
-.addgroupname {
-    margin: 25px;
-    text-align: center;
-    font-size: 12px;
-    color: #333;
-}
-.addgroupname span {
-    display: inline-block;
-    margin-right: 10px;
-}
-.addbtn .btn {
-    width: 70px;
-    height: 30px;
-}
-.addbtn {
-    text-align: center;padding-bottom: 15px;
-}
-.addkjhf{margin-bottom: 10px;
-    float: left;}
+.addtop span {display: inline-block;float: none;margin: 0 10px;}
+.addtop span:nth-child(2) {float: right;margin-right: 10px;cursor: pointer;}
+.addtop {font-size: 12px;line-height: 30px;background-color: #2A2A2F;color: #fff;border-radius: 5px 5px 0 0;}
+.addgroupname {margin: 25px;text-align: center;font-size: 12px;color: #333;}
+.addgroupname span {display: inline-block;margin-right: 10px;}
+.addbtn .btn {width: 70px;height: 30px;}
+.addbtn {text-align: center;padding-bottom: 15px;}
+.addkjhf{margin-bottom: 10px;float: left;}

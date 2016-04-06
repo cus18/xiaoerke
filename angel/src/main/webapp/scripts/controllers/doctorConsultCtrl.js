@@ -298,6 +298,20 @@ angular.module('controllers', ['luegg.directives'])
             $scope.addcontent1 = function() {
                 $scope.addcontent.show = !$scope.addcontent.show;
             }
+            //编辑分组
+            $scope.editgroup = {
+                show: false
+            }
+            $scope.editgroup1 = function() {
+                $scope.editgroup.show = !$scope.editgroup.show;
+            }
+            //编辑内容
+            $scope.editcontent = {
+                show: false
+            }
+            $scope.editcontent1 = function() {
+                $scope.editcontent.show = !$scope.editcontent.show;
+            }
         }])
 
 
