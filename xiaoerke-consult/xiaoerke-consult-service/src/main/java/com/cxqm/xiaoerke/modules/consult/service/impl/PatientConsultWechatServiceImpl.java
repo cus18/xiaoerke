@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import javax.websocket.*;
+import java.net.URI;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -50,16 +51,16 @@ public class PatientConsultWechatServiceImpl implements PatientConsultWechatServ
 			WebSocketContainer container = ContainerProvider.getWebSocketContainer();
 			String uri = "ws://120.25.161.33:2048/ws&wechatUser&" + xmlEntityApp.getFromUserName();
 			System.out.println("Connecting to" + uri);
-//			try {
-//				session = container.connectToServer(MyClient.class, URI.create(uri));
-//				if (session != null) {
-//					sessionCache.putWechatSessionByOpenId(xmlEntityApp.getFromUserName(), session);
-//				}
-//			} catch (DeploymentException e) {
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
+			try {
+				session = container.connectToServer(MyClient.class, URI.create(uri));
+				if (session != null) {
+					sessionCache.putWechatSessionByOpenId(xmlEntityApp.getFromUserName(), session);
+				}
+			} catch (DeploymentException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -113,7 +114,6 @@ public class PatientConsultWechatServiceImpl implements PatientConsultWechatServ
 			 * 如果没有，则推送欢迎词，建立与在线接诊员的会话联系
 			 * */
 			synchronized(this){
-				System.out.println(xmlEntity.getFromUserName());
 				Session wechatSession = sessionCache.getWechatSessionByOpenId(xmlEntity.getFromUserName());
 				if (wechatSession == null) {
 					MyClientApp client = new MyClientApp(xmlEntity);
