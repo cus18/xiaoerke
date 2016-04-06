@@ -43,7 +43,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @date 2015-10-14
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "")
 public class AccountUserController {
 
 	@Autowired
