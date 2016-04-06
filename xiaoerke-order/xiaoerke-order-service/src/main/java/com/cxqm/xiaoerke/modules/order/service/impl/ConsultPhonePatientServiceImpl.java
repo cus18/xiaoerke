@@ -90,9 +90,7 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         illnessVo.setStatus("0");
         illnessVo.setBabyinfoId(babyId);
         int illnessInfoId = healthRecordsService.insertBabyIllnessInfo(illnessVo);
-        User U =  UserUtils.getUser();
         PatientVo PatientVo = utilService.CreateUser(UserUtils.getUser().getPhone(), "", "patient");
-
         SysConsultPhoneServiceVo sysConsultPhoneServiceVo = sysConsultPhoneServiceDao.selectByPrimaryKey(sysConsultPhoneId);
         ConsulPhonetDoctorRelationVo consulPhonetDoctorRelationVo = phoneConsultDoctorRelationDao.selectByDoctorId(sysConsultPhoneServiceVo.getSysDoctorId());
         ConsultPhoneRegisterServiceVo vo = new ConsultPhoneRegisterServiceVo();
@@ -104,6 +102,8 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         vo.setSysPatientId(PatientVo.getId());
         vo.setSysPhoneconsultServiceId(sysConsultPhoneId);
         vo.setPhoneNum(phoneNum);
+        vo.setCreat_by(UserUtils.getUser().getId());
+        vo.setType("0");
         Integer serviceLength = consulPhonetDoctorRelationVo.getServerLength()*60*100;
         Date surplusTime = new Date();
         surplusTime.setTime(serviceLength);
