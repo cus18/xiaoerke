@@ -12,7 +12,7 @@
 
         $scope.$on('$ionicView.enter', function(){
             $scope.pageLoading = true;
-            var routePath = "/ap/doctorBBBBBB" + $location.path();
+            var routePath = "/doctorBBBBBB" + $location.path();
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 $scope.pageLoading = false;
                 if(data.status=="9") {

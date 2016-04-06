@@ -45,7 +45,7 @@
             });
         }
         $scope.$on('$ionicView.enter',function() {
-            var routePath = "/ap/appointBBBBBB" + $location.path();
+            var routePath = "/appointBBBBBB" + $location.path();
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 if(data.status=="9") {
                     window.location.href = data.redirectURL;

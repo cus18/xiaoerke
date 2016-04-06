@@ -53,7 +53,7 @@ angular.module('controllers', ['luegg.directives'])
             ];
 
             $scope.doctorConsultFirst = function () {
-                var routePath = "/ap/doctor/consultBBBBBB" + $location.path();
+                var routePath = "/doctor/consultBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath: routePath}, function (data) {
                     $scope.pageLoading = false;
                     if (data.status == "9") {

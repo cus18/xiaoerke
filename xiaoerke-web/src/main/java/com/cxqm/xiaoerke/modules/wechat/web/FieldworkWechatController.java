@@ -71,7 +71,7 @@ public class FieldworkWechatController {
             session.setAttribute("openId", openid);
             CookieUtils.setCookie(response, "openId", openid, 60 * 60 * 24 * 30,".baodf.com");
         }
-        return "redirect:" + ConstantUtil.S1_WEB_URL + "/doctor/ap/doctor" + url;
+        return "redirect:" + ConstantUtil.S1_WEB_URL + "/doctor/doctor" + url;
     }
 
     /**
@@ -99,11 +99,11 @@ public class FieldworkWechatController {
         } else if ("4".equals(url)) {
             //郑玉巧育儿经
             url = ConstantUtil.S2_WEB_URL + "/wisdom/firstPage/knowledge";
-//            url = ConstantUtil.WEB_URL + "/wisdom/ap/knowledge#/knowledgeIndex";
+//            url = ConstantUtil.WEB_URL + "/wisdom/knowledge#/knowledgeIndex";
             LogUtils.saveLog("郑玉巧育儿经");
         } else if ("5".equals(url)) {
             //郑玉巧在线
-            url = ConstantUtil.S2_WEB_URL + "/wisdom/ap/knowledge#/sheOnlineIndex";
+            url = ConstantUtil.S2_WEB_URL + "/wisdom/knowledge#/sheOnlineIndex";
             LogUtils.saveLog("郑玉巧在线");
 
         } else if ("6".equals(url)) {
@@ -132,14 +132,14 @@ public class FieldworkWechatController {
         }else if("10".equals(url)){
             //健康管理
             url = ConstantUtil.S3_WEB_URL +"/wisdom/firstPage/healthPlan";
-//            url = ConstantUtil.S3_WEB_URL +"/wisdom/ap/ctp#/constipationIndex";
+//            url = ConstantUtil.S3_WEB_URL +"/wisdom/ctp#/constipationIndex";
             LogUtils.saveLog("BMGL_36");
         }else if("23".equals(url)){
             url = ConstantUtil.S2_WEB_URL + "/titan/appoint#/healthRecordIndex/0";
         }else if("24".equals(url)){
-            url = ConstantUtil.S2_WEB_URL + "/keeper/ap/health#/consultBabyList";
+            url = ConstantUtil.S2_WEB_URL + "/keeper/health#/consultBabyList";
         }else if("25".equals(url)){
-            url = ConstantUtil.S2_WEB_URL + "/market/ap/market#/consultBabyList";
+            url = ConstantUtil.S2_WEB_URL + "/market/market#/consultBabyList";
         }else if("11".equals(url)){
             //运营活动
             String state = request.getParameter("state");

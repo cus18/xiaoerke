@@ -12,7 +12,7 @@
         }
 
         $scope.$on('$ionicView.enter',function() {
-        	var routePath = "/ap/healthBBBBBB" + $location.path();
+        	var routePath = "/healthBBBBBB" + $location.path();
         	GetUserLoginStatus.save({routePath:routePath},function(data){
 	            if(data.status=="9") {
 	                window.location.href = data.redirectURL;

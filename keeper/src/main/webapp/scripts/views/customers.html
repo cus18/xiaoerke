@@ -619,7 +619,7 @@
 	function getBabyInfo(){
 		$.ajax({
 			type: 'POST',
-			url: "../../ap/customer/searchBabyInfo",
+			url: "../../customer/searchBabyInfo",
 			contentType: "application/json; charset=utf-8",
 			data: "{'openid':'"+openid+"'}",
 			success: function(result){
@@ -668,7 +668,7 @@
 		var id=$("#id").val();
 		$.ajax({
 			type: 'POST',
-			url: "../../ap/customer/saveBaby",
+			url: "../../customer/saveBaby",
 			contentType: "application/json; charset=utf-8",
 			data: "{'openid':'"+openid+"','babyName':'"+babyName+"','weChatName':'"+wechatName+"','babyBirthday':'"+babyBirthday+"','phone':'"+phone+"','sex':'"+sex+"','id':'"+id+"','remark':'"+remark+"'}",
 			success: function(result){
@@ -692,7 +692,7 @@
 	}
 
 	function getIllness(){
-		$.post("../../ap/customer/searchIllnessList",
+		$.post("../../customer/searchIllnessList",
 				function(result){
 					result=eval("("+result+")");
 					var datas=result.illnessList;
@@ -720,7 +720,7 @@
 		}
 		$.ajax({
 			type: 'POST',
-			url: "../../ap/customer/saveCustomerLog",
+			url: "../../customer/saveCustomerLog",
 			contentType: "application/json; charset=utf-8",
 			data: "{'create_date':'"+create_date+"','illness':'"+illness+"','sections':'"+sections+"','customerID':'"+costomerID+"','id':'"+id+"'}",
 			success: function(result){
@@ -744,7 +744,7 @@
 		}
 		$.ajax({
 			type: 'POST',
-			url: "../../ap/customer/saveIllness",
+			url: "../../customer/saveIllness",
 			contentType: "application/json; charset=utf-8",
 			async:false,
 			data: "{'illness':'"+costomerID+"'}",
@@ -784,7 +784,7 @@
 	function getOrderInfoByOpenid(){
 		$.ajax({
 			type: 'POST',
-			url: "../../ap/customer/getOrderInfoByOpenid",
+			url: "../../customer/getOrderInfoByOpenid",
 			contentType: "application/json; charset=utf-8",
 			data: "{'openid':'"+openid+"'}",
 			success: function(result){
@@ -843,7 +843,7 @@
 	function getCustomerLogByOpenID(){
 		$.ajax({
 			type: 'POST',
-			url: "../../ap/customer/getCustomerLogByOpenID",
+			url: "../../customer/getCustomerLogByOpenID",
 			contentType: "application/json; charset=utf-8",
 			data: "{'openid':'"+openid+"'}",
 			success: function(result){
@@ -944,19 +944,8 @@
 	}
 	function onIllnessKeydown(title){
 		showIllnessList(title);
-// 		if(title=="湿疹"||title=='尿布疹'||title=='荨麻疹'){
 		if(title=="湿疹"||title=='尿布疹'){
-// 			$.ajax({
-// 				type: 'POST',
-// 				url: "../../ap/customer/onIllnessKeydown",
-// 				contentType: "application/json; charset=utf-8",
-// 				data: "{'illness':'"+title+"'}",
-// 				success: function(result){
-// 					var obj=result.ZYQURI;
-					sendMessage(title);
-// 				},
-// 				dataType: "json"
-// 			});
+			sendMessage(title);
 		}
 		
 	}
@@ -1003,7 +992,7 @@
 	function sendMessage(obj){
 			$.ajax({
 			type: 'POST',
-			url: "../../ap/customer/getKeywordsByOpenID",
+			url: "../../customer/getKeywordsByOpenID",
 			contentType: "application/json; charset=utf-8",
 			data: "{'openid':'"+openid+"','keywords':'"+obj+"'}",
 			success: function(result){
@@ -1013,7 +1002,7 @@
 				}else{
 					$.ajax({
 						type: 'POST',
-						url: "../../ap/customer/saveOpenidAndKeywords",
+						url: "../../customer/saveOpenidAndKeywords",
 						contentType: "application/json; charset=utf-8",
 						data: "{'openid':'"+openid+"','keywords':'"+obj+"'}",
 						success: function(result){
@@ -1105,7 +1094,7 @@
 	function checkIllness(){
 	 			$.ajax({
  				type: 'POST',
- 				url: "../../ap/customer/getDocotrByIllness",
+ 				url: "../../customer/getDocotrByIllness",
  				contentType: "application/json; charset=utf-8",
  				data: "{'illness':'"+illnessName+"'}",
  				success: function(result){

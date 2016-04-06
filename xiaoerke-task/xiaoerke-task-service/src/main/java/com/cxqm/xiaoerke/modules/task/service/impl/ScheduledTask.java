@@ -661,6 +661,14 @@ public class ScheduledTask {
     }
 
     /**
+     * 生成第五周号源，用于重复设置电话咨询号源
+     * sunxiao
+     */
+    public void repeatSettingConsultPhoneRegister() {
+    	scheduleTaskService.repeatSettingConsultPhoneRegister();
+    }
+    
+    /**
      * 插入信息 @author zdl
      *
      * @param list 信息
