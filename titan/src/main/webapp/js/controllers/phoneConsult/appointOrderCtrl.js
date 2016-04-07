@@ -10,6 +10,9 @@
 
             $scope.MyselfInfoAppointment = function(pageNo,pageSize,status){
                 $scope.pageLoading = true;
+                if(status == "5"){
+                    status = "6";
+                }
                 MyselfInfoAppointment.save({"pageNo": pageNo, "pageSize": pageSize, "status": status}, function (data) {
                     $scope.pageLoading = false;
                     $scope.orderInfo = data.orderList;
@@ -36,6 +39,7 @@
 
 
             $scope.$on('$ionicView.enter', function(){
+                $scope.classifyItem =0;
                 $scope.MyselfInfoAppointment("1","10");
 
             })
