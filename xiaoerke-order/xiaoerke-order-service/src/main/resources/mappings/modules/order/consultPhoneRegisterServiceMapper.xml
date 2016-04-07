@@ -71,7 +71,7 @@
     left join sys_consultPhone_service scs on crs.sys_phoneConsult_service_id = scs.id
     left join consultphone_doctor_relation cdr on cdr.doctor_id = scs.sys_doctor_id
     where 1=1
-    <if test="state != null" >
+    <if test="id != null" >
       and crs.id = #{id,jdbcType=VARCHAR}
     </if>
   </select>
