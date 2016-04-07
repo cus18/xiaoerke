@@ -65,6 +65,7 @@
 
   <select id="getPhoneConsultaServiceIndo" resultType="java.util.Map" parameterType="java.lang.Integer" >
     select
+    sd.id doctorId,
     sd.name doctorName,
     sd.position1,
     sd.position2,
@@ -75,12 +76,14 @@
     when crs.state ='6' then '已取消' end state,
     DATE_FORMAT(scs.beginTime,'%k:%i') beginTime,
     DATE_FORMAT(scs.endTime,'%k:%i') endTime,
+    DATE_FORMAT(scs.date,'%Y/%m/%d') date,
     DATE_FORMAT(crs.create_time,'%Y/%m/%d  %k:%i') orderTime,
     crs.register_no as orderNo,
     crs.phone,
     sbi.name babyName,
     cdr.price,
     crs.type,
+    crs.surplusTime,
     cdr.server_length
     from consultPhone_register_service crs
     left join sys_consultPhone_service scs
