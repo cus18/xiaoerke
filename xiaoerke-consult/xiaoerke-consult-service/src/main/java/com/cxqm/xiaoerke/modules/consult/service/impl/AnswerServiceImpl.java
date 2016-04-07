@@ -33,14 +33,18 @@ public class AnswerServiceImpl implements AnswerService {
 
         if ("myAnswer".equals(type)) {
 
-            query.addCriteria(where("type").is(type).andOperator(new Criteria().where("userId").is(UserUtils.getUser().getId())));
+            query.addCriteria(where("type").is(type).andOperator(new Criteria().where("userId").is("123")));//UserUtils.getUser().getId()
         } else {
             query.addCriteria(where("type").is(type));
         }
 
         List<AnswerMongoVo> answerMongoVos = answerMongoVoMongoDBService.queryList(query);
+        if(answerMongoVos!=null && answerMongoVos.size()>0){
 
-        return answerMongoVos.get(0).getAnswerContent();
+            return  answerMongoVos.get(0).getAnswerContent();
+        }else{
+            return "";
+        }
     }
 
     @Override
@@ -50,10 +54,16 @@ public class AnswerServiceImpl implements AnswerService {
 
 
     @Override
-    public WriteResult upsertConsultAnswer(String myanswer) {
+    public WriteResult upsertConsultAnswer(String answerType,String answer) {
         User user = UserUtils.getUser();
-        WriteResult writeResult = answerMongoVoMongoDBService.upsert((new Query(where("userId").is(user.getId()).and("type").is("myAnswer"))),
-                new Update().update("answerContent", myanswer));
+        WriteResult writeResult =null;
+        if(answerType.equals("myAnswer")){
+            writeResult = answerMongoVoMongoDBService.upsert((new Query(where("userId").is(user.getId()).and("type").is("myAnswer"))),
+                    new Update().update("answerContent", answer));
+        }else if(answerType.equals("commonAnswer")){
+            writeResult = answerMongoVoMongoDBService.upsert((new Query(where("userId").is("456").and("type").is("commonAnswer"))),//user.getId()
+                    new Update().update("answerContent", answer));
+        }
         return writeResult;
     }
 

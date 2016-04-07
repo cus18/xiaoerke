@@ -1,8 +1,8 @@
 angular.module('controllers', ['luegg.directives'])
     .controller('doctorConsultFirstCtrl', ['$scope', '$sce', 'getTodayRankingList', 'getOnlineDoctorList',
-        'getCommonAnswerList', 'getMyAnswerList', 'GetUserLoginStatus', '$location', 'GetUserRecordList','answerModify',
+        'getCommonAnswerList', 'getMyAnswerList', 'GetUserLoginStatus', '$location', 'GetUserRecordList','getMyAnswerModify',
         function ($scope, $sce, getTodayRankingList, getOnlineDoctorList, getCommonAnswerList,
-                  getMyAnswerList, GetUserLoginStatus, $location, GetUserRecordList,answerModify) {
+                  getMyAnswerList, GetUserLoginStatus, $location, GetUserRecordList,getMyAnswerModify) {
             $scope.test = "";
             $scope.info = {};
             $scope.socketServer1 = "";
@@ -285,18 +285,37 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.switchover.show = !$scope.switchover.show;
             }
             //添加分组
-            $scope.addgroup = {
-                show: false
+            var flag,parentIndex,childIndex;
+            $scope.getCommonGroup = function(parentIndex) {
+                flag = 0;
+                console.log("flag", flag)
+                parentIndex = parentIndex;
+                console.log("parentIndex", parentIndex)
+            };
+            $scope.getCommonContent = function(parentIndex, childIndex) {
+                flag = 1;
+                console.log("flag", flag)
+                parentIndex = parentIndex;
+                childIndex = childIndex;
+                console.log("childIndex", childIndex)
+                console.log("parentIndex", parentIndex)
+            };
+            $scope.add = function() {
+                console.log("flag", flag)
+                if (flag == 0) {
+                    $scope.addgroup = true;
+                } else if (flag == 1) {
+                    $scope.addcontent = true;
+                }
             }
-            $scope.addgroup1 = function() {
-                $scope.addgroup.show = !$scope.addgroup.show;
+            $scope.addgroup =  false;
+            $scope.closeAddGroup = function() {
+                $scope.addgroup = false;
             }
             //添加内容
-            $scope.addcontent = {
-                show: false
-            }
-            $scope.addcontent1 = function() {
-                $scope.addcontent.show = !$scope.addcontent.show;
+            $scope.addcontent = false;
+            $scope.closeAddContent = function() {
+                $scope.addcontent=false;
             }
 
             //保存公共回复
@@ -306,25 +325,29 @@ angular.module('controllers', ['luegg.directives'])
                 addGroupFirst.name = $("#addGroupFirstId").val();
                 $scope.commonAnswer.push(addGroupFirst);
                 alert(123);
-                answerModify.save({answer:$scope.commonAnswer,answerType:"commonAnswer"}, function (data) {
-
+                getMyAnswerModify.save({answer:$scope.commonAnswer,answerType:"commonAnswer"}, function (data) {
                 });
 
             }
 
             //编辑分组
-            $scope.editgroup = {
-                show: false
-            }
-            $scope.editgroup1 = function() {
-                $scope.editgroup.show = !$scope.editgroup.show;
+            $scope.editgroup =  false;
+            $scope.closeEditGroup = function() {
+                $scope.editgroup = false;
             }
             //编辑内容
-            $scope.editcontent = {
-                show: false
+            $scope.editcontent =  false;
+            $scope.closeEditContent = function() {
+                $scope.editcontent = false;
             }
-            $scope.editcontent1 = function() {
-                $scope.editcontent.show = !$scope.editcontent.show;
+
+            $scope.edit = function() {
+                console.log("flag", flag)
+                if (flag == 0) {
+                    $scope.editgroup = true;
+                } else if (flag == 1) {
+                    $scope.editcontent = true;
+                }
             }
         }])
 

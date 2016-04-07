@@ -71,24 +71,11 @@
           </element>
           <element id="library" level="project" name="Maven: org.mongodb:mongo-java-driver:2.13.0" />
           <element id="library" level="project" name="Maven: com.google.code.gson:gson:2.6" />
+          <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-core:7.0.47" />
           <element id="archive" name="xiaoerke-consult-service-0.0.1-SNAPSHOT.jar">
             <element id="module-output" name="xiaoerke-consult-service" />
           </element>
           <element id="library" level="project" name="Maven: io.netty:netty-all:4.0.24.Final" />
-          <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-core:7.0.47" />
-          <element id="library" level="project" name="Maven: javax:javaee-api:7.0" />
-          <element id="library" level="project" name="Maven: com.sun.mail:javax.mail:1.5.0" />
-          <element id="library" level="project" name="Maven: org.glassfish.tyrus:tyrus-client:1.0-rc3" />
-          <element id="library" level="project" name="Maven: org.glassfish.tyrus:tyrus-core:1.0-rc3" />
-          <element id="library" level="project" name="Maven: org.glassfish.tyrus:tyrus-spi:1.0-rc3" />
-          <element id="library" level="project" name="Maven: org.glassfish.tyrus:tyrus-websocket-core:1.0-rc3" />
-          <element id="library" level="project" name="Maven: org.glassfish.tyrus:tyrus-container-grizzly:1.0-rc3" />
-          <element id="library" level="project" name="Maven: org.glassfish.grizzly:grizzly-framework:2.3" />
-          <element id="library" level="project" name="Maven: org.glassfish.grizzly:grizzly-http-server:2.3" />
-          <element id="library" level="project" name="Maven: org.glassfish.grizzly:grizzly-http:2.3" />
-          <element id="library" level="project" name="Maven: org.glassfish.grizzly:grizzly-rcm:2.3" />
-          <element id="library" level="project" name="Maven: org.glassfish.tyrus:tyrus-server:1.0-rc3" />
-          <element id="library" level="project" name="Maven: javax.websocket:javax.websocket-api:1.0-rc5" />
           <element id="archive" name="xiaoerke-insurance-service-0.0.1-SNAPSHOT.jar">
             <element id="module-output" name="xiaoerke-insurance-service" />
           </element>

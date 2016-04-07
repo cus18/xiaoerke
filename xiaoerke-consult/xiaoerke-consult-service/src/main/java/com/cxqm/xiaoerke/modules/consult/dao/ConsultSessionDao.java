@@ -31,6 +31,7 @@ public interface ConsultSessionDao {
 
     Page<DoctorVo> getOnlineCsListInfo(Page<DoctorVo> page,List<String> userList);
 
+    List<ConsultSession> getAlreadyAccessUsers(ConsultSession consultSession);
+
     HashMap<String,Object> getAttention(String openId);
-    
 }

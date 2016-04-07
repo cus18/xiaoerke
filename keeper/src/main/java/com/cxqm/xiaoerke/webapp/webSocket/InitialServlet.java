@@ -1,8 +1,7 @@
 package com.cxqm.xiaoerke.webapp.webSocket;
 
-import com.cxqm.xiaoerke.modules.consult.service.core.SessionCache;
+import com.cxqm.xiaoerke.modules.consult.service.SessionCache;
 import com.cxqm.xiaoerke.modules.consult.service.impl.SessionCacheRedisImpl;
-import com.cxqm.xiaoerke.modules.sys.entity.ReceiveXmlEntity;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.websocket.*;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.Map;
 
@@ -34,6 +35,8 @@ public class InitialServlet extends HttpServlet {
 
 	private SessionCache sessionCache = new SessionCacheRedisImpl();
 
+	private static String CLIENT_SERVER_ID = "keeperServerFirst";
+
 	@Autowired
 	private SystemService systemService;
 
@@ -47,24 +50,26 @@ public class InitialServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
-		Session wechatSession = sessionCache.getWechatSessionByOpenId("");
-		if (wechatSession == null) {
-			MyClientApp client = new MyClientApp();
-			client.start();
-		}
+//		Session wechatSession = sessionCache.getWechatSessionByClientServerId(CLIENT_SERVER_ID);
+//		if (wechatSession == null) {
+//			MyClientApp client = new MyClientApp();
+//			client.start();
+//		}
 	}
 
 	public class MyClientApp {
@@ -73,8 +78,7 @@ public class InitialServlet extends HttpServlet {
 
 		protected void start() {
 			WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-			String ipAddress = "120.25.161.33";
-			String uri = "ws://120.25.161.33:2048/ws&wechatUser&" + ipAddress;
+			String uri = "ws://120.25.161.33:2048/ws&wechatUser&" + CLIENT_SERVER_ID;
 			System.out.println("Connecting to" + uri);
 			try {
 				session = container.connectToServer(MyClient.class, URI.create(uri));

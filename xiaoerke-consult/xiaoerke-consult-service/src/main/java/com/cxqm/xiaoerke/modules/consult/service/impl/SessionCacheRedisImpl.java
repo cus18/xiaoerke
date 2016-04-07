@@ -3,8 +3,8 @@ package com.cxqm.xiaoerke.modules.consult.service.impl;
 import java.util.Collection;
 import java.util.List;
 
-import com.cxqm.xiaoerke.modules.consult.service.core.RichConsultSession;
-import com.cxqm.xiaoerke.modules.consult.service.core.SessionCache;
+import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.service.SessionCache;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
@@ -34,8 +34,8 @@ public class SessionCacheRedisImpl implements SessionCache {
 	}
 
 	@Override
-	public Integer getSessionIdByOpenId(String openId) {
-		Object sessionId = redisTemplate.opsForHash().get(USER_SESSIONID_KEY, openId);
+	public Integer getSessionIdByClientServerId(String clientServerId) {
+		Object sessionId = redisTemplate.opsForHash().get(USER_SESSIONID_KEY, clientServerId);
 		return sessionId == null ? null : (Integer) sessionId;
 	}
 
@@ -59,19 +59,19 @@ public class SessionCacheRedisImpl implements SessionCache {
 	}
 
 	@Override
-	public void putOpenIdSessionIdPair(String openId,
+	public void putClientServerIdSessionIdPair(String clientServerId,
 									   Integer sessionId) {
-		redisTemplate.opsForHash().put(USER_SESSIONID_KEY, openId, sessionId);
+		redisTemplate.opsForHash().put(USER_SESSIONID_KEY, clientServerId, sessionId);
 	}
 
 	@Override
-	public void putWechatSessionByOpenId(String openId,Session wechatSession) {
-		redisTemplate.opsForHash().put(USER_WECHATSESSION_KEY, openId, wechatSession);
+	public void putWechatSessionByClientServerId(String clientServerId,Session wechatSession) {
+		redisTemplate.opsForHash().put(USER_WECHATSESSION_KEY, clientServerId, wechatSession);
 	}
 
 	@Override
-	public Session getWechatSessionByOpenId(String openId) {
-		Object wechatSession = redisTemplate.opsForHash().get(USER_WECHATSESSION_KEY, openId);
+	public Session getWechatSessionByClientServerId(String clientServerId) {
+		Object wechatSession = redisTemplate.opsForHash().get(USER_WECHATSESSION_KEY, clientServerId);
 		return wechatSession == null ? null : (Session) wechatSession;
 	}
 	
@@ -86,7 +86,7 @@ public class SessionCacheRedisImpl implements SessionCache {
 	}
 
 	@Override
-	public void removeWechatSessionPair(String openId){
-		redisTemplate.opsForHash().delete(USER_WECHATSESSION_KEY, openId);
+	public void removeWechatSessionPair(String clientServerId){
+		redisTemplate.opsForHash().delete(USER_WECHATSESSION_KEY, clientServerId);
 	}
 }

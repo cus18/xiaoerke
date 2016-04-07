@@ -1,4 +1,6 @@
-package com.cxqm.xiaoerke.modules.consult.service.core;
+package com.cxqm.xiaoerke.modules.consult.service;
+
+import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 
 import javax.websocket.Session;
 import java.util.Collection;
@@ -18,15 +20,15 @@ public interface SessionCache {
 
 	void removeUserIdSessionIdPair(String userId);
 
-	void removeWechatSessionPair(String openId);
+	void removeWechatSessionPair(String clientServerId);
 
 	List<Object> getConsultSessionsBySessionIds(Collection<Object> sessionIds);
 
-	Integer getSessionIdByOpenId(String openId);
+	Integer getSessionIdByClientServerId(String clientServerId);
 
-	void putOpenIdSessionIdPair(String openId, Integer sessionId);
+	void putClientServerIdSessionIdPair(String clientServerId, Integer sessionId);
 
-	void putWechatSessionByOpenId(String openId,Session wechatSession);
+	void putWechatSessionByClientServerId(String clientServerId, Session wechatSession);
 
-	Session getWechatSessionByOpenId(String openId);
+	Session getWechatSessionByClientServerId(String clientServerId);
 }
