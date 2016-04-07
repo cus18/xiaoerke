@@ -95,12 +95,10 @@
                 <div class="replayContent">
                 <div class="myreply">
                     <div ng-click="myreplyList1()" class="rtitle">
-                        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(4).png" alt=""/>
                         我的回复（{{myAnswer.length}}）</div>
                     <ul ng-show="myreplyList.show">
                         <li ng-repeat="item in myAnswer">
-                            <div ng-click="mreplyContent1($index)">
-                                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(4).png" alt=""/>
+                            <div class="group-title" ng-click="mreplyContent1($index)">
                                 {{item.name}}（{{item.secondAnswer.length}}）</div>
                             <ul ng-show="mreplayindex==$index">
                                 <li ng-repeat="item2 in item.secondAnswer" class="rcontent"><nobr>{{item2.name}}</nobr></li>
@@ -110,18 +108,16 @@
                 </div>
                 <div class="pubilcreply">
                     <div ng-click="pubilcreplyList1()"  class="rtitle">
-                        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(4).png" alt=""/>
                         公共回复（{{commonAnswer.length}}）</div>
                     <ul ng-show='pubilcreplyList.show'>
                         <li ng-repeat="item in commonAnswer">
                             <div ng-click="pubilcreplyContent1($index)">
-                                <div ng-click="editCommonGroup($index)">
-                                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(4).png" alt=""/>
+                                <div class="group-title" ng-click="editCommonGroup($index)">
                                 {{item.name}}（{{item.secondAnswer.length}}）
                                 </div>
                             </div>
                             <ul ng-show='pubilcreplyindex==$index'>
-                                <li ng-repeat="item2 in item.secondAnswer" class="rcontent"><nobr ng-click="editCommonContent($parent.$index,$index)">{{item2.name}}</nobr><span>删除</span></li>
+                                <li ng-repeat="item2 in item.secondAnswer" class="rcontent"><nobr ng-click="editCommonContent($parent.$index,$index)">{{item2.name}}</nobr></li>
                             </ul>
                         </li>
                     </ul>
