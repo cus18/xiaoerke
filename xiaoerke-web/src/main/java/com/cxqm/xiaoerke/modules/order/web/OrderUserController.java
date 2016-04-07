@@ -232,8 +232,8 @@ public class OrderUserController extends BaseController {
             map.put("status",order.get("status"));
             map.put("classify","ap");
 
-            map.put("doctorId", order.get("patient_register_service_id"));
-            map.put("orderId", order.get("orderId"));
+            map.put("doctorId", order.get("doctorId"));
+            map.put("orderId", order.get("patient_register_service_id"));
             orderList.add(map);
         }
         response.put("orderList",orderList);

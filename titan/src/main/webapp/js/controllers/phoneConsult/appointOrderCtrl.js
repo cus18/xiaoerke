@@ -8,6 +8,14 @@
 
             $scope.orderInfo=[];
 
+            $scope.MyselfInfoAppointment = function(pageNo,pageSize,status){
+                $scope.pageLoading = true;
+                MyselfInfoAppointment.save({"pageNo": pageNo, "pageSize": pageSize, "status": status}, function (data) {
+                    $scope.pageLoading = false;
+                    $scope.orderInfo = data.orderList;
+                });
+            }
+
            /* 选择订单分类*/
             $scope.selectClassify = function(item){
                 $scope.classifyItem =item;
@@ -15,31 +23,20 @@
                 $scope.status = item -1;
                 $scope.pageLoading = true;
                 if($scope.status < 0){
-                    MyselfInfoAppointment.save({"pageNo": "1", "pageSize": "10"}, function (data) {
-                        $scope.pageLoading = false;
-                        $scope.orderInfo = data.orderList;
-
-                    });
+                    $scope.MyselfInfoAppointment("1","10");
                 }else{
-                    MyselfInfoAppointment.save({"pageNo": "1", "pageSize": "10", "status": $scope.status+""}, function (data) {
-                        $scope.pageLoading = false;
-                        $scope.orderInfo = data.orderList;
-                    });
+                    $scope.MyselfInfoAppointment("1","10",$scope.status+"");
                 }
 
             };
 
             $scope.orderDerail = function(item){
-                $state.go("orderDetail",{doctorId:item.doctorId,orderId:item.patient_register_service_id,type:"ap"})
+                $state.go("orderDetail",{doctorId:item.doctorId,orderId:item.orderId,type:"ap"})
             };
 
 
             $scope.$on('$ionicView.enter', function(){
-                MyselfInfoAppointment.save({"pageNo": "1", "pageSize": "10"}, function (data) {
-                    $scope.pageLoading = false;
-                    $scope.orderInfo = data.orderList;
-
-                });
+                $scope.MyselfInfoAppointment("1","10");
 
             })
     }])
