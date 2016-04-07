@@ -273,7 +273,7 @@ define(['appPhoneConsult'], function(app){
                         }
                     })
                     .state('phoneConConnectCall', {
-                        url: '/phoneConConnectCall/:phoneConsultaServiceId',
+                        url: '/phoneConConnectCall/:phoneConsultaServiceId,:doctorName,:phone',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'phoneConConnectCallCtrl',
                         resolve: {
