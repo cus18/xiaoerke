@@ -48,7 +48,9 @@ public class ConsultPhoneRegisterServiceVo {
 
     private Date beginTime;//开始时间
 
-    private Date surplusTime; //通话剩余时长
+    private long surplusTime; //通话剩余时长
+
+    private String callSid; //通话的唯一标示
 
     public String getLoginPhone() {
         return loginPhone;
@@ -226,11 +228,19 @@ public class ConsultPhoneRegisterServiceVo {
         this.type = type;
     }
 
-    public Date getSurplusTime() {
+    public String getCallSid() {
+        return callSid;
+    }
+
+    public void setCallSid(String callSid) {
+        this.callSid = callSid;
+    }
+
+    public long getSurplusTime() {
         return surplusTime;
     }
 
-    public void setSurplusTime(Date surplusTime) {
+    public void setSurplusTime(long surplusTime) {
         this.surplusTime = surplusTime;
     }
 }
