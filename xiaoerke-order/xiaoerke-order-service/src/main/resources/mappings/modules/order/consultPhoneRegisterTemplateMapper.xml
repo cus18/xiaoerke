@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxqm.xiaoerke.modules.order.dao.ConsultPhoneRegisterTemplateDao">
+	<resultMap id="registerTemplateServiceVo" type="com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterTemplateVo">
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="doctor_id" property="doctorId" jdbcType="VARCHAR" />
+        <result column="price" property="price" jdbcType="VARCHAR" />
+        <result column="week_day" property="weekDay" jdbcType="VARCHAR" />
+        <result column="time" property="time" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="servertype" property="serviceType" jdbcType="VARCHAR" />
+        <result column="create_date" property="createDate" jdbcType="DATE" />
+        <result column="update_date" property="updateDate" jdbcType="DATE" />
+        <result column="repeat_interval" property="repeatInterval" jdbcType="CHAR" />
+    </resultMap>
+    <update id="updateRegisterTemplateByInfo">
+        update sys_consultphone_template
+        <set>
+            <if test="price != null">
+                price=#{price},
+            </if>
+            <if test="serverType != null">
+                servertype=#{serverType},
+            </if>
+            <if test="updateDate != null">
+                update_date=#{updateDate},
+            </if>
+            <if test="doctorId != null">
+                doctor_id=#{doctorId}
+            </if>
+        </set>
+        where doctor_id=#{doctorId}
+        	and week_day=#{weekday} and time=#{time} 
+        <if test="updateDateList != null">
+	     	 and update_date in 
+			 <foreach item="item" index="index" collection="updateDateList" open="(" separator="," close=")">  
+	 			#{item}
+			 </foreach>
+   		</if>
+       	<if test="times != null">
+	     	 and time in 
+			 <foreach item="item" index="index" collection="times" open="(" separator="," close=")">  
+	 			#{item}
+			 </foreach>
+     	</if>
+    </update>
+
+    <!--鎻掑叆鐢佃瘽鍜ㄨ鍙锋簮妯℃澘淇℃伅-->
+    <insert id="saveRegisterTemplate">
+        INSERT INTO sys_consultphone_template(doctor_id,price,servertype,week_day,time,status,create_date,update_date,repeat_interval)
+        VALUES(#{doctorId},#{price},#{serverType},#{weekday},#{time},#{status},#{createDate},#{updateDate},#{interval});
+    </insert>
+    <select id="getRegisterTemplateList" resultType="registerTemplateServiceVo">
+    	select * from sys_consultphone_template srt where 1=1
+    	<if test="doctorId != null and doctorId != ''">
+			AND srt.doctor_id=#{doctorId}
+		</if>
+		<if test="weekday != null and weekday != ''">
+			AND srt.week_day=#{weekday}
+		</if>
+		<if test="status != null and status != ''">
+			AND srt.status=#{status}
+		</if>
+		<if test="time != null">
+            AND srt.time=#{time}
+        </if>
+        <if test="times != null">
+	     	 and srt.time in 
+			 <foreach item="item" index="index" collection="times" open="(" separator="," close=")">  
+	 			#{item}
+			 </foreach>
+     	</if>
+    </select>
+    
+    <delete id="deleteRegisterTemplateByinfo">
+        delete from sys_consultphone_template
+        where  1=1
+        <if test="doctorId != null and doctorId != ''">
+			AND doctor_id=#{doctorId}
+		</if>
+		<if test="weekday != null and weekday != ''">
+			AND week_day=#{weekday}
+		</if>
+		<if test="time != null">
+            AND time=#{time}
+        </if>
+        <if test="updateDate != null">
+            AND update_date=#{updateDate}
+        </if>
+        <if test="updateDateList != null">
+	     	 and update_date in 
+			 <foreach item="item" index="index" collection="updateDateList" open="(" separator="," close=")">  
+	 			#{item}
+			 </foreach>
+     	</if>
+        <if test="times != null">
+	     	 and time in 
+			 <foreach item="item" index="index" collection="times" open="(" separator="," close=")">  
+	 			#{item}
+			 </foreach>
+     	</if>
+    </delete>
+    
+    <select id="getRegisterTemplate" resultType="registerTemplateServiceVo">
+    	select * from sys_consultphone_template srt where 1=1
+    	<if test="doctorId != null and doctorId != ''">
+			AND srt.doctor_id=#{doctorId}
+		</if>
+		<if test="weekDay != null and weekDay != ''">
+			AND srt.week_day=#{weekDay}
+		</if>
+		<if test="status != null and status != ''">
+			AND srt.status=#{status}
+		</if>
+		<if test="time != null">
+            AND srt.time=#{time}
+        </if>
+        <if test="times != null">
+	     	 and srt.time in 
+			 <foreach item="item" index="index" collection="times" open="(" separator="," close=")">  
+	 			#{item}
+			 </foreach>
+     	</if>
+    </select>
+    
+</mapper>
