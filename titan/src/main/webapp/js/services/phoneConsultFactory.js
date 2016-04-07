@@ -49,6 +49,13 @@ define(['appPhoneConsult'], function (app) {
         .factory('PhoneConsultRegisterInfo', ['$resource', function ($resource) {
             return $resource(user_h5 + 'consultOrder/getOrderInfo');
         }])
+
+        //获取电话咨询订单详情
+        .factory('ConsultReconnection', ['$resource', function ($resource) {
+            return $resource("baodaifu/"+user_h5 + 'consultReconnect');
+        }])
+
+
         //获取预约挂号订单详情
         .factory('AppointRegisterInfo', ['$resource', function ($resource) {
             return $resource(user_appoint + '/titan/order/user/orderDetail');
