@@ -135,7 +135,7 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
         String talkDuration = vo.getTalkduration();
 
         ConsultPhoneRegisterServiceVo consultPhonevo = new ConsultPhoneRegisterServiceVo();
-        consultPhonevo.setSurplusTime(serviceLength-Integer.parseInt(talkDuration));
+        consultPhonevo.setSurplusTime(serviceLength-Integer.parseInt(talkDuration)*1000);
         consultPhonevo.setId(Integer.parseInt(userData));
         consultPhonevo.setUpdateTime(new Date());
         if(Integer.parseInt(talkDuration)<serviceLength*60-10&&"0".equals(phonepatientInfo.get("type"))){
