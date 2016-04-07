@@ -20,7 +20,7 @@ public interface ConsultPhoneOrderService {
      * @return
      * @author chenxiaoqiong
      */
-    Map<String, Object> getOrderList(Map<String,Object> params);
+    Map<String, Object> getOrderListAll(Map<String,Object> params);
 
     /**
      * 电话咨询（含分页）

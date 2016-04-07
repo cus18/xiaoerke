@@ -153,10 +153,10 @@ define(['appPhoneConsult'], function (app) {
         }])
         //获取个人的各种预约信息列表
         .factory('MyselfInfoAppointment', ['$resource', function ($resource) {
-            return $resource(user_appoint + 'order/user/orderList');
+            return $resource(user_appoint + 'order/user/orderList1');
         }])
         .factory('MyselfInfoPhoneConsult',['$resource',function ($resource){
-            return $resource(user_h5 + 'consultOrder/getOrderList');
+            return $resource(user_h5 + 'order/user/orderList');
         }])
 
         //获取所有订单列表

@@ -16,13 +16,13 @@
                 if($scope.status < 0){
                     MyselfInfoPhoneConsult.save({"pageNo": "1", "pageSize": "10"}, function (data) {
                         $scope.pageLoading = false;
-                        $scope.orderInfo = data.appointmentData;
+                        $scope.orderInfo = data.orderList;
 
                     });
                 }else{
                     MyselfInfoPhoneConsult.save({"pageNo": "1", "pageSize": "10", "status": $scope.status+""}, function (data) {
                         $scope.pageLoading = false;
-                        $scope.orderInfo = data.appointmentData;
+                        $scope.orderInfo = data.orderList;
                     });
                 }
 
@@ -36,7 +36,7 @@
             $scope.$on('$ionicView.enter', function(){
                 MyselfInfoPhoneConsult.save({"pageNo": "1", "pageSize": "10"}, function (data) {
                     $scope.pageLoading = false;
-                    $scope.orderInfo = data.appointmentData;
+                    $scope.orderInfo = data.orderList;
 
                 });
 

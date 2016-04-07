@@ -18,15 +18,16 @@ import com.cxqm.xiaoerke.modules.sys.service.MessageService;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -208,6 +209,36 @@ public class OrderUserController extends BaseController {
         return patientRegisterService.getUserOrderList(params);
     }
 
+    @RequestMapping(value = "/order/user/orderList1", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> myselfInfoAppointment1(@RequestBody Map<String, Object> params) {
+        Map<String, Object> dataMap = patientRegisterService.getUserOrderList(params);
+        Map<String, Object> response = new HashMap<String, Object>();
+        //组装json数据
+        response.put("pageNo", dataMap.get("pageNo"));
+        response.put("pageSize", dataMap.get("getPageSize"));
+        response.put("pageTotal", dataMap.get("pageTotal"));
+        List<HashMap<String,Object>> resultList = (List<HashMap<String, Object>>) dataMap.get("appointmentData");
+        List<HashMap<String,Object>> orderList = new ArrayList<HashMap<String, Object>>();
+        for(HashMap<String,Object> order:resultList){
+            HashMap<String,Object> map = new HashMap<String, Object>();
+            map.put("doctorName", order.get("doctorName"));
+            map.put("position", order.get("position"));
+            map.put("hospitalName", order.get("hospitalName"));
+            map.put("date",order.get("date"));
+            map.put("time",order.get("time"));
+
+            map.put("status",order.get("status"));
+            map.put("classify","ap");
+
+            map.put("doctorId", order.get("patient_register_service_id"));
+            map.put("orderId", order.get("orderId"));
+            orderList.add(map);
+        }
+        response.put("orderList",orderList);
+        return response;
+    }
     /**
      * 订单列表，当前订单
      * @param
@@ -218,7 +249,7 @@ public class OrderUserController extends BaseController {
     @ResponseBody
     Map<String, Object> myselfInfoOrderListAll(Map<String,Object> params) {
         HashMap<String, Object> response = new HashMap<String, Object>();
-        return consultPhoneOrderService.getOrderList(params);
+        return consultPhoneOrderService.getOrderListAll(params);
     }
 
     /**
