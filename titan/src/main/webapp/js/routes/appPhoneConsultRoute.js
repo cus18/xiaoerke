@@ -262,6 +262,7 @@ define(['appPhoneConsult'], function(app){
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.phoneConReconnectionCtrl',
                                     [
+                                        'js/libs/moment.min.js',
                                         'js/libs/lodash.min.js',
                                         'js/controllers/phoneConsult/phoneConReconnectionCtrl.js',
                                         'styles/commonDoctor/doctorInfo.less?ver='+phoneConsultVersion,
