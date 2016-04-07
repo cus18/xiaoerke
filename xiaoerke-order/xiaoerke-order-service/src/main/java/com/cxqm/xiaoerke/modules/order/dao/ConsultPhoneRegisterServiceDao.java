@@ -59,4 +59,6 @@ public interface ConsultPhoneRegisterServiceDao {
 
     List<HashMap<String, Object>> getOrderPhoneConsultListByTime(@Param("state") String state);
 
+    HashMap<String, Object> getConsultConnectInfo(@Param("id") Integer id);
+
 }
