@@ -17,6 +17,6 @@
             //});
 
             $scope.reconnection = function(){
-                $state.go("phoneConConnectCall",{phoneConsultaServiceId:$stateParams.consultPhoneServiceId})
+                $state.go("phoneConConnectCall",{phoneConsultaServiceId:$stateParams.consultPhoneServiceId,doctorName: $scope.orderInfo.doctorName,phone: $scope.orderInfo.phone})
             }
     }]);
