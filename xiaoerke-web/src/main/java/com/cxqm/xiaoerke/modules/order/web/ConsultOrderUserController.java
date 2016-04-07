@@ -63,6 +63,19 @@ public class ConsultOrderUserController {
     }
 
     /**
+     * 订单列表，当前订单
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/order/user/orderListAll", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> myselfInfoOrderListAll(Map<String,Object> params) {
+        HashMap<String, Object> response = new HashMap<String, Object>();
+        return consultPhoneOrderService.getOrderListAll(params);
+    }
+
+    /**
      * 电话咨询订单列表
      * @return Map
      * @author chenxiaoqiong

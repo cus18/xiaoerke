@@ -239,18 +239,6 @@ public class OrderUserController extends BaseController {
         response.put("orderList",orderList);
         return response;
     }
-    /**
-     * 订单列表，当前订单
-     * @param
-     * @return
-     */
-    @RequestMapping(value = "/order/user/orderListAll", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    Map<String, Object> myselfInfoOrderListAll(Map<String,Object> params) {
-        HashMap<String, Object> response = new HashMap<String, Object>();
-        return consultPhoneOrderService.getOrderListAll(params);
-    }
 
     /**
      *判断用户的订单信息
