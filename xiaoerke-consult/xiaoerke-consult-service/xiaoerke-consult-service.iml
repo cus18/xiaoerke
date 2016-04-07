@@ -29,6 +29,7 @@
     <orderEntry type="module" module-name="xiaoerke-payment-api" />
     <orderEntry type="module" module-name="xiaoerke-member-api" />
     <orderEntry type="module" module-name="xiaoerke-system-service" />
+    <orderEntry type="library" name="Maven: javax.websocket:javax.websocket-api:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:4.0.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:4.0.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:4.0.8.RELEASE" level="project" />

@@ -67,8 +67,14 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
     @Override
     public Map<String,Object> getPatientRegisterInfo(Integer patientRegisterId){
       Map<String,Object> registerInfo = consultPhoneRegisterServiceDao.getPhoneConsultaServiceIndo(patientRegisterId);
+        String position1 = (String)registerInfo.get("position1");
+        String position = (String)registerInfo.get("position2");
+        if(position1 != null && !"".equals(position1)){
+            position = position1 + "、" + position;
+        }
+        registerInfo.put("position",position);
         registerInfo.put("expertise", doctorInfoService
-                .getDoctorExpertiseById((String)registerInfo.get("doctorId"), null, null));
+                .getDoctorExpertiseById((String) registerInfo.get("doctorId"), null, null));
         // 根据医生ID和医院ID，获取医生的所处科室
         return registerInfo;
     }
@@ -174,6 +180,13 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         return pages;
     }
 
-
-
+    /**
+     * 根据条件查询订单
+     * sunxiao
+     */
+    @Override
+    public List<Map<String, Object>> getConsultPhoneRegisterListByInfo(Map map) {
+        // TODO Auto-generated method stub
+        return consultPhoneRegisterServiceDao.getConsultPhoneRegisterListByInfo(map);
+    }
 }

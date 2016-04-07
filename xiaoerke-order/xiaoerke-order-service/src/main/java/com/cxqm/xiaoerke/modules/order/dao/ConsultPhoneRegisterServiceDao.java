@@ -37,6 +37,8 @@ public interface ConsultPhoneRegisterServiceDao {
      */
     Page<ConsultPhoneRegisterServiceVo> findConsultPhonePatientList(Page<ConsultPhoneRegisterServiceVo> page,ConsultPhoneRegisterServiceVo vo);
 
+    List<Map<String, Object>> getConsultPhoneRegisterListByInfo(Map<String, Object> map);
+
     /**
      *
      * 电话咨询 -- 通过state和userId分页查询
