@@ -104,10 +104,8 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         vo.setPhoneNum(phoneNum);
         vo.setCreat_by(UserUtils.getUser().getId());
         vo.setType("0");
-        Integer serviceLength = consulPhonetDoctorRelationVo.getServerLength()*60*100;
-        Date surplusTime = new Date();
-        surplusTime.setTime(serviceLength);
-        vo.setSurplusTime(surplusTime);
+        Integer serviceLength = consulPhonetDoctorRelationVo.getServerLength()*60*1000;
+        vo.setSurplusTime(serviceLength);
         int result = consultPhoneRegisterServiceDao.insertSelective(vo);
         if(result== 0){
             throw new CreateOrderException();
