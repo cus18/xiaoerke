@@ -113,7 +113,7 @@ define(['appPhoneConsult'], function (app) {
             return $resource(user_h5 + 'sys/illness/first');
         }])
         .factory('FindDoctorCaseEvaluation',['$resource',function ($resource){
-            return $resource(user_h5 + 'sys/user/findDoctorCaseEvaluation');
+            return $resource(user_appoint + 'sys/user/findDoctorCaseEvaluation');
         }])
         //获取二类疾病的列表
         .factory('ListSecondIllness', ['$resource', function ($resource) {

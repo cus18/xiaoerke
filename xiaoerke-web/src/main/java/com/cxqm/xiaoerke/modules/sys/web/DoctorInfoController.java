@@ -252,13 +252,17 @@ public class DoctorInfoController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> findDoctorCaseEvaluation(@RequestBody Map<String, Object> params) {
+        String doctorId = (String)params.get("doctorId");
+        if(doctorId == null || "".equals(doctorId)){
+            //获取医生的案例信息
+            String patient_register_service_id = (String) params.get("patient_register_service_id");
+            HashMap<String, Object> searchMap = new HashMap<String, Object>();
+            searchMap.put("id", patient_register_service_id);
+            HashMap<String, Object> patientMap = patientRegisterService.findSysRegisterServiceByPRSIdExecute(searchMap);
+            doctorId = (String) patientMap.get("sys_doctor_id");
+        }
+
         Map<String, Object> respose = new HashMap<String, Object>();
-        //获取医生的案例信息
-        String patient_register_service_id = (String) params.get("patient_register_service_id");
-        HashMap<String, Object> searchMap = new HashMap<String, Object>();
-        searchMap.put("id", patient_register_service_id);
-        HashMap<String, Object> patientMap = patientRegisterService.findSysRegisterServiceByPRSIdExecute(searchMap);
-        String doctorId = (String) patientMap.get("sys_doctor_id");
         List<DoctorCaseVo> doctorCaseVos = doctorCaseService.findDoctorCase(doctorId);
         DoctorCaseVo docVo = new DoctorCaseVo();
         docVo.setDoctor_case_name("其他");
