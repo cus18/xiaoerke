@@ -31,7 +31,7 @@ import com.cxqm.xiaoerke.modules.order.service.SysConsultPhoneService;
 
 /**
  * 电话咨询Controller
- * @author sunxiao
+ * @author sunxiao sunxiao
  * @version 2016-3-22
  */
 @Controller(value = "ConsultPhoneController")
@@ -186,5 +186,6 @@ public class ConsultPhoneController extends BaseController {
 		model.addAttribute("consultPhone", vo);
 		return "modules/consultPhone/orderList";
 	}
-	
+
+
 }
