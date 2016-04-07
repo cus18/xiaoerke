@@ -15,7 +15,11 @@ public interface SessionCache {
 	RichConsultSession getConsultSessionBySessionId(Integer sessionId);
 	
 	Integer getSessionIdByUserId(String userId);
-	
+
+	void putWeChatToken(String token);
+
+	void removeWeChatToken();
+
 	void removeSessionIdConsultSessionPair(Integer sessionId);
 
 	void removeUserIdSessionIdPair(String userId);
@@ -31,4 +35,6 @@ public interface SessionCache {
 	void putWechatSessionByOpenId(String openId, Session wechatSession);
 
 	Session getWechatSessionByOpenId(String openId);
+
+	String getWeChatToken();
 }
