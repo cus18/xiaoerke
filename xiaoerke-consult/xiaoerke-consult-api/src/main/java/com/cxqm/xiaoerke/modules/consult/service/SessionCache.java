@@ -20,15 +20,15 @@ public interface SessionCache {
 
 	void removeUserIdSessionIdPair(String userId);
 
-	void removeWechatSessionPair(String clientServerId);
+	void removeWechatSessionPair(String openId);
 
 	List<Object> getConsultSessionsBySessionIds(Collection<Object> sessionIds);
 
-	Integer getSessionIdByClientServerId(String clientServerId);
+	Integer getSessionIdByOpenId(String openId);
 
-	void putClientServerIdSessionIdPair(String clientServerId, Integer sessionId);
+	void putopenIdSessionIdPair(String openId, Integer sessionId);
 
-	void putWechatSessionByClientServerId(String clientServerId, Session wechatSession);
+	void putWechatSessionByOpenId(String openId, Session wechatSession);
 
-	Session getWechatSessionByClientServerId(String clientServerId);
+	Session getWechatSessionByOpenId(String openId);
 }
