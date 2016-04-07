@@ -63,7 +63,7 @@ public class ConstantUtil {
 			"ap/user/getInsurancePayNotifyInfo";
 
 	public static String NOTIFY_CONSULTPHONE_URL = "http://xiaork.cn/titan/" +
-			"ap/user/getPhoneConsultPayNotifyInfo";
+			"user/getPhoneConsultPayNotifyInfo";
 
 	public static String BAODF_URL = "http://baodf.com";
 	public static String WEB_URL = "http://xiaoxiaoerke.cn";

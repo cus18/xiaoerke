@@ -47,7 +47,7 @@ public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProc
 			throw new AuthenticationServiceException("empty_password");
 
 		String openId = WechatUtil.getOpenId(request.getSession(), request);
-		
+		openId = "123";
 		String toUrl = request.getParameter("toUrl");
 		String status = null;
 		if(toUrl != null && toUrl.indexOf("xiaoerke-doctor") != -1)
