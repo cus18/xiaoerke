@@ -36,4 +36,10 @@ public interface ConsultPhoneOrderService {
      * 查询当前时间需要创建通话链接的订单数据
      * */
     List<HashMap<String, Object>> getOrderPhoneConsultListByTime(String state);
+
+    /**
+     * 定时任务
+     * 查询当前时间需要创建通话链接的订单数据
+     * */
+    HashMap<String, Object> getConsultConnectInfo(Integer id);
 }
