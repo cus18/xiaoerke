@@ -42,6 +42,7 @@
             };
 
             $scope.$on('$ionicView.enter', function(){
+                $scope.classifyItem ="all";
                 $scope.getOrderListAll("1","10");
 
             })
