@@ -164,5 +164,10 @@ public class ConsultPhoneOrderServiceImpl implements ConsultPhoneOrderService {
       return consultPhoneRegisterServiceDao.getOrderPhoneConsultListByTime(state);
     }
 
+    @Override
+    public HashMap<String, Object> getConsultConnectInfo(Integer id) {
+      return consultPhoneRegisterServiceDao.getConsultConnectInfo(id);
+    }
+
 
 }
