@@ -133,14 +133,16 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
         Map<String,Object> phonepatientInfo = consultPhonePatientService.getPatientRegisterInfo(Integer.parseInt(userData));
         Integer serviceLength = (Integer)phonepatientInfo.get("server_length");
         String talkDuration = vo.getTalkduration();
+
+        ConsultPhoneRegisterServiceVo consultPhonevo = new ConsultPhoneRegisterServiceVo();
+        consultPhonevo.setSurplusTime(serviceLength-Integer.parseInt(talkDuration));
+        consultPhonevo.setId(Integer.parseInt(userData));
+        consultPhonevo.setUpdateTime(new Date());
         if(Integer.parseInt(talkDuration)<serviceLength*60-10&&"0".equals(phonepatientInfo.get("type"))){
             //发消息 改状态
-            ConsultPhoneRegisterServiceVo consultPhonevo = new ConsultPhoneRegisterServiceVo();
-            consultPhonevo.setId(Integer.parseInt(userData));
-            consultPhonevo.setUpdateTime(new Date());
             consultPhonevo.setType("1");//已推送过消息
-            int state = consultPhonePatientService.updateOrderInfoBySelect(consultPhonevo);
         }
+        int state = consultPhonePatientService.updateOrderInfoBySelect(consultPhonevo);
         //返回的数据
         CallResponse response = new CallResponse();
         response.setStatuscode("0000");
