@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import net.sf.json.JSONObject;
 
@@ -18,13 +19,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.order.dao.ConsultPhoneRegisterTemplateDao;
 import com.cxqm.xiaoerke.modules.order.dao.SysConsultPhoneServiceDao;
 import com.cxqm.xiaoerke.modules.order.entity.ConsulPhonetDoctorRelationVo;
+import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterTemplateVo;
 import com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo;
+import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PhoneConsultDoctorRelationService;
 import com.cxqm.xiaoerke.modules.order.service.SysConsultPhoneService;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 
 /**
  * Created by wangbaowei on 16/3/21.
@@ -32,108 +37,111 @@ import com.cxqm.xiaoerke.modules.order.service.SysConsultPhoneService;
 @Service
 public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 
-    @Autowired
-    SysConsultPhoneServiceDao sysConsultPhoneServiceDao;
-    
-    @Autowired
-    ConsultPhoneRegisterTemplateDao consultPhoneRegisterTemplateDao;
+	@Autowired
+	SysConsultPhoneServiceDao sysConsultPhoneServiceDao;
 
-    @Autowired
+	@Autowired
+	ConsultPhoneRegisterTemplateDao consultPhoneRegisterTemplateDao;
+
+	@Autowired
+	ConsultPhonePatientService consultPhonePatientService;
+
+	@Autowired
 	private PhoneConsultDoctorRelationService phoneConsultDoctorRelationService;
 
-    public Map<String, Object> getDoctorConsultDate(HashMap<String,Object> dataMap) {
+	public Map<String, Object> getDoctorConsultDate(HashMap<String,Object> dataMap) {
 
-        Map<String, Object> response = new HashMap<String, Object>();
-        List<HashMap<String, Object>> resultList =  sysConsultPhoneServiceDao.getConsultDateList(dataMap);
+		Map<String, Object> response = new HashMap<String, Object>();
+		List<HashMap<String, Object>> resultList =  sysConsultPhoneServiceDao.getConsultDateList(dataMap);
 
-        List<HashMap<String, Object>> consultDateList = new LinkedList<HashMap<String, Object>>();
-        if(resultList != null && !resultList.isEmpty()){
-            for(HashMap<String,Object> map:resultList){
-                HashMap<String,Object> consultDate = new HashMap<String, Object>();
-                consultDate.put("date",(String)map.get("date"));
-                consultDateList.add(consultDate);
-            }
-        }
-        response.put("dateList",consultDateList);
+		List<HashMap<String, Object>> consultDateList = new LinkedList<HashMap<String, Object>>();
+		if(resultList != null && !resultList.isEmpty()){
+			for(HashMap<String,Object> map:resultList){
+				HashMap<String,Object> consultDate = new HashMap<String, Object>();
+				consultDate.put("date",(String)map.get("date"));
+				consultDateList.add(consultDate);
+			}
+		}
+		response.put("dateList",consultDateList);
 
-        return response;
-    }
+		return response;
+	}
 
-    @Override
-    public Integer getCount() {
-        return sysConsultPhoneServiceDao.finCountOfService();
-    }
+	@Override
+	public Integer getCount() {
+		return sysConsultPhoneServiceDao.finCountOfService();
+	}
 
-    @Override
-    public Map<String, Object> doctorConsultPhoneOfDay(Map<String, Object> params) {
-        HashMap<String, Object> response = new HashMap<String, Object>();
+	@Override
+	public Map<String, Object> doctorConsultPhoneOfDay(Map<String, Object> params) {
+		HashMap<String, Object> response = new HashMap<String, Object>();
 
-        String doctorId = (String) params.get("doctorId");
-        Date date = DateUtils.formatDate(params);
+		String doctorId = (String) params.get("doctorId");
+		Date date = DateUtils.formatDate(params);
 
-        // 根据日期得到周几
-        String DateToStr = DateUtils.DateToStr(date);
-        int week = 0;
-        try {
-            week = DateUtils.dayForWeek(DateToStr);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        String dayWeek = DateUtils.getDayWeek(week);
+		// 根据日期得到周几
+		String DateToStr = DateUtils.DateToStr(date);
+		int week = 0;
+		try {
+			week = DateUtils.dayForWeek(DateToStr);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		String dayWeek = DateUtils.getDayWeek(week);
 
-        StringBuffer bf = new StringBuffer();
-        bf.append(DateToStr.substring(0, 10));
-        bf.append("  " + dayWeek).toString();
-        response.put("date", bf.toString());
+		StringBuffer bf = new StringBuffer();
+		bf.append(DateToStr.substring(0, 10));
+		bf.append("  " + dayWeek).toString();
+		response.put("date", bf.toString());
 
-        HashMap<String, Object> dataInfo = new HashMap<String, Object>();
-        dataInfo.put("doctorId", doctorId);
-        dataInfo.put("date", date);
-        List<HashMap<String, Object>> resultList = sysConsultPhoneServiceDao.findConsultPhoneTimeListByDoctorAndDate(dataInfo);
+		HashMap<String, Object> dataInfo = new HashMap<String, Object>();
+		dataInfo.put("doctorId", doctorId);
+		dataInfo.put("date", date);
+		List<HashMap<String, Object>> resultList = sysConsultPhoneServiceDao.findConsultPhoneTimeListByDoctorAndDate(dataInfo);
 
-        // 记录日志 TODO：
+		// 记录日志 TODO：
 //		LogUtils.saveLog(Servlets.getRequest(), "00000030" ,"医生主键："+ doctorId
 //				+ "date:" + date);
-        DateFormat formart = new SimpleDateFormat("hh:mm");
-        List<HashMap<String, Object>> consultPhoneTimeList = new LinkedList<HashMap<String, Object>>();
-        if(resultList != null && !resultList.isEmpty()){
-            for(HashMap<String, Object> map:resultList){
-                HashMap<String, Object> consultPhoneTime = new HashMap<String, Object>();
-                consultPhoneTime.put("price", (String) map.get("price"));
-                consultPhoneTime.put("id",(Integer)map.get("id"));
-                consultPhoneTime.put("begin_time",(String)map.get("begin_time"));
-                try {
-                    Date start = formart.parse((String)map.get("begin_time"));
-                    Date now = formart.parse(formart.format(new Date()));
+		DateFormat formart = new SimpleDateFormat("hh:mm");
+		List<HashMap<String, Object>> consultPhoneTimeList = new LinkedList<HashMap<String, Object>>();
+		if(resultList != null && !resultList.isEmpty()){
+			for(HashMap<String, Object> map:resultList){
+				HashMap<String, Object> consultPhoneTime = new HashMap<String, Object>();
+				consultPhoneTime.put("price", (String) map.get("price"));
+				consultPhoneTime.put("id",(Integer)map.get("id"));
+				consultPhoneTime.put("begin_time",(String)map.get("begin_time"));
+				try {
+					Date start = formart.parse((String)map.get("begin_time"));
+					Date now = formart.parse(formart.format(new Date()));
 
-                    if(date.getTime()>=new Date().getTime()){
-                        consultPhoneTime.put("state",(String)map.get("state"));
-                    }else{
-                        if(start.getTime()>now.getTime()){
-                            consultPhoneTime.put("state",(String)map.get("state"));
-                        }else{
-                            consultPhoneTime.put("state","1");
-                        }
+					if(date.getTime()>=new Date().getTime()){
+						consultPhoneTime.put("state",(String)map.get("state"));
+					}else{
+						if(start.getTime()>now.getTime()){
+							consultPhoneTime.put("state",(String)map.get("state"));
+						}else{
+							consultPhoneTime.put("state","1");
+						}
 
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                consultPhoneTime.put("end_time", (String) map.get("end_time"));
+					}
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				consultPhoneTime.put("end_time", (String) map.get("end_time"));
 
-                consultPhoneTime.put("serviceType",(String)map.get("serviceType"));
-                consultPhoneTimeList.add(consultPhoneTime);
-            }
-        }
+				consultPhoneTime.put("serviceType",(String)map.get("serviceType"));
+				consultPhoneTimeList.add(consultPhoneTime);
+			}
+		}
 
-        response.put("consultPhoneTimeList", consultPhoneTimeList);
+		response.put("consultPhoneTimeList", consultPhoneTimeList);
 
-        return response;
-    }
+		return response;
+	}
 
-    /**
-     * 返回一个医生指定日期的号源
-     */
+	/**
+	 * 返回一个医生指定日期的号源
+	 */
 	@Override
 	public JSONObject getRegisterTime(String doctorId , String date) {
 		// TODO Auto-generated method stub
@@ -186,9 +194,9 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 		}else{
 			phoneConsultFlag = "yes";
 		}
-		
+
 		Map<String, Object> retmap = getSysConsultPhoneServiceListInfo(doctorId,DateUtils.DateToStr(firstDay, "date"));
-		
+
 		returnMap.put("consulPhonetDoctorRelationVo", list.size()==0?cvo:list.get(0));
 		returnMap.put("dateList", dateList);
 		returnMap.put("phoneConsultFlag", phoneConsultFlag);
@@ -197,7 +205,7 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 		returnMap.put("beginTimeList", retmap.get("beginTimeList"));
 		return returnMap;
 	}
-	
+
 	/**
 	 * 获取医生指定日期的号源信息
 	 */
@@ -205,7 +213,7 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("doctorId", doctorId);
-		paramMap.put("date", new Date());
+		paramMap.put("date", date);
 		List<SysConsultPhoneServiceVo> spsvList = sysConsultPhoneServiceDao.findSysConsultPhoneByInfo(paramMap);
 		List<String> beginTimeList = new ArrayList<String>();
 		String time = new String();
@@ -213,17 +221,21 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 		for (SysConsultPhoneServiceVo rsv : spsvList) {// 1无信息2约3重4约 重
 			time = DateUtils.DateToStr(rsv.getBegintime(), "time");
 			if("0".equals(rsv.getState())){//没有被预约
-				if("0".equals(rsv.getRepeatFlag())){//不重复
-					beginTimeList.add("1S|X" + time);
-				}else if("1".equals(rsv.getRepeatFlag())){//每周重复
+				if("0".equals(rsv.getRepeatFlag())){//每周重复
 					beginTimeList.add("3S|X" + time);
+				}/*else if("1".equals(rsv.getRepeatFlag())){//隔周重复
+					beginTimeList.add("S|X" + time);
+				}*/else if("2".equals(rsv.getRepeatFlag())){//不重复
+					beginTimeList.add("1S|X" + time);
 				}
 			}
 			if("1".equals(rsv.getState())){//已被预约
 				if("0".equals(rsv.getRepeatFlag())){
-					beginTimeList.add("2S|X" + time);
-				}else if("1".equals(rsv.getRepeatFlag())){
 					beginTimeList.add("4S|X" + time);
+				}/*else if("1".equals(rsv.getRepeatFlag())){
+					beginTimeList.add("S|X" + time);
+				}*/else if("2".equals(rsv.getRepeatFlag())){
+					beginTimeList.add("2S|X" + time);
 				}
 			}
 		}
@@ -238,8 +250,8 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 	 * 添加电话咨询号源
 	 */
 	@Override
-	public Map<String, String> addRegister(SysConsultPhoneServiceVo vo,
-			List<String> timeList, String date, String operInterval) {
+	public Map<String, String> addRegisters(SysConsultPhoneServiceVo vo,
+											List<String> timeList, String date, String operInterval) {
 		// TODO Auto-generated method stub
 		synchronized (SysConsultPhoneServiceImpl.class) {
 			Map<String, Object> map = new HashMap<String, Object>();
@@ -327,13 +339,13 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 							sb.append(DateUtils.DateToStr(tvo.getDate(), "date")
 									+ "("
 									+ DateUtils.DateToStr(tvo.getBegintime(),
-											"time") + ")的号源已被预约\n");
+									"time") + ")的号源已被预约\n");
 						} else {
 							countUsed++;
 							sb.append(DateUtils.DateToStr(tvo.getDate(), "date")
 									+ "("
 									+ DateUtils.DateToStr(tvo.getBegintime(),
-											"time") + ")的号源已被占用\n");
+									"time") + ")的号源已被占用\n");
 						}
 					}
 				}
@@ -364,7 +376,7 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 	 * sunxiao
 	 */
 	private void insertRegister(SysConsultPhoneServiceVo registerVo,
-			String time, String date) {
+								String time, String date) {
 		Date begin_time = DateUtils.StrToDate(time, "time");
 		// 结束时间自动加15分钟
 		Date end_time = new Date(begin_time.getTime() + 900000);
@@ -375,8 +387,8 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 		registerVo.setState("0");
 		Map<String, Object> queryMap = new HashMap<String, Object>();
 		List<String> statusList = new ArrayList<String>();
-    	statusList.add("0");
-    	statusList.add("1");
+		statusList.add("0");
+		statusList.add("1");
 		queryMap.put("statusList", statusList);
 		queryMap.put("date", date);
 		queryMap.put("time", begin_time);
@@ -386,7 +398,7 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 			sysConsultPhoneServiceDao.insertSelective(registerVo);
 		}
 	}
-	
+
 	/**
 	 * 修改电话咨询号源
 	 * sunxiao
@@ -399,14 +411,14 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 		svo.setUpdatedate(new Date());
 		sysConsultPhoneServiceDao.updateByPrimaryKeySelective(svo);
 	}
-	
+
 	/**
 	 * 操作电话咨询号源模板表，用于号源的重复设置
 	 * sunxiao
 	 */
 	private ConsultPhoneRegisterTemplateVo operTemplate(String operType,
-			SysConsultPhoneServiceVo vo, String weekday, String date, String time,
-			String operInterval) {
+														SysConsultPhoneServiceVo vo, String weekday, String date, String time,
+														String operInterval) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		if ("get".equals(operType)) {
 			map.put("doctorId", vo.getSysDoctorId());
@@ -499,13 +511,226 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 		}
 		return null;
 	}
-	
+
 	/**
-     * 获取电话咨询模板列表
-     * sunxiao
-     * @param executeMap
-     * @return
-     */
+	 * 获取设置重复号源的日期
+	 * sunxiao
+	 */
+	private Map<String, Object> getDateList(SysConsultPhoneServiceVo vo, String date,
+											String time, String repeat) {
+		List<String> dateList = new ArrayList<String>();
+		Map<String, Object> retmap = new HashMap<String, Object>();
+		dateList.add(date);
+		if (!"no".equals(repeat) && repeat != null && !"".equals(repeat)) {
+			Date temp = DateUtils.StrToDate(date, "date");
+			Calendar c = Calendar.getInstance();
+			c.setTime(temp);
+			String weekday = c.get(Calendar.DAY_OF_WEEK) + "";
+			ConsultPhoneRegisterTemplateVo rvo = operTemplate("get", vo, weekday,
+					date, time, null);
+			if (rvo != null) {
+				retmap.put("repeat", "yes");
+				if ("0".equals(rvo.getRepeatInterval())) {// 每周重复只能查出一个
+					c.setTime(temp);
+					for (int i = 0; i < 6; i++) {
+						c.add(Calendar.DAY_OF_YEAR, 7);
+						Date today = c.getTime();
+						dateList.add(DateUtils.DateToStr(today, "date"));
+					}
+				}
+				if ("1".equals(rvo.getRepeatInterval())) {
+					c.setTime(temp);
+					for (int i = 0; i < 3; i++) {
+						c.add(Calendar.DAY_OF_YEAR, 14);
+						Date today = c.getTime();
+						dateList.add(DateUtils.DateToStr(today, "date"));
+					}
+				}
+			}else{
+				c.setTime(temp);
+				for (int i = 0; i < 6; i++) {
+					c.add(Calendar.DAY_OF_YEAR, 7);
+					Date today = c.getTime();
+					dateList.add(DateUtils.DateToStr(today, "date"));
+				}
+			}
+		}
+		retmap.put("dateList", dateList);
+		return retmap;
+	}
+
+	/**
+	 * 删除号源时判断受影响的号源
+	 * sunxiao
+	 */
+	public String judgeRepeatEffect(String date, String timeParam,String doctorId, String operRepeat) {
+		String[] timeArray = timeParam.split(";");
+		StringBuffer sb = new StringBuffer("");
+		for (String time : timeArray) {
+			SysConsultPhoneServiceVo vo = new SysConsultPhoneServiceVo();
+			vo.setSysDoctorId(doctorId);
+			SysConsultPhoneServiceVo rvo = new SysConsultPhoneServiceVo();
+			rvo.setSysDoctorId(doctorId);
+
+			List<String> dateList = new ArrayList<String>();
+			Map<String, Object> retMap = getDateList(rvo, date, time,
+					operRepeat);
+			dateList = (List<String>) retMap.get("dateList");
+			String repeat = (String) retMap.get("repeat");
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("sysDoctorId", doctorId);
+			map.put("dateList", dateList);
+			map.put("status", "1");
+			map.put("time", time);
+			List<SysConsultPhoneServiceVo> rsList = sysConsultPhoneServiceDao
+					.findSysConsultPhoneByInfo(map);
+			SysConsultPhoneServiceVo isRepeatvo = null;
+			for (SysConsultPhoneServiceVo rsvo : rsList) {
+				if (date.equals(DateUtils.DateToStr(rsvo.getDate(), "date"))) {
+					if (!("0".equals(rsvo.getRepeatFlag()) || "1".equals(rsvo
+							.getRepeatFlag()))) {
+						isRepeatvo = rsvo;
+					} else {
+						if (!"yes".equals(operRepeat)) {
+							isRepeatvo = rsvo;
+						}
+					}
+				}
+			}
+			if (isRepeatvo != null) {
+				sb.append(DateUtils.DateToStr(isRepeatvo.getDate(), "date")
+						+ DateUtils.DateToStr(isRepeatvo.getBegintime(), "time")
+						+ "的号源已被预约");
+			} else {
+				for (SysConsultPhoneServiceVo rsvo : rsList) {
+					if ("0".equals(rsvo.getRepeatFlag())
+							|| "1".equals(rvo.getRepeatFlag())) {
+						sb.append(DateUtils.DateToStr(rsvo.getDate(), "date")
+								+ DateUtils.DateToStr(rsvo.getBegintime(),
+								"time") + "的号源已被预约");
+					}
+				}
+			}
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * 删除号源
+	 * sunxiao
+	 */
+	public int deleteRegisters(SysConsultPhoneServiceVo registerServiceVo,
+							   List<String> timeList, String date, String operRepeat,String deleteBy) {
+		int count = 0;
+		Random r = new Random();
+		for (String time : timeList) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			List<String> dateList = new ArrayList<String>();
+			Map<String, Object> retMap = getDateList(registerServiceVo, date,
+					time, operRepeat);
+			dateList = (List<String>) retMap.get("dateList");
+			String repeat = (String) retMap.get("repeat");
+			map.put("dateList", dateList);
+			map.put("sysDoctorId", registerServiceVo.getSysDoctorId());
+			List<String> statusList = new ArrayList<String>();
+			statusList.add("0");
+			statusList.add("1");
+			map.put("statusList", statusList);
+			map.put("time", time);
+			List<SysConsultPhoneServiceVo> rsList = sysConsultPhoneServiceDao
+					.findSysConsultPhoneByInfo(map);
+			SysConsultPhoneServiceVo isRepeatvo = null;
+			for (SysConsultPhoneServiceVo rvo : rsList) {
+				if (date.equals(DateUtils.DateToStr(rvo.getDate(), "date"))) {
+					if (!("0".equals(rvo.getRepeatFlag()) || "1".equals(rvo
+							.getRepeatFlag()))) {
+						isRepeatvo = rvo;
+					} else {
+						if (!"yes".equals(operRepeat)) {
+							isRepeatvo = rvo;
+						}
+					}
+				}
+			}
+			if (isRepeatvo != null) {
+				Map<String, Object> executeMap = new HashMap<String, Object>();
+				ConsultPhoneRegisterServiceVo cvo = new ConsultPhoneRegisterServiceVo();
+				if ("1".equals(isRepeatvo.getState())) {
+					HashMap<String, Object> executeMap1 = new HashMap<String, Object>();
+					executeMap1.put("registerId", isRepeatvo.getId());
+					List<Map<String, Object>> orderList = consultPhonePatientService.getConsultPhoneRegisterListByInfo(executeMap1);
+					Integer patientRegisterId = Integer.parseInt((String)orderList.get(0).get("id"));
+					cvo.setId(patientRegisterId);
+					cvo.setDeleteBy(deleteBy);
+					cvo.setState("6");
+					cvo.setUpdateTime(new Date());
+					consultPhonePatientService.updateOrderInfoBySelect(cvo);
+					LogUtils.saveLog(Servlets.getRequest(), "00000027" ,"订单主键"+ patientRegisterId
+							+ ":" + date);//删除号源时删除订单，订单id:
+					try {
+						executeMap.put("patient_register_service_id",
+								patientRegisterId);
+						//orderMessageService.sendMessage(executeMap, false);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				count += sysConsultPhoneServiceDao.cancelOrder(isRepeatvo.getId(), "2");
+				LogUtils.saveLog(Servlets.getRequest(), "00000028" ,"订单主键"+ isRepeatvo.getId()
+						+ ":" + date);
+			} else {
+				for (SysConsultPhoneServiceVo rvo : rsList) {
+					if ("0".equals(rvo.getRepeatFlag())
+							|| "1".equals(rvo.getRepeatFlag())) {
+						ConsultPhoneRegisterServiceVo cvo = new ConsultPhoneRegisterServiceVo();
+						Map<String, Object> executeMap = new HashMap<String, Object>();
+						if ("1".equals(rvo.getState())) {
+							HashMap<String, Object> executeMap1 = new HashMap<String, Object>();
+							executeMap1.put("registerId", rvo.getId());
+							List<Map<String, Object>> orderList = consultPhonePatientService.getConsultPhoneRegisterListByInfo(executeMap1);
+							Integer patientRegisterId = Integer.parseInt((String)orderList.get(0).get("id"));
+							cvo.setId(patientRegisterId);
+							cvo.setDeleteBy(deleteBy);
+							cvo.setState("6");
+							cvo.setUpdateTime(new Date());
+							consultPhonePatientService.updateOrderInfoBySelect(cvo);
+							LogUtils.saveLog(Servlets.getRequest(), "00000027" ,"订单主键"+ patientRegisterId
+									+ ":" + date);
+							try {
+								executeMap.put("patient_register_service_id",
+										patientRegisterId);
+								//orderMessageService.sendMessage(executeMap, false);
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+						count += sysConsultPhoneServiceDao.cancelOrder(rvo.getId(), "2");
+						LogUtils.saveLog(Servlets.getRequest(), "00000028","订单表主键" + rvo.getId()
+								+ ":" + date);//删除号源，号源
+					}
+				}
+			}
+			if ("yes".equals(operRepeat) && "yes".equals(repeat)
+					&& isRepeatvo == null) {
+				Date temp = DateUtils.StrToDate(date, "date");
+				Calendar c = Calendar.getInstance();
+				c.setTime(temp);
+				String weekday = c.get(Calendar.DAY_OF_WEEK) + "";
+				operTemplate("del", registerServiceVo, weekday, date, time,
+						null);
+			}
+		}
+		return count;
+	}
+
+	/**
+	 * 获取电话咨询模板列表
+	 * sunxiao
+	 * @param executeMap
+	 * @return
+	 */
 	@Override
 	public List<ConsultPhoneRegisterTemplateVo> getRegisterTemplateList(
 			Map<String, Object> executeMap) {
@@ -524,4 +749,5 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 		List<SysConsultPhoneServiceVo> list = sysConsultPhoneServiceDao.findSysConsultPhoneByInfo(map);
 		return list;
 	}
+
 }

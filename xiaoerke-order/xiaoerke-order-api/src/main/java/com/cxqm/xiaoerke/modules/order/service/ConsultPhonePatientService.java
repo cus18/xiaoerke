@@ -29,4 +29,12 @@ public interface ConsultPhonePatientService {
      * sunxiao
      */
     Page<ConsultPhoneRegisterServiceVo> findConsultPhonePatientList(Page<ConsultPhoneRegisterServiceVo> page,ConsultPhoneRegisterServiceVo vo);
+
+    /**
+     * 根据条件查询订单
+     * sunxiao
+     * @param map
+     * @return
+     */
+    List<Map<String, Object>> getConsultPhoneRegisterListByInfo(Map map);
 }
