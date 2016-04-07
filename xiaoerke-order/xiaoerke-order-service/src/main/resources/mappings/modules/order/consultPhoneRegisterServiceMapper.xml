@@ -294,7 +294,7 @@
       </if>
 
       <if test="surplusTime != null" >
-        #{surplusTime,jdbcType=TIMESTAMP},
+        #{surplusTime,jdbcType=BIGINT},
       </if>
       <if test="creat_by != null" >
         #{creat_by,jdbcType=VARCHAR},
