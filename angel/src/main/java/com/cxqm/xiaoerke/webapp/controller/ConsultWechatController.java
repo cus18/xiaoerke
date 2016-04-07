@@ -4,6 +4,8 @@
 package com.cxqm.xiaoerke.webapp.controller;
 
 import com.cxqm.xiaoerke.common.web.BaseController;
+import com.cxqm.xiaoerke.modules.consult.service.SessionCache;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +24,9 @@ import java.util.*;
 @RequestMapping(value = "consult/wechat")
 public class ConsultWechatController extends BaseController {
 
+    @Autowired
+    private SessionCache sessionCache;
+
     @RequestMapping(value = "/conversation", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
@@ -30,16 +35,19 @@ public class ConsultWechatController extends BaseController {
                                      @RequestParam(required=false) String messageContent,
                                      @RequestParam(required=false) String mediaId) {
 
+        //根据用户的openId，判断redis中，是否有用户正在进行的session
+        Integer sessionId = sessionCache.getSessionIdByOpenId(openId);
+
+
         if(messageType.equals("text")){
+            try {
+                System.out.println(URLDecoder.decode(messageContent, "utf-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
 
         }else{
 
-        }
-
-        try {
-            System.out.println(URLDecoder.decode(messageContent, "utf-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
         }
 
         Map<String, Object> response = new HashMap<String, Object>();
