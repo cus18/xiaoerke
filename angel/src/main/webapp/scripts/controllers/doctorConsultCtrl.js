@@ -1,7 +1,7 @@
 angular.module('controllers', ['luegg.directives'])
-    .controller('doctorConsultFirstCtrl', ['$scope', '$sce', 'getTodayRankingList', 'getOnlineDoctorList',
+    .controller('doctorConsultFirstCtrl', ['$scope', '$sce', '$window','getTodayRankingList', 'getOnlineDoctorList',
         'getCommonAnswerList', 'getMyAnswerList', 'GetUserLoginStatus', '$location', 'GetUserRecordList','getMyAnswerModify',
-        function ($scope, $sce, getTodayRankingList, getOnlineDoctorList, getCommonAnswerList,
+        function ($scope, $sce, $window,getTodayRankingList, getOnlineDoctorList, getCommonAnswerList,
                   getMyAnswerList, GetUserLoginStatus, $location, GetUserRecordList,getMyAnswerModify) {
             $scope.test = "";
             $scope.info = {};
@@ -23,6 +23,17 @@ angular.module('controllers', ['luegg.directives'])
                 console.log("getOnlineDoctorList", data);
             });
 
+            $scope.alreadyJoinPatientConversationContent = [
+                {
+                    "patientId":"aaaa",
+                    "patientName": "frank",
+                },
+                {
+                    "patientId":"wefedfwe",
+                    "patientName": "frank",
+                }
+            ];
+
             getCommonAnswerList.save({"type": "commonAnswer"}, function (data) {
                 console.log("getCommonAnswerList", data);
                 if (data.commonAnswer.length == 0) {
@@ -41,17 +52,6 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.myAnswer = data.myAnswer;
                 }
             });
-            $scope.alreadyJoinPatientConversationContent = [
-                {
-                    "patientId":"aaaa",
-                    "patientName": "frank",
-                },
-                {
-                    "patientId":"wefedfwe",
-                    "patientName": "frank",
-                }
-            ];
-
             $scope.doctorConsultFirst = function () {
                 var routePath = "/doctor/consultBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath: routePath}, function (data) {
@@ -285,29 +285,15 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.switchover.show = !$scope.switchover.show;
             }
             //添加分组
-            var flag,parentIndex,childIndex;
-            $scope.getCommonGroup = function(parentIndex) {
-                flag = 0;
-                console.log("flag", flag)
-                parentIndex = parentIndex;
-                console.log("parentIndex", parentIndex)
-            };
-            $scope.getCommonContent = function(parentIndex, childIndex) {
-                flag = 1;
-                console.log("flag", flag)
-                parentIndex = parentIndex;
-                childIndex = childIndex;
-                console.log("childIndex", childIndex)
-                console.log("parentIndex", parentIndex)
-            };
             $scope.add = function() {
-                console.log("flag", flag)
                 if (flag == 0) {
+                    console.log("parentIndex",parentIndex)
                     $scope.addgroup = true;
                 } else if (flag == 1) {
                     $scope.addcontent = true;
                 }
             }
+
             $scope.addgroup =  false;
             $scope.closeAddGroup = function() {
                 $scope.addgroup = false;
@@ -320,7 +306,6 @@ angular.module('controllers', ['luegg.directives'])
 
             //保存公共回复
             $scope.addGroupFirst = function () {
-                alert("sdf");
                 var addGroupFirst = {};
                 addGroupFirst.name = $("#addGroupFirstId").val();
                 $scope.commonAnswer.push(addGroupFirst);
@@ -340,18 +325,40 @@ angular.module('controllers', ['luegg.directives'])
             $scope.closeEditContent = function() {
                 $scope.editcontent = false;
             }
-
+            var flag,parentIndex,childIndex;
+            $scope.editCommonGroup = function(parentIndex1) {
+                flag = 0;
+                parentIndex = parentIndex1;
+                $scope.info.editCommonGroup = $scope.commonAnswer[parentIndex].name;
+                console.log("editCommonGroup",$scope.info.editCommonGroup);
+                console.log("parentIndex",parentIndex);
+            };
+            $scope.editCommonContent = function(parentIndex1, childIndex1) {
+                flag = 1;
+                parentIndex = parentIndex1;
+                childIndex = childIndex1;
+                $scope.info.editCommonContent = $scope.commonAnswer[parentIndex].secondAnswer[childIndex].name;
+                console.log("editCommonContent",$scope.info.editCommonContent);
+                console.log("parentIndex",parentIndex);
+                console.log("childIndex",childIndex);
+            };
             $scope.edit = function() {
-                console.log("flag", flag)
                 if (flag == 0) {
                     $scope.editgroup = true;
+                    console.log("editCommonGroup",$scope.info.editCommonGroup);
                 } else if (flag == 1) {
                     $scope.editcontent = true;
                 }
             }
+            //删除
+            $scope.remove = function(index) {
+                if (flag == 0 && $window.confirm("确定要删除该组回复?")) {
+                    $scope.commonAnswer.splice(index, 1);
+                }else if(flag == 1 && $window.confirm("确定要删除该回复?")) {
+                    $scope.commonAnswer[parentIndex].secondAnswer.splice(index, 1);;
+                }
+            }
         }])
-
-
 
     .controller('messageListCtrl', ['$scope', '$log', '$sce', 'getUserConsultListInfo', 'getUserRecordDetail', 'getCSdoctorList', 'CSInfoByUserId', 'getMessageRecordInfo',
         function ($scope, $log, $sce, getUserConsultListInfo, getUserRecordDetail, getCSdoctorList, CSInfoByUserId, getMessageRecordInfo) {
