@@ -72,25 +72,27 @@ public class PhoneConsultaController {
     }
 
     @RequestMapping(value = "consultReconnect",method = {RequestMethod.GET,RequestMethod.POST})
-    public String consultReconnect(@RequestParam Integer phoneConsultaServiceId){
+    public
+    @ResponseBody
+    String consultReconnect(@RequestParam Integer phoneConsultaServiceId){
 
         Map<String,Object> orderInfo = consultPhoneOrderService.getConsultConnectInfo(phoneConsultaServiceId);
-        String orderId = (String)orderInfo.get("id");
+        Integer orderId = (Integer)orderInfo.get("id");
         String userPhone = (String)orderInfo.get("userPhone");
-        String doctorPhone = (String)orderInfo.get("doctor_answer_phone");
-        String conversationLength = (String)orderInfo.get("conversationLength");
+        String doctorPhone = (String)orderInfo.get("doctorPhone");
+        Integer conversationLength = (Integer)orderInfo.get("conversationLength");
 
         CCPRestSDK sdk = new CCPRestSDK();
         sdk.init("sandboxapp.cloopen.com", "8883");// 初始化服务器地址和端口，格式如下，服务器地址不需要写https://
         sdk.setSubAccount("2fa43378da0a11e59288ac853d9f54f2", "0ad73d75ac5bcb7e68fb191830b06d6b");
         sdk.setAppId("aaf98f8952f7367a0153084e29992035");
 
-        HashMap<String, Object> result = sdk.callback(userPhone, doctorPhone,
+        HashMap<String, Object> result = sdk.callback(userPhone, doctorPhone+"",
                 "4006237120", "4006237120", null,
                 "true", null, orderId+"",
                 conversationLength+"", null, "0",
                 "1", "10", null);
-
-        return null;
+        String statusCode = (String) result.get("statusCode");
+        return statusCode;
     }
 }
