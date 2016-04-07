@@ -1,7 +1,6 @@
 package com.cxqm.xiaoerke.modules.order.service.impl;
 
 
-import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.service.ServiceException;
 import com.cxqm.xiaoerke.common.utils.*;
@@ -28,7 +27,6 @@ import com.cxqm.xiaoerke.modules.sys.interceptor.SystemServiceLog;
 import com.cxqm.xiaoerke.modules.sys.service.*;
 import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
-import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -686,13 +684,14 @@ public class PatientRegisterServiceImpl implements PatientRegisterService {
             } else {
                 responseMap.put("departmentName", (responseMap.get("department_level1") + "-" + responseMap.get("department_level2")));
             }
+
+            Date createTime = (Date) responseMap.get("date");
+            String week = DateUtils.getWeekOfDate(createTime);
+            String year = DateUtils.formatDateToStr(createTime, "yyyy/MM/dd");
+            String hour = (String) responseMap.get("beginTime");
+            responseMap.put("date", year + " " + week + " " + hour);
         }
 
-        Date createTime = (Date) responseMap.get("date");
-        String week = DateUtils.getWeekOfDate(createTime);
-        String year = DateUtils.formatDateToStr(createTime, "yyyy/MM/dd");
-        String hour = (String) responseMap.get("beginTime");
-        responseMap.put("date", year + " " + week + " " + hour);
         return responseMap;
     }
 
