@@ -160,8 +160,8 @@ define(['appPhoneConsult'], function (app) {
         }])
 
         //获取所有订单列表
-        .factory('getOrderList',['$resource',function ($resource){
-            return $resource(user_appoint + 'order/user/orderListAll');
+        .factory('getOrderListAll',['$resource',function ($resource){
+            return $resource(user_h5 + 'order/user/orderListAll');
         }])
 
         .factory('checkUserOrder',['$resource',function ($resource){
