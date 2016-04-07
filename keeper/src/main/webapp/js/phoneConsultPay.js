@@ -61,6 +61,7 @@ var doRefresh = function(){
             $('#department').html(data.doctor_expert_desc);
             $('#ServerLength').html(data.ServerLength);
             $('#price').html(data.price);
+            $('#payPrice').html(data.price);
             $("#photo").attr("src","http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/"+data.doctorId+"?ver==1.0.2");
         },
         error : function() {
