@@ -77,7 +77,7 @@
             //        window.location.href = data.redirectURL+"?targeturl="+routePath;
             //    }else{
                     window.location.href = "/keeper/phoneConsultPay/patientPay.do?phoneConDoctorDetail="
-                        + item.id;
+                        + item.id+"&doctorId="+$stateParams.doctorId;
                 //}})
         }
 
