@@ -240,14 +240,21 @@ angular.module('controllers', ['luegg.directives'])
             }
             $scope.myreplyList1 = function () {
                 $scope.myreplyList.show = !$scope.myreplyList.show;
+                if ($scope.myreplyList.show == false){
+                    $(".rtitle:eq(0)").css('backgroundPosition','0 0');
+                    $(".rtitle:eq(0)").css('color','#333');
+                }else if($scope.myreplyList.show == true){
+                    $(".rtitle:eq(0)").css('backgroundPosition','0 -42px');
+                    $(".rtitle:eq(0)").css('color','#08b7c2');
+                }
             }
             //我的回复内容
-            $scope.mreplyContent = {
-                show: false
-            }
             $scope.mreplyContent1 = function (index) {
-                //$scope.mreplyContent.show = !$scope.mreplyContent.show;
                 $scope.mreplayindex = index;
+                $(".myreply .group-title").not(index).css('backgroundPosition','0 0');
+                $(".myreply .group-title").not(index).css('color','#333');
+                $(".myreply .group-title").eq(index).css('backgroundPosition','0 -42px');
+                $(".myreply .group-title").eq(index).css('color','#08b7c2');
             }
             //公共回复
             $scope.pubilcreplyList = {
@@ -255,13 +262,23 @@ angular.module('controllers', ['luegg.directives'])
             }
             $scope.pubilcreplyList1 = function () {
                 $scope.pubilcreplyList.show = !$scope.pubilcreplyList.show;
+                console.log($scope.pubilcreplyList.show)
+                if ($scope.pubilcreplyList.show == false){
+                    $(".rtitle:eq(1)").css('backgroundPosition','0 0');
+                    $(".rtitle:eq(1)").css('color','#333');
+                }else if($scope.pubilcreplyList.show == true){
+                    console.log($scope.pubilcreplyList.show)
+                    $(".rtitle:eq(1)").css('backgroundPosition','0 -42px');
+                    $(".rtitle:eq(1)").css('color','#08b7c2');
+                }
             }
             //公告回复内容
-            $scope.pubilcreplyContent = {
-                show: false
-            }
             $scope.pubilcreplyContent1 = function (index) {
                 $scope.pubilcreplyindex = index;
+                $(".pubilcreply .group-title").not(index).css('backgroundPosition','0 0');
+                $(".pubilcreply .group-title").not(index).css('color','#333');
+                $(".pubilcreply .group-title").eq(index).css('backgroundPosition','0 -42px');
+                $(".pubilcreply .group-title").eq(index).css('color','#08b7c2');
             }
             //系统设置
             $scope.systemsetup = {
