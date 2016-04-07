@@ -139,7 +139,7 @@ public class ConsultPhoneOrderServiceImpl implements ConsultPhoneOrderService {
             HashMap<String,Object> map = new HashMap<String, Object>();
             map.put("doctorName", order.getDoctorName());
             map.put("position", order.getPosition());
-            map.put("hospitalName",order.getHospitalName());
+            map.put("hospital",order.getHospitalName());
 
             SimpleDateFormat format = new SimpleDateFormat("MM/dd");
             map.put("date",format.format(order.getDate()));

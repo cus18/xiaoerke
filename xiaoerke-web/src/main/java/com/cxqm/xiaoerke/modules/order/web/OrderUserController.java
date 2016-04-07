@@ -225,7 +225,7 @@ public class OrderUserController extends BaseController {
             HashMap<String,Object> map = new HashMap<String, Object>();
             map.put("doctorName", order.get("doctorName"));
             map.put("position", order.get("position"));
-            map.put("hospitalName", order.get("hospitalName"));
+            map.put("hospital", order.get("hospitalName"));
             map.put("date",order.get("date"));
             map.put("time",order.get("time"));
 
