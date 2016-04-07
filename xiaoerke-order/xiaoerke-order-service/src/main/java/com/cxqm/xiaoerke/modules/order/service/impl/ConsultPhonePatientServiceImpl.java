@@ -1,34 +1,31 @@
 package com.cxqm.xiaoerke.modules.order.service.impl;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
-import com.cxqm.xiaoerke.modules.account.exception.BalanceNotEnoughException;
 import com.cxqm.xiaoerke.modules.healthRecords.entity.BabyIllnessInfoVo;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
+import com.cxqm.xiaoerke.modules.order.dao.ConsultPhoneRegisterServiceDao;
 import com.cxqm.xiaoerke.modules.order.dao.PhoneConsultDoctorRelationDao;
+import com.cxqm.xiaoerke.modules.order.dao.SysConsultPhoneServiceDao;
 import com.cxqm.xiaoerke.modules.order.entity.ConsulPhonetDoctorRelationVo;
+import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo;
 import com.cxqm.xiaoerke.modules.order.exception.CreateOrderException;
+import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.entity.PatientVo;
-import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.DoctorInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.cxqm.xiaoerke.common.persistence.Page;
-import com.cxqm.xiaoerke.modules.order.dao.ConsultPhoneRegisterServiceDao;
-import com.cxqm.xiaoerke.modules.order.dao.SysConsultPhoneServiceDao;
-import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
-import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by wangbaowei on 16/3/18.
@@ -67,8 +64,14 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
     @Override
     public Map<String,Object> getPatientRegisterInfo(Integer patientRegisterId){
       Map<String,Object> registerInfo = consultPhoneRegisterServiceDao.getPhoneConsultaServiceIndo(patientRegisterId);
+        String position1 = (String)registerInfo.get("position1");
+        String position = (String)registerInfo.get("position2");
+        if(position1 != null && !"".equals(position1)){
+            position = position1 + "、" + position;
+        }
+        registerInfo.put("position",position);
         registerInfo.put("expertise", doctorInfoService
-                .getDoctorExpertiseById((String)registerInfo.get("doctorId"), null, null));
+                .getDoctorExpertiseById((String) registerInfo.get("doctorId"), null, null));
         // 根据医生ID和医院ID，获取医生的所处科室
         return registerInfo;
     }
