@@ -23,9 +23,9 @@
                 $scope.status = item -1;
                 $scope.pageLoading = true;
                 if($scope.status < 0){
-                    $scope.MyselfInfoPhoneConsult("1","10");
+                    $scope.MyselfInfoPhoneConsult("1","1000");
                 }else{
-                    $scope.MyselfInfoPhoneConsult("1","10",$scope.status+"");
+                    $scope.MyselfInfoPhoneConsult("1","1000",$scope.status+"");
                 }
 
             };
@@ -35,7 +35,7 @@
 
 
             $scope.$on('$ionicView.enter', function(){
-                $scope.MyselfInfoPhoneConsult("1","10");
+                $scope.MyselfInfoPhoneConsult("1","1000");
 
             })
     }])
