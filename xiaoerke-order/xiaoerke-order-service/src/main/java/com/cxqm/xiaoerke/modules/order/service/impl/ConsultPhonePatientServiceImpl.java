@@ -1,31 +1,34 @@
 package com.cxqm.xiaoerke.modules.order.service.impl;
 
-import com.cxqm.xiaoerke.common.persistence.Page;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.modules.account.exception.BalanceNotEnoughException;
 import com.cxqm.xiaoerke.modules.healthRecords.entity.BabyIllnessInfoVo;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
-import com.cxqm.xiaoerke.modules.order.dao.ConsultPhoneRegisterServiceDao;
 import com.cxqm.xiaoerke.modules.order.dao.PhoneConsultDoctorRelationDao;
-import com.cxqm.xiaoerke.modules.order.dao.SysConsultPhoneServiceDao;
 import com.cxqm.xiaoerke.modules.order.entity.ConsulPhonetDoctorRelationVo;
-import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo;
 import com.cxqm.xiaoerke.modules.order.exception.CreateOrderException;
-import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.entity.PatientVo;
+import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.DoctorInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.cxqm.xiaoerke.common.persistence.Page;
+import com.cxqm.xiaoerke.modules.order.dao.ConsultPhoneRegisterServiceDao;
+import com.cxqm.xiaoerke.modules.order.dao.SysConsultPhoneServiceDao;
+import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
+import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by wangbaowei on 16/3/18.
@@ -177,6 +180,13 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         return pages;
     }
 
-
-
+    /**
+     * 根据条件查询订单
+     * sunxiao
+     */
+    @Override
+    public List<Map<String, Object>> getConsultPhoneRegisterListByInfo(Map map) {
+        // TODO Auto-generated method stub
+        return consultPhoneRegisterServiceDao.getConsultPhoneRegisterListByInfo(map);
+    }
 }
