@@ -141,8 +141,17 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		public void run() {
 			try {
 				System.out.println(xmlEntity.getContent());
-				this.sendPost("http://localhost/angel/consult/wechat/conversation", "messageContent=" +
-                        URLEncoder.encode(xmlEntity.getContent(), "UTF-8"));
+				if(xmlEntity.getMsgType().equals("text")){
+					this.sendPost("http://localhost/angel/consult/wechat/conversation",
+							"openId=" + xmlEntity.getFromUserName() +
+							"&messageType=" + xmlEntity.getMsgType() +
+							"&messageContent=" + URLEncoder.encode(xmlEntity.getContent(), "UTF-8"));
+				}else{
+					this.sendPost("http://localhost/angel/consult/wechat/conversation",
+							"openId=" + xmlEntity.getFromUserName() +
+							"&messageType=" + xmlEntity.getMsgType() +
+							"&mediaId=" + xmlEntity.getMediaId());
+				}
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}

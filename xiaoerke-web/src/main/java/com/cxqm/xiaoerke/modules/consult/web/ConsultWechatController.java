@@ -47,7 +47,16 @@ public class ConsultWechatController extends BaseController {
     @RequestMapping(value = "/conversation", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> conversation(@RequestParam(required=true) String messageContent) {
+    Map<String, Object> conversation(@RequestParam(required=true) String openId,
+                                     @RequestParam(required=true) String messageType,
+                                     @RequestParam(required=false) String messageContent,
+                                     @RequestParam(required=false) String mediaId) {
+
+        if(messageType.equals("text")){
+
+        }else{
+
+        }
 
         try {
             System.out.println(URLDecoder.decode(messageContent, "utf-8"));
