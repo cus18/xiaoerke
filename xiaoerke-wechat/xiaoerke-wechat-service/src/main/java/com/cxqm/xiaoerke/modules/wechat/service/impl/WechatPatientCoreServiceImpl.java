@@ -126,7 +126,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			Runnable thread = new processConsultMessageThread(xmlEntity);
 			threadExecutor.execute(thread);
 			return "";
-			//respMessage = transferToCustomer(xmlEntity);
+//			respMessage = transferToCustomer(xmlEntity);
 		}
 		return respMessage;
 	}
@@ -142,12 +142,12 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			try {
 				System.out.println(xmlEntity.getContent());
 				if(xmlEntity.getMsgType().equals("text")){
-					this.sendPost("http://localhost/angel/consult/wechat/conversation",
+					this.sendPost("http://xiaoxiaoerke.cn/angel/consult/wechat/conversation",
 							"openId=" + xmlEntity.getFromUserName() +
 							"&messageType=" + xmlEntity.getMsgType() +
 							"&messageContent=" + URLEncoder.encode(xmlEntity.getContent(), "UTF-8"));
 				}else{
-					this.sendPost("http://localhost/angel/consult/wechat/conversation",
+					this.sendPost("http://xiaoxiaoerke.cn/angel/consult/wechat/conversation",
 							"openId=" + xmlEntity.getFromUserName() +
 							"&messageType=" + xmlEntity.getMsgType() +
 							"&mediaId=" + xmlEntity.getMediaId());

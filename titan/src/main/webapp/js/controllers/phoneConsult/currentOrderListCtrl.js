@@ -21,18 +21,18 @@
             $scope.selectClassify = function(item){
                 $scope.classifyItem =item;
                 if($scope.classifyItem == "ap"){
-                    MyselfInfoAppointment.save({"pageNo": "1", "pageSize": "10"}, function (data) {
+                    MyselfInfoAppointment.save({"pageNo": "1", "pageSize": "1000"}, function (data) {
                         $scope.pageLoading = false;
                         $scope.orderInfo = data.orderList;
 
                     });
                 }else if($scope.classifyItem == "phone"){
-                    MyselfInfoPhoneConsult.save({"pageNo": "1", "pageSize": "10"}, function (data) {
+                    MyselfInfoPhoneConsult.save({"pageNo": "1", "pageSize": "1000"}, function (data) {
                         $scope.pageLoading = false;
                         $scope.orderInfo = data.orderList;
                     });
                 }else{
-                    $scope.getOrderListAll("1","10");
+                    $scope.getOrderListAll("1","1000");
                 }
 
             };
@@ -43,7 +43,7 @@
 
             $scope.$on('$ionicView.enter', function(){
                 $scope.classifyItem ="all";
-                $scope.getOrderListAll("1","10");
+                $scope.getOrderListAll("1","1000");
 
             })
     }])

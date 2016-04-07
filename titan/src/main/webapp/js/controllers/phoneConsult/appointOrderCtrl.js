@@ -10,6 +10,9 @@
 
             $scope.MyselfInfoAppointment = function(pageNo,pageSize,status){
                 $scope.pageLoading = true;
+                if(status == "5"){
+                    status = "6";
+                }
                 MyselfInfoAppointment.save({"pageNo": pageNo, "pageSize": pageSize, "status": status}, function (data) {
                     $scope.pageLoading = false;
                     $scope.orderInfo = data.orderList;
@@ -23,9 +26,9 @@
                 $scope.status = item -1;
                 $scope.pageLoading = true;
                 if($scope.status < 0){
-                    $scope.MyselfInfoAppointment("1","10");
+                    $scope.MyselfInfoAppointment("1","1000");
                 }else{
-                    $scope.MyselfInfoAppointment("1","10",$scope.status+"");
+                    $scope.MyselfInfoAppointment("1","1000",$scope.status+"");
                 }
 
             };
@@ -36,7 +39,8 @@
 
 
             $scope.$on('$ionicView.enter', function(){
-                $scope.MyselfInfoAppointment("1","10");
+                $scope.classifyItem =0;
+                $scope.MyselfInfoAppointment("1","1000");
 
             })
     }])
