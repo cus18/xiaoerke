@@ -5,17 +5,18 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="sys_doctor_id" property="sysDoctorId" jdbcType="VARCHAR" />
     <result column="price" property="price" jdbcType="VARCHAR" />
-    <result column="date" property="date" jdbcType="TIMESTAMP" />
-    <result column="beginTime" property="begintime" jdbcType="TIMESTAMP" />
-    <result column="endTime" property="endtime" jdbcType="TIMESTAMP" />
+    <result column="date" property="date" jdbcType="DATE" />
+    <result column="beginTime" property="begintime" jdbcType="TIME" />
+    <result column="endTime" property="endtime" jdbcType="TIME" />
     <result column="state" property="state" jdbcType="VARCHAR" />
     <result column="createDate" property="createdate" jdbcType="TIMESTAMP" />
     <result column="updateDate" property="updatedate" jdbcType="TIMESTAMP" />
     <result column="serviceType" property="servicetype" jdbcType="VARCHAR" />
+    <result column="repeatFlag" property="repeatFlag" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, sys_doctor_id, price, date, beginTime, endTime, state, createDate, updateDate,
-    serviceType
+    serviceType,repeatFlag
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
@@ -90,11 +91,11 @@
     insert into sys_consultPhone_service (id, sys_doctor_id, price,
     date, beginTime, endTime,
     state, createDate, updateDate,
-    serviceType)
+    serviceType,repeatFlag)
     values (#{id,jdbcType=INTEGER}, #{sysDoctorId,jdbcType=VARCHAR}, #{price,jdbcType=VARCHAR},
     #{date,jdbcType=TIMESTAMP}, #{begintime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP},
     #{state,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, #{updatedate,jdbcType=TIMESTAMP},
-    #{servicetype,jdbcType=VARCHAR})
+    #{servicetype,jdbcType=VARCHAR},#{repeatFlag,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo" >
     insert into sys_consultPhone_service
@@ -129,6 +130,9 @@
       <if test="servicetype != null" >
         serviceType,
       </if>
+      <if test="repeatFlag != null" >
+        repeatFlag,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -160,6 +164,9 @@
       </if>
       <if test="servicetype != null" >
         #{servicetype,jdbcType=VARCHAR},
+      </if>
+      <if test="repeatFlag != null" >
+        #{repeatFlag,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -193,6 +200,9 @@
       <if test="servicetype != null" >
         serviceType = #{servicetype,jdbcType=VARCHAR},
       </if>
+      <if test="repeatFlag != null" >
+        repeatFlag = #{servicetype,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -206,7 +216,8 @@
     state = #{state,jdbcType=VARCHAR},
     createDate = #{createdate,jdbcType=TIMESTAMP},
     updateDate = #{updatedate,jdbcType=TIMESTAMP},
-    serviceType = #{servicetype,jdbcType=VARCHAR}
+    serviceType = #{servicetype,jdbcType=VARCHAR},
+    repeatFlag = #{repeatFlag,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
@@ -215,4 +226,29 @@
     set state = #{state,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="findSysConsultPhoneByInfo" resultMap="BaseResultMap">
+    select
+    scs.id,
+    scs.price,
+    DATE_FORMAT(scs.beginTime, '%H:%i') AS beginTime,
+    DATE_FORMAT(scs.endTime, '%H:%i') AS endTime,
+    scs.state,
+    scs.serviceType,
+    scs.repeatFlag
+    FROM
+    sys_consultphone_service scs
+    WHERE 1=1
+    and scs.sys_doctor_id = #{doctorId}
+
+    <if test="date != null">
+      AND date = #{date}
+    </if>
+    <if test="dateList != null">
+      and scs.date in
+      <foreach item="item" index="index" collection="dateList" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+    ORDER BY scs.beginTime asc
+  </select>
 </mapper>
