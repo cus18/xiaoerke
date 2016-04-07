@@ -50,7 +50,7 @@ var doRefresh = function(){
         url:"consultPhone/consultPhoneDoctor/doctorDetail",// 跳转到 action
         async:true,
         type:'get',
-        data:{doctorId:"0084dbde22af4078bc9cc189f5b9a282"},
+        data:{doctorId:GetQueryString("doctorId")},
         cache:false,
         dataType:'json',
         success:function(data) {
@@ -61,6 +61,7 @@ var doRefresh = function(){
             $('#department').html(data.doctor_expert_desc);
             $('#ServerLength').html(data.ServerLength);
             $('#price').html(data.price);
+            $("#photo").attr("src","http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/"+data.doctorId+"?ver==1.0.2");
         },
         error : function() {
         }
@@ -68,7 +69,7 @@ var doRefresh = function(){
 
 
     //预约时间
-    var param = {consultPhoneServiceId:2221};
+    var param = {consultPhoneServiceId:GetQueryString("phoneConDoctorDetail")};
     $.ajax({
         url:"consultPhone/phoneRegister/getRegisterInfo",// 跳转到 action
         async:true,
@@ -144,11 +145,11 @@ var doRefresh = function(){
         data: {},
         complete: function(jqXHR){
             if(jqXHR.status=="404"){
-                window.location.href = "phoneConsultPay/patientPay.do?phoneConDoctorDetail='3123'";
+                window.location.href = "phoneConsultPay/patientPay.do?phoneConDoctorDetail="+GetQueryString("phoneConDoctorDetail");
             }
         },
         success:function(data){
-            var param = '{routePath:"phoneConsultPay/patientPay.do?phoneConDoctorDetail="3123"}';
+            var param = '{routePath:"phoneConsultPay/patientPay.do?phoneConDoctorDetail="'+GetQueryString("phoneConDoctorDetail")+'"}';
             $.ajaxSetup({
                 contentType : 'application/json'
             });

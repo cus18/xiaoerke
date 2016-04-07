@@ -16,6 +16,7 @@ import com.cxqm.xiaoerke.modules.order.exception.CreateOrderException;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.entity.PatientVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
+import com.cxqm.xiaoerke.modules.sys.service.DoctorInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
@@ -53,6 +54,9 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
     @Autowired
     private PhoneConsultDoctorRelationDao phoneConsultDoctorRelationDao;
 
+    @Autowired
+    private DoctorInfoService doctorInfoService;
+
 
     /**
      * 查询电话咨询的订单
@@ -62,7 +66,11 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
 
     @Override
     public Map<String,Object> getPatientRegisterInfo(Integer patientRegisterId){
-        return  consultPhoneRegisterServiceDao.getPhoneConsultaServiceIndo(patientRegisterId);
+      Map<String,Object> registerInfo = consultPhoneRegisterServiceDao.getPhoneConsultaServiceIndo(patientRegisterId);
+        registerInfo.put("expertise", doctorInfoService
+                .getDoctorExpertiseById((String)registerInfo.get("doctorId"), null, null));
+        // 根据医生ID和医院ID，获取医生的所处科室
+        return registerInfo;
     }
 
     /**

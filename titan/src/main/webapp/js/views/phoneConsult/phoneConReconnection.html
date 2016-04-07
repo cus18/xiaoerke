@@ -8,24 +8,24 @@
 					<img class="photo" width="62.5" height="62.5" src="images/a1.png">
 				</div>
 				<div class="intro">
-					<div class="name s"><span>刘晓雁</span>副主任医师、副教授</div>
-					<div class="hospital s">首都儿科研究所</div>
-					<div class="department">皮肤科 皮肤科 皮肤科</div>
+					<div class="name s"><span>{{orderInfo.doctorName}}</span>{{position}}</div>
+					<div class="hospital s">{{orderInfo.hospitalName}}</div>
+					<div class="department">{{orderInfo.expertise}}</div>
 				</div>
 			</div>
 			<div class="order-info bg1">
 				<ul>
 					<li class="f4 c5 li2">
-						<span class="f4 c3 ">服务价格：</span> 200元/15分钟</i>
+						<span class="f4 c3 ">服务价格：</span>{{orderInfo.price}}元/{{orderInfo.server_length}}分钟</i>
 					</li>
 					<li class="f4 c5 li2">
-						<span class="f4 c3">服务时间：</span> 2016/01/12&nbsp;&nbsp;15:10-15:30
+						<span class="f4 c3">服务时间：</span> {{orderInfo.date}}&nbsp;&nbsp;{{orderInfo.beginTime}}-{{orderInfo.endTime}}
 					</li>
 					<li class="f4 c5 li2">
-						<span class="f4 c3">接听电话：</span> 152111111111
+						<span class="f4 c3">接听电话：</span>{{orderInfo.phone}}
 					</li>
 					<li class="f4 c5 ">
-						<span class="f4 c3">剩余时间：</span> 10:25:31
+						<span class="f4 c3">剩余时间：</span> {{surplusTime}}
 					</li>
 
 				</ul>

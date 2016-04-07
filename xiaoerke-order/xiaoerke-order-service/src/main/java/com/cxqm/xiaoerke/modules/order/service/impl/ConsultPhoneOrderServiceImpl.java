@@ -47,14 +47,13 @@ public class ConsultPhoneOrderServiceImpl implements ConsultPhoneOrderService {
     }
 
     @Override
-    public Map<String, Object> getOrderList(Map<String,Object> params) {
+    public Map<String, Object> getOrderListAll(Map<String,Object> params) {
         User user = UserUtils.getUser();
         String userId = user.getId();
 
         String pageNo = (String) params.get("pageNo");
         String pageSize = (String) params.get("pageSize");
         String status = (String) params.get("status");//
-        String type = (String) params.get("type");
 
         Page<OrderServiceVo> page = FrontUtils.generatorPage(pageNo, pageSize);
         HashMap<String, Object> searchMap = new HashMap<String, Object>();
@@ -65,16 +64,8 @@ public class ConsultPhoneOrderServiceImpl implements ConsultPhoneOrderService {
         }
         searchMap.put("userId", userId);
 
-        Page<OrderServiceVo> resultPage = null;
         //取数据
-        if(type != null && type.equals("ap")){
-            resultPage = patientRegisterServiceDao.getAppointOrderPageList(page, searchMap);
-        }else if(type != null && type.equals("phone")){
-            resultPage = consultPhoneRegisterServiceDao.getPhoneConsultPageList(page, searchMap);
-        }else{
-            resultPage = consultPhoneRegisterServiceDao.getOrderAllPageList(page, searchMap);
-        }
-
+        Page<OrderServiceVo> resultPage = resultPage = consultPhoneRegisterServiceDao.getOrderAllPageList(page, searchMap);
 
         //返回数据
         Map<String, Object> response = new HashMap<String, Object>();

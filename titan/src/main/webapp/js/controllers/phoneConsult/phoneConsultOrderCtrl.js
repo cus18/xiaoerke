@@ -7,6 +7,15 @@
             $scope.classifyItemList =["全部","待支付","待接听","待评价","待分享","已完成","已取消"];
             $scope.orderInfo=[];
 
+            $scope.MyselfInfoPhoneConsult = function(pageNo,pageSize,status){
+                $scope.pageLoading = true;
+                MyselfInfoPhoneConsult.save({"pageNo": pageNo, "pageSize": pageSize, "status": status}, function (data) {
+                    $scope.pageLoading = false;
+                    $scope.orderInfo = data.orderList;
+
+                });
+            }
+
            /* 选择订单分类*/
             $scope.selectClassify = function(item){
                 $scope.classifyItem =item;
@@ -14,18 +23,10 @@
                 $scope.status = item -1;
                 $scope.pageLoading = true;
                 if($scope.status < 0){
-                    MyselfInfoPhoneConsult.save({"pageNo": "1", "pageSize": "10"}, function (data) {
-                        $scope.pageLoading = false;
-                        $scope.orderInfo = data.appointmentData;
-
-                    });
+                    $scope.MyselfInfoPhoneConsult("1","1000");
                 }else{
-                    MyselfInfoPhoneConsult.save({"pageNo": "1", "pageSize": "10", "status": $scope.status+""}, function (data) {
-                        $scope.pageLoading = false;
-                        $scope.orderInfo = data.appointmentData;
-                    });
+                    $scope.MyselfInfoPhoneConsult("1","1000",$scope.status+"");
                 }
-
 
             };
             $scope.orderDerail = function(item){
@@ -34,11 +35,7 @@
 
 
             $scope.$on('$ionicView.enter', function(){
-                MyselfInfoPhoneConsult.save({"pageNo": "1", "pageSize": "10"}, function (data) {
-                    $scope.pageLoading = false;
-                    $scope.orderInfo = data.appointmentData;
-
-                });
+                $scope.MyselfInfoPhoneConsult("1","1000");
 
             })
     }])

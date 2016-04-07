@@ -74,19 +74,6 @@
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-mongodb:1.7.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:1.10.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-redis:1.5.2.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: javax:javaee-api:7.0" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.mail:javax.mail:1.5.0" level="project" />
-    <orderEntry type="library" name="Maven: org.glassfish.tyrus:tyrus-client:1.0-rc3" level="project" />
-    <orderEntry type="library" name="Maven: org.glassfish.tyrus:tyrus-core:1.0-rc3" level="project" />
-    <orderEntry type="library" name="Maven: org.glassfish.tyrus:tyrus-spi:1.0-rc3" level="project" />
-    <orderEntry type="library" name="Maven: org.glassfish.tyrus:tyrus-websocket-core:1.0-rc3" level="project" />
-    <orderEntry type="library" name="Maven: org.glassfish.tyrus:tyrus-container-grizzly:1.0-rc3" level="project" />
-    <orderEntry type="library" name="Maven: org.glassfish.grizzly:grizzly-framework:2.3" level="project" />
-    <orderEntry type="library" name="Maven: org.glassfish.grizzly:grizzly-http-server:2.3" level="project" />
-    <orderEntry type="library" name="Maven: org.glassfish.grizzly:grizzly-http:2.3" level="project" />
-    <orderEntry type="library" name="Maven: org.glassfish.grizzly:grizzly-rcm:2.3" level="project" />
-    <orderEntry type="library" name="Maven: org.glassfish.tyrus:tyrus-server:1.0-rc3" level="project" />
-    <orderEntry type="library" name="Maven: javax.websocket:javax.websocket-api:1.0-rc5" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:4.0.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:4.0.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:4.0.8.RELEASE" level="project" />

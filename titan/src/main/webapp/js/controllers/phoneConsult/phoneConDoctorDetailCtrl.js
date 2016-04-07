@@ -67,18 +67,18 @@
         }
         $scope.chooseTime = function(item){
             if(item.state == "1")return
-            var routePath = "/keeper/phoneConsultPay/patientPay.do?phoneConDoctorDetail="
-                + item.id;
-            GetUserLoginStatus.save({routePath:routePath},function(data){
-                $scope.pageLoading = false;
-                if(data.status=="9") {
-                    window.location.href = data.redirectURL;
-                }else if(data.status=="8"){
-                    window.location.href = data.redirectURL+"?targeturl="+routePath;
-                }else{
+            //var routePath = "/keeper/phoneConsultPay/patientPay.do?phoneConDoctorDetail="
+            //    + item.id;
+            //GetUserLoginStatus.save({routePath:routePath},function(data){
+            //    $scope.pageLoading = false;
+            //    if(data.status=="9") {
+            //        window.location.href = data.redirectURL;
+            //    }else if(data.status=="8"){
+            //        window.location.href = data.redirectURL+"?targeturl="+routePath;
+            //    }else{
                     window.location.href = "/keeper/phoneConsultPay/patientPay.do?phoneConDoctorDetail="
-                        + item.id;
-                }})
+                        + item.id+"&doctorId="+$stateParams.doctorId;
+                //}})
         }
 
         /*选择某一天的号源*/
