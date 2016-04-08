@@ -289,9 +289,9 @@
 	<!--插入最后就诊时间，待测试 -->
     <insert id="PatientRegisterServiceIsPraise"
             useGeneratedKeys="true" keyProperty="planId">
-        INSERT INTO patient_register_praise(visit_endTime,id,patient_register_service_id,sys_patient_id,phone,praise,star,praise_date,symptom,impression,zan,sys_doctor_id,major_star)
+        INSERT INTO patient_register_praise(visit_endTime,id,patient_register_service_id,sys_patient_id,phone,praise,star,praise_date,symptom,impression,zan,sys_doctor_id,major_star,evaluateType)
         VALUES
-        (#{visit_endTime},#{patientRegisterPraiseId},#{id},#{patientId},#{phone},#{appraise},#{star},#{praise_date},#{symptom},#{impression},#{zan},#{sys_doctor_id},#{major_star});
+        (#{visit_endTime},#{patientRegisterPraiseId},#{id},#{patientId},#{phone},#{appraise},#{star},#{praise_date},#{symptom},#{impression},#{zan},#{sys_doctor_id},#{major_star},#{evaluateType});
     </insert>
     
     <!--获取某个医生的详细信息 @author 09_zdl-->

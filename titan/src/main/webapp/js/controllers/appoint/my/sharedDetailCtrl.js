@@ -105,7 +105,7 @@
 
             }
 
-            MyShare.save({patientRegisterServiceId:$stateParams.patient_register_service_id},function(data){
+            MyShare.save({patientRegisterServiceId:$stateParams.patient_register_service_id,type:$stateParams.type},function(data){
                 $scope.doctorData  = data
                 $scope.imgUrl = !data.qrcode?("http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/my%2FshareDeatil_code.png"):
                     ("https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket="+data.qrcode)

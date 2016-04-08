@@ -169,5 +169,9 @@ public class ConsultPhoneOrderServiceImpl implements ConsultPhoneOrderService {
       return consultPhoneRegisterServiceDao.getConsultConnectInfo(id);
     }
 
+    @Override
+    public void changeConsultPhoneRegisterServiceState(HashMap<String, Object> excuteMap) {
+        consultPhoneRegisterServiceDao.changeConsultPhoneRegisterServiceState(excuteMap);
+    }
 
 }

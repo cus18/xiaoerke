@@ -225,6 +225,15 @@
     </if>
   </select>
 
+  <!-- 更新订单状态 -->
+  <update id="changeConsultPhoneRegisterServiceState">
+     update consultphone_register_service prs
+     <set>
+        prs.state=#{state}
+     </set>
+    where prs.id=#{id};
+  </update>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from consultPhone_register_service
     where id = #{id,jdbcType=INTEGER}

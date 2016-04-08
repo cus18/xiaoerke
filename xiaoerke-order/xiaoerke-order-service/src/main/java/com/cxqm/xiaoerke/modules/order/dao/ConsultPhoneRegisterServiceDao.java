@@ -63,4 +63,11 @@ public interface ConsultPhoneRegisterServiceDao {
 
     HashMap<String, Object> getConsultConnectInfo(@Param("id") Integer id);
 
+    /**
+     * 更新订单状态
+     * @param excuteMap
+     * @author chenxiaoqiong
+     */
+    void changeConsultPhoneRegisterServiceState(HashMap<String, Object> excuteMap);
+
 }
