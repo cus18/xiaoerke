@@ -2,6 +2,8 @@ package com.cxqm.xiaoerke.modules.consult.service.core;
 
 import java.util.Map;
 
+import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.SessionCache;
 import com.cxqm.xiaoerke.modules.consult.service.impl.SessionCacheRedisImpl;
@@ -70,8 +72,15 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 				csChannel.writeAndFlush(msg.retain());
 			} else {
 				String userId = consultSession.getUserId();
-				Channel userChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(userId);
-				userChannel.writeAndFlush(msg.retain());
+				if(StringUtils.isNotNull(userId)){
+					Channel userChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(userId);
+					userChannel.writeAndFlush(msg.retain());
+				}else{
+					String openId = consultSession.getOpenid();
+					String st = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
+					WechatUtil.senMsgToWechat(sessionCache.getWeChatToken(), openId, st);
+				}
+
 			}
 		}
 	}

@@ -14,7 +14,7 @@
 			classpath*:/spring-context-jedis.xml
 			classpath*:/spring-context-mongodb.xml
 			classpath*:/spring-security.xml
-			classpath*:/spring-oauth2.xml
+			<!--classpath*:/spring-oauth2.xml-->
 		</param-value>
 	</context-param>
 
@@ -157,17 +157,6 @@
 		<servlet-name>ValidateCodeServlet</servlet-name>
 		<url-pattern>/servlet/validateCodeServlet</url-pattern>
 	</servlet-mapping>
-	
-	<!-- FineReport -->
-	<servlet>
-		<servlet-name>ReportServer</servlet-name>
-		<servlet-class>com.fr.web.ReportServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ReportServer</servlet-name>
-		<url-pattern>/ReportServer</url-pattern>
-	</servlet-mapping>
-
 
 	<filter>
 		<filter-name>jsessionid</filter-name>
@@ -191,6 +180,6 @@
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping> 
+    </filter-mapping>
 
 </web-app>
