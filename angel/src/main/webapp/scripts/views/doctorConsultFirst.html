@@ -99,9 +99,10 @@
                     <ul ng-show="myreplyList.show">
                         <li ng-repeat="item in myAnswer">
                             <div class="group-title" ng-click="mreplyContent1($index)">
-                                {{item.name}}（{{item.secondAnswer.length}}）</div>
+                                    {{item.name}}（{{item.secondAnswer.length}}）
+                            </div>
                             <ul ng-show="mreplayindex==$index">
-                                <li ng-repeat="item2 in item.secondAnswer" class="rcontent"><nobr>{{item2.name}}</nobr></li>
+                                <li ng-repeat="item2 in item.secondAnswer" class="rcontent"><nobr ng-click="editMyContent($parent.$index,$index)">{{item2.name}}</nobr></li>
                             </ul>
                         </li>
                     </ul>
@@ -129,7 +130,7 @@
                     <div class="addgroupname"><span>添加分组</span><input id="addGroupFirstId" type="text"/></div>
                     <div class="addbtn">
                         <input class="btn" type="submit" ng-click="addGroupFirst()" value="确定">
-                        <input class="btn" type="submit" value="取消">
+                        <input class="btn" type="submit" value="取消" ng-click="closeAddGroup()">
                     </div>
                 </div>
                 <!--添加内容-->
@@ -139,28 +140,28 @@
                         <textarea placeholder="请在此处进行编辑"></textarea>
                     </div>
                     <div class="addbtn">
-                        <input class="btn" type="submit" value="确定">
-                        <input class="btn" type="submit" value="取消">
+                        <input class="btn" type="submit" value="确定" ng-click="closeAddContent()">
+                        <input class="btn" type="submit" value="取消" ng-click="closeAddContent()">
                     </div>
                 </div>
                 <!--编辑分组-->
                 <div class="editgroup" ng-show='editgroup'>
                     <div class="addtop"><span>编辑分组</span><span ng-click="closeEditGroup()">关闭</span></div>
-                    <div class="addgroupname"><span>编辑分组</span><input type="text" ng-model="info.editCommonGroup"/></div>
+                    <div class="addgroupname"><span>编辑分组</span><input type="text" ng-model="info.editGroup"/></div>
                     <div class="addbtn">
-                        <input class="btn" type="submit" value="确定">
-                        <input class="btn" type="submit" value="取消">
+                        <input class="btn" type="submit" value="确定" ng-click="closeEditGroup()">
+                        <input class="btn" type="submit" value="取消" ng-click="closeEditGroup()">
                     </div>
                 </div>
                 <!--编辑内容-->
                 <div class="editcontent" ng-show='editcontent'>
                     <div class="addtop"><span>编辑回复</span><span ng-click="closeEditContent()">关闭</span></div>
                     <div class="addgroupname"><span class="addkjhf">编辑回复内容：</span>
-                        <textarea placeholder="请在此处进行编辑" ng-model="info.editCommonContent"></textarea>
+                        <textarea placeholder="请在此处进行编辑" ng-model="info.editContent"></textarea>
                     </div>
                     <div class="addbtn">
-                        <input class="btn" type="submit" value="确定">
-                        <input class="btn" type="submit" value="取消">
+                        <input class="btn" type="submit" value="确定" ng-click="closeEditContent()">
+                        <input class="btn" type="submit" value="取消" ng-click="closeEditContent()">
                     </div>
                 </div>
             </div>
