@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -151,6 +152,11 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
         response.setTotalfee("");//呼叫费用
         String result = getXmlFormObj(response);
         return result;
+    }
+
+    @Override
+    public List<ConsultPhoneRecordVo> getConsultRecordInfo(String userData,String action) {
+       return consultPhoneRecordDao.selectByUserData(userData,action);
     }
 
     public String getXmlFormObj(Object obj){
