@@ -125,9 +125,9 @@
                 <!--添加分组-->
                 <div class="addgroup" ng-show='addgroup'>
                     <div class="addtop"><span>添加分组</span><span ng-click="closeAddGroup()">关闭</span></div>
-                    <div class="addgroupname"><span>添加分组</span><input id="addGroupFirstId" type="text"/></div>
+                    <div class="addgroupname"><span>添加分组</span><input type="text" ng-model="info.addGroup"/></div>
                     <div class="addbtn">
-                        <input class="btn" type="submit" ng-click="addGroupFirst()" value="确定">
+                        <input class="btn" type="submit" ng-click="addGroupSubmit()" value="确定">
                         <input class="btn" type="submit" value="取消" ng-click="closeAddGroup()">
                     </div>
                 </div>
@@ -135,10 +135,10 @@
                 <div class="addcontent" ng-show='addcontent'>
                     <div class="addtop"><span>添加回复</span><span ng-click="closeAddContent()">关闭</span></div>
                     <div class="addgroupname"><span class="addkjhf">快捷回复内容：</span>
-                        <textarea placeholder="请在此处进行编辑"></textarea>
+                        <textarea placeholder="请在此处进行编辑" ng-model="info.addContent"></textarea>
                     </div>
                     <div class="addbtn">
-                        <input class="btn" type="submit" value="确定" ng-click="closeAddContent()">
+                        <input class="btn" type="submit" value="确定" ng-click="addContentSubmit()">
                         <input class="btn" type="submit" value="取消" ng-click="closeAddContent()">
                     </div>
                 </div>

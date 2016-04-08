@@ -282,7 +282,7 @@ angular.module('controllers', ['luegg.directives'])
                 flag = 0;
                 parentIndex = parentIndex1;
                 $scope.info.editGroup = $scope.myAnswer[parentIndex].name;
-                console.log("editMyGroup",$scope.info.editGroup)
+                //console.log("editMyGroup",$scope.info.editGroup)
                 $(".myreply .group-title").not(parentIndex1).css('backgroundPosition','0 0');
                 $(".myreply .group-title").not(parentIndex1).css('color','#333');
                 $(".myreply .group-title").eq(parentIndex1).css('backgroundPosition','0 -42px');
@@ -309,7 +309,6 @@ angular.module('controllers', ['luegg.directives'])
                     $(".rtitle:eq(1)").css('backgroundPosition','0 0');
                     $(".rtitle:eq(1)").css('color','#333');
                 }else if($scope.pubilcreplyList.show == true){
-                    console.log($scope.pubilcreplyList.show)
                     $(".rtitle:eq(1)").css('backgroundPosition','0 -42px');
                     $(".rtitle:eq(1)").css('color','#08b7c2');
                 }
@@ -355,20 +354,34 @@ angular.module('controllers', ['luegg.directives'])
             $scope.closeAddGroup = function() {
                 $scope.addgroup = false;
             }
+            $scope.addGroupSubmit = function () {
+                var setGroupContent = {};
+                setGroupContent.name = $scope.info.addGroup;
+                setGroupContent.secondAnswer=[];
+                console.log('addGroup',setGroupContent);
+                if(sign == 0 && mark == 0){
+                    $scope.myAnswer.push(setGroupContent);
+                } else if(sign == 1 && mark == 0){
+                    $scope.commonAnswer.push(setGroupContent);
+                }
+                $scope.addgroup = false;
+            }
             //添加内容
             $scope.addcontent = false;
             $scope.closeAddContent = function() {
                 $scope.addcontent=false;
             }
-            //保存公共回复
-            $scope.addGroupFirst = function () {
-                var addGroupFirst = {};
-                addGroupFirst.name = $("#addGroupFirstId").val();
-                $scope.commonAnswer.push(addGroupFirst);
-                alert(123);
-                getMyAnswerModify.save({answer:$scope.commonAnswer,answerType:"commonAnswer"}, function (data) {
-                });
-                $scope.addgroup = false;
+
+            $scope.addContentSubmit = function () {
+                var setContent = {};
+                setContent.name = $scope.info.addContent;
+                console.log('addContent',setContent);
+                if(sign == 0 && mark == 1){
+                    $scope.myAnswer[parentIndex].secondAnswer.push(setContent);
+                } else if(sign == 1 && mark == 1){
+                    $scope.commonAnswer[parentIndex].secondAnswer.push(setContent);
+                }
+                $scope.addcontent=false;
             }
             //编辑分组
             $scope.editgroup =  false;
@@ -538,3 +551,13 @@ angular.module('controllers', ['luegg.directives'])
             }
 
         }])
+/*            //保存公共回复
+ $scope.addGroupFirst = function () {
+ var addGroupFirst = {};
+ addGroupFirst.name = $("#addGroupFirstId").val();
+ $scope.commonAnswer.push(addGroupFirst);
+ alert(123);
+ getMyAnswerModify.save({answer:$scope.commonAnswer,answerType:"commonAnswer"}, function (data) {
+ });
+ $scope.addgroup = false;
+ }*/
