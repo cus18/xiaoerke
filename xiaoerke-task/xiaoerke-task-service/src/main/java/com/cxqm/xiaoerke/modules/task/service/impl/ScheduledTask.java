@@ -997,6 +997,11 @@ public class ScheduledTask {
           vo.setCallSid(callSid);
           consultPhonePatientService.updateOrderInfoBySelect(vo);
       }
+    }
+
+    public void consultMangement4Session(){
+
+        //
 
     }
 }

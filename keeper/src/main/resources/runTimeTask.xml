@@ -253,6 +253,18 @@
 		<property name="cronExpression" value="0 */1 * * * ?"/>
 	</bean>
 
+	<!--每一分钟遍历一次更新保险订单状态-->
+	<!--@Scheduled(cron = "0 0/1 * * * ?") -->
+	<bean id="consultMangementQuarzTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="scheduledQuarz"/>
+		<property name="targetMethod" value="consultMangement4Session"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+	<bean id="consultMangementCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="consultMangementQuarzTask"/>
+		<property name="cronExpression" value="0 */1 * * * ?"/>
+	</bean>
+
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
@@ -273,6 +285,7 @@
 				<!--<ref bean="nutritionManagementSendWechatMessageCronTrigger"/>-->
 				<!--<ref bean="insuranceUpdateCronTrigger"/>-->
 				<ref bean="consultPhoneCronTrigger"/>
+				<ref bean="consultMangementCronTrigger"/>
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>
