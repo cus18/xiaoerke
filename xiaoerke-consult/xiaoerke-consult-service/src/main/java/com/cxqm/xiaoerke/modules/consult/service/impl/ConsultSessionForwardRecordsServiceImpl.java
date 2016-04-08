@@ -100,7 +100,8 @@ public class ConsultSessionForwardRecordsServiceImpl implements ConsultSessionFo
         String toCsUserId = (String)map.get("toCsUserId");
         String toCsUserName = (String)map.get("toCsUserName");
         String operation = (String)map.get("operation");
-        ConsultSessionManager.getSessionManager().react2Transfer(sessionId, forwardRecordId, toCsUserId, toCsUserName, operation);
+        ConsultSessionManager.getSessionManager().react2Transfer(sessionId, forwardRecordId, toCsUserId,
+                toCsUserName, operation);
     }
 
     @Override

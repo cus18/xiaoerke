@@ -130,7 +130,7 @@
     <select id="findPageConsultaDoctorByDepartment"  resultMap="DoctorVoMap"
             resultType="com.cxqm.xiaoerke.common.persistence.Page">
 
-        select sd.id, sd.name,sd.position2,sd.career_time,sd.hospitalName,FORMAT(avg(prp.star+prp.major_star)/2, 2) star ,min(DATE_FORMAT(scs.beginTime,' %k:%i')) as latest_time,
+        select sd.id, sd.name,sd.position2,sd.career_time,sd.hospitalName,FORMAT(avg(prp.star+prp.major_star)/2, 2) star ,DATE_FORMAT(min(DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s')),'%k:%i') as latest_time,
         TIMESTAMPDIFF(DAY,DATE_FORMAT(NOW(),'%Y:%c:%d'),DATE_FORMAT(MIN(scs.date),'%Y:%c:%d')) available_time
         from sys_doctor sd
         left join doctor_hospital_relation dhr

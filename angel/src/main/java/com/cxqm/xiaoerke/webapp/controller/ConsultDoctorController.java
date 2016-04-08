@@ -177,10 +177,10 @@ public class ConsultDoctorController extends BaseController {
         Map<String, Object> response = new HashMap<String, Object>();
 
         Integer sessionId= (Integer)params.get("sessionId");
-        String transferer= String.valueOf(params.get("transferer"));
+        String doctorId= String.valueOf(params.get("doctorId"));//转接的话，必须要用医生ID
         String remark = (String)params.get("remark");
-        if(null != sessionId && StringUtils.isNotNull(transferer)){
-            consultSessionForwardRecordsService.transferSession(sessionId,transferer,remark);
+        if(null != sessionId && StringUtils.isNotNull(doctorId)){
+            consultSessionForwardRecordsService.transferSession(sessionId,doctorId,remark);
             response.put("result", "success");
         }else {
             response.put("result", "failure");
@@ -286,7 +286,6 @@ public class ConsultDoctorController extends BaseController {
          ]
      }）
      */
-
     @RequestMapping(value = "/commonAnswer", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody

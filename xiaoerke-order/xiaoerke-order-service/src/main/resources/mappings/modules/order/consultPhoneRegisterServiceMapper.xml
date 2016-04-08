@@ -51,9 +51,6 @@
     <if test="state != null" >
       and crs.state = #{state,jdbcType=VARCHAR}
     </if>
-    <if test="state != null" >
-      and crs.id = #{state,jdbcType=VARCHAR}
-    </if>
     AND (
     now()>=DATE_FORMAT(
     CONCAT(
@@ -347,6 +344,12 @@
       </if>
       <if test="phoneNum != null" >
         phone = #{phoneNum,jdbcType=VARCHAR},
+      </if>
+      <if test="callSid != null" >
+        callSid = #{callSid,jdbcType=VARCHAR},
+      </if>
+      <if test="surplusTime != null" >
+        surplusTime = #{surplusTime,jdbcType=BIGINT},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -131,7 +132,8 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
         consultPhoneRecordDao.insertSelective(vo);
         //挂机请求 ,根据剩余时长给用户推送消息,让用户在意外挂断的情况下可以再次接通 判断订单状态是否已推送过 此消息
         Map<String,Object> phonepatientInfo = consultPhonePatientService.getPatientRegisterInfo(Integer.parseInt(userData));
-        Integer serviceLength = (Integer)phonepatientInfo.get("server_length");
+
+        Integer serviceLength = (Integer)phonepatientInfo.get("server_length")*60*1000;
         String talkDuration = vo.getTalkduration();
 
         ConsultPhoneRegisterServiceVo consultPhonevo = new ConsultPhoneRegisterServiceVo();
@@ -150,6 +152,11 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
         response.setTotalfee("");//呼叫费用
         String result = getXmlFormObj(response);
         return result;
+    }
+
+    @Override
+    public List<ConsultPhoneRecordVo> getConsultRecordInfo(String userData,String action) {
+       return consultPhoneRecordDao.selectByUserData(userData,action);
     }
 
     public String getXmlFormObj(Object obj){

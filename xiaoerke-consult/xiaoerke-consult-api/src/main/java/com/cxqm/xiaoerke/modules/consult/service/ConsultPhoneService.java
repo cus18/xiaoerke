@@ -1,6 +1,9 @@
 package com.cxqm.xiaoerke.modules.consult.service;
 
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo;
+
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,5 +16,7 @@ public interface ConsultPhoneService {
     public String parseCallEstablish(  Map<String, Object> map);
 
     public String parseHangup( Map<String, Object> map);
+
+    public List<ConsultPhoneRecordVo> getConsultRecordInfo(String userData,String action);
 
 }
