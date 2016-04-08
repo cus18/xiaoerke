@@ -50,7 +50,7 @@ var doRefresh = function(){
         url:"consultPhone/consultPhoneDoctor/doctorDetail",// 跳转到 action
         async:true,
         type:'get',
-        data:{doctorId:"0084dbde22af4078bc9cc189f5b9a282"},
+        data:{doctorId:GetQueryString("doctorId")},
         cache:false,
         dataType:'json',
         success:function(data) {
@@ -61,6 +61,8 @@ var doRefresh = function(){
             $('#department').html(data.doctor_expert_desc);
             $('#ServerLength').html(data.ServerLength);
             $('#price').html(data.price);
+            $('#payPrice').html(data.price);
+            $("#photo").attr("src","http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/"+data.doctorId+"?ver==1.0.2");
         },
         error : function() {
         }
@@ -68,7 +70,7 @@ var doRefresh = function(){
 
 
     //预约时间
-    var param = {consultPhoneServiceId:2221};
+    var param = {consultPhoneServiceId:GetQueryString("phoneConDoctorDetail")};
     $.ajax({
         url:"consultPhone/phoneRegister/getRegisterInfo",// 跳转到 action
         async:true,
@@ -144,17 +146,19 @@ var doRefresh = function(){
         data: {},
         complete: function(jqXHR){
             if(jqXHR.status=="404"){
-                window.location.href = "phoneConsultPay/patientPay.do?phoneConDoctorDetail='3123'";
+                window.location.href = "phoneConsultPay/patientPay.do?phoneConDoctorDetail="+GetQueryString("phoneConDoctorDetail");
             }
         },
         success:function(data){
-            var param = '{routePath:"phoneConsultPay/patientPay.do?phoneConDoctorDetail="3123"}';
+            var param = '{routePath:"phoneConsultPay/patientPay.do?phoneConDoctorDetail='+GetQueryString("phoneConDoctorDetail")+'"}';
             $.ajaxSetup({
                 contentType : 'application/json'
             });
+            alert(param);
             $.post('info/loginStatus',param,
                 function(data) {
                     if(data.status=="9"){
+                        alert(data.redirectURL);
                         window.location.href = data.redirectURL;
                     }else if(data.status=="8"){
                         window.location.href = data.redirectURL;
@@ -162,38 +166,6 @@ var doRefresh = function(){
                 }, 'json');
         }
     });
-
-    //检测当前页面是否绑定
-    //var param = '{routePath:"/phoneConsultPay/patientPay.do?phoneConDoctorDetail="3123"}';
-    //$.ajax({
-    //    type: "POST",
-    //    url: "ap/info/loginStatus",
-    //    contentType: 'application/json',
-    //    data: param,
-    //    success: function (data) {
-    //        if(data.status=="9"){
-    //            window.location.href = data.redirectURL;
-    //        }else if(data.status=="8"){
-    //            window.location.href = data.redirectURL;
-    //        }
-    //    }
-    //})
-
-    //生产订单
-    /*$.ajax({
-     url:"ap/consulPhone/consultOrder/createOrder",// 跳转到 action
-     async:true,
-     type:'post',
-     data:{babyId:"1",babyName:"2",phoneNum:"3",illnessDesc:"4",sysConsultPhoneId:"5",birthDay:"6"},
-     contentType: "application/json; charset=utf-8",
-     cache:false,
-     dataType:'json',
-     success:function(data) {
-     console.log("生产订单",data);
-     },
-     error : function() {
-     }
-     });*/
 }
 
 //  日期插件
@@ -298,7 +270,11 @@ var pay = function(){
             dataType:'json',
             success:function(data) {
                 console.log("生产订单",data);
-                wxPay(data.reultState);
+                if("false" != data.state){
+                    wxPay(data.reultState);
+                }else{
+                    alert("预约失败,请重新预约或联系客服");
+                }
             },
             error : function() {
             }
@@ -338,7 +314,7 @@ var wxPay = function (consultPhoneServiceId) {
                 paySign:obj.paySign,  // 支付签名
                 success: function (res) {
                     if(res.errMsg == "chooseWXPay:ok" ) {
-                        window.location.href = "phoneConsult#/phoneConPaySuccess/"+consultPhoneServiceId;
+                        window.location.href = "/titan/phoneConsult#/phoneConPaySuccess/"+consultPhoneServiceId;
                     }else{
                         alert("支付失败,请重新支付")
                     }

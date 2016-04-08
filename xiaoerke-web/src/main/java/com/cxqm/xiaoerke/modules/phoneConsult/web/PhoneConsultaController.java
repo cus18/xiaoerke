@@ -1,22 +1,15 @@
 package com.cxqm.xiaoerke.modules.phoneConsult.web;
 
-import com.cxqm.xiaoerke.common.bean.AccessToken;
 import com.cxqm.xiaoerke.common.utils.XMLUtil;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
-import com.cxqm.xiaoerke.modules.consult.entity.CallAuthen;
-import com.cxqm.xiaoerke.modules.consult.entity.CallEstablish;
-import com.cxqm.xiaoerke.modules.consult.entity.CallHangup;
-import com.cxqm.xiaoerke.modules.consult.entity.CallResponse;
+import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultPhoneService;
-import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.cxqm.xiaoerke.modules.order.service.ConsultPhoneOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.*;
@@ -36,6 +29,9 @@ public class PhoneConsultaController {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private ConsultPhoneOrderService consultPhoneOrderService;
 
     /**
      * 鉴权接口
@@ -73,5 +69,30 @@ public class PhoneConsultaController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @RequestMapping(value = "consultReconnect",method = {RequestMethod.GET,RequestMethod.POST})
+    public
+    @ResponseBody
+    String consultReconnect(@RequestParam Integer phoneConsultaServiceId){
+
+        Map<String,Object> orderInfo = consultPhoneOrderService.getConsultConnectInfo(phoneConsultaServiceId);
+        Integer orderId = (Integer)orderInfo.get("id");
+        String userPhone = (String)orderInfo.get("userPhone");
+        String doctorPhone = (String)orderInfo.get("doctorPhone");
+        Integer conversationLength = (Integer)orderInfo.get("conversationLength");
+
+        CCPRestSDK sdk = new CCPRestSDK();
+        sdk.init("sandboxapp.cloopen.com", "8883");// 初始化服务器地址和端口，格式如下，服务器地址不需要写https://
+        sdk.setSubAccount("2fa43378da0a11e59288ac853d9f54f2", "0ad73d75ac5bcb7e68fb191830b06d6b");
+        sdk.setAppId("aaf98f8952f7367a0153084e29992035");
+
+        HashMap<String, Object> result = sdk.callback(userPhone, doctorPhone+"",
+                "4006237120", "4006237120", null,
+                "true", null, orderId+"",
+                conversationLength+"", null, "0",
+                "1", "10", null);
+        String statusCode = (String) result.get("statusCode");
+        return statusCode;
     }
 }

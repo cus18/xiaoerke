@@ -51,7 +51,7 @@ public class ConsultOrderUserController {
      * 电话咨询订单列表
      * @return Map
      * */
-    @RequestMapping(value = "getOrderList",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "consultOrder/getOrderList",method = {RequestMethod.GET,RequestMethod.POST})
     public
     @ResponseBody
     Map<String,Object> getConsultPhoneList(){
@@ -60,6 +60,19 @@ public class ConsultOrderUserController {
         List<HashMap<String,Object>> orderList = consultPhonePatientService.getOrderList(userId);
         resultMap.put("orderList",orderList);
         return resultMap;
+    }
+
+    /**
+     * 订单列表，当前订单
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/order/user/orderListAll", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> myselfInfoOrderListAll(Map<String,Object> params) {
+        HashMap<String, Object> response = new HashMap<String, Object>();
+        return consultPhoneOrderService.getOrderListAll(params);
     }
 
     /**

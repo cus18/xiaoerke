@@ -17,6 +17,8 @@ public class ConsultSession  implements Serializable {
 	
     private Integer id;
 
+    private String nickName;
+
     private transient String title;
 
     private transient Date createTime;
@@ -30,6 +32,14 @@ public class ConsultSession  implements Serializable {
     private String userId;
     
     private String csUserId;
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
 
     public Integer getId() {
         return id;

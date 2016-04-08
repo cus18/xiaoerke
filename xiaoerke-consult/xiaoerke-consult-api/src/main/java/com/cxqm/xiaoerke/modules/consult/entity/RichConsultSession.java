@@ -1,6 +1,4 @@
-package com.cxqm.xiaoerke.modules.consult.service.core;
-
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
+package com.cxqm.xiaoerke.modules.consult.entity;
 
 public class RichConsultSession extends ConsultSession {
 

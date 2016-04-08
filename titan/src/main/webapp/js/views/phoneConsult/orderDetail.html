@@ -8,7 +8,7 @@
 					<img class="photo" width="62.5" height="62.5" src="images/a1.png">
 				</div>
                 <div class="intro">
-                    <div class="name"><span>{{orderDetail.doctorName}}</span>{{orderDetail.position1}}、{{orderDetail.position2}}</div>
+                    <div class="name"><span>{{orderDetail.doctorName}}</span>{{orderDetail.position}}</div>
                     <div class="hospital">{{orderDetail.hospitalName}}</div>
                     <div class="department">{{orderDetail.departmentName}}</div>
                 </div>
@@ -16,10 +16,10 @@
 			<div class="order-info bg1 apart1">
 				<ul>
 					<li class="f4 c5">
-						<span class="f4 c3 ">服务价格：</span> 200元/15分钟
+						<span class="f4 c3 ">服务价格：</span> {{orderDetail.price}}元/{{orderDetail.server_length}}分钟
 					</li>
 					<li class="f4 c5">
-						<span class="f4 c3">服务时间：</span> 2016/04/29 &nbsp;16:25-16:40
+						<span class="f4 c3">服务时间：</span> {{orderDetail.date}} &nbsp;{{orderDetail.beginTime}}-{{orderDetail.endTime}}
 					</li>
 
 				</ul>
@@ -46,7 +46,10 @@
 			<br><br><br><br><br>
 		</ion-scroll>
 	</ion-content>
-	<button class="button bottom-btn bg2">立即评价</button>
+    <button class="button bottom-btn bg2" ng-if="orderDetail.state == '待支付'">立即支付</button>
+    <button class="button bottom-btn bg2" ng-if="orderDetail.state == '待接听'">取消预约</button>
+    <button class="button bottom-btn bg2" ng-if="orderDetail.state == '待评价'"
+            ui-sref="phoneConEvaluate({consultphone_register_service_id:orderDetail.orderId,doctorId:orderDetail.doctorId})">立即评价</button>
 
 </ion-view>
 

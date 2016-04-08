@@ -4,7 +4,6 @@ import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
-import com.cxqm.xiaoerke.modules.consult.service.PatientConsultWechatService;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
 import com.cxqm.xiaoerke.modules.interaction.dao.PatientRegisterPraiseDao;
 import com.cxqm.xiaoerke.modules.member.service.MemberService;
@@ -30,10 +29,10 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -50,9 +49,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
 	@Autowired
 	private SystemService systemService;
-
-	@Autowired
-	private PatientConsultWechatService patientConsultWechatService;
 
 	@Autowired
 	private ConsultSessionService consultConversationService;
@@ -79,6 +75,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
 	@Autowired
 	private PatientRegisterPraiseDao patientRegisterPraiseDao;
+
+	private static ExecutorService threadExecutor = Executors.newCachedThreadPool();
 
 	/**
 	 * 处理微信发来的请求
@@ -125,11 +123,98 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			}
 		}
 		else {
-			patientConsultWechatService.patientWechatConsultService(xmlEntity);
+			Runnable thread = new processConsultMessageThread(xmlEntity);
+			threadExecutor.execute(thread);
 			return "";
-			//respMessage = transferToCustomer(xmlEntity);
+//			respMessage = transferToCustomer(xmlEntity);
 		}
 		return respMessage;
+	}
+
+	public class processConsultMessageThread extends Thread {
+		private ReceiveXmlEntity xmlEntity;
+
+		public processConsultMessageThread(ReceiveXmlEntity xmlEntity) {
+			this.xmlEntity = xmlEntity;
+		}
+
+		public void run() {
+			try {
+				System.out.println(xmlEntity.getContent());
+				if(xmlEntity.getMsgType().equals("text")){
+					this.sendPost("http://xiaoxiaoerke.cn/angel/consult/wechat/conversation",
+							"openId=" + xmlEntity.getFromUserName() +
+							"&messageType=" + xmlEntity.getMsgType() +
+							"&messageContent=" + URLEncoder.encode(xmlEntity.getContent(), "UTF-8"));
+				}else{
+					this.sendPost("http://xiaoxiaoerke.cn/angel/consult/wechat/conversation",
+							"openId=" + xmlEntity.getFromUserName() +
+							"&messageType=" + xmlEntity.getMsgType() +
+							"&mediaId=" + xmlEntity.getMediaId());
+				}
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+
+		/**
+		 * 向指定 URL 发送POST方法的请求
+		 *
+		 * @param url
+		 *            发送请求的 URL
+		 * @param param
+		 *            请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
+		 * @return 所代表远程资源的响应结果
+		 */
+		public String sendPost(String url, String param) {
+			PrintWriter out = null;
+			BufferedReader in = null;
+			String result = "";
+			try {
+				URL realUrl = new URL(url);
+				// 打开和URL之间的连接
+				URLConnection conn = realUrl.openConnection();
+				// 设置通用的请求属性
+				conn.setRequestProperty("accept", "*/*");
+				conn.setRequestProperty("connection", "Keep-Alive");
+				conn.setRequestProperty("user-agent",
+						"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+				// 发送POST请求必须设置如下两行
+				conn.setDoOutput(true);
+				conn.setDoInput(true);
+				// 获取URLConnection对象对应的输出流
+				out = new PrintWriter(conn.getOutputStream());
+				// 发送请求参数
+				out.print(param);
+				// flush输出流的缓冲
+				out.flush();
+				// 定义BufferedReader输入流来读取URL的响应
+				in = new BufferedReader(
+						new InputStreamReader(conn.getInputStream()));
+				String line;
+				while ((line = in.readLine()) != null) {
+					result += line;
+				}
+			} catch (Exception e) {
+				System.out.println("发送 POST 请求出现异常！"+e);
+				e.printStackTrace();
+			}
+			//使用finally块来关闭输出流、输入流
+			finally{
+				try{
+					if(out!=null){
+						out.close();
+					}
+					if(in!=null){
+						in.close();
+					}
+				}
+				catch(IOException ex){
+					ex.printStackTrace();
+				}
+			}
+			return result;
+		}
 	}
 
 	private String getXmlDataFromWechat(HttpServletRequest request)

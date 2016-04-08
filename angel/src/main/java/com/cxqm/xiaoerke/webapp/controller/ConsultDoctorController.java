@@ -1,6 +1,7 @@
 
-package com.cxqm.xiaoerke.modules.consult.web;
+package com.cxqm.xiaoerke.webapp.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.FrontUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
@@ -14,7 +15,7 @@ import com.cxqm.xiaoerke.modules.sys.entity.DoctorVo;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
-import org.apache.batik.css.engine.value.StringValue;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -27,7 +28,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -299,12 +299,12 @@ public class ConsultDoctorController extends BaseController {
             return answerService.findConsultAnswer(type);
         }
 
-        return "false";
+        return "";
     }
 
 
     /***
-     * 医生修改自己的回复,没有的话先执行插入操作
+     * 改接口有两个功能：1、医生修改自己的回复,没有的话先执行插入操作    2、修改公共回复，没有的话先执行插入操作
      *
      * @param
         {
@@ -315,15 +315,25 @@ public class ConsultDoctorController extends BaseController {
      "result":"success",
      }
      */
-    @RequestMapping(value = "/myAnswer/modify", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value="/Answer/modify",method=RequestMethod.POST, headers = {"content-type=application/json","content-type=application/xml"})
     public
     @ResponseBody
     Map<String, Object> modify(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
         Map<String, Object> response = new HashMap<String, Object>();
-        String myanswer = String.valueOf(params.get("myanswer"));
+        Map<String, Object> tranMap = new HashMap<String, Object>();
+
+        String answerType = String.valueOf(params.get("answerType"));
+        if(answerType.equals("myAnswer")){
+            tranMap.put("myAnswer",params.get("answer"));
+        }else if(answerType.equals("commonAnswer")){
+            tranMap.put("commonAnswer",params.get("answer"));
+        }
+
+        String answer = JSON.toJSONString(tranMap);
+
         response.put("result","failure");
         try {
-            answerService.upsertConsultAnswer(myanswer);
+            answerService.upsertConsultAnswer(answerType,answer);
             response.put("result","success");
         }catch (Exception e){
             e.printStackTrace();
@@ -418,8 +428,8 @@ public class ConsultDoctorController extends BaseController {
         PaginationVo<ConsultRecordMongoVo> pagination = null;
         Map<String,Object> response = new HashMap<String, Object>();
         if(null != params.get("pageNo") && null != params.get("pageSize")){
-            pageNo = (Integer)params.get("pageNo");
-            pageSize = (Integer)params.get("pageSize");
+            pageNo = Integer.parseInt((String)params.get("pageNo"));
+            pageSize = Integer.parseInt((String)params.get("pageSize"));
         }
 
         if(recordType.equals("user") && StringUtils.isNotNull(toUserId) && pageSize > 0){

@@ -135,7 +135,7 @@
                 timeFormat: 'HH:ii',//24小时显示
                 timeWheels: 'HHii',
                 setText: '确定',
-                cancelText: '取消',
+                cancelText: '取消'
             };
             $("#treatTime").mobiscroll(opt);
 
@@ -149,8 +149,8 @@
                     window.location.href = data.redirectURL+"?targeturl="+routePath;
                 } else {
                     //初始化信息
-                    FindDoctorCaseEvaluation.save({"patient_register_service_id":$stateParams.patient_register_service_id},function(data){
-                       /* $scope.illnessList = data.doctorCaseList*/
+                    FindDoctorCaseEvaluation.save({"doctorId":$stateParams.doctorId},function(data){
+                       $scope.illnessList = data.doctorCaseList;
                     });
                 }
             });

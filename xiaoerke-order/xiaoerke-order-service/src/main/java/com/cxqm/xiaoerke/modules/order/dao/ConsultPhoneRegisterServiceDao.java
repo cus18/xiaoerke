@@ -37,6 +37,8 @@ public interface ConsultPhoneRegisterServiceDao {
      */
     Page<ConsultPhoneRegisterServiceVo> findConsultPhonePatientList(Page<ConsultPhoneRegisterServiceVo> page,ConsultPhoneRegisterServiceVo vo);
 
+    List<Map<String, Object>> getConsultPhoneRegisterListByInfo(Map<String, Object> map);
+
     /**
      *
      * 电话咨询 -- 通过state和userId分页查询
@@ -58,5 +60,7 @@ public interface ConsultPhoneRegisterServiceDao {
     Page<OrderServiceVo> getOrderAllPageList(Page<OrderServiceVo> page, HashMap<String, Object> hashMap);
 
     List<HashMap<String, Object>> getOrderPhoneConsultListByTime(@Param("state") String state);
+
+    HashMap<String, Object> getConsultConnectInfo(@Param("id") Integer id);
 
 }

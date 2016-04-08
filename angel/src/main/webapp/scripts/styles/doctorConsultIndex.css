@@ -22,7 +22,7 @@ header{position: relative;}
 .h5 {height: 45px;}
 .h6{height: 40px;}
 .h7{height: 35px;}
-.h20 {height: 400px;overflow: scroll;}
+.h20 {height: 400px;overflow: auto;}
 .h30 {height: 500px;}
 .cl {color:#fff;}
 .br1{border-right: 1px solid #ccc;}

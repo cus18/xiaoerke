@@ -1,8 +1,8 @@
 angular.module('controllers', ['luegg.directives'])
-    .controller('doctorConsultFirstCtrl', ['$scope', '$sce', 'getTodayRankingList', 'getOnlineDoctorList',
-        'getCommonAnswerList', 'getMyAnswerList', 'GetUserLoginStatus', '$location', 'GetUserRecordList',
-        function ($scope, $sce, getTodayRankingList, getOnlineDoctorList, getCommonAnswerList,
-                  getMyAnswerList, GetUserLoginStatus, $location, GetUserRecordList) {
+    .controller('doctorConsultFirstCtrl', ['$scope', '$sce', '$window','getTodayRankingList', 'getOnlineDoctorList',
+        'getCommonAnswerList', 'getMyAnswerList', 'GetUserLoginStatus', '$location', 'GetUserRecordList','getMyAnswerModify',
+        function ($scope, $sce, $window,getTodayRankingList, getOnlineDoctorList, getCommonAnswerList,
+                  getMyAnswerList, GetUserLoginStatus, $location, GetUserRecordList,getMyAnswerModify) {
             $scope.test = "";
             $scope.info = {};
             $scope.socketServer1 = "";
@@ -23,6 +23,17 @@ angular.module('controllers', ['luegg.directives'])
                 console.log("getOnlineDoctorList", data);
             });
 
+            $scope.alreadyJoinPatientConversationContent = [
+                {
+                    "patientId":"aaaa",
+                    "patientName": "frank",
+                },
+                {
+                    "patientId":"wefedfwe",
+                    "patientName": "frank",
+                }
+            ];
+
             getCommonAnswerList.save({"type": "commonAnswer"}, function (data) {
                 console.log("getCommonAnswerList", data);
                 if (data.commonAnswer.length == 0) {
@@ -41,17 +52,6 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.myAnswer = data.myAnswer;
                 }
             });
-            $scope.alreadyJoinPatientConversationContent = [
-                {
-                    "patientId":"aaaa",
-                    "patientName": "frank",
-                },
-                {
-                    "patientId":"wefedfwe",
-                    "patientName": "frank",
-                }
-            ];
-
             $scope.doctorConsultFirst = function () {
                 var routePath = "/doctor/consultBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath: routePath}, function (data) {
@@ -240,14 +240,21 @@ angular.module('controllers', ['luegg.directives'])
             }
             $scope.myreplyList1 = function () {
                 $scope.myreplyList.show = !$scope.myreplyList.show;
+                if ($scope.myreplyList.show == false){
+                    $(".rtitle:eq(0)").css('backgroundPosition','0 0');
+                    $(".rtitle:eq(0)").css('color','#333');
+                }else if($scope.myreplyList.show == true){
+                    $(".rtitle:eq(0)").css('backgroundPosition','0 -42px');
+                    $(".rtitle:eq(0)").css('color','#08b7c2');
+                }
             }
             //我的回复内容
-            $scope.mreplyContent = {
-                show: false
-            }
             $scope.mreplyContent1 = function (index) {
-                //$scope.mreplyContent.show = !$scope.mreplyContent.show;
                 $scope.mreplayindex = index;
+                $(".myreply .group-title").not(index).css('backgroundPosition','0 0');
+                $(".myreply .group-title").not(index).css('color','#333');
+                $(".myreply .group-title").eq(index).css('backgroundPosition','0 -42px');
+                $(".myreply .group-title").eq(index).css('color','#08b7c2');
             }
             //公共回复
             $scope.pubilcreplyList = {
@@ -255,13 +262,23 @@ angular.module('controllers', ['luegg.directives'])
             }
             $scope.pubilcreplyList1 = function () {
                 $scope.pubilcreplyList.show = !$scope.pubilcreplyList.show;
+                console.log($scope.pubilcreplyList.show)
+                if ($scope.pubilcreplyList.show == false){
+                    $(".rtitle:eq(1)").css('backgroundPosition','0 0');
+                    $(".rtitle:eq(1)").css('color','#333');
+                }else if($scope.pubilcreplyList.show == true){
+                    console.log($scope.pubilcreplyList.show)
+                    $(".rtitle:eq(1)").css('backgroundPosition','0 -42px');
+                    $(".rtitle:eq(1)").css('color','#08b7c2');
+                }
             }
             //公告回复内容
-            $scope.pubilcreplyContent = {
-                show: false
-            }
             $scope.pubilcreplyContent1 = function (index) {
                 $scope.pubilcreplyindex = index;
+                $(".pubilcreply .group-title").not(index).css('backgroundPosition','0 0');
+                $(".pubilcreply .group-title").not(index).css('color','#333');
+                $(".pubilcreply .group-title").eq(index).css('backgroundPosition','0 -42px');
+                $(".pubilcreply .group-title").eq(index).css('color','#08b7c2');
             }
             //系统设置
             $scope.systemsetup = {
@@ -285,36 +302,80 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.switchover.show = !$scope.switchover.show;
             }
             //添加分组
-            $scope.addgroup = {
-                show: false
+            $scope.add = function() {
+                if (flag == 0) {
+                    console.log("parentIndex",parentIndex)
+                    $scope.addgroup = true;
+                } else if (flag == 1) {
+                    $scope.addcontent = true;
+                }
             }
-            $scope.addgroup1 = function() {
-                $scope.addgroup.show = !$scope.addgroup.show;
+
+            $scope.addgroup =  false;
+            $scope.closeAddGroup = function() {
+                $scope.addgroup = false;
             }
             //添加内容
-            $scope.addcontent = {
-                show: false
+            $scope.addcontent = false;
+            $scope.closeAddContent = function() {
+                $scope.addcontent=false;
             }
-            $scope.addcontent1 = function() {
-                $scope.addcontent.show = !$scope.addcontent.show;
+
+            //保存公共回复
+            $scope.addGroupFirst = function () {
+                var addGroupFirst = {};
+                addGroupFirst.name = $("#addGroupFirstId").val();
+                $scope.commonAnswer.push(addGroupFirst);
+                alert(123);
+                getMyAnswerModify.save({answer:$scope.commonAnswer,answerType:"commonAnswer"}, function (data) {
+                });
+
             }
+
             //编辑分组
-            $scope.editgroup = {
-                show: false
-            }
-            $scope.editgroup1 = function() {
-                $scope.editgroup.show = !$scope.editgroup.show;
+            $scope.editgroup =  false;
+            $scope.closeEditGroup = function() {
+                $scope.editgroup = false;
             }
             //编辑内容
-            $scope.editcontent = {
-                show: false
+            $scope.editcontent =  false;
+            $scope.closeEditContent = function() {
+                $scope.editcontent = false;
             }
-            $scope.editcontent1 = function() {
-                $scope.editcontent.show = !$scope.editcontent.show;
+            var flag,parentIndex,childIndex;
+            $scope.editCommonGroup = function(parentIndex1) {
+                flag = 0;
+                parentIndex = parentIndex1;
+                $scope.info.editCommonGroup = $scope.commonAnswer[parentIndex].name;
+                console.log("editCommonGroup",$scope.info.editCommonGroup);
+                console.log("parentIndex",parentIndex);
+            };
+            $scope.editCommonContent = function(parentIndex1, childIndex1) {
+                flag = 1;
+                parentIndex = parentIndex1;
+                childIndex = childIndex1;
+                $scope.info.editCommonContent = $scope.commonAnswer[parentIndex].secondAnswer[childIndex].name;
+                console.log("editCommonContent",$scope.info.editCommonContent);
+                console.log("parentIndex",parentIndex);
+                console.log("childIndex",childIndex);
+            };
+            $scope.edit = function() {
+                if (flag == 0) {
+                    $scope.editgroup = true;
+                    console.log("editCommonGroup",$scope.info.editCommonGroup);
+                } else if (flag == 1) {
+                    $scope.editcontent = true;
+                }
+            }
+            //删除
+            $scope.remove = function(index) {
+                if (flag == 0 && $window.confirm("确定要删除该组回复?")) {
+                    $scope.commonAnswer.splice(index, 1);
+                }else if(flag == 1 && $window.confirm("确定要删除该回复?")) {
+                    $scope.commonAnswer[parentIndex].secondAnswer.splice(index, 1);;
+                }
             }
         }])
-
-
 
     .controller('messageListCtrl', ['$scope', '$log', '$sce', 'getUserConsultListInfo', 'getUserRecordDetail', 'getCSdoctorList', 'CSInfoByUserId', 'getMessageRecordInfo',
         function ($scope, $log, $sce, getUserConsultListInfo, getUserRecordDetail, getCSdoctorList, CSInfoByUserId, getMessageRecordInfo) {

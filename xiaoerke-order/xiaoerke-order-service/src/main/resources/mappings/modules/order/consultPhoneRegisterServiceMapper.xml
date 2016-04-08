@@ -51,6 +51,9 @@
     <if test="state != null" >
       and crs.state = #{state,jdbcType=VARCHAR}
     </if>
+    <if test="state != null" >
+      and crs.id = #{state,jdbcType=VARCHAR}
+    </if>
     AND (
     now()>=DATE_FORMAT(
     CONCAT(
@@ -63,8 +66,19 @@
 
   </select>
 
+  <select id="getConsultConnectInfo" resultType="java.util.Map" >
+    select crs.id, crs.phone userPhone,cdr.doctor_answer_phone doctorPhone,cdr.server_length conversationLength from consultPhone_register_service crs
+    left join sys_consultPhone_service scs on crs.sys_phoneConsult_service_id = scs.id
+    left join consultphone_doctor_relation cdr on cdr.doctor_id = scs.sys_doctor_id
+    where 1=1
+    <if test="id != null" >
+      and crs.id = #{id,jdbcType=VARCHAR}
+    </if>
+  </select>
+
   <select id="getPhoneConsultaServiceIndo" resultType="java.util.Map" parameterType="java.lang.Integer" >
     select
+    sd.id doctorId,
     sd.name doctorName,
     sd.position1,
     sd.position2,
@@ -75,12 +89,15 @@
     when crs.state ='6' then '已取消' end state,
     DATE_FORMAT(scs.beginTime,'%k:%i') beginTime,
     DATE_FORMAT(scs.endTime,'%k:%i') endTime,
+    DATE_FORMAT(scs.date,'%Y/%m/%d') date,
     DATE_FORMAT(crs.create_time,'%Y/%m/%d  %k:%i') orderTime,
+    crs.id orderId,
     crs.register_no as orderNo,
     crs.phone,
     sbi.name babyName,
     cdr.price,
     crs.type,
+    crs.surplusTime,
     cdr.server_length
     from consultPhone_register_service crs
     left join sys_consultPhone_service scs
@@ -258,7 +275,7 @@
       </if>
 
       <if test="creat_by != null" >
-        creat_by,
+        create_by,
       </if>
       <if test="type != null" >
         type,
@@ -294,7 +311,7 @@
       </if>
 
       <if test="surplusTime != null" >
-        #{surplusTime,jdbcType=TIMESTAMP},
+        #{surplusTime,jdbcType=BIGINT},
       </if>
       <if test="creat_by != null" >
         #{creat_by,jdbcType=VARCHAR},

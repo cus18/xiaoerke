@@ -39,17 +39,17 @@ import com.cxqm.xiaoerke.modules.order.service.SysConsultPhoneService;
 public class ConsultPhoneController extends BaseController {
 
 	@Autowired
-    private ConsultPhonePatientService consultPhonePatientService;
-	
+	private ConsultPhonePatientService consultPhonePatientService;
+
 	@Autowired
 	private ConsultPhoneOrderService consultPhoneOrderService;
-	
+
 	@Autowired
 	private SysConsultPhoneService sysConsultPhoneService;
-	
+
 	@Autowired
 	private PhoneConsultDoctorRelationService phoneConsultDoctorRelationService;
-	
+
 	/**
 	 * 号源信息显示及保存
 	 * sunxiao
@@ -65,7 +65,7 @@ public class ConsultPhoneController extends BaseController {
 			String hospital = new String(request.getParameter("hospital").getBytes("ISO-8859-1"),"utf-8");
 			String phone = request.getParameter("phone");
 			Map<String, Object> resultMap = sysConsultPhoneService.getRegisterInfo(doctorId,pageFlag);
-			
+
 			model.addAttribute("repeatFlag", "1");
 			model.addAttribute("intervalFlag", "1");
 			model.addAttribute("pageFlag", pageFlag);
@@ -83,7 +83,7 @@ public class ConsultPhoneController extends BaseController {
 		}
 		return "modules/consultPhone/registerForm";
 	}
-	
+
 	/**
 	 * 添加号源页面切换时间时查询号源
 	 * @param
@@ -100,7 +100,7 @@ public class ConsultPhoneController extends BaseController {
 		result = sysConsultPhoneService.getRegisterTime(doctorId,date);
 		return result.toString();
 	}
-	
+
 	/**
 	 * 开通电话咨询
 	 * sunxiao
@@ -119,7 +119,7 @@ public class ConsultPhoneController extends BaseController {
 		result = phoneConsultDoctorRelationService.openConsultPhone(vo);
 		return result.toString();
 	}
-	
+
 	/**
 	 * 添加电话咨询号源
 	 * sunxiao
@@ -132,10 +132,8 @@ public class ConsultPhoneController extends BaseController {
 	@RequestMapping(value = "addRegister")
 	public String addRegister(SysConsultPhoneServiceVo vo ,HttpServletRequest request,HttpServletResponse response, Model model) {
 		JSONObject result = new JSONObject();
-		SysConsultPhoneServiceVo svo = new SysConsultPhoneServiceVo();
 		String time = request.getParameter("time");
 		String times = request.getParameter("times");
-		vo.setSysDoctorId(request.getParameter("sysDoctorId"));
 		//vo.setSysHospitalId(request.getParameter("sysHospitalId"));
 		//vo.setPrice(Float.parseFloat(request.getParameter("price")));
 		//vo.setServiceType(request.getParameter("serverType"));
@@ -150,18 +148,72 @@ public class ConsultPhoneController extends BaseController {
 		if(time!=null){
 			timeList.add(time);
 		}
-		Map<String, String> ret = sysConsultPhoneService.addRegister(svo,timeList,request.getParameter("date"),request.getParameter("operInterval"));
+		Map<String, String> ret = sysConsultPhoneService.addRegisters(vo,timeList,request.getParameter("date"),request.getParameter("repeat"));
 		result.put("suc", "suc");
 		result.put("reason", ret.get("backend"));
 		return result.toString();
 	}
-	
+
+	/**
+	 * 删除号源
+	 * @param user
+	 * @param model
+	 * sunxiao
+	 */
+	@RequiresPermissions("user")
+	@ResponseBody
+	@RequestMapping(value = "removeRegister")
+	public String removeRegister(HttpServletRequest request,HttpServletResponse response, Model model) {
+		JSONObject result = new JSONObject();
+		String times = request.getParameter("times");
+		String time = request.getParameter("time");
+		SysConsultPhoneServiceVo vo = new SysConsultPhoneServiceVo();
+		vo.setId(Integer.parseInt(request.getParameter("registerId")));
+		vo.setSysDoctorId(request.getParameter("sysDoctorId"));
+		List<String> timeList = new ArrayList<String>();
+		if(times!=null){
+			String[] timeArray = times.split(";");
+			for(String s : timeArray){
+				timeList.add(s);
+			}
+		}
+		if(time!=null){
+			timeList.add(time);
+		}
+		sysConsultPhoneService.deleteRegisters(vo,timeList,request.getParameter("date"),request.getParameter("operRepeat"),"kefu");
+		result.put("suc", "suc");
+		return result.toString();
+	}
+
+	/**
+	 * 删除号源时判断受影响的号源
+	 * @param user
+	 * @param model
+	 * sunxiao
+	 */
+	@RequiresPermissions("user")
+	@ResponseBody
+	@RequestMapping(value = "judgeRepeatEffect")
+	public String judgeRepeatEffect(HttpServletRequest request,HttpServletResponse response, Model model) {
+		JSONObject result = new JSONObject();
+		String date = request.getParameter("date");
+		String pageFlag = request.getParameter("pageFlag");
+		String operRepeat = request.getParameter("operRepeat");
+		String timeParam = request.getParameter("times");
+		String locationId = request.getParameter("locationId");
+		String doctorId = request.getParameter("sysDoctorId");
+		String re = sysConsultPhoneService.judgeRepeatEffect(date, timeParam, doctorId,operRepeat);
+		result.put("reason", re);
+		result.put("pageFlag", pageFlag);
+		return result.toString();
+	}
+
 	/**
 	 * 电话咨询订单列表
 	 * sunxiao
-	 * @param 
+	 * @param
 	 * @param model
-	 * @return 
+	 * @return
 	 */
 	@RequiresPermissions("consultPhone:consultPhoneOrderList")
 	@RequestMapping(value = "consultPhoneOrderList")
@@ -186,5 +238,5 @@ public class ConsultPhoneController extends BaseController {
 		model.addAttribute("consultPhone", vo);
 		return "modules/consultPhone/orderList";
 	}
-	
+
 }

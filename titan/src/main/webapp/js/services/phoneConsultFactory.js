@@ -47,11 +47,18 @@ define(['appPhoneConsult'], function (app) {
 
         //获取电话咨询订单详情
         .factory('PhoneConsultRegisterInfo', ['$resource', function ($resource) {
-            return $resource(user_appoint + '/consultPhone/getOrderInfo');
+            return $resource(user_h5 + 'consultOrder/getOrderInfo');
         }])
+
+        //获取电话咨询订单详情
+        .factory('ConsultReconnection', ['$resource', function ($resource) {
+            return $resource("baodaifu/"+user_h5 + 'consultReconnect');
+        }])
+
+
         //获取预约挂号订单详情
         .factory('AppointRegisterInfo', ['$resource', function ($resource) {
-            return $resource(user_appoint + '/order/user/orderDetail');
+            return $resource(user_appoint + '/titan/order/user/orderDetail');
         }])
 
 
@@ -106,7 +113,7 @@ define(['appPhoneConsult'], function (app) {
             return $resource(user_h5 + 'sys/illness/first');
         }])
         .factory('FindDoctorCaseEvaluation',['$resource',function ($resource){
-            return $resource(user_h5 + 'sys/user/findDoctorCaseEvaluation');
+            return $resource(user_appoint + 'sys/user/findDoctorCaseEvaluation');
         }])
         //获取二类疾病的列表
         .factory('ListSecondIllness', ['$resource', function ($resource) {
@@ -153,15 +160,15 @@ define(['appPhoneConsult'], function (app) {
         }])
         //获取个人的各种预约信息列表
         .factory('MyselfInfoAppointment', ['$resource', function ($resource) {
-            return $resource(user_appoint + 'order/user/orderList');
+            return $resource(user_appoint + 'order/user/orderList1');
         }])
         .factory('MyselfInfoPhoneConsult',['$resource',function ($resource){
-            return $resource(user_h5 + 'order/user/appointmentByPhone');
+            return $resource(user_h5 + 'order/user/orderList');
         }])
 
         //获取所有订单列表
-        .factory('getOrderList',['$resource',function ($resource){
-            return $resource(user_appoint + 'order/user/orderListAll');
+        .factory('getOrderListAll',['$resource',function ($resource){
+            return $resource(user_h5 + 'order/user/orderListAll');
         }])
 
         .factory('checkUserOrder',['$resource',function ($resource){
@@ -204,7 +211,7 @@ define(['appPhoneConsult'], function (app) {
         }])
         //检测用户是否已经关注该医生
         .factory('CheckAttentionDoctor', ['$resource', function ($resource) {
-            return $resource(user_h5 + 'interaction/user/isConcerned');
+            return $resource(user_appoint + 'interaction/user/isConcerned');
         }])
         //我的关注
         .factory('MyAttention', ['$resource', function ($resource) {

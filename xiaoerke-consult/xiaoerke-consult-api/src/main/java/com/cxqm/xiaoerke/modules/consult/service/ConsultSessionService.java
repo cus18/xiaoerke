@@ -6,6 +6,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.sys.entity.DoctorVo;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,5 +28,8 @@ public interface ConsultSessionService {
     List<String> getOnlineCsList();
 
     Page<DoctorVo> getOnlineCsListInfo(Page<DoctorVo> page, List<String> userList);
+
+    List<ConsultSession> getAlreadyAccessUsers(ConsultSession richConsultSession);
+
 
 }

@@ -1,21 +1,21 @@
 package com.cxqm.xiaoerke.modules.consult.service.core;
 
-import com.cxqm.xiaoerke.modules.consult.dao.ConsultSessionDao;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
+import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.service.SessionCache;
 import com.cxqm.xiaoerke.modules.consult.service.impl.SessionCacheRedisImpl;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
-
 import java.net.InetSocketAddress;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
@@ -53,8 +53,9 @@ public class ConsultSessionManager {
 	private List<String> distributorsList = null;
 	
 	private AtomicInteger accessNumber = new AtomicInteger(1000);
-	
-	private SessionCache sessionCache = new SessionCacheRedisImpl();
+
+	@Autowired
+	private SessionCache sessionCache;
 	
 	private ConsultSessionService consultSessionService = SpringContextHolder.getBean("consultSessionServiceImpl");
 	
@@ -63,9 +64,6 @@ public class ConsultSessionManager {
 	private SystemService systemService = SpringContextHolder.getBean("systemService");
 	
 	private static ConsultSessionManager sessionManager = new ConsultSessionManager();
-
-	@Autowired
-	private ConsultSessionDao consultSessionDao;
 
 	private ConsultSessionManager(){
 		String distributorsStr = Global.getConfig("distributors.list");
@@ -81,16 +79,15 @@ public class ConsultSessionManager {
 		
 		String[] args = url.split("&");
 		String fromType = args[1];
-		String userId = args[2];
-		
+
 		if(fromType.equals("user")) {
+			String userId = args[2];
 			doCreateSessionInitiatedByUser(userId, channel);
-		}else if(fromType.equals("wechatUser")){
-			//此处的userId即为微信中的openId
-			doCreateSessionInitiatedByWX(userId, channel);
-		} else if(fromType.equals("cs")) {
+		}else if(fromType.equals("cs")) {
+			String userId = args[2];
 			doCreateSessionInitiatedByCs(userId, channel);
 		} else if(fromType.equals("distributor")) {
+			String userId = args[2];
 			doCreateSessionInitiatedByDistributor(userId, channel);
 		}
 	}
@@ -151,6 +148,7 @@ public class ConsultSessionManager {
 							break;
 						} else {
 							distributors.remove(distributorUserId);
+							csuserChannelMapping.remove(distributorUserId);
 						}
 					}
 				}
@@ -182,75 +180,81 @@ public class ConsultSessionManager {
 		channelUserMapping.put(channel, userId);
 	}
 
-	public void doCreateSessionInitiatedByWX(String openId,Channel channel){
+	public Channel createWechatConsultSession(RichConsultSession consultSession){
 
-		Integer sessionId = sessionCache.getSessionIdByOpenId(openId);
+		Channel  csChannel = null;
 
-		RichConsultSession consultSession = null;
-		if(sessionId != null)
-			consultSession = sessionCache.getConsultSessionBySessionId(sessionId);
+		int number = accessNumber.getAndDecrement();
+		if(number < 10)
+			accessNumber.set(1000);
 
-		if(consultSession == null) {
-			HashMap<String,Object> attentionUser = consultSessionDao.getAttention(openId);
-			consultSession = new RichConsultSession();
-			consultSession.setCreateTime(new Date());
-			InetSocketAddress address = (InetSocketAddress) channel.localAddress();
-			consultSession.setServerAddress(address.getHostName());
-			consultSession.setOpenid(openId);
-			consultSession.setUserName((String) attentionUser.get("nickname"));
-
-			int number = accessNumber.getAndDecrement();
-			if(number < 10)
-				accessNumber.set(1000);
-
-			int distributorsListSize = distributorsList.size();
-			int index = number % distributorsListSize;
-			String distributorUserId = distributorsList.get(index);
-			Channel distributorChannel = distributors.get(distributorUserId);
-			if(distributorChannel != null) {
-				consultSession.setCsUserId(distributorUserId);
-			} else {
-				int length = index + distributorsListSize + 2;
-				for(int i = index + 1;  i < length; i ++) {
-					distributorUserId = distributorsList.get(i % distributorsListSize);
-					distributorChannel = distributors.get(distributorUserId);
-					if(distributorChannel != null) {
-						if(distributorChannel.isActive()) {
-							consultSession.setCsUserId(distributorUserId);
-							User csUser = systemService.getUser(distributorUserId);//chenjiakeQ&A，此处的userId，是否应该为distributorUserId
-							consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
-							break;
-						} else {
-							distributors.remove(distributorUserId);
-						}
+		int distributorsListSize = distributorsList.size();
+		int index = number % distributorsListSize;
+		String distributorUserId = distributorsList.get(index);
+		Channel distributorChannel = distributors.get(distributorUserId);
+		if(distributorChannel != null) {
+			consultSession.setCsUserId(distributorUserId);
+			csChannel = distributorChannel;
+		} else {
+			int length = index + distributorsListSize + 2;
+			for(int i = index + 1;  i < length; i ++) {
+				distributorUserId = distributorsList.get(i % distributorsListSize);
+				distributorChannel = distributors.get(distributorUserId);
+				if(distributorChannel != null) {
+					if(distributorChannel.isActive()) {
+						consultSession.setCsUserId(distributorUserId);
+						User csUser = systemService.getUser(distributorUserId);//chenjiakeQ&A，此处的userId，是否应该为distributorUserId
+						consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
+						csChannel = distributorChannel;
+						break;
+					} else {
+						distributors.remove(distributorUserId);
+						csuserChannelMapping.remove(distributorUserId);
 					}
 				}
 			}
-
-			if(distributorChannel == null) {
-				//TODO send msg to user that no distributor is available
-				return;
-			}
-
-			consultSessionService.saveConsultInfo(consultSession);
-
-			sessionId = consultSession.getId();
-			sessionCache.putSessionIdConsultSessionPair(sessionId, consultSession);
-			sessionCache.putUserIdSessionIdPair(openId, sessionId);
-
-			//send user
-			JSONObject obj = new JSONObject();
-			obj.put("type", 4);
-			obj.put("notifyType", "0001");
-			obj.put("session", consultSession);
-			TextWebSocketFrame frame = new TextWebSocketFrame(obj.toJSONString());
-			distributorChannel.writeAndFlush(frame.retain());
 		}
 
-		userChannelMapping.put(openId, channel);
-		channelUserMapping.put(channel, openId);
+		if(distributorChannel == null) {
+			//所有的接诊员不在线，随机分配一个在线医生
+			Iterator<Entry<String, Channel>> csuserChannel = csuserChannelMapping.entrySet().iterator();
+			if(csuserChannel!=null){
+				List<HashMap<String,Object>> doctorOnLineList = new ArrayList();
+				while (csuserChannel.hasNext()) {
+					HashMap<String,Object> doctorOnLineMap = new HashMap<String,Object>();
+					Map.Entry<String, Channel> entry = csuserChannel.next();
+					doctorOnLineMap.put("doctorId", entry.getKey());
+					doctorOnLineMap.put("Channel", entry.getValue());
+					doctorOnLineList.add(doctorOnLineMap);
+				}
+				//通过一个随机方法，从doctorOnLineList选择一个医生，为用户提供服务
+				consultSession.setCsUserId((String)doctorOnLineList.get(0).get("doctorId"));
+				csChannel = (Channel) doctorOnLineList.get(0).get("Channel");
+				User csUser = systemService.getUser((String)doctorOnLineList.get(0).get("doctorId"));
+				consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
+
+			}else{
+				//如果没有任何医生在线，给用户推送微信消息，告知没有医生在线，稍后在使用服务
+				String st = "尊敬的用户，您好，目前没有医生在线，请稍后再试";
+				WechatUtil.senMsgToWechat(sessionCache.getWeChatToken(),consultSession.getOpenid(), st);
+				return null;
+			}
+		}
+
+		consultSessionService.saveConsultInfo(consultSession);
+
+		Integer sessionId = consultSession.getId();
+		sessionCache.putSessionIdConsultSessionPair(sessionId, consultSession);
+		sessionCache.putopenIdSessionIdPair(consultSession.getOpenid(), sessionId);
+
+		//成功分配医生，给用户发送一个欢迎语
+		String st = "尊敬的用户，宝大夫在线，有什么可以帮您";
+		WechatUtil.senMsgToWechat(sessionCache.getWeChatToken(), consultSession.getOpenid(), st);
+
+		return csChannel;
+
 	}
-	
+
 	public void transferSession(Integer sessionId, String toCsUserId, String remark){
 		RichConsultSession session = sessionCache.getConsultSessionBySessionId(sessionId);
 		Channel channel = userChannelMapping.get(toCsUserId);
@@ -336,13 +340,11 @@ public class ConsultSessionManager {
 	public Map<Channel, String> getChannelUserMapping() {
 		return channelUserMapping;
 	}
-	
-	//TODO service for getting sessionId
+
 	public Integer getSessionIdByUser(String userId) {
 		return sessionCache.getSessionIdByUserId(userId);
 	}
-	
-	//TODO service for getting sessionId
+
 	public List<Object> getCurrentSessions(List<Object> sessionIds) {
 		return sessionCache.getConsultSessionsBySessionIds(sessionIds);
 	}

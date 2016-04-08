@@ -73,6 +73,9 @@ public class ScheduledTask {
     @Autowired
     private ConsultPhoneOrderService consultPhoneOrderService;
 
+    @Autowired
+    private ConsultPhonePatientService consultPhonePatientService;
+
     //将所有任务放到一个定时器里，减少并发
     //@Scheduled(cron = "0 */1 * * * ?")
     public void letsGoReminder() {
@@ -977,12 +980,22 @@ public class ScheduledTask {
           String doctorPhone =  (String)map.get("doctorPhone");
           String userPhone =  (String)map.get("userPhone");
           Integer orderId = (Integer)map.get("id");
-          Integer conversationLength =  Integer.valueOf((String)map.get("conversationLength"))*60;
+          Integer conversationLength =  (Integer)map.get("conversationLength")*60;
           HashMap<String, Object> result = sdk.callback(userPhone, doctorPhone,
                   "4006237120", "4006237120", null,
                   "true", null, orderId+"",
                   conversationLength+"", null, "0",
                   "1", "10", null);
+          HashMap<String, Object> dataMap = (HashMap) result.get("data");
+          HashMap<String, Object> callBackMap = (HashMap)dataMap.get("CallBack");
+          String callSid =(String)callBackMap.get("callSid");
+
+          System.out.println(result);
+          ConsultPhoneRegisterServiceVo vo =  new ConsultPhoneRegisterServiceVo();
+          vo.setId(orderId);
+          vo.setUpdateTime(new Date());
+          vo.setCallSid(callSid);
+          consultPhonePatientService.updateOrderInfoBySelect(vo);
       }
 
     }

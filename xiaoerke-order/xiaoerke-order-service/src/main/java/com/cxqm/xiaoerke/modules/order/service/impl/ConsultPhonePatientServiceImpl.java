@@ -16,6 +16,7 @@ import com.cxqm.xiaoerke.modules.order.exception.CreateOrderException;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.entity.PatientVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
+import com.cxqm.xiaoerke.modules.sys.service.DoctorInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
@@ -53,6 +54,9 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
     @Autowired
     private PhoneConsultDoctorRelationDao phoneConsultDoctorRelationDao;
 
+    @Autowired
+    private DoctorInfoService doctorInfoService;
+
 
     /**
      * 查询电话咨询的订单
@@ -62,7 +66,17 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
 
     @Override
     public Map<String,Object> getPatientRegisterInfo(Integer patientRegisterId){
-        return  consultPhoneRegisterServiceDao.getPhoneConsultaServiceIndo(patientRegisterId);
+      Map<String,Object> registerInfo = consultPhoneRegisterServiceDao.getPhoneConsultaServiceIndo(patientRegisterId);
+        String position1 = (String)registerInfo.get("position1");
+        String position = (String)registerInfo.get("position2");
+        if(position1 != null && !"".equals(position1)){
+            position = position1 + "、" + position;
+        }
+        registerInfo.put("position",position);
+        registerInfo.put("expertise", doctorInfoService
+                .getDoctorExpertiseById((String) registerInfo.get("doctorId"), null, null));
+        // 根据医生ID和医院ID，获取医生的所处科室
+        return registerInfo;
     }
 
     /**
@@ -104,10 +118,8 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         vo.setPhoneNum(phoneNum);
         vo.setCreat_by(UserUtils.getUser().getId());
         vo.setType("0");
-        Integer serviceLength = consulPhonetDoctorRelationVo.getServerLength()*60*100;
-        Date surplusTime = new Date();
-        surplusTime.setTime(serviceLength);
-        vo.setSurplusTime(surplusTime);
+        Integer serviceLength = consulPhonetDoctorRelationVo.getServerLength()*60*1000;
+        vo.setSurplusTime(serviceLength);
         int result = consultPhoneRegisterServiceDao.insertSelective(vo);
         if(result== 0){
             throw new CreateOrderException();
@@ -168,6 +180,13 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         return pages;
     }
 
-
-
+    /**
+     * 根据条件查询订单
+     * sunxiao
+     */
+    @Override
+    public List<Map<String, Object>> getConsultPhoneRegisterListByInfo(Map map) {
+        // TODO Auto-generated method stub
+        return consultPhoneRegisterServiceDao.getConsultPhoneRegisterListByInfo(map);
+    }
 }
