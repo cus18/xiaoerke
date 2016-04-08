@@ -7,7 +7,7 @@ angular.module('controllers', ['luegg.directives'])
             $scope.info = {};
             $scope.socketServer1 = "";
             $scope.socketServer2 = "";
-
+            var flag,mark,parentIndex,childIndex;
             var currDate = new moment().format("YYYY-MM-DD");
             getTodayRankingList.save({"rankDate": currDate}, function (data) {
                 console.log("getTodayRankingList", data);
@@ -234,52 +234,6 @@ angular.module('controllers', ['luegg.directives'])
             $scope.toggleRankList = function () {
                 $scope.rankList.show = !$scope.rankList.show;
             }
-            //我的回复
-            $scope.myreplyList = {
-                show: false
-            }
-            $scope.myreplyList1 = function () {
-                $scope.myreplyList.show = !$scope.myreplyList.show;
-                if ($scope.myreplyList.show == false){
-                    $(".rtitle:eq(0)").css('backgroundPosition','0 0');
-                    $(".rtitle:eq(0)").css('color','#333');
-                }else if($scope.myreplyList.show == true){
-                    $(".rtitle:eq(0)").css('backgroundPosition','0 -42px');
-                    $(".rtitle:eq(0)").css('color','#08b7c2');
-                }
-            }
-            //我的回复内容
-            $scope.mreplyContent1 = function (index) {
-                $scope.mreplayindex = index;
-                $(".myreply .group-title").not(index).css('backgroundPosition','0 0');
-                $(".myreply .group-title").not(index).css('color','#333');
-                $(".myreply .group-title").eq(index).css('backgroundPosition','0 -42px');
-                $(".myreply .group-title").eq(index).css('color','#08b7c2');
-            }
-            //公共回复
-            $scope.pubilcreplyList = {
-                show: false
-            }
-            $scope.pubilcreplyList1 = function () {
-                $scope.pubilcreplyList.show = !$scope.pubilcreplyList.show;
-                console.log($scope.pubilcreplyList.show)
-                if ($scope.pubilcreplyList.show == false){
-                    $(".rtitle:eq(1)").css('backgroundPosition','0 0');
-                    $(".rtitle:eq(1)").css('color','#333');
-                }else if($scope.pubilcreplyList.show == true){
-                    console.log($scope.pubilcreplyList.show)
-                    $(".rtitle:eq(1)").css('backgroundPosition','0 -42px');
-                    $(".rtitle:eq(1)").css('color','#08b7c2');
-                }
-            }
-            //公告回复内容
-            $scope.pubilcreplyContent1 = function (index) {
-                $scope.pubilcreplyindex = index;
-                $(".pubilcreply .group-title").not(index).css('backgroundPosition','0 0');
-                $(".pubilcreply .group-title").not(index).css('color','#333');
-                $(".pubilcreply .group-title").eq(index).css('backgroundPosition','0 -42px');
-                $(".pubilcreply .group-title").eq(index).css('color','#08b7c2');
-            }
             //系统设置
             $scope.systemsetup = {
                 show: false
@@ -301,16 +255,87 @@ angular.module('controllers', ['luegg.directives'])
             $scope.switchover1 = function() {
                 $scope.switchover.show = !$scope.switchover.show;
             }
+
+            //我的回复
+            $scope.myreplyList = {
+                show: false
+            }
+            $scope.myreplyList1 = function () {
+                $scope.myreplyList.show = !$scope.myreplyList.show;
+                mark = 0;
+                if ($scope.myreplyList.show == false){
+                    $(".rtitle:eq(0)").css('backgroundPosition','0 0');
+                    $(".rtitle:eq(0)").css('color','#333');
+                }else if($scope.myreplyList.show == true){
+                    $(".rtitle:eq(0)").css('backgroundPosition','0 -42px');
+                    $(".rtitle:eq(0)").css('color','#08b7c2');
+                }
+            }
+            //我的回复内容
+            $scope.mreplyContent1 = function (parentIndex1) {
+                $scope.mreplayindex = parentIndex1;
+                mark = 0;
+                flag = 0;
+                parentIndex = parentIndex1;
+                $scope.info.editGroup = $scope.myAnswer[parentIndex].name;
+                console.log("editMyGroup",$scope.info.editGroup)
+                $(".myreply .group-title").not(parentIndex1).css('backgroundPosition','0 0');
+                $(".myreply .group-title").not(parentIndex1).css('color','#333');
+                $(".myreply .group-title").eq(parentIndex1).css('backgroundPosition','0 -42px');
+                $(".myreply .group-title").eq(parentIndex1).css('color','#08b7c2');
+            }
+
+            $scope.editMyContent = function(parentIndex1, childIndex1) {
+                flag = 1;
+                parentIndex = parentIndex1;
+                childIndex = childIndex1;
+                $scope.info.editContent = $scope.myAnswer[parentIndex].secondAnswer[childIndex].name;
+                console.log("editMyContent",$scope.info.editContent)
+            };
+            //公共回复
+            $scope.pubilcreplyList = {
+                show: false
+            }
+            //回复列表
+            $scope.pubilcreplyList1 = function () {
+                $scope.pubilcreplyList.show = !$scope.pubilcreplyList.show;
+                mark = 0;
+                if ($scope.pubilcreplyList.show == false){
+                    $(".rtitle:eq(1)").css('backgroundPosition','0 0');
+                    $(".rtitle:eq(1)").css('color','#333');
+                }else if($scope.pubilcreplyList.show == true){
+                    console.log($scope.pubilcreplyList.show)
+                    $(".rtitle:eq(1)").css('backgroundPosition','0 -42px');
+                    $(".rtitle:eq(1)").css('color','#08b7c2');
+                }
+            }
+            //公告回复内容
+            $scope.pubilcreplyContent1 = function (parentIndex1) {
+                $scope.pubilcreplyindex = parentIndex1;
+                mark = 1;
+                flag = 0;
+                parentIndex = parentIndex1;
+                $scope.info.editCommonGroup = $scope.commonAnswer[parentIndex].name;
+                $(".pubilcreply .group-title").not(parentIndex1).css('backgroundPosition','0 0');
+                $(".pubilcreply .group-title").not(parentIndex1).css('color','#333');
+                $(".pubilcreply .group-title").eq(parentIndex1).css('backgroundPosition','0 -42px');
+                $(".pubilcreply .group-title").eq(parentIndex1).css('color','#08b7c2');
+            }
+            //编辑公共内容
+            $scope.editCommonContent = function(parentIndex1, childIndex1) {
+                flag = 1;
+                parentIndex = parentIndex1;
+                childIndex = childIndex1;
+                $scope.info.editContent = $scope.commonAnswer[parentIndex].secondAnswer[childIndex].name;
+            };
             //添加分组
             $scope.add = function() {
-                if (flag == 0) {
-                    console.log("parentIndex",parentIndex)
+                if (mark == 0) {
                     $scope.addgroup = true;
-                } else if (flag == 1) {
+                } else if (mark == 1) {
                     $scope.addcontent = true;
                 }
             }
-
             $scope.addgroup =  false;
             $scope.closeAddGroup = function() {
                 $scope.addgroup = false;
@@ -320,7 +345,6 @@ angular.module('controllers', ['luegg.directives'])
             $scope.closeAddContent = function() {
                 $scope.addcontent=false;
             }
-
             //保存公共回复
             $scope.addGroupFirst = function () {
                 var addGroupFirst = {};
@@ -329,7 +353,7 @@ angular.module('controllers', ['luegg.directives'])
                 alert(123);
                 getMyAnswerModify.save({answer:$scope.commonAnswer,answerType:"commonAnswer"}, function (data) {
                 });
-
+                $scope.addgroup = false;
             }
 
             //编辑分组
@@ -342,37 +366,29 @@ angular.module('controllers', ['luegg.directives'])
             $scope.closeEditContent = function() {
                 $scope.editcontent = false;
             }
-            var flag,parentIndex,childIndex;
-            $scope.editCommonGroup = function(parentIndex1) {
-                flag = 0;
-                parentIndex = parentIndex1;
-                $scope.info.editCommonGroup = $scope.commonAnswer[parentIndex].name;
-                console.log("editCommonGroup",$scope.info.editCommonGroup);
-                console.log("parentIndex",parentIndex);
-            };
-            $scope.editCommonContent = function(parentIndex1, childIndex1) {
-                flag = 1;
-                parentIndex = parentIndex1;
-                childIndex = childIndex1;
-                $scope.info.editCommonContent = $scope.commonAnswer[parentIndex].secondAnswer[childIndex].name;
-                console.log("editCommonContent",$scope.info.editCommonContent);
-                console.log("parentIndex",parentIndex);
-                console.log("childIndex",childIndex);
-            };
             $scope.edit = function() {
                 if (flag == 0) {
                     $scope.editgroup = true;
-                    console.log("editCommonGroup",$scope.info.editCommonGroup);
                 } else if (flag == 1) {
                     $scope.editcontent = true;
                 }
             }
             //删除
-            $scope.remove = function(index) {
-                if (flag == 0 && $window.confirm("确定要删除该组回复?")) {
-                    $scope.commonAnswer.splice(index, 1);
-                }else if(flag == 1 && $window.confirm("确定要删除该回复?")) {
-                    $scope.commonAnswer[parentIndex].secondAnswer.splice(index, 1);;
+            $scope.remove = function(){
+                console.log("mark",mark);
+                console.log("flag",flag);
+                if(mark == 0){
+                    if (flag == 0 && $window.confirm("确定要删除该组回复?")) {
+                        $scope.myAnswer.splice(parentIndex, 1);
+                    }else if(flag == 1 && $window.confirm("确定要删除该回复?")) {
+                        $scope.myAnswer[parentIndex].secondAnswer.splice(childIndex, 1);
+                    }
+                }else if(mark == 1){
+                    if (flag == 0 && $window.confirm("确定要删除该组回复?")) {
+                        $scope.commonAnswer.splice(parentIndex, 1);
+                    }else if(flag == 1 && $window.confirm("确定要删除该回复?")) {
+                        $scope.commonAnswer[parentIndex].secondAnswer.splice(childIndex, 1);
+                    }
                 }
             }
         }])
