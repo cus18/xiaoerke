@@ -11,10 +11,10 @@ require.config({
         "angular-route" : "libs/angular-route.min",
         "ocLazyLoad":"libs/ocLazyLoad.require.min",
         "jquery":"libs/jquery-2.1.3.min",
-        "bdfFactory" : "services/bdfFactory",
-        "bdfDirective" : "directives/bdfDirective",
-        "route" : "routes/appRoute",
-        "app" : "modules/app"
+        "bdfFactory" : "services/knowledgeFactory",
+        "bdfDirective" : "directives/knowledgeDirective",
+        "route" : "routes/appKnowledgeRoute",
+        "app" : "modules/appKnowledge"
     },
     waitSeconds: 0,
     shim: {
