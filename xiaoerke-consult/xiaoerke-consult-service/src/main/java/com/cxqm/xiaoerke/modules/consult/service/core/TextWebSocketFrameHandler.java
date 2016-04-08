@@ -14,12 +14,14 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
 	
 	private transient static final Logger log = LoggerFactory.getLogger(TextWebSocketFrameHandler.class);
-	
-	private SessionCache sessionCache = new SessionCacheRedisImpl();
+
+	@Autowired
+	private SessionCache sessionCache;
 	
 	public TextWebSocketFrameHandler() {
 		super();

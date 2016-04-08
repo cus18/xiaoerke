@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.websocket.Session;
 
+
 @Service
 @Transactional(readOnly = false)
 public class SessionCacheRedisImpl implements SessionCache {
@@ -24,6 +25,8 @@ public class SessionCacheRedisImpl implements SessionCache {
 	private static final String USER_SESSIONID_KEY = "consult.userSessionID";
 
 	private static final String USER_WECHATSESSION_KEY = "consult.wechatSession";
+
+	private static final String WECHAT_TOKEN = "wechat.token";
 	
 	@Override
 	public RichConsultSession getConsultSessionBySessionId(Integer sessionId) {
@@ -77,6 +80,22 @@ public class SessionCacheRedisImpl implements SessionCache {
 	public Session getWechatSessionByOpenId(String openId) {
 		Object wechatSession = redisTemplate.opsForHash().get(USER_WECHATSESSION_KEY, openId);
 		return wechatSession == null ? null : (Session) wechatSession;
+	}
+
+	@Override
+	public String getWeChatToken(){
+		Object Token = redisTemplate.opsForHash().get(WECHAT_TOKEN,"wechatToken");
+		return Token == null ? null : (String) Token;
+	}
+
+	@Override
+	public void putWeChatToken(String token){
+		redisTemplate.opsForHash().put(WECHAT_TOKEN, "wechatToken", token);
+	}
+
+	@Override
+	public void removeWeChatToken(){
+		redisTemplate.opsForHash().delete(WECHAT_TOKEN, "wechatToken");
 	}
 	
 	@Override

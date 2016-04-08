@@ -67,11 +67,13 @@
         }
         $scope.chooseTime = function(item){
             if(item.state == "1")return
-            var routePath = "/keeper/phoneConsultPay/patientPay.do?phoneConDoctorDetail="
+            var routePath = "http://localhost/keeper/phoneConsultPay/patientPay.do?" +
+                "phoneConDoctorDetail="
                 + item.id;
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 $scope.pageLoading = false;
                 if(data.status=="9") {
+                    alert(data.redirectURL);
                     window.location.href = data.redirectURL;
                 }else if(data.status=="8"){
                     window.location.href = data.redirectURL+"?targeturl="+routePath;

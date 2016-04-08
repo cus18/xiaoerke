@@ -150,13 +150,15 @@ var doRefresh = function(){
             }
         },
         success:function(data){
-            var param = '{routePath:"phoneConsultPay/patientPay.do?phoneConDoctorDetail="'+GetQueryString("phoneConDoctorDetail")+'"}';
+            var param = '{routePath:"phoneConsultPay/patientPay.do?phoneConDoctorDetail='+GetQueryString("phoneConDoctorDetail")+'"}';
             $.ajaxSetup({
                 contentType : 'application/json'
             });
+            alert(param);
             $.post('info/loginStatus',param,
                 function(data) {
                     if(data.status=="9"){
+                        alert(data.redirectURL);
                         window.location.href = data.redirectURL;
                     }else if(data.status=="8"){
                         window.location.href = data.redirectURL;

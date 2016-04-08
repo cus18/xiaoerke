@@ -47,6 +47,7 @@
     <orderEntry type="library" name="Maven: org.mongodb:mongo-java-driver:2.13.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.6" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-core:7.0.47" level="project" />
+    <orderEntry type="library" name="Maven: javax.websocket:javax.websocket-api:1.0" level="project" />
     <orderEntry type="module" module-name="xiaoerke-operation-service" />
     <orderEntry type="module" module-name="xiaoerke-plan-service" />
     <orderEntry type="module" module-name="xiaoerke-healthRecords-service" />

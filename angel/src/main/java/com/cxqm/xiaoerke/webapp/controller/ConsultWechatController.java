@@ -6,9 +6,11 @@ package com.cxqm.xiaoerke.webapp.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.SessionCache;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
+import com.cxqm.xiaoerke.modules.sys.entity.User;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +18,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
+import java.net.InetSocketAddress;
 import java.net.URLDecoder;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -33,6 +37,10 @@ public class ConsultWechatController extends BaseController {
     @Autowired
     private SessionCache sessionCache;
 
+    private AtomicInteger accessNumber = new AtomicInteger(1000);
+
+    private List<String> distributorsList = null;
+
     @RequestMapping(value = "/conversation", method = {RequestMethod.POST, RequestMethod.GET})
     public
     String conversation(@RequestParam(required=true) String openId,
@@ -42,25 +50,33 @@ public class ConsultWechatController extends BaseController {
 
         //根据用户的openId，判断redis中，是否有用户正在进行的session
         Integer sessionId = sessionCache.getSessionIdByOpenId(openId);
+        String nickName = "";
+        //需要根据openId获取到nickname，如果拿不到nickName，则用利用openId换算出一个编号即可
+
+        Channel csChannel = null;
 
         if(sessionId!=null){
             RichConsultSession consultSession = sessionCache.getConsultSessionBySessionId(sessionId);
-            Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
+            csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
+        }else{
+            RichConsultSession consultSession = new RichConsultSession();
+            consultSession.setCreateTime(new Date());
+            consultSession.setOpenid(openId);
+            consultSession.setNickName(nickName);
+            csChannel = ConsultSessionManager.getSessionManager().createWechatConsultSession(consultSession);
+        }
 
+        if(csChannel!=null){
             try {
                 JSONObject obj = new JSONObject();
                 obj.put("sessionId", sessionId);
                 obj.put("senderId", openId);
                 obj.put("dateTime", DateUtils.DateToStr(new Date()));
-                String nickName = "";
-                //需要根据openId获取到nickname，如果拿不到nickName，则用利用openId换算出一个编号即可
                 obj.put("senderName",nickName);
 
                 if(messageType.equals("text")) {
-
                     obj.put("type", 0);
                     obj.put("content", URLDecoder.decode(messageContent, "utf-8"));
-
                     TextWebSocketFrame frame = new TextWebSocketFrame(obj.toJSONString());
                     csChannel.writeAndFlush(frame.retain());
                 }else{
@@ -80,12 +96,9 @@ public class ConsultWechatController extends BaseController {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-
-            //会话信息存入mongodb
-
-
-
         }
+
+        //会话信息存入mongodb
 
 
         return "";

@@ -19,10 +19,10 @@
 .replayContent{overflow: auto;height: 399px;}
 .reply-content .myreply{cursor: pointer;font: 12px/35px 'Microsoft Yahei';color:#333;}
 .reply-content .pubilcreply{cursor: pointer;font: 12px/35px 'Microsoft Yahei';color:#333;}
-.myreply .rtitle img {margin-left: 10px;}
-.pubilcreply .rtitle img {margin-left: 10px;}
+.rtitle {margin-left: 10px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(4).png") no-repeat 0 0;padding-left: 20px;}
 .myreply ul li img,.pubilcreply ul li img {margin-left: 25px;}
-.rcontent {margin-left: 25px; height:35px;width: 350px;overflow: hidden;text-overflow: ellipsis;color:#666;}
+.rcontent {margin-left: 50px; height:35px;width: 325px;overflow: hidden;text-overflow: ellipsis;color:#666;}
+.group-title{margin-left: 30px;padding-left:20px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(4).png") no-repeat 0 0;}
 /*聊天对话框的图片*/
 .consultNowList{line-height: 40px;cursor: pointer;}
 .consultNowList img{margin-top: 3%;margin-left: 3%;width: 13%;height: 3%;}

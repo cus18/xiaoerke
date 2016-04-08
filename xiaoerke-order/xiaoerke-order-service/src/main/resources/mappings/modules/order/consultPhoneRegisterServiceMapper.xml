@@ -91,6 +91,7 @@
     DATE_FORMAT(scs.endTime,'%k:%i') endTime,
     DATE_FORMAT(scs.date,'%Y/%m/%d') date,
     DATE_FORMAT(crs.create_time,'%Y/%m/%d  %k:%i') orderTime,
+    crs.id orderId,
     crs.register_no as orderNo,
     crs.phone,
     sbi.name babyName,

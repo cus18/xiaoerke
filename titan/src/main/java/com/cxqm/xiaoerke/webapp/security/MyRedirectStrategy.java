@@ -15,7 +15,7 @@ public class MyRedirectStrategy extends DefaultRedirectStrategy {
 	public void sendRedirect(HttpServletRequest request, HttpServletResponse response, String url) throws IOException {
 		url = url.replaceAll("BBBBBB", "#");
 		
-		url = WebUtil.getWebPath(request) + url;
+//		url = WebUtil.getWebPath(request) + url;
 		this.setContextRelative(false);
 		
 		super.sendRedirect(request, response, url);
