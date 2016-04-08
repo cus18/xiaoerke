@@ -14,7 +14,7 @@
 			classpath*:/spring-context-jedis.xml
 			classpath*:/spring-context-mongodb.xml
 			classpath*:/spring-security.xml
-			<!--<!--classpath*:/spring-oauth2.xml-->-->
+			<!--classpath*:/spring-oauth2.xml-->
 		</param-value>
 	</context-param>
 
