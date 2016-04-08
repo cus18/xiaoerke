@@ -349,7 +349,7 @@
         callSid = #{callSid,jdbcType=VARCHAR},
       </if>
       <if test="surplusTime != null" >
-        #{surplusTime,jdbcType=BIGINT},
+        surplusTime = #{surplusTime,jdbcType=BIGINT},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

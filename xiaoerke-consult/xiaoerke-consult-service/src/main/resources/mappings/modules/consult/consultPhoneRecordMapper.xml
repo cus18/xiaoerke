@@ -31,6 +31,16 @@
     from consultphonerecord
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectByUserData" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from consultphonerecord
+    where userData = #{userData,jdbcType=VARCHAR}
+    <if test="action != null" >
+      and action =  #{action,jdbcType=VARCHAR}
+    </if>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from consultphonerecord
     where id = #{id,jdbcType=INTEGER}
