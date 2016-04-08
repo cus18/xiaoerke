@@ -408,7 +408,7 @@ define(['appAppoint'], function(app){
                         }
                     })
                     .state('sharedDetail', {
-                        url: '/sharedDetail/:patient_register_service_id,:status,:returnpay',
+                        url: '/sharedDetail/:patient_register_service_id,:status,:returnpay,:type',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'SharedDetailCtrl',
                         resolve: {

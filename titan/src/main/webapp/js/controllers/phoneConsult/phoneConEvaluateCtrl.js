@@ -112,12 +112,15 @@
                 visit_endTime = initialTime;
             }
             $scope.pageLoading=true;
-            OrderPraiseOperation.save({"patient_register_service_id":$stateParams.patient_register_service_id,
-                "action":{"status":"3","star":$scope.starNum,"major_star":$scope.major_star,
+            OrderPraiseOperation.save({"type":"phone","patient_register_service_id":$stateParams.consultphone_register_service_id,
+                "action":{"status":"3","star":$scope.starNum+"","major_star":$scope.major_star+"",
                     "otherCase":$scope.info.symptom,"impression":$scope.info.context,"zan":$scope.lock,
                     "visit_endTime":visit_endTime,'doctorCaseId':$scope.doctorCaseId}},function(data){
                 $scope.pageLoading=false;
-                $state.go("sharedDetail",{patient_register_service_id:$stateParams.patient_register_service_id,status:'true',"returnpay":data.amount});
+                if(data.status == "1"){
+                    window.location.href="/titan/appoint#/sharedDetail/"+data.patient_register_service_id+",true,,"+"phone";
+                }
+                //$state.go("sharedDetail",{patient_register_service_id:$stateParams.consultphone_register_service_id,status:'true',"returnpay":data.amount});
             })
         }
 

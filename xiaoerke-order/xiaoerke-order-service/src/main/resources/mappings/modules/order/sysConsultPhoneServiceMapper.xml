@@ -82,6 +82,18 @@
     ORDER BY scs.beginTime asc
   </select>
 
+    <!-- 根据consultPhoneRegisterServiceId查询sys_consultPhone_service表信息 -->
+    <select id="findSysConsultPhoneServiceByCRSIdExecute" resultType="java.util.Map">
+      SELECT
+	  srs.sys_doctor_id,
+	  prs.sys_patient_id,
+	  srs.id AS sys_register_service_id
+      FROM
+	  sys_consultphone_service srs
+      INNER JOIN consultphone_register_service prs ON prs.sys_phoneConsult_service_id = srs.id
+      WHERE
+	  prs.id = #{id}
+    </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from sys_consultPhone_service

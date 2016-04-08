@@ -1,23 +1,5 @@
 package com.cxqm.xiaoerke.modules.order.service.impl;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
-import net.sf.json.JSONObject;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.order.dao.ConsultPhoneRegisterTemplateDao;
@@ -30,6 +12,14 @@ import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PhoneConsultDoctorRelationService;
 import com.cxqm.xiaoerke.modules.order.service.SysConsultPhoneService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
+import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by wangbaowei on 16/3/21.
@@ -749,5 +739,10 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 		List<SysConsultPhoneServiceVo> list = sysConsultPhoneServiceDao.findSysConsultPhoneByInfo(map);
 		return list;
 	}
+
+    @Override
+    public HashMap<String, Object> findSysConsultPhoneServiceByCRSIdExecute(HashMap<String, Object> hashMap) {
+        return sysConsultPhoneServiceDao.findSysConsultPhoneServiceByCRSIdExecute(hashMap);
+    }
 
 }

@@ -222,7 +222,7 @@ define(['appPhoneConsult'], function(app){
                         }
                     })
                     .state('phoneConEvaluate', {
-                        url: '/phoneConEvaluate:consultphone_register_service_id,:doctorId',
+                        url: '/phoneConEvaluate:consultphone_register_service_id,:doctorId,:date,:beginTime,:endTime',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'phoneConEvaluateCtrl',
                         resolve: {

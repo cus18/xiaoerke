@@ -42,4 +42,12 @@ public interface ConsultPhoneOrderService {
      * 查询当前时间需要创建通话链接的订单数据
      * */
     HashMap<String, Object> getConsultConnectInfo(Integer id);
+
+    /**
+     * 更新订单状态
+     * @param excuteMap
+     * @author chenxiaoqiong
+     */
+    void changeConsultPhoneRegisterServiceState(HashMap<String, Object> excuteMap);
+
 }

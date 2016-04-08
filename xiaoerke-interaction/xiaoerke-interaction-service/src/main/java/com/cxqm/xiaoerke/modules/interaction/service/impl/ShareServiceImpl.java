@@ -1,24 +1,20 @@
 package com.cxqm.xiaoerke.modules.interaction.service.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import com.cxqm.xiaoerke.common.utils.IdGen;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.modules.interaction.service.ShareService;
+import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
 import com.cxqm.xiaoerke.modules.sys.interceptor.SystemServiceLog;
+import com.cxqm.xiaoerke.modules.sys.service.HospitalInfoService;
+import com.cxqm.xiaoerke.modules.sys.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cxqm.xiaoerke.common.utils.IdGen;
-import com.cxqm.xiaoerke.common.web.Servlets;
-import com.cxqm.xiaoerke.modules.interaction.service.ShareService;
-import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
-import com.cxqm.xiaoerke.modules.sys.service.HospitalInfoService;
-import com.cxqm.xiaoerke.modules.sys.service.MessageService;
-import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by wangbaowei on 15/11/5.
@@ -46,9 +42,16 @@ public class ShareServiceImpl implements ShareService{
 	@Override
     public HashMap<String, Object> getMyShareDetail(Map<String, Object> params)
     {
+        String type = (String)params.get("type");
         HashMap<String, Object> hashMap = new HashMap<String, Object>();
         hashMap.put("patientRegisterServiceId", params.get("patientRegisterServiceId"));
-        HashMap<String, Object> response = messageService.findShareDetailInfoExecute(hashMap);
+        HashMap<String, Object> response = null;
+        if(type != null && "phone".equals(type)){
+            response = messageService.findPhoneConsultShareDetailInfoExecute(hashMap);
+        }else{
+            response = messageService.findShareDetailInfoExecute(hashMap);
+        }
+
         //获取科室
         String departmentName = hospitalInfoService.getDepartmentFullName((String) response.get("doctorId"),
                 (String) response.get("hospitalId"));

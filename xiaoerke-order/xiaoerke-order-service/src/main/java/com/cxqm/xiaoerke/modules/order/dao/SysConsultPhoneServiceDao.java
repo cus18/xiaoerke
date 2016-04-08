@@ -5,15 +5,9 @@ import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.ibatis.annotations.Param;
-
-import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
-import com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo;
 
 @MyBatisDao
 public interface SysConsultPhoneServiceDao {
@@ -49,4 +43,12 @@ public interface SysConsultPhoneServiceDao {
 	 * sunxiao
 	 */
     List<SysConsultPhoneServiceVo> findSysConsultPhoneByInfo(Map<String, Object> map);
+
+    /**
+     * 根据consultPhoneRegisterServiceId查询sys_consultPhone_service表信息
+     * @param hashMap
+     * @return
+     * @author chenxiaoqiong
+     */
+    HashMap<String,Object> findSysConsultPhoneServiceByCRSIdExecute(HashMap<String, Object> hashMap);
 }
