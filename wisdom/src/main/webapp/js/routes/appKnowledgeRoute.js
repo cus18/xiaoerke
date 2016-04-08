@@ -18,8 +18,8 @@ define(['app'], function(app){
                                 lazyDeferred = $q.defer();
                                 return $ocLazyLoad.load ({
                                     name: 'app.sheOnlineIndexCtrl',
-                                    files: ['/xiaoerke-knowledge/js/controllers/sheOnline/sheOnlineIndexCtrl.js',
-                                        '/xiaoerke-knowledge/js/libs/moment.min.js']
+                                    files: ['/wisdom/js/controllers/sheOnline/sheOnlineIndexCtrl.js',
+                                        '/wisdom/js/libs/moment.min.js']
                                 }).then(function() {
                                     return $http.get('js/views/sheOnline/sheOnlineIndex.html?ver='+version)
                                         .success(function(data, status, headers, config) {
@@ -44,7 +44,7 @@ define(['app'], function(app){
                                 lazyDeferred = $q.defer();
                                 return $ocLazyLoad.load ({
                                     name: 'app.sheOnQuestionsDetailCtrl',
-                                    files: ['/xiaoerke-knowledge/js/controllers/sheOnline/sheOnQuestionsDetailCtrl.js']
+                                    files: ['/wisdom/js/controllers/sheOnline/sheOnQuestionsDetailCtrl.js']
                                 }).then(function() {
                                     return $http.get('js/views/sheOnline/sheOnQuestionsDetail.html?ver='+version)
                                         .success(function(data, status, headers, config) {
@@ -69,7 +69,7 @@ define(['app'], function(app){
                                 lazyDeferred = $q.defer();
                                 return $ocLazyLoad.load ({
                                     name: 'app.sheOnlineDetailCtrl',
-                                    files: ['/xiaoerke-knowledge/js/controllers/sheOnline/sheOnlineDetailCtrl.js']
+                                    files: ['/wisdom/js/controllers/sheOnline/sheOnlineDetailCtrl.js']
                                 }).then(function() {
                                     return $http.get('js/views/sheOnline/sheOnlineDetail.html?ver='+version)
                                         .success(function(data, status, headers, config) {
@@ -96,8 +96,8 @@ define(['app'], function(app){
                                 lazyDeferred = $q.defer();
                                 return $ocLazyLoad.load ({
                                     name: 'app.knowledgeIndexCtrl',
-                                    files: ['/xiaoerke-knowledge/js/controllers/knowledge/knowledgeIndexCtrl.js',
-                                        '/xiaoerke-knowledge/js/libs/mobiscroll.custom-2.5.0.min.js']
+                                    files: ['/wisdom/js/controllers/knowledge/knowledgeIndexCtrl.js',
+                                        '/wisdom/js/libs/mobiscroll.custom-2.5.0.min.js']
                                 }).then(function() {
                                     return $http.get('js/views/knowledge/knowledgeIndex.html?ver='+version)
                                         .success(function(data, status, headers, config) {
@@ -122,9 +122,9 @@ define(['app'], function(app){
                                 lazyDeferred = $q.defer();
                                 return $ocLazyLoad.load ({
                                     name: 'app.knowledgeLoginCtrl',
-                                    files: ['/xiaoerke-knowledge/js/controllers/knowledge/knowledgeLoginCtrl.js',
-                                        '/xiaoerke-knowledge/js/libs/moment.min.js',
-                                        '/xiaoerke-knowledge/js/libs/mobiscroll.custom-2.5.0.min.js'
+                                    files: ['/wisdom/js/controllers/knowledge/knowledgeLoginCtrl.js',
+                                        '/wisdom/js/libs/moment.min.js',
+                                        '/wisdom/js/libs/mobiscroll.custom-2.5.0.min.js'
                                     ]
                                 }).then(function() {
                                     return $http.get('js/views/knowledge/knowledgeLogin.html?ver='+version)
@@ -150,7 +150,7 @@ define(['app'], function(app){
                                 lazyDeferred = $q.defer();
                                 return $ocLazyLoad.load ({
                                     name: 'app.knowledgeSearchCtrl',
-                                    files: ['/xiaoerke-knowledge/js/controllers/knowledge/knowledgeSearchCtrl.js'
+                                    files: ['/wisdom/js/controllers/knowledge/knowledgeSearchCtrl.js'
                                     ]
                                 }).then(function() {
                                     return $http.get('js/views/knowledge/knowledgeSearch.html?ver='+version)
@@ -176,7 +176,7 @@ define(['app'], function(app){
                                 lazyDeferred = $q.defer();
                                 return $ocLazyLoad.load ({
                                     name: 'app.knowledgeWarnCtrl',
-                                    files: ['/xiaoerke-knowledge/js/controllers/knowledge/knowledgeWarnCtrl.js']
+                                    files: ['/wisdom/js/controllers/knowledge/knowledgeWarnCtrl.js']
                                 }).then(function() {
                                     return $http.get('js/views/knowledge/knowledgeWarn.html?ver='+version)
                                         .success(function(data, status, headers, config) {
@@ -201,9 +201,9 @@ define(['app'], function(app){
                                 lazyDeferred = $q.defer();
                                 return $ocLazyLoad.load ({
                                     name: 'app.todayReadMoreCtrl',
-                                    files: ['/xiaoerke-knowledge/js/controllers/knowledge/todayReadMoreCtrl.js',
-                                        '/xiaoerke-knowledge/js/libs/moment.min.js',
-                                        '/xiaoerke-knowledge/js/libs/lodash.min.js']
+                                    files: ['/wisdom/js/controllers/knowledge/todayReadMoreCtrl.js',
+                                        '/wisdom/js/libs/moment.min.js',
+                                        '/wisdom/js/libs/lodash.min.js']
                                 }).then(function() {
                                     return $http.get('js/views/knowledge/todayReadMore.html?ver='+version)
                                         .success(function(data, status, headers, config) {
@@ -228,7 +228,7 @@ define(['app'], function(app){
                                 lazyDeferred = $q.defer();
                                 return $ocLazyLoad.load ({
                                     name: 'app.todayChoiceNewbornCtrl',
-                                    files: ['/xiaoerke-knowledge/js/controllers/knowledge/todayChoiceNewbornCtrl.js']
+                                    files: ['/wisdom/js/controllers/knowledge/todayChoiceNewbornCtrl.js']
                                 }).then(function() {
                                     return $http.get('js/views/knowledge/todayChoiceNewborn.html?ver='+version)
                                         .success(function(data, status, headers, config) {
@@ -253,7 +253,7 @@ define(['app'], function(app){
                                 lazyDeferred = $q.defer();
                                 return $ocLazyLoad.load ({
                                     name: 'app.todayChoiceNurslingCtrl',
-                                    files: ['/xiaoerke-knowledge/js/controllers/knowledge/todayChoiceNurslingCtrl.js']
+                                    files: ['/wisdom/js/controllers/knowledge/todayChoiceNurslingCtrl.js']
                                 }).then(function() {
                                     return $http.get('js/views/knowledge/todayChoiceNursling.html?ver='+version)
                                         .success(function(data, status, headers, config) {
@@ -278,7 +278,7 @@ define(['app'], function(app){
                                 lazyDeferred = $q.defer();
                                 return $ocLazyLoad.load ({
                                     name: 'app.todayChoiceNurslingListCtrl',
-                                    files: ['/xiaoerke-knowledge/js/controllers/knowledge/todayChoiceNurslingListCtrl.js']
+                                    files: ['/wisdom/js/controllers/knowledge/todayChoiceNurslingListCtrl.js']
                                 }).then(function() {
                                     return $http.get('js/views/knowledge/todayChoiceNurslingList.html?ver='+version)
                                         .success(function(data, status, headers, config) {
@@ -303,7 +303,7 @@ define(['app'], function(app){
                                 lazyDeferred = $q.defer();
                                 return $ocLazyLoad.load ({
                                     name: 'app.knowledgeArticleContentCtrl',
-                                    files: ['/xiaoerke-knowledge/js/controllers/knowledge/knowledgeArticleContentCtrl.js']
+                                    files: ['/wisdom/js/controllers/knowledge/knowledgeArticleContentCtrl.js']
                                 }).then(function() {
                                     return $http.get('js/views/knowledge/knowledgeArticleContent.html?ver='+version)
                                         .success(function(data, status, headers, config) {
@@ -328,7 +328,7 @@ define(['app'], function(app){
                                 lazyDeferred = $q.defer();
                                 return $ocLazyLoad.load ({
                                     name: 'app.otherDiseaseCtrl',
-                                    files: ['/xiaoerke-knowledge/js/controllers/knowledge/otherDiseaseCtrl.js']
+                                    files: ['/wisdom/js/controllers/knowledge/otherDiseaseCtrl.js']
                                 }).then(function() {
                                     return $http.get('js/views/knowledge/otherDisease.html?ver='+version)
                                         .success(function(data, status, headers, config) {
@@ -353,7 +353,7 @@ define(['app'], function(app){
                                 lazyDeferred = $q.defer();
                                 return $ocLazyLoad.load ({
                                     name: 'app.knowledgeCommentCtrl',
-                                    files: ['/xiaoerke-knowledge/js/controllers/knowledge/knowledgeCommentCtrl.js']
+                                    files: ['/wisdom/js/controllers/knowledge/knowledgeCommentCtrl.js']
                                 }).then(function() {
                                     return $http.get('js/views/knowledge/knowledgeComment.html?ver='+version)
                                         .success(function(data, status, headers, config) {
@@ -378,7 +378,7 @@ define(['app'], function(app){
                                 lazyDeferred = $q.defer();
                                 return $ocLazyLoad.load ({
                                     name: 'app.aboutConsultCtrl',
-                                    files: ['/xiaoerke-knowledge/js/controllers/knowledge/aboutConsultCtrl.js']
+                                    files: ['/wisdom/js/controllers/knowledge/aboutConsultCtrl.js']
                                 }).then(function() {
                                     return $http.get('js/views/knowledge/aboutConsult.html?ver='+version)
                                         .success(function(data, status, headers, config) {
