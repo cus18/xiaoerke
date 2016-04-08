@@ -51,9 +51,6 @@
     <if test="state != null" >
       and crs.state = #{state,jdbcType=VARCHAR}
     </if>
-    <if test="state != null" >
-      and crs.id = #{state,jdbcType=VARCHAR}
-    </if>
     AND (
     now()>=DATE_FORMAT(
     CONCAT(
