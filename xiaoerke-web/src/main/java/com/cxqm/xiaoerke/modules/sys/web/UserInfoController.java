@@ -147,7 +147,7 @@ public class UserInfoController extends BaseController {
 
 
 	//获取用户登陆状态
-	@RequestMapping(value = "/info/loginStatus", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "info/loginStatus", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
 	HashMap<String,Object> loginStatus(@RequestBody Map<String, Object> params,HttpSession session,HttpServletRequest request) {

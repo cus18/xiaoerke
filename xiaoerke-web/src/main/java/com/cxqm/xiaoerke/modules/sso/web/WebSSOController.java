@@ -144,13 +144,15 @@ public class WebSSOController {
 			e.printStackTrace();
 		}
 		
-		if(userName != null && !userName.equals("")){//走客户端登录流程
+		if(userName != null && !userName.equals("")){
+			//走客户端登录流程
 			String targeturl = null;
 			Cookie[] cookies = request.getCookies();
 			if(cookies != null){
 				for(Cookie cookie : cookies){
 					if(cookie.getName().equals("targeturl")){
-						targeturl = cookie.getValue();//认证中心拿到token回传客户端，由客户端发起验证token请求
+						targeturl = cookie.getValue();
+						//认证中心拿到token回传客户端，由客户端发起验证token请求
 					}else{
 						
 					}

@@ -14,7 +14,7 @@
 	<http pattern="${xiaoerkePath}/market" security="none" />
 	<http pattern="${xiaoerkePath}/marketing/**" security="none"/>
 
-	<http pattern="${xiaoerkePath}/**" use-expressions="true" entry-point-ref="authenticationProcessingFilterEntryPoint" >
+	<http pattern="/**" use-expressions="true" entry-point-ref="authenticationProcessingFilterEntryPoint" >
 		<intercept-url pattern="${xiaoerkePath}/**" access="isAuthenticated()" />
 		<logout logout-url="${xiaoerkePath}/logout" logout-success-url="${xiaoerkePath}/sso/logout" delete-cookies="JSESSIONID" />
 		<!-- 实现免登陆验证 -->

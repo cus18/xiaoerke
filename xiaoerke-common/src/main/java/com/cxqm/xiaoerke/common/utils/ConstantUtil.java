@@ -2,6 +2,10 @@ package com.cxqm.xiaoerke.common.utils;
 
 public class ConstantUtil {
 
+	//public static final String DOAMIN_VALUE = ".baodf.com";
+	public static final String DOAMIN_VALUE = ".xiaoerke.cn";
+	public static final String WebPath = "xiaoxiaoerke.cn";
+
 	//初始化
 //	public static String APP_ID = "wx0baf90e904df0117";//微信开发平台应用id
 //	public static String APP_SECRET = "b3dac0be3e1739af01fee0052ea7a68f";//应用对应的凭证

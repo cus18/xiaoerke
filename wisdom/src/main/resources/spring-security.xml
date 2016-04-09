@@ -15,9 +15,9 @@
 	<http pattern="${xiaoerkePath}/ctp" security="none" />
 	<http pattern="${xiaoerkePath}/ntr" security="none" />
 
-	<http pattern="${xiaoerkePath}/**" use-expressions="true" entry-point-ref="authenticationProcessingFilterEntryPoint" >
-		<intercept-url pattern="${xiaoerkePath}/**" access="isAuthenticated()" />
-		<logout logout-url="${xiaoerkePath}/logout" logout-success-url="${xiaoerkePath}/sso/logout" delete-cookies="JSESSIONID" />
+	<http pattern="/*" use-expressions="true" entry-point-ref="authenticationProcessingFilterEntryPoint" >
+		<intercept-url pattern="info/loginStatus" access="isAuthenticated()" />
+		<logout logout-url="/logout" logout-success-url="/sso/logout" delete-cookies="JSESSIONID" />
 		<!-- 实现免登陆验证 -->
 		<remember-me user-service-ref="myUserDetailsService" />
 		<session-management invalid-session-url="/">
@@ -34,7 +34,7 @@
 	<beans:bean id="myAuthenticationProcessingFilter"
 		class="com.cxqm.xiaoerke.webapp.security.MyAuthenticationProcessingFilter">
 		<!-- 处理登录的action -->
-		<beans:property name="filterProcessesUrl" value="${xiaoerkePath}/auth_center/form" />
+		<beans:property name="filterProcessesUrl" value="/auth_center/form" />
 		<!-- 验证成功后的处理 -->
 		<beans:property name="authenticationSuccessHandler" ref="loginLogAuthenticationSuccessHandler" />
 		<!-- 验证失败后的处理 -->

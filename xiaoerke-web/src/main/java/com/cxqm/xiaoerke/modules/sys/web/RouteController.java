@@ -39,6 +39,14 @@ public class RouteController extends BaseController {
     @Autowired
     private BabyEmrService babyEmrService;
 
+//    /**
+//     * appoint 预约 原生首页
+//     */
+//    @RequestMapping(value ="",method = {RequestMethod.POST, RequestMethod.GET})
+//    public String redirectPage() {
+//        return "native/phoneConsultFirstPage";
+//    }
+
     /**
      * appoint 预约 原生首页
      */
