@@ -30,6 +30,13 @@
 		<sys:ckfinder input="email" type="files" uploadPath="/mytask" selectMultiple="false"/> --%>
 		<sys:message content="${message}"/>
 		<div class="control-group">
+			<label class="control-label">first:</label>
+			<div class="controls">
+				<form:input name="first" path="first" htmlEscape="false" maxlength="50" class="required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label">咨询内容(keyword1):</label>
 			<div class="controls">
 				<form:textarea path="keyword1" htmlEscape="false" maxlength="1150" rows="4" cols="63" class="required input-xxlarge"/>
