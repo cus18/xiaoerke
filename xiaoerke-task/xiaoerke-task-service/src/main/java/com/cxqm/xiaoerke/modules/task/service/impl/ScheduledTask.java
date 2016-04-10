@@ -2,11 +2,18 @@ package com.cxqm.xiaoerke.modules.task.service.impl;
 
 import com.cxqm.xiaoerke.common.bean.CustomBean;
 import com.cxqm.xiaoerke.common.bean.WechatRecord;
+import com.cxqm.xiaoerke.common.security.shiro.session.SessionManager;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.common.bean.WechatArticle;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
+import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultPhoneService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
+import com.cxqm.xiaoerke.modules.consult.service.SessionCache;
+import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
+import com.cxqm.xiaoerke.modules.consult.utils.DateUtil;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
 import com.cxqm.xiaoerke.modules.operation.service.BaseDataService;
 import com.cxqm.xiaoerke.modules.operation.service.OperationsComprehensiveService;
@@ -27,6 +34,8 @@ import com.cxqm.xiaoerke.modules.task.service.ScheduleTaskService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
 import javax.print.Doc;
 
@@ -62,13 +71,13 @@ public class ScheduledTask {
     private BaseDataService baseDataService;
     @Autowired
     private OperationsComprehensiveService operationComprehensiveService;
-    
+
     @Autowired
     private PlanMessageService planMessageService;
-    
+
     @Autowired
     private CustomerService  customerService;
-    
+
     @Autowired
     private InsuranceRegisterServiceService insuranceService;
 
@@ -80,6 +89,13 @@ public class ScheduledTask {
 
     @Autowired
     private ConsultPhoneService consultPhoneService;
+
+    @Autowired
+    private SessionCache sessionCache;
+
+    @Autowired
+    private ConsultRecordService consultRecordService;
+
 
     //将所有任务放到一个定时器里，减少并发
     //@Scheduled(cron = "0 */1 * * * ?")
@@ -596,7 +612,6 @@ public class ScheduledTask {
     /**
      * 微信状态。启动时执行一次，之后每隔100分钟执行一次
      */
-//    @Scheduled(fixedRate = 1000*60*100)
     public void persistRecord() {
         try {
             System.out.print("用户端微信参数更新");
@@ -675,7 +690,7 @@ public class ScheduledTask {
     public void repeatSettingConsultPhoneRegister() {
     	scheduleTaskService.repeatSettingConsultPhoneRegister();
     }
-    
+
     /**
      * 插入信息 @author zdl
      *
@@ -935,37 +950,37 @@ public class ScheduledTask {
           System.out.print(content);
         }
     }
-    
+
     //慢病管理定时发送消息
     //2016年1月14日
     //张博
-    
-    
+
+
     //每天7点 综合提醒
     //@Scheduled(cron = "0 0 7 * * ?")
     public void everyMorningSendMessage() {
         planMessageService.everyMorningSendSMS();
         planMessageService.TimingSendWechatMessageByPunchTicket();
     }
-    
+
     //每一分钟遍历一次发送慢病管理消息
     //@Scheduled(cron = "0 0/1 * * * ?")
     public void everyMinuteSendWechatMessage() {
         planMessageService.TimingSendWechatMessage();
     }
-    
+
   //每一分钟遍历一次发送慢病管理消息
     //@Scheduled(cron = "0 0/1 * * * ?")
     public void sendMessageForCustomerReturn() {
         customerService.SendCustomerReturn();
     }
-    
+
     //营养管理消息发送 sunxiao
     //@Scheduled(cron = "0 0 7:00,12:30,19:00 * * ?")
     public void nutritionManagementSendWechatMessage() {
         planMessageService.nutritionManagementSendWechatMessage();
     }
-    
+
   //更新保险订单
     //@Scheduled(cron = "0 0/1 * * * ?")
     public void insuranceUpdate() {
@@ -1007,9 +1022,21 @@ public class ScheduledTask {
       }
     }
 
+    /**
+     *  删除mongo中的,redis中的,内存中的consultSession
+     */
     public void consultMangement4Session(){
-
-        //
-
+        List<ConsultSessionStatusVo> consultSessionStatusVos = consultRecordService.querySessionStatusList(new Query());
+        for(ConsultSessionStatusVo consultSessionStatusVo:consultSessionStatusVos){
+            if(DateUtils.pastMinutes(DateUtils.StrToDate(consultSessionStatusVo.getLastMessageTime(),"datetime"))>10L){
+                try{
+                    consultRecordService.deleteConsultSessionStatusVo(new Query().addCriteria(new Criteria().where("sessionId").is(consultSessionStatusVo.getSessionId())));
+                    sessionCache.removeConsultSession(Integer.valueOf(consultSessionStatusVo.getSessionId()));
+                    ConsultSessionManager.getSessionManager().removeUserSession(consultSessionStatusVo.getUserId());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
