@@ -84,8 +84,8 @@ angular.module('controllers', ['luegg.directives'])
 
                 GetUserRecordList.save({
                     recordType: "user",
-                    pageNo: "2",
-                    pageSize: "100",
+                    pageNo: 2,
+                    pageSize: 100,
                     patientId: patientId,
                     patientName: patientName
                 }, function (data) {

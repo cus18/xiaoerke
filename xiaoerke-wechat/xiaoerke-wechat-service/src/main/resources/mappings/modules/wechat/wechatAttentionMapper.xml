@@ -59,7 +59,7 @@
 
   <select id="findAttentionInfoByOpenId" resultMap="sysWechatAppintInfoVo">
         select sa.nickname wechat_name,sa.date attention_time,sa.marketer  from sys_attention sa
-        where sa.openid=#{open_id}
+        where sa.openid=#{open_id} and `status`='0'
         GROUP BY sa.openid
     </select>
     
