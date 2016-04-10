@@ -201,6 +201,19 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		long afterTime = after.getTime();
 		return (afterTime - beforeTime) / (1000 * 60 * 60 * 24);
 	}
+
+	/**
+	 * 获取两个日期之间的分钟数
+	 *
+	 * @param before
+	 * @param after
+	 * @return
+	 */
+	public static double getMinuteOfTwoDate(Date before, Date after) {
+		long beforeTime = before.getTime();
+		long afterTime = after.getTime();
+		return (afterTime - beforeTime) / (1000 * 60 );
+	}
 	
 	/**
 	 * @param args
@@ -267,6 +280,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		String str = format.format(date);
 		return str;
 	}
+
 
 	/**
 	 * @author zdl
