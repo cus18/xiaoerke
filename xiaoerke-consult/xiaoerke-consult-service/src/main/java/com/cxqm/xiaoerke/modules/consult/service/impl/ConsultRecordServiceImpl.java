@@ -3,12 +3,16 @@ package com.cxqm.xiaoerke.modules.consult.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
+import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.OSSObjectTool;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultRecordDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordVo;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
+import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
+import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -20,9 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -131,6 +133,44 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
         return response;
     }
 
+    @Override
+    public void buildRecordMongoVo(@RequestParam(required = true) String openId, @RequestParam(required = true) String messageType, @RequestParam(required = false) String messageContent, RichConsultSession consultSession, ConsultRecordMongoVo consultRecordMongoVo, SysWechatAppintInfoVo resultVo) {
+        Integer sessionId = consultSession.getId();
+        consultRecordMongoVo.setSessionId(sessionId.toString());
+        consultRecordMongoVo.setType(messageType);
+        consultRecordMongoVo.setOpenid(openId);
+        consultRecordMongoVo.setMessage(messageContent);
+        consultRecordMongoVo.setAttentionDate(resultVo.getCreate_time());
+        consultRecordMongoVo.setAttentionMarketer(resultVo.getMarketer());
+        consultRecordMongoVo.setSenderId("patient");
+        consultRecordMongoVo.setFromUserId(consultSession.getUserId());
+        consultRecordMongoVo.setToUserId(consultSession.getCsUserId());
+        consultRecordMongoVo.setDoctorName(consultSession.getCsUserName());
+        consultRecordMongoVo.setAttentionNickname(resultVo.getWechat_name());
+        consultRecordMongoVo.setSenderName(resultVo.getWechat_name());
+        saveConsultRecord(consultRecordMongoVo);
+    }
+    @Override
+    public void saveConsultSessionStatus(Integer sessionId,String userId) {
+        ConsultSessionStatusVo consultSessionStatusVo = new ConsultSessionStatusVo();
+        consultSessionStatusVo.setSessionId(sessionId.toString());
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.HOUR, 8);
+        Date dateTime = calendar.getTime();
+        String lastDate = DateUtils.DateToStr(dateTime);
+        consultSessionStatusVo.setLastMessageTime(lastDate);
+        consultSessionStatusVo.setUserId(userId);
+        consultRecordMongoDBService.upsertConsultSessionStatusVo(consultSessionStatusVo);
+    }
 
+    @Override
+    public List<ConsultSessionStatusVo> querySessionStatusList(Query query){
+        return consultRecordMongoDBService.querySessionStatusList(query);
+    }
+
+    @Override
+    public void  deleteConsultSessionStatusVo(Query query) {
+        consultRecordMongoDBService.deleteConsultSessionStatusVo(query);
+    }
 
 }

@@ -77,6 +77,7 @@ public class ConsultSessionManager {
 	}
 	
 	void createSession(ChannelHandlerContext ctx, FullHttpRequest msg, String url) {
+
 		Channel channel = ctx.channel();
 		
 		String[] args = url.split("&");
@@ -110,7 +111,19 @@ public class ConsultSessionManager {
 			log.warn("Maybe a Simulated Distributor: The userId is " + distributorUserId);
 		}
 	}
-	
+
+	public void removeUserSession(String userId){
+		Iterator iterator = userChannelMapping.keySet().iterator();
+		while (iterator.hasNext()){
+			String key = (String) iterator.next();
+			if (userId.equals(key)) {
+				iterator.remove();
+				userChannelMapping.remove(key);
+			}
+		}
+	}
+
+
 	private void doCreateSessionInitiatedByUser(String userId, Channel channel){
 		Integer sessionId = sessionCache.getSessionIdByUserId(userId);
 		
@@ -126,7 +139,7 @@ public class ConsultSessionManager {
 			consultSession.setServerAddress(address.getHostName());
 			consultSession.setUserId(userId);
 			consultSession.setUserName(user.getName() == null ? user.getLoginName() : user.getName());
-			
+
 			int number = accessNumber.getAndDecrement();
 			if(number < 10)
 				accessNumber.set(1000);
@@ -182,7 +195,9 @@ public class ConsultSessionManager {
 		channelUserMapping.put(channel, userId);
 	}
 
-	public Channel createWechatConsultSession(RichConsultSession consultSession){
+	public HashMap<String,Object> createWechatConsultSession(RichConsultSession consultSession){
+
+		HashMap<String,Object> response = new HashMap<String, Object>();
 
 		Channel  csChannel = null;
 
@@ -230,9 +245,11 @@ public class ConsultSessionManager {
 					doctorOnLineList.add(doctorOnLineMap);
 				}
 				//通过一个随机方法，从doctorOnLineList选择一个医生，为用户提供服务
-				consultSession.setCsUserId((String)doctorOnLineList.get(0).get("doctorId"));
+				Random rand = new Random();
+				int indexCS = rand.nextInt(doctorOnLineList.size());
+				consultSession.setCsUserId((String) doctorOnLineList.get(indexCS).get("doctorId"));
 				csChannel = (Channel) doctorOnLineList.get(0).get("Channel");
-				User csUser = systemService.getUser((String)doctorOnLineList.get(0).get("doctorId"));
+				User csUser = systemService.getUser((String)doctorOnLineList.get(indexCS).get("doctorId"));
 				consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
 
 			}else{
@@ -253,7 +270,10 @@ public class ConsultSessionManager {
 		String st = "尊敬的用户，宝大夫在线，有什么可以帮您";
 		WechatUtil.senMsgToWechat(sessionCache.getWeChatToken(), consultSession.getOpenid(), st);
 
-		return csChannel;
+		response.put("csChannel", csChannel);
+		response.put("sessionId",sessionId);
+		response.put("consultSession",consultSession);
+		return response;
 
 	}
 
