@@ -26,6 +26,10 @@ public interface SessionCache {
 
 	void removeWechatSessionPair(String openId);
 
+	void removeConsultSession(Integer sessionId);
+
+	List<Object> getConsultSessionsByKey();
+
 	List<Object> getConsultSessionsBySessionIds(Collection<Object> sessionIds);
 
 	Integer getSessionIdByOpenId(String openId);

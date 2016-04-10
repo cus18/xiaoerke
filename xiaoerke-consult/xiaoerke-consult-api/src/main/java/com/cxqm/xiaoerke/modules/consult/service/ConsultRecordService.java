@@ -3,7 +3,10 @@ package com.cxqm.xiaoerke.modules.consult.service;
 
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordVo;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
+import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
+import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,4 +39,12 @@ public interface ConsultRecordService {
     List<ConsultRecordMongoVo> findUserConsultInfoBySessionId(ConsultRecordMongoVo consultRecordMongoVo);
 
     HashMap<String, Object> uploadMediaFile(@RequestParam("file") MultipartFile file, @RequestParam("data") String data) throws UnsupportedEncodingException;
+
+    void buildRecordMongoVo(@RequestParam(required = true) String openId, @RequestParam(required = true) String messageType, @RequestParam(required = false) String messageContent, RichConsultSession consultSession, ConsultRecordMongoVo consultRecordMongoVo, SysWechatAppintInfoVo resultVo);
+
+    void saveConsultSessionStatus(Integer sessionId, String userId);
+
+    List<ConsultSessionStatusVo> querySessionStatusList(Query query);
+
+    void  deleteConsultSessionStatusVo(Query query);
 }
