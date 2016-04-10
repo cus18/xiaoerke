@@ -427,8 +427,8 @@ public class ConsultDoctorController extends BaseController {
         PaginationVo<ConsultRecordMongoVo> pagination = null;
         Map<String,Object> response = new HashMap<String, Object>();
         if(null != params.get("pageNo") && null != params.get("pageSize")){
-            pageNo = Integer.parseInt((String)params.get("pageNo"));
-            pageSize = Integer.parseInt((String)params.get("pageSize"));
+            pageNo = (Integer)params.get("pageNo");
+            pageSize = (Integer)params.get("pageSize");
         }
 
         if(recordType.equals("user") && StringUtils.isNotNull(toUserId) && pageSize > 0){

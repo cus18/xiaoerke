@@ -5,18 +5,26 @@ package com.cxqm.xiaoerke.webapp.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionCache;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
+import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
+import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.URLDecoder;
@@ -37,9 +45,12 @@ public class ConsultWechatController extends BaseController {
     @Autowired
     private SessionCache sessionCache;
 
-    private AtomicInteger accessNumber = new AtomicInteger(1000);
+    @Autowired
+    private WechatAttentionService wechatAttentionService;
 
-    private List<String> distributorsList = null;
+    @Autowired
+    private ConsultRecordService consultRecordService;
+
 
     @RequestMapping(value = "/conversation", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -50,22 +61,36 @@ public class ConsultWechatController extends BaseController {
 
         //根据用户的openId，判断redis中，是否有用户正在进行的session
         Integer sessionId = sessionCache.getSessionIdByOpenId(openId);
-        String nickName = "";
+        HashMap<String,Object> createWechatConsultSessionMap = null;
+        RichConsultSession consultSession = new RichConsultSession();
+       //聊天记录存入mongodb
+        ConsultRecordMongoVo consultRecordMongoVo = new ConsultRecordMongoVo();
+
         //需要根据openId获取到nickname，如果拿不到nickName，则用利用openId换算出一个编号即可
-
+        SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
+        sysWechatAppintInfoVo.setOpen_id(openId);
+        SysWechatAppintInfoVo resultVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
+        String nickName = resultVo.getWechat_name();
+        if(StringUtils.isNotNull(nickName)){
+            nickName = openId +  (new Date()).getTime();
+        }
         Channel csChannel = null;
-
+        //如果此用户是第一次发送消息
         if(sessionId!=null){
-            RichConsultSession consultSession = sessionCache.getConsultSessionBySessionId(sessionId);
+            consultSession = sessionCache.getConsultSessionBySessionId(sessionId);
             csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
-        }else{
-            RichConsultSession consultSession = new RichConsultSession();
+        }else{//如果此用户不是第一次发送消息
+
             consultSession.setCreateTime(new Date());
             consultSession.setOpenid(openId);
             consultSession.setNickName(nickName);
-            csChannel = ConsultSessionManager.getSessionManager().createWechatConsultSession(consultSession);
+            //创建会话，发送消息给用户，给用户分配接诊员
+            createWechatConsultSessionMap = ConsultSessionManager.getSessionManager().createWechatConsultSession(consultSession);
+            csChannel = (Channel)createWechatConsultSessionMap.get("csChannel");
+            consultSession = (RichConsultSession)createWechatConsultSessionMap.get("consultSession");
+            sessionId = consultSession.getId();
         }
-
+        //会话创建成功，给接诊员(或是医生)发送消息
         if(csChannel!=null){
             try {
                 JSONObject obj = new JSONObject();
@@ -77,8 +102,6 @@ public class ConsultWechatController extends BaseController {
                 if(messageType.equals("text")) {
                     obj.put("type", 0);
                     obj.put("content", URLDecoder.decode(messageContent, "utf-8"));
-                    TextWebSocketFrame frame = new TextWebSocketFrame(obj.toJSONString());
-                    csChannel.writeAndFlush(frame.retain());
                 }else{
                     if(messageType.equals("image")){
                         obj.put("type", 1);
@@ -88,20 +111,30 @@ public class ConsultWechatController extends BaseController {
                         obj.put("type", 3);
                     }
                     //根据mediaId，从微信服务器上，获取到媒体文件，再将媒体文件，放置阿里云服务器，获取URL
-                    String mediaURL = "";
-                    obj.put("content", mediaURL);
-                    TextWebSocketFrame frame = new TextWebSocketFrame(obj.toJSONString());
-                    csChannel.writeAndFlush(frame.retain());
+                    try{
+                        WechatUtil wechatUtil = new WechatUtil();
+                        String mediaURL = wechatUtil.downloadMediaFromWx(sessionCache.getWeChatToken(),mediaId,nickName);
+                        obj.put("content", mediaURL);
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
                 }
+                TextWebSocketFrame frame = new TextWebSocketFrame(obj.toJSONString());
+                csChannel.writeAndFlush(frame.retain());
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         }
+        //保存聊天记录
+        consultRecordService.buildRecordMongoVo(openId, messageType, messageContent, consultSession, consultRecordMongoVo, resultVo);
 
-        //会话信息存入mongodb
+        //更新会话操作时间
+        consultRecordService.saveConsultSessionStatus(sessionId,consultSession.getUserId());
 
 
         return "";
     }
+
+
 
 }
