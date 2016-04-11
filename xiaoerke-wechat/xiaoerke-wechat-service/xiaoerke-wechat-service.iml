@@ -21,9 +21,7 @@
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-redis:1.5.2.RELEASE" level="project" />
     <orderEntry type="module" module-name="xiaoerke-system-api" />
     <orderEntry type="module" module-name="xiaoerke-member-api" />
-    <orderEntry type="module" module-name="xiaoerke-payment-api" />
     <orderEntry type="module" module-name="xiaoerke-interaction-api" />
-    <orderEntry type="module" module-name="xiaoerke-healthRecords-api" />
     <orderEntry type="module" module-name="xiaoerke-consult-api" />
     <orderEntry type="library" name="Maven: org.mongodb:mongo-java-driver:2.13.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.6" level="project" />
@@ -32,6 +30,8 @@
     <orderEntry type="module" module-name="xiaoerke-interaction-service" />
     <orderEntry type="module" module-name="xiaoerke-order-api" />
     <orderEntry type="module" module-name="xiaoerke-system-service" />
+    <orderEntry type="module" module-name="xiaoerke-healthRecords-api" />
+    <orderEntry type="module" module-name="xiaoerke-payment-api" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:4.0.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:4.0.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:4.0.8.RELEASE" level="project" />

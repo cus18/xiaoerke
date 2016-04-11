@@ -44,11 +44,11 @@
     <orderEntry type="module" module-name="xiaoerke-order-api" />
     <orderEntry type="module" module-name="xiaoerke-task-api" />
     <orderEntry type="module" module-name="xiaoerke-wechat-api" />
-    <orderEntry type="module" module-name="xiaoerke-healthRecords-api" />
     <orderEntry type="module" module-name="xiaoerke-operation-api" />
     <orderEntry type="module" module-name="xiaoerke-plan-api" />
     <orderEntry type="module" module-name="xiaoerke-cms-api" />
     <orderEntry type="module" module-name="xiaoerke-healthRecords-service" />
+    <orderEntry type="module" module-name="xiaoerke-healthRecords-api" />
     <orderEntry type="module" module-name="xiaoerke-marketing-service" />
     <orderEntry type="module" module-name="xiaoerke-marketing-api" />
     <orderEntry type="module" module-name="xiaoerke-consult-api" />

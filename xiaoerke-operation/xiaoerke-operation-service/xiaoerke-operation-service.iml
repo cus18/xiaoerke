@@ -33,9 +33,9 @@
     <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-core:7.0.47" level="project" />
     <orderEntry type="library" name="Maven: javax.websocket:javax.websocket-api:1.0" level="project" />
     <orderEntry type="module" module-name="xiaoerke-interaction-service" />
+    <orderEntry type="module" module-name="xiaoerke-healthRecords-api" />
     <orderEntry type="module" module-name="xiaoerke-system-service" />
     <orderEntry type="module" module-name="xiaoerke-order-service" />
-    <orderEntry type="module" module-name="xiaoerke-healthRecords-api" />
     <orderEntry type="module" module-name="xiaoerke-payment-service" />
     <orderEntry type="module" module-name="xiaoerke-search-service" />
     <orderEntry type="library" name="Maven: com.aliyun.opensearch:aliyun-sdk-opensearch:2.1.2" level="project" />

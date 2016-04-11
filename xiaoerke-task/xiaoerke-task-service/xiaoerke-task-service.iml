@@ -18,15 +18,10 @@
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-mongodb:1.7.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:1.10.2.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.mongodb:mongo-java-driver:2.13.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-redis:1.5.2.RELEASE" level="project" />
     <orderEntry type="module" module-name="xiaoerke-wechat-api" />
     <orderEntry type="module" module-name="xiaoerke-member-api" />
     <orderEntry type="module" module-name="xiaoerke-interaction-api" />
-    <orderEntry type="module" module-name="xiaoerke-healthRecords-api" />
-    <orderEntry type="module" module-name="xiaoerke-consult-api" />
-    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.6" level="project" />
-    <orderEntry type="library" name="Maven: javax.websocket:javax.websocket-api:1.0" level="project" />
     <orderEntry type="module" module-name="xiaoerke-task-api" />
     <orderEntry type="module" module-name="xiaoerke-order-api" />
     <orderEntry type="module" module-name="xiaoerke-payment-api" />
@@ -35,6 +30,13 @@
     <orderEntry type="module" module-name="xiaoerke-search-api" />
     <orderEntry type="module" module-name="xiaoerke-plan-api" />
     <orderEntry type="module" module-name="xiaoerke-cms-api" />
+    <orderEntry type="module" module-name="xiaoerke-consult-service" />
+    <orderEntry type="module" module-name="xiaoerke-consult-api" />
+    <orderEntry type="library" name="Maven: org.mongodb:mongo-java-driver:2.13.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.6" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-core:7.0.47" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-all:4.0.24.Final" level="project" />
+    <orderEntry type="library" name="Maven: javax.websocket:javax.websocket-api:1.0" level="project" />
     <orderEntry type="module" module-name="xiaoerke-insurance-api" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:4.0.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:4.0.8.RELEASE" level="project" />
@@ -212,7 +214,6 @@
     <orderEntry type="library" name="Maven: ch.qos.logback:logback-core:1.1.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.yaml:snakeyaml:1.13" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-tomcat:1.0.2.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-core:7.0.52" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-el:7.0.52" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-logging-juli:7.0.52" level="project" />
     <orderEntry type="library" name="Maven: org.quartz-scheduler:quartz:2.2.1" level="project" />

@@ -7,13 +7,13 @@
         http://www.springframework.org/schema/security 
         http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
-	<http pattern="/info/loginStatus" use-expressions="true" entry-point-ref="authenticationProcessingFilterEntryPoint" >
-		<intercept-url pattern="/info/loginStatus" access="isAuthenticated()" />
+	<http pattern="/auth/**" use-expressions="true" entry-point-ref="authenticationProcessingFilterEntryPoint" >
+		<intercept-url pattern="/auth/**" access="isAuthenticated()" />
 		<logout logout-url="/logout" logout-success-url="/sso/logout" delete-cookies="JSESSIONID" />
 		<!-- 实现免登陆验证 -->
 		<remember-me user-service-ref="myUserDetailsService" />
 		<session-management invalid-session-url="/">
-			<concurrency-control max-sessions="10" error-if-maximum-exceeded="true" />
+			<concurrency-control max-sessions="3" error-if-maximum-exceeded="true" />
 		</session-management>
 		<custom-filter ref="myAuthenticationProcessingFilter" position="FORM_LOGIN_FILTER" />
 		<csrf disabled="true"/>
@@ -26,7 +26,7 @@
 	<beans:bean id="myAuthenticationProcessingFilter"
 		class="com.cxqm.xiaoerke.webapp.security.MyAuthenticationProcessingFilter">
 		<!-- 处理登录的action -->
-		<beans:property name="filterProcessesUrl" value="/auth_center/form" />
+		<beans:property name="filterProcessesUrl" value="/auth/auth_center/form" />
 		<!-- 验证成功后的处理 -->
 		<beans:property name="authenticationSuccessHandler" ref="loginLogAuthenticationSuccessHandler" />
 		<!-- 验证失败后的处理 -->

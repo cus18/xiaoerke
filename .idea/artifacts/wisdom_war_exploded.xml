@@ -34,9 +34,6 @@
           <element id="archive" name="xiaoerke-wechat-api-0.0.1-SNAPSHOT.jar">
             <element id="module-output" name="xiaoerke-wechat-api" />
           </element>
-          <element id="archive" name="xiaoerke-healthRecords-api-0.0.1-SNAPSHOT.jar">
-            <element id="module-output" name="xiaoerke-healthRecords-api" />
-          </element>
           <element id="archive" name="xiaoerke-operation-api-0.0.1-SNAPSHOT.jar">
             <element id="module-output" name="xiaoerke-operation-api" />
           </element>
@@ -48,6 +45,9 @@
           </element>
           <element id="archive" name="xiaoerke-healthRecords-service-0.0.1-SNAPSHOT.jar">
             <element id="module-output" name="xiaoerke-healthRecords-service" />
+          </element>
+          <element id="archive" name="xiaoerke-healthRecords-api-0.0.1-SNAPSHOT.jar">
+            <element id="module-output" name="xiaoerke-healthRecords-api" />
           </element>
           <element id="archive" name="xiaoerke-marketing-service-0.0.1-SNAPSHOT.jar">
             <element id="module-output" name="xiaoerke-marketing-service" />
