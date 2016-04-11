@@ -72,17 +72,17 @@ public class CCPRestSDK {
 	
 	private static final String Ivrconf = "ivr/conf";
 	
-	private String SERVER_IP;
-	private String SERVER_PORT;
-	private String ACCOUNT_SID;
-	private String ACCOUNT_TOKEN;
-	private String SUBACCOUNT_SID;
-	private String SUBACCOUNT_Token;
-	private String VOIP_ACCOUNT;
-	private String VOIP_TOKEN;
-	public String App_ID;
-	private BodyType BODY_TYPE = BodyType.Type_XML;
-	public String Callsid;
+	private static String SERVER_IP = "sandboxapp.cloopen.com";
+	private static String SERVER_PORT = "8883";
+	private static String ACCOUNT_SID;
+	private static String ACCOUNT_TOKEN;
+	private static String SUBACCOUNT_SID = "2fa43378da0a11e59288ac853d9f54f2";
+	private static String SUBACCOUNT_Token = "0ad73d75ac5bcb7e68fb191830b06d6b";
+	private static String VOIP_ACCOUNT;
+	private static String VOIP_TOKEN;
+	public static String App_ID = "aaf98f8952f7367a0153084e29992035";
+	private static BodyType BODY_TYPE = BodyType.Type_XML;
+	public static String Callsid;
 
 	public enum BodyType {
 		Type_XML, Type_JSON;
@@ -687,7 +687,7 @@ public class CCPRestSDK {
 	 *            可选参数 到达倒计时时间播放的提示音
 	 * @return
 	 */
-	public HashMap<String, Object> callback(String from, String to,
+	public static HashMap<String, Object> callback(String from, String to,
 			String customerSerNum, String fromSerNum, String promptTone,
 			String alwaysPlay, String terminalDtmf, String userData,
 			String maxCallTime, String hangupCdrUrl, String needBothCdr,
@@ -1615,7 +1615,7 @@ public class CCPRestSDK {
 	 *            必选参数 二进制数据
 	 * @return
 	 */
-	public String Filename;
+	public static String Filename;
 	public HashMap<String, Object> MediaFileUpload(String filename, String requsetbody) {
 
 		HashMap<String, Object> validate = accountValidate();
@@ -1718,7 +1718,7 @@ public class CCPRestSDK {
      * @return 
      * */
 	
-	public String maxmember;
+	public static String maxmember;
 	public HashMap<String, Object> createMeeting(String createConf,String action,String maxmember,String passwd,String passwderrorurl,String dtmfreporturl,
 			String delreporturl,String confduration,String autohangup,String confendprompt,String autorecord,String quiturl,String mediaopturl,String autojoin,String joinurl) {
 		
@@ -1932,7 +1932,7 @@ public class CCPRestSDK {
 	 * @param joinurl
 	 * 		  加入会议通知的回调url地址              
 	 * */
-	public String confid;
+	public static String confid;
 	public HashMap<String,Object> invite2Meeting(String InviteJoinConf,String confid,String number,String action,String role,String speak,String joinurl){
 		
 		HashMap<String, Object> meetingValidate = accountValidate();
@@ -2020,7 +2020,7 @@ public class CCPRestSDK {
 		
 	}
 
-	private HashMap<String, Object> jsonToMap(String result) {
+	private static HashMap<String, Object> jsonToMap(String result) {
 		HashMap<String, Object> hashMap = new HashMap<String, Object>();
 		JsonParser parser = new JsonParser();
 		JsonObject asJsonObject = parser.parse(result).getAsJsonObject();
@@ -2113,7 +2113,7 @@ public class CCPRestSDK {
 	 * @param xml
 	 * @return Map
 	 */
-	private HashMap<String, Object> xmlToMap(String xml) {
+	private static HashMap<String, Object> xmlToMap(String xml) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		Document doc = null;
 		try {
@@ -2190,7 +2190,7 @@ public class CCPRestSDK {
 		return getHttpRequestBase(get, action, AccountType.Accounts);
 	}
 
-	private HttpRequestBase getHttpRequestBase(int get, String action,
+	private static HttpRequestBase getHttpRequestBase(int get, String action,
 			AccountType mAccountType) throws NoSuchAlgorithmException,
 			UnsupportedEncodingException {
 		String timestamp = DateUtil.dateToStr(new Date(),
@@ -2247,7 +2247,7 @@ public class CCPRestSDK {
 		return mHttpRequestBase;
 	}
 
-	private String getmethodName(String action) {
+	private static String getmethodName(String action) {
 		if (action.equals(Account_Info)) {
 			return "queryAccountInfo";
 		} else if (action.equals(Create_SubAccount)) {
@@ -2275,12 +2275,12 @@ public class CCPRestSDK {
 		}
 	}
 
-	private void setHttpHeaderXML(AbstractHttpMessage httpMessage) {
+	private static void setHttpHeaderXML(AbstractHttpMessage httpMessage) {
 		httpMessage.setHeader("Accept", "application/xml");
 		httpMessage.setHeader("Content-Type", "application/xml;charset=utf-8");
 	}
 	
-	private void setHttpHeaderMedia(AbstractHttpMessage httpMessage) {
+	private static void setHttpHeaderMedia(AbstractHttpMessage httpMessage) {
 		if (BODY_TYPE == BodyType.Type_JSON) {
 			httpMessage.setHeader("Accept", "application/json");
 			httpMessage.setHeader("Content-Type", "application/octet-stream;charset=utf-8;");
@@ -2290,7 +2290,7 @@ public class CCPRestSDK {
 		}
 	}
 
-	private void setHttpHeader(AbstractHttpMessage httpMessage) {
+	private static void setHttpHeader(AbstractHttpMessage httpMessage) {
 		if (BODY_TYPE == BodyType.Type_JSON) {
 			httpMessage.setHeader("Accept", "application/json");
 			httpMessage.setHeader("Content-Type",
@@ -2302,25 +2302,25 @@ public class CCPRestSDK {
 		}
 	}
 
-	private StringBuffer getBaseUrl() {
+	private static StringBuffer getBaseUrl() {
 		StringBuffer sb = new StringBuffer("https://");
 		sb.append(SERVER_IP).append(":").append(SERVER_PORT);
 		sb.append("/2013-12-26");
 		return sb;
 	}
 
-	private boolean isEmpty(String str) {
+	private static boolean isEmpty(String str) {
 		return (("".equals(str)) || (str == null));
 	}
 
-	private HashMap<String, Object> getMyError(String code, String msg) {
+	private static HashMap<String, Object> getMyError(String code, String msg) {
 		HashMap<String, Object> hashMap = new HashMap<String, Object>();
 		hashMap.put("statusCode", code);
 		hashMap.put("statusMsg", msg);
 		return hashMap;
 	}
 
-	private HashMap<String, Object> subAccountValidate() {
+	private static HashMap<String, Object> subAccountValidate() {
 		if ((isEmpty(SERVER_IP))) {
 			return getMyError("172004", "IP为空");
 		}
