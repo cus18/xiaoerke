@@ -132,7 +132,7 @@ define(['appPhoneConsult'], function (app) {
         }])
         //获取用户登陆状态
         .factory('GetUserLoginStatus', ['$resource', function ($resource) {
-            return $resource(user_appoint + 'info/loginStatus');
+            return $resource(user_appoint + 'auth/info/loginStatus');
         }])
         //获取医生某个出诊地点的7天内的可预约时间
         .factory('GetDoctorDateInfo',['$resource',function ($resource){

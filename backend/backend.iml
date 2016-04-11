@@ -44,10 +44,6 @@
     <orderEntry type="module" module-name="xiaoerke-operation-api" />
     <orderEntry type="module" module-name="xiaoerke-wechat-api" />
     <orderEntry type="module" module-name="xiaoerke-interaction-api" />
-    <orderEntry type="module" module-name="xiaoerke-healthRecords-api" />
-    <orderEntry type="module" module-name="xiaoerke-consult-api" />
-    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.6" level="project" />
-    <orderEntry type="library" name="Maven: javax.websocket:javax.websocket-api:1.0" level="project" />
     <orderEntry type="module" module-name="xiaoerke-search-api" />
     <orderEntry type="module" module-name="xiaoerke-cms-api" />
     <orderEntry type="module" module-name="xiaoerke-collector-4service" />
@@ -60,10 +56,16 @@
     <orderEntry type="module" module-name="xiaoerke-payment-service" />
     <orderEntry type="module" module-name="xiaoerke-interaction-service" />
     <orderEntry type="module" module-name="xiaoerke-order-service" />
+    <orderEntry type="module" module-name="xiaoerke-healthRecords-api" />
     <orderEntry type="module" module-name="xiaoerke-task-service" />
     <orderEntry type="module" module-name="xiaoerke-task-api" />
     <orderEntry type="module" module-name="xiaoerke-plan-api" />
+    <orderEntry type="module" module-name="xiaoerke-consult-service" />
+    <orderEntry type="library" name="Maven: io.netty:netty-all:4.0.24.Final" level="project" />
+    <orderEntry type="library" name="Maven: javax.websocket:javax.websocket-api:1.0" level="project" />
     <orderEntry type="module" module-name="xiaoerke-wechat-service" />
+    <orderEntry type="module" module-name="xiaoerke-consult-api" />
+    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.6" level="project" />
     <orderEntry type="module" module-name="xiaoerke-operation-service" />
     <orderEntry type="module" module-name="xiaoerke-plan-service" />
     <orderEntry type="module" module-name="xiaoerke-healthRecords-service" />

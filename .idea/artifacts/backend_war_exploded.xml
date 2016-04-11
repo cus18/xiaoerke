@@ -41,14 +41,6 @@
           <element id="archive" name="xiaoerke-interaction-api-0.0.1-SNAPSHOT.jar">
             <element id="module-output" name="xiaoerke-interaction-api" />
           </element>
-          <element id="archive" name="xiaoerke-healthRecords-api-0.0.1-SNAPSHOT.jar">
-            <element id="module-output" name="xiaoerke-healthRecords-api" />
-          </element>
-          <element id="archive" name="xiaoerke-consult-api-0.0.1-SNAPSHOT.jar">
-            <element id="module-output" name="xiaoerke-consult-api" />
-          </element>
-          <element id="library" level="project" name="Maven: com.google.code.gson:gson:2.6" />
-          <element id="library" level="project" name="Maven: javax.websocket:javax.websocket-api:1.0" />
           <element id="archive" name="xiaoerke-search-api-0.0.1-SNAPSHOT.jar">
             <element id="module-output" name="xiaoerke-search-api" />
           </element>
@@ -81,6 +73,9 @@
           <element id="archive" name="xiaoerke-order-service-0.0.1-SNAPSHOT.jar">
             <element id="module-output" name="xiaoerke-order-service" />
           </element>
+          <element id="archive" name="xiaoerke-healthRecords-api-0.0.1-SNAPSHOT.jar">
+            <element id="module-output" name="xiaoerke-healthRecords-api" />
+          </element>
           <element id="archive" name="xiaoerke-task-service-0.0.1-SNAPSHOT.jar">
             <element id="module-output" name="xiaoerke-task-service" />
           </element>
@@ -90,9 +85,18 @@
           <element id="archive" name="xiaoerke-plan-api-0.0.1-SNAPSHOT.jar">
             <element id="module-output" name="xiaoerke-plan-api" />
           </element>
+          <element id="archive" name="xiaoerke-consult-service-0.0.1-SNAPSHOT.jar">
+            <element id="module-output" name="xiaoerke-consult-service" />
+          </element>
+          <element id="library" level="project" name="Maven: io.netty:netty-all:4.0.24.Final" />
+          <element id="library" level="project" name="Maven: javax.websocket:javax.websocket-api:1.0" />
           <element id="archive" name="xiaoerke-wechat-service-0.0.1-SNAPSHOT.jar">
             <element id="module-output" name="xiaoerke-wechat-service" />
           </element>
+          <element id="archive" name="xiaoerke-consult-api-0.0.1-SNAPSHOT.jar">
+            <element id="module-output" name="xiaoerke-consult-api" />
+          </element>
+          <element id="library" level="project" name="Maven: com.google.code.gson:gson:2.6" />
           <element id="archive" name="xiaoerke-operation-service-0.0.1-SNAPSHOT.jar">
             <element id="module-output" name="xiaoerke-operation-service" />
           </element>

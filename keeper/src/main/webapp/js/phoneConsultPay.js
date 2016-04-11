@@ -141,7 +141,7 @@ var doRefresh = function(){
     }
 
     $.ajax({
-        url: 'info/loginStatus',
+        url: 'auth/info/loginStatus',
         type: 'post',
         data: {},
         complete: function(jqXHR){

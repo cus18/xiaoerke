@@ -77,7 +77,7 @@ define(['appBaoFansCamp'], function (app) {
         }])
         //获取用户登陆状态
         .factory('GetUserLoginStatus', ['$resource', function ($resource) {
-            return $resource(user_h5 + 'info/loginStatus');
+            return $resource(user_h5 + 'auth/info/loginStatus');
         }])
         //获取医生某个出诊地点的7天内的可预约时间
         .factory('GetDoctorVisitInfoByLocation',['$resource',function ($resource){

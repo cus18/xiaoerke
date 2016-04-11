@@ -160,9 +160,9 @@ public class WebSSOController {
 			}
 			
 			if(targeturl != null) {
-				return "redirect:/auth_center/form?token="+token + "&targeturl=" + targeturl;
+				return "redirect:/auth/auth_center/form?token="+token + "&targeturl=" + targeturl;
 			} else
-				return "redirect:/auth_center/form?token="+token;
+				return "redirect:/auth/auth_center/form?token="+token;
 		}else{//走认证中心登录流程
 			String authLoginUrl = Global.getConfig("authentication.basePath") + "/sso/login?toUrl="+WebUtil.getWebPath(request)+loginCallbackUrl;//认证中心登录地址
 			return "redirect:"+authLoginUrl;
