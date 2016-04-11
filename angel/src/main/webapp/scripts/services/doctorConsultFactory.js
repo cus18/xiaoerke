@@ -65,7 +65,7 @@ angular.module('services', ['ngResource'])
     }])
     //医生修改的自己的回复
     .factory('getMyAnswerModify', ['$resource', function ($resource) {
-        return $resource(public + 'consult/doctor/myAnswer/modify');
+        return $resource(public + 'consult/doctor/Answer/modify');
     }])
     //医生删除的自己的回复
     .factory('getMyAnswerDelete', ['$resource', function ($resource) {
