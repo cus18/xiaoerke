@@ -36,9 +36,9 @@ header{position: relative;}
 
 /*聊天窗口*/
 .msg {border-top: 1px solid #acacac;border-bottom: 1px solid #acacac;background-color: #fff;}
-.msg-l {background: #08b7c2;width: 166px;}
+.msg-l {background: #fff;width: 175px;}
 .msg-m {background: #fff;min-width: 452px;}
-.msg-r {width: 403px;border-left: 2px solid #acacac;background-color: #fff;}
+.msg-r {width: 403px;border-left: 1px solid #acacac;background-color: #fff;}
 
 /* h5下拉列表的样式修改 */
 select {border-radius:2px;width: 75px;margin:0 20px 0 5px;color:#fff;overflow: hidden;background:transparent;}

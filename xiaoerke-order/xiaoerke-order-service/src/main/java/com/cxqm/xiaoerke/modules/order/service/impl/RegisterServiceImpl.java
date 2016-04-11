@@ -1724,4 +1724,41 @@ public class RegisterServiceImpl implements RegisterService {
 		return registerServiceDao.getCooperationHospitalTypeBySrsId(register_service_id);
 	}
 
+	@Override
+	public Map<String, Object> getEarliestVisiteInfo(String doctorId) {
+		HashMap<String,Object> dataMap = new HashMap<String, Object>();
+		List<HashMap<String, Object>> doctorInfo = registerServiceDao.getDoctorVisitInfoById(doctorId);
+		List<Map> formatInfo = new ArrayList<Map>();
+		for (Map m : doctorInfo) {
+			HashMap<String,Object> info = new HashMap<String,Object>();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String latest_time = sdf.format((Date) m.get("latest_time"));
+			String pat1 = "yyyy-MM-dd HH:mm";
+			String pat2 = "HH:mm";
+			try {
+				SimpleDateFormat sdf1 = new SimpleDateFormat(pat1); // 实例化模板对象
+				SimpleDateFormat sdf2 = new SimpleDateFormat(pat2); // 实例化模板对象
+				Date d = sdf1.parse(latest_time);
+				// 将给定的字符串中的日期提取出来
+				info.put("latest_time",sdf2.format(d));
+				info.put("availableDate",m.get("availableDate"));
+				info.put("begin_time",m.get("begin_time"));
+				info.put("name",m.get("name"));
+				info.put("position",m.get("position"));
+				info.put("date",m.get("date"));
+				info.put("location",m.get("location"));
+				info.put("location_id",m.get("location_id"));
+				info.put("available_time",m.get("available_time"));
+				info.put("service_type",m.get("service_type"));
+				info.put("shot_time",m.get("shot_time"));
+				formatInfo.add(info);
+			} catch (Exception e) { // 如果提供的字符串格式有错误，则进行异常处理
+				e.printStackTrace(); // 打印异常信息
+			}
+		}
+
+		dataMap.put("visitInfo", formatInfo);
+		return dataMap;
+	}
+
 }

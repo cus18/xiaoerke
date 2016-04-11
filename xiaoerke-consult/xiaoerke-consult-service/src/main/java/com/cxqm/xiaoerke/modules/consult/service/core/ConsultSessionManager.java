@@ -56,9 +56,8 @@ public class ConsultSessionManager {
 	
 	private AtomicInteger accessNumber = new AtomicInteger(1000);
 
-	@Autowired
-	private SessionCache sessionCache;
-	
+	private SessionCache sessionCache = SpringContextHolder.getBean("sessionCacheRedisImpl");
+
 	private ConsultSessionService consultSessionService = SpringContextHolder.getBean("consultSessionServiceImpl");
 	
 	private ConsultSessionForwardRecordsService sessionForwardService = SpringContextHolder.getBean("consultSessionForwardRecordsServiceImpl");
@@ -198,7 +197,7 @@ public class ConsultSessionManager {
 	public HashMap<String,Object> createWechatConsultSession(RichConsultSession consultSession){
 
 		HashMap<String,Object> response = new HashMap<String, Object>();
-
+		sessionCache.putSessionIdConsultSessionPair(123, consultSession);
 		Channel  csChannel = null;
 
 		int number = accessNumber.getAndDecrement();

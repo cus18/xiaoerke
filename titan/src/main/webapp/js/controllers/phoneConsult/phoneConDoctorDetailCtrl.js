@@ -1,6 +1,6 @@
 ﻿angular.module('controllers', ['ionic']).controller('phoneConDoctorDetailCtrl', [
-    '$scope','$state','$stateParams','DoctorDetail','DoctorVisitInfoByLocationInWeek','DoctorAppointmentInfoDetail','$location','CheckAttentionDoctor','GetUserLoginStatus',
-    function ($scope,$state,$stateParams,DoctorDetail,DoctorVisitInfoByLocationInWeek,DoctorAppointmentInfoDetail,$location,CheckAttentionDoctor,GetUserLoginStatus) {
+    '$scope','$state','$stateParams','DoctorDetail','DoctorVisitInfoByLocationInWeek','DoctorAppointmentInfoDetail','$location','CheckAttentionDoctor','GetUserLoginStatus','EarliestVisiteInfo',
+    function ($scope,$state,$stateParams,DoctorDetail,DoctorVisitInfoByLocationInWeek,DoctorAppointmentInfoDetail,$location,CheckAttentionDoctor,GetUserLoginStatus,EarliestVisiteInfo) {
         $scope.title = "医生详情页";
         $scope.pageLoading =false;
         $scope.toggleItem="phone";//默认的底部选择
@@ -21,6 +21,7 @@
             "#94ceeb","#5abceb","#8cd2f3","#c1e5f7","#3baf36","#7ebe30","#bdd535","#f5d120","#f7f131",
             "#3891cf","#69b3e4","#8b70b0","#ba81b6","#e179a8","#f0a7b3","#c8e6df","#c9e7f9","#f9d7e6",
             "#bdddf4","#e0cae2","#e0d5e9","#d5ece4","#fbe0e5","#fae4ee"];
+        $scope.evaluateList = [];
 
         var routePath = encodeURI(encodeURI("/appointBBBBBB" + $location.path()));
 
@@ -28,6 +29,7 @@
         DoctorDetail.get({"doctorId":$stateParams.doctorId},function(data){
             $scope.pageLoading = false;
             $scope.doctorDetail = data;
+            $scope.evaluateList[0] = $scope.doctorDetail.evaluaMap;
             console.log($scope.doctorDetail.doctorCaseList);
             //计算总的案列数
             $scope.doctorDetail.sumcase=0;
@@ -67,8 +69,8 @@
         }
         $scope.chooseTime = function(item){
             if(item.state == "1")return
-            var routePath = "http://xiaoxiaoerke.cn/keeper/phoneConsultPay/patientPay.do?" +
-                "phoneConDoctorDetail="
+            var routePath = "http://localhost:8080/keeper/phoneConsultPay/patientPay.do?phoneConDoctorDetail="
+                + item.id+"AAAAAAdoctorId="+$stateParams.doctorId;
                 + item.id;
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 $scope.pageLoading = false;
@@ -77,7 +79,7 @@
                 }else if(data.status=="8"){
                     window.location.href = data.redirectURL+"?targeturl="+routePath;
                 }else{
-                    window.location.href = "http://xiaoxiaoerke.cn/keeper/phoneConsultPay/patientPay.do?phoneConDoctorDetail="
+                    window.location.href = "http://localhost:8080/keeper/phoneConsultPay/patientPay.do?phoneConDoctorDetail="
                         + item.id+"&doctorId="+$stateParams.doctorId;
                 }})
         }
@@ -94,11 +96,12 @@
             if(index=="ap"){
                 $scope.selectApImg ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Ficon_ap2.png";
                 $scope.selectPhoneImg ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Ficon_phone1.png";
-
+                window.location.href = "appoint#/doctorAppointment/04b17d3ed0374609ad65a2f3b68b9b32,,%E5%8C%97%E4%BA%AC%E4%B8%AD%E6%97%A5%E5%8F%8B%E5%A5%BD%E5%8C%BB%E9%99%A2,,,dateNoAvailable,,";
             }
             else{
                 $scope.selectApImg ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Ficon_ap1.png";
                 $scope.selectPhoneImg ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Ficon_phone2.png";
+                $state.go("phoneConDoctorDetail", {doctorId: $stateParams.doctorId,choiceItem:$stateParams.choiceItem});
             }
         };
 
@@ -134,6 +137,9 @@
                 if($scope.weekList[i]==6){$scope.weekList[i]="六"}
                 if($scope.weekList[i]==7){$scope.weekList[i]="日"}
             }
+            EarliestVisiteInfo.get({doctorId:$stateParams.doctorId},function(data){
+              console.log(data)
+            })
 
 
             //检测用户是否已关注

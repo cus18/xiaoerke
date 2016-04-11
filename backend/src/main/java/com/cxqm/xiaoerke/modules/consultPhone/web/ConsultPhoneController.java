@@ -168,7 +168,6 @@ public class ConsultPhoneController extends BaseController {
 		String times = request.getParameter("times");
 		String time = request.getParameter("time");
 		SysConsultPhoneServiceVo vo = new SysConsultPhoneServiceVo();
-		vo.setId(Integer.parseInt(request.getParameter("registerId")));
 		vo.setSysDoctorId(request.getParameter("sysDoctorId"));
 		List<String> timeList = new ArrayList<String>();
 		if(times!=null){
@@ -200,7 +199,6 @@ public class ConsultPhoneController extends BaseController {
 		String pageFlag = request.getParameter("pageFlag");
 		String operRepeat = request.getParameter("operRepeat");
 		String timeParam = request.getParameter("times");
-		String locationId = request.getParameter("locationId");
 		String doctorId = request.getParameter("sysDoctorId");
 		String re = sysConsultPhoneService.judgeRepeatEffect(date, timeParam, doctorId,operRepeat);
 		result.put("reason", re);

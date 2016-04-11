@@ -153,8 +153,8 @@ public class WechatUtil {
      * @param li          聊天记录集合
      */
     public static void setWechatInfoToDb(String dateTime, String accessToken, int pageIndex, List<WechatRecord> li) {
-        long startTime = String2TimeStamp(dateTime + " 00:00");
-        long endTime = String2TimeStamp(dateTime + " 23:00");
+        long startTime = (new Date().getTime()-30*60*1000)/1000;
+        long endTime = new Date().getTime()/1000;
         String request = getCustom(accessToken, endTime, startTime, pageIndex, 30);
         JSONObject resultJson = new JSONObject(request);
         JSONArray array = resultJson.getJSONArray("recordlist");

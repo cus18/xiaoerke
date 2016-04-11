@@ -242,6 +242,7 @@
     select
     scs.id,
     scs.price,
+    scs.date,
     DATE_FORMAT(scs.beginTime, '%H:%i') AS beginTime,
     DATE_FORMAT(scs.endTime, '%H:%i') AS endTime,
     scs.state,
@@ -254,6 +255,12 @@
 
     <if test="date != null">
       AND date = #{date}
+    </if>
+    <if test="status != null">
+      AND state = #{status}
+    </if>
+    <if test="time != null">
+      AND beginTime = #{time}
     </if>
     <if test="dateList != null">
       and scs.date in

@@ -27,8 +27,6 @@ public interface PatientRegisterPraiseService {
     List<PraiseVo> findDoctorDetailPraiseInfo(PraiseVo praisevo);
     
     void insertCancelReason(HashMap<String, Object> executeMap);
-
-    HashMap<String,Object> getConsultEvaluate(HashMap<String,Object> params);
     
     Integer updateCustomerEvaluation(Map<String, Object> params);
     
@@ -37,4 +35,28 @@ public interface PatientRegisterPraiseService {
     Map<String,Object> getCustomerStarInfoById(@Param("doctorId")String id);
     
     Map<String,Object> getDoctorHeadImageURIById(@Param("doctorId")String id);
+
+    /**
+     * 医生详情页--获取电话咨询评价总数
+     * @param params
+     * @return
+     * @author chenxiaoqiong
+     */
+    Integer getTotalCount(HashMap<String, Object> params);
+
+    /**
+     * 医生详情页--获取一条电话咨询评价
+     * @param params
+     * @return
+     * @author chenxiaoqiong
+     */
+    HashMap<String,Object> getConsultEvaluateTop(HashMap<String, Object> params);
+
+    /**
+     * 医生详情页--获取所有电话咨询评价（带分页）
+     * @param params
+     * @return
+     * @author chenxiaoqiong
+     */
+    HashMap<String,Object> getConsultEvaluate(HashMap<String,Object> params);
 }

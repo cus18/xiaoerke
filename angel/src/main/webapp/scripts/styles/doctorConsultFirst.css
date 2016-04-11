@@ -1,17 +1,12 @@
 /* 左边的小盒子 */
 
-/*
-.m-left {float: left;width: 160px;background-color: #F0F0F0;border-right: 1px solid #333;}
-*/
-
-.m-left-header {height:106px;background-color: #08b7c2;cursor: pointer;}
-.m-left-header .insert{height: 40px;background-color: #09CBD9;float: left;font: 12px/40px 'Microsoft Yahei';color: #fff;
+.m-left-header {background-color: #f2f2f2;cursor: pointer;height: 92px;}
+.m-left-header .insert{height: 40px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fs_06.png") center bottom no-repeat #fff;float: left;font: 12px/40px 'Microsoft Yahei';color: #acacac;
     text-align: center;width: 100%;}
-.m-left-top div.tab-content-chat {float: left;text-align: center;padding: 10px 17px;}
-.tab-content-chat h3{font: 24px/24px 'Microsoft Yahei';color:#fff;}
-.tab-content-chat p {margin-top: 10px; font: 12px/12px 'Microsoft Yahei';color:#fff;}
-#ddjr{background-color: #acacac;}
-
+.m-left-top div.tab-content-chat {float: left;text-align: center;padding: 8px 19px;}
+.tab-content-chat h3{font: 24px/24px 'Microsoft Yahei';color:#fe717b;}
+.tab-content-chat p {font: 12px/12px 'Microsoft Yahei';color:#acacac;}
+div#ddjr {border-right: 1px solid #fff;}
 /*右边的盒子*/
 .bdf-dkf-sever {background-color: #eee;font: 12px/50px 'Microsoft Yahei';}
 .bdf-dkf-sever a{display: inline-block;width: 191px;line-height: 50px;cursor: pointer;text-align: center;}
@@ -80,6 +75,7 @@
 .zhhftop span {display: inline-block;width: 80px;height: 1px;background-color: #f0f0f0;}
 .zhhftop span:nth-child(2){width: 100px;font: 12px/20px 'Microsoft Yahei';height: 20px;margin: 0 10px;background-color: #fff;}
 .zhhfcontent p {margin: 12px 0;}
+.zhhf .zhhfcontent a {color:#313bff;}
 .zhhfcontent {font: 12px/20px 'Microsoft Yahei';}
 input[type="number"] {width: 36px;}
 /*转接content*/
@@ -107,19 +103,19 @@ span.emotion:hover{background-position:2px -28px}
 .nametop div.fr {line-height: 50px;margin-right: 20px;cursor: pointer;}
 .headimg {float: left;width: 40px;margin: 5px 10px 5px 20px;}
 .nametop span {display: inline-block;line-height: 50px;}
-.nametop {border-bottom: 1px solid #acacac;font-size:12px;}
+.nametop {border-bottom: 1px solid #acacac;font-size:12px;/*height: 62px;*/}
 /*快捷回复*/
 .chatinstall{border-bottom: 1px solid #acacac;background-color: #fff;}
 .chatinstall span:nth-child(1){margin: 0 15px 0 20px;}
 .chatinstall span {display: inline-block;margin-right: 10px;font: 12px/50px 'Microsoft Yahei';color:#333;cursor:pointer;}
 .chatinstall span img {margin-right: 5px;}
 /*textarea输入框*/
-.inputcontent{padding-left: 166px;padding-right: 405px;}
+.inputcontent{padding-left: 175px;padding-right: 405px;}
 textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 100%;height: 100px;box-sizing: border-box;border: 1px solid #dcdcdc;vertical-align: top;resize: none;}
-.sendbtn {height: 39px;border-top:1px solid #acacac;background-color: #f8f8f8;}
+.sendbtn {height: 43px;border-top:1px solid #acacac;background-color: #f8f8f8;}
 .sendbtn div {cursor: pointer;margin:10px;display: inline-block;color:#fff;float: right;font: 12px/20px 'Microsoft Yahei';padding: 0 15px;border-radius: 4px;}
-.sendbtn div:nth-child(1){background-color: #fe717b;}
-.sendbtn div:nth-child(2){background-color: #08b7c2;}
+.sendbtn div:nth-child(1){background-color: #08b7c2;}
+.sendbtn div:nth-child(2){background-color: #fe717b;}
 .historymessage {float: right;}
 .historymessage img{margin:0 10px;}
 /*添加分组*/

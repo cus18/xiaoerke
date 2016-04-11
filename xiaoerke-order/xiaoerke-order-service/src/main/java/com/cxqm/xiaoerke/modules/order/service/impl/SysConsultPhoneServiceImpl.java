@@ -568,7 +568,7 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 			dateList = (List<String>) retMap.get("dateList");
 			String repeat = (String) retMap.get("repeat");
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("sysDoctorId", doctorId);
+			map.put("doctorId", doctorId);
 			map.put("dateList", dateList);
 			map.put("status", "1");
 			map.put("time", time);
@@ -621,7 +621,7 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 			dateList = (List<String>) retMap.get("dateList");
 			String repeat = (String) retMap.get("repeat");
 			map.put("dateList", dateList);
-			map.put("sysDoctorId", registerServiceVo.getSysDoctorId());
+			map.put("doctorId", registerServiceVo.getSysDoctorId());
 			List<String> statusList = new ArrayList<String>();
 			statusList.add("0");
 			statusList.add("1");
@@ -679,7 +679,7 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 							HashMap<String, Object> executeMap1 = new HashMap<String, Object>();
 							executeMap1.put("registerId", rvo.getId());
 							List<Map<String, Object>> orderList = consultPhonePatientService.getConsultPhoneRegisterListByInfo(executeMap1);
-							Integer patientRegisterId = Integer.parseInt((String)orderList.get(0).get("id"));
+							Integer patientRegisterId = (Integer)orderList.get(0).get("id");
 							cvo.setId(patientRegisterId);
 							cvo.setDeleteBy(deleteBy);
 							cvo.setState("6");

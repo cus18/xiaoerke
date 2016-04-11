@@ -31,6 +31,8 @@ public class PatientRegisterPraise {
 
     private String majorStar;
 
+    private String evaluateType;
+
     public String getId() {
         return id;
     }
@@ -141,5 +143,13 @@ public class PatientRegisterPraise {
 
     public void setMajorStar(String majorStar) {
         this.majorStar = majorStar;
+    }
+
+    public String getEvaluateType() {
+        return evaluateType;
+    }
+
+    public void setEvaluateType(String evaluateType) {
+        this.evaluateType = evaluateType;
     }
 }

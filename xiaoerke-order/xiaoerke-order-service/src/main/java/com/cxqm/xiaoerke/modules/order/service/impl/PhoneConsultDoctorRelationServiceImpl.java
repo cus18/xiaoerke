@@ -92,5 +92,11 @@ public class PhoneConsultDoctorRelationServiceImpl implements PhoneConsultDoctor
 		return phoneConsultDoctorRelationDao.selectByDoctorId(doctorId);
 	}
 
+	@Override
+	public Map<String, Object> findDoctorDetailInfo(String doctorId) {
+
+	  return	phoneConsultDoctorRelationDao.findDoctorDetailInfo(doctorId);
+	}
+
 
 }

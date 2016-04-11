@@ -61,6 +61,11 @@ define(['appPhoneConsult'], function (app) {
             return $resource(user_appoint + '/titan/order/user/orderDetail');
         }])
 
+        //查询最早医生的预约挂号时间
+        .factory('EarliestVisiteInfo', ['$resource', function ($resource) {
+            return $resource(user_h5 + '/consultPhoneDoctor/earliestVisiteInfo');
+        }])
+
 
 
     ///consultPhone/user/doctor/time
@@ -132,7 +137,7 @@ define(['appPhoneConsult'], function (app) {
         }])
         //获取用户登陆状态
         .factory('GetUserLoginStatus', ['$resource', function ($resource) {
-            return $resource(user_appoint + 'info/loginStatus');
+            return $resource(user_appoint + 'auth/info/loginStatus');
         }])
         //获取医生某个出诊地点的7天内的可预约时间
         .factory('GetDoctorDateInfo',['$resource',function ($resource){
