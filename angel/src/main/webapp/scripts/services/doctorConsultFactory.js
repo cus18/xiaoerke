@@ -19,7 +19,7 @@ angular.module('services', ['ngResource'])
         return $resource(public + 'consult/doctor/doctorList');
     }])
 
-    //获取客户户列表
+    //获取客户列表
     .factory('getUserConsultListInfo', ['$resource', function ($resource) {
         return $resource(public + 'consult/user/getUserList');
     }])

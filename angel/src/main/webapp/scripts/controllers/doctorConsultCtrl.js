@@ -448,7 +448,6 @@ angular.module('controllers', ['luegg.directives'])
                     }else if(flag == 1 && $window.confirm("确定要删除该回复?")) {
                         $scope.myAnswer[parentIndex].secondAnswer.splice(childIndex, 1);
                         getMyAnswerModify.save({answer:$scope.myAnswer,answerType:"myAnswer"}, function (data) {});
-
                     }
                 }else if(sign == 1){
                     if (flag == 0 && $window.confirm("确定要删除该组回复?")) {
