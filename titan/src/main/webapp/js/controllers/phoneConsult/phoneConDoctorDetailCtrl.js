@@ -1,6 +1,6 @@
 ﻿angular.module('controllers', ['ionic']).controller('phoneConDoctorDetailCtrl', [
-    '$scope','$state','$stateParams','DoctorDetail','DoctorVisitInfoByLocationInWeek','DoctorAppointmentInfoDetail','$location','CheckAttentionDoctor','GetUserLoginStatus',
-    function ($scope,$state,$stateParams,DoctorDetail,DoctorVisitInfoByLocationInWeek,DoctorAppointmentInfoDetail,$location,CheckAttentionDoctor,GetUserLoginStatus) {
+    '$scope','$state','$stateParams','DoctorDetail','DoctorVisitInfoByLocationInWeek','DoctorAppointmentInfoDetail','$location','CheckAttentionDoctor','GetUserLoginStatus','EarliestVisiteInfo',
+    function ($scope,$state,$stateParams,DoctorDetail,DoctorVisitInfoByLocationInWeek,DoctorAppointmentInfoDetail,$location,CheckAttentionDoctor,GetUserLoginStatus,EarliestVisiteInfo) {
         $scope.title = "医生详情页";
         $scope.pageLoading =false;
         $scope.toggleItem="phone";//默认的底部选择
@@ -94,11 +94,12 @@
             if(index=="ap"){
                 $scope.selectApImg ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Ficon_ap2.png";
                 $scope.selectPhoneImg ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Ficon_phone1.png";
-
+                window.location.href = "appoint#/doctorAppointment/04b17d3ed0374609ad65a2f3b68b9b32,,%E5%8C%97%E4%BA%AC%E4%B8%AD%E6%97%A5%E5%8F%8B%E5%A5%BD%E5%8C%BB%E9%99%A2,,,dateNoAvailable,,";
             }
             else{
                 $scope.selectApImg ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Ficon_ap1.png";
                 $scope.selectPhoneImg ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Ficon_phone2.png";
+                $state.go("phoneConDoctorDetail", {doctorId: $stateParams.doctorId,choiceItem:$stateParams.choiceItem});
             }
         };
 
@@ -134,6 +135,9 @@
                 if($scope.weekList[i]==6){$scope.weekList[i]="六"}
                 if($scope.weekList[i]==7){$scope.weekList[i]="日"}
             }
+            EarliestVisiteInfo.get({doctorId:$stateParams.doctorId},function(data){
+              console.log(data)
+            })
 
 
             //检测用户是否已关注
