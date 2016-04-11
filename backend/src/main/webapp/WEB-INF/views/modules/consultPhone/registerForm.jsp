@@ -285,8 +285,8 @@
 						if(data.reason==""){
 							$.ajax({
 								type: "post",
-								url: "${ctx}/register/removeRegister",
-								data: {sysDoctorId:"${registerServiceVo.sysDoctorId}",sysHospitalId:hospitalId,locationId:locationId,date:date,times:array,operRepeat:operRepeat,pageFlag:data.pageFlag},
+								url: "${ctx}/consultPhone/removeRegister",
+								data: {sysDoctorId:"${consulPhonetDoctorRelationVo.doctorId}",date:date,times:array,operRepeat:operRepeat,pageFlag:data.pageFlag},
 								dataType: "json",
 								success: function(data){
 									for(var i=0;i<timeList.length;i++){
@@ -311,8 +311,8 @@
 							confirmx(data.reason+"确认删除吗？",function(){
 								$.ajax({
 									type: "post",
-									url: "${ctx}/register/removeRegister",
-									data: {sysDoctorId:"${registerServiceVo.sysDoctorId}",sysHospitalId:hospitalId,locationId:locationId,date:date,times:array,operRepeat:operRepeat,pageFlag:data.pageFlag},
+									url: "${ctx}/consultPhone/removeRegister",
+									data: {sysDoctorId:"${consulPhonetDoctorRelationVo.doctorId}",date:date,times:array,operRepeat:operRepeat,pageFlag:data.pageFlag},
 									dataType: "json",
 									success: function(data){
 										for(var i=0;i<timeList.length;i++){
@@ -322,7 +322,6 @@
 										var tempTimeList = array.split(";");
 										for(var i=0;i<tempTimeList.length;i++){
 											if(data.suc=="suc"){
-												document.getElementById(tempTimeList[i]+"oper").innerText="添加";
 												document.getElementById(tempTimeList[i]+"oper").value="";
 												document.getElementById(tempTimeList[i]+"span").style.background="";
 												if(operRepeat=="yes"){

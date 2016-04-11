@@ -27,6 +27,6 @@ public interface ConsultPhoneRegisterTemplateDao {
     
     void saveRegisterTemplate(Map<String, Object> executeMap);
     
-    List<RegisterTemplateServiceVo> getRegisterTemplate(RegisterTemplateServiceVo registerTemplate);
+    List<ConsultPhoneRegisterTemplateVo> getRegisterTemplate(ConsultPhoneRegisterTemplateVo registerTemplate);
     
 }

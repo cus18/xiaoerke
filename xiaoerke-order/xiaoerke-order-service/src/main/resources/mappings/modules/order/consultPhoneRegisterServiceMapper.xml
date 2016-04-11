@@ -408,4 +408,18 @@
       and crs.state = #{state,VARCHAR}
     </if>
   </select>
+  <!--根据条件查询订单 sunxiao-->
+  <select id="getConsultPhoneRegisterListByInfo" resultType="java.util.HashMap" parameterType="java.util.Map">
+    SELECT * from consultphone_register_service crs
+    where 1=1
+    <if test="state != null" >
+      and crs.state = #{state}
+    </if>
+    <if test="id != null" >
+      and crs.id = #{id}
+    </if>
+    <if test="registerId != null" >
+      and crs.sys_phoneConsult_service_id = #{registerId}
+    </if>
+  </select>
 </mapper>
