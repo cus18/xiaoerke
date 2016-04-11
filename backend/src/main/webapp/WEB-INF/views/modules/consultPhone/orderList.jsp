@@ -126,7 +126,10 @@
 					<td>${consultPhone.state}</td>
 					<td><fmt:formatDate value ="${consultPhone.updateTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 					<td>${consultPhone.deleteBy}</td>
-					<td><a href="${ctx}/insurance/orderDetails?id=${consultPhone.id}">查看详情</a></td>
+					<td>
+						<a href="${ctx}/consultPhone/cancelOrder?id=${consultPhone.id}">取消预约</a>
+						<a href="${ctx}/consultPhone/orderDetails?id=${consultPhone.id}">手动接通</a>
+					</td>
 				</tr>
 			</c:forEach>
 		</tbody>
