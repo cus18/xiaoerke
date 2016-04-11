@@ -58,7 +58,7 @@
                     已接入会话
                 </div>
             </div>
-            <div class="consultNowList" ng-style="chooseAlreadyJoinConsultPatientId==item.patientId?{'background':'#00a1ab'}:{'background':'#08b7c2'}"
+            <div class="consultNowList" ng-style="chooseAlreadyJoinConsultPatientId==item.patientId?{'background':'#08b7c2'}:{'background':'#fff'}"
                  ng-repeat="item in alreadyJoinPatientConversationContent"
                  ng-click="chooseAlreadyJoinConsultPatient(item.patientId,item.patientName)"
                  alt="">
@@ -214,10 +214,10 @@
                 <div class="inputcontent"><textarea ng-model="info.consultMessage" placeholder="请在此处进行咨询" id="saytext"></textarea>
                 </div>
                 <div class="sendbtn">
-                    <div class="sub_btn" ng-click="sendConsultMessage()">发送消息Ctrl+Enter</div>
+                    <div class="sub_btn" ng-click="sendConsultMessage()">发送(Ctrl+Enter)</div>
                     <div ng-click="closeConsult()">
                         <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(9).png" alt=""/>
-                        关闭咨询</div>
+                        关闭</div>
                 </div>
             </div>
         </div>
