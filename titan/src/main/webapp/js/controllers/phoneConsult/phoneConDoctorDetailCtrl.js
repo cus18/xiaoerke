@@ -68,7 +68,7 @@
         $scope.chooseTime = function(item){
             if(item.state == "1")return
             var routePath = "http://localhost:8080/keeper/phoneConsultPay/patientPay.do?phoneConDoctorDetail="
-                + item.id+"&doctorId="+$stateParams.doctorId;
+                + item.id+"AAAAAAdoctorId="+$stateParams.doctorId;
                 + item.id;
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 $scope.pageLoading = false;
