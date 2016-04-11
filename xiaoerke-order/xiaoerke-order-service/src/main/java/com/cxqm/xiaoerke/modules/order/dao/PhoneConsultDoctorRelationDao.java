@@ -6,6 +6,7 @@ import com.cxqm.xiaoerke.modules.order.entity.ConsulPhonetDoctorRelationVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @MyBatisDao
 public interface PhoneConsultDoctorRelationDao {
@@ -29,4 +30,6 @@ public interface PhoneConsultDoctorRelationDao {
     List<ConsulPhonetDoctorRelationVo> getConsultPhoneDoctorRelationByInfo(ConsulPhonetDoctorRelationVo vo);
 
     ConsulPhonetDoctorRelationVo selectByDoctorId(@Param("doctorId") String doctorId);
+
+    Map<String, Object> findDoctorDetailInfo(@Param("doctorId") String doctorId);
 }

@@ -35,4 +35,8 @@ public interface PhoneConsultDoctorRelationService {
 	 * @return vo
 	 */
 	ConsulPhonetDoctorRelationVo getPhoneConsultRigister(String doctorId);
+
+//	获取电话咨询医生的基本信息
+	Map<String, Object> findDoctorDetailInfo(String doctorId);
+
 }
