@@ -361,8 +361,10 @@ angular.module('controllers', ['luegg.directives'])
                 console.log('addGroup',setGroupContent);
                 if(sign == 0 && mark == 0){
                     $scope.myAnswer.push(setGroupContent);
+                    getMyAnswerModify.save({answer:$scope.myAnswer,answerType:"myAnswer"}, function (data) {});
                 } else if(sign == 1 && mark == 0){
                     $scope.commonAnswer.push(setGroupContent);
+                    getMyAnswerModify.save({answer:$scope.commonAnswer,answerType:"commonAnswer"}, function (data) {});
                 }
                 $scope.addgroup = false;
             }
@@ -378,8 +380,10 @@ angular.module('controllers', ['luegg.directives'])
                 console.log('addContent',setContent);
                 if(sign == 0 && mark == 1){
                     $scope.myAnswer[parentIndex].secondAnswer.push(setContent);
+                    getMyAnswerModify.save({answer:$scope.myAnswer,answerType:"myAnswer"}, function (data) {});
                 } else if(sign == 1 && mark == 1){
                     $scope.commonAnswer[parentIndex].secondAnswer.push(setContent);
+                    getMyAnswerModify.save({answer:$scope.commonAnswer,answerType:"commonAnswer"}, function (data) {});
                 }
                 $scope.addcontent=false;
             }
@@ -388,10 +392,37 @@ angular.module('controllers', ['luegg.directives'])
             $scope.closeEditGroup = function() {
                 $scope.editgroup = false;
             }
+            $scope.editGroupSubmit = function () {
+                /*var changeGroup = {};*/
+                var changeGroup = $scope.info.editGroup;
+                console.log('changeContent',changeGroup);
+                if(sign == 0 && flag == 0){
+                    $scope.myAnswer[parentIndex].name = changeGroup;
+                    console.log($scope.myAnswer[parentIndex].name)
+                    getMyAnswerModify.save({answer:$scope.myAnswer,answerType:"myAnswer"}, function (data) {});
+                } else if(sign == 1 && flag == 0){
+                    $scope.commonAnswer[parentIndex].name = changeGroup;
+                    getMyAnswerModify.save({answer:$scope.commonAnswer,answerType:"commonAnswer"}, function (data) {});
+
+                }
+                $scope.editgroup=false;
+            }
             //编辑内容
             $scope.editcontent =  false;
             $scope.closeEditContent = function() {
                 $scope.editcontent = false;
+            }
+            $scope.editContentSubmit = function () {
+                var changeContent = $scope.info.editContent;
+                console.log('changeContent',changeContent);
+                if(sign == 0 && flag == 1){
+                    $scope.myAnswer[parentIndex].secondAnswer[childIndex].name = changeContent;
+                    getMyAnswerModify.save({answer:$scope.myAnswer,answerType:"myAnswer"}, function (data) {});
+                } else if(sign == 1 && flag == 1){
+                    $scope.commonAnswer[parentIndex].secondAnswer[childIndex].name = changeContent;
+                    getMyAnswerModify.save({answer:$scope.commonAnswer,answerType:"commonAnswer"}, function (data) {});
+                }
+                $scope.editcontent=false;
             }
             $scope.edit = function() {
                 if (sign == 0){

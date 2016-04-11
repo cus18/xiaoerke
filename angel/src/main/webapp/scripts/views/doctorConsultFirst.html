@@ -147,7 +147,7 @@
                     <div class="addtop"><span>编辑分组</span><span ng-click="closeEditGroup()">关闭</span></div>
                     <div class="addgroupname"><span>编辑分组</span><input type="text" required ng-model="info.editGroup"/></div>
                     <div class="addbtn">
-                        <input class="btn" type="submit" value="确定" ng-click="closeEditGroup()">
+                        <input class="btn" type="submit" value="确定" ng-click="editGroupSubmit()">
                         <input class="btn" type="submit" value="取消" ng-click="closeEditGroup()">
                     </div>
                 </div>
@@ -158,7 +158,7 @@
                         <textarea placeholder="请在此处进行编辑" required ng-model="info.editContent"></textarea>
                     </div>
                     <div class="addbtn">
-                        <input class="btn" type="submit" value="确定" ng-click="closeEditContent()">
+                        <input class="btn" type="submit" value="确定" ng-click="editContentSubmit()">
                         <input class="btn" type="submit" value="取消" ng-click="closeEditContent()">
                     </div>
                 </div>
