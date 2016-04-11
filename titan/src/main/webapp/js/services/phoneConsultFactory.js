@@ -61,6 +61,11 @@ define(['appPhoneConsult'], function (app) {
             return $resource(user_appoint + '/titan/order/user/orderDetail');
         }])
 
+        //查询最早医生的预约挂号时间
+        .factory('EarliestVisiteInfo', ['$resource', function ($resource) {
+            return $resource(user_h5 + '/consultPhoneDoctor/earliestVisiteInfo');
+        }])
+
 
 
     ///consultPhone/user/doctor/time
