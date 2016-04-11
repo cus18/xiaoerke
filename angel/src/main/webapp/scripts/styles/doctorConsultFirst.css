@@ -1,11 +1,11 @@
 /* 左边的小盒子 */
 
-.m-left-header {background-color: #f2f2f2;cursor: pointer;height: 102px;}
+.m-left-header {background-color: #f2f2f2;cursor: pointer;height: 92px;}
 .m-left-header .insert{height: 40px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fs_06.png") center bottom no-repeat #fff;float: left;font: 12px/40px 'Microsoft Yahei';color: #acacac;
     text-align: center;width: 100%;}
 .m-left-top div.tab-content-chat {float: left;text-align: center;padding: 8px 19px;}
 .tab-content-chat h3{font: 24px/24px 'Microsoft Yahei';color:#fe717b;}
-.tab-content-chat p {margin-top: 10px; font: 12px/12px 'Microsoft Yahei';color:#acacac;}
+.tab-content-chat p {font: 12px/12px 'Microsoft Yahei';color:#acacac;}
 div#ddjr {border-right: 1px solid #fff;}
 /*右边的盒子*/
 .bdf-dkf-sever {background-color: #eee;font: 12px/50px 'Microsoft Yahei';}
@@ -111,7 +111,7 @@ span.emotion:hover{background-position:2px -28px}
 /*textarea输入框*/
 .inputcontent{padding-left: 175px;padding-right: 405px;}
 textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 100%;height: 100px;box-sizing: border-box;border: 1px solid #dcdcdc;vertical-align: top;resize: none;}
-.sendbtn {height: 39px;border-top:1px solid #acacac;background-color: #f8f8f8;}
+.sendbtn {height: 43px;border-top:1px solid #acacac;background-color: #f8f8f8;}
 .sendbtn div {cursor: pointer;margin:10px;display: inline-block;color:#fff;float: right;font: 12px/20px 'Microsoft Yahei';padding: 0 15px;border-radius: 4px;}
 .sendbtn div:nth-child(1){background-color: #08b7c2;}
 .sendbtn div:nth-child(2){background-color: #fe717b;}

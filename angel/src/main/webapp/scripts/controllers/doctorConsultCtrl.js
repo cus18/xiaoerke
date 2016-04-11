@@ -444,14 +444,19 @@ angular.module('controllers', ['luegg.directives'])
                 if(sign == 0){
                     if (flag == 0 && $window.confirm("确定要删除该组回复?")) {
                         $scope.myAnswer.splice(parentIndex, 1);
+                        getMyAnswerModify.save({answer:$scope.myAnswer,answerType:"myAnswer"}, function (data) {});
                     }else if(flag == 1 && $window.confirm("确定要删除该回复?")) {
                         $scope.myAnswer[parentIndex].secondAnswer.splice(childIndex, 1);
+                        getMyAnswerModify.save({answer:$scope.myAnswer,answerType:"myAnswer"}, function (data) {});
+
                     }
                 }else if(sign == 1){
                     if (flag == 0 && $window.confirm("确定要删除该组回复?")) {
                         $scope.commonAnswer.splice(parentIndex, 1);
+                        getMyAnswerModify.save({answer:$scope.commonAnswer,answerType:"commonAnswer"}, function (data) {});
                     }else if(flag == 1 && $window.confirm("确定要删除该回复?")) {
                         $scope.commonAnswer[parentIndex].secondAnswer.splice(childIndex, 1);
+                        getMyAnswerModify.save({answer:$scope.commonAnswer,answerType:"commonAnswer"}, function (data) {});
                     }
                 }
             }
@@ -582,13 +587,3 @@ angular.module('controllers', ['luegg.directives'])
             }
 
         }])
-/*            //保存公共回复
- $scope.addGroupFirst = function () {
- var addGroupFirst = {};
- addGroupFirst.name = $("#addGroupFirstId").val();
- $scope.commonAnswer.push(addGroupFirst);
- alert(123);
- getMyAnswerModify.save({answer:$scope.commonAnswer,answerType:"commonAnswer"}, function (data) {
- });
- $scope.addgroup = false;
- }*/
