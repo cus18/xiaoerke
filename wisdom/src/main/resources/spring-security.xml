@@ -16,7 +16,7 @@
 	<http pattern="${xiaoerkePath}/ntr" security="none" />
 
 	<http pattern="/*" use-expressions="true" entry-point-ref="authenticationProcessingFilterEntryPoint" >
-		<intercept-url pattern="info/loginStatus" access="isAuthenticated()" />
+		<intercept-url pattern="/*" access="isAuthenticated()" />
 		<logout logout-url="/logout" logout-success-url="/sso/logout" delete-cookies="JSESSIONID" />
 		<!-- 实现免登陆验证 -->
 		<remember-me user-service-ref="myUserDetailsService" />

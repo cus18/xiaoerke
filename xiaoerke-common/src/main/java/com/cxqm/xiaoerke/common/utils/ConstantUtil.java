@@ -3,8 +3,11 @@ package com.cxqm.xiaoerke.common.utils;
 public class ConstantUtil {
 
 	//public static final String DOAMIN_VALUE = ".baodf.com";
-	public static final String DOAMIN_VALUE = ".xiaoerke.cn";
+	public static final String DOAMIN_VALUE = "xiaoxiaoerke.cn";
 	public static final String WebPath = "xiaoxiaoerke.cn";
+
+//	public static final String DOAMIN_VALUE = "localhost";
+//	public static final String WebPath = "localhost";
 
 	//初始化
 //	public static String APP_ID = "wx0baf90e904df0117";//微信开发平台应用id

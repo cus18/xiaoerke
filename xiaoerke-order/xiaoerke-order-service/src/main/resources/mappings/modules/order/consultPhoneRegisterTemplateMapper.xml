@@ -50,7 +50,7 @@
         INSERT INTO sys_consultphone_template(doctor_id,price,servertype,week_day,time,status,create_date,update_date,repeat_interval)
         VALUES(#{doctorId},#{price},#{serverType},#{weekday},#{time},#{status},#{createDate},#{updateDate},#{interval});
     </insert>
-    <select id="getRegisterTemplateList" resultType="registerTemplateServiceVo">
+    <select id="getRegisterTemplateList" resultMap="registerTemplateServiceVo">
     	select * from sys_consultphone_template srt where 1=1
     	<if test="doctorId != null and doctorId != ''">
 			AND srt.doctor_id=#{doctorId}
@@ -101,7 +101,7 @@
      	</if>
     </delete>
     
-    <select id="getRegisterTemplate" resultType="registerTemplateServiceVo">
+    <select id="getRegisterTemplate" resultMap="registerTemplateServiceVo">
     	select * from sys_consultphone_template srt where 1=1
     	<if test="doctorId != null and doctorId != ''">
 			AND srt.doctor_id=#{doctorId}
