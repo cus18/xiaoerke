@@ -28,12 +28,11 @@
     where doctor_id = #{doctorId,jdbcType=VARCHAR}
   </select>
 
-  <select id="findDoctorDetailInfo" resultType="java.lang.String"
+  <select id="findDoctorDetailInfo" resultType="java.util.Map"
           parameterType="com.cxqm.xiaoerke.modules.sys.entity.DoctorDetailInfoVo">
     SELECT dr.id AS doctorId,dr.personal_details AS doctor_normal_desc, dr.hospitalName AS hospitalName,
     sh.id AS hospitalId,su.name AS doctorName ,dr.position1,dr.position2,
     ROUND((UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(career_time))/(60*60*24*365)) AS career_time,dr.fans_number
-
     FROM sys_doctor dr
     INNER JOIN sys_user su ON  dr.sys_user_id=su.id
 
