@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -334,7 +335,7 @@ public class ConsultPhoneDoctorController {
 
         HashMap<String, Object> params = new HashMap<String, Object>();
         params.put("doctorId",doctorId);
-        Map<String, Object> response = doctorInfoService.findDoctorDetailInfoAndType(params);
+        Map<String, Object> response = phoneConsultDoctorRelationService.findDoctorDetailInfo(doctorId);
         ConsulPhonetDoctorRelationVo relationVo = phoneConsultDoctorRelationService.getPhoneConsultRigister(doctorId);
         if(relationVo != null) {
             response.put("price", relationVo.getPrice());
@@ -378,6 +379,16 @@ public class ConsultPhoneDoctorController {
         response.put("sumcase", sumcase);//总案例数
         response.put("doctorCaseList", doctorCaseVos);//医生案例
         return response;
+    }
+
+    @RequestMapping(value = "earliestVisiteInfo",method = {RequestMethod.GET,RequestMethod.POST})
+    public
+    @ResponseBody
+    Map<String,Object> earliestVisiteInfo(@RequestParam String doctorId){
+
+        Map<String,Object> resultMap = registerService.getEarliestVisiteInfo(doctorId);
+        resultMap.size();
+        return resultMap;
     }
 
 }
