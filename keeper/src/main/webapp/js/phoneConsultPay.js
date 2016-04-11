@@ -154,7 +154,7 @@ var doRefresh = function(){
             $.ajaxSetup({
                 contentType : 'application/json'
             });
-            $.post('info/loginStatus',param,
+            $.post('auth/info/loginStatus',param,
                 function(data) {
                     if(data.status=="9"){
                         alert(data.redirectURL);
