@@ -992,10 +992,10 @@ public class ScheduledTask {
     public void getConnenct4doctorAndPatient(){
       List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1");
 
-      CCPRestSDK sdk = new CCPRestSDK();
-        sdk.init("sandboxapp.cloopen.com", "8883");// 初始化服务器地址和端口，格式如下，服务器地址不需要写https://
-        sdk.setSubAccount("2fa43378da0a11e59288ac853d9f54f2", "0ad73d75ac5bcb7e68fb191830b06d6b");
-        sdk.setAppId("aaf98f8952f7367a0153084e29992035");
+//      CCPRestSDK sdk = new CCPRestSDK();
+//        sdk.init("sandboxapp.cloopen.com", "8883");// 初始化服务器地址和端口，格式如下，服务器地址不需要写https://
+//        sdk.setSubAccount("2fa43378da0a11e59288ac853d9f54f2", "0ad73d75ac5bcb7e68fb191830b06d6b");
+//        sdk.setAppId("aaf98f8952f7367a0153084e29992035");
       for(HashMap map:consultOrderList){
           String doctorPhone =  (String)map.get("doctorPhone");
           String userPhone =  (String)map.get("userPhone");
@@ -1003,7 +1003,7 @@ public class ScheduledTask {
           List<ConsultPhoneRecordVo> list = consultPhoneService.getConsultRecordInfo(orderId + "", "CallAuth");
           if(list.size()<2){
               Integer conversationLength =  (Integer)map.get("conversationLength")*60;
-              HashMap<String, Object> result = sdk.callback(userPhone, doctorPhone,
+              HashMap<String, Object> result = CCPRestSDK.callback(userPhone, doctorPhone,
                       "4006237120", "4006237120", null,
                       "true", null, orderId+"",
                       conversationLength+"", null, "0",
