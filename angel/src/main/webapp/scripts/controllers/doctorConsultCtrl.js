@@ -393,11 +393,30 @@ angular.module('controllers', ['luegg.directives'])
             //编辑分组
             $scope.editgroup =  false;
             $scope.closeEditGroup = function() {
+                var setContent = {};
+                setContent.name = $scope.info.editGroup;
+                setContent.secondAnswer=[];
+                if (sign == 0 && flag == 0){
+                    $scope.myAnswer.splice(parentIndex, 1,setContent);
+                    saveMyAnswer();
+                }else if(sign == 1 && flag == 0){
+                    $scope.commonAnswer.splice(parentIndex, 1,setContent);
+                    saveCommonAnswer(getMyAnswerModify, $scope);
+                }
                 $scope.editgroup = false;
             }
             //编辑内容
             $scope.editcontent =  false;
             $scope.closeEditContent = function() {
+                var setContent = {};
+                setContent.name = $scope.info.editContent;
+                if (sign == 0 && flag == 1){
+                    $scope.myAnswer[parentIndex].secondAnswer.splice(childIndex, 1,setContent);
+                    saveMyAnswer();
+                }else if(sign == 1 && flag == 1){
+                    $scope.commonAnswer[parentIndex].secondAnswer.splice(childIndex, 1,setContent);
+                    saveCommonAnswer(getMyAnswerModify, $scope);
+                }
                 $scope.editcontent = false;
             }
             $scope.edit = function() {
