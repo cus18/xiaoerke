@@ -67,7 +67,7 @@
         }
         $scope.chooseTime = function(item){
             if(item.state == "1")return
-            var routePath = "http://localhost/keeper/phoneConsultPay/patientPay.do?" +
+            var routePath = "http://xiaoxiaoerke.cn/keeper/phoneConsultPay/patientPay.do?" +
                 "phoneConDoctorDetail="
                 + item.id;
             GetUserLoginStatus.save({routePath:routePath},function(data){
@@ -77,7 +77,7 @@
                 }else if(data.status=="8"){
                     window.location.href = data.redirectURL+"?targeturl="+routePath;
                 }else{
-                    window.location.href = "http://localhost/keeper/phoneConsultPay/patientPay.do?phoneConDoctorDetail="
+                    window.location.href = "http://xiaoxiaoerke.cn/keeper/phoneConsultPay/patientPay.do?phoneConDoctorDetail="
                         + item.id+"&doctorId="+$stateParams.doctorId;
                 }})
         }

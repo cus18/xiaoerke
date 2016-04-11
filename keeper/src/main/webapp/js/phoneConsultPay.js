@@ -146,11 +146,13 @@ var doRefresh = function(){
         data: {},
         complete: function(jqXHR){
             if(jqXHR.status=="404"){
-                window.location.href = "/phoneConsultPay/patientPay.do?phoneConDoctorDetail="+GetQueryString("phoneConDoctorDetail");
+                window.location.href = "/phoneConsultPay/patientPay.do?phoneConDoctorDetail="
+                    +GetQueryString("phoneConDoctorDetail");
             }
         },
         success:function(data){
-            var param = '{routePath:"/phoneConsultPay/patientPay.do?phoneConDoctorDetail='+GetQueryString("phoneConDoctorDetail")+'"}';
+            var param = '{routePath:"/phoneConsultPay/patientPay.do?phoneConDoctorDetail='
+                +GetQueryString("phoneConDoctorDetail")+'"}';
             $.ajaxSetup({
                 contentType : 'application/json'
             });
