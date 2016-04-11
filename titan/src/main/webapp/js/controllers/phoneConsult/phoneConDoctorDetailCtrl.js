@@ -21,6 +21,7 @@
             "#94ceeb","#5abceb","#8cd2f3","#c1e5f7","#3baf36","#7ebe30","#bdd535","#f5d120","#f7f131",
             "#3891cf","#69b3e4","#8b70b0","#ba81b6","#e179a8","#f0a7b3","#c8e6df","#c9e7f9","#f9d7e6",
             "#bdddf4","#e0cae2","#e0d5e9","#d5ece4","#fbe0e5","#fae4ee"];
+        $scope.evaluateList = [];
 
         var routePath = encodeURI(encodeURI("/appointBBBBBB" + $location.path()));
 
@@ -28,6 +29,7 @@
         DoctorDetail.get({"doctorId":$stateParams.doctorId},function(data){
             $scope.pageLoading = false;
             $scope.doctorDetail = data;
+            $scope.evaluateList[0] = $scope.doctorDetail.evaluaMap;
             console.log($scope.doctorDetail.doctorCaseList);
             //计算总的案列数
             $scope.doctorDetail.sumcase=0;
