@@ -11,7 +11,7 @@ define(['appConstipation'], function (app) {
         .factory('AppraisalList',['$resource',function ($resource){
             return $resource(user_h5 + 'constipation/appraisal/appraisalList');
         }])
-        //健康管理添加评论
+        //健康广跃管理添加评论
         .factory('SaveAppraisal',['$resource',function ($resource){
             return $resource(user_h5 + 'constipation/appraisal/saveAppraisal');
         }])
