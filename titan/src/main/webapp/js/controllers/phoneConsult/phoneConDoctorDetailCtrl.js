@@ -1,6 +1,6 @@
 ﻿angular.module('controllers', ['ionic']).controller('phoneConDoctorDetailCtrl', [
-    '$scope','$state','$stateParams','DoctorDetail','DoctorVisitInfoByLocationInWeek','DoctorAppointmentInfoDetail','$location','CheckAttentionDoctor','GetUserLoginStatus','EarliestVisiteInfo',
-    function ($scope,$state,$stateParams,DoctorDetail,DoctorVisitInfoByLocationInWeek,DoctorAppointmentInfoDetail,$location,CheckAttentionDoctor,GetUserLoginStatus,EarliestVisiteInfo) {
+    '$scope','$state','$stateParams','DoctorDetail','DoctorVisitInfoByLocationInWeek','DoctorAppointmentInfoDetail','$location','CheckAttentionDoctor','GetUserLoginStatus','EarliestVisiteInfo','GetUserEvaluate',
+    function ($scope,$state,$stateParams,DoctorDetail,DoctorVisitInfoByLocationInWeek,DoctorAppointmentInfoDetail,$location,CheckAttentionDoctor,GetUserLoginStatus,EarliestVisiteInfo,GetUserEvaluate) {
         $scope.title = "医生详情页";
         $scope.pageLoading =false;
         $scope.toggleItem="phone";//默认的底部选择
@@ -120,6 +120,14 @@
                         ($scope.doctorDetail.fans_number+1);
                 }
             })
+        }
+
+        //获取全部评价（电话咨询）
+        $scope.getConsultEvaluate = function(){
+            $scope.pageLoading = false;
+            GetUserEvaluate.save({"doctorId":$stateParams.doctorId,evaluateType:"1",pageNo:"1",pageSize:"1000"},function(data){
+                $scope.evaluateList = data.evaluateList;
+            });
         }
 
         $scope.$on('$ionicView.enter', function(){
