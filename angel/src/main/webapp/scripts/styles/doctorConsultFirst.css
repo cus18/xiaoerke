@@ -103,7 +103,7 @@ span.emotion:hover{background-position:2px -28px}
 .nametop div.fr {line-height: 50px;margin-right: 20px;cursor: pointer;}
 .headimg {float: left;width: 40px;margin: 5px 10px 5px 20px;}
 .nametop span {display: inline-block;line-height: 50px;}
-.nametop {border-bottom: 1px solid #acacac;font-size:12px;/*height: 62px;*/}
+.nametop {border-bottom: 1px solid #acacac;font-size:12px;height: 52px;}
 /*快捷回复*/
 .chatinstall{border-bottom: 1px solid #acacac;background-color: #fff;}
 .chatinstall span:nth-child(1){margin: 0 15px 0 20px;}
@@ -112,7 +112,7 @@ span.emotion:hover{background-position:2px -28px}
 /*textarea输入框*/
 .inputcontent{padding-left: 175px;padding-right: 405px;}
 textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 100%;height: 100px;box-sizing: border-box;border: 1px solid #dcdcdc;vertical-align: top;resize: none;}
-.sendbtn {height: 43px;border-top:1px solid #acacac;background-color: #f8f8f8;}
+.sendbtn {height: 41px;border-top:1px solid #acacac;border-bottom: 1px solid #acacac;background-color: #f8f8f8;}
 .sendbtn div {cursor: pointer;margin:10px;display: inline-block;color:#fff;float: right;font: 12px/20px 'Microsoft Yahei';padding: 0 15px;border-radius: 4px;}
 .sendbtn div:nth-child(1){background-color: #08b7c2;}
 .sendbtn div:nth-child(2){background-color: #fe717b;}

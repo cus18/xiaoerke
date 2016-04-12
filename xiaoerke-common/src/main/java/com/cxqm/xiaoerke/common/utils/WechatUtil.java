@@ -18,10 +18,7 @@ import java.net.URL;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -478,25 +475,46 @@ public class WechatUtil {
      *
      * @author deliang
      */
-    public String downloadMediaFromWx(String accessToken, String mediaId, String FileName) throws IOException {
+    public String downloadMediaFromWx(String accessToken, String mediaId, String FileName, String messageType) throws IOException {
+
 
         if (StringUtils.isEmpty(accessToken) || StringUtils.isEmpty(mediaId)) return "";
-
-        String download_media_url = "https://api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID";
-        String requestUrl = download_media_url.replace("ACCESS_TOKEN", accessToken).replace("MEDIA_ID", mediaId);
-        URL url = new URL(requestUrl);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setDoInput(true);
-        conn.setDoOutput(true);
-        InputStream inputStream = conn.getInputStream();
-        conn.disconnect();
-
-        Runnable thread = new uploadFileInputStreamThread(FileName, new Long(inputStream.available()), inputStream, OSSObjectTool.BUCKET_CONSULT_PIC);
-        threadExecutor.execute(thread);
+            Long picLen = 0L;
+            InputStream inputStream = null;
+            String url = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token="
+                    + accessToken + "&media_id=" + mediaId;
+            try {
+                URL urlGet = new URL(url);
+                HttpURLConnection http = (HttpURLConnection) urlGet
+                        .openConnection();
+                http.setRequestMethod("GET"); // 必须是get方式请求
+                http.setRequestProperty("Content-Type",
+                        "application/x-www-form-urlencoded");
+                http.setDoOutput(true);
+                http.setDoInput(true);
+                System.setProperty("sun.net.client.defaultConnectTimeout", "30000");// 连接超时30秒
+                System.setProperty("sun.net.client.defaultReadTimeout", "30000"); // 读取超时30秒
+                http.connect();
+                // 获取文件转化为byte流
+                inputStream = http.getInputStream();
+                picLen = http.getContentLengthLong();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         //返回图片的阿里云地址getConsultMediaBaseUrl
-        String mediaURL = OSSObjectTool.getConsultMediaBaseUrl()+ FileName;
+        String mediaName = mediaId;
+        if(messageType.equals("image")){
+            mediaName = mediaName+".jpg";
+        }else if(messageType.equals("voice")){
+            mediaName = mediaName+".mp4";
+        }else if(messageType.equals("video")){
+            mediaName = mediaName+".mp4";
+        }
+        Runnable thread = new uploadFileInputStreamThread(mediaName, picLen, inputStream, OSSObjectTool.BUCKET_CONSULT_PIC);
+        threadExecutor.execute(thread);
+
+        String mediaURL = OSSObjectTool.getConsultMediaBaseUrl()+ mediaName;
 
         return mediaURL;
     }

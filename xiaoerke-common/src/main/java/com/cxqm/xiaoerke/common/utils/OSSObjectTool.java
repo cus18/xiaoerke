@@ -62,7 +62,7 @@ public class OSSObjectTool {
 
     public static String getConsultMediaBaseUrl(){
         http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/
-        return "http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com//";
+        return "http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/";
     }
 
     public static Map<String,String> getObject(String bucketName, String key)

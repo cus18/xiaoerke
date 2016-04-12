@@ -144,13 +144,16 @@ public class ConsultOrderUserController {
 
     /**
      * 取消订单
-     * @param phoneConsultaServiceId
+     * @param params
      * @return map
      * */
     @RequestMapping(value = "cancelOrder",method = {RequestMethod.POST,RequestMethod.GET})
     public
     @ResponseBody
-    Map<String,Object> cancelOrder(@RequestParam Integer phoneConsultaServiceId,@RequestParam String cancelReason){
+    Map<String,Object> cancelOrder(@RequestBody Map<String, Object> params){
+        Integer phoneConsultaServiceId = Integer.parseInt((String) params.get("phoneConsultaServiceId"));
+        String cancelReason = (String)params.get("cancelReason");
+//        @RequestParam Integer phoneConsultaServiceId,@RequestParam String cancelReason
         HashMap<String,Object> resultMap = new HashMap<String, Object>();
         int resultState = consultPhonePatientService.cancelOrder(phoneConsultaServiceId,cancelReason);
         resultMap.put("reultState",resultState);
