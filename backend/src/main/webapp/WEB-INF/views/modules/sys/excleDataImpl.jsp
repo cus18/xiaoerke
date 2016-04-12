@@ -97,7 +97,7 @@
 				<input id="hospitalFile" type="file" name="files" class="btn btn-small">&nbsp;&nbsp;&nbsp;
 				<input id="hospitalSubmit" type="submit" class="btn btn-success" value="导入">
 				<span class="help-inline">生成医院信息</span>
-				<a href="http://101.200.194.68:8081/xiaoerke-backend/excleTemplate/hospital.xls">模版下载</a>
+				<a href="http://101.200.194.68:8081/backend/excleTemplate/hospital.xls">模版下载</a>
 			</div>
 		</div>
 	</form:form>
@@ -111,7 +111,7 @@
 				<input id="illnessFile" type="file" name="files" class="btn btn-small">&nbsp;&nbsp;&nbsp;
 				<input id="illnessSubmit" type="submit" class="btn btn-success" value="导入">
 				<span class="help-inline">往疾病库里添加数据</span>
-				<a href="http://101.200.194.68:8081/xiaoerke-backend/excleTemplate/illness.xls">模版下载</a>
+				<a href="http://101.200.194.68:8081/backend/excleTemplate/illness.xls">模版下载</a>
 			</div>
 		</div>
 	</form:form>
@@ -125,7 +125,7 @@
 				<input id="doctorIllnessFile" type="file" name="files" class="btn btn-small">&nbsp;&nbsp;&nbsp;
 				<input id="doctorIllnessSubmit" type="submit" class="btn btn-success" value="导入">
 				<span class="help-inline">注意：1、医生手机号必须已存在 2、一级疾病和二级疾病在疾病库里已存在 。否则导入失败。</span>
-				<a href="http://101.200.194.68:8081/xiaoerke-backend/excleTemplate/doctor_illness_relation.xls">模版下载</a>
+				<a href="http://101.200.194.68:8081/backend/excleTemplate/doctor_illness_relation.xls">模版下载</a>
 			</div>
 		</div>
 	</form:form>
@@ -140,7 +140,7 @@
 				<input id="doctorFile" type="file" name="files" class="btn btn-small">&nbsp;&nbsp;&nbsp;
 				<input id="doctorSubmit" type="submit" class="btn btn-success" value="导入">
 				<span class="help-inline">生成user信息、生成医生信息、医生与医院的关系信息</span>
-				<a href="http://101.200.194.68:8081/xiaoerke-backend/excleTemplate/doctor.xls">模版下载</a>
+				<a href="http://101.200.194.68:8081/backend/excleTemplate/doctor.xls">模版下载</a>
 			</div>
 		</div>
 	</form:form>
@@ -155,7 +155,7 @@
 				<input id="sourceFile" type="file" name="files" class="btn btn-small">&nbsp;&nbsp;&nbsp;
 				<input id="sourceSubmit" type="submit" class="btn btn-success" value="导入">
 				<span class="help-inline">生成号源信息</span>
-				<a href="http://101.200.194.68:8081/xiaoerke-backend/excleTemplate/service.xls">模版下载</a>
+				<a href="http://101.200.194.68:8081/backend/excleTemplate/service.xls">模版下载</a>
 			</div>
 		</div>
 	</form:form>
