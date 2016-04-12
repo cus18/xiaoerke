@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.order.service;
 
 import com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,11 +36,11 @@ public interface ConsultPhoneOrderService {
      * 定时任务
      * 查询当前时间需要创建通话链接的订单数据
      * */
-    List<HashMap<String, Object>> getOrderPhoneConsultListByTime(String state);
+    List<HashMap<String, Object>> getOrderPhoneConsultListByTime(String state,Date date);
 
     /**
      * 定时任务
-     * 查询当前时间需要创建通话链接的订单数据
+     * 根据主见查询订单详细信息
      * */
     HashMap<String, Object> getConsultConnectInfo(Integer id);
 

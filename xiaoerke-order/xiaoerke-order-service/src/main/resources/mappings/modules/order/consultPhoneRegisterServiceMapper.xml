@@ -44,15 +44,41 @@
   </select>
 
   <select id="getOrderPhoneConsultListByTime" resultType="java.util.Map" >
-    select crs.id,crs.phone userPhone,cdr.doctor_answer_phone doctorPhone,cdr.server_length conversationLength from consultPhone_register_service crs
-    left join sys_consultPhone_service scs on crs.sys_phoneConsult_service_id = scs.id
-    left join consultphone_doctor_relation cdr on cdr.doctor_id = scs.sys_doctor_id
+    SELECT
+    crs.id,
+    sd.id doctorId,
+    sd. NAME doctorName,
+    cdr.doctor_answer_phone doctorPhone,
+    DATE_FORMAT(scs.beginTime, '%k:%i') beginTime,
+    DATE_FORMAT(scs.endTime, '%k:%i') endTime,
+    DATE_FORMAT(scs.date, '%Y/%m/%d') date,
+    DATE_FORMAT(
+    crs.create_time,
+    '%Y/%m/%d  %k:%i'
+    ) orderTime,
+    crs.register_no AS orderNo,
+    crs.phone userPhone,
+    sbi. NAME babyName,
+    cdr.price,
+    crs.type,
+    crs.surplusTime,
+    su.openid,
+    cdr.server_length conversationLength
+    FROM
+    consultPhone_register_service crs
+    LEFT JOIN sys_consultPhone_service scs ON crs.sys_phoneConsult_service_id = scs.id
+    LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = scs.sys_doctor_id
+    LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
+    LEFT JOIN sys_patient sp ON sp.id = crs.sys_patient_id
+    LEFT JOIN sys_baby_baseInfo sbi ON sp.sys_user_id = sbi.userid
+    LEFT JOIN sys_user su on sp.sys_user_id = su.id
+    WHERE
     where 1=1
     <if test="state != null" >
       and crs.state = #{state,jdbcType=VARCHAR}
     </if>
     AND (
-    now()>=DATE_FORMAT(
+    #{date}>=DATE_FORMAT(
     CONCAT(
     DATE_FORMAT(scs.date, '%Y:%c:%d'),
     DATE_FORMAT(scs.beginTime, ' %k:%i:%s')

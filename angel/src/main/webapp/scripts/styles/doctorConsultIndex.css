@@ -35,7 +35,7 @@ header{position: relative;}
 .bg-b {background: #00c20b;}
 
 /*聊天窗口*/
-.msg {border-top: 1px solid #acacac;border-bottom: 1px solid #acacac;background-color: #fff;}
+.msg {border-top: 1px solid #acacac;background-color: #fff;}
 .msg-l {background: #fff;width: 175px;}
 .msg-m {background: #fff;min-width: 452px;}
 .msg-r {width: 403px;border-left: 1px solid #acacac;background-color: #fff;}

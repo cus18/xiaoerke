@@ -12,17 +12,6 @@
     <file type="web" url="file://$PROJECT_DIR$/market" />
     <file type="web" url="file://$PROJECT_DIR$/titan" />
     <file type="web" url="file://$PROJECT_DIR$/wisdom" />
-    <file type="web" url="file://$PROJECT_DIR$/xiaoerke-appoint" />
-    <file type="web" url="file://$PROJECT_DIR$/xiaoerke-authcenter" />
-    <file type="web" url="file://$PROJECT_DIR$/xiaoerke-backend" />
-    <file type="web" url="file://$PROJECT_DIR$/xiaoerke-consult-webapp" />
-    <file type="web" url="file://$PROJECT_DIR$/xiaoerke-doctor" />
-    <file type="web" url="file://$PROJECT_DIR$/xiaoerke-healthPlan" />
-    <file type="web" url="file://$PROJECT_DIR$/xiaoerke-insurance-webapp" />
-    <file type="web" url="file://$PROJECT_DIR$/xiaoerke-knowledge" />
-    <file type="web" url="file://$PROJECT_DIR$/xiaoerke-marketing-webapp" />
-    <file type="web" url="file://$PROJECT_DIR$/xiaoerke-runTimeTask" />
-    <file type="web" url="file://$PROJECT_DIR$/xiaoerke-wxapp" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
@@ -30,33 +19,6 @@
         <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
-    <option name="ignoredFiles">
-      <set>
-        <option value="$PROJECT_DIR$/xiaoerke-appoint/pom.xml" />
-        <option value="$PROJECT_DIR$/xiaoerke-authcenter/pom.xml" />
-        <option value="$PROJECT_DIR$/xiaoerke-backend/pom.xml" />
-        <option value="$PROJECT_DIR$/xiaoerke-consult-webapp/pom.xml" />
-        <option value="$PROJECT_DIR$/xiaoerke-doctor/pom.xml" />
-        <option value="$PROJECT_DIR$/xiaoerke-healthPlan/pom.xml" />
-        <option value="$PROJECT_DIR$/xiaoerke-insurance-webapp/pom.xml" />
-        <option value="$PROJECT_DIR$/xiaoerke-knowledge/pom.xml" />
-        <option value="$PROJECT_DIR$/xiaoerke-marketing-webapp/pom.xml" />
-        <option value="$PROJECT_DIR$/xiaoerke-runTimeTask/pom.xml" />
-        <option value="$PROJECT_DIR$/xiaoerke-wxapp/pom.xml" />
-      </set>
-    </option>
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
-    <OptionsSetting value="true" id="Add" />
-    <OptionsSetting value="true" id="Remove" />
-    <OptionsSetting value="true" id="Checkout" />
-    <OptionsSetting value="true" id="Update" />
-    <OptionsSetting value="true" id="Status" />
-    <OptionsSetting value="true" id="Edit" />
-    <ConfirmationsSetting value="0" id="Add" />
-    <ConfirmationsSetting value="0" id="Remove" />
-  </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/classes" />
-  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
 </project>
