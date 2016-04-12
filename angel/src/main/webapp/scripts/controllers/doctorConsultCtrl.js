@@ -1,4 +1,3 @@
-
 angular.module('controllers', ['luegg.directives'])
     .controller('doctorConsultFirstCtrl', ['$scope', '$sce', '$window','getTodayRankingList', 'getOnlineDoctorList',
         'getCommonAnswerList', 'getMyAnswerList', 'GetUserLoginStatus', '$location', 'GetUserRecordList','getMyAnswerModify',
@@ -393,30 +392,11 @@ angular.module('controllers', ['luegg.directives'])
             //编辑分组
             $scope.editgroup =  false;
             $scope.closeEditGroup = function() {
-                var setContent = {};
-                setContent.name = $scope.info.editGroup;
-                setContent.secondAnswer=[];
-                if (sign == 0 && flag == 0){
-                    $scope.myAnswer.splice(parentIndex, 1,setContent);
-                    saveMyAnswer();
-                }else if(sign == 1 && flag == 0){
-                    $scope.commonAnswer.splice(parentIndex, 1,setContent);
-                    saveCommonAnswer(getMyAnswerModify, $scope);
-                }
                 $scope.editgroup = false;
             }
             //编辑内容
             $scope.editcontent =  false;
             $scope.closeEditContent = function() {
-                var setContent = {};
-                setContent.name = $scope.info.editContent;
-                if (sign == 0 && flag == 1){
-                    $scope.myAnswer[parentIndex].secondAnswer.splice(childIndex, 1,setContent);
-                    saveMyAnswer();
-                }else if(sign == 1 && flag == 1){
-                    $scope.commonAnswer[parentIndex].secondAnswer.splice(childIndex, 1,setContent);
-                    saveCommonAnswer(getMyAnswerModify, $scope);
-                }
                 $scope.editcontent = false;
             }
             $scope.edit = function() {
@@ -433,6 +413,31 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.editcontent = true;
                     }
                 }
+            }
+            $scope.editGroupSubmit = function () {
+                var setGroup = {};
+                setGroup.name = $scope.info.editGroup;
+                setGroup.secondAnswer=[];
+                if (sign == 0 && flag == 0){
+                    $scope.myAnswer.splice(parentIndex, 1,setGroup);
+                    saveMyAnswer();
+                }else if(sign == 1 && flag == 0){
+                    $scope.commonAnswer.splice(parentIndex, 1,setGroup);
+                    saveCommonAnswer(getMyAnswerModify, $scope);
+                }
+                $scope.editgroup=false;
+            }
+            $scope.editContentSubmit = function () {
+                var setContent = {};
+                setContent.name = $scope.info.editContent;
+                if (sign == 0 && flag == 1){
+                    $scope.myAnswer[parentIndex].secondAnswer.splice(childIndex, 1,setContent);
+                    saveMyAnswer();
+                }else if(sign == 1 && flag == 1){
+                    $scope.commonAnswer[parentIndex].secondAnswer.splice(childIndex, 1,setContent);
+                    saveCommonAnswer(getMyAnswerModify, $scope);
+                }
+                $scope.editcontent=false;
             }
             //删除
             $scope.remove = function(){
