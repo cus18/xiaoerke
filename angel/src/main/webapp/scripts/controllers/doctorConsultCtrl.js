@@ -559,6 +559,9 @@ angular.module('controllers', ['luegg.directives'])
                     }, function (data) {
                         $scope.userConsultListInfo = data.userList;
                         $scope.currentUserConsultRecordDetail = data.records;
+                        if (senderId==doctor){
+
+                        }
                     });
                 }
             }
@@ -596,13 +599,3 @@ angular.module('controllers', ['luegg.directives'])
             }
 
         }])
-/*            //保存公共回复
- $scope.addGroupFirst = function () {
- var addGroupFirst = {};
- addGroupFirst.name = $("#addGroupFirstId").val();
- $scope.commonAnswer.push(addGroupFirst);
- alert(123);
- getMyAnswerModify.save({answer:$scope.commonAnswer,answerType:"commonAnswer"}, function (data) {
- });
- $scope.addgroup = false;
- }*/

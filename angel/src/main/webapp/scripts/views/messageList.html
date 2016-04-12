@@ -128,38 +128,36 @@
             </div>
             <div class='w10 h20 examinecontent'>
                 <ul>
-                    <div ng-repeat="item in currentUserConsultRecordDetail">
-                        <li>
-                            <div ng-if="item.senderId==doctor">
-                                <div class="name">
-                                    {{item.doctorName}} {{item.dateTime}}
-                                </div>
-                                <div ng-if="item.messageType=='text'" id="show" class="chatcontent">
-                                    {{item.message}}
-                                </div>
-                            </div>
-                            <div ng-if="item.senderId!=doctor">
-                                <div class="name">
-                                    {{item.senderName}} {{item.createDate}}
-                                </div>
-                                <div ng-if="item.messageType=='text'" class="chatcontent">
-                                    {{item.message}}
-                                </div>
-                                <div ng-if="item.messageType=='1'" class="chatcontent">
-                                    <a target="_blank" ng-href="{{item.message}}">
-                                        <img width="100" height="100" ng-src="{{item.message}}">
-                                    </a>
-                                </div>
-                                <div ng-if="item.messageType=='2'" class="chatcontent">
-                                    <audio ng-src="{{item.message}}" controls="controls"/>
-                                </div>
-                                <div ng-if="item.messageType=='3'" class="chatcontent">
-                                    <video width="500" height="250" ng-src="{{item.message}}" controls="controls"/>
-                                </div>
-                            </div>
-                        </li>
-                        <br/>
-                    </div>
+                     <li ng-repeat="item in currentUserConsultRecordDetail">
+                         <div ng-if="item.senderId==doctor">
+                             <div class="name" style="color:#7fc700">
+                                 {{item.doctorName}} {{item.dateTime}}
+                             </div>
+                             <div ng-if="item.messageType=='text'" id="show" class="chatcontent">
+                                 {{item.message}}
+                             </div>
+                         </div>
+                         <div ng-if="item.senderId!=doctor">
+                             <div class="name">
+                                 {{item.senderName}} {{item.createDate}}
+                             </div>
+                             <div ng-if="item.messageType=='text'" class="chatcontent">
+                                 {{item.message}}
+                             </div>
+                             <div ng-if="item.messageType=='1'" class="chatcontent">
+                                 <a target="_blank" ng-href="{{item.message}}">
+                                     <img width="100" height="100" ng-src="{{item.message}}">
+                                 </a>
+                             </div>
+                             <div ng-if="item.messageType=='2'" class="chatcontent">
+                                 <audio ng-src="{{item.message}}" controls="controls"/>
+                             </div>
+                             <div ng-if="item.messageType=='3'" class="chatcontent">
+                                 <video width="500" height="250" ng-src="{{item.message}}" controls="controls"/>
+                             </div>
+                         </div>
+                     </li>
+
                 </ul>
 
             </div>
@@ -183,14 +181,6 @@
                     <a href="#"><span>接入语设置</span></a>
                     <a href="#"><span>会话自动关闭设置</span></a>
                 </div>
-                <!--
-                <h3>个人设置</h3>
-                <div>
-                    <a href="#"><span>常规</span></a>
-                    <a href="#"><span>热键</span></a>
-                    <a href="#"><span>声音</span></a>
-                    <a href="#"><span>网络连接</span></a>
-                </div>-->
             </div>
             <div class="xtsz-up-right">
                 <ul>
