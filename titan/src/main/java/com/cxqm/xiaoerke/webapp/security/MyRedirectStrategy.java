@@ -17,12 +17,15 @@ public class MyRedirectStrategy extends DefaultRedirectStrategy {
 		url = url.replaceAll("BBBBBB", "#");
 		url = url.replaceAll("AAAAAA", "&");
 
-		if(url.indexOf(ConstantUtil.WebPath)==-1){
+		System.out.println(url);
+		System.out.println(WebUtil.getWebPath(request));
+
+		if(url.indexOf("http://")==-1){
 			url = WebUtil.getWebPath(request) + url;
 		}
 
 		this.setContextRelative(false);
-		
+
 		super.sendRedirect(request, response, url);
     }
 	
