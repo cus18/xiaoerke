@@ -1045,8 +1045,11 @@ public class ScheduledTask {
         date.setTime(date.getTime()-5*60*100);
         List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",date);
         for(HashMap<String ,Object> map:consultOrderList){
-          String phone = (String)map.get("phone");
-//            【宝大夫】（接听提醒）**小朋友家长，您预约**医生的2月14日周三15:00的电话咨询将在5分钟后接通，届时您会接到号码为010-12345678的来电，请保持电话畅通。订单号：*********，有疑问，请致电400-623-7120。
+          Map<String,Object> parameter = systemService.getWechatParameter();
+          String token = (String)parameter.get("token");
+          String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)map.get("date"),"yyyy/MM/dd"));
+          PatientMsgTemplate.consultPhoneWaring2Wechat((String)map.get("doctorName"),(String)map.get("date"),week,(String)map.get("beginTime") ,(String)map.get("endTime") ,(String)map.get("phone") ,(String)map.get("orderNo"),(String)map.get("openid"),token ,"");
+          PatientMsgTemplate.consultPhoneWaring2Msg((String)map.get("babyName") ,(String)map.get("doctorName"),(String)map.get("date"), week,(String)map.get("beginTime"),(String)map.get("phone"),(String)map.get("orderNo"));
         }
     }
 
