@@ -305,12 +305,13 @@ public class PatientMsgTemplate {
 
     /**
      * 退款成功
-     * @param register_no 订单号
-     * @param price 退款金额
-     * @param openId
-     * @param token
-     * @param url
+
      */
+    public static void consultPhoneRefund2Msg(String babyName,String doctorName, String price,String phone){
+        String content =  "（退款成功）"+babyName+"小朋友家长您好，由于您预约的"+doctorName+"医生的电话咨询未接通，已将"+price+"元咨询费用退还到宝大夫账户。有疑问请致电400-623-7120。";
+        SMSMessageUtil.sendMsg(phone, content);
+    }
+
     public static void consultPhoneRefund2Wechat(String register_no,String price, String openId,String token ,String url){
         ArrayList<Object> obj = new ArrayList<Object>();
         WechatArticle article = new WechatArticle();
@@ -350,6 +351,10 @@ public class PatientMsgTemplate {
         }
     }
 
+    public static void consultPhoneWaring2Msg(String babyName,String doctorName,String date,String week,String beginTime,String phone,String register_no){
+        String content = "（接听提醒）"+babyName+"小朋友家长，您预约"+doctorName+"医生的"+date+" "+week+" "+beginTime+"的电话咨询将在5分钟后接通，届时您会接到号码为010-4006237120的来电，请保持电话畅通。订单号："+register_no+"，有疑问，请致电400-623-7120。";
+        SMSMessageUtil.sendMsg(phone, content);
+    }
     /**
      * 订单评价提醒
      * @param register_no 订单编号
