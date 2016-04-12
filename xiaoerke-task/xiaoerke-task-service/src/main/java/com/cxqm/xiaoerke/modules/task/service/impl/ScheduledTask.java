@@ -1030,7 +1030,7 @@ public class ScheduledTask {
               consultPhonePatientService.updateOrderInfoBySelect(vo);
 //             将钱退还到用户的账户
               HashMap<String, Object> response = new HashMap<String, Object>();
-              accountService.updateAccount((Float) map.get("price"), (Integer) map.get("id")+"", response, false, UserUtils.getUser().getId(),"电话咨询超时取消退款");
+              accountService.updateAccount(0F, (Integer) map.get("id")+"", response, false, UserUtils.getUser().getId(),"电话咨询超时取消退款");
 //              并发送消息
 
           }
@@ -1046,7 +1046,7 @@ public class ScheduledTask {
         List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",date);
         for(HashMap<String ,Object> map:consultOrderList){
           String phone = (String)map.get("phone");
-
+//            【宝大夫】（接听提醒）**小朋友家长，您预约**医生的2月14日周三15:00的电话咨询将在5分钟后接通，届时您会接到号码为010-12345678的来电，请保持电话畅通。订单号：*********，有疑问，请致电400-623-7120。
         }
     }
 
