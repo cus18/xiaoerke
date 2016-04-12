@@ -22,7 +22,7 @@ public class MyRedirectStrategy extends DefaultRedirectStrategy {
 		System.out.println(url);
 		System.out.println(WebUtil.getWebPath(request));
 
-		if(url.indexOf(ConstantUtil.WebPath)==-1){
+		if(url.indexOf("http://")==-1){
 			url = WebUtil.getWebPath(request) + url;
 		}
 

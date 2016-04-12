@@ -13,10 +13,17 @@ public class MyRedirectStrategy extends DefaultRedirectStrategy {
 	
 	public void sendRedirect(HttpServletRequest request, HttpServletResponse response, String url) throws IOException {
 		url = url.replaceAll("BBBBBB", "#");
-		
-		url = WebUtil.getWebPath(request) + url;
+		url = url.replaceAll("AAAAAA", "&");
+
+		System.out.println(url);
+		System.out.println(WebUtil.getWebPath(request));
+
+		if(url.indexOf("http://")==-1){
+			url = WebUtil.getWebPath(request) + url;
+		}
+
 		this.setContextRelative(false);
-		
+
 		super.sendRedirect(request, response, url);
     }
 	
