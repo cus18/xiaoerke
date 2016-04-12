@@ -84,7 +84,7 @@
                                     imgUrl: 'http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/4f695bec386944898c423a2f78b579ac',
                                     success: function (res) {
                                         $scope.pageLoading = true;
-                                        OrderShareOperation.save({"patient_register_service_id":$stateParams.patient_register_service_id,
+                                        OrderShareOperation.save({"patient_register_service_id":$stateParams.patient_register_service_id,"type":$stateParams.type,
                                             "action":{"status":"4"}},function(data){
                                             $scope.pageLoading = false;
                                         })
