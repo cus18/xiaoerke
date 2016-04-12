@@ -995,7 +995,7 @@ public class ScheduledTask {
 
     //建立患者与医生之间的通讯
     public void getConnenct4doctorAndPatient(){
-      List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",null);
+      List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",new Date());
       for(HashMap map:consultOrderList){
           String doctorPhone =  (String)map.get("doctorPhone");
           String userPhone =  (String)map.get("userPhone");
@@ -1003,7 +1003,7 @@ public class ScheduledTask {
           List<ConsultPhoneRecordVo> list = consultPhoneService.getConsultRecordInfo(orderId + "", "CallAuth");
           if(list.size()<2){
               Integer conversationLength =  (Integer)map.get("conversationLength")*60;
-              HashMap<String, Object> result = CCPRestSDK.callback( doctorPhone,userPhone,
+              HashMap<String, Object> result = CCPRestSDK.callback(doctorPhone,userPhone,
                       "4006237120", "4006237120", null,
                       "true", null, orderId+"",
                       conversationLength+"", null, "0",
@@ -1038,7 +1038,9 @@ public class ScheduledTask {
      * 再建立通讯的五分钟前发消息给用户
      * */
     public void sendMsg2User4ConsultOrder(){
-        List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1","befor");
+        Date date = new Date();
+        date.setTime(date.getTime()-5*60*100);
+        List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",date);
         for(HashMap<String ,Object> map:consultOrderList){
           String phone = (String)map.get("phone");
 
