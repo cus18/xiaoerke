@@ -162,7 +162,7 @@ public class FieldworkWechatController {
         }else if("27".equals(url)){
             url = ConstantUtil.S3_WEB_URL + "/titan/antiDogPay/patientPay.do";
         } else if ("28".equals(url)){
-            url = ConstantUtil.S3_WEB_URL + "/titan/firstPage/phoneConsult";
+            url = "http://xiaork.cn" + "/titan/firstPage/phoneConsult";
         }
 
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +

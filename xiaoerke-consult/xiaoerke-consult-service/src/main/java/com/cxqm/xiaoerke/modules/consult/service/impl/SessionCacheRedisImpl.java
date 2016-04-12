@@ -86,8 +86,8 @@ public class SessionCacheRedisImpl implements SessionCache {
 	}
 
 	@Override
-	public void putWechatSessionByOpenId(String openId,Session wechatSession) {
-		redisTemplate.opsForHash().put(USER_WECHATSESSION_KEY, openId, wechatSession);
+	public void putWechatSessionByOpenId(String openId,RichConsultSession richConsultSession) {
+		redisTemplate.opsForHash().put(USER_WECHATSESSION_KEY, openId, richConsultSession);
 	}
 
 	@Override

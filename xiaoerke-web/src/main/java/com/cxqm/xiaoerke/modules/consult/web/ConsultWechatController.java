@@ -1,7 +1,7 @@
-/**
+package com.cxqm.xiaoerke.modules.consult.web; /**
  * Copyright &copy; 2012-2014 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
-package com.cxqm.xiaoerke.webapp.controller;
+
 
 import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
@@ -9,27 +9,25 @@ import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionCache;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
-import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.InetSocketAddress;
 import java.net.URLDecoder;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Date;
+import java.util.HashMap;
 
 
 /**
@@ -63,24 +61,28 @@ public class ConsultWechatController extends BaseController {
         Integer sessionId = sessionCache.getSessionIdByOpenId(openId);
         HashMap<String,Object> createWechatConsultSessionMap = null;
         RichConsultSession consultSession = new RichConsultSession();
-       //聊天记录存入mongodb
+
         ConsultRecordMongoVo consultRecordMongoVo = new ConsultRecordMongoVo();
 
         //需要根据openId获取到nickname，如果拿不到nickName，则用利用openId换算出一个编号即可
         SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
         sysWechatAppintInfoVo.setOpen_id(openId);
         SysWechatAppintInfoVo resultVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
-        String nickName = resultVo.getWechat_name();
-        if(StringUtils.isNotNull(nickName)){
-            nickName = openId +  (new Date()).getTime();
+        if(resultVo == null){
+            return "";
+        }
+        String nickName = openId +  (new Date()).getTime();
+        if(resultVo!=null){
+            if(StringUtils.isNotNull(resultVo.getWechat_name())){
+               nickName = resultVo.getWechat_name();
+            }
         }
         Channel csChannel = null;
-        //如果此用户是第一次发送消息
+        //如果此用户不是第一次发送消息，则sessionId不为空
         if(sessionId!=null){
             consultSession = sessionCache.getConsultSessionBySessionId(sessionId);
             csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
-        }else{//如果此用户不是第一次发送消息
-
+        }else{//如果此用户是第一次发送消息，则sessionId为空
             consultSession.setCreateTime(new Date());
             consultSession.setOpenid(openId);
             consultSession.setNickName(nickName);
@@ -113,7 +115,7 @@ public class ConsultWechatController extends BaseController {
                     //根据mediaId，从微信服务器上，获取到媒体文件，再将媒体文件，放置阿里云服务器，获取URL
                     try{
                         WechatUtil wechatUtil = new WechatUtil();
-                        String mediaURL = wechatUtil.downloadMediaFromWx(sessionCache.getWeChatToken(),mediaId,nickName);
+                        String mediaURL = wechatUtil.downloadMediaFromWx("bIkXki53G7M6Ogm8xGJR5gVBAVDLUiGJDx64V8xtr7gSIyKDprPQWgQZ1dysVJtp_1nXQY2SeBe-WvPSVL0woyLDqoI4Us57p4CUMI0FB48mSKd0k9zC1TDF0MyePfnwBYEeAIAIFL",mediaId,nickName,messageType);//sessionCache.getWeChatToken()
                         obj.put("content", mediaURL);
                     }catch (IOException e){
                         e.printStackTrace();
@@ -130,7 +132,6 @@ public class ConsultWechatController extends BaseController {
 
         //更新会话操作时间
         consultRecordService.saveConsultSessionStatus(sessionId,consultSession.getUserId());
-
 
         return "";
     }

@@ -49,7 +49,7 @@
                         <p>等待接入</p>
                     </div>
                     <div class="tab-content-chat " ng-click="toggleRankList()">
-                        <h3>5</h3>
+                        <h3>{{info.rankListlength}}</h3>
                         <p>已接会话</p>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                  ng-repeat="item in alreadyJoinPatientConversationContent"
                  ng-click="chooseAlreadyJoinConsultPatient(item.patientId,item.patientName)"
                  alt="">
-                <img src="images/consultPatient.png">{{item.patientName}}
+                {{item.patientName}}
                 {{item.dateTime}}&nbsp;&nbsp;
             </div>
         </div>
@@ -73,24 +73,12 @@
             </div>
             <div class="reply-content">
                 <div class="chatinstall">
-                  <span ng-click="add()">
-                      <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(11).png" alt=""/>
-                      添加</span>
-                  <span ng-click="edit()">
-                      <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(12).png" alt=""/>
-                      编辑</span>
-                  <span ng-click="remove()">
-                      <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(3).png" alt=""/>
-                      删除</span>
-                  <span>
-                      <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(13).png" alt=""/>
-                      向上</span>
-                  <span>
-                      <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(1).png" alt=""/>
-                      向下</span>
-                  <span>
-                      <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(2).png" alt=""/>
-                      同步</span>
+                  <span ng-click="add()">添加</span>
+                  <span ng-click="edit()">编辑</span>
+                  <span ng-click="remove()">删除</span>
+                  <span>向上</span>
+                  <span>向下</span>
+                  <span>同步</span>
                 </div>
                 <div class="replayContent">
                 <div class="myreply">

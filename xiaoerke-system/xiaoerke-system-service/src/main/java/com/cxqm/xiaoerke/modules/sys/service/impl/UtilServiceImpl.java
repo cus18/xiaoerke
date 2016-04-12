@@ -143,7 +143,39 @@ public class UtilServiceImpl implements UtilService {
         return response;
     }
 
-    //============================================================123==========================
+    @Override
+    public String bindUser4ConsultDoctor(String mobile, String verifyCode, String openId){
+        String response = null;
+        //根据用户的手机号，来判断短信下发的code是否还有效
+        ValidateBean validateBean = utilDao.getIdentifying(mobile);
+        Date date = validateBean.getCreateTime();
+        boolean flag = (date.getTime() + 1000 * 300) > new Date().getTime();
+        if (validateBean != null && flag && verifyCode.equals(validateBean.getCode())) {
+            //code有效，根据用户的手机号（切记，目前手机号，都是用户user表中的login_name）
+            User userSearch = new User();
+            userSearch.setLoginName(mobile);
+            Map user = userDao.getUserByLoginName(userSearch);
+
+            if (user != null) {
+                String userType = (String) user.get("user_type");
+                if (User.USER_TYPE_DISTRIBUTOR.equalsIgnoreCase(userType)) {
+                    CreateUser(mobile, openId, "distributor");
+                    response = "1";//验证码有效，且完成账户绑定
+                }else if(User.USER_TYPE_CONSULTDOCTOR.equalsIgnoreCase(userType)){
+                    CreateUser(mobile, openId, "consultDoctor");
+                    response = "1";//验证码有效，且完成账户绑定
+                }
+                else
+                    response = "2";//客服未认证
+            } else {
+                response = "2";//客服未认证
+            }
+        } else {
+            response = "0";//验证码无效，绑定没有完成
+        }
+
+        return response;
+    }
 
     /**
      * 创建用户
@@ -189,7 +221,43 @@ public class UtilServiceImpl implements UtilService {
                 accountInfo.setUpdatedTime(new Date());
                 accountService.saveOrUpdateAccountInfo(accountInfo);
             }
-        } else if (type.equals("patient")) {
+        }else if(type.equals("distributor")||type.equals("consultDoctor")){
+            User userSearch = new User();
+            userSearch.setLoginName(num);
+            Map user = userDao.getUserByLoginName(userSearch);
+            User userNew = new User();
+            String sys_user_id = (String) user.get("id");
+            userNew.setId(sys_user_id);
+            userNew.setLoginName(num);
+            userNew.setPhone(num);
+            userNew.setOpenid(openid);
+            userNew.setCompany(new Office((String) user.get("company_id")));
+            userNew.setOffice(new Office((String) user.get("office_id")));
+            userNew.setPassword((String) user.get("password"));
+            userNew.setName((String) user.get("name"));
+            userNew.setUserType((String) user.get("user_type"));
+            userNew.setLoginFlag((String) user.get("login_flag"));
+            userNew.setCreateDate((Date) user.get("create_date"));
+            userNew.setDelFlag((String) user.get("del_flag"));
+            userDao.update(userNew);
+
+            //更新账户
+            AccountInfo accountInfo = accountService.findAccountInfoByUserId(sys_user_id);
+            if (accountInfo == null) {
+                accountInfo = new AccountInfo();
+                accountInfo.setId(IdGen.uuid());
+                accountInfo.setUserId(sys_user_id);
+                accountInfo.setOpenId(openid);
+                accountInfo.setBalance(Float.parseFloat("0"));
+                accountInfo.setCreatedBy(sys_user_id);
+                accountInfo.setCreateTime(new Date());
+                accountInfo.setStatus("normal");
+                accountInfo.setType("1");
+                accountInfo.setUpdatedTime(new Date());
+                accountService.saveOrUpdateAccountInfo(accountInfo);
+            }
+
+        }else if (type.equals("patient")) {
             User userSearch = new User();
             userSearch.setLoginName(num);
             Map user = userDao.getUserByLoginName(userSearch);

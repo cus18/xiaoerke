@@ -44,12 +44,10 @@
     <div class="content qf">
         <div class="head-b qf chatbox">
             <div class="w5 fl h5">
-                <span>
-                    <img ng-click="refreshUserList()" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_11.png" alt=""/>
+                <span ng-click="refreshUserList()">
                 刷新消息
             </span>
             <span>
-               <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_13.png" alt=""/>
                 发起会话
             </span>
             </div>
@@ -99,16 +97,13 @@
                 </ul>
                 <a id="bottom"></a>
             </div>
-
-            <!--</div>currentUserConsultRecordDetail-->
-
         </div>
         <div class="content-r" style='margin-left: 501px;'>
             <div class='w10 h6 messagelistc'>
                 <div>消息记录</div>
                 <div class="fr">
-                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fb_03.png" alt=""/>
-                    刷新当前信息</div>
+                    刷新当前信息
+                </div>
             </div>
             <div class='w10 h7 messagelistn'>
                 <div>
@@ -128,38 +123,36 @@
             </div>
             <div class='w10 h20 examinecontent'>
                 <ul>
-                    <div ng-repeat="item in currentUserConsultRecordDetail">
-                        <li>
-                            <div ng-if="item.senderId==doctor">
-                                <div class="name">
-                                    {{item.doctorName}} {{item.dateTime}}
-                                </div>
-                                <div ng-if="item.messageType=='text'" id="show" class="chatcontent">
-                                    {{item.message}}
-                                </div>
-                            </div>
-                            <div ng-if="item.senderId!=doctor">
-                                <div class="name">
-                                    {{item.senderName}} {{item.createDate}}
-                                </div>
-                                <div ng-if="item.messageType=='text'" class="chatcontent">
-                                    {{item.message}}
-                                </div>
-                                <div ng-if="item.messageType=='1'" class="chatcontent">
-                                    <a target="_blank" ng-href="{{item.message}}">
-                                        <img width="100" height="100" ng-src="{{item.message}}">
-                                    </a>
-                                </div>
-                                <div ng-if="item.messageType=='2'" class="chatcontent">
-                                    <audio ng-src="{{item.message}}" controls="controls"/>
-                                </div>
-                                <div ng-if="item.messageType=='3'" class="chatcontent">
-                                    <video width="500" height="250" ng-src="{{item.message}}" controls="controls"/>
-                                </div>
-                            </div>
-                        </li>
-                        <br/>
-                    </div>
+                     <li ng-repeat="item in currentUserConsultRecordDetail">
+                         <div ng-if="item.senderId==doctor" style="color:#7fc700">
+                             <div class="name">
+                                 {{item.doctorName}} {{item.dateTime}}
+                             </div>
+                             <div ng-if="item.messageType=='text'" id="show" class="chatcontent">
+                                 {{item.message}}
+                             </div>
+                         </div>
+                         <div ng-if="item.senderId!=doctor">
+                             <div class="name">
+                                 {{item.senderName}} {{item.createDate}}
+                             </div>
+                             <div ng-if="item.messageType=='text'" class="chatcontent">
+                                 {{item.message}}
+                             </div>
+                             <div ng-if="item.messageType=='1'" class="chatcontent">
+                                 <a target="_blank" ng-href="{{item.message}}">
+                                     <img width="100" height="100" ng-src="{{item.message}}">
+                                 </a>
+                             </div>
+                             <div ng-if="item.messageType=='2'" class="chatcontent">
+                                 <audio ng-src="{{item.message}}" controls="controls"/>
+                             </div>
+                             <div ng-if="item.messageType=='3'" class="chatcontent">
+                                 <video width="500" height="250" ng-src="{{item.message}}" controls="controls"/>
+                             </div>
+                         </div>
+                     </li>
+
                 </ul>
 
             </div>
@@ -183,14 +176,6 @@
                     <a href="#"><span>接入语设置</span></a>
                     <a href="#"><span>会话自动关闭设置</span></a>
                 </div>
-                <!--
-                <h3>个人设置</h3>
-                <div>
-                    <a href="#"><span>常规</span></a>
-                    <a href="#"><span>热键</span></a>
-                    <a href="#"><span>声音</span></a>
-                    <a href="#"><span>网络连接</span></a>
-                </div>-->
             </div>
             <div class="xtsz-up-right">
                 <ul>

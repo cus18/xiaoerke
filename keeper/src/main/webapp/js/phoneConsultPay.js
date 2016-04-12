@@ -91,7 +91,7 @@ var doRefresh = function(){
 
     $.ajax({
         type: 'POST',
-        url: "/titan/healthRecord/getBabyinfoList",
+        url: "healthRecord/getBabyinfoList",
         data: "{'openid':''}",
         contentType: "application/json; charset=utf-8",
         success: function(result){
@@ -147,12 +147,12 @@ var doRefresh = function(){
         complete: function(jqXHR){
             if(jqXHR.status=="404"){
                 window.location.href = "/phoneConsultPay/patientPay.do?phoneConDoctorDetail="
-                    +GetQueryString("phoneConDoctorDetail");
+                    +GetQueryString("phoneConDoctorDetail")+"AAAAAAdoctorId="+GetQueryString("doctorId");
             }
         },
         success:function(data){
             var param = '{routePath:"/phoneConsultPay/patientPay.do?phoneConDoctorDetail='
-                +GetQueryString("phoneConDoctorDetail")+'"}';
+                +GetQueryString("phoneConDoctorDetail")+"AAAAAAdoctorId="+GetQueryString("doctorId")+'"}';
             $.ajaxSetup({
                 contentType : 'application/json'
             });

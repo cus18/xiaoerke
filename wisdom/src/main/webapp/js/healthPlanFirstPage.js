@@ -14,7 +14,7 @@ var constipationAdd = false;
 var healthPlanFirstPageInit = function() {
     recordLogs("healthPlanFirstPageAccess");
     $.ajax({
-        url: 'info/loginStatus',
+        url: 'auth/info/loginStatus',
         type: 'post',
         data: {},
         complete: function(jqXHR){
@@ -33,7 +33,7 @@ var healthPlanFirst = function(){
     $.ajaxSetup({
         contentType : 'application/json',
     });
-    $.post('info/loginStatus',paramValue,
+    $.post('auth/info/loginStatus',paramValue,
         function(data) {
              if(data.status=="9"){
                 window.location.href = data.redirectURL;

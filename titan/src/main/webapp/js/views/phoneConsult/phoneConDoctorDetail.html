@@ -55,29 +55,29 @@
 			<div class="apart"></div>
 			<!--用户评价-->
 			<div class="evaluate">
-				<h3>用户评价（{{doctorDetail.evaluaMap.pageTotal}}）：</h3>
+				<h3>用户评价（{{doctorDetail.evaluateTotal}}）：</h3>
 				<div class="score">
 					<span>服务态度{{avgStar}}分</span>
 					<span>专业水平{{avgMajorStar}}分</span>
 				</div>
-				<div class="user" ng-repeat="items in doctorDetail.evaluaMap.evaluateList">
+				<div class="user" ng-repeat="items in evaluateList">
 					<img class="photo" width="35" height="35" src="images/a2.png">
 					<div class="info">
 						<div>
 							<div class="fl">
 								<span class="name c3">某某某</span>
-								<img class="star" ng-repeat="item in [1,2,3,4,5]" width="9.5" height="auto" ng-src="{{items.star}}">
+								<img class="star" ng-repeat="item in [1,2,3,4,5]" width="9.5" height="auto" ng-src="{{starImg1}}">
 							</div>
-							<div class="fr date c5">{{items.date}}</div>
+							<div class="fr date c5">{{items.star}} {{items.date}}</div>
 						</div>
 						<span class="c4">{{items.phone}}</span>
 					</div>
 					<div class="text c3">{{items.impression}}</div>
-					<div class="all">
-						<a class="c1">查看全部评价</a>
-					</div>
 				</div>
 
+                <div class="all">
+                    <a class="c1" ng-click="getConsultEvaluate()">查看全部评价</a>
+                </div>
 			</div>
 			<div class="apart"></div>
 			<!--医生简介-->

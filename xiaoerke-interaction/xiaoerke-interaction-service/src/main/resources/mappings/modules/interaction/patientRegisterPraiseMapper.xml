@@ -16,6 +16,7 @@
     <result column="reason" property="reason" jdbcType="VARCHAR" />
     <result column="visit_endTime" property="visitEndtime" jdbcType="VARCHAR" />
     <result column="major_star" property="majorStar" jdbcType="VARCHAR" />
+    <result column="evaluateType" property="evaluateType" jdbcType="VARCHAR" />
   </resultMap>
 
   <sql id="Base_Column_List" >
@@ -208,19 +209,46 @@
         from patient_register_praise prp
         where prp.sys_doctor_id = #{doctorId}
 
-        <if test="evaluateType != ''" >
+        <if test="evaluateType != null" >
             and evaluateType = #{evaluateType,jdbcType=VARCHAR},
         </if>
     </select>
 
+    <!-- 评论总数 -->
+    <select id="getTotalCount" resultType="java.lang.Integer">
+        select count(*)
+        from patient_register_praise prp
+        where prp.sys_doctor_id = #{doctorId}
+
+        <if test="evaluateType != null" >
+            and evaluateType = #{evaluateType,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <!-- 获取一条电话咨询评论 -->
+    <select id="getConsultEvaluateTop" resultType="java.util.HashMap">
+        select INSERT(prp.phone,4,5,'****') phone,
+        prp.impression,
+        prp.praise_date as date,
+        prp.star,
+        prp.major_star as majorStar
+        from patient_register_praise prp
+        where
+        prp.sys_doctor_id = #{doctorId}
+
+        <if test="evaluateType != ''" >
+            and evaluateType = #{evaluateType,jdbcType=VARCHAR}
+        </if>
+        limit 1
+    </select>
 
     <!--<select id="getConsultEvaluate" resultType="com.cxqm.xiaoerke.common.persistence.Page">-->
-    <select id="getConsultEvaluate" resultType="java.util.HashMap">
+    <select id="getConsultEvaluate" resultMap="BaseResultMap" resultType="com.cxqm.xiaoerke.common.persistence.Page">
         select INSERT(prp.phone,4,5,'****') phone,
-        prp.impression as impression,
-        DATE_FORMAT(prp.praise_date,'%c/%d %k:%i') as date,
-        prp.star as star,
-        prp.major_star as majorStar
+        prp.impression,
+        prp.praise_date,
+        prp.star,
+        prp.major_star
         from patient_register_praise prp
         where prp.sys_doctor_id = #{doctorId}
 

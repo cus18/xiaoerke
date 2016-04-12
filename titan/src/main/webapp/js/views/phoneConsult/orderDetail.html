@@ -46,11 +46,13 @@
 			<br><br><br><br><br>
 		</ion-scroll>
 	</ion-content>
-    <button class="button bottom-btn bg2" ng-if="orderDetail.state == '待支付'">立即支付</button>
-    <button class="button bottom-btn bg2" ng-if="orderDetail.state == '待接听'">取消预约</button>
+    <button class="button bottom-btn bg2" ng-if="orderDetail.state == '待支付'">去支付</button>
+    <button class="button bottom-btn bg2" ng-if="orderDetail.state == '待接听'"
+            ui-sref="phoneConCancelOrder({consultPhone_register_service_id:orderDetail.orderId})">取消预约</button>
     <button class="button bottom-btn bg2" ng-if="orderDetail.state == '待评价'"
             ui-sref="phoneConEvaluate({consultphone_register_service_id:orderDetail.orderId,doctorId:orderDetail.doctorId,
             date:orderDetail.date,beginTime:orderDetail.beginTime,endTime:orderDetail.endTime})">立即评价</button>
+    <button class="button bottom-btn bg2" ng-if="orderDetail.state == '待分享'" ng-click="toShare()">去分享</button>
 
 </ion-view>
 

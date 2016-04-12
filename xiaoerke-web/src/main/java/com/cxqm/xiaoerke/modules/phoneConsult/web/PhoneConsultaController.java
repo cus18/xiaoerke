@@ -92,7 +92,7 @@ public class PhoneConsultaController {
 //        sdk.setSubAccount("2fa43378da0a11e59288ac853d9f54f2", "0ad73d75ac5bcb7e68fb191830b06d6b");
 //        sdk.setAppId("aaf98f8952f7367a0153084e29992035");
 
-        HashMap<String, Object> result = CCPRestSDK.callback(userPhone, doctorPhone+"",
+        HashMap<String, Object> result = CCPRestSDK.callback(doctorPhone,userPhone,
                 "4006237120", "4006237120", null,
                 "true", null, orderId+"",
                 conversationLength+"", null, "0",

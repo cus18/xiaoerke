@@ -7,6 +7,7 @@ import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.entity.OrderServiceVo;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +60,7 @@ public interface ConsultPhoneRegisterServiceDao {
      */
     Page<OrderServiceVo> getOrderAllPageList(Page<OrderServiceVo> page, HashMap<String, Object> hashMap);
 
-    List<HashMap<String, Object>> getOrderPhoneConsultListByTime(@Param("state") String state);
+    List<HashMap<String, Object>> getOrderPhoneConsultListByTime(@Param("state") String state,@Param("date")Date date);
 
     HashMap<String, Object> getConsultConnectInfo(@Param("id") Integer id);
 

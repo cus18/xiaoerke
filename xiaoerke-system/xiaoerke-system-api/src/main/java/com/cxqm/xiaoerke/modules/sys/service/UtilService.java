@@ -7,6 +7,8 @@ import com.cxqm.xiaoerke.modules.sys.entity.PatientVo;
 
 public interface UtilService {
 
+	String bindUser4ConsultDoctor(String mobile, String verifyCode, String openId);
+
 	PatientVo CreateUser(String num,String openid,String type);
 
 	String bindUser4Doctor(String mobile, String verifyCode, String openId);

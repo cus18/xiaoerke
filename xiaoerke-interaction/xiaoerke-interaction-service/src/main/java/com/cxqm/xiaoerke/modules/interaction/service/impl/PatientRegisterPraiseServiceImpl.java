@@ -2,11 +2,9 @@ package com.cxqm.xiaoerke.modules.interaction.service.impl;
 
 
 import com.cxqm.xiaoerke.common.persistence.Page;
-import com.cxqm.xiaoerke.common.utils.FrontUtils;
-import com.cxqm.xiaoerke.common.utils.IdGen;
-import com.cxqm.xiaoerke.common.utils.StringUtils;
-import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.interaction.dao.PatientRegisterPraiseDao;
+import com.cxqm.xiaoerke.modules.interaction.entity.PatientRegisterPraise;
 import com.cxqm.xiaoerke.modules.interaction.entity.PraiseVo;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhoneOrderService;
@@ -23,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -70,7 +69,25 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
     @Override
     public void getUserEvaluate(Map<String, Object> params,HashMap<String, Object> response)
     {
-        response.put("userEvaluate", patientRegisterPraiseDao.getUserEvaluate((String) params.get("doctorId")));
+        response.put("userEvaluate", patientRegisterPraiseDao.getUserEvaluate(params));
+    }
+
+    @Override
+    public Integer getTotalCount(HashMap<String, Object> params) {
+        return patientRegisterPraiseDao.getTotalCount(params);
+    }
+
+    @Override
+    public HashMap<String, Object> getConsultEvaluateTop(HashMap<String, Object> params) {
+        HashMap<String,Object> resultMap = patientRegisterPraiseDao.getConsultEvaluateTop(params);
+        if(resultMap!=null){
+            Date date = (Date) resultMap.get("date");
+            String week = DateUtils.getWeekOfDate(date);
+            SimpleDateFormat format = new SimpleDateFormat("MM/dd");
+            SimpleDateFormat format1 = new SimpleDateFormat("HH:mm");
+            resultMap.put("date", format.format(date)+"("+week.replaceAll("星期","周")+")"+format1.format(date));
+        }
+        return resultMap;
     }
 
     @Override
@@ -86,9 +103,9 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 
         String currentPage = (String) params.get("pageNo");
         String pageSize = (String) params.get("pageSize");
-        Page<HashMap<String, Object>> page = FrontUtils.generatorPage(currentPage, pageSize);
+        Page<PatientRegisterPraise> page = FrontUtils.generatorPage(currentPage, pageSize);
 
-        Page<HashMap<String, Object>> resultPage = patientRegisterPraiseDao.getConsultEvaluate(dataMap, page);
+        Page<PatientRegisterPraise> resultPage = patientRegisterPraiseDao.getConsultEvaluate(dataMap, page);
 
         long tmp = FrontUtils.generatorTotalPage(resultPage);
         response.put("pageTotal", tmp + "");
@@ -96,16 +113,19 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
         response.put("pageSize", resultPage.getPageSize());
 
         List<HashMap<String, Object>> evaluateList = new ArrayList<HashMap<String, Object>>();
-        List<HashMap<String, Object>> list = resultPage.getList();
-        HashMap<String, Object> hmap = new HashMap<String, Object>();
+        List<PatientRegisterPraise> list = resultPage.getList();
         if(list != null && !list.isEmpty()) {
-            for (HashMap<String, Object> map : list) {
-                hmap.put("phone", (String) map.get("phone"));
-                hmap.put("impression", (String) map.get("impression"));
-                hmap.put("star", (String) map.get("star"));
-                hmap.put("majorStar", (String) map.get("majorStar"));
-                hmap.put("date", (String) map.get("date"));
-
+            for (PatientRegisterPraise praise : list) {
+                HashMap<String, Object> hmap = new HashMap<String, Object>();
+                hmap.put("phone", praise.getPhone());
+                hmap.put("impression", praise.getImpression());
+                hmap.put("star", praise.getStar());
+                hmap.put("majorStar", praise.getMajorStar());
+                Date date = praise.getPraiseDate();
+                String week = DateUtils.getWeekOfDate(date);
+                SimpleDateFormat format = new SimpleDateFormat("MM/dd");
+                SimpleDateFormat format1 = new SimpleDateFormat("HH:mm");
+                hmap.put("date", format.format(date)+"("+week.replaceAll("星期","周")+")"+format1.format(date));
                 evaluateList.add(hmap);
             }
         }
@@ -335,4 +355,5 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 		// TODO Auto-generated method stub
 		return patientRegisterPraiseDao.getDoctorHeadImageURIById(id);
 	}
+
 }
