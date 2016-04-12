@@ -1,4 +1,4 @@
-package com.cxqm.xiaoerke.webapp.controller; /**
+package com.cxqm.xiaoerke.modules.consult.web; /**
  * Copyright &copy; 2012-2014 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
 
