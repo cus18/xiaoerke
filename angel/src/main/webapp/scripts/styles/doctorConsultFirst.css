@@ -107,7 +107,12 @@ span.emotion:hover{background-position:2px -28px}
 /*快捷回复*/
 .chatinstall{border-bottom: 1px solid #acacac;background-color: #fff;}
 .chatinstall span:nth-child(1){margin: 0 15px 0 20px;}
-.chatinstall span {display: inline-block;margin-right: 10px;font: 12px/50px 'Microsoft Yahei';color:#333;cursor:pointer;}
+.chatinstall span:nth-child(2){background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(12).png") left center no-repeat;}
+.chatinstall span:nth-child(3){background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(3).png") left center no-repeat;}
+.chatinstall span:nth-child(4){background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(13).png") left center no-repeat;}
+.chatinstall span:nth-child(5){background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(1).png") left center no-repeat;}
+.chatinstall span:nth-child(6){background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(2).png") left center no-repeat;}
+.chatinstall span {padding-left: 15px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(11).png") left center no-repeat;display: inline-block;margin-right: 10px;font: 12px/50px 'Microsoft Yahei';color:#333;cursor:pointer;}
 .chatinstall span img {margin-right: 5px;}
 /*textarea输入框*/
 .inputcontent{padding-left: 175px;padding-right: 405px;}
