@@ -3,8 +3,8 @@ package com.cxqm.xiaoerke.common.utils;
 public class ConstantUtil {
 
 	//public static final String DOAMIN_VALUE = ".baodf.com";
-	public static final String DOAMIN_VALUE = "xiaoxiaoerke.cn";
-	public static final String WebPath = "xiaoxiaoerke.cn";
+	public static final String DOAMIN_VALUE = "xiaork.cn";
+	public static final String WebPath = "xiaork.cn";
 
 //	public static final String DOAMIN_VALUE = "localhost";
 //	public static final String WebPath = "localhost";
