@@ -153,7 +153,6 @@ define(['appPhoneConsult'], function (app) {
             return $resource(user_h5 + 'register/user/time');
         }])
 
-
         //获取一个医生的某天的加号信息
         .factory('DoctorconsultPhoneInfo', ['$resource', function ($resource) {
             return $resource(user_h5 + '/consultPhone/user/doctor/time');
@@ -167,8 +166,13 @@ define(['appPhoneConsult'], function (app) {
         .factory('MyselfInfoAppointment', ['$resource', function ($resource) {
             return $resource(user_appoint + 'order/user/orderList1');
         }])
+        //电话咨询订单列表
         .factory('MyselfInfoPhoneConsult',['$resource',function ($resource){
             return $resource(user_h5 + 'order/user/orderList');
+        }])
+        //取消订单
+        .factory('OrderCancel',['$resource',function ($resource){
+            return $resource(user_h5 + 'cancelOrder');
         }])
 
         //获取所有订单列表

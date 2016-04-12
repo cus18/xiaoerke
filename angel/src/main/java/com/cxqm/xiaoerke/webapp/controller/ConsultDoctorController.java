@@ -1,5 +1,5 @@
 
-package com.cxqm.xiaoerke.webapp.controller;
+package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.alibaba.fastjson.JSON;
 import com.cxqm.xiaoerke.common.persistence.Page;
@@ -15,7 +15,6 @@ import com.cxqm.xiaoerke.modules.sys.entity.DoctorVo;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
