@@ -49,7 +49,7 @@
                         <p>等待接入</p>
                     </div>
                     <div class="tab-content-chat " ng-click="toggleRankList()">
-                        <h3>5</h3>
+                        <h3>{{info.rankListlength}}</h3>
                         <p>已接会话</p>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                  ng-repeat="item in alreadyJoinPatientConversationContent"
                  ng-click="chooseAlreadyJoinConsultPatient(item.patientId,item.patientName)"
                  alt="">
-                <img src="images/consultPatient.png">{{item.patientName}}
+                {{item.patientName}}
                 {{item.dateTime}}&nbsp;&nbsp;
             </div>
         </div>
