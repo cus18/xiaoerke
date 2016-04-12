@@ -11,6 +11,11 @@
             $scope.consultDoc = function(){
 
             };
+
+            $scope.toShare = function(){
+                window.location.href="/titan/appoint#/sharedDetail/"+$scope.orderId+",false,,"+"phone";
+            }
+
             $scope.$on('$ionicView.enter', function(){
 
                 $scope.pageLoading = true;
