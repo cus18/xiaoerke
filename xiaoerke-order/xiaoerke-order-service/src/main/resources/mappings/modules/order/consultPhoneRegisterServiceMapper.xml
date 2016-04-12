@@ -52,7 +52,7 @@
       and crs.state = #{state,jdbcType=VARCHAR}
     </if>
     AND (
-    now()>=DATE_FORMAT(
+    #{date}>=DATE_FORMAT(
     CONCAT(
     DATE_FORMAT(scs.date, '%Y:%c:%d'),
     DATE_FORMAT(scs.beginTime, ' %k:%i:%s')
