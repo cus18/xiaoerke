@@ -197,7 +197,8 @@ public class ConsultSessionManager {
 	public HashMap<String,Object> createWechatConsultSession(RichConsultSession consultSession){
 
 		HashMap<String,Object> response = new HashMap<String, Object>();
-		sessionCache.putSessionIdConsultSessionPair(123, consultSession);
+//		sessionCache.putSessionIdConsultSessionPair(123, consultSession);
+
 		Channel  csChannel = null;
 
 		int number = accessNumber.getAndDecrement();
@@ -245,11 +246,13 @@ public class ConsultSessionManager {
 				}
 				//通过一个随机方法，从doctorOnLineList选择一个医生，为用户提供服务
 				Random rand = new Random();
-				int indexCS = rand.nextInt(doctorOnLineList.size());
-				consultSession.setCsUserId((String) doctorOnLineList.get(indexCS).get("doctorId"));
-				csChannel = (Channel) doctorOnLineList.get(0).get("Channel");
-				User csUser = systemService.getUser((String)doctorOnLineList.get(indexCS).get("doctorId"));
-				consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
+				if(doctorOnLineList!=null && doctorOnLineList.size()>0){
+					int indexCS = rand.nextInt(doctorOnLineList.size());
+					consultSession.setCsUserId((String) doctorOnLineList.get(indexCS).get("doctorId"));
+					csChannel = (Channel) doctorOnLineList.get(0).get("Channel");
+					User csUser = systemService.getUser((String)doctorOnLineList.get(indexCS).get("doctorId"));
+					consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
+				}
 
 			}else{
 				//如果没有任何医生在线，给用户推送微信消息，告知没有医生在线，稍后在使用服务
@@ -267,8 +270,8 @@ public class ConsultSessionManager {
 
 		//成功分配医生，给用户发送一个欢迎语
 		String st = "尊敬的用户，宝大夫在线，有什么可以帮您";
-		WechatUtil.senMsgToWechat(sessionCache.getWeChatToken(), consultSession.getOpenid(), st);
-
+		WechatUtil.senMsgToWechat("a0cNpOtk4bMgfn2wq8---RrGhz4racwEDxQrz2gFJiNl_UIn2VU8RJM7nLuIGXQuX14z2VJ9tvOQgfXhQB1XQBqB3IgzRQ8lFnxM0uY-F8XATaCzJbilIMGU5Cjmt6oZFVLiAHAJZP", consultSession.getOpenid(), st);//sessionCache.getWeChatToken()
+		sessionCache.putWechatSessionByOpenId(consultSession.getOpenid(),consultSession);
 		response.put("csChannel", csChannel);
 		response.put("sessionId",sessionId);
 		response.put("consultSession",consultSession);
