@@ -339,6 +339,8 @@ angular.module('controllers', ['luegg.directives'])
             };
             //添加分组
             $scope.add = function() {
+                $scope.info.addGroup = '';
+                $scope.info.addContent = '';
                 if(sign == 0){
                     if (mark == 0) {
                         $scope.addgroup = true;
