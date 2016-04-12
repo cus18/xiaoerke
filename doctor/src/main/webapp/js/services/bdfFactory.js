@@ -2,7 +2,7 @@
  * 取得实际位置
  * 调用方式：geoFactory.getGeo();
  */
-var doctor_h5 = '/xiaoerke-doctor/'
+var doctor_h5 = ''
 
 define(['app'], function (app) {
     app
@@ -53,7 +53,7 @@ define(['app'], function (app) {
         }])
         //获取用户登陆状态
         .factory('GetUserLoginStatus', ['$resource', function ($resource) {
-            return $resource(doctor_h5 + 'info/loginStatus');
+            return $resource(doctor_h5 + 'auth/info/loginStatus');
         }])
         //发送验证码
         .factory('IdentifyDoctor', ['$resource', function ($resource) {

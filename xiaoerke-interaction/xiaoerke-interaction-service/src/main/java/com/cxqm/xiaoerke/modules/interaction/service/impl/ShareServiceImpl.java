@@ -3,6 +3,7 @@ package com.cxqm.xiaoerke.modules.interaction.service.impl;
 import com.cxqm.xiaoerke.common.utils.IdGen;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.interaction.service.ShareService;
+import com.cxqm.xiaoerke.modules.order.service.ConsultPhoneOrderService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
 import com.cxqm.xiaoerke.modules.sys.interceptor.SystemServiceLog;
 import com.cxqm.xiaoerke.modules.sys.service.HospitalInfoService;
@@ -31,6 +32,9 @@ public class ShareServiceImpl implements ShareService{
 	
 	@Autowired
 	private PatientRegisterService patientRegisterService;
+
+    @Autowired
+    private ConsultPhoneOrderService consultPhoneOrderService;
 	
 	//获取分享信息详情 
 	@Override
@@ -71,19 +75,25 @@ public class ShareServiceImpl implements ShareService{
 		}
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		HashMap<String, Object> excuteMap = new HashMap<String, Object>();
+        String type = (String) params.get("type");
 
 		//分享处理
-		shareHandle(patientRegisterServiceId, excuteMap);
+		shareHandle(patientRegisterServiceId, excuteMap, type);
 
 		response.put("patient_register_service_id", patientRegisterServiceId);
 		response.put("status", '1');
 		return response;
 	}
 	
-	private void shareHandle(String patientRegisterServiceId, HashMap<String, Object> excuteMap) {
+	private void shareHandle(String patientRegisterServiceId, HashMap<String, Object> excuteMap,String type) {
 		//完成分享    需传入参数register_no
 		excuteMap.put("patientRegisterServiceId", patientRegisterServiceId);
-		patientRegisterService.completeShareExecute(excuteMap);
+        if(type != null && "phone".equals(type)){
+            excuteMap.put("state","4");
+            consultPhoneOrderService.changeConsultPhoneRegisterServiceState(excuteMap);
+        }else{
+            patientRegisterService.completeShareExecute(excuteMap);
+        }
 	}
     
 }

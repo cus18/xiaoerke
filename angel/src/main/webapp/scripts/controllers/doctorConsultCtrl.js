@@ -8,43 +8,10 @@ angular.module('controllers', ['luegg.directives'])
             $scope.socketServer1 = "";
             $scope.socketServer2 = "";
 
-            var currDate = new moment().format("YYYY-MM-DD");
-            getTodayRankingList.save({"rankDate": currDate}, function (data) {
-                console.log("getTodayRankingList", data);
-                $scope.info.rankListlength = data.rankListValue.length;
-                console.log("$scope.info.rankListlength", data.rankListValue.length);
-                if (data.rankListValue.length == 0) {
-                    $scope.lockScroll = "false";
-                    console.log("当前没有排名");
-                } else {
-                    $scope.rankListValue = data.rankListValue;
-                }
-            });
+            $scope.alreadyJoinPatientConversationContent = [
+                {}
+            ];
 
-            getOnlineDoctorList.save({"pageNo": "1", "pageSize": "3"}, function (data) {
-                console.log("getOnlineDoctorList", data);
-            });
-
-            $scope.alreadyJoinPatientConversationContent = [{}];
-
-            getCommonAnswerList.save({"type": "commonAnswer"}, function (data) {
-                console.log("getCommonAnswerList", data);
-                if (data.commonAnswer.length == 0) {
-                    $scope.lockScroll = "false";
-                    console.log("没有添加会话插件");
-                } else {
-                    $scope.commonAnswer = data.commonAnswer;
-                }
-            });
-            getMyAnswerList.save({"type":"myAnswer"},function(data){
-                console.log("getMyAnswerList",data);
-                if(data.myAnswer!=null && data.myAnswer.length==0){
-                    $scope.lockScroll="false";
-                    console.log("没有添加会话插件");
-                } else {
-                    $scope.myAnswer = data.myAnswer;
-                }
-            });
             $scope.doctorConsultFirst = function () {
                 var routePath = "/doctor/consultBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath: routePath}, function (data) {
@@ -60,6 +27,43 @@ angular.module('controllers', ['luegg.directives'])
 
                         $scope.initConsultSocket1();
                         //$scope.initConsultSocket2();
+
+                        var currDate = new moment().format("YYYY-MM-DD");
+                        getTodayRankingList.save({"rankDate": currDate}, function (data) {
+                            console.log("getTodayRankingList", data);
+                            $scope.info.rankListlength = data.rankListValue.length;
+                            console.log("$scope.info.rankListlength", data.rankListValue.length);
+                            if (data.rankListValue.length == 0) {
+                                $scope.lockScroll = "false";
+                                console.log("当前没有排名");
+                            } else {
+                                $scope.rankListValue = data.rankListValue;
+                            }
+                        });
+
+                        getOnlineDoctorList.save({"pageNo": "1", "pageSize": "3"}, function (data) {
+                            console.log("getOnlineDoctorList", data);
+                        });
+
+                        getCommonAnswerList.save({"type": "commonAnswer"}, function (data) {
+                            console.log("getCommonAnswerList", data);
+                            if (data.commonAnswer.length == 0) {
+                                $scope.lockScroll = "false";
+                                console.log("没有添加会话插件");
+                            } else {
+                                $scope.commonAnswer = data.commonAnswer;
+                            }
+                        });
+
+                        getMyAnswerList.save({"type":"myAnswer"},function(data){
+                            console.log("getMyAnswerList",data);
+                            if(data.myAnswer!=null && data.myAnswer.length==0){
+                                $scope.lockScroll="false";
+                                console.log("没有添加会话插件");
+                            } else {
+                                $scope.myAnswer = data.myAnswer;
+                            }
+                        });
                     }
                 })
 

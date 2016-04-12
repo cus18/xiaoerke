@@ -8,7 +8,7 @@ angular.module('services', ['ngResource'])
     }])
     //获取用户登陆状态
     .factory('GetUserLoginStatus', ['$resource', function ($resource) {
-        return $resource(public + 'info/loginStatus');
+        return $resource(public + 'auth/info/loginStatus');
     }])
     //获取聊天记录
     .factory('GetUserRecordList', ['$resource', function ($resource) {

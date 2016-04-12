@@ -55,9 +55,9 @@ define(['app'], function(app){
                        resolve: {
                            load: function($templateCache, $ocLazyLoad, $q, $http) {
                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.doctorFirstCtrl',
-                                   ['js/controllers/doctorFirstCtrl.js','js/libs/moment.min.js',
-                                       'styles/doctorFirst.less?ver='+version,'styles/lib/common.css','styles/showBo.css'],
-                                   'js/views/doctorFirst.html?ver='+version);
+                                   ['js/controllers/ap/doctorFirstCtrl.js','js/libs/moment.min.js',
+                                       'styles/ap/doctorFirst.less?ver='+version,'styles/lib/common.css','styles/showBo.css'],
+                                   'js/views/ap/doctorFirst.html?ver='+version);
                            }
                        }
                    })
@@ -67,10 +67,11 @@ define(['app'], function(app){
                        controller: 'addTimeCtrl',
                        resolve: {
                            load: function($templateCache, $ocLazyLoad, $q, $http) {
-                               loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.doctorFirstCtrl',
-                                   ['js/controllers/addTimeCtrl.js','js/libs/mobiscroll.custom-2.5.0.min.js','js/libs/lodash.min.js',
-                                       'styles/addTime.less?ver='+version,'styles/lib/mobiscroll.custom-2.5.0.min.css'],
-                                   'js/views/addTime.html?ver='+version);
+                               loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.addTimeCtrl',
+                                   ['js/controllers/ap/addTimeCtrl.js','js/libs/mobiscroll.custom-2.5.0.min.js','js/libs/lodash.min.js',
+                                       'styles/ap/addTime.less?ver='+version,'styles/lib/mobiscroll.custom-2.5.0.min.css',
+                                       'styles/fonts/ionicons.ttf','styles/fonts/ionicons.woff'],
+                                   'js/views/ap/addTime.html?ver='+version);
                            }
                        }
                    })
@@ -81,8 +82,9 @@ define(['app'], function(app){
                        resolve: {
                            load: function($templateCache, $ocLazyLoad, $q, $http) {
                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.acceptRemindCtrl',
-                                   ['js/controllers/acceptRemindCtrl.js','styles/acceptRemind.less?ver='+version,'styles/lib/common.css',],
-                                   'js/views/acceptRemind.html?ver='+version);
+                                   ['js/controllers/ap/acceptRemindCtrl.js',
+                                       'styles/ap/acceptRemind.less?ver='+version,'styles/lib/common.css'],
+                                   'js/views/ap/acceptRemind.html?ver='+version);
                            }
                        }
                    })
@@ -93,9 +95,9 @@ define(['app'], function(app){
                        resolve: {
                            load: function($templateCache, $ocLazyLoad, $q, $http) {
                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.settlementCtrl',
-                                   ['js/controllers/settlementCtrl.js', 'js/libs/moment.min.js',
-                                       'styles/settlement.less?ver='+version,'styles/lib/common.css'],
-                                   'js/views/settlement.html?ver='+version);
+                                   ['js/controllers/ap/settlementCtrl.js', 'js/libs/moment.min.js',
+                                       'styles/ap/settlement.less?ver='+version,'styles/lib/common.css'],
+                                   'js/views/ap/settlement.html?ver='+version);
                            }
                        }
                    })
@@ -106,7 +108,8 @@ define(['app'], function(app){
                        resolve: {
                            load: function($templateCache, $ocLazyLoad, $q, $http) {
                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.myselfFirstCtrl',
-                                   ['js/controllers/account/myselfFirstCtrl.js', 'styles/account/myselfFirst.less?ver='+version],
+                                   ['js/controllers/account/myselfFirstCtrl.js',
+                                       'styles/account/myselfFirst.less?ver='+version],
                                    'js/views/account/myselfFirst.html?ver='+version);
                            }
                        }
@@ -119,7 +122,8 @@ define(['app'], function(app){
                            load: function($templateCache, $ocLazyLoad, $q, $http) {
                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.myselfFirstCtrl',
                                    ['js/controllers/account/myAccountCtrl.js','js/libs/mobiscroll.custom-2.5.0.min.js',
-                                       'js/libs/lodash.min.js', 'js/libs/moment.min.js','styles/lib/mobiscroll.custom-2.5.0.min.css',
+                                       'js/libs/lodash.min.js', 'js/libs/moment.min.js',
+                                       'styles/lib/mobiscroll.custom-2.5.0.min.css',
                                        'styles/account/myAccount.less?ver='+version],
                                    'js/views/account/myAccount.html?ver='+version);
                            }
@@ -146,7 +150,8 @@ define(['app'], function(app){
                        resolve: {
                            load: function($templateCache, $ocLazyLoad, $q, $http) {
                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.withDrawlsCtrl',
-                                   ['js/controllers/account/withDrawlsCtrl.js','styles/account/withDrawls.less?ver='+version],
+                                   ['js/controllers/account/withDrawlsCtrl.js',
+                                       'styles/account/withDrawls.less?ver='+version],
                                    'js/views/account/withDrawls.html?ver='+version);
                            }
                        }
@@ -171,7 +176,8 @@ define(['app'], function(app){
                        resolve: {
                            load: function($templateCache, $ocLazyLoad, $q, $http) {
                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.settingCtrl',
-                                   ['js/controllers/account/settingCtrl.js','styles/account/setting.less?ver='+version],
+                                   ['js/controllers/account/settingCtrl.js',
+                                       'styles/account/setting.less?ver='+version],
                                    'js/views/account/setting.html?ver='+version);
                            }
                        }
@@ -183,7 +189,8 @@ define(['app'], function(app){
                        resolve: {
                            load: function($templateCache, $ocLazyLoad, $q, $http) {
                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.aboutUsCtrl',
-                                   ['js/controllers/other/aboutUsCtrl.js','styles/other/aboutUs.less?ver='+version],
+                                   ['js/controllers/other/aboutUsCtrl.js',
+                                       'styles/other/aboutUs.less?ver='+version],
                                    'js/views/other/aboutUs.html?ver='+version);
                            }
                        }
@@ -195,7 +202,8 @@ define(['app'], function(app){
                        resolve: {
                            load: function($templateCache, $ocLazyLoad, $q, $http) {
                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.userDealCtrl',
-                                   ['js/controllers/other/userDealCtrl.js','styles/other/userDeal.less?ver='+version],
+                                   ['js/controllers/other/userDealCtrl.js',
+                                       'styles/other/userDeal.less?ver='+version],
                                    'js/views/other/userDeal.html?ver='+version);
                            }
                        }
