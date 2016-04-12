@@ -1,15 +1,44 @@
 package com.cxqm.xiaoerke.modules.message.web;
 
 public class MessageVo {
-	
+
 	private String keyword1;
 	private String keyword2;
 	private String keyword3;
 	private String keyword4;
 	private String url;
 	private String openId;
+	private String first;
+
+	public String getFirst() {
+		return first;
+	}
+
+	public void setFirst(String first) {
+		this.first = first;
+	}
+
+	private String fromTime;
+	private String toTime;
+	public String getFromTime() {
+		return fromTime;
+	}
+
+	public void setFromTime(String fromTime) {
+		this.fromTime = fromTime;
+	}
+
+	public String getToTime() {
+		return toTime;
+	}
+
+	public void setToTime(String toTime) {
+		this.toTime = toTime;
+	}
+
 	public String getKeyword1() {
 		return keyword1;
+
 	}
 	public void setKeyword1(String keyword1) {
 		this.keyword1 = keyword1;

@@ -1,14 +1,13 @@
 package com.cxqm.xiaoerke.modules.sys.service;
 
 
+import com.cxqm.xiaoerke.modules.sys.entity.MessageVo;
+import com.cxqm.xiaoerke.modules.sys.entity.PerAppDetInfoVo;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.transaction.annotation.Transactional;
-
-import com.cxqm.xiaoerke.modules.sys.entity.MessageVo;
-import com.cxqm.xiaoerke.modules.sys.entity.PerAppDetInfoVo;
 
 @Transactional(readOnly = false)
 public interface MessageService {
@@ -37,6 +36,7 @@ public interface MessageService {
     
   //获取分享信息详情 @author zdl
     HashMap<String,Object> findShareDetailInfoExecute(HashMap<String,Object> hashMap);
+    HashMap<String,Object> findPhoneConsultShareDetailInfoExecute(HashMap<String, Object> hashMap);
     
     void saveAdvice(Map<String, Object>  hashMap);
 
@@ -49,5 +49,5 @@ public interface MessageService {
 	List<HashMap<String,Object>> LetsGoReminderExecute();
 
 	List<HashMap<String, Object>> getTrackOrder();
-    
+
 }

@@ -2,29 +2,26 @@ package com.cxqm.xiaoerke.modules.interaction.service.impl;
 
 
 import com.cxqm.xiaoerke.common.persistence.Page;
-import com.cxqm.xiaoerke.common.utils.FrontUtils;
-import com.cxqm.xiaoerke.common.utils.IdGen;
-import com.cxqm.xiaoerke.common.utils.StringUtils;
-import com.cxqm.xiaoerke.common.utils.WechatUtil;
-import com.cxqm.xiaoerke.common.web.Servlets;
+import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.interaction.dao.PatientRegisterPraiseDao;
+import com.cxqm.xiaoerke.modules.interaction.entity.PatientRegisterPraise;
 import com.cxqm.xiaoerke.modules.interaction.entity.PraiseVo;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
+import com.cxqm.xiaoerke.modules.order.service.ConsultPhoneOrderService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
+import com.cxqm.xiaoerke.modules.order.service.SysConsultPhoneService;
 import com.cxqm.xiaoerke.modules.sys.interceptor.SystemServiceLog;
 import com.cxqm.xiaoerke.modules.sys.service.*;
-import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -55,6 +52,12 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
     @Autowired
     private SystemService systemService;
 
+    @Autowired
+    SysConsultPhoneService sysConsultPhoneService;
+
+    @Autowired
+    ConsultPhoneOrderService consultPhoneOrderService;
+
 
     //将取消原因插入到patient_register_praise表中
 	@Override
@@ -66,7 +69,25 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
     @Override
     public void getUserEvaluate(Map<String, Object> params,HashMap<String, Object> response)
     {
-        response.put("userEvaluate", patientRegisterPraiseDao.getUserEvaluate((String) params.get("doctorId")));
+        response.put("userEvaluate", patientRegisterPraiseDao.getUserEvaluate(params));
+    }
+
+    @Override
+    public Integer getTotalCount(HashMap<String, Object> params) {
+        return patientRegisterPraiseDao.getTotalCount(params);
+    }
+
+    @Override
+    public HashMap<String, Object> getConsultEvaluateTop(HashMap<String, Object> params) {
+        HashMap<String,Object> resultMap = patientRegisterPraiseDao.getConsultEvaluateTop(params);
+        if(resultMap!=null){
+            Date date = (Date) resultMap.get("date");
+            String week = DateUtils.getWeekOfDate(date);
+            SimpleDateFormat format = new SimpleDateFormat("MM/dd");
+            SimpleDateFormat format1 = new SimpleDateFormat("HH:mm");
+            resultMap.put("date", format.format(date)+"("+week.replaceAll("星期","周")+")"+format1.format(date));
+        }
+        return resultMap;
     }
 
     @Override
@@ -82,9 +103,9 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 
         String currentPage = (String) params.get("pageNo");
         String pageSize = (String) params.get("pageSize");
-        Page<HashMap<String, Object>> page = FrontUtils.generatorPage(currentPage, pageSize);
+        Page<PatientRegisterPraise> page = FrontUtils.generatorPage(currentPage, pageSize);
 
-        Page<HashMap<String, Object>> resultPage = patientRegisterPraiseDao.getConsultEvaluate(dataMap, page);
+        Page<PatientRegisterPraise> resultPage = patientRegisterPraiseDao.getConsultEvaluate(dataMap, page);
 
         long tmp = FrontUtils.generatorTotalPage(resultPage);
         response.put("pageTotal", tmp + "");
@@ -92,16 +113,19 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
         response.put("pageSize", resultPage.getPageSize());
 
         List<HashMap<String, Object>> evaluateList = new ArrayList<HashMap<String, Object>>();
-        List<HashMap<String, Object>> list = resultPage.getList();
-        HashMap<String, Object> hmap = new HashMap<String, Object>();
+        List<PatientRegisterPraise> list = resultPage.getList();
         if(list != null && !list.isEmpty()) {
-            for (HashMap<String, Object> map : list) {
-                hmap.put("phone", (String) map.get("phone"));
-                hmap.put("impression", (String) map.get("impression"));
-                hmap.put("star", (String) map.get("star"));
-                hmap.put("majorStar", (String) map.get("majorStar"));
-                hmap.put("date", (String) map.get("date"));
-
+            for (PatientRegisterPraise praise : list) {
+                HashMap<String, Object> hmap = new HashMap<String, Object>();
+                hmap.put("phone", praise.getPhone());
+                hmap.put("impression", praise.getImpression());
+                hmap.put("star", praise.getStar());
+                hmap.put("majorStar", praise.getMajorStar());
+                Date date = praise.getPraiseDate();
+                String week = DateUtils.getWeekOfDate(date);
+                SimpleDateFormat format = new SimpleDateFormat("MM/dd");
+                SimpleDateFormat format1 = new SimpleDateFormat("HH:mm");
+                hmap.put("date", format.format(date)+"("+week.replaceAll("星期","周")+")"+format1.format(date));
                 evaluateList.add(hmap);
             }
         }
@@ -159,6 +183,8 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 	@SystemServiceLog(description = "00000012")//用户评价医生
 	public Map<String, Object> orderPraiseOperation(Map<String, Object> params, HttpSession session, HttpServletRequest request)
 	{
+        String type = (String)params.get("type");//phone:电话咨询
+
 		String path = request.getLocalAddr() + request.getContextPath();
 		HashMap<String, Object> action = (HashMap<String, Object>) params.get("action");
 		String openId = WechatUtil.getOpenId (session,request);
@@ -178,31 +204,43 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 			excuteMap.put("doctorCaseId", doctorCaseId);
 		}
 		//进行评价
-		praiseHandle(action, patientRegisterServiceId, excuteMap);
+		praiseHandle(type, action, patientRegisterServiceId, excuteMap);
 		//分享消息推送
 		Map tokenMap = systemService.getWechatParameter();
 		String token = (String)tokenMap.get("token");
 		HashMap<String, Object> searchMap = new HashMap<String, Object>();
 		searchMap.put("id", patientRegisterServiceId);
-		HashMap<String, Object> resultMap  = patientRegisterService.getOrderInfoById(searchMap);
 
-		PatientMsgTemplate.shareRemind2Wechat(openId,token,(String)resultMap.get("babyName"),(String)resultMap.get("doctorName") ,"http://baodf.com/titan/appoint#/sharedDetail/"+patientRegisterServiceId+",false,");
+        if(type == null){
+            HashMap<String, Object> resultMap  = patientRegisterService.getOrderInfoById(searchMap);
+            PatientMsgTemplate.shareRemind2Wechat(openId,token,(String)resultMap.get("babyName"),(String)resultMap.get("doctorName") ,"http://baodf.com/titan/appoint#/sharedDetail/"+patientRegisterServiceId+",false,");
+        }
 
 		response.put("patient_register_service_id", patientRegisterServiceId);
 		response.put("status", '1');
 		return response;
 	}
 
-    private void praiseHandle(HashMap<String, Object> action, String patientRegisterServiceId, HashMap<String, Object> excuteMap) {
+    private void praiseHandle(String type, HashMap<String, Object> action, String patientRegisterServiceId, HashMap<String, Object> excuteMap) {
 		String userId = UserUtils.getUser().getId();
 		HashMap<String, Object> perInfo = new HashMap<String, Object>();
 		if (userId != null && !"".equals(userId)) {
 			perInfo = userInfoService.findPersonDetailInfoByUserId(userId);
 		}
 		excuteMap.put("id", patientRegisterServiceId);
+        excuteMap.put("state","3");//待分享（已评价）
+
 		excuteMap.put("patientRegisterPraiseId", IdGen.uuid());
-		//根据patientRegisterServiceId查询sys_register_service表信息
-		HashMap<String, Object> hashMap = patientRegisterService.findSysRegisterServiceByPRSIdExecute(excuteMap);
+        HashMap<String, Object> hashMap = null;
+
+        //根据patientRegisterServiceId查询sys_register_service表信息
+        if(type != null && "phone".equals(type)){//phone
+            excuteMap.put("evaluateType","1");
+            hashMap = sysConsultPhoneService.findSysConsultPhoneServiceByCRSIdExecute(excuteMap);
+        }else{
+            hashMap = patientRegisterService.findSysRegisterServiceByPRSIdExecute(excuteMap);
+        }
+
 		excuteMap.put("star", 1 + Integer.parseInt((String) action.get("star")));
 		excuteMap.put("major_star", 1 + Integer.parseInt((String) action.get("major_star")));
 		excuteMap.put("appraise", action.get("appraise"));
@@ -217,8 +255,17 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 
 		excuteMap.put("sys_patient_id", hashMap.get("sys_patient_id"));
 		excuteMap.put("sys_register_service_id", hashMap.get("sys_register_service_id"));
-		patientRegisterService.PatientRegisterServiceIsService(excuteMap);
+
+        //更新订单状态为已评价
+        if(type != null && "phone".equals(type)){//phone
+            consultPhoneOrderService.changeConsultPhoneRegisterServiceState(excuteMap);
+        }else{
+            patientRegisterService.PatientRegisterServiceIsService(excuteMap);
+        }
+
+        //添加一条评价记录
 		patientRegisterPraiseDao.PatientRegisterServiceIsPraise(excuteMap);
+
 		//---保存案例---
 		String otherCase = (String)action.get("otherCase");//其他案例
 		if(StringUtils.isNotNull(otherCase)){
@@ -234,10 +281,10 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 			doctorCaseService.saveDoctorCaseInfo(excuteMap);
 		}
 
-		if (StringUtils.isNotNull((String) action.get("visit_endTime"))) {
-			//计算平均等待时间
-			calculationWaitTime(patientRegisterServiceId, hashMap);
-		}
+        if (type == null && StringUtils.isNotNull((String) action.get("visit_endTime"))) {
+            //计算平均等待时间
+            calculationWaitTime(patientRegisterServiceId, hashMap);
+        }
 
 	}
 
@@ -308,4 +355,5 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 		// TODO Auto-generated method stub
 		return patientRegisterPraiseDao.getDoctorHeadImageURIById(id);
 	}
+
 }

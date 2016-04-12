@@ -3,7 +3,6 @@
  */
 package com.cxqm.xiaoerke.modules.sys.dao;
 
-import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.sys.entity.MessageVo;
 import com.cxqm.xiaoerke.modules.sys.entity.PerAppDetInfoVo;
@@ -48,6 +47,7 @@ public interface MessageDao {
 
     //获取分享信息详情 @author zdl
     HashMap<String,Object> findShareDetailInfoExecute(HashMap<String,Object> hashMap);
+    HashMap<String,Object> findPhoneConsultShareDetailInfoExecute(HashMap<String, Object> hashMap);
 
     //插入监听器
     void insertMonitorExecute(HashMap<String,Object> monitorMap);

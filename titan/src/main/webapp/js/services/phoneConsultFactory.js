@@ -61,6 +61,11 @@ define(['appPhoneConsult'], function (app) {
             return $resource(user_appoint + '/titan/order/user/orderDetail');
         }])
 
+        //查询最早医生的预约挂号时间
+        .factory('EarliestVisiteInfo', ['$resource', function ($resource) {
+            return $resource(user_h5 + '/consultPhoneDoctor/earliestVisiteInfo');
+        }])
+
 
 
     ///consultPhone/user/doctor/time
@@ -132,7 +137,7 @@ define(['appPhoneConsult'], function (app) {
         }])
         //获取用户登陆状态
         .factory('GetUserLoginStatus', ['$resource', function ($resource) {
-            return $resource(user_appoint + 'info/loginStatus');
+            return $resource(user_appoint + 'auth/info/loginStatus');
         }])
         //获取医生某个出诊地点的7天内的可预约时间
         .factory('GetDoctorDateInfo',['$resource',function ($resource){
@@ -148,7 +153,6 @@ define(['appPhoneConsult'], function (app) {
             return $resource(user_h5 + 'register/user/time');
         }])
 
-
         //获取一个医生的某天的加号信息
         .factory('DoctorconsultPhoneInfo', ['$resource', function ($resource) {
             return $resource(user_h5 + '/consultPhone/user/doctor/time');
@@ -162,8 +166,13 @@ define(['appPhoneConsult'], function (app) {
         .factory('MyselfInfoAppointment', ['$resource', function ($resource) {
             return $resource(user_appoint + 'order/user/orderList1');
         }])
+        //电话咨询订单列表
         .factory('MyselfInfoPhoneConsult',['$resource',function ($resource){
             return $resource(user_h5 + 'order/user/orderList');
+        }])
+        //取消订单
+        .factory('OrderCancel',['$resource',function ($resource){
+            return $resource(user_h5 + 'cancelOrder');
         }])
 
         //获取所有订单列表
@@ -186,7 +195,7 @@ define(['appPhoneConsult'], function (app) {
             return $resource(user_h5 + 'order/user/orderPayOperation');
         }])
         .factory('OrderPraiseOperation', ['$resource', function ($resource) {
-            return $resource(user_h5 + 'order/user/orderPraiseOperation');
+            return $resource(user_appoint + 'order/user/orderPraiseOperation');
         }])
         .factory('OrderShareOperation', ['$resource', function ($resource) {
             return $resource(user_h5 + 'order/user/orderShareOperation');
@@ -221,13 +230,13 @@ define(['appPhoneConsult'], function (app) {
         .factory('MyShare', ['$resource', function ($resource) {
             return $resource(user_h5 + 'interaction/user/share');
         }])
-        //获取用户对某医生的评价
+        //获取用户对某医生的评价（电话咨询）
         .factory('GetUserEvaluate',['$resource',function ($resource){
-            return $resource(user_h5 + 'interaction/user/evaluateDoctor');
+            return $resource(user_appoint + 'interaction/user/evaluateDoctor');
         }])
         //用户对客服的评价
         .factory('CustomerEvaluation',['$resource',function ($resource){
-            return $resource(user_h5 + 'interaction/user/customerEvaluation');
+            return $resource(user_appoint + 'interaction/user/customerEvaluation');
         }])
         //问卷调查
         .factory('QuestionnaireSurvey',['$resource',function ($resource){

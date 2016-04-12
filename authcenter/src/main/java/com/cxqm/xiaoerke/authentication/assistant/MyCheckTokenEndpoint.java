@@ -61,19 +61,7 @@ public class MyCheckTokenEndpoint {
 	@RequestMapping(value = "/oauth/check_token")
 	@ResponseBody
 	public Map<String, ?> checkToken(@RequestParam(required=false, value = "token") String value) {
-/*
-		if("token-from-cookies".equalsIgnoreCase(value)) {
-			Cookie[] cookies = request.getCookies();
-			if(cookies != null) {
-				for(Cookie cookie : cookies){
-					if(cookie.getName().equals("ssoToken")){
-						value = cookie.getValue();
-						break;
-					}
-				}
-			}
-		}*/
-			
+
 		OAuth2AccessToken token = resourceServerTokenServices.readAccessToken(value);
 		if (token == null) {
 			throw new InvalidTokenException("Token was not recognised");

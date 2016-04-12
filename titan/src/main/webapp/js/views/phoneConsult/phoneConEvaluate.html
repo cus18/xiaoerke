@@ -3,7 +3,7 @@
 	<div bdf-head="title"></div>
 	<div class="c-shadow" ng-click="toggleIllnessCancel()" ng-if="illnessLock=='true'"></div>
 	<ion-item class="caseList border2 bg1" ng-if="illnessLock=='true'">
-		<p class=" f5 c4  margin0" ng-repeat="item in illnessList" ng-click="selectIllness(item)">{{item}}{{item.doctor_case_name}}</p>
+		<p class=" f5 c4  margin0" ng-repeat="item in illnessList" ng-click="selectIllness(item)">{{item.doctor_case_name}}</p>
 	</ion-item>
 	<ion-content class="phoneConEvaluate evaluateDoctor bg1"  overflow-scroll="true" >
 		<ion-scroll direction="y" has-bouncing="true">

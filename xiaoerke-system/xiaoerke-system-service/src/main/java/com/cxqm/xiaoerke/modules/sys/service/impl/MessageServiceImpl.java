@@ -9,7 +9,6 @@ import com.cxqm.xiaoerke.modules.sys.entity.PerAppDetInfoVo;
 import com.cxqm.xiaoerke.modules.sys.service.DoctorInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.MessageService;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
-import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
 import com.cxqm.xiaoerke.modules.sys.utils.DoctorMsgTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -137,11 +136,17 @@ public class MessageServiceImpl implements MessageService{
 		return messageDao.findAppointMessageExecute(hashMap);
 	}
 
-	@Override
-	public HashMap<String, Object> findShareDetailInfoExecute(
-			HashMap<String, Object> hashMap) {
-		return messageDao.findShareDetailInfoExecute(hashMap);
-	}
+    @Override
+    public HashMap<String, Object> findShareDetailInfoExecute(
+            HashMap<String, Object> hashMap) {
+        return messageDao.findShareDetailInfoExecute(hashMap);
+    }
+
+    @Override
+    public HashMap<String, Object> findPhoneConsultShareDetailInfoExecute(
+            HashMap<String, Object> hashMap) {
+        return messageDao.findPhoneConsultShareDetailInfoExecute(hashMap);
+    }
 
 	@Override
 	public void saveAdvice(Map<String, Object> hashMap) {

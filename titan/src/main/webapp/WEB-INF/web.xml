@@ -14,7 +14,6 @@
 			classpath*:/spring-context-jedis.xml
 			classpath*:/spring-context-mongodb.xml
 			classpath*:/spring-security.xml
-			<!--classpath*:/spring-oauth2.xml-->
 		</param-value>
 	</context-param>
 
@@ -179,7 +178,7 @@
     </filter>
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/auth/*</url-pattern>
     </filter-mapping>
 
 </web-app>

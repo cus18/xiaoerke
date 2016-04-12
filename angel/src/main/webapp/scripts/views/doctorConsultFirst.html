@@ -49,7 +49,7 @@
                         <p>等待接入</p>
                     </div>
                     <div class="tab-content-chat " ng-click="toggleRankList()">
-                        <h3>5</h3>
+                        <h3>{{info.rankListlength}}</h3>
                         <p>已接会话</p>
                     </div>
                 </div>
@@ -58,11 +58,11 @@
                     已接入会话
                 </div>
             </div>
-            <div class="consultNowList" ng-style="chooseAlreadyJoinConsultPatientId==item.patientId?{'background':'#00a1ab'}:{'background':'#08b7c2'}"
+            <div class="consultNowList" ng-style="chooseAlreadyJoinConsultPatientId==item.patientId?{'background':'#08b7c2'}:{'background':'#fff'}"
                  ng-repeat="item in alreadyJoinPatientConversationContent"
                  ng-click="chooseAlreadyJoinConsultPatient(item.patientId,item.patientName)"
                  alt="">
-                <img src="images/consultPatient.png">{{item.patientName}}
+                {{item.patientName}}
                 {{item.dateTime}}&nbsp;&nbsp;
             </div>
         </div>
@@ -112,10 +112,8 @@
                         公共回复（{{commonAnswer.length}}）</div>
                     <ul ng-show='pubilcreplyList.show'>
                         <li ng-repeat="item in commonAnswer">
-                            <div ng-click="pubilcreplyContent1($index)">
-                                <div class="group-title" ng-click="editCommonGroup($index)">
+                            <div class="group-title" ng-click="pubilcreplyContent1($index)">
                                 {{item.name}}（{{item.secondAnswer.length}}）
-                                </div>
                             </div>
                             <ul ng-show='pubilcreplyindex==$index'>
                                 <li ng-repeat="item2 in item.secondAnswer" class="rcontent"><nobr ng-click="editCommonContent($parent.$index,$index)">{{item2.name}}</nobr></li>
@@ -127,9 +125,9 @@
                 <!--添加分组-->
                 <div class="addgroup" ng-show='addgroup'>
                     <div class="addtop"><span>添加分组</span><span ng-click="closeAddGroup()">关闭</span></div>
-                    <div class="addgroupname"><span>添加分组</span><input id="addGroupFirstId" type="text"/></div>
+                    <div class="addgroupname"><span>添加分组</span><input type="text" ng-model="info.addGroup"/></div>
                     <div class="addbtn">
-                        <input class="btn" type="submit" ng-click="addGroupFirst()" value="确定">
+                        <input class="btn" type="submit" ng-click="addGroupSubmit()" value="确定">
                         <input class="btn" type="submit" value="取消" ng-click="closeAddGroup()">
                     </div>
                 </div>
@@ -137,19 +135,19 @@
                 <div class="addcontent" ng-show='addcontent'>
                     <div class="addtop"><span>添加回复</span><span ng-click="closeAddContent()">关闭</span></div>
                     <div class="addgroupname"><span class="addkjhf">快捷回复内容：</span>
-                        <textarea placeholder="请在此处进行编辑"></textarea>
+                        <textarea placeholder="请在此处进行编辑" ng-model="info.addContent"></textarea>
                     </div>
                     <div class="addbtn">
-                        <input class="btn" type="submit" value="确定" ng-click="closeAddContent()">
+                        <input class="btn" type="submit" value="确定" ng-click="addContentSubmit()">
                         <input class="btn" type="submit" value="取消" ng-click="closeAddContent()">
                     </div>
                 </div>
                 <!--编辑分组-->
                 <div class="editgroup" ng-show='editgroup'>
                     <div class="addtop"><span>编辑分组</span><span ng-click="closeEditGroup()">关闭</span></div>
-                    <div class="addgroupname"><span>编辑分组</span><input type="text" ng-model="info.editGroup"/></div>
+                    <div class="addgroupname"><span>编辑分组</span><input type="text" required ng-model="info.editGroup"/></div>
                     <div class="addbtn">
-                        <input class="btn" type="submit" value="确定" ng-click="closeEditGroup()">
+                        <input class="btn" type="submit" value="确定" ng-click="editGroupSubmit()">
                         <input class="btn" type="submit" value="取消" ng-click="closeEditGroup()">
                     </div>
                 </div>
@@ -157,10 +155,10 @@
                 <div class="editcontent" ng-show='editcontent'>
                     <div class="addtop"><span>编辑回复</span><span ng-click="closeEditContent()">关闭</span></div>
                     <div class="addgroupname"><span class="addkjhf">编辑回复内容：</span>
-                        <textarea placeholder="请在此处进行编辑" ng-model="info.editContent"></textarea>
+                        <textarea placeholder="请在此处进行编辑" required ng-model="info.editContent"></textarea>
                     </div>
                     <div class="addbtn">
-                        <input class="btn" type="submit" value="确定" ng-click="closeEditContent()">
+                        <input class="btn" type="submit" value="确定" ng-click="editContentSubmit()">
                         <input class="btn" type="submit" value="取消" ng-click="closeEditContent()">
                     </div>
                 </div>
@@ -216,10 +214,10 @@
                 <div class="inputcontent"><textarea ng-model="info.consultMessage" placeholder="请在此处进行咨询" id="saytext"></textarea>
                 </div>
                 <div class="sendbtn">
-                    <div class="sub_btn" ng-click="sendConsultMessage()">发送消息Ctrl+Enter</div>
+                    <div class="sub_btn" ng-click="sendConsultMessage()">发送(Ctrl+Enter</div>
                     <div ng-click="closeConsult()">
                         <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(9).png" alt=""/>
-                        关闭咨询</div>
+                        关闭</div>
                 </div>
             </div>
         </div>
@@ -265,11 +263,9 @@
                                 <span></span><span>主号自动回复</span><span></span>
                             </div>
                             <div class="zhhfcontent">
-                                <p>主号自动回复</p>
-                                <p>主号自动回复</p>
-                                <p>主号自动回复</p>
-                                <p>主号自动回复</p>
-                                <p>主号自动回复</p>
+                                <p>主号自动回复针对工号已经接入客户。对未接客户请设置<a href="#">主号自动回复</a></p>
+                                <p><input type="checkbox">工号自动回复设置</p>
+                                <textarea placeholder="请在此处进行编辑"></textarea>
                             </div>
                         </div>
                     </li>

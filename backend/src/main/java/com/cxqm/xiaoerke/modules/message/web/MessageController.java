@@ -1,25 +1,24 @@
 package com.cxqm.xiaoerke.modules.message.web;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.cxqm.xiaoerke.common.bean.TemplateData;
+import com.cxqm.xiaoerke.common.bean.WxTemplate;
+import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.utils.HttpRequestUtil;
+import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.common.web.BaseController;
+import com.cxqm.xiaoerke.modules.consult.utils.DateUtil;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.cxqm.xiaoerke.modules.wechat.dao.WechatInfoDao;
 import net.sf.json.JSONObject;
-
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.cxqm.xiaoerke.common.bean.TemplateData;
-import com.cxqm.xiaoerke.common.bean.WxTemplate;
-import com.cxqm.xiaoerke.common.utils.HttpRequestUtil;
-import com.cxqm.xiaoerke.common.utils.StringUtils;
-import com.cxqm.xiaoerke.common.web.BaseController;
-import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 /**
  * 消息Controller
@@ -32,7 +31,10 @@ public class MessageController extends BaseController {
 
     @Autowired
     private SystemService systemService;
-    
+
+    @Autowired
+    private WechatInfoDao wechatInfoDao;
+
     private String COLOR = "#000000";
     
 	/**
@@ -44,7 +46,7 @@ public class MessageController extends BaseController {
 	 */
 	@RequiresPermissions("message:messageForm")
 	@RequestMapping(value = "messageForm")
-	public String insuranceList(MessageVo message,HttpServletRequest request,HttpServletResponse response, Model model) {
+	public String messageForm(MessageVo message,HttpServletRequest request,HttpServletResponse response, Model model) {
 		model.addAttribute("messagevo", message);
 		return "modules/message/messageForm";
 	}
@@ -61,10 +63,9 @@ public class MessageController extends BaseController {
 	public String sendWechatMessage(MessageVo message,HttpServletRequest request,HttpServletResponse response, Model model) {
 		Map<String,Object> parameter = systemService.getWechatParameter();
         String token = (String)parameter.get("token");
-		String first = "营养师yoyo回复了您的咨询";
 		String remark = "祝您的宝宝健康成长";
 		String templateId = "bRgqyNcnnpZT0A4B1uLCwKculSwuV81vmVXjiVpCETo";
-        String errcode = this.templateModel(first, message.getKeyword1(), message.getKeyword2(), message.getKeyword3(), message.getKeyword4(), remark, token, message.getUrl(), message.getOpenId(), templateId);
+        String errcode = this.templateModel(message.getFirst(), message.getKeyword1(), message.getKeyword2(), message.getKeyword3(), message.getKeyword4(), remark, token, message.getUrl(), message.getOpenId(), templateId);
         model.addAttribute("messagevo", message);
 		model.addAttribute("message", "0".equals(errcode)?"消息发送成功！":"消息发送失败："+errcode);
 		return "modules/message/messageForm";
@@ -130,5 +131,49 @@ public class MessageController extends BaseController {
             }
         }
 		return jsonObject.getString("errcode");
+    }
+
+    /**
+     * 客服未回复用户列表
+     * sunxiao
+     * @param
+     * @param model
+     * @return
+     */
+    @RequiresPermissions("message:messageForm")
+    @RequestMapping(value = "noAnswerWechatRecordList")
+    public String noAnswerWechatRecordList(MessageVo message,HttpServletRequest request,HttpServletResponse response, Model model) {
+        Map<String, Object> param = new HashMap<String, Object>();
+        if(StringUtils.isNotNull(message.getFromTime())){
+            param.put("fromTime", DateUtils.DateToStr(new Date(), "date")+" "+message.getFromTime());
+        }else{
+            param.put("fromTime",new Date(new Date().getTime()-30*60*1000));
+        }
+        if(StringUtils.isNotNull(message.getToTime())){
+            param.put("toTime",DateUtils.DateToStr(new Date(), "date")+" "+message.getToTime());
+        }else{
+            param.put("toTime",new Date());
+        }
+        List<String> list =  wechatInfoDao.getUsersOpenIdList(param);
+        List<Map<String,Object>> lists = new ArrayList<Map<String, Object>>();
+        for(String temp : list){
+            param.put("openId",temp);
+            List<Map<String,Object>> mapList = wechatInfoDao.getNoAnswerUserList(param);
+            boolean flag = true;
+            int j=0;
+            for(int i=0;i<mapList.size();i++){
+                if("2002".equals(mapList.get(i).get("opercode"))){
+                    flag = false;
+                    break;
+                }
+                j=i;
+            }
+            if(flag){
+                lists.add(mapList.get(j));
+            }
+        }
+        model.addAttribute("lists", lists);
+        model.addAttribute("vo", message);
+        return "modules/message/noAnswerWechatRecordList";
     }
 }

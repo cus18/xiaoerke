@@ -56,9 +56,8 @@ public class ConsultSessionManager {
 	
 	private AtomicInteger accessNumber = new AtomicInteger(1000);
 
-	@Autowired
-	private SessionCache sessionCache;
-	
+	private SessionCache sessionCache = SpringContextHolder.getBean("sessionCacheRedisImpl");
+
 	private ConsultSessionService consultSessionService = SpringContextHolder.getBean("consultSessionServiceImpl");
 	
 	private ConsultSessionForwardRecordsService sessionForwardService = SpringContextHolder.getBean("consultSessionForwardRecordsServiceImpl");
@@ -77,6 +76,7 @@ public class ConsultSessionManager {
 	}
 	
 	void createSession(ChannelHandlerContext ctx, FullHttpRequest msg, String url) {
+
 		Channel channel = ctx.channel();
 		
 		String[] args = url.split("&");
@@ -110,7 +110,19 @@ public class ConsultSessionManager {
 			log.warn("Maybe a Simulated Distributor: The userId is " + distributorUserId);
 		}
 	}
-	
+
+	public void removeUserSession(String userId){
+		Iterator iterator = userChannelMapping.keySet().iterator();
+		while (iterator.hasNext()){
+			String key = (String) iterator.next();
+			if (userId.equals(key)) {
+				iterator.remove();
+				userChannelMapping.remove(key);
+			}
+		}
+	}
+
+
 	private void doCreateSessionInitiatedByUser(String userId, Channel channel){
 		Integer sessionId = sessionCache.getSessionIdByUserId(userId);
 		
@@ -126,7 +138,7 @@ public class ConsultSessionManager {
 			consultSession.setServerAddress(address.getHostName());
 			consultSession.setUserId(userId);
 			consultSession.setUserName(user.getName() == null ? user.getLoginName() : user.getName());
-			
+
 			int number = accessNumber.getAndDecrement();
 			if(number < 10)
 				accessNumber.set(1000);
@@ -182,7 +194,10 @@ public class ConsultSessionManager {
 		channelUserMapping.put(channel, userId);
 	}
 
-	public Channel createWechatConsultSession(RichConsultSession consultSession){
+	public HashMap<String,Object> createWechatConsultSession(RichConsultSession consultSession){
+
+		HashMap<String,Object> response = new HashMap<String, Object>();
+//		sessionCache.putSessionIdConsultSessionPair(123, consultSession);
 
 		Channel  csChannel = null;
 
@@ -230,10 +245,14 @@ public class ConsultSessionManager {
 					doctorOnLineList.add(doctorOnLineMap);
 				}
 				//通过一个随机方法，从doctorOnLineList选择一个医生，为用户提供服务
-				consultSession.setCsUserId((String)doctorOnLineList.get(0).get("doctorId"));
-				csChannel = (Channel) doctorOnLineList.get(0).get("Channel");
-				User csUser = systemService.getUser((String)doctorOnLineList.get(0).get("doctorId"));
-				consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
+				Random rand = new Random();
+				if(doctorOnLineList!=null && doctorOnLineList.size()>0){
+					int indexCS = rand.nextInt(doctorOnLineList.size());
+					consultSession.setCsUserId((String) doctorOnLineList.get(indexCS).get("doctorId"));
+					csChannel = (Channel) doctorOnLineList.get(0).get("Channel");
+					User csUser = systemService.getUser((String)doctorOnLineList.get(indexCS).get("doctorId"));
+					consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
+				}
 
 			}else{
 				//如果没有任何医生在线，给用户推送微信消息，告知没有医生在线，稍后在使用服务
@@ -251,9 +270,12 @@ public class ConsultSessionManager {
 
 		//成功分配医生，给用户发送一个欢迎语
 		String st = "尊敬的用户，宝大夫在线，有什么可以帮您";
-		WechatUtil.senMsgToWechat(sessionCache.getWeChatToken(), consultSession.getOpenid(), st);
-
-		return csChannel;
+		WechatUtil.senMsgToWechat("a0cNpOtk4bMgfn2wq8---RrGhz4racwEDxQrz2gFJiNl_UIn2VU8RJM7nLuIGXQuX14z2VJ9tvOQgfXhQB1XQBqB3IgzRQ8lFnxM0uY-F8XATaCzJbilIMGU5Cjmt6oZFVLiAHAJZP", consultSession.getOpenid(), st);//sessionCache.getWeChatToken()
+		sessionCache.putWechatSessionByOpenId(consultSession.getOpenid(),consultSession);
+		response.put("csChannel", csChannel);
+		response.put("sessionId",sessionId);
+		response.put("consultSession",consultSession);
+		return response;
 
 	}
 

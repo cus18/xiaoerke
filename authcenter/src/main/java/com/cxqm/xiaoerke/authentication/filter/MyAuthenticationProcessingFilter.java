@@ -47,12 +47,13 @@ public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProc
 			throw new AuthenticationServiceException("empty_password");
 
 		String openId = WechatUtil.getOpenId(request.getSession(), request);
-		openId = "123";
 		String toUrl = request.getParameter("toUrl");
 		String status = null;
-		if(toUrl != null && toUrl.indexOf("xiaoerke-doctor") != -1)
+		if(toUrl != null && toUrl.indexOf("/doctor/") != -1){
 			status = utilService.bindUser4Doctor(username, password, openId);
-		else 
+		} else if(toUrl != null && toUrl.indexOf("/doctor/consultBBBBBB") != -1){
+			status = utilService.bindUser4ConsultDoctor(username, password, openId);
+		}else
 			status = utilService.bindUser(username, password, openId);
 		
 

@@ -4,6 +4,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,7 @@ public class TokenController extends BaseController {
 	public String sendToken(@RequestParam String toUrl, @RequestParam String token, HttpServletRequest request, HttpServletResponse response, Model model){
 		Cookie cookie = new Cookie("ssoToken",token);
 		cookie.setPath("/");
-		cookie.setDomain(".baodf.com");
+		cookie.setDomain(ConstantUtil.DOAMIN_VALUE);
 		cookie.setMaxAge(60*60*24*90);
 		response.addCookie(cookie);
 		

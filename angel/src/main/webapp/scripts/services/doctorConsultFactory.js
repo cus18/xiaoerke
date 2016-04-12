@@ -19,7 +19,7 @@ angular.module('services', ['ngResource'])
         return $resource(public + 'consult/doctor/doctorList');
     }])
 
-    //获取客户户列表
+    //获取客户列表
     .factory('getUserConsultListInfo', ['$resource', function ($resource) {
         return $resource(public + 'consult/user/getUserList');
     }])
@@ -65,7 +65,7 @@ angular.module('services', ['ngResource'])
     }])
     //医生修改的自己的回复
     .factory('getMyAnswerModify', ['$resource', function ($resource) {
-        return $resource(public + 'consult/doctor/myAnswer/modify');
+        return $resource(public + 'consult/doctor/Answer/modify');
     }])
     //医生删除的自己的回复
     .factory('getMyAnswerDelete', ['$resource', function ($resource) {

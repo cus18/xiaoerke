@@ -45,22 +45,22 @@ public class InsuranceController extends BaseController {
 
 	@Autowired
 	private InsuranceRegisterServiceService insuranceRegisterService;
-	
+
 	@Autowired
 	BabyBaseInfoService babyBaseInfoService;
-	
-    @Autowired
-    private AccountService accountService;
-    
-    @Autowired
-    private InsuranceHospitalService insuranceHospitalService;
-	
+
+	@Autowired
+	private AccountService accountService;
+
+	@Autowired
+	private InsuranceHospitalService insuranceHospitalService;
+
 	/**
 	 * 防犬宝的订单列表
 	 * sunxiao
-	 * @param 
+	 * @param
 	 * @param model
-	 * @return 
+	 * @return
 	 */
 	@RequiresPermissions("insurance:insuranceList")
 	@RequestMapping(value = "insuranceList")
@@ -99,7 +99,7 @@ public class InsuranceController extends BaseController {
 		model.addAttribute("vo", vo);
 		return returnUrl;
 	}
-	
+
 	/**
 	 * 导出订单数据
 	 * sunxiao
@@ -109,41 +109,41 @@ public class InsuranceController extends BaseController {
 	 * @return
 	 */
 	@RequiresPermissions("user")
-    @RequestMapping(value = "export", method=RequestMethod.POST)
-    public String exportFile(InsuranceRegisterService insuranceRegisterVo, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+	@RequestMapping(value = "export", method=RequestMethod.POST)
+	public String exportFile(InsuranceRegisterService insuranceRegisterVo, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
-            String fileName = "订单数据"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
-            List<InsuranceRegisterService> list = insuranceRegisterService.getInsuranceServiceList(insuranceRegisterVo);
-    		new ExportExcel("订单数据", InsuranceRegisterService.class).setDataList(list).write(response, fileName).dispose();
-    		return null;
+			String fileName = "订单数据"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+			List<InsuranceRegisterService> list = insuranceRegisterService.getInsuranceServiceList(insuranceRegisterVo);
+			new ExportExcel("订单数据", InsuranceRegisterService.class).setDataList(list).write(response, fileName).dispose();
+			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
 			addMessage(redirectAttributes, "导出用户失败！失败信息："+e.getMessage());
 		}
-		return "redirect:" + adminPath + "/register/patientRegisterList";
-    }
-	
+		return "redirect:" + adminPath + "insurance/insuranceList";
+	}
+
 	/**
 	 * 防犬宝的订单详情
 	 * sunxiao
-	 * @param 
+	 * @param
 	 * @param model
-	 * @return 
+	 * @return
 	 */
 	@RequiresPermissions("insurance:orderDetails")
 	@RequestMapping(value = "orderDetails")
 	public String orderDetails(InsuranceRegisterService vo,HttpServletRequest request,HttpServletResponse response, Model model) {
-			InsuranceRegisterService irsvo = insuranceRegisterService.getInsuranceRegisterServiceById(vo.getId()+"");
-			model.addAttribute("irsvo", irsvo);
+		InsuranceRegisterService irsvo = insuranceRegisterService.getInsuranceRegisterServiceById(vo.getId()+"");
+		model.addAttribute("irsvo", irsvo);
 		return "modules/insurance/orderDetails";
 	}
-	
+
 	/**
 	 * 弹出是否审批通过页面
 	 * sunxiao
-	 * @param 
+	 * @param
 	 * @param model
-	 * @return 
+	 * @return
 	 */
 	@RequiresPermissions("insurance:orderDetails")
 	@RequestMapping(value = "auditForm")
@@ -163,13 +163,13 @@ public class InsuranceController extends BaseController {
 		model.addAttribute("irsvo", vo);
 		return returnUrl;
 	}
-	
+
 	/**
 	 * 审批
 	 * sunxiao
-	 * @param 
+	 * @param
 	 * @param model
-	 * @return 
+	 * @return
 	 */
 	@RequiresPermissions("insurance:orderDetails")
 	@ResponseBody
@@ -189,13 +189,13 @@ public class InsuranceController extends BaseController {
 		}
 		return result.toString();
 	}
-	
+
 	/**
 	 * 赠送保险form
 	 * sunxiao
-	 * @param 
+	 * @param
 	 * @param model
-	 * @return 
+	 * @return
 	 */
 	@RequiresPermissions("insurance:insuranceList")
 	@RequestMapping(value = "giveInsuranceForm")
@@ -203,13 +203,13 @@ public class InsuranceController extends BaseController {
 		model.addAttribute("InsuranceRegisterService", new InsuranceRegisterService());
 		return "modules/insurance/giveInsuranceForm";
 	}
-	
+
 	/**
 	 * 赠送保险
 	 * sunxiao
-	 * @param 
+	 * @param
 	 * @param model
-	 * @return 
+	 * @return
 	 */
 	@RequiresPermissions("insurance:insuranceList")
 	@RequestMapping(value = "giveInsurance")
@@ -224,13 +224,13 @@ public class InsuranceController extends BaseController {
 			return "modules/insurance/giveInsuranceForm";
 		}
 	}
-	
+
 	/**
 	 * 保险关联医院列表
 	 * sunxiao
-	 * @param 
+	 * @param
 	 * @param model
-	 * @return 
+	 * @return
 	 */
 	@RequiresPermissions("insurance:insuranceList")
 	@RequestMapping(value = "insuranceHospitalList")
@@ -249,13 +249,13 @@ public class InsuranceController extends BaseController {
 		model.addAttribute("vo", vo);
 		return "modules/insurance/insuranceHospitalList";
 	}
-	
+
 	/**
 	 * 保存保险关联医院
 	 * sunxiao
-	 * @param 
+	 * @param
 	 * @param model
-	 * @return 
+	 * @return
 	 */
 	@RequiresPermissions("insurance:insuranceList")
 	@RequestMapping(value = "saveInsuranceHospitalForm")
@@ -263,13 +263,13 @@ public class InsuranceController extends BaseController {
 		model.addAttribute("insuranceHospitalVo", vo);
 		return "modules/insurance/addInsuranceHospitalForm";
 	}
-	
+
 	/**
 	 * 保存保险关联医院
 	 * sunxiao
-	 * @param 
+	 * @param
 	 * @param model
-	 * @return 
+	 * @return
 	 */
 	@RequiresPermissions("insurance:insuranceList")
 	@RequestMapping(value = "saveInsuranceHospital")

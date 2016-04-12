@@ -1,5 +1,5 @@
 
-package com.cxqm.xiaoerke.webapp.controller;
+package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.alibaba.fastjson.JSON;
 import com.cxqm.xiaoerke.common.persistence.Page;
@@ -15,7 +15,6 @@ import com.cxqm.xiaoerke.modules.sys.entity.DoctorVo;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -427,8 +426,8 @@ public class ConsultDoctorController extends BaseController {
         PaginationVo<ConsultRecordMongoVo> pagination = null;
         Map<String,Object> response = new HashMap<String, Object>();
         if(null != params.get("pageNo") && null != params.get("pageSize")){
-            pageNo = Integer.parseInt((String)params.get("pageNo"));
-            pageSize = Integer.parseInt((String)params.get("pageSize"));
+            pageNo = (Integer)params.get("pageNo");
+            pageSize = (Integer)params.get("pageSize");
         }
 
         if(recordType.equals("user") && StringUtils.isNotNull(toUserId) && pageSize > 0){

@@ -160,8 +160,8 @@ public class ConsultPhoneOrderServiceImpl implements ConsultPhoneOrderService {
     }
 
     @Override
-    public List<HashMap<String, Object>> getOrderPhoneConsultListByTime(String state) {
-      return consultPhoneRegisterServiceDao.getOrderPhoneConsultListByTime(state);
+    public List<HashMap<String, Object>> getOrderPhoneConsultListByTime(String state,Date date) {
+      return consultPhoneRegisterServiceDao.getOrderPhoneConsultListByTime(state,date);
     }
 
     @Override
@@ -169,5 +169,9 @@ public class ConsultPhoneOrderServiceImpl implements ConsultPhoneOrderService {
       return consultPhoneRegisterServiceDao.getConsultConnectInfo(id);
     }
 
+    @Override
+    public void changeConsultPhoneRegisterServiceState(HashMap<String, Object> excuteMap) {
+        consultPhoneRegisterServiceDao.changeConsultPhoneRegisterServiceState(excuteMap);
+    }
 
 }

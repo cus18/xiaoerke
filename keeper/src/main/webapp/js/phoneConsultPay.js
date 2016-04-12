@@ -91,7 +91,7 @@ var doRefresh = function(){
 
     $.ajax({
         type: 'POST',
-        url: "/titan/healthRecord/getBabyinfoList",
+        url: "healthRecord/getBabyinfoList",
         data: "{'openid':''}",
         contentType: "application/json; charset=utf-8",
         success: function(result){
@@ -141,24 +141,24 @@ var doRefresh = function(){
     }
 
     $.ajax({
-        url: 'info/loginStatus',
+        url: 'auth/info/loginStatus',
         type: 'post',
         data: {},
         complete: function(jqXHR){
             if(jqXHR.status=="404"){
-                window.location.href = "phoneConsultPay/patientPay.do?phoneConDoctorDetail="+GetQueryString("phoneConDoctorDetail");
+                window.location.href = "/phoneConsultPay/patientPay.do?phoneConDoctorDetail="
+                    +GetQueryString("phoneConDoctorDetail")+"AAAAAAdoctorId="+GetQueryString("doctorId");
             }
         },
         success:function(data){
-            var param = '{routePath:"phoneConsultPay/patientPay.do?phoneConDoctorDetail='+GetQueryString("phoneConDoctorDetail")+'"}';
+            var param = '{routePath:"/phoneConsultPay/patientPay.do?phoneConDoctorDetail='
+                +GetQueryString("phoneConDoctorDetail")+"AAAAAAdoctorId="+GetQueryString("doctorId")+'"}';
             $.ajaxSetup({
                 contentType : 'application/json'
             });
-            alert(param);
-            $.post('info/loginStatus',param,
+            $.post('auth/info/loginStatus',param,
                 function(data) {
                     if(data.status=="9"){
-                        alert(data.redirectURL);
                         window.location.href = data.redirectURL;
                     }else if(data.status=="8"){
                         window.location.href = data.redirectURL;
@@ -255,10 +255,6 @@ var pay = function(){
     }else if(!readLock){
         alert("请勾选预约须知");
     }else{
-        //wxPay();
-        //alert("可以预约了");
-        //window.location.href="ap/phoneConsult#/phoneConPaySuccess/,"
-        alert($("#babyId").val()+$('#babyName').val()+$('#connectphone').val()+$('#case').val(),GetQueryString('phoneConDoctorDetail')+bodBirthday);
         $.ajax({
             url:"consultPhone/consultOrder/createOrder",// 跳转到 action
             async:true,

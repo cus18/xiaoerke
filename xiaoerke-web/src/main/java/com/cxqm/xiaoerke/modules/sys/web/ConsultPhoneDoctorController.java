@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -334,10 +335,11 @@ public class ConsultPhoneDoctorController {
 
         HashMap<String, Object> params = new HashMap<String, Object>();
         params.put("doctorId",doctorId);
-        Map<String, Object> response = doctorInfoService.findDoctorDetailInfoAndType(params);
+        Map<String, Object> response = phoneConsultDoctorRelationService.findDoctorDetailInfo(doctorId);
         ConsulPhonetDoctorRelationVo relationVo = phoneConsultDoctorRelationService.getPhoneConsultRigister(doctorId);
         if(relationVo != null) {
-            response.put("price", relationVo.getPrice());
+            float price = relationVo.getPrice();
+            response.put("price",price);
             response.put("ServerLength", relationVo.getServerLength());
         }
         //获取科室
@@ -348,12 +350,11 @@ public class ConsultPhoneDoctorController {
 
         //评价
         params.put("evaluateType", "1");
-        HashMap<String,Object> evaluaMap = patientRegisterPraiseService.getConsultEvaluate(params);
+        HashMap<String,Object> evaluaMap = patientRegisterPraiseService.getConsultEvaluateTop(params);
         HashMap<String, Object> doctorScore = doctorInfoService.findDoctorScoreInfo(doctorId);
         response.put("doctorScore", doctorScore);
         response.put("evaluaMap",evaluaMap);
-
-
+        response.put("evaluateTotal", patientRegisterPraiseService.getTotalCount(params));//评论总数
 
         //获取医生的案例信息
         List<DoctorCaseVo> doctorCaseVos = doctorCaseService.findDoctorCase((String) params.get("doctorId"));
@@ -378,6 +379,16 @@ public class ConsultPhoneDoctorController {
         response.put("sumcase", sumcase);//总案例数
         response.put("doctorCaseList", doctorCaseVos);//医生案例
         return response;
+    }
+
+    @RequestMapping(value = "earliestVisiteInfo",method = {RequestMethod.GET,RequestMethod.POST})
+    public
+    @ResponseBody
+    Map<String,Object> earliestVisiteInfo(@RequestParam String doctorId){
+
+        Map<String,Object> resultMap = registerService.getEarliestVisiteInfo(doctorId);
+        resultMap.size();
+        return resultMap;
     }
 
 }

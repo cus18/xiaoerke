@@ -24,7 +24,7 @@ public class UserAgentUtils {
 	public static UserAgent getUserAgent(HttpServletRequest request){
 		return UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
 	}
-	
+
 	/**
 	 * 获取设备类型
 	 * @param request
@@ -33,7 +33,7 @@ public class UserAgentUtils {
 	public static DeviceType getDeviceType(HttpServletRequest request){
 		return getUserAgent(request).getOperatingSystem().getDeviceType();
 	}
-	
+
 	/**
 	 * 是否是PC
 	 * @param request
@@ -51,7 +51,7 @@ public class UserAgentUtils {
 	public static boolean isMobile(HttpServletRequest request){
 		return DeviceType.MOBILE.equals(getDeviceType(request));
 	}
-	
+
 	/**
 	 * 是否是平板
 	 * @param request
@@ -70,7 +70,7 @@ public class UserAgentUtils {
 		DeviceType deviceType = getDeviceType(request);
 		return DeviceType.MOBILE.equals(deviceType) || DeviceType.TABLET.equals(deviceType);
 	}
-	
+
 	/**
 	 * 获取浏览类型
 	 * @param request
@@ -79,7 +79,7 @@ public class UserAgentUtils {
 	public static Browser getBrowser(HttpServletRequest request){
 		return getUserAgent(request).getBrowser();
 	}
-	
+
 	/**
 	 * 是否IE版本是否小于等于IE8
 	 * @param request
@@ -90,5 +90,5 @@ public class UserAgentUtils {
 		return Browser.IE5.equals(browser) || Browser.IE6.equals(browser)
 				|| Browser.IE7.equals(browser) || Browser.IE8.equals(browser);
 	}
-	
+
 }

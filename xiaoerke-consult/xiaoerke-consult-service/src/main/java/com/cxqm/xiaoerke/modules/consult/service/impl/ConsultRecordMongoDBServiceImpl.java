@@ -3,6 +3,7 @@ package com.cxqm.xiaoerke.modules.consult.service.impl;
 
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordVo;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
 import com.mongodb.WriteResult;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 @Service
 @Transactional(readOnly = false)
@@ -53,7 +56,9 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		return this.insert(consultRecordMongoVo);
 	}
 
-
+	public void  deleteConsultSessionStatusVo(Query query) {
+		mongoTemplate.remove(query, ConsultSessionStatusVo.class);
+	}
 
 	@Override
 	public ConsultRecordMongoVo findAndRemove(Query query) {
@@ -80,6 +85,15 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 
 	}
 
+	public WriteResult upsertConsultSessionStatusVo(ConsultSessionStatusVo consultSessionStatusVo) {
+
+		return mongoTemplate.upsert((new Query(where("sessionId").is(consultSessionStatusVo.getSessionId()))),
+				new Update().update("ConsultSessionStatusVo", consultSessionStatusVo),ConsultSessionStatusVo.class);
+	}
+	//zdl
+	public List<ConsultSessionStatusVo> querySessionStatusList(Query query){
+		return this.mongoTemplate.find(query, ConsultSessionStatusVo.class, "ConsultSessionStatusVo");
+	}
 
 
 	@Override

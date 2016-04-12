@@ -46,7 +46,7 @@
 	<!--事件触发时间点-->
 	<bean id="getWechatRecoderTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="getWechatRecoderQuarzTask"/>
-		<property name="cronExpression" value="0 0 1 * * ?"/>
+		<property name="cronExpression" value="0 0/30 * * * ?"/>
 	</bean>
 
 	<!-- 获取多客服在线时长 -->
@@ -284,8 +284,8 @@
 				<!--<ref bean="everyMinuteSendWechatMessageCronTrigger"/>-->
 				<!--<ref bean="nutritionManagementSendWechatMessageCronTrigger"/>-->
 				<!--<ref bean="insuranceUpdateCronTrigger"/>-->
-				<ref bean="consultPhoneCronTrigger"/>
-				<ref bean="consultMangementCronTrigger"/>
+				<!--<ref bean="consultPhoneCronTrigger"/>-->
+				<!--<ref bean="consultMangementCronTrigger"/>-->
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>

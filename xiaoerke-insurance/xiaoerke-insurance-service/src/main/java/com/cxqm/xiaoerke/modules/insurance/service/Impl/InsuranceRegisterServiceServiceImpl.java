@@ -143,6 +143,7 @@ public class InsuranceRegisterServiceServiceImpl implements
             nuser.setLoginName(phone);
             nuser.setPhone(phone);
             nuser.setCreateDate(new Date());
+			nuser.setUserType("user");
             userDao.insert(nuser);
             PatientVo patientVo = new PatientVo();
             String spid = IdGen.uuid();

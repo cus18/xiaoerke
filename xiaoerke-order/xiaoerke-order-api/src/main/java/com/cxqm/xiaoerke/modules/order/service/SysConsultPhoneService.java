@@ -1,13 +1,12 @@
 package com.cxqm.xiaoerke.modules.order.service;
 
+import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterTemplateVo;
+import com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo;
+import net.sf.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterTemplateVo;
-import com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo;
-
-import net.sf.json.JSONObject;
 
 /**
  * Created by cxq on 2016/3/21.
@@ -45,4 +44,13 @@ public interface SysConsultPhoneService {
      * sunxiao
      */
     List<SysConsultPhoneServiceVo> findSysConsultPhoneByInfo(Map<String, Object> map);
+
+    /**
+     * 根据consultPhoneRegisterServiceId查询sys_consultPhone_service表信息
+     * @param hashMap
+     * @return
+     * @author chenxiaoqiong
+     */
+    HashMap<String, Object> findSysConsultPhoneServiceByCRSIdExecute(HashMap<String, Object> hashMap);
+
 }

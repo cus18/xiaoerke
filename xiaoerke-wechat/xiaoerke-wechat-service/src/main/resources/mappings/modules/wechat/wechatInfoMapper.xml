@@ -55,5 +55,30 @@
     <select id="checkAttention" resultType="java.lang.Integer">
         select count(sa.id) from sys_attention sa where sa.openid = #{openId}
     </select>
+    <!--查询没有回复用户的openid sunxiao-->
+    <select id="getUsersOpenIdList" resultType="java.lang.String">
+        select DISTINCT openid from sys_wechat_record where opercode in ('2001' ,'2002','2003' )
+        <if test="fromTime != null and fromTime != ''">
+            and infoTime>#{fromTime}
+        </if>
+        <if test="toTime != null and toTime != ''">
+            and #{toTime}>infoTime
+        </if>
+    </select>
+    <!--查询没有回复的用户的信息 sunxiao-->
+    <select id="getNoAnswerUserList" resultType="java.util.Map">
+        SELECT
+            swr.*,sa.nickname
+        FROM
+            sys_wechat_record swr
+        LEFT JOIN sys_attention sa on sa.openid=swr.openid
+        where swr.openid= #{openId} and swr.opercode in ('2001' ,'2002','2003' )
+        <if test="fromTime != null and fromTime != ''">
+            and infoTime>#{fromTime}
+        </if>
+        <if test="toTime != null and toTime != ''">
+            and #{toTime}>infoTime
+        </if>
+    </select>
 
 </mapper>

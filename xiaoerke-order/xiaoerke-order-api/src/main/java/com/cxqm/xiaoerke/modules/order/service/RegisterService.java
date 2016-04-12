@@ -96,4 +96,6 @@ public interface RegisterService {
     int findDoctorRegisterServiceByData(HashMap<String, Object> hashMap);
 
     HashMap<String, Object> getCooperationHospitalTypeBySrsId(String register_service_id);
+
+    Map<String,Object> getEarliestVisiteInfo(String doctorId);
 }

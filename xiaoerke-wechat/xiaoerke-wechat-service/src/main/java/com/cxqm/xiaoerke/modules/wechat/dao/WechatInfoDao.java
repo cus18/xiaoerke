@@ -35,4 +35,9 @@ public interface WechatInfoDao {
 
     //new zdl
     void updateAttentionInfo(HashMap<String,Object> hashMap);
+
+    List<String> getUsersOpenIdList(Map<String, Object> param);
+
+    //客服查询没有回复的用户列表sunxiao
+    List<Map<String,Object>> getNoAnswerUserList(Map<String, Object> param);
 }

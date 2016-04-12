@@ -31,9 +31,22 @@ public class SessionCacheRedisImpl implements SessionCache {
 	@Override
 	public RichConsultSession getConsultSessionBySessionId(Integer sessionId) {
 		Object session = redisTemplate.opsForHash().get(SESSIONID_CONSULTSESSION_KEY, sessionId);
+//		List<HV> multiGet(H key, Collection<HK> hashKeys);
+
 		return session == null ? null : (RichConsultSession) session;
 	}
-	
+
+	@Override
+	public void removeConsultSession(Integer sessionId){
+		redisTemplate.opsForHash().delete(SESSIONID_CONSULTSESSION_KEY, sessionId);
+	}
+
+	@Override
+	public List<Object> getConsultSessionsByKey() {
+		List<Object> objects = redisTemplate.opsForHash().values(SESSIONID_CONSULTSESSION_KEY);
+		return objects;
+	}
+
 	@Override
 	public List<Object> getConsultSessionsBySessionIds(Collection<Object> sessionIds) {
 		List<Object> sessions = redisTemplate.opsForHash().multiGet(SESSIONID_CONSULTSESSION_KEY, sessionIds);
@@ -65,6 +78,7 @@ public class SessionCacheRedisImpl implements SessionCache {
 		redisTemplate.opsForHash().put(USER_SESSIONID_KEY, userId, sessionId);
 	}
 
+
 	@Override
 	public void putopenIdSessionIdPair(String openId,
 									   Integer sessionId) {
@@ -72,8 +86,8 @@ public class SessionCacheRedisImpl implements SessionCache {
 	}
 
 	@Override
-	public void putWechatSessionByOpenId(String openId,Session wechatSession) {
-		redisTemplate.opsForHash().put(USER_WECHATSESSION_KEY, openId, wechatSession);
+	public void putWechatSessionByOpenId(String openId,RichConsultSession richConsultSession) {
+		redisTemplate.opsForHash().put(USER_WECHATSESSION_KEY, openId, richConsultSession);
 	}
 
 	@Override

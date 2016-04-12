@@ -26,13 +26,17 @@ public interface SessionCache {
 
 	void removeWechatSessionPair(String openId);
 
+	void removeConsultSession(Integer sessionId);
+
+	List<Object> getConsultSessionsByKey();
+
 	List<Object> getConsultSessionsBySessionIds(Collection<Object> sessionIds);
 
 	Integer getSessionIdByOpenId(String openId);
 
 	void putopenIdSessionIdPair(String openId, Integer sessionId);
 
-	void putWechatSessionByOpenId(String openId, Session wechatSession);
+	void putWechatSessionByOpenId(String openId, RichConsultSession wechatSession);
 
 	Session getWechatSessionByOpenId(String openId);
 
