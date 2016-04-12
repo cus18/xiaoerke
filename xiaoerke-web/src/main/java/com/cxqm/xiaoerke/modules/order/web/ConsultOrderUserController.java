@@ -2,10 +2,12 @@ package com.cxqm.xiaoerke.modules.order.web;
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.IdGen;
+import com.cxqm.xiaoerke.modules.consult.utils.DateUtil;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.order.exception.CreateOrderException;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhoneOrderService;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
+import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -106,6 +108,10 @@ public class ConsultOrderUserController {
         int reultState = 0;
         try {
             reultState = consultPhonePatientService.PatientRegister(openid, babyId, babyName, birthDay, phoneNum, illnessDesc, sysConsultPhoneId);
+            Map<String,Object> consultOrder = consultPhonePatientService.getPatientRegisterInfo(reultState);
+            String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)consultOrder.get("date"),"yyyy/MM/dd"));
+            PatientMsgTemplate.consultPhoneSuccess2Msg((String)consultOrder.get("babyName"),(String)consultOrder.get("doctorName"),(String)consultOrder.get("date"),week,(String)consultOrder.get("beginTime"),(String)consultOrder.get("phone"),(String)consultOrder.get("orderNo"));
+
         } catch (CreateOrderException e) {
             e.printStackTrace();
             resultMap.put("state","false");
