@@ -1003,21 +1003,24 @@ public class ScheduledTask {
           List<ConsultPhoneRecordVo> list = consultPhoneService.getConsultRecordInfo(orderId + "", "CallAuth");
           if(list.size()<2){
               Integer conversationLength =  (Integer)map.get("conversationLength")*60;
-              HashMap<String, Object> result = CCPRestSDK.callback(doctorPhone,userPhone,
+              HashMap<String, Object> result = CCPRestSDK.callback(userPhone,doctorPhone,
                       "4006237120", "4006237120", null,
                       "true", null, orderId+"",
                       conversationLength+"", null, "0",
                       "1", "10", null);
-              HashMap<String, Object> dataMap = (HashMap) result.get("data");
-              HashMap<String, Object> callBackMap = (HashMap)dataMap.get("CallBack");
-              String callSid =(String)callBackMap.get("callSid");
 
-              System.out.println(result);
-              ConsultPhoneRegisterServiceVo vo =  new ConsultPhoneRegisterServiceVo();
-              vo.setId(orderId);
-              vo.setUpdateTime(new Date());
-              vo.setCallSid(callSid);
-              consultPhonePatientService.updateOrderInfoBySelect(vo);
+              if("000000".equals((String) result.get("statusCode"))){
+                  HashMap<String, Object> dataMap = (HashMap) result.get("data");
+                  HashMap<String, Object> callBackMap = (HashMap)dataMap.get("CallBack");
+                  String callSid =(String)callBackMap.get("callSid");
+
+                  System.out.println(result);
+                  ConsultPhoneRegisterServiceVo vo =  new ConsultPhoneRegisterServiceVo();
+                  vo.setId(orderId);
+                  vo.setUpdateTime(new Date());
+                  vo.setCallSid(callSid);
+                  consultPhonePatientService.updateOrderInfoBySelect(vo);
+              }
           }else{
               //取消用户订单
               ConsultPhoneRegisterServiceVo vo =  new ConsultPhoneRegisterServiceVo();
@@ -1027,7 +1030,7 @@ public class ScheduledTask {
               consultPhonePatientService.updateOrderInfoBySelect(vo);
 //             将钱退还到用户的账户
               HashMap<String, Object> response = new HashMap<String, Object>();
-              accountService.updateAccount((Float)map.get("price"),(String)map.get("id"),response,false, UserUtils.getUser().getId(),"电话咨询超时取消退款");
+              accountService.updateAccount((Float) map.get("price"), (Integer) map.get("id")+"", response, false, UserUtils.getUser().getId(),"电话咨询超时取消退款");
 //              并发送消息
 
           }
