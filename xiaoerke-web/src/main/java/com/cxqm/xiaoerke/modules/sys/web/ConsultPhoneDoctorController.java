@@ -338,7 +338,8 @@ public class ConsultPhoneDoctorController {
         Map<String, Object> response = phoneConsultDoctorRelationService.findDoctorDetailInfo(doctorId);
         ConsulPhonetDoctorRelationVo relationVo = phoneConsultDoctorRelationService.getPhoneConsultRigister(doctorId);
         if(relationVo != null) {
-            response.put("price", relationVo.getPrice());
+            float price = relationVo.getPrice();
+            response.put("price",price);
             response.put("ServerLength", relationVo.getServerLength());
         }
         //获取科室

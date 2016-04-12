@@ -7,14 +7,9 @@
         http://www.springframework.org/schema/security 
         http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
-	<http pattern="${xiaoerkePath}/wechatInfo/**" security="none" />
-	<http pattern="${xiaoerkePath}/doctor" security="none" />
-	<http pattern="${xiaoerkePath}/doctor/wxChat" security="none" />
-	<http pattern="${xiaoerkePath}/util/**" security="none" />
-
-	<http pattern="${xiaoerkePath}/**" use-expressions="true" entry-point-ref="authenticationProcessingFilterEntryPoint" >
-		<intercept-url pattern="${xiaoerkePath}/**" access="isAuthenticated()" />
-		<logout logout-url="${xiaoerkePath}/logout" logout-success-url="${xiaoerkePath}/sso/logout" delete-cookies="JSESSIONID" />
+	<http pattern="/auth/**" use-expressions="true" entry-point-ref="authenticationProcessingFilterEntryPoint" >
+		<intercept-url pattern="/auth/**" access="isAuthenticated()" />
+		<logout logout-url="/auth/logout" logout-success-url="/auth/sso/logout" delete-cookies="JSESSIONID" />
 		<!-- 实现免登陆验证 -->
 		<remember-me user-service-ref="myUserDetailsService" />
 		<session-management invalid-session-url="/">

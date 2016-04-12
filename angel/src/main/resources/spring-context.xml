@@ -27,8 +27,11 @@
 	<context:component-scan base-package="com.cxqm.xiaoerke"><!-- base-package 如果多个，用“,”分隔 -->
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
-	
- 	<!-- MyBatis begin -->
+
+	<!-- 获取bean工具注入 -->
+	<bean id="springContextHolder" class="com.cxqm.xiaoerke.common.utils.SpringContextHolder" lazy-init="false"/>
+
+	<!-- MyBatis begin -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="typeAliasesPackage" value="com.cxqm.xiaoerke"/>

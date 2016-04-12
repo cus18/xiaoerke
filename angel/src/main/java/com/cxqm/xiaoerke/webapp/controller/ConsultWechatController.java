@@ -70,9 +70,11 @@ public class ConsultWechatController extends BaseController {
         SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
         sysWechatAppintInfoVo.setOpen_id(openId);
         SysWechatAppintInfoVo resultVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
-        String nickName = resultVo.getWechat_name();
-        if(StringUtils.isNotNull(nickName)){
-            nickName = openId +  (new Date()).getTime();
+        String nickName = openId +  (new Date()).getTime();
+        if(resultVo!=null){
+            if(StringUtils.isNotNull(resultVo.getWechat_name())){
+               nickName = resultVo.getWechat_name();
+            }
         }
         Channel csChannel = null;
         //如果此用户是第一次发送消息
@@ -80,7 +82,6 @@ public class ConsultWechatController extends BaseController {
             consultSession = sessionCache.getConsultSessionBySessionId(sessionId);
             csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
         }else{//如果此用户不是第一次发送消息
-
             consultSession.setCreateTime(new Date());
             consultSession.setOpenid(openId);
             consultSession.setNickName(nickName);
