@@ -37,4 +37,18 @@ public interface ConsultPhonePatientService {
      * @return
      */
     List<Map<String, Object>> getConsultPhoneRegisterListByInfo(Map map);
+
+    /**
+     * 电话咨询取消预约退费
+     * sunxiao
+     * @param id
+     */
+    void refundConsultPhoneFee(String id,String cancelReason,Float price,String userId);
+
+    /**
+     * 获取手动接通页面数据
+     * sunxiao
+     * @param vo
+     */
+    Map manuallyConnectFormInfo(ConsultPhoneRegisterServiceVo vo);
 }
