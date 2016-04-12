@@ -9,7 +9,7 @@ define(['appNutrition'], function (app) {
     app
         //获取用户登陆状态
         .factory('GetUserLoginStatus', ['$resource', function ($resource) {
-            return $resource(user_h5 + 'info/loginStatus');
+            return $resource(user_h5 + 'auth/info/loginStatus');
         }])
         //发送验证码
         .factory('IdentifyUser', ['$resource', function ($resource) {
