@@ -72,13 +72,12 @@
     LEFT JOIN sys_patient sp ON sp.id = crs.sys_patient_id
     LEFT JOIN sys_baby_baseInfo sbi ON sp.sys_user_id = sbi.userid
     LEFT JOIN sys_user su on sp.sys_user_id = su.id
-    WHERE
     where 1=1
     <if test="state != null" >
       and crs.state = #{state,jdbcType=VARCHAR}
     </if>
     AND (
-    #{date}>=DATE_FORMAT(
+    #{date,jdbcType=TIMESTAMP}>=DATE_FORMAT(
     CONCAT(
     DATE_FORMAT(scs.date, '%Y:%c:%d'),
     DATE_FORMAT(scs.beginTime, ' %k:%i:%s')
