@@ -1032,6 +1032,10 @@ public class ScheduledTask {
               HashMap<String, Object> response = new HashMap<String, Object>();
               accountService.updateAccount(0F, (Integer) map.get("id")+"", response, false, UserUtils.getUser().getId(),"电话咨询超时取消退款");
 //              并发送消息
+              Map<String,Object> parameter = systemService.getWechatParameter();
+              String token = (String)parameter.get("token");
+              PatientMsgTemplate.consultPhoneRefund2Wechat((String)map.get("orderNo"),(String)map.get("price"), (String)map.get("openid"),token ,"");
+              PatientMsgTemplate.consultPhoneRefund2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (String) map.get("price"), (String) map.get("phone"));
 
           }
       }
