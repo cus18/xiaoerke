@@ -1047,6 +1047,7 @@ public class ScheduledTask {
     public void sendMsg2User4ConsultOrder(){
         Date date = new Date();
         date.setTime(date.getTime()-5*60*100);
+        String dateStr = DateUtils.DateToStr(date,"datetime");
         List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",date);
         for(HashMap<String ,Object> map:consultOrderList){
           Map<String,Object> parameter = systemService.getWechatParameter();
