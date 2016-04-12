@@ -1,1 +1,7 @@
-/classes
+*.MF
+*.class
+*.iml
+*.idea/
+***/classes/***
+***/target/***
+
