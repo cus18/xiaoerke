@@ -5,6 +5,7 @@ import com.cxqm.xiaoerke.common.bean.WechatRecord;
 import com.cxqm.xiaoerke.common.security.shiro.session.SessionManager;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.common.bean.WechatArticle;
+import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
@@ -30,6 +31,7 @@ import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
 import com.cxqm.xiaoerke.modules.sys.utils.DoctorMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
+import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import com.cxqm.xiaoerke.modules.task.service.ScheduleTaskService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 
@@ -95,6 +97,9 @@ public class ScheduledTask {
 
     @Autowired
     private ConsultRecordService consultRecordService;
+
+    @Autowired
+    private AccountService accountService;
 
 
     //将所有任务放到一个定时器里，减少并发
@@ -990,12 +995,7 @@ public class ScheduledTask {
 
     //建立患者与医生之间的通讯
     public void getConnenct4doctorAndPatient(){
-      List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1");
-
-//      CCPRestSDK sdk = new CCPRestSDK();
-//        sdk.init("sandboxapp.cloopen.com", "8883");// 初始化服务器地址和端口，格式如下，服务器地址不需要写https://
-//        sdk.setSubAccount("2fa43378da0a11e59288ac853d9f54f2", "0ad73d75ac5bcb7e68fb191830b06d6b");
-//        sdk.setAppId("aaf98f8952f7367a0153084e29992035");
+      List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",null);
       for(HashMap map:consultOrderList){
           String doctorPhone =  (String)map.get("doctorPhone");
           String userPhone =  (String)map.get("userPhone");
@@ -1003,7 +1003,7 @@ public class ScheduledTask {
           List<ConsultPhoneRecordVo> list = consultPhoneService.getConsultRecordInfo(orderId + "", "CallAuth");
           if(list.size()<2){
               Integer conversationLength =  (Integer)map.get("conversationLength")*60;
-              HashMap<String, Object> result = CCPRestSDK.callback(userPhone, doctorPhone,
+              HashMap<String, Object> result = CCPRestSDK.callback( doctorPhone,userPhone,
                       "4006237120", "4006237120", null,
                       "true", null, orderId+"",
                       conversationLength+"", null, "0",
@@ -1018,8 +1018,31 @@ public class ScheduledTask {
               vo.setUpdateTime(new Date());
               vo.setCallSid(callSid);
               consultPhonePatientService.updateOrderInfoBySelect(vo);
+          }else{
+              //取消用户订单
+              ConsultPhoneRegisterServiceVo vo =  new ConsultPhoneRegisterServiceVo();
+              vo.setId(orderId);
+              vo.setUpdateTime(new Date());
+              vo.setState("5");
+              consultPhonePatientService.updateOrderInfoBySelect(vo);
+//             将钱退还到用户的账户
+              HashMap<String, Object> response = new HashMap<String, Object>();
+              accountService.updateAccount((Float)map.get("price"),(String)map.get("id"),response,false, UserUtils.getUser().getId(),"电话咨询超时取消退款");
+//              并发送消息
+
           }
       }
+    }
+
+    /**
+     * 再建立通讯的五分钟前发消息给用户
+     * */
+    public void sendMsg2User4ConsultOrder(){
+        List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1","befor");
+        for(HashMap<String ,Object> map:consultOrderList){
+          String phone = (String)map.get("phone");
+
+        }
     }
 
     /**
