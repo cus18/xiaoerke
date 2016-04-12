@@ -114,9 +114,9 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 
         List<HashMap<String, Object>> evaluateList = new ArrayList<HashMap<String, Object>>();
         List<PatientRegisterPraise> list = resultPage.getList();
-        HashMap<String, Object> hmap = new HashMap<String, Object>();
         if(list != null && !list.isEmpty()) {
             for (PatientRegisterPraise praise : list) {
+                HashMap<String, Object> hmap = new HashMap<String, Object>();
                 hmap.put("phone", praise.getPhone());
                 hmap.put("impression", praise.getImpression());
                 hmap.put("star", praise.getStar());
