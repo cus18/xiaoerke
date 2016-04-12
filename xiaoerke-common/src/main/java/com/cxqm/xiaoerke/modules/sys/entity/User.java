@@ -31,6 +31,8 @@ public class User extends DataEntity<User> {
 	private static final long serialVersionUID = 1L;
 	public static final String USER_TYPE_USER = "user";
 	public static final String USER_TYPE_DOCTOR = "doctor";
+	public static final String USER_TYPE_DISTRIBUTOR = "distributor";
+	public static final String USER_TYPE_CONSULTDOCTOR = "consultDoctor";
 	
 	private Office company;	// 归属公司
 	private Office office;	// 归属部门
