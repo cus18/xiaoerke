@@ -25,17 +25,7 @@ angular.module('controllers', ['luegg.directives'])
                 console.log("getOnlineDoctorList", data);
             });
 
-            $scope.alreadyJoinPatientConversationContent = [
-                {}
-                /*
-                    "patientId":"aaaa",
-                    "patientName": "frank",
-                },
-                {
-                    "patientId":"wefedfwe",
-                    "patientName": "frank",
-                }*/
-            ];
+            $scope.alreadyJoinPatientConversationContent = [{}];
 
             getCommonAnswerList.save({"type": "commonAnswer"}, function (data) {
                 console.log("getCommonAnswerList", data);

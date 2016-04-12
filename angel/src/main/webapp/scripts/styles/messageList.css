@@ -2,15 +2,16 @@
 .content .content-l {border-right: 1px solid #fff;}
 
 /*刷新*/
-.chatbox div span {display: inline-block; padding: 13px 0 14px 0;margin:0 0 0 20px;font: 14px/17px 'Microsoft Yahei';}
-.chatbox div span img{margin-right: 5px;}
+.chatbox div span {display: inline-block; padding: 13px 0 14px 30px;margin:0 0 0 20px;font: 14px/17px 'Microsoft Yahei';background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_11.png") left center no-repeat;}
+.chatbox div span:nth-child(2){background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_13.png") left center no-repeat;}
 .find {width: 293px;height: 18px;padding: 5px 10px;border:1px solid #08b7c2;float: right;margin: 8px 20px 13px 0;border-radius: 20px;}
 .find select{border:none;border-right: 1px solid #000;color:#333;font: 12px/28px 'Microsoft Yahei';background:transparent;padding: 0;margin: 0;}
 .find img {float: right;margin-top: -15px;}
 .find input{border:none;float:left;margin-left: 80px;margin-top:-15px;}
 .customerlist,.messagelistc {background-color: #08b7c2;font: 14px/14px 'Microsoft Yahei'; color:#fff;}
 .customerlist div,.messagelistc div{float: left;margin: 12px 20px 0 20px;}
-.customerlist div.fr,.messagelistc div.fr {float: right;margin-right: 45px;margin-left: -10px;}
+.customerlist div.fr,.messagelistc div.fr {float: right;margin-right: 45px;margin-left: -10px;line-height: 20px;}
+.messagelistc div.fr{padding-left: 25px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fb_03.png") left center no-repeat;}
 .customerlist div select {border:none;width: 80px;margin: 0;}
 .nicknamelist{background-color: #f6f6f6;}
 .nicknamelist div,.messagelistn div{float: left;color:#acacac;font: 12px/35px 'Microsoft Yahei';margin: 0 20px;}

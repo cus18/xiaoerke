@@ -44,12 +44,10 @@
     <div class="content qf">
         <div class="head-b qf chatbox">
             <div class="w5 fl h5">
-                <span>
-                    <img ng-click="refreshUserList()" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_11.png" alt=""/>
+                <span ng-click="refreshUserList()">
                 刷新消息
             </span>
             <span>
-               <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_13.png" alt=""/>
                 发起会话
             </span>
             </div>
@@ -99,16 +97,13 @@
                 </ul>
                 <a id="bottom"></a>
             </div>
-
-            <!--</div>currentUserConsultRecordDetail-->
-
         </div>
         <div class="content-r" style='margin-left: 501px;'>
             <div class='w10 h6 messagelistc'>
                 <div>消息记录</div>
                 <div class="fr">
-                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fb_03.png" alt=""/>
-                    刷新当前信息</div>
+                    刷新当前信息
+                </div>
             </div>
             <div class='w10 h7 messagelistn'>
                 <div>
@@ -129,8 +124,8 @@
             <div class='w10 h20 examinecontent'>
                 <ul>
                      <li ng-repeat="item in currentUserConsultRecordDetail">
-                         <div ng-if="item.senderId==doctor">
-                             <div class="name" style="color:#7fc700">
+                         <div ng-if="item.senderId==doctor" style="color:#7fc700">
+                             <div class="name">
                                  {{item.doctorName}} {{item.dateTime}}
                              </div>
                              <div ng-if="item.messageType=='text'" id="show" class="chatcontent">
