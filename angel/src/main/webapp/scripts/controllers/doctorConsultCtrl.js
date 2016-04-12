@@ -415,7 +415,6 @@ angular.module('controllers', ['luegg.directives'])
                     if (flag == 0) {
                         $scope.editgroup = true;
                     } else if (flag == 1) {
-                        var aa;
                         $scope.editcontent = true;
                     }
                 }
