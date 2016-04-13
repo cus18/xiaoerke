@@ -45,17 +45,17 @@ var doRefresh = function(){
         }
     });
 
-    function selectedBaby(index){
-        var baby=babyInfo[index];
-        $("#babyName").val(baby.name);
-        var time = moment(baby.birthday).format('YYYY/MM/DD');
-        $("#birthday").val(time);
-        bodBirthday = time;
-        var sex=baby.sex;
-        $(".sex a").removeAttr("onclick");
-        $("#babyId").val(baby.id);
-        $(".baby-list").hide();
-    }
+    //var selectedBaby = function(index){
+    //    var baby=babyInfo[index];
+    //    $("#babyName").val(baby.name);
+    //    var time = moment(baby.birthday).format('YYYY/MM/DD');
+    //    $("#birthday").val(time);
+    //    bodBirthday = time;
+    //    var sex=baby.sex;
+    //    $(".sex a").removeAttr("onclick");
+    //    $("#babyId").val(baby.id);
+    //    $(".baby-list").hide();
+    //};
 
     $.ajax({
         url: 'auth/info/loginStatus',
@@ -142,7 +142,7 @@ var doRefresh = function(){
                                     $(".sex a").removeAttr("onclick");
                                 }
                                 for(var i=0;i<babyInfo.length;i++){
-                                    option+="<dd class=\"select\" onclick=\"selectedBaby("+i+")\" ><span >"+babyInfo[i].name+"</span></dd>";
+                                    option+="<dd class=\"select\" onclick=\"choiceBabyss("+i+")\" ><span >"+babyInfo[i].name+"</span></dd>";
                                 }
                                 $("#selectBabyTitle").after(option);
                                 var babyId=GetQueryString("babyId");
@@ -150,11 +150,11 @@ var doRefresh = function(){
                                     for(var j=0;j<babyInfo.length;j++){
                                         var bid=babyInfo[j].id;
                                         if(bid==babyId){
-                                            selectedBaby(j);
+                                            choiceBabyss(j);
                                         }
                                     }
                                 }else{
-                                    selectedBaby(0);
+                                    choiceBabyss(0);
                                 }
                             },
                             dataType: "json"
@@ -214,6 +214,20 @@ var choiceBaby=function(index){
     $('#connectname').val(byList[index].name);
     $("#birthday").val(byList[index].birthday);
 }
+
+var choiceBabyss=function(index){
+    var baby=babyInfo[index];
+    $("#babyName").val(baby.name);
+    var time = moment(baby.birthday).format('YYYY/MM/DD');
+    $("#birthday").val(time);
+    bodBirthday = time;
+    var sex=baby.sex;
+    $(".sex a").removeAttr("onclick");
+    $("#babyId").val(baby.id);
+    $(".baby-list").hide();
+}
+
+
 // 添加宝宝
 var addBaby=function(){
     window.location.href = "phoneConsult#/phoneConAddBaby";
