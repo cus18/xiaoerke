@@ -124,6 +124,10 @@ public class MessageServiceImpl implements MessageService{
     public void insertMonitorExecute(HashMap<String,Object> monitorMap) {
 		messageDao.insertMonitorExecute(monitorMap);
 	}
+	@Override
+	public void insertMonitorConsultPhone(HashMap<String, Object> monitorMap){
+		messageDao.insertMonitorConsultPhone(monitorMap);
+	};
 
 	@Override
 	public Map fidPersonAppointDetailInfoExcut(PerAppDetInfoVo perAppDetInfoVO) {
@@ -167,5 +171,8 @@ public class MessageServiceImpl implements MessageService{
 
 	@Override
 	public List<HashMap<String, Object>> getTrackOrder(){return messageDao.getTrackOrder();};
+
+	@Override
+	public Map consultPhoneMsgRemind(String id){return messageDao.consultPhoneMsgRemind(id);};
     
 }
