@@ -7,10 +7,11 @@ angular.module('controllers', ['luegg.directives'])
             $scope.info = {};
             $scope.socketServer1 = "";
             $scope.socketServer2 = "";
-
             $scope.alreadyJoinPatientConversationContent = [];
-
             $scope.currentUserConversationContent = {};
+
+            ////QQ表情初始化
+            //qqFace();
 
             //初始化医生端登录，建立socket链接，获取基本信息
             $scope.doctorConsultFirst = function () {
@@ -66,8 +67,6 @@ angular.module('controllers', ['luegg.directives'])
                             }
                         });
 
-                        //QQ表情初始化
-                        qqFace();
                     }
                 })
 
@@ -159,14 +158,12 @@ angular.module('controllers', ['luegg.directives'])
                     }
 
                     $scope.socketServer1.onmessage = function (event) {
-                        //console.log("onmessage" + event.data);
                         var consultData = JSON.parse(event.data);
-                        if(consultData.type==0||consultData.type==1||
-                            consultData.type==2||consultData.type==3||
-                            consultData.type==4){
-                            processConversationMessage(consultData);
-                        }else if(consultData.type==4){
+                        console.log(consultData);
+                        if(consultData.type==4){
                             processNotifyMessage(consultData);
+                        }else{
+                            processConversationMessage(consultData);
                         }
                     };
 
@@ -222,21 +219,40 @@ angular.module('controllers', ['luegg.directives'])
                 else if($scope.currentUserConversationContent.patientId == conversationData.senderId){
                     $scope.currentUserConversationContent.consultValue.push(currentConsultValue);
                 }
-                updateAlreadyJoinPatientConversationContentFromPatient(currentConsultValue);
+                updateAlreadyJoinPatientConversationContentFromPatient(conversationData);
+
+                console.log($scope.currentUserConversationContent);
+                console.log($scope.alreadyJoinPatientConversationContent);
             }
 
-            var updateAlreadyJoinPatientConversationContentFromPatient = function(currentConsultValue){
+            var updateAlreadyJoinPatientConversationContentFromPatient = function(conversationData){
                 var updateFlag = false;
                 $.each($scope.alreadyJoinPatientConversationContent, function (index, value) {
-                    if (value.patientId == currentConsultValue.senderId) {
-                        value.consultValue.push(currentConsultValue);
+                    if (value.patientId == conversationData.senderId) {
+                        value.consultValue.push(conversationData);
                         updateFlag = true;
                     }
-                })
+                });
                 if(!updateFlag){
-                    $scope.alreadyJoinPatientConversationContent.push(angular.copy($scope.currentUserConversationContent));
+                    var consultValue = {};
+                    var conversationContent = {};
+                    consultValue.type = conversationData.type;
+                    consultValue.content = conversationData.content;
+                    consultValue.dateTime = conversationData.dateTime;
+                    consultValue.senderId = conversationData.senderId;
+                    consultValue.senderName = conversationData.senderName;
+                    consultValue.sessionId = conversationData.sessionId;
+                    conversationContent.patientId = conversationData.senderId;
+                    conversationContent.fromServer = conversationData.fromServer;
+                    conversationContent.sessionId = conversationData.sessionId;
+                    conversationContent.isOnline = true;
+                    conversationContent.dateTime = conversationData.dateTime;
+                    conversationContent.messageNotSee = false;
+                    conversationContent.patientName = conversationData.senderName;
+                    conversationContent.consultValue = [];
+                    conversationContent.consultValue.push(consultValue);
+                    $scope.alreadyJoinPatientConversationContent.push(conversationContent);
                 }
-
             }
 
             //处理系统发送过来的通知类消息

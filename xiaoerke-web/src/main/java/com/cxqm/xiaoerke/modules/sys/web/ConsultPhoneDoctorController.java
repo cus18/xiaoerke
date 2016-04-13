@@ -350,6 +350,7 @@ public class ConsultPhoneDoctorController {
 
         //评价
         params.put("evaluateType", "1");
+        params.put("limit", 1);//默认获取一条评论
         HashMap<String,Object> evaluaMap = patientRegisterPraiseService.getConsultEvaluateTop(params);
         HashMap<String, Object> doctorScore = doctorInfoService.findDoctorScoreInfo(doctorId);
         response.put("doctorScore", doctorScore);

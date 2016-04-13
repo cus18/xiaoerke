@@ -29,7 +29,7 @@
         DoctorDetail.get({"doctorId":$stateParams.doctorId},function(data){
             $scope.pageLoading = false;
             $scope.doctorDetail = data;
-            $scope.evaluateList[0] = $scope.doctorDetail.evaluaMap;
+            $scope.evaluateList = $scope.doctorDetail.evaluaMap.evaluateList;
             console.log($scope.doctorDetail.doctorCaseList);
             //计算总的案列数
             $scope.doctorDetail.sumcase=0;

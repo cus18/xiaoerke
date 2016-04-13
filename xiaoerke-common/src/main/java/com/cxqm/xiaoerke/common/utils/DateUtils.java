@@ -353,6 +353,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 			format = new SimpleDateFormat("yyyy-MM-dd");
 		}else if("datetime".equals(flag)){
 			format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		}else if("xiangang".equals(flag)){
+			format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		}else if("datetimesec".equals(flag)){
 			format = new SimpleDateFormat("yyyyMMddHHmmss");
 		}else{
