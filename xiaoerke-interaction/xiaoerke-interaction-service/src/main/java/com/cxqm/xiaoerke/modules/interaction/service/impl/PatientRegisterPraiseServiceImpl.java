@@ -126,6 +126,8 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
                 hmap.put("impression", praise.getImpression());
                 hmap.put("star", praise.getStar());
                 hmap.put("majorStar", praise.getMajorStar());
+				hmap.put("pic_url", praise.getPicUrl());
+				hmap.put("wechat_name", praise.getWechatName());
                 Date date = praise.getPraiseDate();
                 String week = DateUtils.getWeekOfDate(date);
                 SimpleDateFormat format = new SimpleDateFormat("MM/dd");
