@@ -226,7 +226,7 @@ var cancelSelectBaby=function(){
     $(".baby-list").hide();
 }
 // 点击已阅读
-var readLock=true;
+var readLock=false;
 var read = function(){
     if(readLock){
         $("#readLock").show();
@@ -260,7 +260,7 @@ var pay = function(){
         alert("信息不能为空");
     }else if($('#case').val().length<10){
         alert("病情不能少于10个字！");
-    }else if(!readLock){
+    }else if(readLock){
         alert("请勾选预约须知");
     }else{
         $.ajax({
