@@ -232,7 +232,7 @@ define(['appPhoneConsult'], function (app) {
         }])
         //获取用户对某医生的评价（电话咨询）
         .factory('GetUserEvaluate',['$resource',function ($resource){
-            return $resource(user_appoint + 'interaction/user/evaluateDoctor');
+            return $resource(user_appoint + 'interaction/user/doctorEvaluate');
         }])
         //用户对客服的评价
         .factory('CustomerEvaluation',['$resource',function ($resource){

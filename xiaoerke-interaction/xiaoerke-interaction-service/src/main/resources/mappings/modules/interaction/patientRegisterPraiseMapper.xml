@@ -225,11 +225,13 @@
 
     <!-- 获取n条电话咨询评论 -->
     <select id="getConsultEvaluateTop" resultType="java.util.HashMap">
-        select INSERT(prp.phone,4,5,'****') phone,
+        select INSERT(prp.phone,4,6,'****') phone,
         prp.impression,
         prp.praise_date as date,
         prp.star,
-        prp.major_star as majorStar
+        prp.major_star as majorStar,
+        prp.wechat_name,
+        prp.pic_url
         from patient_register_praise prp
         where
         prp.sys_doctor_id = #{doctorId}
