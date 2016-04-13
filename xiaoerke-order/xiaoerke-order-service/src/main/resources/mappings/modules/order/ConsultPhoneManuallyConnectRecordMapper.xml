@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cxqm.xiaoerke.modules.order.dao.UserReturnVisitServiceDao">
-	<resultMap id="UserReturnVisitVo" type="com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneManuallyConnectVo">
+<mapper namespace="com.cxqm.xiaoerke.modules.order.dao.ConsultPhoneManuallyConnectRecordDao">
+	<resultMap id="consultPhoneManuallyConnectVo" type="com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneManuallyConnectVo">
         <result column="id" property="id" jdbcType="VARCHAR" />
         <result column="patient_register_id" property="patientRegisterId" jdbcType="VARCHAR" />
         <result column="wait_time" property="waitTime" jdbcType="VARCHAR" />
@@ -84,7 +84,7 @@
         	#{createDate},
         	#{updateDate});
     </insert>
-    <select id="getUserReturnVisitByInfo" resultType="UserReturnVisitVo">
+    <select id="getUserReturnVisitByInfo" resultMap="consultPhoneManuallyConnectVo">
     	select * from consultphone_manuallyConnect_record srv where 1=1
     	<if test="patientRegisterId != null and patientRegisterId != ''">
 			AND srv.patient_register_id=#{patientRegisterId}
