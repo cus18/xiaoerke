@@ -1,6 +1,6 @@
 ﻿angular.module('controllers', ['ionic']).controller('phoneConDoctorDetailCtrl', [
-    '$scope','$state','$stateParams','DoctorDetail','DoctorVisitInfoByLocationInWeek','DoctorAppointmentInfoDetail','$location','CheckAttentionDoctor','GetUserLoginStatus','EarliestVisiteInfo','GetUserEvaluate',
-    function ($scope,$state,$stateParams,DoctorDetail,DoctorVisitInfoByLocationInWeek,DoctorAppointmentInfoDetail,$location,CheckAttentionDoctor,GetUserLoginStatus,EarliestVisiteInfo,GetUserEvaluate) {
+    '$scope','$state','$stateParams','DoctorDetail','DoctorVisitInfoByLocationInWeek','DoctorAppointmentInfoDetail','$location','CheckAttentionDoctor','GetUserLoginStatus','EarliestVisiteInfo','GetUserEvaluate','AttentionDoctor',
+    function ($scope,$state,$stateParams,DoctorDetail,DoctorVisitInfoByLocationInWeek,DoctorAppointmentInfoDetail,$location,CheckAttentionDoctor,GetUserLoginStatus,EarliestVisiteInfo,GetUserEvaluate,AttentionDoctor) {
         $scope.title = "医生详情页";
         $scope.pageLoading =false;
         $scope.toggleItem="phone";//默认的底部选择
@@ -27,6 +27,7 @@
 
         //获取医生的信息
         DoctorDetail.get({"doctorId":$stateParams.doctorId},function(data){
+            console.log(data)
             $scope.pageLoading = false;
             $scope.doctorDetail = data;
             $scope.evaluateList = $scope.doctorDetail.evaluaMap.evaluateList;
@@ -107,14 +108,15 @@
 
         //关注功能
         $scope.attentionDoctor= function(){
+            if($scope.isAttention)return;
             $scope.pageLoading = true;
-            AttentionDoctor.save({doctorId:$scope.doctorId,routePath:routePath},function(data){
+            AttentionDoctor.save({doctorId:$stateParams.doctorId,routePath:routePath},function(data){
                 $scope.pageLoading = false;
                 if(data.status=="9") {
                     window.location.href = data.redirectURL;
                 }
                 else{
-                    $scope.attentionImg ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Ficon_attention_y%.png";
+                    $scope.attentionImg ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Ficon_attention_y.png";
                     $scope.isAttention = true;
                     $scope.doctorDetail.fans_number = (typeof($scope.doctorDetail.fans_number) == undefined)?1:
                         ($scope.doctorDetail.fans_number+1);
@@ -149,12 +151,12 @@
               console.log(data)
             })
 
-
+            $scope.isAttention = false;
             //检测用户是否已关注
-            CheckAttentionDoctor.save({doctorId:$scope.doctorId},function(data){
+            CheckAttentionDoctor.save({doctorId:$stateParams.doctorId},function(data){
                 $scope.pageLoading = false;
-                if(data.isconcerned){
-                    $scope.attentionImg ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Ficon_attention_y%.png";
+                if(data.isConcerned){
+                    $scope.attentionImg ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Ficon_attention_y.png";
                     $scope.isAttention = true;
                 }
             })
