@@ -4,4 +4,4 @@
 *.idea/
 ***/classes/***
 ***/target/***
-
+*.jar

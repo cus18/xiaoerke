@@ -284,7 +284,7 @@
 				<!--<ref bean="everyMinuteSendWechatMessageCronTrigger"/>-->
 				<!--<ref bean="nutritionManagementSendWechatMessageCronTrigger"/>-->
 				<!--<ref bean="insuranceUpdateCronTrigger"/>-->
-				<!--<ref bean="consultPhoneCronTrigger"/>-->
+				<ref bean="consultPhoneCronTrigger"/>
 				<!--<ref bean="consultMangementCronTrigger"/>-->
 			</list>
 		</property>
