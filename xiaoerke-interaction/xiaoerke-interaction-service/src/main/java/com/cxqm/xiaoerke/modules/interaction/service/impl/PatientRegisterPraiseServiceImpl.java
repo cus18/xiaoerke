@@ -14,6 +14,7 @@ import com.cxqm.xiaoerke.modules.sys.interceptor.SystemServiceLog;
 import com.cxqm.xiaoerke.modules.sys.service.*;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -188,17 +189,30 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 	public Map<String, Object> orderPraiseOperation(Map<String, Object> params, HttpSession session, HttpServletRequest request)
 	{
         String type = (String)params.get("type");//phone:电话咨询
-
 		String path = request.getLocalAddr() + request.getContextPath();
 		HashMap<String, Object> action = (HashMap<String, Object>) params.get("action");
-		String openId = WechatUtil.getOpenId (session,request);
+		String openId = WechatUtil.getOpenId(session, request);
 		params.put("openId",openId);
+		Map<String,Object> parameter = systemService.getWechatParameter();
+		String token = (String)parameter.get("token");
+		String strURL="https://api.weixin.qq.com/cgi-bin/user/info?access_token="+token+"&openid="+openId+"&lang=zh_CN";
+		String param="";
+		String json=WechatUtil.post(strURL, param, "GET");
+		JSONObject jasonObject = JSONObject.fromObject(json);
+		Map<String, Object> jsonMap = (Map) jasonObject;
+
 		String patientRegisterServiceId = (String) params.get("patient_register_service_id");
 		if (patientRegisterServiceId == null || "".equals(patientRegisterServiceId)) {
 			patientRegisterServiceId = IdGen.uuid();
 		}
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		HashMap<String, Object> excuteMap = new HashMap<String, Object>();
+
+		String headimgurl = null == (String) jsonMap.get("headimgurl")?"images/a2.png":(String) jsonMap.get("headimgurl") ;
+		String nickname = null == (String) jsonMap.get("nickname")?"微信用户":(String) jsonMap.get("nickname") ;
+
+		excuteMap.put("wechat_name", nickname);
+		excuteMap.put("pic_url",headimgurl);
 
 		//返还用户所提交的保证金
 		Map<String, Object> executeMap = new HashMap<String, Object>();
@@ -210,8 +224,8 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 		//进行评价
 		praiseHandle(type, action, patientRegisterServiceId, excuteMap);
 		//分享消息推送
-		Map tokenMap = systemService.getWechatParameter();
-		String token = (String)tokenMap.get("token");
+//		Map tokenMap = systemService.getWechatParameter();
+//		String token = (String)tokenMap.get("token");
 		HashMap<String, Object> searchMap = new HashMap<String, Object>();
 		searchMap.put("id", patientRegisterServiceId);
 
