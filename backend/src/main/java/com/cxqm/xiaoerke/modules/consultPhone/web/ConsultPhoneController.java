@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.excel.ExportExcel;
 import com.cxqm.xiaoerke.modules.member.entity.MemberservicerelItemservicerelRelationVo;
+import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneManuallyConnectVo;
 import net.sf.json.JSONObject;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -299,7 +300,7 @@ public class ConsultPhoneController extends BaseController {
 		String cancelReason = request.getParameter("cancelReason");
 		Float price = Float.valueOf(request.getParameter("price"));
 		String userId = request.getParameter("userId");
-		consultPhonePatientService.refundConsultPhoneFee(id,cancelReason,price,userId);
+		consultPhonePatientService.refundConsultPhoneFee(id, cancelReason, price, userId);
 		return result.toString();
 	}
 
@@ -317,5 +318,19 @@ public class ConsultPhoneController extends BaseController {
 		model.addAttribute("consultPhone", vo);
 		model.addAttribute("map", map);
 		return "modules/consultPhone/phoneInterruptHandle";
+	}
+
+	/**
+	 * 手动拨号
+	 * @param model
+	 * sunxiao
+	 */
+	@RequiresPermissions("user")
+	@ResponseBody
+	@RequestMapping(value = "timingDial")
+	public String timingDial(ConsultPhoneManuallyConnectVo vo,HttpServletRequest request,HttpServletResponse response, Model model) {
+		JSONObject result = new JSONObject();
+		consultPhonePatientService.manuallyConnect(vo);
+		return result.toString();
 	}
 }
