@@ -88,8 +88,12 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
             String week = DateUtils.getWeekOfDate(date);
             SimpleDateFormat format = new SimpleDateFormat("MM/dd");
             SimpleDateFormat format1 = new SimpleDateFormat("HH:mm");
-                map.put("date", format.format(date) + "(" + week.replaceAll("星期", "周") + ")" + format1.format(date));
-            }
+            map.put("date", format.format(date) + "(" + week.replaceAll("星期", "周") + ")" + format1.format(date));
+			String wechat_name = map.get("wechat_name") == null?"微信用户":(String)map.get("wechat_name");
+			String pic_url = map.get("pic_url") == null?"images/a2.png":(String)map.get("pic_url");
+			map.put("wechat_name",wechat_name);
+			map.put("pic_url",pic_url);
+			}
         }
         response.put("evaluateList",resultList);
         return response;
@@ -126,8 +130,8 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
                 hmap.put("impression", praise.getImpression());
                 hmap.put("star", praise.getStar());
                 hmap.put("majorStar", praise.getMajorStar());
-				hmap.put("pic_url", praise.getPicUrl());
-				hmap.put("wechat_name", praise.getWechatName());
+				hmap.put("pic_url", praise.getPicUrl()==null?"images/a2.png":praise.getPicUrl());
+				hmap.put("wechat_name", praise.getWechatName()==null?"微信用户": praise.getWechatName());
                 Date date = praise.getPraiseDate();
                 String week = DateUtils.getWeekOfDate(date);
                 SimpleDateFormat format = new SimpleDateFormat("MM/dd");
