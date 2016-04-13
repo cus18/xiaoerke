@@ -17,12 +17,14 @@ import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import org.apache.coyote.http11.Http11NioProtocol;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -52,10 +54,11 @@ public class ConsultWechatController extends BaseController {
 
     @RequestMapping(value = "/conversation", method = {RequestMethod.POST, RequestMethod.GET})
     public
-    String conversation(@RequestParam(required=true) String openId,
-                                     @RequestParam(required=true) String messageType,
-                                     @RequestParam(required=false) String messageContent,
-                                     @RequestParam(required=false) String mediaId) {
+    String conversation(HttpServletRequest request,
+                        @RequestParam(required=true) String openId,
+                        @RequestParam(required=true) String messageType,
+                        @RequestParam(required=false) String messageContent,
+                        @RequestParam(required=false) String mediaId) {
 
         //根据用户的openId，判断redis中，是否有用户正在进行的session
         Integer sessionId = sessionCache.getSessionIdByOpenId(openId);
@@ -100,6 +103,7 @@ public class ConsultWechatController extends BaseController {
                 obj.put("senderId", openId);
                 obj.put("dateTime", DateUtils.DateToStr(new Date()));
                 obj.put("senderName",nickName);
+                obj.put("fromServer",StringUtils.getRemoteAddr(request));
 
                 if(messageType.equals("text")) {
                     obj.put("type", 0);

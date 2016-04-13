@@ -157,6 +157,7 @@ public class UserInfoController extends BaseController {
 		result.put("userPhone",user.getPhone());
 		result.put("userId",user.getId());
 		result.put("userName",user.getName());
+		result.put("userType",user.getUserType());
 		if(StringUtils.isNotNull(user.getOpenid())){
 			result.put("openId",user.getOpenid());
 		}else{
