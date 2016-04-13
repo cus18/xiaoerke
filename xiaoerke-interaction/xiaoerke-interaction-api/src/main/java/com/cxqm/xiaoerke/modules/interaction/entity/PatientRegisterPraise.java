@@ -33,6 +33,10 @@ public class PatientRegisterPraise {
 
     private String evaluateType;
 
+    private String wechatName;
+
+    private String picUrl;
+
     public String getId() {
         return id;
     }
@@ -151,5 +155,21 @@ public class PatientRegisterPraise {
 
     public void setEvaluateType(String evaluateType) {
         this.evaluateType = evaluateType;
+    }
+
+    public String getWechatName() {
+        return wechatName;
+    }
+
+    public void setWechatName(String wechatName) {
+        this.wechatName = wechatName;
+    }
+
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
     }
 }
