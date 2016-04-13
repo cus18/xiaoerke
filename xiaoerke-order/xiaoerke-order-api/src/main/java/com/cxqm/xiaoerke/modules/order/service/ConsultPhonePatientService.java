@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.cxqm.xiaoerke.common.persistence.Page;
+import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneManuallyConnectVo;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.exception.CreateOrderException;
 
@@ -51,4 +52,11 @@ public interface ConsultPhonePatientService {
      * @param vo
      */
     Map manuallyConnectFormInfo(ConsultPhoneRegisterServiceVo vo);
+
+    /**
+     * 手动接通电话
+     * sunxiao
+     * @param vo
+     */
+    void manuallyConnect(ConsultPhoneManuallyConnectVo vo);
 }
