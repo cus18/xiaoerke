@@ -368,11 +368,17 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 	private void insertRegister(SysConsultPhoneServiceVo registerVo,
 								String time, String date) {
 		Date begin_time = DateUtils.StrToDate(time, "time");
-		// 结束时间自动加15分钟
-		Date end_time = new Date(begin_time.getTime() + 900000);
+		ConsulPhonetDoctorRelationVo rvo = new ConsulPhonetDoctorRelationVo();
+		rvo.setDoctorId(registerVo.getSysDoctorId());
+		List<ConsulPhonetDoctorRelationVo> relationList = phoneConsultDoctorRelationService.getPhoneConsultDoctorRelationByInfo(rvo);
+		if(relationList!=null){
+			if(relationList.size()!=0){
+				Date end_time = new Date(begin_time.getTime() + relationList.get(0).getServerLength()*60*1000);
+				registerVo.setEndtime(end_time);
+			}
+		}
 		registerVo.setDate(DateUtils.StrToDate(date, "date"));
 		registerVo.setBegintime(begin_time);
-		registerVo.setEndtime(end_time);
 		registerVo.setCreatedate(new Date());
 		registerVo.setState("0");
 		Map<String, Object> queryMap = new HashMap<String, Object>();
