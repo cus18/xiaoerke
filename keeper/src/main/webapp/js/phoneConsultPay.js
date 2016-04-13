@@ -230,7 +230,7 @@ var choiceBabyss=function(index){
 
 // 添加宝宝
 var addBaby=function(){
-    window.location.href = "phoneConsult#/phoneConAddBaby";
+    window.location.href = "/titan/phoneConsult#/phoneConAddBaby";
 }
 // 取消选择宝宝
 var cancelSelectBaby=function(){
