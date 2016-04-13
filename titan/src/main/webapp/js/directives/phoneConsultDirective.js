@@ -6,8 +6,8 @@ define(['appPhoneConsult','jquery'], function (app,$) {
                     restrict: 'EAC',
                     replace: true,
                     template: '<div class="head bg1 tc f8 border2">' +
-                    '<div class="left fl f6" ng-click="appointmentFirst()"><span class="city">首页</span> </div>' +
-                    '<div class="title fl" >{{title}}</div>' +
+                    '<div class="left fl f6 c3" ng-click="appointmentFirst()"><span class="city">首页</span> </div>' +
+                    '<div class="title fl c3" >{{title}}</div>' +
                     '<div class="right fr"><a class= my" ng-click="myself()">' +
                     '<img class="my-img1" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fmy1.png" width="22" height="22" ng-if="!haveOrder">' +
                     '<img class="my-img1" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fmy2.png" width="22" height="22" ng-if="haveOrder"> </a> ' +

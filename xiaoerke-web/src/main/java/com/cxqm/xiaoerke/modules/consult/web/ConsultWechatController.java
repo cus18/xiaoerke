@@ -17,17 +17,21 @@ import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import org.apache.coyote.http11.Http11NioProtocol;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -52,10 +56,13 @@ public class ConsultWechatController extends BaseController {
 
     @RequestMapping(value = "/conversation", method = {RequestMethod.POST, RequestMethod.GET})
     public
-    String conversation(@RequestParam(required=true) String openId,
-                                     @RequestParam(required=true) String messageType,
-                                     @RequestParam(required=false) String messageContent,
-                                     @RequestParam(required=false) String mediaId) {
+    @ResponseBody
+    Map<String,Object> conversation(HttpServletRequest request,
+                        @RequestParam(required=true) String openId,
+                        @RequestParam(required=true) String messageType,
+                        @RequestParam(required=false) String messageContent,
+                        @RequestParam(required=false) String mediaId) {
+        HashMap<String,Object> result = new HashMap<String,Object>();
 
         //根据用户的openId，判断redis中，是否有用户正在进行的session
         Integer sessionId = sessionCache.getSessionIdByOpenId(openId);
@@ -69,7 +76,8 @@ public class ConsultWechatController extends BaseController {
         sysWechatAppintInfoVo.setOpen_id(openId);
         SysWechatAppintInfoVo resultVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
         if(resultVo == null){
-            return "";
+            result.put("status","failure");
+            return result;
         }
         String nickName = openId +  (new Date()).getTime();
         if(resultVo!=null){
@@ -100,6 +108,7 @@ public class ConsultWechatController extends BaseController {
                 obj.put("senderId", openId);
                 obj.put("dateTime", DateUtils.DateToStr(new Date()));
                 obj.put("senderName",nickName);
+                obj.put("fromServer",StringUtils.getRemoteAddr(request));
 
                 if(messageType.equals("text")) {
                     obj.put("type", 0);
@@ -133,7 +142,8 @@ public class ConsultWechatController extends BaseController {
         //更新会话操作时间
         consultRecordService.saveConsultSessionStatus(sessionId,consultSession.getUserId());
 
-        return "";
+        result.put("status","success");
+        return result;
     }
 
 

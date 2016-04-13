@@ -1039,24 +1039,32 @@ public class ScheduledTask {
 
           }
       }
+
+
+//        再建立通讯的五分钟前发消息给用户
+        Date date = new Date();
+        date.setTime(date.getTime()+5*60*1000);
+        String dateStr = DateUtils.DateToStr(date,"datetime");
+        List<HashMap<String, Object>> orderMsgList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",date);
+        for(HashMap<String ,Object> map:orderMsgList){
+            Map messageMap = messageService.consultPhoneMsgRemind((Integer) map.get("id") + "");
+            if(null == messageMap||messageMap.size() == 0){
+                Map<String,Object> parameter = systemService.getWechatParameter();
+                String token = (String)parameter.get("token");
+                String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)map.get("date"),"yyyy/MM/dd"));
+                PatientMsgTemplate.consultPhoneWaring2Wechat((String)map.get("doctorName"),(String)map.get("date"),week,(String)map.get("beginTime") ,(String)map.get("endTime") ,(String)map.get("userPhone") ,(String)map.get("orderNo"),(String)map.get("openid"),token ,"");
+                PatientMsgTemplate.consultPhoneWaring2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (String) map.get("date"), week, (String) map.get("beginTime"), (String) map.get("userPhone"), (String) map.get("orderNo"));
+                insertMonitor((Integer) map.get("id") + "", "2", "7");
+            }
+        }
     }
 
     /**
      * 再建立通讯的五分钟前发消息给用户
      * */
-    public void sendMsg2User4ConsultOrder(){
-        Date date = new Date();
-        date.setTime(date.getTime()-5*60*100);
-        String dateStr = DateUtils.DateToStr(date,"datetime");
-        List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",date);
-        for(HashMap<String ,Object> map:consultOrderList){
-          Map<String,Object> parameter = systemService.getWechatParameter();
-          String token = (String)parameter.get("token");
-          String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)map.get("date"),"yyyy/MM/dd"));
-          PatientMsgTemplate.consultPhoneWaring2Wechat((String)map.get("doctorName"),(String)map.get("date"),week,(String)map.get("beginTime") ,(String)map.get("endTime") ,(String)map.get("phone") ,(String)map.get("orderNo"),(String)map.get("openid"),token ,"");
-          PatientMsgTemplate.consultPhoneWaring2Msg((String)map.get("babyName") ,(String)map.get("doctorName"),(String)map.get("date"), week,(String)map.get("beginTime"),(String)map.get("phone"),(String)map.get("orderNo"));
-        }
-    }
+//    public void sendMsg2User4ConsultOrder(){
+//
+//    }
 
     /**
      *  删除mongo中的,redis中的,内存中的consultSession
@@ -1076,5 +1084,17 @@ public class ScheduledTask {
                 }
             }
         }
+    }
+
+
+
+    //插入监听器
+    private void insertMonitor(String register_no, String type, String status) {
+        HashMap<String, Object> monitorMap = new HashMap<String, Object>();
+        monitorMap.put("id", IdGen.uuid());
+        monitorMap.put("patient_register_service_id", register_no);
+        monitorMap.put("status", status);
+        monitorMap.put("types", type);
+        messageService.insertMonitorConsultPhone(monitorMap);
     }
 }
