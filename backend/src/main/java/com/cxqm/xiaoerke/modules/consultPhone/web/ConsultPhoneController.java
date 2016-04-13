@@ -1,6 +1,7 @@
 package com.cxqm.xiaoerke.modules.consultPhone.web;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -10,6 +11,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.utils.excel.ExportExcel;
+import com.cxqm.xiaoerke.modules.member.entity.MemberservicerelItemservicerelRelationVo;
 import net.sf.json.JSONObject;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -17,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cxqm.xiaoerke.common.persistence.Page;
@@ -28,6 +33,7 @@ import com.cxqm.xiaoerke.modules.order.service.ConsultPhoneOrderService;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PhoneConsultDoctorRelationService;
 import com.cxqm.xiaoerke.modules.order.service.SysConsultPhoneService;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * 电话咨询Controller
@@ -134,10 +140,6 @@ public class ConsultPhoneController extends BaseController {
 		JSONObject result = new JSONObject();
 		String time = request.getParameter("time");
 		String times = request.getParameter("times");
-		//vo.setSysHospitalId(request.getParameter("sysHospitalId"));
-		//vo.setPrice(Float.parseFloat(request.getParameter("price")));
-		//vo.setServiceType(request.getParameter("serverType"));
-		//vo.setLocationId(request.getParameter("locationId"));
 		List<String> timeList = new ArrayList<String>();
 		if(times!=null){
 			String[] timeArray = times.split(";");
@@ -156,7 +158,6 @@ public class ConsultPhoneController extends BaseController {
 
 	/**
 	 * 删除号源
-	 * @param user
 	 * @param model
 	 * sunxiao
 	 */
@@ -179,14 +180,13 @@ public class ConsultPhoneController extends BaseController {
 		if(time!=null){
 			timeList.add(time);
 		}
-		sysConsultPhoneService.deleteRegisters(vo,timeList,request.getParameter("date"),request.getParameter("operRepeat"),"kefu");
+		sysConsultPhoneService.deleteRegisters(vo, timeList, request.getParameter("date"), request.getParameter("operRepeat"), "kefu");
 		result.put("suc", "suc");
 		return result.toString();
 	}
 
 	/**
 	 * 删除号源时判断受影响的号源
-	 * @param user
 	 * @param model
 	 * sunxiao
 	 */
@@ -237,4 +237,85 @@ public class ConsultPhoneController extends BaseController {
 		return "modules/consultPhone/orderList";
 	}
 
+	/**
+	 * 导出电话咨询订单数据
+	 * sunxiao
+	 * @param request
+	 * @param response
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequiresPermissions("user")
+	@RequestMapping(value = "export", method= RequestMethod.POST)
+	public String exportFile(ConsultPhoneRegisterServiceVo vo, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		try {
+			String fileName = "订单数据"+ DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+			List<ConsultPhoneRegisterServiceVo> list = null;//memberService.getAllMemberServiceList(vo,"exportData");
+			new ExportExcel("订单数据", ConsultPhoneRegisterServiceVo.class).setDataList(list).write(response, fileName).dispose();
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			addMessage(redirectAttributes, "导出用户失败！失败信息："+e.getMessage());
+		}
+		return "redirect:" + adminPath + "/register/patientRegisterList";
+	}
+
+	/**
+	 * 电话咨询退费表单
+	 * @param
+	 * @param model
+	 * @return
+	 */
+	@RequiresPermissions("consultPhone:memberList")
+	@RequestMapping(value = "refundConsultPhoneFeeForm")
+	public String refundConsultPhoneFeeForm(ConsultPhoneRegisterServiceVo vo,HttpServletRequest request,HttpServletResponse response, Model model) {
+		try {
+			vo.setNickName(URLDecoder.decode(request.getParameter("babyName"), "utf-8"));
+			String answerPhone = request.getParameter("answerPhone");
+			String id = request.getParameter("id");
+			String price = request.getParameter("price");
+			String surplusTime = request.getParameter("surplusTime");
+			String phoneNum = request.getParameter("phoneNum");//医生接听电话
+			String loginPhone = request.getParameter("loginPhone");//用户电话
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		model.addAttribute("vo", vo);
+		return "modules/consultPhone/refundConsultPhoneFeeForm";
+	}
+
+	/**
+	 * 取消预约
+	 * @param model
+	 * sunxiao
+	 */
+	@RequiresPermissions("user")
+	@ResponseBody
+	@RequestMapping(value = "cancelOrder")
+	public String cancelOrder(HttpServletRequest request,HttpServletResponse response, Model model) {
+		JSONObject result = new JSONObject();
+		String id = request.getParameter("id");
+		String cancelReason = request.getParameter("cancelReason");
+		Float price = Float.valueOf(request.getParameter("price"));
+		String userId = request.getParameter("userId");
+		consultPhonePatientService.refundConsultPhoneFee(id,cancelReason,price,userId);
+		return result.toString();
+	}
+
+	/**
+	 * 电话咨询手动接通页
+	 * sunxiao
+	 * @param
+	 * @param model
+	 * @return
+	 */
+	@RequiresPermissions("consultPhone:consultPhoneOrderList")
+	@RequestMapping(value = "manuallyConnectForm")
+	public String manuallyConnectForm(ConsultPhoneRegisterServiceVo vo,HttpServletRequest request,HttpServletResponse response, Model model) {
+		Map map = consultPhonePatientService.manuallyConnectFormInfo(vo);
+		model.addAttribute("consultPhone", vo);
+		model.addAttribute("map", map);
+		return "modules/consultPhone/phoneInterruptHandle";
+	}
 }

@@ -404,16 +404,22 @@
   <!-- 查询电话咨询订单列表，sunxiao -->
   <select id="findConsultPhonePatientList" resultType="com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo" >
     SELECT
+    crs.id,
     crs.register_no,
     crs.create_time,
     crs.phone AS phoneNum,
     crs.update_time,
     crs.delete_by,
     crs.state,
+    crs.surplusTime,
     scs.date,
     scs.beginTime,
-    cdr.server_length,
+    scs.endTime,
+    cdr.server_length AS type,
+    cdr.price,
+    cdr.doctor_answer_phone,
     sd. NAME AS doctorName,
+    sd.id AS doctorId,
     su.phone AS loginPhone,
     sa.nickname,
     sbb. NAME AS babyName
@@ -435,7 +441,36 @@
   </select>
   <!--根据条件查询订单 sunxiao-->
   <select id="getConsultPhoneRegisterListByInfo" resultType="java.util.HashMap" parameterType="java.util.Map">
-    SELECT * from consultphone_register_service crs
+    SELECT
+    crs.id,
+    crs.register_no,
+    crs.create_time,
+    crs.phone AS phoneNum,
+    crs.update_time,
+    crs.delete_by,
+    crs.state,
+    crs.surplusTime,
+    scs.date,
+    scs.beginTime,
+    scs.endTime,
+    cdr.server_length AS type,
+    cdr.price,
+    cdr.doctor_answer_phone,
+    sd. NAME AS doctorName,
+    sd.id AS doctorId,
+    su.phone AS loginPhone,
+    sa.nickname,
+    sbb. NAME AS babyName
+    FROM
+    consultphone_register_service crs
+    LEFT JOIN sys_consultphone_service scs ON scs.id = crs.sys_phoneConsult_service_id
+    LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = scs.sys_doctor_id
+    LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
+    LEFT JOIN sys_patient sp ON sp.id = crs.sys_patient_id
+    LEFT JOIN sys_user su ON su.id = sp.sys_user_id
+    LEFT JOIN sys_attention sa ON sa.openid = su.openid
+    LEFT JOIN healthrecord_illness_describe hid ON hid.id = crs.illness_describe_id
+    LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
     where 1=1
     <if test="state != null" >
       and crs.state = #{state}
@@ -445,6 +480,12 @@
     </if>
     <if test="registerId != null" >
       and crs.sys_phoneConsult_service_id = #{registerId}
+    </if>
+    <if test="doctorId != null" >
+      and sd.id = #{doctorId}
+    </if>
+    <if test="fromDate != null" >
+      and scs.date > date_sub(now(),interval 1 week)
     </if>
   </select>
 </mapper>

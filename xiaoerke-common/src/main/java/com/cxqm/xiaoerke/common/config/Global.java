@@ -121,7 +121,7 @@ public class Global {
 		String dir = getConfig("userfiles.basedir");
 		if (StringUtils.isBlank(dir)){
 			try {
-				dir = "../webapps/xiaoerke-backend";
+				dir = "../webapps/backend";
 			} catch (Exception e) {
 				return "";
 			}

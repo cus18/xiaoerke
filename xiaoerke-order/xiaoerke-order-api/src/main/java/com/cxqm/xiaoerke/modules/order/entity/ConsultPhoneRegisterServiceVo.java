@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.order.entity;
 
+import com.cxqm.xiaoerke.common.utils.excel.annotation.ExcelField;
+
 import java.util.Date;
 
 public class ConsultPhoneRegisterServiceVo {
@@ -36,6 +38,8 @@ public class ConsultPhoneRegisterServiceVo {
 
     private String doctorName;//预约医生姓名
 
+    private String doctorId;
+
     private String orderTimeFromStr;//下单时间从
 
     private String orderTimeToStr;//下单时间到
@@ -52,6 +56,25 @@ public class ConsultPhoneRegisterServiceVo {
 
     private String callSid; //通话的唯一标示
 
+    private String price;
+
+    public String getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(String doctorId) {
+        this.doctorId = doctorId;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    @ExcelField(title="登录手机号", align=2, sort=4)
     public String getLoginPhone() {
         return loginPhone;
     }
@@ -60,6 +83,7 @@ public class ConsultPhoneRegisterServiceVo {
         this.loginPhone = loginPhone;
     }
 
+    @ExcelField(title="咨询时刻", align=2, sort=8)
     public Date getDate() {
         return date;
     }
@@ -80,6 +104,7 @@ public class ConsultPhoneRegisterServiceVo {
         return orderTimeFromStr;
     }
 
+    @ExcelField(title="宝宝姓名", align=2, sort=6)
     public String getBabyName() {
         return babyName;
     }
@@ -88,6 +113,7 @@ public class ConsultPhoneRegisterServiceVo {
         this.babyName = babyName;
     }
 
+    @ExcelField(title="微信号", align=2, sort=2)
     public String getNickName() {
         return nickName;
     }
@@ -96,6 +122,7 @@ public class ConsultPhoneRegisterServiceVo {
         this.nickName = nickName;
     }
 
+    @ExcelField(title="删除人", align=2, sort=12)
     public String getDeleteBy() {
         return deleteBy;
     }
@@ -132,6 +159,7 @@ public class ConsultPhoneRegisterServiceVo {
         this.consultPhoneTimeToStr = consultPhoneTimeToStr;
     }
 
+    @ExcelField(title="预约医生", align=2, sort=7)
     public String getDoctorName() {
         return doctorName;
     }
@@ -164,6 +192,7 @@ public class ConsultPhoneRegisterServiceVo {
         this.sysPatientId = sysPatientId;
     }
 
+    @ExcelField(title="订单状态", align=2, sort=11)
     public String getState() {
         return state;
     }
@@ -172,6 +201,7 @@ public class ConsultPhoneRegisterServiceVo {
         this.state = state;
     }
 
+    @ExcelField(title="下单时间", align=2, sort=3)
     public Date getCreateTime() {
         return createTime;
     }
@@ -180,6 +210,7 @@ public class ConsultPhoneRegisterServiceVo {
         this.createTime = createTime;
     }
 
+    @ExcelField(title="最后操作时间", align=2, sort=11)
     public Date getUpdateTime() {
         return updateTime;
     }
@@ -188,6 +219,7 @@ public class ConsultPhoneRegisterServiceVo {
         this.updateTime = updateTime;
     }
 
+    @ExcelField(title="订单号", align=2, sort=1)
     public String getRegisterNo() {
         return registerNo;
     }
@@ -204,6 +236,7 @@ public class ConsultPhoneRegisterServiceVo {
         this.illnessDescribeId = illnessDescribeId;
     }
 
+    @ExcelField(title="接听手机号", align=2, sort=5)
     public String getPhoneNum() {
         return phoneNum;
     }
@@ -220,6 +253,7 @@ public class ConsultPhoneRegisterServiceVo {
         this.creat_by = creat_by;
     }
 
+    @ExcelField(title="预约类型", align=2, sort=9)
     public String getType() {
         return type;
     }
@@ -236,6 +270,7 @@ public class ConsultPhoneRegisterServiceVo {
         this.callSid = callSid;
     }
 
+    @ExcelField(title="剩余时长", align=2, sort=10)
     public long getSurplusTime() {
         return surplusTime;
     }

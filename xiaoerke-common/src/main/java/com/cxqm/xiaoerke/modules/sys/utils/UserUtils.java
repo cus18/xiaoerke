@@ -24,7 +24,7 @@ import com.cxqm.xiaoerke.modules.sys.security.SystemAuthorizingRealm.Principal;
 public class UserUtils {
 	
 	private static String appName = Global.getConfig("web.app.name");
-	private static boolean isBackend = "xiaoerke-backend".equals(appName);
+	private static boolean isBackend = "backend".equals(appName);
 	
 	public static final String USER_CACHE = "userCache";
 	public static final String USER_CACHE_ID_ = "id_";
