@@ -17,6 +17,8 @@
     <result column="visit_endTime" property="visitEndtime" jdbcType="VARCHAR" />
     <result column="major_star" property="majorStar" jdbcType="VARCHAR" />
     <result column="evaluateType" property="evaluateType" jdbcType="VARCHAR" />
+      <result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
+      <result column="wechat_name" property="wechatName" jdbcType="VARCHAR" />
   </resultMap>
 
   <sql id="Base_Column_List" >
@@ -250,7 +252,9 @@
         prp.impression,
         prp.praise_date,
         prp.star,
-        prp.major_star
+        prp.major_star,
+        prp.wechat_name,
+        prp.pic_url
         from patient_register_praise prp
         where prp.sys_doctor_id = #{doctorId}
 
