@@ -9,5 +9,8 @@ define(['phoneConsultApp'], function (app) {
         .factory('GetUserLoginStatus', ['$resource', function ($resource) {
             return $resource('auth/info/loginStatus');
         }])
-
+        //获取某医生的评价
+        .factory('GetUserEvaluate',['$resource',function ($resource){
+            return $resource('interaction/user/doctorEvaluate');
+        }])
 });
