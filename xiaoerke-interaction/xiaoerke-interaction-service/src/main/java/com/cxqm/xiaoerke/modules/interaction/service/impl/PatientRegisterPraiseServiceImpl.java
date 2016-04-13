@@ -79,15 +79,19 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 
     @Override
     public HashMap<String, Object> getConsultEvaluateTop(HashMap<String, Object> params) {
-        HashMap<String,Object> resultMap = patientRegisterPraiseDao.getConsultEvaluateTop(params);
-        if(resultMap!=null){
-            Date date = (Date) resultMap.get("date");
+        HashMap<String,Object> response = new HashMap<String, Object>();
+        List<HashMap<String,Object>> resultList = patientRegisterPraiseDao.getConsultEvaluateTop(params);
+        if(resultList != null && resultList.size() > 0){
+            for(HashMap<String,Object> map:resultList){
+            Date date = (Date) map.get("date");
             String week = DateUtils.getWeekOfDate(date);
             SimpleDateFormat format = new SimpleDateFormat("MM/dd");
             SimpleDateFormat format1 = new SimpleDateFormat("HH:mm");
-            resultMap.put("date", format.format(date)+"("+week.replaceAll("星期","周")+")"+format1.format(date));
+                map.put("date", format.format(date) + "(" + week.replaceAll("星期", "周") + ")" + format1.format(date));
+            }
         }
-        return resultMap;
+        response.put("evaluateList",resultList);
+        return response;
     }
 
     @Override

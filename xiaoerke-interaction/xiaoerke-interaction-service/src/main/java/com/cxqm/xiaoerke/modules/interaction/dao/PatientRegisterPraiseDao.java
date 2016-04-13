@@ -57,12 +57,12 @@ public interface PatientRegisterPraiseDao {
     int getTotalCount(HashMap<String, Object> dataMap);
 
     /**
-     * 医生详情页--获取一条电话咨询评价
+     * 医生详情页--获取n条电话咨询评价
      * @param params
      * @return
      * @author chenxiaoqiong
      */
-    HashMap<String,Object> getConsultEvaluateTop(HashMap<String, Object> params);
+    List<HashMap<String,Object>> getConsultEvaluateTop(HashMap<String, Object> params);
 
     /**
      * 医生详情页--获取所有电话咨询评价（带分页）

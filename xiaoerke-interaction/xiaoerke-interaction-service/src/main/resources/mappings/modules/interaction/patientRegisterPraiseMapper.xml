@@ -225,7 +225,7 @@
         </if>
     </select>
 
-    <!-- 获取一条电话咨询评论 -->
+    <!-- 获取n条电话咨询评论 -->
     <select id="getConsultEvaluateTop" resultType="java.util.HashMap">
         select INSERT(prp.phone,4,5,'****') phone,
         prp.impression,
@@ -239,7 +239,9 @@
         <if test="evaluateType != ''" >
             and evaluateType = #{evaluateType,jdbcType=VARCHAR}
         </if>
-        limit 1
+        <if test="limit != null" >
+            limit  #{limit}
+        </if>
     </select>
 
     <!--<select id="getConsultEvaluate" resultType="com.cxqm.xiaoerke.common.persistence.Page">-->
