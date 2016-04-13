@@ -63,4 +63,8 @@ public interface MessageDao {
 
     //获取个人的预约信息详情 @author 得良
     Map fidPersonAppointDetailInfoExcut(PerAppDetInfoVo perAppDetInfoVO);
+
+    Map consultPhoneMsgRemind(String id);
+
+    void insertMonitorConsultPhone(HashMap<String,Object> monitorMap);
 }

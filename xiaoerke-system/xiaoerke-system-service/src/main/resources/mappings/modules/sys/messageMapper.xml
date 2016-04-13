@@ -114,6 +114,11 @@
         VALUES(#{id},(SELECT id FROM patient_register_service WHERE register_no=#{register_no}),#{status},#{types});
     </insert>
 
+    <insert id="insertMonitorConsultPhone">
+        INSERT INTO sys_monitor(id,patient_register_service_id,status,types)
+        VALUES(#{id},#{patient_register_service_id},#{status},#{types});
+    </insert>
+
     <!--更新sys_monitor表状态-->
     <update id="setMonitorStatusExecute">
         UPDATE sys_monitor sm SET sm.STATUS=#{status} where sm.patient_register_service_id=#{patient_register_service_id}
@@ -204,6 +209,11 @@
             and apr.id=#{status}<!--临时替换 待修复 deliang-->
         </if>
         group by prs.id
+    </select>
+
+    <select id="consultPhoneMsgRemind" resultType="java.util.HashMap">
+        select * from sys_monitor smt where smt.patient_register_service_id = #{id}
+        and smt.status = '7' and smt.types = '2'
     </select>
 </mapper>
 
