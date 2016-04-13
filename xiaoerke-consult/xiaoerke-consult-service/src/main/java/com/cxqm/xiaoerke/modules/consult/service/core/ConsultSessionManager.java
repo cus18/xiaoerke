@@ -197,7 +197,6 @@ public class ConsultSessionManager {
 	public HashMap<String,Object> createWechatConsultSession(RichConsultSession consultSession){
 
 		HashMap<String,Object> response = new HashMap<String, Object>();
-//		sessionCache.putSessionIdConsultSessionPair(123, consultSession);
 
 		Channel  csChannel = null;
 
@@ -270,7 +269,7 @@ public class ConsultSessionManager {
 
 		//成功分配医生，给用户发送一个欢迎语
 		String st = "尊敬的用户，宝大夫在线，有什么可以帮您";
-		WechatUtil.senMsgToWechat("a0cNpOtk4bMgfn2wq8---RrGhz4racwEDxQrz2gFJiNl_UIn2VU8RJM7nLuIGXQuX14z2VJ9tvOQgfXhQB1XQBqB3IgzRQ8lFnxM0uY-F8XATaCzJbilIMGU5Cjmt6oZFVLiAHAJZP", consultSession.getOpenid(), st);//sessionCache.getWeChatToken()
+		WechatUtil.senMsgToWechat("4o8SWi3t9iFaB_suGf5rugZ9XCFftPmRqcZW7MAxLK8zkKf419-yF9SphL2H-IbuZBNoDzzGPGwpzIWOkc4TKQc8jcQvV9AOmCSIWQjP-z_rpwEI7oUY4b0uxsCD7juvNHMdAHACWB", consultSession.getOpenid(), st);//sessionCache.getWeChatToken()
 		sessionCache.putWechatSessionByOpenId(consultSession.getOpenid(),consultSession);
 		response.put("csChannel", csChannel);
 		response.put("sessionId",sessionId);
