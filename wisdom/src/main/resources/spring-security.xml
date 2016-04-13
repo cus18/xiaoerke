@@ -7,17 +7,17 @@
         http://www.springframework.org/schema/security 
         http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
-	<http pattern="${xiaoerkePath}/util/**" security="none" />
-	<http pattern="${xiaoerkePath}/nutritionPlan" security="none" />
-	<http pattern="${xiaoerkePath}/constipationPlan" security="none" />
-	<http pattern="${xiaoerkePath}/wechatInfo/**" security="none" />
-	<http pattern="${xiaoerkePath}/firstPage/**" security="none" />
-	<http pattern="${xiaoerkePath}/ctp" security="none" />
-	<http pattern="${xiaoerkePath}/ntr" security="none" />
+	<http pattern="util/**" security="none" />
+	<http pattern="nutritionPlan/**" security="none" />
+	<http pattern="constipationPlan/**" security="none" />
+	<http pattern="wechatInfo/**" security="none" />
+	<http pattern="firstPage/**" security="none" />
+	<http pattern="ctp" security="none" />
+	<http pattern="ntr" security="none" />
 
-	<http pattern="/*" use-expressions="true" entry-point-ref="authenticationProcessingFilterEntryPoint" >
-		<intercept-url pattern="/*" access="isAuthenticated()" />
-		<logout logout-url="/logout" logout-success-url="/sso/logout" delete-cookies="JSESSIONID" />
+	<http pattern="/auth/**" use-expressions="true" entry-point-ref="authenticationProcessingFilterEntryPoint" >
+		<intercept-url pattern="/auth/**" access="isAuthenticated()" />
+		<logout logout-url="/auth/logout" logout-success-url="/auth/sso/logout" delete-cookies="JSESSIONID" />
 		<!-- 实现免登陆验证 -->
 		<remember-me user-service-ref="myUserDetailsService" />
 		<session-management invalid-session-url="/">
@@ -34,7 +34,7 @@
 	<beans:bean id="myAuthenticationProcessingFilter"
 		class="com.cxqm.xiaoerke.webapp.security.MyAuthenticationProcessingFilter">
 		<!-- 处理登录的action -->
-		<beans:property name="filterProcessesUrl" value="/auth_center/form" />
+		<beans:property name="filterProcessesUrl" value="/auth/auth_center/form" />
 		<!-- 验证成功后的处理 -->
 		<beans:property name="authenticationSuccessHandler" ref="loginLogAuthenticationSuccessHandler" />
 		<!-- 验证失败后的处理 -->

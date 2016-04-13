@@ -515,3 +515,133 @@ angular.module('controllers', ['luegg.directives'])
                 });
             }
         }])
+
+    .controller('messageListCtrl', ['$scope', '$log', '$sce', 'getUserConsultListInfo', 'getUserRecordDetail', 'getCSdoctorList', 'CSInfoByUserId', 'getMessageRecordInfo',
+        function ($scope, $log, $sce, getUserConsultListInfo, getUserRecordDetail, getCSdoctorList, CSInfoByUserId, getMessageRecordInfo) {
+
+            $scope.info = {};
+
+            $scope.searchMessageContent = "";
+
+            $scope.messageType = "";
+
+            $scope.currentClickUserName = "";
+
+            $scope.defaultClickUserOpenId = "";
+
+            $scope.searchMessageType = [{
+                searchType:"user",
+                searchContent: "查找客户"
+            },{
+                searchType:"message",
+                searchContent: "查找消息"
+            }];
+
+            $scope.searchDate = [{
+                name: "今天",
+                value: 1
+            }, {
+                name: "最近7天",
+                value: 7
+            }, {
+                name: "最近30天",
+                value: 30
+            }];
+
+            //获取客户列表
+            getUserConsultListInfo.save({pageNo: "1", pageSize: "20"}, function (data) {
+                console.log(data);
+                $scope.userConsultListInfo = data.userList;
+            });
+
+            //获取客服医生列表
+            getCSdoctorList.save({}, function (data) {
+                console.log(data);
+                $scope.CSList = data.CSList;
+            });
+
+            //获取用户的详细聊天记录
+            $scope.getUserRecordDetail = function (openid,senderName,fromUserId,toUserId) {
+                $scope.currentClickUserName = senderName;
+                getUserRecordDetail.save({pageNo:0,pageSize:100,fromUserId:fromUserId,toUserId:toUserId,recordType: "doctor", "openid": openid}, function (data) {
+                    console.log(data);
+                    $scope.defaultClickUserOpenId = openid;
+                    $scope.currentUserConsultRecordDetail = data.records;
+
+                });
+            }
+
+
+            //查询某个客服信息
+            $scope.getCSInfoByUserId = function (Object) {
+
+                if (Object == 1000 || Object == 1 || Object == 7 || Object == 30) {
+                    CSInfoByUserId.save({dateNum: Object, pageNo: "1", pageSize: "100"}, function (data) {
+                        console.log(data);
+                        $scope.CSDoctorListInfo = data.records;
+                    });
+                } else {
+                    CSInfoByUserId.save({CSDoctorId: Object, pageNo: "1", pageSize: "100"}, function (data) {
+                        console.log(data);
+                        $scope.CSDoctorListInfo = data.records;
+                    });
+                }
+            }
+            //查找咨询记录（消息列表右上角的搜索功能）
+            $scope.searchMessage = function () {
+
+                if($scope.info.searchMessageContent == '' || $scope.info.searchMessageContent == null){
+                    alert('请选择查询内容！')
+                    return ;
+                }else if($scope.messageType == '' || $scope.messageType == null){
+                    alert('请选择查询类型！');
+                    return ;
+                }else{
+                    getMessageRecordInfo.save({
+                        searchInfo: $scope.info.searchMessageContent,
+                        searchType: $scope.messageType,
+                        pageNo: "1",
+                        pageSize: "100"
+                    }, function (data) {
+                        $scope.userConsultListInfo = data.userList;
+                        $scope.currentUserConsultRecordDetail = data.records;
+                    });
+                }
+            }
+            /*            if (currentUserConsultRecordDetail.senderId == doctor){
+             $(this).css('color','#7fc700');
+             console.log($(this))
+             }*/
+            //查找咨询记录
+            $scope.setSearchMessageType = function (searchType) {
+                $scope.messageType = searchType;
+            }
+
+            //查找消息记录（点击全部、图片等）
+            $scope.getRecordByOpenId = function (searchRecordType) {
+                getUserRecordDetail.save({
+                    recordType: searchRecordType,
+                    openId:$scope.defaultClickUserOpenId,
+                    pageNo: "1",
+                    pageSize: "100"
+                }, function (data) {
+                    $scope.currentUserConsultRecordDetail = data.records;
+                });
+            }
+            //左上角的刷新消息
+            $scope.refreshUserList = function () {
+                userConsultListInfo.save({pageNo: "1", pageSize: "100"}, function (data) {
+                    console.log(data);
+                    $scope.userConsultListInfo = data.userList;
+                });
+            }
+
+            //系统设置
+            $scope.systemsetup = {
+                show: false
+            }
+            $scope.systemsetup1 = function() {
+                $scope.systemsetup.show = !$scope.systemsetup.show;
+            }
+
+        }])
