@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 测试Controller
+ * 医生评价Controller
  *
  * @author ThinkGem
  * @version 2013-10-17
@@ -30,6 +30,11 @@ public class PraiseDoctorController extends BaseController {
     @Autowired
     private PatientRegisterPraiseService patientRegisterPraiseService;
 
+    /**
+     * appointment所有，未分页
+     * @param params
+     * @return
+     */
     @RequestMapping(value = "/user/getUserEvaluate", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
@@ -41,4 +46,20 @@ public class PraiseDoctorController extends BaseController {
         return response;
     }
 
+    /**
+     * 通用，带分页
+     * @params(pageNo,pageSize,evaluateType,doctorId)
+     *
+     * @return Map
+     * @author chenxiaoqiong
+     * */
+    @RequestMapping(value = "/user/evaluateDoctor",method = {RequestMethod.GET,RequestMethod.POST})
+    public
+    @ResponseBody
+    Map<String,Object> evaluateDoctor(@RequestBody HashMap<String, Object> params){
+        HashMap<String, Object> response = new HashMap<String, Object>();
+        response = patientRegisterPraiseService.getConsultEvaluate(params);
+        LogUtils.saveLog(Servlets.getRequest(), "00000049","获取医生的评价信息:" + params.get("doctorId"));
+        return response;
+    }
 }
