@@ -7,8 +7,11 @@ import com.cxqm.xiaoerke.modules.account.exception.BalanceNotEnoughException;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.healthRecords.entity.BabyIllnessInfoVo;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
+import com.cxqm.xiaoerke.modules.order.dao.ConsultPhoneTimingDialDao;
 import com.cxqm.xiaoerke.modules.order.dao.PhoneConsultDoctorRelationDao;
+import com.cxqm.xiaoerke.modules.order.dao.SysConsultPhoneServiceDao;
 import com.cxqm.xiaoerke.modules.order.entity.ConsulPhonetDoctorRelationVo;
+import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneManuallyConnectVo;
 import com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo;
 import com.cxqm.xiaoerke.modules.order.exception.CreateOrderException;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
@@ -23,7 +26,6 @@ import org.springframework.stereotype.Service;
 
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.modules.order.dao.ConsultPhoneRegisterServiceDao;
-import com.cxqm.xiaoerke.modules.order.dao.SysConsultPhoneServiceDao;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +59,9 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private ConsultPhoneTimingDialDao consultPhoneTimingDialDao;
 
 
     /**
@@ -232,5 +237,19 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         map = consultInfoList.get(0);
         map.put("orderTimeMap",orderTimeMap);
         return map;
+    }
+
+    /**
+     * 手动接通电话
+     * sunxiao
+     * @param vo
+     */
+    @Override
+    public void manuallyConnect(ConsultPhoneManuallyConnectVo vo){
+        if("immediatelyDial".equals(vo.getDialType())){
+
+        }else if("timingDial".equals(vo.getDialType())){
+
+        }
     }
 }

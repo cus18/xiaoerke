@@ -48,12 +48,12 @@ public class PraiseDoctorController extends BaseController {
 
     /**
      * 通用，带分页
-     * @params(pageNo,pageSize,evaluateType,doctorId)
+     * @params {pageNo:"1",pageSize:"5",evaluateType:"0全部，1电话咨询，2预约挂号",doctorId:"XXX"}
      *
      * @return Map
      * @author chenxiaoqiong
      * */
-    @RequestMapping(value = "/user/evaluateDoctor",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/user/doctorEvaluate",method = {RequestMethod.GET,RequestMethod.POST})
     public
     @ResponseBody
     Map<String,Object> evaluateDoctor(@RequestBody HashMap<String, Object> params){
