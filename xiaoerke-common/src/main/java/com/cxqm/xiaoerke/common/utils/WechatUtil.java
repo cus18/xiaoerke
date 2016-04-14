@@ -10,9 +10,7 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Timestamp;
@@ -27,7 +25,6 @@ import it.sauronsoftware.jave.Encoder;
 import it.sauronsoftware.jave.EncoderException;
 import it.sauronsoftware.jave.EncodingAttributes;
 import it.sauronsoftware.jave.InputFormatException;
-import java.io.File;
 
 /**
  * Created by baoweiw on 2015/7/27.
@@ -515,6 +512,15 @@ public class WechatUtil {
             mediaName = mediaName+".jpg";
         }else if(messageType.contains("voice")){
             mediaName = mediaName+".mp3";
+            //创建源文件
+            String sourceFile = createFile("sourceFile");
+            //创建目标文件
+            String targetFile = createFile("targetFile");
+            //将InputStream转成源文件
+            File sorceName = new  File(sourceFile);
+            inputstreamtofile(inputStream,sorceName);
+            changeToMp3(sourceFile,targetFile);
+
         }else if(messageType.contains("video")){
             mediaName = mediaName+".mp4";
         }
@@ -524,6 +530,40 @@ public class WechatUtil {
 
         String mediaURL = OSSObjectTool.getConsultMediaBaseUrl()+ mediaName;
         return mediaURL;
+    }
+    //创建文件，并返回文件路径
+    public String createFile(String fileName){
+        String path = "../tempFileSource";
+        File f = new File(path);
+        if(!f.exists()){
+            f.mkdirs();
+        }
+        String Name=IdGen.uuid();
+        File file = new File(f,Name);
+        if(!file.exists()){
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return path+Name;
+    }
+
+    public void inputstreamtofile(InputStream ins,File file){
+        try{
+            OutputStream os = new FileOutputStream(file);
+            int bytesRead = 0;
+            byte[] buffer = new byte[8192];
+            while ((bytesRead = ins.read(buffer, 0, 8192)) != -1) {
+                os.write(buffer, 0, bytesRead);
+            }
+            os.close();
+            ins.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
     }
 
     public static void changeToMp3(String sourcePath, String targetPath) {
