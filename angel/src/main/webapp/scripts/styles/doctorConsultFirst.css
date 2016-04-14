@@ -163,7 +163,7 @@ textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 10
 /*.patientConsultContent div {
     float: right;
 }*/
-.doctorReplyContent .message::after,.patientConsultContent .message::after {
+/*.doctorReplyContent .message::after,.patientConsultContent .message::after {
     content: '';
     width: 7px;
     height: 9px;
@@ -171,7 +171,7 @@ textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 10
     position: absolute;
     top: 12px;
     left: -7px;
-    /*background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fyh_10.png") center no-repeat;*/
+    background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fyh_10.png") center no-repeat;
 }
-.patientConsultContent .message::after {left: 95px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fyh_11.png") center no-repeat;}
+.patientConsultContent .message::after {left: 95px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fyh_11.png") center no-repeat;}*/
 .startTime {font: 12px/20px 'Microsoft Yahei';}
