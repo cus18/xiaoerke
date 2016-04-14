@@ -522,8 +522,8 @@ public class WechatUtil {
             changeToMp3(sourceFile, targetFile);
             File finalFile = new File(targetFile);
             inputStream = new FileInputStream(finalFile);
-            deleteDirectory(sourceFile);
-            deleteDirectory(targetFile);
+            deleteFiles(sourceFile);
+            deleteFiles(targetFile);
         }else if(messageType.contains("video")){
             mediaName = mediaName+".mp4";
         }
@@ -571,43 +571,13 @@ public class WechatUtil {
 
     /**
      *
-     * 删除目录及目录下的文件
-     *
-     * @param dirName 被删除的目录所在的文件路径
-     * @return 如果目录删除成功，则返回true，否则返回false
+     * 删除文件
      */
-    public  void deleteDirectory(String dirName) {
-        String dirNames = dirName;
-        if (!dirNames.endsWith(File.separator)) {
-            dirNames = dirNames + File.separator;
-        }
-        File dirFile = new File(dirNames);
-        if (!dirFile.exists() || !dirFile.isDirectory()) {
-            return;
-        }
-        boolean flag = true;
-        // 列出全部文件及子目录
-        File[] files = dirFile.listFiles();
-        for (int i = 0; i < files.length; i++) {
-            // 删除子文件
-            if (files[i].isFile()) {
-                flag = FileUtils.deleteFile(files[i].getAbsolutePath());
-                // 如果删除文件失败，则退出循环
-                if (!flag) {
-                    break;
-                }
-            }
-            // 删除子目录
-            else if (files[i].isDirectory()) {
-                flag = FileUtils.deleteDirectory(files[i]
-                        .getAbsolutePath());
-                // 如果删除子目录失败，则退
-                if (!flag) {
-                    break;
-                }
-            }
-        }
-   }
+    //删除文件和目录
+    private void deleteFiles(String workspaceRootPath){
+        File file = new File(workspaceRootPath);
+        file.delete();
+    }
 
     public static void changeToMp3(String sourcePath, String targetPath) {
         File source = new File(sourcePath);
