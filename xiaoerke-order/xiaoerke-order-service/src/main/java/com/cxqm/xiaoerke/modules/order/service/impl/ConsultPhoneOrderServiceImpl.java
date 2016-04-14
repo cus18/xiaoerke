@@ -1,6 +1,7 @@
 package com.cxqm.xiaoerke.modules.order.service.impl;
 
 import com.cxqm.xiaoerke.common.persistence.Page;
+import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.FrontUtils;
 import com.cxqm.xiaoerke.modules.order.dao.ConsultPhoneRegisterServiceDao;
 import com.cxqm.xiaoerke.modules.order.dao.PatientRegisterServiceDao;
@@ -88,10 +89,12 @@ public class ConsultPhoneOrderServiceImpl implements ConsultPhoneOrderService {
                 map.put("hospital",order.getHospitalName());
 
                 SimpleDateFormat format = new SimpleDateFormat("MM/dd");
-                map.put("date",format.format(order.getDate()));
+                map.put("date", format.format(order.getDate()));
 
-                SimpleDateFormat format1 = new SimpleDateFormat("HH:ss");
-                map.put("time",format1.format(order.getBeginTime()) + "-" + format1.format(order.getEndTime()));
+
+                String startTime = DateUtils.DateToStr(order.getBeginTime(),"time");
+                String endTime = DateUtils.DateToStr(order.getEndTime(), "time");
+                map.put("time",startTime + "-" + endTime);
 
                 map.put("status",order.getStatus());
                 map.put("classify",order.getClassify());
