@@ -9,6 +9,10 @@ angular.module('controllers', ['luegg.directives'])
             $scope.socketServer2 = "";
             $scope.alreadyJoinPatientConversationContent = [];
             $scope.currentUserConversationContent = {};
+            $scope.info.effect = "true";
+            $scope.glued = true;
+
+            $scope.audioData = $sce.trustAsResourceUrl("http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/q9ONyEWgxkvTQxDhj7HADcHOBklzvkd8gv697tFwT9R72fe1l1ldKrAZTTicxE6x.mp3");
 
             ////QQ表情初始化
             //qqFace();
@@ -71,9 +75,6 @@ angular.module('controllers', ['luegg.directives'])
                         });
 
                         getAlreadyJoinConsultPatientList();
-                        $scope.info.effect = "true";
-                        $scope.glued = true;
-
                     }
                 })
 
@@ -151,10 +152,10 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 if (window.WebSocket) {
                     if($scope.userType="distributor"){
-                        $scope.socketServer1 = new WebSocket("ws://120.25.161.33:2048/ws&" +
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://120.25.161.33:2048/ws&" +
                             "distributor&" + $scope.doctorId);//cs,user,distributor
                     }else if($scope.userType="consultDoctor"){
-                        $scope.socketServer1 = new WebSocket("ws://120.25.161.33:2048/ws&" +
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://120.25.161.33:2048/ws&" +
                             "cs&" + $scope.doctorId);//cs,user,distributor
                     }
 
@@ -164,6 +165,7 @@ angular.module('controllers', ['luegg.directives'])
                             processNotifyMessage(consultData);
                         }else{
                             filterMediaData(consultData);
+                            console.log("testdata",consultData);
                             processConversationMessage(consultData);
                         }
                         $scope.$apply()
@@ -183,8 +185,9 @@ angular.module('controllers', ['luegg.directives'])
 
             //过滤媒体数据
             var filterMediaData = function (val) {
-                if (val.type == "2" || val.type == "3") {
-                    val.content = $sce.trustAsResourceUrl(val.content);
+                if (val.type == "2"||val.type == "3") {
+                    console.log(val.content);
+                    val.content = $sce.trustAsResourceUrl(angular.copy(val.content));
                 }
             }
 

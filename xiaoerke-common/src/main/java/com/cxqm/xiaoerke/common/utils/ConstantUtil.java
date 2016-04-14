@@ -7,7 +7,7 @@ public class ConstantUtil {
 //	public static final String WebPath = "xiaork.cn";
 
 	public static final String DOAMIN_VALUE = "localhost";
-	public static final String TEST_TOKEN = "aPXVNZoM2Sakhbemoy8C408DTTI7Xy7YRC6ljoyu0ibJABRNxILMX4i0UlvAsBbTpwDRDcLZ8sLM65QVOrLz_iOpMf1Sv-BQ5C9JChnSqTmvybb1ic6akfSQD8Ppq62CQCDcABAZLM";
+	public static final String TEST_TOKEN = "OjgT_fe2o_zSjx9UECG7nPVhFzFcLEyYFPLbh8BytRR__uuRChYmp3DiXw4UEJAxzmKsEa8x85sFXNa9uXdAV8yg47fd-ikAJIjRptMEuM-U_VSIAuwrHHOY5kqxf7TENWHhAAACLW";
 
 	//初始化
 //	public static String APP_ID = "wx0baf90e904df0117";//微信开发平台应用id

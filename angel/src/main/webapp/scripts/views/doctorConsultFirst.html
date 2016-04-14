@@ -156,79 +156,50 @@
             <div class="headportrait">
                 <div class="nametop">
                     <div class="nametopin">
-                        <img class="headimg" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png">
+                        <img class="headimg"
+                             src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png">
                         <span>{{chooseAlreadyJoinConsultPatientName}}</span>
                         <div class="fr" ng-click="switchover1()">转接</div>
                     </div>
                 </div>
-                <div scroll-glue-bottom="glued" class="chatlist">
-<!--                    <div class="chatlistin">
-                        <div class="startTime">xx-xx-xx</div>
-                        <div  ng-repeat="item in currentUserConsultRecordDetail">
-                        <div ng-if="item.senderId==doctorId" class="doctorReplyContent">
-                            <div>
-                                <img  ng-src="{{item.message}}" class="headPortrait">
+                <div class="chatlist">
+                    <div scroll-glue-bottom="glued" class="chatlistin">
+                        <div ng-repeat="item in currentUserConversationContent.consultValue">
+                            <div ng-if="item.senderId==doctorId" class="doctorReplyContent">
+                                <div>
+                                    <span>{{doctorName}}</span>
+                                    <span>{{item.dateTime}}</span>
+                                </div>
+                                <div ng-if="item.messageType=='0'" id="show" class="message" >
+                                    {{item.content}}
+                                </div>
                             </div>
-                            <div id="show" class="message" ng-if="item.messageType=='0'">
-                                 {{item.message}}
-                            </div>
-                        </div>
-                        <div ng-if="item.senderId!=doctorId" class="patientConsultContent">
-                            <div>
-                                <img ng-src="{{item.message}}" class="headPortrait">
-                            </div>
-                            <div class="message" ng-if="item.messageType=='0'">
-                                 {{item.message}}
-                            </div>
-                            <div class="message" ng-if="item.messageType=='1'">
-                                <a target="_blank" ng-href="{{item.message}}">
-                                    <img ng-src="{{item.message}}">
-                                </a>
-                            </div>
-                            <div class="message" ng-if="item.messageType=='2'">
-                                <audio ng-src="{{item.message}}" controls="controls"/>
-                            </div>
-                            <div class="message" ng-if="item.messageType=='3'">
-                                <video width="500" height="250" ng-src="{{item.message}}" controls="controls"/>
-                            </div>
-                        </div>
-                        </div>
-                        <div class="startTime">xx-xx-xx</div>
-                    </div>-->
-                    <div class="chatlistin">
-                    <div ng-repeat="item in currentUserConsultRecordDetail">
-                        <div ng-if="item.senderId==doctorId" class="doctorReplyContent">
-                            <div><span>{{doctorName}}</span><span>{{item.dateTime}}</span></div>
-                            <div ng-if="item.messageType=='0'" id="show" class="message" >
-                                {{item.message}}
+                            <div ng-if="item.senderId!=doctorId" class="patientConsultContent">
+                                <div>
+                                    <span>{{item.senderName}}</span>
+                                     <span>{{item.dateTime}}</span>
+                                </div>
+                                <div ng-if="item.type=='0'" class="message">
+                                    {{item.content}}
+                                </div>
+                                <div ng-if="item.type=='1'" class="message">
+                                    {{}}
+                                    <a target="_blank" ng-href="{{item.content}}">
+                                        <img width="100" height="100" ng-src="{{item.content}}">
+                                    </a>
+                                </div>
+                                <div ng-if="item.type=='2'">
+                                    <audio ng-src="{{audioData}}" controls="controls"/>
+                                </div>
+                                <div ng-if="item.type=='3'" class="message">
+                                    <video width="500" height="250" ng-src="{{item.content}}"
+                                           controls="controls"/>
+                                </div>
                             </div>
                         </div>
-                        <div ng-if="item.senderId!=doctorId" class="patientConsultContent">
-                            <div>
-                                <span>{{item.senderName}}</span>
-                                 <span>{{item.createDate}}</span>
-                            </div>
-                            <div ng-if="item.messageType=='0'" class="message">
-                                {{item.message}}
-                            </div>
-                            <div ng-if="item.messageType=='1'" class="message">
-                                <a target="_blank" ng-href="{{item.message}}">
-                                    <img width="100" height="100" ng-src="{{item.message}}">
-                                </a>
-                            </div>
-                            <div ng-if="item.messageType=='2'" class="message">
-                                <audio ng-src="{{item.message}}" controls="controls"/>
-                            <div ng-if="item.type=='2'">
-                                <audio ng-src="{{item.content}}" controls="controls"/>
-                            </div>
-                            <div ng-if="item.messageType=='3'" class="message">
-                                <video width="500" height="250" ng-src="{{item.message}}" controls="controls"/>
-                            </div>
-                        </div>
-                    </div>
                     </div>
                 </div>
-                    </div>
+            </div>
                 <div class="facebox">
                     <div class="facein">
                         <p class="fl"><span class="emotion" ng-click="getQQExpression()">表情</span></p>
