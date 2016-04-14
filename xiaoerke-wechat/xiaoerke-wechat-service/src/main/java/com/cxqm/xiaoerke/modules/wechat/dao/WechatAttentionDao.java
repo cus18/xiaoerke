@@ -15,7 +15,7 @@ import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 public interface WechatAttentionDao {
 	
 	 //根据openId查询关注信息
-    SysWechatAppintInfoVo findAttentionInfoByOpenId(SysWechatAppintInfoVo sysWechatAppintInfoVo);
+    List<SysWechatAppintInfoVo> findAttentionInfoByOpenId(SysWechatAppintInfoVo sysWechatAppintInfoVo);
     
     int deleteByPrimaryKey(String id);
 

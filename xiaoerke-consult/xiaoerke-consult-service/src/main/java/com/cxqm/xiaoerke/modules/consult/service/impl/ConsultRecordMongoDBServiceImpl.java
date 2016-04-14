@@ -91,8 +91,8 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 				new Update().update("ConsultSessionStatusVo", consultSessionStatusVo),ConsultSessionStatusVo.class);
 	}
 	//zdl
-	public List<ConsultSessionStatusVo> querySessionStatusList(Query query){
-		return this.mongoTemplate.find(query, ConsultSessionStatusVo.class, "ConsultSessionStatusVo");
+	public List<Object> querySessionStatusList(Query query){
+		return this.mongoTemplate.find(query, Object.class, "consultSessionStatusVo");
 	}
 
 
