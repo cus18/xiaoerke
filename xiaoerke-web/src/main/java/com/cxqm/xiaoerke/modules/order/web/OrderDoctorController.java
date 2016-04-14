@@ -28,7 +28,7 @@ import com.cxqm.xiaoerke.modules.wechat.service.WeChatInfoService;
  * @version 2015-11-04
  */
 @Controller
-@RequestMapping(value = "${xiaoerkePath}")
+@RequestMapping(value = "")
 public class OrderDoctorController extends BaseController {
 
 	@Autowired
