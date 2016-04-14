@@ -618,7 +618,7 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 	}
 
 	/**
-	 * 删除号源
+	 * 删除号源,被预约的退款
 	 * sunxiao
 	 */
 	public int deleteRegisters(SysConsultPhoneServiceVo registerServiceVo,
