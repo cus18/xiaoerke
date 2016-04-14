@@ -52,11 +52,6 @@ define(['app'], function (app) {
             return $resource(doctor_h5 + 'util/checkBind');
         }])
 
-        //获取某医生的评价
-        .factory('GetUserEvaluate',['$resource',function ($resource){
-            return $resource(doctor_h5 + 'interaction/user/doctorEvaluate');
-        }])
-
         //获取用户登陆状态
         .factory('GetUserLoginStatus', ['$resource', function ($resource) {
             return $resource(doctor_h5 + 'auth/info/loginStatus');
