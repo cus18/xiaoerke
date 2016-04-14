@@ -1,6 +1,11 @@
-<div ui-view class="container-fluid" style="height:100%" ng-init="patientConsultFirst()">
-    <div id="consultDisplay" scroll-glue-bottom="glued" class="consultDisplay">
-        <div ng-repeat="item in consultContent" style="margin-top:5%">
+<div ui-view class="container-fluid" ng-init="patientConsultFirst()">
+    <div class="consultTitle">
+        <span><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_2.png" alt=""/></span>
+        宝大夫
+        <span><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_1.png" alt=""/></span>
+    </div>
+    <div scroll-glue-bottom="glued" class="consultDisplay">
+        <div ng-repeat="item in consultContent">
             <div ng-if="item.senderId!=patientId&&item.type!='4'">
                 <div style="margin-left:2%;font-size:12px;color:#9C27B0;font-weight:bold">{{item.senderName}}</div>
                 <img ng-src="{{item.avatar}}" style="width:40px;height:40px;margin-top:2%;margin-left:2%">
@@ -16,8 +21,8 @@
                 </div>
             </div>
             <div ng-if="item.senderId==patientId&&item.type!='4'">
-                <img ng-src="{{item.avatar}}" style="width:40px;height:40px;margin-top:2%;margin-left:85%">
-                <div class="sendRight" style="margin-top:-20%;margin-left:4%;">
+                <img ng-src="{{item.avatar}}">
+                <div class="sendRight">
                     <div class="consultRightContent">
                         <div ng-if="item.type=='0'">
                             <br/>
@@ -28,34 +33,31 @@
                     <div class="arrowRight"></div>
                 </div>
             </div>
-            <div ng-if="item.type=='4'" style="width:90%;font-size:10px;margin-left:7%;color:red">
+            <div ng-if="item.type=='4'">
                  亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^
             </div>
         </div>
-        <br/>
     </div>
-    <div id="consultInput" style="height:7%;top:91%;position:relative">
-        <input placeholder="请输入咨询内容" ng-model="info.consultInputValue" type="text"
-               style="height:100%;margin-top:2%;width:70%;border:1px solid #000;">
-        <div id="expression" style="margin-top:-10%;margin-left:73%">
-            <img src="images/patient/55.png" style="width:35%;height:35%">
-        </div>
-        <div id="fileInput" ng-if="!sendItem" style="margin-left:88%;margin-top:-11%;" ng-click="openFileList()">
-            <img src="images/patient/11.png" style="width:83%;height:83%">
-        </div>
-        <div id="sendConsultContent" ng-if="sendItem"
-             style="margin-left:84%;margin-top:-13%;">
-            <button ng-click="sendConsultContent()" style="width:48px;height:34px">发送</button>
+    <div class="consultInput">
+        <div class="consultInputTop">
+            <div class="videoInput">
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_4.png" alt=""/>
+            </div>
+            <div class="textInput">
+                <input placeholder="请输入咨询内容" ng-model="info.consultInputValue" type="text" name="text" style="border-style:none">
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_6.png" alt=""/>
+            </div>
+            <div ng-if="!sendItem" ng-click="openFileList()" ng-if="sendItem">
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_5.png" alt=""/>
+            </div>
+            <div class="sendConsultContent" ng-if="sendItem" id="sendConsultContent">
+                <button ng-click="sendConsultContent()">发送</button>
+            </div>
         </div>
         <div ng-if="openFileListFlag&&!sendItem" id="fileInputList" class="fileInputList">
-            <img src="images/patient/33.png" style="width:18%;height:59%;margin-left:2%"
-                     type="file" ng-file-select="uploadFiles($files,'image')"
-                     accept="image/*" ng-file-max-height="2000" ng-file-max-size="2MB">
-            <img src="images/patient/22.png" style="width:19%;height:63%"
-                 type="file" ng-file-select="uploadFiles($files,'audio')" accept="audio/*">
-            <img src="images/patient/44.png" style="width:19%;height:65%;margin-top:4%"
-                 type="file" ng-file-select="uploadFiles($files,'video')" accept="video/*">
+            <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_7.png" type="file" ng-file-select="uploadFiles($files,'image')" accept="image/*" ng-file-max-height="2000" ng-file-max-size="2MB">
+            <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_8.png" type="file" ng-file-select="uploadFiles($files,'audio')" accept="audio/*">
+            <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_9.png" type="file" ng-file-select="uploadFiles($files,'video')" accept="video/*">
         </div>
-        <br/>
     </div>
 </div>

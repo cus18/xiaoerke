@@ -511,8 +511,10 @@ public class WechatUtil {
         }else if(messageType.equals("video")){
             mediaName = mediaName+".mp4";
         }
-        Runnable thread = new uploadFileInputStreamThread(mediaName, picLen, inputStream, OSSObjectTool.BUCKET_CONSULT_PIC);
-        threadExecutor.execute(thread);
+//        Runnable thread = new uploadFileInputStreamThread(mediaName, picLen, inputStream, OSSObjectTool.BUCKET_CONSULT_PIC);
+        //上传图片到阿里云
+        OSSObjectTool.uploadFileInputStream(mediaName, picLen, inputStream, OSSObjectTool.BUCKET_CONSULT_PIC);
+//        threadExecutor.execute(thread);
 
         String mediaURL = OSSObjectTool.getConsultMediaBaseUrl()+ mediaName;
 

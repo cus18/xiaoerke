@@ -45,7 +45,8 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
 
             $scope.sendItem = false;
             $scope.$watch('info.consultInputValue', function(newVal, oldVal) {
-                if(newVal==undefined||newVal==""){
+                console.log(newVal);
+                if(newVal==undefined||newVal == ""){
                     $scope.sendItem = false;
                 }else{
                     $scope.sendItem = true;
