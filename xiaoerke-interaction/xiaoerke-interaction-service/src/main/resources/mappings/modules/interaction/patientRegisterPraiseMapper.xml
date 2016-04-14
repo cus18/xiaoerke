@@ -17,6 +17,8 @@
     <result column="visit_endTime" property="visitEndtime" jdbcType="VARCHAR" />
     <result column="major_star" property="majorStar" jdbcType="VARCHAR" />
     <result column="evaluateType" property="evaluateType" jdbcType="VARCHAR" />
+      <result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
+      <result column="wechat_name" property="wechatName" jdbcType="VARCHAR" />
   </resultMap>
 
   <sql id="Base_Column_List" >
@@ -204,14 +206,12 @@
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
+    <!-- appointment -->
     <select id="getUserEvaluate" resultType="java.util.Map">
         select INSERT(prp.phone,4,5,'****') phone, prp.impression,DATE_FORMAT(prp.praise_date,'%c/%d %k:%i') date ,prp.star
         from patient_register_praise prp
         where prp.sys_doctor_id = #{doctorId}
-
-        <if test="evaluateType != null" >
-            and evaluateType = #{evaluateType,jdbcType=VARCHAR},
-        </if>
+        and evaluateType is not "1"
     </select>
 
     <!-- 评论总数 -->
@@ -225,13 +225,15 @@
         </if>
     </select>
 
-    <!-- 获取一条电话咨询评论 -->
+    <!-- 获取n条电话咨询评论 -->
     <select id="getConsultEvaluateTop" resultType="java.util.HashMap">
-        select INSERT(prp.phone,4,5,'****') phone,
+        select INSERT(prp.phone,4,6,'****') phone,
         prp.impression,
         prp.praise_date as date,
         prp.star,
-        prp.major_star as majorStar
+        prp.major_star as majorStar,
+        prp.wechat_name,
+        prp.pic_url
         from patient_register_praise prp
         where
         prp.sys_doctor_id = #{doctorId}
@@ -239,7 +241,9 @@
         <if test="evaluateType != ''" >
             and evaluateType = #{evaluateType,jdbcType=VARCHAR}
         </if>
-        limit 1
+        <if test="limit != null" >
+            limit  #{limit}
+        </if>
     </select>
 
     <!--<select id="getConsultEvaluate" resultType="com.cxqm.xiaoerke.common.persistence.Page">-->
@@ -248,7 +252,9 @@
         prp.impression,
         prp.praise_date,
         prp.star,
-        prp.major_star
+        prp.major_star,
+        prp.wechat_name,
+        prp.pic_url
         from patient_register_praise prp
         where prp.sys_doctor_id = #{doctorId}
 
@@ -317,9 +323,9 @@
 	<!--插入最后就诊时间，待测试 -->
     <insert id="PatientRegisterServiceIsPraise"
             useGeneratedKeys="true" keyProperty="planId">
-        INSERT INTO patient_register_praise(visit_endTime,id,patient_register_service_id,sys_patient_id,phone,praise,star,praise_date,symptom,impression,zan,sys_doctor_id,major_star,evaluateType)
+        INSERT INTO patient_register_praise(visit_endTime,id,patient_register_service_id,sys_patient_id,phone,praise,star,praise_date,symptom,impression,zan,sys_doctor_id,major_star,evaluateType,wechat_name,pic_url)
         VALUES
-        (#{visit_endTime},#{patientRegisterPraiseId},#{id},#{patientId},#{phone},#{appraise},#{star},#{praise_date},#{symptom},#{impression},#{zan},#{sys_doctor_id},#{major_star},#{evaluateType});
+        (#{visit_endTime},#{patientRegisterPraiseId},#{id},#{patientId},#{phone},#{appraise},#{star},#{praise_date},#{symptom},#{impression},#{zan},#{sys_doctor_id},#{major_star},#{evaluateType},#{wechat_name},#{pic_url});
     </insert>
     
     <!--获取某个医生的详细信息 @author 09_zdl-->

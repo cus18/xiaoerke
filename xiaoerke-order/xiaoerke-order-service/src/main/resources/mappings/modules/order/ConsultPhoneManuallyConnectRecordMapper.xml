@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxqm.xiaoerke.modules.order.dao.ConsultPhoneManuallyConnectRecordDao">
+	<resultMap id="consultPhoneManuallyConnectVo" type="com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneManuallyConnectVo">
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="patient_register_id" property="patientRegisterId" jdbcType="VARCHAR" />
+        <result column="wait_time" property="waitTime" jdbcType="VARCHAR" />
+        <result column="overall_satisfy" property="overallSatisfy" jdbcType="VARCHAR" />
+        <result column="user_feedback" property="userFeedback" jdbcType="VARCHAR" />
+        <result column="user_feedback_remarks" property="userFeedbackRemarks" jdbcType="VARCHAR" />
+        <result column="isUser" property="isUser" jdbcType="VARCHAR" />
+        <result column="falseUser_reason" property="falseUserReason" jdbcType="VARCHAR" />
+        <result column="falseUser_reason_remarks" property="falseUserReasonRemarks" jdbcType="VARCHAR" />
+        <result column="cancel_reason" property="cancelReason" jdbcType="VARCHAR" />
+        <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <update id="updateUserReturnVisitInfo">
+        update consultphone_manuallyConnect_record
+        <set>
+            <if test="waitTime != null">
+                wait_time=#{waitTime},
+            </if>
+            <if test="overallSatisfy != null">
+                overall_satisfy=#{overallSatisfy},
+            </if>
+            <if test="userFeedback != null">
+                user_feedback=#{userFeedback},
+            </if>
+            <if test="userFeedbackRemarks != null">
+                user_feedback_remarks=#{userFeedbackRemarks},
+            </if>
+            <if test="isUser != null">
+                isUser=#{isUser},
+            </if>
+            <if test="falseUserReason != null">
+                falseUser_reason=#{falseUserReason},
+            </if>
+            <if test="falseUserReasonRemarks != null">
+                falseUser_reason_remarks=#{falseUserReasonRemarks},
+            </if>
+            <if test="cancelReason != null">
+                cancel_reason=#{cancelReason},
+            </if>
+            <if test="remarks != null">
+                remarks=#{remarks},
+            </if>
+            <if test="updateDate != null">
+                update_date=#{updateDate},
+            </if>
+            <if test="id != null">
+                id=#{id}
+            </if>
+        </set>
+        where patient_register_id=#{patientRegisterId}
+    </update>
+
+    <!--插入号源信息-->
+    <insert id="saveUserReturnVisitInfo">
+        INSERT INTO consultphone_manuallyConnect_record
+        	(patient_register_id,
+        	wait_time,
+        	overall_satisfy,
+        	user_feedback,
+        	user_feedback_remarks,
+        	isUser,
+        	falseUser_reason,
+        	falseUser_reason_remarks,
+        	cancel_reason,
+        	remarks,
+        	create_date,
+        	update_date)
+        VALUES
+        	(#{patientRegisterId},
+        	#{waitTime},
+        	#{overallSatisfy},
+        	#{userFeedback},
+        	#{userFeedbackRemarks},
+        	#{isUser},
+        	#{falseUserReason},
+        	#{falseUserReasonRemarks},
+        	#{cancelReason},
+        	#{remarks},
+        	#{createDate},
+        	#{updateDate});
+    </insert>
+    <select id="getUserReturnVisitByInfo" resultMap="consultPhoneManuallyConnectVo">
+    	select * from consultphone_manuallyConnect_record srv where 1=1
+    	<if test="patientRegisterId != null and patientRegisterId != ''">
+			AND srv.patient_register_id=#{patientRegisterId}
+		</if>
+    </select>
+</mapper>

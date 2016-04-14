@@ -14,6 +14,7 @@ import com.cxqm.xiaoerke.modules.sys.interceptor.SystemServiceLog;
 import com.cxqm.xiaoerke.modules.sys.service.*;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,15 +80,23 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 
     @Override
     public HashMap<String, Object> getConsultEvaluateTop(HashMap<String, Object> params) {
-        HashMap<String,Object> resultMap = patientRegisterPraiseDao.getConsultEvaluateTop(params);
-        if(resultMap!=null){
-            Date date = (Date) resultMap.get("date");
+        HashMap<String,Object> response = new HashMap<String, Object>();
+        List<HashMap<String,Object>> resultList = patientRegisterPraiseDao.getConsultEvaluateTop(params);
+        if(resultList != null && resultList.size() > 0){
+            for(HashMap<String,Object> map:resultList){
+            Date date = (Date) map.get("date");
             String week = DateUtils.getWeekOfDate(date);
             SimpleDateFormat format = new SimpleDateFormat("MM/dd");
             SimpleDateFormat format1 = new SimpleDateFormat("HH:mm");
-            resultMap.put("date", format.format(date)+"("+week.replaceAll("星期","周")+")"+format1.format(date));
+            map.put("date", format.format(date) + "(" + week.replaceAll("星期", "周") + ")" + format1.format(date));
+			String wechat_name = map.get("wechat_name") == null?"微信用户":(String)map.get("wechat_name");
+			String pic_url = map.get("pic_url") == null?"images/a2.png":(String)map.get("pic_url");
+			map.put("wechat_name",wechat_name);
+			map.put("pic_url",pic_url);
+			}
         }
-        return resultMap;
+        response.put("evaluateList",resultList);
+        return response;
     }
 
     @Override
@@ -121,6 +130,8 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
                 hmap.put("impression", praise.getImpression());
                 hmap.put("star", praise.getStar());
                 hmap.put("majorStar", praise.getMajorStar());
+				hmap.put("pic_url", praise.getPicUrl()==null?"images/a2.png":praise.getPicUrl());
+				hmap.put("wechat_name", praise.getWechatName()==null?"微信用户": praise.getWechatName());
                 Date date = praise.getPraiseDate();
                 String week = DateUtils.getWeekOfDate(date);
                 SimpleDateFormat format = new SimpleDateFormat("MM/dd");
@@ -184,17 +195,30 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 	public Map<String, Object> orderPraiseOperation(Map<String, Object> params, HttpSession session, HttpServletRequest request)
 	{
         String type = (String)params.get("type");//phone:电话咨询
-
 		String path = request.getLocalAddr() + request.getContextPath();
 		HashMap<String, Object> action = (HashMap<String, Object>) params.get("action");
-		String openId = WechatUtil.getOpenId (session,request);
+		String openId = WechatUtil.getOpenId(session, request);
 		params.put("openId",openId);
+		Map<String,Object> parameter = systemService.getWechatParameter();
+		String token = (String)parameter.get("token");
+		String strURL="https://api.weixin.qq.com/cgi-bin/user/info?access_token="+token+"&openid="+openId+"&lang=zh_CN";
+		String param="";
+		String json=WechatUtil.post(strURL, param, "GET");
+		JSONObject jasonObject = JSONObject.fromObject(json);
+		Map<String, Object> jsonMap = (Map) jasonObject;
+
 		String patientRegisterServiceId = (String) params.get("patient_register_service_id");
 		if (patientRegisterServiceId == null || "".equals(patientRegisterServiceId)) {
 			patientRegisterServiceId = IdGen.uuid();
 		}
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		HashMap<String, Object> excuteMap = new HashMap<String, Object>();
+
+		String headimgurl = null == (String) jsonMap.get("headimgurl")?"images/a2.png":(String) jsonMap.get("headimgurl") ;
+		String nickname = null == (String) jsonMap.get("nickname")?"微信用户":(String) jsonMap.get("nickname") ;
+
+		excuteMap.put("wechat_name", nickname);
+		excuteMap.put("pic_url",headimgurl);
 
 		//返还用户所提交的保证金
 		Map<String, Object> executeMap = new HashMap<String, Object>();
@@ -206,8 +230,8 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 		//进行评价
 		praiseHandle(type, action, patientRegisterServiceId, excuteMap);
 		//分享消息推送
-		Map tokenMap = systemService.getWechatParameter();
-		String token = (String)tokenMap.get("token");
+//		Map tokenMap = systemService.getWechatParameter();
+//		String token = (String)tokenMap.get("token");
 		HashMap<String, Object> searchMap = new HashMap<String, Object>();
 		searchMap.put("id", patientRegisterServiceId);
 

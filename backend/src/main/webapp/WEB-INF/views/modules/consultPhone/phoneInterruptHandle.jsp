@@ -16,13 +16,50 @@
 				}
 			});
 		}
+		function dialing(){
+			if($("#surplusTime").val().trim()==''){
+				alertx("请输入剩余时间！");
+				return;
+			}
+			if($("#loginPhone").val().trim()==''){
+				alertx("请输入用户电话！");
+				return;
+			}
+			if($("#doctorAnswerPhone").val().trim()==''){
+				alertx("请输入医生电话！");
+				return;
+			}
+			alert($("#timingDial").attr("checked"));
+			if($("#inputDailTime").val()==''&&$("#timingDial").attr("checked")){
+				alertx("请输入拨打时间！");
+				return;
+			}
+
+			$.ajax({
+				type: "post",
+				url: "${ctx}/consultPhone/timingDial",
+				data: {dialType:$('input[name="dial"]:checked').val(),surplusTime:$("#surplusTime").val(),userPhone:$("#loginPhone").val(),doctorPhone:$("#doctorAnswerPhone").val(),dialDate:$("#inputDailTime").val()},
+				dataType: "json",
+				success: function(data){
+
+				}
+			});
+		}
+		function showTime(){
+			$("#inputTime").show();
+			$("#btnCancel").val("保存接通申请");
+		}
+		function hideTime(){
+			$("#inputTime").hide();
+			$("#btnCancel").val("确认点击拨打");
+		}
 	</script>
 </head>
 <body>
 <ul class="nav nav-tabs">
 	<li class="active"><a><font color="#b8860b">电话中断处理</font></a></li>
 </ul><br/>
-<form:form id="inputForm" modelAttribute="consultPhone" action="" method="post" class="form-horizontal"><%--
+<form:form id="inputForm" modelAttribute="consultPhone" action="${ctx}/consultPhone/timingDial" method="post" class="form-horizontal"><%--
 		<form:hidden path="email" htmlEscape="false" maxlength="255" class="input-xlarge"/>
 		<sys:ckfinder input="email" type="files" uploadPath="/mytask" selectMultiple="false"/> --%>
 	<form:input id="urvid" path="id" type="hidden" value="${vo.id}"/>
@@ -70,13 +107,17 @@
 		<div class="controls">
 			<font color="blue">手动接通设置</font><br/>
 			设置时长&nbsp;&nbsp;&nbsp;&nbsp;用户手机号码&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${map.doctorName}电话<br/>
-			<input id="1" htmlEscape="false" maxlength="50" style="width: 50px" class="required" value="${map.surplusTime}"/>
-			<input id="2" htmlEscape="false" maxlength="50" style="width: 150px" class="required" value="${map.loginPhone}"/>
-			<input id="3" htmlEscape="false" maxlength="50" style="width: 150px" class="required" value="${map.doctor_answer_phone}"/><br/>
+			<input id="surplusTime" htmlEscape="false" maxlength="50" style="width: 50px" class="required" value="${map.surplusTime}"/>
+			<input id="loginPhone" htmlEscape="false" maxlength="50" style="width: 150px" class="required" value="${map.loginPhone}"/>
+			<input id="doctorAnswerPhone" htmlEscape="false" maxlength="50" style="width: 150px" class="required" value="${map.doctor_answer_phone}"/><br/>
 			<hr>设定接通时间
-			<input id="10min" name="duration" value="10" type="radio" checked="checked"><label for="10min">立即拨打</label>
-			<input id="15min" name="duration" value="15" type="radio"><label for="15min">定时拨打</label><hr>
-			<input id="btnCancel" class="btn" type="button" value="确认点击拨打" onclick="openConsultPhone()"/>
+			<input id="immediatelyDial" name="dial" value="immediatelyDial" type="radio" checked="checked" onclick="hideTime()"><label for="immediatelyDial">立即拨打</label>
+			<input id="timingDial" name="dial" value="timingDial" type="radio" onclick="showTime()"><label for="timingDial">定时拨打</label><hr>
+			<div id="inputTime" style="display: none">拨打时间:<input id="inputDailTime" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
+						onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',isShowClear:false});"/><br/>
+			注意：医生被预约的时间段不能设置定时拨打<br/>
+			</div>
+			<input id="btnCancel" class="btn" type="button" value="确认点击拨打" onclick="dialing()"/>
 		</div>
 	</div>
 	<div class="control-group">

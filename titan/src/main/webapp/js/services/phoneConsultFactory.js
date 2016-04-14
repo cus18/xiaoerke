@@ -65,7 +65,10 @@ define(['appPhoneConsult'], function (app) {
         .factory('EarliestVisiteInfo', ['$resource', function ($resource) {
             return $resource(user_h5 + '/consultPhoneDoctor/earliestVisiteInfo');
         }])
-
+        //用户关注医生功能
+        .factory('AttentionDoctor', ['$resource', function ($resource) {
+            return $resource(user_appoint + 'interaction/user/doctorConcern');
+        }])
 
 
     ///consultPhone/user/doctor/time
@@ -214,10 +217,7 @@ define(['appPhoneConsult'], function (app) {
         .factory('GetCheckOrder',['$resource',function ($resource){
             return $resource(user_h5 + 'order/getCheckOrder');
         }])
-        //用户关注医生功能
-        .factory('AttentionDoctor', ['$resource', function ($resource) {
-            return $resource(user_h5 + 'interaction/user/doctorConcern');
-        }])
+
         //检测用户是否已经关注该医生
         .factory('CheckAttentionDoctor', ['$resource', function ($resource) {
             return $resource(user_appoint + 'interaction/user/isConcerned');
@@ -232,7 +232,7 @@ define(['appPhoneConsult'], function (app) {
         }])
         //获取用户对某医生的评价（电话咨询）
         .factory('GetUserEvaluate',['$resource',function ($resource){
-            return $resource(user_appoint + 'interaction/user/evaluateDoctor');
+            return $resource(user_appoint + 'interaction/user/doctorEvaluate');
         }])
         //用户对客服的评价
         .factory('CustomerEvaluation',['$resource',function ($resource){

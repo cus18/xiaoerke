@@ -16,9 +16,13 @@
 					<div class="hospital">{{doctorDetail.hospitalName}}</div>
 					<div class="department">{{doctorDetail.departmentName}}</div>
 				</div>
-				<div class="attention tc" ng-click="attentionDoctor()">
+				<div class="attention tc" ng-if="!isAttention" >
 					<div class="f2" ng-class="{'c1':isAttention}">{{doctorDetail.fans_number}}</div>
-					<img width="50" height="auto" ng-src="{{attentionImg}}">
+					<img width="50" height="auto" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Ficon_attention_y.png">
+				</div>
+				<div class="attention tc" ng-if="isAttention" ng-click="attentionDoctor()">
+					<div class="f2" ng-class="{'c1':isAttention}">{{doctorDetail.fans_number}}</div>
+					<img width="50" height="auto" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Ficon_attention_n.png">
 				</div>
 			</div>
 			<div class="apart"></div>
@@ -61,11 +65,11 @@
 					<span>专业水平{{avgMajorStar}}分</span>
 				</div>
 				<div class="user" ng-repeat="items in evaluateList">
-					<img class="photo" width="35" height="35" src="images/a2.png">
+					<img class="photo" width="35" height="35" src="{{items.pic_url}}">
 					<div class="info">
 						<div>
 							<div class="fl">
-								<span class="name c3">某某某</span>
+								<span class="name c3">{{items.wechat_name}}</span>
 								<img class="star" ng-repeat="item in [1,2,3,4,5]" width="9.5" height="auto" ng-src="{{starImg1}}">
 							</div>
 							<div class="fr date c5">{{items.star}} {{items.date}}</div>

@@ -1071,8 +1071,10 @@ public class ScheduledTask {
      */
     public void consultMangement4Session(){
         List<ConsultSessionStatusVo> consultSessionStatusVos = consultRecordService.querySessionStatusList(new Query());
-        for(ConsultSessionStatusVo consultSessionStatusVo:consultSessionStatusVos){
-            if(DateUtils.pastMinutes(DateUtils.StrToDate(consultSessionStatusVo.getLastMessageTime(),"datetime"))>10L){
+        for(Object object : consultSessionStatusVos){
+            Map map= (Map)object;
+            ConsultSessionStatusVo consultSessionStatusVo = (ConsultSessionStatusVo) map.get("ConsultSessionStatusVo");
+            if(DateUtils.pastMinutes(DateUtils.StrToDate(consultSessionStatusVo.getLastMessageTime(),"xiangang"))>10L){
                 try{
                     consultRecordService.deleteConsultSessionStatusVo(new Query().addCriteria(new Criteria().where("sessionId").is(consultSessionStatusVo.getSessionId())));
                     sessionCache.removeConsultSession(Integer.valueOf(consultSessionStatusVo.getSessionId()));

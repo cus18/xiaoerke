@@ -99,6 +99,15 @@ public class NgRouteController extends BaseController {
     }
 
     /**
+     *  phoneConsultDoctor 医生端电话咨询
+     */
+    @SystemControllerLog(description = "00000079")
+    @RequestMapping(value ="/phoneConsultDoctor",method = {RequestMethod.POST, RequestMethod.GET})
+    public String phoneConsultDoctorIndex() {
+        return "angular/phoneConsultIndex";
+    }
+
+    /**
      * healthManage 健康档案
      */
     @SystemControllerLog(description = "00000079")
