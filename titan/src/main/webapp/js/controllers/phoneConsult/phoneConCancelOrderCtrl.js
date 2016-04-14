@@ -43,7 +43,7 @@
                     }
                     $scope.pageLoading = false;
                     $scope.info.buttonLock = false;
-                    $state.go('phoneConCancelSuccess');
+                    $state.go('phoneConCancelSuccess',{"price":data.reultState});
                 })
             };
             $scope.$on('$ionicView.enter', function(){
