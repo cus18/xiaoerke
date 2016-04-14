@@ -69,7 +69,8 @@
     DATE_FORMAT(scs.beginTime, '%H:%i') AS begin_time,
     DATE_FORMAT(scs.endTime, '%H:%i') AS end_time,
     scs.state,
-    scs.serviceType
+    scs.serviceType,
+    scs.repeatFlag
     FROM
     sys_consultphone_service scs
     WHERE 1=1

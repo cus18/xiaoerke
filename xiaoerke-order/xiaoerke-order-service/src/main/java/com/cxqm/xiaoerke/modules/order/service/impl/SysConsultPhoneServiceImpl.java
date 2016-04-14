@@ -753,4 +753,20 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
         return sysConsultPhoneServiceDao.findSysConsultPhoneServiceByCRSIdExecute(hashMap);
     }
 
+    @Override
+    public Map<String, Object> getSysPhoneConsultInfo(Integer id) {
+        SysConsultPhoneServiceVo vo = sysConsultPhoneServiceDao.selectByPrimaryKey(id);
+        Map<String, Object> response = new HashMap<String, Object>();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format1 = new SimpleDateFormat("HH:mm");
+        if(vo != null){
+            response.put("consultDate", format.format(vo.getDate())+format1.format(vo.getBegintime())+
+                    format1.format(vo.getEndtime()));
+        }
+
+        return response;
+    }
+
+
+
 }

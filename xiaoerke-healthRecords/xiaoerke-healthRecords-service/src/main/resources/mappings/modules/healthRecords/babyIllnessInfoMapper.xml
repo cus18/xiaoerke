@@ -17,6 +17,23 @@
     id, babyinfo_Id, illness, create_time, conversation_id, status, caseImg, resultImg,
     otherImg, positionImg
   </sql>
+
+  <select id="getIllnessDetail" resultType="java.util.Map">
+    SELECT
+        hid.illness,
+        sbb.name,
+        sbb.birthday
+    FROM
+        healthrecord_illness_describe hid
+    LEFT JOIN
+        sys_baby_baseinfo sbb ON
+        sbb.id = hid.babyinfo_Id
+    LEFT JOIN consultphone_register_service crs ON
+        crs.illness_describe_id = hid.id
+    WHERE
+        crs.id = #{sys_phoneConsult_id,jdbcType=INTEGER};
+  </select>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />
