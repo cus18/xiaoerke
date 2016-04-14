@@ -1045,16 +1045,16 @@ public class ScheduledTask {
      * 再建立通讯的五分钟前发消息给用户
      * */
     public void sendMsg2User4ConsultOrder(){
-        Date date = new Date();
-        date.setTime(date.getTime()-5*60*100);
+         Date date = new Date();
+        date.setTime(date.getTime()+5*60*1000);
         String dateStr = DateUtils.DateToStr(date,"datetime");
         List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",date);
         for(HashMap<String ,Object> map:consultOrderList){
           Map<String,Object> parameter = systemService.getWechatParameter();
           String token = (String)parameter.get("token");
           String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)map.get("date"),"yyyy/MM/dd"));
-          PatientMsgTemplate.consultPhoneWaring2Wechat((String)map.get("doctorName"),(String)map.get("date"),week,(String)map.get("beginTime") ,(String)map.get("endTime") ,(String)map.get("phone") ,(String)map.get("orderNo"),(String)map.get("openid"),token ,"");
-          PatientMsgTemplate.consultPhoneWaring2Msg((String)map.get("babyName") ,(String)map.get("doctorName"),(String)map.get("date"), week,(String)map.get("beginTime"),(String)map.get("phone"),(String)map.get("orderNo"));
+          PatientMsgTemplate.consultPhoneWaring2Wechat((String)map.get("doctorName"),(String)map.get("date"),week,(String)map.get("beginTime") ,(String)map.get("endTime") ,(String)map.get("userPhone") ,(String)map.get("orderNo"),(String)map.get("openid"),token ,"");
+          PatientMsgTemplate.consultPhoneWaring2Msg((String)map.get("babyName") ,(String)map.get("doctorName"),(String)map.get("date"), week,(String)map.get("beginTime"),(String)map.get("userPhone"),(String)map.get("orderNo"));
         }
     }
 
