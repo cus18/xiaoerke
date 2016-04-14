@@ -8,6 +8,7 @@ import java.util.Map;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneManuallyConnectVo;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
+import com.cxqm.xiaoerke.modules.order.exception.CancelOrderException;
 import com.cxqm.xiaoerke.modules.order.exception.CreateOrderException;
 
 /**
@@ -21,7 +22,7 @@ public interface ConsultPhonePatientService {
 
     List<HashMap<String,Object>> getOrderList(String userId);
 
-    int cancelOrder(Integer phoneConsultaServiceId,String cancelReason);
+    Float cancelOrder(Integer phoneConsultaServiceId,String cancelReason) throws CancelOrderException;
 
     int updateOrderInfoBySelect(ConsultPhoneRegisterServiceVo vo);
 
@@ -59,4 +60,6 @@ public interface ConsultPhonePatientService {
      * @param vo
      */
     void manuallyConnect(ConsultPhoneManuallyConnectVo vo);
+
+    ConsultPhoneRegisterServiceVo selectByPrimaryKey(Integer phoneConsultaServiceId);
 }
