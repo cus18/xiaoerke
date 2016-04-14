@@ -138,7 +138,7 @@ public class AccountServiceImpl implements AccountService {
 
     //更新账户信息
     @Override
-    public void updateAccount(Float amount,String order, HashMap<String, Object> response,boolean isEvaluation,String userId,String reason) {
+    public Float updateAccount(Float amount,String order, HashMap<String, Object> response,boolean isEvaluation,String userId,String reason) {
         //将本次订单的交易记录查询出来
         PayRecord payRecord =  payRecordDao.selectSuccessOrderByOrderId(order);
         if(payRecord!=null){
@@ -187,6 +187,7 @@ public class AccountServiceImpl implements AccountService {
             payRecord.setReceiveDate(new Date());
             payRecordDao.insertSelective(payRecord);
         }
+        return amount;
     }
 
     @Override
