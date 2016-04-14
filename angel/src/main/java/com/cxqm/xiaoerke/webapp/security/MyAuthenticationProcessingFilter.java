@@ -17,6 +17,7 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
@@ -45,7 +46,7 @@ public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProc
 	
 	@Autowired
 	private SystemService systemService;
-	
+
 	public MyAuthenticationProcessingFilter() {
 		super("/test");
 	}
