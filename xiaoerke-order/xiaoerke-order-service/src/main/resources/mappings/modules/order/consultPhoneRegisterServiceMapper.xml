@@ -249,7 +249,36 @@
       and prs.status = #{state,VARCHAR}
     </if>
   </select>
-
+    <!-- 每日清单 -->
+    <select id="getSettlementPhoneConsultInfoByDate" resultType="java.util.Map">
+        SELECT
+        srs.beginTime,
+        srs.endTime,
+        sd.position2 position,
+        sbb.name,
+        hid.illness,
+        sd.subsidy,
+        cdr.price
+        FROM
+        sys_consultphone_service srs
+        RIGHT JOIN consultphone_register_service prs ON srs.id = prs.sys_phoneConsult_service_id
+        AND prs. state != "6"
+        AND prs. state != "1"
+        AND prs. state != "0"
+        LEFT JOIN healthrecord_illness_describe hid on hid.id = prs.illness_describe_id
+        LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
+        INNER JOIN sys_doctor sd ON sd.id = srs.sys_doctor_id
+        <if test="date != null" >
+            AND srs.date=#{date}
+        </if>
+        <if test="doctorId != null" >
+            AND srs.sys_doctor_id = #{doctorId}
+        </if>
+        LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = sd.id
+        ORDER BY
+        srs.beginTime ASC
+    </select>
+    
   <!-- 更新订单状态 -->
   <update id="changeConsultPhoneRegisterServiceState">
      update consultphone_register_service prs

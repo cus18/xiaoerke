@@ -51,4 +51,11 @@ public interface ConsultPhoneOrderService {
      */
     void changeConsultPhoneRegisterServiceState(HashMap<String, Object> excuteMap);
 
+    /**
+     * 根据日期获得咨询情况
+     * @param doctorId
+     * @param date
+     * @author chenxiaoqiong
+     */
+    HashMap<String,Object> getSettlementPhoneConsultInfoByDate(String doctorId, String date);
 }
