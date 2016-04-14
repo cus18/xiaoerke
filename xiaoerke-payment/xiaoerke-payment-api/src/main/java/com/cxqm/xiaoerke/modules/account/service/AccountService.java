@@ -64,7 +64,7 @@ public interface AccountService {
 
 
     //更新账户信息
-    void updateAccount(Float amount, String order, HashMap<String, Object> response, boolean isEvaluation, String userId, String reason);
+    Float updateAccount(Float amount, String order, HashMap<String, Object> response, boolean isEvaluation, String userId, String reason);
 
     int updateByPrimaryKey(AccountInfo record);
 
