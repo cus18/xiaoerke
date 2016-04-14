@@ -11,6 +11,8 @@ public class ConsultSessionStatusVo {
 
     private String UserId;
 
+    private ConsultSessionStatusVo consultSessionStatusVo;
+
     public String getUserId() {
         return UserId;
     }

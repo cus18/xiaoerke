@@ -207,7 +207,7 @@ define(['appPhoneConsult'], function(app){
                         }
                     })
                     .state('phoneConCancelSuccess', {
-                        url: '/phoneConCancelSuccess',
+                        url: '/phoneConCancelSuccess/:price',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'phoneConCancelSuccessCtrl',
                         resolve: {

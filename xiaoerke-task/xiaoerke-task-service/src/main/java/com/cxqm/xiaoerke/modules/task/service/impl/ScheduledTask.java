@@ -1070,7 +1070,7 @@ public class ScheduledTask {
      *  删除mongo中的,redis中的,内存中的consultSession
      */
     public void consultMangement4Session(){
-        List<ConsultSessionStatusVo> consultSessionStatusVos = consultRecordService.querySessionStatusList(new Query());
+        List<Object> consultSessionStatusVos = consultRecordService.querySessionStatusList(new Query());
         for(Object object : consultSessionStatusVos){
             Map map= (Map)object;
             ConsultSessionStatusVo consultSessionStatusVo = (ConsultSessionStatusVo) map.get("ConsultSessionStatusVo");

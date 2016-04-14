@@ -4,6 +4,7 @@ package com.cxqm.xiaoerke.modules.consult.web; /**
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
@@ -124,8 +125,9 @@ public class ConsultWechatController extends BaseController {
                     //根据mediaId，从微信服务器上，获取到媒体文件，再将媒体文件，放置阿里云服务器，获取URL
                     try{
                         WechatUtil wechatUtil = new WechatUtil();
-                        String mediaURL = wechatUtil.downloadMediaFromWx("bIkXki53G7M6Ogm8xGJR5gVBAVDLUiGJDx64V8xtr7gSIyKDprPQWgQZ1dysVJtp_1nXQY2SeBe-WvPSVL0woyLDqoI4Us57p4CUMI0FB48mSKd0k9zC1TDF0MyePfnwBYEeAIAIFL",mediaId,nickName,messageType);//sessionCache.getWeChatToken()
+                        String mediaURL = wechatUtil.downloadMediaFromWx(ConstantUtil.TEST_TOKEN,mediaId,nickName,messageType);//sessionCache.getWeChatToken()
                         obj.put("content", mediaURL);
+                        messageContent = mediaURL;
                     }catch (IOException e){
                         e.printStackTrace();
                     }

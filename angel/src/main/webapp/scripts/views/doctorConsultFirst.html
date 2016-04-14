@@ -58,12 +58,12 @@
                     已接入会话
                 </div>
             </div>
-            <div class="consultNowList" ng-style="chooseAlreadyJoinConsultPatientId==item.patientId?{'background':'#08b7c2'}:{'background':'#fff'}"
+            <div class="consultNowList"
+                 ng-style="chooseAlreadyJoinConsultPatientId==item.patientId?{'background':'#08b7c2'}:{'background':'#fff'}"
                  ng-repeat="item in alreadyJoinPatientConversationContent"
                  ng-click="chooseAlreadyJoinConsultPatient(item.patientId,item.patientName)"
                  alt="">
-                {{item.patientName}}
-                {{item.dateTime}}&nbsp;&nbsp;
+                <nobr>{{item.patientName}}&nbsp;&nbsp;{{transformDate(item.dateTime)}}</nobr>
             </div>
         </div>
         <div class="msg-r h30 fr">
@@ -218,6 +218,8 @@
                             </div>
                             <div ng-if="item.messageType=='2'" class="message">
                                 <audio ng-src="{{item.message}}" controls="controls"/>
+                            <div ng-if="item.type=='2'">
+                                <audio ng-src="{{item.content}}" controls="controls"/>
                             </div>
                             <div ng-if="item.messageType=='3'" class="message">
                                 <video width="500" height="250" ng-src="{{item.message}}" controls="controls"/>

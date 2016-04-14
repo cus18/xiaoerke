@@ -164,7 +164,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     }
 
     @Override
-    public List<ConsultSessionStatusVo> querySessionStatusList(Query query){
+    public List<Object> querySessionStatusList(Query query){
         return consultRecordMongoDBService.querySessionStatusList(query);
     }
 

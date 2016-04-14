@@ -5,6 +5,7 @@ import com.cxqm.xiaoerke.common.utils.IdGen;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.utils.DateUtil;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
+import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.exception.CreateOrderException;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhoneOrderService;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
@@ -148,22 +149,30 @@ public class ConsultOrderUserController {
      * @return map
      * */
     @RequestMapping(value = "cancelOrder",method = {RequestMethod.POST,RequestMethod.GET})
-    public
+    public synchronized
     @ResponseBody
     Map<String,Object> cancelOrder(@RequestBody Map<String, Object> params){
+        Float resultState = 0f;
         Integer phoneConsultaServiceId = Integer.parseInt((String) params.get("phoneConsultaServiceId"));
         String cancelReason = (String)params.get("cancelReason");
-//        @RequestParam Integer phoneConsultaServiceId,@RequestParam String cancelReason
         HashMap<String,Object> resultMap = new HashMap<String, Object>();
-        int resultState = consultPhonePatientService.cancelOrder(phoneConsultaServiceId,cancelReason);
-        resultMap.put("reultState",resultState);
-        //插入取消原因
-        resultMap.put("reason", cancelReason);
-        resultMap.put("praiseId", IdGen.uuid());
-        resultMap.put("patientRegisterServiceId", phoneConsultaServiceId);
-        resultMap.put("praise_date", new Date());
-        if(resultState>0){
-            patientRegisterPraiseService.insertCancelReason(resultMap);
+        ConsultPhoneRegisterServiceVo vo = consultPhonePatientService.selectByPrimaryKey(phoneConsultaServiceId);
+        if("1".equals(vo.getState())){
+            try {
+                 resultState = consultPhonePatientService.cancelOrder(phoneConsultaServiceId,cancelReason);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            resultMap.put("reultState",resultState);
+            //插入取消原因
+            resultMap.put("reason", cancelReason);
+            resultMap.put("praiseId", IdGen.uuid());
+            resultMap.put("patientRegisterServiceId", phoneConsultaServiceId);
+            resultMap.put("praise_date", new Date());
+            if(resultState>0){
+                patientRegisterPraiseService.insertCancelReason(resultMap);
+            }
         }
         return  resultMap;
     }

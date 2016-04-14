@@ -3,23 +3,23 @@ package com.cxqm.xiaoerke.modules.order.service.impl;
 import java.util.*;
 
 import com.cxqm.xiaoerke.common.utils.StringUtils;
-import com.cxqm.xiaoerke.modules.account.exception.BalanceNotEnoughException;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.healthRecords.entity.BabyIllnessInfoVo;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
-import com.cxqm.xiaoerke.modules.order.dao.ConsultPhoneTimingDialDao;
 import com.cxqm.xiaoerke.modules.order.dao.PhoneConsultDoctorRelationDao;
 import com.cxqm.xiaoerke.modules.order.dao.SysConsultPhoneServiceDao;
 import com.cxqm.xiaoerke.modules.order.entity.ConsulPhonetDoctorRelationVo;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneManuallyConnectVo;
 import com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo;
+import com.cxqm.xiaoerke.modules.order.exception.CancelOrderException;
 import com.cxqm.xiaoerke.modules.order.exception.CreateOrderException;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.entity.PatientVo;
-import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.DoctorInfoService;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
+import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,7 +61,7 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
     private AccountService accountService;
 
     @Autowired
-    private ConsultPhoneTimingDialDao consultPhoneTimingDialDao;
+    private SystemService systemService;
 
 
     /**
@@ -147,9 +147,11 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
     }
 
 
-    //    @Override
-    public int cancelOrder(Integer phoneConsultaServiceId,String cancelReason) {
+    @Override
+    @Transactional(rollbackFor=Exception.class)
+    public Float cancelOrder(Integer phoneConsultaServiceId,String cancelReason) throws CancelOrderException {
         int sysOrderState = 0;
+        Float price = 0f;
         //取消订单
         ConsultPhoneRegisterServiceVo vo = consultPhoneRegisterServiceDao.selectByPrimaryKey(phoneConsultaServiceId);
         vo.setState("6");
@@ -159,10 +161,23 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         if(state>0){
             sysOrderState = sysConsultPhoneServiceDao.cancelOrder(vo.getSysPhoneconsultServiceId(),"0");
         }
-        //发消息
+        //退钱
+        if(sysOrderState>0){
+            HashMap<String, Object> response = new HashMap<String, Object>();
+            price = accountService.updateAccount(0F, phoneConsultaServiceId + "", response, false, UserUtils.getUser().getId(), "取消电话咨询");
+            //发消息
+            Map<String,Object> parameter = systemService.getWechatParameter();
+            String token = (String)parameter.get("token");
+            Map<String,Object> map = getPatientRegisterInfo(phoneConsultaServiceId);
+            PatientMsgTemplate.consultPhoneRefund2Wechat((String) map.get("orderNo"), (Float) map.get("price")+"", (String) map.get("openid"), token, "");
+            PatientMsgTemplate.consultPhoneRefund2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (Float) map.get("price")+"", (String) map.get("phone"));
 
+        }
+        if(price== 0){
+                throw  new CancelOrderException();
+        }
 
-        return sysOrderState;
+        return price;
     }
 
     /**
@@ -203,10 +218,15 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
      */
     @Override
     public void refundConsultPhoneFee(String id,String cancelReason,Float price,String userId){
-        int a = cancelOrder(Integer.valueOf(id),cancelReason);//取消预约
-        if(a>0){//退费
-            accountService.updateAccount(price*100, id, new HashMap<String, Object>(), false, userId,cancelReason);//补贴钱给用户
-        }
+      try {
+          cancelOrder(Integer.valueOf(id),cancelReason);//取消预约
+      }catch (Exception e){
+          e.printStackTrace();
+      }
+
+//        if(a>0){//退费
+//            accountService.updateAccount(price*100, id, new HashMap<String, Object>(), false, userId,cancelReason);//补贴钱给用户
+//        }
     }
 
     /**
@@ -252,4 +272,9 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
 
         }
     }
+
+    @Override
+    public ConsultPhoneRegisterServiceVo selectByPrimaryKey(Integer phoneConsultaServiceId){
+       return  consultPhoneRegisterServiceDao.selectByPrimaryKey(phoneConsultaServiceId);
+    };
 }

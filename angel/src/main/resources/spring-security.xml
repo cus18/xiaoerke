@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans:beans xmlns="http://www.springframework.org/schema/security"
-	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xmlns:beans="http://www.springframework.org/schema/beans"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans 
 		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
@@ -12,16 +13,17 @@
 		<logout logout-url="/logout" logout-success-url="/sso/appoint/logout" delete-cookies="JSESSIONID" />
 		<!-- 实现免登陆验证 -->
 		<remember-me user-service-ref="myUserDetailsService" />
-		<session-management invalid-session-url="/">
-			<concurrency-control max-sessions="10" error-if-maximum-exceeded="true" />
-		</session-management>
+		<session-management invalid-session-url="/"
+							session-authentication-strategy-ref="sessionAuthenticationStrategy"/>
 		<custom-filter ref="myAuthenticationProcessingFilter" position="FORM_LOGIN_FILTER" />
+		<custom-filter ref="concurrencyFilter" position="CONCURRENT_SESSION_FILTER" />
 		<csrf disabled="true"/>
 	</http>
 
 	<authentication-manager alias="authenticationManager">
 		<authentication-provider user-service-ref="myUserDetailsService" />
 	</authentication-manager>
+
 	<!-- 登录验证器 -->
 	<beans:bean id="myAuthenticationProcessingFilter"
 		class="com.cxqm.xiaoerke.webapp.security.MyAuthenticationProcessingFilter">
@@ -32,9 +34,27 @@
 		<!-- 验证失败后的处理 -->
 		<beans:property name="authenticationFailureHandler" ref="simpleUrlAuthenticationFailureHandler" />
 		<beans:property name="authenticationManager" ref="authenticationManager" />
+		<beans:property name="sessionAuthenticationStrategy" ref="sessionAuthenticationStrategy"></beans:property>
 	</beans:bean>
 
-	<beans:bean id="loginLogAuthenticationSuccessHandler" class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+	<!-- sessionManagementFilter -->
+	<beans:bean id="concurrencyFilter"
+				class="org.springframework.security.web.session.ConcurrentSessionFilter">
+		<beans:constructor-arg name="sessionRegistry" ref="sessionRegistry"/>
+		<beans:constructor-arg name="expiredUrl" value="/"/>
+	</beans:bean>
+
+	<beans:bean id="sessionAuthenticationStrategy"
+				class="org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy">
+		<beans:property name="maximumSessions" value="1"></beans:property>
+		<beans:property name="exceptionIfMaximumExceeded" value="true"></beans:property>
+		<beans:constructor-arg name="sessionRegistry" ref="sessionRegistry"></beans:constructor-arg>
+	</beans:bean>
+
+	<beans:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
+
+	<beans:bean id="loginLogAuthenticationSuccessHandler"
+				class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
 		<beans:property name="alwaysUseDefaultTargetUrl" value="false" />
 		<beans:property name="targetUrlParameter" value="targeturl" />
 		<beans:property name="redirectStrategy" ref="redirectStrategy" />

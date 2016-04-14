@@ -81,6 +81,7 @@ public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProc
 
 		// UsernamePasswordAuthenticationToken实现 Authentication
 		UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(userName, user.getPassword());
+
 		// 允许子类设置详细属性
 		setDetails(request, authRequest);
 		// 运行UserDetailsService的loadUserByUsername 再次封装Authentication
