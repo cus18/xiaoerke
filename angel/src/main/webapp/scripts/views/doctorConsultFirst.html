@@ -58,12 +58,13 @@
                     已接入会话
                 </div>
             </div>
-            <div class="consultNowList" ng-style="chooseAlreadyJoinConsultPatientId==item.patientId?{'background':'#08b7c2'}:{'background':'#fff'}"
+            <div class="consultNowList"
+                 style="font-size:10px"
+                 ng-style="chooseAlreadyJoinConsultPatientId==item.patientId?{'background':'#08b7c2'}:{'background':'#fff'}"
                  ng-repeat="item in alreadyJoinPatientConversationContent"
                  ng-click="chooseAlreadyJoinConsultPatient(item.patientId,item.patientName)"
                  alt="">
-                {{item.patientName}}
-                {{item.dateTime}}&nbsp;&nbsp;
+                <nobr>{{item.patientName}}&nbsp;&nbsp;{{transformDate(item.dateTime)}}</nobr>
             </div>
         </div>
         <div class="msg-r h30 fr">
@@ -160,30 +161,30 @@
                     <div class="fr" ng-click="switchover1()">转接</div>
                 </div>
                 <div scroll-glue-bottom="glued" class="chatlist">
-                    <div ng-repeat="item in currentUserConsultRecordDetail">
+                    <div ng-repeat="item in currentUserConversationContent.consultValue">
                         <div ng-if="item.senderId==doctorId">
                             <div>
                                 {{doctorName}} {{item.dateTime}}</div>
-                            <div ng-if="item.messageType=='0'" id="show">
+                            <div ng-if="item.type=='0'" id="show">
                                 {{item.message}}
                             </div>
                         </div>
                         <div ng-if="item.senderId!=doctorId">
                             <div>
-                                {{item.senderName}} {{item.createDate}}</div>
-                            <div ng-if="item.messageType=='0'">
-                                {{item.message}}
+                                {{item.senderName}} {{item.dateTime}}</div>
+                            <div ng-if="item.type=='0'">
+                                {{item.content}}
                             </div>
-                            <div ng-if="item.messageType=='1'">
-                                <a target="_blank" ng-href="{{item.message}}">
-                                    <img width="100" height="100" ng-src="{{item.message}}">
+                            <div ng-if="item.type=='1'">
+                                <a target="_blank" ng-href="{{item.content}}">
+                                    <img width="100" height="100" ng-src="{{item.content}}">
                                 </a>
                             </div>
-                            <div ng-if="item.messageType=='2'">
-                                <audio ng-src="{{item.message}}" controls="controls"/>
+                            <div ng-if="item.type=='2'">
+                                <audio ng-src="{{item.content}}" controls="controls"/>
                             </div>
-                            <div ng-if="item.messageType=='3'">
-                                <video width="500" height="250" ng-src="{{item.message}}" controls="controls"/>
+                            <div ng-if="item.type=='3'">
+                                <video width="500" height="250" ng-src="{{item.content}}" controls="controls"/>
                             </div>
                         </div>
                         <br/>

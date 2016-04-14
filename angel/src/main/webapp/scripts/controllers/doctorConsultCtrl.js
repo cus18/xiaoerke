@@ -30,6 +30,7 @@ angular.module('controllers', ['luegg.directives'])
 
                         $scope.initConsultSocket1();
 
+                        //获取今日咨询排名
                         var currDate = new moment().format("YYYY-MM-DD");
                         getTodayRankingList.save({"rankDate": currDate}, function (data) {
                             console.log("getTodayRankingList", data);
@@ -43,10 +44,12 @@ angular.module('controllers', ['luegg.directives'])
                             }
                         });
 
+                        //获取在线医生列表
                         getOnlineDoctorList.save({"pageNo": "1", "pageSize": "3"}, function (data) {
                             console.log("getOnlineDoctorList", data);
                         });
 
+                        //获取通用回复列表
                         getCommonAnswerList.save({"type": "commonAnswer"}, function (data) {
                             console.log("getCommonAnswerList", data);
                             if (data.commonAnswer.length == 0) {
@@ -67,12 +70,13 @@ angular.module('controllers', ['luegg.directives'])
                             }
                         });
 
+                        getAlreadyJoinConsultPatientList();
+                        $scope.info.effect = "true";
+                        $scope.glued = true;
+
                     }
                 })
 
-                $scope.getAlreadyJoinConsultPatientList();
-                $scope.info.effect = "true";
-                $scope.glued = true;
 
                 //$scope.chooseAlreadyJoinConsultPatientId = "";
                 //$scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversationContent[0].patientId,
@@ -109,9 +113,7 @@ angular.module('controllers', ['luegg.directives'])
                 if (!window.WebSocket) {
                     return;
                 }
-                if ($scope.socketServer1.readyState == WebSocket.OPEN
-                //&& $scope.socketServer2.readyState == WebSocket.OPEN
-                ) {
+                if ($scope.socketServer1.readyState == WebSocket.OPEN) {
                     $scope.alreadyJoinPatientConversationContent[0].consultValue.push(consultValMessage);
                     $scope.chooseAlreadyJoinConsultPatient($scope.chooseAlreadyJoinConsultPatientId,
                         $scope.chooseAlreadyJoinConsultPatientName);
@@ -119,7 +121,6 @@ angular.module('controllers', ['luegg.directives'])
 
                     console.log(JSON.stringify(consultValMessage));
                     $scope.socketServer1.send(JSON.stringify(consultValMessage));
-                    //$scope.socketServer2.send(JSON.stringify(consultValMessage));
                 } else {
                     alert("连接没有开启.");
                 }
@@ -141,7 +142,7 @@ angular.module('controllers', ['luegg.directives'])
 
             $scope.useImgFace = function () {}
 
-            $scope.getAlreadyJoinConsultPatientList = function () {}
+            var getAlreadyJoinConsultPatientList = function () {}
 
             //初始化socket链接
             $scope.initConsultSocket1 = function () {
@@ -159,12 +160,13 @@ angular.module('controllers', ['luegg.directives'])
 
                     $scope.socketServer1.onmessage = function (event) {
                         var consultData = JSON.parse(event.data);
-                        console.log(consultData);
                         if(consultData.type==4){
                             processNotifyMessage(consultData);
                         }else{
+                            filterMediaData(consultData);
                             processConversationMessage(consultData);
                         }
+                        $scope.$apply()
                     };
 
                     $scope.socketServer1.onopen = function (event) {
@@ -215,13 +217,14 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.currentUserConversationContent.patientName = conversationData.senderName;
                     $scope.currentUserConversationContent.consultValue = [];
                     $scope.currentUserConversationContent.consultValue.push(currentConsultValue);
+                    $scope.chooseAlreadyJoinConsultPatient(currentConsultValue.senderId,currentConsultValue.senderName);
                 }
                 else if($scope.currentUserConversationContent.patientId == conversationData.senderId){
                     $scope.currentUserConversationContent.consultValue.push(currentConsultValue);
                 }
                 updateAlreadyJoinPatientConversationContentFromPatient(conversationData);
 
-                console.log($scope.currentUserConversationContent);
+                console.log($scope.currentUserConversationContent.consultValue);
                 console.log($scope.alreadyJoinPatientConversationContent);
             }
 
@@ -289,6 +292,7 @@ angular.module('controllers', ['luegg.directives'])
             $scope.toggleRankList = function () {
                 $scope.rankList.show = !$scope.rankList.show;
             }
+
             //系统设置
             $scope.systemsetup = {
                 show: false
@@ -296,6 +300,7 @@ angular.module('controllers', ['luegg.directives'])
             $scope.systemsetup1 = function() {
                 $scope.systemsetup.show = !$scope.systemsetup.show;
             }
+
             //等待接入设置
             $scope.waitprocess = {
                 show: false
@@ -303,6 +308,7 @@ angular.module('controllers', ['luegg.directives'])
             $scope.waitprocess1 = function() {
                 $scope.waitprocess.show = !$scope.waitprocess.show;
             }
+
             //转接
             $scope.switchover = {
                 show: false
@@ -518,6 +524,12 @@ angular.module('controllers', ['luegg.directives'])
                         saveCommonAnswer(getMyAnswerModify, $scope);
                     }
                 }
+            };
+
+            //日期转换
+            $scope.transformDate = function(dateTime){
+                var dateValue = new moment(dateTime).format("HH:mm");
+                return dateValue;
             }
 
             //保存公共回复
@@ -525,6 +537,7 @@ angular.module('controllers', ['luegg.directives'])
                 getMyAnswerModify.save({answer: $scope.commonAnswer, answerType: "commonAnswer"}, function (data) {
                 });
             }
+
             //保存我的回复
             function saveMyAnswer() {
                 getMyAnswerModify.save({answer: $scope.myAnswer, answerType: "myAnswer"}, function (data) {
