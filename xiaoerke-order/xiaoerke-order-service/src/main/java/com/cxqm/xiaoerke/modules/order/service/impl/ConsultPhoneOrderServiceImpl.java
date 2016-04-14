@@ -164,7 +164,7 @@ public class ConsultPhoneOrderServiceImpl implements ConsultPhoneOrderService {
 
     @Override
     public List<HashMap<String, Object>> getOrderPhoneConsultListByTime(String state,Date date) {
-      return consultPhoneRegisterServiceDao.getOrderPhoneConsultListByTime(state,date);
+      return consultPhoneRegisterServiceDao.getOrderPhoneConsultListByTime(state, date);
     }
 
     @Override
@@ -175,6 +175,32 @@ public class ConsultPhoneOrderServiceImpl implements ConsultPhoneOrderService {
     @Override
     public void changeConsultPhoneRegisterServiceState(HashMap<String, Object> excuteMap) {
         consultPhoneRegisterServiceDao.changeConsultPhoneRegisterServiceState(excuteMap);
+    }
+
+    @Override
+    public HashMap<String, Object> getSettlementPhoneConsultInfoByDate(String doctorId, String date) {
+        Map<String,Object> searchMap = new HashMap<String, Object>();
+        searchMap.put("doctorId",doctorId);
+        searchMap.put("date",date);
+        List<Map<String,Object>> resultList = consultPhoneRegisterServiceDao.getSettlementPhoneConsultInfoByDate(searchMap);
+
+        HashMap<String,Object> response = new HashMap<String, Object>();
+        List<Map<String,Object>> timeList = new ArrayList<Map<String, Object>>();
+        Integer totalPrice = 0;
+        if(resultList != null){
+            for(Map<String,Object> resultMap:resultList){
+                Map<String,Object> map = new HashMap<String, Object>();
+                map.put("time",resultMap.get("beginTime"));
+                map.put("name",resultMap.get("name"));
+                map.put("price",resultMap.get("price"));
+                timeList.add(map);
+                totalPrice += (Integer)resultMap.get("price");
+            }
+        }
+        response.put("totalNum", resultList.size());
+        response.put("totalPrice", totalPrice);
+
+        return response;
     }
 
 }

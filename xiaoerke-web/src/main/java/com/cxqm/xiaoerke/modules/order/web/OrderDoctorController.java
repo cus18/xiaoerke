@@ -3,10 +3,12 @@
  */
 package com.cxqm.xiaoerke.modules.order.web;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.cxqm.xiaoerke.modules.order.service.ConsultPhoneOrderService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,9 @@ public class OrderDoctorController extends BaseController {
 
 	@Autowired
 	private PatientRegisterService patientRegisterService;
+
+    @Autowired
+    private ConsultPhoneOrderService consultPhoneOrderService;
 
 	@Autowired
 	private WeChatInfoService weChatInfoService;
@@ -86,4 +91,43 @@ public class OrderDoctorController extends BaseController {
 		}
 		return response;
 	}
+
+    /**
+     * 每日清单
+     * @params {}
+     * @return {}
+     */
+    @RequestMapping(value="/order/doctor/getDayList")
+    public Map<String,Object> getDayList(Map<String,Object> params){
+        Map<String,Object> response = new HashMap<String, Object>();
+        String userId = UserUtils.getUser().getId();
+        String doctorId = (String) params.get("doctorId");
+        String date = (String) params.get("date");
+
+        //预约挂号
+        HashMap<String, Object> apppintment = new HashMap<String, Object>();
+
+        HashMap<String, Object> appointResponse = new HashMap<String, Object>();
+        patientRegisterService.findDoctorSettlementAppointmentInfoByDate(doctorId,userId,date,appointResponse);
+        apppintment.put("totalNum", response.get("appointmentTotal"));
+        apppintment.put("totalPrice", response.get("totalAppPrice"));
+        List<HashMap<String, Object>> doctorSettlementList = (List<HashMap<String, Object>>) appointResponse.get("appointment");
+        List<HashMap<String, Object>> timeList = new ArrayList<HashMap<String, Object>>();
+        for(HashMap<String, Object> appoint:doctorSettlementList){
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            map.put("time",appoint.get("beginTime"));
+            map.put("name",appoint.get("babyName"));
+            map.put("price",appoint.get("price"));
+            timeList.add(map);
+        }
+        apppintment.put("timeList", timeList);
+        response.put("appointment",apppintment);
+
+        //电话咨询
+        HashMap<String, Object> phoneConsult = new HashMap<String, Object>();
+        HashMap<String, Object> phoneConsultResponse = consultPhoneOrderService.getSettlementPhoneConsultInfoByDate(doctorId,date);
+        response.put("phoneConsult",phoneConsultResponse);
+
+        return response;
+    }
 }

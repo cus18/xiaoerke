@@ -78,4 +78,11 @@ public interface ConsultPhoneRegisterServiceDao {
      */
     void changeConsultPhoneRegisterServiceState(HashMap<String, Object> excuteMap);
 
+    /**
+     * 每日清单
+     * @param searchMap dortorId,date
+     * @return
+     * @author chenxiaoqiong
+     */
+    List<Map<String,Object>> getSettlementPhoneConsultInfoByDate(Map<String, Object> searchMap);
 }
