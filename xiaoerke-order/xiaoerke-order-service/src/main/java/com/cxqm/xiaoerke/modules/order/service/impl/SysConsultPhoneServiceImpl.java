@@ -103,6 +103,7 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 				HashMap<String, Object> consultPhoneTime = new HashMap<String, Object>();
 				consultPhoneTime.put("price", (String) map.get("price"));
 				consultPhoneTime.put("id",(Integer)map.get("id"));
+				consultPhoneTime.put("data", DateToStr);
 				consultPhoneTime.put("begin_time",(String)map.get("begin_time"));
 				try {
 					Date start = formart.parse((String)map.get("begin_time"));
@@ -725,5 +726,21 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
     public HashMap<String, Object> findSysConsultPhoneServiceByCRSIdExecute(HashMap<String, Object> hashMap) {
         return sysConsultPhoneServiceDao.findSysConsultPhoneServiceByCRSIdExecute(hashMap);
     }
+
+    @Override
+    public Map<String, Object> getSysPhoneConsultInfo(Integer id) {
+        SysConsultPhoneServiceVo vo = sysConsultPhoneServiceDao.selectByPrimaryKey(id);
+        Map<String, Object> response = new HashMap<String, Object>();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format1 = new SimpleDateFormat("HH:mm");
+        if(vo != null){
+            response.put("consultDate", format.format(vo.getDate())+format1.format(vo.getBegintime())+
+                    format1.format(vo.getEndtime()));
+        }
+
+        return response;
+    }
+
+
 
 }

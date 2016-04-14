@@ -354,9 +354,9 @@ define(['appPhoneConsult'], function (app) {
                 var runFirstRequest = function(redirectParam,routeParam,goParam,hrefParam,action) {
                     var routePath = "";
                     if(action=="go"){
-                        routePath = "/appointBBBBBB/"+redirectParam+"/"+routeParam;
+                        routePath = "/phoneConsultBBBBBB/"+redirectParam+"/"+routeParam;
                     } else if(action=="notGo"){
-                        routePath = "/appointBBBBBB/"+redirectParam;
+                        routePath = "/phoneConsultBBBBBB/"+redirectParam;
                     }
                     GetUserLoginStatus.save({routePath:routePath},function(data){
                         if(data.status=="9") {

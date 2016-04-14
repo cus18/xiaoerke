@@ -7,11 +7,11 @@
             $scope.myselfBindStatus=false;
            /*去绑定*/
             $scope.bindUserPhone = function(){
-                resolveUserLoginStatus.events("selfCenter",",",{userPhoneNum:$stateParams.userPhoneNum},"","notGo");
+                resolveUserLoginStatus.events("selfCenter",",",{userPhoneNum:$stateParams.userPhoneNum},"","go");
             };
             /*我的资料*/
             $scope.myInfo = function(){
-                window.location.href="ap/appoint#/myInfo/"+$scope.myselfInfo.userPhoneNum;
+                window.location.href="appoint#/myInfo/"+$scope.myselfInfo.userPhoneNum;
                /* window.location.href = "/titan/appoint#/healthRecordSelectBaby/"+index+",1,"+$stateParams.conid;*/
             };
             /* 当前订单*/
@@ -29,11 +29,11 @@
 
            /* 我的资产*/
             $scope.accountBalance = function(){
-                resolveUserLoginStatus.events("accountBalance","","","","notGo");
+                resolveUserLoginStatus.events("accountBalance","","","appoint#/accountBalance","notGo");
             };
            /* 健康档案*/
             $scope.healthRecord = function(){
-                resolveUserLoginStatus.events("healthRecordIndex","","","ap/appoint#/healthRecordIndex/","notGo");
+                resolveUserLoginStatus.events("healthRecordIndex","","","appoint#/healthRecordIndex/","notGo");
             };
             var routePath = "/appointBBBBBB" + $location.path();
             GetUserLoginStatus.save({routePath:routePath},function(data){

@@ -5,6 +5,7 @@
             $scope.pageLoading =false;
             $scope.classifyItem =0;
             $scope.classifyItemList =["全部","待支付","待接听","待评价","待分享","已完成","已取消"];
+            $scope.classifyItemListIndex =[null,"0","1","2","3","4","6"];
             $scope.orderInfo=[];
 
             $scope.MyselfInfoPhoneConsult = function(pageNo,pageSize,status){
@@ -20,7 +21,7 @@
             $scope.selectClassify = function(item){
                 $scope.classifyItem =item;
 
-                $scope.status = item -1;
+                $scope.status = $scope.classifyItemListIndex[item];
                 $scope.pageLoading = true;
                 if($scope.status < 0){
                     $scope.MyselfInfoPhoneConsult("1","1000");
