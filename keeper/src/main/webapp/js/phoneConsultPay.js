@@ -51,6 +51,7 @@ var doRefresh = function(){
         url: "auth/info/loginStatus",
         contentType: 'application/json',
         data: param,
+        dataType:'json',
         success: function (data) {
             if (data.status == "9") {
                 window.location.href = data.redirectURL;
