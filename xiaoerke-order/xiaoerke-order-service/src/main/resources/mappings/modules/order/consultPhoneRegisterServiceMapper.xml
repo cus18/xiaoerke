@@ -188,7 +188,7 @@
     WHERE
     sp.sys_user_id = #{userId,jdbcType=VARCHAR}
     <if test="state != null" >
-      and crs.state = #{state,VARCHAR}
+      and crs.state = #{state,jdbcType=VARCHAR}
     </if>
     order by scp.date,scp.beginTime desc
   </select>
