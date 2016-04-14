@@ -249,7 +249,7 @@ public class ConsultSessionManager {
 				if(doctorOnLineList!=null && doctorOnLineList.size()>0){
 					int indexCS = rand.nextInt(doctorOnLineList.size());
 					consultSession.setCsUserId((String) doctorOnLineList.get(indexCS).get("doctorId"));
-					csChannel = (Channel) doctorOnLineList.get(0).get("Channel");
+					csChannel = (Channel) doctorOnLineList.get(indexCS).get("Channel");
 					User csUser = systemService.getUser((String)doctorOnLineList.get(indexCS).get("doctorId"));
 					consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
 				}
@@ -356,7 +356,7 @@ public class ConsultSessionManager {
 		}
 		return userIds;
 	}
-	
+
 	public Map<String, Channel> getUserChannelMapping() {
 		return userChannelMapping;
 	}
