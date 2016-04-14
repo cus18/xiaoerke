@@ -80,7 +80,7 @@ public class ConsultWechatController extends BaseController {
             result.put("status","failure");
             return result;
         }
-        String nickName = openId +  (new Date()).getTime();
+        String nickName = openId.substring(0,5);
         if(resultVo!=null){
             if(StringUtils.isNotNull(resultVo.getWechat_name())){
                nickName = resultVo.getWechat_name();
