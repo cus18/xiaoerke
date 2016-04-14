@@ -100,6 +100,7 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 				HashMap<String, Object> consultPhoneTime = new HashMap<String, Object>();
 				consultPhoneTime.put("price", (String) map.get("price"));
 				consultPhoneTime.put("id",(Integer)map.get("id"));
+				consultPhoneTime.put("data", DateToStr);
 				consultPhoneTime.put("begin_time",(String)map.get("begin_time"));
 				try {
 					Date start = formart.parse((String)map.get("begin_time"));
