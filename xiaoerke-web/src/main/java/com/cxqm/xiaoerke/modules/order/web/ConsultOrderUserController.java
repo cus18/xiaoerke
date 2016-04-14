@@ -170,7 +170,7 @@ public class ConsultOrderUserController {
                 e.printStackTrace();
             }
 
-            resultMap.put("reultState",resultState);
+            resultMap.put("reultState",resultState/100);
             //插入取消原因
             resultMap.put("reason", cancelReason);
             resultMap.put("praiseId", IdGen.uuid());
