@@ -28,7 +28,24 @@
         $scope.starImg1 ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fstar.png";
         $scope.starImg2 ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fstar_part.png";
         $scope.starImg3 ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fstar_gray.png";
+        $scope.starNumInt=[];
+        $scope.starNumFloat=[];
 
+        // 医生星级评价 星星个数
+        $scope.doctorStar = function () {
+            for(var i=0;i<$scope.doctorData.length;i++){
+                if($scope.doctorData[i].star==""){
+                    $scope.doctorData[i].star="5.0"
+                }
+                $scope.starNumInt[i] =  parseInt($scope.doctorData[i].star.substr(0, 1));
+                $scope.starNumFloat[i] =  parseInt($scope.doctorData[i].star.substr(2, 1));
+                if($scope.starNumInt[i]>=5){
+                    $scope.starNumInt[i]=5;
+                }
+
+
+            }
+        }
         $scope.init = function () {
             $scope.dataLoading = true;
             $scope.reloadMoreDataMark="";
@@ -134,6 +151,7 @@
                     $scope.infoPage.page = page;
                     $scope.doctorData = page == 1 ? [] : $scope.doctorData;
                     $scope.doctorData = $scope.doctorData.concat(data.doctorDataVo || []);
+                    $scope.doctorStar();
                     for(var i=0;i<$scope.doctorData.length;i++){
                         console.log($scope.doctorData[i].star);
                         /*     $(".doctor-info .pic").eq(i).children("img")*/
@@ -152,6 +170,7 @@
                     $scope.infoPage.page = page;
                     $scope.doctorData = page == 1 ? [] : $scope.doctorData;
                     $scope.doctorData = $scope.doctorData.concat(data.doctorDataVo || []);
+                    $scope.doctorStar();
                     /* console.log($scope.doctorData );*/
                     for(var i=0;i<$scope.doctorData.length;i++){
                         console.log($scope.doctorData[i].star);
@@ -184,6 +203,7 @@
                                 $scope.infoPage.page = page;
                                 $scope.doctorData = page == 1 ? [] : $scope.doctorData;
                                 $scope.doctorData = $scope.doctorData.concat(data.doctorDataVo || []);
+                                $scope.doctorStar();
                                 $scope.$broadcast('scroll.refreshComplete');
                                 $scope.$broadcast('scroll.infiniteScrollComplete');
                             });
@@ -202,6 +222,7 @@
                             $scope.infoPage.page = page;
                             $scope.doctorData = page == 1 ? [] : $scope.doctorData;
                             $scope.doctorData = $scope.doctorData.concat(data.doctorDataVo || []);
+                            $scope.doctorStar();
                             $scope.$broadcast('scroll.refreshComplete');
                             $scope.$broadcast('scroll.infiniteScrollComplete');
                             if(data.doctorDataVo.length==0){
@@ -240,6 +261,7 @@
                             $scope.infoPage.page = page;
                             $scope.doctorData = page == 1 ? [] : $scope.doctorData;
                             $scope.doctorData = $scope.doctorData.concat(data.doctorDataVo || []);
+                            $scope.doctorStar();
                             $scope.$broadcast('scroll.refreshComplete');
                             $scope.$broadcast('scroll.infiniteScrollComplete');
                             if( data.doctorDataVo.length==0){
@@ -264,6 +286,7 @@
                             $scope.infoPage.page = page;
                             $scope.doctorData = page == 1 ? [] : $scope.doctorData;
                             $scope.doctorData = $scope.doctorData.concat(data.doctorDataVo || []);
+                            $scope.doctorStar();
                             $scope.$broadcast('scroll.refreshComplete');
                             $scope.$broadcast('scroll.infiniteScrollComplete');
                             if( data.doctorDataVo.length==0){
@@ -303,6 +326,7 @@
                             $scope.infoPage.page = page;
                             $scope.doctorData = page == 1 ? [] : $scope.doctorData;
                             $scope.doctorData = $scope.doctorData.concat(data.doctorDataVo || []);
+                            $scope.doctorStar();
                             $scope.$broadcast('scroll.refreshComplete');
                             $scope.$broadcast('scroll.infiniteScrollComplete');
                             $scope.title = $stateParams.titleName
@@ -327,6 +351,7 @@
                             $scope.infoPage.page = page;
                             $scope.doctorData = page == 1 ? [] : $scope.doctorData;
                             $scope.doctorData = $scope.doctorData.concat(data.doctorDataVo || []);
+                            $scope.doctorStar();
                             $scope.$broadcast('scroll.refreshComplete');
                             $scope.$broadcast('scroll.infiniteScrollComplete');
                             $scope.title = $stateParams.titleName
@@ -364,6 +389,7 @@
                             $scope.infoPage.page = page;
                             $scope.doctorData = page == 1 ? [] : $scope.doctorData;
                             $scope.doctorData = $scope.doctorData.concat(data.doctorData || []);
+                            $scope.doctorStar();
                             $scope.$broadcast('scroll.refreshComplete');
                             $scope.$broadcast('scroll.infiniteScrollComplete');
                             $scope.hospitalData = data.hospitals;
@@ -376,6 +402,7 @@
                             $scope.infoPage.page = page;
                             $scope.doctorData = page == 1 ? [] : $scope.doctorData;
                             $scope.doctorData = $scope.doctorData.concat(data.doctorData || []);
+                            $scope.doctorStar();
                             $scope.$broadcast('scroll.refreshComplete');
                             $scope.$broadcast('scroll.infiniteScrollComplete');
                             var teamHash = {}

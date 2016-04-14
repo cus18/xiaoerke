@@ -8,7 +8,11 @@
 				<div  class="pic">
 					<img class="photo" width="62.5" height="62.5" ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{doctorDetail.doctorId}}?ver={{picVer}}" >
 					<div class="rank">
-						<img class="my-img1" ng-repeat="item in [1,2,3,4,5]" width="9.5" height="auto" ng-src="{{starImg1}}">
+						<img class="my-img1"  width="9.5" height="auto" ng-src="{{0<starNumInt?starImg1:0==starNumInt&&starNumFloat>0?starImg2:starImg3}}">
+						<img class="my-img1"  width="9.5" height="auto" ng-src="{{1<starNumInt?starImg1:1==starNumInt&&starNumFloat>0?starImg2:starImg3}}">
+						<img class="my-img1"  width="9.5" height="auto" ng-src="{{2<starNumInt?starImg1:2==starNumInt&&starNumFloat>0?starImg2:starImg3}}">
+						<img class="my-img1"  width="9.5" height="auto" ng-src="{{3<starNumInt?starImg1:3==starNumInt&&starNumFloat>0?starImg2:starImg3}}">
+						<img class="my-img1"  width="9.5" height="auto" ng-src="{{4<starNumInt?starImg1:4==starNumInt&&starNumFloat>0?starImg2:starImg3}}">
 					</div>
 				</div>
 				<div class="intro">
@@ -65,12 +69,16 @@
 					<span>专业水平{{avgMajorStar}}分</span>
 				</div>
 				<div class="user" ng-repeat="items in evaluateList">
-					<img class="photo" width="35" height="35" src="{{items.pic_url}}">
+					<img class="photo radius" width="35" height="35" src="{{items.pic_url}}">
 					<div class="info">
-						<div>
+						<div style="overflow: hidden">
 							<div class="fl">
 								<span class="name c3">{{items.wechat_name}}</span>
-								<img class="star" ng-repeat="item in [1,2,3,4,5]" width="9.5" height="auto" ng-src="{{starImg1}}">
+								<img class="my-img1"  width="9.5" height="auto" ng-src="{{0<userStarNum[$index]?starImg1:starImg3}}">
+								<img class="my-img1"  width="9.5" height="auto" ng-src="{{1<userStarNum[$index]?starImg1:starImg3}}">
+								<img class="my-img1"  width="9.5" height="auto" ng-src="{{2<userStarNum[$index]?starImg1:starImg3}}">
+								<img class="my-img1"  width="9.5" height="auto" ng-src="{{3<userStarNum[$index]?starImg1:starImg3}}">
+								<img class="my-img1"  width="9.5" height="auto" ng-src="{{4<userStarNum[$index]?starImg1:starImg3}}">
 							</div>
 							<div class="fr date c5">{{items.star}} {{items.date}}</div>
 						</div>
@@ -80,7 +88,7 @@
 				</div>
 
                 <div class="all">
-                    <a class="c1" ng-click="getConsultEvaluate()">查看全部评价</a>
+                    <a class="c1" ng-click="goEvaluateList()">查看全部评价</a>
                 </div>
 			</div>
 			<div class="apart"></div>

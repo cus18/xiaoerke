@@ -22,6 +22,7 @@
             "#3891cf","#69b3e4","#8b70b0","#ba81b6","#e179a8","#f0a7b3","#c8e6df","#c9e7f9","#f9d7e6",
             "#bdddf4","#e0cae2","#e0d5e9","#d5ece4","#fbe0e5","#fae4ee"];
         $scope.evaluateList = [];
+        $scope.userStarNum=[];
 
         var routePath = encodeURI(encodeURI("/appointBBBBBB" + $location.path()));
 
@@ -31,6 +32,7 @@
             $scope.pageLoading = false;
             $scope.doctorDetail = data;
             $scope.evaluateList = $scope.doctorDetail.evaluaMap.evaluateList;
+            $scope.userStar();
             console.log($scope.doctorDetail.doctorCaseList);
             //计算总的案列数
             $scope.doctorDetail.sumcase=0;
@@ -42,8 +44,27 @@
 
             $scope.avgMajorStar = data.doctorScore.avgMajorStar == null?"5": data.doctorScore.avgMajorStar;
             $scope.avgStar =  data.doctorScore.avgStar == null?"5":data.doctorScore.avgStar;
+            $scope.doctorStar();
         });
 
+        // 医生星级评价 星星个数
+        $scope.doctorStar = function () {
+            $scope.starNum=(parseFloat($scope.avgMajorStar)+parseFloat($scope.avgStar))/2;
+            $scope.starNum= $scope.starNum.toString();
+            console.log("star "+ $scope.starNum);
+            $scope.starNumInt = parseInt($scope.starNum.substr(0, 1));
+            $scope.starNumFloat=  parseInt($scope.starNum.substr(2, 1));
+        };
+        // 用户星级评价 星星个数
+        $scope.userStar = function () {
+            for(var i=0;i<$scope.evaluateList.length;i++){
+                if($scope.evaluateList[i].star==""){
+                    $scope.evaluateList[i].star="5"
+                }
+                console.log($scope.evaluateList[i].star);
+                $scope.userStarNum[i] = parseInt( $scope.evaluateList[i].star);
+            }
+        }
 
         //根据输入的地点信息，获医生一周内出诊的出诊日期
         DoctorVisitInfoByLocationInWeek.save({"doctorId":$stateParams.doctorId,"state":"0"},function(data){
@@ -105,7 +126,7 @@
             if(index=="ap"){
                 $scope.selectApImg ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Ficon_ap2.png";
                 $scope.selectPhoneImg ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Ficon_phone1.png";
-                window.location.href = "appoint#/doctorAppointment/04b17d3ed0374609ad65a2f3b68b9b32,,%E5%8C%97%E4%BA%AC%E4%B8%AD%E6%97%A5%E5%8F%8B%E5%A5%BD%E5%8C%BB%E9%99%A2,,,dateNoAvailable,,";
+                window.location.href = "appoint#/doctorAppointment/04b17d3ed0374609ad65s2f3b68b9b32,,%E5%8C%97%E4%BA%AC%E4%B8%AD%E6%97%A5%E5%8F%8B%E5%A5%BD%E5%8C%BB%E9%99%A2,,,dateNoAvailable,,";
             }
             else{
                 $scope.selectApImg ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Ficon_ap1.png";
@@ -132,11 +153,16 @@
             })
         }
 
+        // 点击查看全部评价 跳转到评价列表页
+        $scope.goEvaluateList = function(){
+          $state.go("evaluateList",{"doctorId":$stateParams.doctorId})
+        }
         //获取全部评价（电话咨询）
         $scope.getConsultEvaluate = function(){
             $scope.pageLoading = false;
             GetUserEvaluate.save({"doctorId":$stateParams.doctorId,evaluateType:"1",pageNo:"1",pageSize:"1000"},function(data){
                 $scope.evaluateList = data.evaluateList;
+                $scope.userStar();
             });
         }
 
