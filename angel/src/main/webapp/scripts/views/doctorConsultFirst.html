@@ -157,9 +157,7 @@
                 <div class="nametop">
                     <img class="headimg" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png">
                     <span>{{chooseAlreadyJoinConsultPatientName}}</span>
-                    <div class="fr" ng-click="switchover1()">
-                        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(10).png" alt=""/>
-                        转接</div>
+                    <div class="fr" ng-click="switchover1()">转接</div>
                 </div>
                 <div scroll-glue-bottom="glued" class="chatlist">
                     <div ng-repeat="item in currentUserConsultRecordDetail">
@@ -193,11 +191,12 @@
                 </div>
                 <div class="facebox">
                     <p class="fl"><span class="emotion" ng-click="getQQExpression()">表情</span></p>
-                    <p class="historymessage"><span>
-                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(7).png" alt=""/>
-                    消息记录
-                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(8).png" alt=""/>
-                </span></p>
+                    <p class="historymessage">
+                        <span>
+                        消息记录
+                        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(8).png" alt=""/>
+                        </span>
+                    </p>
                 </div>
                 <div class="inputcontent"><textarea ng-model="info.consultMessage" placeholder="请在此处进行咨询" id="saytext"></textarea>
                 </div>
