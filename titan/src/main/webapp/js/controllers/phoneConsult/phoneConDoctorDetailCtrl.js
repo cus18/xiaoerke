@@ -80,8 +80,16 @@
                 }else if(data.status=="8"){
                     window.location.href = data.redirectURL+"?targeturl="+routePath;
                 }else{
-                    window.location.href = "http://xiaork.cn/keeper/phoneConsultPay/patientPay.do?phoneConDoctorDetail="
-                        + item.id+"&doctorId="+$stateParams.doctorId;
+                    $scope.nowdate = moment().format('YYYY/MM/DD HH:MM');
+                    var boolean = moment(moment(item.data).format('YYYY/MM/DD')+" "+item.begin_time).isAfter(moment().add(5, 'm'));
+                    if(boolean){
+                        window.location.href = "http://xiaork.cn/keeper/phoneConsultPay/patientPay.do?phoneConDoctorDetail="
+                            + item.id+"&doctorId="+$stateParams.doctorId;
+                    }else{
+                        alert("预约时间间隔过短")
+                        retrun
+                    }
+
                 }})
         }
 

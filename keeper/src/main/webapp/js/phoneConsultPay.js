@@ -44,220 +44,104 @@ var doRefresh = function(){
         error : function() {
         }
     });
-
-    //var selectedBaby = function(index){
-    //    var baby=babyInfo[index];
-    //    $("#babyName").val(baby.name);
-    //    var time = moment(baby.birthday).format('YYYY/MM/DD');
-    //    $("#birthday").val(time);
-    //    bodBirthday = time;
-    //    var sex=baby.sex;
-    //    $(".sex a").removeAttr("onclick");
-    //    $("#babyId").val(baby.id);
-    //    $(".baby-list").hide();
-    //};
-
-    $.ajax({
-        url: 'auth/info/loginStatus',
-        type: 'post',
-        data: {},
-        complete: function(jqXHR){
-            if(jqXHR.status=="404"){
-                window.location.href = "/phoneConsultPay/patientPay.do?phoneConDoctorDetail="
-                    +GetQueryString("phoneConDoctorDetail")+"AAAAAAdoctorId="+GetQueryString("doctorId");
-            }
-        },
-        success:function(data){
-            var param = '{routePath:"/phoneConsultPay/patientPay.do?phoneConDoctorDetail='
+    var param = '{routePath:"/phoneConsultPay/patientPay.do?phoneConDoctorDetail='
                 +GetQueryString("phoneConDoctorDetail")+"AAAAAAdoctorId="+GetQueryString("doctorId")+'"}';
-            //$.ajaxSetup({
-            //    contentType : 'application/json'
-            //});
+    $.ajax({
+        type: "POST",
+        url: "auth/info/loginStatus",
+        contentType: 'application/json',
+        data: param,
+        success: function (data) {
+            if (data.status == "9") {
+                window.location.href = data.redirectURL;
+            } else if (data.status == "8") {
+                window.location.href = data.redirectURL;
+            } else if (data.status == "20") {
 
-            $.ajax({type : "POST",
-                url : "auth/info/loginStatus",
-                contentType : 'application/json',
-                data : param,
-                success : function (data){
-                    if(data.status=="9"){
-                        window.location.href = data.redirectURL;
-                    }else if(data.status=="8"){
-                        window.location.href = data.redirectURL;
-                    }else if(data.status=="20"){
-                        //获取医生个人信息
-                        $.ajax({
-                            url:"consultPhone/consultPhoneDoctor/doctorDetail",// 跳转到 action
-                            async:true,
-                            type:'get',
-                            data:{doctorId:GetQueryString("doctorId")},
-                            cache:false,
-                            dataType:'json',
-                            success:function(data) {
-                                console.log("data",data);
-                                $('#doctorName').html(data.doctorName);
-                                $('#position').html(data.position1+data.position2);
-                                $('#hospitalName').html(data.hospitalName);
-                                $('#department').html(data.doctor_expert_desc);
-                                $('#ServerLength').html(data.ServerLength);
-                                $('#price').html(data.price);
-                                $('#payPrice').html(data.price);
-                                $("#photo").attr("src","http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/"+data.doctorId+"?ver==1.0.2");
-                            },
-                            error : function() {
-                            }
-                        });
-
-                        //预约时间GetQueryString("phoneConDoctorDetail")
-                        var param = {consultPhoneServiceId:GetQueryString("phoneConDoctorDetail")};
-                        $.ajax({
-                            url:"consultPhone/phoneRegister/getRegisterInfo",// 跳转到 action
-                            async:true,
-                            type:'post',
-                            data:param,
-                            success:function(data) {
-                                //var time = moment(data.date).format('YYYY/MM/DD');
-                                $('#time').html(moment(data.date).format('YYYY/MM/DD'));
-                                $('#begintime').html(moment(data.date).format('h:mm'));
-                                $('#endtime').html(moment(data.date).format('h:mm'));
-                                //alert(time);
-                                console.log(data)
-                            },
-                            error : function() {
-                            }
-                        });
-
-                        //获取宝宝信息
-                        $.ajax({
-                            type: 'POST',
-                            url: "healthRecord/getBabyinfoList",
-                            data: "{'openid':''}",
-                            contentType: "application/json; charset=utf-8",
-                            success: function(result){
-                                console.log(result)
-                                babyInfo=result.babyInfoList;
-                                var userPhone=result.userPhone;
-                                $('#connectphone').val(userPhone);
-                                var option="";
-                                if(babyInfo==""){
-                                    $("#addBaby").hide();
-                                    loadDate();
-                                    return;
-                                }else{
-                                    $("#babyName").attr("disabled","disabled");
-                                    $(".sex a").removeAttr("onclick");
-                                }
-                                for(var i=0;i<babyInfo.length;i++){
-                                    option+="<dd class=\"select\" onclick=\"choiceBabyss("+i+")\" ><span >"+babyInfo[i].name+"</span></dd>";
-                                }
-                                $("#selectBabyTitle").after(option);
-                                var babyId=GetQueryString("babyId");
-                                if(babyId!=null&&babyId!=""){
-                                    for(var j=0;j<babyInfo.length;j++){
-                                        var bid=babyInfo[j].id;
-                                        if(bid==babyId){
-                                            choiceBabyss(j);
-                                        }
-                                    }
-                                }else{
-                                    choiceBabyss(0);
-                                }
-                            },
-                            dataType: "json"
-                        });
+                //获取医生个人信息
+                $.ajax({
+                    url: "consultPhone/consultPhoneDoctor/doctorDetail",// 跳转到 action
+                    async: true,
+                    type: 'get',
+                    data: {doctorId: GetQueryString("doctorId")},
+                    cache: false,
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log("data", data);
+                        $('#doctorName').html(data.doctorName);
+                        $('#position').html(data.position1 + data.position2);
+                        $('#hospitalName').html(data.hospitalName);
+                        $('#department').html(data.doctor_expert_desc);
+                        $('#ServerLength').html(data.ServerLength);
+                        $('#price').html(data.price);
+                        $('#payPrice').html(data.price);
+                        $("#photo").attr("src", "http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/" + data.doctorId + "?ver==1.0.2");
+                    },
+                    error: function () {
                     }
-                }})
+                });
 
-            //$.post('auth/info/loginStatus',param,
-            //    function(data) {
-                    //if(data.status=="9"){
-                    //    window.location.href = data.redirectURL;
-                    //}else if(data.status=="8"){
-                    //    window.location.href = data.redirectURL;
-                    //}else if(data.status=="20"){
-                    //    //获取医生个人信息
-                    //    $.ajax({
-                    //        url:"consultPhone/consultPhoneDoctor/doctorDetail",// 跳转到 action
-                    //        async:true,
-                    //        type:'get',
-                    //        data:{doctorId:GetQueryString("doctorId")},
-                    //        cache:false,
-                    //        dataType:'json',
-                    //        success:function(data) {
-                    //            console.log("data",data);
-                    //            $('#doctorName').html(data.doctorName);
-                    //            $('#position').html(data.position1+data.position2);
-                    //            $('#hospitalName').html(data.hospitalName);
-                    //            $('#department').html(data.doctor_expert_desc);
-                    //            $('#ServerLength').html(data.ServerLength);
-                    //            $('#price').html(data.price);
-                    //            $('#payPrice').html(data.price);
-                    //            $("#photo").attr("src","http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/"+data.doctorId+"?ver==1.0.2");
-                    //        },
-                    //        error : function() {
-                    //        }
-                    //    });
-                    //
-                    //    //预约时间GetQueryString("phoneConDoctorDetail")
-                    //    var param = {consultPhoneServiceId:11};
-                    //    $.ajax({
-                    //        url:"consultPhone/phoneRegister/getRegisterInfo",// 跳转到 action
-                    //        async:true,
-                    //        type:'post',
-                    //        data:param,
-                    //        success:function(data) {
-                    //            //var time = moment(data.date).format('YYYY/MM/DD');
-                    //            $('#time').html(moment(data.date).format('YYYY/MM/DD'));
-                    //            $('#begintime').html(moment(data.date).format('h:mm'));
-                    //            $('#endtime').html(moment(data.date).format('h:mm'));
-                    //            //alert(time);
-                    //            console.log(data)
-                    //        },
-                    //        error : function() {
-                    //        }
-                    //    });
-                    //
-                    //    //获取宝宝信息
-                    //    $.ajax({
-                    //        type: 'POST',
-                    //        url: "healthRecord/getBabyinfoList",
-                    //        data: "{'openid':''}",
-                    //        contentType: "application/json; charset=utf-8",
-                    //        success: function(result){
-                    //            console.log(result)
-                    //            babyInfo=result.babyInfoList;
-                    //            var userPhone=result.userPhone;
-                    //            $('#connectphone').val(userPhone);
-                    //            var option="";
-                    //            if(babyInfo==""){
-                    //                $("#addBaby").hide();
-                    //                loadDate();
-                    //                return;
-                    //            }else{
-                    //                $("#babyName").attr("disabled","disabled");
-                    //                $(".sex a").removeAttr("onclick");
-                    //            }
-                    //            for(var i=0;i<babyInfo.length;i++){
-                    //                option+="<dd class=\"select\" onclick=\"choiceBabyss("+i+")\" ><span >"+babyInfo[i].name+"</span></dd>";
-                    //            }
-                    //            $("#selectBabyTitle").after(option);
-                    //            var babyId=GetQueryString("babyId");
-                    //            if(babyId!=null&&babyId!=""){
-                    //                for(var j=0;j<babyInfo.length;j++){
-                    //                    var bid=babyInfo[j].id;
-                    //                    if(bid==babyId){
-                    //                        choiceBabyss(j);
-                    //                    }
-                    //                }
-                    //            }else{
-                    //                choiceBabyss(0);
-                    //            }
-                    //        },
-                    //        dataType: "json"
-                    //    });
-                    //}
-                //}, 'json');
+                //预约时间GetQueryString("phoneConDoctorDetail")
+                var param = {consultPhoneServiceId: GetQueryString("phoneConDoctorDetail")};
+                $.ajax({
+                    url: "consultPhone/phoneRegister/getRegisterInfo",// 跳转到 action
+                    async: true,
+                    type: 'post',
+                    data: param,
+                    success: function (data) {
+                        //var time = moment(data.date).format('YYYY/MM/DD');
+                        $('#time').html(moment(data.date).format('YYYY/MM/DD'));
+                        $('#begintime').html(moment(data.date).format('h:mm'));
+                        $('#endtime').html(moment(data.date).format('h:mm'));
+                        //alert(time);
+                        console.log(data)
+                    },
+                    error: function () {
+                    }
+                });
+
+                //获取宝宝信息
+                $.ajax({
+                    type: 'POST',
+                    url: "healthRecord/getBabyinfoList",
+                    data: "{'openid':''}",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        console.log(result)
+                        babyInfo = result.babyInfoList;
+                        var userPhone = result.userPhone;
+                        $('#connectphone').val(userPhone);
+                        var option = "";
+                        if (babyInfo == "") {
+                            $("#addBaby").hide();
+                            loadDate();
+                            return;
+                        } else {
+                            $("#babyName").attr("disabled", "disabled");
+                            $(".sex a").removeAttr("onclick");
+                        }
+                        for (var i = 0; i < babyInfo.length; i++) {
+                            option += "<dd class=\"select\" onclick=\"choiceBabyss(" + i + ")\" ><span >" + babyInfo[i].name + "</span></dd>";
+                        }
+                        $("#selectBabyTitle").after(option);
+                        var babyId = GetQueryString("babyId");
+                        if (babyId != null && babyId != "") {
+                            for (var j = 0; j < babyInfo.length; j++) {
+                                var bid = babyInfo[j].id;
+                                if (bid == babyId) {
+                                    choiceBabyss(j);
+                                }
+                            }
+                        } else {
+                            choiceBabyss(0);
+                        }
+                    },
+                    dataType: "json"
+                });
+            }
         }
     });
+
 }
 
 //  日期插件

@@ -53,4 +53,11 @@ public interface SysConsultPhoneService {
      */
     HashMap<String, Object> findSysConsultPhoneServiceByCRSIdExecute(HashMap<String, Object> hashMap);
 
+    /**
+     * 根据主键获取详细信息
+     * @param id
+     * @return
+     * @author chenxiaoqiong
+     */
+    Map<String,Object> getSysPhoneConsultInfo(Integer id);
 }

@@ -156,8 +156,14 @@ public class ConsultOrderUserController {
         Integer phoneConsultaServiceId = Integer.parseInt((String) params.get("phoneConsultaServiceId"));
         String cancelReason = (String)params.get("cancelReason");
         HashMap<String,Object> resultMap = new HashMap<String, Object>();
-        ConsultPhoneRegisterServiceVo vo = consultPhonePatientService.selectByPrimaryKey(phoneConsultaServiceId);
-        if("1".equals(vo.getState())){
+        Map<String,Object> orderVo = consultPhonePatientService.getPatientRegisterInfo(phoneConsultaServiceId);
+        Date orderDate = DateUtils.StrToDate(orderVo.get("date") + " " + orderVo.get("beginTime"), "yyyy/MM/dd HH:mm");
+
+        if(orderDate.getTime()<new Date().getTime()+10*60*1000){
+            resultMap.put("status","20");
+            return resultMap;
+        }
+        if("待接听".equals(orderVo.get("state"))){
             try {
                  resultState = consultPhonePatientService.cancelOrder(phoneConsultaServiceId,cancelReason);
             }catch (Exception e){
