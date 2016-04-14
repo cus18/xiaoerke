@@ -4,8 +4,10 @@ import java.util.*;
 
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
+import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
 import com.cxqm.xiaoerke.modules.healthRecords.entity.BabyIllnessInfoVo;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
+import com.cxqm.xiaoerke.modules.order.dao.*;
 import com.cxqm.xiaoerke.modules.order.dao.PhoneConsultDoctorRelationDao;
 import com.cxqm.xiaoerke.modules.order.dao.SysConsultPhoneServiceDao;
 import com.cxqm.xiaoerke.modules.order.entity.ConsulPhonetDoctorRelationVo;
@@ -25,7 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cxqm.xiaoerke.common.persistence.Page;
-import com.cxqm.xiaoerke.modules.order.dao.ConsultPhoneRegisterServiceDao;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,6 +64,11 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
     @Autowired
     private SystemService systemService;
 
+    @Autowired
+    private ConsultPhoneTimingDialDao consultPhoneTimingDialDao;
+            
+    @Autowired
+    private ConsultPhoneManuallyConnectRecordDao consultPhoneManuallyConnectRecordDao;
 
     /**
      * 查询电话咨询的订单
@@ -201,6 +207,11 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         return pages;
     }
 
+    public List<ConsultPhoneRegisterServiceVo> getAllConsultPhoneRegisterListByInfo(ConsultPhoneRegisterServiceVo vo){
+        List<ConsultPhoneRegisterServiceVo> list = consultPhoneRegisterServiceDao.getAllConsultPhoneRegisterListByInfo(vo);
+        return list;
+    }
+
     /**
      * 根据条件查询订单
      * sunxiao
@@ -223,10 +234,6 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
       }catch (Exception e){
           e.printStackTrace();
       }
-
-//        if(a>0){//退费
-//            accountService.updateAccount(price*100, id, new HashMap<String, Object>(), false, userId,cancelReason);//补贴钱给用户
-//        }
     }
 
     /**
@@ -254,8 +261,12 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
             }
             list.add(temp.get("date"));
         }
+        Map paramMap = new HashMap();
+        paramMap.put("orderId",vo.getId());
+        List<ConsultPhoneManuallyConnectVo> recordList = consultPhoneManuallyConnectRecordDao.getManuallyConnectRecordListByInfo(paramMap);
         map = consultInfoList.get(0);
         map.put("orderTimeMap",orderTimeMap);
+        map.put("recordList",recordList);
         return map;
     }
 
@@ -267,10 +278,38 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
     @Override
     public void manuallyConnect(ConsultPhoneManuallyConnectVo vo){
         if("immediatelyDial".equals(vo.getDialType())){
-
+            //dialConnection(vo.getOrderId());
+            vo.setDialDate(new Date());
         }else if("timingDial".equals(vo.getDialType())){
-
+            consultPhoneTimingDialDao.saveConsultPhoneTimingDialInfo(vo);
         }
+        vo.setOperBy(UserUtils.getUser().getName());
+        consultPhoneManuallyConnectRecordDao.saveManuallyConnectRecordInfo(vo);
+    }
+
+    /**
+     * 电话咨询拨打用户和医生电话
+     * @return
+     */
+    private String dialConnection(Integer consultPhoneServiceId){
+        Map<String,Object> orderInfo = consultPhoneRegisterServiceDao.getConsultConnectInfo(consultPhoneServiceId);
+        Integer orderId = (Integer)orderInfo.get("id");
+        String userPhone = (String)orderInfo.get("userPhone");
+        String doctorPhone = (String)orderInfo.get("doctorPhone");
+        Integer conversationLength = (Integer)orderInfo.get("conversationLength");
+
+//        CCPRestSDK sdk = new CCPRestSDK();
+//        sdk.init("sandboxapp.cloopen.com", "8883");// 初始化服务器地址和端口，格式如下，服务器地址不需要写https://
+//        sdk.setSubAccount("2fa43378da0a11e59288ac853d9f54f2", "0ad73d75ac5bcb7e68fb191830b06d6b");
+//        sdk.setAppId("aaf98f8952f7367a0153084e29992035");
+
+        HashMap<String, Object> result = CCPRestSDK.callback(doctorPhone, userPhone,
+                "4006237120", "4006237120", null,
+                "true", null, orderId + "",
+                conversationLength + "", null, "0",
+                "1", "10", null);
+        String statusCode = (String) result.get("statusCode");
+        return statusCode;
     }
 
     @Override

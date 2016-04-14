@@ -39,6 +39,7 @@ public interface ConsultPhonePatientService {
      * @return
      */
     List<Map<String, Object>> getConsultPhoneRegisterListByInfo(Map map);
+    List<ConsultPhoneRegisterServiceVo> getAllConsultPhoneRegisterListByInfo(ConsultPhoneRegisterServiceVo vo);
 
     /**
      * 电话咨询取消预约退费

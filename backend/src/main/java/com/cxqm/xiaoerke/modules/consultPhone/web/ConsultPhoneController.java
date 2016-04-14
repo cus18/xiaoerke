@@ -15,6 +15,7 @@ import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.excel.ExportExcel;
 import com.cxqm.xiaoerke.modules.member.entity.MemberservicerelItemservicerelRelationVo;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneManuallyConnectVo;
+import com.cxqm.xiaoerke.modules.order.exception.CancelOrderException;
 import net.sf.json.JSONObject;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -47,9 +48,6 @@ public class ConsultPhoneController extends BaseController {
 
 	@Autowired
 	private ConsultPhonePatientService consultPhonePatientService;
-
-	@Autowired
-	private ConsultPhoneOrderService consultPhoneOrderService;
 
 	@Autowired
 	private SysConsultPhoneService sysConsultPhoneService;
@@ -165,7 +163,7 @@ public class ConsultPhoneController extends BaseController {
 	@RequiresPermissions("user")
 	@ResponseBody
 	@RequestMapping(value = "removeRegister")
-	public String removeRegister(HttpServletRequest request,HttpServletResponse response, Model model) {
+	public synchronized String removeRegister(HttpServletRequest request,HttpServletResponse response, Model model) {
 		JSONObject result = new JSONObject();
 		String times = request.getParameter("times");
 		String time = request.getParameter("time");
@@ -181,7 +179,7 @@ public class ConsultPhoneController extends BaseController {
 		if(time!=null){
 			timeList.add(time);
 		}
-		sysConsultPhoneService.deleteRegisters(vo, timeList, request.getParameter("date"), request.getParameter("operRepeat"), "kefu");
+		sysConsultPhoneService.deleteRegisters(vo, timeList, request.getParameter("date"), request.getParameter("operRepeat"));
 		result.put("suc", "suc");
 		return result.toString();
 	}
@@ -251,7 +249,7 @@ public class ConsultPhoneController extends BaseController {
 	public String exportFile(ConsultPhoneRegisterServiceVo vo, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
 			String fileName = "订单数据"+ DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
-			List<ConsultPhoneRegisterServiceVo> list = null;//memberService.getAllMemberServiceList(vo,"exportData");
+			List<ConsultPhoneRegisterServiceVo> list = consultPhonePatientService.getAllConsultPhoneRegisterListByInfo(vo);
 			new ExportExcel("订单数据", ConsultPhoneRegisterServiceVo.class).setDataList(list).write(response, fileName).dispose();
 			return null;
 		} catch (Exception e) {
@@ -294,13 +292,15 @@ public class ConsultPhoneController extends BaseController {
 	@RequiresPermissions("user")
 	@ResponseBody
 	@RequestMapping(value = "cancelOrder")
-	public String cancelOrder(HttpServletRequest request,HttpServletResponse response, Model model) {
+	public synchronized String cancelOrder(HttpServletRequest request,HttpServletResponse response, Model model) {
 		JSONObject result = new JSONObject();
 		String id = request.getParameter("id");
 		String cancelReason = request.getParameter("cancelReason");
-		Float price = Float.valueOf(request.getParameter("price"));
-		String userId = request.getParameter("userId");
-		consultPhonePatientService.refundConsultPhoneFee(id, cancelReason, price, userId);
+		try {
+			consultPhonePatientService.cancelOrder(Integer.valueOf(id), cancelReason);
+		} catch (CancelOrderException e) {
+			e.printStackTrace();
+		}
 		return result.toString();
 	}
 
