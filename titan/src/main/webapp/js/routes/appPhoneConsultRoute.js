@@ -240,7 +240,7 @@ define(['appPhoneConsult'], function(app){
                         }
                     })
                     .state('evaluateList', {
-                        url: '/evaluateList',
+                        url: '/evaluateList:doctorId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'evaluateListCtrl',
                         resolve: {

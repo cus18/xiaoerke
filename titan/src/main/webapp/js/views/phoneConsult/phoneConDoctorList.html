@@ -58,7 +58,11 @@
 							<div  class="pic">
 								<img class="photo" width="62.5" height="62.5" ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.doctorId}}?ver={{picVer}}" >
 								<div class="rank">
-									<img class="my-img1" ng-repeat="item in [1,2,3,4,5]" width="9.5" height="auto" ng-src="{{starImg1}}">
+									<img class="my-img1"  width="9.5" height="auto" ng-src="{{0<starNumInt[$index]?starImg1:0==starNumInt[$index]&&starNumFloat[$index]>0?starImg2:starImg3}}">
+									<img class="my-img1"  width="9.5" height="auto" ng-src="{{1<starNumInt[$index]?starImg1:1==starNumInt[$index]&&starNumFloat[$index]>0?starImg2:starImg3}}">
+									<img class="my-img1"  width="9.5" height="auto" ng-src="{{2<starNumInt[$index]?starImg1:2==starNumInt[$index]&&starNumFloat[$index]>0?starImg2:starImg3}}">
+									<img class="my-img1"  width="9.5" height="auto" ng-src="{{3<starNumInt[$index]?starImg1:3==starNumInt[$index]&&starNumFloat[$index]>0?starImg2:starImg3}}">
+									<img class="my-img1"  width="9.5" height="auto" ng-src="{{4<starNumInt[$index]?starImg1:4==starNumInt[$index]&&starNumFloat[$index]>0?starImg2:starImg3}}">
 								</div>
 							</div>
 							<div class="intro">
