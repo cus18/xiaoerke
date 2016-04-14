@@ -28,6 +28,8 @@ public interface MessageService {
 	List<MessageVo> findMessageByRegisterNo(String appointmentNo);
 
 	void insertMonitorExecute(HashMap<String, Object> monitorMap);
+
+	void insertMonitorConsultPhone(HashMap<String, Object> monitorMap);
 	
 	//获取个人的预约信息详情 @author 得良
     Map fidPersonAppointDetailInfoExcut(PerAppDetInfoVo perAppDetInfoVO);
@@ -50,4 +52,5 @@ public interface MessageService {
 
 	List<HashMap<String, Object>> getTrackOrder();
 
+	Map consultPhoneMsgRemind(String id);
 }
