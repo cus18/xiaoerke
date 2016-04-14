@@ -513,14 +513,15 @@ public class WechatUtil {
         }else if(messageType.contains("voice")){
             mediaName = mediaName+".mp3";
             //创建源文件
-            String sourceFile = createFile("sourceFile");
+            String sourceFile = createFile();
             //创建目标文件
-            String targetFile = createFile("targetFile");
+            String targetFile = createFile();
             //将InputStream转成源文件
             File sorceName = new  File(sourceFile);
             inputstreamtofile(inputStream,sorceName);
-            changeToMp3(sourceFile,targetFile);
-
+            changeToMp3(sourceFile, targetFile);
+            deleteDirectory(sourceFile);
+            deleteDirectory(targetFile);
         }else if(messageType.contains("video")){
             mediaName = mediaName+".mp4";
         }
@@ -532,7 +533,7 @@ public class WechatUtil {
         return mediaURL;
     }
     //创建文件，并返回文件路径
-    public String createFile(String fileName){
+    public String createFile(){
         String path = "../tempFileSource";
         File f = new File(path);
         if(!f.exists()){
@@ -566,6 +567,45 @@ public class WechatUtil {
 
     }
 
+    /**
+     *
+     * 删除目录及目录下的文件
+     *
+     * @param dirName 被删除的目录所在的文件路径
+     * @return 如果目录删除成功，则返回true，否则返回false
+     */
+    public  void deleteDirectory(String dirName) {
+        String dirNames = dirName;
+        if (!dirNames.endsWith(File.separator)) {
+            dirNames = dirNames + File.separator;
+        }
+        File dirFile = new File(dirNames);
+        if (!dirFile.exists() || !dirFile.isDirectory()) {
+            return;
+        }
+        boolean flag = true;
+        // 列出全部文件及子目录
+        File[] files = dirFile.listFiles();
+        for (int i = 0; i < files.length; i++) {
+            // 删除子文件
+            if (files[i].isFile()) {
+                flag = FileUtils.deleteFile(files[i].getAbsolutePath());
+                // 如果删除文件失败，则退出循环
+                if (!flag) {
+                    break;
+                }
+            }
+            // 删除子目录
+            else if (files[i].isDirectory()) {
+                flag = FileUtils.deleteDirectory(files[i]
+                        .getAbsolutePath());
+                // 如果删除子目录失败，则退出循环
+                if (!flag) {
+                    break;
+                }
+            }
+        }
+    }
     public static void changeToMp3(String sourcePath, String targetPath) {
         File source = new File(sourcePath);
         File target = new File(targetPath);
