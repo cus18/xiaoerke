@@ -22,14 +22,30 @@ public interface SysConsultPhoneService {
 
     JSONObject getRegisterTime(String doctorId , String date);
 
+    /**
+     * 电话咨询添加号源页面初始数据
+     * sunxiao
+     */
     Map<String, Object> getRegisterInfo(String doctorId,String pageFlag);
 
+    /**
+     * 添加电话咨询号源
+     * sunxiao
+     */
     Map<String, String> addRegisters(SysConsultPhoneServiceVo Vo,List<String> timeList,
                                      String date,String operInterval);
 
+    /**
+     * 删除电话咨询号源时判断受影响的号源
+     * sunxiao
+     */
     String judgeRepeatEffect(String date,String timeParam,String doctorId,String operRepeat);
 
-    int deleteRegisters(SysConsultPhoneServiceVo registerServiceVo,List<String> timeList,String date,String operRepeat,String deleteBy);
+    /**
+     * 删除电话咨询号源
+     * sunxiao
+     */
+    int deleteRegisters(SysConsultPhoneServiceVo registerServiceVo,List<String> timeList,String date,String operRepeat);
 
     /**
      * 获取电话咨询模板列表

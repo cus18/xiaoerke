@@ -8,13 +8,16 @@ import com.cxqm.xiaoerke.modules.order.entity.ConsulPhonetDoctorRelationVo;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterTemplateVo;
 import com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo;
+import com.cxqm.xiaoerke.modules.order.exception.CancelOrderException;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PhoneConsultDoctorRelationService;
 import com.cxqm.xiaoerke.modules.order.service.SysConsultPhoneService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
+import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -241,6 +244,7 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 	 * 添加电话咨询号源
 	 */
 	@Override
+	@Transactional(rollbackFor=Exception.class)
 	public Map<String, String> addRegisters(SysConsultPhoneServiceVo vo,
 											List<String> timeList, String date, String operInterval) {
 		// TODO Auto-generated method stub
@@ -617,7 +621,7 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 	 * sunxiao
 	 */
 	public int deleteRegisters(SysConsultPhoneServiceVo registerServiceVo,
-							   List<String> timeList, String date, String operRepeat,String deleteBy) {
+							   List<String> timeList, String date, String operRepeat) {
 		int count = 0;
 		Random r = new Random();
 		for (String time : timeList) {
@@ -656,56 +660,28 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 					HashMap<String, Object> executeMap1 = new HashMap<String, Object>();
 					executeMap1.put("registerId", isRepeatvo.getId());
 					List<Map<String, Object>> orderList = consultPhonePatientService.getConsultPhoneRegisterListByInfo(executeMap1);
-					Integer patientRegisterId = Integer.parseInt((String)orderList.get(0).get("id"));
-					cvo.setId(patientRegisterId);
-					cvo.setDeleteBy(deleteBy);
-					cvo.setState("6");
-					cvo.setUpdateTime(new Date());
-					consultPhonePatientService.updateOrderInfoBySelect(cvo);
-					LogUtils.saveLog(Servlets.getRequest(), "00000027" ,"订单主键"+ patientRegisterId
-							+ ":" + date);//删除号源时删除订单，订单id:
+					Integer orderId = Integer.parseInt((String)orderList.get(0).get("id"));
 					try {
-						executeMap.put("patient_register_service_id",
-								patientRegisterId);
-						//orderMessageService.sendMessage(executeMap, false);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
+						consultPhonePatientService.cancelOrder(orderId,"运维"+ UserUtils.getUser().getName()+"删除");//删除订单，修改号源状态，退款
+					} catch (CancelOrderException e) {
 						e.printStackTrace();
 					}
 				}
-				count += sysConsultPhoneServiceDao.cancelOrder(isRepeatvo.getId(), "2");
-				LogUtils.saveLog(Servlets.getRequest(), "00000028" ,"订单主键"+ isRepeatvo.getId()
-						+ ":" + date);
 			} else {
 				for (SysConsultPhoneServiceVo rvo : rsList) {
 					if ("0".equals(rvo.getRepeatFlag())
 							|| "1".equals(rvo.getRepeatFlag())) {
-						ConsultPhoneRegisterServiceVo cvo = new ConsultPhoneRegisterServiceVo();
-						Map<String, Object> executeMap = new HashMap<String, Object>();
 						if ("1".equals(rvo.getState())) {
 							HashMap<String, Object> executeMap1 = new HashMap<String, Object>();
 							executeMap1.put("registerId", rvo.getId());
 							List<Map<String, Object>> orderList = consultPhonePatientService.getConsultPhoneRegisterListByInfo(executeMap1);
-							Integer patientRegisterId = (Integer)orderList.get(0).get("id");
-							cvo.setId(patientRegisterId);
-							cvo.setDeleteBy(deleteBy);
-							cvo.setState("6");
-							cvo.setUpdateTime(new Date());
-							consultPhonePatientService.updateOrderInfoBySelect(cvo);
-							LogUtils.saveLog(Servlets.getRequest(), "00000027" ,"订单主键"+ patientRegisterId
-									+ ":" + date);
+							Integer orderId = (Integer)orderList.get(0).get("id");
 							try {
-								executeMap.put("patient_register_service_id",
-										patientRegisterId);
-								//orderMessageService.sendMessage(executeMap, false);
-							} catch (Exception e) {
-								// TODO Auto-generated catch block
+								consultPhonePatientService.cancelOrder(orderId,"运维"+ UserUtils.getUser().getName()+"删除");//删除订单，修改号源状态，退款
+							} catch (CancelOrderException e) {
 								e.printStackTrace();
 							}
 						}
-						count += sysConsultPhoneServiceDao.cancelOrder(rvo.getId(), "2");
-						LogUtils.saveLog(Servlets.getRequest(), "00000028","订单表主键" + rvo.getId()
-								+ ":" + date);//删除号源，号源
 					}
 				}
 			}
@@ -729,8 +705,7 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 	 * @return
 	 */
 	@Override
-	public List<ConsultPhoneRegisterTemplateVo> getRegisterTemplateList(
-			Map<String, Object> executeMap) {
+	public List<ConsultPhoneRegisterTemplateVo> getRegisterTemplateList(Map<String, Object> executeMap) {
 		// TODO Auto-generated method stub
 		return consultPhoneRegisterTemplateDao.getRegisterTemplateList(executeMap);
 	}
@@ -740,8 +715,7 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 	 * sunxiao
 	 */
 	@Override
-	public List<SysConsultPhoneServiceVo> findSysConsultPhoneByInfo(
-			Map<String, Object> map) {
+	public List<SysConsultPhoneServiceVo> findSysConsultPhoneByInfo(Map<String, Object> map) {
 		// TODO Auto-generated method stub
 		List<SysConsultPhoneServiceVo> list = sysConsultPhoneServiceDao.findSysConsultPhoneByInfo(map);
 		return list;
