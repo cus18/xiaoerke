@@ -96,7 +96,7 @@ span.emotion:hover{background-position:2px -28px}
 .qqFace table td img{cursor:pointer;border:1px #fff solid;}
 .qqFace table td img:hover{border:1px #0066cc solid;}
 /*聊天框的头部*/
-.chatlistin{font: 14px/20px 'Microsoft Yahei';height: 265px;overflow-y:scroll;overflow-x:hidden;background-color: #f8f8f8;width: 100%;text-align: center;color:#333;}
+.chatlistin{font: 14px/20px 'Microsoft Yahei';height: 265px;overflow-y:scroll;overflow-x:hidden;background-color: #f8f8f8;width: 100%;color:#333;}
 p.historymessage span {display: block;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(7).png") left center no-repeat;padding-left: 25px;}
 .facein{width: 100%;border-bottom: 1px solid #acacac;font: 12px/38px 'Microsoft Yahei';border-top: 1px solid #acacac;background-color: #f2f2f2;height: 38px;}
 .facein p {margin:0 10px;}
