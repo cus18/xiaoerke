@@ -89,9 +89,10 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 		dataInfo.put("date", date);
 		List<HashMap<String, Object>> resultList = sysConsultPhoneServiceDao.findConsultPhoneTimeListByDoctorAndDate(dataInfo);
 
-		// 记录日志 TODO：
-//		LogUtils.saveLog(Servlets.getRequest(), "00000030" ,"医生主键："+ doctorId
-//				+ "date:" + date);
+		// 记录日志
+		LogUtils.saveLog(Servlets.getRequest(), "00000030" ,"医生主键："+ doctorId
+				+ "date:" + date);
+
 		DateFormat formart = new SimpleDateFormat("hh:mm");
 		List<HashMap<String, Object>> consultPhoneTimeList = new LinkedList<HashMap<String, Object>>();
 		if(resultList != null && !resultList.isEmpty()){

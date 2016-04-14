@@ -126,6 +126,7 @@ public class ConsultWechatController extends BaseController {
                         WechatUtil wechatUtil = new WechatUtil();
                         String mediaURL = wechatUtil.downloadMediaFromWx("bIkXki53G7M6Ogm8xGJR5gVBAVDLUiGJDx64V8xtr7gSIyKDprPQWgQZ1dysVJtp_1nXQY2SeBe-WvPSVL0woyLDqoI4Us57p4CUMI0FB48mSKd0k9zC1TDF0MyePfnwBYEeAIAIFL",mediaId,nickName,messageType);//sessionCache.getWeChatToken()
                         obj.put("content", mediaURL);
+                        messageContent = mediaURL;
                     }catch (IOException e){
                         e.printStackTrace();
                     }

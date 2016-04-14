@@ -44,7 +44,7 @@ public interface ConsultRecordService {
 
     void saveConsultSessionStatus(Integer sessionId, String userId);
 
-    List<ConsultSessionStatusVo> querySessionStatusList(Query query);
+    List<Object> querySessionStatusList(Query query);
 
     void  deleteConsultSessionStatusVo(Query query);
 }
