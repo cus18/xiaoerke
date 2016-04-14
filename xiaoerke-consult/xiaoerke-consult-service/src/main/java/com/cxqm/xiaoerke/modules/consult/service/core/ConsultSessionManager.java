@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.consult.service.core;
 
+import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
@@ -269,8 +270,8 @@ public class ConsultSessionManager {
 
 		//成功分配医生，给用户发送一个欢迎语
 		String st = "尊敬的用户，宝大夫在线，有什么可以帮您";
-		WechatUtil.senMsgToWechat("sSlhYMFDuejfsHw500EgqB3PjkIGYhTPKXEM2k8bWmrDWL-CxJdTdEIQczMMb9AcwtklJ2Y6zB125nRQvQn4elqqr-ccrObNyYDr4IHo7RdVv6av3pWD6yD1AIif63g9VBRgAIANTJ", consultSession.getOpenid(), st);//sessionCache.getWeChatToken()
-		sessionCache.putWechatSessionByOpenId(consultSession.getOpenid(),consultSession);
+		WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN, consultSession.getOpenid(), st);//sessionCache.getWeChatToken()
+		sessionCache.putWechatSessionByOpenId(consultSession.getOpenid(), consultSession);
 		response.put("csChannel", csChannel);
 		response.put("sessionId",sessionId);
 		response.put("consultSession",consultSession);
