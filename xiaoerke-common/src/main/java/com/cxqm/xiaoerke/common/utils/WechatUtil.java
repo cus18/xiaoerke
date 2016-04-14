@@ -520,6 +520,8 @@ public class WechatUtil {
             File sorceName = new  File(sourceFile);
             inputstreamtofile(inputStream,sorceName);
             changeToMp3(sourceFile, targetFile);
+            File finalFile = new File(targetFile);
+            inputStream = new FileInputStream(finalFile);
             deleteDirectory(sourceFile);
             deleteDirectory(targetFile);
         }else if(messageType.contains("video")){
@@ -599,13 +601,14 @@ public class WechatUtil {
             else if (files[i].isDirectory()) {
                 flag = FileUtils.deleteDirectory(files[i]
                         .getAbsolutePath());
-                // 如果删除子目录失败，则退出循环
+                // 如果删除子目录失败，则退
                 if (!flag) {
                     break;
                 }
             }
         }
-    }
+   }
+
     public static void changeToMp3(String sourcePath, String targetPath) {
         File source = new File(sourcePath);
         File target = new File(targetPath);
