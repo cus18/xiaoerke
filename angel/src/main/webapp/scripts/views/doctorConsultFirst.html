@@ -29,7 +29,7 @@
             <div class="w5 fr h4 bg-h1">
                 <div class="bdf-dkf-content-right">
                     <div class="cjgl">退出</div>
-                    <div class="xtsz" ng-click="systemsetup1()">
+                    <div class="xtsz" ng-click="tapSystemSetup()">
                         <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_06.png" alt=""/>
                         系统设置</div>
                 </div>
@@ -44,11 +44,11 @@
         <div class="msg-l h30 fl">
             <div class="m-left-header">
                 <div class="m-left-top">
-                    <div class="tab-content-chat" id="ddjr" ng-click="waitprocess1()">
+                    <div class="tab-content-chat" id="ddjr" ng-click="tapWaitProcess()">
                         <h3>0</h3>
                         <p>等待接入</p>
                     </div>
-                    <div class="tab-content-chat " ng-click="toggleRankList()">
+                    <div class="tab-content-chat " ng-click="tapRankList()">
                         <h3>{{info.rankListlength}}</h3>
                         <p>已接会话</p>
                     </div>
@@ -58,12 +58,14 @@
                     已接入会话
                 </div>
             </div>
-            <div class="consultNowList"
-                 ng-style="chooseAlreadyJoinConsultPatientId==item.patientId?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}"
-                 ng-repeat="item in alreadyJoinPatientConversationContent"
-                 ng-click="chooseAlreadyJoinConsultPatient(item.patientId,item.patientName)"
-                 alt="">
-                <nobr>{{item.patientName}}&nbsp;&nbsp;{{transformDate(item.dateTime)}}</nobr>
+            <div class="consultList">
+                <div class="consultNowList"
+                     ng-style="chooseAlreadyJoinConsultPatientId==item.patientId?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}"
+                     ng-repeat="item in alreadyJoinPatientConversationContent"
+                     ng-click="chooseAlreadyJoinConsultPatient(item.patientId,item.patientName)"
+                     alt="">
+                    <nobr>{{item.patientName}}&nbsp;&nbsp;{{transformDate(item.dateTime)}}</nobr>
+                </div>
             </div>
         </div>
         <div class="msg-r h30 fr">
@@ -82,29 +84,35 @@
                 </div>
                 <div class="replayContent">
                 <div class="myreply">
-                    <div ng-click="myreplyList1()" class="rtitle">
+                    <div ng-click="tapMyReplyList()" class="rtitle">
                         我的回复（{{myAnswer.length}}）</div>
-                    <ul ng-show="myreplyList.show">
+                    <ul ng-show="showFlag.myReplyList">
                         <li ng-repeat="item in myAnswer">
-                            <div class="group-title" ng-click="mreplyContent1($index)">
+                            <div class="group-title" ng-click="tapMyReplyContent($index)">
                                     {{item.name}}（{{item.secondAnswer.length}}）
                             </div>
-                            <ul ng-show="mreplayindex==$index">
-                                <li ng-repeat="item2 in item.secondAnswer" class="rcontent"><nobr ng-click="editMyContent($parent.$index,$index)">{{item2.name}}</nobr></li>
+                            <ul ng-show="myReplayIndex==$index">
+                                <li ng-repeat="item2 in item.secondAnswer" class="rcontent">
+                                    <nobr ng-click="tapEditMyContent($parent.$index,$index)">{{item2.name}}
+                                    </nobr>
+                                </li>
                             </ul>
                         </li>
                     </ul>
                 </div>
                 <div class="pubilcreply">
-                    <div ng-click="pubilcreplyList1()"  class="rtitle">
+                    <div ng-click="tapPublicReplyList()"  class="rtitle">
                         公共回复（{{commonAnswer.length}}）</div>
-                    <ul ng-show='pubilcreplyList.show'>
+                    <ul ng-show='showFlag.publicReplyList'>
                         <li ng-repeat="item in commonAnswer">
-                            <div class="group-title" ng-click="pubilcreplyContent1($index)">
+                            <div class="group-title" ng-click="tapPublicReplyContent($index)">
                                 {{item.name}}（{{item.secondAnswer.length}}）
                             </div>
-                            <ul ng-show='pubilcreplyindex==$index'>
-                                <li ng-repeat="item2 in item.secondAnswer" class="rcontent"><nobr ng-click="editCommonContent($parent.$index,$index)">{{item2.name}}</nobr></li>
+                            <ul ng-show='publicReplyIndex==$index'>
+                                <li ng-repeat="item2 in item.secondAnswer" class="rcontent">
+                                    <nobr ng-click="tapEditCommonContent($parent.$index,$index)">{{item2.name}}
+                                    </nobr>
+                                </li>
                             </ul>
                         </li>
                     </ul>
@@ -220,7 +228,7 @@
                         关闭</div>
                 </div>
             </div>
-        </div>
+    </div>
     </div>
     <!--等待接入会话-->
     <div class="jrhhpm" ng-show='rankList.show'>
@@ -406,6 +414,6 @@
             </div>
         </div>
     </div>
-    <div class="lipanpan" style="width: 80px;height: 80px;background-color: #333;" >
+    <div class="lipanpan" style="width: 20px;height: 20px;background-color: #333;" >
     </div>
 </div>

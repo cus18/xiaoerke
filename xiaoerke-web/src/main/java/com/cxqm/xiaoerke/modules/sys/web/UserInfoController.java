@@ -85,12 +85,13 @@ public class UserInfoController extends BaseController {
 		}
 		User user = UserUtils.getUser();
 		String userId = user.getId();
+		String userPhone = user.getPhone();
 		if(userId!=null){
 			String patientId = userInfoService.getPatientIdByUserId(userId);
 			HashMap<String, Object> hashMap = new HashMap<String, Object>();
 			hashMap.put("patientId", patientId);
 			HashMap<String, Object> resultMap = patientRegisterService.getPerCenterPageInfo(hashMap);//获取个人中心主页的信息
-
+			resultMap.put("userPhone",userPhone);
 			resultMap.put("patientId", patientId);
 			resultMap.put("userName", session.getAttribute("wechatName"));
 			Float account = accountService.accountFund(userId);
@@ -127,6 +128,10 @@ public class UserInfoController extends BaseController {
 			Boolean Bl = new Boolean(BondSwitch);
 			response.put("bondSwitch", Bl);
 			response.put("switchStatus", Bl);
+			response.put("memberNum", "0");
+			response.put("accountFund","0");
+			response.put("userPhone",userPhone);
+
 			List<HashMap<Integer, Object>> appointmentInfo = patientRegisterService.getUnBindUserOrder(unBindUserPhoneNum);//myselfService.getUnBindUserOrder(unBindUserPhoneNum);//获取个人中心主页的信息
 			for(HashMap<Integer, Object> map:appointmentInfo){
 

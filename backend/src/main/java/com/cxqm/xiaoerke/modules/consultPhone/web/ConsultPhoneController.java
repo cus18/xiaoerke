@@ -216,6 +216,13 @@ public class ConsultPhoneController extends BaseController {
 	@RequestMapping(value = "consultPhoneOrderList")
 	public String consultPhoneOrderList(ConsultPhoneRegisterServiceVo vo,HttpServletRequest request,HttpServletResponse response, Model model) {
 		String temp = ((String)request.getParameter("pageNo"));
+		String returnUrl = "";
+		if("remove".equals(request.getParameter("stateFlag"))){
+			vo.setState("4");
+			returnUrl = "modules/consultPhone/removedOrderList";
+		}else{
+			returnUrl = "modules/consultPhone/orderList";
+		}
 		Page<ConsultPhoneRegisterServiceVo> pagess = null;
 		if(temp==null){
 			pagess = new Page<ConsultPhoneRegisterServiceVo>();
@@ -225,15 +232,24 @@ public class ConsultPhoneController extends BaseController {
 			pagess = new Page<ConsultPhoneRegisterServiceVo>(pageNo,pageSize);
 		}
 		Page<ConsultPhoneRegisterServiceVo> page = consultPhonePatientService.findConsultPhonePatientList(pagess,vo);
-		Map<String, Object> map = new LinkedHashMap<String, Object>();
-		map.put("youxiao", "待支付");
-		map.put("shixiao", "已支付");
-		map.put("yituikuan", "已退款");
-		map.put("", "全部");
-		model.addAttribute("statusList", map);
+		Map<String, Object> payStateMap = new LinkedHashMap<String, Object>();
+		payStateMap.put("0", "待支付");
+		payStateMap.put("1", "已支付");
+		payStateMap.put("4", "已退款");
+		payStateMap.put("", "全部");
+		Map<String, Object> stateMap = new LinkedHashMap<String, Object>();
+		stateMap.put("0", "待支付");
+		stateMap.put("1", "待接通");
+		stateMap.put("2", "待评价");
+		stateMap.put("3", "待分享");
+		stateMap.put("4", "已取消");
+		stateMap.put("", "全部");
+		model.addAttribute("statusList", stateMap);
+		model.addAttribute("payStatusList", payStateMap);
 		model.addAttribute("page", page);
+		model.addAttribute("pageCount", page.getCount());
 		model.addAttribute("consultPhone", vo);
-		return "modules/consultPhone/orderList";
+		return returnUrl;
 	}
 
 	/**

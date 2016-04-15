@@ -1,0 +1,24 @@
+<ion-spinner ng-show="pageLoading" style="color:#139fff;position: relative;top: 301px;left:148px;z-index:999;"></ion-spinner>
+<ion-view view-title={{title}} >
+    <ion-spinner ng-show="dataLoading"></ion-spinner>
+    <ion-content  style="top: 0px;">
+        <ion-scroll class="phoneConsultFans" direction="y" has-bouncing="true">
+            <ul ng-if="haveMore">
+                <li ng-repeat="item in fansList">
+                    <div ng-style="(item.img=='')?{'background-color':'#ccc'}:{'background-color':'#ffffff'}">
+                        <img ng-src="{{item.img}}" width="38px" height="38px" ng-if="item.img!=''">
+                    </div>
+                    <span>{{item.name}}</span>
+                </li>
+            </ul>
+            <div class="gomore" ng-if="haveMore">
+                <span>点击加载更多</span>
+                <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Ffansmore.png" width="11" height="6"/>
+            </div>
+        </ion-scroll>
+    </ion-content>
+    <div class="nohave" ng-if="noMore">
+        <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fweekno.png" width="88px" height="63px"/>
+        <div>您还没有任何粉丝哦~</div>
+    </div>
+</ion-view>

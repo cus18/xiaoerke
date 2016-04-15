@@ -2,23 +2,29 @@ package com.cxqm.xiaoerke.modules.interaction.service.impl;
 
 
 import com.cxqm.xiaoerke.common.persistence.Page;
-import com.cxqm.xiaoerke.common.utils.*;
+import com.cxqm.xiaoerke.common.utils.FrontUtils;
+import com.cxqm.xiaoerke.common.utils.IdGen;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.interaction.dao.DoctorConcernDao;
 import com.cxqm.xiaoerke.modules.interaction.service.ConcernService;
 import com.cxqm.xiaoerke.modules.order.service.RegisterService;
 import com.cxqm.xiaoerke.modules.sys.interceptor.SystemServiceLog;
 import com.cxqm.xiaoerke.modules.sys.service.DoctorInfoService;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
-
+import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by wangbaowei on 15/11/5.
@@ -37,6 +43,9 @@ public class ConcernServiceImpl implements ConcernService {
 	
 	@Autowired
 	private RegisterService registerService;
+
+    @Autowired
+    SystemService systemService;
 
     @Override
     @SystemServiceLog(description = "00000010")//查询我的关注医生信息
@@ -100,5 +109,42 @@ public class ConcernServiceImpl implements ConcernService {
         else {
             response.put("isConcerned", false);
         }
+    }
+
+    @Override
+    public void getMyFansList(Map<String, Object> params, HashMap<String, Object> response) {
+        HashMap<String, Object> searchMap = new HashMap<String, Object>();
+        String doctorId = (String)params.get("doctorId");
+        String pageNo = (String)params.get("pageNo");
+        String pageSize = (String)params.get("pageSize");
+
+        Page<HashMap<String, Object>> page = FrontUtils.generatorPage(pageNo,pageSize);
+        Page<HashMap<String, Object>> resultPage = doctorConcernDao.getMyFansList(doctorId,page);
+        response.put("pageNo", resultPage.getPageNo());
+        response.put("pageSize", resultPage.getPageSize());
+        long tmp = FrontUtils.generatorTotalPage(resultPage);
+        response.put("pageTotal", tmp + "");
+
+        Map<String,Object> parameter = systemService.getWechatParameter();
+        String token = (String)parameter.get("token");
+
+        List<HashMap<String, Object>> resultList = resultPage.getList();
+        List<HashMap<String, Object>> fansList = new ArrayList<HashMap<String, Object>>();
+        if(resultList != null && resultList.size() > 0){
+            for(HashMap<String, Object> resultMap:resultList){
+                String openId = (String) resultMap.get("openid");
+                String strURL="https://api.weixin.qq.com/cgi-bin/user/info?access_token="+token+"&openid="+openId+"&lang=zh_CN";
+                String param="";
+                String json= WechatUtil.post(strURL, param, "GET");
+                JSONObject jasonObject = JSONObject.fromObject(json);
+                Map<String, Object> jsonMap = (Map) jasonObject;
+
+                HashMap<String, Object> fansMap = new HashMap<String, Object>();
+                fansMap.put("headImgUrl", (String) jsonMap.get("headimgurl"));
+                fansMap.put("wechatName", (String) jsonMap.get("wechatName"));
+                fansList.add(fansMap);
+            }
+        }
+        response.put("fansList",fansList);
     }
 }

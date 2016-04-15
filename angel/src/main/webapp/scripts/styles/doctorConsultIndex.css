@@ -23,6 +23,7 @@ header{position: relative;}
 .h6{height: 40px;}
 .h7{height: 35px;}
 .h20 {height: 400px;overflow: auto;}
+.h20::-webkit-scrollbar {height: 0;width: 0;}
 .h30 {height: 500px;}
 .cl {color:#fff;}
 .br1{border-right: 1px solid #ccc;}

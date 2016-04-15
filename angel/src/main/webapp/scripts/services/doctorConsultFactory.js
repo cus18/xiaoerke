@@ -19,7 +19,11 @@ angular.module('services', ['ngResource'])
         return $resource(public + 'consult/doctor/doctorList');
     }])
 
-    //获取客户列表
+    //获取医生下的目前正在咨询的用户列表
+    .factory('getCurrentUserConsultListInfo', ['$resource', function ($resource) {
+        return $resource(public + 'consult/user/getCurrentUserList');
+    }])
+    //获取客户列表(或咨询过某个医生的客户)详细信息,按照时间降序排序
     .factory('getUserConsultListInfo', ['$resource', function ($resource) {
         return $resource(public + 'consult/user/getUserList');
     }])
@@ -36,7 +40,7 @@ angular.module('services', ['ngResource'])
         return $resource(public + 'consult/doctor/commonAnswer');
     }])
     //获取客服医生列表
-    .factory('getCSdoctorList', ['$resource', function ($resource) {
+    .factory('getCSDoctorList', ['$resource', function ($resource) {
         return $resource(public + 'consult/doctor/getCSDoctorList');
     }])
     .factory('getMessageRecordInfo', ['$resource', function ($resource) {

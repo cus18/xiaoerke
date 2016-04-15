@@ -48,6 +48,19 @@ define(['phoneConsultApp'], function(app){
                             }
                         }
                     })
+                    .state('phoneConsultFans', {
+                        url: '/phoneConsultFans',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'phoneConsultFansCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.phoneConsultFansCtrl',
+                                    ['js/controllers/phoneConsult/phoneConsultFansCtrl.js',
+                                        'styles/phoneConsult/phoneConsultFans.less?ver='+appointVersion],
+                                    'js/views/phoneConsult/phoneConsultFans.html?ver='+appointVersion);
+                            }
+                        }
+                    })
 
                 $urlRouterProvider.otherwise('phoneConsultFirst');
             }])

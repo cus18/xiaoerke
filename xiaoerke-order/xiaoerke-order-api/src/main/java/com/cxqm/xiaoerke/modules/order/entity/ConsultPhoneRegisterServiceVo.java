@@ -14,6 +14,8 @@ public class ConsultPhoneRegisterServiceVo {
 
     private String state;//订单状态 0-待支付  1-待接通  2-待评价  3-待分享 4-已取消 5-超时取消
 
+    private String payState;//订单支付状态
+
     private Date createTime;
 
     private Date updateTime;
@@ -74,6 +76,14 @@ public class ConsultPhoneRegisterServiceVo {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getPayState() {
+        return payState;
+    }
+
+    public void setPayState(String payState) {
+        this.payState = payState;
     }
 
     @ExcelField(title="登录手机号", align=2, sort=4)

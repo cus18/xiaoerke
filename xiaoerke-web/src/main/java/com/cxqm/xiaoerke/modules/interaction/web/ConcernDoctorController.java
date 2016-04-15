@@ -73,4 +73,19 @@ public class ConcernDoctorController extends BaseController {
         concernService.judgeIfUserConcernDoctor(params,response);
         return response;
     }
+
+    /**
+     * 查看我的粉丝列表
+     * @param params
+     * @return
+     * @author chenxiaoqiong
+     */
+    @RequestMapping(value = "/user/myFansList", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> myFansList(@RequestBody Map<String, Object> params) {
+        HashMap<String, Object> response = new HashMap<String, Object>();
+        concernService.getMyFansList(params,response);
+        return response;
+    }
 }

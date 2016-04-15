@@ -107,8 +107,8 @@
     sd.hospitalName,
     dhr.department_level1 as departmentName,
     case when crs.state ='0' then '待支付' when crs.state ='1' then '待接听' when crs.state ='2' then '待评价'
-    when crs.state ='3' then '待分享' when crs.state ='4' then '待建档'
-    when crs.state ='6' then '已取消' end state,
+    when crs.state ='3' then '待分享' when crs.state ='4' then '已取消'
+    when crs.state ='5' then '已完成' end state,
     DATE_FORMAT(scs.beginTime,'%k:%i') beginTime,
     DATE_FORMAT(scs.endTime,'%k:%i') endTime,
     DATE_FORMAT(scs.date,'%Y/%m/%d') date,
@@ -171,8 +171,8 @@
     sd.hospitalName,
     crs.id,
     case when crs.state ='0' then '待支付' when crs.state ='1' then '待接听' when crs.state ='2' then '待评价'
-    when crs.state ='3' then '待分享' when crs.state ='4' then '待建档'
-    when crs.state ='6' then '已取消' end state,
+    when crs.state ='3' then '待分享' when crs.state ='4' then '已取消'
+    when crs.state ='5' then '已完成' end state,
     crs.create_time,
     crs.register_no,
     crs.illness_describe_id,
@@ -202,8 +202,8 @@
     sd.hospitalName,
     crs.id,
     case when crs.state ='0' then '待支付' when crs.state ='1' then '待接听' when crs.state ='2' then '待评价'
-    when crs.state ='3' then '待分享' when crs.state ='4' then '待建档'
-    when crs.state ='6' then '已取消' end state,
+    when crs.state ='3' then '待分享' when crs.state ='4' then '已取消'
+    when crs.state ='5' then '已完成' end state,
     crs.create_time,
     crs.register_no,
     crs.illness_describe_id,
@@ -229,8 +229,8 @@
     sd.hospitalName,
     prs.id,
     case when prs.status ='0' then '待支付' when prs.status ='1' then '待就诊' when prs.status ='2' then '待评价'
-    when prs.status ='3' then '待分享' when prs.status ='4' then '待建档'
-    when prs.status ='6' then '已取消' end state,
+    when prs.status ='3' then '待分享' when prs.status ='4' then '已取消'
+    when prs.status ='5' then '已完成' end state,
     prs.create_date as create_time,
     prs.register_no,
     prs.illness as illness_describe_id,
@@ -262,7 +262,7 @@
         FROM
         sys_consultphone_service srs
         RIGHT JOIN consultphone_register_service prs ON srs.id = prs.sys_phoneConsult_service_id
-        AND prs. state != "6"
+        AND prs. state != "4"
         AND prs. state != "1"
         AND prs. state != "0"
         LEFT JOIN healthrecord_illness_describe hid on hid.id = prs.illness_describe_id
@@ -464,8 +464,34 @@
     LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
     WHERE
     1=1
-    <if test="state != null" >
-      and crs.state = #{state,VARCHAR}
+    <if test="state != null and state != ''" >
+      and crs.state = #{state}
+    </if>
+    <if test="payState != null and payState != ''">
+      <if test="payState == 1">
+        and crs.state in (1,2,3)
+      </if>
+      <if test="payState == 4 or payState == 0">
+        and crs.state = #{payState}
+      </if>
+    </if>
+    <if test="loginPhone != null and loginPhone != ''">
+      and su.phone = #{loginPhone}
+    </if>
+    <if test="doctorName != null and doctorName != ''">
+      and sd.NAME = #{doctorName}
+    </if>
+    <if test="orderTimeFromStr != null and orderTimeFromStr != ''">
+      and crs.create_time >= #{orderTimeFromStr}
+    </if>
+    <if test="orderTimeToStr != null and orderTimeToStr != ''">
+      and #{orderTimeToStr} >= crs.create_time
+    </if>
+    <if test="consultPhoneTimeFromStr != null and consultPhoneTimeFromStr != ''">
+      and scs.date >= #{consultPhoneTimeFromStr}
+    </if>
+    <if test="consultPhoneTimeToStr != null and consultPhoneTimeToStr != ''">
+      and #{consultPhoneTimeToStr} >= scs.date
     </if>
   </select>
   <!--根据条件查询订单 sunxiao-->
@@ -501,19 +527,19 @@
     LEFT JOIN healthrecord_illness_describe hid ON hid.id = crs.illness_describe_id
     LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
     where 1=1
-    <if test="state != null" >
+    <if test="state != null and state != ''" >
       and crs.state = #{state}
     </if>
-    <if test="id != null" >
+    <if test="id != null and id != ''" >
       and crs.id = #{id}
     </if>
-    <if test="registerId != null" >
+    <if test="registerId != null and registerId != ''" >
       and crs.sys_phoneConsult_service_id = #{registerId}
     </if>
-    <if test="doctorId != null" >
+    <if test="doctorId != null and doctorId != ''" >
       and sd.id = #{doctorId}
     </if>
-    <if test="fromDate != null" >
+    <if test="fromDate != null and fromDate != ''" >
       and scs.date > date_sub(now(),interval 1 week)
     </if>
   </select>
@@ -549,20 +575,22 @@
     LEFT JOIN healthrecord_illness_describe hid ON hid.id = crs.illness_describe_id
     LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
     where 1=1
-    <if test="state != null" >
+    <if test="state != null and state != ''" >
       and crs.state = #{state}
     </if>
-    <if test="id != null" >
+    <if test="payState != null and payState != ''">
+      <if test="payState == 1">
+        and crs.state in (1,2,3)
+      </if>
+      <if test="payState == 4 or payState == 0">
+        and crs.state = #{payState}
+      </if>
+    </if>
+    <if test="id != null and id != ''" >
       and crs.id = #{id}
     </if>
-    <if test="registerId != null" >
-      and crs.sys_phoneConsult_service_id = #{registerId}
-    </if>
-    <if test="doctorId != null" >
+    <if test="doctorId != null and doctorId != ''">
       and sd.id = #{doctorId}
-    </if>
-    <if test="fromDate != null" >
-      and scs.date > date_sub(now(),interval 1 week)
     </if>
   </select>
 </mapper>

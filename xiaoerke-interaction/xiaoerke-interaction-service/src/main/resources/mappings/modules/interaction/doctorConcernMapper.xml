@@ -21,7 +21,11 @@
         <result column="availableDate" property="availableDate" jdbcType="TIMESTAMP" />
         <result column="doctorName" property="doctorName" jdbcType="VARCHAR" />
     </resultMap>
-    
+
+    <resultMap id="OpenIdMap" type="HashMap">
+        <result column="openid" property="openid" jdbcType="VARCHAR" />
+    </resultMap>
+
   <sql id="Base_Column_List" >
     id, sys_user_id, sys_doctor_id
   </sql>
@@ -123,5 +127,10 @@
             ORDER BY dr.fans_number DESC
         </if>
     </select>
-    
+
+    <select id="getMyFansList" resultMap="OpenIdMap" resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        SELECT su.openid FROM sys_concern sc
+        LEFT JOIN sys_user su ON su.id = sc.sys_user_id
+        where sc.sys_doctor_id = #{doctorId}
+    </select>
 </mapper>

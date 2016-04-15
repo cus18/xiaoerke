@@ -1,8 +1,11 @@
-angular.module('controllers', ['ionic']).controller('phoneConsultDetailsCtrl', [
+angular.module('controllers', ['ionic']).controller('phoneConsultFansCtrl', [
     '$scope','$ionicPopup','$state','$stateParams','$location','GetUserLoginStatus',
     function ($scope,$ionicPopup,$state,$stateParams,$location,GetUserLoginStatus) {
-        $scope.title = "病情资料";
-
+        $scope.title = "粉丝列表";
+        $scope.haveMore = true;
+        $scope.noMore = false;
+        var imgUrl = "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/other%2Fliangp.png";
+        $scope.fansList =[{"img":"","name":"aaffffaa"},{"img":imgUrl,"name":"aaaa"},{"img":imgUrl,"name":"aaaa"},{"img":"","name":"aaaa"},{"img":"","name":"aaaa"}];
 
 
         $scope.$on('$ionicView.enter', function(){
@@ -23,4 +26,5 @@ angular.module('controllers', ['ionic']).controller('phoneConsultDetailsCtrl', [
 
 
     }]);
+
 
