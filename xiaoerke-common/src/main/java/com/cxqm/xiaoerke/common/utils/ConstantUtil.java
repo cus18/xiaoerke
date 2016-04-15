@@ -7,8 +7,11 @@ public class ConstantUtil {
 //	public static final String WebPath = "xiaork.cn";
 
 	public static final String DOAMIN_VALUE = "localhost";
-	public static final String TEST_TOKEN = "OjgT_fe2o_zSjx9UECG7nPVhFzFcLEyYFPLbh8BytRR__uuRChYmp3DiXw4UEJAxzmKsEa8x85sFXNa9uXdAV8yg47fd-ikAJIjRptMEuM-U_VSIAuwrHHOY5kqxf7TENWHhAAACLW";
+	public static final String TEST_TOKEN = "cxsV4DIergeycufx3ruDsvHgE3sB7UA27ie6NoFqEb3ZM-HB0nzaVxXlvgXDspIltGYWJ-EoEGrvJaVqn3r0rRrmUCkoMmaGhG5hf6gA4cYCATgAFAOMF";
 
+	public static final String AMR_TOMP3_WINDOWSPATH = "D:\\ffmpeg\\ffmpeg\\bin\\";
+	public static final String AMR_TOMP3_WINDOWSPATHTEMP = "D:\\ffmpeg\\temp\\";
+	public static final String AMR_TOMP3_LINUXPATH = "/mnt/temp";
 	//初始化
 //	public static String APP_ID = "wx0baf90e904df0117";//微信开发平台应用id
 //	public static String APP_SECRET = "b3dac0be3e1739af01fee0052ea7a68f";//应用对应的凭证
