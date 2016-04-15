@@ -217,7 +217,19 @@ angular.module('controllers', ['luegg.directives'])
                     shows[i].innerHTML = replace_em(shows[i].innerHTML);
                 }
             });
-
+            //触发qq声音
+            $('.lipanpan').click(function() {
+                console.log("aaa")
+                var audio = document.createElement('audio');
+                var source = document.createElement('source');
+                source.type = "audio/mpeg";
+                source.type = "audio/mpeg";
+                source.src = "http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/18.ogg";
+                source.autoplay = "autoplay";
+                source.controls = "controls";
+                audio.appendChild(source);
+                audio.play();
+            })
             //查看结果
             var replace_em = function(str){
                 str = str.replace(/\[em_([0-9]*)\]/g, '<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/' +
