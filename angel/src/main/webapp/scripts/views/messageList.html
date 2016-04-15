@@ -124,8 +124,8 @@
             <div class='w10 h20 examinecontent'>
                 <ul>
                      <li ng-repeat="item in currentUserConsultRecordDetail">
-                         <div ng-if="item.senderId==doctor" style="color:#7fc700">
-                             <div class="name">
+                         <div ng-if="item.senderId==doctor">
+                             <div class="name" ng-style="item.senderId==doctor?{color: '#7fc700'}:{color: '#08b7c2'}">
                                  {{item.doctorName}} {{item.dateTime}}
                              </div>
                              <div ng-if="item.messageType=='text'" id="show" class="chatcontent">

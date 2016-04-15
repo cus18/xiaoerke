@@ -58,12 +58,14 @@
                     已接入会话
                 </div>
             </div>
-            <div class="consultNowList"
-                 ng-style="chooseAlreadyJoinConsultPatientId==item.patientId?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}"
-                 ng-repeat="item in alreadyJoinPatientConversationContent"
-                 ng-click="chooseAlreadyJoinConsultPatient(item.patientId,item.patientName)"
-                 alt="">
-                <nobr>{{item.patientName}}&nbsp;&nbsp;{{transformDate(item.dateTime)}}</nobr>
+            <div class="consultList">
+                <div class="consultNowList"
+                     ng-style="chooseAlreadyJoinConsultPatientId==item.patientId?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}"
+                     ng-repeat="item in alreadyJoinPatientConversationContent"
+                     ng-click="chooseAlreadyJoinConsultPatient(item.patientId,item.patientName)"
+                     alt="">
+                    <nobr>{{item.patientName}}&nbsp;&nbsp;{{transformDate(item.dateTime)}}</nobr>
+                </div>
             </div>
         </div>
         <div class="msg-r h30 fr">
@@ -220,7 +222,7 @@
                         关闭</div>
                 </div>
             </div>
-        </div>
+    </div>
     </div>
     <!--等待接入会话-->
     <div class="jrhhpm" ng-show='rankList.show'>
@@ -406,6 +408,6 @@
             </div>
         </div>
     </div>
-    <div class="lipanpan" style="width: 80px;height: 80px;background-color: #333;" >
+    <div class="lipanpan" style="width: 20px;height: 20px;background-color: #333;" >
     </div>
 </div>
