@@ -13,6 +13,15 @@ angular.module('controllers', ['luegg.directives'])
             $scope.info.effect = "true";
             $scope.glued = true;
 
+            $scope.showFlag = {
+                rankList: false,
+                systemSetup: false,
+                waitProcess: false,
+                switchOver: false,
+                myReplyList: false,
+                publicReplyList: false,
+            }
+
             ////QQ表情初始化
             //qqFace();
 
@@ -130,7 +139,6 @@ angular.module('controllers', ['luegg.directives'])
                 }
             }
 
-
             //关闭跟某个用户的会话
             $scope.closeConsult = function () {
                 console.log($scope.info.effect);
@@ -211,42 +219,30 @@ angular.module('controllers', ['luegg.directives'])
             });
 
             //查看结果
-            function replace_em(str) {
+            var replace_em = function(str){
                 str = str.replace(/\[em_([0-9]*)\]/g, '<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/' +
                     'dkf%2Fface%2F$1.gif" border="0" />');
                 return str;
             }
 
             //会话排名
-            $scope.rankList = {
-                show: false
-            }
-            $scope.toggleRankList = function () {
-                $scope.rankList.show = !$scope.rankList.show;
+            $scope.tapRankList = function () {
+                $scope.showFlag.rankList = !$scope.showFlag.rankList;
             }
 
             //系统设置
-            $scope.systemsetup = {
-                show: false
-            }
-            $scope.systemsetup1 = function() {
-                $scope.systemsetup.show = !$scope.systemsetup.show;
+            $scope.tapSystemSetup = function() {
+                $scope.showFlag.systemSetup = !$scope.showFlag.systemSetup;
             }
 
             //等待接入设置
-            $scope.waitprocess = {
-                show: false
-            }
-            $scope.waitprocess1 = function() {
-                $scope.waitprocess.show = !$scope.waitprocess.show;
+            $scope.tapWaitProcess = function() {
+                $scope.showFlag.waitProcess = !$scope.showFlag.waitProcess;
             }
 
             //转接
-            $scope.switchover = {
-                show: false
-            }
-            $scope.switchover1 = function() {
-                $scope.switchover.show = !$scope.switchover.show;
+            $scope.tapSwitchOver = function() {
+                $scope.showFlag.switchOver = !$scope.showFlag.switchOver;
             }
 
             var flag,mark,sign,parentIndex,childIndex;
@@ -254,80 +250,71 @@ angular.module('controllers', ['luegg.directives'])
             //sign标记添加编辑删除的时候是公共回复还是我的回复
             //mark标记删除的时候
             //我的回复
-            $scope.myreplyList = {
-                show: false
-            }
-            $scope.myreplyList1 = function () {
-                $scope.myreplyList.show = !$scope.myreplyList.show;
+            $scope.tapMyReplyList = function () {
+                $scope.showFlag.myReplyList = !$scope.showFlag.myReplyList;
                 sign = 0;
                 mark = 0;
-                if ($scope.myreplyList.show == false){
+                if (!$scope.showFlag.myReplyList){
                     $(".rtitle:eq(0)").css('backgroundPosition','0 0');
                     $(".rtitle:eq(0)").css('color','#333');
-                }else if($scope.myreplyList.show == true){
+                }else if($scope.showFlag.myReplyList){
                     $(".rtitle:eq(0)").css('backgroundPosition','0 -42px');
                     $(".rtitle:eq(0)").css('color','#08b7c2');
                 }
             }
+
             //我的回复内容
-            $scope.mreplyContent1 = function (parentIndex1) {
-                $scope.mreplayindex = parentIndex1;
+            $scope.tapMyReplyContent = function (parentIndex) {
+                $scope.myReplayIndex = parentIndex;
                 mark = 1;
                 flag = 0;
-                parentIndex = parentIndex1;
                 $scope.info.editGroup = $scope.myAnswer[parentIndex].name;
-                //console.log("editMyGroup",$scope.info.editGroup)
-                $(".myreply .group-title").not(parentIndex1).css('backgroundPosition','0 0');
-                $(".myreply .group-title").not(parentIndex1).css('color','#333');
-                $(".myreply .group-title").eq(parentIndex1).css('backgroundPosition','0 -42px');
-                $(".myreply .group-title").eq(parentIndex1).css('color','#08b7c2');
+                $(".myreply .group-title").not(parentIndex).css('backgroundPosition','0 0');
+                $(".myreply .group-title").not(parentIndex).css('color','#333');
+                $(".myreply .group-title").eq(parentIndex).css('backgroundPosition','0 -42px');
+                $(".myreply .group-title").eq(parentIndex).css('color','#08b7c2');
             }
-            $scope.editMyContent = function(parentIndex1, childIndex1) {
+            $scope.tapEditMyContent = function(parentIndex, childIndex) {
                 flag = 1;
-                parentIndex = parentIndex1;
-                childIndex = childIndex1;
                 $scope.info.editContent = $scope.myAnswer[parentIndex].secondAnswer[childIndex].name;
-                $("nobr").not(childIndex1).css('color','#333')
-                $(".myreply .group-title").eq(parentIndex1).siblings("ul").find("nobr").eq(childIndex1).css('color','#08b7c2');
+                $("nobr").not(childIndex).css('color','#333')
+                $(".myreply .group-title").eq(parentIndex).siblings("ul").find("nobr").eq(childIndex).css('color','#08b7c2');
             };
-            //公共回复
-            $scope.pubilcreplyList = {
-                show: false
-            }
+
             //回复列表
-            $scope.pubilcreplyList1 = function () {
-                $scope.pubilcreplyList.show = !$scope.pubilcreplyList.show;
+            $scope.tapPublicReplyList = function () {
+                $scope.showFlag.publicReplyList = !$scope.showFlag.publicReplyList;
                 sign = 1;
                 mark = 0;
-                if ($scope.pubilcreplyList.show == false){
+                if (!$scope.showFlag.publicReplyList){
                     $(".rtitle:eq(1)").css('backgroundPosition','0 0');
                     $(".rtitle:eq(1)").css('color','#333');
-                }else if($scope.pubilcreplyList.show == true){
+                }else if($scope.showFlag.publicReplyList){
                     $(".rtitle:eq(1)").css('backgroundPosition','0 -42px');
                     $(".rtitle:eq(1)").css('color','#08b7c2');
                 }
             }
+
             //公告回复内容
-            $scope.pubilcreplyContent1 = function (parentIndex1) {
-                $scope.pubilcreplyindex = parentIndex1;
+            $scope.tapPublicReplyContent = function (parentIndex) {
+                $scope.pubilcReplyIndex = parentIndex;
                 mark = 1;
                 flag = 0;
-                parentIndex = parentIndex1;
                 $scope.info.editGroup = $scope.commonAnswer[parentIndex].name;
-                $(".pubilcreply .group-title").not(parentIndex1).css('backgroundPosition','0 0');
-                $(".pubilcreply .group-title").not(parentIndex1).css('color','#333');
-                $(".pubilcreply .group-title").eq(parentIndex1).css('backgroundPosition','0 -42px');
-                $(".pubilcreply .group-title").eq(parentIndex1).css('color','#08b7c2');
+                $(".pubilcreply .group-title").not(parentIndex).css('backgroundPosition','0 0');
+                $(".pubilcreply .group-title").not(parentIndex).css('color','#333');
+                $(".pubilcreply .group-title").eq(parentIndex).css('backgroundPosition','0 -42px');
+                $(".pubilcreply .group-title").eq(parentIndex).css('color','#08b7c2');
             }
+
             //编辑公共内容
-            $scope.editCommonContent = function(parentIndex1, childIndex1) {
+            $scope.tapEditCommonContent = function(parentIndex, childIndex) {
                 flag = 1;
-                parentIndex = parentIndex1;
-                childIndex = childIndex1;
                 $scope.info.editContent = $scope.commonAnswer[parentIndex].secondAnswer[childIndex].name;
-                $("nobr").not(childIndex1).css('color','#333')
-                $(".pubilcreply .group-title").eq(parentIndex1).siblings("ul").find("nobr").eq(childIndex1).css('color','#08b7c2');
+                $("nobr").not(childIndex).css('color','#333')
+                $(".pubilcreply .group-title").eq(parentIndex).siblings("ul").find("nobr").eq(childIndex).css('color','#08b7c2');
             };
+
             //添加分组
             $scope.add = function() {
                 $scope.info.addGroup = '';
@@ -350,12 +337,10 @@ angular.module('controllers', ['luegg.directives'])
             $scope.closeAddGroup = function() {
                 $scope.addgroup = false;
             }
-
             $scope.addGroupSubmit = function () {
                 var setGroupContent = {};
                 setGroupContent.name = $scope.info.addGroup;
                 setGroupContent.secondAnswer=[];
-                console.log('addGroup',setGroupContent);
                 if(sign == 0 && mark == 0){
                     $scope.myAnswer.push(setGroupContent);
                     saveMyAnswer();
@@ -365,12 +350,12 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 $scope.addgroup = false;
             }
+
             //添加内容
             $scope.addcontent = false;
             $scope.closeAddContent = function() {
                 $scope.addcontent=false;
             }
-
             $scope.addContentSubmit = function () {
                 var setContent = {};
                 setContent.name = $scope.info.addContent;
