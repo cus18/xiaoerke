@@ -10,9 +10,7 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Timestamp;
@@ -504,20 +502,18 @@ public class WechatUtil {
 
         //返回图片的阿里云地址getConsultMediaBaseUrl
         String mediaName = mediaId;
-        if(messageType.equals("image")){
+        if(messageType.contains("image")){
             mediaName = mediaName+".jpg";
-        }else if(messageType.equals("voice")){
-            mediaName = mediaName+".mp4";
-        }else if(messageType.equals("video")){
+        }else if(messageType.contains("voice")){
+            mediaName = mediaName+".amr";
+        }else if(messageType.contains("video")){
             mediaName = mediaName+".mp4";
         }
-//        Runnable thread = new uploadFileInputStreamThread(mediaName, picLen, inputStream, OSSObjectTool.BUCKET_CONSULT_PIC);
+
         //上传图片到阿里云
         OSSObjectTool.uploadFileInputStream(mediaName, picLen, inputStream, OSSObjectTool.BUCKET_CONSULT_PIC);
-//        threadExecutor.execute(thread);
 
         String mediaURL = OSSObjectTool.getConsultMediaBaseUrl()+ mediaName;
-
         return mediaURL;
     }
 }

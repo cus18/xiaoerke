@@ -4,6 +4,8 @@ import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneManuallyConnectVo;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 电话咨询手动接通电话记录
@@ -20,5 +22,5 @@ public interface ConsultPhoneManuallyConnectRecordDao {
     void saveManuallyConnectRecordInfo(ConsultPhoneManuallyConnectVo vo);
 
     //查询手动接通电话记录信息
-    ConsultPhoneManuallyConnectVo getManuallyConnectRecordByInfo(HashMap<String, Object> hashMap);
+    List<ConsultPhoneManuallyConnectVo> getManuallyConnectRecordListByInfo(Map<String, Object> map);
 }

@@ -15,6 +15,7 @@ import com.cxqm.xiaoerke.modules.order.service.PhoneConsultDoctorRelationService
 import com.cxqm.xiaoerke.modules.sys.dao.DoctorDao;
 import com.cxqm.xiaoerke.modules.sys.dao.HospitalDao;
 import com.cxqm.xiaoerke.modules.sys.service.DoctorGroupInfoService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by sunxiao on 16/3/23.
@@ -40,6 +41,7 @@ public class PhoneConsultDoctorRelationServiceImpl implements PhoneConsultDoctor
      * sunxiao
      */
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public JSONObject openConsultPhone(ConsulPhonetDoctorRelationVo vo) {
 		// TODO Auto-generated method stub
 		JSONObject result = new JSONObject();

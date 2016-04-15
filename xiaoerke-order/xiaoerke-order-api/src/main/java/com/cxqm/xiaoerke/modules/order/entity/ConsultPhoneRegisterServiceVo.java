@@ -12,7 +12,7 @@ public class ConsultPhoneRegisterServiceVo {
 
     private String sysPatientId;
 
-    private String state;//0待支付，1带接听，2待评价，3待分享，4已取消
+    private String state;//订单状态 0-待支付  1-待接通  2-待评价  3-待分享 4-已取消 5-超时取消
 
     private Date createTime;
 
@@ -51,6 +51,8 @@ public class ConsultPhoneRegisterServiceVo {
     private Date date;//医生加号表中的时间
 
     private Date beginTime;//开始时间
+
+    private Date endTime;//开始时间
 
     private long surplusTime; //通话剩余时长
 
@@ -125,6 +127,14 @@ public class ConsultPhoneRegisterServiceVo {
     @ExcelField(title="删除人", align=2, sort=12)
     public String getDeleteBy() {
         return deleteBy;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     public void setDeleteBy(String deleteBy) {

@@ -38,7 +38,7 @@
 			$.ajax({
 				type: "post",
 				url: "${ctx}/consultPhone/timingDial",
-				data: {dialType:$('input[name="dial"]:checked').val(),surplusTime:$("#surplusTime").val(),userPhone:$("#loginPhone").val(),doctorPhone:$("#doctorAnswerPhone").val(),dialDate:$("#inputDailTime").val()},
+				data: {dialType:$('input[name="dial"]:checked').val(),surplusTime:$("#surplusTime").val(),userPhone:$("#loginPhone").val(),doctorPhone:$("#doctorAnswerPhone").val(),dialDate:$("#inputDailTime").val(),orderId:${map.id}},
 				dataType: "json",
 				success: function(data){
 
@@ -62,7 +62,7 @@
 <form:form id="inputForm" modelAttribute="consultPhone" action="${ctx}/consultPhone/timingDial" method="post" class="form-horizontal"><%--
 		<form:hidden path="email" htmlEscape="false" maxlength="255" class="input-xlarge"/>
 		<sys:ckfinder input="email" type="files" uploadPath="/mytask" selectMultiple="false"/> --%>
-	<form:input id="urvid" path="id" type="hidden" value="${vo.id}"/>
+	<input id="orderId" value="${map.id}"/>
 	<sys:message content="${message}"/>
 	<div class="control-group">
 		<label class="control-label">订单号:</label>
@@ -108,7 +108,7 @@
 			<font color="blue">手动接通设置</font><br/>
 			设置时长&nbsp;&nbsp;&nbsp;&nbsp;用户手机号码&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${map.doctorName}电话<br/>
 			<input id="surplusTime" htmlEscape="false" maxlength="50" style="width: 50px" class="required" value="${map.surplusTime}"/>
-			<input id="loginPhone" htmlEscape="false" maxlength="50" style="width: 150px" class="required" value="${map.loginPhone}"/>
+			<input id="loginPhone" htmlEscape="false" maxlength="50" style="width: 150px" class="required" value="${map.phoneNum}"/>
 			<input id="doctorAnswerPhone" htmlEscape="false" maxlength="50" style="width: 150px" class="required" value="${map.doctor_answer_phone}"/><br/>
 			<hr>设定接通时间
 			<input id="immediatelyDial" name="dial" value="immediatelyDial" type="radio" checked="checked" onclick="hideTime()"><label for="immediatelyDial">立即拨打</label>
@@ -124,14 +124,32 @@
 		<label class="control-label"></label>
 		<div class="controls">
 			<font color="blue">手动接通记录</font><br/>
-			设置时长&nbsp;&nbsp;&nbsp;&nbsp;用户手机号码&nbsp;&nbsp;&nbsp;&nbsp;医生电话&nbsp;&nbsp;&nbsp;&nbsp;拨打时间&nbsp;&nbsp;&nbsp;&nbsp;接通方式&nbsp;&nbsp;&nbsp;&nbsp;操作用户<br/>
+			<table border="1px">
+				<tr>
+					<th>设置时长</th>
+					<th>用户手机号码</th>
+					<th>医生电话</th>
+					<th>拨打时间</th>
+					<th>接通方式</th>
+					<th>操作用户</th>
+				</tr>
+				<c:forEach items="${map.recordList}" var="record">
+					<tr>
+						<td>${record.surplusTime}</td>
+						<td>${record.userPhone}</td>
+						<td>${record.doctorPhone}</td>
+						<td><fmt:formatDate value ="${record.dialDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+						<td>
+							<c:if test="${record.dialType eq 'immediatelyDial'}">立即拨打</c:if>
+							<c:if test="${record.dialType eq 'timingDial'}">定时拨打</c:if>
+						</td>
+						<td>${record.operBy}</td>
+					</tr>
+				</c:forEach>
+			</table>
 		</div>
 	</div>
 	<div class="form-actions">
-		<c:if test="${irsvo.state eq '2'}">
-			<input id="btnSubmit" class="btn btn-primary" type="button" onclick="insuranceAudit('${ctx}/insurance/auditForm?id=${irsvo.id}&nickName=${irsvo.nickName}&parentId=${irsvo.parentId}&state=3','审核通过')" value="审核通过"></input>
-			<input id="btnSubmit" class="btn btn-primary" type="button" onclick="insuranceAudit('${ctx}/insurance/auditForm?id=${irsvo.id}&nickName=${irsvo.nickName}&parentId=${irsvo.parentId}&state=5','审核不通过')" value="审核不通过"/>
-		</c:if>
 		<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 	</div>
 </form:form>

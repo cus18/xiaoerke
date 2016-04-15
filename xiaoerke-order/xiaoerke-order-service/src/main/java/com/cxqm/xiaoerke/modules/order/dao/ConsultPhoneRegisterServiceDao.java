@@ -38,7 +38,14 @@ public interface ConsultPhoneRegisterServiceDao {
      */
     Page<ConsultPhoneRegisterServiceVo> findConsultPhonePatientList(Page<ConsultPhoneRegisterServiceVo> page,ConsultPhoneRegisterServiceVo vo);
 
+    /**
+     * 根据条件查询电话咨询订单
+     * sunxiao
+     * @param map
+     * @return
+     */
     List<Map<String, Object>> getConsultPhoneRegisterListByInfo(Map<String, Object> map);
+    List<ConsultPhoneRegisterServiceVo> getAllConsultPhoneRegisterListByInfo(ConsultPhoneRegisterServiceVo vo);
 
     /**
      *
@@ -71,4 +78,11 @@ public interface ConsultPhoneRegisterServiceDao {
      */
     void changeConsultPhoneRegisterServiceState(HashMap<String, Object> excuteMap);
 
+    /**
+     * 每日清单
+     * @param searchMap dortorId,date
+     * @return
+     * @author chenxiaoqiong
+     */
+    List<Map<String,Object>> getSettlementPhoneConsultInfoByDate(Map<String, Object> searchMap);
 }

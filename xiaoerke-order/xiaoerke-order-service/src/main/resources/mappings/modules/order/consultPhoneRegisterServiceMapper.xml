@@ -249,7 +249,36 @@
       and prs.status = #{state,VARCHAR}
     </if>
   </select>
-
+    <!-- 每日清单 -->
+    <select id="getSettlementPhoneConsultInfoByDate" resultType="java.util.Map">
+        SELECT
+        srs.beginTime,
+        srs.endTime,
+        sd.position2 position,
+        sbb.name,
+        hid.illness,
+        sd.subsidy,
+        cdr.price
+        FROM
+        sys_consultphone_service srs
+        RIGHT JOIN consultphone_register_service prs ON srs.id = prs.sys_phoneConsult_service_id
+        AND prs. state != "6"
+        AND prs. state != "1"
+        AND prs. state != "0"
+        LEFT JOIN healthrecord_illness_describe hid on hid.id = prs.illness_describe_id
+        LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
+        INNER JOIN sys_doctor sd ON sd.id = srs.sys_doctor_id
+        <if test="date != null" >
+            AND srs.date=#{date}
+        </if>
+        <if test="doctorId != null" >
+            AND srs.sys_doctor_id = #{doctorId}
+        </if>
+        LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = sd.id
+        ORDER BY
+        srs.beginTime ASC
+    </select>
+    
   <!-- 更新订单状态 -->
   <update id="changeConsultPhoneRegisterServiceState">
      update consultphone_register_service prs
@@ -460,6 +489,54 @@
     sd.id AS doctorId,
     su.phone AS loginPhone,
     sa.nickname,
+    sbb. NAME AS babyName
+    FROM
+    consultphone_register_service crs
+    LEFT JOIN sys_consultphone_service scs ON scs.id = crs.sys_phoneConsult_service_id
+    LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = scs.sys_doctor_id
+    LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
+    LEFT JOIN sys_patient sp ON sp.id = crs.sys_patient_id
+    LEFT JOIN sys_user su ON su.id = sp.sys_user_id
+    LEFT JOIN sys_attention sa ON sa.openid = su.openid
+    LEFT JOIN healthrecord_illness_describe hid ON hid.id = crs.illness_describe_id
+    LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
+    where 1=1
+    <if test="state != null" >
+      and crs.state = #{state}
+    </if>
+    <if test="id != null" >
+      and crs.id = #{id}
+    </if>
+    <if test="registerId != null" >
+      and crs.sys_phoneConsult_service_id = #{registerId}
+    </if>
+    <if test="doctorId != null" >
+      and sd.id = #{doctorId}
+    </if>
+    <if test="fromDate != null" >
+      and scs.date > date_sub(now(),interval 1 week)
+    </if>
+  </select>
+  <!--根据条件查询订单 sunxiao-->
+  <select id="getAllConsultPhoneRegisterListByInfo" resultType="com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo" parameterType="java.util.Map">
+    SELECT
+    crs.id,
+    crs.register_no AS registerNo,
+    crs.create_time AS createTime,
+    crs.phone AS loginPhone,
+    crs.update_time AS updateTime,
+    crs.delete_by AS deleteBy,
+    crs.state,
+    crs.surplusTime,
+    scs.date,
+    scs.beginTime,
+    scs.endTime,
+    cdr.server_length AS type,
+    cdr.price,
+    cdr.doctor_answer_phone AS phoneNum,
+    sd. NAME AS doctorName,
+    sd.id AS doctorId,
+    sa.nickname AS nickName,
     sbb. NAME AS babyName
     FROM
     consultphone_register_service crs

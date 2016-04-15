@@ -115,11 +115,11 @@ public class ConsultWechatController extends BaseController {
                     obj.put("type", 0);
                     obj.put("content", URLDecoder.decode(messageContent, "utf-8"));
                 }else{
-                    if(messageType.equals("image")){
+                    if(messageType.contains("image")){
                         obj.put("type", 1);
-                    }else if(messageType.equals("voice")){
+                    }else if(messageType.contains("voice")){
                         obj.put("type", 2);
-                    }else if(messageType.equals("video")){
+                    }else if(messageType.contains("video")){
                         obj.put("type", 3);
                     }
                     //根据mediaId，从微信服务器上，获取到媒体文件，再将媒体文件，放置阿里云服务器，获取URL

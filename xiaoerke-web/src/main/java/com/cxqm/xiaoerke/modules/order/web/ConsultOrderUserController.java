@@ -93,7 +93,7 @@ public class ConsultOrderUserController {
     @RequestMapping(value = "order/user/orderList",method = {RequestMethod.GET,RequestMethod.POST})
     public
     @ResponseBody
-    Map<String,Object> getConsultPhonePageList(Map<String,Object> params){
+    Map<String,Object> getConsultPhonePageList(@RequestBody Map<String,Object> params){
         return consultPhoneOrderService.getUserOrderPhoneConsultList(params);
     }
 
