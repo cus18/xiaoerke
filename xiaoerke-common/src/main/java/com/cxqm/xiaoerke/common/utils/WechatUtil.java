@@ -20,12 +20,6 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import it.sauronsoftware.jave.AudioAttributes;
-import it.sauronsoftware.jave.Encoder;
-import it.sauronsoftware.jave.EncoderException;
-import it.sauronsoftware.jave.EncodingAttributes;
-import it.sauronsoftware.jave.InputFormatException;
-
 /**
  * Created by baoweiw on 2015/7/27.
  */
@@ -511,19 +505,7 @@ public class WechatUtil {
         if(messageType.contains("image")){
             mediaName = mediaName+".jpg";
         }else if(messageType.contains("voice")){
-            mediaName = mediaName+".mp3";
-            //创建源文件
-            String sourceFile = createFile();
-            //创建目标文件
-            String targetFile = createFile();
-            //将InputStream转成源文件
-            File sorceName = new  File(sourceFile);
-            inputstreamtofile(inputStream,sorceName);
-            changeToMp3(sourceFile, targetFile);
-            File finalFile = new File(targetFile);
-            inputStream = new FileInputStream(finalFile);
-            deleteFiles(sourceFile);
-            deleteFiles(targetFile);
+            mediaName = mediaName+".amr";
         }else if(messageType.contains("video")){
             mediaName = mediaName+".mp4";
         }
@@ -533,71 +515,5 @@ public class WechatUtil {
 
         String mediaURL = OSSObjectTool.getConsultMediaBaseUrl()+ mediaName;
         return mediaURL;
-    }
-    //创建文件，并返回文件路径
-    public String createFile(){
-        String path = "../tempFileSource";
-        File f = new File(path);
-        if(!f.exists()){
-            f.mkdirs();
-        }
-        String Name=IdGen.uuid();
-        File file = new File(f,Name);
-        if(!file.exists()){
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return path+Name;
-    }
-
-    public void inputstreamtofile(InputStream ins,File file){
-        try{
-            OutputStream os = new FileOutputStream(file);
-            int bytesRead = 0;
-            byte[] buffer = new byte[8192];
-            while ((bytesRead = ins.read(buffer, 0, 8192)) != -1) {
-                os.write(buffer, 0, bytesRead);
-            }
-            os.close();
-            ins.close();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-
-    }
-
-    /**
-     *
-     * 删除文件
-     */
-    //删除文件和目录
-    private void deleteFiles(String workspaceRootPath){
-        File file = new File(workspaceRootPath);
-        file.delete();
-    }
-
-    public static void changeToMp3(String sourcePath, String targetPath) {
-        File source = new File(sourcePath);
-        File target = new File(targetPath);
-        AudioAttributes audio = new AudioAttributes();
-        Encoder encoder = new Encoder();
-
-        audio.setCodec("libmp3lame");
-        EncodingAttributes attrs = new EncodingAttributes();
-        attrs.setFormat("mp3");
-        attrs.setAudioAttributes(audio);
-
-        try {
-            encoder.encode(source, target, attrs);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (InputFormatException e) {
-            e.printStackTrace();
-        } catch (EncoderException e) {
-            e.printStackTrace();
-        }
     }
 }
