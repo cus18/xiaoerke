@@ -355,22 +355,32 @@ define(['appPhoneConsult'], function (app) {
                     var routePath = "";
                     if(action=="go"){
                         routePath = "/phoneConsultBBBBBB/"+redirectParam+"/"+routeParam;
-                    } else if(action=="notGo"){
+                    }
+                    else if(action=="notGo"){
                         routePath = "/phoneConsultBBBBBB/"+redirectParam;
+                    }
+                    if(hrefParam!=""&&routeParam==""){
+                        routePath = "/appointBBBBBB/"+redirectParam;
+                    }
+                    if(hrefParam!=""&&routeParam!=""){
+                        routePath = "/appointBBBBBB/"+redirectParam+"/"+routeParam;
                     }
                     GetUserLoginStatus.save({routePath:routePath},function(data){
                         if(data.status=="9") {
                             window.location.href = data.redirectURL;
-                        } else if(data.status=="8"){
+                        }
+                        else if(data.status=="8"){
                             window.location.href = data.redirectURL+"?targeturl="+routePath;
-                        }else {
+                        }
+                        else {
                             if(action=="notGo"){
                                 if(hrefParam==""){
                                     $state.go(redirectParam);
                                 }else{
                                     window.location.href = hrefParam;
                                 }
-                            }else if(action=="go"){
+                            }
+                            else if(action=="go"){
                                 $state.go(redirectParam,goParam);
                             }
                         }
