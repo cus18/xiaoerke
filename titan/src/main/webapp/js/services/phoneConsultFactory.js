@@ -226,13 +226,13 @@ define(['appPhoneConsult'], function (app) {
         .factory('MyShare', ['$resource', function ($resource) {
             return $resource(user_h5 + 'interaction/user/share');
         }])
-        //获取用户对某医生的评价
+        //获取用户对某医生的评价（电话咨询）
         .factory('GetUserEvaluate',['$resource',function ($resource){
-            return $resource(user_h5 + 'interaction/user/evaluateDoctor');
+            return $resource(user_appoint + 'interaction/user/evaluateDoctor');
         }])
         //用户对客服的评价
         .factory('CustomerEvaluation',['$resource',function ($resource){
-            return $resource(user_h5 + 'interaction/user/customerEvaluation');
+            return $resource(user_appoint + 'interaction/user/customerEvaluation');
         }])
         //问卷调查
         .factory('QuestionnaireSurvey',['$resource',function ($resource){
