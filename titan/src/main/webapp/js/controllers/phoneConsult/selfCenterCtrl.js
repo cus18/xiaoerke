@@ -14,6 +14,11 @@
                 window.location.href="appoint#/myInfo/"+$scope.myselfInfo.userPhoneNum;
                /* window.location.href = "/titan/appoint#/healthRecordSelectBaby/"+index+",1,"+$stateParams.conid;*/
             };
+            /*我的预约券*/
+            $scope.myService = function(){
+                window.location.href="appoint#/myService";
+                /* window.location.href = "/titan/appoint#/healthRecordSelectBaby/"+index+",1,"+$stateParams.conid;*/
+            };
             /* 当前订单*/
             $scope.currentOrder = function(){
                 resolveUserLoginStatus.events("currentOrderList","","","","notGo");
@@ -33,9 +38,9 @@
             };
            /* 健康档案*/
             $scope.healthRecord = function(){
-                resolveUserLoginStatus.events("healthRecordIndex","","","appoint#/healthRecordIndex/","notGo");
+                resolveUserLoginStatus.events("healthRecordIndex","0","","appoint#/healthRecordIndex","notGo");
             };
-            var routePath = "/appointBBBBBB" + $location.path();
+            var routePath = "/phoneConsultBBBBBB" + $location.path();
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 $scope.pageLoading = false;
                 if(data.status=="9") {
