@@ -187,6 +187,18 @@ public class ConsultUserController extends BaseController {
         return response;
     }
 
+    /**
+     * 获取医生下的目前正在咨询的用户列表
+     */
+    @RequestMapping(value = "/getCurrentUserList", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> getCurrentUserList(@RequestBody Map<String, Object> params) {
+        Map<String,Object> response = new HashMap<String, Object>();
+
+        return response;
+    }
+
 
     /***
      * 聊天记录查询接口（UserInfo 根据客户查找  message 根据聊天记录查找  分页

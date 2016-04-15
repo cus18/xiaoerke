@@ -1,8 +1,9 @@
 angular.module('controllers', ['luegg.directives'])
     .controller('doctorConsultFirstCtrl', ['$scope', '$sce', '$window','getTodayRankingList', 'getOnlineDoctorList',
         'getCommonAnswerList', 'getMyAnswerList', 'GetUserLoginStatus', '$location', 'GetUserRecordList','getMyAnswerModify',
+        'getCurrentUserConsultListInfo',
         function ($scope, $sce, $window,getTodayRankingList, getOnlineDoctorList, getCommonAnswerList,
-                  getMyAnswerList, GetUserLoginStatus, $location, GetUserRecordList,getMyAnswerModify) {
+                  getMyAnswerList, GetUserLoginStatus, $location, GetUserRecordList,getMyAnswerModify,getCurrentUserConsultListInfo) {
             $scope.test = "";
             $scope.info = {};
             $scope.socketServer1 = "";
@@ -12,7 +13,14 @@ angular.module('controllers', ['luegg.directives'])
             $scope.info.effect = "true";
             $scope.glued = true;
 
-            $scope.audioData = $sce.trustAsResourceUrl("http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/q9ONyEWgxkvTQxDhj7HADcHOBklzvkd8gv697tFwT9R72fe1l1ldKrAZTTicxE6x.mp3");
+            $scope.showFlag = {
+                rankList: false,
+                systemSetup: false,
+                waitProcess: false,
+                switchOver: false,
+                myReplyList: false,
+                publicReplyList: false,
+            }
 
             ////QQ表情初始化
             //qqFace();
@@ -77,27 +85,34 @@ angular.module('controllers', ['luegg.directives'])
                         getAlreadyJoinConsultPatientList();
                     }
                 })
-
-
-                //$scope.chooseAlreadyJoinConsultPatientId = "";
-                //$scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversationContent[0].patientId,
-                //    $scope.alreadyJoinPatientConversationContent[0].patientName);
             }
 
             //在通话列表中，选取一个用户进行会话
-            $scope.chooseAlreadyJoinConsultPatient = function (patientId, patientName, page) {
+            $scope.chooseAlreadyJoinConsultPatient = function (patientId, patientName) {
                 $scope.chooseAlreadyJoinConsultPatientId = patientId;
                 $scope.chooseAlreadyJoinConsultPatientName = patientName;
 
-                GetUserRecordList.save({
-                    recordType: "user",
-                    pageNo: 2,
-                    pageSize: 100,
-                    patientId: patientId,
-                    patientName: patientName
-                }, function (data) {
-                    $scope.currentAlreadyJoinConsultContent = data.records;
+                var updateFlag = false;
+                $.each($scope.alreadyJoinPatientConversationContent, function (index, value) {
+                    if (value.patientId == patientId) {
+                        $scope.currentUserConversationContent = "";
+                        $scope.currentUserConversationContent = angular.copy(value);
+                        updateFlag = true;
+                    }
                 });
+                if(!updateFlag){
+                    GetUserRecordList.save({
+                        recordType: "user",
+                        pageNo: 1,
+                        pageSize: 100,
+                        patientId: patientId,
+                        patientName: patientName
+                    }, function (data) {
+                        $scope.currentUserConversationContent = "";
+                        $scope.currentUserConversationContent = angular.copy(data.records);
+                        $scope.alreadyJoinPatientConversationContent.push(data.records);
+                    });
+                }
             }
 
             //向用户发送咨询消息
@@ -106,21 +121,18 @@ angular.module('controllers', ['luegg.directives'])
                     "type": 0,
                     "content": angular.copy($scope.info.consultMessage),
                     "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                    "senderId": $scope.doctorId,
-                    "senderName": $scope.doctorName,
-                    "sessionId": 18538
+                    "senderId": angular.copy($scope.doctorId),
+                    "senderName": angular.copy($scope.doctorName),
+                    "sessionId": angular.copy($scope.currentUserConversationContent.sessionId)
                 };
 
                 if (!window.WebSocket) {
                     return;
                 }
                 if ($scope.socketServer1.readyState == WebSocket.OPEN) {
-                    $scope.alreadyJoinPatientConversationContent[0].consultValue.push(consultValMessage);
-                    $scope.chooseAlreadyJoinConsultPatient($scope.chooseAlreadyJoinConsultPatientId,
-                        $scope.chooseAlreadyJoinConsultPatientName);
                     $scope.info.consultMessage = "";
-
-                    console.log(JSON.stringify(consultValMessage));
+                    $scope.currentUserConversationContent.consultValue.push(consultValMessage);
+                    updateAlreadyJoinPatientConversationContentFromPatient(consultValMessage);
                     $scope.socketServer1.send(JSON.stringify(consultValMessage));
                 } else {
                     alert("连接没有开启.");
@@ -143,8 +155,6 @@ angular.module('controllers', ['luegg.directives'])
 
             $scope.useImgFace = function () {}
 
-            var getAlreadyJoinConsultPatientList = function () {}
-
             //初始化socket链接
             $scope.initConsultSocket1 = function () {
                 if (!window.WebSocket) {
@@ -166,7 +176,7 @@ angular.module('controllers', ['luegg.directives'])
                         }else{
                             filterMediaData(consultData);
                             console.log("testdata",consultData);
-                            processConversationMessage(consultData);
+                            processPatientSendMessage(consultData);
                         }
                         $scope.$apply()
                     };
@@ -183,14 +193,6 @@ angular.module('controllers', ['luegg.directives'])
                 }
             }
 
-            //过滤媒体数据
-            var filterMediaData = function (val) {
-                if (val.type == "2"||val.type == "3") {
-                    console.log(val.content);
-                    val.content = $sce.trustAsResourceUrl(angular.copy(val.content));
-                }
-            }
-
             //处理用户按键事件
             document.onkeydown = function () {
                 var a = window.event.keyCode;
@@ -200,71 +202,6 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 }
             };//当onkeydown 事件发生时调用函数
-
-            //处理用户发送过来的会话消息
-            var processConversationMessage = function(conversationData){
-                var currentConsultValue = {};
-                currentConsultValue.type = conversationData.type;
-                currentConsultValue.content = conversationData.content;
-                currentConsultValue.dateTime = conversationData.dateTime;
-                currentConsultValue.senderId = conversationData.senderId;
-                currentConsultValue.senderName = conversationData.senderName;
-                currentConsultValue.sessionId = conversationData.sessionId;
-                if(JSON.stringify($scope.currentUserConversationContent)=='{}'){
-                    $scope.currentUserConversationContent.patientId = conversationData.senderId;
-                    $scope.currentUserConversationContent.fromServer = conversationData.fromServer;
-                    $scope.currentUserConversationContent.sessionId = conversationData.sessionId;
-                    $scope.currentUserConversationContent.isOnline = true;
-                    $scope.currentUserConversationContent.dateTime = conversationData.dateTime;
-                    $scope.currentUserConversationContent.messageNotSee = false;
-                    $scope.currentUserConversationContent.patientName = conversationData.senderName;
-                    $scope.currentUserConversationContent.consultValue = [];
-                    $scope.currentUserConversationContent.consultValue.push(currentConsultValue);
-                    $scope.chooseAlreadyJoinConsultPatient(currentConsultValue.senderId,currentConsultValue.senderName);
-                }
-                else if($scope.currentUserConversationContent.patientId == conversationData.senderId){
-                    $scope.currentUserConversationContent.consultValue.push(currentConsultValue);
-                }
-                updateAlreadyJoinPatientConversationContentFromPatient(conversationData);
-
-                console.log($scope.currentUserConversationContent.consultValue);
-                console.log($scope.alreadyJoinPatientConversationContent);
-            }
-
-            var updateAlreadyJoinPatientConversationContentFromPatient = function(conversationData){
-                var updateFlag = false;
-                $.each($scope.alreadyJoinPatientConversationContent, function (index, value) {
-                    if (value.patientId == conversationData.senderId) {
-                        value.consultValue.push(conversationData);
-                        updateFlag = true;
-                    }
-                });
-                if(!updateFlag){
-                    var consultValue = {};
-                    var conversationContent = {};
-                    consultValue.type = conversationData.type;
-                    consultValue.content = conversationData.content;
-                    consultValue.dateTime = conversationData.dateTime;
-                    consultValue.senderId = conversationData.senderId;
-                    consultValue.senderName = conversationData.senderName;
-                    consultValue.sessionId = conversationData.sessionId;
-                    conversationContent.patientId = conversationData.senderId;
-                    conversationContent.fromServer = conversationData.fromServer;
-                    conversationContent.sessionId = conversationData.sessionId;
-                    conversationContent.isOnline = true;
-                    conversationContent.dateTime = conversationData.dateTime;
-                    conversationContent.messageNotSee = false;
-                    conversationContent.patientName = conversationData.senderName;
-                    conversationContent.consultValue = [];
-                    conversationContent.consultValue.push(consultValue);
-                    $scope.alreadyJoinPatientConversationContent.push(conversationContent);
-                }
-            }
-
-            //处理系统发送过来的通知类消息
-            var processNotifyMessage = function(notifyDate){
-
-            }
 
             $scope.getQQExpression = function () {
                 $('.emotion').qqFace({
@@ -282,42 +219,30 @@ angular.module('controllers', ['luegg.directives'])
             });
 
             //查看结果
-            function replace_em(str) {
+            var replace_em = function(str){
                 str = str.replace(/\[em_([0-9]*)\]/g, '<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/' +
                     'dkf%2Fface%2F$1.gif" border="0" />');
                 return str;
             }
 
             //会话排名
-            $scope.rankList = {
-                show: false
-            }
-            $scope.toggleRankList = function () {
-                $scope.rankList.show = !$scope.rankList.show;
+            $scope.tapRankList = function () {
+                $scope.showFlag.rankList = !$scope.showFlag.rankList;
             }
 
             //系统设置
-            $scope.systemsetup = {
-                show: false
-            }
-            $scope.systemsetup1 = function() {
-                $scope.systemsetup.show = !$scope.systemsetup.show;
+            $scope.tapSystemSetup = function() {
+                $scope.showFlag.systemSetup = !$scope.showFlag.systemSetup;
             }
 
             //等待接入设置
-            $scope.waitprocess = {
-                show: false
-            }
-            $scope.waitprocess1 = function() {
-                $scope.waitprocess.show = !$scope.waitprocess.show;
+            $scope.tapWaitProcess = function() {
+                $scope.showFlag.waitProcess = !$scope.showFlag.waitProcess;
             }
 
             //转接
-            $scope.switchover = {
-                show: false
-            }
-            $scope.switchover1 = function() {
-                $scope.switchover.show = !$scope.switchover.show;
+            $scope.tapSwitchOver = function() {
+                $scope.showFlag.switchOver = !$scope.showFlag.switchOver;
             }
 
             var flag,mark,sign,parentIndex,childIndex;
@@ -325,80 +250,71 @@ angular.module('controllers', ['luegg.directives'])
             //sign标记添加编辑删除的时候是公共回复还是我的回复
             //mark标记删除的时候
             //我的回复
-            $scope.myreplyList = {
-                show: false
-            }
-            $scope.myreplyList1 = function () {
-                $scope.myreplyList.show = !$scope.myreplyList.show;
+            $scope.tapMyReplyList = function () {
+                $scope.showFlag.myReplyList = !$scope.showFlag.myReplyList;
                 sign = 0;
                 mark = 0;
-                if ($scope.myreplyList.show == false){
+                if (!$scope.showFlag.myReplyList){
                     $(".rtitle:eq(0)").css('backgroundPosition','0 0');
                     $(".rtitle:eq(0)").css('color','#333');
-                }else if($scope.myreplyList.show == true){
+                }else if($scope.showFlag.myReplyList){
                     $(".rtitle:eq(0)").css('backgroundPosition','0 -42px');
                     $(".rtitle:eq(0)").css('color','#08b7c2');
                 }
             }
+
             //我的回复内容
-            $scope.mreplyContent1 = function (parentIndex1) {
-                $scope.mreplayindex = parentIndex1;
+            $scope.tapMyReplyContent = function (parentIndex) {
+                $scope.myReplayIndex = parentIndex;
                 mark = 1;
                 flag = 0;
-                parentIndex = parentIndex1;
                 $scope.info.editGroup = $scope.myAnswer[parentIndex].name;
-                //console.log("editMyGroup",$scope.info.editGroup)
-                $(".myreply .group-title").not(parentIndex1).css('backgroundPosition','0 0');
-                $(".myreply .group-title").not(parentIndex1).css('color','#333');
-                $(".myreply .group-title").eq(parentIndex1).css('backgroundPosition','0 -42px');
-                $(".myreply .group-title").eq(parentIndex1).css('color','#08b7c2');
+                $(".myreply .group-title").not(parentIndex).css('backgroundPosition','0 0');
+                $(".myreply .group-title").not(parentIndex).css('color','#333');
+                $(".myreply .group-title").eq(parentIndex).css('backgroundPosition','0 -42px');
+                $(".myreply .group-title").eq(parentIndex).css('color','#08b7c2');
             }
-            $scope.editMyContent = function(parentIndex1, childIndex1) {
+            $scope.tapEditMyContent = function(parentIndex, childIndex) {
                 flag = 1;
-                parentIndex = parentIndex1;
-                childIndex = childIndex1;
                 $scope.info.editContent = $scope.myAnswer[parentIndex].secondAnswer[childIndex].name;
-                $("nobr").not(childIndex1).css('color','#333')
-                $(".myreply .group-title").eq(parentIndex1).siblings("ul").find("nobr").eq(childIndex1).css('color','#08b7c2');
+                $("nobr").not(childIndex).css('color','#333')
+                $(".myreply .group-title").eq(parentIndex).siblings("ul").find("nobr").eq(childIndex).css('color','#08b7c2');
             };
-            //公共回复
-            $scope.pubilcreplyList = {
-                show: false
-            }
+
             //回复列表
-            $scope.pubilcreplyList1 = function () {
-                $scope.pubilcreplyList.show = !$scope.pubilcreplyList.show;
+            $scope.tapPublicReplyList = function () {
+                $scope.showFlag.publicReplyList = !$scope.showFlag.publicReplyList;
                 sign = 1;
                 mark = 0;
-                if ($scope.pubilcreplyList.show == false){
+                if (!$scope.showFlag.publicReplyList){
                     $(".rtitle:eq(1)").css('backgroundPosition','0 0');
                     $(".rtitle:eq(1)").css('color','#333');
-                }else if($scope.pubilcreplyList.show == true){
+                }else if($scope.showFlag.publicReplyList){
                     $(".rtitle:eq(1)").css('backgroundPosition','0 -42px');
                     $(".rtitle:eq(1)").css('color','#08b7c2');
                 }
             }
+
             //公告回复内容
-            $scope.pubilcreplyContent1 = function (parentIndex1) {
-                $scope.pubilcreplyindex = parentIndex1;
+            $scope.tapPublicReplyContent = function (parentIndex) {
+                $scope.pubilcReplyIndex = parentIndex;
                 mark = 1;
                 flag = 0;
-                parentIndex = parentIndex1;
                 $scope.info.editGroup = $scope.commonAnswer[parentIndex].name;
-                $(".pubilcreply .group-title").not(parentIndex1).css('backgroundPosition','0 0');
-                $(".pubilcreply .group-title").not(parentIndex1).css('color','#333');
-                $(".pubilcreply .group-title").eq(parentIndex1).css('backgroundPosition','0 -42px');
-                $(".pubilcreply .group-title").eq(parentIndex1).css('color','#08b7c2');
+                $(".pubilcreply .group-title").not(parentIndex).css('backgroundPosition','0 0');
+                $(".pubilcreply .group-title").not(parentIndex).css('color','#333');
+                $(".pubilcreply .group-title").eq(parentIndex).css('backgroundPosition','0 -42px');
+                $(".pubilcreply .group-title").eq(parentIndex).css('color','#08b7c2');
             }
+
             //编辑公共内容
-            $scope.editCommonContent = function(parentIndex1, childIndex1) {
+            $scope.tapEditCommonContent = function(parentIndex, childIndex) {
                 flag = 1;
-                parentIndex = parentIndex1;
-                childIndex = childIndex1;
                 $scope.info.editContent = $scope.commonAnswer[parentIndex].secondAnswer[childIndex].name;
-                $("nobr").not(childIndex1).css('color','#333')
-                $(".pubilcreply .group-title").eq(parentIndex1).siblings("ul").find("nobr").eq(childIndex1).css('color','#08b7c2');
+                $("nobr").not(childIndex).css('color','#333')
+                $(".pubilcreply .group-title").eq(parentIndex).siblings("ul").find("nobr").eq(childIndex).css('color','#08b7c2');
             };
+
             //添加分组
             $scope.add = function() {
                 $scope.info.addGroup = '';
@@ -421,12 +337,10 @@ angular.module('controllers', ['luegg.directives'])
             $scope.closeAddGroup = function() {
                 $scope.addgroup = false;
             }
-
             $scope.addGroupSubmit = function () {
                 var setGroupContent = {};
                 setGroupContent.name = $scope.info.addGroup;
                 setGroupContent.secondAnswer=[];
-                console.log('addGroup',setGroupContent);
                 if(sign == 0 && mark == 0){
                     $scope.myAnswer.push(setGroupContent);
                     saveMyAnswer();
@@ -436,12 +350,12 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 $scope.addgroup = false;
             }
+
             //添加内容
             $scope.addcontent = false;
             $scope.closeAddContent = function() {
                 $scope.addcontent=false;
             }
-
             $scope.addContentSubmit = function () {
                 var setContent = {};
                 setContent.name = $scope.info.addContent;
@@ -535,21 +449,100 @@ angular.module('controllers', ['luegg.directives'])
                 return dateValue;
             }
 
+            var getAlreadyJoinConsultPatientList = function () {
+                //获取跟医生的会话还保存的用户列表
+                getCurrentUserConsultListInfo.save({doctorId:$scope.doctorId},function(data){
+                    $scope.alreadyJoinPatientConversationContent = data.alreadyJoinPatientConversationContent;
+                    var patientId = angular.copy($scope.alreadyJoinPatientConversationContent[0].patientId);
+                    var patientName = angular.copy($scope.alreadyJoinPatientConversationContent[0].patientName);
+                })
+            }
+
             //保存公共回复
-            function saveCommonAnswer(getMyAnswerModify, $scope) {
+            var saveCommonAnswer = function(getMyAnswerModify, $scope) {
                 getMyAnswerModify.save({answer: $scope.commonAnswer, answerType: "commonAnswer"}, function (data) {
                 });
             }
 
             //保存我的回复
-            function saveMyAnswer() {
+            var saveCommonAnswer = function() {
                 getMyAnswerModify.save({answer: $scope.myAnswer, answerType: "myAnswer"}, function (data) {
                 });
             }
+
+            //处理用户发送过来的会话消息
+            var processPatientSendMessage = function(conversationData){
+                var currentConsultValue = {};
+                currentConsultValue.type = conversationData.type;
+                currentConsultValue.content = conversationData.content;
+                currentConsultValue.dateTime = conversationData.dateTime;
+                currentConsultValue.senderId = conversationData.senderId;
+                currentConsultValue.senderName = conversationData.senderName;
+                currentConsultValue.sessionId = conversationData.sessionId;
+                if(JSON.stringify($scope.currentUserConversationContent)=='{}'){
+                    $scope.currentUserConversationContent.patientId = conversationData.senderId;
+                    $scope.currentUserConversationContent.fromServer = conversationData.fromServer;
+                    $scope.currentUserConversationContent.sessionId = conversationData.sessionId;
+                    $scope.currentUserConversationContent.isOnline = true;
+                    $scope.currentUserConversationContent.dateTime = conversationData.dateTime;
+                    $scope.currentUserConversationContent.messageNotSee = false;
+                    $scope.currentUserConversationContent.patientName = conversationData.senderName;
+                    $scope.currentUserConversationContent.consultValue = [];
+                    $scope.currentUserConversationContent.consultValue.push(currentConsultValue);
+                    $scope.chooseAlreadyJoinConsultPatient(currentConsultValue.senderId,currentConsultValue.senderName);
+                }
+                else if($scope.currentUserConversationContent.patientId == conversationData.senderId){
+                    $scope.currentUserConversationContent.consultValue.push(currentConsultValue);
+                }
+                updateAlreadyJoinPatientConversationContentFromPatient(conversationData);
+            }
+
+            var updateAlreadyJoinPatientConversationContentFromPatient = function(conversationData){
+                var updateFlag = false;
+                $.each($scope.alreadyJoinPatientConversationContent, function (index, value) {
+                    if (value.patientId == conversationData.senderId) {
+                        value.consultValue.push(conversationData);
+                        updateFlag = true;
+                    }
+                });
+                if(!updateFlag){
+                    var consultValue = {};
+                    var conversationContent = {};
+                    consultValue.type = conversationData.type;
+                    consultValue.content = conversationData.content;
+                    consultValue.dateTime = conversationData.dateTime;
+                    consultValue.senderId = conversationData.senderId;
+                    consultValue.senderName = conversationData.senderName;
+                    consultValue.sessionId = conversationData.sessionId;
+                    conversationContent.patientId = conversationData.senderId;
+                    conversationContent.fromServer = conversationData.fromServer;
+                    conversationContent.sessionId = conversationData.sessionId;
+                    conversationContent.isOnline = true;
+                    conversationContent.dateTime = conversationData.dateTime;
+                    conversationContent.messageNotSee = false;
+                    conversationContent.patientName = conversationData.senderName;
+                    conversationContent.consultValue = [];
+                    conversationContent.consultValue.push(consultValue);
+                    $scope.alreadyJoinPatientConversationContent.push(conversationContent);
+                }
+            }
+
+            //处理系统发送过来的通知类消息
+            var processNotifyMessage = function(notifyDate){
+
+            }
+
+            //过滤媒体数据
+            var filterMediaData = function (val) {
+                if (val.type == "2"||val.type == "3") {
+                    console.log(val.content);
+                    val.content = $sce.trustAsResourceUrl(angular.copy(val.content));
+                }
+            }
         }])
 
-    .controller('messageListCtrl', ['$scope', '$log', '$sce', 'getUserConsultListInfo', 'getUserRecordDetail', 'getCSdoctorList', 'CSInfoByUserId', 'getMessageRecordInfo',
-        function ($scope, $log, $sce, getUserConsultListInfo, getUserRecordDetail, getCSdoctorList, CSInfoByUserId, getMessageRecordInfo) {
+    .controller('messageListCtrl', ['$scope', '$log', '$sce', 'getUserConsultListInfo', 'getUserRecordDetail', 'getCSDoctorList', 'CSInfoByUserId', 'getMessageRecordInfo',
+        function ($scope, $log, $sce, getUserConsultListInfo, getUserRecordDetail, getCSDoctorList, CSInfoByUserId, getMessageRecordInfo) {
 
             $scope.info = {};
 
@@ -587,7 +580,7 @@ angular.module('controllers', ['luegg.directives'])
             });
 
             //获取客服医生列表
-            getCSdoctorList.save({}, function (data) {
+            getCSDoctorList.save({}, function (data) {
                 console.log(data);
                 $scope.CSList = data.CSList;
             });
