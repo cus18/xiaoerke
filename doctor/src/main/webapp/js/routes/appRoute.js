@@ -220,6 +220,19 @@ define(['app'], function(app){
                                    'js/views/account/doctorFans.html?ver='+version);
                            }
                        }
+                   })
+                   .state('doctorHome', {
+                       url: '/doctorHome',
+                       templateProvider: function() { return lazyDeferred.promise; },
+                       controller: 'doctorHomeCtrl',
+                       resolve: {
+                           load: function($templateCache, $ocLazyLoad, $q, $http) {
+                               loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.doctorHomeCtrl',
+                                   ['js/controllers/account/doctorHomeCtrl.js',
+                                       'styles/account/doctorHome.less?ver='+version],
+                                   'js/views/account/doctorHome.html?ver='+version);
+                           }
+                       }
                    });
 
 
