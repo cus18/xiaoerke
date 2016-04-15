@@ -22,11 +22,11 @@
 				</div>
 				<div class="attention tc" ng-if="!isAttention" ng-click="attentionDoctor()">
 					<div class="f2" ng-class="{'c1':isAttention}">{{doctorDetail.fans_number}}</div>
-					<img width="50" height="auto" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Ficon_attention_y.png">
+					<img width="50" height="auto" ng-src="{{attentionImg}}">
 				</div>
 				<div class="attention tc" ng-if="isAttention" >
 					<div class="f2" ng-class="{'c1':isAttention}">{{doctorDetail.fans_number}}</div>
-					<img width="50" height="auto" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Ficon_attention_n.png">
+					<img width="50" height="auto" ng-src="{{attentionImg}}">
 				</div>
 			</div>
 			<div class="apart"></div>
