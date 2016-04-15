@@ -207,7 +207,34 @@ define(['app'], function(app){
                                    'js/views/other/userDeal.html?ver='+version);
                            }
                        }
+                   })
+                   .state('doctorFans', {
+                       url: '/doctorFans',
+                       templateProvider: function() { return lazyDeferred.promise; },
+                       controller: 'doctorFansCtrl',
+                       resolve: {
+                           load: function($templateCache, $ocLazyLoad, $q, $http) {
+                               loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.doctorFansCtrl',
+                                   ['js/controllers/account/doctorFansCtrl.js',
+                                       'styles/account/doctorFans.less?ver='+version],
+                                   'js/views/account/doctorFans.html?ver='+version);
+                           }
+                       }
+                   })
+                   .state('doctorHome', {
+                       url: '/doctorHome',
+                       templateProvider: function() { return lazyDeferred.promise; },
+                       controller: 'doctorHomeCtrl',
+                       resolve: {
+                           load: function($templateCache, $ocLazyLoad, $q, $http) {
+                               loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.doctorHomeCtrl',
+                                   ['js/controllers/account/doctorHomeCtrl.js',
+                                       'styles/account/doctorHome.less?ver='+version],
+                                   'js/views/account/doctorHome.html?ver='+version);
+                           }
+                       }
                    });
+
 
                $urlRouterProvider.otherwise('myselfFirst');
    }])
