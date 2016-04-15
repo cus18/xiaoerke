@@ -14,6 +14,11 @@
                 window.location.href="appoint#/myInfo/"+$scope.myselfInfo.userPhoneNum;
                /* window.location.href = "/titan/appoint#/healthRecordSelectBaby/"+index+",1,"+$stateParams.conid;*/
             };
+            /*我的预约券*/
+            $scope.myService = function(){
+                window.location.href="appoint#/myService";
+                /* window.location.href = "/titan/appoint#/healthRecordSelectBaby/"+index+",1,"+$stateParams.conid;*/
+            };
             /* 当前订单*/
             $scope.currentOrder = function(){
                 resolveUserLoginStatus.events("currentOrderList","","","","notGo");
