@@ -13,4 +13,11 @@ public interface ConcernService {
 	void judgeIfUserConcernDoctor(Map<String, Object> params,
 			HashMap<String, Object> response);
 
+    /**
+     * 获取粉丝列表（关注我的用户）
+     * @param params
+     * @param response
+     * @author chenxiaoqiong
+     */
+    void getMyFansList(Map<String, Object> params, HashMap<String, Object> response);
 }

@@ -1,10 +1,10 @@
 package com.cxqm.xiaoerke.modules.interaction.dao;
 
-import java.util.HashMap;
-
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.interaction.entity.DoctorConcern;
+
+import java.util.HashMap;
 
 @MyBatisDao
 public interface DoctorConcernDao {
@@ -29,4 +29,7 @@ public interface DoctorConcernDao {
 
     //获取我关注的医生信息列表
     Page<HashMap<String, Object>> findMyConcernDoctorInfo(HashMap<String, Object> doctorMap, Page<HashMap<String, Object>> page);
+
+    //查询关注我的用户
+    Page<HashMap<String,Object>> getMyFansList(String doctorId, Page<HashMap<String,Object>> page);
 }
