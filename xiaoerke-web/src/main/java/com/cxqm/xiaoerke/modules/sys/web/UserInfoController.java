@@ -127,6 +127,8 @@ public class UserInfoController extends BaseController {
 			Boolean Bl = new Boolean(BondSwitch);
 			response.put("bondSwitch", Bl);
 			response.put("switchStatus", Bl);
+			response.put("memberNum", "0");
+			response.put("accountFund","0");
 			List<HashMap<Integer, Object>> appointmentInfo = patientRegisterService.getUnBindUserOrder(unBindUserPhoneNum);//myselfService.getUnBindUserOrder(unBindUserPhoneNum);//获取个人中心主页的信息
 			for(HashMap<Integer, Object> map:appointmentInfo){
 
