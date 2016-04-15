@@ -85,19 +85,31 @@ angular.module('controllers', ['luegg.directives'])
             }
 
             //在通话列表中，选取一个用户进行会话
-            $scope.chooseAlreadyJoinConsultPatient = function (patientId, patientName, page) {
+            $scope.chooseAlreadyJoinConsultPatient = function (patientId, patientName) {
                 $scope.chooseAlreadyJoinConsultPatientId = patientId;
                 $scope.chooseAlreadyJoinConsultPatientName = patientName;
 
-                GetUserRecordList.save({
-                    recordType: "user",
-                    pageNo: 2,
-                    pageSize: 100,
-                    patientId: patientId,
-                    patientName: patientName
-                }, function (data) {
-                    $scope.currentAlreadyJoinConsultContent = data.records;
+                var updateFlag = false;
+                $.each($scope.alreadyJoinPatientConversationContent, function (index, value) {
+                    if (value.patientId == patientId) {
+                        $scope.currentUserConversationContent = "";
+                        $scope.currentUserConversationContent = angular.copy(value);
+                        updateFlag = true;
+                    }
                 });
+                if(!updateFlag){
+                    GetUserRecordList.save({
+                        recordType: "user",
+                        pageNo: 1,
+                        pageSize: 100,
+                        patientId: patientId,
+                        patientName: patientName
+                    }, function (data) {
+                        $scope.currentUserConversationContent = "";
+                        $scope.currentUserConversationContent = angular.copy(data.records);
+                        $scope.alreadyJoinPatientConversationContent.push(data.records);
+                    });
+                }
             }
 
             //向用户发送咨询消息
@@ -106,26 +118,24 @@ angular.module('controllers', ['luegg.directives'])
                     "type": 0,
                     "content": angular.copy($scope.info.consultMessage),
                     "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                    "senderId": $scope.doctorId,
-                    "senderName": $scope.doctorName,
-                    "sessionId": 18538
+                    "senderId": angular.copy($scope.doctorId),
+                    "senderName": angular.copy($scope.doctorName),
+                    "sessionId": angular.copy($scope.currentUserConversationContent.sessionId)
                 };
 
                 if (!window.WebSocket) {
                     return;
                 }
                 if ($scope.socketServer1.readyState == WebSocket.OPEN) {
-                    $scope.alreadyJoinPatientConversationContent[0].consultValue.push(consultValMessage);
-                    $scope.chooseAlreadyJoinConsultPatient($scope.chooseAlreadyJoinConsultPatientId,
-                        $scope.chooseAlreadyJoinConsultPatientName);
                     $scope.info.consultMessage = "";
-
-                    console.log(JSON.stringify(consultValMessage));
+                    $scope.currentUserConversationContent.consultValue.push(consultValMessage);
+                    updateAlreadyJoinPatientConversationContentFromPatient(consultValMessage);
                     $scope.socketServer1.send(JSON.stringify(consultValMessage));
                 } else {
                     alert("连接没有开启.");
                 }
             }
+
 
             //关闭跟某个用户的会话
             $scope.closeConsult = function () {
@@ -166,7 +176,7 @@ angular.module('controllers', ['luegg.directives'])
                         }else{
                             filterMediaData(consultData);
                             console.log("testdata",consultData);
-                            processConversationMessage(consultData);
+                            processPatientSendMessage(consultData);
                         }
                         $scope.$apply()
                     };
@@ -202,7 +212,7 @@ angular.module('controllers', ['luegg.directives'])
             };//当onkeydown 事件发生时调用函数
 
             //处理用户发送过来的会话消息
-            var processConversationMessage = function(conversationData){
+            var processPatientSendMessage = function(conversationData){
                 var currentConsultValue = {};
                 currentConsultValue.type = conversationData.type;
                 currentConsultValue.content = conversationData.content;
@@ -226,9 +236,6 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.currentUserConversationContent.consultValue.push(currentConsultValue);
                 }
                 updateAlreadyJoinPatientConversationContentFromPatient(conversationData);
-
-                console.log($scope.currentUserConversationContent.consultValue);
-                console.log($scope.alreadyJoinPatientConversationContent);
             }
 
             var updateAlreadyJoinPatientConversationContentFromPatient = function(conversationData){
