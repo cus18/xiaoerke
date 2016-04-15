@@ -160,7 +160,7 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         Float price = 0f;
         //取消订单
         ConsultPhoneRegisterServiceVo vo = consultPhoneRegisterServiceDao.selectByPrimaryKey(phoneConsultaServiceId);
-        vo.setState("6");
+        vo.setState("4");
         vo.setUpdateTime(new Date());
         int state = consultPhoneRegisterServiceDao.updateByPrimaryKeySelective(vo);
         //取消号源
