@@ -505,12 +505,19 @@ public class WechatUtil {
         if(messageType.contains("image")){
             mediaName = mediaName+".jpg";
         }else if(messageType.contains("voice")){
-            mediaName = mediaName+".amr";
-            //创建源文件
-            String sourceFile = createFile();
-            File file = new File(sourceFile);
-            inputStreamtofile(inputStream,file);
-            ToMp3("D:\\ffpeg\\ffmpeg-20160413-git-0efafc5-win64-static\\bin",sourceFile);
+            String mediaNameAmr = mediaName+".amr";
+            String mediaNameMp3 = mediaName+".mp3";
+            BufferedInputStream bis = new BufferedInputStream(inputStream);
+            FileOutputStream fos = new FileOutputStream(ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP+mediaNameAmr);
+            byte[] buf = new byte[8096];
+            int size = 0;
+            while ((size = bis.read(buf)) != -1)
+                fos.write(buf, 0, size);
+            fos.close();
+            bis.close();
+            ToMp3(ConstantUtil.AMR_TOMP3_WINDOWSPATH, ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP + mediaName);
+            inputStream = new FileInputStream(new File(ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP+mediaNameMp3));
+            mediaName = mediaNameMp3;
         }else if(messageType.contains("video")){
             mediaName = mediaName+".mp4";
         }
@@ -522,60 +529,14 @@ public class WechatUtil {
         return mediaURL;
     }
 
-    //创建文件，并返回文件路径
-    public String createFile(){
-        String path = "D:\\ffpeg\\temp";
-        File f = new File(path);
-        if(!f.exists()){
-            f.mkdirs();
-        }
-        String Name=IdGen.uuid();
-        File file = new File(f,Name);
-        if(!file.exists()){
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return path+Name;
-    }
-
-    /**
-     * inputStream转文件
-     * @param ins
-     * @param file
-     */
-    public void inputStreamtofile(InputStream ins,File file){
-        try{
-            OutputStream os = new FileOutputStream(file);
-            int bytesRead = 0;
-            byte[] buffer = new byte[8192];
-            while ((bytesRead = ins.read(buffer, 0, 8192)) != -1) {
-                os.write(buffer, 0, bytesRead);
-            }
-            os.close();
-            ins.close();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-
-    }
-
-    /**
-     * 将上传的录音转为mp3格式
-     * @param webroot 项目的根目录
-     * @param sourcePath 文件的相对地址
-     */
     public void ToMp3(String webroot, String sourcePath){
-        //File file = new File(sourcePath);
         String targetPath = sourcePath+".mp3";//转换后文件的存储地址，直接将原来的文件名后加mp3后缀名
         Runtime run = null;
         try {
             run = Runtime.getRuntime();
             long start=System.currentTimeMillis();
-            Process p=run.exec(webroot+"files/ffmpeg -i "+webroot+sourcePath+" -acodec libmp3lame "+webroot+targetPath);//执行ffmpeg.exe,前面是ffmpeg.exe的地址，中间是需要转换的文件地址，后面是转换后的文件地址。-i是转换方式，意思是可编码解码，mp3编码方式采用的是libmp3lame
-            //释放进程
+            String path = webroot+"ffmpeg -i "+sourcePath+".amr"+" -acodec libmp3lame "+targetPath;
+            Process p=run.exec(path);
             p.getOutputStream().close();
             p.getInputStream().close();
             p.getErrorStream().close();
