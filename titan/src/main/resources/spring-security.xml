@@ -6,9 +6,9 @@
         http://www.springframework.org/schema/security 
         http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
-	<http pattern="/auth/**" use-expressions="true"
+	<http pattern="/**" use-expressions="true"
 		  entry-point-ref="authenticationProcessingFilterEntryPoint" >
-		<intercept-url pattern="/auth/**" access="isAuthenticated()" />
+		<intercept-url pattern="/**" access="isAuthenticated()" />
 		<logout logout-url="/logout" logout-success-url="/sso/appoint/logout" delete-cookies="JSESSIONID" />
 		<!-- 实现免登陆验证 -->
 		<remember-me user-service-ref="myUserDetailsService" />
