@@ -66,6 +66,12 @@
                         $scope.bondSwitch = data.bondSwitch;
                         $scope.switchStatus = data.switchStatus;
                         $scope.memberNum = data.memberNum;
+                        $scope.userPhoneNum = data.userPhone;
+                        if($scope.userPhoneNum!=''){
+                          $scope.myselfBindStatus=true;
+                        }else{
+                          $scope.myselfBindStatus=false;
+                        }
                     });
                 //}
             //});
