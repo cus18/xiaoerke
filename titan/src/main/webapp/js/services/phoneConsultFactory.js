@@ -358,6 +358,12 @@ define(['appPhoneConsult'], function (app) {
                     } else if(action=="notGo"){
                         routePath = "/phoneConsultBBBBBB/"+redirectParam;
                     }
+                    if(hrefParam!=""&&routeParam==""){
+                        routePath = "/appointBBBBBB/"+redirectParam;
+                    }
+                    if(hrefParam!=""&&routeParam!=""){
+                        routePath = "/appointBBBBBB/"+redirectParam+"/"+routeParam;
+                    }
                     GetUserLoginStatus.save({routePath:routePath},function(data){
                         if(data.status=="9") {
                             window.location.href = data.redirectURL;
