@@ -28,7 +28,7 @@
     </div>
     <ion-content  style="top: 0px;">
         <ion-scroll class="phoneConsultFirst" direction="y" has-bouncing="true" style="top: 240px;" >
-        <ul class="conTime">
+        <ul class="conTime" ng-if="consultHave">
             <li ng-repeat="item in consultList" ng-click="goDetails($index)">
                 <img  ng-if="item.repart==0" src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fweekchong_1.png" width="17px" height="17px"/>
                 <img  ng-if="item.repart==1" src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fweekchong_2.png" width="17px" height="17px"/>
@@ -38,12 +38,16 @@
                 <img ng-if="item.state==1" src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fweekgo.png" width="9.5px" height="17px"/>
             </li>
         </ul>
-        <dl>
+        <dl ng-if="consultHave">
             <dd>提示：</dd>
             <dd>1.<img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fweekchong_2.png" width="17px" height="17px"/>该时刻的号源下周自动会添加。</dd>
             <dd>2.请提前查看患者病情资料，通话过程中请保持良好的信号，有任何疑问，敬请拨打客服电话！</dd>
         </dl>
-
+        <br/><br/>
         </ion-scroll>
     </ion-content>
+    <div class="consultNo" ng-if="consultN">
+        <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fweekno.png" width="88px" height="63px"/>
+        <div>今日无任何咨询信息</div>
+    </div>
 </ion-view>

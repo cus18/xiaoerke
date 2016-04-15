@@ -6,6 +6,8 @@ angular.module('controllers', ['ionic']).controller('phoneConsultFirstCtrl', [
         $scope.date = ["13","14","15","16","17","18","19"];
         $scope.prevWeekDisable = false;
         $scope.nextWeekDisable = false;
+        $scope.consultN = false;//没有号源
+        $scope.consultHave = true;//有号源
         $scope.consultList = [{begin_time:"8:00",
                                 state:"0",
                                 repart:"0"},
