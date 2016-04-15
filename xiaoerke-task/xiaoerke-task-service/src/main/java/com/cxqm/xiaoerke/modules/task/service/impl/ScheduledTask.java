@@ -1026,7 +1026,7 @@ public class ScheduledTask {
               ConsultPhoneRegisterServiceVo vo =  new ConsultPhoneRegisterServiceVo();
               vo.setId(orderId);
               vo.setUpdateTime(new Date());
-              vo.setState("5");
+              vo.setState("4");
               consultPhonePatientService.updateOrderInfoBySelect(vo);
 //             将钱退还到用户的账户
               HashMap<String, Object> response = new HashMap<String, Object>();
