@@ -159,11 +159,11 @@ img {
     height:65px;
     border:1px solid #000;
     position:relative
-}
+}*/
 
 [scroll-glue-bottom],
 {
     height:85%;
     overflow-y: scroll;
     border: 1px solid gray;
-}*/
+}
