@@ -1,4 +1,4 @@
-angular.module('controllers', ['ionic']).controller('phoneConsultFirstCtrl', [
+angular.module('controllers', ['ionic']).controller('phoneConsultDetailsCtrl', [
     '$scope','$ionicPopup','$state','$stateParams','$location','GetUserLoginStatus',
     function ($scope,$ionicPopup,$state,$stateParams,$location,GetUserLoginStatus) {
         $scope.title = "病情资料";
