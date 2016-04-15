@@ -196,6 +196,7 @@ public class ConsultUserController extends BaseController {
     Map<String, Object> getCurrentUserList(@RequestBody Map<String, Object> params) {
         Map<String,Object> response = new HashMap<String, Object>();
 
+        response.put("result","");
         return response;
     }
 
