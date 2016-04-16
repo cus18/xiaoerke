@@ -23,6 +23,14 @@ angular.module('controllers', ['luegg.directives'])
                 publicReplyList: false,
             }
 
+            $scope.tapShowButton = function(type){
+                $.each($scope.showFlag,function(key,value){
+                    if(key==type){
+                        $scope.showFlag[key] = !$scope.showFlag[key]
+                    }
+                })
+            }
+
             ////QQ表情初始化
             //qqFace();
 
@@ -129,7 +137,7 @@ angular.module('controllers', ['luegg.directives'])
                     if($scope.currentUserConversation.consultValue!=undefined&&
                         $scope.currentUserConversation.consultValue!=""){
                         $scope.currentUserConversation.consultValue.push(consultValMessage);
-                        updatealreadyJoinPatientConversationFromDoctor(angular.copy(consultValMessage));
+                        updateAlreadyJoinPatientConversationFromDoctor(angular.copy(consultValMessage));
                         $scope.socketServer1.send(JSON.stringify(consultValMessage));
                     }
                 } else {
@@ -235,26 +243,6 @@ angular.module('controllers', ['luegg.directives'])
                 str = str.replace(/\[em_([0-9]*)\]/g, '<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/' +
                     'dkf%2Fface%2F$1.gif" border="0" />');
                 return str;
-            }
-
-            //会话排名
-            $scope.tapRankList = function () {
-                $scope.showFlag.rankList = !$scope.showFlag.rankList;
-            }
-
-            //系统设置
-            $scope.tapSystemSetup = function() {
-                $scope.showFlag.systemSetup = !$scope.showFlag.systemSetup;
-            }
-
-            //等待接入设置
-            $scope.tapWaitProcess = function() {
-                $scope.showFlag.waitProcess = !$scope.showFlag.waitProcess;
-            }
-
-            //转接
-            $scope.tapSwitchOver = function() {
-                $scope.showFlag.switchOver = !$scope.showFlag.switchOver;
             }
 
             var flag,mark,sign,parentIndex,childIndex;
@@ -550,7 +538,7 @@ angular.module('controllers', ['luegg.directives'])
                 }
             }
 
-            var updatealreadyJoinPatientConversationFromDoctor = function(consultValMessage){
+            var updateAlreadyJoinPatientConversationFromDoctor = function(consultValMessage){
                 $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                     if (value.patientId == $scope.currentUserConversation.patientId) {
                         value.consultValue.push(consultValMessage);

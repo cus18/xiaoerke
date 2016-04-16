@@ -4,34 +4,37 @@
     <header class="head w10">
         <div class="head-t w10 qf">
             <div class="bdf-dkf-nav w5 fl h4 bg-h1">
-                <span><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png" alt=""/></span>
+                <span>
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png" alt=""/>
+                </span>
                 <span></span>
                 <span>宝大夫</span>
                 <span>自动回复
-                <select>
-                    <option>无</option>
-                    <option>外出就餐，请稍候</option>
-                    <option>不在电脑旁边，请稍候</option>
-                    <option>接听电话中</option>
-                    <option>无自动回复</option>
-                    <option>马上回来</option>
-                </select>
-                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>
+                    <select>
+                        <option>无</option>
+                        <option>外出就餐，请稍候</option>
+                        <option>不在电脑旁边，请稍候</option>
+                        <option>接听电话中</option>
+                        <option>无自动回复</option>
+                        <option>马上回来</option>
+                    </select>
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>
                 </span>
                 <span>自动接入
-                <select>
-                    <option>关闭</option>
-                    <option>打开</option>
-                </select>
-                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>
+                    <select>
+                        <option>关闭</option>
+                        <option>打开</option>
+                    </select>
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>
                 </span>
             </div>
             <div class="w5 fr h4 bg-h1">
                 <div class="bdf-dkf-content-right">
                     <div class="cjgl">退出</div>
-                    <div class="xtsz" ng-click="tapSystemSetup()">
+                    <div class="xtsz" ng-click="tapShowButton('systemSetup')">
                         <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_06.png" alt=""/>
-                        系统设置</div>
+                        系统设置
+                    </div>
                 </div>
             </div>
         </div>
@@ -44,17 +47,18 @@
         <div class="msg-l h30 fl">
             <div class="m-left-header">
                 <div class="m-left-top">
-                    <div class="tab-content-chat" id="ddjr" ng-click="tapWaitProcess()">
+                    <div class="tab-content-chat" id="ddjr" ng-click="tapShowButton('waitProcess')">
                         <h3>0</h3>
                         <p>等待接入</p>
                     </div>
-                    <div class="tab-content-chat " ng-click="tapRankList()">
+                    <div class="tab-content-chat" ng-click="tapShowButton('rankList')">
                         <h3>{{alreadyJoinPatientConversation.length}}</h3>
                         <p>已接会话</p>
                     </div>
                 </div>
                 <div class="insert">
-                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(1).png" alt="">
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(1).png"
+                         alt="">
                     已接入会话
                 </div>
             </div>
@@ -84,7 +88,7 @@
                 </div>
                 <div class="replayContent">
                 <div class="myreply">
-                    <div ng-click="tapMyReplyList()" class="rtitle">
+                    <div ng-click="tapShowButton('myReplyList')" class="rtitle">
                         我的回复（{{myAnswer.length}}）</div>
                     <ul ng-show="showFlag.myReplyList">
                         <li ng-repeat="item in myAnswer">
@@ -103,7 +107,7 @@
                     </ul>
                 </div>
                 <div class="pubilcreply">
-                    <div ng-click="tapPublicReplyList()"  class="rtitle">
+                    <div ng-click="tapShowButton('publicReplyList')"  class="rtitle">
                         公共回复（{{commonAnswer.length}}）</div>
                     <ul ng-show='showFlag.publicReplyList'>
                         <li ng-repeat="item in commonAnswer">
@@ -169,7 +173,7 @@
                         <img class="headimg"
                              src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png">
                         <span>{{currentUserConversation.patientName}}</span>
-                        <div class="fr" ng-click="switchover1()">转接</div>
+                        <div class="fr" ng-click="tapShowButton('switchOver')">转接</div>
                     </div>
                 </div>
                 <div class="chatlist">
@@ -231,9 +235,8 @@
                 </div>
             </div>
     </div>
-    </div>
     <!--等待接入会话-->
-    <div class="jrhhpm" ng-show='rankList.show'>
+    <div class="jrhhpm" ng-show='showFlag.rankList'>
         <div class="jrhhpm-top">今日接入会话排名 <a href="#">刷新</a></div>
         <div class="jrhhpm-tb">
             <span>排名</span>
@@ -247,9 +250,9 @@
         </div>
     </div>
     <!--系统设置的弹出框-->
-    <div class="xtsz-up" id="xtsz_up" ng-show='systemsetup.show'>
+    <div class="xtsz-up" id="xtsz_up" ng-show='showFlag.systemSetup'>
         <div class="hd" id="drop">系统设置
-            <span class="close" ng-click="systemsetup1()">【关闭】</span>
+            <span class="close" ng-click="tapShowButton('systemSetup')">【关闭】</span>
         </div>
         <!-- 系统设置的tab切换 -->
         <div class="xtsz-up-middle">
@@ -329,9 +332,9 @@
         </div>
     </div>
     <!--等待接入的弹出框-->
-    <div class="xtsz-up  ddjr-up" id="ddjr_up" ng-show='waitprocess.show'>
+    <div class="xtsz-up  ddjr-up" id="ddjr_up" ng-show='showFlag.waitProcess'>
         <div class="hd" id="drop2">未接入客户信息
-            <span class="close" ng-click="waitprocess1()">【关闭】</span>
+            <span class="close" ng-click="tapShowButton('waitProcess')">【关闭】</span>
         </div>
         <div class="ddjr-content">
             <div class="checktop">
@@ -371,9 +374,9 @@
         </div>
     </div>
     <!--转接-->
-    <div class="xtsz-up  ddjr-up" ng-show='switchover.show'>
+    <div class="xtsz-up  ddjr-up" ng-show='showFlag.switchOver'>
         <div class="hd">转接客户
-            <span class="close" ng-click="switchover1()">【关闭】</span>
+            <span class="close" ng-click="tapShowButton('switchOver')">【关闭】</span>
         </div>
         <div class="switchcontent">
             <div class="switchbox">
@@ -416,6 +419,5 @@
             </div>
         </div>
     </div>
-    <div class="lipanpan" style="width: 20px;height: 20px;background-color: #333;" >
-    </div>
+    <div class="lipanpan" style="width: 20px;height: 20px;background-color: #333;" />
 </div>
