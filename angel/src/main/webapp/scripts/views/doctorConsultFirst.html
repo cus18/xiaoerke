@@ -49,7 +49,7 @@
                         <p>等待接入</p>
                     </div>
                     <div class="tab-content-chat " ng-click="tapRankList()">
-                        <h3>{{info.rankListlength}}</h3>
+                        <h3>{{alreadyJoinPatientConversation.length}}</h3>
                         <p>已接会话</p>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
             <div class="consultList">
                 <div class="consultNowList"
                      ng-style="chooseAlreadyJoinConsultPatientId==item.patientId?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}"
-                     ng-repeat="item in alreadyJoinPatientConversationContent"
+                     ng-repeat="item in alreadyJoinPatientConversation"
                      ng-click="chooseAlreadyJoinConsultPatient(item.patientId,item.patientName)"
                      alt="">
                     <nobr>{{item.patientName}}&nbsp;&nbsp;{{transformDate(item.dateTime)}}</nobr>
@@ -93,7 +93,9 @@
                             </div>
                             <ul ng-show="myReplayIndex==$index">
                                 <li ng-repeat="item2 in item.secondAnswer" class="rcontent">
-                                    <nobr ng-click="tapEditMyContent($parent.$index,$index)">{{item2.name}}
+                                    <nobr ng-click="tapEditMyContent($parent.$index,$index)"
+                                          ng-dblclick="chooseMyContent($parent.$index,$index)">
+                                        {{item2.name}}
                                     </nobr>
                                 </li>
                             </ul>
@@ -166,13 +168,13 @@
                     <div class="nametopin">
                         <img class="headimg"
                              src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png">
-                        <span>{{chooseAlreadyJoinConsultPatientName}}</span>
+                        <span>{{currentUserConversation.patientName}}</span>
                         <div class="fr" ng-click="switchover1()">转接</div>
                     </div>
                 </div>
                 <div class="chatlist">
                     <div scroll-glue-bottom="glued" class="chatlistin">
-                        <div ng-repeat="item in currentUserConversationContent.consultValue">
+                        <div ng-repeat="item in currentUserConversation.consultValue">
                             <div ng-if="item.senderId==doctorId" class="doctorReplyContent">
                                 <div>
                                     <span>{{doctorName}}</span>

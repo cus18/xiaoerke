@@ -9,8 +9,8 @@ angular.module('controllers', ['luegg.directives'])
             $scope.info = {};
             $scope.socketServer1 = "";
             $scope.socketServer2 = "";
-            $scope.alreadyJoinPatientConversationContent = [];
-            $scope.currentUserConversationContent = {};
+            $scope.alreadyJoinPatientConversation = [];
+            $scope.currentUserConversation = {};
             $scope.info.effect = "true";
             $scope.glued = true;
 
@@ -77,6 +77,7 @@ angular.module('controllers', ['luegg.directives'])
                         });
 
                         getAlreadyJoinConsultPatientList();
+                        
                     }
                 })
             }
@@ -87,10 +88,10 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.chooseAlreadyJoinConsultPatientName = patientName;
 
                 var updateFlag = false;
-                $.each($scope.alreadyJoinPatientConversationContent, function (index, value) {
+                $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                     if (value.patientId == patientId) {
-                        $scope.currentUserConversationContent = "";
-                        $scope.currentUserConversationContent = angular.copy(value);
+                        $scope.currentUserConversation = "";
+                        $scope.currentUserConversation = angular.copy(value);
                         updateFlag = true;
                     }
                 });
@@ -102,9 +103,9 @@ angular.module('controllers', ['luegg.directives'])
                         patientId: patientId,
                         patientName: patientName
                     }, function (data) {
-                        $scope.currentUserConversationContent = "";
-                        $scope.currentUserConversationContent = angular.copy(data.records);
-                        $scope.alreadyJoinPatientConversationContent.push(data.records);
+                        $scope.currentUserConversation = "";
+                        $scope.currentUserConversation = angular.copy(data.records);
+                        $scope.alreadyJoinPatientConversation.push(data.records);
                     });
                 }
             }
@@ -117,7 +118,7 @@ angular.module('controllers', ['luegg.directives'])
                     "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                     "senderId": angular.copy($scope.doctorId),
                     "senderName": angular.copy($scope.doctorName),
-                    "sessionId": angular.copy($scope.currentUserConversationContent.sessionId)
+                    "sessionId": angular.copy($scope.currentUserConversation.sessionId)
                 };
 
                 if (!window.WebSocket) {
@@ -125,9 +126,12 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 if ($scope.socketServer1.readyState == WebSocket.OPEN) {
                     $scope.info.consultMessage = "";
-                    $scope.currentUserConversationContent.consultValue.push(consultValMessage);
-                    updateAlreadyJoinPatientConversationContentFromDoctor(angular.copy(consultValMessage));
-                    $scope.socketServer1.send(JSON.stringify(consultValMessage));
+                    if($scope.currentUserConversation.consultValue!=undefined&&
+                        $scope.currentUserConversation.consultValue!=""){
+                        $scope.currentUserConversation.consultValue.push(consultValMessage);
+                        updatealreadyJoinPatientConversationFromDoctor(angular.copy(consultValMessage));
+                        $scope.socketServer1.send(JSON.stringify(consultValMessage));
+                    }
                 } else {
                     alert("连接没有开启.");
                 }
@@ -136,14 +140,18 @@ angular.module('controllers', ['luegg.directives'])
             //关闭跟某个用户的会话
             $scope.closeConsult = function () {
                 var indexClose = 0;
-                $.each($scope.alreadyJoinPatientConversationContent, function (index, value) {
+                $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                     if (value.patientId == $scope.chooseAlreadyJoinConsultPatientId) {
                         indexClose = index;
                     }
                 })
-                $scope.alreadyJoinPatientConversationContent.splice(indexClose, 1);
-                $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversationContent[0].patientId,
-                    $scope.alreadyJoinPatientConversationContent[0].patientName);
+                $scope.alreadyJoinPatientConversation.splice(indexClose, 1);
+                if($scope.alreadyJoinPatientConversation.length!=0){
+                    $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
+                        $scope.alreadyJoinPatientConversation[0].patientName);
+                }else{
+                    $scope.currentUserConversation = {};
+                }
             }
 
             $scope.useImgFace = function () {}
@@ -284,6 +292,9 @@ angular.module('controllers', ['luegg.directives'])
                 $("nobr").not(childIndex).css('color','#333')
                 $(".myreply .group-title").eq(parentIndex).siblings("ul").find("nobr").eq(childIndex).css('color','#08b7c2');
             };
+            $scope.chooseMyContent = function(parentIndex, childIndex){
+                $scope.info.consultMessage = angular.copy($scope.myAnswer[parentIndex].secondAnswer[childIndex].name);
+            }
 
             //回复列表
             $scope.tapPublicReplyList = function () {
@@ -456,9 +467,9 @@ angular.module('controllers', ['luegg.directives'])
                 //获取跟医生的会话还保存的用户列表
                 getCurrentUserConsultListInfo.save({doctorId:$scope.doctorId},function(data){
                     if(data.result!=""){
-                        $scope.alreadyJoinPatientConversationContent = data.alreadyJoinPatientConversationContent;
-                        var patientId = angular.copy($scope.alreadyJoinPatientConversationContent[0].patientId);
-                        var patientName = angular.copy($scope.alreadyJoinPatientConversationContent[0].patientName);
+                        $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
+                        var patientId = angular.copy($scope.alreadyJoinPatientConversation[0].patientId);
+                        var patientName = angular.copy($scope.alreadyJoinPatientConversation[0].patientName);
                         $scope.chooseAlreadyJoinConsultPatient(patientId,patientName);
                     }
                 })
@@ -486,32 +497,32 @@ angular.module('controllers', ['luegg.directives'])
                 currentConsultValue.senderId = conversationData.senderId;
                 currentConsultValue.senderName = conversationData.senderName;
                 currentConsultValue.sessionId = conversationData.sessionId;
-                if(JSON.stringify($scope.currentUserConversationContent)=='{}'){
-                    $scope.currentUserConversationContent.patientId = conversationData.senderId;
-                    $scope.currentUserConversationContent.fromServer = conversationData.fromServer;
-                    $scope.currentUserConversationContent.sessionId = conversationData.sessionId;
-                    $scope.currentUserConversationContent.isOnline = true;
-                    $scope.currentUserConversationContent.dateTime = conversationData.dateTime;
-                    $scope.currentUserConversationContent.messageNotSee = false;
-                    $scope.currentUserConversationContent.patientName = conversationData.senderName;
-                    $scope.currentUserConversationContent.consultValue = [];
-                    $scope.currentUserConversationContent.consultValue.push(currentConsultValue);
+                if(JSON.stringify($scope.currentUserConversation)=='{}'){
+                    $scope.currentUserConversation.patientId = conversationData.senderId;
+                    $scope.currentUserConversation.fromServer = conversationData.fromServer;
+                    $scope.currentUserConversation.sessionId = conversationData.sessionId;
+                    $scope.currentUserConversation.isOnline = true;
+                    $scope.currentUserConversation.dateTime = conversationData.dateTime;
+                    $scope.currentUserConversation.messageNotSee = false;
+                    $scope.currentUserConversation.patientName = conversationData.senderName;
+                    $scope.currentUserConversation.consultValue = [];
+                    $scope.currentUserConversation.consultValue.push(currentConsultValue);
                     chooseFlag = true;
                 }
-                else if($scope.currentUserConversationContent.patientId == conversationData.senderId){
-                    $scope.currentUserConversationContent.consultValue.push(currentConsultValue);
+                else if($scope.currentUserConversation.patientId == conversationData.senderId){
+                    $scope.currentUserConversation.consultValue.push(currentConsultValue);
                 }
 
-                updateAlreadyJoinPatientConversationContentFromPatient(angular.copy(conversationData));
+                updatealreadyJoinPatientConversationFromPatient(angular.copy(conversationData));
                 if(chooseFlag){
                     $scope.chooseAlreadyJoinConsultPatient(angular.copy(currentConsultValue.senderId),
                         angular.copy(currentConsultValue.senderName));
                 }
             }
 
-            var updateAlreadyJoinPatientConversationContentFromPatient = function(conversationData){
+            var updatealreadyJoinPatientConversationFromPatient = function(conversationData){
                 var updateFlag = false;
-                $.each($scope.alreadyJoinPatientConversationContent, function (index, value) {
+                $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                     if (value.patientId == conversationData.senderId) {
                         value.consultValue.push(conversationData);
                         updateFlag = true;
@@ -535,13 +546,13 @@ angular.module('controllers', ['luegg.directives'])
                     conversationContent.patientName = conversationData.senderName;
                     conversationContent.consultValue = [];
                     conversationContent.consultValue.push(consultValue);
-                    $scope.alreadyJoinPatientConversationContent.push(conversationContent);
+                    $scope.alreadyJoinPatientConversation.push(conversationContent);
                 }
             }
 
-            var updateAlreadyJoinPatientConversationContentFromDoctor = function(consultValMessage){
-                $.each($scope.alreadyJoinPatientConversationContent, function (index, value) {
-                    if (value.patientId == $scope.currentUserConversationContent.patientId) {
+            var updatealreadyJoinPatientConversationFromDoctor = function(consultValMessage){
+                $.each($scope.alreadyJoinPatientConversation, function (index, value) {
+                    if (value.patientId == $scope.currentUserConversation.patientId) {
                         value.consultValue.push(consultValMessage);
                     }
                 });

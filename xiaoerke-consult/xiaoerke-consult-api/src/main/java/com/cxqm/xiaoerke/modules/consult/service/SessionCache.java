@@ -38,7 +38,7 @@ public interface SessionCache {
 
 	void putWechatSessionByOpenId(String openId, RichConsultSession wechatSession);
 
-	Session getWechatSessionByOpenId(String openId);
+	RichConsultSession getWechatSessionByOpenId(String openId);
 
 	String getWeChatToken();
 }

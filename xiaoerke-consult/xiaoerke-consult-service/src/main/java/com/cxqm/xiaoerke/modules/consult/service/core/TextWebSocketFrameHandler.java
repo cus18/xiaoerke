@@ -2,6 +2,8 @@ package com.cxqm.xiaoerke.modules.consult.service.core;
 
 import java.util.Map;
 
+import com.cxqm.xiaoerke.common.utils.ConstantUtil;
+import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
@@ -22,9 +24,8 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 	
 	private transient static final Logger log = LoggerFactory.getLogger(TextWebSocketFrameHandler.class);
 
-	@Autowired
-	private SessionCache sessionCache;
-	
+	private SessionCache sessionCache = SpringContextHolder.getBean("sessionCacheRedisImpl");
+
 	public TextWebSocketFrameHandler() {
 		super();
 	}
@@ -55,7 +56,6 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 			return;
 		}
 
-		System.out.println(msgMap);
 		Integer sessionId = msgMap.get(ConsultSessionManager.KEY_SESSION_ID) == null ?
 				null : (Integer) msgMap.get(ConsultSessionManager.KEY_SESSION_ID);
 		int msgType = msgMap.get(ConsultSessionManager.KEY_REQUEST_TYPE)== null ?
@@ -78,7 +78,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 				}else{
 					String openId = consultSession.getOpenid();
 					String st = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
-					WechatUtil.senMsgToWechat(sessionCache.getWeChatToken(), openId, st);
+					WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN, openId, st);
 				}
 
 			}
