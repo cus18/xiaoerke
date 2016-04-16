@@ -48,7 +48,7 @@
             <div class="m-left-header">
                 <div class="m-left-top">
                     <div class="tab-content-chat" id="ddjr" ng-click="tapShowButton('waitProcess')">
-                        <h3>0</h3>
+                        <h3>{{waitJoinNum}}</h3>
                         <p>等待接入</p>
                     </div>
                     <div class="tab-content-chat" ng-click="tapShowButton('rankList')">
@@ -88,16 +88,22 @@
                 </div>
                 <div class="replayContent">
                 <div class="myreply">
-                    <div ng-click="tapShowButton('myReplyList')" class="rtitle">
-                        我的回复（{{myAnswer.length}}）</div>
+                    <div ng-click="tapShowButton('myReplyList')"
+                         ng-style="showFlag.myReplyList?{'backgroundPosition':'0 -42px', color: '#08b7c2'}:{'backgroundPosition':'0 0', color: '#333'}"
+                         class="rtitle">
+                        我的回复（{{myAnswer.length}}）
+                    </div>
                     <ul ng-show="showFlag.myReplyList">
                         <li ng-repeat="item in myAnswer">
-                            <div class="group-title" ng-click="tapMyReplyContent($index)">
+                            <div class="group-title"
+                                 ng-style="myReplyIndex==$index?{'backgroundPosition':'0 -42px', color: '#08b7c2'}:{'backgroundPosition':'0 0', color: '#333'}"
+                                 ng-click="tapMyReplyContent($index)">
                                     {{item.name}}（{{item.secondAnswer.length}}）
                             </div>
-                            <ul ng-show="myReplayIndex==$index">
+                            <ul ng-show="myReplyIndex==$index">
                                 <li ng-repeat="item2 in item.secondAnswer" class="rcontent">
                                     <nobr ng-click="tapEditMyContent($parent.$index,$index)"
+                                          ng-style="myReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}"
                                           ng-dblclick="chooseMyContent($parent.$index,$index)">
                                         {{item2.name}}
                                     </nobr>
@@ -107,16 +113,22 @@
                     </ul>
                 </div>
                 <div class="pubilcreply">
-                    <div ng-click="tapShowButton('publicReplyList')"  class="rtitle">
+                    <div ng-click="tapShowButton('publicReplyList')"
+                         ng-style="showFlag.publicReplyList?{'backgroundPosition':'0 -42px', color: '#08b7c2'}:{'backgroundPosition':'0 0', color: '#333'}"
+                         class="rtitle">
                         公共回复（{{commonAnswer.length}}）</div>
                     <ul ng-show='showFlag.publicReplyList'>
                         <li ng-repeat="item in commonAnswer">
-                            <div class="group-title" ng-click="tapPublicReplyContent($index)">
+                            <div class="group-title"
+                                 ng-style="publicReplyIndex==$index?{'backgroundPosition':'0 -42px', color: '#08b7c2'}:{'backgroundPosition':'0 0', color: '#333'}"
+                                 ng-click="tapPublicReplyContent($index)">
                                 {{item.name}}（{{item.secondAnswer.length}}）
                             </div>
                             <ul ng-show='publicReplyIndex==$index'>
                                 <li ng-repeat="item2 in item.secondAnswer" class="rcontent">
-                                    <nobr ng-click="tapEditCommonContent($parent.$index,$index)">{{item2.name}}
+                                    <nobr ng-click="tapEditCommonContent($parent.$index,$index)"
+                                          ng-dblclick="chooseCommonContent($parent.$index,$index)"
+                                          ng-style="publicReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}">{{item2.name}}
                                     </nobr>
                                 </li>
                             </ul>
@@ -125,7 +137,7 @@
                 </div>
                 </div>
                 <!--添加分组-->
-                <div class="addgroup" ng-show='addgroup'>
+                <div class="addgroup" ng-show='addGroupFlag'>
                     <div class="addtop"><span>添加分组</span><span ng-click="closeAddGroup()">关闭</span></div>
                     <div class="addgroupname"><span>添加分组</span><input type="text" ng-model="info.addGroup"/></div>
                     <div class="addbtn">
@@ -134,7 +146,7 @@
                     </div>
                 </div>
                 <!--添加内容-->
-                <div class="addcontent" ng-show='addcontent'>
+                <div class="addcontent" ng-show='addContentFlag'>
                     <div class="addtop"><span>添加回复</span><span ng-click="closeAddContent()">关闭</span></div>
                     <div class="addgroupname"><span class="addkjhf">快捷回复内容：</span>
                         <textarea placeholder="请在此处进行编辑" ng-model="info.addContent"></textarea>
@@ -145,7 +157,7 @@
                     </div>
                 </div>
                 <!--编辑分组-->
-                <div class="editgroup" ng-show='editgroup'>
+                <div class="editgroup" ng-show='editGroupFlag'>
                     <div class="addtop"><span>编辑分组</span><span ng-click="closeEditGroup()">关闭</span></div>
                     <div class="addgroupname"><span>编辑分组</span><input type="text" required ng-model="info.editGroup"/></div>
                     <div class="addbtn">
@@ -154,7 +166,7 @@
                     </div>
                 </div>
                 <!--编辑内容-->
-                <div class="editcontent" ng-show='editcontent'>
+                <div class="editcontent" ng-show='editContentFlag'>
                     <div class="addtop"><span>编辑回复</span><span ng-click="closeEditContent()">关闭</span></div>
                     <div class="addgroupname"><span class="addkjhf">编辑回复内容：</span>
                         <textarea placeholder="请在此处进行编辑" required ng-model="info.editContent"></textarea>
