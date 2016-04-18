@@ -2,10 +2,10 @@ angular.module('controllers', ['luegg.directives'])
     .controller('doctorConsultFirstCtrl', ['$scope', '$sce', '$window','GetTodayRankingList',
         'GetOnlineDoctorList','GetAnswerValueList','GetAnswerValueList','GetUserLoginStatus',
         '$location', 'GetUserRecordList','GetMyAnswerModify','GetCurrentUserConsultListInfo',
-        'TransferToCsUser',
+        'TransferToOtherCsUser',
         function ($scope, $sce, $window,GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
                   GetAnswerValueList, GetUserLoginStatus, $location, GetUserRecordList,GetMyAnswerModify,
-                  GetCurrentUserConsultListInfo,TransferToCsUser) {
+                  GetCurrentUserConsultListInfo,TransferToOtherCsUser) {
             $scope.test = "";
             $scope.info = {};
             $scope.socketServer1 = "";
@@ -61,19 +61,29 @@ angular.module('controllers', ['luegg.directives'])
                 });
             }
 
-            $scope.chooseTransferCsUser = function(csUserId){
+            $scope.chooseTransferCsUser = function(csUserId,csUserName){
                 $scope.transferCsUserId = csUserId;
+                $scope.csTransferUserName = csUserName;
             }
 
             $scope.transferOtherCsUser = function(){
-
+                TransferToOtherCsUser.save({doctorId: $scope.transferCsUserId,
+                    sessionId:$scope.currentUserConversation.sessionId,
+                    remark: $scope.info.transferRemark},function(data){
+                    if(data.result=="success"){
+                        alert("转接成功，将由"+$scope.csTransferUserName+"为用户提供服务");
+                        $scope.closeConsult();
+                    }else if(data.result=="failure"){
+                        alert("转接失败，请转接给其他医生");
+                    }
+                });
             }
 
             ////QQ表情初始化
             //qqFace();
 
             //初始化医生端登录，建立socket链接，获取基本信息
-            $scope.doctorConsultFirst = function () {
+            $scope.doctorConsultInit = function () {
                 var routePath = "/doctor/consultBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath: routePath}, function (data) {
                     $scope.pageLoading = false;
@@ -406,12 +416,14 @@ angular.module('controllers', ['luegg.directives'])
 
             var getAlreadyJoinConsultPatientList = function () {
                 //获取跟医生的会话还保存的用户列表
-                GetCurrentUserConsultListInfo.save({doctorId:$scope.doctorId},function(data){
-                    if(data.result!=""){
-                        $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
-                        var patientId = angular.copy($scope.alreadyJoinPatientConversation[0].patientId);
-                        var patientName = angular.copy($scope.alreadyJoinPatientConversation[0].patientName);
-                        $scope.chooseAlreadyJoinConsultPatient(patientId,patientName);
+                GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:100},function(data){
+                    console.log(data);
+                    if(data.alreadyJoinPatientConversation!=""){
+                        console.log(data);
+                        //$scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
+                        //var patientId = angular.copy($scope.alreadyJoinPatientConversation[0].patientId);
+                        //var patientName = angular.copy($scope.alreadyJoinPatientConversation[0].patientName);
+                        //$scope.chooseAlreadyJoinConsultPatient(patientId,patientName);
                     }
                 })
             }

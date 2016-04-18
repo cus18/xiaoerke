@@ -205,8 +205,8 @@ public class ConsultUserController extends BaseController {
         int pageNo = 0;
         int pageSize = 0;
         String csUserId = String.valueOf(params.get("csUserId"));
-        pageNo = Integer.valueOf("pageNo");
-        pageSize = Integer.valueOf("pageSize");
+        pageNo = (Integer) params.get("pageNo");
+        pageSize = (Integer) params.get("pageSize");
         List<HashMap<String,Object>> responseList = new ArrayList<HashMap<String, Object>>();
 
         List<Object> list = new ArrayList<Object>();
@@ -214,10 +214,10 @@ public class ConsultUserController extends BaseController {
         List<Object> objectList = sessionCache.getConsultSessionByCsId(list);
         for(Object object :objectList){
             HashMap<String,Object> searchMap = new HashMap<String, Object>();
-            RichConsultSession richConsultSession = (RichConsultSession)object;
+            RichConsultSession richConsultSession = transferMapToRichConsultSession((HashMap<String,Object>)object);
             Query query = new Query(where("toUserId").is(richConsultSession.getUserId()).and("fromUserId")
                     .is(richConsultSession.getCsUserId())).with(new Sort(Direction.DESC, "createDate"));
-            pagination = consultRecordService.getPage(pageNo, pageSize, query);
+            pagination = consultRecordService.getPage(pageNo, pageSize, query,"");
             searchMap.put("patientId",richConsultSession.getUserId());
             searchMap.put("patientName",richConsultSession.getUserName());
             searchMap.put("fromServer",richConsultSession.getServerAddress());
@@ -287,10 +287,10 @@ public class ConsultUserController extends BaseController {
             query.addCriteria(cr.orOperator(
                     Criteria.where("attentionNickName").regex(searchInfo)
             )).with(new Sort(Sort.Direction.DESC, "create_date"));
-            pagination = consultRecordService.getPage(pageNo, pageSize, query);
+            pagination = consultRecordService.getPage(pageNo, pageSize, query,"permanent");
         }else if(searchType.equals("message")){
             Query query = new Query(where("message").regex(searchInfo)).with(new Sort(Sort.Direction.DESC, "create_date"));
-            pagination = consultRecordService.getPage(pageNo, pageSize, query);
+            pagination = consultRecordService.getPage(pageNo, pageSize, query,"permanent");
         }
         //根据咨询记录查询对应的用户
         HashSet<String> openidSet = new HashSet<String>();
@@ -355,5 +355,35 @@ public class ConsultUserController extends BaseController {
                      HttpServletRequest request,
                      HttpServletResponse httpResponse) {
         return consultConversationService.removeSessionById(request,params);
+    }
+
+    public RichConsultSession transferMapToRichConsultSession(HashMap<String,Object> consultSessionMap){
+        RichConsultSession consultSession = new RichConsultSession();
+        consultSession.setUserName((String) consultSessionMap.get("userName"));
+        consultSession.setUserId((String) consultSessionMap.get("userId"));
+        consultSession.setServerAddress((String) consultSessionMap.get("serverAddress"));
+        consultSession.setCreateTime((Date) consultSessionMap.get("createTime"));
+        consultSession.setCsUserName((String) consultSessionMap.get("csUserName"));
+        consultSession.setOpenid((String) consultSessionMap.get("openId"));
+        consultSession.setNickName((String) consultSessionMap.get("nickName"));
+        consultSession.setCsUserId((String) consultSessionMap.get("csUserId"));
+        consultSession.setStatus((String) consultSessionMap.get("status"));
+        consultSession.setTitle((String) consultSessionMap.get("title"));
+        return consultSession;
+    }
+
+    public HashMap<String,Object> transferRichConsultSessionToMap(RichConsultSession consultSession){
+        HashMap<String,Object> consultSessionMap = new HashMap<String, Object>();
+        consultSessionMap.put("userName",consultSession.getUserName());
+        consultSessionMap.put("userId",consultSession.getUserId());
+        consultSessionMap.put("serverAddress",consultSession.getServerAddress());
+        consultSessionMap.put("createTime",consultSession.getCreateTime());
+        consultSessionMap.put("csUserName",consultSession.getCsUserName());
+        consultSessionMap.put("openId",consultSession.getOpenid());
+        consultSessionMap.put("nickName",consultSession.getNickName());
+        consultSessionMap.put("csUserId",consultSession.getCsUserId());
+        consultSessionMap.put("status",consultSession.getStatus());
+        consultSessionMap.put("title",consultSession.getTitle());
+        return consultSessionMap;
     }
 }

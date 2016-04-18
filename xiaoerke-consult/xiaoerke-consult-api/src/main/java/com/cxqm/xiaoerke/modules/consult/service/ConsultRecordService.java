@@ -29,7 +29,7 @@ public interface ConsultRecordService {
 
     int updateByPrimaryKey(ConsultRecordVo record);
 
-    PaginationVo<ConsultRecordMongoVo> getPage(int pageNo, int pageSize, Query query);
+    PaginationVo<ConsultRecordMongoVo> getPage(int pageNo, int pageSize, Query query,String recordType);
 
     int saveConsultRecord(ConsultRecordMongoVo consultRecordMongoVo);
 
@@ -40,7 +40,9 @@ public interface ConsultRecordService {
 
     HashMap<String, Object> uploadMediaFile(@RequestParam("file") MultipartFile file, @RequestParam("data") String data) throws UnsupportedEncodingException;
 
-    void buildRecordMongoVo(@RequestParam(required = true) String openId, @RequestParam(required = true) String messageType, @RequestParam(required = false) String messageContent, RichConsultSession consultSession, ConsultRecordMongoVo consultRecordMongoVo, SysWechatAppintInfoVo resultVo);
+    void buildRecordMongoVo(@RequestParam(required = true) String consultType,@RequestParam(required = true) String senderId,
+                            @RequestParam(required = true) String messageType, @RequestParam(required = false) String messageContent,
+                            RichConsultSession consultSession, SysWechatAppintInfoVo resultVo);
 
     void saveConsultSessionStatus(Integer sessionId, String userId);
 
