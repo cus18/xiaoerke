@@ -3,6 +3,7 @@
  */
 package com.cxqm.xiaoerke.modules.consult.web;
 
+import com.cxqm.xiaoerke.common.persistence.Order;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.FrontUtils;
@@ -11,9 +12,11 @@ import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
+import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
+import com.cxqm.xiaoerke.modules.consult.service.SessionCache;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
@@ -24,7 +27,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.data.domain.Sort.Direction;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
@@ -48,6 +51,9 @@ public class ConsultUserController extends BaseController {
 
     @Autowired
     private ConsultRecordService consultRecordService;
+
+    @Autowired
+    SessionCache sessionCache;
 
     @Autowired
     private ConsultSessionForwardRecordsService consultSessionForwardRecordsService;
@@ -184,6 +190,46 @@ public class ConsultUserController extends BaseController {
 
         response.put("userList",consultSessionForwardRecordsVos);
         response.put("status", "success");
+        return response;
+    }
+
+    /**
+     * 根据csUserId获取Session,最近聊天记录信息，咨询界面左侧已接入会话 asd
+     */
+    @RequestMapping(value = "/getPatientUserInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> getPatientUserInfo(@RequestBody Map<String, Object> params) {
+        Map<String,Object> response = new HashMap<String, Object>();
+        PaginationVo<ConsultRecordMongoVo> pagination = null;
+        int pageNo = 0;
+        int pageSize = 0;
+        String csUserId = String.valueOf(params.get("csUserId"));
+        pageNo = Integer.valueOf("pageNo");
+        pageSize = Integer.valueOf("pageSize");
+        List<HashMap<String,Object>> responseList = new ArrayList<HashMap<String, Object>>();
+
+        List<Object> list = new ArrayList<Object>();
+        list.add(csUserId);
+        List<Object> objectList = sessionCache.getConsultSessionByCsId(list);
+        for(Object object :objectList){
+            HashMap<String,Object> searchMap = new HashMap<String, Object>();
+            RichConsultSession richConsultSession = (RichConsultSession)object;
+            Query query = new Query(where("toUserId").is(richConsultSession.getUserId()).and("fromUserId")
+                    .is(richConsultSession.getCsUserId())).with(new Sort(Direction.DESC, "create_date"));
+            pagination = consultRecordService.getPage(pageNo, pageSize, query);
+            searchMap.put("patientId",richConsultSession.getUserId());
+            searchMap.put("patientName",richConsultSession.getUserName());
+            searchMap.put("fromServer",richConsultSession.getServerAddress());
+            searchMap.put("sessionId",richConsultSession.getId());
+            searchMap.put("isOnline","true");
+            searchMap.put("messageNotSee","true");
+            searchMap.put("dateTime",richConsultSession.getCreateTime());
+            searchMap.put("dateTime",pagination.getDatas());
+            responseList.add(searchMap);
+        }
+        response.put("alreadyJoinPatientConversation",responseList);
+        response.put("result",response);
         return response;
     }
 
