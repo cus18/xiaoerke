@@ -9,32 +9,32 @@
                 </span>
                 <span></span>
                 <span>宝大夫</span>
-                <span>自动回复
-                    <select>
-                        <option>无</option>
-                        <option>外出就餐，请稍候</option>
-                        <option>不在电脑旁边，请稍候</option>
-                        <option>接听电话中</option>
-                        <option>无自动回复</option>
-                        <option>马上回来</option>
-                    </select>
-                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>
-                </span>
-                <span>自动接入
-                    <select>
-                        <option>关闭</option>
-                        <option>打开</option>
-                    </select>
-                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>
-                </span>
+                <!--<span>自动回复-->
+                    <!--<select>-->
+                        <!--<option>无</option>-->
+                        <!--<option>外出就餐，请稍候</option>-->
+                        <!--<option>不在电脑旁边，请稍候</option>-->
+                        <!--<option>接听电话中</option>-->
+                        <!--<option>无自动回复</option>-->
+                        <!--<option>马上回来</option>-->
+                    <!--</select>-->
+                    <!--<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>-->
+                <!--</span>-->
+                <!--<span>自动接入-->
+                    <!--<select>-->
+                        <!--<option>关闭</option>-->
+                        <!--<option>打开</option>-->
+                    <!--</select>-->
+                    <!--<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>-->
+                <!--</span>-->
             </div>
             <div class="w5 fr h4 bg-h1">
                 <div class="bdf-dkf-content-right">
                     <div class="cjgl">退出</div>
-                    <div class="xtsz" ng-click="tapShowButton('systemSetup')">
-                        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_06.png" alt=""/>
-                        系统设置
-                    </div>
+                    <!--<div class="xtsz" ng-click="tapShowButton('systemSetup')">-->
+                        <!--<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_06.png" alt=""/>-->
+                        <!--系统设置-->
+                    <!--</div>-->
                 </div>
             </div>
         </div>
@@ -249,7 +249,7 @@
     </div>
     <!--等待接入会话-->
     <div class="jrhhpm" ng-show='showFlag.rankList'>
-        <div class="jrhhpm-top">今日接入会话排名 <a href="#">刷新</a></div>
+        <div class="jrhhpm-top">今日接入会话排名 <a href="refreshRankList">刷新</a></div>
         <div class="jrhhpm-tb">
             <span>排名</span>
             <span>接入工号</span>
@@ -257,7 +257,11 @@
         </div>
         <div class="getdata">
             <ul>
-                <li ng-repeat="item in rankListValue"><span>{{item.consultNum}}</span><span>{{item.id}}</span><span>{{item.name}}</span></li>
+                <li ng-repeat="item in info.rankListValue">
+                    <span>{{item.consultNum}}</span>
+                    <span>{{item.id}}</span>
+                    <span>{{item.name}}</span>
+                </li>
             </ul>
         </div>
     </div>
@@ -400,34 +404,33 @@
                                 <span>状态</span><span>工号</span><span>昵称</span>
                             </div>
                             <ul>
-                                <li>
-                                <span>
-                                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(5).png" alt=""/>
-                                    状态</span><span>工号</span><span>昵称</span>
-                                </li>
-                                <li>
-                                <span>
-                                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(5).png" alt=""/>
-                                状态</span><span>工号</span><span>昵称</span>
-                                </li>
-                                <li>
-                                <span>
-                                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(5).png" alt=""/>
-                                    状态</span><span>工号</span><span>昵称</span>
+                                <li ng-repeat="item in info.onLineCsUserList"
+                                    ng-click="chooseTransferCsUser(item.csUserId)"
+                                    ng-style="item.csUserId==transferCsUserId?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}">
+                                    <span>
+                                        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(5).png" alt=""/>
+                                        {{item.status}}
+                                    </span>
+                                    <span>
+                                        {{item.csUserPhoneNumber}}
+                                    </span>
+                                    <span>
+                                        {{item.csUserName}}
+                                    </span>
                                 </li>
                             </ul>
                         </div>
                     </div>
-                    <div class="refreshbtn">刷新在线工号</div>
+                    <div class="refreshbtn" ng-click="refreshOnLineCsUserList()">刷新在线工号</div>
                     <div class="postscript">
                         <span>附言：</span>
-                        <textarea placeholder="请在此处进行编辑"></textarea>
+                        <textarea placeholder="请在此处进行编辑" ng-model="info.transferWord"></textarea>
                     </div>
                 </div>
             </div>
             <div class="footer ddjr-footer">
-                <button>取消</button>
-                <button>确定</button>
+                <button ng-click="tapShowButton('switchOver')">取消</button>
+                <button ng-click="transferOtherCsUser()">确定</button>
             </div>
         </div>
     </div>

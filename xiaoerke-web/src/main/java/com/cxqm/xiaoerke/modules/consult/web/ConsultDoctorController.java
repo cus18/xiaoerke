@@ -285,10 +285,10 @@ public class ConsultDoctorController extends BaseController {
          ]
      }）
      */
-    @RequestMapping(value = "/commonAnswer", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/consult/answerValue", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    String commonAnswer(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
+    String consultAnswerValue(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
 
         String type = String.valueOf(params.get("type"));
 
@@ -468,10 +468,10 @@ public class ConsultDoctorController extends BaseController {
     /**
      * 获取客服医生列表
      */
-    @RequestMapping(value = "/getCSDoctorList", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/GetCSDoctorList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> getCSDoctorList(Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
+    Map<String, Object> GetCSDoctorList(Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
         Map<String,Object> response = new HashMap<String, Object>();
         List<User> users ;
         User user = new User();
