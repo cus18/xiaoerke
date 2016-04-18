@@ -63,7 +63,7 @@ public class ConsultSessionManager {
 
 	private ConsultSessionService consultSessionService = SpringContextHolder.getBean("consultSessionServiceImpl");
 
-	private ConsultRecordService consultRecordService  = SpringContextHolder.getBean("ConsultRecordServiceImpl");
+	private ConsultRecordService consultRecordService  = SpringContextHolder.getBean("consultRecordServiceImpl");
 	
 	private ConsultSessionForwardRecordsService sessionForwardService = SpringContextHolder.getBean("consultSessionForwardRecordsServiceImpl");
 	
