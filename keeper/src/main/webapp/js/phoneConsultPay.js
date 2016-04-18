@@ -91,8 +91,8 @@ var doRefresh = function(){
                     data: param,
                     success: function (data) {
                         $('#time').html(moment(data.date).format('YYYY/MM/DD'));
-                        $('#begintime').html(moment(data.begintime).format('h:mm'));
-                        $('#endtime').html(moment(data.endtime).format('h:mm'));
+                        $('#begintime').html(moment(data.begintime).format('HH:mm'));
+                        $('#endtime').html(moment(data.endtime).format('HH:mm'));
                     },
                     error: function () {
                     }
