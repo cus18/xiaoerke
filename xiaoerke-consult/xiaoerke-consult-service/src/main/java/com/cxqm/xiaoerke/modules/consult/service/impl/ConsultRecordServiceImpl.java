@@ -146,6 +146,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
         consultRecordMongoVo.setFromUserId(consultSession.getUserId());
         consultRecordMongoVo.setToUserId(consultSession.getCsUserId());
         consultRecordMongoVo.setDoctorName(consultSession.getCsUserName());
+        consultRecordMongoVo.setCreateDate(new Date());
         consultRecordMongoVo.setAttentionNickname(resultVo.getWechat_name());
         consultRecordMongoVo.setSenderName(resultVo.getWechat_name());
         saveConsultRecord(consultRecordMongoVo);
