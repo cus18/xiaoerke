@@ -196,10 +196,10 @@ public class ConsultUserController extends BaseController {
     /**
      * 根据csUserId获取Session,最近聊天记录信息，咨询界面左侧已接入会话 asd
      */
-    @RequestMapping(value = "/getPatientUserInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/getCurrentUserList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> getPatientUserInfo(@RequestBody Map<String, Object> params) {
+    Map<String, Object> getCurrentUserList(@RequestBody Map<String, Object> params) {
         Map<String,Object> response = new HashMap<String, Object>();
         PaginationVo<ConsultRecordMongoVo> pagination = null;
         int pageNo = 0;
@@ -232,20 +232,6 @@ public class ConsultUserController extends BaseController {
         response.put("result",response);
         return response;
     }
-
-    /**
-     * 获取医生下的目前正在咨询的用户列表
-     */
-    @RequestMapping(value = "/getCurrentUserList", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    Map<String, Object> getCurrentUserList(@RequestBody Map<String, Object> params) {
-        Map<String,Object> response = new HashMap<String, Object>();
-
-        response.put("result","");
-        return response;
-    }
-
 
     /***
      * 聊天记录查询接口（UserInfo 根据客户查找  message 根据聊天记录查找  分页
