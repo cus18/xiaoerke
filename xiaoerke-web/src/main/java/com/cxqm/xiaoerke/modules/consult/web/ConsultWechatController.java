@@ -73,15 +73,15 @@ public class ConsultWechatController extends BaseController {
         //需要根据openId获取到nickname，如果拿不到nickName，则用利用openId换算出一个编号即可
         SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
         sysWechatAppintInfoVo.setOpen_id(openId);
-        SysWechatAppintInfoVo resultVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
-        if(resultVo == null){
+        SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
+        if(wechatAttentionVo == null){
             result.put("status","failure");
             return result;
         }
         String nickName = openId.substring(0,5);
-        if(resultVo!=null){
-            if(StringUtils.isNotNull(resultVo.getWechat_name())){
-               nickName = resultVo.getWechat_name();
+        if(wechatAttentionVo!=null){
+            if(StringUtils.isNotNull(wechatAttentionVo.getWechat_name())){
+               nickName = wechatAttentionVo.getWechat_name();
             }
         }
         Channel csChannel = null;
@@ -94,7 +94,7 @@ public class ConsultWechatController extends BaseController {
             consultSession.setOpenid(openId);
             consultSession.setNickName(nickName);
             //创建会话，发送消息给用户，给用户分配接诊员
-            createWechatConsultSessionMap = ConsultSessionManager.getSessionManager().createWechatConsultSession(consultSession);
+            createWechatConsultSessionMap = ConsultSessionManager.getSessionManager().createWechatConsultSession(consultSession,wechatAttentionVo);
             csChannel = (Channel)createWechatConsultSessionMap.get("csChannel");
             consultSession = (RichConsultSession)createWechatConsultSessionMap.get("consultSession");
             sessionId = consultSession.getId();
@@ -138,10 +138,10 @@ public class ConsultWechatController extends BaseController {
         }
 
         //保存聊天记录
-        consultRecordService.buildRecordMongoVo("wx", openId, messageType, messageContent, consultSession, resultVo);
+        consultRecordService.buildRecordMongoVo("wx", openId, messageType, messageContent, consultSession, wechatAttentionVo);
 
         //更新会话操作时间
-        consultRecordService.saveConsultSessionStatus(sessionId,consultSession.getUserId());
+        consultRecordService.saveConsultSessionStatus(sessionId,consultSession.getUserId(),messageType,consultSession);
 
         result.put("status","success");
         return result;
