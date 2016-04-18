@@ -11,9 +11,9 @@ http://www.springframework.org/schema/security/spring-security-4.0.xsd
 http://www.springframework.org/schema/security/oauth2
 http://www.springframework.org/schema/security/spring-security-oauth2-1.0.xsd">
 
-	<sec:http pattern="/a/**" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
+	<sec:http pattern="/auth/**" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
 		<sec:anonymous enabled="false" />
-		<sec:intercept-url pattern="/a/**" method="GET" access="isFullyAuthenticated()" />
+		<sec:intercept-url pattern="/auth/**" method="GET" access="isFullyAuthenticated()" />
 		<sec:csrf disabled="true"/>
 		<sec:custom-filter ref="resourceServerFilter" position="PRE_AUTH_FILTER" />
 		<sec:custom-filter ref="myCheckTokenFilter" position="FIRST"/>

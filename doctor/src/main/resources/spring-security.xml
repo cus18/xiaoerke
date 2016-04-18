@@ -26,7 +26,7 @@
 	<beans:bean id="myAuthenticationProcessingFilter"
 		class="com.cxqm.xiaoerke.webapp.doctor.security.MyAuthenticationProcessingFilter">
 		<!-- 处理登录的action -->
-		<beans:property name="filterProcessesUrl" value="/auth_center/form" />
+		<beans:property name="filterProcessesUrl" value="/auth/auth_center/form" />
 		<!-- 验证成功后的处理 -->
 		<beans:property name="authenticationSuccessHandler" ref="loginLogAuthenticationSuccessHandler" />
 		<!-- 验证失败后的处理 -->
