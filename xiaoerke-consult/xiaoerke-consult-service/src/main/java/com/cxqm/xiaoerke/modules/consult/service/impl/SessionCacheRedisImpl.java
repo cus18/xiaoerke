@@ -103,10 +103,11 @@ public class SessionCacheRedisImpl implements SessionCache {
 	}
 
 	@Override
-	public RichConsultSession getConsultSessionByCsId(String csUserId) {
-		HashMap<String,Object> session = (HashMap<String,Object>) redisTemplate.opsForHash().get(CS_SESSION_KEY, csUserId);
-		return session == null ? null : transferMapToRichConsultSession(session);
+	public List<Object> getConsultSessionByCsId(Collection<Object> csUserId) {
+		List<Object> sessions = redisTemplate.opsForHash().multiGet(CS_SESSION_KEY, csUserId);
+		return sessions;
 	}
+
 
 	@Override
 	public String getWeChatToken(){
