@@ -227,6 +227,7 @@ var read = function(){
 //监听 病情描述的长度
 var skip=function(item){
        $("html,body").animate({ scrollTop: $("#"+item).offset().top }, 0);
+
     if(item=="case"){
         caseLength();
     }
