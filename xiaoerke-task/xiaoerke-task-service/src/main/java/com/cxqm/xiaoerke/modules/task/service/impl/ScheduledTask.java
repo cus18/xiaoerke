@@ -1034,8 +1034,8 @@ public class ScheduledTask {
 //              并发送消息
               Map<String,Object> parameter = systemService.getWechatParameter();
               String token = (String)parameter.get("token");
-              PatientMsgTemplate.consultPhoneRefund2Wechat((String)map.get("orderNo"),(String)map.get("price"), (String)map.get("openid"),token ,"");
-              PatientMsgTemplate.consultPhoneRefund2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (String) map.get("price"), (String) map.get("phone"));
+              PatientMsgTemplate.consultPhoneRefund2Wechat((String)map.get("orderNo"),(Float)map.get("price")+"", (String)map.get("openid"),token ,"");
+              PatientMsgTemplate.consultPhoneRefund2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (Float)map.get("price")+"", (String) map.get("userPhone"));
 
           }
       }
