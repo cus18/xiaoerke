@@ -29,7 +29,7 @@ public interface ConsultRecordService {
 
     int updateByPrimaryKey(ConsultRecordVo record);
 
-    PaginationVo<ConsultRecordMongoVo> getPage(int pageNo, int pageSize, Query query);
+    PaginationVo<ConsultRecordMongoVo> getPage(int pageNo, int pageSize, Query query,String recordType);
 
     int saveConsultRecord(ConsultRecordMongoVo consultRecordMongoVo);
 
