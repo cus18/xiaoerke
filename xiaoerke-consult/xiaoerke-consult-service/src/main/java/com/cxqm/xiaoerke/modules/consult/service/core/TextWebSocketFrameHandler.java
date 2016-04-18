@@ -30,9 +30,11 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 
 	private SessionCache sessionCache = SpringContextHolder.getBean("sessionCacheRedisImpl");
 
+	@Autowired
 	private ConsultRecordService consultRecordService = SpringContextHolder.getBean("consultRecordServiceImpl");
 
-	private WechatAttentionService wechatAttentionService =  SpringContextHolder.getBean("WechatAttentionServiceImpl");
+	@Autowired
+	private WechatAttentionService wechatAttentionService = SpringContextHolder.getBean("wechatAttentionServiceImpl");
 
 	public TextWebSocketFrameHandler() {
 		super();
