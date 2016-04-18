@@ -163,6 +163,7 @@ public class SessionCacheRedisImpl implements SessionCache {
 		consultSession.setCsUserId((String) consultSessionMap.get("csUserId"));
 		consultSession.setStatus((String) consultSessionMap.get("status"));
 		consultSession.setTitle((String) consultSessionMap.get("title"));
+		consultSession.setId((Integer) consultSessionMap.get("id"));
 		return consultSession;
 	}
 
@@ -178,6 +179,7 @@ public class SessionCacheRedisImpl implements SessionCache {
 		consultSessionMap.put("csUserId",consultSession.getCsUserId());
 		consultSessionMap.put("status",consultSession.getStatus());
 		consultSessionMap.put("title",consultSession.getTitle());
+		consultSessionMap.put("id",consultSession.getId());
 		return consultSessionMap;
 	}
 }
