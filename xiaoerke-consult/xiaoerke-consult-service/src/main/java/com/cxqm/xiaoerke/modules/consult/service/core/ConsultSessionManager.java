@@ -4,8 +4,10 @@ import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionCache;
 import com.cxqm.xiaoerke.modules.consult.service.impl.SessionCacheRedisImpl;
+import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;
@@ -60,6 +62,8 @@ public class ConsultSessionManager {
 	private SessionCache sessionCache = SpringContextHolder.getBean("sessionCacheRedisImpl");
 
 	private ConsultSessionService consultSessionService = SpringContextHolder.getBean("consultSessionServiceImpl");
+
+	private ConsultRecordService consultRecordService  = SpringContextHolder.getBean("ConsultRecordServiceImpl");
 	
 	private ConsultSessionForwardRecordsService sessionForwardService = SpringContextHolder.getBean("consultSessionForwardRecordsServiceImpl");
 	
@@ -195,7 +199,7 @@ public class ConsultSessionManager {
 		channelUserMapping.put(channel, userId);
 	}
 
-	public HashMap<String,Object> createWechatConsultSession(RichConsultSession consultSession){
+	public HashMap<String,Object> createWechatConsultSession(RichConsultSession consultSession,SysWechatAppintInfoVo wechatAttentionVo){
 
 		HashMap<String,Object> response = new HashMap<String, Object>();
 
@@ -257,6 +261,7 @@ public class ConsultSessionManager {
 			}else{
 				//如果没有任何医生在线，给用户推送微信消息，告知没有医生在线，稍后在使用服务
 				String st = "尊敬的用户，您好，目前没有医生在线，请稍后再试";
+				consultRecordService.buildRecordMongoVo("wx",consultSession.getOpenid(),"wx", st, consultSession, wechatAttentionVo);
 				WechatUtil.senMsgToWechat(sessionCache.getWeChatToken(),consultSession.getOpenid(), st);
 				return null;
 			}
@@ -267,10 +272,11 @@ public class ConsultSessionManager {
 		Integer sessionId = consultSession.getId();
 		sessionCache.putSessionIdConsultSessionPair(sessionId, consultSession);
 		sessionCache.putOpenIdSessionIdPair(consultSession.getOpenid(), sessionId);
-		sessionCache.putCsIdConsultSessionPair(consultSession.getCsUserId(),consultSession);
+		sessionCache.putCsIdConsultSessionPair(consultSession.getCsUserId(), consultSession);
 
 		//成功分配医生，给用户发送一个欢迎语
 		String st = "尊敬的用户，宝大夫在线，有什么可以帮您";
+		consultRecordService.buildRecordMongoVo("wx",consultSession.getOpenid(),"wx", st, consultSession, wechatAttentionVo);
 		WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN, consultSession.getOpenid(), st);//sessionCache.getWeChatToken()
 		sessionCache.putWechatSessionByOpenId(consultSession.getOpenid(), consultSession);
 		response.put("csChannel", csChannel);

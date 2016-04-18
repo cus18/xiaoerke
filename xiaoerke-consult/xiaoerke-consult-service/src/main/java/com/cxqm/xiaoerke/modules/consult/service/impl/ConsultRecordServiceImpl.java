@@ -168,11 +168,17 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     }
 
     @Override
-    public void saveConsultSessionStatus(Integer sessionId,String userId) {
+    public void saveConsultSessionStatus(Integer sessionId,String userId,String consultType, RichConsultSession consultSession) {
         ConsultSessionStatusVo consultSessionStatusVo = new ConsultSessionStatusVo();
         consultSessionStatusVo.setSessionId(sessionId.toString());
         String lastDate = DateUtils.DateToStr(new Date());
         consultSessionStatusVo.setLastMessageTime(lastDate);
+        if(consultType.equals("wx")){
+            consultSessionStatusVo.setUserId(consultSession.getOpenid());
+        }else{
+            consultSessionStatusVo.setUserId(consultSession.getUserId());
+        }
+
         consultSessionStatusVo.setUserId(userId);
         consultRecordMongoDBService.upsertConsultSessionStatusVo(consultSessionStatusVo);
     }
