@@ -3,7 +3,9 @@ package com.cxqm.xiaoerke.modules.interaction.service.impl;
 import com.cxqm.xiaoerke.common.utils.IdGen;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.interaction.service.ShareService;
+import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhoneOrderService;
+import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
 import com.cxqm.xiaoerke.modules.sys.interceptor.SystemServiceLog;
 import com.cxqm.xiaoerke.modules.sys.service.HospitalInfoService;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +31,7 @@ public class ShareServiceImpl implements ShareService{
 	private MessageService messageService;
 	
 	@Autowired
-	private HospitalInfoService hospitalInfoService;
+	private ConsultPhonePatientService consultPhonePatientService;
 	
 	@Autowired
 	private PatientRegisterService patientRegisterService;
@@ -51,15 +54,21 @@ public class ShareServiceImpl implements ShareService{
         hashMap.put("patientRegisterServiceId", params.get("patientRegisterServiceId"));
         HashMap<String, Object> response = null;
         if(type != null && "phone".equals(type)){
+
             response = messageService.findPhoneConsultShareDetailInfoExecute(hashMap);
+            ConsultPhoneRegisterServiceVo vo =  new ConsultPhoneRegisterServiceVo();
+            vo.setId((Integer)params.get("patientRegisterServiceId"));
+            vo.setUpdateTime(new Date());
+            vo.setState("5");
+            consultPhonePatientService.updateOrderInfoBySelect(vo);
         }else{
             response = messageService.findShareDetailInfoExecute(hashMap);
         }
 
         //获取科室
-        String departmentName = hospitalInfoService.getDepartmentFullName((String) response.get("doctorId"),
-                (String) response.get("hospitalId"));
-        response.put("departmentName", departmentName);
+//        String departmentName = hospitalInfoService.getDepartmentFullName((String) response.get("doctorId"),
+//                (String) response.get("hospitalId"));
+//        response.put("departmentName", departmentName);
         return response;
     }
 	
@@ -89,7 +98,7 @@ public class ShareServiceImpl implements ShareService{
 		//完成分享    需传入参数register_no
 		excuteMap.put("patientRegisterServiceId", patientRegisterServiceId);
         if(type != null && "phone".equals(type)){
-            excuteMap.put("state","4");
+            excuteMap.put("state","5");
             consultPhoneOrderService.changeConsultPhoneRegisterServiceState(excuteMap);
         }else{
             patientRegisterService.completeShareExecute(excuteMap);
