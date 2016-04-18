@@ -56,12 +56,12 @@
         <ul style="border-bottom:none;">
             <li class="f4 c5">
                 <span class="f4 c3">接听电话：</span>
-                <input id="connectphone" type="text" placeholder="">
+                <input id="connectphone" type="text" placeholder="" onfocus="skip('connectphone')">
             </li>
             <li class="f4 c5">
                 <span class="f4 c3">宝宝姓名：</span>
                 <input type="hidden" id="babyId"/>
-                <input id="babyName" type="text" placeholder="填写宝宝姓名（必填）">
+                <input id="babyName" type="text" placeholder="填写宝宝姓名（必填）" onfocus="skip('babyName')">
                 <a onclick="selectBaby()" class="selectBabyBtn" id="addBaby">选择宝宝</a>
             </li>
             <li class="f4 c5 border0">
@@ -71,7 +71,7 @@
             <li class="case f4 c5" >
                 <span class="f4 c3">病情描述：</span>
                 <a>0/200</a>
-                <textarea id="case" onfocus="caseLength()" placeholder="尽可能详细描述病情，治疗情况以及想要获得的帮助（至少10个字）"></textarea>
+                <textarea id="case" onfocus="skip('case')" placeholder="尽可能详细描述病情，治疗情况以及想要获得的帮助（至少10个字）"></textarea>
             </li>
         </ul>
     </div>

@@ -1007,7 +1007,7 @@ public class ScheduledTask {
                       "4006237120", "4006237120", null,
                       "true", null, orderId+"",
                       conversationLength+"", null, "0",
-                      "1", "10", null);
+                      "1", "60", null);
 
               if("000000".equals((String) result.get("statusCode"))){
                   HashMap<String, Object> dataMap = (HashMap) result.get("data");
@@ -1034,8 +1034,8 @@ public class ScheduledTask {
 //              并发送消息
               Map<String,Object> parameter = systemService.getWechatParameter();
               String token = (String)parameter.get("token");
-              PatientMsgTemplate.consultPhoneRefund2Wechat((String)map.get("orderNo"),(String)map.get("price"), (String)map.get("openid"),token ,"");
-              PatientMsgTemplate.consultPhoneRefund2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (String) map.get("price"), (String) map.get("phone"));
+              PatientMsgTemplate.consultPhoneRefund2Wechat((String)map.get("orderNo"),(Float)map.get("price")+"", (String)map.get("openid"),token ,"");
+              PatientMsgTemplate.consultPhoneRefund2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (Float)map.get("price")+"", (String) map.get("userPhone"));
 
           }
       }
