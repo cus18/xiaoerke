@@ -285,10 +285,10 @@ public class ConsultDoctorController extends BaseController {
          ]
      }）
      */
-    @RequestMapping(value = "/commonAnswer", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/consult/answerValue", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    String commonAnswer(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
+    String consultAnswerValue(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
 
         String type = String.valueOf(params.get("type"));
 
@@ -302,7 +302,7 @@ public class ConsultDoctorController extends BaseController {
 
 
     /***
-     * 改接口有两个功能：1、医生修改自己的回复,没有的话先执行插入操作    2、修改公共回复，没有的话先执行插入操作
+     * 该接口有两个功能：1、医生修改自己的回复,没有的话先执行插入操作    2、修改公共回复，没有的话先执行插入操作
      *
      * @param
         {
@@ -437,7 +437,7 @@ public class ConsultDoctorController extends BaseController {
             Query query = new Query(where("toUserId").is(toUserId).and("fromUserId")
                     .is(fromUserId)).with(new Sort(Direction.DESC, "create_date"));
             pagination = consultRecordService.getPage(pageNo, pageSize, query);
-        }else if (recordType.equals("image") || recordType.equals("voice")){//查询语音、图片
+        }else if (recordType.contains("image") || recordType.contains("voice")){//查询语音、图片
             String openId = String.valueOf(params.get("openId"));
             Query query = new Query(where("openId").is(openId).and("messageType")
                     .is(recordType)).with(new Sort(Direction.DESC, "create_date"));
@@ -468,10 +468,10 @@ public class ConsultDoctorController extends BaseController {
     /**
      * 获取客服医生列表
      */
-    @RequestMapping(value = "/getCSDoctorList", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/GetCSDoctorList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> getCSDoctorList(Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
+    Map<String, Object> GetCSDoctorList(Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
         Map<String,Object> response = new HashMap<String, Object>();
         List<User> users ;
         User user = new User();

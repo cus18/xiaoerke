@@ -68,12 +68,12 @@
             <div class='w10 h6 customerlist '>
                 <div class="fl">客户列表</div>
                 <div class="fr">
-                    <select id="searchDateId" ng-model="selected" ng-options="date.name for date in searchDate" ng-change="getCSInfoByUserId(selected.value)">
+                    <select id="searchDateId" ng-model="selected" ng-options="date.name for date in searchDate" ng-change="getGetCSInfoByUserId(selected.value)">
                         <option value="">所有时间</option>
                     </select>
                 </div>
                 <div class="fr">
-                    <select id="CSDoctorListInfoId" ng-model="selected" ng-options="user.name for user in CSList" ng-change="getCSInfoByUserId(selected.id)">
+                    <select id="CSDoctorListInfoId" ng-model="selected" ng-options="user.name for user in CSList" ng-change="getGetCSInfoByUserId(selected.id)">
                         <option value="">所有客服</option>
                     </select>
                 </div>
@@ -86,7 +86,7 @@
 
             <div  class='w10 h20 br1'>
                 <ul class="nicknamecontentlist">
-                    <div ng-repeat="item in userConsultListInfo" ng-click ="getUserRecordDetail(item.openid,item.senderName,item.fromUserId,item.toUserId)">
+                    <div ng-repeat="item in userConsultListInfo" ng-click ="GetUserRecordDetail(item.openid,item.senderName,item.fromUserId,item.toUserId)">
                         <li>
                             <div class="nickname">{{item.senderName}}</div>
                             <div class="recently">{{item.infoDate}}</div>

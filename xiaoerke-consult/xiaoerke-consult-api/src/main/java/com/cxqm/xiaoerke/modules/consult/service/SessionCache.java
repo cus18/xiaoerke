@@ -42,7 +42,7 @@ public interface SessionCache {
 
 	RichConsultSession getWechatSessionByOpenId(String openId);
 
-	RichConsultSession getConsultSessionByCsId(String csUserId);
+	List<Object> getConsultSessionByCsId(Collection<Object> csUserId);
 
 	String getWeChatToken();
 
