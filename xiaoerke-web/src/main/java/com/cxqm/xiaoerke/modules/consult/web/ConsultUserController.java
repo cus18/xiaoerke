@@ -213,27 +213,29 @@ public class ConsultUserController extends BaseController {
         List<Object> list = new ArrayList<Object>();
         list.add(csUserId);
         List<Object> objectList = sessionCache.getConsultSessionByCsId(list);
-        for(Object object :objectList){
-            HashMap<String,Object> searchMap = new HashMap<String, Object>();
-            RichConsultSession richConsultSession = ConsultUtil.transferMapToRichConsultSession((HashMap<String, Object>) object);
-            String userId = richConsultSession.getUserId();
-            if(StringUtils.isNull(userId)){
-               userId =  richConsultSession.getOpenid();
+        if(objectList!=null && objectList.size()>0){
+            for(Object object :objectList){
+                HashMap<String,Object> searchMap = new HashMap<String, Object>();
+                RichConsultSession richConsultSession = ConsultUtil.transferMapToRichConsultSession((HashMap<String, Object>) object);
+                String userId = richConsultSession.getUserId();
+                if(StringUtils.isNull(userId)){
+                    userId =  richConsultSession.getOpenid();
+                }
+                Query query = new Query(where("userId").is(userId).and("csUserId")
+                        .is(richConsultSession.getCsUserId())).with(new Sort(Direction.DESC, "createDate"));
+                pagination = consultRecordService.getPage(pageNo, pageSize, query,"temporary");
+                if(StringUtils.isNull(richConsultSession.getUserId())){
+                    searchMap.put("patientId",richConsultSession.getOpenid());
+                }
+                searchMap.put("patientName", richConsultSession.getNickName());
+                searchMap.put("fromServer",richConsultSession.getServerAddress());
+                searchMap.put("sessionId",richConsultSession.getId());
+                searchMap.put("isOnline",true);
+                searchMap.put("messageNotSee",true);
+                searchMap.put("dateTime",richConsultSession.getCreateTime());
+                searchMap.put("consultValue",pagination.getDatas());
+                responseList.add(searchMap);
             }
-            Query query = new Query(where("userId").is(userId).and("csUserId")
-                    .is(richConsultSession.getCsUserId())).with(new Sort(Direction.DESC, "createDate"));
-            pagination = consultRecordService.getPage(pageNo, pageSize, query,"temporary");
-            if(StringUtils.isNull(richConsultSession.getUserId())){
-                searchMap.put("patientId",richConsultSession.getOpenid());
-            }
-            searchMap.put("patientName", richConsultSession.getNickName());
-            searchMap.put("fromServer",richConsultSession.getServerAddress());
-            searchMap.put("sessionId",richConsultSession.getId());
-            searchMap.put("isOnline",true);
-            searchMap.put("messageNotSee",true);
-            searchMap.put("dateTime",richConsultSession.getCreateTime());
-            searchMap.put("consultValue",pagination.getDatas());
-            responseList.add(searchMap);
         }
         response.put("alreadyJoinPatientConversation",responseList);
         return response;
