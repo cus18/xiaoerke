@@ -225,7 +225,7 @@ public class ConsultUserController extends BaseController {
             searchMap.put("isOnline","true");
             searchMap.put("messageNotSee","true");
             searchMap.put("dateTime",richConsultSession.getCreateTime());
-            searchMap.put("dateTime",pagination.getDatas());
+            searchMap.put("consultValue",pagination.getDatas());
             responseList.add(searchMap);
         }
         response.put("alreadyJoinPatientConversation",responseList);
