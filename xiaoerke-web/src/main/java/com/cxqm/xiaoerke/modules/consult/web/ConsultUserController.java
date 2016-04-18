@@ -216,7 +216,7 @@ public class ConsultUserController extends BaseController {
             HashMap<String,Object> searchMap = new HashMap<String, Object>();
             RichConsultSession richConsultSession = (RichConsultSession)object;
             Query query = new Query(where("toUserId").is(richConsultSession.getUserId()).and("fromUserId")
-                    .is(richConsultSession.getCsUserId())).with(new Sort(Direction.DESC, "create_date"));
+                    .is(richConsultSession.getCsUserId())).with(new Sort(Direction.DESC, "createDate"));
             pagination = consultRecordService.getPage(pageNo, pageSize, query);
             searchMap.put("patientId",richConsultSession.getUserId());
             searchMap.put("patientName",richConsultSession.getUserName());
