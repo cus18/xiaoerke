@@ -302,7 +302,7 @@ public class ConsultDoctorController extends BaseController {
 
 
     /***
-     * 改接口有两个功能：1、医生修改自己的回复,没有的话先执行插入操作    2、修改公共回复，没有的话先执行插入操作
+     * 该接口有两个功能：1、医生修改自己的回复,没有的话先执行插入操作    2、修改公共回复，没有的话先执行插入操作
      *
      * @param
         {
@@ -437,7 +437,7 @@ public class ConsultDoctorController extends BaseController {
             Query query = new Query(where("toUserId").is(toUserId).and("fromUserId")
                     .is(fromUserId)).with(new Sort(Direction.DESC, "create_date"));
             pagination = consultRecordService.getPage(pageNo, pageSize, query);
-        }else if (recordType.equals("image") || recordType.equals("voice")){//查询语音、图片
+        }else if (recordType.contains("image") || recordType.contains("voice")){//查询语音、图片
             String openId = String.valueOf(params.get("openId"));
             Query query = new Query(where("openId").is(openId).and("messageType")
                     .is(recordType)).with(new Sort(Direction.DESC, "create_date"));
