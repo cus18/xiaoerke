@@ -563,7 +563,9 @@ angular.module('controllers', ['luegg.directives'])
             //获取用户的详细聊天记录
             $scope.GetUserRecordDetail = function (openid,senderName,fromUserId,toUserId) {
                 $scope.currentClickUserName = senderName;
-                GetUserRecordDetail.save({pageNo:0,pageSize:100,fromUserId:fromUserId,toUserId:toUserId,recordType: "doctor", "openid": openid}, function (data) {
+                GetUserRecordDetail.save({pageNo:0,pageSize:100,
+                    fromUserId:fromUserId,toUserId:toUserId,
+                    recordType: "doctor", "openid": openid}, function (data) {
                     $scope.defaultClickUserOpenId = openid;
                     $scope.currentUserConsultRecordDetail = data.records;
 

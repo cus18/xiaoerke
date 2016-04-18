@@ -80,14 +80,14 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 			if(channel != csChannel && csChannel != null) {
 				csChannel.writeAndFlush(msg.retain());
 				//保存聊天记录
-				consultRecordService.buildRecordMongoVo("wx", csUserId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession,resultVo);
+				consultRecordService.buildRecordMongoVo("web", csUserId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession,resultVo);
 			} else {
 				String userId = consultSession.getUserId();
 				if(StringUtils.isNotNull(userId)){
 					Channel userChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(userId);
 					userChannel.writeAndFlush(msg.retain());
 					//保存聊天记录
-					consultRecordService.buildRecordMongoVo("wx", userId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession, resultVo);
+					consultRecordService.buildRecordMongoVo("h5", userId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession, resultVo);
 				}else{
 					String openId = consultSession.getOpenid();
 					String st = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
@@ -96,7 +96,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 					sysWechatAppintInfoVo.setOpen_id(openId);
 					resultVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
 					//保存聊天记录
-					consultRecordService.buildRecordMongoVo("wx", openId,String.valueOf(msgType), (String) msgMap.get("content"), consultSession, resultVo);
+					consultRecordService.buildRecordMongoVo("wx",openId,String.valueOf(msgType), (String) msgMap.get("content"), consultSession, resultVo);
 				}
 
 			}

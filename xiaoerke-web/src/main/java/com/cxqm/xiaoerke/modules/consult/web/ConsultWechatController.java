@@ -140,9 +140,6 @@ public class ConsultWechatController extends BaseController {
         //保存聊天记录
         consultRecordService.buildRecordMongoVo("wx", openId, messageType, messageContent, consultSession, resultVo);
 
-        //保存临时聊天记录，供医生刷新浏览器时使用。
-//        consultRecordService.buildTempRecordMongoVo(openId, messageType, messageContent, consultSession, consultRecordMongoVo, resultVo);
-
         //更新会话操作时间
         consultRecordService.saveConsultSessionStatus(sessionId,consultSession.getUserId());
 
