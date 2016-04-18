@@ -432,16 +432,16 @@ public class ConsultDoctorController extends BaseController {
 
         if(recordType.equals("user") && StringUtils.isNotNull(toUserId) && pageSize > 0){
             Query query = new Query(where("toUserId").is(toUserId)).with(new Sort(Direction.DESC, "create_date"));//用户端获取与平台的所有聊天记录
-            pagination = consultRecordService.getPage(pageNo, pageSize, query);
+            pagination = consultRecordService.getPage(pageNo, pageSize, query,"permanent");
         }else if (recordType.equals("doctor") && StringUtils.isNotNull(toUserId) && StringUtils.isNotNull(fromUserId)){//医生端获取与自己有关的所有聊天记录
             Query query = new Query(where("toUserId").is(toUserId).and("fromUserId")
                     .is(fromUserId)).with(new Sort(Direction.DESC, "create_date"));
-            pagination = consultRecordService.getPage(pageNo, pageSize, query);
+            pagination = consultRecordService.getPage(pageNo, pageSize, query,"permanent");
         }else if (recordType.contains("image") || recordType.contains("voice")){//查询语音、图片
             String openId = String.valueOf(params.get("openId"));
             Query query = new Query(where("openId").is(openId).and("messageType")
                     .is(recordType)).with(new Sort(Direction.DESC, "create_date"));
-            pagination = consultRecordService.getPage(pageNo, pageSize, query);
+            pagination = consultRecordService.getPage(pageNo, pageSize, query,"permanent");
         }
 
         response.put("records", pagination!=null?pagination.getDatas():"");

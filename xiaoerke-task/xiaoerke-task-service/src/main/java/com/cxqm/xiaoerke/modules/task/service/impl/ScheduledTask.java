@@ -1034,8 +1034,8 @@ public class ScheduledTask {
 //              并发送消息
               Map<String,Object> parameter = systemService.getWechatParameter();
               String token = (String)parameter.get("token");
-              PatientMsgTemplate.consultPhoneRefund2Wechat((String)map.get("orderNo"),(String)map.get("price"), (String)map.get("openid"),token ,"");
-              PatientMsgTemplate.consultPhoneRefund2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (String) map.get("price"), (String) map.get("phone"));
+              PatientMsgTemplate.consultPhoneRefund2Wechat((String)map.get("orderNo"),(Float)map.get("price")+"", (String)map.get("openid"),token ,"");
+              PatientMsgTemplate.consultPhoneRefund2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (Float)map.get("price")+"", (String) map.get("userPhone"));
 
           }
       }
@@ -1079,6 +1079,8 @@ public class ScheduledTask {
                     consultRecordService.deleteConsultSessionStatusVo(new Query().addCriteria(new Criteria().where("sessionId").is(consultSessionStatusVo.getSessionId())));
                     sessionCache.removeConsultSessionBySessionId(Integer.valueOf(consultSessionStatusVo.getSessionId()));
                     ConsultSessionManager.getSessionManager().removeUserSession(consultSessionStatusVo.getUserId());
+                    //删除用户的临时聊天记录
+                    consultRecordService.deleteConsultTempRecordVo(new Query().addCriteria(new Criteria().where("userId").is(consultSessionStatusVo.getUserId())));
                 }catch (Exception e){
                     e.printStackTrace();
                 }

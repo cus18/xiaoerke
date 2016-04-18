@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="scripts/styles/doctorConsultFirst.css?ver=1.0.1" type="text/css"/>
-<div ui-view ng-init="doctorConsultFirst()" class="messageList">
+<div ui-view ng-init="doctorConsultInit()" class="messageList">
     <!--头部-->
     <header class="head w10">
         <div class="head-t w10 qf">
@@ -190,6 +190,7 @@
                 </div>
                 <div class="chatlist">
                     <div scroll-glue-bottom="glued" class="chatlistin">
+                        <div class="moreInformation"><a href="#">查看更多消息</a></div>
                         <div ng-repeat="item in currentUserConversation.consultValue">
                             <div ng-if="item.senderId==doctorId" class="doctorReplyContent">
                                 <div>
@@ -405,7 +406,7 @@
                             </div>
                             <ul>
                                 <li ng-repeat="item in info.onLineCsUserList"
-                                    ng-click="chooseTransferCsUser(item.csUserId)"
+                                    ng-click="chooseTransferCsUser(item.csUserId,item.csUserName)"
                                     ng-style="item.csUserId==transferCsUserId?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}">
                                     <span>
                                         <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(5).png" alt=""/>
@@ -424,7 +425,7 @@
                     <div class="refreshbtn" ng-click="refreshOnLineCsUserList()">刷新在线工号</div>
                     <div class="postscript">
                         <span>附言：</span>
-                        <textarea placeholder="请在此处进行编辑" ng-model="info.transferWord"></textarea>
+                        <textarea placeholder="请在此处进行编辑" ng-model="info.transferRemark"></textarea>
                     </div>
                 </div>
             </div>

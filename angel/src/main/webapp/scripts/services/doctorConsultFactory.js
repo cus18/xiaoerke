@@ -96,7 +96,7 @@ angular.module('services', ['ngResource'])
         return $resource(public + 'consult/historyRecord/doctor');
     }])
     //转发会话到其他客服
-    .factory('TransferToCsUser', ['$resource', function ($resource) {
+    .factory('TransferToOtherCsUser', ['$resource', function ($resource) {
         return $resource(public + 'consult/transfer');
     }])
 

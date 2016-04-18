@@ -27,6 +27,11 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		return 0;
 	}
 
+	public int insertTempRecord(ConsultRecordMongoVo consultRecordMongoVo) {
+		mongoTemplate.insert(consultRecordMongoVo, "consultTempRecordVo");
+		return 0;
+	}
+
 	/**
 	 * 通过条件查询,查询分页结果
 	 *
@@ -35,12 +40,17 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 	 * @param query
 	 * @return
 	 */
-	public PaginationVo<ConsultRecordMongoVo> getPage(int pageNo, int pageSize, Query query) {
+	public PaginationVo<ConsultRecordMongoVo> getPage(int pageNo, int pageSize, Query query,String recordType) {
 		long totalCount = this.mongoTemplate.count(query, ConsultRecordVo.class);
 		PaginationVo<ConsultRecordMongoVo> page = new PaginationVo<ConsultRecordMongoVo>(pageNo, pageSize, totalCount);
 		query.skip(page.getFirstResult());// skip相当于从那条记录开始
 		query.limit(pageSize);// 从skip开始,取多少条记录
-		List<ConsultRecordMongoVo> datas = this.queryList(query);
+		List<ConsultRecordMongoVo> datas = null;
+		if(recordType.equals("permanent")){
+			datas = this.queryList(query);
+		}else{
+			datas = this.queryTempRecordList(query);
+		}
 		page.setDatas(datas);
 		return page;
 	}
@@ -53,12 +63,19 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 
 
 	public int saveConsultRecord(ConsultRecordMongoVo consultRecordMongoVo) {
+		insertTempRecord(consultRecordMongoVo);
 		return this.insert(consultRecordMongoVo);
 	}
 
 	public void  deleteConsultSessionStatusVo(Query query) {
 		mongoTemplate.remove(query, ConsultSessionStatusVo.class);
 	}
+
+	public void  deleteConsultTempRecordVo(Query query) {
+		mongoTemplate.remove(query, ConsultSessionStatusVo.class,"consultTempRecordVo");
+	}
+
+
 
 	@Override
 	public ConsultRecordMongoVo findAndRemove(Query query) {
@@ -104,6 +121,10 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 
 	public List<ConsultRecordMongoVo> queryList(Query query){
 		return this.mongoTemplate.find(query, ConsultRecordMongoVo.class, "consultRecordVo");
+	}
+
+	public List<ConsultRecordMongoVo> queryTempRecordList(Query query){
+		return this.mongoTemplate.find(query, ConsultRecordMongoVo.class, "consultTempRecordVo");
 	}
 
 	@Override
