@@ -33,4 +33,8 @@
                     }
                 })
             });
+
+            $scope.gohome = function () {
+                $state.go("doctorHome");
+            }
     }])
