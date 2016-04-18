@@ -61,7 +61,7 @@ public class ConsultTest{
 		}
 		public void run()
 		{
-			String url = "http://xiaoxiaoerke.cn/keeper/patient/wxChat";
+			String url = "http://xiaork.com/keeper/patient/wxChat";
 			testPost(url,xmlInfo);
 		}
 	}

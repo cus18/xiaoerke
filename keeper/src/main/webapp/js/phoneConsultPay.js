@@ -90,12 +90,9 @@ var doRefresh = function(){
                     type: 'post',
                     data: param,
                     success: function (data) {
-                        //var time = moment(data.date).format('YYYY/MM/DD');
                         $('#time').html(moment(data.date).format('YYYY/MM/DD'));
-                        $('#begintime').html(moment(data.date).format('h:mm'));
-                        $('#endtime').html(moment(data.date).format('h:mm'));
-                        //alert(time);
-                        console.log(data)
+                        $('#begintime').html(moment(data.begintime).format('h:mm'));
+                        $('#endtime').html(moment(data.endtime).format('h:mm'));
                     },
                     error: function () {
                     }

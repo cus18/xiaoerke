@@ -52,9 +52,8 @@ public class WechatUtil {
 //    public static final String SECTET = "b3dac0be3e1739af01fee0052ea7a68f";
 //
 //    //医生端微信参数
-    public static final String CORPID = "wxa19496b1076e7352";
-    public static final String SECTET = "f645d4bcf81c905b3ad628cda79bd7ee";
-
+    public static final String CORPID = "wxfb77729adf195622";
+    public static final String SECTET = "c0192dc68e66eff74161e9cf266898bb";
 
     //在任务管理器中ScheduledTaskManager初始化。100分钟更新一次。
 //    public static String TOKEN;

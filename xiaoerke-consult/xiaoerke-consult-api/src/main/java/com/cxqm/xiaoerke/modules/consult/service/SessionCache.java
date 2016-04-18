@@ -24,9 +24,11 @@ public interface SessionCache {
 
 	void removeUserIdSessionIdPair(String userId);
 
+	void removeCsIdSessionIdPair(String csUserId);
+
 	void removeWechatSessionPair(String openId);
 
-	void removeConsultSession(Integer sessionId);
+	void removeConsultSessionBySessionId(Integer sessionId);
 
 	List<Object> getConsultSessionsByKey();
 
@@ -34,11 +36,15 @@ public interface SessionCache {
 
 	Integer getSessionIdByOpenId(String openId);
 
-	void putopenIdSessionIdPair(String openId, Integer sessionId);
+	void putOpenIdSessionIdPair(String openId, Integer sessionId);
 
 	void putWechatSessionByOpenId(String openId, RichConsultSession wechatSession);
 
 	RichConsultSession getWechatSessionByOpenId(String openId);
 
+	RichConsultSession getConsultSessionByCsId(String csUserId);
+
 	String getWeChatToken();
+
+	void putCsIdConsultSessionPair(String csUserId, RichConsultSession consultSession);
 }

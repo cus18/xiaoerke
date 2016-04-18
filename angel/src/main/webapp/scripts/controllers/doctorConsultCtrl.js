@@ -61,21 +61,21 @@ angular.module('controllers', ['luegg.directives'])
 
                         $scope.initConsultSocket1();
 
-                        //获取今日咨询排名
-                        var currDate = new moment().format("YYYY-MM-DD");
-                        getTodayRankingList.save({"rankDate": currDate}, function (data) {
-                            $scope.info.rankListlength = data.rankListValue.length;
-                            if (data.rankListValue.length == 0) {
-                                $scope.lockScroll = "false";
-                            } else {
-                                $scope.rankListValue = data.rankListValue;
-                            }
-                        });
+                        ////获取今日咨询排名
+                        //var currDate = new moment().format("YYYY-MM-DD");
+                        //getTodayRankingList.save({"rankDate": currDate}, function (data) {
+                        //    $scope.info.rankListlength = data.rankListValue.length;
+                        //    if (data.rankListValue.length == 0) {
+                        //        $scope.lockScroll = "false";
+                        //    } else {
+                        //        $scope.rankListValue = data.rankListValue;
+                        //    }
+                        //});
 
-                        //获取在线医生列表
-                        getOnlineDoctorList.save({"pageNo": "1", "pageSize": "3"}, function (data) {
-
-                        });
+                        ////获取在线医生列表
+                        //getOnlineDoctorList.save({"pageNo": "1", "pageSize": "3"}, function (data) {
+                        //
+                        //});
 
                         //获取通用回复列表
                         getCommonAnswerList.save({"type": "commonAnswer"}, function (data) {
@@ -86,6 +86,7 @@ angular.module('controllers', ['luegg.directives'])
                             }
                         });
 
+                        //获取我的回复列表
                         getMyAnswerList.save({"type":"myAnswer"},function(data){
                             if(data.myAnswer!=null && data.myAnswer.length==0){
                                 $scope.lockScroll="false";
@@ -181,10 +182,10 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 if (window.WebSocket) {
                     if($scope.userType="distributor"){
-                        $scope.socketServer1 = new ReconnectingWebSocket("ws://120.25.161.33:2048/ws&" +
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://101.201.154.201:2048/ws&" +
                             "distributor&" + $scope.doctorId);//cs,user,distributor
                     }else if($scope.userType="consultDoctor"){
-                        $scope.socketServer1 = new ReconnectingWebSocket("ws://120.25.161.33:2048/ws&" +
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://101.201.154.201:2048/ws&" +
                             "cs&" + $scope.doctorId);//cs,user,distributor
                     }
 
