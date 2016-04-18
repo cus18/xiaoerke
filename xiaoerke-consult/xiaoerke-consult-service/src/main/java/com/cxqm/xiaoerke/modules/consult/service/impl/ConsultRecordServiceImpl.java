@@ -134,7 +134,12 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     }
 
     @Override
-    public void buildRecordMongoVo(@RequestParam(required = true) String openId, @RequestParam(required = true) String messageType, @RequestParam(required = false) String messageContent, RichConsultSession consultSession, ConsultRecordMongoVo consultRecordMongoVo, SysWechatAppintInfoVo resultVo) {
+    public void buildRecordMongoVo(@RequestParam(required = true) String openId,
+                                   @RequestParam(required = true) String messageType,
+                                   @RequestParam(required = false) String messageContent,
+                                   RichConsultSession consultSession,
+                                   ConsultRecordMongoVo consultRecordMongoVo,
+                                   SysWechatAppintInfoVo resultVo) {
         Integer sessionId = consultSession.getId();
         consultRecordMongoVo.setSessionId(sessionId.toString());
         consultRecordMongoVo.setType(messageType);
@@ -151,6 +156,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
         consultRecordMongoVo.setSenderName(resultVo.getWechat_name());
         saveConsultRecord(consultRecordMongoVo);
     }
+
     @Override
     public void saveConsultSessionStatus(Integer sessionId,String userId) {
         ConsultSessionStatusVo consultSessionStatusVo = new ConsultSessionStatusVo();
