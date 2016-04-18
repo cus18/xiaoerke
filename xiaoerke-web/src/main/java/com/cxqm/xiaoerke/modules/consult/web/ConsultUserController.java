@@ -218,8 +218,10 @@ public class ConsultUserController extends BaseController {
             Query query = new Query(where("userId").is(richConsultSession.getUserId()).and("csUserId")
                     .is(richConsultSession.getCsUserId())).with(new Sort(Direction.DESC, "createDate"));
             pagination = consultRecordService.getPage(pageNo, pageSize, query,"temporary");
-            searchMap.put("patientId",richConsultSession.getUserId());
-            searchMap.put("patientName",richConsultSession.getUserName());
+            if(StringUtils.isNull(richConsultSession.getUserId())){
+                searchMap.put("patientId",richConsultSession.getOpenid());
+            }
+            searchMap.put("patientName",richConsultSession.getNickName());
             searchMap.put("fromServer",richConsultSession.getServerAddress());
             searchMap.put("sessionId",richConsultSession.getId());
             searchMap.put("isOnline","true");
