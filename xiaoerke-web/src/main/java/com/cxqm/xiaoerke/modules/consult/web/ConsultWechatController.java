@@ -65,11 +65,6 @@ public class ConsultWechatController extends BaseController {
                         @RequestParam(required=false) String mediaId) {
         HashMap<String,Object> result = new HashMap<String,Object>();
 
-        //根据用户的openId，判断redis中，是否有用户正在进行的session
-        Integer sessionId = sessionCache.getSessionIdByOpenId(openId);
-        HashMap<String,Object> createWechatConsultSessionMap = null;
-        RichConsultSession consultSession = new RichConsultSession();
-
         //需要根据openId获取到nickname，如果拿不到nickName，则用利用openId换算出一个编号即可
         SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
         sysWechatAppintInfoVo.setOpen_id(openId);
@@ -84,7 +79,12 @@ public class ConsultWechatController extends BaseController {
                nickName = wechatAttentionVo.getWechat_name();
             }
         }
+
         Channel csChannel = null;
+        //根据用户的openId，判断redis中，是否有用户正在进行的session
+        Integer sessionId = sessionCache.getSessionIdByOpenId(openId);
+        HashMap<String,Object> createWechatConsultSessionMap = null;
+        RichConsultSession consultSession = new RichConsultSession();
         //如果此用户不是第一次发送消息，则sessionId不为空
         if(sessionId!=null){
             consultSession = sessionCache.getConsultSessionBySessionId(sessionId);
