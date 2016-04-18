@@ -178,6 +178,6 @@ textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 10
 /*.startTime {font: 12px/20px 'Microsoft Yahei';}*/
 .consultList {height: 408px;overflow: auto;}
 .consultList::-webkit-scrollbar {width:0;height:0;}
-.moreInformation{text-align: center;}
-.moreInformation a{display: inline-block;color: #08b7c2;padding-left: 15px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(13).png") no-repeat center left;}
+.moreInformation{text-align: center;padding-top: 10px;}
+.moreInformation a{display: inline-block;color: #08b7c2;padding-left: 15px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fyh_12.png") no-repeat center left;}
 .moreInformation a:hover{text-decoration: underline;}
