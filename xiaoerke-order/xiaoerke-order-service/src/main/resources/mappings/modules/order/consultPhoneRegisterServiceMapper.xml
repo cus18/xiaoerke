@@ -63,6 +63,7 @@
     crs.type,
     crs.surplusTime,
     su.openid,
+    su.id userId,
     cdr.server_length conversationLength
     FROM
     consultPhone_register_service crs
