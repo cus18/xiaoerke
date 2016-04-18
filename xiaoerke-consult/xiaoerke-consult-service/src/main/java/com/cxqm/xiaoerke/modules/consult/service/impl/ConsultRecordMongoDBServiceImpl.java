@@ -48,7 +48,7 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		List<ConsultRecordMongoVo> datas = null;
 		if(recordType.equals("permanent")){
 			datas = this.queryList(query);
-		}else{
+		}else if(recordType.equals("temporary")){
 			datas = this.queryTempRecordList(query);
 		}
 		page.setDatas(datas);

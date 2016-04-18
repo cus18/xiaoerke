@@ -63,6 +63,7 @@
     crs.type,
     crs.surplusTime,
     su.openid,
+    su.id userId,
     cdr.server_length conversationLength
     FROM
     consultPhone_register_service crs
@@ -415,6 +416,9 @@
       </if>
       <if test="surplusTime != null" >
         surplusTime = #{surplusTime,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

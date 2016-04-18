@@ -1027,16 +1027,18 @@ public class ScheduledTask {
               vo.setId(orderId);
               vo.setUpdateTime(new Date());
               vo.setState("4");
-              consultPhonePatientService.updateOrderInfoBySelect(vo);
+              int state = consultPhonePatientService.updateOrderInfoBySelect(vo);
 //             将钱退还到用户的账户
-              HashMap<String, Object> response = new HashMap<String, Object>();
-              accountService.updateAccount(0F, (Integer) map.get("id")+"", response, false, UserUtils.getUser().getId(),"电话咨询超时取消退款");
-//              并发送消息
-              Map<String,Object> parameter = systemService.getWechatParameter();
-              String token = (String)parameter.get("token");
-              PatientMsgTemplate.consultPhoneRefund2Wechat((String)map.get("orderNo"),(Float)map.get("price")+"", (String)map.get("openid"),token ,"");
-              PatientMsgTemplate.consultPhoneRefund2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (Float)map.get("price")+"", (String) map.get("userPhone"));
+              if(state>0){
+                  HashMap<String, Object> response = new HashMap<String, Object>();
+                  accountService.updateAccount(0F, (Integer) map.get("id")+"", response, false, (String)map.get("userId"),"电话咨询超时取消退款");
+                  //              并发送消息
+                  Map<String,Object> parameter = systemService.getWechatParameter();
+                  String token = (String)parameter.get("token");
+                  PatientMsgTemplate.consultPhoneRefund2Wechat((String)map.get("orderNo"),(Float)map.get("price")+"", (String)map.get("openid"),token ,"");
+                  PatientMsgTemplate.consultPhoneRefund2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (Float) map.get("price") + "", (String) map.get("userPhone"));
 
+              }
           }
       }
 

@@ -199,8 +199,8 @@ public class ConsultUserController extends BaseController {
     @RequestMapping(value = "/getCurrentUserList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> getCurrentUserList(@RequestBody Map<String, Object> params) {
-        Map<String,Object> response = new HashMap<String, Object>();
+    HashMap<String, Object> getCurrentUserList(@RequestBody Map<String, Object> params) {
+        HashMap<String,Object> response = new HashMap<String, Object>();
         PaginationVo<ConsultRecordMongoVo> pagination = null;
         int pageNo = 0;
         int pageSize = 0;
@@ -214,10 +214,10 @@ public class ConsultUserController extends BaseController {
         List<Object> objectList = sessionCache.getConsultSessionByCsId(list);
         for(Object object :objectList){
             HashMap<String,Object> searchMap = new HashMap<String, Object>();
-            RichConsultSession richConsultSession = transferMapToRichConsultSession((HashMap<String,Object>)object);
+            RichConsultSession richConsultSession = transferMapToRichConsultSession((HashMap<String, Object>) object);
             Query query = new Query(where("toUserId").is(richConsultSession.getUserId()).and("fromUserId")
                     .is(richConsultSession.getCsUserId())).with(new Sort(Direction.DESC, "createDate"));
-            pagination = consultRecordService.getPage(pageNo, pageSize, query,"");
+            pagination = consultRecordService.getPage(pageNo, pageSize, query,"temporary");
             searchMap.put("patientId",richConsultSession.getUserId());
             searchMap.put("patientName",richConsultSession.getUserName());
             searchMap.put("fromServer",richConsultSession.getServerAddress());
@@ -229,7 +229,6 @@ public class ConsultUserController extends BaseController {
             responseList.add(searchMap);
         }
         response.put("alreadyJoinPatientConversation",responseList);
-        response.put("result",response);
         return response;
     }
 
