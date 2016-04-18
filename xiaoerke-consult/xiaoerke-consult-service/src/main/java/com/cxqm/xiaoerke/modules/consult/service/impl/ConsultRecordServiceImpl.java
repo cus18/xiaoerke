@@ -155,7 +155,12 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
             consultRecordMongoVo.setSenderName(resultVo.getWechat_name());
         }
         consultRecordMongoVo.setSenderId(senderId);
-        consultRecordMongoVo.setUserId(consultSession.getUserId());
+        if(consultType.equals("wx")){
+            consultRecordMongoVo.setUserId(consultSession.getOpenid());
+        }else{
+            consultRecordMongoVo.setUserId(consultSession.getUserId());
+        }
+
         consultRecordMongoVo.setCsUserId(consultSession.getCsUserId());
         consultRecordMongoVo.setDoctorName(consultSession.getCsUserName());
         consultRecordMongoVo.setCreateDate(new Date());
