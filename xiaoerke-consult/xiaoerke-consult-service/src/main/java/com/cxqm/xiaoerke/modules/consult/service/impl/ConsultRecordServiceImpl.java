@@ -76,7 +76,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
 
     @Override
     public PaginationVo<ConsultRecordMongoVo> getPage(int pageNo, int pageSize, Query query,String recordType) {
-        return consultRecordMongoDBService.getPage(pageNo, pageSize, query,recordType);
+        return consultRecordMongoDBService.getPage(pageNo, pageSize, query, recordType);
     }
 
     @Override
@@ -166,10 +166,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     public void saveConsultSessionStatus(Integer sessionId,String userId) {
         ConsultSessionStatusVo consultSessionStatusVo = new ConsultSessionStatusVo();
         consultSessionStatusVo.setSessionId(sessionId.toString());
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.HOUR, 8);
-        Date dateTime = calendar.getTime();
-        String lastDate = DateUtils.DateToStr(dateTime);
+        String lastDate = DateUtils.DateToStr(new Date());
         consultSessionStatusVo.setLastMessageTime(lastDate);
         consultSessionStatusVo.setUserId(userId);
         consultRecordMongoDBService.upsertConsultSessionStatusVo(consultSessionStatusVo);
@@ -182,6 +179,11 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
 
     @Override
     public void  deleteConsultSessionStatusVo(Query query) {
+        consultRecordMongoDBService.deleteConsultSessionStatusVo(query);
+    }
+
+    @Override
+    public void  deleteConsultTempRecordVo(Query query) {
         consultRecordMongoDBService.deleteConsultSessionStatusVo(query);
     }
 

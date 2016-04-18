@@ -49,4 +49,7 @@ public interface ConsultRecordService {
     List<Object> querySessionStatusList(Query query);
 
     void  deleteConsultSessionStatusVo(Query query);
+
+    void  deleteConsultTempRecordVo(Query query);
+
 }
