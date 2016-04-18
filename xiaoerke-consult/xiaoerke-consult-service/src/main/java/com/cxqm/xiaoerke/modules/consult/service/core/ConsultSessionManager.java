@@ -266,7 +266,8 @@ public class ConsultSessionManager {
 
 		Integer sessionId = consultSession.getId();
 		sessionCache.putSessionIdConsultSessionPair(sessionId, consultSession);
-		sessionCache.putopenIdSessionIdPair(consultSession.getOpenid(), sessionId);
+		sessionCache.putOpenIdSessionIdPair(consultSession.getOpenid(), sessionId);
+		sessionCache.putCsIdConsultSessionPair(consultSession.getCsUserId(),consultSession);
 
 		//成功分配医生，给用户发送一个欢迎语
 		String st = "尊敬的用户，宝大夫在线，有什么可以帮您";

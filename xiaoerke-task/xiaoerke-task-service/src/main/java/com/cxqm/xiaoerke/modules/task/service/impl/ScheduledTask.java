@@ -1077,7 +1077,7 @@ public class ScheduledTask {
             if(DateUtils.pastMinutes(DateUtils.StrToDate(consultSessionStatusVo.getLastMessageTime(),"xiangang"))>10L){
                 try{
                     consultRecordService.deleteConsultSessionStatusVo(new Query().addCriteria(new Criteria().where("sessionId").is(consultSessionStatusVo.getSessionId())));
-                    sessionCache.removeConsultSession(Integer.valueOf(consultSessionStatusVo.getSessionId()));
+                    sessionCache.removeConsultSessionBySessionId(Integer.valueOf(consultSessionStatusVo.getSessionId()));
                     ConsultSessionManager.getSessionManager().removeUserSession(consultSessionStatusVo.getUserId());
                 }catch (Exception e){
                     e.printStackTrace();
