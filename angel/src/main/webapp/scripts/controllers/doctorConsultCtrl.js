@@ -1,10 +1,11 @@
 angular.module('controllers', ['luegg.directives'])
-    .controller('doctorConsultFirstCtrl', ['$scope', '$sce', '$window','getTodayRankingList',
-        'getOnlineDoctorList','getCommonAnswerList','getMyAnswerList','GetUserLoginStatus',
-        '$location', 'GetUserRecordList','getMyAnswerModify','getCurrentUserConsultListInfo',
-        function ($scope, $sce, $window,getTodayRankingList, getOnlineDoctorList, getCommonAnswerList,
-                  getMyAnswerList, GetUserLoginStatus, $location, GetUserRecordList,getMyAnswerModify,
-                  getCurrentUserConsultListInfo) {
+    .controller('doctorConsultFirstCtrl', ['$scope', '$sce', '$window','GetTodayRankingList',
+        'GetOnlineDoctorList','GetAnswerValueList','GetAnswerValueList','GetUserLoginStatus',
+        '$location', 'GetUserRecordList','GetMyAnswerModify','GetCurrentUserConsultListInfo',
+        'TransferToCsUser',
+        function ($scope, $sce, $window,GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
+                  GetAnswerValueList, GetUserLoginStatus, $location, GetUserRecordList,GetMyAnswerModify,
+                  GetCurrentUserConsultListInfo,TransferToCsUser) {
             $scope.test = "";
             $scope.info = {};
             $scope.socketServer1 = "";
@@ -35,10 +36,37 @@ angular.module('controllers', ['luegg.directives'])
                             }else if(type == "publicReplyList"){
                                 $scope.publicReplyIndex = -1;
                                 $scope.publicReplySecondIndex = -1;
+                            }else if(type = "rankList"){
+                                //已接入会话咨询医生今日排名
+                                $scope.refreshRankList();
+                            }else if(type == "switchOver"){
+                                //获取在线医生列表
+                                $scope.refreshOnLineCsUserList();
                             }
                         }
                     }
                 })
+            }
+
+            $scope.refreshRankList = function(){
+                var currDate = new moment().format("YYYY-MM-DD");
+                GetTodayRankingList.save({"rankDate": currDate}, function (data) {
+                    $scope.info.rankListValue = data.rankListValue;
+                });
+            }
+
+            $scope.refreshOnLineCsUserList = function(){
+                GetOnlineDoctorList.save({"pageNo": "1", "pageSize": "100"}, function (data) {
+                    $scope.info.onLineCsUserList = data.onLineCsUserList;
+                });
+            }
+
+            $scope.chooseTransferCsUser = function(csUserId){
+                $scope.transferCsUserId = csUserId;
+            }
+
+            $scope.transferOtherCsUser = function(){
+
             }
 
             ////QQ表情初始化
@@ -61,24 +89,8 @@ angular.module('controllers', ['luegg.directives'])
 
                         $scope.initConsultSocket1();
 
-                        ////获取今日咨询排名
-                        //var currDate = new moment().format("YYYY-MM-DD");
-                        //getTodayRankingList.save({"rankDate": currDate}, function (data) {
-                        //    $scope.info.rankListlength = data.rankListValue.length;
-                        //    if (data.rankListValue.length == 0) {
-                        //        $scope.lockScroll = "false";
-                        //    } else {
-                        //        $scope.rankListValue = data.rankListValue;
-                        //    }
-                        //});
-
-                        ////获取在线医生列表
-                        //getOnlineDoctorList.save({"pageNo": "1", "pageSize": "3"}, function (data) {
-                        //
-                        //});
-
                         //获取通用回复列表
-                        getCommonAnswerList.save({"type": "commonAnswer"}, function (data) {
+                        GetAnswerValueList.save({"type": "commonAnswer"}, function (data) {
                             if (data.commonAnswer.length == 0) {
                                 $scope.lockScroll = "false";
                             } else {
@@ -87,7 +99,7 @@ angular.module('controllers', ['luegg.directives'])
                         });
 
                         //获取我的回复列表
-                        getMyAnswerList.save({"type":"myAnswer"},function(data){
+                        GetAnswerValueList.save({"type":"myAnswer"},function(data){
                             if(data.myAnswer!=null && data.myAnswer.length==0){
                                 $scope.lockScroll="false";
                             } else {
@@ -394,7 +406,7 @@ angular.module('controllers', ['luegg.directives'])
 
             var getAlreadyJoinConsultPatientList = function () {
                 //获取跟医生的会话还保存的用户列表
-                getCurrentUserConsultListInfo.save({doctorId:$scope.doctorId},function(data){
+                GetCurrentUserConsultListInfo.save({doctorId:$scope.doctorId},function(data){
                     if(data.result!=""){
                         $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                         var patientId = angular.copy($scope.alreadyJoinPatientConversation[0].patientId);
@@ -406,7 +418,7 @@ angular.module('controllers', ['luegg.directives'])
 
             //保存我的回复
             var saveMyAnswer = function() {
-                getMyAnswerModify.save({answer: $scope.myAnswer, answerType: "myAnswer"}, function (data) {
+                GetMyAnswerModify.save({answer: $scope.myAnswer, answerType: "myAnswer"}, function (data) {
                 });
             }
 
@@ -494,8 +506,8 @@ angular.module('controllers', ['luegg.directives'])
             }
         }])
 
-    .controller('messageListCtrl', ['$scope', '$log', '$sce', 'getUserConsultListInfo', 'getUserRecordDetail', 'getCSDoctorList', 'CSInfoByUserId', 'getMessageRecordInfo',
-        function ($scope, $log, $sce, getUserConsultListInfo, getUserRecordDetail, getCSDoctorList, CSInfoByUserId, getMessageRecordInfo) {
+    .controller('messageListCtrl', ['$scope', '$log', '$sce', 'GetUserConsultListInfo', 'GetUserRecordDetail', 'GetCSDoctorList', 'GetCSInfoByUserId', 'GetMessageRecordInfo',
+        function ($scope, $log, $sce, GetUserConsultListInfo, GetUserRecordDetail, GetCSDoctorList, GetCSInfoByUserId, GetMessageRecordInfo) {
 
             $scope.info = {};
 
@@ -527,19 +539,19 @@ angular.module('controllers', ['luegg.directives'])
             }];
 
             //获取客户列表
-            getUserConsultListInfo.save({pageNo: "1", pageSize: "20"}, function (data) {
+            GetUserConsultListInfo.save({pageNo: "1", pageSize: "20"}, function (data) {
                 $scope.userConsultListInfo = data.userList;
             });
 
             //获取客服医生列表
-            getCSDoctorList.save({}, function (data) {
+            GetCSDoctorList.save({}, function (data) {
                 $scope.CSList = data.CSList;
             });
 
             //获取用户的详细聊天记录
-            $scope.getUserRecordDetail = function (openid,senderName,fromUserId,toUserId) {
+            $scope.GetUserRecordDetail = function (openid,senderName,fromUserId,toUserId) {
                 $scope.currentClickUserName = senderName;
-                getUserRecordDetail.save({pageNo:0,pageSize:100,fromUserId:fromUserId,toUserId:toUserId,recordType: "doctor", "openid": openid}, function (data) {
+                GetUserRecordDetail.save({pageNo:0,pageSize:100,fromUserId:fromUserId,toUserId:toUserId,recordType: "doctor", "openid": openid}, function (data) {
                     $scope.defaultClickUserOpenId = openid;
                     $scope.currentUserConsultRecordDetail = data.records;
 
@@ -548,14 +560,14 @@ angular.module('controllers', ['luegg.directives'])
 
 
             //查询某个客服信息
-            $scope.getCSInfoByUserId = function (Object) {
+            $scope.getGetCSInfoByUserId = function (Object) {
 
                 if (Object == 1000 || Object == 1 || Object == 7 || Object == 30) {
-                    CSInfoByUserId.save({dateNum: Object, pageNo: "1", pageSize: "100"}, function (data) {
+                    GetCSInfoByUserId.save({dateNum: Object, pageNo: "1", pageSize: "100"}, function (data) {
                         $scope.CSDoctorListInfo = data.records;
                     });
                 } else {
-                    CSInfoByUserId.save({CSDoctorId: Object, pageNo: "1", pageSize: "100"}, function (data) {
+                    GetCSInfoByUserId.save({CSDoctorId: Object, pageNo: "1", pageSize: "100"}, function (data) {
                         $scope.CSDoctorListInfo = data.records;
                     });
                 }
@@ -570,7 +582,7 @@ angular.module('controllers', ['luegg.directives'])
                     alert('请选择查询类型！');
                     return ;
                 }else{
-                    getMessageRecordInfo.save({
+                    GetMessageRecordInfo.save({
                         searchInfo: $scope.info.searchMessageContent,
                         searchType: $scope.messageType,
                         pageNo: "1",
@@ -588,7 +600,7 @@ angular.module('controllers', ['luegg.directives'])
 
             //查找消息记录（点击全部、图片等）
             $scope.getRecordByOpenId = function (searchRecordType) {
-                getUserRecordDetail.save({
+                GetUserRecordDetail.save({
                     recordType: searchRecordType,
                     openId:$scope.defaultClickUserOpenId,
                     pageNo: "1",
