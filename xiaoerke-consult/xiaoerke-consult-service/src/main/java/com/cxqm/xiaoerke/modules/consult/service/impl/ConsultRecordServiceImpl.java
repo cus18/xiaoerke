@@ -75,8 +75,8 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     }
 
     @Override
-    public PaginationVo<ConsultRecordMongoVo> getPage(int pageNo, int pageSize, Query query) {
-        return consultRecordMongoDBService.getPage(pageNo, pageSize, query);
+    public PaginationVo<ConsultRecordMongoVo> getPage(int pageNo, int pageSize, Query query,String recordType) {
+        return consultRecordMongoDBService.getPage(pageNo, pageSize, query,recordType);
     }
 
     @Override

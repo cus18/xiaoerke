@@ -217,7 +217,7 @@ public class ConsultUserController extends BaseController {
             RichConsultSession richConsultSession = transferMapToRichConsultSession((HashMap<String,Object>)object);
             Query query = new Query(where("toUserId").is(richConsultSession.getUserId()).and("fromUserId")
                     .is(richConsultSession.getCsUserId())).with(new Sort(Direction.DESC, "createDate"));
-            pagination = consultRecordService.getPage(pageNo, pageSize, query);
+            pagination = consultRecordService.getPage(pageNo, pageSize, query,"");
             searchMap.put("patientId",richConsultSession.getUserId());
             searchMap.put("patientName",richConsultSession.getUserName());
             searchMap.put("fromServer",richConsultSession.getServerAddress());
@@ -287,10 +287,10 @@ public class ConsultUserController extends BaseController {
             query.addCriteria(cr.orOperator(
                     Criteria.where("attentionNickName").regex(searchInfo)
             )).with(new Sort(Sort.Direction.DESC, "create_date"));
-            pagination = consultRecordService.getPage(pageNo, pageSize, query);
+            pagination = consultRecordService.getPage(pageNo, pageSize, query,"permanent");
         }else if(searchType.equals("message")){
             Query query = new Query(where("message").regex(searchInfo)).with(new Sort(Sort.Direction.DESC, "create_date"));
-            pagination = consultRecordService.getPage(pageNo, pageSize, query);
+            pagination = consultRecordService.getPage(pageNo, pageSize, query,"permanent");
         }
         //根据咨询记录查询对应的用户
         HashSet<String> openidSet = new HashSet<String>();
