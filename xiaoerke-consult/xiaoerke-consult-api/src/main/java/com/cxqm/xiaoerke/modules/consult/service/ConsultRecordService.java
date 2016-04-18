@@ -44,7 +44,7 @@ public interface ConsultRecordService {
                             @RequestParam(required = true) String messageType, @RequestParam(required = false) String messageContent,
                             RichConsultSession consultSession, SysWechatAppintInfoVo resultVo);
 
-    void saveConsultSessionStatus(Integer sessionId, String userId);
+    void saveConsultSessionStatus(Integer sessionId, String userId,String messageType,RichConsultSession consultSession);
 
     List<Object> querySessionStatusList(Query query);
 

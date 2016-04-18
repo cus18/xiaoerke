@@ -155,7 +155,12 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
             consultRecordMongoVo.setSenderName(resultVo.getWechat_name());
         }
         consultRecordMongoVo.setSenderId(senderId);
-        consultRecordMongoVo.setUserId(consultSession.getUserId());
+        if(consultType.equals("wx")){
+            consultRecordMongoVo.setUserId(consultSession.getOpenid());
+        }else{
+            consultRecordMongoVo.setUserId(consultSession.getUserId());
+        }
+
         consultRecordMongoVo.setCsUserId(consultSession.getCsUserId());
         consultRecordMongoVo.setDoctorName(consultSession.getCsUserName());
         consultRecordMongoVo.setCreateDate(new Date());
@@ -163,11 +168,17 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     }
 
     @Override
-    public void saveConsultSessionStatus(Integer sessionId,String userId) {
+    public void saveConsultSessionStatus(Integer sessionId,String userId,String consultType, RichConsultSession consultSession) {
         ConsultSessionStatusVo consultSessionStatusVo = new ConsultSessionStatusVo();
         consultSessionStatusVo.setSessionId(sessionId.toString());
         String lastDate = DateUtils.DateToStr(new Date());
         consultSessionStatusVo.setLastMessageTime(lastDate);
+        if(consultType.equals("wx")){
+            consultSessionStatusVo.setUserId(consultSession.getOpenid());
+        }else{
+            consultSessionStatusVo.setUserId(consultSession.getUserId());
+        }
+
         consultSessionStatusVo.setUserId(userId);
         consultRecordMongoDBService.upsertConsultSessionStatusVo(consultSessionStatusVo);
     }
