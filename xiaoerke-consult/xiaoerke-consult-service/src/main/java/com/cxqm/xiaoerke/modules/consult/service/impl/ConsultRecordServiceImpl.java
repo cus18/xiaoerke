@@ -139,11 +139,12 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
                                    @RequestParam(required = true) String messageType,
                                    @RequestParam(required = false) String messageContent,
                                    RichConsultSession consultSession,
-                                   ConsultRecordMongoVo consultRecordMongoVo,
                                    SysWechatAppintInfoVo resultVo) {
 
-        consultRecordMongoVo.setConsultType(consultType);
+        ConsultRecordMongoVo consultRecordMongoVo = new ConsultRecordMongoVo();
         Integer sessionId = consultSession.getId();
+
+        consultRecordMongoVo.setConsultType(consultType);
         consultRecordMongoVo.setSessionId(sessionId.toString());
         consultRecordMongoVo.setType(messageType);
         consultRecordMongoVo.setMessage(messageContent);
@@ -154,13 +155,8 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
             consultRecordMongoVo.setSenderName(resultVo.getWechat_name());
         }
         consultRecordMongoVo.setSenderId(senderId);
-        if(senderId.equals(consultSession.getUserId())){
-            consultRecordMongoVo.setFromUserId(consultSession.getUserId());
-            consultRecordMongoVo.setToUserId(consultSession.getCsUserId());
-        }else{
-            consultRecordMongoVo.setFromUserId(consultSession.getCsUserId());
-            consultRecordMongoVo.setToUserId(consultSession.getUserId());
-        }
+        consultRecordMongoVo.setUserId(consultSession.getUserId());
+        consultRecordMongoVo.setCsUserId(consultSession.getCsUserId());
         consultRecordMongoVo.setDoctorName(consultSession.getCsUserName());
         consultRecordMongoVo.setCreateDate(new Date());
         saveConsultRecord(consultRecordMongoVo);
