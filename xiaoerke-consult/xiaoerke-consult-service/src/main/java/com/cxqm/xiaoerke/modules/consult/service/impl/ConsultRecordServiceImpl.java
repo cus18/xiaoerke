@@ -134,26 +134,35 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     }
 
     @Override
-    public void buildRecordMongoVo(@RequestParam(required = true) String openId,
+    public void buildRecordMongoVo(@RequestParam(required = true) String consultType,
+                                   @RequestParam(required = true) String senderId,
                                    @RequestParam(required = true) String messageType,
                                    @RequestParam(required = false) String messageContent,
                                    RichConsultSession consultSession,
                                    ConsultRecordMongoVo consultRecordMongoVo,
                                    SysWechatAppintInfoVo resultVo) {
+
+        consultRecordMongoVo.setConsultType(consultType);
         Integer sessionId = consultSession.getId();
         consultRecordMongoVo.setSessionId(sessionId.toString());
         consultRecordMongoVo.setType(messageType);
-        consultRecordMongoVo.setOpenid(openId);
         consultRecordMongoVo.setMessage(messageContent);
-        consultRecordMongoVo.setAttentionDate(resultVo.getCreate_time());
-        consultRecordMongoVo.setAttentionMarketer(resultVo.getMarketer());
-        consultRecordMongoVo.setSenderId("patient");
-        consultRecordMongoVo.setFromUserId(consultSession.getUserId());
-        consultRecordMongoVo.setToUserId(consultSession.getCsUserId());
+        if(consultType.equals("wx")){
+            consultRecordMongoVo.setAttentionDate(resultVo.getCreate_time());
+            consultRecordMongoVo.setAttentionMarketer(resultVo.getMarketer());
+            consultRecordMongoVo.setAttentionNickname(resultVo.getWechat_name());
+            consultRecordMongoVo.setSenderName(resultVo.getWechat_name());
+        }
+        consultRecordMongoVo.setSenderId(senderId);
+        if(senderId.equals(consultSession.getUserId())){
+            consultRecordMongoVo.setFromUserId(consultSession.getUserId());
+            consultRecordMongoVo.setToUserId(consultSession.getCsUserId());
+        }else{
+            consultRecordMongoVo.setFromUserId(consultSession.getCsUserId());
+            consultRecordMongoVo.setToUserId(consultSession.getUserId());
+        }
         consultRecordMongoVo.setDoctorName(consultSession.getCsUserName());
         consultRecordMongoVo.setCreateDate(new Date());
-        consultRecordMongoVo.setAttentionNickname(resultVo.getWechat_name());
-        consultRecordMongoVo.setSenderName(resultVo.getWechat_name());
         saveConsultRecord(consultRecordMongoVo);
     }
 

@@ -7,7 +7,7 @@ public class ConsultRecordMongoVo {
 
     private String sessionId;
 
-    private String openid;
+    private String consultType;
 
     private String message;
 
@@ -117,14 +117,6 @@ public class ConsultRecordMongoVo {
         this.sessionId = sessionId;
     }
 
-    public String getOpenid() {
-        return openid;
-    }
-
-    public void setOpenid(String openid) {
-        this.openid = openid;
-    }
-
     public String getMessage() {
         return message;
     }
@@ -211,5 +203,13 @@ public class ConsultRecordMongoVo {
 
     public void setToUserId(String toUserId) {
         this.toUserId = toUserId;
+    }
+
+    public String getConsultType() {
+        return consultType;
+    }
+
+    public void setConsultType(String consultType) {
+        this.consultType = consultType;
     }
 }
