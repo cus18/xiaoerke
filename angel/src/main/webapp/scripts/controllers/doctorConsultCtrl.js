@@ -481,6 +481,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.chooseAlreadyJoinConsultPatient(angular.copy(currentConsultValue.senderId),
                         angular.copy(currentConsultValue.senderName));
                 }
+                console.log($scope.alreadyJoinPatientConversation);
             }
 
             var updateAlreadyJoinPatientConversationFromPatient = function(conversationData){
