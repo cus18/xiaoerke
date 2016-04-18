@@ -307,7 +307,7 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
                 "4006237120", "4006237120", null,
                 "true", null, orderId + "",
                 conversationLength + "", null, "0",
-                "1", "10", null);
+                "1", "60", null);
         String statusCode = (String) result.get("statusCode");
         return statusCode;
     }

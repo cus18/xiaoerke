@@ -201,7 +201,7 @@ define(['appPhoneConsult'], function (app) {
             return $resource(user_appoint + 'order/user/orderPraiseOperation');
         }])
         .factory('OrderShareOperation', ['$resource', function ($resource) {
-            return $resource(user_h5 + 'order/user/orderShareOperation');
+            return $resource(user_appoint + 'order/user/info/orderShareOperation');
         }])
         .factory('OrderCancelOperation', ['$resource', function ($resource) {
             return $resource(user_h5 + 'order/user/info/orderCancelOperation');

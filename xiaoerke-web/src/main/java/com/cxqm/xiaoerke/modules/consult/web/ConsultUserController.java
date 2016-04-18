@@ -182,7 +182,7 @@ public class ConsultUserController extends BaseController {
             Date date = oneConsultRecord.getCreateDate();
             oneConsultRecord.setInfoDate(DateUtils.DateToStr(date));
 
-            if (oneConsultRecord != null && StringUtils.isNotNull(oneConsultRecord.getOpenid())){
+            if (oneConsultRecord != null && StringUtils.isNotNull(oneConsultRecord.getSenderId())){
                 consultSessionForwardRecordsVos.add(oneConsultRecord);
             }
 
@@ -295,7 +295,9 @@ public class ConsultUserController extends BaseController {
         //根据咨询记录查询对应的用户
         HashSet<String> openidSet = new HashSet<String>();
         for(ConsultRecordMongoVo consultRecordMongoVo :pagination.getDatas()){
-            openidSet.add(consultRecordMongoVo.getOpenid());
+            if(consultRecordMongoVo.getConsultType().equals("wx")){
+                openidSet.add(consultRecordMongoVo.getSenderId());
+            }
         }
 
         List<ConsultRecordMongoVo> consultSessionForwardRecordsVos = new ArrayList<ConsultRecordMongoVo>();
@@ -303,7 +305,7 @@ public class ConsultUserController extends BaseController {
         while(iterator.hasNext()){
             Query query = new Query(where("openid").is(iterator.next())).with(new Sort(Sort.Direction.DESC, "createDate"));
             ConsultRecordMongoVo oneConsultRecord = consultRecordService.findOneConsultRecord(query);
-            if(oneConsultRecord!=null && StringUtils.isNotNull(oneConsultRecord.getOpenid())){
+            if(oneConsultRecord!=null && StringUtils.isNotNull(oneConsultRecord.getSenderId())){
                 consultSessionForwardRecordsVos.add(oneConsultRecord);
             }
         }

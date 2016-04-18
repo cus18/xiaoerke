@@ -1079,6 +1079,8 @@ public class ScheduledTask {
                     consultRecordService.deleteConsultSessionStatusVo(new Query().addCriteria(new Criteria().where("sessionId").is(consultSessionStatusVo.getSessionId())));
                     sessionCache.removeConsultSessionBySessionId(Integer.valueOf(consultSessionStatusVo.getSessionId()));
                     ConsultSessionManager.getSessionManager().removeUserSession(consultSessionStatusVo.getUserId());
+                    //删除用户的临时聊天记录
+                    consultRecordService.deleteConsultTempRecordVo(new Query().addCriteria(new Criteria().where("userId").is(consultSessionStatusVo.getUserId())));
                 }catch (Exception e){
                     e.printStackTrace();
                 }

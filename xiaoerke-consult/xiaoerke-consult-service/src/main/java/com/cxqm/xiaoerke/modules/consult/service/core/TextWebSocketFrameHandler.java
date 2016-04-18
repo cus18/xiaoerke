@@ -6,9 +6,13 @@ import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionCache;
 import com.cxqm.xiaoerke.modules.consult.service.impl.SessionCacheRedisImpl;
+import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
+import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
@@ -25,6 +29,12 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 	private transient static final Logger log = LoggerFactory.getLogger(TextWebSocketFrameHandler.class);
 
 	private SessionCache sessionCache = SpringContextHolder.getBean("sessionCacheRedisImpl");
+
+	@Autowired
+	private ConsultRecordService consultRecordService = SpringContextHolder.getBean("consultRecordServiceImpl");
+
+	@Autowired
+	private WechatAttentionService wechatAttentionService = SpringContextHolder.getBean("wechatAttentionServiceImpl");
 
 	public TextWebSocketFrameHandler() {
 		super();
@@ -68,17 +78,27 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 			
 			String csUserId = consultSession.getCsUserId();
 			Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(csUserId);
+			SysWechatAppintInfoVo resultVo = new SysWechatAppintInfoVo();
 			if(channel != csChannel && csChannel != null) {
 				csChannel.writeAndFlush(msg.retain());
+				//保存聊天记录
+				consultRecordService.buildRecordMongoVo("web", csUserId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession,resultVo);
 			} else {
 				String userId = consultSession.getUserId();
 				if(StringUtils.isNotNull(userId)){
 					Channel userChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(userId);
 					userChannel.writeAndFlush(msg.retain());
+					//保存聊天记录
+					consultRecordService.buildRecordMongoVo("h5", userId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession, resultVo);
 				}else{
 					String openId = consultSession.getOpenid();
 					String st = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
 					WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN, openId, st);
+					SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
+					sysWechatAppintInfoVo.setOpen_id(openId);
+					resultVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
+					//保存聊天记录
+					consultRecordService.buildRecordMongoVo("wx",openId,String.valueOf(msgType), (String) msgMap.get("content"), consultSession, resultVo);
 				}
 
 			}

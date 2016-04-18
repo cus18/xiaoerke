@@ -76,7 +76,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
 
     @Override
     public PaginationVo<ConsultRecordMongoVo> getPage(int pageNo, int pageSize, Query query,String recordType) {
-        return consultRecordMongoDBService.getPage(pageNo, pageSize, query,recordType);
+        return consultRecordMongoDBService.getPage(pageNo, pageSize, query, recordType);
     }
 
     @Override
@@ -139,11 +139,12 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
                                    @RequestParam(required = true) String messageType,
                                    @RequestParam(required = false) String messageContent,
                                    RichConsultSession consultSession,
-                                   ConsultRecordMongoVo consultRecordMongoVo,
                                    SysWechatAppintInfoVo resultVo) {
 
-        consultRecordMongoVo.setConsultType(consultType);
+        ConsultRecordMongoVo consultRecordMongoVo = new ConsultRecordMongoVo();
         Integer sessionId = consultSession.getId();
+
+        consultRecordMongoVo.setConsultType(consultType);
         consultRecordMongoVo.setSessionId(sessionId.toString());
         consultRecordMongoVo.setType(messageType);
         consultRecordMongoVo.setMessage(messageContent);
@@ -154,13 +155,8 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
             consultRecordMongoVo.setSenderName(resultVo.getWechat_name());
         }
         consultRecordMongoVo.setSenderId(senderId);
-        if(senderId.equals(consultSession.getUserId())){
-            consultRecordMongoVo.setFromUserId(consultSession.getUserId());
-            consultRecordMongoVo.setToUserId(consultSession.getCsUserId());
-        }else{
-            consultRecordMongoVo.setFromUserId(consultSession.getCsUserId());
-            consultRecordMongoVo.setToUserId(consultSession.getUserId());
-        }
+        consultRecordMongoVo.setUserId(consultSession.getUserId());
+        consultRecordMongoVo.setCsUserId(consultSession.getCsUserId());
         consultRecordMongoVo.setDoctorName(consultSession.getCsUserName());
         consultRecordMongoVo.setCreateDate(new Date());
         saveConsultRecord(consultRecordMongoVo);
@@ -170,10 +166,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     public void saveConsultSessionStatus(Integer sessionId,String userId) {
         ConsultSessionStatusVo consultSessionStatusVo = new ConsultSessionStatusVo();
         consultSessionStatusVo.setSessionId(sessionId.toString());
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.HOUR, 8);
-        Date dateTime = calendar.getTime();
-        String lastDate = DateUtils.DateToStr(dateTime);
+        String lastDate = DateUtils.DateToStr(new Date());
         consultSessionStatusVo.setLastMessageTime(lastDate);
         consultSessionStatusVo.setUserId(userId);
         consultRecordMongoDBService.upsertConsultSessionStatusVo(consultSessionStatusVo);
@@ -186,6 +179,11 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
 
     @Override
     public void  deleteConsultSessionStatusVo(Query query) {
+        consultRecordMongoDBService.deleteConsultSessionStatusVo(query);
+    }
+
+    @Override
+    public void  deleteConsultTempRecordVo(Query query) {
         consultRecordMongoDBService.deleteConsultSessionStatusVo(query);
     }
 

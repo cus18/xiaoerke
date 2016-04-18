@@ -70,8 +70,6 @@ public class ConsultWechatController extends BaseController {
         HashMap<String,Object> createWechatConsultSessionMap = null;
         RichConsultSession consultSession = new RichConsultSession();
 
-        ConsultRecordMongoVo consultRecordMongoVo = new ConsultRecordMongoVo();
-
         //需要根据openId获取到nickname，如果拿不到nickName，则用利用openId换算出一个编号即可
         SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
         sysWechatAppintInfoVo.setOpen_id(openId);
@@ -138,11 +136,9 @@ public class ConsultWechatController extends BaseController {
                 e.printStackTrace();
             }
         }
-        //保存聊天记录
-        consultRecordService.buildRecordMongoVo("wx", openId, messageType, messageContent, consultSession, consultRecordMongoVo, resultVo);
 
-        //保存临时聊天记录，供医生刷新浏览器时使用。
-//        consultRecordService.buildTempRecordMongoVo(openId, messageType, messageContent, consultSession, consultRecordMongoVo, resultVo);
+        //保存聊天记录
+        consultRecordService.buildRecordMongoVo("wx", openId, messageType, messageContent, consultSession, resultVo);
 
         //更新会话操作时间
         consultRecordService.saveConsultSessionStatus(sessionId,consultSession.getUserId());

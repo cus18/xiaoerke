@@ -120,6 +120,7 @@
     cdr.price,
     crs.type,
     crs.surplusTime,
+    sp.sys_user_id,
     cdr.server_length
     from consultPhone_register_service crs
     left join sys_consultPhone_service scs
@@ -248,6 +249,7 @@
     <if test="state != null" >
       and prs.status = #{state,VARCHAR}
     </if>
+    order by prs.create_time desc
   </select>
     <!-- 每日清单 -->
     <select id="getSettlementPhoneConsultInfoByDate" resultType="java.util.Map">

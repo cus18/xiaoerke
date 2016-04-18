@@ -58,7 +58,6 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
         response.setStatusmsg("");
         response.setRecord("1");//录音
         response.setRecordPoint("1");//录音方式
-        response.setSessiontime("60");//通话剩余1分钟提醒
 
         Integer serviceLength = (Integer) phonepatientInfo.get("server_length")*60;
         response.setSessiontime(serviceLength + "");//通话时长

@@ -90,7 +90,7 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
             SimpleDateFormat format1 = new SimpleDateFormat("HH:mm");
             map.put("date", format.format(date) + "(" + week.replaceAll("星期", "周") + ")" + format1.format(date));
 			String wechat_name = map.get("wechat_name") == null?"微信用户":(String)map.get("wechat_name");
-			String pic_url = map.get("pic_url") == null?"images/a2.png":(String)map.get("pic_url");
+			String pic_url = map.get("pic_url") == null?"images/user_photo.png":(String)map.get("pic_url");
 			map.put("wechat_name",wechat_name);
 			map.put("pic_url",pic_url);
 			}
@@ -130,7 +130,7 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
                 hmap.put("impression", praise.getImpression());
                 hmap.put("star", praise.getStar());
                 hmap.put("majorStar", praise.getMajorStar());
-				hmap.put("pic_url", praise.getPicUrl()==null?"images/a2.png":praise.getPicUrl());
+				hmap.put("pic_url", praise.getPicUrl()==null?"images/user_photo.png":praise.getPicUrl());
 				hmap.put("wechat_name", praise.getWechatName()==null?"微信用户": praise.getWechatName());
                 Date date = praise.getPraiseDate();
                 String week = DateUtils.getWeekOfDate(date);
@@ -214,7 +214,7 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		HashMap<String, Object> excuteMap = new HashMap<String, Object>();
 
-		String headimgurl = null == (String) jsonMap.get("headimgurl")?"images/a2.png":(String) jsonMap.get("headimgurl") ;
+		String headimgurl = null == (String) jsonMap.get("headimgurl")?"images/user_photo.png":(String) jsonMap.get("headimgurl") ;
 		String nickname = null == (String) jsonMap.get("nickname")?"微信用户":(String) jsonMap.get("nickname") ;
 
 		excuteMap.put("wechat_name", nickname);

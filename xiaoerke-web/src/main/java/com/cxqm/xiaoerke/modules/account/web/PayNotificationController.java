@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.account.web;
 
+import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.utils.XMLUtil;
 import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
@@ -11,8 +13,10 @@ import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
 import com.cxqm.xiaoerke.modules.sys.entity.PerAppDetInfoVo;
+import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
+import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -199,6 +203,15 @@ public class PayNotificationController {
 
 					consultPhonePatientService.updateOrderInfoBySelect(consultPhoneVo);
 					payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
+					Map<String,Object> consultOrder = consultPhonePatientService.getPatientRegisterInfo(Integer.parseInt(consultPhoneId));
+					HashMap<String,Object> hashMap=new HashMap<String, Object>();
+					hashMap.put("userId", consultOrder.get("sys_user_id"));
+					User userInfo = systemService.getUserById((String)consultOrder.get("sys_user_id"));
+					String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String) consultOrder.get("date"), "yyyy/MM/dd"));
+					PatientMsgTemplate.consultPhoneSuccess2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"), (String) consultOrder.get("date"), week, (String) consultOrder.get("beginTime"), (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"));
+					Map<String,Object> parameter = systemService.getWechatParameter();
+					String token = (String)parameter.get("token");
+					PatientMsgTemplate.consultPhoneSuccess2Wechat((String) consultOrder.get("doctorName"), (String) consultOrder.get("date"), week, (String) consultOrder.get("beginTime"), (String) consultOrder.get("endTime"), (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"), userInfo.getOpenid(), token, "url");
 				}
 			}
 			return  XMLUtil.setXML("SUCCESS", "");

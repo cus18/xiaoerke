@@ -32,11 +32,11 @@
 			</div>
 			<div class="evaluate">
 				<div class="user border4" ng-repeat="item in evaluateList" ng-class="{'border0':$last}">
-					<img class="photo radius" width="35" height="35" src="images/user_photo.png" >
+					<img class="photo radius" width="35" height="35" src="{{item.pic_url}}" >
 					<div class="info">
 						<div style="overflow: hidden;">
 							<div class="fl">
-								<span class="name c3">宝粉{{item.name}}</span>
+								<span class="name c3">{{item.wechat_name}}</span>
 								<img class="my-img1"  width="9.5" height="auto" ng-src="{{0<userStarNum[$index]?starImg1:starImg3}}">
 								<img class="my-img1"  width="9.5" height="auto" ng-src="{{1<userStarNum[$index]?starImg1:starImg3}}">
 								<img class="my-img1"  width="9.5" height="auto" ng-src="{{2<userStarNum[$index]?starImg1:starImg3}}">

@@ -111,7 +111,7 @@
 						<p>部分案例（概括{{doctorDetail.sumcase}}名宝宝的疾病症状）</p>
 						<p class="case" ng-repeat="item in doctorDetail.doctorCaseList">
 							<span class="case-name" >{{item.doctor_case_name}}</span>
-							<span class="case-num" ng-style="(true)?{'background-color':caseColor[$index],'width':item.doctor_case_number/doctorDetail.sumcase*420+'px'}:{}">{{item.doctor_case_number}}</span>
+							<span class="case-num" ng-class="{'other c5':item.doctor_case_name=='其他'}" ng-style="(item.doctor_case_name!='其他')?{'background-color':caseColor[$index],'width':item.doctor_case_number/doctorDetail.sumcase*420+'px'}:{'width':item.doctor_case_number/doctorDetail.sumcase*420+'px'}">{{item.doctor_case_number}}</span>
 						</p>
 						<!--<p class="case ">-->
 							<!--<span class="case-name " >其他</span>-->

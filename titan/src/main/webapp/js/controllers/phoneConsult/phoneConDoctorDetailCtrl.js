@@ -40,7 +40,7 @@
                 $scope.doctorDetail.sumcase+=$scope.doctorDetail.doctorCaseList[i].doctor_case_number;
                 console.log($scope.doctorDetail.doctorCaseList[i].doctor_case_number)
             };
-            $scope.doctorDetail.sumcase+=$scope.doctorDetail.otherCase;
+           /* $scope.doctorDetail.sumcase+=$scope.doctorDetail.otherCase;*/
 
             $scope.avgMajorStar = data.doctorScore.avgMajorStar == null?"5": data.doctorScore.avgMajorStar;
             $scope.avgStar =  data.doctorScore.avgStar == null?"5":data.doctorScore.avgStar;

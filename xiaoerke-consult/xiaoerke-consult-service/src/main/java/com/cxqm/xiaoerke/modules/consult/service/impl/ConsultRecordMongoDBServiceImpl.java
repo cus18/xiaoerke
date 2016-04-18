@@ -71,6 +71,12 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		mongoTemplate.remove(query, ConsultSessionStatusVo.class);
 	}
 
+	public void  deleteConsultTempRecordVo(Query query) {
+		mongoTemplate.remove(query, ConsultSessionStatusVo.class,"consultTempRecordVo");
+	}
+
+
+
 	@Override
 	public ConsultRecordMongoVo findAndRemove(Query query) {
 		return this.mongoTemplate.findAndRemove(query, ConsultRecordMongoVo.class);
