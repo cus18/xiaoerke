@@ -11,7 +11,6 @@ import java.util.List;
 
 public interface  ConsultMongoUtilsService {
 
-
 	int insertRichConsultSession(RichConsultSession richConsultSession);
 
 	List<RichConsultSession> queryRichConsultSessionList(Query query);
