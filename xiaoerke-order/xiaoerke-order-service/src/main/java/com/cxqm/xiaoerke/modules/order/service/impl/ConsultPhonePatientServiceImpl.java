@@ -235,6 +235,38 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
 
     public List<ConsultPhoneRegisterServiceVo> getAllConsultPhoneRegisterListByInfo(ConsultPhoneRegisterServiceVo vo){
         List<ConsultPhoneRegisterServiceVo> list = consultPhoneRegisterServiceDao.getAllConsultPhoneRegisterListByInfo(vo);
+        SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
+        for(ConsultPhoneRegisterServiceVo temp : list){
+            temp.setConsultPhoneTimeFromStr(DateUtils.DateToStr(temp.getDate(), "date") + " " + DateUtils.DateToStr(temp.getBeginTime(), "time"));
+            temp.setType(temp.getPrice() + "元/" + temp.getType() + "min");
+            temp.setConsultPhoneTimeToStr(sdf.format(new Date(temp.getSurplusTime())));
+            temp.setOrderTimeFromStr(DateUtils.DateToStr(temp.getCreateTime(),"datetime"));
+            if("0".equals(temp.getState())){
+                temp.setState("待支付");
+                temp.setPayState("待支付");
+            }else if("1".equals(temp.getState())){
+                temp.setState("待接通");
+                temp.setPayState("已付款");
+            }else if("2".equals(temp.getState())){
+                temp.setState("待评价");
+                temp.setPayState("已付款");
+            }else if("3".equals(temp.getState())){
+                temp.setState("待分享");
+                temp.setPayState("已付款");
+            }else if("4".equals(temp.getState())){
+                temp.setState("已取消");
+                temp.setPayState("已退款");
+            }
+            Map map = new HashMap();
+            map.put("orderId", temp.getId());
+            map.put("state", 1);
+            List<ConsultPhoneManuallyConnectVo> clist = consultPhoneTimingDialDao.getConsultPhoneTimingDialByInfo(map);
+            if(clist.size()!=0){
+                temp.setState("等待重连");
+                temp.setPayState("已付款");
+            }
+            temp.setOrderTimeToStr(DateUtils.DateToStr(temp.getUpdateTime(), "datetime"));
+        }
         return list;
     }
 
