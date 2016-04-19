@@ -8,6 +8,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.cxqm.xiaoerke.common.utils.CacheUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.request.RequestAttributes;
@@ -41,13 +42,12 @@ public class UserUtilsSpringSecurityImpl {
 	private static AreaDao areaDao = SpringContextHolder.getBean(AreaDao.class);
 	private static OfficeDao officeDao = SpringContextHolder.getBean(OfficeDao.class);
 	private static UserDao userDao = SpringContextHolder.getBean(UserDao.class);
-	
+
 	public static final String USER_CACHE = "userCache";
 	public static final String USER_CACHE_ID_ = "id_";
 	public static final String USER_CACHE_LOGIN_NAME_ = "ln";
-	public static final String USER_CACHE_LIST_BY_OFFICE_ID_ = "oid_";
-	public static final String CACHE_USER = "user";
 
+	public static final String CACHE_USER = "user";
 	public static final String CACHE_ROLE_LIST = "roleList";
 	public static final String CACHE_MENU_LIST = "menuList";
 	public static final String CACHE_AREA_LIST = "areaList";
@@ -56,7 +56,13 @@ public class UserUtilsSpringSecurityImpl {
 	
 	
 	public static User get(String id){
-		User user = getUser(id);
+		User user = (User) CacheUtils.get(USER_CACHE, USER_CACHE_ID_ + id);
+		if (user ==  null){
+			user = userDao.get(id);
+			if (user == null){
+				return null;
+			}
+		}
 		return user;
 	}
 	
@@ -74,11 +80,9 @@ public class UserUtilsSpringSecurityImpl {
     	User u = getUser();
     	return u==null ? null:u.getId();
     }
-    
+
     public static User getUser() {
         User user = (User) getCache(CACHE_USER);
-        //long id = Thread.currentThread().getId();
-        //String name = Thread.currentThread().getName();
         if (user == null) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication != null) {
@@ -91,15 +95,12 @@ public class UserUtilsSpringSecurityImpl {
                 }
                 if (loginName != null) {
                     user = systemService.getUserByLoginName(loginName);
-                    //id = Thread.currentThread().getId();
-                    //name = Thread.currentThread().getName();
                     putCache(CACHE_USER, user);
                 }
             }
         }
         if (user == null) {
             user = new User();
-
         }
         return user;
     }
@@ -122,8 +123,6 @@ public class UserUtilsSpringSecurityImpl {
     }
 
     public static Object getCache(String key, Object defaultValue) {
-        /*Object obj = getCacheMap().get(key);
-        return obj == null ? defaultValue : obj;*/
     	RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
     	if(attributes != null) {
 	    	HttpServletRequest request = ((ServletRequestAttributes) attributes).getRequest(); 
@@ -133,12 +132,10 @@ public class UserUtilsSpringSecurityImpl {
 	    			return session.getAttribute(key);
 	    	}
     	}
-    	
     	return defaultValue;
     }
 
     public static void putCache(String key, Object value) {
-        //getCacheMap().put(key, value);
     	HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest(); 
     	if(request != null) {
     		HttpSession session = request.getSession();
@@ -153,8 +150,7 @@ public class UserUtilsSpringSecurityImpl {
 
     public static Map<String, Object> getCacheMap() {
         SecurityUtils.Subject subject = SecurityUtils.getSubject();
-        SecurityUtils.Principal principal = (SecurityUtils.Principal) subject.getPrincipal();
-
+        SecurityUtils.Principal principal = subject.getPrincipal();
         return principal != null ? principal.getCacheMap() : new HashMap<String, Object>();
     }
 
@@ -168,7 +164,6 @@ public class UserUtilsSpringSecurityImpl {
 		removeCache(CACHE_OFFICE_LIST);
 		removeCache(CACHE_OFFICE_ALL_LIST);
 		removeCache(CACHE_USER);
-		//UserUtils.clearCache(getUser());
 	}
 	
     /**

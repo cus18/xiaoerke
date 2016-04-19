@@ -47,12 +47,12 @@
                 <p >{{doctorDetail.hospitalName}}</p>
                 <p >{{doctorDetail.departmentName}}</p>
                 <div ng-if="!isAttention" class="focus" ng-click="attentionDoctor()">
-                    <div>{{doctorDetail.fans_number}}</div>
-                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fdoc_attention1.png" width="43" height="15"><br>
+                    <div class="c1"> {{doctorDetail.fans_number}}</div>
+                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Ficon_attention_n.png" width="50" height="auto"><br>
                 </div>
                 <div ng-if="isAttention" class="focus">
-                    <div>{{doctorDetail.fans_number}}</div>
-                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fdoc_attention2.png" width="43" height="15"><br>
+                    <div class="c6">{{doctorDetail.fans_number}}</div>
+                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Ficon_attention_y.png" width="50" height="auto"><br>
                 </div>
                 <div class="doctorGroup" ng-click="doctorGroup()" ng-if="doctorDetail.doctorGroupName!=undefined">
                     {{doctorDetail.doctorGroupName}} >

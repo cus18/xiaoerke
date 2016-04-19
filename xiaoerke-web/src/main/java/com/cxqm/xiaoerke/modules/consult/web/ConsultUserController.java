@@ -207,34 +207,39 @@ public class ConsultUserController extends BaseController {
         int pageNo = 0;
         int pageSize = 0;
         String csUserId = String.valueOf(params.get("csUserId"));
-        pageNo = (Integer) params.get("pageNo");
-        pageSize = (Integer) params.get("pageSize");
-        List<HashMap<String,Object>> responseList = new ArrayList<HashMap<String, Object>>();
 
-        List<RichConsultSession> richConsultSessions = consultMongoUtilsService.queryRichConsultSessionList(new Query().addCriteria(new Criteria().where("csUserId").is(csUserId)));
-        if(richConsultSessions!=null && richConsultSessions.size()>0){
-            for(RichConsultSession richConsultSession :richConsultSessions){
-                HashMap<String,Object> searchMap = new HashMap<String, Object>();
-                String userId = richConsultSession.getUserId();
-                if(StringUtils.isNull(userId)){
-                    userId =  richConsultSession.getOpenid();
+        if(StringUtils.isNotNull(csUserId)){
+            pageNo = (Integer) params.get("pageNo");
+            pageSize = (Integer) params.get("pageSize");
+            List<HashMap<String,Object>> responseList = new ArrayList<HashMap<String, Object>>();
+
+            List<RichConsultSession> richConsultSessions = consultMongoUtilsService.queryRichConsultSessionList(new Query().addCriteria(Criteria.where("csUserId").is(csUserId)));
+            if(richConsultSessions!=null && richConsultSessions.size()>0){
+                for(RichConsultSession richConsultSession :richConsultSessions){
+                    HashMap<String,Object> searchMap = new HashMap<String, Object>();
+                    String userId = richConsultSession.getUserId();
+                    if(StringUtils.isNull(userId)){
+                        userId =  richConsultSession.getOpenid();
+                    }
+                    Query query = new Query(where("userId").is(userId).and("csUserId")
+                            .is(richConsultSession.getCsUserId())).with(new Sort(Direction.DESC, "createDate"));
+                    pagination = consultRecordService.getPage(pageNo, pageSize, query,"temporary");
+                    if(StringUtils.isNull(richConsultSession.getUserId())){
+                        searchMap.put("patientId",richConsultSession.getOpenid());
+                    }
+                    searchMap.put("patientName", richConsultSession.getNickName());
+                    searchMap.put("fromServer",richConsultSession.getServerAddress());
+                    searchMap.put("sessionId",richConsultSession.getId());
+                    searchMap.put("isOnline",true);
+                    searchMap.put("messageNotSee",true);
+                    searchMap.put("dateTime",richConsultSession.getCreateTime());
+                    searchMap.put("consultValue",ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
+                    responseList.add(searchMap);
                 }
-                Query query = new Query(where("userId").is(userId).and("csUserId")
-                        .is(richConsultSession.getCsUserId())).with(new Sort(Direction.DESC, "createDate"));
-                pagination = consultRecordService.getPage(pageNo, pageSize, query,"temporary");
-                if(StringUtils.isNull(richConsultSession.getUserId())){
-                    searchMap.put("patientId",richConsultSession.getOpenid());
-                }
-                searchMap.put("patientName", richConsultSession.getNickName());
-                searchMap.put("fromServer",richConsultSession.getServerAddress());
-                searchMap.put("sessionId",richConsultSession.getId());
-                searchMap.put("isOnline",true);
-                searchMap.put("messageNotSee",true);
-                searchMap.put("dateTime",richConsultSession.getCreateTime());
-                searchMap.put("consultValue",ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
-                responseList.add(searchMap);
+                response.put("alreadyJoinPatientConversation",responseList);
             }
-            response.put("alreadyJoinPatientConversation",responseList);
+        }else {
+            response.put("status","csUserId is null");
         }
         return response;
     }
