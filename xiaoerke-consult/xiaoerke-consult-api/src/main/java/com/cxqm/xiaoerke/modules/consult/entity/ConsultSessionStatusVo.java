@@ -21,8 +21,6 @@ public class ConsultSessionStatusVo {
         this.openId = openId;
     }
 
-    private ConsultSessionStatusVo consultSessionStatusVo;
-
     public String getUserId() {
         return UserId;
     }
