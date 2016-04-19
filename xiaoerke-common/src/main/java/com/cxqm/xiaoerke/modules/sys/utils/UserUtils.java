@@ -46,6 +46,7 @@ public class UserUtils {
 		if(isBackend)
 			return UserUtilsShiroImpl.get(id);
 		else
+		    //此处禁用
 			return UserUtilsSpringSecurityImpl.get(id);
 	}
 	

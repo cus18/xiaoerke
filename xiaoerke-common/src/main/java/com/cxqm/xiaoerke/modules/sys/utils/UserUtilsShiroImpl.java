@@ -248,7 +248,6 @@ public class UserUtilsShiroImpl {
 			if (principal != null){
 				return principal;
 			}
-//			subject.logout();
 		}catch (UnavailableSecurityManagerException e) {
 			
 		}catch (InvalidSessionException e){
@@ -267,9 +266,7 @@ public class UserUtilsShiroImpl {
 			if (session != null){
 				return session;
 			}
-//			subject.logout();
 		}catch (InvalidSessionException e){
-			
 		}
 		return null;
 	}
@@ -281,27 +278,15 @@ public class UserUtilsShiroImpl {
 	}
 	
 	public static Object getCache(String key, Object defaultValue) {
-//		Object obj = getCacheMap().get(key);
 		Object obj = getSession().getAttribute(key);
 		return obj==null?defaultValue:obj;
 	}
 
 	public static void putCache(String key, Object value) {
-//		getCacheMap().put(key, value);
 		getSession().setAttribute(key, value);
 	}
 
 	public static void removeCache(String key) {
-//		getCacheMap().remove(key);
 		getSession().removeAttribute(key);
 	}
-	
-//	public static Map<String, Object> getCacheMap(){
-//		Principal principal = getPrincipal();
-//		if(principal!=null){
-//			return principal.getCacheMap();
-//		}
-//		return new HashMap<String, Object>();
-//	}
-	
 }
