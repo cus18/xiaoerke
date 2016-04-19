@@ -361,7 +361,7 @@ angular.module('controllers', ['luegg.directives'])
                 setGroupContent.secondAnswer=[];
                 $scope.myAnswer.push(setGroupContent);
                 saveMyAnswer();
-                $scope.addgroup = false;
+                $scope.addGroupFlag = false;
             }
 
             //添加内容
@@ -396,14 +396,14 @@ angular.module('controllers', ['luegg.directives'])
                 setGroup.secondAnswer=[];
                 $scope.myAnswer.splice($scope.myReplyIndex, 1,setGroup);
                 saveMyAnswer();
-                $scope.editgroup=false;
+                $scope.editGroupFlag=false;
             }
             $scope.editContentSubmit = function () {
                 var setContent = {};
                 setContent.name = $scope.info.editContent;
                 $scope.myAnswer[$scope.myReplyIndex].secondAnswer.splice($scope.myReplySecondIndex, 1,setContent);
                 saveMyAnswer();
-                $scope.editcontent=false;
+                $scope.editContentFlag=false;
             }
 
             //删除
@@ -433,15 +433,15 @@ angular.module('controllers', ['luegg.directives'])
 
             var getAlreadyJoinConsultPatientList = function () {
                 //获取跟医生的会话还保存的用户列表
-                //GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:100},function(data){
-                //    console.log(data.alreadyJoinPatientConversation);
-                //    if(data.alreadyJoinPatientConversation!=""){
-                //        $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
-                //        var patientId = angular.copy($scope.alreadyJoinPatientConversation[0].patientId);
-                //        var patientName = angular.copy($scope.alreadyJoinPatientConversation[0].patientName);
-                //        $scope.chooseAlreadyJoinConsultPatient(patientId,patientName);
-                //    }
-                //})
+                GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:100},function(data){
+                    if(data.alreadyJoinPatientConversation!=""){
+                        console.log(data.alreadyJoinPatientConversation);
+                        $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
+                        var patientId = angular.copy($scope.alreadyJoinPatientConversation[0].patientId);
+                        var patientName = angular.copy($scope.alreadyJoinPatientConversation[0].patientName);
+                        $scope.chooseAlreadyJoinConsultPatient(patientId,patientName);
+                    }
+                })
             }
 
             //保存我的回复

@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
@@ -26,8 +27,6 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 
 	private static final String USER_WECHATSESSION_KEY = "consult.wechatSession";
 
-	private static final String CS_SESSION_KEY = "consult.csSessionID";
-
 	private static final String WECHAT_TOKEN = "wechat.token";
 	
 	@Override
@@ -39,8 +38,10 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 	@Override
 	public void putSessionIdConsultSessionPair(Integer sessionId,
 											   RichConsultSession consultSession) {
-		redisTemplate.opsForHash().put(SESSIONID_CONSULTSESSION_KEY,
-				sessionId, ConsultUtil.transferRichConsultSessionToMap(consultSession));
+		if(sessionId!=null||consultSession!=null){
+			redisTemplate.opsForHash().put(SESSIONID_CONSULTSESSION_KEY,
+					sessionId, ConsultUtil.transferRichConsultSessionToMap(consultSession));
+		}
 	}
 
 	@Override
@@ -75,22 +76,26 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 	
 
 	@Override
-	public void putUserIdSessionIdPair(String userId,
-			Integer sessionId) {
-		redisTemplate.opsForHash().put(USER_SESSIONID_KEY, userId, sessionId);
+	public void putUserIdSessionIdPair(String userId, Integer sessionId) {
+		if(StringUtils.isNotNull(userId)||sessionId!=null){
+			redisTemplate.opsForHash().put(USER_SESSIONID_KEY, userId, sessionId);
+		}
 	}
 
 
 	@Override
-	public void putOpenIdSessionIdPair(String openId,
-									   Integer sessionId) {
-		redisTemplate.opsForHash().put(USER_SESSIONID_KEY, openId, sessionId);
+	public void putOpenIdSessionIdPair(String openId, Integer sessionId) {
+		if(StringUtils.isNotNull(openId)||sessionId!=null){
+			redisTemplate.opsForHash().put(USER_SESSIONID_KEY, openId, sessionId);
+		}
 	}
 
 	@Override
 	public void putWechatSessionByOpenId(String openId,RichConsultSession richConsultSession) {
-		redisTemplate.opsForHash().put(USER_WECHATSESSION_KEY,
-				openId, ConsultUtil.transferRichConsultSessionToMap(richConsultSession));
+		if(StringUtils.isNotNull(openId)||richConsultSession!=null){
+			redisTemplate.opsForHash().put(USER_WECHATSESSION_KEY,
+					openId, ConsultUtil.transferRichConsultSessionToMap(richConsultSession));
+		}
 	}
 
 	@Override
@@ -107,7 +112,9 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 
 	@Override
 	public void putWeChatToken(String token){
-		redisTemplate.opsForHash().put(WECHAT_TOKEN, "wechatToken", token);
+		if(StringUtils.isNotNull(token)){
+			redisTemplate.opsForHash().put(WECHAT_TOKEN, "wechatToken", token);
+		}
 	}
 
 	@Override

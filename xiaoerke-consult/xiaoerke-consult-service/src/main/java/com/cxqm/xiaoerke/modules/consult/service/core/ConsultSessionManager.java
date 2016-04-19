@@ -264,7 +264,7 @@ public class ConsultSessionManager {
 					csChannel = (Channel) doctorOnLineList.get(indexCS).get("Channel");
 					if(csChannel.isActive()){
 						//csChannel如果活着的话，证明，此医生处于登陆状态
-						User csUser = systemService.getUserById((String)doctorOnLineList.get(indexCS).get("doctorId"));
+						User csUser = systemService.getUserById((String) doctorOnLineList.get(indexCS).get("doctorId"));
 						consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
 					}
 				}
@@ -285,12 +285,14 @@ public class ConsultSessionManager {
 		sessionRedisCache.putOpenIdSessionIdPair(consultSession.getOpenid(), sessionId);
         consultMongoUtilsService.upsertRichConsultSession((new Query(where("openid").is(consultSession.getOpenid()))),
 				new Update().update("RichConsultSession", consultSession));
+		sessionRedisCache.putWechatSessionByOpenId(consultSession.getOpenid(), consultSession);
+		consultMongoUtilsService.insertRichConsultSession(consultSession);
+
 
 		//成功分配医生，给用户发送一个欢迎语
 		String st = "尊敬的用户，宝大夫在线，有什么可以帮您";
-		consultRecordService.buildRecordMongoVo("wx",consultSession.getOpenid(),"wx", st, consultSession, wechatAttentionVo);
-		WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN, consultSession.getOpenid(), st);//sessionRedisCache.getWeChatToken()
-		sessionRedisCache.putWechatSessionByOpenId(consultSession.getOpenid(), consultSession);
+		WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN, consultSession.getOpenid(), st);
+
 		response.put("csChannel", csChannel);
 		response.put("sessionId",sessionId);
 		response.put("consultSession",consultSession);
