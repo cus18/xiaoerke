@@ -33,7 +33,7 @@ public interface SysConsultPhoneService {
      * sunxiao
      */
     Map<String, String> addRegisters(SysConsultPhoneServiceVo Vo,List<String> timeList,
-                                     String date,String operInterval);
+                                     String date,String operInterval) throws Exception;
 
     /**
      * 删除电话咨询号源时判断受影响的号源
@@ -45,7 +45,7 @@ public interface SysConsultPhoneService {
      * 删除电话咨询号源
      * sunxiao
      */
-    int deleteRegisters(SysConsultPhoneServiceVo registerServiceVo,List<String> timeList,String date,String operRepeat);
+    int deleteRegisters(SysConsultPhoneServiceVo registerServiceVo,List<String> timeList,String date,String operRepeat) throws Exception;
 
     /**
      * 获取电话咨询模板列表

@@ -247,7 +247,7 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 	@Override
 	@Transactional(rollbackFor=Exception.class)
 	public Map<String, String> addRegisters(SysConsultPhoneServiceVo vo,
-											List<String> timeList, String date, String operInterval) {
+											List<String> timeList, String date, String operInterval) throws Exception{
 		// TODO Auto-generated method stub
 		synchronized (SysConsultPhoneServiceImpl.class) {
 			Map<String, Object> map = new HashMap<String, Object>();
@@ -565,6 +565,7 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 	 * 删除号源时判断受影响的号源
 	 * sunxiao
 	 */
+	@Override
 	public String judgeRepeatEffect(String date, String timeParam,String doctorId, String operRepeat) {
 		String[] timeArray = timeParam.split(";");
 		StringBuffer sb = new StringBuffer("");
@@ -621,8 +622,10 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 	 * 删除号源,被预约的退款
 	 * sunxiao
 	 */
+	@Override
+	@Transactional(rollbackFor=Exception.class)
 	public int deleteRegisters(SysConsultPhoneServiceVo registerServiceVo,
-							   List<String> timeList, String date, String operRepeat) {
+							   List<String> timeList, String date, String operRepeat) throws Exception{
 		int count = 0;
 		Random r = new Random();
 		for (String time : timeList) {

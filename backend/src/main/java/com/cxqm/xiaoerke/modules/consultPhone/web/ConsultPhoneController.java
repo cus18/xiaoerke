@@ -121,7 +121,13 @@ public class ConsultPhoneController extends BaseController {
 		vo.setCreateTime(new Date());
 		vo.setState("1");
 		vo.setUpdateTime(new Date());
-		result = phoneConsultDoctorRelationService.openConsultPhone(vo);
+		try {
+			result = phoneConsultDoctorRelationService.openConsultPhone(vo);
+			result.put("result", "suc");
+		} catch (Exception e) {
+			result.put("result", "fail");
+			e.printStackTrace();
+		}
 		return result.toString();
 	}
 
@@ -149,9 +155,15 @@ public class ConsultPhoneController extends BaseController {
 		if(time!=null){
 			timeList.add(time);
 		}
-		Map<String, String> ret = sysConsultPhoneService.addRegisters(vo,timeList,request.getParameter("date"),request.getParameter("repeat"));
-		result.put("suc", "suc");
-		result.put("reason", ret.get("backend"));
+		Map<String, String> ret = null;
+		try {
+			ret = sysConsultPhoneService.addRegisters(vo,timeList,request.getParameter("date"),request.getParameter("repeat"));
+			result.put("result", "suc");
+			result.put("reason", ret.get("backend"));
+		} catch (Exception e) {
+			result.put("result", "fail");
+			e.printStackTrace();
+		}
 		return result.toString();
 	}
 
@@ -179,8 +191,13 @@ public class ConsultPhoneController extends BaseController {
 		if(time!=null){
 			timeList.add(time);
 		}
-		sysConsultPhoneService.deleteRegisters(vo, timeList, request.getParameter("date"), request.getParameter("operRepeat"));
-		result.put("suc", "suc");
+		try {
+			sysConsultPhoneService.deleteRegisters(vo, timeList, request.getParameter("date"), request.getParameter("operRepeat"));
+			result.put("result", "suc");
+		} catch (Exception e) {
+			result.put("result", "fail");
+			e.printStackTrace();
+		}
 		return result.toString();
 	}
 
@@ -317,11 +334,11 @@ public class ConsultPhoneController extends BaseController {
 		JSONObject result = new JSONObject();
 		String id = request.getParameter("id");
 		String cancelReason = request.getParameter("cancelReason");
-		/*try {
+		try {
 			consultPhonePatientService.cancelOrder(Integer.valueOf(id), cancelReason);
 		} catch (CancelOrderException e) {
 			e.printStackTrace();
-		}*/
+		}
 		return result.toString();
 	}
 
