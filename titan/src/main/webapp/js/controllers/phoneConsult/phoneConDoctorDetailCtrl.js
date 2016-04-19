@@ -11,6 +11,8 @@
         $scope.selectApImg ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Ficon_ap1.png";
         $scope.selectPhoneImg ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Ficon_phone2.png";
         $scope.attentionImg ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Ficon_attention_n.png";
+        $scope.serviceImg ="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2FblueW_down.png";
+        $scope.serviceLock =false;
         $scope.timeListWithMonth = [];
         $scope.timeList = [];
         $scope.weekList = [];
@@ -25,6 +27,17 @@
         $scope.userStarNum=[];
 
         var routePath = encodeURI(encodeURI("/appointBBBBBB" + $location.path()));
+
+        $scope.showService=function(){
+            if($scope.serviceLock){
+                $scope.serviceLock =false;
+                $scope.serviceImg ="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2FblueW_down.png";
+            }
+            else{
+                $scope.serviceLock =true;
+                $scope.serviceImg ="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2FblueW_up.png";
+            }
+        }
 
         //获取医生的信息
         DoctorDetail.get({"doctorId":$stateParams.doctorId},function(data){
