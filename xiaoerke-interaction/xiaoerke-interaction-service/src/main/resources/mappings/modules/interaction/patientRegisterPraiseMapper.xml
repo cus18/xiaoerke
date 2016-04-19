@@ -212,7 +212,6 @@
         from patient_register_praise prp
         where prp.sys_doctor_id = #{doctorId}
         and evaluateType is not "1"
-         order by prp.praise_date desc
     </select>
 
     <!-- 评论总数 -->
@@ -227,8 +226,8 @@
     </select>
 
     <!-- 获取n条电话咨询评论 -->
-    <select id="getConsultEvaluateTop" resultType="java.util.HashMap">
-        select INSERT(prp.phone,4,6,'*****') phone,
+    <select id="getDoctorEvaluateTop" resultType="java.util.HashMap">
+        select INSERT(prp.phone,4,6,'****') phone,
         prp.impression,
         prp.praise_date as date,
         prp.star,
@@ -238,19 +237,22 @@
         from patient_register_praise prp
         where
         prp.sys_doctor_id = #{doctorId}
-        <if test="evaluateType != ''" >
-            and evaluateType = #{evaluateType,jdbcType=VARCHAR}
+
+        <if test="evaluateType == 1" >
+            and evaluateType = '1'
         </if>
 
-        order by prp.praise_date desc
+        <if test="evaluateType == 2" >
+            and (evaluateType &lt;&gt; '1' or evaluateType is null)
+        </if>
+
         <if test="limit != null" >
             limit  #{limit}
         </if>
-
     </select>
 
-    <!--<select id="getConsultEvaluate" resultType="com.cxqm.xiaoerke.common.persistence.Page">-->
-    <select id="getConsultEvaluate" resultMap="BaseResultMap" resultType="com.cxqm.xiaoerke.common.persistence.Page">
+    <!--<select id="getDoctorEvaluate" resultType="com.cxqm.xiaoerke.common.persistence.Page">-->
+    <select id="getDoctorEvaluate" resultMap="BaseResultMap" resultType="com.cxqm.xiaoerke.common.persistence.Page">
         select INSERT(prp.phone,4,5,'****') phone,
         prp.impression,
         prp.praise_date,
@@ -261,10 +263,13 @@
         from patient_register_praise prp
         where prp.sys_doctor_id = #{doctorId}
 
-        <if test="evaluateType != ''" >
-            and evaluateType = #{evaluateType,jdbcType=VARCHAR}
+        <if test="evaluateType == 1" >
+            and evaluateType = '1'
         </if>
-        order by prp.praise_date desc
+
+        <if test="evaluateType == 2" >
+            and (evaluateType &lt;&gt; '1' or evaluateType is null)
+        </if>
     </select>
 
   <select id="findAllPraiseByDoctorId" resultType="java.util.Map">

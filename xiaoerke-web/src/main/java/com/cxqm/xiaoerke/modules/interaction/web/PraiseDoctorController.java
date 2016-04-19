@@ -58,7 +58,7 @@ public class PraiseDoctorController extends BaseController {
     @ResponseBody
     Map<String,Object> evaluateDoctor(@RequestBody HashMap<String, Object> params){
         HashMap<String, Object> response = new HashMap<String, Object>();
-        response = patientRegisterPraiseService.getConsultEvaluate(params);
+        response = patientRegisterPraiseService.getDoctorEvaluate(params);
         LogUtils.saveLog(Servlets.getRequest(), "00000049","获取医生的评价信息:" + params.get("doctorId"));
         return response;
     }
