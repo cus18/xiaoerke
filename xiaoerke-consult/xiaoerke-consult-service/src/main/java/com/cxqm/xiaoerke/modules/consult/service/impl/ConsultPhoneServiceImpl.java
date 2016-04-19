@@ -148,7 +148,7 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
         consultPhonevo.setSurplusTime(serviceLength-Integer.parseInt(talkDuration)*1000);
         consultPhonevo.setId(Integer.parseInt(userData));
         consultPhonevo.setUpdateTime(new Date());
-        if(Integer.parseInt(talkDuration)<serviceLength*60-10&&"0".equals(phonepatientInfo.get("type"))){
+        if(Integer.parseInt(talkDuration)>0&&Integer.parseInt(talkDuration)<serviceLength*60-10&&"0".equals(phonepatientInfo.get("type"))){
 //             改状态
             consultPhonevo.setType("1");//已推送过消息
             //发消息
