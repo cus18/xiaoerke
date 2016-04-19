@@ -4,6 +4,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.cxqm.xiaoerke.modules.sys.dao.SysActivityDao;
 import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import com.cxqm.xiaoerke.authentication.common.BaseController;
 import com.cxqm.xiaoerke.authentication.common.CookieUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 
+import java.util.Date;
 import java.util.Map;
 
 
@@ -147,6 +149,7 @@ public class LoginController extends BaseController{
 	public
 	@ResponseBody
 	Map<String, Object> getUserCode(@RequestBody Map<String, Object> params) {
+		System.out.print("getCode()...."+new Date());
 		String userPhone = (String) params.get("userPhone");
 		return utilService.sendIdentifying(userPhone);
 	}
