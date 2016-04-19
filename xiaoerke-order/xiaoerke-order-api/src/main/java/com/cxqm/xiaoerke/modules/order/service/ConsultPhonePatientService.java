@@ -10,6 +10,7 @@ import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneManuallyConnectVo;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.exception.CancelOrderException;
 import com.cxqm.xiaoerke.modules.order.exception.CreateOrderException;
+import net.sf.json.JSONObject;
 
 /**
  * Created by wangbaowei on 16/3/18.
@@ -60,7 +61,19 @@ public interface ConsultPhonePatientService {
      * sunxiao
      * @param vo
      */
-    void manuallyConnect(ConsultPhoneManuallyConnectVo vo);
+    JSONObject manuallyConnect(ConsultPhoneManuallyConnectVo vo) throws Exception;
+
+    //查询手动接通任务信息
+    List<ConsultPhoneManuallyConnectVo> getConsultPhoneTimingDialByInfo(Map<String, Object> map);
+    int updateConsultPhoneTimingDialInfo(ConsultPhoneManuallyConnectVo vo);
+
+    /**
+     * 获取订单数
+     * sunxiao
+     * @param state
+     * @return
+     */
+    int getNewOrderCount(String state);
 
     ConsultPhoneRegisterServiceVo selectByPrimaryKey(Integer phoneConsultaServiceId);
 }

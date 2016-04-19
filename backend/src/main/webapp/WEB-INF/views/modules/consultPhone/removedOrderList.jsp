@@ -5,13 +5,15 @@
 	<title>订单列表</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
+		var orderCount;
+		var timer;
 		$(document).ready(function() {
 			document.getElementById("newOrder").disabled=true;
-			timer = window.setInterval(temp,300000);
+			timer = window.setInterval(getNewOrderCount,300000);
 			$.ajax({
 				type: "post",
-				url: "${ctx}/order/getNewOrderList?",
-				data: {},
+				url: "${ctx}/consultPhone/getNewOrderCount?",
+				data: {state:4},
 				dataType: "json",
 				success: function(data){
 					orderCount = data.orderCount;
@@ -25,11 +27,11 @@
 			$("#searchForm").submit();
 			return false;
 		}
-		function temp(){
+		function getNewOrderCount(){
 			$.ajax({
 				type: "post",
-				url: "${ctx}/order/getNewOrderList?",
-				data: {pageNo:$("#pageNo").val(),pageSize:$("#pageSize").val()},
+				url: "${ctx}/consultPhone/getNewOrderCount?",
+				data: {state:4},
 				dataType: "json",
 				success: function(data){
 					if(data.orderCount!=orderCount){
@@ -41,8 +43,8 @@
 			});
 		}
 		function refreshNewOrder(){
-			timer = window.setInterval(temp,300000);
-			window.location.href = "${ctx}/order/consultPhoneOrderList?stateFlag=remove";
+			timer = window.setInterval(getNewOrderCount,300000);
+			window.location.href = "${ctx}/consultPhone/consultPhoneOrderList?stateFlag=remove";
 		}
 	</script>
 </head>
@@ -99,9 +101,7 @@
 				<c:if test="${consultPhone.state eq '1'}">待接通</c:if>
 				<c:if test="${consultPhone.state eq '2'}">待评价</c:if>
 				<c:if test="${consultPhone.state eq '3'}">待分享</c:if>
-				<c:if test="${consultPhone.state eq '4'}">待建档</c:if>
-				<c:if test="${consultPhone.state eq '5'}">超时取消</c:if>
-				<c:if test="${consultPhone.state eq '6'}">已取消</c:if>
+				<c:if test="${consultPhone.state eq '4'}">已取消</c:if>
 			</td>
 			<td>${consultPhone.state}</td>
 			<td><fmt:formatDate value ="${consultPhone.updateTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>

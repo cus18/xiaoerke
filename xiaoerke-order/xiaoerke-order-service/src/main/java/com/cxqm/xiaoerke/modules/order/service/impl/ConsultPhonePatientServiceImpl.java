@@ -1,8 +1,10 @@
 package com.cxqm.xiaoerke.modules.order.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.service.ServiceException;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
@@ -24,6 +26,7 @@ import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -206,7 +209,28 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
             ConsultPhoneRegisterServiceVo vo) {
         // TODO Auto-generated method stub
         Page<ConsultPhoneRegisterServiceVo> pages = consultPhoneRegisterServiceDao.findConsultPhonePatientList(page,vo);
+        for(ConsultPhoneRegisterServiceVo tvo : pages.getList()){
+            tvo.setSurplusDate(new Date(tvo.getSurplusTime()));
+            Map map = new HashMap();
+            map.put("orderId",tvo.getId());
+            map.put("state",1);
+            List<ConsultPhoneManuallyConnectVo> list = consultPhoneTimingDialDao.getConsultPhoneTimingDialByInfo(map);
+            if(list.size()!=0){
+                tvo.setState("daichonglian");
+            }
+        }
         return pages;
+    }
+
+    /**
+     * 分页查询电话咨询订单列表
+     * sunxiao
+     */
+    @Override
+    public int getNewOrderCount(String state){
+        // TODO Auto-generated method stub
+        int count = consultPhoneRegisterServiceDao.getNewOrderCount(state);
+        return count;
     }
 
     public List<ConsultPhoneRegisterServiceVo> getAllConsultPhoneRegisterListByInfo(ConsultPhoneRegisterServiceVo vo){
@@ -266,7 +290,11 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         Map paramMap = new HashMap();
         paramMap.put("orderId",vo.getId());
         List<ConsultPhoneManuallyConnectVo> recordList = consultPhoneManuallyConnectRecordDao.getManuallyConnectRecordListByInfo(paramMap);
+        for(ConsultPhoneManuallyConnectVo cvo : recordList){
+            cvo.setSurplusDate(new Date(cvo.getSurplusTime()));
+        }
         map = consultInfoList.get(0);
+        map.put("surplusTime",new Date((Long)map.get("surplusTime")));
         map.put("orderTimeMap",orderTimeMap);
         map.put("recordList",recordList);
         return map;
@@ -278,15 +306,43 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
      * @param vo
      */
     @Override
-    public void manuallyConnect(ConsultPhoneManuallyConnectVo vo){
+    @Transactional(rollbackFor=Exception.class)
+    public JSONObject manuallyConnect(ConsultPhoneManuallyConnectVo vo) throws Exception{
+        JSONObject result = new JSONObject();
+        boolean tip = true;
         if("immediatelyDial".equals(vo.getDialType())){
             //dialConnection(vo.getOrderId());
             vo.setDialDate(new Date());
         }else if("timingDial".equals(vo.getDialType())){
-            consultPhoneTimingDialDao.saveConsultPhoneTimingDialInfo(vo);
+            Map param = new HashMap();
+            param.put("orderId",vo.getOrderId());
+            param.put("state","1");
+            List<ConsultPhoneManuallyConnectVo> list = consultPhoneTimingDialDao.getConsultPhoneTimingDialByInfo(param);
+            if(list.size()==0){
+                vo.setState("1");//待拨打
+                consultPhoneTimingDialDao.saveConsultPhoneTimingDialInfo(vo);
+            }else{
+                result.put("result","已设置定时拨打！");
+                tip = false;
+            }
         }
-        vo.setOperBy(UserUtils.getUser().getName());
-        consultPhoneManuallyConnectRecordDao.saveManuallyConnectRecordInfo(vo);
+        if(tip){
+            vo.setOperBy(UserUtils.getUser().getName());
+            consultPhoneManuallyConnectRecordDao.saveManuallyConnectRecordInfo(vo);
+        }
+        return result;
+    }
+
+    @Override
+    public List<ConsultPhoneManuallyConnectVo> getConsultPhoneTimingDialByInfo(Map<String, Object> map) {
+        List<ConsultPhoneManuallyConnectVo> list = consultPhoneTimingDialDao.getConsultPhoneTimingDialByInfo(map);
+        return list;
+    }
+
+    @Override
+    public int updateConsultPhoneTimingDialInfo(ConsultPhoneManuallyConnectVo vo) {
+        int count = consultPhoneTimingDialDao.updateConsultPhoneTimingDialInfo(vo);
+        return count;
     }
 
     /**

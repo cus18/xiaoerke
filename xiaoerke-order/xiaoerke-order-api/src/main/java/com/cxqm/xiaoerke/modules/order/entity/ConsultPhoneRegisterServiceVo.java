@@ -12,7 +12,7 @@ public class ConsultPhoneRegisterServiceVo {
 
     private String sysPatientId;
 
-    private String state;//订单状态 0-待支付  1-待接通  2-待评价  3-待分享 4-已取消 5-超时取消
+    private String state;//订单状态 0-待支付  1-待接通  2-待评价  3-待分享 4-已取消
 
     private String payState;//订单支付状态
 
@@ -57,6 +57,8 @@ public class ConsultPhoneRegisterServiceVo {
     private Date endTime;//开始时间
 
     private long surplusTime; //通话剩余时长
+
+    private Date surplusDate; //通话剩余时长
 
     private String callSid; //通话的唯一标示
 
@@ -137,6 +139,14 @@ public class ConsultPhoneRegisterServiceVo {
     @ExcelField(title="删除人", align=2, sort=12)
     public String getDeleteBy() {
         return deleteBy;
+    }
+
+    public Date getSurplusDate() {
+        return surplusDate;
+    }
+
+    public void setSurplusDate(Date surplusDate) {
+        this.surplusDate = surplusDate;
     }
 
     public Date getEndTime() {
