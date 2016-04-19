@@ -286,13 +286,10 @@ public class ConsultSessionManager {
         consultMongoUtilsService.upsertRichConsultSession((new Query(where("openid").is(consultSession.getOpenid()))),
 				new Update().update("RichConsultSession", consultSession));
 		sessionRedisCache.putWechatSessionByOpenId(consultSession.getOpenid(), consultSession);
-		consultMongoUtilsService.insertRichConsultSession(consultSession);
-
 
 		//成功分配医生，给用户发送一个欢迎语
 		String st = "尊敬的用户，宝大夫在线，有什么可以帮您";
 		WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN, consultSession.getOpenid(), st);
-
 		response.put("csChannel", csChannel);
 		response.put("sessionId",sessionId);
 		response.put("consultSession",consultSession);
