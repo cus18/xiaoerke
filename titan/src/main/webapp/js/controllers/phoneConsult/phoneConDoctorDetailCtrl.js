@@ -31,6 +31,7 @@
             console.log(data)
             $scope.pageLoading = false;
             $scope.doctorDetail = data;
+            $scope.position = (data.position1==''?'':data.position1+"、")+data.position2
             $scope.evaluateList = $scope.doctorDetail.evaluaMap.evaluateList;
             $scope.userStar();
             console.log($scope.doctorDetail.doctorCaseList);
