@@ -159,13 +159,9 @@ angular.module('controllers', ['luegg.directives'])
                     "senderName": angular.copy($scope.doctorName),
                     "sessionId": angular.copy($scope.currentUserConversation.sessionId)
                 };
- //               var consultValMessage.content =
                 console.log(inputText);
                 console.log(consultValMessage.content);
                 console.log(AnalyticEmotion(inputText));
- ///*               function out(){
- //                   $('#out').html(AnalyticEmotion(inputText));
- //               }*/
                 if (!window.WebSocket) {
                     return;
                 }
