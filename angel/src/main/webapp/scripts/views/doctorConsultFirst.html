@@ -229,7 +229,7 @@
             </div>
                 <div class="facebox">
                     <div class="facein">
-                        <p class="fl"><span class="emotion" ng-click="getQQExpression()">表情</span></p>
+                        <p class="fl"><span id="face" ng-click="getEmotion()">表情</span></p>
                         <!--<p class="historymessage">-->
                         <!--<span>-->
                         <!--消息记录-->
@@ -238,7 +238,7 @@
                         <!--</p>-->
                     </div>
                 </div>
-                <div class="inputcontent"><textarea ng-model="info.consultMessage" placeholder="请在此处进行咨询" id="saytext"></textarea>
+                <div class="inputcontent"><textarea ng-model="info.consultMessage" placeholder="请在此处进行咨询" class="emotion"></textarea>
                 </div>
                 <div class="sendbtn">
                     <div class="sub_btn" ng-click="sendConsultMessage()">发送(Ctrl+Enter</div>
