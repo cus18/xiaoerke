@@ -92,7 +92,7 @@
 	</bean>
 	
 	<!-- 定义授权缓存管理器 -->
-<!-- 	<bean id="shiroCacheManager" class="com.cxqm.xiaoerke.common.security.shiro.cache.SessionCacheManager" /> -->
+<!-- 	<bean id="shiroCacheManager" class="com.cxqm.xiaoerke.common.security.shiro.cache.sessionRedisCacheManager" /> -->
 	<bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
 		<property name="cacheManager" ref="cacheManager"/>
 	</bean>

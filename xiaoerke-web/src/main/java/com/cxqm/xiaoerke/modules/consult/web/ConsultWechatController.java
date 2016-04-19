@@ -9,17 +9,15 @@ import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
-import com.cxqm.xiaoerke.modules.consult.service.SessionCache;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
-import org.apache.coyote.http11.Http11NioProtocol;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,7 +45,7 @@ import java.util.Map;
 public class ConsultWechatController extends BaseController {
 
     @Autowired
-    private SessionCache sessionCache;
+    private SessionRedisCache sessionRedisCache;
 
     @Autowired
     private WechatAttentionService wechatAttentionService;
@@ -83,12 +81,12 @@ public class ConsultWechatController extends BaseController {
 
         Channel csChannel = null;
         //根据用户的openId，判断redis中，是否有用户正在进行的session
-        Integer sessionId = sessionCache.getSessionIdByOpenId(openId);
+        Integer sessionId = sessionRedisCache.getSessionIdByOpenId(openId);
         HashMap<String,Object> createWechatConsultSessionMap = null;
         RichConsultSession consultSession = new RichConsultSession();
         //如果此用户不是第一次发送消息，则sessionId不为空
         if(sessionId!=null){
-            consultSession = sessionCache.getConsultSessionBySessionId(sessionId);
+            consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
             csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
         }else{//如果此用户是第一次发送消息，则sessionId为空
             consultSession.setCreateTime(new Date());
@@ -124,7 +122,7 @@ public class ConsultWechatController extends BaseController {
                     //根据mediaId，从微信服务器上，获取到媒体文件，再将媒体文件，放置阿里云服务器，获取URL
                     try{
                         WechatUtil wechatUtil = new WechatUtil();
-                        String mediaURL = wechatUtil.downloadMediaFromWx(ConstantUtil.TEST_TOKEN,mediaId,nickName,messageType);//sessionCache.getWeChatToken()
+                        String mediaURL = wechatUtil.downloadMediaFromWx(ConstantUtil.TEST_TOKEN,mediaId,nickName,messageType);//sessionRedisCache.getWeChatToken()
                         obj.put("content", mediaURL);
                         messageContent = mediaURL;
                     }catch (IOException e){

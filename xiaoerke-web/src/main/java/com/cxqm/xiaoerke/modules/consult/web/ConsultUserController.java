@@ -3,7 +3,6 @@
  */
 package com.cxqm.xiaoerke.modules.consult.web;
 
-import com.cxqm.xiaoerke.common.persistence.Order;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.FrontUtils;
@@ -13,6 +12,10 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
@@ -51,10 +54,8 @@ public class ConsultUserController extends BaseController {
     private ConsultRecordService consultRecordService;
 
     @Autowired
+    SessionRedisCache sessionRedisCache;
     private ConsultMongoUtilsService consultMongoUtilsService;
-
-    @Autowired
-    SessionCache sessionCache;
 
     @Autowired
     private ConsultSessionForwardRecordsService consultSessionForwardRecordsService;
@@ -209,6 +210,7 @@ public class ConsultUserController extends BaseController {
         pageNo = (Integer) params.get("pageNo");
         pageSize = (Integer) params.get("pageSize");
         List<HashMap<String,Object>> responseList = new ArrayList<HashMap<String, Object>>();
+
         List<RichConsultSession> richConsultSessions = consultMongoUtilsService.queryRichConsultSessionList(new Query().addCriteria(new Criteria().where("csUserId").is(csUserId)));
         if(richConsultSessions!=null && richConsultSessions.size()>0){
             for(RichConsultSession richConsultSession :richConsultSessions){
@@ -232,8 +234,8 @@ public class ConsultUserController extends BaseController {
                 searchMap.put("consultValue",ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
                 responseList.add(searchMap);
             }
+            response.put("alreadyJoinPatientConversation",responseList);
         }
-        response.put("alreadyJoinPatientConversation",responseList);
         return response;
     }
 
