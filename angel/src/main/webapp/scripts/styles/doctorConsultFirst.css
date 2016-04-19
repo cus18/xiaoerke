@@ -89,12 +89,22 @@ input[type="number"] {width: 36px;}
 .refreshboxtop ul li {padding: 0 0 0 15px;font-size: 12px;color: #333;line-height: 28px;}
 .postscript span {display: block;font: 12px/40px 'Microsoft Yahei';}
 /*qq表情*/
-span.emotion{width:42px; height:20px; background:url(icon.gif) no-repeat 2px 2px; padding-left:20px; cursor:pointer}
-span.emotion:hover{background-position:2px -28px}
-.qqFace{margin-top:4px;background:#fff;padding:2px;border:1px #dfe6f6 solid;}
-.qqFace table td{padding:0;}
-.qqFace table td img{cursor:pointer;border:1px #fff solid;}
-.qqFace table td img:hover{border:1px #0066cc solid;}
+#emotions{left:0;width:444px;font-size:12px;background:#fff;position:absolute;border:1px solid #E8E8E8;}
+#emotions a{color:#9ABBC8;padding:2px 7px;text-decoration:none;}
+#emotions img{border:0;}
+#emotions div{margin:5px 10px;padding:1px;overflow:hidden;}
+#emotions #prev,#emotions #next{margin-left:3px;background:#eee;}
+#emotions .categorys{color:#ccc;height:23px;color:#9ABBC8;overflow:hidden;}
+#emotions .categorys a{display:inline-block;}
+#emotions .categorys a:hover{text-decoration:underline;}
+#emotions .categorys a.current{cursor:default;background:#F0F0F0;-moz-border-radius:3px;-webkit-border-radius:3px;}
+#emotions .container{padding:1px;overflow:hidden;}
+#emotions .container a{float:left;width:22px;height:20px;text-align:center;padding:4px 2px;margin:-1px 0 0 -1px;border:1px solid #e8e8e8;}
+#emotions .container a:hover{z-index:2;position:relative;border:1px solid #0095cd;}
+#emotions .page{text-align:right;}
+#emotions .page a.current{color:#666;background-color:#fff;}
+#emotions .page a{margin-left:3px;color:#0078B6;background-color:#f3f3f3;}
+#emotions .page a:hover{background-color:#e7e7e7;}
 /*聊天框的头部*/
 .chatlistin{font: 14px/20px 'Microsoft Yahei';height: 265px;overflow:auto;background-color: #f8f8f8;width: 100%;color:#333;}
 .chatlistin::-webkit-scrollbar{height: 0;width: 0;}
@@ -155,27 +165,11 @@ textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 10
 .patientConsultContent div:nth-child(1){
     color:#7fc700;
 }
-/*.doctorReplyContent div{float: left;}*/
 .doctorReplyContent .headPortrait,.patientConsultContent .headPortrait {
     width: 30px;
     height: 30px;
     margin: 0 10px;
 }
-/*.patientConsultContent div {
-    float: right;
-}*/
-/*.doctorReplyContent .message::after,.patientConsultContent .message::after {
-    content: '';
-    width: 7px;
-    height: 9px;
-    border:none;
-    position: absolute;
-    top: 12px;
-    left: -7px;
-    background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fyh_10.png") center no-repeat;
-}
-.patientConsultContent .message::after {left: 95px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fyh_11.png") center no-repeat;}*/
-/*.startTime {font: 12px/20px 'Microsoft Yahei';}*/
 .consultList {height: 408px;overflow: auto;}
 .consultList::-webkit-scrollbar {width:0;height:0;}
 .moreInformation{text-align: center;padding-top: 10px;}

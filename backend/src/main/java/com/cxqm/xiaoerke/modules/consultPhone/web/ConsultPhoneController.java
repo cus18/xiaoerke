@@ -121,7 +121,13 @@ public class ConsultPhoneController extends BaseController {
 		vo.setCreateTime(new Date());
 		vo.setState("1");
 		vo.setUpdateTime(new Date());
-		result = phoneConsultDoctorRelationService.openConsultPhone(vo);
+		try {
+			result = phoneConsultDoctorRelationService.openConsultPhone(vo);
+			result.put("result", "suc");
+		} catch (Exception e) {
+			result.put("result", "fail");
+			e.printStackTrace();
+		}
 		return result.toString();
 	}
 
@@ -149,9 +155,15 @@ public class ConsultPhoneController extends BaseController {
 		if(time!=null){
 			timeList.add(time);
 		}
-		Map<String, String> ret = sysConsultPhoneService.addRegisters(vo,timeList,request.getParameter("date"),request.getParameter("repeat"));
-		result.put("suc", "suc");
-		result.put("reason", ret.get("backend"));
+		Map<String, String> ret = null;
+		try {
+			ret = sysConsultPhoneService.addRegisters(vo,timeList,request.getParameter("date"),request.getParameter("repeat"));
+			result.put("result", "suc");
+			result.put("reason", ret.get("backend"));
+		} catch (Exception e) {
+			result.put("result", "fail");
+			e.printStackTrace();
+		}
 		return result.toString();
 	}
 
@@ -179,8 +191,13 @@ public class ConsultPhoneController extends BaseController {
 		if(time!=null){
 			timeList.add(time);
 		}
-		sysConsultPhoneService.deleteRegisters(vo, timeList, request.getParameter("date"), request.getParameter("operRepeat"));
-		result.put("suc", "suc");
+		try {
+			sysConsultPhoneService.deleteRegisters(vo, timeList, request.getParameter("date"), request.getParameter("operRepeat"));
+			result.put("result", "suc");
+		} catch (Exception e) {
+			result.put("result", "fail");
+			e.printStackTrace();
+		}
 		return result.toString();
 	}
 
@@ -243,6 +260,7 @@ public class ConsultPhoneController extends BaseController {
 		stateMap.put("2", "待评价");
 		stateMap.put("3", "待分享");
 		stateMap.put("4", "已取消");
+		stateMap.put("5", "已完成");
 		stateMap.put("", "全部");
 		model.addAttribute("statusList", stateMap);
 		model.addAttribute("payStatusList", payStateMap);
@@ -250,6 +268,22 @@ public class ConsultPhoneController extends BaseController {
 		model.addAttribute("pageCount", page.getCount());
 		model.addAttribute("consultPhone", vo);
 		return returnUrl;
+	}
+
+	/**
+	 * 手动拨号
+	 * @param model
+	 * sunxiao
+	 */
+	@RequiresPermissions("user")
+	@ResponseBody
+	@RequestMapping(value = "getNewOrderCount")
+	public String getNewOrderCount(HttpServletRequest request,HttpServletResponse response, Model model) {
+		JSONObject result = new JSONObject();
+		String state = request.getParameter("state");
+		int count = consultPhonePatientService.getNewOrderCount(state);
+		result.put("orderCount",count);
+		return result.toString();
 	}
 
 	/**
@@ -281,21 +315,9 @@ public class ConsultPhoneController extends BaseController {
 	 * @param model
 	 * @return
 	 */
-	@RequiresPermissions("consultPhone:memberList")
+	@RequiresPermissions("user")
 	@RequestMapping(value = "refundConsultPhoneFeeForm")
 	public String refundConsultPhoneFeeForm(ConsultPhoneRegisterServiceVo vo,HttpServletRequest request,HttpServletResponse response, Model model) {
-		try {
-			vo.setNickName(URLDecoder.decode(request.getParameter("babyName"), "utf-8"));
-			String answerPhone = request.getParameter("answerPhone");
-			String id = request.getParameter("id");
-			String price = request.getParameter("price");
-			String surplusTime = request.getParameter("surplusTime");
-			String phoneNum = request.getParameter("phoneNum");//医生接听电话
-			String loginPhone = request.getParameter("loginPhone");//用户电话
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		model.addAttribute("vo", vo);
 		return "modules/consultPhone/refundConsultPhoneFeeForm";
 	}
@@ -346,7 +368,14 @@ public class ConsultPhoneController extends BaseController {
 	@RequestMapping(value = "timingDial")
 	public String timingDial(ConsultPhoneManuallyConnectVo vo,HttpServletRequest request,HttpServletResponse response, Model model) {
 		JSONObject result = new JSONObject();
-		consultPhonePatientService.manuallyConnect(vo);
+		String surplusTimeStr = request.getParameter("surplusTimeStr");
+		vo.setSurplusTime(Long.valueOf(surplusTimeStr.split(":")[0])*60*1000 + Long.valueOf(surplusTimeStr.split(":")[1])*1000);
+		try {
+			result = consultPhonePatientService.manuallyConnect(vo);
+		}catch (Exception e){
+			e.printStackTrace();
+			result.put("result", "操作失败！");
+		}
 		return result.toString();
 	}
 }

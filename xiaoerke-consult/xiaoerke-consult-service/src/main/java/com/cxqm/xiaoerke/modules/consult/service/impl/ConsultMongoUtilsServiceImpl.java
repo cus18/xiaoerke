@@ -26,9 +26,23 @@ public class ConsultMongoUtilsServiceImpl implements ConsultMongoUtilsService {
 		mongoTemplate.insert(richConsultSession, "RichConsultSession");
 		return 0;
 	}
+
 	@Override
 	public List<RichConsultSession> queryRichConsultSessionList(Query query){
-		return this.mongoTemplate.find(query, RichConsultSession.class, "RichConsultSession");
+		 List<RichConsultSession> list = mongoTemplate.find(query, RichConsultSession.class, "RichConsultSession");
+		return list;
+	}
+
+	@Override
+	public WriteResult upsertRichConsultSession(Query query,Update update) {
+
+		return mongoTemplate.upsert(query,update,"RichConsultSession");
+
+	}
+
+	@Override
+	public RichConsultSession  removeRichConsultSession(Query query) {
+		return this.mongoTemplate.findAndRemove(query, RichConsultSession.class,"RichConsultSession");
 	}
 
 }

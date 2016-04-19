@@ -29,6 +29,32 @@ public class ConsultPhoneManuallyConnectVo {
     private String dialType;
 
     private long surplusTime; //通话剩余时长
+    private Date surplusDate; //通话剩余时长
+    private String state;
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public Date getSurplusDate() {
+        return surplusDate;
+    }
+
+    public void setSurplusDate(Date surplusDate) {
+        this.surplusDate = surplusDate;
+    }
+
+    public long getSurplusTime() {
+        return surplusTime;
+    }
+
+    public void setSurplusTime(long surplusTime) {
+        this.surplusTime = surplusTime;
+    }
 
     public Integer getId() {
         return id;
@@ -94,9 +120,6 @@ public class ConsultPhoneManuallyConnectVo {
         this.dialDate = dialDate;
     }
 
-    public long getSurplusTime() {
-        return surplusTime;
-    }
 
     public String getDialType() {
         return dialType;
@@ -106,7 +129,4 @@ public class ConsultPhoneManuallyConnectVo {
         this.dialType = dialType;
     }
 
-    public void setSurplusTime(long surplusTime) {
-        this.surplusTime = surplusTime;
-    }
 }

@@ -42,43 +42,37 @@ public class PhoneConsultDoctorRelationServiceImpl implements PhoneConsultDoctor
      */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public JSONObject openConsultPhone(ConsulPhonetDoctorRelationVo vo) {
+	public JSONObject openConsultPhone(ConsulPhonetDoctorRelationVo vo) throws Exception{
 		// TODO Auto-generated method stub
 		JSONObject result = new JSONObject();
-		try{
-			ConsulPhonetDoctorRelationVo param = new ConsulPhonetDoctorRelationVo();
-			param.setDoctorId(vo.getDoctorId());
-			List<ConsulPhonetDoctorRelationVo> relist = phoneConsultDoctorRelationDao.getConsultPhoneDoctorRelationByInfo(param);
-			if(relist.size()==0){
-				phoneConsultDoctorRelationDao.insert(vo);
-			}else{
-				ConsulPhonetDoctorRelationVo uparam = new ConsulPhonetDoctorRelationVo();
-				uparam.setPrice(vo.getPrice());
-				uparam.setServerLength(vo.getServerLength());
-				uparam.setDoctorAnswerPhone(vo.getDoctorAnswerPhone());
-				uparam.setId(relist.get(0).getId());
-				phoneConsultDoctorRelationDao.updateByPrimaryKeySelective(uparam);
-			}
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("isConsultPhone", "1");
-			map.put("id", vo.getDoctorId());
-			doctorDao.updateDoctor(map);//更新doctor表
-			List<Map<String, Object>> list = doctorDao.getDoctorInfo(map);
-			if(list.size()!=0){
-				if(list.get(0).get("sys_doctor_group_id")!=null){
-					map.put("id", list.get(0).get("sys_doctor_group_id"));
-					doctorGroupInfoService.updateSysDoctorGroup(map);//更新doctorgroup表
-				}
-				if(list.get(0).get("sys_hospital_id")!=null){
-					map.put("id", list.get(0).get("sys_hospital_id"));//更新hospital表
-					hospitalDao.updateSysHospital(map);
-				}
-			}
-			result.put("result", "suc");
-		}catch(Exception e){
-			result.put("result", "fail");
+		ConsulPhonetDoctorRelationVo param = new ConsulPhonetDoctorRelationVo();
+		param.setDoctorId(vo.getDoctorId());
+		List<ConsulPhonetDoctorRelationVo> relist = phoneConsultDoctorRelationDao.getConsultPhoneDoctorRelationByInfo(param);
+		if(relist.size()==0){
+			phoneConsultDoctorRelationDao.insert(vo);
+		}else{
+			ConsulPhonetDoctorRelationVo uparam = new ConsulPhonetDoctorRelationVo();
+			uparam.setPrice(vo.getPrice());
+			uparam.setServerLength(vo.getServerLength());
+			uparam.setDoctorAnswerPhone(vo.getDoctorAnswerPhone());
+			uparam.setId(relist.get(0).getId());
+			phoneConsultDoctorRelationDao.updateByPrimaryKeySelective(uparam);
 		}
-		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("isConsultPhone", "1");
+		map.put("id", vo.getDoctorId());
+		doctorDao.updateDoctor(map);//更新doctor表
+		List<Map<String, Object>> list = doctorDao.getDoctorInfo(map);
+		if(list.size()!=0){
+			if(list.get(0).get("sys_doctor_group_id")!=null){
+				map.put("id", list.get(0).get("sys_doctor_group_id"));
+				doctorGroupInfoService.updateSysDoctorGroup(map);//更新doctorgroup表
+			}
+			if(list.get(0).get("sys_hospital_id")!=null){
+				map.put("id", list.get(0).get("sys_hospital_id"));//更新hospital表
+				hospitalDao.updateSysHospital(map);
+			}
+		}
 		return result;
 	}
 

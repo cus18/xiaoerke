@@ -11,7 +11,15 @@ public class ConsultSessionStatusVo {
 
     private String UserId;
 
-    private ConsultSessionStatusVo consultSessionStatusVo;
+    private String openId;
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
 
     public String getUserId() {
         return UserId;

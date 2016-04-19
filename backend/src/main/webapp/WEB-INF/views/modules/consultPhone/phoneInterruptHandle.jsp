@@ -29,19 +29,21 @@
 				alertx("请输入医生电话！");
 				return;
 			}
-			alert($("#timingDial").attr("checked"));
 			if($("#inputDailTime").val()==''&&$("#timingDial").attr("checked")){
 				alertx("请输入拨打时间！");
 				return;
 			}
-
 			$.ajax({
 				type: "post",
 				url: "${ctx}/consultPhone/timingDial",
-				data: {dialType:$('input[name="dial"]:checked').val(),surplusTime:$("#surplusTime").val(),userPhone:$("#loginPhone").val(),doctorPhone:$("#doctorAnswerPhone").val(),dialDate:$("#inputDailTime").val(),orderId:${map.id}},
+				data: {dialType:$('input[name="dial"]:checked').val(),surplusTimeStr:$("#surplusTime").val(),userPhone:$("#loginPhone").val(),doctorPhone:$("#doctorAnswerPhone").val(),dialDate:$("#inputDailTime").val(),orderId:${map.id}},
 				dataType: "json",
 				success: function(data){
-
+					if(data.result==undefined){
+						alertx("操作成功！");
+					}else{
+						alertx(data.result);
+					}
 				}
 			});
 		}
@@ -79,7 +81,7 @@
 	<div class="control-group">
 		<label class="control-label">剩余时长:</label>
 		<div class="controls">
-				${map.surplusTime}
+			<fmt:formatDate value ="${map.surplusTime}" pattern="mm:ss" />
 		</div>
 	</div>
 	<div class="control-group">
@@ -106,10 +108,25 @@
 		<label class="control-label"></label>
 		<div class="controls">
 			<font color="blue">手动接通设置</font><br/>
-			设置时长&nbsp;&nbsp;&nbsp;&nbsp;用户手机号码&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${map.doctorName}电话<br/>
-			<input id="surplusTime" htmlEscape="false" maxlength="50" style="width: 50px" class="required" value="${map.surplusTime}"/>
-			<input id="loginPhone" htmlEscape="false" maxlength="50" style="width: 150px" class="required" value="${map.phoneNum}"/>
-			<input id="doctorAnswerPhone" htmlEscape="false" maxlength="50" style="width: 150px" class="required" value="${map.doctor_answer_phone}"/><br/>
+			<table>
+				<tr>
+					<th>设置时长</th>
+					<th>用户手机号码</th>
+					<th>${map.doctorName}电话</th>
+				</tr>
+				<tr>
+					<td>
+						<input id="surplusTime" type="text" readonly="readonly" maxlength="10" class="input-small Wdate"
+									onclick="WdatePicker({dateFmt:'mm:ss',isShowClear:false});" value="<fmt:formatDate value ="${map.surplusTime}" pattern="mm:ss" />"/>
+					</td>
+					<td>
+						<input id="loginPhone" htmlEscape="false" maxlength="50" style="width: 150px" class="required" value="${map.phoneNum}"/>
+					</td>
+					<td>
+						<input id="doctorAnswerPhone" htmlEscape="false" maxlength="50" style="width: 150px" class="required" value="${map.doctor_answer_phone}"/>
+					</td>
+				</tr>
+			</table>
 			<hr>设定接通时间
 			<input id="immediatelyDial" name="dial" value="immediatelyDial" type="radio" checked="checked" onclick="hideTime()"><label for="immediatelyDial">立即拨打</label>
 			<input id="timingDial" name="dial" value="timingDial" type="radio" onclick="showTime()"><label for="timingDial">定时拨打</label><hr>
@@ -135,7 +152,7 @@
 				</tr>
 				<c:forEach items="${map.recordList}" var="record">
 					<tr>
-						<td>${record.surplusTime}</td>
+						<td><fmt:formatDate value ="${record.surplusDate}" pattern="mm:ss" /></td>
 						<td>${record.userPhone}</td>
 						<td>${record.doctorPhone}</td>
 						<td><fmt:formatDate value ="${record.dialDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>

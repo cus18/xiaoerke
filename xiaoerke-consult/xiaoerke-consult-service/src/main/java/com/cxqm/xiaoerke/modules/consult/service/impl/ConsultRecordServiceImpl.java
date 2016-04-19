@@ -85,6 +85,18 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
         return consultRecordMongoDBService.saveConsultRecord(consultRecordMongoVo);
     }
 
+    public int saveConsultRecordTemporary(ConsultRecordMongoVo consultRecordMongoVo){
+        /**1、通过consultRecordMongoVo中的sessionId判断，在RichConsultSession中是否有此sessionId的记录，如果有sessionId的记录则将
+        consultRecordMongoVo的数据，插入到RichConsultSession中***/
+
+
+        /**2、如果RichConsultSession中没有sessionId的数据，证明这是一个新来的sessionId会话，做如下判断，
+         * （1），consultRecordMongoVo中的userId和csUserId组合查询在RichConsultSession中有记录， 不管多少条，全部删除，将consultRecordMongoVo
+         * 数据重新插入；（2）consultRecordMongoVo中的userId和csUserId组合查询在RichConsultSession中没有记录，则直接插入，不需要做任何删除***/
+
+        return 0;
+    }
+
 
     @Override
     public ConsultRecordMongoVo findOneConsultRecord(Query query) {
@@ -168,6 +180,8 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
         consultRecordMongoVo.setDoctorName(consultSession.getCsUserName());
         consultRecordMongoVo.setCreateDate(new Date());
         saveConsultRecord(consultRecordMongoVo);
+
+        saveConsultRecordTemporary(consultRecordMongoVo);
     }
 
     @Override
@@ -181,8 +195,6 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
         }else{
             consultSessionStatusVo.setUserId(consultSession.getUserId());
         }
-
-        consultSessionStatusVo.setUserId(userId);
         consultRecordMongoDBService.upsertConsultSessionStatusVo(consultSessionStatusVo);
     }
 

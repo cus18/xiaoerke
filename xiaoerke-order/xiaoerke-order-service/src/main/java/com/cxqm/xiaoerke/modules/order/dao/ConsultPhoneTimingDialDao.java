@@ -3,7 +3,8 @@ package com.cxqm.xiaoerke.modules.order.dao;
 import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneManuallyConnectVo;
 
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 电话咨询手动接通电话dao
@@ -20,5 +21,5 @@ public interface ConsultPhoneTimingDialDao {
     void saveConsultPhoneTimingDialInfo(ConsultPhoneManuallyConnectVo UserReturnVisitVo);
 
     //查询手动接通任务信息
-    ConsultPhoneManuallyConnectVo getConsultPhoneTimingDialByInfo(HashMap<String, Object> hashMap);
+    List<ConsultPhoneManuallyConnectVo> getConsultPhoneTimingDialByInfo(Map<String, Object> map);
 }

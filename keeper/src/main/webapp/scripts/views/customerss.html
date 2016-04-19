@@ -9,7 +9,7 @@
 	<meta http-equiv="Pragma" content="no-cache">
 	<meta http-equiv="Cache-control" content="no-cache">
 	<meta http-equiv="Cache" content="no-cache">
-	<script language="javascript" type="text/javascript" src="/xiaoerke-wxapp/scripts/lib/My97DatePicker/WdatePicker.js"></script>
+	<script language="javascript" type="text/javascript" src="/keeper/scripts/lib/My97DatePicker/WdatePicker.js"></script>
 
 	<title></title>
 
@@ -302,7 +302,7 @@
 			</tr>
 			<tr>
 				<td class="">
-					<span style="">客服：</span><input type="hidden" id="openid"  value="oogbDwIvfJL1E5KcUNfrpMSeoA-A" />
+					<span style="">客服：</span><input type="hidden" id="openid"  value="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk" />
 					<input type="text" id="costomerID" />
 				</td>
 				<td class="td-l">
@@ -624,7 +624,7 @@
 	function getBabyInfo(){
 		$.ajax({
 			type: 'POST',
-			url: "/xiaoerke-wxapp/customer/searchBabyInfo",
+			url: "/keeper/customer/searchBabyInfo",
 			contentType: "application/json; charset=utf-8",
 			data: "{'openid':'"+openid+"'}",
 			success: function(result){
@@ -674,7 +674,7 @@
 		var userid=$("#userid").val();
 		$.ajax({
 			type: 'POST',
-			url: "/xiaoerke-wxapp/customer/saveBaby",
+			url: "/keeper/customer/saveBaby",
 			contentType: "application/json; charset=utf-8",
 // 			data: "{'openid':'"+openid+"','babyName':'"+babyName+"','weChatName':'"+wechatName+"','babyBirthday':'"+babyBirthday+"','phone':'"+phone+"','sex':'"+sex+"','id':'"+id+"','remark':'"+remark+"'}",
 			data: "{'id':'"+id+"','openid':'"+openid+"','userid':'"+userid+"','babyName':'"+babyName+"','babyBirthday':'"+babyBirthday+"','sex':'"+sex+"'}",
@@ -700,7 +700,7 @@
 	}
 
 	function getIllness(){
-		$.post("/xiaoerke-wxapp/customer/searchIllnessList",
+		$.post("/keeper/customer/searchIllnessList",
 				function(result){
 					result=eval("("+result+")");
 					var datas=result.illnessList;
@@ -730,7 +730,7 @@
 		}
 		$.ajax({
 			type: 'POST',
-			url: "/xiaoerke-wxapp/customer/saveCustomerLog",
+			url: "/keeper/customer/saveCustomerLog",
 			contentType: "application/json; charset=utf-8",
 			data: "{'openid':'"+openid+"','create_date':'"+create_date+"','illness':'"+illness+"','sections':'"+sections+"','customerID':'"+costomerID+"','id':'"+id+"','show':'"+show+"','result':'"+result+"'}",
 			success: function(result){
@@ -755,7 +755,7 @@
 		}
 		$.ajax({
 			type: 'POST',
-			url: "/xiaoerke-wxapp/customer/saveIllness",
+			url: "/keeper/customer/saveIllness",
 			contentType: "application/json; charset=utf-8",
 			async:false,
 			data: "{'illness':'"+costomerID+"'}",
@@ -801,7 +801,7 @@
 	function getOrderInfoByOpenid(){
 		$.ajax({
 			type: 'POST',
-			url: "/xiaoerke-wxapp/customer/getOrderInfoByOpenid",
+			url: "/keeper/customer/getOrderInfoByOpenid",
 			contentType: "application/json; charset=utf-8",
 			data: "{'openid':'"+openid+"'}",
 			success: function(result){
@@ -866,7 +866,7 @@
 	function getCustomerLogByOpenID(){
 		$.ajax({
 			type: 'POST',
-			url: "/xiaoerke-wxapp/customer/getCustomerLogByOpenID",
+			url: "/keeper/customer/getCustomerLogByOpenID",
 			contentType: "application/json; charset=utf-8",
 			data: "{'openid':'"+openid+"'}",
 			success: function(result){
@@ -1030,7 +1030,7 @@
 	function sendMessage(obj){
 			$.ajax({
 			type: 'POST',
-			url: "/xiaoerke-wxapp/customer/getKeywordsByOpenID",
+			url: "/keeper/customer/getKeywordsByOpenID",
 			contentType: "application/json; charset=utf-8",
 			data: "{'openid':'"+openid+"','keywords':'"+obj+"'}",
 			success: function(result){
@@ -1040,7 +1040,7 @@
 				}else{
 					$.ajax({
 						type: 'POST',
-						url: "/xiaoerke-wxapp/customer/saveOpenidAndKeywords",
+						url: "/keeper/customer/saveOpenidAndKeywords",
 						contentType: "application/json; charset=utf-8",
 						data: "{'openid':'"+openid+"','keywords':'"+obj+"'}",
 						success: function(result){
@@ -1132,7 +1132,7 @@
 	function checkIllness(){
 	 			$.ajax({
  				type: 'POST',
- 				url: "/xiaoerke-wxapp/customer/getDocotrByIllness",
+ 				url: "/keeper/customer/getDocotrByIllness",
  				contentType: "application/json; charset=utf-8",
  				data: "{'illness':'"+illnessName+"'}",
  				success: function(result){
@@ -1164,7 +1164,7 @@
 		function getLastOrderDate(babyame){
 	 			$.ajax({
  				type: 'POST',
- 				url: "/xiaoerke-wxapp/customer/getLastOrderDate",
+ 				url: "/keeper/customer/getLastOrderDate",
  				contentType: "application/json; charset=utf-8",
  				data: "{'openid':'"+openid+"','babyname':'"+babyame+"'}",
  				success: function(result){
@@ -1207,7 +1207,7 @@
 		if(customer=="110@BaodfWX"){
 			$.ajax({
  				type: 'POST',
- 				url: "/xiaoerke-wxapp/customer/getMemberInfo",
+ 				url: "/keeper/customer/getMemberInfo",
  				contentType: "application/json; charset=utf-8",
  				data: "{'openid':'"+openid+"','babyname':'"+babyName+"'}",
  				success: function(result){
@@ -1236,7 +1236,7 @@
 	    	 var costomerID=$("#costomerID").val();
 	    	 $.ajax({
 	 				type: 'POST',
-	 				url: "/xiaoerke-wxapp/customer/saveReturnService",
+	 				url: "/keeper/customer/saveReturnService",
 	 				contentType: "application/json; charset=utf-8",
 	 				data: "{'openid':'"+openid+"','customerID':'"+costomerID+"'}",
 	 				success: function(result){

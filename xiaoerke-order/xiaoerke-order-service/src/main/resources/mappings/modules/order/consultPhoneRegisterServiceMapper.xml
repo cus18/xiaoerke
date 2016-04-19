@@ -476,7 +476,7 @@
     </if>
     <if test="payState != null and payState != ''">
       <if test="payState == 1">
-        and crs.state in (1,2,3)
+        and crs.state in (1,2,3,5)
       </if>
       <if test="payState == 4 or payState == 0">
         and crs.state = #{payState}
@@ -499,6 +499,18 @@
     </if>
     <if test="consultPhoneTimeToStr != null and consultPhoneTimeToStr != ''">
       and #{consultPhoneTimeToStr} >= scs.date
+    </if>
+  </select>
+  <!-- 查询电话咨询订单数，sunxiao -->
+  <select id="getNewOrderCount" resultType="java.lang.Integer" >
+      SELECT COUNT(*) from consultphone_register_service
+    <if test="state != null and state != ''">
+      <if test="state == 1">
+        where state in (0,1,2,3)
+      </if>
+      <if test="state == 4">
+        where state = 4
+      </if>
     </if>
   </select>
   <!--根据条件查询订单 sunxiao-->
@@ -587,7 +599,7 @@
     </if>
     <if test="payState != null and payState != ''">
       <if test="payState == 1">
-        and crs.state in (1,2,3)
+        and crs.state in (1,2,3,5)
       </if>
       <if test="payState == 4 or payState == 0">
         and crs.state = #{payState}

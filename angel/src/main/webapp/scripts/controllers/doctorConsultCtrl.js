@@ -79,9 +79,6 @@ angular.module('controllers', ['luegg.directives'])
                 });
             }
 
-            ////QQ表情初始化
-            //qqFace();
-
             //初始化医生端登录，建立socket链接，获取基本信息
             $scope.doctorConsultInit = function () {
                 var routePath = "/doctor/consultBBBBBB" + $location.path();
@@ -153,15 +150,18 @@ angular.module('controllers', ['luegg.directives'])
 
             //向用户发送咨询消息
             $scope.sendConsultMessage = function () {
+                var inputText = $('.emotion').val();
                 var consultValMessage = {
                     "type": 0,
-                    "content": angular.copy($scope.info.consultMessage),
+                    "content": angular.copy($scope.info.consultMessage)+AnalyticEmotion(inputText),
                     "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                     "senderId": angular.copy($scope.doctorId),
                     "senderName": angular.copy($scope.doctorName),
                     "sessionId": angular.copy($scope.currentUserConversation.sessionId)
                 };
-
+                console.log(inputText);
+                console.log(consultValMessage.content);
+                console.log(AnalyticEmotion(inputText));
                 if (!window.WebSocket) {
                     return;
                 }
@@ -245,20 +245,6 @@ angular.module('controllers', ['luegg.directives'])
                 }
             };//当onkeydown 事件发生时调用函数
 
-            $scope.getQQExpression = function () {
-                $('.emotion').qqFace({
-                    id: 'facebox', //表情盒子的ID
-                    assign: 'saytext', //给那个控件赋值
-                    path: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fface%2F',//表情存放的路径
-                });
-            }
-
-            $(".sub_btn").click(function () {
-                var shows = document.querySelectorAll('#show');
-                for (var i = 0; i < shows.length; i++) {
-                    shows[i].innerHTML = replace_em(shows[i].innerHTML);
-                }
-            });
             //触发qq声音
             $('.lipanpan').click(function() {
                 var audio = document.createElement('audio');
@@ -271,13 +257,9 @@ angular.module('controllers', ['luegg.directives'])
                 audio.appendChild(source);
                 audio.play();
             })
-            //查看结果
-            var replace_em = function(str){
-                str = str.replace(/\[em_([0-9]*)\]/g, '<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/' +
-                    'dkf%2Fface%2F$1.gif" border="0" />');
-                return str;
+            $scope.getEmotion = function (){
+                $('#face').SinaEmotion($('.emotion'));
             }
-
             //查看更多的用户历史消息
             $scope.seeMoreConversationMessage = function(){
                 var mostFarCurrentConversationDateTime = $scope.currentUserConversation.consultValue[0].dateTime;
@@ -335,7 +317,6 @@ angular.module('controllers', ['luegg.directives'])
             $scope.tapEditCommonContent = function(parentIndex, childIndex){
                 $scope.publicReplySecondIndex = childIndex;
             };
-
             //添加分组
             $scope.add = function() {
                 $scope.info.addGroup = '';
@@ -361,7 +342,7 @@ angular.module('controllers', ['luegg.directives'])
                 setGroupContent.secondAnswer=[];
                 $scope.myAnswer.push(setGroupContent);
                 saveMyAnswer();
-                $scope.addgroup = false;
+                $scope.addGroupFlag = false;
             }
 
             //添加内容
@@ -396,14 +377,14 @@ angular.module('controllers', ['luegg.directives'])
                 setGroup.secondAnswer=[];
                 $scope.myAnswer.splice($scope.myReplyIndex, 1,setGroup);
                 saveMyAnswer();
-                $scope.editgroup=false;
+                $scope.editGroupFlag=false;
             }
             $scope.editContentSubmit = function () {
                 var setContent = {};
                 setContent.name = $scope.info.editContent;
                 $scope.myAnswer[$scope.myReplyIndex].secondAnswer.splice($scope.myReplySecondIndex, 1,setContent);
                 saveMyAnswer();
-                $scope.editcontent=false;
+                $scope.editContentFlag=false;
             }
 
             //删除
@@ -433,15 +414,15 @@ angular.module('controllers', ['luegg.directives'])
 
             var getAlreadyJoinConsultPatientList = function () {
                 //获取跟医生的会话还保存的用户列表
-                //GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:100},function(data){
-                //    console.log(data.alreadyJoinPatientConversation);
-                //    if(data.alreadyJoinPatientConversation!=""){
-                //        $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
-                //        var patientId = angular.copy($scope.alreadyJoinPatientConversation[0].patientId);
-                //        var patientName = angular.copy($scope.alreadyJoinPatientConversation[0].patientName);
-                //        $scope.chooseAlreadyJoinConsultPatient(patientId,patientName);
-                //    }
-                //})
+                GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:100},function(data){
+                    if(data.alreadyJoinPatientConversation!=""){
+                        console.log(data.alreadyJoinPatientConversation);
+                        $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
+                        var patientId = angular.copy($scope.alreadyJoinPatientConversation[0].patientId);
+                        var patientName = angular.copy($scope.alreadyJoinPatientConversation[0].patientName);
+                        $scope.chooseAlreadyJoinConsultPatient(patientId,patientName);
+                    }
+                })
             }
 
             //保存我的回复
