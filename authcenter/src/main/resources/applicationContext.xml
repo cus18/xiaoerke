@@ -19,6 +19,7 @@
     
     <!-- 获取bean工具注入 -->
     <bean id="springContextHolder" class="com.cxqm.xiaoerke.common.utils.SpringContextHolder" lazy-init="false"/>
+    <bean id="utilService" class="com.cxqm.xiaoerke.modules.sys.service.impl.UtilServiceImpl" lazy-init="false" init-method="init"/>
 
     <!-- 使用Annotation自动注册Bean，解决事物失效问题：在主容器中不扫描@Controller注解，在SpringMvc中只扫描@Controller注解。  -->
     <context:component-scan base-package="com.cxqm.xiaoerke"><!-- base-package 如果多个，用“,”分隔 -->
@@ -69,10 +70,10 @@
         <!-- 配置获取连接等待超时的时间 -->
         <property name="maxWait" value="60000"/>
 
-        <property name="removeAbandoned" value="true" />  
-        <property name="removeAbandonedTimeout" value="180" />  
-        <property name="connectionProperties">  
-            <value>clientEncoding=utf-8</value>  
+        <property name="removeAbandoned" value="true" />
+        <property name="removeAbandonedTimeout" value="180" />
+        <property name="connectionProperties">
+            <value>clientEncoding=utf-8</value>
         </property>
         <property name="validationQuery" value="SELECT 1" />
     	<property name="testOnBorrow" value="true"/>
