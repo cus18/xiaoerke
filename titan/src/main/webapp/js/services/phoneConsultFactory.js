@@ -5,6 +5,7 @@
 var user_h5 = 'consultPhone/'
 var user_appoint = ''
 var wxChat = 'wechatInfo/'
+var healthRecord='healthRecord/'
 
 define(['appPhoneConsult'], function (app) {
     app
