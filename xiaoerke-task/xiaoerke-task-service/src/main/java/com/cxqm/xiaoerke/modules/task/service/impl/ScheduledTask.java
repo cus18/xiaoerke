@@ -7,6 +7,7 @@ import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
 import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultMongoUtilsService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultPhoneService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
@@ -90,6 +91,10 @@ public class ScheduledTask {
 
     @Autowired
     private ConsultRecordService consultRecordService;
+
+    @Autowired
+    private ConsultMongoUtilsService consultMongoUtilsService;
+
 
     @Autowired
     private AccountService accountService;
@@ -1066,23 +1071,50 @@ public class ScheduledTask {
      *  删除mongo中的,redis中的,内存中的consultSession
      */
     public void consultMangement4Session(){
+        //获取用户与平台最后交流时间
         List<Object> consultSessionStatusVos = consultRecordService.querySessionStatusList(new Query());
-        for(Object object : consultSessionStatusVos){
-            Map map= (Map)object;
-            ConsultSessionStatusVo consultSessionStatusVo = (ConsultSessionStatusVo) map.get("ConsultSessionStatusVo");
-            if(DateUtils.pastMinutes(DateUtils.StrToDate(consultSessionStatusVo.getLastMessageTime(),"xiangang"))>10L){
-                try{
-                    consultRecordService.deleteConsultSessionStatusVo(new Query().addCriteria(new Criteria().where("sessionId").is(consultSessionStatusVo.getSessionId())));
-                    sessionRedisCache.removeConsultSessionBySessionId(Integer.valueOf(consultSessionStatusVo.getSessionId()));
-                    ConsultSessionManager.getSessionManager().removeUserSession(consultSessionStatusVo.getUserId());
-                    //删除用户的临时聊天记录
-                    consultRecordService.deleteConsultTempRecordVo(new Query().addCriteria(new Criteria().where("userId").is(consultSessionStatusVo.getUserId())));
-                }catch (Exception e){
-                    e.printStackTrace();
+        if(consultSessionStatusVos != null && consultSessionStatusVos.size() > 0){
+            for(Object object : consultSessionStatusVos){
+                Map map= (Map)object;
+                if(!map.isEmpty()){
+                    Map mapVo = (Map)map.get("consultSessionStatusVo");
+                    ConsultSessionStatusVo consultSessionStatusVo = transConsultSessionStatusMapToVo(mapVo);
+                    if(consultSessionStatusVo !=null && StringUtils.isNotNull(consultSessionStatusVo.getLastMessageTime())){
+                        if(DateUtils.pastMinutes(DateUtils.StrToDate(consultSessionStatusVo.getLastMessageTime(),"xiangang"))>10L){
+                            try{
+                                //清除redis内的数据
+                                sessionRedisCache.removeConsultSessionBySessionId(Integer.valueOf(consultSessionStatusVo.getSessionId()));
+                                sessionRedisCache.removeUserIdSessionIdPair(consultSessionStatusVo.getUserId());
+                                //清除内存内的数据
+                                ConsultSessionManager.getSessionManager().removeUserSession(consultSessionStatusVo.getUserId());
+                                //清除mongo中的session
+                                String findId =  consultSessionStatusVo.getUserId() == null ? "openid":"userId";
+                                consultMongoUtilsService.removeRichConsultSession(new Query().addCriteria(new Criteria().where(findId).is(consultSessionStatusVo.getUserId())));
+                                //删除最后一次会话
+                                consultRecordService.deleteConsultSessionStatusVo(new Query().addCriteria(new Criteria().where("sessionId").is(consultSessionStatusVo.getSessionId())));
+                               //删除用户的临时聊天记录
+                                consultRecordService.deleteConsultTempRecordVo(new Query().addCriteria(new Criteria().where("userId").is(consultSessionStatusVo.getUserId())));
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                        }
+                    }
                 }
             }
         }
     }
+
+    public ConsultSessionStatusVo transConsultSessionStatusMapToVo(Map map){
+        if(!map.isEmpty()){
+            ConsultSessionStatusVo consultSessionStatusVo = new ConsultSessionStatusVo();
+            consultSessionStatusVo.setSessionId((String)map.get("sessionId"));
+            consultSessionStatusVo.setLastMessageTime((String)map.get("lastMessageTime"));
+            consultSessionStatusVo.setUserId((String)map.get("UserId"));
+            return consultSessionStatusVo;
+        }
+        return null;
+    }
+
 
 
 

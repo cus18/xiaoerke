@@ -140,9 +140,9 @@ public class ConsultWechatController extends BaseController {
         consultRecordService.buildRecordMongoVo("wx", openId, String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)), messageContent, consultSession, wechatAttentionVo);
 
         //更新会话操作时间
-        consultRecordService.saveConsultSessionStatus(sessionId,consultSession.getUserId(),String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)),consultSession);
+        consultRecordService.saveConsultSessionStatus(sessionId,consultSession.getUserId(),"wx",consultSession);
 
-        result.put("status","success");
+        result.put("status", "success");
         return result;
     }
 

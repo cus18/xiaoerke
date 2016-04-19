@@ -26,6 +26,10 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsSer
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 public class ConsultSessionManager {
 	
@@ -260,7 +264,7 @@ public class ConsultSessionManager {
 					csChannel = (Channel) doctorOnLineList.get(indexCS).get("Channel");
 					if(csChannel.isActive()){
 						//csChannel如果活着的话，证明，此医生处于登陆状态
-						User csUser = systemService.getUserById((String)doctorOnLineList.get(indexCS).get("doctorId"));
+						User csUser = systemService.getUserById((String) doctorOnLineList.get(indexCS).get("doctorId"));
 						consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
 					}
 				}
@@ -279,14 +283,13 @@ public class ConsultSessionManager {
 		Integer sessionId = consultSession.getId();
 		sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
 		sessionRedisCache.putOpenIdSessionIdPair(consultSession.getOpenid(), sessionId);
-		consultMongoUtilsService.insertRichConsultSession(consultSession);
-
+        consultMongoUtilsService.upsertRichConsultSession((new Query(where("openid").is(consultSession.getOpenid()))),
+				new Update().update("RichConsultSession", consultSession));
+		sessionRedisCache.putWechatSessionByOpenId(consultSession.getOpenid(), consultSession);
 
 		//成功分配医生，给用户发送一个欢迎语
 		String st = "尊敬的用户，宝大夫在线，有什么可以帮您";
-		consultRecordService.buildRecordMongoVo("wx",consultSession.getOpenid(),"wx", st, consultSession, wechatAttentionVo);
-		WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN, consultSession.getOpenid(), st);//sessionRedisCache.getWeChatToken()
-		sessionRedisCache.putWechatSessionByOpenId(consultSession.getOpenid(), consultSession);
+		WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN, consultSession.getOpenid(), st);
 		response.put("csChannel", csChannel);
 		response.put("sessionId",sessionId);
 		response.put("consultSession",consultSession);

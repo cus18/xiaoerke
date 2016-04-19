@@ -141,14 +141,14 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
         //挂机请求 ,根据剩余时长给用户推送消息,让用户在意外挂断的情况下可以再次接通 判断订单状态是否已推送过 此消息
         Map<String,Object> phonepatientInfo = consultPhonePatientService.getPatientRegisterInfo(Integer.parseInt(userData));
 
-        Integer serviceLength = (Integer)phonepatientInfo.get("server_length")*60*1000;
+        Integer serviceLength = (Integer)phonepatientInfo.get("surplusTime");
         String talkDuration = vo.getTalkduration();
 
         ConsultPhoneRegisterServiceVo consultPhonevo = new ConsultPhoneRegisterServiceVo();
         consultPhonevo.setSurplusTime(serviceLength-Integer.parseInt(talkDuration)*1000);
         consultPhonevo.setId(Integer.parseInt(userData));
         consultPhonevo.setUpdateTime(new Date());
-        if(Integer.parseInt(talkDuration)<serviceLength*60-10&&"0".equals(phonepatientInfo.get("type"))){
+        if(Integer.parseInt(talkDuration)>0&&Integer.parseInt(talkDuration)<serviceLength*60-10&&"0".equals(phonepatientInfo.get("type"))){
 //             改状态
             consultPhonevo.setType("1");//已推送过消息
             //发消息
