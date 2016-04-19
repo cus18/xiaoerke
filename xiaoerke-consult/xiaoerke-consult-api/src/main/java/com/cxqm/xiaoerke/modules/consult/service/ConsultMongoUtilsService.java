@@ -15,4 +15,8 @@ public interface  ConsultMongoUtilsService {
 	int insertRichConsultSession(RichConsultSession richConsultSession);
 
 	List<RichConsultSession> queryRichConsultSessionList(Query query);
+
+	WriteResult upsertRichConsultSession(Query query, Update update);
+
+	RichConsultSession  removeRichConsultSession(Query query);
 }
