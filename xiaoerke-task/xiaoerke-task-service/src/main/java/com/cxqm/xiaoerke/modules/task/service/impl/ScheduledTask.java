@@ -1013,6 +1013,7 @@ public class ScheduledTask {
                   vo.setUpdateTime(new Date());
                   vo.setCallSid(callSid);
                   consultPhonePatientService.updateOrderInfoBySelect(vo);
+
               }
           }else{
               //取消用户订单
@@ -1029,7 +1030,7 @@ public class ScheduledTask {
                   Map<String,Object> parameter = systemService.getWechatParameter();
                   String token = (String)parameter.get("token");
                   PatientMsgTemplate.consultPhoneRefund2Wechat((String)map.get("orderNo"),(Float)map.get("price")+"", (String)map.get("openid"),token ,"");
-                  PatientMsgTemplate.consultPhoneRefund2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (Float) map.get("price") + "", (String) map.get("userPhone"));
+                  PatientMsgTemplate.returnPayPhoneRefund2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (Float) map.get("price") + "", (String) map.get("userPhone"));
 
               }
           }
