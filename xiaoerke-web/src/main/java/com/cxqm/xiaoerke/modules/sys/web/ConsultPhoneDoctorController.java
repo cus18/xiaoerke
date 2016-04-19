@@ -4,8 +4,6 @@ import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.FrontUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
-import com.cxqm.xiaoerke.common.web.Servlets;
-import com.cxqm.xiaoerke.modules.interaction.entity.PraiseVo;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.order.entity.ConsulPhonetDoctorRelationVo;
 import com.cxqm.xiaoerke.modules.order.service.PhoneConsultDoctorRelationService;
@@ -15,12 +13,10 @@ import com.cxqm.xiaoerke.modules.sys.entity.DoctorCaseVo;
 import com.cxqm.xiaoerke.modules.sys.service.DoctorCaseService;
 import com.cxqm.xiaoerke.modules.sys.service.DoctorInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.HospitalInfoService;
-import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -351,7 +347,7 @@ public class ConsultPhoneDoctorController {
         //评价
         params.put("evaluateType", "1");
         params.put("limit", 1);//默认获取一条评论
-        HashMap<String,Object> evaluaMap = patientRegisterPraiseService.getConsultEvaluateTop(params);
+        HashMap<String,Object> evaluaMap = patientRegisterPraiseService.getDoctorEvaluateTop(params);
         HashMap<String, Object> doctorScore = doctorInfoService.findDoctorScoreInfo(doctorId);
         response.put("doctorScore", doctorScore);
         response.put("evaluaMap",evaluaMap);
