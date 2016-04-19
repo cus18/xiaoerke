@@ -118,7 +118,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
                     if(consultRecordMongoVos!=null && consultRecordMongoVos.size()>0){
                         consultRecordMongoVo = consultRecordMongoVos.get(0);
                         consultRecordMongoVo.setType(fileType);
-                        consultRecordMongoVo.setMessage(fileName);
+//                        consultRecordMongoVo.setMessage(fileName);
                         consultRecordMongoVo.setOpercode("sender");
                         this.saveConsultRecord(consultRecordMongoVo);
                         response.put("status","success");
@@ -148,7 +148,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
         consultRecordMongoVo.setConsultType(consultType);
         consultRecordMongoVo.setSessionId(sessionId.toString());
         consultRecordMongoVo.setType(type);
-        consultRecordMongoVo.setMessage(messageContent);
+//        consultRecordMongoVo.setMessage(messageContent);
         if(consultType.equals("wx")){
             consultRecordMongoVo.setAttentionDate(resultVo.getCreate_time());
             consultRecordMongoVo.setAttentionMarketer(resultVo.getMarketer());
@@ -181,8 +181,6 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
         }else{
             consultSessionStatusVo.setUserId(consultSession.getUserId());
         }
-
-        consultSessionStatusVo.setUserId(userId);
         consultRecordMongoDBService.upsertConsultSessionStatusVo(consultSessionStatusVo);
     }
 
