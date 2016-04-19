@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.order.service.impl;
 
 import java.util.*;
 
+import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
@@ -176,7 +177,8 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
             String token = (String)parameter.get("token");
             Map<String,Object> map = getPatientRegisterInfo(phoneConsultaServiceId);
             PatientMsgTemplate.consultPhoneRefund2Wechat((String) map.get("orderNo"), (Float) map.get("price")+"", (String) map.get("openid"), token, "");
-            PatientMsgTemplate.consultPhoneRefund2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (Float) map.get("price")+"", (String) map.get("phone"));
+            String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String) map.get("date"), "yyyy/MM/dd"));
+            PatientMsgTemplate.consultPhoneRefund2Msg((String) map.get("doctorName"), (Float) map.get("price")+"", (String) map.get("phone"),(String) map.get("date"), week, (String) map.get("beginTime"),(String) map.get("orderNo"));
 
         }
         if(price== 0){
