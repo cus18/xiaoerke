@@ -7,6 +7,8 @@
         <result column="userPhone" property="userPhone" jdbcType="VARCHAR" />
         <result column="doctorPhone" property="doctorPhone" jdbcType="VARCHAR" />
         <result column="dialDate" property="dialDate" jdbcType="TIMESTAMP" />
+        <result column="orderId" property="orderId" jdbcType="INTEGER" />
+        <result column="state" property="state" jdbcType="VARCHAR" />
     </resultMap>
     
     <update id="updateConsultPhoneTimingDialInfo">
@@ -24,6 +26,9 @@
             <if test="dialDate != null">
                 dialDate=#{dialDate},
             </if>
+            <if test="state != null">
+                state=#{state},
+            </if>
             updateTime = now()
         </set>
         where id=#{id}
@@ -37,19 +42,32 @@
         	doctorPhone,
         	dialDate,
         	createTime,
-        	updateTime)
+        	updateTime,
+        	orderId,
+        	state)
         VALUES
         	(#{surplusTime},
         	#{userPhone},
         	#{doctorPhone},
         	#{dialDate},
         	now(),
-        	now());
+        	now(),
+        	#{orderId},
+        	#{state});
     </insert>
     <select id="getConsultPhoneTimingDialByInfo" resultMap="consultPhoneManuallyConnectVo">
     	select * from consultphone_timingDial ct where 1=1
     	<if test="id != null and id != ''">
 			AND ct.id=#{id}
 		</if>
+        <if test="orderId != null and orderId != ''">
+            AND ct.orderId=#{orderId}
+        </if>
+        <if test="state != null and state != ''">
+            AND ct.state=#{state}
+        </if>
+        <if test="dialDate != null and dialDate != ''">
+            AND #{dialDate}>=dialDate
+        </if>
     </select>
 </mapper>

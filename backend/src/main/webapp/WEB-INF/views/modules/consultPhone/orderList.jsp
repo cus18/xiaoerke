@@ -5,6 +5,8 @@
 	<title>订单列表</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
+		var orderCount;
+		var timer;
 		$(document).ready(function() {
 			$("#btnExport").click(function(){
 				top.$.jBox.confirm("确认要导出用户数据吗？","系统提示",function(v,h,f){
@@ -16,11 +18,11 @@
 				top.$('.jbox-body .jbox-icon').css('top','55px');
 			});
 			document.getElementById("newOrder").disabled=true;
-			timer = window.setInterval(temp,300000);
+			timer = window.setInterval(getNewOrderCount,300000);
 			$.ajax({
 				type: "post",
-				url: "${ctx}/order/getNewOrderList?",
-				data: {},
+				url: "${ctx}/consultPhone/getNewOrderCount?",
+				data: {state:1},
 				dataType: "json",
 				success: function(data){
 					orderCount = data.orderCount;
@@ -48,11 +50,11 @@
 				}
 			});
 		}
-		function temp(){
+		function getNewOrderCount(){
 			$.ajax({
 				type: "post",
-				url: "${ctx}/order/getNewOrderList?",
-				data: {pageNo:$("#pageNo").val(),pageSize:$("#pageSize").val()},
+				url: "${ctx}/consultPhone/getNewOrderCount?",
+				data: {state:1},
 				dataType: "json",
 				success: function(data){
 					if(data.orderCount!=orderCount){
@@ -64,8 +66,8 @@
 			});
 		}
 		function refreshNewOrder(){
-			timer = window.setInterval(temp,300000);
-			window.location.href = "${ctx}/order/consultPhoneOrderList?";
+			timer = window.setInterval(getNewOrderCount,300000);
+			window.location.href = "${ctx}/consultPhone/consultPhoneOrderList?";
 		}
 	</script>
 </head>
@@ -157,21 +159,25 @@
 			<td>${consultPhone.doctorName}</td>
 			<td><fmt:formatDate value ="${consultPhone.date}" pattern="yyyy-MM-dd" /> <fmt:formatDate value ="${consultPhone.beginTime}" pattern="HH:mm" /></td>
 			<td>${consultPhone.price}元/${consultPhone.type}min</td>
-			<td>${consultPhone.surplusTime}</td>
+			<td><fmt:formatDate value ="${consultPhone.surplusDate}" pattern="mm:ss" /></td>
 			<td>
 				<c:if test="${consultPhone.state eq '0'}">待支付</c:if>
 				<c:if test="${consultPhone.state eq '1'}">待接通</c:if>
 				<c:if test="${consultPhone.state eq '2'}">待评价</c:if>
 				<c:if test="${consultPhone.state eq '3'}">待分享</c:if>
-				<c:if test="${consultPhone.state eq '4'}">待建档</c:if>
-				<c:if test="${consultPhone.state eq '5'}">超时取消</c:if>
-				<c:if test="${consultPhone.state eq '6'}">已取消</c:if>
+				<c:if test="${consultPhone.state eq '4'}">已取消</c:if>
+				<c:if test="${consultPhone.state eq '5'}">已完成</c:if>
+				<c:if test="${consultPhone.state eq 'daichonglian'}">等待重连</c:if>
 			</td>
-			<td>${consultPhone.state}</td>
+			<td>
+				<c:if test="${consultPhone.state eq '0'}">待支付</c:if>
+				<c:if test="${consultPhone.state eq '1' || consultPhone.state eq '2' || consultPhone.state eq '3' || consultPhone.state eq 'daichonglian'}">已支付</c:if>
+				<c:if test="${consultPhone.state eq '4'}">已退款</c:if>
+			</td>
 			<td><fmt:formatDate value ="${consultPhone.updateTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 			<td>${consultPhone.deleteBy}</td>
 			<td>
-				<a href="#"  onclick="refundConsultPhoneFee('${ctx}/consultPhone/refundConsultPhoneFeeForm?id=${consultPhone.id}&price=${consultPhone.price}')">退会员费</a>
+				<a href="#"  onclick="refundConsultPhoneFee('${ctx}/consultPhone/refundConsultPhoneFeeForm?id=${consultPhone.id}&price=${consultPhone.price}&babyName=${consultPhone.babyName}')">取消预约</a>
 				<a href="${ctx}/consultPhone/manuallyConnectForm?id=${consultPhone.id}&doctorId=${consultPhone.doctorId}">手动接通</a>
 			</td>
 		</tr>

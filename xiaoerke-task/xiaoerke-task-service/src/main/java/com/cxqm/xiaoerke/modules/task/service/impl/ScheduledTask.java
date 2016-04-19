@@ -16,6 +16,7 @@ import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceServi
 import com.cxqm.xiaoerke.modules.operation.service.BaseDataService;
 import com.cxqm.xiaoerke.modules.operation.service.OperationsComprehensiveService;
 import com.cxqm.xiaoerke.modules.operation.service.DataStatisticService;
+import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneManuallyConnectVo;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhoneOrderService;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
@@ -1126,5 +1127,60 @@ public class ScheduledTask {
         monitorMap.put("status", status);
         monitorMap.put("types", type);
         messageService.insertMonitorConsultPhone(monitorMap);
+    }
+
+    //电话咨询运维定时拨打电话 sunxiao
+    public void timingDial(){
+        Map param = new HashMap();
+        param.put("state",1);
+        param.put("dialDate",new Date());
+        List<ConsultPhoneManuallyConnectVo> list = consultPhonePatientService.getConsultPhoneTimingDialByInfo(param);
+        for(ConsultPhoneManuallyConnectVo vo:list){
+            String doctorPhone =  vo.getDoctorPhone();
+            String userPhone =  vo.getUserPhone();
+            Integer orderId = vo.getOrderId();
+            ConsultPhoneRegisterServiceVo cvo = consultPhonePatientService.selectByPrimaryKey(orderId);
+            long conversationLength =  cvo.getSurplusTime()/1000;
+            HashMap<String, Object> result = CCPRestSDK.callback(userPhone,doctorPhone,
+                    "4006237120", "4006237120", null,
+                    "true", null, orderId+"",
+                    conversationLength+"", null, "0",
+                    "1", "60", null);
+
+            if("000000".equals((String) result.get("statusCode"))){
+                HashMap<String, Object> dataMap = (HashMap) result.get("data");
+                HashMap<String, Object> callBackMap = (HashMap)dataMap.get("CallBack");
+                String callSid =(String)callBackMap.get("callSid");
+
+                System.out.println(result);
+                ConsultPhoneRegisterServiceVo cpvo =  new ConsultPhoneRegisterServiceVo();
+                cpvo.setId(orderId);
+                cpvo.setUpdateTime(new Date());
+                cpvo.setCallSid(callSid);
+                consultPhonePatientService.updateOrderInfoBySelect(cpvo);
+
+                ConsultPhoneManuallyConnectVo mvo = new ConsultPhoneManuallyConnectVo();
+                mvo.setId(vo.getId());
+                mvo.setState("2");
+                consultPhonePatientService.updateConsultPhoneTimingDialInfo(mvo);
+            }
+        }
+
+        //再建立通讯的五分钟前发消息给用户
+        Date date = new Date();
+        date.setTime(date.getTime() + 5 * 60 * 1000);
+        String dateStr = DateUtils.DateToStr(date,"datetime");
+        List<HashMap<String, Object>> orderMsgList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1", date);
+        for(HashMap<String ,Object> map:orderMsgList){
+            Map messageMap = messageService.consultPhoneMsgRemind((Integer) map.get("id") + "");
+            if(null == messageMap||messageMap.size() == 0){
+                Map<String,Object> parameter = systemService.getWechatParameter();
+                String token = (String)parameter.get("token");
+                String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)map.get("date"),"yyyy/MM/dd"));
+                PatientMsgTemplate.consultPhoneWaring2Wechat((String) map.get("doctorName"), (String) map.get("date"), week, (String) map.get("beginTime"), (String) map.get("endTime"), (String) map.get("userPhone"), (String) map.get("orderNo"), (String) map.get("openid"), token, "");
+                PatientMsgTemplate.consultPhoneWaring2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (String) map.get("date"), week, (String) map.get("beginTime"), (String) map.get("userPhone"), (String) map.get("orderNo"));
+                insertMonitor((Integer) map.get("id") + "", "2", "7");
+            }
+        }
     }
 }

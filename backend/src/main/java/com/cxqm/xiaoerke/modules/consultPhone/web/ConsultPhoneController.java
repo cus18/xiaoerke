@@ -243,6 +243,7 @@ public class ConsultPhoneController extends BaseController {
 		stateMap.put("2", "待评价");
 		stateMap.put("3", "待分享");
 		stateMap.put("4", "已取消");
+		stateMap.put("5", "已完成");
 		stateMap.put("", "全部");
 		model.addAttribute("statusList", stateMap);
 		model.addAttribute("payStatusList", payStateMap);
@@ -250,6 +251,22 @@ public class ConsultPhoneController extends BaseController {
 		model.addAttribute("pageCount", page.getCount());
 		model.addAttribute("consultPhone", vo);
 		return returnUrl;
+	}
+
+	/**
+	 * 手动拨号
+	 * @param model
+	 * sunxiao
+	 */
+	@RequiresPermissions("user")
+	@ResponseBody
+	@RequestMapping(value = "getNewOrderCount")
+	public String getNewOrderCount(HttpServletRequest request,HttpServletResponse response, Model model) {
+		JSONObject result = new JSONObject();
+		String state = request.getParameter("state");
+		int count = consultPhonePatientService.getNewOrderCount(state);
+		result.put("orderCount",count);
+		return result.toString();
 	}
 
 	/**
@@ -281,21 +298,9 @@ public class ConsultPhoneController extends BaseController {
 	 * @param model
 	 * @return
 	 */
-	@RequiresPermissions("consultPhone:memberList")
+	@RequiresPermissions("user")
 	@RequestMapping(value = "refundConsultPhoneFeeForm")
 	public String refundConsultPhoneFeeForm(ConsultPhoneRegisterServiceVo vo,HttpServletRequest request,HttpServletResponse response, Model model) {
-		try {
-			vo.setNickName(URLDecoder.decode(request.getParameter("babyName"), "utf-8"));
-			String answerPhone = request.getParameter("answerPhone");
-			String id = request.getParameter("id");
-			String price = request.getParameter("price");
-			String surplusTime = request.getParameter("surplusTime");
-			String phoneNum = request.getParameter("phoneNum");//医生接听电话
-			String loginPhone = request.getParameter("loginPhone");//用户电话
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		model.addAttribute("vo", vo);
 		return "modules/consultPhone/refundConsultPhoneFeeForm";
 	}
@@ -312,11 +317,11 @@ public class ConsultPhoneController extends BaseController {
 		JSONObject result = new JSONObject();
 		String id = request.getParameter("id");
 		String cancelReason = request.getParameter("cancelReason");
-		try {
+		/*try {
 			consultPhonePatientService.cancelOrder(Integer.valueOf(id), cancelReason);
 		} catch (CancelOrderException e) {
 			e.printStackTrace();
-		}
+		}*/
 		return result.toString();
 	}
 
@@ -346,7 +351,14 @@ public class ConsultPhoneController extends BaseController {
 	@RequestMapping(value = "timingDial")
 	public String timingDial(ConsultPhoneManuallyConnectVo vo,HttpServletRequest request,HttpServletResponse response, Model model) {
 		JSONObject result = new JSONObject();
-		consultPhonePatientService.manuallyConnect(vo);
+		String surplusTimeStr = request.getParameter("surplusTimeStr");
+		vo.setSurplusTime(Long.valueOf(surplusTimeStr.split(":")[0])*60*1000 + Long.valueOf(surplusTimeStr.split(":")[1])*1000);
+		try {
+			result = consultPhonePatientService.manuallyConnect(vo);
+		}catch (Exception e){
+			e.printStackTrace();
+			result.put("result", "操作失败！");
+		}
 		return result.toString();
 	}
 }

@@ -48,6 +48,12 @@ public interface ConsultPhoneRegisterServiceDao {
     List<ConsultPhoneRegisterServiceVo> getAllConsultPhoneRegisterListByInfo(ConsultPhoneRegisterServiceVo vo);
 
     /**
+     * 查询订单数
+     * sunxiao
+     * @return
+     */
+    int getNewOrderCount(@Param("state") String state);
+    /**
      *
      * 电话咨询 -- 通过state和userId分页查询
      * @param page
