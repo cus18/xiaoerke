@@ -38,7 +38,7 @@
             };
            /* 健康档案*/
             $scope.healthRecord = function(){
-                resolveUserLoginStatus.events("healthRecordIndex","0","","appoint#/healthRecordIndex","notGo");
+                resolveUserLoginStatus.events("healthRecordIndex","0","","appoint#/healthRecordIndex/","notGo");
             };
             //var routePath = "/phoneConsultBBBBBB" + $location.path();
             //GetUserLoginStatus.save({routePath:routePath},function(data){
