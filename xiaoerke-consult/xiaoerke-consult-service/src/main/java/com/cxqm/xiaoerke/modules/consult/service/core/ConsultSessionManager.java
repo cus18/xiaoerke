@@ -26,6 +26,10 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsSer
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 public class ConsultSessionManager {
 	
@@ -279,8 +283,8 @@ public class ConsultSessionManager {
 		Integer sessionId = consultSession.getId();
 		sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
 		sessionRedisCache.putOpenIdSessionIdPair(consultSession.getOpenid(), sessionId);
-		consultMongoUtilsService.insertRichConsultSession(consultSession);
-
+        consultMongoUtilsService.upsertRichConsultSession((new Query(where("openid").is(consultSession.getOpenid()))),
+				new Update().update("RichConsultSession", consultSession));
 
 		//成功分配医生，给用户发送一个欢迎语
 		String st = "尊敬的用户，宝大夫在线，有什么可以帮您";
