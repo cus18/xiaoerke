@@ -2,19 +2,15 @@ package com.cxqm.xiaoerke.modules.task.service.impl;
 
 import com.cxqm.xiaoerke.common.bean.CustomBean;
 import com.cxqm.xiaoerke.common.bean.WechatRecord;
-import com.cxqm.xiaoerke.common.security.shiro.session.SessionManager;
 import com.cxqm.xiaoerke.common.utils.*;
-import com.cxqm.xiaoerke.common.bean.WechatArticle;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
-import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultPhoneService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
-import com.cxqm.xiaoerke.modules.consult.service.SessionCache;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
-import com.cxqm.xiaoerke.modules.consult.utils.DateUtil;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
 import com.cxqm.xiaoerke.modules.operation.service.BaseDataService;
 import com.cxqm.xiaoerke.modules.operation.service.OperationsComprehensiveService;
@@ -31,15 +27,12 @@ import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
 import com.cxqm.xiaoerke.modules.sys.utils.DoctorMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
-import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import com.cxqm.xiaoerke.modules.task.service.ScheduleTaskService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-
-import javax.print.Doc;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -93,7 +86,7 @@ public class ScheduledTask {
     private ConsultPhoneService consultPhoneService;
 
     @Autowired
-    private SessionCache sessionCache;
+    private SessionRedisCache sessionRedisCache;
 
     @Autowired
     private ConsultRecordService consultRecordService;
@@ -1079,7 +1072,7 @@ public class ScheduledTask {
             if(DateUtils.pastMinutes(DateUtils.StrToDate(consultSessionStatusVo.getLastMessageTime(),"xiangang"))>10L){
                 try{
                     consultRecordService.deleteConsultSessionStatusVo(new Query().addCriteria(new Criteria().where("sessionId").is(consultSessionStatusVo.getSessionId())));
-                    sessionCache.removeConsultSessionBySessionId(Integer.valueOf(consultSessionStatusVo.getSessionId()));
+                    sessionRedisCache.removeConsultSessionBySessionId(Integer.valueOf(consultSessionStatusVo.getSessionId()));
                     ConsultSessionManager.getSessionManager().removeUserSession(consultSessionStatusVo.getUserId());
                     //删除用户的临时聊天记录
                     consultRecordService.deleteConsultTempRecordVo(new Query().addCriteria(new Criteria().where("userId").is(consultSessionStatusVo.getUserId())));

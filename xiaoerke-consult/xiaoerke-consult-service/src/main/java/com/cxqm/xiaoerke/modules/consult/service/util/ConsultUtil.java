@@ -52,7 +52,7 @@ public class ConsultUtil {
 			dataMap.put("dateTime",(new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss")).format(dataVo.getCreateDate()));
 			dataMap.put("senderId",dataVo.getSenderId());
 			if(dataVo.getConsultType().equals("wx")){
-				dataMap.put("senderName",dataVo.getNickName());
+				dataMap.put("senderName",dataVo.getAttentionNickname());
 			}else{
 				dataMap.put("senderName",dataVo.getSenderName());
 			}

@@ -21,6 +21,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 @Service
@@ -46,6 +47,11 @@ public class UtilServiceImpl implements UtilService {
     private BabyBaseInfoService babyBaseInfoService;
 
 
+    public void init(){
+        //在这里加载缓存..
+        utilDao.getIdentifying("18510525441");
+    }
+
     /**
      * 短信验证码
      *
@@ -55,6 +61,7 @@ public class UtilServiceImpl implements UtilService {
      */
     @Override
     public Map<String, Object> sendIdentifying(String num) {
+        System.out.print("sendIdentifying()...."+new Date());
         HashMap<String, Object> response = new HashMap<String, Object>();
         if (num != null) {
             ValidateBean validateBean = utilDao.getIdentifying(num);
@@ -84,6 +91,7 @@ public class UtilServiceImpl implements UtilService {
         } else {
             response.put("status", "0");
         }
+
         return response;
     }
 
@@ -342,5 +350,6 @@ public class UtilServiceImpl implements UtilService {
             ChangzhuoMessageUtil.sendMsg(num, content);
         }
     }
+
 
 }

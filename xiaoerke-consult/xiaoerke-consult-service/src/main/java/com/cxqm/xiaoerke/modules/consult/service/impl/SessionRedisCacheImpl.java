@@ -1,13 +1,11 @@
 package com.cxqm.xiaoerke.modules.consult.service.impl;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import com.alibaba.fastjson.JSON;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
-import com.cxqm.xiaoerke.modules.consult.service.SessionCache;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 
@@ -15,12 +13,10 @@ import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.websocket.Session;
-
 
 @Service
 @Transactional(readOnly = false)
-public class SessionCacheRedisImpl implements SessionCache {
+public class SessionRedisCacheImpl implements SessionRedisCache {
 
 	private RedisTemplate<String, Object> redisTemplate = SpringContextHolder.getBean("redisTemplate");
 	
@@ -104,23 +100,9 @@ public class SessionCacheRedisImpl implements SessionCache {
 	}
 
 	@Override
-	public List<Object> getConsultSessionByCsId(Collection<Object> csUserId) {
-		List<Object> sessions = redisTemplate.opsForHash().multiGet(CS_SESSION_KEY, csUserId);
-		return sessions;
-	}
-
-
-	@Override
 	public String getWeChatToken(){
 		Object Token = redisTemplate.opsForHash().get(WECHAT_TOKEN,"wechatToken");
 		return Token == null ? null : (String) Token;
-	}
-
-	@Override
-	public void putCsIdConsultSessionPair(String csUserId, RichConsultSession consultSession) {
-		HashMap<String,Object> map = ConsultUtil.transferRichConsultSessionToMap(consultSession);
-		redisTemplate.opsForHash().put(CS_SESSION_KEY,
-				csUserId, ConsultUtil.transferRichConsultSessionToMap(consultSession));
 	}
 
 	@Override
@@ -141,11 +123,6 @@ public class SessionCacheRedisImpl implements SessionCache {
 	@Override
 	public void removeUserIdSessionIdPair(String userId) {
 		redisTemplate.opsForHash().delete(USER_SESSIONID_KEY, userId);
-	}
-
-	@Override
-	public void removeCsIdSessionIdPair(String csUserId) {
-		redisTemplate.opsForHash().delete(CS_SESSION_KEY, csUserId);
 	}
 
 	@Override

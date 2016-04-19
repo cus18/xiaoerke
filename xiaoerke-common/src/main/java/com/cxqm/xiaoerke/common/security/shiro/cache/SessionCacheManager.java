@@ -32,19 +32,19 @@ public class SessionCacheManager implements CacheManager {
 
 	@Override
 	public <K, V> Cache<K, V> getCache(String name) throws CacheException {
-		return new SessionCache<K, V>(name);
+		return new sessionCache<K, V>(name);
 	}
 
 	/**
 	 * SESSION缓存管理类
 	 */
-	public class SessionCache<K, V> implements Cache<K, V> {
+	public class sessionCache<K, V> implements Cache<K, V> {
 
 		private Logger logger = LoggerFactory.getLogger(getClass());
 		
 		private String cacheKeyName = null;
 
-		public SessionCache(String cacheKeyName) {
+		public sessionCache(String cacheKeyName) {
 			this.cacheKeyName = cacheKeyName;
 		}
 		

@@ -6,7 +6,7 @@ import javax.websocket.Session;
 import java.util.Collection;
 import java.util.List;
 
-public interface SessionCache {
+public interface SessionRedisCache {
 	
 	void putSessionIdConsultSessionPair(Integer sessionId, RichConsultSession consultSession);
 	
@@ -24,8 +24,6 @@ public interface SessionCache {
 
 	void removeUserIdSessionIdPair(String userId);
 
-	void removeCsIdSessionIdPair(String csUserId);
-
 	void removeWechatSessionPair(String openId);
 
 	void removeConsultSessionBySessionId(Integer sessionId);
@@ -42,9 +40,6 @@ public interface SessionCache {
 
 	RichConsultSession getWechatSessionByOpenId(String openId);
 
-	List<Object> getConsultSessionByCsId(Collection<Object> csUserId);
-
 	String getWeChatToken();
 
-	void putCsIdConsultSessionPair(String csUserId, RichConsultSession consultSession);
 }

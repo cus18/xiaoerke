@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.OSSObjectTool;
+import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultRecordDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordVo;
@@ -151,16 +152,18 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
         if(consultType.equals("wx")){
             consultRecordMongoVo.setAttentionDate(resultVo.getCreate_time());
             consultRecordMongoVo.setAttentionMarketer(resultVo.getMarketer());
-            consultRecordMongoVo.setAttentionNickname(resultVo.getWechat_name());
-            consultRecordMongoVo.setSenderName(resultVo.getWechat_name());
-        }
-        consultRecordMongoVo.setSenderId(senderId);
-        if(consultType.equals("wx")){
             consultRecordMongoVo.setUserId(consultSession.getOpenid());
+            if(StringUtils.isNotNull(resultVo.getWechat_name())){
+                consultRecordMongoVo.setAttentionNickname(resultVo.getWechat_name());
+                consultRecordMongoVo.setSenderName(resultVo.getWechat_name());
+            }else{
+                consultRecordMongoVo.setAttentionNickname(consultSession.getNickName());
+                consultRecordMongoVo.setSenderName(consultSession.getNickName());
+            }
         }else{
             consultRecordMongoVo.setUserId(consultSession.getUserId());
         }
-
+        consultRecordMongoVo.setSenderId(senderId);
         consultRecordMongoVo.setCsUserId(consultSession.getCsUserId());
         consultRecordMongoVo.setDoctorName(consultSession.getCsUserName());
         consultRecordMongoVo.setCreateDate(new Date());

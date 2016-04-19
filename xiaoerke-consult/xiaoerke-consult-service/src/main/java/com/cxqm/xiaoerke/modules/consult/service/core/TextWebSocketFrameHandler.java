@@ -6,11 +6,9 @@ import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
-import com.cxqm.xiaoerke.modules.consult.service.SessionCache;
-import com.cxqm.xiaoerke.modules.consult.service.impl.SessionCacheRedisImpl;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.slf4j.Logger;
@@ -28,7 +26,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 	
 	private transient static final Logger log = LoggerFactory.getLogger(TextWebSocketFrameHandler.class);
 
-	private SessionCache sessionCache = SpringContextHolder.getBean("sessionCacheRedisImpl");
+	private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
 
 	@Autowired
 	private ConsultRecordService consultRecordService = SpringContextHolder.getBean("consultRecordServiceImpl");
@@ -72,7 +70,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 				0 : (Integer) msgMap.get(ConsultSessionManager.KEY_REQUEST_TYPE);
 		
 		if(sessionId != null && msgType == 0) {
-			RichConsultSession consultSession = sessionCache.getConsultSessionBySessionId(sessionId);
+			RichConsultSession consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
 			if(consultSession == null)
 				return;
 			
