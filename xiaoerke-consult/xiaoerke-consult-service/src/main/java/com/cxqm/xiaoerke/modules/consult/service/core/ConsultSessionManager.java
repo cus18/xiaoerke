@@ -388,7 +388,7 @@ public class ConsultSessionManager {
 		return sessionRedisCache.getConsultSessionsBySessionIds(sessionIds);
 	}
 	
-	public Map<String, Channel> getcsUserChannelMapping() {
+	public Map<String, Channel> getCsUserChannelMapping() {
 		return csUserChannelMapping;
 	}
 
