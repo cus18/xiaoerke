@@ -334,7 +334,7 @@
       <if test="phoneNum != null" >
         phone,
       </if>
-      <if test="surplusTime != null" >
+      <if test="surplusTime != 0" >
         surplusTime,
       </if>
 
@@ -374,7 +374,7 @@
         #{phoneNum,jdbcType=VARCHAR},
       </if>
 
-      <if test="surplusTime != null" >
+      <if test="surplusTime != 0" >
         #{surplusTime,jdbcType=BIGINT},
       </if>
       <if test="creat_by != null" >
@@ -415,7 +415,7 @@
       <if test="callSid != null" >
         callSid = #{callSid,jdbcType=VARCHAR},
       </if>
-      <if test="surplusTime != null" >
+      <if test="surplusTime != 0" >
         surplusTime = #{surplusTime,jdbcType=BIGINT},
       </if>
       <if test="type != null" >
