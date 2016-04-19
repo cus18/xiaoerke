@@ -274,7 +274,6 @@ public class ConsultSessionManager {
 		Integer sessionId = consultSession.getId();
 		sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
 		sessionRedisCache.putOpenIdSessionIdPair(consultSession.getOpenid(), sessionId);
-		sessionRedisCache.putCsIdConsultSessionPair(consultSession.getCsUserId(), consultSession);
 		consultMongoUtilsService.insertRichConsultSession(consultSession);
 
 
