@@ -21,11 +21,11 @@
 					<div class="department">{{doctorDetail.departmentName}}</div>
 				</div>
 				<div class="attention tc" ng-if="!isAttention" ng-click="attentionDoctor()">
-					<div class="f2" ng-class="{'c1':isAttention}">{{doctorDetail.fans_number}}</div>
+					<div  class="c1">{{doctorDetail.fans_number}}</div>
 					<img width="50" height="auto" ng-src="{{attentionImg}}">
 				</div>
 				<div class="attention tc" ng-if="isAttention" >
-					<div class="f2" ng-class="{'c1':isAttention}">{{doctorDetail.fans_number}}</div>
+					<div class="" >{{doctorDetail.fans_number}}</div>
 					<img width="50" height="auto" ng-src="{{attentionImg}}">
 				</div>
 			</div>
@@ -56,7 +56,11 @@
 						<span>服务流程：</span>选择时间 > 支付订单 > 等待接听 > 咨询评价
 					</li>
 					<li>
-						<span>服务详情：</span>1、保证100%为专家接听
+						<a class="fr showService" ng-click="showService()"><img  width="15" height="auto" ng-src="{{serviceImg}}" ></a>
+						<span>服务详情：</span>
+						<p >1、每次通话只能使用一次</p>
+						<p ng-if="serviceLock">2、保证100%为专家本人接听</p>
+						<p ng-if="serviceLock">3、未接通可全额退款</p>
 					</li>
 				</ul>
 			</div>
