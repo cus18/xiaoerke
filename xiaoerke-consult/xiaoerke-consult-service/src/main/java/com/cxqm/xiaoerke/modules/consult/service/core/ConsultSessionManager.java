@@ -6,6 +6,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionCache;
+import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultMongoUtilsServiceImpl;
 import com.cxqm.xiaoerke.modules.consult.service.impl.SessionCacheRedisImpl;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import io.netty.channel.Channel;
@@ -60,6 +61,8 @@ public class ConsultSessionManager {
 	private AtomicInteger accessNumber = new AtomicInteger(1000);
 
 	private SessionCache sessionCache = SpringContextHolder.getBean("sessionCacheRedisImpl");
+
+	private ConsultMongoUtilsServiceImpl consultMongoUtilsService = SpringContextHolder.getBean("consultMongoUtilsServiceImpl");
 
 	private ConsultSessionService consultSessionService = SpringContextHolder.getBean("consultSessionServiceImpl");
 
@@ -274,7 +277,8 @@ public class ConsultSessionManager {
 		Integer sessionId = consultSession.getId();
 		sessionCache.putSessionIdConsultSessionPair(sessionId, consultSession);
 		sessionCache.putOpenIdSessionIdPair(consultSession.getOpenid(), sessionId);
-		sessionCache.putCsIdConsultSessionPair(consultSession.getCsUserId(), consultSession);
+		consultMongoUtilsService.insertRichConsultSession(consultSession);
+//		sessionCache.putCsIdConsultSessionPair(consultSession.getCsUserId(), consultSession);
 
 		//成功分配医生，给用户发送一个欢迎语
 		String st = "尊敬的用户，宝大夫在线，有什么可以帮您";
