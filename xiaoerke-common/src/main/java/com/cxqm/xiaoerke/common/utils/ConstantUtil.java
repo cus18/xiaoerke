@@ -7,7 +7,7 @@ public class ConstantUtil {
 //	public static final String WebPath = "xiaork.cn";
 
 	public static final String DOAMIN_VALUE = "localhost";
-	public static final String TEST_TOKEN = "K2eyN5v66PotdvhsZxYIoCG5sNCG60K2O9MQjN2AUJGV_gDQ1k5pQ9r6FAeEmADwczkiY4szwstiKUG3oSzeHQI_P_f6Bz6tsCkGp1lKEGlmUPsbVrdWL22cPeg7e0VxQGMgAFALBH";
+	public static final String TEST_TOKEN = "2E2tqWrVP-Mxh3qp14zLsZUESd_jhC-QFo8jel4L6R3mEzgGVZp2CpIj2oNu08lQoxTo6q6kiDsgA0h1e-BxgBtlGGuj6Va1KIvFg-nWPHMXYJiAEATUF";
 
 	public static final String AMR_TOMP3_WINDOWSPATH = "D:\\ffmpeg\\ffmpeg\\bin\\";
 	public static final String AMR_TOMP3_WINDOWSPATHTEMP = "D:\\ffmpeg\\temp\\";

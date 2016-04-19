@@ -138,16 +138,16 @@ angular.module('controllers', ['luegg.directives'])
                 });
                 if(!updateFlag){
                     GetUserRecordList.save({
-                        recordType: "user",
-                        pageNo: 1,
-                        pageSize: 100,
-                        patientId: patientId,
-                        patientName: patientName
-                    }, function (data) {
-                        $scope.currentUserConversation = "";
-                        $scope.currentUserConversation = angular.copy(data.records);
-                        $scope.alreadyJoinPatientConversation.push(data.records);
-                    });
+                        userId:patientId,
+                        dateTime: moment().format('YYYY-MM-DD HH:mm:ss'),
+                        pageSize:20},function(data){
+                        if(data.consultDataList!=""){
+                            $.each(data.consultDataList,function(index,value){
+                                filterMediaData(value);
+                                processPatientSendMessage(value);
+                            });
+                        }
+                    })
                 }
             }
 
@@ -276,6 +276,23 @@ angular.module('controllers', ['luegg.directives'])
                 str = str.replace(/\[em_([0-9]*)\]/g, '<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/' +
                     'dkf%2Fface%2F$1.gif" border="0" />');
                 return str;
+            }
+
+            //查看更多的用户历史消息
+            $scope.seeMoreConversationMessage = function(){
+                var mostFarCurrentConversationDateTime = $scope.currentUserConversation.consultValue[0].dateTime;
+                GetUserRecordList.save({
+                    userId:$scope.currentUserConversation.patientId,
+                    dateTime:$scope.currentUserConversation.consultValue[0].dateTime,
+                    pageSize:20},function(data){
+                    if(data.consultDataList!=""){
+                        $.each(data.consultDataList,function(index,value){
+                            filterMediaData(value);
+                            processPatientSendMessage(value);
+                        });
+                    }
+                })
+
             }
 
             //我的回复内容
@@ -416,16 +433,15 @@ angular.module('controllers', ['luegg.directives'])
 
             var getAlreadyJoinConsultPatientList = function () {
                 //获取跟医生的会话还保存的用户列表
-                GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:100},function(data){
-                    console.log(data);
-                    if(data.alreadyJoinPatientConversation!=""){
-                        console.log(data);
-                        //$scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
-                        //var patientId = angular.copy($scope.alreadyJoinPatientConversation[0].patientId);
-                        //var patientName = angular.copy($scope.alreadyJoinPatientConversation[0].patientName);
-                        //$scope.chooseAlreadyJoinConsultPatient(patientId,patientName);
-                    }
-                })
+                //GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:100},function(data){
+                //    console.log(data.alreadyJoinPatientConversation);
+                //    if(data.alreadyJoinPatientConversation!=""){
+                //        $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
+                //        var patientId = angular.copy($scope.alreadyJoinPatientConversation[0].patientId);
+                //        var patientName = angular.copy($scope.alreadyJoinPatientConversation[0].patientName);
+                //        $scope.chooseAlreadyJoinConsultPatient(patientId,patientName);
+                //    }
+                //})
             }
 
             //保存我的回复
@@ -465,6 +481,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.chooseAlreadyJoinConsultPatient(angular.copy(currentConsultValue.senderId),
                         angular.copy(currentConsultValue.senderName));
                 }
+                console.log($scope.alreadyJoinPatientConversation);
             }
 
             var updateAlreadyJoinPatientConversationFromPatient = function(conversationData){
@@ -563,7 +580,9 @@ angular.module('controllers', ['luegg.directives'])
             //获取用户的详细聊天记录
             $scope.GetUserRecordDetail = function (openid,senderName,fromUserId,toUserId) {
                 $scope.currentClickUserName = senderName;
-                GetUserRecordDetail.save({pageNo:0,pageSize:100,fromUserId:fromUserId,toUserId:toUserId,recordType: "doctor", "openid": openid}, function (data) {
+                GetUserRecordDetail.save({pageNo:0,pageSize:100,
+                    fromUserId:fromUserId,toUserId:toUserId,
+                    recordType: "doctor", "openid": openid}, function (data) {
                     $scope.defaultClickUserOpenId = openid;
                     $scope.currentUserConsultRecordDetail = data.records;
 

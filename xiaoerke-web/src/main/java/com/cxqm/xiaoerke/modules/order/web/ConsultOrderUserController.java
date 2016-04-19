@@ -104,7 +104,7 @@ public class ConsultOrderUserController {
     @RequestMapping(value = "consultOrder/createOrder",method = {RequestMethod.GET,RequestMethod.POST})
     public
     @ResponseBody
-    Map<String,Object> createOrder(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session){
+    Map<String,Object> createOrder(@RequestBody Map<String, Object> params){
         String babyId =(String)params.get("babyId");
         String  babyName =(String)params.get("babyName");
         String  phoneNum =(String)params.get("phoneNum");
@@ -116,13 +116,7 @@ public class ConsultOrderUserController {
         int reultState = 0;
         try {
             reultState = consultPhonePatientService.PatientRegister(openid, babyId, babyName, birthDay, phoneNum, illnessDesc, sysConsultPhoneId);
-            Map<String,Object> consultOrder = consultPhonePatientService.getPatientRegisterInfo(reultState);
-            String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)consultOrder.get("date"),"yyyy/MM/dd"));
-            PatientMsgTemplate.consultPhoneSuccess2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"), (String) consultOrder.get("date"), week, (String) consultOrder.get("beginTime"), (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"));
-            String openId = WechatUtil.getOpenId(session, request);
-            Map<String,Object> parameter = systemService.getWechatParameter();
-            String token = (String)parameter.get("token");
-            PatientMsgTemplate.consultPhoneSuccess2Wechat((String)consultOrder.get("doctorName"),(String)consultOrder.get("date"),week,(String)consultOrder.get("beginTime"),(String)consultOrder.get("endTime"),(String)consultOrder.get("phone"),(String)consultOrder.get("orderNo"),openId,token,"url");
+
         } catch (CreateOrderException e) {
             e.printStackTrace();
             resultMap.put("state","false");

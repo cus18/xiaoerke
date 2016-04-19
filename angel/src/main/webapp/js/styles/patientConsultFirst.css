@@ -80,90 +80,27 @@ img {
     height: 60px;
     margin: 0 30px;
 }
-/*
-.consultDisplay{
-    border:1px solid #000;
-    height:85%;
-    width:95%;
-    position:absolute;
-    overflow-y:scroll;
-    overflow-x:hidden;
+.moreInformation {
+    padding-top: 10px;
+    text-align: center;
 }
-
-.sendLeft {
-    position:relative;
-    width:232px;
-    background:#03A9F4;
-    border-radius:5px; /!* 圆角 *!/
-    margin-top: -20%;
-    margin-left: 20%;
+.moreInformation a{
+    display: inline-block;
+    color: #08b7c2;
+    padding-left: 15px;
+    background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fyh_12.png") no-repeat center left;
 }
-
-.sendLeft .consultLeftContent {
-    position:relative;
-    width:220px;
-    word-wrap:break-word;
+.moreInformation a:hover{
+    text-decoration: underline;
+}
+textarea {
+    overflow:auto;
     word-break:break-all;
-    display:block;
-    height:auto;
-    background:#03A9F4;
-    border-radius:5px; /!* 圆角 *!/
-    margin:30px auto 0;
-}
-
-.sendLeft .arrowLeft {
-    position: absolute;
-    top: 5px;
-    left: -16px;
-    width: 0;
-    height: 0;
-    font-size: 0;
-    border: solid 8px;
-    border-color: transparent #03A9F4 transparent transparent;
-}
-
-.sendRight {
-    position:relative;
-    width:230px;
-    height:auto;
-    background:#03A9F4;
-    border-radius:5px; /!* 圆角 *!/
-    margin:30px auto 0;
-}
-
-.sendRight .consultRightContent {
-    position:relative;
-    width:220px;
-    word-wrap:break-word;
-    word-break:break-all;
-    display:block;
-    height:auto;
-    background:#03A9F4;
-    border-radius:5px; /!* 圆角 *!/
-    margin:30px auto 0;
-}
-
-.sendRight .arrowRight {
-    position: absolute;
-    top: 5px;
-    right: -15px;
-    width: 0;
-    height: 0;
-    font-size: 0;
-    border: solid 8px;
-    border-color: transparent transparent transparent #03A9F4;
-}
-
-.fileInputList{
-    margin-top:3%;
-    height:65px;
-    border:1px solid #000;
-    position:relative
-}*/
-
-[scroll-glue-bottom],
-{
-    height:85%;
-    overflow-y: scroll;
-    border: 1px solid gray;
+    width: 90%;
+    height: 25px;
+    line-height: 25px;
+    box-sizing: border-box;
+    border: none;
+    vertical-align: top;
+    resize: none;
 }

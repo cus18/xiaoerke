@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.consult.service.impl;
 
+import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultPhoneRecordDao;
@@ -7,12 +8,16 @@ import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultPhoneService;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
+import com.cxqm.xiaoerke.modules.sys.entity.User;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +33,9 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
 
     @Autowired
     private ConsultPhoneRecordDao consultPhoneRecordDao;
+
+    @Autowired
+    private SystemService systemService;
 
 
     @Override
@@ -58,7 +66,6 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
         response.setStatusmsg("");
         response.setRecord("1");//录音
         response.setRecordPoint("1");//录音方式
-        response.setSessiontime("60");//通话剩余1分钟提醒
 
         Integer serviceLength = (Integer) phonepatientInfo.get("server_length")*60;
         response.setSessiontime(serviceLength + "");//通话时长
@@ -142,8 +149,17 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
         consultPhonevo.setId(Integer.parseInt(userData));
         consultPhonevo.setUpdateTime(new Date());
         if(Integer.parseInt(talkDuration)<serviceLength*60-10&&"0".equals(phonepatientInfo.get("type"))){
-            //发消息 改状态
+//             改状态
             consultPhonevo.setType("1");//已推送过消息
+            //发消息
+            Map<String,Object> consultOrder = consultPhonePatientService.getPatientRegisterInfo(Integer.parseInt(userData));
+            User userInfo = systemService.getUserById((String)consultOrder.get("sys_user_id"));
+            String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) consultOrder.get("doctorName")+","+userData+",phone";
+            String connectUrl = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/phoneConReconnection/"+userData;
+            PatientMsgTemplate.consultPhoneEvaluateWaring2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"),(String) consultOrder.get("phone"), url,connectUrl);
+            Map<String,Object> parameter = systemService.getWechatParameter();
+            String token = (String)parameter.get("token");
+            PatientMsgTemplate.evaluationRemind2Wechat(userInfo.getOpenid(),token,connectUrl,"您的订单可以评价了哦!",(String) consultOrder.get("orderNo"), (String) consultOrder.get("date"),"");
         }
         int state = consultPhonePatientService.updateOrderInfoBySelect(consultPhonevo);
         //返回的数据

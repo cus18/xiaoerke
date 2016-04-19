@@ -1,25 +1,22 @@
 package com.cxqm.xiaoerke.modules.consult.service.impl;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import com.alibaba.fastjson.JSON;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
-import com.cxqm.xiaoerke.modules.consult.service.SessionCache;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.websocket.Session;
-
 
 @Service
 @Transactional(readOnly = false)
-public class SessionCacheRedisImpl implements SessionCache {
+public class SessionRedisCacheImpl implements SessionRedisCache {
 
 	private RedisTemplate<String, Object> redisTemplate = SpringContextHolder.getBean("redisTemplate");
 	
@@ -36,14 +33,14 @@ public class SessionCacheRedisImpl implements SessionCache {
 	@Override
 	public RichConsultSession getConsultSessionBySessionId(Integer sessionId) {
 		HashMap<String,Object> sessionMap = (HashMap<String,Object>) redisTemplate.opsForHash().get(SESSIONID_CONSULTSESSION_KEY, sessionId);
-		return sessionMap == null ? null : transferMapToRichConsultSession(sessionMap);
+		return sessionMap == null ? null : ConsultUtil.transferMapToRichConsultSession(sessionMap);
 	}
 
 	@Override
 	public void putSessionIdConsultSessionPair(Integer sessionId,
 											   RichConsultSession consultSession) {
 		redisTemplate.opsForHash().put(SESSIONID_CONSULTSESSION_KEY,
-				sessionId, transferRichConsultSessionToMap(consultSession));
+				sessionId, ConsultUtil.transferRichConsultSessionToMap(consultSession));
 	}
 
 	@Override
@@ -93,32 +90,19 @@ public class SessionCacheRedisImpl implements SessionCache {
 	@Override
 	public void putWechatSessionByOpenId(String openId,RichConsultSession richConsultSession) {
 		redisTemplate.opsForHash().put(USER_WECHATSESSION_KEY,
-				openId, transferRichConsultSessionToMap(richConsultSession));
+				openId, ConsultUtil.transferRichConsultSessionToMap(richConsultSession));
 	}
 
 	@Override
 	public RichConsultSession getWechatSessionByOpenId(String openId) {
 		HashMap<String,Object> wechatSession = (HashMap<String,Object>) redisTemplate.opsForHash().get(USER_WECHATSESSION_KEY, openId);
-		return wechatSession == null ? null : transferMapToRichConsultSession(wechatSession);
+		return wechatSession == null ? null : ConsultUtil.transferMapToRichConsultSession(wechatSession);
 	}
-
-	@Override
-	public List<Object> getConsultSessionByCsId(Collection<Object> csUserId) {
-		List<Object> sessions = redisTemplate.opsForHash().multiGet(CS_SESSION_KEY, csUserId);
-		return sessions;
-	}
-
 
 	@Override
 	public String getWeChatToken(){
 		Object Token = redisTemplate.opsForHash().get(WECHAT_TOKEN,"wechatToken");
 		return Token == null ? null : (String) Token;
-	}
-
-	@Override
-	public void putCsIdConsultSessionPair(String csUserId, RichConsultSession consultSession) {
-		redisTemplate.opsForHash().put(CS_SESSION_KEY,
-				csUserId, transferRichConsultSessionToMap(consultSession));
 	}
 
 	@Override
@@ -142,42 +126,8 @@ public class SessionCacheRedisImpl implements SessionCache {
 	}
 
 	@Override
-	public void removeCsIdSessionIdPair(String csUserId) {
-		redisTemplate.opsForHash().delete(CS_SESSION_KEY, csUserId);
-	}
-
-	@Override
 	public void removeWechatSessionPair(String openId){
 		redisTemplate.opsForHash().delete(USER_WECHATSESSION_KEY, openId);
 	}
 
-	public RichConsultSession transferMapToRichConsultSession(HashMap<String,Object> consultSessionMap){
-		RichConsultSession consultSession = new RichConsultSession();
-		consultSession.setUserName((String) consultSessionMap.get("userName"));
-		consultSession.setUserId((String) consultSessionMap.get("userId"));
-		consultSession.setServerAddress((String) consultSessionMap.get("serverAddress"));
-		consultSession.setCreateTime((Date) consultSessionMap.get("createTime"));
-		consultSession.setCsUserName((String) consultSessionMap.get("csUserName"));
-		consultSession.setOpenid((String) consultSessionMap.get("openId"));
-		consultSession.setNickName((String) consultSessionMap.get("nickName"));
-		consultSession.setCsUserId((String) consultSessionMap.get("csUserId"));
-		consultSession.setStatus((String) consultSessionMap.get("status"));
-		consultSession.setTitle((String) consultSessionMap.get("title"));
-		return consultSession;
-	}
-
-	public HashMap<String,Object> transferRichConsultSessionToMap(RichConsultSession consultSession){
-		HashMap<String,Object> consultSessionMap = new HashMap<String, Object>();
-		consultSessionMap.put("userName",consultSession.getUserName());
-		consultSessionMap.put("userId",consultSession.getUserId());
-		consultSessionMap.put("serverAddress",consultSession.getServerAddress());
-		consultSessionMap.put("createTime",consultSession.getCreateTime());
-		consultSessionMap.put("csUserName",consultSession.getCsUserName());
-		consultSessionMap.put("openId",consultSession.getOpenid());
-		consultSessionMap.put("nickName",consultSession.getNickName());
-		consultSessionMap.put("csUserId",consultSession.getCsUserId());
-		consultSessionMap.put("status",consultSession.getStatus());
-		consultSessionMap.put("title",consultSession.getTitle());
-		return consultSessionMap;
-	}
 }

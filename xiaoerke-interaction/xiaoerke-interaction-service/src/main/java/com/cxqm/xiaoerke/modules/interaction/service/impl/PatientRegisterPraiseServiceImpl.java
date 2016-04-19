@@ -79,9 +79,9 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
     }
 
     @Override
-    public HashMap<String, Object> getConsultEvaluateTop(HashMap<String, Object> params) {
+    public HashMap<String, Object> getDoctorEvaluateTop(HashMap<String, Object> params) {
         HashMap<String,Object> response = new HashMap<String, Object>();
-        List<HashMap<String,Object>> resultList = patientRegisterPraiseDao.getConsultEvaluateTop(params);
+        List<HashMap<String,Object>> resultList = patientRegisterPraiseDao.getDoctorEvaluateTop(params);
         if(resultList != null && resultList.size() > 0){
             for(HashMap<String,Object> map:resultList){
             Date date = (Date) map.get("date");
@@ -90,7 +90,7 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
             SimpleDateFormat format1 = new SimpleDateFormat("HH:mm");
             map.put("date", format.format(date) + "(" + week.replaceAll("星期", "周") + ")" + format1.format(date));
 			String wechat_name = map.get("wechat_name") == null?"微信用户":(String)map.get("wechat_name");
-			String pic_url = map.get("pic_url") == null?"images/a2.png":(String)map.get("pic_url");
+			String pic_url = map.get("pic_url") == null?"images/user_photo.png":(String)map.get("pic_url");
 			map.put("wechat_name",wechat_name);
 			map.put("pic_url",pic_url);
 			}
@@ -100,7 +100,7 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
     }
 
     @Override
-    public HashMap<String, Object> getConsultEvaluate(HashMap<String, Object> params)
+    public HashMap<String, Object> getDoctorEvaluate(HashMap<String, Object> params)
     {
         HashMap<String, Object> response = new HashMap<String, Object>();
 
@@ -114,7 +114,7 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
         String pageSize = (String) params.get("pageSize");
         Page<PatientRegisterPraise> page = FrontUtils.generatorPage(currentPage, pageSize);
 
-        Page<PatientRegisterPraise> resultPage = patientRegisterPraiseDao.getConsultEvaluate(dataMap, page);
+        Page<PatientRegisterPraise> resultPage = patientRegisterPraiseDao.getDoctorEvaluate(dataMap, page);
 
         long tmp = FrontUtils.generatorTotalPage(resultPage);
         response.put("pageTotal", tmp + "");
@@ -130,7 +130,7 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
                 hmap.put("impression", praise.getImpression());
                 hmap.put("star", praise.getStar());
                 hmap.put("majorStar", praise.getMajorStar());
-				hmap.put("pic_url", praise.getPicUrl()==null?"images/a2.png":praise.getPicUrl());
+				hmap.put("pic_url", praise.getPicUrl()==null?"images/user_photo.png":praise.getPicUrl());
 				hmap.put("wechat_name", praise.getWechatName()==null?"微信用户": praise.getWechatName());
                 Date date = praise.getPraiseDate();
                 String week = DateUtils.getWeekOfDate(date);
@@ -214,7 +214,7 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		HashMap<String, Object> excuteMap = new HashMap<String, Object>();
 
-		String headimgurl = null == (String) jsonMap.get("headimgurl")?"images/a2.png":(String) jsonMap.get("headimgurl") ;
+		String headimgurl = null == (String) jsonMap.get("headimgurl")?"images/user_photo.png":(String) jsonMap.get("headimgurl") ;
 		String nickname = null == (String) jsonMap.get("nickname")?"微信用户":(String) jsonMap.get("nickname") ;
 
 		excuteMap.put("wechat_name", nickname);

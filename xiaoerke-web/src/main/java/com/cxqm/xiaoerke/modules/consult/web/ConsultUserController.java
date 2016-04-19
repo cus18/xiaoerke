@@ -3,7 +3,6 @@
  */
 package com.cxqm.xiaoerke.modules.consult.web;
 
-import com.cxqm.xiaoerke.common.persistence.Order;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.FrontUtils;
@@ -16,8 +15,10 @@ import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
-import com.cxqm.xiaoerke.modules.consult.service.SessionCache;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
+import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,8 @@ public class ConsultUserController extends BaseController {
     private ConsultRecordService consultRecordService;
 
     @Autowired
-    SessionCache sessionCache;
+    SessionRedisCache sessionRedisCache;
+    private ConsultMongoUtilsService consultMongoUtilsService;
 
     @Autowired
     private ConsultSessionForwardRecordsService consultSessionForwardRecordsService;
@@ -182,7 +184,7 @@ public class ConsultUserController extends BaseController {
             Date date = oneConsultRecord.getCreateDate();
             oneConsultRecord.setInfoDate(DateUtils.DateToStr(date));
 
-            if (oneConsultRecord != null && StringUtils.isNotNull(oneConsultRecord.getOpenid())){
+            if (oneConsultRecord != null && StringUtils.isNotNull(oneConsultRecord.getSenderId())){
                 consultSessionForwardRecordsVos.add(oneConsultRecord);
             }
 
@@ -199,37 +201,46 @@ public class ConsultUserController extends BaseController {
     @RequestMapping(value = "/getCurrentUserList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> getCurrentUserList(@RequestBody Map<String, Object> params) {
-        Map<String,Object> response = new HashMap<String, Object>();
+    HashMap<String, Object> getCurrentUserList(@RequestBody Map<String, Object> params) {
+        HashMap<String,Object> response = new HashMap<String, Object>();
         PaginationVo<ConsultRecordMongoVo> pagination = null;
         int pageNo = 0;
         int pageSize = 0;
         String csUserId = String.valueOf(params.get("csUserId"));
-        pageNo = (Integer) params.get("pageNo");
-        pageSize = (Integer) params.get("pageSize");
-        List<HashMap<String,Object>> responseList = new ArrayList<HashMap<String, Object>>();
 
-        List<Object> list = new ArrayList<Object>();
-        list.add(csUserId);
-        List<Object> objectList = sessionCache.getConsultSessionByCsId(list);
-        for(Object object :objectList){
-            HashMap<String,Object> searchMap = new HashMap<String, Object>();
-            RichConsultSession richConsultSession = transferMapToRichConsultSession((HashMap<String,Object>)object);
-            Query query = new Query(where("toUserId").is(richConsultSession.getUserId()).and("fromUserId")
-                    .is(richConsultSession.getCsUserId())).with(new Sort(Direction.DESC, "createDate"));
-            pagination = consultRecordService.getPage(pageNo, pageSize, query,"");
-            searchMap.put("patientId",richConsultSession.getUserId());
-            searchMap.put("patientName",richConsultSession.getUserName());
-            searchMap.put("fromServer",richConsultSession.getServerAddress());
-            searchMap.put("sessionId",richConsultSession.getId());
-            searchMap.put("isOnline","true");
-            searchMap.put("messageNotSee","true");
-            searchMap.put("dateTime",richConsultSession.getCreateTime());
-            searchMap.put("dateTime",pagination.getDatas());
-            responseList.add(searchMap);
+        if(StringUtils.isNotNull(csUserId)){
+            pageNo = (Integer) params.get("pageNo");
+            pageSize = (Integer) params.get("pageSize");
+            List<HashMap<String,Object>> responseList = new ArrayList<HashMap<String, Object>>();
+
+            List<RichConsultSession> richConsultSessions = consultMongoUtilsService.queryRichConsultSessionList(new Query().addCriteria(Criteria.where("csUserId").is(csUserId)));
+            if(richConsultSessions!=null && richConsultSessions.size()>0){
+                for(RichConsultSession richConsultSession :richConsultSessions){
+                    HashMap<String,Object> searchMap = new HashMap<String, Object>();
+                    String userId = richConsultSession.getUserId();
+                    if(StringUtils.isNull(userId)){
+                        userId =  richConsultSession.getOpenid();
+                    }
+                    Query query = new Query(where("userId").is(userId).and("csUserId")
+                            .is(richConsultSession.getCsUserId())).with(new Sort(Direction.DESC, "createDate"));
+                    pagination = consultRecordService.getPage(pageNo, pageSize, query,"temporary");
+                    if(StringUtils.isNull(richConsultSession.getUserId())){
+                        searchMap.put("patientId",richConsultSession.getOpenid());
+                    }
+                    searchMap.put("patientName", richConsultSession.getNickName());
+                    searchMap.put("fromServer",richConsultSession.getServerAddress());
+                    searchMap.put("sessionId",richConsultSession.getId());
+                    searchMap.put("isOnline",true);
+                    searchMap.put("messageNotSee",true);
+                    searchMap.put("dateTime",richConsultSession.getCreateTime());
+                    searchMap.put("consultValue",ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
+                    responseList.add(searchMap);
+                }
+                response.put("alreadyJoinPatientConversation",responseList);
+            }
+        }else {
+            response.put("status","csUserId is null");
         }
-        response.put("alreadyJoinPatientConversation",responseList);
-        response.put("result",response);
         return response;
     }
 
@@ -295,7 +306,9 @@ public class ConsultUserController extends BaseController {
         //根据咨询记录查询对应的用户
         HashSet<String> openidSet = new HashSet<String>();
         for(ConsultRecordMongoVo consultRecordMongoVo :pagination.getDatas()){
-            openidSet.add(consultRecordMongoVo.getOpenid());
+            if(consultRecordMongoVo.getConsultType().equals("wx")){
+                openidSet.add(consultRecordMongoVo.getSenderId());
+            }
         }
 
         List<ConsultRecordMongoVo> consultSessionForwardRecordsVos = new ArrayList<ConsultRecordMongoVo>();
@@ -303,7 +316,7 @@ public class ConsultUserController extends BaseController {
         while(iterator.hasNext()){
             Query query = new Query(where("openid").is(iterator.next())).with(new Sort(Sort.Direction.DESC, "createDate"));
             ConsultRecordMongoVo oneConsultRecord = consultRecordService.findOneConsultRecord(query);
-            if(oneConsultRecord!=null && StringUtils.isNotNull(oneConsultRecord.getOpenid())){
+            if(oneConsultRecord!=null && StringUtils.isNotNull(oneConsultRecord.getSenderId())){
                 consultSessionForwardRecordsVos.add(oneConsultRecord);
             }
         }
@@ -357,33 +370,4 @@ public class ConsultUserController extends BaseController {
         return consultConversationService.removeSessionById(request,params);
     }
 
-    public RichConsultSession transferMapToRichConsultSession(HashMap<String,Object> consultSessionMap){
-        RichConsultSession consultSession = new RichConsultSession();
-        consultSession.setUserName((String) consultSessionMap.get("userName"));
-        consultSession.setUserId((String) consultSessionMap.get("userId"));
-        consultSession.setServerAddress((String) consultSessionMap.get("serverAddress"));
-        consultSession.setCreateTime((Date) consultSessionMap.get("createTime"));
-        consultSession.setCsUserName((String) consultSessionMap.get("csUserName"));
-        consultSession.setOpenid((String) consultSessionMap.get("openId"));
-        consultSession.setNickName((String) consultSessionMap.get("nickName"));
-        consultSession.setCsUserId((String) consultSessionMap.get("csUserId"));
-        consultSession.setStatus((String) consultSessionMap.get("status"));
-        consultSession.setTitle((String) consultSessionMap.get("title"));
-        return consultSession;
-    }
-
-    public HashMap<String,Object> transferRichConsultSessionToMap(RichConsultSession consultSession){
-        HashMap<String,Object> consultSessionMap = new HashMap<String, Object>();
-        consultSessionMap.put("userName",consultSession.getUserName());
-        consultSessionMap.put("userId",consultSession.getUserId());
-        consultSessionMap.put("serverAddress",consultSession.getServerAddress());
-        consultSessionMap.put("createTime",consultSession.getCreateTime());
-        consultSessionMap.put("csUserName",consultSession.getCsUserName());
-        consultSessionMap.put("openId",consultSession.getOpenid());
-        consultSessionMap.put("nickName",consultSession.getNickName());
-        consultSessionMap.put("csUserId",consultSession.getCsUserId());
-        consultSessionMap.put("status",consultSession.getStatus());
-        consultSessionMap.put("title",consultSession.getTitle());
-        return consultSessionMap;
-    }
 }

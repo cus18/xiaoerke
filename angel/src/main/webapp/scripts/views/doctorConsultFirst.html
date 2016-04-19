@@ -190,7 +190,7 @@
                 </div>
                 <div class="chatlist">
                     <div scroll-glue-bottom="glued" class="chatlistin">
-                        <div class="moreInformation"><a href="#">查看更多消息</a></div>
+                        <div class="moreInformation" ng-click="seeMoreConversationMessage()"><a href="">查看更多消息</a></div>
                         <div ng-repeat="item in currentUserConversation.consultValue">
                             <div ng-if="item.senderId==doctorId" class="doctorReplyContent">
                                 <div>
@@ -230,12 +230,12 @@
                 <div class="facebox">
                     <div class="facein">
                         <p class="fl"><span class="emotion" ng-click="getQQExpression()">表情</span></p>
-                        <p class="historymessage">
-                        <span>
-                        消息记录
-                        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(8).png" alt=""/>
-                        </span>
-                        </p>
+                        <!--<p class="historymessage">-->
+                        <!--<span>-->
+                        <!--消息记录-->
+                        <!--<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(8).png" alt=""/>-->
+                        <!--</span>-->
+                        <!--</p>-->
                     </div>
                 </div>
                 <div class="inputcontent"><textarea ng-model="info.consultMessage" placeholder="请在此处进行咨询" id="saytext"></textarea>
@@ -435,5 +435,4 @@
             </div>
         </div>
     </div>
-    <div class="lipanpan" style="width: 20px;height: 20px;background-color: #333;" />
 </div>

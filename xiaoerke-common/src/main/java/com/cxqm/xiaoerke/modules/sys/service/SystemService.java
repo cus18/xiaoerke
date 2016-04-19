@@ -62,6 +62,7 @@ public class SystemService extends BaseService {
 	 * 获取用户
 	 * @param id
 	 * @return
+	 * 此处禁用，第三者通过用户id来获取一个登陆用户的信息
 	 */
 	public User getUser(String id) {
 		return UserUtils.get(id);

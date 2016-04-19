@@ -25,8 +25,6 @@ public class ConsultRecordMongoVo {
 
     private Date updateDate;
 
-    private String messageType;
-
     private String opercode;
 
     private String userId;
@@ -171,14 +169,6 @@ public class ConsultRecordMongoVo {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
-    }
-
-    public String getMessageType() {
-        return messageType;
-    }
-
-    public void setMessageType(String messageType) {
-        this.messageType = messageType;
     }
 
     public String getOpercode() {
