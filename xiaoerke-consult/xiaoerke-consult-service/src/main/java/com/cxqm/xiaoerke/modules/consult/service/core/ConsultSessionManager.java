@@ -87,15 +87,17 @@ public class ConsultSessionManager {
 		String[] args = url.split("&");
 		String fromType = args[1];
 
-		if(fromType.equals("user")) {
-			String userId = args[2];
-			doCreateSessionInitiatedByUser(userId, channel);
-		}else if(fromType.equals("cs")) {
-			String userId = args[2];
-			doCreateSessionInitiatedByCs(userId, channel);
-		} else if(fromType.equals("distributor")) {
-			String userId = args[2];
-			doCreateSessionInitiatedByDistributor(userId, channel);
+		if(args.length>2){
+			if(fromType.equals("user")) {
+				String userId = args[2];
+				doCreateSessionInitiatedByUser(userId, channel);
+			}else if(fromType.equals("cs")) {
+				String userId = args[2];
+				doCreateSessionInitiatedByCs(userId, channel);
+			} else if(fromType.equals("distributor")) {
+				String userId = args[2];
+				doCreateSessionInitiatedByDistributor(userId, channel);
+			}
 		}
 	}
 	

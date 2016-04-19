@@ -136,7 +136,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     @Override
     public void buildRecordMongoVo(@RequestParam(required = true) String consultType,
                                    @RequestParam(required = true) String senderId,
-                                   @RequestParam(required = true) String messageType,
+                                   @RequestParam(required = true) String type,
                                    @RequestParam(required = false) String messageContent,
                                    RichConsultSession consultSession,
                                    SysWechatAppintInfoVo resultVo) {
@@ -146,7 +146,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
 
         consultRecordMongoVo.setConsultType(consultType);
         consultRecordMongoVo.setSessionId(sessionId.toString());
-        consultRecordMongoVo.setType(messageType);
+        consultRecordMongoVo.setType(type);
         consultRecordMongoVo.setMessage(messageContent);
         if(consultType.equals("wx")){
             consultRecordMongoVo.setAttentionDate(resultVo.getCreate_time());

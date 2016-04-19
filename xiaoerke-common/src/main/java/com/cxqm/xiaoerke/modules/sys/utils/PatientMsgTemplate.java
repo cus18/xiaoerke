@@ -388,4 +388,7 @@ public class PatientMsgTemplate {
     }
 
 
+    public static void consultPhoneEvaluateWaring2Msg(String babyName, String doctorName, String phone, String url, String connectUrl) {
+
+    }
 }

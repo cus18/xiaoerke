@@ -1,9 +1,66 @@
 <ion-spinner ng-show="pageLoading" style="color:#139fff;position: relative;top: 301px;left:148px;z-index:999;"></ion-spinner>
 <ion-view view-title={{title}} >
-    <ion-spinner ng-show="dataLoading"></ion-spinner>
-    <ion-content  style="top: 0px;">
+    <div class="doc_home">
+        <div class="doc">
+            <div class="doc_ser">
+                <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fhome_manyi.png" width="45px" height="45px"/>
+                <div class="doc_com_1">服务态度</div>
+                <div class="doc_com_2">3.5</div>
+            </div>
+            <div class="doc_img">
+                <img src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fbaodf_logo1.png" width="105px" height="105px"/>
+            </div>
+            <div class="doc_ma">
+                <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fhome_xin.png" width="45px" height="45px" />
+                <div class="doc_com_1">专业水平</div>
+                <div class="doc_com_2">5</div>
+            </div>
+        </div>
+        <div class="name">
+            林志炫
+            <img ng-repeat="item in [1,2,3,4]" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fstar.png" width="12.5px" height="12.5px"/>
+            <img class="partStay" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fstar_part.png" width="12.5px" height="12.5px" />
+        </div>
+        <div class="address">
+            北京鼓楼中医手机发动机的<span>消化科</span>
+        </div>
+        <div class="fans" ng-click="goFans()">
+            粉丝（<span>35</span>）
+        </div>
+    </div>
+    <div class="doc_comment" ng-click="getComment()">
+       {{commentTitle}}<img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fhome_comgo.png" width="7px" height="12.5px"/>
+    </div>
+    <div class="doc_commentList" ng-if="moreComment">
+        <div ng-repeat="item in commentList" ng-click="setComment($index)">{{item}}</div>
+    </div>
+    <ion-content  style="top: 317px;">
         <ion-scroll class="doctorHome" direction="y" has-bouncing="true">
-            gfhg
+            <ul ng-if="haveComment">
+                <li ng-repeat="item in [1,2,3,4,5]">
+                    <div class="com_all">
+                        <div class="com_num">
+                            13111111111
+                            <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fhome_man.png" width="15px" height="15px"/><span>4.5</span>
+                            <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fhome_zan.png" width="15px" height="15px"/><span>5</span>
+                        </div>
+                        <div class="com_time">
+                            <div >10:35</div>
+                            <div >2014-05-10</div>
+                        </div>
+                    </div>
+                    <p>几号上课讲的好风景卡刷卡积分的皇家卡森活动时间获得积分回馈时间发货贺卡设计的回复可见</p>
+                </li>
+            </ul>
+            <div class="com_more" ng-if="haveComment">
+                <span>点击加载更多</span>
+                <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Ffansmore.png" width="11" height="6"/>
+            </div>
+            <div class="nohave" ng-if="noComment">
+                <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fweekno.png" width="88px" height="63px"/>
+                <div>您还没有任何评价哦~</div>
+            </div>
+            <br/><br/><br/>
         </ion-scroll>
     </ion-content>
 </ion-view>

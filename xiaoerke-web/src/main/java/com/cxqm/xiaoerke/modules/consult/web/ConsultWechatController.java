@@ -14,6 +14,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionCache;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
+import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import io.netty.channel.Channel;
@@ -73,7 +74,7 @@ public class ConsultWechatController extends BaseController {
             result.put("status","failure");
             return result;
         }
-        String nickName = openId.substring(0,5);
+        String nickName = openId.substring(openId.length()-8,openId.length());
         if(wechatAttentionVo!=null){
             if(StringUtils.isNotNull(wechatAttentionVo.getWechat_name())){
                nickName = wechatAttentionVo.getWechat_name();
@@ -138,10 +139,10 @@ public class ConsultWechatController extends BaseController {
         }
 
         //保存聊天记录
-        consultRecordService.buildRecordMongoVo("wx", openId, messageType, messageContent, consultSession, wechatAttentionVo);
+        consultRecordService.buildRecordMongoVo("wx", openId, String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)), messageContent, consultSession, wechatAttentionVo);
 
         //更新会话操作时间
-        consultRecordService.saveConsultSessionStatus(sessionId,consultSession.getUserId(),messageType,consultSession);
+        consultRecordService.saveConsultSessionStatus(sessionId,consultSession.getUserId(),String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)),consultSession);
 
         result.put("status","success");
         return result;
