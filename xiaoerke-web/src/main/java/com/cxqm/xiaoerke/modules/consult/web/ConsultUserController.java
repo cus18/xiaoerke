@@ -213,7 +213,7 @@ public class ConsultUserController extends BaseController {
             pageSize = (Integer) params.get("pageSize");
             List<HashMap<String,Object>> responseList = new ArrayList<HashMap<String, Object>>();
 
-            List<RichConsultSession> richConsultSessions = consultMongoUtilsService.queryRichConsultSessionList(new Query().addCriteria(new Criteria().where("csUserId").is(csUserId)));
+            List<RichConsultSession> richConsultSessions = consultMongoUtilsService.queryRichConsultSessionList(new Query().addCriteria(Criteria.where("csUserId").is(csUserId)));
             if(richConsultSessions!=null && richConsultSessions.size()>0){
                 for(RichConsultSession richConsultSession :richConsultSessions){
                     HashMap<String,Object> searchMap = new HashMap<String, Object>();
