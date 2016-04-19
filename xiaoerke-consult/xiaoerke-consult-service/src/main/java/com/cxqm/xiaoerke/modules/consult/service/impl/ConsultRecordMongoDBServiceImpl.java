@@ -28,7 +28,12 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 	}
 
 	public int insertTempRecord(ConsultRecordMongoVo consultRecordMongoVo) {
-		mongoTemplate.insert(consultRecordMongoVo, "consultTempRecordVo");
+		mongoTemplate.insert(consultRecordMongoVo, "ConsultRecordTemporary");
+		return 0;
+	}
+
+	public int insertConsultRankRecord(ConsultRecordMongoVo consultRecordMongoVo) {
+		mongoTemplate.insert(consultRecordMongoVo, "consultRankRecord");
 		return 0;
 	}
 
@@ -61,18 +66,26 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		return consultRecordMongoVo;
 	}
 
+	public ConsultRecordMongoVo findOneConsultRecordTemporary(Query query) {
+		ConsultRecordMongoVo consultRecordMongoVo = new ConsultRecordMongoVo();
+		consultRecordMongoVo = mongoTemplate.findOne(query,ConsultRecordMongoVo.class,"ConsultRecordTemporary");
+		return consultRecordMongoVo;
+	}
+
+
 
 	public int saveConsultRecord(ConsultRecordMongoVo consultRecordMongoVo) {
-		insertTempRecord(consultRecordMongoVo);
-		return this.insert(consultRecordMongoVo);
+		insertConsultRankRecord(consultRecordMongoVo);//今日排名
+//		insertTempRecord(consultRecordMongoVo);//临时聊天记录
+		return this.insert(consultRecordMongoVo);//全部聊天记录
 	}
 
 	public void  deleteConsultSessionStatusVo(Query query) {
 		mongoTemplate.remove(query, ConsultSessionStatusVo.class);
 	}
 
-	public void  deleteConsultTempRecordVo(Query query) {
-		mongoTemplate.remove(query, ConsultSessionStatusVo.class,"consultTempRecordVo");
+	public void  deleteConsultRecordTemporary(Query query) {
+		mongoTemplate.remove(query,"ConsultRecordTemporary");
 	}
 
 
@@ -124,7 +137,7 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 	}
 
 	public List<ConsultRecordMongoVo> queryTempRecordList(Query query){
-		return this.mongoTemplate.find(query, ConsultRecordMongoVo.class, "consultTempRecordVo");
+		return this.mongoTemplate.find(query, ConsultRecordMongoVo.class, "ConsultRecordTemporary");
 	}
 
 	@Override
