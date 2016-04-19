@@ -45,7 +45,7 @@ public class ConsultSessionManager {
 	private final Map<String, Channel> userChannelMapping = new ConcurrentHashMap<String, Channel>();
 	
 	//<cs-userId, Channel>
-	private final Map<String, Channel> csuserChannelMapping = new ConcurrentHashMap<String, Channel>();
+	private final Map<String, Channel> csUserChannelMapping = new ConcurrentHashMap<String, Channel>();
 	
 	//<cs-userId, Channel>
 	private final Map<String, Channel> distributors = new ConcurrentHashMap<String, Channel>();
@@ -102,7 +102,7 @@ public class ConsultSessionManager {
 	}
 	
 	private void doCreateSessionInitiatedByCs(String csUserId, Channel channel){
-		csuserChannelMapping.put(csUserId, channel);
+		csUserChannelMapping.put(csUserId, channel);
 		userChannelMapping.put(csUserId, channel);
 		channelUserMapping.put(channel, csUserId);
 	}
@@ -110,7 +110,7 @@ public class ConsultSessionManager {
 	private void doCreateSessionInitiatedByDistributor(String distributorUserId, Channel channel){
 		if(distributorsList.contains(distributorUserId)) {
 			distributors.put(distributorUserId, channel);
-			csuserChannelMapping.put(distributorUserId, channel);
+			csUserChannelMapping.put(distributorUserId, channel);
 			userChannelMapping.put(distributorUserId, channel);
 			channelUserMapping.put(channel, distributorUserId);
 		} else {
@@ -164,12 +164,13 @@ public class ConsultSessionManager {
 					if(distributorChannel != null) {
 						if(distributorChannel.isActive()) {
 							consultSession.setCsUserId(distributorUserId);
-							User csUser = systemService.getUser(userId);//chenjiakeQ&A，此处的userId，是否应该为distributorUserId
+							//如果distributorChannel处于激活状态，证明，此接诊员处于登陆状态
+							User csUser = systemService.getUserById(distributorUserId);//chenjiakeQ&A，此处的userId，是否应该为distributorUserId
 							consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
 							break;
 						} else {
 							distributors.remove(distributorUserId);
-							csuserChannelMapping.remove(distributorUserId);
+							csUserChannelMapping.remove(distributorUserId);
 						}
 					}
 				}
@@ -226,13 +227,14 @@ public class ConsultSessionManager {
 				if(distributorChannel != null) {
 					if(distributorChannel.isActive()) {
 						consultSession.setCsUserId(distributorUserId);
-						User csUser = systemService.getUser(distributorUserId);//chenjiakeQ&A，此处的userId，是否应该为distributorUserId
+						//如果distributorChannel处于激活状态，证明，此接诊员处于登陆状态
+						User csUser = systemService.getUserById(distributorUserId);//chenjiakeQ&A，此处的userId，是否应该为distributorUserId
 						consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
 						csChannel = distributorChannel;
 						break;
 					} else {
 						distributors.remove(distributorUserId);
-						csuserChannelMapping.remove(distributorUserId);
+						csUserChannelMapping.remove(distributorUserId);
 					}
 				}
 			}
@@ -240,12 +242,12 @@ public class ConsultSessionManager {
 
 		if(distributorChannel == null) {
 			//所有的接诊员不在线，随机分配一个在线医生
-			Iterator<Entry<String, Channel>> csuserChannel = csuserChannelMapping.entrySet().iterator();
-			if(csuserChannel!=null){
+			Iterator<Entry<String, Channel>> csUserChannel = csUserChannelMapping.entrySet().iterator();
+			if(csUserChannel!=null){
 				List<HashMap<String,Object>> doctorOnLineList = new ArrayList();
-				while (csuserChannel.hasNext()) {
+				while (csUserChannel.hasNext()) {
 					HashMap<String,Object> doctorOnLineMap = new HashMap<String,Object>();
-					Map.Entry<String, Channel> entry = csuserChannel.next();
+					Map.Entry<String, Channel> entry = csUserChannel.next();
 					doctorOnLineMap.put("doctorId", entry.getKey());
 					doctorOnLineMap.put("Channel", entry.getValue());
 					doctorOnLineList.add(doctorOnLineMap);
@@ -256,8 +258,11 @@ public class ConsultSessionManager {
 					int indexCS = rand.nextInt(doctorOnLineList.size());
 					consultSession.setCsUserId((String) doctorOnLineList.get(indexCS).get("doctorId"));
 					csChannel = (Channel) doctorOnLineList.get(indexCS).get("Channel");
-					User csUser = systemService.getUser((String)doctorOnLineList.get(indexCS).get("doctorId"));
-					consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
+					if(csChannel.isActive()){
+						//csChannel如果活着的话，证明，此医生处于登陆状态
+						User csUser = systemService.getUserById((String)doctorOnLineList.get(indexCS).get("doctorId"));
+						consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
+					}
 				}
 
 			}else{
@@ -358,7 +363,7 @@ public class ConsultSessionManager {
 
 	public List<String> getOnlineCsList() {
 		List<String> userIds = new ArrayList<String>();
-		Iterator<Entry<String, Channel>> it = csuserChannelMapping.entrySet().iterator();
+		Iterator<Entry<String, Channel>> it = csUserChannelMapping.entrySet().iterator();
 		while(it.hasNext()){
 			Entry<String, Channel> entry = it.next();
 			if(entry.getValue().isOpen())
@@ -384,7 +389,7 @@ public class ConsultSessionManager {
 	}
 	
 	public Map<String, Channel> getCsUserChannelMapping() {
-		return csuserChannelMapping;
+		return csUserChannelMapping;
 	}
 
 }
