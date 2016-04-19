@@ -80,3 +80,27 @@ img {
     height: 60px;
     margin: 0 30px;
 }
+.moreInformation {
+    padding-top: 10px;
+    text-align: center;
+}
+.moreInformation a{
+    display: inline-block;
+    color: #08b7c2;
+    padding-left: 15px;
+    background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fyh_12.png") no-repeat center left;
+}
+.moreInformation a:hover{
+    text-decoration: underline;
+}
+textarea {
+    overflow:auto;
+    word-break:break-all;
+    width: 90%;
+    height: 25px;
+    line-height: 25px;
+    box-sizing: border-box;
+    border: none;
+    vertical-align: top;
+    resize: none;
+}
