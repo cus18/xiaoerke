@@ -250,7 +250,8 @@
     <if test="state != null" >
       and prs.status = #{state,VARCHAR}
     </if>
-    order by prs.create_time desc
+    ORDER BY
+    create_time DESC
   </select>
     <!-- 每日清单 -->
     <select id="getSettlementPhoneConsultInfoByDate" resultType="java.util.Map">

@@ -307,8 +307,13 @@ public class PatientMsgTemplate {
      * 退款成功
 
      */
-    public static void consultPhoneRefund2Msg(String babyName,String doctorName, String price,String phone){
+    public static void returnPayPhoneRefund2Msg(String babyName,String doctorName, String price,String phone){
         String content =  "（退款成功）"+babyName+"小朋友家长您好，由于您预约的"+doctorName+"医生的电话咨询未接通，已将"+price+"元咨询费用退还到宝大夫账户。有疑问请致电400-623-7120。";
+        SMSMessageUtil.sendMsg(phone, content);
+    }
+
+    public static void consultPhoneRefund2Msg(String doctorName, String price,String phone,String date,String week,String beginTime,String register_no){
+        String content =  "（取消电话咨询）您已取消"+doctorName+"医生的"+date+" "+week+" "+beginTime+"的电话咨询，订单号："+register_no+"，已将"+price+"元咨询费用退还到宝大夫账户,有疑问，请致电400-623-7120。";
         SMSMessageUtil.sendMsg(phone, content);
     }
 
@@ -323,6 +328,9 @@ public class PatientMsgTemplate {
         {
             WechatMessageUtil.senMsgToWechat(token,openId, obj);
         }
+
+
+
     }
 
     /**
@@ -355,25 +363,22 @@ public class PatientMsgTemplate {
         String content = "（接听提醒）"+babyName+"小朋友家长，您预约"+doctorName+"医生的"+date+" "+week+" "+beginTime+"的电话咨询将在5分钟后接通，届时您会接到号码为010-4006237120的来电，请保持电话畅通。订单号："+register_no+"，有疑问，请致电400-623-7120。";
         SMSMessageUtil.sendMsg(phone, content);
     }
-    /**
-     * 订单评价提醒
-     * @param register_no 订单编号
-     * @param date 订单时间
-     * @param openId
-     * @param token
-     * @param url
-     */
-    public static void consultPhoneEvaluateWaring2Wechat(String register_no,String date, String openId,String token ,String url){
-        ArrayList<Object> obj = new ArrayList<Object>();
-        WechatArticle article = new WechatArticle();
-        article.setTitle("订单评价提醒");
-        article.setDescription("您的电话咨询订单可以进行评价了哦！\n订单号:" + register_no + "\n订单时间:" + date + "\n\n｛宝宝姓名｝小朋友家长您好，感谢您使用宝大夫预约｛医生姓名｝医生的电话咨询，点击后即可进行评价！\n\n查看全文");
-        article.setUrl(url);
-        obj.add(article);
-        if(StringUtils.isNotNull(openId))
-        {
-            WechatMessageUtil.senMsgToWechat(token,openId, obj);
-        }
+//    /**
+//     * 订单评价提醒
+//     * @param register_no 订单编号
+//     * @param date 订单时间
+//     * @param openId
+//     * @param token
+//     * @param url
+//     */
+//    public static void consultPhoneEvaluateWaring2Wechat(String content,String date, String openId,String token ,String url){
+//
+//        WechatMessageUtil.evaluateRemind("取消预约通知", content, date, "", "", "若您因紧急情况不能按时出诊，请联系客服：400-623-7120。宝大夫祝您工作顺利。", token, url, openId, WechatMessageUtil.DOC_APPINTMENT_CANCEL);
+//    }
+
+    public static void consultPhoneEvaluateWaring2Msg(String babyName,String doctorName, String phone,String url,String connectUrl){
+        String content = "（评价电话咨询）"+babyName+"小朋友家长您好，感谢您使用宝大夫预约"+doctorName+"医生的电话咨询，请点击"+url+"完成评价！注：若此次通话意外中断，请在5分钟内点击"+connectUrl+"重新连接通话，否则本次咨询结束。";
+        SMSMessageUtil.sendMsg(phone, content);
     }
 
     /**
@@ -387,8 +392,4 @@ public class PatientMsgTemplate {
       return (String)shortUrl.get("tinyurl");
     }
 
-
-    public static void consultPhoneEvaluateWaring2Msg(String babyName, String doctorName, String phone, String url, String connectUrl) {
-
-    }
 }
