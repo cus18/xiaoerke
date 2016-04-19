@@ -137,18 +137,28 @@
 
         //关注功能
         $scope.attentionDoctor= function(){
-            if($scope.isAttention)return;
-            $scope.pageLoading = true;
-            AttentionDoctor.save({doctorId:$stateParams.doctorId,routePath:routePath},function(data){
+            var routePath = "/phoneConsultBBBBBB"+$location.path();
+            GetUserLoginStatus.save({routePath:routePath},function(data){
                 $scope.pageLoading = false;
                 if(data.status=="9") {
                     window.location.href = data.redirectURL;
-                }
-                else{
-                    $scope.attentionImg ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Ficon_attention_y.png";
-                    $scope.isAttention = true;
-                    $scope.doctorDetail.fans_number = (typeof($scope.doctorDetail.fans_number) == undefined)?1:
-                        ($scope.doctorDetail.fans_number+1);
+                }else if(data.status=="8"){
+                    window.location.href = data.redirectURL+"?targeturl="+routePath;
+                }else{
+                    if($scope.isAttention)return;
+                    $scope.pageLoading = true;
+                    AttentionDoctor.save({doctorId:$stateParams.doctorId,routePath:routePath},function(data){
+                        $scope.pageLoading = false;
+                        if(data.status=="9") {
+                            window.location.href = data.redirectURL;
+                        }
+                        else{
+                            $scope.attentionImg ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Ficon_attention_y.png";
+                            $scope.isAttention = true;
+                            $scope.doctorDetail.fans_number = (typeof($scope.doctorDetail.fans_number) == undefined)?1:
+                                ($scope.doctorDetail.fans_number+1);
+                        }
+                    })
                 }
             })
         }
@@ -181,9 +191,9 @@
                 if($scope.weekList[i]==6){$scope.weekList[i]="六"}
                 if($scope.weekList[i]==7){$scope.weekList[i]="日"}
             }
-            EarliestVisiteInfo.get({doctorId:$stateParams.doctorId},function(data){
-              console.log(data)
-            })
+            //EarliestVisiteInfo.get({doctorId:$stateParams.doctorId},function(data){
+            //  console.log(data)
+            //})
 
             $scope.isAttention = false;
             //检测用户是否已关注
