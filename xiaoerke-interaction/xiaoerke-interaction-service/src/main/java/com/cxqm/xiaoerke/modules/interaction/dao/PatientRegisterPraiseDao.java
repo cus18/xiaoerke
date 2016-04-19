@@ -1,15 +1,14 @@
 package com.cxqm.xiaoerke.modules.interaction.dao;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.interaction.entity.PatientRegisterPraise;
 import com.cxqm.xiaoerke.modules.interaction.entity.PraiseVo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @MyBatisDao
 public interface PatientRegisterPraiseDao {
@@ -62,7 +61,7 @@ public interface PatientRegisterPraiseDao {
      * @return
      * @author chenxiaoqiong
      */
-    List<HashMap<String,Object>> getConsultEvaluateTop(HashMap<String, Object> params);
+    List<HashMap<String,Object>> getDoctorEvaluateTop(HashMap<String, Object> params);
 
     /**
      * 医生详情页--获取所有电话咨询评价（带分页）
@@ -71,6 +70,6 @@ public interface PatientRegisterPraiseDao {
      * @return
      * @author chenxiaoqiong
      */
-    Page<PatientRegisterPraise> getConsultEvaluate(HashMap<String, Object> dataMap, Page<PatientRegisterPraise> page);
+    Page<PatientRegisterPraise> getDoctorEvaluate(HashMap<String, Object> dataMap, Page<PatientRegisterPraise> page);
 
 }

@@ -1,15 +1,13 @@
 package com.cxqm.xiaoerke.modules.interaction.service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.cxqm.xiaoerke.modules.interaction.entity.PraiseVo;
+import org.apache.ibatis.annotations.Param;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-import org.apache.ibatis.annotations.Param;
-
-import com.cxqm.xiaoerke.modules.interaction.entity.PraiseVo;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public interface PatientRegisterPraiseService {
 
@@ -45,12 +43,12 @@ public interface PatientRegisterPraiseService {
     Integer getTotalCount(HashMap<String, Object> params);
 
     /**
-     * 医生详情页--获取一条电话咨询评价
+     * 获取n条电话咨询评价
      * @param params
      * @return
      * @author chenxiaoqiong
      */
-    HashMap<String,Object> getConsultEvaluateTop(HashMap<String, Object> params);
+    HashMap<String,Object> getDoctorEvaluateTop(HashMap<String, Object> params);
 
     /**
      * 医生详情页--获取所有电话咨询评价（带分页）
@@ -58,5 +56,5 @@ public interface PatientRegisterPraiseService {
      * @return
      * @author chenxiaoqiong
      */
-    HashMap<String,Object> getConsultEvaluate(HashMap<String,Object> params);
+    HashMap<String,Object> getDoctorEvaluate(HashMap<String, Object> params);
 }

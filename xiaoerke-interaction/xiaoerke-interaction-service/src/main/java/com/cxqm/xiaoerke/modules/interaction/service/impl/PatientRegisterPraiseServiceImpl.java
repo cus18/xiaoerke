@@ -79,9 +79,9 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
     }
 
     @Override
-    public HashMap<String, Object> getConsultEvaluateTop(HashMap<String, Object> params) {
+    public HashMap<String, Object> getDoctorEvaluateTop(HashMap<String, Object> params) {
         HashMap<String,Object> response = new HashMap<String, Object>();
-        List<HashMap<String,Object>> resultList = patientRegisterPraiseDao.getConsultEvaluateTop(params);
+        List<HashMap<String,Object>> resultList = patientRegisterPraiseDao.getDoctorEvaluateTop(params);
         if(resultList != null && resultList.size() > 0){
             for(HashMap<String,Object> map:resultList){
             Date date = (Date) map.get("date");
@@ -100,7 +100,7 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
     }
 
     @Override
-    public HashMap<String, Object> getConsultEvaluate(HashMap<String, Object> params)
+    public HashMap<String, Object> getDoctorEvaluate(HashMap<String, Object> params)
     {
         HashMap<String, Object> response = new HashMap<String, Object>();
 
@@ -114,7 +114,7 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
         String pageSize = (String) params.get("pageSize");
         Page<PatientRegisterPraise> page = FrontUtils.generatorPage(currentPage, pageSize);
 
-        Page<PatientRegisterPraise> resultPage = patientRegisterPraiseDao.getConsultEvaluate(dataMap, page);
+        Page<PatientRegisterPraise> resultPage = patientRegisterPraiseDao.getDoctorEvaluate(dataMap, page);
 
         long tmp = FrontUtils.generatorTotalPage(resultPage);
         response.put("pageTotal", tmp + "");
