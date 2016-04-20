@@ -28,7 +28,7 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 	}
 
 	public int insertTempRecord(ConsultRecordMongoVo consultRecordMongoVo) {
-		mongoTemplate.insert(consultRecordMongoVo, "ConsultRecordTemporary");
+		mongoTemplate.insert(consultRecordMongoVo, "consultRecordTemporary");
 		return 0;
 	}
 
@@ -68,7 +68,7 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 
 	public ConsultRecordMongoVo findOneConsultRecordTemporary(Query query) {
 		ConsultRecordMongoVo consultRecordMongoVo = new ConsultRecordMongoVo();
-		consultRecordMongoVo = mongoTemplate.findOne(query,ConsultRecordMongoVo.class,"ConsultRecordTemporary");
+		consultRecordMongoVo = mongoTemplate.findOne(query,ConsultRecordMongoVo.class,"consultRecordTemporary");
 		return consultRecordMongoVo;
 	}
 
@@ -85,7 +85,7 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 	}
 
 	public void  deleteConsultRecordTemporary(Query query) {
-		mongoTemplate.remove(query,"ConsultRecordTemporary");
+		mongoTemplate.remove(query,"consultRecordTemporary");
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 	public WriteResult upsertConsultSessionStatusVo(ConsultSessionStatusVo consultSessionStatusVo) {
 
 		return mongoTemplate.upsert((new Query(where("sessionId").is(consultSessionStatusVo.getSessionId()))),
-				new Update().update("ConsultSessionStatusVo", consultSessionStatusVo),ConsultSessionStatusVo.class);
+				new Update().update("consultSessionStatusVo", consultSessionStatusVo),ConsultSessionStatusVo.class);
 	}
 	//zdl
 	public List<Object> querySessionStatusList(Query query){
@@ -135,7 +135,7 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 	}
 
 	public List<ConsultRecordMongoVo> queryTempRecordList(Query query){
-		return this.mongoTemplate.find(query, ConsultRecordMongoVo.class, "ConsultRecordTemporary");
+		return this.mongoTemplate.find(query, ConsultRecordMongoVo.class, "consultRecordTemporary");
 	}
 
 	@Override
