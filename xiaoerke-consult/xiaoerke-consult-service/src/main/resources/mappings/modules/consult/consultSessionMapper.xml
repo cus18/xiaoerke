@@ -5,7 +5,7 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="title" property="title" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
-        <result column="openid" property="openid" jdbcType="VARCHAR"/>
+        <result column="source" property="source" jdbcType="VARCHAR"/>
         <result column="state" property="status" jdbcType="VARCHAR"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="sys_user_id_cs" property="csUserId" jdbcType="VARCHAR"/>
@@ -14,28 +14,10 @@
 
     </resultMap>
 
-    <resultMap id="doctorResultMap" type="com.cxqm.xiaoerke.modules.sys.entity.DoctorVo" >
-        <id column="id" property="id" jdbcType="VARCHAR" />
-        <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
-        <result column="hospitalName" property="hospital" jdbcType="VARCHAR" />
-        <result column="career_time" property="careerTime" jdbcType="DATE" />
-        <result column="position1" property="position1" jdbcType="VARCHAR" />
-        <result column="position2" property="position2" jdbcType="VARCHAR" />
-        <result column="comment_number" property="commentNumber" jdbcType="INTEGER" />
-        <result column="fans_number" property="fansNumber" jdbcType="INTEGER" />
-        <result column="personal_details" property="personDetails" jdbcType="VARCHAR" />
-        <result column="experince" property="experience" jdbcType="VARCHAR" />
-        <result column="card_experince" property="cardExperience" jdbcType="VARCHAR" />
-        <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
-        <result column="name" property="name" jdbcType="VARCHAR" />
-        <result column="latest_time" property="latestTime" jdbcType="TIMESTAMP" />
-        <result column="location" property="location" jdbcType="VARCHAR" />
-        <result column="doctorName" property="doctorName" jdbcType="VARCHAR" />
-    </resultMap>
-
     <sql id="Base_Column_List">
-    id, title, create_time, openid, state, update_time,sys_user_id_cs, sys_user_id
-  </sql>
+        id, title, create_time, state, update_time,sys_user_id_cs, sys_user_id
+    </sql>
+    
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
@@ -55,9 +37,7 @@
         <if test="createTime != null">
             and create_time = #{createTime,jdbcType=TIMESTAMP}
         </if>
-        <if test="openid != null">
-            and openid = #{openid,jdbcType=VARCHAR}
-        </if>
+
         <if test="status != null">
             and state = #{status,jdbcType=VARCHAR}
         </if>
@@ -76,7 +56,7 @@
     <select id="getAlreadyAccessUsers" resultMap="BaseResultMap"
             parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession">
         SELECT * from consult_conversation cc
-        INNER JOIN sys_attention sa on sa.openid = cc.openid
+        INNER JOIN sys_attention sa on sa.openid = cc.userId
         where 1=1
         <if test="status != null">
             and cc.state = #{status,jdbcType=VARCHAR}
@@ -84,7 +64,7 @@
         <if test="csUserId != null">
             and CC.sys_user_id_cs = #{csUserId,jdbcType=VARCHAR}
         </if>
-        group by cc.openid
+        group by cc.userId
     </select>
 
 
@@ -96,22 +76,22 @@
     on hc.title = hid.conversation_id
     left join sys_baby_baseInfo sbi
     on hid.babyinfo_Id = sbi.id
-     where hc.openid = #{openId,jdbcType=VARCHAR}
+     where hc.userId = #{openId,jdbcType=VARCHAR}
     order by hc.create_time,hc.update_time  desc
   </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from consult_conversation
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
+        delete from consult_conversation
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
 
     <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession" useGeneratedKeys="true"
             keyProperty="id">
     insert into consult_conversation (id, title, create_time, 
-      openid, state, update_time,sys_user_id_cs, sys_user_id
+      state, update_time,sys_user_id_cs, sys_user_id
       )
     values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{openid,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP} ,#{csUserId,jdbcType=VARCHAR}
+       #{status,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP} ,#{csUserId,jdbcType=VARCHAR}
       ,#{userId,jdbcType=VARCHAR}
       )
   </insert>
@@ -128,9 +108,7 @@
             <if test="createTime != null">
                 create_time,
             </if>
-            <if test="openid != null">
-                openid,
-            </if>
+
             <if test="status != null">
                 state,
             </if>
@@ -154,9 +132,7 @@
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="openid != null">
-                #{openid,jdbcType=VARCHAR},
-            </if>
+
             <if test="status != null">
                 #{status,jdbcType=VARCHAR},
             </if>
@@ -180,9 +156,7 @@
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="openid != null">
-                openid = #{openid,jdbcType=VARCHAR},
-            </if>
+
             <if test="status != null">
                 state = #{status,jdbcType=VARCHAR},
             </if>
@@ -208,9 +182,7 @@
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="openid != null">
-                openid = #{openid,jdbcType=VARCHAR},
-            </if>
+
             <if test="status != null">
                 state = #{status,jdbcType=VARCHAR},
             </if>
@@ -230,7 +202,7 @@
     update consult_conversation
     set title = #{title,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      openid = #{openid,jdbcType=VARCHAR},
+
       state = #{status,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       sys_user_id_cs = #{csUserId,jdbcType=VARCHAR},
@@ -239,9 +211,8 @@
   </update>
 
 
-    <select id="getOnlineCsListInfo" resultMap="doctorResultMap"
-            resultType="com.cxqm.xiaoerke.common.persistence.Page">
-        SELECT * from sys_doctor
+    <select id="getOnlineCsListInfo" resultType="java.util.HashMap">
+        SELECT * from sys_user
         where id in
         <foreach collection="list" item="classIdList" open="(" separator="," close=")">
             #{classIdList}

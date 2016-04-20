@@ -2,16 +2,14 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.alibaba.fastjson.JSON;
-import com.cxqm.xiaoerke.common.persistence.Page;
-import com.cxqm.xiaoerke.common.utils.FrontUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.service.AnswerService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
+import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultSessionServiceImpl;
-import com.cxqm.xiaoerke.modules.sys.entity.DoctorVo;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
@@ -113,7 +111,6 @@ public class ConsultDoctorController extends BaseController {
     }
 
 
-
     /***
      * 获取在线医生列表（分页）
      *
@@ -141,24 +138,11 @@ public class ConsultDoctorController extends BaseController {
     @RequestMapping(value = "/doctorList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    HashMap<String, Object> doctorList(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
-
+    HashMap<String, Object> doctorList(@RequestBody Map<String, Object> params) {
         HashMap<String,Object> response = new HashMap<String, Object>();
-        Page<DoctorVo> responsePage = null;
-
-        String pageNo = String.valueOf(params.get("pageNo"));
-        String pageSize = String.valueOf(params.get("pageSize"));
-
-        if(StringUtils.isNotNull(pageNo) && StringUtils.isNotNull(pageSize)){
-
-            Page<DoctorVo> page = FrontUtils.generatorPage(pageNo, pageSize);
-
-            List<String> userList = consultSessionService.getOnlineCsList();
-
-            if(userList!=null && userList.size()>0){
-                responsePage = consultSessionService.getOnlineCsListInfo(page, userList);
-                response.put("onLineDoctor",responsePage.getList());
-            }
+        List<String> userList = consultSessionService.getOnlineCsList();
+        if(userList!=null && userList.size()>0){
+            response.put("onLineDoctor",consultSessionService.getOnlineCsListInfo(userList));
         }
         return response;
     }
@@ -404,7 +388,7 @@ public class ConsultDoctorController extends BaseController {
                  {
                      "id":123
                      "session_id": 456,
-                     "openid": "3Wisdfsdflaksjfsd234234j",
+                     "userId": "3Wisdfsdflaksjfsd234234j",
                      "message":"聊天内容"
                      "message_type": "yuyin",
                      "toUserId": "fdasfa",
@@ -413,7 +397,7 @@ public class ConsultDoctorController extends BaseController {
                  {
                      "id":456
                      "session_id": 345534,
-                     "openid": "3Wisdfsdsdfsfjfsd234234j",
+                     "userId": "3Wisdfsdsdfsfjfsd234234j",
                      "message":"聊天内容"
                      "message_type": "yuyin",
                      "toUserId": "fdasfa",
@@ -426,8 +410,8 @@ public class ConsultDoctorController extends BaseController {
     @RequestMapping(value = "/recordList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> recordList(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
-
+    Map<String, Object> recordList(@RequestBody Map<String, Object> params,
+                                   HttpServletRequest request, HttpServletResponse httpResponse) {
 
         String recordType = String.valueOf(params.get("recordType"));
         String toUserId = String.valueOf(params.get("toUserId"));
@@ -459,7 +443,6 @@ public class ConsultDoctorController extends BaseController {
         response.put("pageNo",pageNo);
         response.put("pageSize",pageSize);
 
-
         return response;
     }
 
@@ -470,9 +453,8 @@ public class ConsultDoctorController extends BaseController {
     public
     @ResponseBody
     void produceRecord(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
-
         ConsultRecordMongoVo consultRecordMongoVo = new ConsultRecordMongoVo();
-        int insertNumber = consultRecordService.saveConsultRecord(consultRecordMongoVo);
+        consultRecordService.saveConsultRecord(consultRecordMongoVo);
     }
 
     /**
@@ -481,7 +463,7 @@ public class ConsultDoctorController extends BaseController {
     @RequestMapping(value = "/GetCSDoctorList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> GetCSDoctorList(Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
+    Map<String, Object> GetCSDoctorList(Map<String, Object> params) {
         Map<String,Object> response = new HashMap<String, Object>();
         List<User> users ;
         User user = new User();

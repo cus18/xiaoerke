@@ -24,21 +24,11 @@ public interface SessionRedisCache {
 
 	void removeUserIdSessionIdPair(String userId);
 
-	void removeWechatSessionPair(String openId);
-
 	void removeConsultSessionBySessionId(Integer sessionId);
 
 	List<Object> getConsultSessionsByKey();
 
 	List<Object> getConsultSessionsBySessionIds(Collection<Object> sessionIds);
-
-	Integer getSessionIdByOpenId(String openId);
-
-	void putOpenIdSessionIdPair(String openId, Integer sessionId);
-
-	void putWechatSessionByOpenId(String openId, RichConsultSession wechatSession);
-
-	RichConsultSession getWechatSessionByOpenId(String openId);
 
 	String getWeChatToken();
 

@@ -61,10 +61,10 @@ public class ConsultUserController extends BaseController {
 
     @Autowired
     private ConsultSessionForwardRecordsService consultSessionForwardRecordsService;
+
     /***
      * 用户在咨询完毕后，主动请求终止会话（医生和患者都可操作）
      * @param
-     *        userId:{"userId": "124124"}
      * @return
      *     {
      *        "result":"success"(失败返回failure)
@@ -74,16 +74,11 @@ public class ConsultUserController extends BaseController {
     @RequestMapping(value = "/sessionEnd", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> getSessionId(@RequestParam(required=true) String userId) {
-        Integer sessionId = ConsultSessionManager.getSessionManager().getSessionIdByUser(userId);
-        Map<String, Object> response = new HashMap<String, Object>();
-        response.put("status", 0);
-        response.put("msg", "OK");
-        response.put("sessionId", sessionId);
+    Map<String, Object> getSessionId(@RequestParam(required=true) String sessionId,@RequestParam(required=true) String userId) {
 
-        if(null == sessionId){
-            response.put("status", 1);
-        }
+        String result = consultConversationService.clearSession(Integer.parseInt(sessionId),userId);
+        Map<String, Object> response = new HashMap<String, Object>();
+        response.put("result", result);
         return response;
     }
 
@@ -107,8 +102,6 @@ public class ConsultUserController extends BaseController {
         response.put("sessions", sessions);
         return response;
     }
-
-
 
     @RequestMapping(value = "/getCurrentUserByCSId", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -147,8 +140,6 @@ public class ConsultUserController extends BaseController {
         return response;
     }
 
-
-
     /**
      * 获取客户列表(或咨询过某个医生的客户)详细信息,按照时间降序排序
      */
@@ -172,16 +163,14 @@ public class ConsultUserController extends BaseController {
             String searchDate = DateUtils.formatDateTime(timeMillis);
             searchMap.put("searchDate",searchDate);
         }
-
         searchMap.put("CSDoctorId",CSDoctorId);
-
         Page<ConsultSessionForwardRecordsVo> userPage  = FrontUtils.generatorPage(pageNo, pageSize);
         Page<ConsultSessionForwardRecordsVo> resultPage = consultSessionForwardRecordsService.getConsultUserListRecently(userPage,searchMap);
 
         //根据会话记录查询客户列表的详细信息
         List<ConsultRecordMongoVo> consultSessionForwardRecordsVos = new ArrayList<ConsultRecordMongoVo>();
         for(ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo : resultPage.getList()){
-            Query query = new Query(where("openid").is(consultSessionForwardRecordsVo.getOpenid())).with(new Sort(Sort.Direction.DESC, "createDate"));
+            Query query = new Query(where("fromUserId").is(consultSessionForwardRecordsVo.getFromUserId())).with(new Sort(Sort.Direction.DESC, "createDate"));
             ConsultRecordMongoVo oneConsultRecord = consultRecordService.findOneConsultRecord(query);
             Date date = oneConsultRecord.getCreateDate();
             oneConsultRecord.setInfoDate(DateUtils.DateToStr(date));
@@ -219,16 +208,13 @@ public class ConsultUserController extends BaseController {
                 for(RichConsultSession richConsultSession :richConsultSessions){
                     HashMap<String,Object> searchMap = new HashMap<String, Object>();
                     String userId = richConsultSession.getUserId();
-                    if(StringUtils.isNull(userId)){
-                        userId =  richConsultSession.getOpenid();
-                    }
                     Query query = new Query(where("userId").is(userId).and("csUserId")
                             .is(richConsultSession.getCsUserId())).with(new Sort(Direction.DESC, "createDate"));
                     pagination = consultRecordService.getPage(pageNo, pageSize, query,"temporary");
                     if(StringUtils.isNull(richConsultSession.getUserId())){
-                        searchMap.put("patientId",richConsultSession.getOpenid());
+                        searchMap.put("patientId",richConsultSession.getUserId());
                     }
-                    searchMap.put("patientName", richConsultSession.getNickName());
+                    searchMap.put("patientName", richConsultSession.getUserName());
                     searchMap.put("fromServer",richConsultSession.getServerAddress());
                     searchMap.put("sessionId",richConsultSession.getId());
                     searchMap.put("isOnline",true);
@@ -277,11 +263,10 @@ public class ConsultUserController extends BaseController {
          ]
      }
      */
-
     @RequestMapping(value = "/recordSearchList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> recordSearchList(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
+    Map<String, Object> recordSearchList(@RequestBody Map<String, Object> params) {
 
         int pageNo = 0;
         int pageSize = 1;
@@ -329,48 +314,6 @@ public class ConsultUserController extends BaseController {
         response.put("pageNo",pageNo);
         response.put("pageSize",pageSize);
         return response;
-    }
-
-    /***
-     * 用户在咨询完毕后，主动请求终止会话（医生和患者都可操作）
-     * @param
-     *        params:{"sessionId": 432432}
-     * @return
-     *     {
-     *        "result":"success"(失败返回failure)
-     *      }
-     */
-
-//    @RequestMapping(value = "/sessionEnd", method = {RequestMethod.POST, RequestMethod.GET})
-//    public
-//    @ResponseBody
-//    String sessionEnd(@RequestBody Map<String, Object> params,HttpServletRequest request,
-//                      HttpServletResponse httpResponse) {
-//        return consultConversationService.removeSessionById(request, params);
-//    }
-
-    /***
-     * 用户删除会话
-     *
-     * @param
-     * {
-    "sessionId": "dafdsaf",
-    "patientId":"fdsafew",
-    "operation":"confirm" (delete删除操作)
-    }
-     @return
-     {
-     "result":"success"
-     }
-     */
-
-    @RequestMapping(value = "/waitJoinList/operation", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    String operation(@RequestBody Map<String, Object> params,
-                     HttpServletRequest request,
-                     HttpServletResponse httpResponse) {
-        return consultConversationService.removeSessionById(request,params);
     }
 
 }

@@ -7,11 +7,9 @@ import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
 import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultMongoUtilsService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultPhoneService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
-import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
+import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
 import com.cxqm.xiaoerke.modules.operation.service.BaseDataService;
 import com.cxqm.xiaoerke.modules.operation.service.OperationsComprehensiveService;
@@ -96,10 +94,11 @@ public class ScheduledTask {
     @Autowired
     private ConsultMongoUtilsService consultMongoUtilsService;
 
-
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private ConsultSessionService consultSessionService;
 
     //将所有任务放到一个定时器里，减少并发
     //@Scheduled(cron = "0 */1 * * * ?")
@@ -993,14 +992,14 @@ public class ScheduledTask {
     }
 
     //建立患者与医生之间的通讯
-    public void getConnenct4doctorAndPatient(){
+    public synchronized void getConnenct4doctorAndPatient(){
       List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",new Date());
       for(HashMap map:consultOrderList){
           String doctorPhone =  (String)map.get("doctorPhone");
           String userPhone =  (String)map.get("userPhone");
           Integer orderId = (Integer)map.get("id");
           List<ConsultPhoneRecordVo> list = consultPhoneService.getConsultRecordInfo(orderId + "", "CallAuth");
-          if(list.size()<2){
+          if(list.size()<1){
               Integer conversationLength =  (Integer)map.get("conversationLength")*60;
               HashMap<String, Object> result = CCPRestSDK.callback(userPhone,doctorPhone,
                       "4006237120", "4006237120", null,
@@ -1049,7 +1048,7 @@ public class ScheduledTask {
         String dateStr = DateUtils.DateToStr(date,"datetime");
         List<HashMap<String, Object>> orderMsgList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",date);
         for(HashMap<String ,Object> map:orderMsgList){
-            Map messageMap = messageService.consultPhoneMsgRemind((Integer) map.get("id") + "");
+            List<Map> messageMap = messageService.consultPhoneMsgRemind((Integer) map.get("id") + "");
             if(null == messageMap||messageMap.size() == 0){
                 Map<String,Object> parameter = systemService.getWechatParameter();
                 String token = (String)parameter.get("token");
@@ -1075,22 +1074,8 @@ public class ScheduledTask {
                     ConsultSessionStatusVo consultSessionStatusVo = transConsultSessionStatusMapToVo(mapVo);
                     if(consultSessionStatusVo !=null && StringUtils.isNotNull(consultSessionStatusVo.getLastMessageTime())){
                         if(DateUtils.pastMinutes(DateUtils.StrToDate(consultSessionStatusVo.getLastMessageTime(),"xiangang"))>10L){
-                            try{
-                                //清除redis内的数据
-                                sessionRedisCache.removeConsultSessionBySessionId(Integer.valueOf(consultSessionStatusVo.getSessionId()));
-                                sessionRedisCache.removeUserIdSessionIdPair(consultSessionStatusVo.getUserId());
-                                //清除内存内的数据
-                                ConsultSessionManager.getSessionManager().removeUserSession(consultSessionStatusVo.getUserId());
-                                //清除mongo中的session
-                                String findId =  consultSessionStatusVo.getUserId() == null ? "openid":"userId";
-                                consultMongoUtilsService.removeRichConsultSession(new Query().addCriteria(new Criteria().where(findId).is(consultSessionStatusVo.getUserId())));
-                                //删除最后一次会话
-                                consultRecordService.deleteConsultSessionStatusVo(new Query().addCriteria(new Criteria().where("sessionId").is(consultSessionStatusVo.getSessionId())));
-                               //删除用户的临时聊天记录
-                                consultRecordService.deleteConsultTempRecordVo(new Query().addCriteria(new Criteria().where("userId").is(consultSessionStatusVo.getUserId())));
-                            }catch (Exception e){
-                                e.printStackTrace();
-                            }
+                            consultSessionService.clearSession(Integer.valueOf(consultSessionStatusVo.getSessionId()),
+                                    consultSessionStatusVo.getUserId());
                         }
                     }
                 }
@@ -1108,9 +1093,6 @@ public class ScheduledTask {
         }
         return null;
     }
-
-
-
 
     //插入监听器
     private void insertMonitor(String register_no, String type, String status) {
@@ -1165,7 +1147,7 @@ public class ScheduledTask {
         String dateStr = DateUtils.DateToStr(date,"datetime");
         List<HashMap<String, Object>> orderMsgList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1", date);
         for(HashMap<String ,Object> map:orderMsgList){
-            Map messageMap = messageService.consultPhoneMsgRemind((Integer) map.get("id") + "");
+            List<Map> messageMap = messageService.consultPhoneMsgRemind((Integer) map.get("id") + "");
             if(null == messageMap||messageMap.size() == 0){
                 Map<String,Object> parameter = systemService.getWechatParameter();
                 String token = (String)parameter.get("token");

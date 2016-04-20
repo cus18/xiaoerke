@@ -59,12 +59,8 @@ public class ConsultSessionManager {
 
 	private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
 
-	private ConsultMongoUtilsServiceImpl consultMongoUtilsService = SpringContextHolder.getBean("consultMongoUtilsServiceImpl");
-
 	private ConsultSessionService consultSessionService = SpringContextHolder.getBean("consultSessionServiceImpl");
 
-	private ConsultRecordService consultRecordService  = SpringContextHolder.getBean("consultRecordServiceImpl");
-	
 	private ConsultSessionForwardRecordsService sessionForwardService = SpringContextHolder.getBean("consultSessionForwardRecordsServiceImpl");
 	
 	private SystemService systemService = SpringContextHolder.getBean("systemService");
@@ -90,13 +86,14 @@ public class ConsultSessionManager {
 		if(args.length>2){
 			if(fromType.equals("user")) {
 				String userId = args[2];
-				doCreateSessionInitiatedByUser(userId, channel);
+				String source = args[3];
+				doCreateSessionInitiatedByUser(userId, source,channel);
 			}else if(fromType.equals("cs")) {
 				String userId = args[2];
-				doCreateSessionInitiatedByCs(userId, channel);
+				doCreateSessionInitiatedByCs(userId,channel);
 			} else if(fromType.equals("distributor")) {
 				String userId = args[2];
-				doCreateSessionInitiatedByDistributor(userId, channel);
+				doCreateSessionInitiatedByDistributor(userId,channel);
 			}
 		}
 	}
@@ -129,7 +126,7 @@ public class ConsultSessionManager {
 		}
 	}
 
-	private void doCreateSessionInitiatedByUser(String userId, Channel channel){
+	private void doCreateSessionInitiatedByUser(String userId, String source,Channel channel){
 		Integer sessionId = sessionRedisCache.getSessionIdByUserId(userId);
 		
 		RichConsultSession consultSession = null;
@@ -144,6 +141,7 @@ public class ConsultSessionManager {
 			consultSession.setServerAddress(address.getHostName());
 			consultSession.setUserId(userId);
 			consultSession.setUserName(user.getName() == null ? user.getLoginName() : user.getName());
+			consultSession.setSource(source);
 
 			int number = accessNumber.getAndDecrement();
 			if(number < 10)
@@ -201,7 +199,7 @@ public class ConsultSessionManager {
 		channelUserMapping.put(channel, userId);
 	}
 
-	public HashMap<String,Object> createWechatConsultSession(RichConsultSession consultSession,SysWechatAppintInfoVo wechatAttentionVo){
+	public HashMap<String,Object> createUserWXConsultSession(RichConsultSession consultSession){
 
 		HashMap<String,Object> response = new HashMap<String, Object>();
 
@@ -267,7 +265,7 @@ public class ConsultSessionManager {
 			}else{
 				//如果没有任何医生在线，给用户推送微信消息，告知没有医生在线，稍后在使用服务
 				String st = "尊敬的用户，您好，目前没有医生在线，请稍后再试";
-				WechatUtil.senMsgToWechat(sessionRedisCache.getWeChatToken(),consultSession.getOpenid(), st);
+				WechatUtil.senMsgToWechat(sessionRedisCache.getWeChatToken(),consultSession.getUserId(), st);
 				return null;
 			}
 		}
@@ -276,14 +274,11 @@ public class ConsultSessionManager {
 		consultSessionService.saveConsultInfo(consultSession);
 		Integer sessionId = consultSession.getId();
 		sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
-		sessionRedisCache.putOpenIdSessionIdPair(consultSession.getOpenid(), sessionId);
-//        consultMongoUtilsService.upsertRichConsultSession((new Query(where("openid").is(consultSession.getOpenid()))),
-//				new Update().update("RichConsultSession", consultSession));
-		sessionRedisCache.putWechatSessionByOpenId(consultSession.getOpenid(), consultSession);
+		sessionRedisCache.putUserIdSessionIdPair(consultSession.getUserId(), sessionId);
 
 		//成功分配医生，给用户发送一个欢迎语
 		String st = "尊敬的用户，宝大夫在线，有什么可以帮您";
-		WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN, consultSession.getOpenid(), st);
+		WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN, consultSession.getUserId(), st);
 		response.put("csChannel", csChannel);
 		response.put("sessionId",sessionId);
 		response.put("consultSession",consultSession);

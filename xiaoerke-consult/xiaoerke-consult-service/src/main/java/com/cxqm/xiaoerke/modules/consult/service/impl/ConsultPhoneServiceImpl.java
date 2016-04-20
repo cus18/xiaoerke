@@ -101,6 +101,8 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
         consultPhonevo.setState("2");//带评价
         consultPhonevo.setUpdateTime(new Date());
         int state = consultPhonePatientService.updateOrderInfoBySelect(consultPhonevo);
+//        发消息
+
         CallResponse response = new CallResponse();
         response.setStatuscode("0000");
         response.setStatusmsg(state + "");
@@ -145,12 +147,13 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
         String talkDuration = vo.getTalkduration();
 
         ConsultPhoneRegisterServiceVo consultPhonevo = new ConsultPhoneRegisterServiceVo();
-        consultPhonevo.setSurplusTime(serviceLength-Integer.parseInt(talkDuration)*1000);
+
         consultPhonevo.setId(Integer.parseInt(userData));
         consultPhonevo.setUpdateTime(new Date());
-        if(Integer.parseInt(talkDuration)>0&&Integer.parseInt(talkDuration)<serviceLength*60-10&&"0".equals(phonepatientInfo.get("type"))){
+        if("1234".indexOf(vo.getByetype())>-1&&Integer.parseInt(talkDuration)>0&&Integer.parseInt(talkDuration)<serviceLength*60-10&&"0".equals(phonepatientInfo.get("type"))){
 //             改状态
             consultPhonevo.setType("1");//已推送过消息
+            consultPhonevo.setSurplusTime(serviceLength - Integer.parseInt(talkDuration) * 1000);//修改通话时间
             //发消息
             Map<String,Object> consultOrder = consultPhonePatientService.getPatientRegisterInfo(Integer.parseInt(userData));
             User userInfo = systemService.getUserById((String)consultOrder.get("sys_user_id"));

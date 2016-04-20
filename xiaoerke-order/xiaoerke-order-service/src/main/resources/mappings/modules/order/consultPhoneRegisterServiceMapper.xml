@@ -74,6 +74,7 @@
     LEFT JOIN sys_baby_baseInfo sbi ON sp.sys_user_id = sbi.userid
     LEFT JOIN sys_user su on sp.sys_user_id = su.id
     where 1=1
+    and crs.callSid is null
     <if test="state != null" >
       and crs.state = #{state,jdbcType=VARCHAR}
     </if>
@@ -86,6 +87,7 @@
     '%Y-%m-%d %k:%i:%s'
     )
     )
+    group by crs.id
 
   </select>
 
