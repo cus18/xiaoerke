@@ -19,6 +19,7 @@ import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -92,5 +93,34 @@ public class PayController {
                             HttpServletResponse response) {
        return "customerPay";
    }
+
+    /**
+     *
+     * 处理来自微信服务器的请求
+     *
+     */
+    @RequestMapping(value = "/wxPay/patientPay.do", method = {RequestMethod.POST, RequestMethod.GET})
+    public String wxPay(@RequestParam(required=true) String serviceType,
+                        @RequestParam(required=false) String phoneConDoctorDetail,
+                        @RequestParam(required=false) String doctorId,
+                        Model model) {
+
+        if(serviceType.equals("antiDogPay")){
+            model.addAttribute("payPrice", 19.8);
+            model.addAttribute("intervalFlag", "1");
+            return "antiDogPay";
+        }else if(serviceType.equals("phoneConsult")){
+            model.addAttribute("payPrice", 120);
+            model.addAttribute("phoneConDoctorDetail", phoneConDoctorDetail);
+            model.addAttribute("doctorId", doctorId);
+            return "phoneConsultPay";
+        }else if(serviceType.equals("appointment")){
+            model.addAttribute("payPrice", 200);
+            model.addAttribute("intervalFlag", "1");
+            return "appointmentPay";
+        }else{
+            return null;
+        }
+    }
     
 }

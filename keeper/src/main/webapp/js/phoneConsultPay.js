@@ -44,7 +44,7 @@ var doRefresh = function(){
         error : function() {
         }
     });
-    var param = '{routePath:"/phoneConsultPay/patientPay.do?phoneConDoctorDetail='
+    var param = '{routePath:"/wxPay/serviceType=phoneConsultAAAAAApatientPay.do?phoneConDoctorDetail='
                 +GetQueryString("phoneConDoctorDetail")+"AAAAAAdoctorId="+GetQueryString("doctorId")+'"}';
     $.ajax({
         type: "POST",
@@ -58,7 +58,6 @@ var doRefresh = function(){
             } else if (data.status == "8") {
                 window.location.href = data.redirectURL;
             } else if (data.status == "20") {
-
                 //获取医生个人信息
                 $.ajax({
                     url: "consultPhone/consultPhoneDoctor/doctorDetail",// 跳转到 action

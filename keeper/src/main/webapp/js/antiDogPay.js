@@ -495,11 +495,11 @@ function loginCheck(){
         data: {},
         complete: function(jqXHR){
             if(jqXHR.status=="404"){
-                window.location.href = "/xiaoerke-insurance-webapp/antiDogPay/patientPay.do";
+                window.location.href = "/wxPay/patientPay.do";
             }
         },
         success:function(data){
-            var param = '{routePath:"/antiDogPay/patientPay.do"}';
+            var param = '{routePath:"/wxPay/patientPay.do"}';
             $.ajaxSetup({
                 contentType : 'application/json'
             });
