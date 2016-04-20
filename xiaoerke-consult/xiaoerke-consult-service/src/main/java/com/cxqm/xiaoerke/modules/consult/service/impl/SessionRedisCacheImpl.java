@@ -62,13 +62,6 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 	}
 
 	@Override
-	public Integer getSessionIdByOpenId(String openId) {
-		Object sessionId = redisTemplate.opsForHash().get(USER_SESSIONID_KEY, openId);
-		return sessionId == null ? null : (Integer) sessionId;
-	}
-
-
-	@Override
 	public Integer getSessionIdByUserId(String userId) {
 		Object sessionId = redisTemplate.opsForHash().get(USER_SESSIONID_KEY, userId);
 		return sessionId == null ? null : (Integer) sessionId;
@@ -80,28 +73,6 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 		if(StringUtils.isNotNull(userId)||sessionId!=null){
 			redisTemplate.opsForHash().put(USER_SESSIONID_KEY, userId, sessionId);
 		}
-	}
-
-
-	@Override
-	public void putOpenIdSessionIdPair(String openId, Integer sessionId) {
-		if(StringUtils.isNotNull(openId)||sessionId!=null){
-			redisTemplate.opsForHash().put(USER_SESSIONID_KEY, openId, sessionId);
-		}
-	}
-
-	@Override
-	public void putWechatSessionByOpenId(String openId,RichConsultSession richConsultSession) {
-		if(StringUtils.isNotNull(openId)||richConsultSession!=null){
-			redisTemplate.opsForHash().put(USER_WECHATSESSION_KEY,
-					openId, ConsultUtil.transferRichConsultSessionToMap(richConsultSession));
-		}
-	}
-
-	@Override
-	public RichConsultSession getWechatSessionByOpenId(String openId) {
-		HashMap<String,Object> wechatSession = (HashMap<String,Object>) redisTemplate.opsForHash().get(USER_WECHATSESSION_KEY, openId);
-		return wechatSession == null ? null : ConsultUtil.transferMapToRichConsultSession(wechatSession);
 	}
 
 	@Override
@@ -130,11 +101,6 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 	@Override
 	public void removeUserIdSessionIdPair(String userId) {
 		redisTemplate.opsForHash().delete(USER_SESSIONID_KEY, userId);
-	}
-
-	@Override
-	public void removeWechatSessionPair(String openId){
-		redisTemplate.opsForHash().delete(USER_WECHATSESSION_KEY, openId);
 	}
 
 }

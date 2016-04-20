@@ -173,6 +173,6 @@ public class MessageServiceImpl implements MessageService{
 	public List<HashMap<String, Object>> getTrackOrder(){return messageDao.getTrackOrder();};
 
 	@Override
-	public Map consultPhoneMsgRemind(String id){return messageDao.consultPhoneMsgRemind(id);};
+	public List<Map> consultPhoneMsgRemind(String id){return messageDao.consultPhoneMsgRemind(id);};
     
 }

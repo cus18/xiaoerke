@@ -467,13 +467,13 @@ public class WechatUtil {
         }
 
     }
+
     /**
      * 从微信服务器下载多媒体文件
      *
      * @author deliang
      */
-    public String downloadMediaFromWx(String accessToken, String mediaId, String FileName, String messageType) throws IOException {
-
+    public String downloadMediaFromWx(String accessToken, String mediaId, String messageType) throws IOException {
 
         if (StringUtils.isEmpty(accessToken) || StringUtils.isEmpty(mediaId)) return "";
             Long picLen = 0L;

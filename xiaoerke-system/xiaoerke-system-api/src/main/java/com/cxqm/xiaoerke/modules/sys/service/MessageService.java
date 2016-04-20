@@ -52,5 +52,5 @@ public interface MessageService {
 
 	List<HashMap<String, Object>> getTrackOrder();
 
-	Map consultPhoneMsgRemind(String id);
+	List<Map> consultPhoneMsgRemind(String id);
 }

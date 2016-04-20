@@ -126,9 +126,7 @@ public class SystemService extends BaseService {
 	 * @return
 	 */
 	public List<User> findUserByUserType(User user) {
-
 		List<User>	users = userDao.findUserByUserType(user);
-
 		return users;
 	}
 
