@@ -13,12 +13,6 @@ public class ConsultRecordMongoVo {
 
     private String worker;
 
-    private Date attentionDate;
-
-    private String attentionMarketer;
-
-    private String attentionNickname;
-
     private Date createDate;
 
     private String infoDate;
@@ -129,30 +123,6 @@ public class ConsultRecordMongoVo {
 
     public void setWorker(String worker) {
         this.worker = worker;
-    }
-
-    public Date getAttentionDate() {
-        return attentionDate;
-    }
-
-    public void setAttentionDate(Date attentionDate) {
-        this.attentionDate = attentionDate;
-    }
-
-    public String getAttentionMarketer() {
-        return attentionMarketer;
-    }
-
-    public void setAttentionMarketer(String attentionMarketer) {
-        this.attentionMarketer = attentionMarketer;
-    }
-
-    public String getAttentionNickname() {
-        return attentionNickname;
-    }
-
-    public void setAttentionNickname(String attentionNickname) {
-        this.attentionNickname = attentionNickname;
     }
 
     public Date getCreateDate() {
