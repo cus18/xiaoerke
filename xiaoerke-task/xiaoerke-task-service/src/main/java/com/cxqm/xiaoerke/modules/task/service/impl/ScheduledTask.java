@@ -1109,9 +1109,6 @@ public class ScheduledTask {
         return null;
     }
 
-
-
-
     //插入监听器
     private void insertMonitor(String register_no, String type, String status) {
         HashMap<String, Object> monitorMap = new HashMap<String, Object>();

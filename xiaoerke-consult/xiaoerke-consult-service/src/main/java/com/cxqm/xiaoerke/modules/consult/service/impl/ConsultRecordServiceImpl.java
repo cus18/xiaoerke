@@ -98,11 +98,13 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
          * 数据重新插入；（2）consultRecordMongoVo中的userId和csUserId组合查询在RichConsultSession中没有记录，则直接插入，不需要做任何删除***/
 
         if(consultRecordMongoVo != null && consultRecordMongoVo.getSessionId()!=null){
-            ConsultRecordMongoVo recordMongoVo = consultRecordMongoDBService.findOneConsultRecordTemporary(new Query(Criteria.where("sessionId").is(consultRecordMongoVo.getSessionId())));
+            ConsultRecordMongoVo recordMongoVo = consultRecordMongoDBService.findOneConsultRecordTemporary(new Query(Criteria.where("sessionId").
+                    is(consultRecordMongoVo.getSessionId())));
             if(recordMongoVo !=null ){
                 consultRecordMongoDBService.insertTempRecord(consultRecordMongoVo);
             }else {
-                Query query = new Query(Criteria.where("userId").is(consultRecordMongoVo.getUserId()).andOperator(Criteria.where("csUserId").is(consultRecordMongoVo.getCsUserId())));
+                Query query = new Query(Criteria.where("userId").is(consultRecordMongoVo.getUserId()).andOperator(Criteria.where("csUserId").
+                        is(consultRecordMongoVo.getCsUserId())));
                 ConsultRecordMongoVo resultVo = consultRecordMongoDBService.findOneConsultRecordTemporary(query);
                 if(resultVo!=null){
                     consultRecordMongoDBService.deleteConsultRecordTemporary(query);
@@ -164,78 +166,50 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
 
     //异步保存聊天信息
     @Override
-    public void buildRecordMongoVo(@RequestParam(required = true) String consultType,
-                                   @RequestParam(required = true) String senderId,
-                                   @RequestParam(required = true) String type,
-                                   @RequestParam(required = false) String messageContent,
-                                   RichConsultSession consultSession,
-                                   SysWechatAppintInfoVo resultVo) {
-        Runnable thread = new SaveRecordThread(consultType, senderId, type,messageContent,consultSession,resultVo);
+    public void buildRecordMongoVo(@RequestParam(required = true) String senderId, @RequestParam(required = true) String type,
+                                   @RequestParam(required = false) String messageContent, RichConsultSession consultSession) {
+        Runnable thread = new SaveRecordThread(senderId,type,messageContent,consultSession);
         threadExecutor.execute(thread);
     }
 
     public class SaveRecordThread extends Thread {
-        private String consultType;
         private String senderId;
         private String type;
         private String messageContent;
         private RichConsultSession consultSession;
-        private SysWechatAppintInfoVo sysWechatAppintInfoVo;
 
-        public SaveRecordThread(String consultType, String senderId, String type,String messageContent,RichConsultSession consultSession,SysWechatAppintInfoVo sysWechatAppintInfoVo) {
+        public SaveRecordThread(String senderId, String type,String messageContent,RichConsultSession consultSession) {
             super(SaveRecordThread.class.getSimpleName());
-            this.consultType = consultType;
             this.senderId = senderId;
             this.type = type;
             this.messageContent = messageContent;
             this.consultSession = consultSession;
-            this.sysWechatAppintInfoVo = sysWechatAppintInfoVo;
         }
 
         @Override
         public void run() {
-
             ConsultRecordMongoVo consultRecordMongoVo = new ConsultRecordMongoVo();
             Integer sessionId = consultSession.getId();
-
-            consultRecordMongoVo.setConsultType(consultType);
             consultRecordMongoVo.setSessionId(sessionId.toString());
             consultRecordMongoVo.setType(type);
             consultRecordMongoVo.setMessage(messageContent);
-            if(consultType.equals("wx")){
-                consultRecordMongoVo.setAttentionDate(sysWechatAppintInfoVo.getCreate_time());
-                consultRecordMongoVo.setAttentionMarketer(sysWechatAppintInfoVo.getMarketer());
-                consultRecordMongoVo.setUserId(consultSession.getOpenid());
-                if(StringUtils.isNotNull(sysWechatAppintInfoVo.getWechat_name())){
-                    consultRecordMongoVo.setAttentionNickname(sysWechatAppintInfoVo.getWechat_name());
-                    consultRecordMongoVo.setSenderName(sysWechatAppintInfoVo.getWechat_name());
-                }else{
-                    consultRecordMongoVo.setAttentionNickname(consultSession.getNickName());
-                    consultRecordMongoVo.setSenderName(consultSession.getNickName());
-                }
-            }else{
-                consultRecordMongoVo.setUserId(consultSession.getUserId());
-                consultRecordMongoVo.setSenderId(senderId);
-                consultRecordMongoVo.setCsUserId(consultSession.getCsUserId());
-                consultRecordMongoVo.setDoctorName(consultSession.getCsUserName());
-                consultRecordMongoVo.setCreateDate(new Date());
-                saveConsultRecord(consultRecordMongoVo);
-                saveConsultRecordTemporary(consultRecordMongoVo);
-            }
+            consultRecordMongoVo.setSenderId(senderId);
+            consultRecordMongoVo.setUserId(consultSession.getUserId());
+            consultRecordMongoVo.setCsUserId(consultSession.getCsUserId());
+            consultRecordMongoVo.setDoctorName(consultSession.getCsUserName());
+            consultRecordMongoVo.setCreateDate(new Date());
+            saveConsultRecord(consultRecordMongoVo);
+            saveConsultRecordTemporary(consultRecordMongoVo);
         }
     }
 
     @Override
-    public void saveConsultSessionStatus(Integer sessionId,String userId,String consultType, RichConsultSession consultSession) {
+    public void saveConsultSessionStatus(RichConsultSession consultSession) {
         ConsultSessionStatusVo consultSessionStatusVo = new ConsultSessionStatusVo();
-        consultSessionStatusVo.setSessionId(sessionId.toString());
+        consultSessionStatusVo.setSessionId(String.valueOf(consultSession.getId()));
         String lastDate = DateUtils.DateToStr(new Date());
         consultSessionStatusVo.setLastMessageTime(lastDate);
-        if(consultType.equals("wx")){
-            consultSessionStatusVo.setUserId(consultSession.getOpenid());
-        }else{
-            consultSessionStatusVo.setUserId(consultSession.getUserId());
-        }
+        consultSessionStatusVo.setUserId(consultSession.getUserId());
         consultRecordMongoDBService.upsertConsultSessionStatusVo(consultSessionStatusVo);
     }
 

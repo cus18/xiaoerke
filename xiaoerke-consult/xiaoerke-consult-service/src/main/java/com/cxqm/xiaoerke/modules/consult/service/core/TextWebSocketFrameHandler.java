@@ -81,22 +81,18 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 			if(channel != csChannel && csChannel != null) {
 				csChannel.writeAndFlush(msg.retain());
 				//保存聊天记录
-				consultRecordService.buildRecordMongoVo("web", userId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession,resultVo);
+				consultRecordService.buildRecordMongoVo(userId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
 			} else {
-				if(StringUtils.isNotNull(userId)){
+				if(consultSession.getSource().equals("h5cxqm")){
 					Channel userChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(userId);
 					userChannel.writeAndFlush(msg.retain());
 					//保存聊天记录
-					consultRecordService.buildRecordMongoVo("h5", csUserId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession, resultVo);
-				}else{
-					String openId = consultSession.getOpenid();
+					consultRecordService.buildRecordMongoVo(csUserId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
+				}else if(consultSession.getSource().equals("wxcxqm")){
 					String st = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
-					WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN, openId, st);
-					SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
-					sysWechatAppintInfoVo.setOpen_id(openId);
-					resultVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
+					WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN, consultSession.getUserId(), st);
 					//保存聊天记录
-					consultRecordService.buildRecordMongoVo("wx",csUserId,String.valueOf(msgType), (String) msgMap.get("content"), consultSession, resultVo);
+					consultRecordService.buildRecordMongoVo(csUserId,String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
 				}
 
 			}
