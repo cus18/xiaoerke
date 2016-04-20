@@ -76,7 +76,6 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 
 	public int saveConsultRecord(ConsultRecordMongoVo consultRecordMongoVo) {
 		insertConsultRankRecord(consultRecordMongoVo);//今日排名
-//		insertTempRecord(consultRecordMongoVo);//临时聊天记录
 		return this.insert(consultRecordMongoVo);//全部聊天记录
 	}
 
