@@ -1,11 +1,13 @@
 package com.cxqm.xiaoerke.modules.consult.service.core;
 
 import com.cxqm.xiaoerke.common.utils.ConstantUtil;
+import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultMongoUtilsServiceImpl;
+import com.cxqm.xiaoerke.modules.sys.service.impl.UserInfoServiceImpl;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -64,6 +66,9 @@ public class ConsultSessionManager {
 	private ConsultSessionForwardRecordsService sessionForwardService = SpringContextHolder.getBean("consultSessionForwardRecordsServiceImpl");
 	
 	private SystemService systemService = SpringContextHolder.getBean("systemService");
+
+	private UserInfoServiceImpl userInfoService = SpringContextHolder.getBean("userInfoServiceImpl");
+
 
 	private static ConsultSessionManager sessionManager = new ConsultSessionManager();
 
@@ -271,6 +276,12 @@ public class ConsultSessionManager {
 				return null;
 			}
 		}
+
+		HashMap<String, Object> perInfo = new HashMap<String, Object>();
+		if ( StringUtils.isNotNull(consultSession.getCsUserId())) {
+			perInfo = userInfoService.findPersonDetailInfoByUserId(consultSession.getCsUserId());
+		}
+		consultSession.setCsUserName((String)perInfo.get("name"));
 
 		//可开启线程进行记录
 		consultSessionService.saveConsultInfo(consultSession);

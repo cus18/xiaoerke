@@ -194,6 +194,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
             consultRecordMongoVo.setType(type);
             consultRecordMongoVo.setMessage(messageContent);
             consultRecordMongoVo.setSenderId(senderId);
+            consultRecordMongoVo.setSenderName(consultSession.getUserName());
             consultRecordMongoVo.setUserId(consultSession.getUserId());
             consultRecordMongoVo.setCsUserId(consultSession.getCsUserId());
             consultRecordMongoVo.setDoctorName(consultSession.getCsUserName());
