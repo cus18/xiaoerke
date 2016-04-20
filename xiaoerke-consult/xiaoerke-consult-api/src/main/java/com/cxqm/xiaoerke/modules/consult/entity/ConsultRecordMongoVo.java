@@ -23,6 +23,8 @@ public class ConsultRecordMongoVo {
 
     private String userId;
 
+    private String attentionNickname;
+
     private String csUserId;
 
     private String senderId;
@@ -36,6 +38,14 @@ public class ConsultRecordMongoVo {
     private String doctorcs;
 
     private String nickName;
+
+    public String getAttentionNickname() {
+        return attentionNickname;
+    }
+
+    public void setAttentionNickname(String attentionNickname) {
+        this.attentionNickname = attentionNickname;
+    }
 
     public String getNickName() {
         return nickName;
