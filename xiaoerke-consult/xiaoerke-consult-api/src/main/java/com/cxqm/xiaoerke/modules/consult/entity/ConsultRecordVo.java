@@ -13,10 +13,6 @@ public class ConsultRecordVo {
 
     private String worker;
 
-    private Date attentionDate;
-
-    private String attentionMarketer;
-
     private String attentionNickname;
 
     private Date createDate;
@@ -69,22 +65,6 @@ public class ConsultRecordVo {
 
     public void setWorker(String worker) {
         this.worker = worker;
-    }
-
-    public Date getAttentionDate() {
-        return attentionDate;
-    }
-
-    public void setAttentionDate(Date attentionDate) {
-        this.attentionDate = attentionDate;
-    }
-
-    public String getAttentionMarketer() {
-        return attentionMarketer;
-    }
-
-    public void setAttentionMarketer(String attentionMarketer) {
-        this.attentionMarketer = attentionMarketer;
     }
 
     public String getAttentionNickname() {
