@@ -1083,6 +1083,12 @@ public class ScheduledTask {
         }
     }
 
+
+    public void consultMangementDayTask(){
+        //删除会话排名中的临时数据
+        consultMongoUtilsService.removeConsultRankRecord(new Query());
+    }
+
     public ConsultSessionStatusVo transConsultSessionStatusMapToVo(Map map){
         if(!map.isEmpty()){
             ConsultSessionStatusVo consultSessionStatusVo = new ConsultSessionStatusVo();

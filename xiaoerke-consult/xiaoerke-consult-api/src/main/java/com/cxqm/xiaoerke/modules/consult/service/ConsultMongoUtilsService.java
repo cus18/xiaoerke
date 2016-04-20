@@ -18,4 +18,6 @@ public interface  ConsultMongoUtilsService {
 	WriteResult upsertRichConsultSession(Query query, Update update);
 
 	RichConsultSession  removeRichConsultSession(Query query);
+
+	WriteResult removeConsultRankRecord(Query query);
 }
