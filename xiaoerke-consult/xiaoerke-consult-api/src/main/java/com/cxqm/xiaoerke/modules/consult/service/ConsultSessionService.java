@@ -32,4 +32,5 @@ public interface ConsultSessionService {
     List<ConsultSession> getAlreadyAccessUsers(ConsultSession richConsultSession);
 
 
+    String clearSession(Integer sessionId, String userId);
 }

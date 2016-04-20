@@ -2,16 +2,14 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.alibaba.fastjson.JSON;
-import com.cxqm.xiaoerke.common.persistence.Page;
-import com.cxqm.xiaoerke.common.utils.FrontUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.service.AnswerService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
+import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultSessionServiceImpl;
-import com.cxqm.xiaoerke.modules.sys.entity.DoctorVo;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
@@ -111,7 +109,6 @@ public class ConsultDoctorController extends BaseController {
         }
         return resultMap;
     }
-
 
 
     /***
@@ -466,7 +463,7 @@ public class ConsultDoctorController extends BaseController {
     @RequestMapping(value = "/GetCSDoctorList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> GetCSDoctorList(Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
+    Map<String, Object> GetCSDoctorList(Map<String, Object> params) {
         Map<String,Object> response = new HashMap<String, Object>();
         List<User> users ;
         User user = new User();

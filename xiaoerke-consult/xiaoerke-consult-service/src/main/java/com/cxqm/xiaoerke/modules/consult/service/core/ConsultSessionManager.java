@@ -59,12 +59,8 @@ public class ConsultSessionManager {
 
 	private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
 
-	private ConsultMongoUtilsServiceImpl consultMongoUtilsService = SpringContextHolder.getBean("consultMongoUtilsServiceImpl");
-
 	private ConsultSessionService consultSessionService = SpringContextHolder.getBean("consultSessionServiceImpl");
 
-	private ConsultRecordService consultRecordService  = SpringContextHolder.getBean("consultRecordServiceImpl");
-	
 	private ConsultSessionForwardRecordsService sessionForwardService = SpringContextHolder.getBean("consultSessionForwardRecordsServiceImpl");
 	
 	private SystemService systemService = SpringContextHolder.getBean("systemService");
