@@ -94,7 +94,7 @@ var recordLogs = function(val){
 
 var goBuy = function(){
     recordLogs("FQB_FWXQ_LJGM");
-    window.location.href = "antiDogPay/patientPay.do";
+    window.location.href = "http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=antiDogPay";
 };
 
 // 点击已阅读
