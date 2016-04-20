@@ -30,6 +30,8 @@
         $scope.starImg3 ="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fstar_gray.png";
         $scope.starNumInt=[];
         $scope.starNumFloat=[];
+        $scope.shadowLock1=false;// 全部医院或科室列表
+        $scope.shadowLock2=false;// 排序列表
 
         // 医生星级评价 星星个数
         $scope.doctorStar = function () {
@@ -60,13 +62,26 @@
         /*点击 全部医院或全部科室*/
         $scope.selectAllDepartmentOrHospital = function(){
             $scope.selectType = $scope.remark;
-            $scope.shadowLock = true;
+            $scope.shadowLock2 = false;
+            if( $scope.shadowLock1){
+                $scope.shadowLock1 = false;
+            }
+            else{
+                $scope.shadowLock1 = true;
+            }
+
         };
 
         /*点击 排序*/
         $scope.selectAllRank = function(){
-            $scope.selectType = "rank";
-            $scope.shadowLock = true;
+            $scope.shadowLock1 = false;
+            if( $scope.shadowLock2){
+                $scope.shadowLock2 = false;
+            }
+            else{
+                $scope.selectType = "rank";
+                $scope.shadowLock2 = true;
+            }
         };
         /*加载 某科室下 的医生列表*/
         $scope.reloadDoctorInDepartment = function(hospitalId,departmentLevel1Name){
@@ -74,7 +89,7 @@
             $scope.reloadMoreDataMark = "reloadDoctorInDepartment";
             infoParam.hospitalId = hospitalId;
             infoParam.departmentLevel1Name = departmentLevel1Name;
-            $scope.shadowLock = false;
+            $scope.shadowLock1 = false;
             $scope.orderBy= "0";
             $scope.departmentSelectName=departmentLevel1Name;
             $scope.doRefresh($scope.orderBy,1,infoParam);
@@ -87,7 +102,7 @@
             $scope.reloadMoreDataMark = "reloadDoctorInHospital";
             infoParam.hospitalId = hospitalId;
             $scope.orderBy = "0";
-            $scope.shadowLock = false;
+            $scope.shadowLock1 = false;
             $scope.hospitalSelectName=hospitalName;
             $scope.doRefresh($scope.orderBy,1,infoParam);
             $scope.allItemLock = true;//选择列表中全部科室 或 全部医院 是否显示
@@ -101,9 +116,10 @@
             $scope.pageCurrent = 1;
             $scope.reloadMoreDataMark="";
             $scope.doctorData="";
-            $scope.shadowLock = false;
+            $scope.shadowLock2 = false;
             $scope.rankTitle = "时间最近";
             $scope.doRefresh($scope.orderBy,1,infoParam);
+            $scope.shadowLock2 = false;
         };
         /*按粉丝数 排序*/
         $scope.fansRank = function(){
@@ -112,10 +128,11 @@
             $scope.pageCurrent = 1;
             $scope.reloadMoreDataMark="";
             $scope.doctorData="";
-            $scope.shadowLock = false;
+            $scope.shadowLock2 = false;
             $scope.orderBy = "1";
             $scope.rankTitle = "粉丝最多";
             $scope.doRefresh($scope.orderBy,1,infoParam);
+            $scope.shadowLock2 = false;
         }
         /*按工作年限 排序*/
         $scope.workTimeRank = function(){
@@ -128,6 +145,7 @@
             $scope.orderBy = "2";
             $scope.rankTitle = "从业时间";
             $scope.doRefresh($scope.orderBy,1,infoParam);
+            $scope.shadowLock2 = false;
         }
 
         /*下拉时加载更多医生 排序*/
@@ -306,6 +324,7 @@
                     }, function (data) {
                         $scope.pageLoading = false;
                         $scope.hospitalData = data['hospitalData'];
+                        console.log($scope.hospitalData);
                     });
 
                     $scope.remark = "hospital";
