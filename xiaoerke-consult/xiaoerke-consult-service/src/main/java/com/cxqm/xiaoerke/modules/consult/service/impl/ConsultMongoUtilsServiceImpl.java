@@ -35,7 +35,6 @@ public class ConsultMongoUtilsServiceImpl implements ConsultMongoUtilsService {
 
 	@Override
 	public WriteResult upsertRichConsultSession(Query query,Update update) {
-
 		return mongoTemplate.upsert(query,update,"RichConsultSession");
 
 	}

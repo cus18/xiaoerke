@@ -84,6 +84,7 @@ public class ConsultWechatController extends BaseController {
         Integer sessionId = sessionRedisCache.getSessionIdByOpenId(openId);
         HashMap<String,Object> createWechatConsultSessionMap = null;
         RichConsultSession consultSession = new RichConsultSession();
+
         //如果此用户不是第一次发送消息，则sessionId不为空
         if(sessionId!=null){
             consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);

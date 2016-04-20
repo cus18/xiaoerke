@@ -20,10 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -87,6 +84,18 @@ public class ConsultDoctorController extends BaseController {
      ]
      }
      */
+    @RequestMapping(value = "/closeConsult", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    HashMap<String, Object> closeConsult(@RequestBody Map<String, Object> params) {
+
+        String userId = (String) params.get("userId");
+        String csUserId = (String) params.get("csUserId");
+
+
+        return null;
+    }
+
     @RequestMapping(value = "/rankList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
@@ -102,6 +111,8 @@ public class ConsultDoctorController extends BaseController {
         }
         return resultMap;
     }
+
+
 
     /***
      * 获取在线医生列表（分页）
@@ -462,7 +473,6 @@ public class ConsultDoctorController extends BaseController {
 
         ConsultRecordMongoVo consultRecordMongoVo = new ConsultRecordMongoVo();
         int insertNumber = consultRecordService.saveConsultRecord(consultRecordMongoVo);
-
     }
 
     /**

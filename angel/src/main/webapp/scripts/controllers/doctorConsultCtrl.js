@@ -2,10 +2,10 @@ angular.module('controllers', ['luegg.directives'])
     .controller('doctorConsultFirstCtrl', ['$scope', '$sce', '$window','GetTodayRankingList',
         'GetOnlineDoctorList','GetAnswerValueList','GetAnswerValueList','GetUserLoginStatus',
         '$location', 'GetUserRecordList','GetMyAnswerModify','GetCurrentUserConsultListInfo',
-        'TransferToOtherCsUser',
+        'TransferToOtherCsUser','CloseConsultNotify',
         function ($scope, $sce, $window,GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
                   GetAnswerValueList, GetUserLoginStatus, $location, GetUserRecordList,GetMyAnswerModify,
-                  GetCurrentUserConsultListInfo,TransferToOtherCsUser) {
+                  GetCurrentUserConsultListInfo,TransferToOtherCsUser,CloseConsultNotify) {
             $scope.test = "";
             $scope.info = {};
             $scope.socketServer1 = "";
@@ -180,19 +180,24 @@ angular.module('controllers', ['luegg.directives'])
 
             //关闭跟某个用户的会话
             $scope.closeConsult = function () {
-                var indexClose = 0;
-                $.each($scope.alreadyJoinPatientConversation, function (index, value) {
-                    if (value.patientId == $scope.chooseAlreadyJoinConsultPatientId) {
-                        indexClose = index;
+                CloseConsultNotify.save({userId: $scope.chooseAlreadyJoinConsultPatientId,
+                    csUserId:$scope.doctorId},function(data){
+                    if(data.result=="success"){
+                        var indexClose = 0;
+                        $.each($scope.alreadyJoinPatientConversation, function (index, value) {
+                            if (value.patientId == $scope.chooseAlreadyJoinConsultPatientId) {
+                                indexClose = index;
+                            }
+                        })
+                        $scope.alreadyJoinPatientConversation.splice(indexClose, 1);
+                        if($scope.alreadyJoinPatientConversation.length!=0){
+                            $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
+                                $scope.alreadyJoinPatientConversation[0].patientName);
+                        }else{
+                            $scope.currentUserConversation = {};
+                        }
                     }
                 })
-                $scope.alreadyJoinPatientConversation.splice(indexClose, 1);
-                if($scope.alreadyJoinPatientConversation.length!=0){
-                    $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
-                        $scope.alreadyJoinPatientConversation[0].patientName);
-                }else{
-                    $scope.currentUserConversation = {};
-                }
             }
 
             $scope.useImgFace = function () {}

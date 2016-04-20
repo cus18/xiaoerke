@@ -973,7 +973,7 @@ public class ScheduledTask {
         planMessageService.TimingSendWechatMessage();
     }
 
-  //每一分钟遍历一次发送慢病管理消息
+    //每一分钟遍历一次发送慢病管理消息
     //@Scheduled(cron = "0 0/1 * * * ?")
     public void sendMessageForCustomerReturn() {
         customerService.SendCustomerReturn();
@@ -985,7 +985,7 @@ public class ScheduledTask {
         planMessageService.nutritionManagementSendWechatMessage();
     }
 
-  //更新保险订单
+    //更新保险订单
     //@Scheduled(cron = "0 0/1 * * * ?")
     public void insuranceUpdate() {
         System.out.print("进入定时器：");
@@ -1062,16 +1062,9 @@ public class ScheduledTask {
     }
 
     /**
-     * 再建立通讯的五分钟前发消息给用户
-     * */
-//    public void sendMsg2User4ConsultOrder(){
-//
-//    }
-
-    /**
      *  删除mongo中的,redis中的,内存中的consultSession
      */
-    public void consultMangement4Session(){
+    public void consultManagement4Session(){
         //获取用户与平台最后交流时间
         List<Object> consultSessionStatusVos = consultRecordService.querySessionStatusList(new Query());
         if(consultSessionStatusVos != null && consultSessionStatusVos.size() > 0){
