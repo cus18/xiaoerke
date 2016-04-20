@@ -6,9 +6,9 @@ import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.service.AnswerService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultMongoUtilsService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
-import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultSessionServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
@@ -16,15 +16,17 @@ import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
@@ -55,6 +57,9 @@ public class ConsultDoctorController extends BaseController {
 
     @Autowired
     private SystemService systemService;
+
+    @Autowired
+    private ConsultMongoUtilsService consultMongoUtilsService;
 
 
     /***
@@ -98,16 +103,31 @@ public class ConsultDoctorController extends BaseController {
     public
     @ResponseBody
     HashMap<String, Object> findConversationRankList(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
-        Map<String,Object> searchMap = new HashMap<String, Object>();
-        HashMap<String,Object> resultMap = new HashMap<String,Object>();
-        try{
-            searchMap.put("rankDate", String.valueOf(params.get("rankDate")));
-            List<Map<String, Object>> resultValue = consultConversationForwardRecordsService.findConversationRankList(searchMap);
-            resultMap.put("rankListValue",resultValue);
-        }catch (Exception e){
-            e.printStackTrace();
+        HashMap<String,Object> responseMap = new HashMap<String, Object>();
+        List<HashMap<String,Object>> responseList = new ArrayList<HashMap<String, Object>>();
+
+        List<ConsultRecordMongoVo> doctors = consultMongoUtilsService.queryConsultRankRecordDistinct("csUserId",new Query());
+
+        for(Iterator<ConsultRecordMongoVo> iterator=doctors.iterator() ;iterator.hasNext();){
+            HashMap<String,Object> serachMap = new HashMap<String, Object>();
+            List<String> users = consultMongoUtilsService.queryConsultRankUserCount("senderId", new Query().addCriteria(Criteria.where("csUserId").is(iterator.next().getCsUserId())));
+            serachMap.put("csUserId",iterator.next().getCsUserId());
+            serachMap.put("name",iterator.next().getDoctorName());
+            serachMap.put("consultNum",users.size());
+            responseList.add(serachMap);
         }
-        return resultMap;
+        Collections.sort(responseList, new Comparator<HashMap<String, Object>>() {
+
+            public int compare(HashMap<String, Object> o1, HashMap<String, Object> o2) {
+
+                int map1value = (Integer) o1.get("consultNum");
+                int map2value = (Integer) o2.get("consultNum");
+
+                return map1value - map2value;
+            }
+        });
+        responseMap.put("doctors",responseList);
+        return responseMap;
     }
 
 
