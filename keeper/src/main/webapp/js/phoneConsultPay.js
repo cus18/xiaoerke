@@ -72,7 +72,7 @@ var doRefresh = function(){
                         $('#doctorName').html(data.doctorName);
                         $('#position').html(data.position1 + data.position2);
                         $('#hospitalName').html(data.hospitalName);
-                        $('#department').html(data.doctor_expert_desc);
+                        $('#department').html(data.departmentName);
                         $('#ServerLength').html(data.ServerLength);
                         $('#price').html(data.price);
                         $('#payPrice').html(data.price);
