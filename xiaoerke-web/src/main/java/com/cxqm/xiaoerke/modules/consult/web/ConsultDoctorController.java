@@ -20,10 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -87,6 +84,18 @@ public class ConsultDoctorController extends BaseController {
      ]
      }
      */
+    @RequestMapping(value = "/closeConsult", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    HashMap<String, Object> closeConsult(@RequestBody Map<String, Object> params) {
+
+        String userId = (String) params.get("userId");
+        String csUserId = (String) params.get("csUserId");
+
+
+        return null;
+    }
+
     @RequestMapping(value = "/rankList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
@@ -102,6 +111,8 @@ public class ConsultDoctorController extends BaseController {
         }
         return resultMap;
     }
+
+
 
     /***
      * 获取在线医生列表（分页）
@@ -393,7 +404,7 @@ public class ConsultDoctorController extends BaseController {
                  {
                      "id":123
                      "session_id": 456,
-                     "openid": "3Wisdfsdflaksjfsd234234j",
+                     "userId": "3Wisdfsdflaksjfsd234234j",
                      "message":"聊天内容"
                      "message_type": "yuyin",
                      "toUserId": "fdasfa",
@@ -402,7 +413,7 @@ public class ConsultDoctorController extends BaseController {
                  {
                      "id":456
                      "session_id": 345534,
-                     "openid": "3Wisdfsdsdfsfjfsd234234j",
+                     "userId": "3Wisdfsdsdfsfjfsd234234j",
                      "message":"聊天内容"
                      "message_type": "yuyin",
                      "toUserId": "fdasfa",
@@ -415,8 +426,8 @@ public class ConsultDoctorController extends BaseController {
     @RequestMapping(value = "/recordList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> recordList(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
-
+    Map<String, Object> recordList(@RequestBody Map<String, Object> params,
+                                   HttpServletRequest request, HttpServletResponse httpResponse) {
 
         String recordType = String.valueOf(params.get("recordType"));
         String toUserId = String.valueOf(params.get("toUserId"));
@@ -448,7 +459,6 @@ public class ConsultDoctorController extends BaseController {
         response.put("pageNo",pageNo);
         response.put("pageSize",pageSize);
 
-
         return response;
     }
 
@@ -459,10 +469,8 @@ public class ConsultDoctorController extends BaseController {
     public
     @ResponseBody
     void produceRecord(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
-
         ConsultRecordMongoVo consultRecordMongoVo = new ConsultRecordMongoVo();
-        int insertNumber = consultRecordService.saveConsultRecord(consultRecordMongoVo);
-
+        consultRecordService.saveConsultRecord(consultRecordMongoVo);
     }
 
     /**

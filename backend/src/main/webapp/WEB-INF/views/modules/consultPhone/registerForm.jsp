@@ -236,7 +236,7 @@
 				data: {sysDoctorId:"${consulPhonetDoctorRelationVo.doctorId}",date:date,repeat:repeat,times:array,pageFlag:pageFlag},
 				dataType: "json",
 				success: function(data){
-					if(data.suc=="suc"){
+					if(data.result=="suc"){
 						addUpdateFlag="init";
 						if(data.reason==""){
 							alertx("操作成功");
@@ -259,6 +259,8 @@
 						}else{
 							alertx(data.reason);
 						}
+					}else{
+						alertx("操作失败！");
 					}
 				}
 			});
@@ -295,7 +297,7 @@
 									document.getElementById("deleteRegisterArea").style.display="none";
 									var tempTimeList = array.split(";");
 									for(var i=0;i<tempTimeList.length;i++){
-										if(data.suc=="suc"){
+										if(data.result=="suc"){
 											//document.getElementById(tempTimeList[i]+"oper").innerText="添加";
 											document.getElementById(tempTimeList[i]+"oper").value="";
 											document.getElementById(tempTimeList[i]+"span").style.background="";
@@ -303,6 +305,8 @@
 												document.getElementById(tempTimeList[i]+"showInfo").innerText="";
 											}
 											addUpdateFlag="init";
+										}else{
+											alert("删除失败!");
 										}
 									}
 								}
@@ -321,13 +325,15 @@
 										document.getElementById("deleteRegisterArea").style.display="none";
 										var tempTimeList = array.split(";");
 										for(var i=0;i<tempTimeList.length;i++){
-											if(data.suc=="suc"){
+											if(data.result=="suc"){
 												document.getElementById(tempTimeList[i]+"oper").value="";
 												document.getElementById(tempTimeList[i]+"span").style.background="";
 												if(operRepeat=="yes"){
 													document.getElementById(tempTimeList[i]+"showInfo").innerText="";
 												}
 												addUpdateFlag="init";
+											}else{
+												alert("删除失败!");
 											}
 										}
 									}

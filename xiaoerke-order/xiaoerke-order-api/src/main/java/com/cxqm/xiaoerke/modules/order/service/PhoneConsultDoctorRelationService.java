@@ -17,7 +17,7 @@ public interface PhoneConsultDoctorRelationService {
 	 * @param vo
 	 * @return
 	 */
-	JSONObject openConsultPhone(ConsulPhonetDoctorRelationVo vo);
+	JSONObject openConsultPhone(ConsulPhonetDoctorRelationVo vo) throws Exception;
 	
 	/**
 	 * 根据条件查询医生电话咨询信息

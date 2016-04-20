@@ -1,35 +1,62 @@
 <ion-spinner ng-show="pageLoading" style="color:#139fff;position: relative;top: 301px;left:148px;z-index:999;"></ion-spinner>
 <ion-view view-title="我的账单" ng-init="doRefresh()">
     <ion-spinner ng-show="dataLoading"></ion-spinner>
-        <ion-content class="myAccount" style="top:0;">
+        <div class="account_notice" ng-if="true">
+            <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Faccount_jh.png" width="15px" height="15px"/>
+            <span>每晚20：00更新当日账单</span>
+            <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Faccount_close.png" width="15px" height="15px"/>
+        </div>
+        <ul class="account_date">
+            <li class="c1">前一天</li>
+            <li class="acctda_da">
+                <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Faccount_chadate.png" width="20px" height="14px"/>
+                <input type="text" id="dateTime" readonly="readonly" placeholder="2014-05-06"/>
+                <div>周日</div>
+            </li>
+            <li class="c1 c2">后一天</li>
+        </ul>
+        <div class="account_img">
+            <img  src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Faccount_sanjiao.png" width="12px" height="4px"/>
+        </div>
+        <ion-content class="myAccount" style="top: 123px;">
             <ion-scroll direction="y" has-bouncing="true"  >
-                <div  class="date">
-                   <div>
-                       <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2Fdate_clock.png" width="15" height="15">&nbsp;日期
-                   </div>
-                    <div class="time">
-                        <input type="text" id="dateTime" name="dateTime"
-                               readonly="readonly" placeholder="{{settlementDate}}" />&nbsp;
-                    </div>
+                <div class="account_no" ng-if="false">
+                    <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Faccount_zhusheqi.png" width="71" height="259"/>
+                    <div>目前暂无收入</div>
+                    <div>点击页面上方日期可查看历史收入噢</div>
                 </div>
               <!--  接诊补贴-->
                 <dl class="" ng-if="checkAvailable=='true'">
                     <dt ng-click="toggle1()">
                         <span class="left">接诊补贴</span>
                         <a>共{{settlementInfoData.appointment.length}}位</a>
-                        <span  class="right">收入：{{settlementInfoData.totalAppPrice}}元</span>
-                        <img  ng-if="acceptLock=='true'" src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2FmyAccount_bg.png" width="100%" height="13">
+                        <span  class="right">收入：{{settlementInfoData.totalAppPrice}}</span>
+                        <img  ng-if="acceptLock" src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2FmyAccount_bg.png" width="100%" height="13">
                     </dt>
-                    <dd  ng-if="acceptLock=='true'" ng-repeat="item in settlementInfoData.appointment">
+                    <dd  ng-if="acceptLock" ng-repeat="item in settlementInfoData.appointment">
                         <h5>{{item.babyName}}</h5>
                         <p >{{item.beginTime}}</p>
-                        <span>{{item.price}}元</span>
+                        <span>￥{{item.price}}</span>
                     </dd>
                 </dl>
-                <dl class="" ng-if="checkAvailable=='false'">
-                    <dt>
-                        <span class="left">医生您好，每晚20：00更新当日账单。<br/>如需查看历史记录请切换右上方日期，谢谢支持！</span>
+                <!--<dl class="" ng-if="checkAvailable=='false'">-->
+                    <!--<dt>-->
+                        <!--<span class="left">医生您好，每晚20：00更新当日账单。<br/>如需查看历史记录请切换右上方日期，谢谢支持！</span>-->
+                    <!--</dt>-->
+                <!--</dl>-->
+                <!-- 电话咨询-->
+                <dl class="" ng-if="true" >
+                    <dt ng-click="toggle4()">
+                        <span class="left">电话咨询收入</span>
+                        <a>共10位</a>
+                        <span  class="right">收入：380.0</span>
+                        <img  ng-if="phoneConsultLock" src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/images%2FmyAccount_bg.png" width="100%" height="13">
                     </dt>
+                    <dd  ng-if="phoneConsultLock" ng-repeat="item in [1,2,3,4,5]">
+                        <h5>gf</h5>
+                        <p >09:30</p>
+                        <span>￥100</span>
+                    </dd>
                 </dl>
                <!-- 扫码关注
                 <dl class="">
@@ -65,6 +92,7 @@
                         <!--<span>120.00元</span>-->
                     <!--</dd>-->
                 <!--</dl>-->
+                <br/><br/><br/>
             </ion-scroll>
         </ion-content>
     </div>

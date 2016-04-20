@@ -597,7 +597,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		ConsultSession vo = new ConsultSession();
 		vo.setUpdateTime(new Date());
 		vo.setStatus("0");
-		vo.setOpenid(xmlEntity.getFromUserName());
+		vo.setUserId(xmlEntity.getFromUserName());
 		vo.setCreateTime(new Date());
 		String title = UUID.randomUUID().toString().replaceAll("-", "");
 		vo.setTitle(title);

@@ -12,7 +12,7 @@ public class ConsultPhoneRegisterServiceVo {
 
     private String sysPatientId;
 
-    private String state;//订单状态 0-待支付  1-待接通  2-待评价  3-待分享 4-已取消 5-超时取消
+    private String state;//订单状态 0-待支付  1-待接通  2-待评价  3-待分享 4-已取消
 
     private String payState;//订单支付状态
 
@@ -58,6 +58,8 @@ public class ConsultPhoneRegisterServiceVo {
 
     private long surplusTime; //通话剩余时长
 
+    private Date surplusDate; //通话剩余时长
+
     private String callSid; //通话的唯一标示
 
     private String price;
@@ -95,7 +97,6 @@ public class ConsultPhoneRegisterServiceVo {
         this.loginPhone = loginPhone;
     }
 
-    @ExcelField(title="咨询时刻", align=2, sort=8)
     public Date getDate() {
         return date;
     }
@@ -112,6 +113,7 @@ public class ConsultPhoneRegisterServiceVo {
         this.beginTime = beginTime;
     }
 
+    @ExcelField(title="下单时间", align=2, sort=3)
     public String getOrderTimeFromStr() {
         return orderTimeFromStr;
     }
@@ -139,6 +141,14 @@ public class ConsultPhoneRegisterServiceVo {
         return deleteBy;
     }
 
+    public Date getSurplusDate() {
+        return surplusDate;
+    }
+
+    public void setSurplusDate(Date surplusDate) {
+        this.surplusDate = surplusDate;
+    }
+
     public Date getEndTime() {
         return endTime;
     }
@@ -155,6 +165,7 @@ public class ConsultPhoneRegisterServiceVo {
         this.orderTimeFromStr = orderTimeFromStr;
     }
 
+    @ExcelField(title="最后操作时间", align=2, sort=11)
     public String getOrderTimeToStr() {
         return orderTimeToStr;
     }
@@ -163,6 +174,7 @@ public class ConsultPhoneRegisterServiceVo {
         this.orderTimeToStr = orderTimeToStr;
     }
 
+    @ExcelField(title="咨询时刻", align=2, sort=8)
     public String getConsultPhoneTimeFromStr() {
         return consultPhoneTimeFromStr;
     }
@@ -171,6 +183,7 @@ public class ConsultPhoneRegisterServiceVo {
         this.consultPhoneTimeFromStr = consultPhoneTimeFromStr;
     }
 
+    @ExcelField(title="剩余时长", align=2, sort=10)
     public String getConsultPhoneTimeToStr() {
         return consultPhoneTimeToStr;
     }
@@ -221,7 +234,6 @@ public class ConsultPhoneRegisterServiceVo {
         this.state = state;
     }
 
-    @ExcelField(title="下单时间", align=2, sort=3)
     public Date getCreateTime() {
         return createTime;
     }
@@ -230,7 +242,6 @@ public class ConsultPhoneRegisterServiceVo {
         this.createTime = createTime;
     }
 
-    @ExcelField(title="最后操作时间", align=2, sort=11)
     public Date getUpdateTime() {
         return updateTime;
     }
@@ -290,7 +301,6 @@ public class ConsultPhoneRegisterServiceVo {
         this.callSid = callSid;
     }
 
-    @ExcelField(title="剩余时长", align=2, sort=10)
     public long getSurplusTime() {
         return surplusTime;
     }

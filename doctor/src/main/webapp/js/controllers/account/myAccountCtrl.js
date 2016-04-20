@@ -3,64 +3,11 @@
     '$location','GetUserLoginStatus',
         function ($scope,$state,$stateParams,CheckBind,GetDoctorInfo,SettlementInfo,GetWithDrawList,
                   $location,GetUserLoginStatus) {
-            $scope.acceptLock="true";
+            $scope.acceptLock=false;
             $scope.codeLock="false";
             $scope.fineLock="false";
+            $scope.phoneConsultLock = false;
             $scope.choice = "everyDayList";
-
-            $scope.withDrawls = function(){
-                $state.go("withDrawls");
-            }
-            $scope.everyDayList = function(){
-                $scope.choice = "everyDayList";
-            }
-            $scope.withDrawlsList = function(){
-                $scope.choice = "withDrawlsList";
-            }
-            $scope.loadMoreWithDrawlsList = function(){
-                if ($scope.scrollLoading) {
-                    $scope.pageLoading = true;
-                    GetWithDrawList.get({"pageNo":$scope.pageNo,"pageSize":$scope.pageSize},function(data){
-                        $scope.pageLoading = false;
-                        $scope.scrollLoading = $scope.pageNo < data.totalNum;
-                        if($scope.scrollLoading==true)
-                        {
-                            $scope.pageNo = $scope.pageNo + 1;
-                        }
-                        $scope.withDrawList = $scope.withDrawList.concat(data.withDrawList || []);
-                    })
-                }
-            }
-            $scope.toggle1 = function(){
-                if( $scope.acceptLock=="false"){
-                    $scope.acceptLock="true";
-                }
-                else{
-                    $scope.acceptLock="false";
-                }
-                if( $scope.fineLock=="false"){
-                    $scope.finetLock="true";
-                }
-                else{
-                    $scope.fineLock="false";
-                }
-            }
-            $scope.toggle2 = function(){
-                if( $scope.codeLock=="false"){
-                    $scope.codeLock="true";
-                }
-                else{
-                    $scope.codeLock="false";
-                }
-            }
-            $scope.toggle3 = function(){
-                if( $scope.fineLock=="false"){
-                    $scope.fineLock="true";
-                }
-                else{
-                    $scope.fineLock="false";
-                }
-            }
 
             $scope.$on('$ionicView.enter', function(){
                 $scope.pageLoading = true;
@@ -159,4 +106,64 @@
                     }
                 });
             });
+
+            $scope.withDrawls = function(){
+                $state.go("withDrawls");
+            }
+            $scope.everyDayList = function(){
+                $scope.choice = "everyDayList";
+            }
+            $scope.withDrawlsList = function(){
+                $scope.choice = "withDrawlsList";
+            }
+            $scope.loadMoreWithDrawlsList = function(){
+                if ($scope.scrollLoading) {
+                    $scope.pageLoading = true;
+                    GetWithDrawList.get({"pageNo":$scope.pageNo,"pageSize":$scope.pageSize},function(data){
+                        $scope.pageLoading = false;
+                        $scope.scrollLoading = $scope.pageNo < data.totalNum;
+                        if($scope.scrollLoading==true)
+                        {
+                            $scope.pageNo = $scope.pageNo + 1;
+                        }
+                        $scope.withDrawList = $scope.withDrawList.concat(data.withDrawList || []);
+                    })
+                }
+            }
+            $scope.toggle1 = function(){
+                if( $scope.acceptLock==false){
+                    $scope.acceptLock=true;
+                }
+                else{
+                    $scope.acceptLock=false;
+                }
+                if( $scope.fineLock=="false"){
+                    $scope.finetLock="true";
+                }
+                else{
+                    $scope.fineLock="false";
+                }
+                $scope.phoneConsultLock=false;
+            }
+            $scope.toggle2 = function(){
+                if( $scope.codeLock=="false"){
+                    $scope.codeLock="true";
+                }
+                else{
+                    $scope.codeLock="false";
+                }
+            }
+            $scope.toggle3 = function(){
+                if( $scope.fineLock=="false"){
+                    $scope.fineLock="true";
+                }
+                else{
+                    $scope.fineLock="false";
+                }
+            }
+            //电话咨询
+            $scope.toggle4 = function () {
+                $scope.phoneConsultLock==true?$scope.phoneConsultLock=false:$scope.phoneConsultLock=true;
+                $scope.acceptLock=false;
+            }
     }])

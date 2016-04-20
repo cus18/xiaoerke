@@ -28,7 +28,12 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 	}
 
 	public int insertTempRecord(ConsultRecordMongoVo consultRecordMongoVo) {
-		mongoTemplate.insert(consultRecordMongoVo, "consultTempRecordVo");
+		mongoTemplate.insert(consultRecordMongoVo, "consultRecordTemporary");
+		return 0;
+	}
+
+	public int insertConsultRankRecord(ConsultRecordMongoVo consultRecordMongoVo) {
+		mongoTemplate.insert(consultRecordMongoVo, "consultRankRecord");
 		return 0;
 	}
 
@@ -61,21 +66,26 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		return consultRecordMongoVo;
 	}
 
+	public ConsultRecordMongoVo findOneConsultRecordTemporary(Query query) {
+		ConsultRecordMongoVo consultRecordMongoVo = new ConsultRecordMongoVo();
+		consultRecordMongoVo = mongoTemplate.findOne(query,ConsultRecordMongoVo.class,"consultRecordTemporary");
+		return consultRecordMongoVo;
+	}
+
+
 
 	public int saveConsultRecord(ConsultRecordMongoVo consultRecordMongoVo) {
-		insertTempRecord(consultRecordMongoVo);
-		return this.insert(consultRecordMongoVo);
+		insertConsultRankRecord(consultRecordMongoVo);//今日排名
+		return this.insert(consultRecordMongoVo);//全部聊天记录
 	}
 
 	public void  deleteConsultSessionStatusVo(Query query) {
 		mongoTemplate.remove(query, ConsultSessionStatusVo.class);
 	}
 
-	public void  deleteConsultTempRecordVo(Query query) {
-		mongoTemplate.remove(query, ConsultSessionStatusVo.class,"consultTempRecordVo");
+	public void  deleteConsultRecordTemporary(Query query) {
+		mongoTemplate.remove(query,"consultRecordTemporary");
 	}
-
-
 
 	@Override
 	public ConsultRecordMongoVo findAndRemove(Query query) {
@@ -105,7 +115,7 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 	public WriteResult upsertConsultSessionStatusVo(ConsultSessionStatusVo consultSessionStatusVo) {
 
 		return mongoTemplate.upsert((new Query(where("sessionId").is(consultSessionStatusVo.getSessionId()))),
-				new Update().update("ConsultSessionStatusVo", consultSessionStatusVo),ConsultSessionStatusVo.class);
+				new Update().update("consultSessionStatusVo", consultSessionStatusVo),ConsultSessionStatusVo.class);
 	}
 	//zdl
 	public List<Object> querySessionStatusList(Query query){
@@ -124,7 +134,7 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 	}
 
 	public List<ConsultRecordMongoVo> queryTempRecordList(Query query){
-		return this.mongoTemplate.find(query, ConsultRecordMongoVo.class, "consultTempRecordVo");
+		return this.mongoTemplate.find(query, ConsultRecordMongoVo.class, "consultRecordTemporary");
 	}
 
 	@Override

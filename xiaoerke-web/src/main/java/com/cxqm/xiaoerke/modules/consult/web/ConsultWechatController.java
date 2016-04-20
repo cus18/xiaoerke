@@ -32,6 +32,8 @@ import java.net.URLDecoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -53,6 +55,7 @@ public class ConsultWechatController extends BaseController {
     @Autowired
     private ConsultRecordService consultRecordService;
 
+    private static ExecutorService threadExecutor = Executors.newCachedThreadPool();
 
     @RequestMapping(value = "/conversation", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -64,86 +67,122 @@ public class ConsultWechatController extends BaseController {
                         @RequestParam(required=false) String mediaId) {
         HashMap<String,Object> result = new HashMap<String,Object>();
 
-        //需要根据openId获取到nickname，如果拿不到nickName，则用利用openId换算出一个编号即可
-        SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
-        sysWechatAppintInfoVo.setOpen_id(openId);
-        SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
-        if(wechatAttentionVo == null){
-            result.put("status","failure");
-            return result;
+        HashMap<String,Object> paramMap = new HashMap<String,Object>();
+        paramMap.put("openId",openId);
+        paramMap.put("messageType",messageType);
+        paramMap.put("messageContent",messageContent);
+        if(messageType.contains("voice")||messageType.contains("video")){
+            paramMap.put("mediaId",mediaId);
         }
-        String nickName = openId.substring(openId.length()-8,openId.length());
-        if(wechatAttentionVo!=null){
-            if(StringUtils.isNotNull(wechatAttentionVo.getWechat_name())){
-               nickName = wechatAttentionVo.getWechat_name();
-            }
-        }
+        paramMap.put("serverAddress",StringUtils.getRemoteAddr(request));
 
-        Channel csChannel = null;
-        //根据用户的openId，判断redis中，是否有用户正在进行的session
-        Integer sessionId = sessionRedisCache.getSessionIdByOpenId(openId);
-        HashMap<String,Object> createWechatConsultSessionMap = null;
-        RichConsultSession consultSession = new RichConsultSession();
-        //如果此用户不是第一次发送消息，则sessionId不为空
-        if(sessionId!=null){
-            consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
-            csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
-        }else{//如果此用户是第一次发送消息，则sessionId为空
-            consultSession.setCreateTime(new Date());
-            consultSession.setOpenid(openId);
-            consultSession.setNickName(nickName);
-            //创建会话，发送消息给用户，给用户分配接诊员
-            createWechatConsultSessionMap = ConsultSessionManager.getSessionManager().createWechatConsultSession(consultSession,wechatAttentionVo);
-            csChannel = (Channel)createWechatConsultSessionMap.get("csChannel");
-            consultSession = (RichConsultSession)createWechatConsultSessionMap.get("consultSession");
-            sessionId = consultSession.getId();
-        }
-        //会话创建成功，给接诊员(或是医生)发送消息
-        if(csChannel!=null){
-            try {
-                JSONObject obj = new JSONObject();
-                obj.put("sessionId", sessionId);
-                obj.put("senderId", openId);
-                obj.put("dateTime", DateUtils.DateToStr(new Date()));
-                obj.put("senderName",nickName);
-                obj.put("fromServer",StringUtils.getRemoteAddr(request));
-
-                if(messageType.equals("text")) {
-                    obj.put("type", 0);
-                    obj.put("content", URLDecoder.decode(messageContent, "utf-8"));
-                }else{
-                    if(messageType.contains("image")){
-                        obj.put("type", 1);
-                    }else if(messageType.contains("voice")){
-                        obj.put("type", 2);
-                    }else if(messageType.contains("video")){
-                        obj.put("type", 3);
-                    }
-                    //根据mediaId，从微信服务器上，获取到媒体文件，再将媒体文件，放置阿里云服务器，获取URL
-                    try{
-                        WechatUtil wechatUtil = new WechatUtil();
-                        String mediaURL = wechatUtil.downloadMediaFromWx(ConstantUtil.TEST_TOKEN,mediaId,nickName,messageType);//sessionRedisCache.getWeChatToken()
-                        obj.put("content", mediaURL);
-                        messageContent = mediaURL;
-                    }catch (IOException e){
-                        e.printStackTrace();
-                    }
-                }
-                TextWebSocketFrame frame = new TextWebSocketFrame(obj.toJSONString());
-                csChannel.writeAndFlush(frame.retain());
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        }
-
-        //保存聊天记录
-        consultRecordService.buildRecordMongoVo("wx", openId, String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)), messageContent, consultSession, wechatAttentionVo);
-
-        //更新会话操作时间
-        consultRecordService.saveConsultSessionStatus(sessionId,consultSession.getUserId(),"wx",consultSession);
+        Runnable thread = new processUserMessageThread(paramMap);
+        threadExecutor.execute(thread);
 
         result.put("status", "success");
         return result;
+    }
+
+    public class processUserMessageThread extends Thread {
+        private HashMap<String,Object> param;
+
+        public processUserMessageThread(HashMap<String,Object> paramMap) {
+            this.param = paramMap;
+        }
+
+        public void run() {
+            //需要根据openId获取到nickname，如果拿不到nickName，则用利用openId换算出一个编号即可
+            String openId = (String) this.param.get("openId");
+            String messageType = (String) this.param.get("messageType");
+            String messageContent = (String) this.param.get("messageContent");
+            String serverAddress = (String) this.param.get("serverAddress");
+
+            SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
+            sysWechatAppintInfoVo.setOpen_id(openId);
+            SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
+            String userName = openId.substring(openId.length()-8,openId.length());
+            if(wechatAttentionVo!=null){
+                if(StringUtils.isNotNull(wechatAttentionVo.getWechat_name())){
+                    userName = wechatAttentionVo.getWechat_name();
+                }
+            }
+            //此处，将openId统一转换成userId，以后，在咨询系统中，所有表示咨询用户唯一来源的id统一都用userId表示，
+            // 在所有的日志记录，还是缓存中，所有的会话，都引入一个字段，source，标示，这个会话，
+            // 是基于微信，还是H5，还是合作第三方的来源，以便按照不同的逻辑来处理。
+            String userId = openId;
+            String source = "wxcxqm";
+
+            Channel csChannel = null;
+            //根据用户的openId，判断redis中，是否有用户正在进行的session
+            Integer sessionId = sessionRedisCache.getSessionIdByUserId(userId);
+            HashMap<String,Object> createWechatConsultSessionMap = null;
+            RichConsultSession consultSession = new RichConsultSession();
+
+            //如果此用户不是第一次发送消息，则sessionId不为空
+            if(sessionId!=null){
+                consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
+                csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
+            }else{//如果此用户是第一次发送消息，则sessionId为空
+                consultSession.setCreateTime(new Date());
+                consultSession.setUserId(userId);
+                consultSession.setUserName(userName);
+                consultSession.setSource(source);
+                //创建会话，发送消息给用户，给用户分配接诊员
+                createWechatConsultSessionMap = ConsultSessionManager.getSessionManager().createUserWXConsultSession(consultSession);
+                csChannel = (Channel)createWechatConsultSessionMap.get("csChannel");
+                consultSession = (RichConsultSession)createWechatConsultSessionMap.get("consultSession");
+                sessionId = consultSession.getId();
+            }
+
+            //会话创建成功，拿到了csChannel,给接诊员(或是医生)发送消息
+            if(csChannel!=null){
+                try {
+                    JSONObject obj = new JSONObject();
+                    obj.put("sessionId", sessionId);
+                    obj.put("senderId", userId);
+                    obj.put("dateTime", DateUtils.DateToStr(new Date()));
+                    obj.put("senderName",userName);
+                    obj.put("fromServer",serverAddress);
+
+                    if(messageType.equals("text")) {
+                        obj.put("type", 0);
+                        obj.put("content", URLDecoder.decode(messageContent, "utf-8"));
+                    }else{
+                        if(messageType.contains("image")){
+                            obj.put("type", 1);
+                        }else if(messageType.contains("voice")){
+                            obj.put("type", 2);
+                        }else if(messageType.contains("video")){
+                            obj.put("type", 3);
+                        }
+
+                        //根据mediaId，从微信服务器上，获取到媒体文件，再将媒体文件，放置阿里云服务器，获取URL
+                        if(messageType.contains("voice")||messageType.contains("video")){
+                            try{
+                                WechatUtil wechatUtil = new WechatUtil();
+                                String mediaURL = wechatUtil.downloadMediaFromWx(ConstantUtil.TEST_TOKEN,
+                                        (String) this.param.get("mediaId"),messageType);
+                                obj.put("content", mediaURL);
+                                messageContent = mediaURL;
+                            }catch (IOException e){
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    TextWebSocketFrame frame = new TextWebSocketFrame(obj.toJSONString());
+                    csChannel.writeAndFlush(frame.retain());
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            //保存聊天记录
+            consultRecordService.buildRecordMongoVo(userId,String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)), messageContent, consultSession);
+
+            //更新会话操作时间
+            consultRecordService.saveConsultSessionStatus(consultSession);
+
+        }
     }
 
 

@@ -16,6 +16,7 @@ import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceServi
 import com.cxqm.xiaoerke.modules.operation.service.BaseDataService;
 import com.cxqm.xiaoerke.modules.operation.service.OperationsComprehensiveService;
 import com.cxqm.xiaoerke.modules.operation.service.DataStatisticService;
+import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneManuallyConnectVo;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhoneOrderService;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
@@ -972,7 +973,7 @@ public class ScheduledTask {
         planMessageService.TimingSendWechatMessage();
     }
 
-  //每一分钟遍历一次发送慢病管理消息
+    //每一分钟遍历一次发送慢病管理消息
     //@Scheduled(cron = "0 0/1 * * * ?")
     public void sendMessageForCustomerReturn() {
         customerService.SendCustomerReturn();
@@ -984,7 +985,7 @@ public class ScheduledTask {
         planMessageService.nutritionManagementSendWechatMessage();
     }
 
-  //更新保险订单
+    //更新保险订单
     //@Scheduled(cron = "0 0/1 * * * ?")
     public void insuranceUpdate() {
         System.out.print("进入定时器：");
@@ -992,14 +993,14 @@ public class ScheduledTask {
     }
 
     //建立患者与医生之间的通讯
-    public void getConnenct4doctorAndPatient(){
+    public synchronized void getConnenct4doctorAndPatient(){
       List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",new Date());
       for(HashMap map:consultOrderList){
           String doctorPhone =  (String)map.get("doctorPhone");
           String userPhone =  (String)map.get("userPhone");
           Integer orderId = (Integer)map.get("id");
           List<ConsultPhoneRecordVo> list = consultPhoneService.getConsultRecordInfo(orderId + "", "CallAuth");
-          if(list.size()<2){
+          if(list.size()<1){
               Integer conversationLength =  (Integer)map.get("conversationLength")*60;
               HashMap<String, Object> result = CCPRestSDK.callback(userPhone,doctorPhone,
                       "4006237120", "4006237120", null,
@@ -1048,7 +1049,7 @@ public class ScheduledTask {
         String dateStr = DateUtils.DateToStr(date,"datetime");
         List<HashMap<String, Object>> orderMsgList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",date);
         for(HashMap<String ,Object> map:orderMsgList){
-            Map messageMap = messageService.consultPhoneMsgRemind((Integer) map.get("id") + "");
+            List<Map> messageMap = messageService.consultPhoneMsgRemind((Integer) map.get("id") + "");
             if(null == messageMap||messageMap.size() == 0){
                 Map<String,Object> parameter = systemService.getWechatParameter();
                 String token = (String)parameter.get("token");
@@ -1061,16 +1062,9 @@ public class ScheduledTask {
     }
 
     /**
-     * 再建立通讯的五分钟前发消息给用户
-     * */
-//    public void sendMsg2User4ConsultOrder(){
-//
-//    }
-
-    /**
      *  删除mongo中的,redis中的,内存中的consultSession
      */
-    public void consultMangement4Session(){
+    public void consultManagement4Session(){
         //获取用户与平台最后交流时间
         List<Object> consultSessionStatusVos = consultRecordService.querySessionStatusList(new Query());
         if(consultSessionStatusVos != null && consultSessionStatusVos.size() > 0){
@@ -1115,9 +1109,6 @@ public class ScheduledTask {
         return null;
     }
 
-
-
-
     //插入监听器
     private void insertMonitor(String register_no, String type, String status) {
         HashMap<String, Object> monitorMap = new HashMap<String, Object>();
@@ -1126,5 +1117,60 @@ public class ScheduledTask {
         monitorMap.put("status", status);
         monitorMap.put("types", type);
         messageService.insertMonitorConsultPhone(monitorMap);
+    }
+
+    //电话咨询运维定时拨打电话 sunxiao
+    public void timingDial(){
+        Map param = new HashMap();
+        param.put("state",1);
+        param.put("dialDate",new Date());
+        List<ConsultPhoneManuallyConnectVo> list = consultPhonePatientService.getConsultPhoneTimingDialByInfo(param);
+        for(ConsultPhoneManuallyConnectVo vo:list){
+            String doctorPhone =  vo.getDoctorPhone();
+            String userPhone =  vo.getUserPhone();
+            Integer orderId = vo.getOrderId();
+            ConsultPhoneRegisterServiceVo cvo = consultPhonePatientService.selectByPrimaryKey(orderId);
+            long conversationLength =  cvo.getSurplusTime()/1000;
+            HashMap<String, Object> result = CCPRestSDK.callback(userPhone,doctorPhone,
+                    "4006237120", "4006237120", null,
+                    "true", null, orderId+"",
+                    conversationLength+"", null, "0",
+                    "1", "60", null);
+
+            if("000000".equals((String) result.get("statusCode"))){
+                HashMap<String, Object> dataMap = (HashMap) result.get("data");
+                HashMap<String, Object> callBackMap = (HashMap)dataMap.get("CallBack");
+                String callSid =(String)callBackMap.get("callSid");
+
+                System.out.println(result);
+                ConsultPhoneRegisterServiceVo cpvo =  new ConsultPhoneRegisterServiceVo();
+                cpvo.setId(orderId);
+                cpvo.setUpdateTime(new Date());
+                cpvo.setCallSid(callSid);
+                consultPhonePatientService.updateOrderInfoBySelect(cpvo);
+
+                ConsultPhoneManuallyConnectVo mvo = new ConsultPhoneManuallyConnectVo();
+                mvo.setId(vo.getId());
+                mvo.setState("2");
+                consultPhonePatientService.updateConsultPhoneTimingDialInfo(mvo);
+            }
+        }
+
+        //再建立通讯的五分钟前发消息给用户
+        Date date = new Date();
+        date.setTime(date.getTime() + 5 * 60 * 1000);
+        String dateStr = DateUtils.DateToStr(date,"datetime");
+        List<HashMap<String, Object>> orderMsgList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1", date);
+        for(HashMap<String ,Object> map:orderMsgList){
+            List<Map> messageMap = messageService.consultPhoneMsgRemind((Integer) map.get("id") + "");
+            if(null == messageMap||messageMap.size() == 0){
+                Map<String,Object> parameter = systemService.getWechatParameter();
+                String token = (String)parameter.get("token");
+                String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)map.get("date"),"yyyy/MM/dd"));
+                PatientMsgTemplate.consultPhoneWaring2Wechat((String) map.get("doctorName"), (String) map.get("date"), week, (String) map.get("beginTime"), (String) map.get("endTime"), (String) map.get("userPhone"), (String) map.get("orderNo"), (String) map.get("openid"), token, "");
+                PatientMsgTemplate.consultPhoneWaring2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (String) map.get("date"), week, (String) map.get("beginTime"), (String) map.get("userPhone"), (String) map.get("orderNo"));
+                insertMonitor((Integer) map.get("id") + "", "2", "7");
+            }
+        }
     }
 }

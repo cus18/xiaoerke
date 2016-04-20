@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class ConsultSession  implements Serializable {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	public final static String STATUS_ONGOING = "ongoing";
@@ -17,13 +15,9 @@ public class ConsultSession  implements Serializable {
 	
     private Integer id;
 
-    private String nickName;
-
     private transient String title;
 
     private transient Date createTime;
-
-    private transient String openid;
 
     private String status;
 
@@ -33,13 +27,7 @@ public class ConsultSession  implements Serializable {
     
     private String csUserId;
 
-    public String getNickName() {
-        return nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
+    private transient String source;
 
     public Integer getId() {
         return id;
@@ -64,15 +52,6 @@ public class ConsultSession  implements Serializable {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
-
-    public String getOpenid() {
-        return openid;
-    }
-
-    public void setOpenid(String openid) {
-        this.openid = openid;
-    }
-
 
     public Date getUpdateTime() {
         return updateTime;
@@ -106,4 +85,11 @@ public class ConsultSession  implements Serializable {
 		this.status = status;
 	}
 
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
 }
