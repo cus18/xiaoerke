@@ -1042,7 +1042,7 @@ public class ScheduledTask {
       }
 
 
-//        再建立通讯的五分钟前发消息给用户
+        //再建立通讯的五分钟前发消息给用户
         Date date = new Date();
         date.setTime(date.getTime()+5*60*1000);
         String dateStr = DateUtils.DateToStr(date,"datetime");
