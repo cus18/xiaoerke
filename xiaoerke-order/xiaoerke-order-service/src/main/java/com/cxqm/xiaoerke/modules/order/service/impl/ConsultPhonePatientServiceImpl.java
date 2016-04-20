@@ -159,7 +159,7 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
 
     @Override
     @Transactional(rollbackFor=Exception.class)
-    public Float cancelOrder(Integer phoneConsultaServiceId,String cancelReason) throws CancelOrderException {
+    public Float cancelOrder(Integer phoneConsultaServiceId,String cancelReason,String cancelState) throws CancelOrderException {
         int sysOrderState = 0;
         Float price = 0f;
         //取消订单
@@ -169,7 +169,7 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         int state = consultPhoneRegisterServiceDao.updateByPrimaryKeySelective(vo);
         //取消号源
         if(state>0){
-            sysOrderState = sysConsultPhoneServiceDao.cancelOrder(vo.getSysPhoneconsultServiceId(),"0");
+            sysOrderState = sysConsultPhoneServiceDao.cancelOrder(vo.getSysPhoneconsultServiceId(),cancelState);
         }
         //退钱
         if(sysOrderState>0){
@@ -278,20 +278,6 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
     public List<Map<String, Object>> getConsultPhoneRegisterListByInfo(Map map) {
         // TODO Auto-generated method stub
         return consultPhoneRegisterServiceDao.getConsultPhoneRegisterListByInfo(map);
-    }
-
-    /**
-     * 电话咨询取消预约退费
-     * sunxiao
-     * @param id
-     */
-    @Override
-    public void refundConsultPhoneFee(String id,String cancelReason,Float price,String userId){
-      try {
-          cancelOrder(Integer.valueOf(id),cancelReason);//取消预约
-      }catch (Exception e){
-          e.printStackTrace();
-      }
     }
 
     /**

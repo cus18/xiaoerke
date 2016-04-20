@@ -523,7 +523,7 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 		List<String> dateList = new ArrayList<String>();
 		Map<String, Object> retmap = new HashMap<String, Object>();
 		dateList.add(date);
-		if (!"no".equals(repeat) && repeat != null && !"".equals(repeat)) {
+		if ("yes".equals(repeat) && repeat != null && !"".equals(repeat)) {
 			Date temp = DateUtils.StrToDate(date, "date");
 			Calendar c = Calendar.getInstance();
 			c.setTime(temp);
@@ -644,53 +644,29 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 			map.put("time", time);
 			List<SysConsultPhoneServiceVo> rsList = sysConsultPhoneServiceDao
 					.findSysConsultPhoneByInfo(map);
-			SysConsultPhoneServiceVo isRepeatvo = null;
+			SysConsultPhoneServiceVo svo = null;
 			for (SysConsultPhoneServiceVo rvo : rsList) {
-				if (date.equals(DateUtils.DateToStr(rvo.getDate(), "date"))) {
-					if (!("0".equals(rvo.getRepeatFlag()) || "1".equals(rvo
-							.getRepeatFlag()))) {
-						isRepeatvo = rvo;
+				if (date.equals(DateUtils.DateToStr(rvo.getDate(), "date"))) {//当前号源不重复或不重复删除时只删除当前号源
+					if ("2".equals(rvo.getRepeatFlag())) {
+						svo = rvo;
 					} else {
-						if (!"yes".equals(operRepeat)) {
-							isRepeatvo = rvo;
+						if ("no".equals(operRepeat)) {
+							svo = rvo;
 						}
 					}
 				}
 			}
-			if (isRepeatvo != null) {
-				Map<String, Object> executeMap = new HashMap<String, Object>();
-				ConsultPhoneRegisterServiceVo cvo = new ConsultPhoneRegisterServiceVo();
-				if ("1".equals(isRepeatvo.getState())) {
-					HashMap<String, Object> executeMap1 = new HashMap<String, Object>();
-					executeMap1.put("registerId", isRepeatvo.getId());
-					List<Map<String, Object>> orderList = consultPhonePatientService.getConsultPhoneRegisterListByInfo(executeMap1);
-					Integer orderId = Integer.parseInt((String)orderList.get(0).get("id"));
-					try {
-						consultPhonePatientService.cancelOrder(orderId,"运维"+ UserUtils.getUser().getName()+"删除");//删除订单，修改号源状态，退款
-					} catch (CancelOrderException e) {
-						e.printStackTrace();
-					}
-				}
+			if (svo != null) {
+				delRegister(svo);
 			} else {
 				for (SysConsultPhoneServiceVo rvo : rsList) {
-					if ("0".equals(rvo.getRepeatFlag())
-							|| "1".equals(rvo.getRepeatFlag())) {
-						if ("1".equals(rvo.getState())) {
-							HashMap<String, Object> executeMap1 = new HashMap<String, Object>();
-							executeMap1.put("registerId", rvo.getId());
-							List<Map<String, Object>> orderList = consultPhonePatientService.getConsultPhoneRegisterListByInfo(executeMap1);
-							Integer orderId = (Integer)orderList.get(0).get("id");
-							try {
-								consultPhonePatientService.cancelOrder(orderId,"运维"+ UserUtils.getUser().getName()+"删除");//删除订单，修改号源状态，退款
-							} catch (CancelOrderException e) {
-								e.printStackTrace();
-							}
-						}
+					if ("0".equals(rvo.getRepeatFlag())	|| "1".equals(rvo.getRepeatFlag())) {
+						delRegister(rvo);
 					}
 				}
 			}
 			if ("yes".equals(operRepeat) && "yes".equals(repeat)
-					&& isRepeatvo == null) {
+					&& svo == null) {//删除模板
 				Date temp = DateUtils.StrToDate(date, "date");
 				Calendar c = Calendar.getInstance();
 				c.setTime(temp);
@@ -702,6 +678,24 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 		return count;
 	}
 
+	private Float delRegister(SysConsultPhoneServiceVo vo) throws Exception {
+		Float price = 0f;
+		try {
+			if ("1".equals(vo.getState())) {//被预约了删除号源，删除订单，退费
+				HashMap<String, Object> executeMap1 = new HashMap<String, Object>();
+				executeMap1.put("registerId", vo.getId());
+				List<Map<String, Object>> orderList = consultPhonePatientService.getConsultPhoneRegisterListByInfo(executeMap1);
+				Integer orderId = (Integer) orderList.get(0).get("id");
+				price = consultPhonePatientService.cancelOrder(orderId, "运维" + UserUtils.getUser().getName() + "删除", "2");//删除订单，修改号源状态，退款
+			}else if("0".equals(vo.getState())){//没被预约只删除号源
+				sysConsultPhoneServiceDao.cancelOrder(vo.getId(),"2");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception();
+		}
+		return price;
+	}
 	/**
 	 * 获取电话咨询模板列表
 	 * sunxiao

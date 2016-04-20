@@ -306,7 +306,7 @@
 											}
 											addUpdateFlag="init";
 										}else{
-											alert("删除失败!");
+											alertx("删除失败!");
 										}
 									}
 								}
@@ -333,7 +333,7 @@
 												}
 												addUpdateFlag="init";
 											}else{
-												alert("删除失败!");
+												alertx("删除失败!");
 											}
 										}
 									}

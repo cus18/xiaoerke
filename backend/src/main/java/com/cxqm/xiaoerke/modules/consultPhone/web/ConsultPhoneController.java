@@ -335,7 +335,7 @@ public class ConsultPhoneController extends BaseController {
 		String id = request.getParameter("id");
 		String cancelReason = request.getParameter("cancelReason");
 		try {
-			consultPhonePatientService.cancelOrder(Integer.valueOf(id), cancelReason);
+			consultPhonePatientService.cancelOrder(Integer.valueOf(id), cancelReason,"0");
 		} catch (CancelOrderException e) {
 			e.printStackTrace();
 		}
