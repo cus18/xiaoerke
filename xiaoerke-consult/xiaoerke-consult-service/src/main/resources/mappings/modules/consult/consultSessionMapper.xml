@@ -5,7 +5,7 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="title" property="title" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
-        <result column="openid" property="openid" jdbcType="VARCHAR"/>
+        <result column="source" property="source" jdbcType="VARCHAR"/>
         <result column="state" property="status" jdbcType="VARCHAR"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="sys_user_id_cs" property="csUserId" jdbcType="VARCHAR"/>
@@ -34,8 +34,9 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-    id, title, create_time, openid, state, update_time,sys_user_id_cs, sys_user_id
-  </sql>
+        id, title, create_time, openid, state, update_time,sys_user_id_cs, sys_user_id
+    </sql>
+
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
