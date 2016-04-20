@@ -13,6 +13,7 @@ angular.module('controllers', ['luegg.directives'])
             };
             $scope.socketServer1 = "";
             $scope.socketServer2 = "";
+            $scope.source = "wxcxqm";
             $scope.alreadyJoinPatientConversation = [];
             $scope.currentUserConversation = {};
             $scope.waitJoinNum = 0;
@@ -25,12 +26,27 @@ angular.module('controllers', ['luegg.directives'])
                 switchOver: false,
                 myReplyList: false,
                 publicReplyList: false,
+                replyContent: true,
+                advisoryContent: false
             }
 
             $scope.tapShowButton = function(type){
                 $.each($scope.showFlag,function(key,value){
                     if(key==type){
                         $scope.showFlag[key] = !$scope.showFlag[key];
+                        if("replyContent"==type){
+                            if($scope.showFlag.replyContent==false){
+                                $scope.showFlag.advisoryContent =true;
+                            }else{
+                                $scope.showFlag.advisoryContent =false;
+                            }
+                        }else if("advisoryContent"==type){
+                            if($scope.showFlag.advisoryContent==false){
+                                $scope.showFlag.replyContent=true;
+                            }else{
+                                $scope.showFlag.replyContent=false;
+                            }
+                        }
                         if(!$scope.showFlag[key]){
                             if(type == "myReplyList"){
                                 $scope.myReplyIndex = -1;
