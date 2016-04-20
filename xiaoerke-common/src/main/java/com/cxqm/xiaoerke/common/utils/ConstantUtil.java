@@ -6,8 +6,8 @@ public class ConstantUtil {
 //	public static final String DOAMIN_VALUE = "xiaork.cn";
 //	public static final String WebPath = "xiaork.cn";
 
-	public static final String DOAMIN_VALUE = "xiaoxiaoerke.cn";
-	public static final String TEST_TOKEN = "krUu_FaoCwqZ10-kx8qAMXXXprgQsz8gQV3XCJi0uThzz71brI2Qac4Ya-LtHhjDFJent4MHgecfWWWPwk5j5XBJN_u3rChETv8HC3zPzhYPXHZJse8vd4Rk4_mTrWVCOJFjAJAVQM";
+	public static final String DOAMIN_VALUE = "localhost";
+	public static final String TEST_TOKEN = "9SIOvur1AriSqGw4vbg9sLSEgZYnWF0XIUlFC8p8f5OKWqJf9O90TVflMIo-N6KBnlY9grPMQMcVedTilx-BSuyUZ-b2PykGht1HfFtfE8bOsoiMPRkyOUmUcvy9AfuSAPNbABAKZX";
 
 	public static final String AMR_TOMP3_WINDOWSPATH = "D:\\ffmpeg\\ffmpeg\\bin\\";
 	public static final String AMR_TOMP3_WINDOWSPATHTEMP = "D:\\ffmpeg\\temp\\";
@@ -76,7 +76,7 @@ public class ConstantUtil {
 			"user/getPhoneConsultPayNotifyInfo";
 
 	public static String BAODF_URL = "http://baodf.com";
-	public static String WEB_URL = "http://xiaoxiaoerke.cn";
+	public static String WEB_URL = "http://xiaork.com";
 	public static String S1_WEB_URL = "http://s11.baodf.com/";
 	public static String S2_WEB_URL = "http://s22.baodf.com/";
 	public static String S3_WEB_URL = "http://s3.baodf.com/";

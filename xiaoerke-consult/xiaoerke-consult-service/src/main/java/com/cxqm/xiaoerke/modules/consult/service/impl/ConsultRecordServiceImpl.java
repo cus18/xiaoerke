@@ -215,14 +215,13 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
                 }
             }else{
                 consultRecordMongoVo.setUserId(consultSession.getUserId());
+                consultRecordMongoVo.setSenderId(senderId);
+                consultRecordMongoVo.setCsUserId(consultSession.getCsUserId());
+                consultRecordMongoVo.setDoctorName(consultSession.getCsUserName());
+                consultRecordMongoVo.setCreateDate(new Date());
+                saveConsultRecord(consultRecordMongoVo);
+                saveConsultRecordTemporary(consultRecordMongoVo);
             }
-            consultRecordMongoVo.setSenderId(senderId);
-            consultRecordMongoVo.setCsUserId(consultSession.getCsUserId());
-            consultRecordMongoVo.setDoctorName(consultSession.getCsUserName());
-            consultRecordMongoVo.setCreateDate(new Date());
-            saveConsultRecord(consultRecordMongoVo);//同时将聊天记录数据插入到consultRankRecord
-
-            saveConsultRecordTemporary(consultRecordMongoVo);
         }
     }
 

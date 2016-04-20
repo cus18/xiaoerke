@@ -26,10 +26,6 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsSer
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
-
-import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 public class ConsultSessionManager {
 	
@@ -132,7 +128,6 @@ public class ConsultSessionManager {
 			}
 		}
 	}
-
 
 	private void doCreateSessionInitiatedByUser(String userId, Channel channel){
 		Integer sessionId = sessionRedisCache.getSessionIdByUserId(userId);
@@ -272,19 +267,18 @@ public class ConsultSessionManager {
 			}else{
 				//如果没有任何医生在线，给用户推送微信消息，告知没有医生在线，稍后在使用服务
 				String st = "尊敬的用户，您好，目前没有医生在线，请稍后再试";
-				consultRecordService.buildRecordMongoVo("wx",consultSession.getOpenid(),"wx", st, consultSession, wechatAttentionVo);
 				WechatUtil.senMsgToWechat(sessionRedisCache.getWeChatToken(),consultSession.getOpenid(), st);
 				return null;
 			}
 		}
 
+		//可开启线程进行记录
 		consultSessionService.saveConsultInfo(consultSession);
-
 		Integer sessionId = consultSession.getId();
 		sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
 		sessionRedisCache.putOpenIdSessionIdPair(consultSession.getOpenid(), sessionId);
-        consultMongoUtilsService.upsertRichConsultSession((new Query(where("openid").is(consultSession.getOpenid()))),
-				new Update().update("RichConsultSession", consultSession));
+//        consultMongoUtilsService.upsertRichConsultSession((new Query(where("openid").is(consultSession.getOpenid()))),
+//				new Update().update("RichConsultSession", consultSession));
 		sessionRedisCache.putWechatSessionByOpenId(consultSession.getOpenid(), consultSession);
 
 		//成功分配医生，给用户发送一个欢迎语

@@ -32,7 +32,6 @@ public class AnswerServiceImpl implements AnswerService {
         Query query = new Query();
 
         if ("myAnswer".equals(type)) {
-
             query.addCriteria(where("type").is(type).andOperator(new Criteria().where("userId").is("123")));//UserUtils.getUser().getId()
         } else {
             query.addCriteria(where("type").is(type));
@@ -52,7 +51,6 @@ public class AnswerServiceImpl implements AnswerService {
         return null;
     }
 
-
     @Override
     public WriteResult upsertConsultAnswer(String answerType,String answer) {
         User user = UserUtils.getUser();
@@ -66,8 +64,6 @@ public class AnswerServiceImpl implements AnswerService {
         }
         return writeResult;
     }
-
-
 
     @Override
     public void deleteMyConsultAnswer() throws Exception{

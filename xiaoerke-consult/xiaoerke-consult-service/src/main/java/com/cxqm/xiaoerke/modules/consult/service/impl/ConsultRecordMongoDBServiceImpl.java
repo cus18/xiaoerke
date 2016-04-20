@@ -88,8 +88,6 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		mongoTemplate.remove(query,"ConsultRecordTemporary");
 	}
 
-
-
 	@Override
 	public ConsultRecordMongoVo findAndRemove(Query query) {
 		return this.mongoTemplate.findAndRemove(query, ConsultRecordMongoVo.class);
