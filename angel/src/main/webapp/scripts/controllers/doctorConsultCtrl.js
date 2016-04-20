@@ -7,13 +7,15 @@ angular.module('controllers', ['luegg.directives'])
                   GetAnswerValueList, GetUserLoginStatus, $location, GetUserRecordList,GetMyAnswerModify,
                   GetCurrentUserConsultListInfo,TransferToOtherCsUser,CloseConsultNotify) {
             $scope.test = "";
-            $scope.info = {};
+            $scope.info = {
+                effect:"true",
+                transferRemark:""
+            };
             $scope.socketServer1 = "";
             $scope.socketServer2 = "";
             $scope.alreadyJoinPatientConversation = [];
             $scope.currentUserConversation = {};
             $scope.waitJoinNum = 0;
-            $scope.info.effect = "true";
             $scope.glued = true;
 
             $scope.showFlag = {
@@ -56,7 +58,7 @@ angular.module('controllers', ['luegg.directives'])
             }
 
             $scope.refreshOnLineCsUserList = function(){
-                GetOnlineDoctorList.save({"pageNo": "1", "pageSize": "100"}, function (data) {
+                GetOnlineDoctorList.save({}, function (data) {
                     $scope.info.onLineCsUserList = data.onLineCsUserList;
                 });
             }

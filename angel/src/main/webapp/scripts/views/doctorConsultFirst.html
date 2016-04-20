@@ -406,17 +406,17 @@
                             </div>
                             <ul>
                                 <li ng-repeat="item in info.onLineCsUserList"
-                                    ng-click="chooseTransferCsUser(item.csUserId,item.csUserName)"
+                                    ng-click="chooseTransferCsUser(item.id,item.name)"
                                     ng-style="item.csUserId==transferCsUserId?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}">
                                     <span>
                                         <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(5).png" alt=""/>
-                                        {{item.status}}
+                                        在线
                                     </span>
                                     <span>
-                                        {{item.csUserPhoneNumber}}
+                                        {{item.phone}}
                                     </span>
                                     <span>
-                                        {{item.csUserName}}
+                                        {{item.name}}
                                     </span>
                                 </li>
                             </ul>

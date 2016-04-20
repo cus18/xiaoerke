@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -65,8 +66,8 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
     }
 
     @Override
-    public Page<DoctorVo> getOnlineCsListInfo(Page<DoctorVo> page,List<String> userList){
-        return  consultSessionDao.getOnlineCsListInfo(page, userList);
+    public HashMap<String,Object> getOnlineCsListInfo(List<String> userList){
+        return  consultSessionDao.getOnlineCsListInfo(userList);
     }
 
     @Override
