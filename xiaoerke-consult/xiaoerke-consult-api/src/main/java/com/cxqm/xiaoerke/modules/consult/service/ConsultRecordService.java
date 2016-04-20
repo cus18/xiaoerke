@@ -40,11 +40,10 @@ public interface ConsultRecordService {
 
     HashMap<String, Object> uploadMediaFile(@RequestParam("file") MultipartFile file, @RequestParam("data") String data) throws UnsupportedEncodingException;
 
-    void buildRecordMongoVo(@RequestParam(required = true) String consultType,@RequestParam(required = true) String senderId,
-                            @RequestParam(required = true) String type, @RequestParam(required = false) String messageContent,
-                            RichConsultSession consultSession, SysWechatAppintInfoVo resultVo);
+    void buildRecordMongoVo(@RequestParam(required = true) String senderId,@RequestParam(required = true) String type,
+                            @RequestParam(required = false) String messageContent,RichConsultSession consultSession);
 
-    void saveConsultSessionStatus(Integer sessionId, String userId,String messageType,RichConsultSession consultSession);
+    void saveConsultSessionStatus(RichConsultSession consultSession);
 
     List<Object> querySessionStatusList(Query query);
 

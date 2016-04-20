@@ -404,7 +404,7 @@ public class ConsultDoctorController extends BaseController {
                  {
                      "id":123
                      "session_id": 456,
-                     "openid": "3Wisdfsdflaksjfsd234234j",
+                     "userId": "3Wisdfsdflaksjfsd234234j",
                      "message":"聊天内容"
                      "message_type": "yuyin",
                      "toUserId": "fdasfa",
@@ -413,7 +413,7 @@ public class ConsultDoctorController extends BaseController {
                  {
                      "id":456
                      "session_id": 345534,
-                     "openid": "3Wisdfsdsdfsfjfsd234234j",
+                     "userId": "3Wisdfsdsdfsfjfsd234234j",
                      "message":"聊天内容"
                      "message_type": "yuyin",
                      "toUserId": "fdasfa",
@@ -426,8 +426,8 @@ public class ConsultDoctorController extends BaseController {
     @RequestMapping(value = "/recordList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> recordList(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
-
+    Map<String, Object> recordList(@RequestBody Map<String, Object> params,
+                                   HttpServletRequest request, HttpServletResponse httpResponse) {
 
         String recordType = String.valueOf(params.get("recordType"));
         String toUserId = String.valueOf(params.get("toUserId"));
@@ -459,7 +459,6 @@ public class ConsultDoctorController extends BaseController {
         response.put("pageNo",pageNo);
         response.put("pageSize",pageSize);
 
-
         return response;
     }
 
@@ -470,9 +469,8 @@ public class ConsultDoctorController extends BaseController {
     public
     @ResponseBody
     void produceRecord(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
-
         ConsultRecordMongoVo consultRecordMongoVo = new ConsultRecordMongoVo();
-        int insertNumber = consultRecordService.saveConsultRecord(consultRecordMongoVo);
+        consultRecordService.saveConsultRecord(consultRecordMongoVo);
     }
 
     /**

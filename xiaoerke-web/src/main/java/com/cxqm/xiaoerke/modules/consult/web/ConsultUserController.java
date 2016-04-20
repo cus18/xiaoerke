@@ -108,8 +108,6 @@ public class ConsultUserController extends BaseController {
         return response;
     }
 
-
-
     @RequestMapping(value = "/getCurrentUserByCSId", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
@@ -147,8 +145,6 @@ public class ConsultUserController extends BaseController {
         return response;
     }
 
-
-
     /**
      * 获取客户列表(或咨询过某个医生的客户)详细信息,按照时间降序排序
      */
@@ -172,9 +168,7 @@ public class ConsultUserController extends BaseController {
             String searchDate = DateUtils.formatDateTime(timeMillis);
             searchMap.put("searchDate",searchDate);
         }
-
         searchMap.put("CSDoctorId",CSDoctorId);
-
         Page<ConsultSessionForwardRecordsVo> userPage  = FrontUtils.generatorPage(pageNo, pageSize);
         Page<ConsultSessionForwardRecordsVo> resultPage = consultSessionForwardRecordsService.getConsultUserListRecently(userPage,searchMap);
 
@@ -219,16 +213,13 @@ public class ConsultUserController extends BaseController {
                 for(RichConsultSession richConsultSession :richConsultSessions){
                     HashMap<String,Object> searchMap = new HashMap<String, Object>();
                     String userId = richConsultSession.getUserId();
-                    if(StringUtils.isNull(userId)){
-                        userId =  richConsultSession.getOpenid();
-                    }
                     Query query = new Query(where("userId").is(userId).and("csUserId")
                             .is(richConsultSession.getCsUserId())).with(new Sort(Direction.DESC, "createDate"));
                     pagination = consultRecordService.getPage(pageNo, pageSize, query,"temporary");
                     if(StringUtils.isNull(richConsultSession.getUserId())){
-                        searchMap.put("patientId",richConsultSession.getOpenid());
+                        searchMap.put("patientId",richConsultSession.getUserId());
                     }
-                    searchMap.put("patientName", richConsultSession.getNickName());
+                    searchMap.put("patientName", richConsultSession.getUserName());
                     searchMap.put("fromServer",richConsultSession.getServerAddress());
                     searchMap.put("sessionId",richConsultSession.getId());
                     searchMap.put("isOnline",true);
@@ -277,7 +268,6 @@ public class ConsultUserController extends BaseController {
          ]
      }
      */
-
     @RequestMapping(value = "/recordSearchList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
@@ -331,23 +321,6 @@ public class ConsultUserController extends BaseController {
         return response;
     }
 
-    /***
-     * 用户在咨询完毕后，主动请求终止会话（医生和患者都可操作）
-     * @param
-     *        params:{"sessionId": 432432}
-     * @return
-     *     {
-     *        "result":"success"(失败返回failure)
-     *      }
-     */
-
-//    @RequestMapping(value = "/sessionEnd", method = {RequestMethod.POST, RequestMethod.GET})
-//    public
-//    @ResponseBody
-//    String sessionEnd(@RequestBody Map<String, Object> params,HttpServletRequest request,
-//                      HttpServletResponse httpResponse) {
-//        return consultConversationService.removeSessionById(request, params);
-//    }
 
     /***
      * 用户删除会话
@@ -363,13 +336,11 @@ public class ConsultUserController extends BaseController {
      "result":"success"
      }
      */
-
     @RequestMapping(value = "/waitJoinList/operation", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     String operation(@RequestBody Map<String, Object> params,
-                     HttpServletRequest request,
-                     HttpServletResponse httpResponse) {
+                     HttpServletRequest request) {
         return consultConversationService.removeSessionById(request,params);
     }
 
