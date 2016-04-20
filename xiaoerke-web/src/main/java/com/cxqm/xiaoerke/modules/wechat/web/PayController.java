@@ -106,7 +106,7 @@ public class PayController {
                         Model model) {
 
         if(serviceType.equals("antiDogPay")){
-            model.addAttribute("payPrice", 19.9);
+            model.addAttribute("payPrice", 19.8);
             model.addAttribute("intervalFlag", "1");
             return "antiDogPay";
         }else if(serviceType.equals("phoneConsult")){
