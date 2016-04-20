@@ -175,7 +175,7 @@ public class ConsultUserController extends BaseController {
         //根据会话记录查询客户列表的详细信息
         List<ConsultRecordMongoVo> consultSessionForwardRecordsVos = new ArrayList<ConsultRecordMongoVo>();
         for(ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo : resultPage.getList()){
-            Query query = new Query(where("openid").is(consultSessionForwardRecordsVo.getOpenid())).with(new Sort(Sort.Direction.DESC, "createDate"));
+            Query query = new Query(where("fromUserId").is(consultSessionForwardRecordsVo.getFromUserId())).with(new Sort(Sort.Direction.DESC, "createDate"));
             ConsultRecordMongoVo oneConsultRecord = consultRecordService.findOneConsultRecord(query);
             Date date = oneConsultRecord.getCreateDate();
             oneConsultRecord.setInfoDate(DateUtils.DateToStr(date));
