@@ -1070,8 +1070,7 @@ public class ScheduledTask {
             for(Object object : consultSessionStatusVos){
                 Map map= (Map)object;
                 if(!map.isEmpty()){
-                    Map mapVo = (Map)map.get("consultSessionStatusVo");
-                    ConsultSessionStatusVo consultSessionStatusVo = transConsultSessionStatusMapToVo(mapVo);
+                    ConsultSessionStatusVo consultSessionStatusVo = (ConsultSessionStatusVo)map.get("consultSessionStatusVo");
                     if(consultSessionStatusVo !=null && StringUtils.isNotNull(consultSessionStatusVo.getLastMessageTime())){
                         if(DateUtils.pastMinutes(DateUtils.StrToDate(consultSessionStatusVo.getLastMessageTime(),"xiangang"))>10L){
                             consultSessionService.clearSession(Integer.valueOf(consultSessionStatusVo.getSessionId()),
