@@ -1049,7 +1049,7 @@ public class ScheduledTask {
         String dateStr = DateUtils.DateToStr(date,"datetime");
         List<HashMap<String, Object>> orderMsgList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",date);
         for(HashMap<String ,Object> map:orderMsgList){
-            Map messageMap = messageService.consultPhoneMsgRemind((Integer) map.get("id") + "");
+            List<Map> messageMap = messageService.consultPhoneMsgRemind((Integer) map.get("id") + "");
             if(null == messageMap||messageMap.size() == 0){
                 Map<String,Object> parameter = systemService.getWechatParameter();
                 String token = (String)parameter.get("token");
@@ -1165,7 +1165,7 @@ public class ScheduledTask {
         String dateStr = DateUtils.DateToStr(date,"datetime");
         List<HashMap<String, Object>> orderMsgList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1", date);
         for(HashMap<String ,Object> map:orderMsgList){
-            Map messageMap = messageService.consultPhoneMsgRemind((Integer) map.get("id") + "");
+            List<Map> messageMap = messageService.consultPhoneMsgRemind((Integer) map.get("id") + "");
             if(null == messageMap||messageMap.size() == 0){
                 Map<String,Object> parameter = systemService.getWechatParameter();
                 String token = (String)parameter.get("token");
