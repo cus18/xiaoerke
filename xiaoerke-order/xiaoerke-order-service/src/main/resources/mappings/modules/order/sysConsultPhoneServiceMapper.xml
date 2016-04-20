@@ -273,6 +273,12 @@
         #{item}
       </foreach>
     </if>
+    <if test="statusList != null">
+      and scs.state in
+      <foreach item="item" index="index" collection="statusList" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
     ORDER BY scs.beginTime asc
   </select>
 </mapper>
