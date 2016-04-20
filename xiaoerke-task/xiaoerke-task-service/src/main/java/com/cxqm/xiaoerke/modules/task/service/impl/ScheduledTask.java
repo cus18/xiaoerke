@@ -993,14 +993,14 @@ public class ScheduledTask {
     }
 
     //建立患者与医生之间的通讯
-    public void getConnenct4doctorAndPatient(){
+    public synchronized void getConnenct4doctorAndPatient(){
       List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",new Date());
       for(HashMap map:consultOrderList){
           String doctorPhone =  (String)map.get("doctorPhone");
           String userPhone =  (String)map.get("userPhone");
           Integer orderId = (Integer)map.get("id");
           List<ConsultPhoneRecordVo> list = consultPhoneService.getConsultRecordInfo(orderId + "", "CallAuth");
-          if(list.size()<2){
+          if(list.size()<1){
               Integer conversationLength =  (Integer)map.get("conversationLength")*60;
               HashMap<String, Object> result = CCPRestSDK.callback(userPhone,doctorPhone,
                       "4006237120", "4006237120", null,
