@@ -277,6 +277,18 @@
 		<property name="cronExpression" value="0 */1 * * * ?"/>
 	</bean>
 
+	<!-- 咨询定时操作（天）-->
+	<bean id="consultMangementDayTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="scheduledQuarz"/>
+		<property name="targetMethod" value="consultMangementDayTask"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+	<!--事件触发时间点 每天凌晨零点执行一次  -->
+	<bean id="deleteTempRecordTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="consultMangementDayTask"/>
+		<property name="cronExpression" value="0 0 0 * * ?"/>
+	</bean>
+
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
