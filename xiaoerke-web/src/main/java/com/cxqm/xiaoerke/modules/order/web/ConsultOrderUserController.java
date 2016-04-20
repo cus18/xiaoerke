@@ -153,13 +153,13 @@ public class ConsultOrderUserController {
         Map<String,Object> orderVo = consultPhonePatientService.getPatientRegisterInfo(phoneConsultaServiceId);
         Date orderDate = DateUtils.StrToDate(orderVo.get("date") + " " + orderVo.get("beginTime"), "yyyy/MM/dd HH:mm");
 
-        if(orderDate.getTime()<new Date().getTime()+10*60*1000){
+        if(orderDate.getTime()<new Date().getTime()+5*60*1000){
             resultMap.put("status","20");
             return resultMap;
         }
         if("待接听".equals(orderVo.get("state"))){
             try {
-                 resultState = consultPhonePatientService.cancelOrder(phoneConsultaServiceId,cancelReason);
+                 resultState = consultPhonePatientService.cancelOrder(phoneConsultaServiceId,cancelReason,"0");
             }catch (Exception e){
                 e.printStackTrace();
             }

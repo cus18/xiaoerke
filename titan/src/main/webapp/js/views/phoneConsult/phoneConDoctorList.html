@@ -15,10 +15,10 @@
 		</div>
 	</div>
 	<!--医院、科室、排序列表-->
-	<div class="c-shadow" ng-if="shadowLock"></div>
-	<div ng-if="shadowLock" >
+	<div class="c-shadow" ng-if="shadowLock1 || shadowLock2"></div>
+	<div ng-if="shadowLock1 || shadowLock2">
 		<!--医院、科室列表-->
-		<ion-content ng-if="selectType=='department' ||selectType=='hospital'" class="mySeek "  overflow-scroll="true">
+		<ion-content ng-if="selectType=='department' || selectType=='hospital'" class="mySeek "  overflow-scroll="true">
 			<ion-scroll direction="y" has-bouncing="true" >
 				<dl class="c5 bg1" ng-if="selectType=='department'" >
 					<dt class="f6 c6 fw0 border2"  ng-click="init()" ng-if="allItemLock">全部科室</dt>
@@ -44,7 +44,6 @@
 				</dl>
 			</ion-scroll>
 		</ion-content>
-
 	</div>
 
 	<!--医生列表-->
@@ -66,19 +65,19 @@
 								</div>
 							</div>
 							<div class="intro">
-								<div class="name s"><span>{{item.doctorName}}</span>{{item.position1}}&nbsp;{{item.position2}}&nbsp;({{item.career_time}}年)</div>
-								<div class="hospital s">{{item.hospitalName}}</div>
+								<div class="name "><span>{{item.doctorName}}</span>{{item.position1}}&nbsp;{{item.position2}}&nbsp;({{item.career_time}}年)</div>
+								<div class="hospital ">{{item.hospitalName}}</div>
 								<div class="department">擅长：{{item.expertise}}</div>
-								<div class="icon">
+								<!--<div class="icon">
 										<span class="f3 c5" >
 											<img class="my-img1" width="20" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Ficon_classify_ap.png">
 											预约挂号
 										</span>
 										<span class="f3 c5">
 											<img class="my-img1" width="20" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/phoneConsult%2Ficon_classify_phone.png">
-											预约挂号
+											电话咨询
 										</span>
-								</div>
+								</div>-->
 							</div>
 						</div>
 						<div class="time tc border3" ><!--ng-click="doctorAppointment(item.doctorId,item.available_time, ite.name, ite.location, ite.position,ite.location_id,'')"-->

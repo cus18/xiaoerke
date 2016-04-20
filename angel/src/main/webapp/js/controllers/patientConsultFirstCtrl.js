@@ -59,8 +59,8 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 }
                 if (window.WebSocket) {
                     console.log($scope.patientId);
-                    $scope.socketServer = new WebSocket("ws://localhost:2048/ws&user&"
-                        + "000907aab02a489ab92ffa48e0c0dc14&h5cxqm");//cs,user,distributor
+                    $scope.socketServer = new WebSocket("ws://101.201.154.201:2048/ws&user&"
+                        + $scope.patientId +"&h5cxqm");//cs,user,distributor
                     $scope.socketServer.onmessage = function(event) {
                         console.log("onmessage"+event.data);
                     };
@@ -88,13 +88,13 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             }
 
             $scope.sendConsultContent = function(){
-
                 var message = {
                     "type": 0,
                     "content": $scope.info.consultInputValue,
                     "dateTime": moment().format("YYYY-MM-DD HH:mm:ss"),
                     "senderId":$scope.patientId,
                     "senderName":$scope.patientName,
+                    "sessionId":$scope.sessionId,
                     "avatar":"http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/jialisan01.png",
                 }
 

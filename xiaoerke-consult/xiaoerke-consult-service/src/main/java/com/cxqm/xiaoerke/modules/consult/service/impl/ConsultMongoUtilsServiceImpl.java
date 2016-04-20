@@ -41,7 +41,12 @@ public class ConsultMongoUtilsServiceImpl implements ConsultMongoUtilsService {
 
 	@Override
 	public RichConsultSession  removeRichConsultSession(Query query) {
-		return this.mongoTemplate.findAndRemove(query, RichConsultSession.class,"richConsultSession");
+		return this.mongoTemplate.findAndRemove(query, RichConsultSession.class, "richConsultSession");
+	}
+
+	@Override
+	public WriteResult removeConsultRankRecord(Query query) {
+		return mongoTemplate.remove(query,"consultRankRecord");
 	}
 
 }

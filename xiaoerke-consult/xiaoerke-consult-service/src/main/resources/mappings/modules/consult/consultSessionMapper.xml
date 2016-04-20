@@ -21,7 +21,7 @@
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
-        from consult_conversation
+        from consult_session
         where id = #{id,jdbcType=INTEGER}
     </select>
 
@@ -29,7 +29,7 @@
             parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession">
         select
         <include refid="Base_Column_List"/>
-        from consult_conversation
+        from consult_session
         where 1=1
         <if test="title != null">
             and title = #{title,jdbcType=VARCHAR}
@@ -55,7 +55,7 @@
 
     <select id="getAlreadyAccessUsers" resultMap="BaseResultMap"
             parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession">
-        SELECT * from consult_conversation cc
+        SELECT * from consult_session cc
         INNER JOIN sys_attention sa on sa.openid = cc.userId
         where 1=1
         <if test="status != null">
@@ -71,7 +71,7 @@
 
     <select id="selectByPrOpenid" resultType="java.util.Map" parameterType="java.lang.String">
     select  hc.id,hid.illness ,hid.caseImg,hid.otherImg,hid.positionImg,hid.resultImg,sbi.name,sbi.birthday,sbi.sex
-    from consult_conversation hc
+    from consult_session hc
     left join healthRecord_illness_describe hid
     on hc.title = hid.conversation_id
     left join sys_baby_baseInfo sbi
@@ -81,13 +81,13 @@
   </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete from consult_conversation
+        delete from consult_session
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
     <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession" useGeneratedKeys="true"
             keyProperty="id">
-    insert into consult_conversation (id, title, create_time, 
+    insert into consult_session (id, title, create_time,
       state, update_time,sys_user_id_cs, sys_user_id
       )
     values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
@@ -97,7 +97,7 @@
   </insert>
     <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession"
             useGeneratedKeys="true" keyProperty="id">
-        insert into consult_conversation
+        insert into consult_session
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -148,7 +148,7 @@
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession">
-        update consult_conversation
+        update consult_session
         <set>
             <if test="title != null">
                 title = #{title,jdbcType=VARCHAR},
@@ -174,7 +174,7 @@
     </update>
 
     <update id="updateSessionInfoByUserId" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession">
-        update consult_conversation
+        update consult_session
         <set>
             <if test="title != null">
                 title = #{title,jdbcType=VARCHAR},
@@ -199,7 +199,7 @@
 
 
     <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession">
-    update consult_conversation
+    update consult_session
     set title = #{title,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
 

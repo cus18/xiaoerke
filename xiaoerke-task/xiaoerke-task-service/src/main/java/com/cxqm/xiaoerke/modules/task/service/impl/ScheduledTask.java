@@ -1042,7 +1042,7 @@ public class ScheduledTask {
       }
 
 
-//        再建立通讯的五分钟前发消息给用户
+        //再建立通讯的五分钟前发消息给用户
         Date date = new Date();
         date.setTime(date.getTime()+5*60*1000);
         String dateStr = DateUtils.DateToStr(date,"datetime");
@@ -1070,8 +1070,7 @@ public class ScheduledTask {
             for(Object object : consultSessionStatusVos){
                 Map map= (Map)object;
                 if(!map.isEmpty()){
-                    Map mapVo = (Map)map.get("consultSessionStatusVo");
-                    ConsultSessionStatusVo consultSessionStatusVo = transConsultSessionStatusMapToVo(mapVo);
+                    ConsultSessionStatusVo consultSessionStatusVo = (ConsultSessionStatusVo)map.get("consultSessionStatusVo");
                     if(consultSessionStatusVo !=null && StringUtils.isNotNull(consultSessionStatusVo.getLastMessageTime())){
                         if(DateUtils.pastMinutes(DateUtils.StrToDate(consultSessionStatusVo.getLastMessageTime(),"xiangang"))>10L){
                             consultSessionService.clearSession(Integer.valueOf(consultSessionStatusVo.getSessionId()),
@@ -1081,6 +1080,12 @@ public class ScheduledTask {
                 }
             }
         }
+    }
+
+
+    public void consultMangementDayTask(){
+        //删除会话排名中的临时数据
+        consultMongoUtilsService.removeConsultRankRecord(new Query());
     }
 
     public ConsultSessionStatusVo transConsultSessionStatusMapToVo(Map map){
