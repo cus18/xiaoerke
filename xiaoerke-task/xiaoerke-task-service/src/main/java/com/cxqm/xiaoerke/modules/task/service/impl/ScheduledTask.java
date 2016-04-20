@@ -7,11 +7,9 @@ import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
 import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultMongoUtilsService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultPhoneService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
-import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
+import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
 import com.cxqm.xiaoerke.modules.operation.service.BaseDataService;
 import com.cxqm.xiaoerke.modules.operation.service.OperationsComprehensiveService;
@@ -96,10 +94,11 @@ public class ScheduledTask {
     @Autowired
     private ConsultMongoUtilsService consultMongoUtilsService;
 
-
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private ConsultSessionService consultSessionService;
 
     //将所有任务放到一个定时器里，减少并发
     //@Scheduled(cron = "0 */1 * * * ?")
@@ -1043,7 +1042,7 @@ public class ScheduledTask {
       }
 
 
-//        再建立通讯的五分钟前发消息给用户
+        //再建立通讯的五分钟前发消息给用户
         Date date = new Date();
         date.setTime(date.getTime()+5*60*1000);
         String dateStr = DateUtils.DateToStr(date,"datetime");
@@ -1075,22 +1074,8 @@ public class ScheduledTask {
                     ConsultSessionStatusVo consultSessionStatusVo = transConsultSessionStatusMapToVo(mapVo);
                     if(consultSessionStatusVo !=null && StringUtils.isNotNull(consultSessionStatusVo.getLastMessageTime())){
                         if(DateUtils.pastMinutes(DateUtils.StrToDate(consultSessionStatusVo.getLastMessageTime(),"xiangang"))>10L){
-                            try{
-                                //清除redis内的数据
-                                sessionRedisCache.removeConsultSessionBySessionId(Integer.valueOf(consultSessionStatusVo.getSessionId()));
-                                sessionRedisCache.removeUserIdSessionIdPair(consultSessionStatusVo.getUserId());
-                                //清除内存内的数据
-                                ConsultSessionManager.getSessionManager().removeUserSession(consultSessionStatusVo.getUserId());
-                                //清除mongo中的session
-                                String findId =  consultSessionStatusVo.getUserId() == null ? "openid":"userId";
-                                consultMongoUtilsService.removeRichConsultSession(new Query().addCriteria(new Criteria().where(findId).is(consultSessionStatusVo.getUserId())));
-                                //删除最后一次会话
-                                consultRecordService.deleteConsultSessionStatusVo(new Query().addCriteria(new Criteria().where("sessionId").is(consultSessionStatusVo.getSessionId())));
-                               //删除用户的临时聊天记录
-                                consultRecordService.deleteConsultTempRecordVo(new Query().addCriteria(new Criteria().where("userId").is(consultSessionStatusVo.getUserId())));
-                            }catch (Exception e){
-                                e.printStackTrace();
-                            }
+                            consultSessionService.clearSession(Integer.valueOf(consultSessionStatusVo.getSessionId()),
+                                    consultSessionStatusVo.getUserId());
                         }
                     }
                 }

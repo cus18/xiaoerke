@@ -25,8 +25,6 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 	
 	private static final String USER_SESSIONID_KEY = "consult.userSessionID";
 
-	private static final String USER_WECHATSESSION_KEY = "consult.wechatSession";
-
 	private static final String WECHAT_TOKEN = "wechat.token";
 	
 	@Override

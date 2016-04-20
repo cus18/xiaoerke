@@ -2,7 +2,6 @@ package com.cxqm.xiaoerke.modules.consult.service.util;
 
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;

@@ -2,18 +2,20 @@ angular.module('controllers', ['luegg.directives'])
     .controller('doctorConsultFirstCtrl', ['$scope', '$sce', '$window','GetTodayRankingList',
         'GetOnlineDoctorList','GetAnswerValueList','GetAnswerValueList','GetUserLoginStatus',
         '$location', 'GetUserRecordList','GetMyAnswerModify','GetCurrentUserConsultListInfo',
-        'TransferToOtherCsUser','CloseConsultNotify',
+        'TransferToOtherCsUser','SessionEnd',
         function ($scope, $sce, $window,GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
                   GetAnswerValueList, GetUserLoginStatus, $location, GetUserRecordList,GetMyAnswerModify,
-                  GetCurrentUserConsultListInfo,TransferToOtherCsUser,CloseConsultNotify) {
+                  GetCurrentUserConsultListInfo,TransferToOtherCsUser,SessionEnd) {
             $scope.test = "";
-            $scope.info = {};
+            $scope.info = {
+                effect:"true",
+                transferRemark:""
+            };
             $scope.socketServer1 = "";
             $scope.socketServer2 = "";
             $scope.alreadyJoinPatientConversation = [];
             $scope.currentUserConversation = {};
             $scope.waitJoinNum = 0;
-            $scope.info.effect = "true";
             $scope.glued = true;
 
             $scope.showFlag = {
@@ -56,7 +58,7 @@ angular.module('controllers', ['luegg.directives'])
             }
 
             $scope.refreshOnLineCsUserList = function(){
-                GetOnlineDoctorList.save({"pageNo": "1", "pageSize": "100"}, function (data) {
+                GetOnlineDoctorList.save({}, function (data) {
                     $scope.info.onLineCsUserList = data.onLineCsUserList;
                 });
             }
@@ -180,8 +182,7 @@ angular.module('controllers', ['luegg.directives'])
 
             //关闭跟某个用户的会话
             $scope.closeConsult = function () {
-                CloseConsultNotify.save({userId: $scope.chooseAlreadyJoinConsultPatientId,
-                    csUserId:$scope.doctorId},function(data){
+                SessionEnd.save({sessionId:$scope.currentUserConversation.sessionId},function(data){
                     if(data.result=="success"){
                         var indexClose = 0;
                         $.each($scope.alreadyJoinPatientConversation, function (index, value) {
@@ -196,6 +197,8 @@ angular.module('controllers', ['luegg.directives'])
                         }else{
                             $scope.currentUserConversation = {};
                         }
+                    }else{
+                        alert("会话关闭失败，请重试");
                     }
                 })
             }

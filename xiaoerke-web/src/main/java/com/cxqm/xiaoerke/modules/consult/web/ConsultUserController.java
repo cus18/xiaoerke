@@ -61,10 +61,10 @@ public class ConsultUserController extends BaseController {
 
     @Autowired
     private ConsultSessionForwardRecordsService consultSessionForwardRecordsService;
+
     /***
      * 用户在咨询完毕后，主动请求终止会话（医生和患者都可操作）
      * @param
-     *        userId:{"userId": "124124"}
      * @return
      *     {
      *        "result":"success"(失败返回failure)
@@ -74,16 +74,11 @@ public class ConsultUserController extends BaseController {
     @RequestMapping(value = "/sessionEnd", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> getSessionId(@RequestParam(required=true) String userId) {
-        Integer sessionId = ConsultSessionManager.getSessionManager().getSessionIdByUser(userId);
-        Map<String, Object> response = new HashMap<String, Object>();
-        response.put("status", 0);
-        response.put("msg", "OK");
-        response.put("sessionId", sessionId);
+    Map<String, Object> sessionEnd(@RequestParam(required=true) String sessionId,@RequestParam(required=true) String userId) {
 
-        if(null == sessionId){
-            response.put("status", 1);
-        }
+        String result = consultConversationService.clearSession(Integer.parseInt(sessionId),userId);
+        Map<String, Object> response = new HashMap<String, Object>();
+        response.put("result", result);
         return response;
     }
 
@@ -175,7 +170,7 @@ public class ConsultUserController extends BaseController {
         //根据会话记录查询客户列表的详细信息
         List<ConsultRecordMongoVo> consultSessionForwardRecordsVos = new ArrayList<ConsultRecordMongoVo>();
         for(ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo : resultPage.getList()){
-            Query query = new Query(where("openid").is(consultSessionForwardRecordsVo.getOpenid())).with(new Sort(Sort.Direction.DESC, "createDate"));
+            Query query = new Query(where("fromUserId").is(consultSessionForwardRecordsVo.getFromUserId())).with(new Sort(Sort.Direction.DESC, "createDate"));
             ConsultRecordMongoVo oneConsultRecord = consultRecordService.findOneConsultRecord(query);
             Date date = oneConsultRecord.getCreateDate();
             oneConsultRecord.setInfoDate(DateUtils.DateToStr(date));
@@ -271,7 +266,7 @@ public class ConsultUserController extends BaseController {
     @RequestMapping(value = "/recordSearchList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> recordSearchList(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
+    Map<String, Object> recordSearchList(@RequestBody Map<String, Object> params) {
 
         int pageNo = 0;
         int pageSize = 1;
@@ -319,29 +314,6 @@ public class ConsultUserController extends BaseController {
         response.put("pageNo",pageNo);
         response.put("pageSize",pageSize);
         return response;
-    }
-
-
-    /***
-     * 用户删除会话
-     *
-     * @param
-     * {
-    "sessionId": "dafdsaf",
-    "patientId":"fdsafew",
-    "operation":"confirm" (delete删除操作)
-    }
-     @return
-     {
-     "result":"success"
-     }
-     */
-    @RequestMapping(value = "/waitJoinList/operation", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    String operation(@RequestBody Map<String, Object> params,
-                     HttpServletRequest request) {
-        return consultConversationService.removeSessionById(request,params);
     }
 
 }

@@ -18,10 +18,6 @@ angular.module('services', ['ngResource'])
     .factory('GetOnlineDoctorList', ['$resource', function ($resource) {
         return $resource(public + 'consult/doctor/doctorList');
     }])
-    //医生关闭跟用户的会话
-    .factory('CloseConsultNotify', ['$resource', function ($resource) {
-        return $resource(public + 'consult/doctor/closeConsult');
-    }])
     //获取医生下的目前正在咨询的用户列表
     .factory('GetCurrentUserConsultListInfo', ['$resource', function ($resource) {
         return $resource(public + 'consult/user/getCurrentUserList');
@@ -79,16 +75,12 @@ angular.module('services', ['ngResource'])
         return $resource(public + 'consult/doctor/sessionBuild');
     }])
     //主动终止会话
-    .factory('GetSessionEnd', ['$resource', function ($resource) {
+    .factory('SessionEnd', ['$resource', function ($resource) {
         return $resource(public + 'consult/user/sessionEnd');
     }])
     //获取等待加入用户列表
     .factory('GetWaitJoinList', ['$resource', function ($resource) {
         return $resource(public + 'consult/waitJoinList');
-    }])
-    //选择用户，删除或增加
-    .factory('GetWaitJoinListOperation', ['$resource', function ($resource) {
-        return $resource(public + 'consult/user/waitJoinList/operation');
     }])
     //医生获取当前会话用户的N条聊天记录
     .factory('GetHistoryRecordPatient', ['$resource', function ($resource) {

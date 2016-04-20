@@ -225,7 +225,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
 
     @Override
     public void  deleteConsultTempRecordVo(Query query) {
-        consultRecordMongoDBService.deleteConsultSessionStatusVo(query);
+        consultRecordMongoDBService.deleteConsultRecordTemporary(query);
     }
 
 }

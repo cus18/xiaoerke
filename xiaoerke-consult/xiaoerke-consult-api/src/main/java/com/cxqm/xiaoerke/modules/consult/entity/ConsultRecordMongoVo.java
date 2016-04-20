@@ -13,12 +13,6 @@ public class ConsultRecordMongoVo {
 
     private String worker;
 
-    private Date attentionDate;
-
-    private String attentionMarketer;
-
-    private String attentionNickname;
-
     private Date createDate;
 
     private String infoDate;
@@ -28,6 +22,8 @@ public class ConsultRecordMongoVo {
     private String opercode;
 
     private String userId;
+
+    private String attentionNickname;
 
     private String csUserId;
 
@@ -42,6 +38,14 @@ public class ConsultRecordMongoVo {
     private String doctorcs;
 
     private String nickName;
+
+    public String getAttentionNickname() {
+        return attentionNickname;
+    }
+
+    public void setAttentionNickname(String attentionNickname) {
+        this.attentionNickname = attentionNickname;
+    }
 
     public String getNickName() {
         return nickName;
@@ -129,30 +133,6 @@ public class ConsultRecordMongoVo {
 
     public void setWorker(String worker) {
         this.worker = worker;
-    }
-
-    public Date getAttentionDate() {
-        return attentionDate;
-    }
-
-    public void setAttentionDate(Date attentionDate) {
-        this.attentionDate = attentionDate;
-    }
-
-    public String getAttentionMarketer() {
-        return attentionMarketer;
-    }
-
-    public void setAttentionMarketer(String attentionMarketer) {
-        this.attentionMarketer = attentionMarketer;
-    }
-
-    public String getAttentionNickname() {
-        return attentionNickname;
-    }
-
-    public void setAttentionNickname(String attentionNickname) {
-        this.attentionNickname = attentionNickname;
     }
 
     public Date getCreateDate() {
