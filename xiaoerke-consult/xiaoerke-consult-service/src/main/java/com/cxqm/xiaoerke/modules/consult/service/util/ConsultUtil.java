@@ -17,6 +17,7 @@ public class ConsultUtil {
 		consultSession.setServerAddress((String) consultSessionMap.get("serverAddress"));
 		consultSession.setCreateTime((Date) consultSessionMap.get("createTime"));
 		consultSession.setCsUserName((String) consultSessionMap.get("csUserName"));
+		consultSession.setSource((String) consultSessionMap.get("source"));
 		consultSession.setCsUserId((String) consultSessionMap.get("csUserId"));
 		consultSession.setStatus((String) consultSessionMap.get("status"));
 		consultSession.setTitle((String) consultSessionMap.get("title"));
@@ -31,6 +32,7 @@ public class ConsultUtil {
 		consultSessionMap.put("serverAddress", consultSession.getServerAddress());
 		consultSessionMap.put("createTime", consultSession.getCreateTime());
 		consultSessionMap.put("csUserName", consultSession.getCsUserName());
+		consultSessionMap.put("source", consultSession.getSource());
 		consultSessionMap.put("csUserId", consultSession.getCsUserId());
 		consultSessionMap.put("status", consultSession.getStatus());
 		consultSessionMap.put("title", consultSession.getTitle());
