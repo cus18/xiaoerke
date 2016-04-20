@@ -13,4 +13,12 @@ define(['phoneConsultApp'], function (app) {
         .factory('GetUserEvaluate',['$resource',function ($resource){
             return $resource('interaction/user/doctorEvaluate');
         }])
+        //获取某医生的号源日期
+        .factory('GetConsultInfo',['$resource',function ($resource){
+            return $resource('consultPhone/consultPhoneDoctor/getConsultInfo');
+        }])
+        //获取某医生的号源日期的具体信息
+        .factory('GetConsultTime',['$resource',function ($resource){
+            return $resource('consultPhone/user/doctor/time');
+        }])
 });
