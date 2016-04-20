@@ -27,9 +27,10 @@ public interface ConsultSessionService {
 
     List<String> getOnlineCsList();
 
-    Page<DoctorVo> getOnlineCsListInfo(Page<DoctorVo> page, List<String> userList);
+    HashMap<String,Object> getOnlineCsListInfo(List<String> userList);
 
     List<ConsultSession> getAlreadyAccessUsers(ConsultSession richConsultSession);
 
 
+    String clearSession(Integer sessionId, String userId);
 }

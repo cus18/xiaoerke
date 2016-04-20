@@ -77,7 +77,6 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 			String csUserId = consultSession.getCsUserId();
 			String userId = consultSession.getUserId();
 			Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(csUserId);
-			SysWechatAppintInfoVo resultVo = new SysWechatAppintInfoVo();
 			if(channel != csChannel && csChannel != null) {
 				csChannel.writeAndFlush(msg.retain());
 				//保存聊天记录

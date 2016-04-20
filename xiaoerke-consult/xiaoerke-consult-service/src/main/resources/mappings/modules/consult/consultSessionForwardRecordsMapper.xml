@@ -10,7 +10,6 @@
     <result column="create_by" property="createBy" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
-    <result column="openid" property="openid" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, conversation_id, from_user_id, to_user_id, create_time, create_by, remark,status
@@ -169,13 +168,8 @@
     <if test="CSDoctorId != null">
       and to_user_id=#{CSDoctorId}
     </if>
-    group su.openid
+    group su.id
     ORDER BY ccfr.create_time desc
-  </select>
-  <!--测试 测完删掉当前并给getConsultUserListRecently_bak改名字-->
-  <select id="getConsultUserListRecently" resultMap="BaseResultMap"
-          resultType="com.cxqm.xiaoerke.common.persistence.Page">
-    select openid from consult_record GROUP BY openid
   </select>
 
 </mapper>

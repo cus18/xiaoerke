@@ -59,12 +59,8 @@ public class ConsultSessionManager {
 
 	private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
 
-	private ConsultMongoUtilsServiceImpl consultMongoUtilsService = SpringContextHolder.getBean("consultMongoUtilsServiceImpl");
-
 	private ConsultSessionService consultSessionService = SpringContextHolder.getBean("consultSessionServiceImpl");
 
-	private ConsultRecordService consultRecordService  = SpringContextHolder.getBean("consultRecordServiceImpl");
-	
 	private ConsultSessionForwardRecordsService sessionForwardService = SpringContextHolder.getBean("consultSessionForwardRecordsServiceImpl");
 	
 	private SystemService systemService = SpringContextHolder.getBean("systemService");
@@ -80,7 +76,7 @@ public class ConsultSessionManager {
 		return sessionManager;
 	}
 	
-	void createSession(ChannelHandlerContext ctx, FullHttpRequest msg, String url) {
+	void createSession(ChannelHandlerContext ctx, String url) {
 
 		Channel channel = ctx.channel();
 		
@@ -91,7 +87,7 @@ public class ConsultSessionManager {
 			if(fromType.equals("user")) {
 				String userId = args[2];
 				String source = args[3];
-				doCreateSessionInitiatedByUser(userId, source,channel);
+				doCreateSessionInitiatedByUser(userId,source,channel);
 			}else if(fromType.equals("cs")) {
 				String userId = args[2];
 				doCreateSessionInitiatedByCs(userId,channel);
@@ -190,13 +186,15 @@ public class ConsultSessionManager {
 			sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
 			sessionRedisCache.putUserIdSessionIdPair(userId, sessionId);
 			
-			//send user
+			//send doctor or distributor
 			JSONObject obj = new JSONObject();
 			obj.put("type", 4);
 			obj.put("notifyType", "0001");
 			obj.put("session", consultSession);
 			TextWebSocketFrame frame = new TextWebSocketFrame(obj.toJSONString());
 			distributorChannel.writeAndFlush(frame.retain());
+
+			//sender，告诉会有哪个医生或者接诊员提供服务
 		}
 		
 		userChannelMapping.put(userId, channel);
