@@ -100,9 +100,6 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
             //清除内存内的数据
             ConsultSessionManager.getSessionManager().removeUserSession(userId);
 
-            //清除mongo中的session
-            consultMongoUtilsService.removeRichConsultSession(new Query().addCriteria(new Criteria().where("userId").is(userId)));
-
             //删除最后一次会话
             consultRecordService.deleteConsultSessionStatusVo(new Query().addCriteria(new Criteria().where("sessionId").is(sessionId)));
 
