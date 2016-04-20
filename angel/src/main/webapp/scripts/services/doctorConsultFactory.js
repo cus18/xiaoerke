@@ -18,7 +18,10 @@ angular.module('services', ['ngResource'])
     .factory('GetOnlineDoctorList', ['$resource', function ($resource) {
         return $resource(public + 'consult/doctor/doctorList');
     }])
-
+    //医生关闭跟用户的会话
+    .factory('CloseConsultNotify', ['$resource', function ($resource) {
+        return $resource(public + 'consult/doctor/closeConsult');
+    }])
     //获取医生下的目前正在咨询的用户列表
     .factory('GetCurrentUserConsultListInfo', ['$resource', function ($resource) {
         return $resource(public + 'consult/user/getCurrentUserList');

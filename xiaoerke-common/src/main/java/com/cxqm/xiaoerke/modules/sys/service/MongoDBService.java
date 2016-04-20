@@ -27,7 +27,6 @@ public abstract class MongoDBService<T> {
 	 */
 	public abstract int insertByBatch(List<T> entities);
 
-
 	public abstract WriteResult updateMulti(Query query, Update update);
 
 	public abstract WriteResult upsert(Query query, Update update);

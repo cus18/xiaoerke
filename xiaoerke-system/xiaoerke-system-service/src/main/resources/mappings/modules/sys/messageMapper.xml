@@ -212,7 +212,7 @@
     </select>
 
     <select id="consultPhoneMsgRemind" resultType="java.util.HashMap">
-        select * from sys_monitor smt where smt.patient_register_service_id = #{id}
+        select min(id) from sys_monitor smt where smt.patient_register_service_id = #{id}
         and smt.status = '7' and smt.types = '2'
     </select>
 </mapper>

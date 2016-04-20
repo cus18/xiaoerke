@@ -24,16 +24,12 @@ public class AnswerMongoDBServiceImpl extends MongoDBService<AnswerMongoVo> {
 
 	@Override
 	public WriteResult updateMulti(Query query,Update update) {
-
 		return mongoTemplate.updateMulti(query,update,AnswerMongoVo.class);
-
 	}
 
 	@Override
 	public WriteResult upsert(Query query,Update update) {
-
 		return mongoTemplate.upsert(query,update,"AnswerMongoVo");
-
 	}
 
 	@Override
@@ -41,7 +37,6 @@ public class AnswerMongoDBServiceImpl extends MongoDBService<AnswerMongoVo> {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
 
 	@Override
 	public long queryCount(Query query)
@@ -59,10 +54,9 @@ public class AnswerMongoDBServiceImpl extends MongoDBService<AnswerMongoVo> {
 	}
 
 	@Override
-	public AnswerMongoVo  findAndRemove(Query query) {
+	public AnswerMongoVo findAndRemove(Query query) {
         return this.mongoTemplate.findAndRemove(query, AnswerMongoVo.class,"AnswerMongoVo");
 	}
-
 
 	@Override
 	public List<String> queryStringListDistinct(Query query,String key){

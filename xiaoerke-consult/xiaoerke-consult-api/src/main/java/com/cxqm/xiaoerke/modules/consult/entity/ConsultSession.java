@@ -73,7 +73,6 @@ public class ConsultSession  implements Serializable {
         this.openid = openid;
     }
 
-
     public Date getUpdateTime() {
         return updateTime;
     }
