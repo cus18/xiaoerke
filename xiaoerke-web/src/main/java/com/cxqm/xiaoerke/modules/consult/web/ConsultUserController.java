@@ -74,7 +74,7 @@ public class ConsultUserController extends BaseController {
     @RequestMapping(value = "/sessionEnd", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> getSessionId(@RequestParam(required=true) String sessionId,@RequestParam(required=true) String userId) {
+    Map<String, Object> sessionEnd(@RequestParam(required=true) String sessionId,@RequestParam(required=true) String userId) {
 
         String result = consultConversationService.clearSession(Integer.parseInt(sessionId),userId);
         Map<String, Object> response = new HashMap<String, Object>();

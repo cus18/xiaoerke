@@ -43,10 +43,10 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 	private PhoneConsultDoctorRelationService phoneConsultDoctorRelationService;
 
 	public Map<String, Object> getDoctorConsultDate(HashMap<String,Object> dataMap) {
-
-		Map<String, Object> response = new HashMap<String, Object>();
+        dataMap.put("state","0");//未被预约的
 		List<HashMap<String, Object>> resultList =  sysConsultPhoneServiceDao.getConsultDateList(dataMap);
 
+        Map<String, Object> response = new HashMap<String, Object>();
 		List<HashMap<String, Object>> consultDateList = new LinkedList<HashMap<String, Object>>();
 		if(resultList != null && !resultList.isEmpty()){
 			for(HashMap<String,Object> map:resultList){

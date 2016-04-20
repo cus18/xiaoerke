@@ -54,12 +54,16 @@
     from
     sys_consultphone_service scs
     WHERE
-    scs.sys_doctor_id = #{doctorId}
+      scs.sys_doctor_id = #{doctorId,jdbcType=VARCHAR}
 
     <if test="state != null">
-      and scs.state=#{state}
+      and scs.state=#{state,jdbcType=VARCHAR}
     </if>
-    AND (DATE_FORMAT(CONCAT(DATE_FORMAT(scs.DATE,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>NOW()
+
+    <if test="date != null">
+      and week(scs.date) = week(DATE_FORMAT(#{date,jdbcType=VARCHAR},'%Y-%m-%d'))
+    </if>
+      AND (DATE_FORMAT(CONCAT(DATE_FORMAT(scs.DATE,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>NOW()
     GROUP BY scs.date
     ORDER BY (DATE_FORMAT(CONCAT(DATE_FORMAT(scs.DATE,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s')) ASC
   </select>

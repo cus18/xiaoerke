@@ -36,7 +36,7 @@
                     cancelReason:$scope.cancelContent},function(data){
                     if(data.status=="20")
                     {
-                        alert("很抱歉，接听前3小时无法取消预约；\n如需帮助，请联系客服：400-623-7120。");
+                        alert("很抱歉，接听前5分钟无法取消预约；\n如需帮助，请联系客服：400-623-7120。");
                         $scope.pageLoading = false;
                         history.back();
                         return;

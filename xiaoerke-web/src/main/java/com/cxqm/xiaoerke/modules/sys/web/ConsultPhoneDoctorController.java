@@ -13,6 +13,7 @@ import com.cxqm.xiaoerke.modules.sys.entity.DoctorCaseVo;
 import com.cxqm.xiaoerke.modules.sys.service.DoctorCaseService;
 import com.cxqm.xiaoerke.modules.sys.service.DoctorInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.HospitalInfoService;
+import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -115,13 +116,23 @@ public class ConsultPhoneDoctorController {
     @ResponseBody
     Map<String, Object> getConsultInfo(@RequestBody Map<String, Object> params){
         String doctorId = (String) params.get("doctorId");
+        if(doctorId == null || "".equals(doctorId)){
+            Map<String,Object> paramsMap = new HashMap<String, Object>();
+            paramsMap.put("userId",UserUtils.getUser().getId());
+            doctorId = (String)doctorInfoService.getDoctorIdByUserIdExecute(paramsMap).get("id");
+        }
         String state = (String) params.get("state");
+        String date = (String) params.get("date");
 
         HashMap<String,Object> dataMap = new HashMap<String, Object>();
         dataMap.put("doctorId", doctorId);
         dataMap.put("state", state);
+        dataMap.put("date", date);
 
-        return sysConsultPhoneService.getDoctorConsultDate(dataMap);
+        Map<String, Object> response = sysConsultPhoneService.getDoctorConsultDate(dataMap);
+        response.put("doctorId",doctorId);
+
+        return response;
     }
 
     /**
