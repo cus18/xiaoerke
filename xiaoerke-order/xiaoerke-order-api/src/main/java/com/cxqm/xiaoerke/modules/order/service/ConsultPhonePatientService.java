@@ -23,7 +23,7 @@ public interface ConsultPhonePatientService {
 
     List<HashMap<String,Object>> getOrderList(String userId);
 
-    Float cancelOrder(Integer phoneConsultaServiceId,String cancelReason) throws CancelOrderException;
+    Float cancelOrder(Integer phoneConsultaServiceId,String cancelReason,String cancelState) throws CancelOrderException;//cancelState:0是取消订单，号源设置为可用，2是删除号源
 
     int updateOrderInfoBySelect(ConsultPhoneRegisterServiceVo vo);
 
@@ -41,13 +41,6 @@ public interface ConsultPhonePatientService {
      */
     List<Map<String, Object>> getConsultPhoneRegisterListByInfo(Map map);
     List<ConsultPhoneRegisterServiceVo> getAllConsultPhoneRegisterListByInfo(ConsultPhoneRegisterServiceVo vo);
-
-    /**
-     * 电话咨询取消预约退费
-     * sunxiao
-     * @param id
-     */
-    void refundConsultPhoneFee(String id,String cancelReason,Float price,String userId);
 
     /**
      * 获取手动接通页面数据

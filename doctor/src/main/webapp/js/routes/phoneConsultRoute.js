@@ -30,6 +30,7 @@ define(['phoneConsultApp'], function(app){
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.phoneConsultFirstCtrl',
                                     ['js/controllers/phoneConsult/phoneConsultFirstCtrl.js',
+                                        'js/libs/moment.min.js',
                                         'styles/phoneConsult/phoneConsultFirst.less?ver='+appointVersion],
                                     'js/views/phoneConsult/phoneConsultFirst.html?ver='+appointVersion);
                             }
