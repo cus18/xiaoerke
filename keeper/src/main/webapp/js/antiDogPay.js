@@ -490,16 +490,16 @@ var recordLogs = function(val){
 
 function loginCheck(){
     $.ajax({
-        url: 'ap/info/loginStatus',
+        url: 'auth/info/loginStatus',
         type: 'post',
         data: {},
         complete: function(jqXHR){
             if(jqXHR.status=="404"){
-                window.location.href = "/wxPay/patientPay.do";
+                window.location.href = "/keeper/wxPay/patientPay.do?serviceType=antiDogPay";
             }
         },
         success:function(data){
-            var param = '{routePath:"/wxPay/patientPay.do"}';
+            var param = '{routePath:"/keeper/wxPay/patientPay.do?serviceType=antiDogPay"}';
             $.ajaxSetup({
                 contentType : 'application/json'
             });
