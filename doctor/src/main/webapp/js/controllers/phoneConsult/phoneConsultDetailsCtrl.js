@@ -23,7 +23,9 @@ angular.module('controllers', ['ionic']).controller('phoneConsultDetailsCtrl', [
                         $scope.serverTimeEnd = $filter('limitTo')(time, -5);
                         $scope.serverPrice = data.price;
                         $scope.serverLength = data.serverLength;
-
+                        $scope.name = data.illnessInfo.name;
+                        $scope.age = data.illnessInfo.age;
+                        $scope.illContent = data.illnessInfo.content;
                     });
                 }
             })
