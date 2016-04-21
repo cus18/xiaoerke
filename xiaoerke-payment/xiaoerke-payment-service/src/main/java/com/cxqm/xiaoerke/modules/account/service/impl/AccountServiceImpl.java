@@ -428,8 +428,8 @@ public class AccountServiceImpl implements AccountService {
             patientRegisterId = "noData";
         }
 //        String orderPrice = request.getParameter("payPrice");
-        int price = ((Float)request.getAttribute("payPrice")).intValue()*100;
-        String orderPrice =StringUtils.isNotNull(String.valueOf(price))?String.valueOf(price):request.getParameter("payPrice");
+//        int price = ((Float)request.getAttribute("payPrice")).intValue()*100;
+        String orderPrice =StringUtils.isNotNull(String.valueOf((request.getAttribute("payPrice"))))?String.valueOf(((Float)request.getAttribute("payPrice")).intValue()*100):request.getParameter("payPrice");
 
 
         String outTradeNo = PrepayInfo.get("out_trade_no");
