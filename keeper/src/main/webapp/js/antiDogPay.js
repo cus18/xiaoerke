@@ -10,7 +10,7 @@ var selectBaby=function(){
 }
 // 添加宝宝
 var addBaby=function(){
-    window.location.href = "insurance#/antiDogAddBaby";
+    window.location.href = "http://localhost:8080/titan/insurance#/antiDogAddBaby";
 }
 // 取消选择宝宝
 var cancelSelectBaby=function(){
@@ -195,12 +195,12 @@ function getBabyInfo(){
             $("#selectBabyTitle").after(option);
             var babyId=GetQueryString("babyId");
             if(babyId!=null&&babyId!=""){
-                for(var j=0;j<babyInfo.length;j++){
-                    var bid=babyInfo[j].id;
-                    if(bid==babyId){
-                        selectedBaby(j);
+                    for(var j=0;j<babyInfo.length;j++){
+                        var bid=babyInfo[j].id;
+                        if(bid==babyId){
+                            selectedBaby(j);
+                        }
                     }
-                }
             }else{
                 selectedBaby(0);
             }
