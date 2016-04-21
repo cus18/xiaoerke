@@ -13,7 +13,6 @@ angular.module('controllers', ['luegg.directives'])
             };
             $scope.socketServer1 = "";
             $scope.socketServer2 = "";
-            $scope.source = "wxcxqm";
             $scope.alreadyJoinPatientConversation = [];
             $scope.currentUserConversation = {};
             $scope.waitJoinNum = 0;
