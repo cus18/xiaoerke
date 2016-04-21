@@ -40,7 +40,7 @@ angular.module('controllers', ['ionic']).controller('antiDogAddBabyCtrl', [
             saveBabyInfo.get({"sex":sex,"name":encodeURI(name),"birthDay":birthday}, function (data){
                 if(data.resultCode=='1'){
                 	var babyid=data.autoId;
-                       window.location.href="/antiDogPay/patientPay.do?&chargePrice=15000&babyId="+babyid;
+                       window.location.href="localhost:8080/keeper/wxPay/patientPay.do?serviceType=antiDogPay&chargePrice=15000&babyId="+babyid;
                 }
             });
         }

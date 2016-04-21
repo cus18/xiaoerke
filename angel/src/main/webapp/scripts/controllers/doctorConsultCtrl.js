@@ -541,8 +541,10 @@ angular.module('controllers', ['luegg.directives'])
             }
         }])
 
-    .controller('messageListCtrl', ['$scope', '$log', '$sce', 'GetUserConsultListInfo', 'GetUserRecordDetail', 'GetCSDoctorList', 'GetCSInfoByUserId', 'GetMessageRecordInfo',
-        function ($scope, $log, $sce, GetUserConsultListInfo, GetUserRecordDetail, GetCSDoctorList, GetCSInfoByUserId, GetMessageRecordInfo) {
+    .controller('messageListCtrl', ['$scope', '$log', '$sce', 'GetUserConsultListInfo',
+        'GetUserRecordDetail', 'GetCSDoctorList', 'GetCSInfoByUserId', 'GetMessageRecordInfo','GetUserLoginStatus',
+        function ($scope, $log, $sce, GetUserConsultListInfo, GetUserRecordDetail,
+                  GetCSDoctorList, GetCSInfoByUserId, GetMessageRecordInfo,GetUserLoginStatus) {
 
             $scope.info = {};
 
@@ -573,15 +575,27 @@ angular.module('controllers', ['luegg.directives'])
                 value: 30
             }];
 
-            //获取客户列表
-            GetUserConsultListInfo.save({pageNo: "1", pageSize: "20"}, function (data) {
-                $scope.userConsultListInfo = data.userList;
-            });
+            $scope.messageListInit = function(){
+                var routePath = "/doctor/consultBBBBBB" + $location.path();
+                GetUserLoginStatus.save({routePath: routePath}, function (data) {
+                    if (data.status == "9") {
+                        window.location.href = data.redirectURL;
+                    } else if (data.status == "8") {
+                        window.location.href = data.redirectURL + "?targeturl=" + routePath;
+                    } else if (data.status == "20") {
+                        //获取客户列表
+                        GetUserConsultListInfo.save({pageNo: "1", pageSize: "20"}, function (data) {
+                            $scope.userConsultListInfo = data.userList;
+                        });
 
-            //获取客服医生列表
-            GetCSDoctorList.save({}, function (data) {
-                $scope.CSList = data.CSList;
-            });
+                        //获取客服医生列表
+                        GetCSDoctorList.save({}, function (data) {
+                            $scope.CSList = data.CSList;
+                        });
+
+                    }
+                })
+            }
 
             //获取用户的详细聊天记录
             $scope.GetUserRecordDetail = function (openid,senderName,fromUserId,toUserId) {
@@ -609,6 +623,7 @@ angular.module('controllers', ['luegg.directives'])
                     });
                 }
             }
+
             //查找咨询记录（消息列表右上角的搜索功能）
             $scope.searchMessage = function () {
 
@@ -630,6 +645,7 @@ angular.module('controllers', ['luegg.directives'])
                     });
                 }
             }
+
             //查找咨询记录
             $scope.setSearchMessageType = function (searchType) {
                 $scope.messageType = searchType;
@@ -646,6 +662,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.currentUserConsultRecordDetail = data.records;
                 });
             }
+
             //左上角的刷新消息
             $scope.refreshUserList = function () {
                 GetUserConsultListInfo.save({pageNo: "1", pageSize: "100"}, function (data) {
@@ -653,12 +670,5 @@ angular.module('controllers', ['luegg.directives'])
                 });
             }
 
-            //系统设置
-            $scope.systemsetup = {
-                show: false
-            }
-            $scope.systemsetup1 = function() {
-                $scope.systemsetup.show = !$scope.systemsetup.show;
-            }
 
         }])
