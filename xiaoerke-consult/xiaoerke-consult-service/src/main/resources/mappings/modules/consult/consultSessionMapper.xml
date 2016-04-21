@@ -37,7 +37,6 @@
         <if test="createTime != null">
             and create_time = #{createTime,jdbcType=TIMESTAMP}
         </if>
-
         <if test="status != null">
             and state = #{status,jdbcType=VARCHAR}
         </if>
@@ -50,8 +49,10 @@
         <if test="userId != null">
             and sys_user_id = #{userId,jdbcType=VARCHAR}
         </if>
+        <if test="source != null">
+            and source = #{source,jdbcType=VARCHAR}
+        </if>
     </select>
-
 
     <select id="getAlreadyAccessUsers" resultMap="BaseResultMap"
             parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession">
@@ -67,18 +68,16 @@
         group by cc.userId
     </select>
 
-
-
     <select id="selectByPrOpenid" resultType="java.util.Map" parameterType="java.lang.String">
-    select  hc.id,hid.illness ,hid.caseImg,hid.otherImg,hid.positionImg,hid.resultImg,sbi.name,sbi.birthday,sbi.sex
-    from consult_session hc
-    left join healthRecord_illness_describe hid
-    on hc.title = hid.conversation_id
-    left join sys_baby_baseInfo sbi
-    on hid.babyinfo_Id = sbi.id
-     where hc.userId = #{openId,jdbcType=VARCHAR}
-    order by hc.create_time,hc.update_time  desc
-  </select>
+        select  hc.id,hid.illness ,hid.caseImg,hid.otherImg,hid.positionImg,hid.resultImg,sbi.name,sbi.birthday,sbi.sex
+        from consult_session hc
+        left join healthRecord_illness_describe hid
+        on hc.title = hid.conversation_id
+        left join sys_baby_baseInfo sbi
+        on hid.babyinfo_Id = sbi.id
+         where hc.userId = #{openId,jdbcType=VARCHAR}
+        order by hc.create_time,hc.update_time  desc
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete from consult_session
@@ -87,14 +86,15 @@
 
     <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession" useGeneratedKeys="true"
             keyProperty="id">
-    insert into consult_session (id, title, create_time,
-      state, update_time,sys_user_id_cs, sys_user_id
-      )
-    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-       #{status,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP} ,#{csUserId,jdbcType=VARCHAR}
-      ,#{userId,jdbcType=VARCHAR}
-      )
-  </insert>
+        insert into consult_session (id, title, create_time,
+          state, update_time,sys_user_id_cs, sys_user_id,source
+          )
+        values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+           #{status,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP} ,#{csUserId,jdbcType=VARCHAR}
+          ,#{userId,jdbcType=VARCHAR},#{source,jdbcType=VARCHAR}
+          )
+   </insert>
+
     <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession"
             useGeneratedKeys="true" keyProperty="id">
         insert into consult_session
@@ -108,7 +108,6 @@
             <if test="createTime != null">
                 create_time,
             </if>
-
             <if test="status != null">
                 state,
             </if>
@@ -120,6 +119,9 @@
             </if>
             <if test="userId != null">
                 sys_user_id,
+            </if>
+            <if test="source != null">
+                source,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -145,6 +147,9 @@
             <if test="userId != null">
                 #{userId,jdbcType=VARCHAR},
             </if>
+            <if test="source != null">
+                #{source,jdbcType=VARCHAR},
+            </if>
         </trim>
     </insert>
 
@@ -157,7 +162,6 @@
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
-
             <if test="status != null">
                 state = #{status,jdbcType=VARCHAR},
             </if>
@@ -169,6 +173,9 @@
             </if>
             <if test="userId != null">
                 sys_user_id = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="source != null">
+                source = #{source,jdbcType=VARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
@@ -193,6 +200,9 @@
             <if test="csUserId != null">
                 sys_user_id_cs = #{csUserId,jdbcType=VARCHAR},
             </if>
+            <if test="source != null">
+                source = #{source,jdbcType=VARCHAR},
+            </if>
 
         </set>
         where sys_user_id = #{userId,jdbcType=INTEGER}
@@ -207,7 +217,8 @@
       state = #{status,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       sys_user_id_cs = #{csUserId,jdbcType=VARCHAR},
-      sys_user_id = #{userId,jdbcType=VARCHAR}
+      sys_user_id = #{userId,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 

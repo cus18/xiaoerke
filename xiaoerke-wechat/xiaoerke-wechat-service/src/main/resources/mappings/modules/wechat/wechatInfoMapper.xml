@@ -55,7 +55,7 @@
     <select id="checkAttention" resultType="java.lang.Integer">
         select count(sa.id) from sys_attention sa where sa.openid = #{openId}
     </select>
-    <!--查询没有回复用户的openid sunxiao-->
+    <!--查询没有回复用户的openid sunxiao
     <select id="getUsersOpenIdList" resultType="java.lang.String">
         select DISTINCT openid from sys_wechat_record where opercode in ('2001' ,'2002','2003' )
         <if test="fromTime != null and fromTime != ''">
@@ -65,7 +65,7 @@
             and #{toTime}>infoTime
         </if>
     </select>
-    <!--查询没有回复的用户的信息 sunxiao-->
+    &lt;!&ndash;查询没有回复的用户的信息 sunxiao&ndash;&gt;
     <select id="getNoAnswerUserList" resultType="java.util.Map">
         SELECT
             swr.*,sa.nickname
@@ -79,6 +79,24 @@
         <if test="toTime != null and toTime != ''">
             and #{toTime}>infoTime
         </if>
+    </select>-->
+    <!--查询没有回复的用户列表 sunxiao-->
+    <select id="findNoAnswerUserList" resultType="java.util.Map">
+        SELECT
+        swr.*, sa.nickname
+        FROM
+        sys_wechat_record swr
+        LEFT JOIN sys_attention sa ON sa.openid = swr.openid
+        WHERE
+        1 > (SELECT count(*) FROM sys_wechat_record WHERE openid = swr.openid AND infoTime > swr.infoTime)
+        AND swr.opercode IN ('2001', '2003')
+        <if test="fromTime != null and fromTime != ''">
+            and infoTime>#{fromTime}
+        </if>
+        <if test="toTime != null and toTime != ''">
+            and #{toTime}>infoTime
+        </if>
+        ORDER BY
+        swr.openid
     </select>
-
 </mapper>

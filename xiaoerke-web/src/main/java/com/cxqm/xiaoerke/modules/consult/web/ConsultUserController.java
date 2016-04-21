@@ -49,7 +49,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 public class ConsultUserController extends BaseController {
 
     @Autowired
-    private ConsultSessionService consultConversationService;
+    private ConsultSessionService consultSessionService;
 
     @Autowired
     private ConsultRecordService consultRecordService;
@@ -75,7 +75,7 @@ public class ConsultUserController extends BaseController {
     Map<String, Object> sessionEnd(@RequestParam(required=true) String sessionId,
                                    @RequestParam(required=true) String userId) {
 
-        String result = consultConversationService.clearSession(Integer.parseInt(sessionId),userId);
+        String result = consultSessionService.clearSession(sessionId,userId);
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("result", result);
         return response;
@@ -88,7 +88,7 @@ public class ConsultUserController extends BaseController {
         ConsultSession consultSession = new ConsultSession();
         consultSession.setCsUserId(csUserId);
         consultSession.setStatus(ConsultSession.STATUS_ONGOING);
-        List<ConsultSession> consultSessions = consultConversationService.selectBySelective(consultSession);
+        List<ConsultSession> consultSessions = consultSessionService.selectBySelective(consultSession);
         List<Object> sessionIds = new ArrayList<Object>();
         for(ConsultSession session : consultSessions) {
             sessionIds.add(session.getId());
@@ -115,7 +115,7 @@ public class ConsultUserController extends BaseController {
         consultSession.setCsUserId(csUserId);
         consultSession.setStatus(ConsultSession.STATUS_ONGOING);
 
-        List<ConsultSession> consultSessions = null;//consultConversationService.getAlreadyAccessUsers(consultSession);
+        List<ConsultSession> consultSessions = null;//consultSessionService.getAlreadyAccessUsers(consultSession);
         if(consultSessions!=null && consultSessions.size()>0){
             response.put("alreadyAccessUsers",consultSessions);
         }
@@ -198,9 +198,6 @@ public class ConsultUserController extends BaseController {
         int pageSize = 0;
         String csUserId = String.valueOf(params.get("csUserId"));
 
-//        Query query1 = new Query(where("csUserId").is(csUserId)).with(new Sort(Direction.DESC, "createDate"));
-//        PaginationVo<ConsultRecordMongoVo> pagination1 = consultRecordService.getPage(1, 100, query1, "temporary");
-
         if(StringUtils.isNotNull(csUserId)){
             pageNo = (Integer) params.get("pageNo");
             pageSize = (Integer) params.get("pageSize");
@@ -209,7 +206,7 @@ public class ConsultUserController extends BaseController {
             ConsultSession consultSessionSearch = new ConsultSession();
             consultSessionSearch.setCsUserId(csUserId);
             consultSessionSearch.setStatus(ConsultSession.STATUS_ONGOING);
-            List<ConsultSession> consultSessions = consultConversationService.selectBySelective(consultSessionSearch);
+            List<ConsultSession> consultSessions = consultSessionService.selectBySelective(consultSessionSearch);
 
             if(consultSessions!=null && consultSessions.size()>0){
                 for(ConsultSession consultSession :consultSessions){
@@ -220,6 +217,7 @@ public class ConsultUserController extends BaseController {
                             .is(consultSession.getCsUserId())).with(new Sort(Direction.DESC, "createDate"));
                     pagination = consultRecordService.getPage(pageNo, pageSize, query,"temporary");
                     searchMap.put("patientId",userId);
+                    searchMap.put("source",richConsultSession.getSource());
                     searchMap.put("patientName", richConsultSession.getUserName());
                     searchMap.put("fromServer",richConsultSession.getServerAddress());
                     searchMap.put("sessionId",richConsultSession.getId());
