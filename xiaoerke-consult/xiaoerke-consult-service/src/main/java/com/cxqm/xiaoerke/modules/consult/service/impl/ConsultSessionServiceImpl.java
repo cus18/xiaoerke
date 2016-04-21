@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,7 +75,6 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
 		return consultSessionDao.selectBySelective(consultSession);
 	}
 
-
     @Override
     public List<String> getOnlineCsList() {
         return ConsultSessionManager.getSessionManager().getOnlineCsList();
@@ -91,20 +91,32 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
     }
 
     @Override
-    public String clearSession(Integer sessionId,String userId){
+    public String clearSession(String sessionId, String userId){
         try{
-            //清除redis内的数据
-            sessionRedisCache.removeConsultSessionBySessionId(sessionId);
-            sessionRedisCache.removeUserIdSessionIdPair(userId);
+            //数据库中的consultSession，状态由ongoing变成completed
+            ConsultSession consultSession = new ConsultSession();
+            consultSession.setId(Integer.parseInt(sessionId));
+            consultSession.setUserId(userId);
+            consultSession.setStatus(ConsultSession.STATUS_ONGOING);
+            List<ConsultSession> consultSessionList = this.selectBySelective(consultSession);
+            consultSession = consultSessionList.get(0);
+            consultSession.setStatus(ConsultSession.STATUS_COMPLETED);
 
-            //清除内存内的数据
-            ConsultSessionManager.getSessionManager().removeUserSession(userId);
+            int status = this.updateSessionInfo(consultSession);
+            if(status==1){
+                //清除redis内的数据
+                sessionRedisCache.removeConsultSessionBySessionId(Integer.parseInt(sessionId));
+                sessionRedisCache.removeUserIdSessionIdPair(userId);
 
-            //删除最后一次会话
-            consultRecordService.deleteConsultSessionStatusVo(new Query().addCriteria(new Criteria().where("sessionId").is(sessionId)));
+                //清除内存内的数据
+                ConsultSessionManager.getSessionManager().removeUserSession(userId);
 
-            //删除用户的临时聊天记录
-            consultRecordService.deleteConsultTempRecordVo(new Query().addCriteria(new Criteria().where("userId").is(userId)));
+                //删除最后一次会话
+                consultRecordService.deleteConsultSessionStatusVo(new Query().addCriteria(new Criteria().where("sessionId").is(sessionId)));
+
+                //删除用户的临时聊天记录
+                consultRecordService.deleteConsultTempRecordVo(new Query().addCriteria(new Criteria().where("userId").is(userId)));
+            }
 
             return "success";
         }catch (Exception e){

@@ -6,12 +6,10 @@
     </div>
     <div class="consultDisplay">
         <div class="consulChatList">
-            <div class="moreInformation"><a href="#">查看更多消息</a></div>
-            <div>
+            <div class="chatBox">
                 <div class="doctorReplyContent">
-                    <div>
-                        <span> doctorName </span>
-                        <span> item.dateTime </span>
+                    <div class="chatHeaderImg">
+                        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png" alt=""/>
                     </div>
                     <div class="message" >
                          item.content
@@ -19,11 +17,7 @@
                 </div>
                 <div class="patientConsultContent">
                     <div>
-                        <span> item.senderName </span>
-                        <span> item.dateTime </span>
-                    </div>
-                    <div class="message">
-                         item.content
+                        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png" alt=""/>
                     </div>
                     <div class="message">
                          item.content
@@ -70,7 +64,8 @@
                 <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_4.png" alt=""/>
             </div>
             <div class="textInput">
-                <input placeholder="请输入咨询内容" ng-model="info.consultInputValue" type="text" name="text" style="border-style:none">
+                <!--<input placeholder="请输入咨询内容" ng-model="info.consultInputValue" type="text" name="text" style="border-style:none">-->
+                <textarea placeholder="请在此处进行编辑" ng-model="info.consultInputValue" style="border-style:none"></textarea>
                 <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_6.png" alt=""/>
             </div>
             <div ng-if="!sendItem" ng-click="openFileList()" ng-if="sendItem">

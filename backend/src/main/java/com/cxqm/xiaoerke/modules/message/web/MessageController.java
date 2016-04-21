@@ -147,14 +147,15 @@ public class MessageController extends BaseController {
         if(StringUtils.isNotNull(message.getFromTime())){
             param.put("fromTime", DateUtils.DateToStr(new Date(), "date")+" "+message.getFromTime());
         }else{
-            param.put("fromTime",new Date(new Date().getTime()-30*60*1000));
+            param.put("fromTime",new Date(new Date().getTime()-3*60*1000));
         }
         if(StringUtils.isNotNull(message.getToTime())){
             param.put("toTime",DateUtils.DateToStr(new Date(), "date")+" "+message.getToTime());
         }else{
             param.put("toTime",new Date());
         }
-        List<String> list =  wechatInfoDao.getUsersOpenIdList(param);
+        List<Map<String,Object>> list =  wechatInfoDao.findNoAnswerUserList(param);
+        /*List<String> list =  wechatInfoDao.getUsersOpenIdList(param);
         List<Map<String,Object>> lists = new ArrayList<Map<String, Object>>();
         for(String temp : list){
             param.put("openId",temp);
@@ -171,8 +172,8 @@ public class MessageController extends BaseController {
             if(flag){
                 lists.add(mapList.get(j));
             }
-        }
-        model.addAttribute("lists", lists);
+        }*/
+        model.addAttribute("lists", list);
         model.addAttribute("vo", message);
         return "modules/message/noAnswerWechatRecordList";
     }

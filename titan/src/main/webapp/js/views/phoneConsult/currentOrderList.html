@@ -17,9 +17,9 @@
 	</div>
 	<ion-content class="currentOrderList" overflow-scroll="true"  style="top:90px;">
 		<ion-scroll direction="y" has-bouncing="true">
-				<div class="doctor-info apart1 bg1 border1 border2"  ng-repeat="item in orderInfo" ng-click="orderDerail(item)">
+				<div class="doctor-info apart1 bg1 border1 border2"  ng-repeat="item in orderInfo" ng-click="orderDerail(item)" ng-if="item.status =='待支付'||item.status =='待接听'||item.status =='待就诊'">
 					<div  class="pic">
-						<img class="photo" width="62.5" height="62.5" src="images/a1.png">
+						<img class="photo" width="62.5" height="62.5" ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.doctorId}}?ver={{picVer}}" >
 					</div>
 					<div class="intro">
 						<div class="name s"><span>{{item.doctorName}}</span>{{item.position}}</div>

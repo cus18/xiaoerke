@@ -74,10 +74,14 @@
         </div>
         <div class="msg-r h30 fr">
             <div class="bdf-dkf-sever">
-                <a class="reply"><span>快捷回复</span></a>
-                <a class="advisory"><span>咨询服务</span></a>
+                <a class="reply" ng-click="tapShowButton('replyContent')"
+                   ng-style="showFlag.replyContent?{'background':'#fff'}:{'background':'#eee'}"
+                        ><span>快捷回复</span></a>
+                <a class="advisory" ng-click="tapShowButton('advisoryContent')"
+                   ng-style="showFlag.advisoryContent?{'background':'#fff'}:{'background':'#eee'}"
+                        ><span>咨询服务</span></a>
             </div>
-            <div class="reply-content">
+            <div class="reply-content" ng-show='showFlag.replyContent'>
                 <div class="chatinstall">
                   <span ng-click="add()">添加</span>
                   <span ng-click="edit()">编辑</span>
@@ -177,6 +181,12 @@
                     </div>
                 </div>
             </div>
+            <iframe src="http://localhost:8080/keeper/scripts/views/customerss.html" frameborder="0"
+                    class="advisory-content" ng-show='showFlag.advisoryContent'>
+            </iframe>
+            <textarea type="text" name="messageData" id="userIdData" class="textarea" style="display:none;">{{currentUserConversation.patientId}}</textarea>
+            <textarea type="text" name="messageData" id="sourceData" class="textarea" style="display:none;">{{currentUserConversation.source}}</textarea>
+
         </div>
         <div class="msg-m h30" ng-if="chooseAlreadyJoinConsultPatientId!=''">
             <div class="headportrait">
@@ -197,7 +207,7 @@
                                     <span>{{doctorName}}</span>
                                     <span>{{item.dateTime}}</span>
                                 </div>
-                                <div ng-if="item.type=='0'" id="show" class="message" >
+                                <div ng-if="item.type=='0'" class="message" >
                                     {{item.content}}
                                 </div>
                             </div>
@@ -266,7 +276,7 @@
             </ul>
         </div>
     </div>
-    <!--系统设置的弹出框-->
+    <!--系统设置-->
     <div class="xtsz-up" id="xtsz_up" ng-show='showFlag.systemSetup'>
         <div class="hd" id="drop">系统设置
             <span class="close" ng-click="tapShowButton('systemSetup')">【关闭】</span>
@@ -348,7 +358,7 @@
             <button ng-click="">确定</button>
         </div>
     </div>
-    <!--等待接入的弹出框-->
+    <!--等待接入-->
     <div class="xtsz-up  ddjr-up" id="ddjr_up" ng-show='showFlag.waitProcess'>
         <div class="hd" id="drop2">未接入客户信息
             <span class="close" ng-click="tapShowButton('waitProcess')">【关闭】</span>
@@ -402,16 +412,12 @@
                     <div class="refreshbox">
                         <div class="refreshboxtop">
                             <div>
-                                <span>状态</span><span>工号</span><span>昵称</span>
+                                <span>工号</span><span>昵称</span>
                             </div>
                             <ul>
                                 <li ng-repeat="item in info.onLineCsUserList"
                                     ng-click="chooseTransferCsUser(item.id,item.name)"
                                     ng-style="item.csUserId==transferCsUserId?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}">
-                                    <span>
-                                        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(5).png" alt=""/>
-                                        在线
-                                    </span>
                                     <span>
                                         {{item.phone}}
                                     </span>

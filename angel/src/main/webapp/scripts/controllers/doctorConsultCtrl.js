@@ -6,7 +6,7 @@ angular.module('controllers', ['luegg.directives'])
         function ($scope, $sce, $window,GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
                   GetAnswerValueList, GetUserLoginStatus, $location, GetUserRecordList,GetMyAnswerModify,
                   GetCurrentUserConsultListInfo,TransferToOtherCsUser,SessionEnd) {
-            $scope.test = "";
+
             $scope.info = {
                 effect:"true",
                 transferRemark:""
@@ -25,12 +25,27 @@ angular.module('controllers', ['luegg.directives'])
                 switchOver: false,
                 myReplyList: false,
                 publicReplyList: false,
+                replyContent: true,
+                advisoryContent: false
             }
 
             $scope.tapShowButton = function(type){
                 $.each($scope.showFlag,function(key,value){
                     if(key==type){
                         $scope.showFlag[key] = !$scope.showFlag[key];
+                        if("replyContent"==type){
+                            if($scope.showFlag.replyContent==false){
+                                $scope.showFlag.advisoryContent =true;
+                            }else{
+                                $scope.showFlag.advisoryContent =false;
+                            }
+                        }else if("advisoryContent"==type){
+                            if($scope.showFlag.advisoryContent==false){
+                                $scope.showFlag.replyContent=true;
+                            }else{
+                                $scope.showFlag.replyContent=false;
+                            }
+                        }
                         if(!$scope.showFlag[key]){
                             if(type == "myReplyList"){
                                 $scope.myReplyIndex = -1;
@@ -155,15 +170,15 @@ angular.module('controllers', ['luegg.directives'])
                 var inputText = $('.emotion').val();
                 var consultValMessage = {
                     "type": 0,
-                    "content": angular.copy($scope.info.consultMessage)+AnalyticEmotion(inputText),
+                    "content": angular.copy($scope.info.consultMessage),//+AnalyticEmotion(inputText),
                     "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                     "senderId": angular.copy($scope.doctorId),
                     "senderName": angular.copy($scope.doctorName),
                     "sessionId": angular.copy($scope.currentUserConversation.sessionId)
                 };
-                console.log(inputText);
-                console.log(consultValMessage.content);
-                console.log(AnalyticEmotion(inputText));
+                //console.log(inputText);
+                //console.log(consultValMessage.content);
+                //console.log(AnalyticEmotion(inputText));
                 if (!window.WebSocket) {
                     return;
                 }
@@ -182,7 +197,8 @@ angular.module('controllers', ['luegg.directives'])
 
             //关闭跟某个用户的会话
             $scope.closeConsult = function () {
-                SessionEnd.save({sessionId:$scope.currentUserConversation.sessionId},function(data){
+                SessionEnd.get({sessionId:$scope.currentUserConversation.sessionId,
+                    userId:$scope.currentUserConversation.patientId},function(data){
                     if(data.result=="success"){
                         var indexClose = 0;
                         $.each($scope.alreadyJoinPatientConversation, function (index, value) {
@@ -422,9 +438,8 @@ angular.module('controllers', ['luegg.directives'])
 
             var getAlreadyJoinConsultPatientList = function () {
                 //获取跟医生的会话还保存的用户列表
-                GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:100},function(data){
-                    if(data.alreadyJoinPatientConversation!=""){
-                        console.log(data.alreadyJoinPatientConversation);
+                GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
+                    if(data.alreadyJoinPatientConversation!=""&&data.alreadyJoinPatientConversation!=undefined){
                         $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                         var patientId = angular.copy($scope.alreadyJoinPatientConversation[0].patientId);
                         var patientName = angular.copy($scope.alreadyJoinPatientConversation[0].patientName);
@@ -451,6 +466,7 @@ angular.module('controllers', ['luegg.directives'])
                 currentConsultValue.sessionId = conversationData.sessionId;
                 if(JSON.stringify($scope.currentUserConversation)=='{}'){
                     $scope.currentUserConversation.patientId = conversationData.senderId;
+                    $scope.currentUserConversation.source = conversationData.source;
                     $scope.currentUserConversation.fromServer = conversationData.fromServer;
                     $scope.currentUserConversation.sessionId = conversationData.sessionId;
                     $scope.currentUserConversation.isOnline = true;
@@ -491,6 +507,7 @@ angular.module('controllers', ['luegg.directives'])
                     consultValue.senderName = conversationData.senderName;
                     consultValue.sessionId = conversationData.sessionId;
                     conversationContent.patientId = conversationData.senderId;
+                    conversationContent.source = conversationData.source;
                     conversationContent.fromServer = conversationData.fromServer;
                     conversationContent.sessionId = conversationData.sessionId;
                     conversationContent.isOnline = true;
@@ -631,7 +648,7 @@ angular.module('controllers', ['luegg.directives'])
             }
             //左上角的刷新消息
             $scope.refreshUserList = function () {
-                userConsultListInfo.save({pageNo: "1", pageSize: "100"}, function (data) {
+                GetUserConsultListInfo.save({pageNo: "1", pageSize: "100"}, function (data) {
                     $scope.userConsultListInfo = data.userList;
                 });
             }

@@ -7,10 +7,10 @@
 .tab-content-chat p {font: 12px/12px 'Microsoft Yahei';color:#acacac;}
 div#ddjr {border-right: 1px solid #fff;}
 /*右边的盒子*/
-.bdf-dkf-sever {background-color: #eee;font: 12px/50px 'Microsoft Yahei';}
-.bdf-dkf-sever a{display: inline-block;width: 191px;line-height: 50px;cursor: pointer;text-align: center;}
-.bdf-dkf-sever a:nth-child(1){background-color: #fff;}
+.bdf-dkf-sever {font: 12px/50px 'Microsoft Yahei';}
+.bdf-dkf-sever a{display: inline-block;width: 199px;line-height: 50px;cursor: pointer;text-align: center;}
 .replayContent{overflow: auto;height: 399px;}
+.replayContent::-webkit-scrollbar {width: 0;height: 0;}
 .reply-content .myreply{cursor: pointer;font: 12px/35px 'Microsoft Yahei';color:#333;}
 .reply-content .pubilcreply{cursor: pointer;font: 12px/35px 'Microsoft Yahei';color:#333;}
 .rtitle {margin-left: 10px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(4).png") no-repeat 0 0;padding-left: 20px;}
@@ -110,7 +110,7 @@ input[type="number"] {width: 36px;}
 .chatlistin::-webkit-scrollbar{height: 0;width: 0;}
 p.historymessage span {display: block;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(7).png") left center no-repeat;padding-left: 25px;}
 .facein{width: 100%;border-bottom: 1px solid #acacac;font: 12px/38px 'Microsoft Yahei';border-top: 1px solid #acacac;background-color: #f2f2f2;height: 38px;}
-.facein p {margin:0 10px;}
+.facein p span {display: inline-block;padding: 0 20px;margin: 0 10px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fyh_06.png") left top no-repeat;cursor: pointer;}
 .nametopin div.fr {line-height: 50px;margin-right: 20px;cursor: pointer;padding-left: 25px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(10).png") left center no-repeat;}
 .headimg {float: left;width: 40px;margin: 5px 10px 5px 20px;}
 .nametopin span {display: inline-block;line-height: 50px;}
@@ -175,3 +175,6 @@ textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 10
 .moreInformation{text-align: center;padding-top: 10px;}
 .moreInformation a{display: inline-block;color: #08b7c2;padding-left: 15px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fyh_12.png") no-repeat center left;}
 .moreInformation a:hover{text-decoration: underline;}
+/*咨询服务*/
+.advisory-content::-webkit-scrollbar {width: 0;height: 0;}
+.advisory-content {overflow: auto;height: 450px;width: 403px;}
