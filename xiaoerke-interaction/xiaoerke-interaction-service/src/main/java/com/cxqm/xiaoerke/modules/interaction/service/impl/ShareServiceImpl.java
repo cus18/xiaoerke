@@ -57,7 +57,7 @@ public class ShareServiceImpl implements ShareService{
 
             response = messageService.findPhoneConsultShareDetailInfoExecute(hashMap);
             ConsultPhoneRegisterServiceVo vo =  new ConsultPhoneRegisterServiceVo();
-            vo.setId((Integer)params.get("patientRegisterServiceId"));
+            vo.setId(Integer.parseInt((String)params.get("patientRegisterServiceId")));
             vo.setUpdateTime(new Date());
             vo.setState("5");
             consultPhonePatientService.updateOrderInfoBySelect(vo);
