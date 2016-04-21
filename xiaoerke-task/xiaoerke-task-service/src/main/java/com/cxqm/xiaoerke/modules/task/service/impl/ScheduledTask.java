@@ -1028,16 +1028,16 @@ public class ScheduledTask {
               vo.setState("4");
               int state = consultPhonePatientService.updateOrderInfoBySelect(vo);
 //             将钱退还到用户的账户
-              if(state>0){
-                  HashMap<String, Object> response = new HashMap<String, Object>();
-                  accountService.updateAccount(0F, (Integer) map.get("id")+"", response, false, (String)map.get("userId"),"电话咨询超时取消退款");
-                  //              并发送消息
+//              if(state>0){
+//                  HashMap<String, Object> response = new HashMap<String, Object>();
+//                  accountService.updateAccount(0F, (Integer) map.get("id")+"", response, false, (String)map.get("userId"),"电话咨询超时取消退款");
+                  //并发送消息
                   Map<String,Object> parameter = systemService.getWechatParameter();
                   String token = (String)parameter.get("token");
                   PatientMsgTemplate.consultPhoneRefund2Wechat((String)map.get("orderNo"),(Float)map.get("price")+"", (String)map.get("openid"),token ,"");
                   PatientMsgTemplate.returnPayPhoneRefund2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (Float) map.get("price") + "", (String) map.get("userPhone"));
 
-              }
+//              }
           }
       }
 
@@ -1058,6 +1058,17 @@ public class ScheduledTask {
                 insertMonitor((Integer) map.get("id") + "", "2", "7");
             }
         }
+
+        //将钱退还给用户
+        //再建立通讯的五分钟前发消息给用户
+        date = new Date();
+        date.setTime(date.getTime()-12*60*60*1000);
+        dateStr = DateUtils.DateToStr(date,"datetime");
+        List<HashMap<String, Object>> returnPayList = consultPhoneOrderService.getOrderPhoneConsultListByTime("4",date);
+
+//        查询是不是有return状态
+
+
     }
 
     /**
