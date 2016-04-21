@@ -67,12 +67,9 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 	}
 
 	public ConsultRecordMongoVo findOneConsultRecordTemporary(Query query) {
-		ConsultRecordMongoVo consultRecordMongoVo = new ConsultRecordMongoVo();
-		consultRecordMongoVo = mongoTemplate.findOne(query,ConsultRecordMongoVo.class,"consultRecordTemporary");
+		ConsultRecordMongoVo consultRecordMongoVo = mongoTemplate.findOne(query,ConsultRecordMongoVo.class,"consultRecordTemporary");
 		return consultRecordMongoVo;
 	}
-
-
 
 	public int saveConsultRecord(ConsultRecordMongoVo consultRecordMongoVo) {
 		insertConsultRankRecord(consultRecordMongoVo);//今日排名
