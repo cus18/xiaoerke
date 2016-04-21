@@ -4,6 +4,8 @@ package com.cxqm.xiaoerke.modules.consult.service.impl;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultMongoUtilsService;
+import com.mongodb.AggregationOutput;
+import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -49,15 +51,15 @@ public class ConsultMongoUtilsServiceImpl implements ConsultMongoUtilsService {
     }
 
     @Override
-    public List<ConsultRecordMongoVo> queryConsultRankRecordDistinct(String key,Query query){
-        return this.mongoTemplate.getCollection("consultRankRecord").distinct(key, query.getQueryObject());
+    public AggregationOutput queryConsultRankRecordGroup(DBObject group){
+        AggregationOutput output = mongoTemplate.getCollection("consultRankRecord").aggregate(group);
+        return output;
     }
 
     @Override
     public List<String> queryConsultRankUserCount(String key,Query query){
         return this.mongoTemplate.getCollection("consultRankRecord").distinct(key, query.getQueryObject());
     }
-
 
 
 }

@@ -109,7 +109,7 @@ public class UtilServiceImpl implements UtilService {
         if (validateBean != null && flag && code.equals(validateBean.getCode())) {
             //code有效，根据用户的手机号（切记，目前手机号，都是用户user表中的login_name）
             System.out.println(code + "|||||||||||||" + validateBean.getCode());
-            PatientVo patientVo = CreateUser(num, openid, "patient");//zdl 抽取
+             PatientVo patientVo = CreateUser(num, openid, "patient");//zdl 抽取
             if (patientVo.getId() == null) {
                 response = "0";
             } else {

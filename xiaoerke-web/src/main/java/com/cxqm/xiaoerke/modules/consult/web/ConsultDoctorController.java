@@ -13,6 +13,9 @@ import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultSessionServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.mongodb.AggregationOutput;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -62,31 +65,7 @@ public class ConsultDoctorController extends BaseController {
     private ConsultMongoUtilsService consultMongoUtilsService;
 
 
-    /***
-     * 获取咨询今日会话的排名列表
-     *
-     * @param  {"rankDate":"2016-03-14"}
-     @return
-     {
-         "doctors": [
-             {
-                 "id": "fdasfa",
-                 "name": "liutao",
-                 "consultNum": 20,
-             },
-             {
-                 "id": "fdasfa",
-                 "name": "liutao",
-                 "consultNum": 26,
-             },
-             {
-                 "id": "fdasfa",
-                 "name": "liutao",
-                 "consultNum": 40,
-             }
-     ]
-     }
-     */
+
     @RequestMapping(value = "/closeConsult", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
@@ -99,35 +78,46 @@ public class ConsultDoctorController extends BaseController {
         return null;
     }
 
+    /***
+     * 获取咨询今日会话的排名列表
+     *
+     * @param  {"rankDate":"2016-03-14"}
+     @return
+     {
+     "doctors": [
+     {
+     "csUserId": "fdasfa",
+     "doctorName": "liutao",
+     "consultNum": 20,
+     },
+     {
+     "csUserId": "fdasfa",
+     "doctorName": "liutao",
+     "consultNum": 26,
+     },
+     {
+     "csUserId": "fdasfa",
+     "doctorName": "liutao",
+     "consultNum": 40,
+     }
+     ]
+     }
+     */
+
     @RequestMapping(value = "/rankList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     HashMap<String, Object> findConversationRankList(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
-        HashMap<String,Object> responseMap = new HashMap<String, Object>();
-        List<HashMap<String,Object>> responseList = new ArrayList<HashMap<String, Object>>();
-
-        List<ConsultRecordMongoVo> doctors = consultMongoUtilsService.queryConsultRankRecordDistinct("csUserId",new Query());
-
-        for(Iterator<ConsultRecordMongoVo> iterator=doctors.iterator() ;iterator.hasNext();){
-            HashMap<String,Object> serachMap = new HashMap<String, Object>();
-            List<String> users = consultMongoUtilsService.queryConsultRankUserCount("senderId", new Query().addCriteria(Criteria.where("csUserId").is(iterator.next().getCsUserId())));
-            serachMap.put("csUserId",iterator.next().getCsUserId());
-            serachMap.put("name",iterator.next().getDoctorName());
-            serachMap.put("consultNum",users.size());
-            responseList.add(serachMap);
+        Map<String,Object> searchMap = new HashMap<String, Object>();
+        HashMap<String,Object> resultMap = new HashMap<String,Object>();
+        try{
+            searchMap.put("rankDate", params.get("rankDate"));
+            List<Map<String, Object>> resultValue = consultConversationForwardRecordsService.findConversationRankList(searchMap);
+            resultMap.put("rankListValue",resultValue);
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        Collections.sort(responseList, new Comparator<HashMap<String, Object>>() {
-
-            public int compare(HashMap<String, Object> o1, HashMap<String, Object> o2) {
-
-                int map1value = (Integer) o1.get("consultNum");
-                int map2value = (Integer) o2.get("consultNum");
-
-                return map1value - map2value;
-            }
-        });
-        responseMap.put("doctors",responseList);
-        return responseMap;
+        return resultMap;
     }
 
 

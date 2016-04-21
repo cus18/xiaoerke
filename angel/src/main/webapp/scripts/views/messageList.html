@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="scripts/styles/doctorConsultFirst.css?ver=1.0.1" type="text/css"/>
 <link rel="stylesheet" href="scripts/styles/messageList.css?ver=1.0.1" type="text/css"/>
-<div ui-view ng-init="userConsultList()" class="messageList">
+<div ui-view ng-init="messageListInit()" class="messageList">
     <!--头部-->
     <header class="head w10">
         <div class="head-t w10 qf">
@@ -86,7 +86,8 @@
 
             <div  class='w10 h20 br1'>
                 <ul class="nicknamecontentlist">
-                    <div ng-repeat="item in userConsultListInfo" ng-click ="GetUserRecordDetail(item.openid,item.senderName,item.fromUserId,item.toUserId)">
+                    <div ng-repeat="item in userConsultListInfo"
+                         ng-click ="GetUserRecordDetail(item.openid,item.senderName,item.fromUserId,item.toUserId)">
                         <li>
                             <div class="nickname">{{item.senderName}}</div>
                             <div class="recently">{{item.infoDate}}</div>

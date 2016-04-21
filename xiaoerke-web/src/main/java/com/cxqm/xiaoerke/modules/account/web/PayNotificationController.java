@@ -202,6 +202,9 @@ public class PayNotificationController {
 					consultPhoneVo.setUpdateTime(new Date());
 
 					consultPhonePatientService.updateOrderInfoBySelect(consultPhoneVo);
+					Map<String,Object> mapVo = consultPhonePatientService.getPatientRegisterInfo((Integer) consultPhoneMap.get("order_id"));
+					payRecord.setDoctorId((String)mapVo.get("doctorId"));
+
 					payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
 					Map<String,Object> consultOrder = consultPhonePatientService.getPatientRegisterInfo(Integer.parseInt(consultPhoneId));
 					HashMap<String,Object> hashMap=new HashMap<String, Object>();
