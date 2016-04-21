@@ -649,7 +649,7 @@ angular.module('controllers', ['luegg.directives'])
             }
             //左上角的刷新消息
             $scope.refreshUserList = function () {
-                userConsultListInfo.save({pageNo: "1", pageSize: "100"}, function (data) {
+                GetUserConsultListInfo.save({pageNo: "1", pageSize: "100"}, function (data) {
                     $scope.userConsultListInfo = data.userList;
                 });
             }
