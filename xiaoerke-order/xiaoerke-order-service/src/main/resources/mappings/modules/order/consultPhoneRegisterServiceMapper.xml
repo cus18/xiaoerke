@@ -121,8 +121,10 @@
     sbi.name babyName,
     cdr.price,
     crs.type,
+    crs.sys_phoneConsult_service_id,
     crs.surplusTime,
     sp.sys_user_id,
+    su.openid,
     cdr.server_length
     from consultPhone_register_service crs
     left join sys_consultPhone_service scs
@@ -136,6 +138,7 @@
     left join sys_baby_baseInfo sbi
     on sp.sys_user_id = sbi.userid
     LEFT join consultphone_doctor_relation cdr on cdr.doctor_id = sd.id
+    LEFT JOIN sys_user su on sp.sys_user_id = su.id
     where crs.id =#{id,jdbcType=INTEGER}
     group by crs.id
   </select>
