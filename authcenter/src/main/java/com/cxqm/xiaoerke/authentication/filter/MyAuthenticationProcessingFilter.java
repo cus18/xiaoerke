@@ -49,7 +49,7 @@ public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProc
 		String openId = WechatUtil.getOpenId(request.getSession(), request);
 		String toUrl = request.getParameter("toUrl");
 		String status = null;
-		if(toUrl != null && toUrl.indexOf("/doctorBBBBBB") != -1){
+		if(toUrl != null && (toUrl.indexOf("/doctorBBBBBB") != -1||toUrl.indexOf("/phoneConsultDoctorBBBBBB") != -1)){
 			status = utilService.bindUser4Doctor(username, password, openId);
 		} else if(toUrl != null && toUrl.indexOf("/doctor/consultBBBBBB") != -1){
 			status = utilService.bindUser4ConsultDoctor(username, password, openId);

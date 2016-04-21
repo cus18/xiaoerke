@@ -620,6 +620,9 @@
 		getCustomerLogByOpenID();
 		getOrderInfoByOpenid();
 		sendGreetingsMessage();
+		var id=$("#userIdData",parent.document).html();
+		var sourth=$("#sourceData",parent.document).html();
+		$("#openid").val(id);
 	}
 	function getBabyInfo(){
 		$.ajax({
