@@ -139,6 +139,21 @@
     and status = 'waiting' 
   </update>
 
+  <select id="findConversationRankList" resultType="java.util.HashMap" >
+    SELECT
+    su.id csUserId,
+    su.name doctorName,
+    count(*) consultNum
+    FROM
+    consult_session cs
+    left JOIN sys_user su ON su.id = cs.sys_user_id_cs
+    WHERE create_time LIKE '${rankDate}%'
+    and su.user_type  != 'distributor'
+    GROUP BY
+    cs.sys_user_id_cs
+    ORDER BY
+    consultNum desc
+  </select>
 
   <select id="getConsultUserListRecently" resultMap="BaseResultMap"
           resultType="com.cxqm.xiaoerke.common.persistence.Page">
