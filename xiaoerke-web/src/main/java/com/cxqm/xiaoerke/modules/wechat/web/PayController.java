@@ -17,6 +17,7 @@ import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -101,18 +102,17 @@ public class PayController {
      */
     @RequestMapping(value = "/wxPay/patientPay.do", method = {RequestMethod.POST, RequestMethod.GET})
     public String wxPay(@RequestParam(required=true) String serviceType,
-                        @RequestParam(required=false) String phoneConDoctorDetail,
-                        @RequestParam(required=false) String doctorId,
+                        @RequestParam(required=true) String payParam,
                         Model model) {
+        JSONObject payParamJson = JSONObject.fromObject(payParam);
 
         if(serviceType.equals("antiDogPay")){
             model.addAttribute("payPrice", 19.8);
             model.addAttribute("intervalFlag", "1");
             return "antiDogPay";
         }else if(serviceType.equals("phoneConsult")){
-            model.addAttribute("payPrice", 120);
-            model.addAttribute("phoneConDoctorDetail", phoneConDoctorDetail);
-            model.addAttribute("doctorId", doctorId);
+            model.addAttribute("phoneConDoctorDetail", payParamJson.get("phoneConDoctorDetail"));
+            model.addAttribute("doctorId", payParamJson.get("doctorId"));
             return "phoneConsultPay";
         }else if(serviceType.equals("appointment")){
             model.addAttribute("payPrice", 200);
