@@ -6,7 +6,7 @@ angular.module('controllers', ['luegg.directives'])
         function ($scope, $sce, $window,GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
                   GetAnswerValueList, GetUserLoginStatus, $location, GetUserRecordList,GetMyAnswerModify,
                   GetCurrentUserConsultListInfo,TransferToOtherCsUser,SessionEnd) {
-            $scope.test = "";
+
             $scope.info = {
                 effect:"true",
                 transferRemark:""
@@ -198,7 +198,6 @@ angular.module('controllers', ['luegg.directives'])
 
             //关闭跟某个用户的会话
             $scope.closeConsult = function () {
-                console.log("enter",$scope.currentUserConversation);
                 SessionEnd.get({sessionId:$scope.currentUserConversation.sessionId,
                     userId:$scope.currentUserConversation.patientId},function(data){
                     if(data.result=="success"){
@@ -215,7 +214,6 @@ angular.module('controllers', ['luegg.directives'])
                         }else{
                             $scope.currentUserConversation = {};
                         }
-                        console.log("outer",$scope.currentUserConversation);
                     }else{
                         alert("会话关闭失败，请重试");
                     }
@@ -469,6 +467,7 @@ angular.module('controllers', ['luegg.directives'])
                 currentConsultValue.sessionId = conversationData.sessionId;
                 if(JSON.stringify($scope.currentUserConversation)=='{}'){
                     $scope.currentUserConversation.patientId = conversationData.senderId;
+                    $scope.currentUserConversation.source = conversationData.source;
                     $scope.currentUserConversation.fromServer = conversationData.fromServer;
                     $scope.currentUserConversation.sessionId = conversationData.sessionId;
                     $scope.currentUserConversation.isOnline = true;
@@ -509,6 +508,7 @@ angular.module('controllers', ['luegg.directives'])
                     consultValue.senderName = conversationData.senderName;
                     consultValue.sessionId = conversationData.sessionId;
                     conversationContent.patientId = conversationData.senderId;
+                    conversationContent.source = conversationData.source;
                     conversationContent.fromServer = conversationData.fromServer;
                     conversationContent.sessionId = conversationData.sessionId;
                     conversationContent.isOnline = true;

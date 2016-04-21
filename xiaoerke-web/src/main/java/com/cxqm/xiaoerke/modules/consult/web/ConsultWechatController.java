@@ -142,6 +142,7 @@ public class ConsultWechatController extends BaseController {
                     obj.put("dateTime", DateUtils.DateToStr(new Date()));
                     obj.put("senderName",userName);
                     obj.put("fromServer",serverAddress);
+                    obj.put("source",consultSession.getSource());
 
                     if(messageType.equals("text")) {
                         obj.put("type", 0);

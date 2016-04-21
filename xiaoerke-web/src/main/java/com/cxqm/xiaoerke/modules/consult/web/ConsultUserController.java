@@ -217,6 +217,7 @@ public class ConsultUserController extends BaseController {
                             .is(consultSession.getCsUserId())).with(new Sort(Direction.DESC, "createDate"));
                     pagination = consultRecordService.getPage(pageNo, pageSize, query,"temporary");
                     searchMap.put("patientId",userId);
+                    searchMap.put("source",richConsultSession.getSource());
                     searchMap.put("patientName", richConsultSession.getUserName());
                     searchMap.put("fromServer",richConsultSession.getServerAddress());
                     searchMap.put("sessionId",richConsultSession.getId());

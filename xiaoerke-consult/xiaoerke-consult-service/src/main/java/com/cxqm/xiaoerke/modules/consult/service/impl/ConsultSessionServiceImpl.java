@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,6 +101,7 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
             List<ConsultSession> consultSessionList = this.selectBySelective(consultSession);
             consultSession = consultSessionList.get(0);
             consultSession.setStatus(ConsultSession.STATUS_COMPLETED);
+
             int status = this.updateSessionInfo(consultSession);
             if(status==1){
                 //清除redis内的数据
