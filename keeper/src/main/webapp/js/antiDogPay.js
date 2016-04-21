@@ -293,7 +293,7 @@ function payInsurance(){
                                     var insuranceId=result.id;
                                     $('#payButton').attr('disabled',"true");//添加disabled属性
                                     $.ajax({
-                                        url:"ap/account/user/antiDogPay",// 跳转到 action
+                                        url:"account/user/antiDogPay",// 跳转到 action
                                         async:true,
                                         type:'get',
                                         data:{patientRegisterId:insuranceId,payPrice:needPayMoney*100},
@@ -379,7 +379,7 @@ function payInsurance(){
                                     var insuranceId=result.id;
                                     $('#payButton').attr('disabled',"true");//添加disabled属性
                                     $.ajax({
-                                        url:"ap/account/user/antiDogPay",// 跳转到 action
+                                        url:"account/user/antiDogPay",// 跳转到 action
                                         async:true,
                                         type:'get',
                                         data:{patientRegisterId:insuranceId,payPrice:needPayMoney*100},
@@ -499,17 +499,17 @@ function loginCheck(){
             }
         },
         success:function(data){
-            var param = '{routePath:"/keeper/wxPay/patientPay.do?serviceType=antiDogPay"}';
+            var param = '{routePath:"/wxPay/patientPay.do?serviceType=antiDogPay"}';
             $.ajaxSetup({
                 contentType : 'application/json'
             });
-            $.post('ap/info/loginStatus',param,
+            $.post('auth/info/loginStatus',param,
                 function(data) {
-                    alert(data.status);
+
                     if(data.status=="9"){
                         window.location.href = (data.redirectURL)
                     }else if(data.status=="20"){
-                        alert(data.openId);
+
                         if(data.openId=="noOpenId"){
                             window.location.href = "http://s22.baodf.com/xiaoerke-wxapp/wechatInfo/" +
                                 "fieldwork/wechat/author?url=http://s22.baodf.com/" +
