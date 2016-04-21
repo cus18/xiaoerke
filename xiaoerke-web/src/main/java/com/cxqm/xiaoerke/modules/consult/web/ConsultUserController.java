@@ -194,13 +194,11 @@ public class ConsultUserController extends BaseController {
     HashMap<String, Object> getCurrentUserList(@RequestBody Map<String, Object> params) {
         HashMap<String,Object> response = new HashMap<String, Object>();
         PaginationVo<ConsultRecordMongoVo> pagination = null;
-        int pageNo = 0;
-        int pageSize = 0;
         String csUserId = String.valueOf(params.get("csUserId"));
 
         if(StringUtils.isNotNull(csUserId)){
-            pageNo = (Integer) params.get("pageNo");
-            pageSize = (Integer) params.get("pageSize");
+            int pageNo = (Integer) params.get("pageNo");
+            int pageSize = (Integer) params.get("pageSize");
             List<HashMap<String,Object>> responseList = new ArrayList<HashMap<String, Object>>();
 
             ConsultSession consultSessionSearch = new ConsultSession();

@@ -15,6 +15,7 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -227,6 +231,13 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     @Override
     public void  deleteConsultTempRecordVo(Query query) {
         consultRecordMongoDBService.deleteConsultRecordTemporary(query);
+    }
+
+    @Override
+    public List<ConsultRecordMongoVo> getCurrentUserHistoryRecord(String userId, Date dateTime, Integer pageSize) {
+        Query query = new Query().addCriteria(Criteria.where("userId").is(userId).and("createDate").lt(dateTime)).
+                with(new Sort(Sort.Direction.DESC, "createDate")).limit(pageSize);
+        return consultRecordMongoDBService.queryList(query);
     }
 
 }

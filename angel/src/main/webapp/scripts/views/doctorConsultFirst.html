@@ -264,15 +264,17 @@
         <div class="jrhhpm-top">今日接入会话排名 <a href="refreshRankList">刷新</a></div>
         <div class="jrhhpm-tb">
             <span>排名</span>
-            <span>接入工号</span>
-            <span>接入会话</span>
+            <span>工号</span>
+            <span>名称</span>
+            <span>会话（人次）</span>
         </div>
         <div class="getdata">
             <ul>
                 <li ng-repeat="item in info.rankListValue">
+                    <span>{{$index+1}}</span>
+                    <span>{{item.doctorEmail}}</span>
+                    <span>{{item.doctorName}}</span>
                     <span>{{item.consultNum}}</span>
-                    <span>{{item.id}}</span>
-                    <span>{{item.name}}</span>
                 </li>
             </ul>
         </div>
@@ -438,7 +440,7 @@
             </div>
             <div class="footer ddjr-footer">
                 <button ng-click="tapShowButton('switchOver')">取消</button>
-                <button ng-click="transferOtherCsUser()">确定</button>
+                <button ng-click="transferToCsUser()">确定</button>
             </div>
         </div>
     </div>
