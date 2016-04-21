@@ -37,7 +37,7 @@ define(['phoneConsultApp'], function(app){
                         }
                     })
                     .state('phoneConsultDetails', {
-                        url: '/phoneConsultDetails',
+                        url: '/phoneConsultDetails/:id,:doctorId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'phoneConsultDetailsCtrl',
                         resolve: {

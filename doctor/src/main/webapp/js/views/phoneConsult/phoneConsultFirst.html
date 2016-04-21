@@ -13,25 +13,25 @@
                 <span ng-repeat="item in week">{{item}}</span>
             </li>
             <li class="time" >
-                    <span ng-repeat="item in date" ng-click="selectTime($index)" ng-style="(selectItem==$index)?{'background':'
+                    <span ng-repeat="item in cusultList" ng-click="selectTime($index)" ng-style="(selectItem==$index)?{'background':'
                         url(images/icon_week.png) no-repeat center 0','background-size':'24px 33px','color':'#fff'}:{'background-color':'#fff'}">
-                       {{item}}<br>
-                        <i class="cir" ng-if="item==date[$index]"></i>
+                       {{item.da}}<br>
+                        <i class="cir" ng-if="consultFlag[$index]"></i>
                     </span>
             </li>
         </ul>
     </div>
     <div class="conCurrDate">
         <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fweeknaozhong.png" width="16px" height="18px"/>
-        <span>2014-03-05</span>
-        <span>周三</span>
+        <span>{{currDate}}</span>
+        <span>{{currWeek}}</span>
     </div>
     <ion-content  style="top: 0px;">
         <ion-scroll class="phoneConsultFirst" direction="y" has-bouncing="true" style="top: 240px;" >
         <ul class="conTime" ng-if="consultHave">
-            <li ng-repeat="item in consultList1" ng-click="goDetails($index)">
-                <img  ng-if="item.repart==0" src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fweekchong_1.png" width="17px" height="17px"/>
-                <img  ng-if="item.repart==1" src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fweekchong_2.png" width="17px" height="17px"/>
+            <li ng-repeat="item in consultDetalisList" ng-click="goDetails($index)">
+                <img  ng-if="item.repeatFlag==2" src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fweekchong_1.png" width="17px" height="17px"/>
+                <img  ng-if="item.repeatFlag==0" src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fweekchong_2.png" width="17px" height="17px"/>
                 <span class="chongtime" ng-style="(item.state==0)?{'color':'#b8b8b8'}:{'color': '#333'}">{{item.begin_time}}</span>
                 <span class="chongtype_1" ng-if="item.state==0" style="color:#b8b8b8">未被约</span>
                 <span class="chongtype_1" ng-if="item.state==1">已被约</span>
