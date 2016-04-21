@@ -998,7 +998,7 @@ public class ScheduledTask {
         Date date = new Date();
         date.setTime(date.getTime()+5*60*1000);
         String dateStr = DateUtils.DateToStr(date,"datetime");
-        List<HashMap<String, Object>> orderMsgList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",date);
+        List<HashMap<String, Object>> orderMsgList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1", date);
         for(HashMap<String ,Object> map:orderMsgList){
             List<Map> messageMap = messageService.consultPhoneMsgRemind((Integer) map.get("id") + "");
             if(null == messageMap||messageMap.size() == 0){
@@ -1054,7 +1054,7 @@ public class ScheduledTask {
                   Map<String,Object> parameter = systemService.getWechatParameter();
                   String token = (String)parameter.get("token");
                   PatientMsgTemplate.consultPhoneRefund2Wechat((String) map.get("orderNo"), (Float) map.get("price") + "", (String) map.get("openid"), token, "");
-                  PatientMsgTemplate.unConnectPhone((String) map.get("babyName"), (String) map.get("doctorName"), "", (String) map.get("userPhone"), (String) map.get("orderNo"));
+                  PatientMsgTemplate.unConnectPhone((String) map.get("babyName"), (String) map.get("doctorName"), (Float) map.get("price") + "", (String) map.get("userPhone"), (String) map.get("orderNo"));
 
 //              }
           }
