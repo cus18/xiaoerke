@@ -89,10 +89,12 @@ public class AccountServiceImpl implements AccountService {
                 String title = payRecord.getOperateType();
                 if("success".equals(payRecord.getStatus())){
                     if("wx".equals(payRecord.getPayType()))continue;
-                    title = "预约了"+payRecord.getName()+"医生";
+//                    title = "预约了"+payRecord.getName()+"医生";
+                    title = "预约了医生";
                     detailBean.put("amount", "-" + payRecord.getAmount() / 100);
                 }else if("return".equals(payRecord.getStatus())){
-                    title = "取消预约"+payRecord.getName()+"医生";
+//                    title = "取消预约"+payRecord.getName()+"医生";
+                    title = "取消预约医生";
                     detailBean.put("amount", "+" + payRecord.getAmount() / 100);
                 }else if("evaluation".equals(payRecord.getStatus())){
                     title = "评价"+payRecord.getName()+"医生";
