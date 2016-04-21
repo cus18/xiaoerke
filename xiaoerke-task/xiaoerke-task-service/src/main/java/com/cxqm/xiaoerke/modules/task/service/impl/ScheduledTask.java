@@ -993,6 +993,25 @@ public class ScheduledTask {
 
     //建立患者与医生之间的通讯
     public synchronized void getConnenct4doctorAndPatient(){
+
+        //再建立通讯的五分钟前发消息给用户
+        Date date = new Date();
+        date.setTime(date.getTime()+5*60*1000);
+        String dateStr = DateUtils.DateToStr(date,"datetime");
+        List<HashMap<String, Object>> orderMsgList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",date);
+        for(HashMap<String ,Object> map:orderMsgList){
+            List<Map> messageMap = messageService.consultPhoneMsgRemind((Integer) map.get("id") + "");
+            if(null == messageMap||messageMap.size() == 0){
+                Map<String,Object> parameter = systemService.getWechatParameter();
+                String token = (String)parameter.get("token");
+                String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)map.get("date"),"yyyy/MM/dd"));
+                PatientMsgTemplate.consultPhoneWaring2Wechat((String)map.get("doctorName"),(String)map.get("date"),week,(String)map.get("beginTime") ,(String)map.get("endTime") ,(String)map.get("userPhone") ,(String)map.get("orderNo"),(String)map.get("openid"),token ,"");
+                PatientMsgTemplate.consultPhoneWaring2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (String) map.get("date"), week, (String) map.get("beginTime"), (String) map.get("userPhone"), (String) map.get("orderNo"));
+                insertMonitor((Integer) map.get("id") + "", "2", "7");
+            }
+        }
+
+
       List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",new Date());
       for(HashMap map:consultOrderList){
           String doctorPhone =  (String)map.get("doctorPhone");
@@ -1034,7 +1053,7 @@ public class ScheduledTask {
                   //              并发送消息
                   Map<String,Object> parameter = systemService.getWechatParameter();
                   String token = (String)parameter.get("token");
-                  PatientMsgTemplate.consultPhoneRefund2Wechat((String)map.get("orderNo"),(Float)map.get("price")+"", (String)map.get("openid"),token ,"");
+                  PatientMsgTemplate.consultPhoneRefund2Wechat((String) map.get("orderNo"), (Float) map.get("price") + "", (String) map.get("openid"), token, "");
                   PatientMsgTemplate.unConnectPhone((String) map.get("babyName"), (String) map.get("doctorName"), "", (String) map.get("userPhone"), (String) map.get("orderNo"));
 
 //              }
@@ -1042,22 +1061,7 @@ public class ScheduledTask {
       }
 
 
-        //再建立通讯的五分钟前发消息给用户
-        Date date = new Date();
-        date.setTime(date.getTime()+5*60*1000);
-        String dateStr = DateUtils.DateToStr(date,"datetime");
-        List<HashMap<String, Object>> orderMsgList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",date);
-        for(HashMap<String ,Object> map:orderMsgList){
-            List<Map> messageMap = messageService.consultPhoneMsgRemind((Integer) map.get("id") + "");
-            if(null == messageMap||messageMap.size() == 0){
-                Map<String,Object> parameter = systemService.getWechatParameter();
-                String token = (String)parameter.get("token");
-                String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)map.get("date"),"yyyy/MM/dd"));
-                PatientMsgTemplate.consultPhoneWaring2Wechat((String)map.get("doctorName"),(String)map.get("date"),week,(String)map.get("beginTime") ,(String)map.get("endTime") ,(String)map.get("userPhone") ,(String)map.get("orderNo"),(String)map.get("openid"),token ,"");
-                PatientMsgTemplate.consultPhoneWaring2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (String) map.get("date"), week, (String) map.get("beginTime"), (String) map.get("userPhone"), (String) map.get("orderNo"));
-                insertMonitor((Integer) map.get("id") + "", "2", "7");
-            }
-        }
+
 
         //将钱退还给用户
         //再建立通讯的五分钟前发消息给用户
