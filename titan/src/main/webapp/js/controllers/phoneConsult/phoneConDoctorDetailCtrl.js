@@ -122,7 +122,6 @@
                             "phoneConDoctorDetail":item.id,
                             "doctorId":$stateParams.doctorId
                         }
-                        $scope.socketServer1 = JSON.stringify(consultValMessage);
                         window.location.href = "http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=phoneConsult&payParam="
                             + JSON.stringify(consultValMessage);
                     }else{
