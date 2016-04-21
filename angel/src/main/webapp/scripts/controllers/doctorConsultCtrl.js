@@ -171,15 +171,15 @@ angular.module('controllers', ['luegg.directives'])
                 var inputText = $('.emotion').val();
                 var consultValMessage = {
                     "type": 0,
-                    "content": angular.copy($scope.info.consultMessage)+AnalyticEmotion(inputText),
+                    "content": angular.copy($scope.info.consultMessage),//+AnalyticEmotion(inputText),
                     "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                     "senderId": angular.copy($scope.doctorId),
                     "senderName": angular.copy($scope.doctorName),
                     "sessionId": angular.copy($scope.currentUserConversation.sessionId)
                 };
-                console.log(inputText);
-                console.log(consultValMessage.content);
-                console.log(AnalyticEmotion(inputText));
+                //console.log(inputText);
+                //console.log(consultValMessage.content);
+                //console.log(AnalyticEmotion(inputText));
                 if (!window.WebSocket) {
                     return;
                 }
@@ -198,7 +198,9 @@ angular.module('controllers', ['luegg.directives'])
 
             //关闭跟某个用户的会话
             $scope.closeConsult = function () {
-                SessionEnd.save({sessionId:$scope.currentUserConversation.sessionId},function(data){
+                SessionEnd.get({sessionId:$scope.currentUserConversation.sessionId,
+                    userId:$scope.currentUserConversation.patientId},function(data){
+                    console.log(data);
                     if(data.result=="success"){
                         var indexClose = 0;
                         $.each($scope.alreadyJoinPatientConversation, function (index, value) {

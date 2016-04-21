@@ -74,7 +74,6 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
 		return consultSessionDao.selectBySelective(consultSession);
 	}
 
-
     @Override
     public List<String> getOnlineCsList() {
         return ConsultSessionManager.getSessionManager().getOnlineCsList();
@@ -91,20 +90,29 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
     }
 
     @Override
-    public String clearSession(Integer sessionId,String userId){
+    public String clearSession(Integer sessionId, String userId){
         try{
-            //清除redis内的数据
-            sessionRedisCache.removeConsultSessionBySessionId(sessionId);
-            sessionRedisCache.removeUserIdSessionIdPair(userId);
+            //数据库中的consultSession，状态由ongoing变成completed
+            ConsultSession consultSession = new ConsultSession();
+            consultSession.setId(sessionId);
+            List<ConsultSession> consultSessionList = this.selectBySelective(consultSession);
+            consultSession = consultSessionList.get(0);
+            consultSession.setStatus(ConsultSession.STATUS_COMPLETED);
+            int status = this.updateSessionInfo(consultSession);
+            if(status==1){
+                //清除redis内的数据
+                sessionRedisCache.removeConsultSessionBySessionId(sessionId);
+                sessionRedisCache.removeUserIdSessionIdPair(userId);
 
-            //清除内存内的数据
-            ConsultSessionManager.getSessionManager().removeUserSession(userId);
+                //清除内存内的数据
+                ConsultSessionManager.getSessionManager().removeUserSession(userId);
 
-            //删除最后一次会话
-            consultRecordService.deleteConsultSessionStatusVo(new Query().addCriteria(new Criteria().where("sessionId").is(sessionId)));
+                //删除最后一次会话
+                consultRecordService.deleteConsultSessionStatusVo(new Query().addCriteria(new Criteria().where("sessionId").is(sessionId)));
 
-            //删除用户的临时聊天记录
-            consultRecordService.deleteConsultTempRecordVo(new Query().addCriteria(new Criteria().where("userId").is(userId)));
+                //删除用户的临时聊天记录
+                consultRecordService.deleteConsultTempRecordVo(new Query().addCriteria(new Criteria().where("userId").is(userId)));
+            }
 
             return "success";
         }catch (Exception e){
