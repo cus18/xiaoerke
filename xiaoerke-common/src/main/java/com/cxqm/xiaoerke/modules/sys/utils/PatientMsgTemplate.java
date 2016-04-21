@@ -317,6 +317,11 @@ public class PatientMsgTemplate {
         SMSMessageUtil.sendMsg(phone, content);
     }
 
+    public static void unConnectPhone(String babyName,String doctorName, String price,String phone,String register_no){
+        String content =  "（未接通）"+babyName+"小朋友家长您好，由于您预约的"+doctorName+"医生的电话咨询未接通，咨询费用"+price+"元将在24小时后返回到您的宝大夫账户，订单号："+register_no+"，有疑问，请致电400-623-7120。";
+        SMSMessageUtil.sendMsg(phone, content);
+    }
+
     public static void consultPhoneRefund2Wechat(String register_no,String price, String openId,String token ,String url){
         ArrayList<Object> obj = new ArrayList<Object>();
         WechatArticle article = new WechatArticle();
