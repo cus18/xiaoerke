@@ -1031,11 +1031,11 @@ public class ScheduledTask {
 //              if(state>0){
 //                  HashMap<String, Object> response = new HashMap<String, Object>();
 //                  accountService.updateAccount(0F, (Integer) map.get("id")+"", response, false, (String)map.get("userId"),"电话咨询超时取消退款");
-                  //并发送消息
+                  //              并发送消息
                   Map<String,Object> parameter = systemService.getWechatParameter();
                   String token = (String)parameter.get("token");
                   PatientMsgTemplate.consultPhoneRefund2Wechat((String)map.get("orderNo"),(Float)map.get("price")+"", (String)map.get("openid"),token ,"");
-                  PatientMsgTemplate.returnPayPhoneRefund2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (Float) map.get("price") + "", (String) map.get("userPhone"));
+                  PatientMsgTemplate.unConnectPhone((String) map.get("babyName"), (String) map.get("doctorName"), "", (String) map.get("userPhone"), (String) map.get("orderNo"));
 
 //              }
           }
@@ -1054,7 +1054,7 @@ public class ScheduledTask {
                 String token = (String)parameter.get("token");
                 String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)map.get("date"),"yyyy/MM/dd"));
                 PatientMsgTemplate.consultPhoneWaring2Wechat((String)map.get("doctorName"),(String)map.get("date"),week,(String)map.get("beginTime") ,(String)map.get("endTime") ,(String)map.get("userPhone") ,(String)map.get("orderNo"),(String)map.get("openid"),token ,"");
-                PatientMsgTemplate.unConnectPhone((String) map.get("babyName"), (String) map.get("doctorName"), "", (String) map.get("userPhone"), (String) map.get("orderNo"));
+                PatientMsgTemplate.consultPhoneWaring2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (String) map.get("date"), week, (String) map.get("beginTime"), (String) map.get("userPhone"), (String) map.get("orderNo"));
                 insertMonitor((Integer) map.get("id") + "", "2", "7");
             }
         }
