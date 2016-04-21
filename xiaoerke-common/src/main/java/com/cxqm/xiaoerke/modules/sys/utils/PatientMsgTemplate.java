@@ -294,7 +294,7 @@ public class PatientMsgTemplate {
         ArrayList<Object> obj = new ArrayList<Object>();
         WechatArticle article = new WechatArticle();
         article.setTitle("取消电话咨询");
-        article.setDescription("医生：" + doctorName + "\n时间：" + date + week + beginTime + "-" + endTime + "\n接听电话：" + phone + "\n订单号:" + register_no + "（已取消）\n" + price +"元咨询费用已退还至您的宝大夫账户\n\n查看全文");
+        article.setDescription("医生：" + doctorName + "\n时间：" + date + week + beginTime + "-" + endTime + "\n接听电话：" + phone + "\n订单号:" + register_no + "（已取消）\n" + price +"元咨询费用将在24小时后返回到您的宝大夫账户\n\n查看全文");
         article.setUrl(url);
         obj.add(article);
         if(StringUtils.isNotNull(openId))
@@ -313,7 +313,7 @@ public class PatientMsgTemplate {
     }
 
     public static void consultPhoneRefund2Msg(String doctorName, String price,String phone,String date,String week,String beginTime,String register_no){
-        String content =  "（取消电话咨询）您已取消"+doctorName+"医生的"+date+" "+week+" "+beginTime+"的电话咨询，订单号："+register_no+"，已将"+price+"元咨询费用退还到宝大夫账户,有疑问，请致电400-623-7120。";
+        String content =  "（取消电话咨询）您已取消"+doctorName+"医生的"+date+" "+week+" "+beginTime+"的电话咨询，咨询费用"+price+"元将在24小时后返回到您的宝大夫账户,订单号："+register_no+"，有疑问，请致电400-623-7120。";
         SMSMessageUtil.sendMsg(phone, content);
     }
 
