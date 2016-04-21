@@ -1,6 +1,6 @@
 angular.module('controllers', ['ionic']).controller('phoneConsultDetailsCtrl', [
-    '$scope','$ionicPopup','$state','$stateParams','$location','GetUserLoginStatus',
-    function ($scope,$ionicPopup,$state,$stateParams,$location,GetUserLoginStatus) {
+    '$scope','$state','$stateParams','$location','GetUserLoginStatus','GetIllnessDetail','$filter',
+    function ($scope,$state,$stateParams,$location,GetUserLoginStatus,GetIllnessDetail,$filter) {
         $scope.title = "病情资料";
 
 
@@ -15,7 +15,16 @@ angular.module('controllers', ['ionic']).controller('phoneConsultDetailsCtrl', [
                 }else if(data.status=="8"){
                     window.location.href = data.redirectURL+"?targeturl="+routePath;
                 }else{
+                    GetIllnessDetail.save({"sys_phoneConsult_id":$stateParams.id,"doctorId":$stateParams.doctorId},function(data){
+                        console.log("data",data);
+                        $scope.serverTime = $filter('limitTo')(data.consultDate, 10);
+                        var time = $filter('limitTo')(data.consultDate, -10);
+                        $scope.serverTimeBegin = $filter('limitTo')(time, 5);
+                        $scope.serverTimeEnd = $filter('limitTo')(time, -5);
+                        $scope.serverPrice = data.price;
+                        $scope.serverLength = data.serverLength;
 
+                    });
                 }
             })
         });

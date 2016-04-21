@@ -4,8 +4,8 @@
     <ion-content  style="top: 0px;">
         <ion-scroll class="phoneConsultDetails" direction="y" has-bouncing="true">
             <ul>
-                <li class="time">预约时刻：<span>2015-03-14</span><span>14:00-14:10</span></li>
-                <li>服务类型：<span>150元/15分钟</span></li>
+                <li class="time">预约时刻：<span>{{serverTime}}</span><span>{{serverTimeBegin}}-{{serverTimeEnd}}</span></li>
+                <li>服务类型：<span>{{serverPrice}}元/{{serverLength}}分钟</span></li>
             </ul>
             <dl>
                 <dd>宝宝信息</dd>
