@@ -91,4 +91,6 @@ public interface ConsultPhoneRegisterServiceDao {
      * @author chenxiaoqiong
      */
     List<Map<String,Object>> getSettlementPhoneConsultInfoByDate(Map<String, Object> searchMap);
+
+    List<HashMap<String, Object>> getReturnPayConsultList();
 }
