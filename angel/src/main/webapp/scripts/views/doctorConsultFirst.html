@@ -184,7 +184,8 @@
             <iframe src="http://localhost:8080/keeper/scripts/views/customerss.html" frameborder="0"
                     class="advisory-content" ng-show='showFlag.advisoryContent'>
             </iframe>
-            <textarea type="text" name="messageData" id="userIdData" class="textarea" style="display:none;">{{currentUserConversation.patientId}}</textarea>
+            <textarea type="text" name="messageData" id="patientIdData" class="textarea" style="display:none;">{{currentUserConversation.patientId}}</textarea>
+            <textarea type="text" name="messageData" id="doctorIdData" class="textarea" style="display:none;">{{doctorId}}</textarea>
             <textarea type="text" name="messageData" id="sourceData" class="textarea" style="display:none;">{{currentUserConversation.source}}</textarea>
 
         </div>
