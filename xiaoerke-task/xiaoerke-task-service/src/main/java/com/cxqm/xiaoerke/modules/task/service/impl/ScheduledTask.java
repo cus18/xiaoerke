@@ -1073,7 +1073,7 @@ public class ScheduledTask {
                     ConsultSessionStatusVo consultSessionStatusVo = (ConsultSessionStatusVo)map.get("consultSessionStatusVo");
                     if(consultSessionStatusVo !=null && StringUtils.isNotNull(consultSessionStatusVo.getLastMessageTime())){
                         if(DateUtils.pastMinutes(DateUtils.StrToDate(consultSessionStatusVo.getLastMessageTime(),"xiangang"))>10L){
-                            consultSessionService.clearSession(Integer.valueOf(consultSessionStatusVo.getSessionId()),
+                            consultSessionService.clearSession(consultSessionStatusVo.getSessionId(),
                                     consultSessionStatusVo.getUserId());
                         }
                     }

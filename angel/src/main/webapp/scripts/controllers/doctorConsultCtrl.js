@@ -198,9 +198,9 @@ angular.module('controllers', ['luegg.directives'])
 
             //关闭跟某个用户的会话
             $scope.closeConsult = function () {
+                console.log("enter",$scope.currentUserConversation);
                 SessionEnd.get({sessionId:$scope.currentUserConversation.sessionId,
                     userId:$scope.currentUserConversation.patientId},function(data){
-                    console.log(data);
                     if(data.result=="success"){
                         var indexClose = 0;
                         $.each($scope.alreadyJoinPatientConversation, function (index, value) {
@@ -215,6 +215,7 @@ angular.module('controllers', ['luegg.directives'])
                         }else{
                             $scope.currentUserConversation = {};
                         }
+                        console.log("outer",$scope.currentUserConversation);
                     }else{
                         alert("会话关闭失败，请重试");
                     }
@@ -440,9 +441,8 @@ angular.module('controllers', ['luegg.directives'])
 
             var getAlreadyJoinConsultPatientList = function () {
                 //获取跟医生的会话还保存的用户列表
-                GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:100},function(data){
-                    if(data.alreadyJoinPatientConversation!=""){
-                        console.log(data.alreadyJoinPatientConversation);
+                GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
+                    if(data.alreadyJoinPatientConversation!=""&&data.alreadyJoinPatientConversation!=undefined){
                         $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                         var patientId = angular.copy($scope.alreadyJoinPatientConversation[0].patientId);
                         var patientName = angular.copy($scope.alreadyJoinPatientConversation[0].patientName);

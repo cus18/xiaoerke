@@ -90,18 +90,20 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
     }
 
     @Override
-    public String clearSession(Integer sessionId, String userId){
+    public String clearSession(String sessionId, String userId){
         try{
             //数据库中的consultSession，状态由ongoing变成completed
             ConsultSession consultSession = new ConsultSession();
-            consultSession.setId(sessionId);
+            consultSession.setId(Integer.parseInt(sessionId));
+            consultSession.setUserId(userId);
+            consultSession.setStatus(ConsultSession.STATUS_ONGOING);
             List<ConsultSession> consultSessionList = this.selectBySelective(consultSession);
             consultSession = consultSessionList.get(0);
             consultSession.setStatus(ConsultSession.STATUS_COMPLETED);
             int status = this.updateSessionInfo(consultSession);
             if(status==1){
                 //清除redis内的数据
-                sessionRedisCache.removeConsultSessionBySessionId(sessionId);
+                sessionRedisCache.removeConsultSessionBySessionId(Integer.parseInt(sessionId));
                 sessionRedisCache.removeUserIdSessionIdPair(userId);
 
                 //清除内存内的数据
