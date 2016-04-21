@@ -56,10 +56,10 @@ public class AnswerServiceImpl implements AnswerService {
         User user = UserUtils.getUser();
         WriteResult writeResult =null;
         if(answerType.equals("myAnswer")){
-            writeResult = answerMongoVoMongoDBService.upsert((new Query(where("userId").is("123").and("type").is("myAnswer"))),//user.getId()
+            writeResult = answerMongoVoMongoDBService.upsert((new Query(where("userId").is(user.getId()).and("type").is("myAnswer"))),
                     new Update().update("answerContent", answer));
         }else if(answerType.equals("commonAnswer")){
-            writeResult = answerMongoVoMongoDBService.upsert((new Query(where("userId").is("456").and("type").is("commonAnswer"))),//user.getId()
+            writeResult = answerMongoVoMongoDBService.upsert((new Query(where("userId").is(user.getId()).and("type").is("commonAnswer"))),
                     new Update().update("answerContent", answer));
         }
         return writeResult;
