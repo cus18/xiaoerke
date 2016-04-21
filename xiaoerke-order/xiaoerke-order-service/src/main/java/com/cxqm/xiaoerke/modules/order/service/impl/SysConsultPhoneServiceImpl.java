@@ -94,7 +94,7 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 		LogUtils.saveLog(Servlets.getRequest(), "00000030" ,"医生主键："+ doctorId
 				+ "date:" + date);
 
-		DateFormat formart = new SimpleDateFormat("hh:mm");
+		DateFormat formart = new SimpleDateFormat("HH:mm");
 		List<HashMap<String, Object>> consultPhoneTimeList = new LinkedList<HashMap<String, Object>>();
 		if(resultList != null && !resultList.isEmpty()){
 			for(HashMap<String, Object> map:resultList){
