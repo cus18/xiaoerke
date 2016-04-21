@@ -234,6 +234,11 @@ public class RegisterUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> doctorConsultPhoneInfo(@RequestBody Map<String, Object> params) throws Exception {
+        String date = (String)params.get("date");
+        if(date.contains("-")){
+            date = date.replaceAll("-","/");
+        }
+        params.put("date",date);
         return sysConsultPhoneService.doctorConsultPhoneOfDay(params);
     }
 

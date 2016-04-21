@@ -106,7 +106,7 @@ input[type="number"] {width: 36px;}
 #emotions .page a{margin-left:3px;color:#0078B6;background-color:#f3f3f3;}
 #emotions .page a:hover{background-color:#e7e7e7;}
 /*聊天框的头部*/
-.chatlistin{font: 14px/20px 'Microsoft Yahei';height: 265px;overflow:auto;background-color: #f8f8f8;width: 100%;color:#333;}
+.chatlistin{font: 12px/20px 'Microsoft Yahei';height: 265px;overflow:auto;background-color: #f8f8f8;width: 100%;color:#333;}
 .chatlistin::-webkit-scrollbar{height: 0;width: 0;}
 p.historymessage span {display: block;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(7).png") left center no-repeat;padding-left: 25px;}
 .facein{width: 100%;border-bottom: 1px solid #acacac;font: 12px/38px 'Microsoft Yahei';border-top: 1px solid #acacac;background-color: #f2f2f2;height: 38px;}
