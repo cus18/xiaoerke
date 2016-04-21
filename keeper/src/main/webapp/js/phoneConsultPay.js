@@ -1,5 +1,13 @@
 var byList = [];
 var bodBirthday = "";
+
+var GetQueryString = function(name)
+{
+    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if(r!=null)return  unescape(r[2]); return null;
+}
+var payParam = JSON.parse(GetQueryString('payParam'));
 //进入页面对日期插件以及微信支付进行初始化
 var doRefresh = function(){
     //loadDate();//调用日期插件
@@ -45,7 +53,7 @@ var doRefresh = function(){
         }
     });
     var param = '{routePath:"/wxPay/serviceType=phoneConsultAAAAAApatientPay.do?phoneConDoctorDetail='
-                +GetQueryString("phoneConDoctorDetail")+"AAAAAAdoctorId="+GetQueryString("doctorId")+'"}';
+                +payParam.phoneConDoctorDetail+"AAAAAAdoctorId="+payParam.doctorId+'"}';
     $.ajax({
         type: "POST",
         url: "auth/info/loginStatus",
@@ -63,7 +71,7 @@ var doRefresh = function(){
                     url: "consultPhone/consultPhoneDoctor/doctorDetail",// 跳转到 action
                     async: true,
                     type: 'get',
-                    data: {doctorId: GetQueryString("doctorId")},
+                    data: {doctorId: payParam.doctorId},
                     cache: false,
                     dataType: 'json',
                     success: function (data) {
@@ -206,7 +214,8 @@ var choiceBabyss=function(index){
 
 // 添加宝宝
 var addBaby=function(){
-    window.location.href = "/titan/phoneConsult#/phoneConAddBaby/"+GetQueryString('phoneConDoctorDetail')+","+GetQueryString('doctorId');
+
+    window.location.href = "/titan/phoneConsult#/phoneConAddBaby/"+payParam.phoneConDoctorDetail+","+payParam.doctorId;
 }
 // 取消选择宝宝
 var cancelSelectBaby=function(){
@@ -337,10 +346,4 @@ var getCookie = function(name)
         return null;
 }
 
-var GetQueryString = function(name)
-{
-    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-    var r = window.location.search.substr(1).match(reg);
-    if(r!=null)return  unescape(r[2]); return null;
-}
 

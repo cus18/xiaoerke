@@ -5,10 +5,8 @@ import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.order.dao.ConsultPhoneRegisterTemplateDao;
 import com.cxqm.xiaoerke.modules.order.dao.SysConsultPhoneServiceDao;
 import com.cxqm.xiaoerke.modules.order.entity.ConsulPhonetDoctorRelationVo;
-import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterTemplateVo;
 import com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo;
-import com.cxqm.xiaoerke.modules.order.exception.CancelOrderException;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PhoneConsultDoctorRelationService;
 import com.cxqm.xiaoerke.modules.order.service.SysConsultPhoneService;
@@ -96,7 +94,7 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 		LogUtils.saveLog(Servlets.getRequest(), "00000030" ,"医生主键："+ doctorId
 				+ "date:" + date);
 
-		DateFormat formart = new SimpleDateFormat("hh:mm");
+		DateFormat formart = new SimpleDateFormat("HH:mm");
 		List<HashMap<String, Object>> consultPhoneTimeList = new LinkedList<HashMap<String, Object>>();
 		if(resultList != null && !resultList.isEmpty()){
 			for(HashMap<String, Object> map:resultList){
@@ -125,6 +123,7 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 				consultPhoneTime.put("end_time", (String) map.get("end_time"));
 
 				consultPhoneTime.put("serviceType",(String)map.get("serviceType"));
+                consultPhoneTime.put("repeatFlag",(String)map.get("repeatFlag"));
 				consultPhoneTimeList.add(consultPhoneTime);
 			}
 		}

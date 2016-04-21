@@ -56,8 +56,8 @@ div#ddjr {border-right: 1px solid #fff;}
 .hd {height: 35px;background-color: #2A2A2F;border-radius: 5px 5px 0 0;line-height: 40px;color: #fff;font-size: 13px;padding: 0 10px;}
 .xtsz-up-left {float: left;width: 150px;height: 394px;cursor: pointer;background-color: #f2f2f2;}
 
-.xtsz-up-left h3 {font: 14px/40px 'Microsoft Yahei';color:#08b7c2;margin: 0 10px;
-}
+.xtsz-up-left h3 {font: 14px/40px 'Microsoft Yahei';color:#08b7c2;margin: 0 10px;}
+
 .xtsz-up-left a {display: block;}
 
 .xtsz-up-left a span {display: block;padding: 0 20px 0 30px;font: 12px/40px 'Microsoft Yahei';}
@@ -106,7 +106,7 @@ input[type="number"] {width: 36px;}
 #emotions .page a{margin-left:3px;color:#0078B6;background-color:#f3f3f3;}
 #emotions .page a:hover{background-color:#e7e7e7;}
 /*聊天框的头部*/
-.chatlistin{font: 14px/20px 'Microsoft Yahei';height: 265px;overflow:auto;background-color: #f8f8f8;width: 100%;color:#333;}
+.chatlistin{font: 12px/20px 'Microsoft Yahei';height: 265px;overflow:auto;background-color: #f8f8f8;width: 100%;color:#333;}
 .chatlistin::-webkit-scrollbar{height: 0;width: 0;}
 p.historymessage span {display: block;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(7).png") left center no-repeat;padding-left: 25px;}
 .facein{width: 100%;border-bottom: 1px solid #acacac;font: 12px/38px 'Microsoft Yahei';border-top: 1px solid #acacac;background-color: #f2f2f2;height: 38px;}
@@ -145,30 +145,27 @@ textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 10
 .addbtn {margin: 15px 100px;}
 .addkjhf{margin-bottom: 10px;float: left;}
 /*会话内容*/
-.doctorReplyContent,.patientConsultContent{
-    margin-top: 26px;overflow: hidden;
+.doctorReplyContent{
+    margin:26px 10px 0 0;
+    padding-left: 20%;
+}
+.patientConsultContent{
+    margin:26px 0 0 10px;
+    padding-right: 20%;
 }
 .doctorReplyContent .message,.patientConsultContent .message{
     font: 12px/12px 'Microsoft Yahei';
     padding: 8px;
-    max-width: 80%;
+    max-width: 100%;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #fff;
-    position: relative;
 }
-.patientConsultContent{margin-left: 200px;}
-.doctorReplyContent{margin-left: 5px;}
 .doctorReplyContent div:nth-child(1){
     color:#08b7c2;
 }
 .patientConsultContent div:nth-child(1){
     color:#7fc700;
-}
-.doctorReplyContent .headPortrait,.patientConsultContent .headPortrait {
-    width: 30px;
-    height: 30px;
-    margin: 0 10px;
 }
 .consultList {height: 408px;overflow: auto;}
 .consultList::-webkit-scrollbar {width:0;height:0;}

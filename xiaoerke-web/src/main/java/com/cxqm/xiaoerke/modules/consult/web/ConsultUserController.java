@@ -214,7 +214,7 @@ public class ConsultUserController extends BaseController {
                     RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(consultSession.getId());
                     String userId = richConsultSession.getUserId();
                     Query query = new Query(where("userId").is(userId).and("csUserId")
-                            .is(consultSession.getCsUserId())).with(new Sort(Direction.DESC, "createDate"));
+                            .is(consultSession.getCsUserId())).with(new Sort(Direction.ASC, "createDate"));
                     pagination = consultRecordService.getPage(pageNo, pageSize, query,"temporary");
                     searchMap.put("patientId",userId);
                     searchMap.put("source",richConsultSession.getSource());
