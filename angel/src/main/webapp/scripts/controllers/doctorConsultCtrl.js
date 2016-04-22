@@ -491,9 +491,9 @@ angular.module('controllers', ['luegg.directives'])
                 if(chooseFlag){
                     $scope.chooseAlreadyJoinConsultPatient(angular.copy(currentConsultValue.senderId),
                         angular.copy(currentConsultValue.senderName));
+                    getIframeSrc();
                 }
                 console.log($scope.alreadyJoinPatientConversation);
-                getIframeSrc();
             }
 
             var updateAlreadyJoinPatientConversationFromPatient = function(conversationData){
