@@ -44,7 +44,7 @@ var doRefresh = function(){
         error : function() {
         }
     });
-    var param = '{routePath:"/wxPay/serviceType=phoneConsultAAAAAApatientPay.do?phoneConDoctorDetail='
+    var param = '{routePath:"/wxPay/patientPay.do?serviceType=phoneConsultAAAAAApatientPay.do?phoneConDoctorDetail='
                 +GetQueryString("phoneConDoctorDetail")+"AAAAAAdoctorId="+GetQueryString("doctorId")+'"}';
     $.ajax({
         type: "POST",
