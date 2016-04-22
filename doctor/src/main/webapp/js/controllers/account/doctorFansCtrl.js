@@ -1,6 +1,6 @@
 angular.module('controllers', ['ionic']).controller('doctorFansCtrl', [
-    '$scope','$ionicPopup','$state','$stateParams','$location','GetUserLoginStatus',
-    function ($scope,$ionicPopup,$state,$stateParams,$location,GetUserLoginStatus) {
+    '$scope','$ionicPopup','$state','$stateParams','$location','GetUserLoginStatus','GetFansList',
+    function ($scope,$ionicPopup,$state,$stateParams,$location,GetUserLoginStatus,GetFansList) {
         $scope.title = "粉丝列表";
         $scope.haveMore = true;
         $scope.noMore = false;
@@ -18,7 +18,9 @@ angular.module('controllers', ['ionic']).controller('doctorFansCtrl', [
                 }else if(data.status=="8"){
                     window.location.href = data.redirectURL+"?targeturl="+routePath;
                 }else{
-
+                    GetFansList.save({"doctorId":$stateParams.id,"pageNo":"1","pageSize":"5"}, function (data) {
+                        console.log("data",data);
+                    })
                 }
             })
         });
