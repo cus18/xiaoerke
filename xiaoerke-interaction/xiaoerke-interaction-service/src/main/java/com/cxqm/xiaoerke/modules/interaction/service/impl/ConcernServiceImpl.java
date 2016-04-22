@@ -136,7 +136,7 @@ public class ConcernServiceImpl implements ConcernService {
                 //如果头像或微信名为空，通过微信获取并保存到数据库
                 if(wechatName == null || headImgUrl == null){
                     String openId = (String) resultMap.get("openid");
-                    if(openId ==null){
+                    if(openId == null){
                         headImgUrl = "";
                         wechatName = "宝粉";
                     }else{
