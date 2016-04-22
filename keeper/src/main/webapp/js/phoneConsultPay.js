@@ -206,8 +206,7 @@ var choiceBabyss=function(index){
 
 // 添加宝宝
 var addBaby=function(){
-
-    window.location.href = "/titan/phoneConsult#/phoneConAddBaby/"+payParam.phoneConDoctorDetail+","+payParam.doctorId;
+    window.location.href = "/titan/phoneConsult#/phoneConAddBaby/"+GetQueryString("phoneConDoctorDetail")+","+GetQueryString("doctorId");
 }
 // 取消选择宝宝
 var cancelSelectBaby=function(){

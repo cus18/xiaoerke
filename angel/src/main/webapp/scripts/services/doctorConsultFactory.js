@@ -75,7 +75,7 @@ angular.module('services', ['ngResource'])
     }])
     //获取等待加入用户列表
     .factory('GetWaitJoinList', ['$resource', function ($resource) {
-        return $resource(public + 'consult/waitJoinList');
+        return $resource(public + 'consult/doctor/waitJoinList');
     }])
     //医生获取当前会话用户的N条聊天记录
     .factory('GetHistoryRecordPatient', ['$resource', function ($resource) {

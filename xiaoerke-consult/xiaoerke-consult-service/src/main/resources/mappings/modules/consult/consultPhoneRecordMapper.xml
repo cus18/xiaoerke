@@ -41,6 +41,7 @@
       and action =  #{action,jdbcType=VARCHAR}
     </if>
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from consultphonerecord
     where id = #{id,jdbcType=INTEGER}

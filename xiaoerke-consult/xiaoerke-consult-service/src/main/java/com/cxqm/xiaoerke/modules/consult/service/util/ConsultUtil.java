@@ -1,13 +1,19 @@
 package com.cxqm.xiaoerke.modules.consult.service.util;
 
+import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 public class ConsultUtil {
+
+	private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
 
 	public static RichConsultSession transferMapToRichConsultSession(HashMap<String, Object> consultSessionMap){
 		RichConsultSession consultSession = new RichConsultSession();

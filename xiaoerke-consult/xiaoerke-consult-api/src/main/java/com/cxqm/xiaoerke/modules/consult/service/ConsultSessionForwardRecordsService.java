@@ -36,6 +36,7 @@ public interface ConsultSessionForwardRecordsService {
 
     void react2Transfer(Map<String,Object> map);
 
-
     Page<ConsultSessionForwardRecordsVo> getConsultUserListRecently(Page<ConsultSessionForwardRecordsVo> page, HashMap<String, Object> hashMap);
+
+    List<ConsultSessionForwardRecordsVo> getWaitJoinList(String csUserId);
 }

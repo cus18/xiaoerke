@@ -8,7 +8,7 @@
                     <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png" alt=""/>
                 </span>
                 <span></span>
-                <span>宝大夫</span>
+                <span>（{{doctorName}}），宝大夫欢迎您！！</span>
                 <!--<span>自动回复-->
                     <!--<select>-->
                         <!--<option>无</option>-->
@@ -391,13 +391,13 @@
             </div>
             <!--input标签获取总值-->
             <div class="light">
-                <ul>
+                <ul ng-repeat="item in watiJoinUserList">
                     <li><input type="checkbox"></li>
-                    <li>昵称</li>
-                    <li>消息</li>
-                    <li>消息数</li>
-                    <li>时间</li>
-                    <li>来自</li>
+                    <li>{{item.userName}}</li>
+                    <li>{{item.message}}</li>
+                    <li>{{item.messageNum}}</li>
+                    <li>{{item.dateTime}}</li>
+                    <li>{{item.fromCsUserName}}</li>
                 </ul>
             </div>
         </div>

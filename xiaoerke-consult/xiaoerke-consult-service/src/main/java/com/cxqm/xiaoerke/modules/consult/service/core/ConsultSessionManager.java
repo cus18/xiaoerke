@@ -307,7 +307,8 @@ public class ConsultSessionManager {
 		jsonObj.put("notifyType", "0009");
 		jsonObj.put("session", session);
 		jsonObj.put("remark", remark);
-		channel.writeAndFlush(jsonObj.toJSONString());
+		TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
+		channel.writeAndFlush(frame.retain());
 		
 		ConsultSessionForwardRecordsVo forwardRecord = new ConsultSessionForwardRecordsVo();
 		forwardRecord.setConversationId(sessionId.longValue());
