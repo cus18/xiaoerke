@@ -111,8 +111,8 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
                 //清除内存内的数据
                 ConsultSessionManager.getSessionManager().removeUserSession(userId);
 
-                //删除最后一次会话
-                consultRecordService.deleteConsultSessionStatusVo(new Query().addCriteria(new Criteria().where("sessionId").is(sessionId)));
+                //更新最后一次会话
+                consultRecordService.updateConsultSessionStatusVo(new Query().addCriteria(new Criteria().where("sessionId").is(sessionId)),"complete");
 
                 //删除用户的临时聊天记录
                 consultRecordService.deleteConsultTempRecordVo(new Query().addCriteria(new Criteria().where("userId").is(userId)));

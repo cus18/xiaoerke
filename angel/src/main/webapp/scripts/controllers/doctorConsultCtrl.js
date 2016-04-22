@@ -142,7 +142,7 @@ angular.module('controllers', ['luegg.directives'])
             $scope.chooseAlreadyJoinConsultPatient = function (patientId, patientName) {
                 $scope.chooseAlreadyJoinConsultPatientId = patientId;
                 $scope.chooseAlreadyJoinConsultPatientName = patientName;
-
+                getIframeSrc();
                 var updateFlag = false;
                 $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                     if (value.patientId == patientId) {
@@ -430,6 +430,11 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 }
             };
+            var getIframeSrc = function(){
+                var newSrc = $(".advisory-content").attr("src");
+                $(".advisory-content").attr("src","");
+                $(".advisory-content").attr("src",newSrc);
+            }
 
             //日期转换
             $scope.transformDate = function(dateTime){
@@ -488,6 +493,7 @@ angular.module('controllers', ['luegg.directives'])
                         angular.copy(currentConsultValue.senderName));
                 }
                 console.log($scope.alreadyJoinPatientConversation);
+                getIframeSrc();
             }
 
             var updateAlreadyJoinPatientConversationFromPatient = function(conversationData){

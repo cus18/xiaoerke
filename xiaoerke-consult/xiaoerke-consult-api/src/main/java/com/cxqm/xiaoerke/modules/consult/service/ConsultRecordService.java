@@ -46,9 +46,9 @@ public interface ConsultRecordService {
 
     void saveConsultSessionStatus(RichConsultSession consultSession);
 
-    List<Object> querySessionStatusList(Query query);
+    List<ConsultSessionStatusVo> querySessionStatusList(Query query);
 
-    void  deleteConsultSessionStatusVo(Query query);
+    void  updateConsultSessionStatusVo(Query query,String status);
 
     void  deleteConsultTempRecordVo(Query query);
 

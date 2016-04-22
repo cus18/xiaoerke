@@ -79,8 +79,8 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		return this.insert(consultRecordMongoVo);//全部聊天记录
 	}
 
-	public void  deleteConsultSessionStatusVo(Query query) {
-		mongoTemplate.remove(query, ConsultSessionStatusVo.class);
+	public void  updateConsultSessionStatusVo(Query query,String status) {
+		mongoTemplate.updateMulti(query,new Update().set("status", status), ConsultSessionStatusVo.class);
 	}
 
 	public void  deleteConsultRecordTemporary(Query query) {
@@ -124,8 +124,8 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
         return writeResult;
 	}
 	//zdl
-	public List<Object> querySessionStatusList(Query query){
-		return this.mongoTemplate.find(query, Object.class, "consultSessionStatusVo");
+	public List<ConsultSessionStatusVo> querySessionStatusList(Query query){
+		return this.mongoTemplate.find(query, ConsultSessionStatusVo.class, "consultSessionStatusVo");
 	}
 
 
