@@ -9,7 +9,11 @@ angular.module('controllers', ['luegg.directives'])
 
             $scope.info = {
                 effect:"true",
-                transferRemark:""
+                transferRemark:"",
+                role:{
+                    "distributor":"接诊员",
+                    "consultDoctor":"专业医生"
+                }
             };
             $scope.socketServer1 = "";
             $scope.socketServer2 = "";
@@ -76,9 +80,10 @@ angular.module('controllers', ['luegg.directives'])
             }
 
             $scope.refreshOnLineCsUserList = function(){
+                $scope.searchFlag = false;
+                $scope.info.searchCsUserValue = "";
                 GetOnlineDoctorList.save({}, function (data) {
                     $scope.info.onLineCsUserList = data.onLineCsUserList;
-                    console.log($scope.info.onLineCsUserList);
                 });
             }
 
@@ -100,6 +105,16 @@ angular.module('controllers', ['luegg.directives'])
                 });
             }
 
+            $scope.searchFlag = false;
+            $scope.info.searchCsUserValue = "";
+            $scope.searchCsUser = function(){
+                if($scope.info.searchCsUserValue!=""){
+                    $scope.searchFlag = true;
+                }else{
+                    $scope.searchFlag = false;
+                }
+            }
+
             //初始化医生端登录，建立socket链接，获取基本信息
             $scope.doctorConsultInit = function () {
                 var routePath = "/doctor/consultBBBBBB" + $location.path();
@@ -118,6 +133,7 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.initConsultSocket1();
 
                         //获取通用回复列表
+                        $scope.myAnswer = [];
                         GetAnswerValueList.save({"type": "commonAnswer"}, function (data) {
                             if (data.commonAnswer.length == 0) {
                                 $scope.lockScroll = "false";
@@ -231,13 +247,12 @@ angular.module('controllers', ['luegg.directives'])
                     window.WebSocket = window.MozWebSocket;
                 }
                 if (window.WebSocket) {
-
-                    if($scope.userType="distributor"){
-                        $scope.socketServer1 = new ReconnectingWebSocket("ws://120.25.161.33:2048/ws&" +
-                            "distributor&" + "000455ab145e4bb3bb94ba52ac4d7eb3");//cs,user,distributor
-                    }else if($scope.userType="consultDoctor"){
-                        $scope.socketServer1 = new ReconnectingWebSocket("ws://120.25.161.33:2048/ws&" +
-                            "distributor&" + "000455ab145e4bb3bb94ba52ac4d7eb3");//cs,user,distributor
+                    if($scope.userType=="distributor"){
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://101.201.154.201:2048/ws&" +
+                            "distributor&" + $scope.doctorId);//cs,user,distributor
+                    }else if($scope.userType=="consultDoctor"){
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://101.201.154.201:2048/ws&" +
+                            "cs&" + $scope.doctorId);//cs,user,distributor
 
                     }
 
@@ -348,7 +363,6 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.publicReplySecondIndex = childIndex;
             };
             //添加分组
-            $scope.myAnswer = [];
             $scope.add = function() {
                 $scope.info.addGroup = '';
                 $scope.info.addContent = '';
@@ -452,12 +466,14 @@ angular.module('controllers', ['luegg.directives'])
             var getAlreadyJoinConsultPatientList = function () {
                 //获取跟医生的会话还保存的用户列表
                 GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
+                    console.log(data);
                     if(data.alreadyJoinPatientConversation!=""&&data.alreadyJoinPatientConversation!=undefined){
                         $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                         var patientId = angular.copy($scope.alreadyJoinPatientConversation[0].patientId);
                         var patientName = angular.copy($scope.alreadyJoinPatientConversation[0].patientName);
                         $scope.chooseAlreadyJoinConsultPatient(patientId,patientName);
                     }
+                    console.log($scope.currentUserConversation);
                 })
             }
 
@@ -500,6 +516,7 @@ angular.module('controllers', ['luegg.directives'])
                         angular.copy(currentConsultValue.senderName));
                     getIframeSrc();
                 }
+                console.log($scope.currentUserConversation);
                 console.log($scope.alreadyJoinPatientConversation);
             }
 
@@ -558,9 +575,9 @@ angular.module('controllers', ['luegg.directives'])
         }])
 
     .controller('messageListCtrl', ['$scope', '$log', '$sce', 'GetUserConsultListInfo',
-        'GetUserRecordDetail', 'GetCSDoctorList', 'GetCSInfoByUserId', 'GetMessageRecordInfo','GetUserLoginStatus',
+        'GetUserRecordDetail', 'GetCSDoctorList', 'GetCSInfoByUserId', 'GetMessageRecordInfo','GetUserLoginStatus','$location',
         function ($scope, $log, $sce, GetUserConsultListInfo, GetUserRecordDetail,
-                  GetCSDoctorList, GetCSInfoByUserId, GetMessageRecordInfo,GetUserLoginStatus) {
+                  GetCSDoctorList, GetCSInfoByUserId, GetMessageRecordInfo,GetUserLoginStatus,$location) {
 
             $scope.info = {};
 
@@ -620,11 +637,10 @@ angular.module('controllers', ['luegg.directives'])
 
             //获取用户的详细聊天记录
             $scope.GetUserRecordDetail = function (userId) {
-                alert(userId);
                 GetUserRecordDetail.save({pageNo:0,pageSize:100,
                     userId:userId,recordType:"all"}, function (data) {
                     $scope.currentUserConsultRecordDetail = data.records;
-
+                    console.log($scope.currentUserConsultRecordDetail);
                 });
             }
 
@@ -644,7 +660,6 @@ angular.module('controllers', ['luegg.directives'])
 
             //查找咨询记录（消息列表右上角的搜索功能）
             $scope.searchMessage = function () {
-
                 if($scope.info.searchMessageContent == '' || $scope.info.searchMessageContent == null){
                     alert('请选择查询内容！')
                     return ;

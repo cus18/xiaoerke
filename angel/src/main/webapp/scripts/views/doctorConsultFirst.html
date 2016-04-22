@@ -207,7 +207,7 @@
                         <div ng-repeat="item in currentUserConversation.consultValue" class="information">
                             <div ng-if="item.senderId==doctorId" class="doctorReplyContent">
                                 <div class="doctorName">
-                                    <span>{{doctorName}}</span>
+                                    <span>{{item.senderName}}</span>
                                     <span>{{item.dateTime}}</span>
                                 </div>
                                 <div ng-if="item.type=='0'" class="message" >
@@ -223,13 +223,12 @@
                                     {{item.content}}
                                 </div>
                                 <div ng-if="item.type=='1'" class="message">
-                                    {{}}
-                                    <a target="_blank" ng-href="{{item.content}}">
+                                    <a target="_blank">
                                         <img width="100" height="100" ng-src="{{item.content}}">
                                     </a>
                                 </div>
                                 <div ng-if="item.type=='2'">
-                                    <audio ng-src="{{audioData}}" controls="controls"/>
+                                    <audio ng-src="{{item.content}}" controls="controls"/>
                                 </div>
                                 <div ng-if="item.type=='3'" class="message">
                                     <video width="500" height="250" ng-src="{{item.content}}"
@@ -263,7 +262,7 @@
     </div>
     <!--等待接入会话-->
     <div class="jrhhpm" ng-show='showFlag.rankList'>
-        <div class="jrhhpm-top">今日接入会话排名 <a href="refreshRankList">刷新</a></div>
+        <div class="jrhhpm-top">今日接入会话排名 <a ng-click="refreshRankList()" href="">刷新</a></div>
         <table border="0">
             <tr class="jrhhpm-tb">
                 <th>排名</th>
@@ -412,26 +411,33 @@
         </div>
         <div class="switchcontent">
             <div class="switchbox">
-                <input type="text" placeholder="按员工、昵称查找工号">
+                <input type="text" placeholder="按员工、昵称查找工号" ng-model="info.searchCsUserValue" ng-change="searchCsUser()">
                 <div class="refresh">
                     <div class="refreshbox">
                         <div class="refreshboxtop">
-                            <div>
-                                <span>工号</span>
-                                <span>昵称</span>
-                            </div>
-                            <ul>
-                                <li ng-repeat="item in info.onLineCsUserList"
+                            <table>
+                                <tr>
+                                    <th>工号</th>
+                                    <th>昵称</th>
+                                    <th>角色</th>
+                                </tr>
+                                <tr ng-repeat="item in info.onLineCsUserList"
                                     ng-click="chooseTransferCsUser(item.id,item.name)"
-                                    ng-style="item.csUserId==transferCsUserId?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}">
-                                    <span>
-                                        {{item.email}}
-                                    </span>
-                                    <span>
-                                        {{item.name}}
-                                    </span>
-                                </li>
-                            </ul>
+                                    ng-style="item.id==transferCsUserId?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}"
+                                    ng-if="!searchFlag&&item.id!=doctorId">
+                                    <td>{{item.email}}</td>
+                                    <td>{{item.name}}</td>
+                                    <td>{{info.role[item.user_type]}}</td>
+                                </tr>
+                                <tr ng-repeat="item in info.onLineCsUserList"
+                                    ng-click="chooseTransferCsUser(item.id,item.name)"
+                                    ng-style="item.id==transferCsUserId?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}"
+                                    ng-if="searchFlag&&item.id!=doctorId&&(item.email.indexOf(info.searchCsUserValue)!=-1||item.name.indexOf(info.searchCsUserValue)!=-1)">
+                                    <td>{{item.email}}</td>
+                                    <td>{{item.name}}</td>
+                                    <td>{{info.role[item.user_type]}}</td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                     <div class="refreshbtn" ng-click="refreshOnLineCsUserList()">刷新在线工号</div>
