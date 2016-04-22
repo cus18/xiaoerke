@@ -7,10 +7,7 @@ li{list-style:none}
 img{border:0;vertical-align:middle}
 table{border-collapse:collapse;border-spacing:0}
 p{word-wrap:break-word}
-a:focus,input:focus{
-    -webkit-tap-highlight-color:rgba(0,0,0,0);
-    -webkit-user-modify:read-write-plaintext-only;
-}
+a:focus,input:focus{-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-user-modify:read-write-plaintext-only;}
 .container-fluid{
     background-color: #fff;
     width: 375px;
@@ -116,10 +113,11 @@ textarea {
     float: right;
 }
 .message{
-    border:1px solid #aaa;
-    border-radius: 5px;
-    padding: 5px;
+    border-radius: 2px;
+    padding: 7px 5px;
     font: 12px/12px 'Microsoft Yahei';
+    position: relative;
+    margin: 0 10px;
 
 }
 .doctorReplyContent div:nth-child(2){
@@ -127,4 +125,30 @@ textarea {
 }
 .patientConsultContent div:nth-child(2){
     background-color: #1fc3c5;
+    color:#fff;
+}
+/*小三角*/
+.patientConsultContent .message::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-width: 4px;
+    border-style: solid;
+    border-color: transparent;
+    border-left-color: #1FC3C5;
+    position: absolute;
+    top: 8px;
+    right: -8px;
+}
+.doctorReplyContent .message::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-width: 4px;
+    border-style: solid;
+    border-color: transparent;
+    border-right-color: #fff;
+    position: absolute;
+    top: 8px;
+    left: -8px;
 }
