@@ -207,7 +207,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
             consultRecordMongoVo.setUserId(consultSession.getUserId());
             consultRecordMongoVo.setCsUserId(consultSession.getCsUserId());
             consultRecordMongoVo.setDoctorName(consultSession.getCsUserName());
-            consultRecordMongoVo.setCreateDate(new Date());
+            consultRecordMongoVo.setCreateDate(DateUtils.formatDateTime(new Date()));
             saveConsultRecord(consultRecordMongoVo);
             saveConsultRecordTemporary(consultRecordMongoVo);
         }

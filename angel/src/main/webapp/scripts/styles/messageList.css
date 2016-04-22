@@ -27,6 +27,6 @@
 .nicknamecontentlist li .recently{width: 110px;margin-left: 80px;}
 .nicknamecontentlist li .insert{width: 105px;margin-left: 75px;}
 
-.examinecontent ul li {margin: 15px 0 0 20px;}
-.examinecontent ul li .name{color:#08b7c2;font: 12px/28px 'Microsoft Yahei';}
+.examinecontent ul li {margin: 15px 0 0 20px;font: 12px/28px 'Microsoft Yahei';}
+.examinecontent ul li .name{color:#08b7c2;}
 .examinecontent ul li .chatcontent{color:#666;font: 12px/20px 'Microsoft Yahei';margin-top: 10px;}

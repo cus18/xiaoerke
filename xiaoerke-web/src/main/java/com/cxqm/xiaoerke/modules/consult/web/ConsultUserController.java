@@ -181,8 +181,8 @@ public class ConsultUserController extends BaseController {
         for(ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo : resultPage.getList()){
             Query query = new Query(where("fromUserId").is(consultSessionForwardRecordsVo.getFromUserId())).with(new Sort(Sort.Direction.DESC, "createDate"));
             ConsultRecordMongoVo oneConsultRecord = consultRecordService.findOneConsultRecord(query);
-            Date date = oneConsultRecord.getCreateDate();
-            oneConsultRecord.setInfoDate(DateUtils.DateToStr(date));
+//            Date date = oneConsultRecord.getCreateDate();
+//            oneConsultRecord.setInfoDate(DateUtils.DateToStr(date));
 
             if (oneConsultRecord != null && StringUtils.isNotNull(oneConsultRecord.getSenderId())){
                 consultSessionForwardRecordsVos.add(oneConsultRecord);
