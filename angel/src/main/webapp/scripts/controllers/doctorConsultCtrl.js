@@ -74,6 +74,7 @@ angular.module('controllers', ['luegg.directives'])
             }
 
             $scope.refreshOnLineCsUserList = function(){
+                console.log("test");
                 GetOnlineDoctorList.save({}, function (data) {
                     $scope.info.onLineCsUserList = data.onLineCsUserList;
                 });
@@ -343,6 +344,7 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.publicReplySecondIndex = childIndex;
             };
             //添加分组
+            $scope.myAnswer = [];
             $scope.add = function() {
                 $scope.info.addGroup = '';
                 $scope.info.addContent = '';
@@ -365,6 +367,7 @@ angular.module('controllers', ['luegg.directives'])
                 var setGroupContent = {};
                 setGroupContent.name = $scope.info.addGroup;
                 setGroupContent.secondAnswer=[];
+                console.log($scope.myAnswer);
                 $scope.myAnswer.push(setGroupContent);
                 saveMyAnswer();
                 $scope.addGroupFlag = false;
@@ -537,7 +540,9 @@ angular.module('controllers', ['luegg.directives'])
 
             //处理系统发送过来的通知类消息
             var processNotifyMessage = function(notifyDate){
-
+                if(notifyDate.notifyType=="0009"){
+                    $scope.waitJoinNum++;
+                }
             }
 
             //过滤媒体数据

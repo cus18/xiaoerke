@@ -27,7 +27,7 @@
                             if(data.doctorId!=""){
                                 $scope.doctorId = data.doctorId;
                                 $scope.doctorName = data.doctorName;
-                                $scope.balance = data.balance;
+                                $scope.phone = data.phone;
                             }
                         });
                     }
@@ -35,6 +35,6 @@
             });
 
             $scope.gohome = function () {
-                $state.go("doctorHome");
+                $state.go("doctorHome",{id:$scope.doctorId});
             }
     }])

@@ -80,7 +80,7 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 	}
 
 	public void  updateConsultSessionStatusVo(Query query,String status) {
-		mongoTemplate.updateMulti(query,new Update().set("status", status), ConsultSessionStatusVo.class);
+		mongoTemplate.updateMulti(query, new Update().set("status", status), ConsultSessionStatusVo.class);
 	}
 
 	public void  deleteConsultRecordTemporary(Query query) {
@@ -119,7 +119,7 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		if(StatusVo != null){
 			writeResult = mongoTemplate.updateMulti(query,new Update().set("lastMessageTime", DateUtils.formatDateTime(new Date())), ConsultSessionStatusVo.class);
 		}else {
-			mongoTemplate.insert(ConsultSessionStatusVo.class, "consultSessionStatusVo");
+			mongoTemplate.insert(consultSessionStatusVo, "consultSessionStatusVo");
 		}
         return writeResult;
 	}
