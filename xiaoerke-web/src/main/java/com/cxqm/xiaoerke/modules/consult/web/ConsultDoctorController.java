@@ -514,7 +514,6 @@ public class ConsultDoctorController extends BaseController {
         HashMap<String,Object> response = new HashMap<String, Object>();
         List<HashMap<String,Object>> dataList = new ArrayList<HashMap<String, Object>>();
         String csUserId = (String) params.get("csUserId");
-        String csUserName = (String) params.get("csUserName");
         List<ConsultSessionForwardRecordsVo> waitJoinListVoList = consultSessionForwardRecordsService.getWaitJoinList(csUserId);
         for(ConsultSessionForwardRecordsVo waitJoinListVo:waitJoinListVoList){
             HashMap<String,Object> dataValue = new HashMap<String, Object>();
@@ -529,8 +528,9 @@ public class ConsultDoctorController extends BaseController {
                 dataValue.put("userName", richConsultSession.getUserName());
             }
             dataValue.put("dateTime", DateUtils.DateToStr(new Date()));
-            dataValue.put("fromCsUserName",csUserName);
-            dataValue.put("fromCsUserId",csUserId);
+            User user = systemService.getUser(waitJoinListVo.getFromUserId());
+            dataValue.put("fromCsUserName",user.getName());
+            dataValue.put("fromCsUserId",waitJoinListVo.getFromUserId());
             dataList.add(dataValue);
         }
         response.put("waitJoinList",dataList);

@@ -69,7 +69,6 @@ angular.module('controllers', ['luegg.directives'])
                             }else if(type=="waitProcess"){
                                 //获取待接入用户列表
                                 GetWaitJoinList.save({csUserId:$scope.doctorId},function(data){
-                                    console.log(data);
                                     $scope.waitJoinNum = data.waitJoinNum;
                                     $scope.watiJoinUserList = data.waitJoinList;
                                 })
@@ -171,8 +170,7 @@ angular.module('controllers', ['luegg.directives'])
                             }
                         });
 
-                        GetWaitJoinList.save({csUserId:$scope.doctorId,csUserName:$scope.doctorName},function(data){
-                            console.log(data);
+                        GetWaitJoinList.save({csUserId:$scope.doctorId},function(data){
                             $scope.waitJoinNum = data.waitJoinNum;
                             $scope.watiJoinUserList = data.waitJoinList;
                         })
