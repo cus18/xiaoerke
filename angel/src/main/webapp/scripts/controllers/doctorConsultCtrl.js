@@ -74,6 +74,7 @@ angular.module('controllers', ['luegg.directives'])
             }
 
             $scope.refreshOnLineCsUserList = function(){
+                console.log("test");
                 GetOnlineDoctorList.save({}, function (data) {
                     $scope.info.onLineCsUserList = data.onLineCsUserList;
                 });
@@ -142,7 +143,7 @@ angular.module('controllers', ['luegg.directives'])
             $scope.chooseAlreadyJoinConsultPatient = function (patientId, patientName) {
                 $scope.chooseAlreadyJoinConsultPatientId = patientId;
                 $scope.chooseAlreadyJoinConsultPatientName = patientName;
-
+                getIframeSrc();
                 var updateFlag = false;
                 $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                     if (value.patientId == patientId) {
@@ -343,6 +344,7 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.publicReplySecondIndex = childIndex;
             };
             //添加分组
+            $scope.myAnswer = [];
             $scope.add = function() {
                 $scope.info.addGroup = '';
                 $scope.info.addContent = '';
@@ -365,6 +367,7 @@ angular.module('controllers', ['luegg.directives'])
                 var setGroupContent = {};
                 setGroupContent.name = $scope.info.addGroup;
                 setGroupContent.secondAnswer=[];
+                console.log($scope.myAnswer);
                 $scope.myAnswer.push(setGroupContent);
                 saveMyAnswer();
                 $scope.addGroupFlag = false;
@@ -430,6 +433,11 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 }
             };
+            var getIframeSrc = function(){
+                var newSrc = $(".advisory-content").attr("src");
+                $(".advisory-content").attr("src","");
+                $(".advisory-content").attr("src",newSrc);
+            }
 
             //日期转换
             $scope.transformDate = function(dateTime){
@@ -486,6 +494,7 @@ angular.module('controllers', ['luegg.directives'])
                 if(chooseFlag){
                     $scope.chooseAlreadyJoinConsultPatient(angular.copy(currentConsultValue.senderId),
                         angular.copy(currentConsultValue.senderName));
+                    getIframeSrc();
                 }
                 console.log($scope.alreadyJoinPatientConversation);
             }
@@ -531,7 +540,9 @@ angular.module('controllers', ['luegg.directives'])
 
             //处理系统发送过来的通知类消息
             var processNotifyMessage = function(notifyDate){
-
+                if(notifyDate.notifyType=="0009"){
+                    $scope.waitJoinNum++;
+                }
             }
 
             //过滤媒体数据
