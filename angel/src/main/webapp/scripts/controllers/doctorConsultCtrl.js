@@ -466,12 +466,14 @@ angular.module('controllers', ['luegg.directives'])
             var getAlreadyJoinConsultPatientList = function () {
                 //获取跟医生的会话还保存的用户列表
                 GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
+                    console.log(data);
                     if(data.alreadyJoinPatientConversation!=""&&data.alreadyJoinPatientConversation!=undefined){
                         $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                         var patientId = angular.copy($scope.alreadyJoinPatientConversation[0].patientId);
                         var patientName = angular.copy($scope.alreadyJoinPatientConversation[0].patientName);
                         $scope.chooseAlreadyJoinConsultPatient(patientId,patientName);
                     }
+                    console.log($scope.currentUserConversation);
                 })
             }
 
@@ -514,6 +516,7 @@ angular.module('controllers', ['luegg.directives'])
                         angular.copy(currentConsultValue.senderName));
                     getIframeSrc();
                 }
+                console.log($scope.currentUserConversation);
                 console.log($scope.alreadyJoinPatientConversation);
             }
 
@@ -572,9 +575,9 @@ angular.module('controllers', ['luegg.directives'])
         }])
 
     .controller('messageListCtrl', ['$scope', '$log', '$sce', 'GetUserConsultListInfo',
-        'GetUserRecordDetail', 'GetCSDoctorList', 'GetCSInfoByUserId', 'GetMessageRecordInfo','GetUserLoginStatus',
+        'GetUserRecordDetail', 'GetCSDoctorList', 'GetCSInfoByUserId', 'GetMessageRecordInfo','GetUserLoginStatus','$location',
         function ($scope, $log, $sce, GetUserConsultListInfo, GetUserRecordDetail,
-                  GetCSDoctorList, GetCSInfoByUserId, GetMessageRecordInfo,GetUserLoginStatus) {
+                  GetCSDoctorList, GetCSInfoByUserId, GetMessageRecordInfo,GetUserLoginStatus,$location) {
 
             $scope.info = {};
 
@@ -657,7 +660,6 @@ angular.module('controllers', ['luegg.directives'])
 
             //查找咨询记录（消息列表右上角的搜索功能）
             $scope.searchMessage = function () {
-
                 if($scope.info.searchMessageContent == '' || $scope.info.searchMessageContent == null){
                     alert('请选择查询内容！')
                     return ;

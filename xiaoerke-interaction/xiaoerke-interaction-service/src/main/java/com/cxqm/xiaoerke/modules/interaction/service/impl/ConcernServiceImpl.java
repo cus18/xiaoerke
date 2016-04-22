@@ -116,7 +116,7 @@ public class ConcernServiceImpl implements ConcernService {
         HashMap<String, Object> searchMap = new HashMap<String, Object>();
         String doctorId = (String)params.get("doctorId");
         String pageNo = (String)params.get("pageNo");
-        String pageSize = (String)params.get("pageSize");
+        String pageSize = String.valueOf(params.get("pageSize"));
 
         Page<HashMap<String, Object>> page = FrontUtils.generatorPage(pageNo,pageSize);
         //分页查询粉丝列表

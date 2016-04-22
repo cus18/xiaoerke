@@ -63,7 +63,7 @@ public class ConsultSessionManager {
 
 	private ConsultSessionService consultSessionService = SpringContextHolder.getBean("consultSessionServiceImpl");
 
-	private ConsultSessionForwardRecordsService sessionForwardService = SpringContextHolder.getBean("consultSessionForwardRecordsServiceImpl");
+	private ConsultSessionForwardRecordsService consultSessionForwardRecordsService = SpringContextHolder.getBean("consultSessionForwardRecordsServiceImpl");
 	
 	private SystemService systemService = SpringContextHolder.getBean("systemService");
 
@@ -317,7 +317,7 @@ public class ConsultSessionManager {
 		forwardRecord.setToUserId(toCsUserId);
 		forwardRecord.setRemark(remark);
 		forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_WAITING);
-		sessionForwardService.save(forwardRecord);
+		consultSessionForwardRecordsService.save(forwardRecord);
 	}
 	
 	public void react2Transfer(Integer sessionId, Integer forwardRecordId, String toCsUserId, String toCsUserName, String operation){
@@ -339,10 +339,10 @@ public class ConsultSessionManager {
 		if(ConsultSessionForwardRecordsVo.REACT_TRANSFER_OPERATION_ACCEPT.equalsIgnoreCase(operation)){
 			sessionRedisCache.putSessionIdConsultSessionPair(sessionId, session);
 			forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_ACCEPT);
-			sessionForwardService.updateAcceptedTransfer(forwardRecord);
+			consultSessionForwardRecordsService.updateAcceptedTransfer(forwardRecord);
 		} else {
 			forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_REJECT);
-			sessionForwardService.updateRejectedTransfer(forwardRecord);
+			consultSessionForwardRecordsService.updateRejectedTransfer(forwardRecord);
 		}
 		
 	}
@@ -354,7 +354,7 @@ public class ConsultSessionManager {
 		forwardRecord.setFromUserId(session.getCsUserId());
 		forwardRecord.setToUserId(toCsUserId);
 		forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_CANCELLED);
-		int count = sessionForwardService.cancelTransfer(forwardRecord);
+		int count = consultSessionForwardRecordsService.cancelTransfer(forwardRecord);
 		
 		if(count > 0) {
 			Channel channel = userChannelMapping.get(toCsUserId);

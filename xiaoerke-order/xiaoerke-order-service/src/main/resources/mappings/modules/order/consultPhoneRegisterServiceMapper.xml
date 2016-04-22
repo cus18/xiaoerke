@@ -299,13 +299,13 @@ left join sys_user su
 on su.id = sp.sys_user_id
 where crs.state = '4'
 and apr.`status` = 'success'
-AND (DATE_ADD((DATE_FORMAT(crs.update_time,'%Y-%m-%d %k:%i:%s')), INTERVAL 1 day))> NOW()
+AND  NOW()>(DATE_ADD((DATE_FORMAT(crs.update_time,'%Y-%m-%d %k:%i:%s')), INTERVAL 1 day))
 and crs.id not in (
 select DISTINCT(crs.id) from consultphone_register_service crs
 left join account_pay_record apr
 on crs.id = apr.order_id
 where crs.state = '4'
- AND (DATE_ADD((DATE_FORMAT(crs.update_time,'%Y-%m-%d %k:%i:%s')), INTERVAL 1 day))> NOW()
+ AND  NOW()>(DATE_ADD((DATE_FORMAT(crs.update_time,'%Y-%m-%d %k:%i:%s')), INTERVAL 1 day))
 and apr.`status` = 'return'
 )
 group by crs.id
