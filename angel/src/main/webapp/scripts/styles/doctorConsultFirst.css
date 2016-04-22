@@ -82,9 +82,9 @@ input[type="number"] {width: 36px;}
 .switchcontent {width: 100%;}
 .switchbox{padding: 20px}
 .switchbox input[type="text"] {width: 100%;height: 26px;margin-bottom:20px;}
-.refreshboxtop tr th {width: 224px;}
+.refreshboxtop tr th {width: 150px;}
 .refreshboxtop tr{font: 12px/30px 'Microsoft Yahei';background-color: #8aa1a8;}
-.refreshboxtop tr td{text-align: center;width: 224px;}
+.refreshboxtop tr td{text-align: center;width: 150px;}
 .refreshboxtop {margin: 0 110px 0 0;border: 1px solid #eee;height: 175px;overflow-y: scroll;}
 .refreshboxtop::-webkit-scrollbar {width:10px;height:10px;}
 .refreshboxtop::-webkit-scrollbar-track-piece {background:#eee;border-radius:5px;}

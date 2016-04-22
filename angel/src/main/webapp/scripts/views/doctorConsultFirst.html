@@ -420,12 +420,23 @@
                                 <tr>
                                     <th>工号</th>
                                     <th>昵称</th>
+                                    <th>角色</th>
                                 </tr>
                                 <tr ng-repeat="item in info.onLineCsUserList"
                                     ng-click="chooseTransferCsUser(item.id,item.name)"
-                                    ng-style="item.csUserId==transferCsUserId?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}">
-                                    <td>{{item.phone}}</td>
+                                    ng-style="item.csUserId==transferCsUserId?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}"
+                                    ng-if="!searchFlag">
+                                    <td>{{item.email}}</td>
                                     <td>{{item.name}}</td>
+                                    <td>{{item.role}}</td>
+                                </tr>
+                                <tr ng-repeat="item in info.onLineCsUserList"
+                                    ng-click="chooseTransferCsUser(item.id,item.name)"
+                                    ng-style="item.csUserId==transferCsUserId?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}"
+                                    ng-if="searchFlag&&(item.email.indexOf(info.searchCsUserValue)!=-1||item.name.indexOf(info.searchCsUserValue)!=-1)">
+                                    <td>{{item.email}}</td>
+                                    <td>{{item.name}}</td>
+                                    <td>{{item.role}}</td>
                                 </tr>
                             </table>
                         </div>
