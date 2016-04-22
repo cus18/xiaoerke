@@ -1,13 +1,5 @@
 var byList = [];
 var bodBirthday = "";
-
-var GetQueryString = function(name)
-{
-    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-    var r = window.location.search.substr(1).match(reg);
-    if(r!=null)return  unescape(r[2]); return null;
-}
-var payParam = JSON.parse(GetQueryString('payParam'));
 //进入页面对日期插件以及微信支付进行初始化
 var doRefresh = function(){
     //loadDate();//调用日期插件
@@ -52,13 +44,13 @@ var doRefresh = function(){
         error : function() {
         }
     });
-    var routePath = "http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=phoneConsultAAAAAAphoneConDoctorDetail="
-        +GetQueryString("phoneConDoctorDetail")+"AAAAAAdoctorId="+GetQueryString("doctorId");
+    var param = '{routePath:"/wxPay/serviceType=phoneConsultAAAAAApatientPay.do?phoneConDoctorDetail='
+                +GetQueryString("phoneConDoctorDetail")+"AAAAAAdoctorId="+GetQueryString("doctorId")+'"}';
     $.ajax({
         type: "POST",
         url: "auth/info/loginStatus",
         contentType: 'application/json',
-        data: routePath,
+        data: param,
         dataType:'json',
         success: function (data) {
             if (data.status == "9") {
@@ -71,7 +63,7 @@ var doRefresh = function(){
                     url: "consultPhone/consultPhoneDoctor/doctorDetail",// 跳转到 action
                     async: true,
                     type: 'get',
-                    data: {doctorId: payParam.doctorId},
+                    data: {doctorId: GetQueryString("doctorId")},
                     cache: false,
                     dataType: 'json',
                     success: function (data) {
@@ -346,4 +338,10 @@ var getCookie = function(name)
         return null;
 }
 
+var GetQueryString = function(name)
+{
+    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if(r!=null)return  unescape(r[2]); return null;
+}
 
