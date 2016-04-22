@@ -102,18 +102,17 @@ public class PayController {
      */
     @RequestMapping(value = "/wxPay/patientPay.do", method = {RequestMethod.POST, RequestMethod.GET})
     public String wxPay(@RequestParam(required=true) String serviceType,
-                        @RequestParam(required=false) String payParam,
+                        @RequestParam(required=false) String phoneConDoctorDetail,
+                        @RequestParam(required=false) String doctorId,
                         Model model) {
-
 
         if(serviceType.equals("antiDogPay")){
             model.addAttribute("payPrice", 19.8);
             model.addAttribute("intervalFlag", "1");
             return "antiDogPay";
         }else if(serviceType.equals("phoneConsult")){
-            JSONObject payParamJson = JSONObject.fromObject(payParam);
-            model.addAttribute("phoneConDoctorDetail", payParamJson.get("phoneConDoctorDetail"));
-            model.addAttribute("doctorId", payParamJson.get("doctorId"));
+            model.addAttribute("phoneConDoctorDetail", phoneConDoctorDetail);
+            model.addAttribute("doctorId", doctorId);
             return "phoneConsultPay";
         }else if(serviceType.equals("appointment")){
             model.addAttribute("payPrice", 200);
