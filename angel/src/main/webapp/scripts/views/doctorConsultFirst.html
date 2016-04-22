@@ -379,27 +379,24 @@
                 <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(4).png" alt=""/>
                 刷新</span>
             </div>
-            <div class="light">
-                <ul>
-                    <li><input type="checkbox"></li>
-                    <li>昵称</li>
-                    <li>消息</li>
-                    <li>消息数</li>
-                    <li>时间</li>
-                    <li>来自</li>
-                </ul>
-            </div>
-            <!--input标签获取总值-->
-            <div class="light">
-                <ul ng-repeat="item in watiJoinUserList">
-                    <li><input type="checkbox"></li>
-                    <li>{{item.userName}}</li>
-                    <li>{{item.message}}</li>
-                    <li>{{item.messageNum}}</li>
-                    <li>{{item.dateTime}}</li>
-                    <li>{{item.fromCsUserName}}</li>
-                </ul>
-            </div>
+            <table border="0">
+                <tr  class="light">
+                    <th><input type="checkbox"></th>
+                    <th>昵称</th>
+                    <th>消息</th>
+                    <th>消息数</th>
+                    <th>时间</th>
+                    <th>来自</th>
+                </tr>
+                <tr class="light light1">
+                    <td><input type="checkbox"></td>
+                    <td>{{item.userName}}</td>
+                    <td>{{item.message}}</td>
+                    <td>{{item.messageNum}}</td>
+                    <td>{{item.dateTime}}</td>
+                    <td>{{item.fromCsUserName}}</td>
+                </tr>
+            </table>
         </div>
         <div class="footer ddjr-footer" id="ddjr_footer">已选中：<span id="add1">0</span>/<span id="add2">0</span>
         </div>

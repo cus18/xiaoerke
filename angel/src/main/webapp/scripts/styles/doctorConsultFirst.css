@@ -33,8 +33,11 @@ div#ddjr {border-right: 1px solid #fff;}
 .ddjr-content div:nth-child(2){background-color: #8aa1a8;color:#fff;}
 .checktop {height: 38px;}
 .light{padding: 8px 0; font-size: 12px;color:#333;background-color: #fafffb;height: 14px;}
-.light ul li:nth-child(1){margin: 0 0 0 5px;}
-.light ul li{float: left;margin: 0 50px 0 10px;}
+.light1{background-color: #fff;}
+.light td:nth-child(1){margin: 0 0 0 5px;width: 20px;}
+.light th:nth-child(1){margin: 0 0 0 5px;width: 20px;}
+.light th{height: 14px;width: 100px;}
+.light td{text-align: center;}
 .footer {font-size:12px;width: 610px;height: 40px;border-top: 1px solid #aaa;float: left;line-height: 40px;position: absolute;bottom: 0;}
 /*今日会话排名*/
 .jrhhpm {height: auto;position: absolute;top: 101px;left: 176px;background-color: #fff;box-shadow: 1px 1px 1px 1px #aaa;overflow: hidden;}
