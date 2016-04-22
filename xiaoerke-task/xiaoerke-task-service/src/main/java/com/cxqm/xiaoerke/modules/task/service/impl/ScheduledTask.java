@@ -1068,9 +1068,10 @@ public class ScheduledTask {
         List<HashMap<String, Object>> returnPayList = consultPhoneOrderService.getReturnPayConsultList();
         for(HashMap<String, Object> map:returnPayList){
           accountService.updateAccount(0F, (Integer) map.get("id")+"", response, false, (String)map.get("userId"),"电话咨询超时取消退款");
+            Map<String,Object> consultOrder = consultPhonePatientService.getPatientRegisterInfo((Integer) map.get("orderId"));
           String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(Integer) map.get("orderId")+",phone";
-          PatientMsgTemplate.returnPayPhoneRefund2Msg((String) map.get("babyName"), (Float) map.get("price") + "", (String) map.get("userPhone"));
-          PatientMsgTemplate.returnPayPhoneRefund2Wechat((String) map.get("babyName"), (Float) map.get("price") + "",(String) map.get("openid"),token,url);
+          PatientMsgTemplate.returnPayPhoneRefund2Msg((String) consultOrder.get("babyName"), (Float) consultOrder.get("price") + "", (String) consultOrder.get("userPhone"));
+          PatientMsgTemplate.returnPayPhoneRefund2Wechat((String) consultOrder.get("babyName"), (Float) consultOrder.get("price") + "",(String) consultOrder.get("openid"),token,url);
         }
 //        查询是不是有return状态
 
