@@ -245,12 +245,10 @@
         <if test="evaluateType == 2" >
             and (evaluateType &lt;&gt; '1' or evaluateType is null)
         </if>
-
+        ORDER BY prp.praise_date DESC
         <if test="limit != null" >
             limit  #{limit}
         </if>
-
-        ORDER BY prp.praise_date DESC
     </select>
 
     <!--<select id="getDoctorEvaluate" resultType="com.cxqm.xiaoerke.common.persistence.Page">-->
