@@ -610,6 +610,11 @@
             return Inter_Days; 
         } 
 	function loadData(){
+		var id=$("#userIdData",parent.document).html();
+		var sourth=$("#sourceData",parent.document).html();
+		$("#openid").val(id);
+		getOpenid();
+		$("#costomerID").val($("#doctorIdData",parent.document).html());
 		hiddenTableOrder();
 		getIllness();
 		getBabyInfo();
@@ -619,14 +624,9 @@
 		getCustomerLogByOpenID();
 		getOrderInfoByOpenid();
 		sendGreetingsMessage();
-		var id=$("#userIdData",parent.document).html();
-		var sourth=$("#sourceData",parent.document).html();
-		$("#openid").val(id);
-		getOpenid();
-		$("#costomerID").val($("#doctorIdData",parent.document).html());
 	}
 	function getBabyInfo(){
-		alert(openid);
+		alert("getBabyInfo...."+openid);
 		$.ajax({
 			type: 'POST',
 			url: "/keeper/customer/searchBabyInfo",
