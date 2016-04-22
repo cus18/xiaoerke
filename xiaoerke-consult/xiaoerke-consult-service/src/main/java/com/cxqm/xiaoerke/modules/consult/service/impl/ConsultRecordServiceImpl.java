@@ -215,17 +215,18 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
         String lastDate = DateUtils.DateToStr(new Date());
         consultSessionStatusVo.setLastMessageTime(lastDate);
         consultSessionStatusVo.setUserId(consultSession.getUserId());
+        consultSessionStatusVo.setStatus("ongoing");
         consultRecordMongoDBService.upsertConsultSessionStatusVo(consultSessionStatusVo);
     }
 
     @Override
-    public List<Object> querySessionStatusList(Query query){
+    public List<ConsultSessionStatusVo> querySessionStatusList(Query query){
         return consultRecordMongoDBService.querySessionStatusList(query);
     }
 
     @Override
-    public void  deleteConsultSessionStatusVo(Query query) {
-        consultRecordMongoDBService.deleteConsultSessionStatusVo(query);
+    public void  updateConsultSessionStatusVo(Query query,String status) {
+        consultRecordMongoDBService.updateConsultSessionStatusVo(query,status);
     }
 
     @Override
