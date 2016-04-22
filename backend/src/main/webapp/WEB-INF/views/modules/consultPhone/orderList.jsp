@@ -42,7 +42,7 @@
 		}
 		function refundConsultPhoneFee(href){
 			href=encodeURI(encodeURI(href));
-			top.$.jBox.open('iframe:'+href,'退会员费',$(top.document).width()-860,$(top.document).height()-330,{
+			top.$.jBox.open('iframe:'+href,'取消预约',$(top.document).width()-860,$(top.document).height()-330,{
 				buttons:{"关闭":true},
 				closed: function () {
 					$("#searchForm").attr("action","${ctx}/consultPhone/consultPhoneOrderList?");
