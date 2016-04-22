@@ -48,7 +48,7 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 	 * @param query
 	 * @return
 	 */
-	public PaginationVo<ConsultRecordMongoVo> getPage(int pageNo, int pageSize, Query query,String recordType) {
+	public PaginationVo<ConsultRecordMongoVo> getRecordDetailInfo(int pageNo, int pageSize, Query query,String recordType) {
 		long totalCount = this.mongoTemplate.count(query, ConsultRecordVo.class);
 		PaginationVo<ConsultRecordMongoVo> page = new PaginationVo<ConsultRecordMongoVo>(pageNo, pageSize, totalCount);
 		query.skip(page.getFirstResult());// skip相当于从那条记录开始

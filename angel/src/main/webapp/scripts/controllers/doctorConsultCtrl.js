@@ -590,6 +590,11 @@ angular.module('controllers', ['luegg.directives'])
                 name: "最近30天",
                 value: 30
             }];
+            //测完即删
+            GetUserConsultListInfo.save({pageNo: 1, pageSize: 20}, function (data) {
+                $scope.userConsultListInfo = data.userList;
+                console.log(data.userList);
+            });
 
             $scope.messageListInit = function(){
                 var routePath = "/doctor/consultBBBBBB" + $location.path();
@@ -614,12 +619,10 @@ angular.module('controllers', ['luegg.directives'])
             }
 
             //获取用户的详细聊天记录
-            $scope.GetUserRecordDetail = function (openid,senderName,fromUserId,toUserId) {
-                $scope.currentClickUserName = senderName;
+            $scope.GetUserRecordDetail = function (userId) {
+                alert(userId);
                 GetUserRecordDetail.save({pageNo:0,pageSize:100,
-                    fromUserId:fromUserId,toUserId:toUserId,
-                    recordType: "doctor", "openid": openid}, function (data) {
-                    $scope.defaultClickUserOpenId = openid;
+                    userId:userId,recordType:"all"}, function (data) {
                     $scope.currentUserConsultRecordDetail = data.records;
 
                 });
