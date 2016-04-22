@@ -514,6 +514,7 @@ angular.module('controllers', ['luegg.directives'])
                         angular.copy(currentConsultValue.senderName));
                     getIframeSrc();
                 }
+                console.log($scope.currentUserConversation);
                 console.log($scope.alreadyJoinPatientConversation);
             }
 
@@ -657,7 +658,6 @@ angular.module('controllers', ['luegg.directives'])
 
             //查找咨询记录（消息列表右上角的搜索功能）
             $scope.searchMessage = function () {
-
                 if($scope.info.searchMessageContent == '' || $scope.info.searchMessageContent == null){
                     alert('请选择查询内容！')
                     return ;
