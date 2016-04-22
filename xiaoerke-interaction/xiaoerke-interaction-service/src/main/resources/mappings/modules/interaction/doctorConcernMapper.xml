@@ -129,8 +129,28 @@
     </select>
 
     <select id="getMyFansList" resultMap="OpenIdMap" resultType="com.cxqm.xiaoerke.common.persistence.Page">
-        SELECT su.openid FROM sys_concern sc
+        SELECT
+        su.openid,
+        sc.id,
+        sc.wechat_name,
+        sc.pic_url
+        FROM sys_concern sc
         LEFT JOIN sys_user su ON su.id = sc.sys_user_id
         where sc.sys_doctor_id = #{doctorId}
     </select>
+
+    <update id="updateWechatNameAndImg">
+        UPDATE sys_concern
+        set
+        <if test="wechatName != null">
+        wechat_name=#{wechatName,jdbcType=VARCHAR}
+        </if>
+
+        <if test="headImgUrl != null">
+        ,pic_url=#{headImgUrl,jdbcType=VARCHAR}
+        </if>
+
+        where id={id,jdbcType=VARCHAR}
+    </update>
+
 </mapper>

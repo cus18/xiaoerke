@@ -1060,16 +1060,13 @@ public class ScheduledTask {
           }
       }
 
-
-
-
         //将钱退还给用户
         //再建立通讯的五分钟前发消息给用户
-        date = new Date();
-        date.setTime(date.getTime()-12*60*60*1000);
-        dateStr = DateUtils.DateToStr(date,"datetime");
-        List<HashMap<String, Object>> returnPayList = consultPhoneOrderService.getOrderPhoneConsultListByTime("4",date);
-
+        HashMap<String, Object> response = new HashMap<String, Object>();
+        List<HashMap<String, Object>> returnPayList = consultPhoneOrderService.getReturnPayConsultList();
+        for(HashMap<String, Object> map:returnPayList){
+          accountService.updateAccount(0F, (Integer) map.get("id")+"", response, false, (String)map.get("userId"),"电话咨询超时取消退款");
+        }
 //        查询是不是有return状态
 
 

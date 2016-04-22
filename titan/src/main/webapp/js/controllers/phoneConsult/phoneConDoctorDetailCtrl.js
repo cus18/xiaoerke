@@ -118,12 +118,8 @@
                     $scope.nowdate = moment().format('YYYY/MM/DD HH:MM');
                     var boolean = moment(moment(item.data).format('YYYY/MM/DD')+" "+item.begin_time).isAfter(moment().add(5, 'm'));
                     if(boolean){
-                        var consultValMessage = {
-                            "phoneConDoctorDetail":item.id,
-                            "doctorId":$stateParams.doctorId
-                        }
-                        window.location.href = "http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=phoneConsult&payParam="
-                            + JSON.stringify(consultValMessage);
+                        window.location.href = "http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=phoneConsultAAAAAAphoneConDoctorDetail="
+                            + item.id+"AAAAAAdoctorId="+$stateParams.doctorId;
                     }else{
                         alert("预约时间间隔过短")
                         retrun

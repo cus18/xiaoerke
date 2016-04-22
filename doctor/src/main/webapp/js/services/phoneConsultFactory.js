@@ -21,4 +21,8 @@ define(['phoneConsultApp'], function (app) {
         .factory('GetConsultTime',['$resource',function ($resource){
             return $resource('consultPhone/user/doctor/time');
         }])
+        //获取病情详情
+        .factory('GetIllnessDetail',['$resource',function ($resource){
+            return $resource('illness/illnessDescribe/detail');
+        }])
 });

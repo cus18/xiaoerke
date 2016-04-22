@@ -245,9 +245,9 @@ public class ConsultSessionManager {
 		}
 
 		if(distributorChannel == null) {
-			//所有的接诊员不在线，随机分配一个在线医生
-			Iterator<Entry<String, Channel>> csUserChannel = csUserChannelMapping.entrySet().iterator();
-			if(csUserChannel!=null){
+			if(csUserChannelMapping.size()!=0){
+				//所有的接诊员不在线，随机分配一个在线医生
+				Iterator<Entry<String, Channel>> csUserChannel = csUserChannelMapping.entrySet().iterator();
 				List<HashMap<String,Object>> doctorOnLineList = new ArrayList();
 				while (csUserChannel.hasNext()) {
 					HashMap<String,Object> doctorOnLineMap = new HashMap<String,Object>();
@@ -268,14 +268,14 @@ public class ConsultSessionManager {
 						consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
 					}
 				}
-
 			}else{
 				//如果没有任何医生在线，给用户推送微信消息，告知没有医生在线，稍后在使用服务
 				String st = "尊敬的用户，您好，目前没有医生在线，请稍后再试";
-				WechatUtil.senMsgToWechat(sessionRedisCache.getWeChatToken(),consultSession.getUserId(), st);
+				WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN,consultSession.getUserId(), st);
 				return null;
 			}
 		}
+
 
 		HashMap<String, Object> perInfo = new HashMap<String, Object>();
 		if ( StringUtils.isNotNull(consultSession.getCsUserId())) {

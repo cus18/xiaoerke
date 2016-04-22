@@ -52,13 +52,13 @@ var doRefresh = function(){
         error : function() {
         }
     });
-    var param = '{routePath:"/wxPay/serviceType=phoneConsultAAAAAApatientPay.do?phoneConDoctorDetail='
-                +payParam.phoneConDoctorDetail+"AAAAAAdoctorId="+payParam.doctorId+'"}';
+    var routePath = "http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=phoneConsultAAAAAAphoneConDoctorDetail="
+        +GetQueryString("phoneConDoctorDetail")+"AAAAAAdoctorId="+GetQueryString("doctorId");
     $.ajax({
         type: "POST",
         url: "auth/info/loginStatus",
         contentType: 'application/json',
-        data: param,
+        data: routePath,
         dataType:'json',
         success: function (data) {
             if (data.status == "9") {

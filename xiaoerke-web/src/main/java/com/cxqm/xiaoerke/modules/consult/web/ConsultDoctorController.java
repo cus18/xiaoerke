@@ -10,6 +10,7 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultMongoUtilsService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultSessionServiceImpl;
+import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
@@ -29,6 +30,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -42,9 +45,6 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 @Controller
 @RequestMapping(value = "consult/doctor")
 public class ConsultDoctorController extends BaseController {
-
-    @Autowired
-    private ConsultSessionForwardRecordsService consultConversationForwardRecordsService;
 
     @Autowired
     private AnswerService answerService;
@@ -61,21 +61,31 @@ public class ConsultDoctorController extends BaseController {
     @Autowired
     private SystemService systemService;
 
-    @Autowired
-    private ConsultMongoUtilsService consultMongoUtilsService;
-
-
-
-    @RequestMapping(value = "/closeConsult", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/getCurrentUserHistoryRecord", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    HashMap<String, Object> closeConsult(@RequestBody Map<String, Object> params) {
+    HashMap<String, Object> getCurrentUserHistoryRecord(@RequestBody Map<String, Object> params) {
+        HashMap<String,Object> response = new HashMap<String, Object>();
 
         String userId = (String) params.get("userId");
-        String csUserId = (String) params.get("csUserId");
+        String dateTime = (String) params.get("dateTime");
+        Integer pageSize = (Integer) params.get("pageSize");
+        List<ConsultRecordMongoVo> currentUserHistoryRecord = null;
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date date = sdf.parse(dateTime);
+            currentUserHistoryRecord = consultRecordService.getCurrentUserHistoryRecord(userId, date, pageSize);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-        return null;
+        if(currentUserHistoryRecord!=null){
+            response.put("consultDataList", ConsultUtil.transformCurrentUserListData(currentUserHistoryRecord));
+        }else{
+            response.put("consultDataList", "");
+        }
+        return response;
     }
 
     /***
@@ -112,7 +122,7 @@ public class ConsultDoctorController extends BaseController {
         HashMap<String,Object> resultMap = new HashMap<String,Object>();
         try{
             searchMap.put("rankDate", params.get("rankDate"));
-            List<Map<String, Object>> resultValue = consultConversationForwardRecordsService.findConversationRankList(searchMap);
+            List<Map<String, Object>> resultValue = consultSessionForwardRecordsService.findConversationRankList(searchMap);
             resultMap.put("rankListValue",resultValue);
         }catch (Exception e){
             e.printStackTrace();
@@ -420,8 +430,7 @@ public class ConsultDoctorController extends BaseController {
     @RequestMapping(value = "/recordList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> recordList(@RequestBody Map<String, Object> params,
-                                   HttpServletRequest request, HttpServletResponse httpResponse) {
+    Map<String, Object> recordList(@RequestBody Map<String, Object> params) {
 
         String recordType = String.valueOf(params.get("recordType"));
         String toUserId = String.valueOf(params.get("toUserId"));

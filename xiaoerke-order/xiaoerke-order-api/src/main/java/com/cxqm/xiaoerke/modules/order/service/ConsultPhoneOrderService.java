@@ -58,4 +58,6 @@ public interface ConsultPhoneOrderService {
      * @author chenxiaoqiong
      */
     HashMap<String,Object> getSettlementPhoneConsultInfoByDate(String doctorId, String date);
+
+    List<HashMap<String, Object>> getReturnPayConsultList();
 }

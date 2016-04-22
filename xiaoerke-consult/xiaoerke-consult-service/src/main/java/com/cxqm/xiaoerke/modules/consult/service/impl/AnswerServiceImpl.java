@@ -32,7 +32,7 @@ public class AnswerServiceImpl implements AnswerService {
         Query query = new Query();
 
         if ("myAnswer".equals(type)) {
-            query.addCriteria(where("type").is(type).andOperator(new Criteria().where("userId").is("123")));//UserUtils.getUser().getId()
+            query.addCriteria(where("type").is(type).andOperator(new Criteria().where("userId").is(UserUtils.getUser().getId())));
         } else {
             query.addCriteria(where("type").is(type));
         }
