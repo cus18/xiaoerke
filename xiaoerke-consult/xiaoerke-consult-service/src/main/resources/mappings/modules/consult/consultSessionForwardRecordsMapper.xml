@@ -89,6 +89,7 @@
 
     </trim>
   </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo" >
     update consult_conversation_forward_records
     <set >
@@ -169,6 +170,14 @@
     </if>
     group su.id
     ORDER BY ccfr.create_time desc
+  </select>
+
+  <select id="findWaitJoinListByCsUserId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from consult_conversation_forward_records
+    where to_user_id = #{csUserId,jdbcType=VARCHAR}
+      and status =  #{status,jdbcType=VARCHAR}
   </select>
 
 </mapper>

@@ -2,16 +2,17 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.alibaba.fastjson.JSON;
+import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
-import com.cxqm.xiaoerke.modules.consult.service.AnswerService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultMongoUtilsService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
+import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultSessionServiceImpl;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
+import com.cxqm.xiaoerke.modules.consult.utils.DateUtil;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
@@ -58,6 +59,9 @@ public class ConsultDoctorController extends BaseController {
 
     @Autowired
     private ConsultRecordService consultRecordService;
+
+    @Autowired
+    private SessionRedisCache sessionRedisCache;
 
     @Autowired
     private SystemService systemService;
@@ -345,7 +349,7 @@ public class ConsultDoctorController extends BaseController {
         response.put("result","failure");
         try {
             answerService.upsertConsultAnswer(answerType,answer);
-            response.put("result","success");
+            response.put("result", "success");
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -480,7 +484,7 @@ public class ConsultDoctorController extends BaseController {
     @RequestMapping(value = "/GetCSDoctorList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> GetCSDoctorList(Map<String, Object> params) {
+    Map<String, Object> GetCSDoctorList(@RequestBody Map<String, Object> params) {
         Map<String,Object> response = new HashMap<String, Object>();
         List<User> users ;
         User user = new User();
@@ -496,4 +500,42 @@ public class ConsultDoctorController extends BaseController {
         }
         return response;
     }
+
+    /**
+     * 获取待接入用户列表
+     */
+    /***
+     * 生成聊天记录(咨询造数据)
+     */
+    @RequestMapping(value = "/waitJoinList", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    HashMap<String,Object> waitJoinList(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
+        HashMap<String,Object> response = new HashMap<String, Object>();
+        List<HashMap<String,Object>> dataList = new ArrayList<HashMap<String, Object>>();
+        String csUserId = (String) params.get("csUserId");
+        String csUserName = (String) params.get("csUserName");
+        List<ConsultSessionForwardRecordsVo> waitJoinListVoList = consultSessionForwardRecordsService.getWaitJoinList(csUserId);
+        for(ConsultSessionForwardRecordsVo waitJoinListVo:waitJoinListVoList){
+            HashMap<String,Object> dataValue = new HashMap<String, Object>();
+            dataValue.put("sessionId", waitJoinListVo.getConversationId());
+            RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(Integer.parseInt(String.valueOf(waitJoinListVo.getConversationId())));
+            if(richConsultSession!=null){
+                List<ConsultRecordMongoVo> consultRecordMongoVo = consultRecordService.getCurrentUserHistoryRecord(richConsultSession.getUserId(), new Date(),100);
+                if(consultRecordMongoVo!=null){
+                    dataValue.put("messageContent", consultRecordMongoVo.get(0).getMessage());
+                    dataValue.put("messageNum", consultRecordMongoVo.size());
+                }
+                dataValue.put("userName", richConsultSession.getUserName());
+            }
+            dataValue.put("dateTime", DateUtils.DateToStr(new Date()));
+            dataValue.put("fromCsUserName",csUserName);
+            dataValue.put("fromCsUserId",csUserId);
+            dataList.add(dataValue);
+        }
+        response.put("waitJoinList",dataList);
+        response.put("waitJoinNum",dataList.size());
+        return response;
+    }
+
 }

@@ -109,6 +109,9 @@ public class ConsultSessionForwardRecordsServiceImpl implements ConsultSessionFo
        return  forwardRecordsDao.getConsultUserListRecently(page,hashMap);
     }
 
-
+    @Override
+    public List<ConsultSessionForwardRecordsVo> getWaitJoinList(String csUserId) {
+        return forwardRecordsDao.findWaitJoinListByCsUserId(csUserId,ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_WAITING);
+    }
 
 }
