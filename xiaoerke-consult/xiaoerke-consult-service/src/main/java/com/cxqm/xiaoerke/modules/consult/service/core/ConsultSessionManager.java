@@ -303,8 +303,8 @@ public class ConsultSessionManager {
 		RichConsultSession session = sessionRedisCache.getConsultSessionBySessionId(sessionId);
 		Channel channel = userChannelMapping.get(toCsUserId);
 		JSONObject jsonObj = new JSONObject();
-		jsonObj.put("type", 6);
-		jsonObj.put("notifyType", 1);
+		jsonObj.put("type", 4);
+		jsonObj.put("notifyType", "0009");
 		jsonObj.put("session", session);
 		jsonObj.put("remark", remark);
 		channel.writeAndFlush(jsonObj.toJSONString());

@@ -155,10 +155,10 @@ public class ConsultDoctorController extends BaseController {
          ]
      }
      */
-    @RequestMapping(value = "/doctorList", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/doctorOnLineList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    HashMap<String, Object> doctorList(@RequestBody Map<String, Object> params) {
+    HashMap<String, Object> doctorOnLineList(@RequestBody Map<String, Object> params) {
         HashMap<String,Object> response = new HashMap<String, Object>();
         List<String> userList = consultSessionService.getOnlineCsList();
         if(userList!=null && userList.size()>0){
@@ -189,7 +189,6 @@ public class ConsultDoctorController extends BaseController {
     @ResponseBody
     Map<String, Object> transfer(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
         Map<String, Object> response = new HashMap<String, Object>();
-
         Integer sessionId= (Integer)params.get("sessionId");
         String doctorId= String.valueOf(params.get("doctorId"));//转接的话，必须要用医生ID
         String remark = (String)params.get("remark");
@@ -200,9 +199,7 @@ public class ConsultDoctorController extends BaseController {
             response.put("result", "failure");
         }
         response.put("sessionId",sessionId);
-
         return  response;
-
     }
 
     /***

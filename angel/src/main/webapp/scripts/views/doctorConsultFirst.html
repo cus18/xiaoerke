@@ -201,7 +201,9 @@
                 </div>
                 <div class="chatlist">
                     <div scroll-glue-bottom="glued" class="chatlistin">
-                        <div class="moreInformation" ng-click="seeMoreConversationMessage()"><a href="">查看更多消息</a></div>
+                        <div class="moreInformation" ng-click="seeMoreConversationMessage()">
+                            <a href="">查看更多消息</a>
+                        </div>
                         <div ng-repeat="item in currentUserConversation.consultValue" class="information">
                             <div ng-if="item.senderId==doctorId" class="doctorReplyContent">
                                 <div class="doctorName">
@@ -405,7 +407,7 @@
     </div>
     <!--转接-->
     <div class="xtsz-up  ddjr-up" ng-show='showFlag.switchOver'>
-        <div class="hd">转接客户
+        <div class="hd"><转接客户></转接客户>
             <span class="close" ng-click="tapShowButton('switchOver')">【关闭】</span>
         </div>
         <div class="switchcontent">

@@ -3,6 +3,7 @@ package com.cxqm.xiaoerke.modules.order.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.service.ServiceException;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
@@ -180,7 +181,8 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
             Map<String,Object> parameter = systemService.getWechatParameter();
             String token = (String)parameter.get("token");
             String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String) map.get("date"), "yyyy/MM/dd"));
-            PatientMsgTemplate.consultPhoneCancel2Wechat((String) map.get("doctorName"),(String) map.get("date"), week, (String) map.get("beginTime"),(String) map.get("endTime"), (String) map.get("phone"),(String) map.get("orderNo"),(Float) map.get("price")+"",(String) map.get("openid"),token,"");
+            String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(String) map.get("orderId")+",phone";
+            PatientMsgTemplate.consultPhoneCancel2Wechat((String) map.get("doctorName"),(String) map.get("date"), week, (String) map.get("beginTime"),(String) map.get("endTime"), (String) map.get("phone"),(String) map.get("orderNo"),(Float) map.get("price")+"",(String) map.get("openid"),token,url);
             PatientMsgTemplate.consultPhoneRefund2Msg((String) map.get("doctorName"), (Float) map.get("price")+"", (String) map.get("phone"),(String) map.get("date"), week, (String) map.get("beginTime"),(String) map.get("orderNo"));
         }
         if(sysOrderState== 0){
