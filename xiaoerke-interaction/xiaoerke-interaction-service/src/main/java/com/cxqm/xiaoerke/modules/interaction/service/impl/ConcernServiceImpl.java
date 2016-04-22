@@ -136,21 +136,27 @@ public class ConcernServiceImpl implements ConcernService {
                 //如果头像或微信名为空，通过微信获取并保存到数据库
                 if(wechatName == null || headImgUrl == null){
                     String openId = (String) resultMap.get("openid");
-                    //微信获取头像用户名
-                    Map<String, Object> jsonMap = getWechatMessage(openId);
-                    if(jsonMap.get("subscribe")!=null && (Integer)jsonMap.get("subscribe") == 1){
-                        if(wechatName == null) {
-                            wechatName = (String) jsonMap.get("nickname");
+                    if(openId ==null){
+                        headImgUrl = "";
+                        wechatName = "宝粉";
+                    }else{
+                        //微信获取头像用户名
+                        Map<String, Object> jsonMap = getWechatMessage(openId);
+                        if(jsonMap.get("subscribe")!=null && (Integer)jsonMap.get("subscribe") == 1){
+                            if(wechatName == null) {
+                                wechatName = (String) jsonMap.get("nickname");
+                            }
+                            if(headImgUrl == null) {
+                                headImgUrl = (String) jsonMap.get("headimgurl");
+                            }
+                            HashMap<String, Object> updateMap = new HashMap<String, Object>();
+                            updateMap.put("headImgUrl",headImgUrl);
+                            updateMap.put("wechatName", wechatName);
+                            updateMap.put("id", (String) resultMap.get("id"));
+                            doctorConcernDao.updateWechatNameAndImg(updateMap);//保存到数据库
                         }
-                        if(headImgUrl == null) {
-                            headImgUrl = (String) jsonMap.get("headimgurl");
-                        }
-                        HashMap<String, Object> updateMap = new HashMap<String, Object>();
-                        updateMap.put("headImgUrl",headImgUrl);
-                        updateMap.put("wechatName", wechatName);
-                        updateMap.put("id", (String) resultMap.get("id"));
-                        doctorConcernDao.updateWechatNameAndImg(updateMap);//保存到数据库
                     }
+
                 }
 
                 HashMap<String, Object> fansMap = new HashMap<String, Object>();
