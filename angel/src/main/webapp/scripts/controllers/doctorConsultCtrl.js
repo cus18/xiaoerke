@@ -9,7 +9,11 @@ angular.module('controllers', ['luegg.directives'])
 
             $scope.info = {
                 effect:"true",
-                transferRemark:""
+                transferRemark:"",
+                role:{
+                    "distributor":"接诊员",
+                    "consultDoctor":"专业医生"
+                }
             };
             $scope.socketServer1 = "";
             $scope.socketServer2 = "";
@@ -129,6 +133,7 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.initConsultSocket1();
 
                         //获取通用回复列表
+                        $scope.myAnswer = [];
                         GetAnswerValueList.save({"type": "commonAnswer"}, function (data) {
                             if (data.commonAnswer.length == 0) {
                                 $scope.lockScroll = "false";
@@ -242,13 +247,12 @@ angular.module('controllers', ['luegg.directives'])
                     window.WebSocket = window.MozWebSocket;
                 }
                 if (window.WebSocket) {
-
-                    if($scope.userType="distributor"){
-                        $scope.socketServer1 = new ReconnectingWebSocket("ws://120.25.161.33:2048/ws&" +
-                            "distributor&" + "000455ab145e4bb3bb94ba52ac4d7eb3");//cs,user,distributor
-                    }else if($scope.userType="consultDoctor"){
-                        $scope.socketServer1 = new ReconnectingWebSocket("ws://120.25.161.33:2048/ws&" +
-                            "distributor&" + "000455ab145e4bb3bb94ba52ac4d7eb3");//cs,user,distributor
+                    if($scope.userType=="distributor"){
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://101.201.154.201:2048/ws&" +
+                            "distributor&" + $scope.doctorId);//cs,user,distributor
+                    }else if($scope.userType=="consultDoctor"){
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://101.201.154.201:2048/ws&" +
+                            "cs&" + $scope.doctorId);//cs,user,distributor
 
                     }
 
@@ -359,7 +363,6 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.publicReplySecondIndex = childIndex;
             };
             //添加分组
-            $scope.myAnswer = [];
             $scope.add = function() {
                 $scope.info.addGroup = '';
                 $scope.info.addContent = '';
@@ -631,11 +634,10 @@ angular.module('controllers', ['luegg.directives'])
 
             //获取用户的详细聊天记录
             $scope.GetUserRecordDetail = function (userId) {
-                alert(userId);
                 GetUserRecordDetail.save({pageNo:0,pageSize:100,
                     userId:userId,recordType:"all"}, function (data) {
                     $scope.currentUserConsultRecordDetail = data.records;
-
+                    console.log($scope.currentUserConsultRecordDetail);
                 });
             }
 
