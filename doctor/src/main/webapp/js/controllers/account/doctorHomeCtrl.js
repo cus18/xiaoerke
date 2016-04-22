@@ -2,8 +2,6 @@ angular.module('controllers', ['ionic']).controller('doctorHomeCtrl', [
     '$scope','$ionicPopup','$state','$stateParams','$location','GetUserLoginStatus','GetDoctorDetail','$filter','GetDoctorEvaluate',
     function ($scope,$ionicPopup,$state,$stateParams,$location,GetUserLoginStatus,GetDoctorDetail,$filter,GetDoctorEvaluate) {
         $scope.title = "医生信息";
-        $scope.commentList =["全部评论","电话咨询","预约挂号"];
-        $scope.commentTitle ="全部评论";
         $scope.haveComment = true;
         $scope.noComment = false;
         $scope.StayPart = false;//半颗星
@@ -24,6 +22,8 @@ angular.module('controllers', ['ionic']).controller('doctorHomeCtrl', [
                 }else{
                     $scope.starList = [];
                     $scope.evaluateCon = "点击加载更多";
+                    $scope.commentList =["全部评论","电话咨询","预约挂号"];
+                    $scope.commentTitle ="全部评论";
                     GetDoctorDetail.save({"doctorId":$stateParams.id},function(data){
                         $scope.doctorId = data.doctorId;
                         $scope.doctorName = data.doctorName;
@@ -100,8 +100,7 @@ angular.module('controllers', ['ionic']).controller('doctorHomeCtrl', [
                 if(data.evaluateList.length==0){
                     $scope.haveComment = false;
                     $scope.noComment = true;
-                }
-                if(data.evaluateList.length<size){
+                }else if(data.evaluateList.length<size&&data.evaluateList.length>0){
                     $scope.haveComment = true;
                     $scope.noComment = false;
                     $scope.evaluateList = data.evaluateList;
