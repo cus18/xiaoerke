@@ -16,6 +16,16 @@ public class ConsultSessionStatusVo {
 
     private String userName;
 
+    private String csUserName;
+
+    public String getCsUserName() {
+        return csUserName;
+    }
+
+    public void setCsUserName(String csUserName) {
+        this.csUserName = csUserName;
+    }
+
     public String getUserName() {
         return userName;
     }

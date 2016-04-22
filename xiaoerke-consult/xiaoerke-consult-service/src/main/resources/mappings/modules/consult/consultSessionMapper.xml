@@ -54,6 +54,15 @@
         </if>
     </select>
 
+    <select id="getCsUserByUserId" resultMap="BaseResultMap"
+            parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession">
+        SELECT su.name nickname from consult_session cs
+        INNER JOIN sys_user su on su.id = cs.sys_user_id_cs
+        where cs.sys_user_id = #{userId}
+        GROUP BY cs.sys_user_id_cs
+        ORDER BY null
+    </select>
+
     <select id="getAlreadyAccessUsers" resultMap="BaseResultMap"
             parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession">
         SELECT * from consult_session cc

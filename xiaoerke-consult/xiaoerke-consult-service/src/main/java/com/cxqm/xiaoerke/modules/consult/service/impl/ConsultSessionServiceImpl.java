@@ -72,6 +72,12 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
 	}
 
     @Override
+    public List<ConsultSession> getCsUserByUserId(ConsultSession consultSession) {
+        return consultSessionDao.getCsUserByUserId(consultSession);
+    }
+
+
+    @Override
     public List<String> getOnlineCsList() {
         return ConsultSessionManager.getSessionManager().getOnlineCsList();
     }
