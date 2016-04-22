@@ -82,9 +82,14 @@ input[type="number"] {width: 36px;}
 .switchcontent {width: 100%;}
 .switchbox{padding: 20px}
 .switchbox input[type="text"] {width: 100%;height: 26px;margin-bottom:20px;}
-.refreshboxtop div span {display: inline-block;margin: 0 100px 0 0;}
-.refreshboxtop div{font: 12px/30px 'Microsoft Yahei';background-color: #8aa1a8;padding: 0 0 0 35px;}
-.refreshboxtop {margin: 0 110px 0 0;border: 1px solid #eee;height: 175px;}
+.refreshboxtop tr th {width: 224px;}
+.refreshboxtop tr{font: 12px/30px 'Microsoft Yahei';background-color: #8aa1a8;}
+.refreshboxtop tr td{text-align: center;width: 224px;}
+.refreshboxtop {margin: 0 110px 0 0;border: 1px solid #eee;height: 175px;overflow-y: scroll;}
+.refreshboxtop::-webkit-scrollbar {width:10px;height:10px;}
+.refreshboxtop::-webkit-scrollbar-track-piece {background:#eee;border-radius:5px;}
+.refreshboxtop::-webkit-scrollbar-thumb{background:#08b7c2;border-radius:5px;}
+
 .refreshbtn {position: absolute;top: 100px;right: 20px;font-size: 12px;line-height: 28px;border: 1px solid #A0A0A0;padding: 0 10px;background-color: #E9E9E9;cursor: pointer;}
 .refreshboxtop ul li span {display: inline-block;margin: 0 100px 0 0;}
 .refreshboxtop ul li {padding: 0 0 0 15px;font-size: 12px;color: #333;line-height: 28px;}

@@ -2,7 +2,7 @@
 .content .content-l {border-right: 1px solid #fff;}
 
 /*刷新*/
-.chatbox div span {display: inline-block; padding: 13px 0 14px 30px;margin:0 0 0 20px;font: 14px/17px 'Microsoft Yahei';background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_11.png") left center no-repeat;}
+.chatbox div span {cursor:pointer;display: inline-block; padding: 13px 0 14px 30px;margin:0 0 0 20px;font: 14px/17px 'Microsoft Yahei';background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_11.png") left center no-repeat;}
 .chatbox div span:nth-child(2){background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_13.png") left center no-repeat;}
 .find {width: 293px;height: 18px;padding: 5px 10px;border:1px solid #08b7c2;float: right;margin: 8px 20px 13px 0;border-radius: 20px;}
 .find select{border:none;border-right: 1px solid #000;color:#333;font: 12px/28px 'Microsoft Yahei';background:transparent;padding: 0;margin: 0;}

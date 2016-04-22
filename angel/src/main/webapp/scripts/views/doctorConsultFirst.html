@@ -279,8 +279,6 @@
             </tr>
         </table>
     </div>
-
-
     <!--系统设置-->
     <div class="xtsz-up" id="xtsz_up" ng-show='showFlag.systemSetup'>
         <div class="hd" id="drop">系统设置
@@ -416,21 +414,18 @@
                 <div class="refresh">
                     <div class="refreshbox">
                         <div class="refreshboxtop">
-                            <div>
-                                <span>工号</span><span>昵称</span>
-                            </div>
-                            <ul>
-                                <li ng-repeat="item in info.onLineCsUserList"
+                            <table>
+                                <tr>
+                                    <th>工号</th>
+                                    <th>昵称</th>
+                                </tr>
+                                <tr ng-repeat="item in info.onLineCsUserList"
                                     ng-click="chooseTransferCsUser(item.id,item.name)"
                                     ng-style="item.csUserId==transferCsUserId?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}">
-                                    <span>
-                                        {{item.phone}}
-                                    </span>
-                                    <span>
-                                        {{item.name}}
-                                    </span>
-                                </li>
-                            </ul>
+                                    <td>{{item.phone}}</td>
+                                    <td>{{item.name}}</td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                     <div class="refreshbtn" ng-click="refreshOnLineCsUserList()">刷新在线工号</div>
