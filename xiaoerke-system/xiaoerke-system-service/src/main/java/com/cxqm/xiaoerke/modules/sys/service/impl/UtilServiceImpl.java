@@ -239,6 +239,7 @@ public class UtilServiceImpl implements UtilService {
             userNew.setLoginName(num);
             userNew.setPhone(num);
             userNew.setOpenid(openid);
+            userNew.setEmail((String) user.get("email"));
             userNew.setCompany(new Office((String) user.get("company_id")));
             userNew.setOffice(new Office((String) user.get("office_id")));
             userNew.setPassword((String) user.get("password"));

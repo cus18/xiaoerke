@@ -302,40 +302,56 @@ public class PatientMsgTemplate {
             WechatMessageUtil.senMsgToWechat(token,openId, obj);
         }
     }
-
-    /**
-     * 退款成功
-
-     */
-    public static void returnPayPhoneRefund2Msg(String babyName,String doctorName, String price,String phone){
-        String content =  "（退款成功）"+babyName+"小朋友家长您好，由于您预约的"+doctorName+"医生的电话咨询未接通，已将"+price+"元咨询费用退还到宝大夫账户。有疑问请致电400-623-7120。";
-        SMSMessageUtil.sendMsg(phone, content);
-    }
-
     public static void consultPhoneRefund2Msg(String doctorName, String price,String phone,String date,String week,String beginTime,String register_no){
         String content =  "（取消电话咨询）您已取消"+doctorName+"医生的"+date+" "+week+" "+beginTime+"的电话咨询，咨询费用"+price+"元将在24小时后返回到您的宝大夫账户,订单号："+register_no+"，有疑问，请致电400-623-7120。";
         SMSMessageUtil.sendMsg(phone, content);
     }
 
-    public static void unConnectPhone(String babyName,String doctorName, String price,String phone,String register_no){
+
+    //未接通提醒 电话
+    public static void unConnectPhone2Msg(String babyName,String doctorName, String price,String phone,String register_no){
         String content =  "（未接通）"+babyName+"小朋友家长您好，由于您预约的"+doctorName+"医生的电话咨询未接通，咨询费用"+price+"元将在24小时后返回到您的宝大夫账户，订单号："+register_no+"，有疑问，请致电400-623-7120。";
         SMSMessageUtil.sendMsg(phone, content);
     }
-
-    public static void consultPhoneRefund2Wechat(String register_no,String price, String openId,String token ,String url){
+    //未接通提醒 微信
+    public static void unConnectPhone2Wechat(String babyName,String doctorName, String price,String url,String register_no,String openId,String token){
         ArrayList<Object> obj = new ArrayList<Object>();
         WechatArticle article = new WechatArticle();
-        article.setTitle("退款成功通知");
-        article.setDescription("由于电话未接通，已将咨询费用退还至您的宝大夫账户。\n订单号:" + register_no + "\n服务项目：电话咨询\n退款金额:" + price + "元\n\n如有疑问，请联系客服400-623-7120。\n\n查看全文");
+        article.setTitle("未接通");
+        article.setDescription(babyName + "小朋友家长您好，由于您预约的" + doctorName + "医生的电话咨询未接通，咨询费用" + price + "元将在24小时后返回到您的宝大夫账户，订单号：" + register_no + "，有疑问，请致电400-623-7120。");
         article.setUrl(url);
         obj.add(article);
         if(StringUtils.isNotNull(openId))
         {
             WechatMessageUtil.senMsgToWechat(token,openId, obj);
         }
+    }
 
 
+    /**
+     * 退款成功
 
+     */
+    public static void returnPayPhoneRefund2Msg(String babyName, String price,String phone){
+        String content =  "（退款成功）"+babyName+"小朋友家长您好，您的"+price+"元咨询费用已成功退还到宝大夫账户。有疑问请致电400-623-7120。";
+        SMSMessageUtil.sendMsg(phone, content);
+    }
+
+    /**
+     * 退款成功
+
+     */
+    public static void returnPayPhoneRefund2Wechat(String babyName,String price, String openId,String token ,String url){
+        ArrayList<Object> obj = new ArrayList<Object>();
+        WechatArticle article = new WechatArticle();
+        article.setTitle("退款成功");
+        article.setDescription(babyName + "小朋友家长您好，您的" + price + "元咨询费用已成功退还到宝大夫账户。有疑问请致电400-623-7120。");
+        article.setUrl(url);
+        obj.add(article);
+        if(StringUtils.isNotNull(openId))
+        {
+            WechatMessageUtil.senMsgToWechat(token,openId, obj);
+        }
     }
 
     /**
