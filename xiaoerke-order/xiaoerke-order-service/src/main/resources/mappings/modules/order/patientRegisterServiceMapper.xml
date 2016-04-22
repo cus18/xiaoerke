@@ -714,7 +714,7 @@
         RIGHT JOIN patient_register_service prs ON srs.id=prs.sys_register_service_id and prs.status!="6" and prs.status!="1" and prs.status!="0"
         INNER JOIN sys_doctor sd ON sd.id = srs.sys_doctor_id
         inner join sys_hospital shs on shs.id = srs.sys_hospital_id
-        AND srs.date=#{date}
+        AND srs.date=DATE_FORMAT(#{date,jdbcType=VARCHAR},'%Y-%m-%d')
         and srs.sys_doctor_id=#{doctorId}
         and shs.hospital_type!='2'
         order BY srs.begin_time asc

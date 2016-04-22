@@ -277,7 +277,7 @@
         LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
         INNER JOIN sys_doctor sd ON sd.id = srs.sys_doctor_id
         <if test="date != null" >
-            AND srs.date=#{date}
+            AND srs.date=DATE_FORMAT(#{date,jdbcType=VARCHAR},'%Y-%m-%d')
         </if>
         <if test="doctorId != null" >
             AND srs.sys_doctor_id = #{doctorId}
