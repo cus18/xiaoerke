@@ -204,35 +204,35 @@
                         <div class="moreInformation" ng-click="seeMoreConversationMessage()">
                             <a href="">查看更多消息</a>
                         </div>
-                        <div ng-repeat="item in currentUserConversation.consultValue" class="information">
-                            <div ng-if="item.senderId==doctorId" class="doctorReplyContent">
+                        <div ng-repeat="item in currentUserConsultRecordDetail" class="information">
+                            <div ng-if="item.senderId==csUserId" class="doctorReplyContent">
                                 <div class="doctorName">
-                                    <span>{{doctorName}}</span>
-                                    <span>{{item.dateTime}}</span>
+                                    <span>{{item.doctorName}}</span>
+                                    <span>{{item.createDate}}</span>
                                 </div>
                                 <div ng-if="item.type=='0'" class="message" >
-                                    {{item.content}}
+                                    {{item.message}}
                                 </div>
                             </div>
-                            <div ng-if="item.senderId!=doctorId" class="patientConsultContent">
+                            <div ng-if="item.senderId==userId" class="patientConsultContent">
                                 <div class="senderName">
                                     <span>{{item.senderName}}</span>
-                                     <span>{{item.dateTime}}</span>
+                                     <span>{{item.createDate}}</span>
                                 </div>
                                 <div ng-if="item.type=='0'" class="message">
-                                    {{item.content}}
+                                    {{item.message}}
                                 </div>
                                 <div ng-if="item.type=='1'" class="message">
                                     {{}}
                                     <a target="_blank" ng-href="{{item.content}}">
-                                        <img width="100" height="100" ng-src="{{item.content}}">
+                                        <img width="100" height="100" ng-src="{{item.message}}">
                                     </a>
                                 </div>
                                 <div ng-if="item.type=='2'">
                                     <audio ng-src="{{audioData}}" controls="controls"/>
                                 </div>
                                 <div ng-if="item.type=='3'" class="message">
-                                    <video width="500" height="250" ng-src="{{item.content}}"
+                                    <video width="500" height="250" ng-src="{{item.message}}"
                                            controls="controls"/>
                                 </div>
                             </div>

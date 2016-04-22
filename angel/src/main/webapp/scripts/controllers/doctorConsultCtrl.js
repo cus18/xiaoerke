@@ -620,11 +620,10 @@ angular.module('controllers', ['luegg.directives'])
 
             //获取用户的详细聊天记录
             $scope.GetUserRecordDetail = function (userId) {
-                alert(userId);
                 GetUserRecordDetail.save({pageNo:0,pageSize:100,
                     userId:userId,recordType:"all"}, function (data) {
                     $scope.currentUserConsultRecordDetail = data.records;
-
+                    console.log($scope.currentUserConsultRecordDetail);
                 });
             }
 
