@@ -111,7 +111,7 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
         dataMap.put("evaluateType",evaluateType);
 
         String currentPage = (String) params.get("pageNo");
-        String pageSize = (String) params.get("pageSize");
+        String pageSize = String.valueOf(params.get("pageSize"));
         Page<PatientRegisterPraise> page = FrontUtils.generatorPage(currentPage, pageSize);
 
         Page<PatientRegisterPraise> resultPage = patientRegisterPraiseDao.getDoctorEvaluate(dataMap, page);
