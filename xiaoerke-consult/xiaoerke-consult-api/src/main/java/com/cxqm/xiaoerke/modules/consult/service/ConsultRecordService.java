@@ -32,6 +32,8 @@ public interface ConsultRecordService {
 
     PaginationVo<ConsultRecordMongoVo> getPage(int pageNo, int pageSize, Query query,String recordType);
 
+    PaginationVo<ConsultSessionStatusVo> getUserMessageList(int pageNo, int pageSize, Query query);
+
     int saveConsultRecord(ConsultRecordMongoVo consultRecordMongoVo);
 
     ConsultRecordMongoVo findOneConsultRecord(Query query);

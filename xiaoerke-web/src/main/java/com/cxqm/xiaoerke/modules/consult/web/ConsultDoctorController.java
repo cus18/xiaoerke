@@ -9,6 +9,7 @@ import com.cxqm.xiaoerke.modules.consult.service.AnswerService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultMongoUtilsService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
+import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultSessionServiceImpl;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
@@ -160,9 +161,9 @@ public class ConsultDoctorController extends BaseController {
     @ResponseBody
     HashMap<String, Object> doctorOnLineList(@RequestBody Map<String, Object> params) {
         HashMap<String,Object> response = new HashMap<String, Object>();
-        List<String> userList = consultSessionService.getOnlineCsList();
+        List<String> userList = ConsultSessionManager.getSessionManager().getOnlineCsList();
         if(userList!=null && userList.size()>0){
-            response.put("onLineDoctor",consultSessionService.getOnlineCsListInfo(userList));
+            response.put("onLineCsUserList",consultSessionService.getOnlineCsListInfo(userList));
         }
         return response;
     }

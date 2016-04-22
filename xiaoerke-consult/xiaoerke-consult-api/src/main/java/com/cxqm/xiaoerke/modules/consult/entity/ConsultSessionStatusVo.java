@@ -9,11 +9,20 @@ public class ConsultSessionStatusVo {
 
     private String lastMessageTime;
 
-    private String UserId;
+    private String userId;
 
-    private String openId;
 
     private String status;
+
+    private String userName;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public String getStatus() {
         return status;
@@ -23,20 +32,12 @@ public class ConsultSessionStatusVo {
         this.status = status;
     }
 
-    public String getOpenId() {
-        return openId;
-    }
-
-    public void setOpenId(String openId) {
-        this.openId = openId;
-    }
-
     public String getUserId() {
-        return UserId;
+        return userId;
     }
 
     public void setUserId(String userId) {
-        UserId = userId;
+        this.userId = userId;
     }
 
     public String getSessionId() {

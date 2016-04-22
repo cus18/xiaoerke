@@ -612,7 +612,6 @@
 	function loadData(){
 		hiddenTableOrder();
 		getIllness();
-		getOpenid();
 		getBabyInfo();
 		var d = new Date();
 		var str = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
@@ -623,8 +622,11 @@
 		var id=$("#userIdData",parent.document).html();
 		var sourth=$("#sourceData",parent.document).html();
 		$("#openid").val(id);
+		getOpenid();
+		$("#costomerID").val($("#doctorIdData",parent.document).html());
 	}
 	function getBabyInfo(){
+		alert(openid);
 		$.ajax({
 			type: 'POST',
 			url: "/keeper/customer/searchBabyInfo",

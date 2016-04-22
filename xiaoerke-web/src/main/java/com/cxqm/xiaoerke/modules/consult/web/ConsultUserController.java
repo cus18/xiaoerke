@@ -8,10 +8,7 @@ import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.FrontUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
-import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
@@ -143,6 +140,22 @@ public class ConsultUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> getUserList(@RequestBody Map<String, Object> params) {
+        Map<String,Object> response = new HashMap<String, Object>();
+        Integer pageNo = (Integer) params.get("pageNo");
+        Integer pageSize = (Integer) params.get("pageSize");
+        Query query = new Query().with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
+        PaginationVo<ConsultSessionStatusVo> pagination = consultRecordService.getUserMessageList(pageNo, pageSize, query);
+        response.put("userList",pagination.getDatas());
+        return response;
+    }
+
+    /**
+     * 获取客户列表(或咨询过某个医生的客户)详细信息,按照时间降序排序
+     */
+    @RequestMapping(value = "/getUserList_back", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> getUserList_back(@RequestBody Map<String, Object> params) {
         Map<String,Object> response = new HashMap<String, Object>();
 
         //分页获取最近会话记录

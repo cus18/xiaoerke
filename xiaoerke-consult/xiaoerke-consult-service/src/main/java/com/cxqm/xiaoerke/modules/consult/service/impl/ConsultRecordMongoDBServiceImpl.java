@@ -63,6 +63,23 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		return page;
 	}
 
+	public PaginationVo<ConsultSessionStatusVo> getUserMessageList(int pageNo, int pageSize, Query query) {
+		long totalCount = this.mongoTemplate.count(query, ConsultRecordVo.class);
+		PaginationVo<ConsultSessionStatusVo> page = new PaginationVo<ConsultSessionStatusVo>(pageNo, pageSize, totalCount);
+		query.skip(page.getFirstResult());// skip相当于从那条记录开始
+		query.limit(pageSize);// 从skip开始,取多少条记录
+		List<ConsultSessionStatusVo> datas = null;
+		datas = queryUserMessageList(query);
+		page.setDatas(datas);
+		return page;
+	}
+
+	public List<ConsultSessionStatusVo> queryUserMessageList(Query query){
+		return mongoTemplate.find(query, ConsultSessionStatusVo.class, "consultSessionStatusVo");
+	}
+
+
+
 	public ConsultRecordMongoVo findOneConsult(Query query) {
 		ConsultRecordMongoVo consultRecordMongoVo = new ConsultRecordMongoVo();
 		consultRecordMongoVo = mongoTemplate.findOne(query,ConsultRecordMongoVo.class,"consultRecordVo");

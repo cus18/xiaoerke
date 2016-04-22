@@ -29,7 +29,7 @@ public interface ConsultSessionDao {
     
     List<ConsultSession> selectBySelective(ConsultSession consultSession);
 
-    HashMap<String,Object> getOnlineCsListInfo(List<String> userList);
+    List<HashMap<String,Object>> getOnlineCsListInfo(List<String> userList);
 
     List<ConsultSession> getAlreadyAccessUsers(ConsultSession consultSession);
 
