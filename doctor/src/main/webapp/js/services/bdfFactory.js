@@ -63,7 +63,16 @@ define(['app'], function (app) {
         .factory('OutOfBind', ['$resource', function ($resource) {
             return $resource(doctor_h5 + 'util/logOut');
         }])
+        //获取医生相关信息(专业水平等)
         .factory('GetDoctorDetail', ['$resource', function ($resource) {
-            return $resource('sys/user/doctorDetail');
+            return $resource('sys/doctor/doctorBaseInfo');
+        }])
+        //获取医生评论
+        .factory('GetDoctorEvaluate', ['$resource', function ($resource) {
+            return $resource('interaction/user/doctorEvaluate');
+        }])
+        //获取医生粉丝列表
+        .factory('GetFansList', ['$resource', function ($resource) {
+            return $resource('interaction/user/myFansList');
         }])
 })
