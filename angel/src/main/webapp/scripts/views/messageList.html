@@ -86,15 +86,13 @@
 
             <div  class='w10 h20 br1'>
                 <ul class="nicknamecontentlist">
-                    <div ng-repeat="item in userConsultListInfo"
-                         ng-click ="GetUserRecordDetail(item.userId)">
-                        <li>
-                            <div class="nickname">{{item.userName}}</div>
-                            <div class="recently">{{item.lastMessageTime}}</div>
-                            <div class="insert">{{item.csUserName}}</div>
-                        </li>
-                        <br/>
-                    </div>
+                    <li  ng-repeat="item in userConsultListInfo"
+                         ng-click ="getUserRecordDetail(item.userId,$index)"
+                         ng-style="(setSessoin==$index)?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}">
+                        <div class="nickname">{{item.userName}}</div>
+                        <div class="recently">{{item.lastMessageTime}}</div>
+                        <div class="insert">{{item.csUserName}}</div>
+                    </li>
                 </ul>
                 <a id="bottom"></a>
             </div>
