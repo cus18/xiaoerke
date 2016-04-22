@@ -53,7 +53,7 @@ var doRefresh = function(){
         }
     });
     var routePath = "http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=phoneConsultAAAAAAphoneConDoctorDetail="
-        + item.id+"AAAAAAdoctorId="+$stateParams.doctorId;
+        +GetQueryString("phoneConDoctorDetail")+"AAAAAAdoctorId="+GetQueryString("doctorId");
     $.ajax({
         type: "POST",
         url: "auth/info/loginStatus",
