@@ -145,7 +145,25 @@ public class ConsultUserController extends BaseController {
         Integer pageSize = (Integer) params.get("pageSize");
         Query query = new Query().with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
         PaginationVo<ConsultSessionStatusVo> pagination = consultRecordService.getUserMessageList(pageNo, pageSize, query);
-        response.put("userList",pagination.getDatas());
+        List<ConsultSessionStatusVo> resultList = new ArrayList<ConsultSessionStatusVo>();
+        if(pagination.getDatas()!=null && pagination.getDatas().size()>0){
+            for(ConsultSessionStatusVo consultSessionStatusVo :pagination.getDatas()){
+                ConsultSessionStatusVo vo = consultSessionStatusVo;
+                //根据userId查询CsUserId
+                ConsultSession consultSession =new ConsultSession();
+                consultSession.setUserId(consultSessionStatusVo.getUserId());
+                List<ConsultSession> sessionList = consultSessionService.getCsUserByUserId(consultSession);
+                if(sessionList!=null && sessionList.size() > 0){
+                    String csUserName = "";
+                    for(ConsultSession session :sessionList){
+                        csUserName = csUserName + " " +session.getNickName();
+                    }
+                    vo.setCsUserName(csUserName);
+                }
+                resultList.add(vo);
+            }
+        }
+        response.put("userList",resultList);
         return response;
     }
 
