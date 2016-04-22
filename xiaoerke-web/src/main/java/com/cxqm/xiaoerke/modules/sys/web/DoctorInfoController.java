@@ -305,4 +305,32 @@ public class DoctorInfoController extends BaseController {
         return response;
     }
 
+    @RequestMapping(value = "/sys/doctor/doctorBaseInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    @SystemControllerLog(description = "00000073")
+        //获取某个医生的详细信息
+    Map<String, Object> DoctorBaseInfo(@RequestBody Map<String, Object> params) {
+        String doctorId = (String) params.get("doctorId");
+        if(doctorId == null || "".equals(doctorId)){
+            Map<String,Object> paramsMap = new HashMap<String, Object>();
+            paramsMap.put("id",UserUtils.getUser().getId());
+            doctorId = (String)doctorInfoService.getDoctorIdByUserIdExecute(paramsMap).get("id");
+        }
+
+        HashMap<String, Object> doctorMap = new HashMap<String, Object>();
+        doctorMap.put("doctorId", doctorId);
+
+        Map<String, Object> response = doctorInfoService.findDoctorDetailInfo(doctorMap);
+
+        //获取科室
+        response.put("departmentName", hospitalInfoService.getDepartmentFullName(doctorId,(String) response.get("hospitalId")));
+
+        HashMap<String, Object> doctorScore = doctorInfoService.findDoctorScoreInfo(doctorId);
+        response.put("doctorScore", doctorScore);
+
+        return response;
+
+    }
+
 }

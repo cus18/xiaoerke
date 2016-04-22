@@ -216,6 +216,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
         consultSessionStatusVo.setLastMessageTime(lastDate);
         consultSessionStatusVo.setUserId(consultSession.getUserId());
         consultSessionStatusVo.setStatus("ongoing");
+        consultSessionStatusVo.setUserName(consultSession.getUserName());
         consultRecordMongoDBService.upsertConsultSessionStatusVo(consultSessionStatusVo);
     }
 
