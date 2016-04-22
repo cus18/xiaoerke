@@ -87,7 +87,7 @@
             <div  class='w10 h20 br1'>
                 <ul class="nicknamecontentlist">
                     <div ng-repeat="item in userConsultListInfo"
-                         ng-click ="GetUserRecordDetail(item.openid,item.senderName,item.fromUserId,item.toUserId)">
+                         ng-click ="GetUserRecordDetail(item.userId)">
                         <li>
                             <div class="nickname">{{item.userName}}</div>
                             <div class="recently">{{item.lastMessageTime}}</div>

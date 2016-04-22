@@ -39,7 +39,8 @@ angular.module('controllers', ['luegg.directives'])
                             }else{
                                 $scope.showFlag.advisoryContent =false;
                             }
-                        }else if("advisoryContent"==type){
+                        }
+                        else if("advisoryContent"==type){
                             if($scope.showFlag.advisoryContent==false){
                                 $scope.showFlag.replyContent=true;
                             }else{
@@ -54,13 +55,14 @@ angular.module('controllers', ['luegg.directives'])
                                 $scope.publicReplyIndex = -1;
                                 $scope.publicReplySecondIndex = -1;
                             }
-                        }
-                        if(type = "rankList"){
-                            //已接入会话咨询医生今日排名
-                            $scope.refreshRankList();
-                        }else if(type == "switchOver"){
-                            //获取在线医生列表
-                            $scope.refreshOnLineCsUserList();
+                        }else{
+                            if(type=="rankList"){
+                                //已接入会话咨询医生今日排名
+                                $scope.refreshRankList();
+                            } else if(type == "switchOver"){
+                                //获取在线医生列表
+                                $scope.refreshOnLineCsUserList();
+                            }
                         }
                     }
                 })
@@ -74,9 +76,9 @@ angular.module('controllers', ['luegg.directives'])
             }
 
             $scope.refreshOnLineCsUserList = function(){
-                console.log("test");
                 GetOnlineDoctorList.save({}, function (data) {
                     $scope.info.onLineCsUserList = data.onLineCsUserList;
+                    console.log($scope.info.onLineCsUserList);
                 });
             }
 
@@ -134,7 +136,7 @@ angular.module('controllers', ['luegg.directives'])
                         });
 
                         getAlreadyJoinConsultPatientList();
-                        
+
                     }
                 })
             }
@@ -229,12 +231,14 @@ angular.module('controllers', ['luegg.directives'])
                     window.WebSocket = window.MozWebSocket;
                 }
                 if (window.WebSocket) {
+
                     if($scope.userType="distributor"){
-                        $scope.socketServer1 = new ReconnectingWebSocket("ws://101.201.154.201:2048/ws&" +
-                            "distributor&" + $scope.doctorId);//cs,user,distributor
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://120.25.161.33:2048/ws&" +
+                            "distributor&" + "000455ab145e4bb3bb94ba52ac4d7eb3");//cs,user,distributor
                     }else if($scope.userType="consultDoctor"){
-                        $scope.socketServer1 = new ReconnectingWebSocket("ws://101.201.154.201:2048/ws&" +
-                            "cs&" + $scope.doctorId);//cs,user,distributor
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://120.25.161.33:2048/ws&" +
+                            "distributor&" + "000455ab145e4bb3bb94ba52ac4d7eb3");//cs,user,distributor
+
                     }
 
                     $scope.socketServer1.onmessage = function (event) {
@@ -338,7 +342,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.publicReplyIndex = parentIndex;
                     $scope.publicReplySecondIndex = -1;
                 }
-           }
+            }
             //编辑公共内容
             $scope.tapEditCommonContent = function(parentIndex, childIndex){
                 $scope.publicReplySecondIndex = childIndex;
@@ -586,6 +590,11 @@ angular.module('controllers', ['luegg.directives'])
                 name: "最近30天",
                 value: 30
             }];
+            //测完即删
+            GetUserConsultListInfo.save({pageNo: 1, pageSize: 20}, function (data) {
+                $scope.userConsultListInfo = data.userList;
+                console.log(data.userList);
+            });
 
             $scope.messageListInit = function(){
                 var routePath = "/doctor/consultBBBBBB" + $location.path();
@@ -610,12 +619,10 @@ angular.module('controllers', ['luegg.directives'])
             }
 
             //获取用户的详细聊天记录
-            $scope.GetUserRecordDetail = function (openid,senderName,fromUserId,toUserId) {
-                $scope.currentClickUserName = senderName;
+            $scope.GetUserRecordDetail = function (userId) {
+                alert(userId);
                 GetUserRecordDetail.save({pageNo:0,pageSize:100,
-                    fromUserId:fromUserId,toUserId:toUserId,
-                    recordType: "doctor", "openid": openid}, function (data) {
-                    $scope.defaultClickUserOpenId = openid;
+                    userId:userId,recordType:"all"}, function (data) {
                     $scope.currentUserConsultRecordDetail = data.records;
 
                 });

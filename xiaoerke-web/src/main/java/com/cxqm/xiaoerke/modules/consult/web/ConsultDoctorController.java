@@ -9,6 +9,7 @@ import com.cxqm.xiaoerke.modules.consult.service.AnswerService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultMongoUtilsService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
+import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultSessionServiceImpl;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
@@ -160,9 +161,9 @@ public class ConsultDoctorController extends BaseController {
     @ResponseBody
     HashMap<String, Object> doctorOnLineList(@RequestBody Map<String, Object> params) {
         HashMap<String,Object> response = new HashMap<String, Object>();
-        List<String> userList = consultSessionService.getOnlineCsList();
+        List<String> userList = ConsultSessionManager.getSessionManager().getOnlineCsList();
         if(userList!=null && userList.size()>0){
-            response.put("onLineDoctor",consultSessionService.getOnlineCsListInfo(userList));
+            response.put("onLineCsUserList",consultSessionService.getOnlineCsListInfo(userList));
         }
         return response;
     }
@@ -430,7 +431,7 @@ public class ConsultDoctorController extends BaseController {
     Map<String, Object> recordList(@RequestBody Map<String, Object> params) {
 
         String recordType = String.valueOf(params.get("recordType"));
-        String toUserId = String.valueOf(params.get("toUserId"));
+        String userId = String.valueOf(params.get("userId"));
         String fromUserId = String.valueOf(params.get("fromUserId"));
         int pageNo = 0;
         int pageSize = 1;
@@ -441,18 +442,18 @@ public class ConsultDoctorController extends BaseController {
             pageSize = (Integer)params.get("pageSize");
         }
 
-        if(recordType.equals("user") && StringUtils.isNotNull(toUserId) && pageSize > 0){
-            Query query = new Query(where("toUserId").is(toUserId)).with(new Sort(Direction.DESC, "create_date"));//用户端获取与平台的所有聊天记录
-            pagination = consultRecordService.getPage(pageNo, pageSize, query,"permanent");
-        }else if (recordType.equals("doctor") && StringUtils.isNotNull(toUserId) && StringUtils.isNotNull(fromUserId)){//医生端获取与自己有关的所有聊天记录
-            Query query = new Query(where("toUserId").is(toUserId).and("fromUserId")
+        if(recordType.equals("all") && StringUtils.isNotNull(userId) && pageSize > 0){
+            Query query = new Query(where("userId").is(userId)).with(new Sort(Direction.DESC, "createDate"));//用户端获取与平台的所有聊天记录
+            pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "permanent");
+        }else if (recordType.equals("doctor") && StringUtils.isNotNull(userId) && StringUtils.isNotNull(fromUserId)){//医生端获取与自己有关的所有聊天记录
+            Query query = new Query(where("toUserId").is(userId).and("fromUserId")
                     .is(fromUserId)).with(new Sort(Direction.DESC, "create_date"));
-            pagination = consultRecordService.getPage(pageNo, pageSize, query,"permanent");
+            pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "permanent");
         }else if (recordType.contains("image") || recordType.contains("voice")){//查询语音、图片
             String openId = String.valueOf(params.get("openId"));
             Query query = new Query(where("openId").is(openId).and("messageType")
                     .is(recordType)).with(new Sort(Direction.DESC, "create_date"));
-            pagination = consultRecordService.getPage(pageNo, pageSize, query,"permanent");
+            pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "permanent");
         }
 
         response.put("records", pagination!=null?pagination.getDatas():"");

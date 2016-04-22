@@ -30,7 +30,7 @@ public interface ConsultRecordService {
 
     int updateByPrimaryKey(ConsultRecordVo record);
 
-    PaginationVo<ConsultRecordMongoVo> getPage(int pageNo, int pageSize, Query query,String recordType);
+    PaginationVo<ConsultRecordMongoVo> getRecordDetailInfo(int pageNo, int pageSize, Query query,String recordType);
 
     PaginationVo<ConsultSessionStatusVo> getUserMessageList(int pageNo, int pageSize, Query query);
 
