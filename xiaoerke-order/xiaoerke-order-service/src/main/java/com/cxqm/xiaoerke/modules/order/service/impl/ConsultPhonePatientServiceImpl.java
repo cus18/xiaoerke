@@ -181,7 +181,7 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
             Map<String,Object> parameter = systemService.getWechatParameter();
             String token = (String)parameter.get("token");
             String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String) map.get("date"), "yyyy/MM/dd"));
-            String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(String) map.get("orderId")+",phone";
+            String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(Integer) map.get("orderId")+",phone";
             PatientMsgTemplate.consultPhoneCancel2Wechat((String) map.get("doctorName"),(String) map.get("date"), week, (String) map.get("beginTime"),(String) map.get("endTime"), (String) map.get("phone"),(String) map.get("orderNo"),(Float) map.get("price")+"",(String) map.get("openid"),token,url);
             PatientMsgTemplate.consultPhoneRefund2Msg((String) map.get("doctorName"), (Float) map.get("price")+"", (String) map.get("phone"),(String) map.get("date"), week, (String) map.get("beginTime"),(String) map.get("orderNo"));
         }

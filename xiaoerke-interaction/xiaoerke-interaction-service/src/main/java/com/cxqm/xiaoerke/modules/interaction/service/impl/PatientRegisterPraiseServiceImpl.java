@@ -111,7 +111,7 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
         dataMap.put("evaluateType",evaluateType);
 
         String currentPage = (String) params.get("pageNo");
-        String pageSize = (String) params.get("pageSize");
+        String pageSize = String.valueOf(params.get("pageSize"));
         Page<PatientRegisterPraise> page = FrontUtils.generatorPage(currentPage, pageSize);
 
         Page<PatientRegisterPraise> resultPage = patientRegisterPraiseDao.getDoctorEvaluate(dataMap, page);
@@ -137,6 +137,7 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
                 SimpleDateFormat format = new SimpleDateFormat("MM/dd");
                 SimpleDateFormat format1 = new SimpleDateFormat("HH:mm");
                 hmap.put("date", format.format(date)+"("+week.replaceAll("星期","周")+")"+format1.format(date));
+                hmap.put("dateTime",date.getTime());
                 evaluateList.add(hmap);
             }
         }
