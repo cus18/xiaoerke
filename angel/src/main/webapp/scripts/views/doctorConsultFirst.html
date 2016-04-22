@@ -424,19 +424,19 @@
                                 </tr>
                                 <tr ng-repeat="item in info.onLineCsUserList"
                                     ng-click="chooseTransferCsUser(item.id,item.name)"
-                                    ng-style="item.csUserId==transferCsUserId?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}"
-                                    ng-if="!searchFlag">
+                                    ng-style="item.id==transferCsUserId?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}"
+                                    ng-if="!searchFlag&&item.id!=doctorId">
                                     <td>{{item.email}}</td>
                                     <td>{{item.name}}</td>
-                                    <td>{{item.role}}</td>
+                                    <td>{{info.role[item.user_type]}}</td>
                                 </tr>
                                 <tr ng-repeat="item in info.onLineCsUserList"
                                     ng-click="chooseTransferCsUser(item.id,item.name)"
-                                    ng-style="item.csUserId==transferCsUserId?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}"
-                                    ng-if="searchFlag&&(item.email.indexOf(info.searchCsUserValue)!=-1||item.name.indexOf(info.searchCsUserValue)!=-1)">
+                                    ng-style="item.id==transferCsUserId?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}"
+                                    ng-if="searchFlag&&item.id!=doctorId&&(item.email.indexOf(info.searchCsUserValue)!=-1||item.name.indexOf(info.searchCsUserValue)!=-1)">
                                     <td>{{item.email}}</td>
                                     <td>{{item.name}}</td>
-                                    <td>{{item.role}}</td>
+                                    <td>{{info.role[item.user_type]}}</td>
                                 </tr>
                             </table>
                         </div>

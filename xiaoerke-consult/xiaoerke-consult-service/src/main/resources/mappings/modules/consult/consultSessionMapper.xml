@@ -229,8 +229,6 @@
         <foreach collection="list" item="classIdList" open="(" separator="," close=")">
             #{classIdList}
         </foreach>
-        AND
-        user_type!='distributor'
     </select>
 
 </mapper>
