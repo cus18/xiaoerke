@@ -573,9 +573,9 @@ angular.module('controllers', ['luegg.directives'])
         }])
 
     .controller('messageListCtrl', ['$scope', '$log', '$sce', 'GetUserConsultListInfo',
-        'GetUserRecordDetail', 'GetCSDoctorList', 'GetCSInfoByUserId', 'GetMessageRecordInfo','GetUserLoginStatus',
+        'GetUserRecordDetail', 'GetCSDoctorList', 'GetCSInfoByUserId', 'GetMessageRecordInfo','GetUserLoginStatus','$location',
         function ($scope, $log, $sce, GetUserConsultListInfo, GetUserRecordDetail,
-                  GetCSDoctorList, GetCSInfoByUserId, GetMessageRecordInfo,GetUserLoginStatus) {
+                  GetCSDoctorList, GetCSInfoByUserId, GetMessageRecordInfo,GetUserLoginStatus,$location) {
 
             $scope.info = {};
 
