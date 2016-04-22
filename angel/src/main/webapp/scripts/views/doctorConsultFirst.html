@@ -263,7 +263,7 @@
     </div>
     <!--等待接入会话-->
     <div class="jrhhpm" ng-show='showFlag.rankList'>
-        <div class="jrhhpm-top">今日接入会话排名 <a href="refreshRankList">刷新</a></div>
+        <div class="jrhhpm-top">今日接入会话排名 <a ng-click="refreshRankList()" href="">刷新</a></div>
         <table border="0">
             <tr class="jrhhpm-tb">
                 <th>排名</th>
@@ -412,7 +412,7 @@
         </div>
         <div class="switchcontent">
             <div class="switchbox">
-                <input type="text" placeholder="按员工、昵称查找工号">
+                <input type="text" placeholder="按员工、昵称查找工号" ng-model="info.searchCsUserValue" ng-change="searchCsUser()">
                 <div class="refresh">
                     <div class="refreshbox">
                         <div class="refreshboxtop">

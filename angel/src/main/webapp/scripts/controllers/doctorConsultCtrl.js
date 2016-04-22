@@ -76,9 +76,10 @@ angular.module('controllers', ['luegg.directives'])
             }
 
             $scope.refreshOnLineCsUserList = function(){
+                $scope.searchFlag = false;
+                $scope.info.searchCsUserValue = "";
                 GetOnlineDoctorList.save({}, function (data) {
                     $scope.info.onLineCsUserList = data.onLineCsUserList;
-                    console.log($scope.info.onLineCsUserList);
                 });
             }
 
@@ -98,6 +99,16 @@ angular.module('controllers', ['luegg.directives'])
                         alert("转接失败，请转接给其他医生");
                     }
                 });
+            }
+
+            $scope.searchFlag = false;
+            $scope.info.searchCsUserValue = "";
+            $scope.searchCsUser = function(){
+                if($scope.info.searchCsUserValue!=""){
+                    $scope.searchFlag = true;
+                }else{
+                    $scope.searchFlag = false;
+                }
             }
 
             //初始化医生端登录，建立socket链接，获取基本信息
