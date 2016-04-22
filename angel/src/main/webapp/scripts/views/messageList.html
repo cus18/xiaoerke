@@ -125,7 +125,7 @@
             <div class='w10 h20 examinecontent'>
                 <ul>
                      <li ng-repeat="item in currentUserConsultRecordDetail">
-                         <div ng-if="item.senderId==doctor">
+                         <div ng-if="item.senderId==item.csUserId">
                              <div class="name" ng-style="item.senderId==doctor?{color: '#7fc700'}:{color: '#08b7c2'}">
                                  {{item.doctorName}} {{item.dateTime}}
                              </div>
@@ -133,7 +133,7 @@
                                  {{item.message}}
                              </div>
                          </div>
-                         <div ng-if="item.senderId!=doctor">
+                         <div ng-if="item.senderId==item.userId">
                              <div class="name">
                                  {{item.senderName}} {{item.createDate}}
                              </div>
