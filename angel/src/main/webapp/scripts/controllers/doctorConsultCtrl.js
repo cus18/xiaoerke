@@ -136,7 +136,7 @@ angular.module('controllers', ['luegg.directives'])
                         });
 
                         getAlreadyJoinConsultPatientList();
-                        
+
                     }
                 })
             }
@@ -231,12 +231,14 @@ angular.module('controllers', ['luegg.directives'])
                     window.WebSocket = window.MozWebSocket;
                 }
                 if (window.WebSocket) {
-                    if($scope.userType=="distributor"){
-                        $scope.socketServer1 = new ReconnectingWebSocket("ws://101.201.154.201:2048/ws&" +
-                            "distributor&" + $scope.doctorId);//cs,user,distributor
-                    }else if($scope.userType=="consultDoctor"){
-                        $scope.socketServer1 = new ReconnectingWebSocket("ws://101.201.154.201:2048/ws&" +
-                            "cs&" + $scope.doctorId);//cs,user,distributor
+
+                    if($scope.userType="distributor"){
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://120.25.161.33:2048/ws&" +
+                            "distributor&" + "000455ab145e4bb3bb94ba52ac4d7eb3");//cs,user,distributor
+                    }else if($scope.userType="consultDoctor"){
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://120.25.161.33:2048/ws&" +
+                            "distributor&" + "000455ab145e4bb3bb94ba52ac4d7eb3");//cs,user,distributor
+
                     }
 
                     $scope.socketServer1.onmessage = function (event) {
@@ -340,7 +342,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.publicReplyIndex = parentIndex;
                     $scope.publicReplySecondIndex = -1;
                 }
-           }
+            }
             //编辑公共内容
             $scope.tapEditCommonContent = function(parentIndex, childIndex){
                 $scope.publicReplySecondIndex = childIndex;
