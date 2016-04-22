@@ -2,16 +2,16 @@
     <ion-spinner ng-show="dataLoading"></ion-spinner>
     <div class="doctorImg" ng-click="gohome()">
         <div class="doc_img">
-            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/other%2Fliangp.png" width="50px" height="50px"/>
+            <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{doctorId}}" width="50px" height="50px"/>
         </div>
         <div class="doc_ms">
             <div>
                 <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fmyself_geren.png" width="10px" height="12px"/>
-                <span class="ms_com">几点开始几点发</span>
+                <span class="ms_com">{{doctorName}}</span>
             </div>
             <div >
                 <img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fmyself_phone.png" width="12px" height="12px"/>
-                <span class="ms_com">13131313131</span>
+                <span class="ms_com">{{phone}}</span>
             </div>
         </div>
         <img class="doc_gohome" src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fmyself_gohome.png" width="12px" height="22px"/>
