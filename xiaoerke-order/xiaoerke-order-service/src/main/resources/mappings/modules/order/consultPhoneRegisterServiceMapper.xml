@@ -277,7 +277,7 @@
         LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
         INNER JOIN sys_doctor sd ON sd.id = srs.sys_doctor_id
         <if test="date != null" >
-            AND srs.date=#{date}
+            AND srs.date=DATE_FORMAT(#{date,jdbcType=VARCHAR},'%Y-%m-%d')
         </if>
         <if test="doctorId != null" >
             AND srs.sys_doctor_id = #{doctorId}
@@ -286,6 +286,30 @@
         ORDER BY
         srs.beginTime ASC
     </select>
+
+
+  <select id="getReturnPayConsultList" resultType="java.util.Map">
+select crs.id,su.id userId
+from consultphone_register_service crs
+left join account_pay_record apr
+on crs.id = apr.order_id
+left join sys_patient sp
+on sp.id = crs.sys_patient_id
+left join sys_user su
+on su.id = sp.sys_user_id
+where crs.state = '4'
+and apr.`status` = 'success'
+AND (DATE_ADD((DATE_FORMAT(crs.update_time,'%Y-%m-%d %k:%i:%s')), INTERVAL 1 day))> NOW()
+and crs.id not in (
+select DISTINCT(crs.id) from consultphone_register_service crs
+left join account_pay_record apr
+on crs.id = apr.order_id
+where crs.state = '4'
+ AND (DATE_ADD((DATE_FORMAT(crs.update_time,'%Y-%m-%d %k:%i:%s')), INTERVAL 1 day))> NOW()
+and apr.`status` = 'return'
+)
+group by crs.id
+  </select>
     
   <!-- 更新订单状态 -->
   <update id="changeConsultPhoneRegisterServiceState">

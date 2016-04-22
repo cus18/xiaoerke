@@ -8,30 +8,24 @@ import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.FrontUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
-import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
-import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
-import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.data.domain.Sort.Direction;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 
@@ -147,6 +141,22 @@ public class ConsultUserController extends BaseController {
     @ResponseBody
     Map<String, Object> getUserList(@RequestBody Map<String, Object> params) {
         Map<String,Object> response = new HashMap<String, Object>();
+        Integer pageNo = (Integer) params.get("pageNo");
+        Integer pageSize = (Integer) params.get("pageSize");
+        Query query = new Query().with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
+        PaginationVo<ConsultSessionStatusVo> pagination = consultRecordService.getUserMessageList(pageNo, pageSize, query);
+        response.put("userList",pagination.getDatas());
+        return response;
+    }
+
+    /**
+     * 获取客户列表(或咨询过某个医生的客户)详细信息,按照时间降序排序
+     */
+    @RequestMapping(value = "/getUserList_back", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> getUserList_back(@RequestBody Map<String, Object> params) {
+        Map<String,Object> response = new HashMap<String, Object>();
 
         //分页获取最近会话记录
         String pageNo = (String) params.get("pageNo");
@@ -194,13 +204,11 @@ public class ConsultUserController extends BaseController {
     HashMap<String, Object> getCurrentUserList(@RequestBody Map<String, Object> params) {
         HashMap<String,Object> response = new HashMap<String, Object>();
         PaginationVo<ConsultRecordMongoVo> pagination = null;
-        int pageNo = 0;
-        int pageSize = 0;
         String csUserId = String.valueOf(params.get("csUserId"));
 
         if(StringUtils.isNotNull(csUserId)){
-            pageNo = (Integer) params.get("pageNo");
-            pageSize = (Integer) params.get("pageSize");
+            int pageNo = (Integer) params.get("pageNo");
+            int pageSize = (Integer) params.get("pageSize");
             List<HashMap<String,Object>> responseList = new ArrayList<HashMap<String, Object>>();
 
             ConsultSession consultSessionSearch = new ConsultSession();
@@ -317,6 +325,30 @@ public class ConsultUserController extends BaseController {
         response.put("records", pagination!=null?pagination.getDatas():"");
         response.put("pageNo",pageNo);
         response.put("pageSize",pageSize);
+        return response;
+    }
+
+    /**
+     * 根据userId查询会话sessionId
+     * @author guozengguang
+     * @param userId
+     * @return response 返回前台的响应数据
+     */
+    @RequestMapping(value = "/getSessionId", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> getSessionId(@RequestParam(required=true) String userId) {
+
+        Map<String, Object> response = new HashMap<String, Object>();
+        Integer sessionId = sessionRedisCache.getSessionIdByUserId(userId);
+        if(sessionId != null){
+            response.put("status", 0);
+            response.put("sessionId", sessionId);
+        }else{
+            response.put("status", 1);
+            response.put("sessionId", "");
+        }
+
         return response;
     }
 

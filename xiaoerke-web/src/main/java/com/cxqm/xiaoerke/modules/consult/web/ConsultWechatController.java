@@ -128,9 +128,11 @@ public class ConsultWechatController extends BaseController {
                 consultSession.setSource(source);
                 //创建会话，发送消息给用户，给用户分配接诊员
                 createWechatConsultSessionMap = ConsultSessionManager.getSessionManager().createUserWXConsultSession(consultSession);
-                csChannel = (Channel)createWechatConsultSessionMap.get("csChannel");
-                consultSession = (RichConsultSession)createWechatConsultSessionMap.get("consultSession");
-                sessionId = consultSession.getId();
+                if(createWechatConsultSessionMap!=null){
+                    csChannel = (Channel)createWechatConsultSessionMap.get("csChannel");
+                    consultSession = (RichConsultSession)createWechatConsultSessionMap.get("consultSession");
+                    sessionId = consultSession.getId();
+                }
             }
 
             //会话创建成功，拿到了csChannel,给接诊员(或是医生)发送消息
@@ -171,16 +173,16 @@ public class ConsultWechatController extends BaseController {
                     }
                     TextWebSocketFrame frame = new TextWebSocketFrame(obj.toJSONString());
                     csChannel.writeAndFlush(frame.retain());
+
+                    //保存聊天记录
+                    consultRecordService.buildRecordMongoVo(userId,String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)), messageContent, consultSession);
+
+                    //更新会话操作时间
+                    consultRecordService.saveConsultSessionStatus(consultSession);
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
             }
-
-            //保存聊天记录
-            consultRecordService.buildRecordMongoVo(userId,String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)), messageContent, consultSession);
-
-            //更新会话操作时间
-            consultRecordService.saveConsultSessionStatus(consultSession);
 
         }
     }

@@ -4,14 +4,14 @@
     <ion-content  style="top: 0px;">
         <ion-scroll class="phoneConsultDetails" direction="y" has-bouncing="true">
             <ul>
-                <li class="time">预约时刻：<span>2015-03-14</span><span>14:00-14:10</span></li>
-                <li>服务类型：<span>150元/15分钟</span></li>
+                <li class="time">预约时刻：<span>{{serverTime}}</span><span>{{serverTimeBegin}}-{{serverTimeEnd}}</span></li>
+                <li>服务类型：<span>{{serverPrice}}元/{{serverLength}}分钟</span></li>
             </ul>
             <dl>
                 <dd>宝宝信息</dd>
-                <dd class="detelsCom">姓名：<span>张天师</span></dd>
-                <dd class="detelsCom">年龄：<span>1岁8月</span></dd>
-                <dd class="detelsCom">病情描述：<span>盛大的丰厚的快乐jfk的理解顺丰快递jfk就是就开始jfk就撒开了房间快结束了看风景卡</span></dd>
+                <dd class="detelsCom">姓名：<span>{{name}}</span></dd>
+                <dd class="detelsCom" ng-if="age!=''">年龄：<span>{{age}}</span></dd>
+                <dd class="detelsCom">病情描述：<span>{{illContent}}</span></dd>
             </dl>
         <br/><br/>
         </ion-scroll>

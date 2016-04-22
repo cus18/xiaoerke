@@ -63,4 +63,7 @@ define(['app'], function (app) {
         .factory('OutOfBind', ['$resource', function ($resource) {
             return $resource(doctor_h5 + 'util/logOut');
         }])
+        .factory('GetDoctorDetail', ['$resource', function ($resource) {
+            return $resource('sys/user/doctorDetail');
+        }])
 })

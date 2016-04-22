@@ -30,9 +30,6 @@ public class ConsultPhoneOrderServiceImpl implements ConsultPhoneOrderService {
     @Autowired
     private ConsultPhoneRegisterServiceDao consultPhoneRegisterServiceDao;
 
-    @Autowired
-    private PatientRegisterServiceDao patientRegisterServiceDao;
-
     //获取预约挂号的号源
     public Map findDoctorAppointmentInfo(String doctorId){
         HashMap<String,Object> resultMap = new HashMap<String, Object>();
@@ -201,6 +198,11 @@ public class ConsultPhoneOrderServiceImpl implements ConsultPhoneOrderService {
         response.put("totalPrice", totalPrice);
 
         return response;
+    }
+
+    @Override
+    public List<HashMap<String, Object>> getReturnPayConsultList() {
+      return  consultPhoneRegisterServiceDao.getReturnPayConsultList();
     }
 
 }

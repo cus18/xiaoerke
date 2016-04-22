@@ -143,12 +143,13 @@
     SELECT
     su.id csUserId,
     su.name doctorName,
+    su.email doctorEmail,
     count(*) consultNum
     FROM
     consult_session cs
     left JOIN sys_user su ON su.id = cs.sys_user_id_cs
-    WHERE create_time LIKE '${rankDate}%'
-    and su.user_type  != 'distributor'
+    WHERE DATE_FORMAT(cs.create_time,'%Y-%m-%d') = #{rankDate}
+    and su.user_type = 'distributor'
     GROUP BY
     cs.sys_user_id_cs
     ORDER BY

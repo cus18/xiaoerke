@@ -10,13 +10,9 @@ angular.module('services', ['ngResource'])
     .factory('GetUserLoginStatus', ['$resource', function ($resource) {
         return $resource(public + 'auth/info/loginStatus');
     }])
-    //获取聊天记录
-    .factory('GetUserRecordList', ['$resource', function ($resource) {
-        return $resource(public + 'consult/doctor/recordList');
-    }])
     //获取在线医生列表
     .factory('GetOnlineDoctorList', ['$resource', function ($resource) {
-        return $resource(public + 'consult/doctor/doctorList');
+        return $resource(public + 'consult/doctor/doctorOnLineList');
     }])
     //获取医生下的目前正在咨询的用户列表
     .factory('GetCurrentUserConsultListInfo', ['$resource', function ($resource) {
@@ -49,7 +45,6 @@ angular.module('services', ['ngResource'])
     .factory('AnswerModify', ['$resource', function ($resource) {
         return $resource(public + 'consult/doctor/Answer/modify');
     }])
-
     //获取客户的聊天记录
     .factory('GetUserRecordDetail', ['$resource', function ($resource) {
         return $resource(public + 'consult/doctor/recordList');
@@ -92,6 +87,9 @@ angular.module('services', ['ngResource'])
     }])
     //转发会话到其他客服
     .factory('TransferToOtherCsUser', ['$resource', function ($resource) {
-        return $resource(public + 'consult/transfer');
+        return $resource(public + 'consult/doctor/transfer');
+    }])
+    .factory('GetCurrentUserHistoryRecord', ['$resource', function ($resource) {
+        return $resource(public + 'consult/doctor/getCurrentUserHistoryRecord');
     }])
 
