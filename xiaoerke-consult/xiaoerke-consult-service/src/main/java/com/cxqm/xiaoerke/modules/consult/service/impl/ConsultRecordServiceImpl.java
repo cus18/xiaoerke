@@ -90,6 +90,11 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     }
 
     @Override
+    public PaginationVo<ConsultSessionStatusVo> getUserMessageList(int pageNo, int pageSize, Query query) {
+        return consultRecordMongoDBService.getUserMessageList(pageNo, pageSize, query);
+    }
+
+    @Override
     public int saveConsultRecord(ConsultRecordMongoVo consultRecordMongoVo) {
         return consultRecordMongoDBService.saveConsultRecord(consultRecordMongoVo);
     }
@@ -216,6 +221,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
         consultSessionStatusVo.setLastMessageTime(lastDate);
         consultSessionStatusVo.setUserId(consultSession.getUserId());
         consultSessionStatusVo.setStatus("ongoing");
+        consultSessionStatusVo.setUserId(consultSession.getUserId());
         consultSessionStatusVo.setUserName(consultSession.getUserName());
         consultRecordMongoDBService.upsertConsultSessionStatusVo(consultSessionStatusVo);
     }

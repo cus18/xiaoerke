@@ -596,7 +596,7 @@ angular.module('controllers', ['luegg.directives'])
                         window.location.href = data.redirectURL + "?targeturl=" + routePath;
                     } else if (data.status == "20") {
                         //获取客户列表
-                        GetUserConsultListInfo.save({pageNo: "1", pageSize: "20"}, function (data) {
+                        GetUserConsultListInfo.save({pageNo: 1, pageSize: 20}, function (data) {
                             $scope.userConsultListInfo = data.userList;
                         });
 
@@ -676,7 +676,7 @@ angular.module('controllers', ['luegg.directives'])
 
             //左上角的刷新消息
             $scope.refreshUserList = function () {
-                GetUserConsultListInfo.save({pageNo: "1", pageSize: "100"}, function (data) {
+                GetUserConsultListInfo.save({pageNo: 1, pageSize: 100}, function (data) {
                     $scope.userConsultListInfo = data.userList;
                 });
             }

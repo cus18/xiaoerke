@@ -9,9 +9,8 @@ public class ConsultSessionStatusVo {
 
     private String lastMessageTime;
 
-    private String UserId;
+    private String userId;
 
-    private String openId;
 
     private String status;
 
@@ -33,20 +32,12 @@ public class ConsultSessionStatusVo {
         this.status = status;
     }
 
-    public String getOpenId() {
-        return openId;
-    }
-
-    public void setOpenId(String openId) {
-        this.openId = openId;
-    }
-
     public String getUserId() {
-        return UserId;
+        return userId;
     }
 
     public void setUserId(String userId) {
-        UserId = userId;
+        this.userId = userId;
     }
 
     public String getSessionId() {
