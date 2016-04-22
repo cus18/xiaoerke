@@ -52,12 +52,8 @@ var doRefresh = function(){
         error : function() {
         }
     });
-    var consultValMessage = {
-        "phoneConDoctorDetail":item.id,
-        "doctorId":$stateParams.doctorId
-    }
-    var routePath = "http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=phoneConsultAAAAAApayParam="
-        + JSON.stringify(consultValMessage);
+    var routePath = "http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=phoneConsultAAAAAAphoneConDoctorDetail="
+        +GetQueryString("phoneConDoctorDetail")+"AAAAAAdoctorId="+GetQueryString("doctorId");
     $.ajax({
         type: "POST",
         url: "auth/info/loginStatus",

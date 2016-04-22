@@ -39,6 +39,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+
 /**
  * Created by 得良 on 2015/6/17.
  */
@@ -1077,19 +1079,16 @@ public class ScheduledTask {
      */
     public void consultManagement4Session(){
         //获取用户与平台最后交流时间
-        List<Object> consultSessionStatusVos = consultRecordService.querySessionStatusList(new Query());
+        Query query = new Query(where("status").is("ongoing"));
+        List<ConsultSessionStatusVo> consultSessionStatusVos = consultRecordService.querySessionStatusList(query);
         if(consultSessionStatusVos != null && consultSessionStatusVos.size() > 0){
-            for(Object object : consultSessionStatusVos){
-                Map map= (Map)object;
-                if(!map.isEmpty()){
-                    ConsultSessionStatusVo consultSessionStatusVo = (ConsultSessionStatusVo)map.get("consultSessionStatusVo");
+            for(ConsultSessionStatusVo consultSessionStatusVo : consultSessionStatusVos){
                     if(consultSessionStatusVo !=null && StringUtils.isNotNull(consultSessionStatusVo.getLastMessageTime())){
                         if(DateUtils.pastMinutes(DateUtils.StrToDate(consultSessionStatusVo.getLastMessageTime(),"xiangang"))>10L){
                             consultSessionService.clearSession(consultSessionStatusVo.getSessionId(),
                                     consultSessionStatusVo.getUserId());
                         }
                     }
-                }
             }
         }
     }
