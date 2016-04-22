@@ -4,6 +4,7 @@ package com.cxqm.xiaoerke.modules.consult.dao;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,8 +27,9 @@ public interface ConsultSessionForwardRecordsDao {
     
     int cancelTransfer(ConsultSessionForwardRecordsVo record);
 
+    Page<ConsultSessionForwardRecordsVo> getConsultUserListRecently(Page<ConsultSessionForwardRecordsVo> page,
+                                                                    HashMap<String, Object> hashMap);
 
-    Page<ConsultSessionForwardRecordsVo> getConsultUserListRecently(Page<ConsultSessionForwardRecordsVo> page,HashMap<String, Object> hashMap);
-
+    List<ConsultSessionForwardRecordsVo> findWaitJoinListByCsUserId(@Param("csUserId")String csUserId,@Param("status")String status);
     
 }
