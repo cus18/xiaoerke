@@ -32,4 +32,7 @@ public interface DoctorConcernDao {
 
     //查询关注我的用户
     Page<HashMap<String,Object>> getMyFansList(String doctorId, Page<HashMap<String,Object>> page);
+
+    //更新微信头像微信名
+    void updateWechatNameAndImg(HashMap<String, Object> updateMap);
 }

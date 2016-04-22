@@ -1,6 +1,7 @@
 package com.cxqm.xiaoerke.modules.consult.service.impl;
 
 
+import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
@@ -8,11 +9,13 @@ import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
 import com.mongodb.WriteResult;
 import org.springframework.data.mongodb.core.mapreduce.MapReduceResults;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -81,7 +84,7 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 	}
 
 	public void  deleteConsultRecordTemporary(Query query) {
-		mongoTemplate.remove(query,"consultRecordTemporary");
+		mongoTemplate.remove(query, "consultRecordTemporary");
 	}
 
 	@Override
@@ -110,9 +113,15 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 	}
 
 	public WriteResult upsertConsultSessionStatusVo(ConsultSessionStatusVo consultSessionStatusVo) {
-
-		return mongoTemplate.upsert((new Query(where("sessionId").is(consultSessionStatusVo.getSessionId()))),
-				new Update().update("consultSessionStatusVo", consultSessionStatusVo),ConsultSessionStatusVo.class);
+		Query query = new Query(where("sessionId").is(consultSessionStatusVo.getSessionId()));
+		WriteResult writeResult = null;
+		ConsultSessionStatusVo  StatusVo = mongoTemplate.findOne(query, ConsultSessionStatusVo.class, "consultSessionStatusVo");
+		if(StatusVo != null){
+			writeResult = mongoTemplate.updateMulti(query,new Update().set("lastMessageTime", DateUtils.formatDateTime(new Date())), ConsultSessionStatusVo.class);
+		}else {
+			mongoTemplate.insert(ConsultSessionStatusVo.class, "consultSessionStatusVo");
+		}
+        return writeResult;
 	}
 	//zdl
 	public List<Object> querySessionStatusList(Query query){

@@ -119,32 +119,63 @@ public class ConcernServiceImpl implements ConcernService {
         String pageSize = (String)params.get("pageSize");
 
         Page<HashMap<String, Object>> page = FrontUtils.generatorPage(pageNo,pageSize);
+        //分页查询粉丝列表
         Page<HashMap<String, Object>> resultPage = doctorConcernDao.getMyFansList(doctorId,page);
         response.put("pageNo", resultPage.getPageNo());
         response.put("pageSize", resultPage.getPageSize());
         long tmp = FrontUtils.generatorTotalPage(resultPage);
         response.put("pageTotal", tmp + "");
 
-        Map<String,Object> parameter = systemService.getWechatParameter();
-        String token = (String)parameter.get("token");
-
         List<HashMap<String, Object>> resultList = resultPage.getList();
         List<HashMap<String, Object>> fansList = new ArrayList<HashMap<String, Object>>();
         if(resultList != null && resultList.size() > 0){
             for(HashMap<String, Object> resultMap:resultList){
-                String openId = (String) resultMap.get("openid");
-                String strURL="https://api.weixin.qq.com/cgi-bin/user/info?access_token="+token+"&openid="+openId+"&lang=zh_CN";
-                String param="";
-                String json= WechatUtil.post(strURL, param, "GET");
-                JSONObject jasonObject = JSONObject.fromObject(json);
-                Map<String, Object> jsonMap = (Map) jasonObject;
+                String wechatName = (String) resultMap.get("wechat_name");
+                String headImgUrl = (String) resultMap.get("pic_url");
+
+                //如果头像或微信名为空，通过微信获取并保存到数据库
+                if(wechatName == null || headImgUrl == null){
+                    String openId = (String) resultMap.get("openid");
+                    //微信获取头像用户名
+                    Map<String, Object> jsonMap = getWechatMessage(openId);
+                    if(wechatName == null) {
+                        wechatName = (String) jsonMap.get("wechatName");
+                    }
+                    if(headImgUrl == null) {
+                        headImgUrl = (String) jsonMap.get("headimgurl");
+                    }
+                    HashMap<String, Object> updateMap = new HashMap<String, Object>();
+                    updateMap.put("headImgUrl",headImgUrl);
+                    updateMap.put("wechatName", wechatName);
+                    updateMap.put("id", (String) resultMap.get("id"));
+                    doctorConcernDao.updateWechatNameAndImg(updateMap);//保存到数据库
+                }
 
                 HashMap<String, Object> fansMap = new HashMap<String, Object>();
-                fansMap.put("headImgUrl", (String) jsonMap.get("headimgurl"));
-                fansMap.put("wechatName", (String) jsonMap.get("wechatName"));
+                fansMap.put("headImgUrl", headImgUrl);
+                fansMap.put("wechatName", wechatName);
                 fansList.add(fansMap);
             }
         }
         response.put("fansList",fansList);
+    }
+
+    /**
+     * 获取微信头像、微信名
+     * @param openId
+     * @return
+     */
+    public Map<String, Object> getWechatMessage(String openId){
+
+        Map<String,Object> parameter = systemService.getWechatParameter();
+        String token = (String)parameter.get("token");
+
+        String strURL="https://api.weixin.qq.com/cgi-bin/user/info?access_token="+token+"&openid="+openId+"&lang=zh_CN";
+        String param="";
+        String json= WechatUtil.post(strURL, param, "GET");
+        JSONObject jasonObject = JSONObject.fromObject(json);
+        Map<String, Object> jsonMap = (Map) jasonObject;
+
+        return jsonMap;
     }
 }
