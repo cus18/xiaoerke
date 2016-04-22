@@ -105,13 +105,9 @@
             });
         }
         $scope.chooseTime = function(item){
-            if(item.state == "1")return;
-            var consultValMessage = {
-                "phoneConDoctorDetail":item.id,
-                "doctorId":$stateParams.doctorId
-            }
-            var routePath = "http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=phoneConsultAAAAAApayParam="
-                + JSON.stringify(consultValMessage);
+            if(item.state == "1")return
+            var routePath = "http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=phoneConsultAAAAAAphoneConDoctorDetail="
+                + item.id+"AAAAAAdoctorId="+$stateParams.doctorId;
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 $scope.pageLoading = false;
                 if(data.status=="9") {
@@ -122,8 +118,8 @@
                     $scope.nowdate = moment().format('YYYY/MM/DD HH:MM');
                     var boolean = moment(moment(item.data).format('YYYY/MM/DD')+" "+item.begin_time).isAfter(moment().add(5, 'm'));
                     if(boolean){
-                        window.location.href = "http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=phoneConsult&payParam="
-                            + JSON.stringify(consultValMessage);
+                        window.location.href = "http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=phoneConsultAAAAAAphoneConDoctorDetail="
+                            + item.id+"AAAAAAdoctorId="+$stateParams.doctorId;
                     }else{
                         alert("预约时间间隔过短")
                         retrun
