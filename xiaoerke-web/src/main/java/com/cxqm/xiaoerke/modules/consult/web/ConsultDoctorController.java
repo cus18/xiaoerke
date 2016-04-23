@@ -52,16 +52,10 @@ public class ConsultDoctorController extends BaseController {
     private AnswerService answerService;
 
     @Autowired
-    private ConsultSessionServiceImpl consultSessionService;
-
-    @Autowired
     private ConsultSessionForwardRecordsService consultSessionForwardRecordsService;
 
     @Autowired
     private ConsultRecordService consultRecordService;
-
-    @Autowired
-    private SessionRedisCache sessionRedisCache;
 
     @Autowired
     private SystemService systemService;
@@ -118,7 +112,6 @@ public class ConsultDoctorController extends BaseController {
      ]
      }
      */
-
     @RequestMapping(value = "/rankList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
@@ -134,283 +127,6 @@ public class ConsultDoctorController extends BaseController {
         }
         return resultMap;
     }
-
-
-    /***
-     * 获取在线医生列表（分页）
-     *
-     * @param
-     @return
-     {
-         "pageNo":"2",
-         "pageSize":"20",
-         "doctors": [
-             {
-                 "id": "fdasfa",
-                 "name": "liutao",
-                 "worker":"123baodaifu"
-                 "status":"onLine"
-             },
-             {
-                 "id": "fdasfa",
-                 "name": "liutao",
-                 "worker":"234baodaifu"
-                 "status":"offLine"
-             }
-         ]
-     }
-     */
-    @RequestMapping(value = "/doctorOnLineList", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    HashMap<String, Object> doctorOnLineList(@RequestBody Map<String, Object> params) {
-        HashMap<String,Object> response = new HashMap<String, Object>();
-        List<String> userList = ConsultSessionManager.getSessionManager().getOnlineCsList();
-        if(userList!=null && userList.size()>0){
-            response.put("onLineCsUserList",consultSessionService.getOnlineCsListInfo(userList));
-        }
-        return response;
-    }
-
-    /***
-     * 转发会话到其他客服
-     *
-     * @param
-       {
-            "doctorId": "dafdsaf",
-            "sessionId":53534534,
-            "patientName":"liutao",
-            "transferer":"frank",
-            "fromServer":""
-        }
-         @return
-         {
-             "result":"success",
-             "sessionId":"fwefewf"
-         }
-     */
-    @RequestMapping(value = "/transfer", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    Map<String, Object> transfer(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
-        Map<String, Object> response = new HashMap<String, Object>();
-        Integer sessionId= (Integer)params.get("sessionId");
-        String doctorId= String.valueOf(params.get("doctorId"));//转接的话，必须要用医生ID
-        String remark = (String)params.get("remark");
-        int status = 0;
-        if(null != sessionId && StringUtils.isNotNull(doctorId)){
-            status =consultSessionForwardRecordsService.transferSession(sessionId,doctorId,remark);
-        }
-        if(status==0){
-            response.put("result", "failure");
-        }else{
-            response.put("result", "success");
-        }
-        response.put("sessionId",sessionId);
-        return  response;
-    }
-
-    /***
-     * 取消转接
-     *
-     * @param
-        {
-        "sessionId":53534534,
-        "toCsUserId":"123124"
-        "remark":"请注意"
-        }
-         @return
-         {
-         "result":"success",
-         }
-     */
-    @RequestMapping(value = "/cancelTransfer", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    Map<String, Object> cancelTransferringSession(@RequestBody Map<String, Object> params) {
-        Map<String, Object> response = new HashMap<String, Object>();
-        Integer sessionId= (Integer)params.get("sessionId");
-        String transferer= String.valueOf(params.get("toCsUserId"));
-        String remark = String.valueOf(params.get("remark"));
-        if(null != sessionId && StringUtils.isNotNull(transferer)){
-            consultSessionForwardRecordsService.cancelTransferringSession(sessionId, transferer, remark);
-            response.put("result", "success");
-        }
-        response.put("result", "failure");
-        return  response;
-    }
-
-
-    /***
-     * 获取回复 type 为 myAnswer获取我的回复  common获取公共回复
-     *
-     * @param {"type":"myAnswer"} commonAnswer
-     @return
-     {
-        （ "commonAnswer": [
-             {
-                 "firstId": "fdsaf",
-                 "name": "fwef",
-                 "secondAnswer": [
-                     {
-                         "secondId": "fsad",
-                         "name": "fdsf"
-                     },
-                     {
-                         "secondId": "fsad",
-                         "name": "fdsf"
-                     },
-                     {
-                         "secondId": "fsad",
-                         "name": "fdsf"
-                     }
-                 ]
-             },
-             {
-                 "firstId": "fdsaf",
-                 "name": "fwef",
-                 "secondAnswer": [
-                     {
-                         "secondId": "fsad",
-                         "name": "fdsf"
-                     },
-                     {
-                         "secondId": "fsad",
-                         "name": "fdsf"
-                     },
-                     {
-                         "secondId": "fsad",
-                         "name": "fdsf"
-                     }
-                 ]
-             },
-             {
-                 "firstId": "fdsaf",
-                 "name": "fwef",
-                 "secondAnswer": [
-                     {
-                     "secondId": "fsad",
-                     "name": "fdsf"
-                     },
-                     {
-                     "secondId": "fsad",
-                     "name": "fdsf"
-                     },
-                     {
-                     "secondId": "fsad",
-                     "name": "fdsf"
-                     }
-                ]
-             }
-         ]
-     }）
-     */
-    @RequestMapping(value = "/consult/answerValue", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    String consultAnswerValue(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
-
-        String type = String.valueOf(params.get("type"));
-
-        if(StringUtils.isNotNull(type)){
-
-            return answerService.findConsultAnswer(type);
-        }
-
-        return "";
-    }
-
-
-    /***
-     * 该接口有两个功能：1、医生修改自己的回复,没有的话先执行插入操作    2、修改公共回复，没有的话先执行插入操作
-     *
-     * @param
-        {
-         "myanswer":"json串"
-        }
-     @return
-     {
-     "result":"success",
-     }
-     */
-    @RequestMapping(value="/Answer/modify",method=RequestMethod.POST, headers = {"content-type=application/json","content-type=application/xml"})
-    public
-    @ResponseBody
-    Map<String, Object> modify(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
-        Map<String, Object> response = new HashMap<String, Object>();
-        Map<String, Object> tranMap = new HashMap<String, Object>();
-
-        String answerType = String.valueOf(params.get("answerType"));
-        if(answerType.equals("myAnswer")){
-            tranMap.put("myAnswer",params.get("answer"));
-        }else if(answerType.equals("commonAnswer")){
-            tranMap.put("commonAnswer",params.get("answer"));
-        }
-
-        String answer = JSON.toJSONString(tranMap);
-
-        response.put("result","failure");
-        try {
-            answerService.upsertConsultAnswer(answerType,answer);
-            response.put("result", "success");
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return response;
-    }
-
-
-    /***
-     * 医生删除自己的回复
-     @return
-     {
-     "result":"success",
-     }
-     */
-    @RequestMapping(value = "/myAnswer/delete", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    String delete(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
-        try{
-            answerService.deleteMyConsultAnswer();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return "success";
-    }
-
-
-    /***
-     * 接收或者拒绝转接
-     * @param {"sessionId":123,"forwardRecordId":4234,"toCsUserId":"123","toCsUserName":"小明"，“operation”:""}
-     @return
-     {
-      "result":"success",
-     }
-     */
-    @RequestMapping(value = "/react2Transfer", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody HashMap<String, Object> react2Transfer(@RequestBody Map<String, Object> params) {
-        HashMap<String,Object> response = new HashMap<String, Object>();
-        String forwardSessionIds = (String) params.get("forwardSessionIds");
-        String operation = (String) params.get("operation");
-        String[] forwardSessionIdArray = forwardSessionIds.split(";");
-        for(int i=0;i<forwardSessionIdArray.length;i++){
-            System.out.println(forwardSessionIdArray[i]);
-            HashMap<String,Object> param = new HashMap<String, Object>();
-            ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = consultSessionForwardRecordsService.selectByPrimaryKey(Long.parseLong(forwardSessionIdArray[i]));
-            param.put("sessionId",consultSessionForwardRecordsVo.getConversationId());
-            param.put("forwardRecordId",consultSessionForwardRecordsVo.getId());
-            param.put("toCsUserId",consultSessionForwardRecordsVo.getToUserId());
-            User user = systemService.getUser(consultSessionForwardRecordsVo.getToUserId());
-            param.put("toCsUserName",user.getName());
-            param.put("operation",operation);
-            consultSessionForwardRecordsService.react2Transfer(param);
-        }
-        response.put("result","success");
-        return response;
-    }
-
 
     /***
      * 获取聊天记录  分页
@@ -442,12 +158,9 @@ public class ConsultDoctorController extends BaseController {
              ]
          }
      */
-
     @RequestMapping(value = "/recordList", method = {RequestMethod.POST, RequestMethod.GET})
     public
-    @ResponseBody
-    Map<String, Object> recordList(@RequestBody Map<String, Object> params) {
-
+    @ResponseBody Map<String, Object> recordList(@RequestBody Map<String, Object> params) {
         String recordType = String.valueOf(params.get("recordType"));
         String userId = String.valueOf(params.get("userId"));
         String fromUserId = String.valueOf(params.get("fromUserId"));
@@ -514,48 +227,4 @@ public class ConsultDoctorController extends BaseController {
         }
         return response;
     }
-
-    /**
-     * 获取待接入用户列表
-     */
-    /***
-     * 生成聊天记录(咨询造数据)
-     */
-    @RequestMapping(value = "/waitJoinList", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    HashMap<String,Object> waitJoinList(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
-        HashMap<String,Object> response = new HashMap<String, Object>();
-        List<HashMap<String,Object>> dataList = new ArrayList<HashMap<String, Object>>();
-        String csUserId = (String) params.get("csUserId");
-        List<ConsultSessionForwardRecordsVo> waitJoinListVoList = consultSessionForwardRecordsService.getWaitJoinList(csUserId);
-        for(ConsultSessionForwardRecordsVo waitJoinListVo:waitJoinListVoList){
-            HashMap<String,Object> dataValue = new HashMap<String, Object>();
-            dataValue.put("sessionId", waitJoinListVo.getConversationId());
-            dataValue.put("forwardSessionId", waitJoinListVo.getId());
-            RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(Integer.parseInt(String.valueOf(waitJoinListVo.getConversationId())));
-            if(richConsultSession!=null){
-                List<ConsultRecordMongoVo> consultRecordMongoVo = consultRecordService.getCurrentUserHistoryRecord(richConsultSession.getUserId(), new Date(),100);
-                if(consultRecordMongoVo!=null){
-                    dataValue.put("messageContent", consultRecordMongoVo.get(0).getMessage());
-                    dataValue.put("messageNum", consultRecordMongoVo.size());
-                }
-                dataValue.put("userId",richConsultSession.getUserId());
-                dataValue.put("userName",richConsultSession.getUserName());
-                dataValue.put("source",richConsultSession.getSource());
-                dataValue.put("serverAddress",richConsultSession.getServerAddress());
-                dataValue.put("sessionCreateTime",richConsultSession.getCreateTime());
-            }
-            dataValue.put("dateTime", DateUtils.DateToStr(new Date()));
-            User user = systemService.getUser(waitJoinListVo.getFromUserId());
-            dataValue.put("fromCsUserName",user.getName());
-            dataValue.put("fromCsUserId",waitJoinListVo.getFromUserId());
-            dataValue.put("chooseFlag",true);
-            dataList.add(dataValue);
-        }
-        response.put("waitJoinList",dataList);
-        response.put("waitJoinNum",dataList.size());
-        return response;
-    }
-
 }

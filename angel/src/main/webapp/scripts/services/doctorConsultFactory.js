@@ -28,7 +28,7 @@ angular.module('services', ['ngResource'])
     }])
     //获取公共回复列表
     .factory('GetAnswerValueList', ['$resource', function ($resource) {
-        return $resource(public + 'consult/doctor/consult/answerValue');
+        return $resource(public + 'consult/doctor/answerValue');
     }])
     //获取客服医生列表
     .factory('GetCSDoctorList', ['$resource', function ($resource) {
