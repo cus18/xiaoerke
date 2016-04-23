@@ -30,7 +30,7 @@ public interface ConsultSessionForwardRecordsService {
 	
 	int cancelTransfer(ConsultSessionForwardRecordsVo record);
 
-    void transferSession(Integer sessionId, String transferer, String remark);
+    int transferSession(Integer sessionId, String transferer, String remark);
 
     void cancelTransferringSession(Integer sessionId, String transferer, String remark);
 

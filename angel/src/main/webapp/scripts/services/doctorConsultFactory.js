@@ -92,4 +92,10 @@ angular.module('services', ['ngResource'])
     .factory('GetCurrentUserHistoryRecord', ['$resource', function ($resource) {
         return $resource(public + 'consult/doctor/getCurrentUserHistoryRecord');
     }])
+    .factory('React2Transfer', ['$resource', function ($resource) {
+        return $resource(public + 'consult/doctor/react2Transfer');
+    }])
+    .factory('CancelTransfer', ['$resource', function ($resource) {
+        return $resource(public + 'consult/doctor/cancelTransfer');
+    }])
 

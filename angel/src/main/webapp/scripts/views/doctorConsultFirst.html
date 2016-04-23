@@ -181,7 +181,7 @@
                     </div>
                 </div>
             </div>
-            <iframe src="http://localhost:8080/keeper/scripts/views/customerss.html" frameborder="0"
+            <iframe src="http://xiaork.com/keeper/scripts/views/customerss.html" frameborder="0"
                     class="advisory-content" ng-show='showFlag.advisoryContent'>
             </iframe>
             <textarea type="text" name="messageData" id="patientIdData" class="textarea" style="display:none;">{{currentUserConversation.patientId}}</textarea>
@@ -205,7 +205,7 @@
                             <a href="">查看更多消息</a>
                         </div>
                         <div ng-repeat="item in currentUserConversation.consultValue" class="information">
-                            <div ng-if="item.senderId==doctorId" class="doctorReplyContent">
+                            <div ng-if="item.senderId==doctorId" class="doctorReplyContent" ng-if="item.type!='4'">
                                 <div class="doctorName">
                                     <span>{{item.senderName}}</span>
                                     <span>{{item.dateTime}}</span>
@@ -214,7 +214,7 @@
                                     {{item.content}}
                                 </div>
                             </div>
-                            <div ng-if="item.senderId!=doctorId" class="patientConsultContent">
+                            <div ng-if="item.senderId!=doctorId" class="patientConsultContent" ng-if="item.type!='4'">
                                 <div class="senderName">
                                     <span>{{item.senderName}}</span>
                                      <span>{{item.dateTime}}</span>
@@ -234,6 +234,12 @@
                                     <video width="500" height="250" ng-src="{{item.content}}"
                                            controls="controls"/>
                                 </div>
+                            </div>
+                            <div class="moreInformation" ng-if="item.type=='4'">
+                                <a ng-if="item.notifyType=='0010'">正在将用户{{item.patientName}}转接给{{item.toCsUserName}}提供服务，
+                                    取消请点击<a ng-click="cancelTransfer(item.session.id,item.toCsUserId,item.remark)">【取消转接】</a>></a>
+                                <a ng-if="item.notifyType=='0011'&&item.operation=='rejected'">将用户{{item.patientName}}转接给{{item.toCsUserName}}
+                                    提供的服务被拒绝，请转接给其他医生，谢谢！</a>
                             </div>
                         </div>
                     </div>
@@ -369,27 +375,30 @@
         </div>
         <div class="ddjr-content">
             <div class="checktop">
-            <span>
-                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(2).png" alt=""/>
-                接入</span>
-            <span>
-                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(3).png" alt=""/>
-                删除</span>
-            <span>
-                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(4).png" alt=""/>
-                刷新</span>
+                <span ng-click="acceptTransfer()">
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(2).png" style="cursor:pointer;"/>
+                    接入
+                </span>
+                <span ng-click="rejectTransfer()">
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(3).png" style="cursor:pointer;"/>
+                    删除
+                </span>
+                <span ng-click="refreshWaitJoinUserList()">
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(4).png" style="cursor:pointer;"/>
+                    刷新
+                </span>
             </div>
             <table border="0">
                 <tr  class="light">
-                    <th><input type="checkbox"></th>
+                    <th></th>
                     <th>昵称</th>
                     <th>消息</th>
                     <th>消息数</th>
                     <th>时间</th>
                     <th>来自</th>
                 </tr>
-                <tr class="light light1" ng-repeat="item in watiJoinUserList">
-                    <td><input type="checkbox"></td>
+                <tr class="light light1" ng-repeat="item in waitJoinUserList">
+                    <td><input type="checkbox" ng-checked="item.chooseFlag" ng-model="item.chooseFlag"></td>
                     <td>{{item.userName}}</td>
                     <td>{{item.messageContent}}</td>
                     <td>{{item.messageNum}}</td>

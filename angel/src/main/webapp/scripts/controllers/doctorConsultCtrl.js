@@ -2,10 +2,10 @@ angular.module('controllers', ['luegg.directives'])
     .controller('doctorConsultFirstCtrl', ['$scope', '$sce', '$window','GetTodayRankingList',
         'GetOnlineDoctorList','GetAnswerValueList','GetAnswerValueList','GetUserLoginStatus',
         '$location', 'GetCurrentUserHistoryRecord','GetMyAnswerModify','GetCurrentUserConsultListInfo',
-        'TransferToOtherCsUser','SessionEnd','GetWaitJoinList',
+        'TransferToOtherCsUser','SessionEnd','GetWaitJoinList','React2Transfer','CancelTransfer',
         function ($scope, $sce, $window,GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
                   GetAnswerValueList, GetUserLoginStatus, $location, GetCurrentUserHistoryRecord,GetMyAnswerModify,
-                  GetCurrentUserConsultListInfo,TransferToOtherCsUser,SessionEnd,GetWaitJoinList) {
+                  GetCurrentUserConsultListInfo,TransferToOtherCsUser,SessionEnd,GetWaitJoinList,React2Transfer,CancelTransfer) {
 
             $scope.info = {
                 effect:"true",
@@ -68,14 +68,59 @@ angular.module('controllers', ['luegg.directives'])
                                 $scope.refreshOnLineCsUserList();
                             }else if(type=="waitProcess"){
                                 //获取待接入用户列表
-                                GetWaitJoinList.save({csUserId:$scope.doctorId},function(data){
-                                    $scope.waitJoinNum = data.waitJoinNum;
-                                    $scope.watiJoinUserList = data.waitJoinList;
-                                })
+                                $scope.refreshWaitJoinUserList();
                             }
                         }
                     }
                 })
+            }
+
+            var waitJoinChooseUserList = "";
+            $scope.acceptTransfer = function(){
+                $.each($scope.waitJoinUserList,function(index,value){
+                   if(value.chooseFlag){
+                       waitJoinChooseUserList = waitJoinChooseUserList + value.forwardSessionId + ";"
+                   }
+                });
+                waitJoinChooseUserList = waitJoinChooseUserList.slice(0,waitJoinChooseUserList.length-1);
+                React2Transfer.save({operation:"accept",forwardSessionIds:waitJoinChooseUserList},function(data){
+                    if(data.result=="success"){
+                        //将转接成功的用户，都加入会话列表中来
+                        var indexClose = 0;
+                        $.each($scope.waitJoinUserList,function(index,value){
+                            if(value.chooseFlag){
+                                var conversationContent = {};
+                                conversationContent.patientId = value.userId;
+                                conversationContent.source = value.source;
+                                conversationContent.fromServer = value.serverAddress;
+                                conversationContent.sessionId = value.sessionId;
+                                conversationContent.isOnline = true;
+                                conversationContent.dateTime = value.sessionCreateTime;
+                                conversationContent.messageNotSee = true;
+                                conversationContent.patientName = value.userName;
+                                conversationContent.consultValue = [];
+                                conversationContent.consultValue.push(consultValue);
+                                $scope.alreadyJoinPatientConversation.push(conversationContent);
+                                indexClose = index;
+                            }
+                            $scope.waitJoinUserList.splice(indexClose, 1);
+                        });
+                    }
+                });
+            }
+
+            $scope.rejectTransfer = function(){
+                $.each($scope.waitJoinUserList,function(index,value){
+                    if(value.chooseFlag){
+                        waitJoinChooseUserList = waitJoinChooseUserList + value.forwardSessionId + ";"
+                    }
+                });
+                waitJoinChooseUserList = waitJoinChooseUserList.slice(0,waitJoinChooseUserList.length-1);
+                React2Transfer.save({operation:"rejected",forwardSessionIds:waitJoinChooseUserList},function(data){
+                    if(data.result=="success"){
+
+                    }
+                });
             }
 
             $scope.refreshRankList = function(){
@@ -103,21 +148,9 @@ angular.module('controllers', ['luegg.directives'])
                     sessionId:$scope.currentUserConversation.sessionId,
                     remark: $scope.info.transferRemark},function(data){
                     if(data.result=="success"){
-                        alert("将转接用户"+$scope.currentUserConversation.patientName+"，由"+$scope.csTransferUserName+"为用户提供服务");
                         $scope.tapShowButton('switchOver');
-                        var indexClose = 0;
-                        $.each($scope.alreadyJoinPatientConversation, function (index, value) {
-                            if (value.patientId == $scope.chooseAlreadyJoinConsultPatientId) {
-                                indexClose = index;
-                            }
-                        })
-                        $scope.alreadyJoinPatientConversation.splice(indexClose, 1);
-                        if($scope.alreadyJoinPatientConversation.length!=0){
-                            $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
-                                $scope.alreadyJoinPatientConversation[0].patientName);
-                        }else{
-                            $scope.currentUserConversation = {};
-                        }
+                        //转接请求成功后，在接诊员侧，保留了此会话，只到被转接的医生收到为止，
+                        // 才将会话拆除，在此过程中，允许接诊员，取消转接。
                     }else if(data.result=="failure"){
                         alert("转接失败，请转接给其他医生");
                     }
@@ -170,14 +203,18 @@ angular.module('controllers', ['luegg.directives'])
                             }
                         });
 
-                        GetWaitJoinList.save({csUserId:$scope.doctorId},function(data){
-                            $scope.waitJoinNum = data.waitJoinNum;
-                            $scope.watiJoinUserList = data.waitJoinList;
-                        })
+                        $scope.refreshWaitJoinUserList();
 
                         getAlreadyJoinConsultPatientList();
 
                     }
+                })
+            }
+
+            $scope.refreshWaitJoinUserList = function(){
+                GetWaitJoinList.save({csUserId:$scope.doctorId},function(data){
+                    $scope.waitJoinNum = data.waitJoinNum;
+                    $scope.waitJoinUserList = data.waitJoinList;
                 })
             }
 
@@ -581,8 +618,58 @@ angular.module('controllers', ['luegg.directives'])
             //处理系统发送过来的通知类消息
             var processNotifyMessage = function(notifyData){
                 if(notifyData.notifyType=="0009"){
+                    //有转接的用户过来
                     $scope.waitJoinNum++;
+                }else if(notifyData.notifyType=="0010"){
+                    //通知接诊员，转接正在进行中，还未被医生受理
+                    $scope.currentUserConversation.consultValue.push(notifyData);
+                    $.each($scope.alreadyJoinPatientConversation, function (index, value) {
+                        if (value.patientId == $scope.currentUserConversation.patientId) {
+                            value.consultValue.push(notifyData);
+                        }
+                    });
+                }else if(notifyData.notifyType=="0011"){
+                    //通知接诊员，转接的处理情况，rejected为拒绝，accept为转接受理了
+                    if(notifyData.operation=="accept"){
+                        var indexClose = 0;
+                        $.each($scope.alreadyJoinPatientConversation, function (index, value) {
+                            if (value.patientId == notifyData.session.userId) {
+                                indexClose = index;
+                            }
+                        })
+                        $scope.alreadyJoinPatientConversation.splice(indexClose, 1);
+                        if($scope.alreadyJoinPatientConversation.length!=0){
+                            $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
+                                $scope.alreadyJoinPatientConversation[0].patientName);
+                        }else if($scope.currentUserConversation.patientId == notifyData.session.userId){
+                            $scope.currentUserConversation = {};
+                        }
+                    }else if(notifyData.operation=="rejected"){
+                        if($scope.currentUserConversation.patientId == notifyData.session.userId){
+                            $scope.currentUserConversation.consultValue.push(notifyData);
+                        }
+                        $.each($scope.alreadyJoinPatientConversation, function (index, value) {
+                            if (value.patientId == $scope.currentUserConversation.patientId) {
+                                value.consultValue.push(notifyData);
+                            }
+                        });
+                    }
                 }
+            }
+
+            $scope.cancelTransfer = function(sessionId,toCsUserId,remark){
+                CancelTransfer.save({sessionId:sessionId,toCsUserId:toCsUserId,remark:remark},function(data){
+                    if(data.result=="success"){
+                        //删除取消通知
+                        var indexClose = 0;
+                        $.each($scope.currentUserConversation.consultValue, function (index, value) {
+                            if (value.remark == remark && value.toCsUserId==toCsUserId) {
+                                indexClose = index;
+                            }
+                        })
+                        $scope.currentUserConversation.consultValue.splice(indexClose, 1);
+                    }
+                })
             }
 
             //过滤媒体数据

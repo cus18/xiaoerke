@@ -197,11 +197,14 @@ public class ConsultDoctorController extends BaseController {
         Integer sessionId= (Integer)params.get("sessionId");
         String doctorId= String.valueOf(params.get("doctorId"));//转接的话，必须要用医生ID
         String remark = (String)params.get("remark");
+        int status = 0;
         if(null != sessionId && StringUtils.isNotNull(doctorId)){
-            consultSessionForwardRecordsService.transferSession(sessionId,doctorId,remark);
-            response.put("result", "success");
-        }else {
+            status =consultSessionForwardRecordsService.transferSession(sessionId,doctorId,remark);
+        }
+        if(status==0){
             response.put("result", "failure");
+        }else{
+            response.put("result", "success");
         }
         response.put("sessionId",sessionId);
         return  response;
@@ -385,16 +388,27 @@ public class ConsultDoctorController extends BaseController {
       "result":"success",
      }
      */
-    @RequestMapping(value = "/myAnswer/react2Transfer", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/react2Transfer", method = {RequestMethod.POST, RequestMethod.GET})
     public
-    @ResponseBody
-    String react2Transfer(@RequestBody Map<String, Object> params) {
-        try{
-            consultSessionForwardRecordsService.react2Transfer(params);
-        }catch (Exception e){
-            e.printStackTrace();
+    @ResponseBody HashMap<String, Object> react2Transfer(@RequestBody Map<String, Object> params) {
+        HashMap<String,Object> response = new HashMap<String, Object>();
+        String forwardSessionIds = (String) params.get("forwardSessionIds");
+        String operation = (String) params.get("operation");
+        String[] forwardSessionIdArray = forwardSessionIds.split(";");
+        for(int i=0;i<forwardSessionIdArray.length;i++){
+            System.out.println(forwardSessionIdArray[i]);
+            HashMap<String,Object> param = new HashMap<String, Object>();
+            ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = consultSessionForwardRecordsService.selectByPrimaryKey(Long.parseLong(forwardSessionIdArray[i]));
+            param.put("sessionId",consultSessionForwardRecordsVo.getConversationId());
+            param.put("forwardRecordId",consultSessionForwardRecordsVo.getId());
+            param.put("toCsUserId",consultSessionForwardRecordsVo.getToUserId());
+            User user = systemService.getUser(consultSessionForwardRecordsVo.getToUserId());
+            param.put("toCsUserName",user.getName());
+            param.put("operation",operation);
+            consultSessionForwardRecordsService.react2Transfer(param);
         }
-        return "success";
+        response.put("result","success");
+        return response;
     }
 
 
@@ -518,6 +532,7 @@ public class ConsultDoctorController extends BaseController {
         for(ConsultSessionForwardRecordsVo waitJoinListVo:waitJoinListVoList){
             HashMap<String,Object> dataValue = new HashMap<String, Object>();
             dataValue.put("sessionId", waitJoinListVo.getConversationId());
+            dataValue.put("forwardSessionId", waitJoinListVo.getId());
             RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(Integer.parseInt(String.valueOf(waitJoinListVo.getConversationId())));
             if(richConsultSession!=null){
                 List<ConsultRecordMongoVo> consultRecordMongoVo = consultRecordService.getCurrentUserHistoryRecord(richConsultSession.getUserId(), new Date(),100);
@@ -525,12 +540,17 @@ public class ConsultDoctorController extends BaseController {
                     dataValue.put("messageContent", consultRecordMongoVo.get(0).getMessage());
                     dataValue.put("messageNum", consultRecordMongoVo.size());
                 }
-                dataValue.put("userName", richConsultSession.getUserName());
+                dataValue.put("userId",richConsultSession.getUserId());
+                dataValue.put("userName",richConsultSession.getUserName());
+                dataValue.put("source",richConsultSession.getSource());
+                dataValue.put("serverAddress",richConsultSession.getServerAddress());
+                dataValue.put("sessionCreateTime",richConsultSession.getCreateTime());
             }
             dataValue.put("dateTime", DateUtils.DateToStr(new Date()));
             User user = systemService.getUser(waitJoinListVo.getFromUserId());
             dataValue.put("fromCsUserName",user.getName());
             dataValue.put("fromCsUserId",waitJoinListVo.getFromUserId());
+            dataValue.put("chooseFlag",true);
             dataList.add(dataValue);
         }
         response.put("waitJoinList",dataList);

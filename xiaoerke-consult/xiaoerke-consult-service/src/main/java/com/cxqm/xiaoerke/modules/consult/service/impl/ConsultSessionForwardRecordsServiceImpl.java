@@ -69,12 +69,10 @@ public class ConsultSessionForwardRecordsServiceImpl implements ConsultSessionFo
 
 	@Override
 	public int updateAcceptedTransfer(ConsultSessionForwardRecordsVo record) {
-
 		ConsultSession consultSession = new ConsultSession();
     	consultSession.setId(record.getConversationId().intValue());
     	consultSession.setCsUserId(record.getToUserId());
     	consultConversationDao.updateByPrimaryKeySelective(consultSession);
-
 		return forwardRecordsDao.updateByPrimaryKeySelective(record);
 	}
 
@@ -84,8 +82,8 @@ public class ConsultSessionForwardRecordsServiceImpl implements ConsultSessionFo
 	}
 
     @Override
-    public  void transferSession(Integer sessionId, String transferer, String remark){
-        ConsultSessionManager.getSessionManager().transferSession(sessionId,transferer,remark);
+    public int transferSession(Integer sessionId, String transferer, String remark){
+        return ConsultSessionManager.getSessionManager().transferSession(sessionId,transferer,remark);
     }
 
     @Override
@@ -95,8 +93,8 @@ public class ConsultSessionForwardRecordsServiceImpl implements ConsultSessionFo
 
     @Override
     public void react2Transfer(Map<String, Object> map) {
-        Integer sessionId = (Integer)map.get("sessionId");
-        Integer forwardRecordId = (Integer)map.get("forwardRecordId");
+        Integer sessionId = Integer.parseInt(String.valueOf(map.get("sessionId")));
+        Integer forwardRecordId = Integer.parseInt(String.valueOf(map.get("forwardRecordId")));
         String toCsUserId = (String)map.get("toCsUserId");
         String toCsUserName = (String)map.get("toCsUserName");
         String operation = (String)map.get("operation");
