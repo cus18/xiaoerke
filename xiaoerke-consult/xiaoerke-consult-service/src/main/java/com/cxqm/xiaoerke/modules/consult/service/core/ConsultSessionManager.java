@@ -352,19 +352,24 @@ public class ConsultSessionManager {
 			String fromCsUserId = session.getCsUserId();
 			session.setCsUserId(toCsUserId);
 			session.setCsUserName(toCsUserName);
-			Channel channel = userChannelMapping.get(fromCsUserId);
-			if(channel.isActive()){
+			Channel channelFromCsUser = userChannelMapping.get(fromCsUserId);
+			if(channelFromCsUser.isActive()){
 				JSONObject jsonObj = new JSONObject();
 				jsonObj.put("type", 4);
 				jsonObj.put("notifyType", "0010");
 				jsonObj.put("operation", operation);
 				jsonObj.put("session", session);
 				TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
-				channel.writeAndFlush(frame.retain());
+				channelFromCsUser.writeAndFlush(frame.retain());
 
 				ConsultSessionForwardRecordsVo forwardRecord = consultSessionForwardRecordsService.selectByPrimaryKey(forwardRecordId.longValue());
 
 				if(ConsultSessionForwardRecordsVo.REACT_TRANSFER_OPERATION_ACCEPT.equalsIgnoreCase(operation)){
+					if(session.getSource().equals("wxcxqm")){
+						String st = "尊敬的用户，您好，已经为您转接了" + toCsUserName + "提供服务，谢谢^_^";
+						WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN,session.getUserId(), st);
+					}
+
 					if(session!=null){
 						sessionRedisCache.putSessionIdConsultSessionPair(sessionId, session);
 					}

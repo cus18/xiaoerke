@@ -75,14 +75,13 @@ angular.module('controllers', ['luegg.directives'])
                 })
             }
 
-            var waitJoinChooseUserList = "";
             $scope.acceptTransfer = function(){
+                var waitJoinChooseUserList = "";
                 $.each($scope.waitJoinUserList,function(index,value){
                    if(value.chooseFlag){
                        waitJoinChooseUserList = waitJoinChooseUserList + value.forwardSessionId + ";"
                    }
                 });
-                waitJoinChooseUserList = waitJoinChooseUserList.slice(0,waitJoinChooseUserList.length-1);
                 React2Transfer.save({operation:"accept",forwardSessionIds:waitJoinChooseUserList},function(data){
                     if(data.result=="success"){
                         //将转接成功的用户，都加入会话列表中来
@@ -102,23 +101,25 @@ angular.module('controllers', ['luegg.directives'])
                                 $scope.alreadyJoinPatientConversation.push(angular.copy($scope.currentUserConversation));
                                 indexClose = index;
                             }
+                            console.log("waitJoinUserListloop",$scope.waitJoinUserList);
                             $scope.waitJoinUserList.splice(indexClose, 1);
                         });
                         $scope.tapShowButton('waitProcess');
                         $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
                             $scope.alreadyJoinPatientConversation[0].patientName);
                         $scope.waitJoinNum--;
+                        console.log("waitJoinUserList",$scope.waitJoinUserList);
                     }
                 });
             }
 
             $scope.rejectTransfer = function(){
+                var waitJoinChooseUserList = "";
                 $.each($scope.waitJoinUserList,function(index,value){
                     if(value.chooseFlag){
                         waitJoinChooseUserList = waitJoinChooseUserList + value.forwardSessionId + ";"
                     }
                 });
-                waitJoinChooseUserList = waitJoinChooseUserList.slice(0,waitJoinChooseUserList.length-1);
                 React2Transfer.save({operation:"rejected",forwardSessionIds:waitJoinChooseUserList},function(data){
                     if(data.result=="success"){
                         $scope.waitJoinNum--;
