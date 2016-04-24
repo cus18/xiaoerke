@@ -25,10 +25,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,7 +46,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 public class ConsultDoctorController extends BaseController {
 
     @Autowired
-    private AnswerService answerService;
+    private ConsultSessionService consultSessionService;
 
     @Autowired
     private ConsultSessionForwardRecordsService consultSessionForwardRecordsService;
@@ -225,6 +222,25 @@ public class ConsultDoctorController extends BaseController {
             response.put("CSList",users);
             response.put("status","success");
         }
+        return response;
+    }
+
+    /***
+     * 用户在咨询完毕后，主动请求终止会话（医生和患者都可操作）
+     * @param
+     * @return
+     *     {
+     *        "result":"success"(失败返回failure)
+     *      }
+     */
+    @RequestMapping(value = "/sessionEnd", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> sessionEnd(@RequestParam(required=true) String sessionId,
+                                   @RequestParam(required=true) String userId) {
+        String result = consultSessionService.clearSession(sessionId,userId);
+        Map<String, Object> response = new HashMap<String, Object>();
+        response.put("result", result);
         return response;
     }
 }

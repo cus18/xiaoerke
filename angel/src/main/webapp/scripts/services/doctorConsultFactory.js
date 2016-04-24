@@ -71,7 +71,7 @@ angular.module('services', ['ngResource'])
     }])
     //主动终止会话
     .factory('SessionEnd', ['$resource', function ($resource) {
-        return $resource(public + 'consult/user/sessionEnd');
+        return $resource(public + 'consult/doctor/sessionEnd');
     }])
     //获取等待加入用户列表
     .factory('GetWaitJoinList', ['$resource', function ($resource) {

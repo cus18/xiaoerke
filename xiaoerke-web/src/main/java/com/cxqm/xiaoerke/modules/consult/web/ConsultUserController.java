@@ -54,27 +54,6 @@ public class ConsultUserController extends BaseController {
     @Autowired
     private ConsultSessionForwardRecordsService consultSessionForwardRecordsService;
 
-    /***
-     * 用户在咨询完毕后，主动请求终止会话（医生和患者都可操作）
-     * @param
-     * @return
-     *     {
-     *        "result":"success"(失败返回failure)
-     *      }
-     */
-
-    @RequestMapping(value = "/sessionEnd", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    Map<String, Object> sessionEnd(@RequestParam(required=true) String sessionId,
-                                   @RequestParam(required=true) String userId) {
-
-        String result = consultSessionService.clearSession(sessionId,userId);
-        Map<String, Object> response = new HashMap<String, Object>();
-        response.put("result", result);
-        return response;
-    }
-
     @RequestMapping(value = "/getCurrentSessions", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody

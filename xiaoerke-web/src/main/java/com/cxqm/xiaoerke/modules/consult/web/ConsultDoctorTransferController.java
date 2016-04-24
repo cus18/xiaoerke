@@ -155,8 +155,9 @@ public class ConsultDoctorTransferController extends BaseController {
         if(null != sessionId && StringUtils.isNotNull(transferer)){
             consultSessionForwardRecordsService.cancelTransferringSession(sessionId, transferer, remark);
             response.put("result", "success");
+        }else{
+            response.put("result", "failure");
         }
-        response.put("result", "failure");
         return  response;
     }
 
@@ -178,13 +179,15 @@ public class ConsultDoctorTransferController extends BaseController {
             System.out.println(forwardSessionIdArray[i]);
             HashMap<String,Object> param = new HashMap<String, Object>();
             ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = consultSessionForwardRecordsService.selectByPrimaryKey(Long.parseLong(forwardSessionIdArray[i]));
-            param.put("sessionId",consultSessionForwardRecordsVo.getConversationId());
-            param.put("forwardRecordId",consultSessionForwardRecordsVo.getId());
-            param.put("toCsUserId",consultSessionForwardRecordsVo.getToUserId());
-            User user = systemService.getUser(consultSessionForwardRecordsVo.getToUserId());
-            param.put("toCsUserName",user.getName());
-            param.put("operation",operation);
-            consultSessionForwardRecordsService.react2Transfer(param);
+            if(consultSessionForwardRecordsVo!=null){
+                param.put("sessionId",consultSessionForwardRecordsVo.getConversationId());
+                param.put("forwardRecordId",consultSessionForwardRecordsVo.getId());
+                param.put("toCsUserId",consultSessionForwardRecordsVo.getToUserId());
+                User user = systemService.getUser(consultSessionForwardRecordsVo.getToUserId());
+                param.put("toCsUserName",user.getName());
+                param.put("operation",operation);
+                consultSessionForwardRecordsService.react2Transfer(param);
+            }
         }
         response.put("result","success");
         return response;

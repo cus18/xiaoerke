@@ -324,8 +324,9 @@ public class ConsultSessionManager {
 				jsonObj.put("session", session);
 				jsonObj.put("remark", remark);
 				jsonObj.put("toCsUserId", toCsUserId);
+				jsonObj.put("toCsUserName", toCsUser.getName());
 				TextWebSocketFrame frameFromCsUser = new TextWebSocketFrame(jsonObj.toJSONString());
-				channelToCsUser.writeAndFlush(frameFromCsUser.retain());
+				channelFromCsUser.writeAndFlush(frameFromCsUser.retain());
 
 				ConsultSessionForwardRecordsVo forwardRecord = new ConsultSessionForwardRecordsVo();
 				forwardRecord.setConversationId(sessionId.longValue());
@@ -358,10 +359,10 @@ public class ConsultSessionManager {
 				jsonObj.put("notifyType", "0010");
 				jsonObj.put("operation", operation);
 				jsonObj.put("session", session);
-				channel.writeAndFlush(jsonObj.toJSONString());
+				TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
+				channel.writeAndFlush(frame.retain());
 
-				ConsultSessionForwardRecordsVo forwardRecord = new ConsultSessionForwardRecordsVo();
-				forwardRecord.setId(forwardRecordId.longValue());
+				ConsultSessionForwardRecordsVo forwardRecord = consultSessionForwardRecordsService.selectByPrimaryKey(forwardRecordId.longValue());
 
 				if(ConsultSessionForwardRecordsVo.REACT_TRANSFER_OPERATION_ACCEPT.equalsIgnoreCase(operation)){
 					if(session!=null){
@@ -390,10 +391,11 @@ public class ConsultSessionManager {
 		if(count > 0) {
 			Channel channel = userChannelMapping.get(toCsUserId);
 			JSONObject jsonObj = new JSONObject();
-			jsonObj.put("type", 6);
-			jsonObj.put("notifyType", 3);
+			jsonObj.put("type", 4);
+			jsonObj.put("notifyType", "0012");
 			jsonObj.put("session", session);
-			channel.writeAndFlush(jsonObj.toJSONString());
+			TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
+			channel.writeAndFlush(frame.retain());
 		}
 	}
 

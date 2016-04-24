@@ -112,7 +112,7 @@
         remark = #{remark,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
-        remark = #{status,jdbcType=VARCHAR},
+        status = #{status,jdbcType=VARCHAR},
       </if>
 
     </set>
