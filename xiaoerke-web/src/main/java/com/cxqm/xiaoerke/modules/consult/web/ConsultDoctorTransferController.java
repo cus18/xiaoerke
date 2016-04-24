@@ -209,7 +209,7 @@ public class ConsultDoctorTransferController extends BaseController {
             RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(Integer.parseInt(String.valueOf(waitJoinListVo.getConversationId())));
             if(richConsultSession!=null){
                 List<ConsultRecordMongoVo> consultRecordMongoVo = consultRecordService.getCurrentUserHistoryRecord(richConsultSession.getUserId(), new Date(),100);
-                if(consultRecordMongoVo!=null){
+                if(consultRecordMongoVo.size()!=0){
                     dataValue.put("messageContent", consultRecordMongoVo.get(0).getMessage());
                     dataValue.put("messageNum", consultRecordMongoVo.size());
                 }

@@ -30,9 +30,10 @@
              slave-ok="${mongo.slaveOk}"
              write-number="1"
              write-timeout="0"
-             write-fsync="true"/>        
+             write-fsync="true"/>
     </mongo:mongo>
     <mongo:db-factory dbname="database" mongo-ref="mongo"/>
+    <!--<mongo:db-factory dbname="database" mongo-ref="mongo" username="${mongo.username}" password="${mongo.password}"/>-->
     
     <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
         <constructor-arg ref="mongo" />
