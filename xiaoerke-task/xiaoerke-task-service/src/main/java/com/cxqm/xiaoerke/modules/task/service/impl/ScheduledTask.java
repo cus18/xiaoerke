@@ -1087,8 +1087,8 @@ public class ScheduledTask {
         List<ConsultSessionStatusVo> consultSessionStatusVos = consultRecordService.querySessionStatusList(query);
         if(consultSessionStatusVos != null && consultSessionStatusVos.size() > 0){
             for(ConsultSessionStatusVo consultSessionStatusVo : consultSessionStatusVos){
-                    if(consultSessionStatusVo !=null && StringUtils.isNotNull(consultSessionStatusVo.getLastMessageTime())){
-                        if(DateUtils.pastMinutes(DateUtils.StrToDate(consultSessionStatusVo.getLastMessageTime(), "xiangang"))>10L){
+                    if(consultSessionStatusVo !=null && consultSessionStatusVo.getLastMessageTime()!=null){
+                        if(DateUtils.pastMinutes(consultSessionStatusVo.getLastMessageTime())>10L){
                             consultSessionService.clearSession(consultSessionStatusVo.getSessionId(),
                                     consultSessionStatusVo.getUserId());
                         }
@@ -1103,16 +1103,16 @@ public class ScheduledTask {
         consultMongoUtilsService.removeConsultRankRecord(new Query());
     }
 
-    public ConsultSessionStatusVo transConsultSessionStatusMapToVo(Map map){
-        if(!map.isEmpty()){
-            ConsultSessionStatusVo consultSessionStatusVo = new ConsultSessionStatusVo();
-            consultSessionStatusVo.setSessionId((String)map.get("sessionId"));
-            consultSessionStatusVo.setLastMessageTime((String)map.get("lastMessageTime"));
-            consultSessionStatusVo.setUserId((String)map.get("UserId"));
-            return consultSessionStatusVo;
-        }
-        return null;
-    }
+//    public ConsultSessionStatusVo transConsultSessionStatusMapToVo(Map map){
+//        if(!map.isEmpty()){
+//            ConsultSessionStatusVo consultSessionStatusVo = new ConsultSessionStatusVo();
+//            consultSessionStatusVo.setSessionId((String)map.get("sessionId"));
+//            consultSessionStatusVo.setLastMessageTime((String)map.get("lastMessageTime"));
+//            consultSessionStatusVo.setUserId((String)map.get("UserId"));
+//            return consultSessionStatusVo;
+//        }
+//        return null;
+//    }
 
     //插入监听器
     private void insertMonitor(String register_no, String type, String status) {

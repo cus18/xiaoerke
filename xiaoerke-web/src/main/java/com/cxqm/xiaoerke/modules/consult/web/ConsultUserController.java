@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -133,11 +134,12 @@ public class ConsultUserController extends BaseController {
                 query = new Query().addCriteria(new Criteria().where("csUserId").is(csUserId)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
             }
         }else {
-            Date date;
+            String date2;
             Calendar ca = Calendar.getInstance();
             ca.add(Calendar.DATE, -dateNum);// 30为增加的天数，可以改变的
-            date = ca.getTime();
-            query = new Query().addCriteria(new Criteria("infoTime").lte(new Date()).gte(date));
+            date2 = DateUtils.DateToStr(ca.getTime(), "datetime");
+            Date date = DateUtils.StrToDate(date2,"datetime");
+            query = new Query().addCriteria(Criteria.where("lastMessageTime").gte(date));
         }
 
 
