@@ -217,8 +217,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     public void saveConsultSessionStatus(RichConsultSession consultSession) {
         ConsultSessionStatusVo consultSessionStatusVo = new ConsultSessionStatusVo();
         consultSessionStatusVo.setSessionId(String.valueOf(consultSession.getId()));
-        String lastDate = DateUtils.DateToStr(new Date());
-        consultSessionStatusVo.setLastMessageTime(lastDate);
+        consultSessionStatusVo.setLastMessageTime(new Date());
         consultSessionStatusVo.setUserId(consultSession.getUserId());
         consultSessionStatusVo.setStatus("ongoing");
         consultSessionStatusVo.setUserId(consultSession.getUserId());
