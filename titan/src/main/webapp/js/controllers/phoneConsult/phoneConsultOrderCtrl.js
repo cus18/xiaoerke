@@ -31,7 +31,8 @@
 
             };
             $scope.orderDerail = function(item){
-                $state.go("orderDetail",{doctorId:item.doctorId,orderId:item.orderId,type:"phone"})
+               /* $state.go("orderDetail",{doctorId:item.doctorId,orderId:item.orderId,type:"phone"})*/
+                window.location.href = "/keeper/orderDetailPay/patientPay.do?orderDetailPay=";
             };
 
 

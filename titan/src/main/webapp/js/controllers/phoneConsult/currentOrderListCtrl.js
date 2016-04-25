@@ -38,7 +38,8 @@
             };
 
             $scope.orderDerail = function(item){
-                $state.go("orderDetail",{doctorId:item.doctorId,orderId:item.orderId,type:item.classify})
+                /*$state.go("orderDetail",{doctorId:item.doctorId,orderId:item.orderId,type:item.classify})*/
+                window.location.href = "/keeper/orderDetailPay/patientPay.do?orderDetailPay=";
             };
 
             $scope.$on('$ionicView.enter', function(){
