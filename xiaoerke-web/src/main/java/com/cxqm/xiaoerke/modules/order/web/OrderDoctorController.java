@@ -98,9 +98,11 @@ public class OrderDoctorController extends BaseController {
      * 每日清单
      * @params {}
      * @return {}
+     * @author chenxiaoqiong
      */
-    @RequestMapping(value="/order/doctor/getDayList")
-    public Map<String,Object> getDayList(Map<String,Object> params){
+    @RequestMapping(value="/order/doctor/getDayList",method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public Map<String,Object> getDayList(@RequestBody Map<String,Object> params){
         Map<String,Object> response = new HashMap<String, Object>();
         String userId = UserUtils.getUser().getId();
         String doctorId = (String) params.get("doctorId");
