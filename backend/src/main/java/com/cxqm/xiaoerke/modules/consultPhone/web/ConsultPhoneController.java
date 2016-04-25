@@ -78,6 +78,7 @@ public class ConsultPhoneController extends BaseController {
 			model.addAttribute("dateList", resultMap.get("dateList"));
 			model.addAttribute("phoneConsultFlag", resultMap.get("phoneConsultFlag"));
 			model.addAttribute("serverType", resultMap.get("serverType"));
+			model.addAttribute("serverLength", resultMap.get("serverLength"));
 			model.addAttribute("beginTimeList", resultMap.get("beginTimeList"));
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block

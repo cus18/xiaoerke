@@ -191,7 +191,12 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 
 		Map<String, Object> retmap = getSysConsultPhoneServiceListInfo(doctorId,DateUtils.DateToStr(firstDay, "date"));
 
-		returnMap.put("consulPhonetDoctorRelationVo", list.size()==0?cvo:list.get(0));
+		if(list.size()==0){
+			returnMap.put("consulPhonetDoctorRelationVo", cvo);
+		}else{
+			returnMap.put("consulPhonetDoctorRelationVo", list.get(0));
+			returnMap.put("serverLength", list.get(0).getServerLength());
+		}
 		returnMap.put("dateList", dateList);
 		returnMap.put("phoneConsultFlag", phoneConsultFlag);
 		returnMap.put("serverType", retmap.get("serverType"));
