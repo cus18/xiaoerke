@@ -170,6 +170,7 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         consultPhoneRegisterServiceVo.setState("4");
         consultPhoneRegisterServiceVo.setUpdateTime(new Date());
         consultPhoneRegisterServiceVo.setId(phoneConsultaServiceId);
+        consultPhoneRegisterServiceVo.setDeleteBy(UserUtils.getUser().getName());
         int state = consultPhoneRegisterServiceDao.updateByPrimaryKeySelective(consultPhoneRegisterServiceVo);
         //取消号源
         if(state>0){
