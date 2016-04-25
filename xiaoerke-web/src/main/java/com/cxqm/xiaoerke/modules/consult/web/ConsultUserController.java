@@ -8,30 +8,26 @@ import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.FrontUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
-import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
-import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.data.domain.Sort.Direction;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -48,7 +44,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 public class ConsultUserController extends BaseController {
 
     @Autowired
-    private ConsultSessionService consultConversationService;
+    private ConsultSessionService consultSessionService;
 
     @Autowired
     private ConsultRecordService consultRecordService;
@@ -57,30 +53,7 @@ public class ConsultUserController extends BaseController {
     SessionRedisCache sessionRedisCache;
 
     @Autowired
-    private ConsultMongoUtilsService consultMongoUtilsService;
-
-    @Autowired
     private ConsultSessionForwardRecordsService consultSessionForwardRecordsService;
-
-    /***
-     * 用户在咨询完毕后，主动请求终止会话（医生和患者都可操作）
-     * @param
-     * @return
-     *     {
-     *        "result":"success"(失败返回failure)
-     *      }
-     */
-
-    @RequestMapping(value = "/sessionEnd", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    Map<String, Object> sessionEnd(@RequestParam(required=true) String sessionId,@RequestParam(required=true) String userId) {
-
-        String result = consultConversationService.clearSession(Integer.parseInt(sessionId),userId);
-        Map<String, Object> response = new HashMap<String, Object>();
-        response.put("result", result);
-        return response;
-    }
 
     @RequestMapping(value = "/getCurrentSessions", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -89,7 +62,7 @@ public class ConsultUserController extends BaseController {
         ConsultSession consultSession = new ConsultSession();
         consultSession.setCsUserId(csUserId);
         consultSession.setStatus(ConsultSession.STATUS_ONGOING);
-        List<ConsultSession> consultSessions = consultConversationService.selectBySelective(consultSession);
+        List<ConsultSession> consultSessions = consultSessionService.selectBySelective(consultSession);
         List<Object> sessionIds = new ArrayList<Object>();
         for(ConsultSession session : consultSessions) {
             sessionIds.add(session.getId());
@@ -116,7 +89,7 @@ public class ConsultUserController extends BaseController {
         consultSession.setCsUserId(csUserId);
         consultSession.setStatus(ConsultSession.STATUS_ONGOING);
 
-        List<ConsultSession> consultSessions = null;//consultConversationService.getAlreadyAccessUsers(consultSession);
+        List<ConsultSession> consultSessions = null;//consultSessionService.getAlreadyAccessUsers(consultSession);
         if(consultSessions!=null && consultSessions.size()>0){
             response.put("alreadyAccessUsers",consultSessions);
         }
@@ -148,6 +121,68 @@ public class ConsultUserController extends BaseController {
     @ResponseBody
     Map<String, Object> getUserList(@RequestBody Map<String, Object> params) {
         Map<String,Object> response = new HashMap<String, Object>();
+        Integer pageNo = (Integer) params.get("pageNo");
+        Integer pageSize = (Integer) params.get("pageSize");
+        Integer dateNum = (Integer) params.get("dateNum");
+        String csUserId = String.valueOf(params.get("CSDoctorId"));
+
+        Query query;
+        if(dateNum == null){
+            if(csUserId == "null"){
+                query = new Query().with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
+            }else {
+                query = new Query().addCriteria(new Criteria().where("csUserId").is(csUserId)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
+            }
+        }else {
+            String date2;
+            Calendar ca = Calendar.getInstance();
+            ca.add(Calendar.DATE, -dateNum);// 30为增加的天数，可以改变的
+            date2 = DateUtils.DateToStr(ca.getTime(), "datetime");
+            Date date = DateUtils.StrToDate(date2,"datetime");
+            query = new Query().addCriteria(Criteria.where("lastMessageTime").gte(date));
+        }
+
+
+        PaginationVo<ConsultSessionStatusVo> pagination = consultRecordService.getUserMessageList(pageNo, pageSize, query);
+        List<ConsultSessionStatusVo> resultList = new ArrayList<ConsultSessionStatusVo>();
+        if(pagination.getDatas()!=null && pagination.getDatas().size()>0){
+            for(ConsultSessionStatusVo consultSessionStatusVo :pagination.getDatas()){
+                ConsultSessionStatusVo vo = new ConsultSessionStatusVo();
+                vo.setUserName(consultSessionStatusVo.getUserName());
+                vo.setUserId(consultSessionStatusVo.getUserId());
+                vo.setCsUserId(consultSessionStatusVo.getCsUserId());
+                vo.setCsUserName(consultSessionStatusVo.getCsUserName());
+                //根据userId查询CsUserId
+                ConsultSession consultSession =new ConsultSession();
+                consultSession.setUserId(consultSessionStatusVo.getUserId());
+                List<ConsultSession> sessionList = consultSessionService.getCsUserByUserId(consultSession);
+                if(sessionList!=null && sessionList.size() > 0){
+                    String csUserName = "";
+                    for(ConsultSession session :sessionList){
+                        if(session!=null){
+                            csUserName = csUserName + " " +session.getNickName();
+                        }
+                    }
+                    vo.setCsUserName(csUserName);
+                }
+                resultList.add(vo);
+            }
+        }
+        HashSet hashSet  =   new  HashSet(resultList);
+        resultList.clear();
+        resultList.addAll(hashSet);
+        response.put("userList",resultList);
+        return response;
+    }
+
+    /**
+     * 获取客户列表(或咨询过某个医生的客户)详细信息,按照时间降序排序
+     */
+    @RequestMapping(value = "/getUserList_back", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> getUserList_back(@RequestBody Map<String, Object> params) {
+        Map<String,Object> response = new HashMap<String, Object>();
 
         //分页获取最近会话记录
         String pageNo = (String) params.get("pageNo");
@@ -172,8 +207,8 @@ public class ConsultUserController extends BaseController {
         for(ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo : resultPage.getList()){
             Query query = new Query(where("fromUserId").is(consultSessionForwardRecordsVo.getFromUserId())).with(new Sort(Sort.Direction.DESC, "createDate"));
             ConsultRecordMongoVo oneConsultRecord = consultRecordService.findOneConsultRecord(query);
-            Date date = oneConsultRecord.getCreateDate();
-            oneConsultRecord.setInfoDate(DateUtils.DateToStr(date));
+//            Date date = oneConsultRecord.getCreateDate();
+//            oneConsultRecord.setInfoDate(DateUtils.DateToStr(date));
 
             if (oneConsultRecord != null && StringUtils.isNotNull(oneConsultRecord.getSenderId())){
                 consultSessionForwardRecordsVos.add(oneConsultRecord);
@@ -195,25 +230,28 @@ public class ConsultUserController extends BaseController {
     HashMap<String, Object> getCurrentUserList(@RequestBody Map<String, Object> params) {
         HashMap<String,Object> response = new HashMap<String, Object>();
         PaginationVo<ConsultRecordMongoVo> pagination = null;
-        int pageNo = 0;
-        int pageSize = 0;
         String csUserId = String.valueOf(params.get("csUserId"));
 
         if(StringUtils.isNotNull(csUserId)){
-            pageNo = (Integer) params.get("pageNo");
-            pageSize = (Integer) params.get("pageSize");
+            int pageNo = (Integer) params.get("pageNo");
+            int pageSize = (Integer) params.get("pageSize");
             List<HashMap<String,Object>> responseList = new ArrayList<HashMap<String, Object>>();
-            List<RichConsultSession> richConsultSessions = consultMongoUtilsService.queryRichConsultSessionList(new Query().addCriteria(Criteria.where("csUserId").is(csUserId)));
-            if(richConsultSessions!=null && richConsultSessions.size()>0){
-                for(RichConsultSession richConsultSession :richConsultSessions){
+
+            ConsultSession consultSessionSearch = new ConsultSession();
+            consultSessionSearch.setCsUserId(csUserId);
+            consultSessionSearch.setStatus(ConsultSession.STATUS_ONGOING);
+            List<ConsultSession> consultSessions = consultSessionService.selectBySelective(consultSessionSearch);
+
+            if(consultSessions!=null && consultSessions.size()>0){
+                for(ConsultSession consultSession :consultSessions){
                     HashMap<String,Object> searchMap = new HashMap<String, Object>();
+                    RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(consultSession.getId());
                     String userId = richConsultSession.getUserId();
                     Query query = new Query(where("userId").is(userId).and("csUserId")
-                            .is(richConsultSession.getCsUserId())).with(new Sort(Direction.DESC, "createDate"));
-                    pagination = consultRecordService.getPage(pageNo, pageSize, query,"temporary");
-                    if(StringUtils.isNull(richConsultSession.getUserId())){
-                        searchMap.put("patientId",richConsultSession.getUserId());
-                    }
+                            .is(consultSession.getCsUserId())).with(new Sort(Direction.ASC, "createDate"));
+                    pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "temporary");
+                    searchMap.put("patientId",userId);
+                    searchMap.put("source",richConsultSession.getSource());
                     searchMap.put("patientName", richConsultSession.getUserName());
                     searchMap.put("fromServer",richConsultSession.getServerAddress());
                     searchMap.put("sessionId",richConsultSession.getId());
@@ -225,7 +263,7 @@ public class ConsultUserController extends BaseController {
                 }
                 response.put("alreadyJoinPatientConversation",responseList);
             }else{
-                response.put("alreadyJoinPatientConversation","");
+                response.put("alreadyJoinPatientConversation", "");
             }
         }else {
             response.put("alreadyJoinPatientConversation","");
@@ -234,7 +272,7 @@ public class ConsultUserController extends BaseController {
     }
 
     /***
-     * 聊天记录查询接口（UserInfo 根据客户查找  message 根据聊天记录查找  分页
+     * 聊天记录查询接口（UserInfo 根据客户查找  message 根据聊天记录查找  分页  123
      *
      * @param
      @return
@@ -277,42 +315,75 @@ public class ConsultUserController extends BaseController {
         }
 
         PaginationVo<ConsultRecordMongoVo> pagination = null;
+        PaginationVo<ConsultSessionStatusVo> consultSessionStatusVoPaginationVo = null;
         String searchType = String.valueOf(params.get("searchType"));  //user 根据客户查找  message 根据聊天记录查找
         String searchInfo = String.valueOf(params.get("searchInfo"));
-
+        List<ConsultSessionStatusVo> resultList = new ArrayList<ConsultSessionStatusVo>();
         if(searchType.equals("user")){
             Criteria cr = new Criteria();
             Query query = new Query();
             query.addCriteria(cr.orOperator(
-                    Criteria.where("attentionNickName").regex(searchInfo)
-            )).with(new Sort(Sort.Direction.DESC, "create_date"));
-            pagination = consultRecordService.getPage(pageNo, pageSize, query,"permanent");
+                    Criteria.where("userName").regex(searchInfo)
+            )).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
+            consultSessionStatusVoPaginationVo = consultRecordService.getUserMessageList(pageNo, pageSize, query);
+
+            if(consultSessionStatusVoPaginationVo.getDatas()!=null && consultSessionStatusVoPaginationVo.getDatas().size()>0){
+                for(ConsultSessionStatusVo consultSessionStatusVo :consultSessionStatusVoPaginationVo.getDatas()){
+                    ConsultSessionStatusVo vo = consultSessionStatusVo;
+                    //根据userId查询CsUserId
+                    ConsultSession consultSession =new ConsultSession();
+                    consultSession.setUserId(consultSessionStatusVo.getUserId());
+                    List<ConsultSession> sessionList = consultSessionService.getCsUserByUserId(consultSession);
+                    if(sessionList!=null && sessionList.size() > 0){
+                        String csUserName = "";
+                        for(ConsultSession session :sessionList){
+                            if(session!=null){
+                                csUserName = csUserName + " " +session.getNickName();
+                            }
+                        }
+                        vo.setCsUserName(csUserName);
+                    }
+                    resultList.add(vo);
+                }
+            }
+
+            HashSet hashSet  =   new  HashSet(resultList);
+            resultList.clear();
+            resultList.addAll(hashSet);
+            response.put("userList",resultList);
         }else if(searchType.equals("message")){
             Query query = new Query(where("message").regex(searchInfo)).with(new Sort(Sort.Direction.DESC, "create_date"));
-            pagination = consultRecordService.getPage(pageNo, pageSize, query,"permanent");
-        }
-        //根据咨询记录查询对应的用户
-        HashSet<String> openidSet = new HashSet<String>();
-        for(ConsultRecordMongoVo consultRecordMongoVo :pagination.getDatas()){
-            if(consultRecordMongoVo.getConsultType().equals("wx")){
-                openidSet.add(consultRecordMongoVo.getSenderId());
-            }
+            pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query,"permanent");
+            response.put("userList", pagination!=null?pagination.getDatas():"");
+
         }
 
-        List<ConsultRecordMongoVo> consultSessionForwardRecordsVos = new ArrayList<ConsultRecordMongoVo>();
-        Iterator iterator = openidSet.iterator();
-        while(iterator.hasNext()){
-            Query query = new Query(where("openid").is(iterator.next())).with(new Sort(Sort.Direction.DESC, "createDate"));
-            ConsultRecordMongoVo oneConsultRecord = consultRecordService.findOneConsultRecord(query);
-            if(oneConsultRecord!=null && StringUtils.isNotNull(oneConsultRecord.getSenderId())){
-                consultSessionForwardRecordsVos.add(oneConsultRecord);
-            }
-        }
-
-        response.put("userList",consultSessionForwardRecordsVos);
-        response.put("records", pagination!=null?pagination.getDatas():"");
         response.put("pageNo",pageNo);
         response.put("pageSize",pageSize);
+        return response;
+    }
+
+    /**
+     * 根据userId查询会话sessionId
+     * @author guozengguang
+     * @param userId
+     * @return response 返回前台的响应数据
+     */
+    @RequestMapping(value = "/getSessionId", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> getSessionId(@RequestParam(required=true) String userId) {
+
+        Map<String, Object> response = new HashMap<String, Object>();
+        Integer sessionId = sessionRedisCache.getSessionIdByUserId(userId);
+        if(sessionId != null){
+            response.put("status", 0);
+            response.put("sessionId", sessionId);
+        }else{
+            response.put("status", 1);
+            response.put("sessionId", "");
+        }
+
         return response;
     }
 

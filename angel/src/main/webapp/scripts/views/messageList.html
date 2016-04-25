@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="scripts/styles/doctorConsultFirst.css?ver=1.0.1" type="text/css"/>
 <link rel="stylesheet" href="scripts/styles/messageList.css?ver=1.0.1" type="text/css"/>
-<div ui-view ng-init="userConsultList()" class="messageList">
+<div ui-view ng-init="messageListInit()" class="messageList">
     <!--头部-->
     <header class="head w10">
         <div class="head-t w10 qf">
@@ -60,7 +60,6 @@
                     </div>
                     <input type="text" placeholder="搜索内容" ng-model="info.searchMessageContent">
                     <img ng-click="searchMessage()" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_16.png" alt=""/>
-
                 </div>
             </div>
         </div>
@@ -68,12 +67,16 @@
             <div class='w10 h6 customerlist '>
                 <div class="fl">客户列表</div>
                 <div class="fr">
-                    <select id="searchDateId" ng-model="selected" ng-options="date.name for date in searchDate" ng-change="getGetCSInfoByUserId(selected.value)">
+                    <select id="searchDateId" ng-model="selected"
+                            ng-options="date.name for date in searchDate"
+                            ng-change="getGetCSInfoByUserId(selected.value)">
                         <option value="">所有时间</option>
                     </select>
                 </div>
                 <div class="fr">
-                    <select id="CSDoctorListInfoId" ng-model="selected" ng-options="user.name for user in CSList" ng-change="getGetCSInfoByUserId(selected.id)">
+                    <select id="CSDoctorListInfoId" ng-model="selected"
+                            ng-options="user.name for user in CSList"
+                            ng-change="getGetCSInfoByUserId(selected.id)">
                         <option value="">所有客服</option>
                     </select>
                 </div>
@@ -86,14 +89,13 @@
 
             <div  class='w10 h20 br1'>
                 <ul class="nicknamecontentlist">
-                    <div ng-repeat="item in userConsultListInfo" ng-click ="GetUserRecordDetail(item.openid,item.senderName,item.fromUserId,item.toUserId)">
-                        <li>
-                            <div class="nickname">{{item.senderName}}</div>
-                            <div class="recently">{{item.infoDate}}</div>
-                            <div class="insert">{{item.doctorName}}</div>
-                        </li>
-                        <br/>
-                    </div>
+                    <li ng-repeat="item in userConsultListInfo"
+                        ng-click ="getUserRecordDetail(item.userId,$index)"
+                        ng-style="(setSessoin==$index)?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}">
+                        <div class="nickname">{{item.userName}}</div>
+                        <div class="recently">{{item.lastMessageTime}}</div>
+                        <div class="insert">{{item.csUserName}}</div>
+                    </li>
                 </ul>
                 <a id="bottom"></a>
             </div>
@@ -124,30 +126,30 @@
             <div class='w10 h20 examinecontent'>
                 <ul>
                      <li ng-repeat="item in currentUserConsultRecordDetail">
-                         <div ng-if="item.senderId==doctor">
-                             <div class="name" ng-style="item.senderId==doctor?{color: '#7fc700'}:{color: '#08b7c2'}">
+                         <div ng-if="item.senderId==item.csUserId">
+                             <div class="name" ng-style="item.senderId==item.csUserId?{color: '#7fc700'}:{color: '#08b7c2'}">
                                  {{item.doctorName}} {{item.dateTime}}
                              </div>
-                             <div ng-if="item.messageType=='text'" id="show" class="chatcontent">
+                             <div ng-if="item.type=='0'" id="show" class="chatcontent">
                                  {{item.message}}
                              </div>
                          </div>
-                         <div ng-if="item.senderId!=doctor">
-                             <div class="name">
+                         <div ng-if="item.senderId==item.userId">
+                             <div class="name" ng-style="item.senderId==item.userId?{color: '#08b7c2'}:{color: '#7fc700'}">
                                  {{item.senderName}} {{item.createDate}}
                              </div>
-                             <div ng-if="item.messageType=='text'" class="chatcontent">
+                             <div ng-if="item.type=='0'" class="chatcontent">
                                  {{item.message}}
                              </div>
-                             <div ng-if="item.messageType=='1'" class="chatcontent">
+                             <div ng-if="item.type=='1'" class="chatcontent">
                                  <a target="_blank" ng-href="{{item.message}}">
                                      <img width="100" height="100" ng-src="{{item.message}}">
                                  </a>
                              </div>
-                             <div ng-if="item.messageType=='2'" class="chatcontent">
+                             <div ng-if="item.type=='2'" class="chatcontent">
                                  <audio ng-src="{{item.message}}" controls="controls"/>
                              </div>
-                             <div ng-if="item.messageType=='3'" class="chatcontent">
+                             <div ng-if="item.type=='3'" class="chatcontent">
                                  <video width="500" height="250" ng-src="{{item.message}}" controls="controls"/>
                              </div>
                          </div>

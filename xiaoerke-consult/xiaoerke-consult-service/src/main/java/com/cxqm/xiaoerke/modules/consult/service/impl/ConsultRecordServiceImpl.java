@@ -15,6 +15,7 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -81,8 +85,13 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     }
 
     @Override
-    public PaginationVo<ConsultRecordMongoVo> getPage(int pageNo, int pageSize, Query query,String recordType) {
-        return consultRecordMongoDBService.getPage(pageNo, pageSize, query, recordType);
+    public PaginationVo<ConsultRecordMongoVo> getRecordDetailInfo(int pageNo, int pageSize, Query query,String recordType) {
+        return consultRecordMongoDBService.getRecordDetailInfo(pageNo, pageSize, query, recordType);
+    }
+
+    @Override
+    public PaginationVo<ConsultSessionStatusVo> getUserMessageList(int pageNo, int pageSize, Query query) {
+        return consultRecordMongoDBService.getUserMessageList(pageNo, pageSize, query);
     }
 
     @Override
@@ -194,6 +203,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
             consultRecordMongoVo.setType(type);
             consultRecordMongoVo.setMessage(messageContent);
             consultRecordMongoVo.setSenderId(senderId);
+            consultRecordMongoVo.setSenderName(consultSession.getUserName());
             consultRecordMongoVo.setUserId(consultSession.getUserId());
             consultRecordMongoVo.setCsUserId(consultSession.getCsUserId());
             consultRecordMongoVo.setDoctorName(consultSession.getCsUserName());
@@ -207,25 +217,36 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     public void saveConsultSessionStatus(RichConsultSession consultSession) {
         ConsultSessionStatusVo consultSessionStatusVo = new ConsultSessionStatusVo();
         consultSessionStatusVo.setSessionId(String.valueOf(consultSession.getId()));
-        String lastDate = DateUtils.DateToStr(new Date());
-        consultSessionStatusVo.setLastMessageTime(lastDate);
+        consultSessionStatusVo.setLastMessageTime(new Date());
         consultSessionStatusVo.setUserId(consultSession.getUserId());
+        consultSessionStatusVo.setStatus("ongoing");
+        consultSessionStatusVo.setUserId(consultSession.getUserId());
+        consultSessionStatusVo.setUserName(consultSession.getUserName());
+        consultSessionStatusVo.setCsUserName(consultSession.getCsUserName());
+        consultSessionStatusVo.setCsUserId(consultSession.getCsUserId());
         consultRecordMongoDBService.upsertConsultSessionStatusVo(consultSessionStatusVo);
     }
 
     @Override
-    public List<Object> querySessionStatusList(Query query){
+    public List<ConsultSessionStatusVo> querySessionStatusList(Query query){
         return consultRecordMongoDBService.querySessionStatusList(query);
     }
 
     @Override
-    public void  deleteConsultSessionStatusVo(Query query) {
-        consultRecordMongoDBService.deleteConsultSessionStatusVo(query);
+    public void  updateConsultSessionStatusVo(Query query,String status) {
+        consultRecordMongoDBService.updateConsultSessionStatusVo(query,status);
     }
 
     @Override
     public void  deleteConsultTempRecordVo(Query query) {
         consultRecordMongoDBService.deleteConsultRecordTemporary(query);
+    }
+
+    @Override
+    public List<ConsultRecordMongoVo> getCurrentUserHistoryRecord(String userId, Date dateTime, Integer pageSize) {
+        Query query = new Query().addCriteria(Criteria.where("userId").is(userId).and("createDate").lt(dateTime)).
+                with(new Sort(Sort.Direction.DESC, "createDate")).limit(pageSize);
+        return consultRecordMongoDBService.queryList(query);
     }
 
 }

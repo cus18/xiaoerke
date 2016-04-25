@@ -89,6 +89,7 @@
 
     </trim>
   </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo" >
     update consult_conversation_forward_records
     <set >
@@ -111,7 +112,7 @@
         remark = #{remark,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
-        remark = #{status,jdbcType=VARCHAR},
+        status = #{status,jdbcType=VARCHAR},
       </if>
 
     </set>
@@ -139,25 +140,24 @@
     and status = 'waiting' 
   </update>
 
-
   <select id="findConversationRankList" resultType="java.util.HashMap" >
     SELECT
-        su.id,
-        su.name,
-        count(*) consultNum
+    su.id csUserId,
+    su.name doctorName,
+    su.email doctorEmail,
+    count(*) consultNum
     FROM
-        consult_conversation_forward_records ccfr
-    INNER JOIN sys_user su ON su.id = ccfr.to_user_id
-    WHERE
-        create_time LIKE '${rankDate}%'
+    consult_session cs
+    left JOIN sys_user su ON su.id = cs.sys_user_id_cs
+    WHERE DATE_FORMAT(cs.create_time,'%Y-%m-%d') = #{rankDate}
+    and su.user_type = 'distributor'
     GROUP BY
-        ccfr.to_user_id
+    cs.sys_user_id_cs
     ORDER BY
-        consultNum desc
+    consultNum desc
   </select>
 
-
-  <select id="getConsultUserListRecently_bak" resultMap="BaseResultMap"
+  <select id="getConsultUserListRecently" resultMap="BaseResultMap"
           resultType="com.cxqm.xiaoerke.common.persistence.Page">
     SELECT ccfr.*,su.openid from consult_conversation_forward_records ccfr
     INNER JOIN sys_user su on su.id = ccfr.from_user_id
@@ -170,6 +170,14 @@
     </if>
     group su.id
     ORDER BY ccfr.create_time desc
+  </select>
+
+  <select id="findWaitJoinListByCsUserId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from consult_conversation_forward_records
+    where to_user_id = #{csUserId,jdbcType=VARCHAR}
+      and status =  #{status,jdbcType=VARCHAR}
   </select>
 
 </mapper>

@@ -31,7 +31,7 @@
     LEFT JOIN consultphone_register_service crs ON
         crs.illness_describe_id = hid.id
     WHERE
-        crs.id = #{sys_phoneConsult_id,jdbcType=INTEGER};
+        crs.sys_phoneConsult_service_id = #{sys_phoneConsult_id,jdbcType=INTEGER};
   </select>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >

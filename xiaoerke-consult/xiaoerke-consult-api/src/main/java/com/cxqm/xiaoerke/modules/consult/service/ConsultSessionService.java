@@ -25,12 +25,14 @@ public interface ConsultSessionService {
     
     List<ConsultSession> selectBySelective(ConsultSession consultSession);
 
+    List<ConsultSession> getCsUserByUserId(ConsultSession consultSession);
+
     List<String> getOnlineCsList();
 
-    HashMap<String,Object> getOnlineCsListInfo(List<String> userList);
+    List<HashMap<String, Object>> getOnlineCsListInfo(List<String> userList);
 
     List<ConsultSession> getAlreadyAccessUsers(ConsultSession richConsultSession);
 
 
-    String clearSession(Integer sessionId, String userId);
+    String clearSession(String sessionId, String userId);
 }

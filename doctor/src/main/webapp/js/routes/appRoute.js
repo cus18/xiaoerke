@@ -209,7 +209,7 @@ define(['app'], function(app){
                        }
                    })
                    .state('doctorFans', {
-                       url: '/doctorFans',
+                       url: '/doctorFans/:id',
                        templateProvider: function() { return lazyDeferred.promise; },
                        controller: 'doctorFansCtrl',
                        resolve: {
@@ -222,7 +222,7 @@ define(['app'], function(app){
                        }
                    })
                    .state('doctorHome', {
-                       url: '/doctorHome',
+                       url: '/doctorHome/:id',
                        templateProvider: function() { return lazyDeferred.promise; },
                        controller: 'doctorHomeCtrl',
                        resolve: {

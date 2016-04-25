@@ -1,7 +1,6 @@
 package com.cxqm.xiaoerke.modules.consultPhone.web;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.excel.ExportExcel;
-import com.cxqm.xiaoerke.modules.member.entity.MemberservicerelItemservicerelRelationVo;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneManuallyConnectVo;
 import com.cxqm.xiaoerke.modules.order.exception.CancelOrderException;
 import net.sf.json.JSONObject;
@@ -31,7 +29,6 @@ import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.order.entity.ConsulPhonetDoctorRelationVo;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo;
-import com.cxqm.xiaoerke.modules.order.service.ConsultPhoneOrderService;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PhoneConsultDoctorRelationService;
 import com.cxqm.xiaoerke.modules.order.service.SysConsultPhoneService;
@@ -81,6 +78,7 @@ public class ConsultPhoneController extends BaseController {
 			model.addAttribute("dateList", resultMap.get("dateList"));
 			model.addAttribute("phoneConsultFlag", resultMap.get("phoneConsultFlag"));
 			model.addAttribute("serverType", resultMap.get("serverType"));
+			model.addAttribute("serverLength", resultMap.get("serverLength"));
 			model.addAttribute("beginTimeList", resultMap.get("beginTimeList"));
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
@@ -335,7 +333,7 @@ public class ConsultPhoneController extends BaseController {
 		String id = request.getParameter("id");
 		String cancelReason = request.getParameter("cancelReason");
 		try {
-			consultPhonePatientService.cancelOrder(Integer.valueOf(id), cancelReason);
+			consultPhonePatientService.cancelOrder(Integer.valueOf(id), cancelReason,"0");
 		} catch (CancelOrderException e) {
 			e.printStackTrace();
 		}

@@ -17,6 +17,7 @@ import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -110,7 +111,6 @@ public class PayController {
             model.addAttribute("intervalFlag", "1");
             return "antiDogPay";
         }else if(serviceType.equals("phoneConsult")){
-            model.addAttribute("payPrice", 120);
             model.addAttribute("phoneConDoctorDetail", phoneConDoctorDetail);
             model.addAttribute("doctorId", doctorId);
             return "phoneConsultPay";

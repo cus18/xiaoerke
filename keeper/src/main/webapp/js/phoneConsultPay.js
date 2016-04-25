@@ -44,7 +44,7 @@ var doRefresh = function(){
         error : function() {
         }
     });
-    var param = '{routePath:"/wxPay/serviceType=phoneConsultAAAAAApatientPay.do?phoneConDoctorDetail='
+    var param = '{routePath:"/wxPay/patientPay.do?serviceType=phoneConsultAAAAAApatientPay.do?phoneConDoctorDetail='
                 +GetQueryString("phoneConDoctorDetail")+"AAAAAAdoctorId="+GetQueryString("doctorId")+'"}';
     $.ajax({
         type: "POST",
@@ -71,7 +71,7 @@ var doRefresh = function(){
                         $('#doctorName').html(data.doctorName);
                         $('#position').html(data.position1 + data.position2);
                         $('#hospitalName').html(data.hospitalName);
-                        $('#department').html(data.doctor_expert_desc);
+                        $('#department').html(data.departmentName);
                         $('#ServerLength').html(data.ServerLength);
                         $('#price').html(data.price);
                         $('#payPrice').html(data.price);
@@ -206,7 +206,7 @@ var choiceBabyss=function(index){
 
 // 添加宝宝
 var addBaby=function(){
-    window.location.href = "/titan/phoneConsult#/phoneConAddBaby";
+    window.location.href = "/titan/phoneConsult#/phoneConAddBaby/"+GetQueryString("phoneConDoctorDetail")+","+GetQueryString("doctorId");
 }
 // 取消选择宝宝
 var cancelSelectBaby=function(){

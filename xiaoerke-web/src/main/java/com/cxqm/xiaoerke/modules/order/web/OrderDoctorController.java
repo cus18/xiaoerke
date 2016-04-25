@@ -3,14 +3,13 @@
  */
 package com.cxqm.xiaoerke.modules.order.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.cxqm.xiaoerke.common.config.Global;
+import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhoneOrderService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
-
+import com.cxqm.xiaoerke.modules.sys.service.DoctorInfoService;
+import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
+import com.cxqm.xiaoerke.modules.wechat.service.WeChatInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cxqm.xiaoerke.common.config.Global;
-import com.cxqm.xiaoerke.common.web.BaseController;
-import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
-import com.cxqm.xiaoerke.modules.wechat.service.WeChatInfoService;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 订单Controller
@@ -35,6 +34,9 @@ public class OrderDoctorController extends BaseController {
 
 	@Autowired
 	private PatientRegisterService patientRegisterService;
+
+    @Autowired
+    DoctorInfoService doctorInfoService;
 
     @Autowired
     private ConsultPhoneOrderService consultPhoneOrderService;
@@ -102,6 +104,11 @@ public class OrderDoctorController extends BaseController {
         Map<String,Object> response = new HashMap<String, Object>();
         String userId = UserUtils.getUser().getId();
         String doctorId = (String) params.get("doctorId");
+        if(doctorId == null || "".equals(doctorId)){
+            Map<String,Object> paramsMap = new HashMap<String, Object>();
+            paramsMap.put("id",UserUtils.getUser().getId());
+            doctorId = (String)doctorInfoService.getDoctorIdByUserIdExecute(paramsMap).get("id");
+        }
         String date = (String) params.get("date");
 
         //预约挂号

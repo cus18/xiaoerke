@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.consult.entity;
 
+import java.util.Date;
+
 /**
  * 根据此vo判断redis中的会话是否过期
  * @author deliang
@@ -7,26 +9,57 @@ package com.cxqm.xiaoerke.modules.consult.entity;
 public class ConsultSessionStatusVo {
     private String sessionId;
 
-    private String lastMessageTime;
+    private Date lastMessageTime;
 
-    private String UserId;
+    private String userId;
 
-    private String openId;
 
-    public String getOpenId() {
-        return openId;
+    private String status;
+
+    private String userName;
+
+    private String csUserName;
+
+    private String csUserId;
+
+    public String getCsUserId() {
+        return csUserId;
     }
 
-    public void setOpenId(String openId) {
-        this.openId = openId;
+    public void setCsUserId(String csUserId) {
+        this.csUserId = csUserId;
+    }
+
+    public String getCsUserName() {
+        return csUserName;
+    }
+
+    public void setCsUserName(String csUserName) {
+        this.csUserName = csUserName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getUserId() {
-        return UserId;
+        return userId;
     }
 
     public void setUserId(String userId) {
-        UserId = userId;
+        this.userId = userId;
     }
 
     public String getSessionId() {
@@ -37,11 +70,11 @@ public class ConsultSessionStatusVo {
         this.sessionId = sessionId;
     }
 
-    public String getLastMessageTime() {
+    public Date getLastMessageTime() {
         return lastMessageTime;
     }
 
-    public void setLastMessageTime(String lastMessageTime) {
+    public void setLastMessageTime(Date lastMessageTime) {
         this.lastMessageTime = lastMessageTime;
     }
 }

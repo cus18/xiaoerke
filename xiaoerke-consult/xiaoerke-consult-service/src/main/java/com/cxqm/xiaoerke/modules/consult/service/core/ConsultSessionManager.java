@@ -1,11 +1,14 @@
 package com.cxqm.xiaoerke.modules.consult.service.core;
 
 import com.cxqm.xiaoerke.common.utils.ConstantUtil;
+import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultMongoUtilsServiceImpl;
+import com.cxqm.xiaoerke.modules.sys.service.impl.UserInfoServiceImpl;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -61,9 +64,12 @@ public class ConsultSessionManager {
 
 	private ConsultSessionService consultSessionService = SpringContextHolder.getBean("consultSessionServiceImpl");
 
-	private ConsultSessionForwardRecordsService sessionForwardService = SpringContextHolder.getBean("consultSessionForwardRecordsServiceImpl");
+	private ConsultSessionForwardRecordsService consultSessionForwardRecordsService = SpringContextHolder.getBean("consultSessionForwardRecordsServiceImpl");
 	
 	private SystemService systemService = SpringContextHolder.getBean("systemService");
+
+	private UserInfoServiceImpl userInfoService = SpringContextHolder.getBean("userInfoServiceImpl");
+
 
 	private static ConsultSessionManager sessionManager = new ConsultSessionManager();
 
@@ -240,9 +246,9 @@ public class ConsultSessionManager {
 		}
 
 		if(distributorChannel == null) {
-			//所有的接诊员不在线，随机分配一个在线医生
-			Iterator<Entry<String, Channel>> csUserChannel = csUserChannelMapping.entrySet().iterator();
-			if(csUserChannel!=null){
+			if(csUserChannelMapping.size()!=0){
+				//所有的接诊员不在线，随机分配一个在线医生
+				Iterator<Entry<String, Channel>> csUserChannel = csUserChannelMapping.entrySet().iterator();
 				List<HashMap<String,Object>> doctorOnLineList = new ArrayList();
 				while (csUserChannel.hasNext()) {
 					HashMap<String,Object> doctorOnLineMap = new HashMap<String,Object>();
@@ -263,14 +269,20 @@ public class ConsultSessionManager {
 						consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
 					}
 				}
-
 			}else{
 				//如果没有任何医生在线，给用户推送微信消息，告知没有医生在线，稍后在使用服务
 				String st = "尊敬的用户，您好，目前没有医生在线，请稍后再试";
-				WechatUtil.senMsgToWechat(sessionRedisCache.getWeChatToken(),consultSession.getUserId(), st);
+				WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN,consultSession.getUserId(), st);
 				return null;
 			}
 		}
+
+
+		HashMap<String, Object> perInfo = new HashMap<String, Object>();
+		if ( StringUtils.isNotNull(consultSession.getCsUserId())) {
+			perInfo = userInfoService.findPersonDetailInfoByUserId(consultSession.getCsUserId());
+		}
+		consultSession.setCsUserName((String) perInfo.get("name"));
 
 		//可开启线程进行记录
 		consultSessionService.saveConsultInfo(consultSession);
@@ -282,58 +294,94 @@ public class ConsultSessionManager {
 		String st = "尊敬的用户，宝大夫在线，有什么可以帮您";
 		WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN, consultSession.getUserId(), st);
 		response.put("csChannel", csChannel);
-		response.put("sessionId",sessionId);
-		response.put("consultSession",consultSession);
+		response.put("sessionId", sessionId);
+		response.put("consultSession", consultSession);
 		return response;
 
 	}
 
-	public void transferSession(Integer sessionId, String toCsUserId, String remark){
-		RichConsultSession session = sessionRedisCache.getConsultSessionBySessionId(sessionId);
-		Channel channel = userChannelMapping.get(toCsUserId);
-		JSONObject jsonObj = new JSONObject();
-		jsonObj.put("type", 6);
-		jsonObj.put("notifyType", 1);
-		jsonObj.put("session", session);
-		jsonObj.put("remark", remark);
-		channel.writeAndFlush(jsonObj.toJSONString());
-		
-		ConsultSessionForwardRecordsVo forwardRecord = new ConsultSessionForwardRecordsVo();
-		forwardRecord.setConversationId(sessionId.longValue());
-		forwardRecord.setCreateBy(session.getCsUserId());
-		forwardRecord.setCreateTime(new Date());
-		forwardRecord.setFromUserId(session.getCsUserId());
-		forwardRecord.setToUserId(toCsUserId);
-		forwardRecord.setRemark(remark);
-		forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_WAITING);
-		sessionForwardService.save(forwardRecord);
+	public int transferSession(Integer sessionId, String toCsUserId, String remark){
+		try{
+			RichConsultSession session = sessionRedisCache.getConsultSessionBySessionId(sessionId);
+			User toCsUser = systemService.getUser(toCsUserId);
+			Channel channelToCsUser = userChannelMapping.get(toCsUserId);
+			Channel channelFromCsUser = userChannelMapping.get(session.getCsUserId());
+			if(channelToCsUser.isActive()&&channelFromCsUser.isActive()){
+				//通知被转接咨询医生，有用户需要转接
+				JSONObject jsonObj = new JSONObject();
+				jsonObj.put("type", 4);
+				jsonObj.put("notifyType", "0009");
+				jsonObj.put("session", session);
+				jsonObj.put("toCsUserName",toCsUser.getName());
+				jsonObj.put("remark", remark);
+				TextWebSocketFrame frameToCsUser = new TextWebSocketFrame(jsonObj.toJSONString());
+				channelToCsUser.writeAndFlush(frameToCsUser.retain());
+
+				//通知发起转接的人，转接正在处理中
+				jsonObj.clear();
+				jsonObj.put("type", 4);
+				jsonObj.put("notifyType", "0011");
+				jsonObj.put("session", session);
+				jsonObj.put("remark", remark);
+				jsonObj.put("toCsUserId", toCsUserId);
+				jsonObj.put("toCsUserName", toCsUser.getName());
+				TextWebSocketFrame frameFromCsUser = new TextWebSocketFrame(jsonObj.toJSONString());
+				channelFromCsUser.writeAndFlush(frameFromCsUser.retain());
+
+				ConsultSessionForwardRecordsVo forwardRecord = new ConsultSessionForwardRecordsVo();
+				forwardRecord.setConversationId(sessionId.longValue());
+				forwardRecord.setCreateBy(session.getCsUserId());
+				forwardRecord.setCreateTime(new Date());
+				forwardRecord.setFromUserId(session.getCsUserId());
+				forwardRecord.setToUserId(toCsUserId);
+				forwardRecord.setRemark(remark);
+				forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_WAITING);
+				consultSessionForwardRecordsService.save(forwardRecord);
+				return 1;
+			}else{
+				return 0;
+			}
+		}catch (Exception e){
+			return 0;
+		}
 	}
 	
 	public void react2Transfer(Integer sessionId, Integer forwardRecordId, String toCsUserId, String toCsUserName, String operation){
 		RichConsultSession session = sessionRedisCache.getConsultSessionBySessionId(sessionId);
-		String fromCsUserId = session.getCsUserId();
-		session.setCsUserId(toCsUserId);
-		session.setCsUserName(toCsUserName);
-		Channel channel = userChannelMapping.get(fromCsUserId);
-		JSONObject jsonObj = new JSONObject();
-		jsonObj.put("type", 6);
-		jsonObj.put("notifyType", 2);
-		jsonObj.put("operation", operation);
-		jsonObj.put("session", session);
-		channel.writeAndFlush(jsonObj.toJSONString());
-		
-		ConsultSessionForwardRecordsVo forwardRecord = new ConsultSessionForwardRecordsVo();
-		forwardRecord.setId(forwardRecordId.longValue());
-		
-		if(ConsultSessionForwardRecordsVo.REACT_TRANSFER_OPERATION_ACCEPT.equalsIgnoreCase(operation)){
-			sessionRedisCache.putSessionIdConsultSessionPair(sessionId, session);
-			forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_ACCEPT);
-			sessionForwardService.updateAcceptedTransfer(forwardRecord);
-		} else {
-			forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_REJECT);
-			sessionForwardService.updateRejectedTransfer(forwardRecord);
+		if(session!=null){
+			String fromCsUserId = session.getCsUserId();
+			session.setCsUserId(toCsUserId);
+			session.setCsUserName(toCsUserName);
+			Channel channelFromCsUser = userChannelMapping.get(fromCsUserId);
+			if(channelFromCsUser.isActive()){
+				JSONObject jsonObj = new JSONObject();
+				jsonObj.put("type", 4);
+				jsonObj.put("notifyType", "0010");
+				jsonObj.put("operation", operation);
+				jsonObj.put("session", session);
+				TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
+				channelFromCsUser.writeAndFlush(frame.retain());
+
+				ConsultSessionForwardRecordsVo forwardRecord = consultSessionForwardRecordsService.selectByPrimaryKey(forwardRecordId.longValue());
+
+				if(ConsultSessionForwardRecordsVo.REACT_TRANSFER_OPERATION_ACCEPT.equalsIgnoreCase(operation)){
+					if(session.getSource().equals("wxcxqm")){
+						String st = "尊敬的用户，您好，已经为您转接了" + toCsUserName + "提供服务，谢谢^_^";
+						WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN,session.getUserId(), st);
+					}
+
+					if(session!=null){
+						sessionRedisCache.putSessionIdConsultSessionPair(sessionId, session);
+					}
+					forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_ACCEPT);
+					consultSessionForwardRecordsService.updateAcceptedTransfer(forwardRecord);
+				} else {
+					forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_REJECT);
+					consultSessionForwardRecordsService.updateRejectedTransfer(forwardRecord);
+				}
+			}
 		}
-		
+
 	}
 	
 	public void cancelTransferringSession(Integer sessionId, String toCsUserId, String remark){
@@ -343,15 +391,16 @@ public class ConsultSessionManager {
 		forwardRecord.setFromUserId(session.getCsUserId());
 		forwardRecord.setToUserId(toCsUserId);
 		forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_CANCELLED);
-		int count = sessionForwardService.cancelTransfer(forwardRecord);
+		int count = consultSessionForwardRecordsService.cancelTransfer(forwardRecord);
 		
 		if(count > 0) {
 			Channel channel = userChannelMapping.get(toCsUserId);
 			JSONObject jsonObj = new JSONObject();
-			jsonObj.put("type", 6);
-			jsonObj.put("notifyType", 3);
+			jsonObj.put("type", 4);
+			jsonObj.put("notifyType", "0012");
 			jsonObj.put("session", session);
-			channel.writeAndFlush(jsonObj.toJSONString());
+			TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
+			channel.writeAndFlush(frame.retain());
 		}
 	}
 

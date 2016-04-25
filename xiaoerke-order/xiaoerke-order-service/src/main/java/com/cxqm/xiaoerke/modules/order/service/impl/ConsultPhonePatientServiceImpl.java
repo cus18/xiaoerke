@@ -3,6 +3,7 @@ package com.cxqm.xiaoerke.modules.order.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.service.ServiceException;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
@@ -159,36 +160,36 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
 
     @Override
     @Transactional(rollbackFor=Exception.class)
-    public Float cancelOrder(Integer phoneConsultaServiceId,String cancelReason) throws CancelOrderException {
+    public Float cancelOrder(Integer phoneConsultaServiceId,String cancelReason,String cancelState) throws CancelOrderException {
         int sysOrderState = 0;
-        Float price = 0f;
+//        Float price = 0f;
         //取消订单
-        ConsultPhoneRegisterServiceVo vo = consultPhoneRegisterServiceDao.selectByPrimaryKey(phoneConsultaServiceId);
-        vo.setState("4");
-        vo.setUpdateTime(new Date());
-        int state = consultPhoneRegisterServiceDao.updateByPrimaryKeySelective(vo);
+        Map<String,Object> map = consultPhoneRegisterServiceDao.getPhoneConsultaServiceIndo(phoneConsultaServiceId);
+
+        ConsultPhoneRegisterServiceVo consultPhoneRegisterServiceVo= new ConsultPhoneRegisterServiceVo();
+        consultPhoneRegisterServiceVo.setState("4");
+        consultPhoneRegisterServiceVo.setUpdateTime(new Date());
+        consultPhoneRegisterServiceVo.setId(phoneConsultaServiceId);
+        int state = consultPhoneRegisterServiceDao.updateByPrimaryKeySelective(consultPhoneRegisterServiceVo);
         //取消号源
         if(state>0){
-            sysOrderState = sysConsultPhoneServiceDao.cancelOrder(vo.getSysPhoneconsultServiceId(),"0");
+            sysOrderState = sysConsultPhoneServiceDao.cancelOrder((Integer)map.get("sys_phoneConsult_service_id"),cancelState);
         }
         //退钱
         if(sysOrderState>0){
-            HashMap<String, Object> response = new HashMap<String, Object>();
-            price = accountService.updateAccount(0F, phoneConsultaServiceId + "", response, false, UserUtils.getUser().getId(), "取消电话咨询");
             //发消息
             Map<String,Object> parameter = systemService.getWechatParameter();
             String token = (String)parameter.get("token");
-            Map<String,Object> map = getPatientRegisterInfo(phoneConsultaServiceId);
-            PatientMsgTemplate.consultPhoneRefund2Wechat((String) map.get("orderNo"), (Float) map.get("price")+"", (String) map.get("openid"), token, "");
             String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String) map.get("date"), "yyyy/MM/dd"));
+            String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(Integer) map.get("orderId")+",phone";
+            PatientMsgTemplate.consultPhoneCancel2Wechat((String) map.get("doctorName"),(String) map.get("date"), week, (String) map.get("beginTime"),(String) map.get("endTime"), (String) map.get("phone"),(String) map.get("orderNo"),(Float) map.get("price")+"",(String) map.get("openid"),token,url);
             PatientMsgTemplate.consultPhoneRefund2Msg((String) map.get("doctorName"), (Float) map.get("price")+"", (String) map.get("phone"),(String) map.get("date"), week, (String) map.get("beginTime"),(String) map.get("orderNo"));
-
         }
-        if(price== 0){
+        if(sysOrderState== 0){
                 throw  new CancelOrderException();
         }
 
-        return price;
+        return (Float)map.get("price");
     }
 
     /**
@@ -265,7 +266,9 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
                 temp.setState("等待重连");
                 temp.setPayState("已付款");
             }
-            temp.setOrderTimeToStr(DateUtils.DateToStr(temp.getUpdateTime(), "datetime"));
+            if(temp.getUpdateTime()!=null){
+                temp.setOrderTimeToStr(DateUtils.DateToStr(temp.getUpdateTime(), "datetime"));
+            }
         }
         return list;
     }
@@ -278,20 +281,6 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
     public List<Map<String, Object>> getConsultPhoneRegisterListByInfo(Map map) {
         // TODO Auto-generated method stub
         return consultPhoneRegisterServiceDao.getConsultPhoneRegisterListByInfo(map);
-    }
-
-    /**
-     * 电话咨询取消预约退费
-     * sunxiao
-     * @param id
-     */
-    @Override
-    public void refundConsultPhoneFee(String id,String cancelReason,Float price,String userId){
-      try {
-          cancelOrder(Integer.valueOf(id),cancelReason);//取消预约
-      }catch (Exception e){
-          e.printStackTrace();
-      }
     }
 
     /**
@@ -343,7 +332,7 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         JSONObject result = new JSONObject();
         boolean tip = true;
         if("immediatelyDial".equals(vo.getDialType())){
-            //dialConnection(vo.getOrderId());
+            dialConnection(vo.getOrderId());
             vo.setDialDate(new Date());
         }else if("timingDial".equals(vo.getDialType())){
             Map param = new HashMap();

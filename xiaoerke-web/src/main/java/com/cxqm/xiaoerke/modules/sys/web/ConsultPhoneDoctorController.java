@@ -118,7 +118,7 @@ public class ConsultPhoneDoctorController {
         String doctorId = (String) params.get("doctorId");
         if(doctorId == null || "".equals(doctorId)){
             Map<String,Object> paramsMap = new HashMap<String, Object>();
-            paramsMap.put("userId",UserUtils.getUser().getId());
+            paramsMap.put("id",UserUtils.getUser().getId());
             doctorId = (String)doctorInfoService.getDoctorIdByUserIdExecute(paramsMap).get("id");
         }
         String state = (String) params.get("state");

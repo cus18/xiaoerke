@@ -159,12 +159,12 @@ public class ConsultOrderUserController {
         }
         if("待接听".equals(orderVo.get("state"))){
             try {
-                 resultState = consultPhonePatientService.cancelOrder(phoneConsultaServiceId,cancelReason);
+                 resultState = consultPhonePatientService.cancelOrder(phoneConsultaServiceId,cancelReason,"0");
             }catch (Exception e){
                 e.printStackTrace();
             }
 
-            resultMap.put("reultState",resultState/100);
+            resultMap.put("reultState",resultState);
             //插入取消原因
             resultMap.put("reason", cancelReason);
             resultMap.put("praiseId", IdGen.uuid());

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,7 +30,9 @@ public interface ConsultRecordService {
 
     int updateByPrimaryKey(ConsultRecordVo record);
 
-    PaginationVo<ConsultRecordMongoVo> getPage(int pageNo, int pageSize, Query query,String recordType);
+    PaginationVo<ConsultRecordMongoVo> getRecordDetailInfo(int pageNo, int pageSize, Query query,String recordType);
+
+    PaginationVo<ConsultSessionStatusVo> getUserMessageList(int pageNo, int pageSize, Query query);
 
     int saveConsultRecord(ConsultRecordMongoVo consultRecordMongoVo);
 
@@ -45,10 +48,11 @@ public interface ConsultRecordService {
 
     void saveConsultSessionStatus(RichConsultSession consultSession);
 
-    List<Object> querySessionStatusList(Query query);
+    List<ConsultSessionStatusVo> querySessionStatusList(Query query);
 
-    void  deleteConsultSessionStatusVo(Query query);
+    void  updateConsultSessionStatusVo(Query query,String status);
 
     void  deleteConsultTempRecordVo(Query query);
 
+    List<ConsultRecordMongoVo> getCurrentUserHistoryRecord(String userId, Date dateTime, Integer pageSize);
 }

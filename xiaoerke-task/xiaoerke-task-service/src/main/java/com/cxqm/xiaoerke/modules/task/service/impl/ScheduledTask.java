@@ -39,6 +39,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+
 /**
  * Created by 得良 on 2015/6/17.
  */
@@ -993,6 +995,27 @@ public class ScheduledTask {
 
     //建立患者与医生之间的通讯
     public synchronized void getConnenct4doctorAndPatient(){
+
+        //再建立通讯的五分钟前发消息给用户
+        Map<String,Object> parameter = systemService.getWechatParameter();
+        String token = (String)parameter.get("token");
+
+        Date date = new Date();
+        date.setTime(date.getTime()+5*60*1000);
+        String dateStr = DateUtils.DateToStr(date,"datetime");
+        List<HashMap<String, Object>> orderMsgList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1", date);
+        for(HashMap<String ,Object> map:orderMsgList){
+            List<Map> messageMap = messageService.consultPhoneMsgRemind((Integer) map.get("id") + "");
+            if(null == messageMap||messageMap.size() == 0){
+                String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)map.get("date"),"yyyy/MM/dd"));
+                String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(Integer) map.get("orderId")+",phone";
+                PatientMsgTemplate.consultPhoneWaring2Wechat((String)map.get("doctorName"),(String)map.get("date"),week,(String)map.get("beginTime") ,(String)map.get("endTime") ,(String)map.get("userPhone") ,(String)map.get("orderNo"),(String)map.get("openid"),token ,url);
+                PatientMsgTemplate.consultPhoneWaring2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (String) map.get("date"), week, (String) map.get("beginTime"), (String) map.get("userPhone"), (String) map.get("orderNo"));
+                insertMonitor((Integer) map.get("id") + "", "2", "7");
+            }
+        }
+
+
       List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",new Date());
       for(HashMap map:consultOrderList){
           String doctorPhone =  (String)map.get("doctorPhone");
@@ -1028,36 +1051,31 @@ public class ScheduledTask {
               vo.setState("4");
               int state = consultPhonePatientService.updateOrderInfoBySelect(vo);
 //             将钱退还到用户的账户
-              if(state>0){
-                  HashMap<String, Object> response = new HashMap<String, Object>();
-                  accountService.updateAccount(0F, (Integer) map.get("id")+"", response, false, (String)map.get("userId"),"电话咨询超时取消退款");
+//              if(state>0){
+//                  HashMap<String, Object> response = new HashMap<String, Object>();
+//                  accountService.updateAccount(0F, (Integer) map.get("id")+"", response, false, (String)map.get("userId"),"电话咨询超时取消退款");
                   //              并发送消息
-                  Map<String,Object> parameter = systemService.getWechatParameter();
-                  String token = (String)parameter.get("token");
-                  PatientMsgTemplate.consultPhoneRefund2Wechat((String)map.get("orderNo"),(Float)map.get("price")+"", (String)map.get("openid"),token ,"");
-                  PatientMsgTemplate.returnPayPhoneRefund2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (Float) map.get("price") + "", (String) map.get("userPhone"));
-
-              }
+                  String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(Integer) map.get("id")+",phone";
+                  PatientMsgTemplate.unConnectPhone2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (Float) map.get("price") + "", (String) map.get("userPhone"), (String) map.get("orderNo"));
+                  PatientMsgTemplate.unConnectPhone2Wechat((String) map.get("babyName"), (String) map.get("doctorName"), (Float) map.get("price") + "", url, (String) map.get("orderNo"), (String) map.get("openid"), token);
+//              }
           }
       }
 
-
+        //将钱退还给用户
         //再建立通讯的五分钟前发消息给用户
-        Date date = new Date();
-        date.setTime(date.getTime()+5*60*1000);
-        String dateStr = DateUtils.DateToStr(date,"datetime");
-        List<HashMap<String, Object>> orderMsgList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",date);
-        for(HashMap<String ,Object> map:orderMsgList){
-            List<Map> messageMap = messageService.consultPhoneMsgRemind((Integer) map.get("id") + "");
-            if(null == messageMap||messageMap.size() == 0){
-                Map<String,Object> parameter = systemService.getWechatParameter();
-                String token = (String)parameter.get("token");
-                String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)map.get("date"),"yyyy/MM/dd"));
-                PatientMsgTemplate.consultPhoneWaring2Wechat((String)map.get("doctorName"),(String)map.get("date"),week,(String)map.get("beginTime") ,(String)map.get("endTime") ,(String)map.get("userPhone") ,(String)map.get("orderNo"),(String)map.get("openid"),token ,"");
-                PatientMsgTemplate.consultPhoneWaring2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (String) map.get("date"), week, (String) map.get("beginTime"), (String) map.get("userPhone"), (String) map.get("orderNo"));
-                insertMonitor((Integer) map.get("id") + "", "2", "7");
-            }
+        HashMap<String, Object> response = new HashMap<String, Object>();
+        List<HashMap<String, Object>> returnPayList = consultPhoneOrderService.getReturnPayConsultList();
+        for(HashMap<String, Object> map:returnPayList){
+          accountService.updateAccount(0F, (Integer) map.get("id")+"", response, false, (String)map.get("userId"),"电话咨询超时取消退款");
+            Map<String,Object> consultOrder = consultPhonePatientService.getPatientRegisterInfo((Integer) map.get("orderId"));
+          String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(Integer) map.get("orderId")+",phone";
+          PatientMsgTemplate.returnPayPhoneRefund2Msg((String) consultOrder.get("babyName"), (Float) consultOrder.get("price") + "", (String) consultOrder.get("userPhone"));
+          PatientMsgTemplate.returnPayPhoneRefund2Wechat((String) consultOrder.get("babyName"), (Float) consultOrder.get("price") + "",(String) consultOrder.get("openid"),token,url);
         }
+//        查询是不是有return状态
+
+
     }
 
     /**
@@ -1065,20 +1083,16 @@ public class ScheduledTask {
      */
     public void consultManagement4Session(){
         //获取用户与平台最后交流时间
-        List<Object> consultSessionStatusVos = consultRecordService.querySessionStatusList(new Query());
+        Query query = new Query(where("status").is("ongoing"));
+        List<ConsultSessionStatusVo> consultSessionStatusVos = consultRecordService.querySessionStatusList(query);
         if(consultSessionStatusVos != null && consultSessionStatusVos.size() > 0){
-            for(Object object : consultSessionStatusVos){
-                Map map= (Map)object;
-                if(!map.isEmpty()){
-                    Map mapVo = (Map)map.get("consultSessionStatusVo");
-                    ConsultSessionStatusVo consultSessionStatusVo = transConsultSessionStatusMapToVo(mapVo);
-                    if(consultSessionStatusVo !=null && StringUtils.isNotNull(consultSessionStatusVo.getLastMessageTime())){
-                        if(DateUtils.pastMinutes(DateUtils.StrToDate(consultSessionStatusVo.getLastMessageTime(),"xiangang"))>10L){
-                            consultSessionService.clearSession(Integer.valueOf(consultSessionStatusVo.getSessionId()),
+            for(ConsultSessionStatusVo consultSessionStatusVo : consultSessionStatusVos){
+                    if(consultSessionStatusVo !=null && consultSessionStatusVo.getLastMessageTime()!=null){
+                        if(DateUtils.pastMinutes(consultSessionStatusVo.getLastMessageTime())>10L){
+                            consultSessionService.clearSession(consultSessionStatusVo.getSessionId(),
                                     consultSessionStatusVo.getUserId());
                         }
                     }
-                }
             }
         }
     }
@@ -1089,16 +1103,16 @@ public class ScheduledTask {
         consultMongoUtilsService.removeConsultRankRecord(new Query());
     }
 
-    public ConsultSessionStatusVo transConsultSessionStatusMapToVo(Map map){
-        if(!map.isEmpty()){
-            ConsultSessionStatusVo consultSessionStatusVo = new ConsultSessionStatusVo();
-            consultSessionStatusVo.setSessionId((String)map.get("sessionId"));
-            consultSessionStatusVo.setLastMessageTime((String)map.get("lastMessageTime"));
-            consultSessionStatusVo.setUserId((String)map.get("UserId"));
-            return consultSessionStatusVo;
-        }
-        return null;
-    }
+//    public ConsultSessionStatusVo transConsultSessionStatusMapToVo(Map map){
+//        if(!map.isEmpty()){
+//            ConsultSessionStatusVo consultSessionStatusVo = new ConsultSessionStatusVo();
+//            consultSessionStatusVo.setSessionId((String)map.get("sessionId"));
+//            consultSessionStatusVo.setLastMessageTime((String)map.get("lastMessageTime"));
+//            consultSessionStatusVo.setUserId((String)map.get("UserId"));
+//            return consultSessionStatusVo;
+//        }
+//        return null;
+//    }
 
     //插入监听器
     private void insertMonitor(String register_no, String type, String status) {
@@ -1158,7 +1172,8 @@ public class ScheduledTask {
                 Map<String,Object> parameter = systemService.getWechatParameter();
                 String token = (String)parameter.get("token");
                 String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)map.get("date"),"yyyy/MM/dd"));
-                PatientMsgTemplate.consultPhoneWaring2Wechat((String) map.get("doctorName"), (String) map.get("date"), week, (String) map.get("beginTime"), (String) map.get("endTime"), (String) map.get("userPhone"), (String) map.get("orderNo"), (String) map.get("openid"), token, "");
+                String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(Integer) map.get("orderId")+",phone";
+                PatientMsgTemplate.consultPhoneWaring2Wechat((String) map.get("doctorName"), (String) map.get("date"), week, (String) map.get("beginTime"), (String) map.get("endTime"), (String) map.get("userPhone"), (String) map.get("orderNo"), (String) map.get("openid"), token, url);
                 PatientMsgTemplate.consultPhoneWaring2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (String) map.get("date"), week, (String) map.get("beginTime"), (String) map.get("userPhone"), (String) map.get("orderNo"));
                 insertMonitor((Integer) map.get("id") + "", "2", "7");
             }

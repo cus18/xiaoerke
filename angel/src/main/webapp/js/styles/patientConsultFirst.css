@@ -7,10 +7,7 @@ li{list-style:none}
 img{border:0;vertical-align:middle}
 table{border-collapse:collapse;border-spacing:0}
 p{word-wrap:break-word}
-a:focus,input:focus{
-    -webkit-tap-highlight-color:rgba(0,0,0,0);
-    -webkit-user-modify:read-write-plaintext-only;
-}
+a:focus,input:focus{-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-user-modify:read-write-plaintext-only;}
 .container-fluid{
     background-color: #fff;
     width: 375px;
@@ -31,17 +28,22 @@ img {
 .consultTitle span {
      display: inline-block;
      float: left;
-     padding: 10px 10px;
+     padding: 9px 10px;
      line-height: 24px;
  }
 .consultTitle span:nth-child(2){
     float: right;
 }
 .consultDisplay {
-     height: 500px;
+    height: 500px;
     background-color: #f9f9f9;
     border-bottom: 1px solid #ccc;
+    overflow: auto;
  }
+.consultDisplay::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
 .consultInputTop{
     height: 50px;
 }
@@ -80,19 +82,6 @@ img {
     height: 60px;
     margin: 0 30px;
 }
-.moreInformation {
-    padding-top: 10px;
-    text-align: center;
-}
-.moreInformation a{
-    display: inline-block;
-    color: #08b7c2;
-    padding-left: 15px;
-    background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fyh_12.png") no-repeat center left;
-}
-.moreInformation a:hover{
-    text-decoration: underline;
-}
 textarea {
     overflow:auto;
     word-break:break-all;
@@ -103,4 +92,63 @@ textarea {
     border: none;
     vertical-align: top;
     resize: none;
+}
+/*会话内容*/
+.doctorReplyContent,.patientConsultContent{
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    padding-top: 10px;
+}
+.doctorHeaderImg {
+    margin-left: 10px;
+}
+.patientHeaderImg {
+    margin-right: 10px;
+}
+.doctorReplyContent div{
+    float: left;
+}
+.patientConsultContent  div{
+    float: right;
+}
+.message{
+    border-radius: 2px;
+    padding: 7px 5px;
+    font: 12px/12px 'Microsoft Yahei';
+    position: relative;
+    margin: 0 10px;
+
+}
+.doctorReplyContent div:nth-child(2){
+    background-color: #fff;
+}
+.patientConsultContent div:nth-child(2){
+    background-color: #1fc3c5;
+    color:#fff;
+}
+/*小三角*/
+.patientConsultContent .message::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-width: 4px;
+    border-style: solid;
+    border-color: transparent;
+    border-left-color: #1FC3C5;
+    position: absolute;
+    top: 8px;
+    right: -8px;
+}
+.doctorReplyContent .message::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-width: 4px;
+    border-style: solid;
+    border-color: transparent;
+    border-right-color: #fff;
+    position: absolute;
+    top: 8px;
+    left: -8px;
 }

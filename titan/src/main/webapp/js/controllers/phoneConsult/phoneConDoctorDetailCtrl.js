@@ -18,6 +18,7 @@
         $scope.weekList = [];
         $scope.timeListStatus = [];
         $scope.choiceItem = $stateParams.choiceItem;
+
         //每个案例对应的背景色
         $scope.caseColor=["#f08664","#f39618","#f5c61e","#efea3a","#ba81b6","#eb96be","#f6c3d9",
             "#94ceeb","#5abceb","#8cd2f3","#c1e5f7","#3baf36","#7ebe30","#bdd535","#f5d120","#f7f131",
@@ -107,7 +108,6 @@
             if(item.state == "1")return
             var routePath = "http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=phoneConsultAAAAAAphoneConDoctorDetail="
                 + item.id+"AAAAAAdoctorId="+$stateParams.doctorId;
-                + item.id;
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 $scope.pageLoading = false;
                 if(data.status=="9") {
@@ -118,7 +118,7 @@
                     $scope.nowdate = moment().format('YYYY/MM/DD HH:MM');
                     var boolean = moment(moment(item.data).format('YYYY/MM/DD')+" "+item.begin_time).isAfter(moment().add(5, 'm'));
                     if(boolean){
-                        window.location.href = "http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=phoneConsultAAAAAAphoneConDoctorDetail="
+                        window.location.href = "http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=phoneConsult&phoneConDoctorDetail="
                             + item.id+"&doctorId="+$stateParams.doctorId;
                     }else{
                         alert("预约时间间隔过短")

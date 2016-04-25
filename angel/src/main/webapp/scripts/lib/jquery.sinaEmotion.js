@@ -59,7 +59,7 @@ $(function() {
 function AnalyticEmotion(s) {
 	if(typeof (s) != "undefined") {
 		var sArr = s.match(/\[.*?\]/g);
-		for(var i = 0; i < sArr.length; i++){
+		for(var i = 0; i <= sArr.length; i++){
 			if(uSinaEmotionsHt.containsKey(sArr[i])) {
 				var reStr = "<img src=\"" + uSinaEmotionsHt.get(sArr[i]) + "\" height=\"22\" width=\"22\" />";
 				s = s.replace(sArr[i], reStr);

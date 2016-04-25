@@ -1,13 +1,19 @@
 package com.cxqm.xiaoerke.modules.consult.service.util;
 
+import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 public class ConsultUtil {
+
+	private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
 
 	public static RichConsultSession transferMapToRichConsultSession(HashMap<String, Object> consultSessionMap){
 		RichConsultSession consultSession = new RichConsultSession();
@@ -46,13 +52,9 @@ public class ConsultUtil {
 			HashMap<String,Object> dataMap = new HashMap<String, Object>();
 			dataMap.put("type",dataVo.getType());
 			dataMap.put("content", dataVo.getMessage());
-			dataMap.put("dateTime",(new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss")).format(dataVo.getCreateDate()));
+			dataMap.put("dateTime", (new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(dataVo.getCreateDate()));
 			dataMap.put("senderId",dataVo.getSenderId());
-			if(dataVo.getConsultType().equals("wx")){
-				dataMap.put("senderName",dataVo.getAttentionNickname());
-			}else{
-				dataMap.put("senderName",dataVo.getSenderName());
-			}
+			dataMap.put("senderName",dataVo.getSenderName());
 			dataMap.put("sessionId",dataVo.getSessionId());
 			listData.add(dataMap);
 		}

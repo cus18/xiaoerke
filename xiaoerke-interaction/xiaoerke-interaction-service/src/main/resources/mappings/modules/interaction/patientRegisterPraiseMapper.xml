@@ -245,7 +245,7 @@
         <if test="evaluateType == 2" >
             and (evaluateType &lt;&gt; '1' or evaluateType is null)
         </if>
-
+        ORDER BY prp.praise_date DESC
         <if test="limit != null" >
             limit  #{limit}
         </if>
@@ -270,6 +270,8 @@
         <if test="evaluateType == 2" >
             and (evaluateType &lt;&gt; '1' or evaluateType is null)
         </if>
+
+        ORDER BY prp.praise_date DESC
     </select>
 
   <select id="findAllPraiseByDoctorId" resultType="java.util.Map">

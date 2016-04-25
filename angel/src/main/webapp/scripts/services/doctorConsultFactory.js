@@ -10,13 +10,9 @@ angular.module('services', ['ngResource'])
     .factory('GetUserLoginStatus', ['$resource', function ($resource) {
         return $resource(public + 'auth/info/loginStatus');
     }])
-    //获取聊天记录
-    .factory('GetUserRecordList', ['$resource', function ($resource) {
-        return $resource(public + 'consult/doctor/recordList');
-    }])
     //获取在线医生列表
     .factory('GetOnlineDoctorList', ['$resource', function ($resource) {
-        return $resource(public + 'consult/doctor/doctorList');
+        return $resource(public + 'consult/doctor/doctorOnLineList');
     }])
     //获取医生下的目前正在咨询的用户列表
     .factory('GetCurrentUserConsultListInfo', ['$resource', function ($resource) {
@@ -32,7 +28,7 @@ angular.module('services', ['ngResource'])
     }])
     //获取公共回复列表
     .factory('GetAnswerValueList', ['$resource', function ($resource) {
-        return $resource(public + 'consult/doctor/consult/answerValue');
+        return $resource(public + 'consult/doctor/answerValue');
     }])
     //获取客服医生列表
     .factory('GetCSDoctorList', ['$resource', function ($resource) {
@@ -49,7 +45,6 @@ angular.module('services', ['ngResource'])
     .factory('AnswerModify', ['$resource', function ($resource) {
         return $resource(public + 'consult/doctor/Answer/modify');
     }])
-
     //获取客户的聊天记录
     .factory('GetUserRecordDetail', ['$resource', function ($resource) {
         return $resource(public + 'consult/doctor/recordList');
@@ -76,11 +71,11 @@ angular.module('services', ['ngResource'])
     }])
     //主动终止会话
     .factory('SessionEnd', ['$resource', function ($resource) {
-        return $resource(public + 'consult/user/sessionEnd');
+        return $resource(public + 'consult/doctor/sessionEnd');
     }])
     //获取等待加入用户列表
     .factory('GetWaitJoinList', ['$resource', function ($resource) {
-        return $resource(public + 'consult/waitJoinList');
+        return $resource(public + 'consult/doctor/waitJoinList');
     }])
     //医生获取当前会话用户的N条聊天记录
     .factory('GetHistoryRecordPatient', ['$resource', function ($resource) {
@@ -92,6 +87,15 @@ angular.module('services', ['ngResource'])
     }])
     //转发会话到其他客服
     .factory('TransferToOtherCsUser', ['$resource', function ($resource) {
-        return $resource(public + 'consult/transfer');
+        return $resource(public + 'consult/doctor/transfer');
+    }])
+    .factory('GetCurrentUserHistoryRecord', ['$resource', function ($resource) {
+        return $resource(public + 'consult/doctor/getCurrentUserHistoryRecord');
+    }])
+    .factory('React2Transfer', ['$resource', function ($resource) {
+        return $resource(public + 'consult/doctor/react2Transfer');
+    }])
+    .factory('CancelTransfer', ['$resource', function ($resource) {
+        return $resource(public + 'consult/doctor/cancelTransfer');
     }])
 

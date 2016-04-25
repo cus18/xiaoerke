@@ -90,9 +90,11 @@ public class AccountServiceImpl implements AccountService {
                 if("success".equals(payRecord.getStatus())){
                     if("wx".equals(payRecord.getPayType()))continue;
                     title = "预约了"+payRecord.getName()+"医生";
+//                    title = "预约了医生";
                     detailBean.put("amount", "-" + payRecord.getAmount() / 100);
                 }else if("return".equals(payRecord.getStatus())){
                     title = "取消预约"+payRecord.getName()+"医生";
+//                    title = "取消预约医生";
                     detailBean.put("amount", "+" + payRecord.getAmount() / 100);
                 }else if("evaluation".equals(payRecord.getStatus())){
                     title = "评价"+payRecord.getName()+"医生";
@@ -385,8 +387,8 @@ public class AccountServiceImpl implements AccountService {
         }
 
         //获取需要支付的金额  单位(分)
-        int price = ((Float)request.getAttribute("payPrice")).intValue()*100;
-        String order_price =StringUtils.isNotNull(String.valueOf(price))?String.valueOf(price):request.getParameter("payPrice");
+//        int price = ((Float)request.getAttribute("payPrice")).intValue()*100;
+        String order_price =StringUtils.isNotNull(String.valueOf((request.getAttribute("payPrice"))))?String.valueOf(((Float)request.getAttribute("payPrice")).intValue()*100):request.getParameter("payPrice");
         order_price = "1";
         //生成的商户订单号
         String out_trade_no = IdGen.uuid();//Sha1Util.getNonceStr();
@@ -428,8 +430,8 @@ public class AccountServiceImpl implements AccountService {
             patientRegisterId = "noData";
         }
 //        String orderPrice = request.getParameter("payPrice");
-        int price = ((Float)request.getAttribute("payPrice")).intValue()*100;
-        String orderPrice =StringUtils.isNotNull(String.valueOf(price))?String.valueOf(price):request.getParameter("payPrice");
+//        int price = ((Float)request.getAttribute("payPrice")).intValue()*100;
+        String orderPrice =StringUtils.isNotNull(String.valueOf((request.getAttribute("payPrice"))))?String.valueOf(((Float)request.getAttribute("payPrice")).intValue()*100):request.getParameter("payPrice");
 
 
         String outTradeNo = PrepayInfo.get("out_trade_no");

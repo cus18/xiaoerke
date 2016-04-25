@@ -91,7 +91,7 @@
   </select>
 
   <select id="getConsultConnectInfo" resultType="java.util.Map" >
-    select crs.id, crs.phone userPhone,cdr.doctor_answer_phone doctorPhone,cdr.server_length conversationLength from consultPhone_register_service crs
+    select crs.id, crs.phone userPhone,cdr.doctor_answer_phone doctorPhone,crs.surplusTime,cdr.server_length conversationLength from consultPhone_register_service crs
     left join sys_consultPhone_service scs on crs.sys_phoneConsult_service_id = scs.id
     left join consultphone_doctor_relation cdr on cdr.doctor_id = scs.sys_doctor_id
     where 1=1
@@ -121,8 +121,10 @@
     sbi.name babyName,
     cdr.price,
     crs.type,
+    crs.sys_phoneConsult_service_id,
     crs.surplusTime,
     sp.sys_user_id,
+    su.openid,
     cdr.server_length
     from consultPhone_register_service crs
     left join sys_consultPhone_service scs
@@ -136,6 +138,7 @@
     left join sys_baby_baseInfo sbi
     on sp.sys_user_id = sbi.userid
     LEFT join consultphone_doctor_relation cdr on cdr.doctor_id = sd.id
+    LEFT JOIN sys_user su on sp.sys_user_id = su.id
     where crs.id =#{id,jdbcType=INTEGER}
     group by crs.id
   </select>
@@ -274,7 +277,7 @@
         LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
         INNER JOIN sys_doctor sd ON sd.id = srs.sys_doctor_id
         <if test="date != null" >
-            AND srs.date=#{date}
+            AND srs.date=DATE_FORMAT(#{date,jdbcType=VARCHAR},'%Y-%m-%d')
         </if>
         <if test="doctorId != null" >
             AND srs.sys_doctor_id = #{doctorId}
@@ -283,6 +286,30 @@
         ORDER BY
         srs.beginTime ASC
     </select>
+
+
+  <select id="getReturnPayConsultList" resultType="java.util.Map">
+select crs.id,su.id userId
+from consultphone_register_service crs
+left join account_pay_record apr
+on crs.id = apr.order_id
+left join sys_patient sp
+on sp.id = crs.sys_patient_id
+left join sys_user su
+on su.id = sp.sys_user_id
+where crs.state = '4'
+and apr.`status` = 'success'
+AND  NOW()>(DATE_ADD((DATE_FORMAT(crs.update_time,'%Y-%m-%d %k:%i:%s')), INTERVAL 1 day))
+and crs.id not in (
+select DISTINCT(crs.id) from consultphone_register_service crs
+left join account_pay_record apr
+on crs.id = apr.order_id
+where crs.state = '4'
+ AND  NOW()>(DATE_ADD((DATE_FORMAT(crs.update_time,'%Y-%m-%d %k:%i:%s')), INTERVAL 1 day))
+and apr.`status` = 'return'
+)
+group by crs.id
+  </select>
     
   <!-- 更新订单状态 -->
   <update id="changeConsultPhoneRegisterServiceState">
@@ -501,6 +528,7 @@
     <if test="consultPhoneTimeToStr != null and consultPhoneTimeToStr != ''">
       and #{consultPhoneTimeToStr} >= scs.date
     </if>
+    group by crs.id
   </select>
   <!-- 查询电话咨询订单数，sunxiao -->
   <select id="getNewOrderCount" resultType="java.lang.Integer" >
@@ -562,6 +590,7 @@
     <if test="fromDate != null and fromDate != ''" >
       and scs.date > date_sub(now(),interval 1 week)
     </if>
+    group by crs.id
   </select>
   <!--根据条件查询订单 sunxiao-->
   <select id="getAllConsultPhoneRegisterListByInfo" resultType="com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo" parameterType="java.util.Map">
@@ -612,5 +641,6 @@
     <if test="doctorId != null and doctorId != ''">
       and sd.id = #{doctorId}
     </if>
+    group by crs.id
   </select>
 </mapper>

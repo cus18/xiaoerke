@@ -84,10 +84,17 @@ public class DoctorInfoController extends BaseController {
     @SystemControllerLog(description = "00000073")
     //获取某个医生的详细信息
     Map<String, Object> DoctorDetail(@RequestBody Map<String, Object> params) {
+        String doctorId = (String) params.get("doctorId");
+        if(doctorId == null || "".equals(doctorId)){
+            Map<String,Object> paramsMap = new HashMap<String, Object>();
+            paramsMap.put("id",UserUtils.getUser().getId());
+            doctorId = (String)doctorInfoService.getDoctorIdByUserIdExecute(paramsMap).get("id");
+        }
+
         Map<String, Object> response;
         PraiseVo praiseVo = new PraiseVo();
         HashMap<String, Object> doctorMap = new HashMap<String, Object>();
-        doctorMap.put("doctorId", params.get("doctorId"));
+        doctorMap.put("doctorId", doctorId);
         String register_service_id = (String) params.get("register_service_id");
         //需返回hospital_type，需关联表查询
         if (!"".equals(register_service_id) && register_service_id != null) {
@@ -95,28 +102,27 @@ public class DoctorInfoController extends BaseController {
             response = doctorInfoService.findDoctorDetailInfoAndType(doctorMap);
         } else {//不需返回hospital_type，不需关联表查询
             response = doctorInfoService.findDoctorDetailInfo(doctorMap);
-            DoctorGroupVo doctorGroupVo = doctorGroupInfoService.getDoctorGroupInfoByDoctor((String) params.get("doctorId"));
+            DoctorGroupVo doctorGroupVo = doctorGroupInfoService.getDoctorGroupInfoByDoctor(doctorId);
             if(doctorGroupVo!=null) {
                 response.put("doctorGroupId",doctorGroupVo.getDoctorGroupId());
                 response.put("doctorGroupName",doctorGroupVo.getName());
             }
         }
         //获取科室
-        response.put("departmentName", hospitalInfoService.getDepartmentFullName((String) params.get("doctorId"),
-                (String) response.get("hospitalId")));
+        response.put("departmentName", hospitalInfoService.getDepartmentFullName(doctorId,(String) response.get("hospitalId")));
         //获取从业擅长
-        response.put("doctor_expert_desc", doctorInfoService.getDoctorCardExpertiseById((String) params.get("doctorId")));
-        praiseVo.setSys_doctor_id((String) params.get("doctorId"));
+        response.put("doctor_expert_desc", doctorInfoService.getDoctorCardExpertiseById(doctorId));
+        praiseVo.setSys_doctor_id(doctorId);
         List<PraiseVo> mapPraise = patientRegisterPraiseService.findDoctorDetailPraiseInfo(praiseVo);
 
-        HashMap<String, Object> doctorScore = doctorInfoService.findDoctorScoreInfo((String) params.get("doctorId"));
+        HashMap<String, Object> doctorScore = doctorInfoService.findDoctorScoreInfo(doctorId);
         response.put("doctorScore", doctorScore);
         //获取医生的案例信息
-        List<DoctorCaseVo> doctorCaseVos = doctorCaseService.findDoctorCase((String) params.get("doctorId"));
+        List<DoctorCaseVo> doctorCaseVos = doctorCaseService.findDoctorCase(doctorId);
         int sumcase = 0;
         int otherCase = 0;
         if (doctorCaseVos.size() > 0) {
-            sumcase = doctorCaseService.findDoctorCaseNumber((String) params.get("doctorId"));
+            sumcase = doctorCaseService.findDoctorCaseNumber(doctorId);
             for (DoctorCaseVo doctorCaseVo : doctorCaseVos) {
                 //"计算"其他案例
                 otherCase = otherCase + doctorCaseVo.getDoctor_case_number();
@@ -297,6 +303,34 @@ public class DoctorInfoController extends BaseController {
             response.put("currentTime", System.currentTimeMillis());
         }
         return response;
+    }
+
+    @RequestMapping(value = "/sys/doctor/doctorBaseInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    @SystemControllerLog(description = "00000073")
+        //获取某个医生的详细信息
+    Map<String, Object> DoctorBaseInfo(@RequestBody Map<String, Object> params) {
+        String doctorId = (String) params.get("doctorId");
+        if(doctorId == null || "".equals(doctorId)){
+            Map<String,Object> paramsMap = new HashMap<String, Object>();
+            paramsMap.put("id",UserUtils.getUser().getId());
+            doctorId = (String)doctorInfoService.getDoctorIdByUserIdExecute(paramsMap).get("id");
+        }
+
+        HashMap<String, Object> doctorMap = new HashMap<String, Object>();
+        doctorMap.put("doctorId", doctorId);
+
+        Map<String, Object> response = doctorInfoService.findDoctorDetailInfo(doctorMap);
+
+        //获取科室
+        response.put("departmentName", hospitalInfoService.getDepartmentFullName(doctorId,(String) response.get("hospitalId")));
+
+        HashMap<String, Object> doctorScore = doctorInfoService.findDoctorScoreInfo(doctorId);
+        response.put("doctorScore", doctorScore);
+
+        return response;
+
     }
 
 }

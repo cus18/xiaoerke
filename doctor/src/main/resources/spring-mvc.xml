@@ -111,5 +111,5 @@
 	<!-- 开启注解 -->
 	<mvc:annotation-driven/>
 
-	<import resource="runTimeTask.xml"></import>
+	<!--<import resource="runTimeTask.xml"></import>-->
 </beans>

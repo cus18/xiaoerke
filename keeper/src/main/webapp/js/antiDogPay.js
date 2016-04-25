@@ -10,7 +10,7 @@ var selectBaby=function(){
 }
 // 添加宝宝
 var addBaby=function(){
-    window.location.href = "insurance#/antiDogAddBaby";
+    window.location.href = "http://localhost:8080/titan/insurance#/antiDogAddBaby";
 }
 // 取消选择宝宝
 var cancelSelectBaby=function(){
@@ -195,12 +195,12 @@ function getBabyInfo(){
             $("#selectBabyTitle").after(option);
             var babyId=GetQueryString("babyId");
             if(babyId!=null&&babyId!=""){
-                for(var j=0;j<babyInfo.length;j++){
-                    var bid=babyInfo[j].id;
-                    if(bid==babyId){
-                        selectedBaby(j);
+                    for(var j=0;j<babyInfo.length;j++){
+                        var bid=babyInfo[j].id;
+                        if(bid==babyId){
+                            selectedBaby(j);
+                        }
                     }
-                }
             }else{
                 selectedBaby(0);
             }
@@ -293,7 +293,7 @@ function payInsurance(){
                                     var insuranceId=result.id;
                                     $('#payButton').attr('disabled',"true");//添加disabled属性
                                     $.ajax({
-                                        url:"ap/account/user/antiDogPay",// 跳转到 action
+                                        url:"account/user/antiDogPay",// 跳转到 action
                                         async:true,
                                         type:'get',
                                         data:{patientRegisterId:insuranceId,payPrice:needPayMoney*100},
@@ -379,7 +379,7 @@ function payInsurance(){
                                     var insuranceId=result.id;
                                     $('#payButton').attr('disabled',"true");//添加disabled属性
                                     $.ajax({
-                                        url:"ap/account/user/antiDogPay",// 跳转到 action
+                                        url:"account/user/antiDogPay",// 跳转到 action
                                         async:true,
                                         type:'get',
                                         data:{patientRegisterId:insuranceId,payPrice:needPayMoney*100},
@@ -490,26 +490,26 @@ var recordLogs = function(val){
 
 function loginCheck(){
     $.ajax({
-        url: 'ap/info/loginStatus',
+        url: 'auth/info/loginStatus',
         type: 'post',
         data: {},
         complete: function(jqXHR){
             if(jqXHR.status=="404"){
-                window.location.href = "/wxPay/patientPay.do";
+                window.location.href = "/keeper/wxPay/patientPay.do?serviceType=antiDogPay";
             }
         },
         success:function(data){
-            var param = '{routePath:"/wxPay/patientPay.do"}';
+            var param = '{routePath:"/wxPay/patientPay.do?serviceType=antiDogPay"}';
             $.ajaxSetup({
                 contentType : 'application/json'
             });
-            $.post('ap/info/loginStatus',param,
+            $.post('auth/info/loginStatus',param,
                 function(data) {
-                    alert(data.status);
+
                     if(data.status=="9"){
                         window.location.href = (data.redirectURL)
                     }else if(data.status=="20"){
-                        alert(data.openId);
+
                         if(data.openId=="noOpenId"){
                             window.location.href = "http://s22.baodf.com/xiaoerke-wxapp/wechatInfo/" +
                                 "fieldwork/wechat/author?url=http://s22.baodf.com/" +

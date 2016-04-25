@@ -38,8 +38,7 @@
 		$(document).ready(function() {
 			<%
                 List<String> dateList = (List<String>)request.getAttribute("dateList");
-                String copy = (String)request.getAttribute("repeatFlag");
-                String tempinterval = (String)request.getAttribute("intervalFlag");
+                Integer serverLength = (Integer)request.getAttribute("serverLength");
                 List<String> list = (List<String>)request.getAttribute("beginTimeList");
                 for(String time : list){
                     String[] times = time.split("S\\|X");
@@ -59,6 +58,9 @@
 			<%		}
                 }
             %>
+			if("<%=serverLength%>"=="15"){
+				$("#15min").attr("checked","checked");
+			}
 			document.getElementsByClassName("datesun")[0].getElementsByTagName("A")[1].className="current";
 			document.getElementById("showTime").value=date;
 			pageFlag=${pageFlag};
@@ -306,7 +308,7 @@
 											}
 											addUpdateFlag="init";
 										}else{
-											alert("删除失败!");
+											alertx("删除失败!");
 										}
 									}
 								}
@@ -333,7 +335,7 @@
 												}
 												addUpdateFlag="init";
 											}else{
-												alert("删除失败!");
+												alertx("删除失败!");
 											}
 										}
 									}

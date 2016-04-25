@@ -1,6 +1,7 @@
 package com.cxqm.xiaoerke.modules.consult.service.impl;
 
 
+import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
@@ -8,11 +9,13 @@ import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
 import com.mongodb.WriteResult;
 import org.springframework.data.mongodb.core.mapreduce.MapReduceResults;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -45,7 +48,7 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 	 * @param query
 	 * @return
 	 */
-	public PaginationVo<ConsultRecordMongoVo> getPage(int pageNo, int pageSize, Query query,String recordType) {
+	public PaginationVo<ConsultRecordMongoVo> getRecordDetailInfo(int pageNo, int pageSize, Query query,String recordType) {
 		long totalCount = this.mongoTemplate.count(query, ConsultRecordVo.class);
 		PaginationVo<ConsultRecordMongoVo> page = new PaginationVo<ConsultRecordMongoVo>(pageNo, pageSize, totalCount);
 		query.skip(page.getFirstResult());// skip相当于从那条记录开始
@@ -60,6 +63,21 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		return page;
 	}
 
+	public PaginationVo<ConsultSessionStatusVo> getUserMessageList(int pageNo, int pageSize, Query query) {
+		long totalCount = this.mongoTemplate.count(query, ConsultRecordVo.class);
+		PaginationVo<ConsultSessionStatusVo> page = new PaginationVo<ConsultSessionStatusVo>(pageNo, pageSize, totalCount);
+		query.skip(page.getFirstResult());// skip相当于从那条记录开始
+		query.limit(pageSize);// 从skip开始,取多少条记录
+		List<ConsultSessionStatusVo> datas = null;
+		datas = queryUserMessageList(query);
+		page.setDatas(datas);
+		return page;
+	}
+
+	public List<ConsultSessionStatusVo> queryUserMessageList(Query query){
+		return mongoTemplate.find(query, ConsultSessionStatusVo.class, "consultSessionStatusVo");
+	}
+
 	public ConsultRecordMongoVo findOneConsult(Query query) {
 		ConsultRecordMongoVo consultRecordMongoVo = new ConsultRecordMongoVo();
 		consultRecordMongoVo = mongoTemplate.findOne(query,ConsultRecordMongoVo.class,"consultRecordVo");
@@ -67,24 +85,21 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 	}
 
 	public ConsultRecordMongoVo findOneConsultRecordTemporary(Query query) {
-		ConsultRecordMongoVo consultRecordMongoVo = new ConsultRecordMongoVo();
-		consultRecordMongoVo = mongoTemplate.findOne(query,ConsultRecordMongoVo.class,"consultRecordTemporary");
+		ConsultRecordMongoVo consultRecordMongoVo = mongoTemplate.findOne(query,ConsultRecordMongoVo.class,"consultRecordTemporary");
 		return consultRecordMongoVo;
 	}
-
-
 
 	public int saveConsultRecord(ConsultRecordMongoVo consultRecordMongoVo) {
 		insertConsultRankRecord(consultRecordMongoVo);//今日排名
 		return this.insert(consultRecordMongoVo);//全部聊天记录
 	}
 
-	public void  deleteConsultSessionStatusVo(Query query) {
-		mongoTemplate.remove(query, ConsultSessionStatusVo.class);
+	public void  updateConsultSessionStatusVo(Query query,String status) {
+		mongoTemplate.updateMulti(query, new Update().set("status", status), ConsultSessionStatusVo.class);
 	}
 
 	public void  deleteConsultRecordTemporary(Query query) {
-		mongoTemplate.remove(query,"consultRecordTemporary");
+		mongoTemplate.remove(query, "consultRecordTemporary");
 	}
 
 	@Override
@@ -94,9 +109,7 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 
 	@Override
 	public WriteResult updateMulti(Query query,Update update) {
-
 		return mongoTemplate.updateMulti(query, update, ConsultRecordMongoVo.class);
-
 	}
 
 	@Override
@@ -107,21 +120,25 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 
 	@Override
 	public WriteResult upsert(Query query,Update update) {
-
 		return mongoTemplate.upsert(query, update, ConsultRecordMongoVo.class);
-
 	}
 
 	public WriteResult upsertConsultSessionStatusVo(ConsultSessionStatusVo consultSessionStatusVo) {
-
-		return mongoTemplate.upsert((new Query(where("sessionId").is(consultSessionStatusVo.getSessionId()))),
-				new Update().update("consultSessionStatusVo", consultSessionStatusVo),ConsultSessionStatusVo.class);
+		Query query = new Query(where("sessionId").is(consultSessionStatusVo.getSessionId()));
+		WriteResult writeResult = null;
+		ConsultSessionStatusVo  StatusVo = mongoTemplate.findOne(query, ConsultSessionStatusVo.class, "consultSessionStatusVo");
+		if(StatusVo != null){
+			writeResult = mongoTemplate.updateMulti(query,new Update().set("lastMessageTime", DateUtils.formatDateTime(new Date())), ConsultSessionStatusVo.class);
+		}else {
+			mongoTemplate.insert(consultSessionStatusVo, "consultSessionStatusVo");
+		}
+        return writeResult;
 	}
+
 	//zdl
-	public List<Object> querySessionStatusList(Query query){
-		return this.mongoTemplate.find(query, Object.class, "consultSessionStatusVo");
+	public List<ConsultSessionStatusVo> querySessionStatusList(Query query){
+		return this.mongoTemplate.find(query, ConsultSessionStatusVo.class, "consultSessionStatusVo");
 	}
-
 
 	@Override
 	public long queryCount(Query query)
@@ -131,6 +148,10 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 
 	public List<ConsultRecordMongoVo> queryList(Query query){
 		return this.mongoTemplate.find(query, ConsultRecordMongoVo.class, "consultRecordVo");
+	}
+
+	public List<ConsultRecordMongoVo> queryconsultRecordVoList(Query query){
+		return this.mongoTemplate.find(query, ConsultRecordMongoVo.class, "consultSessionStatusVo");
 	}
 
 	public List<ConsultRecordMongoVo> queryTempRecordList(Query query){

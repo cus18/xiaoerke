@@ -105,7 +105,6 @@ public class SystemService extends BaseService {
 
 	/**
 	 * 通过部门ID获取用户列表，仅返回用户id和name（树查询用户时用）
-	 * @param user
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")

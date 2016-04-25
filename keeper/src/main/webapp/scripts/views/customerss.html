@@ -610,9 +610,14 @@
             return Inter_Days; 
         } 
 	function loadData(){
+		var id=$("#patientIdData",parent.document).html();
+		var sourth=$("#sourceData",parent.document).html();
+		$("#openid").val(id);
+		getOpenid();
+		alert($("#doctorIdData",parent.document).html());
+		$("#costomerID").val($("#doctorIdData",parent.document).html());
 		hiddenTableOrder();
 		getIllness();
-		getOpenid();
 		getBabyInfo();
 		var d = new Date();
 		var str = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
@@ -622,6 +627,7 @@
 		sendGreetingsMessage();
 	}
 	function getBabyInfo(){
+		alert("getBabyInfo...."+openid);
 		$.ajax({
 			type: 'POST',
 			url: "/keeper/customer/searchBabyInfo",
