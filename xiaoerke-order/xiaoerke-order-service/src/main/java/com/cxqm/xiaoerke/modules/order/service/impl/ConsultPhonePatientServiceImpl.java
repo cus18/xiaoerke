@@ -332,7 +332,7 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         JSONObject result = new JSONObject();
         boolean tip = true;
         if("immediatelyDial".equals(vo.getDialType())){
-            dialConnection(vo.getOrderId());
+            dialConnection(vo);
             vo.setDialDate(new Date());
         }else if("timingDial".equals(vo.getDialType())){
             Map param = new HashMap();
@@ -370,21 +370,17 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
      * 电话咨询拨打用户和医生电话
      * @return
      */
-    private String dialConnection(Integer consultPhoneServiceId){
-        Map<String,Object> orderInfo = consultPhoneRegisterServiceDao.getConsultConnectInfo(consultPhoneServiceId);
-        Integer orderId = (Integer)orderInfo.get("id");
-        String userPhone = (String)orderInfo.get("userPhone");
-        String doctorPhone = (String)orderInfo.get("doctorPhone");
-        Integer conversationLength = (Integer)orderInfo.get("conversationLength");
+    private String dialConnection(ConsultPhoneManuallyConnectVo vo){
+        long conversationLength = vo.getSurplusTime()/1000;
 
 //        CCPRestSDK sdk = new CCPRestSDK();
 //        sdk.init("sandboxapp.cloopen.com", "8883");// 初始化服务器地址和端口，格式如下，服务器地址不需要写https://
 //        sdk.setSubAccount("2fa43378da0a11e59288ac853d9f54f2", "0ad73d75ac5bcb7e68fb191830b06d6b");
 //        sdk.setAppId("aaf98f8952f7367a0153084e29992035");
 
-        HashMap<String, Object> result = CCPRestSDK.callback(doctorPhone, userPhone,
+        HashMap<String, Object> result = CCPRestSDK.callback(vo.getDoctorPhone(), vo.getUserPhone(),
                 "4006237120", "4006237120", null,
-                "true", null, orderId + "",
+                "true", null, vo.getOrderId() + "",
                 conversationLength + "", null, "0",
                 "1", "60", null);
         String statusCode = (String) result.get("statusCode");

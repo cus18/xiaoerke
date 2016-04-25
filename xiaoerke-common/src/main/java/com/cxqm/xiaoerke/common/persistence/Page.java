@@ -5,17 +5,13 @@
  */
 package com.cxqm.xiaoerke.common.persistence;
 
+import org.apache.ibatis.session.RowBounds;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import org.apache.ibatis.session.RowBounds;
-
-
-
-import com.cxqm.xiaoerke.common.config.Global;
 
 /**
  * 分页类
@@ -32,7 +28,7 @@ public class Page<T> extends RowBounds implements Serializable{
 	 */
 	private static final long serialVersionUID = 8377027857240893626L;
 	private int pageNo = 1; // 当前页码
-	private int pageSize = Integer.valueOf(Global.getConfig("page.pageSize")); // 页面大小，设置为“-1”表示不进行分页（分页无效）
+	private int pageSize = 30;//Integer.valueOf(Global.getConfig("page.pageSize")); // 页面大小，设置为“-1”表示不进行分页（分页无效）
 
 	private long count;// 总记录数，设置为“-1”表示不查询总数
 
