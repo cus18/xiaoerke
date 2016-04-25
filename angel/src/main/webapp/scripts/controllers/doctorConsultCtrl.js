@@ -275,27 +275,20 @@ angular.module('controllers', ['luegg.directives'])
                     var inputText = $('.emotion').val();
                     var consultValMessage = {
                         "type": 0,
-                        "content": angular.copy($scope.info.consultMessage),//+AnalyticEmotion(inputText),
+                        "content": angular.copy($scope.info.consultMessage),
                         "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                         "senderId": angular.copy($scope.doctorId),
                         "senderName": angular.copy($scope.doctorName),
                         "sessionId": angular.copy($scope.currentUserConversation.sessionId)
                     };
-                    //console.log(inputText);
-                    //console.log(consultValMessage.content);
-                    //console.log(AnalyticEmotion(inputText));
                     if (!window.WebSocket) {
                         return;
                     }
-                    console.log("fwefw",$scope.currentUserConversation.consultValue);
                     if ($scope.socketServer1.readyState == WebSocket.OPEN) {
                         $scope.info.consultMessage = "";
-                        console.log($scope.currentUserConversation.consultValue);
-
                         $scope.currentUserConversation.consultValue.push(consultValMessage);
                         updateAlreadyJoinPatientConversationFromDoctor(angular.copy(consultValMessage));
                         $scope.socketServer1.send(JSON.stringify(consultValMessage));
-
                     } else {
                         alert("连接没有开启.");
                     }
@@ -747,16 +740,6 @@ angular.module('controllers', ['luegg.directives'])
                 value: 30
             }];
 
-            //测完即删
-            GetUserConsultListInfo.save({pageNo: 1, pageSize: 20}, function (data) {
-                $scope.userConsultListInfo = data.userList;
-            });
-
-            //测完即删
-            GetCSDoctorList.save({}, function (data) {
-                $scope.CSList = data.CSList;
-            });
-
             $scope.messageListInit = function(){
                 var routePath = "/doctor/consultBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath: routePath}, function (data) {
@@ -765,16 +748,18 @@ angular.module('controllers', ['luegg.directives'])
                     } else if (data.status == "8") {
                         window.location.href = data.redirectURL + "?targeturl=" + routePath;
                     } else if (data.status == "20") {
-                        //获取客户列表
-                        GetUserConsultListInfo.save({pageNo: 1, pageSize: 20}, function (data) {
+                        //获取会话客户列表（含会话转接过程中，经历过几个客服）
+                        GetUserConsultListInfo.save({pageNo: 1, pageSize: 1000}, function (data) {
                             $scope.userConsultListInfo = data.userList;
+                            if($scope.userConsultListInfo.length!=0){
+                                $scope.getUserRecordDetail($scope.userConsultListInfo[0].userId,0);
+                            }
                         });
 
                         //获取客服医生列表
                         GetCSDoctorList.save({}, function (data) {
                             $scope.CSList = data.CSList;
                         });
-
                     }
                 })
             }
@@ -790,14 +775,14 @@ angular.module('controllers', ['luegg.directives'])
 
             //查询某个客服信息
             $scope.getGetCSInfoByUserId = function (Object) {
-
                 if (Object == 1000 || Object == 1 || Object == 7 || Object == 30) {
-                    GetCSInfoByUserId.save({dateNum: Object, pageNo: 1, pageSize: 100}, function (data) {
+                    GetCSInfoByUserId.save({dateNum: Object, pageNo: 1, pageSize: 1000}, function (data) {
                         $scope.CSDoctorListInfo = data.records;
                     });
                 } else {
-                    GetCSInfoByUserId.save({CSDoctorId: Object, pageNo: 1, pageSize: 100}, function (data) {
+                    GetCSInfoByUserId.save({CSDoctorId: Object, pageNo: 1, pageSize: 1000}, function (data) {
                         $scope.CSDoctorListInfo = data.records;
+                        console.log(data.records,$scope.CSDoctorListInfo);
                     });
                 }
             }
@@ -819,6 +804,7 @@ angular.module('controllers', ['luegg.directives'])
                     }, function (data) {
                         $scope.userConsultListInfo = data.userList;
                         $scope.currentUserConsultRecordDetail = data.records;
+                        console.log($scope.userConsultListInfo);
                     });
                 }
             }
@@ -846,6 +832,5 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.userConsultListInfo = data.userList;
                 });
             }
-
 
         }])

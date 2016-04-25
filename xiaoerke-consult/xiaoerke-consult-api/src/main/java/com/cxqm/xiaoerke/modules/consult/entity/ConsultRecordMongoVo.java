@@ -13,7 +13,7 @@ public class ConsultRecordMongoVo {
 
     private String worker;
 
-    private String createDate;
+    private Date createDate;
 
     private String infoDate;
 
@@ -135,11 +135,11 @@ public class ConsultRecordMongoVo {
         this.worker = worker;
     }
 
-    public String getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(String createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 

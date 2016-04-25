@@ -266,7 +266,9 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
                 temp.setState("等待重连");
                 temp.setPayState("已付款");
             }
-            temp.setOrderTimeToStr(DateUtils.DateToStr(temp.getUpdateTime(), "datetime"));
+            if(temp.getUpdateTime()!=null){
+                temp.setOrderTimeToStr(DateUtils.DateToStr(temp.getUpdateTime(), "datetime"));
+            }
         }
         return list;
     }
@@ -330,7 +332,7 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         JSONObject result = new JSONObject();
         boolean tip = true;
         if("immediatelyDial".equals(vo.getDialType())){
-            //dialConnection(vo.getOrderId());
+            dialConnection(vo.getOrderId());
             vo.setDialDate(new Date());
         }else if("timingDial".equals(vo.getDialType())){
             Map param = new HashMap();

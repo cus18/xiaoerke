@@ -5,6 +5,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.cxqm.xiaoerke.modules.sys.entity.Office;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -144,6 +146,9 @@ public class InsuranceRegisterServiceServiceImpl implements
             nuser.setPhone(phone);
             nuser.setCreateDate(new Date());
 			nuser.setUserType("user");
+			nuser.setCompany(new Office("1"));
+			nuser.setOffice(new Office("3"));
+			nuser.setPassword(SystemService.entryptPassword("ILoveXiaoErKe"));
             userDao.insert(nuser);
             PatientVo patientVo = new PatientVo();
             String spid = IdGen.uuid();

@@ -52,7 +52,7 @@ public class ConsultUtil {
 			HashMap<String,Object> dataMap = new HashMap<String, Object>();
 			dataMap.put("type",dataVo.getType());
 			dataMap.put("content", dataVo.getMessage());
-			dataMap.put("dateTime", dataVo.getCreateDate());//(new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(dataVo.getCreateDate())
+			dataMap.put("dateTime", (new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(dataVo.getCreateDate()));
 			dataMap.put("senderId",dataVo.getSenderId());
 			dataMap.put("senderName",dataVo.getSenderName());
 			dataMap.put("sessionId",dataVo.getSessionId());

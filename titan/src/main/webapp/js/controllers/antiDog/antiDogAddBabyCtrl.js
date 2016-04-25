@@ -43,6 +43,7 @@ angular.module('controllers', ['ionic']).controller('antiDogAddBabyCtrl', [
                        window.location.href="localhost:8080/keeper/wxPay/patientPay.do?serviceType=antiDogPay&chargePrice=15000&babyId="+babyid;
                 }
             });
+
         }
         $scope.$on('$ionicView.enter',function() {
             var routePath = "/insuranceBBBBBB" + $location.path();

@@ -122,13 +122,24 @@ public class ConsultUserController extends BaseController {
         Map<String,Object> response = new HashMap<String, Object>();
         Integer pageNo = (Integer) params.get("pageNo");
         Integer pageSize = (Integer) params.get("pageSize");
+        Integer dateNum = (Integer) params.get("dateNum");
         String csUserId = String.valueOf(params.get("CSDoctorId"));
-        Query query = null;
-        if(StringUtils.isNull(csUserId)){
-            query = new Query().with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
+
+        Query query;
+        if(dateNum == null){
+            if(csUserId == "null"){
+                query = new Query().with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
+            }else {
+                query = new Query().addCriteria(new Criteria().where("csUserId").is(csUserId)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
+            }
         }else {
-            query = new Query().addCriteria(new Criteria().where("csUserId").is(csUserId)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
+            Date date;
+            Calendar ca = Calendar.getInstance();
+            ca.add(Calendar.DATE, -dateNum);// 30为增加的天数，可以改变的
+            date = ca.getTime();
+            query = new Query().addCriteria(new Criteria("infoTime").lte(new Date()).gte(date));
         }
+
 
         PaginationVo<ConsultSessionStatusVo> pagination = consultRecordService.getUserMessageList(pageNo, pageSize, query);
         List<ConsultSessionStatusVo> resultList = new ArrayList<ConsultSessionStatusVo>();
