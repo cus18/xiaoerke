@@ -852,8 +852,10 @@ angular.module('controllers', ['luegg.directives'])
                     pageSize: 100
                 }, function (data) {
                     $scope.currentUserConsultRecordDetail = data.records;
-                    filterMediaData(value);
-                    console.log($scope.currentUserConsultRecordDetail)
+                    $.each(data.records,function(index,value){
+                        filterMediaData(value);
+                    });
+
                 });
             }
 
@@ -866,8 +868,8 @@ angular.module('controllers', ['luegg.directives'])
 
             //过滤媒体数据
             var filterMediaData = function (val) {
-                if (val.type == "2"||val.type == "3") {
-                    val.content = $sce.trustAsResourceUrl(angular.copy(val.content));
+                if (val.type == "1"||val.type == "2" || val.type == "3") {
+                    val.message = $sce.trustAsResourceUrl(angular.copy(val.message));
                 }
             }
 
