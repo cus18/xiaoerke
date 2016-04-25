@@ -85,7 +85,7 @@ public class PhoneConsultaController {
         Integer orderId = (Integer)orderInfo.get("id");
         String userPhone = (String)orderInfo.get("userPhone");
         String doctorPhone = (String)orderInfo.get("doctorPhone");
-        Integer conversationLength = (Integer)orderInfo.get("surplusTime")/1000;
+        Long conversationLength = (Long)orderInfo.get("surplusTime")/1000;
         Date updateTime = (Date)orderInfo.get("update_time");
 //        CCPRestSDK sdk = new CCPRestSDK();
 //        sdk.init("sandboxapp.cloopen.com", "8883");// 初始化服务器地址和端口，格式如下，服务器地址不需要写https://
