@@ -119,6 +119,12 @@ input[type="number"] {width: 36px;}
 .chatlistin::-webkit-scrollbar {width:10px;height:10px;}
 .chatlistin::-webkit-scrollbar-track-piece {background:#eee;border-radius:5px;}
 .chatlistin::-webkit-scrollbar-thumb{background:#08b7c2;border-radius:5px;}
+/*消息列表*/
+.consultList {}
+.consultList{height: 408px;font: 12px/20px 'Microsoft Yahei';overflow-y:scroll;background-color: #fff;width: 100%;color:#333;}
+.consultList::-webkit-scrollbar {width:10px;height:10px;}
+.consultList::-webkit-scrollbar-track-piece {background:#eee;border-radius:5px;}
+.consultList::-webkit-scrollbar-thumb{background:#08b7c2;border-radius:5px;}
 
 
 p.historymessage span {display: block;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(7).png") left center no-repeat;padding-left: 25px;}
@@ -180,8 +186,7 @@ textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 10
 .patientConsultContent div:nth-child(1){
     color:#7fc700;
 }
-.consultList {height: 408px;overflow: auto;}
-.consultList::-webkit-scrollbar {width:0;height:0;}
+
 .moreInformation{text-align: center;padding-top: 10px;}
 .moreInformation a{display: inline-block;color: #08b7c2;padding-left: 15px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fyh_12.png") no-repeat center left;}
 .moreInformation a:hover{text-decoration: underline;}
