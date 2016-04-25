@@ -123,8 +123,8 @@ public class ConsultUserController extends BaseController {
         Integer pageNo = (Integer) params.get("pageNo");
         Integer pageSize = (Integer) params.get("pageSize");
         String csUserId = String.valueOf(params.get("CSDoctorId"));
-        Query query = null;
-        if(StringUtils.isNull(csUserId)){
+        Query query;
+        if(csUserId == "null"){
             query = new Query().with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
         }else {
             query = new Query().addCriteria(new Criteria().where("csUserId").is(csUserId)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
