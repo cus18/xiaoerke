@@ -150,6 +150,10 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		return this.mongoTemplate.find(query, ConsultRecordMongoVo.class, "consultRecordVo");
 	}
 
+	public List<ConsultRecordMongoVo> queryconsultRecordVoList(Query query){
+		return this.mongoTemplate.find(query, ConsultRecordMongoVo.class, "consultSessionStatusVo");
+	}
+
 	public List<ConsultRecordMongoVo> queryTempRecordList(Query query){
 		return this.mongoTemplate.find(query, ConsultRecordMongoVo.class, "consultRecordTemporary");
 	}
