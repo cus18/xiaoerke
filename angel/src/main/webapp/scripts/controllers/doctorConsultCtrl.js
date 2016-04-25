@@ -746,7 +746,7 @@ angular.module('controllers', ['luegg.directives'])
 
             $scope.currentClickUserName = "";
 
-            $scope.defaultClickUserOpenId = "";
+            $scope.currentClickUserId = "";
 
             $scope.searchMessageType = [{
                 searchType:"user",
@@ -778,7 +778,6 @@ angular.module('controllers', ['luegg.directives'])
                         //获取会话客户列表（含会话转接过程中，经历过几个客服）
                         GetUserConsultListInfo.save({pageNo: 1, pageSize: 1000}, function (data) {
                             $scope.userConsultListInfo = data.userList;
-                            console.log($scope.userConsultListInfo);
                             if($scope.userConsultListInfo.length!=0){
                                 $scope.getUserRecordDetail($scope.userConsultListInfo[0].userId,0);
                             }
@@ -793,11 +792,13 @@ angular.module('controllers', ['luegg.directives'])
             }
 
             //获取用户的详细聊天记录
-            $scope.getUserRecordDetail = function (userId,index) {
+            $scope.getUserRecordDetail = function (userName,userId,index) {
                 $scope.setSessoin = index;
                 GetUserRecordDetail.save({pageNo:0,pageSize:100,
                     userId:userId,recordType:"all"}, function (data) {
                     $scope.currentUserConsultRecordDetail = data.records;
+                    $scope.currentClickUserName = userName;
+                    $scope.currentClickUserId = userId;
                 });
             }
 
@@ -805,12 +806,12 @@ angular.module('controllers', ['luegg.directives'])
             $scope.getGetCSInfoByUserId = function (Object) {
                 if (Object == 1000 || Object == 1 || Object == 7 || Object == 30) {
                     GetCSInfoByUserId.save({dateNum: Object, pageNo: 1, pageSize: 1000}, function (data) {
-                        $scope.userConsultListInfo = data.userList;
+                        $scope.CSDoctorListInfo = data.userList;
                     });
                 } else {
                     GetCSInfoByUserId.save({CSDoctorId: Object, pageNo: 1, pageSize: 1000}, function (data) {
-                        $scope.userConsultListInfo = data.userList;
-
+                        $scope.CSDoctorListInfo = data.userList;
+                        console.log(data.records,$scope.CSDoctorListInfo);
                     });
                 }
             }
@@ -843,14 +844,16 @@ angular.module('controllers', ['luegg.directives'])
             }
 
             //查找消息记录（点击全部、图片等）
-            $scope.getRecordByOpenId = function (searchRecordType) {
+            $scope.getRecordByUserId = function (searchRecordType) {
                 GetUserRecordDetail.save({
                     recordType: searchRecordType,
-                    openId:$scope.defaultClickUserOpenId,
-                    pageNo: "1",
-                    pageSize: "100"
+                    userId:$scope.currentClickUserId,
+                    pageNo: 1,
+                    pageSize: 100
                 }, function (data) {
                     $scope.currentUserConsultRecordDetail = data.records;
+                    filterMediaData(value);
+                    console.log($scope.currentUserConsultRecordDetail)
                 });
             }
 
@@ -859,6 +862,13 @@ angular.module('controllers', ['luegg.directives'])
                 GetUserConsultListInfo.save({pageNo: 1, pageSize: 100}, function (data) {
                     $scope.userConsultListInfo = data.userList;
                 });
+            }
+
+            //过滤媒体数据
+            var filterMediaData = function (val) {
+                if (val.type == "2"||val.type == "3") {
+                    val.content = $sce.trustAsResourceUrl(angular.copy(val.content));
+                }
             }
 
         }])
