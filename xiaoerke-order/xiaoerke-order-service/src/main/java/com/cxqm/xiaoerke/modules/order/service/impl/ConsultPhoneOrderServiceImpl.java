@@ -4,7 +4,6 @@ import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.FrontUtils;
 import com.cxqm.xiaoerke.modules.order.dao.ConsultPhoneRegisterServiceDao;
-import com.cxqm.xiaoerke.modules.order.dao.PatientRegisterServiceDao;
 import com.cxqm.xiaoerke.modules.order.dao.SysConsultPhoneServiceDao;
 import com.cxqm.xiaoerke.modules.order.entity.OrderServiceVo;
 import com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo;
@@ -196,6 +195,7 @@ public class ConsultPhoneOrderServiceImpl implements ConsultPhoneOrderService {
         }
         response.put("totalNum", resultList.size());
         response.put("totalPrice", totalPrice);
+        response.put("timeList", timeList);
 
         return response;
     }
