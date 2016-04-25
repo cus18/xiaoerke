@@ -107,6 +107,32 @@
 		<property name="cronExpression" value="0 0 7 * * ?"/>
 	</bean>
 
+    <!-- 电话咨询 @author chenxiaoqiong-->
+    <!-- task of sendMsgToDocAtNightPhoneConsult -->
+    <bean id="sendMsgToDocAtNightPhoneConsultQuarzTask"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="scheduledQuarz"/>
+        <property name="targetMethod" value="sendMsgToDocAtNightPhoneConsult"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="sendMsgToDocAtNightPhoneConsultCronTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="sendMsgToDocAtNightPhoneConsultQuarzTask"/>
+        <property name="cronExpression" value="0 0 20 * * ?"/>
+    </bean>
+
+    <!-- task of sendMsgToDocAtMorningPhoneConsult -->
+    <bean id="sendMsgToDocAtMorningPhoneConsultQuarzTask"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="scheduledQuarz"/>
+        <property name="targetMethod" value="sendMsgToDocAtMorningPhoneConsult"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="sendMsgToDocAtMorningPhoneConsultCronTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="sendMsgToDocAtMorningPhoneConsultQuarzTask"/>
+        <property name="cronExpression" value="0 0 7 * * ?"/>
+    </bean>
 
 	<!--==========================================appoint部分================================================-->
 	<bean id="letsGoReminderQuarzTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
