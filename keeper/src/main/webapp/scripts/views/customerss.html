@@ -436,58 +436,58 @@
 	var ticket = getUrlParam('ticket');
 	var workerAccouont = '';
 	// 	获取客服账号
-	function getUrlParam(name)
-	{
-		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
-		var r = window.location.search.substr(1).match(reg);  //匹配目标参数
-		if (r!=null) return unescape(r[2]); return null; //返回参数值
-	}
-	$.getScript('http://crm1.dkf.qq.com/php/index.php/thirdapp/appdemo/get_workeraccount_by_sessionkey?callback=wokeraccountCallback&ticket='+ticket);
-	function wokeraccountCallback(data){
-		$("#costomerID").val($xss(data.workeraccount,"html"));
-	}
-	function $xss(str,type){
-		//空过滤
-		if(!str){
-			return str===0 ? "0" : "";
-		}
-		switch(type){
-			case "none": //过度方案
-				return str+"";
-				break;
-			case "html": //过滤html字符串中的XSS
-				return str.replace(/[&'"<>\/\\\-\x00-\x09\x0b-\x0c\x1f\x80-\xff]/g, function(r){
-					return "&#" + r.charCodeAt(0) + ";"
-				}).replace(/ /g, " ").replace(/\r\n/g, "<br />").replace(/\n/g,"<br />").replace(/\r/g,"<br />");
-				break;
-			case "htmlEp": //过滤DOM节点属性中的XSS
-				return str.replace(/[&'"<>\/\\\-\x00-\x1f\x80-\xff]/g, function(r){
-					return "&#" + r.charCodeAt(0) + ";"
-				});
-				break;
-			case "url": //过滤url
-				return escape(str).replace(/\+/g, "%2B");
-				break;
-			case "miniUrl":
-				return str.replace(/%/g, "%25");
-				break;
-			case "script":
-				return str.replace(/[\\"']/g, function(r){
-					return "\\" + r;
-				}).replace(/%/g, "\\x25").replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\x01/g, "\\x01");
-				break;
-			case "reg":
-				return str.replace(/[\\\^\$\*\+\?\{\}\.\(\)\[\]]/g, function(a){
-					return "\\" + a;
-				});
-				break;
-			default:
-				return escape(str).replace(/[&'"<>\/\\\-\x00-\x09\x0b-\x0c\x1f\x80-\xff]/g, function(r){
-					return "&#" + r.charCodeAt(0) + ";"
-				}).replace(/ /g, " ").replace(/\r\n/g, "<br />").replace(/\n/g,"<br />").replace(/\r/g,"<br />");
-				break;
-		}
-	}
+//	function getUrlParam(name)
+//	{
+//		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+//		var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+//		if (r!=null) return unescape(r[2]); return null; //返回参数值
+//	}
+//	$.getScript('http://crm1.dkf.qq.com/php/index.php/thirdapp/appdemo/get_workeraccount_by_sessionkey?callback=wokeraccountCallback&ticket='+ticket);
+//	function wokeraccountCallback(data){
+//		$("#costomerID").val($xss(data.workeraccount,"html"));
+//	}
+//	function $xss(str,type){
+//		//空过滤
+//		if(!str){
+//			return str===0 ? "0" : "";
+//		}
+//		switch(type){
+//			case "none": //过度方案
+//				return str+"";
+//				break;
+//			case "html": //过滤html字符串中的XSS
+//				return str.replace(/[&'"<>\/\\\-\x00-\x09\x0b-\x0c\x1f\x80-\xff]/g, function(r){
+//					return "&#" + r.charCodeAt(0) + ";"
+//				}).replace(/ /g, " ").replace(/\r\n/g, "<br />").replace(/\n/g,"<br />").replace(/\r/g,"<br />");
+//				break;
+//			case "htmlEp": //过滤DOM节点属性中的XSS
+//				return str.replace(/[&'"<>\/\\\-\x00-\x1f\x80-\xff]/g, function(r){
+//					return "&#" + r.charCodeAt(0) + ";"
+//				});
+//				break;
+//			case "url": //过滤url
+//				return escape(str).replace(/\+/g, "%2B");
+//				break;
+//			case "miniUrl":
+//				return str.replace(/%/g, "%25");
+//				break;
+//			case "script":
+//				return str.replace(/[\\"']/g, function(r){
+//					return "\\" + r;
+//				}).replace(/%/g, "\\x25").replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\x01/g, "\\x01");
+//				break;
+//			case "reg":
+//				return str.replace(/[\\\^\$\*\+\?\{\}\.\(\)\[\]]/g, function(a){
+//					return "\\" + a;
+//				});
+//				break;
+//			default:
+//				return escape(str).replace(/[&'"<>\/\\\-\x00-\x09\x0b-\x0c\x1f\x80-\xff]/g, function(r){
+//					return "&#" + r.charCodeAt(0) + ";"
+//				}).replace(/ /g, " ").replace(/\r\n/g, "<br />").replace(/\n/g,"<br />").replace(/\r/g,"<br />");
+//				break;
+//		}
+//	}
 	function getOpenid(){
 		openid=$("#openid").val();
 	}
@@ -779,24 +779,24 @@
 		});
 	}
 	// 获取用户的openid
-	function MCS_ClientNotify(EventData) {
-		EventData = strToJson(EventData);
-		switch(EventData['event']){
-			case 'OnUserChange':{
-				var openid=EventData['userid'];
-				$("#openid").val(openid);
-				loadData();
-				$("#illness").val('');
-				$("#show").val('');
-				$("#result").val('');
-				$('#addCustomerLog').removeAttr("disabled"); 
-				$("#addCustomerLog").css("background","#88d9dd");
-				$('#returnServiceButton').removeAttr("disabled"); 
-				$("#returnServiceButton").css("background","#88d9dd");
-				break;
-			}
-		}
-	}
+//	function MCS_ClientNotify(EventData) {
+//		EventData = strToJson(EventData);
+//		switch(EventData['event']){
+//			case 'OnUserChange':{
+//				var openid=EventData['userid'];
+//				$("#openid").val(openid);
+//				loadData();
+//				$("#illness").val('');
+//				$("#show").val('');
+//				$("#result").val('');
+//				$('#addCustomerLog').removeAttr("disabled");
+//				$("#addCustomerLog").css("background","#88d9dd");
+//				$('#returnServiceButton').removeAttr("disabled");
+//				$("#returnServiceButton").css("background","#88d9dd");
+//				break;
+//			}
+//		}
+//	}
 
 	function strToJson(str){
 		var json = (new Function("return " + str))();
