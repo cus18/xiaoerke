@@ -261,7 +261,7 @@ angular.module('controllers', ['luegg.directives'])
                 //处理用户按键事件
                 document.onkeydown = function () {
                     var a = window.event.keyCode;
-                    if ((a == 13) && (event.ctrlKey)) {
+                    if (a == 13) {
                         if ($scope.info.consultMessage != "") {
                             $scope.sendConsultMessage();
                         }
