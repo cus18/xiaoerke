@@ -159,9 +159,9 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
             User userInfo = systemService.getUserById((String)consultOrder.get("sys_user_id"));
             String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) consultOrder.get("doctorName")+","+userData+",phone";
             String connectUrl = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/phoneConReconnection/"+userData;
-            PatientMsgTemplate.consultPhoneEvaluateWaring2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"),(String) consultOrder.get("phone"), url,connectUrl);
             Map<String,Object> parameter = systemService.getWechatParameter();
             String token = (String)parameter.get("token");
+            PatientMsgTemplate.consultPhoneEvaluateWaring2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"),(String) consultOrder.get("phone"), url,connectUrl,token);
             PatientMsgTemplate.evaluationRemind2Wechat(userInfo.getOpenid(),token,connectUrl,"您的订单可以评价了哦!",(String) consultOrder.get("orderNo"), (String) consultOrder.get("date"),"");
         }
         int state = consultPhonePatientService.updateOrderInfoBySelect(consultPhonevo);
