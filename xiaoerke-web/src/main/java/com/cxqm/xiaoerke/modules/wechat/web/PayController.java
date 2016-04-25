@@ -80,6 +80,18 @@ public class PayController {
         CookieUtils.setCookie(response,"phoneConDoctorDetail", phoneConDoctorDetail);
         return "phoneConsultPay";
     }
+    /**
+     *
+     * 处理来自微信服务器的请求
+     * 电话咨询 订单详情页 去支付
+     *
+     */
+    @RequestMapping(value = "/orderDetailPay/patientPay.do", method = {RequestMethod.POST, RequestMethod.GET})
+    public String orderDetailPay(@RequestParam(required=false) String orderDetailPay,
+                                  HttpServletResponse response) {
+        CookieUtils.setCookie(response,"orderDetailPay", orderDetailPay);
+        return "orderDetailPay";
+    }
     
     /**
     *
