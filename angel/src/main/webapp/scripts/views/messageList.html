@@ -127,7 +127,7 @@
                      <li ng-repeat="item in currentUserConsultRecordDetail">
                          <div ng-if="item.senderId==item.csUserId">
                              <div class="name" ng-style="item.senderId==item.csUserId?{color: '#7fc700'}:{color: '#08b7c2'}">
-                                 {{item.doctorName}} {{item.dateTime}}
+                                 {{item.doctorName}} {{item.infoDate}}
                              </div>
                              <div ng-if="item.type=='0'" id="show" class="chatcontent">
                                  {{item.message}}
@@ -135,7 +135,7 @@
                          </div>
                          <div ng-if="item.senderId==item.userId">
                              <div class="name" ng-style="item.senderId==item.userId?{color: '#08b7c2'}:{color: '#7fc700'}">
-                                 {{item.senderName}} {{item.createDate}}
+                                 {{item.senderName}} {{item.infoDate}}
                              </div>
                              <div ng-if="item.type=='0'" class="chatcontent">
                                  {{item.message}}

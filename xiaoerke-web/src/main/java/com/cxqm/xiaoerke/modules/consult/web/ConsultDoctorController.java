@@ -168,10 +168,7 @@ public class ConsultDoctorController extends BaseController {
         if(recordType.equals("all") && StringUtils.isNotNull(userId) && pageSize > 0){
             Query query = new Query(where("userId").is(userId)).with(new Sort(Direction.DESC, "createDate"));//用户端获取与平台的所有聊天记录
             pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "permanent");
-            for(ConsultRecordMongoVo consultRecordMongoVo :pagination.getDatas()){
-                ConsultRecordMongoVo recordMongoVo = consultRecordMongoVo;
-                recordMongoVo.setCreateDate(consultRecordMongoVo.getCreateDate());//暂时
-            }
+
         }else if (recordType.equals("doctor") && StringUtils.isNotNull(userId) && StringUtils.isNotNull(fromUserId)){//医生端获取与自己有关的所有聊天记录
             Query query = new Query(where("toUserId").is(userId).and("fromUserId")
                     .is(fromUserId)).with(new Sort(Direction.DESC, "create_date"));
@@ -182,7 +179,13 @@ public class ConsultDoctorController extends BaseController {
                     .is(recordType)).with(new Sort(Direction.DESC, "create_date"));
             pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "permanent");
         }
-        response.put("records", pagination!=null?pagination.getDatas():"");
+        List<ConsultRecordMongoVo> recordMongoVos = new ArrayList<ConsultRecordMongoVo>();
+        for(ConsultRecordMongoVo consultRecordMongoVo : pagination.getDatas()){
+            ConsultRecordMongoVo recordMongoVo = consultRecordMongoVo;
+            recordMongoVo.setInfoDate(DateUtils.DateToStr(consultRecordMongoVo.getCreateDate(),"datetime"));
+            recordMongoVos.add(recordMongoVo);
+        }
+        response.put("records", recordMongoVos);
         response.put("pageNo",pageNo);
         response.put("pageSize",pageSize);
         return response;
