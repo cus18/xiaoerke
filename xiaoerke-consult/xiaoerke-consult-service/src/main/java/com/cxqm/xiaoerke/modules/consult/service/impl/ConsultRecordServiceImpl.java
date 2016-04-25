@@ -243,9 +243,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     }
 
     @Override
-    public List<ConsultRecordMongoVo> getCurrentUserHistoryRecord(String userId, Date dateTime, Integer pageSize) {
-        Query query = new Query().addCriteria(Criteria.where("userId").is(userId).and("createDate").lt(dateTime)).
-                with(new Sort(Sort.Direction.DESC, "createDate")).limit(pageSize);
+    public List<ConsultRecordMongoVo> getCurrentUserHistoryRecord(Query query) {
         return consultRecordMongoDBService.queryList(query);
     }
 

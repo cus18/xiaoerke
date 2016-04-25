@@ -71,7 +71,9 @@ public class ConsultDoctorController extends BaseController {
         }else if(dateTime.indexOf("/")!=-1){
             date = DateUtils.StrToDate(dateTime,"xiangang");
         }
-        currentUserHistoryRecord = consultRecordService.getCurrentUserHistoryRecord(userId, date, pageSize);
+        Query query = new Query().addCriteria(Criteria.where("userId").is(userId).and("createDate").lt(date)).
+                with(new Sort(Sort.Direction.DESC, "createDate")).limit(pageSize);
+        currentUserHistoryRecord = consultRecordService.getCurrentUserHistoryRecord(query);
         if(currentUserHistoryRecord!=null){
             response.put("consultDataList", ConsultUtil.transformCurrentUserListData(currentUserHistoryRecord));
         }else{

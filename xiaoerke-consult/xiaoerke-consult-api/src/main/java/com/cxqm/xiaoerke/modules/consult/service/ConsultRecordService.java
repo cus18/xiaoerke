@@ -54,5 +54,5 @@ public interface ConsultRecordService {
 
     void  deleteConsultTempRecordVo(Query query);
 
-    List<ConsultRecordMongoVo> getCurrentUserHistoryRecord(String userId, Date dateTime, Integer pageSize);
+    List<ConsultRecordMongoVo> getCurrentUserHistoryRecord(Query query);
 }

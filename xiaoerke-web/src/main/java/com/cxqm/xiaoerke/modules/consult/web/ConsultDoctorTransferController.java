@@ -18,6 +18,7 @@ import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -210,7 +211,10 @@ public class ConsultDoctorTransferController extends BaseController {
             dataValue.put("forwardSessionId", waitJoinListVo.getId());
             RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(Integer.parseInt(String.valueOf(waitJoinListVo.getConversationId())));
             if(richConsultSession!=null){
-                List<ConsultRecordMongoVo> consultRecordMongoVo = consultRecordService.getCurrentUserHistoryRecord(richConsultSession.getUserId(), new Date(),100);
+
+                Query query = new Query().addCriteria(Criteria.where("userId").is(richConsultSession.getUserId()).and("createDate").lt(new Date())).
+                        with(new Sort(Sort.Direction.DESC, "createDate")).limit(100);
+                List<ConsultRecordMongoVo> consultRecordMongoVo = consultRecordService.getCurrentUserHistoryRecord(query);
                 if(consultRecordMongoVo.size()!=0){
                     dataValue.put("messageContent", consultRecordMongoVo.get(0).getMessage());
                     dataValue.put("messageNum", consultRecordMongoVo.size());

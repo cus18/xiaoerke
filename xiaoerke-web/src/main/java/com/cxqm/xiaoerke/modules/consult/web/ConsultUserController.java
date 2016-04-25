@@ -25,17 +25,13 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 
 /**
- * 会员Controller
- *
  * @author deliang
  * @version 2015-11-04
  */
@@ -181,7 +177,7 @@ public class ConsultUserController extends BaseController {
     }
 
     /**
-     * @author
+     * @author deliang
      * @param c
      * @param o
      * @return
@@ -371,18 +367,34 @@ public class ConsultUserController extends BaseController {
                     resultList.add(vo);
                 }
             }
-
-            HashSet hashSet  =   new  HashSet(resultList);
-            resultList.clear();
-            resultList.addAll(hashSet);
+            int size = resultList.size();
+            for(int i = 0;i<size;i++){
+                if(frequency(resultList, resultList.get(i)) > 1){
+                    resultList.remove(i);
+                    size = resultList.size();
+                }
+            }
             response.put("userList",resultList);
+
+
         }else if(searchType.equals("message")){
-            Query query = new Query(where("message").regex(searchInfo)).with(new Sort(Sort.Direction.DESC, "create_date"));
+            Query query = new Query(where("message").regex(searchInfo)).with(new Sort(Sort.Direction.DESC, "createDate"));
             pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query,"permanent");
             response.put("userList", pagination!=null?pagination.getDatas():"");
+            List<HashMap<String,Object>> responseList = new ArrayList<HashMap<String, Object>>();
+            for(ConsultRecordMongoVo consultRecordMongoVo : pagination.getDatas()){
+                HashMap<String,Object> hashMap = new HashMap<String, Object>();
+                hashMap.put("currentRecord",consultRecordMongoVo);
 
+                Query beforeQuery = new Query(where("userId").is(consultRecordMongoVo.getUserId()).andOperator(Criteria.where("createDate").lte(consultRecordMongoVo.getCreateDate()))).with(new Sort(Sort.Direction.DESC, "createDate")).limit(5);
+                List<ConsultRecordMongoVo> searchList = consultRecordService.getCurrentUserHistoryRecord(beforeQuery);
+                hashMap.put("beforeRecord",searchList);
+
+                Query laterQuery = new Query(where("userId").is(consultRecordMongoVo.getUserId()).andOperator(Criteria.where("createDate").gte(consultRecordMongoVo.getCreateDate()))).with(new Sort(Sort.Direction.DESC, "createDate")).limit(5);
+                hashMap.put("laterRecord",laterQuery);
+                responseList.add(hashMap);
+            }
         }
-
         response.put("pageNo",pageNo);
         response.put("pageSize",pageSize);
         return response;
