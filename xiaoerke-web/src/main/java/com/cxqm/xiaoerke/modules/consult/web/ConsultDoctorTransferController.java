@@ -180,13 +180,15 @@ public class ConsultDoctorTransferController extends BaseController {
             HashMap<String,Object> param = new HashMap<String, Object>();
             ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = consultSessionForwardRecordsService.selectByPrimaryKey(Long.parseLong(forwardSessionIdArray[i]));
             if(consultSessionForwardRecordsVo!=null){
-                param.put("sessionId",consultSessionForwardRecordsVo.getConversationId());
-                param.put("forwardRecordId",consultSessionForwardRecordsVo.getId());
-                param.put("toCsUserId",consultSessionForwardRecordsVo.getToUserId());
-                User user = systemService.getUser(consultSessionForwardRecordsVo.getToUserId());
-                param.put("toCsUserName",user.getName());
-                param.put("operation",operation);
-                consultSessionForwardRecordsService.react2Transfer(param);
+                if(consultSessionForwardRecordsVo.getStatus().equals(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_WAITING)){
+                    param.put("sessionId",consultSessionForwardRecordsVo.getConversationId());
+                    param.put("forwardRecordId",consultSessionForwardRecordsVo.getId());
+                    param.put("toCsUserId",consultSessionForwardRecordsVo.getToUserId());
+                    User user = systemService.getUser(consultSessionForwardRecordsVo.getToUserId());
+                    param.put("toCsUserName",user.getName());
+                    param.put("operation", operation);
+                    consultSessionForwardRecordsService.react2Transfer(param);
+                }
             }
         }
         response.put("result","success");
