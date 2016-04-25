@@ -120,7 +120,6 @@ input[type="number"] {width: 36px;}
 .chatlistin::-webkit-scrollbar-track-piece {background:#eee;border-radius:5px;}
 .chatlistin::-webkit-scrollbar-thumb{background:#08b7c2;border-radius:5px;}
 /*消息列表*/
-.consultList {}
 .consultList{height: 408px;font: 12px/20px 'Microsoft Yahei';overflow-y:scroll;background-color: #fff;width: 100%;color:#333;}
 .consultList::-webkit-scrollbar {width:10px;height:10px;}
 .consultList::-webkit-scrollbar-track-piece {background:#eee;border-radius:5px;}
@@ -193,3 +192,4 @@ textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 10
 /*咨询服务*/
 .advisory-content::-webkit-scrollbar {width: 0;height: 0;}
 .advisory-content {overflow: auto;height: 450px;width: 403px;}
+.messageMark{background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_3.png") right center no-repeat;}
