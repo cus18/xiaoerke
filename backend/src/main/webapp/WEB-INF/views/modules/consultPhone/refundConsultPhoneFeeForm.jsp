@@ -44,7 +44,7 @@
 	             data: {id:"${vo.id}",price:$("#price").val(),cancelReason:$("#cancelReason").val()},
 	             dataType: "json",
 	             success: function(data){
-	             	if("suc"==data.suc){
+	             	if("suc"==data.result){
 	             		top.$.jBox.close(true);
              		}else{
 	             		alertx("操作失败！");

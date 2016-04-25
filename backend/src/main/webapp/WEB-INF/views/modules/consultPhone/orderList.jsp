@@ -171,13 +171,15 @@
 			</td>
 			<td>
 				<c:if test="${consultPhone.state eq '0'}">待支付</c:if>
-				<c:if test="${consultPhone.state eq '1' || consultPhone.state eq '2' || consultPhone.state eq '3' || consultPhone.state eq 'daichonglian'}">已支付</c:if>
+				<c:if test="${consultPhone.state eq '1' || consultPhone.state eq '2' || consultPhone.state eq '3' || consultPhone.state eq '5' || consultPhone.state eq 'daichonglian'}">已支付</c:if>
 				<c:if test="${consultPhone.state eq '4'}">已退款</c:if>
 			</td>
 			<td><fmt:formatDate value ="${consultPhone.updateTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 			<td>${consultPhone.deleteBy}</td>
 			<td>
-				<a href="#"  onclick="refundConsultPhoneFee('${ctx}/consultPhone/refundConsultPhoneFeeForm?id=${consultPhone.id}&price=${consultPhone.price}&babyName=${consultPhone.babyName}')">取消预约</a>
+				<c:if test="${consultPhone.state eq '1'}">
+					<a href="#"  onclick="refundConsultPhoneFee('${ctx}/consultPhone/refundConsultPhoneFeeForm?id=${consultPhone.id}&price=${consultPhone.price}&babyName=${consultPhone.babyName}')">取消预约</a>
+				</c:if>
 				<a href="${ctx}/consultPhone/manuallyConnectForm?id=${consultPhone.id}&doctorId=${consultPhone.doctorId}">手动接通</a>
 			</td>
 		</tr>

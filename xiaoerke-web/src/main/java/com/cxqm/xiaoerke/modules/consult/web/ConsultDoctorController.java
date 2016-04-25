@@ -65,7 +65,12 @@ public class ConsultDoctorController extends BaseController {
         String dateTime = (String) params.get("dateTime");
         Integer pageSize = (Integer) params.get("pageSize");
         List<ConsultRecordMongoVo> currentUserHistoryRecord = null;
-        Date date = DateUtils.StrToDate(dateTime,"datetime");
+        Date date = null;
+        if(dateTime.indexOf("-")!=-1){
+            date = DateUtils.StrToDate(dateTime,"datetime");
+        }else if(dateTime.indexOf("/")!=-1){
+            date = DateUtils.StrToDate(dateTime,"xiangang");
+        }
         currentUserHistoryRecord = consultRecordService.getCurrentUserHistoryRecord(userId, date, pageSize);
         if(currentUserHistoryRecord!=null){
             response.put("consultDataList", ConsultUtil.transformCurrentUserListData(currentUserHistoryRecord));

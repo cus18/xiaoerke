@@ -98,9 +98,11 @@ public class OrderDoctorController extends BaseController {
      * 每日清单
      * @params {}
      * @return {}
+     * @author chenxiaoqiong
      */
-    @RequestMapping(value="/order/doctor/getDayList")
-    public Map<String,Object> getDayList(Map<String,Object> params){
+    @RequestMapping(value="/order/doctor/getDayList",method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public Map<String,Object> getDayList(@RequestBody Map<String,Object> params){
         Map<String,Object> response = new HashMap<String, Object>();
         String userId = UserUtils.getUser().getId();
         String doctorId = (String) params.get("doctorId");
@@ -112,12 +114,12 @@ public class OrderDoctorController extends BaseController {
         String date = (String) params.get("date");
 
         //预约挂号
-        HashMap<String, Object> apppintment = new HashMap<String, Object>();
+        HashMap<String, Object> appointment = new HashMap<String, Object>();
 
         HashMap<String, Object> appointResponse = new HashMap<String, Object>();
-        patientRegisterService.findDoctorSettlementAppointmentInfoByDate(doctorId,userId,date,appointResponse);
-        apppintment.put("totalNum", response.get("appointmentTotal"));
-        apppintment.put("totalPrice", response.get("totalAppPrice"));
+        patientRegisterService.findDoctorSettlementAppointmentInfoByDate(doctorId, userId, date, appointResponse);
+        appointment.put("totalNum", response.get("appointmentTotal"));
+        appointment.put("totalPrice", response.get("totalAppPrice"));
         List<HashMap<String, Object>> doctorSettlementList = (List<HashMap<String, Object>>) appointResponse.get("appointment");
         List<HashMap<String, Object>> timeList = new ArrayList<HashMap<String, Object>>();
         for(HashMap<String, Object> appoint:doctorSettlementList){
@@ -127,13 +129,12 @@ public class OrderDoctorController extends BaseController {
             map.put("price",appoint.get("price"));
             timeList.add(map);
         }
-        apppintment.put("timeList", timeList);
-        response.put("appointment",apppintment);
+        appointment.put("timeList", timeList);
+        response.put("appointment",appointment);
 
         //电话咨询
-        HashMap<String, Object> phoneConsult = new HashMap<String, Object>();
-        HashMap<String, Object> phoneConsultResponse = consultPhoneOrderService.getSettlementPhoneConsultInfoByDate(doctorId,date);
-        response.put("phoneConsult",phoneConsultResponse);
+        HashMap<String, Object> phoneConsult =  consultPhoneOrderService.getSettlementPhoneConsultInfoByDate(doctorId,date);
+        response.put("phoneConsult",phoneConsult);
 
         return response;
     }
