@@ -192,7 +192,7 @@ public class PayNotificationController {
 				payRecord.setStatus("success");
 				payRecord.setReceiveDate(new Date());
 				Map<String, Object> consultPhoneMap = insuranceService.getPayRecordById(payRecord.getId());
-				Map<String, Object> mapVo = consultPhonePatientService.getPatientRegisterInfo((Integer) consultPhoneMap.get("order_id"));
+				Map<String, Object> mapVo = consultPhonePatientService.getPatientRegisterInfo(Integer.parseInt((String) consultPhoneMap.get("order_id")));
 				if ("待支付".equals(mapVo.get("state"))) {
 					String consultPhoneId = consultPhoneMap.get("order_id").toString();
 					System.out.println("orderId:" + consultPhoneId);
@@ -217,7 +217,7 @@ public class PayNotificationController {
 						PatientMsgTemplate.consultPhoneSuccess2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"), (String) consultOrder.get("date"), week, (String) consultOrder.get("beginTime"), (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"));
 						Map<String, Object> parameter = systemService.getWechatParameter();
 						String token = (String) parameter.get("token");
-						String url = ConstantUtil.S1_WEB_URL + "/titan/phoneConsult#/orderDetail" + (String) consultOrder.get("doctorId") + "," + (String) consultOrder.get("orderId") + ",phone";
+						String url = ConstantUtil.S1_WEB_URL + "/titan/phoneConsult#/orderDetail" + (String) consultOrder.get("doctorId") + "," + (Integer) consultOrder.get("orderId") + ",phone";
 						PatientMsgTemplate.consultPhoneSuccess2Wechat((String) consultOrder.get("doctorName"), (String) consultOrder.get("date"), week, (String) consultOrder.get("beginTime"), (String) consultOrder.get("endTime"), (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"), userInfo.getOpenid(), token, url);
 					}
 				}
