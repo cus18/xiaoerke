@@ -317,7 +317,7 @@ public class PatientMsgTemplate {
     public static void unConnectPhone2Wechat(String babyName,String doctorName, String price,String url,String register_no,String openId,String token){
         ArrayList<Object> obj = new ArrayList<Object>();
         WechatArticle article = new WechatArticle();
-        article.setTitle("未接通");
+        article.setTitle("电话咨询未接通");
         article.setDescription(babyName + "小朋友家长您好，由于您预约的" + doctorName + "医生的电话咨询未接通，咨询费用" + price + "元将在24小时后返回到您的宝大夫账户，订单号：" + register_no + "，有疑问，请致电400-623-7120。");
         article.setUrl(url);
         obj.add(article);
@@ -398,6 +398,8 @@ public class PatientMsgTemplate {
 //    }
 
     public static void consultPhoneEvaluateWaring2Msg(String babyName,String doctorName, String phone,String url,String connectUrl){
+        url = getShortUrl(url);
+        connectUrl = getShortUrl(connectUrl);
         String content = "（评价电话咨询）"+babyName+"小朋友家长您好，感谢您使用宝大夫预约"+doctorName+"医生的电话咨询，请点击"+url+"完成评价！注：若此次通话意外中断，请在5分钟内点击"+connectUrl+"重新连接通话，否则本次咨询结束。";
         SMSMessageUtil.sendMsg(phone, content);
     }
