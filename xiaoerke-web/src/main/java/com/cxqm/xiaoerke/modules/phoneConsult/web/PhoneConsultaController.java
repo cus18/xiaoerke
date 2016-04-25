@@ -86,18 +86,21 @@ public class PhoneConsultaController {
         String userPhone = (String)orderInfo.get("userPhone");
         String doctorPhone = (String)orderInfo.get("doctorPhone");
         Integer conversationLength = (Integer)orderInfo.get("surplusTime")/1000;
-
+        Date updateTime = (Date)orderInfo.get("update_time");
 //        CCPRestSDK sdk = new CCPRestSDK();
 //        sdk.init("sandboxapp.cloopen.com", "8883");// 初始化服务器地址和端口，格式如下，服务器地址不需要写https://
 //        sdk.setSubAccount("2fa43378da0a11e59288ac853d9f54f2", "0ad73d75ac5bcb7e68fb191830b06d6b");
 //        sdk.setAppId("aaf98f8952f7367a0153084e29992035");
+        String statusCode = "111111";
+        if(conversationLength>10&&updateTime.getTime()+1000*60*5>new Date().getTime()){
+            HashMap<String, Object> result = CCPRestSDK.callback(userPhone,doctorPhone,
+                    "4006237120", "4006237120", null,
+                    "true", null, orderId+"",
+                    conversationLength+"", null, "0",
+                    "1", "10", null);
+            statusCode = (String) result.get("statusCode");
+        }
 
-        HashMap<String, Object> result = CCPRestSDK.callback(userPhone,doctorPhone,
-                "4006237120", "4006237120", null,
-                "true", null, orderId+"",
-                conversationLength+"", null, "0",
-                "1", "10", null);
-        String statusCode = (String) result.get("statusCode");
         return statusCode;
     }
 }
