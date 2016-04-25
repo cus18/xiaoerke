@@ -5,7 +5,7 @@ define(['app'], function(app){
    return app
        .config(['$stateProvider','$urlRouterProvider',
            function($stateProvider,$urlRouterProvider) {
-               var version = "1.0.4";
+               var version = appointVersion;
                var loadFunction = function($templateCache, $ocLazyLoad, $q, $http,name,files,htmlURL){
                    lazyDeferred = $q.defer();
                    return $ocLazyLoad.load ({
@@ -121,9 +121,9 @@ define(['app'], function(app){
                        resolve: {
                            load: function($templateCache, $ocLazyLoad, $q, $http) {
                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.myselfFirstCtrl',
-                                   ['js/controllers/account/myAccountCtrl.js','js/libs/mobiscroll.custom-2.5.0.min.js',
+                                   ['js/controllers/account/myAccountCtrl.js','js/libs/mobiscroll.custom-2.17.0.min.js',
                                        'js/libs/lodash.min.js', 'js/libs/moment.min.js',
-                                       'styles/lib/mobiscroll.custom-2.5.0.min.css',
+                                       'styles/lib/mobiscroll.custom-2.17.0.min.css',
                                        'styles/account/myAccount.less?ver='+version],
                                    'js/views/account/myAccount.html?ver='+version);
                            }

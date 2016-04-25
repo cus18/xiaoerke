@@ -1,9 +1,6 @@
 package com.cxqm.xiaoerke.common.utils;
 
-import com.cxqm.xiaoerke.common.bean.AccessToken;
-import com.cxqm.xiaoerke.common.bean.CustomBean;
-import com.cxqm.xiaoerke.common.bean.JsApiTicket;
-import com.cxqm.xiaoerke.common.bean.WechatRecord;
+import com.cxqm.xiaoerke.common.bean.*;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -327,7 +324,9 @@ public class WechatUtil {
     }
 
     public static void main(String args[]) {
-        String tic = createQrcode("YDm2FQGDF-3cFBZzFn2BXAyTCWygANrpCySVH3x_itYOOMonkCfVa9j4_5Pc_IqaF2ArnlWbMw1VYn88FzIFHQS1GSzfuBa8ewFJyjODoYU", "76b766068ca242d78464669d0f6d4671");
+        String token = "s7uYp3bJ21ZkPqe0YyLfx85K_sYOroyol34sVq60BBJDK8bwJHkrl2IwIl6bB3oCEeAFVBYqRl4NMpBfRDocXMBAUzRAvS9M9lmV6CeGmaYZZGaAIASSZ";
+        String url = "http://xiaork.cn//titan/phoneConsult#/phoneConReconnection/165";
+        String tic = getShortUrl(token,url);
         System.out.print(tic);
     }
 
@@ -552,5 +551,23 @@ public class WechatUtil {
             //run调用lame解码器最后释放内存
             run.freeMemory();
         }
+    }
+
+
+    /**
+     * 获取短链接信息
+     * @param accessToken
+     * @param longUrl
+     * @return
+     */
+    public static String getShortUrl(String accessToken,String longUrl){
+        String url = "https://api.weixin.qq.com/cgi-bin/shorturl?access_token="+accessToken;
+        ShortUrlCreate shortUrlCreate  = new ShortUrlCreate();
+        shortUrlCreate.setAction("long2short");
+        shortUrlCreate.setLong_url(longUrl);
+        String object = HttpRequestUtil.httpsRequest(url, "POST", net.sf.json.JSONObject.fromObject(shortUrlCreate).toString());
+        JSONObject resultJson = new JSONObject(object);
+        String shortUrl = (String) resultJson.get("short_url");
+        return shortUrl;
     }
 }
