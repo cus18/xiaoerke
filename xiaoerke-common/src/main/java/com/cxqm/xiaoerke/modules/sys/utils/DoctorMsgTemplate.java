@@ -73,12 +73,13 @@ public class DoctorMsgTemplate {
     /*
     电话咨询
      */
-    public static void doctorPhoneonsultRemindAtNight2Sms(String doctorPhone,String doctorName,String num,String nameList){
+    
+    public static void doctorPhoneConsultRemindAtNight2Sms(String doctorPhone,String doctorName,String num,String nameList){
         String content = "【电话咨询一览】尊敬的"+doctorName+"医生，明天已有"+num+"名宝宝预约您的电话咨询："+nameList+"。若您因特殊情况不能接听，请联系客服：400-623-7120。可登录微信公众号宝大夫专家版查看患者病情资料。宝大夫祝您工作顺利！";
         SMSMessageUtil.sendMsg(doctorPhone,content);
     }
 
-    public static void doctorPhoneonsultRemindAtNight2Wechat(String date,String num,String nameList,String token,String url,String openId){
+    public static void doctorPhoneConsultRemindAtNight2Wechat(String date,String num,String nameList,String token,String url,String openId){
         ArrayList<Object> obj = new ArrayList<Object>();
         WechatArticle article = new WechatArticle();
         article.setTitle("电话咨询提醒");
@@ -93,12 +94,12 @@ public class DoctorMsgTemplate {
     }
 
 
-    public static void doctorPhoneonsultRemindAtMoning2Sms(String doctorPhone,String doctorName,String num,String nameList){
+    public static void doctorPhoneConsultRemindAtMoning2Sms(String doctorPhone,String doctorName,String num,String nameList){
         String content = "【电话咨询一览】尊敬的"+doctorName+"医生，今天已有"+num+"名宝宝预约您的电话咨询："+nameList+"。因特殊情况不能接听，请联系客服：400-623-7120。可登录微信公众号宝大夫专家版查看患者病情资料。宝大夫祝您工作顺利！";
         SMSMessageUtil.sendMsg(doctorPhone, content);
     }
 
-    public static void doctorPhoneonsultRemindAtMoning2Wechat(String date,String num,String nameList,String token,String url, String openId){
+    public static void doctorPhoneConsultRemindAtMoning2Wechat(String date,String num,String nameList,String token,String url, String openId){
         ArrayList<Object> obj = new ArrayList<Object>();
         WechatArticle article = new WechatArticle();
         article.setTitle("电话咨询提醒");
@@ -113,13 +114,13 @@ public class DoctorMsgTemplate {
     }
 
 
-    public static void doctorPhoneonsultRemindAt5minLater2Sms(String doctorName,String babyName,String doctorPhone,String date,String week,String beginTime){
+    public static void doctorPhoneConsultRemindAt5minLater2Sms(String doctorName,String babyName,String doctorPhone,String date,String week,String beginTime){
         String content =  "【电话咨询预约成功】尊敬的"+doctorName+"医生，"+babyName+"小朋友家长预约了您"+date+" ("+week+")"+beginTime+"的电话咨询。" +
                 "若您因特殊情况不能接听，请联系客服：400-623-7120。宝大夫祝您工作顺利！";
         SMSMessageUtil.sendMsg(doctorPhone, content);
     }
 
-    public static void doctorPhoneonsultRemindAt5minLater2Wechat(String babyName,String date,String week,String beginTime,String token,String url,String openId){
+    public static void doctorPhoneConsultRemindAt5minLater2Wechat(String babyName,String date,String week,String beginTime,String token,String url,String openId){
         ArrayList<Object> obj = new ArrayList<Object>();
         WechatArticle article = new WechatArticle();
         article.setTitle("预约成功电话咨询");
@@ -135,12 +136,12 @@ public class DoctorMsgTemplate {
     }
 
 
-    public static void cancelDoctorPhoneonsult2Sms(String doctorName,String babyName,String phone,String date,String week,String beginTime){
+    public static void cancelDoctorPhoneConsult2Sms(String doctorName,String babyName,String phone,String date,String week,String beginTime){
         String content = "【电话咨询取消预约】尊敬的"+doctorName+"医生，"+babyName+"小朋友家长取消了您"+date+"("+week+")"+beginTime+"的电话咨询。";
         SMSMessageUtil.sendMsg(phone, content);
     }
 
-    public static void cancelDoctorPhoneonsult2Wechat(String babyName,String date,String week,String beginTime,String token,String url,String openId){
+    public static void cancelDoctorPhoneConsult2Wechat(String babyName,String date,String week,String beginTime,String token,String url,String openId){
         ArrayList<Object> obj = new ArrayList<Object>();
         WechatArticle article = new WechatArticle();
         article.setTitle("取消电话咨询");
@@ -156,12 +157,12 @@ public class DoctorMsgTemplate {
     }
 
 
-    public static void doctorPhoneonsultRemindAt5minBefore2Sms(String doctorName,String babyName,String phone,String userPhone){
+    public static void doctorPhoneConsultRemindAt5minBefore2Sms(String doctorName,String babyName,String phone,String userPhone){
         String content = "【接听提醒】尊敬的"+doctorName+"医生，"+babyName+"小朋友家长将在5min以后接通电话咨询，到时您会接到号码为"+userPhone+"的来电，请保持电话畅通。在这之前，您可以打开链接，查看患者详细的病情资料http://baod";
         SMSMessageUtil.sendMsg(phone, content);
     }
 
-    public static void doctorPhoneonsultRemindAt5minBefore2Wechat(String babyName,String date,String userPhone, String token,String url,String openId){
+    public static void doctorPhoneConsultRemindAt5minBefore2Wechat(String babyName,String date,String userPhone, String token,String url,String openId){
         ArrayList<Object> obj = new ArrayList<Object>();
         WechatArticle article = new WechatArticle();
         article.setTitle("接听提醒");
@@ -176,12 +177,12 @@ public class DoctorMsgTemplate {
     }
 
 
-    public static void doctorPhoneonsultRemindFail2Sms(String doctorName,String babyName,String phone){
+    public static void doctorPhoneConsultRemindFail2Sms(String doctorName,String babyName,String phone){
         String content = "【未接通】尊敬的"+doctorName+"医生，由于"+babyName+"小朋友家长预约电话咨询未接通，已将咨询费用退还给预约用户。有疑问请致电400-623-7120。";
         SMSMessageUtil.sendMsg(phone, content);
     }
 
-    public static void doctorPhoneonsultRemindFail2Wechat(String babyName,String date, String token,String url,String openId){
+    public static void doctorPhoneConsultRemindFail2Wechat(String babyName,String date, String token,String url,String openId){
         ArrayList<Object> obj = new ArrayList<Object>();
         WechatArticle article = new WechatArticle();
         article.setTitle("未接提醒");
