@@ -14,14 +14,14 @@ angular.module('controllers', ['luegg.directives'])
                     "distributor":"接诊员",
                     "consultDoctor":"专业医生"
                 }
-            };
-            $scope.socketServer1 = "";
+            }; //初始化info参数
+            $scope.socketServer1 = ""; //如果用了两台netty服务器，则需要开启两个socket链接，分别取链接不同的netty服务
             $scope.socketServer2 = "";
-            $scope.alreadyJoinPatientConversation = [];
-            $scope.currentUserConversation = {};
-            $scope.waitJoinNum = 0;
-            $scope.glued = true;
-
+            $scope.alreadyJoinPatientConversation = []; //已经加入会话的用户数据，一个医生可以有多个对话的用户，这些用户的数据，都保存在此集合中
+            $scope.currentUserConversation = {}; //医生与当前正在进行对话用户的聊天数据，医生在切换不同用户时，数据变更到切换的用户上来。
+            $scope.waitJoinNum = 0; //医生待接入的用户数，是动态变化的数
+            $scope.glued = true; //angular滚动条的插件预制参数，让对话滚动条，每次都定位底部，当新的聊天数据到达时
+            //各个子窗口的开关变量
             $scope.showFlag = {
                 rankList: false,
                 systemSetup: false,
@@ -33,6 +33,7 @@ angular.module('controllers', ['luegg.directives'])
                 advisoryContent: false
             }
 
+            //公共点击按钮，用来触发弹出对应的子窗口
             $scope.tapShowButton = function(type){
                 $.each($scope.showFlag,function(key,value){
                     if(key==type){
