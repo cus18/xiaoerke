@@ -42,8 +42,8 @@
 					</li>
 				</ul>
 				<ul class="time ">
-					<li class="" ng-repeat="item in appointmentList">
-						<a ng-class="{'no':item.state=='1'||item.state=='2'}" ng-click="chooseTime(item)">
+					<li class="" ng-repeat="item in appointmentList" ng-if="item.state=='1'||item.state=='0'">
+						<a ng-class="{'no':item.state=='1'||item.state=='2'}" ng-click="chooseTime(item)" >
 							{{item.begin_time}}
 						</a>
 					</li>
