@@ -1,13 +1,17 @@
 ﻿angular.module('controllers', ['ionic']).controller('myAccountCtrl', [
     '$scope','$state','$stateParams','CheckBind','GetDoctorInfo','SettlementInfo','GetWithDrawList',
-    '$location','GetUserLoginStatus',
+    '$location','GetUserLoginStatus','GetDayList',
         function ($scope,$state,$stateParams,CheckBind,GetDoctorInfo,SettlementInfo,GetWithDrawList,
-                  $location,GetUserLoginStatus) {
+                  $location,GetUserLoginStatus,GetDayList) {
             $scope.acceptLock=false;
             $scope.codeLock="false";
             $scope.fineLock="false";
             $scope.phoneConsultLock = false;
             $scope.choice = "everyDayList";
+            $scope.updateAccount = true;//8:00提醒
+            var saveCurrDate;
+
+
 
             $scope.$on('$ionicView.enter', function(){
                 $scope.pageLoading = true;
@@ -21,7 +25,7 @@
                     }
                 })
 
-                if((moment(moment().format("YYYY-MM-DD")+" "+"20:00:00",
+                /*if((moment(moment().format("YYYY-MM-DD")+" "+"20:00:00",
                         "YYYY-MM-DD HH:mm:ss").fromNow()).indexOf("ago")!=-1)
                 {
                     $scope.checkAvailable = "true";
@@ -29,13 +33,16 @@
                 else
                 {
                     $scope.checkAvailable = "false";
-                }
+                }*/
+                var myYear=moment().format("YYYY");
+                var myMonth=moment().format("MM");
+                var myDate=moment().format("DD");
                 $("#dateTime").mobiscroll().date();
-                var currYear = (new Date()).getFullYear();
+               // var currYear = (new Date()).getFullYear();
                 $("#dateTime").mobiscroll().date(
                     {
                         preset: 'date', //日期，可选：date\datetime\time\tree_list\image_text\select
-                        theme: 'android-ics light', //皮肤样式，可选：default\android\android-ics light\android-ics\ios\jqm\sense-ui\wp light\wp
+                        theme: 'default', //皮肤样式，可选：default\android\android-ics light\android-ics\ios\jqm\sense-ui\wp light\wp
                         display: 'modal', //显示方式 ，可选：modal\inline\bubble\top\bottom
                         mode: 'scroller', //日期选择模式，可选：scroller\clickpick\mixed
                         lang:'zh',
@@ -46,10 +53,12 @@
                         dayText: '日', monthText: '月', yearText: '年', //面板中年月日文字
                         showNow: false,
                         nowText: "今",
-                        startYear:1980, //开始年份
-                        endYear:currYear, //结束年份
+                        /*startYear:1980, //开始年份
+                        endYear:currYear, //结束年份*/
+                        minDate: new Date(2015,0,1),
+                        maxDate: new Date(myYear,myMonth-1,myDate),
                         onSelect: function (valueText) {
-                            if(moment(valueText).format("YYYY-MM-DD")==moment().format("YYYY-MM-DD"))
+                            /*if(moment(valueText).format("YYYY-MM-DD")==moment().format("YYYY-MM-DD"))
                             {
                                 if((moment(moment(valueText).format("YYYY-MM-DD")+" "+"20:00:00",
                                         "YYYY-MM-DD HH:mm:ss").fromNow()).indexOf("ago")!=-1)
@@ -64,18 +73,28 @@
                             else
                             {
                                 $scope.checkAvailable = "true";
-                            }
-                            $scope.pageLoading = true;
+                            }*/
+                            /*$scope.pageLoading = true;
                             SettlementInfo.save({"doctorId":$scope.doctorId,"date":valueText,
                                 "type":"appointment"},function(data){
                                 $scope.pageLoading = false;
                                 $scope.settlementInfoData = data;
                                 $scope.totalPrice = data.appointmentTotal;
-                            })
+                            });*/
+                            getphoneConsultDay(valueText);
+                            saveCurrDate = valueText;
+                            $scope.currWeek = getChWeek(getWeekNum(valueText));
+
+                            if(Date.parse(valueText)<Date.parse(getCurrDate())){
+                                $("#changeNext").removeClass("c2");
+                            }else{
+                                $("#changeNext").addClass("c2");
+                            }
                     }
                 });
-
-                $scope.settlementDate = moment().format('YYYY-MM-DD');
+                saveCurrDate = getCurrDate();
+                $("#dateTime").val(getCurrDate());
+                $scope.currWeek = getChWeek(getWeekNum(getCurrDate()));
 
                 /**
                  * 判断医生是否绑定
@@ -87,10 +106,11 @@
                         $scope.doctorId = data.doctorId;
                         $scope.balance = data.balance;
                         $scope.choice = "everyDayList";
-                        SettlementInfo.save({"doctorId":$scope.doctorId,"date":$scope.settlementDate,"type":"appointment"},function(data){
-                            $scope.settlementInfoData = data;
-                            $scope.totalPrice = data.appointmentTotal;
-                        })
+                        //SettlementInfo.save({"doctorId":$scope.doctorId,"date":saveCurrDate,"type":"appointment"},function(data){
+                        //    $scope.settlementInfoData = data;
+                        //    $scope.totalPrice = data.appointmentTotal;
+                        //})
+                        getphoneConsultDay(getCurrDate());
 
                         $scope.pageNo = 1;
                         $scope.pageSize = 10;
@@ -106,6 +126,28 @@
                     }
                 });
             });
+
+            //关闭提醒
+            $scope.closeNotice = function () {
+                $scope.updateAccount = false;
+                $(".myAccount").addClass("closeNotice");
+            }
+            //前一天
+            $scope.goPrev = function () {
+                var prevDate = moment(saveCurrDate).subtract(1,'days').format("YYYY-MM-DD");
+                changePrevNext(prevDate);
+                $("#changeNext").removeClass("c2");
+            }
+            //后一天
+            $scope.goNext = function () {
+                if(Date.parse(saveCurrDate)<Date.parse(getCurrDate())){
+                    var next = moment(saveCurrDate).add(1,'days').format("YYYY-MM-DD");
+                    changePrevNext(next);
+                    if(Date.parse(next)==Date.parse(getCurrDate())){
+                        $("#changeNext").addClass("c2");
+                    }
+                }
+            }
 
             $scope.withDrawls = function(){
                 $state.go("withDrawls");
@@ -166,4 +208,63 @@
                 $scope.phoneConsultLock==true?$scope.phoneConsultLock=false:$scope.phoneConsultLock=true;
                 $scope.acceptLock=false;
             }
+            //获取每日清单列表
+            var getphoneConsultDay = function (date) {
+                $scope.pageLoading = true;
+                GetDayList.save({"doctorId":$scope.doctorId,"date":date}, function (data) {
+                    $scope.pageLoading = false;
+                    console.log("meir",data);
+                    if(data.appointment.timeList.length==0){
+                        $scope.checkAvailable = false;
+                    }else{
+                        $scope.checkAvailable = true;
+                        $scope.noAccount = false;
+                        $scope.appList = data.appointment.timeList;
+                        $scope.appMoney = data.appointment.totalPrice;
+                    }
+                    if(data.phoneConsult.timeList.length==0){
+                        $scope.havephoneConsult = false;
+                    }else{
+                        $scope.havephoneConsult = true;
+                        $scope.noAccount = false;
+                        $scope.phoneList = data.phoneConsult.timeList;
+                        $scope.phoneMoney = data.phoneConsult.totalPrice;
+                    }
+                    if(data.appointment.timeList.length==0&&data.phoneConsult.timeList.length==0){
+                        $scope.noAccount = true;
+                        $scope.checkAvailable = false;
+                        $scope.havephoneConsult = false;
+                    }
+                })
+            }
+            //选择前一天、后一天时间数据的变化
+            var changePrevNext = function (date) {
+                $("#dateTime").val(date);
+                $scope.currWeek = getChWeek(getWeekNum(date));
+                saveCurrDate = date;
+                getphoneConsultDay(date);
+            }
+            
+            //得到当前日期
+            var getCurrDate = function () {
+                return moment().format("YYYY-MM-DD");
+            }
+            //得到日期是周几的数字
+            var getWeekNum = function (date) {
+                return moment(date).format("d");
+            }
+
+            //判断当前日期是周几
+            var getChWeek = function(num){
+                switch (num){
+                    case "0": return "周日";
+                    case "1": return "周一";
+                    case "2": return "周二";
+                    case "3": return "周三";
+                    case "4": return "周四";
+                    case "5": return "周五";
+                    case "6": return "周六";
+                }
+            }
+
     }])
