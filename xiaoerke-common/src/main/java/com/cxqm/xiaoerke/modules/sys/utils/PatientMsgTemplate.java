@@ -401,7 +401,7 @@ public class PatientMsgTemplate {
     public static void consultPhoneEvaluateWaring2Msg(String babyName,String doctorName, String phone,String url,String connectUrl,String token){
         url = WechatUtil.getShortUrl(token,url);
         connectUrl = WechatUtil.getShortUrl(token,connectUrl);
-        String content = "（评价电话咨询）"+babyName+"小朋友家长您好，感谢您使用宝大夫预约"+doctorName+"医生的电话咨询，请点击"+url+"完成评价！注：若此次通话意外中断，请在5分钟内点击"+connectUrl+"重新连接通话，否则本次咨询结束。";
+        String content = "（评价电话咨询）"+babyName+"小朋友家长您好，感谢您使用宝大夫预约"+doctorName+"医生的电话咨询，请点击"+url+"  完成评价！注：若此次通话意外中断，请在5分钟内点击"+connectUrl+"  重新连接通话，否则本次咨询结束。";
         SMSMessageUtil.sendMsg(phone, content);
     }
 
