@@ -31,6 +31,9 @@
     <if test="district != null and district != ''">
        and ihl.district=#{district}
     </if>
+    <if test="id != null and id != ''">
+      and ihl.id=#{id}
+    </if>
   </select>
   
   <select id="findInsuranceHospitalListByInfo" resultType="com.cxqm.xiaoerke.modules.insurance.entity.InsuranceHospitalVo" >
@@ -40,4 +43,25 @@
        and ihl.district=#{district}
     </if>
   </select>
+  <delete id="delInsuranceHospital" parameterType="java.lang.Integer">
+    delete from insurance_hospital_list where id=#{id}
+  </delete>
+  <update id="updateInsuranceHospital" parameterType="com.cxqm.xiaoerke.modules.insurance.entity.InsuranceHospitalVo">
+    update insurance_hospital_list
+    <set >
+      <if test="hospitalName != null" >
+        hospital_name = #{hospitalName},
+      </if>
+      <if test="location != null" >
+        location = #{location},
+      </if>
+      <if test="district != null" >
+        district = #{district},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
 </mapper>
