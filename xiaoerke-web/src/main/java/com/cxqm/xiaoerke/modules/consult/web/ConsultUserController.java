@@ -147,7 +147,11 @@ public class ConsultUserController extends BaseController {
         List<ConsultSessionStatusVo> resultList = new ArrayList<ConsultSessionStatusVo>();
         if(pagination.getDatas()!=null && pagination.getDatas().size()>0){
             for(ConsultSessionStatusVo consultSessionStatusVo :pagination.getDatas()){
-                ConsultSessionStatusVo vo = consultSessionStatusVo;
+                ConsultSessionStatusVo vo = new ConsultSessionStatusVo();
+                vo.setUserName(consultSessionStatusVo.getUserName());
+                vo.setUserId(consultSessionStatusVo.getUserId());
+                vo.setCsUserId(consultSessionStatusVo.getCsUserId());
+                vo.setCsUserName(consultSessionStatusVo.getCsUserName());
                 //根据userId查询CsUserId
                 ConsultSession consultSession =new ConsultSession();
                 consultSession.setUserId(consultSessionStatusVo.getUserId());
@@ -164,6 +168,9 @@ public class ConsultUserController extends BaseController {
                 resultList.add(vo);
             }
         }
+        HashSet hashSet  =   new  HashSet(resultList);
+        resultList.clear();
+        resultList.addAll(hashSet);
         response.put("userList",resultList);
         return response;
     }
@@ -265,7 +272,7 @@ public class ConsultUserController extends BaseController {
     }
 
     /***
-     * 聊天记录查询接口（UserInfo 根据客户查找  message 根据聊天记录查找  分页
+     * 聊天记录查询接口（UserInfo 根据客户查找  message 根据聊天记录查找  分页  123
      *
      * @param
      @return
@@ -308,22 +315,49 @@ public class ConsultUserController extends BaseController {
         }
 
         PaginationVo<ConsultRecordMongoVo> pagination = null;
+        PaginationVo<ConsultSessionStatusVo> consultSessionStatusVoPaginationVo = null;
         String searchType = String.valueOf(params.get("searchType"));  //user 根据客户查找  message 根据聊天记录查找
         String searchInfo = String.valueOf(params.get("searchInfo"));
-
+        List<ConsultSessionStatusVo> resultList = new ArrayList<ConsultSessionStatusVo>();
         if(searchType.equals("user")){
             Criteria cr = new Criteria();
             Query query = new Query();
             query.addCriteria(cr.orOperator(
-                    Criteria.where("attentionNickName").regex(searchInfo)
-            )).with(new Sort(Sort.Direction.DESC, "create_date"));
-            pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "permanent");
+                    Criteria.where("userName").regex(searchInfo)
+            )).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
+            consultSessionStatusVoPaginationVo = consultRecordService.getUserMessageList(pageNo, pageSize, query);
+
+            if(consultSessionStatusVoPaginationVo.getDatas()!=null && consultSessionStatusVoPaginationVo.getDatas().size()>0){
+                for(ConsultSessionStatusVo consultSessionStatusVo :consultSessionStatusVoPaginationVo.getDatas()){
+                    ConsultSessionStatusVo vo = consultSessionStatusVo;
+                    //根据userId查询CsUserId
+                    ConsultSession consultSession =new ConsultSession();
+                    consultSession.setUserId(consultSessionStatusVo.getUserId());
+                    List<ConsultSession> sessionList = consultSessionService.getCsUserByUserId(consultSession);
+                    if(sessionList!=null && sessionList.size() > 0){
+                        String csUserName = "";
+                        for(ConsultSession session :sessionList){
+                            if(session!=null){
+                                csUserName = csUserName + " " +session.getNickName();
+                            }
+                        }
+                        vo.setCsUserName(csUserName);
+                    }
+                    resultList.add(vo);
+                }
+            }
+
+            HashSet hashSet  =   new  HashSet(resultList);
+            resultList.clear();
+            resultList.addAll(hashSet);
+            response.put("userList",resultList);
         }else if(searchType.equals("message")){
             Query query = new Query(where("message").regex(searchInfo)).with(new Sort(Sort.Direction.DESC, "create_date"));
             pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query,"permanent");
+            response.put("userList", pagination!=null?pagination.getDatas():"");
+
         }
 
-        response.put("records", pagination!=null?pagination.getDatas():"");
         response.put("pageNo",pageNo);
         response.put("pageSize",pageSize);
         return response;
