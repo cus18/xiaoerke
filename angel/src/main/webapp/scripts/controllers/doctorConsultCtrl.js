@@ -789,6 +789,7 @@ angular.module('controllers', ['luegg.directives'])
                     });
                 } else {
                     GetCSInfoByUserId.save({CSDoctorId: Object, pageNo: 1, pageSize: 100}, function (data) {
+
                         $scope.CSDoctorListInfo = data.records;
                     });
                 }
