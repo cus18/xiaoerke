@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.consult.entity;
 
+import java.util.Date;
+
 /**
  * 根据此vo判断redis中的会话是否过期
  * @author deliang
@@ -7,7 +9,7 @@ package com.cxqm.xiaoerke.modules.consult.entity;
 public class ConsultSessionStatusVo {
     private String sessionId;
 
-    private String lastMessageTime;
+    private Date lastMessageTime;
 
     private String userId;
 
@@ -68,11 +70,11 @@ public class ConsultSessionStatusVo {
         this.sessionId = sessionId;
     }
 
-    public String getLastMessageTime() {
+    public Date getLastMessageTime() {
         return lastMessageTime;
     }
 
-    public void setLastMessageTime(String lastMessageTime) {
+    public void setLastMessageTime(Date lastMessageTime) {
         this.lastMessageTime = lastMessageTime;
     }
 }
