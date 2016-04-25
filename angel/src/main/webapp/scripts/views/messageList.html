@@ -86,14 +86,13 @@
                 <div class="recently">最近联系时间</div>
                 <div class="insert">接入客服</div>
             </div>
-
             <div  class='w10 h20 br1'>
                 <ul class="nicknamecontentlist">
                     <li ng-repeat="item in userConsultListInfo"
                         ng-click ="getUserRecordDetail(item.userId,$index)"
                         ng-style="(setSessoin==$index)?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}">
                         <div class="nickname">{{item.userName}}</div>
-                        <div class="recently">{{item.lastMessageTime}}</div>
+                        <div class="recently">{{item.createDate}}</div>
                         <div class="insert">{{item.csUserName}}</div>
                     </li>
                 </ul>
@@ -128,7 +127,7 @@
                      <li ng-repeat="item in currentUserConsultRecordDetail">
                          <div ng-if="item.senderId==item.csUserId">
                              <div class="name" ng-style="item.senderId==item.csUserId?{color: '#7fc700'}:{color: '#08b7c2'}">
-                                 {{item.doctorName}} {{item.dateTime}}
+                                 {{item.doctorName}} {{item.infoDate}}
                              </div>
                              <div ng-if="item.type=='0'" id="show" class="chatcontent">
                                  {{item.message}}
@@ -136,7 +135,7 @@
                          </div>
                          <div ng-if="item.senderId==item.userId">
                              <div class="name" ng-style="item.senderId==item.userId?{color: '#08b7c2'}:{color: '#7fc700'}">
-                                 {{item.senderName}} {{item.createDate}}
+                                 {{item.senderName}} {{item.infoDate}}
                              </div>
                              <div ng-if="item.type=='0'" class="chatcontent">
                                  {{item.message}}

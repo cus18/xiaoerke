@@ -91,7 +91,7 @@
   </select>
 
   <select id="getConsultConnectInfo" resultType="java.util.Map" >
-    select crs.id, crs.phone userPhone,cdr.doctor_answer_phone doctorPhone,crs.surplusTime,cdr.server_length conversationLength from consultPhone_register_service crs
+    select crs.id, crs.phone userPhone,cdr.doctor_answer_phone doctorPhone,crs.surplusTime,crs.update_time,cdr.server_length conversationLength from consultPhone_register_service crs
     left join sys_consultPhone_service scs on crs.sys_phoneConsult_service_id = scs.id
     left join consultphone_doctor_relation cdr on cdr.doctor_id = scs.sys_doctor_id
     where 1=1
@@ -448,6 +448,9 @@ group by crs.id
       </if>
       <if test="type != null" >
         type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteBy != null" >
+        delete_by = #{deleteBy,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

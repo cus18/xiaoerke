@@ -75,4 +75,8 @@ define(['app'], function (app) {
         .factory('GetFansList', ['$resource', function ($resource) {
             return $resource('interaction/user/myFansList');
         }])
+        //获取医生电话咨询每日清单列表
+        .factory('GetDayList', ['$resource', function ($resource) {
+            return $resource('order/doctor/getDayList');
+        }])
 })
