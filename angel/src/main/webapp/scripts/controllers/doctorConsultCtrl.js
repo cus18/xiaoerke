@@ -6,7 +6,6 @@ angular.module('controllers', ['luegg.directives'])
         function ($scope, $sce, $window,GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
                   GetAnswerValueList, GetUserLoginStatus, $location, GetCurrentUserHistoryRecord,GetMyAnswerModify,
                   GetCurrentUserConsultListInfo,TransferToOtherCsUser,SessionEnd,GetWaitJoinList,React2Transfer,CancelTransfer) {
-
             $scope.info = {
                 effect:"true",
                 transferRemark:"",
@@ -53,7 +52,6 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.initConsultSocket1();
 
                         //获取通用回复列表
-                        $scope.myAnswer = [];
                         GetAnswerValueList.save({"type": "commonAnswer"}, function (data) {
                             if (data.commonAnswer.length == 0) {
                                 $scope.lockScroll = "false";
@@ -64,6 +62,7 @@ angular.module('controllers', ['luegg.directives'])
 
                         //获取我的回复列表
                         GetAnswerValueList.save({"type":"myAnswer"},function(data){
+                            $scope.myAnswer = [];
                             if(data.myAnswer!=null && data.myAnswer.length==0){
                                 $scope.lockScroll="false";
                             } else {
@@ -381,7 +380,6 @@ angular.module('controllers', ['luegg.directives'])
                     })
 
                 }
-
             /**会话操作区**/
 
 
@@ -705,7 +703,6 @@ angular.module('controllers', ['luegg.directives'])
                 }
             }
         }])
-
     .controller('messageListCtrl', ['$scope', '$log', '$sce', 'GetUserConsultListInfo',
         'GetUserRecordDetail', 'GetCSDoctorList', 'GetCSInfoByUserId', 'GetMessageRecordInfo','GetUserLoginStatus','$location',
         function ($scope, $log, $sce, GetUserConsultListInfo, GetUserRecordDetail,
@@ -751,6 +748,7 @@ angular.module('controllers', ['luegg.directives'])
                         //获取会话客户列表（含会话转接过程中，经历过几个客服）
                         GetUserConsultListInfo.save({pageNo: 1, pageSize: 1000}, function (data) {
                             $scope.userConsultListInfo = data.userList;
+                            console.log($scope.userConsultListInfo);
                             if($scope.userConsultListInfo.length!=0){
                                 $scope.getUserRecordDetail($scope.userConsultListInfo[0].userId,0);
                             }
@@ -777,12 +775,12 @@ angular.module('controllers', ['luegg.directives'])
             $scope.getGetCSInfoByUserId = function (Object) {
                 if (Object == 1000 || Object == 1 || Object == 7 || Object == 30) {
                     GetCSInfoByUserId.save({dateNum: Object, pageNo: 1, pageSize: 1000}, function (data) {
-                        $scope.CSDoctorListInfo = data.records;
+                        $scope.userConsultListInfo = data.userList;
                     });
                 } else {
                     GetCSInfoByUserId.save({CSDoctorId: Object, pageNo: 1, pageSize: 1000}, function (data) {
-                        $scope.CSDoctorListInfo = data.records;
-                        console.log(data.records,$scope.CSDoctorListInfo);
+                        $scope.userConsultListInfo = data.userList;
+
                     });
                 }
             }

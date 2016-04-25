@@ -168,11 +168,35 @@ public class ConsultUserController extends BaseController {
                 resultList.add(vo);
             }
         }
-        HashSet hashSet  =   new  HashSet(resultList);
-        resultList.clear();
-        resultList.addAll(hashSet);
+        int size = resultList.size();
+        for(int i = 0;i<size;i++){
+            if(frequency(resultList, resultList.get(i)) > 0){
+                resultList.remove(i);
+                size = resultList.size();
+            }
+        }
         response.put("userList",resultList);
         return response;
+    }
+
+    /**
+     * @author deliang jdk源代码改造
+     * @param c
+     * @param o
+     * @return
+     */
+    public int frequency(List<ConsultSessionStatusVo> c, ConsultSessionStatusVo o) {
+        int result = 0;
+        if (o == null) {
+            for (ConsultSessionStatusVo e : c)
+                if (e == null)
+                    result++;
+        } else {
+            for (ConsultSessionStatusVo e : c)
+                if (o.getUserId().equals(e.getUserId()))
+                    result++;
+        }
+        return result;
     }
 
     /**

@@ -449,6 +449,9 @@ group by crs.id
       <if test="type != null" >
         type = #{type,jdbcType=VARCHAR},
       </if>
+      <if test="deleteBy != null" >
+        delete_by = #{deleteBy,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>

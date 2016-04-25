@@ -65,7 +65,12 @@ public class ConsultDoctorController extends BaseController {
         String dateTime = (String) params.get("dateTime");
         Integer pageSize = (Integer) params.get("pageSize");
         List<ConsultRecordMongoVo> currentUserHistoryRecord = null;
-        Date date = DateUtils.StrToDate(dateTime,"datetime");
+        Date date = null;
+        if(dateTime.indexOf("-")!=-1){
+            date = DateUtils.StrToDate(dateTime,"datetime");
+        }else if(dateTime.indexOf("/")!=-1){
+            date = DateUtils.StrToDate(dateTime,"xiangang");
+        }
         currentUserHistoryRecord = consultRecordService.getCurrentUserHistoryRecord(userId, date, pageSize);
         if(currentUserHistoryRecord!=null){
             response.put("consultDataList", ConsultUtil.transformCurrentUserListData(currentUserHistoryRecord));
@@ -163,6 +168,10 @@ public class ConsultDoctorController extends BaseController {
         if(recordType.equals("all") && StringUtils.isNotNull(userId) && pageSize > 0){
             Query query = new Query(where("userId").is(userId)).with(new Sort(Direction.DESC, "createDate"));//用户端获取与平台的所有聊天记录
             pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "permanent");
+            for(ConsultRecordMongoVo consultRecordMongoVo :pagination.getDatas()){
+                ConsultRecordMongoVo recordMongoVo = consultRecordMongoVo;
+                recordMongoVo.setCreateDate(consultRecordMongoVo.getCreateDate());//暂时
+            }
         }else if (recordType.equals("doctor") && StringUtils.isNotNull(userId) && StringUtils.isNotNull(fromUserId)){//医生端获取与自己有关的所有聊天记录
             Query query = new Query(where("toUserId").is(userId).and("fromUserId")
                     .is(fromUserId)).with(new Sort(Direction.DESC, "create_date"));

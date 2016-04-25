@@ -150,7 +150,7 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
 
         consultPhonevo.setId(Integer.parseInt(userData));
         consultPhonevo.setUpdateTime(new Date());
-        if("1234".indexOf(vo.getByetype())>-1&&Integer.parseInt(talkDuration)>0&&Integer.parseInt(talkDuration)<serviceLength*60-10&&"0".equals(phonepatientInfo.get("type"))){
+        if("1234".indexOf(vo.getByetype())>-1&&Integer.parseInt(talkDuration)>0){
 //             改状态
             consultPhonevo.setType("1");//已推送过消息
             consultPhonevo.setSurplusTime(serviceLength - Integer.parseInt(talkDuration) * 1000);//修改通话时间

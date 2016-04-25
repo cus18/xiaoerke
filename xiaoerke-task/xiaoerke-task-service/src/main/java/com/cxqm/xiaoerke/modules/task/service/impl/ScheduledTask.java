@@ -8,12 +8,10 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
 import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
 import com.cxqm.xiaoerke.modules.consult.service.*;
-import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
-import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
 import com.cxqm.xiaoerke.modules.operation.service.BaseDataService;
-import com.cxqm.xiaoerke.modules.operation.service.OperationsComprehensiveService;
 import com.cxqm.xiaoerke.modules.operation.service.DataStatisticService;
+import com.cxqm.xiaoerke.modules.operation.service.OperationsComprehensiveService;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneManuallyConnectVo;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhoneOrderService;
@@ -29,9 +27,7 @@ import com.cxqm.xiaoerke.modules.sys.utils.DoctorMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import com.cxqm.xiaoerke.modules.task.service.ScheduleTaskService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.text.DateFormat;
@@ -1134,8 +1130,7 @@ public class ScheduledTask {
             String doctorPhone =  vo.getDoctorPhone();
             String userPhone =  vo.getUserPhone();
             Integer orderId = vo.getOrderId();
-            ConsultPhoneRegisterServiceVo cvo = consultPhonePatientService.selectByPrimaryKey(orderId);
-            long conversationLength =  cvo.getSurplusTime()/1000;
+            long conversationLength =  vo.getSurplusTime()/1000;
             HashMap<String, Object> result = CCPRestSDK.callback(userPhone,doctorPhone,
                     "4006237120", "4006237120", null,
                     "true", null, orderId+"",
@@ -1179,4 +1174,20 @@ public class ScheduledTask {
             }
         }
     }
+
+
+
+    /*
+     * 电话咨询
+     * @author chenxiaoqiong
+     */
+
+    public void sendMsgToDocAtNightPhoneConsult(){
+
+    }
+
+    public void sendMsgToDocAtMorningPhoneConsult(){
+
+    }
+
 }
