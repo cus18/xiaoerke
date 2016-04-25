@@ -133,9 +133,8 @@ public class OrderDoctorController extends BaseController {
         response.put("appointment",apppintment);
 
         //电话咨询
-        HashMap<String, Object> phoneConsult = new HashMap<String, Object>();
-        HashMap<String, Object> phoneConsultResponse = consultPhoneOrderService.getSettlementPhoneConsultInfoByDate(doctorId,date);
-        response.put("phoneConsult",phoneConsultResponse);
+        HashMap<String, Object> phoneConsult =  consultPhoneOrderService.getSettlementPhoneConsultInfoByDate(doctorId,date);
+        response.put("phoneConsult",phoneConsult);
 
         return response;
     }
