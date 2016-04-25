@@ -11,6 +11,8 @@
                 ConsultReconnection.get({phoneConsultaServiceId:$stateParams.phoneConsultaServiceId},function(data){
                     if("000000" == data){
                         WeixinJSBridge.call('closeWindow');
+                    }else{
+                        alert("通话已过期")
                     }
 
                 })
