@@ -270,7 +270,7 @@
                 </div>
             </div>
     </div>
-    <!--等待接入会话-->
+    <!--已经接入-->
     <div class="jrhhpm" ng-show='showFlag.rankList'>
         <div class="jrhhpm-top">今日接入会话排名 <a ng-click="refreshRankList()" href="">刷新</a></div>
         <table border="0">
@@ -289,11 +289,10 @@
         </table>
     </div>
     <!--系统设置-->
-    <div class="xtsz-up" id="xtsz_up" ng-show='showFlag.systemSetup'>
+    <div class="xtsz-up" ng-show='showFlag.systemSetup'>
         <div class="hd" id="drop">系统设置
             <span class="close" ng-click="tapShowButton('systemSetup')">【关闭】</span>
         </div>
-        <!-- 系统设置的tab切换 -->
         <div class="xtsz-up-middle">
             <div class="xtsz-up-left">
                 <h3>
