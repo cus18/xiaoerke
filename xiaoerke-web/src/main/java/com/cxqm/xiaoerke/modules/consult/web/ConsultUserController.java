@@ -347,7 +347,10 @@ public class ConsultUserController extends BaseController {
                 }
             }
 
-            response.put("userList", consultSessionStatusVoPaginationVo!=null?consultSessionStatusVoPaginationVo.getDatas():"");
+            HashSet hashSet  =   new  HashSet(resultList);
+            resultList.clear();
+            resultList.addAll(hashSet);
+            response.put("userList",resultList);
         }else if(searchType.equals("message")){
             Query query = new Query(where("message").regex(searchInfo)).with(new Sort(Sort.Direction.DESC, "create_date"));
             pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query,"permanent");
