@@ -310,6 +310,7 @@
 				<!--<ref bean="insuranceUpdateCronTrigger"/>-->
 				<ref bean="consultPhoneCronTrigger"/>
 				<ref bean="consultMangementCronTrigger"/>
+				<ref bean="timingDialCronTrigger"/>
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>
