@@ -78,8 +78,6 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		return mongoTemplate.find(query, ConsultSessionStatusVo.class, "consultSessionStatusVo");
 	}
 
-
-
 	public ConsultRecordMongoVo findOneConsult(Query query) {
 		ConsultRecordMongoVo consultRecordMongoVo = new ConsultRecordMongoVo();
 		consultRecordMongoVo = mongoTemplate.findOne(query,ConsultRecordMongoVo.class,"consultRecordVo");
@@ -111,9 +109,7 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 
 	@Override
 	public WriteResult updateMulti(Query query,Update update) {
-
 		return mongoTemplate.updateMulti(query, update, ConsultRecordMongoVo.class);
-
 	}
 
 	@Override
@@ -124,9 +120,7 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 
 	@Override
 	public WriteResult upsert(Query query,Update update) {
-
 		return mongoTemplate.upsert(query, update, ConsultRecordMongoVo.class);
-
 	}
 
 	public WriteResult upsertConsultSessionStatusVo(ConsultSessionStatusVo consultSessionStatusVo) {
@@ -140,11 +134,11 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		}
         return writeResult;
 	}
+
 	//zdl
 	public List<ConsultSessionStatusVo> querySessionStatusList(Query query){
 		return this.mongoTemplate.find(query, ConsultSessionStatusVo.class, "consultSessionStatusVo");
 	}
-
 
 	@Override
 	public long queryCount(Query query)

@@ -83,62 +83,62 @@
             </div>
             <div class="reply-content" ng-show='showFlag.replyContent'>
                 <div class="chatinstall">
-                  <span ng-click="add()">添加</span>
-                  <span ng-click="edit()">编辑</span>
-                  <span ng-click="remove()">删除</span>
-                  <span>向上</span>
-                  <span>向下</span>
-                  <span>同步</span>
+                    <span ng-click="add()">添加</span>
+                    <span ng-click="edit()">编辑</span>
+                    <span ng-click="remove()">删除</span>
+                    <span>向上</span>
+                    <span>向下</span>
+                    <span>同步</span>
                 </div>
                 <div class="replayContent">
-                <div class="myreply">
-                    <div ng-click="tapShowButton('myReplyList')"
-                         ng-style="showFlag.myReplyList?{'backgroundPosition':'0 -42px', color: '#08b7c2'}:{'backgroundPosition':'0 0', color: '#333'}"
-                         class="rtitle">
-                        我的回复（{{myAnswer.length}}）
-                    </div>
-                    <ul ng-show="showFlag.myReplyList">
-                        <li ng-repeat="item in myAnswer">
-                            <div class="group-title"
-                                 ng-style="myReplyIndex==$index?{'backgroundPosition':'0 -42px', color: '#08b7c2'}:{'backgroundPosition':'0 0', color: '#333'}"
-                                 ng-click="tapMyReplyContent($index)">
+                    <div class="myreply">
+                        <div ng-click="tapShowButton('myReplyList')"
+                             ng-style="showFlag.myReplyList?{'backgroundPosition':'0 -42px', color: '#08b7c2'}:{'backgroundPosition':'0 0', color: '#333'}"
+                             class="rtitle">
+                            我的回复（{{myAnswer.length}}）
+                        </div>
+                        <ul ng-show="showFlag.myReplyList">
+                            <li ng-repeat="item in myAnswer">
+                                <div class="group-title"
+                                     ng-style="myReplyIndex==$index?{'backgroundPosition':'0 -42px', color: '#08b7c2'}:{'backgroundPosition':'0 0', color: '#333'}"
+                                     ng-click="tapMyReplyContent($index)">
                                     {{item.name}}（{{item.secondAnswer.length}}）
-                            </div>
-                            <ul ng-show="myReplyIndex==$index">
-                                <li ng-repeat="item2 in item.secondAnswer" class="rcontent">
-                                    <nobr ng-click="tapEditMyContent($parent.$index,$index)"
-                                          ng-style="myReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}"
-                                          ng-dblclick="chooseMyContent($parent.$index,$index)">
-                                        {{item2.name}}
-                                    </nobr>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-                <div class="pubilcreply">
-                    <div ng-click="tapShowButton('publicReplyList')"
-                         ng-style="showFlag.publicReplyList?{'backgroundPosition':'0 -42px', color: '#08b7c2'}:{'backgroundPosition':'0 0', color: '#333'}"
-                         class="rtitle">
-                        公共回复（{{commonAnswer.length}}）</div>
-                    <ul ng-show='showFlag.publicReplyList'>
-                        <li ng-repeat="item in commonAnswer">
-                            <div class="group-title"
-                                 ng-style="publicReplyIndex==$index?{'backgroundPosition':'0 -42px', color: '#08b7c2'}:{'backgroundPosition':'0 0', color: '#333'}"
-                                 ng-click="tapPublicReplyContent($index)">
-                                {{item.name}}（{{item.secondAnswer.length}}）
-                            </div>
-                            <ul ng-show='publicReplyIndex==$index'>
-                                <li ng-repeat="item2 in item.secondAnswer" class="rcontent">
-                                    <nobr ng-click="tapEditCommonContent($parent.$index,$index)"
-                                          ng-dblclick="chooseCommonContent($parent.$index,$index)"
-                                          ng-style="publicReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}">{{item2.name}}
-                                    </nobr>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+                                </div>
+                                <ul ng-show="myReplyIndex==$index">
+                                    <li ng-repeat="item2 in item.secondAnswer" class="rcontent">
+                                        <nobr ng-click="tapEditMyContent($parent.$index,$index)"
+                                              ng-style="myReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}"
+                                              ng-dblclick="chooseMyContent($parent.$index,$index)">
+                                            {{item2.name}}
+                                        </nobr>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="pubilcreply">
+                        <div ng-click="tapShowButton('publicReplyList')"
+                             ng-style="showFlag.publicReplyList?{'backgroundPosition':'0 -42px', color: '#08b7c2'}:{'backgroundPosition':'0 0', color: '#333'}"
+                             class="rtitle">
+                            公共回复（{{commonAnswer.length}}）</div>
+                        <ul ng-show='showFlag.publicReplyList'>
+                            <li ng-repeat="item in commonAnswer">
+                                <div class="group-title"
+                                     ng-style="publicReplyIndex==$index?{'backgroundPosition':'0 -42px', color: '#08b7c2'}:{'backgroundPosition':'0 0', color: '#333'}"
+                                     ng-click="tapPublicReplyContent($index)">
+                                    {{item.name}}（{{item.secondAnswer.length}}）
+                                </div>
+                                <ul ng-show='publicReplyIndex==$index'>
+                                    <li ng-repeat="item2 in item.secondAnswer" class="rcontent">
+                                        <nobr ng-click="tapEditCommonContent($parent.$index,$index)"
+                                              ng-dblclick="chooseCommonContent($parent.$index,$index)"
+                                              ng-style="publicReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}">{{item2.name}}
+                                        </nobr>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <!--添加分组-->
                 <div class="addgroup" ng-show='addGroupFlag'>
