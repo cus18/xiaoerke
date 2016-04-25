@@ -155,7 +155,9 @@ public class ConsultUserController extends BaseController {
                 if(sessionList!=null && sessionList.size() > 0){
                     String csUserName = "";
                     for(ConsultSession session :sessionList){
-                        csUserName = csUserName + " " +session.getNickName();
+                        if(session!=null){
+                            csUserName = csUserName + " " +session.getNickName();
+                        }
                     }
                     vo.setCsUserName(csUserName);
                 }
