@@ -736,6 +736,11 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.userConsultListInfo = data.userList;
             });
 
+            //测完即删
+            GetCSDoctorList.save({}, function (data) {
+                $scope.CSList = data.CSList;
+            });
+
             $scope.messageListInit = function(){
                 var routePath = "/doctor/consultBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath: routePath}, function (data) {
@@ -771,11 +776,11 @@ angular.module('controllers', ['luegg.directives'])
             $scope.getGetCSInfoByUserId = function (Object) {
 
                 if (Object == 1000 || Object == 1 || Object == 7 || Object == 30) {
-                    GetCSInfoByUserId.save({dateNum: Object, pageNo: "1", pageSize: "100"}, function (data) {
+                    GetCSInfoByUserId.save({dateNum: Object, pageNo: 1, pageSize: 100}, function (data) {
                         $scope.CSDoctorListInfo = data.records;
                     });
                 } else {
-                    GetCSInfoByUserId.save({CSDoctorId: Object, pageNo: "1", pageSize: "100"}, function (data) {
+                    GetCSInfoByUserId.save({CSDoctorId: Object, pageNo: 1, pageSize: 100}, function (data) {
                         $scope.CSDoctorListInfo = data.records;
                     });
                 }

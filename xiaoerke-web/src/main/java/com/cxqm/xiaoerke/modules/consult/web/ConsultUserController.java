@@ -122,7 +122,14 @@ public class ConsultUserController extends BaseController {
         Map<String,Object> response = new HashMap<String, Object>();
         Integer pageNo = (Integer) params.get("pageNo");
         Integer pageSize = (Integer) params.get("pageSize");
-        Query query = new Query().with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
+        String csUserId = String.valueOf(params.get("CSDoctorId"));
+        Query query = null;
+        if(StringUtils.isNull(csUserId)){
+            query = new Query().with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
+        }else {
+            query = new Query().addCriteria(new Criteria().where("csUserId").is(csUserId)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
+        }
+
         PaginationVo<ConsultSessionStatusVo> pagination = consultRecordService.getUserMessageList(pageNo, pageSize, query);
         List<ConsultSessionStatusVo> resultList = new ArrayList<ConsultSessionStatusVo>();
         if(pagination.getDatas()!=null && pagination.getDatas().size()>0){
@@ -300,25 +307,7 @@ public class ConsultUserController extends BaseController {
             Query query = new Query(where("message").regex(searchInfo)).with(new Sort(Sort.Direction.DESC, "create_date"));
             pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query,"permanent");
         }
-        //根据咨询记录查询对应的用户
-        HashSet<String> openidSet = new HashSet<String>();
-        for(ConsultRecordMongoVo consultRecordMongoVo :pagination.getDatas()){
-            if(consultRecordMongoVo.getConsultType().equals("wx")){
-                openidSet.add(consultRecordMongoVo.getSenderId());
-            }
-        }
 
-        List<ConsultRecordMongoVo> consultSessionForwardRecordsVos = new ArrayList<ConsultRecordMongoVo>();
-        Iterator iterator = openidSet.iterator();
-        while(iterator.hasNext()){
-            Query query = new Query(where("openid").is(iterator.next())).with(new Sort(Sort.Direction.DESC, "createDate"));
-            ConsultRecordMongoVo oneConsultRecord = consultRecordService.findOneConsultRecord(query);
-            if(oneConsultRecord!=null && StringUtils.isNotNull(oneConsultRecord.getSenderId())){
-                consultSessionForwardRecordsVos.add(oneConsultRecord);
-            }
-        }
-
-        response.put("userList",consultSessionForwardRecordsVos);
         response.put("records", pagination!=null?pagination.getDatas():"");
         response.put("pageNo",pageNo);
         response.put("pageSize",pageSize);

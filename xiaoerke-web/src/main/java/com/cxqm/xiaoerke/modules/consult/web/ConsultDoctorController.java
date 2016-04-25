@@ -118,7 +118,7 @@ public class ConsultDoctorController extends BaseController {
         try{
             searchMap.put("rankDate", params.get("rankDate"));
             List<Map<String, Object>> resultValue = consultSessionForwardRecordsService.findConversationRankList(searchMap);
-            resultMap.put("rankListValue",resultValue);
+            resultMap.put("rankListValue", resultValue);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -212,7 +212,7 @@ public class ConsultDoctorController extends BaseController {
         Map<String,Object> response = new HashMap<String, Object>();
         List<User> users ;
         User user = new User();
-        user.setUserType("cs_doctor");
+        user.setUserType("consultDoctor");
         String userId = String.valueOf(params.get("userId"));
         if(StringUtils.isNotNull(userId)){
             user.setId(userId);
