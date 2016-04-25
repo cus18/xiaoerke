@@ -1055,7 +1055,7 @@ public class ScheduledTask {
 //                  HashMap<String, Object> response = new HashMap<String, Object>();
 //                  accountService.updateAccount(0F, (Integer) map.get("id")+"", response, false, (String)map.get("userId"),"电话咨询超时取消退款");
                   //              并发送消息
-                  String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(Integer) map.get("orderId")+",phone";
+                  String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(Integer) map.get("id")+",phone";
                   PatientMsgTemplate.unConnectPhone2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (Float) map.get("price") + "", (String) map.get("userPhone"), (String) map.get("orderNo"));
                   PatientMsgTemplate.unConnectPhone2Wechat((String) map.get("babyName"), (String) map.get("doctorName"), (Float) map.get("price") + "", url, (String) map.get("orderNo"), (String) map.get("openid"), token);
 //              }
