@@ -433,7 +433,7 @@
 <script>
 	var babyInfo;
 	var openid="";
-	var ticket = getUrlParam('ticket');
+//	var ticket = getUrlParam('ticket');
 	var workerAccouont = '';
 	// 	获取客服账号
 //	function getUrlParam(name)
@@ -614,7 +614,7 @@
 		var sourth=$("#sourceData",parent.document).html();
 		$("#openid").val(id);
 		getOpenid();
-		alert($("#doctorIdData",parent.document).html());
+//		alert($("#doctorIdData",parent.document).html());
 		$("#costomerID").val($("#doctorIdData",parent.document).html());
 		hiddenTableOrder();
 		getIllness();
@@ -627,7 +627,7 @@
 		sendGreetingsMessage();
 	}
 	function getBabyInfo(){
-		alert("getBabyInfo...."+openid);
+//		alert("getBabyInfo...."+openid);
 		$.ajax({
 			type: 'POST',
 			url: "/keeper/customer/searchBabyInfo",

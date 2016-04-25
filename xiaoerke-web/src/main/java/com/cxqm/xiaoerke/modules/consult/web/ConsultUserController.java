@@ -152,6 +152,7 @@ public class ConsultUserController extends BaseController {
                 vo.setUserId(consultSessionStatusVo.getUserId());
                 vo.setCsUserId(consultSessionStatusVo.getCsUserId());
                 vo.setCsUserName(consultSessionStatusVo.getCsUserName());
+                vo.setCreateDate(DateUtils.DateToStr(consultSessionStatusVo.getLastMessageTime(),"datetime"));
                 //根据userId查询CsUserId
                 ConsultSession consultSession =new ConsultSession();
                 consultSession.setUserId(consultSessionStatusVo.getUserId());
@@ -170,7 +171,7 @@ public class ConsultUserController extends BaseController {
         }
         int size = resultList.size();
         for(int i = 0;i<size;i++){
-            if(frequency(resultList, resultList.get(i)) > 0){
+            if(frequency(resultList, resultList.get(i)) > 1){
                 resultList.remove(i);
                 size = resultList.size();
             }
@@ -180,7 +181,7 @@ public class ConsultUserController extends BaseController {
     }
 
     /**
-     * @author deliang jdk源代码改造
+     * @author
      * @param c
      * @param o
      * @return

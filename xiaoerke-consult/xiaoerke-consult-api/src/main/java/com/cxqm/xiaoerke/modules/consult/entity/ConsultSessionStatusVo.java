@@ -13,6 +13,7 @@ public class ConsultSessionStatusVo {
 
     private String userId;
 
+    private String createDate;
 
     private String status;
 
@@ -28,6 +29,14 @@ public class ConsultSessionStatusVo {
 
     public void setCsUserId(String csUserId) {
         this.csUserId = csUserId;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
     }
 
     public String getCsUserName() {
