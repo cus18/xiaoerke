@@ -275,27 +275,20 @@ angular.module('controllers', ['luegg.directives'])
                     var inputText = $('.emotion').val();
                     var consultValMessage = {
                         "type": 0,
-                        "content": angular.copy($scope.info.consultMessage),//+AnalyticEmotion(inputText),
+                        "content": angular.copy($scope.info.consultMessage),
                         "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                         "senderId": angular.copy($scope.doctorId),
                         "senderName": angular.copy($scope.doctorName),
                         "sessionId": angular.copy($scope.currentUserConversation.sessionId)
                     };
-                    //console.log(inputText);
-                    //console.log(consultValMessage.content);
-                    //console.log(AnalyticEmotion(inputText));
                     if (!window.WebSocket) {
                         return;
                     }
-                    console.log("fwefw",$scope.currentUserConversation.consultValue);
                     if ($scope.socketServer1.readyState == WebSocket.OPEN) {
                         $scope.info.consultMessage = "";
-                        console.log($scope.currentUserConversation.consultValue);
-
                         $scope.currentUserConversation.consultValue.push(consultValMessage);
                         updateAlreadyJoinPatientConversationFromDoctor(angular.copy(consultValMessage));
                         $scope.socketServer1.send(JSON.stringify(consultValMessage));
-
                     } else {
                         alert("连接没有开启.");
                     }
@@ -790,7 +783,6 @@ angular.module('controllers', ['luegg.directives'])
 
             //查询某个客服信息
             $scope.getGetCSInfoByUserId = function (Object) {
-
                 if (Object == 1000 || Object == 1 || Object == 7 || Object == 30) {
                     GetCSInfoByUserId.save({dateNum: Object, pageNo: 1, pageSize: 100}, function (data) {
                         $scope.CSDoctorListInfo = data.records;

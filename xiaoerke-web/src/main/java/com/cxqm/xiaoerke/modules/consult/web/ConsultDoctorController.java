@@ -59,23 +59,14 @@ public class ConsultDoctorController extends BaseController {
 
     @RequestMapping(value = "/getCurrentUserHistoryRecord", method = {RequestMethod.POST, RequestMethod.GET})
     public
-    @ResponseBody
-    HashMap<String, Object> getCurrentUserHistoryRecord(@RequestBody Map<String, Object> params) {
+    @ResponseBody HashMap<String, Object> getCurrentUserHistoryRecord(@RequestBody Map<String, Object> params) {
         HashMap<String,Object> response = new HashMap<String, Object>();
-
         String userId = (String) params.get("userId");
         String dateTime = (String) params.get("dateTime");
         Integer pageSize = (Integer) params.get("pageSize");
         List<ConsultRecordMongoVo> currentUserHistoryRecord = null;
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            Date date = sdf.parse(dateTime);
-            currentUserHistoryRecord = consultRecordService.getCurrentUserHistoryRecord(userId, date, pageSize);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
+        Date date = DateUtils.StrToDate(dateTime,"datetime");
+        currentUserHistoryRecord = consultRecordService.getCurrentUserHistoryRecord(userId, date, pageSize);
         if(currentUserHistoryRecord!=null){
             response.put("consultDataList", ConsultUtil.transformCurrentUserListData(currentUserHistoryRecord));
         }else{
@@ -169,7 +160,6 @@ public class ConsultDoctorController extends BaseController {
             pageNo = (Integer)params.get("pageNo");
             pageSize = (Integer)params.get("pageSize");
         }
-
         if(recordType.equals("all") && StringUtils.isNotNull(userId) && pageSize > 0){
             Query query = new Query(where("userId").is(userId)).with(new Sort(Direction.DESC, "createDate"));//用户端获取与平台的所有聊天记录
             pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "permanent");
@@ -183,11 +173,9 @@ public class ConsultDoctorController extends BaseController {
                     .is(recordType)).with(new Sort(Direction.DESC, "create_date"));
             pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "permanent");
         }
-
         response.put("records", pagination!=null?pagination.getDatas():"");
         response.put("pageNo",pageNo);
         response.put("pageSize",pageSize);
-
         return response;
     }
 
