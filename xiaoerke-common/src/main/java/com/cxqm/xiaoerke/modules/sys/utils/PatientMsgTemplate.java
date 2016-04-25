@@ -3,6 +3,7 @@ package com.cxqm.xiaoerke.modules.sys.utils;
 import com.cxqm.xiaoerke.common.bean.WechatArticle;
 import com.cxqm.xiaoerke.common.utils.HttpRequestUtil;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import net.sf.json.JSONObject;
 
 import java.net.URLConnection;
@@ -397,9 +398,9 @@ public class PatientMsgTemplate {
 //        WechatMessageUtil.evaluateRemind("取消预约通知", content, date, "", "", "若您因紧急情况不能按时出诊，请联系客服：400-623-7120。宝大夫祝您工作顺利。", token, url, openId, WechatMessageUtil.DOC_APPINTMENT_CANCEL);
 //    }
 
-    public static void consultPhoneEvaluateWaring2Msg(String babyName,String doctorName, String phone,String url,String connectUrl){
-        url = getShortUrl(url);
-        connectUrl = getShortUrl(connectUrl);
+    public static void consultPhoneEvaluateWaring2Msg(String babyName,String doctorName, String phone,String url,String connectUrl,String token){
+        url = WechatUtil.getShortUrl(token,url);
+        connectUrl = WechatUtil.getShortUrl(token,connectUrl);
         String content = "（评价电话咨询）"+babyName+"小朋友家长您好，感谢您使用宝大夫预约"+doctorName+"医生的电话咨询，请点击"+url+"完成评价！注：若此次通话意外中断，请在5分钟内点击"+connectUrl+"重新连接通话，否则本次咨询结束。";
         SMSMessageUtil.sendMsg(phone, content);
     }
@@ -414,5 +415,6 @@ public class PatientMsgTemplate {
       JSONObject shortUrl=JSONObject.fromObject(result);
       return (String)shortUrl.get("tinyurl");
     }
+
 
 }
