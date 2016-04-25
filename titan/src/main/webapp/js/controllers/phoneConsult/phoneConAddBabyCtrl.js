@@ -35,13 +35,15 @@
             }
             saveBabyInfo.get({"sex":sex,"name":encodeURI(name),"birthDay":birthday}, function (data){
                 if(data.resultCode=='1'){
-                    var consultValMessage = {
-                        "phoneConDoctorDetail":$stateParams.phoneConDoctorDetail,
-                        "doctorId":$stateParams.doctorId
-                    }
-                    window.location.href = "http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=phoneConsult&payParam="
-                        + JSON.stringify(consultValMessage);
-
+                    //if($stateParams.pageIndex=="1"){
+                    //    $scope.titleLock = false;// 隐藏顶部菜单
+                    //    $state.go("healthRecordSelectBaby",{index:0,page:1,conid:$stateParams.conid});
+                    //}else{
+                    //    $state.go("healthRecordSelectBaby");
+                    //}
+                    //keeper/wxPay/patientPay.do?serviceType=phoneConsult&patientPay.do?phoneConDoctorDetail=62&doctorId=00f95d308087415887fc008ab74476f4
+                    var babyid=data.autoId;
+                    window.location.href = "/keeper/wxPay/patientPay.do?serviceType=phoneConsult&phoneConDoctorDetail="+$stateParams.phoneConDoctorDetail+"&doctorId="+$stateParams.doctorId+"&babyId="+babyid;
                 }
             });
         }

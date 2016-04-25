@@ -528,6 +528,7 @@ group by crs.id
     <if test="consultPhoneTimeToStr != null and consultPhoneTimeToStr != ''">
       and #{consultPhoneTimeToStr} >= scs.date
     </if>
+    group by crs.id
   </select>
   <!-- 查询电话咨询订单数，sunxiao -->
   <select id="getNewOrderCount" resultType="java.lang.Integer" >
@@ -589,6 +590,7 @@ group by crs.id
     <if test="fromDate != null and fromDate != ''" >
       and scs.date > date_sub(now(),interval 1 week)
     </if>
+    group by crs.id
   </select>
   <!--根据条件查询订单 sunxiao-->
   <select id="getAllConsultPhoneRegisterListByInfo" resultType="com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo" parameterType="java.util.Map">
@@ -639,5 +641,6 @@ group by crs.id
     <if test="doctorId != null and doctorId != ''">
       and sd.id = #{doctorId}
     </if>
+    group by crs.id
   </select>
 </mapper>
