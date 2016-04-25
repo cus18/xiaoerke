@@ -72,7 +72,7 @@ public class CCPRestSDK {
 	
 	private static final String Ivrconf = "ivr/conf";
 	
-	private static String SERVER_IP = "sandboxapp.cloopen.com";
+	private static String SERVER_IP = "app.cloopen.com";
 	private static String SERVER_PORT = "8883";
 	private static String ACCOUNT_SID;
 	private static String ACCOUNT_TOKEN;
