@@ -31,8 +31,11 @@
 
             };
             $scope.orderDerail = function(item){
-               /* $state.go("orderDetail",{doctorId:item.doctorId,orderId:item.orderId,type:"phone"})*/
-                window.location.href = "/keeper/orderDetailPay/patientPay.do?orderDetailPay=";
+                if(item.status == "待支付"){
+                    window.location.href = "/keeper/wxPay/patientPay.do?serviceType=orderDetail&doctorId="+item.doctorId+"&orderId="+item.orderId+"&type=phone";
+                }else{
+                    $state.go("orderDetail",{doctorId:item.doctorId,orderId:item.orderId,type:"phone"})
+                }
             };
 
 
