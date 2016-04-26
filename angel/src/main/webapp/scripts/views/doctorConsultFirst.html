@@ -212,6 +212,11 @@
                                 <div ng-if="item.type=='0'" class="message" >
                                     {{item.content}}
                                 </div>
+                                <div ng-if="item.type=='1'" class="message">
+                                    <a target="_blank">
+                                        <img width="100" height="100" ng-src="{{item.content}}">
+                                    </a>
+                                </div>
                             </div>
                             <div ng-if="item.senderId!=doctorId&&item.type!='4'" class="patientConsultContent">
                                 <div class="senderName">
