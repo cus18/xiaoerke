@@ -243,6 +243,7 @@ angular.module('controllers', ['luegg.directives'])
                                 filterMediaData(consultData);
                                 processPatientSendMessage(consultData);
                             }
+                            triggerVoice();
                             $scope.$apply();
                         };
 
@@ -348,7 +349,7 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.useImgFace = function () {}
 
                 //触发qq声音
-                $('.lipanpan').click(function() {
+                $scope.triggerVoice = function () {
                     var audio = document.createElement('audio');
                     var source = document.createElement('source');
                     source.type = "audio/mpeg";
@@ -358,7 +359,7 @@ angular.module('controllers', ['luegg.directives'])
                     source.controls = "controls";
                     audio.appendChild(source);
                     audio.play();
-                })
+                }
 
                 $scope.getEmotion = function (){
                     $('#face').SinaEmotion($('.emotion'));
