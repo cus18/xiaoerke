@@ -382,17 +382,21 @@ public class ConsultUserController extends BaseController {
             pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query,"permanent");
             response.put("userList", pagination!=null?pagination.getDatas():"");
             List<HashMap<String,Object>> responseList = new ArrayList<HashMap<String, Object>>();
-            for(ConsultRecordMongoVo consultRecordMongoVo : pagination.getDatas()){
-                HashMap<String,Object> hashMap = new HashMap<String, Object>();
-                hashMap.put("currentRecord",consultRecordMongoVo);
+            if(pagination.getDatas()!=null && pagination.getDatas().size()>0){
+                for(ConsultRecordMongoVo consultRecordMongoVo : pagination.getDatas()){
+                    HashMap<String,Object> hashMap = new HashMap<String, Object>();
+                    hashMap.put("currentRecord",consultRecordMongoVo);
 
-                Query beforeQuery = new Query(where("userId").is(consultRecordMongoVo.getUserId()).andOperator(Criteria.where("createDate").lte(consultRecordMongoVo.getCreateDate()))).with(new Sort(Sort.Direction.DESC, "createDate")).limit(5);
-                List<ConsultRecordMongoVo> searchList = consultRecordService.getCurrentUserHistoryRecord(beforeQuery);
-                hashMap.put("beforeRecord",searchList);
+                    Query beforeQuery = new Query(where("userId").is(consultRecordMongoVo.getUserId()).andOperator(Criteria.where("createDate").lt(consultRecordMongoVo.getCreateDate()))).with(new Sort(Direction.ASC, "createDate")).limit(5);
+                    List<ConsultRecordMongoVo> beforeRecordList = consultRecordService.getCurrentUserHistoryRecord(beforeQuery);
+                    hashMap.put("beforeRecord",beforeRecordList);
 
-                Query laterQuery = new Query(where("userId").is(consultRecordMongoVo.getUserId()).andOperator(Criteria.where("createDate").gte(consultRecordMongoVo.getCreateDate()))).with(new Sort(Sort.Direction.DESC, "createDate")).limit(5);
-                hashMap.put("laterRecord",laterQuery);
-                responseList.add(hashMap);
+                    Query laterQuery = new Query(where("userId").is(consultRecordMongoVo.getUserId()).andOperator(Criteria.where("createDate").gt(consultRecordMongoVo.getCreateDate()))).with(new Sort(Sort.Direction.ASC, "createDate")).limit(5);
+                    List<ConsultRecordMongoVo> laterRecordList = consultRecordService.getCurrentUserHistoryRecord(laterQuery);
+                    hashMap.put("laterRecord",laterRecordList);
+                    responseList.add(hashMap);
+                }
+                response.put("userList",responseList);
             }
         }
         response.put("pageNo",pageNo);
