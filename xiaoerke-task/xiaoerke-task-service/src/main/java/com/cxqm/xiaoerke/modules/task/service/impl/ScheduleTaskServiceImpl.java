@@ -345,4 +345,14 @@ public class ScheduleTaskServiceImpl implements ScheduleTaskService {
         return scheduledTaskDao.getOrderInfoToDoc5minAfterSuccess();
     }
 
+    @Override
+    public List<HashMap<String, Object>> getDoctorInfoByDate(String date) {
+        return scheduledTaskDao.getDoctorInfoByDate(date);
+    }
+
+    @Override
+    public List<HashMap<String, Object>> getOrderInfoByDate(String date) {
+        return scheduledTaskDao.getOrderInfoByDate(date);
+    }
+
 }

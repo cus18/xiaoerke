@@ -95,7 +95,7 @@ public class DoctorMsgTemplate {
 
 
     public static void doctorPhoneConsultRemindAtMoning2Sms(String doctorPhone,String doctorName,String num,String nameList){
-        String content = "【电话咨询一览】尊敬的"+doctorName+"医生，今天已有"+num+"名宝宝预约您的电话咨询："+nameList+"。因特殊情况不能接听，请联系客服：400-623-7120。可登录微信公众号宝大夫专家版查看患者病情资料。宝大夫祝您工作顺利！";
+        String content = "【电话咨询一览】尊敬的"+doctorName+"医生，今天已有"+num+"名宝宝预约您的电话咨询："+nameList+"。若您因特殊情况不能接听，请联系客服：400-623-7120。可登录微信公众号宝大夫专家版查看患者病情资料。宝大夫祝您工作顺利！";
         SMSMessageUtil.sendMsg(doctorPhone, content);
     }
 
