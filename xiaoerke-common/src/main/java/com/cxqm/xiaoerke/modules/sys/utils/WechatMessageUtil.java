@@ -36,6 +36,9 @@ public class WechatMessageUtil {
     //医生端预约成功提醒提醒
     protected static final String DOC_APPINTMENT_SUCCESS= "OPENTM207664688";
 
+    //电话咨询未接通提醒
+    protected static final String CONSULT_PHONE_UNCONNNECT= "mLwO1rHV4xTP3ppNyfMiYNfNBqDShjO5bzZ_eu6aRVg";
+
     protected static final String DOC_APPINTMENT_CANCEL= "OPENTM203353498";
     //模板颜色
     private static final String COLOR = "#000000";
