@@ -6,26 +6,29 @@
     </div>
     <div class="consultDisplay">
         <div class="consulChatList">
-            <div class="chatBox">
-                <div class="patientConsultContent">
+            <div class="chatBox" ng-repeat="item in consultContent">
+                <div class="patientConsultContent" ng-if="item.senderId==patientId&&item.type!='4'">
                     <div class="patientHeaderImg">
-                        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png" alt=""/>
+                        <img ng-src="{{item.avatar}}">
                     </div>
-                    <div class="message">
-                         item.content
+                    <div class="message" ng-if="item.type=='0'">
+                        {{item.content}}
                     </div>
                 </div>
-                <div class="doctorReplyContent">
+                <div class="doctorReplyContent"  ng-if="item.senderId!=patientId&&item.type!='4'">
                     <div class="doctorHeaderImg">
-                        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png" alt=""/>
+                        <img ng-src="{{item.avatar}}" alt=""/>
                     </div>
-                    <div class="message" >
-                        item.content
+                    <div class="message" ng-if="item.type=='0'">
+                        {{item.content}}
                     </div>
+                </div>
+                <div ng-if="item.type=='4'">
+                    亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^
                 </div>
             </div>
         </div>
-        <div ng-repeat="item in consultContent">
+        <!--<div ng-repeat="item in consultContent">
             <div ng-if="item.senderId!=patientId&&item.type!='4'">
                 <div style="margin-left:2%;font-size:12px;color:#9C27B0;font-weight:bold">{{item.senderName}}</div>
                 <img ng-src="{{item.avatar}}" style="width:40px;height:40px;margin-top:2%;margin-left:2%">
@@ -38,23 +41,11 @@
                     </div>
                 </div>
             </div>
-            <div ng-if="item.senderId==patientId&&item.type!='4'">
-                <img ng-src="{{item.avatar}}">
-                <div class="sendRight">
-                    <div class="consultRightContent">
-                        <div ng-if="item.type=='0'">
-                            <br/>
-                            {{item.content}}
-                            <br/><br/>
-                        </div>
-                    </div>
-                    <div class="arrowRight"></div>
-                </div>
-            </div>
+
             <div ng-if="item.type=='4'">
                  亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^
             </div>
-        </div>
+        </div>-->
     </div>
     <div class="consultInput">
         <div class="consultInputTop">
