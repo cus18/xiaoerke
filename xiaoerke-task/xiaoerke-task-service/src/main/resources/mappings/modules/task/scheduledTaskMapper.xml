@@ -67,7 +67,9 @@
         crs.id AS patient_register_service_id,
         crs.sys_patient_id AS patientid,
         crs.register_no,
+        crs.sys_phoneConsult_service_id,
         crs.phone as userPhone,
+        sd.id as doctorId,
         sd.name AS doctorName,
         su.phone,
         sbb.name as babyName,
@@ -86,6 +88,39 @@
         AND DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(scs.date,"%Y-%m-%d")
         AND DATE_SUB(NOW(), INTERVAL 5 MINUTE) > crs.create_time
         AND crs.state = '1'
+    </select>
+
+    <select id="sendMsgToDoc5minBeforeConnect" resultType="java.util.HashMap">
+        SELECT
+        scs.beginTime,
+        scs.date,
+        crs.id AS patient_register_service_id,
+        crs.sys_patient_id AS patientid,
+        crs.register_no,
+        crs.sys_phoneConsult_service_id,
+        crs.phone as userPhone,
+        sd.id as doctorId,
+        sd.name AS doctorName,
+        su.phone,
+        sbb.name as babyName,
+        case when shc.contact_phone is null then "" else shc.contact_phone end hospitalContactPhone,
+        su.openid,
+        sh.name as hospitalName
+        FROM sys_consultphone_service scs
+        INNER JOIN consultphone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
+        LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
+        LEFT  JOIN doctor_hospital_relation dhr on sd.id = dhr.sys_doctor_id
+        LEFT JOIN sys_hospital sh on dhr.sys_hospital_id = sh.id
+        LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = dhr.sys_hospital_id
+        LEFT JOIN sys_user su ON su.id = sd.sys_user_id
+        LEFT JOIN sys_baby_baseinfo sbb on sbb.userid = su.id
+        LEFT JOIN sys_monitor sm ON sm.patient_register_service_id = crs.id
+        WHERE DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(crs.create_time,"%Y-%m-%d")
+        AND DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(scs.date,"%Y-%m-%d")
+        AND DATE_SUB(scs.beginTime, INTERVAL 5 MINUTE) > crs.create_time
+        AND crs.state = '1'
+		AND sm.types='3'
+		AND sm.status='7'
     </select>
 
     <update id="updateOrderInfoToDoc" >
