@@ -306,7 +306,7 @@ public class ConsultSessionManager {
 
 				//通知发起转接的人，转接正在处理中在5秒钟内，接诊员有机会取消转接，如果，5秒后，接诊员不取消，则接诊员不能再取消转接
 				JSONObject jsonObj = new JSONObject();
-				jsonObj.put("type", 4);
+				jsonObj.put("type", "4");
 				jsonObj.put("notifyType", "0011");
 				jsonObj.put("session", session);
 				jsonObj.put("remark", remark);
@@ -366,7 +366,7 @@ public class ConsultSessionManager {
 				if(channelToCsUser.isActive()&&channelFromCsUser.isActive()){
 					//通知被转接咨询医生，有用户需要转接
 					JSONObject jsonObj = new JSONObject();
-					jsonObj.put("type", 4);
+					jsonObj.put("type", "4");
 					jsonObj.put("notifyType", "0009");
 					jsonObj.put("session", session);
 					jsonObj.put("toCsUserName", toCsUser.getName());
@@ -376,7 +376,7 @@ public class ConsultSessionManager {
 
 					//通知接诊员，不能再取消转接
 					jsonObj.clear();
-					jsonObj.put("type", 4);
+					jsonObj.put("type", "4");
 					jsonObj.put("notifyType", "0013");
 					jsonObj.put("session", session);
 					TextWebSocketFrame frameFromCsUser = new TextWebSocketFrame(jsonObj.toJSONString());
@@ -399,7 +399,7 @@ public class ConsultSessionManager {
 								//通知医生，转接取消
 								Channel channelToCsUser = userChannelMapping.get(sessionForwardRecordsVoLater.getToUserId());
 								jsonObj.clear();
-								jsonObj.put("type", 4);
+								jsonObj.put("type", "4");
 								jsonObj.put("notifyType", "0012");
 								jsonObj.put("session", session);
 								TextWebSocketFrame frame1 = new TextWebSocketFrame(jsonObj.toJSONString());
@@ -408,7 +408,7 @@ public class ConsultSessionManager {
 								//通知接诊员，退回此次转接
 								Channel channelFromCsUser = userChannelMapping.get(sessionForwardRecordsVoLater.getFromUserId());
 								jsonObj.clear();
-								jsonObj.put("type", 4);
+								jsonObj.put("type", "4");
 								jsonObj.put("notifyType", "0014");
 								jsonObj.put("session", session);
 								TextWebSocketFrame frame2 = new TextWebSocketFrame(jsonObj.toJSONString());
@@ -432,7 +432,7 @@ public class ConsultSessionManager {
 			Channel channelFromCsUser = userChannelMapping.get(fromCsUserId);
 			if(channelFromCsUser.isActive()){
 				JSONObject jsonObj = new JSONObject();
-				jsonObj.put("type", 4);
+				jsonObj.put("type", "4");
 				jsonObj.put("notifyType", "0010");
 				jsonObj.put("operation", operation);
 				jsonObj.put("session", session);

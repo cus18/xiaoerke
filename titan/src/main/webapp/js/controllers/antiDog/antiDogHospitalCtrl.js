@@ -1,6 +1,6 @@
 angular.module('controllers', ['ionic']).controller('antiDogHospitalCtrl', [
-    '$scope','$state','$stateParams',
-    function ($scope,$state,$stateParams) {
+    '$scope','$state','$stateParams','getInsuranceHospitalListByInfo',
+    function ($scope,$state,$stateParams,getInsuranceHospitalListByInfo) {
 
         $scope.num = "";
         $scope.openImg = "http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Farrow_blue_down.png";
@@ -114,6 +114,58 @@ angular.module('controllers', ['ionic']).controller('antiDogHospitalCtrl', [
             },
         ];
 
+        $scope.districtList =[
+            {
+                district:"海淀"
+            },
+            {
+                district:"朝阳"
+            },
+            {
+                district:"东城"
+            },
+            {
+                district:"西城"
+            },
+            {
+                district:"石景山"
+            },
+            {
+                district:"丰台"
+            },
+            {
+                district:"门头沟"
+            },
+            {
+                district:"房山"
+            },
+            {
+                district:"通州"
+            },
+            {
+                district:"顺义"
+            },
+            {
+                district:"大兴"
+            },
+            {
+                district:"昌平"
+            },
+            {
+                district:"平谷"
+            },
+            {
+                district:"怀柔"
+            },
+            {
+                district:"密云"
+            },
+            {
+                district:"延庆"
+            }
+        ];
+
+
         $scope.openMore = function(index){
            if( $(".hospital dt img").eq(index).attr("src")== $scope.openImg){
                $(".hospital dt img").attr("src",$scope.openImg2);
@@ -125,6 +177,11 @@ angular.module('controllers', ['ionic']).controller('antiDogHospitalCtrl', [
                $(".hospital dt img").eq(index).attr("src",$scope.openImg2);
                $(".hospital dt").eq(index).siblings("dd").hide();
            }
+            getInsuranceHospitalListByInfo.save({"district":index+''}, function (data){
+                if(data.insurance!=''||data.insurance!=null){
+                    $scope.hospitalList=data.insurance;
+                }
+            });
         };
 
 

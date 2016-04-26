@@ -114,3 +114,7 @@ var goPay = function(){
     recordLogs("FQB_FWXQ_PEI");
     window.location.href = "insurance#/antiDogOrderList";
 };
+var hospitalList = function(){
+    recordLogs("FQB_FWXQ_PEI");
+    window.location.href = "insurance#/antiDogHospital";
+};

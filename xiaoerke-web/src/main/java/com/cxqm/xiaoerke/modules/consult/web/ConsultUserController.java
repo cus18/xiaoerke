@@ -373,8 +373,6 @@ public class ConsultUserController extends BaseController {
             }
             removeDuplicateList(resultList);
             response.put("userList",resultList);
-
-
         }else if(searchType.equals("message")){
             Query query = new Query(where("message").regex(searchInfo)).with(new Sort(Sort.Direction.DESC, "createDate"));
             pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query,"permanent");
