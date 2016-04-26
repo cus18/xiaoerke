@@ -20,6 +20,7 @@ import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
 import com.cxqm.xiaoerke.modules.plan.service.PlanMessageService;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.service.CustomerService;
+import com.cxqm.xiaoerke.modules.sys.service.DoctorInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.MessageService;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
@@ -91,6 +92,9 @@ public class ScheduledTask {
 
     @Autowired
     private ConsultSessionService consultSessionService;
+
+    @Autowired
+    private DoctorInfoService doctorInfoService;
 
     //将所有任务放到一个定时器里，减少并发
     //@Scheduled(cron = "0 */1 * * * ?")
@@ -202,6 +206,12 @@ public class ScheduledTask {
             String status = "4";
             updateMonitorStatus(trackList, status);
         }
+
+        //电话咨询预约成功5min后发消息给医生
+        sendMsgToDoc5minAfterSuccess();
+
+        //电话咨询接通前5min发消息提醒医生
+        sendMsgToDoc5minBeforeConnect();
     }
 
     //每天晚上11：00更新sys_register_service中的status状态
@@ -1009,6 +1019,8 @@ public class ScheduledTask {
       List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",new Date());
       for(HashMap map:consultOrderList){
           String doctorPhone =  (String)map.get("doctorPhone");
+          String doctorName =  (String)map.get("doctorName");
+          String babyName =  (String)map.get("babyName");
           String userPhone =  (String)map.get("userPhone");
           Integer orderId = (Integer)map.get("id");
           List<ConsultPhoneRecordVo> list = consultPhoneService.getConsultRecordInfo(orderId + "", "CallAuth");
@@ -1048,6 +1060,17 @@ public class ScheduledTask {
                   String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(Integer) map.get("id")+",phone";
                   PatientMsgTemplate.unConnectPhone2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (Float) map.get("price") + "", (String) map.get("userPhone"), (String) map.get("orderNo"));
                   PatientMsgTemplate.unConnectPhone2Wechat((String) map.get("babyName"), (String) map.get("doctorName"), (Float) map.get("price") + "", url, (String) map.get("orderNo"), (String) map.get("openid"), token);
+
+              //未接通时 给医生发消息提醒
+              DoctorMsgTemplate.doctorPhoneConsultRemindFail2Sms(doctorName,babyName,doctorPhone);
+              SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("mm月dd日");
+              String nowTime = simpleDateFormat1.format(new Date());
+              Map tokenMap = systemService.getDoctorWechatParameter();
+              String doctorToken = (String)tokenMap.get("token");
+              HashMap<String,Object> searchMap = new HashMap<String, Object>();
+              searchMap.put("doctorId",(String) map.get("doctorId"));
+              List<HashMap<String, Object>> doctorList = doctorInfoService.findDoctorByDoctorId(searchMap);
+              DoctorMsgTemplate.doctorPhoneConsultRemindFail2Wechat(babyName,nowTime,doctorToken,"",(String)doctorList.get(0).get("openid"));
 //              }
           }
       }
@@ -1354,7 +1377,7 @@ public class ScheduledTask {
     //接听前5min
     public void sendMsgToDoc5minBeforeConnect(){
         System.out.println(new Date() + " package.controller scheduled test --> sendMsgToDoc_PhoneConsult");
-        List<HashMap<String, Object>> doctorMsg = scheduleTaskService.sendMsgToDoc5minBeforeConnect();
+        List<HashMap<String, Object>> doctorMsg = scheduleTaskService.getOrderInfoToDoc5minBeforeConnect();
         for (HashMap<String, Object> map : doctorMsg) {
             String doctorName = (String)map.get("doctorName");
             String babyName = (String)map.get("babyName");
@@ -1383,14 +1406,5 @@ public class ScheduledTask {
         }
     }
 
-    //未接通
-    public void sendMsgToDocFailConnect(){
-
-    }
-
-    //取消咨询
-    public void sendMsgToDocCancelSuccess(){
-
-    }
 
 }

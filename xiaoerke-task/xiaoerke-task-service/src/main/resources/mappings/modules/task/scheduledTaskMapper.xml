@@ -90,7 +90,7 @@
         AND crs.state = '1'
     </select>
 
-    <select id="sendMsgToDoc5minBeforeConnect" resultType="java.util.HashMap">
+    <select id="getOrderInfoToDoc5minBeforeConnect" resultType="java.util.HashMap">
         SELECT
         scs.beginTime,
         scs.date,
