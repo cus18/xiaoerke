@@ -2,10 +2,10 @@ angular.module('controllers', ['luegg.directives'])
     .controller('doctorConsultFirstCtrl', ['$scope', '$sce', '$window','GetTodayRankingList',
         'GetOnlineDoctorList','GetAnswerValueList','GetAnswerValueList','GetUserLoginStatus',
         '$location', 'GetCurrentUserHistoryRecord','GetMyAnswerModify','GetCurrentUserConsultListInfo',
-        'TransferToOtherCsUser','SessionEnd','GetWaitJoinList','React2Transfer','CancelTransfer',
+        'TransferToOtherCsUser','SessionEnd','GetWaitJoinList','React2Transfer','CancelTransfer','$upload',
         function ($scope, $sce, $window,GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
                   GetAnswerValueList, GetUserLoginStatus, $location, GetCurrentUserHistoryRecord,GetMyAnswerModify,
-                  GetCurrentUserConsultListInfo,TransferToOtherCsUser,SessionEnd,GetWaitJoinList,React2Transfer,CancelTransfer) {
+                  GetCurrentUserConsultListInfo,TransferToOtherCsUser,SessionEnd,GetWaitJoinList,React2Transfer,CancelTransfer,$upload) {
             $scope.info = {
                 effect:"true",
                 transferRemark:"",
@@ -346,8 +346,6 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 }
 
-                $scope.useImgFace = function () {}
-
                 //触发qq声音
                 $scope.triggerVoice = function () {
                     var audio = document.createElement('audio');
@@ -364,6 +362,27 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.getEmotion = function (){
                     $('#face').SinaEmotion($('.emotion'));
                 }
+                //图片
+                $scope.uploadFiles = function($files,fileType) {
+                    var dataValue = {
+                        "fileType": fileType,
+                        "senderId": $scope.doctorId
+                    };
+                    console.log(JSON.stringify(dataValue));
+                    var dataJsonValue = JSON.stringify(dataValue);
+                    for (var i = 0; i < $files.length; i++) {
+                        var file = $files[i];
+                        $scope.upload = $upload.upload({
+                            url: 'ap/consult/uploadMediaFile',
+                            data: encodeURI(dataJsonValue),
+                            file: file
+                        }).progress(function(evt) {
+                            console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+                        }).success(function(data, status, headers, config){
+                            console.log(data);
+                        });
+                    }
+                };
 
                 //查看更多的用户历史消息
                 $scope.seeMoreConversationMessage = function(){
