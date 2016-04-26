@@ -95,7 +95,7 @@ public class DoctorMsgTemplate {
 
 
     public static void doctorPhoneConsultRemindAtMoning2Sms(String doctorPhone,String doctorName,String num,String nameList){
-        String content = "【电话咨询一览】尊敬的"+doctorName+"医生，今天已有"+num+"名宝宝预约您的电话咨询："+nameList+"。因特殊情况不能接听，请联系客服：400-623-7120。可登录微信公众号宝大夫专家版查看患者病情资料。宝大夫祝您工作顺利！";
+        String content = "【电话咨询一览】尊敬的"+doctorName+"医生，今天已有"+num+"名宝宝预约您的电话咨询："+nameList+"。若您因特殊情况不能接听，请联系客服：400-623-7120。可登录微信公众号宝大夫专家版查看患者病情资料。宝大夫祝您工作顺利！";
         SMSMessageUtil.sendMsg(doctorPhone, content);
     }
 
@@ -157,8 +157,8 @@ public class DoctorMsgTemplate {
     }
 
 
-    public static void doctorPhoneConsultRemindAt5minBefore2Sms(String doctorName,String babyName,String phone,String userPhone){
-        String content = "【接听提醒】尊敬的"+doctorName+"医生，"+babyName+"小朋友家长将在5min以后接通电话咨询，到时您会接到号码为"+userPhone+"的来电，请保持电话畅通。在这之前，您可以打开链接，查看患者详细的病情资料http://baod";
+    public static void doctorPhoneConsultRemindAt5minBefore2Sms(String doctorName,String babyName,String phone,String userPhone,String url){
+        String content = "【接听提醒】尊敬的"+doctorName+"医生，"+babyName+"小朋友家长将在5min以后接通电话咨询，到时您会接到号码为"+userPhone+"的来电，请保持电话畅通。在这之前，您可以打开链接，查看患者详细的病情资料"+url;
         SMSMessageUtil.sendMsg(phone, content);
     }
 

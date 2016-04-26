@@ -38,8 +38,11 @@
             };
 
             $scope.orderDerail = function(item){
-                /*$state.go("orderDetail",{doctorId:item.doctorId,orderId:item.orderId,type:item.classify})*/
-                window.location.href = "/keeper/orderDetailPay/patientPay.do?orderDetailPay=";
+                if(item.status == "待支付"&&item.classify == "phone"){
+                    window.location.href = "/keeper/wxPay/patientPay.do?serviceType=orderDetail&doctorId="+item.doctorId+"&orderId="+item.orderId+"&type=phone";
+                }else{
+                    $state.go("orderDetail",{doctorId:item.doctorId,orderId:item.orderId,type:"phone"})
+                }
             };
 
             $scope.$on('$ionicView.enter', function(){

@@ -130,6 +130,8 @@ public class PayController {
             model.addAttribute("payPrice", 200);
             model.addAttribute("intervalFlag", "1");
             return "appointmentPay";
+        }else if(serviceType.equals("orderDetail")){
+           return  "orderDetailPay";
         }else{
             return null;
         }

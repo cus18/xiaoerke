@@ -79,8 +79,8 @@ public class PhoneConsultaController {
     @RequestMapping(value = "consultReconnect",method = {RequestMethod.GET,RequestMethod.POST})
     public
     @ResponseBody
-    String consultReconnect(@RequestParam Integer phoneConsultaServiceId){
-
+    Map consultReconnect(@RequestParam Integer phoneConsultaServiceId){
+        Map<String,Object> resultMap = new HashMap<String, Object>();
         Map<String,Object> orderInfo = consultPhoneOrderService.getConsultConnectInfo(phoneConsultaServiceId);
         Integer orderId = (Integer)orderInfo.get("id");
         String userPhone = (String)orderInfo.get("userPhone");
@@ -100,7 +100,7 @@ public class PhoneConsultaController {
                     "1", "10", null);
             statusCode = (String) result.get("statusCode");
         }
-
-        return statusCode;
+        resultMap.put("statusCode",statusCode);
+        return resultMap;
     }
 }

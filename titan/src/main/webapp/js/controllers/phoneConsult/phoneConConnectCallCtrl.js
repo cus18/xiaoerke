@@ -9,8 +9,8 @@
 
             $scope.$on('$ionicView.enter', function(){
                 ConsultReconnection.get({phoneConsultaServiceId:$stateParams.phoneConsultaServiceId},function(data){
-                    if("000000" == data){
-                        WeixinJSBridge.call('closeWindow');
+                    if("000000" == data.statusCode){
+                        wx.closeWindow();
                     }else{
                         alert("通话已过期")
                     }

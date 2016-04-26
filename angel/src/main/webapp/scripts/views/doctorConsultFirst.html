@@ -209,8 +209,12 @@
                                     <span>{{item.senderName}}</span>
                                     <span>{{item.dateTime}}</span>
                                 </div>
-                                <div ng-if="item.type=='0'" class="message" >
-                                    {{item.content}}
+                                <div ng-if="item.type=='0'" class="message" ng-bind-html="item.content">
+                                </div>
+                                <div ng-if="item.type=='1'" class="message">
+                                    <a target="_blank">
+                                        <img width="100" height="100" ng-src="{{item.content}}">
+                                    </a>
                                 </div>
                             </div>
                             <div ng-if="item.senderId!=doctorId&&item.type!='4'" class="patientConsultContent">
@@ -262,6 +266,11 @@
                 <div class="facebox">
                     <div class="facein">
                         <p class="fl"><span id="face" ng-click="getEmotion()">表情</span></p>
+                        <p class="fl"><span type="file" ng-file-select="uploadFiles($files,'image')"
+                                        accept="image/*"
+                                        ng-file-max-height="2000"
+                                        ng-file-max-size="2MB"
+                                >图片</span></p>
                         <!--<p class="historymessage">-->
                         <!--<span>-->
                         <!--消息记录-->

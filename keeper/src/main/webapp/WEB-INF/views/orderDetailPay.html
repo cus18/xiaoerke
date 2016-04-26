@@ -36,18 +36,18 @@
             <img class="photo" width="62.5" height="62.5" src="images/a1.png">
         </div>
         <div class="intro">
-            <div class="name"><span>{{orderDetail.doctorName}}</span>{{orderDetail.position}}</div>
-            <div class="hospital">{{orderDetail.hospitalName}}</div>
-            <div class="department">{{orderDetail.departmentName}}</div>
+            <div class="name"><a id="doctorName"></a><a id="position"></a></div>
+            <div class="hospital" id="hospitalName"></div>
+            <div class="department" id="departmentName"></div>
         </div>
     </div>
     <div class="order-info bg1 apart1">
         <ul>
             <li class="f4 c5">
-                <span class="f4 c3 ">服务价格：</span> {{orderDetail.price}}元/{{orderDetail.server_length}}分钟
+                <span class="f4 c3 ">服务价格：</span> <a id="price"></a>
             </li>
             <li class="f4 c5">
-                <span class="f4 c3">服务时间：</span> {{orderDetail.date}} &nbsp;{{orderDetail.beginTime}}-{{orderDetail.endTime}}
+                <span class="f4 c3">服务时间：</span> <a id="date"></a> &nbsp;<a id="beginTime"></a>-<a id="endTime"></a>
             </li>
 
         </ul>
@@ -58,43 +58,23 @@
                 <i class="bg2"></i>订单详情
             </li>
             <li class="f4 c5">
-                <span class="f4 c3 ">订单号：</span> <a class="order-num">{{orderDetail.orderNo}}</a><i class="c2">({{orderDetail.state}})</i>
+                <span class="f4 c3 ">订单号：</span> <a class="order-num" id="orderNo"></a><i class="c2" id="state"></i>
             </li>
             <li class="f4 c5">
-                <span class="f4 c3">姓名：</span> {{orderDetail.babyName}}
+                <span class="f4 c3">姓名：</span> <a id="babyName"></a>
             </li>
             <li class="f4 c5">
-                <span class="f4 c3">接听电话：</span> {{orderDetail.phone}}
+                <span class="f4 c3">接听电话：</span> <a id="phone"></a>
             </li>
             <li class="f4 c5">
-                <span class="f4 c3">下单时间：</span> {{orderDetail.orderTime}}
+                <span class="f4 c3">下单时间：</span><a id="orderTime"></a>
             </li>
         </ul>
     </div>
     <br><br><br><br><br>
 
     <br><br><br><br><br>
-    <button class="button bottom-btn bg2" ng-if="orderDetail.state == '待支付'">去支付</button>
-    <button class="button bottom-btn bg2" ng-if="orderDetail.state == '待接听'"
-            ui-sref="phoneConCancelOrder({consultPhone_register_service_id:orderDetail.orderId})">取消预约</button>
-    <button class="button bottom-btn bg2" ng-if="orderDetail.state == '待评价'"
-            ui-sref="phoneConEvaluate({consultphone_register_service_id:orderDetail.orderId,doctorId:orderDetail.doctorId,
-            date:orderDetail.date,beginTime:orderDetail.beginTime,endTime:orderDetail.endTime})">立即评价</button>
-    <button class="button bottom-btn bg2" ng-if="orderDetail.state == '待分享'" ng-click="toShare()">去分享</button>
-    <!--  选择宝宝列表-->
-    <div class="baby-list">
-        <dl>
-            <dt id="selectBabyTitle">
-                <i class="line"></i>
-                <span>选择宝宝</span>
-            </dt>
-            <!--<div class="select" id="selBaby">-->
-
-            <!--</div>-->
-        </dl>
-        <div onclick="addBaby()" class="select" style="background-color: #88d9dd">添加宝宝</div>
-        <div onclick="cancelSelectBaby()" class="select">取消</div>
-    </div>
+    <button class="button bottom-btn bg2" onclick="wxPay()" id="payButton">去支付</button>
 </div>
 </body>
 </html>

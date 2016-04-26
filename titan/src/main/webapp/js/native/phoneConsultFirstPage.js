@@ -295,10 +295,10 @@ var consultDoc = function(){
         cache:false,
         dataType:'json',
         success:function(data) {
-            if(data=="true") {
+            if(data) {
                 WeixinJSBridge.call('closeWindow');
             }else {
-                init();
+                WeixinJSBridge.call('closeWindow');
             }
         },
         error : function() {
