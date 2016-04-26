@@ -62,30 +62,30 @@
 
     <select id="getOrderInfoToDoc5minAfterSuccess" resultType="java.util.HashMap">
         SELECT
-        srs.beginTime,
-        srs.date,
-        prs.id AS patient_register_service_id,
-        prs.sys_patient_id AS patientid,
-        prs.register_no,
-        prs.phone as userPhone,
+        scs.beginTime,
+        scs.date,
+        crs.id AS patient_register_service_id,
+        crs.sys_patient_id AS patientid,
+        crs.register_no,
+        crs.phone as userPhone,
         sd.name AS doctorName,
         su.phone,
         sbb.name as babyName,
         case when shc.contact_phone is null then "" else shc.contact_phone end hospitalContactPhone,
         su.openid,
         sh.name as hospitalName
-        FROM sys_consultphone_service srs
-        INNER JOIN consultphone_register_service prs ON prs.sys_phoneConsult_service_id = srs.id
-        RIGHT JOIN sys_doctor sd ON sd.id = srs.sys_doctor_id
+        FROM sys_consultphone_service scs
+        INNER JOIN consultphone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
+        LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
 		LEFT  JOIN doctor_hospital_relation dhr on sd.id = dhr.sys_doctor_id
 		LEFT JOIN sys_hospital sh on dhr.sys_hospital_id = sh.id
         LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = dhr.sys_hospital_id
         LEFT JOIN sys_user su ON su.id = sd.sys_user_id
 		LEFT JOIN sys_baby_baseinfo sbb on sbb.userid = su.id
-        WHERE DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(prs.create_time,"%Y-%m-%d")
-        AND DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(srs.date,"%Y-%m-%d")
-        AND DATE_SUB(NOW(), INTERVAL 5 MINUTE) > prs.create_time
-        AND prs.state = '1'
+        WHERE DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(crs.create_time,"%Y-%m-%d")
+        AND DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(scs.date,"%Y-%m-%d")
+        AND DATE_SUB(NOW(), INTERVAL 5 MINUTE) > crs.create_time
+        AND crs.state = '1'
     </select>
 
     <update id="updateOrderInfoToDoc" >
@@ -193,6 +193,44 @@
         AND  sm.types = '1'
         AND  sm.`status` = '7'
         ORDER  BY  srs.begin_time
+    </select>
+
+    <select id="getDoctorInfoByDate" resultType="java.util.HashMap">
+        select DISTINCT(sd.name) AS doctorName,
+        case when shc.sys_hospital_name is null then "" else shc.sys_hospital_name end hospitalName,
+        case when shc.contact_phone is null then "" else shc.contact_phone end hospitalContactPhone,
+        su.phone phone
+        FROM sys_consultphone_service scs
+        INNER JOIN consultphone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
+        LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
+		LEFT JOIN doctor_hospital_relation dhr on sd.id = dhr.sys_doctor_id
+        LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = dhr.sys_hospital_id
+        LEFT JOIN sys_user su ON su.id = sd.sys_user_id
+        where crs. state = '1'
+        AND DATE_FORMAT(srs.date,"%Y-%m-%d") = #{date}
+        ORDER  BY  scs.beginTime
+    </select>
+
+    <select id="getOrderInfoByDate" resultType="java.util.HashMap">
+        select sbb.name as babyName,
+        case when shc.contact_phone is null then "" else shc.contact_phone end hospitalContactPhone,
+        case when shc.sys_hospital_name is null then "" else shc.sys_hospital_name end hospitalName,
+        DATE_FORMAT(scs.beginTime,"%H:%i") begin_time,
+        DATE_FORMAT(scs.endTime,"%H:%i") end_time,
+        sd.name AS doctorName,
+        su.phone,
+        case when su.openid is null then "" else su.openid end
+        FROM sys_consultphone_service scs
+        INNER JOIN consultphone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
+        LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
+		LEFT  JOIN doctor_hospital_relation dhr on sd.id = dhr.sys_doctor_id
+		LEFT JOIN sys_hospital sh on dhr.sys_hospital_id = sh.id
+        LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = dhr.sys_hospital_id
+        LEFT JOIN sys_user su ON su.id = sd.sys_user_id
+		LEFT JOIN sys_baby_baseinfo sbb on sbb.userid = su.id
+        where crs. state = '1'
+        AND DATE_FORMAT(srs.date,"%Y-%m-%d") = #{date}
+        ORDER  BY  scs.beginTime
     </select>
 
     <!--将取消原因插入到patient_register_praise表中-->
