@@ -217,7 +217,9 @@ public class ConsultDoctorTransferController extends BaseController {
                 List<ConsultRecordMongoVo> consultRecordMongoVo = consultRecordService.getCurrentUserHistoryRecord(query);
                 if(consultRecordMongoVo.size()!=0){
                     dataValue.put("messageContent", consultRecordMongoVo.get(0).getMessage());
+                    dataValue.put("type", consultRecordMongoVo.get(0).getType());
                     dataValue.put("messageNum", consultRecordMongoVo.size());
+                    dataValue.put("messageDateTime", consultRecordMongoVo.get(0).getCreateDate());
                 }
                 dataValue.put("userId",richConsultSession.getUserId());
                 dataValue.put("userName",richConsultSession.getUserName());
