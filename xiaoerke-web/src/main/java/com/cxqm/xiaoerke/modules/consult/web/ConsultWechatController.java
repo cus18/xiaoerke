@@ -55,7 +55,7 @@ public class ConsultWechatController extends BaseController {
     @Autowired
     private ConsultRecordService consultRecordService;
 
-    private static ExecutorService threadExecutor = Executors.newCachedThreadPool();
+    private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
     @RequestMapping(value = "/conversation", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -103,8 +103,12 @@ public class ConsultWechatController extends BaseController {
             SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
             //String userName = openId.substring(openId.length()-8,openId.length());
             String userName = openId;
-            if(openId.length() != 5){
+            String userId = openId;
+            if(openId.length() > 11){
                 userName = openId.substring(openId.length()-8,openId.length());
+            }else{
+                userName = openId.substring(0,5);
+                userId = openId.substring(0,5);
             }
             if(wechatAttentionVo!=null){
                 if(StringUtils.isNotNull(wechatAttentionVo.getWechat_name())){
@@ -114,7 +118,7 @@ public class ConsultWechatController extends BaseController {
             //此处，将openId统一转换成userId，以后，在咨询系统中，所有表示咨询用户唯一来源的id统一都用userId表示，
             // 在所有的日志记录，还是缓存中，所有的会话，都引入一个字段，source，标示，这个会话，
             // 是基于微信，还是H5，还是合作第三方的来源，以便按照不同的逻辑来处理。
-            String userId = openId;
+            //String userId = openId;
             String source = "wxcxqm";
 
             Channel csChannel = null;
@@ -151,12 +155,15 @@ public class ConsultWechatController extends BaseController {
                     obj.put("fromServer",serverAddress);
                     obj.put("source",consultSession.getSource());
 
+
                     StringBuffer sbf = new StringBuffer();
                     if(messageType.equals("text")) {
                         obj.put("type", 0);
                         //将模拟微信端发过来的信息内容进行修改
-                        if(openId.length() == 5){
-                            sbf.append(openId).append("<--->").append(consultSession.getCsUserId());
+                        if(openId.length() <= 11){
+                            String[] openIdArr = openId.split("-");
+                            sbf.append(openIdArr[0]).append("<--->").append(consultSession.getCsUserId());
+                            sbf.append("<--->").append(openIdArr[1]);
                             messageContent = sbf.toString();
                             System.out.println(messageContent);
                         }

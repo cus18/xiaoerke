@@ -25,8 +25,8 @@ public class TestSimulator implements Runnable {
 
         String openId = String.valueOf(i);
         if(openId.length() == 1){
-            //userNo = "a000" + openId;
-            userNo = "b000" + openId;
+            userNo = "a000" + openId;
+            //userNo = "b000" + openId;
         }else if(openId.length() == 2){
             userNo = "a00" + openId;
         }else if(openId.length() == 3){
@@ -42,12 +42,18 @@ public class TestSimulator implements Runnable {
     public void run() {
         String url = "";
         url = testConcurrentDemo.getUrl();
-        while (!testConcurrentDemo.isFinished){
-            sendPost(url);
+            //sendPost(url);
+        for (int i = 1; i <= testConcurrentDemo.getMessageCount(); i++) {
+            try {
+                    sendPost(url,i);
+                    Thread.sleep(3 * 1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-    }
 
-    public void sendPost(String url){
+    public void sendPost(String url,int messageNo){
         PrintWriter out = null;
         BufferedReader in = null;
         String result = "";
@@ -74,9 +80,9 @@ public class TestSimulator implements Runnable {
             //    "&FromUserName=" + userNo +
             //    "&messageContent=a";
             String param = "<xml>" + " <ToUserName><![CDATA[toUser]]></ToUserName>"
-                + " <FromUserName>" + userNo + "</FromUserName>"
+                + " <FromUserName>" + userNo + "-" +  messageNo + "</FromUserName>"
                 + " <CreateTime>1348831860</CreateTime>" + " <MsgType>text</MsgType>"
-                + " <Content>" + userNo + "</Content>"
+                + " <Content>" + userNo +  "</Content>"
                 + " <MsgId>1234567890123456</MsgId>" + " </xml>";
             out.print(param);
 
@@ -89,12 +95,12 @@ public class TestSimulator implements Runnable {
                 result += line + "\n";
             }
             System.out.println(result);
-            try {
-                Thread.sleep(3000);
-                sendPost(url);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            //try {
+            //    Thread.sleep(3000);
+            //    sendPost(url);
+            //} catch (InterruptedException e) {
+            //    e.printStackTrace();
+            //}
         } catch (Exception e) {
             System.out.println("发送 POST 请求出现异常！"+e.getMessage());
             e.printStackTrace();

@@ -142,7 +142,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			try {
 				System.out.println(xmlEntity.getContent());
 				if(xmlEntity.getMsgType().equals("text")){
-					this.sendPost("http://101.201.154.75:8080/angel/consult/wechat/conversation",
+					this.sendPost("http://192.168.191.2:8080/angel/consult/wechat/conversation",
 							"openId=" + xmlEntity.getFromUserName() +
 							"&messageType=" + xmlEntity.getMsgType() +
 							"&messageContent=" + URLEncoder.encode(xmlEntity.getContent(), "UTF-8"));
