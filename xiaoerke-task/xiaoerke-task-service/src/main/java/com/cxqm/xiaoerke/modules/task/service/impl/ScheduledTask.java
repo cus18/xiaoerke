@@ -1061,7 +1061,9 @@ public class ScheduledTask {
             Map<String,Object> consultOrder = consultPhonePatientService.getPatientRegisterInfo((Integer) map.get("orderId"));
           String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(Integer) map.get("orderId")+",phone";
           PatientMsgTemplate.returnPayPhoneRefund2Msg((String) consultOrder.get("babyName"), (Float) consultOrder.get("price") + "", (String) consultOrder.get("userPhone"));
-          PatientMsgTemplate.returnPayPhoneRefund2Wechat((String) consultOrder.get("babyName"), (Float) consultOrder.get("price") + "",(String) consultOrder.get("openid"),token,url);
+          String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)map.get("date"),"yyyy/MM/dd"));
+          String dateTime = (String) map.get("date")+" "+week+ " "+(String) map.get("beginTime");
+          PatientMsgTemplate.returnPayPhoneRefund2Wechat((String) consultOrder.get("babyName"),(String) consultOrder.get("doctorName"),dateTime, (String) consultOrder.get("userPhone"), (String) map.get("orderNo"), (Float) consultOrder.get("price") + "",(String) consultOrder.get("openid"),token,url);
         }
 //        查询是不是有return状态
 
