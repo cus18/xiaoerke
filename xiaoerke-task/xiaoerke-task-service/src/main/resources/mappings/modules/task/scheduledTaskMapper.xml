@@ -60,6 +60,34 @@
         AND sm.status = '7'
     </select>
 
+    <select id="getOrderInfoToDoc5minAfterSuccess" resultType="java.util.HashMap">
+        SELECT
+        srs.beginTime,
+        srs.date,
+        prs.id AS patient_register_service_id,
+        prs.sys_patient_id AS patientid,
+        prs.register_no,
+        prs.phone as userPhone,
+        sd.name AS doctorName,
+        su.phone,
+        sbb.name as babyName,
+        case when shc.contact_phone is null then "" else shc.contact_phone end hospitalContactPhone,
+        su.openid,
+        sh.name as hospitalName
+        FROM sys_consultphone_service srs
+        INNER JOIN consultphone_register_service prs ON prs.sys_phoneConsult_service_id = srs.id
+        RIGHT JOIN sys_doctor sd ON sd.id = srs.sys_doctor_id
+		LEFT  JOIN doctor_hospital_relation dhr on sd.id = dhr.sys_doctor_id
+		LEFT JOIN sys_hospital sh on dhr.sys_hospital_id = sh.id
+        LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = dhr.sys_hospital_id
+        LEFT JOIN sys_user su ON su.id = sd.sys_user_id
+		LEFT JOIN sys_baby_baseinfo sbb on sbb.userid = su.id
+        WHERE DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(prs.create_time,"%Y-%m-%d")
+        AND DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(srs.date,"%Y-%m-%d")
+        AND DATE_SUB(NOW(), INTERVAL 5 MINUTE) > prs.create_time
+        AND prs.state = '1'
+    </select>
+
     <update id="updateOrderInfoToDoc" >
         update sys_monitor SET types='0'
         where id IN

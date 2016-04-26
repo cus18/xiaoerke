@@ -1,11 +1,11 @@
 package com.cxqm.xiaoerke.modules.task.service;
 
+import com.cxqm.xiaoerke.common.bean.CustomBean;
+import com.cxqm.xiaoerke.common.bean.WechatRecord;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import com.cxqm.xiaoerke.common.bean.CustomBean;
-import com.cxqm.xiaoerke.common.bean.WechatRecord;
 
 public interface ScheduleTaskService {
 
@@ -54,4 +54,9 @@ public interface ScheduleTaskService {
 
 	List<HashMap<String,Object>> getUserOrderNextWeek();
 
+    /**
+     * 5min之前预约成功的电话咨询订单
+     * @return
+     */
+    List<HashMap<String,Object>> getOrderInfoToDoc5minAfterSuccess();
 }
