@@ -272,10 +272,9 @@ angular.module('controllers', ['luegg.directives'])
 
                 //向用户发送咨询消息
                 $scope.sendConsultMessage = function () {
-                    var inputText = $('.emotion').val();
                     var consultValMessage = {
                         "type": 0,
-                        "content": angular.copy($scope.info.consultMessage),
+                        "content": $sce.trustAsHtml(AnalyticEmotion($scope.info.consultMessage)),
                         "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                         "senderId": angular.copy($scope.doctorId),
                         "senderName": angular.copy($scope.doctorName),
@@ -398,7 +397,6 @@ angular.module('controllers', ['luegg.directives'])
                             });
                         }
                     })
-
                 }
             /**会话操作区**/
 

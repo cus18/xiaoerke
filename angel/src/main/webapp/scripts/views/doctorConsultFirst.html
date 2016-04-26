@@ -209,8 +209,7 @@
                                     <span>{{item.senderName}}</span>
                                     <span>{{item.dateTime}}</span>
                                 </div>
-                                <div ng-if="item.type=='0'" class="message" >
-                                    {{item.content}}
+                                <div ng-if="item.type=='0'" class="message" ng-bind-html="item.content">
                                 </div>
                                 <div ng-if="item.type=='1'" class="message">
                                     <a target="_blank">
