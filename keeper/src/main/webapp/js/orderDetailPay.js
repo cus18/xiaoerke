@@ -89,6 +89,7 @@ var doRefresh = function() {
     });
 }
 
+
     var wxPay = function () {
         $('#payButton').attr('disabled',"true");//添加disabled属性
         $.ajax({
