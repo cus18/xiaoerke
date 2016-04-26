@@ -54,20 +54,21 @@ angular.module('controllers', ['luegg.directives'])
                         getIframeSrc();
                         //获取通用回复列表
                         GetAnswerValueList.save({"type": "commonAnswer"}, function (data) {
-                            if (data.commonAnswer.length == 0) {
-                                $scope.lockScroll = "false";
-                            } else {
-                                $scope.commonAnswer = data.commonAnswer;
+                            if(data.result=="success"){
+                                var answerData = JSON.parse(data.answerValue);
+                                $scope.commonAnswer = answerData.commonAnswer;
+                            }else{
+                                $scope.commonAnswer = [];
                             }
                         });
 
                         //获取我的回复列表
                         GetAnswerValueList.save({"type":"myAnswer"},function(data){
-                            if(data.myAnswer!=null && data.myAnswer.length==0){
-                                $scope.lockScroll="false";
+                            if(data.result=="success"){
+                                var answerData = JSON.parse(data.answerValue);
+                                $scope.myAnswer = answerData.myAnswer;
+                            }else{
                                 $scope.myAnswer = [];
-                            } else {
-                                $scope.myAnswer = data.myAnswer;
                             }
                         });
 
