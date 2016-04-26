@@ -120,7 +120,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 for (var i = 0; i < $files.length; i++) {
                     var file = $files[i];
                     $scope.upload = $upload.upload({
-                        url: 'ap/consult/uploadMediaFile',
+                        url: 'consult/h5/uploadMediaFile',
                         data: encodeURI(dataJsonValue),
                         file: file
                     }).progress(function(evt) {
