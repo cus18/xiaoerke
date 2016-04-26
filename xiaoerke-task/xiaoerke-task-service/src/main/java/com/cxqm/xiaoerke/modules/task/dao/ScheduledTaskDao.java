@@ -55,4 +55,10 @@ public interface ScheduledTaskDao {
     void saveWechatRecoder(List<WechatRecord> list);
 
     List<HashMap<String,Object>> getUserOrderNestWeek();
+
+    /**
+     * 5min之前预约的电话咨询订单
+     * @return
+     */
+    List<HashMap<String,Object>> getOrderInfoToDoc5minAfterSuccess();
 }

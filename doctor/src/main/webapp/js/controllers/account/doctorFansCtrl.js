@@ -4,8 +4,6 @@ angular.module('controllers', ['ionic']).controller('doctorFansCtrl', [
         $scope.title = "粉丝列表";
         $scope.haveMore = true;
         $scope.noMore = false;
-        var imgUrl = "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/other%2Fliangp.png";
-        $scope.fansList =[{"img":"","name":"aaffffaa"},{"img":imgUrl,"name":"aaaa"},{"img":imgUrl,"name":"aaaa"},{"img":"","name":"aaaa"},{"img":"","name":"aaaa"}];
         var num;
 
         $scope.$on('$ionicView.enter', function(){
@@ -33,8 +31,9 @@ angular.module('controllers', ['ionic']).controller('doctorFansCtrl', [
         }
 
         var getFansList = function (size) {
+            $scope.pageLoading = true;
             GetFansList.save({"doctorId":$stateParams.id,"pageNo":"1","pageSize":size}, function (data) {
-                console.log("data",data);
+                $scope.pageLoading = false;
                 if(data.fansList.length==0){
                     $scope.haveMore = false;
                     $scope.noMore = true;

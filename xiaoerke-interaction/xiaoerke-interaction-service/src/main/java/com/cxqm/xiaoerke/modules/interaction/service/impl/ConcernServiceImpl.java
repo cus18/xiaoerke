@@ -154,6 +154,9 @@ public class ConcernServiceImpl implements ConcernService {
                             updateMap.put("wechatName", wechatName);
                             updateMap.put("id", (String) resultMap.get("id"));
                             doctorConcernDao.updateWechatNameAndImg(updateMap);//保存到数据库
+                        }else{
+                            headImgUrl = "";
+                            wechatName = "宝粉";
                         }
                     }
 
