@@ -262,7 +262,11 @@
                 <div class="facebox">
                     <div class="facein">
                         <p class="fl"><span id="face" ng-click="getEmotion()">表情</span></p>
-                        <p class="fl"><span  ng-click="getImage()">图片</span></p>
+                        <p class="fl"><span type="file" ng-file-select="uploadFiles($files,'image')"
+                                        accept="image/*"
+                                        ng-file-max-height="2000"
+                                        ng-file-max-size="2MB"
+                                >图片</span></p>
                         <!--<p class="historymessage">-->
                         <!--<span>-->
                         <!--消息记录-->
