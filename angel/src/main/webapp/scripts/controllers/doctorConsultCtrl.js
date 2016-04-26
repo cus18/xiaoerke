@@ -161,10 +161,9 @@ angular.module('controllers', ['luegg.directives'])
                                     $scope.waitJoinNum--;
                                 }
                             });
-
                             $scope.tapShowButton('waitProcess');
                             $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
-                                $scope.alreadyJoinPatientConversation[0].patientName,"noFilterMediaData");
+                                $scope.alreadyJoinPatientConversation[0].patientName);
                         }
                     });
                 }
@@ -251,8 +250,8 @@ angular.module('controllers', ['luegg.directives'])
                                 filterMediaData(consultData);
                                 processPatientSendMessage(consultData);
                             }
-                            triggerVoice();
                             $scope.$apply();
+                            $scope.triggerVoice();
                         };
 
                         $scope.socketServer1.onopen = function (event) {
@@ -315,7 +314,7 @@ angular.module('controllers', ['luegg.directives'])
                             $scope.alreadyJoinPatientConversation.splice(indexClose, 1);
                             if($scope.alreadyJoinPatientConversation.length!=0){
                                 $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
-                                    $scope.alreadyJoinPatientConversation[0].patientName,"noFilterMediaData");
+                                    $scope.alreadyJoinPatientConversation[0].patientName);
                             }else{
                                 $scope.currentUserConversation = {};
                             }
@@ -326,7 +325,7 @@ angular.module('controllers', ['luegg.directives'])
                 }
 
                 //在通话列表中，选取一个用户进行会话
-                $scope.chooseAlreadyJoinConsultPatient = function (patientId, patientName,filterAction) {
+                $scope.chooseAlreadyJoinConsultPatient = function (patientId, patientName) {
                     $scope.chooseAlreadyJoinConsultPatientId = patientId;
                     $scope.chooseAlreadyJoinConsultPatientName = patientName;
                     getIframeSrc();
@@ -334,12 +333,7 @@ angular.module('controllers', ['luegg.directives'])
                     $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                         if (value.patientId == patientId) {
                             $scope.currentUserConversation = "";
-                            $scope.currentUserConversation = value;//angular.copy(value);
-                            $.each($scope.currentUserConversation.consultValue,function(index1,value1){
-                                if(filterAction=="filterMediaData"){
-                                    filterMediaData(value1);
-                                }
-                            })
+                            $scope.currentUserConversation = value;
                             updateFlag = true;
                         }
                     });
@@ -350,9 +344,6 @@ angular.module('controllers', ['luegg.directives'])
                             pageSize:100},function(data){
                             if(data.consultDataList!=""){
                                 $.each(data.consultDataList,function(index,value){
-                                    if(filterAction=="filterMediaData"){
-                                        filterMediaData(value1);
-                                    }
                                     $scope.currentUserConversation.consultValue.splice(0, 0, value);
                                 });
                             }
@@ -405,6 +396,7 @@ angular.module('controllers', ['luegg.directives'])
                         userId:$scope.currentUserConversation.patientId,
                         dateTime:$scope.currentUserConversation.consultValue[0].dateTime,
                         pageSize:100},function(data){
+                        console.log(data);
                         if(data.consultDataList!=""){
                             $.each(data.consultDataList,function(index,value){
                                 filterMediaData(value);
@@ -603,7 +595,7 @@ angular.module('controllers', ['luegg.directives'])
                         })
                         var patientId = angular.copy($scope.alreadyJoinPatientConversation[0].patientId);
                         var patientName = angular.copy($scope.alreadyJoinPatientConversation[0].patientName);
-                        $scope.chooseAlreadyJoinConsultPatient(patientId,patientName,"noFilterMediaData");
+                        $scope.chooseAlreadyJoinConsultPatient(patientId,patientName);
                     }
                 })
             }
@@ -635,7 +627,7 @@ angular.module('controllers', ['luegg.directives'])
                 updateAlreadyJoinPatientConversationFromPatient(conversationData);
                 if(chooseFlag){
                     $scope.chooseAlreadyJoinConsultPatient(angular.copy(currentConsultValue.senderId),
-                        angular.copy(currentConsultValue.senderName),"noFilterMediaData");
+                        angular.copy(currentConsultValue.senderName));
                     getIframeSrc();
                 }
             }
@@ -729,7 +721,7 @@ angular.module('controllers', ['luegg.directives'])
                         }else{
                             if($scope.currentUserConversation.patientId == notifyData.session.userId){
                                 $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
-                                    $scope.alreadyJoinPatientConversation[0].patientName,"noFilterMediaData");
+                                    $scope.alreadyJoinPatientConversation[0].patientName);
                             }
                         }
                     }

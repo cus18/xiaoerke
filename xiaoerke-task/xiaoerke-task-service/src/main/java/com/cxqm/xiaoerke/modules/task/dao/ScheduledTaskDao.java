@@ -62,7 +62,7 @@ public interface ScheduledTaskDao {
      */
     List<HashMap<String,Object>> getOrderInfoToDoc5minAfterSuccess();
 
-    List<HashMap<String,Object>> sendMsgToDoc5minBeforeConnect();
+    List<HashMap<String,Object>> getOrderInfoToDoc5minBeforeConnect();
 
     List<HashMap<String,Object>> getDoctorInfoByDate(String date);
 
