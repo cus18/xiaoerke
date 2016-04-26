@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.insurance.service.Impl;
 
 import java.util.List;
 
+import com.cxqm.xiaoerke.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +39,20 @@ public class InsuranceHospitalServiceImpl implements InsuranceHospitalService {
 	@Override
 	public int saveInsuranceHospital(InsuranceHospitalVo vo) {
 		// TODO Auto-generated method stub
-		return insuranceHospitalDao.saveInsuranceHospital(vo);
+		int count = 0;
+		if(StringUtils.isNotNull(vo.getId()+"")){
+			InsuranceHospitalVo param = new InsuranceHospitalVo();
+			param.setId(vo.getId());
+			List<InsuranceHospitalVo> list = getInsuranceHospitalListByInfo(param);
+			if(list.size()==0){
+				count = insuranceHospitalDao.saveInsuranceHospital(vo);
+			}else{
+				count = insuranceHospitalDao.updateInsuranceHospital(vo);
+			}
+		}else{
+			count = insuranceHospitalDao.saveInsuranceHospital(vo);
+		}
+		return count;
 	}
 
 	@Override
@@ -46,5 +60,10 @@ public class InsuranceHospitalServiceImpl implements InsuranceHospitalService {
 			Page<InsuranceHospitalVo> page, InsuranceHospitalVo vo) {
 		// TODO Auto-generated method stub
 		return insuranceHospitalDao.findInsuranceHospitalListByInfo(page, vo);
+	}
+
+	@Override
+	public int delInsuranceHospital(Integer id) {
+		return insuranceHospitalDao.delInsuranceHospital(id);
 	}
 }

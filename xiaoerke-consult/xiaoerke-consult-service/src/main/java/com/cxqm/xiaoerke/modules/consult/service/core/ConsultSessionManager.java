@@ -1,29 +1,24 @@
 package com.cxqm.xiaoerke.modules.consult.service.core;
 
-import com.cxqm.xiaoerke.common.utils.ConstantUtil;
-import com.cxqm.xiaoerke.common.utils.StringUtils;
-import com.cxqm.xiaoerke.common.utils.WechatUtil;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
+import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
-import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultMongoUtilsServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.impl.UserInfoServiceImpl;
-import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+
 import java.net.InetSocketAddress;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.config.Global;
-import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
@@ -70,6 +65,7 @@ public class ConsultSessionManager {
 
 	private UserInfoServiceImpl userInfoService = SpringContextHolder.getBean("userInfoServiceImpl");
 
+	private static ExecutorService threadExecutor = Executors.newCachedThreadPool();
 
 	private static ConsultSessionManager sessionManager = new ConsultSessionManager();
 
@@ -306,19 +302,10 @@ public class ConsultSessionManager {
 			User toCsUser = systemService.getUser(toCsUserId);
 			Channel channelToCsUser = userChannelMapping.get(toCsUserId);
 			Channel channelFromCsUser = userChannelMapping.get(session.getCsUserId());
-			if(channelToCsUser.isActive()&&channelFromCsUser.isActive()){
-				//通知被转接咨询医生，有用户需要转接
-				JSONObject jsonObj = new JSONObject();
-				jsonObj.put("type", 4);
-				jsonObj.put("notifyType", "0009");
-				jsonObj.put("session", session);
-				jsonObj.put("toCsUserName",toCsUser.getName());
-				jsonObj.put("remark", remark);
-				TextWebSocketFrame frameToCsUser = new TextWebSocketFrame(jsonObj.toJSONString());
-				channelToCsUser.writeAndFlush(frameToCsUser.retain());
+			if(channelFromCsUser.isActive()){
 
-				//通知发起转接的人，转接正在处理中
-				jsonObj.clear();
+				//通知发起转接的人，转接正在处理中在5秒钟内，接诊员有机会取消转接，如果，5秒后，接诊员不取消，则接诊员不能再取消转接
+				JSONObject jsonObj = new JSONObject();
 				jsonObj.put("type", 4);
 				jsonObj.put("notifyType", "0011");
 				jsonObj.put("session", session);
@@ -337,12 +324,102 @@ public class ConsultSessionManager {
 				forwardRecord.setRemark(remark);
 				forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_WAITING);
 				consultSessionForwardRecordsService.save(forwardRecord);
+
+				Runnable thread = new processTransferThread(forwardRecord.getId(),channelToCsUser,channelFromCsUser,session,toCsUser,remark);
+				threadExecutor.execute(thread);
+
 				return 1;
 			}else{
 				return 0;
 			}
 		}catch (Exception e){
 			return 0;
+		}
+	}
+
+	public class processTransferThread extends Thread {
+		private long forwardRecordId;
+		private Channel channelToCsUser;
+		private Channel channelFromCsUser;
+		private RichConsultSession session;
+		private User toCsUser;
+		private String remark;
+
+		public processTransferThread(long forwardRecordId,Channel channelToCsUser,Channel channelFromCsUser,RichConsultSession session,User toCsUser,String remark) {
+			this.forwardRecordId = forwardRecordId;
+			this.channelToCsUser = channelToCsUser;
+			this.channelFromCsUser = channelFromCsUser;
+			this.session = session;
+			this.toCsUser = toCsUser;
+			this.remark = remark;
+		}
+
+		public void run() {
+			try {
+				Thread.sleep(8000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			//查询SessionForwardRecords，如果此条记录，已经被接诊员取消，则不再通知医生转接
+			ConsultSessionForwardRecordsVo sessionForwardRecordsVo = consultSessionForwardRecordsService.selectByPrimaryKey(forwardRecordId);
+			if(!(sessionForwardRecordsVo.getStatus().equals(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_CANCELLED))){
+				if(channelToCsUser.isActive()&&channelFromCsUser.isActive()){
+					//通知被转接咨询医生，有用户需要转接
+					JSONObject jsonObj = new JSONObject();
+					jsonObj.put("type", 4);
+					jsonObj.put("notifyType", "0009");
+					jsonObj.put("session", session);
+					jsonObj.put("toCsUserName", toCsUser.getName());
+					jsonObj.put("remark", remark);
+					TextWebSocketFrame frameToCsUser = new TextWebSocketFrame(jsonObj.toJSONString());
+					channelToCsUser.writeAndFlush(frameToCsUser.retain());
+
+					//通知接诊员，不能再取消转接
+					jsonObj.clear();
+					jsonObj.put("type", 4);
+					jsonObj.put("notifyType", "0013");
+					jsonObj.put("session", session);
+					TextWebSocketFrame frameFromCsUser = new TextWebSocketFrame(jsonObj.toJSONString());
+					channelFromCsUser.writeAndFlush(frameFromCsUser.retain());
+
+					try {
+						//一分钟后判断，如果，该会话，没有被医生转接走，则取消该次转接，将会话，还给接诊员
+						Thread.sleep(60000);
+						ConsultSessionForwardRecordsVo sessionForwardRecordsVoLater = consultSessionForwardRecordsService.selectByPrimaryKey(forwardRecordId);
+						if(sessionForwardRecordsVoLater.getStatus().equals(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_WAITING)){
+							Long sessionId = sessionForwardRecordsVoLater.getConversationId();
+							RichConsultSession session = sessionRedisCache.getConsultSessionBySessionId(Integer.parseInt(String.valueOf(sessionId)));
+							ConsultSessionForwardRecordsVo forwardRecord = new ConsultSessionForwardRecordsVo();
+							forwardRecord.setConversationId(sessionId);
+							forwardRecord.setFromUserId(session.getCsUserId());
+							forwardRecord.setToUserId(sessionForwardRecordsVoLater.getToUserId());
+							forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_CANCELLED);
+							int count = consultSessionForwardRecordsService.cancelTransfer(forwardRecord);
+							if(count > 0) {
+								//通知医生，转接取消
+								Channel channelToCsUser = userChannelMapping.get(sessionForwardRecordsVoLater.getToUserId());
+								jsonObj.clear();
+								jsonObj.put("type", 4);
+								jsonObj.put("notifyType", "0012");
+								jsonObj.put("session", session);
+								TextWebSocketFrame frame1 = new TextWebSocketFrame(jsonObj.toJSONString());
+								channelToCsUser.writeAndFlush(frame1.retain());
+
+								//通知接诊员，退回此次转接
+								Channel channelFromCsUser = userChannelMapping.get(sessionForwardRecordsVoLater.getFromUserId());
+								jsonObj.clear();
+								jsonObj.put("type", 4);
+								jsonObj.put("notifyType", "0014");
+								jsonObj.put("session", session);
+								TextWebSocketFrame frame2 = new TextWebSocketFrame(jsonObj.toJSONString());
+								channelFromCsUser.writeAndFlush(frame2.retain());
+							}
+						}
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
 		}
 	}
 	
@@ -391,17 +468,7 @@ public class ConsultSessionManager {
 		forwardRecord.setFromUserId(session.getCsUserId());
 		forwardRecord.setToUserId(toCsUserId);
 		forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_CANCELLED);
-		int count = consultSessionForwardRecordsService.cancelTransfer(forwardRecord);
-		
-		if(count > 0) {
-			Channel channel = userChannelMapping.get(toCsUserId);
-			JSONObject jsonObj = new JSONObject();
-			jsonObj.put("type", 4);
-			jsonObj.put("notifyType", "0012");
-			jsonObj.put("session", session);
-			TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
-			channel.writeAndFlush(frame.retain());
-		}
+		consultSessionForwardRecordsService.cancelTransfer(forwardRecord);
 	}
 
 	public List<String> getOnlineCsList() {

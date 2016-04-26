@@ -79,5 +79,5 @@ public abstract class MongoDBService<T> {
     public void setMongoTemplate(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
-    
+
 }

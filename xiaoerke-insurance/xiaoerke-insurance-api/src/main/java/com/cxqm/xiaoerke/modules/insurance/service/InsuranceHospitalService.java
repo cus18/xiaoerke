@@ -30,4 +30,6 @@ public interface InsuranceHospitalService {
 	 * 分页查询保险相关医院
 	 */
 	Page<InsuranceHospitalVo> findInsuranceHospitalListByInfo(Page<InsuranceHospitalVo> page , InsuranceHospitalVo vo);
+
+	int delInsuranceHospital(Integer id);
 }

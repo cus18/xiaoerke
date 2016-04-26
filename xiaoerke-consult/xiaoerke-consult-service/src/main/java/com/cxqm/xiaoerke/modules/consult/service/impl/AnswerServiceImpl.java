@@ -28,21 +28,17 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public String findConsultAnswer(String type) {
-
         Query query = new Query();
-
         if ("myAnswer".equals(type)) {
             query.addCriteria(where("type").is(type).andOperator(new Criteria().where("userId").is(UserUtils.getUser().getId())));
         } else {
             query.addCriteria(where("type").is(type));
         }
-
         List<AnswerMongoVo> answerMongoVos = answerMongoVoMongoDBService.queryList(query);
         if(answerMongoVos!=null && answerMongoVos.size()>0){
-
             return  answerMongoVos.get(0).getAnswerContent();
         }else{
-            return "";
+            return "noValue";
         }
     }
 

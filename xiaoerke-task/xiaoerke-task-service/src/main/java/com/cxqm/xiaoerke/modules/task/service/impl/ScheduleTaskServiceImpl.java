@@ -340,4 +340,9 @@ public class ScheduleTaskServiceImpl implements ScheduleTaskService {
 		return scheduledTaskDao.getUserOrderNestWeek();
 	}
 
+    @Override
+    public List<HashMap<String, Object>> getOrderInfoToDoc5minAfterSuccess() {
+        return scheduledTaskDao.getOrderInfoToDoc5minAfterSuccess();
+    }
+
 }

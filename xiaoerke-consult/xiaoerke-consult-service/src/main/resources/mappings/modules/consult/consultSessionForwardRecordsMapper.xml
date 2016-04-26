@@ -32,7 +32,9 @@
       #{toUserId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
       #{remark,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo" >
+
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo"
+          useGeneratedKeys="true" keyProperty="id">
     insert into consult_conversation_forward_records
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

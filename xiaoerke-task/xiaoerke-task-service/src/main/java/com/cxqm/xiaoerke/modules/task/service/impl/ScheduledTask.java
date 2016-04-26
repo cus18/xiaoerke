@@ -84,13 +84,7 @@ public class ScheduledTask {
     private ConsultPhoneService consultPhoneService;
 
     @Autowired
-    private SessionRedisCache sessionRedisCache;
-
-    @Autowired
     private ConsultRecordService consultRecordService;
-
-    @Autowired
-    private ConsultMongoUtilsService consultMongoUtilsService;
 
     @Autowired
     private AccountService accountService;
@@ -1096,19 +1090,8 @@ public class ScheduledTask {
 
     public void consultMangementDayTask(){
         //删除会话排名中的临时数据
-        consultMongoUtilsService.removeConsultRankRecord(new Query());
+        consultRecordService.removeConsultRankRecord(new Query());
     }
-
-//    public ConsultSessionStatusVo transConsultSessionStatusMapToVo(Map map){
-//        if(!map.isEmpty()){
-//            ConsultSessionStatusVo consultSessionStatusVo = new ConsultSessionStatusVo();
-//            consultSessionStatusVo.setSessionId((String)map.get("sessionId"));
-//            consultSessionStatusVo.setLastMessageTime((String)map.get("lastMessageTime"));
-//            consultSessionStatusVo.setUserId((String)map.get("UserId"));
-//            return consultSessionStatusVo;
-//        }
-//        return null;
-//    }
 
     //插入监听器
     private void insertMonitor(String register_no, String type, String status) {
@@ -1181,12 +1164,65 @@ public class ScheduledTask {
      * 电话咨询
      * @author chenxiaoqiong
      */
-
+    //晚8点发送明天的咨询信息
     public void sendMsgToDocAtNightPhoneConsult(){
 
     }
 
+    //早7点，发送今天的咨询信息
     public void sendMsgToDocAtMorningPhoneConsult(){
+
+    }
+
+    //预约咨询成功5min后
+    public void sendMsgToDoc5minAfterSuccess(){
+        Date date=new Date();
+        DateFormat format=new SimpleDateFormat("HH");
+        int time=Integer.parseInt(format.format(date));
+        if(22>time&&time>7){
+            System.out.println(new Date() + " package.controller scheduled test --> sendMsgToDoc_PhoneConsult");
+            List<HashMap<String, Object>> doctorMsg = scheduleTaskService.getOrderInfoToDoc5minAfterSuccess();
+            for (HashMap<String, Object> map : doctorMsg) {
+                String doctorName = (String)map.get("doctorName");
+                String babyName = (String)map.get("babyName");
+                String doctorPhone = (String)map.get("doctorPhone");
+                String visitDate =  DateUtils.DateToStr((Date) map.get("date"),"date");
+                String beginTime = DateUtils.DateToStr((Date) map.get("beginTime"),"time");
+                String week = DateUtils.getWeekOfDate((Date) map.get("date"));
+                if(!(map.get("hospitalContactPhone").equals(""))){
+                    String content =  "【电话咨询预约成功】尊敬的"+doctorName+"医生，"+babyName+"小朋友家长预约了您"+date+" ("+week+")"+beginTime+"的电话咨询。" +
+                            "若您因特殊情况不能接听，请联系客服：400-623-7120。宝大夫祝您工作顺利！";
+                    ChangzhuoMessageUtil.sendMsg((String) map.get("hospitalContactPhone"), content,
+                            ChangzhuoMessageUtil.RECEIVER_TYPE_DOCTOR);
+                }
+                else {
+                    //短信
+                    DoctorMsgTemplate.doctorPhoneConsultRemindAt5minLater2Sms
+                            (doctorName,babyName,doctorPhone,visitDate,week,beginTime);
+                    //微信推送
+                    Map tokenMap = systemService.getDoctorWechatParameter();
+                    String token = (String)tokenMap.get("token");
+                    DoctorMsgTemplate.doctorPhoneConsultRemindAt5minLater2Wechat(babyName, visitDate, week,
+                            beginTime,token,"",(String)map.get("openid"));
+                }
+                insertMonitor((Integer) map.get("patient_register_service_id") + "", "3", "7");
+            }
+        }
+
+    }
+
+    //取消咨询
+    public void sendMsgToDocCancelSuccess(){
+
+    }
+
+    //接听钱5min
+    public void sendMsgToDoc5minBeforeConnect(){
+
+    }
+
+    //未接通
+    public void sendMsgToDocFailConnect(){
 
     }
 

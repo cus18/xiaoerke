@@ -178,5 +178,8 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		mongoTemplate.insert(entities, "consultRecordVo");
 		return 0;
 	}
-	
+
+	public WriteResult removeConsultRankRecord(Query query) {
+		return mongoTemplate.remove(query, "consultRankRecord");
+	}
 }

@@ -111,17 +111,24 @@ public class ConsultDoctorAnswerController extends BaseController {
      }）
      */
     @RequestMapping(value = "/answerValue", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody String consultAnswerValue(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
-
+    public @ResponseBody HashMap<String,Object> consultAnswerValue(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
+        HashMap<String,Object> response = new HashMap<String, Object>();
+        String answerValue = "";
         String type = String.valueOf(params.get("type"));
-
         if(StringUtils.isNotNull(type)){
-
-            return answerService.findConsultAnswer(type);
+            answerValue = answerService.findConsultAnswer(type);
         }
-
-        return "";
+        if(StringUtils.isNotNull(answerValue)){
+            if(!answerValue.equals("noValue")){
+                response.put("result","success");
+                response.put("answerValue",answerValue);
+            }else{
+                response.put("result","failure");
+            }
+        }else{
+            response.put("result","failure");
+        }
+        return response;
     }
 
 

@@ -51,22 +51,24 @@ angular.module('controllers', ['luegg.directives'])
 
                         $scope.initConsultSocket1();
 
+                        getIframeSrc();
                         //获取通用回复列表
                         GetAnswerValueList.save({"type": "commonAnswer"}, function (data) {
-                            if (data.commonAnswer.length == 0) {
-                                $scope.lockScroll = "false";
-                            } else {
-                                $scope.commonAnswer = data.commonAnswer;
+                            if(data.result=="success"){
+                                var answerData = JSON.parse(data.answerValue);
+                                $scope.commonAnswer = answerData.commonAnswer;
+                            }else{
+                                $scope.commonAnswer = [];
                             }
                         });
 
                         //获取我的回复列表
                         GetAnswerValueList.save({"type":"myAnswer"},function(data){
-                            $scope.myAnswer = [];
-                            if(data.myAnswer!=null && data.myAnswer.length==0){
-                                $scope.lockScroll="false";
-                            } else {
-                                $scope.myAnswer = data.myAnswer;
+                            if(data.result=="success"){
+                                var answerData = JSON.parse(data.answerValue);
+                                $scope.myAnswer = answerData.myAnswer;
+                            }else{
+                                $scope.myAnswer = [];
                             }
                         });
 
@@ -155,7 +157,6 @@ angular.module('controllers', ['luegg.directives'])
                             $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
                                 $scope.alreadyJoinPatientConversation[0].patientName);
                             $scope.waitJoinNum--;
-                            console.log("waitJoinUserList",$scope.waitJoinUserList);
                         }
                     });
                 }
@@ -203,20 +204,19 @@ angular.module('controllers', ['luegg.directives'])
                 }
 
                 $scope.cancelTransfer = function(sessionId,toCsUserId,remark){
-                CancelTransfer.save({sessionId:sessionId,toCsUserId:toCsUserId,remark:remark},function(data){
-                    if(data.result=="success"){
-                        //删除取消通知
-                        var indexClose = 0;
-                        $.each($scope.currentUserConversation.consultValue, function (index, value) {
-                            if (value.remark == remark && value.toCsUserId==toCsUserId) {
-                                indexClose = index;
-                            }
-                        })
-                        $scope.currentUserConversation.consultValue.splice(indexClose, 1);
-                    }
-                })
-
-            }
+                    CancelTransfer.save({sessionId:sessionId,toCsUserId:toCsUserId,remark:remark},function(data){
+                        if(data.result=="success"){
+                            //删除取消通知
+                            var indexClose = 0;
+                            $.each($scope.currentUserConversation.consultValue, function (index, value) {
+                                if (value.remark == remark && value.toCsUserId==toCsUserId) {
+                                    indexClose = index;
+                                }
+                            })
+                            $scope.currentUserConversation.consultValue.splice(indexClose, 1);
+                        }
+                    })
+                }
             /**转接功能区**/
 
             /**会话操作区**/
@@ -647,13 +647,44 @@ angular.module('controllers', ['luegg.directives'])
 
             //处理系统发送过来的通知类消息
             var processNotifyMessage = function(notifyData){
-                console.log(notifyData);
                 if(notifyData.notifyType=="0009"){
                     //有转接的用户过来
                     $scope.waitJoinNum++;
+                    $scope.refreshWaitJoinUserList();
+                    $scope.$apply();
                 } else if(notifyData.notifyType=="0012"){
                     //取消转接过来的用户
                     $scope.waitJoinNum--;
+                    $scope.refreshWaitJoinUserList();
+                    $scope.$apply();
+                }
+                else if(notifyData.notifyType=="0013"){
+                    if($scope.currentUserConversation.patientId == notifyData.session.userId){
+                        $.each($scope.currentUserConversation.consultValue, function (index, value) {
+                            if (value.notifyType == "0011") {
+                                value.notifyType = "0013";
+                            }
+                        });
+                    }
+                    $.each($scope.alreadyJoinPatientConversation, function (index, value) {
+                        if (value.patientId == $scope.currentUserConversation.patientId) {
+                            $.each(value, function (index1, value1) {
+                                if (value1.notifyType == "0011") {
+                                    value1.notifyType = "0013";
+                                }
+                            });
+                        }
+                    });
+                }
+                else if(notifyData.notifyType=="0014"){
+                    if($scope.currentUserConversation.patientId == notifyData.session.userId){
+                        $scope.currentUserConversation.consultValue.push(notifyData);
+                    }
+                    $.each($scope.alreadyJoinPatientConversation, function (index, value) {
+                        if (value.patientId == $scope.currentUserConversation.patientId) {
+                            value.consultValue.push(notifyData);
+                        }
+                    });
                 }
                 else if(notifyData.notifyType=="0011"){
                     //通知接诊员，转接正在进行中，还未被医生受理
@@ -716,7 +747,7 @@ angular.module('controllers', ['luegg.directives'])
 
             $scope.currentClickUserName = "";
 
-            $scope.defaultClickUserOpenId = "";
+            $scope.currentClickUserId = "";
 
             $scope.searchMessageType = [{
                 searchType:"user",
@@ -748,7 +779,6 @@ angular.module('controllers', ['luegg.directives'])
                         //获取会话客户列表（含会话转接过程中，经历过几个客服）
                         GetUserConsultListInfo.save({pageNo: 1, pageSize: 1000}, function (data) {
                             $scope.userConsultListInfo = data.userList;
-                            console.log($scope.userConsultListInfo);
                             if($scope.userConsultListInfo.length!=0){
                                 $scope.getUserRecordDetail($scope.userConsultListInfo[0].userId,0);
                             }
@@ -763,11 +793,13 @@ angular.module('controllers', ['luegg.directives'])
             }
 
             //获取用户的详细聊天记录
-            $scope.getUserRecordDetail = function (userId,index) {
+            $scope.getUserRecordDetail = function (userName,userId,index) {
                 $scope.setSessoin = index;
                 GetUserRecordDetail.save({pageNo:0,pageSize:100,
                     userId:userId,recordType:"all"}, function (data) {
                     $scope.currentUserConsultRecordDetail = data.records;
+                    $scope.currentClickUserName = userName;
+                    $scope.currentClickUserId = userId;
                 });
             }
 
@@ -775,12 +807,12 @@ angular.module('controllers', ['luegg.directives'])
             $scope.getGetCSInfoByUserId = function (Object) {
                 if (Object == 1000 || Object == 1 || Object == 7 || Object == 30) {
                     GetCSInfoByUserId.save({dateNum: Object, pageNo: 1, pageSize: 1000}, function (data) {
-                        $scope.userConsultListInfo = data.userList;
+                        $scope.CSDoctorListInfo = data.userList;
                     });
                 } else {
                     GetCSInfoByUserId.save({CSDoctorId: Object, pageNo: 1, pageSize: 1000}, function (data) {
-                        $scope.userConsultListInfo = data.userList;
-
+                        $scope.CSDoctorListInfo = data.userList;
+                        console.log(data.records,$scope.CSDoctorListInfo);
                     });
                 }
             }
@@ -813,14 +845,18 @@ angular.module('controllers', ['luegg.directives'])
             }
 
             //查找消息记录（点击全部、图片等）
-            $scope.getRecordByOpenId = function (searchRecordType) {
+            $scope.getRecordByUserId = function (searchRecordType) {
                 GetUserRecordDetail.save({
                     recordType: searchRecordType,
-                    openId:$scope.defaultClickUserOpenId,
-                    pageNo: "1",
-                    pageSize: "100"
+                    userId:$scope.currentClickUserId,
+                    pageNo: 1,
+                    pageSize: 100
                 }, function (data) {
                     $scope.currentUserConsultRecordDetail = data.records;
+                    $.each(data.records,function(index,value){
+                        filterMediaData(value);
+                    });
+
                 });
             }
 
@@ -829,6 +865,13 @@ angular.module('controllers', ['luegg.directives'])
                 GetUserConsultListInfo.save({pageNo: 1, pageSize: 100}, function (data) {
                     $scope.userConsultListInfo = data.userList;
                 });
+            }
+
+            //过滤媒体数据
+            var filterMediaData = function (val) {
+                if (val.type == "1"||val.type == "2" || val.type == "3") {
+                    val.message = $sce.trustAsResourceUrl(angular.copy(val.message));
+                }
             }
 
         }])

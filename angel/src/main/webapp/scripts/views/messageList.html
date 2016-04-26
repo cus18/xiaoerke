@@ -89,7 +89,7 @@
             <div  class='w10 h20 br1'>
                 <ul class="nicknamecontentlist">
                     <li ng-repeat="item in userConsultListInfo"
-                        ng-click ="getUserRecordDetail(item.userId,$index)"
+                        ng-click ="getUserRecordDetail(item.userName,item.userId,$index)"
                         ng-style="(setSessoin==$index)?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}">
                         <div class="nickname">{{item.userName}}</div>
                         <div class="recently">{{item.createDate}}</div>
@@ -110,13 +110,15 @@
                 <div>
                     消息记录-&nbsp;<font color="#228b22">{{currentClickUserName}}</font>
                 </div>
-                <div ng-click="getRecordByOpenId('user')">全部</div>
-                <div ng-click="getRecordByOpenId('image')">图片</div>
-                <div ng-click="getRecordByOpenId('voice')">语音</div>
+                <div ng-click="getRecordByUserId('all')">全部</div>
+                <div ng-click="getRecordByUserId('1')">图片</div>
+                <div ng-click="getRecordByUserId('2')">语音</div>
+                <div ng-click="getRecordByUserId('3')">视频</div>
                 <div>
                     <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_27.png" alt=""/>
                     <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_29.png" alt=""/>
-                    <input type="text"/>/5页
+                    <input type="text"/>/
+                    <input type="text"/>页
                     <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_22.png" alt=""/>
                     <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_24.png" alt=""/>
 

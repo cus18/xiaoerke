@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.cxqm.xiaoerke.common.utils.StringUtils;
 import net.sf.json.JSONObject;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -260,6 +261,17 @@ public class InsuranceController extends BaseController {
 	@RequiresPermissions("insurance:insuranceList")
 	@RequestMapping(value = "saveInsuranceHospitalForm")
 	public String saveInsuranceHospitalForm(InsuranceHospitalVo vo,HttpServletRequest request,HttpServletResponse response, Model model) {
+		if(request.getParameter("id")!=null){
+			Integer hospitalId = Integer.parseInt(request.getParameter("id"));
+			if(StringUtils.isNotNull(hospitalId+"")){
+				InsuranceHospitalVo param = new InsuranceHospitalVo();
+				param.setId(hospitalId);
+				List<InsuranceHospitalVo> voList = insuranceHospitalService.getInsuranceHospitalListByInfo(param);
+				if(voList.size()!=0){
+					vo = voList.get(0);
+				}
+			}
+		}
 		model.addAttribute("insuranceHospitalVo", vo);
 		return "modules/insurance/addInsuranceHospitalForm";
 	}
@@ -277,13 +289,37 @@ public class InsuranceController extends BaseController {
 		try{
 			int add = insuranceHospitalService.saveInsuranceHospital(vo);
 			if(add==1){
-				model.addAttribute("message", "保存医院成功！");
+				model.addAttribute("message", "操作成功！");
 			}else{
-				model.addAttribute("message", "保存医院失败！");
+				model.addAttribute("message", "操作失败！");
 			}
 		}catch(Exception e){
 			model.addAttribute("message", "保存医院异常！");
 		}
+		model.addAttribute("insuranceHospitalVo", new InsuranceHospitalVo());
 		return "modules/insurance/addInsuranceHospitalForm";
+	}
+
+	/**
+	 * 删除保险关联医院
+	 * sunxiao
+	 * @param
+	 * @param model
+	 * @return
+	 */
+	@RequiresPermissions("insurance:insuranceList")
+	@RequestMapping(value = "delInsuranceHospital")
+	public String delInsuranceHospital(InsuranceHospitalVo vo,HttpServletRequest request, RedirectAttributes redirectAttributes, Model model) {
+		try{
+			int del = insuranceHospitalService.delInsuranceHospital(vo.getId());
+			if(del==1){
+				addMessage(redirectAttributes, "删除医院成功！");
+			}else{
+				addMessage(redirectAttributes, "删除医院失败！");
+			}
+		}catch(Exception e){
+			addMessage(redirectAttributes, "删除医院异常！");
+		}
+		return "redirect:" + adminPath + "/insurance/insuranceHospitalList";
 	}
 }

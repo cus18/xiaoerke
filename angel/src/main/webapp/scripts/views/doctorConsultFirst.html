@@ -240,9 +240,19 @@
                                     <h ng-click="cancelTransfer(item.session.id,item.toCsUserId,item.remark)" alt="">【取消转接】</h>
                                 </a>
                             </div>
+                            <div class="moreInformation" ng-if="item.type=='4'&&item.notifyType=='0013'" >
+                                <a href="">
+                                    正在将用户{{item.patientName}}转接给{{item.toCsUserName}}中.......
+                                </a>
+                            </div>
                             <div class="moreInformation" ng-if="item.type=='4'&&item.notifyType=='0010'&&item.operation=='rejected'">
                                 <a>
                                     <h>转接用户{{item.session.userName}}给{{item.csUserName}}提供服务的请求被拒绝，请转接给其他医生，谢谢！</h>
+                                </a>
+                            </div>
+                            <div class="moreInformation" ng-if="item.type=='4'&&item.notifyType=='0014'">
+                                <a>
+                                    <h>转接用户{{item.session.userName}}给{{item.csUserName}}提供服务长时间未被受理，已被退会，请重新转接其他医生，谢谢！</h>
                                 </a>
                             </div>
                         </div>

@@ -29,9 +29,9 @@
 		<li><a href="${ctx}/insurance/insuranceHospitalList?">保险关联医院列表</a></li>
 		<li class="active"><a href="">添加保险关联医院</a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="insuranceHospitalVo" action="${ctx}/insurance/saveInsuranceHospital?" method="post" class="form-horizontal"><%--
-		<form:hidden path="email" htmlEscape="false" maxlength="255" class="input-xlarge"/>
-		<sys:ckfinder input="email" type="files" uploadPath="/mytask" selectMultiple="false"/> --%>
+	<form:form id="inputForm" modelAttribute="insuranceHospitalVo" action="${ctx}/insurance/saveInsuranceHospital?" method="post" class="form-horizontal">
+		<form:hidden path="id" htmlEscape="false" maxlength="255" class="input-xlarge"/>
+		<%--<sys:ckfinder input="email" type="files" uploadPath="/mytask" selectMultiple="false"/> --%>
 		<sys:message content="${message}"/>
 		<div class="control-group">
 			<label class="control-label">医院:</label>

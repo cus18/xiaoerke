@@ -25,17 +25,13 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 
 /**
- * 会员Controller
- *
  * @author deliang
  * @version 2015-11-04
  */
@@ -169,6 +165,12 @@ public class ConsultUserController extends BaseController {
                 resultList.add(vo);
             }
         }
+        removeDuplicateList(resultList);
+        response.put("userList",resultList);
+        return response;
+    }
+
+    private void removeDuplicateList(List<ConsultSessionStatusVo> resultList) {
         int size = resultList.size();
         for(int i = 0;i<size;i++){
             if(frequency(resultList, resultList.get(i)) > 1){
@@ -176,12 +178,10 @@ public class ConsultUserController extends BaseController {
                 size = resultList.size();
             }
         }
-        response.put("userList",resultList);
-        return response;
     }
 
     /**
-     * @author
+     * @author deliang
      * @param c
      * @param o
      * @return
@@ -371,21 +371,44 @@ public class ConsultUserController extends BaseController {
                     resultList.add(vo);
                 }
             }
-
-            HashSet hashSet  =   new  HashSet(resultList);
-            resultList.clear();
-            resultList.addAll(hashSet);
+            removeDuplicateList(resultList);
             response.put("userList",resultList);
+
+
         }else if(searchType.equals("message")){
-            Query query = new Query(where("message").regex(searchInfo)).with(new Sort(Sort.Direction.DESC, "create_date"));
+            Query query = new Query(where("message").regex(searchInfo)).with(new Sort(Sort.Direction.DESC, "createDate"));
             pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query,"permanent");
             response.put("userList", pagination!=null?pagination.getDatas():"");
+            List<HashMap<String,Object>> responseList = new ArrayList<HashMap<String, Object>>();
+            if(pagination.getDatas()!=null && pagination.getDatas().size()>0){
+                for(ConsultRecordMongoVo consultRecordMongoVo : pagination.getDatas()){
+                    HashMap<String,Object> hashMap = new HashMap<String, Object>();
+                    consultRecordMongoVo.setInfoDate(DateUtils.DateToStr(consultRecordMongoVo.getCreateDate(),"datetime"));
+                    hashMap.put("currentRecord",consultRecordMongoVo);
 
+                    Query beforeQuery = new Query(where("userId").is(consultRecordMongoVo.getUserId()).andOperator(Criteria.where("createDate").lt(consultRecordMongoVo.getCreateDate()))).with(new Sort(Direction.ASC, "createDate")).limit(5);
+                    List<ConsultRecordMongoVo> beforeRecordList = consultRecordService.getCurrentUserHistoryRecord(beforeQuery);
+                    modifyDate(beforeRecordList);
+                    hashMap.put("beforeRecord",beforeRecordList);
+
+                    Query laterQuery = new Query(where("userId").is(consultRecordMongoVo.getUserId()).andOperator(Criteria.where("createDate").gt(consultRecordMongoVo.getCreateDate()))).with(new Sort(Sort.Direction.ASC, "createDate")).limit(5);
+                    List<ConsultRecordMongoVo> laterRecordList = consultRecordService.getCurrentUserHistoryRecord(laterQuery);
+                    modifyDate(laterRecordList);
+                    hashMap.put("laterRecord",laterRecordList);
+                    responseList.add(hashMap);
+                }
+                response.put("userList",responseList);
+            }
         }
-
         response.put("pageNo",pageNo);
         response.put("pageSize",pageSize);
         return response;
+    }
+
+    private void modifyDate(List<ConsultRecordMongoVo> laterRecordList) {
+        for(ConsultRecordMongoVo recordMongoVo : laterRecordList){
+            recordMongoVo.setInfoDate(DateUtils.DateToStr(recordMongoVo.getCreateDate(), "datetime"));
+        }
     }
 
     /**

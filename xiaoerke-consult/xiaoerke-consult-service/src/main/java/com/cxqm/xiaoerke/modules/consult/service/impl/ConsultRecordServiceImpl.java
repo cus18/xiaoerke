@@ -14,6 +14,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
+import com.mongodb.WriteResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -243,10 +244,12 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     }
 
     @Override
-    public List<ConsultRecordMongoVo> getCurrentUserHistoryRecord(String userId, Date dateTime, Integer pageSize) {
-        Query query = new Query().addCriteria(Criteria.where("userId").is(userId).and("createDate").lt(dateTime)).
-                with(new Sort(Sort.Direction.DESC, "createDate")).limit(pageSize);
+    public List<ConsultRecordMongoVo> getCurrentUserHistoryRecord(Query query) {
         return consultRecordMongoDBService.queryList(query);
     }
 
+    @Override
+    public WriteResult removeConsultRankRecord(Query query) {
+        return consultRecordMongoDBService.removeConsultRankRecord(query);
+    }
 }

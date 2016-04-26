@@ -7,6 +7,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
+import com.mongodb.WriteResult;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,5 +55,7 @@ public interface ConsultRecordService {
 
     void  deleteConsultTempRecordVo(Query query);
 
-    List<ConsultRecordMongoVo> getCurrentUserHistoryRecord(String userId, Date dateTime, Integer pageSize);
+    List<ConsultRecordMongoVo> getCurrentUserHistoryRecord(Query query);
+
+    WriteResult removeConsultRankRecord(Query query);
 }

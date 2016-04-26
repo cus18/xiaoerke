@@ -70,7 +70,7 @@ public class ConsultWechatController extends BaseController {
         paramMap.put("openId",openId);
         paramMap.put("messageType",messageType);
         paramMap.put("messageContent",messageContent);
-        if(messageType.contains("voice")||messageType.contains("video")){
+        if(messageType.contains("voice")||messageType.contains("video")||messageType.contains("image")){
             paramMap.put("mediaId",mediaId);
         }
         paramMap.put("serverAddress",StringUtils.getRemoteAddr(request));
@@ -159,7 +159,7 @@ public class ConsultWechatController extends BaseController {
                         }
 
                         //根据mediaId，从微信服务器上，获取到媒体文件，再将媒体文件，放置阿里云服务器，获取URL
-                        if(messageType.contains("voice")||messageType.contains("video")){
+                        if(messageType.contains("voice")||messageType.contains("video")||messageType.contains("image")){
                             try{
                                 WechatUtil wechatUtil = new WechatUtil();
                                 String mediaURL = wechatUtil.downloadMediaFromWx(ConstantUtil.TEST_TOKEN,

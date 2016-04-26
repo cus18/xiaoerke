@@ -71,7 +71,9 @@ public class ConsultDoctorController extends BaseController {
         }else if(dateTime.indexOf("/")!=-1){
             date = DateUtils.StrToDate(dateTime,"xiangang");
         }
-        currentUserHistoryRecord = consultRecordService.getCurrentUserHistoryRecord(userId, date, pageSize);
+        Query query = new Query().addCriteria(Criteria.where("userId").is(userId).and("createDate").lt(date)).
+                with(new Sort(Sort.Direction.DESC, "createDate")).limit(pageSize);
+        currentUserHistoryRecord = consultRecordService.getCurrentUserHistoryRecord(query);
         if(currentUserHistoryRecord!=null){
             response.put("consultDataList", ConsultUtil.transformCurrentUserListData(currentUserHistoryRecord));
         }else{
@@ -159,6 +161,7 @@ public class ConsultDoctorController extends BaseController {
         String fromUserId = String.valueOf(params.get("fromUserId"));
         int pageNo = 0;
         int pageSize = 1;
+        Query query;
         PaginationVo<ConsultRecordMongoVo> pagination = null;
         Map<String,Object> response = new HashMap<String, Object>();
         if(null != params.get("pageNo") && null != params.get("pageSize")){
@@ -166,26 +169,27 @@ public class ConsultDoctorController extends BaseController {
             pageSize = (Integer)params.get("pageSize");
         }
         if(recordType.equals("all") && StringUtils.isNotNull(userId) && pageSize > 0){
-            Query query = new Query(where("userId").is(userId)).with(new Sort(Direction.DESC, "createDate"));//用户端获取与平台的所有聊天记录
+            query = new Query(where("userId").is(userId)).with(new Sort(Direction.DESC, "createDate"));//用户端获取与平台的所有聊天记录
             pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "permanent");
 
         }else if (recordType.equals("doctor") && StringUtils.isNotNull(userId) && StringUtils.isNotNull(fromUserId)){//医生端获取与自己有关的所有聊天记录
-            Query query = new Query(where("toUserId").is(userId).and("fromUserId")
-                    .is(fromUserId)).with(new Sort(Direction.DESC, "create_date"));
+            query = new Query(where("toUserId").is(userId).and("fromUserId")
+                    .is(fromUserId)).with(new Sort(Direction.DESC, "createDate"));
             pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "permanent");
-        }else if (recordType.contains("image") || recordType.contains("voice")){//查询语音、图片
-            String openId = String.valueOf(params.get("openId"));
-            Query query = new Query(where("openId").is(openId).and("messageType")
-                    .is(recordType)).with(new Sort(Direction.DESC, "create_date"));
+        }else if (recordType.equals("1") || recordType.equals("2")){//查询语音、图片
+            query = new Query(where("userId").is(userId).and("type")
+                    .is(recordType)).with(new Sort(Direction.DESC, "createDate"));
             pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "permanent");
         }
         List<ConsultRecordMongoVo> recordMongoVos = new ArrayList<ConsultRecordMongoVo>();
-        for(ConsultRecordMongoVo consultRecordMongoVo : pagination.getDatas()){
-            ConsultRecordMongoVo recordMongoVo = consultRecordMongoVo;
-            recordMongoVo.setInfoDate(DateUtils.DateToStr(consultRecordMongoVo.getCreateDate(),"datetime"));
-            recordMongoVos.add(recordMongoVo);
+        if(pagination.getDatas() != null && pagination.getDatas().size()>0){
+            for(ConsultRecordMongoVo consultRecordMongoVo : pagination.getDatas()){
+                ConsultRecordMongoVo recordMongoVo = consultRecordMongoVo;
+                recordMongoVo.setInfoDate(DateUtils.DateToStr(consultRecordMongoVo.getCreateDate(),"datetime"));
+                recordMongoVos.add(recordMongoVo);
+            }
+            response.put("records", recordMongoVos);
         }
-        response.put("records", recordMongoVos);
         response.put("pageNo",pageNo);
         response.put("pageSize",pageSize);
         return response;
