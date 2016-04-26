@@ -165,6 +165,12 @@ public class ConsultUserController extends BaseController {
                 resultList.add(vo);
             }
         }
+        removeDuplicateList(resultList);
+        response.put("userList",resultList);
+        return response;
+    }
+
+    private void removeDuplicateList(List<ConsultSessionStatusVo> resultList) {
         int size = resultList.size();
         for(int i = 0;i<size;i++){
             if(frequency(resultList, resultList.get(i)) > 1){
@@ -172,8 +178,6 @@ public class ConsultUserController extends BaseController {
                 size = resultList.size();
             }
         }
-        response.put("userList",resultList);
-        return response;
     }
 
     /**
@@ -367,13 +371,7 @@ public class ConsultUserController extends BaseController {
                     resultList.add(vo);
                 }
             }
-            int size = resultList.size();
-            for(int i = 0;i<size;i++){
-                if(frequency(resultList, resultList.get(i)) > 1){
-                    resultList.remove(i);
-                    size = resultList.size();
-                }
-            }
+            removeDuplicateList(resultList);
             response.put("userList",resultList);
 
 
