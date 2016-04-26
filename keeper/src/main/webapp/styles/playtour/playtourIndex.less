@@ -62,8 +62,6 @@ body{
 }
 .playtourpingjie{
   padding-top: 24px;
-  background-color: #FFFFFF;
-  border-bottom:1px solid #e6e6e6 ;
 }
 .playtourpingjie .playtourpj_1,.playtourpj_2,.playtourpj_3{
   display:inline-block;
@@ -187,16 +185,26 @@ button{
 .playtourno{
   padding: 18px 15px;
   margin: 5px 0;
-  border-bottom:1px solid #e6e6e6 ;
-  border-top:1px solid #e6e6e6 ;
-  background-color: #FFFFFF;
 }
 .playtourno .ptntitle{
-  margin-left: auto;
-  margin-right: auto;
-  font-size: 18px;
+  font-size: 15px;
   color: #030303;
-  text-align: center;
+  width: 100%;
+}
+.playtourno .ptntitle span:nth-child(1){
+  width:35%;
+  height: 1px;
+  background-color: #f9f9f9;
+  border: 1px solid #f9f9f9;
+}
+.playtourno .ptntitle span:nth-child(2){
+  width:25%;
+}
+.playtourno .ptntitle span:nth-child(3){
+  width:35%;
+  height: 1px;
+  background-color: #f9f9f9;
+  border: 1px solid #f9f9f9;
 }
 .playtourno .ptn_1{
   margin-top: 14px;
@@ -239,4 +247,82 @@ button{
 }
 input::-webkit-inner-spin-button ,input::-webkit-outer-spin-button{
   -webkit-appearance: none;
+}
+.tourdoctor{
+  background-image: url("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_headback.png");
+  background-size: 100% 105px;
+  height: 76px;
+  padding: 15px 0px;
+  width: 100%;
+}
+.tourdoctor .td_1{
+  display: inline-block;
+  width: 25%;
+}
+.tourdoctor .td_1 div:nth-child(1){
+  width: 58px;
+  height: 58px;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.tourdoctor .td_1 div:nth-child(1) img{
+  float: left;
+  border-radius: 50%;
+  margin-top: 2px;
+  margin-left: 2px;
+}
+.tourdoctor .td_1 div:nth-child(2){
+  width: 58px;
+  text-align: center;
+  margin-top: 5px;
+  font-size: 15px;
+  color: #FFFFFF;
+  margin-left: auto;
+  margin-right: auto;
+}
+.tourdoctor .td_com{
+  display: inline-block;
+  text-align: center;
+  vertical-align: top;
+  margin: 5px 0;
+  padding: 5px 0;
+}
+.tourdoctor .td_2{
+  border-right: 1px solid #FFFFFF;
+  width: 37%;
+}
+.tourdoctor .td_3{
+  width: 30%;
+}
+.tourdoctor .td_2 div,.td_3 div{
+  margin-top: 10px;
+  font-size: 15px;
+  color: #FFFFFF;
+}
+.tourinit {
+  margin-top: 75px;
+  text-align: center;
+}
+.tourinit ul{
+  width: 100%;
+  margin-top: 37px;
+}
+.tourinit ul li:nth-child(1){
+  display: inline-block;
+  width: 20%;
+}
+.tourinit ul li:nth-child(2){
+  display: inline-block;
+  width: 45%;
+}
+.tourinit ul li:nth-child(3){
+  display: inline-block;
+  width: 20%;
+}
+.tourinit .ti_com{
+  margin-top: 11px;
+  font-size: 15px;
+  color: #333333;
 }
