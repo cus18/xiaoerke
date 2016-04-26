@@ -4,7 +4,6 @@ package com.cxqm.xiaoerke.modules.consult.service.impl;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultSessionDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultMongoUtilsService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
@@ -26,9 +25,6 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
 
     @Autowired
     private SessionRedisCache sessionRedisCache;
-
-    @Autowired
-    private ConsultMongoUtilsService consultMongoUtilsService;
 
     @Autowired
     private ConsultRecordService consultRecordService;

@@ -14,6 +14,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
+import com.mongodb.WriteResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -247,4 +248,8 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
         return consultRecordMongoDBService.queryList(query);
     }
 
+    @Override
+    public WriteResult removeConsultRankRecord(Query query) {
+        return consultRecordMongoDBService.removeConsultRankRecord(query);
+    }
 }

@@ -84,13 +84,7 @@ public class ScheduledTask {
     private ConsultPhoneService consultPhoneService;
 
     @Autowired
-    private SessionRedisCache sessionRedisCache;
-
-    @Autowired
     private ConsultRecordService consultRecordService;
-
-    @Autowired
-    private ConsultMongoUtilsService consultMongoUtilsService;
 
     @Autowired
     private AccountService accountService;
@@ -1096,19 +1090,8 @@ public class ScheduledTask {
 
     public void consultMangementDayTask(){
         //删除会话排名中的临时数据
-        consultMongoUtilsService.removeConsultRankRecord(new Query());
+        consultRecordService.removeConsultRankRecord(new Query());
     }
-
-//    public ConsultSessionStatusVo transConsultSessionStatusMapToVo(Map map){
-//        if(!map.isEmpty()){
-//            ConsultSessionStatusVo consultSessionStatusVo = new ConsultSessionStatusVo();
-//            consultSessionStatusVo.setSessionId((String)map.get("sessionId"));
-//            consultSessionStatusVo.setLastMessageTime((String)map.get("lastMessageTime"));
-//            consultSessionStatusVo.setUserId((String)map.get("UserId"));
-//            return consultSessionStatusVo;
-//        }
-//        return null;
-//    }
 
     //插入监听器
     private void insertMonitor(String register_no, String type, String status) {

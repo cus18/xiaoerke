@@ -111,16 +111,11 @@ public class ConsultDoctorAnswerController extends BaseController {
      }）
      */
     @RequestMapping(value = "/answerValue", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody String consultAnswerValue(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
-
+    public @ResponseBody String consultAnswerValue(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
         String type = String.valueOf(params.get("type"));
-
         if(StringUtils.isNotNull(type)){
-
             return answerService.findConsultAnswer(type);
         }
-
         return "";
     }
 
