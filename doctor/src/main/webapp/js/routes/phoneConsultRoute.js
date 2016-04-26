@@ -23,7 +23,7 @@ define(['phoneConsultApp'], function(app){
 
                 $stateProvider
                     .state('phoneConsultFirst', {
-                        url: '/phoneConsultFirst',
+                        url: '/phoneConsultFirst/:date',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'phoneConsultFirstCtrl',
                         resolve: {

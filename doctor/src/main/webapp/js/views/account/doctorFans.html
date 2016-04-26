@@ -4,11 +4,11 @@
     <ion-content  style="top: 0px;">
         <ion-scroll class="doctorFans" direction="y" has-bouncing="true">
             <ul ng-if="haveMore">
-                <li ng-repeat="item in fansList">
-                    <div ng-style="(item.img=='')?{'background-color':'#ccc'}:{'background-color':'#ffffff'}">
-                        <img ng-src="{{item.img}}" width="38px" height="38px" ng-if="item.img!=''">
+                <li ng-repeat="item in FansList">
+                    <div ng-style="(item.headImgUrl=='')?{'background-color':'#ccc'}:{'background-color':'#ffffff'}">
+                        <img ng-src="{{item.headImgUrl}}" width="38px" height="38px" ng-if="item.headImgUrl!=''">
                     </div>
-                    <span>{{item.name}}</span>
+                    <span>{{item.wechatName}}</span>
                 </li>
             </ul>
             <div class="gomore" ng-if="haveMore">

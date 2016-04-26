@@ -22,13 +22,19 @@ angular.module('controllers', ['ionic']).controller('phoneConsultFirstCtrl', [
                 }else if(data.status=="8"){
                     window.location.href = data.redirectURL+"?targeturl="+routePath;
                 }else{
+                    var changeDate ;
+                    if($stateParams.date==""){
+                        changeDate = getCurrDate();
+                    }else{
+                        changeDate = $stateParams.date;
+                    }
                     num = 0;
                     $("button").eq(0).addClass("changWeekCom");
                     $scope.cusultList = [];
-                    getDateList(getCurrDate());
-                    $scope.selectItem = getWeekNum(getCurrDate());
+                    getDateList(changeDate);
+                    $scope.selectItem = getWeekNum(changeDate);
                     getDateWeek($scope.selectItem);
-                    getConsultDateList(getCurrDate());
+                    getConsultDateList(changeDate);
 
                 }
             });
