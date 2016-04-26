@@ -385,14 +385,17 @@ public class ConsultUserController extends BaseController {
             if(pagination.getDatas()!=null && pagination.getDatas().size()>0){
                 for(ConsultRecordMongoVo consultRecordMongoVo : pagination.getDatas()){
                     HashMap<String,Object> hashMap = new HashMap<String, Object>();
+                    consultRecordMongoVo.setInfoDate(DateUtils.DateToStr(consultRecordMongoVo.getCreateDate(),"datetime"));
                     hashMap.put("currentRecord",consultRecordMongoVo);
 
                     Query beforeQuery = new Query(where("userId").is(consultRecordMongoVo.getUserId()).andOperator(Criteria.where("createDate").lt(consultRecordMongoVo.getCreateDate()))).with(new Sort(Direction.ASC, "createDate")).limit(5);
                     List<ConsultRecordMongoVo> beforeRecordList = consultRecordService.getCurrentUserHistoryRecord(beforeQuery);
+                    modifyDate(beforeRecordList);
                     hashMap.put("beforeRecord",beforeRecordList);
 
                     Query laterQuery = new Query(where("userId").is(consultRecordMongoVo.getUserId()).andOperator(Criteria.where("createDate").gt(consultRecordMongoVo.getCreateDate()))).with(new Sort(Sort.Direction.ASC, "createDate")).limit(5);
                     List<ConsultRecordMongoVo> laterRecordList = consultRecordService.getCurrentUserHistoryRecord(laterQuery);
+                    modifyDate(laterRecordList);
                     hashMap.put("laterRecord",laterRecordList);
                     responseList.add(hashMap);
                 }
@@ -402,6 +405,12 @@ public class ConsultUserController extends BaseController {
         response.put("pageNo",pageNo);
         response.put("pageSize",pageSize);
         return response;
+    }
+
+    private void modifyDate(List<ConsultRecordMongoVo> laterRecordList) {
+        for(ConsultRecordMongoVo recordMongoVo : laterRecordList){
+            recordMongoVo.setInfoDate(DateUtils.DateToStr(recordMongoVo.getCreateDate(), "datetime"));
+        }
     }
 
     /**
