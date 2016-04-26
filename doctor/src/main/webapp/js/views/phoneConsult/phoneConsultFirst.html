@@ -29,7 +29,7 @@
     <ion-content  style="top: 0px;">
         <ion-scroll class="phoneConsultFirst" direction="y" has-bouncing="true" style="top: 240px;" >
         <ul class="conTime" ng-if="consultHave">
-            <li ng-repeat="item in consultDetalisList" ng-click="goDetails($index)">
+            <li ng-repeat="item in consultDetalisList" ng-click="goDetails($index)" ng-if="item.state!=2">
                 <img  ng-if="item.repeatFlag==2" src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fweekchong_1.png" width="17px" height="17px"/>
                 <img  ng-if="item.repeatFlag==0" src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/phoneConsult%2Fweekchong_2.png" width="17px" height="17px"/>
                 <span class="chongtime" ng-style="(item.state==0)?{'color':'#b8b8b8'}:{'color': '#333'}">{{item.begin_time}}</span>
