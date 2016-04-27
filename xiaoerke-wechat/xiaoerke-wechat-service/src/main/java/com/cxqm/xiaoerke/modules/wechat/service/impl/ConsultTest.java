@@ -21,33 +21,24 @@ public class ConsultTest{
 	@Autowired
 	private WechatAttentionService wechatAttentionService;
 
-	public void consultTest(int userNumber,String content){
+	public void consultTest(int userNumber,String content) throws Exception{
 		SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
 		List<SysWechatAppintInfoVo> findAttentionInfoByOpenIdLists = wechatAttentionService.findAttentionInfo(sysWechatAppintInfoVo);
 		//共有userNumber个用户,同时发送消息
-		for(int i=0;i<=userNumber;i++){
+		for(int i=0;i<userNumber;i++){
 			SysWechatAppintInfoVo vo = findAttentionInfoByOpenIdLists.get(i);
 
 			String NickName = vo.getWechat_name();
 			if(StringUtils.isBlank(vo.getWechat_name())){
 				NickName = vo.getOpen_id().substring(0,10);
 			}
-			StringBuilder sb = new StringBuilder();
-			sb.append("<xml>");
-			sb.append("    <FromUserName>");
-			sb.append(vo.getOpen_id());
-			sb.append("    </FromUserName>");
-			sb.append("    <MsgType>");
-			sb.append("text");
-			sb.append("    </MsgType>");
-			sb.append("    <Content>");
-			sb.append("我是");
-			sb.append(NickName);
-			sb.append("  ");
-			sb.append(content);
-			sb.append("    </Content>");
-			sb.append("</xml>");
-			Thread thread = new MyThread(sb.toString());
+			StringBuffer stringBuffer = new StringBuffer();
+			stringBuffer.append("<xml>").append(" <ToUserName><![CDATA[toUser]]></ToUserName>").append(" <FromUserName>")
+					.append(vo.getOpen_id()).append("</FromUserName>").append(" <CreateTime>1348831860</CreateTime>").
+					append(" <MsgType>text</MsgType>").append(" <Content>").append("I am ").append("URLEncoder.encode(").append(NickName).append(", UTF-8").
+					append(content)
+					.append("</Content>").append(" <MsgId>1234567890123456</MsgId>").append(" </xml>");
+			Thread thread = new MyThread(stringBuffer.toString());
 			thread.start();
 		}
 	}
@@ -61,7 +52,7 @@ public class ConsultTest{
 		}
 		public void run()
 		{
-			String url = "http://xiaork.com/keeper/patient/wxChat";
+			String url = "http://101.201.154.75:8080/keeper/patient/wxChat";
 			testPost(url,xmlInfo);
 		}
 	}
@@ -70,14 +61,20 @@ public class ConsultTest{
 	 * 每个用户向该用户对应的医生，发送100条消息
 	 * @param
 	 */
-	public void consultTestStart(){
-		for(int i=0;i<100;i++){
-			consultTest(500,"向你发送第"+i+"条消息");
+	public void consultTestStart() throws Exception{
+		for(int i=0;i<500;i++){
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			consultTest(200,"sent "+i+" message");
 		}
 	}
 
 	void testPost(String urlStr,String xmlInfo) {
 		try {
+
 			URL url = new URL(urlStr);
 			URLConnection con = url.openConnection();
 			con.setDoOutput(true);
@@ -88,7 +85,7 @@ public class ConsultTest{
 			OutputStreamWriter out = new OutputStreamWriter(con
 					.getOutputStream());
 
-			out.write(new String(xmlInfo.getBytes("ISO-8859-1"),"utf-8"));
+			out.write(new String(xmlInfo.getBytes("ISO-8859-1")));
 			out.flush();
 			out.close();
 			BufferedReader br = new BufferedReader(new InputStreamReader(con
@@ -103,4 +100,6 @@ public class ConsultTest{
 			e.printStackTrace();
 		}
 	}
+
+
 }
