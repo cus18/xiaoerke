@@ -337,6 +337,10 @@
 				<ref bean="consultPhoneCronTrigger"/>
 				<ref bean="consultMangementCronTrigger"/>
 				<ref bean="timingDialCronTrigger"/>
+
+                <!--<ref bean="sendMsgToDocAtNightPhoneConsultCronTrigger"/>-->
+                <!--<ref bean="sendMsgToDocAtMorningPhoneConsultCronTrigger"/>-->
+
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>

@@ -124,6 +124,7 @@ angular.module('controllers', ['luegg.directives'])
 
             /**转接功能区**/
                 $scope.acceptTransfer = function(){
+                    $scope.tapShowButton('waitProcess');
                     var waitJoinChooseUserList = "";
                     $.each($scope.waitJoinUserList,function(index,value){
                        if(value.chooseFlag){
@@ -160,7 +161,6 @@ angular.module('controllers', ['luegg.directives'])
                                 }
                             });
                             $scope.refreshWaitJoinUserList();
-                            $scope.tapShowButton('waitProcess');
                             $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
                                 $scope.alreadyJoinPatientConversation[0].patientName);
                         }
@@ -168,6 +168,7 @@ angular.module('controllers', ['luegg.directives'])
                 }
 
                 $scope.rejectTransfer = function(){
+                    $scope.tapShowButton('waitProcess');
                     var waitJoinChooseUserList = "";
                     $.each($scope.waitJoinUserList,function(index,value){
                         if(value.chooseFlag){
@@ -176,7 +177,6 @@ angular.module('controllers', ['luegg.directives'])
                     });
                     React2Transfer.save({operation:"rejected",forwardSessionIds:waitJoinChooseUserList},function(data){
                         if(data.result=="success"){
-                            $scope.tapShowButton('waitProcess');
                             $scope.refreshWaitJoinUserList();
                         }
                     });

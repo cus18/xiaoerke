@@ -105,7 +105,8 @@
         sbb.name as babyName,
         case when shc.contact_phone is null then "" else shc.contact_phone end hospitalContactPhone,
         su.openid,
-        sh.name as hospitalName
+        sh.name as hospitalName,
+        sm.id as smId
         FROM sys_consultphone_service scs
         INNER JOIN consultphone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
         LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
@@ -117,10 +118,10 @@
         LEFT JOIN sys_monitor sm ON sm.patient_register_service_id = crs.id
         WHERE DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(crs.create_time,"%Y-%m-%d")
         AND DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(scs.date,"%Y-%m-%d")
-        AND DATE_SUB(scs.beginTime, INTERVAL 5 MINUTE) > crs.create_time
+        DATE_FORMAT(DATE_SUB(now(), INTERVAL -5 MINUTE),"%H:%i") = DATE_FORMAT(scs.beginTime,"%H:%i")
         AND crs.state = '1'
 		AND sm.types='3'
-		AND sm.status='7'
+		AND sm.status='1'
     </select>
 
     <update id="updateOrderInfoToDoc" >
@@ -234,6 +235,7 @@
         select DISTINCT(sd.name) AS doctorName,
         case when shc.sys_hospital_name is null then "" else shc.sys_hospital_name end hospitalName,
         case when shc.contact_phone is null then "" else shc.contact_phone end hospitalContactPhone,
+        su.openid openid,
         su.phone phone
         FROM sys_consultphone_service scs
         INNER JOIN consultphone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
@@ -242,7 +244,7 @@
         LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = dhr.sys_hospital_id
         LEFT JOIN sys_user su ON su.id = sd.sys_user_id
         where crs. state = '1'
-        AND DATE_FORMAT(srs.date,"%Y-%m-%d") = #{date}
+        AND DATE_FORMAT(scs.date,"%Y-%m-%d") = #{date}
         ORDER  BY  scs.beginTime
     </select>
 
@@ -264,7 +266,7 @@
         LEFT JOIN sys_user su ON su.id = sd.sys_user_id
 		LEFT JOIN sys_baby_baseinfo sbb on sbb.userid = su.id
         where crs. state = '1'
-        AND DATE_FORMAT(srs.date,"%Y-%m-%d") = #{date}
+        AND DATE_FORMAT(scs.date,"%Y-%m-%d") = #{date}
         ORDER  BY  scs.beginTime
     </select>
 

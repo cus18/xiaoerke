@@ -66,7 +66,7 @@ public class ConsultSessionManager {
 
 	private UserInfoServiceImpl userInfoService = SpringContextHolder.getBean("userInfoServiceImpl");
 
-	private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
+	private static ExecutorService threadExecutor = Executors.newCachedThreadPool();
 
 	private static ConsultSessionManager sessionManager = new ConsultSessionManager();
 
@@ -394,7 +394,7 @@ public class ConsultSessionManager {
 
 		public void run() {
 			try {
-				Thread.sleep(8000);
+				Thread.sleep(4000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

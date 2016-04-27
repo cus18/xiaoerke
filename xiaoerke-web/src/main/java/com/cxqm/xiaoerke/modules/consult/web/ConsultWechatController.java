@@ -123,7 +123,6 @@ public class ConsultWechatController extends BaseController {
             //如果此用户不是第一次发送消息，则sessionId不为空
             if(sessionId!=null){
                 consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
-
                 csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
             }else{//如果此用户是第一次发送消息，则sessionId为空
                 consultSession.setCreateTime(new Date());

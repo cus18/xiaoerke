@@ -99,7 +99,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 						WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN, consultSession.getUserId(), st);
 						//保存聊天记录
 						consultRecordService.buildRecordMongoVo(csUserId,String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
-					}else if(msgType!=0){
+					}else if(msgType != 0){
 						//发送多媒体消息
 
 					}
