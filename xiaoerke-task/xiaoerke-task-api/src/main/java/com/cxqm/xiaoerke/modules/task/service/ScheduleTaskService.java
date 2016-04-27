@@ -64,6 +64,6 @@ public interface ScheduleTaskService {
 
     List<HashMap<String,Object>> getOrderInfoByDate(String tomorrow);
 
-    List<HashMap<String,Object>> sendMsgToDoc5minBeforeConnect();
+    List<HashMap<String,Object>> getOrderInfoToDoc5minBeforeConnect();
 
 }

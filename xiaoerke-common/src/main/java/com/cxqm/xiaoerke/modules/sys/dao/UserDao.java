@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.cxqm.xiaoerke.common.persistence.Page;
 import org.springframework.stereotype.Repository;
 
 import com.cxqm.xiaoerke.common.persistence.CrudDao;
@@ -51,8 +52,13 @@ public interface UserDao extends CrudDao<User> {
 	HashMap<String,Object> findPatientIdByPhoneExecute(HashMap<String, Object> executeMap);
 	
 	//对预约的状态进行操作（插入用户信息） @author 14_zdl
-    void insertUserElementsExecute(HashMap<String, Object> executeMap);
+    void updateUserElementsExecute(User user);
     
     HashMap<String, Object> findUserDetailInfoByUserIdExecute(HashMap<String,Object> userId);
-	
+
+	//分页查询用户列表sunxiao
+	Page<User> findUserList(Page<User> page,User user);
+
+	//根据条件查询用户信息sunxiao
+	List<User> getUserListByInfo(HashMap map);
 }

@@ -217,13 +217,15 @@ public class ConsultDoctorTransferController extends BaseController {
                 List<ConsultRecordMongoVo> consultRecordMongoVo = consultRecordService.getCurrentUserHistoryRecord(query);
                 if(consultRecordMongoVo.size()!=0){
                     dataValue.put("messageContent", consultRecordMongoVo.get(0).getMessage());
+                    dataValue.put("type", consultRecordMongoVo.get(0).getType());
                     dataValue.put("messageNum", consultRecordMongoVo.size());
+                    dataValue.put("messageDateTime", DateUtils.DateToStr(consultRecordMongoVo.get(0).getCreateDate()));
                 }
                 dataValue.put("userId",richConsultSession.getUserId());
                 dataValue.put("userName",richConsultSession.getUserName());
                 dataValue.put("source",richConsultSession.getSource());
                 dataValue.put("serverAddress",richConsultSession.getServerAddress());
-                dataValue.put("sessionCreateTime",richConsultSession.getCreateTime());
+                dataValue.put("sessionCreateTime",DateUtils.DateToStr(richConsultSession.getCreateTime()));
             }
             dataValue.put("dateTime", DateUtils.DateToStr(new Date()));
             User user = systemService.getUser(waitJoinListVo.getFromUserId());

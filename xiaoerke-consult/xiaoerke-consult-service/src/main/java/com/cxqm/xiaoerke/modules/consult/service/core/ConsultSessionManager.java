@@ -4,6 +4,7 @@ import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.sys.service.impl.UserInfoServiceImpl;
+import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
@@ -65,7 +66,7 @@ public class ConsultSessionManager {
 
 	private UserInfoServiceImpl userInfoService = SpringContextHolder.getBean("userInfoServiceImpl");
 
-	private static ExecutorService threadExecutor = Executors.newCachedThreadPool();
+	private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
 	private static ConsultSessionManager sessionManager = new ConsultSessionManager();
 
@@ -85,6 +86,7 @@ public class ConsultSessionManager {
 		String[] args = url.split("&");
 		String fromType = args[1];
 
+		User user = UserUtils.getUser();
 		if(args.length>2){
 			if(fromType.equals("user")) {
 				String userId = args[2];
@@ -95,7 +97,7 @@ public class ConsultSessionManager {
 				doCreateSessionInitiatedByCs(userId,channel);
 			} else if(fromType.equals("distributor")) {
 				String userId = args[2];
-				doCreateSessionInitiatedByDistributor(userId,channel);
+				doCreateSessionInitiatedByDistributor(userId, channel);
 			}
 		}
 	}
@@ -281,18 +283,22 @@ public class ConsultSessionManager {
 		consultSession.setCsUserName((String) perInfo.get("name"));
 
 		//可开启线程进行记录
-		consultSessionService.saveConsultInfo(consultSession);
-		Integer sessionId = consultSession.getId();
-		sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
-		sessionRedisCache.putUserIdSessionIdPair(consultSession.getUserId(), sessionId);
+		if(consultSession.getCsUserId()!=null){
+			consultSessionService.saveConsultInfo(consultSession);
+			Integer sessionId = consultSession.getId();
+			sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
+			sessionRedisCache.putUserIdSessionIdPair(consultSession.getUserId(), sessionId);
 
-		//成功分配医生，给用户发送一个欢迎语
-		String st = "尊敬的用户，宝大夫在线，有什么可以帮您";
-		WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN, consultSession.getUserId(), st);
-		response.put("csChannel", csChannel);
-		response.put("sessionId", sessionId);
-		response.put("consultSession", consultSession);
-		return response;
+			//成功分配医生，给用户发送一个欢迎语
+			String st = "尊敬的用户，宝大夫在线，有什么可以帮您";
+			WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN, consultSession.getUserId(), st);
+			response.put("csChannel", csChannel);
+			response.put("sessionId", sessionId);
+			response.put("consultSession", consultSession);
+			return response;
+		}else{
+			return null;
+		}
 
 	}
 
@@ -306,7 +312,7 @@ public class ConsultSessionManager {
 
 				//通知发起转接的人，转接正在处理中在5秒钟内，接诊员有机会取消转接，如果，5秒后，接诊员不取消，则接诊员不能再取消转接
 				JSONObject jsonObj = new JSONObject();
-				jsonObj.put("type", 4);
+				jsonObj.put("type", "4");
 				jsonObj.put("notifyType", "0011");
 				jsonObj.put("session", session);
 				jsonObj.put("remark", remark);
@@ -366,7 +372,7 @@ public class ConsultSessionManager {
 				if(channelToCsUser.isActive()&&channelFromCsUser.isActive()){
 					//通知被转接咨询医生，有用户需要转接
 					JSONObject jsonObj = new JSONObject();
-					jsonObj.put("type", 4);
+					jsonObj.put("type", "4");
 					jsonObj.put("notifyType", "0009");
 					jsonObj.put("session", session);
 					jsonObj.put("toCsUserName", toCsUser.getName());
@@ -376,7 +382,7 @@ public class ConsultSessionManager {
 
 					//通知接诊员，不能再取消转接
 					jsonObj.clear();
-					jsonObj.put("type", 4);
+					jsonObj.put("type", "4");
 					jsonObj.put("notifyType", "0013");
 					jsonObj.put("session", session);
 					TextWebSocketFrame frameFromCsUser = new TextWebSocketFrame(jsonObj.toJSONString());
@@ -399,7 +405,7 @@ public class ConsultSessionManager {
 								//通知医生，转接取消
 								Channel channelToCsUser = userChannelMapping.get(sessionForwardRecordsVoLater.getToUserId());
 								jsonObj.clear();
-								jsonObj.put("type", 4);
+								jsonObj.put("type", "4");
 								jsonObj.put("notifyType", "0012");
 								jsonObj.put("session", session);
 								TextWebSocketFrame frame1 = new TextWebSocketFrame(jsonObj.toJSONString());
@@ -408,7 +414,7 @@ public class ConsultSessionManager {
 								//通知接诊员，退回此次转接
 								Channel channelFromCsUser = userChannelMapping.get(sessionForwardRecordsVoLater.getFromUserId());
 								jsonObj.clear();
-								jsonObj.put("type", 4);
+								jsonObj.put("type", "4");
 								jsonObj.put("notifyType", "0014");
 								jsonObj.put("session", session);
 								TextWebSocketFrame frame2 = new TextWebSocketFrame(jsonObj.toJSONString());
@@ -432,7 +438,7 @@ public class ConsultSessionManager {
 			Channel channelFromCsUser = userChannelMapping.get(fromCsUserId);
 			if(channelFromCsUser.isActive()){
 				JSONObject jsonObj = new JSONObject();
-				jsonObj.put("type", 4);
+				jsonObj.put("type", "4");
 				jsonObj.put("notifyType", "0010");
 				jsonObj.put("operation", operation);
 				jsonObj.put("session", session);

@@ -69,4 +69,7 @@ public interface ConsultPhonePatientService {
     int getNewOrderCount(String state);
 
     ConsultPhoneRegisterServiceVo selectByPrimaryKey(Integer phoneConsultaServiceId);
+
+    int CancelAppointNoPay();
+
 }

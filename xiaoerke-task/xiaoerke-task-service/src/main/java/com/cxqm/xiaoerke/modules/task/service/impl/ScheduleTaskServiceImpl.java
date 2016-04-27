@@ -346,8 +346,8 @@ public class ScheduleTaskServiceImpl implements ScheduleTaskService {
     }
 
     @Override
-    public List<HashMap<String, Object>> sendMsgToDoc5minBeforeConnect() {
-        return scheduledTaskDao.sendMsgToDoc5minBeforeConnect();
+    public List<HashMap<String, Object>> getOrderInfoToDoc5minBeforeConnect() {
+        return scheduledTaskDao.getOrderInfoToDoc5minBeforeConnect();
     }
 
     @Override

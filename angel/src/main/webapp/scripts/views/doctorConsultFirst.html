@@ -181,9 +181,9 @@
                     </div>
                 </div>
             </div>
-            <iframe src="http://localhost:8080/keeper/scripts/views/customerss.html" frameborder="0"
-                    class="advisory-content" ng-show='showFlag.advisoryContent'>
-            </iframe>
+            <!--<iframe src="http://localhost:8080/keeper/scripts/views/customerss.html" frameborder="0"-->
+                    <!--class="advisory-content" ng-show='showFlag.advisoryContent'>-->
+            <!--</iframe>-->
             <textarea type="text" name="messageData" id="patientIdData" class="textarea" style="display:none;">{{currentUserConversation.patientId}}</textarea>
             <textarea type="text" name="messageData" id="doctorIdData" class="textarea" style="display:none;">{{doctorId}}</textarea>
             <textarea type="text" name="messageData" id="sourceData" class="textarea" style="display:none;">{{currentUserConversation.source}}</textarea>
@@ -209,8 +209,7 @@
                                     <span>{{item.senderName}}</span>
                                     <span>{{item.dateTime}}</span>
                                 </div>
-                                <div ng-if="item.type=='0'" class="message" ng-bind-html="item.content">
-                                </div>
+                                <div ng-if="item.type=='0'" class="message" ng-bind-html="item.content" />
                                 <div ng-if="item.type=='1'" class="message">
                                     <a target="_blank">
                                         <img width="100" height="100" ng-src="{{item.content}}">
@@ -279,10 +278,11 @@
                         <!--</p>-->
                     </div>
                 </div>
-                <div class="inputcontent"><textarea ng-model="info.consultMessage" placeholder="请在此处进行咨询" class="emotion"></textarea>
+                <div class="inputcontent">
+                    <textarea ng-model="info.consultMessage" id="consultMessage" placeholder="请在此处进行咨询" class="emotion"></textarea>
                 </div>
                 <div class="sendbtn">
-                    <div class="sub_btn" ng-click="sendConsultMessage()">发送(Ctrl+Enter)</div>
+                    <div class="sub_btn" ng-click="sendConsultMessage()">发送(Enter)</div>
                     <div ng-click="closeConsult()">
                         <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(9).png" alt=""/>
                         关闭</div>
@@ -420,7 +420,12 @@
                 <tr class="light light1" ng-repeat="item in waitJoinUserList">
                     <td><input type="checkbox" ng-checked="item.chooseFlag" ng-model="item.chooseFlag"></td>
                     <td>{{item.userName}}</td>
-                    <td>{{item.messageContent}}</td>
+                    <td>
+                        <a ng-if="item.type=='0'">{{item.messageContent}}</a>
+                        <a ng-if="item.type=='1'">图片</a>
+                        <a ng-if="item.type=='2'">声音</a>
+                        <a ng-if="item.type=='3'">视频</a>
+                    </td>
                     <td>{{item.messageNum}}</td>
                     <td>{{item.dateTime}}</td>
                     <td>{{item.fromCsUserName}}</td>

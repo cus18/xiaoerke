@@ -120,6 +120,13 @@ public class DoctorInfoServiceImpl implements DoctorInfoService {
         return doctorDao.findPageConsultaDoctorByDepartment(hospitalInfo, page);
     }
 
+    @Override
+    public String findOpenIdByDoctorId(String doctorId) {
+        HashMap<String,Object> map = doctorDao.findOpenIdByDoctorId(doctorId);
+        String openId = map==null?"": (String) map.get("openid");
+        return openId == null ? "" : openId;
+    }
+
     //获取系统内的推荐医生
     @Override
     public Page<HashMap<String, Object>> findPageDoctorByRecommend(HashMap<String, Object> recommendInfo, Page<HashMap<String, Object>> page) {

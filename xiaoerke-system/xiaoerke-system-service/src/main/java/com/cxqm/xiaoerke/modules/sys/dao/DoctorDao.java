@@ -142,4 +142,6 @@ public interface DoctorDao extends CrudDao<DoctorVo> {
     void updateDoctor(Map<String, Object> map);
     
     List<Map<String, Object>> getDoctorInfo(Map<String, Object> map);
+
+    HashMap<String,Object> findOpenIdByDoctorId(@Param(value="doctorId")String doctorId);
 }

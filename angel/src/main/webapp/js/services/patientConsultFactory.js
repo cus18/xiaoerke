@@ -1,5 +1,3 @@
-var user_h5 = ''
-
 define(['appPatientConsult'], function (app) {
     app
         .factory('GetSessionId',['$resource',function ($resource){
@@ -10,6 +8,6 @@ define(['appPatientConsult'], function (app) {
         }])
         //获取用户登陆状态
         .factory('GetUserLoginStatus', ['$resource', function ($resource) {
-            return $resource('info/loginStatus');
+            return $resource('auth/info/loginStatus');
         }])
 })

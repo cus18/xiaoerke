@@ -1,40 +1,37 @@
 package com.cxqm.xiaoerke.modules.order.service.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.*;
-
+import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
-import com.cxqm.xiaoerke.common.service.ServiceException;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
 import com.cxqm.xiaoerke.modules.healthRecords.entity.BabyIllnessInfoVo;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
 import com.cxqm.xiaoerke.modules.order.dao.*;
-import com.cxqm.xiaoerke.modules.order.dao.PhoneConsultDoctorRelationDao;
-import com.cxqm.xiaoerke.modules.order.dao.SysConsultPhoneServiceDao;
 import com.cxqm.xiaoerke.modules.order.entity.ConsulPhonetDoctorRelationVo;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneManuallyConnectVo;
+import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo;
 import com.cxqm.xiaoerke.modules.order.exception.CancelOrderException;
 import com.cxqm.xiaoerke.modules.order.exception.CreateOrderException;
+import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.entity.PatientVo;
 import com.cxqm.xiaoerke.modules.sys.service.DoctorInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
+import com.cxqm.xiaoerke.modules.sys.utils.DoctorMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.cxqm.xiaoerke.common.persistence.Page;
-import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
-import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by wangbaowei on 16/3/18.
@@ -178,13 +175,28 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         }
         //退钱
         if(sysOrderState>0){
+            String doctorName = (String) map.get("doctorName");
+            String doctorPhone = (String) map.get("doctorPhone");
+            String babyName = (String) map.get("babyName");
+            String date = (String) map.get("date");
+            String beginTime = (String) map.get("beginTime");
+            String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String) map.get("date"), "yyyy/MM/dd"));
+
             //发消息
             Map<String,Object> parameter = systemService.getWechatParameter();
             String token = (String)parameter.get("token");
-            String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String) map.get("date"), "yyyy/MM/dd"));
             String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(Integer) map.get("orderId")+",phone";
-            PatientMsgTemplate.consultPhoneCancel2Wechat((String) map.get("doctorName"),(String) map.get("date"), week, (String) map.get("beginTime"),(String) map.get("endTime"), (String) map.get("phone"),(String) map.get("orderNo"),(Float) map.get("price")+"",(String) map.get("openid"),token,url);
-            PatientMsgTemplate.consultPhoneRefund2Msg((String) map.get("doctorName"), (Float) map.get("price")+"", (String) map.get("phone"),(String) map.get("date"), week, (String) map.get("beginTime"),(String) map.get("orderNo"));
+            PatientMsgTemplate.consultPhoneCancel2Wechat(doctorName,date, week, beginTime,(String) map.get("endTime"), (String) map.get("phone"),(String) map.get("orderNo"),(Float) map.get("price")+"",(String) map.get("openid"),token,url);
+            PatientMsgTemplate.consultPhoneRefund2Msg(doctorName, (Float) map.get("price")+"", (String) map.get("phone"),(String) map.get("date"), week, (String) map.get("beginTime"),(String) map.get("orderNo"));
+
+            //医生 消息
+            DoctorMsgTemplate.cancelDoctorPhoneConsult2Sms(doctorName,babyName,doctorPhone,date,week,beginTime);
+            Map<String,Object> tokenMap = systemService.getDoctorWechatParameter();
+            String doctorToken = (String)tokenMap.get("token");
+            String openId = doctorInfoService.findOpenIdByDoctorId((String) map.get("doctorId"));
+            if(StringUtils.isNotNull(openId)) {
+                DoctorMsgTemplate.doctorPhoneConsultRemindFail2Wechat(babyName, date, doctorToken, "", openId);
+            }
         }
         if(sysOrderState== 0){
                 throw  new CancelOrderException();
@@ -391,5 +403,14 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
     @Override
     public ConsultPhoneRegisterServiceVo selectByPrimaryKey(Integer phoneConsultaServiceId){
        return  consultPhoneRegisterServiceDao.selectByPrimaryKey(phoneConsultaServiceId);
-    };
+    }
+
+    @Override
+    public int CancelAppointNoPay() {
+        consultPhoneRegisterServiceDao.cancelAppointNoPayRegiste();
+      return  consultPhoneRegisterServiceDao.cancelAppointNoPayOrder();
+
+    }
+
+    ;
 }

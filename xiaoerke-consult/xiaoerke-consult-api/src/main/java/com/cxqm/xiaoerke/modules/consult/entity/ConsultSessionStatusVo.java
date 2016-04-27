@@ -13,7 +13,7 @@ public class ConsultSessionStatusVo {
 
     private String userId;
 
-    private String createDate;
+    private Date createDate;
 
     private String status;
 
@@ -31,11 +31,11 @@ public class ConsultSessionStatusVo {
         this.csUserId = csUserId;
     }
 
-    public String getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(String createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 
