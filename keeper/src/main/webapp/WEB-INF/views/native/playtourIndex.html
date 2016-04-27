@@ -48,15 +48,15 @@
 <div class="tourinit">
     <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_font.png" width="204px" height="18px"/>
     <ul>
-        <li>
+        <li class="init_com" onclick="setEvaluate(0)">
             <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fbumanyi_weixuanzhong.png" width="37px" height="37px"/>
             <div class="ti_com">不满意</div>
         </li>
-        <li>
+        <li class="init_com_1" onclick="setEvaluate(1)">
             <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fmanyiweixuanzhong.png" width="37px" height="37px"/>
             <div class="ti_com">满意</div>
         </li>
-        <li>
+        <li class="init_com" onclick="setEvaluate(2)">
             <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Ffeichangmanyiweixuanzhong.png" width="37px" height="37px"/>
             <div class="ti_com">非常满意</div>
         </li>
@@ -89,9 +89,9 @@
 <div class="playtourmoney">
     <div class="ptmdoc" >
         <!--<img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fxinyi_png.png" width="144px" height="17px"/>-->
-        <span>1</span>
+        <span class="ptmdoc_com"></span>
         <span>给医生的一点心意</span>
-        <span>2</span>
+        <span class="ptmdoc_com"></span>
     </div>
     <div class="ptm">
         <img onclick="setMoney(0)" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png" width="43px" height="44px">
@@ -106,9 +106,9 @@
 </div>
 <div class="playtourno">
     <div class="ptntitle">
-        <span>1</span>
+        <span class="ptntitle_com"></span>
         <span>哪里不满意?</span>
-        <span>2</span>
+        <span class="ptntitle_com"></span>
     </div>
     <ul class="ptn_1">
         <li>
@@ -131,6 +131,6 @@
 <div class="playtourwenti" style="display:none">
     亲，支付出现问题哦~
 </div>
-<button onclick="updateCustomerInfo()" >提交评价</button>
+<button id="but" onclick="updateCustomerInfo()" >提交评价</button>
 </body>
 </html>

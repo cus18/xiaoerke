@@ -7,10 +7,20 @@ var moneyNum = 0;
 
 //点击选择是否满意
 var setEvaluate = function (index) {
+    $(".tourinit").hide();
+    $(".playtourpingjie").show();
+    $(".playtourmoney").show();
+    $(".playtourno").show();
+    $(".playtourjianyi").show();
+    $(".playtourpingjie").show();
+    $('#but').show();
     if(index==0){
         $("#getMoney").val("");
         starNum1=1;
         $('.playtourpj_1 img').attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fbumanyi_xuanzhong_01.png");
+        $('.center1 div').removeClass("c1");
+        $('.playtourpj_2 div').removeClass("c1");
+        $('.playtourpj_1 div').addClass("c1");
         $('.playtourmoney').hide();
         $('.playtourno').show();
         $('.center1 img').attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fmanyiweixuanzhong.png");
@@ -20,6 +30,9 @@ var setEvaluate = function (index) {
         starNum1=3;
         $('.playtourmoney').show();
         $('.playtourno').hide();
+        $('.center1 div').addClass("c1");
+        $('.playtourpj_2 div').removeClass("c1");
+        $('.playtourpj_1 div').removeClass("c1");
         $('.playtourpj_1 img').attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fbumanyi_weixuanzhong.png");
         $('.center1 img').attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fmanyixuanzhong_01.png");
         $('.playtourpj_3 img').attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Ffeichangmanyiweixuanzhong.png");
@@ -28,6 +41,9 @@ var setEvaluate = function (index) {
         starNum1=5;
         $('.playtourmoney').show();
         $('.playtourno').hide();
+        $('.center1 div').removeClass("c1");
+        $('.playtourpj_1 div').removeClass("c1");
+        $('.playtourpj_2 div').addClass("c1");
         $('.playtourpj_1 img').attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fbumanyi_weixuanzhong.png");
         $('.center1 img').attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fmanyiweixuanzhong.png");
         $('.playtourpj_3 img').attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Ffeichangmanyiyixuanzhogn01.png");
@@ -95,10 +111,17 @@ var sumEval = function () {
 }
 $(function(){
     getCustomerInfo();
-    setEvaluate(1);
     $("#moneyDiff").hide();
-    $(".tourinit").hide();
+    $(".tourinit").show();
+    $(".playtourpingjie").hide();
+    $(".playtourmoney").hide();
+    $(".playtourno").hide();
+    $(".playtourjianyi").hide();
+    $(".playtourpingjie").hide();
+    $(".playtourwenti").hide();
+    $('#but').hide();
 });
+
 
 var GetQueryString = function(name)
 {
@@ -221,8 +244,6 @@ function updateCustomerInfo(){
 //var chargePrice,patient_register_service_id,needPayMoney;
 //页面初始化执行,用户初始化页面参数信息以及微信的支付接口
 var doRefresh = function(){
-    $('.playtourmoney').show();
-    $('.playtourno').hide();
     var timestamp;//时间戳
     var nonceStr;//随机字符串
     var signature;//得到的签名

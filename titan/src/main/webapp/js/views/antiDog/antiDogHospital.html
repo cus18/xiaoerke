@@ -2,13 +2,13 @@
 <ion-view view-title="接种疫苗医院" ng-init="doRefresh()">
     <ion-content class="antiDogHospital" style="top:0;"  >
         <ion-scroll direction="y" has-bouncing="true">
-            <div class="hospital">
+            <div class="hospital" id="hospital">
                 <dl ng-repeat="item in districtList">
-                    <dt ng-click="openMore($index)">
-                        {{item.district}}
+                    <dt ng-click="openMore($index)" id="{{$index}}">
+                        {{districtList[$index].district}}
                         <img  width="13" height="7" src="{{openImg}}">
                     </dt>
-                    <dd  ng-repeat="prop in hospitalList">
+                    <dd  ng-repeat="prop in hospitalList" ng-if="selectItem==$parent.$index" >
                         <div>
                             <img class="my-img" width="12.5" height="12.5" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Fhospital_name.png">
                             &nbsp;{{prop.hospitalName}}
