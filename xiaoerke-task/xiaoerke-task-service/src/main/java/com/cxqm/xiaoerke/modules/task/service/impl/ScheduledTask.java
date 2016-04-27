@@ -1086,10 +1086,10 @@ public class ScheduledTask {
           accountService.updateAccount(0F, (Integer) map.get("id")+"", response, false, (String)map.get("userId"),"电话咨询超时取消退款");
             Map<String,Object> consultOrder = consultPhonePatientService.getPatientRegisterInfo((Integer) map.get("id"));
           String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) consultOrder.get("doctorId")+","+(Integer) consultOrder.get("orderId")+",phone";
-          PatientMsgTemplate.returnPayPhoneRefund2Msg((String) consultOrder.get("babyName"), (Float) consultOrder.get("price") + "", (String) consultOrder.get("userPhone"));
+          PatientMsgTemplate.returnPayPhoneRefund2Msg((String) consultOrder.get("babyName"), (Float) consultOrder.get("price") + "", (String) consultOrder.get("phone"));
           String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)consultOrder.get("date"),"yyyy/MM/dd"));
           String dateTime = (String) consultOrder.get("date")+" "+week+ " "+(String) consultOrder.get("beginTime");
-          PatientMsgTemplate.returnPayPhoneRefund2Wechat((String) consultOrder.get("babyName"),(String) consultOrder.get("doctorName"),dateTime, (String) consultOrder.get("userPhone"), (String) consultOrder.get("orderNo"), (Float) consultOrder.get("price") + "",(String) consultOrder.get("openid"),token,url);
+          PatientMsgTemplate.returnPayPhoneRefund2Wechat((String) consultOrder.get("babyName"),(String) consultOrder.get("doctorName"),dateTime, (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"), (Float) consultOrder.get("price") + "",(String) consultOrder.get("openid"),token,url);
         }
 //        查询是不是有return状态
 
