@@ -97,6 +97,7 @@ $(function(){
     getCustomerInfo();
     setEvaluate(1);
     $("#moneyDiff").hide();
+    $(".tourinit").hide();
 });
 
 var GetQueryString = function(name)
