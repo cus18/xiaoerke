@@ -1084,12 +1084,12 @@ public class ScheduledTask {
         List<HashMap<String, Object>> returnPayList = consultPhoneOrderService.getReturnPayConsultList();
         for(HashMap<String, Object> map:returnPayList){
           accountService.updateAccount(0F, (Integer) map.get("id")+"", response, false, (String)map.get("userId"),"电话咨询超时取消退款");
-            Map<String,Object> consultOrder = consultPhonePatientService.getPatientRegisterInfo((Integer) map.get("orderId"));
-          String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(Integer) map.get("orderId")+",phone";
+            Map<String,Object> consultOrder = consultPhonePatientService.getPatientRegisterInfo((Integer) map.get("id"));
+          String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) consultOrder.get("doctorId")+","+(Integer) consultOrder.get("orderId")+",phone";
           PatientMsgTemplate.returnPayPhoneRefund2Msg((String) consultOrder.get("babyName"), (Float) consultOrder.get("price") + "", (String) consultOrder.get("userPhone"));
-          String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)map.get("date"),"yyyy/MM/dd"));
-          String dateTime = (String) map.get("date")+" "+week+ " "+(String) map.get("beginTime");
-          PatientMsgTemplate.returnPayPhoneRefund2Wechat((String) consultOrder.get("babyName"),(String) consultOrder.get("doctorName"),dateTime, (String) consultOrder.get("userPhone"), (String) map.get("orderNo"), (Float) consultOrder.get("price") + "",(String) consultOrder.get("openid"),token,url);
+          String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)consultOrder.get("date"),"yyyy/MM/dd"));
+          String dateTime = (String) consultOrder.get("date")+" "+week+ " "+(String) consultOrder.get("beginTime");
+          PatientMsgTemplate.returnPayPhoneRefund2Wechat((String) consultOrder.get("babyName"),(String) consultOrder.get("doctorName"),dateTime, (String) consultOrder.get("userPhone"), (String) consultOrder.get("orderNo"), (Float) consultOrder.get("price") + "",(String) consultOrder.get("openid"),token,url);
         }
 //        查询是不是有return状态
 
