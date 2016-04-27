@@ -20,6 +20,7 @@ import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
 import com.cxqm.xiaoerke.modules.plan.service.PlanMessageService;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.service.CustomerService;
+import com.cxqm.xiaoerke.modules.sys.service.DoctorInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.MessageService;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
@@ -91,6 +92,9 @@ public class ScheduledTask {
 
     @Autowired
     private ConsultSessionService consultSessionService;
+
+    @Autowired
+    private DoctorInfoService doctorInfoService;
 
     //将所有任务放到一个定时器里，减少并发
     //@Scheduled(cron = "0 */1 * * * ?")
@@ -202,6 +206,12 @@ public class ScheduledTask {
             String status = "4";
             updateMonitorStatus(trackList, status);
         }
+
+        //电话咨询预约成功5min后发消息给医生
+        sendMsgToDoc5minAfterSuccess();
+
+        //电话咨询接通前5min发消息提醒医生
+        sendMsgToDoc5minBeforeConnect();
     }
 
     //每天晚上11：00更新sys_register_service中的status状态
@@ -1009,6 +1019,8 @@ public class ScheduledTask {
       List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",new Date());
       for(HashMap map:consultOrderList){
           String doctorPhone =  (String)map.get("doctorPhone");
+          String doctorName =  (String)map.get("doctorName");
+          String babyName =  (String)map.get("babyName");
           String userPhone =  (String)map.get("userPhone");
           Integer orderId = (Integer)map.get("id");
           List<ConsultPhoneRecordVo> list = consultPhoneService.getConsultRecordInfo(orderId + "", "CallAuth");
@@ -1048,6 +1060,17 @@ public class ScheduledTask {
                   String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(Integer) map.get("id")+",phone";
                   PatientMsgTemplate.unConnectPhone2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (Float) map.get("price") + "", (String) map.get("userPhone"), (String) map.get("orderNo"));
                   PatientMsgTemplate.unConnectPhone2Wechat((String) map.get("babyName"), (String) map.get("doctorName"), (Float) map.get("price") + "", url, (String) map.get("orderNo"), (String) map.get("openid"), token);
+
+              //未接通时 给医生发消息提醒
+              DoctorMsgTemplate.doctorPhoneConsultRemindFail2Sms(doctorName,babyName,doctorPhone);
+              SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("mm月dd日");
+              String nowTime = simpleDateFormat1.format(new Date());
+              Map tokenMap = systemService.getDoctorWechatParameter();
+              String doctorToken = (String)tokenMap.get("token");
+              HashMap<String,Object> searchMap = new HashMap<String, Object>();
+              searchMap.put("doctorId",(String) map.get("doctorId"));
+              List<HashMap<String, Object>> doctorList = doctorInfoService.findDoctorByDoctorId(searchMap);
+              DoctorMsgTemplate.doctorPhoneConsultRemindFail2Wechat(babyName,nowTime,doctorToken,"",(String)doctorList.get(0).get("openid"));
 //              }
           }
       }
@@ -1210,7 +1233,7 @@ public class ScheduledTask {
                     SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("mm月dd日");
                     String nowTime = simpleDateFormat1.format(new Date());
                     String openid = (String) orderMap.get("openid");
-                    String url = "http://localhost/doctor/phoneConsultDoctor#/phoneConsultFirst/"+date;
+                    String url = ConstantUtil.S1_WEB_URL + "/doctor/phoneConsultDoctor#/phoneConsultFirst/"+date;
                     DoctorMsgTemplate.doctorPhoneConsultRemindAtNight2Wechat(nowTime, String.valueOf(num), nameList, token,
                             url, openid);
                 }
@@ -1259,7 +1282,7 @@ public class ScheduledTask {
                     SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("mm月dd日");
                     String nowTime = simpleDateFormat1.format(new Date());
                     String openid = (String) orderMap.get("openid");
-                    String url = "http://localhost/doctor/phoneConsultDoctor#/phoneConsultFirst/"+date;
+                    String url = ConstantUtil.S1_WEB_URL + "/doctor/phoneConsultDoctor#/phoneConsultFirst/"+date;
                     DoctorMsgTemplate.doctorPhoneConsultRemindAtMoning2Wechat(nowTime, String.valueOf(num), nameList,
                             token,
                             url, openid);
@@ -1325,13 +1348,13 @@ public class ScheduledTask {
             for (HashMap<String, Object> map : doctorMsg) {
                 String doctorName = (String)map.get("doctorName");
                 String babyName = (String)map.get("babyName");
-                String doctorPhone = (String)map.get("doctorPhone");
+                String doctorPhone = (String)map.get("phone");
                 String visitDate =  DateUtils.DateToStr((Date) map.get("date"),"date");
                 String beginTime = DateUtils.DateToStr((Date) map.get("beginTime"),"time");
                 String week = DateUtils.getWeekOfDate((Date) map.get("date"));
                 if(!(map.get("hospitalContactPhone").equals(""))){
                     String content =  "【电话咨询预约成功】尊敬的"+doctorName+"医生，"+babyName+"小朋友家长预约了您" +
-                            ""+date+" ("+week+")"+beginTime+"的电话咨询。" +
+                            ""+visitDate+" ("+week+")"+beginTime+"的电话咨询。" +
                             "若您因特殊情况不能接听，请联系客服：400-623-7120。宝大夫祝您工作顺利！";
                     ChangzhuoMessageUtil.sendMsg((String) map.get("hospitalContactPhone"), content,
                             ChangzhuoMessageUtil.RECEIVER_TYPE_DOCTOR);
@@ -1342,27 +1365,48 @@ public class ScheduledTask {
                     //微信推送
                     Map tokenMap = systemService.getDoctorWechatParameter();
                     String token = (String)tokenMap.get("token");
+                    String sysPhoneConsultId = (String)map.get("sys_phoneConsult_service_id");
+                    String doctorId = (String)map.get("doctorId");
+                    String url=ConstantUtil.S1_WEB_URL + "/doctor/phoneConsultDoctor#/phoneConsultDetails/"+sysPhoneConsultId+","+doctorId;
                     DoctorMsgTemplate.doctorPhoneConsultRemindAt5minLater2Wechat(babyName, visitDate, week,
-                            beginTime,token,"",(String)map.get("openid"));
+                            beginTime,token,url,(String)map.get("openid"));
                 }
                 insertMonitor((Integer) map.get("patient_register_service_id") + "", "3", "7");
             }
         }
     }
 
-    //取消咨询
-    public void sendMsgToDocCancelSuccess(){
-
-    }
-
     //接听前5min
     public void sendMsgToDoc5minBeforeConnect(){
-
+        System.out.println(new Date() + " package.controller scheduled test --> sendMsgToDoc_PhoneConsult");
+        List<HashMap<String, Object>> doctorMsg = scheduleTaskService.getOrderInfoToDoc5minBeforeConnect();
+        for (HashMap<String, Object> map : doctorMsg) {
+            String doctorName = (String)map.get("doctorName");
+            String babyName = (String)map.get("babyName");
+            String doctorPhone = (String)map.get("phone");
+            String userPhone = (String)map.get("userPhone");
+            String sysPhoneConsultId = (String)map.get("sys_phoneConsult_service_id");
+            String doctorId = (String)map.get("doctorId");
+            String url = ConstantUtil.S1_WEB_URL + "/doctor/phoneConsultDoctor#/phoneConsultDetails/"+sysPhoneConsultId+","+doctorId;
+            if(!(map.get("hospitalContactPhone").equals(""))){
+                String content = "【接听提醒】尊敬的"+doctorName+"医生，"+babyName+"小朋友家长将在5min以后接通电话咨询，到时您会" +
+                        "接到号码为"+userPhone+"的来电，请保持电话畅通。在这之前，您可以打开链接，" +
+                        "查看患者详细的病情资料"+url;
+                ChangzhuoMessageUtil.sendMsg((String) map.get("hospitalContactPhone"), content,
+                        ChangzhuoMessageUtil.RECEIVER_TYPE_DOCTOR);
+            }
+            else {
+                //短信
+                DoctorMsgTemplate.doctorPhoneConsultRemindAt5minBefore2Sms(doctorName, babyName, doctorPhone, userPhone, url);
+                //微信推送
+                Map tokenMap = systemService.getDoctorWechatParameter();
+                String token = (String)tokenMap.get("token");
+                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("mm月dd日");
+                String nowTime = simpleDateFormat1.format(new Date());
+                DoctorMsgTemplate.doctorPhoneConsultRemindAt5minBefore2Wechat(babyName,nowTime,userPhone,token,url,(String)map.get("openid"));
+            }
+        }
     }
 
-    //未接通
-    public void sendMsgToDocFailConnect(){
-
-    }
 
 }

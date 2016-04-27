@@ -4,7 +4,6 @@ import com.cxqm.xiaoerke.common.bean.CustomBean;
 import com.cxqm.xiaoerke.common.bean.WechatRecord;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -64,4 +63,7 @@ public interface ScheduleTaskService {
     List<HashMap<String,Object>> getDoctorInfoByDate(String date);
 
     List<HashMap<String,Object>> getOrderInfoByDate(String tomorrow);
+
+    List<HashMap<String,Object>> getOrderInfoToDoc5minBeforeConnect();
+
 }

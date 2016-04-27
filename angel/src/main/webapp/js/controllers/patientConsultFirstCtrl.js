@@ -97,13 +97,32 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     "sessionId":$scope.sessionId,
                     "avatar":"http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/jialisan01.png",
                 }
+                var patientValMessage;
+                if(type = 0){
+                    patientValMessage = {"type": 0,
+                        "content": $scope.info.consultInputValue,
+                        "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                        "senderId": angular.copy($scope.doctorId),
+                        "senderName": angular.copy($scope.doctorName),
+                        "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                    };
+                }else if(type = 1){
+                    patientValMessage = {"type": 0,
+                        "content": $scope.info.consultInputValue,
+                        "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                        "senderId": angular.copy($scope.doctorId),
+                        "senderName": angular.copy($scope.doctorName),
+                        "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                    };
+                }
+
 
                 if (!window.WebSocket) {
                     return;
                 }
                 if ($scope.socketServer.readyState == WebSocket.OPEN) {
-                    $scope.consultContent.push(message);
-                    $scope.socketServer.send(JSON.stringify(message));
+                    $scope.consultContent.push(patientValMessage);
+                    $scope.socketServer.send(JSON.stringify(patientValMessage));
                     $scope.info.consultInputValue = "";
                 } else {
                     alert("连接没有开启.");
@@ -127,6 +146,8 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                         console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
                     }).success(function(data, status, headers, config){
                         console.log(data);
+                        $scope.imageSrc = data.showVal;
+
                     });
                 }
             };

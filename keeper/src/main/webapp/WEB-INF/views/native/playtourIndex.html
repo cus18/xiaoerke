@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="/keeper/styles/playtour/playtourIndex.less" type="text/css" />
 </head>
 <body onload="doRefresh()">
-<div class="playtourdoctor">
+<!--<div class="playtourdoctor">
     <div class="playtourdoctorimg">
         <img id="headImage" src="images/a1.png" width="62.5px" height="62.5px">
     </div>
@@ -28,6 +28,39 @@
             <span class="haoping">好评率<span id="starInfo">100%</span></span>
         </div>
     </div>
+</div>-->
+<div class="tourdoctor">
+    <div class="td_1">
+        <div>
+            <img src="images/a1.png" width="54px" height="54px"/>
+        </div>
+        <div>梁平</div>
+    </div>
+    <div class="td_2 td_com">
+        <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_liwu.png" width="30px" height="29px"/>
+        <div>收到心意：32</div>
+    </div>
+    <div class="td_3 td_com">
+        <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_haoping03.png" width="27px" height="30px"/>
+        <div>好评率：100%</div>
+    </div>
+</div>
+<div class="tourinit">
+    <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_font.png" width="204px" height="18px"/>
+    <ul>
+        <li>
+            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fbumanyi_weixuanzhong.png" width="37px" height="37px"/>
+            <div class="ti_com">不满意</div>
+        </li>
+        <li>
+            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fmanyiweixuanzhong.png" width="37px" height="37px"/>
+            <div class="ti_com">满意</div>
+        </li>
+        <li>
+            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Ffeichangmanyiweixuanzhong.png" width="37px" height="37px"/>
+            <div class="ti_com">非常满意</div>
+        </li>
+    </ul>
 </div>
 <div class="playtourpingjie">
     <div class="playtourpj_1" onclick="setEvaluate(0)">
@@ -37,14 +70,14 @@
         </div>
     </div>
     <div class="playtourpj_2" onclick="setEvaluate(1)">
-        <div class="line left1"></div>
+        <!--<div class="line left1"></div>-->
         <div class="center1">
             <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fmanyiweixuanzhong.png" width="37px" height="37px"/>
             <div class="manyi">
                 满意
             </div>
         </div>
-        <div class="line right1"></div>
+        <!--<div class="line right1"></div>-->
     </div>
     <div class="playtourpj_3" onclick="setEvaluate(2)">
         <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Ffeichangmanyiweixuanzhong.png" width="37px" height="37px"/>
@@ -55,7 +88,10 @@
 </div>
 <div class="playtourmoney">
     <div class="ptmdoc" >
-        <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fxinyi_png.png" width="144px" height="17px"/>
+        <!--<img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fxinyi_png.png" width="144px" height="17px"/>-->
+        <span>1</span>
+        <span>给医生的一点心意</span>
+        <span>2</span>
     </div>
     <div class="ptm">
         <img onclick="setMoney(0)" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png" width="43px" height="44px">
@@ -69,16 +105,20 @@
     </div>
 </div>
 <div class="playtourno">
-    <div class="ptntitle">哪里不满意?</div>
+    <div class="ptntitle">
+        <span>1</span>
+        <span>哪里不满意?</span>
+        <span>2</span>
+    </div>
     <ul class="ptn_1">
         <li>
-            <span class="com ptn_1_1" onclick="setNo(0)">服务态度</span>
+            <span class="com ptn_1_1" onclick="setNo(0)">服务态度不好</span>
         </li>
         <li>
-            <span class="com ptn_1_1" onclick="setNo(1)">专业水平</span>
+            <span class="com ptn_1_1" onclick="setNo(1)">专业水平不高</span>
         </li>
         <li>
-            <span class="com ptn_1_1" onclick="setNo(2)">响应速度</span>
+            <span class="com ptn_1_1" onclick="setNo(2)">响应速度太慢</span>
         </li>
         <li>
             <span class="com ptn_1_1" onclick="setNo(3)">其它</span>
@@ -86,7 +126,7 @@
     </ul>
 </div>
 <div class="playtourjianyi">
-    <textarea placeholder="大胆说出对医生的建议" maxlength="100" id="content"></textarea>
+    <textarea placeholder="更多留言..." maxlength="100" id="content"></textarea>
 </div>
 <div class="playtourwenti" style="display:none">
     亲，支付出现问题哦~

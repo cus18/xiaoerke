@@ -48,4 +48,7 @@ define(['appInsurance'], function (app) {
          .factory('getInsuranceRegisterServiceListByUserid',['$resource',function ($resource){
             return $resource(antiDog + 'getInsuranceRegisterServiceListByUserid');
         }])
+        .factory('getInsuranceHospitalListByInfo',['$resource',function ($resource){
+            return $resource(antiDog + 'getInsuranceHospitalListByInfo');
+        }])
 })

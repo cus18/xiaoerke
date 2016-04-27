@@ -346,6 +346,11 @@ public class ScheduleTaskServiceImpl implements ScheduleTaskService {
     }
 
     @Override
+    public List<HashMap<String, Object>> getOrderInfoToDoc5minBeforeConnect() {
+        return scheduledTaskDao.getOrderInfoToDoc5minBeforeConnect();
+    }
+
+    @Override
     public List<HashMap<String, Object>> getDoctorInfoByDate(String date) {
         return scheduledTaskDao.getDoctorInfoByDate(date);
     }
