@@ -71,4 +71,5 @@ public interface ConsultPhonePatientService {
     ConsultPhoneRegisterServiceVo selectByPrimaryKey(Integer phoneConsultaServiceId);
 
     int CancelAppointNoPay();
+
 }
