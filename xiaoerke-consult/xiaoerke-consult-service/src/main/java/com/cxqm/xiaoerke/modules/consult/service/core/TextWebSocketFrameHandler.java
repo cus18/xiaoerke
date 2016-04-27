@@ -85,6 +85,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 				csChannel.writeAndFlush(msg.retain());
 				//保存聊天记录
 				consultRecordService.buildRecordMongoVo(userId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
+
 			} else {
 				if(consultSession.getSource().equals("h5cxqm")){
 					Channel userChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(userId);
