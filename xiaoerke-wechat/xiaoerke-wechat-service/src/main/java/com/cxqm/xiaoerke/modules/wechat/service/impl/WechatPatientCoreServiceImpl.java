@@ -76,7 +76,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 	@Autowired
 	private PatientRegisterPraiseDao patientRegisterPraiseDao;
 
-	private static ExecutorService threadExecutor = Executors.newCachedThreadPool();
+	private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
 	/**
 	 * 处理微信发来的请求

@@ -114,8 +114,7 @@ public class ConsultUserController extends BaseController {
      */
     @RequestMapping(value = "/getUserList", method = {RequestMethod.POST, RequestMethod.GET})
     public
-    @ResponseBody
-    Map<String, Object> getUserList(@RequestBody Map<String, Object> params) {
+    @ResponseBody Map<String, Object> getUserList(@RequestBody Map<String, Object> params) {
         Map<String,Object> response = new HashMap<String, Object>();
         Integer pageNo = (Integer) params.get("pageNo");
         Integer pageSize = (Integer) params.get("pageSize");
@@ -148,7 +147,8 @@ public class ConsultUserController extends BaseController {
                 vo.setUserId(consultSessionStatusVo.getUserId());
                 vo.setCsUserId(consultSessionStatusVo.getCsUserId());
                 vo.setCsUserName(consultSessionStatusVo.getCsUserName());
-                vo.setCreateDate(DateUtils.DateToStr(consultSessionStatusVo.getLastMessageTime(),"datetime"));
+                //vo.setCreateDate(DateUtils.DateToStr(consultSessionStatusVo.getLastMessageTime(), "datetime"));
+                vo.setLastMessageTime(consultSessionStatusVo.getLastMessageTime());
                 //根据userId查询CsUserId
                 ConsultSession consultSession =new ConsultSession();
                 consultSession.setUserId(consultSessionStatusVo.getUserId());
