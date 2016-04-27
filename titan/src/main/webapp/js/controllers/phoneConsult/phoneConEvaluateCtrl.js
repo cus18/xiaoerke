@@ -1,13 +1,9 @@
 ﻿angular.module('controllers', ['ionic']).controller('phoneConEvaluateCtrl',[
-    '$scope','$state','$location','$stateParams','$filter','OrderPraiseOperation','FindDoctorCaseEvaluation','GetUserLoginStatus',
-    function ($scope,$state,$location,$stateParams,$filter,OrderPraiseOperation,FindDoctorCaseEvaluation,GetUserLoginStatus) {
+    '$scope','$state','$location','$stateParams','$filter','OrderPraiseOperation','FindDoctorCaseEvaluation','GetUserLoginStatus','PhoneConsultRegisterInfo',
+    function ($scope,$state,$location,$stateParams,$filter,OrderPraiseOperation,FindDoctorCaseEvaluation,GetUserLoginStatus,PhoneConsultRegisterInfo) {
 
         $scope.title="评价医生";
         $scope.title0 = "宝大夫（400-623-7120）";
-        $scope.date =  $stateParams.date;
-        $scope.beginTime =  $stateParams.beginTime;
-        $scope.endTime =  $stateParams.endTime;
-        $scope.treatTime =  $stateParams.beginTime;
         $scope.submit = "提交"
         $scope.lock = "1"
         $scope.info = {};
@@ -155,6 +151,15 @@
                     FindDoctorCaseEvaluation.save({"doctorId":$stateParams.doctorId},function(data){
                        $scope.illnessList = data.doctorCaseList;
                     });
+                    PhoneConsultRegisterInfo.get({phoneConsultaServiceId:$stateParams.consultphone_register_service_id},function(data){
+                        $scope.pageLoading = false;
+                        $scope.orderDetail = data;
+                        $scope.date =  data.date;
+                        $scope.beginTime =  data.beginTime;
+                        $scope.endTime =  data.endTime;
+                        $scope.treatTime =  data.beginTime;
+                    });
+
                 }
             });
         });

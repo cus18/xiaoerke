@@ -159,14 +159,14 @@
 	</servlet-mapping>
 	
 	<!-- FineReport -->
-	<servlet>
-		<servlet-name>ReportServer</servlet-name>
-		<servlet-class>com.fr.web.ReportServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ReportServer</servlet-name>
-		<url-pattern>/ReportServer</url-pattern>
-	</servlet-mapping>
+	<!--<servlet>-->
+		<!--<servlet-name>ReportServer</servlet-name>-->
+		<!--<servlet-class>com.fr.web.ReportServlet</servlet-class>-->
+	<!--</servlet>-->
+	<!--<servlet-mapping>-->
+		<!--<servlet-name>ReportServer</servlet-name>-->
+		<!--<url-pattern>/ReportServer</url-pattern>-->
+	<!--</servlet-mapping>-->
 
 
 	<filter>
