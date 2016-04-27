@@ -1,5 +1,3 @@
-var user_h5 = ''
-
 define(['appPatientConsult'], function (app) {
     app
         .factory('GetSessionId',['$resource',function ($resource){
