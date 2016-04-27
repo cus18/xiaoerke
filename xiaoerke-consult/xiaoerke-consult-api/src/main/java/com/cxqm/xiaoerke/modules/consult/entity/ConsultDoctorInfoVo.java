@@ -1,0 +1,140 @@
+package com.cxqm.xiaoerke.modules.consult.entity;
+
+import java.util.Date;
+
+/**
+ * 咨询医生信息
+ * @author sunxiao
+ * 2016-04-26
+ */
+public class ConsultDoctorInfoVo {
+    private Integer id;
+
+    private String userId;
+
+    private String gender;
+
+    private String title;
+
+    private String hospital;
+
+    private String department;
+
+    private String skill;
+
+    private String description;
+
+    private String grabSession;
+
+    private String sendMessage;
+
+    private String receiveDifferentialNotification;
+
+    private Date createDate;
+
+    private Date updateDate;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getHospital() {
+        return hospital;
+    }
+
+    public void setHospital(String hospital) {
+        this.hospital = hospital;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getSkill() {
+        return skill;
+    }
+
+    public void setSkill(String skill) {
+        this.skill = skill;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getGrabSession() {
+        return grabSession;
+    }
+
+    public void setGrabSession(String grabSession) {
+        this.grabSession = grabSession;
+    }
+
+    public String getSendMessage() {
+        return sendMessage;
+    }
+
+    public void setSendMessage(String sendMessage) {
+        this.sendMessage = sendMessage;
+    }
+
+    public String getReceiveDifferentialNotification() {
+        return receiveDifferentialNotification;
+    }
+
+    public void setReceiveDifferentialNotification(String receiveDifferentialNotification) {
+        this.receiveDifferentialNotification = receiveDifferentialNotification;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+}
