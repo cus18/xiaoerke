@@ -128,7 +128,7 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		WriteResult writeResult = null;
 		ConsultSessionStatusVo  StatusVo = mongoTemplate.findOne(query, ConsultSessionStatusVo.class, "consultSessionStatusVo");
 		if(StatusVo != null){
-			writeResult = mongoTemplate.updateMulti(query,new Update().set("lastMessageTime", DateUtils.formatDateTime(new Date())), ConsultSessionStatusVo.class);
+			writeResult = mongoTemplate.updateMulti(query,new Update().set("lastMessageTime", new Date()), ConsultSessionStatusVo.class);
 		}else {
 			mongoTemplate.insert(consultSessionStatusVo, "consultSessionStatusVo");
 		}
