@@ -1015,7 +1015,7 @@ public class ScheduledTask {
             }
         }
 
-
+//建立通讯
       List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1",new Date());
       for(HashMap map:consultOrderList){
           String doctorPhone =  (String)map.get("doctorPhone");
@@ -1090,6 +1090,8 @@ public class ScheduledTask {
         }
 //        查询是不是有return状态
 
+        //将半小时钱的未支付的订单释放
+        consultPhonePatientService.CancelAppointNoPay();
 
     }
 
