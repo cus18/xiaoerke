@@ -234,7 +234,15 @@ a{
   border:none;
   font-size:18px;
   font-weight:500;
-  border-radius: 0;
+  border-radius: 0!important;
+}
+.bottom-btn.button:after {
+  position: absolute;
+  top: 0;
+  right: 0;
+   bottom: 0;
+  left:0;
+  content: ' ';
 }
 .button.disabled, .button[disabled] {
   opacity: 1!important;
