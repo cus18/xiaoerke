@@ -51,7 +51,7 @@ var doRefresh = function(){
         error : function() {
         }
     });
-    var param = '{routePath:"/wxPay/patientPay.do?serviceType=phoneConsultAAAAAApatientPay.do?phoneConDoctorDetail='
+    var param = '{routePath:"/wxPay/patientPay.do?serviceType=phoneConsultAAAAAAphoneConDoctorDetail='
                 +GetQueryString("phoneConDoctorDetail")+"AAAAAAdoctorId="+GetQueryString("doctorId")+'"}';
     $.ajax({
         type: "POST",
@@ -83,6 +83,7 @@ var doRefresh = function(){
                         $('#price').html(data.price);
                         $('#payPrice').html(data.price);
                         $("#photo").attr("src", "http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/" + data.doctorId + "?ver==1.0.2");
+                        $('#phoneConDoctorDetail').html(GetQueryString("phoneConDoctorDetail"));
                     },
                     error: function () {
                     }
