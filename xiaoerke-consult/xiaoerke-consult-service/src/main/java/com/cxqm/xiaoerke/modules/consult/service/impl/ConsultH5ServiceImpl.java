@@ -2,11 +2,15 @@ package com.cxqm.xiaoerke.modules.consult.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
+import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.OSSObjectTool;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultH5Service;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
+import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
+import com.cxqm.xiaoerke.modules.sys.entity.DoctorVo;
+import com.cxqm.xiaoerke.modules.sys.service.DoctorInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +35,8 @@ public class ConsultH5ServiceImpl implements ConsultH5Service {
     @Autowired
     ConsultRecordService consultRecordService;
 
+    @Autowired
+    DoctorInfoService doctorInfoService;
     @Override
     public  HashMap<String, Object>  uploadH5MediaFile(
             @RequestParam("file") MultipartFile file,
@@ -49,9 +55,17 @@ public class ConsultH5ServiceImpl implements ConsultH5Service {
                     InputStream inputStream = file.getInputStream();
                     String key = null ;
                     String aliUrl = null ;
+                    String csName = null;
                     if(fileType.equalsIgnoreCase("image") ||fileType.equalsIgnoreCase("1")){
-                         key = OSSObjectTool.uploadFileInputStream(fileName, file.getSize(), inputStream, OSSObjectTool.BUCKET_CONSULT_PIC);
-                         aliUrl = "http://"+OSSObjectTool.BUCKET_CONSULT_PIC+".oss-cn-beijing.aliyuncs.com/"+fileName;
+                        csName = doctorInfoService.getDoctorNameByDoctorId(senderId);
+                        if(StringUtils.isNotNull(csName)){
+                            key = OSSObjectTool.uploadFileInputStream(fileName, file.getSize(), inputStream, OSSObjectTool.BUCKET_DOCTOR_PIC);
+                            aliUrl = "http://"+OSSObjectTool.BUCKET_DOCTOR_PIC+".oss-cn-beijing.aliyuncs.com/"+fileName;
+                        }else{
+                            key = OSSObjectTool.uploadFileInputStream(fileName, file.getSize(), inputStream, OSSObjectTool.BUCKET_CONSULT_PIC);
+                            aliUrl = "http://"+OSSObjectTool.BUCKET_CONSULT_PIC+".oss-cn-beijing.aliyuncs.com/"+fileName;
+                        }
+
                     }else if(fileType.equalsIgnoreCase("voice") ||fileType.equalsIgnoreCase("2")){
                          key = OSSObjectTool.uploadFileInputStream(fileName, file.getSize(), inputStream, OSSObjectTool.BUCKET_CONSULT_PIC);
                          aliUrl = "http://"+OSSObjectTool.BUCKET_CONSULT_PIC+".oss-cn-beijing.aliyuncs.com/"+fileName;
@@ -72,11 +86,11 @@ public class ConsultH5ServiceImpl implements ConsultH5Service {
                         response.put("senderId",senderId);
                         response.put("status","failure");
                     }
-
+                    /*
                     ConsultRecordMongoVo consultRecordMongoVo = new ConsultRecordMongoVo();
                     consultRecordMongoVo.setSessionId(senderId);
                     List<ConsultRecordMongoVo> consultRecordMongoVos = consultRecordService.findUserConsultInfoBySessionId(consultRecordMongoVo);
-                    response.put("status","senderId is null !!!");
+                //  response.put("status","senderId is null !!!");
                     if(consultRecordMongoVos!=null && consultRecordMongoVos.size()>0){
                         consultRecordMongoVo = consultRecordMongoVos.get(0);
                         consultRecordMongoVo.setType(fileType);
@@ -85,6 +99,7 @@ public class ConsultH5ServiceImpl implements ConsultH5Service {
                         consultRecordService.saveConsultRecord(consultRecordMongoVo);
                         response.put("status","success");
                     }
+                  */
                 } catch (IOException e) {
                     e.printStackTrace();
                     response.put("status","failure");
