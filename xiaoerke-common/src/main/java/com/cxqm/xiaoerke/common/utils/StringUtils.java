@@ -482,7 +482,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     /**
      * 删除目录下所有文件 deliang
      */
-    private static void deleteFile(File dir) {
+    public static void deleteFile(File dir) {
         if (dir.isDirectory()) {
             String[] children = dir.list();
             for (int i=0; i<children.length; i++) {
