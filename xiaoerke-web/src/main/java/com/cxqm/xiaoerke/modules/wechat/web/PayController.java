@@ -123,6 +123,7 @@ public class PayController {
             model.addAttribute("intervalFlag", "1");
             return "antiDogPay";
         }else if(serviceType.equals("phoneConsult")){
+            model.addAttribute("ceshi", "");
             model.addAttribute("phoneConDoctorDetail", phoneConDoctorDetail);
             model.addAttribute("doctorId", doctorId);
             return "phoneConsultPay";
