@@ -145,7 +145,8 @@ var doRefresh = function(){
             }
         }
     });
-    $('#phoneConDoctorDetail').val(GetQueryString("phoneConDoctorDetail"));
+    $('#phoneConDoctorDetail').html(GetQueryString("phoneConDoctorDetail"));
+
 }
 
 //  日期插件
