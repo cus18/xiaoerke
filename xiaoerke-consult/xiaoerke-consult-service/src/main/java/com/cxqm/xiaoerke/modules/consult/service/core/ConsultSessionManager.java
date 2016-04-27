@@ -181,7 +181,33 @@ public class ConsultSessionManager {
 				//TODO send msg to user that no distributor is available
 				//TextWebSocketFrame msg = new TextWebSocketFrame("no distributor");
 				//channel.writeAndFlush(msg);
-				return;
+				//所有的接诊员不在线，随机分配一个在线医生
+				Iterator<Entry<String, Channel>> csUserChannel = csUserChannelMapping.entrySet().iterator();
+				if(csUserChannel !=null ){
+					List<HashMap<String,Object>> doctorOnLineList = new ArrayList();
+					while (csUserChannel.hasNext()) {
+						HashMap<String,Object> doctorOnLineMap = new HashMap<String,Object>();
+						Map.Entry<String, Channel> entry = csUserChannel.next();
+						doctorOnLineMap.put("doctorId", entry.getKey());
+						doctorOnLineMap.put("Channel", entry.getValue());
+						doctorOnLineList.add(doctorOnLineMap);
+					}
+					Random rand = new Random();
+					if(doctorOnLineList!= null && doctorOnLineList.size()>0){
+						int indexCS = rand.nextInt(doctorOnLineList.size());
+						consultSession.setCsUserId((String) doctorOnLineList.get(indexCS).get("doctorId"));
+						distributorChannel = (Channel) doctorOnLineList.get(indexCS).get("Channel");
+						if(distributorChannel.isActive()){
+							//csChannel如果活着的话，证明，此医生处于登陆状态
+							User csUser = systemService.getUserById((String) doctorOnLineList.get(indexCS).get("doctorId"));
+							consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
+						}
+					}
+				}else{
+					//TextWebSocketFrame msg = new TextWebSocketFrame("no distributor");
+					//channel.writeAndFlush(msg);
+					return;
+				}
 			}
 			
 			consultSessionService.saveConsultInfo(consultSession);
@@ -199,6 +225,12 @@ public class ConsultSessionManager {
 			distributorChannel.writeAndFlush(frame.retain());
 
 			//sender，告诉会有哪个医生或者接诊员提供服务
+			JSONObject csobj = new JSONObject();
+			csobj.put("type",5);
+			csobj.put("notifyType","0003");
+			csobj.put("doctorName",consultSession.getCsUserName());
+			TextWebSocketFrame csframe = new TextWebSocketFrame(csobj.toJSONString());
+			channel.writeAndFlush(csframe.retain());
 		}
 		
 		userChannelMapping.put(userId, channel);
