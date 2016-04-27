@@ -1068,9 +1068,10 @@ public class ScheduledTask {
               Map tokenMap = systemService.getDoctorWechatParameter();
               String doctorToken = (String)tokenMap.get("token");
               HashMap<String,Object> searchMap = new HashMap<String, Object>();
-              searchMap.put("doctorId",(String) map.get("doctorId"));
-              List<HashMap<String, Object>> doctorList = doctorInfoService.findDoctorByDoctorId(searchMap);
-              DoctorMsgTemplate.doctorPhoneConsultRemindFail2Wechat(babyName,nowTime,doctorToken,"",(String)doctorList.get(0).get("openid"));
+              String openId = doctorInfoService.findOpenIdByDoctorId((String) map.get("doctorId"));
+              if(StringUtils.isNotNull(openId)) {
+                  DoctorMsgTemplate.doctorPhoneConsultRemindFail2Wechat(babyName, nowTime, doctorToken, "", openId);
+              }
 //              }
           }
       }

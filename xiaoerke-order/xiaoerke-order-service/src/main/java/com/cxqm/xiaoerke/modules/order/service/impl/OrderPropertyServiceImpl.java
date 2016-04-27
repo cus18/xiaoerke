@@ -40,7 +40,7 @@ public class OrderPropertyServiceImpl implements OrderPropertyService {
     @Autowired
     OrderPropertyDao orderPropertyDao;
 
-    private static ExecutorService threadExecutor = Executors.newCachedThreadPool();
+    private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
 
     @Override

@@ -239,7 +239,6 @@ angular.module('controllers', ['luegg.directives'])
                         }else if($scope.userType=="consultDoctor"){
                             $scope.socketServer1 = new ReconnectingWebSocket("ws://101.201.154.201:2048/ws&" +
                                 "cs&" + $scope.doctorId);//cs,user,distributor
-
                         }
 
                         $scope.socketServer1.onmessage = function (event) {
@@ -255,11 +254,10 @@ angular.module('controllers', ['luegg.directives'])
                         };
 
                         $scope.socketServer1.onopen = function (event) {
-
                         };
 
                         $scope.socketServer1.onclose = function (event) {
-
+                            console.log("close",event.data);
                         };
                     } else {
                         alert("你的浏览器不支持！");
@@ -367,6 +365,7 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.getEmotion = function (){
                     $('#face').SinaEmotion($('.emotion'));
                 }
+
                 //图片
                 $scope.uploadFiles = function($files,fileType) {
                     var dataValue = {
@@ -386,6 +385,13 @@ angular.module('controllers', ['luegg.directives'])
                         }).success(function(data, status, headers, config){
                             console.log(data);
                         });
+                if (window.WebSocket) {
+                    if($scope.userType="distributor"){
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://192.168.191.2:2048/ws&" +
+                            "distributor&" + $scope.doctorId);//cs,user,distributor
+                    }else if($scope.userType="consultDoctor"){
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://192.168.191.2:2048/ws&" +
+                            "cs&" + $scope.doctorId);//cs,user,distributor
                     }
                 };
 
@@ -396,7 +402,6 @@ angular.module('controllers', ['luegg.directives'])
                         userId:$scope.currentUserConversation.patientId,
                         dateTime:$scope.currentUserConversation.consultValue[0].dateTime,
                         pageSize:100},function(data){
-                        console.log(data);
                         if(data.consultDataList!=""){
                             $.each(data.consultDataList,function(index,value){
                                 filterMediaData(value);
