@@ -66,7 +66,7 @@ public class MemberServiceImpl implements MemberService {
     @Autowired
     AccountService accountService;
 
-    private static ExecutorService threadExecutor = Executors.newCachedThreadPool();
+    private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
     /**
      * 生成会员（来源：收费）
