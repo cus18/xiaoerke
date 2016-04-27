@@ -485,6 +485,15 @@
         </if>
     </select>
 
+    <select id="findOpenIdByDoctorId" parameterType="java.lang.String" resultType="java.util.HashMap">
+        select ur.openid
+        from sys_doctor dr, sys_user ur
+        WHERE
+        dr.sys_user_id = ur.id
+        <if test="doctorId != null">
+            and dr.id = #{doctorId}
+        </if>
+    </select>
 
     <select id="getDoctorHospitalInfo" parameterType="java.lang.String" resultType="java.util.HashMap">
         select sdl.sys_hospital_id hospitalId,sdl.hospitalName,sdl.id locationId,
