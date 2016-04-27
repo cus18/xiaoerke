@@ -209,8 +209,7 @@
                                     <span>{{item.senderName}}</span>
                                     <span>{{item.dateTime}}</span>
                                 </div>
-                                <div ng-if="item.type=='0'" class="message" ng-bind-html="item.content">
-                                </div>
+                                <div ng-if="item.type=='0'" class="message" ng-bind-html="item.content" />
                                 <div ng-if="item.type=='1'" class="message">
                                     <a target="_blank">
                                         <img width="100" height="100" ng-src="{{item.content}}">
@@ -279,7 +278,8 @@
                         <!--</p>-->
                     </div>
                 </div>
-                <div class="inputcontent"><textarea ng-model="info.consultMessage" placeholder="请在此处进行咨询" class="emotion"></textarea>
+                <div class="inputcontent">
+                    <textarea ng-model="info.consultMessage" id="consultMessage" placeholder="请在此处进行咨询" class="emotion"></textarea>
                 </div>
                 <div class="sendbtn">
                     <div class="sub_btn" ng-click="sendConsultMessage()">发送(Enter)</div>
