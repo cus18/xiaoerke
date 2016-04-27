@@ -7,7 +7,13 @@
     <div class="consultDisplay">
         <div class="consulChatList">
             <div class="chatBox" ng-repeat="item in consultContent">
-                <div class="patientConsultContent" ng-if="item.senderId==patientId&&item.type!='4'">
+
+                <div ng-if="item.type=='1'" class="message">
+                    <a target="_blank">
+                        <img width="100" height="100" ng-src="{{item.content}}">
+                    </a>
+                </div>
+                <!--<div class="patientConsultContent" ng-if="item.senderId==patientId&&item.type!='4'">
                     <div class="patientHeaderImg">
                         <img ng-src="{{item.avatar}}">
                     </div>
@@ -30,7 +36,7 @@
                 </div>
                 <div ng-if="item.type=='4'">
                     亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^
-                </div>
+                </div>-->
             </div>
         </div>
         <!--<div ng-repeat="item in consultContent">

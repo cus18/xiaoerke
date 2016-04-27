@@ -93,4 +93,14 @@ public interface ConsultPhoneRegisterServiceDao {
     List<Map<String,Object>> getSettlementPhoneConsultInfoByDate(Map<String, Object> searchMap);
 
     List<HashMap<String, Object>> getReturnPayConsultList();
+
+    /**
+     * 定时器-取消半小时未支付的号源
+     */
+    int cancelAppointNoPayRegiste();
+
+    /**
+     * 定时器-取消半小时未支付的订单
+     */
+    int cancelAppointNoPayOrder();
 }
