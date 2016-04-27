@@ -1,3 +1,10 @@
+var GetQueryString = function(name)
+{
+    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if(r!=null)return  unescape(r[2]); return null;
+}
+
 var byList = [];
 var bodBirthday = "";
 //进入页面对日期插件以及微信支付进行初始化
@@ -138,7 +145,7 @@ var doRefresh = function(){
             }
         }
     });
-
+    $('#phoneConDoctorDetail').val(GetQueryString("phoneConDoctorDetail"));
 }
 
 //  日期插件
@@ -337,10 +344,5 @@ var getCookie = function(name)
         return null;
 }
 
-var GetQueryString = function(name)
-{
-    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-    var r = window.location.search.substr(1).match(reg);
-    if(r!=null)return  unescape(r[2]); return null;
-}
+
 
