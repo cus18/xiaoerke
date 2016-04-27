@@ -57,6 +57,16 @@
 					<form:option value="3" label="西城区"/>
 					<form:option value="4" label="石景山区"/>
 					<form:option value="5" label="丰台区"/>
+					<form:option value="6" label="门头沟区"/>
+					<form:option value="7" label="房山区"/>
+					<form:option value="8" label="通州区"/>
+					<form:option value="9" label="顺义区"/>
+					<form:option value="10" label="大兴区"/>
+					<form:option value="11" label="昌平区"/>
+					<form:option value="12" label="平谷区"/>
+					<form:option value="13" label="怀柔区"/>
+					<form:option value="14" label="密云县"/>
+					<form:option value="15" label="延庆县"/>
 				</form:select>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>

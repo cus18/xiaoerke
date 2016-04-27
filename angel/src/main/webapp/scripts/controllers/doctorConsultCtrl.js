@@ -75,7 +75,6 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.refreshWaitJoinUserList();
 
                         getAlreadyJoinConsultPatientList();
-
                     }
                 })
             }
@@ -158,7 +157,6 @@ angular.module('controllers', ['luegg.directives'])
                                     $scope.currentUserConversation.consultValue = [];
                                     $scope.currentUserConversation.consultValue.push(consultValue);
                                     $scope.alreadyJoinPatientConversation.push($scope.currentUserConversation);
-                                    $scope.waitJoinNum--;
                                 }
                             });
                             $scope.tapShowButton('waitProcess');
@@ -257,7 +255,6 @@ angular.module('controllers', ['luegg.directives'])
                         };
 
                         $scope.socketServer1.onclose = function (event) {
-                            console.log("close",event.data);
                         };
                     } else {
                         alert("你的浏览器不支持！");
@@ -268,7 +265,8 @@ angular.module('controllers', ['luegg.directives'])
                 document.onkeydown = function () {
                     var a = window.event.keyCode;
                     if (a == 13) {
-                        if ($scope.info.consultMessage != "") {
+                        if($("#consultMessage").val()!=""){
+                            $scope.info.consultMessage = $("#consultMessage").val();
                             $scope.sendConsultMessage();
                         }
                         $scope.$apply();
@@ -277,22 +275,22 @@ angular.module('controllers', ['luegg.directives'])
 
                 //向用户发送咨询消息
                 $scope.sendConsultMessage = function () {
-                    var consultValMessage = {
-                        "type": 0,
-                        "content": $sce.trustAsHtml(AnalyticEmotion($scope.info.consultMessage)),
-                        "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                        "senderId": angular.copy($scope.doctorId),
-                        "senderName": angular.copy($scope.doctorName),
-                        "sessionId": angular.copy($scope.currentUserConversation.sessionId)
-                    };
                     if (!window.WebSocket) {
                         return;
                     }
                     if ($scope.socketServer1.readyState == WebSocket.OPEN) {
-                        $scope.info.consultMessage = "";
-                        $scope.currentUserConversation.consultValue.push(consultValMessage);
-                        updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
+                        var consultValMessage = {
+                            "type": 0,
+                            "content": $scope.info.consultMessage,
+                            "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                            "senderId": angular.copy($scope.doctorId),
+                            "senderName": angular.copy($scope.doctorName),
+                            "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                        };
                         $scope.socketServer1.send(JSON.stringify(consultValMessage));
+                        consultValMessage.content =  $sce.trustAsHtml(AnalyticEmotion(angular.copy($scope.info.consultMessage)));
+                        $scope.info.consultMessage = "";
+                        updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                     } else {
                         alert("连接没有开启.");
                     }
@@ -751,8 +749,14 @@ angular.module('controllers', ['luegg.directives'])
 
             //过滤媒体数据
             var filterMediaData = function (val) {
-                if (val.type == "2"||val.type == "3") {
-                    val.content = $sce.trustAsResourceUrl(angular.copy(val.content));
+                if(val.senderId==$scope.doctorId){
+                    if (val.type == "0") {
+                        val.content = $sce.trustAsHtml(AnalyticEmotion(angular.copy(val.content)));
+                    }
+                }else{
+                    if (val.type == "2"||val.type == "3") {
+                        val.content = $sce.trustAsResourceUrl(angular.copy(val.content));
+                    }
                 }
             }
         }])
