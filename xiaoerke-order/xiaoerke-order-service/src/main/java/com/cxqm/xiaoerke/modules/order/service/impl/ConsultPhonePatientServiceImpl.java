@@ -403,5 +403,14 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
     @Override
     public ConsultPhoneRegisterServiceVo selectByPrimaryKey(Integer phoneConsultaServiceId){
        return  consultPhoneRegisterServiceDao.selectByPrimaryKey(phoneConsultaServiceId);
-    };
+    }
+
+    @Override
+    public int CancelAppointNoPay() {
+        consultPhoneRegisterServiceDao.cancelAppointNoPayRegiste();
+      return  consultPhoneRegisterServiceDao.cancelAppointNoPayOrder();
+
+    }
+
+    ;
 }
