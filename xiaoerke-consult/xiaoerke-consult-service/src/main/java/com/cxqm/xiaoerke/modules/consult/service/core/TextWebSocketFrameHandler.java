@@ -79,9 +79,6 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 			Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(csUserId);
 			if(msgType == 0){   //发送文字消息
 				if(channel != csChannel && csChannel != null) {
-					msgMap.put("csUserId",csUserId);
-					msgMap.put("csUserName",csUserName);
-					msg = (TextWebSocketFrame) JSON.toJSON(msgMap);
 					csChannel.writeAndFlush(msg.retain());
 					//保存聊天记录
 					consultRecordService.buildRecordMongoVo(userId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
@@ -93,6 +90,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 						consultRecordService.buildRecordMongoVo(csUserId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
 					}else if(consultSession.getSource().equals("wxcxqm")){
 						String st = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
+						//TEST_TOKEN 将来会获取
 						WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN, consultSession.getUserId(), st);
 						//保存聊天记录
 						consultRecordService.buildRecordMongoVo(csUserId,String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
@@ -101,9 +99,6 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 				}
 			}else if(msgType == 1){  //发送图片消息
 				if(channel != csChannel && csChannel != null) {
-					msgMap.put("csUserId",csUserId);
-					msgMap.put("csUserName",csUserName);
-					msg = (TextWebSocketFrame) JSON.toJSON(msgMap);
 					csChannel.writeAndFlush(msg.retain());
 					//保存聊天记录
 					consultRecordService.buildRecordMongoVo(userId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
@@ -115,7 +110,6 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 						consultRecordService.buildRecordMongoVo(csUserId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
 					}else if(consultSession.getSource().equals("wxcxqm")){
 						String st = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
-
 						WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN, consultSession.getUserId(), st);
 						//保存聊天记录
 						consultRecordService.buildRecordMongoVo(csUserId,String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
@@ -124,9 +118,6 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 				}
 			}else if(msgType == 2){  //发送音频
 				if(channel != csChannel && csChannel != null) {
-					msgMap.put("csUserId",csUserId);
-					msgMap.put("csUserName",csUserName);
-					msg = (TextWebSocketFrame) JSON.toJSON(msgMap);
 					csChannel.writeAndFlush(msg.retain());
 					//保存聊天记录
 					consultRecordService.buildRecordMongoVo(userId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
@@ -146,9 +137,6 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 				}
 			}else{ //发送视频
 				if(channel != csChannel && csChannel != null) {
-					msgMap.put("csUserId",csUserId);
-					msgMap.put("csUserName",csUserName);
-					msg = (TextWebSocketFrame) JSON.toJSON(msgMap);
 					csChannel.writeAndFlush(msg.retain());
 					//保存聊天记录
 					consultRecordService.buildRecordMongoVo(userId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
