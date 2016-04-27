@@ -37,7 +37,9 @@ public class WechatMessageUtil {
     protected static final String DOC_APPINTMENT_SUCCESS= "OPENTM207664688";
 
     //电话咨询未接通提醒
-    protected static final String CONSULT_PHONE_UNCONNNECT= "mLwO1rHV4xTP3ppNyfMiYNfNBqDShjO5bzZ_eu6aRVg";
+    public static final String CONSULT_PHONE_UNCONNNECT= "mLwO1rHV4xTP3ppNyfMiYNfNBqDShjO5bzZ_eu6aRVg";
+
+    protected  static final String CONSULT_REUTNPAY_SUCCESS = "xG2qnez1yCRX8wwXWUzkROqaaioyJR573q1ZYSY_BdY";
 
     protected static final String DOC_APPINTMENT_CANCEL= "OPENTM203353498";
     //模板颜色
