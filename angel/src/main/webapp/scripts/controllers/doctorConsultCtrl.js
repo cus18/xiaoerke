@@ -367,6 +367,7 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.getEmotion = function (){
                     $('#face').SinaEmotion($('.emotion'));
                 }
+
                 //图片
                 $scope.uploadFiles = function($files,fileType) {
                     var dataValue = {
@@ -386,6 +387,13 @@ angular.module('controllers', ['luegg.directives'])
                         }).success(function(data, status, headers, config){
                             console.log(data);
                         });
+                if (window.WebSocket) {
+                    if($scope.userType="distributor"){
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://192.168.191.2:2048/ws&" +
+                            "distributor&" + $scope.doctorId);//cs,user,distributor
+                    }else if($scope.userType="consultDoctor"){
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://192.168.191.2:2048/ws&" +
+                            "cs&" + $scope.doctorId);//cs,user,distributor
                     }
                 };
 

@@ -59,7 +59,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 }
                 if (window.WebSocket) {
                     console.log($scope.patientId);
-                    $scope.socketServer = new WebSocket("ws://101.201.154.201:2048/ws&user&"
+                    $scope.socketServer = new WebSocket("ws://192.168.191.2:2048/ws&user&"
                         + $scope.patientId +"&h5cxqm");//cs,user,distributor
                     $scope.socketServer.onmessage = function(event) {
                         console.log("onmessage"+event.data);

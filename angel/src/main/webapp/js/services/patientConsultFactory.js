@@ -10,6 +10,6 @@ define(['appPatientConsult'], function (app) {
         }])
         //获取用户登陆状态
         .factory('GetUserLoginStatus', ['$resource', function ($resource) {
-            return $resource('info/loginStatus');
+            return $resource('auth/info/loginStatus');
         }])
 })
