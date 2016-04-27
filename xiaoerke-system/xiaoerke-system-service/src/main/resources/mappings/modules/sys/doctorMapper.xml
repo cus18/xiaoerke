@@ -491,7 +491,7 @@
         WHERE
         dr.sys_user_id = ur.id
         <if test="doctorId != null">
-            and dr.id = #{doctorId}
+            and dr.id = #{doctorId,jdbcType=VARCHAR}
         </if>
     </select>
 
