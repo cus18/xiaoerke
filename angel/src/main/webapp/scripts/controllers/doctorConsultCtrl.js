@@ -365,36 +365,6 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.getEmotion = function (){
                     $('#face').SinaEmotion($('.emotion'));
                 }
-
-                //图片
-                $scope.uploadFiles = function($files,fileType) {
-                    var dataValue = {
-                        "fileType": fileType,
-                        "senderId": $scope.doctorId
-                    };
-                    console.log(JSON.stringify(dataValue));
-                    var dataJsonValue = JSON.stringify(dataValue);
-                    for (var i = 0; i < $files.length; i++) {
-                        var file = $files[i];
-                        $scope.upload = $upload.upload({
-                            url: 'ap/consult/uploadMediaFile',
-                            data: encodeURI(dataJsonValue),
-                            file: file
-                        }).progress(function(evt) {
-                            console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-                        }).success(function(data, status, headers, config){
-                            console.log(data);
-                        });
-                if (window.WebSocket) {
-                    if($scope.userType="distributor"){
-                        $scope.socketServer1 = new ReconnectingWebSocket("ws://192.168.191.2:2048/ws&" +
-                            "distributor&" + $scope.doctorId);//cs,user,distributor
-                    }else if($scope.userType="consultDoctor"){
-                        $scope.socketServer1 = new ReconnectingWebSocket("ws://192.168.191.2:2048/ws&" +
-                            "cs&" + $scope.doctorId);//cs,user,distributor
-                    }
-                };
-
                 //查看更多的用户历史消息
                 $scope.seeMoreConversationMessage = function(){
                     var mostFarCurrentConversationDateTime = $scope.currentUserConversation.consultValue[0].dateTime;
@@ -901,3 +871,4 @@ angular.module('controllers', ['luegg.directives'])
             }
 
         }])
+
