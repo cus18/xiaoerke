@@ -1,16 +1,15 @@
 package com.cxqm.xiaoerke.modules.sys.service;
 
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.modules.sys.entity.DoctorHospitalRelationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.DoctorVo;
-
 import org.apache.ibatis.annotations.Param;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Transactional(readOnly = false)
 public interface DoctorInfoService {
@@ -96,4 +95,5 @@ public interface DoctorInfoService {
 
 	Page<HashMap<String, Object>>findPageConsultaDoctorByDepartment(HashMap<String, Object> hospitalInfo, Page<HashMap<String, Object>> page);
 
+    String findOpenIdByDoctorId(String doctorId);
 }

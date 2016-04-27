@@ -26,6 +26,7 @@ import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
 import com.cxqm.xiaoerke.modules.sys.utils.DoctorMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
+import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
 import com.cxqm.xiaoerke.modules.task.service.ScheduleTaskService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -1057,26 +1058,28 @@ public class ScheduledTask {
 //                  HashMap<String, Object> response = new HashMap<String, Object>();
 //                  accountService.updateAccount(0F, (Integer) map.get("id")+"", response, false, (String)map.get("userId"),"电话咨询超时取消退款");
                   //              并发送消息
-                  String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(Integer) map.get("id")+",phone";
-                  PatientMsgTemplate.unConnectPhone2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (Float) map.get("price") + "", (String) map.get("userPhone"), (String) map.get("orderNo"));
-                  PatientMsgTemplate.unConnectPhone2Wechat((String) map.get("babyName"), (String) map.get("doctorName"), (Float) map.get("price") + "", url, (String) map.get("orderNo"), (String) map.get("openid"), token);
+              String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(Integer) map.get("id")+",phone";
+              PatientMsgTemplate.unConnectPhone2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (Float) map.get("price") + "", (String) map.get("userPhone"), (String) map.get("orderNo"));
 
+              String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)map.get("date"),"yyyy/MM/dd"));
+              String dateTime = (String)map.get("date")+week+(String)map.get("beginTime");
+              PatientMsgTemplate.unConnectPhone2Wechat(dateTime, (String) map.get("userPhone"), (String) map.get("doctorName"), (Float) map.get("price") + "", url, (String) map.get("orderNo"), (String) map.get("openid"), token);
               //未接通时 给医生发消息提醒
-              DoctorMsgTemplate.doctorPhoneConsultRemindFail2Sms(doctorName,babyName,doctorPhone);
+              DoctorMsgTemplate.doctorPhoneConsultRemindFail2Sms(doctorName, babyName, doctorPhone);
               SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("mm月dd日");
               String nowTime = simpleDateFormat1.format(new Date());
               Map tokenMap = systemService.getDoctorWechatParameter();
               String doctorToken = (String)tokenMap.get("token");
               HashMap<String,Object> searchMap = new HashMap<String, Object>();
-              searchMap.put("doctorId",(String) map.get("doctorId"));
-              List<HashMap<String, Object>> doctorList = doctorInfoService.findDoctorByDoctorId(searchMap);
-              DoctorMsgTemplate.doctorPhoneConsultRemindFail2Wechat(babyName,nowTime,doctorToken,"",(String)doctorList.get(0).get("openid"));
+              String openId = doctorInfoService.findOpenIdByDoctorId((String) map.get("doctorId"));
+              if(StringUtils.isNotNull(openId)) {
+                  DoctorMsgTemplate.doctorPhoneConsultRemindFail2Wechat(babyName, nowTime, doctorToken, "", openId);
+              }
 //              }
           }
       }
 
         //将钱退还给用户
-        //再建立通讯的五分钟前发消息给用户
         HashMap<String, Object> response = new HashMap<String, Object>();
         List<HashMap<String, Object>> returnPayList = consultPhoneOrderService.getReturnPayConsultList();
         for(HashMap<String, Object> map:returnPayList){
@@ -1169,7 +1172,7 @@ public class ScheduledTask {
         //再建立通讯的五分钟前发消息给用户
         Date date = new Date();
         date.setTime(date.getTime() + 5 * 60 * 1000);
-        String dateStr = DateUtils.DateToStr(date,"datetime");
+        String dateStr = DateUtils.DateToStr(date, "datetime");
         List<HashMap<String, Object>> orderMsgList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1", date);
         for(HashMap<String ,Object> map:orderMsgList){
             List<Map> messageMap = messageService.consultPhoneMsgRemind((Integer) map.get("id") + "");

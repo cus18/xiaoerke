@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -54,7 +55,8 @@ public class ConsultWechatController extends BaseController {
     @Autowired
     private ConsultRecordService consultRecordService;
 
-    private static ExecutorService threadExecutor = Executors.newCachedThreadPool();
+
+    private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
     @RequestMapping(value = "/conversation", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -94,12 +96,14 @@ public class ConsultWechatController extends BaseController {
             String openId = (String) this.param.get("openId");
             String messageType = (String) this.param.get("messageType");
             String messageContent = (String) this.param.get("messageContent");
+            System.out.println(messageContent);
             String serverAddress = (String) this.param.get("serverAddress");
 
             SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
             sysWechatAppintInfoVo.setOpen_id(openId);
             SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
             String userName = openId.substring(openId.length()-8,openId.length());
+            String userId = openId;
             if(wechatAttentionVo!=null){
                 if(StringUtils.isNotNull(wechatAttentionVo.getWechat_name())){
                     userName = wechatAttentionVo.getWechat_name();
@@ -108,7 +112,6 @@ public class ConsultWechatController extends BaseController {
             //此处，将openId统一转换成userId，以后，在咨询系统中，所有表示咨询用户唯一来源的id统一都用userId表示，
             // 在所有的日志记录，还是缓存中，所有的会话，都引入一个字段，source，标示，这个会话，
             // 是基于微信，还是H5，还是合作第三方的来源，以便按照不同的逻辑来处理。
-            String userId = openId;
             String source = "wxcxqm";
 
             Channel csChannel = null;
@@ -120,6 +123,7 @@ public class ConsultWechatController extends BaseController {
             //如果此用户不是第一次发送消息，则sessionId不为空
             if(sessionId!=null){
                 consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
+
                 csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
             }else{//如果此用户是第一次发送消息，则sessionId为空
                 consultSession.setCreateTime(new Date());
@@ -146,9 +150,20 @@ public class ConsultWechatController extends BaseController {
                     obj.put("fromServer",serverAddress);
                     obj.put("source",consultSession.getSource());
 
+
+                    StringBuffer sbf = new StringBuffer();
                     if(messageType.equals("text")) {
                         obj.put("type", 0);
+                        //将模拟微信端发过来的信息内容进行修改
+                        if(openId.length() <= 11){
+                            String[] openIdArr = openId.split("-");
+                            sbf.append(openIdArr[0]).append("<--->").append(consultSession.getCsUserId());
+                            sbf.append("<--->").append(openIdArr[1]);
+                            messageContent = sbf.toString();
+                            System.out.println(messageContent);
+                        }
                         obj.put("content", URLDecoder.decode(messageContent, "utf-8"));
+
                     }else{
                         if(messageType.contains("image")){
                             obj.put("type", 1);

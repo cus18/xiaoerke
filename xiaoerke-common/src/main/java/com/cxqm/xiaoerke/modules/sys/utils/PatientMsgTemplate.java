@@ -315,17 +315,9 @@ public class PatientMsgTemplate {
         SMSMessageUtil.sendMsg(phone, content);
     }
     //未接通提醒 微信
-    public static void unConnectPhone2Wechat(String babyName,String doctorName, String price,String url,String register_no,String openId,String token){
-        ArrayList<Object> obj = new ArrayList<Object>();
-        WechatArticle article = new WechatArticle();
-        article.setTitle("电话咨询未接通");
-        article.setDescription(babyName + "小朋友家长您好，由于您预约的" + doctorName + "医生的电话咨询未接通，咨询费用" + price + "元将在24小时后返回到您的宝大夫账户，订单号：" + register_no + "，有疑问，请致电400-623-7120。");
-        article.setUrl(url);
-        obj.add(article);
-        if(StringUtils.isNotNull(openId))
-        {
-            WechatMessageUtil.senMsgToWechat(token,openId, obj);
-        }
+    public static void unConnectPhone2Wechat(String date,String phone,String doctorName, String price,String url,String register_no,String openId,String token){
+        String content= "由于电话未接通," + price+ "元咨询费用将会在24小时之后返回到您的宝大夫账户";
+        WechatMessageUtil.templateModel(content,doctorName,date,phone,register_no,"如有疑问，请联系客服。",token,url,openId,WechatMessageUtil.CONSULT_PHONE_UNCONNNECT);
     }
 
 
@@ -346,7 +338,7 @@ public class PatientMsgTemplate {
 //        ArrayList<Object> obj = new ArrayList<Object>();
 //        WechatArticle article = new WechatArticle();
 //        article.setTitle("退款成功");
-        String content= babyName + "由于电话未接通," + price + "元咨询费用将在24小时后返回到您的宝大夫账户。";
+        String content= babyName + "再建立通讯的五分钟前发消息给用户";
 //        article.setUrl(url);
 //        obj.add(article);
 //        if(StringUtils.isNotNull(openId))
@@ -354,7 +346,7 @@ public class PatientMsgTemplate {
 //            WechatMessageUtil.senMsgToWechat(token,openId, obj);
 //        }
 
-        WechatMessageUtil.templateModel(content,doctorName,date,phone,register_no,"如有疑问，请联系客服。",token,url,openId,WechatMessageUtil.CONSULT_PHONE_UNCONNNECT);
+        WechatMessageUtil.templateModel(content,register_no,"电话咨询",price,null,"如有疑问，请联系客服400-623-7120。",token,url,openId,WechatMessageUtil.CONSULT_REUTNPAY_SUCCESS);
     }
 
     /**

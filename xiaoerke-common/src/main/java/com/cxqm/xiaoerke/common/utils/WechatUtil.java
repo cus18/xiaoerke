@@ -444,7 +444,7 @@ public class WechatUtil {
         return null; // 自定义错误信息
     }
 
-    private static ExecutorService threadExecutor = Executors.newCachedThreadPool();
+    private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
     public class uploadFileInputStreamThread extends Thread {
 

@@ -88,7 +88,7 @@ public class ConsultTest{
 			OutputStreamWriter out = new OutputStreamWriter(con
 					.getOutputStream());
 
-			out.write(new String(xmlInfo.getBytes("ISO-8859-1")));
+			out.write(new String(xmlInfo.getBytes("ISO-8859-1"),"utf-8"));
 			out.flush();
 			out.close();
 			BufferedReader br = new BufferedReader(new InputStreamReader(con

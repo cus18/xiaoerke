@@ -374,9 +374,9 @@
 <form:form id="inputForm" modelAttribute="consulPhonetDoctorRelationVo" action="${ctx}/register/save?" method="post" class="form-horizontal"><%--
 		<form:hidden path="email" htmlEscape="false" maxlength="255" class="input-xlarge"/>
 		<sys:ckfinder input="email" type="files" uploadPath="/mytask" selectMultiple="false"/> --%>
-	<input type="text" id="showTime" htmlEscape="false" maxlength="255" class="input-xlarge"/>
-	<form:input path="id" htmlEscape="false" maxlength="255" class="input-xlarge"/>
-	<form:input path="doctorId" htmlEscape="false" maxlength="255" class="input-xlarge"/>
+	<input type="hidden" id="showTime" htmlEscape="false" maxlength="255" class="input-xlarge"/>
+	<form:hidden path="id" htmlEscape="false" maxlength="255" class="input-xlarge"/>
+	<form:hidden path="doctorId" htmlEscape="false" maxlength="255" class="input-xlarge"/>
 	<sys:message content="${message}"/>
 	<div class="control-group">
 		<label class="control-label">医生姓名:</label>
