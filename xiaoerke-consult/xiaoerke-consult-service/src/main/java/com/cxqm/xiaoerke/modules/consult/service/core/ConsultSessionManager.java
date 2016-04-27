@@ -4,6 +4,7 @@ import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.sys.service.impl.UserInfoServiceImpl;
+import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
@@ -65,7 +66,7 @@ public class ConsultSessionManager {
 
 	private UserInfoServiceImpl userInfoService = SpringContextHolder.getBean("userInfoServiceImpl");
 
-	private static ExecutorService threadExecutor = Executors.newCachedThreadPool();
+	private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
 	private static ConsultSessionManager sessionManager = new ConsultSessionManager();
 
@@ -85,6 +86,7 @@ public class ConsultSessionManager {
 		String[] args = url.split("&");
 		String fromType = args[1];
 
+		User user = UserUtils.getUser();
 		if(args.length>2){
 			if(fromType.equals("user")) {
 				String userId = args[2];
@@ -95,7 +97,7 @@ public class ConsultSessionManager {
 				doCreateSessionInitiatedByCs(userId,channel);
 			} else if(fromType.equals("distributor")) {
 				String userId = args[2];
-				doCreateSessionInitiatedByDistributor(userId,channel);
+				doCreateSessionInitiatedByDistributor(userId, channel);
 			}
 		}
 	}
@@ -281,18 +283,22 @@ public class ConsultSessionManager {
 		consultSession.setCsUserName((String) perInfo.get("name"));
 
 		//可开启线程进行记录
-		consultSessionService.saveConsultInfo(consultSession);
-		Integer sessionId = consultSession.getId();
-		sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
-		sessionRedisCache.putUserIdSessionIdPair(consultSession.getUserId(), sessionId);
+		if(consultSession.getCsUserId()!=null){
+			consultSessionService.saveConsultInfo(consultSession);
+			Integer sessionId = consultSession.getId();
+			sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
+			sessionRedisCache.putUserIdSessionIdPair(consultSession.getUserId(), sessionId);
 
-		//成功分配医生，给用户发送一个欢迎语
-		String st = "尊敬的用户，宝大夫在线，有什么可以帮您";
-		WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN, consultSession.getUserId(), st);
-		response.put("csChannel", csChannel);
-		response.put("sessionId", sessionId);
-		response.put("consultSession", consultSession);
-		return response;
+			//成功分配医生，给用户发送一个欢迎语
+			String st = "尊敬的用户，宝大夫在线，有什么可以帮您";
+			WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN, consultSession.getUserId(), st);
+			response.put("csChannel", csChannel);
+			response.put("sessionId", sessionId);
+			response.put("consultSession", consultSession);
+			return response;
+		}else{
+			return null;
+		}
 
 	}
 

@@ -76,7 +76,11 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 	@Autowired
 	private PatientRegisterPraiseDao patientRegisterPraiseDao;
 
+<<<<<<< HEAD
 	private static ExecutorService threadExecutor = Executors.newFixedThreadPool(1000);
+=======
+	private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
+>>>>>>> 1ab99ff5db344d84ee4cc4aabc291ceda462c014
 
 	/**
 	 * 处理微信发来的请求

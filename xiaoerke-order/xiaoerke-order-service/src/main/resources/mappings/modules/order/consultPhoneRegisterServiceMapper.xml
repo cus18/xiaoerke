@@ -120,6 +120,7 @@
     crs.phone,
     sbi.name babyName,
     cdr.price,
+    cdr.doctor_answer_phone as doctorPhone,
     crs.type,
     crs.sys_phoneConsult_service_id,
     crs.surplusTime,

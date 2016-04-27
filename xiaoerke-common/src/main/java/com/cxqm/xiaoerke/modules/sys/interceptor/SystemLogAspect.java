@@ -59,7 +59,7 @@ public class SystemLogAspect {
     private static MenuDao menuDao = SpringContextHolder.getBean(MenuDao.class);
     private static String mongoEnabled = Global.getConfig("mongo.enabled");
 
-    private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
+    private static ExecutorService threadExecutor = Executors.newCachedThreadPool();
 
 
     /**
