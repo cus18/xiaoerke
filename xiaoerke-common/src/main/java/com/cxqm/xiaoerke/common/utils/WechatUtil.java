@@ -515,6 +515,7 @@ public class WechatUtil {
             bis.close();
             ToMp3(ConstantUtil.AMR_TOMP3_WINDOWSPATH, ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP + mediaName);
             inputStream = new FileInputStream(new File(ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP+mediaNameMp3));
+            StringUtils.deleteFile(new File(ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP));
             mediaName = mediaNameMp3;
         }else if(messageType.contains("video")){
             mediaName = mediaName+".mp4";
