@@ -23,8 +23,7 @@ import java.util.Map;
 @Service
 @Transactional(readOnly = false)
 public class MessageServiceImpl implements MessageService{
-
-	@Autowired
+    @Autowired
 	private MessageDao messageDao;
 	
 	@Autowired
@@ -166,6 +165,10 @@ public class MessageServiceImpl implements MessageService{
 	@Override
 	public void setMonitorStatusExecute(HashMap<String,Object> hashMap){messageDao.setMonitorStatusExecute(hashMap);};
 
+    @Override
+    public void setMonitorStatusByID(HashMap<String, Object> hashMap) {
+        messageDao.setMonitorStatusById(hashMap);
+    }
 	@Override
 	public List<HashMap<String,Object>> LetsGoReminderExecute(){return messageDao.LetsGoReminderExecute();};
 

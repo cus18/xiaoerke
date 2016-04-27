@@ -124,6 +124,9 @@
         UPDATE sys_monitor sm SET sm.STATUS=#{status} where sm.patient_register_service_id=#{patient_register_service_id}
         and sm.STATUS != '7'
     </update>
+    <update id="setMonitorStatusByID">
+    UPDATE sys_monitor sm SET sm.STATUS=#{status} where sm.id=#{id}
+    </update>
 
     <insert id="saveAdvice">
       INSERT INTO sys_advice (id,advice,contact_information,project,user,create_time)

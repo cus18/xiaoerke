@@ -48,6 +48,8 @@ public interface MessageService {
 
 	void setMonitorStatusExecute(HashMap<String,Object> hashMap);
 
+    void setMonitorStatusByID(HashMap<String, Object> hashMap);
+
 	List<HashMap<String,Object>> LetsGoReminderExecute();
 
 	List<HashMap<String, Object>> getTrackOrder();

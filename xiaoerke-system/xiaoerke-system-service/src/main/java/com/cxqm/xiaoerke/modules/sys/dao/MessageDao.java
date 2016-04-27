@@ -55,6 +55,8 @@ public interface MessageDao {
     //更新sys_monitor表状态
     void setMonitorStatusExecute(HashMap<String,Object> hashMap);
 
+    void setMonitorStatusById(HashMap<String,Object> hashMap);
+
     public void saveAdvice(Map<String, Object>  hashMap);
 
     HashMap<String,Object> getCancelAppointmentDocNum(String patientRegisterServiceId);
@@ -67,4 +69,5 @@ public interface MessageDao {
     List<Map> consultPhoneMsgRemind(String id);
 
     void insertMonitorConsultPhone(HashMap<String,Object> monitorMap);
+
 }
