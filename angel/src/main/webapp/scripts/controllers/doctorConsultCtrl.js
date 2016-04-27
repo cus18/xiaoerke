@@ -159,6 +159,7 @@ angular.module('controllers', ['luegg.directives'])
                                     $scope.alreadyJoinPatientConversation.push($scope.currentUserConversation);
                                 }
                             });
+                            $scope.refreshWaitJoinUserList();
                             $scope.tapShowButton('waitProcess');
                             $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
                                 $scope.alreadyJoinPatientConversation[0].patientName);
@@ -408,7 +409,7 @@ angular.module('controllers', ['luegg.directives'])
                     GetCurrentUserHistoryRecord.save({
                         userId:$scope.currentUserConversation.patientId,
                         dateTime:$scope.currentUserConversation.consultValue[0].dateTime,
-                        pageSize:100},function(data){
+                        pageSize:10},function(data){
                         if(data.consultDataList!=""){
                             $.each(data.consultDataList,function(index,value){
                                 filterMediaData(value);

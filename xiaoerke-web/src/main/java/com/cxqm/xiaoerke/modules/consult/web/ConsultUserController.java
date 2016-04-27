@@ -147,7 +147,6 @@ public class ConsultUserController extends BaseController {
                 vo.setUserId(consultSessionStatusVo.getUserId());
                 vo.setCsUserId(consultSessionStatusVo.getCsUserId());
                 vo.setCsUserName(consultSessionStatusVo.getCsUserName());
-                //vo.setCreateDate(DateUtils.DateToStr(consultSessionStatusVo.getLastMessageTime(), "datetime"));
                 vo.setLastMessageTime(consultSessionStatusVo.getLastMessageTime());
                 //根据userId查询CsUserId
                 ConsultSession consultSession =new ConsultSession();
