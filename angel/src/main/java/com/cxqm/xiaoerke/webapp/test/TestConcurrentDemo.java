@@ -7,10 +7,10 @@ public class TestConcurrentDemo {
 
     //public  boolean isFinished = false;
     //private static String url = "http://localhost:8080/keeper/patient/wxChat";
-    private static String url = "http://192.168.191.2:8080/keeper/patient/wxChat";
+    private static String url = "http://101.201.154.75:8080/keeper/patient/wxChat";
     private static final int MAX_THREADS_COUNT = 500;//初始化开启最大线程数
     //private static final int MAX_THREADS_COUNT = 1;
-    private static final int MESSAGE_COUNT = 5;//模拟一个用户向服务器发送的消息总数
+    private static final int MESSAGE_COUNT = 10;//模拟一个用户向服务器发送的消息总数
 
     public static String getUrl(){
         return url;

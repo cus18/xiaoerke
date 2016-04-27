@@ -55,7 +55,7 @@ public class ConsultWechatController extends BaseController {
     @Autowired
     private ConsultRecordService consultRecordService;
 
-    private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
+    private static ExecutorService threadExecutor = Executors.newFixedThreadPool(1000);
 
     @RequestMapping(value = "/conversation", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -202,7 +202,7 @@ public class ConsultWechatController extends BaseController {
             consultRecordService.buildRecordMongoVo(userId,String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)), messageContent, consultSession);
 
             //更新会话操作时间
-            //consultRecordService.saveConsultSessionStatus(consultSession);
+            consultRecordService.saveConsultSessionStatus(consultSession);
 
         }
     }
