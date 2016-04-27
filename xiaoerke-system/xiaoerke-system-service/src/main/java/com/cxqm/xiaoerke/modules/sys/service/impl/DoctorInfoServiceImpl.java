@@ -123,7 +123,7 @@ public class DoctorInfoServiceImpl implements DoctorInfoService {
     @Override
     public String findOpenIdByDoctorId(String doctorId) {
         HashMap<String,Object> map = doctorDao.findOpenIdByDoctorId(doctorId);
-        String openId = (String) map.get("openid");
+        String openId = map==null?"": (String) map.get("openid");
         return openId == null ? "" : openId;
     }
 

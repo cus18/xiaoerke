@@ -297,6 +297,45 @@ angular.module('controllers', ['luegg.directives'])
                         alert("连接没有开启.");
                     }
                 }
+                //向用户发送咨询图片
+                $scope.uploadFiles = function($files,fileType) {
+                    var dataValue = {
+                        "fileType": fileType,
+                        "senderId": $scope.patientId
+                    };
+                    console.log(JSON.stringify(dataValue));
+                    var dataJsonValue = JSON.stringify(dataValue);
+                    for (var i = 0; i < $files.length; i++) {
+                        var file = $files[i];
+                        $scope.upload = $upload.upload({
+                            url: 'consult/h5/uploadMediaFile',
+                            data: encodeURI(dataJsonValue),
+                            file: file
+                        }).progress(function(evt) {
+                            console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+                        }).success(function(data, status, headers, config){
+                            console.log(data);
+                            var consultValMessage = {
+                                "type": 1,
+                                "content": data.showFile,
+                                "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                                "senderId": angular.copy($scope.doctorId),
+                                "senderName": angular.copy($scope.doctorName),
+                                "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                            };
+                            console.log(consultValMessage.content);
+                            if (!window.WebSocket) {
+                                return;
+                            }
+                            if ($scope.socketServer.readyState == WebSocket.OPEN) {
+                                $scope.consultContent.push(consultValMessage);
+                                $scope.socketServer.send(JSON.stringify(consultValMessage));
+                            } else {
+                                alert("连接没有开启.");
+                            }
+                        });
+                    }
+                };
 
                 //关闭跟某个用户的会话
                 $scope.closeConsult = function () {
@@ -365,36 +404,6 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.getEmotion = function (){
                     $('#face').SinaEmotion($('.emotion'));
                 }
-
-                //图片
-                $scope.uploadFiles = function($files,fileType) {
-                    var dataValue = {
-                        "fileType": fileType,
-                        "senderId": $scope.doctorId
-                    };
-                    console.log(JSON.stringify(dataValue));
-                    var dataJsonValue = JSON.stringify(dataValue);
-                    for (var i = 0; i < $files.length; i++) {
-                        var file = $files[i];
-                        $scope.upload = $upload.upload({
-                            url: 'ap/consult/uploadMediaFile',
-                            data: encodeURI(dataJsonValue),
-                            file: file
-                        }).progress(function(evt) {
-                            console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-                        }).success(function(data, status, headers, config){
-                            console.log(data);
-                        });
-                if (window.WebSocket) {
-                    if($scope.userType="distributor"){
-                        $scope.socketServer1 = new ReconnectingWebSocket("ws://192.168.191.2:2048/ws&" +
-                            "distributor&" + $scope.doctorId);//cs,user,distributor
-                    }else if($scope.userType="consultDoctor"){
-                        $scope.socketServer1 = new ReconnectingWebSocket("ws://192.168.191.2:2048/ws&" +
-                            "cs&" + $scope.doctorId);//cs,user,distributor
-                    }
-                };
-
                 //查看更多的用户历史消息
                 $scope.seeMoreConversationMessage = function(){
                     var mostFarCurrentConversationDateTime = $scope.currentUserConversation.consultValue[0].dateTime;
@@ -901,3 +910,4 @@ angular.module('controllers', ['luegg.directives'])
             }
 
         }])
+
