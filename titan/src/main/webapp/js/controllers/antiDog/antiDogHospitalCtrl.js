@@ -6,6 +6,7 @@ angular.module('controllers', ['ionic']).controller('antiDogHospitalCtrl', [
         $scope.openImg = "http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Farrow_blue_down.png";
         $scope.openImg1 = "http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Farrow_blue_up.png";
         $scope.openImg2 = "http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Farrow_blue_down.png";
+        $scope.telList ={};
        /* $scope.hospitalList =[
             {
                 district:"朝阳区",
@@ -170,7 +171,13 @@ angular.module('controllers', ['ionic']).controller('antiDogHospitalCtrl', [
             getInsuranceHospitalListByInfo.save({"district":index+''}, function (data){
                 if(data.insurance!=''||data.insurance!=null){
                     $scope.hospitalList=data.insurance;
+                   /* for(var i=0;i< $scope.hospitalList.length;i++){
+                        $scope.hospitalList[i].tel=$scope.hospitalList[i].phone.split(";");
+                       console.log("phone "+$scope.hospitalList[i].phone);
+                       console.log("tel "+$scope.hospitalList[i].tel);
+                     }*/
                 }
+
             });
            if( $(".hospital dt img").eq(index).attr("src")== $scope.openImg){
                $scope.selectItem=index;
