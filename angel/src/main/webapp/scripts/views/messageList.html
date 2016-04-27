@@ -92,7 +92,7 @@
                         ng-click ="getUserRecordDetail(item.userName,item.userId,$index)"
                         ng-style="(setSessoin==$index)?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}">
                         <div class="nickname">{{item.userName}}</div>
-                        <div class="recently">{{item.lastMessageTime}}</div>
+                        <div class="recently">{{item.lastMessageTime|date:"yyyy-MM-dd"}}</div>
                         <div class="insert">{{item.csUserName}}</div>
                     </li>
                 </ul>
