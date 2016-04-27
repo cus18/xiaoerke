@@ -469,7 +469,7 @@ group by crs.id
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <update id="CancelAppointNoPayOrder">
+  <update id="cancelAppointNoPayOrder">
     UPDATE sys_consultphone_service srs
     SET srs.state = '0'
     WHERE
@@ -495,7 +495,7 @@ group by crs.id
 
   </update>
 
-  <update id="CancelAppointNoPayRegiste">
+  <update id="cancelAppointNoPayRegiste">
     UPDATE consultphone_register_service crs SET crs.state='6'
         WHERE crs.state='0' AND
         NOW()>(DATE_ADD((DATE_FORMAT(crs.create_time,'%Y-%m-%d %k:%i:%s')), INTERVAL 30 MINUTE))
