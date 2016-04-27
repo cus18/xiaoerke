@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/keeper/"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+    <title>咨询打赏</title>
+    <script src="js/libs/jquery-2.1.3.min.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script src="js/playtourEvaluate.js"></script>
+    <link rel="stylesheet" href="/keeper/styles/playtour/playtourEvaluate2.less" type="text/css" />
+</head>
+<body onload="doRefresh()">
+    <div class="evaltitle">
+        <div class="et_1">
+            <div>
+                <img src="images/a1.png" width="54px" height="54px"/>
+            </div>
+            <div>梁平</div>
+        </div>
+        <div class="et_2 et_com">
+            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_liwu.png" width="30px" height="29px"/>
+            <div>收到心意：32</div>
+        </div>
+        <div class="et_3 et_com">
+            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_haoping03.png" width="27px" height="30px"/>
+            <div>好评率：100%</div>
+        </div>
+    </div>
+    <div class="evalfinish">
+        <div>您已完成此次评价</div>
+        <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fbumanyi_weixuanzhong.png" width="37px" height="37px"/>
+        <div>不满意</div>
+    </div>
+    <ul class="evalother">
+        <li id="ping">
+            <span class="c1" >您的评价:</span>付款计划的分厘卡时间来看地方就是看见的就打开数据
+        </li>
+        <li>
+            <span class="c1">您的建议:</span>是客户端发空间设计开发时间很快就发挥科技时代科技时代开发计划署看见对方结婚计划设定和开发环境
+        </li>
+    </ul>
+    <div class="evalhavemoney">
+        已送心意：100元
+    </div>
+    <div class="evalinputmoney">
+        <div class="tile" >
+            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fxinyi_png.png" width="144px" height="17px"/>
+        </div>
+        <div class="inputmoney">
+            <img onclick="setMoney(0)" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png" width="43px" height="44px">
+
+            <input  type="number" maxlength="4" id="getMoney" placeholder="0元" onfocus="this.type='number'" onblur="this.type='text'" onclick="moreMoney()"/>
+
+            <img onclick="setMoney(1)" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjia_xuanzhong.png" width="43px" height="44px">
+        </div>
+        <!--<div id="moneyDiff" class="ptmfu">
+            <span>金额不可以为负哦~</span>
+        </div>-->
+    </div>
+    <div class="evalsharebut">
+        <button >分享给更多宝妈</button>
+    </div>
+    <button id="but" onclick="updateCustomerInfo()" >提交评价</button>
+</body>
+</html>
