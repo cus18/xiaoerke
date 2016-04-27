@@ -1,12 +1,12 @@
 angular.module('controllers', ['ionic']).controller('antiDogHospitalCtrl', [
-    '$scope','$state','$stateParams','getInsuranceHospitalListByInfo',
-    function ($scope,$state,$stateParams,getInsuranceHospitalListByInfo) {
+    '$scope','$state','$stateParams','getInsuranceHospitalListByInfo','$ionicScrollDelegate',
+    function ($scope,$state,$stateParams,getInsuranceHospitalListByInfo,$ionicScrollDelegate) {
 
         $scope.num = "";
         $scope.openImg = "http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Farrow_blue_down.png";
         $scope.openImg1 = "http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Farrow_blue_up.png";
         $scope.openImg2 = "http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Farrow_blue_down.png";
-        $scope.hospitalList =[
+       /* $scope.hospitalList =[
             {
                 district:"朝阳区",
                 hospital:[
@@ -112,7 +112,7 @@ angular.module('controllers', ['ionic']).controller('antiDogHospitalCtrl', [
 
                 ]
             },
-        ];
+        ];*/
 
         $scope.districtList =[
             {
@@ -165,23 +165,25 @@ angular.module('controllers', ['ionic']).controller('antiDogHospitalCtrl', [
             }
         ];
 
-
         $scope.openMore = function(index){
-           if( $(".hospital dt img").eq(index).attr("src")== $scope.openImg){
-               $(".hospital dt img").attr("src",$scope.openImg2);
-               $(".hospital dt img").eq(index).attr("src",$scope.openImg1);
-               $(".hospital dt").siblings("dd").hide();
-               $(".hospital dt").eq(index).siblings("dd").show();
-           }
-            else{
-               $(".hospital dt img").eq(index).attr("src",$scope.openImg2);
-               $(".hospital dt").eq(index).siblings("dd").hide();
-           }
+          /* var divScroll= document.getElementById(index).offsetTop;*/
             getInsuranceHospitalListByInfo.save({"district":index+''}, function (data){
                 if(data.insurance!=''||data.insurance!=null){
                     $scope.hospitalList=data.insurance;
                 }
             });
+           if( $(".hospital dt img").eq(index).attr("src")== $scope.openImg){
+               $scope.selectItem=index;
+               $(".hospital dt img").attr("src",$scope.openImg2);
+               $(".hospital dt img").eq(index).attr("src",$scope.openImg1);
+
+              /* $("body,html").stop().animate({"scrollTop":divScroll},0);*/
+           }
+            else{
+               $scope.selectItem=-1;
+               $(".hospital dt img").eq(index).attr("src",$scope.openImg2);
+           }
+
         };
 
 
