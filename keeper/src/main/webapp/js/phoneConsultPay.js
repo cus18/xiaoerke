@@ -142,6 +142,7 @@ var doRefresh = function(){
                     },
                     dataType: "json"
                 });
+                $('#phoneConDoctorDetail').html(GetQueryString("phoneConDoctorDetail"));
             }
         }
     });
