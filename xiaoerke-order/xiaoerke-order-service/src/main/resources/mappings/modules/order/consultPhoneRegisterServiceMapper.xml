@@ -121,6 +121,7 @@
     sbi.name babyName,
     cdr.price,
     cdr.doctor_answer_phone as doctorPhone,
+	shc.contact_phone as hospitalContactPhone,
     crs.type,
     crs.sys_phoneConsult_service_id,
     crs.surplusTime,
@@ -134,6 +135,7 @@
     on sd.id = scs.sys_doctor_id
     LEFT JOIN doctor_hospital_relation dhr
     ON dhr.sys_doctor_id=sd.id
+    LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = dhr.sys_hospital_id
     left join sys_patient sp
     on sp.id = crs.sys_patient_id
     left join sys_baby_baseInfo sbi
