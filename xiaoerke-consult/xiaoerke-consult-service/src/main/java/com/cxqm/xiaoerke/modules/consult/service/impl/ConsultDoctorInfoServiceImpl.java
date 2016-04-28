@@ -8,8 +8,11 @@ import com.cxqm.xiaoerke.modules.consult.dao.ConsultPhoneRecordDao;
 import com.cxqm.xiaoerke.modules.consult.entity.CallResponse;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultPhoneService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
+import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
@@ -38,6 +41,12 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
     @Autowired
     private ConsultDoctorInfoDao consultDoctorInfoDao;
 
+    @Autowired
+    private PatientRegisterPraiseService patientRegisterPraiseService;
+
+    @Autowired
+    private ConsultSessionService consultSessionService;
+
     @Override
     public int saveConsultDoctorInfo(ConsultDoctorInfoVo vo) {
         return 0;
@@ -52,6 +61,31 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
         List<ConsultDoctorInfoVo> doctorList = getConsultDoctorByInfo(param);
         map.put("user",list.get(0));
         map.put("doctor",doctorList.get(0));
+        Map praiseParam = new HashMap();
+        praiseParam.put("doctorId",user.getId());
+        List<Map<String,Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParam);
+        int redPacket = 0;
+        int satisfy = 0;
+        int unsatisfy = 0;
+        for(Map<String,Object> temp : praiseList){
+            if(StringUtils.isNotNull((String) temp.get(redPacket))){
+                redPacket += (Integer)temp.get(redPacket);
+                satisfy += 1;
+            }else{
+                unsatisfy += 1;
+            }
+        }
+        map.put("redPacket",redPacket);
+        map.put("satisfy",satisfy);
+        map.put("unsatisfy", unsatisfy);
+        Integer sessionCount = consultSessionService.getConsultSessionUserCount(praiseParam);
+        map.put("sessionCount", sessionCount);
+        List<ConsultSession> sessionList = consultSessionService.getConsultSessionListByInfo(praiseParam);
+        Map<String,Integer> sessionMap = new HashMap();
+        for(ConsultSession temp : sessionList){
+            sessionMap.put(DateUtils.DateToStr(temp.getCreateTime(),"date"),sessionMap.get(DateUtils.DateToStr(temp.getCreateTime(),"date"))==null?1:sessionMap.get(DateUtils.DateToStr(temp.getCreateTime(),"date"))+1);
+        }
+        map.put("sessionMap",sessionMap);
         return map;
     }
 

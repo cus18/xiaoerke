@@ -34,6 +34,36 @@ public class ConsultDoctorInfoVo {
 
     private Date updateDate;
 
+    private String type;//类型，全职0，兼职1
+
+    private String fromDate;
+
+    private String toDate;
+
+    public String getFromDate() {
+        return fromDate;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setFromDate(String fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public String getToDate() {
+        return toDate;
+    }
+
+    public void setToDate(String toDate) {
+        this.toDate = toDate;
+    }
+
     public Integer getId() {
         return id;
     }

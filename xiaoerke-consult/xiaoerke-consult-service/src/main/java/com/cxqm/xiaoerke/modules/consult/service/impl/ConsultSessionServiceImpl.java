@@ -122,4 +122,16 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
             return "failure";
         }
     }
+
+    //根据条件查询接待人数 sunxiao
+    @Override
+    public Integer getConsultSessionUserCount(Map map) {
+        return consultSessionDao.getConsultSessionUserCount(map);
+    }
+
+    //根据条件查询会话列表 sunxiao
+    @Override
+    public List<ConsultSession> getConsultSessionListByInfo(Map map) {
+        return consultSessionDao.getConsultSessionListByInfo(map);
+    }
 }
