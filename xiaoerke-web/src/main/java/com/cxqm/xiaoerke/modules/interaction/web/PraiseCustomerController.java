@@ -72,6 +72,7 @@ public class PraiseCustomerController extends BaseController {
     	String doctorId=map.get("doctorId").toString();
     	result.put("evaluation", map);
     	result.put("starInfo", patientRegisterPraiseService.getCustomerStarInfoById(doctorId));
+        result.put("doctorHeadImage",patientRegisterPraiseService.getDoctorHeadImageURIById(doctorId));
         return result;
     }
     

@@ -57,4 +57,6 @@ public interface PatientRegisterPraiseService {
      * @author chenxiaoqiong
      */
     HashMap<String,Object> getDoctorEvaluate(HashMap<String, Object> params);
+
+    void saveCustomerEvaluation(Map<String, Object> params);
 }

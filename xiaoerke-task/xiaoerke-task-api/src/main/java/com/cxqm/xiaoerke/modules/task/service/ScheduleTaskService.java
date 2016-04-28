@@ -58,12 +58,12 @@ public interface ScheduleTaskService {
      * 5min之前预约成功的电话咨询订单
      * @return
      */
-    List<HashMap<String,Object>> getOrderInfoToDoc5minAfterSuccess();
+    List<HashMap<String,Object>> getOrderInfoToDocSuccess5minBefore();
 
     List<HashMap<String,Object>> getDoctorInfoByDate(String date);
 
     List<HashMap<String,Object>> getOrderInfoByDate(String tomorrow);
 
-    List<HashMap<String,Object>> getOrderInfoToDoc5minBeforeConnect();
+    List<HashMap<String,Object>> getOrderInfoToDocConnect5minAfter();
 
 }
