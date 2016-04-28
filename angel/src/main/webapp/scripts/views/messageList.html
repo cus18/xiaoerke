@@ -86,7 +86,7 @@
                 <div class="recently">最近联系时间</div>
                 <div class="insert">接入客服</div>
             </div>
-            <div  class='w10 h20 br1'>
+            <div  class='w10 h20 h2l'>
                 <ul class="nicknamecontentlist">
                     <li ng-repeat="item in userConsultListInfo"
                         ng-click ="getUserRecordDetail(item.userName,item.userId,$index)"
@@ -97,6 +97,14 @@
                     </li>
                 </ul>
                 <a id="bottom"></a>
+            </div>
+            <div class="clientListPage">
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_27.png" alt=""/>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_29.png" alt=""/>
+                <input type="text"/>/
+                <input type="text"/>页
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_22.png" alt=""/>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_24.png" alt=""/>
             </div>
         </div>
         <div class="content-r" style='margin-left: 501px;'>
@@ -121,10 +129,9 @@
                     <input type="text"/>页
                     <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_22.png" alt=""/>
                     <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_24.png" alt=""/>
-
                 </div>
             </div>
-            <div class='w10 h20 examinecontent'>
+            <div class='w10 h20 h2r examinecontent bl1'>
                 <ul>
                      <li ng-repeat="item in currentUserConsultRecordDetail">
                          <div ng-if="item.senderId==item.csUserId">
