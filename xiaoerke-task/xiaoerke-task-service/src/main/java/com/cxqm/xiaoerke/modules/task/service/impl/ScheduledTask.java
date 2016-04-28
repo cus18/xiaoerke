@@ -1115,7 +1115,7 @@ public class ScheduledTask {
         if(consultSessionStatusVos != null && consultSessionStatusVos.size() > 0){
             for(ConsultSessionStatusVo consultSessionStatusVo : consultSessionStatusVos){
                     if(consultSessionStatusVo !=null && consultSessionStatusVo.getLastMessageTime()!=null){
-                        if(DateUtils.pastMinutes(consultSessionStatusVo.getLastMessageTime())>10L){
+                        if(DateUtils.pastMinutes(consultSessionStatusVo.getLastMessageTime())>100L){
                             consultSessionService.clearSession(consultSessionStatusVo.getSessionId(),
                                     consultSessionStatusVo.getUserId());
                         }
