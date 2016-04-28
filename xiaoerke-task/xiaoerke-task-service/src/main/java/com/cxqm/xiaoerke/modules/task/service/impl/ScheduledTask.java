@@ -1010,7 +1010,7 @@ public class ScheduledTask {
             List<Map> messageMap = messageService.consultPhoneMsgRemind((Integer) map.get("id") + "");
             if(null == messageMap||messageMap.size() == 0){
                 String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)map.get("date"),"yyyy/MM/dd"));
-                String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(Integer) map.get("orderId")+",phone";
+                String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(Integer) map.get("id")+",phone";
                 PatientMsgTemplate.consultPhoneWaring2Wechat((String)map.get("doctorName"),(String)map.get("date"),week,(String)map.get("beginTime") ,(String)map.get("endTime") ,(String)map.get("userPhone") ,(String)map.get("orderNo"),(String)map.get("openid"),token ,url);
                 PatientMsgTemplate.consultPhoneWaring2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (String) map.get("date"), week, (String) map.get("beginTime"), (String) map.get("userPhone"), (String) map.get("orderNo"));
                 insertMonitor((Integer) map.get("id") + "", "2", "7");
