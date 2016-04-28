@@ -172,7 +172,7 @@ public class ConsultUserController extends BaseController {
             }
         }
 //        removeDuplicateList(resultList);
-
+        response.put("totalPage",pagination.getTotalPage());
         response.put("userList",resultList);
         return response;
     }
@@ -378,7 +378,7 @@ public class ConsultUserController extends BaseController {
                     resultList.add(vo);
                 }
             }
-            removeDuplicateList(resultList);
+//            removeDuplicateList(resultList);
             response.put("userList",resultList);
         }else if(searchType.equals("message")){
             Query query = new Query(where("message").regex(searchInfo)).with(new Sort(Sort.Direction.DESC, "createDate"));
@@ -405,6 +405,7 @@ public class ConsultUserController extends BaseController {
                 response.put("userList",responseList);
             }
         }
+        response.put("totalPage",pagination.getTotalPage());
         response.put("pageNo",pageNo);
         response.put("pageSize",pageSize);
         return response;
