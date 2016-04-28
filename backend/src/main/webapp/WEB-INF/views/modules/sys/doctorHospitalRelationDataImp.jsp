@@ -195,7 +195,6 @@
 				<form:select path="relationType" style="width: 100px"  name="relationType" htmlEscape="false" maxlength="50">
 					<option value="0">0</option>
 					<option value="1">1</option>
-					<option value="2">2</option>
 				</form:select>
 					<%--<form:input path="relationType" htmlEscape="false" maxlength="100"/>--%>
 				<span class="help-inline">医生和此医院的关系（1表示归属关系，0表示仅在此坐诊执业，2表示此医院为合作机构）</span>
