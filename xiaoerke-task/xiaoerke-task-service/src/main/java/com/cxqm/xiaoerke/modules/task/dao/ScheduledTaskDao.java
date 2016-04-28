@@ -60,9 +60,9 @@ public interface ScheduledTaskDao {
      * 5min之前预约的电话咨询订单
      * @return
      */
-    List<HashMap<String,Object>> getOrderInfoToDoc5minAfterSuccess();
+    List<HashMap<String,Object>> getOrderInfoToDocSuccess5minBefore();
 
-    List<HashMap<String,Object>> getOrderInfoToDoc5minBeforeConnect();
+    List<HashMap<String,Object>> getOrderInfoToDocConnect5minAfter();
 
     List<HashMap<String,Object>> getDoctorInfoByDate(String date);
 
