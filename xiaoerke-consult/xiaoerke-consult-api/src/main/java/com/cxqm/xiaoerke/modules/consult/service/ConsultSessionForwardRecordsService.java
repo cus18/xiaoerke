@@ -39,4 +39,6 @@ public interface ConsultSessionForwardRecordsService {
     Page<ConsultSessionForwardRecordsVo> getConsultUserListRecently(Page<ConsultSessionForwardRecordsVo> page, HashMap<String, Object> hashMap);
 
     List<ConsultSessionForwardRecordsVo> getWaitJoinList(String csUserId);
+
+    List<ConsultSessionForwardRecordsVo> selectConsultForwardList(ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo);
 }

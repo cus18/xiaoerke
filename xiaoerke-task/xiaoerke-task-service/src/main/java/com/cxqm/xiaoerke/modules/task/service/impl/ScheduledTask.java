@@ -5,10 +5,12 @@ import com.cxqm.xiaoerke.common.bean.WechatRecord;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
 import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultPhoneService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
 import com.cxqm.xiaoerke.modules.operation.service.BaseDataService;
@@ -65,8 +67,12 @@ public class ScheduledTask {
 
     @Autowired
     private BaseDataService baseDataService;
+
     @Autowired
     private OperationsComprehensiveService operationComprehensiveService;
+
+    @Autowired
+    private ConsultSessionForwardRecordsService consultSessionForwardRecordsService;
 
     @Autowired
     private PlanMessageService planMessageService;
@@ -1116,8 +1122,15 @@ public class ScheduledTask {
             for(ConsultSessionStatusVo consultSessionStatusVo : consultSessionStatusVos){
                     if(consultSessionStatusVo !=null && consultSessionStatusVo.getLastMessageTime()!=null){
                         if(DateUtils.pastMinutes(consultSessionStatusVo.getLastMessageTime())>100L){
-                            consultSessionService.clearSession(consultSessionStatusVo.getSessionId(),
-                                    consultSessionStatusVo.getUserId());
+                            //根据sessionId查询consult_conversation_forward_records表，状态为waiting不执行
+                            ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = new ConsultSessionForwardRecordsVo();
+                            consultSessionForwardRecordsVo.setConversationId(Long.parseLong(consultSessionStatusVo.getSessionId()));
+                            consultSessionForwardRecordsVo.setStatus("waiting");
+                            List<ConsultSessionForwardRecordsVo> consultSessionForwardRecordsVos = consultSessionForwardRecordsService.selectConsultForwardList(consultSessionForwardRecordsVo);
+                            if(consultSessionForwardRecordsVos.size() > 0){
+                                consultSessionService.clearSession(consultSessionStatusVo.getSessionId(),
+                                        consultSessionStatusVo.getUserId());
+                            }
                         }
                     }
             }

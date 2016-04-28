@@ -83,7 +83,7 @@ public class ConsultSessionForwardRecordsServiceImpl implements ConsultSessionFo
 
     @Override
     public int transferSession(Integer sessionId, String transferer, String remark){
-        return ConsultSessionManager.getSessionManager().transferSession(sessionId,transferer,remark);
+        return ConsultSessionManager.getSessionManager().transferSession(sessionId, transferer, remark);
     }
 
     @Override
@@ -104,12 +104,17 @@ public class ConsultSessionForwardRecordsServiceImpl implements ConsultSessionFo
 
     @Override
     public Page<ConsultSessionForwardRecordsVo> getConsultUserListRecently(Page<ConsultSessionForwardRecordsVo> page,HashMap<String, Object> hashMap){
-       return  forwardRecordsDao.getConsultUserListRecently(page,hashMap);
+       return  forwardRecordsDao.getConsultUserListRecently(page, hashMap);
     }
 
     @Override
     public List<ConsultSessionForwardRecordsVo> getWaitJoinList(String csUserId) {
-        return forwardRecordsDao.findWaitJoinListByCsUserId(csUserId,ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_WAITING);
+        return forwardRecordsDao.findWaitJoinListByCsUserId(csUserId, ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_WAITING);
+    }
+
+    @Override
+    public List<ConsultSessionForwardRecordsVo> selectConsultForwardList(ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo){
+        return forwardRecordsDao.selectConsultForwardList(consultSessionForwardRecordsVo);
     }
 
 }
