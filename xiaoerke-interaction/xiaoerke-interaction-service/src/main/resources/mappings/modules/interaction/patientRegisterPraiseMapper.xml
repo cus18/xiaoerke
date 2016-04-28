@@ -313,11 +313,12 @@
 <!--  获取医生头像信息 -->
 	 <select id="getDoctorHeadImageURIById" resultType="java.util.Map">
 		SELECT
-			*
+			su.name as 'doctor_name',CONCAT('http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/', cdi.sys_user_id) as 'doctor_pic_url'
 		FROM
-			customerevaluation
+			consult_doctor_info cdi
+            inner join sys_user su on su.id=cdi.sys_user_id
 		WHERE
-			doctorId =#{doctorId}
+			sys_user_id =#{doctorId}
 	</select>
 
 	<insert id="saveQuestionnaireSurvey" parameterType="java.util.List">

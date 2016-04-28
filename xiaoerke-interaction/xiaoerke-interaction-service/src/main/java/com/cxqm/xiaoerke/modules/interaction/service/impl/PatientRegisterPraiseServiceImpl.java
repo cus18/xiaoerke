@@ -145,6 +145,7 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
         return response;
     }
 
+	@Override
     public void saveCustomerEvaluation(Map<String, Object> params) {
     	patientRegisterPraiseDao.saveCustomerEvaluation(params);
     }
