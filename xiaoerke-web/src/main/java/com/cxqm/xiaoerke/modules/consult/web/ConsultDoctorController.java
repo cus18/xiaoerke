@@ -4,6 +4,7 @@ package com.cxqm.xiaoerke.modules.consult.web;
 import com.alibaba.fastjson.JSON;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
@@ -13,9 +14,11 @@ import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultSessionServiceImpl;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.consult.utils.DateUtil;
+import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -56,6 +59,9 @@ public class ConsultDoctorController extends BaseController {
 
     @Autowired
     private SystemService systemService;
+
+    @Autowired
+    private PatientRegisterPraiseService patientRegisterPraiseService;
 
     @RequestMapping(value = "/getCurrentUserHistoryRecord", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -242,6 +248,22 @@ public class ConsultDoctorController extends BaseController {
     @ResponseBody
     Map<String, Object> sessionEnd(@RequestParam(required=true) String sessionId,
                                    @RequestParam(required=true) String userId) {
+        Map<String,Object> params=new HashMap<String,Object>();
+        params.put("openid", userId);
+        params.put("uuid", UUID.randomUUID().toString().replaceAll("-", ""));
+        params.put("starNum1", 0);
+        params.put("starNum2", 0);
+        params.put("starNum3", 0);
+        params.put("doctorId", UserUtils.getUser().getId());
+        params.put("content", "");
+        params.put("dissatisfied", null);
+        params.put("redPacket", null);
+        patientRegisterPraiseService.saveCustomerEvaluation(params);
+        String st = "感谢您对我们的信任与支持，为了以后能更好的为您服务，请对本次服务做出评价！【" +
+                "<a href='http://s11.baodf.com/titan/appoint#/userEvaluate/"+params.get("uuid")+"'>我要评价</a>】";
+        Map parameter = systemService.getWechatParameter();
+        String token = (String)parameter.get("token");
+        WechatUtil.senMsgToWechat(token, userId, st);
         String result = consultSessionService.clearSession(sessionId,userId);
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("result", result);
