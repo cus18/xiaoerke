@@ -120,6 +120,14 @@ public class ConsultUserController extends BaseController {
         Integer pageSize = (Integer) params.get("pageSize");
         Integer dateNum = (Integer) params.get("dateNum");
         String csUserId = String.valueOf(params.get("CSDoctorId"));
+        Date date = null;
+        if(dateNum != null){
+            String dateTemp;
+            Calendar ca = Calendar.getInstance();
+            ca.add(Calendar.DATE, -dateNum);// 30为增加的天数，可以改变的
+            dateTemp = DateUtils.DateToStr(ca.getTime(), "datetime");
+            date = DateUtils.StrToDate(dateTemp,"datetime");
+        }
 
         Query query;
         if(dateNum == null){
@@ -128,14 +136,13 @@ public class ConsultUserController extends BaseController {
             }else {
                 query = new Query().addCriteria(new Criteria().where("csUserId").is(csUserId)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
             }
-        }else {
-            String date2;
-            Calendar ca = Calendar.getInstance();
-            ca.add(Calendar.DATE, -dateNum);// 30为增加的天数，可以改变的
-            date2 = DateUtils.DateToStr(ca.getTime(), "datetime");
-            Date date = DateUtils.StrToDate(date2,"datetime");
+        }else if(csUserId != "null"){
+            query = new Query().addCriteria(new Criteria().where("csUserId").is(csUserId).andOperator(Criteria.where("lastMessageTime").gte(date))).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
+        } else {
             query = new Query().addCriteria(Criteria.where("lastMessageTime").gte(date));
         }
+
+
 
 
         PaginationVo<ConsultSessionStatusVo> pagination = consultRecordService.getUserMessageList(pageNo, pageSize, query);
@@ -163,8 +170,9 @@ public class ConsultUserController extends BaseController {
                 }
                 resultList.add(vo);
             }
+            removeDuplicateList(resultList);
         }
-        removeDuplicateList(resultList);
+
         response.put("userList",resultList);
         return response;
     }
@@ -369,8 +377,9 @@ public class ConsultUserController extends BaseController {
                     }
                     resultList.add(vo);
                 }
+                removeDuplicateList(resultList);
             }
-            removeDuplicateList(resultList);
+
             response.put("userList",resultList);
         }else if(searchType.equals("message")){
             Query query = new Query(where("message").regex(searchInfo)).with(new Sort(Sort.Direction.DESC, "createDate"));

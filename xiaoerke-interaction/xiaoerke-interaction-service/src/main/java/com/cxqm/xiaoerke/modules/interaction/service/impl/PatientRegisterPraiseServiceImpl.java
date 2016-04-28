@@ -145,6 +145,7 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
         return response;
     }
 
+	@Override
     public void saveCustomerEvaluation(Map<String, Object> params) {
     	patientRegisterPraiseDao.saveCustomerEvaluation(params);
     }
@@ -379,6 +380,12 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 	public Map<String, Object> getDoctorHeadImageURIById(String id) {
 		// TODO Auto-generated method stub
 		return patientRegisterPraiseDao.getDoctorHeadImageURIById(id);
+	}
+
+	//根据条件查询评价信息sunxiao
+	@Override
+	public List<Map<String, Object>> getCustomerEvaluationListByInfo(Map map) {
+		return patientRegisterPraiseDao.getCustomerEvaluationListByInfo(map);
 	}
 
 }

@@ -480,10 +480,11 @@ public class ConsultSessionManager {
 				ConsultSessionForwardRecordsVo forwardRecord = consultSessionForwardRecordsService.selectByPrimaryKey(forwardRecordId.longValue());
 
 				if(ConsultSessionForwardRecordsVo.REACT_TRANSFER_OPERATION_ACCEPT.equalsIgnoreCase(operation)){
-					if(session.getSource().equals("wxcxqm")){
-						String st = "尊敬的用户，您好，已经为您转接了" + toCsUserName + "提供服务，谢谢^_^";
-						WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN,session.getUserId(), st);
-					}
+					//转接给医生时，在用户那里不需要显示转接给谁的消息,待定，李凯给详细需求
+//					if(session.getSource().equals("wxcxqm")){
+//						String st = "尊敬的用户，您好，已经为您转接了" + toCsUserName + "提供服务，谢谢^_^";
+//						WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN,session.getUserId(), st);
+//					}
 
 					if(session!=null){
 						sessionRedisCache.putSessionIdConsultSessionPair(sessionId, session);

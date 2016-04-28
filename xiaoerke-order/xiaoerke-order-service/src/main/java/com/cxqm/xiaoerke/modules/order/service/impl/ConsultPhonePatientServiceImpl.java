@@ -190,12 +190,20 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
             PatientMsgTemplate.consultPhoneRefund2Msg(doctorName, (Float) map.get("price")+"", (String) map.get("phone"),(String) map.get("date"), week, (String) map.get("beginTime"),(String) map.get("orderNo"));
 
             //医生 消息
-            DoctorMsgTemplate.cancelDoctorPhoneConsult2Sms(doctorName,babyName,doctorPhone,date,week,beginTime);
-            Map<String,Object> tokenMap = systemService.getDoctorWechatParameter();
-            String doctorToken = (String)tokenMap.get("token");
-            String openId = doctorInfoService.findOpenIdByDoctorId((String) map.get("doctorId"));
-            if(StringUtils.isNotNull(openId)) {
-                DoctorMsgTemplate.doctorPhoneConsultRemindFail2Wechat(babyName, date, doctorToken, "", openId);
+            String hospitalContactPhone = (String)map.get("hospitalContactPhone");
+            if(StringUtils.isNotNull(hospitalContactPhone)){
+                String content = "【电话咨询取消预约】尊敬的"+doctorName+"医生，"+babyName+"小朋友家长取消了您"+date+"("+week+")"+beginTime+"的电话咨询。";
+                ChangzhuoMessageUtil.sendMsg(hospitalContactPhone, content, ChangzhuoMessageUtil.RECEIVER_TYPE_DOCTOR);
+            }else {
+                DoctorMsgTemplate.cancelDoctorPhoneConsult2Sms(doctorName, babyName, doctorPhone, date, week, beginTime);
+
+                //微信消息
+                Map<String, Object> tokenMap = systemService.getDoctorWechatParameter();
+                String doctorToken = (String) tokenMap.get("token");
+                String openId = doctorInfoService.findOpenIdByDoctorId((String) map.get("doctorId"));
+                if (StringUtils.isNotNull(openId)) {
+                    DoctorMsgTemplate.cancelDoctorPhoneConsult2Wechat(babyName, date, week, beginTime, doctorToken, "", openId);
+                }
             }
         }
         if(sysOrderState== 0){

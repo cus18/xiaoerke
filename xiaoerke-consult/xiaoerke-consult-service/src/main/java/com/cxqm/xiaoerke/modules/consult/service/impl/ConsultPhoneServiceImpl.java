@@ -162,7 +162,7 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
             Map<String,Object> parameter = systemService.getWechatParameter();
             String token = (String)parameter.get("token");
             PatientMsgTemplate.consultPhoneEvaluateWaring2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"),(String) consultOrder.get("phone"), url,connectUrl,token);
-            PatientMsgTemplate.evaluationRemind2Wechat(userInfo.getOpenid(),token,connectUrl,"您的订单可以评价了哦!",(String) consultOrder.get("orderNo"), (String) consultOrder.get("date"),"");
+            PatientMsgTemplate.evaluationRemind2Wechat(userInfo.getOpenid(),token,url,"您的订单可以评价了哦!",(String) consultOrder.get("orderNo"), (String) consultOrder.get("date"),"");
         }
         int state = consultPhonePatientService.updateOrderInfoBySelect(consultPhonevo);
         //返回的数据

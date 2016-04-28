@@ -15,10 +15,11 @@
     <result column="receive_differential_notification" property="receiveDifferentialNotification" jdbcType="VARCHAR" />
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, sys_user_id, gender, title, hospital, department, skill, description, grab_session, send_message, receive_differential_notification,
-    create_date, update_date
+    create_date, update_date,type
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -41,6 +42,9 @@
     <if test="id != null and id != ''" >
       and id =  #{id,jdbcType=VARCHAR}
     </if>
+    <if test="type != null and id != ''" >
+      and type =  #{type,jdbcType=VARCHAR}
+    </if>
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -50,12 +54,12 @@
   <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo" >
     insert into consult_doctor_info (id, sys_user_id, gender, title, hospital, department, skill,
     description, grab_session, send_message, receive_differential_notification,
-    create_date, update_date)
+    create_date, update_date,type)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR},
       #{title,jdbcType=VARCHAR}, #{hospital,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR},
       #{skill,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{grabSession,jdbcType=VARCHAR},
       #{sendMessage,jdbcType=VARCHAR}, #{receiveDifferentialNotification,jdbcType=TIMESTAMP}, #{createDate,jdbcType=VARCHAR},
-      #{updateDate,jdbcType=TIMESTAMP})
+      #{updateDate,jdbcType=TIMESTAMP},#{type,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo" >
     insert into consult_doctor_info
@@ -99,6 +103,9 @@
       <if test="updateDate != null" >
         update_date,
       </if>
+      <if test="type != null" >
+        type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -139,6 +146,9 @@
       </if>
       <if test="updateDate != null" >
         #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -181,6 +191,9 @@
       <if test="updateDate != null" >
         update_date = #{updateDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -197,7 +210,8 @@
       send_message = #{sendMessage,jdbcType=VARCHAR},
       receive_differential_notification = #{receiveDifferentialNotification,jdbcType=VARCHAR},
       create_date = #{createDate,jdbcType=TIMESTAMP},
-      update_date = #{updateDate,jdbcType=TIMESTAMP}}
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      type = #{type,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
