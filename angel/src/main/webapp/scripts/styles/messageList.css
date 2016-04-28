@@ -21,7 +21,7 @@
 .messagelistn {border-bottom: 1px solid #ccc;height: 34px;}
 .messagelistn input {width: 30px;}
 .messagelistn img{margin:0 10px;}
-.messagelistn div {margin: 0 20px 0 5px;cursor: pointer;}
+.messagelistn div {margin: 0 10px 0 5px;cursor: pointer;}
 .nicknamecontentlist li{height: 35px;}
 .nicknamecontentlist li div {overflow: hidden;height: 35px;float: left;font: 12px/35px 'Microsoft Yahei';cursor: pointer;}
 .nicknamecontentlist li .nickname{width: 88px;margin-left: 20px;}
@@ -31,3 +31,6 @@
 .examinecontent ul li {margin: 15px 0 0 20px;font: 12px/28px 'Microsoft Yahei';}
 .examinecontent ul li .name{color:#08b7c2;}
 .examinecontent ul li .chatcontent{color:#666;font: 12px/20px 'Microsoft Yahei';margin-top: 10px;}
+.clientListPage{padding: 4px 20px;font-size: 12px;color: #acacac;}
+.clientListPage img{margin: 0 20px;}
+.clientListPage input{width: 60px;}

@@ -321,6 +321,16 @@
 			sys_user_id =#{doctorId}
 	</select>
 
+    <!--  根据条件查询医生评价sunxiao -->
+    <select id="getCustomerEvaluationListByInfo" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT
+        *
+        FROM
+        customerevaluation
+        WHERE
+        doctorId =#{doctorId}
+    </select>
+
 	<insert id="saveQuestionnaireSurvey" parameterType="java.util.List">
 		<selectKey keyProperty="id" resultType="long">
 			select LAST_INSERT_ID()

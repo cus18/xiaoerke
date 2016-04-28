@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.utils.OSSObjectTool;
 import com.cxqm.xiaoerke.common.utils.excel.ExportExcel;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
@@ -20,11 +21,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 
@@ -110,6 +114,11 @@ public class ConsultController extends BaseController {
 		Map map = consultDoctorInfoService.getConsultDoctorInfo(user);
 		model.addAttribute("user", map.get("user"));
 		model.addAttribute("doctor", map.get("doctor"));
+		model.addAttribute("redPacket", map.get("redPacket"));
+		model.addAttribute("satisfy", map.get("satisfy"));
+		model.addAttribute("unsatisfy", map.get("unsatisfy"));
+		model.addAttribute("sessionCount", map.get("sessionCount"));
+		model.addAttribute("sessionMap", map.get("sessionMap"));
 		return "modules/consult/doctorMoreSettingForm";
 	}
 
@@ -132,4 +141,27 @@ public class ConsultController extends BaseController {
 		}
 		return result.toString();
 	}
+
+	/**
+	 * 新增医生
+	 * @return
+	 */
+	@RequestMapping(value = "fileUpload")
+	public String fileUpload(@RequestParam("files") MultipartFile file,String id, Model model,RedirectAttributes redirectAttributes) {
+		if (!file.isEmpty()) {
+			try {
+				InputStream inputStream = file.getInputStream();
+				long length = file.getSize();
+				//上传图片至阿里云
+				OSSObjectTool.uploadFileInputStream(id, length, inputStream, OSSObjectTool.BUCKET_DOCTOR_PIC);
+				inputStream.close();
+				addMessage(redirectAttributes, "上传头像成功！");
+			} catch (Exception e) {
+				e.printStackTrace();
+				addMessage(redirectAttributes, "上传头像失败！");
+			}
+		}
+		return "redirect:" + adminPath + "/consult/doctorMoreSettingForm?id="+id;
+	}
+
 }

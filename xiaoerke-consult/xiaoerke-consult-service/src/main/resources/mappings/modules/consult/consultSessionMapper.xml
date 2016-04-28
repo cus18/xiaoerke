@@ -240,4 +240,11 @@
         </foreach>
     </select>
 
+    <select id="getConsultSessionUserCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT count(DISTINCT sys_user_id) FROM consult_session where sys_user_id_cs=#{doctorId}
+    </select>
+
+    <select id="getConsultSessionListByInfo" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT * FROM consult_session where sys_user_id_cs=#{doctorId} GROUP BY DATE_FORMAT(create_time,'%Y-%c-%d'),sys_user_id
+    </select>
 </mapper>

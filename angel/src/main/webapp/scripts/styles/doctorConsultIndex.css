@@ -22,14 +22,15 @@ header{position: relative;}
 .h5 {height: 45px;}
 .h6{height: 40px;}
 .h7{height: 35px;}
-.h20{height: 400px;font: 12px/20px 'Microsoft Yahei';overflow-y:scroll;background-color: #fff;color:#333;}
+.h20{font: 12px/20px 'Microsoft Yahei';overflow-y:scroll;background-color: #fff;color:#333;}
 .h20::-webkit-scrollbar {width:10px;height:10px;}
 .h20::-webkit-scrollbar-track-piece {background:#eee;border-radius:5px;}
 .h20::-webkit-scrollbar-thumb{background:#08b7c2;border-radius:5px;}
-
+.h2l{height: 400px;}
+.h2r{height: 428px;}
 .h30 {height: 500px;}
 .cl {color:#fff;}
-.br1{border-right: 1px solid #ccc;}
+.bl1{border-left: 1px solid #ccc;}
 .tab div a span {display: inline-block; padding: 13px 0 14px 0;cursor: pointer;}
 .messageList {width: 100%;min-width: 1024px;height: auto;}
 .qf:after {content:'';display:table;clear:both;}

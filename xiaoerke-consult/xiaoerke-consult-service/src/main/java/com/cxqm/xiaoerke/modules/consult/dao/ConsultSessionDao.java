@@ -36,4 +36,10 @@ public interface ConsultSessionDao {
     List<ConsultSession> getAlreadyAccessUsers(ConsultSession consultSession);
 
     HashMap<String,Object> getAttention(String openId);
+
+    //根据条件查询接待人数 sunxiao
+    Integer getConsultSessionUserCount(Map map);
+
+    //根据条件查询会话列表 sunxiao
+    List<ConsultSession> getConsultSessionListByInfo(Map map);
 }
