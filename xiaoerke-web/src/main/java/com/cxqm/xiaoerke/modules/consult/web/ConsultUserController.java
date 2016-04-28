@@ -170,8 +170,9 @@ public class ConsultUserController extends BaseController {
                 }
                 resultList.add(vo);
             }
+            removeDuplicateList(resultList);
         }
-        removeDuplicateList(resultList);
+
         response.put("userList",resultList);
         return response;
     }
@@ -376,8 +377,9 @@ public class ConsultUserController extends BaseController {
                     }
                     resultList.add(vo);
                 }
+                removeDuplicateList(resultList);
             }
-            removeDuplicateList(resultList);
+
             response.put("userList",resultList);
         }else if(searchType.equals("message")){
             Query query = new Query(where("message").regex(searchInfo)).with(new Sort(Sort.Direction.DESC, "createDate"));
