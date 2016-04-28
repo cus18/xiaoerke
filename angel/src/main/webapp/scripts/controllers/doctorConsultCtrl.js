@@ -763,9 +763,9 @@ angular.module('controllers', ['luegg.directives'])
         }])
 
     .controller('messageListCtrl', ['$scope', '$log', '$sce', 'GetUserConsultListInfo',
-        'GetUserRecordDetail', 'GetCSDoctorList', 'GetCSInfoByUserId', 'GetMessageRecordInfo','GetUserLoginStatus','$location',
+        'GetUserRecordDetail', 'GetCSDoctorList', 'GetMessageRecordInfo','GetUserLoginStatus','$location',
         function ($scope, $log, $sce, GetUserConsultListInfo, GetUserRecordDetail,
-                  GetCSDoctorList, GetCSInfoByUserId, GetMessageRecordInfo,GetUserLoginStatus,$location) {
+                  GetCSDoctorList, GetMessageRecordInfo,GetUserLoginStatus,$location) {
 
             $scope.info = {};
 
@@ -789,13 +789,16 @@ angular.module('controllers', ['luegg.directives'])
 
             $scope.searchDate = [{
                 name: "今天",
-                value: 1
+                value: 0
             }, {
                 name: "最近7天",
                 value: 7
             }, {
                 name: "最近30天",
                 value: 30
+            },{
+                name: "所有时间",
+                value: 10000
             }];
 
             $scope.messageListInit = function(){
@@ -807,13 +810,24 @@ angular.module('controllers', ['luegg.directives'])
                         window.location.href = data.redirectURL + "?targeturl=" + routePath;
                     } else if (data.status == "20") {
                         //获取会话客户列表（含会话转接过程中，经历过几个客服）
-                        GetUserConsultListInfo.save({pageNo: 1, pageSize: 1000}, function (data) {
+                        $scope.selectedDate = $scope.searchDate[0];
+                        GetUserConsultListInfo.save({dateNum: 1,
+                            CSDoctorId: "allCS",
+                            pageNo: 1, pageSize:5}, function (data) {
                             refreshUserRecordDetailData(data);
-                        });
+                        })
 
                         //获取客服医生列表
                         GetCSDoctorList.save({}, function (data) {
-                            $scope.CSList = data.CSList;
+                            $scope.CSList = [{"id":"allCS","name":"所有客服"}];
+                            $.each(data.CSList,function(index,value){
+                                $scope.CSList.push(value);
+                            })
+                            console.log($scope.CSList);
+                            $scope.selectedCsList = $scope.CSList[0];
+
+                            $scope.dateNumValue = angular.copy($scope.selectedDate.value);
+                            $scope.CSDoctorIdValue =angular.copy($scope.selectedCsList.id);
                         });
                     }
                 })
@@ -834,17 +848,18 @@ angular.module('controllers', ['luegg.directives'])
                 });
             }
 
-            //查询某个客服信息
-            $scope.getGetCSInfoByUserId = function (Object) {
-                if (Object == 1000 || Object == 1 || Object == 7 || Object == 30) {
-                    GetCSInfoByUserId.save({dateNum: Object, pageNo: 1, pageSize: 1000}, function (data) {
-                        refreshUserRecordDetailData(data);
-                    });
+            //查询某个客服信息位于某个时间段的信息
+            $scope.getCsInfoByUserAndDate = function(Object){
+                if (Object == 1000 || Object == 0 || Object == 7 || Object == 30) {
+                    $scope.dateNumValue = angular.copy(Object);
                 } else {
-                    GetCSInfoByUserId.save({CSDoctorId: Object, pageNo: 1, pageSize: 1000}, function (data) {
-                        refreshUserRecordDetailData(data);
-                    });
+                    $scope.CSDoctorIdValue =angular.copy(Object);
                 }
+                GetUserConsultListInfo.save({dateNum: $scope.dateNumValue,
+                    CSDoctorId: $scope.CSDoctorIdValue,
+                    pageNo: 1, pageSize: 1000}, function (data) {
+                    refreshUserRecordDetailData(data);
+                })
             }
 
             //查找咨询记录（消息列表右上角的搜索功能）
@@ -896,7 +911,6 @@ angular.module('controllers', ['luegg.directives'])
 
             var refreshUserRecordDetailData = function(data){
                 $scope.userConsultListInfo = data.userList;
-                console.log($scope.userConsultListInfo);
                 if($scope.userConsultListInfo.length!=0){
                     $scope.getUserRecordDetail($scope.userConsultListInfo[0].userName,$scope.userConsultListInfo[0].userId,0);
                 }else{

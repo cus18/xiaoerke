@@ -10,14 +10,11 @@ public class PaginationVo<T> {
 
 	private int pageNo;
 
-
 	private int upPage;
-
 
 	private int nextPage;
 
 	private long totalCount;
-
 
 	private int totalPage;
 

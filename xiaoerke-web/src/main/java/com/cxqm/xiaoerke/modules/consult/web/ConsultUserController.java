@@ -121,7 +121,7 @@ public class ConsultUserController extends BaseController {
         Integer dateNum = (Integer) params.get("dateNum");
         String csUserId = String.valueOf(params.get("CSDoctorId"));
         Date date = null;
-        if(dateNum != null){
+        if(dateNum != 10000){
             String dateTemp;
             Calendar ca = Calendar.getInstance();
             ca.add(Calendar.DATE, -dateNum);// 30为增加的天数，可以改变的
@@ -130,20 +130,17 @@ public class ConsultUserController extends BaseController {
         }
 
         Query query;
-        if(dateNum == null){
-            if(csUserId == "null"){
+        if(dateNum == 10000){
+            if(csUserId.equals("allCS")){
                 query = new Query().with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
             }else {
                 query = new Query().addCriteria(new Criteria().where("csUserId").is(csUserId)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
             }
-        }else if(csUserId != "null"){
+        }else if(!csUserId.equals("allCS")){
             query = new Query().addCriteria(new Criteria().where("csUserId").is(csUserId).andOperator(Criteria.where("lastMessageTime").gte(date))).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
         } else {
             query = new Query().addCriteria(Criteria.where("lastMessageTime").gte(date));
         }
-
-
-
 
         PaginationVo<ConsultSessionStatusVo> pagination = consultRecordService.getUserMessageList(pageNo, pageSize, query);
         List<ConsultSessionStatusVo> resultList = new ArrayList<ConsultSessionStatusVo>();
@@ -177,17 +174,8 @@ public class ConsultUserController extends BaseController {
         return response;
     }
 
-    private void removeDuplicateList(List<ConsultSessionStatusVo> resultList) {
-        int size = resultList.size();
-        for(int i = 0;i<size;i++){
-            if(frequency(resultList, resultList.get(i)) > 1){
-                resultList.remove(i);
-                size = resultList.size();
-            }
-        }
-    }
-
     /**
+     * 数据去重，留作后用
      * @author deliang
      * @param c
      * @param o

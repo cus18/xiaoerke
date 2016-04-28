@@ -37,10 +37,6 @@ angular.module('services', ['ngResource'])
     .factory('GetMessageRecordInfo', ['$resource', function ($resource) {
         return $resource(public + 'consult/user/recordSearchList');
     }])
-    //根据userId获取某个客服医生
-    .factory('GetCSInfoByUserId', ['$resource', function ($resource) {
-        return $resource(public + 'consult/user/getUserList');
-    }])
     //修改回复
     .factory('AnswerModify', ['$resource', function ($resource) {
         return $resource(public + 'consult/doctor/Answer/modify');

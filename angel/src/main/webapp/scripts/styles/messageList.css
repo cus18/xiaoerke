@@ -25,7 +25,7 @@
 .nicknamecontentlist li{height: 35px;}
 .nicknamecontentlist li div {overflow: hidden;height: 35px;float: left;font: 12px/35px 'Microsoft Yahei';cursor: pointer;}
 .nicknamecontentlist li .nickname{width: 88px;margin-left: 20px;}
-.nicknamecontentlist li .recently{width: 110px;margin-left: 80px;}
+.nicknamecontentlist li .recently{width: 120px;margin-left: 65px;}
 .nicknamecontentlist li .insert{width: 105px;margin-left: 75px;}
 
 .examinecontent ul li {margin: 15px 0 0 20px;font: 12px/28px 'Microsoft Yahei';}

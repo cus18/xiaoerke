@@ -67,17 +67,15 @@
             <div class='w10 h6 customerlist '>
                 <div class="fl">客户列表</div>
                 <div class="fr">
-                    <select id="searchDateId" ng-model="selected"
+                    <select id="searchDateId" ng-model="selectedDate"
                             ng-options="date.name for date in searchDate"
-                            ng-change="getGetCSInfoByUserId(selected.value)">
-                        <option value="">所有时间</option>
+                            ng-change="getCsInfoByUserAndDate(selectedDate.value)">
                     </select>
                 </div>
                 <div class="fr">
-                    <select id="CSDoctorListInfoId" ng-model="selected"
+                    <select id="CSDoctorListInfoId" ng-model="selectedCsList"
                             ng-options="user.name for user in CSList"
-                            ng-change="getGetCSInfoByUserId(selected.id)">
-                        <option value="">所有客服</option>
+                            ng-change="getCsInfoByUserAndDate(selectedCsList.id)">
                     </select>
                 </div>
             </div>
@@ -92,7 +90,7 @@
                         ng-click ="getUserRecordDetail(item.userName,item.userId,$index)"
                         ng-style="(setSessoin==$index)?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}">
                         <div class="nickname">{{item.userName}}</div>
-                        <div class="recently">{{item.lastMessageTime|date:"yyyy-MM-dd"}}</div>
+                        <div class="recently">{{item.lastMessageTime|date:"yyyy-MM-dd HH:mm:ss"}}</div>
                         <div class="insert">{{item.csUserName}}</div>
                     </li>
                 </ul>
