@@ -382,4 +382,10 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 		return patientRegisterPraiseDao.getDoctorHeadImageURIById(id);
 	}
 
+	//根据条件查询评价信息sunxiao
+	@Override
+	public List<Map<String, Object>> getCustomerEvaluationListByInfo(Map map) {
+		return patientRegisterPraiseDao.getCustomerEvaluationListByInfo(map);
+	}
+
 }
