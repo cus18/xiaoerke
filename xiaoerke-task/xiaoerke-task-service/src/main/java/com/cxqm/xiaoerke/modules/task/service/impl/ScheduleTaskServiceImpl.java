@@ -341,13 +341,13 @@ public class ScheduleTaskServiceImpl implements ScheduleTaskService {
 	}
 
     @Override
-    public List<HashMap<String, Object>> getOrderInfoToDoc5minAfterSuccess() {
-        return scheduledTaskDao.getOrderInfoToDoc5minAfterSuccess();
+    public List<HashMap<String, Object>> getOrderInfoToDocSuccess5minBefore() {
+        return scheduledTaskDao.getOrderInfoToDocSuccess5minBefore();
     }
 
     @Override
-    public List<HashMap<String, Object>> getOrderInfoToDoc5minBeforeConnect() {
-        return scheduledTaskDao.getOrderInfoToDoc5minBeforeConnect();
+    public List<HashMap<String, Object>> getOrderInfoToDocConnect5minAfter() {
+        return scheduledTaskDao.getOrderInfoToDocConnect5minAfter();
     }
 
     @Override
