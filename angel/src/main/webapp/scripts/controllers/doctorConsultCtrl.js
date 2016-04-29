@@ -764,9 +764,9 @@ angular.module('controllers', ['luegg.directives'])
         }])
 
     .controller('messageListCtrl', ['$scope', '$log', '$sce', 'GetUserConsultListInfo',
-        'GetUserRecordDetail', 'GetCSDoctorList', 'GetMessageRecordInfo','GetUserLoginStatus','$location',
+        'GetUserRecordDetail', 'GetCSDoctorList', 'GetMessageRecordInfo','GetUserLoginStatus','$location','CreateDoctorConsultSession',
         function ($scope, $log, $sce, GetUserConsultListInfo, GetUserRecordDetail,
-                  GetCSDoctorList, GetMessageRecordInfo,GetUserLoginStatus,$location) {
+                  GetCSDoctorList, GetMessageRecordInfo,GetUserLoginStatus,$location,CreateDoctorConsultSession) {
 
             $scope.info = {};
 
@@ -843,6 +843,7 @@ angular.module('controllers', ['luegg.directives'])
 
             //获取用户的详细聊天记录
             $scope.getUserRecordDetail = function (userName,userId,index) {
+                $scope.doctorCreateConsultSessionChoosedUserId = userId;
                 $scope.setSessoin = index;
                 GetUserRecordDetail.save({pageNo:1,pageSize:$scope.userRecordDetailPageSize,
                     userId:userId,recordType:"all"}, function (data) {
@@ -944,6 +945,13 @@ angular.module('controllers', ['luegg.directives'])
             //右上角的消息刷新
             $scope.refreshCurrentUserRecordDetail = function(){
                 $scope.getUserRecordDetail($scope.userConsultListInfo[0].userName,$scope.userConsultListInfo[0].userId,0);
+            }
+
+            //医生发起一个针对用户的会话
+            $scope.createDoctorConsultSession = function(){
+                CreateDoctorConsultSession.save({userId:$scope.doctorCreateConsultSessionChoosedUserId},function(data){
+                    console.log(data);
+                })
             }
 
             $scope.chooseUserConsultListDataPage = function(action){
