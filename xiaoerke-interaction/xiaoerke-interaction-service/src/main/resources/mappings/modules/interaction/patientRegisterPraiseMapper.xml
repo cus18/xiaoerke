@@ -253,7 +253,7 @@
 
     <!--<select id="getDoctorEvaluate" resultType="com.cxqm.xiaoerke.common.persistence.Page">-->
     <select id="getDoctorEvaluate" resultMap="BaseResultMap" resultType="com.cxqm.xiaoerke.common.persistence.Page">
-        select INSERT(prp.phone,4,5,'****') phone,
+        select INSERT(prp.phone,4,4,'****') phone,
         prp.impression,
         prp.praise_date,
         prp.star,
