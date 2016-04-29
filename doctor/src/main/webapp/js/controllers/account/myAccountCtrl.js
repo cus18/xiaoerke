@@ -81,6 +81,7 @@
                                 $scope.settlementInfoData = data;
                                 $scope.totalPrice = data.appointmentTotal;
                             });*/
+
                             getphoneConsultDay(valueText);
                             saveCurrDate = valueText;
                             $scope.currWeek = getChWeek(getWeekNum(valueText));
@@ -95,7 +96,6 @@
                 saveCurrDate = getCurrDate();
                 $("#dateTime").val(getCurrDate());
                 $scope.currWeek = getChWeek(getWeekNum(getCurrDate()));
-
                 /**
                  * 判断医生是否绑定
                  */
@@ -110,7 +110,8 @@
                         //    $scope.settlementInfoData = data;
                         //    $scope.totalPrice = data.appointmentTotal;
                         //})
-                        getphoneConsultDay(getCurrDate());
+
+                            getphoneConsultDay(getCurrDate());
 
                         $scope.pageNo = 1;
                         $scope.pageSize = 10;
@@ -208,8 +209,23 @@
                 $scope.phoneConsultLock==true?$scope.phoneConsultLock=false:$scope.phoneConsultLock=true;
                 $scope.acceptLock=false;
             }
-            //获取每日清单列表
+            //判断日期是否是当前及时间是否在晚上8：00
             var getphoneConsultDay = function (date) {
+                if(Date.parse(date)==Date.parse(getCurrDate())){
+                    if(getCurrTime()>="20:00"){
+                        getAllAccountList(date);
+                    }else{
+                        $scope.noAccount = true;
+                        $scope.checkAvailable = false;
+                        $scope.havephoneConsult = false;
+                    }
+                }else{
+                    getAllAccountList(date);
+                }
+            }
+
+            //从数据库得到全部订单
+            var getAllAccountList = function(date){
                 $scope.pageLoading = true;
                 GetDayList.save({"doctorId":$scope.doctorId,"date":date}, function (data) {
                     $scope.pageLoading = false;
@@ -235,8 +251,9 @@
                         $scope.checkAvailable = false;
                         $scope.havephoneConsult = false;
                     }
-                })
+                });
             }
+
             //选择前一天、后一天时间数据的变化
             var changePrevNext = function (date) {
                 $("#dateTime").val(date);
@@ -248,6 +265,10 @@
             //得到当前日期
             var getCurrDate = function () {
                 return moment().format("YYYY-MM-DD");
+            }
+            //得到当前时间
+            var getCurrTime = function () {
+                return moment().format("HH:mm");
             }
             //得到日期是周几的数字
             var getWeekNum = function (date) {
@@ -267,4 +288,4 @@
                 }
             }
 
-    }])
+    }]);
