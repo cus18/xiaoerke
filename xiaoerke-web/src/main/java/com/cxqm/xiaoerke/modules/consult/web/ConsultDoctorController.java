@@ -196,8 +196,9 @@ public class ConsultDoctorController extends BaseController {
             }
             response.put("records", recordMongoVos);
         }
-        response.put("pageNo",pageNo);
+        response.put("currentPage",pageNo);
         response.put("pageSize",pageSize);
+        response.put("totalPage",pagination.getTotalPage());
         return response;
     }
 
