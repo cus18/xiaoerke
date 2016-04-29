@@ -3,6 +3,7 @@ package com.cxqm.xiaoerke.modules.consult.service;
 
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
+import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.sys.entity.DoctorVo;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,8 @@ public interface ConsultSessionService {
     String removeSessionById(HttpServletRequest request, Map<String, Object> param);
     
     List<ConsultSession> selectBySelective(ConsultSession consultSession);
+
+    List<RichConsultSession> selectRichConsultSessions(RichConsultSession consultSession);
 
     List<ConsultSession> getCsUserByUserId(ConsultSession consultSession);
 

@@ -168,8 +168,8 @@ public class ConsultUserController extends BaseController {
                 resultList.add(vo);
             }
         }
-//        removeDuplicateList(resultList);
         response.put("totalPage",pagination.getTotalPage());
+        response.put("currentPage",pagination.getPageNo());
         response.put("userList",resultList);
         return response;
     }
@@ -193,52 +193,6 @@ public class ConsultUserController extends BaseController {
                     result++;
         }
         return result;
-    }
-
-    /**
-     * 获取客户列表(或咨询过某个医生的客户)详细信息,按照时间降序排序
-     */
-    @RequestMapping(value = "/getUserList_back", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    Map<String, Object> getUserList_back(@RequestBody Map<String, Object> params) {
-        Map<String,Object> response = new HashMap<String, Object>();
-
-        //分页获取最近会话记录
-        String pageNo = (String) params.get("pageNo");
-        String pageSize = (String) params.get("pageSize");
-        Integer dateNum = (Integer)params.get("dateNum");
-        String CSDoctorId = (String)params.get("CSDoctorId");
-
-        HashMap<String,Object> searchMap = new HashMap<String, Object>();
-        if(dateNum != null){
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE,-dateNum);
-            Long timeMillis = calendar.getTimeInMillis();
-            String searchDate = DateUtils.formatDateTime(timeMillis);
-            searchMap.put("searchDate",searchDate);
-        }
-        searchMap.put("CSDoctorId",CSDoctorId);
-        Page<ConsultSessionForwardRecordsVo> userPage  = FrontUtils.generatorPage(pageNo, pageSize);
-        Page<ConsultSessionForwardRecordsVo> resultPage = consultSessionForwardRecordsService.getConsultUserListRecently(userPage,searchMap);
-
-        //根据会话记录查询客户列表的详细信息
-        List<ConsultRecordMongoVo> consultSessionForwardRecordsVos = new ArrayList<ConsultRecordMongoVo>();
-        for(ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo : resultPage.getList()){
-            Query query = new Query(where("fromUserId").is(consultSessionForwardRecordsVo.getFromUserId())).with(new Sort(Sort.Direction.DESC, "createDate"));
-            ConsultRecordMongoVo oneConsultRecord = consultRecordService.findOneConsultRecord(query);
-//            Date date = oneConsultRecord.getCreateDate();
-//            oneConsultRecord.setInfoDate(DateUtils.DateToStr(date));
-
-            if (oneConsultRecord != null && StringUtils.isNotNull(oneConsultRecord.getSenderId())){
-                consultSessionForwardRecordsVos.add(oneConsultRecord);
-            }
-
-        }
-
-        response.put("userList",consultSessionForwardRecordsVos);
-        response.put("status", "success");
-        return response;
     }
 
     /**
@@ -330,8 +284,8 @@ public class ConsultUserController extends BaseController {
         int pageSize = 1;
         Map<String,Object> response = new HashMap<String, Object>();
         if(null != params.get("pageNo") && null != params.get("pageSize")){
-            pageNo = Integer.parseInt((String)params.get("pageNo"));
-            pageSize = Integer.parseInt((String)params.get("pageSize"));
+            pageNo = (Integer) params.get("pageNo");
+            pageSize = (Integer)params.get("pageSize");
         }
 
         PaginationVo<ConsultRecordMongoVo> pagination = null;
@@ -343,8 +297,7 @@ public class ConsultUserController extends BaseController {
             Criteria cr = new Criteria();
             Query query = new Query();
             query.addCriteria(cr.orOperator(
-                    Criteria.where("userName").regex(searchInfo)
-            )).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
+                    Criteria.where("userName").regex(searchInfo),Criteria.where("userId").regex(searchInfo))).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
             consultSessionStatusVoPaginationVo = consultRecordService.getUserMessageList(pageNo, pageSize, query);
 
             if(consultSessionStatusVoPaginationVo.getDatas()!=null && consultSessionStatusVoPaginationVo.getDatas().size()>0){
@@ -366,7 +319,9 @@ public class ConsultUserController extends BaseController {
                     resultList.add(vo);
                 }
             }
-//            removeDuplicateList(resultList);
+            response.put("totalPage",consultSessionStatusVoPaginationVo.getTotalPage());
+            response.put("pageNo",pageNo);
+            response.put("pageSize",pageSize);
             response.put("userList",resultList);
         }else if(searchType.equals("message")){
             Query query = new Query(where("message").regex(searchInfo)).with(new Sort(Sort.Direction.DESC, "createDate"));
@@ -390,12 +345,12 @@ public class ConsultUserController extends BaseController {
                     hashMap.put("laterRecord",laterRecordList);
                     responseList.add(hashMap);
                 }
+                response.put("totalPage",pagination.getTotalPage());
+                response.put("pageNo",pageNo);
+                response.put("pageSize",pageSize);
                 response.put("userList",responseList);
             }
         }
-        response.put("totalPage",pagination.getTotalPage());
-        response.put("pageNo",pageNo);
-        response.put("pageSize",pageSize);
         return response;
     }
 

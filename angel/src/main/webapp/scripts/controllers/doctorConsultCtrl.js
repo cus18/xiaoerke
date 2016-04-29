@@ -1,9 +1,9 @@
 angular.module('controllers', ['luegg.directives'])
-    .controller('doctorConsultFirstCtrl', ['$scope', '$sce', '$window','GetTodayRankingList',
+    .controller('doctorConsultFirstCtrl', ['$scope', '$sce', '$window','$stateParams','GetTodayRankingList',
         'GetOnlineDoctorList','GetAnswerValueList','GetAnswerValueList','GetUserLoginStatus',
         '$location', 'GetCurrentUserHistoryRecord','GetMyAnswerModify','GetCurrentUserConsultListInfo',
         'TransferToOtherCsUser','SessionEnd','GetWaitJoinList','React2Transfer','CancelTransfer','$upload',
-        function ($scope, $sce, $window,GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
+        function ($scope, $sce, $window,$stateParams,GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
                   GetAnswerValueList, GetUserLoginStatus, $location, GetCurrentUserHistoryRecord,GetMyAnswerModify,
                   GetCurrentUserConsultListInfo,TransferToOtherCsUser,SessionEnd,GetWaitJoinList,React2Transfer,CancelTransfer,$upload) {
             $scope.info = {
@@ -74,7 +74,26 @@ angular.module('controllers', ['luegg.directives'])
 
                         $scope.refreshWaitJoinUserList();
 
-                        getAlreadyJoinConsultPatientList();
+                        if($stateParams.action == "createUserSession"){
+                            var patientId = $stateParams.userId;
+                            var patientName = "";
+                            GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
+                                if(data.alreadyJoinPatientConversation!=""&&data.alreadyJoinPatientConversation!=undefined){
+                                    $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
+                                    $.each($scope.alreadyJoinPatientConversation,function(index,value){
+                                        if(value.patientId==patientId){
+                                            patientName = value.patientName;
+                                        }
+                                        $.each(value.consultValue,function(index1,value1){
+                                            filterMediaData(value1);
+                                        })
+                                    })
+                                    $scope.chooseAlreadyJoinConsultPatient(patientId,patientName);
+                                }
+                            })
+                        }else if($stateParams.action == ""){
+                            getAlreadyJoinConsultPatientList();
+                        }
                     }
                 })
             }
@@ -264,8 +283,7 @@ angular.module('controllers', ['luegg.directives'])
 
                 //处理用户按键事件
                 document.onkeydown = function () {
-                    var a = window.event.keyCode;
-                    if (a == 13) {
+                    if (window.event.ctrlKey && window.event.keyCode == 13) {
                         if($("#consultMessage").val()!=""){
                             $scope.info.consultMessage = $("#consultMessage").val();
                             $scope.sendConsultMessage();
@@ -280,6 +298,9 @@ angular.module('controllers', ['luegg.directives'])
                         return;
                     }
                     if ($scope.socketServer1.readyState == WebSocket.OPEN) {
+                        if ($scope.info.consultMessage.indexOf("\n") >= 0) {
+                            $scope.info.consultMessage.replace("\n","");
+                        }
                         var consultValMessage = {
                             "type": 0,
                             "content": $scope.info.consultMessage,
@@ -302,7 +323,6 @@ angular.module('controllers', ['luegg.directives'])
                         "fileType": fileType,
                         "senderId": $scope.patientId
                     };
-                    console.log(JSON.stringify(dataValue));
                     var dataJsonValue = JSON.stringify(dataValue);
                     for (var i = 0; i < $files.length; i++) {
                         var file = $files[i];
@@ -322,7 +342,6 @@ angular.module('controllers', ['luegg.directives'])
                                 "senderName": angular.copy($scope.doctorName),
                                 "sessionId": angular.copy($scope.currentUserConversation.sessionId)
                             };
-                            console.log(consultValMessage.content);
                             if (!window.WebSocket) {
                                 return;
                             }
@@ -370,6 +389,7 @@ angular.module('controllers', ['luegg.directives'])
                         if (value.patientId == patientId) {
                             $scope.currentUserConversation = "";
                             $scope.currentUserConversation = value;
+                            value.messageNotSee = false;
                             updateFlag = true;
                         }
                     });
@@ -403,6 +423,7 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.getEmotion = function (){
                     $('#face').SinaEmotion($('.emotion'));
                 }
+
                 //查看更多的用户历史消息
                 $scope.seeMoreConversationMessage = function(){
                     var mostFarCurrentConversationDateTime = $scope.currentUserConversation.consultValue[0].dateTime;
@@ -583,7 +604,6 @@ angular.module('controllers', ['luegg.directives'])
                 }
 
             /***回复操作区**/
-
             var getIframeSrc = function(){
                 var newSrc = $(".advisory-content").attr("src");
                 $(".advisory-content").attr("src","");
@@ -650,6 +670,7 @@ angular.module('controllers', ['luegg.directives'])
                 $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                     if (value.patientId == conversationData.senderId) {
                         value.consultValue.push(conversationData);
+                        value.messageNotSee = true;
                         updateFlag = true;
                     }
                 });
@@ -668,11 +689,15 @@ angular.module('controllers', ['luegg.directives'])
                     conversationContent.sessionId = conversationData.sessionId;
                     conversationContent.isOnline = true;
                     conversationContent.dateTime = conversationData.dateTime;
-                    conversationContent.messageNotSee = false;
+                    conversationContent.messageNotSee = true;
                     conversationContent.patientName = conversationData.senderName;
                     conversationContent.consultValue = [];
                     conversationContent.consultValue.push(consultValue);
                     $scope.alreadyJoinPatientConversation.push(conversationContent);
+                }
+
+                if(conversationData.senderId==$scope.currentUserConversation.patientId){
+                    $scope.currentUserConversation.messageNotSee = false;
                 }
             }
 
@@ -680,6 +705,7 @@ angular.module('controllers', ['luegg.directives'])
                 $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                     if (value.patientId == $scope.currentUserConversation.patientId) {
                         value.consultValue.push(consultValMessage);
+                        value.messageNotSee = false;
                     }
                 });
             }
@@ -708,6 +734,7 @@ angular.module('controllers', ['luegg.directives'])
                     $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                         if (value.patientId == notifyData.session.userId){
                             value.consultValue.push(notifyData);
+                            value.messageNotSee = true;
                         }
                     });
                 }
@@ -716,6 +743,7 @@ angular.module('controllers', ['luegg.directives'])
                     $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                         if (value.patientId == notifyData.session.userId) {
                             value.consultValue.push(notifyData);
+                            value.messageNotSee = true;
                         }
                     });
                 }
@@ -742,6 +770,7 @@ angular.module('controllers', ['luegg.directives'])
                         $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                             if (value.patientId == notifyData.session.userId) {
                                 value.consultValue.push(notifyData);
+                                value.messageNotSee = true;
                             }
                         });
                     }
@@ -757,15 +786,17 @@ angular.module('controllers', ['luegg.directives'])
                 }else{
                     if (val.type == "2"||val.type == "3") {
                         val.content = $sce.trustAsResourceUrl(angular.copy(val.content));
+                    }else if(val.type == "0"){
+                        val.content = $sce.trustAsHtml(AnalyticEmotion(angular.copy(val.content)));
                     }
                 }
             }
         }])
 
-    .controller('messageListCtrl', ['$scope', '$log', '$sce', 'GetUserConsultListInfo',
-        'GetUserRecordDetail', 'GetCSDoctorList', 'GetMessageRecordInfo','GetUserLoginStatus','$location',
-        function ($scope, $log, $sce, GetUserConsultListInfo, GetUserRecordDetail,
-                  GetCSDoctorList, GetMessageRecordInfo,GetUserLoginStatus,$location) {
+    .controller('messageListCtrl', ['$scope', '$log', '$state','$sce', 'GetUserConsultListInfo',
+        'GetUserRecordDetail', 'GetCSDoctorList', 'GetMessageRecordInfo','GetUserLoginStatus','$location','CreateDoctorConsultSession',
+        function ($scope, $log, $state,$sce, GetUserConsultListInfo, GetUserRecordDetail,
+                  GetCSDoctorList, GetMessageRecordInfo,GetUserLoginStatus,$location,CreateDoctorConsultSession) {
 
             $scope.info = {};
 
@@ -781,10 +812,11 @@ angular.module('controllers', ['luegg.directives'])
                 {
                 searchType:"user",
                 searchContent: "查找客户"
-                },{
-                searchType:"message",
-                searchContent: "查找消息"
                 }
+                //,{
+                //searchType:"message",
+                //searchContent: "查找消息"
+                //}
             ];
 
             $scope.searchDate = [{
@@ -801,6 +833,12 @@ angular.module('controllers', ['luegg.directives'])
                 value: 10000
             }];
 
+            $scope.userConsultListPageSize = 11;
+
+            $scope.userRecordDetailPageSize = 10;
+
+            $scope.recordType = "all";
+
             $scope.messageListInit = function(){
                 var routePath = "/doctor/consultBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath: routePath}, function (data) {
@@ -811,10 +849,12 @@ angular.module('controllers', ['luegg.directives'])
                     } else if (data.status == "20") {
                         //获取会话客户列表（含会话转接过程中，经历过几个客服）
                         $scope.selectedDate = $scope.searchDate[0];
-                        GetUserConsultListInfo.save({dateNum: 1,
+                        $scope.selectedMessage = $scope.searchMessageType[0];
+                        $scope.setSearchMessageType("user");
+                        GetUserConsultListInfo.save({dateNum: 0,
                             CSDoctorId: "allCS",
-                            pageNo: 1, pageSize:5}, function (data) {
-                            refreshUserRecordDetailData(data);
+                            pageNo: 1, pageSize: $scope.userConsultListPageSize}, function (data) {
+                            refreshUserConsultListData(data);
                         })
 
                         //获取客服医生列表
@@ -823,9 +863,7 @@ angular.module('controllers', ['luegg.directives'])
                             $.each(data.CSList,function(index,value){
                                 $scope.CSList.push(value);
                             })
-                            console.log($scope.CSList);
                             $scope.selectedCsList = $scope.CSList[0];
-
                             $scope.dateNumValue = angular.copy($scope.selectedDate.value);
                             $scope.CSDoctorIdValue =angular.copy($scope.selectedCsList.id);
                         });
@@ -835,17 +873,54 @@ angular.module('controllers', ['luegg.directives'])
 
             //获取用户的详细聊天记录
             $scope.getUserRecordDetail = function (userName,userId,index) {
+                $scope.doctorCreateConsultSessionChoosedUserId = userId;
                 $scope.setSessoin = index;
-                GetUserRecordDetail.save({pageNo:0,pageSize:100,
+                GetUserRecordDetail.save({pageNo:1,pageSize:$scope.userRecordDetailPageSize,
                     userId:userId,recordType:"all"}, function (data) {
                     $scope.currentClickUserName = userName;
                     $scope.currentClickUserId = userId;
                     $scope.currentUserConsultRecordDetail = data.records;
+                    $scope.currentUserRecordDetailPage = data.currentPage;
+                    $scope.totalUserRecordDetailPage = data.totalPage;
                     $.each($scope.currentUserConsultRecordDetail,function(index,value){
                         filterMediaData(value);
                     });
-
                 });
+            }
+
+            $scope.chooseUserRecordDetail = function(action,recordType){
+                var pageNum = 1;
+                if(action == "firstPage" ){
+                    pageNum = 1;
+                }else if(action == "lastPage"){
+                    pageNum = $scope.totalUserRecordDetailPage;
+                }else if(action == "upPage"){
+                    if($scope.currentUserRecordDetailPage>1){
+                        pageNum = $scope.currentUserRecordDetailPage-1;
+                    }
+                }else if(action == "nextPage"){
+                    if($scope.currentUserRecordDetailPage<$scope.totalUserRecordDetailPage){
+                        pageNum = $scope.currentUserRecordDetailPage+1;
+                    }
+                }
+                GetUserRecordDetail.save({pageNo:pageNum,
+                    pageSize:$scope.userRecordDetailPageSize,
+                    userId:$scope.currentClickUserId,recordType:recordType}, function (data) {
+                    $scope.currentClickUserName = $scope.currentClickUserName;
+                    $scope.currentClickUserId = $scope.currentClickUserId;
+                    $scope.currentUserConsultRecordDetail = data.records;
+                    $scope.currentUserRecordDetailPage = data.currentPage;
+                    $scope.totalUserRecordDetailPage = data.totalPage;
+                    $.each($scope.currentUserConsultRecordDetail,function(index,value){
+                        filterMediaData(value);
+                    });
+                });
+            }
+
+            //查找消息记录（点击全部、图片等）
+            $scope.setRecordType = function (searchRecordType) {
+                $scope.recordType = searchRecordType;
+                $scope.chooseUserRecordDetail("firstPage",$scope.recordType);
             }
 
             //查询某个客服信息位于某个时间段的信息
@@ -857,8 +932,8 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 GetUserConsultListInfo.save({dateNum: $scope.dateNumValue,
                     CSDoctorId: $scope.CSDoctorIdValue,
-                    pageNo: 1, pageSize: 1000}, function (data) {
-                    refreshUserRecordDetailData(data);
+                    pageNo: 1, pageSize:$scope.userConsultListPageSize}, function (data) {
+                    refreshUserConsultListData(data);
                 })
             }
 
@@ -874,10 +949,10 @@ angular.module('controllers', ['luegg.directives'])
                     GetMessageRecordInfo.save({
                         searchInfo: $scope.info.searchMessageContent,
                         searchType: $scope.messageType,
-                        pageNo: "1",
-                        pageSize: "100"
+                        pageNo: 1,
+                        pageSize: $scope.userConsultListPageSize
                     }, function (data) {
-                        refreshUserRecordDetailData(data);
+                        refreshUserConsultListData(data);
                     });
                 }
             }
@@ -887,30 +962,67 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.messageType = searchType;
             }
 
-            //查找消息记录（点击全部、图片等）
-            $scope.getRecordByUserId = function (searchRecordType) {
-                GetUserRecordDetail.save({
-                    recordType: searchRecordType,
-                    userId:$scope.currentClickUserId,
-                    pageNo: 1,
-                    pageSize: 100
-                }, function (data) {
-                    $scope.currentUserConsultRecordDetail = data.records;
-                    $.each($scope.currentUserConsultRecordDetail,function(index,value){
-                        filterMediaData(value);
-                    });
-                });
-            }
-
             //左上角的刷新消息
             $scope.refreshUserList = function () {
-                GetUserConsultListInfo.save({pageNo: 1, pageSize: 100}, function (data) {
-                    refreshUserRecordDetailData(data);
-                });
+                GetUserConsultListInfo.save({dateNum: $scope.dateNumValue,
+                    CSDoctorId: $scope.CSDoctorIdValue,
+                    pageNo: 1,
+                    pageSize: $scope.userConsultListPageSize}, function (data) {
+                    refreshUserConsultListData(data);
+                })
             }
 
-            var refreshUserRecordDetailData = function(data){
+            //右上角的消息刷新
+            $scope.refreshCurrentUserRecordDetail = function(){
+                $scope.getUserRecordDetail($scope.userConsultListInfo[0].userName,$scope.userConsultListInfo[0].userId,0);
+            }
+
+            //医生发起一个针对用户的会话
+            $scope.createDoctorConsultSession = function(){
+                CreateDoctorConsultSession.save({userId:$scope.doctorCreateConsultSessionChoosedUserId},function(data){
+                    if(data.result == "failure"){
+                        alert("无法发起会话，请稍后重试");
+                    }else if(data.result == "existTransferSession"){
+                        alert("此用户正有会话处于转接状态，无法向其发起会话，请稍后重试");
+                    }else if(data.result == "noLicenseTransfer"){
+                        alert("对不起，你没有权限，抢断一个正在咨询用户的会话");
+                    }else if(data.result == "exceed48Hours"){
+                        alert("对不起，用户咨询已经超过了48小时，无法再向其发起会话");
+                    }else if(data.result == "success"){
+                        $state.go('doctorConsultFirst', {userId:data.userId,action:'createUserSession'});
+                    }
+                })
+            }
+
+            $scope.chooseUserConsultListDataPage = function(action){
+                var pageNum = 1;
+                if(action == "firstPage" ){
+                    pageNum = 1;
+                }else if(action == "lastPage"){
+                    pageNum = $scope.totalUserConsultListDataPage;
+                }else if(action == "upPage"){
+                    if($scope.currentUserConsultListDataPage>1){
+                        pageNum = $scope.currentUserConsultListDataPage-1;
+                    }
+                }else if(action == "nextPage"){
+                    if($scope.currentUserConsultListDataPage<$scope.totalUserConsultListDataPage){
+                        pageNum = $scope.currentUserConsultListDataPage+1;
+                    }
+                }
+                GetUserConsultListInfo.save({dateNum: $scope.dateNumValue,
+                    CSDoctorId: $scope.CSDoctorIdValue,
+                    pageNo: pageNum, pageSize: $scope.userConsultListPageSize}, function (data) {
+                    refreshUserConsultListData(data);
+                })
+            }
+
+            var refreshUserConsultListData = function(data){
                 $scope.userConsultListInfo = data.userList;
+                $scope.totalUserConsultListDataPage = data.totalPage;
+                $scope.currentUserConsultListDataPage = data.currentPage;
+                if($scope.totalUserConsultListDataPage==0){
+                    $scope.currentUserConsultListDataPage = 0;
+                }
                 if($scope.userConsultListInfo.length!=0){
                     $scope.getUserRecordDetail($scope.userConsultListInfo[0].userName,$scope.userConsultListInfo[0].userId,0);
                 }else{

@@ -4,6 +4,7 @@ package com.cxqm.xiaoerke.modules.consult.service.impl;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultSessionDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
+import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
@@ -68,6 +69,12 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
 	}
 
     @Override
+    public List<RichConsultSession> selectRichConsultSessions(RichConsultSession richConsultSession) {
+        return consultSessionDao.selectRichConsultSessions(richConsultSession);
+    }
+
+
+    @Override
     public List<ConsultSession> getCsUserByUserId(ConsultSession consultSession) {
         return consultSessionDao.getCsUserByUserId(consultSession);
     }
@@ -97,8 +104,10 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
             consultSession.setUserId(userId);
             consultSession.setStatus(ConsultSession.STATUS_ONGOING);
             List<ConsultSession> consultSessionList = this.selectBySelective(consultSession);
-            consultSession = consultSessionList.get(0);
-            consultSession.setStatus(ConsultSession.STATUS_COMPLETED);
+            if(consultSessionList.size() > 0){
+                consultSession = consultSessionList.get(0);
+                consultSession.setStatus(ConsultSession.STATUS_COMPLETED);
+            }
 
             int status = this.updateSessionInfo(consultSession);
             if(status==1){

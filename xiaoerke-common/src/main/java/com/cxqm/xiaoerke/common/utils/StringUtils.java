@@ -5,6 +5,7 @@ package com.cxqm.xiaoerke.common.utils;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -51,6 +52,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
     /**
      * 对 String[] 去重 @author得良
+     *
      * @param args
      * @return
      */
@@ -485,12 +487,20 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     public static void deleteFile(File dir) {
         if (dir.isDirectory()) {
             String[] children = dir.list();
-            for (int i=0; i<children.length; i++) {
+            for (int i = 0; i < children.length; i++) {
                 deleteFile(new File(dir, children[i]));
             }
         }
-        if(dir.list() == null)
+        if (dir.list() == null)
             dir.delete();
     }
+
+    public static boolean listNotNull(List T) {
+        if (T != null && T.size() > 0) {
+            return true;
+        } else
+            return false;
+    }
+
 
 }
