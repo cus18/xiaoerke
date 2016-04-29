@@ -97,8 +97,10 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
             consultSession.setUserId(userId);
             consultSession.setStatus(ConsultSession.STATUS_ONGOING);
             List<ConsultSession> consultSessionList = this.selectBySelective(consultSession);
-            consultSession = consultSessionList.get(0);
-            consultSession.setStatus(ConsultSession.STATUS_COMPLETED);
+            if(consultSessionList.size() > 0){
+                consultSession = consultSessionList.get(0);
+                consultSession.setStatus(ConsultSession.STATUS_COMPLETED);
+            }
 
             int status = this.updateSessionInfo(consultSession);
             if(status==1){
