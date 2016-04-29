@@ -276,38 +276,29 @@ public class ConsultDoctorController extends BaseController {
                 ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(query);
 
                 //如果目前用户没有正在转接的会话，而存在正在进行的会话
-                //如果用户当前没有任何会话建立，判断用户最近的一次咨询时间，
-                // 是否在48小时以内，如果已经超过了48小时，则提示医生已经超过48小时，
-                // 无法创建会话，如果没有超过48小时，则成功创建会话
-                if (DateUtils.pastHour(consultSessionStatusVo.getLastMessageTime()) < 48L) {
+                if (richConsultSession.getStatus().equals("ongoing")) {
                     String doctorManagerStr = Global.getConfig("doctorManager.list");
                     String csUserId = UserUtils.getUser().getId();
-                    if (StringUtils.isNotNull(csUserId) && doctorManagerStr.indexOf(csUserId) != -1) {
+                    if (doctorManagerStr.indexOf(csUserId) != -1) {
                         //此医生为管理员医生，有权限抢过会话，将会话抢过来
                         richConsultSession.setCsUserId(csUserId);
-                        richConsultSession.setCsUserName(UserUtils.getUser().getName());
-                        richConsultSession.setUserName(userName);
-                        richConsultSession.setNickName(userName);
-                        ConsultSessionManager.getSessionManager().putSessionIdConsultSessionPair(richConsultSession.getId(), richConsultSession);
-                        ConsultSessionManager.getSessionManager().putUserIdSessionIdPair(richConsultSession.getUserId(), richConsultSession.getId());
-                        ConsultSession consultSession = new ConsultSession();
-                        consultSession.setId(richConsultSession.getId());
-                        consultSession.setCsUserId(richConsultSession.getCsUserId());
-                        consultSession.setStatus("ongoing");
-                        int flag = consultSessionService.updateSessionInfo(consultSession);
-                        if(flag > 0){
-                            response.put("result", "success");
-                            response.put("userId", richConsultSession.getUserId());
-                        }else{
-                            response.put("result", "failure");
-                        }
+                        setRichConsultSession(response, richConsultSession, userName);
                     } else {
                         //如果是普通医生，没有权限抢断会话，直接返回提升没有权限操作
                         response.put("result", "noLicenseTransfer");
                     }
+                    //如果用户当前没有任何会话建立，判断用户最近的一次咨询时间，
+                    // 是否在48小时以内，如果已经超过了48小时，则提示医生已经超过48小时，
+                    // 无法创建会话，如果没有超过48小时，则成功创建会话
                 } else {
-                    response.put("result", "exceed48Hours");
+                    if (DateUtils.pastHour(consultSessionStatusVo.getLastMessageTime()) < 48L) {
+                        richConsultSession.setCsUserId(UserUtils.getUser().getId());
+                        setRichConsultSession(response, richConsultSession, userName);
+                    } else {
+                        response.put("result", "exceed48Hours");
+                    }
                 }
+
             }
         } else if (null != richConsultSession.getSource() && richConsultSession.getSource().equals("h5cxqm")) {
             User user = systemService.getUser(userId);
@@ -319,6 +310,25 @@ public class ConsultDoctorController extends BaseController {
         }
 
         return response;
+    }
+
+    private void setRichConsultSession(HashMap<String, Object> response, RichConsultSession richConsultSession, String userName) {
+        richConsultSession.setCsUserName(UserUtils.getUser().getName());
+        richConsultSession.setUserName(userName);
+        richConsultSession.setNickName(userName);
+        ConsultSessionManager.getSessionManager().putSessionIdConsultSessionPair(richConsultSession.getId(), richConsultSession);
+        ConsultSessionManager.getSessionManager().putUserIdSessionIdPair(richConsultSession.getUserId(), richConsultSession.getId());
+        ConsultSession consultSession = new ConsultSession();
+        consultSession.setId(richConsultSession.getId());
+        consultSession.setCsUserId(richConsultSession.getCsUserId());
+        consultSession.setStatus("ongoing");
+        int flag = consultSessionService.updateSessionInfo(consultSession);
+        if (flag > 0) {
+            response.put("result", "success");
+            response.put("userId", richConsultSession.getUserId());
+        } else {
+            response.put("result", "failure");
+        }
     }
 
     /***
