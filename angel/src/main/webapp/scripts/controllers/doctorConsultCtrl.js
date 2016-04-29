@@ -1,9 +1,9 @@
 angular.module('controllers', ['luegg.directives'])
-    .controller('doctorConsultFirstCtrl', ['$scope', '$sce', '$window','GetTodayRankingList',
+    .controller('doctorConsultFirstCtrl', ['$scope', '$sce', '$window','$stateParams','GetTodayRankingList',
         'GetOnlineDoctorList','GetAnswerValueList','GetAnswerValueList','GetUserLoginStatus',
         '$location', 'GetCurrentUserHistoryRecord','GetMyAnswerModify','GetCurrentUserConsultListInfo',
         'TransferToOtherCsUser','SessionEnd','GetWaitJoinList','React2Transfer','CancelTransfer','$upload',
-        function ($scope, $sce, $window,GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
+        function ($scope, $sce, $window,$stateParams,GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
                   GetAnswerValueList, GetUserLoginStatus, $location, GetCurrentUserHistoryRecord,GetMyAnswerModify,
                   GetCurrentUserConsultListInfo,TransferToOtherCsUser,SessionEnd,GetWaitJoinList,React2Transfer,CancelTransfer,$upload) {
             $scope.info = {
@@ -74,7 +74,26 @@ angular.module('controllers', ['luegg.directives'])
 
                         $scope.refreshWaitJoinUserList();
 
-                        getAlreadyJoinConsultPatientList();
+                        if($stateParams.action == "createUserSession"){
+                            var patientId = $stateParams.userId;
+                            var patientName = "";
+                            GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
+                                if(data.alreadyJoinPatientConversation!=""&&data.alreadyJoinPatientConversation!=undefined){
+                                    $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
+                                    $.each($scope.alreadyJoinPatientConversation,function(index,value){
+                                        if(value.patientId==patientId){
+                                            patientName = value.patientName;
+                                        }
+                                        $.each(value.consultValue,function(index1,value1){
+                                            filterMediaData(value1);
+                                        })
+                                    })
+                                    $scope.chooseAlreadyJoinConsultPatient(patientId,patientName);
+                                }
+                            })
+                        }else if($stateParams.action == ""){
+                            getAlreadyJoinConsultPatientList();
+                        }
                     }
                 })
             }
@@ -616,7 +635,6 @@ angular.module('controllers', ['luegg.directives'])
 
             //处理用户发送过来的会话消息
             var processPatientSendMessage = function(conversationData){
-                console.log(conversationData);
                 var currentConsultValue = {};
                 var chooseFlag = false;
                 currentConsultValue.type = conversationData.type;
@@ -763,9 +781,9 @@ angular.module('controllers', ['luegg.directives'])
             }
         }])
 
-    .controller('messageListCtrl', ['$scope', '$log', '$sce', 'GetUserConsultListInfo',
+    .controller('messageListCtrl', ['$scope', '$log', '$state','$sce', 'GetUserConsultListInfo',
         'GetUserRecordDetail', 'GetCSDoctorList', 'GetMessageRecordInfo','GetUserLoginStatus','$location','CreateDoctorConsultSession',
-        function ($scope, $log, $sce, GetUserConsultListInfo, GetUserRecordDetail,
+        function ($scope, $log, $state,$sce, GetUserConsultListInfo, GetUserRecordDetail,
                   GetCSDoctorList, GetMessageRecordInfo,GetUserLoginStatus,$location,CreateDoctorConsultSession) {
 
             $scope.info = {};
@@ -950,7 +968,17 @@ angular.module('controllers', ['luegg.directives'])
             //医生发起一个针对用户的会话
             $scope.createDoctorConsultSession = function(){
                 CreateDoctorConsultSession.save({userId:$scope.doctorCreateConsultSessionChoosedUserId},function(data){
-                    console.log(data);
+                    if(data.result == "failure"){
+                        alert("无法发起会话，请稍后重试");
+                    }else if(data.result == "existTransferSession"){
+                        alert("此用户正有会话处于转接状态，无法向其发起会话，请稍后重试");
+                    }else if(data.result == "noLicenseTransfer"){
+                        alert("对不起，你没有权限，抢断一个正在咨询用户的会话");
+                    }else if(data.result == "exceed48Hours"){
+                        alert("对不起，用户咨询已经超过了48小时，无法再向其发起会话");
+                    }else if(data.result == "success"){
+                        $state.go('doctorConsultFirst', {userId:data.userId,action:'createUserSession'});
+                    }
                 })
             }
 
