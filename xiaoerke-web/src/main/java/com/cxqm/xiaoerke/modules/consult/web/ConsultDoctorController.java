@@ -297,8 +297,9 @@ public class ConsultDoctorController extends BaseController {
                         if(flag > 0){
                             response.put("result", "success");
                             response.put("userId", richConsultSession.getUserId());
+                        }else{
+                            response.put("result", "failure");
                         }
-                        response.put("result", "failure");
                     } else {
                         //如果是普通医生，没有权限抢断会话，直接返回提升没有权限操作
                         response.put("result", "noLicenseTransfer");
