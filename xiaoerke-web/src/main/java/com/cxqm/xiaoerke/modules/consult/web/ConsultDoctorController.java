@@ -289,6 +289,7 @@ public class ConsultDoctorController extends BaseController {
                         richConsultSession.setUserName(userName);
                         richConsultSession.setNickName(userName);
                         ConsultSessionManager.getSessionManager().putSessionIdConsultSessionPair(richConsultSession.getId(), richConsultSession);
+                        ConsultSessionManager.getSessionManager().putUserIdSessionIdPair(richConsultSession.getUserId(), richConsultSession.getId());
                         ConsultSession consultSession = new ConsultSession();
                         consultSession.setId(richConsultSession.getId());
                         consultSession.setCsUserId(richConsultSession.getCsUserId());

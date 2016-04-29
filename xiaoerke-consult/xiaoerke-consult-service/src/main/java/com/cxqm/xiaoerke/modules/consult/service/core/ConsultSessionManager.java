@@ -500,7 +500,12 @@ public class ConsultSessionManager {
 	public  void  putSessionIdConsultSessionPair(Integer sessionId,RichConsultSession session){
 		sessionRedisCache.putSessionIdConsultSessionPair(sessionId, session);
 	}
-	
+
+	public void putUserIdSessionIdPair(String userId, Integer sessionId) {
+		sessionRedisCache.putUserIdSessionIdPair(userId,sessionId);
+	}
+
+
 	public void cancelTransferringSession(Integer sessionId, String toCsUserId, String remark){
 		RichConsultSession session = sessionRedisCache.getConsultSessionBySessionId(sessionId);
 		ConsultSessionForwardRecordsVo forwardRecord = new ConsultSessionForwardRecordsVo();
