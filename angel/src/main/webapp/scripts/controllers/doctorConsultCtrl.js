@@ -216,6 +216,10 @@ angular.module('controllers', ['luegg.directives'])
                             // 才将会话拆除，在此过程中，允许接诊员，取消转接。
                         }else if(data.result=="failure"){
                             alert("转接失败，请转接给其他医生");
+                            $scope.tapShowButton('switchOver');
+                        }else if(data.result=="transferring"){
+                            alert("此会话正在被转接中，不能再次转接");
+                            $scope.tapShowButton('switchOver');
                         }
                     });
                 }
@@ -734,7 +738,9 @@ angular.module('controllers', ['luegg.directives'])
                     $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                         if (value.patientId == notifyData.session.userId){
                             value.consultValue.push(notifyData);
-                            value.messageNotSee = true;
+                            if(value.patientId!=$scope.currentUserConversation.patientId){
+                                value.messageNotSee = true;
+                            }
                         }
                     });
                 }
@@ -743,7 +749,9 @@ angular.module('controllers', ['luegg.directives'])
                     $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                         if (value.patientId == notifyData.session.userId) {
                             value.consultValue.push(notifyData);
-                            value.messageNotSee = true;
+                            if(value.patientId!=$scope.currentUserConversation.patientId){
+                                value.messageNotSee = true;
+                            }
                         }
                     });
                 }
@@ -770,7 +778,9 @@ angular.module('controllers', ['luegg.directives'])
                         $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                             if (value.patientId == notifyData.session.userId) {
                                 value.consultValue.push(notifyData);
-                                value.messageNotSee = true;
+                                if(value.patientId!=$scope.currentUserConversation.patientId){
+                                    value.messageNotSee = true;
+                                }
                             }
                         });
                     }
