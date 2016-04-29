@@ -63,7 +63,7 @@ define(['phoneConsultApp'], function(app){
                         }
                     })
 
-                $urlRouterProvider.otherwise('phoneConsultFirst');
+                $urlRouterProvider.otherwise('phoneConsultFirst/');
             }])
         .run(function (){
         });
