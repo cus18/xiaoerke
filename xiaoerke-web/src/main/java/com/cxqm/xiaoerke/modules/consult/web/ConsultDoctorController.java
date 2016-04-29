@@ -275,30 +275,29 @@ public class ConsultDoctorController extends BaseController {
                 Query query = (new Query()).addCriteria(where("userId").is(richConsultSession.getUserId())).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
                 ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(query);
 
-                //如果目前用户没有正在转接的会话，而存在正在进行的会话
-                if (richConsultSession.getStatus().equals("ongoing")) {
-                    String doctorManagerStr = Global.getConfig("doctorManager.list");
-                    String csUserId = UserUtils.getUser().getId();
-                    if (doctorManagerStr.indexOf(csUserId) != -1) {
-                        //此医生为管理员医生，有权限抢过会话，将会话抢过来
-                        richConsultSession.setCsUserId(csUserId);
-                        setRichConsultSession(response, richConsultSession, userName);
+                if (DateUtils.pastHour(consultSessionStatusVo.getLastMessageTime()) < 48L) {
+                    //如果目前用户没有正在转接的会话，而存在正在进行的会话
+                    if (richConsultSession.getStatus().equals("ongoing")) {
+                        String doctorManagerStr = Global.getConfig("doctorManager.list");
+                        String csUserId = UserUtils.getUser().getId();
+                        if (doctorManagerStr.indexOf(csUserId) != -1) {
+                            //此医生为管理员医生，有权限抢过会话，将会话抢过来
+                            richConsultSession.setCsUserId(csUserId);
+                            setRichConsultSession(response, richConsultSession, userName);
+                        } else {
+                            //如果是普通医生，没有权限抢断会话，直接返回提升没有权限操作
+                            response.put("result", "noLicenseTransfer");
+                        }
+                        //如果用户当前没有任何会话建立，判断用户最近的一次咨询时间，
+                        // 是否在48小时以内，如果已经超过了48小时，则提示医生已经超过48小时，
+                        // 无法创建会话，如果没有超过48小时，则成功创建会话
                     } else {
-                        //如果是普通医生，没有权限抢断会话，直接返回提升没有权限操作
-                        response.put("result", "noLicenseTransfer");
-                    }
-                    //如果用户当前没有任何会话建立，判断用户最近的一次咨询时间，
-                    // 是否在48小时以内，如果已经超过了48小时，则提示医生已经超过48小时，
-                    // 无法创建会话，如果没有超过48小时，则成功创建会话
-                } else {
-                    if (DateUtils.pastHour(consultSessionStatusVo.getLastMessageTime()) < 48L) {
                         richConsultSession.setCsUserId(UserUtils.getUser().getId());
                         setRichConsultSession(response, richConsultSession, userName);
-                    } else {
-                        response.put("result", "exceed48Hours");
                     }
+                } else {
+                    response.put("result", "exceed48Hours");
                 }
-
             }
         } else if (null != richConsultSession.getSource() && richConsultSession.getSource().equals("h5cxqm")) {
             User user = systemService.getUser(userId);
