@@ -220,20 +220,22 @@ public class ConsultUserController extends BaseController {
                 for(ConsultSession consultSession :consultSessions){
                     HashMap<String,Object> searchMap = new HashMap<String, Object>();
                     RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(consultSession.getId());
-                    String userId = richConsultSession.getUserId();
-                    Query query = new Query(where("userId").is(userId).and("csUserId")
-                            .is(consultSession.getCsUserId())).with(new Sort(Direction.ASC, "createDate"));
-                    pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "temporary");
-                    searchMap.put("patientId",userId);
-                    searchMap.put("source",richConsultSession.getSource());
-                    searchMap.put("patientName", richConsultSession.getUserName());
-                    searchMap.put("fromServer",richConsultSession.getServerAddress());
-                    searchMap.put("sessionId",richConsultSession.getId());
-                    searchMap.put("isOnline",true);
-                    searchMap.put("messageNotSee",true);
-                    searchMap.put("dateTime",richConsultSession.getCreateTime());
-                    searchMap.put("consultValue",ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
-                    responseList.add(searchMap);
+                    if(richConsultSession !=null && StringUtils.isNotNull(richConsultSession.getUserId())){
+                        String userId = richConsultSession.getUserId();
+                        Query query = new Query(where("userId").is(userId).and("csUserId")
+                                .is(consultSession.getCsUserId())).with(new Sort(Direction.ASC, "createDate"));
+                        pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "temporary");
+                        searchMap.put("patientId",userId);
+                        searchMap.put("source",richConsultSession.getSource());
+                        searchMap.put("patientName", richConsultSession.getUserName());
+                        searchMap.put("fromServer",richConsultSession.getServerAddress());
+                        searchMap.put("sessionId",richConsultSession.getId());
+                        searchMap.put("isOnline",true);
+                        searchMap.put("messageNotSee",true);
+                        searchMap.put("dateTime",richConsultSession.getCreateTime());
+                        searchMap.put("consultValue",ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
+                        responseList.add(searchMap);
+                    }
                 }
                 response.put("alreadyJoinPatientConversation",responseList);
             }else{
