@@ -3,7 +3,7 @@ angular.module('doctorConsultApp', ['angularFileUpload', 'ui.router','controller
         var root = '/angel/scripts/views';
         $stateProvider
             .state('doctorConsultFirst', {
-                url: '/doctorConsultFirst',
+                url: '/doctorConsultFirst/:action,:userId',
                 templateUrl: root + '/doctorConsultFirst.html',
                 controller: 'doctorConsultFirstCtrl',
                 title: '医生咨询客户端首页'
@@ -14,5 +14,5 @@ angular.module('doctorConsultApp', ['angularFileUpload', 'ui.router','controller
                 controller: 'messageListCtrl',
                 title: '消息列表'
             })
-        $urlRouterProvider.otherwise('doctorConsultFirst');
+        $urlRouterProvider.otherwise('doctorConsultFirst/,');
     })
