@@ -1127,7 +1127,7 @@ public class ScheduledTask {
                             consultSessionForwardRecordsVo.setConversationId(Long.parseLong(consultSessionStatusVo.getSessionId()));
                             consultSessionForwardRecordsVo.setStatus("waiting");
                             List<ConsultSessionForwardRecordsVo> consultSessionForwardRecordsVos = consultSessionForwardRecordsService.selectConsultForwardList(consultSessionForwardRecordsVo);
-                            if(consultSessionForwardRecordsVos.size() > 0){
+                            if(consultSessionForwardRecordsVos.size() == 0){
                                 consultSessionService.clearSession(consultSessionStatusVo.getSessionId(),
                                         consultSessionStatusVo.getUserId());
                             }
