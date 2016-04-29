@@ -6,10 +6,7 @@ import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
-import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
@@ -292,7 +289,15 @@ public class ConsultDoctorController extends BaseController {
                         richConsultSession.setUserName(userName);
                         richConsultSession.setNickName(userName);
                         ConsultSessionManager.getSessionManager().putSessionIdConsultSessionPair(richConsultSession.getId(), richConsultSession);
-                        response.put("result", "success");
+                        ConsultSession consultSession = new ConsultSession();
+                        consultSession.setCsUserId(richConsultSession.getCsUserId());
+                        consultSession.setStatus("ongoing");
+                        int flag = consultSessionService.updateSessionInfo(consultSession);
+                        if(flag > 0){
+                            response.put("result", "success");
+                            response.put("userId", richConsultSession.getUserId());
+                        }
+                        response.put("result", "failure");
                     } else {
                         //如果是普通医生，没有权限抢断会话，直接返回提升没有权限操作
                         response.put("result", "noLicenseTransfer");

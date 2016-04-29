@@ -108,7 +108,7 @@ public class ConsultSessionManager {
 		userChannelMapping.put(csUserId, channel);
 		channelUserMapping.put(channel, csUserId);
 	}
-	
+
 	private void doCreateSessionInitiatedByDistributor(String distributorUserId, Channel channel){
 		if(distributorsList.contains(distributorUserId)) {
 			distributors.put(distributorUserId, channel);
