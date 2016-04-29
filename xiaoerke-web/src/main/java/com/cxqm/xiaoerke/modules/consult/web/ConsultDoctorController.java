@@ -290,6 +290,7 @@ public class ConsultDoctorController extends BaseController {
                         richConsultSession.setNickName(userName);
                         ConsultSessionManager.getSessionManager().putSessionIdConsultSessionPair(richConsultSession.getId(), richConsultSession);
                         ConsultSession consultSession = new ConsultSession();
+                        consultSession.setId(richConsultSession.getId());
                         consultSession.setCsUserId(richConsultSession.getCsUserId());
                         consultSession.setStatus("ongoing");
                         int flag = consultSessionService.updateSessionInfo(consultSession);
