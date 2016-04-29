@@ -283,8 +283,7 @@ angular.module('controllers', ['luegg.directives'])
 
                 //处理用户按键事件
                 document.onkeydown = function () {
-                    var a = window.event.keyCode;
-                    if (a == 13) {
+                    if (window.event.ctrlKey && window.event.keyCode == 13) {
                         if($("#consultMessage").val()!=""){
                             $scope.info.consultMessage = $("#consultMessage").val();
                             $scope.sendConsultMessage();
@@ -299,6 +298,9 @@ angular.module('controllers', ['luegg.directives'])
                         return;
                     }
                     if ($scope.socketServer1.readyState == WebSocket.OPEN) {
+                        if ($scope.info.consultMessage.indexOf("\n") >= 0) {
+                            $scope.info.consultMessage.replace("\n","");
+                        }
                         var consultValMessage = {
                             "type": 0,
                             "content": $scope.info.consultMessage,
@@ -340,7 +342,6 @@ angular.module('controllers', ['luegg.directives'])
                                 "senderName": angular.copy($scope.doctorName),
                                 "sessionId": angular.copy($scope.currentUserConversation.sessionId)
                             };
-                            console.log(consultValMessage.content);
                             if (!window.WebSocket) {
                                 return;
                             }
@@ -388,6 +389,7 @@ angular.module('controllers', ['luegg.directives'])
                         if (value.patientId == patientId) {
                             $scope.currentUserConversation = "";
                             $scope.currentUserConversation = value;
+                            value.messageNotSee = false;
                             updateFlag = true;
                         }
                     });
@@ -602,7 +604,6 @@ angular.module('controllers', ['luegg.directives'])
                 }
 
             /***回复操作区**/
-
             var getIframeSrc = function(){
                 var newSrc = $(".advisory-content").attr("src");
                 $(".advisory-content").attr("src","");
@@ -669,6 +670,7 @@ angular.module('controllers', ['luegg.directives'])
                 $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                     if (value.patientId == conversationData.senderId) {
                         value.consultValue.push(conversationData);
+                        value.messageNotSee = true;
                         updateFlag = true;
                     }
                 });
@@ -699,6 +701,7 @@ angular.module('controllers', ['luegg.directives'])
                 $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                     if (value.patientId == $scope.currentUserConversation.patientId) {
                         value.consultValue.push(consultValMessage);
+                        value.messageNotSee = true;
                     }
                 });
             }
@@ -727,6 +730,7 @@ angular.module('controllers', ['luegg.directives'])
                     $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                         if (value.patientId == notifyData.session.userId){
                             value.consultValue.push(notifyData);
+                            value.messageNotSee = true;
                         }
                     });
                 }
@@ -735,6 +739,7 @@ angular.module('controllers', ['luegg.directives'])
                     $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                         if (value.patientId == notifyData.session.userId) {
                             value.consultValue.push(notifyData);
+                            value.messageNotSee = true;
                         }
                     });
                 }
@@ -761,6 +766,7 @@ angular.module('controllers', ['luegg.directives'])
                         $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                             if (value.patientId == notifyData.session.userId) {
                                 value.consultValue.push(notifyData);
+                                value.messageNotSee = true;
                             }
                         });
                     }
@@ -776,6 +782,8 @@ angular.module('controllers', ['luegg.directives'])
                 }else{
                     if (val.type == "2"||val.type == "3") {
                         val.content = $sce.trustAsResourceUrl(angular.copy(val.content));
+                    }else if(val.type == "0"){
+                        val.content = $sce.trustAsHtml(AnalyticEmotion(angular.copy(val.content)));
                     }
                 }
             }

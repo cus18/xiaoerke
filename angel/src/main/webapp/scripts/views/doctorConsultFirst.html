@@ -68,7 +68,9 @@
                      ng-repeat="item in alreadyJoinPatientConversation"
                      ng-click="chooseAlreadyJoinConsultPatient(item.patientId,item.patientName)"
                      alt="">
-                    <nobr>&nbsp;&nbsp;{{item.patientName}}&nbsp;&nbsp;{{transformDate(item.dateTime)}}</nobr>
+                    <nobr>&nbsp;&nbsp;{{item.patientName|limitTo:6}}&nbsp;&nbsp;{{transformDate(item.dateTime)}}</nobr>
+                    <img ng-if="item.messageNotSee" style="width:15px;height:15px;margin-top:5%;margin-left:10%;"
+                         src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/newMessage.png" />
                 </div>
             </div>
         </div>
@@ -181,9 +183,9 @@
                     </div>
                 </div>
             </div>
-            <!--<iframe src="http://localhost:8080/keeper/scripts/views/customerss.html" frameborder="0"-->
-                    <!--class="advisory-content" ng-show='showFlag.advisoryContent'>-->
-            <!--</iframe>-->
+            <iframe src="http://xiaork.com/keeper/scripts/views/customerss.html" frameborder="0"
+                    class="advisory-content" ng-show='showFlag.advisoryContent'>
+            </iframe>
             <textarea type="text" name="messageData" id="patientIdData" class="textarea" style="display:none;">{{currentUserConversation.patientId}}</textarea>
             <textarea type="text" name="messageData" id="doctorIdData" class="textarea" style="display:none;">{{doctorId}}</textarea>
             <textarea type="text" name="messageData" id="sourceData" class="textarea" style="display:none;">{{currentUserConversation.source}}</textarea>
@@ -206,7 +208,7 @@
                         <div ng-repeat="item in currentUserConversation.consultValue" class="information">
                             <div ng-if="item.senderId==doctorId&&item.type!='4'" class="doctorReplyContent">
                                 <div class="doctorName">
-                                    <span>{{item.senderName}}</span>
+                                    <span>{{doctorName}}</span>
                                     <span>{{item.dateTime}}</span>
                                 </div>
                                 <div ng-if="item.type=='0'" class="message" ng-bind-html="item.content" />
@@ -221,9 +223,7 @@
                                     <span>{{item.senderName}}</span>
                                      <span>{{item.dateTime}}</span>
                                 </div>
-                                <div ng-if="item.type=='0'" class="message">
-                                    {{item.content}}
-                                </div>
+                                <div ng-if="item.type=='0'" class="message" ng-bind-html="item.content" />
                                 <div ng-if="item.type=='1'" class="message">
                                     <a target="_blank">
                                         <img width="100" height="100" ng-src="{{item.content}}">
@@ -282,7 +282,7 @@
                     <textarea ng-model="info.consultMessage" id="consultMessage" placeholder="请在此处进行咨询" class="emotion"></textarea>
                 </div>
                 <div class="sendbtn">
-                    <div class="sub_btn" ng-click="sendConsultMessage()">发送(Enter)</div>
+                    <div class="sub_btn" ng-click="sendConsultMessage()">发送(Ctrl+Enter)</div>
                     <div ng-click="closeConsult()">
                         <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(9).png" alt=""/>
                         关闭</div>
