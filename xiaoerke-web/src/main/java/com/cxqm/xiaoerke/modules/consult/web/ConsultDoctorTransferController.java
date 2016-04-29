@@ -125,8 +125,10 @@ public class ConsultDoctorTransferController extends BaseController {
         }
         if(status==0){
             response.put("result", "failure");
-        }else{
+        }else if(status==1){
             response.put("result", "success");
+        }else if(status==2){
+            response.put("result", "transferring");
         }
         response.put("sessionId",sessionId);
         return  response;

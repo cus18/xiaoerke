@@ -338,6 +338,22 @@ public class ConsultSessionManager {
 	public int transferSession(Integer sessionId, String toCsUserId, String remark){
 		try{
 			RichConsultSession session = sessionRedisCache.getConsultSessionBySessionId(sessionId);
+
+			ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = new ConsultSessionForwardRecordsVo();
+			consultSessionForwardRecordsVo.setConversationId(Long.parseLong(String.valueOf(sessionId)));
+			consultSessionForwardRecordsVo.setToUserId(toCsUserId);
+			consultSessionForwardRecordsVo.setFromUserId(session.getCsUserId());
+			List<ConsultSessionForwardRecordsVo> consultSessionForwardRecordsVoList = consultSessionForwardRecordsService.selectConsultForwardList(consultSessionForwardRecordsVo);
+
+			if(consultSessionForwardRecordsVoList.size()>0){
+				for(ConsultSessionForwardRecordsVo consultSessionForwardRecords:consultSessionForwardRecordsVoList){
+					String status = consultSessionForwardRecords.getStatus();
+					if(status.equals(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_WAITING)){
+						return 2;
+					}
+				}
+			}
+
 			User toCsUser = systemService.getUser(toCsUserId);
 			Channel channelToCsUser = userChannelMapping.get(toCsUserId);
 			Channel channelFromCsUser = userChannelMapping.get(session.getCsUserId());
