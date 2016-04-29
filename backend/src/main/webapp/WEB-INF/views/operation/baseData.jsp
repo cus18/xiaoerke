@@ -43,14 +43,14 @@
 
 				<th class="sort-column name">时间\指标</th>
 				<th class="sort-column name">预约大夫</th>
-				<th class="sort-column name">访问次数</th>
+				<%--<th class="sort-column name" >访问次数</th>--%>
 				<th class="sort-column name">新增订单</th>
 				<th class="sort-column name">取消订单</th>
 				<th class="sort-column name">净增订单</th>
 				<th class="sort-column name">累计有效订单</th>
 				<th class="sort-column name">当天就诊订单</th>
-				<th class="sort-column name">当天真实用户</th>
-				<th class="sort-column name">当天付费订单</th>
+				<%--<th class="sort-column name">当天真实用户</th>--%>
+				<%--<th class="sort-column name">当天付费订单</th>--%>
 				<!-- <th class="sort-column name">累计已就诊订单</th> -->
 				<th class="sort-column name">咨询大夫</th>
 				<th class="sort-column name">有效咨询人数</th>
@@ -78,14 +78,14 @@
                     <tr>
 					<td>${userData.CREATED}</td>
 					<td></td>
-					<td>${userData.visiteNum}</td>
+					<%--<td>${userData.visiteNum}</td>--%>
 					<td>${userData.addOrder}</td>
 					<td>${userData.cancelOrder}</td>
 					<td>${userData.netOrder}</td>
 					<td>${userData.totalAddOrder}</td>
 					<td>${userData.thatdayOrder}</td>
-					<td>${userData.truthorder}</td>
-					<td>${userData.payorder}</td>
+					<%--<td>${userData.truthorder}</td>--%>
+					<%--<td>${userData.payorder}</td>--%>
 					<!-- <td>${userData.totalVictoryOrder}</td> -->
 					<td></td>
 					<td>${userData.victorynums}</td>
