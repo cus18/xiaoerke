@@ -3,6 +3,7 @@ package com.cxqm.xiaoerke.modules.consult.dao;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
+import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.sys.entity.DoctorVo;
 
 import java.util.HashMap;
@@ -28,6 +29,8 @@ public interface ConsultSessionDao {
     List<Map<String,Object>> selectByPrOpenid(String openId);
     
     List<ConsultSession> selectBySelective(ConsultSession consultSession);
+
+    List<RichConsultSession> selectRichConsultSessions(RichConsultSession consultSession);
 
     List<ConsultSession> getCsUserByUserId(ConsultSession consultSession);
 

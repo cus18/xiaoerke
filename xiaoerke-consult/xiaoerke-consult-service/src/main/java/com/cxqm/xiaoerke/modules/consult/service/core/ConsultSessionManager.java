@@ -1,6 +1,7 @@
 package com.cxqm.xiaoerke.modules.consult.service.core;
 
 import com.cxqm.xiaoerke.common.utils.*;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.sys.service.impl.UserInfoServiceImpl;
@@ -492,6 +493,12 @@ public class ConsultSessionManager {
 			}
 		}
 
+	}
+
+
+
+	public  void  putSessionIdConsultSessionPair(Integer sessionId,RichConsultSession session){
+		sessionRedisCache.putSessionIdConsultSessionPair(sessionId, session);
 	}
 	
 	public void cancelTransferringSession(Integer sessionId, String toCsUserId, String remark){

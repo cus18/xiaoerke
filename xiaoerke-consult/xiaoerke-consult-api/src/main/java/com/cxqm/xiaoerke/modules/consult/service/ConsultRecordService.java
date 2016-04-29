@@ -39,6 +39,8 @@ public interface ConsultRecordService {
 
     ConsultRecordMongoVo findOneConsultRecord(Query query);
 
+    ConsultSessionStatusVo findOneConsultSessionStatusVo(Query query);
+
     //根据sessionId查询consult用户信息
     List<ConsultRecordMongoVo> findUserConsultInfoBySessionId(ConsultRecordMongoVo consultRecordMongoVo);
 

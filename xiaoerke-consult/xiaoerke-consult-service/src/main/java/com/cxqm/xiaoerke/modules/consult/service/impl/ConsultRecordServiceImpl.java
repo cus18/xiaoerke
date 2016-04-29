@@ -51,7 +51,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     private ConsultRecordDao consultRecordDao;
 
     @Autowired
-    ConsultRecordMongoDBServiceImpl consultRecordMongoDBService;
+    private ConsultRecordMongoDBServiceImpl consultRecordMongoDBService;
 
     private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
@@ -129,6 +129,12 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     @Override
     public ConsultRecordMongoVo findOneConsultRecord(Query query) {
         return consultRecordMongoDBService.findOneConsult(query);
+    }
+
+
+    @Override
+    public ConsultSessionStatusVo findOneConsultSessionStatusVo(Query query){
+        return consultRecordMongoDBService.findOneConsultSessionStatusVo(query);
     }
 
     @Override

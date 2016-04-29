@@ -4,6 +4,7 @@ package com.cxqm.xiaoerke.modules.consult.service.impl;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultSessionDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
+import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
@@ -66,6 +67,12 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
 	public List<ConsultSession> selectBySelective(ConsultSession consultSession) {
 		return consultSessionDao.selectBySelective(consultSession);
 	}
+
+    @Override
+    public List<RichConsultSession> selectRichConsultSessions(RichConsultSession richConsultSession) {
+        return consultSessionDao.selectRichConsultSessions(richConsultSession);
+    }
+
 
     @Override
     public List<ConsultSession> getCsUserByUserId(ConsultSession consultSession) {

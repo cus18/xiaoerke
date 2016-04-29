@@ -118,15 +118,19 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		return 0;
 	}
 
-	@Override
 	public WriteResult upsert(Query query,Update update) {
 		return mongoTemplate.upsert(query, update, ConsultRecordMongoVo.class);
+	}
+
+
+	public ConsultSessionStatusVo findOneConsultSessionStatusVo(Query query){
+		return mongoTemplate.findOne(query, ConsultSessionStatusVo.class, "consultSessionStatusVo");
 	}
 
 	public WriteResult upsertConsultSessionStatusVo(ConsultSessionStatusVo consultSessionStatusVo) {
 		Query query = new Query(where("sessionId").is(consultSessionStatusVo.getSessionId()));
 		WriteResult writeResult = null;
-		ConsultSessionStatusVo  StatusVo = mongoTemplate.findOne(query, ConsultSessionStatusVo.class, "consultSessionStatusVo");
+		ConsultSessionStatusVo  StatusVo = this.findOneConsultSessionStatusVo(query);
 		if(StatusVo != null){
 			writeResult = mongoTemplate.updateMulti(query,new Update().set("lastMessageTime", new Date()), ConsultSessionStatusVo.class);
 		}else {
