@@ -134,10 +134,10 @@ public class ConsultUserController extends BaseController {
             if(csUserId.equals("allCS")){
                 query = new Query().with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
             }else {
-                query = new Query().addCriteria(new Criteria().where("csUserId").is(csUserId)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
+                query = new Query().addCriteria(new Criteria().where("csUserId").is(csUserId)).with(new Sort(Sort.Direction.ASC, "lastMessageTime"));
             }
         }else if(!csUserId.equals("allCS")){
-            query = new Query().addCriteria(new Criteria().where("csUserId").is(csUserId).andOperator(Criteria.where("lastMessageTime").gte(date))).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
+            query = new Query().addCriteria(new Criteria().where("csUserId").is(csUserId).andOperator(Criteria.where("lastMessageTime").gte(date))).with(new Sort(Sort.Direction.ASC, "lastMessageTime"));
         } else {
             query = new Query().addCriteria(Criteria.where("lastMessageTime").gte(date));
         }
