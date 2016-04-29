@@ -626,6 +626,7 @@ angular.module('controllers', ['luegg.directives'])
                     if(data.alreadyJoinPatientConversation!=""&&data.alreadyJoinPatientConversation!=undefined){
                         $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                         $.each($scope.alreadyJoinPatientConversation,function(index,value){
+                            value.messageNotSee = false;
                             $.each(value.consultValue,function(index1,value1){
                                 filterMediaData(value1);
                             })
@@ -935,7 +936,7 @@ angular.module('controllers', ['luegg.directives'])
 
             //查询某个客服信息位于某个时间段的信息
             $scope.getCsInfoByUserAndDate = function(Object){
-                if (Object == 1000 || Object == 0 || Object == 7 || Object == 30) {
+                if (Object == 10000 || Object == 0 || Object == 7 || Object == 30) {
                     $scope.dateNumValue = angular.copy(Object);
                 } else {
                     $scope.CSDoctorIdValue =angular.copy(Object);
