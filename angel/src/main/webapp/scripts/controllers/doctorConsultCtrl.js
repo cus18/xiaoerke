@@ -689,11 +689,15 @@ angular.module('controllers', ['luegg.directives'])
                     conversationContent.sessionId = conversationData.sessionId;
                     conversationContent.isOnline = true;
                     conversationContent.dateTime = conversationData.dateTime;
-                    conversationContent.messageNotSee = false;
+                    conversationContent.messageNotSee = true;
                     conversationContent.patientName = conversationData.senderName;
                     conversationContent.consultValue = [];
                     conversationContent.consultValue.push(consultValue);
                     $scope.alreadyJoinPatientConversation.push(conversationContent);
+                }
+
+                if(conversationData.senderId==$scope.currentUserConversation.patientId){
+                    $scope.currentUserConversation.messageNotSee = false;
                 }
             }
 
@@ -701,7 +705,7 @@ angular.module('controllers', ['luegg.directives'])
                 $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                     if (value.patientId == $scope.currentUserConversation.patientId) {
                         value.consultValue.push(consultValMessage);
-                        value.messageNotSee = true;
+                        value.messageNotSee = false;
                     }
                 });
             }
