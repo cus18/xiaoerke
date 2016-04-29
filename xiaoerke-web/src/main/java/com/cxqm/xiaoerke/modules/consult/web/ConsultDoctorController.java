@@ -2,6 +2,7 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.alibaba.fastjson.JSON;
+import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
@@ -19,6 +20,8 @@ import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
+import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
+import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -62,6 +65,9 @@ public class ConsultDoctorController extends BaseController {
 
     @Autowired
     private PatientRegisterPraiseService patientRegisterPraiseService;
+
+    @Autowired
+    private WechatAttentionService wechatAttentionService;
 
     @RequestMapping(value = "/getCurrentUserHistoryRecord", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -196,8 +202,9 @@ public class ConsultDoctorController extends BaseController {
             }
             response.put("records", recordMongoVos);
         }
-        response.put("pageNo",pageNo);
+        response.put("currentPage",pageNo);
         response.put("pageSize",pageSize);
+        response.put("totalPage",pagination.getTotalPage());
         return response;
     }
 
@@ -232,6 +239,53 @@ public class ConsultDoctorController extends BaseController {
             response.put("CSList",users);
             response.put("status","success");
         }
+        return response;
+    }
+
+    /**
+     * 医生选择一个用户，主动跟用户发起咨询会话
+     */
+    @RequestMapping(value = "/createDoctorConsultSession", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    HashMap<String, Object> createDoctorConsultSession(@RequestBody Map<String, Object> params) {
+        HashMap<String,Object> response = new HashMap<String, Object>();
+        String userId = (String) params.get("userId");
+        String source = null;
+        System.out.println(userId);
+
+        //根据用户ID去查询，从历史会话记录中，获取用户最近的一条聊天记录，根据source判断会话来源
+        if(source.equals("wxcxqm")){
+            //判断此用户是否有正在处于转接状态的会话，如果有正在转接(waitting状态)的会话,返回提示此次会话创建失败
+            response.put("result","existTransferSession");
+
+            //如果目前用户没有正在转接的会话，而存在正在进行的会话
+            String doctorManagerStr = Global.getConfig("doctorManager.list");
+            User csUser = UserUtils.getUser();
+            if(doctorManagerStr.indexOf(csUser.getId())!=-1){
+                //此医生未管理员医生，有权限抢过会话，将会话抢过来
+
+                response.put("result","success");
+            }else{
+                //如果是普通医生，没有权限抢断会话，直接返回提升没有权限操作
+                response.put("result","noLicenseTransfer");
+            }
+
+            //如果用户当前没有任何会话建立，判断用户最近的一次咨询时间，
+            // 是否在48小时以内，如果已经超过了48小时，则提示医生已经超过48小时，
+            // 无法创建会话，如果没有超过48小时，则成功创建会话
+            response.put("result","exceed48Hours");
+            response.put("result","success");
+
+        }else if(source.equals("h5cxqm")){
+            User user = systemService.getUser(userId);
+            if(user!=null){
+            }
+            response.put("result","notOnLine");
+        }else{
+            response.put("result","failure");
+        }
+
         return response;
     }
 
