@@ -34,6 +34,8 @@ public interface PatientRegisterPraiseService {
     
     Map<String,Object> getDoctorHeadImageURIById(@Param("doctorId")String id);
 
+    //根据条件查询评价信息sunxiao
+    List<Map<String,Object>> getCustomerEvaluationListByInfo(Map map);
     /**
      * 医生详情页--获取电话咨询评价总数
      * @param params
@@ -57,4 +59,6 @@ public interface PatientRegisterPraiseService {
      * @author chenxiaoqiong
      */
     HashMap<String,Object> getDoctorEvaluate(HashMap<String, Object> params);
+
+    void saveCustomerEvaluation(Map<String, Object> params);
 }

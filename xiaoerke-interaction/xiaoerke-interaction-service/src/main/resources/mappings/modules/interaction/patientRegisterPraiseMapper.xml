@@ -253,7 +253,7 @@
 
     <!--<select id="getDoctorEvaluate" resultType="com.cxqm.xiaoerke.common.persistence.Page">-->
     <select id="getDoctorEvaluate" resultMap="BaseResultMap" resultType="com.cxqm.xiaoerke.common.persistence.Page">
-        select INSERT(prp.phone,4,5,'****') phone,
+        select INSERT(prp.phone,4,4,'****') phone,
         prp.impression,
         prp.praise_date,
         prp.star,
@@ -313,12 +313,23 @@
 <!--  获取医生头像信息 -->
 	 <select id="getDoctorHeadImageURIById" resultType="java.util.Map">
 		SELECT
-			*
+			su.name as 'doctor_name',CONCAT('http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/', cdi.sys_user_id) as 'doctor_pic_url'
 		FROM
-			customerevaluation
+			consult_doctor_info cdi
+            inner join sys_user su on su.id=cdi.sys_user_id
 		WHERE
-			doctorId =#{doctorId}
+			sys_user_id =#{doctorId}
 	</select>
+
+    <!--  根据条件查询医生评价sunxiao -->
+    <select id="getCustomerEvaluationListByInfo" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT
+        *
+        FROM
+        customerevaluation
+        WHERE
+        doctorId =#{doctorId}
+    </select>
 
 	<insert id="saveQuestionnaireSurvey" parameterType="java.util.List">
 		<selectKey keyProperty="id" resultType="long">

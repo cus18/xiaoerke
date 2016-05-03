@@ -62,9 +62,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 	@Autowired
 	private MongoDBService<MongoLog> mongoLogService;
 
-	@Autowired
-	private HealthRecordsService healthRecordsService;
-
     @Autowired
     private MongoDBService<HealthRecordMsgVo> healthRecordMsgVoMongoDBService;
 
@@ -369,7 +366,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 	private String processSubscribeEvent(ReceiveXmlEntity xmlEntity,HttpServletRequest request)
 	{
 		Map parameter = systemService.getWechatParameter();
-		String token = (String) parameter.get("token");
+		String token = ConstantUtil.TEST_TOKEN;//(String) parameter.get("token");
 		String EventKey = xmlEntity.getEventKey();
 		String marketer = "";
 		if(StringUtils.isNotNull(EventKey)){

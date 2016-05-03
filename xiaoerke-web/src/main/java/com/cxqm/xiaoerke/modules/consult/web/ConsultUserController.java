@@ -120,23 +120,27 @@ public class ConsultUserController extends BaseController {
         Integer pageSize = (Integer) params.get("pageSize");
         Integer dateNum = (Integer) params.get("dateNum");
         String csUserId = String.valueOf(params.get("CSDoctorId"));
-
-        Query query;
-        if(dateNum == null){
-            if(csUserId == "null"){
-                query = new Query().with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
-            }else {
-                query = new Query().addCriteria(new Criteria().where("csUserId").is(csUserId)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
-            }
-        }else {
-            String date2;
+        Date date = null;
+        if(dateNum != 10000){
+            String dateTemp;
             Calendar ca = Calendar.getInstance();
             ca.add(Calendar.DATE, -dateNum);// 30为增加的天数，可以改变的
-            date2 = DateUtils.DateToStr(ca.getTime(), "datetime");
-            Date date = DateUtils.StrToDate(date2,"datetime");
-            query = new Query().addCriteria(Criteria.where("lastMessageTime").gte(date));
+            dateTemp = DateUtils.DateToStr(ca.getTime(), "datetime");
+            date = DateUtils.StrToDate(dateTemp,"datetime");
         }
 
+        Query query;
+        if(dateNum == 10000){
+            if(csUserId.equals("allCS")){
+                query = new Query().with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
+            }else {
+                query = new Query().addCriteria(new Criteria().where("csUserId").is(csUserId)).with(new Sort(Sort.Direction.ASC, "lastMessageTime"));
+            }
+        }else if(!csUserId.equals("allCS")){
+            query = new Query().addCriteria(new Criteria().where("csUserId").is(csUserId).andOperator(Criteria.where("lastMessageTime").gte(date))).with(new Sort(Sort.Direction.ASC, "lastMessageTime"));
+        } else {
+            query = new Query().addCriteria(Criteria.where("lastMessageTime").gte(date));
+        }
 
         PaginationVo<ConsultSessionStatusVo> pagination = consultRecordService.getUserMessageList(pageNo, pageSize, query);
         List<ConsultSessionStatusVo> resultList = new ArrayList<ConsultSessionStatusVo>();
@@ -164,22 +168,14 @@ public class ConsultUserController extends BaseController {
                 resultList.add(vo);
             }
         }
-        removeDuplicateList(resultList);
+        response.put("totalPage",pagination.getTotalPage());
+        response.put("currentPage",pagination.getPageNo());
         response.put("userList",resultList);
         return response;
     }
 
-    private void removeDuplicateList(List<ConsultSessionStatusVo> resultList) {
-        int size = resultList.size();
-        for(int i = 0;i<size;i++){
-            if(frequency(resultList, resultList.get(i)) > 1){
-                resultList.remove(i);
-                size = resultList.size();
-            }
-        }
-    }
-
     /**
+     * 数据去重，留作后用
      * @author deliang
      * @param c
      * @param o
@@ -197,52 +193,6 @@ public class ConsultUserController extends BaseController {
                     result++;
         }
         return result;
-    }
-
-    /**
-     * 获取客户列表(或咨询过某个医生的客户)详细信息,按照时间降序排序
-     */
-    @RequestMapping(value = "/getUserList_back", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    Map<String, Object> getUserList_back(@RequestBody Map<String, Object> params) {
-        Map<String,Object> response = new HashMap<String, Object>();
-
-        //分页获取最近会话记录
-        String pageNo = (String) params.get("pageNo");
-        String pageSize = (String) params.get("pageSize");
-        Integer dateNum = (Integer)params.get("dateNum");
-        String CSDoctorId = (String)params.get("CSDoctorId");
-
-        HashMap<String,Object> searchMap = new HashMap<String, Object>();
-        if(dateNum != null){
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE,-dateNum);
-            Long timeMillis = calendar.getTimeInMillis();
-            String searchDate = DateUtils.formatDateTime(timeMillis);
-            searchMap.put("searchDate",searchDate);
-        }
-        searchMap.put("CSDoctorId",CSDoctorId);
-        Page<ConsultSessionForwardRecordsVo> userPage  = FrontUtils.generatorPage(pageNo, pageSize);
-        Page<ConsultSessionForwardRecordsVo> resultPage = consultSessionForwardRecordsService.getConsultUserListRecently(userPage,searchMap);
-
-        //根据会话记录查询客户列表的详细信息
-        List<ConsultRecordMongoVo> consultSessionForwardRecordsVos = new ArrayList<ConsultRecordMongoVo>();
-        for(ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo : resultPage.getList()){
-            Query query = new Query(where("fromUserId").is(consultSessionForwardRecordsVo.getFromUserId())).with(new Sort(Sort.Direction.DESC, "createDate"));
-            ConsultRecordMongoVo oneConsultRecord = consultRecordService.findOneConsultRecord(query);
-//            Date date = oneConsultRecord.getCreateDate();
-//            oneConsultRecord.setInfoDate(DateUtils.DateToStr(date));
-
-            if (oneConsultRecord != null && StringUtils.isNotNull(oneConsultRecord.getSenderId())){
-                consultSessionForwardRecordsVos.add(oneConsultRecord);
-            }
-
-        }
-
-        response.put("userList",consultSessionForwardRecordsVos);
-        response.put("status", "success");
-        return response;
     }
 
     /**
@@ -270,20 +220,22 @@ public class ConsultUserController extends BaseController {
                 for(ConsultSession consultSession :consultSessions){
                     HashMap<String,Object> searchMap = new HashMap<String, Object>();
                     RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(consultSession.getId());
-                    String userId = richConsultSession.getUserId();
-                    Query query = new Query(where("userId").is(userId).and("csUserId")
-                            .is(consultSession.getCsUserId())).with(new Sort(Direction.ASC, "createDate"));
-                    pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "temporary");
-                    searchMap.put("patientId",userId);
-                    searchMap.put("source",richConsultSession.getSource());
-                    searchMap.put("patientName", richConsultSession.getUserName());
-                    searchMap.put("fromServer",richConsultSession.getServerAddress());
-                    searchMap.put("sessionId",richConsultSession.getId());
-                    searchMap.put("isOnline",true);
-                    searchMap.put("messageNotSee",true);
-                    searchMap.put("dateTime",richConsultSession.getCreateTime());
-                    searchMap.put("consultValue",ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
-                    responseList.add(searchMap);
+                    if(richConsultSession !=null && StringUtils.isNotNull(richConsultSession.getUserId())){
+                        String userId = richConsultSession.getUserId();
+                        Query query = new Query(where("userId").is(userId).and("csUserId")
+                                .is(consultSession.getCsUserId())).with(new Sort(Direction.ASC, "createDate"));
+                        pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "temporary");
+                        searchMap.put("patientId",userId);
+                        searchMap.put("source",richConsultSession.getSource());
+                        searchMap.put("patientName", richConsultSession.getUserName());
+                        searchMap.put("fromServer",richConsultSession.getServerAddress());
+                        searchMap.put("sessionId",richConsultSession.getId());
+                        searchMap.put("isOnline",true);
+                        searchMap.put("messageNotSee",true);
+                        searchMap.put("dateTime",richConsultSession.getCreateTime());
+                        searchMap.put("consultValue",ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
+                        responseList.add(searchMap);
+                    }
                 }
                 response.put("alreadyJoinPatientConversation",responseList);
             }else{
@@ -334,8 +286,8 @@ public class ConsultUserController extends BaseController {
         int pageSize = 1;
         Map<String,Object> response = new HashMap<String, Object>();
         if(null != params.get("pageNo") && null != params.get("pageSize")){
-            pageNo = Integer.parseInt((String)params.get("pageNo"));
-            pageSize = Integer.parseInt((String)params.get("pageSize"));
+            pageNo = (Integer) params.get("pageNo");
+            pageSize = (Integer)params.get("pageSize");
         }
 
         PaginationVo<ConsultRecordMongoVo> pagination = null;
@@ -347,8 +299,7 @@ public class ConsultUserController extends BaseController {
             Criteria cr = new Criteria();
             Query query = new Query();
             query.addCriteria(cr.orOperator(
-                    Criteria.where("userName").regex(searchInfo)
-            )).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
+                    Criteria.where("userName").regex(searchInfo),Criteria.where("userId").regex(searchInfo))).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
             consultSessionStatusVoPaginationVo = consultRecordService.getUserMessageList(pageNo, pageSize, query);
 
             if(consultSessionStatusVoPaginationVo.getDatas()!=null && consultSessionStatusVoPaginationVo.getDatas().size()>0){
@@ -370,7 +321,9 @@ public class ConsultUserController extends BaseController {
                     resultList.add(vo);
                 }
             }
-            removeDuplicateList(resultList);
+            response.put("totalPage",consultSessionStatusVoPaginationVo.getTotalPage());
+            response.put("pageNo",pageNo);
+            response.put("pageSize",pageSize);
             response.put("userList",resultList);
         }else if(searchType.equals("message")){
             Query query = new Query(where("message").regex(searchInfo)).with(new Sort(Sort.Direction.DESC, "createDate"));
@@ -394,11 +347,12 @@ public class ConsultUserController extends BaseController {
                     hashMap.put("laterRecord",laterRecordList);
                     responseList.add(hashMap);
                 }
+                response.put("totalPage",pagination.getTotalPage());
+                response.put("pageNo",pageNo);
+                response.put("pageSize",pageSize);
                 response.put("userList",responseList);
             }
         }
-        response.put("pageNo",pageNo);
-        response.put("pageSize",pageSize);
         return response;
     }
 

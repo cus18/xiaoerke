@@ -31,5 +31,7 @@ public interface ConsultSessionForwardRecordsDao {
                                                                     HashMap<String, Object> hashMap);
 
     List<ConsultSessionForwardRecordsVo> findWaitJoinListByCsUserId(@Param("csUserId")String csUserId,@Param("status")String status);
+
+    List<ConsultSessionForwardRecordsVo> selectConsultForwardList(ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo);
     
 }

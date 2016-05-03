@@ -14,8 +14,20 @@
 
     </resultMap>
 
+    <resultMap id="BaseResultRichConsultSessionsMap" type="com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="source" property="source" jdbcType="VARCHAR"/>
+        <result column="state" property="status" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="sys_user_id_cs" property="csUserId" jdbcType="VARCHAR"/>
+        <result column="sys_user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="nickname" property="nickName" jdbcType="VARCHAR"/>
+    </resultMap>
+
     <sql id="Base_Column_List">
-        id, title, create_time, state, update_time,sys_user_id_cs, sys_user_id
+        id, title, create_time, state, update_time,sys_user_id_cs, sys_user_id ,source
     </sql>
     
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -47,12 +59,45 @@
             and sys_user_id_cs = #{csUserId,jdbcType=VARCHAR}
         </if>
         <if test="userId != null">
-            and sys_user_id = #{userId,jdbcType=VARCHAR}
+            and sys_user_id = #{userId,jdbcType=VARCHAR} ORDER BY create_time desc
         </if>
         <if test="source != null">
             and source = #{source,jdbcType=VARCHAR}
         </if>
+
     </select>
+
+    <select id="selectRichConsultSessions" resultMap="BaseResultRichConsultSessionsMap"
+            parameterType="com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession">
+        select
+        <include refid="Base_Column_List"/>
+        from consult_session
+        where 1=1
+        <if test="title != null">
+            and title = #{title,jdbcType=VARCHAR}
+        </if>
+        <if test="createTime != null">
+            and create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="status != null">
+            and state = #{status,jdbcType=VARCHAR}
+        </if>
+        <if test="updateTime != null">
+            and update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="csUserId != null">
+            and sys_user_id_cs = #{csUserId,jdbcType=VARCHAR}
+        </if>
+        <if test="userId != null">
+            and sys_user_id = #{userId,jdbcType=VARCHAR} ORDER BY create_time desc
+        </if>
+        <if test="source != null">
+            and source = #{source,jdbcType=VARCHAR}
+        </if>
+
+    </select>
+
+
 
     <select id="getCsUserByUserId" resultMap="BaseResultMap"
             parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession">
@@ -240,4 +285,11 @@
         </foreach>
     </select>
 
+    <select id="getConsultSessionUserCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT count(DISTINCT sys_user_id) FROM consult_session where sys_user_id_cs=#{doctorId}
+    </select>
+
+    <select id="getConsultSessionListByInfo" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT * FROM consult_session where sys_user_id_cs=#{doctorId} GROUP BY DATE_FORMAT(create_time,'%Y-%c-%d'),sys_user_id
+    </select>
 </mapper>

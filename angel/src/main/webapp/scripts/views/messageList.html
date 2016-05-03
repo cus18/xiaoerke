@@ -47,19 +47,19 @@
                 <span ng-click="refreshUserList()">
                 刷新消息
             </span>
-            <span>
+            <span ng-click="createDoctorConsultSession()">
                 发起会话
             </span>
             </div>
             <div class="w5 fr h5">
                 <div class="find">
                     <div class="select">
-                        <select  ng-model="selected" ng-change="setSearchMessageType(selected.searchType)" ng-options="date.searchContent for date in searchMessageType">
-                            <option value="">-请选择-</option>
+                        <select  ng-model="selectedMessage" ng-change="setSearchMessageType(selectedMessage.searchType)" ng-options="date.searchContent for date in searchMessageType">
+                            <!--<option value="">-请选择-</option>-->
                         </select>
                     </div>
                     <input type="text" placeholder="搜索内容" ng-model="info.searchMessageContent">
-                    <img ng-click="searchMessage()" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_16.png" alt=""/>
+                    <a href="" ng-click="searchMessage()"><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_16.png" /></a>
                 </div>
             </div>
         </div>
@@ -67,17 +67,15 @@
             <div class='w10 h6 customerlist '>
                 <div class="fl">客户列表</div>
                 <div class="fr">
-                    <select id="searchDateId" ng-model="selected"
+                    <select id="searchDateId" ng-model="selectedDate"
                             ng-options="date.name for date in searchDate"
-                            ng-change="getGetCSInfoByUserId(selected.value)">
-                        <option value="">所有时间</option>
+                            ng-change="getCsInfoByUserAndDate(selectedDate.value)">
                     </select>
                 </div>
                 <div class="fr">
-                    <select id="CSDoctorListInfoId" ng-model="selected"
+                    <select id="CSDoctorListInfoId" ng-model="selectedCsList"
                             ng-options="user.name for user in CSList"
-                            ng-change="getGetCSInfoByUserId(selected.id)">
-                        <option value="">所有客服</option>
+                            ng-change="getCsInfoByUserAndDate(selectedCsList.id)">
                     </select>
                 </div>
             </div>
@@ -86,45 +84,52 @@
                 <div class="recently">最近联系时间</div>
                 <div class="insert">接入客服</div>
             </div>
-            <div  class='w10 h20 br1'>
+            <div  class='w10 h20 h2l'>
                 <ul class="nicknamecontentlist">
                     <li ng-repeat="item in userConsultListInfo"
                         ng-click ="getUserRecordDetail(item.userName,item.userId,$index)"
                         ng-style="(setSessoin==$index)?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}">
                         <div class="nickname">{{item.userName}}</div>
-                        <div class="recently">{{item.lastMessageTime|date:"yyyy-MM-dd"}}</div>
+                        <div class="recently">{{item.lastMessageTime|date:"yyyy-MM-dd HH:mm:ss"}}</div>
                         <div class="insert">{{item.csUserName}}</div>
                     </li>
                 </ul>
                 <a id="bottom"></a>
             </div>
+            <div class="clientListPage" style="margin-left:85px;">
+                <a href="" ng-click="chooseUserConsultListDataPage('firstPage')"><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_27.png"/></a>
+                <a href="" ng-click="chooseUserConsultListDataPage('upPage')"><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_29.png" alt=""/></a>
+                {{currentUserConsultListDataPage}}/{{totalUserConsultListDataPage}}页
+                <a href="" ng-click="chooseUserConsultListDataPage('nextPage')"><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_22.png" alt=""/></a>
+                <a href="" ng-click="chooseUserConsultListDataPage('lastPage')"><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_24.png" alt=""/></a>
+            </div>
         </div>
         <div class="content-r" style='margin-left: 501px;'>
             <div class='w10 h6 messagelistc'>
                 <div>消息记录</div>
-                <div class="fr">
-                    刷新当前信息
-                </div>
+                <a href="" ng-click="refreshCurrentUserRecordDetail()">
+                    <div class="fr">
+                        刷新当前信息
+                    </div>
+                </a>
             </div>
             <div class='w10 h7 messagelistn'>
                 <div>
                     消息记录-&nbsp;<font color="#228b22">{{currentClickUserName}}</font>
                 </div>
-                <div ng-click="getRecordByUserId('all')">全部</div>
-                <div ng-click="getRecordByUserId('1')">图片</div>
-                <div ng-click="getRecordByUserId('2')">语音</div>
-                <div ng-click="getRecordByUserId('3')">视频</div>
+                <div ng-click="setRecordType('all')">全部</div>
+                <div ng-click="setRecordType('1')">图片</div>
+                <div ng-click="setRecordType('2')">语音</div>
+                <div ng-click="setRecordType('3')">视频</div>
                 <div>
-                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_27.png" alt=""/>
-                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_29.png" alt=""/>
-                    <input type="text"/>/
-                    <input type="text"/>页
-                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_22.png" alt=""/>
-                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_24.png" alt=""/>
-
+                    <a href="" ng-click="chooseUserRecordDetail('firstPage',recordType)"><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_27.png"/></a>
+                    <a href="" ng-click="chooseUserRecordDetail('upPage',recordType)"><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_29.png"/></a>
+                    {{currentUserRecordDetailPage}}/{{totalUserRecordDetailPage}}页
+                    <a href="" ng-click="chooseUserRecordDetail('nextPage',recordType)"><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_22.png" /></a>
+                    <a href="" ng-click="chooseUserRecordDetail('lastPage',recordType)"><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_24.png" /></a>
                 </div>
             </div>
-            <div class='w10 h20 examinecontent'>
+            <div class='w10 h20 h2r examinecontent bl1'>
                 <ul>
                      <li ng-repeat="item in currentUserConsultRecordDetail">
                          <div ng-if="item.senderId==item.csUserId">

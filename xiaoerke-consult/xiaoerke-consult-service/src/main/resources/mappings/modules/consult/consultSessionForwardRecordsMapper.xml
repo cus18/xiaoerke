@@ -20,6 +20,20 @@
     from consult_conversation_forward_records
     where id = #{id,jdbcType=BIGINT}
   </select>
+
+  <select id="selectConsultForwardList" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo" >
+    select
+    <include refid="Base_Column_List" />
+    from consult_conversation_forward_records
+    where 1=1
+    <if test="conversationId != null" >
+      and conversation_id = #{conversationId,jdbcType=BIGINT}
+    </if>
+    <if test="status != null" >
+      and status = #{status,jdbcType=VARCHAR}
+    </if>
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from consult_conversation_forward_records
     where id = #{id,jdbcType=BIGINT}

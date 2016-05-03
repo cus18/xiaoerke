@@ -444,29 +444,6 @@ public class WechatUtil {
         return null; // 自定义错误信息
     }
 
-    private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
-
-    public class uploadFileInputStreamThread extends Thread {
-
-        private String key;
-        private Long length;
-        private InputStream in;
-        private String bucket;
-
-        public uploadFileInputStreamThread(String key, Long length ,InputStream in, String bucket) {
-            this.key = key;
-            this.length = length;
-            this.in = in;
-            this.bucket = bucket;
-        }
-
-        public void run() {
-            //上传图片到阿里云
-            OSSObjectTool.uploadFileInputStream(key, length, in, bucket);
-        }
-
-    }
-
     /**
      * 从微信服务器下载多媒体文件
      *

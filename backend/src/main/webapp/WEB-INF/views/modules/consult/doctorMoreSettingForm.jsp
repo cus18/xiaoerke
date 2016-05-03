@@ -74,10 +74,17 @@
 				}
 			});
 			$("#gender").val('${doctor.gender}');
+			$("#type").val('${doctor.type}');
 			$("input[type='radio'][name=grabSession][value='${doctor.grabSession}']").attr("checked",true);
 			$("input[type='radio'][name=sendMessage][value='${doctor.sendMessage}']").attr("checked",true);
 			$("input[type='radio'][name=receiveDifferentialNotification][value='${doctor.receiveDifferentialNotification}']").attr("checked",true);
-			document.getElementsByClassName("datesun")[0].getElementsByTagName("A")[0].className="current";
+			$("#imgSubmit").click(function () {
+				var file = $("#picfile").val();
+				if (file == "") {
+					alertx("请添加医生头像！");
+					return false;
+				}
+			});
 		});
 		
 		function savePersonalData(){
@@ -92,7 +99,7 @@
 			$.ajax({
 	             type: "post",
 	             url: "${ctx}/consult/doctorInfoOper",
-	             data: {userId:"${user.id}",gender:$("#gender").val(),title:$("#title").val(),hospital:$("#hospital").val(),department:$("#department").val(),skill:$("#skill").val(),description:$("#description").val()},
+	             data: {userId:"${user.id}",gender:$("#gender").val(),type:$("#type").val(),title:$("#title").val(),hospital:$("#hospital").val(),department:$("#department").val(),skill:$("#skill").val(),description:$("#description").val()},
 	             dataType: "json",
 	             success: function(data){
 	             	if("suc"==data.result){
@@ -104,11 +111,11 @@
         	});
 		}
 		function changeDiv(obj,flag){
-			var a=document.getElementsByClassName("datesun")[0].getElementsByTagName("A");
+			var a=document.getElementById("datesun").getElementsByTagName("li");
 			for(var i=0;i<a.length;i++){
 				a[i].className="";
 			}
-			obj.className="current";
+			obj.className="active";
 			if(flag=='consultRecords'){
 				$("#consultRecords").show();
 				$("#personalData").hide();
@@ -161,38 +168,79 @@
 	</script>
 </head>
 <body>
-	<form:form id="inputForm" modelAttribute="user" action="${ctx}/consult/doctorOper" method="post" class="form-horizontal"><%--
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="">更多设置</a></li>
+	</ul>
+	<form:form id="inputForm" modelAttribute="user" enctype="multipart/form-data" action="${ctx}/consult/fileUpload" method="post" class="form-horizontal"><%--
 		<form:hidden path="email" htmlEscape="false" maxlength="255" class="input-xlarge"/>
 		<sys:ckfinder input="email" type="files" uploadPath="/mytask" selectMultiple="false"/> --%>
-		<input type="text" value="${user.id}"/>
+		<sys:message content="${message}"/>
+		<form:input path="id" type="hidden" />
 		<div class="control-group">
-			<label class="control-label">姓名:</label>
+			<label class="control-label">
+				<img src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/${user.id}" class="img-rounded" /><br/>
+				<form id="fileForm" modelAttribute="user" enctype="multipart/form-data" action="${ctx}/consult/fileUpload" method="post" class="form-horizontal">
+					<input id="picfile" type="file" name="files" class="btn btn-small" style="position: absolute; filter: alpha(opacity = 0); opacity: 0; width: 3px;" value=""><br/>
+					<input type="submit" id="imgSubmit" class="btn btn-success" value="上传">
+				</form>
+			</label>
 			<div class="controls">
-					${user.name}
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label"></label>
-			<div class="controls">
-				<ul class="datesun" id="datesun">
-					<LI><A href="#" onclick="changeDiv(this,'consultRecords')">咨询记录</A></LI>
-					<LI><A href="#" onclick="changeDiv(this,'personalData')">个人资料</A></LI>
-					<LI><A href="#" onclick="changeDiv(this,'permissionSettings')">权限设置</A></LI>
-				</ul>
+				<p>
+				姓名:${user.name}<p>
+				总服务数量：${sessionCount}  人    满意：${satisfy}  人   不满意：${unsatisfy}  人<p>
+				收到赏金：${redPacket}  元
 			</div>
 		</div>
 	</form:form>
+	<ul class="nav nav-tabs" id="datesun">
+		<li class="active" onclick="changeDiv(this,'consultRecords')"><a href="#">咨询记录</a></li>
+		<li onclick="changeDiv(this,'personalData')"><a href="#">个人资料</a></li>
+		<li onclick="changeDiv(this,'permissionSettings')"><a href="#">权限设置</a></li>
+	</ul>
 	<div id="consultRecords">
 		<form:form id="inputForm" modelAttribute="user" action="${ctx}/consult/doctorOper" method="post" class="form-horizontal"><%--
 			<form:hidden path="email" htmlEscape="false" maxlength="255" class="input-xlarge"/>
 			<sys:ckfinder input="email" type="files" uploadPath="/mytask" selectMultiple="false"/> --%>
-			<input type="text" value="${user.id}"/>
-			<div class="control-group">
-				<label class="control-label">姓名:</label>
-				<div class="controls">
-						${user.name}
-				</div>
-			</div>
+			<input type="hidden" value="${user.id}"/>
+
+
+
+
+
+			<form:form id="searchForm" modelAttribute="doctor" action="${ctx}/register/registerList" method="post" class="breadcrumb form-search ">
+				<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
+				<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
+				<sys:tableSort id="orderBy" name="orderBy" value="${page.orderBy}" callback="page();"/><p>
+					姓名:${user.name}
+					就诊时间：<form:input id="fromDate" path="fromDate" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
+									onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+						至
+						<form:input id="toDate" path="toDate" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
+									onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+					<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询" onclick="return page();"/>
+				<hr>
+				接待人数：${sessionCount}  人     回复消息总数：150  人<p>
+			</form:form>
+			<table id="contentTable" class="table table-striped table-bordered table-condensed">
+				<thead><tr><th>日期</th><th>接待人数</th><th>回复消息总数</th>
+				</tr></thead>
+				<tbody>
+				<c:forEach items="${sessionMap}" var="map">
+					<tr>
+						<td>${map.key}</td>
+						<td>${map.value}</td>
+						<td>${map.value}</td>
+					</tr>
+				</c:forEach>
+				</tbody>
+			</table>
+			<div class="pagination">${page}</div>
+
+
+
+
+
+
 			<div class="form-actions" >
 				<input class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 				<input class="btn btn-primary" type="button" onclick="deleteDoctor()" value="删除该医生"/>
@@ -212,6 +260,15 @@
 						<option value="0">女</option>
 					</select>
 					<span class="help-inline"><font color="red">*</font> </span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">类型:</label>
+				<div class="controls">
+					<select id="type" class="txt required" style="width:100px;">
+						<option value="0">全职</option>
+						<option value="1">兼职</option>
+					</select>
 				</div>
 			</div>
 			<div class="control-group">
@@ -237,13 +294,13 @@
 			<div class="control-group">
 				<label class="control-label">擅长:</label>
 				<div class="controls">
-					<input id="skill" value="${doctor.skill}" htmlEscape="false" maxlength="50" class="input-medium"/>
+					<textarea id="skill" rows="4" maxlength="250" class="required" style="width:200px;">${doctor.skill}</textarea>
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">医生介绍:</label>
 				<div class="controls">
-					<input id="description" value="${doctor.description}" htmlEscape="false" maxlength="50" class="input-medium"/>
+					<textarea id="description" rows="4" maxlength="250" class="required" style="width:400px;">${doctor.description}</textarea>
 				</div>
 			</div>
 			<div class="form-actions" >

@@ -59,6 +59,7 @@
     crs.register_no AS orderNo,
     crs.phone userPhone,
     sbi. NAME babyName,
+      case when shc.contact_phone is null then "" else shc.contact_phone end hospitalContactPhone,
     cdr.price,
     crs.type,
     crs.surplusTime,
@@ -70,6 +71,9 @@
     LEFT JOIN sys_consultPhone_service scs ON crs.sys_phoneConsult_service_id = scs.id
     LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = scs.sys_doctor_id
     LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
+      LEFT  JOIN doctor_hospital_relation dhr on sd.id = dhr.sys_doctor_id
+      LEFT JOIN sys_hospital sh on dhr.sys_hospital_id = sh.id
+      LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = dhr.sys_hospital_id
     LEFT JOIN sys_patient sp ON sp.id = crs.sys_patient_id
     LEFT JOIN sys_baby_baseInfo sbi ON sp.sys_user_id = sbi.userid
     LEFT JOIN sys_user su on sp.sys_user_id = su.id

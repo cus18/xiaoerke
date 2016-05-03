@@ -14,6 +14,10 @@ angular.module('services', ['ngResource'])
     .factory('GetOnlineDoctorList', ['$resource', function ($resource) {
         return $resource(public + 'consult/doctor/doctorOnLineList');
     }])
+    //医生选择一个用户后，主动发起跟用户创建会话
+    .factory('CreateDoctorConsultSession', ['$resource', function ($resource) {
+        return $resource(public + 'consult/doctor/createDoctorConsultSession');
+    }])
     //获取医生下的目前正在咨询的用户列表
     .factory('GetCurrentUserConsultListInfo', ['$resource', function ($resource) {
         return $resource(public + 'consult/user/getCurrentUserList');
@@ -36,10 +40,6 @@ angular.module('services', ['ngResource'])
     }])
     .factory('GetMessageRecordInfo', ['$resource', function ($resource) {
         return $resource(public + 'consult/user/recordSearchList');
-    }])
-    //根据userId获取某个客服医生
-    .factory('GetCSInfoByUserId', ['$resource', function ($resource) {
-        return $resource(public + 'consult/user/getUserList');
     }])
     //修改回复
     .factory('AnswerModify', ['$resource', function ($resource) {

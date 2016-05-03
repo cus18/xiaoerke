@@ -1,6 +1,7 @@
 package com.cxqm.xiaoerke.modules.consult.service.core;
 
 import com.cxqm.xiaoerke.common.utils.*;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.sys.service.impl.UserInfoServiceImpl;
@@ -107,7 +108,7 @@ public class ConsultSessionManager {
 		userChannelMapping.put(csUserId, channel);
 		channelUserMapping.put(channel, csUserId);
 	}
-	
+
 	private void doCreateSessionInitiatedByDistributor(String distributorUserId, Channel channel){
 		if(distributorsList.contains(distributorUserId)) {
 			distributors.put(distributorUserId, channel);
@@ -337,6 +338,22 @@ public class ConsultSessionManager {
 	public int transferSession(Integer sessionId, String toCsUserId, String remark){
 		try{
 			RichConsultSession session = sessionRedisCache.getConsultSessionBySessionId(sessionId);
+
+			ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = new ConsultSessionForwardRecordsVo();
+			consultSessionForwardRecordsVo.setConversationId(Long.parseLong(String.valueOf(sessionId)));
+			consultSessionForwardRecordsVo.setToUserId(toCsUserId);
+			consultSessionForwardRecordsVo.setFromUserId(session.getCsUserId());
+			List<ConsultSessionForwardRecordsVo> consultSessionForwardRecordsVoList = consultSessionForwardRecordsService.selectConsultForwardList(consultSessionForwardRecordsVo);
+
+			if(consultSessionForwardRecordsVoList.size()>0){
+				for(ConsultSessionForwardRecordsVo consultSessionForwardRecords:consultSessionForwardRecordsVoList){
+					String status = consultSessionForwardRecords.getStatus();
+					if(status.equals(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_WAITING)){
+						return 2;
+					}
+				}
+			}
+
 			User toCsUser = systemService.getUser(toCsUserId);
 			Channel channelToCsUser = userChannelMapping.get(toCsUserId);
 			Channel channelFromCsUser = userChannelMapping.get(session.getCsUserId());
@@ -480,11 +497,6 @@ public class ConsultSessionManager {
 				ConsultSessionForwardRecordsVo forwardRecord = consultSessionForwardRecordsService.selectByPrimaryKey(forwardRecordId.longValue());
 
 				if(ConsultSessionForwardRecordsVo.REACT_TRANSFER_OPERATION_ACCEPT.equalsIgnoreCase(operation)){
-					if(session.getSource().equals("wxcxqm")){
-						String st = "尊敬的用户，您好，已经为您转接了" + toCsUserName + "提供服务，谢谢^_^";
-						WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN,session.getUserId(), st);
-					}
-
 					if(session!=null){
 						sessionRedisCache.putSessionIdConsultSessionPair(sessionId, session);
 					}
@@ -498,7 +510,18 @@ public class ConsultSessionManager {
 		}
 
 	}
-	
+
+
+
+	public  void  putSessionIdConsultSessionPair(Integer sessionId,RichConsultSession session){
+		sessionRedisCache.putSessionIdConsultSessionPair(sessionId, session);
+	}
+
+	public void putUserIdSessionIdPair(String userId, Integer sessionId) {
+		sessionRedisCache.putUserIdSessionIdPair(userId,sessionId);
+	}
+
+
 	public void cancelTransferringSession(Integer sessionId, String toCsUserId, String remark){
 		RichConsultSession session = sessionRedisCache.getConsultSessionBySessionId(sessionId);
 		ConsultSessionForwardRecordsVo forwardRecord = new ConsultSessionForwardRecordsVo();
