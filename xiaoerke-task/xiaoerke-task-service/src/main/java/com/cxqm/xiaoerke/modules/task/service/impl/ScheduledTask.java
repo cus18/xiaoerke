@@ -643,7 +643,7 @@ public class ScheduledTask {
             map = new HashMap<String, Object>();
             map.put("token",token);
             map.put("ticket",ticket);
-            map.put("id", 2);
+            map.put("id", "2");
             scheduleTaskService.updateWechatParameter(map);
             sessionRedisCache.putWeChatParamToRedis(map);
 

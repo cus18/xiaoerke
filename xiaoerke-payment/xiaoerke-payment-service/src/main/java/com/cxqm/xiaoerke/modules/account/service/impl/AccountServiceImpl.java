@@ -428,11 +428,7 @@ public class AccountServiceImpl implements AccountService {
         if(StringUtils.isNull(patientRegisterId) || "undefined".equals(patientRegisterId)){
             patientRegisterId = "noData";
         }
-//        String orderPrice = request.getParameter("payPrice");
-//        int price = ((Float)request.getAttribute("payPrice")).intValue()*100;
         String orderPrice =StringUtils.isNotNull(String.valueOf((request.getAttribute("payPrice"))))?String.valueOf(((Float)request.getAttribute("payPrice")).intValue()*100):request.getParameter("payPrice");
-
-
         String outTradeNo = PrepayInfo.get("out_trade_no");
         String openId = (String)session.getAttribute("openId");
         if(!StringUtils.isNotNull(openId)){

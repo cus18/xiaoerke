@@ -31,17 +31,15 @@ public class WechatUtil {
 //    public static final String   DOCTORSECTET= "1822bb2703511da89fa7bfa1a5549b31";
 
     //小儿科用户端微信参数
-    public static final String CORPID = "wxa19496b1076e7352";
-    public static final String SECTET = "f645d4bcf81c905b3ad628cda79bd7ee";
+    public static final String CORPID = "wx9b663cd46164130c";
+    public static final String SECTET = "d0460e461a3bcf8598ce6e87443b3d0f";
+
+    //小儿科医生端微信参数
+    public static final String DOCTORCORPID= "wxa19496b1076e7352";
+    public static final String DOCTORSECTET = "f645d4bcf81c905b3ad628cda79bd7ee";
 
 //    public static final String CORPID = "wx0baf90e904df0117";
 //    public static final String SECTET = "b3dac0be3e1739af01fee0052ea7a68f";
-
-    //小儿科医生端微信参数
-
-    //用户端微信参数
-    public static final String DOCTORCORPID = "wx9b663cd46164130c";
-    public static final String DOCTORSECTET = "d0460e461a3bcf8598ce6e87443b3d0f";
 
 //    //医生端微信参数
 //    public static final String CORPID = "wxfb77729adf195622";
@@ -50,7 +48,7 @@ public class WechatUtil {
     public static String getToken(String corpid, String sectet) throws IOException {
         String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + corpid + "&secret=" + sectet + "";
         String content = HttpRequestUtil.get(url);
-        AccessToken token = (AccessToken) JsonUtil.getObjFromJsonStr(content, AccessToken.class);
+        AccessToken token = JsonUtil.getObjFromJsonStr(content, AccessToken.class);
         System.out.println("token:" + content);
         return token.getaccess_token();
     }

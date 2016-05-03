@@ -113,15 +113,15 @@ public class ConsultOrderUserController {
         Date  birthDay = DateUtils.StrToDate((String)params.get("birthDay"),"yyyy/MM/dd");
         Map<String,Object> resultMap = new HashMap<String, Object>();
         String openid = UserUtils.getUser().getOpenid();
-        int reultState = 0;
+        int resultState = 0;
         try {
-            reultState = consultPhonePatientService.PatientRegister(openid, babyId, babyName, birthDay, phoneNum, illnessDesc, sysConsultPhoneId);
+            resultState = consultPhonePatientService.PatientRegister(openid, babyId, babyName, birthDay, phoneNum, illnessDesc, sysConsultPhoneId);
 
         } catch (CreateOrderException e) {
             e.printStackTrace();
             resultMap.put("state","false");
         }
-        resultMap.put("reultState",reultState);
+        resultMap.put("resultState",resultState);
         return  resultMap;
     }
 
@@ -164,7 +164,7 @@ public class ConsultOrderUserController {
                 e.printStackTrace();
             }
 
-            resultMap.put("reultState",resultState);
+            resultMap.put("resultState",resultState);
             //插入取消原因
             resultMap.put("reason", cancelReason);
             resultMap.put("praiseId", IdGen.uuid());

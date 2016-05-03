@@ -276,7 +276,7 @@
 	</bean>
 	<bean id="consultPhoneCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="consultPhoneQuarzTask"/>
-		<property name="cronExpression" value="0 */1 * * * ?"/>
+		<property name="cronExpression" value="0 */2 * * * ?"/>
 	</bean>
 
 	<!--运维电话咨询定时拨打任务 sunxiao-->
