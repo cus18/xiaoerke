@@ -1002,7 +1002,7 @@ public class ScheduledTask {
     }
 
     //建立患者与医生之间的通讯
-    public synchronized void getConnenct4doctorAndPatient(){
+    public synchronized void getConnection4doctorAndPatient(){
 
         //再建立通讯的五分钟前发消息给用户
         Map<String,Object> parameter = systemService.getWechatParameter();
