@@ -171,8 +171,10 @@ var selectIllnessDetail = function(chooseFirstIllnessName,firstIllnessItem){
             if(data!=null ){
                 var illnessSecondList = "";
                 $.each(data.illnessListData,function(index,value){
+                   /* '<li class="border2" id="firstIllnessItem' + index + '" ' +
+                    'onclick="selectIllnessDetail(' + chooseFirstIllnessName + ')"><a class="f3 c3">'+ value.illnessName +'</a></li>';*/
                     var chooseSecondIllness = "'" + value.illnessSecondId +"','" + value.illnessSecondName + "'";
-                    illnessSecondList = illnessSecondList + '<li class="border2"><a class="f3 c3" onclick="searchSecondIllness(' + chooseSecondIllness + ')">' + value.illnessSecondName + '</a> </li>';
+                    illnessSecondList = illnessSecondList + '<li class="border2" onclick="searchSecondIllness(' + chooseSecondIllness + ')"><a class="f3 c3" >' + value.illnessSecondName + '</a> </li>';
                 })
                 $('.ill-right').html(illnessSecondList);
             }
