@@ -171,7 +171,7 @@ function updateCustomerInfo(){
             url:"account/user/customerPay",// 跳转到 action
             async:true,
             type:'get',
-            data:{patientRegisterId:customerId,payPrice:redPacket*100},
+            data:{patientRegisterId:customerId,payPrice:redPacket*1000},
             cache:false,
             success:function(data) {
                 var obj = eval('(' + data + ')');
