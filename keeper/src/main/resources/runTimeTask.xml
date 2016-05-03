@@ -271,7 +271,7 @@
 	<!--@Scheduled(cron = "0 0/1 * * * ?") -->
 	<bean id="consultPhoneQuarzTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="scheduledQuarz"/>
-		<property name="targetMethod" value="getConnenct4doctorAndPatient"/>
+		<property name="targetMethod" value="getConnection4doctorAndPatient"/>
 		<property name="concurrent" value="false"/>
 	</bean>
 	<bean id="consultPhoneCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
