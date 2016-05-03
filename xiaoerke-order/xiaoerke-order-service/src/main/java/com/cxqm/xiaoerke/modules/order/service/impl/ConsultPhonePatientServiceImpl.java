@@ -318,16 +318,9 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         map.put("doctorId", vo.getDoctorId());
         map.put("fromDate","yes");
         List<Map<String, Object>> orderList = getConsultPhoneRegisterListByInfo(map);
-        List list = new ArrayList();
-        List orderTimeList = new ArrayList();
         Map orderTimeMap = new HashMap();
         for(Map<String, Object> temp : orderList){
-            if(list.contains(temp.get("date"))){
-                orderTimeMap.put(temp.get("date"),orderTimeMap.get(temp.get("date"))+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+temp.get("beginTime")+"-"+temp.get("endTime"));
-            }else{
-                orderTimeMap.put(temp.get("date"),temp.get("beginTime")+"-"+temp.get("endTime"));
-            }
-            list.add(temp.get("date"));
+            orderTimeMap.put(temp.get("date"), orderTimeMap.containsKey(temp.get("date")) ? orderTimeMap.get(temp.get("date")) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + temp.get("beginTime").toString().substring(0, 5) + "--" + temp.get("endTime").toString().substring(0, 5) : temp.get("beginTime").toString().substring(0, 5)+"--"+temp.get("endTime").toString().substring(0,5));
         }
         Map paramMap = new HashMap();
         paramMap.put("orderId",vo.getId());
@@ -419,6 +412,4 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
       return  consultPhoneRegisterServiceDao.cancelAppointNoPayOrder();
 
     }
-
-    ;
 }
