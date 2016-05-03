@@ -156,7 +156,7 @@ public class WechatDoctorCoreServiceImpl implements WechatDoctorCoreService {
                     st = "医生您好，宝大夫专家版，专为您精心打造，让我们一起用自己的专业能力来帮助更多人！如需帮助请致电:400-623-7120.";
                     textMessage.setContent(st);
                     respMessage = MessageUtil.textMessageToXml(textMessage);
-                    WechatUtil.senMsgToWechat(token, xmlEntity.getFromUserName(),st);
+                    WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(),st);
                 }
                 // 取消订阅
                 else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE))

@@ -176,7 +176,8 @@ public class ConsultWechatController extends BaseController {
                         if(messageType.contains("voice")||messageType.contains("video")||messageType.contains("image")){
                             try{
                                 WechatUtil wechatUtil = new WechatUtil();
-                                String mediaURL = wechatUtil.downloadMediaFromWx(ConstantUtil.TEST_TOKEN,
+                                Map userWechatParam = sessionRedisCache.getWeChatToken("user");
+                                String mediaURL = wechatUtil.downloadMediaFromWx((String) userWechatParam.get("token"),
                                         (String) this.param.get("mediaId"),messageType);
                                 obj.put("content", mediaURL);
                                 messageContent = mediaURL;

@@ -184,7 +184,7 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
         Map<String,Object> parameter = systemService.getWechatParameter();
         String token = (String)parameter.get("token");
 			openId = "oogbDwCLH1_x-KLcQKqlrmUzG2ng";
-        WechatUtil.senMsgToWechat(token,openId,st);
+        WechatUtil.sendMsgToWechat(token,openId,st);
             return "true";
         } catch (Exception ex) {
             ex.printStackTrace();
