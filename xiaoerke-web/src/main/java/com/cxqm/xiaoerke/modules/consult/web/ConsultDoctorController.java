@@ -355,10 +355,10 @@ public class ConsultDoctorController extends BaseController {
         params.put("redPacket", null);
         patientRegisterPraiseService.saveCustomerEvaluation(params);
         String st = "感谢您对我们的信任与支持，为了以后能更好的为您服务，请对本次服务做出评价！【" +
-                "<a href='http://s11.baodf.com/titan/appoint#/userEvaluate/" + params.get("uuid") + "'>我要评价</a>】";
+                "<a href='http://123.57.45.33/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" + params.get("uuid") + "'>我要评价</a>】";
         Map parameter = systemService.getWechatParameter();
         String token = (String) parameter.get("token");
-        WechatUtil.senMsgToWechat(token, userId, st);
+        WechatUtil.sendMsgToWechat(token, userId, st);
         String result = consultSessionService.clearSession(sessionId, userId);
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("result", result);

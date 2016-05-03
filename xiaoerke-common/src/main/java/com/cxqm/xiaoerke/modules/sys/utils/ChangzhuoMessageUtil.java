@@ -318,7 +318,7 @@ public class ChangzhuoMessageUtil {
 
 
 //	多客服接口
-	public static  void senMsgToWechat(String token,String openId,ArrayList<Object> obj){
+	public static  void sendMsgToWechat(String token,String openId,ArrayList<Object> obj){
 		String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token="+ token;
 		try {
 			String str = JsonUtil.getJsonStrFromList(obj);

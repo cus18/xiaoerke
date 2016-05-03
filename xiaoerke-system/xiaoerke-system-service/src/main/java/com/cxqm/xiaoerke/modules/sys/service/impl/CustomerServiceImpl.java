@@ -198,7 +198,7 @@ public class CustomerServiceImpl implements CustomerService {
 		        { 
 		        	Map parameter = systemService.getWechatParameter();
 					String token = (String)parameter.get("token");
-					WechatUtil.senMsgToWechat(token,openid, st);
+					WechatUtil.sendMsgToWechat(token,openid, st);
 		        }
 		}
 	}

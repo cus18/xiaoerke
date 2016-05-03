@@ -133,6 +133,8 @@ public class PayController {
             return "appointmentPay";
         }else if(serviceType.equals("orderDetail")){
            return  "orderDetailPay";
+        }else if(serviceType.equals("customerPay")){
+            return  "native/playtourIndex";
         }else{
             return null;
         }

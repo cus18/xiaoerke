@@ -25,8 +25,7 @@ public class WechatUtil {
     //用户端微信参数
 //    public static final String CORPID = "wx0baf90e904df0117";
 //    public static final String SECTET = "b3dac0be3e1739af01fee0052ea7a68f";
-//    public static final String CORPID = "wx0baf90e904df0117";
-//    public static final String SECTET = "b3dac0be3e1739af01fee0052ea7a68f";
+
     //宝大夫医生端微信参数
 //    public static final String  DOCTORCORPID= "wxb6b6ad2a55af0567";
 //    public static final String   DOCTORSECTET= "1822bb2703511da89fa7bfa1a5549b31";
@@ -39,22 +38,14 @@ public class WechatUtil {
 //    public static final String SECTET = "b3dac0be3e1739af01fee0052ea7a68f";
 
     //小儿科医生端微信参数
-//    public static final String CORPID = "wx9b663cd46164130c";
-//    public static final String SECTET = "d0460e461a3bcf8598ce6e87443b3d0f";
+
     //用户端微信参数
     public static final String DOCTORCORPID = "wx9b663cd46164130c";
     public static final String DOCTORSECTET = "d0460e461a3bcf8598ce6e87443b3d0f";
-    //   宝大夫
-//    public static final String CORPID = "wx0baf90e904df0117";
-//    public static final String SECTET = "b3dac0be3e1739af01fee0052ea7a68f";
-//
+
 //    //医生端微信参数
     public static final String CORPID = "wxfb77729adf195622";
     public static final String SECTET = "c0192dc68e66eff74161e9cf266898bb";
-
-    //在任务管理器中ScheduledTaskManager初始化。100分钟更新一次。
-//    public static String TOKEN;
-//    public static String JSAPI_Ticket;
 
     public static String getToken(String corpid, String sectet) throws IOException {
         String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + corpid + "&secret=" + sectet + "";
@@ -227,7 +218,6 @@ public class WechatUtil {
             if (flag) {
                 //发短信给医生
                 System.out.println("短信");
-//                ChangzhuoMessageUtil.sendMsg("","");
             }
         }
     }
@@ -251,7 +241,7 @@ public class WechatUtil {
      * @param token      标示
      * @param nextopenid 拉去的第一个openid
      */
-    public static String getAttetionList(String token, String nextopenid) {
+    public static String getAttentionList(String token, String nextopenid) {
         String url = "https://api.weixin.qq.com/cgi-bin/user/get?access_token=" + token + "&next_openid=" + nextopenid + "";
         String jsonObj = HttpRequestUtil.getConnectionResult(url, "GET", "");
         JSONObject obj = new JSONObject(jsonObj);
@@ -267,7 +257,7 @@ public class WechatUtil {
      * @param openId  用户的唯一标示
      * @param content 发送内容
      */
-    public static void senMsgToWechat(String token, String openId, String content) {
+    public static void sendMsgToWechat(String token, String openId, String content) {
         String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + token;
         try {
             String json = "{\"touser\":\"" + openId + "\",\"msgtype\":\"text\",\"text\":" +

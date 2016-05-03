@@ -8,10 +8,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
 import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultPhoneService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
+import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
 import com.cxqm.xiaoerke.modules.operation.service.BaseDataService;
 import com.cxqm.xiaoerke.modules.operation.service.DataStatisticService;
@@ -49,6 +46,9 @@ public class ScheduledTask {
 
     @Autowired
     private ScheduleTaskService scheduleTaskService;
+
+    @Autowired
+    private SessionRedisCache sessionRedisCache;
 
     @Autowired
     private SystemService systemService;
@@ -635,6 +635,7 @@ public class ScheduledTask {
             map.put("ticket",ticket);
             map.put("id","1");
             scheduleTaskService.updateWechatParameter(map);
+            sessionRedisCache.putWeChatToken(map);
 
             System.out.print("医生端微信参数更新");
             token = WechatUtil.getToken(WechatUtil.DOCTORCORPID,WechatUtil.DOCTORSECTET);
@@ -644,7 +645,7 @@ public class ScheduledTask {
             map.put("ticket",ticket);
             map.put("id", 2);
             scheduleTaskService.updateWechatParameter(map);
-
+            sessionRedisCache.putWeChatToken(map);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -1035,7 +1036,7 @@ public class ScheduledTask {
           if(list.size()<1){
               Integer conversationLength =  (Integer)map.get("conversationLength")*60;
               HashMap<String, Object> result = CCPRestSDK.callback(userPhone,doctorPhone,
-                      "4006237120", "4006237120", null,
+                      "57115120", "57115120", null,
                       "true", null, orderId+"",
                       conversationLength+"", null, "0",
                       "1", "60", null);
@@ -1165,7 +1166,7 @@ public class ScheduledTask {
             Integer orderId = vo.getOrderId();
             long conversationLength =  vo.getSurplusTime()/1000;
             HashMap<String, Object> result = CCPRestSDK.callback(userPhone,doctorPhone,
-                    "4006237120", "4006237120", null,
+                    "57115120", "57115120", null,
                     "true", null, orderId+"",
                     conversationLength+"", null, "0",
                     "1", "60", null);
@@ -1430,15 +1431,6 @@ public class ScheduledTask {
                     DoctorMsgTemplate.doctorPhoneConsultRemindAt5minBefore2Wechat(babyName,nowTime,userPhone,token,url,openid);
                 }
             }
-        }
-    }
-
-    private void updateMonitorStatusById(List<HashMap<String, Object>> listPay, String status) {
-        for (Map paymap : listPay) {
-            HashMap<String, Object> newhash = new HashMap<String, Object>();
-            newhash.put("id", paymap.get("id"));
-            newhash.put("status", status);
-            messageService.setMonitorStatusByID(newhash);
         }
     }
 
