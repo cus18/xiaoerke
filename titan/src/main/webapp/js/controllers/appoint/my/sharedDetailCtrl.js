@@ -50,7 +50,7 @@
                                     success: function (res) {
                                         $scope.pageLoading = true;
                                         OrderShareOperation.save({"patient_register_service_id":$stateParams.patient_register_service_id,"type":$stateParams.type,
-                                            "action":{"status":"4"}},function(data){
+                                            "action":{"status":"5"}},function(data){
                                             $scope.pageLoading = false;
                                         })
                                         $state.go("shareSuccess");
