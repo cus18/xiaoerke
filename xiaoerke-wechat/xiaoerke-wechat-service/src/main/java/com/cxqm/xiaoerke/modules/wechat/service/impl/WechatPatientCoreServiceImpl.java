@@ -144,12 +144,12 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			try {
 				System.out.println(xmlEntity.getContent());
 				if(xmlEntity.getMsgType().equals("text")){
-					this.sendPost("http://xiaork.com/angel/consult/wechat/conversation",
+					this.sendPost(ConstantUtil.ANGEL_WEB_URL + "/angel/consult/wechat/conversation",
 							"openId=" + xmlEntity.getFromUserName() +
 							"&messageType=" + xmlEntity.getMsgType() +
 							"&messageContent=" + URLEncoder.encode(xmlEntity.getContent(), "UTF-8"));
 				}else{
-					this.sendPost("http://xiaork.com/angel/consult/wechat/conversation",
+					this.sendPost(ConstantUtil.ANGEL_WEB_URL + "/angel/consult/wechat/conversation",
 							"openId=" + xmlEntity.getFromUserName() +
 							"&messageType=" + xmlEntity.getMsgType() +
 							"&mediaId=" + xmlEntity.getMediaId());
@@ -253,8 +253,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			Map<String,Object> map = wechatInfoDao.getDoctorInfo(EventKey.replace("doc",""));
 			article.setTitle("您已经成功关注" + map.get("hospitalName") + map.get("name") + "医生，点击即可预约");
 			article.setDescription("");
-			article.setPicUrl(ConstantUtil.BAODF_URL+"/titan/images/attentionDoc.jpg");
-			article.setUrl(ConstantUtil.BAODF_URL+"/titan/appoint#/doctorAppointment/" + map.get("id") + ",,,,,doctorShare,,");
+			article.setPicUrl(ConstantUtil.TITAN_WEB_URL+"/titan/images/attentionDoc.jpg");
+			article.setUrl(ConstantUtil.TITAN_WEB_URL+"/titan/appoint#/doctorAppointment/" + map.get("id") + ",,,,,doctorShare,,");
 			articleList.add(article);
 		}else if(EventKey.indexOf("267")>-1){
 			article.setTitle("恭喜您,通过‘糖盒儿(tanghe2)’关注宝大夫,不仅可以随时免费咨询儿科专家,还可获赠一次预约名医的机会。");
@@ -263,8 +263,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		}else if(EventKey.indexOf("263")>-1){
 			article.setTitle("【郑玉巧育儿经】--宝大夫");
 			article.setDescription("智能匹配月龄，获取针对一对一育儿指导，建立宝宝专属健康档案，一路呵护，茁壮成长！");
-			article.setPicUrl(ConstantUtil.BAODF_URL+"/titan/images/Follow.jpg");
-			article.setUrl(ConstantUtil.BAODF_URL+"/titan/appoint#/knowledgeIndex");
+			article.setPicUrl(ConstantUtil.TITAN_WEB_URL+"/titan/images/Follow.jpg");
+			article.setUrl(ConstantUtil.TITAN_WEB_URL+"/titan/appoint#/knowledgeIndex");
 			articleList.add(article);
 		}
 		else if(EventKey.indexOf("month")>-1)
@@ -277,9 +277,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 					//推送赠送月会员URL消息
 					article.setTitle("月卡");
 					article.setDescription("感谢您关注宝大夫综合育儿服务平台，宝大夫现对新用户推出月卡服务。");
-					article.setPicUrl(ConstantUtil.BAODF_URL + "/titan/images/Follow.jpg");
-					article.setUrl(ConstantUtil.BAODF_URL + "/titan/wechatInfo/fieldwork/wechat/author?url="+
-							ConstantUtil.BAODF_URL + "/titan/wechatInfo/getUserWechatMenId?url=21");
+					article.setPicUrl(ConstantUtil.TITAN_WEB_URL + "/titan/images/Follow.jpg");
+					article.setUrl(ConstantUtil.TITAN_WEB_URL + "/titan/wechatInfo/fieldwork/wechat/author?url="+
+							ConstantUtil.TITAN_WEB_URL + "/titan/wechatInfo/getUserWechatMenId?url=21");
 					articleList.add(article);
 					memberService.insertMemberSendMessage(xmlEntity.getFromUserName(), "1");
 				}
@@ -287,9 +287,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				{
 					article.setTitle("活动已过期，赠送周会员");
 					article.setDescription("您好，此活动已过期，不过别担心，您仍可参加免费体验宝大夫短期会员服务");
-					article.setPicUrl(ConstantUtil.BAODF_URL + "/titan/images/Follow.jpg");
-					article.setUrl(ConstantUtil.BAODF_URL + "/titan/wechatInfo/fieldwork/wechat/author?url=" +
-							ConstantUtil.BAODF_URL + "/titan/wechatInfo/getUserWechatMenId?url=20");
+					article.setPicUrl(ConstantUtil.TITAN_WEB_URL + "/titan/images/Follow.jpg");
+					article.setUrl(ConstantUtil.TITAN_WEB_URL + "/titan/wechatInfo/fieldwork/wechat/author?url=" +
+							ConstantUtil.TITAN_WEB_URL + "/titan/wechatInfo/getUserWechatMenId?url=20");
 					articleList.add(article);
 				}
 			}
@@ -311,9 +311,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 					//推送赠送季会员URL消息
 					article.setTitle("季卡");
 					article.setDescription("感谢您关注宝大夫综合育儿服务平台，宝大夫现对新用户推出季卡服务。");
-					article.setPicUrl(ConstantUtil.BAODF_URL+"/titan/images/Follow.jpg");
-					article.setUrl(ConstantUtil.BAODF_URL+"/titan/wechatInfo/fieldwork/wechat/author?url="+
-							ConstantUtil.BAODF_URL+"/titan/wechatInfo/getUserWechatMenId?url=22");
+					article.setPicUrl(ConstantUtil.TITAN_WEB_URL+"/titan/images/Follow.jpg");
+					article.setUrl(ConstantUtil.TITAN_WEB_URL+"/titan/wechatInfo/fieldwork/wechat/author?url="+
+							ConstantUtil.TITAN_WEB_URL+"/titan/wechatInfo/getUserWechatMenId?url=22");
 					articleList.add(article);
 					memberService.insertMemberSendMessage(xmlEntity.getFromUserName(), "1");
 				}
@@ -321,9 +321,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				{
 					article.setTitle("活动已过期，赠送周会员");
 					article.setDescription("您好，此活动已过期，不过别担心，您仍可参加免费体验宝大夫短期会员服务");
-					article.setPicUrl(ConstantUtil.BAODF_URL + "/titan/images/Follow.jpg");
-					article.setUrl(ConstantUtil.BAODF_URL + "/titan/wechatInfo/fieldwork/wechat/author?url=" +
-							ConstantUtil.BAODF_URL + "/titan/wechatInfo/getUserWechatMenId?url=20");
+					article.setPicUrl(ConstantUtil.TITAN_WEB_URL + "/titan/images/Follow.jpg");
+					article.setUrl(ConstantUtil.TITAN_WEB_URL + "/titan/wechatInfo/fieldwork/wechat/author?url=" +
+							ConstantUtil.TITAN_WEB_URL + "/titan/wechatInfo/getUserWechatMenId?url=20");
 					articleList.add(article);
 				}
 			}
@@ -348,7 +348,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setTitle("防犬宝,一份温馨的安全保障");
 			article.setDescription("只要19.8元，打狂犬疫苗最高可获得互助补贴1000元。不幸患狂犬病可获得互助补贴5万元！");
 			article.setPicUrl("http://oss-cn-beijing.aliyuncs.com/xiaoerke-article-pic/FQBTGXX.png");
-			article.setUrl(ConstantUtil.S2_WEB_URL+"xiaoerke-wxapp/wechatInfo/fieldwork/wechat/author?url=http://s22.baodf.com/xiaoerke-wxapp/wechatInfo/getUserWechatMenId?url=26");
+			article.setUrl(ConstantUtil.KEEPER_WEB_URL+"/wechatInfo/fieldwork/wechat/author?url=http://s22.baodf.com/xiaoerke-wxapp/wechatInfo/getUserWechatMenId?url=26");
 			articleList.add(article);
 		}
 		System.out.println(EventKey + "===================================");

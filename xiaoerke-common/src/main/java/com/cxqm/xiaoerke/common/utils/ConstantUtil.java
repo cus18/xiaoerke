@@ -69,8 +69,10 @@ public class ConstantUtil {
 
 	public static int DAY_QUARTER_NUMBER = 96;
 	public static int VISIT_INTERVAL = 15;
-	public static String BAODF_URL = "http://baodf.com";
-	public static String S1_WEB_URL = "http://s11.baodf.com/";
-	public static String S2_WEB_URL = "http://s22.baodf.com/";
-	public static String S3_WEB_URL = "http://s3.baodf.com/";
+	public static String MARKET_WEB_URL = "http://xiaork.com";
+	public static String WISDOM_WEB_URL = "http://xiaork.com";
+	public static String ANGEL_WEB_URL = "http://xiaork.com";
+	public static String KEEPER_WEB_URL = "http://xiaork.cn";
+	public static String DOCTOR_WEB_URL = "http://xiaork.cn";
+	public static String TITAN_WEB_URL = "http://xiaork.cn";
 }
