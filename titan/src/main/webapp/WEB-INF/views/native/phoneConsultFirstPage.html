@@ -70,11 +70,11 @@
     <!--四个菜单-->
     <div class="myMenu" id="menu">
         <ul >
-            <li class="f5 c4 fl tc border2 "  id="hospital" onclick="chooseMenu('hospital',0)" >
+            <li class="f5 c4 fl tc border2 cur"  id="hospital" onclick="chooseMenu('hospital',0)" >
                 <a >医&nbsp;院</a>
                 <i></i>
             </li>
-            <li class="f5 c4 fl tc border2 cur" id="illness" onclick="chooseMenu('illness',1)" >
+            <li class="f5 c4 fl tc border2 " id="illness" onclick="chooseMenu('illness',1)" >
                 <a>疾&nbsp;病</a>
                 <i></i>
             </li>
@@ -91,7 +91,7 @@
     <!--菜单列表-->
     <div class="main-list">
         <!--医院列表-->
-        <div  class="hospitalItem menuItem" hidden>
+        <div  class="hospitalItem menuItem" >
             <ul id="hospitalItem"></ul>
            <!-- <div class="footer tc" >
                 <p>
@@ -104,7 +104,7 @@
             </div>-->
         </div>
         <!--疾病列表-->
-        <div  class="illness menuItem " >
+        <div  class="illness menuItem " hidden>
             <div class="ill-left">
             </div>
             <div class="ill-right">
