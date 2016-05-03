@@ -157,8 +157,8 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
             //发消息
             Map<String,Object> consultOrder = consultPhonePatientService.getPatientRegisterInfo(Integer.parseInt(userData));
             User userInfo = systemService.getUserById((String)consultOrder.get("sys_user_id"));
-            String url = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) consultOrder.get("doctorName")+","+userData+",phone";
-            String connectUrl = ConstantUtil.S1_WEB_URL+"/titan/phoneConsult#/phoneConReconnection/"+userData;
+            String url = ConstantUtil.TITAN_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) consultOrder.get("doctorName")+","+userData+",phone";
+            String connectUrl = ConstantUtil.TITAN_WEB_URL+"/titan/phoneConsult#/phoneConReconnection/"+userData;
             Map<String,Object> parameter = systemService.getWechatParameter();
             String token = (String)parameter.get("token");
             PatientMsgTemplate.consultPhoneEvaluateWaring2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"),(String) consultOrder.get("phone"), url,connectUrl,token);
