@@ -2,16 +2,11 @@ package com.cxqm.xiaoerke.common.utils;
 
 public class ConstantUtil {
 
-	//public static final String DOAMIN_VALUE = ".baodf.com";
-//	public static final String DOAMIN_VALUE = "xiaork.cn";
-//	public static final String WebPath = "xiaork.cn";
-
 	public static final String DOAMIN_VALUE = "localhost";
-	public static final String TEST_TOKEN = "8yJAVrjlPxRq2ZtAT3MhPatF6JhK5QOimfxkCJ6BIZB_Sz3QBsX3bYH7WHA5o9pw5YS9Jwy1N9iP81ho0svF6NGipHRU4a1qBZlWlAy7MZ-J8uVfkaoaUkI1vYyyn9ukTMDfAEAMFW";
-
 	public static final String AMR_TOMP3_WINDOWSPATH = "E:\\ffmpeg\\ffmpeg\\bin\\";
 	public static final String AMR_TOMP3_WINDOWSPATHTEMP = "E:\\ffmpeg\\temp\\";
 	public static final String AMR_TOMP3_LINUXPATH = "/mnt/temp";
+
 	//初始化
 //	public static String APP_ID = "wx0baf90e904df0117";//微信开发平台应用id
 //	public static String APP_SECRET = "b3dac0be3e1739af01fee0052ea7a68f";//应用对应的凭证
@@ -33,7 +28,7 @@ public class ConstantUtil {
 //	public static String packageValue = "bank_type=WX&body=%B2%E2%CA%D4&fee_type=1&input_charset=GBK&notify_url=http%3A%2F%2F127.0.0.1%3A8180%2Ftenpay_api_b2c%2FpayNotifyUrl.jsp&out_trade_no=2051571832&partner=1900000109&sign=10DA99BCB3F63EF23E4981B331B0A3EF&spbill_create_ip=127.0.0.1&time_expire=20131222091010&total_fee=1";
 //	public static String traceid = "wbw565871712";//测试用户id
 
-	//	public static String NOTIFY_URL = "http://s11.baodf.com/titan/user/getPayNotifyInfo";
+	//	public static String NOTIFY_APPOINT_URL = "http://s11.baodf.com/titan/user/getPayNotifyInfo";
 //	public static String NOTIFY_INSURANCE_URL = "http://s3.baodf.com/xiaoerke-insurance-webapp/" +
 //			"ap/user/getInsurancePayNotifyInfo";
 //	public static String NOTIFY_CUSTOMER_URL = "http://s3.baodf.com/xiaoerke-insurance-webapp/" +
@@ -42,9 +37,7 @@ public class ConstantUtil {
 //	public static String NOTIFY_CONSULTPHONE_URL = "http://s3.baodf.com/titan/" +
 //			"ap/user/getPhoneConsultPayNotifyInfo";
 //
-	public static int DAY_QUARTER_NUMBER = 96;
 
-	public static int VISIT_INTERVAL = 15;
 	//初始化
 	public static String APP_ID = "wxa19496b1076e7352";//微信开发平台应用id
 	public static String APP_SECRET = "f645d4bcf81c905b3ad628cda79bd7ee";//应用对应的凭证
@@ -66,19 +59,18 @@ public class ConstantUtil {
 	public static String packageValue = "bank_type=WX&body=%B2%E2%CA%D4&fee_type=1&input_charset=GBK&notify_url=http%3A%2F%2F127.0.0.1%3A8180%2Ftenpay_api_b2c%2FpayNotifyUrl.jsp&out_trade_no=2051571832&partner=1900000109&sign=10DA99BCB3F63EF23E4981B331B0A3EF&spbill_create_ip=127.0.0.1&time_expire=20131222091010&total_fee=1";
 	public static String traceid = "wbw565871712";//测试用户id
 
-	public static String NOTIFY_URL = "http://s11.baodf.com/titan/user/getPayNotifyInfo";
+	public static String NOTIFY_APPOINT_URL = "http://s11.baodf.com/titan/user/getPayNotifyInfo";
 	public static String NOTIFY_INSURANCE_URL = "http://s3.baodf.com/xiaoerke-insurance-webapp/" +
 			"ap/user/getInsurancePayNotifyInfo";
 	public static String NOTIFY_CUSTOMER_URL = "http://s3.baodf.com/xiaoerke-insurance-webapp/" +
 			"ap/user/getInsurancePayNotifyInfo";
-
 	public static String NOTIFY_CONSULTPHONE_URL = "http://xiaork.cn/titan/" +
 			"user/getPhoneConsultPayNotifyInfo";
 
+	public static int DAY_QUARTER_NUMBER = 96;
+	public static int VISIT_INTERVAL = 15;
 	public static String BAODF_URL = "http://baodf.com";
-	public static String WEB_URL = "http://xiaork.com";
 	public static String S1_WEB_URL = "http://s11.baodf.com/";
 	public static String S2_WEB_URL = "http://s22.baodf.com/";
 	public static String S3_WEB_URL = "http://s3.baodf.com/";
-//	public static String WEB_URL = "http://www.baodf.com";
 }
