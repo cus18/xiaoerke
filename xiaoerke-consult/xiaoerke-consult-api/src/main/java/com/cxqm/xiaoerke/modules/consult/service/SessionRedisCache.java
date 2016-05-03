@@ -17,9 +17,9 @@ public interface SessionRedisCache {
 	
 	Integer getSessionIdByUserId(String userId);
 
-	Map getWeChatToken(String paramType);
+	Map getWeChatParamFromRedis(String paramType);
 
-	void putWeChatToken(Map wechatParam);
+	void putWeChatParamToRedis(Map wechatParam);
 
 	void removeSessionIdConsultSessionPair(Integer sessionId);
 

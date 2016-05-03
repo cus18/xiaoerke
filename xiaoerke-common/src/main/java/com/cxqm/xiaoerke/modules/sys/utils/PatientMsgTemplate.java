@@ -338,7 +338,7 @@ public class PatientMsgTemplate {
 //        ArrayList<Object> obj = new ArrayList<Object>();
 //        WechatArticle article = new WechatArticle();
 //        article.setTitle("退款成功");
-        String content= babyName + "再建立通讯的五分钟前发消息给用户";
+        String content= "由于电话未接通，已将咨询费用退还至您的宝大夫账户。";
 //        article.setUrl(url);
 //        obj.add(article);
 //        if(StringUtils.isNotNull(openId))

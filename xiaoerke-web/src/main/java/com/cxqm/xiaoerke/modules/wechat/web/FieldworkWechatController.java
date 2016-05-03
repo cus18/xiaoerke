@@ -42,19 +42,6 @@ public class FieldworkWechatController {
     public String getDoctorWechatMenu(HttpServletRequest request,HttpServletResponse response, HttpSession session) throws Exception {
         String code = request.getParameter("code");
         String url = java.net.URLDecoder.decode(request.getParameter("url"), "utf-8");
-        if ("1".equals(url)) {
-            //每日清单
-            url = "#/myAccount";
-        } else if ("2".equals(url)) {
-            //出诊安排
-            url = "#/doctorFirst/,";
-        } else if ("3".equals(url)) {
-            //接诊提醒
-            url = "#/acceptRemind";
-        } else if ("4".equals(url)) {
-            //个人中心
-            url = "#/myselfFirst";
-        }
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
                 "appid=APPID" +
                 "&secret=SECRET&" +
@@ -69,9 +56,28 @@ public class FieldworkWechatController {
             WechatBean wechat = JsonUtil.getObjFromJsonStr(json, WechatBean.class);
             openid = wechat.getOpenid();
             session.setAttribute("openId", openid);
-            CookieUtils.setCookie(response, "openId", openid, 60 * 60 * 24 * 30,".baodf.com");
+            CookieUtils.setCookie(response, "openId", openid, 60 * 60 * 24 * 30,"xiaork.com");
         }
-        return "redirect:" + ConstantUtil.S1_WEB_URL + "/doctor/doctor" + url;
+        if ("1".equals(url)) {
+            //每日清单
+            url = "#/myAccount";
+        } else if ("2".equals(url)) {
+            //出诊安排
+            url = "#/doctorFirst/,";
+        } else if ("3".equals(url)) {
+            //接诊提醒
+            url = "#/acceptRemind";
+        } else if ("4".equals(url)) {
+            //个人中心
+            url = "#/myselfFirst";
+        } else if("5".equals(url)){
+            //电话咨询
+            url = "#/phoneConsultFirst/";
+
+            return "redirect:" + ConstantUtil.DOCTOR_WEB_URL + "/doctor/phoneConsultDoctor" + url;
+        }
+
+        return "redirect:" + ConstantUtil.DOCTOR_WEB_URL + "/doctor/doctor" + url;
     }
 
     /**
@@ -79,67 +85,64 @@ public class FieldworkWechatController {
      */
     @RequestMapping(value = "/getUserWechatMenId", method = {RequestMethod.POST, RequestMethod.GET})
     public String getUserWechatMenu(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
-        String code = request.getParameter("code");
+            String code = request.getParameter("code");
         String url = java.net.URLDecoder.decode(request.getParameter("url"), "utf-8");
         if ("1".equals(url)) {
             //引导页
-            url = ConstantUtil.S1_WEB_URL + "/titan/appoint#/guide";
+            url = ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/guide";
             LogUtils.saveLog("引导页");
         } else if ("2".equals(url)) {
             //预约首页
-            url = ConstantUtil.S1_WEB_URL + "/titan/firstPage/appoint";
-//            url = ConstantUtil.WEB_URL + "/titan/appoint#/appointmentFirst";
+            url = ConstantUtil.TITAN_WEB_URL + "/titan/firstPage/appoint";
             LogUtils.saveLog("预约首页");
         } else if ("3".equals(url)) {
             String state = request.getParameter("state");
             //接诊提醒
-            url = ConstantUtil.S1_WEB_URL + "/titan/appoint#/userEvaluate/" + state;
+            url = ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/userEvaluate/" + state;
             LogUtils.saveLog("接诊提醒");
 
         } else if ("4".equals(url)) {
             //郑玉巧育儿经
-            url = ConstantUtil.S2_WEB_URL + "/wisdom/firstPage/knowledge";
-//            url = ConstantUtil.WEB_URL + "/wisdom/knowledge#/knowledgeIndex";
+            url = ConstantUtil.WISDOM_WEB_URL + "/wisdom/firstPage/knowledge";
             LogUtils.saveLog("郑玉巧育儿经");
         } else if ("5".equals(url)) {
             //郑玉巧在线
-            url = ConstantUtil.S2_WEB_URL + "/wisdom/knowledge#/sheOnlineIndex";
+            url = ConstantUtil.WISDOM_WEB_URL + "/wisdom/knowledge#/sheOnlineIndex";
             LogUtils.saveLog("郑玉巧在线");
 
         } else if ("6".equals(url)) {
             //我的预约
-            url = ConstantUtil.S1_WEB_URL + "/titan/appoint#/myAppointment";
+            url = ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/myAppointment";
             LogUtils.saveLog("我的预约");
 
         } else if ("7".equals(url)) {
-            url = ConstantUtil.S1_WEB_URL + "/titan/appoint#/operateIndex";
+            url = ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/operateIndex";
         } else if ("8".equals(url)) {
-            url = ConstantUtil.S1_WEB_URL + "/titan/appoint#/operateIndex";
+            url = ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/operateIndex";
         } else if ("9".equals(url)) {
-            url = ConstantUtil.S1_WEB_URL + "/titan/appoint#/myselfFirst/,";
+            url = ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/myselfFirst/,";
         } else if ("20".equals(url)) {
             //扫码送周会员
-            url = ConstantUtil.S1_WEB_URL + "/titan/appoint#/memberService/week,extend,";
+            url = ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/memberService/week,extend,";
         } else if ("23".equals(url)) {
             //赠送周会员
-            url = ConstantUtil.S1_WEB_URL + "/titan/appoint#/memberService/week,extend,";
+            url = ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/memberService/week,extend,";
         } else if ("21".equals(url)) {
             //赠送月会员
-            url = ConstantUtil.S1_WEB_URL + "/titan/appoint#/memberService/month,extend,";
+            url = ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/memberService/month,extend,";
         } else if ("22".equals(url)) {
             //赠送季会员
-            url = ConstantUtil.S1_WEB_URL + "/titan/appoint#/memberService/quarter,extend,";
+            url = ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/memberService/quarter,extend,";
         }else if("10".equals(url)){
             //健康管理
-            url = ConstantUtil.S3_WEB_URL +"/wisdom/firstPage/healthPlan";
-//            url = ConstantUtil.S3_WEB_URL +"/wisdom/ctp#/constipationIndex";
+            url = ConstantUtil.WISDOM_WEB_URL +"/wisdom/firstPage/healthPlan";
             LogUtils.saveLog("BMGL_36");
         }else if("23".equals(url)){
-            url = ConstantUtil.S2_WEB_URL + "/titan/appoint#/healthRecordIndex/0";
+            url = ConstantUtil.WISDOM_WEB_URL + "/titan/appoint#/healthRecordIndex/0";
         }else if("24".equals(url)){
-            url = ConstantUtil.S2_WEB_URL + "/keeper/health#/consultBabyList";
+            url = ConstantUtil.KEEPER_WEB_URL + "/keeper/health#/consultBabyList";
         }else if("25".equals(url)){
-            url = ConstantUtil.S2_WEB_URL + "/market/market#/consultBabyList";
+            url = ConstantUtil.MARKET_WEB_URL + "/market/market#/consultBabyList";
         }else if("11".equals(url)){
             //运营活动
             String state = request.getParameter("state");
@@ -156,13 +159,11 @@ public class FieldworkWechatController {
             }else if("FXJG_PYXX".equals(state)){
                 LogUtils.saveLog("FXJG_PYXX");//从结果页朋友圈打开活动首页
             }
-            url = ConstantUtil.S1_WEB_URL +"market/firstPage/momNutritionTest";
+            url = ConstantUtil.MARKET_WEB_URL +"market/firstPage/momNutritionTest";
         }else if("26".equals(url)){
-            url = ConstantUtil.S3_WEB_URL + "firstPage/antiDogFirst";
-        }else if("27".equals(url)){
-            url = ConstantUtil.S3_WEB_URL + "/titan/antiDogPay/patientPay.do";
-        } else if ("28".equals(url)){
-            url = "http://xiaork.cn" + "/titan/firstPage/phoneConsult";
+            url = ConstantUtil.TITAN_WEB_URL + "titan/firstPage/antiDogFirst";
+        }else if ("28".equals(url)){
+            url = ConstantUtil.TITAN_WEB_URL + "/titan/firstPage/phoneConsult";
         }
 
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
@@ -190,7 +191,7 @@ public class FieldworkWechatController {
 
             openid = wechat.getOpenid();
             session.setAttribute("openId", openid);
-            CookieUtils.setCookie(response, "openId", openid==null?"":openid,60*60*24*30,".baodf.com");
+            CookieUtils.setCookie(response, "openId", openid==null?"":openid,60*60*24*30,"xiaork.com");
             memberService.sendExtendOldMemberWechatMessage(openid);
         }
         return "redirect:" + url;
@@ -272,7 +273,6 @@ public class FieldworkWechatController {
     @SystemControllerLog(description = "00000085")//郑玉巧在线咨询医生消息推送
     String
     sendMsgToWechatOnline(HttpServletRequest request, HttpSession session) {
-
         String openId = (String) session.getAttribute("openId");
         if (!StringUtils.isNotNull(openId)) {
             openId = CookieUtils.getCookie(request, "openId");
@@ -314,24 +314,6 @@ public class FieldworkWechatController {
      */
     @RequestMapping(value = "/getCustomerEvaluation", method = {RequestMethod.POST, RequestMethod.GET})
     public String getCustomerEvaluation(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
-//        String code = request.getParameter("code");
-//        String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
-//                "appid=APPID" +
-//                "&secret=SECRET&" +
-//                "code=CODE&grant_type=authorization_code";
-//        get_access_token_url = get_access_token_url.replace("APPID", WechatUtil.CORPID);
-//        get_access_token_url = get_access_token_url.replace("SECRET", WechatUtil.SECTET);
-//        get_access_token_url = get_access_token_url.replace("CODE", code);
-//        String access_token = "";
-//        String openid = "";
-//        String userName = "";
-//        if (access_token.isEmpty() && openid.isEmpty()) {
-//            String json = HttpRequestUtil.getConnectionResult(get_access_token_url, "GET", "");
-//            WechatBean wechat = JsonUtil.getObjFromJsonStr(json, WechatBean.class);
-//            openid = wechat.getOpenid();
-//            session.setAttribute("openId", openid);
-//            CookieUtils.setCookie(response, "openId", openid, 60 * 60 * 24 * 30,".baodf.com");
-//        }
         String state = request.getParameter("state");
         return "redirect:" + "/appoint#/userEvaluate/" + state;
     }
@@ -356,7 +338,7 @@ public class FieldworkWechatController {
             WechatBean wechat = JsonUtil.getObjFromJsonStr(json, WechatBean.class);
             openid = wechat.getOpenid();
             session.setAttribute("openId", openid);
-            CookieUtils.setCookie(response, "openId", openid, 60 * 60 * 24 * 30,".baodf.com");
+            CookieUtils.setCookie(response, "openId", openid, 60 * 60 * 24 * 30,"xiaork.com");
         }
         String id = request.getParameter("id");
         LogUtils.saveLog(Servlets.getRequest(),"00000082", "分享后查看某篇文章:" + id + ":openid:" + openid);
@@ -384,7 +366,7 @@ public class FieldworkWechatController {
             WechatBean wechat = JsonUtil.getObjFromJsonStr(json, WechatBean.class);
             openid = wechat.getOpenid();
             session.setAttribute("openId", openid);
-            CookieUtils.setCookie(response, "openId", openid, 60 * 60 * 24 * 30,".baodf.com");
+            CookieUtils.setCookie(response, "openId", openid, 60 * 60 * 24 * 30,"xiaork.com");
         }
         return "redirect:" + "/ap#/knowledgeIndex";
     }

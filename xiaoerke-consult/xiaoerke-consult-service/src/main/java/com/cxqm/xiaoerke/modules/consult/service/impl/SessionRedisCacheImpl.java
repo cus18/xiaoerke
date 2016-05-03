@@ -77,7 +77,7 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 	}
 
 	@Override
-	public Map getWeChatToken(String paramType){
+	public Map getWeChatParamFromRedis(String paramType){
 		Object wechatParam = null;
 		if(StringUtils.isNotNull(paramType)){
 			if(paramType.equals("user")){
@@ -90,7 +90,7 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 	}
 
 	@Override
-	public void putWeChatToken(Map wechatParam){
+	public void putWeChatParamToRedis(Map wechatParam){
 		if(wechatParam!=null){
 			if(wechatParam.get("id").equals("1")){
 				redisTemplate.opsForHash().put(WECHAT_USER_PARAM, "wechatUserParam", wechatParam);
