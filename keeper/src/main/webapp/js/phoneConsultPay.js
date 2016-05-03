@@ -236,7 +236,6 @@ var read = function(){
 //监听 病情描述的长度
 var skip=function(item){
        $("html,body").animate({ scrollTop: $("#"+item).offset().top }, 0);
-
     if(item=="case"){
         caseLength();
     }
@@ -244,7 +243,11 @@ var skip=function(item){
 //监听 病情描述的长度
 var caseLength=function(){
     $('#case').bind('input propertychange',function(){
-        $(".case a").html($('#case').val().length+"/200")
+        $(".case a").html($('#case').val().length+"/200");
+         console.log($('#case').val().length);
+        if($('#case').val().length==200){
+            $("#case").attr("readonly","true")
+        }
     })
 }
 
