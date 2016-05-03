@@ -148,6 +148,7 @@
             and dhr.department_level1 = #{departmentName}
         </if>
         and (DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>NOW()
+        AND  (DATE_ADD(NOW(), INTERVAL 7 day))>=(DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))
         group by sd.id
         <if test="orderBy==0">
             order by min(
