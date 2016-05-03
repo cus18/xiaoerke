@@ -99,6 +99,7 @@ public class ShareServiceImpl implements ShareService{
 		excuteMap.put("patientRegisterServiceId", patientRegisterServiceId);
         if(type != null && "phone".equals(type)){
             excuteMap.put("state","5");
+			excuteMap.put("id",patientRegisterServiceId);
             consultPhoneOrderService.changeConsultPhoneRegisterServiceState(excuteMap);
         }else{
             patientRegisterService.completeShareExecute(excuteMap);
