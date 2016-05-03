@@ -88,7 +88,6 @@ public class FieldworkWechatController {
         } else if ("2".equals(url)) {
             //预约首页
             url = ConstantUtil.S1_WEB_URL + "/titan/firstPage/appoint";
-//            url = ConstantUtil.WEB_URL + "/titan/appoint#/appointmentFirst";
             LogUtils.saveLog("预约首页");
         } else if ("3".equals(url)) {
             String state = request.getParameter("state");
@@ -99,7 +98,6 @@ public class FieldworkWechatController {
         } else if ("4".equals(url)) {
             //郑玉巧育儿经
             url = ConstantUtil.S2_WEB_URL + "/wisdom/firstPage/knowledge";
-//            url = ConstantUtil.WEB_URL + "/wisdom/knowledge#/knowledgeIndex";
             LogUtils.saveLog("郑玉巧育儿经");
         } else if ("5".equals(url)) {
             //郑玉巧在线
@@ -132,7 +130,6 @@ public class FieldworkWechatController {
         }else if("10".equals(url)){
             //健康管理
             url = ConstantUtil.S3_WEB_URL +"/wisdom/firstPage/healthPlan";
-//            url = ConstantUtil.S3_WEB_URL +"/wisdom/ctp#/constipationIndex";
             LogUtils.saveLog("BMGL_36");
         }else if("23".equals(url)){
             url = ConstantUtil.S2_WEB_URL + "/titan/appoint#/healthRecordIndex/0";
@@ -272,7 +269,6 @@ public class FieldworkWechatController {
     @SystemControllerLog(description = "00000085")//郑玉巧在线咨询医生消息推送
     String
     sendMsgToWechatOnline(HttpServletRequest request, HttpSession session) {
-
         String openId = (String) session.getAttribute("openId");
         if (!StringUtils.isNotNull(openId)) {
             openId = CookieUtils.getCookie(request, "openId");
@@ -314,24 +310,6 @@ public class FieldworkWechatController {
      */
     @RequestMapping(value = "/getCustomerEvaluation", method = {RequestMethod.POST, RequestMethod.GET})
     public String getCustomerEvaluation(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
-//        String code = request.getParameter("code");
-//        String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
-//                "appid=APPID" +
-//                "&secret=SECRET&" +
-//                "code=CODE&grant_type=authorization_code";
-//        get_access_token_url = get_access_token_url.replace("APPID", WechatUtil.CORPID);
-//        get_access_token_url = get_access_token_url.replace("SECRET", WechatUtil.SECTET);
-//        get_access_token_url = get_access_token_url.replace("CODE", code);
-//        String access_token = "";
-//        String openid = "";
-//        String userName = "";
-//        if (access_token.isEmpty() && openid.isEmpty()) {
-//            String json = HttpRequestUtil.getConnectionResult(get_access_token_url, "GET", "");
-//            WechatBean wechat = JsonUtil.getObjFromJsonStr(json, WechatBean.class);
-//            openid = wechat.getOpenid();
-//            session.setAttribute("openId", openid);
-//            CookieUtils.setCookie(response, "openId", openid, 60 * 60 * 24 * 30,".baodf.com");
-//        }
         String state = request.getParameter("state");
         return "redirect:" + "/appoint#/userEvaluate/" + state;
     }
