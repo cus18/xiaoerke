@@ -20,7 +20,7 @@ public class TokenController extends BaseController {
 	public String sendToken(@RequestParam String toUrl, @RequestParam String token, HttpServletRequest request, HttpServletResponse response, Model model){
 		Cookie cookie = new Cookie("ssoToken",token);
 		cookie.setPath("/");
-		cookie.setDomain(ConstantUtil.DOAMIN_VALUE);
+		cookie.setDomain(ConstantUtil.DOMAIN_VALUE);
 		cookie.setMaxAge(60*60*24*90);
 		response.addCookie(cookie);
 		

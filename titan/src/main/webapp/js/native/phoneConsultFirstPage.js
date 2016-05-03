@@ -10,8 +10,8 @@ document.write('<scr'+'ipt src="js/libs/jquery.touchSlider.js"></scr'+'ipt>');
 
 var phoneConsultFirstPageInit = function(){
     recordLogs("accessAppointmentFirstPageInit");
-   /* chooseHospital();*/
-    chooseIllness();
+    chooseHospital();
+    /*chooseIllness();*/
     roundPage();
     initLight();
 }
