@@ -115,7 +115,7 @@ public class MessageServiceImpl implements MessageService{
                 "【<a href='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9b663cd46164130c&redirect_uri=" +
                 "http%3a%2f%2fxiaoxiaoerke.com%2fxiaoerke-doctor%2fgetWechatOpenid%3furl%3d1"+"&response_type=" +
                 "code&scope=snsapi_base&connect_redirect=1#wechat_redirect'>查看详情</a>】\n";
-        WechatUtil.senMsgToWechat(token, (String) doctorInfo.get("openid"), st);
+        WechatUtil.sendMsgToWechat(token, (String) doctorInfo.get("openid"), st);
     }
 	
 	//插入监听器

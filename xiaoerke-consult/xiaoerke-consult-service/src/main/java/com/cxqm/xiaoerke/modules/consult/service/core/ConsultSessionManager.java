@@ -303,7 +303,8 @@ public class ConsultSessionManager {
 			}else{
 				//如果没有任何医生在线，给用户推送微信消息，告知没有医生在线，稍后在使用服务
 				String st = "尊敬的用户，您好，目前没有医生在线，请稍后再试";
-				WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN,consultSession.getUserId(), st);
+				Map userWechatParam = sessionRedisCache.getWeChatToken("user");
+				WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"),consultSession.getUserId(), st);
 				return null;
 			}
 		}
@@ -324,7 +325,8 @@ public class ConsultSessionManager {
 
 			//成功分配医生，给用户发送一个欢迎语
 			String st = "尊敬的用户，宝大夫在线，有什么可以帮您";
-			WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN, consultSession.getUserId(), st);
+			Map userWechatParam = sessionRedisCache.getWeChatToken("user");
+			WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"),consultSession.getUserId(), st);
 			response.put("csChannel", csChannel);
 			response.put("sessionId", sessionId);
 			response.put("consultSession", consultSession);

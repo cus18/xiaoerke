@@ -3,6 +3,7 @@ package com.cxqm.xiaoerke.modules.consult.service.impl;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
@@ -25,7 +26,9 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 	
 	private static final String USER_SESSIONID_KEY = "consult.userSessionID";
 
-	private static final String WECHAT_TOKEN = "wechat.token";
+	private static final String WECHAT_USER_PARAM = "wechat.user.param";
+
+	private static final String WECHAT_DOCTOR_PARAM = "wechat.doctor.param";
 	
 	@Override
 	public RichConsultSession getConsultSessionBySessionId(Integer sessionId) {
@@ -74,23 +77,30 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 	}
 
 	@Override
-	public String getWeChatToken(){
-		Object Token = redisTemplate.opsForHash().get(WECHAT_TOKEN,"wechatToken");
-		return Token == null ? null : (String) Token;
+	public Map getWeChatToken(String paramType){
+		Object wechatParam = null;
+		if(StringUtils.isNotNull(paramType)){
+			if(paramType.equals("user")){
+				wechatParam = redisTemplate.opsForHash().get(WECHAT_USER_PARAM,"wechatUserParam");
+			}else if(paramType.equals("doctor")){
+				wechatParam = redisTemplate.opsForHash().get(WECHAT_DOCTOR_PARAM,"wechatDoctorParam");
+			}
+		}
+		return wechatParam == null ? null : (Map) wechatParam;
 	}
 
 	@Override
-	public void putWeChatToken(String token){
-		if(StringUtils.isNotNull(token)){
-			redisTemplate.opsForHash().put(WECHAT_TOKEN, "wechatToken", token);
+	public void putWeChatToken(Map wechatParam){
+		if(wechatParam!=null){
+			if(wechatParam.get("id").equals("1")){
+				redisTemplate.opsForHash().put(WECHAT_USER_PARAM, "wechatUserParam", wechatParam);
+			}else if(wechatParam.get("id").equals("2")){
+				redisTemplate.opsForHash().put(WECHAT_DOCTOR_PARAM, "wechatDoctorParam", wechatParam);
+			}
+
 		}
 	}
 
-	@Override
-	public void removeWeChatToken(){
-		redisTemplate.opsForHash().delete(WECHAT_TOKEN, "wechatToken");
-	}
-	
 	@Override
 	public void removeSessionIdConsultSessionPair(Integer sessionId) {
 		redisTemplate.opsForHash().delete(SESSIONID_CONSULTSESSION_KEY, sessionId);

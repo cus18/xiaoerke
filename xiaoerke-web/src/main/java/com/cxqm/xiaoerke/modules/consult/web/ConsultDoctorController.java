@@ -358,7 +358,7 @@ public class ConsultDoctorController extends BaseController {
                 "<a href='http://s11.baodf.com/titan/appoint#/userEvaluate/" + params.get("uuid") + "'>我要评价</a>】";
         Map parameter = systemService.getWechatParameter();
         String token = (String) parameter.get("token");
-        WechatUtil.senMsgToWechat(token, userId, st);
+        WechatUtil.sendMsgToWechat(token, userId, st);
         String result = consultSessionService.clearSession(sessionId, userId);
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("result", result);

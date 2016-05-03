@@ -89,7 +89,7 @@ public class DoctorMsgTemplate {
         obj.add(article);
         if(StringUtils.isNotNull(openId))
         {
-            WechatMessageUtil.senMsgToWechat(token,openId, obj);
+            WechatMessageUtil.sendMsgToWechat(token,openId, obj);
         }
     }
 
@@ -109,7 +109,7 @@ public class DoctorMsgTemplate {
         obj.add(article);
         if(StringUtils.isNotNull(openId))
         {
-            WechatMessageUtil.senMsgToWechat(token,openId, obj);
+            WechatMessageUtil.sendMsgToWechat(token,openId, obj);
         }
     }
 
@@ -130,7 +130,7 @@ public class DoctorMsgTemplate {
         obj.add(article);
         if(StringUtils.isNotNull(openId))
         {
-            WechatMessageUtil.senMsgToWechat(token,openId, obj);
+            WechatMessageUtil.sendMsgToWechat(token,openId, obj);
         }
 
     }
@@ -151,7 +151,7 @@ public class DoctorMsgTemplate {
         obj.add(article);
         if(StringUtils.isNotNull(openId))
         {
-            WechatMessageUtil.senMsgToWechat(token,openId, obj);
+            WechatMessageUtil.sendMsgToWechat(token,openId, obj);
         }
 
     }
@@ -172,7 +172,7 @@ public class DoctorMsgTemplate {
         obj.add(article);
         if(StringUtils.isNotNull(openId))
         {
-            WechatMessageUtil.senMsgToWechat(token,openId, obj);
+            WechatMessageUtil.sendMsgToWechat(token,openId, obj);
         }
     }
 
@@ -191,7 +191,7 @@ public class DoctorMsgTemplate {
         obj.add(article);
         if(StringUtils.isNotNull(openId))
         {
-            WechatMessageUtil.senMsgToWechat(token,openId, obj);
+            WechatMessageUtil.sendMsgToWechat(token,openId, obj);
         }
     }
 

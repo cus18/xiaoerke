@@ -318,29 +318,27 @@
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
- 				<!--<ref bean="updateWechatInfoQuarzCronTrigger"/>-->
- 				<!--<ref bean="getWechatRecoderTrigger"/>-->
-				<!--<ref bean="sendMessageForCustomerReturnAMTrigger"/>-->
-				<!--<ref bean="sendMessageForCustomerReturnPMTrigger"/>-->
-				<!--<ref bean="letsGoReminderCronTrigger"/>-->
-				<!--<ref bean="updateSrSerStatusCronTrigger"/>-->
-				<!--<ref bean="repeatSettingRegisterCronTrigger"/>-->
-				<!--<ref bean="statisticsTrigger"/>-->
-				<!--<ref bean="prepareOperationStatisticDataTrigger"/>-->
-				<!--<ref bean="insertStatisticsTitleCronTrigger"/>-->
-				<!--<ref bean="sendMsgToDocAtNightCronTrigger"/>-->
-				<!--<ref bean="sendMsgToDocAtMorningCronTrigger"/>-->
-				<!--<ref bean="everyMorningSendMessageCronTrigger"/>-->
-				<!--<ref bean="everyMinuteSendWechatMessageCronTrigger"/>-->
-				<!--<ref bean="nutritionManagementSendWechatMessageCronTrigger"/>-->
-				<!--<ref bean="insuranceUpdateCronTrigger"/>-->
+ 				<ref bean="updateWechatInfoQuarzCronTrigger"/>
+ 				<ref bean="getWechatRecoderTrigger"/>
+				<ref bean="sendMessageForCustomerReturnAMTrigger"/>
+				<ref bean="sendMessageForCustomerReturnPMTrigger"/>
+				<ref bean="letsGoReminderCronTrigger"/>
+				<ref bean="updateSrSerStatusCronTrigger"/>
+				<ref bean="repeatSettingRegisterCronTrigger"/>
+				<ref bean="statisticsTrigger"/>
+				<ref bean="prepareOperationStatisticDataTrigger"/>
+				<ref bean="insertStatisticsTitleCronTrigger"/>
+				<ref bean="sendMsgToDocAtNightCronTrigger"/>
+				<ref bean="sendMsgToDocAtMorningCronTrigger"/>
+				<ref bean="everyMorningSendMessageCronTrigger"/>
+				<ref bean="everyMinuteSendWechatMessageCronTrigger"/>
+				<ref bean="nutritionManagementSendWechatMessageCronTrigger"/>
+				<ref bean="insuranceUpdateCronTrigger"/>
 				<ref bean="consultPhoneCronTrigger"/>
 				<ref bean="consultMangementCronTrigger"/>
 				<ref bean="timingDialCronTrigger"/>
-
-                <!--<ref bean="sendMsgToDocAtNightPhoneConsultCronTrigger"/>-->
-                <!--<ref bean="sendMsgToDocAtMorningPhoneConsultCronTrigger"/>-->
-
+                <ref bean="sendMsgToDocAtNightPhoneConsultCronTrigger"/>
+                <ref bean="sendMsgToDocAtMorningPhoneConsultCronTrigger"/>
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>

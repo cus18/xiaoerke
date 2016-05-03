@@ -67,7 +67,7 @@ public class PatientMsgTemplate {
         obj.add(article);
         if(StringUtils.isNotNull(openId))
         {
-            WechatMessageUtil.senMsgToWechat(token,openId, obj);
+            WechatMessageUtil.sendMsgToWechat(token,openId, obj);
         }
     };
 
@@ -86,7 +86,7 @@ public class PatientMsgTemplate {
         obj.add(article);
         if(StringUtils.isNotNull(openId))
         {
-            WechatMessageUtil.senMsgToWechat(token,openId, obj);
+            WechatMessageUtil.sendMsgToWechat(token,openId, obj);
         }
     }
 
@@ -106,7 +106,7 @@ public class PatientMsgTemplate {
         article.setUrl(url);
         obj.add(article);
         if(null!=openId) {
-            WechatMessageUtil.senMsgToWechat(token, openId, obj);
+            WechatMessageUtil.sendMsgToWechat(token, openId, obj);
         }
 
     }
@@ -163,7 +163,7 @@ public class PatientMsgTemplate {
         obj.add(article);
         if(StringUtils.isNotNull(openId))
         {
-            WechatMessageUtil.senMsgToWechat(token,openId, obj);
+            WechatMessageUtil.sendMsgToWechat(token,openId, obj);
         }
     }
 
@@ -186,7 +186,7 @@ public class PatientMsgTemplate {
         article.setUrl(url);
         obj.add(article);
         if(null!=openId) {
-            WechatMessageUtil.senMsgToWechat(token, openId, obj);
+            WechatMessageUtil.sendMsgToWechat(token, openId, obj);
         }
 
     }
@@ -236,7 +236,7 @@ public class PatientMsgTemplate {
         obj.add(article);
         if(StringUtils.isNotNull(openid))
         {
-            WechatMessageUtil.senMsgToWechat(token,openid, obj);
+            WechatMessageUtil.sendMsgToWechat(token,openid, obj);
         }
     }
 
@@ -267,7 +267,7 @@ public class PatientMsgTemplate {
         obj.add(article);
         if(StringUtils.isNotNull(openId))
         {
-            WechatMessageUtil.senMsgToWechat(token,openId, obj);
+            WechatMessageUtil.sendMsgToWechat(token,openId, obj);
         }
     }
 
@@ -300,7 +300,7 @@ public class PatientMsgTemplate {
         obj.add(article);
         if(StringUtils.isNotNull(openId))
         {
-            WechatMessageUtil.senMsgToWechat(token,openId, obj);
+            WechatMessageUtil.sendMsgToWechat(token,openId, obj);
         }
     }
     public static void consultPhoneRefund2Msg(String doctorName, String price,String phone,String date,String week,String beginTime,String register_no){
@@ -343,7 +343,7 @@ public class PatientMsgTemplate {
 //        obj.add(article);
 //        if(StringUtils.isNotNull(openId))
 //        {
-//            WechatMessageUtil.senMsgToWechat(token,openId, obj);
+//            WechatMessageUtil.sendMsgToWechat(token,openId, obj);
 //        }
 
         WechatMessageUtil.templateModel(content,register_no,"电话咨询",price,null,"如有疑问，请联系客服400-623-7120。",token,url,openId,WechatMessageUtil.CONSULT_REUTNPAY_SUCCESS);
@@ -371,7 +371,7 @@ public class PatientMsgTemplate {
         obj.add(article);
         if(StringUtils.isNotNull(openId))
         {
-            WechatMessageUtil.senMsgToWechat(token,openId, obj);
+            WechatMessageUtil.sendMsgToWechat(token,openId, obj);
         }
     }
 

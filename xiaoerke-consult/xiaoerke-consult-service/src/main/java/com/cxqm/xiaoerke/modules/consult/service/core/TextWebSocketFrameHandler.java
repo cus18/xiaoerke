@@ -96,7 +96,8 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 					if(msgType==0){
 						//直接发送文本消息
 						String st = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
-						WechatUtil.senMsgToWechat(ConstantUtil.TEST_TOKEN, consultSession.getUserId(), st);
+						Map userWechatParam = sessionRedisCache.getWeChatToken("user");
+						WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"),consultSession.getUserId(), st);
 						//保存聊天记录
 						consultRecordService.buildRecordMongoVo(csUserId,String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
 					}else if(msgType!=0){

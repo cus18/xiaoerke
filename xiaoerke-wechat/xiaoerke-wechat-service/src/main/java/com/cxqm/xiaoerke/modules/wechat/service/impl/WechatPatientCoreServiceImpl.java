@@ -4,6 +4,7 @@ import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
 import com.cxqm.xiaoerke.modules.interaction.dao.PatientRegisterPraiseDao;
 import com.cxqm.xiaoerke.modules.member.service.MemberService;
@@ -67,6 +68,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
     @Autowired
 	private MemberService memberService;
+
+	@Autowired
+	private SessionRedisCache sessionRedisCache;
 
 	private String mongoEnabled = Global.getConfig("mongo.enabled");
 
@@ -366,7 +370,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 	private String processSubscribeEvent(ReceiveXmlEntity xmlEntity,HttpServletRequest request)
 	{
 		Map parameter = systemService.getWechatParameter();
-		String token = ConstantUtil.TEST_TOKEN;//(String) parameter.get("token");
+		Map userWechatParam = sessionRedisCache.getWeChatToken("user");
+		String token = (String) userWechatParam.get("token");
 		String EventKey = xmlEntity.getEventKey();
 		String marketer = "";
 		if(StringUtils.isNotNull(EventKey)){
@@ -453,7 +458,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 					"【预约专家】急速预约北京儿科专家出诊时间，不用排队挂号！\n"+
 					"【妈妈活动】添加宝大夫客服微信：bdfdxb，加入宝大夫家长群，与众多宝妈一起交流分享，参与更多好玩儿的活动！\n\n"+
 					"如需人工协助预约儿科专家,请您拨打：400-623-7120。";
-			WechatUtil.senMsgToWechat(token, xmlEntity.getFromUserName(), st);
+			WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
 		}
 		return processScanEvent(xmlEntity,"newUser");
 	}
@@ -573,7 +578,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			"<a href='http://s11.baodf.com/titan/appoint#/userEvaluate/"+params.get("uuid")+"'>我要评价</a>】";
 		 Map parameter = systemService.getWechatParameter();
 		 String token = (String)parameter.get("token");
-		 WechatUtil.senMsgToWechat(token, openId, st);
+		 WechatUtil.sendMsgToWechat(token, openId, st);
 		 LogUtils.saveLog(request, "00000004");//注：00000004表示“客服评价”
 	}
 
@@ -614,7 +619,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 //					"http://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=403036004&idx=1&sn=db524245950080a097b0574927c97001" +
 //							"&scene=0&previewkey=lQ2vTkDCu67xf5wIiSxoGJ1iJUUG%2F7eLf7OA%2FVEtaJE%3D#wechat_redirect",
 //					"http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/MessageImage%2F7.jpg");
-//			WechatUtil.senMsgToWechat(token, xmlEntity.getFromUserName(), st);
+//			WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
 //			Log log=new Log();
 //			log.setTitle("YYHD-YY");
 //			log.setCreateDate(new Date());
@@ -633,7 +638,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 //					"点击下方小键盘，赶紧发送您的健康疑问吧！";
 //			Map parameter = systemService.getWechatParameter();
 //			String token = (String)parameter.get("token");
-//			WechatUtil.senMsgToWechat(token, xmlEntity.getFromUserName(), st);
+//			WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
 //			Log log=new Log();
 //			log.setTitle("YYHD-AQ");
 //			log.setCreateDate(new Date());
@@ -658,7 +663,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 //					"=http://s22.baodf.com/xiaoerke-wxapp/wechatInfo/getUserWechatMenId?url=24'>点击这里补充宝宝信息</a>";
 //			Map parameter = systemService.getWechatParameter();
 //			String token = (String)parameter.get("token");
-//			WechatUtil.senMsgToWechat(token, xmlEntity.getFromUserName(), st);
+//			WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
 //			HealthRecordMsgVo healthRecordMsgVo = new HealthRecordMsgVo();
 //			healthRecordMsgVo.setOpenId(xmlEntity.getFromUserName());
 //			healthRecordMsgVo.setType("BB_MSG");

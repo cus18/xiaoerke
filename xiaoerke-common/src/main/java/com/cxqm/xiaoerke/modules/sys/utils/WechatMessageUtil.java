@@ -240,7 +240,7 @@ public class WechatMessageUtil {
      * @param openId 用户的openId
      * @param obj 消息体
      * */
-    public static String senMsgToWechat(String token,String openId,ArrayList<Object> obj){
+    public static String sendMsgToWechat(String token,String openId,ArrayList<Object> obj){
         String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token="+ token;
         try {
             String str = JsonUtil.getJsonStrFromList(obj);
