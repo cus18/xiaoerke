@@ -635,7 +635,7 @@ public class ScheduledTask {
             map.put("ticket",ticket);
             map.put("id","1");
             scheduleTaskService.updateWechatParameter(map);
-            sessionRedisCache.putWeChatToken(map);
+            sessionRedisCache.putWeChatParamToRedis(map);
 
             System.out.print("医生端微信参数更新");
             token = WechatUtil.getToken(WechatUtil.DOCTORCORPID,WechatUtil.DOCTORSECTET);
@@ -645,7 +645,7 @@ public class ScheduledTask {
             map.put("ticket",ticket);
             map.put("id", 2);
             scheduleTaskService.updateWechatParameter(map);
-            sessionRedisCache.putWeChatToken(map);
+            sessionRedisCache.putWeChatParamToRedis(map);
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -10,6 +10,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
@@ -60,6 +61,9 @@ public class ConsultDoctorController extends BaseController {
 
     @Autowired
     private WechatAttentionService wechatAttentionService;
+
+    @Autowired
+    private SessionRedisCache sessionRedisCache;
 
     @RequestMapping(value = "/getCurrentUserHistoryRecord", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -356,9 +360,8 @@ public class ConsultDoctorController extends BaseController {
         patientRegisterPraiseService.saveCustomerEvaluation(params);
         String st = "感谢您对我们的信任与支持，为了以后能更好的为您服务，请对本次服务做出评价！【" +
                 "<a href='http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" + params.get("uuid") + "'>我要评价</a>】";
-        Map parameter = systemService.getWechatParameter();
-        String token = (String) parameter.get("token");
-        WechatUtil.sendMsgToWechat(token, userId, st);
+        Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+        WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
         String result = consultSessionService.clearSession(sessionId, userId);
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("result", result);
