@@ -42,19 +42,6 @@ public class FieldworkWechatController {
     public String getDoctorWechatMenu(HttpServletRequest request,HttpServletResponse response, HttpSession session) throws Exception {
         String code = request.getParameter("code");
         String url = java.net.URLDecoder.decode(request.getParameter("url"), "utf-8");
-        if ("1".equals(url)) {
-            //每日清单
-            url = "#/myAccount";
-        } else if ("2".equals(url)) {
-            //出诊安排
-            url = "#/doctorFirst/,";
-        } else if ("3".equals(url)) {
-            //接诊提醒
-            url = "#/acceptRemind";
-        } else if ("4".equals(url)) {
-            //个人中心
-            url = "#/myselfFirst";
-        }
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
                 "appid=APPID" +
                 "&secret=SECRET&" +
@@ -71,6 +58,25 @@ public class FieldworkWechatController {
             session.setAttribute("openId", openid);
             CookieUtils.setCookie(response, "openId", openid, 60 * 60 * 24 * 30,".baodf.com");
         }
+        if ("1".equals(url)) {
+            //每日清单
+            url = "#/myAccount";
+        } else if ("2".equals(url)) {
+            //出诊安排
+            url = "#/doctorFirst/,";
+        } else if ("3".equals(url)) {
+            //接诊提醒
+            url = "#/acceptRemind";
+        } else if ("4".equals(url)) {
+            //个人中心
+            url = "#/myselfFirst";
+        } else if("5".equals(url)){
+            //电话咨询
+            url = "#/phoneConsultFirst/";
+
+            return "redirect:" + ConstantUtil.DOCTOR_WEB_URL + "/doctor/phoneConsultDoctor" + url;
+        }
+
         return "redirect:" + ConstantUtil.DOCTOR_WEB_URL + "/doctor/doctor" + url;
     }
 
