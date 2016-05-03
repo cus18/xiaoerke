@@ -56,7 +56,7 @@ public class FieldworkWechatController {
             WechatBean wechat = JsonUtil.getObjFromJsonStr(json, WechatBean.class);
             openid = wechat.getOpenid();
             session.setAttribute("openId", openid);
-            CookieUtils.setCookie(response, "openId", openid, 60 * 60 * 24 * 30,".baodf.com");
+            CookieUtils.setCookie(response, "openId", openid, 60 * 60 * 24 * 30,"xiaork.com");
         }
         if ("1".equals(url)) {
             //每日清单
@@ -85,7 +85,7 @@ public class FieldworkWechatController {
      */
     @RequestMapping(value = "/getUserWechatMenId", method = {RequestMethod.POST, RequestMethod.GET})
     public String getUserWechatMenu(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
-        String code = request.getParameter("code");
+            String code = request.getParameter("code");
         String url = java.net.URLDecoder.decode(request.getParameter("url"), "utf-8");
         if ("1".equals(url)) {
             //引导页
@@ -161,7 +161,7 @@ public class FieldworkWechatController {
             }
             url = ConstantUtil.MARKET_WEB_URL +"market/firstPage/momNutritionTest";
         }else if("26".equals(url)){
-            url = ConstantUtil.TITAN_WEB_URL + "firstPage/antiDogFirst";
+            url = ConstantUtil.TITAN_WEB_URL + "titan/firstPage/antiDogFirst";
         }else if ("28".equals(url)){
             url = ConstantUtil.TITAN_WEB_URL + "/titan/firstPage/phoneConsult";
         }
@@ -191,7 +191,7 @@ public class FieldworkWechatController {
 
             openid = wechat.getOpenid();
             session.setAttribute("openId", openid);
-            CookieUtils.setCookie(response, "openId", openid==null?"":openid,60*60*24*30,".baodf.com");
+            CookieUtils.setCookie(response, "openId", openid==null?"":openid,60*60*24*30,"xiaork.com");
             memberService.sendExtendOldMemberWechatMessage(openid);
         }
         return "redirect:" + url;
@@ -338,7 +338,7 @@ public class FieldworkWechatController {
             WechatBean wechat = JsonUtil.getObjFromJsonStr(json, WechatBean.class);
             openid = wechat.getOpenid();
             session.setAttribute("openId", openid);
-            CookieUtils.setCookie(response, "openId", openid, 60 * 60 * 24 * 30,".baodf.com");
+            CookieUtils.setCookie(response, "openId", openid, 60 * 60 * 24 * 30,"xiaork.com");
         }
         String id = request.getParameter("id");
         LogUtils.saveLog(Servlets.getRequest(),"00000082", "分享后查看某篇文章:" + id + ":openid:" + openid);
@@ -366,7 +366,7 @@ public class FieldworkWechatController {
             WechatBean wechat = JsonUtil.getObjFromJsonStr(json, WechatBean.class);
             openid = wechat.getOpenid();
             session.setAttribute("openId", openid);
-            CookieUtils.setCookie(response, "openId", openid, 60 * 60 * 24 * 30,".baodf.com");
+            CookieUtils.setCookie(response, "openId", openid, 60 * 60 * 24 * 30,"xiaork.com");
         }
         return "redirect:" + "/ap#/knowledgeIndex";
     }
