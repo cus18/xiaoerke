@@ -387,8 +387,7 @@ public class AccountServiceImpl implements AccountService {
         }
 
         //获取需要支付的金额  单位(分)
-//        int price = ((Float)request.getAttribute("payPrice")).intValue()*100;
-        String order_price =StringUtils.isNotNull(String.valueOf((request.getAttribute("payPrice"))))?String.valueOf(((Float)request.getAttribute("payPrice")).intValue()*100):request.getParameter("payPrice");
+        String order_price = StringUtils.isNotNull(String.valueOf((request.getAttribute("payPrice"))))?String.valueOf(((Float)request.getAttribute("payPrice")).intValue()*100):request.getParameter("payPrice");
         order_price = "1";
         //生成的商户订单号
         String out_trade_no = IdGen.uuid();//Sha1Util.getNonceStr();
@@ -402,7 +401,7 @@ public class AccountServiceImpl implements AccountService {
         parameters.put("total_fee", order_price);//金额
         parameters.put("spbill_create_ip",request.getRemoteAddr());//终端ip
         if(serviceType.equals("appointService")){
-            parameters.put("notify_url", ConstantUtil.NOTIFY_URL);//通知地址
+            parameters.put("notify_url", ConstantUtil.NOTIFY_APPOINT_URL);//通知地址
         }else if(serviceType.equals("insuranceService")){
             parameters.put("notify_url", ConstantUtil.NOTIFY_INSURANCE_URL);//通知地址
         }else if(serviceType.equals("customerService")){

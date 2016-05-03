@@ -56,11 +56,11 @@ public class ShareServiceImpl implements ShareService{
         if(type != null && "phone".equals(type)){
 
             response = messageService.findPhoneConsultShareDetailInfoExecute(hashMap);
-            ConsultPhoneRegisterServiceVo vo =  new ConsultPhoneRegisterServiceVo();
-            vo.setId(Integer.parseInt((String)params.get("patientRegisterServiceId")));
-            vo.setUpdateTime(new Date());
-            vo.setState("5");
-            consultPhonePatientService.updateOrderInfoBySelect(vo);
+//            ConsultPhoneRegisterServiceVo vo =  new ConsultPhoneRegisterServiceVo();
+//            vo.setId(Integer.parseInt((String)params.get("patientRegisterServiceId")));
+//            vo.setUpdateTime(new Date());
+//            vo.setState("5");
+//            consultPhonePatientService.updateOrderInfoBySelect(vo);
         }else{
             response = messageService.findShareDetailInfoExecute(hashMap);
         }
@@ -99,6 +99,7 @@ public class ShareServiceImpl implements ShareService{
 		excuteMap.put("patientRegisterServiceId", patientRegisterServiceId);
         if(type != null && "phone".equals(type)){
             excuteMap.put("state","5");
+			excuteMap.put("id",patientRegisterServiceId);
             consultPhoneOrderService.changeConsultPhoneRegisterServiceState(excuteMap);
         }else{
             patientRegisterService.completeShareExecute(excuteMap);
