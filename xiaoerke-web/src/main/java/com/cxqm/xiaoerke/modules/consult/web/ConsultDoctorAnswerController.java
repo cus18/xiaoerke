@@ -161,7 +161,7 @@ public class ConsultDoctorAnswerController extends BaseController {
             if (doctorManagerStr.indexOf(csUserId) != -1) {
                 tranMap.put("commonAnswer",params.get("answer"));
             }else {
-                response.put("result","Permission denied");
+                response.put("result","NoPermission");
                 return response;
             }
         }
