@@ -188,7 +188,7 @@ function updateCustomerInfo() {
     customerId = GetQueryString("customerId");
     var redPacket = $("#getMoney").val();
     if (redPacket != "") {
-        if (redPacket < 0) {
+        if (redPacket <= 0) {
             alert("金额不能为负数");
             return;
         }

@@ -94,7 +94,7 @@ public class PhoneConsultaController {
         String statusCode = "111111";
         if(conversationLength>10&&updateTime.getTime()+1000*60*5>new Date().getTime()){
             HashMap<String, Object> result = CCPRestSDK.callback(userPhone,doctorPhone,
-                    "010-57115120", "010-57115120", null,
+                    "01057115120", "01057115120", null,
                     "true", null, orderId+"",
                     conversationLength+"", null, "0",
                     "1", "10", null);

@@ -343,9 +343,10 @@
         sd.id, sd.name,sd.position2,sd.career_time,sd.hospitalName,
         FORMAT(avg(prp.star+prp.major_star)/2, 2) star ,
         min(DATE_FORMAT(scs.beginTime,' %k:%i')) as latest_time,
+        dhr.sys_hospital_id,
         TIMESTAMPDIFF(DAY,DATE_FORMAT(NOW(),'%Y:%c:%d'),
-        DATE_FORMAT(MIN(scs.date),'%Y:%c:%d')) available_time
 
+        DATE_FORMAT(MIN(scs.date),'%Y:%c:%d')) available_time
         from sys_doctor sd
         left join doctor_illness_relation dir
         on sd.id = dir.sys_doctor_id

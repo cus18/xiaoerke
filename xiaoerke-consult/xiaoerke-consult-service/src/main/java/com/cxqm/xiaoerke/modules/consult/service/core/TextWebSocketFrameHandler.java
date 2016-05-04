@@ -68,20 +68,18 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 				null : (Integer) msgMap.get(ConsultSessionManager.KEY_SESSION_ID);
 		int msgType = msgMap.get(ConsultSessionManager.KEY_REQUEST_TYPE)== null ?
 				0 : (Integer) msgMap.get(ConsultSessionManager.KEY_REQUEST_TYPE);
-		
+		Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
 		if(sessionId != null ) {
 			RichConsultSession consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
 			if(consultSession == null)
 				return;
 			String csUserId = consultSession.getCsUserId();
-			String csUserName = consultSession.getCsUserName();
+//			String csUserName = consultSession.getCsUserName();
+//			String UserName = consultSession.getUserName();
 			String userId = consultSession.getUserId();
 			Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(csUserId);
 
 			if(channel != csChannel && csChannel != null) {
-				msgMap.put("csUserId",csUserId);
-				msgMap.put("csUserName",csUserName);
-				msg = (TextWebSocketFrame) JSON.toJSON(msgMap);
 				csChannel.writeAndFlush(msg.retain());
 				//保存聊天记录
 				consultRecordService.buildRecordMongoVo(userId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
@@ -96,13 +94,14 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 					if(msgType==0){
 						//直接发送文本消息
 						String st = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
-						Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-						WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"),consultSession.getUserId(), st);
+						WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(), st);
 						//保存聊天记录
 						consultRecordService.buildRecordMongoVo(csUserId,String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
 					}else if(msgType!=0){
 						//发送多媒体消息
-
+						String noTextMsg = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
+						WechatUtil.sendNoTextMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(),noTextMsg,msgType);
+						consultRecordService.buildRecordMongoVo(csUserId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
 					}
 				}
 			}

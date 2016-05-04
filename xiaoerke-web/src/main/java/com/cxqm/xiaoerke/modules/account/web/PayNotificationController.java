@@ -147,7 +147,7 @@ public class PayNotificationController {
 				if(insuranceMap.get("fee_type").toString().equals("customer")){
 					Map<String, Object> params = new HashMap<String, Object>();
 					params.put("payStatus","success");
-					params.put("id",payRecord.getId());
+					params.put("id",insuranceId);
 					patientRegisterPraiseService.updateCustomerEvaluation(params);
 					payRecord.getId();//修改pay_record表状态
 					payRecord.setStatus("success");
