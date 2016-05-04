@@ -114,8 +114,7 @@ public class PayNotificationController {
 	 * */
 	@RequestMapping(value = "getInsurancePayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
 	public synchronized
-	@ResponseBody
-	String getInsurancePayNotifyInfo(HttpServletRequest request) {
+	@ResponseBody String getInsurancePayNotifyInfo(HttpServletRequest request) {
 		lock.lock();
 		InputStream inStream = null;
 		try {
