@@ -6,35 +6,23 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$("#btnGiftMember").click(function(){
-				$("#searchForm").attr("action","${ctx}/member/giftMemberForm");
-				$("#searchForm").submit();
-			});
-			$("#btnExport").click(function(){
-				top.$.jBox.confirm("确认要导出用户数据吗？","系统提示",function(v,h,f){
-					if(v=="ok"){
-						$("#searchForm").attr("action","${ctx}/member/export");
-						$("#searchForm").submit();
-					}
-				},{buttonsFocus:1});
-				top.$('.jbox-body .jbox-icon').css('top','55px');
-			});
+
 		});
 		function page(n,s){
 			if(n) $("#pageNo").val(n);
 			if(s) $("#pageSize").val(s);
-			$("#searchForm").attr("action","${ctx}/member/memberList?");
+			$("#searchForm").attr("action","${ctx}/consult/consultDoctorList?");
 			$("#searchForm").submit();
 	    	return false;
 	    }
 	    function searchSub(){
-			$("#searchForm").attr("action","${ctx}/member/memberList?");
+			$("#searchForm").attr("action","${ctx}/consult/consultDoctorList?");
 			$("#searchForm").submit();
 		}
 
 		function doctorOperForm(href,title){
 			href=encodeURI(encodeURI(href));
-			top.$.jBox.open('iframe:'+href,title,$(top.document).width()-860,$(top.document).height()-250,{
+			top.$.jBox.open('iframe:'+href,title,430,370,{
 				buttons:{"关闭":true},
 				closed: function () {
 					$("#searchForm").attr("action","${ctx}/consult/consultDoctorList");
@@ -46,9 +34,9 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/member/memberList?">会员列表</a></li>
+		<li class="active"><a href="${ctx}/consult/consultDoctorList?">咨询医生列表</a></li>
 	</ul>
-	<form:form id="searchForm" modelAttribute="user" action="${ctx}/member/memberList?" method="post" class="breadcrumb form-search ">
+	<form:form id="searchForm" modelAttribute="user" action="${ctx}/consult/consultDoctorList?" method="post" class="breadcrumb form-search ">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<sys:message content="${message}"/>
