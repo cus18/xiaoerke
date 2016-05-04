@@ -112,7 +112,6 @@
     sd.position2,
     sd.hospitalName,
     dhr.department_level1 as departmentName,
-    dhr
     case when crs.state ='0' then '待支付' when crs.state ='1' then '待接听' when crs.state ='2' then '待评价'
     when crs.state ='3' then '待分享' when crs.state ='4' then '已取消'
     when crs.state ='5' then '已完成' end state,

@@ -220,6 +220,7 @@
 			});
 		}
 		function addRegisters(){
+			$("#addSubmit").attr('disabled',true);
 			var timeList=document.getElementsByName("timeList");
 			var repeat = "no";
 			var flag = false;
@@ -238,6 +239,7 @@
 				data: {sysDoctorId:"${consulPhonetDoctorRelationVo.doctorId}",date:date,repeat:repeat,times:array,pageFlag:pageFlag},
 				dataType: "json",
 				success: function(data){
+					$("#addSubmit").attr('disabled',false);
 					if(data.result=="suc"){
 						addUpdateFlag="init";
 						if(data.reason==""){
@@ -862,7 +864,7 @@
 				<div class="form-actions">
 					<input id="copy" name="copy" type="checkbox" value="yes">
 					<label for="copy" >自动按周重复该设置</label><br/>
-					<input id="btnSubmit" class="btn btn-primary" type="button" onclick="addRegisters()" value="确认添加选中"/>
+					<input id="addSubmit" class="btn btn-primary" type="button" onclick="addRegisters()" value="确认添加选中"/>
 					<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 				</div>
 			</div>
@@ -870,7 +872,7 @@
 				<div class="form-actions">
 					<input id="delCopy" name="delCopy" type="checkbox" value="yes">
 					<label for="delCopy" >删除重复设置的号源</label><br/>
-					<input id="btnSubmit" class="btn btn-primary" type="button" onclick="deleteRegisters()" value="确认删除选中"/>
+					<input id="delSubmit" class="btn btn-primary" type="button" onclick="deleteRegisters()" value="确认删除选中"/>
 					<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 				</div>
 			</div>
