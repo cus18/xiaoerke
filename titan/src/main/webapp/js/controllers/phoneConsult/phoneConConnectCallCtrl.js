@@ -6,6 +6,7 @@
             $scope.phone = $stateParams.phone
             $scope.doctorName = $stateParams.doctorName
             $scope.doctorId = $stateParams.doctorId
+            $scope.phoneConsultaServiceId = $stateParams.phoneConsultaServiceId
 
             $scope.$on('$ionicView.enter', function(){
                 ConsultReconnection.get({phoneConsultaServiceId:$stateParams.phoneConsultaServiceId},function(data){

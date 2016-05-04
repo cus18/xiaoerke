@@ -804,13 +804,13 @@ angular.module('controllers', ['luegg.directives'])
             var filterMediaData = function (val) {
                 if(val.senderId==$scope.doctorId){
                     if (val.type == "0") {
-                        val.content = $sce.trustAsHtml(AnalyticEmotion(angular.copy(val.content)));
+                        val.content = $sce.trustAsHtml(replace_em(angular.copy(val.content)));
                     }
                 }else{
                     if (val.type == "2"||val.type == "3") {
                         val.content = $sce.trustAsResourceUrl(angular.copy(val.content));
                     }else if(val.type == "0"){
-                        val.content = $sce.trustAsHtml(AnalyticEmotion(angular.copy(val.content)));
+                        val.content = $sce.trustAsHtml(replace_em(angular.copy(val.content)));
                     }
                 }
             }

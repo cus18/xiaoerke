@@ -9,13 +9,17 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultPhoneService;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
+import com.cxqm.xiaoerke.modules.sys.service.DoctorInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
+import com.cxqm.xiaoerke.modules.sys.utils.DoctorMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +41,8 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
     @Autowired
     private SystemService systemService;
 
+    @Autowired
+    private DoctorInfoService doctorInfoService;
 
     @Override
     public String parseCallAuth(Map<String, Object> map) {
@@ -150,12 +156,13 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
 
         consultPhonevo.setId(Integer.parseInt(userData));
         consultPhonevo.setUpdateTime(new Date());
+        Map<String,Object> consultOrder = consultPhonePatientService.getPatientRegisterInfo(Integer.parseInt(userData));
         if("1234".indexOf(vo.getByetype())>-1&&Integer.parseInt(talkDuration)>0){
 //             改状态
             consultPhonevo.setType("1");//已推送过消息
             consultPhonevo.setSurplusTime(serviceLength - Integer.parseInt(talkDuration) * 1000);//修改通话时间
             //发消息
-            Map<String,Object> consultOrder = consultPhonePatientService.getPatientRegisterInfo(Integer.parseInt(userData));
+
             User userInfo = systemService.getUserById((String)consultOrder.get("sys_user_id"));
             String url = ConstantUtil.TITAN_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) consultOrder.get("doctorName")+","+userData+",phone";
             String connectUrl = ConstantUtil.TITAN_WEB_URL+"/titan/phoneConsult#/phoneConReconnection/"+userData;
@@ -163,6 +170,42 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
             String token = (String)parameter.get("token");
             PatientMsgTemplate.consultPhoneEvaluateWaring2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"),(String) consultOrder.get("phone"), url,connectUrl,token);
             PatientMsgTemplate.evaluationRemind2Wechat(userInfo.getOpenid(),token,url,"您的订单可以评价了哦!",(String) consultOrder.get("orderNo"), (String) consultOrder.get("date"),"");
+        }else{
+            //没接通
+            //取消用户订单
+            ConsultPhoneRegisterServiceVo registerServiceVo =  new ConsultPhoneRegisterServiceVo();
+            registerServiceVo.setId(Integer.parseInt(userData));
+            registerServiceVo.setUpdateTime(new Date());
+            registerServiceVo.setState("4");
+            int state = consultPhonePatientService.updateOrderInfoBySelect(registerServiceVo);
+            //              并发送消息
+            String url = ConstantUtil.TITAN_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) consultOrder.get("doctorId")+","+(Integer) consultOrder.get("id")+",phone";
+            PatientMsgTemplate.unConnectPhone2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"), (Float) consultOrder.get("price") + "", (String) consultOrder.get("userPhone"), (String) consultOrder.get("orderNo"));
+            Map tokenMap = systemService.getDoctorWechatParameter();
+            String token = (String)tokenMap.get("token");
+            String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)consultOrder.get("date"),"yyyy/MM/dd"));
+            String dateTime = (String)consultOrder.get("date")+week+(String)consultOrder.get("beginTime");
+            PatientMsgTemplate.unConnectPhone2Wechat(dateTime, (String) consultOrder.get("userPhone"), (String) consultOrder.get("doctorName"), (Float) consultOrder.get("price") + "", url, (String) consultOrder.get("orderNo"), (String) consultOrder.get("openid"), token);
+
+            //未接通时 给医生发消息提醒
+            String hospitalContactPhone = (String)consultOrder.get("hospitalContactPhone");
+            String doctorName =  (String) consultOrder.get("doctorName");
+            String babyName =  (String) consultOrder.get("babyName");
+            String doctorPhone =  (String)consultOrder.get("doctorPhone");
+
+            if(StringUtils.isNotNull(hospitalContactPhone)){
+                String content = "【未接通】尊敬的"+doctorName+"医生，由于"+babyName+"小朋友家长预约电话咨询未接通，已将咨询费用退还给预约用户。有疑问请致电400-623-7120。";
+                ChangzhuoMessageUtil.sendMsg(hospitalContactPhone, content, ChangzhuoMessageUtil.RECEIVER_TYPE_DOCTOR);
+            }else {
+                DoctorMsgTemplate.doctorPhoneConsultRemindFail2Sms(doctorName, babyName, doctorPhone);
+                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("mm月dd日");
+                String nowTime = simpleDateFormat1.format(new Date());
+                String doctorToken = (String) tokenMap.get("token");
+                String openId = doctorInfoService.findOpenIdByDoctorId((String) consultOrder.get("doctorId"));
+                if (StringUtils.isNotNull(openId)) {
+                    DoctorMsgTemplate.doctorPhoneConsultRemindFail2Wechat(babyName, nowTime, doctorToken, "", openId);
+                }
+            }
         }
         int state = consultPhonePatientService.updateOrderInfoBySelect(consultPhonevo);
         //返回的数据

@@ -27,22 +27,31 @@ var setMoney = function (index) {
     moneyNum = $('#getMoney').val();
     if(index==0){
         if(moneyNum<=0){
-            $('.inputmoney img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
+            $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
         }else{
-            $('.inputmoney img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
-            moneyNum--;
+            $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
+            if(moneyNum.indexOf(".")>0){
+                moneyNum=parseInt(moneyNum);
+            }else {
+                moneyNum--;
+            }
             if(moneyNum==0){
-                $('.inputmoney img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
+                $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
             }
             $('#getMoney').val(moneyNum);
         }
     }else if(index==1){
-        moneyNum++;
+        if(moneyNum.indexOf(".")>0){
+            moneyNum=parseInt(moneyNum)+1;
+        }else {
+            moneyNum++;
+        }
         $('#getMoney').val(moneyNum);
-        $('.inputmoney img').eq(1).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjia_xuanzhong.png");
-        $('.inputmoney img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
+        $('.ptm img').eq(1).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjia_xuanzhong.png");
+        $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
     }
 }
+
 var GetQueryString = function(name)
 {
     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
@@ -67,6 +76,7 @@ function getCustomerInfo(){
                 window.location.href = "wxPay/patientPay.do?serviceType=customerPay&customerId="+customerId;
             }else if(evaluation.serviceAttitude==1){
                 $("#playtourStar").html("不满意");
+                $(".evalhavemoney").hide();
                 var dissatisfied=evaluation.dissatisfied;
                 dissatisfied=dissatisfied.split(",");
                 var a="";
@@ -80,9 +90,9 @@ function getCustomerInfo(){
                     if(dissatisfied[i]=="2"){
                         a+="响应速度太慢       ";
                     }
-                    if(dissatisfied[i]=="3"){
-                        a+="其他       ";
-                    }
+                    // if(dissatisfied[i]=="3"){
+                    //     a+="其他       ";
+                    // }
                 }
                 $("#evaluation").html(a);
                 $("#suggest").html(evaluation.content);
@@ -219,7 +229,7 @@ function updateCustomerInfo() {
                                 url: "interaction/user/updateCustomerEvaluation",// 跳转到 action
                                 async: false,
                                 type: 'POST',
-                                data: "{'id':'" + customerId + "','starNum1':'" + starNum1 + "','content':'" + content + "','dissatisfied':'" + noManYi + "','redPacket':'" + redPacket + "'}",
+                                data: "{'id':'" + customerId + "','redPacket':'" + redPacket + "'}",
                                 contentType: "application/json; charset=utf-8",
                                 dataType: 'json',
                                 success: function (data) {

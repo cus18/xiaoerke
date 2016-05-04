@@ -10,7 +10,7 @@ var selectBaby=function(){
 }
 // 添加宝宝
 var addBaby=function(){
-    window.location.href = "http://localhost:8080/titan/insurance#/antiDogAddBaby";
+    window.location.href = "http://xiaork.cn/titan/insurance#/antiDogAddBaby";
 }
 // 取消选择宝宝
 var cancelSelectBaby=function(){
@@ -42,7 +42,7 @@ var selectParent=function(parent){
 }
 // 查看订单信息
 var lookOrderInfo=function(){
-    window.location.href = "insurance#/antiDogOrderList";
+    window.location.href = "http://xiaork.cn/titan/insurance#/antiDogOrderList";
 }
 var cancelRemind=function(){
     $(".c-shadow").hide();

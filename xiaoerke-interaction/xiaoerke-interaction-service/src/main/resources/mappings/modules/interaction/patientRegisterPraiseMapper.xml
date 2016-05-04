@@ -297,6 +297,10 @@
             redPacket=#{redPacket},serviceAttitude=#{starNum1},content=#{content},dissatisfied=#{dissatisfied}
         </if>
 
+        <if test="starNum1 == null" >
+            redPacket=#{redPacket}
+        </if>
+
         <if test="payStatus != null" >
             payStatus=#{payStatus}
         </if>
