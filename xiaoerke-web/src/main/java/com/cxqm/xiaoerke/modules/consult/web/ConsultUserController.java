@@ -124,7 +124,13 @@ public class ConsultUserController extends BaseController {
         if(dateNum != 10000){
             String dateTemp;
             Calendar ca = Calendar.getInstance();
-            ca.add(Calendar.DATE, -dateNum);// 30为增加的天数，可以改变的
+            if(dateNum == 0){
+                ca.set(Calendar.HOUR, 0);
+                ca.set(Calendar.SECOND, 0);
+                ca.set(Calendar.MINUTE, 0);
+            }else{
+                ca.add(Calendar.DATE, -dateNum);// 30为增加的天数，可以改变的
+            }
             dateTemp = DateUtils.DateToStr(ca.getTime(), "datetime");
             date = DateUtils.StrToDate(dateTemp,"datetime");
         }
