@@ -170,7 +170,7 @@ public class WebSSOController {
 	}
 	
 	@RequestMapping(value="appoint/logout")
-	public String logout(HttpServletRequest request, HttpServletResponse response){
+	public String logout(HttpServletRequest request){
 		return "redirect:" + Global.getConfig("authentication.basePath") + "/sso/logout?toUrl=" + WebUtil.getWebPath(request) + "/firstPage/appoint";
 	}
 	
