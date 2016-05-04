@@ -272,7 +272,7 @@ public class PatientMsgTemplate {
     }
 
     public static void consultPhoneSuccess2Msg(String babyName,String doctorName,String date,String week,String beginTime,String phone,String register_no){
-        String content = "（电话咨询预约成功）"+babyName+"小朋友家长，您已成功预约了"+doctorName+"医生的电话咨询，预约时间是"+date+" "+week+" "+beginTime+"，届时您会接到号码为010-4006237120的来电请保持电话畅通。订单号："+register_no+"，有疑问请致电400-623-7120。";
+        String content = "（电话咨询预约成功）"+babyName+"小朋友家长，您已成功预约了"+doctorName+"医生的电话咨询，预约时间是"+date+" "+week+" "+beginTime+"，届时您会接到号码为010-57115120的来电请保持电话畅通。订单号："+register_no+"，有疑问请致电400-623-7120。";
         SMSMessageUtil.sendMsg(phone, content);
     }
 
