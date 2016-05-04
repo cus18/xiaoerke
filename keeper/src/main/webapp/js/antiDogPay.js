@@ -315,7 +315,7 @@ function payInsurance(){
                                                         paySign:obj.paySign,  // 支付签名
                                                         success: function (res) {
                                                             if(res.errMsg == "chooseWXPay:ok" ) {
-                                                                window.location.href="insurance#/antiDogPaySuccess/"+insuranceId;
+                                                                window.location.href="http://xiaork.cn/titan/insurance#/antiDogPaySuccess/"+insuranceId;
                                                             }else{
                                                                 alert("支付失败,请重新支付")
                                                             }
