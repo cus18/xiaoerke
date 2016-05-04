@@ -358,8 +358,8 @@ public class ConsultDoctorController extends BaseController {
         params.put("dissatisfied", null);
         params.put("redPacket", null);
         patientRegisterPraiseService.saveCustomerEvaluation(params);
-        String st = "感谢您对我们的信任与支持，为了以后能更好的为您服务，请对本次服务做出评价！【" +
-                "<a href='http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" + params.get("uuid") + "'>我要评价</a>】";
+        String st = "本次咨询体验怎么样?赶快来评价吧!【" +
+                "<a href='http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" + params.get("uuid") + "'>点击这里去评价</a>】";
         Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
         WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
         String result = consultSessionService.clearSession(sessionId, userId);

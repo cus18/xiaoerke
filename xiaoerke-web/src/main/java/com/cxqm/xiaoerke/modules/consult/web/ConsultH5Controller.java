@@ -23,7 +23,7 @@ public class ConsultH5Controller extends BaseController{
     @Autowired
     private ConsultH5Service consultH5Service;
     /**
-     * H5咨询上传文件
+     * 鍜ㄨH5涓婁紶鏂囦欢
      * @param file
      * @param data
      * @return {"status","success"}

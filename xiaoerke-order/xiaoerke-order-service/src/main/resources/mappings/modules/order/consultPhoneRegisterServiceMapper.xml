@@ -131,6 +131,7 @@
     crs.surplusTime,
     sp.sys_user_id,
     su.openid,
+    sh.id hospitalId,
     cdr.server_length
     from consultPhone_register_service crs
     left join sys_consultPhone_service scs
@@ -146,6 +147,7 @@
     on sp.sys_user_id = sbi.userid
     LEFT join consultphone_doctor_relation cdr on cdr.doctor_id = sd.id
     LEFT JOIN sys_user su on sp.sys_user_id = su.id
+    left join sys_hospital sh on sh.`name` = sd.hospitalName
     where crs.id =#{id,jdbcType=INTEGER}
     group by crs.id
   </select>
@@ -172,7 +174,6 @@
     <if test="state != null" >
       and crs.state = #{state,VARCHAR}
     </if>
-
   </select>
 
   <!--获取个人中心的 电话咨询订单列表（带分页） @author cxq-->
@@ -548,7 +549,7 @@ group by crs.id
       <if test="payState == 1">
         and crs.state in (1,2,3,5)
       </if>
-      <if test="payState == 4 or payState == 0">
+      <if test="payState == 4 or payState == 0 or payState == 6">
         and crs.state = #{payState}
       </if>
     </if>
@@ -571,6 +572,12 @@ group by crs.id
       and #{consultPhoneTimeToStr} >= scs.date
     </if>
     group by crs.id
+    <if test="state != 4" >
+      order by crs.create_time desc
+    </if>
+    <if test="state == 4" >
+      order by crs.update_time desc
+    </if>
   </select>
   <!-- 查询电话咨询订单数，sunxiao -->
   <select id="getNewOrderCount" resultType="java.lang.Integer" >

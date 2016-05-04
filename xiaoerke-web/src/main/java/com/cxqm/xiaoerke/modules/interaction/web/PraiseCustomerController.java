@@ -65,10 +65,11 @@ public class PraiseCustomerController extends BaseController {
     @RequestMapping(value = "/user/findCustomerEvaluation", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> findCustomerEvaluation(@RequestBody Map<String, Object> params) {
+    Map<String, Object> findCustomerEvaluation(@RequestBody Map<String, Object> params, HttpSession session) {
     	String id=params.get("id").toString();
     	Map<String, Object> result =new HashMap<String, Object>();
     	Map<String, Object> map=patientRegisterPraiseService.selectCustomerEvaluation(id);
+        session.setAttribute("openId",map.get("openid"));
     	String doctorId=map.get("doctorId").toString();
     	result.put("evaluation", map);
     	result.put("starInfo", patientRegisterPraiseService.getCustomerStarInfoById(doctorId));

@@ -8,15 +8,14 @@
 			tip : 'em_'
 		};
 		var option = $.extend(defaults, options);
-		var assign = $('#'+option.assign);
 		var id = option.id;
 		var path = option.path;
 		var tip = option.tip;
-		
+		/*
 		if(assign.length<=0){
 			alert('缺少表情赋值对象。');
 			return false;
-		}
+		}*/
 		
 		$(this).click(function(e){
 			var strFace, labFace;
@@ -74,18 +73,18 @@ jQuery.fn.extend({
 		}); 
 	}, 
 
-	setCaret: function(){ 
-		if(!$.browser.msie) return; 
+	setCaret: function(){
+		if(!$.browser.msie) return;
 		var initSetCaret = function(){ 
-			var textObj = $(this).get(0); 
-			textObj.caretPos = document.selection.createRange().duplicate(); 
+			var textObj = $(this).get(0);
+			textObj.caretPos = document.selection.createRange().duplicate();
 		}; 
-		$(this).click(initSetCaret).select(initSetCaret).keyup(initSetCaret); 
-	}, 
+		$(this).click(initSetCaret).select(initSetCaret).keyup(initSetCaret);
+	},
 
-	insertAtCaret: function(textFeildValue){ 
-		var textObj = $(this).get(0); 
-		if(document.all && textObj.createTextRange && textObj.caretPos){ 
+	insertAtCaret: function(textFeildValue){
+		var textObj = $(this).get(0);
+		if(document.all && textObj.createTextRange && textObj.caretPos){
 			var caretPos=textObj.caretPos; 
 			caretPos.text = caretPos.text.charAt(caretPos.text.length-1) == '' ? 
 			textFeildValue+'' : textFeildValue; 
@@ -98,9 +97,9 @@ jQuery.fn.extend({
 			textObj.focus(); 
 			var len=textFeildValue.length; 
 			textObj.setSelectionRange(rangeStart+len,rangeStart+len); 
-			textObj.blur(); 
-		}else{ 
-			textObj.value+=textFeildValue; 
+			textObj.blur();
+		}else{
+			textObj.value+=textFeildValue;
 		} 
 	} 
 });

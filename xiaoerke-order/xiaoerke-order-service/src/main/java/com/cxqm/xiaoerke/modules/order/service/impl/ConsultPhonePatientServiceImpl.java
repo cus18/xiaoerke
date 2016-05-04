@@ -88,8 +88,9 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         }
         registerInfo.put("position",position);
         registerInfo.put("expertise", doctorInfoService
-                .getDoctorExpertiseById((String) registerInfo.get("doctorId"), null, null));
+                .getDoctorExpertiseById((String) registerInfo.get("doctorId"),(String) registerInfo.get("hospitalId") , null));
         // 根据医生ID和医院ID，获取医生的所处科室
+
         return registerInfo;
     }
 
@@ -318,16 +319,9 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         map.put("doctorId", vo.getDoctorId());
         map.put("fromDate","yes");
         List<Map<String, Object>> orderList = getConsultPhoneRegisterListByInfo(map);
-        List list = new ArrayList();
-        List orderTimeList = new ArrayList();
         Map orderTimeMap = new HashMap();
         for(Map<String, Object> temp : orderList){
-            if(list.contains(temp.get("date"))){
-                orderTimeMap.put(temp.get("date"),orderTimeMap.get(temp.get("date"))+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+temp.get("beginTime")+"-"+temp.get("endTime"));
-            }else{
-                orderTimeMap.put(temp.get("date"),temp.get("beginTime")+"-"+temp.get("endTime"));
-            }
-            list.add(temp.get("date"));
+            orderTimeMap.put(temp.get("date"), orderTimeMap.containsKey(temp.get("date")) ? orderTimeMap.get(temp.get("date")) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + temp.get("beginTime").toString().substring(0, 5) + "--" + temp.get("endTime").toString().substring(0, 5) : temp.get("beginTime").toString().substring(0, 5)+"--"+temp.get("endTime").toString().substring(0,5));
         }
         Map paramMap = new HashMap();
         paramMap.put("orderId",vo.getId());
@@ -400,7 +394,7 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
 //        sdk.setAppId("aaf98f8952f7367a0153084e29992035");
 
         HashMap<String, Object> result = CCPRestSDK.callback(vo.getDoctorPhone(), vo.getUserPhone(),
-                "57115120", "57115120", null,
+                "01057115120", "01057115120", null,
                 "true", null, vo.getOrderId() + "",
                 conversationLength + "", null, "0",
                 "1", "60", null);
@@ -419,6 +413,4 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
       return  consultPhoneRegisterServiceDao.cancelAppointNoPayOrder();
 
     }
-
-    ;
 }

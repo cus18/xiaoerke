@@ -220,6 +220,7 @@
 			});
 		}
 		function addRegisters(){
+			$("#addSubmit").attr('disabled',true);
 			var timeList=document.getElementsByName("timeList");
 			var repeat = "no";
 			var flag = false;
@@ -238,6 +239,7 @@
 				data: {sysDoctorId:"${consulPhonetDoctorRelationVo.doctorId}",date:date,repeat:repeat,times:array,pageFlag:pageFlag},
 				dataType: "json",
 				success: function(data){
+					$("#addSubmit").attr('disabled',false);
 					if(data.result=="suc"){
 						addUpdateFlag="init";
 						if(data.reason==""){
@@ -303,9 +305,7 @@
 											//document.getElementById(tempTimeList[i]+"oper").innerText="添加";
 											document.getElementById(tempTimeList[i]+"oper").value="";
 											document.getElementById(tempTimeList[i]+"span").style.background="";
-											if(operRepeat=="yes"){
-												document.getElementById(tempTimeList[i]+"showInfo").innerText="";
-											}
+											document.getElementById(tempTimeList[i]+"showInfo").innerText="";
 											addUpdateFlag="init";
 										}else{
 											alertx("删除失败!");
@@ -330,9 +330,7 @@
 											if(data.result=="suc"){
 												document.getElementById(tempTimeList[i]+"oper").value="";
 												document.getElementById(tempTimeList[i]+"span").style.background="";
-												if(operRepeat=="yes"){
-													document.getElementById(tempTimeList[i]+"showInfo").innerText="";
-												}
+												document.getElementById(tempTimeList[i]+"showInfo").innerText="";
 												addUpdateFlag="init";
 											}else{
 												alertx("删除失败!");
@@ -657,7 +655,7 @@
 										<input id="13:00" name="timeList" class="" type="checkbox" value="13:00" onclick="kick('13:00')">
 										<label for="13:00"><span id="13:00span" name="spanList">13:00</span></label>
 										<label><span id="13:00oper" name="operList"  onclick="operRegister('13:00')"></span></label>
-										<span id="13:00showInfo" name="showInfoList"></span>
+										<span id="13:00showInfo" name="showInfoList">&nbsp;&nbsp;&nbsp;</span>
 									</span>
 							</td>
 							<td>
@@ -777,7 +775,7 @@
 										<input id="17:40" name="timeList" class="" type="checkbox" value="17:40" onclick="kick('17:40')">
 										<label for="17:40"><span id="17:40span" name="spanList">17:40</span></label>
 										<label><span id="17:40oper" name="operList"  onclick="operRegister('17:40')"></span></label>
-										<span id="17:40showInfo" name="showInfoList"></span>&nbsp;&nbsp;&nbsp;
+										<span id="17:40showInfo" name="showInfoList">&nbsp;&nbsp;&nbsp;</span>
 									</span>
 							</td>
 						</tr>
@@ -866,7 +864,7 @@
 				<div class="form-actions">
 					<input id="copy" name="copy" type="checkbox" value="yes">
 					<label for="copy" >自动按周重复该设置</label><br/>
-					<input id="btnSubmit" class="btn btn-primary" type="button" onclick="addRegisters()" value="确认添加选中"/>
+					<input id="addSubmit" class="btn btn-primary" type="button" onclick="addRegisters()" value="确认添加选中"/>
 					<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 				</div>
 			</div>
@@ -874,7 +872,7 @@
 				<div class="form-actions">
 					<input id="delCopy" name="delCopy" type="checkbox" value="yes">
 					<label for="delCopy" >删除重复设置的号源</label><br/>
-					<input id="btnSubmit" class="btn btn-primary" type="button" onclick="deleteRegisters()" value="确认删除选中"/>
+					<input id="delSubmit" class="btn btn-primary" type="button" onclick="deleteRegisters()" value="确认删除选中"/>
 					<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 				</div>
 			</div>

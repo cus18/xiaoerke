@@ -60,9 +60,9 @@ public interface ScheduleTaskService {
      */
     List<HashMap<String,Object>> getOrderInfoToDocSuccess5minBefore();
 
-    List<HashMap<String,Object>> getDoctorInfoByDate(String date);
+    List<HashMap<String,Object>> getDoctorInfoByDate(HashMap<String, Object> map);
 
-    List<HashMap<String,Object>> getOrderInfoByDate(String tomorrow);
+    List<HashMap<String,Object>> getOrderInfoByDate(HashMap<String, Object> map);
 
     List<HashMap<String,Object>> getOrderInfoToDocConnect5minAfter();
 

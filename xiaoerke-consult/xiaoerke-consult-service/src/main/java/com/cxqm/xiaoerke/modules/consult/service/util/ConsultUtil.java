@@ -13,8 +13,6 @@ import java.util.List;
 
 public class ConsultUtil {
 
-	private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
-
 	public static RichConsultSession transferMapToRichConsultSession(HashMap<String, Object> consultSessionMap){
 		RichConsultSession consultSession = new RichConsultSession();
 		consultSession.setUserName((String) consultSessionMap.get("userName"));

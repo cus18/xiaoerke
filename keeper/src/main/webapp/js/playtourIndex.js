@@ -91,14 +91,22 @@ var setMoney = function (index) {
             $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
         }else{
             $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
-            moneyNum--;
+            if(moneyNum.indexOf(".")>0){
+                moneyNum=parseInt(moneyNum);
+            }else {
+                moneyNum--;
+            }
             if(moneyNum==0){
                 $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
             }
             $('#getMoney').val(moneyNum);
         }
     }else if(index==1){
-        moneyNum++;
+        if(moneyNum.indexOf(".")>0){
+            moneyNum=parseInt(moneyNum)+1;
+        }else {
+            moneyNum++;
+        }
         $('#getMoney').val(moneyNum);
         $('.ptm img').eq(1).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjia_xuanzhong.png");
         $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
@@ -144,7 +152,7 @@ function getCustomerInfo(){
             var starInfo=data.starInfo;
             var doctorInfo=data.doctorHeadImage;
             if(evaluation.serviceAttitude!=0){
-                window.location.href = "playtour#/playtourEvaluate/"+customerId;
+                window.location.href = "wxPay/patientPay.do?serviceType=playtourPay&customerId="+customerId;
             }else{
                 var star=starInfo.startNum+"";
                 $("#redPacket").html(starInfo.redPacket);
@@ -162,7 +170,7 @@ function updateCustomerInfo(){
     var content=$("#content").val();
     var redPacket=$("#getMoney").val();
     if(redPacket!=""){
-        if(redPacket<0){
+        if(redPacket<=0){
             $("#moneyDiff").show();
             return;
         }
@@ -171,7 +179,7 @@ function updateCustomerInfo(){
             url:"account/user/customerPay",// 跳转到 action
             async:true,
             type:'get',
-            data:{patientRegisterId:customerId,payPrice:redPacket*100},
+            data:{patientRegisterId:customerId,payPrice:redPacket*1000},
             cache:false,
             success:function(data) {
                 var obj = eval('(' + data + ')');

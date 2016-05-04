@@ -124,7 +124,13 @@ public class ConsultUserController extends BaseController {
         if(dateNum != 10000){
             String dateTemp;
             Calendar ca = Calendar.getInstance();
-            ca.add(Calendar.DATE, -dateNum);// 30为增加的天数，可以改变的
+            if(dateNum == 0){
+                ca.set(Calendar.HOUR, 0);
+                ca.set(Calendar.SECOND, 0);
+                ca.set(Calendar.MINUTE, 0);
+            }else{
+                ca.add(Calendar.DATE, -dateNum);// 30为增加的天数，可以改变的
+            }
             dateTemp = DateUtils.DateToStr(ca.getTime(), "datetime");
             date = DateUtils.StrToDate(dateTemp,"datetime");
         }
@@ -134,12 +140,12 @@ public class ConsultUserController extends BaseController {
             if(csUserId.equals("allCS")){
                 query = new Query().with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
             }else {
-                query = new Query().addCriteria(new Criteria().where("csUserId").is(csUserId)).with(new Sort(Sort.Direction.ASC, "lastMessageTime"));
+                query = new Query().addCriteria(new Criteria().where("csUserId").is(csUserId)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
             }
         }else if(!csUserId.equals("allCS")){
-            query = new Query().addCriteria(new Criteria().where("csUserId").is(csUserId).andOperator(Criteria.where("lastMessageTime").gte(date))).with(new Sort(Sort.Direction.ASC, "lastMessageTime"));
+            query = new Query().addCriteria(new Criteria().where("csUserId").is(csUserId).andOperator(Criteria.where("lastMessageTime").gte(date))).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
         } else {
-            query = new Query().addCriteria(Criteria.where("lastMessageTime").gte(date));
+            query = new Query().addCriteria(Criteria.where("lastMessageTime").gte(date)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));;
         }
 
         PaginationVo<ConsultSessionStatusVo> pagination = consultRecordService.getUserMessageList(pageNo, pageSize, query);
