@@ -172,6 +172,7 @@
     LEFT JOIN sys_doctor sd ON sd.id = scp.sys_doctor_id
     WHERE
     sp.sys_user_id = #{userId,jdbcType=VARCHAR}
+
     <if test="state != null" >
       and crs.state = #{state,VARCHAR}
     </if>
