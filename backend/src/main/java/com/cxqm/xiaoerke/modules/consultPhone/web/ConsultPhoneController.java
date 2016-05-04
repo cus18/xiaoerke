@@ -251,6 +251,7 @@ public class ConsultPhoneController extends BaseController {
 		payStateMap.put("0", "待支付");
 		payStateMap.put("1", "已支付");
 		payStateMap.put("4", "已退款");
+		payStateMap.put("6", "未支付");
 		payStateMap.put("", "全部");
 		Map<String, Object> stateMap = new LinkedHashMap<String, Object>();
 		stateMap.put("0", "待支付");
@@ -259,6 +260,7 @@ public class ConsultPhoneController extends BaseController {
 		stateMap.put("3", "待分享");
 		stateMap.put("4", "已取消");
 		stateMap.put("5", "已完成");
+		stateMap.put("6", "超时完成");
 		stateMap.put("", "全部");
 		model.addAttribute("statusList", stateMap);
 		model.addAttribute("payStatusList", payStateMap);
