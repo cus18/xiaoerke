@@ -106,7 +106,7 @@
         }
         $scope.chooseTime = function(item){
             if(item.state == "1")return
-            var routePath = "http://localhost:8080/keeper/wxPay/patientPay.do?serviceType=phoneConsultAAAAAAphoneConDoctorDetail="
+            var routePath = "http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=phoneConsultAAAAAAphoneConDoctorDetail="
                 + item.id+"AAAAAAdoctorId="+$stateParams.doctorId;
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 $scope.pageLoading = false;
@@ -118,7 +118,7 @@
                     $scope.nowdate = moment().format('YYYY/MM/DD HH:MM');
                     var boolean = moment(moment(item.data).format('YYYY/MM/DD')+" "+item.begin_time).isAfter(moment().add(5, 'm'));
                     if(boolean){
-                        window.location.href = "http://localhost:8080/keeper/wxPay/patientPay.do?serviceType=phoneConsult&phoneConDoctorDetail="
+                        window.location.href = "http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=phoneConsult&phoneConDoctorDetail="
                             + item.id+"&doctorId="+$stateParams.doctorId;
                     }else{
                         alert("预约时间间隔过短")

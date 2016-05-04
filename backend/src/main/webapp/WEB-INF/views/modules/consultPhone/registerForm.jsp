@@ -303,9 +303,7 @@
 											//document.getElementById(tempTimeList[i]+"oper").innerText="添加";
 											document.getElementById(tempTimeList[i]+"oper").value="";
 											document.getElementById(tempTimeList[i]+"span").style.background="";
-											if(operRepeat=="yes"){
-												document.getElementById(tempTimeList[i]+"showInfo").innerText="";
-											}
+											document.getElementById(tempTimeList[i]+"showInfo").innerText="";
 											addUpdateFlag="init";
 										}else{
 											alertx("删除失败!");
@@ -330,9 +328,7 @@
 											if(data.result=="suc"){
 												document.getElementById(tempTimeList[i]+"oper").value="";
 												document.getElementById(tempTimeList[i]+"span").style.background="";
-												if(operRepeat=="yes"){
-													document.getElementById(tempTimeList[i]+"showInfo").innerText="";
-												}
+												document.getElementById(tempTimeList[i]+"showInfo").innerText="";
 												addUpdateFlag="init";
 											}else{
 												alertx("删除失败!");
@@ -657,7 +653,7 @@
 										<input id="13:00" name="timeList" class="" type="checkbox" value="13:00" onclick="kick('13:00')">
 										<label for="13:00"><span id="13:00span" name="spanList">13:00</span></label>
 										<label><span id="13:00oper" name="operList"  onclick="operRegister('13:00')"></span></label>
-										<span id="13:00showInfo" name="showInfoList"></span>
+										<span id="13:00showInfo" name="showInfoList">&nbsp;&nbsp;&nbsp;</span>
 									</span>
 							</td>
 							<td>
@@ -777,7 +773,7 @@
 										<input id="17:40" name="timeList" class="" type="checkbox" value="17:40" onclick="kick('17:40')">
 										<label for="17:40"><span id="17:40span" name="spanList">17:40</span></label>
 										<label><span id="17:40oper" name="operList"  onclick="operRegister('17:40')"></span></label>
-										<span id="17:40showInfo" name="showInfoList"></span>&nbsp;&nbsp;&nbsp;
+										<span id="17:40showInfo" name="showInfoList">&nbsp;&nbsp;&nbsp;</span>
 									</span>
 							</td>
 						</tr>

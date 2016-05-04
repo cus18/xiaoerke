@@ -144,7 +144,7 @@ function getCustomerInfo(){
             var starInfo=data.starInfo;
             var doctorInfo=data.doctorHeadImage;
             if(evaluation.serviceAttitude!=0){
-                window.location.href = "playtour#/playtourEvaluate/"+customerId;
+                window.location.href = "wxPay/patientPay.do?serviceType=playtourPay&customerId="+customerId;
             }else{
                 var star=starInfo.startNum+"";
                 $("#redPacket").html(starInfo.redPacket);
@@ -171,7 +171,7 @@ function updateCustomerInfo(){
             url:"account/user/customerPay",// 跳转到 action
             async:true,
             type:'get',
-            data:{patientRegisterId:customerId,payPrice:redPacket*100},
+            data:{patientRegisterId:customerId,payPrice:redPacket*1000},
             cache:false,
             success:function(data) {
                 var obj = eval('(' + data + ')');

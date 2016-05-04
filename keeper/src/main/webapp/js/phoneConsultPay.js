@@ -182,18 +182,22 @@ function loadDate(){
     };
     $("#birthday").mobiscroll(opt);
 }
+
 // 点击跳转到首页
 var goFirstPage=function(){
     window.location.href="/titan/firstPage/phoneConsult"
 }
+
 // 点击跳转到个人中心
 var goMyselfCenter=function(){
     window.location.href="/titan/phoneConsult#/selfCenter"
 }
+
 // 点击选择宝宝按钮
 var selectBaby=function(){
     $(".baby-list").show();
 }
+
 // 从宝宝列表中选择宝宝
 var choiceBaby=function(index){
     $(".baby-list").hide();
@@ -213,11 +217,11 @@ var choiceBabyss=function(index){
     $(".baby-list").hide();
 }
 
-
 // 添加宝宝
 var addBaby=function(){
     window.location.href = "/titan/phoneConsult#/phoneConAddBaby/"+GetQueryString("phoneConDoctorDetail")+","+GetQueryString("doctorId");
 }
+
 // 取消选择宝宝
 var cancelSelectBaby=function(){
     $(".baby-list").hide();
@@ -251,14 +255,7 @@ var caseLength=function(){
     })
 }
 
-
-
-// 订单单价,账户余额,订单id,微信需支付
-var chargePrice,patient_register_service_id,needPayMoney;
-
 //页面初始化执行,用户初始化页面参数信息以及微信的支付接口
-
-
 var pay = function(){
     console.log("Dd",$('#connectphone').val()+$('#babyName').val()+bodBirthday+$('#case').val()+bodBirthday);
     if($('#connectphone').val()==""||$('#connectphone').val()==undefined||
@@ -275,7 +272,6 @@ var pay = function(){
             url:"consultPhone/consultOrder/createOrder",// 跳转到 action
             async:true,
             type:'post',
-            //data:{babyId:$("#babyId").val(),babyName:$('#babyName').val(),phoneNum:$('#connectphone').val(),illnessDesc:$('#case').val(),sysConsultPhoneId:GetQueryString('phoneConDoctorDetail'),birthDay:bodBirthday},
             data: "{'babyId':'"+$("#babyId").val()+"','babyName':'"+$("#babyName").val()+"','phoneNum':'"+$("#connectphone").val()+"','illnessDesc':'"+$("#case").val()+"','sysConsultPhoneId':'"+GetQueryString('phoneConDoctorDetail')+"','birthDay':'"+bodBirthday+"'}",
             contentType: "application/json; charset=utf-8",
             cache:false,
@@ -283,7 +279,7 @@ var pay = function(){
             success:function(data) {
                 console.log("生产订单",data);
                 if("false" != data.state){
-                    wxPay(data.reultState);
+                    wxPay(data.resultState);
                 }else{
                     alert("预约失败,请重新预约或联系客服");
                 }

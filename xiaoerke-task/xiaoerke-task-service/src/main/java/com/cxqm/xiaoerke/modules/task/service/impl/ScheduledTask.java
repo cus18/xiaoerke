@@ -631,7 +631,7 @@ public class ScheduledTask {
             String token = WechatUtil.getToken(WechatUtil.CORPID,WechatUtil.SECTET);
             String ticket = WechatUtil.getJsapiTicket(token);
             HashMap<String, Object> map = new HashMap<String, Object>();
-            map.put("token",token);
+            map.put("token", token);
             map.put("ticket",ticket);
             map.put("id","1");
             scheduleTaskService.updateWechatParameter(map);
@@ -643,7 +643,7 @@ public class ScheduledTask {
             map = new HashMap<String, Object>();
             map.put("token",token);
             map.put("ticket",ticket);
-            map.put("id", 2);
+            map.put("id", "2");
             scheduleTaskService.updateWechatParameter(map);
             sessionRedisCache.putWeChatParamToRedis(map);
 
@@ -1226,7 +1226,7 @@ public class ScheduledTask {
         Date tomorrow = DateUtils.addDays(new Date(), 1);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date = simpleDateFormat.format(tomorrow);
-        List<HashMap<String,Object>> doctorOrderInfoList = getDoctorOrderInfoList(date);
+        List<HashMap<String,Object>> doctorOrderInfoList = getDoctorOrderInfoList(date,"night");
 
         for(HashMap<String,Object> orderMap:doctorOrderInfoList){
             String doctorName = (String) orderMap.get("doctorName");
@@ -1274,7 +1274,7 @@ public class ScheduledTask {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date = simpleDateFormat.format(new Date());
-        List<HashMap<String,Object>> doctorOrderInfoList = getDoctorOrderInfoList(date);
+        List<HashMap<String,Object>> doctorOrderInfoList = getDoctorOrderInfoList(date,"morning");
 
         for(HashMap<String,Object> orderMap:doctorOrderInfoList){
             String doctorName = (String) orderMap.get("doctorName");
@@ -1317,12 +1317,26 @@ public class ScheduledTask {
      * @param date
      * @return
      */
-    public List<HashMap<String,Object>> getDoctorOrderInfoList(String date){
+    public List<HashMap<String,Object>> getDoctorOrderInfoList(String date,String time){
         List<HashMap<String,Object>> doctorOrderInfoList = new ArrayList<HashMap<String,Object>>();
+        HashMap<String,Object> searchMap = new HashMap<String, Object>();
+        searchMap.put("date",date);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+        if("morning".equals(time)) {
+            try {
+                Date d = format.parse(date);
+                d = DateUtils.addDays(d,-1);
+                searchMap.put("startTime", format.format(d)+" 20:00:00");//昨晚8点
+                searchMap.put("endTime", date + " 07:00:00");//今天7点
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
 
         //明天预约的订单信息，医生信息
-        List<HashMap<String, Object>> doctorList = scheduleTaskService.getDoctorInfoByDate(date);
-        List<HashMap<String, Object>> list = scheduleTaskService.getOrderInfoByDate(date);
+        List<HashMap<String, Object>> doctorList = scheduleTaskService.getDoctorInfoByDate(searchMap);
+        List<HashMap<String, Object>> list = scheduleTaskService.getOrderInfoByDate(searchMap);
         List<String> classList = new ArrayList<String>();
 
         for(int i=0;i<doctorList.size();i++){

@@ -12,6 +12,6 @@ import java.util.HashMap;
  */
 public interface ConsultH5Service {
 
-    //×ÉÑ¯H5ÉÏ´«MediaFile
+
     HashMap<String, Object> uploadH5MediaFile(@RequestParam("file") MultipartFile file, @RequestParam("data") String data) throws UnsupportedEncodingException;
 }

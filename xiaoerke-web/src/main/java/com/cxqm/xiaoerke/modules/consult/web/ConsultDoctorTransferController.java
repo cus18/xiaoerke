@@ -213,7 +213,6 @@ public class ConsultDoctorTransferController extends BaseController {
             dataValue.put("forwardSessionId", waitJoinListVo.getId());
             RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(Integer.parseInt(String.valueOf(waitJoinListVo.getConversationId())));
             if(richConsultSession!=null){
-
                 Query query = new Query().addCriteria(Criteria.where("userId").is(richConsultSession.getUserId()).and("createDate").lt(new Date())).
                         with(new Sort(Sort.Direction.DESC, "createDate")).limit(100);
                 List<ConsultRecordMongoVo> consultRecordMongoVo = consultRecordService.getCurrentUserHistoryRecord(query);
@@ -228,13 +227,13 @@ public class ConsultDoctorTransferController extends BaseController {
                 dataValue.put("source",richConsultSession.getSource());
                 dataValue.put("serverAddress",richConsultSession.getServerAddress());
                 dataValue.put("sessionCreateTime",DateUtils.DateToStr(richConsultSession.getCreateTime()));
+                dataValue.put("dateTime", DateUtils.DateToStr(new Date()));
+                User user = systemService.getUser(waitJoinListVo.getFromUserId());
+                dataValue.put("fromCsUserName",user.getName());
+                dataValue.put("fromCsUserId",waitJoinListVo.getFromUserId());
+                dataValue.put("chooseFlag",true);
+                dataList.add(dataValue);
             }
-            dataValue.put("dateTime", DateUtils.DateToStr(new Date()));
-            User user = systemService.getUser(waitJoinListVo.getFromUserId());
-            dataValue.put("fromCsUserName",user.getName());
-            dataValue.put("fromCsUserId",waitJoinListVo.getFromUserId());
-            dataValue.put("chooseFlag",true);
-            dataList.add(dataValue);
         }
         response.put("waitJoinList",dataList);
         response.put("waitJoinNum",dataList.size());
