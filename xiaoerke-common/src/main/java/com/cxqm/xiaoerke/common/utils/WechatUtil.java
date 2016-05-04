@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -312,10 +313,24 @@ public class WechatUtil {
     }
 
     public static void main(String args[]) {
-        String token = "s7uYp3bJ21ZkPqe0YyLfx85K_sYOroyol34sVq60BBJDK8bwJHkrl2IwIl6bB3oCEeAFVBYqRl4NMpBfRDocXMBAUzRAvS9M9lmV6CeGmaYZZGaAIASSZ";
-        String url = "http://xiaork.cn//titan/phoneConsult#/phoneConReconnection/165";
-        String tic = getShortUrl(token,url);
-        System.out.print(tic);
+        String token = "3w-3nfC1IzbX0mcxSsaKMbJizcdoinbn_0DzvsVbMr3yqC38p3lhYJB0NdDE0OmDt5dYDdlu5j0XWpSpjSdcqphlY7Z6g5o9m2XKkwzEJscavjQhEiq9ZINtXGFHeMovTGGeAHAWJJ";
+//        String url = "http://xiaork.cn//titan/phoneConsult#/phoneConReconnection/165";
+        String urlStr = "https://api.weixin.qq.com/cgi-bin/media/upload";
+        String msgType = "image";
+        File file = new File("F://1.jpg");
+        String fileName = file.getName();
+        try {
+            InputStream inputStream = new FileInputStream(file);
+            System.out.println("11111");
+            JSONObject json = uploadNoTextMsgToWX(token,urlStr,msgType,fileName,inputStream);
+            System.out.println(json.toString());
+            System.out.println(json.optString("media_id"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+//        String filePath = "http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/1.jpg";
+ //       String tic = getShortUrl(token,url);
+ //     System.out.print(tic);
     }
 
     /**
@@ -535,5 +550,152 @@ public class WechatUtil {
         JSONObject resultJson = new JSONObject(object);
         String shortUrl = (String) resultJson.get("short_url");
         return shortUrl;
+    }
+
+    /**
+     * 上传H5医生向微信用户发送图片消息
+     * @param token 微信唯一票据
+     * @param openId 微信用户唯一标识
+     * @param content 发送内容
+     * @param msgType 发送信息类型
+     * */
+    public static void sendNoTextMsgToWechat(String token, String openId, String content,int msgType){
+        String type = null ;
+        if(msgType == 1){
+            type = "image";
+        }else if(msgType ==2){
+            type = "voice";
+        }else{
+            type = "video";
+        }
+//      File file = new File(content);
+//      String upLoadUrl = "https://api.weixin.qq.com/cgi-bin/media/upload";
+//      JSONObject result = uploadNoTextMsgToWX(token,upLoadUrl,type,fileName,inputStream);
+//      String media_id = result.optString("media_id");
+//      String media_id = result.optString("type");
+//      String media_id = result.optString("created_at");
+        String sendUrl = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + token;
+        String json = "{\"touser\": \""+openId+"\",\"msgtype\": \""+type+"\", \""+type+"\": {\"media_id\": \""+content+"\"}}";
+        sendNoTextToWX(sendUrl,json);
+
+    }
+    /**
+     * 上传H5医生向微信用户发送图片消息
+     * @param  token 微信唯一票据
+     * @param  urlStr 上传微信服务器地址
+     * @param  msgType 发送文件类型
+     * @param  fileName 上传文件名字
+     * @param  inputStream 上传文件流
+     * */
+    public static JSONObject uploadNoTextMsgToWX(String token,String urlStr,String msgType,String fileName,InputStream inputStream){
+        String upLoadUrl = urlStr + "?access_token="+token+"&type="+msgType;
+        String result = null;
+        BufferedReader reader = null;
+        try {
+            URL openUrl= new URL(upLoadUrl);
+//            File file = new File(filePath);
+//            if (!file.exists() || !file.isFile()) {
+//                throw new IOException("上传的文件不存在");
+//            }
+            HttpURLConnection httpURLConnection = (HttpURLConnection) openUrl.openConnection();
+            httpURLConnection.setRequestMethod("POST"); // 以Post方式提交表单，默认get方式
+            httpURLConnection.setDoInput(true);
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setUseCaches(false); // post方式不能使用缓存
+            // 设置请求头信息
+            httpURLConnection.setRequestProperty("Connection", "Keep-Alive");
+            httpURLConnection.setRequestProperty("Charset", "UTF-8");
+            // 设置边界
+            String BOUNDARY = "----------" + System.currentTimeMillis();
+            httpURLConnection.setRequestProperty("Content-Type", "multipart/form-data; boundary="+BOUNDARY);
+            // 请求正文信息
+            // 第一部分：
+            StringBuilder sb = new StringBuilder();
+            sb.append("--"); // 必须多两道线
+            sb.append(BOUNDARY);
+            sb.append("\r\n");
+            sb.append("Content-Disposition: form-data;name=\"file\";filename=\""+ fileName + "\"\r\n");
+            sb.append("Content-Type:application/octet-stream\r\n\r\n");
+            byte[] head = sb.toString().getBytes("utf-8");
+            // 获得输出流
+            OutputStream out = new DataOutputStream(httpURLConnection.getOutputStream());
+            // 输出表头
+            out.write(head);
+            // 文件正文部分
+            // 把文件已流文件的方式推入到url中
+            DataInputStream in = new DataInputStream(inputStream);
+            int bytes = 0;
+            byte[] bufferOut = new byte[1024];
+            while ((bytes = in.read(bufferOut)) != -1) {
+                out.write(bufferOut, 0, bytes);
+            }
+            in.close();
+            byte[] foot = ("\r\n--" + BOUNDARY + "--\r\n").getBytes("utf-8");// 定义最后数据分隔线
+            out.write(foot);
+            out.flush();
+            out.close();
+
+            StringBuffer buffer = new StringBuffer();
+            // 定义BufferedReader输入流来读取URL的响应
+            reader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                buffer.append(line);
+            }
+            System.out.println(buffer.toString());
+            if (result == null) {
+                result = buffer.toString();
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("发送POST请求出现异常！" + e);
+            e.printStackTrace();
+        }finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        JSONObject jsonObj = new JSONObject(result);
+        return jsonObj;
+    }
+
+    /**
+     *  向微信端发送非文字消息
+     *  @param sendUrl 发送微信地址
+     *  @param  json 发送json类型消息
+     */
+    public static String sendNoTextToWX(String sendUrl,String json){
+        URL sendWXUser;
+        String reResult = null;
+        try {
+            sendWXUser = new URL(sendUrl);
+            HttpURLConnection httpURLConnection = (HttpURLConnection) sendWXUser.openConnection();
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setDoInput(true);
+            System.setProperty("sun.net.client.defaultConnectTimeout", "30000");// 连接超时30秒
+            System.setProperty("sun.net.client.defaultReadTimeout", "30000"); // 读取超时30秒
+//            http.connect();
+            OutputStream os = httpURLConnection.getOutputStream();
+            os.write(json.getBytes("UTF-8"));// 传入参数
+            os.flush();
+            os.close();
+            InputStream is = httpURLConnection.getInputStream();
+            int size = is.available();
+            byte[] jsonBytes = new byte[size];
+            is.read(jsonBytes);
+            reResult = new String(jsonBytes, "UTF-8");
+            System.out.println("请求返回结果:"+reResult);
+            is.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return reResult;
     }
 }
