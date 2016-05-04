@@ -351,13 +351,13 @@ public class ScheduleTaskServiceImpl implements ScheduleTaskService {
     }
 
     @Override
-    public List<HashMap<String, Object>> getDoctorInfoByDate(String date) {
-        return scheduledTaskDao.getDoctorInfoByDate(date);
+    public List<HashMap<String, Object>> getDoctorInfoByDate(HashMap<String, Object> map) {
+        return scheduledTaskDao.getDoctorInfoByDate(map);
     }
 
     @Override
-    public List<HashMap<String, Object>> getOrderInfoByDate(String date) {
-        return scheduledTaskDao.getOrderInfoByDate(date);
+    public List<HashMap<String, Object>> getOrderInfoByDate(HashMap<String, Object> map) {
+        return scheduledTaskDao.getOrderInfoByDate(map);
     }
 
 }

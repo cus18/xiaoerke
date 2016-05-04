@@ -241,6 +241,13 @@
         LEFT JOIN sys_user su ON su.id = sd.sys_user_id
         where crs. state = '1'
         AND DATE_FORMAT(scs.date,"%Y-%m-%d") = #{date}
+        <if test="startTime != null">
+            AND DATE_FORMAT(crs.create_time,"%Y-%m-%d %H:%i:%s") &gt; #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND DATE_FORMAT(crs.create_time,"%Y-%m-%d %H:%i:%s") &lt; #{endTime}
+        </if>
+
         ORDER  BY  scs.beginTime
     </select>
 
@@ -263,6 +270,13 @@
 		LEFT JOIN sys_baby_baseinfo sbb on sbb.userid = su.id
         where crs. state = '1'
         AND DATE_FORMAT(scs.date,"%Y-%m-%d") = #{date}
+        <if test="startTime != null">
+            AND DATE_FORMAT(crs.create_time,"%Y-%m-%d %H:%i:%s") &gt; #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND DATE_FORMAT(crs.create_time,"%Y-%m-%d %H:%i:%s") &lt; #{endTime}
+        </if>
+
         ORDER  BY  scs.beginTime
     </select>
 
