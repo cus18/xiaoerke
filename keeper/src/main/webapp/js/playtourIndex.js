@@ -91,14 +91,22 @@ var setMoney = function (index) {
             $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
         }else{
             $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
-            moneyNum--;
+            if(moneyNum.indexOf(".")>0){
+                moneyNum=parseInt(moneyNum);
+            }else {
+                moneyNum--;
+            }
             if(moneyNum==0){
                 $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
             }
             $('#getMoney').val(moneyNum);
         }
     }else if(index==1){
-        moneyNum++;
+        if(moneyNum.indexOf(".")>0){
+            moneyNum=parseInt(moneyNum)+1;
+        }else {
+            moneyNum++;
+        }
         $('#getMoney').val(moneyNum);
         $('.ptm img').eq(1).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjia_xuanzhong.png");
         $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
