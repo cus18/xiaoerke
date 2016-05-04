@@ -162,7 +162,7 @@ function updateCustomerInfo(){
     var content=$("#content").val();
     var redPacket=$("#getMoney").val();
     if(redPacket!=""){
-        if(redPacket<0){
+        if(redPacket<=0){
             $("#moneyDiff").show();
             return;
         }
