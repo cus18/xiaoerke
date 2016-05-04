@@ -125,6 +125,9 @@
         <if test="orderBy==1">
             order by dr_hos.fans_number desc, dr_hos.fans_number is null
         </if>
+        <if test="orderBy==2">
+            order by dr.career_time
+        </if>
     </select>
 
     <select id="findPageConsultaDoctorByDepartment"  resultMap="DoctorVoMap"
@@ -171,6 +174,9 @@
         </if>
         <if test="orderBy==1">
             order by sd.fans_number desc, sd.fans_number is null
+        </if>
+        <if test="orderBy==2">
+            order by sd.career_time
         </if>
 
     </select>
@@ -228,7 +234,7 @@
             order by dr_hos.fans_number desc, dr_hos.fans_number is null
         </if>
         <if test="orderBy==2">
-            ORDER BY career_time asc
+            ORDER BY dr.career_time asc
         </if>
     </select>
 
