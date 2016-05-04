@@ -394,7 +394,7 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
 //        sdk.setAppId("aaf98f8952f7367a0153084e29992035");
 
         HashMap<String, Object> result = CCPRestSDK.callback(vo.getDoctorPhone(), vo.getUserPhone(),
-                "010-57115120", "010-57115120", null,
+                "01057115120", "01057115120", null,
                 "true", null, vo.getOrderId() + "",
                 conversationLength + "", null, "0",
                 "1", "60", null);

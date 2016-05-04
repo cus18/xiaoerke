@@ -2,6 +2,7 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.alibaba.fastjson.JSON;
+import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
@@ -12,6 +13,7 @@ import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -154,7 +156,14 @@ public class ConsultDoctorAnswerController extends BaseController {
         if(answerType.equals("myAnswer")){
             tranMap.put("myAnswer",params.get("answer"));
         }else if(answerType.equals("commonAnswer")){
-            tranMap.put("commonAnswer",params.get("answer"));
+            String doctorManagerStr = Global.getConfig("doctorManager.list");
+            String csUserId = UserUtils.getUser().getId();
+            if (doctorManagerStr.indexOf(csUserId) != -1) {
+                tranMap.put("commonAnswer",params.get("answer"));
+            }else {
+                response.put("result","NoPermission");
+                return response;
+            }
         }
 
         String answer = JSON.toJSONString(tranMap);
