@@ -27,7 +27,7 @@ public class ConstantUtil {
 
 	public static String NOTIFY_APPOINT_URL = "http://xiaork.cn/titan/user/getPayNotifyInfo";
 	public static String NOTIFY_INSURANCE_URL = "http://xiaork.cn/titan/user/getInsurancePayNotifyInfo";
-	public static String NOTIFY_CUSTOMER_URL = "http://xiaork.cn/titan/user/getInsurancePayNotifyInfo";
+	public static String NOTIFY_CUSTOMER_URL = "http://xiaork.cn/titan/user/getCustomerPayNotifyInfo";
 	public static String NOTIFY_CONSULTPHONE_URL = "http://xiaork.cn/titan/user/getPhoneConsultPayNotifyInfo";
 
 	public static int DAY_QUARTER_NUMBER = 96;
