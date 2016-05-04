@@ -229,7 +229,7 @@ function updateCustomerInfo() {
                                 url: "interaction/user/updateCustomerEvaluation",// 跳转到 action
                                 async: false,
                                 type: 'POST',
-                                data: "{'id':'" + customerId + "','starNum1':'" + starNum1 + "','content':'" + content + "','dissatisfied':'" + noManYi + "','redPacket':'" + redPacket + "'}",
+                                data: "{'id':'" + customerId + "','redPacket':'" + redPacket + "'}",
                                 contentType: "application/json; charset=utf-8",
                                 dataType: 'json',
                                 success: function (data) {

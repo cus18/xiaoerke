@@ -60,7 +60,7 @@
 
             // 医生星级评价 星星个数
             $scope.doctorStar = function () {
-                $scope.starNum=(parseFloat($scope.avgMajorStar)+parseFloat($scope.avgStar))/2;
+                $scope.starNum=((parseFloat($scope.avgMajorStar)+parseFloat($scope.avgStar))/2).toFixed(1);;
                 $scope.starNum= $scope.starNum.toString();
                 console.log("star "+ $scope.starNum);
                 $scope.starNumInt = parseInt($scope.starNum.substr(0, 1));
