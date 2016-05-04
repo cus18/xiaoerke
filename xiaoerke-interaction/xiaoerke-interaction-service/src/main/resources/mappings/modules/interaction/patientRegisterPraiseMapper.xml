@@ -291,7 +291,12 @@
 <!-- 	修改评价内容 -->
 	<update id="updateCustomerEvaluation">
 	 update customerEvaluation
-	 set serviceAttitude=#{starNum1},content=#{content},dissatisfied=#{dissatisfied},redPacket=#{redPacket}
+	 set
+        redPacket=#{redPacket}
+        <if test="starNum1 != null" >
+            ,serviceAttitude=#{starNum1},content=#{content},dissatisfied=#{dissatisfied}
+        </if>
+
        where id=#{id}
 	</update>
 

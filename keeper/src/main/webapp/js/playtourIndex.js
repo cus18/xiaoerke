@@ -144,7 +144,7 @@ function getCustomerInfo(){
             var starInfo=data.starInfo;
             var doctorInfo=data.doctorHeadImage;
             if(evaluation.serviceAttitude!=0){
-                window.location.href = "playtour#/playtourEvaluate/"+customerId;
+                window.location.href = "wxPay/patientPay.do?serviceType=playtourPay&customerId="+customerId;
             }else{
                 var star=starInfo.startNum+"";
                 $("#redPacket").html(starInfo.redPacket);
