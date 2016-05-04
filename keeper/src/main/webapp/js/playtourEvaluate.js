@@ -101,9 +101,13 @@ function getCustomerInfo(){
                 $("#redPacket").html(evaluation.redPacket);
                 $(".evalinputmoney").hide();
                 $(".evalhavemoney").show();
+                $('.evalsharebut').show();//分享按钮
+                $('#but').hide();//分享按钮
             }else{
                 $(".evalhavemoney").hide();
                 $(".evalinputmoney").show();
+                $('.evalsharebut').hide();//分享按钮
+                $('#but').show();//分享按钮
             }
                 $("#redPacketcount").html(starInfo.redPacket);
                 $("#starInfo").html(star.split(".")[0]+"%");
