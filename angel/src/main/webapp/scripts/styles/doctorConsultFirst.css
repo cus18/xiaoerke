@@ -99,7 +99,18 @@ input[type="number"] {width: 36px;}
 .refreshboxtop ul li {padding: 0 0 0 15px;font-size: 12px;color: #333;line-height: 28px;}
 .postscript span {display: block;font: 12px/40px 'Microsoft Yahei';}
 /*qq表情*/
-#emotions{left:0;width:444px;font-size:12px;background:#fff;position:absolute;border:1px solid #E8E8E8;}
+.comment{width:680px; margin:20px auto; position:relative; background:#fff; padding:20px 50px 50px; border:1px solid #DDD; border-radius:5px;}
+.comment h3{height:28px; line-height:28px}
+.com_form{width:100%; position:relative}
+.input{width:99%; height:60px; border:1px solid #ccc}
+.com_form p{height:28px; line-height:28px; position:relative; margin-top:10px;}
+span.emotion{width:42px; height:20px; background:url(http://www.16code.com/cache/demos/user-say/img/icon.gif) no-repeat 2px 2px; padding-left:20px; cursor:pointer}
+span.emotion:hover{background-position:2px -28px}
+.qqFace{margin-top:4px;background:#fff;padding:2px;border:1px #dfe6f6 solid;}
+.qqFace table td{padding:0px;}
+.qqFace table td img{cursor:pointer;border:1px #fff solid;}
+.qqFace table td img:hover{border:1px #0066cc solid;}
+/*#emotions{left:0;width:444px;font-size:12px;background:#fff;position:absolute;border:1px solid #E8E8E8;}
 #emotions a{color:#9ABBC8;padding:2px 7px;text-decoration:none;}
 #emotions img{border:0;}
 #emotions div{margin:5px 10px;padding:1px;overflow:hidden;}
@@ -114,7 +125,7 @@ input[type="number"] {width: 36px;}
 #emotions .page{text-align:right;}
 #emotions .page a.current{color:#666;background-color:#fff;}
 #emotions .page a{margin-left:3px;color:#0078B6;background-color:#f3f3f3;}
-#emotions .page a:hover{background-color:#e7e7e7;}
+#emotions .page a:hover{background-color:#e7e7e7;}*/
 /*聊天框的头部*/
 .chatlistin{font: 12px/20px 'Microsoft Yahei';height: 265px;overflow-y:scroll;background-color: #f8f8f8;width: 100%;color:#333;}
 .chatlistin::-webkit-scrollbar {width:10px;height:10px;}
