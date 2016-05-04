@@ -376,7 +376,7 @@ public class PatientMsgTemplate {
     }
 
     public static void consultPhoneWaring2Msg(String babyName,String doctorName,String date,String week,String beginTime,String phone,String register_no){
-        String content = "（接听提醒）"+babyName+"小朋友家长，您预约"+doctorName+"医生的"+date+" "+week+" "+beginTime+"的电话咨询将在5分钟后接通，届时您会接到号码为010-4006237120的来电，请保持电话畅通。订单号："+register_no+"，有疑问，请致电400-623-7120。";
+        String content = "（接听提醒）"+babyName+"小朋友家长，您预约"+doctorName+"医生的"+date+" "+week+" "+beginTime+"的电话咨询将在5分钟后接通，届时您会接到号码为010-57115120的来电，请保持电话畅通。订单号："+register_no+"，有疑问，请致电400-623-7120。";
         SMSMessageUtil.sendMsg(phone, content);
     }
 //    /**
