@@ -16,7 +16,7 @@
                         type: 'button-calm ',
                         onTap: function(e) {
                             $scope.pageLoading = true;
-                            window.location.href = "logout";
+                            window.location.href = "sso/appoint/logout";
                         }
                     },
                     { text: '取消',

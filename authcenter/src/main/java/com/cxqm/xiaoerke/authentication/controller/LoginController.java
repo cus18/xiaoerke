@@ -91,12 +91,23 @@ public class LoginController extends BaseController{
 	}
 	
 	@RequestMapping(value="${ssoPath}/logout")
-	public String logout(String toUrl,HttpServletResponse response){
-		Cookie cookie = new Cookie("ssoToken",null);
-		cookie.setPath("/");
-		cookie.setDomain(ConstantUtil.DOMAIN_VALUE);
-		cookie.setMaxAge(0);
-		response.addCookie(cookie);
+	public String logout(String toUrl,HttpServletResponse response,HttpServletRequest request){
+//		Cookie cookie = new Cookie("ssoToken",null);
+//		cookie.setPath("/");
+//		cookie.setDomain(ConstantUtil.DOMAIN_VALUE);
+//		cookie.setMaxAge(0);
+//		response.addCookie(cookie);
+		Cookie[] cookies = request.getCookies();
+		String[] pathArray=new String[]{"/titan/","/keeper/","/authcenter/","/angel/","/doctor/","/market/","/wisdom/"};
+		for(int i = 0,len = cookies.length; i < len; i++) {
+			for(int j = 0;j < pathArray.length;  j++){
+				Cookie cookie = new Cookie(cookies[i].getName(), null);
+				cookie.setDomain("localhost");
+				cookie.setMaxAge(0);
+				cookie.setPath(pathArray[j]);
+				response.addCookie(cookie);
+			}
+		}
 		return "redirect:"+toUrl;
 	}
 	
