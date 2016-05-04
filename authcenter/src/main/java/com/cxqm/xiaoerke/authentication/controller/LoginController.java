@@ -4,6 +4,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.modules.sys.dao.SysActivityDao;
 import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 
@@ -90,11 +91,10 @@ public class LoginController extends BaseController{
 	}
 	
 	@RequestMapping(value="${ssoPath}/logout")
-	public String logout(String toUrl,HttpServletRequest request,
-						 HttpServletResponse response){
+	public String logout(String toUrl,HttpServletResponse response){
 		Cookie cookie = new Cookie("ssoToken",null);
 		cookie.setPath("/");
-		cookie.setDomain(".baodf.com");
+		cookie.setDomain(ConstantUtil.DOMAIN_VALUE);
 		cookie.setMaxAge(0);
 		response.addCookie(cookie);
 		return "redirect:"+toUrl;

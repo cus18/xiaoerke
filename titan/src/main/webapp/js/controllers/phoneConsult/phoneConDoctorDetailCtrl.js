@@ -101,7 +101,14 @@
                 doctorId: $stateParams.doctorId,
                 date: date
             }, function (data) {
+                for(var i=0;i<data.consultPhoneTimeList.length;i++){
+                    var boolean = moment(moment(data.consultPhoneTimeList[i].data).format('YYYY/MM/DD')+" "+data.consultPhoneTimeList[i].begin_time).isAfter(moment().add(5, 'm'));
+                    if(!boolean){
+                        data.consultPhoneTimeList[i].state = '1'
+                    }
+                }
                 $scope.appointmentList= data.consultPhoneTimeList;
+                console.log(data.consultPhoneTimeList)
             });
         }
         $scope.chooseTime = function(item){
