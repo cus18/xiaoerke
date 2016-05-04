@@ -90,6 +90,7 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         registerInfo.put("expertise", doctorInfoService
                 .getDoctorExpertiseById((String) registerInfo.get("doctorId"),(String) registerInfo.get("hospitalId") , null));
         // 根据医生ID和医院ID，获取医生的所处科室
+
         return registerInfo;
     }
 
