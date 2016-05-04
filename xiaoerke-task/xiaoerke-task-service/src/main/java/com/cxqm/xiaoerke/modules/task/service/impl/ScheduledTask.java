@@ -5,6 +5,7 @@ import com.cxqm.xiaoerke.common.bean.WechatRecord;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
 import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
@@ -1137,6 +1138,21 @@ public class ScheduledTask {
                     }
             }
         }
+
+        ConsultSession consultSession = new ConsultSession();
+        consultSession.setStatus(ConsultSession.STATUS_ONGOING);
+        List<ConsultSession> consultSessionVOs = consultSessionService.selectBySelective(consultSession);
+        for(ConsultSession consultSessionVO:consultSessionVOs){
+            Query queryAgain = new Query(where("sessionId").is(consultSessionVO.getId()));
+            List<ConsultSessionStatusVo> consultSessionStatusAgainVos = consultRecordService.querySessionStatusList(queryAgain);
+            if(consultSessionStatusAgainVos.size()>0){
+                if(consultSessionStatusAgainVos.get(0).getStatus().equals(ConsultSession.STATUS_COMPLETED)){
+                    consultSessionService.clearSession(consultSessionStatusAgainVos.get(0).getSessionId(),
+                            consultSessionStatusAgainVos.get(0).getUserId());
+                }
+            }
+        }
+
     }
 
 
