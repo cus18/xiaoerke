@@ -48,21 +48,6 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
         return consultSessionDao.updateByPrimaryKeySelective(consultSession);
     }
 
-    @Override
-    public int updateSessionInfoByUserId(ConsultSession consultSession) {
-        return consultSessionDao.updateSessionInfoByUserId(consultSession);
-    }
-
-    @Override
-    public String removeSessionById(HttpServletRequest request, Map<String, Object> param) {
-        String sessionId = (String) param.get("sessionId");
-        if (StringUtils.isNotNull(sessionId)) {
-            request.getSession().removeAttribute(sessionId);
-            return "success";
-        }
-        return "failure";
-    }
-
 	@Override
 	public List<ConsultSession> selectBySelective(ConsultSession consultSession) {
 		return consultSessionDao.selectBySelective(consultSession);
@@ -79,20 +64,9 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
         return consultSessionDao.getCsUserByUserId(consultSession);
     }
 
-
-    @Override
-    public List<String> getOnlineCsList() {
-        return ConsultSessionManager.getSessionManager().getOnlineCsList();
-    }
-
     @Override
     public List<HashMap<String,Object>> getOnlineCsListInfo(List<String> userList){
         return  consultSessionDao.getOnlineCsListInfo(userList);
-    }
-
-    @Override
-    public List<ConsultSession> getAlreadyAccessUsers(ConsultSession richConsultSession) {
-        return null;
     }
 
     @Override

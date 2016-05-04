@@ -102,9 +102,6 @@ public class ScheduledTask {
     @Autowired
     private ConsultSessionService consultSessionService;
 
-    @Autowired
-    private DoctorInfoService doctorInfoService;
-
     //将所有任务放到一个定时器里，减少并发
     //@Scheduled(cron = "0 */1 * * * ?")
     public void letsGoReminder() {
@@ -1150,6 +1147,23 @@ public class ScheduledTask {
                     consultSessionService.clearSession(consultSessionStatusAgainVos.get(0).getSessionId(),
                             consultSessionStatusAgainVos.get(0).getUserId());
                 }
+            }
+        }
+
+        List<Object> consultSessions = sessionRedisCache.getConsultSessionsByKey();
+        if(consultSessions.size()>0){
+            for(Object consultSessionObject:consultSessions){
+                ConsultSession consultSessionValue = (ConsultSession) consultSessionObject;
+                Query queryAgain = new Query(where("sessionId").is(consultSessionValue.getId()));
+                List<ConsultSessionStatusVo> consultSessionStatusAgainVos = consultRecordService.querySessionStatusList(queryAgain);
+                if(consultSessionStatusAgainVos.size()>0){
+                    if(consultSessionStatusAgainVos.get(0).getStatus().equals(ConsultSession.STATUS_COMPLETED)){
+                        //清除redis内的残留数据
+                        sessionRedisCache.removeConsultSessionBySessionId(Integer.parseInt(consultSessionStatusAgainVos.get(0).getSessionId()));
+                        sessionRedisCache.removeUserIdSessionIdPair(consultSessionStatusAgainVos.get(0).getUserId());
+                    }
+                }
+
             }
         }
 
