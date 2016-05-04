@@ -94,6 +94,7 @@ function getCustomerInfo(){
                     //     a+="其他       ";
                     // }
                 }
+                a="<br/>";
                 $("#evaluation").html(a);
                 $("#suggest").html(evaluation.content);
             }else if(evaluation.serviceAttitude==3){
