@@ -69,7 +69,7 @@ public class PraiseCustomerController extends BaseController {
     	String id=params.get("id").toString();
     	Map<String, Object> result =new HashMap<String, Object>();
     	Map<String, Object> map=patientRegisterPraiseService.selectCustomerEvaluation(id);
-        session.setAttribute("openid",map.get("openid"));
+        session.setAttribute("openId",map.get("openid"));
     	String doctorId=map.get("doctorId").toString();
     	result.put("evaluation", map);
     	result.put("starInfo", patientRegisterPraiseService.getCustomerStarInfoById(doctorId));
