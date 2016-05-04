@@ -292,9 +292,13 @@
 	<update id="updateCustomerEvaluation">
 	 update customerEvaluation
 	 set
-        redPacket=#{redPacket}
+
         <if test="starNum1 != null" >
-            ,serviceAttitude=#{starNum1},content=#{content},dissatisfied=#{dissatisfied}
+            redPacket=#{redPacket},serviceAttitude=#{starNum1},content=#{content},dissatisfied=#{dissatisfied}
+        </if>
+
+        <if test="payStatus != null" >
+            payStatus=#{payStatus}
         </if>
 
        where id=#{id}

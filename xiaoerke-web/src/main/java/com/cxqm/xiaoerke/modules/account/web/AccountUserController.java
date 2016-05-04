@@ -168,6 +168,8 @@ public class AccountUserController {
 		//拼装jsPay所需参数,如果prepay_id生成成功则将信息放入account_pay_record表
 		String userId = UserUtils.getUser().getId();//patientRegisterService.getUserIdByPatientRegisterId(patientRegisterId);
 
+
+
 		String payParameter = accountService.assemblyPayParameter(request,prepayInfo,session,userId, null);
 		return payParameter;
 	}

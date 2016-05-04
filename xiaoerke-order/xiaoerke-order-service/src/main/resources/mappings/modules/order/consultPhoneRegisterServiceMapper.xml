@@ -131,6 +131,7 @@
     crs.surplusTime,
     sp.sys_user_id,
     su.openid,
+    sh.id hospitalId,
     cdr.server_length
     from consultPhone_register_service crs
     left join sys_consultPhone_service scs
@@ -146,6 +147,7 @@
     on sp.sys_user_id = sbi.userid
     LEFT join consultphone_doctor_relation cdr on cdr.doctor_id = sd.id
     LEFT JOIN sys_user su on sp.sys_user_id = su.id
+    left join sys_hospital sh on sh.`name` = sd.hospitalName
     where crs.id =#{id,jdbcType=INTEGER}
     group by crs.id
   </select>
@@ -172,7 +174,6 @@
     <if test="state != null" >
       and crs.state = #{state,VARCHAR}
     </if>
-
   </select>
 
   <!--获取个人中心的 电话咨询订单列表（带分页） @author cxq-->
