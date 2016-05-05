@@ -4,16 +4,26 @@ import com.cxqm.xiaoerke.common.bean.WechatArticle;
 import com.cxqm.xiaoerke.common.utils.HttpRequestUtil;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.modules.sys.dao.UserDao;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by wangbaowei on 15/12/7.
  */
+@Service
+@Transactional(readOnly = true)
 public class PatientMsgTemplate {
 
+    @Autowired
+    private SystemService systemService;
     /**
      *预约成功 --短信
      * @param phone 用户电话
@@ -28,8 +38,10 @@ public class PatientMsgTemplate {
      *@param consultingAddress 诊室地址
      *@param url 短信链接地址
      * */
-    public static void appointmentSuccess2Sms(String phone,String babyName,String doctorName,String visitDate,String week,String beginTime,String endTime,String hospitalAddress,String hospitalName,String consultingAddress,String url){
-      String content = "（预约成功）"+babyName+"小朋友家长，您已成功预约"+doctorName+"医生，"+visitDate+"（"+week+"）"+beginTime+"~"+endTime+"，"+hospitalAddress+" "+hospitalName+" "+consultingAddress+"。客服电话：400-623-7120，详情请点击"+getShortUrl(url);
+    public void appointmentSuccess2Sms(String phone,String babyName,String doctorName,String visitDate,String week,String beginTime,String endTime,String hospitalAddress,String hospitalName,String consultingAddress,String url){
+        Map<String,Object> parameter = systemService.getWechatParameter();
+        String token = (String)parameter.get("token");
+      String content = "（预约成功）"+babyName+"小朋友家长，您已成功预约"+doctorName+"医生，"+visitDate+"（"+week+"）"+beginTime+"~"+endTime+"，"+hospitalAddress+" "+hospitalName+" "+consultingAddress+"。客服电话：400-623-7120，详情请点击"+WechatUtil.getShortUrl(token, url);
       SMSMessageUtil.sendMsg(phone,content);
     };
 
