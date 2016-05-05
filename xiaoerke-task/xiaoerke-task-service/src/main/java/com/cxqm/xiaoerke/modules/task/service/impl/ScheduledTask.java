@@ -4,12 +4,10 @@ import com.cxqm.xiaoerke.common.bean.CustomBean;
 import com.cxqm.xiaoerke.common.bean.WechatRecord;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
+import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
 import com.cxqm.xiaoerke.modules.consult.service.*;
+import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
 import com.cxqm.xiaoerke.modules.operation.service.BaseDataService;
 import com.cxqm.xiaoerke.modules.operation.service.DataStatisticService;
@@ -1140,7 +1138,7 @@ public class ScheduledTask {
         consultSession.setStatus(ConsultSession.STATUS_ONGOING);
         List<ConsultSession> consultSessionVOs = consultSessionService.selectBySelective(consultSession);
         for(ConsultSession consultSessionVO:consultSessionVOs){
-            Query queryAgain = new Query(where("sessionId").is(consultSessionVO.getId()));
+            Query queryAgain = new Query(where("sessionId").is(String.valueOf(consultSessionVO.getId())));
             List<ConsultSessionStatusVo> consultSessionStatusAgainVos = consultRecordService.querySessionStatusList(queryAgain);
             if(consultSessionStatusAgainVos.size()>0){
                 if(consultSessionStatusAgainVos.get(0).getStatus().equals("complete")){
@@ -1153,8 +1151,8 @@ public class ScheduledTask {
         List<Object> consultSessions = sessionRedisCache.getConsultSessionsByKey();
         if(consultSessions.size()>0){
             for(Object consultSessionObject:consultSessions){
-                ConsultSession consultSessionValue = (ConsultSession) consultSessionObject;
-                Query queryAgain = new Query(where("sessionId").is(consultSessionValue.getId()));
+                RichConsultSession consultSessionValue = ConsultUtil.transferMapToRichConsultSession((HashMap<String,Object>) consultSessionObject);
+                Query queryAgain = new Query(where("sessionId").is(String.valueOf(consultSessionValue.getId())));
                 List<ConsultSessionStatusVo> consultSessionStatusAgainVos = consultRecordService.querySessionStatusList(queryAgain);
                 if(consultSessionStatusAgainVos.size()>0){
                     if(consultSessionStatusAgainVos.get(0).getStatus().equals("complete")){
@@ -1163,14 +1161,13 @@ public class ScheduledTask {
                         sessionRedisCache.removeUserIdSessionIdPair(consultSessionStatusAgainVos.get(0).getUserId());
                     }
                 }
-
             }
         }
 
     }
 
 
-    public void consultMangementDayTask(){
+    public void consultManagementDayTask(){
         //删除会话排名中的临时数据
         consultRecordService.removeConsultRankRecord(new Query());
     }
