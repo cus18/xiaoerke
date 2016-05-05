@@ -12,13 +12,25 @@ angular.module('controllers', ['ionic']).controller('playtourShareCtrl', [
             $scope.sharetou = false;
             $scope.shareimg = false;//分享图片
             imgType=$stateParams.id;
-            $scope.goShare();
+            $scope.LinkShare();
             $scope.doRefresh();
 
         });
 
         //显示分享图层
         $scope.goShare = function () {
+                $scope.sharetou = true;
+                $scope.shareimg = true;
+                if (imgType == 1) {
+                    $scope.shareImg = shareimgList[0];
+                } else if (imgType == 2) {
+                    $scope.shareImg = shareimgList[1];
+                } else {
+                    $scope.shareImg = shareimgList[2];
+                }
+        }
+
+        $scope.LinkShare = function () {
             if(imgType!=6) {
                 $scope.sharetou = true;
                 $scope.shareimg = true;
