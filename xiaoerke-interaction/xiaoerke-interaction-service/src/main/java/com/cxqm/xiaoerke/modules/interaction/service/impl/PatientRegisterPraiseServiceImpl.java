@@ -15,6 +15,7 @@ import com.cxqm.xiaoerke.modules.sys.service.*;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import net.sf.json.JSONObject;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -374,6 +375,16 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 	public Map<String, Object> getCustomerStarInfoById(String id) {
 		// TODO Auto-generated method stub
 		return patientRegisterPraiseDao.getCustomerStarInfoById(id);
+	}
+
+	@Override
+	public Map<String, Object> getCustomerStarSingById( String id) {
+		return patientRegisterPraiseDao.getCustomerStarSingById(id);
+	}
+
+	@Override
+	public Map<String, Object> getCustomerStarCountById( String id) {
+		return patientRegisterPraiseDao.getCustomerStarCountById(id);
 	}
 
 	@Override

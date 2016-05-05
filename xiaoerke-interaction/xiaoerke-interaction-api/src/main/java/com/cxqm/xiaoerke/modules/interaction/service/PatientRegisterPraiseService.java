@@ -31,6 +31,10 @@ public interface PatientRegisterPraiseService {
     Map<String,Object> selectCustomerEvaluation(@Param("id")String id);
     
     Map<String,Object> getCustomerStarInfoById(@Param("doctorId")String id);
+
+    Map<String,Object> getCustomerStarSingById(@Param("doctorId")String id);
+
+    Map<String,Object> getCustomerStarCountById(@Param("doctorId")String id);
     
     Map<String,Object> getDoctorHeadImageURIById(@Param("doctorId")String id);
 

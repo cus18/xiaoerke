@@ -169,11 +169,8 @@ function updateCustomerInfo(){
     customerId=GetQueryString("customerId");
     var content=$("#content").val();
     var redPacket=$("#getMoney").val();
-    if(redPacket!=""){
-        if(redPacket<=0){
-            $("#moneyDiff").show();
-            return;
-        }
+    if(redPacket!=""&& redPacket > 0){
+        
         recordLogs("ZXPJSXY_JE");
         $.ajax({
             url:"account/user/customerPay",// 跳转到 action
