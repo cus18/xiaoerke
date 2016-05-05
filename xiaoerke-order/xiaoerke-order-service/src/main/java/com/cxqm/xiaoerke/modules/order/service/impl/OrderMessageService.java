@@ -68,7 +68,7 @@ class OrderMessageService {
 					(String)resultMap.get("date"),dayWeek,(String)resultMap.get("begin_time"),
 					(String)resultMap.get("end_time"),(String)resultMap.get("position"),
 					(String)resultMap.get("contactHospitalName"),(String)resultMap.get("location"),
-							"s11.baodf.com/titan/appoint#/toBeTreatedDetail/" + params.get("patient_register_service_id") + ",1");
+							"http://s11.baodf.com/titan/appoint#/toBeTreatedDetail/" + params.get("patient_register_service_id") + ",1");
 
 			if(params.containsKey("openId")&&params.get("openId")!=null)
 			{
