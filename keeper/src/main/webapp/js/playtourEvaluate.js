@@ -111,7 +111,7 @@ function getCustomerInfo(){
                 $("#suggest").html(evaluation.content);
                 $(".evalfinish img").attr("src",resultList[1]);
                 // getMoney(evaluation);
-                if(evaluation.redPacket!='null'&&typeof(evaluation.redPacket) != 'undefined'||evaluation.redPacket==""){
+                if(evaluation.redPacket!='null'&&typeof(evaluation.redPacket) != 'undefined'&&evaluation.redPacket!=""){
                     $("#redPacket").html(evaluation.redPacket);
                     $(".evalinputmoney").hide();
                     $(".evalhavemoney").show();
@@ -129,7 +129,7 @@ function getCustomerInfo(){
                 $("#suggest").html(evaluation.content);
                 $(".evalfinish img").attr("src",resultList[2]);
                 // getMoney(evaluation);
-                if(evaluation.redPacket!='null'&&typeof(evaluation.redPacket) != 'undefined'||evaluation.redPacket==""){
+                if(evaluation.redPacket!='null'&&typeof(evaluation.redPacket) != 'undefined'&&evaluation.redPacket!=""){
                     $("#redPacket").html(evaluation.redPacket);
                     $(".evalinputmoney").hide();
                     $(".evalhavemoney").show();
