@@ -337,14 +337,26 @@ angular.module('controllers', ['luegg.directives'])
                         }).progress(function(evt) {
                             console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
                         }).success(function(data, status, headers, config){
-                            var consultValMessage = {
-                                "type": 1,
-                                "content": data.showFile,
-                                "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                                "senderId": angular.copy($scope.doctorId),
-                                "senderName": angular.copy($scope.doctorName),
-                                "sessionId": angular.copy($scope.currentUserConversation.sessionId)
-                            };
+                            if(data.source == "wxcxqm"){
+                                var consultValMessage = {
+                                    "type": 1,
+                                    "content": data.showFile,
+                                    "wscontent": data.WS_File,
+                                    "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                                    "senderId": angular.copy($scope.doctorId),
+                                    "senderName": angular.copy($scope.doctorName),
+                                    "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                                };
+                            }else{
+                                var consultValMessage = {
+                                    "type": 1,
+                                    "content": data.showFile,
+                                    "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                                    "senderId": angular.copy($scope.doctorId),
+                                    "senderName": angular.copy($scope.doctorName),
+                                    "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                                };
+                            }
                             if (!window.WebSocket) {
                                 return;
                             }
