@@ -87,10 +87,10 @@ angular.module('controllers', ['ionic']).controller('AppointmentConfirmCtrl', [
                 setTimeout(function() {
                     $scope.info.show = false
                 }, 2000);
-                $scope. phoneErrorShow = true
+                $scope. phoneErrorShow = false;
                 return;
             }
-            $scope. phoneErrorShow = false
+            $scope. phoneErrorShow = true
         }
 
         $scope.pageLoading = true;

@@ -251,7 +251,9 @@
 			AND #{toDate} >= srs.date
 		</if>
 		<if test="department != null and department != ''">
-			AND srs.sys_doctor_id  in (SELECT distinct sys_doctor_id FROM doctor_illness_relation where sys_illness_id in (SELECT id  FROM sys_illness where level_1=#{department}))
+			AND
+            EXISTS (SELECT distinct sys_doctor_id FROM doctor_illness_relation where
+            EXISTS (SELECT id  FROM sys_illness where level_1=#{department} and id=sys_illness_id) and sys_doctor_id=srs.sys_doctor_id)
 		</if>
 		<if test="relationType != null and relationType != ''">
 			AND dhr.relation_type=#{relationType}
