@@ -173,39 +173,41 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
         }else{
             //没接通
             //取消用户订单
-            ConsultPhoneRegisterServiceVo registerServiceVo =  new ConsultPhoneRegisterServiceVo();
-            registerServiceVo.setId(Integer.parseInt(userData));
-            registerServiceVo.setUpdateTime(new Date());
-            registerServiceVo.setState("4");
-            int state = consultPhonePatientService.updateOrderInfoBySelect(registerServiceVo);
-            //              并发送消息
-            String url = ConstantUtil.TITAN_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) consultOrder.get("doctorId")+","+(Integer) consultOrder.get("id")+",phone";
-            PatientMsgTemplate.unConnectPhone2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"), (Float) consultOrder.get("price") + "", (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"));
-            Map tokenMap = systemService.getDoctorWechatParameter();
-            String token = (String)tokenMap.get("token");
-            String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)consultOrder.get("date"),"yyyy/MM/dd"));
-            String dateTime = (String)consultOrder.get("date")+week+(String)consultOrder.get("beginTime");
-            PatientMsgTemplate.unConnectPhone2Wechat(dateTime, (String) consultOrder.get("userPhone"), (String) consultOrder.get("doctorName"), (Float) consultOrder.get("price") + "", url, (String) consultOrder.get("orderNo"), (String) consultOrder.get("openid"), token);
+            if("待接听".equals(consultOrder.get("state"))){
+                ConsultPhoneRegisterServiceVo registerServiceVo =  new ConsultPhoneRegisterServiceVo();
+                registerServiceVo.setId(Integer.parseInt(userData));
+                registerServiceVo.setUpdateTime(new Date());
+                registerServiceVo.setState("4");
+                int state = consultPhonePatientService.updateOrderInfoBySelect(registerServiceVo);
+                //              并发送消息
+                String url = ConstantUtil.TITAN_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) consultOrder.get("doctorId")+","+(Integer) consultOrder.get("id")+",phone";
+                PatientMsgTemplate.unConnectPhone2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"), (Float) consultOrder.get("price") + "", (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"));
+                Map tokenMap = systemService.getDoctorWechatParameter();
+                String token = (String)tokenMap.get("token");
+                String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)consultOrder.get("date"),"yyyy/MM/dd"));
+                String dateTime = (String)consultOrder.get("date")+week+(String)consultOrder.get("beginTime");
+                PatientMsgTemplate.unConnectPhone2Wechat(dateTime, (String) consultOrder.get("userPhone"), (String) consultOrder.get("doctorName"), (Float) consultOrder.get("price") + "", url, (String) consultOrder.get("orderNo"), (String) consultOrder.get("openid"), token);
 
-            //未接通时 给医生发消息提醒
-            String hospitalContactPhone = (String)consultOrder.get("hospitalContactPhone");
-            String doctorName =  (String) consultOrder.get("doctorName");
-            String babyName =  (String) consultOrder.get("babyName");
-            String doctorPhone =  (String)consultOrder.get("doctorPhone");
+                //未接通时 给医生发消息提醒
+                String hospitalContactPhone = (String)consultOrder.get("hospitalContactPhone");
+                String doctorName =  (String) consultOrder.get("doctorName");
+                String babyName =  (String) consultOrder.get("babyName");
+                String doctorPhone =  (String)consultOrder.get("doctorPhone");
 
-            if(StringUtils.isNotNull(hospitalContactPhone)){
-                String content = "【未接通】尊敬的"+doctorName+"医生，由于"+babyName+"小朋友家长预约电话咨询未接通，已将咨询费用退还给预约用户。有疑问请致电400-623-7120。";
-                ChangzhuoMessageUtil.sendMsg(hospitalContactPhone, content, ChangzhuoMessageUtil.RECEIVER_TYPE_DOCTOR);
-            }else {
-                DoctorMsgTemplate.doctorPhoneConsultRemindFail2Sms(doctorName, babyName, doctorPhone);
-                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("mm月dd日");
-                String nowTime = simpleDateFormat1.format(new Date());
-                String doctorToken = (String) tokenMap.get("token");
-                String openId = doctorInfoService.findOpenIdByDoctorId((String) consultOrder.get("doctorId"));
-                if (StringUtils.isNotNull(openId)) {
-                    DoctorMsgTemplate.doctorPhoneConsultRemindFail2Wechat(babyName, nowTime, doctorToken, "", openId);
+                if(StringUtils.isNotNull(hospitalContactPhone)){
+                    String content = "【未接通】尊敬的"+doctorName+"医生，由于"+babyName+"小朋友家长预约电话咨询未接通，已将咨询费用退还给预约用户。有疑问请致电400-623-7120。";
+                    ChangzhuoMessageUtil.sendMsg(hospitalContactPhone, content, ChangzhuoMessageUtil.RECEIVER_TYPE_DOCTOR);
+                }else {
+                    DoctorMsgTemplate.doctorPhoneConsultRemindFail2Sms(doctorName, babyName, doctorPhone);
+                    SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("mm月dd日");
+                    String nowTime = simpleDateFormat1.format(new Date());
+                    String doctorToken = (String) tokenMap.get("token");
+                    String openId = doctorInfoService.findOpenIdByDoctorId((String) consultOrder.get("doctorId"));
+                    if (StringUtils.isNotNull(openId)) {
+                        DoctorMsgTemplate.doctorPhoneConsultRemindFail2Wechat(babyName, nowTime, doctorToken, "", openId);
+                    }
                 }
-            }
+            };
         }
         int state = consultPhonePatientService.updateOrderInfoBySelect(consultPhonevo);
         //返回的数据
