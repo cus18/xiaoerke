@@ -366,7 +366,7 @@ public class PatientMsgTemplate {
         ArrayList<Object> obj = new ArrayList<Object>();
         WechatArticle article = new WechatArticle();
         article.setTitle("电话咨询提醒");
-        article.setDescription("医生：" + doctorName + "\n时间：" + date + week + beginTime + "-" + endTime + "\n接听电话：" + phone + "\n订单号:" + register_no + "\n您预约的常丽医生的电话咨询将在5分钟后进行通话，请保持手机畅通。\n\n查看全文");
+        article.setDescription("医生：" + doctorName + "\n时间：" + date + week + beginTime + "-" + endTime + "\n接听电话：" + phone + "\n订单号:" + register_no + "\n您预约的"+doctorName+"医生的电话咨询将在5分钟后进行通话，请保持手机畅通。\n\n查看全文");
         article.setUrl(url);
         obj.add(article);
         if(StringUtils.isNotNull(openId))
