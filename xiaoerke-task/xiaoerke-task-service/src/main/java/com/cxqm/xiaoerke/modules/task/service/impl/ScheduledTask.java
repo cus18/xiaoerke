@@ -1143,7 +1143,7 @@ public class ScheduledTask {
             Query queryAgain = new Query(where("sessionId").is(consultSessionVO.getId()));
             List<ConsultSessionStatusVo> consultSessionStatusAgainVos = consultRecordService.querySessionStatusList(queryAgain);
             if(consultSessionStatusAgainVos.size()>0){
-                if(consultSessionStatusAgainVos.get(0).getStatus().equals(ConsultSession.STATUS_COMPLETED)){
+                if(consultSessionStatusAgainVos.get(0).getStatus().equals("complete")){
                     consultSessionService.clearSession(consultSessionStatusAgainVos.get(0).getSessionId(),
                             consultSessionStatusAgainVos.get(0).getUserId());
                 }
@@ -1157,7 +1157,7 @@ public class ScheduledTask {
                 Query queryAgain = new Query(where("sessionId").is(consultSessionValue.getId()));
                 List<ConsultSessionStatusVo> consultSessionStatusAgainVos = consultRecordService.querySessionStatusList(queryAgain);
                 if(consultSessionStatusAgainVos.size()>0){
-                    if(consultSessionStatusAgainVos.get(0).getStatus().equals(ConsultSession.STATUS_COMPLETED)){
+                    if(consultSessionStatusAgainVos.get(0).getStatus().equals("complete")){
                         //清除redis内的残留数据
                         sessionRedisCache.removeConsultSessionBySessionId(Integer.parseInt(consultSessionStatusAgainVos.get(0).getSessionId()));
                         sessionRedisCache.removeUserIdSessionIdPair(consultSessionStatusAgainVos.get(0).getUserId());
