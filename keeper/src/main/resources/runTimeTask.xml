@@ -301,6 +301,9 @@
 	<bean id="consultMangementCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="consultMangementQuarzTask"/>
 		<property name="cronExpression" value="0 */2 * * * ?"/>
+	<bean id="consultManagementCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="consultManagementQuarzTask"/>
+		<property name="cronExpression" value="0 */1 * * * ?"/>
 	</bean>
 
 	<!-- 咨询定时操作（天）-->

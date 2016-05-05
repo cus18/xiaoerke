@@ -6,7 +6,6 @@
         http://www.springframework.org/schema/security 
         http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
-	<http pattern="/info/user" security="none" />
 	<http pattern="/auth/**" use-expressions="true"
 		  entry-point-ref="authenticationProcessingFilterEntryPoint" >
 		<intercept-url pattern="/auth/**" access="isAuthenticated()" />

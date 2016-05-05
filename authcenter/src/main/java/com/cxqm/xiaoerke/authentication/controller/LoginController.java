@@ -45,10 +45,8 @@ public class LoginController extends BaseController{
 	
 	/** 检查认证中心是否已登录  */
 	@RequestMapping(value = "${ssoPath}/checklogin")
-	public String checkLogin(String toUrl, HttpServletRequest request,
-							 HttpServletResponse response, Model model){
+	public String checkLogin(String toUrl, HttpServletRequest request){
 		//认证中心在cookie中获取token，未取到则跳转登陆页登陆
-		
 		String ip = request.getLocalAddr();
 		int port = request.getLocalPort();
 		String contextPath = request.getContextPath();
