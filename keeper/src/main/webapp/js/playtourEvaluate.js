@@ -6,8 +6,8 @@ var resultList=["","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playt
 var moneyNum = 0;;
 
 $(function(){
-    $('.evalhavemoney').hide();//收到心意钱
-    $('.evalsharebut').hide();//分享按钮
+   // $('.evalhavemoney').hide();//收到心意钱
+   // $('.evalsharebut').hide();//分享按钮
     // $('#ping').hide();
     getCustomerInfo();
 })
@@ -77,48 +77,76 @@ function getCustomerInfo(){
             }else if(evaluation.serviceAttitude==1){
                 $("#playtourStar").html("不满意");
                 $(".evalhavemoney").hide();
-                var dissatisfied=evaluation.dissatisfied;
-                dissatisfied=dissatisfied.split(",");
-                var a="";
-                for(var i=0;i<dissatisfied.length;i++){
-                    if(dissatisfied[i]=="0"){
-                        a+="服务态度不好       ";
-                    }
-                    if(dissatisfied[i]=="1"){
-                        a+="专业水平不高       ";
-                    }
-                    if(dissatisfied[i]=="2"){
-                        a+="响应速度太慢       ";
-                    }
-                    // if(dissatisfied[i]=="3"){
-                    //     a+="其他       ";
-                    // }
+                    var dissatisfied = evaluation.dissatisfied;
+                    dissatisfied = dissatisfied.split(",");
+                    var a = "";
+                    for (var i = 0; i < dissatisfied.length; i++) {
+                        if (dissatisfied[i] == "0") {
+                            a += "服务态度不好       ";
+                        }
+                        if (dissatisfied[i] == "1") {
+                            a += "专业水平不高       ";
+                        }
+                        if (dissatisfied[i] == "2") {
+                            a += "响应速度太慢       ";
+                        }
+                        // if(dissatisfied[i]=="3"){
+                        //     a+="其他       ";
+                        // }
+                        if(a==""){
+                            $("#evaluationSpan").hide();
+                        }else {
+                            a += "<br/>";
+                            $("#evaluation").html(a);
+                        }
                 }
-                a="<br/>";
-                $("#evaluation").html(a);
                 $("#suggest").html(evaluation.content);
+                $(".evalinputmoney").hide();
+                $(".evalhavemoney").hide();
+                $('.evalsharebut').show();//分享按钮
+                $('#but').hide();//分享按钮
             }else if(evaluation.serviceAttitude==3){
                 $("#playtourStar").html("满意");
                 $('#ping').hide();
                 $("#suggest").html(evaluation.content);
+                $(".evalfinish img").attr("src",resultList[1]);
+                // getMoney(evaluation);
+                if(evaluation.redPacket!='null'&&typeof(evaluation.redPacket) != 'undefined'){
+                    $("#redPacket").html(evaluation.redPacket);
+                    $(".evalinputmoney").hide();
+                    $(".evalhavemoney").show();
+                    $('.evalsharebut').show();//分享按钮
+                    $('#but').hide();//分享按钮
+                }else{
+                    $(".evalhavemoney").hide();
+                    $(".evalinputmoney").show();
+                    $('.evalsharebut').hide();//分享按钮
+                    $('#but').show();//分享按钮
+                }
             }else if(evaluation.serviceAttitude==5){
                 $("#playtourStar").html("非常满意");
                 $('#ping').hide();
                 $("#suggest").html(evaluation.content);
+                $(".evalfinish img").attr("src",resultList[2]);
+                // getMoney(evaluation);
+                if(evaluation.redPacket!='null'&&typeof(evaluation.redPacket) != 'undefined'){
+                    $("#redPacket").html(evaluation.redPacket);
+                    $(".evalinputmoney").hide();
+                    $(".evalhavemoney").show();
+                    $('.evalsharebut').show();//分享按钮
+                    $('#but').hide();//分享按钮
+                }else{
+                    $(".evalhavemoney").hide();
+                    $(".evalinputmoney").show();
+                    $('.evalsharebut').hide();//分享按钮
+                    $('#but').show();//分享按钮
+                }
             }
                 var star=starInfo.startNum+"";
-
-            if(evaluation.redPacket!='null'&&typeof(evaluation.redPacket) != 'undefined'){
-                $("#redPacket").html(evaluation.redPacket);
-                $(".evalinputmoney").hide();
-                $(".evalhavemoney").show();
-                $('.evalsharebut').show();//分享按钮
-                $('#but').hide();//分享按钮
-            }else{
-                $(".evalhavemoney").hide();
-                $(".evalinputmoney").show();
-                $('.evalsharebut').hide();//分享按钮
-                $('#but').show();//分享按钮
+            $("#playtourImg").attr("src",resultList[evaluation.serviceAttitude]);
+            
+            if(evaluation.content=='null'||typeof(evaluation.content) == 'undefined'||evaluation.content==''){
+                $("#suggestSpan").hide();
             }
                 $("#redPacketcount").html(starInfo.redPacket);
                 $("#starInfo").html(star.split(".")[0]+"%");
@@ -256,4 +284,9 @@ function updateCustomerInfo() {
             }
         });
     }
+}
+
+var goShare = function () {
+
+    window.location.href="../keeper/playtour#/playtourShare/6";
 }

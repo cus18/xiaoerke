@@ -3,7 +3,6 @@ package com.cxqm.xiaoerke.modules.order.service.impl;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.FrontUtils;
-import com.cxqm.xiaoerke.modules.consult.utils.DateUtil;
 import com.cxqm.xiaoerke.modules.order.dao.ConsultPhoneRegisterServiceDao;
 import com.cxqm.xiaoerke.modules.order.dao.SysConsultPhoneServiceDao;
 import com.cxqm.xiaoerke.modules.order.entity.OrderServiceVo;
@@ -181,7 +180,7 @@ public class ConsultPhoneOrderServiceImpl implements ConsultPhoneOrderService {
 
         HashMap<String,Object> response = new HashMap<String, Object>();
         List<Map<String,Object>> timeList = new ArrayList<Map<String, Object>>();
-        Integer totalPrice = 0;
+        Float totalPrice = new Float(0);
         if(resultList != null){
             for(Map<String,Object> resultMap:resultList){
                 Map<String,Object> map = new HashMap<String, Object>();
@@ -189,7 +188,7 @@ public class ConsultPhoneOrderServiceImpl implements ConsultPhoneOrderService {
                 map.put("name",resultMap.get("name"));
                 map.put("price",resultMap.get("price"));
                 timeList.add(map);
-                totalPrice += (Integer)resultMap.get("price");
+                totalPrice += (Float)resultMap.get("price");
             }
         }
         response.put("totalNum", resultList.size());
