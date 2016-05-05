@@ -6,8 +6,8 @@ var resultList=["","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playt
 var moneyNum = 0;;
 
 $(function(){
-    $('.evalhavemoney').hide();//收到心意钱
-    $('.evalsharebut').hide();//分享按钮
+   // $('.evalhavemoney').hide();//收到心意钱
+   // $('.evalsharebut').hide();//分享按钮
     // $('#ping').hide();
     getCustomerInfo();
 })
@@ -97,18 +97,26 @@ function getCustomerInfo(){
                 a="<br/>";
                 $("#evaluation").html(a);
                 $("#suggest").html(evaluation.content);
+                $(".evalinputmoney").hide();
+                $(".evalhavemoney").hide();
+                $('.evalsharebut').show();//分享按钮
+                $('#but').hide();//分享按钮
             }else if(evaluation.serviceAttitude==3){
                 $("#playtourStar").html("满意");
                 $('#ping').hide();
                 $("#suggest").html(evaluation.content);
+                $(".evalfinish img").attr("src",resultList[1]);
+                getMoney(evaluation);
             }else if(evaluation.serviceAttitude==5){
                 $("#playtourStar").html("非常满意");
                 $('#ping').hide();
                 $("#suggest").html(evaluation.content);
+                $(".evalfinish img").attr("src",resultList[2]);
+                getMoney(evaluation);
             }
                 var star=starInfo.startNum+"";
             $("#playtourImg").attr("src",resultList[evaluation.serviceAttitude]);
-            if(evaluation.redPacket!='null'&&typeof(evaluation.redPacket) != 'undefined'){
+           /* if(evaluation.redPacket!='null'&&typeof(evaluation.redPacket) != 'undefined'){
                 $("#redPacket").html(evaluation.redPacket);
                 $(".evalinputmoney").hide();
                 $(".evalhavemoney").show();
@@ -119,7 +127,7 @@ function getCustomerInfo(){
                 $(".evalinputmoney").show();
                 $('.evalsharebut').hide();//分享按钮
                 $('#but').show();//分享按钮
-            }
+            }*/
                 $("#redPacketcount").html(starInfo.redPacket);
                 $("#starInfo").html(star.split(".")[0]+"%");
                 $("#doctorName").html(doctorInfo.doctor_name);
