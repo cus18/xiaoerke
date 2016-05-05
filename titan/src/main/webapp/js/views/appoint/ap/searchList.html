@@ -30,20 +30,16 @@
             </ion-scroll>
         </ion-content>
     </div>
-    <div class="Category button-bar shadow" ng-if="!isBlank">
-        <div ng-if="remark=='department'" class="button button-light"
-             ng-click="selectAllDepartment()" style="border-right:1px solid #eee;"
-                ng-style="department=='1'?{'color':'#88d9dd'}:{'color':'#999'}">
-            {{departmentSelectName}}&nbsp;&nbsp;<img ng-src="{{arrowImg}}" width="16" height="9" >
+    <div class="category tc border2 f5 c4" ng-if="!isBlank">
+        <div class="fl" ng-click="selectAllDepartment()" ng-style="department=='1'?{'color':'#88d9dd'}:{'color':'#999'}">
+            <span ng-if="remark=='department'" >{{departmentSelectName}}</span>
+            <span  ng-if="remark=='hospital'">{{hospitalSelectName}}</span>
+            &nbsp;<img class="my-img1" ng-src="{{arrowImg}}" width="16" height="9" >
         </div>
-        <div ng-if="remark=='hospital'" class="button button-light"
-             ng-click="selectAllDepartment()" style="border-right:1px solid #eee;"
-             ng-style="department=='1'?{'color':'#88d9dd'}:{'color':'#999'}">
-            {{hospitalSelectName}}&nbsp;&nbsp;<img ng-src="{{arrowImg}}" width="16" height="9">
-        </div>
-        <div class="button button-light" nav-direction="none" ng-click="selectAllRank()"
+        <div class="fl" nav-direction="none" ng-click="selectAllRank()"
              ng-style="rank=='1'?{'color':'#88d9dd'}:{'color':'#999'}">
-            {{rankTitle}}&nbsp;&nbsp;<img ng-src="{{rankImg}}" width="22" height="14" >
+           <span> {{rankTitle}}</span>
+            &nbsp;<img class="my-img1" ng-src="{{rankImg}}" width="22" height="14" >
         </div>
     </div>
 
