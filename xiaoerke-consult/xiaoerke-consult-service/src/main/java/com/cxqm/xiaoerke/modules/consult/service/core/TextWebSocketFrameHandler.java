@@ -75,46 +75,32 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 			if(consultSession == null)
 				return;
 			String csUserId = consultSession.getCsUserId();
-//			String csUserName = consultSession.getCsUserName();
-//			String UserName = consultSession.getUserName();
 			String userId = consultSession.getUserId();
 			Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(csUserId);
 
 			if(channel != csChannel && csChannel != null) {
 				csChannel.writeAndFlush(msg.retain());
-				//保存聊天记录
-				consultRecordService.buildRecordMongoVo(userId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
-
 			} else {
 				if(consultSession.getSource().equals("h5cxqm")){
 					Channel userChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(userId);
 					userChannel.writeAndFlush(msg.retain());
-					//保存聊天记录
-					consultRecordService.buildRecordMongoVo(csUserId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
 				}else if(consultSession.getSource().equals("wxcxqm")){
 					if(msgType==0){
 						//直接发送文本消息
 						String st = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
 						WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(), st);
-
-//						String token = WechatUtil.getToken(WechatUtil.CORPID,WechatUtil.SECTET);
-//						String ticket = WechatUtil.getJsapiTicket(token);
-//						HashMap<String, Object> map = new HashMap<String, Object>();
-//						map.put("token", token);
-//						map.put("ticket",ticket);
-//						map.put("id","1");
-//						sessionRedisCache.putWeChatParamToRedis(map);
-
-						//保存聊天记录
-						consultRecordService.buildRecordMongoVo(csUserId,String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
 					}else if(msgType!=0){
 						//发送多媒体消息
 						String noTextMsg = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
 						WechatUtil.sendNoTextMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(),noTextMsg,msgType);
-						consultRecordService.buildRecordMongoVo(csUserId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
 					}
 				}
 			}
+
+			//保存聊天记录
+			consultRecordService.buildRecordMongoVo(userId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
+			//更新会话操作时间
+			consultRecordService.saveConsultSessionStatus(consultSession);
 		}
 	}
 	

@@ -7,8 +7,19 @@
             $scope.myselfBindStatus=false;
            /*去绑定*/
             $scope.bindUserPhone = function(){
-                resolveUserLoginStatus.events("selfCenter",",",{userPhoneNum:$stateParams.userPhoneNum},"","notGo");
-            };
+                //resolveUserLoginStatus.events("selfCenter",",",{userPhoneNum:$stateParams.userPhoneNum},"","notGo");
+                var routePath = "/phoneConsultBBBBBB" + $location.path();
+                GetUserLoginStatus.save({routePath:routePath},function(data){
+                    if(data.status=="9") {
+                        window.location.href = data.redirectURL;
+                    } else if(data.status=="8"){
+                        window.location.href = data.redirectURL+"?targeturl="+routePath;
+                    }else {
+
+                    }
+                })
+            }
+
             /*我的资料*/
             $scope.myInfo = function(){
                 window.location.href="appoint#/myInfo/"+$scope.myselfInfo.userPhoneNum;
@@ -44,6 +55,10 @@
             $scope.healthRecord = function(){
                 resolveUserLoginStatus.events("healthRecordIndex","0","","appoint#/healthRecordIndex/","notGo");
             };
+
+            var routePath = "/phoneConsultBBBBBB" + $location.path();
+            GetUserLoginStatus.save({routePath:routePath},function(loginData){
+                if(loginData.status=="20") {
                     MyselfInfo.save({unBindUserPhoneNum:$rootScope.unBindUserPhoneNum}, function(data) {
                         $scope.pageLoading = false;
                         $scope.myselfInfo = data;
@@ -55,11 +70,18 @@
                         $scope.memberNum = data.memberNum;
                         $scope.userPhoneNum = data.userPhone;
                         if($scope.userPhoneNum!=''){
-                          $scope.myselfBindStatus=true;
+                            $scope.myselfBindStatus=true;
                         }else{
-                          $scope.myselfBindStatus=false;
+                            $scope.myselfBindStatus=false;
                         }
                     });
+                }else{
+                    $scope.memberNum = "0";
+                    $scope.accountFund = "0元";
+                }
+            })
+
+
             $scope.$on('$ionicView.enter', function(){
 
 

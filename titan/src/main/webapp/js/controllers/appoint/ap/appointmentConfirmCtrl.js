@@ -430,6 +430,7 @@ angular.module('controllers', ['ionic']).controller('AppointmentConfirmCtrl', [
                 }else if(data.status=="8"){
                     window.location.href = data.redirectURL+"?targeturl="+routePath;
                 }else{
+                    $scope.info.userPhone = data.userPhone;
                     GetMemberServiceStatus.save(function(data){
                         $scope.status = data.status;
                         if($scope.status=="11") {
