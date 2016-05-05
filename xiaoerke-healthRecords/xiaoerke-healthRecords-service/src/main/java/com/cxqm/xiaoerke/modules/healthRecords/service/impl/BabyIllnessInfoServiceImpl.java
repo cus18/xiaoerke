@@ -34,26 +34,30 @@ public class BabyIllnessInfoServiceImpl implements BabyIllnessInfoService {
             response.put("content", illnessMap.get("illness"));
 
             Date birthday = (Date) illnessMap.get("birthday");
-            int day = (int) DateUtils.getDistanceOfTwoDate(birthday,new Date());
-            String age = "";
-            if(day ==0){
-                response.put("age","0天");
-            }else{
-                int year = day/365;
-                if(year > 0){
-                    age += year+"岁";
-                }
-                day = day % 365;
-                int month = day/30;
-                if(month > 0){
-                    age += month+"个月";
-                }
-                day = day % 30;
-                if(day > 0){
-                    age += day+"天";
-                }
+            if(birthday !=null) {
+                int day = (int) DateUtils.getDistanceOfTwoDate(birthday, new Date());
+                String age = "";
+                if (day == 0) {
+                    response.put("age", "0天");
+                } else {
+                    int year = day / 365;
+                    if (year > 0) {
+                        age += year + "岁";
+                    }
+                    day = day % 365;
+                    int month = day / 30;
+                    if (month > 0) {
+                        age += month + "个月";
+                    }
+                    day = day % 30;
+                    if (day > 0) {
+                        age += day + "天";
+                    }
 
-                response.put("age",age);
+                    response.put("age", age);
+                }
+            }else{
+                response.put("age", "");
             }
 
         }

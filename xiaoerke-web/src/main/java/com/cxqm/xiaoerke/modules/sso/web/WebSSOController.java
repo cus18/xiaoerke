@@ -170,7 +170,15 @@ public class WebSSOController {
 	}
 	
 	@RequestMapping(value="appoint/logout")
-	public String logout(HttpServletRequest request){
+	public String logout(HttpServletRequest request,HttpServletResponse response){
+		String[] pathArray=new String[]{"/titan/","/keeper/","/authcenter/","/angel/","/doctor/","/market/","/wisdom/"};
+		for(int j = 0;j < pathArray.length;  j++){
+			Cookie cookie = new Cookie("JSESSIONID", null);
+//			cookie.setDomain("localhost");
+			cookie.setMaxAge(0);
+			cookie.setPath(pathArray[j]);
+			response.addCookie(cookie);
+		}
 		return "redirect:" + Global.getConfig("authentication.basePath") + "/sso/logout?toUrl=" + WebUtil.getWebPath(request) + "/firstPage/appoint";
 	}
 	

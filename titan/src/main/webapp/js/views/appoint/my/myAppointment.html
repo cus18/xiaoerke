@@ -3,7 +3,7 @@
     <div bdf-head="title"></div>
     <ion-content class="myAppointment">
         <ion-scroll direction="y" has-bouncing="true" style="top:2px;">
-            <div class="list"  ng-repeat="item in appointmentData | orderBy:'date':true" ng-if="!isBlank" >
+            <div class="list"  ng-repeat="item in appointmentData" ng-if="!isBlank" >
                 <ul>
                     <li class="item item-thumbnail-left waitInfo"
                         ui-sref="toBeTreatedDetail({patient_register_service_id:item.patient_register_service_id,status:'1'})"
