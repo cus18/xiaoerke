@@ -107,7 +107,7 @@ function getCustomerInfo(){
                 $("#suggest").html(evaluation.content);
             }
                 var star=starInfo.startNum+"";
-
+            $("#playtourImg").attr("src",resultList[evaluation.serviceAttitude]);
             if(evaluation.redPacket!='null'&&typeof(evaluation.redPacket) != 'undefined'){
                 $("#redPacket").html(evaluation.redPacket);
                 $(".evalinputmoney").hide();
