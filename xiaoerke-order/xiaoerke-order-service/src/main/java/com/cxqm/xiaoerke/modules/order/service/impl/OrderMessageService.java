@@ -62,7 +62,8 @@ class OrderMessageService {
 
 
 			//消息修改
-			PatientMsgTemplate.appointmentSuccess2Sms((String) resultMap.get("phone"),
+			PatientMsgTemplate patientMsgTemplate = new PatientMsgTemplate();
+			patientMsgTemplate.appointmentSuccess2Sms((String) resultMap.get("phone"),
 					(String)resultMap.get("babyName"),(String)resultMap.get("doctorName"),
 					(String)resultMap.get("date"),dayWeek,(String)resultMap.get("begin_time"),
 					(String)resultMap.get("end_time"),(String)resultMap.get("position"),

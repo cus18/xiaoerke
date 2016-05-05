@@ -9,7 +9,7 @@
                         ui-sref="toBeTreatedDetail({patient_register_service_id:item.patient_register_service_id,status:'1'})"
                         ng-if="item.status==statusToBeTreat">
                         <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.doctorId}}"/>
-                        <h2>{{item.doctorName}}&nbsp;&nbsp;<span>{{item.position}}</span></h2>
+                        <h2>{{item.doctorName}}&nbsp;<span>{{item.position}}</span></h2>
                         <p>{{item.hospitalName}}</p>
                         <p>{{item.date}}&nbsp;&nbsp;{{item.startTime}}-{{item.endTime}}</p>
                         <span class="wait-status">{{item.status}}</span>
@@ -19,7 +19,7 @@
                         ui-sref="evaluateDoctor({patient_register_service_id:item.patient_register_service_id})"
                         ng-if="item.status==statusToBeEvaluate" >
                         <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.doctorId}}"/>
-                        <h2>{{item.doctorName}}&nbsp;&nbsp;<span>{{item.position}}</span></h2>
+                        <h2>{{item.doctorName}}&nbsp;<span>{{item.position}}</span></h2>
                         <p>{{item.hospitalName}}</p>
                         <p>{{item.date}}&nbsp;&nbsp;{{item.startTime}}-{{item.endTime}}</p>
                         <span class="wait-status">{{item.status}}</span>
@@ -29,7 +29,7 @@
                     <li class="item item-thumbnail-left waitInfo " ng-if="item.status==statusToBeShare"
                         ui-sref="sharedDetail({patient_register_service_id:item.patient_register_service_id})">
                         <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.doctorId}}"/>
-                        <h2>{{item.doctorName}}&nbsp;&nbsp;<span>{{item.position}}</span></h2>
+                        <h2>{{item.doctorName}}&nbsp;<span>{{item.position}}</span></h2>
                         <p>{{item.hospitalName}}</p>
                         <p>{{item.date}}&nbsp;&nbsp;{{item.startTime}}-{{item.endTime}}</p>
                         <span class="wait-status">{{item.status}}</span>
@@ -39,7 +39,7 @@
                     <li class="item item-thumbnail-left waitInfo " ng-if="item.status==statusIsFinished"
                         ui-sref="toBeTreatedDetail({patient_register_service_id:item.patient_register_service_id,status:'2'})">
                         <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.doctorId}}"/>
-                        <h2>{{item.doctorName}}&nbsp;&nbsp;<span>{{item.position}}</span></h2>
+                        <h2>{{item.doctorName}}&nbsp;<span>{{item.position}}</span></h2>
                         <p>{{item.hospitalName}}</p>
                         <p>{{item.date}}&nbsp;&nbsp;{{item.startTime}}-{{item.endTime}}</p>
                         <span class="wait-status">{{item.status}}</span>
@@ -48,7 +48,7 @@
                         ui-sref="toBeTreatedDetail({patient_register_service_id:
                         item.patient_register_service_id,status:'3'})">
                         <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.doctorId}}"/>
-                        <h2>{{item.doctorName}}&nbsp;&nbsp;<span>{{item.position}}</span></h2>
+                        <h2>{{item.doctorName}}&nbsp;<span>{{item.position}}</span></h2>
                         <p>{{item.hospitalName}}</p>
                         <p>{{item.date}}&nbsp;&nbsp;{{item.startTime}}-{{item.endTime}}</p>
                         <span class="wait-status">{{item.status}}</span>
