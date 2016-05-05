@@ -1182,24 +1182,6 @@ public class ScheduledTask {
                 consultPhonePatientService.updateConsultPhoneTimingDialInfo(mvo);
             }
         }
-
-        //再建立通讯的五分钟前发消息给用户
-        Date date = new Date();
-        date.setTime(date.getTime() + 5 * 60 * 1000);
-        String dateStr = DateUtils.DateToStr(date, "datetime");
-        List<HashMap<String, Object>> orderMsgList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1", date);
-        for(HashMap<String ,Object> map:orderMsgList){
-            List<Map> messageMap = messageService.consultPhoneMsgRemind((Integer) map.get("id") + "");
-            if(null == messageMap||messageMap.size() == 0){
-                Map<String,Object> parameter = systemService.getWechatParameter();
-                String token = (String)parameter.get("token");
-                String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)map.get("date"),"yyyy/MM/dd"));
-                String url = ConstantUtil.TITAN_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(Integer) map.get("orderId")+",phone";
-                PatientMsgTemplate.consultPhoneWaring2Wechat((String) map.get("doctorName"), (String) map.get("date"), week, (String) map.get("beginTime"), (String) map.get("endTime"), (String) map.get("userPhone"), (String) map.get("orderNo"), (String) map.get("openid"), token, url);
-                PatientMsgTemplate.consultPhoneWaring2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (String) map.get("date"), week, (String) map.get("beginTime"), (String) map.get("userPhone"), (String) map.get("orderNo"));
-                insertMonitor((Integer) map.get("id") + "", "2", "7");
-            }
-        }
     }
 
 
