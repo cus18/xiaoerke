@@ -19,7 +19,7 @@ angular.module('controllers', ['ionic']).controller('nutritionIndexCtrl', [
                     window.location.href = data.redirectURL;
                 }else if(data.status=="8"){
                     window.location.href = data.redirectURL+"?targeturl="+routePath;
-                }else{
+                }else if(data.status=="20"){
                     $scope.commentImg = "http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Fdianjiqian_png_03.png";
                     $ionicScrollDelegate.scrollTop();
                     SaveManagementInfo.get({planTemplateId:2},function(data){
@@ -34,7 +34,6 @@ angular.module('controllers', ['ionic']).controller('nutritionIndexCtrl', [
                             $scope.Refresh();
                             GetBabyInfo.save({}, function (data){
                                 if(data.babyInfo==undefined){
-                                    //$state.go("nutritionBabyInfo");
                                     window.location.href = "ntr?value=251335#/nutritionBabyInfo";
                                 }else{
                                     var pData = {logContent:encodeURI("YYGL_SY")};

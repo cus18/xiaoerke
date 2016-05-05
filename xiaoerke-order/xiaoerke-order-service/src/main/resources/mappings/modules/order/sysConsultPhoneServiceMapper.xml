@@ -64,6 +64,7 @@
       and week(scs.date) = week(DATE_FORMAT(#{date,jdbcType=VARCHAR},'%Y-%m-%d'))
     </if>
       AND (DATE_FORMAT(CONCAT(DATE_FORMAT(scs.DATE,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>NOW()
+    AND  (DATE_ADD(NOW(), INTERVAL 7 day))>(DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))
     GROUP BY scs.date
     ORDER BY (DATE_FORMAT(CONCAT(DATE_FORMAT(scs.DATE,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s')) ASC
   </select>
