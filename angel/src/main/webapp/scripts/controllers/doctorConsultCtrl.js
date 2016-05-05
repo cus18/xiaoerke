@@ -103,15 +103,15 @@ angular.module('controllers', ['luegg.directives'])
                 $.each($scope.showFlag,function(key,value){
                     if(key==type){
                         $scope.showFlag[key] = !$scope.showFlag[key];
-                        if("replyContent"==type){
-                            if($scope.showFlag.replyContent==false){
+                        if(type == "replyContent"){
+                            if($scope.showFlag.replyContent == false){
                                 $scope.showFlag.advisoryContent =true;
                             }else{
                                 $scope.showFlag.advisoryContent =false;
                             }
                         }
-                        else if("advisoryContent"==type){
-                            if($scope.showFlag.advisoryContent==false){
+                        else if(type == "advisoryContent"){
+                            if ($scope.showFlag.advisoryContent==false){
                                 $scope.showFlag.replyContent=true;
                             }else{
                                 $scope.showFlag.replyContent=false;
@@ -325,7 +325,7 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.uploadFiles = function($files,fileType) {
                     var dataValue = {
                         "fileType": fileType,
-                        "senderId": $scope.patientId
+                        "senderId": $scope.doctorId
                     };
                     var dataJsonValue = JSON.stringify(dataValue);
                     for (var i = 0; i < $files.length; i++) {
@@ -337,21 +337,32 @@ angular.module('controllers', ['luegg.directives'])
                         }).progress(function(evt) {
                             console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
                         }).success(function(data, status, headers, config){
-                            console.log(data);
-                            var consultValMessage = {
-                                "type": 1,
-                                "content": data.showFile,
-                                "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                                "senderId": angular.copy($scope.doctorId),
-                                "senderName": angular.copy($scope.doctorName),
-                                "sessionId": angular.copy($scope.currentUserConversation.sessionId)
-                            };
+                            if(data.source == "wxcxqm"){
+                                var consultValMessage = {
+                                    "type": 1,
+                                    "content": data.showFile,
+                                    "wscontent": data.WS_File,
+                                    "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                                    "senderId": angular.copy($scope.doctorId),
+                                    "senderName": angular.copy($scope.doctorName),
+                                    "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                                };
+                            }else{
+                                var consultValMessage = {
+                                    "type": 1,
+                                    "content": data.showFile,
+                                    "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                                    "senderId": angular.copy($scope.doctorId),
+                                    "senderName": angular.copy($scope.doctorName),
+                                    "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                                };
+                            }
                             if (!window.WebSocket) {
                                 return;
                             }
-                            if ($scope.socketServer.readyState == WebSocket.OPEN) {
-                                $scope.consultContent.push(consultValMessage);
-                                $scope.socketServer.send(JSON.stringify(consultValMessage));
+                            if ($scope.socketServer1.readyState == WebSocket.OPEN) {
+                                $scope.socketServer1.send(JSON.stringify(consultValMessage));
+                                updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                             } else {
                                 alert("连接没有开启.");
                             }
@@ -434,13 +445,13 @@ angular.module('controllers', ['luegg.directives'])
                 });
             };
             //查看结果
-            function replace_em(str) {
+            var replace_em = function (str) {
                 str = str.replace(/\</g,'&lt;');
                 str = str.replace(/\>/g,'&gt;');
                 str = str.replace(/\n/g,'<br/>');
                 str = str.replace(/\[em_([0-9]*)\]/g,'<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fqqface%2F$1.gif" border="0" />');
                 return str;
-            }
+            };
 
             //查看更多的用户历史消息
                 $scope.seeMoreConversationMessage = function(){
@@ -716,7 +727,6 @@ angular.module('controllers', ['luegg.directives'])
                 })
             };
 
-
             //处理用户发送过来的会话消息    看到这里了
             var processPatientSendMessage = function(conversationData){
                 var currentConsultValue = {};
@@ -975,7 +985,7 @@ angular.module('controllers', ['luegg.directives'])
                         filterMediaData(value);
                     });
                 });
-            }
+            };
 
             $scope.chooseUserRecordDetail = function(action,recordType){
                 var pageNum = 1;
@@ -1004,13 +1014,13 @@ angular.module('controllers', ['luegg.directives'])
                         filterMediaData(value);
                     });
                 });
-            }
+            };
 
             //查找消息记录（点击全部、图片等）
             $scope.setRecordType = function (searchRecordType) {
                 $scope.recordType = searchRecordType;
                 $scope.chooseUserRecordDetail("firstPage",$scope.recordType);
-            }
+            };
 
             //查询某个客服信息位于某个时间段的信息
             $scope.getCsInfoByUserAndDate = function(Object){
@@ -1024,12 +1034,12 @@ angular.module('controllers', ['luegg.directives'])
                     pageNo: 1, pageSize:$scope.userConsultListPageSize}, function (data) {
                     refreshUserConsultListData(data);
                 })
-            }
+            };
 
             //查找咨询记录（消息列表右上角的搜索功能）
             $scope.searchMessage = function () {
                 if($scope.info.searchMessageContent == '' || $scope.info.searchMessageContent == null){
-                    alert('请选择查询内容！')
+                    alert('请选择查询内容！');
                     return ;
                 }else if($scope.messageType == '' || $scope.messageType == null){
                     alert('请选择查询类型！');
@@ -1044,12 +1054,12 @@ angular.module('controllers', ['luegg.directives'])
                         refreshUserConsultListData(data);
                     });
                 }
-            }
+            };
 
             //查找咨询记录
             $scope.setSearchMessageType = function (searchType) {
                 $scope.messageType = searchType;
-            }
+            };
 
             //左上角的刷新消息
             $scope.refreshUserList = function () {
@@ -1059,12 +1069,12 @@ angular.module('controllers', ['luegg.directives'])
                     pageSize: $scope.userConsultListPageSize}, function (data) {
                     refreshUserConsultListData(data);
                 })
-            }
+            };
 
             //右上角的消息刷新
             $scope.refreshCurrentUserRecordDetail = function(){
                 $scope.getUserRecordDetail($scope.userConsultListInfo[0].userName,$scope.userConsultListInfo[0].userId,0);
-            }
+            };
 
             //医生发起一个针对用户的会话
             $scope.createDoctorConsultSession = function(){
@@ -1081,7 +1091,7 @@ angular.module('controllers', ['luegg.directives'])
                         $state.go('doctorConsultFirst', {userId:data.userId,action:'createUserSession'});
                     }
                 })
-            }
+            };
 
             $scope.chooseUserConsultListDataPage = function(action){
                 var pageNum = 1;
@@ -1103,7 +1113,7 @@ angular.module('controllers', ['luegg.directives'])
                     pageNo: pageNum, pageSize: $scope.userConsultListPageSize}, function (data) {
                     refreshUserConsultListData(data);
                 })
-            }
+            };
 
             var refreshUserConsultListData = function(data){
                 $scope.userConsultListInfo = data.userList;
@@ -1120,14 +1130,14 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.currentClickUserId = "";
                     $scope.currentUserConsultRecordDetail = [];
                 }
-            }
+            };
 
             //过滤媒体数据
             var filterMediaData = function (val) {
                 if (val.type == "1"||val.type == "2" || val.type == "3") {
                     val.message = $sce.trustAsResourceUrl(angular.copy(val.message));
                 }
-            }
+            };
 
         }])
 
