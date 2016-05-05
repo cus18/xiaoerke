@@ -58,7 +58,9 @@
            /* $scope.doctorDetail.sumcase+=$scope.doctorDetail.otherCase;*/
 
             $scope.avgMajorStar = data.doctorScore.avgMajorStar == null?"5": data.doctorScore.avgMajorStar;
+            $scope.avgMajorStar =  parseFloat($scope.avgMajorStar)>5?"5": $scope.avgMajorStar;
             $scope.avgStar =  data.doctorScore.avgStar == null?"5":data.doctorScore.avgStar;
+            $scope.avgStar =  parseFloat($scope.avgStar)>5?"5": $scope.avgStar;
             $scope.doctorStar();
         });
 
