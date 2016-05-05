@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.sys.utils;
 
 import com.cxqm.xiaoerke.common.bean.WechatArticle;
 import com.cxqm.xiaoerke.common.utils.HttpRequestUtil;
+import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.sys.dao.UserDao;
@@ -18,12 +19,10 @@ import java.util.Map;
 /**
  * Created by wangbaowei on 15/12/7.
  */
-@Service
-@Transactional(readOnly = true)
+
 public class PatientMsgTemplate {
 
-    @Autowired
-    private SystemService systemService;
+    private SystemService systemService = SpringContextHolder.getBean("systemService");
     /**
      *预约成功 --短信
      * @param phone 用户电话
