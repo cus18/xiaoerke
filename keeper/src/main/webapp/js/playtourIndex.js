@@ -156,7 +156,7 @@ function getCustomerInfo(){
             }else{
                 var star=starInfo.startNum+"";
                 $("#redPacket").html(starInfo.redPacket);
-                $("#starInfo").html(star.split(".")[0]+"%");
+                $("#starInfo").html(star.split(".")[1]+"%");
                 $("#doctorName").html(doctorInfo.doctor_name);
                 $("#headImage").attr("src",doctorInfo.doctor_pic_url);
             }
@@ -170,7 +170,7 @@ function updateCustomerInfo(){
     var content=$("#content").val();
     var redPacket=$("#getMoney").val();
     if(redPacket!=""&& redPacket > 0){
-        
+
         recordLogs("ZXPJSXY_JE");
         $.ajax({
             url:"account/user/customerPay",// 跳转到 action
