@@ -1,6 +1,6 @@
 ﻿angular.module('controllers', ['ionic']).controller('phoneConEvaluateCtrl',[
-    '$scope','$state','$location','$stateParams','$filter','OrderPraiseOperation','FindDoctorCaseEvaluation','GetUserLoginStatus','PhoneConsultRegisterInfo',
-    function ($scope,$state,$location,$stateParams,$filter,OrderPraiseOperation,FindDoctorCaseEvaluation,GetUserLoginStatus,PhoneConsultRegisterInfo) {
+    '$scope','$state','$location','$stateParams','$filter','OrderPraiseOperation','FindDoctorCaseEvaluation','GetUserLoginStatus','PhoneConsultRegisterInfo','RecordLogs',
+    function ($scope,$state,$location,$stateParams,$filter,OrderPraiseOperation,FindDoctorCaseEvaluation,GetUserLoginStatus,PhoneConsultRegisterInfo,RecordLogs) {
 
         $scope.title="评价医生";
         $scope.title0 = "宝大夫（400-623-7120）";
@@ -162,5 +162,6 @@
 
                 }
             });
+            RecordLogs.get({logContent:encodeURI("DHZX_PJDX_PJYM")},function(){})
         });
     }])

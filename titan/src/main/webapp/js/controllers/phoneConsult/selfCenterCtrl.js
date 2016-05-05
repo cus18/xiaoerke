@@ -1,7 +1,7 @@
 ﻿angular.module('controllers', ['ionic']).controller('selfCenterCtrl', [
         '$scope','$state','MyselfInfo','$ionicPopup','GetUserLoginStatus',
-    '$rootScope','$location','resolveUserLoginStatus','$stateParams',
-        function ($scope,$state,MyselfInfo,$ionicPopup,GetUserLoginStatus,$rootScope,$location,resolveUserLoginStatus,$stateParams) {
+    '$rootScope','$location','resolveUserLoginStatus','$stateParams','RecordLogs',
+        function ($scope,$state,MyselfInfo,$ionicPopup,GetUserLoginStatus,$rootScope,$location,resolveUserLoginStatus,$stateParams,RecordLogs) {
             $scope.title = "我的";
             $scope.pageLoading =false;
             $scope.myselfBindStatus=false;
@@ -16,19 +16,23 @@
             };
             /*我的预约券*/
             $scope.myService = function(){
+                RecordLogs.get({logContent:encodeURI("DHZX_HYZX_HYFW")},function(){})
                 window.location.href="appoint#/myService";
                 /* window.location.href = "/titan/appoint#/healthRecordSelectBaby/"+index+",1,"+$stateParams.conid;*/
             };
             /* 当前订单*/
             $scope.currentOrder = function(){
+                RecordLogs.get({logContent:encodeURI("DHZX_HYZX_DQDD")},function(){})
                 resolveUserLoginStatus.events("currentOrderList","","","","notGo");
             };
             /* 预约挂号订单*/
             $scope.appointOrder = function(){
+                RecordLogs.get({logContent:encodeURI("DHZX_HYZX_YYGH")},function(){})
                 resolveUserLoginStatus.events("appointOrder","","","","notGo");
             };
             /* 电话咨询订单*/
             $scope.phoneConsultOrder = function(){
+                RecordLogs.get({logContent:encodeURI("DHZX_HYZX_DHZX")},function(){})
                 resolveUserLoginStatus.events("phoneConsultOrder","","","","notGo");
             };
 
