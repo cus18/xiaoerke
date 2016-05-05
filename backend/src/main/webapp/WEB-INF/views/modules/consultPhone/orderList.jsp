@@ -167,12 +167,14 @@
 				<c:if test="${consultPhone.state eq '3'}">待分享</c:if>
 				<c:if test="${consultPhone.state eq '4'}">已取消</c:if>
 				<c:if test="${consultPhone.state eq '5'}">已完成</c:if>
+				<c:if test="${consultPhone.state eq '6'}">超时取消</c:if>
 				<c:if test="${consultPhone.state eq 'daichonglian'}">等待重连</c:if>
 			</td>
 			<td>
 				<c:if test="${consultPhone.state eq '0'}">待支付</c:if>
 				<c:if test="${consultPhone.state eq '1' || consultPhone.state eq '2' || consultPhone.state eq '3' || consultPhone.state eq '5' || consultPhone.state eq 'daichonglian'}">已支付</c:if>
 				<c:if test="${consultPhone.state eq '4'}">已退款</c:if>
+				<c:if test="${consultPhone.state eq '6'}">未支付</c:if>
 			</td>
 			<td><fmt:formatDate value ="${consultPhone.updateTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 			<td>${consultPhone.deleteBy}</td>

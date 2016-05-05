@@ -9,7 +9,7 @@ document.write('<scr'+'ipt src="js/libs/jquery.event.drag-1.5.min.js"></scr'+'ip
 document.write('<scr'+'ipt src="js/libs/jquery.touchSlider.js"></scr'+'ipt>');
 
 var phoneConsultFirstPageInit = function(){
-    recordLogs("accessAppointmentFirstPageInit");
+    recordLogs("DHZX_SY");
     chooseHospital();
     /*chooseIllness();*/
     roundPage();
@@ -78,15 +78,19 @@ var chooseMenu=function(item,index){
     $("#menu li").removeClass("cur").eq(index).addClass("cur");
     $(".menuItem").hide().eq(index).show();;
     if(item=="hospital"){
+        recordLogs("DHZX_SY_JB");
         chooseHospital();
     }
     else if(item=="illness"){
+        recordLogs("DHZX_SY_JB");
         chooseIllness();
     }
     else if(item=="time"){
+        recordLogs("DHZX_SY_SJ");
         chooseTime();
     }
     else {
+        recordLogs("DHZX_SY_ZJT");
         chooseDoctorGroup();
     }
 
@@ -182,12 +186,12 @@ var selectIllnessDetail = function(chooseFirstIllnessName,firstIllnessItem){
 
 }
 var searchSecondIllness = function(illnessSecondId,illnessSecondName){
+    recordLogs("DHZX_SY_JB_YSLB");
     window.location.href = window.location.href = "phoneConsult#/phoneConDoctorList/" + illnessSecondId + ",searchDoctorByIllnessSecondId," + illnessSecondName;
 }
 
 /*时间列表*/
 var chooseTime = function(){
-
     var param = '{"pageNo":"1","pageSize":"7","orderBy":"1"}';
 
     $.ajax({type : "POST",
@@ -213,6 +217,7 @@ var chooseTime = function(){
 
 }
 var searchAppointmentByDate = function(searchDate){
+    recordLogs("DHZX_SY_SJ_YSLB");
     searchDate = searchDate.replace("/","%252F");
     window.location.href = "phoneConsult#/phoneConDoctorList/" + searchDate + ",searchDoctorByDate," + searchDate;
 }

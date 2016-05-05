@@ -839,7 +839,7 @@
             AND prs.status =#{status}
         </if>
         <if test="patientId!=null">
-            AND prs.sys_patient_id =#{patientId}
+            AND prs.sys_patient_id =#{patientId} ORDER BY srs.date DESC
         </if>
     </select>
 

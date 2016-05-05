@@ -34,11 +34,14 @@ define(['appAppoint','jquery'], function (app,$) {
                     replace: true,
                     template: '<div class=" footer tc">' +
                     '<p><a class="f2 c1 home" ng-click="appointmentFirst()">首页</a>' +
-                    '<a class="f2 c1" ui-sref="questions">常见问题</a></p>' +
-                    '</p><a  class="f2 c1"href="tel:4006237120">客服电话：400-623-7120</a></p></div>',
+                    '<a class="f2 c1" ng-click="commonQuestion()">常见问题</a></p>' +
+                    '</p><a  class="f2 c1" href="tel:4006237120">客服电话：400-623-7120</a></p></div>',
                     link: function(scope) {
                         scope.appointmentFirst = function(){
                             window.location.href = "firstPage/appoint";
+                        };
+                        scope.commonQuestion = function(){
+                            window.location.href = "baoFansCamp#/questions";
                         }
                     }
                 }

@@ -88,12 +88,12 @@
                     <li >
                         <span >手机：</span>
                         <input type="text" placeholder='用于接收短信（必填）'onfocus="skip('phone')"
-                               ng-model="info.userPhone" maxlength="11" ng-blur="checkPhone()"
+                               ng-model="info.userPhone" maxlength="11"
                                ng-if ="info.checkUserBind" readonly="true" style="background-color: #fff;">
                         <input type="text" placeholder='用于接收短信（必填）'onfocus="skip('phone')"
                                ng-model="info.userPhone" maxlength="11" ng-blur="checkPhone()" ng-if ="!info.checkUserBind">
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <p  ng-if="phoneErrorShow" class="errorTips">{{userPhoneError}}</p>
+                        <p  style="text-align: right;" ng-if="phoneErrorShow" class="errorTips">{{userPhoneError}}</p>
                     </li>
                     <li >
                         <span >姓名：</span>

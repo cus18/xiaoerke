@@ -45,10 +45,8 @@ public class LoginController extends BaseController{
 	
 	/** 检查认证中心是否已登录  */
 	@RequestMapping(value = "${ssoPath}/checklogin")
-	public String checkLogin(String toUrl, HttpServletRequest request,
-							 HttpServletResponse response, Model model){
+	public String checkLogin(String toUrl, HttpServletRequest request){
 		//认证中心在cookie中获取token，未取到则跳转登陆页登陆
-		
 		String ip = request.getLocalAddr();
 		int port = request.getLocalPort();
 		String contextPath = request.getContextPath();
@@ -92,17 +90,12 @@ public class LoginController extends BaseController{
 	
 	@RequestMapping(value="${ssoPath}/logout")
 	public String logout(String toUrl,HttpServletResponse response,HttpServletRequest request){
-//		Cookie cookie = new Cookie("ssoToken",null);
-//		cookie.setPath("/");
-//		cookie.setDomain(ConstantUtil.DOMAIN_VALUE);
-//		cookie.setMaxAge(0);
-//		response.addCookie(cookie);
 		Cookie[] cookies = request.getCookies();
-		String[] pathArray=new String[]{"/titan/","/keeper/","/authcenter/","/angel/","/doctor/","/market/","/wisdom/"};
+		String[] pathArray=new String[]{"/titan/","/keeper/","/authcenter/","/angel/","/doctor/","/market/","/wisdom/","/"};
 		for(int i = 0,len = cookies.length; i < len; i++) {
 			for(int j = 0;j < pathArray.length;  j++){
 				Cookie cookie = new Cookie(cookies[i].getName(), null);
-				cookie.setDomain("localhost");
+				cookie.setDomain(".xiaork.cn");
 				cookie.setMaxAge(0);
 				cookie.setPath(pathArray[j]);
 				response.addCookie(cookie);

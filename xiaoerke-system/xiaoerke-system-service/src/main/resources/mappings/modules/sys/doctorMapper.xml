@@ -151,7 +151,7 @@
             and dhr.department_level1 = #{departmentName}
         </if>
         and (DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>NOW()
-        AND  (DATE_ADD(NOW(), INTERVAL 7 day))>=(DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))
+        AND  (DATE_ADD(NOW(), INTERVAL 7 day))>(DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))
         group by sd.id
         <if test="orderBy==0">
             order by min(
@@ -367,19 +367,19 @@
         and sd.is_display = 'display'
         and sd.is_consultPhone = '1'
         and scs.state = '0'
-        and (DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>NOW()
+        and (DATE_ADD((DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s')), INTERVAL -5 MINUTE))>NOW()
         <if test="hospitalId!=null">
             and  dhr.sys_hospital_id = #{hospitalId}
         </if>
         group by sd.id
         <if test="orderBy==0">
-            order by scs.endTime is null,UNIX_TIMESTAMP(scs.endTime) ASC
+            order by DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s') ASC
         </if>
         <if test="orderBy==1">
             order by sd.fans_number desc, sd.fans_number is null
         </if>
         <if test="orderBy==2">
-            ORDER BY scs.begin_time ASC
+            ORDER BY sd.career_time asc
         </if>
     </select>
 

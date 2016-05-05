@@ -1,6 +1,6 @@
 ﻿angular.module('controllers', ['ionic']).controller('phoneConDoctorDetailCtrl', [
-    '$scope','$state','$stateParams','DoctorDetail','DoctorVisitInfoByLocationInWeek','DoctorAppointmentInfoDetail','$location','CheckAttentionDoctor','GetUserLoginStatus','EarliestVisiteInfo','GetUserEvaluate','AttentionDoctor',
-    function ($scope,$state,$stateParams,DoctorDetail,DoctorVisitInfoByLocationInWeek,DoctorAppointmentInfoDetail,$location,CheckAttentionDoctor,GetUserLoginStatus,EarliestVisiteInfo,GetUserEvaluate,AttentionDoctor) {
+    '$scope','$state','$stateParams','DoctorDetail','DoctorVisitInfoByLocationInWeek','DoctorAppointmentInfoDetail','$location','CheckAttentionDoctor','GetUserLoginStatus','EarliestVisiteInfo','GetUserEvaluate','AttentionDoctor','RecordLogs',
+    function ($scope,$state,$stateParams,DoctorDetail,DoctorVisitInfoByLocationInWeek,DoctorAppointmentInfoDetail,$location,CheckAttentionDoctor,GetUserLoginStatus,EarliestVisiteInfo,GetUserEvaluate,AttentionDoctor,RecordLogs) {
         $scope.title = "医生详情页";
         $scope.pageLoading =false;
         $scope.toggleItem="phone";//默认的底部选择
@@ -58,7 +58,9 @@
            /* $scope.doctorDetail.sumcase+=$scope.doctorDetail.otherCase;*/
 
             $scope.avgMajorStar = data.doctorScore.avgMajorStar == null?"5": data.doctorScore.avgMajorStar;
+            $scope.avgMajorStar =  parseFloat($scope.avgMajorStar)>5?"5": $scope.avgMajorStar;
             $scope.avgStar =  data.doctorScore.avgStar == null?"5":data.doctorScore.avgStar;
+            $scope.avgStar =  parseFloat($scope.avgStar)>5?"5": $scope.avgStar;
             $scope.doctorStar();
         });
 
@@ -112,6 +114,8 @@
             });
         }
         $scope.chooseTime = function(item){
+
+            RecordLogs.get({logContent:encodeURI("DHZX_YSLB_SJD")},function(){})
             if(item.state == "1")return
             var routePath = "http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=phoneConsultAAAAAAphoneConDoctorDetail="
                 + item.id+"AAAAAAdoctorId="+$stateParams.doctorId;

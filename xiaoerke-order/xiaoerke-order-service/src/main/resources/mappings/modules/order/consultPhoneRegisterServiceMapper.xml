@@ -549,7 +549,7 @@ group by crs.id
       <if test="payState == 1">
         and crs.state in (1,2,3,5)
       </if>
-      <if test="payState == 4 or payState == 0">
+      <if test="payState == 4 or payState == 0 or payState == 6">
         and crs.state = #{payState}
       </if>
     </if>
@@ -572,6 +572,12 @@ group by crs.id
       and #{consultPhoneTimeToStr} >= scs.date
     </if>
     group by crs.id
+    <if test="state != 4" >
+      order by crs.create_time desc
+    </if>
+    <if test="state == 4" >
+      order by crs.update_time desc
+    </if>
   </select>
   <!-- 查询电话咨询订单数，sunxiao -->
   <select id="getNewOrderCount" resultType="java.lang.Integer" >

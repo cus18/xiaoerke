@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.consult.service.core;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.cxqm.xiaoerke.common.utils.ConstantUtil;
@@ -95,6 +96,15 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 						//直接发送文本消息
 						String st = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
 						WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(), st);
+
+//						String token = WechatUtil.getToken(WechatUtil.CORPID,WechatUtil.SECTET);
+//						String ticket = WechatUtil.getJsapiTicket(token);
+//						HashMap<String, Object> map = new HashMap<String, Object>();
+//						map.put("token", token);
+//						map.put("ticket",ticket);
+//						map.put("id","1");
+//						sessionRedisCache.putWeChatParamToRedis(map);
+
 						//保存聊天记录
 						consultRecordService.buildRecordMongoVo(csUserId,String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
 					}else if(msgType!=0){

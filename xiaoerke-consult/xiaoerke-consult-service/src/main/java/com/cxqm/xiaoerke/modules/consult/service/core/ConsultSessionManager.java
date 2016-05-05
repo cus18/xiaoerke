@@ -501,6 +501,11 @@ public class ConsultSessionManager {
 				if(ConsultSessionForwardRecordsVo.REACT_TRANSFER_OPERATION_ACCEPT.equalsIgnoreCase(operation)){
 					if(session!=null){
 						sessionRedisCache.putSessionIdConsultSessionPair(sessionId, session);
+
+						ConsultSession consultSession = new ConsultSession();
+						consultSession.setId(sessionId);
+						consultSession.setCsUserId(session.getCsUserId());
+						consultSessionService.updateSessionInfo(consultSession);
 					}
 					forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_ACCEPT);
 					consultSessionForwardRecordsService.updateAcceptedTransfer(forwardRecord);
