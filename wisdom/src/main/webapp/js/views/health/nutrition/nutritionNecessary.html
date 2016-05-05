@@ -3,14 +3,14 @@
     <ion-content class="nutritionNecessary " style="top:0;">
         <ion-scroll direction="y" has-bouncing="true">
             <div>
-                <img width="100%" height="auto" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fnecessary_banner.png">
+                <img width="100%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Fnecessary_banner.png">
             </div>
             <div class="necessary-list">
                 <div class="titleLine">
                     <span class="line"></span>
                     <span class="line"></span>
                     妈妈必备
-                    <img class="my-img" width="18" height="15" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fnecessary_car.png">
+                    <img class="my-img" width="18" height="15" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Fnecessary_car.png">
                 </div>
                 <ul >
                     <li ng-repeat="item in necessaryList" ng-click="chooseType(item.text)">
@@ -23,8 +23,8 @@
                 <div class="titleLine">
                     <span class="line"></span>
                     <span class="line"></span>
-                   TOP妈妈最爱榜
-                    <img class="my-img" width="11" height="16" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fnecessary_fire.png">
+                    TOP妈妈最爱榜
+                    <img class="my-img" width="11" height="16" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Fnecessary_fire.png">
                 </div>
                 <ul >
                     <li ng-repeat="item in necessaryList1" ng-click="goNecessaryList(item.title,item.introduce,item.jingdong,
@@ -51,5 +51,5 @@
         <a class="tab-item"  ng-class="{'activated':footerNum==2}" ng-click="menuSelect(2)"><i class="icon ">
             <img width="23" height="25" ng-src="{{reportImg}}"></i> 我的</a>
     </div>
-   <!--<div nutrition-footer="my-footer  tabs tabs-icon-top "></div>-->
+    <!--<div nutrition-footer="my-footer  tabs tabs-icon-top "></div>-->
 </ion-view>

@@ -300,7 +300,7 @@
 	</bean>
 	<bean id="consultManagementCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="consultManagementQuarzTask"/>
-		<property name="cronExpression" value="0 */1 * * * ?"/>
+		<property name="cronExpression" value="0 */2 * * * ?"/>
 	</bean>
 
 	<!-- 咨询定时操作（天）-->
