@@ -372,7 +372,7 @@
         </if>
         group by sd.id
         <if test="orderBy==0">
-            order by scs.endTime is null,UNIX_TIMESTAMP(scs.endTime) ASC
+            order by DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s') ASC
         </if>
         <if test="orderBy==1">
             order by sd.fans_number desc, sd.fans_number is null
