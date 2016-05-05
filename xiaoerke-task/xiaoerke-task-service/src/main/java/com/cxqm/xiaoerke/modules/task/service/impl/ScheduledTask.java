@@ -1051,43 +1051,6 @@ public class ScheduledTask {
 
               }
           }
-//          else{
-//              //取消用户订单
-//              ConsultPhoneRegisterServiceVo vo =  new ConsultPhoneRegisterServiceVo();
-//              vo.setId(orderId);
-//              vo.setUpdateTime(new Date());
-//              vo.setState("4");
-//              int state = consultPhonePatientService.updateOrderInfoBySelect(vo);
-////             将钱退还到用户的账户
-////              if(state>0){
-////                  HashMap<String, Object> response = new HashMap<String, Object>();
-////                  accountService.updateAccount(0F, (Integer) map.get("id")+"", response, false, (String)map.get("userId"),"电话咨询超时取消退款");
-//                  //              并发送消息
-//              String url = ConstantUtil.TITAN_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(Integer) map.get("id")+",phone";
-//              PatientMsgTemplate.unConnectPhone2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (Float) map.get("price") + "", (String) map.get("userPhone"), (String) map.get("orderNo"));
-//
-//              String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)map.get("date"),"yyyy/MM/dd"));
-//              String dateTime = (String)map.get("date")+week+(String)map.get("beginTime");
-//              PatientMsgTemplate.unConnectPhone2Wechat(dateTime, (String) map.get("userPhone"), (String) map.get("doctorName"), (Float) map.get("price") + "", url, (String) map.get("orderNo"), (String) map.get("openid"), token);
-//
-//              //未接通时 给医生发消息提醒
-//              String hospitalContactPhone = (String)map.get("hospitalContactPhone");
-//              if(StringUtils.isNotNull(hospitalContactPhone)){
-//                  String content = "【未接通】尊敬的"+doctorName+"医生，由于"+babyName+"小朋友家长预约电话咨询未接通，已将咨询费用退还给预约用户。有疑问请致电400-623-7120。";
-//                  ChangzhuoMessageUtil.sendMsg(hospitalContactPhone, content, ChangzhuoMessageUtil.RECEIVER_TYPE_DOCTOR);
-//              }else {
-//                  DoctorMsgTemplate.doctorPhoneConsultRemindFail2Sms(doctorName, babyName, doctorPhone);
-//                  SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("mm月dd日");
-//                  String nowTime = simpleDateFormat1.format(new Date());
-//                  Map tokenMap = systemService.getDoctorWechatParameter();
-//                  String doctorToken = (String) tokenMap.get("token");
-//                  String openId = doctorInfoService.findOpenIdByDoctorId((String) map.get("doctorId"));
-//                  if (StringUtils.isNotNull(openId)) {
-//                      DoctorMsgTemplate.doctorPhoneConsultRemindFail2Wechat(babyName, nowTime, doctorToken, "", openId);
-//                  }
-//              }
-////              }
-//          }
       }
 
         //将钱退还给用户
@@ -1102,11 +1065,9 @@ public class ScheduledTask {
           String dateTime = (String) consultOrder.get("date")+" "+week+ " "+(String) consultOrder.get("beginTime");
           PatientMsgTemplate.returnPayPhoneRefund2Wechat((String) consultOrder.get("babyName"),(String) consultOrder.get("doctorName"),dateTime, (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"), (Float) consultOrder.get("price") + "",(String) consultOrder.get("openid"),token,url);
         }
-//        查询是不是有return状态
 
         //将半小时钱的未支付的订单释放
         consultPhonePatientService.CancelAppointNoPay();
-
     }
 
     /**
@@ -1160,6 +1121,10 @@ public class ScheduledTask {
                         sessionRedisCache.removeConsultSessionBySessionId(Integer.parseInt(consultSessionStatusAgainVos.get(0).getSessionId()));
                         sessionRedisCache.removeUserIdSessionIdPair(consultSessionStatusAgainVos.get(0).getUserId());
                     }
+                }else{
+                    //if consultSessionStatusAgainVos have no data, it proved that the data in redis is dirty data, delete it
+                    sessionRedisCache.removeConsultSessionBySessionId(consultSessionValue.getId());
+                    sessionRedisCache.removeUserIdSessionIdPair(consultSessionValue.getUserId());
                 }
             }
         }
