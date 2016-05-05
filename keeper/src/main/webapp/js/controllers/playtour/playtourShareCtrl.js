@@ -6,9 +6,9 @@ angular.module('controllers', ['ionic']).controller('playtourShareCtrl', [
             "http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fsharefuceng.png",//收到心意分享
             "http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fsharefuceng_1.png"];//没有心意只有评价分享
         var imgType = 6;
-
+        $scope.title0="分享";
         $scope.$on('$ionicView.enter', function(){
-            $scope.title0="分享";
+            
             $scope.sharetou = false;
             $scope.shareimg = false;//分享图片
             imgType=$stateParams.id;
@@ -29,6 +29,8 @@ angular.module('controllers', ['ionic']).controller('playtourShareCtrl', [
                 } else {
                     $scope.shareImg = shareimgList[2];
                 }
+            }else {
+                imgType=1;
             }
         }
 
@@ -40,6 +42,7 @@ angular.module('controllers', ['ionic']).controller('playtourShareCtrl', [
         }
 
         $scope.doRefresh = function(){
+           var  host2=document.domain;
             var timestamp;//时间戳
             var nonceStr;//随机字符串
             var signature;//得到的签名
@@ -73,7 +76,7 @@ angular.module('controllers', ['ionic']).controller('playtourShareCtrl', [
                             // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                             wx.onMenuShareTimeline({
                                 title: '你知道吗？微信竟然能免费咨询北京三甲医院的儿科专家！回答的超详细！', // 分享标题
-                                link: window.location.href.replace("true","false"), // 分享链接
+                                link: "", // 分享链接
                                 imgUrl: 'http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fbaodf_logo.jpg', // 分享图标
                                 success: function (res) {
                                     //记录用户分享文章
