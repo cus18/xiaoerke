@@ -379,7 +379,7 @@
             order by sd.fans_number desc, sd.fans_number is null
         </if>
         <if test="orderBy==2">
-            ORDER BY scs.begin_time ASC
+            ORDER BY sd.career_time asc
         </if>
     </select>
 
