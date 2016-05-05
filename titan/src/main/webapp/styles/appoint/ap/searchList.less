@@ -10,34 +10,32 @@
 .searchList .scroll{
   z-index:4;
 }
-.Category.button-bar {
-  height: 49px;
+.category{
   position: absolute;
   top:44px!important;
-  margin-bottom: 5px;
+  width:100%;
+  padding:12px 0;
   z-index:4;
-  color:#999;
-  border-bottom: 1px solid #ddd;
 }
-.Category.button-bar img{
-  vertical-align: middle;
-  margin-top:-3.5px;
-}
-.Category.button-bar > div.button {
+
+.category div {
   width:50%;
-  font-size: 16px;
-  line-height: 49px;
-  color:#22252c;
 }
-.button-bar>.button:last-child {
-  border-right-width: 0px!important;
-  border-radius: 0 2px 2px 0;
+.category div:first-of-type {
+  border-right:1px solid #eee;
+}
+.category div span{
 }
 .searchList .item {
-  margin-bottom: 0px;
+  margin-bottom: 0;
   padding:2px 0 10px 0;
   position: relative;
-  /*border:none!important;*/
+}
+.searchList .item-wrap:first-of-type{
+  margin-top:-2px;
+}
+.searchList .item-wrap{
+  margin-top:7.5px;
 }
 .searchList .doctorInfo h2{
   margin-top:7px;
