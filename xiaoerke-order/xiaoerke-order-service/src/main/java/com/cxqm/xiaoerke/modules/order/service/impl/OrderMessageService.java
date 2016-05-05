@@ -81,10 +81,10 @@ class OrderMessageService {
 			 * *地铁可在南礼士路站下车，进入门诊大厅后可乘电梯到2楼，到达后找到相诮的诊室即可。"
 			 * */
 			//======================交通信息消息插入=====================
-			StringBuffer message_content_traffic = new StringBuffer();
-			message_content_traffic.append("(交通信息)");
-			message_content_traffic.append(resultMap.get("root"));
-			shot_message = message_content_traffic.toString();
+			StringBuffer messageContentTraffic = new StringBuffer();
+			messageContentTraffic.append("(交通信息)");
+			messageContentTraffic.append(resultMap.get("root"));
+			shot_message = messageContentTraffic.toString();
 			//短信用户提示
 			shot_message = shot_message.substring(shot_message.lastIndexOf("；") + 1, shot_message.length());
 			if(params.containsKey("openId")&&params.get("openId")!=null) {
