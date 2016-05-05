@@ -9,19 +9,19 @@ angular.module('controllers', ['ionic']).controller('nutritionNecessaryCtrl', [
         $scope.reportImg="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Ficon_footer4.png";
         $scope.necessaryList=[
             {
-                img:"http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fnecessary1.png",
+                img:"http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Fnecessary1.png",
                 text:"工具"
             },
             {
-                img:"http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fnecessary2.png",
+                img:"http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Fnecessary2.png",
                 text:"蔬菜"
             },
             {
-                img:"http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fnecessary3.png",
+                img:"http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Fnecessary3.png",
                 text:"水果"
             },
             {
-                img:"http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fnecessary4.png",
+                img:"http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Fnecessary4.png",
                 text:"图书"
             },
         ];
@@ -55,7 +55,7 @@ angular.module('controllers', ['ionic']).controller('nutritionNecessaryCtrl', [
         $scope.$on('$ionicView.enter', function(){
             $scope.commentImg = "http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/nutrition%2Fdianjiqian_png_03.png";
         });
-        
+
         $scope.chooseType = function (text) {
             $state.go("nutritionNecessaryList",{type:text});
         }
@@ -67,7 +67,7 @@ angular.module('controllers', ['ionic']).controller('nutritionNecessaryCtrl', [
                 $state.go("nutritionIndex");
             }
             else if(index==1){
-               // $state.go("nutritionAssess",{flag:"noagain"});
+                // $state.go("nutritionAssess",{flag:"noagain"});
                 window.location.href = "ntr?value=251349#/nutritionAssess/noagain";
             }
             else if(index==2){
