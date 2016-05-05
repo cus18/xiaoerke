@@ -20,22 +20,13 @@ public interface ConsultSessionService {
 
     int updateSessionInfo(ConsultSession consultSession);
 
-    int updateSessionInfoByUserId(ConsultSession consultSession);
-
-    String removeSessionById(HttpServletRequest request, Map<String, Object> param);
-    
     List<ConsultSession> selectBySelective(ConsultSession consultSession);
 
     List<RichConsultSession> selectRichConsultSessions(RichConsultSession consultSession);
 
     List<ConsultSession> getCsUserByUserId(ConsultSession consultSession);
 
-    List<String> getOnlineCsList();
-
     List<HashMap<String, Object>> getOnlineCsListInfo(List<String> userList);
-
-    List<ConsultSession> getAlreadyAccessUsers(ConsultSession richConsultSession);
-
 
     String clearSession(String sessionId, String userId);
 

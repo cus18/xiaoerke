@@ -293,25 +293,25 @@
 
 	<!--==========================================咨詢部分================================================-->
 	<!--@Scheduled(cron = "0 0/1 * * * ?") -->
-	<bean id="consultMangementQuarzTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	<bean id="consultManagementQuarzTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="scheduledQuarz"/>
 		<property name="targetMethod" value="consultManagement4Session"/>
 		<property name="concurrent" value="false"/>
 	</bean>
-	<bean id="consultMangementCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="consultMangementQuarzTask"/>
-		<property name="cronExpression" value="0 */1 * * * ?"/>
+	<bean id="consultManagementCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="consultManagementQuarzTask"/>
+		<property name="cronExpression" value="0 */2 * * * ?"/>
 	</bean>
 
 	<!-- 咨询定时操作（天）-->
-	<bean id="consultMangementDayTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	<bean id="consultManagementDayTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="scheduledQuarz"/>
-		<property name="targetMethod" value="consultMangementDayTask"/>
+		<property name="targetMethod" value="consultManagementDayTask"/>
 		<property name="concurrent" value="false"/>
 	</bean>
 	<!--事件触发时间点 每天凌晨零点执行一次  -->
 	<bean id="deleteTempRecordTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="consultMangementDayTask"/>
+		<property name="jobDetail" ref="consultManagementDayTask"/>
 		<property name="cronExpression" value="0 0 0 * * ?"/>
 	</bean>
 
@@ -335,7 +335,7 @@
 				<ref bean="nutritionManagementSendWechatMessageCronTrigger"/>
 				<ref bean="insuranceUpdateCronTrigger"/>
 				<ref bean="consultPhoneCronTrigger"/>
-				<ref bean="consultMangementCronTrigger"/>
+				<ref bean="consultManagementCronTrigger"/>
 				<ref bean="timingDialCronTrigger"/>
                 <ref bean="sendMsgToDocAtNightPhoneConsultCronTrigger"/>
                 <ref bean="sendMsgToDocAtMorningPhoneConsultCronTrigger"/>

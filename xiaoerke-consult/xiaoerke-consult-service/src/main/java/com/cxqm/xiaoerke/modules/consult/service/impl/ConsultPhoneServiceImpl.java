@@ -180,7 +180,7 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
             int state = consultPhonePatientService.updateOrderInfoBySelect(registerServiceVo);
             //              并发送消息
             String url = ConstantUtil.TITAN_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) consultOrder.get("doctorId")+","+(Integer) consultOrder.get("id")+",phone";
-            PatientMsgTemplate.unConnectPhone2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"), (Float) consultOrder.get("price") + "", (String) consultOrder.get("userPhone"), (String) consultOrder.get("orderNo"));
+            PatientMsgTemplate.unConnectPhone2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"), (Float) consultOrder.get("price") + "", (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"));
             Map tokenMap = systemService.getDoctorWechatParameter();
             String token = (String)tokenMap.get("token");
             String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)consultOrder.get("date"),"yyyy/MM/dd"));
