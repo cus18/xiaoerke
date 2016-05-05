@@ -260,7 +260,7 @@ define(['appPhoneConsult'], function (app) {
             return $resource(user_h5 + 'util/user/getCode');
         }])
         .factory('RecordLogs',['$resource',function ($resource){
-            return $resource(user_h5 + 'util/recordLogs');
+            return $resource(user_appoint + 'util/recordLogs');
         }])
         //获取会员信息
         .factory('ExtendMemberService',['$resource',function ($resource){

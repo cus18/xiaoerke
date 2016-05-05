@@ -1,11 +1,12 @@
 ﻿angular.module('controllers', ['ionic']).controller('phoneConPaySuccessCtrl', [
-        '$scope','$state','$stateParams','SendWechatMessageToUser','PhoneConsultRegisterInfo',
-        function ($scope,$state,$stateParams,SendWechatMessageToUser,PhoneConsultRegisterInfo) {
+        '$scope','$state','$stateParams','SendWechatMessageToUser','PhoneConsultRegisterInfo','RecordLogs',
+        function ($scope,$state,$stateParams,SendWechatMessageToUser,PhoneConsultRegisterInfo,RecordLogs) {
             $scope.title = "预约成功";
             $scope.pageLoading =false;
 
 
             $scope.consultDoc = function(){
+                RecordLogs.get({logContent:encodeURI("DHZX_YYCG_MFZX")},function(){})
                 SendWechatMessageToUser.save({},function(data){
                 });
                 WeixinJSBridge.call('closeWindow');
