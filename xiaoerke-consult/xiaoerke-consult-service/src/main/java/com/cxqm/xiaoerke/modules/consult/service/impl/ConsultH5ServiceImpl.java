@@ -2,13 +2,16 @@ package com.cxqm.xiaoerke.modules.consult.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
-import com.cxqm.xiaoerke.common.utils.*;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
+import com.cxqm.xiaoerke.common.utils.OSSObjectTool;
+import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
+import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultH5Service;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
-import com.cxqm.xiaoerke.modules.sys.service.DoctorInfoService;
+import com.cxqm.xiaoerke.modules.sys.entity.User;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,11 +23,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
 
 /**
  * Created by jiangzhongge on 2016-4-21.
@@ -36,8 +37,7 @@ public class ConsultH5ServiceImpl implements ConsultH5Service {
     @Autowired
     ConsultRecordService consultRecordService;
 
-    @Autowired
-    DoctorInfoService doctorInfoService;
+    @Autowired SystemService systemService;
 
     private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
     @Override
@@ -57,68 +57,59 @@ public class ConsultH5ServiceImpl implements ConsultH5Service {
                 Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
                 try {
                     InputStream inputStream = file.getInputStream();
+                    InputStream inputStream_ws = file.getInputStream();
                     String key = null ;
                     String aliUrl = null ;
-                    String csName = null;
-                    if(fileType.equalsIgnoreCase("image") ||fileType.equalsIgnoreCase("1")){
-                        csName = doctorInfoService.getDoctorNameByDoctorId(senderId);
-                        if(StringUtils.isNotNull(csName)){
+                    if(("image").equalsIgnoreCase(fileType) ||("1").equalsIgnoreCase(fileType)){
+                        User user = systemService.getUserById(senderId);
+                        String userType = user.getUserType();
+                        if(StringUtils.isNotNull(userType) && ("distributor".equalsIgnoreCase(userType) || "consultDoctor".equalsIgnoreCase(userType))){
                             Integer sessionId = sessionRedisCache.getSessionIdByUserId(senderId);
                             RichConsultSession consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
                             if("wxcxqm".equalsIgnoreCase(consultSession.getSource())){
                                 String upLoadUrl = "https://api.weixin.qq.com/cgi-bin/media/upload";
-                                ExecutorService executorService = Executors.newCachedThreadPool();
-                                try {
-                                    Future ali = executorService.submit(new MyThread("ali",fileName,file.getSize(),inputStream,OSSObjectTool.BUCKET_DOCTOR_PIC));
-                                    Future ws = executorService.submit(new MyThread("ws", (String) userWechatParam.get("token"), upLoadUrl, fileType, fileName, inputStream));
-                                    response.put("showFile",ali.get());
-                                    response.put("WS_File",ws.get());
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                } catch (ExecutionException e) {
-                                    e.printStackTrace();
-                                }finally {
-                                    if(!executorService.isShutdown()){
-                                        executorService.shutdown();
-                                    }
-                                }
+                                key = OSSObjectTool.uploadFileInputStream(fileName, file.getSize(), inputStream, OSSObjectTool.BUCKET_DOCTOR_PIC);
+                                aliUrl = "http://"+OSSObjectTool.BUCKET_DOCTOR_PIC+".oss-cn-beijing.aliyuncs.com/"+fileName;
+                                JSONObject jsonObject = WechatUtil.uploadNoTextMsgToWX((String) userWechatParam.get("token"), upLoadUrl, fileType, fileName, inputStream_ws);
+                                String  media_id= jsonObject.optString("media_id");
+                                response.put("WS_File",media_id);
+                                response.put("source","wxcxqm");
                             }else{
                                 key = OSSObjectTool.uploadFileInputStream(fileName, file.getSize(), inputStream, OSSObjectTool.BUCKET_DOCTOR_PIC);
                                 aliUrl = "http://"+OSSObjectTool.BUCKET_DOCTOR_PIC+".oss-cn-beijing.aliyuncs.com/"+fileName;
                                 response.put("showFile",aliUrl);
+                                response.put("source","h5cxqm");
                             }
                         }else{
                             key = OSSObjectTool.uploadFileInputStream(fileName, file.getSize(), inputStream, OSSObjectTool.BUCKET_CONSULT_PIC);
                             aliUrl = "http://"+OSSObjectTool.BUCKET_CONSULT_PIC+".oss-cn-beijing.aliyuncs.com/"+fileName;
-                            response.put("showFile",aliUrl);
+                            response.put("source","h5cxqm");
                         }
 
-                    }else if(fileType.equalsIgnoreCase("voice") ||fileType.equalsIgnoreCase("2")){
-                         key = OSSObjectTool.uploadFileInputStream(fileName, file.getSize(), inputStream, OSSObjectTool.BUCKET_CONSULT_PIC);
-                         aliUrl = "http://"+OSSObjectTool.BUCKET_CONSULT_PIC+".oss-cn-beijing.aliyuncs.com/"+fileName;
-                         response.put("showFile",aliUrl);
+                    }else if(("voice").equalsIgnoreCase(fileType) || ("2").equalsIgnoreCase(fileType)){
+                        key = OSSObjectTool.uploadFileInputStream(fileName, file.getSize(), inputStream, OSSObjectTool.BUCKET_CONSULT_PIC);
+                        aliUrl = "http://"+OSSObjectTool.BUCKET_CONSULT_PIC+".oss-cn-beijing.aliyuncs.com/"+fileName;
+                        response.put("source","h5cxqm");
                     }else{
-                         key = OSSObjectTool.uploadFileInputStream(fileName, file.getSize(), inputStream, OSSObjectTool.BUCKET_CONSULT_PIC);
-                         aliUrl = "http://"+OSSObjectTool.BUCKET_CONSULT_PIC+".oss-cn-beijing.aliyuncs.com/"+fileName;
-                         response.put("showFile",aliUrl);
+                        key = OSSObjectTool.uploadFileInputStream(fileName, file.getSize(), inputStream, OSSObjectTool.BUCKET_CONSULT_PIC);
+                        aliUrl = "http://"+OSSObjectTool.BUCKET_CONSULT_PIC+".oss-cn-beijing.aliyuncs.com/"+fileName;
+                        response.put("source","h5cxqm");
                     }
-                    System.out.println("OSSObjectTool key2 ="+key.toString());
-                    System.out.println("OSSObjectTool aliUrl2 =" + aliUrl);
 
                     if(StringUtils.isNotNull(key)){
                         response.put("fileType",fileType);
                         response.put("senderId",StringUtils.isNotNull(senderId)?senderId:"null");
+                        response.put("showFile",aliUrl);
                         response.put("status","success");
                     }else{
                         response.put("fileType", fileType);
                         response.put("senderId", senderId);
                         response.put("status","failure");
                     }
-
-                    /*ConsultRecordMongoVo consultRecordMongoVo = new ConsultRecordMongoVo();
+/*
+                    ConsultRecordMongoVo consultRecordMongoVo = new ConsultRecordMongoVo();
                     consultRecordMongoVo.setSessionId(senderId);
                     List<ConsultRecordMongoVo> consultRecordMongoVos = consultRecordService.findUserConsultInfoBySessionId(consultRecordMongoVo);
-                //  response.put("status","senderId is null !!!");
                     if(consultRecordMongoVos!=null && consultRecordMongoVos.size()>0){
                         consultRecordMongoVo = consultRecordMongoVos.get(0);
                         consultRecordMongoVo.setType(fileType);
@@ -126,20 +117,22 @@ public class ConsultH5ServiceImpl implements ConsultH5Service {
                         consultRecordMongoVo.setOpercode("sender");
                         consultRecordService.saveConsultRecord(consultRecordMongoVo);
                         response.put("status","success");
-                    }*/
-
+                    }else{
+                        response.put("status","failure");
+                    }
+*/
                 } catch (IOException e) {
                     e.printStackTrace();
                     response.put("status","failure");
                 }
             } catch (JSONException ex) {
-                response.put("status","failure");
+                response.put("status", "failure");
             }
         }
         return response;
     }
-
-    public static class MyThread implements Callable<String> {
+/*
+    public  class MyThread implements Callable<String> {
         private String urlStr;
         private long fileSize;
         private String fileName;
@@ -163,12 +156,12 @@ public class ConsultH5ServiceImpl implements ConsultH5Service {
             this.fileName = fileName;
             this.inputStream = inputStream;
         }
-        public MyThread(){
+                public MyThread(){
 
-        }
-        public MyThread(String urlStr){
-            this.urlStr = urlStr;
-        }
+                }
+                public MyThread(String urlStr){
+                    this.urlStr = urlStr;
+                }
         @Override
         public String call() throws Exception {
             if("ali".equalsIgnoreCase(urlStr)){
@@ -212,5 +205,5 @@ public class ConsultH5ServiceImpl implements ConsultH5Service {
             e.printStackTrace();
         }
         exec.shutdown();
-    }
+    }*/
 }
