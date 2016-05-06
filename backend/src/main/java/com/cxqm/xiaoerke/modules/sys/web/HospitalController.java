@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.sys.web;
 
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.IdGen;
+import com.cxqm.xiaoerke.common.utils.OSSObjectTool;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.bankend.service.impl.HospitalServiceImpl;
@@ -24,6 +25,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.net.URLDecoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -75,34 +79,42 @@ public class HospitalController extends BaseController {
      */
     @RequiresPermissions("user")
     @RequestMapping(value = "hospitalDataImp")
-    public String hospitalDataImp(String name, String position, String details, String cityName, String medicalProcess, Model model,
-              String contactName, String contactPhone) {
-        HospitalVo hospitalVo = new HospitalVo();
+    public String hospitalDataImp(HospitalVo hospitalVo, Model model,
+                                  SysHospitalContactVo contactVo) {
         hospitalVo.setId(IdGen.uuid());
-        hospitalVo.setName(name);
-        hospitalVo.setDetails(details);
-        hospitalVo.setPosition(position);
-        hospitalVo.setCityName(cityName);
-        hospitalVo.setMedicalProcess(medicalProcess);
         hospitalVo.setCreateDate(new Date());
         hospitalVo.setCreateBy(UserUtils.getUser().getId());
 
-        if(StringUtils.isNotNull(contactPhone)){
-            hospitalVo.setContactName(contactName);
-            hospitalVo.setContactPhone(contactPhone);
+        if(StringUtils.isNotNull(contactVo.getContactPhone())){
             hospitalVo.setHospitalType("2");
             //将联系人信息插入到sys_hospital_contact表中
-            SysHospitalContactVo sysHospitalContactVo = new SysHospitalContactVo();
-            sysHospitalContactVo.setContactPhone(contactPhone);
-            sysHospitalContactVo.setContactName(contactName);
-            sysHospitalContactVo.setSysHospitalName(name);
-            sysHospitalContactVo.setSysHospitalId(hospitalVo.getId());
-            hospitalInfoService.insertSysHospitalContactVo(sysHospitalContactVo);
+            contactVo.setSysHospitalName(hospitalVo.getName());
+            contactVo.setSysHospitalId(hospitalVo.getId());
+
+            hospitalInfoService.insertSysHospitalContactVo(contactVo);
+
+            //上传医院图片
+            if(StringUtils.isNotNull(contactVo.getHospitalPic())){
+                try {
+                    uploadHospitalImage(contactVo.getSysHospitalId(),contactVo.getHospitalPic());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            //上传诊疗项目图片
+            if(StringUtils.isNotNull(contactVo.getClinicItemsPic())){
+                try {
+                    uploadHospitalImage(contactVo.getSysHospitalId()+"clinicItems",contactVo.getClinicItemsPic());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
-        if (StringUtils.isNotNull(name) && StringUtils.isNotNull(medicalProcess) && StringUtils.isNotNull(position) && StringUtils.isNotNull(details) && StringUtils.isNotNull(cityName)) {
+        if (StringUtils.isNotNull(hospitalVo.getName()) && StringUtils.isNotNull(hospitalVo.getMedicalProcess()) && StringUtils.isNotNull(hospitalVo.getPosition()) && StringUtils.isNotNull(hospitalVo.getDetails()) && StringUtils.isNotNull(hospitalVo.getCityName())) {
 
-            if (!StringUtils.isNotNull(OperationHandleService.findhospitalId(name))) {
+            if (!StringUtils.isNotNull(OperationHandleService.findhospitalId(hospitalVo.getName()))) {
                 //插入医院信息数据
                 HospitalServiceImpl.insertHospitalData(hospitalVo);
                 //掉用rds接口，同步数据到rds上
@@ -113,10 +125,16 @@ public class HospitalController extends BaseController {
             }
         }
 
-
-        HospitalVo hospitalVos = new HospitalVo();
-        model.addAttribute("hospitalVo", hospitalVos);
+        model.addAttribute("contactVo", new SysHospitalContactVo());
         return "modules/sys/hospitalDataImp";
+    }
+
+    private void uploadHospitalImage(String id , String src) throws Exception{
+        File file = new File(System.getProperty("user.dir").replace("bin", "webapps")+ URLDecoder.decode(src, "utf-8"));
+        FileInputStream inputStream = new FileInputStream(file);
+        long length = file.length();
+        //上传图片至阿里云
+        OSSObjectTool.uploadFileInputStream(id, length, inputStream, OSSObjectTool.BUCKET_DOCTOR_PIC);
     }
 
     /**
@@ -159,6 +177,14 @@ public class HospitalController extends BaseController {
             //根据医院id查询医院信息
             HospitalVo resultVo = HospitalServiceImpl.getHospital(hospitalVo.getId());
 
+            if("2".equals(resultVo.getHospitalType())){
+                Map map = new HashMap();
+                map.put("hospitalId", resultVo.getId());
+                List<SysHospitalContactVo> list = hospitalInfoService.getHospitalContact(map);
+                model.addAttribute("contactVo", list.get(0));
+            }else{
+                model.addAttribute("contactVo", new SysHospitalContactVo());
+            }
             model.addAttribute("hospitalVo", resultVo);
             return "modules/sys/hospitalEdit";
         }
@@ -171,10 +197,12 @@ public class HospitalController extends BaseController {
      */
 
     @RequestMapping(value = "hospitalSave")
-    public String hospitalSave(HospitalVo hospitalVo, RedirectAttributes redirectAttributes, Model model) {
+    public String hospitalSave(HospitalVo hospitalVo, Model model,
+                               SysHospitalContactVo contactVo, RedirectAttributes redirectAttributes) {
         //医院修改操作
-        HospitalServiceImpl.saveEditHospital(hospitalVo);
-        addMessage(redirectAttributes, "恭喜您，" + hospitalVo.getName() + "信息修改成功！");
+        hospitalVo.setId(contactVo.getSysHospitalId());
+        HospitalServiceImpl.saveEditHospital(hospitalVo,contactVo);
+        addMessage(redirectAttributes, "恭喜您，" + "信息修改成功！");
         return "redirect:" + adminPath + "/sys/hospital/hospitalManage?repage";
     }
 

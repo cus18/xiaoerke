@@ -7,9 +7,22 @@
     <result column="contact_phone" property="contactPhone" jdbcType="VARCHAR" />
     <result column="sys_hospital_id" property="sysHospitalId" jdbcType="VARCHAR" />
     <result column="sys_hospital_name" property="sysHospitalName" jdbcType="VARCHAR" />
+    <result column="cost_reduction" property="costReduction" jdbcType="VARCHAR" />
+    <result column="green_channel" property="greenChannel" jdbcType="VARCHAR" />
+    <result column="limit_standard" property="limitStandard" jdbcType="VARCHAR" />
+    <result column="limit_range" property="limitRange" jdbcType="VARCHAR" />
+    <result column="limit_disease" property="limitDisease" jdbcType="VARCHAR" />
+    <result column="drug_inspection" property="drugInspection" jdbcType="VARCHAR" />
+    <result column="chinese_medicine" property="chineseMedicine" jdbcType="VARCHAR" />
+    <result column="western_medicine" property="westernMedicine" jdbcType="VARCHAR" />
+    <result column="inspection_items" property="inspectionItems" jdbcType="VARCHAR" />
+    <result column="medicine_fee" property="medicineFee" jdbcType="VARCHAR" />
+    <result column="inspection_fee" property="inspectionFee" jdbcType="VARCHAR" />
+    <result column="clinic_items" property="clinicItems" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, contact_name, contactPhone, sys_hospital_id, sys_hospital_name
+    id, contact_name, contact_phone, sys_hospital_id, sys_hospital_name,cost_reduction,green_channel,limit_standard,limit_range,limit_disease,
+    drug_inspection,chinese_medicine,western_medicine,inspection_items,medicine_fee,inspection_fee,clinic_items
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -22,62 +35,173 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.sys.entity.SysHospitalContactVo" >
-    insert into sys_hospital_contact (id, contact_name, contact_phone,
-      sys_hospital_id, sys_hospital_name)
+    insert into sys_hospital_contact (id, contact_name, contact_phone, sys_hospital_id, sys_hospital_name,cost_reduction,green_channel,limit_standard,limit_range,limit_disease,
+    drug_inspection,chinese_medicine,western_medicine,inspection_items,medicine_fee,inspection_fee,clinic_items)
     values (#{id,jdbcType=INTEGER}, #{contactName,jdbcType=VARCHAR}, #{contactPhone,jdbcType=VARCHAR},
-      #{sysHospitalId,jdbcType=VARCHAR}, #{sysHospitalName,jdbcType=VARCHAR})
+      #{sysHospitalId,jdbcType=VARCHAR}, #{sysHospitalName,jdbcType=VARCHAR}, #{costReduction,jdbcType=VARCHAR}
+      , #{greenChannel,jdbcType=VARCHAR}, #{limitStandard,jdbcType=VARCHAR}, #{limitRange,jdbcType=VARCHAR}, #{limitDisease,jdbcType=VARCHAR},
+       #{drugInspection,jdbcType=VARCHAR}, #{chineseMedicine,jdbcType=VARCHAR}, #{westernMedicine,jdbcType=VARCHAR}, #{inspectionItems,jdbcType=VARCHAR}
+       , #{medicineFee,jdbcType=VARCHAR}, #{inspectionFee,jdbcType=VARCHAR}, #{clinicItems,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.sys.entity.SysHospitalContactVo" >
     insert into sys_hospital_contact
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+      <if test="id != null and id != ''" >
         id,
       </if>
-      <if test="contactName != null" >
+      <if test="contactName != null and contactName != ''" >
         contact_name,
       </if>
-      <if test="contactPhone != null" >
+      <if test="contactPhone != null and contactPhone != ''" >
         contact_phone,
       </if>
-      <if test="sysHospitalId != null" >
+      <if test="sysHospitalId != null and sysHospitalId != ''" >
         sys_hospital_id,
       </if>
-      <if test="sysHospitalName != null" >
+      <if test="sysHospitalName != null and sysHospitalName != ''" >
         sys_hospital_name,
+      </if>
+      <if test="costReduction != null and costReduction != ''" >
+        cost_reduction,
+      </if>
+      <if test="greenChannel != null and greenChannel != ''" >
+        green_channel,
+      </if>
+      <if test="limitStandard != null and limitStandard != ''" >
+        limit_standard,
+      </if>
+      <if test="limitRange != null and limitRange != ''" >
+        limit_range,
+      </if>
+      <if test="limitDisease != null and limitDisease != ''" >
+        limit_disease,
+      </if>
+      <if test="drugInspection != null and drugInspection != ''" >
+        drug_inspection,
+      </if>
+      <if test="chineseMedicine != null and chineseMedicine != ''" >
+        chinese_medicine,
+      </if>
+      <if test="westernMedicine != null and westernMedicine != ''" >
+        western_medicine,
+      </if>
+      <if test="inspectionItems != null and inspectionItems != ''" >
+        inspection_items,
+      </if>
+      <if test="medicineFee != null and medicineFee != ''" >
+        medicine_fee,
+      </if>
+      <if test="inspectionFee != null and inspectionFee != ''" >
+        inspection_fee,
+      </if>
+      <if test="clinicItems != null and clinicItems != ''" >
+        clinic_items,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+      <if test="id != null and id != ''" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="contactName != null" >
+      <if test="contactName != null and contactName != ''" >
         #{contactName,jdbcType=VARCHAR},
       </if>
-      <if test="contactPhone != null" >
+      <if test="contactPhone != null and contactPhone != ''" >
         #{contactPhone,jdbcType=VARCHAR},
       </if>
-      <if test="sysHospitalId != null" >
+      <if test="sysHospitalId != null and sysHospitalId != ''" >
         #{sysHospitalId,jdbcType=VARCHAR},
       </if>
-      <if test="sysHospitalName != null" >
+      <if test="sysHospitalName != null and sysHospitalName != ''" >
         #{sysHospitalName,jdbcType=VARCHAR},
+      </if>
+      <if test="costReduction != null and costReduction != ''" >
+        #{costReduction,jdbcType=VARCHAR},
+      </if>
+      <if test="greenChannel != null and greenChannel != ''" >
+        #{greenChannel,jdbcType=VARCHAR},
+      </if>
+      <if test="limitStandard != null and limitStandard != ''" >
+        #{limitStandard,jdbcType=VARCHAR},
+      </if>
+      <if test="limitRange != null and limitRange != ''" >
+      #{limitRange,jdbcType=VARCHAR},
+    </if>
+      <if test="limitDisease != null and limitDisease != ''" >
+        #{limitDisease,jdbcType=VARCHAR},
+      </if>
+      <if test="drugInspection != null and drugInspection != ''" >
+        #{drugInspection,jdbcType=VARCHAR},
+      </if>
+      <if test="chineseMedicine != null and chineseMedicine != ''" >
+        #{chineseMedicine,jdbcType=VARCHAR},
+      </if>
+      <if test="westernMedicine != null and westernMedicine != ''" >
+        #{westernMedicine,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionItems != null and inspectionItems != ''" >
+        #{inspectionItems,jdbcType=VARCHAR},
+      </if>
+      <if test="medicineFee != null and medicineFee != ''" >
+        #{medicineFee,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionFee != null and inspectionFee != ''" >
+        #{inspectionFee,jdbcType=VARCHAR},
+      </if>
+      <if test="clinicItems != null and clinicItems != ''" >
+        #{clinicItems,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.sys.entity.SysHospitalContactVo" >
     update sys_hospital_contact
     <set >
-      <if test="contactName != null" >
+      <if test="contactName != null and contactName != ''" >
         contact_name = #{contactName,jdbcType=VARCHAR},
       </if>
-      <if test="contactPhone != null" >
-        phone = #{contactPhone,jdbcType=VARCHAR},
+      <if test="contactPhone != null and contactPhone != ''" >
+        contact_phone = #{contactPhone,jdbcType=VARCHAR},
       </if>
-      <if test="sysHospitalId != null" >
+      <if test="sysHospitalId != null and sysHospitalId != ''" >
         sys_hospital_id = #{sysHospitalId,jdbcType=VARCHAR},
       </if>
-      <if test="sysHospitalName != null" >
+      <if test="sysHospitalName != null and sysHospitalName != ''" >
         sys_hospital_name = #{sysHospitalName,jdbcType=VARCHAR},
+      </if>
+      <if test="costReduction != null and costReduction != ''" >
+        cost_reduction = #{costReduction,jdbcType=VARCHAR},
+      </if>
+      <if test="greenChannel != null and greenChannel != ''" >
+        green_channel = #{greenChannel,jdbcType=VARCHAR},
+      </if>
+      <if test="limitStandard != null and limitStandard != ''" >
+        limit_standard = #{limitStandard,jdbcType=VARCHAR},
+      </if>
+      <if test="limitRange != null and limitRange != ''" >
+        limit_range = #{limitRange,jdbcType=VARCHAR},
+      </if>
+      <if test="limitDisease != null and limitDisease != ''" >
+        limit_disease = #{limitDisease,jdbcType=VARCHAR},
+      </if>
+      <if test="drugInspection != null and drugInspection != ''" >
+        drug_inspection = #{drugInspection,jdbcType=VARCHAR},
+      </if>
+      <if test="chineseMedicine != null and chineseMedicine != ''" >
+        chinese_medicine = #{chineseMedicine,jdbcType=VARCHAR},
+      </if>
+      <if test="westernMedicine != null and westernMedicine != ''" >
+        western_medicine = #{westernMedicine,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionItems != null and inspectionItems != ''" >
+        inspection_items = #{inspectionItems,jdbcType=VARCHAR},
+      </if>
+      <if test="medicineFee != null and medicineFee != ''" >
+        medicine_fee = #{medicineFee,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionFee != null and inspectionFee != ''" >
+        inspection_fee = #{inspectionFee,jdbcType=VARCHAR},
+      </if>
+      <if test="clinicItems != null and clinicItems != ''" >
+        clinic_items = #{clinicItems,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -87,13 +211,82 @@
     set contact_name = #{contactName,jdbcType=VARCHAR},
       contact_phone = #{contactPhone,jdbcType=VARCHAR},
       sys_hospital_id = #{sysHospitalId,jdbcType=VARCHAR},
-      sys_hospital_name = #{sysHospitalName,jdbcType=VARCHAR}
+      sys_hospital_name = #{sysHospitalName,jdbcType=VARCHAR},
+      cost_reduction = #{costReduction,jdbcType=VARCHAR},
+      green_channel = #{greenChannel,jdbcType=VARCHAR},
+      limit_standard = #{limitStandard,jdbcType=VARCHAR},
+      limit_range = #{limitRange,jdbcType=VARCHAR},
+      limit_disease = #{limitDisease,jdbcType=VARCHAR},
+      drug_inspection = #{drugInspection,jdbcType=VARCHAR},
+      chinese_medicine = #{chineseMedicine,jdbcType=VARCHAR},
+      western_medicine = #{westernMedicine,jdbcType=VARCHAR},
+      inspection_items = #{inspectionItems,jdbcType=VARCHAR},
+      medicine_fee = #{medicineFee,jdbcType=VARCHAR},
+      inspection_fee = #{inspectionFee,jdbcType=VARCHAR},
+      clinic_items = #{clinicItems,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByHospitalId" parameterType="com.cxqm.xiaoerke.modules.sys.entity.SysHospitalContactVo" >
     update sys_hospital_contact
-    set contact_name = #{contactName,jdbcType=VARCHAR},
-    contact_phone = #{contactPhone,jdbcType=VARCHAR}
+    <set >
+      <if test="contactName != null and contactName != ''" >
+        contact_name = #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPhone != null and contactPhone != ''" >
+        contact_phone = #{contactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="sysHospitalId != null and sysHospitalId != ''" >
+        sys_hospital_id = #{sysHospitalId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysHospitalName != null and sysHospitalName != ''" >
+        sys_hospital_name = #{sysHospitalName,jdbcType=VARCHAR},
+      </if>
+      <if test="costReduction != null and costReduction != ''" >
+        cost_reduction = #{costReduction,jdbcType=VARCHAR},
+      </if>
+      <if test="greenChannel != null and greenChannel != ''" >
+        green_channel = #{greenChannel,jdbcType=VARCHAR},
+      </if>
+      <if test="limitStandard != null and limitStandard != ''" >
+        limit_standard = #{limitStandard,jdbcType=VARCHAR},
+      </if>
+      <if test="limitRange != null and limitRange != ''" >
+        limit_range = #{limitRange,jdbcType=VARCHAR},
+      </if>
+      <if test="limitDisease != null and limitDisease != ''" >
+        limit_disease = #{limitDisease,jdbcType=VARCHAR},
+      </if>
+      <if test="drugInspection != null and drugInspection != ''" >
+        drug_inspection = #{drugInspection,jdbcType=VARCHAR},
+      </if>
+      <if test="chineseMedicine != null and chineseMedicine != ''" >
+        chinese_medicine = #{chineseMedicine,jdbcType=VARCHAR},
+      </if>
+      <if test="westernMedicine != null and westernMedicine != ''" >
+        western_medicine = #{westernMedicine,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionItems != null and inspectionItems != ''" >
+        inspection_items = #{inspectionItems,jdbcType=VARCHAR},
+      </if>
+      <if test="medicineFee != null and medicineFee != ''" >
+        medicine_fee = #{medicineFee,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionFee != null and inspectionFee != ''" >
+        inspection_fee = #{inspectionFee,jdbcType=VARCHAR},
+      </if>
+      <if test="clinicItems != null and clinicItems != ''" >
+        clinic_items = #{clinicItems,jdbcType=VARCHAR},
+      </if>
+    </set>
     where sys_hospital_id = #{sysHospitalId,jdbcType=INTEGER}
   </update>
+  <select id="getHospitalContactByInfo" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from sys_hospital_contact shc
+    where 1=1
+    <if test="hospitalId != null and hospitalId != ''">
+      and shc.sys_hospital_id = #{hospitalId}
+    </if>
+  </select>
 </mapper>

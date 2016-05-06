@@ -1,6 +1,7 @@
 package com.cxqm.xiaoerke.modules.bankend.service;
 
 import com.cxqm.xiaoerke.common.persistence.Page;
+import com.cxqm.xiaoerke.modules.sys.entity.SysHospitalContactVo;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cxqm.xiaoerke.modules.sys.entity.HospitalVo;
@@ -26,7 +27,7 @@ public interface HospitalService {
 
 	Page<HospitalVo> findAllHospital(Page<HospitalVo> page, HospitalVo hospitalVo);
 
-	void saveEditHospital(HospitalVo hospitalVo);
+	void saveEditHospital(HospitalVo hospitalVo,SysHospitalContactVo contactVo);
 
 	void deleteHospitalByHospitalId(String hopitalId);
 }

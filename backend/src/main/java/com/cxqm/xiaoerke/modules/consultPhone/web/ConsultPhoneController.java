@@ -260,7 +260,7 @@ public class ConsultPhoneController extends BaseController {
 		stateMap.put("3", "待分享");
 		stateMap.put("4", "已取消");
 		stateMap.put("5", "已完成");
-		stateMap.put("6", "超时完成");
+		stateMap.put("6", "超时取消");
 		stateMap.put("", "全部");
 		model.addAttribute("statusList", stateMap);
 		model.addAttribute("payStatusList", payStateMap);
