@@ -151,6 +151,10 @@
                     setLog("WXZJB_MRQD_QHRQ");
                 }
             }
+            //弹出时间选择框
+            $scope.showDateTime = function () {
+                $("#dateTime").mobiscroll('show');
+            }
 
             $scope.withDrawls = function(){
                 $state.go("withDrawls");
@@ -231,7 +235,6 @@
                 $scope.pageLoading = true;
                 GetDayList.save({"doctorId":$scope.doctorId,"date":date}, function (data) {
                     $scope.pageLoading = false;
-                    console.log("meir",data);
                     if(data.appointment.timeList.length==0){
                         $scope.checkAvailable = false;
                     }else{
