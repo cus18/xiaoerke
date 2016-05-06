@@ -388,7 +388,6 @@ public class AccountServiceImpl implements AccountService {
 
         //获取需要支付的金额  单位(分)
         String order_price = StringUtils.isNotNull(String.valueOf((request.getAttribute("payPrice"))))?String.valueOf(((Float)request.getAttribute("payPrice")).intValue()*100):request.getParameter("payPrice");
-        order_price = "1";
         //生成的商户订单号
         String out_trade_no = IdGen.uuid();//Sha1Util.getNonceStr();
         String noncestr = IdGen.uuid();//Sha1Util.getNonceStr();//生成随机字符串
