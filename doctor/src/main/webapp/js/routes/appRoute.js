@@ -69,8 +69,8 @@ define(['app'], function(app){
                            load: function($templateCache, $ocLazyLoad, $q, $http) {
                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.addTimeCtrl',
                                    ['js/controllers/ap/addTimeCtrl.js','js/libs/mobiscroll.custom-2.5.0.min.js','js/libs/lodash.min.js',
-                                       'styles/ap/addTime.less?ver='+version,'styles/lib/mobiscroll.custom-2.5.0.min.css',
-                                       'styles/fonts/ionicons.ttf','styles/fonts/ionicons.woff'],
+                                       'styles/ap/addTime.less?ver='+version,'styles/lib/mobiscroll.custom-2.5.0.min.css'
+                                       /*'styles/fonts/ionicons.ttf','styles/fonts/ionicons.woff'*/],
                                    'js/views/ap/addTime.html?ver='+version);
                            }
                        }
