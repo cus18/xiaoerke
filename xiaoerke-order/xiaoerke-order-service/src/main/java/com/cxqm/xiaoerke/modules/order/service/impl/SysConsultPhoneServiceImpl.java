@@ -40,6 +40,7 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 	@Autowired
 	private PhoneConsultDoctorRelationService phoneConsultDoctorRelationService;
 
+    @Override
 	public Map<String, Object> getDoctorConsultDate(HashMap<String,Object> dataMap) {
 		List<HashMap<String, Object>> resultList =  sysConsultPhoneServiceDao.getConsultDateList(dataMap);
 
@@ -56,6 +57,24 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 
 		return response;
 	}
+
+    @Override
+    public Map<String, Object> getDoctorConsultDateInfo(HashMap<String,Object> dataMap) {
+        List<HashMap<String, Object>> resultList =  sysConsultPhoneServiceDao.getConsultDateInfoList(dataMap);
+
+        Map<String, Object> response = new HashMap<String, Object>();
+        List<HashMap<String, Object>> consultDateList = new LinkedList<HashMap<String, Object>>();
+        if(resultList != null && !resultList.isEmpty()){
+            for(HashMap<String,Object> map:resultList){
+                HashMap<String,Object> consultDate = new HashMap<String, Object>();
+                consultDate.put("date",(String)map.get("date"));
+                consultDateList.add(consultDate);
+            }
+        }
+        response.put("dateList",consultDateList);
+
+        return response;
+    }
 
 	@Override
 	public Integer getCount() {
