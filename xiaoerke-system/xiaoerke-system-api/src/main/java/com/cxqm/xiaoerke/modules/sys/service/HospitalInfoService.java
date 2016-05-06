@@ -46,5 +46,6 @@ public interface HospitalInfoService {
 
 	Page<HashMap<String, Object>> getHospitalListByConsulta(Page<HashMap<String, Object>> page);
 
-
+	//获取合作医院信息sunxiao
+	List<SysHospitalContactVo> getHospitalContact(Map map);
 }

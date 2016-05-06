@@ -231,6 +231,11 @@ public class HospitalInfoServiceImpl implements HospitalInfoService {
 		return hospitalDao.findAllHospitalByConsulta(page);
 	}
 
-
+	//获取合作医院信息sunxiao
+	@Override
+	public List<SysHospitalContactVo> getHospitalContact(Map map){
+		List<SysHospitalContactVo> list = sysHospitalContactDao.getHospitalContactByInfo(map);
+		return  list;
+	}
 
 }
