@@ -145,14 +145,13 @@ public class ConsultPhoneDoctorController {
             paramsMap.put("id",UserUtils.getUser().getId());
             doctorId = (String)doctorInfoService.getDoctorIdByUserIdExecute(paramsMap).get("id");
         }
-        String state = (String) params.get("state");
         String date = (String) params.get("date");
 
         HashMap<String,Object> dataMap = new HashMap<String, Object>();
         dataMap.put("doctorId", doctorId);
         dataMap.put("date", date);
 
-        Map<String, Object> response = sysConsultPhoneService.getDoctorConsultDate(dataMap);
+        Map<String, Object> response = sysConsultPhoneService.getDoctorConsultDateInfo(dataMap);
         response.put("doctorId",doctorId);
 
         return response;
