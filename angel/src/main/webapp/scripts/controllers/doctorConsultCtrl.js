@@ -1024,8 +1024,10 @@ angular.module('controllers', ['luegg.directives'])
             $scope.getUserRecordDetail = function (userName,userId,index) {
                 $scope.doctorCreateConsultSessionChoosedUserId = userId;
                 $scope.setSessoin = index;
+                $scope.loadingFlag = true;
                 GetUserRecordDetail.save({pageNo:1,pageSize:$scope.userRecordDetailPageSize,
                     userId:userId,recordType:"all"}, function (data) {
+                    $scope.loadingFlag = false;
                     $scope.currentClickUserName = userName;
                     $scope.currentClickUserId = userId;
                     $scope.currentUserConsultRecordDetail = data.records;
@@ -1052,9 +1054,11 @@ angular.module('controllers', ['luegg.directives'])
                         pageNum = $scope.currentUserRecordDetailPage+1;
                     }
                 }
+                $scope.loadingFlag = true;
                 GetUserRecordDetail.save({pageNo:pageNum,
                     pageSize:$scope.userRecordDetailPageSize,
                     userId:$scope.currentClickUserId,recordType:recordType}, function (data) {
+                    $scope.loadingFlag = false;
                     $scope.currentClickUserName = $scope.currentClickUserName;
                     $scope.currentClickUserId = $scope.currentClickUserId;
                     $scope.currentUserConsultRecordDetail = data.records;
@@ -1079,9 +1083,11 @@ angular.module('controllers', ['luegg.directives'])
                 } else {
                     $scope.CSDoctorIdValue =angular.copy(Object);
                 }
+                $scope.loadingFlag = true;
                 GetUserConsultListInfo.save({dateNum: $scope.dateNumValue,
                     CSDoctorId: $scope.CSDoctorIdValue,
                     pageNo: 1, pageSize:$scope.userConsultListPageSize}, function (data) {
+                    $scope.loadingFlag = false;
                     refreshUserConsultListData(data);
                 })
             };
@@ -1095,12 +1101,14 @@ angular.module('controllers', ['luegg.directives'])
                     alert('请选择查询类型！');
                     return ;
                 }else{
+                    $scope.loadingFlag = true;
                     GetMessageRecordInfo.save({
                         searchInfo: $scope.info.searchMessageContent,
                         searchType: $scope.messageType,
                         pageNo: 1,
                         pageSize: $scope.userConsultListPageSize
                     }, function (data) {
+                        $scope.loadingFlag = false;
                         refreshUserConsultListData(data);
                     });
                 }
@@ -1113,10 +1121,12 @@ angular.module('controllers', ['luegg.directives'])
 
             //左上角的刷新消息
             $scope.refreshUserList = function () {
+                $scope.loadingFlag = true;
                 GetUserConsultListInfo.save({dateNum: $scope.dateNumValue,
                     CSDoctorId: $scope.CSDoctorIdValue,
                     pageNo: 1,
                     pageSize: $scope.userConsultListPageSize}, function (data) {
+                    $scope.loadingFlag = false;
                     refreshUserConsultListData(data);
                 })
             };
@@ -1158,9 +1168,11 @@ angular.module('controllers', ['luegg.directives'])
                         pageNum = $scope.currentUserConsultListDataPage+1;
                     }
                 }
+                $scope.loadingFlag = true;
                 GetUserConsultListInfo.save({dateNum: $scope.dateNumValue,
                     CSDoctorId: $scope.CSDoctorIdValue,
                     pageNo: pageNum, pageSize: $scope.userConsultListPageSize}, function (data) {
+                    $scope.loadingFlag = false;
                     refreshUserConsultListData(data);
                 })
             };
