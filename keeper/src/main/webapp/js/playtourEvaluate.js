@@ -10,12 +10,15 @@ $(function(){
    // $('.evalsharebut').hide();//分享按钮
     // $('#ping').hide();
     getCustomerInfo();
+    $("#but").attr("style","background-color:#E8E8E8");
 })
 
 //判断输入心意钱
 var moreMoney = function () {
    // recordLogs("ZXPJSXY_JE");
+    
     if($('#getMoney').val()>0){
+      
         $('.inputmoney img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
     }else{
         $('.inputmoney img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
@@ -26,24 +29,35 @@ var moreMoney = function () {
 var setMoney = function (index) {
     moneyNum = $('#getMoney').val();
     if(index==0){
+
         if(moneyNum<=0){
             $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
         }else{
             $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
             if(moneyNum.indexOf(".")>0){
+                $("#but").removeAttr('disable');
+                $("#but").attr("style","background-color:#fe717b");
                 moneyNum=parseInt(moneyNum);
             }else {
+                $("#but").removeAttr('disable');
+                $("#but").attr("style","background-color:#fe717b");
                 moneyNum--;
             }
             if(moneyNum==0){
+                $("#but").attr('disable','disabled');
+                $("#but").attr("style","background-color:#E8E8E8");
                 $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
             }
             $('#getMoney').val(moneyNum);
         }
     }else if(index==1){
         if(moneyNum.indexOf(".")>0){
+            $("#but").removeAttr('disable');
+            $("#but").attr("style","background-color:#fe717b");
             moneyNum=parseInt(moneyNum)+1;
         }else {
+            $("#but").removeAttr('disable');
+            $("#but").attr("style","background-color:#fe717b");
             moneyNum++;
         }
         $('#getMoney').val(moneyNum);
@@ -149,7 +163,7 @@ function getCustomerInfo(){
                 $("#suggestSpan").hide();
             }
                 $("#redPacketcount").html(starInfo.redPacket);
-                $("#starInfo").html(star.split(".")[0]+"%");
+                $("#starInfo").html(star.split(".")[1]+"%");
                 $("#doctorName").html(doctorInfo.doctor_name);
                 $("#headImage").attr("src",doctorInfo.doctor_pic_url);
             
@@ -226,11 +240,8 @@ var doRefresh = function(){
 function updateCustomerInfo() {
     customerId = GetQueryString("customerId");
     var redPacket = $("#getMoney").val();
-    if (redPacket != "") {
-        if (redPacket <= 0) {
-            alert("金额不能为负数");
-            return;
-        }
+    if (redPacket != "" && redPacket > 0) {
+        
         recordLogs("ZXPJSXY_JE");
         $.ajax({
             url: "account/user/customerPay",// 跳转到 action

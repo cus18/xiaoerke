@@ -955,6 +955,8 @@ angular.module('controllers', ['luegg.directives'])
 
             $scope.currentClickUserId = "";
 
+            $scope.loadingFlag = false;
+
             $scope.searchMessageType = [
                 {
                 searchType:"user",

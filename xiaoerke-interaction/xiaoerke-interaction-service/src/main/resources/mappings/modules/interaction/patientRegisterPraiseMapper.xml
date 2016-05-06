@@ -315,7 +315,6 @@
 <!--  获取医生信息 -->
 	 <select id="getCustomerStarInfoById" resultType="java.util.Map">
 		SELECT
-			COUNT(serviceAttitude)/10 AS startNum,
 			COUNT(redPacket)+16 AS redPacket
 		FROM
 			customerevaluation
@@ -323,15 +322,37 @@
 			doctorId =#{doctorId}
 	</select>
 
-<!--  获取医生头像信息 -->
+    <select id="getCustomerStarSingById" resultType="java.util.Map">
+        SELECT
+        COUNT(serviceAttitude) AS startNum
+        FROM
+        customerevaluation
+        WHERE
+        doctorId =#{doctorId} and serviceAttitude>1
+    </select>
+
+    <select id="getCustomerStarCountById" resultType="java.util.Map">
+        SELECT
+        COUNT(serviceAttitude) AS startNum
+        FROM
+        customerevaluation
+        WHERE
+        doctorId =#{doctorId}
+    </select>
+
+
+
+    <!--  获取医生头像信息 -->
 	 <select id="getDoctorHeadImageURIById" resultType="java.util.Map">
 		SELECT
-			su.name as 'doctor_name',CONCAT('http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/', cdi.sys_user_id) as 'doctor_pic_url'
-		FROM
-			consult_doctor_info cdi
-            inner join sys_user su on su.id=cdi.sys_user_id
-		WHERE
-			sys_user_id =#{doctorId}
+            su.name AS 'doctor_name',
+            CONCAT('http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/',
+                   id) AS 'doctor_pic_url'
+        FROM
+
+            sys_user su
+        WHERE
+            id  =#{doctorId}
 	</select>
 
     <!--  根据条件查询医生评价sunxiao -->

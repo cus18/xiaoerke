@@ -136,6 +136,8 @@
     from consultPhone_register_service crs
     left join sys_consultPhone_service scs
     on crs.sys_phoneConsult_service_id = scs.id
+    LEFT JOIN healthrecord_illness_describe hid ON hid.id = crs.illness_describe_id
+    LEFT JOIN sys_baby_baseinfo sbi ON sbi.id = hid.babyinfo_Id
     left join sys_doctor sd
     on sd.id = scs.sys_doctor_id
     LEFT JOIN doctor_hospital_relation dhr
@@ -143,8 +145,6 @@
     LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = dhr.sys_hospital_id
     left join sys_patient sp
     on sp.id = crs.sys_patient_id
-    left join sys_baby_baseInfo sbi
-    on sp.sys_user_id = sbi.userid
     LEFT join consultphone_doctor_relation cdr on cdr.doctor_id = sd.id
     LEFT JOIN sys_user su on sp.sys_user_id = su.id
     left join sys_hospital sh on sh.`name` = sd.hospitalName
