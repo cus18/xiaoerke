@@ -78,12 +78,10 @@ var moreMoney = function () {
     // recordLogs("ZXPJSXY_JE");
 
     if($('#getMoney').val()>0){
-        $("#but").removeAttr('disable');
-        $("#but").attr("style","background-color:#fe717b");
+
         $('.inputmoney img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
     }else{
-        $("#but").attr('disable','disabled');
-        $("#but").attr("style","background-color:#E8E8E8");
+
         $('.inputmoney img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
     }
 }
@@ -119,21 +117,11 @@ var setMoney = function (index) {
                 }
             }
             moneyNum=5*(a);
-            if(moneyNum==0){
-                $("#but").attr('disable','disabled');
-                $("#but").attr("style","background-color:#E8E8E8");
-                $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
-            }
+            
             $('#getMoney').val(moneyNum);
         }
     }else if(index==1){
-        if(moneyNum.indexOf(".")>0){
-            $("#but").removeAttr('disable');
-            $("#but").attr("style","background-color:#fe717b");
-        }else {
-            $("#but").removeAttr('disable');
-            $("#but").attr("style","background-color:#fe717b");
-        }
+
         if(moneyNum==""){
             moneyNum=0;
         }
