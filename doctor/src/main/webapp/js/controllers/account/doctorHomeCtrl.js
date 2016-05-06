@@ -1,6 +1,6 @@
 angular.module('controllers', ['ionic']).controller('doctorHomeCtrl', [
-    '$scope','$ionicPopup','$state','$stateParams','$location','GetUserLoginStatus','GetDoctorDetail','$filter','GetDoctorEvaluate',
-    function ($scope,$ionicPopup,$state,$stateParams,$location,GetUserLoginStatus,GetDoctorDetail,$filter,GetDoctorEvaluate) {
+    '$scope','$ionicPopup','$state','$stateParams','$location','GetUserLoginStatus','GetDoctorDetail','$filter','GetDoctorEvaluate','$http',
+    function ($scope,$ionicPopup,$state,$stateParams,$location,GetUserLoginStatus,GetDoctorDetail,$filter,GetDoctorEvaluate,$http) {
         $scope.title = "医生信息";
         $scope.haveComment = true;
         $scope.noComment = false;
@@ -20,6 +20,8 @@ angular.module('controllers', ['ionic']).controller('doctorHomeCtrl', [
                 }else if(data.status=="8"){
                     window.location.href = data.redirectURL+"?targeturl="+routePath;
                 }else{
+                    var pData = {logContent:encodeURI("WXZJB_WDZY")};
+                    $http({method:'post',url:'util/recordLogs',params:pData});
                     $scope.starList = [];
                     $scope.evaluateCon = "点击加载更多";
                     $scope.commentList =["全部评论","电话咨询","预约挂号"];

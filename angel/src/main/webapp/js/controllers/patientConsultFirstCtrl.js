@@ -134,7 +134,6 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                             "senderName": angular.copy($scope.patientName),
                             "sessionId": angular.copy($scope.currentUserConversation.sessionId)
                         };
-                        console.log(consultValMessage.content);
                         if (!window.WebSocket) {
                             return;
                         }

@@ -18,9 +18,12 @@ var moreMoney = function () {
    // recordLogs("ZXPJSXY_JE");
     
     if($('#getMoney').val()>0){
-      
+        $("#but").removeAttr('disable');
+        $("#but").attr("style","background-color:#fe717b");
         $('.inputmoney img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
     }else{
+        $("#but").attr('disable','disabled');
+        $("#but").attr("style","background-color:#E8E8E8");
         $('.inputmoney img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
     }
 }
@@ -37,12 +40,25 @@ var setMoney = function (index) {
             if(moneyNum.indexOf(".")>0){
                 $("#but").removeAttr('disable');
                 $("#but").attr("style","background-color:#fe717b");
-                moneyNum=parseInt(moneyNum);
+                // moneyNum=parseInt(moneyNum);
             }else {
                 $("#but").removeAttr('disable');
                 $("#but").attr("style","background-color:#fe717b");
-                moneyNum--;
+                // moneyNum--;
             }
+
+            var a=parseInt(moneyNum)/5;
+            var b=parseInt(moneyNum)%5;
+            if(a<1){
+                a=0;
+            }else {
+                if(b==0){
+                    a--;
+                }else {
+                    a = parseInt(a);
+                }
+            }
+            moneyNum=5*(a);
             if(moneyNum==0){
                 $("#but").attr('disable','disabled');
                 $("#but").attr("style","background-color:#E8E8E8");
@@ -54,12 +70,16 @@ var setMoney = function (index) {
         if(moneyNum.indexOf(".")>0){
             $("#but").removeAttr('disable');
             $("#but").attr("style","background-color:#fe717b");
-            moneyNum=parseInt(moneyNum)+1;
         }else {
             $("#but").removeAttr('disable');
             $("#but").attr("style","background-color:#fe717b");
-            moneyNum++;
         }
+        if(moneyNum==""){
+            moneyNum=0;
+        }
+        var a=parseInt(moneyNum)/5;
+        a=parseInt(a);
+        moneyNum=5*(a+1);
         $('#getMoney').val(moneyNum);
         $('.ptm img').eq(1).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjia_xuanzhong.png");
         $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
@@ -125,7 +145,7 @@ function getCustomerInfo(){
                 $("#suggest").html(evaluation.content);
                 $(".evalfinish img").attr("src",resultList[1]);
                 // getMoney(evaluation);
-                if(evaluation.redPacket!='null'&&typeof(evaluation.redPacket) != 'undefined'&&evaluation.redPacket!=""){
+                if(evaluation.redPacket!='null'&&typeof(evaluation.redPacket) != 'undefined'&&evaluation.redPacket!=""&&evaluation.redPacket!=0){
                     $("#redPacket").html(evaluation.redPacket);
                     $(".evalinputmoney").hide();
                     $(".evalhavemoney").show();
@@ -247,7 +267,7 @@ function updateCustomerInfo() {
             url: "account/user/customerPay",// 跳转到 action
             async: true,
             type: 'get',
-            data: {patientRegisterId: customerId, payPrice: redPacket * 1000},
+            data: {patientRegisterId: customerId, payPrice: redPacket * 100},
             cache: false,
             success: function (data) {
                 var obj = eval('(' + data + ')');

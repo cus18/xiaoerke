@@ -71,22 +71,21 @@
         crs.phone as userPhone,
         sd.id as doctorId,
         sd.name AS doctorName,
-        su.phone,
+        cdr.doctor_answer_phone as phone,
         su.openid,
         sbb.name as babyName,
-        case when shc.contact_phone is null then "" else shc.contact_phone end hospitalContactPhone,
         sh.name as hospitalName
         FROM sys_consultphone_service scs
-        INNER JOIN consultphone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
+        INNER JOIN consultPhone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
         LEFT JOIN healthrecord_illness_describe hid ON hid.id = crs.illness_describe_id
         LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
         LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
+        LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = sd.id
 		LEFT  JOIN doctor_hospital_relation dhr on sd.id = dhr.sys_doctor_id
 		LEFT JOIN sys_hospital sh on dhr.sys_hospital_id = sh.id
         LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = dhr.sys_hospital_id
         LEFT JOIN sys_user su ON su.id = sd.sys_user_id
         WHERE DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(crs.create_time,"%Y-%m-%d")
-        AND DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(scs.date,"%Y-%m-%d")
 		AND DATE_FORMAT(DATE_SUB(now(), INTERVAL 5 MINUTE),"%H:%i") = DATE_FORMAT(crs.create_time,"%H:%i")
         AND crs.state = '1'
     </select>
@@ -102,22 +101,21 @@
         crs.phone as userPhone,
         sd.id as doctorId,
         sd.name AS doctorName,
-        su.phone,
+        cdr.doctor_answer_phone as phone,
         sbb.name as babyName,
-        case when shc.contact_phone is null then "" else shc.contact_phone end hospitalContactPhone,
         su.openid,
         sh.name as hospitalName
         FROM sys_consultphone_service scs
-        INNER JOIN consultphone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
+        INNER JOIN consultPhone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
         LEFT JOIN healthrecord_illness_describe hid ON hid.id = crs.illness_describe_id
         LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
         LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
+        LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = sd.id
         LEFT  JOIN doctor_hospital_relation dhr on sd.id = dhr.sys_doctor_id
         LEFT JOIN sys_hospital sh on dhr.sys_hospital_id = sh.id
         LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = dhr.sys_hospital_id
         LEFT JOIN sys_user su ON su.id = sd.sys_user_id
-        WHERE DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(crs.create_time,"%Y-%m-%d")
-        AND DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(scs.date,"%Y-%m-%d")
+        WHERE DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(scs.date,"%Y-%m-%d")
         AND DATE_FORMAT(DATE_SUB(now(), INTERVAL -5 MINUTE),"%H:%i") = DATE_FORMAT(scs.beginTime,"%H:%i")
         AND crs.state = '1'
     </select>
@@ -232,12 +230,12 @@
     <select id="getDoctorInfoByDate" resultType="java.util.HashMap">
         select DISTINCT(sd.name) AS doctorName,
         case when shc.sys_hospital_name is null then "" else shc.sys_hospital_name end hospitalName,
-        case when shc.contact_phone is null then "" else shc.contact_phone end hospitalContactPhone,
         su.openid openid,
-        su.phone phone
+        cdr.doctor_answer_phone phone
         FROM sys_consultphone_service scs
-        INNER JOIN consultphone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
+        INNER JOIN consultPhone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
         LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
+        LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = sd.id
 		LEFT JOIN doctor_hospital_relation dhr on sd.id = dhr.sys_doctor_id
         LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = dhr.sys_hospital_id
         LEFT JOIN sys_user su ON su.id = sd.sys_user_id
@@ -255,18 +253,18 @@
 
     <select id="getOrderInfoByDate" resultType="java.util.HashMap">
         select sbb.name as babyName,
-        case when shc.contact_phone is null then "" else shc.contact_phone end hospitalContactPhone,
         case when shc.sys_hospital_name is null then "" else shc.sys_hospital_name end hospitalName,
         DATE_FORMAT(scs.beginTime,"%H:%i") begin_time,
         DATE_FORMAT(scs.endTime,"%H:%i") end_time,
         sd.name AS doctorName,
-        su.phone,
+        cdr.doctor_answer_phone as phone,
         case when su.openid is null then "" else su.openid end
         FROM sys_consultphone_service scs
-        INNER JOIN consultphone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
+        INNER JOIN consultPhone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
         LEFT JOIN healthrecord_illness_describe hid ON hid.id = crs.illness_describe_id
         LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
         LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
+        LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = sd.id
 		LEFT  JOIN doctor_hospital_relation dhr on sd.id = dhr.sys_doctor_id
 		LEFT JOIN sys_hospital sh on dhr.sys_hospital_id = sh.id
         LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = dhr.sys_hospital_id

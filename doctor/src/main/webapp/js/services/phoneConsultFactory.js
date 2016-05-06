@@ -15,7 +15,7 @@ define(['phoneConsultApp'], function (app) {
         }])
         //获取某医生的号源日期
         .factory('GetConsultInfo',['$resource',function ($resource){
-            return $resource('consultPhone/consultPhoneDoctor/getConsultInfo');
+            return $resource('consultPhone/consultPhoneDoctor/getConsultDateInfo');
         }])
         //获取某医生的号源日期的具体信息
         .factory('GetConsultTime',['$resource',function ($resource){

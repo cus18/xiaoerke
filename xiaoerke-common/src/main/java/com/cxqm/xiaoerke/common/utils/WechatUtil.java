@@ -14,9 +14,10 @@ import java.net.URL;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by baoweiw on 2015/7/27.
@@ -153,7 +154,6 @@ public class WechatUtil {
             Date dates = new Date(times);
             Timestamp tt = new Timestamp(dates.getTime());
             String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-
             WechatRecord record = new WechatRecord();
             record.setId(uuid);
             record.setOpenid(openid);
@@ -329,8 +329,8 @@ public class WechatUtil {
             e.printStackTrace();
         }
 //        String filePath = "http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/1.jpg";
- //       String tic = getShortUrl(token,url);
- //     System.out.print(tic);
+        //       String tic = getShortUrl(token,url);
+        //     System.out.print(tic);
     }
 
     /**
@@ -455,28 +455,28 @@ public class WechatUtil {
     public String downloadMediaFromWx(String accessToken, String mediaId, String messageType) throws IOException {
 
         if (StringUtils.isEmpty(accessToken) || StringUtils.isEmpty(mediaId)) return "";
-            Long picLen = 0L;
-            InputStream inputStream = null;
-            String url = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token="
-                    + accessToken + "&media_id=" + mediaId;
-            try {
-                URL urlGet = new URL(url);
-                HttpURLConnection http = (HttpURLConnection) urlGet
-                        .openConnection();
-                http.setRequestMethod("GET"); // 必须是get方式请求
-                http.setRequestProperty("Content-Type",
-                        "application/x-www-form-urlencoded");
-                http.setDoOutput(true);
-                http.setDoInput(true);
-                System.setProperty("sun.net.client.defaultConnectTimeout", "30000");// 连接超时30秒
-                System.setProperty("sun.net.client.defaultReadTimeout", "30000"); // 读取超时30秒
-                http.connect();
-                // 获取文件转化为byte流
-                inputStream = http.getInputStream();
-                picLen = http.getContentLengthLong();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        Long picLen = 0L;
+        InputStream inputStream = null;
+        String url = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token="
+                + accessToken + "&media_id=" + mediaId;
+        try {
+            URL urlGet = new URL(url);
+            HttpURLConnection http = (HttpURLConnection) urlGet
+                    .openConnection();
+            http.setRequestMethod("GET"); // 必须是get方式请求
+            http.setRequestProperty("Content-Type",
+                    "application/x-www-form-urlencoded");
+            http.setDoOutput(true);
+            http.setDoInput(true);
+            System.setProperty("sun.net.client.defaultConnectTimeout", "30000");// 连接超时30秒
+            System.setProperty("sun.net.client.defaultReadTimeout", "30000"); // 读取超时30秒
+            http.connect();
+            // 获取文件转化为byte流
+            inputStream = http.getInputStream();
+            picLen = http.getContentLengthLong();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         //返回图片的阿里云地址getConsultMediaBaseUrl
         String mediaName = mediaId;
@@ -568,12 +568,6 @@ public class WechatUtil {
         }else{
             type = "video";
         }
-//      File file = new File(content);
-//      String upLoadUrl = "https://api.weixin.qq.com/cgi-bin/media/upload";
-//      JSONObject result = uploadNoTextMsgToWX(token,upLoadUrl,type,fileName,inputStream);
-//      String media_id = result.optString("media_id");
-//      String media_id = result.optString("type");
-//      String media_id = result.optString("created_at");
         String sendUrl = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + token;
         String json = "{\"touser\": \""+openId+"\",\"msgtype\": \""+type+"\", \""+type+"\": {\"media_id\": \""+content+"\"}}";
         sendNoTextToWX(sendUrl,json);
@@ -593,10 +587,6 @@ public class WechatUtil {
         BufferedReader reader = null;
         try {
             URL openUrl= new URL(upLoadUrl);
-//            File file = new File(filePath);
-//            if (!file.exists() || !file.isFile()) {
-//                throw new IOException("上传的文件不存在");
-//            }
             HttpURLConnection httpURLConnection = (HttpURLConnection) openUrl.openConnection();
             httpURLConnection.setRequestMethod("POST"); // 以Post方式提交表单，默认get方式
             httpURLConnection.setDoInput(true);
@@ -681,7 +671,7 @@ public class WechatUtil {
             httpURLConnection.setDoInput(true);
             System.setProperty("sun.net.client.defaultConnectTimeout", "30000");// 连接超时30秒
             System.setProperty("sun.net.client.defaultReadTimeout", "30000"); // 读取超时30秒
-//            http.connect();
+//            httpURLConnection.connect();
             OutputStream os = httpURLConnection.getOutputStream();
             os.write(json.getBytes("UTF-8"));// 传入参数
             os.flush();
