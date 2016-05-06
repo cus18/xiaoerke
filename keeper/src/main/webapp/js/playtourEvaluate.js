@@ -260,8 +260,8 @@ var doRefresh = function(){
 function updateCustomerInfo() {
     customerId = GetQueryString("customerId");
     var redPacket = $("#getMoney").val();
-    if (redPacket != "" && redPacket > 0 && redPacket<1001 ) {
-        if(redPacket<1001){
+    if (redPacket != "" && redPacket > 0  ) {
+        if(redPacket>1000){
             alert("感谢您的支持,目前最大金额为1000哦!");
             return;
         }

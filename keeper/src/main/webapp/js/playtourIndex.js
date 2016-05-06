@@ -191,7 +191,7 @@ function updateCustomerInfo(){
     var content=$("#content").val();
     var redPacket=$("#getMoney").val();
     if (redPacket != "" && redPacket > 0  ) {
-        if(redPacket<1001){
+        if(redPacket>1000){
             alert("感谢您的支持,目前最大金额为1000哦!");
             return;
         }
