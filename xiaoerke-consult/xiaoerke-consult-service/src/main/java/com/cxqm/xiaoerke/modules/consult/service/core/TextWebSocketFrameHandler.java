@@ -80,6 +80,9 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 
 			if(channel != csChannel && csChannel != null) {
 				csChannel.writeAndFlush(msg.retain());
+				//保存聊天记录
+				consultRecordService.buildRecordMongoVo(userId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
+
 			} else {
 				if(consultSession.getSource().equals("h5cxqm")){
 					Channel userChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(userId);
@@ -95,10 +98,12 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 						WechatUtil.sendNoTextMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(),noTextMsg,msgType);
 					}
 				}
+
+				//保存聊天记录
+				consultRecordService.buildRecordMongoVo(csUserId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
+
 			}
 
-			//保存聊天记录
-			consultRecordService.buildRecordMongoVo(userId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
 			//更新会话操作时间
 			consultRecordService.saveConsultSessionStatus(consultSession);
 		}
