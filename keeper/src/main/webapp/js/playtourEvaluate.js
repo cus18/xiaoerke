@@ -262,7 +262,7 @@ function updateCustomerInfo() {
     var redPacket = $("#getMoney").val();
     if (redPacket != "" && redPacket > 0 && redPacket<1001 ) {
         var num = new Number(redPacket);
-        redPacket = num.toFixed(redPacket);
+        redPacket = num.toFixed(1);
         recordLogs("ZXPJSXY_JE");
         $.ajax({
             url: "account/user/customerPay",// 跳转到 action
