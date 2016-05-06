@@ -225,10 +225,11 @@
                                      <span>{{item.dateTime}}</span>
                                 </div>
                                 <div ng-if="item.type=='0'" class="message" ng-bind-html="item.content" />
-                                <div ng-if="item.type=='1'" class="message">
-                                    <a ng-href="{{item.content}}">
-                                        <img width="100" height="100" ng-src="{{item.content}}">
-                                    </a>
+                                <div ng-if="item.type=='1'" class="message" ng-click="tapShowButton('magnifyImg')">
+                                    <img width="30%" ng-src="{{item.content}}">
+                                    <div class="magnifyImg" ng-show='showFlag.magnifyImg'>
+                                        <img width="80%" ng-src="{{item.content}}">
+                                    </div>
                                 </div>
                                 <div ng-if="item.type=='2'">
                                     <audio ng-src="{{item.content}}" controls="controls"/>
