@@ -16,7 +16,9 @@ $(function(){
 //判断输入心意钱
 var moreMoney = function () {
    // recordLogs("ZXPJSXY_JE");
+    
     if($('#getMoney').val()>0){
+      
         $('.inputmoney img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
     }else{
         $('.inputmoney img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
