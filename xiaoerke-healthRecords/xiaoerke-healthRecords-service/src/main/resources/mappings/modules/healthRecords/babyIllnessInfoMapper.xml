@@ -28,7 +28,7 @@
     LEFT JOIN
         sys_baby_baseinfo sbb ON
         sbb.id = hid.babyinfo_Id
-    LEFT JOIN consultphone_register_service crs ON
+    LEFT JOIN consultPhone_register_service crs ON
         crs.illness_describe_id = hid.id
     WHERE
         crs.sys_phoneConsult_service_id = #{sys_phoneConsult_id,jdbcType=INTEGER};

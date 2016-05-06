@@ -96,7 +96,7 @@
 	  srs.id AS sys_register_service_id
       FROM
 	  sys_consultphone_service srs
-      INNER JOIN consultphone_register_service prs ON prs.sys_phoneConsult_service_id = srs.id
+      INNER JOIN consultPhone_register_service prs ON prs.sys_phoneConsult_service_id = srs.id
       WHERE
 	  prs.id = #{id}
     </select>
