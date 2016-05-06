@@ -277,7 +277,7 @@
         cdr.price
         FROM
         sys_consultphone_service srs
-        RIGHT JOIN consultphone_register_service prs ON srs.id = prs.sys_phoneConsult_service_id
+        RIGHT JOIN consultPhone_register_service prs ON srs.id = prs.sys_phoneConsult_service_id
         AND prs. state != "4"
         AND prs. state != "1"
         AND prs. state != "0"
@@ -298,7 +298,7 @@
 
   <select id="getReturnPayConsultList" resultType="java.util.Map">
 select crs.id,su.id userId
-from consultphone_register_service crs
+from consultPhone_register_service crs
 left join account_pay_record apr
 on crs.id = apr.order_id
 left join sys_patient sp
@@ -309,7 +309,7 @@ where crs.state = '4'
 and apr.`status` = 'success'
 AND  NOW()>(DATE_ADD((DATE_FORMAT(crs.update_time,'%Y-%m-%d %k:%i:%s')), INTERVAL 1 day))
 and crs.id not in (
-select DISTINCT(crs.id) from consultphone_register_service crs
+select DISTINCT(crs.id) from consultPhone_register_service crs
 left join account_pay_record apr
 on crs.id = apr.order_id
 where crs.state = '4'
@@ -321,7 +321,7 @@ group by crs.id
     
   <!-- 更新订单状态 -->
   <update id="changeConsultPhoneRegisterServiceState">
-     update consultphone_register_service prs
+     update consultPhone_register_service prs
      <set>
         prs.state=#{state}
      </set>
@@ -484,7 +484,7 @@ group by crs.id
             SELECT
                 crs.sys_phoneConsult_service_id
             FROM
-                consultphone_register_service crs
+                consultPhone_register_service crs
             WHERE
                 crs.state = '0'
             AND NOW() > (
@@ -503,7 +503,7 @@ group by crs.id
   </update>
 
   <update id="cancelAppointNoPayRegiste">
-    UPDATE consultphone_register_service crs SET crs.state='6'
+    UPDATE consultPhone_register_service crs SET crs.state='6'
         WHERE crs.state='0' AND
         NOW()>(DATE_ADD((DATE_FORMAT(crs.create_time,'%Y-%m-%d %k:%i:%s')), INTERVAL 30 MINUTE))
   </update>
@@ -531,7 +531,7 @@ group by crs.id
     sa.nickname,
     sbb. NAME AS babyName
     FROM
-    consultphone_register_service crs
+    consultPhone_register_service crs
     LEFT JOIN sys_consultphone_service scs ON scs.id = crs.sys_phoneConsult_service_id
     LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = scs.sys_doctor_id
     LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
@@ -581,7 +581,7 @@ group by crs.id
   </select>
   <!-- 查询电话咨询订单数，sunxiao -->
   <select id="getNewOrderCount" resultType="java.lang.Integer" >
-      SELECT COUNT(*) from consultphone_register_service
+      SELECT COUNT(*) from consultPhone_register_service
     <if test="state != null and state != ''">
       <if test="state == 1">
         where state in (0,1,2,3)
@@ -614,7 +614,7 @@ group by crs.id
     sa.nickname,
     sbb. NAME AS babyName
     FROM
-    consultphone_register_service crs
+    consultPhone_register_service crs
     LEFT JOIN sys_consultphone_service scs ON scs.id = crs.sys_phoneConsult_service_id
     LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = scs.sys_doctor_id
     LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
@@ -663,7 +663,7 @@ group by crs.id
     sa.nickname AS nickName,
     sbb. NAME AS babyName
     FROM
-    consultphone_register_service crs
+    consultPhone_register_service crs
     LEFT JOIN sys_consultphone_service scs ON scs.id = crs.sys_phoneConsult_service_id
     LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = scs.sys_doctor_id
     LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id

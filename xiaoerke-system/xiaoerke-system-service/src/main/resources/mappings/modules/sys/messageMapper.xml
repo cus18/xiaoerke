@@ -100,7 +100,7 @@
         sd.position1,
         sd.position2,
         sd.qrcode
-        from consultphone_register_service prs
+        from consultPhone_register_service prs
         LEFT JOIN sys_consultphone_service srs on srs.id = prs.sys_phoneconsult_service_id
         LEFT JOIN sys_doctor sd ON sd.id=srs.sys_doctor_id
         LEFT JOIN sys_user su ON su.id=sd.sys_user_id

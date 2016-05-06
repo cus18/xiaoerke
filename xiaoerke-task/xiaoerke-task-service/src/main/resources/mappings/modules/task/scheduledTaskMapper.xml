@@ -77,7 +77,7 @@
         case when shc.contact_phone is null then "" else shc.contact_phone end hospitalContactPhone,
         sh.name as hospitalName
         FROM sys_consultphone_service scs
-        INNER JOIN consultphone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
+        INNER JOIN consultPhone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
         LEFT JOIN healthrecord_illness_describe hid ON hid.id = crs.illness_describe_id
         LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
         LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
@@ -108,7 +108,7 @@
         su.openid,
         sh.name as hospitalName
         FROM sys_consultphone_service scs
-        INNER JOIN consultphone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
+        INNER JOIN consultPhone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
         LEFT JOIN healthrecord_illness_describe hid ON hid.id = crs.illness_describe_id
         LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
         LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
@@ -236,7 +236,7 @@
         su.openid openid,
         su.phone phone
         FROM sys_consultphone_service scs
-        INNER JOIN consultphone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
+        INNER JOIN consultPhone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
         LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
 		LEFT JOIN doctor_hospital_relation dhr on sd.id = dhr.sys_doctor_id
         LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = dhr.sys_hospital_id
@@ -263,7 +263,7 @@
         su.phone,
         case when su.openid is null then "" else su.openid end
         FROM sys_consultphone_service scs
-        INNER JOIN consultphone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
+        INNER JOIN consultPhone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
         LEFT JOIN healthrecord_illness_describe hid ON hid.id = crs.illness_describe_id
         LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
         LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
