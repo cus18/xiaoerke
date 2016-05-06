@@ -69,6 +69,21 @@
     ORDER BY (DATE_FORMAT(CONCAT(DATE_FORMAT(scs.DATE,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s')) ASC
   </select>
 
+    <select id="getConsultDateInfoList" resultType="java.util.HashMap">
+        select DISTINCT(DATE_FORMAT(scs.date, '%Y-%m-%d')) as date
+        from
+        sys_consultphone_service scs
+        WHERE
+        scs.sys_doctor_id = #{doctorId,jdbcType=VARCHAR}
+
+        <if test="date != null">
+            and week(scs.date) = week(DATE_FORMAT(#{date,jdbcType=VARCHAR},'%Y-%m-%d'))
+        </if>
+        AND scs.state  &lt;&gt; '2'
+        GROUP BY scs.date
+        ORDER BY (DATE_FORMAT(CONCAT(DATE_FORMAT(scs.DATE,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s')) ASC
+    </select>
+
   <select id="findConsultPhoneTimeListByDoctorAndDate" resultType="java.util.HashMap">
     select scs.id,scs.price,
     DATE_FORMAT(scs.beginTime, '%H:%i') AS begin_time,
