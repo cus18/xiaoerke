@@ -108,8 +108,8 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 			consultRecordService.saveConsultSessionStatus(consultSession);
 		}
 	}
-	
-	
+
+
 	@Override
 	public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
 		this.channelInactive(ctx);

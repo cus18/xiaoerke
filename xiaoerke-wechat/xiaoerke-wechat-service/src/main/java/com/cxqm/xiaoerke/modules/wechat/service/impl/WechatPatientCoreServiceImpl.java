@@ -125,10 +125,14 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			}
 		}
 		else {
-			Runnable thread = new processConsultMessageThread(xmlEntity);
-			threadExecutor.execute(thread);
-			return "";
-//			respMessage = transferToCustomer(xmlEntity);
+			String customservice = Global.getConfig("wechat.customservice");
+			if("false".equals(customservice)){
+				Runnable thread = new processConsultMessageThread(xmlEntity);
+				threadExecutor.execute(thread);
+				return "";
+			}else{
+			  respMessage = transferToCustomer(xmlEntity);
+			}
 		}
 		return respMessage;
 	}

@@ -14,6 +14,7 @@ import java.util.Map;
 public interface SysConsultPhoneService {
     //获取可以预约的日期dateList
     Map<String, Object> getDoctorConsultDate(HashMap<String,Object> dataMap);
+    Map<String, Object> getDoctorConsultDateInfo(HashMap<String,Object> dataMap);
 
     Integer getCount();
 

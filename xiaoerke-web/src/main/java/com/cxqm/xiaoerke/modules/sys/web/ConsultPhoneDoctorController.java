@@ -135,6 +135,28 @@ public class ConsultPhoneDoctorController {
         return response;
     }
 
+    @RequestMapping(value = "getConsultDateInfo",method = {RequestMethod.GET,RequestMethod.POST})
+    public
+    @ResponseBody
+    Map<String, Object> getConsultDateInfo(@RequestBody Map<String, Object> params){
+        String doctorId = (String) params.get("doctorId");
+        if(doctorId == null || "".equals(doctorId)){
+            Map<String,Object> paramsMap = new HashMap<String, Object>();
+            paramsMap.put("id",UserUtils.getUser().getId());
+            doctorId = (String)doctorInfoService.getDoctorIdByUserIdExecute(paramsMap).get("id");
+        }
+        String date = (String) params.get("date");
+
+        HashMap<String,Object> dataMap = new HashMap<String, Object>();
+        dataMap.put("doctorId", doctorId);
+        dataMap.put("date", date);
+
+        Map<String, Object> response = sysConsultPhoneService.getDoctorConsultDateInfo(dataMap);
+        response.put("doctorId",doctorId);
+
+        return response;
+    }
+
     /**
      * 根据医院查询医生
      * @return Map

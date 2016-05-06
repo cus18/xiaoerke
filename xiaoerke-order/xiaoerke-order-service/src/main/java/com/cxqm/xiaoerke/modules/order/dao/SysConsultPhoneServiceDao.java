@@ -32,6 +32,7 @@ public interface SysConsultPhoneServiceDao {
 
     //根据医生获取可预约日期
     List<HashMap<String, Object>> getConsultDateList(HashMap<String,Object> hashMap);
+    List<HashMap<String,Object>> getConsultDateInfoList(HashMap<String, Object> dataMap);
 
     //根据医生和日期获取可预约时间
     List<HashMap<String,Object>> findConsultPhoneTimeListByDoctorAndDate(HashMap<String, Object> hashMap);
