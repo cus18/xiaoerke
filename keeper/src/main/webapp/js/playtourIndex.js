@@ -190,8 +190,8 @@ function updateCustomerInfo(){
     customerId=GetQueryString("customerId");
     var content=$("#content").val();
     var redPacket=$("#getMoney").val();
-    if(redPacket!=""&& redPacket > 0){
-
+    if (redPacket != "" && redPacket > 0 && redPacket<1001 ) {
+        redPacket = num.toFixed(redPacket);
         recordLogs("ZXPJSXY_JE");
         $.ajax({
             url:"account/user/customerPay",// 跳转到 action
