@@ -182,7 +182,9 @@
 				<c:if test="${consultPhone.state eq '1'}">
 					<a href="#"  onclick="refundConsultPhoneFee('${ctx}/consultPhone/refundConsultPhoneFeeForm?id=${consultPhone.id}&price=${consultPhone.price}&babyName=${consultPhone.babyName}')">取消预约</a>
 				</c:if>
-				<a href="${ctx}/consultPhone/manuallyConnectForm?id=${consultPhone.id}&doctorId=${consultPhone.doctorId}">手动接通</a>
+				<c:if test="${consultPhone.state eq '1' || consultPhone.state eq '2' || consultPhone.state eq '3' || consultPhone.state eq 'daichonglian'}">
+					<a href="${ctx}/consultPhone/manuallyConnectForm?id=${consultPhone.id}&doctorId=${consultPhone.doctorId}">手动接通</a>
+				</c:if>
 			</td>
 		</tr>
 	</c:forEach>

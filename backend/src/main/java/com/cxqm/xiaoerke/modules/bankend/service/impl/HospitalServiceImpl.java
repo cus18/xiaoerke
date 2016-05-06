@@ -1,6 +1,7 @@
 package com.cxqm.xiaoerke.modules.bankend.service.impl;
 
 import com.cxqm.xiaoerke.common.persistence.Page;
+import com.cxqm.xiaoerke.common.utils.OSSObjectTool;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.bankend.service.HospitalService;
 import com.cxqm.xiaoerke.modules.sys.dao.*;
@@ -11,6 +12,10 @@ import com.cxqm.xiaoerke.modules.sys.entity.SysHospitalContactVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.net.URLDecoder;
 
 @Service
 @Transactional(readOnly = false)
@@ -67,15 +72,38 @@ public class HospitalServiceImpl implements HospitalService {
      * 医院修改操作
      */
     @Override
-    public void saveEditHospital(HospitalVo hospitalVo) {
+    public void saveEditHospital(HospitalVo hospitalVo,SysHospitalContactVo contactVo) {
         hospitalDao.saveEditHospital(hospitalVo);
-        if (null != hospitalVo.getBusinessContactName()) {
-            SysHospitalContactVo sysHospitalContactVo = new SysHospitalContactVo();
-            sysHospitalContactVo.setContactName(hospitalVo.getBusinessContactName());
-            sysHospitalContactVo.setContactPhone(hospitalVo.getBusinessContactPhone());
-            sysHospitalContactVo.setSysHospitalId(hospitalVo.getId());
-            sysHospitalContactDao.updateByHospitalId(sysHospitalContactVo);
+        if ("2".equals(hospitalVo.getHospitalType())) {
+            sysHospitalContactDao.updateByHospitalId(contactVo);
+            if(StringUtils.isNotNull(contactVo.getHospitalPic())){
+                if(!contactVo.getHospitalPic().contains("oss-cn-beijing.aliyuncs.com")){
+                    try {
+                        uploadHospitalImage(contactVo.getSysHospitalId(),contactVo.getHospitalPic());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            if(StringUtils.isNotNull(contactVo.getClinicItemsPic())){
+                if(!contactVo.getClinicItemsPic().contains("oss-cn-beijing.aliyuncs.com")){
+                    try {
+                        uploadHospitalImage(contactVo.getSysHospitalId()+"clinicItems",contactVo.getClinicItemsPic());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
+    }
+
+    private void uploadHospitalImage(String id , String src) throws Exception{
+        File file = new File(System.getProperty("user.dir").replace("bin", "webapps")+ URLDecoder.decode(src, "utf-8"));
+        FileInputStream inputStream = new FileInputStream(file);
+        long length = file.length();
+        //上传图片至阿里云
+        OSSObjectTool.uploadFileInputStream(id, length, inputStream, OSSObjectTool.BUCKET_DOCTOR_PIC);
     }
 
     /**
