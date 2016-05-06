@@ -191,6 +191,7 @@ function updateCustomerInfo(){
     var content=$("#content").val();
     var redPacket=$("#getMoney").val();
     if (redPacket != "" && redPacket > 0 && redPacket<1001 ) {
+        var num = new Number(redPacket);
         redPacket = num.toFixed(redPacket);
         recordLogs("ZXPJSXY_JE");
         $.ajax({
