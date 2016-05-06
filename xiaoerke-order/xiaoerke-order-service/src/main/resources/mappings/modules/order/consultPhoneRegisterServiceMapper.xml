@@ -69,7 +69,7 @@
     FROM
     consultPhone_register_service crs
     LEFT JOIN sys_consultPhone_service scs ON crs.sys_phoneConsult_service_id = scs.id
-    LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = scs.sys_doctor_id
+    LEFT JOIN consultPhone_doctor_relation cdr ON cdr.doctor_id = scs.sys_doctor_id
     LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
       LEFT  JOIN doctor_hospital_relation dhr on sd.id = dhr.sys_doctor_id
       LEFT JOIN sys_hospital sh on dhr.sys_hospital_id = sh.id
@@ -97,7 +97,7 @@
   <select id="getConsultConnectInfo" resultType="java.util.Map" >
     select crs.id, crs.phone userPhone,cdr.doctor_answer_phone doctorPhone,crs.surplusTime,crs.update_time,cdr.server_length conversationLength from consultPhone_register_service crs
     left join sys_consultPhone_service scs on crs.sys_phoneConsult_service_id = scs.id
-    left join consultphone_doctor_relation cdr on cdr.doctor_id = scs.sys_doctor_id
+    left join consultPhone_doctor_relation cdr on cdr.doctor_id = scs.sys_doctor_id
     where 1=1
     <if test="id != null" >
       and crs.id = #{id,jdbcType=VARCHAR}
@@ -145,7 +145,7 @@
     LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = dhr.sys_hospital_id
     left join sys_patient sp
     on sp.id = crs.sys_patient_id
-    LEFT join consultphone_doctor_relation cdr on cdr.doctor_id = sd.id
+    LEFT join consultPhone_doctor_relation cdr on cdr.doctor_id = sd.id
     LEFT JOIN sys_user su on sp.sys_user_id = su.id
     left join sys_hospital sh on sh.`name` = sd.hospitalName
     where crs.id =#{id,jdbcType=INTEGER}
@@ -290,7 +290,7 @@
         <if test="doctorId != null" >
             AND srs.sys_doctor_id = #{doctorId}
         </if>
-        LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = sd.id
+        LEFT JOIN consultPhone_doctor_relation cdr ON cdr.doctor_id = sd.id
         ORDER BY
         srs.beginTime ASC
     </select>
@@ -533,7 +533,7 @@ group by crs.id
     FROM
     consultphone_register_service crs
     LEFT JOIN sys_consultphone_service scs ON scs.id = crs.sys_phoneConsult_service_id
-    LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = scs.sys_doctor_id
+    LEFT JOIN consultPhone_doctor_relation cdr ON cdr.doctor_id = scs.sys_doctor_id
     LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
     LEFT JOIN sys_patient sp ON sp.id = crs.sys_patient_id
     LEFT JOIN sys_user su ON su.id = sp.sys_user_id
@@ -616,7 +616,7 @@ group by crs.id
     FROM
     consultphone_register_service crs
     LEFT JOIN sys_consultphone_service scs ON scs.id = crs.sys_phoneConsult_service_id
-    LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = scs.sys_doctor_id
+    LEFT JOIN consultPhone_doctor_relation cdr ON cdr.doctor_id = scs.sys_doctor_id
     LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
     LEFT JOIN sys_patient sp ON sp.id = crs.sys_patient_id
     LEFT JOIN sys_user su ON su.id = sp.sys_user_id
@@ -665,7 +665,7 @@ group by crs.id
     FROM
     consultphone_register_service crs
     LEFT JOIN sys_consultphone_service scs ON scs.id = crs.sys_phoneConsult_service_id
-    LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = scs.sys_doctor_id
+    LEFT JOIN consultPhone_doctor_relation cdr ON cdr.doctor_id = scs.sys_doctor_id
     LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
     LEFT JOIN sys_patient sp ON sp.id = crs.sys_patient_id
     LEFT JOIN sys_user su ON su.id = sp.sys_user_id
