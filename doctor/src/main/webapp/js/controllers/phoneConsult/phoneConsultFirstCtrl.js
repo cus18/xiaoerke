@@ -1,6 +1,6 @@
 angular.module('controllers', ['ionic']).controller('phoneConsultFirstCtrl', [
-    '$scope','$ionicPopup','$state','$stateParams','$location','GetUserLoginStatus','GetConsultInfo','GetConsultTime',
-    function ($scope,$ionicPopup,$state,$stateParams,$location,GetUserLoginStatus,GetConsultInfo,GetConsultTime) {
+    '$scope','$ionicPopup','$state','$stateParams','$location','GetUserLoginStatus','GetConsultInfo','GetConsultTime','$http',
+    function ($scope,$ionicPopup,$state,$stateParams,$location,GetUserLoginStatus,GetConsultInfo,GetConsultTime,$http) {
         $scope.title = "电话咨询";
         $scope.week = ["日","一","二","三","四","五","六"];
         $scope.prevWeekDisable = true;
@@ -22,6 +22,8 @@ angular.module('controllers', ['ionic']).controller('phoneConsultFirstCtrl', [
                 }else if(data.status=="8"){
                     window.location.href = data.redirectURL+"?targeturl="+routePath;
                 }else{
+                    var pData = {logContent:encodeURI("WXZJB_CD_DHZX")};
+                    $http({method:'post',url:'util/recordLogs',params:pData});
                     var changeDate ;
                     if($stateParams.date==""){
                         changeDate = getCurrDate();

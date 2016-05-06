@@ -1,8 +1,8 @@
 ﻿angular.module('controllers', ['ionic']).controller('myAccountCtrl', [
     '$scope','$state','$stateParams','CheckBind','GetDoctorInfo','SettlementInfo','GetWithDrawList',
-    '$location','GetUserLoginStatus','GetDayList',
+    '$location','GetUserLoginStatus','GetDayList','$http',
         function ($scope,$state,$stateParams,CheckBind,GetDoctorInfo,SettlementInfo,GetWithDrawList,
-                  $location,GetUserLoginStatus,GetDayList) {
+                  $location,GetUserLoginStatus,GetDayList,$http) {
             $scope.acceptLock=false;
             $scope.codeLock="false";
             $scope.fineLock="false";
@@ -23,8 +23,8 @@
                     }else if(data.status=="8"){
                         window.location.href = data.redirectURL+"?targeturl="+routePath;
                     }
-                })
-
+                });
+                setLog("WXZJB_MRQD");
                 /*if((moment(moment().format("YYYY-MM-DD")+" "+"20:00:00",
                         "YYYY-MM-DD HH:mm:ss").fromNow()).indexOf("ago")!=-1)
                 {
@@ -81,7 +81,7 @@
                                 $scope.settlementInfoData = data;
                                 $scope.totalPrice = data.appointmentTotal;
                             });*/
-
+                            setLog("WXZJB_MRQD_QHRQ");
                             getphoneConsultDay(valueText);
                             saveCurrDate = valueText;
                             $scope.currWeek = getChWeek(getWeekNum(valueText));
@@ -138,6 +138,7 @@
                 var prevDate = moment(saveCurrDate).subtract(1,'days').format("YYYY-MM-DD");
                 changePrevNext(prevDate);
                 $("#changeNext").removeClass("c2");
+                setLog("WXZJB_MRQD_QHRQ");
             }
             //后一天
             $scope.goNext = function () {
@@ -147,7 +148,12 @@
                     if(Date.parse(next)==Date.parse(getCurrDate())){
                         $("#changeNext").addClass("c2");
                     }
+                    setLog("WXZJB_MRQD_QHRQ");
                 }
+            }
+            //弹出时间选择框
+            $scope.showDateTime = function () {
+                $("#dateTime").mobiscroll('show');
             }
 
             $scope.withDrawls = function(){
@@ -229,7 +235,6 @@
                 $scope.pageLoading = true;
                 GetDayList.save({"doctorId":$scope.doctorId,"date":date}, function (data) {
                     $scope.pageLoading = false;
-                    console.log("meir",data);
                     if(data.appointment.timeList.length==0){
                         $scope.checkAvailable = false;
                     }else{
@@ -286,6 +291,12 @@
                     case "5": return "周五";
                     case "6": return "周六";
                 }
+            }
+
+            //保存日志
+            var setLog = function (con) {
+                var pData = {logContent:encodeURI(con)};
+                $http({method:'post',url:'util/recordLogs',params:pData});
             }
 
     }]);
