@@ -75,38 +75,71 @@ var setNo = function(index){
 
 //判断输入心意钱
 var moreMoney = function () {
-    recordLogs("ZXPJSXY_JE");
-        if($("#getMoney").val()>0){
-            $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
-        }else{
-            $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
-        }
+    // recordLogs("ZXPJSXY_JE");
+
+    if($('#getMoney').val()>0){
+        $("#but").removeAttr('disable');
+        $("#but").attr("style","background-color:#fe717b");
+        $('.inputmoney img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
+    }else{
+        $("#but").attr('disable','disabled');
+        $("#but").attr("style","background-color:#E8E8E8");
+        $('.inputmoney img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
+    }
 }
 
 //心意钱数
 var setMoney = function (index) {
     moneyNum = $('#getMoney').val();
     if(index==0){
+
         if(moneyNum<=0){
             $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
         }else{
             $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
             if(moneyNum.indexOf(".")>0){
-                moneyNum=parseInt(moneyNum);
+                $("#but").removeAttr('disable');
+                $("#but").attr("style","background-color:#fe717b");
+                // moneyNum=parseInt(moneyNum);
             }else {
-                moneyNum--;
+                $("#but").removeAttr('disable');
+                $("#but").attr("style","background-color:#fe717b");
+                // moneyNum--;
             }
+
+            var a=parseInt(moneyNum)/5;
+            var b=parseInt(moneyNum)%5;
+            if(a<1){
+                a=0;
+            }else {
+                if(b==0){
+                    a--;
+                }else {
+                    a = parseInt(a);
+                }
+            }
+            moneyNum=5*(a);
             if(moneyNum==0){
+                $("#but").attr('disable','disabled');
+                $("#but").attr("style","background-color:#E8E8E8");
                 $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
             }
             $('#getMoney').val(moneyNum);
         }
     }else if(index==1){
         if(moneyNum.indexOf(".")>0){
-            moneyNum=parseInt(moneyNum)+1;
+            $("#but").removeAttr('disable');
+            $("#but").attr("style","background-color:#fe717b");
         }else {
-            moneyNum++;
+            $("#but").removeAttr('disable');
+            $("#but").attr("style","background-color:#fe717b");
         }
+        if(moneyNum==""){
+            moneyNum=0;
+        }
+        var a=parseInt(moneyNum)/5;
+        a=parseInt(a);
+        moneyNum=5*(a+1);
         $('#getMoney').val(moneyNum);
         $('.ptm img').eq(1).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjia_xuanzhong.png");
         $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");

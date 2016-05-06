@@ -46,11 +46,7 @@ var setMoney = function (index) {
                 $("#but").attr("style","background-color:#fe717b");
                 // moneyNum--;
             }
-            if(moneyNum==0){
-                $("#but").attr('disable','disabled');
-                $("#but").attr("style","background-color:#E8E8E8");
-                $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
-            }
+
             var a=parseInt(moneyNum)/5;
             var b=parseInt(moneyNum)%5;
             if(a<1){
@@ -63,6 +59,11 @@ var setMoney = function (index) {
                 }
             }
             moneyNum=5*(a);
+            if(moneyNum==0){
+                $("#but").attr('disable','disabled');
+                $("#but").attr("style","background-color:#E8E8E8");
+                $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
+            }
             $('#getMoney').val(moneyNum);
         }
     }else if(index==1){
@@ -72,6 +73,9 @@ var setMoney = function (index) {
         }else {
             $("#but").removeAttr('disable');
             $("#but").attr("style","background-color:#fe717b");
+        }
+        if(moneyNum==""){
+            moneyNum=0;
         }
         var a=parseInt(moneyNum)/5;
         a=parseInt(a);
