@@ -16,7 +16,7 @@
     <div class="evaltitle">
         <div class="et_1">
             <div>
-                <img id="headImage" src="images/a1.png" width="54px" height="54px"/>
+                <img id="headImage" src="images/a1.png" width="54px" height="54px" onerror="$('#headImage').attr('src','images/a1.png')"/>
             </div>
             <div id="doctorName" >梁平</div>
         </div>
@@ -63,6 +63,6 @@
     <div class="evalsharebut" onclick="goShare()">
         <button >分享给更多宝妈</button>
     </div>
-    <button id="but" onclick="updateCustomerInfo()" >提交评价</button>
+    <button id="but" background-color="#E8E8E8" onclick="updateCustomerInfo()" >提交评价</button>
 </body>
 </html>

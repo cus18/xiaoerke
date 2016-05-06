@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -72,7 +73,15 @@ public class PraiseCustomerController extends BaseController {
         session.setAttribute("openId",map.get("openid"));
     	String doctorId=map.get("doctorId").toString();
     	result.put("evaluation", map);
-    	result.put("starInfo", patientRegisterPraiseService.getCustomerStarInfoById(doctorId));
+        Map<String, Object> starInfo =new HashMap<String, Object>();
+        starInfo=patientRegisterPraiseService.getCustomerStarInfoById(doctorId);
+        Integer sing=Integer.parseInt(patientRegisterPraiseService.getCustomerStarSingById(doctorId).get("startNum").toString())+200;
+        Integer count=Integer.parseInt(patientRegisterPraiseService.getCustomerStarCountById(doctorId).get("startNum").toString())+200;
+        float num= (float)sing/count;
+        DecimalFormat df = new DecimalFormat("0.00");//格式化小数
+        String s = df.format(num);//返回的是String类型
+        starInfo.put("startNum",s);
+    	result.put("starInfo", starInfo);
         result.put("doctorHeadImage",patientRegisterPraiseService.getDoctorHeadImageURIById(doctorId));
         return result;
     }
