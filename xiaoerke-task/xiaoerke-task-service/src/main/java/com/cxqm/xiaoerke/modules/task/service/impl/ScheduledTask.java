@@ -20,7 +20,6 @@ import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
 import com.cxqm.xiaoerke.modules.plan.service.PlanMessageService;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.service.CustomerService;
-import com.cxqm.xiaoerke.modules.sys.service.DoctorInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.MessageService;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
@@ -210,6 +209,10 @@ public class ScheduledTask {
             String status = "4";
             updateMonitorStatus(trackList, status);
         }
+
+    }
+
+    public void phoneConsultReminder2Doc(){
 
         //电话咨询预约成功5min后发消息给医生
         sendMsgToDoc5minAfterSuccess();
@@ -1375,7 +1378,7 @@ public class ScheduledTask {
                         //微信推送
                         Map tokenMap = systemService.getDoctorWechatParameter();
                         String token = (String)tokenMap.get("token");
-                        String sysPhoneConsultId = (String)map.get("sys_phoneConsult_service_id");
+                        Integer sysPhoneConsultId = (Integer)map.get("sys_phoneConsult_service_id");
                         String doctorId = (String)map.get("doctorId");
                         String url=ConstantUtil.DOCTOR_WEB_URL + "/doctor/phoneConsultDoctor#/phoneConsultDetails/"+sysPhoneConsultId+","+doctorId;
                         DoctorMsgTemplate.doctorPhoneConsultRemindAt5minLater2Wechat(babyName, visitDate, week,
@@ -1396,7 +1399,7 @@ public class ScheduledTask {
             String babyName = (String)map.get("babyName");
             String doctorPhone = (String)map.get("phone");
             String userPhone = (String)map.get("userPhone");
-            String sysPhoneConsultId = (String)map.get("sys_phoneConsult_service_id");
+            Integer sysPhoneConsultId = (Integer)map.get("sys_phoneConsult_service_id");
             String doctorId = (String)map.get("doctorId");
             String url = ConstantUtil.DOCTOR_WEB_URL + "/doctor/phoneConsultDoctor#/phoneConsultDetails/"+sysPhoneConsultId+","+doctorId;
             if(!(map.get("hospitalContactPhone").equals(""))){

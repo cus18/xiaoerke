@@ -18,9 +18,12 @@ var moreMoney = function () {
    // recordLogs("ZXPJSXY_JE");
     
     if($('#getMoney').val()>0){
-      
+        $("#but").removeAttr('disable');
+        $("#but").attr("style","background-color:#fe717b");
         $('.inputmoney img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
     }else{
+        $("#but").attr('disable','disabled');
+        $("#but").attr("style","background-color:#E8E8E8");
         $('.inputmoney img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
     }
 }
@@ -125,7 +128,7 @@ function getCustomerInfo(){
                 $("#suggest").html(evaluation.content);
                 $(".evalfinish img").attr("src",resultList[1]);
                 // getMoney(evaluation);
-                if(evaluation.redPacket!='null'&&typeof(evaluation.redPacket) != 'undefined'&&evaluation.redPacket!=""){
+                if(evaluation.redPacket!='null'&&typeof(evaluation.redPacket) != 'undefined'&&evaluation.redPacket!=""&&evaluation.redPacket!=0){
                     $("#redPacket").html(evaluation.redPacket);
                     $(".evalinputmoney").hide();
                     $(".evalhavemoney").show();

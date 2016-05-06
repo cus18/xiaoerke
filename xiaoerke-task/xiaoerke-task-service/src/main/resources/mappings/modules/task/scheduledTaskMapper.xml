@@ -86,7 +86,6 @@
         LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = dhr.sys_hospital_id
         LEFT JOIN sys_user su ON su.id = sd.sys_user_id
         WHERE DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(crs.create_time,"%Y-%m-%d")
-        AND DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(scs.date,"%Y-%m-%d")
 		AND DATE_FORMAT(DATE_SUB(now(), INTERVAL 5 MINUTE),"%H:%i") = DATE_FORMAT(crs.create_time,"%H:%i")
         AND crs.state = '1'
     </select>
@@ -116,8 +115,7 @@
         LEFT JOIN sys_hospital sh on dhr.sys_hospital_id = sh.id
         LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = dhr.sys_hospital_id
         LEFT JOIN sys_user su ON su.id = sd.sys_user_id
-        WHERE DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(crs.create_time,"%Y-%m-%d")
-        AND DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(scs.date,"%Y-%m-%d")
+        WHERE DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(scs.date,"%Y-%m-%d")
         AND DATE_FORMAT(DATE_SUB(now(), INTERVAL -5 MINUTE),"%H:%i") = DATE_FORMAT(scs.beginTime,"%H:%i")
         AND crs.state = '1'
     </select>

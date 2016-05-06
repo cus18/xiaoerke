@@ -1,6 +1,6 @@
 angular.module('controllers', ['ionic']).controller('doctorFansCtrl', [
-    '$scope','$ionicPopup','$state','$stateParams','$location','GetUserLoginStatus','GetFansList',
-    function ($scope,$ionicPopup,$state,$stateParams,$location,GetUserLoginStatus,GetFansList) {
+    '$scope','$ionicPopup','$state','$stateParams','$location','GetUserLoginStatus','GetFansList','$http',
+    function ($scope,$ionicPopup,$state,$stateParams,$location,GetUserLoginStatus,GetFansList,$http) {
         $scope.title = "粉丝列表";
         $scope.haveMore = true;
         $scope.noMore = false;
@@ -16,6 +16,8 @@ angular.module('controllers', ['ionic']).controller('doctorFansCtrl', [
                 }else if(data.status=="8"){
                     window.location.href = data.redirectURL+"?targeturl="+routePath;
                 }else{
+                    var pData = {logContent:encodeURI("WXZJB_WDZY_CKFS")};
+                    $http({method:'post',url:'util/recordLogs',params:pData});
                     $scope.noMoreFans = true;
                     $scope.FansCon = "点击加载更多";
                     num = 5;

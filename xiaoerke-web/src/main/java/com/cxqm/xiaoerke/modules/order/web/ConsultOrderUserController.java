@@ -110,7 +110,7 @@ public class ConsultOrderUserController {
         String  phoneNum =(String)params.get("phoneNum");
         String  illnessDesc =(String)params.get("illnessDesc");
         Integer  sysConsultPhoneId =Integer.parseInt((String)params.get("sysConsultPhoneId"));
-        Date  birthDay = DateUtils.StrToDate((String)params.get("birthDay"),"yyyy/MM/dd");
+        Date  birthDay = DateUtils.StrToDate((String)params.get("birthDay"),"yyyy-MM-dd");
         Map<String,Object> resultMap = new HashMap<String, Object>();
         String openid = UserUtils.getUser().getOpenid();
         int resultState = 0;
