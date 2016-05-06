@@ -33,7 +33,7 @@ angular.module('controllers', ['luegg.directives'])
                 publicReplyList: false,
                 replyContent: true,
                 advisoryContent: false,
-                magnifyImg: false
+                magnifyImg:false
             };
             $scope.searchFlag = false;
 
@@ -100,11 +100,13 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 })
             };
-
+            $scope.tapImgButton = function (key,value) {
+                $scope.showFlag[key] = !$scope.showFlag[key];
+                $scope.imageSrc = value;
+            };
             //公共点击按钮，用来触发弹出对应的子窗口
             $scope.tapShowButton = function(type){
                 $.each($scope.showFlag,function(key,value){
-                    console.log(type)
                     if(key==type){
                         $scope.showFlag[key] = !$scope.showFlag[key];
                         if(type == "replyContent"){
@@ -716,7 +718,6 @@ angular.module('controllers', ['luegg.directives'])
             var getAlreadyJoinConsultPatientList = function () {
                 //获取跟医生的会话还保存的用户列表
                 GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
-                    console.log(data);
                     if(data.alreadyJoinPatientConversation!=""&&data.alreadyJoinPatientConversation!=undefined){
                         $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                         $.each($scope.alreadyJoinPatientConversation,function(index,value){
@@ -1203,6 +1204,13 @@ angular.module('controllers', ['luegg.directives'])
                     val.message = $sce.trustAsResourceUrl(angular.copy(val.message));
                 }
             };
-
+            //各个子窗口的开关变量
+            $scope.showFlag = {
+                magnifyImg:false
+            };
+            $scope.tapImgButton = function (key,value) {
+                $scope.showFlag[key] = !$scope.showFlag[key];
+                $scope.imageSrc = value;
+            };
         }])
 
