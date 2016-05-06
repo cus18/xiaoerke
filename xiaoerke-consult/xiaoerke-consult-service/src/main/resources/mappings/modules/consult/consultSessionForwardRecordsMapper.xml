@@ -166,7 +166,7 @@
     consult_session cs
     left JOIN sys_user su ON su.id = cs.sys_user_id_cs
     WHERE DATE_FORMAT(cs.create_time,'%Y-%m-%d') = #{rankDate}
-    and su.user_type = 'distributor'
+    and su.user_type != 'distributor'
     GROUP BY
     cs.sys_user_id_cs
     ORDER BY
