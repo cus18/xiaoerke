@@ -76,11 +76,11 @@ var setNo = function(index){
 //判断输入心意钱
 var moreMoney = function () {
     recordLogs("ZXPJSXY_JE");
-    if($('#getMoney').val()>0){
-        $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
-    }else{
-        $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
-    }
+        if($("#getMoney").val()>0){
+            $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
+        }else{
+            $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
+        }
 }
 
 //心意钱数
