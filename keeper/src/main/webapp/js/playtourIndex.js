@@ -190,7 +190,11 @@ function updateCustomerInfo(){
     customerId=GetQueryString("customerId");
     var content=$("#content").val();
     var redPacket=$("#getMoney").val();
-    if (redPacket != "" && redPacket > 0 && redPacket<1001 ) {
+    if (redPacket != "" && redPacket > 0  ) {
+        if(redPacket<1001){
+            alert("感谢您的支持,目前最大金额为1000哦!");
+            return;
+        }
         var num = new Number(redPacket);
         redPacket = num.toFixed(1);
         recordLogs("ZXPJSXY_JE");
