@@ -184,7 +184,7 @@
                 </div>
             </div>
             <!-- http://xiaork.com/keeper/scripts/views/customerss.html-->
-            <iframe src="http://localhost:8080/keeper/scripts/views/customerss.html" frameborder="0"
+            <iframe src="http://xiaork.com/angel/scripts/views/customerss.html" frameborder="0"
                     class="advisory-content" ng-show='showFlag.advisoryContent'>
             </iframe>
             <textarea type="text" name="messageData" id="patientIdData" class="textarea" style="display:none;">{{currentUserConversation.patientId}}</textarea>
@@ -208,25 +208,23 @@
                         </div>
                         <div ng-repeat="item in currentUserConversation.consultValue" class="information">
                             <div ng-if="item.senderId==doctorId&&item.type!='4'" class="doctorReplyContent">
-                                <div class="doctorReplyContentIn">
                                     <div class="doctorName">
                                         <span>{{doctorName}}</span>
                                         <span>{{item.dateTime}}</span>
                                     </div>
                                     <div ng-if="item.type=='0'" class="message" ng-bind-html="item.content"></div>
                                     <div ng-if="item.type=='1'" class="message" ng-click="tapImgButton('magnifyImg',item.content)">
-                                        <img width="30%" ng-src="{{item.content}}">
+                                        <img width="100px" ng-src="{{item.content}}">
                                     </div>
                                 </div>
                             <div ng-if="item.senderId!=doctorId&&item.type!='4'" class="patientConsultContent">
-                                <div class="patientReplyContentIn">
                                     <div class="senderName">
                                         <span>{{item.senderName}}</span>
                                          <span>{{item.dateTime}}</span>
                                     </div>
                                     <div ng-if="item.type=='0'" class="message" ng-bind-html="item.content"></div>
                                     <div ng-if="item.type=='1'" class="message" ng-click="tapImgButton('magnifyImg',item.content)">
-                                        <img width="30%" ng-src="{{item.content}}">
+                                        <img width="100px" ng-src="{{item.content}}">
                                     </div>
                                     <div ng-if="item.type=='2'">
                                         <audio ng-src="{{item.content}}" controls="controls"></audio>
@@ -236,7 +234,6 @@
                                                controls="controls"></video>
                                     </div>
                                 </div>
-                            </div>
                             <div class="moreInformation" ng-if="item.type=='4'&&item.notifyType=='0011'" >
                                 <a href="">
                                     正在将用户{{item.patientName}}转接给{{item.toCsUserName}}，如需取消请点击
@@ -259,8 +256,8 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="magnifyImg" ng-show='showFlag.magnifyImg'>
-                            <img width="60%" ng-src="{{imageSrc}}">
+                        <div class="magnifyImg" ng-show='showFlag.magnifyImg' ng-click="tapShowButton('magnifyImg')">
+                            <img width="400px" ng-src="{{imageSrc}}">
                         </div>
                     </div>
                 </div>
