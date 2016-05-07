@@ -9,8 +9,9 @@ $(function(){
    // $('.evalhavemoney').hide();//收到心意钱
    // $('.evalsharebut').hide();//分享按钮
     // $('#ping').hide();
-    getCustomerInfo();
     $("#but").attr("style","background-color:#E8E8E8");
+    getCustomerInfo();
+    
 })
 
 //判断输入心意钱
@@ -145,12 +146,12 @@ function getCustomerInfo(){
                 $("#suggest").html(evaluation.content);
                 $(".evalfinish img").attr("src",resultList[1]);
                 // getMoney(evaluation);
-                if(evaluation.redPacket!='null'&&typeof(evaluation.redPacket) != 'undefined'&&evaluation.redPacket!=""&&evaluation.redPacket!=0){
+                if(evaluation.redPacket!='null'&&typeof(evaluation.redPacket) != 'undefined'&&evaluation.redPacket!=""&&evaluation.redPacket!=0 && evaluation.payStatus =="success"){
                     $("#redPacket").html(evaluation.redPacket);
                     $(".evalinputmoney").hide();
                     $(".evalhavemoney").show();
                     $('.evalsharebut').show();//分享按钮
-                    $('#but').hide();//分享按钮
+                    $("#but").attr("style","display:none");
                 }else{
                     $(".evalhavemoney").hide();
                     $(".evalinputmoney").show();
