@@ -34,7 +34,7 @@ public class ConstantUtil {
 	public static int VISIT_INTERVAL = 15;
 	public static String MARKET_WEB_URL = "http://xiaork.com/";
 	public static String WISDOM_WEB_URL = "http://xiaork.com/";
-	public static String ANGEL_WEB_URL = "http://s34.baodf.com/";
+	public static String ANGEL_WEB_URL = "http://s34.baodf.com:8081/";
 	public static String KEEPER_WEB_URL = "http://xiaork.cn/";
 	public static String DOCTOR_WEB_URL = "http://xiaork.cn/";
 	public static String TITAN_WEB_URL = "http://xiaork.cn/";
