@@ -177,7 +177,11 @@ function getCustomerInfo(){
             }else{
                 var star=starInfo.startNum+"";
                 $("#redPacket").html(starInfo.redPacket);
-                $("#starInfo").html(star.split(".")[1]+"%");
+                if(star=="1.00"){
+                    $("#starInfo").html("100%");
+                }else {
+                    $("#starInfo").html(star.split(".")[1] + "%");
+                }
                 $("#doctorName").html(doctorInfo.doctor_name);
                 $("#headImage").attr("src",doctorInfo.doctor_pic_url);
             }
