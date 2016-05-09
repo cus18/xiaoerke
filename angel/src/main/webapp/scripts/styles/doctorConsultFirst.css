@@ -182,8 +182,8 @@ textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 10
 .doctorReplyContent .message,.patientConsultContent .message{font: 12px/12px 'Microsoft Yahei';padding: 8px;max-width: 100%;border: 1px solid #ccc;border-radius: 5px;background-color: #fff;margin: 20px 10px 10px 10px;}
 .doctorReplyContent div:nth-child(1){color:#08b7c2;}
 .patientConsultContent div:nth-child(1){color:#7fc700;}
-.senderName{position: absolute;left: 10px;min-width: 160px;}
-.doctorName{position: absolute;right: 10px;min-width: 160px;}
+.senderName{position: absolute;left: 10px;min-width: 200px;}
+.doctorName{position: absolute;right: 10px;min-width: 200px;}
 .moreInformation{text-align: center;padding-top: 10px;}
 .moreInformation a{display: inline-block;color: #08b7c2;padding-left: 15px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fyh_12.png") no-repeat center left;}
 .moreInformation a:hover{text-decoration: underline;}
