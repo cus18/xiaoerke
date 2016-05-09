@@ -1380,9 +1380,17 @@ public class ScheduledTask {
             String openid = (String)map.get("openid");
             if(StringUtils.isNotNull(openid)){
                 //微信推送
-                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("mm月dd日");
-                String nowTime = simpleDateFormat1.format(new Date());
-                DoctorMsgTemplate.doctorPhoneConsultRemindAt5minBefore2Wechat(babyName,nowTime,userPhone,token,url,openid);
+
+                Date date = (Date)map.get("date");
+                Date beginTime = (Date)map.get("beginTime");
+                Date endTime = (Date)map.get("endTime");
+
+                SimpleDateFormat format = new SimpleDateFormat("yyyy/mm/dd");
+                SimpleDateFormat format1 = new SimpleDateFormat("HH:MM");
+                String week = DateUtils.getWeekOfDate(DateUtils.StrToDate(format.format(date), "yyyy/MM/dd"));
+
+                String time = format.format(date)+" "+week+" "+format1.format(beginTime)+"-"+format1.format(endTime);
+                DoctorMsgTemplate.doctorPhoneConsultRemindAt5minBefore2Wechat(babyName,time,userPhone,(String)map.get("register_no"),token,url,openid);
             }
         }
     }
