@@ -206,6 +206,17 @@
 		<property name="cronExpression" value="22 17 23 * * ?"/>
 	</bean>
 
+	<!-- task of repeatSettingRegister -->
+	<bean id="repeatSettingConsultPhoneRegisterQuarzTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="scheduledQuarz"/>
+		<property name="targetMethod" value="repeatSettingConsultPhoneRegister"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+	<bean id="repeatSettingConsultPhoneRegisterCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="repeatSettingConsultPhoneRegisterQuarzTask"/>
+		<property name="cronExpression" value="22 19 23 * * ?"/>
+	</bean>
+
 	<!-- task of sys_statistics_title -->
 	<bean id="insertStatisticsTitleQuarzTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="scheduledQuarz"/>
@@ -337,6 +348,7 @@
 				<ref bean="letsGoReminderCronTrigger"/>
 				<ref bean="updateSrSerStatusCronTrigger"/>
 				<ref bean="repeatSettingRegisterCronTrigger"/>
+				<ref bean="repeatSettingConsultPhoneRegisterCronTrigger"/>
 				<ref bean="statisticsTrigger"/>
 				<ref bean="prepareOperationStatisticDataTrigger"/>
 				<ref bean="insertStatisticsTitleCronTrigger"/>
