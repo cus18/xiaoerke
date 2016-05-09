@@ -119,7 +119,7 @@ public class PlanMessageServiceImpl implements PlanMessageService{
 				String sport="";
 				for (Map<String, Object> planInfoTask : planInfoTaskList) {
 					if(planInfoTask.get("remind_me").toString().equals("0")){
-						continue;
+						return;
 					}
 					String type= planInfoTask.get("type").toString();
 					 if(type.equals("defecate")){
