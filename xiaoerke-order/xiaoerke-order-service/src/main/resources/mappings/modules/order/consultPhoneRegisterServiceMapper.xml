@@ -68,7 +68,7 @@
     cdr.server_length conversationLength
     FROM
     consultPhone_register_service crs
-    LEFT JOIN sys_consultPhone_service scs ON crs.sys_phoneConsult_service_id = scs.id
+    LEFT JOIN sys_consultphone_service scs ON crs.sys_phoneConsult_service_id = scs.id
     LEFT JOIN consultPhone_doctor_relation cdr ON cdr.doctor_id = scs.sys_doctor_id
     LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
       LEFT  JOIN doctor_hospital_relation dhr on sd.id = dhr.sys_doctor_id
@@ -96,7 +96,7 @@
 
   <select id="getConsultConnectInfo" resultType="java.util.Map" >
     select crs.id, crs.phone userPhone,cdr.doctor_answer_phone doctorPhone,crs.surplusTime,crs.update_time,cdr.server_length conversationLength from consultPhone_register_service crs
-    left join sys_consultPhone_service scs on crs.sys_phoneConsult_service_id = scs.id
+    left join sys_consultphone_service scs on crs.sys_phoneConsult_service_id = scs.id
     left join consultPhone_doctor_relation cdr on cdr.doctor_id = scs.sys_doctor_id
     where 1=1
     <if test="id != null" >
@@ -134,10 +134,10 @@
     sh.id hospitalId,
     cdr.server_length
     from consultPhone_register_service crs
-    left join sys_consultPhone_service scs
+    left join sys_consultphone_service scs
     on crs.sys_phoneConsult_service_id = scs.id
     LEFT JOIN healthrecord_illness_describe hid ON hid.id = crs.illness_describe_id
-    LEFT JOIN sys_baby_baseinfo sbi ON sbi.id = hid.babyinfo_Id
+    LEFT JOIN sys_baby_baseInfo sbi ON sbi.id = hid.babyinfo_Id
     left join sys_doctor sd
     on sd.id = scs.sys_doctor_id
     LEFT JOIN doctor_hospital_relation dhr
@@ -167,7 +167,7 @@
     FROM
     consultPhone_register_service crs
     LEFT JOIN sys_patient sp ON crs.sys_patient_id = sp.id
-    LEFT JOIN sys_consultPhone_service scp ON scp.id = crs.sys_phoneConsult_service_id
+    LEFT JOIN sys_consultphone_service scp ON scp.id = crs.sys_phoneConsult_service_id
     LEFT JOIN sys_doctor sd ON sd.id = scp.sys_doctor_id
     WHERE
     sp.sys_user_id = #{userId,jdbcType=VARCHAR}
@@ -197,7 +197,7 @@
     FROM
     consultPhone_register_service crs
     LEFT JOIN sys_patient sp ON crs.sys_patient_id = sp.id
-    LEFT JOIN sys_consultPhone_service scp ON scp.id = crs.sys_phoneConsult_service_id
+    LEFT JOIN sys_consultphone_service scp ON scp.id = crs.sys_phoneConsult_service_id
     LEFT JOIN sys_doctor sd ON sd.id = scp.sys_doctor_id
     WHERE
     sp.sys_user_id = #{userId,jdbcType=VARCHAR}
@@ -228,7 +228,7 @@
     FROM
     consultPhone_register_service crs
     LEFT JOIN sys_patient sp ON crs.sys_patient_id = sp.id
-    LEFT JOIN sys_consultPhone_service scp ON scp.id = crs.sys_phoneConsult_service_id
+    LEFT JOIN sys_consultphone_service scp ON scp.id = crs.sys_phoneConsult_service_id
     LEFT JOIN sys_doctor sd ON sd.id = scp.sys_doctor_id
     WHERE
     sp.sys_user_id = #{userId,jdbcType=VARCHAR}
@@ -282,7 +282,7 @@
         AND prs. state != "1"
         AND prs. state != "0"
         LEFT JOIN healthrecord_illness_describe hid on hid.id = prs.illness_describe_id
-        LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
+        LEFT JOIN sys_baby_baseInfo sbb ON sbb.id = hid.babyinfo_Id
         INNER JOIN sys_doctor sd ON sd.id = srs.sys_doctor_id
         <if test="date != null" >
             AND srs.date=DATE_FORMAT(#{date,jdbcType=VARCHAR},'%Y-%m-%d')
