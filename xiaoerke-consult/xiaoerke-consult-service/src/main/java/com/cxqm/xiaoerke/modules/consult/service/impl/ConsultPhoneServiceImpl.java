@@ -19,6 +19,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -179,12 +180,12 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
                 int state = consultPhonePatientService.updateOrderInfoBySelect(registerServiceVo);
                 //              并发送消息
                 String url = ConstantUtil.TITAN_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) consultOrder.get("doctorId")+","+(Integer) consultOrder.get("id")+",phone";
-                PatientMsgTemplate.unConnectPhone2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"), (Float) consultOrder.get("price") + "", (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"));
+                PatientMsgTemplate.unConnectPhone2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"), (BigDecimal) consultOrder.get("price") + "", (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"));
                 Map tokenMap = systemService.getDoctorWechatParameter();
                 String token = (String)tokenMap.get("token");
                 String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)consultOrder.get("date"),"yyyy/MM/dd"));
                 String dateTime = (String)consultOrder.get("date")+week+(String)consultOrder.get("beginTime");
-                PatientMsgTemplate.unConnectPhone2Wechat(dateTime, (String) consultOrder.get("userPhone"), (String) consultOrder.get("doctorName"), (Float) consultOrder.get("price") + "", url, (String) consultOrder.get("orderNo"), (String) consultOrder.get("openid"), token);
+                PatientMsgTemplate.unConnectPhone2Wechat(dateTime, (String) consultOrder.get("userPhone"), (String) consultOrder.get("doctorName"), (BigDecimal) consultOrder.get("price") + "", url, (String) consultOrder.get("orderNo"), (String) consultOrder.get("openid"), token);
 
                 //未接通时 给医生发消息提醒
                 String doctorName =  (String) consultOrder.get("doctorName");
