@@ -239,6 +239,20 @@ define(['appBaoFansCamp'], function(app){
                             }
                         }
                     })
+                    /* 第三方合作*/
+                    .state('youFuMama', {
+                        url: '/youFuMama',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'youFuMamaCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.youFuMamaCtrl',
+                                    ['js/controllers/baoFansCamp/third/youFuMamaCtrl.js',
+                                        'styles/baoFansCamp/third/youFuMama.less?ver'+baoFansCampVersion],
+                                    'js/views/baoFansCamp/third/youFuMama.html?ver='+baoFansCampVersion);
+                            }
+                        }
+                    })
 
 
 
