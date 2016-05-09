@@ -1224,10 +1224,9 @@ public class ScheduledTask {
             //如果医生有微信ID，则推送微信消息
             String openid = (String) orderMap.get("openid");
             if(StringUtils.isNotNull(openid)){
-                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("mm月dd日");
-                String nowTime = simpleDateFormat1.format(new Date());
+                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy年mm月dd日");
                 String url = ConstantUtil.DOCTOR_WEB_URL + "/doctor/phoneConsultDoctor#/phoneConsultFirst/"+date;
-                DoctorMsgTemplate.doctorPhoneConsultRemindAtNight2Wechat(nowTime, String.valueOf(num), nameList, token,
+                DoctorMsgTemplate.doctorPhoneConsultRemindAtNight2Wechat(simpleDateFormat1.format(tomorrow), String.valueOf(num), nameList, token,
                         url, openid);
             }
         }
@@ -1263,10 +1262,9 @@ public class ScheduledTask {
             //如果医生有微信ID，则推送微信消息
             String openid = (String) orderMap.get("openid");
             if(StringUtils.isNotNull(openid)){
-                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("mm月dd日");
-                String nowTime = simpleDateFormat1.format(new Date());
+                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy年mm月dd日");
                 String url = ConstantUtil.DOCTOR_WEB_URL + "/doctor/phoneConsultDoctor#/phoneConsultFirst/"+date;
-                DoctorMsgTemplate.doctorPhoneConsultRemindAtMoning2Wechat(nowTime, String.valueOf(num), nameList,
+                DoctorMsgTemplate.doctorPhoneConsultRemindAtMoning2Wechat(simpleDateFormat1.format(new Date()), String.valueOf(num), nameList,
                         token, url, openid);
             }
         }

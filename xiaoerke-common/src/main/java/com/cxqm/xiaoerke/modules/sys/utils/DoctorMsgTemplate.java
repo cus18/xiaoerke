@@ -1,10 +1,6 @@
 package com.cxqm.xiaoerke.modules.sys.utils;
 
-import com.cxqm.xiaoerke.common.bean.WechatArticle;
-import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
-
-import java.util.ArrayList;
 
 /**
  * Created by wangbaowei on 15/12/20.
@@ -81,17 +77,9 @@ public class DoctorMsgTemplate {
     }
 
     public static void doctorPhoneConsultRemindAtNight2Wechat(String date,String num,String nameList,String token,String url,String openId){
-        ArrayList<Object> obj = new ArrayList<Object>();
-        WechatArticle article = new WechatArticle();
-        article.setTitle("电话咨询提醒");
-        article.setDescription(date + "\n明日电话咨询一览\n接诊人数：" + num + "\n患者名单："+ nameList + "。"
-                + "\n若您因特殊情况不能接听，请联系客服：400-623-7120。宝大夫祝您工作顺利！\n详情>");
-        article.setUrl(url);
-        obj.add(article);
-        if(StringUtils.isNotNull(openId))
-        {
-            WechatMessageUtil.sendMsgToWechat(token,openId, obj);
-        }
+        String templateId = "GW_uNAiN7hwOMLpW8kn62pYVgbsv2Fahi47239YCAGs";
+        WechatMessageUtil.templateModel("明日电话咨询一览",date,num,nameList,"","若您因特殊情况不能接听，请联系客服：400-623-7120。宝大夫祝您工作顺利！",
+                token,url,openId,templateId);
     }
 
 
@@ -101,17 +89,9 @@ public class DoctorMsgTemplate {
     }
 
     public static void doctorPhoneConsultRemindAtMoning2Wechat(String date,String num,String nameList,String token,String url, String openId){
-        ArrayList<Object> obj = new ArrayList<Object>();
-        WechatArticle article = new WechatArticle();
-        article.setTitle("电话咨询提醒");
-        article.setDescription(date + "\n今日新增电话咨询\n接诊人数：" + num + "\n患者名单："+ nameList + "。"
-                + "\n若您因特殊情况不能接听，请联系客服：400-623-7120。宝大夫祝您工作顺利！\n详情>");
-        article.setUrl(url);
-        obj.add(article);
-        if(StringUtils.isNotNull(openId))
-        {
-            WechatMessageUtil.sendMsgToWechat(token,openId, obj);
-        }
+        String templateId = "GW_uNAiN7hwOMLpW8kn62pYVgbsv2Fahi47239YCAGs";
+        WechatMessageUtil.templateModel("今日新增电话咨询",date,num,nameList,"","若您因特殊情况不能接听，请联系客服：400-623-7120。宝大夫祝您工作顺利！",
+                token,url,openId,templateId);
     }
 
 
@@ -122,17 +102,10 @@ public class DoctorMsgTemplate {
     }
 
     public static void doctorPhoneConsultRemindAt5minLater2Wechat(String babyName,String date,String week,String beginTime,String token,String url,String openId){
-        ArrayList<Object> obj = new ArrayList<Object>();
-        WechatArticle article = new WechatArticle();
-        article.setTitle("预约成功电话咨询");
-        article.setDescription(date + "\n预约成功通知\n详细信息：" + babyName +"小朋友家长预约了您"+date+" ("+week+")"+beginTime+"的电话咨询。" +
-                "若您因特殊情况不能接听，请联系客服：400-623-7120。宝大夫祝您工作顺利！");
-        article.setUrl(url);
-        obj.add(article);
-        if(StringUtils.isNotNull(openId))
-        {
-            WechatMessageUtil.sendMsgToWechat(token,openId, obj);
-        }
+        String templateId = "J8b5ERHelg56VUhLHyLJan6ihWXcEJ5rb-4_lyb8FhY";
+        String content = babyName +"小朋友家长预约了您的电话咨询" ;
+        String time = date+" ("+week+")"+beginTime;
+        WechatMessageUtil.templateModel("预约成功通知",content,time,"","","若您因特殊情况不能接听，请联系客服：400-623-7120。宝大夫祝您工作顺利！",token,url,openId,templateId);
 
     }
 
@@ -142,19 +115,10 @@ public class DoctorMsgTemplate {
         SMSMessageUtil.sendMsg(phone, content);
     }
 
-    public static void cancelDoctorPhoneConsult2Wechat(String babyName,String date,String week,String beginTime,String token,String url,String openId){
-        ArrayList<Object> obj = new ArrayList<Object>();
-        WechatArticle article = new WechatArticle();
-        article.setTitle("取消电话咨询");
-        article.setDescription(date + "\n取消预约通知\n详细信息：" + babyName +"小朋友家长取消了您"+date+" ("+week+")"+beginTime+"的电话咨询。" +
-                "给您造成的不便，敬请谅解！宝大夫祝您工作顺利！");
-        article.setUrl(url);
-        obj.add(article);
-        if(StringUtils.isNotNull(openId))
-        {
-            WechatMessageUtil.sendMsgToWechat(token,openId, obj);
-        }
-
+    public static void cancelDoctorPhoneConsult2Wechat(String babyName,String doctorName,String date,String week,String beginTime,String token,String url,String openId){
+        String templateId="HMAH5Z2ONKe85sIfN07XKQTcNJa_preh9kxXctqWT38";
+        WechatMessageUtil.templateModel("【电话咨询取消】患者已取消您"+date+" ("+week+")"+beginTime+"的电话咨询。",babyName,doctorName,"","","给您造成的不便，敬请谅解！宝大夫祝您工作顺利！",
+                token,url,openId,templateId);
     }
 
 
