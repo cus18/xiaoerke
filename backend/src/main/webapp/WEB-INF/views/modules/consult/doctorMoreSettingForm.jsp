@@ -314,26 +314,26 @@
 		<form:form id="inputForm" modelAttribute="doctor" action="${ctx}/consult/doctorOper" method="post" class="form-horizontal"><%--
 			<form:hidden path="email" htmlEscape="false" maxlength="255" class="input-xlarge"/>
 			<sys:ckfinder input="email" type="files" uploadPath="/mytask" selectMultiple="false"/> --%>
-			<input type="text" value="${doctor.id}"/>
+			<input type="hidden" value="${doctor.id}"/>
 			<div class="control-group">
 				<label class="control-label">是否允许抢接会话:</label>
 				<div class="controls">
-					<input id="grabSessionyes" name="grabSession" value="1" type="radio" checked="checked"><label for="grabSessionyes">是</label>
-					<input id="grabSessionno" name="grabSession" value="0" type="radio"><label for="grabSessionno">否</label>
+					<input id="grabSessionno" name="grabSession" value="0" type="radio" checked="checked"><label for="grabSessionno">否</label>
+					<input id="grabSessionyes" name="grabSession" value="1" type="radio"><label for="grabSessionyes">是</label>
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">是否向用户发送评价消息:</label>
 				<div class="controls">
-					<input id="sendMessageyes" name="sendMessage" value="1" type="radio" checked="checked"><label for="sendMessageyes">是</label>
-					<input id="sendMessageno" name="sendMessage" value="0" type="radio"><label for="sendMessageno">否</label>
+					<input id="sendMessageno" name="sendMessage" value="0" type="radio" checked="checked"><label for="sendMessageno">否</label>
+					<input id="sendMessageyes" name="sendMessage" value="1" type="radio"><label for="sendMessageyes">是</label>
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">接收差评监控通知:</label>
 				<div class="controls">
-					<input id="receiveDifferentialNotificationyes" name="receiveDifferentialNotification" value="1" type="radio" checked="checked"><label for="receiveDifferentialNotificationyes">是</label>
-					<input id="receiveDifferentialNotificationno" name="receiveDifferentialNotification" value="0" type="radio"><label for="receiveDifferentialNotificationno">否</label>
+					<input id="receiveDifferentialNotificationno" name="receiveDifferentialNotification" value="0" type="radio" checked="checked"><label for="receiveDifferentialNotificationno">否</label>
+					<input id="receiveDifferentialNotificationyes" name="receiveDifferentialNotification" value="1" type="radio"><label for="receiveDifferentialNotificationyes">是</label>
 				</div>
 			</div>
 			<div class="form-actions" >
