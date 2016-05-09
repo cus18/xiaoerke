@@ -347,21 +347,21 @@ public class ConsultDoctorController extends BaseController {
     @ResponseBody
     Map<String, Object> sessionEnd(@RequestParam(required = true) String sessionId,
                                    @RequestParam(required = true) String userId) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("openid", userId);
-        params.put("uuid", UUID.randomUUID().toString().replaceAll("-", ""));
-        params.put("starNum1", 0);
-        params.put("starNum2", 0);
-        params.put("starNum3", 0);
-        params.put("doctorId", UserUtils.getUser().getId());
-        params.put("content", "");
-        params.put("dissatisfied", null);
-        params.put("redPacket", null);
-        patientRegisterPraiseService.saveCustomerEvaluation(params);
-        String st = "本次咨询体验怎么样?赶快来评价吧!【" +
-                "<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" + params.get("uuid") + "'>点击这里去评价</a>】";
-        Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-        WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
+//        Map<String, Object> params = new HashMap<String, Object>();
+//        params.put("openid", userId);
+//        params.put("uuid", UUID.randomUUID().toString().replaceAll("-", ""));
+//        params.put("starNum1", 0);
+//        params.put("starNum2", 0);
+//        params.put("starNum3", 0);
+//        params.put("doctorId", UserUtils.getUser().getId());
+//        params.put("content", "");
+//        params.put("dissatisfied", null);
+//        params.put("redPacket", null);
+//        patientRegisterPraiseService.saveCustomerEvaluation(params);
+//        String st = "本次咨询体验怎么样?赶快来评价吧!【" +
+//                "<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" + params.get("uuid") + "'>点击这里去评价</a>】";
+//        Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+//        WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
         String result = consultSessionService.clearSession(sessionId, userId);
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("result", result);
