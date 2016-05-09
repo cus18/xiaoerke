@@ -253,8 +253,10 @@ public class ConsultSessionManager {
 		String distributorUserId = distributorsList.get(index);
 		Channel distributorChannel = distributors.get(distributorUserId);
 		if(distributorChannel != null) {
-			consultSession.setCsUserId(distributorUserId);
-			csChannel = distributorChannel;
+			if(distributorChannel.isActive()){
+				consultSession.setCsUserId(distributorUserId);
+				csChannel = distributorChannel;
+			}
 		} else {
 			int length = index + distributorsListSize + 2;
 			for(int i = index + 1;  i < length; i ++) {
