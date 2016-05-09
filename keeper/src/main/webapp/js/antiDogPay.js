@@ -511,9 +511,9 @@ function loginCheck(){
                     }else if(data.status=="20"){
 
                         if(data.openId=="noOpenId"){
-                            window.location.href = "http://s22.baodf.com/xiaoerke-wxapp/wechatInfo/" +
-                                "fieldwork/wechat/author?url=http://s22.baodf.com/" +
-                                "xiaoerke-wxapp/wechatInfo/getUserWechatMenId?url=26";
+                            window.location.href = "http://s251.baodf.com/keeper/wechatInfo/" +
+                                "fieldwork/wechat/author?url=http://s251.baodf.com/" +
+                                "keeper/wechatInfo/getUserWechatMenId?url=26";
                         }else{
                             getBabyInfo();
                         }
