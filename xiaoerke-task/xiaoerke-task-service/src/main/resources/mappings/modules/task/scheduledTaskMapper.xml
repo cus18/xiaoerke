@@ -93,6 +93,7 @@
     <select id="getOrderInfoToDocConnect5minAfter" resultType="java.util.HashMap">
         SELECT
         scs.beginTime,
+        scs.endTime,
         scs.date,
         crs.id AS patient_register_service_id,
         crs.sys_patient_id AS patientid,

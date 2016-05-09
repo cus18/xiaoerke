@@ -1,10 +1,6 @@
 package com.cxqm.xiaoerke.modules.sys.utils;
 
-import com.cxqm.xiaoerke.common.bean.WechatArticle;
-import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
-
-import java.util.ArrayList;
 
 /**
  * Created by wangbaowei on 15/12/20.
@@ -131,18 +127,11 @@ public class DoctorMsgTemplate {
         SMSMessageUtil.sendMsg(phone, content);
     }
 
-    public static void doctorPhoneConsultRemindAt5minBefore2Wechat(String babyName,String date,String userPhone, String token,String url,String openId){
-        ArrayList<Object> obj = new ArrayList<Object>();
-        WechatArticle article = new WechatArticle();
-        article.setTitle("接听提醒");
-        article.setDescription(date + "\n咨询接听通知\n详细信息：：" + babyName +"小朋友家长将在5min以后接通电话咨询，到时您会接到号码为"+userPhone+
-                "的来电，请保持电话畅通。在这之前，您可以打开链接，查看患者详细的病情资料http://baod\n");
-        article.setUrl(url);
-        obj.add(article);
-        if(StringUtils.isNotNull(openId))
-        {
-            WechatMessageUtil.sendMsgToWechat(token,openId, obj);
-        }
+    public static void doctorPhoneConsultRemindAt5minBefore2Wechat(String babyName,String date,String userPhone, String registerNo,String token,String url,String openId){
+        String templateId = "oG_hw4gJy5N9vSDxpZzu12Lzku3obhbwYEWHhrX3Hfk";
+        WechatMessageUtil.templateModel(babyName+"小朋友家长将在5min以后接通电话咨询，请保持电话畅通。",
+                babyName,date,userPhone,registerNo,"若您因特殊情况不能接听，请联系客服！",
+                token,url,openId,templateId);
     }
 
 
@@ -151,17 +140,10 @@ public class DoctorMsgTemplate {
         SMSMessageUtil.sendMsg(phone, content);
     }
 
-    public static void doctorPhoneConsultRemindFail2Wechat(String babyName,String date, String token,String url,String openId){
-        ArrayList<Object> obj = new ArrayList<Object>();
-        WechatArticle article = new WechatArticle();
-        article.setTitle("未接提醒");
-        article.setDescription(date + "\n咨询未接通知\n详细信息：由于" + babyName +"小朋友家长预约电话咨询未接通，已将咨询费用退还给预约用户。有疑问请致电400-623-7120。");
-        article.setUrl(url);
-        obj.add(article);
-        if(StringUtils.isNotNull(openId))
-        {
-            WechatMessageUtil.sendMsgToWechat(token,openId, obj);
-        }
+    public static void doctorPhoneConsultRemindFail2Wechat(String babyName,String date,String orderNo, String token,String url,String openId){
+        String templateId = "1Id5wrPtzE1-SWGhvqN28LTZ-OoOv4grAA56ROnjb9w";
+        WechatMessageUtil.templateModel("【未接通知】由于"+babyName+"小朋友家长预约的电话咨询未接通，已将咨询费用退还给预约用户。",
+                orderNo,date,"","","若有疑问请致电客服400-623-7120",token,url,openId,templateId);
     }
 
 }
