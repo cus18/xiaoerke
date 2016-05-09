@@ -317,7 +317,7 @@
 		SELECT
 			COUNT(redPacket)+16 AS redPacket
 		FROM
-			customerevaluation
+			customerEvaluation
 		WHERE
 			doctorId =#{doctorId}
 	</select>
@@ -326,7 +326,7 @@
         SELECT
         COUNT(serviceAttitude) AS startNum
         FROM
-        customerevaluation
+        customerEvaluation
         WHERE
         doctorId =#{doctorId} and serviceAttitude>1
     </select>
@@ -335,7 +335,7 @@
         SELECT
         COUNT(serviceAttitude) AS startNum
         FROM
-        customerevaluation
+        customerEvaluation
         WHERE
         doctorId =#{doctorId}
     </select>
@@ -360,7 +360,7 @@
         SELECT
         *
         FROM
-        customerevaluation
+        customerEvaluation
         WHERE
         doctorId =#{doctorId}
     </select>
