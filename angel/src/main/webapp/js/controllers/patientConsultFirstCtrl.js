@@ -94,9 +94,9 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     'type':conversationData.type,
                     'content':conversationData.content,
                     'dateTime':conversationData.dateTime,
-                    'senderId':conversationData.senderId,
-                    'senderName':conversationData.senderName,
-                    'sessionId':conversationData.sessionId
+                    'senderId':$scope.senderId,
+                    'senderName':$scope.senderName,
+                    'sessionId':$scope.sessionId
                 };
                 $scope.consultContent.push(doctorValMessage);
                 console.log(doctorValMessage);
