@@ -1,6 +1,10 @@
 package com.cxqm.xiaoerke.modules.sys.utils;
 
+import com.cxqm.xiaoerke.common.bean.WechatArticle;
+import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
+
+import java.util.ArrayList;
 
 /**
  * Created by wangbaowei on 15/12/20.
