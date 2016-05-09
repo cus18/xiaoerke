@@ -7,11 +7,11 @@ var GetQueryString = function(name)
 }
 // 点击跳转到首页
 var goFirstPage=function(){
-    window.location.href="/titan/firstPage/phoneConsult"
+    window.location.href="http://s68.baodf.com/titan/firstPage/phoneConsult"
 }
 // 点击跳转到个人中心
 var goMyselfCenter=function(){
-    window.location.href="/titan/phoneConsult#/selfCenter"
+    window.location.href="http://s68.baodf.com/titan/phoneConsult#/selfCenter"
 }
 
 
@@ -122,7 +122,7 @@ var doRefresh = function() {
                     paySign:obj.paySign,  // 支付签名
                     success: function (res) {
                         if(res.errMsg == "chooseWXPay:ok" ) {
-                            window.location.href = "/titan/phoneConsult#/phoneConPaySuccess/"+GetQueryString("orderId");
+                            window.location.href = "http://s68.baodf.com/titan/phoneConsult#/phoneConPaySuccess/"+GetQueryString("orderId");
                         }else{
                             alert("支付失败,请重新支付")
                         }

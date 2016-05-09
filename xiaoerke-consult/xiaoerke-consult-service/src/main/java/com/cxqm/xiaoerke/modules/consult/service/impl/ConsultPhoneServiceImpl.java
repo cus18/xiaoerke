@@ -19,7 +19,6 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -192,12 +191,12 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
                 String babyName =  (String) consultOrder.get("babyName");
                 String doctorPhone =  (String)consultOrder.get("doctorPhone");
                 DoctorMsgTemplate.doctorPhoneConsultRemindFail2Sms(doctorName, babyName, doctorPhone);
-                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("mm月dd日");
-                String nowTime = simpleDateFormat1.format(new Date());
+
+                String time = (String)consultOrder.get("date")+" "+week+" "+(String)consultOrder.get("beginTime")+"-"+(String)consultOrder.get("endTime");
                 String doctorToken = (String) tokenMap.get("token");
                 String openId = doctorInfoService.findOpenIdByDoctorId((String) consultOrder.get("doctorId"));
                 if (StringUtils.isNotNull(openId)) {
-                    DoctorMsgTemplate.doctorPhoneConsultRemindFail2Wechat(babyName, nowTime, doctorToken, "", openId);
+                    DoctorMsgTemplate.doctorPhoneConsultRemindFail2Wechat(babyName, time,(String)consultOrder.get("orderNo"), doctorToken, "", openId);
                 }
             };
         }
