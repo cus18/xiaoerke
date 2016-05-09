@@ -159,7 +159,7 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
 
     @Override
     @Transactional(rollbackFor=Exception.class)
-    public Float cancelOrder(Integer phoneConsultaServiceId,String cancelReason,String cancelState) throws CancelOrderException {
+    public BigDecimal cancelOrder(Integer phoneConsultaServiceId,String cancelReason,String cancelState) throws CancelOrderException {
         int sysOrderState = 0;
 //        Float price = 0f;
         //取消订单
@@ -205,7 +205,7 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
                 throw  new CancelOrderException();
         }
 
-        return (Float)map.get("price");
+        return (BigDecimal)map.get("price");
     }
 
     /**
