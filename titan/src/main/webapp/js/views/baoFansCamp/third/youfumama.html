@@ -1,0 +1,32 @@
+<ion-view view-title={{title0}} ng-init="doRefresh()" >
+	<div class="c-shadow" ng-if="shareLock"></div>
+	<div class="youFuMama-remind" ng-if="shareLock">
+		<img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2FshareRemind_arr.png" class="arrow1" width="81" height="auto">
+		<div  ng-click="cancel()">
+			<img width="90%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fshare_img.png">
+		</div>
+	</div>
+	<ion-content class="youFuMama " overflow-scroll="true" style="top:0;">
+		<ion-scroll direction="y" has-bouncing="true">
+			<ul>
+				<li>
+					<img class="my-img2" width="100%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/third%2FyouFuMama_01.png">
+				</li>
+				<li>
+					<img class="my-img2" width="100%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/third%2FyouFuMama_02.png">
+				</li>
+				<li>
+					<img class="my-img2" data-tap-disabled="true"  width="100%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/third%2FyouFuMama_03.png">
+					<!--<img class="code" data-tap-disabled="true"  width="20%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/third%2FyouFuMama_code.jpg">-->
+				</li>
+				<li>
+					<img class="my-img2" width="100%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/third%2FyouFuMama_04.png">
+				</li>
+			</ul>
+
+				<div style="height:30px;"></div>
+		</ion-scroll>
+	</ion-content>
+	<div class="bottom-btn" ng-click="share()">分享给更多宝妈</div>
+</ion-view>
+
