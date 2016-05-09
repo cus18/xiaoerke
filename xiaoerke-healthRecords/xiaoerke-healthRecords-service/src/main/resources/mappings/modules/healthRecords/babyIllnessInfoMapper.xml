@@ -26,7 +26,7 @@
     FROM
         healthrecord_illness_describe hid
     LEFT JOIN
-        sys_baby_baseinfo sbb ON
+        sys_baby_baseInfo sbb ON
         sbb.id = hid.babyinfo_Id
     LEFT JOIN consultPhone_register_service crs ON
         crs.illness_describe_id = hid.id
@@ -37,15 +37,15 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />
-    from healthRecord_illness_describe
+    from healthrecord_illness_describe
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from healthRecord_illness_describe
+    delete from healthrecord_illness_describe
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.healthRecords.entity.BabyIllnessInfoVo" >
-    insert into healthRecord_illness_describe (id, babyinfo_Id, illness,
+    insert into healthrecord_illness_describe (id, babyinfo_Id, illness,
     create_time, conversation_id, status,
     caseImg, resultImg, otherImg,
     positionImg)
@@ -55,7 +55,7 @@
     #{positionimg,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.healthRecords.entity.BabyIllnessInfoVo" useGeneratedKeys="true" keyProperty="id" >
-    insert into healthRecord_illness_describe
+    insert into healthrecord_illness_describe
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -122,7 +122,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.healthRecords.entity.BabyIllnessInfoVo" >
-    update healthRecord_illness_describe
+    update healthrecord_illness_describe
     <set >
       <if test="babyinfoId != null" >
         babyinfo_Id = #{babyinfoId,jdbcType=VARCHAR},
@@ -155,7 +155,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.healthRecords.entity.BabyIllnessInfoVo" >
-    update healthRecord_illness_describe
+    update healthrecord_illness_describe
     set babyinfo_Id = #{babyinfoId,jdbcType=VARCHAR},
     illness = #{desc,jdbcType=VARCHAR},
     create_time = #{createTime,jdbcType=TIMESTAMP},
