@@ -674,23 +674,11 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 //			insertHealthRecordMsg(healthRecordMsgVo);
 //		}
 
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(new Date());
-		int hours = calendar.get(Calendar.HOUR_OF_DAY);
-		if(hours<6||hours>=23){
 			return "<xml><ToUserName><![CDATA[" + xmlEntity.getFromUserName()  +
 					"]]></ToUserName><FromUserName><![CDATA[" + xmlEntity.getToUserName() +
 					"]]></FromUserName><CreateTime><![CDATA[" + new Date().getTime() +
 					"]]></CreateTime><MsgType><![CDATA[transfer_customer_service]]></MsgType>" +
 					"</xml>";
-		}else{
-			return "<xml><ToUserName><![CDATA[" + xmlEntity.getFromUserName()  +
-				"]]></ToUserName><FromUserName><![CDATA[" + xmlEntity.getToUserName() +
-				"]]></FromUserName><CreateTime><![CDATA[" + new Date().getTime() +
-				"]]></CreateTime><MsgType><![CDATA[transfer_customer_service]]></MsgType>" +
-				"<FuncFlag><![CDATA[0]]></FuncFlag><TransInfo><KfAccount><![CDATA[110@BaodfWX]]>" +
-				"</KfAccount></TransInfo></xml>";
-		}
 	}
 
     /***
