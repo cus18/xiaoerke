@@ -153,311 +153,311 @@ angular.module('controllers', ['luegg.directives'])
             };
 
             /**转接功能区**/
-                $scope.acceptTransfer = function(){
-                    $scope.tapShowButton('waitProcess');
-                    var waitJoinChooseUserList = "";
-                    $.each($scope.waitJoinUserList,function(index,value){
-                       if(value.chooseFlag){
-                           waitJoinChooseUserList = waitJoinChooseUserList + value.forwardSessionId + ";"
-                       }
-                    });
-                    React2Transfer.save({operation:"accept",
-                        forwardSessionIds:waitJoinChooseUserList},function(data){
-                        if(data.result=="success"){
-                            //将转接成功的用户，都加入会话列表中来
-                            var indexClose = 0;
-                            $.each($scope.waitJoinUserList,function(index,value){
-                                if(value.chooseFlag){
-                                    $scope.currentUserConversation = {};
-                                    $scope.currentUserConversation.patientId = value.userId;
-                                    $scope.currentUserConversation.source = value.source;
-                                    $scope.currentUserConversation.fromServer = value.serverAddress;
-                                    $scope.currentUserConversation.sessionId = value.sessionId;
-                                    $scope.currentUserConversation.isOnline = true;
-                                    $scope.currentUserConversation.dateTime = value.sessionCreateTime;
-                                    $scope.currentUserConversation.messageNotSee = true;
-                                    $scope.currentUserConversation.patientName = value.userName;
-                                    var consultValue = {};
-                                    consultValue.type = value.type;
-                                    consultValue.content = value.messageContent;
-                                    consultValue.dateTime = value.messageDateTime;
-                                    consultValue.senderId = value.userId;
-                                    consultValue.senderName = value.userName;
-                                    consultValue.sessionId = value.sessionId;
-                                    filterMediaData(consultValue);
-                                    $scope.currentUserConversation.consultValue = [];
-                                    $scope.currentUserConversation.consultValue.push(consultValue);
-                                    $scope.alreadyJoinPatientConversation.push($scope.currentUserConversation);
-                                }
-                            });
-                            $scope.refreshWaitJoinUserList();
-                            $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
-                                $scope.alreadyJoinPatientConversation[0].patientName);
-                        }
-                    });
-                };
-
-                $scope.rejectTransfer = function(){
-                    $scope.tapShowButton('waitProcess');
-                    var waitJoinChooseUserList = "";
-                    $.each($scope.waitJoinUserList,function(index,value){
-                        if(value.chooseFlag){
-                            waitJoinChooseUserList = waitJoinChooseUserList + value.forwardSessionId + ";"
-                        }
-                    });
-                    React2Transfer.save({operation:"rejected",forwardSessionIds:waitJoinChooseUserList},function(data){
-                        if(data.result=="success"){
-                            $scope.refreshWaitJoinUserList();
-                        }
-                    });
-                };
-                //选择转接对象
-                $scope.chooseTransferCsUser = function(csUserId,csUserName){
-                    $scope.transferCsUserId = csUserId;
-                    $scope.csTransferUserName = csUserName;
-                };
-
-                $scope.transferToCsUser = function(){
-                    TransferToOtherCsUser.save({doctorId: $scope.transferCsUserId,
-                        sessionId:$scope.currentUserConversation.sessionId,
-                        remark: $scope.info.transferRemark},function(data){
-                        if(data.result=="success"){
-                            $scope.tapShowButton('switchOver');
-                            //转接请求成功后，在接诊员侧，保留了此会话，只到被转接的医生收到为止，
-                            // 才将会话拆除，在此过程中，允许接诊员，取消转接。
-                        }else if(data.result=="failure"){
-                            alert("转接失败，请转接给其他医生");
-                            $scope.tapShowButton('switchOver');
-                        }else if(data.result=="transferring"){
-                            alert("此会话正在被转接中，不能再次转接");
-                            $scope.tapShowButton('switchOver');
-                        }
-                    });
-                };
-
-                $scope.searchCsUser = function(){
-                    if($scope.info.searchCsUserValue!=""){
-                        $scope.searchFlag = true;
-                    }else{
-                        $scope.searchFlag = false;
+            $scope.acceptTransfer = function(){
+                $scope.tapShowButton('waitProcess');
+                var waitJoinChooseUserList = "";
+                $.each($scope.waitJoinUserList,function(index,value){
+                    if(value.chooseFlag){
+                        waitJoinChooseUserList = waitJoinChooseUserList + value.forwardSessionId + ";"
                     }
-                };
+                });
+                React2Transfer.save({operation:"accept",
+                    forwardSessionIds:waitJoinChooseUserList},function(data){
+                    if(data.result=="success"){
+                        //将转接成功的用户，都加入会话列表中来
+                        var indexClose = 0;
+                        $.each($scope.waitJoinUserList,function(index,value){
+                            if(value.chooseFlag){
+                                $scope.currentUserConversation = {};
+                                $scope.currentUserConversation.patientId = value.userId;
+                                $scope.currentUserConversation.source = value.source;
+                                $scope.currentUserConversation.fromServer = value.serverAddress;
+                                $scope.currentUserConversation.sessionId = value.sessionId;
+                                $scope.currentUserConversation.isOnline = true;
+                                $scope.currentUserConversation.dateTime = value.sessionCreateTime;
+                                $scope.currentUserConversation.messageNotSee = true;
+                                $scope.currentUserConversation.patientName = value.userName;
+                                var consultValue = {};
+                                consultValue.type = value.type;
+                                consultValue.content = value.messageContent;
+                                consultValue.dateTime = value.messageDateTime;
+                                consultValue.senderId = value.userId;
+                                consultValue.senderName = value.userName;
+                                consultValue.sessionId = value.sessionId;
+                                filterMediaData(consultValue);
+                                $scope.currentUserConversation.consultValue = [];
+                                $scope.currentUserConversation.consultValue.push(consultValue);
+                                $scope.alreadyJoinPatientConversation.push($scope.currentUserConversation);
+                            }
+                        });
+                        $scope.refreshWaitJoinUserList();
+                        $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
+                            $scope.alreadyJoinPatientConversation[0].patientName);
+                    }
+                });
+            };
 
-                $scope.cancelTransfer = function(sessionId,toCsUserId,remark){
-                    CancelTransfer.save({sessionId:sessionId,toCsUserId:toCsUserId,remark:remark},function(data){
-                        if(data.result=="success"){
-                            //删除取消通知
-                            var indexClose = 0;
-                            $.each($scope.currentUserConversation.consultValue, function (index, value) {
-                                if (value.remark == remark && value.toCsUserId==toCsUserId) {
-                                    indexClose = index;
-                                }
-                            })
-                            $scope.currentUserConversation.consultValue.splice(indexClose, 1);
-                        }
-                    })
-                };
+            $scope.rejectTransfer = function(){
+                $scope.tapShowButton('waitProcess');
+                var waitJoinChooseUserList = "";
+                $.each($scope.waitJoinUserList,function(index,value){
+                    if(value.chooseFlag){
+                        waitJoinChooseUserList = waitJoinChooseUserList + value.forwardSessionId + ";"
+                    }
+                });
+                React2Transfer.save({operation:"rejected",forwardSessionIds:waitJoinChooseUserList},function(data){
+                    if(data.result=="success"){
+                        $scope.refreshWaitJoinUserList();
+                    }
+                });
+            };
+            //选择转接对象
+            $scope.chooseTransferCsUser = function(csUserId,csUserName){
+                $scope.transferCsUserId = csUserId;
+                $scope.csTransferUserName = csUserName;
+            };
+
+            $scope.transferToCsUser = function(){
+                TransferToOtherCsUser.save({doctorId: $scope.transferCsUserId,
+                    sessionId:$scope.currentUserConversation.sessionId,
+                    remark: $scope.info.transferRemark},function(data){
+                    if(data.result=="success"){
+                        $scope.tapShowButton('switchOver');
+                        //转接请求成功后，在接诊员侧，保留了此会话，只到被转接的医生收到为止，
+                        // 才将会话拆除，在此过程中，允许接诊员，取消转接。
+                    }else if(data.result=="failure"){
+                        alert("转接失败，请转接给其他医生");
+                        $scope.tapShowButton('switchOver');
+                    }else if(data.result=="transferring"){
+                        alert("此会话正在被转接中，不能再次转接");
+                        $scope.tapShowButton('switchOver');
+                    }
+                });
+            };
+
+            $scope.searchCsUser = function(){
+                if($scope.info.searchCsUserValue!=""){
+                    $scope.searchFlag = true;
+                }else{
+                    $scope.searchFlag = false;
+                }
+            };
+
+            $scope.cancelTransfer = function(sessionId,toCsUserId,remark){
+                CancelTransfer.save({sessionId:sessionId,toCsUserId:toCsUserId,remark:remark},function(data){
+                    if(data.result=="success"){
+                        //删除取消通知
+                        var indexClose = 0;
+                        $.each($scope.currentUserConversation.consultValue, function (index, value) {
+                            if (value.remark == remark && value.toCsUserId==toCsUserId) {
+                                indexClose = index;
+                            }
+                        })
+                        $scope.currentUserConversation.consultValue.splice(indexClose, 1);
+                    }
+                })
+            };
             /**转接功能区**/
 
             /**会话操作区**/
                 //初始化socket链接
-                $scope.initConsultSocket1 = function () {
-                    if (!window.WebSocket) {
-                        window.WebSocket = window.MozWebSocket;
+            $scope.initConsultSocket1 = function () {
+                if (!window.WebSocket) {
+                    window.WebSocket = window.MozWebSocket;
+                }
+                if (window.WebSocket) {
+                    if($scope.userType=="distributor"){
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://s34.baodf.com:2048/ws&" +
+                            "distributor&" + $scope.doctorId);//cs,user,distributor
+                    }else if($scope.userType=="consultDoctor"){
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://s34.baodf.com:2048/ws&" +
+                            "cs&" + $scope.doctorId);//cs,user,distributor
                     }
-                    if (window.WebSocket) {
-                        if($scope.userType=="distributor"){
-                            $scope.socketServer1 = new ReconnectingWebSocket("ws://101.201.154.201:2048/ws&" +
-                                "distributor&" + $scope.doctorId);//cs,user,distributor
-                        }else if($scope.userType=="consultDoctor"){
-                            $scope.socketServer1 = new ReconnectingWebSocket("ws://101.201.154.201:2048/ws&" +
-                                "cs&" + $scope.doctorId);//cs,user,distributor
-                        }
 
-                        $scope.socketServer1.onmessage = function (event) {
-                            var consultData = JSON.parse(event.data);
-                            if(consultData.type==4){
-                                processNotifyMessage(consultData);
-                            }else{
-                                filterMediaData(consultData);
-                                processPatientSendMessage(consultData);
-                            }
-                            $scope.$apply();
-                            $scope.triggerVoice();
-                        };
-
-                        $scope.socketServer1.onopen = function (event) {
-                        };
-
-                        $scope.socketServer1.onclose = function (event) {
-                        };
-                    } else {
-                        alert("你的浏览器不支持！");
-                    }
-                };
-
-                //处理用户按键事件
-                document.onkeydown = function () {
-                    if (window.event.ctrlKey && window.event.keyCode == 13) {
-                        if($("#saytext").val()!=""){
-                            $scope.info.consultMessage = $("#saytext").val();
-                            $scope.sendConsultMessage();
+                    $scope.socketServer1.onmessage = function (event) {
+                        var consultData = JSON.parse(event.data);
+                        if(consultData.type==4){
+                            processNotifyMessage(consultData);
+                        }else{
+                            filterMediaData(consultData);
+                            processPatientSendMessage(consultData);
                         }
                         $scope.$apply();
-                    }
-                };//当onkeydown 事件发生时调用函数
-
-                //向用户发送咨询消息
-                $scope.sendConsultMessage = function () {
-                    if (!window.WebSocket) {
-                        return;
-                    }
-                    if ($scope.socketServer1.readyState == WebSocket.OPEN) {
-                        if ($scope.info.consultMessage.indexOf("\n") >= 0) {
-                            $scope.info.consultMessage.replace("\n","");
-                        }
-                        var consultValMessage = "";
-                        if($scope.userType=="distributor"){
-                            var consultValMessage = {
-                                "type": 0,
-                                "content": "分诊" +$scope.doctorName+"："+ $scope.info.consultMessage,
-                                "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                                "senderId": angular.copy($scope.doctorId),
-                                "senderName": angular.copy($scope.doctorName),
-                                "sessionId": angular.copy($scope.currentUserConversation.sessionId)
-                            };
-                        }else if($scope.userType=="consultDoctor"){
-                            var consultValMessage = {
-                                "type": 0,
-                                "content": $scope.doctorName + "医生：" + $scope.info.consultMessage,
-                                "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                                "senderId": angular.copy($scope.doctorId),
-                                "senderName": angular.copy($scope.doctorName),
-                                "sessionId": angular.copy($scope.currentUserConversation.sessionId)
-                            };
-                        }
-
-                        $scope.socketServer1.send(emotionSendFilter(JSON.stringify(consultValMessage)));
-                        consultValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($scope.info.consultMessage)));
-                        $scope.info.consultMessage = "";
-                        updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
-                    } else {
-                        alert("连接没有开启.");
-                    }
-                };
-                //向用户发送咨询图片
-                $scope.uploadFiles = function($files,fileType) {
-                    var dataValue = {
-                        "fileType": fileType,
-                        "senderId": $scope.doctorId
+                        $scope.triggerVoice();
                     };
-                    var dataJsonValue = JSON.stringify(dataValue);
-                    for (var i = 0; i < $files.length; i++) {
-                        var file = $files[i];
-                        $scope.upload = $upload.upload({
-                            url: 'consult/h5/uploadMediaFile',
-                            data: encodeURI(dataJsonValue),
-                            file: file
-                        }).progress(function(evt) {
-                            console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-                        }).success(function(data, status, headers, config){
-                            if(data.source == "wxcxqm"){
-                                var consultValMessage = {
-                                    "type": 1,
-                                    "content": data.showFile,
-                                    "wscontent": data.WS_File,
-                                    "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                                    "senderId": angular.copy($scope.doctorId),
-                                    "senderName": angular.copy($scope.doctorName),
-                                    "sessionId": angular.copy($scope.currentUserConversation.sessionId)
-                                };
-                            }else{
-                                var consultValMessage = {
-                                    "type": 1,
-                                    "content": data.showFile,
-                                    "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                                    "senderId": angular.copy($scope.doctorId),
-                                    "senderName": angular.copy($scope.doctorName),
-                                    "sessionId": angular.copy($scope.currentUserConversation.sessionId)
-                                };
-                            }
-                            if (!window.WebSocket) {
-                                return;
-                            }
-                            if ($scope.socketServer1.readyState == WebSocket.OPEN) {
-                                $scope.socketServer1.send(JSON.stringify(consultValMessage));
-                                updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
-                            } else {
-                                alert("连接没有开启.");
-                            }
-                        });
+
+                    $scope.socketServer1.onopen = function (event) {
+                    };
+
+                    $scope.socketServer1.onclose = function (event) {
+                    };
+                } else {
+                    alert("你的浏览器不支持！");
+                }
+            };
+
+            //处理用户按键事件
+            document.onkeydown = function () {
+                if (window.event.ctrlKey && window.event.keyCode == 13) {
+                    if($("#saytext").val()!=""){
+                        $scope.info.consultMessage = $("#saytext").val();
+                        $scope.sendConsultMessage();
                     }
-                };
+                    $scope.$apply();
+                }
+            };//当onkeydown 事件发生时调用函数
 
-                //关闭跟某个用户的会话
-                $scope.closeConsult = function () {
-                    SessionEnd.get({sessionId:$scope.currentUserConversation.sessionId,
-                        userId:$scope.currentUserConversation.patientId},function(data){
-                        if(data.result=="success"){
-                            var indexClose = 0;
-                            $.each($scope.alreadyJoinPatientConversation, function (index, value) {
-                                if (value.patientId == $scope.chooseAlreadyJoinConsultPatientId) {
-                                    indexClose = index;
-                                }
-                            })
-                            $scope.alreadyJoinPatientConversation.splice(indexClose, 1);
-                            if($scope.alreadyJoinPatientConversation.length!=0){
-                                $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
-                                    $scope.alreadyJoinPatientConversation[0].patientName);
-                            }else{
-                                $scope.currentUserConversation = {};
-                            }
+            //向用户发送咨询消息
+            $scope.sendConsultMessage = function () {
+                if (!window.WebSocket) {
+                    return;
+                }
+                if ($scope.socketServer1.readyState == WebSocket.OPEN) {
+                    if ($scope.info.consultMessage.indexOf("\n") >= 0) {
+                        $scope.info.consultMessage.replace("\n","");
+                    }
+                    var consultValMessage = "";
+                    if($scope.userType=="distributor"){
+                        var consultValMessage = {
+                            "type": 0,
+                            "content": "分诊" +$scope.doctorName+"："+ $scope.info.consultMessage,
+                            "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                            "senderId": angular.copy($scope.doctorId),
+                            "senderName": angular.copy($scope.doctorName),
+                            "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                        };
+                    }else if($scope.userType=="consultDoctor"){
+                        var consultValMessage = {
+                            "type": 0,
+                            "content": $scope.doctorName + "医生：" + $scope.info.consultMessage,
+                            "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                            "senderId": angular.copy($scope.doctorId),
+                            "senderName": angular.copy($scope.doctorName),
+                            "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                        };
+                    }
+
+                    $scope.socketServer1.send(emotionSendFilter(JSON.stringify(consultValMessage)));
+                    consultValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($scope.info.consultMessage)));
+                    $scope.info.consultMessage = "";
+                    updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
+                } else {
+                    alert("连接没有开启.");
+                }
+            };
+            //向用户发送咨询图片
+            $scope.uploadFiles = function($files,fileType) {
+                var dataValue = {
+                    "fileType": fileType,
+                    "senderId": $scope.doctorId
+                };
+                var dataJsonValue = JSON.stringify(dataValue);
+                for (var i = 0; i < $files.length; i++) {
+                    var file = $files[i];
+                    $scope.upload = $upload.upload({
+                        url: 'consult/h5/uploadMediaFile',
+                        data: encodeURI(dataJsonValue),
+                        file: file
+                    }).progress(function(evt) {
+                        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+                    }).success(function(data, status, headers, config){
+                        if(data.source == "wxcxqm"){
+                            var consultValMessage = {
+                                "type": 1,
+                                "content": data.showFile,
+                                "wscontent": data.WS_File,
+                                "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                                "senderId": angular.copy($scope.doctorId),
+                                "senderName": angular.copy($scope.doctorName),
+                                "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                            };
                         }else{
-                            alert("会话关闭失败，请重试");
+                            var consultValMessage = {
+                                "type": 1,
+                                "content": data.showFile,
+                                "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                                "senderId": angular.copy($scope.doctorId),
+                                "senderName": angular.copy($scope.doctorName),
+                                "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                            };
                         }
-                    })
-                };
-
-                //在通话列表中，选取一个用户进行会话
-                $scope.chooseAlreadyJoinConsultPatient = function (patientId, patientName) {
-                    $scope.chooseAlreadyJoinConsultPatientId = patientId;
-                    $scope.chooseAlreadyJoinConsultPatientName = patientName;
-                    getIframeSrc();
-                    var updateFlag = false;
-                    $.each($scope.alreadyJoinPatientConversation, function (index, value) {
-                        if (value.patientId == patientId) {
-                            $scope.currentUserConversation = "";
-                            $scope.currentUserConversation = value;
-                            value.messageNotSee = false;
-                            updateFlag = true;
+                        if (!window.WebSocket) {
+                            return;
+                        }
+                        if ($scope.socketServer1.readyState == WebSocket.OPEN) {
+                            $scope.socketServer1.send(JSON.stringify(consultValMessage));
+                            updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
+                        } else {
+                            alert("连接没有开启.");
                         }
                     });
-                    if(!updateFlag){
-                        GetCurrentUserHistoryRecord.save({
-                            userId:patientId,
-                            dateTime: moment().format('YYYY-MM-DD HH:mm:ss'),
-                            pageSize:100},function(data){
-                            if(data.consultDataList!=""){
-                                $.each(data.consultDataList,function(index,value){
-                                    $scope.currentUserConversation.consultValue.splice(0, 0, value);
-                                });
+                }
+            };
+
+            //关闭跟某个用户的会话
+            $scope.closeConsult = function () {
+                SessionEnd.get({sessionId:$scope.currentUserConversation.sessionId,
+                    userId:$scope.currentUserConversation.patientId},function(data){
+                    if(data.result=="success"){
+                        var indexClose = 0;
+                        $.each($scope.alreadyJoinPatientConversation, function (index, value) {
+                            if (value.patientId == $scope.chooseAlreadyJoinConsultPatientId) {
+                                indexClose = index;
                             }
                         })
+                        $scope.alreadyJoinPatientConversation.splice(indexClose, 1);
+                        if($scope.alreadyJoinPatientConversation.length!=0){
+                            $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
+                                $scope.alreadyJoinPatientConversation[0].patientName);
+                        }else{
+                            $scope.currentUserConversation = {};
+                        }
+                    }else{
+                        alert("会话关闭失败，请重试");
                     }
-                };
+                })
+            };
 
-                //触发qq声音
-                $scope.triggerVoice = function () {
-                    var audio = document.createElement('audio');
-                    var source = document.createElement('source');
-                    source.type = "audio/mpeg";
-                    source.type = "audio/mpeg";
-                    source.src = "http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/18.ogg";
-                    source.autoplay = "autoplay";
-                    source.controls = "controls";
-                    audio.appendChild(source);
-                    audio.play();
-                };
+            //在通话列表中，选取一个用户进行会话
+            $scope.chooseAlreadyJoinConsultPatient = function (patientId, patientName) {
+                $scope.chooseAlreadyJoinConsultPatientId = patientId;
+                $scope.chooseAlreadyJoinConsultPatientName = patientName;
+                getIframeSrc();
+                var updateFlag = false;
+                $.each($scope.alreadyJoinPatientConversation, function (index, value) {
+                    if (value.patientId == patientId) {
+                        $scope.currentUserConversation = "";
+                        $scope.currentUserConversation = value;
+                        value.messageNotSee = false;
+                        updateFlag = true;
+                    }
+                });
+                if(!updateFlag){
+                    GetCurrentUserHistoryRecord.save({
+                        userId:patientId,
+                        dateTime: moment().format('YYYY-MM-DD HH:mm:ss'),
+                        pageSize:100},function(data){
+                        if(data.consultDataList!=""){
+                            $.each(data.consultDataList,function(index,value){
+                                $scope.currentUserConversation.consultValue.splice(0, 0, value);
+                            });
+                        }
+                    })
+                }
+            };
+
+            //触发qq声音
+            $scope.triggerVoice = function () {
+                var audio = document.createElement('audio');
+                var source = document.createElement('source');
+                source.type = "audio/mpeg";
+                source.type = "audio/mpeg";
+                source.src = "http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/18.ogg";
+                source.autoplay = "autoplay";
+                source.controls = "controls";
+                audio.appendChild(source);
+                audio.play();
+            };
 
 
             $scope.getQQExpression = function () {
@@ -478,24 +478,24 @@ angular.module('controllers', ['luegg.directives'])
             };
 
             //查看更多的用户历史消息
-                $scope.seeMoreConversationMessage = function(){
-                    var mostFarCurrentConversationDateTime = $scope.currentUserConversation.consultValue[0].dateTime;
-                    GetCurrentUserHistoryRecord.save({
-                        userId:$scope.currentUserConversation.patientId,
-                        dateTime:mostFarCurrentConversationDateTime,
-                        pageSize:10},function(data){
-                        if(data.consultDataList!=""){
-                            $.each(data.consultDataList,function(index,value){
-                                filterMediaData(value);
-                                $scope.currentUserConversation.consultValue.splice(0, 0, value);
-                            });
-                        }
-                    })
-                };
+            $scope.seeMoreConversationMessage = function(){
+                var mostFarCurrentConversationDateTime = $scope.currentUserConversation.consultValue[0].dateTime;
+                GetCurrentUserHistoryRecord.save({
+                    userId:$scope.currentUserConversation.patientId,
+                    dateTime:mostFarCurrentConversationDateTime,
+                    pageSize:10},function(data){
+                    if(data.consultDataList!=""){
+                        $.each(data.consultDataList,function(index,value){
+                            filterMediaData(value);
+                            $scope.currentUserConversation.consultValue.splice(0, 0, value);
+                        });
+                    }
+                })
+            };
             /**会话操作区**/
 
 
-            //更新咨询医生当日咨询用户数的排名列表
+                //更新咨询医生当日咨询用户数的排名列表
             $scope.refreshRankList = function(){
                 var currDate = new moment().format("YYYY-MM-DD");
                 GetTodayRankingList.save({"rankDate": currDate}, function (data) {
@@ -522,203 +522,203 @@ angular.module('controllers', ['luegg.directives'])
 
             /***回复操作区**/
                 //我的回复内容
-                $scope.tapMyReplyContent = function (parentIndex) {
-                    if($scope.myReplyIndex==parentIndex){
-                        $scope.myReplyIndex = -1;
-                        $scope.myReplySecondIndex = -1;
-                        $scope.info.editGroup = "";
-                        $scope.info.editContent = "";
+            $scope.tapMyReplyContent = function (parentIndex) {
+                if($scope.myReplyIndex==parentIndex){
+                    $scope.myReplyIndex = -1;
+                    $scope.myReplySecondIndex = -1;
+                    $scope.info.editGroup = "";
+                    $scope.info.editContent = "";
+                }else{
+                    $scope.myReplyIndex = parentIndex;
+                    $scope.myReplySecondIndex = -1;
+                    $scope.info.editGroup = $scope.myAnswer[parentIndex].name;
+                    $scope.info.editContent = "";
+                }
+            };
+            $scope.tapEditMyContent = function(parentIndex, childIndex) {
+                $scope.myReplySecondIndex = childIndex;
+                $scope.info.editContent = $scope.myAnswer[parentIndex].secondAnswer[childIndex].name;
+            };
+            $scope.chooseMyContent = function(parentIndex, childIndex){
+                $scope.info.consultMessage = angular.copy($scope.myAnswer[parentIndex].secondAnswer[childIndex].name);
+            };
+
+            //公共回复内容
+            $scope.chooseCommonContent = function(parentIndex, childIndex){
+                $scope.info.consultMessage = angular.copy($scope.commonAnswer[parentIndex].secondAnswer[childIndex].name);
+            };
+            $scope.tapPublicReplyContent = function (parentIndex){
+                if($scope.publicReplyIndex==parentIndex){
+                    $scope.publicReplyIndex = -1;
+                    $scope.publicReplySecondIndex = -1;
+                    $scope.info.editGroup = "";
+                    $scope.info.editContent = "";
+                }else{
+                    $scope.publicReplyIndex = parentIndex;
+                    $scope.publicReplySecondIndex = -1;
+                    $scope.info.editGroup = $scope.commonAnswer[parentIndex].name;
+                    $scope.info.editContent = "";
+                }
+            };
+            $scope.tapEditCommonContent = function(parentIndex, childIndex){
+                $scope.publicReplySecondIndex = childIndex;
+                $scope.info.editContent = $scope.commonAnswer[parentIndex].secondAnswer[childIndex].name;
+            };
+
+            //添加分组
+            $scope.add = function() {
+                $scope.info.addGroup = '';
+                $scope.info.addContent = '';
+                if($scope.showFlag.myReplyList){
+                    if($scope.myReplyIndex==-1||$scope.myReplyIndex==undefined){
+                        $scope.addGroupFlag = true;
+                        $scope.addContentFlag = false;
                     }else{
-                        $scope.myReplyIndex = parentIndex;
-                        $scope.myReplySecondIndex = -1;
-                        $scope.info.editGroup = $scope.myAnswer[parentIndex].name;
-                        $scope.info.editContent = "";
+                        $scope.addGroupFlag = false;
+                        $scope.addContentFlag = true;
                     }
-                };
-                $scope.tapEditMyContent = function(parentIndex, childIndex) {
-                    $scope.myReplySecondIndex = childIndex;
-                    $scope.info.editContent = $scope.myAnswer[parentIndex].secondAnswer[childIndex].name;
-                };
-                $scope.chooseMyContent = function(parentIndex, childIndex){
-                    $scope.info.consultMessage = angular.copy($scope.myAnswer[parentIndex].secondAnswer[childIndex].name);
-                };
-
-                //公共回复内容
-                $scope.chooseCommonContent = function(parentIndex, childIndex){
-                    $scope.info.consultMessage = angular.copy($scope.commonAnswer[parentIndex].secondAnswer[childIndex].name);
-                };
-                $scope.tapPublicReplyContent = function (parentIndex){
-                    if($scope.publicReplyIndex==parentIndex){
-                        $scope.publicReplyIndex = -1;
-                        $scope.publicReplySecondIndex = -1;
-                        $scope.info.editGroup = "";
-                        $scope.info.editContent = "";
+                }
+                if($scope.showFlag.publicReplyList){
+                    if($scope.publicReplyIndex==-1||$scope.publicReplyIndex==undefined){
+                        $scope.addGroupFlag = true;
+                        $scope.addContentFlag = false;
                     }else{
-                        $scope.publicReplyIndex = parentIndex;
-                        $scope.publicReplySecondIndex = -1;
-                        $scope.info.editGroup = $scope.commonAnswer[parentIndex].name;
-                        $scope.info.editContent = "";
+                        $scope.addGroupFlag = false;
+                        $scope.addContentFlag = true;
                     }
-                };
-                $scope.tapEditCommonContent = function(parentIndex, childIndex){
-                    $scope.publicReplySecondIndex = childIndex;
-                    $scope.info.editContent = $scope.commonAnswer[parentIndex].secondAnswer[childIndex].name;
-                };
+                }
+            };
+            $scope.closeAddGroup = function() {
+                $scope.info.addGroup = '';
+                $scope.info.addContent = '';
+                $scope.addGroupFlag = false;
+            };
+            $scope.addGroupSubmit = function () {
+                var setGroupContent = {};
+                setGroupContent.name = $scope.info.addGroup;
+                setGroupContent.secondAnswer=[];
+                if($scope.showFlag.myReplyList){
+                    $scope.myAnswer.push(setGroupContent);
+                    saveMyAnswer();
+                }
+                if($scope.showFlag.publicReplyList){
+                    $scope.commonAnswer.push(setGroupContent);
+                    saveCommonAnswer();
+                }
+                $scope.addGroupFlag = false;
+            };
 
-                //添加分组
-                $scope.add = function() {
-                    $scope.info.addGroup = '';
-                    $scope.info.addContent = '';
-                    if($scope.showFlag.myReplyList){
-                        if($scope.myReplyIndex==-1||$scope.myReplyIndex==undefined){
-                            $scope.addGroupFlag = true;
-                            $scope.addContentFlag = false;
+            //添加内容
+            $scope.closeAddContent = function(){$scope.addContentFlag=false;};
+            $scope.addContentSubmit = function () {
+                var setContent = {};
+                setContent.name = $scope.info.addContent;
+                if($scope.showFlag.myReplyList){
+                    $scope.myAnswer[$scope.myReplyIndex].secondAnswer.push(setContent);
+                    saveMyAnswer();
+                }
+                if($scope.showFlag.publicReplyList){
+                    $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer.push(setContent);
+                    saveCommonAnswer();
+                }
+                $scope.addContentFlag=false;
+            };
+            //编辑分组
+            $scope.closeEditGroup = function(){$scope.editGroupFlag = false;};
+            $scope.closeEditContent = function(){$scope.editContentFlag = false;};
+            $scope.edit = function() {
+                if($scope.showFlag.myReplyList){
+                    if($scope.myReplyIndex!=-1&&$scope.myReplyIndex!=undefined){
+                        if($scope.myReplySecondIndex==-1||$scope.myReplyIndex==undefined){
+                            $scope.editGroupFlag = true;
+                            $scope.editContentFlag = false;
                         }else{
-                            $scope.addGroupFlag = false;
-                            $scope.addContentFlag = true;
+                            $scope.editGroupFlag = false;
+                            $scope.editContentFlag = true;
                         }
                     }
-                    if($scope.showFlag.publicReplyList){
-                        if($scope.publicReplyIndex==-1||$scope.publicReplyIndex==undefined){
-                            $scope.addGroupFlag = true;
-                            $scope.addContentFlag = false;
+                }
+                if($scope.showFlag.publicReplyList){
+                    if($scope.publicReplyIndex!=-1&&$scope.publicReplyIndex!=undefined){
+                        if($scope.publicReplySecondIndex==-1||$scope.publicReplyIndex==undefined){
+                            console.log('$scope.publicReplySecondIndex',$scope.publicReplySecondIndex);
+                            $scope.editGroupFlag = true;
+                            $scope.editContentFlag = false;
                         }else{
-                            $scope.addGroupFlag = false;
-                            $scope.addContentFlag = true;
+                            $scope.editGroupFlag = false;
+                            $scope.editContentFlag = true;
                         }
                     }
-                };
-                $scope.closeAddGroup = function() {
-                    $scope.info.addGroup = '';
-                    $scope.info.addContent = '';
-                    $scope.addGroupFlag = false;
-                };
-                $scope.addGroupSubmit = function () {
-                    var setGroupContent = {};
-                    setGroupContent.name = $scope.info.addGroup;
-                    setGroupContent.secondAnswer=[];
-                    if($scope.showFlag.myReplyList){
-                        $scope.myAnswer.push(setGroupContent);
-                        saveMyAnswer();
-                    }
-                    if($scope.showFlag.publicReplyList){
-                        $scope.commonAnswer.push(setGroupContent);
-                        saveCommonAnswer();
-                    }
-                    $scope.addGroupFlag = false;
-                };
+                }
+            };
+            $scope.editGroupSubmit = function () {
+                console.log($scope.showFlag);
+                if($scope.showFlag.myReplyList){
+                    $scope.myAnswer[$scope.myReplyIndex].name = $scope.info.editGroup;
+                    saveMyAnswer();
+                }
+                if($scope.showFlag.publicReplyList){
+                    $scope.commonAnswer[$scope.publicReplyIndex].name = $scope.info.editGroup;
+                    saveCommonAnswer();
+                }
+                $scope.editGroupFlag=false;
+            };
+            $scope.editContentSubmit = function () {
+                if($scope.showFlag.myReplyList){
+                    $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex].name = $scope.info.editContent;
+                    saveMyAnswer();
+                }
+                if($scope.showFlag.publicReplyList){
+                    $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex].name = $scope.info.editContent;
+                    saveCommonAnswer();
+                }
+                $scope.editContentFlag=false;
+            };
 
-                //添加内容
-                $scope.closeAddContent = function(){$scope.addContentFlag=false;};
-                $scope.addContentSubmit = function () {
-                    var setContent = {};
-                    setContent.name = $scope.info.addContent;
-                    if($scope.showFlag.myReplyList){
-                        $scope.myAnswer[$scope.myReplyIndex].secondAnswer.push(setContent);
-                        saveMyAnswer();
-                    }
-                    if($scope.showFlag.publicReplyList){
-                        $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer.push(setContent);
-                        saveCommonAnswer();
-                    }
-                    $scope.addContentFlag=false;
-                };
-                //编辑分组
-                $scope.closeEditGroup = function(){$scope.editGroupFlag = false;};
-                $scope.closeEditContent = function(){$scope.editContentFlag = false;};
-                $scope.edit = function() {
-                    if($scope.showFlag.myReplyList){
-                        if($scope.myReplyIndex!=-1&&$scope.myReplyIndex!=undefined){
-                            if($scope.myReplySecondIndex==-1||$scope.myReplyIndex==undefined){
-                                $scope.editGroupFlag = true;
-                                $scope.editContentFlag = false;
-                            }else{
-                                $scope.editGroupFlag = false;
-                                $scope.editContentFlag = true;
+            //删除
+            $scope.remove = function(){
+                if($scope.showFlag.myReplyList){
+                    if($scope.myReplyIndex!=-1&&$scope.myReplyIndex!=undefined){
+                        if($scope.myReplySecondIndex==-1||$scope.myReplyIndex==undefined){
+                            if ($window.confirm("确定要删除该组回复?")) {
+                                $scope.myAnswer.splice($scope.myReplyIndex, 1);
+                                saveMyAnswer();
+                            }
+                        }else{
+                            if($window.confirm("确定要删除该回复?")) {
+                                $scope.myAnswer[$scope.myReplyIndex].secondAnswer.splice($scope.myReplySecondIndex, 1);
+                                saveMyAnswer();
                             }
                         }
                     }
-                    if($scope.showFlag.publicReplyList){
-                        if($scope.publicReplyIndex!=-1&&$scope.publicReplyIndex!=undefined){
-                            if($scope.publicReplySecondIndex==-1||$scope.publicReplyIndex==undefined){
-                                console.log('$scope.publicReplySecondIndex',$scope.publicReplySecondIndex);
-                                $scope.editGroupFlag = true;
-                                $scope.editContentFlag = false;
-                            }else{
-                                $scope.editGroupFlag = false;
-                                $scope.editContentFlag = true;
+                }
+                if($scope.showFlag.publicReplyList){
+                    if($scope.publicReplyIndex!=-1&&$scope.publicReplyIndex!=undefined){
+                        if($scope.publicReplySecondIndex==-1||$scope.publicReplyIndex==undefined){
+                            if ($window.confirm("确定要删除该组回复?")) {
+                                $scope.commonAnswer.splice($scope.publicReplyIndex, 1);
+                                saveCommonAnswer();
+                            }
+                        }else{
+                            if($window.confirm("确定要删除该回复?")) {
+                                $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer.splice($scope.publicReplySecondIndex, 1);
+                                saveCommonAnswer();
                             }
                         }
                     }
-                };
-                $scope.editGroupSubmit = function () {
-                    console.log($scope.showFlag);
-                    if($scope.showFlag.myReplyList){
-                        $scope.myAnswer[$scope.myReplyIndex].name = $scope.info.editGroup;
-                        saveMyAnswer();
-                    }
-                    if($scope.showFlag.publicReplyList){
-                        $scope.commonAnswer[$scope.publicReplyIndex].name = $scope.info.editGroup;
-                        saveCommonAnswer();
-                    }
-                    $scope.editGroupFlag=false;
-                };
-                $scope.editContentSubmit = function () {
-                    if($scope.showFlag.myReplyList){
-                        $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex].name = $scope.info.editContent;
-                        saveMyAnswer();
-                    }
-                    if($scope.showFlag.publicReplyList){
-                        $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex].name = $scope.info.editContent;
-                        saveCommonAnswer();
-                    }
-                    $scope.editContentFlag=false;
-                };
+                }
+            };
 
-                //删除
-                $scope.remove = function(){
-                    if($scope.showFlag.myReplyList){
-                        if($scope.myReplyIndex!=-1&&$scope.myReplyIndex!=undefined){
-                            if($scope.myReplySecondIndex==-1||$scope.myReplyIndex==undefined){
-                                if ($window.confirm("确定要删除该组回复?")) {
-                                    $scope.myAnswer.splice($scope.myReplyIndex, 1);
-                                    saveMyAnswer();
-                                }
-                            }else{
-                                if($window.confirm("确定要删除该回复?")) {
-                                    $scope.myAnswer[$scope.myReplyIndex].secondAnswer.splice($scope.myReplySecondIndex, 1);
-                                    saveMyAnswer();
-                                }
-                            }
-                        }
-                    }
-                    if($scope.showFlag.publicReplyList){
-                        if($scope.publicReplyIndex!=-1&&$scope.publicReplyIndex!=undefined){
-                            if($scope.publicReplySecondIndex==-1||$scope.publicReplyIndex==undefined){
-                                if ($window.confirm("确定要删除该组回复?")) {
-                                    $scope.commonAnswer.splice($scope.publicReplyIndex, 1);
-                                    saveCommonAnswer();
-                                }
-                            }else{
-                                if($window.confirm("确定要删除该回复?")) {
-                                    $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer.splice($scope.publicReplySecondIndex, 1);
-                                    saveCommonAnswer();
-                                }
-                            }
-                        }
-                    }
-                };
-
-                //保存我的回复
-                var saveMyAnswer = function() {
-                    GetMyAnswerModify.save({answer: $scope.myAnswer, answerType: "myAnswer"}, function (data) {
-                    });
-                };
-                //保存公共回复
-                var saveCommonAnswer = function() {
-                    GetMyAnswerModify.save({answer: $scope.commonAnswer, answerType: "commonAnswer"}, function (data) {
-                    });
-                };
+            //保存我的回复
+            var saveMyAnswer = function() {
+                GetMyAnswerModify.save({answer: $scope.myAnswer, answerType: "myAnswer"}, function (data) {
+                });
+            };
+            //保存公共回复
+            var saveCommonAnswer = function() {
+                GetMyAnswerModify.save({answer: $scope.commonAnswer, answerType: "commonAnswer"}, function (data) {
+                });
+            };
 
             /***回复操作区**/
             var getIframeSrc = function(){
@@ -981,8 +981,8 @@ angular.module('controllers', ['luegg.directives'])
 
             $scope.searchMessageType = [
                 {
-                searchType:"user",
-                searchContent: "查找客户"
+                    searchType:"user",
+                    searchContent: "查找客户"
                 }
                 //,{
                 //searchType:"message",

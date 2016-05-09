@@ -25,20 +25,20 @@ import java.util.UUID;
 public class WechatUtil {
 
     //用户端微信参数
-//    public static final String CORPID = "wx0baf90e904df0117";
-//    public static final String SECTET = "b3dac0be3e1739af01fee0052ea7a68f";
+    public static final String CORPID = "wx0baf90e904df0117";
+    public static final String SECTET = "b3dac0be3e1739af01fee0052ea7a68f";
 
     //宝大夫医生端微信参数
-//    public static final String  DOCTORCORPID= "wxb6b6ad2a55af0567";
-//    public static final String   DOCTORSECTET= "1822bb2703511da89fa7bfa1a5549b31";
+    public static final String  DOCTORCORPID= "wxb6b6ad2a55af0567";
+    public static final String   DOCTORSECTET= "1822bb2703511da89fa7bfa1a5549b31";
 
     //小儿科用户端微信参数
-    public static final String DOCTORCORPID = "wx9b663cd46164130c";
-    public static final String DOCTORSECTET = "d0460e461a3bcf8598ce6e87443b3d0f";
+//    public static final String DOCTORCORPID = "wx9b663cd46164130c";
+//    public static final String DOCTORSECTET = "d0460e461a3bcf8598ce6e87443b3d0f";
 
     //小儿科医生端微信参数
-    public static final String CORPID= "wxa19496b1076e7352";
-    public static final String SECTET = "f645d4bcf81c905b3ad628cda79bd7ee";
+//    public static final String CORPID= "wxa19496b1076e7352";
+//    public static final String SECTET = "f645d4bcf81c905b3ad628cda79bd7ee";
 
 //    public static final String CORPID = "wx0baf90e904df0117";
 //    public static final String SECTET = "b3dac0be3e1739af01fee0052ea7a68f";
@@ -486,16 +486,20 @@ public class WechatUtil {
             String mediaNameAmr = mediaName+".amr";
             String mediaNameMp3 = mediaName+".mp3";
             BufferedInputStream bis = new BufferedInputStream(inputStream);
-            FileOutputStream fos = new FileOutputStream(ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP+mediaNameAmr);
+//            FileOutputStream fos = new FileOutputStream(ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP+mediaNameAmr);
+            FileOutputStream fos = new FileOutputStream(ConstantUtil.AMR_TOMP3_LINUXPATH+mediaNameAmr);
             byte[] buf = new byte[8096];
             int size = 0;
             while ((size = bis.read(buf)) != -1)
                 fos.write(buf, 0, size);
             fos.close();
             bis.close();
-            ToMp3(ConstantUtil.AMR_TOMP3_WINDOWSPATH, ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP + mediaName);
-            inputStream = new FileInputStream(new File(ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP+mediaNameMp3));
-            StringUtils.deleteFile(new File(ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP));
+//            ToMp3(ConstantUtil.AMR_TOMP3_WINDOWSPATH, ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP + mediaName);
+//            inputStream = new FileInputStream(new File(ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP+mediaNameMp3));
+//            StringUtils.deleteFile(new File(ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP));
+            ToMp3(ConstantUtil.AMR_TOMP3_WINDOWSPATH, ConstantUtil.AMR_TOMP3_LINUXPATH + mediaName);
+            inputStream = new FileInputStream(new File(ConstantUtil.AMR_TOMP3_LINUXPATH+mediaNameMp3));
+            StringUtils.deleteFile(new File(ConstantUtil.AMR_TOMP3_LINUXPATH));
             mediaName = mediaNameMp3;
         }else if(messageType.contains("video")){
             mediaName = mediaName+".mp4";
@@ -514,7 +518,8 @@ public class WechatUtil {
         try {
             run = Runtime.getRuntime();
             long start=System.currentTimeMillis();
-            String path = webroot+"ffmpeg -i "+sourcePath+".amr"+" -acodec libmp3lame "+targetPath;
+//            String path = webroot + "ffmpeg -i "+sourcePath+".amr"+" -acodec libmp3lame "+targetPath;
+            String path = "ffmpeg -i "+sourcePath+".amr"+" -acodec libmp3lame "+targetPath;
             Process p=run.exec(path);
             p.getOutputStream().close();
             p.getInputStream().close();

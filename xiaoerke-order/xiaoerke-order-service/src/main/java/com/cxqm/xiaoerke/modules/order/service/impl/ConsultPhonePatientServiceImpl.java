@@ -197,7 +197,7 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
             String doctorToken = (String) tokenMap.get("token");
             String openId = doctorInfoService.findOpenIdByDoctorId((String) map.get("doctorId"));
             if (StringUtils.isNotNull(openId)) {
-                DoctorMsgTemplate.cancelDoctorPhoneConsult2Wechat(babyName, date, week, beginTime, doctorToken, "", openId);
+                DoctorMsgTemplate.cancelDoctorPhoneConsult2Wechat(babyName, doctorName, date, week, beginTime, doctorToken, "", openId);
             }
         }
         if(sysOrderState== 0){
