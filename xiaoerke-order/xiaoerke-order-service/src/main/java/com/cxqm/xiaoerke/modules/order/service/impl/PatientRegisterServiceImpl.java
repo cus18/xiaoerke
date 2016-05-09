@@ -94,7 +94,7 @@ public class PatientRegisterServiceImpl implements PatientRegisterService {
     //对预约的状态进行操作（预约确认） @author 14_zdl
     @Override
     public Map<String, Object> orderAppointOperation(Map<String, Object> params, HttpSession session, HttpServletRequest request) {
-        params.put("urlPath", "baodf.com/xiaoerke-appoint");
+        params.put("urlPath", "baodf.com/titan");
         HashMap<String, Object> action = (HashMap<String, Object>) params.get("action");
         String openId = WechatUtil.getOpenId(session, request);
         params.put("openId", openId);
@@ -179,7 +179,7 @@ public class PatientRegisterServiceImpl implements PatientRegisterService {
         HashMap<String, Object> messageMap = new HashMap<String, Object>();
         messageMap.put("patient_register_service_id", patient_register_service_id);
         messageMap.put("openId", openId);
-        messageMap.put("urlPath", "baodf.com/xiaoerke-appoint");
+        messageMap.put("urlPath", "baodf.com/titan");
         orderMessageService.sendMessage(messageMap, true);
     }
     @SystemServiceLog(description = "判断用户与订单的关系")
@@ -453,7 +453,7 @@ public class PatientRegisterServiceImpl implements PatientRegisterService {
     @SystemServiceLog(description = "00000023")//用户预约支付
     public Map<String, Object> orderPayOperation(Map<String, Object> params, OrderPropertyVo orderPropertyVo, HttpSession session, HttpServletRequest request) {
         String path = request.getLocalAddr() + request.getContextPath();
-        params.put("urlPath", "baodf.com/xiaoerke-appoint");
+        params.put("urlPath", "baodf.com/titan");
         String openId = WechatUtil.getOpenId(session, request);
         params.put("openId", openId);
         String patientRegisterServiceId = (String) params.get("patient_register_service_id");
@@ -512,7 +512,7 @@ public class PatientRegisterServiceImpl implements PatientRegisterService {
 
     @Override
     public Map<String, Object> orderCancelOperation(Map<String, Object> params, HashMap<String, Object> excuteMap, HttpSession session) {
-        params.put("urlPath", "baodf.com/xiaoerke-appoint");
+        params.put("urlPath", "baodf.com/titan");
         String openId = (String) session.getAttribute("openId");
         params.put("openId", openId);
         String patientRegisterServiceId = (String) params.get("patient_register_service_id");
@@ -1697,7 +1697,7 @@ public class PatientRegisterServiceImpl implements PatientRegisterService {
     @Transactional(rollbackFor = Exception.class)
     public HashMap<String, Object> updateMemberOrderStatus(String patientRegisterServiceId, String memSrsItemSrsRelId) throws ServiceException {
         HashMap<String, Object> response = new HashMap<String, Object>();
-        response.put("urlPath", "baodf.com/xiaoerke-appoint");
+        response.put("urlPath", "baodf.com/titan");
         //根据patientRegisterServiceId查询openid
         PatientRegisterServiceVo patientRegisterServiceVo = new PatientRegisterServiceVo();
         patientRegisterServiceVo.setId(patientRegisterServiceId);
@@ -1737,7 +1737,7 @@ public class PatientRegisterServiceImpl implements PatientRegisterService {
         HashMap<String, Object> messageMap = new HashMap<String, Object>();
         messageMap.put("patient_register_service_id", patientRegisterServiceId);
         messageMap.put("openId", patientRegisterServiceVo.getOpenId());
-        messageMap.put("urlPath", "baodf.com/xiaoerke-appoint");
+        messageMap.put("urlPath", "baodf.com/titan");
         orderMessageService.sendMessage(messageMap, true);
         return response;
     }

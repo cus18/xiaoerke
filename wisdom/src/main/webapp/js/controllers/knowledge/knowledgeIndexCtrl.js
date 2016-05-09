@@ -254,8 +254,8 @@
             }
 
             $scope.doRefresh = function(){
-                var shareUrl ='http://baodf.com/xiaoerke-knowledge/wechatInfo/fieldwork/wechat/' +
-                    'author?url=http://baodf.com/xiaoerke-knowledge/wechatInfo/getZhengIndex';
+                var shareUrl ='http://baodf.com/wisdom/wechatInfo/fieldwork/wechat/' +
+                    'author?url=http://baodf.com/wisdom/wechatInfo/getZhengIndex';
                 var timestamp;//时间戳
                 var nonceStr;//随机字符串
                 var signature;//得到的签名

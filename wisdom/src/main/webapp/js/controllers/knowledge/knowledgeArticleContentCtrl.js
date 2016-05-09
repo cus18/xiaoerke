@@ -192,8 +192,8 @@
         }
 
         $scope.Refresh = function(){
-            var shareUrl ='http://baodf.com/xiaoerke-knowledge/wechatInfo/' +
-                'fieldwork/wechat/author?url=http://baodf.com/xiaoerke-knowledge/' +
+            var shareUrl ='http://baodf.com/wisdom/wechatInfo/' +
+                'fieldwork/wechat/author?url=http://baodf.com/wisdom/' +
                 'wechatInfo/getZhengArticle?'+"id="+$scope.contentId;
             var timestamp;//时间戳
             var nonceStr;//随机字符串

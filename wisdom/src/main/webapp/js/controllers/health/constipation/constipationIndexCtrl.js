@@ -316,7 +316,7 @@ angular.module('controllers', ['ionic']).controller('constipationIndexCtrl', [
         }
 
         $scope.yuyue = function () {
-            window.location.href = "http://s11.baodf.com//titan/firstPage/appoint";
+            window.location.href = "http://s11.baodf.com/titan/firstPage/appoint";
         }
 
 

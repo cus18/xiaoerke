@@ -76,7 +76,7 @@ public class ShareServiceImpl implements ShareService{
 	@SystemServiceLog(description = "00000013")//用户分享
 	public Map<String, Object> orderShareOperation(Map<String, Object> params, HttpSession session, HttpServletRequest request)
 	{
-		params.put("urlPath", "baodf.com/xiaoerke-appoint");
+		params.put("urlPath", "baodf.com/titan");
 		params.put("openId", WechatUtil.getOpenId(session,request));
 		String patientRegisterServiceId = (String) params.get("patient_register_service_id");
 		if (patientRegisterServiceId == null || "".equals(patientRegisterServiceId)) {
