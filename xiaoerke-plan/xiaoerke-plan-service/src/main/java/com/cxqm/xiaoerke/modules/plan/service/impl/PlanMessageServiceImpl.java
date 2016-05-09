@@ -193,13 +193,13 @@ public class PlanMessageServiceImpl implements PlanMessageService{
 					if(openid==null||openid.equals("")){
 						continue;
 					}
-					url="http://s3.baodf.com/xiaoerke-healthPlan/ctp#/constipationFollow/none,"+id;
+					url="http://s165.baodf.com/wisdom/ctp#/constipationFollow/none,"+id;
 					String token=baseDataService.findWechatToken();
 					WechatMessageUtil.templateModel(title, planType, "无", "", "", remark, token, url, openid, wechatMeesageTemplate);
 				}else if(type.equals("all")){
 					title="3天连续打卡：";
 					planType="恭喜宝妈，您连续（又）坚持打卡3天了，宝宝好些了吗，给宝大夫反馈一下吧";
-					url="http://s3.baodf.com/xiaoerke-healthPlan/ctp#/constipationFollow/all,"+id;
+					url="http://s165.baodf.com/wisdom/ctp#/constipationFollow/all,"+id;
 					openid=map.get("open_id").toString();
 					if(openid==null||openid.equals("")){
 						continue;
@@ -263,7 +263,7 @@ public class PlanMessageServiceImpl implements PlanMessageService{
 					}
 					String type= planInfoTask.get("type").toString();
 					if(type.equals("defecate")||type.equals("massage")){
-						defecateURL="http://s3.baodf.com/xiaoerke-healthPlan/ctp#/constipationKnead/1,"+planInfoID+",defecate";
+						defecateURL="http://s165.baodf.com/wisdom/ctp#/constipationKnead/1,"+planInfoID+",defecate";
 					 if(type.equals("defecate")){
 						 String time=sdf.format(sdf.parse(planInfoTask.get("time_happen").toString()));
 						 if(!time.equals(now)){
@@ -277,13 +277,13 @@ public class PlanMessageServiceImpl implements PlanMessageService{
 							 continue;
 						 }
 						if(type.equals("food")){
-							foodURL="http://s3.baodf.com/xiaoerke-healthPlan/ctp#/constipationFood/1,"+planInfoID+",food";
+							foodURL="http://s165.baodf.com/wisdom/ctp#/constipationFood/1,"+planInfoID+",food";
 							food+=" "+time;
 						}else if(type.equals("sport")){
-							sportURL="http://s3.baodf.com/xiaoerke-healthPlan/ctp#/constipationSports/1,"+planInfoID+",sport";
+							sportURL="http://s165.baodf.com/wisdom/ctp#/constipationSports/1,"+planInfoID+",sport";
 							sport+=" "+time;
 						}else if(type.equals("motherMust")){
-							buyURL="http://s3.baodf.com/xiaoerke-healthPlan/ctp#/cMotherNecessary";
+							buyURL="http://s165.baodf.com/wisdom/ctp#/cMotherNecessary";
 							buy+=" "+time;
 						}
 					 }
@@ -400,7 +400,7 @@ public class PlanMessageServiceImpl implements PlanMessageService{
     					String token=baseDataService.findWechatToken();
     					if("07".equals(time)){
     						planType = "今天该给宝宝做些什么呢？看下营养师给的食谱吧。";
-    						url = "http://s251.baodf.com/xiaoerke-healthPlan/ntr?value=251351#/nutritionFood";
+    						url = "http://s165.baodf.com/wisdom/ntr?value=251351#/nutritionFood";
     					}else if("12".equals(time)){
     						Article article = new Article();
     						Category category = new Category();
@@ -416,7 +416,7 @@ public class PlanMessageServiceImpl implements PlanMessageService{
     							choose = r.nextInt(Count);
     						}
     						planType = (String) ((Map) Page.getList().get(choose)).get("title");
-    						url = "http://s165.baodf.com/xiaoerke-knowledge/knowledge?value=251350#/knowledgeArticleContent/" +(String) ((Map) Page.getList().get(choose)).get("id")+",yygl";
+    						url = "http://s165.baodf.com/wisdom/knowledge?value=251350#/knowledgeArticleContent/" +(String) ((Map) Page.getList().get(choose)).get("id")+",yygl";
     					}else if("19".equals(time)){
     						Map<String, Object> params = new HashMap<String, Object>();
     						params.put("createTime", new Date());
@@ -424,7 +424,7 @@ public class PlanMessageServiceImpl implements PlanMessageService{
     						List<NutritionEvaluate> list = nutritionManagementDao.getEvaluateListByInfo(params);
     						if(list.size()==0){
     							planType = "宝宝今天吃的怎么样呢？快来评估下吧。";
-    							url = "http://s251.baodf.com/xiaoerke-healthPlan/ntr?value=251350#/nutritionAssess/noagain";
+    							url = "http://s165.baodf.com/wisdom/ntr?value=251350#/nutritionAssess/noagain";
     						}else{
     							continue;
     						}
