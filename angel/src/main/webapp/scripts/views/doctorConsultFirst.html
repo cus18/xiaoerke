@@ -207,7 +207,8 @@
                             <a href="">查看更多消息</a>
                         </div>
                         <div ng-repeat="item in currentUserConversation.consultValue" class="information">
-                            <div ng-if="item.senderId==doctorId&&item.type!='4'" class="doctorReplyContent">
+                            <div class="doctorContent">
+                                <div ng-if="item.senderId==doctorId&&item.type!='4'" class="doctorReplyContent">
                                     <div class="doctorName">
                                         <span>{{doctorName}}</span>
                                         <span>{{item.dateTime}}</span>
@@ -217,10 +218,12 @@
                                         <img width="100px" ng-src="{{item.content}}">
                                     </div>
                                 </div>
-                            <div ng-if="item.senderId!=doctorId&&item.type!='4'" class="patientConsultContent">
+                            </div>
+                            <div class="patientContent">
+                                <div ng-if="item.senderId!=doctorId&&item.type!='4'" class="patientConsultContent">
                                     <div class="senderName">
                                         <span>{{item.senderName}}</span>
-                                         <span>{{item.dateTime}}</span>
+                                        <span>{{item.dateTime}}</span>
                                     </div>
                                     <div ng-if="item.type=='0'" class="message" ng-bind-html="item.content"></div>
                                     <div ng-if="item.type=='1'" class="message" ng-click="tapImgButton('magnifyImg',item.content)">
@@ -234,6 +237,7 @@
                                                controls="controls"></video>
                                     </div>
                                 </div>
+                            </div>
                             <div class="moreInformation" ng-if="item.type=='4'&&item.notifyType=='0011'" >
                                 <a href="">
                                     正在将用户{{item.patientName}}转接给{{item.toCsUserName}}，如需取消请点击
@@ -262,33 +266,29 @@
                     </div>
                 </div>
             </div>
-                <div class="facebox">
-                    <div class="facein">
-                        <p class="fl"><span id="face" ng-click="getQQExpression()">表情</span></p>
-                        <p class="fl"><span type="file" ng-file-select="uploadFiles($files,'image')"
-                                        accept="image/*"
-                                        ng-file-max-height="2000"
-                                        ng-file-max-size="2MB"
-                                >图片</span></p>
-                        <!--<p class="historymessage">-->
-                        <!--<span>-->
-                        <!--消息记录-->
-                        <!--<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(8).png" alt=""/>-->
-                        <!--</span>-->
-                        <!--</p>-->
-                    </div>
-                </div>
-                <div class="inputcontent">
-                    <textarea ng-model="info.consultMessage" id="saytext" placeholder="请在此处进行咨询" class="emotion"></textarea>
-                </div>
-                <div class="sendbtn">
-                    <div class="sub_btn" ng-click="sendConsultMessage()">发送(Ctrl+Enter)</div>
-                    <div ng-click="closeConsult()">
-                        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(9).png" alt=""/>
-                        关闭</div>
+            <div class="facebox">
+                <div class="facein">
+                    <p class="fl"><span id="face" ng-click="getQQExpression()">表情</span></p>
+                    <p class="fl"><span type="file" ng-file-select="uploadFiles($files,'image')" accept="image/*" ng-file-max-height="2000" ng-file-max-size="2MB"
+                            >图片</span></p>
+                    <!--<p class="historymessage">-->
+                    <!--<span>-->
+                    <!--消息记录-->
+                    <!--<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(8).png" alt=""/>-->
+                    <!--</span>-->
+                    <!--</p>-->
                 </div>
             </div>
-    </div>
+            <div class="inputcontent">
+                <textarea ng-model="info.consultMessage" id="saytext" placeholder="请在此处进行咨询" class="emotion"></textarea>
+            </div>
+            <div class="sendbtn">
+                <div class="sub_btn" ng-click="sendConsultMessage()">发送(Ctrl+Enter)</div>
+                <div ng-click="closeConsult()">
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(9).png" alt=""/>
+                    关闭</div>
+            </div>
+        </div>
     </div>
     <!--已经接入-->
     <div class="jrhhpm" ng-show='showFlag.rankList'>
