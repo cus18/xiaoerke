@@ -400,7 +400,7 @@ public class PlanMessageServiceImpl implements PlanMessageService{
     					String token=baseDataService.findWechatToken();
     					if("07".equals(time)){
     						planType = "今天该给宝宝做些什么呢？看下营养师给的食谱吧。";
-    						url = "http://s3.baodf.com/xiaoerke-healthPlan/ntr?value=251351#/nutritionFood";
+    						url = "http://s251.baodf.com/xiaoerke-healthPlan/ntr?value=251351#/nutritionFood";
     					}else if("12".equals(time)){
     						Article article = new Article();
     						Category category = new Category();
@@ -416,7 +416,7 @@ public class PlanMessageServiceImpl implements PlanMessageService{
     							choose = r.nextInt(Count);
     						}
     						planType = (String) ((Map) Page.getList().get(choose)).get("title");
-    						url = "http://s22.baodf.com/xiaoerke-knowledge/knowledge?value=251350#/knowledgeArticleContent/" +(String) ((Map) Page.getList().get(choose)).get("id")+",yygl";
+    						url = "http://s165.baodf.com/xiaoerke-knowledge/knowledge?value=251350#/knowledgeArticleContent/" +(String) ((Map) Page.getList().get(choose)).get("id")+",yygl";
     					}else if("19".equals(time)){
     						Map<String, Object> params = new HashMap<String, Object>();
     						params.put("createTime", new Date());
@@ -424,7 +424,7 @@ public class PlanMessageServiceImpl implements PlanMessageService{
     						List<NutritionEvaluate> list = nutritionManagementDao.getEvaluateListByInfo(params);
     						if(list.size()==0){
     							planType = "宝宝今天吃的怎么样呢？快来评估下吧。";
-    							url = "http://s3.baodf.com/xiaoerke-healthPlan/ntr?value=251350#/nutritionAssess/noagain";
+    							url = "http://s251.baodf.com/xiaoerke-healthPlan/ntr?value=251350#/nutritionAssess/noagain";
     						}else{
     							continue;
     						}
