@@ -13,7 +13,7 @@
             };
 
             $scope.toShare = function(){
-                window.location.href="/titan/appoint#/sharedDetail/"+$scope.orderId+",false,,"+"phone";
+                window.location.href="http://s68.baodf.com/titan/appoint#/sharedDetail/"+$scope.orderId+",false,,"+"phone";
             }
 
             $scope.$on('$ionicView.enter', function(){
