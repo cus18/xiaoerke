@@ -352,7 +352,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setTitle("防犬宝,一份温馨的安全保障");
 			article.setDescription("只要19.8元，打狂犬疫苗最高可获得互助补贴1000元。不幸患狂犬病可获得互助补贴5万元！");
 			article.setPicUrl("http://oss-cn-beijing.aliyuncs.com/xiaoerke-article-pic/FQBTGXX.png");
-			article.setUrl(ConstantUtil.KEEPER_WEB_URL+"/wechatInfo/fieldwork/wechat/author?url=http://s165.baodf.com/xiaoerke-wxapp/wechatInfo/getUserWechatMenId?url=26");
+			article.setUrl(ConstantUtil.KEEPER_WEB_URL+"/wechatInfo/fieldwork/wechat/author?url=http://s165.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=26");
 			articleList.add(article);
 		}
 		System.out.println(EventKey + "===================================");
