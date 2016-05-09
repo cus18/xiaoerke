@@ -342,25 +342,25 @@
 					<input type="submit" id="recommend" onClick="recommendDoctor()" value="推荐医生"/>
 				</td>
 				<td>
-				
+
 				</td>
 			</tr>
 			<tr class="save">
-			 <td colspan="2">
-			 <span style="margin-right:200px">定时回访：</span>  <input type="submit" id="returnServiceButton" onClick="addReturnService()"  value="添加定时回访"/>
-			 </td>
+				<td colspan="2">
+					<span style="margin-right:200px">定时回访：</span>  <input type="submit" id="returnServiceButton" onClick="addReturnService()"  value="添加定时回访"/>
+				</td>
 			</tr>
 		</table>
 	</div>
 	<!--历史咨询档案-->
 	<div class="module">
 		<table class="table5" id="historyLog">
-		 <tr class="title">
-			<th colspan="2">
-				<h3 >历史咨询档案：
-					<input type="submit" class="more" id="displayCustomerButton"  onClick="hiddenTableCustomer();"  value="收起更多"/>
-				</h3>
-			</th>
+			<tr class="title">
+				<th colspan="2">
+					<h3 >历史咨询档案：
+						<input type="submit" class="more" id="displayCustomerButton"  onClick="hiddenTableCustomer();"  value="收起更多"/>
+					</h3>
+				</th>
 			</tr>
 			<tr class="higher">
 				<td  colspan="2">
@@ -402,13 +402,13 @@
 					</dl>
 				</td>
 			</tr>
-	
+
 
 		</table>
 	</div>
-	
-	
-	
+
+
+
 	<div id="addSec" style="display: none;z-index: 999;position: absolute;">
 		<span style="">科室/类别：</span><input type="text" id="addSections"/>
 		<br/>
@@ -433,61 +433,61 @@
 <script>
 	var babyInfo;
 	var openid="";
-//	var ticket = getUrlParam('ticket');
+	//	var ticket = getUrlParam('ticket');
 	var workerAccouont = '';
 	// 	获取客服账号
-//	function getUrlParam(name)
-//	{
-//		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
-//		var r = window.location.search.substr(1).match(reg);  //匹配目标参数
-//		if (r!=null) return unescape(r[2]); return null; //返回参数值
-//	}
-//	$.getScript('http://crm1.dkf.qq.com/php/index.php/thirdapp/appdemo/get_workeraccount_by_sessionkey?callback=wokeraccountCallback&ticket='+ticket);
-//	function wokeraccountCallback(data){
-//		$("#costomerID").val($xss(data.workeraccount,"html"));
-//	}
-//	function $xss(str,type){
-//		//空过滤
-//		if(!str){
-//			return str===0 ? "0" : "";
-//		}
-//		switch(type){
-//			case "none": //过度方案
-//				return str+"";
-//				break;
-//			case "html": //过滤html字符串中的XSS
-//				return str.replace(/[&'"<>\/\\\-\x00-\x09\x0b-\x0c\x1f\x80-\xff]/g, function(r){
-//					return "&#" + r.charCodeAt(0) + ";"
-//				}).replace(/ /g, " ").replace(/\r\n/g, "<br />").replace(/\n/g,"<br />").replace(/\r/g,"<br />");
-//				break;
-//			case "htmlEp": //过滤DOM节点属性中的XSS
-//				return str.replace(/[&'"<>\/\\\-\x00-\x1f\x80-\xff]/g, function(r){
-//					return "&#" + r.charCodeAt(0) + ";"
-//				});
-//				break;
-//			case "url": //过滤url
-//				return escape(str).replace(/\+/g, "%2B");
-//				break;
-//			case "miniUrl":
-//				return str.replace(/%/g, "%25");
-//				break;
-//			case "script":
-//				return str.replace(/[\\"']/g, function(r){
-//					return "\\" + r;
-//				}).replace(/%/g, "\\x25").replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\x01/g, "\\x01");
-//				break;
-//			case "reg":
-//				return str.replace(/[\\\^\$\*\+\?\{\}\.\(\)\[\]]/g, function(a){
-//					return "\\" + a;
-//				});
-//				break;
-//			default:
-//				return escape(str).replace(/[&'"<>\/\\\-\x00-\x09\x0b-\x0c\x1f\x80-\xff]/g, function(r){
-//					return "&#" + r.charCodeAt(0) + ";"
-//				}).replace(/ /g, " ").replace(/\r\n/g, "<br />").replace(/\n/g,"<br />").replace(/\r/g,"<br />");
-//				break;
-//		}
-//	}
+	//	function getUrlParam(name)
+	//	{
+	//		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+	//		var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+	//		if (r!=null) return unescape(r[2]); return null; //返回参数值
+	//	}
+	//	$.getScript('http://crm1.dkf.qq.com/php/index.php/thirdapp/appdemo/get_workeraccount_by_sessionkey?callback=wokeraccountCallback&ticket='+ticket);
+	//	function wokeraccountCallback(data){
+	//		$("#costomerID").val($xss(data.workeraccount,"html"));
+	//	}
+	//	function $xss(str,type){
+	//		//空过滤
+	//		if(!str){
+	//			return str===0 ? "0" : "";
+	//		}
+	//		switch(type){
+	//			case "none": //过度方案
+	//				return str+"";
+	//				break;
+	//			case "html": //过滤html字符串中的XSS
+	//				return str.replace(/[&'"<>\/\\\-\x00-\x09\x0b-\x0c\x1f\x80-\xff]/g, function(r){
+	//					return "&#" + r.charCodeAt(0) + ";"
+	//				}).replace(/ /g, " ").replace(/\r\n/g, "<br />").replace(/\n/g,"<br />").replace(/\r/g,"<br />");
+	//				break;
+	//			case "htmlEp": //过滤DOM节点属性中的XSS
+	//				return str.replace(/[&'"<>\/\\\-\x00-\x1f\x80-\xff]/g, function(r){
+	//					return "&#" + r.charCodeAt(0) + ";"
+	//				});
+	//				break;
+	//			case "url": //过滤url
+	//				return escape(str).replace(/\+/g, "%2B");
+	//				break;
+	//			case "miniUrl":
+	//				return str.replace(/%/g, "%25");
+	//				break;
+	//			case "script":
+	//				return str.replace(/[\\"']/g, function(r){
+	//					return "\\" + r;
+	//				}).replace(/%/g, "\\x25").replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\x01/g, "\\x01");
+	//				break;
+	//			case "reg":
+	//				return str.replace(/[\\\^\$\*\+\?\{\}\.\(\)\[\]]/g, function(a){
+	//					return "\\" + a;
+	//				});
+	//				break;
+	//			default:
+	//				return escape(str).replace(/[&'"<>\/\\\-\x00-\x09\x0b-\x0c\x1f\x80-\xff]/g, function(r){
+	//					return "&#" + r.charCodeAt(0) + ";"
+	//				}).replace(/ /g, " ").replace(/\r\n/g, "<br />").replace(/\n/g,"<br />").replace(/\r/g,"<br />");
+	//				break;
+	//		}
+	//	}
 	function getOpenid(){
 		openid=$("#openid").val();
 	}
@@ -559,14 +559,14 @@
 		var month=0;
 		var years=0;
 		if(days>31){
-		 month=parseInt(days/31);
-		 years=parseInt(month/12);
+			month=parseInt(days/31);
+			years=parseInt(month/12);
 			if(month>12){
-			 month=month-(years*12);
-			 days=days-(month*31)-(years*365);
+				month=month-(years*12);
+				days=days-(month*31)-(years*365);
 			}
 			if(days>31){
-			days=days-(month*31);
+				days=days-(month*31);
 			}
 		}
 		$("#babyAge").html("");
@@ -591,24 +591,24 @@
 
 	}
 	//计算两个日期的时间间隔 
-        function compareDate(start,end){ 
-            if(start==null||start.length==0||end==null||end.length==0){ 
-                return 0; 
-            } 
-             
-            var arr=start.split("-");  
-            var starttime=new Date(arr[0],parseInt(arr[1]-1),arr[2]);  
-            var starttimes=starttime.getTime(); 
-             
-            var arrs=end.split("-");  
-            var endtime=new Date(arrs[0],parseInt(arrs[1]-1),arrs[2]);  
-            var endtimes=endtime.getTime(); 
-             
-            var intervalTime = endtimes-starttimes;//两个日期相差的毫秒数 一天86400000毫秒 
-            var Inter_Days = ((intervalTime).toFixed(2)/86400000)+1;//加1，是让同一天的两个日期返回一天 
-             
-            return Inter_Days; 
-        } 
+	function compareDate(start,end){
+		if(start==null||start.length==0||end==null||end.length==0){
+			return 0;
+		}
+
+		var arr=start.split("-");
+		var starttime=new Date(arr[0],parseInt(arr[1]-1),arr[2]);
+		var starttimes=starttime.getTime();
+
+		var arrs=end.split("-");
+		var endtime=new Date(arrs[0],parseInt(arrs[1]-1),arrs[2]);
+		var endtimes=endtime.getTime();
+
+		var intervalTime = endtimes-starttimes;//两个日期相差的毫秒数 一天86400000毫秒
+		var Inter_Days = ((intervalTime).toFixed(2)/86400000)+1;//加1，是让同一天的两个日期返回一天
+
+		return Inter_Days;
+	}
 	function loadData(){
 		var id=$("#patientIdData",parent.document).html();
 		var sourth=$("#sourceData",parent.document).html();
@@ -779,24 +779,24 @@
 		});
 	}
 	// 获取用户的openid
-//	function MCS_ClientNotify(EventData) {
-//		EventData = strToJson(EventData);
-//		switch(EventData['event']){
-//			case 'OnUserChange':{
-//				var openid=EventData['userid'];
-//				$("#openid").val(openid);
-//				loadData();
-//				$("#illness").val('');
-//				$("#show").val('');
-//				$("#result").val('');
-//				$('#addCustomerLog').removeAttr("disabled");
-//				$("#addCustomerLog").css("background","#88d9dd");
-//				$('#returnServiceButton').removeAttr("disabled");
-//				$("#returnServiceButton").css("background","#88d9dd");
-//				break;
-//			}
-//		}
-//	}
+	//	function MCS_ClientNotify(EventData) {
+	//		EventData = strToJson(EventData);
+	//		switch(EventData['event']){
+	//			case 'OnUserChange':{
+	//				var openid=EventData['userid'];
+	//				$("#openid").val(openid);
+	//				loadData();
+	//				$("#illness").val('');
+	//				$("#show").val('');
+	//				$("#result").val('');
+	//				$('#addCustomerLog').removeAttr("disabled");
+	//				$("#addCustomerLog").css("background","#88d9dd");
+	//				$('#returnServiceButton').removeAttr("disabled");
+	//				$("#returnServiceButton").css("background","#88d9dd");
+	//				break;
+	//			}
+	//		}
+	//	}
 
 	function strToJson(str){
 		var json = (new Function("return " + str))();
@@ -862,10 +862,10 @@
 		$("#phoneOrder").val(orderList[i].phone);
 		$("#dateOrder").val(new Date(orderList[i].create_date).Format("yyyy-MM-dd"));
 		$("#illnessOrder").val(orderList[i].illness);
-		 if(orderList[i].status=='yes'){
-		$("#typeOrder").val("收费");
+		if(orderList[i].status=='yes'){
+			$("#typeOrder").val("收费");
 		}else{
-		$("#typeOrder").val("免费");
+			$("#typeOrder").val("免费");
 		}
 	}
 	//根据openid获取历史咨询
@@ -888,13 +888,13 @@
 					html+="</dd><dd>";
 					var show=logList[i].show;
 					if(show===undefined){
-					show="";
+						show="";
 					}
 					html+="<span>表现：</span>"+show+"";
 					html+="</dd><dd>";
 					var result=logList[i].result;
 					if(result===undefined){
-					result="";
+						result="";
 					}
 					html+="<span>处理：</span>"+result+"";
 					html+="</dd></dl>";
@@ -902,7 +902,7 @@
 				html+="</td>";
 				html+="</tr>";
 				$("#historyLog").html(html);
-				
+
 			},
 			dataType: "json"
 		});
@@ -986,12 +986,12 @@
 // 				data: "{'illness':'"+title+"'}",
 // 				success: function(result){
 // 					var obj=result.ZYQURI;
-					sendMessage(title);
+			sendMessage(title);
 // 				},
 // 				dataType: "json"
 // 			});
 		}
-		
+
 	}
 	function showIllnessList(title){
 // 		var patt1=/[荨|麻]/g;
@@ -1002,12 +1002,12 @@
 // 		if(patt1.test(title)){
 // 			 liHTML="<li onmouseover='changeBackgroundColorOver(this);' onmouseout='changeBackgroundColorOut(this);' onclick='illnessTitle(this);'>荨麻疹</li>";
 // 		}else
-			if(patt2.test(title)){
-			 liHTML="<li onmouseover='changeBackgroundColorOver(this);' onmouseout='changeBackgroundColorOut(this);' onclick='illnessTitle(this);'>尿布疹</li>";
+		if(patt2.test(title)){
+			liHTML="<li onmouseover='changeBackgroundColorOver(this);' onmouseout='changeBackgroundColorOut(this);' onclick='illnessTitle(this);'>尿布疹</li>";
 		}else if(patt3.test(title)){
-			 liHTML="<li onmouseover='changeBackgroundColorOver(this);' onmouseout='changeBackgroundColorOut(this);' onclick='illnessTitle(this);'>湿疹</li>";
+			liHTML="<li onmouseover='changeBackgroundColorOver(this);' onmouseout='changeBackgroundColorOut(this);' onclick='illnessTitle(this);'>湿疹</li>";
 		}else if(patt4.test(title)){
-		    liHTML="<li onmouseover='changeBackgroundColorOver(this);' onmouseout='changeBackgroundColorOut(this);' onclick='illnessTitle(this);'>荨麻疹</li>";
+			liHTML="<li onmouseover='changeBackgroundColorOver(this);' onmouseout='changeBackgroundColorOut(this);' onclick='illnessTitle(this);'>荨麻疹</li>";
 			liHTML+="<li onmouseover='changeBackgroundColorOver(this);' onmouseout='changeBackgroundColorOut(this);' onclick='illnessTitle(this);'>尿布疹</li>";
 			liHTML+="<li onmouseover='changeBackgroundColorOver(this);' onmouseout='changeBackgroundColorOut(this);' onclick='illnessTitle(this);'>湿疹</li>";
 		}
@@ -1034,7 +1034,7 @@
 		thies.style.backgroundColor='white';
 	}
 	function sendMessage(obj){
-			$.ajax({
+		$.ajax({
 			type: 'POST',
 			url: "/angel/customer/getKeywordsByOpenID",
 			contentType: "application/json; charset=utf-8",
@@ -1077,184 +1077,184 @@
 	var illnessName="";
 	function onChangeIllnessName(val){
 		switch(val){
-		case "呼吸系统":	
-			illnessName="小儿呼吸";
-			break;
-		case "消化系统":
-			illnessName="小儿消化";
-			break;
-		case "新生儿疾病":
-			illnessName="新生儿内科";
-			break;
-		case "心血管系统":
-			illnessName="小儿心内";
-			break;
-		case "泌尿系统":
-			illnessName="小儿肾内";
-			break;
-		case "血液系统":
-			illnessName="小儿血液肿瘤科";
-			break;
-		case "神经系统":
-			illnessName="小儿神经内";
-			break;
-		case "风湿免疫科":
-			illnessName="小儿免疫";
-			break;	
-		case "骨外科":
-			illnessName="小儿骨科";
-			break;	
-		case "皮肤科":
-			illnessName="小儿皮肤";
-			break;	
-		case "眼科":
-			illnessName="小儿眼科";
-			break;	
-		case "口腔科":
-			illnessName="口腔";
-			break;	
+			case "呼吸系统":
+				illnessName="小儿呼吸";
+				break;
+			case "消化系统":
+				illnessName="小儿消化";
+				break;
+			case "新生儿疾病":
+				illnessName="新生儿内科";
+				break;
+			case "心血管系统":
+				illnessName="小儿心内";
+				break;
+			case "泌尿系统":
+				illnessName="小儿肾内";
+				break;
+			case "血液系统":
+				illnessName="小儿血液肿瘤科";
+				break;
+			case "神经系统":
+				illnessName="小儿神经内";
+				break;
+			case "风湿免疫科":
+				illnessName="小儿免疫";
+				break;
+			case "骨外科":
+				illnessName="小儿骨科";
+				break;
+			case "皮肤科":
+				illnessName="小儿皮肤";
+				break;
+			case "眼科":
+				illnessName="小儿眼科";
+				break;
+			case "口腔科":
+				illnessName="口腔";
+				break;
 //		case "预防接种":
 //			illnessName="";
 //			break;	
-		case "喂养问题":
-		case "微量元素缺乏":
-		case "免疫力低":
-		case "母乳喂养":	
-		case "睡眠不好":
-			illnessName="小儿营养保健";
-			break;	
-		case "耳鼻喉科":
-			illnessName="小儿耳鼻喉";
-			break;
-		case "外科":
-			illnessName="小而普通外科";
-			break;		
-		case "内分泌遗传代谢":
-			illnessName="内分泌遗传代谢科";
-			break;			
+			case "喂养问题":
+			case "微量元素缺乏":
+			case "免疫力低":
+			case "母乳喂养":
+			case "睡眠不好":
+				illnessName="小儿营养保健";
+				break;
+			case "耳鼻喉科":
+				illnessName="小儿耳鼻喉";
+				break;
+			case "外科":
+				illnessName="小而普通外科";
+				break;
+			case "内分泌遗传代谢":
+				illnessName="内分泌遗传代谢科";
+				break;
 		}
 		checkIllness();
 	}
 	function checkIllness(){
-	 			$.ajax({
- 				type: 'POST',
- 				url: "/angel/customer/getDocotrByIllness",
- 				contentType: "application/json; charset=utf-8",
- 				data: "{'illness':'"+illnessName+"'}",
- 				success: function(result){
-					var obj=result.values;
-					if(obj=='yes'){
-					 $("#recommend").css("background-color","blue");
-					 $("#recommend").removeAttr("disabled");
-					}else{
-						$("#recommend").css("background-color","gray");
-						 $("#recommend").attr("disabled","disabled");
-					}
- 				},
- 				dataType: "json"
- 			});
+		$.ajax({
+			type: 'POST',
+			url: "/angel/customer/getDocotrByIllness",
+			contentType: "application/json; charset=utf-8",
+			data: "{'illness':'"+illnessName+"'}",
+			success: function(result){
+				var obj=result.values;
+				if(obj=='yes'){
+					$("#recommend").css("background-color","blue");
+					$("#recommend").removeAttr("disabled");
+				}else{
+					$("#recommend").css("background-color","gray");
+					$("#recommend").attr("disabled","disabled");
+				}
+			},
+			dataType: "json"
+		});
 	}
 	function recommendDoctor(){
-	var msg = '{"head":{"random":"{#random#}"}, "body":[{"type":7, "content":[{"title":"宝大夫团队为您精选“#title#”名医,预约请点击~", "digest":"", "cover":"#image#", "url":"#url#"}]}]}';
+		var msg = '{"head":{"random":"{#random#}"}, "body":[{"type":7, "content":[{"title":"宝大夫团队为您精选“#title#”名医,预约请点击~", "digest":"", "cover":"#image#", "url":"#url#"}]}]}';
 		msg=msg.replace("{#random#}",  Math.ceil(Math.random()*10000000));
 		msg=msg.replace("#title#", illnessName);
 		msg=msg.replace("#url#", "http://baodf.com/xiaoerke-webapp/ap#/searchList/"+illnessName+",searchDoctorByOpenSearch,"+illnessName);
 		msg=msg.replace("#image#", 'http://baodf.com/xiaoerke-webapp/images/recommendDoctor.png');
 		alert(msg);
 		document.getElementById('messageData').value = msg;
-	var strReturn = window.external.PutMsg('{"msg":'+document.getElementById('messageData').value+'}');
+		var strReturn = window.external.PutMsg('{"msg":'+document.getElementById('messageData').value+'}');
 		document.getElementById('area').value += 'put msg return:' + strReturn +'\n';
 	}
-	
+
 	//最后就诊日期
-		function getLastOrderDate(babyame){
-	 			$.ajax({
- 				type: 'POST',
- 				url: "/angel/customer/getLastOrderDate",
- 				contentType: "application/json; charset=utf-8",
- 				data: "{'openid':'"+openid+"','babyname':'"+babyame+"'}",
- 				success: function(result){
-					var obj=result.orderDate;
-					if(obj===undefined||obj==''){
-						$("#orderDate").val("");
-					}else{
-				$("#orderDate").val(new Date(obj).Format("yyyy-MM-dd"));
- 				}
-					var enddates=result.memberEndDate;
-					if(enddates===undefined||enddates==''){
-						$("#vipEndDate").val("");
-					}else{
-				$("#vipEndDate").val(new Date(enddates).Format("yyyy-MM-dd"));
- 				}
- 				},
- 				dataType: "json"
- 			});
+	function getLastOrderDate(babyame){
+		$.ajax({
+			type: 'POST',
+			url: "/angel/customer/getLastOrderDate",
+			contentType: "application/json; charset=utf-8",
+			data: "{'openid':'"+openid+"','babyname':'"+babyame+"'}",
+			success: function(result){
+				var obj=result.orderDate;
+				if(obj===undefined||obj==''){
+					$("#orderDate").val("");
+				}else{
+					$("#orderDate").val(new Date(obj).Format("yyyy-MM-dd"));
+				}
+				var enddates=result.memberEndDate;
+				if(enddates===undefined||enddates==''){
+					$("#vipEndDate").val("");
+				}else{
+					$("#vipEndDate").val(new Date(enddates).Format("yyyy-MM-dd"));
+				}
+			},
+			dataType: "json"
+		});
 	}
-	    /**
-	     * 获取会员服务状态  测
-	     *
-	     * @return 状态1，会员服务已过期，免费卷已过期，免费卷没用完
-	     * 状态2，会员服务已过期，免费卷已过期，免费卷已用完
-	     * 状态10，会员服务已过期，免费卷已过期，免费卷没用完，且用户从没有过订单
-	     * <p/>
-	     * 状态3，会员服务已过期，免费卷没过期，免费卷已用完
-	     * 状态4，会员服务已过期，免费卷没过期，免费卷没用完
-	     * <p/>
-	     * <p/>
-	     * 状态7，会员服务没过期，免费卷没过期，免费卷已用完
-	     * 状态8，会员服务没过期，免费卷没过期，免费卷没用完
-	     * <p/>
-	     * 状态5，会员服务没过期，免费卷已过期，免费卷没用完
-	     * 状态6，会员服务没过期，免费卷已过期，免费卷已用完
-	     * 状态9，会员服务没过期，免费卷已过期，免费卷没用完，且用户从没有过订单
-	     */
+	/**
+	 * 获取会员服务状态  测
+	 *
+	 * @return 状态1，会员服务已过期，免费卷已过期，免费卷没用完
+	 * 状态2，会员服务已过期，免费卷已过期，免费卷已用完
+	 * 状态10，会员服务已过期，免费卷已过期，免费卷没用完，且用户从没有过订单
+	 * <p/>
+	 * 状态3，会员服务已过期，免费卷没过期，免费卷已用完
+	 * 状态4，会员服务已过期，免费卷没过期，免费卷没用完
+	 * <p/>
+	 * <p/>
+	 * 状态7，会员服务没过期，免费卷没过期，免费卷已用完
+	 * 状态8，会员服务没过期，免费卷没过期，免费卷没用完
+	 * <p/>
+	 * 状态5，会员服务没过期，免费卷已过期，免费卷没用完
+	 * 状态6，会员服务没过期，免费卷已过期，免费卷已用完
+	 * 状态9，会员服务没过期，免费卷已过期，免费卷没用完，且用户从没有过订单
+	 */
 	function sendGreetingsMessage(){
 		var customer=$("#costomerID").val();
 		if(customer=="110@BaodfWX"){
 			$.ajax({
- 				type: 'POST',
- 				url: "/angel/customer/getMemberInfo",
- 				contentType: "application/json; charset=utf-8",
- 				data: "{'openid':'"+openid+"','babyname':'"+babyName+"'}",
- 				success: function(result){
+				type: 'POST',
+				url: "/angel/customer/getMemberInfo",
+				contentType: "application/json; charset=utf-8",
+				data: "{'openid':'"+openid+"','babyname':'"+babyName+"'}",
+				success: function(result){
 					var obj=result.memberInfo;
-				 	switch (obj) {
-					case '7':
-					case '8':
-					case '5':
-					case '6':
-					case '9':
+					switch (obj) {
+						case '7':
+						case '8':
+						case '5':
+						case '6':
+						case '9':
 							var msg = '{"head":{"random":"{#random#}"}, "body":[{"type":0, "content":{"text":"亲爱的会员，您好，欢迎咨询宝大夫"}}]}"';
-								msg=msg.replace("{#random#}",  Math.ceil(Math.random()*10000000));
-								document.getElementById('messageData').value = msg;
-								alert(msg);
+							msg=msg.replace("{#random#}",  Math.ceil(Math.random()*10000000));
+							document.getElementById('messageData').value = msg;
+							alert(msg);
 							var strReturn = window.external.PutMsg('{"msg":'+document.getElementById('messageData').value+'}');
-								document.getElementById('area').value += 'put msg return:' + strReturn +'\n';
-						break;
-					} 
- 				},
- 				dataType: "json"
- 			});
+							document.getElementById('area').value += 'put msg return:' + strReturn +'\n';
+							break;
+					}
+				},
+				dataType: "json"
+			});
 		}
 	}
-	     
-	     function addReturnService(){
-	    	 var costomerID=$("#costomerID").val();
-	    	 $.ajax({
-	 				type: 'POST',
-	 				url: "/angel/customer/saveReturnService",
-	 				contentType: "application/json; charset=utf-8",
-	 				data: "{'openid':'"+openid+"','customerID':'"+costomerID+"'}",
-	 				success: function(result){
-	 					var type=result.type;
-	 					if(type==1){
-	 						$("#returnServiceButton").attr('disabled',"true");
-	 						$("#returnServiceButton").css("background","gray");
-	 					}else{
-	 						alertD("保存失败,请联系技术人员");
-	 					}
-	 				},
-	 				dataType: "json"
-	 			});
-	     }
+
+	function addReturnService(){
+		var costomerID=$("#costomerID").val();
+		$.ajax({
+			type: 'POST',
+			url: "/angel/customer/saveReturnService",
+			contentType: "application/json; charset=utf-8",
+			data: "{'openid':'"+openid+"','customerID':'"+costomerID+"'}",
+			success: function(result){
+				var type=result.type;
+				if(type==1){
+					$("#returnServiceButton").attr('disabled',"true");
+					$("#returnServiceButton").css("background","gray");
+				}else{
+					alertD("保存失败,请联系技术人员");
+				}
+			},
+			dataType: "json"
+		});
+	}
 </script><!--[if !IE]>|xGv00|539017d66e4e60b1c82cbc86aa9a5d50<![endif]-->

@@ -95,7 +95,7 @@ public class LoginController extends BaseController{
 		for(int i = 0,len = cookies.length; i < len; i++) {
 			for(int j = 0;j < pathArray.length;  j++){
 				Cookie cookie = new Cookie(cookies[i].getName(), null);
-				cookie.setDomain(".xiaork.cn");
+				cookie.setDomain(ConstantUtil.DOMAIN_VALUE);
 				cookie.setMaxAge(0);
 				cookie.setPath(pathArray[j]);
 				response.addCookie(cookie);

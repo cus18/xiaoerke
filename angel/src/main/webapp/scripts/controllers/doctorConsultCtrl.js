@@ -32,10 +32,16 @@ angular.module('controllers', ['luegg.directives'])
                 myReplyList: false,
                 publicReplyList: false,
                 replyContent: true,
-                advisoryContent: false
+                advisoryContent: false,
+                magnifyImg:false
             };
             $scope.searchFlag = false;
-
+            $scope.tapImgButton = function (key,value) {
+                $scope.showFlag[key] = !$scope.showFlag[key];
+                $scope.imageSrc = value;
+                console.log(key)
+                console.log(value)
+            };
             //初始化医生端登录，建立socket链接，获取基本信息
             $scope.doctorConsultInit = function () {
                 var routePath = "/doctor/consultBBBBBB" + $location.path();
@@ -99,7 +105,10 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 })
             };
-
+            $scope.tapImgButton = function (key,value) {
+                $scope.showFlag[key] = !$scope.showFlag[key];
+                $scope.imageSrc = value;
+            };
             //公共点击按钮，用来触发弹出对应的子窗口
             $scope.tapShowButton = function(type){
                 $.each($scope.showFlag,function(key,value){
@@ -307,14 +316,27 @@ angular.module('controllers', ['luegg.directives'])
                         if ($scope.info.consultMessage.indexOf("\n") >= 0) {
                             $scope.info.consultMessage.replace("\n","");
                         }
-                        var consultValMessage = {
-                            "type": 0,
-                            "content": $scope.info.consultMessage,
-                            "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                            "senderId": angular.copy($scope.doctorId),
-                            "senderName": angular.copy($scope.doctorName),
-                            "sessionId": angular.copy($scope.currentUserConversation.sessionId)
-                        };
+                        var consultValMessage = "";
+                        if($scope.userType=="distributor"){
+                            var consultValMessage = {
+                                "type": 0,
+                                "content": "分诊" +$scope.doctorName+"："+ $scope.info.consultMessage,
+                                "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                                "senderId": angular.copy($scope.doctorId),
+                                "senderName": angular.copy($scope.doctorName),
+                                "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                            };
+                        }else if($scope.userType=="consultDoctor"){
+                            var consultValMessage = {
+                                "type": 0,
+                                "content": $scope.doctorName + "医生：" + $scope.info.consultMessage,
+                                "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                                "senderId": angular.copy($scope.doctorId),
+                                "senderName": angular.copy($scope.doctorName),
+                                "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                            };
+                        }
+
                         $scope.socketServer1.send(emotionSendFilter(JSON.stringify(consultValMessage)));
                         consultValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($scope.info.consultMessage)));
                         $scope.info.consultMessage = "";
@@ -896,7 +918,7 @@ angular.module('controllers', ['luegg.directives'])
             var emotionReceiveFilter = function(val){
                 val = val.replace(/\/::\)/g, '[em_1]');val = val.replace(/\/::~/g, '[em_2]');val = val.replace(/\/::B/g, '[em_3]');val = val.replace(/\/::\|/g, '[em_4]');
                 val = val.replace(/\/:8-\)/g, '[em_5]');val = val.replace(/\/::</g, '[em_6]');val = val.replace(/\/::X/g, '[em_7]');val = val.replace(/\/::Z/g, '[em_8]');
-                val = val.replace(/\/::</g, '[em_9]');val = val.replace(/\/::-\|/g, '[em_10]');val = val.replace(/\/::@/g, '[em_11]');val = val.replace(/\/::p/g, '[em_12]');
+                val = val.replace(/\/::</g, '[em_9]');val = val.replace(/\/::-\|/g, '[em_10]');val = val.replace(/\/::@/g, '[em_11]');val = val.replace(/\/::P/g, '[em_12]');
                 val = val.replace(/\/::D/g, '[em_13]');val = val.replace(/\/::O/g, '[em_14]');val = val.replace(/\/::\(/g, '[em_15]');val = val.replace(/\/:--b/g, '[em_16]');
                 val = val.replace(/\/::Q/g, '[em_17]');val = val.replace(/\/::T/g, '[em_18]');val = val.replace(/\/:,@P/g, '[em_19]');val = val.replace(/\/:,@-D/g, '[em_20]');
                 val = val.replace(/\/::d/g, '[em_21]');val = val.replace(/\/:,@-o/g, '[em_22]');val = val.replace(/\/::g/g, '[em_23]');val = val.replace(/\/:\|-\)/g, '[em_24]');
@@ -919,7 +941,7 @@ angular.module('controllers', ['luegg.directives'])
             var emotionSendFilter = function(val){
                 val = val.replace(/\[em_1\]/g, '/::)');val = val.replace(/\[em_2\]/g, '/::~');val = val.replace(/\[em_3\]/g, '/::B');val = val.replace(/\[em_4\]/g, '/::|');
                 val = val.replace(/\[em_5\]/g, '/:8-)');val = val.replace(/\[em_6\]/g, '/::<');val = val.replace(/\[em_7\]/g, '/::X');val = val.replace(/\[em_8\]/g, '/::Z');
-                val = val.replace(/\[em_9\]/g, '/::<');val = val.replace(/\[em_10\]/g, '/::-|');val = val.replace(/\[em_11\]/g, '/::@');val = val.replace(/\[em_12\]/g, '/::p');
+                val = val.replace(/\[em_9\]/g, '/::<');val = val.replace(/\[em_10\]/g, '/::-|');val = val.replace(/\[em_11\]/g, '/::@');val = val.replace(/\[em_12\]/g, '/::P');
                 val = val.replace(/\[em_13\]/g, '/::D');val = val.replace(/\[em_14\]/g, '/::O');val = val.replace(/\[em_15\]/g, '/::(');val = val.replace(/\[em_16\]/g, '/:--b');
                 val = val.replace(/\[em_17\]/g, '/::Q');val = val.replace(/\[em_18\]/g, '/::T');val = val.replace(/\[em_19\]/g, '/:,@P');val = val.replace(/\[em_20\]/g, '/:,@-D');
                 val = val.replace(/\[em_21\]/g, '/::d');val = val.replace(/\[em_22\]/g, '/:,@-o');val = val.replace(/\[em_23\]/g, '/::g');val = val.replace(/\[em_24\]/g, '/:|-');
@@ -954,6 +976,8 @@ angular.module('controllers', ['luegg.directives'])
             $scope.currentClickUserName = "";
 
             $scope.currentClickUserId = "";
+
+            $scope.loadingFlag = false;
 
             $scope.searchMessageType = [
                 {
@@ -1022,8 +1046,10 @@ angular.module('controllers', ['luegg.directives'])
             $scope.getUserRecordDetail = function (userName,userId,index) {
                 $scope.doctorCreateConsultSessionChoosedUserId = userId;
                 $scope.setSessoin = index;
+                $scope.loadingFlag = true;
                 GetUserRecordDetail.save({pageNo:1,pageSize:$scope.userRecordDetailPageSize,
                     userId:userId,recordType:"all"}, function (data) {
+                    $scope.loadingFlag = false;
                     $scope.currentClickUserName = userName;
                     $scope.currentClickUserId = userId;
                     $scope.currentUserConsultRecordDetail = data.records;
@@ -1050,9 +1076,11 @@ angular.module('controllers', ['luegg.directives'])
                         pageNum = $scope.currentUserRecordDetailPage+1;
                     }
                 }
+                $scope.loadingFlag = true;
                 GetUserRecordDetail.save({pageNo:pageNum,
                     pageSize:$scope.userRecordDetailPageSize,
                     userId:$scope.currentClickUserId,recordType:recordType}, function (data) {
+                    $scope.loadingFlag = false;
                     $scope.currentClickUserName = $scope.currentClickUserName;
                     $scope.currentClickUserId = $scope.currentClickUserId;
                     $scope.currentUserConsultRecordDetail = data.records;
@@ -1077,9 +1105,11 @@ angular.module('controllers', ['luegg.directives'])
                 } else {
                     $scope.CSDoctorIdValue =angular.copy(Object);
                 }
+                $scope.loadingFlag = true;
                 GetUserConsultListInfo.save({dateNum: $scope.dateNumValue,
                     CSDoctorId: $scope.CSDoctorIdValue,
                     pageNo: 1, pageSize:$scope.userConsultListPageSize}, function (data) {
+                    $scope.loadingFlag = false;
                     refreshUserConsultListData(data);
                 })
             };
@@ -1093,12 +1123,14 @@ angular.module('controllers', ['luegg.directives'])
                     alert('请选择查询类型！');
                     return ;
                 }else{
+                    $scope.loadingFlag = true;
                     GetMessageRecordInfo.save({
                         searchInfo: $scope.info.searchMessageContent,
                         searchType: $scope.messageType,
                         pageNo: 1,
                         pageSize: $scope.userConsultListPageSize
                     }, function (data) {
+                        $scope.loadingFlag = false;
                         refreshUserConsultListData(data);
                     });
                 }
@@ -1111,10 +1143,12 @@ angular.module('controllers', ['luegg.directives'])
 
             //左上角的刷新消息
             $scope.refreshUserList = function () {
+                $scope.loadingFlag = true;
                 GetUserConsultListInfo.save({dateNum: $scope.dateNumValue,
                     CSDoctorId: $scope.CSDoctorIdValue,
                     pageNo: 1,
                     pageSize: $scope.userConsultListPageSize}, function (data) {
+                    $scope.loadingFlag = false;
                     refreshUserConsultListData(data);
                 })
             };
@@ -1156,9 +1190,11 @@ angular.module('controllers', ['luegg.directives'])
                         pageNum = $scope.currentUserConsultListDataPage+1;
                     }
                 }
+                $scope.loadingFlag = true;
                 GetUserConsultListInfo.save({dateNum: $scope.dateNumValue,
                     CSDoctorId: $scope.CSDoctorIdValue,
                     pageNo: pageNum, pageSize: $scope.userConsultListPageSize}, function (data) {
+                    $scope.loadingFlag = false;
                     refreshUserConsultListData(data);
                 })
             };
@@ -1186,6 +1222,13 @@ angular.module('controllers', ['luegg.directives'])
                     val.message = $sce.trustAsResourceUrl(angular.copy(val.message));
                 }
             };
-
+            //各个子窗口的开关变量
+            $scope.showFlag = {
+                magnifyImg:false
+            };
+            $scope.tapImgButton = function (key,value) {
+                $scope.showFlag[key] = !$scope.showFlag[key];
+                $scope.imageSrc = value;
+            };
         }])
 

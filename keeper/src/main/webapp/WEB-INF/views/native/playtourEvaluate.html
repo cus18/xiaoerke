@@ -16,7 +16,7 @@
     <div class="evaltitle">
         <div class="et_1">
             <div>
-                <img id="headImage" src="images/a1.png" width="54px" height="54px"/>
+                <img id="headImage" src="images/a1.png" width="54px" height="54px" onerror="$('#headImage').attr('src','images/a1.png')"/>
             </div>
             <div id="doctorName" >梁平</div>
         </div>
@@ -52,7 +52,7 @@
         <div class="inputmoney">
             <img onclick="setMoney(0)" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png" width="43px" height="44px">
 
-            <input  type="number" maxlength="4" id="getMoney" placeholder="0元" onfocus="this.type='number'" onblur="this.type='text'" onclick="moreMoney()"/>
+            <input  type="number" maxlength="4" id="getMoney" placeholder="0元" onfocus="this.type='number'" onblur="this.type='text'"  oninput="moreMoney()"/>
 
             <img onclick="setMoney(1)" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjia_xuanzhong.png" width="43px" height="44px">
         </div>
@@ -63,6 +63,6 @@
     <div class="evalsharebut" onclick="goShare()">
         <button >分享给更多宝妈</button>
     </div>
-    <button id="but" onclick="updateCustomerInfo()" >提交评价</button>
+    <button id="but" background-color="#E8E8E8" onclick="updateCustomerInfo()" >我要送心意</button>
 </body>
 </html>

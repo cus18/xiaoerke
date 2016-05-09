@@ -59,3 +59,11 @@ select option {color:#333;}
         transform: rotateZ(360deg);
     }
 }
+.magnifyImg{
+    position: absolute;
+    text-align: center;
+    top: 100px;
+    left: 200px;
+    background-color: #c1c1c1;
+}
+.magnifyImg img {opacity: 1;}

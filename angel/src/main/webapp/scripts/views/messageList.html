@@ -139,6 +139,9 @@
                              <div ng-if="item.type=='0'" id="show" class="chatcontent">
                                  {{item.message}}
                              </div>
+                             <div ng-if="item.type=='1'" class="chatcontent"  ng-click="tapImgButton('magnifyImg',item.message)">
+                                 <img width="30%" ng-src="{{item.message}}">
+                             </div>
                          </div>
                          <div ng-if="item.senderId==item.userId">
                              <div class="name" ng-style="item.senderId==item.userId?{color: '#08b7c2'}:{color: '#7fc700'}">
@@ -148,8 +151,8 @@
                                  {{item.message}}
                              </div>
                              <div ng-if="item.type=='1'" class="chatcontent">
-                                 <a target="_blank" ng-href="{{item.message}}">
-                                     <img width="100" height="100" ng-src="{{item.message}}">
+                                 <a target="_blank" ng-href="{{item.message}}" ng-click="tapImgButton('magnifyImg',item.message)">
+                                     <img width="30%" ng-src="{{item.message}}">
                                  </a>
                              </div>
                              <div ng-if="item.type=='2'" class="chatcontent">
@@ -165,6 +168,9 @@
 
             </div>
         </div>
+    </div>
+    <div class="magnifyImg" ng-show='showFlag.magnifyImg'>
+        <img width="60%" ng-src="{{imageSrc}}">
     </div>
     <!--系统设置的弹出框-->
     <div class="xtsz-up" id="xtsz_up" ng-show='systemsetup.show'>
@@ -264,7 +270,7 @@
             <button>确定</button>
         </div>
     </div>
-    <div class="cover">
+    <div class="cover" ng-if="loadingFlag">
         <div class="content" style="border:none;">
             <div class="image">
                 <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fshuax_03.png" alt=""/>

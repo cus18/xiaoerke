@@ -1,6 +1,6 @@
 angular.module('controllers', ['ionic']).controller('phoneConsultDetailsCtrl', [
-    '$scope','$state','$stateParams','$location','GetUserLoginStatus','GetIllnessDetail','$filter',
-    function ($scope,$state,$stateParams,$location,GetUserLoginStatus,GetIllnessDetail,$filter) {
+    '$scope','$state','$stateParams','$location','GetUserLoginStatus','GetIllnessDetail','$filter','$http',
+    function ($scope,$state,$stateParams,$location,GetUserLoginStatus,GetIllnessDetail,$filter,$http) {
         $scope.title = "病情资料";
 
 
@@ -15,6 +15,8 @@ angular.module('controllers', ['ionic']).controller('phoneConsultDetailsCtrl', [
                 }else if(data.status=="8"){
                     window.location.href = data.redirectURL+"?targeturl="+routePath;
                 }else{
+                    var pData = {logContent:encodeURI("WXZJB_DHZX_CKBQZL")};
+                    $http({method:'post',url:'util/recordLogs',params:pData});
                     GetIllnessDetail.save({"sys_phoneConsult_id":$stateParams.id,"doctorId":$stateParams.doctorId},function(data){
                         console.log("data",data);
                         $scope.serverTime = $filter('limitTo')(data.consultDate, 10);

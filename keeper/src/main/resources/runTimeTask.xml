@@ -134,6 +134,18 @@
         <property name="cronExpression" value="0 0 7 * * ?"/>
     </bean>
 
+    <!-- 预约成功5min和接听钱5min sendDocMsg -->
+    <bean id="phoneConsultReminder2DocQuarzTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="scheduledQuarz"/>
+        <property name="targetMethod" value="phoneConsultReminder2Doc"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="phoneConsultReminder2DocCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="phoneConsultReminder2DocQuarzTask"/>
+        <property name="cronExpression" value="0 */1 * * * ?"/>
+    </bean>
+
+
 	<!--==========================================appoint部分================================================-->
 	<bean id="letsGoReminderQuarzTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="scheduledQuarz"/>
@@ -192,6 +204,17 @@
 	<bean id="repeatSettingRegisterCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="repeatSettingRegisterQuarzTask"/>
 		<property name="cronExpression" value="22 17 23 * * ?"/>
+	</bean>
+
+	<!-- task of repeatSettingRegister -->
+	<bean id="repeatSettingConsultPhoneRegisterQuarzTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="scheduledQuarz"/>
+		<property name="targetMethod" value="repeatSettingConsultPhoneRegister"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+	<bean id="repeatSettingConsultPhoneRegisterCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="repeatSettingConsultPhoneRegisterQuarzTask"/>
+		<property name="cronExpression" value="22 19 23 * * ?"/>
 	</bean>
 
 	<!-- task of sys_statistics_title -->
@@ -325,6 +348,7 @@
 				<ref bean="letsGoReminderCronTrigger"/>
 				<ref bean="updateSrSerStatusCronTrigger"/>
 				<ref bean="repeatSettingRegisterCronTrigger"/>
+				<ref bean="repeatSettingConsultPhoneRegisterCronTrigger"/>
 				<ref bean="statisticsTrigger"/>
 				<ref bean="prepareOperationStatisticDataTrigger"/>
 				<ref bean="insertStatisticsTitleCronTrigger"/>
@@ -339,6 +363,8 @@
 				<ref bean="timingDialCronTrigger"/>
                 <ref bean="sendMsgToDocAtNightPhoneConsultCronTrigger"/>
                 <ref bean="sendMsgToDocAtMorningPhoneConsultCronTrigger"/>
+                <ref bean="phoneConsultReminder2DocCronTrigger"/>
+
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>

@@ -75,10 +75,13 @@ var setNo = function(index){
 
 //判断输入心意钱
 var moreMoney = function () {
-    recordLogs("ZXPJSXY_JE");
+    // recordLogs("ZXPJSXY_JE");
+
     if($('#getMoney').val()>0){
+
         $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
     }else{
+
         $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
     }
 }
@@ -87,26 +90,44 @@ var moreMoney = function () {
 var setMoney = function (index) {
     moneyNum = $('#getMoney').val();
     if(index==0){
+
         if(moneyNum<=0){
             $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
         }else{
             $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
             if(moneyNum.indexOf(".")>0){
-                moneyNum=parseInt(moneyNum);
+                $("#but").removeAttr('disable');
+                $("#but").attr("style","background-color:#fe717b");
+                // moneyNum=parseInt(moneyNum);
             }else {
-                moneyNum--;
+                $("#but").removeAttr('disable');
+                $("#but").attr("style","background-color:#fe717b");
+                // moneyNum--;
             }
-            if(moneyNum==0){
-                $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
+
+            var a=parseInt(moneyNum)/5;
+            var b=parseInt(moneyNum)%5;
+            if(a<1){
+                a=0;
+            }else {
+                if(b==0){
+                    a--;
+                }else {
+                    a = parseInt(a);
+                }
             }
+            moneyNum=5*(a);
+            
             $('#getMoney').val(moneyNum);
         }
     }else if(index==1){
-        if(moneyNum.indexOf(".")>0){
-            moneyNum=parseInt(moneyNum)+1;
-        }else {
-            moneyNum++;
+
+        if(moneyNum==""){
+            moneyNum=0;
         }
+        var a=parseInt(moneyNum)/5;
+        a=parseInt(a);
+        moneyNum=5*(a+1);
         $('#getMoney').val(moneyNum);
         $('.ptm img').eq(1).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjia_xuanzhong.png");
         $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
@@ -156,7 +177,7 @@ function getCustomerInfo(){
             }else{
                 var star=starInfo.startNum+"";
                 $("#redPacket").html(starInfo.redPacket);
-                $("#starInfo").html(star.split(".")[0]+"%");
+                $("#starInfo").html(star.split(".")[1]+"%");
                 $("#doctorName").html(doctorInfo.doctor_name);
                 $("#headImage").attr("src",doctorInfo.doctor_pic_url);
             }
@@ -169,17 +190,19 @@ function updateCustomerInfo(){
     customerId=GetQueryString("customerId");
     var content=$("#content").val();
     var redPacket=$("#getMoney").val();
-    if(redPacket!=""){
-        if(redPacket<=0){
-            $("#moneyDiff").show();
+    if (redPacket != "" && redPacket > 0  ) {
+        if(redPacket>1000){
+            alert("感谢您的支持,目前最大金额为1000哦!");
             return;
         }
+        var num = new Number(redPacket);
+        redPacket = num.toFixed(1);
         recordLogs("ZXPJSXY_JE");
         $.ajax({
             url:"account/user/customerPay",// 跳转到 action
             async:true,
             type:'get',
-            data:{patientRegisterId:customerId,payPrice:redPacket*1000},
+            data:{patientRegisterId:customerId,payPrice:redPacket*100},
             cache:false,
             success:function(data) {
                 var obj = eval('(' + data + ')');
