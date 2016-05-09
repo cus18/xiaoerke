@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.order.service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +24,7 @@ public interface ConsultPhonePatientService {
 
     List<HashMap<String,Object>> getOrderList(String userId);
 
-    Float cancelOrder(Integer phoneConsultaServiceId,String cancelReason,String cancelState) throws CancelOrderException;//cancelState:0是取消订单，号源设置为可用，2是删除号源
+    BigDecimal cancelOrder(Integer phoneConsultaServiceId,String cancelReason,String cancelState) throws CancelOrderException;//cancelState:0是取消订单，号源设置为可用，2是删除号源
 
     int updateOrderInfoBySelect(ConsultPhoneRegisterServiceVo vo);
 

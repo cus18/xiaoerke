@@ -1,14 +1,14 @@
 angular.module('controllers', ['luegg.directives','ngFileUpload'])
     .controller('patientConsultFirstCtrl', ['$scope','$location','$anchorScroll',
-        'GetSessionId','GetUserLoginStatus','$upload',
-        function ($scope,$location,$anchorScroll,GetSessionId,GetUserLoginStatus,$upload) {
+        'GetSessionId','GetUserLoginStatus','$upload','$sce',
+        function ($scope,$location,$anchorScroll,GetSessionId,GetUserLoginStatus,$upload,$sce) {
 
             $scope.consultContent = [];
             $scope.info={};
             $scope.upFile = {};
             $scope.sessionId = "";
             $scope.socketServer = "";
-            $scope.glued = true;
+            $scope.glued = true;//angular滚动条的插件预制参数，让对话滚动条，当新的聊天数据到达时，每次都定位底部
 
             $scope.openFileListFlag = false;
             $location.hash("fileInput");
@@ -37,7 +37,6 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                         $scope.patientId = data.userId;
                         $scope.patientName = data.userName;
                         $scope.patientPhone = data.userPhone;
-
                         $scope.initConsultSocket();
                     }
                 })
@@ -52,7 +51,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     $scope.sendItem = true;
                 }
             });
-
+            //初始化接口
             $scope.initConsultSocket = function(){
                 if (!window.WebSocket) {
                     window.WebSocket = window.MozWebSocket;
@@ -62,7 +61,11 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     $scope.socketServer = new WebSocket("ws://192.168.191.2:2048/ws&user&"
                         + $scope.patientId +"&h5cxqm");//cs,user,distributor
                     $scope.socketServer.onmessage = function(event) {
-                        console.log("onmessage"+event.data);
+                        console.log("consultData"+event.data);
+                        var consultData = JSON.parse(event.data);
+                        console.log("consultData"+JSON.parse(event.data));
+                        filterMediaData(consultData);
+                        processDoctorSendMessage(consultData);
                     };
                     $scope.socketServer.onopen = function(event) {
                         console.log("onopen"+event.data);
@@ -85,8 +88,42 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 } else {
                     alert("你的浏览器不支持！");
                 }
-            }
-
+            };
+            var processDoctorSendMessage = function (conversationData) {
+                var doctorValMessage = {
+                    'type':conversationData.type,
+                    'content':conversationData.content,
+                    'dateTime':conversationData.dateTime,
+                    'senderId':$scope.senderId,
+                    'senderName':$scope.senderName,
+                    'sessionId':$scope.sessionId
+                };
+                $scope.consultContent.push(doctorValMessage);
+                console.log(doctorValMessage);
+                console.log($scope.consultContent);
+/*                if(JSON.stringify($scope.consultContent)=='{}'){
+                    $scope.consultContent = {
+                        'doctorId':conversationData.senderId,
+                        'source':conversationData.source,
+                        'fromServer':conversationData.fromServer,
+                        'sessionId':conversationData.sessionId,
+                        'isOnline':true,
+                        'dateTime':conversationData.dateTime,
+                        'messageNotSee':conversationData.messageNotSee,
+                        'doctorName':conversationData.patientName
+                    };
+                    $scope.consultContent.patientId = conversationData.senderId;
+                    $scope.consultContent.source = conversationData.source;
+                    $scope.consultContent.fromServer = conversationData.fromServer;
+                    $scope.consultContent.sessionId = conversationData.sessionId;
+                    $scope.consultContent.isOnline = true;
+                    $scope.consultContent.dateTime = conversationData.dateTime;
+                    $scope.consultContent.messageNotSee = false;
+                    $scope.consultContent.patientName = conversationData.senderName;
+                    $scope.consultContent.consultValue = [];
+                    $scope.consultContent.consultValue.push(currentConsultValue);
+                }*/
+            };
             $scope.sendConsultContent = function(){
                 var patientValMessage = {
                     "type": 0,
@@ -95,8 +132,8 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     "senderId":$scope.patientId,
                     "senderName":$scope.patientName,
                     "sessionId":$scope.sessionId,
-                    "avatar":"http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/jialisan01.png",
-                }
+                    "avatar":"http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/jialisan01.png"
+                };
                 if (!window.WebSocket) {
                     return;
                 }
@@ -107,8 +144,8 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 } else {
                     alert("连接没有开启.");
                 }
-            }
-
+            };
+            //提交图片
             $scope.uploadFiles = function($files,fileType) {
                 var dataValue = {
                     "fileType": fileType,
@@ -123,6 +160,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                         data: encodeURI(dataJsonValue),
                         file: file
                     }).progress(function(evt) {
+
                         console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
                     }).success(function(data, status, headers, config){
                         console.log(data);
@@ -130,10 +168,11 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                             "type": 1,
                             "content": data.showFile,
                             "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                            "senderId": angular.copy($scope.patientId),
-                            "senderName": angular.copy($scope.patientName),
-                            "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                            "senderId": data.senderId,
+                            "senderName": data.senderName,
+                            "sessionId":data.sessionId
                         };
+                        console.log(patientValMessage.content);
                         if (!window.WebSocket) {
                             return;
                         }
@@ -147,5 +186,18 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     });
                 }
             };
-
+            //过滤媒体数据
+            var filterMediaData = function (val) {
+                if(val.senderId==$scope.patientId){
+                    if (val.type == "0") {
+                        val.content = $sce.trustAsHtml(replace_em(angular.copy(val.content)));
+                    }
+                }else{
+                    if (val.type == "2"||val.type == "3") {
+                        val.content = $sce.trustAsResourceUrl(angular.copy(val.content));
+                    }else if(val.type == "0"){
+                        val.content = $sce.trustAsHtml(replace_em(angular.copy(val.content)));
+                    }
+                }
+            };
         }])

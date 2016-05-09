@@ -19,7 +19,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -180,24 +180,24 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
                 int state = consultPhonePatientService.updateOrderInfoBySelect(registerServiceVo);
                 //              并发送消息
                 String url = ConstantUtil.TITAN_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) consultOrder.get("doctorId")+","+(Integer) consultOrder.get("id")+",phone";
-                PatientMsgTemplate.unConnectPhone2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"), (Float) consultOrder.get("price") + "", (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"));
+                PatientMsgTemplate.unConnectPhone2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"), (BigDecimal) consultOrder.get("price") + "", (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"));
                 Map tokenMap = systemService.getDoctorWechatParameter();
                 String token = (String)tokenMap.get("token");
                 String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)consultOrder.get("date"),"yyyy/MM/dd"));
                 String dateTime = (String)consultOrder.get("date")+week+(String)consultOrder.get("beginTime");
-                PatientMsgTemplate.unConnectPhone2Wechat(dateTime, (String) consultOrder.get("userPhone"), (String) consultOrder.get("doctorName"), (Float) consultOrder.get("price") + "", url, (String) consultOrder.get("orderNo"), (String) consultOrder.get("openid"), token);
+                PatientMsgTemplate.unConnectPhone2Wechat(dateTime, (String) consultOrder.get("userPhone"), (String) consultOrder.get("doctorName"), (BigDecimal) consultOrder.get("price") + "", url, (String) consultOrder.get("orderNo"), (String) consultOrder.get("openid"), token);
 
                 //未接通时 给医生发消息提醒
                 String doctorName =  (String) consultOrder.get("doctorName");
                 String babyName =  (String) consultOrder.get("babyName");
                 String doctorPhone =  (String)consultOrder.get("doctorPhone");
                 DoctorMsgTemplate.doctorPhoneConsultRemindFail2Sms(doctorName, babyName, doctorPhone);
-                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("mm月dd日");
-                String nowTime = simpleDateFormat1.format(new Date());
+
+                String time = (String)consultOrder.get("date")+" "+week+" "+(String)consultOrder.get("beginTime")+"-"+(String)consultOrder.get("endTime");
                 String doctorToken = (String) tokenMap.get("token");
                 String openId = doctorInfoService.findOpenIdByDoctorId((String) consultOrder.get("doctorId"));
                 if (StringUtils.isNotNull(openId)) {
-                    DoctorMsgTemplate.doctorPhoneConsultRemindFail2Wechat(babyName, nowTime, doctorToken, "", openId);
+                    DoctorMsgTemplate.doctorPhoneConsultRemindFail2Wechat(babyName, time,(String)consultOrder.get("orderNo"), doctorToken, "", openId);
                 }
             };
         }

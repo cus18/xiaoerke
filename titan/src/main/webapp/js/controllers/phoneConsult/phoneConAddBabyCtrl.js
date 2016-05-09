@@ -36,7 +36,7 @@
             saveBabyInfo.get({"sex":sex,"name":encodeURI(name),"birthDay":birthday}, function (data){
                 if(data.resultCode=='1'){
                     var babyid = data.autoId;
-                    window.location.href = "/keeper/wxPay/patientPay.do?serviceType=phoneConsult&phoneConDoctorDetail="+$stateParams.phoneConDoctorDetail+"&doctorId="+$stateParams.doctorId+"&babyId="+babyid;
+                    window.location.href = "http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=phoneConsult&phoneConDoctorDetail="+$stateParams.phoneConDoctorDetail+"&doctorId="+$stateParams.doctorId+"&babyId="+babyid;
                 }
             });
         }

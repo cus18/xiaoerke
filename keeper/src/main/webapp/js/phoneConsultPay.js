@@ -185,12 +185,12 @@ function loadDate(){
 
 // 点击跳转到首页
 var goFirstPage=function(){
-    window.location.href="/titan/firstPage/phoneConsult"
+    window.location.href="http://s68.baodf.com/titan/firstPage/phoneConsult"
 }
 
 // 点击跳转到个人中心
 var goMyselfCenter=function(){
-    window.location.href="/titan/phoneConsult#/selfCenter"
+    window.location.href="http://s68.baodf.com/titan/phoneConsult#/selfCenter"
 }
 
 // 点击选择宝宝按钮
@@ -219,7 +219,7 @@ var choiceBabyss=function(index){
 
 // 添加宝宝
 var addBaby=function(){
-    window.location.href = "/titan/phoneConsult#/phoneConAddBaby/"+GetQueryString("phoneConDoctorDetail")+","+GetQueryString("doctorId");
+    window.location.href = "http://s68.baodf.com/titan/phoneConsult#/phoneConAddBaby/"+GetQueryString("phoneConDoctorDetail")+","+GetQueryString("doctorId");
 }
 
 // 取消选择宝宝
@@ -322,7 +322,7 @@ var wxPay = function (consultPhoneServiceId) {
                 paySign:obj.paySign,  // 支付签名
                 success: function (res) {
                     if(res.errMsg == "chooseWXPay:ok" ) {
-                        window.location.href = "/titan/phoneConsult#/phoneConPaySuccess/"+consultPhoneServiceId;
+                        window.location.href = "http://s68.baodf.com/titan/phoneConsult#/phoneConPaySuccess/"+consultPhoneServiceId;
                     }else{
                         alert("支付失败,请重新支付")
                     }

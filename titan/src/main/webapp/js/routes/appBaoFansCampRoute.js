@@ -241,16 +241,16 @@ define(['appBaoFansCamp'], function(app){
                     })
 
                     /* 第三方合作*/
-                    .state('youFuMama', {
-                        url: '/youFuMama',
+                    .state('youfumama', {
+                        url: '/youfumama',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'youFuMamaCtrl',
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.youFuMamaCtrl',
-                                    ['js/controllers/baoFansCamp/third/youFuMamaCtrl.js',
-                                        'styles/baoFansCamp/third/youFuMama.less?ver'+baoFansCampVersion],
-                                    'js/views/baoFansCamp/third/youFuMama.html?ver='+baoFansCampVersion);
+                                    ['js/controllers/baoFansCamp/third/youfumamaCtrl.js',
+                                        'styles/baoFansCamp/third/youfumama.less?ver'+baoFansCampVersion],
+                                    'js/views/baoFansCamp/third/youfumama.html?ver='+baoFansCampVersion);
                             }
                         }
                     })

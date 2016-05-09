@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -700,8 +701,8 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 		return count;
 	}
 
-	private Float delRegister(SysConsultPhoneServiceVo vo) throws Exception {
-		Float price = 0f;
+	private BigDecimal delRegister(SysConsultPhoneServiceVo vo) throws Exception {
+		BigDecimal price =new BigDecimal(0);
 		try {
 			if ("1".equals(vo.getState())) {//被预约了删除号源，删除订单，退费
 				HashMap<String, Object> executeMap1 = new HashMap<String, Object>();

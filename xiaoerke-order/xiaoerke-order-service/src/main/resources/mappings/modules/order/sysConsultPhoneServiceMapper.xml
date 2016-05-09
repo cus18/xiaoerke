@@ -21,12 +21,12 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />
-    from sys_consultPhone_service
+    from sys_consultphone_service
     where id = #{id,jdbcType=INTEGER}
   </select>
 
   <select id="selectConsultList" resultMap="BaseResultMap" parameterType="java.lang.String">
-    select * from sys_consultPhone_service scs
+    select * from sys_consultphone_service scs
     where scs.sys_doctor_id = #{doctorId,jdbcType=VARCHAR}
     and scs.state = #{state,jdbcType=VARCHAR}
     and (DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>now()
@@ -35,7 +35,7 @@
   </select>
 
   <select id="getRegisterInfo" resultMap="BaseResultMap" parameterType="java.lang.String">
-    select * from sys_consultPhone_service scs
+    select * from sys_consultphone_service scs
     where scs.sys_doctor_id = #{doctorId,jdbcType=VARCHAR}
     and scs.state = #{state,jdbcType=VARCHAR}
     and (DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))>now()
@@ -117,11 +117,11 @@
     </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from sys_consultPhone_service
+    delete from sys_consultphone_service
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo" >
-    insert into sys_consultPhone_service (id, sys_doctor_id, price,
+    insert into sys_consultphone_service (id, sys_doctor_id, price,
     date, beginTime, endTime,
     state, createDate, updateDate,
     serviceType,repeatFlag)
@@ -131,7 +131,7 @@
     #{servicetype,jdbcType=VARCHAR},#{repeatFlag,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo" >
-    insert into sys_consultPhone_service
+    insert into sys_consultphone_service
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -204,7 +204,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo" >
-    update sys_consultPhone_service
+    update sys_consultphone_service
     <set >
       <if test="sysDoctorId != null" >
         sys_doctor_id = #{sysDoctorId,jdbcType=VARCHAR},
@@ -240,7 +240,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo" >
-    update sys_consultPhone_service
+    update sys_consultphone_service
     set sys_doctor_id = #{sysDoctorId,jdbcType=VARCHAR},
     price = #{price,jdbcType=VARCHAR},
     date = #{date,jdbcType=TIMESTAMP},
@@ -255,7 +255,7 @@
   </update>
 
   <update id="cancelOrder">
-    update sys_consultPhone_service
+    update sys_consultphone_service
     set state = #{state,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
