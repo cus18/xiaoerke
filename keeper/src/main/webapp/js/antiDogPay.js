@@ -10,7 +10,7 @@ var selectBaby=function(){
 }
 // 添加宝宝
 var addBaby=function(){
-    window.location.href = "http://s68.baodf.com/titan/insurance#/antiDogAddBaby";
+    window.location.href = "http://s68.baodf.com:8081/titan/insurance#/antiDogAddBaby";
 }
 // 取消选择宝宝
 var cancelSelectBaby=function(){
@@ -42,7 +42,7 @@ var selectParent=function(parent){
 }
 // 查看订单信息
 var lookOrderInfo=function(){
-    window.location.href = "http://s68.baodf.com/titan/insurance#/antiDogOrderList";
+    window.location.href = "http://s68.baodf.com:8081/titan/insurance#/antiDogOrderList";
 }
 var cancelRemind=function(){
     $(".c-shadow").hide();
@@ -315,7 +315,7 @@ function payInsurance(){
                                                         paySign:obj.paySign,  // 支付签名
                                                         success: function (res) {
                                                             if(res.errMsg == "chooseWXPay:ok" ) {
-                                                                window.location.href="http://s68.baodf.com/titan/insurance#/antiDogPaySuccess/"+insuranceId;
+                                                                window.location.href="http://s68.baodf.com:8081/titan/insurance#/antiDogPaySuccess/"+insuranceId;
                                                             }else{
                                                                 alert("支付失败,请重新支付")
                                                             }
@@ -511,9 +511,9 @@ function loginCheck(){
                     }else if(data.status=="20"){
 
                         if(data.openId=="noOpenId"){
-                            window.location.href = "http://s22.baodf.com/xiaoerke-wxapp/wechatInfo/" +
-                                "fieldwork/wechat/author?url=http://s22.baodf.com/" +
-                                "xiaoerke-wxapp/wechatInfo/getUserWechatMenId?url=26";
+                            window.location.href = "http://s251.baodf.com/keeper/wechatInfo/" +
+                                "fieldwork/wechat/author?url=http://s251.baodf.com/" +
+                                "keeper/wechatInfo/getUserWechatMenId?url=26";
                         }else{
                             getBabyInfo();
                         }
