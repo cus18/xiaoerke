@@ -9,7 +9,7 @@
 	<meta http-equiv="Pragma" content="no-cache">
 	<meta http-equiv="Cache-control" content="no-cache">
 	<meta http-equiv="Cache" content="no-cache">
-	<script language="javascript" type="text/javascript" src="/keeper/scripts/lib/My97DatePicker/WdatePicker.js"></script>
+	<script language="javascript" type="text/javascript" src="/angel/scripts/lib/My97DatePicker/WdatePicker.js"></script>
 
 	<title></title>
 
@@ -630,7 +630,7 @@
 //		alert("getBabyInfo...."+openid);
 		$.ajax({
 			type: 'POST',
-			url: "/keeper/customer/searchBabyInfo",
+			url: "/angel/customer/searchBabyInfo",
 			contentType: "application/json; charset=utf-8",
 			data: "{'openid':'"+openid+"'}",
 			success: function(result){
@@ -680,7 +680,7 @@
 		var userid=$("#userid").val();
 		$.ajax({
 			type: 'POST',
-			url: "/keeper/customer/saveBaby",
+			url: "/angel/customer/saveBaby",
 			contentType: "application/json; charset=utf-8",
 // 			data: "{'openid':'"+openid+"','babyName':'"+babyName+"','weChatName':'"+wechatName+"','babyBirthday':'"+babyBirthday+"','phone':'"+phone+"','sex':'"+sex+"','id':'"+id+"','remark':'"+remark+"'}",
 			data: "{'id':'"+id+"','openid':'"+openid+"','userid':'"+userid+"','babyName':'"+babyName+"','babyBirthday':'"+babyBirthday+"','sex':'"+sex+"'}",
@@ -706,7 +706,7 @@
 	}
 
 	function getIllness(){
-		$.post("/keeper/customer/searchIllnessList",
+		$.post("/angel/customer/searchIllnessList",
 				function(result){
 					result=eval("("+result+")");
 					var datas=result.illnessList;
@@ -736,7 +736,7 @@
 		}
 		$.ajax({
 			type: 'POST',
-			url: "/keeper/customer/saveCustomerLog",
+			url: "/angel/customer/saveCustomerLog",
 			contentType: "application/json; charset=utf-8",
 			data: "{'openid':'"+openid+"','create_date':'"+create_date+"','illness':'"+illness+"','sections':'"+sections+"','customerID':'"+costomerID+"','id':'"+id+"','show':'"+show+"','result':'"+result+"'}",
 			success: function(result){
@@ -761,7 +761,7 @@
 		}
 		$.ajax({
 			type: 'POST',
-			url: "/keeper/customer/saveIllness",
+			url: "/angel/customer/saveIllness",
 			contentType: "application/json; charset=utf-8",
 			async:false,
 			data: "{'illness':'"+costomerID+"'}",
@@ -807,7 +807,7 @@
 	function getOrderInfoByOpenid(){
 		$.ajax({
 			type: 'POST',
-			url: "/keeper/customer/getOrderInfoByOpenid",
+			url: "/angel/customer/getOrderInfoByOpenid",
 			contentType: "application/json; charset=utf-8",
 			data: "{'openid':'"+openid+"'}",
 			success: function(result){
@@ -872,7 +872,7 @@
 	function getCustomerLogByOpenID(){
 		$.ajax({
 			type: 'POST',
-			url: "/keeper/customer/getCustomerLogByOpenID",
+			url: "/angel/customer/getCustomerLogByOpenID",
 			contentType: "application/json; charset=utf-8",
 			data: "{'openid':'"+openid+"'}",
 			success: function(result){
@@ -1036,7 +1036,7 @@
 	function sendMessage(obj){
 			$.ajax({
 			type: 'POST',
-			url: "/keeper/customer/getKeywordsByOpenID",
+			url: "/angel/customer/getKeywordsByOpenID",
 			contentType: "application/json; charset=utf-8",
 			data: "{'openid':'"+openid+"','keywords':'"+obj+"'}",
 			success: function(result){
@@ -1046,7 +1046,7 @@
 				}else{
 					$.ajax({
 						type: 'POST',
-						url: "/keeper/customer/saveOpenidAndKeywords",
+						url: "/angel/customer/saveOpenidAndKeywords",
 						contentType: "application/json; charset=utf-8",
 						data: "{'openid':'"+openid+"','keywords':'"+obj+"'}",
 						success: function(result){
@@ -1138,7 +1138,7 @@
 	function checkIllness(){
 	 			$.ajax({
  				type: 'POST',
- 				url: "/keeper/customer/getDocotrByIllness",
+ 				url: "/angel/customer/getDocotrByIllness",
  				contentType: "application/json; charset=utf-8",
  				data: "{'illness':'"+illnessName+"'}",
  				success: function(result){
@@ -1170,7 +1170,7 @@
 		function getLastOrderDate(babyame){
 	 			$.ajax({
  				type: 'POST',
- 				url: "/keeper/customer/getLastOrderDate",
+ 				url: "/angel/customer/getLastOrderDate",
  				contentType: "application/json; charset=utf-8",
  				data: "{'openid':'"+openid+"','babyname':'"+babyame+"'}",
  				success: function(result){
@@ -1213,7 +1213,7 @@
 		if(customer=="110@BaodfWX"){
 			$.ajax({
  				type: 'POST',
- 				url: "/keeper/customer/getMemberInfo",
+ 				url: "/angel/customer/getMemberInfo",
  				contentType: "application/json; charset=utf-8",
  				data: "{'openid':'"+openid+"','babyname':'"+babyName+"'}",
  				success: function(result){
@@ -1242,7 +1242,7 @@
 	    	 var costomerID=$("#costomerID").val();
 	    	 $.ajax({
 	 				type: 'POST',
-	 				url: "/keeper/customer/saveReturnService",
+	 				url: "/angel/customer/saveReturnService",
 	 				contentType: "application/json; charset=utf-8",
 	 				data: "{'openid':'"+openid+"','customerID':'"+costomerID+"'}",
 	 				success: function(result){
