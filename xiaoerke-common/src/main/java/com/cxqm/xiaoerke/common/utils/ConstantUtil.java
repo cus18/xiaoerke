@@ -25,16 +25,16 @@ public class ConstantUtil {
 	public static String PAYRESULT = "https://api.mch.weixin.qq.com/pay/orderquery";//获取支付结果
 	public static String SIGN_METHOD = "MD5";//签名算法常量值
 
-	public static String NOTIFY_APPOINT_URL = "http://xiaork.cn/titan/user/getPayNotifyInfo";
-	public static String NOTIFY_INSURANCE_URL = "http://xiaork.cn/titan/user/getInsurancePayNotifyInfo";
-	public static String NOTIFY_CUSTOMER_URL = "http://xiaork.cn/titan/user/getCustomerPayNotifyInfo";
-	public static String NOTIFY_CONSULTPHONE_URL = "http://xiaork.cn/titan/user/getPhoneConsultPayNotifyInfo";
+	public static String NOTIFY_APPOINT_URL = "http://s68.baodf.com:8081/titan/user/getPayNotifyInfo";
+	public static String NOTIFY_INSURANCE_URL = "http://s68.baodf.com:8081/titan/user/getInsurancePayNotifyInfo";
+	public static String NOTIFY_CUSTOMER_URL = "http://s68.baodf.com:8081/titan/user/getCustomerPayNotifyInfo";
+	public static String NOTIFY_CONSULTPHONE_URL = "http://s68.baodf.com:8081/titan/user/getPhoneConsultPayNotifyInfo";
 
 	public static int DAY_QUARTER_NUMBER = 96;
 	public static int VISIT_INTERVAL = 15;
 	public static String MARKET_WEB_URL = "http://xiaork.com/";
 	public static String WISDOM_WEB_URL = "http://xiaork.com/";
-	public static String ANGEL_WEB_URL = "http://xiaork.com/";
+	public static String ANGEL_WEB_URL = "http://s34.baodf.com/";
 	public static String KEEPER_WEB_URL = "http://xiaork.cn/";
 	public static String DOCTOR_WEB_URL = "http://xiaork.cn/";
 	public static String TITAN_WEB_URL = "http://xiaork.cn/";
