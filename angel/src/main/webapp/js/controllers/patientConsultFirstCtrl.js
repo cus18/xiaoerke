@@ -90,7 +90,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 }
             };
             var processDoctorSendMessage = function (conversationData) {
-                var currentConsultValue = {
+                var doctorValMessage = {
                     'type':conversationData.type,
                     'content':conversationData.content,
                     'dateTime':conversationData.dateTime,
@@ -98,7 +98,10 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     'senderName':conversationData.senderName,
                     'sessionId':conversationData.sessionId
                 };
-                if(JSON.stringify($scope.consultContent)=='{}'){
+                $scope.consultContent.push(doctorValMessage);
+                console.log(doctorValMessage);
+                console.log($scope.consultContent);
+/*                if(JSON.stringify($scope.consultContent)=='{}'){
                     $scope.consultContent = {
                         'doctorId':conversationData.senderId,
                         'source':conversationData.source,
@@ -107,12 +110,8 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                         'isOnline':true,
                         'dateTime':conversationData.dateTime,
                         'messageNotSee':conversationData.messageNotSee,
-                        'patientName':conversationData.patientName,
-                        'consultValue':[]
+                        'doctorName':conversationData.patientName
                     };
-                $scope.consultContent.consultValue.push(currentConsultValue);
-                console.log($scope.currentUserConversation);
-/*
                     $scope.consultContent.patientId = conversationData.senderId;
                     $scope.consultContent.source = conversationData.source;
                     $scope.consultContent.fromServer = conversationData.fromServer;
@@ -122,8 +121,8 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     $scope.consultContent.messageNotSee = false;
                     $scope.consultContent.patientName = conversationData.senderName;
                     $scope.consultContent.consultValue = [];
-                    $scope.consultContent.consultValue.push(currentConsultValue);*/
-                }
+                    $scope.consultContent.consultValue.push(currentConsultValue);
+                }*/
             };
             $scope.sendConsultContent = function(){
                 var patientValMessage = {
