@@ -92,7 +92,7 @@
         <label class="control-label">合作机构联系人姓名:</label>
 
         <div class="controls">
-            <form:input path="contactName" name="contactName" type="text" value="" class="required"/>
+            <input name="contactName" type="text" value="" class="required"/>
             <span class="help-inline"><font color="red">*</font> </span>
         </div>
         <br>
