@@ -256,6 +256,9 @@ public class ConsultSessionManager {
 			if(distributorChannel.isActive()){
 				consultSession.setCsUserId(distributorUserId);
 				csChannel = distributorChannel;
+			}else{
+				distributors.remove(distributorUserId);
+				distributorChannel = null;
 			}
 		} else {
 			int length = index + distributorsListSize + 2;
