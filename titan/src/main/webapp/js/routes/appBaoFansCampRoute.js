@@ -239,6 +239,7 @@ define(['appBaoFansCamp'], function(app){
                             }
                         }
                     })
+
                     /* 第三方合作*/
                     .state('youFuMama', {
                         url: '/youFuMama',
