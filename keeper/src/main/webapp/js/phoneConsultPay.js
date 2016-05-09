@@ -162,7 +162,7 @@ function loadDate(){
         display: 'modal', //显示方式 ，可选：modal\inline\bubble\top\bottom
         mode: 'scroller', //日期选择模式，可选：scroller\clickpick\mixed
         lang:'zh',
-        dateFormat: 'yyyy-mm-dd', // 日期格式
+        dateFormat: 'yyyy/mm/dd', // 日期格式
         setText: '确定', //确认按钮名称
         cancelText: '取消',//取消按钮名籍我
         dateOrder: 'yyyymmdd', //面板中日期排列格式
