@@ -14,10 +14,10 @@ define(['appPhoneConsult','jquery'], function (app,$) {
                     '</div> </div>',
                     link: function(scope,ele,attrs) {
                         scope.appointmentFirst = function(){
-                            window.location.href = "firstPage/phoneConsult";
+                            window.location.href = "http://s68.baodf.com:8081/titan/firstPage/phoneConsult";
                         };
                         scope.myself = function(){
-                            window.location.href = "phoneConsult#/selfCenter";
+                            window.location.href = "http://s68.baodf.com:8081/titan/phoneConsult#/selfCenter";
                         }
                         scope.goBack = function(){
                             history.back();
