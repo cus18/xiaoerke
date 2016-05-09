@@ -78,7 +78,7 @@
         FROM sys_consultphone_service scs
         INNER JOIN consultPhone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
         LEFT JOIN healthrecord_illness_describe hid ON hid.id = crs.illness_describe_id
-        LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
+        LEFT JOIN sys_baby_baseInfo sbb ON sbb.id = hid.babyinfo_Id
         LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
         LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = sd.id
 		LEFT  JOIN doctor_hospital_relation dhr on sd.id = dhr.sys_doctor_id
@@ -108,7 +108,7 @@
         FROM sys_consultphone_service scs
         INNER JOIN consultPhone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
         LEFT JOIN healthrecord_illness_describe hid ON hid.id = crs.illness_describe_id
-        LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
+        LEFT JOIN sys_baby_baseInfo sbb ON sbb.id = hid.babyinfo_Id
         LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
         LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = sd.id
         LEFT  JOIN doctor_hospital_relation dhr on sd.id = dhr.sys_doctor_id
@@ -263,7 +263,7 @@
         FROM sys_consultphone_service scs
         INNER JOIN consultPhone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
         LEFT JOIN healthrecord_illness_describe hid ON hid.id = crs.illness_describe_id
-        LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
+        LEFT JOIN sys_baby_baseInfo sbb ON sbb.id = hid.babyinfo_Id
         LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
         LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = sd.id
 		LEFT  JOIN doctor_hospital_relation dhr on sd.id = dhr.sys_doctor_id
