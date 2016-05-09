@@ -346,6 +346,9 @@
 		<if test="id != '' and id !=null">
 			AND id = #{id}
 		</if>
+		<if test="name != '' and name !=null">
+			and name= #{name}
+		</if>
 		<if test="userType != '' and userType != null">
 			<if test="userType == 'both'">
 				and user_type in ('consultDoctor','distributor')

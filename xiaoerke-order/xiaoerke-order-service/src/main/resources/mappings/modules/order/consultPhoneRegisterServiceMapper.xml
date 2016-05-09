@@ -539,7 +539,7 @@ group by crs.id
     LEFT JOIN sys_user su ON su.id = sp.sys_user_id
     LEFT JOIN sys_attention sa ON sa.openid = su.openid
     LEFT JOIN healthrecord_illness_describe hid ON hid.id = crs.illness_describe_id
-    LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
+    LEFT JOIN sys_baby_baseInfo sbb ON sbb.id = hid.babyinfo_Id
     WHERE
     1=1
     <if test="state != null and state != ''" >
@@ -622,7 +622,7 @@ group by crs.id
     LEFT JOIN sys_user su ON su.id = sp.sys_user_id
     LEFT JOIN sys_attention sa ON sa.openid = su.openid
     LEFT JOIN healthrecord_illness_describe hid ON hid.id = crs.illness_describe_id
-    LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
+    LEFT JOIN sys_baby_baseInfo sbb ON sbb.id = hid.babyinfo_Id
     where 1=1
     <if test="state != null and state != ''" >
       and crs.state = #{state}
@@ -671,7 +671,7 @@ group by crs.id
     LEFT JOIN sys_user su ON su.id = sp.sys_user_id
     LEFT JOIN sys_attention sa ON sa.openid = su.openid
     LEFT JOIN healthrecord_illness_describe hid ON hid.id = crs.illness_describe_id
-    LEFT JOIN sys_baby_baseinfo sbb ON sbb.id = hid.babyinfo_Id
+    LEFT JOIN sys_baby_baseInfo sbb ON sbb.id = hid.babyinfo_Id
     where 1=1
     <if test="state != null and state != ''" >
       and crs.state = #{state}
