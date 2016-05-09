@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -146,7 +147,7 @@ public class ConsultOrderUserController {
     public synchronized
     @ResponseBody
     Map<String,Object> cancelOrder(@RequestBody Map<String, Object> params){
-        Float resultState = 0f;
+        BigDecimal resultState =new BigDecimal(0);
         Integer phoneConsultaServiceId = Integer.parseInt((String) params.get("phoneConsultaServiceId"));
         String cancelReason = (String)params.get("cancelReason");
         HashMap<String,Object> resultMap = new HashMap<String, Object>();
@@ -170,7 +171,8 @@ public class ConsultOrderUserController {
             resultMap.put("praiseId", IdGen.uuid());
             resultMap.put("patientRegisterServiceId", phoneConsultaServiceId);
             resultMap.put("praise_date", new Date());
-            if(resultState>0){
+            int i = resultState.compareTo(new BigDecimal(0));
+            if(i>0){
                 patientRegisterPraiseService.insertCancelReason(resultMap);
             }
         }
