@@ -139,6 +139,20 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
         return writeResult;
 	}
 
+	public WriteResult modifyConsultSessionStatusVo(ConsultSessionStatusVo consultSessionStatusVo) {
+		Query query = new Query(where("sessionId").is(consultSessionStatusVo.getSessionId()));
+		WriteResult writeResult = null;
+		ConsultSessionStatusVo  StatusVo = this.findOneConsultSessionStatusVo(query);
+		if(StatusVo != null){
+			String csUserId = StatusVo.getCsUserId();
+			if(csUserId.indexOf(consultSessionStatusVo.getCsUserId()) == -1){
+				csUserId = csUserId + " " + consultSessionStatusVo.getCsUserId();
+			}
+			writeResult = mongoTemplate.updateMulti(query,new Update().set("csUserId", csUserId), ConsultSessionStatusVo.class);
+		}
+		return writeResult;
+	}
+
 	//zdl
 	public List<ConsultSessionStatusVo> querySessionStatusList(Query query){
 		return this.mongoTemplate.find(query, ConsultSessionStatusVo.class, "consultSessionStatusVo");

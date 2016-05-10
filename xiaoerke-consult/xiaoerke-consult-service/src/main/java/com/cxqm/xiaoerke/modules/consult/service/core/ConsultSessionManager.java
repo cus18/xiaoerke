@@ -7,6 +7,7 @@ import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
@@ -63,7 +64,9 @@ public class ConsultSessionManager {
 	private ConsultSessionService consultSessionService = SpringContextHolder.getBean("consultSessionServiceImpl");
 
 	private ConsultSessionForwardRecordsService consultSessionForwardRecordsService = SpringContextHolder.getBean("consultSessionForwardRecordsServiceImpl");
-	
+
+	private ConsultRecordService consultRecordService = SpringContextHolder.getBean("consultRecordServiceImpl");
+
 	private SystemService systemService = SpringContextHolder.getBean("systemService");
 
 	private UserInfoServiceImpl userInfoService = SpringContextHolder.getBean("userInfoServiceImpl");
@@ -544,6 +547,8 @@ public class ConsultSessionManager {
 					}
 					forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_ACCEPT);
 					consultSessionForwardRecordsService.updateAcceptedTransfer(forwardRecord);
+					session.setCsUserId(forwardRecord.getToUserId());
+					consultRecordService.modifyConsultSessionStatusVo(session);
 				} else {
 					forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_REJECT);
 					consultSessionForwardRecordsService.updateRejectedTransfer(forwardRecord);
