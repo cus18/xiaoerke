@@ -761,6 +761,6 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
         return response;
     }
 
-
-
+	@Override
+	public void batchInsertConsultPhoneRegister(List<HashMap<String, Object>> excuteList){sysConsultPhoneServiceDao.batchInsertConsultPhoneRegister(excuteList);};
 }

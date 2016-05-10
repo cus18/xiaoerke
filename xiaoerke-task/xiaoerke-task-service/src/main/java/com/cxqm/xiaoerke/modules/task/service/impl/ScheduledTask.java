@@ -4,10 +4,11 @@ import com.cxqm.xiaoerke.common.bean.CustomBean;
 import com.cxqm.xiaoerke.common.bean.WechatRecord;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
-import com.cxqm.xiaoerke.modules.consult.entity.*;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
 import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
 import com.cxqm.xiaoerke.modules.consult.service.*;
-import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
 import com.cxqm.xiaoerke.modules.operation.service.BaseDataService;
 import com.cxqm.xiaoerke.modules.operation.service.DataStatisticService;
@@ -1198,6 +1199,8 @@ public class ScheduledTask {
      * @Scheduled(cron = "0 0 20 * * ?")
      */
     public void sendMsgToDocAtNightPhoneConsult(){
+        System.out.println("package.controller scheduled test -->sendMsgToDocAtNight_PhoneConsult");
+
         Map tokenMap = systemService.getDoctorWechatParameter();
         String token = (String)tokenMap.get("token");
 
@@ -1237,6 +1240,8 @@ public class ScheduledTask {
      * @Scheduled(cron = "0 0 7 * * ?")
      */
     public void sendMsgToDocAtMorningPhoneConsult(){
+        System.out.println("package.controller scheduled test -->sendMsgToDocAtMorning_PhoneConsult");
+
         Map tokenMap = systemService.getDoctorWechatParameter();
         String token = (String)tokenMap.get("token");
 
@@ -1328,11 +1333,12 @@ public class ScheduledTask {
 
     //预约咨询成功5min后
     public void sendMsgToDoc5minAfterSuccess(){
+        System.out.println(new Date() + " package.controller scheduled test --> sendMsgToDoc5minAfterSuccess_PhoneConsult");
+
         Date date=new Date();
         DateFormat format=new SimpleDateFormat("HH");
         int time=Integer.parseInt(format.format(date));
         if(20>time&&time>7){
-            System.out.println(new Date() + " package.controller scheduled test --> sendMsgToDoc_PhoneConsult");
             List<HashMap<String, Object>> doctorMsg = scheduleTaskService.getOrderInfoToDocSuccess5minBefore();
             for (HashMap<String, Object> map : doctorMsg) {
                 String doctorName = (String)map.get("doctorName");
@@ -1362,7 +1368,8 @@ public class ScheduledTask {
 
     //接听前5min
     public void sendMsgToDoc5minBeforeConnect(){
-        System.out.println(new Date() + " package.controller scheduled test --> sendMsgToDoc_PhoneConsult");
+        System.out.println(new Date() + " package.controller scheduled test --> sendMsgToDoc5minBeforeConnect_PhoneConsult");
+
         List<HashMap<String, Object>> doctorMsg = scheduleTaskService.getOrderInfoToDocConnect5minAfter();
         for (HashMap<String, Object> map : doctorMsg) {
             String doctorName = (String)map.get("doctorName");
