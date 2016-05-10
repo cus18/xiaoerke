@@ -244,7 +244,7 @@
                         $scope.noAccount = false;
                         $scope.appList = data.appointment.timeList;
                         $.each(data.appointment.timeList, function (index,value) {
-                            sum+=sum+value.price;
+                            sum=sum+value.price;
                         });
                        // $scope.appMoney = data.appointment.totalPrice;
                         $scope.appMoney = sum;
