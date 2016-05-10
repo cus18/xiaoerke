@@ -149,7 +149,8 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             $scope.uploadFiles = function($files,fileType) {
                 var dataValue = {
                     "fileType": fileType,
-                    "senderId": $scope.patientId
+                    "senderId": $scope.patientId,
+                    "sessionId":$scope.sessionId
                 };
                 console.log(JSON.stringify(dataValue));
                 var dataJsonValue = JSON.stringify(dataValue);
@@ -168,9 +169,9 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                             "type": 1,
                             "content": data.showFile,
                             "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                            "senderId": data.senderId,
-                            "senderName": data.senderName,
-                            "sessionId":data.sessionId
+                            "senderId": $scope.patientId,
+                            "senderName": $scope.senderName,
+                            "sessionId":$scope.sessionId
                         };
                         console.log(patientValMessage.content);
                         if (!window.WebSocket) {

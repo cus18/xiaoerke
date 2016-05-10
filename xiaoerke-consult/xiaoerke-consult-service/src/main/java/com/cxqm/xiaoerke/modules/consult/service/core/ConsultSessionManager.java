@@ -1,14 +1,24 @@
 package com.cxqm.xiaoerke.modules.consult.service.core;
 
-import com.cxqm.xiaoerke.common.utils.*;
+import com.alibaba.fastjson.JSONObject;
+import com.cxqm.xiaoerke.common.config.Global;
+import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
+import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.sys.entity.User;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.impl.UserInfoServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.util.*;
@@ -17,15 +27,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.alibaba.fastjson.JSONObject;
-import com.cxqm.xiaoerke.common.config.Global;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
-import com.cxqm.xiaoerke.modules.sys.entity.User;
-import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 
 public class ConsultSessionManager {
 	
@@ -222,7 +223,8 @@ public class ConsultSessionManager {
 						}
 					}
 				}else{
-					//如果没有任何医生在线，给用户推送微信消息，告知没有医生在线，稍后在使用服务
+					//TextWebSocketFrame msg = new TextWebSocketFrame("no distributor");
+					//channel.writeAndFlush(msg);
 					return;
 				}
 			}
@@ -235,19 +237,27 @@ public class ConsultSessionManager {
 			
 			//send doctor or distributor
 			JSONObject obj = new JSONObject();
-			obj.put("type", 4);
-			obj.put("notifyType", "0001");
-			obj.put("session", consultSession);
-			TextWebSocketFrame frame = new TextWebSocketFrame(obj.toJSONString());
-			distributorChannel.writeAndFlush(frame.retain());
+      JSONObject csobj = new JSONObject();
+      if(distributorChannel != null ){
+          obj.put("type", 4);
+          obj.put("notifyType", "0001");
+          obj.put("session", consultSession);
+          obj.put("content", "");
+          TextWebSocketFrame frame = new TextWebSocketFrame(obj.toJSONString());
+          distributorChannel.writeAndFlush(frame.retain());
 
-			//sender，告诉会有哪个医生或者接诊员提供服务
-			JSONObject csobj = new JSONObject();
-			csobj.put("type",5);
-			csobj.put("notifyType","0003");
-			csobj.put("doctorName",consultSession.getCsUserName());
-			TextWebSocketFrame csframe = new TextWebSocketFrame(csobj.toJSONString());
-			channel.writeAndFlush(csframe.retain());
+          //sender，告诉会有哪个医生或者接诊员提供服务
+          csobj.put("type",5);
+          csobj.put("notifyType","0003");
+          csobj.put("doctorName",consultSession.getCsUserName());
+          csobj.put("content", "您好,您当前已进入宝大夫咨询平台,接下来可以进行咨询!");
+          TextWebSocketFrame csframe = new TextWebSocketFrame(csobj.toJSONString());
+          channel.writeAndFlush(csframe.retain());
+      }else{
+          TextWebSocketFrame csframe = new TextWebSocketFrame("no distribute,please wait a while ...");
+          channel.writeAndFlush(csframe.retain());
+          return;
+      }
 		}
 		
 		userChannelMapping.put(userId, channel);
@@ -302,7 +312,6 @@ public class ConsultSessionManager {
 			}
 		}
 		/***在此处，先随机为用户分配一个在线的接诊员，如果，此接诊员不在线，再顺序分配一个在线接诊员***/
-
 
 		if(distributorChannel == null) {
 			if(csUserChannelMapping.size()!=0){
