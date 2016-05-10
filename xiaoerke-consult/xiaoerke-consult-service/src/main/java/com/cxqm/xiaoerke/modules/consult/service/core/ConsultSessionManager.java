@@ -154,59 +154,53 @@ public class ConsultSessionManager {
 			
 			int distributorsListSize = distributorsList.size();
 			int index = number % distributorsListSize;
-			String distributorUserId = distributorsList.get(index);
-			Channel distributorChannel = distributors.get(distributorUserId);
-			if(distributorChannel != null) {
-				consultSession.setCsUserId(distributorUserId);
-			} else {
-				int length = index + distributorsListSize + 2;
-				for(int i = index + 1;  i < length; i ++) {
-					distributorUserId = distributorsList.get(i % distributorsListSize);
-					distributorChannel = distributors.get(distributorUserId);
-					if(distributorChannel != null) {
-						if(distributorChannel.isActive()) {
-							consultSession.setCsUserId(distributorUserId);
-							//如果distributorChannel处于激活状态，证明，此接诊员处于登陆状态
-							User csUser = systemService.getUserById(distributorUserId);//chenjiakeQ&A，此处的userId，是否应该为distributorUserId
-							consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
-							break;
-						} else {
-							distributors.remove(distributorUserId);
-							csUserChannelMapping.remove(distributorUserId);
-						}
+			Channel distributorChannel = null;
+			int length = index + distributorsListSize + 2;
+			for(int i = index + 1;  i < length; i ++) {
+				String distributorUserId = distributorsList.get(i % distributorsListSize);
+				distributorChannel = distributors.get(distributorUserId);
+				if(distributorChannel != null) {
+					if(distributorChannel.isActive()) {
+						consultSession.setCsUserId(distributorUserId);
+						//如果distributorChannel处于激活状态，证明，此接诊员处于登陆状态
+						User csUser = systemService.getUserById(distributorUserId);//chenjiakeQ&A，此处的userId，是否应该为distributorUserId
+						consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
+						break;
+					} else {
+						distributors.remove(distributorUserId);
+						csUserChannelMapping.remove(distributorUserId);
 					}
 				}
 			}
-			
+
 			if(distributorChannel == null) {
-				//TODO send msg to user that no distributor is available
-				//TextWebSocketFrame msg = new TextWebSocketFrame("no distributor");
-				//channel.writeAndFlush(msg);
-				//所有的接诊员不在线，随机分配一个在线医生
-				Iterator<Entry<String, Channel>> csUserChannel = csUserChannelMapping.entrySet().iterator();
-				if(csUserChannel !=null ){
+				if(csUserChannelMapping.size()!=0){
+					//所有的接诊员不在线，随机分配一个在线医生
+					Iterator<Entry<String, Channel>> csUserChannel = csUserChannelMapping.entrySet().iterator();
 					List<HashMap<String,Object>> doctorOnLineList = new ArrayList();
 					while (csUserChannel.hasNext()) {
 						HashMap<String,Object> doctorOnLineMap = new HashMap<String,Object>();
 						Map.Entry<String, Channel> entry = csUserChannel.next();
-						doctorOnLineMap.put("doctorId", entry.getKey());
-						doctorOnLineMap.put("Channel", entry.getValue());
+						doctorOnLineMap.put("csUserId", entry.getKey());
+						doctorOnLineMap.put("channel", entry.getValue());
 						doctorOnLineList.add(doctorOnLineMap);
 					}
+					//通过一个随机方法，从doctorOnLineList选择一个医生，为用户提供服务
 					Random rand = new Random();
-					if(doctorOnLineList!= null && doctorOnLineList.size()>0){
+					if(doctorOnLineList!=null && doctorOnLineList.size()>0){
 						int indexCS = rand.nextInt(doctorOnLineList.size());
-						consultSession.setCsUserId((String) doctorOnLineList.get(indexCS).get("doctorId"));
-						distributorChannel = (Channel) doctorOnLineList.get(indexCS).get("Channel");
-						if(distributorChannel.isActive()){
+						consultSession.setCsUserId((String) doctorOnLineList.get(indexCS).get("csUserId"));
+						Channel csChannel = (Channel) doctorOnLineList.get(indexCS).get("channel");
+						if(csChannel.isActive()){
 							//csChannel如果活着的话，证明，此医生处于登陆状态
-							User csUser = systemService.getUserById((String) doctorOnLineList.get(indexCS).get("doctorId"));
+							User csUser = systemService.getUserById((String) doctorOnLineList.get(indexCS).get("csUserId"));
 							consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
+						}else{
+							csUserChannelMapping.remove(doctorOnLineList.get(indexCS).get("csUserId"));
 						}
 					}
 				}else{
-					//TextWebSocketFrame msg = new TextWebSocketFrame("no distributor");
-					//channel.writeAndFlush(msg);
+					//如果没有任何医生在线，给用户推送微信消息，告知没有医生在线，稍后在使用服务
 					return;
 				}
 			}
@@ -247,36 +241,24 @@ public class ConsultSessionManager {
 		int number = accessNumber.getAndDecrement();
 		if(number < 10)
 			accessNumber.set(1000);
-
 		int distributorsListSize = distributorsList.size();
 		int index = number % distributorsListSize;
-		String distributorUserId = distributorsList.get(index);
-		Channel distributorChannel = distributors.get(distributorUserId);
-		if(distributorChannel != null) {
-			if(distributorChannel.isActive()){
-				consultSession.setCsUserId(distributorUserId);
-				csChannel = distributorChannel;
-			}else{
-				distributors.remove(distributorUserId);
-				distributorChannel = null;
-			}
-		} else {
-			int length = index + distributorsListSize + 2;
-			for(int i = index + 1;  i < length; i ++) {
-				distributorUserId = distributorsList.get(i % distributorsListSize);
-				distributorChannel = distributors.get(distributorUserId);
-				if(distributorChannel != null) {
-					if(distributorChannel.isActive()) {
-						consultSession.setCsUserId(distributorUserId);
-						//如果distributorChannel处于激活状态，证明，此接诊员处于登陆状态
-						User csUser = systemService.getUserById(distributorUserId);//chenjiakeQ&A，此处的userId，是否应该为distributorUserId
-						consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
-						csChannel = distributorChannel;
-						break;
-					} else {
-						distributors.remove(distributorUserId);
-						csUserChannelMapping.remove(distributorUserId);
-					}
+		Channel distributorChannel = null;
+		int length = index + distributorsListSize + 2;
+		for(int i = index + 1;  i < length; i ++) {
+			String distributorUserId = distributorsList.get(i % distributorsListSize);
+			distributorChannel = distributors.get(distributorUserId);
+			if(distributorChannel != null) {
+				if(distributorChannel.isActive()) {
+					consultSession.setCsUserId(distributorUserId);
+					//如果distributorChannel处于激活状态，证明，此接诊员处于登陆状态
+					User csUser = systemService.getUserById(distributorUserId);//chenjiakeQ&A，此处的userId，是否应该为distributorUserId
+					consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
+					csChannel = distributorChannel;
+					break;
+				} else {
+					distributors.remove(distributorUserId);
+					csUserChannelMapping.remove(distributorUserId);
 				}
 			}
 		}
@@ -289,27 +271,26 @@ public class ConsultSessionManager {
 				while (csUserChannel.hasNext()) {
 					HashMap<String,Object> doctorOnLineMap = new HashMap<String,Object>();
 					Map.Entry<String, Channel> entry = csUserChannel.next();
-					doctorOnLineMap.put("doctorId", entry.getKey());
-					doctorOnLineMap.put("Channel", entry.getValue());
+					doctorOnLineMap.put("csUserId", entry.getKey());
+					doctorOnLineMap.put("channel", entry.getValue());
 					doctorOnLineList.add(doctorOnLineMap);
 				}
 				//通过一个随机方法，从doctorOnLineList选择一个医生，为用户提供服务
 				Random rand = new Random();
 				if(doctorOnLineList!=null && doctorOnLineList.size()>0){
 					int indexCS = rand.nextInt(doctorOnLineList.size());
-					consultSession.setCsUserId((String) doctorOnLineList.get(indexCS).get("doctorId"));
-					csChannel = (Channel) doctorOnLineList.get(indexCS).get("Channel");
+					consultSession.setCsUserId((String) doctorOnLineList.get(indexCS).get("csUserId"));
+					csChannel = (Channel) doctorOnLineList.get(indexCS).get("channel");
 					if(csChannel.isActive()){
 						//csChannel如果活着的话，证明，此医生处于登陆状态
-						User csUser = systemService.getUserById((String) doctorOnLineList.get(indexCS).get("doctorId"));
+						User csUser = systemService.getUserById((String) doctorOnLineList.get(indexCS).get("csUserId"));
 						consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
+					}else{
+						csUserChannelMapping.remove(doctorOnLineList.get(indexCS).get("csUserId"));
 					}
 				}
 			}else{
 				//如果没有任何医生在线，给用户推送微信消息，告知没有医生在线，稍后在使用服务
-//				String st = "尊敬的用户，您好，目前没有医生在线，请稍后再试";
-//				Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-//				WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"),consultSession.getUserId(), st);
 				return null;
 			}
 		}
@@ -327,11 +308,6 @@ public class ConsultSessionManager {
 			Integer sessionId = consultSession.getId();
 			sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
 			sessionRedisCache.putUserIdSessionIdPair(consultSession.getUserId(), sessionId);
-
-			//成功分配医生，给用户发送一个欢迎语
-//			String st = "尊敬的用户，宝大夫在线，有什么可以帮您";
-//			Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-//			WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"),consultSession.getUserId(), st);
 			response.put("csChannel", csChannel);
 			response.put("sessionId", sessionId);
 			response.put("consultSession", consultSession);
