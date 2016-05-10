@@ -153,7 +153,7 @@
 			AND id = #{id}
 		</if>
 		<if test="userType != '' and userType != null">
-			and user_type = #{userType}
+			and (user_type = #{userType} or user_type = 'distributor')
 		</if>
 	</select>
 
