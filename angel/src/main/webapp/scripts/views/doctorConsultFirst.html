@@ -131,7 +131,7 @@
                                 <div class="group-title"
                                      ng-style="publicReplyIndex==$index?{'backgroundPosition':'0 -42px', color: '#08b7c2'}:{'backgroundPosition':'0 0', color: '#333'}"
                                      ng-click="tapPublicReplyContent($index)">
-                                    {{item.name}}（{{item.secondAnswer.length}}）
+                                    <nobr>{{item.name}}</nobr>（{{item.secondAnswer.length}}）
                                 </div>
                                 <ul ng-show='publicReplyIndex==$index'>
                                     <li ng-repeat="item2 in item.secondAnswer" class="rcontent">
