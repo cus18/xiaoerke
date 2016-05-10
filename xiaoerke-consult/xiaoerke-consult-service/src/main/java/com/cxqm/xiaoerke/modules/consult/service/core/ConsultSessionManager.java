@@ -313,7 +313,6 @@ public class ConsultSessionManager {
 		}
 		/***在此处，先随机为用户分配一个在线的接诊员，如果，此接诊员不在线，再顺序分配一个在线接诊员***/
 
-
 		if(distributorChannel == null) {
 			if(csUserChannelMapping.size()!=0){
 				//所有的接诊员不在线，随机分配一个在线医生

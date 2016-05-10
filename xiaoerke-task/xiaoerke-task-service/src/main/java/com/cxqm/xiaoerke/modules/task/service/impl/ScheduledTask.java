@@ -1098,39 +1098,39 @@ public class ScheduledTask {
             }
         }
 
-        ConsultSession consultSession = new ConsultSession();
-        consultSession.setStatus(ConsultSession.STATUS_ONGOING);
-        List<ConsultSession> consultSessionVOs = consultSessionService.selectBySelective(consultSession);
-        for(ConsultSession consultSessionVO:consultSessionVOs){
-            Query queryAgain = new Query(where("sessionId").is(String.valueOf(consultSessionVO.getId())));
-            List<ConsultSessionStatusVo> consultSessionStatusAgainVos = consultRecordService.querySessionStatusList(queryAgain);
-            if(consultSessionStatusAgainVos.size()>0){
-                if(consultSessionStatusAgainVos.get(0).getStatus().equals("complete")){
-                    consultSessionService.clearSession(consultSessionStatusAgainVos.get(0).getSessionId(),
-                            consultSessionStatusAgainVos.get(0).getUserId());
-                }
-            }
-        }
+//        ConsultSession consultSession = new ConsultSession();
+//        consultSession.setStatus(ConsultSession.STATUS_ONGOING);
+//        List<ConsultSession> consultSessionVOs = consultSessionService.selectBySelective(consultSession);
+//        for(ConsultSession consultSessionVO:consultSessionVOs){
+//            Query queryAgain = new Query(where("sessionId").is(String.valueOf(consultSessionVO.getId())));
+//            List<ConsultSessionStatusVo> consultSessionStatusAgainVos = consultRecordService.querySessionStatusList(queryAgain);
+//            if(consultSessionStatusAgainVos.size()>0){
+//                if(consultSessionStatusAgainVos.get(0).getStatus().equals("complete")){
+//                    consultSessionService.clearSession(consultSessionStatusAgainVos.get(0).getSessionId(),
+//                            consultSessionStatusAgainVos.get(0).getUserId());
+//                }
+//            }
+//        }
 
-        List<Object> consultSessions = sessionRedisCache.getConsultSessionsByKey();
-        if(consultSessions.size()>0){
-            for(Object consultSessionObject:consultSessions){
-                RichConsultSession consultSessionValue = ConsultUtil.transferMapToRichConsultSession((HashMap<String,Object>) consultSessionObject);
-                Query queryAgain = new Query(where("sessionId").is(String.valueOf(consultSessionValue.getId())));
-                List<ConsultSessionStatusVo> consultSessionStatusAgainVos = consultRecordService.querySessionStatusList(queryAgain);
-                if(consultSessionStatusAgainVos.size()>0){
-                    if(consultSessionStatusAgainVos.get(0).getStatus().equals("complete")){
-                        //清除redis内的残留数据
-                        sessionRedisCache.removeConsultSessionBySessionId(Integer.parseInt(consultSessionStatusAgainVos.get(0).getSessionId()));
-                        sessionRedisCache.removeUserIdSessionIdPair(consultSessionStatusAgainVos.get(0).getUserId());
-                    }
-                }else{
-                    //if consultSessionStatusAgainVos have no data, it proved that the data in redis is dirty data, delete it
-                    sessionRedisCache.removeConsultSessionBySessionId(consultSessionValue.getId());
-                    sessionRedisCache.removeUserIdSessionIdPair(consultSessionValue.getUserId());
-                }
-            }
-        }
+//        List<Object> consultSessions = sessionRedisCache.getConsultSessionsByKey();
+//        if(consultSessions.size()>0){
+//            for(Object consultSessionObject:consultSessions){
+//                RichConsultSession consultSessionValue = ConsultUtil.transferMapToRichConsultSession((HashMap<String,Object>) consultSessionObject);
+//                Query queryAgain = new Query(where("sessionId").is(String.valueOf(consultSessionValue.getId())));
+//                List<ConsultSessionStatusVo> consultSessionStatusAgainVos = consultRecordService.querySessionStatusList(queryAgain);
+//                if(consultSessionStatusAgainVos.size()>0){
+//                    if(consultSessionStatusAgainVos.get(0).getStatus().equals("complete")){
+//                        //清除redis内的残留数据
+//                        sessionRedisCache.removeConsultSessionBySessionId(Integer.parseInt(consultSessionStatusAgainVos.get(0).getSessionId()));
+//                        sessionRedisCache.removeUserIdSessionIdPair(consultSessionStatusAgainVos.get(0).getUserId());
+//                    }
+//                }else{
+//                    //if consultSessionStatusAgainVos have no data, it proved that the data in redis is dirty data, delete it
+//                    sessionRedisCache.removeConsultSessionBySessionId(consultSessionValue.getId());
+//                    sessionRedisCache.removeUserIdSessionIdPair(consultSessionValue.getUserId());
+//                }
+//            }
+//        }
 
     }
 
