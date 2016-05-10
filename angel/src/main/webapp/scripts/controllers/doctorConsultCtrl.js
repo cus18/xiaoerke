@@ -211,6 +211,7 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 });
             };
+
             //选择转接对象
             $scope.chooseTransferCsUser = function(csUserId,csUserName){
                 $scope.transferCsUserId = csUserId;
@@ -298,11 +299,9 @@ angular.module('controllers', ['luegg.directives'])
 
             //处理用户按键事件
             document.onkeydown = function () {
-                if (window.event.ctrlKey && window.event.keyCode == 13) {
-                    if($("#saytext").val()!=""){
-                        $scope.info.consultMessage = $("#saytext").val();
-                        $scope.sendConsultMessage();
-                    }
+                //if (window.event.ctrlKey && window.event.keyCode == 13)
+                if (window.event.keyCode == 13){
+                    $scope.sendConsultMessage();
                     $scope.$apply();
                 }
             };//当onkeydown 事件发生时调用函数
@@ -313,9 +312,6 @@ angular.module('controllers', ['luegg.directives'])
                     return;
                 }
                 if ($scope.socketServer1.readyState == WebSocket.OPEN) {
-                    if ($scope.info.consultMessage.indexOf("\n") >= 0) {
-                        $scope.info.consultMessage.replace("\n","");
-                    }
                     var consultValMessage = "";
                     if($scope.userType=="distributor"){
                         var consultValMessage = {
