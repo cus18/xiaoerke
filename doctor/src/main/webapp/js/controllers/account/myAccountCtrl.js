@@ -238,15 +238,22 @@
                     if(data.appointment.timeList.length==0){
                         $scope.checkAvailable = false;
                     }else{
+                        var sum = 0;
                         $scope.checkAvailable = true;
+                        $scope.acceptLock = true;
                         $scope.noAccount = false;
                         $scope.appList = data.appointment.timeList;
-                        $scope.appMoney = data.appointment.totalPrice;
+                        $.each(data.appointment.timeList, function (index,value) {
+                            sum+=sum+value.price;
+                        });
+                       // $scope.appMoney = data.appointment.totalPrice;
+                        $scope.appMoney = sum;
                     }
                     if(data.phoneConsult.timeList.length==0){
                         $scope.havephoneConsult = false;
                     }else{
                         $scope.havephoneConsult = true;
+                        $scope.phoneConsultLock = true;
                         $scope.noAccount = false;
                         $scope.phoneList = data.phoneConsult.timeList;
                         $scope.phoneMoney = data.phoneConsult.totalPrice;
@@ -255,6 +262,13 @@
                         $scope.noAccount = true;
                         $scope.checkAvailable = false;
                         $scope.havephoneConsult = false;
+                    }
+                    if(data.appointment.timeList.length!=0&&data.phoneConsult.timeList.length!=0){
+                        $scope.noAccount = false;
+                        $scope.checkAvailable = true;
+                        $scope.havephoneConsult = true;
+                        $scope.acceptLock = true;
+                        $scope.phoneConsultLock = false;
                     }
                 });
             }
