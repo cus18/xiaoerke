@@ -349,7 +349,8 @@ angular.module('controllers', ['luegg.directives'])
             $scope.uploadFiles = function($files,fileType) {
                 var dataValue = {
                     "fileType": fileType,
-                    "senderId": $scope.doctorId
+                    "senderId": $scope.doctorId,
+                    "sessionId": angular.copy($scope.currentUserConversation.sessionId)
                 };
                 var dataJsonValue = JSON.stringify(dataValue);
                 for (var i = 0; i < $files.length; i++) {
