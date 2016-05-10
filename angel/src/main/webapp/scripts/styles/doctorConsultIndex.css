@@ -14,7 +14,7 @@ header{position: relative;}
 /*总体布局的样式*/
 .fl {float: left;}
 .fr {float: right;}
-.w10 {width: 100%;}
+/*.w10 {width: 100%;}*/
 .w5 {width: 50%;}
 .w6 {width: 60%;}
 .w4 {width: 40%;}
@@ -28,7 +28,7 @@ header{position: relative;}
 .h20::-webkit-scrollbar-thumb{background:#08b7c2;border-radius:5px;}
 .h2l{height: 400px;}
 .h2r{height: 428px;}
-.h30 {height: 500px;}
+.h30 {height: 520px;}
 .cl {color:#fff;}
 .bl1{border-left: 1px solid #ccc;}
 .tab div a span {display: inline-block; padding: 13px 0 14px 0;cursor: pointer;}

@@ -9,14 +9,24 @@ div#ddjr {border-right: 1px solid #fff;}
 /*右边的盒子*/
 .bdf-dkf-sever {font: 12px/50px 'Microsoft Yahei';}
 .bdf-dkf-sever a{display: inline-block;width: 199px;line-height: 50px;cursor: pointer;text-align: center;}
-.replayContent{overflow: auto;height: 399px;}
+.replayContent{overflow: auto;height: 419px;}
 .replayContent::-webkit-scrollbar {width: 0;height: 0;}
 .reply-content .myreply{cursor: pointer;font: 12px/35px 'Microsoft Yahei';color:#333;}
 .reply-content .pubilcreply{cursor: pointer;font: 12px/35px 'Microsoft Yahei';color:#333;}
 .rtitle {margin-left: 10px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(4).png") no-repeat 0 0;padding-left: 20px;}
 .myreply ul li img,.pubilcreply ul li img {margin-left: 25px;}
-.rcontent {margin-left: 50px; height:35px;width: 325px;overflow: hidden;text-overflow: ellipsis;color:#666;}
+.rcontent {margin-left: 50px;color:#666;}
+.rcontentContent{ height:35px;width: 325px;overflow: hidden;text-overflow: ellipsis;position: relative;}
 .group-title{margin-left: 30px;padding-left:20px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(4).png") no-repeat 0 0;}
+.group-title nobr {float: left;display: inline-block;width: 106px;overflow: hidden;text-overflow: ellipsis;}
+.refloat {
+    border: 1px solid #666;
+    border-radius: 10px;
+    background-color: #fff;
+    position: absolute;
+    width: 320px;
+    padding: 10px;
+}
 /*聊天对话框的图片*/
 .consultNowList{height: 40px;cursor: pointer;font: 12px/40px 'Microsoft Yahei';overflow: hidden;position: relative;}
 .consultNowList img{margin-top: 3%;margin-left: 3%;width: 13%;height: 3%;}
@@ -29,7 +39,7 @@ div#ddjr {border-right: 1px solid #fff;}
 
 /* 等待接入 */
 .ddjr-up .ddjr-content {padding: 0 20px;}
-.ddjr-up .ddjr-content span {cursor: pointer;color: #000;display: block;float: left;margin-right: 25px;font: 12px/38px 'Microsoft Yahei';}
+.ddjr-up .ddjr-content span {cursor: pointer;color: #000;display: block;float: left;margin-right: 25px;font: 14px/38px 'Microsoft Yahei';}
 .ddjr-content div:nth-child(2){background-color: #8aa1a8;color:#fff;}
 .checktop {height: 38px;}
 .checktop span{cursor: pointer;}
@@ -110,29 +120,13 @@ span.emotion:hover{background-position:2px -28px}
 .qqFace table td{padding:0px;}
 .qqFace table td img{cursor:pointer;border:1px #fff solid;}
 .qqFace table td img:hover{border:1px #0066cc solid;}
-/*#emotions{left:0;width:444px;font-size:12px;background:#fff;position:absolute;border:1px solid #E8E8E8;}
-#emotions a{color:#9ABBC8;padding:2px 7px;text-decoration:none;}
-#emotions img{border:0;}
-#emotions div{margin:5px 10px;padding:1px;overflow:hidden;}
-#emotions #prev,#emotions #next{margin-left:3px;background:#eee;}
-#emotions .categorys{color:#ccc;height:23px;color:#9ABBC8;overflow:hidden;}
-#emotions .categorys a{display:inline-block;}
-#emotions .categorys a:hover{text-decoration:underline;}
-#emotions .categorys a.current{cursor:default;background:#F0F0F0;-moz-border-radius:3px;-webkit-border-radius:3px;}
-#emotions .container{padding:1px;overflow:hidden;}
-#emotions .container a{float:left;width:22px;height:20px;text-align:center;padding:4px 2px;margin:-1px 0 0 -1px;border:1px solid #e8e8e8;}
-#emotions .container a:hover{z-index:2;position:relative;border:1px solid #0095cd;}
-#emotions .page{text-align:right;}
-#emotions .page a.current{color:#666;background-color:#fff;}
-#emotions .page a{margin-left:3px;color:#0078B6;background-color:#f3f3f3;}
-#emotions .page a:hover{background-color:#e7e7e7;}*/
 /*聊天框的头部*/
-.chatlistin{font: 12px/20px 'Microsoft Yahei';height: 265px;overflow-y:scroll;background-color: #f8f8f8;width: 100%;color:#333;}
+.chatlistin{font: 12px/20px 'Microsoft Yahei';height: 285px;overflow-y:scroll;background-color: #f8f8f8;width: 100%;color:#333;}
 .chatlistin::-webkit-scrollbar {width:10px;height:10px;}
 .chatlistin::-webkit-scrollbar-track-piece {background:#eee;border-radius:5px;}
 .chatlistin::-webkit-scrollbar-thumb{background:#08b7c2;border-radius:5px;}
 /*消息列表*/
-.consultList{height: 408px;font: 12px/20px 'Microsoft Yahei';overflow-y:scroll;background-color: #fff;width: 100%;color:#333;}
+.consultList{height: 428px;font: 12px/20px 'Microsoft Yahei';overflow-y:scroll;background-color: #fff;width: 100%;color:#333;}
 .consultList::-webkit-scrollbar {width:10px;height:10px;}
 .consultList::-webkit-scrollbar-track-piece {background:#eee;border-radius:5px;}
 .consultList::-webkit-scrollbar-thumb{background:#08b7c2;border-radius:5px;}
@@ -160,7 +154,7 @@ p.historymessage span {display: block;background: url("http://xiaoerke-pc-baodf-
 .inputcontent,.facebox,.chatlist,.nametop{padding-left: 175px;padding-right: 405px;}
 textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 100%;height: 100px;box-sizing: border-box;border: 1px solid #dcdcdc;vertical-align: top;resize: none;}
 .sendbtn {height: 41px;border-top:1px solid #acacac;border-bottom: 1px solid #acacac;background-color: #f8f8f8;}
-.sendbtn div {cursor: pointer;margin:10px;display: inline-block;color:#fff;float: right;font: 12px/20px 'Microsoft Yahei';padding: 0 15px;border-radius: 4px;}
+.sendbtn div {cursor: pointer;margin:10px 20px;display: inline-block;color:#fff;float: right;font: 12px/20px 'Microsoft Yahei';padding: 0 15px;border-radius: 4px;}
 .sendbtn div:nth-child(1){background-color: #08b7c2;}
 .sendbtn div:nth-child(2){background-color: #fe717b;}
 .historymessage {float: right;}
