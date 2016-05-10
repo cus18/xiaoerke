@@ -11,7 +11,7 @@ angular.module('controllers', ['ionic']).controller('phoneConsultFirstCtrl', [
         var num ;//判断上下周次数
         var saveSunday ;//保存每周周日的日期
         var saveSaturday ;//保存每周周六的日期
-
+        var saveCurrDate ;//记录当前选中的日期
         $scope.$on('$ionicView.enter', function(){
             $scope.pageLoading = true;
             var routePath = "/phoneConsultDoctorBBBBBB" + $location.path();
@@ -25,9 +25,11 @@ angular.module('controllers', ['ionic']).controller('phoneConsultFirstCtrl', [
                     var pData = {logContent:encodeURI("WXZJB_CD_DHZX")};
                     $http({method:'post',url:'util/recordLogs',params:pData});
                     var changeDate ;
-                    if($stateParams.date==""){
+                    if($stateParams.date==""&&saveCurrDate==undefined){
                         changeDate = getCurrDate();
-                    }else{
+                    }else if(saveCurrDate!=undefined){
+                        changeDate = saveCurrDate;
+                    }else if($stateParams.date!=""&&saveCurrDate==undefined){
                         changeDate = $stateParams.date;
                     }
                     num = 0;
@@ -95,6 +97,7 @@ angular.module('controllers', ['ionic']).controller('phoneConsultFirstCtrl', [
         //跳转到病情详情页
         $scope.goDetails = function (index) {
             if($scope.consultDetalisList[index].state=="1"){
+                saveCurrDate = $scope.currDate;
                 $state.go("phoneConsultDetails",{id:$scope.consultDetalisList[index].id,doctorId:doctorId});
             }
         }

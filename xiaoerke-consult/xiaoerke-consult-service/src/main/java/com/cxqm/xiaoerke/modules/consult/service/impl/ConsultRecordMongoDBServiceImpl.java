@@ -145,7 +145,7 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		ConsultSessionStatusVo  StatusVo = this.findOneConsultSessionStatusVo(query);
 		if(StatusVo != null){
 			String csUserId = StatusVo.getCsUserId();
-			if(csUserId.indexOf(consultSessionStatusVo.getCsUserId()) != -1){
+			if(csUserId.indexOf(consultSessionStatusVo.getCsUserId()) == -1){
 				csUserId = csUserId + " " + consultSessionStatusVo.getCsUserId();
 			}
 			writeResult = mongoTemplate.updateMulti(query,new Update().set("csUserId", csUserId), ConsultSessionStatusVo.class);
