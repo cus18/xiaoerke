@@ -11,7 +11,7 @@
                   提现到微信钱包
                </p>
                <p>
-                    预计到账：2015/10/27 &nbsp;星期三&nbsp; 10:30
+                    预计到账：{{moment}}
                </p>
            </div>
             <button class="button foot-btn" ng-click="withdrawSuccess()" ng-disabled="(accountFund-info.takeCash<0)||(info.takeCash==null||info.takeCash<1||info.isDraw)">
