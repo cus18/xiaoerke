@@ -6,10 +6,8 @@ import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.IdGen;
 import com.cxqm.xiaoerke.modules.operation.service.SysLogService;
-import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterTemplateVo;
-import com.cxqm.xiaoerke.modules.order.entity.RegisterServiceVo;
-import com.cxqm.xiaoerke.modules.order.entity.RegisterTemplateServiceVo;
-import com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo;
+import com.cxqm.xiaoerke.modules.order.entity.*;
+import com.cxqm.xiaoerke.modules.order.service.PhoneConsultDoctorRelationService;
 import com.cxqm.xiaoerke.modules.order.service.RegisterService;
 import com.cxqm.xiaoerke.modules.order.service.SysConsultPhoneService;
 import com.cxqm.xiaoerke.modules.sys.service.MessageService;
@@ -45,6 +43,9 @@ public class ScheduleTaskServiceImpl implements ScheduleTaskService {
 	
 	@Autowired
 	private SysConsultPhoneService sysConsultPhoneService;
+
+	@Autowired
+	private PhoneConsultDoctorRelationService phoneConsultDoctorRelationService;
 
 	@Autowired
 	private WeChatInfoService weChatInfoService;
@@ -304,8 +305,16 @@ public class ScheduleTaskServiceImpl implements ScheduleTaskService {
   	private HashMap<String, Object> prepareConsultPhoneRegisterBatch(SysConsultPhoneServiceVo registerServiceVo,String time,String date){
 		HashMap<String, Object> registerInfo = new HashMap<String, Object>();
 		Date begin_time= DateUtils.StrToDate(time,"time");
-
 		Date end_time = new Date(begin_time.getTime() + 900000);
+		ConsulPhonetDoctorRelationVo rvo = new ConsulPhonetDoctorRelationVo();
+		rvo.setDoctorId(registerServiceVo.getSysDoctorId());
+		List<ConsulPhonetDoctorRelationVo> relationList = phoneConsultDoctorRelationService.getPhoneConsultDoctorRelationByInfo(rvo);
+		if(relationList!=null){
+			if(relationList.size()!=0){
+				end_time = new Date(begin_time.getTime() + relationList.get(0).getServerLength()*60*1000);
+			}
+		}
+
 		registerInfo.put("sysDoctorId", registerServiceVo.getSysDoctorId());
 		registerInfo.put("date", date);
 		registerInfo.put("begintime", begin_time);
