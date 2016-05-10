@@ -692,6 +692,8 @@ public class CCPRestSDK {
 			String alwaysPlay, String terminalDtmf, String userData,
 			String maxCallTime, String hangupCdrUrl, String needBothCdr,
 			String needRecord, String countDownTime, String countDownPrompt) {
+
+		promptTone = "phonering.wav";
 		HashMap<String, Object> subAccountValidate = subAccountValidate();
 		if (subAccountValidate != null)
 			return subAccountValidate;
