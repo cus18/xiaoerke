@@ -76,7 +76,7 @@
                     ("https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket="+data.qrcode)
             })
 
-            $scope.$on('$ionicView.enter', function(){
-                resolveUserLoginStatus.events($location.path(),"","","","notGo");
-            });
+            //$scope.$on('$ionicView.enter', function(){
+            //    resolveUserLoginStatus.events($location.path(),"","","","notGo");
+            //});
     }]);

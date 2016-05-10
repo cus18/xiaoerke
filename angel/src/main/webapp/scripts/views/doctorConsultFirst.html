@@ -65,7 +65,7 @@
             <div class="consultList">
                 <div class="consultNowList"
                      ng-style="chooseAlreadyJoinConsultPatientId==item.patientId?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}"
-                     ng-repeat="item in alreadyJoinPatientConversation"
+                     ng-repeat="item in alreadyJoinPatientConversation | orderBy:'dateTime':true"
                      ng-click="chooseAlreadyJoinConsultPatient(item.patientId,item.patientName)"
                      alt="">
                     <nobr>&nbsp;&nbsp;{{item.patientName|limitTo:6}}&nbsp;&nbsp;{{transformDate(item.dateTime)}}</nobr>
@@ -104,15 +104,18 @@
                                 <div class="group-title"
                                      ng-style="myReplyIndex==$index?{'backgroundPosition':'0 -42px', color: '#08b7c2'}:{'backgroundPosition':'0 0', color: '#333'}"
                                      ng-click="tapMyReplyContent($index)">
-                                    {{item.name}}（{{item.secondAnswer.length}}）
+                                    <nobr>{{item.name}}</nobr>（{{item.secondAnswer.length}}）
                                 </div>
                                 <ul ng-show="myReplyIndex==$index">
                                     <li ng-repeat="item2 in item.secondAnswer" class="rcontent">
-                                        <nobr ng-click="tapEditMyContent($parent.$index,$index)"
-                                              ng-style="myReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}"
-                                              ng-dblclick="chooseMyContent($parent.$index,$index)">
-                                            {{item2.name}}
-                                        </nobr>
+                                        <div class="rcontentContent">
+                                            <nobr ng-click="tapEditMyContent($parent.$index,$index)"
+                                                  ng-style="myReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}"
+                                                  ng-dblclick="chooseMyContent($parent.$index,$index)">
+                                                {{item2.name}}
+                                            </nobr>
+                                        </div>
+                                        <!--<div class="refloat"  ng-mouseover="alert('aaa')" ng-init="count=0">休息一下休息一下休息一下休息一下休息一下休息一下休息一下</div>-->
                                     </li>
                                 </ul>
                             </li>
@@ -132,10 +135,13 @@
                                 </div>
                                 <ul ng-show='publicReplyIndex==$index'>
                                     <li ng-repeat="item2 in item.secondAnswer" class="rcontent">
-                                        <nobr ng-click="tapEditCommonContent($parent.$index,$index)"
-                                              ng-dblclick="chooseCommonContent($parent.$index,$index)"
-                                              ng-style="publicReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}">{{item2.name}}
-                                        </nobr>
+                                        <div class="rcontentContent">
+                                            <nobr ng-click="tapEditCommonContent($parent.$index,$index)"
+                                                  ng-dblclick="chooseCommonContent($parent.$index,$index)"
+                                                  ng-style="publicReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}">{{item2.name}}
+                                            </nobr>
+                                        </div>
+                                        <!--<div class="refloat"  ng-mouseover="alert('aaa')" ng-init="count=0">休息一下休息一下休息一下休息一下休息一下休息一下休息一下</div>-->
                                     </li>
                                 </ul>
                             </li>
@@ -283,7 +289,7 @@
                 <textarea ng-model="info.consultMessage" id="saytext" placeholder="请在此处进行咨询" class="emotion"></textarea>
             </div>
             <div class="sendbtn">
-                <div class="sub_btn" ng-click="sendConsultMessage()">发送(Ctrl+Enter)</div>
+                <div class="sub_btn" ng-click="sendConsultMessage()">发送(Enter)</div>
                 <div ng-click="closeConsult()">
                     <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(9).png" alt=""/>
                     关闭</div>

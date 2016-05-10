@@ -153,64 +153,76 @@ angular.module('controllers', ['luegg.directives'])
             };
 
             /**转接功能区**/
+            var acceptOperationFlag = false;
             $scope.acceptTransfer = function(){
-                $scope.tapShowButton('waitProcess');
-                var waitJoinChooseUserList = "";
-                $.each($scope.waitJoinUserList,function(index,value){
-                    if(value.chooseFlag){
-                        waitJoinChooseUserList = waitJoinChooseUserList + value.forwardSessionId + ";"
-                    }
-                });
-                React2Transfer.save({operation:"accept",
-                    forwardSessionIds:waitJoinChooseUserList},function(data){
-                    if(data.result=="success"){
-                        //将转接成功的用户，都加入会话列表中来
-                        var indexClose = 0;
-                        $.each($scope.waitJoinUserList,function(index,value){
-                            if(value.chooseFlag){
-                                $scope.currentUserConversation = {};
-                                $scope.currentUserConversation.patientId = value.userId;
-                                $scope.currentUserConversation.source = value.source;
-                                $scope.currentUserConversation.fromServer = value.serverAddress;
-                                $scope.currentUserConversation.sessionId = value.sessionId;
-                                $scope.currentUserConversation.isOnline = true;
-                                $scope.currentUserConversation.dateTime = value.sessionCreateTime;
-                                $scope.currentUserConversation.messageNotSee = true;
-                                $scope.currentUserConversation.patientName = value.userName;
-                                var consultValue = {};
-                                consultValue.type = value.type;
-                                consultValue.content = value.messageContent;
-                                consultValue.dateTime = value.messageDateTime;
-                                consultValue.senderId = value.userId;
-                                consultValue.senderName = value.userName;
-                                consultValue.sessionId = value.sessionId;
-                                filterMediaData(consultValue);
-                                $scope.currentUserConversation.consultValue = [];
-                                $scope.currentUserConversation.consultValue.push(consultValue);
-                                $scope.alreadyJoinPatientConversation.push($scope.currentUserConversation);
-                            }
-                        });
-                        $scope.refreshWaitJoinUserList();
-                        $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
-                            $scope.alreadyJoinPatientConversation[0].patientName);
-                    }
-                });
+                if(!acceptOperationFlag){
+                    $scope.tapShowButton('waitProcess');
+                    var waitJoinChooseUserList = "";
+                    $.each($scope.waitJoinUserList,function(index,value){
+                        if(value.chooseFlag){
+                            waitJoinChooseUserList = waitJoinChooseUserList + value.forwardSessionId + ";"
+                        }
+                    });
+                    acceptOperationFlag = true;
+                    React2Transfer.save({operation:"accept",
+                        forwardSessionIds:waitJoinChooseUserList},function(data){
+                        acceptOperationFlag = false;
+                        if(data.result=="success"){
+                            //将转接成功的用户，都加入会话列表中来
+                            var indexClose = 0;
+                            $.each($scope.waitJoinUserList,function(index,value){
+                                if(value.chooseFlag){
+                                    $scope.currentUserConversation = {};
+                                    $scope.currentUserConversation.patientId = value.userId;
+                                    $scope.currentUserConversation.source = value.source;
+                                    $scope.currentUserConversation.fromServer = value.serverAddress;
+                                    $scope.currentUserConversation.sessionId = value.sessionId;
+                                    $scope.currentUserConversation.isOnline = true;
+                                    $scope.currentUserConversation.dateTime = value.sessionCreateTime;
+                                    $scope.currentUserConversation.messageNotSee = true;
+                                    $scope.currentUserConversation.patientName = value.userName;
+                                    var consultValue = {};
+                                    consultValue.type = value.type;
+                                    consultValue.content = value.messageContent;
+                                    consultValue.dateTime = value.messageDateTime;
+                                    consultValue.senderId = value.userId;
+                                    consultValue.senderName = value.userName;
+                                    consultValue.sessionId = value.sessionId;
+                                    filterMediaData(consultValue);
+                                    $scope.currentUserConversation.consultValue = [];
+                                    $scope.currentUserConversation.consultValue.push(consultValue);
+                                    $scope.alreadyJoinPatientConversation.push($scope.currentUserConversation);
+                                }
+                            });
+                            $scope.refreshWaitJoinUserList();
+                            $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
+                                $scope.alreadyJoinPatientConversation[0].patientName);
+                        }
+                    });
+                }
+
             };
 
+            var rejectOperationFlag = false;
             $scope.rejectTransfer = function(){
-                $scope.tapShowButton('waitProcess');
-                var waitJoinChooseUserList = "";
-                $.each($scope.waitJoinUserList,function(index,value){
-                    if(value.chooseFlag){
-                        waitJoinChooseUserList = waitJoinChooseUserList + value.forwardSessionId + ";"
-                    }
-                });
-                React2Transfer.save({operation:"rejected",forwardSessionIds:waitJoinChooseUserList},function(data){
-                    if(data.result=="success"){
-                        $scope.refreshWaitJoinUserList();
-                    }
-                });
+                if(!rejectOperationFlag){
+                    $scope.tapShowButton('waitProcess');
+                    var waitJoinChooseUserList = "";
+                    $.each($scope.waitJoinUserList,function(index,value){
+                        if(value.chooseFlag){
+                            waitJoinChooseUserList = waitJoinChooseUserList + value.forwardSessionId + ";"
+                        }
+                    });
+                    rejectOperationFlag = true;
+                    React2Transfer.save({operation:"rejected",forwardSessionIds:waitJoinChooseUserList},function(data){
+                        rejectOperationFlag = false;
+                        if(data.result=="success"){
+                            $scope.refreshWaitJoinUserList();
+                        }
+                    });
+                }
             };
+
             //选择转接对象
             $scope.chooseTransferCsUser = function(csUserId,csUserName){
                 $scope.transferCsUserId = csUserId;
@@ -298,11 +310,9 @@ angular.module('controllers', ['luegg.directives'])
 
             //处理用户按键事件
             document.onkeydown = function () {
-                if (window.event.ctrlKey && window.event.keyCode == 13) {
-                    if($("#saytext").val()!=""){
-                        $scope.info.consultMessage = $("#saytext").val();
-                        $scope.sendConsultMessage();
-                    }
+                //if (window.event.ctrlKey && window.event.keyCode == 13)
+                if (window.event.keyCode == 13){
+                    $scope.sendConsultMessage();
                     $scope.$apply();
                 }
             };//当onkeydown 事件发生时调用函数
@@ -313,9 +323,6 @@ angular.module('controllers', ['luegg.directives'])
                     return;
                 }
                 if ($scope.socketServer1.readyState == WebSocket.OPEN) {
-                    if ($scope.info.consultMessage.indexOf("\n") >= 0) {
-                        $scope.info.consultMessage.replace("\n","");
-                    }
                     var consultValMessage = "";
                     if($scope.userType=="distributor"){
                         var consultValMessage = {
@@ -349,7 +356,8 @@ angular.module('controllers', ['luegg.directives'])
             $scope.uploadFiles = function($files,fileType) {
                 var dataValue = {
                     "fileType": fileType,
-                    "senderId": $scope.doctorId
+                    "senderId": $scope.doctorId,
+                    "sessionId": angular.copy($scope.currentUserConversation.sessionId)
                 };
                 var dataJsonValue = JSON.stringify(dataValue);
                 for (var i = 0; i < $files.length; i++) {
@@ -729,7 +737,7 @@ angular.module('controllers', ['luegg.directives'])
 
             //日期转换
             $scope.transformDate = function(dateTime){
-                var dateValue = new moment(dateTime).format("HH:mm");
+                var dateValue = new moment(dateTime).format("HH:mm:ss");
                 return dateValue;
             };
 
@@ -786,6 +794,7 @@ angular.module('controllers', ['luegg.directives'])
                 var updateFlag = false;
                 $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                     if (value.patientId == conversationData.senderId) {
+                        value.dateTime = conversationData.dateTime;
                         value.consultValue.push(conversationData);
                         value.messageNotSee = true;
                         updateFlag = true;

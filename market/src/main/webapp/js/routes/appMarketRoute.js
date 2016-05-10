@@ -22,8 +22,8 @@ define(['appMarket'], function(app){
                 };
 
                 $stateProvider
-                   /* 妈妈营养测试*/
-                    .state('momNutritionTest', {
+                /* 妈妈营养测试*/
+                .state('momNutritionTest', {
                         url: '/momNutritionTest',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'momNutritionTestCtrl',
@@ -40,7 +40,7 @@ define(['appMarket'], function(app){
                             public: true
                         }
                     })
-                    .state('momNutritionResult', {
+                .state('momNutritionResult', {
                         url: '/momNutritionResult/:result,:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'momNutritionResultCtrl',
@@ -51,6 +51,41 @@ define(['appMarket'], function(app){
                                         'styles/momNutrition/momNutritionResult.less?ver='+marketVersion,
                                     ],
                                     'js/views/momNutrition/momNutritionResult.html?ver='+marketVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+               /* 宝妈爱心接力*/
+                .state('loveRelayIndex', {
+                        url: '/loveRelayIndex',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'loveRelayIndexCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.loveRelayIndexCtrl',
+                                    ['js/controllers/loveRelay/loveRelayIndexCtrl.js',
+                                        'styles/loveRelay/loveRelayIndex.less?ver='+marketVersion,
+                                    ],
+                                    'js/views/loveRelay/loveRelayIndex.html?ver='+marketVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                .state('loveRelayPoster', {
+                        url: '/loveRelayPoster',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'loveRelayPosterCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.loveRelayPosterCtrl',
+                                    ['js/controllers/loveRelay/loveRelayPosterCtrl.js',
+                                        'styles/loveRelay/loveRelayPoster.less?ver='+marketVersion,
+                                    ],
+                                    'js/views/loveRelay/loveRelayPoster.html?ver='+marketVersion);
                             }
                         },
                         data: {
