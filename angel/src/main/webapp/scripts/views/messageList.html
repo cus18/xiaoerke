@@ -29,7 +29,7 @@
             </div>
             <div class="w5 fr h4 bg-h1">
                 <div class="bdf-dkf-content-right">
-                    <div class="cjgl">退出</div>
+                    <!--<div class="cjgl">退出</div>-->
                     <!--<div class="xtsz" ng-click="systemsetup1()">-->
                         <!--<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_06.png" alt=""/>-->
                         <!--系统设置</div>-->
@@ -150,10 +150,8 @@
                              <div ng-if="item.type=='0'" class="chatcontent">
                                  {{item.message}}
                              </div>
-                             <div ng-if="item.type=='1'" class="chatcontent">
-                                 <a target="_blank" ng-href="{{item.message}}" ng-click="tapImgButton('magnifyImg',item.message)">
-                                     <img width="30%" ng-src="{{item.message}}">
-                                 </a>
+                             <div ng-if="item.type=='1'" class="chatcontent" ng-click="tapImgButton('magnifyImg',item.message)">
+                                     <img width="200px" ng-src="{{item.message}}">
                              </div>
                              <div ng-if="item.type=='2'" class="chatcontent">
                                  <audio ng-src="{{item.message}}" controls="controls"/>
@@ -169,8 +167,8 @@
             </div>
         </div>
     </div>
-    <div class="magnifyImg" ng-show='showFlag.magnifyImg'>
-        <img width="60%" ng-src="{{imageSrc}}">
+    <div class="magnifyImg" ng-show='showFlag.magnifyImg' ng-click="tapImgButton('magnifyImg',item.message)">
+        <img height="600px" ng-src="{{imageSrc}}">
     </div>
     <!--系统设置的弹出框-->
     <div class="xtsz-up" id="xtsz_up" ng-show='systemsetup.show'>

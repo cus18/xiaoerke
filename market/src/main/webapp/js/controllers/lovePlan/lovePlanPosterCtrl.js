@@ -1,4 +1,4 @@
-angular.module('controllers', ['ionic']).controller('loveRelayIndexCtrl', [
+angular.module('controllers', ['ionic']).controller('lovePlanPosterCtrl', [
     '$scope','$state','$stateParams',
     function ($scope,$state,$stateParams) {
 

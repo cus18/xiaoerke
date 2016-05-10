@@ -744,6 +744,7 @@ angular.module('controllers', ['luegg.directives'])
             var getAlreadyJoinConsultPatientList = function () {
                 //获取跟医生的会话还保存的用户列表
                 GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
+                    console.log(data);
                     if(data.alreadyJoinPatientConversation!=""&&data.alreadyJoinPatientConversation!=undefined){
                         $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                         $.each($scope.alreadyJoinPatientConversation,function(index,value){
@@ -1238,6 +1239,10 @@ angular.module('controllers', ['luegg.directives'])
             $scope.tapImgButton = function (key,value) {
                 $scope.showFlag[key] = !$scope.showFlag[key];
                 $scope.imageSrc = value;
+            };
+            //公共点击按钮，用来触发弹出对应的子窗口
+            $scope.tapShowButton = function(type){
+                $scope.showFlag[key] = !$scope.showFlag[key];
             };
         }])
 
