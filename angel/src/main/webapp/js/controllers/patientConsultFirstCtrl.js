@@ -68,7 +68,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                             filterMediaData(consultData);
                             processDoctorSendMessage(consultData);
                         }
-                        $scope.apply();
+                        $scope.$apply();
                     };
                     $scope.socketServer.onopen = function(event) {
                         console.log("onopen"+event.data);
