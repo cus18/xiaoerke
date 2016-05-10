@@ -1331,7 +1331,7 @@ public class ScheduledTask {
         Date date=new Date();
         DateFormat format=new SimpleDateFormat("HH");
         int time=Integer.parseInt(format.format(date));
-        if(22>time&&time>7){
+        if(20>time&&time>7){
             System.out.println(new Date() + " package.controller scheduled test --> sendMsgToDoc_PhoneConsult");
             List<HashMap<String, Object>> doctorMsg = scheduleTaskService.getOrderInfoToDocSuccess5minBefore();
             for (HashMap<String, Object> map : doctorMsg) {
