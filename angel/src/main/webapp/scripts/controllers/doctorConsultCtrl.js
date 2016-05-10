@@ -267,10 +267,10 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 if (window.WebSocket) {
                     if($scope.userType=="distributor"){
-                        $scope.socketServer1 = new ReconnectingWebSocket("ws://s34.baodf.com:2048/ws&" +
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://xiaork.com:2048/ws&" +
                             "distributor&" + $scope.doctorId);//cs,user,distributor
                     }else if($scope.userType=="consultDoctor"){
-                        $scope.socketServer1 = new ReconnectingWebSocket("ws://s34.baodf.com:2048/ws&" +
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://xiaork.com:2048/ws&" +
                             "cs&" + $scope.doctorId);//cs,user,distributor
                     }
 

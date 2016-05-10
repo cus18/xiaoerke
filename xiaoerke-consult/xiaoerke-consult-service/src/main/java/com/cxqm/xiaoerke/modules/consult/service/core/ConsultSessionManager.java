@@ -326,7 +326,8 @@ public class ConsultSessionManager {
 			consultSessionForwardRecordsVo.setConversationId(Long.parseLong(String.valueOf(sessionId)));
 			consultSessionForwardRecordsVo.setToUserId(toCsUserId);
 			consultSessionForwardRecordsVo.setFromUserId(session.getCsUserId());
-			List<ConsultSessionForwardRecordsVo> consultSessionForwardRecordsVoList = consultSessionForwardRecordsService.selectConsultForwardList(consultSessionForwardRecordsVo);
+			List<ConsultSessionForwardRecordsVo> consultSessionForwardRecordsVoList =
+					consultSessionForwardRecordsService.selectConsultForwardList(consultSessionForwardRecordsVo);
 
 			if(consultSessionForwardRecordsVoList.size()>0){
 				for(ConsultSessionForwardRecordsVo consultSessionForwardRecords:consultSessionForwardRecordsVoList){
@@ -394,7 +395,7 @@ public class ConsultSessionManager {
 
 		public void run() {
 			try {
-				Thread.sleep(4000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
