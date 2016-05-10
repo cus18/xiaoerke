@@ -271,33 +271,31 @@ public class ScheduleTaskServiceImpl implements ScheduleTaskService {
   	 */
   	@Override
   	public void repeatSettingConsultPhoneRegister() {
-    	Calendar c = new GregorianCalendar(); 
+		Calendar c = new GregorianCalendar();
 		c.setTime(new Date());
 		String weekday = c.get(Calendar.DAY_OF_WEEK)+"";
-		c.add(Calendar.DAY_OF_YEAR, 28);  
-		Date date = c.getTime();  
+		c.add(Calendar.DAY_OF_YEAR, 28);
+		Date date = c.getTime();
 		String repeatDate = DateUtils.DateToStr(date, "date");
-    	Map<String, Object> map = new HashMap<String, Object>();
-    	map.put("status", 1);
-    	map.put("weekday", weekday);
-    	List<ConsultPhoneRegisterTemplateVo> list = sysConsultPhoneService.getRegisterTemplateList(map);
-    	List<HashMap<String, Object>> excuteList = new ArrayList<HashMap<String,Object>>();
-    	for(ConsultPhoneRegisterTemplateVo vo : list){
-    		String time = vo.getTime();
-    		SysConsultPhoneServiceVo registerServiceVo = new SysConsultPhoneServiceVo();
-    		registerServiceVo.setSysDoctorId(vo.getDoctorId());
-    		registerServiceVo.setPrice(vo.getPrice()+"");
-    		registerServiceVo.setServicetype(vo.getServerType());
-    		registerServiceVo.setRepeatFlag(vo.getRepeatInterval());
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("status", 1);
+		map.put("weekday", weekday);
+		List<ConsultPhoneRegisterTemplateVo> list = sysConsultPhoneService.getRegisterTemplateList(map);
+		List<HashMap<String, Object>> excuteList = new ArrayList<HashMap<String,Object>>();
+		for(ConsultPhoneRegisterTemplateVo vo : list){
+			String time = vo.getTime();
+			SysConsultPhoneServiceVo registerServiceVo = new SysConsultPhoneServiceVo();
+			registerServiceVo.setSysDoctorId(vo.getDoctorId());
+			registerServiceVo.setRepeatFlag(vo.getRepeatInterval());
 			HashMap<String, Object> retMap = prepareConsultPhoneRegisterBatch(registerServiceVo, time, repeatDate);
-    		if(retMap!=null){
-    			excuteList.add(retMap);
-    		}
-    	}
-    	if(excuteList.size()!=0){
-			registerService.batchInsertRegister(excuteList);
-    	}
-    }
+			if(retMap!=null){
+				excuteList.add(retMap);
+			}
+		}
+		if(excuteList.size()!=0){
+			sysConsultPhoneService.batchInsertConsultPhoneRegister(excuteList);
+		}
+	}
   	
   	/**
   	 * 准备批量插入电话咨询号源数据
@@ -308,27 +306,23 @@ public class ScheduleTaskServiceImpl implements ScheduleTaskService {
 		Date begin_time= DateUtils.StrToDate(time,"time");
 
 		Date end_time = new Date(begin_time.getTime() + 900000);
-		registerInfo.put("id", IdGen.uuid());
-		registerInfo.put("doctorId", registerServiceVo.getSysDoctorId());
+		registerInfo.put("sysDoctorId", registerServiceVo.getSysDoctorId());
 		registerInfo.put("date", date);
-		registerInfo.put("begin_time", begin_time);
-		registerInfo.put("end_time", end_time);
-		registerInfo.put("price", registerServiceVo.getPrice());
-		registerInfo.put("deposit", "50");//鎵�渶鎶奸噾
-		registerInfo.put("service_type", registerServiceVo.getServicetype());//鏈嶅姟绫诲瀷
-		registerInfo.put("create_date", new Date());
-		registerInfo.put("status", "0");
+		registerInfo.put("begintime", begin_time);
+		registerInfo.put("endtime", end_time);
+		registerInfo.put("createdate", new Date());
+		registerInfo.put("state", "0");
 		registerInfo.put("repeatFlag", registerServiceVo.getRepeatFlag());
 		Map<String, Object> queryMap = new HashMap<String, Object>();
 		queryMap.put("date", date);
 		queryMap.put("time", begin_time);
-		queryMap.put("sysDoctorId", registerServiceVo.getSysDoctorId());
+		queryMap.put("doctorId", registerServiceVo.getSysDoctorId());
 		List<SysConsultPhoneServiceVo> rlist = sysConsultPhoneService.findSysConsultPhoneByInfo(queryMap);
 		if(rlist.size()!=0){
 			return null;
 		}
 		return registerInfo;
-    }
+	}
   	
 	@Override
 	public HashMap<String,Object> getUserOperationStatistic(HashMap<String,Object> data) {

@@ -52,4 +52,7 @@ public interface SysConsultPhoneServiceDao {
      * @author chenxiaoqiong
      */
     HashMap<String,Object> findSysConsultPhoneServiceByCRSIdExecute(HashMap<String, Object> hashMap);
+
+    //批量插入号源 @author sunxiao
+    void batchInsertConsultPhoneRegister(List<HashMap<String, Object>> excuteList);
 }
