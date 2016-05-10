@@ -101,7 +101,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     'senderId':conversationData.senderId,
                     'senderName':conversationData.senderName,
                     'sessionId':conversationData.sessionId,
-                    "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
+                    "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png"
             };
                 $scope.consultContent.push(doctorValMessage);
             };
@@ -123,7 +123,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     "senderId":$scope.patientId,
                     "senderName":$scope.patientName,
                     "sessionId":$scope.sessionId,
-                    "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png"
+                    "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
                 };
                 if (!window.WebSocket) {
                     return;
