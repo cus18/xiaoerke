@@ -235,6 +235,14 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     }
 
     @Override
+    public void modifyConsultSessionStatusVo(RichConsultSession consultSession) {
+        ConsultSessionStatusVo consultSessionStatusVo = new ConsultSessionStatusVo();
+        consultSessionStatusVo.setSessionId(String.valueOf(consultSession.getId()));
+        consultSessionStatusVo.setCsUserId(consultSession.getCsUserId());
+        consultRecordMongoDBService.modifyConsultSessionStatusVo(consultSessionStatusVo);
+    }
+
+    @Override
     public List<ConsultSessionStatusVo> querySessionStatusList(Query query){
         return consultRecordMongoDBService.querySessionStatusList(query);
     }
