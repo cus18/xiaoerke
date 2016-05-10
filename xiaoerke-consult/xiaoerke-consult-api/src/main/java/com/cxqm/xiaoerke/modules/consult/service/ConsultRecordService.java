@@ -51,6 +51,8 @@ public interface ConsultRecordService {
 
     void saveConsultSessionStatus(RichConsultSession consultSession);
 
+    void modifyConsultSessionStatusVo(RichConsultSession consultSession);
+
     List<ConsultSessionStatusVo> querySessionStatusList(Query query);
 
     void  updateConsultSessionStatusVo(Query query,String status);

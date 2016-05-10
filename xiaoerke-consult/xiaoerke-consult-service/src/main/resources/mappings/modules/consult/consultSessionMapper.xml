@@ -97,15 +97,15 @@
 
     </select>
 
-
-
     <select id="getCsUserByUserId" resultMap="BaseResultMap"
             parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession">
-        SELECT su.name nickname from consult_session cs
-        INNER JOIN sys_user su on su.id = cs.sys_user_id_cs
-        where cs.sys_user_id = #{userId}
-        GROUP BY cs.sys_user_id_cs
-        ORDER BY null
+        SELECT su.name nickname from consult_conversation_forward_records ccfr
+        INNER JOIN sys_user su on su.id = ccfr.from_user_id
+        where ccfr.conversation_id = #{id}
+        UNION
+        SELECT su.name from consult_conversation_forward_records ccfr
+        INNER JOIN sys_user su on su.id = ccfr.to_user_id
+        where ccfr.conversation_id = #{id}
     </select>
 
     <select id="getAlreadyAccessUsers" resultMap="BaseResultMap"
