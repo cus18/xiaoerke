@@ -106,21 +106,7 @@ public class ConsultH5ServiceImpl implements ConsultH5Service {
                         response.put("senderId", senderId);
                         response.put("status","failure");
                     }
-/*
-                    ConsultRecordMongoVo consultRecordMongoVo = new ConsultRecordMongoVo();
-                    consultRecordMongoVo.setSessionId(senderId);
-                    List<ConsultRecordMongoVo> consultRecordMongoVos = consultRecordService.findUserConsultInfoBySessionId(consultRecordMongoVo);
-                    if(consultRecordMongoVos!=null && consultRecordMongoVos.size()>0){
-                        consultRecordMongoVo = consultRecordMongoVos.get(0);
-                        consultRecordMongoVo.setType(fileType);
-                        consultRecordMongoVo.setMessage(fileName);
-                        consultRecordMongoVo.setOpercode("sender");
-                        consultRecordService.saveConsultRecord(consultRecordMongoVo);
-                        response.put("status","success");
-                    }else{
-                        response.put("status","failure");
-                    }
-*/
+
                 } catch (IOException e) {
                     e.printStackTrace();
                     response.put("status","failure");

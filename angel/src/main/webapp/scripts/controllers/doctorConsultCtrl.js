@@ -729,7 +729,7 @@ angular.module('controllers', ['luegg.directives'])
 
             //日期转换
             $scope.transformDate = function(dateTime){
-                var dateValue = new moment(dateTime).format("HH:mm");
+                var dateValue = new moment(dateTime).format("HH:mm:ss");
                 return dateValue;
             };
 
@@ -786,6 +786,7 @@ angular.module('controllers', ['luegg.directives'])
                 var updateFlag = false;
                 $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                     if (value.patientId == conversationData.senderId) {
+                        value.dateTime = conversationData.dateTime;
                         value.consultValue.push(conversationData);
                         value.messageNotSee = true;
                         updateFlag = true;
