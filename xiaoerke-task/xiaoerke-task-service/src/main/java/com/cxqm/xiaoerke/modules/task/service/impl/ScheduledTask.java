@@ -1083,7 +1083,7 @@ public class ScheduledTask {
         if(consultSessionStatusVos != null && consultSessionStatusVos.size() > 0){
             for(ConsultSessionStatusVo consultSessionStatusVo : consultSessionStatusVos){
                     if(consultSessionStatusVo !=null && consultSessionStatusVo.getLastMessageTime()!=null){
-                        if(DateUtils.pastMinutes(consultSessionStatusVo.getLastMessageTime())>60L){
+                        if(DateUtils.pastMinutes(consultSessionStatusVo.getLastMessageTime())>120L){
                             //根据sessionId查询consult_conversation_forward_records表，状态为waiting不执行
                             ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = new ConsultSessionForwardRecordsVo();
                             consultSessionForwardRecordsVo.setConversationId(Long.parseLong(consultSessionStatusVo.getSessionId()));
