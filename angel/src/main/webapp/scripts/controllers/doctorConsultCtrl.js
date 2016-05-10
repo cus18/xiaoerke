@@ -1239,5 +1239,9 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.showFlag[key] = !$scope.showFlag[key];
                 $scope.imageSrc = value;
             };
+            //公共点击按钮，用来触发弹出对应的子窗口
+            $scope.tapShowButton = function(type){
+                $scope.showFlag[key] = !$scope.showFlag[key];
+            };
         }])
 
