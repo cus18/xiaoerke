@@ -27,7 +27,7 @@ angular.module('controllers', ['ionic']).controller('antiDogIndexCtrl', [
         $scope.goBuy = function(){
         	var pData = {logContent:encodeURI("FQB_FWXQ_LJGM")};
         	$http({method:'post',url:'util/recordLogs',params:pData});
-            window.location.href = "http://s68.baodf.com/keeper/wxPay/patientPay.do?serviceType=antiDogPay";
+            window.location.href = "http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=antiDogPay";
         };
 
         $scope.$on('$ionicView.enter', function(){
