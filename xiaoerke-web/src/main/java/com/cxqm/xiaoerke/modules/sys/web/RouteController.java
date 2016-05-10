@@ -89,9 +89,9 @@ public class RouteController extends BaseController {
     /**
      * market 宝妈爱心接力
      */
-    @RequestMapping(value ="/loveRelay",method = {RequestMethod.POST, RequestMethod.GET})
-    public String loveRelayFirst() {
-        return "native/loveRelayFirst";
+    @RequestMapping(value ="/lovePlan",method = {RequestMethod.POST, RequestMethod.GET})
+    public String lovePlanFirst() {
+        return "native/lovePlanFirst";
     }
 
     /**

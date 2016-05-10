@@ -10,7 +10,7 @@ document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.event.drag-1.5.mi
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.touchSlider.js"></scr'+'ipt>');
 
 
-var loveRelayFirsInit = function(){
+var lovePlanFirsInit = function(){
     refreshTestList();
     Refresh();
     recordLogs("HDSY");
