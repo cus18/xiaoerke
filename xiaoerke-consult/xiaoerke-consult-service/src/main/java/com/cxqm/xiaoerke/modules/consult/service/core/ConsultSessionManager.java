@@ -547,6 +547,7 @@ public class ConsultSessionManager {
 					}
 					forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_ACCEPT);
 					consultSessionForwardRecordsService.updateAcceptedTransfer(forwardRecord);
+					session.setCsUserId(forwardRecord.getToUserId());
 					consultRecordService.modifyConsultSessionStatusVo(session);
 				} else {
 					forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_REJECT);
