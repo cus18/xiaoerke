@@ -154,6 +154,7 @@ public class WechatUtil {
             Date dates = new Date(times);
             Timestamp tt = new Timestamp(dates.getTime());
             String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+
             WechatRecord record = new WechatRecord();
             record.setId(uuid);
             record.setOpenid(openid);

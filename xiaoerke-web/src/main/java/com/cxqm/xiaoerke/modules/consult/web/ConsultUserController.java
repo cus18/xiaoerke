@@ -160,7 +160,7 @@ public class ConsultUserController extends BaseController {
                 vo.setLastMessageTime(consultSessionStatusVo.getLastMessageTime());
                 //根据userId查询CsUserId
                 ConsultSession consultSession =new ConsultSession();
-                consultSession.setUserId(consultSessionStatusVo.getUserId());
+                consultSession.setId(Integer.valueOf(consultSessionStatusVo.getSessionId()));
                 List<ConsultSession> sessionList = consultSessionService.getCsUserByUserId(consultSession);
                 if(sessionList!=null && sessionList.size() > 0){
                     String csUserName = "";
@@ -313,7 +313,7 @@ public class ConsultUserController extends BaseController {
                     ConsultSessionStatusVo vo = consultSessionStatusVo;
                     //根据userId查询CsUserId
                     ConsultSession consultSession =new ConsultSession();
-                    consultSession.setUserId(consultSessionStatusVo.getUserId());
+                    consultSession.setId(Integer.valueOf(consultSessionStatusVo.getSessionId()));
                     List<ConsultSession> sessionList = consultSessionService.getCsUserByUserId(consultSession);
                     if(sessionList!=null && sessionList.size() > 0){
                         String csUserName = "";
