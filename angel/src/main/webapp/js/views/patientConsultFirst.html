@@ -29,8 +29,14 @@
                         <img width="100px" ng-src="{{item.content}}" ng-click="tapImgButton('magnifyImg',item.content)">
                     </div>
                 </div>
-                <div ng-if="item.type=='4'">
-                    亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^
+                <div ng-if="item.type=='4'&&item.notifyType=='1001'">
+                    亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^1001
+                </div>
+                <div ng-if="item.type=='4'&&item.notifyType=='1002'">
+                    亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^1002
+                </div>
+                <div ng-if="item.type=='4'&&item.notifyType=='1003'">
+                    亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^1003
                 </div>
             </div>
             <div class="magnifyImg" ng-show='showFlag.magnifyImg' ng-click="tapShowButton('magnifyImg')">

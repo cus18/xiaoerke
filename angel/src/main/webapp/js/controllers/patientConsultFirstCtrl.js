@@ -107,10 +107,13 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             };
             var processNotifyMessage = function(notifyData){
                 if(notifyData.notifyType=="1001"){
-                    //有医生或者接诊员在线
+                    //有医生或者接诊员在线1001
                     console.log("有医生或者接诊员在线");
                 } else if(notifyData.notifyType=="1002"){
-                    //没有医生或者接诊员在线
+                    //没有医生或者接诊员在线1002
+                    console.log("有医生或者接诊员在线");
+                }else if(notifyData.notifyType=="1003"){
+                    //没有医生或者接诊员在线1003
                     console.log("有医生或者接诊员在线");
                 }
             };
