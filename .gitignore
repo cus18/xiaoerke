@@ -5,3 +5,4 @@
 ***/classes/***
 ***/target/***
 *.jar
+src/main/resources/rebel.xml
