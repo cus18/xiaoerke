@@ -288,7 +288,6 @@ var pay = function(){
             }
         });
     }
-    $('#payButton').removeAttr("disabled");
 }
 
 var wxPay = function (consultPhoneServiceId) {
