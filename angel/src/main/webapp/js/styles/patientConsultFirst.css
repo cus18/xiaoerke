@@ -13,10 +13,10 @@ a:focus,input:focus{-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-user-modif
     width: 375px;
     height: 680px;
 }
-img {
+/*img {
     width: 25px;
     height: 25px;
-}
+}*/
 .consultTitle{
     height: 44px;
     font: 16px/44px 'Microsoft Yahei';
@@ -31,6 +31,10 @@ img {
      padding: 9px 10px;
      line-height: 24px;
  }
+.consultTitle span img{
+    width: 25px;
+    height: 25px;
+}
 .consultTitle span:nth-child(2){
     float: right;
 }
