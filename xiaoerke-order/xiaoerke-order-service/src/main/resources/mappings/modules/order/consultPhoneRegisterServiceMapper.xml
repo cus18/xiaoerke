@@ -132,7 +132,9 @@
     sp.sys_user_id,
     su.openid,
     sh.id hospitalId,
-    cdr.server_length
+    cdr.server_length,
+    sm.types,
+    sm.status
     from consultPhone_register_service crs
     left join sys_consultphone_service scs
     on crs.sys_phoneConsult_service_id = scs.id
@@ -148,6 +150,7 @@
     LEFT join consultPhone_doctor_relation cdr on cdr.doctor_id = sd.id
     LEFT JOIN sys_user su on sp.sys_user_id = su.id
     left join sys_hospital sh on sh.`name` = sd.hospitalName
+    LEFT JOIN sys_monitor sm ON sm.patient_register_service_id = crs.id
     where crs.id =#{id,jdbcType=INTEGER}
     group by crs.id
   </select>

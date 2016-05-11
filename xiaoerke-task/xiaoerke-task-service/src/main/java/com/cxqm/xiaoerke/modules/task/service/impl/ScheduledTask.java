@@ -7,7 +7,6 @@ import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
 import com.cxqm.xiaoerke.modules.consult.service.*;
-import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
 import com.cxqm.xiaoerke.modules.operation.service.BaseDataService;
 import com.cxqm.xiaoerke.modules.operation.service.DataStatisticService;
@@ -28,7 +27,6 @@ import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import com.cxqm.xiaoerke.modules.task.service.ScheduleTaskService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -1207,7 +1205,8 @@ public class ScheduledTask {
         Date tomorrow = DateUtils.addDays(new Date(), 1);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date = simpleDateFormat.format(tomorrow);
-        List<HashMap<String,Object>> doctorOrderInfoList = getDoctorOrderInfoList(date,"night");
+        List<Integer> monitorList = new ArrayList<Integer>();
+        List<HashMap<String,Object>> doctorOrderInfoList = getDoctorOrderInfoList(date,"night",monitorList);
 
         for(HashMap<String,Object> orderMap:doctorOrderInfoList){
             String doctorName = (String) orderMap.get("doctorName");
@@ -1233,6 +1232,10 @@ public class ScheduledTask {
                         url, openid);
             }
         }
+        for(Integer monitor:monitorList){
+            //标记已发送预约成功短信
+            insertMonitor(monitor + "", "3", "1");
+        }
     }
 
     /**
@@ -1247,7 +1250,8 @@ public class ScheduledTask {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date = simpleDateFormat.format(new Date());
-        List<HashMap<String,Object>> doctorOrderInfoList = getDoctorOrderInfoList(date,"morning");
+        List<Integer> monitorList = new ArrayList<Integer>();
+        List<HashMap<String,Object>> doctorOrderInfoList = getDoctorOrderInfoList(date,"morning",monitorList);
 
         for(HashMap<String,Object> orderMap:doctorOrderInfoList){
             String doctorName = (String) orderMap.get("doctorName");
@@ -1272,6 +1276,12 @@ public class ScheduledTask {
                 DoctorMsgTemplate.doctorPhoneConsultRemindAtMoning2Wechat(simpleDateFormat1.format(new Date()), String.valueOf(num), nameList,
                         token, url, openid);
             }
+
+        }
+
+        for(Integer monitor:monitorList){
+            //标记已发送预约成功短信
+            insertMonitor(monitor + "", "3", "1");
         }
     }
 
@@ -1280,7 +1290,7 @@ public class ScheduledTask {
      * @param date
      * @return
      */
-    public List<HashMap<String,Object>> getDoctorOrderInfoList(String date,String time){
+    public List<HashMap<String,Object>> getDoctorOrderInfoList(String date,String time,List<Integer> monitorList){
         List<HashMap<String,Object>> doctorOrderInfoList = new ArrayList<HashMap<String,Object>>();
         HashMap<String,Object> searchMap = new HashMap<String, Object>();
         searchMap.put("date",date);
@@ -1324,6 +1334,7 @@ public class ScheduledTask {
                     classList.add((String) mapj.get("id"));
                 }
                 listMap.put("patientList", newList);
+                monitorList.add((Integer) mapj.get("patient_register_service_id"));
             }
             doctorOrderInfoList.add(listMap);
         }
@@ -1361,6 +1372,7 @@ public class ScheduledTask {
                     DoctorMsgTemplate.doctorPhoneConsultRemindAt5minLater2Wechat(babyName, visitDate, week,
                             beginTime,token,url,(String)map.get("openid"));
                 }
+                //标记已发送预约成功短信
                 insertMonitor((Integer) map.get("patient_register_service_id") + "", "3", "1");
             }
         }
