@@ -4,7 +4,7 @@ package com.cxqm.xiaoerke.modules.healthRecords.dao;
 import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.healthRecords.entity.BabyIllnessInfoVo;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @MyBatisDao
@@ -27,5 +27,5 @@ public interface BabyIllnessInfoDao {
      * @return
      * @author chenxiaoqiong
      */
-    Map<String,Object> getIllnessDetail(Map<String,Object> dataMap);
+    List<Map<String,Object>> getIllnessDetail(Map<String,Object> dataMap);
 }
