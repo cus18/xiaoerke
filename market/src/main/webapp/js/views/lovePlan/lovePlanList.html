@@ -2,9 +2,46 @@
 <ion-view view-title="{{title}}" ng-init="doRefresh()">
     <ion-content class="lovePlanList" style="top:0;">
         <ion-scroll direction="y" has-bouncing="true">
+            <div>
+                <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2FlovePlan_baner.png">
+            </div>
+            <dl class="rank">
+                <dt class="bg1 info fw0">
+                    <div class="text fl">
+                        <div>
+                            <h4 class="fw0 c3 f5 margin0">某女子</h4>
+                            <p class=" c4 f2 margin0">太可怜太可怜太可怜太可怜太可怜太可怜太可怜太可怜太可怜太可怜</p>
+                        </div>
+                    </div>
+                    <div class="photo fl tc">
+                        <img class=" radius" width="39" height="39" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fbaodf_logo.jpg"><br>
+                        <div class="f5 c5">
+                            <span class="c3">20</span>名
+                        </div>
+                    </div>
+                    <div class="money f2 c11 fl">
+                        <span class="">180</span>元
+                    </div>
 
-        爱心接力首页
-            <div ui-sref="loveRelayPoster">跳转</div>
+                </dt>
+                <dd class="bg1 info " ng-repeat="item in [1,2,3,4,5,6,7,8]">
+                    <div class="text fl">
+                        <div>
+                            <h4 class="fw0 c3 f5 margin0">某女子</h4>
+                            <p class=" c4 f2 margin0">太可怜太可怜太可怜太可怜太可怜太可怜太可怜太可怜太可怜太可怜</p>
+                        </div>
+                    </div>
+                    <div class="photo fl">
+                        <span class="index  f8" ng-class="{'c12':$index<3,'c13':$index>=3}">{{$index+1}}</span>
+                        <img class="crown" ng-if="$index==0" width="39" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2FlovePlan_crown.png">
+                        <img class="radius" width="39" height="39" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fbaodf_logo.jpg">
+                    </div>
+                    <div class="money f2 c11 fl" ng-class="{'c12':$index<3,'c11':$index>=3}">
+                        <span class="">180</span>元
+                    </div>
+
+                </dd>
+            </dl>
             <br> <br>
         </ion-scroll>
     </ion-content>
