@@ -3,52 +3,42 @@ package com.cxqm.xiaoerke.modules.consult.entity;
 import java.util.Date;
 
 public class ConsultRecordVo {
-    private Long id;
+    private String id;
 
-    private Integer sessionId;
-
-    private String openid;
+    private String sessionId;
 
     private String message;
-
-    private String worker;
-
-    private String attentionNickname;
 
     private Date createDate;
 
     private Date updateDate;
 
-    private String messageType;
+    private String type;
 
-    private String opercode;
+    private String senderId;
 
-    private String fromUserId;
+    private String csuserId;
 
-    private String toUserId;
+    private String userId;
 
-    public Long getId() {
+    private String doctorName;
+
+    private String senderName;
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Integer getSessionId() {
+    public String getSessionId() {
         return sessionId;
     }
 
-    public void setSessionId(Integer sessionId) {
+    public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
-    }
-
-    public String getOpenid() {
-        return openid;
-    }
-
-    public void setOpenid(String openid) {
-        this.openid = openid;
     }
 
     public String getMessage() {
@@ -57,22 +47,6 @@ public class ConsultRecordVo {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public String getWorker() {
-        return worker;
-    }
-
-    public void setWorker(String worker) {
-        this.worker = worker;
-    }
-
-    public String getAttentionNickname() {
-        return attentionNickname;
-    }
-
-    public void setAttentionNickname(String attentionNickname) {
-        this.attentionNickname = attentionNickname;
     }
 
     public Date getCreateDate() {
@@ -91,35 +65,51 @@ public class ConsultRecordVo {
         this.updateDate = updateDate;
     }
 
-    public String getMessageType() {
-        return messageType;
+    public String getType() {
+        return type;
     }
 
-    public void setMessageType(String messageType) {
-        this.messageType = messageType;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getOpercode() {
-        return opercode;
+    public String getSenderId() {
+        return senderId;
     }
 
-    public void setOpercode(String opercode) {
-        this.opercode = opercode;
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
     }
 
-    public String getFromUserId() {
-        return fromUserId;
+    public String getCsuserId() {
+        return csuserId;
     }
 
-    public void setFromUserId(String fromUserId) {
-        this.fromUserId = fromUserId;
+    public void setCsuserId(String csuserId) {
+        this.csuserId = csuserId;
     }
 
-    public String getToUserId() {
-        return toUserId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setToUserId(String toUserId) {
-        this.toUserId = toUserId;
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getDoctorName() {
+        return doctorName;
+    }
+
+    public void setDoctorName(String doctorName) {
+        this.doctorName = doctorName;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
     }
 }

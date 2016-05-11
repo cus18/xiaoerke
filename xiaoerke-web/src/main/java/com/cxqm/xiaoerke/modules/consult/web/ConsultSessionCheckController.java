@@ -38,8 +38,7 @@ public class ConsultSessionCheckController extends BaseController{
      * 手动清理残留的session
      */
     @RequestMapping(value="/sessionCheck",method = {RequestMethod.POST, RequestMethod.GET})
-    public @ResponseBody HashMap<String,Object> sessionCheck(@RequestParam("file") MultipartFile file,
-                                             @RequestParam("data") String data) throws UnsupportedEncodingException {
+    public @ResponseBody HashMap<String,Object> sessionCheck() throws UnsupportedEncodingException {
 
         ConsultSession consultSession = new ConsultSession();
         consultSession.setStatus(ConsultSession.STATUS_ONGOING);

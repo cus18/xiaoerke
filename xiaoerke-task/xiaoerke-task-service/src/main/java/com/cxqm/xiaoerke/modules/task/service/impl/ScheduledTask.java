@@ -28,6 +28,8 @@ import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import com.cxqm.xiaoerke.modules.task.service.ScheduleTaskService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.text.DateFormat;
@@ -1096,6 +1098,40 @@ public class ScheduledTask {
                         }
                     }
             }
+        }
+    }
+
+
+    /**
+     *  每天晚上1点，将前一天的咨询数据备份到数据库中
+     */
+    public void consultRecordMongoTransMySql(){
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Date newDate = calendar.getTime();
+        calendar.add(Calendar.DATE, -6);
+        Date oldDate = calendar.getTime();
+        Query query = new Query().addCriteria(Criteria.where("createDate").gte(oldDate).andOperator(Criteria.where("createDate").lte(newDate)));
+
+        List<ConsultRecordMongoVo> consultRecordMongoVos = consultRecordService.getCurrentUserHistoryRecord(query);
+        Iterator<ConsultRecordMongoVo> iterator = consultRecordMongoVos.iterator();
+        while (iterator.hasNext()){
+            ConsultRecordMongoVo consultRecordMongoVo = iterator.next();
+            ConsultRecordVo consultRecordVo = new ConsultRecordVo();
+            consultRecordVo.setId(IdGen.uuid());
+            consultRecordVo.setSessionId(consultRecordMongoVo.getSessionId());
+            consultRecordVo.setType(consultRecordMongoVo.getType());
+            consultRecordVo.setUserId(consultRecordMongoVo.getUserId());
+            consultRecordVo.setCreateDate(consultRecordMongoVo.getCreateDate());
+            consultRecordVo.setDoctorName(consultRecordMongoVo.getDoctorName());
+            consultRecordVo.setSenderName(consultRecordMongoVo.getSenderName());
+            consultRecordVo.setMessage( EmojiFilter.coverEmoji(consultRecordMongoVo.getMessage()));
+            consultRecordVo.setCsuserId(consultRecordMongoVo.getCsUserId());
+            consultRecordVo.setSenderId(consultRecordMongoVo.getSenderId());
+            consultRecordService.insert(consultRecordVo);
         }
     }
 

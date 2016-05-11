@@ -2,88 +2,43 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cxqm.xiaoerke.modules.consult.dao.ConsultRecordDao" >
   <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordVo" >
-    <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="session_id" property="sessionId" jdbcType="BIGINT" />
-    <result column="openid" property="openid" jdbcType="VARCHAR" />
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="sessionId" property="sessionId" jdbcType="VARCHAR" />
     <result column="message" property="message" jdbcType="VARCHAR" />
-    <result column="worker" property="worker" jdbcType="VARCHAR" />
-    <result column="attention_date" property="attentionDate" jdbcType="TIMESTAMP" />
-    <result column="attention_marketer" property="attentionMarketer" jdbcType="VARCHAR" />
-    <result column="attention_nickName" property="attentionNickname" jdbcType="VARCHAR" />
-    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
-    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
-    <result column="message_type" property="messageType" jdbcType="VARCHAR" />
-    <result column="opercode" property="opercode" jdbcType="VARCHAR" />
-    <result column="from_user_id" property="fromUserId" jdbcType="VARCHAR" />
-    <result column="to_user_id" property="toUserId" jdbcType="VARCHAR" />
-  </resultMap>
-
-  <resultMap id="BaseResultMongoMap" type="com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo" >
-    <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="session_id" property="sessionId" jdbcType="BIGINT" />
-    <result column="openid" property="openid" jdbcType="VARCHAR" />
-    <result column="message" property="message" jdbcType="VARCHAR" />
-    <result column="worker" property="worker" jdbcType="VARCHAR" />
-    <result column="attention_date" property="attentionDate" jdbcType="TIMESTAMP" />
-    <result column="attention_marketer" property="attentionMarketer" jdbcType="VARCHAR" />
-    <result column="attention_nickName" property="attentionNickname" jdbcType="VARCHAR" />
-    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
-    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
-    <result column="message_type" property="messageType" jdbcType="VARCHAR" />
-    <result column="opercode" property="opercode" jdbcType="VARCHAR" />
-    <result column="from_user_id" property="fromUserId" jdbcType="VARCHAR" />
-    <result column="to_user_id" property="toUserId" jdbcType="VARCHAR" />
-
-    <result column="attention_nickName" property="nickName" jdbcType="VARCHAR" />
-    <result column="senderId" property="senderId" jdbcType="VARCHAR" />
+    <result column="createDate" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="updateDate" property="updateDate" jdbcType="TIMESTAMP" />
     <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="senderId" property="senderId" jdbcType="VARCHAR" />
+    <result column="csuserId" property="csuserId" jdbcType="VARCHAR" />
+    <result column="userId" property="userId" jdbcType="VARCHAR" />
     <result column="doctorName" property="doctorName" jdbcType="VARCHAR" />
     <result column="senderName" property="senderName" jdbcType="VARCHAR" />
   </resultMap>
+
   <sql id="Base_Column_List" >
-    id, session_id, openid, message, worker, attention_date, attention_marketer, attention_nickName,
-    create_date, update_date, message_type, opercode, from_user_id, to_user_id
+    id, sessionId, message, createDate, updateDate, type, senderId, csuserId, userId,
+    doctorName, senderName
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />
     from consult_record
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
   </select>
-
-  <select id="findUserConsultInfoBySessionId" resultMap="BaseResultMongoMap">
-    SELECT
-    sc.id AS session_id,
-    sc.openid,
-    sa.date AS attention_date,
-    sa.nickname AS attention_nickName,
-    sc.sys_user_id AS from_user_id,
-    sc.sys_user_id_cs AS to_user_id,
-    sd.name,
-    sa.marketer as doctorName,
-    sa.nickname AS senderName
-    FROM
-    consult_session sc
-    INNER JOIN sys_attention sa ON sa.openid = sc.openid
-    INNER JOIN sys_doctor sd ON sd.id = sc.sys_user_id_cs
-    where sc.id = #{sessionId}
-    GROUP BY sc.openid
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from consult_record
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
+
   <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordVo" >
-    insert into consult_record (id, session_id, openid,
-    message, worker, attention_date,
-    attention_marketer, attention_nickName, create_date,
-    update_date, message_type, opercode,
-    from_user_id, to_user_id)
-    values (#{id,jdbcType=BIGINT}, #{sessionId,jdbcType=BIGINT}, #{openid,jdbcType=VARCHAR},
-    #{message,jdbcType=VARCHAR}, #{worker,jdbcType=VARCHAR}, #{attentionDate,jdbcType=TIMESTAMP},
-    #{attentionMarketer,jdbcType=VARCHAR}, #{attentionNickname,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
-    #{updateDate,jdbcType=TIMESTAMP}, #{messageType,jdbcType=VARCHAR}, #{opercode,jdbcType=VARCHAR},
-    #{fromUserId,jdbcType=VARCHAR}, #{toUserId,jdbcType=VARCHAR})
+    insert into consult_record (id, sessionId, message,
+    createDate, updateDate, type,
+    senderId, csuserId, userId,
+    doctorName, senderName)
+    values (#{id,jdbcType=VARCHAR}, #{sessionId,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR},
+    #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, #{type,jdbcType=VARCHAR},
+    #{senderId,jdbcType=VARCHAR}, #{csuserId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},
+    #{doctorName,jdbcType=VARCHAR}, #{senderName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordVo" >
     insert into consult_record
@@ -92,69 +47,45 @@
         id,
       </if>
       <if test="sessionId != null" >
-        session_id,
-      </if>
-      <if test="openid != null" >
-        openid,
+        sessionId,
       </if>
       <if test="message != null" >
         message,
       </if>
-      <if test="worker != null" >
-        worker,
-      </if>
-      <if test="attentionDate != null" >
-        attention_date,
-      </if>
-      <if test="attentionMarketer != null" >
-        attention_marketer,
-      </if>
-      <if test="attentionNickname != null" >
-        attention_nickName,
-      </if>
       <if test="createDate != null" >
-        create_date,
+        createDate,
       </if>
       <if test="updateDate != null" >
-        update_date,
+        updateDate,
       </if>
-      <if test="messageType != null" >
-        message_type,
+      <if test="type != null" >
+        type,
       </if>
-      <if test="opercode != null" >
-        opercode,
+      <if test="senderId != null" >
+        senderId,
       </if>
-      <if test="fromUserId != null" >
-        from_user_id,
+      <if test="csuserId != null" >
+        csuserId,
       </if>
-      <if test="toUserId != null" >
-        to_user_id,
+      <if test="userId != null" >
+        userId,
+      </if>
+      <if test="doctorName != null" >
+        doctorName,
+      </if>
+      <if test="senderName != null" >
+        senderName,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        #{id,jdbcType=BIGINT},
+        #{id,jdbcType=VARCHAR},
       </if>
       <if test="sessionId != null" >
-        #{sessionId,jdbcType=BIGINT},
-      </if>
-      <if test="openid != null" >
-        #{openid,jdbcType=VARCHAR},
+        #{sessionId,jdbcType=VARCHAR},
       </if>
       <if test="message != null" >
         #{message,jdbcType=VARCHAR},
-      </if>
-      <if test="worker != null" >
-        #{worker,jdbcType=VARCHAR},
-      </if>
-      <if test="attentionDate != null" >
-        #{attentionDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="attentionMarketer != null" >
-        #{attentionMarketer,jdbcType=VARCHAR},
-      </if>
-      <if test="attentionNickname != null" >
-        #{attentionNickname,jdbcType=VARCHAR},
       </if>
       <if test="createDate != null" >
         #{createDate,jdbcType=TIMESTAMP},
@@ -162,17 +93,23 @@
       <if test="updateDate != null" >
         #{updateDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="messageType != null" >
-        #{messageType,jdbcType=VARCHAR},
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
       </if>
-      <if test="opercode != null" >
-        #{opercode,jdbcType=VARCHAR},
+      <if test="senderId != null" >
+        #{senderId,jdbcType=VARCHAR},
       </if>
-      <if test="fromUserId != null" >
-        #{fromUserId,jdbcType=VARCHAR},
+      <if test="csuserId != null" >
+        #{csuserId,jdbcType=VARCHAR},
       </if>
-      <if test="toUserId != null" >
-        #{toUserId,jdbcType=VARCHAR},
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorName != null" >
+        #{doctorName,jdbcType=VARCHAR},
+      </if>
+      <if test="senderName != null" >
+        #{senderName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -180,62 +117,50 @@
     update consult_record
     <set >
       <if test="sessionId != null" >
-        session_id = #{sessionId,jdbcType=BIGINT},
-      </if>
-      <if test="openid != null" >
-        openid = #{openid,jdbcType=VARCHAR},
+        sessionId = #{sessionId,jdbcType=VARCHAR},
       </if>
       <if test="message != null" >
         message = #{message,jdbcType=VARCHAR},
       </if>
-      <if test="worker != null" >
-        worker = #{worker,jdbcType=VARCHAR},
-      </if>
-      <if test="attentionDate != null" >
-        attention_date = #{attentionDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="attentionMarketer != null" >
-        attention_marketer = #{attentionMarketer,jdbcType=VARCHAR},
-      </if>
-      <if test="attentionNickname != null" >
-        attention_nickName = #{attentionNickname,jdbcType=VARCHAR},
-      </if>
       <if test="createDate != null" >
-        create_date = #{createDate,jdbcType=TIMESTAMP},
+        createDate = #{createDate,jdbcType=TIMESTAMP},
       </if>
       <if test="updateDate != null" >
-        update_date = #{updateDate,jdbcType=TIMESTAMP},
+        updateDate = #{updateDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="messageType != null" >
-        message_type = #{messageType,jdbcType=VARCHAR},
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
       </if>
-      <if test="opercode != null" >
-        opercode = #{opercode,jdbcType=VARCHAR},
+      <if test="senderId != null" >
+        senderId = #{senderId,jdbcType=VARCHAR},
       </if>
-      <if test="fromUserId != null" >
-        from_user_id = #{fromUserId,jdbcType=VARCHAR},
+      <if test="csuserId != null" >
+        csuserId = #{csuserId,jdbcType=VARCHAR},
       </if>
-      <if test="toUserId != null" >
-        to_user_id = #{toUserId,jdbcType=VARCHAR},
+      <if test="userId != null" >
+        userId = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorName != null" >
+        doctorName = #{doctorName,jdbcType=VARCHAR},
+      </if>
+      <if test="senderName != null" >
+        senderName = #{senderName,jdbcType=VARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordVo" >
     update consult_record
-    set session_id = #{sessionId,jdbcType=BIGINT},
-      openid = #{openid,jdbcType=VARCHAR},
-      message = #{message,jdbcType=VARCHAR},
-      worker = #{worker,jdbcType=VARCHAR},
-      attention_date = #{attentionDate,jdbcType=TIMESTAMP},
-      attention_marketer = #{attentionMarketer,jdbcType=VARCHAR},
-      attention_nickName = #{attentionNickname,jdbcType=VARCHAR},
-      create_date = #{createDate,jdbcType=TIMESTAMP},
-      update_date = #{updateDate,jdbcType=TIMESTAMP},
-      message_type = #{messageType,jdbcType=VARCHAR},
-      opercode = #{opercode,jdbcType=VARCHAR},
-      from_user_id = #{fromUserId,jdbcType=VARCHAR},
-      to_user_id = #{toUserId,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=BIGINT}
+    set sessionId = #{sessionId,jdbcType=VARCHAR},
+    message = #{message,jdbcType=VARCHAR},
+    createDate = #{createDate,jdbcType=TIMESTAMP},
+    updateDate = #{updateDate,jdbcType=TIMESTAMP},
+    type = #{type,jdbcType=VARCHAR},
+    senderId = #{senderId,jdbcType=VARCHAR},
+    csuserId = #{csuserId,jdbcType=VARCHAR},
+    userId = #{userId,jdbcType=VARCHAR},
+    doctorName = #{doctorName,jdbcType=VARCHAR},
+    senderName = #{senderName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>
