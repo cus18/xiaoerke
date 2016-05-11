@@ -11,12 +11,21 @@ document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.touchSlider.js"><
 
 
 var lovePlanFirsInit = function(){
-    refreshTestList();
-    Refresh();
-    recordLogs("HDSY");
+
 }
 
-var selectAnswer = function(index,parentNum){
-
+var goComment = function(){
+    $(".c-shadow").show();
+    $(".real-edit").show();
+}
+var cancelComment = function(){
+    $(".c-shadow").hide();
+    $(".real-edit").hide();
+}
+var goLovePlanList = function(){
+    window.location.href="market#/lovePlanList"
+}
+var createPoster = function(){
+    window.location.href="market#/lovePlanPoster"
 }
 
