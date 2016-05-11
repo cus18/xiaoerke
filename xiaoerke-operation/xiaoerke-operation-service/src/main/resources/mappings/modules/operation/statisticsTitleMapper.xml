@@ -383,6 +383,18 @@ and apr.`status`='success' and DATE_FORMAT(prs.create_date,'%Y-%m-%d')=DATE_FORM
 			sys_statistics_title sst
 		WHERE
 			DATE_FORMAT(sst.create_date, '%Y-%m-%d') =DATE_ADD(DATE_FORMAT(#{create_date}, '%Y-%m-%d'),INTERVAL -1 DAY) 
-	</select>	
+	</select>
+
+	<select id="getTotalConsultNum" resultType="Integer">
+		SELECT
+			count(*) AS count
+		FROM
+			consult_session
+		WHERE
+			DATE_FORMAT(update_time, '%Y-%m-%d') = DATE_FORMAT(#{create_date}, '%Y-%m-%d')
+		AND state = 'completed'
+	</select>
+
+
 
 </mapper>
