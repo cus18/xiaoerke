@@ -1,10 +1,14 @@
 package com.cxqm.xiaoerke.modules.entity;
 
-
 import java.util.Date;
 
 import com.cxqm.xiaoerke.modules.utils.excel.annotation.ExcelField;
 
+/**
+ * 会员vo
+ * sunxiao 2016-5-11
+ */
+ 
 public class MemberservicerelItemservicerelRelationVo {
     private Integer id;
 
