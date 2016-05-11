@@ -1,6 +1,5 @@
 package com.cxqm.xiaoerke.modules.order.entity;
 
-import com.cxqm.xiaoerke.common.utils.excel.annotation.ExcelField;
 
 import java.util.Date;
 
