@@ -140,4 +140,11 @@ public interface StatisticsTitleDao {
 	 * @return
 	 */
 	int getTotalVipNum(HashMap paramMap);
+
+	/**
+	 * 2016年05月11日启用新版咨询系统统计方法
+	 * @param paramMap
+	 * @return
+     */
+	int getTotalConsultNum(HashMap paramMap);
 }

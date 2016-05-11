@@ -7,7 +7,6 @@ import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
 import com.cxqm.xiaoerke.modules.consult.service.*;
-import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
 import com.cxqm.xiaoerke.modules.operation.service.BaseDataService;
 import com.cxqm.xiaoerke.modules.operation.service.DataStatisticService;
@@ -28,6 +27,7 @@ import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import com.cxqm.xiaoerke.modules.task.service.ScheduleTaskService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.text.DateFormat;
@@ -1097,41 +1097,40 @@ public class ScheduledTask {
                     }
             }
         }
+    }
 
-//        ConsultSession consultSession = new ConsultSession();
-//        consultSession.setStatus(ConsultSession.STATUS_ONGOING);
-//        List<ConsultSession> consultSessionVOs = consultSessionService.selectBySelective(consultSession);
-//        for(ConsultSession consultSessionVO:consultSessionVOs){
-//            Query queryAgain = new Query(where("sessionId").is(String.valueOf(consultSessionVO.getId())));
-//            List<ConsultSessionStatusVo> consultSessionStatusAgainVos = consultRecordService.querySessionStatusList(queryAgain);
-//            if(consultSessionStatusAgainVos.size()>0){
-//                if(consultSessionStatusAgainVos.get(0).getStatus().equals("complete")){
-//                    consultSessionService.clearSession(consultSessionStatusAgainVos.get(0).getSessionId(),
-//                            consultSessionStatusAgainVos.get(0).getUserId());
-//                }
-//            }
-//        }
 
-//        List<Object> consultSessions = sessionRedisCache.getConsultSessionsByKey();
-//        if(consultSessions.size()>0){
-//            for(Object consultSessionObject:consultSessions){
-//                RichConsultSession consultSessionValue = ConsultUtil.transferMapToRichConsultSession((HashMap<String,Object>) consultSessionObject);
-//                Query queryAgain = new Query(where("sessionId").is(String.valueOf(consultSessionValue.getId())));
-//                List<ConsultSessionStatusVo> consultSessionStatusAgainVos = consultRecordService.querySessionStatusList(queryAgain);
-//                if(consultSessionStatusAgainVos.size()>0){
-//                    if(consultSessionStatusAgainVos.get(0).getStatus().equals("complete")){
-//                        //清除redis内的残留数据
-//                        sessionRedisCache.removeConsultSessionBySessionId(Integer.parseInt(consultSessionStatusAgainVos.get(0).getSessionId()));
-//                        sessionRedisCache.removeUserIdSessionIdPair(consultSessionStatusAgainVos.get(0).getUserId());
-//                    }
-//                }else{
-//                    //if consultSessionStatusAgainVos have no data, it proved that the data in redis is dirty data, delete it
-//                    sessionRedisCache.removeConsultSessionBySessionId(consultSessionValue.getId());
-//                    sessionRedisCache.removeUserIdSessionIdPair(consultSessionValue.getUserId());
-//                }
-//            }
-//        }
+    /**
+     *  每天晚上1点，将前一天的咨询数据备份到数据库中
+     */
+    public void consultRecordMongoTransMySql(){
 
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Date newDate = calendar.getTime();
+        calendar.add(Calendar.DATE, -6);
+        Date oldDate = calendar.getTime();
+        Query query = new Query().addCriteria(Criteria.where("createDate").gte(oldDate).andOperator(Criteria.where("createDate").lte(newDate)));
+
+        List<ConsultRecordMongoVo> consultRecordMongoVos = consultRecordService.getCurrentUserHistoryRecord(query);
+        Iterator<ConsultRecordMongoVo> iterator = consultRecordMongoVos.iterator();
+        while (iterator.hasNext()){
+            ConsultRecordMongoVo consultRecordMongoVo = iterator.next();
+            ConsultRecordVo consultRecordVo = new ConsultRecordVo();
+            consultRecordVo.setId(IdGen.uuid());
+            consultRecordVo.setSessionId(consultRecordMongoVo.getSessionId());
+            consultRecordVo.setType(consultRecordMongoVo.getType());
+            consultRecordVo.setUserId(consultRecordMongoVo.getUserId());
+            consultRecordVo.setCreateDate(consultRecordMongoVo.getCreateDate());
+            consultRecordVo.setDoctorName(consultRecordMongoVo.getDoctorName());
+            consultRecordVo.setSenderName(consultRecordMongoVo.getSenderName());
+            consultRecordVo.setMessage( EmojiFilter.coverEmoji(consultRecordMongoVo.getMessage()));
+            consultRecordVo.setCsuserId(consultRecordMongoVo.getCsUserId());
+            consultRecordVo.setSenderId(consultRecordMongoVo.getSenderId());
+            consultRecordService.insert(consultRecordVo);
+        }
     }
 
 
@@ -1198,13 +1197,16 @@ public class ScheduledTask {
      * @Scheduled(cron = "0 0 20 * * ?")
      */
     public void sendMsgToDocAtNightPhoneConsult(){
+        System.out.println("package.controller scheduled test -->sendMsgToDocAtNight_PhoneConsult");
+
         Map tokenMap = systemService.getDoctorWechatParameter();
         String token = (String)tokenMap.get("token");
 
         Date tomorrow = DateUtils.addDays(new Date(), 1);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date = simpleDateFormat.format(tomorrow);
-        List<HashMap<String,Object>> doctorOrderInfoList = getDoctorOrderInfoList(date,"night");
+        List<Integer> monitorList = new ArrayList<Integer>();
+        List<HashMap<String,Object>> doctorOrderInfoList = getDoctorOrderInfoList(date,"night",monitorList);
 
         for(HashMap<String,Object> orderMap:doctorOrderInfoList){
             String doctorName = (String) orderMap.get("doctorName");
@@ -1230,6 +1232,10 @@ public class ScheduledTask {
                         url, openid);
             }
         }
+        for(Integer monitor:monitorList){
+            //标记已发送预约成功短信
+            insertMonitor(monitor + "", "3", "1");
+        }
     }
 
     /**
@@ -1237,12 +1243,15 @@ public class ScheduledTask {
      * @Scheduled(cron = "0 0 7 * * ?")
      */
     public void sendMsgToDocAtMorningPhoneConsult(){
+        System.out.println("package.controller scheduled test -->sendMsgToDocAtMorning_PhoneConsult");
+
         Map tokenMap = systemService.getDoctorWechatParameter();
         String token = (String)tokenMap.get("token");
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date = simpleDateFormat.format(new Date());
-        List<HashMap<String,Object>> doctorOrderInfoList = getDoctorOrderInfoList(date,"morning");
+        List<Integer> monitorList = new ArrayList<Integer>();
+        List<HashMap<String,Object>> doctorOrderInfoList = getDoctorOrderInfoList(date,"morning",monitorList);
 
         for(HashMap<String,Object> orderMap:doctorOrderInfoList){
             String doctorName = (String) orderMap.get("doctorName");
@@ -1267,6 +1276,12 @@ public class ScheduledTask {
                 DoctorMsgTemplate.doctorPhoneConsultRemindAtMoning2Wechat(simpleDateFormat1.format(new Date()), String.valueOf(num), nameList,
                         token, url, openid);
             }
+
+        }
+
+        for(Integer monitor:monitorList){
+            //标记已发送预约成功短信
+            insertMonitor(monitor + "", "3", "1");
         }
     }
 
@@ -1275,7 +1290,7 @@ public class ScheduledTask {
      * @param date
      * @return
      */
-    public List<HashMap<String,Object>> getDoctorOrderInfoList(String date,String time){
+    public List<HashMap<String,Object>> getDoctorOrderInfoList(String date,String time,List<Integer> monitorList){
         List<HashMap<String,Object>> doctorOrderInfoList = new ArrayList<HashMap<String,Object>>();
         HashMap<String,Object> searchMap = new HashMap<String, Object>();
         searchMap.put("date",date);
@@ -1319,6 +1334,7 @@ public class ScheduledTask {
                     classList.add((String) mapj.get("id"));
                 }
                 listMap.put("patientList", newList);
+                monitorList.add((Integer) mapj.get("patient_register_service_id"));
             }
             doctorOrderInfoList.add(listMap);
         }
@@ -1328,11 +1344,12 @@ public class ScheduledTask {
 
     //预约咨询成功5min后
     public void sendMsgToDoc5minAfterSuccess(){
+        System.out.println(new Date() + " package.controller scheduled test --> sendMsgToDoc5minAfterSuccess_PhoneConsult");
+
         Date date=new Date();
         DateFormat format=new SimpleDateFormat("HH");
         int time=Integer.parseInt(format.format(date));
         if(20>time&&time>7){
-            System.out.println(new Date() + " package.controller scheduled test --> sendMsgToDoc_PhoneConsult");
             List<HashMap<String, Object>> doctorMsg = scheduleTaskService.getOrderInfoToDocSuccess5minBefore();
             for (HashMap<String, Object> map : doctorMsg) {
                 String doctorName = (String)map.get("doctorName");
@@ -1355,6 +1372,7 @@ public class ScheduledTask {
                     DoctorMsgTemplate.doctorPhoneConsultRemindAt5minLater2Wechat(babyName, visitDate, week,
                             beginTime,token,url,(String)map.get("openid"));
                 }
+                //标记已发送预约成功短信
                 insertMonitor((Integer) map.get("patient_register_service_id") + "", "3", "1");
             }
         }
@@ -1362,7 +1380,8 @@ public class ScheduledTask {
 
     //接听前5min
     public void sendMsgToDoc5minBeforeConnect(){
-        System.out.println(new Date() + " package.controller scheduled test --> sendMsgToDoc_PhoneConsult");
+        System.out.println(new Date() + " package.controller scheduled test --> sendMsgToDoc5minBeforeConnect_PhoneConsult");
+
         List<HashMap<String, Object>> doctorMsg = scheduleTaskService.getOrderInfoToDocConnect5minAfter();
         for (HashMap<String, Object> map : doctorMsg) {
             String doctorName = (String)map.get("doctorName");

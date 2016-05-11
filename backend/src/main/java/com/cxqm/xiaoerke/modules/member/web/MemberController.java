@@ -22,7 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
-import com.cxqm.xiaoerke.common.utils.excel.ExportExcel;
+import com.cxqm.xiaoerke.modules.utils.excel.ExportExcel;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.member.entity.MemberservicerelItemservicerelRelationVo;
 import com.cxqm.xiaoerke.modules.member.service.MemberService;
@@ -83,7 +83,7 @@ public class MemberController extends BaseController {
 		try {
             String fileName = "订单数据"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
             List<MemberservicerelItemservicerelRelationVo> list = memberService.getAllMemberServiceList(vo,"exportData");
-    		new ExportExcel("订单数据", MemberservicerelItemservicerelRelationVo.class).setDataList(list).write(response, fileName).dispose();
+    		new ExportExcel("订单数据", com.cxqm.xiaoerke.modules.entity.MemberservicerelItemservicerelRelationVo.class).setDataList(list).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
 			e.printStackTrace();

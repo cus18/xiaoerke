@@ -181,7 +181,7 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
                 //              并发送消息
                 String url = ConstantUtil.TITAN_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) consultOrder.get("doctorId")+","+(Integer) consultOrder.get("id")+",phone";
                 PatientMsgTemplate.unConnectPhone2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"), (BigDecimal) consultOrder.get("price") + "", (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"));
-                Map tokenMap = systemService.getDoctorWechatParameter();
+                Map tokenMap = systemService.getWechatParameter();
                 String token = (String)tokenMap.get("token");
                 String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)consultOrder.get("date"),"yyyy/MM/dd"));
                 String dateTime = (String)consultOrder.get("date")+week+(String)consultOrder.get("beginTime");
@@ -194,7 +194,8 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
                 DoctorMsgTemplate.doctorPhoneConsultRemindFail2Sms(doctorName, babyName, doctorPhone);
 
                 String time = (String)consultOrder.get("date")+" "+week+" "+(String)consultOrder.get("beginTime")+"-"+(String)consultOrder.get("endTime");
-                String doctorToken = (String) tokenMap.get("token");
+                Map doctorTokenMap = systemService.getDoctorWechatParameter();
+                String doctorToken = (String) doctorTokenMap.get("token");
                 String openId = doctorInfoService.findOpenIdByDoctorId((String) consultOrder.get("doctorId"));
                 if (StringUtils.isNotNull(openId)) {
                     DoctorMsgTemplate.doctorPhoneConsultRemindFail2Wechat(babyName, time,(String)consultOrder.get("orderNo"), doctorToken, "", openId);

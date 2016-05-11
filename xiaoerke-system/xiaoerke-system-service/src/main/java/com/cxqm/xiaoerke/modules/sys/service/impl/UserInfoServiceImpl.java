@@ -85,16 +85,25 @@ public class UserInfoServiceImpl implements UserInfoService {
     //添加修改用户信息
     @Override
     public void doctorOper(User user) throws Exception{
-        if(StringUtils.isNull(user.getId())){
-            String sys_user_id = UUID.randomUUID().toString().replaceAll("-", "");
-            user.setId(sys_user_id);
-            user.setCreateDate(new Date());
-            user.setLoginName(user.getPhone());
-            user.setCompany(new Office("1"));
-            user.setOffice(new Office("3"));
-            user.setPassword(SystemService.entryptPassword("ILoveXiaoErKe"));
-            userdao.insert(user);
+        HashMap param = new HashMap();
+        param.put("phone",user.getPhone());
+        List<User> list = userdao.getUserListByInfo(param);
+        if(list.size()==0){
+            if(StringUtils.isNull(user.getId())){
+                String sys_user_id = UUID.randomUUID().toString().replaceAll("-", "");
+                user.setId(sys_user_id);
+                user.setCreateDate(new Date());
+                user.setLoginName(user.getPhone());
+                user.setCompany(new Office("1"));
+                user.setOffice(new Office("3"));
+                user.setPassword(SystemService.entryptPassword("ILoveXiaoErKe"));
+                userdao.insert(user);
+            }else{
+                user.setUpdateDate(new Date());
+                userdao.updateUserElementsExecute(user);
+            }
         }else{
+            user.setId(list.get(0).getId());
             user.setUpdateDate(new Date());
             userdao.updateUserElementsExecute(user);
         }

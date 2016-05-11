@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
-import com.cxqm.xiaoerke.common.utils.excel.ExportExcel;
+import com.cxqm.xiaoerke.modules.utils.excel.ExportExcel;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneManuallyConnectVo;
 import com.cxqm.xiaoerke.modules.order.exception.CancelOrderException;
 import net.sf.json.JSONObject;
@@ -300,7 +300,7 @@ public class ConsultPhoneController extends BaseController {
 		try {
 			String fileName = "订单数据"+ DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
 			List<ConsultPhoneRegisterServiceVo> list = consultPhonePatientService.getAllConsultPhoneRegisterListByInfo(vo);
-			new ExportExcel("订单数据", ConsultPhoneRegisterServiceVo.class).setDataList(list).write(response, fileName).dispose();
+			new ExportExcel("订单数据", com.cxqm.xiaoerke.modules.entity.ConsultPhoneRegisterServiceVo.class).setDataList(list).write(response, fileName).dispose();
 			return null;
 		} catch (Exception e) {
 			e.printStackTrace();

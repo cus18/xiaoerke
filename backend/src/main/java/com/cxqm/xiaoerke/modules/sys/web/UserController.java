@@ -8,8 +8,8 @@ import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
-import com.cxqm.xiaoerke.common.utils.excel.ExportExcel;
-import com.cxqm.xiaoerke.common.utils.excel.ImportExcel;
+import com.cxqm.xiaoerke.modules.utils.excel.ExportExcel;
+import com.cxqm.xiaoerke.modules.utils.excel.ImportExcel;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.sys.entity.Office;
 import com.cxqm.xiaoerke.modules.sys.entity.Role;
@@ -153,7 +153,7 @@ public class UserController extends BaseController {
 		try {
             String fileName = "用户数据"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
             Page<User> page = systemService.findUser(new Page<User>(), user);
-    		new ExportExcel("用户数据", User.class).setDataList(page.getList()).write(response, fileName).dispose();
+    		new ExportExcel("用户数据", com.cxqm.xiaoerke.modules.entity.User.class).setDataList(page.getList()).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导出用户失败！失败信息："+e.getMessage());

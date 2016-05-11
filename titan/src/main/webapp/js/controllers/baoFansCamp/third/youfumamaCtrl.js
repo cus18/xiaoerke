@@ -47,7 +47,7 @@
                             wx.ready(function () {
                                 // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                                 wx.onMenuShareTimeline({
-                                    title: '还在为宝宝各种育儿健康问题发愁吗？赶紧点击链接免费咨询一下专家吧！', // 分享标题
+                                    title: '不敢相信，微信竟然能免费咨询三甲医院的儿科专家了！回答的太详细了！', // 分享标题
                                     link: window.location.href.replace("true","false"), // 分享链接
                                     imgUrl: 'http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/third%2Fwechat.png', // 分享图标
                                     success: function (res) {
@@ -60,7 +60,7 @@
                                 });
 
                                 wx.onMenuShareAppMessage({
-                                    title: '还在为宝宝各种育儿健康问题发愁吗？赶紧点击链接免费咨询一下专家吧！', // 分享标题
+                                    title: '不敢相信，微信竟然能免费咨询三甲医院的儿科专家了！回答的太详细了！', // 分享标题
                                     desc: '还在为宝宝各种育儿健康问题发愁吗？赶紧点击链接免费咨询一下专家吧！', // 分享描述
                                     link:window.location.href.replace("true","false"), // 分享链接
                                     imgUrl: 'http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/third%2Fwechat.png', // 分享图标

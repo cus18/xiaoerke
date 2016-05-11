@@ -149,10 +149,14 @@
 		}
 		function deleteDoctor(){
 			confirmx("确认删除吗？",function(){
+				if("${user.phone}"==""){
+					alertx("电话为空，不能删除！");
+					return;
+				}
 				$.ajax({
 					type: "post",
 					url: "${ctx}/consult/doctorOper",
-					data: {id:"${user.id}",delFlag:'1'},
+					data: {id:"${user.id}",delFlag:'1',phone:"${user.phone}"},
 					dataType: "json",
 					success: function(data){
 						if("suc"==data.result){
@@ -325,8 +329,8 @@
 			<div class="control-group">
 				<label class="control-label">是否向用户发送评价消息:</label>
 				<div class="controls">
-					<input id="sendMessageno" name="sendMessage" value="0" type="radio" checked="checked"><label for="sendMessageno">否</label>
-					<input id="sendMessageyes" name="sendMessage" value="1" type="radio"><label for="sendMessageyes">是</label>
+					<input id="sendMessageno" name="sendMessage" value="0" type="radio"><label for="sendMessageno">否</label>
+					<input id="sendMessageyes" name="sendMessage" value="1" type="radio" checked="checked"><label for="sendMessageyes">是</label>
 				</div>
 			</div>
 			<div class="control-group">

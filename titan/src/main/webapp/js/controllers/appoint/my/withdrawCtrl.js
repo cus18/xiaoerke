@@ -8,6 +8,7 @@
             $scope.accountFund = $stateParams.accountFund
             $scope.info = {};
             $scope.info.isDraw = false;
+            $scope.moment = moment().add("1", 'days').format('YYYY/MM/DD HH:mm')
 
             $scope.withdrawSuccess = function(){
                 $scope.info.isDraw = true;

@@ -5,7 +5,6 @@ package com.cxqm.xiaoerke.modules.order.entity;
 
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
-import com.cxqm.xiaoerke.common.utils.excel.annotation.ExcelField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.xml.bind.annotation.XmlTransient;
@@ -90,7 +89,6 @@ public class PatientRegisterServiceVo implements Serializable{
 
     private String relationType;//订单所属医生与医院的关系
 
-    @ExcelField(title="订单类型", align=2, sort=21)
     public String getRelationType() {
         return relationType;
     }
@@ -123,7 +121,6 @@ public class PatientRegisterServiceVo implements Serializable{
         this.memberServiceId = memberServiceId;
     }
 
-    @ExcelField(title="来源", align=2, sort=0)
     public String getMarketer() {
         return marketer;
     }
@@ -132,7 +129,6 @@ public class PatientRegisterServiceVo implements Serializable{
         this.marketer = marketer;
     }
 
-    @ExcelField(title="成功（候诊时长）", align=2, sort=5)
     public String getWaitTime() {
         return waitTime;
     }
@@ -141,7 +137,6 @@ public class PatientRegisterServiceVo implements Serializable{
         this.waitTime = waitTime;
     }
 
-    @ExcelField(title="openID", align=2, sort=2)
     public String getOpenId() {
         return openId;
     }
@@ -150,7 +145,6 @@ public class PatientRegisterServiceVo implements Serializable{
         this.openId = openId;
     }
 
-    @ExcelField(title="出诊类别 专家门诊/特需门诊", align=2, sort=9)
     public String getServiceType() {
         return serviceType;
     }
@@ -159,7 +153,6 @@ public class PatientRegisterServiceVo implements Serializable{
         this.serviceType = serviceType;
     }
 
-    @ExcelField(title="整体满意度 是/否", align=2, sort=11)
     public String getOverallSatisfy() {
         return overallSatisfy;
     }
@@ -168,7 +161,6 @@ public class PatientRegisterServiceVo implements Serializable{
         this.overallSatisfy = overallSatisfy;
     }
 
-    @ExcelField(title="用户反馈（满意的地方）", align=2, sort=12)
     public String getUserFeedBack() {
         return userFeedBack;
     }
@@ -177,7 +169,6 @@ public class PatientRegisterServiceVo implements Serializable{
         this.userFeedBack = userFeedBack;
     }
 
-    @ExcelField(title="用户反馈（不满意和改进建议）", align=2, sort=13)
     public String getUserFeedBackRemarks() {
         return userFeedBackRemarks;
     }
@@ -194,7 +185,6 @@ public class PatientRegisterServiceVo implements Serializable{
         this.isUser = isUser;
     }
 
-    @ExcelField(title="取消（原因及方式）", align=2, sort=16)
     public String getCancelReason() {
         return cancelReason;
     }
@@ -203,7 +193,6 @@ public class PatientRegisterServiceVo implements Serializable{
         this.cancelReason = cancelReason;
     }
 
-    @ExcelField(title="备注", align=2, sort=18)
     public String getRemarks() {
         return remarks;
     }
@@ -252,7 +241,6 @@ public class PatientRegisterServiceVo implements Serializable{
         this.visitDateTo = visitDateTo;
     }
 
-    @ExcelField(title="微信用户名", align=2, sort=1)
     public String getNickName() {
         return nickName;
     }
@@ -261,7 +249,6 @@ public class PatientRegisterServiceVo implements Serializable{
         this.nickName = nickName;
     }
 
-    @ExcelField(title="用户真假", align=1, sort=14)
     public String getFalseUserReason() {
         return falseUserReason;
     }
@@ -270,7 +257,6 @@ public class PatientRegisterServiceVo implements Serializable{
         this.falseUserReason = falseUserReason;
     }
 
-    @ExcelField(title="最后操作时间", align=1, sort=17)
     public String getShowUpdateDate() {
         return showUpdateDate;
     }
@@ -303,7 +289,6 @@ public class PatientRegisterServiceVo implements Serializable{
         OrderCreateDate = orderCreateDate;
     }
 
-    @ExcelField(title="科室", align=1, sort=8)
     public String getDepartmentLevel1() {
         return departmentLevel1;
     }
@@ -312,7 +297,6 @@ public class PatientRegisterServiceVo implements Serializable{
         this.departmentLevel1 = departmentLevel1;
     }
 
-    @ExcelField(title="预约医生", align=1, sort=6)
     public String getDoctorName() {
         return doctorName;
     }
@@ -321,7 +305,6 @@ public class PatientRegisterServiceVo implements Serializable{
         this.doctorName = doctorName;
     }
 
-    @ExcelField(title="预约日期", align=1, sort=9)
     public String getShowCreateDate() {
         return showCreateDate;
     }
@@ -338,7 +321,6 @@ public class PatientRegisterServiceVo implements Serializable{
         this.order = order;
     }
 
-    @ExcelField(title="就诊时间", align=2, sort=10)
     public String getShowTime() {
         return showTime;
     }
@@ -418,7 +400,6 @@ public class PatientRegisterServiceVo implements Serializable{
         this.sysPatientId = sysPatientId;
     }
 
-    @ExcelField(title="订单状态", align=2, sort=7)
     public String getStatus() {
         return status;
     }
@@ -443,7 +424,6 @@ public class PatientRegisterServiceVo implements Serializable{
         this.updateDate = updateDate;
     }
 
-    @ExcelField(title="预约序号", align=2, sort=2)
     public String getRegisterNo() {
         return registerNo;
     }
@@ -452,7 +432,6 @@ public class PatientRegisterServiceVo implements Serializable{
         this.registerNo = registerNo;
     }
 
-    @ExcelField(title="联系电话", align=2, sort=4)
     public String getPhone() {
         return phone;
     }
@@ -461,7 +440,6 @@ public class PatientRegisterServiceVo implements Serializable{
         this.phone = phone;
     }
 
-    @ExcelField(title="宝宝姓名", align=2, sort=3)
     public String getBabyName() {
         return babyName;
     }
@@ -470,7 +448,6 @@ public class PatientRegisterServiceVo implements Serializable{
         this.babyName = babyName;
     }
 
-    @ExcelField(title="症状", align=1, sort=15)
     public String getIllness() {
         return illness;
     }
@@ -487,7 +464,6 @@ public class PatientRegisterServiceVo implements Serializable{
         this.birthday = birthday;
     }
 
-    @ExcelField(title="评价", align=1, sort=19)
     public String getPraise() {
         return praise;
     }
@@ -504,7 +480,6 @@ public class PatientRegisterServiceVo implements Serializable{
         this.star = star;
     }
 
-    @ExcelField(title="医院", align=1, sort=7)
     public String getHospitalName() {
         return hospitalName;
     }
@@ -586,7 +561,6 @@ public class PatientRegisterServiceVo implements Serializable{
         this.allowance = allowance;
     }
 
-    @ExcelField(title="支付状态", align=1, sort=20)
     public String getPayStatus() {
         return payStatus;
     }

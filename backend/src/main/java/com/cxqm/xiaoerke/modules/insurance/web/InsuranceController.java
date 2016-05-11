@@ -25,7 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
-import com.cxqm.xiaoerke.common.utils.excel.ExportExcel;
+import com.cxqm.xiaoerke.modules.utils.excel.ExportExcel;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.insurance.entity.InsuranceHospitalVo;
@@ -115,7 +115,7 @@ public class InsuranceController extends BaseController {
 		try {
 			String fileName = "订单数据"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
 			List<InsuranceRegisterService> list = insuranceRegisterService.getInsuranceServiceList(insuranceRegisterVo);
-			new ExportExcel("订单数据", InsuranceRegisterService.class).setDataList(list).write(response, fileName).dispose();
+			new ExportExcel("订单数据", com.cxqm.xiaoerke.modules.entity.InsuranceRegisterService.class).setDataList(list).write(response, fileName).dispose();
 			return null;
 		} catch (Exception e) {
 			e.printStackTrace();

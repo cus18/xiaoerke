@@ -7,6 +7,7 @@ import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
@@ -63,7 +64,9 @@ public class ConsultSessionManager {
 	private ConsultSessionService consultSessionService = SpringContextHolder.getBean("consultSessionServiceImpl");
 
 	private ConsultSessionForwardRecordsService consultSessionForwardRecordsService = SpringContextHolder.getBean("consultSessionForwardRecordsServiceImpl");
-	
+
+	private ConsultRecordService consultRecordService = SpringContextHolder.getBean("consultRecordServiceImpl");
+
 	private SystemService systemService = SpringContextHolder.getBean("systemService");
 
 	private UserInfoServiceImpl userInfoService = SpringContextHolder.getBean("userInfoServiceImpl");
@@ -396,6 +399,16 @@ public class ConsultSessionManager {
 			Channel channelFromCsUser = userChannelMapping.get(session.getCsUserId());
 			if(channelFromCsUser.isActive()){
 
+				ConsultSessionForwardRecordsVo forwardRecord = new ConsultSessionForwardRecordsVo();
+				forwardRecord.setConversationId(sessionId.longValue());
+				forwardRecord.setCreateBy(session.getCsUserId());
+				forwardRecord.setCreateTime(new Date());
+				forwardRecord.setFromUserId(session.getCsUserId());
+				forwardRecord.setToUserId(toCsUserId);
+				forwardRecord.setRemark(remark);
+				forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_WAITING);
+				consultSessionForwardRecordsService.save(forwardRecord);
+
 				//通知发起转接的人，转接正在处理中在5秒钟内，接诊员有机会取消转接，如果，5秒后，接诊员不取消，则接诊员不能再取消转接
 				JSONObject jsonObj = new JSONObject();
 				jsonObj.put("type", "4");
@@ -406,16 +419,6 @@ public class ConsultSessionManager {
 				jsonObj.put("toCsUserName", toCsUser.getName());
 				TextWebSocketFrame frameFromCsUser = new TextWebSocketFrame(jsonObj.toJSONString());
 				channelFromCsUser.writeAndFlush(frameFromCsUser.retain());
-
-				ConsultSessionForwardRecordsVo forwardRecord = new ConsultSessionForwardRecordsVo();
-				forwardRecord.setConversationId(sessionId.longValue());
-				forwardRecord.setCreateBy(session.getCsUserId());
-				forwardRecord.setCreateTime(new Date());
-				forwardRecord.setFromUserId(session.getCsUserId());
-				forwardRecord.setToUserId(toCsUserId);
-				forwardRecord.setRemark(remark);
-				forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_WAITING);
-				consultSessionForwardRecordsService.save(forwardRecord);
 
 				Runnable thread = new processTransferThread(forwardRecord.getId(),channelToCsUser,channelFromCsUser,session,toCsUser,remark);
 				threadExecutor.execute(thread);
@@ -544,6 +547,8 @@ public class ConsultSessionManager {
 					}
 					forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_ACCEPT);
 					consultSessionForwardRecordsService.updateAcceptedTransfer(forwardRecord);
+					session.setCsUserId(forwardRecord.getToUserId());
+					consultRecordService.modifyConsultSessionStatusVo(session);
 				} else {
 					forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_REJECT);
 					consultSessionForwardRecordsService.updateRejectedTransfer(forwardRecord);

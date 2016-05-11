@@ -3,12 +3,10 @@ package com.cxqm.xiaoerke.modules.search.service.util;
 
 import java.util.List;
 
-import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cxqm.xiaoerke.common.utils.excel.ImportExcel;
 import com.cxqm.xiaoerke.modules.search.dao.SearchKeywordIllnessRelationDao;
 import com.cxqm.xiaoerke.modules.search.entity.SearchKeywordIllnessRelation;
 import com.cxqm.xiaoerke.modules.sys.entity.IllnessVo;
@@ -26,7 +24,7 @@ public class KeywordsImportExportImpl implements KeywordsImportExport {
 	
 	@Override
 	public int importKeywordsIllnessRelation() {
-		try {
+		/*try {
 			ImportExcel importExcel = new ImportExcel("C:\\Users\\ft\\Desktop\\123.xlsx", 1);
 			int i = 1;
 			int number = importExcel.getLastDataRowNum();
@@ -55,7 +53,7 @@ public class KeywordsImportExportImpl implements KeywordsImportExport {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		return 0;
 	}
 

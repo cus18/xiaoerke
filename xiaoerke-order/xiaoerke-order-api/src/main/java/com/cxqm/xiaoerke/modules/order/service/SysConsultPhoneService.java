@@ -77,4 +77,6 @@ public interface SysConsultPhoneService {
      * @author chenxiaoqiong
      */
     Map<String,Object> getSysPhoneConsultInfo(Integer id);
+
+    public void batchInsertConsultPhoneRegister(List<HashMap<String, Object>> excuteList);
 }

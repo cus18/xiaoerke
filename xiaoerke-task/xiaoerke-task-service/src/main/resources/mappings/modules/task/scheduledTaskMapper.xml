@@ -86,6 +86,7 @@
         LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = dhr.sys_hospital_id
         LEFT JOIN sys_user su ON su.id = sd.sys_user_id
         WHERE DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(crs.create_time,"%Y-%m-%d")
+        AND DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(scs.date,"%Y-%m-%d")
 		AND DATE_FORMAT(DATE_SUB(now(), INTERVAL 5 MINUTE),"%H:%i") = DATE_FORMAT(crs.create_time,"%H:%i")
         AND crs.state = '1'
     </select>
@@ -117,7 +118,6 @@
         LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = dhr.sys_hospital_id
         LEFT JOIN sys_user su ON su.id = sd.sys_user_id
         WHERE DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(scs.date,"%Y-%m-%d")
-        AND DATE_FORMAT(now(),"%Y-%m-%d") = DATE_FORMAT(crs.create_time,"%Y-%m-%d")
         AND DATE_FORMAT(DATE_SUB(now(), INTERVAL -5 MINUTE),"%H:%i") = DATE_FORMAT(scs.beginTime,"%H:%i")
         AND crs.state = '1'
     </select>
@@ -255,6 +255,7 @@
 
     <select id="getOrderInfoByDate" resultType="java.util.HashMap">
         select sbb.name as babyName,
+        crs.id AS patient_register_service_id,
         case when shc.sys_hospital_name is null then "" else shc.sys_hospital_name end hospitalName,
         DATE_FORMAT(scs.beginTime,"%H:%i") begin_time,
         DATE_FORMAT(scs.endTime,"%H:%i") end_time,

@@ -297,4 +297,15 @@
     </if>
     ORDER BY scs.beginTime asc
   </select>
+
+  <insert id="batchInsertConsultPhoneRegister" parameterType="java.util.Map">
+    INSERT INTO sys_consultphone_service(sys_doctor_id, date, beginTime, endTime, state, createDate, repeatFlag)
+    VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.sysDoctorId},
+      #{item.date}, #{item.begintime}, #{item.endtime},
+      #{item.state}, #{item.createdate},
+      #{item.repeatFlag})
+    </foreach>
+  </insert>
 </mapper>

@@ -160,20 +160,20 @@ public class BaseDataServiceImpl implements BaseDataService {
 		    	 st.setTotalVictoryOrder(737);
 		     }
 		      }
-		      List<HashMap<String,Object>> totalvOrder= statisticsTitleDao.selectRecord(date);
-		      Integer victoryRecord=0;
+//		      List<HashMap<String,Object>> totalvOrder= statisticsTitleDao.selectRecord(date);
 				HashMap<String,String> ma=new HashMap<String, String>();
 				ma.put("create_date", date);
-				 List<HashMap<String,Object>> totalvRecord;
-				 SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-				 Date nowDate=sdf.parse(date);
-				 Date lastDate=sdf.parse("2015-11-03");
-				 if(lastDate.before(nowDate)){
-					 totalvRecord=statisticsTitleDao.selectIntoDayToDaytotalRecordAfterNov(ma);
-				 }else{
-					 totalvRecord=statisticsTitleDao.selectIntoDayToDaytotalRecord(ma);
-				 }
-					 victoryRecord=totalvOrder.size()-totalvRecord.size();
+		      Integer victoryRecord=statisticsTitleDao.getTotalConsultNum(ma);
+//				 List<HashMap<String,Object>> totalvRecord;
+//				 SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+//				 Date nowDate=sdf.parse(date);
+//				 Date lastDate=sdf.parse("2015-11-03");
+//				 if(lastDate.before(nowDate)){
+//					 totalvRecord=statisticsTitleDao.selectIntoDayToDaytotalRecordAfterNov(ma);
+//				 }else{
+//					 totalvRecord=statisticsTitleDao.selectIntoDayToDaytotalRecord(ma);
+//				 }
+//					 victoryRecord=totalvOrder.size()-totalvRecord.size();
 					 st.setVictoryNums(victoryRecord);
 		      List<HashMap<String,Object>> list=statisticsTitleDao.selectLastDayTotalRecord(date);
 			if (list == null || list.size() == 0) {

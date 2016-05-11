@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2012-2014 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
-package com.cxqm.xiaoerke.common.utils.excel;
+package com.cxqm.xiaoerke.modules.utils.excel;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
 
 import com.cxqm.xiaoerke.common.utils.Encodes;
 import com.cxqm.xiaoerke.common.utils.Reflections;
-import com.cxqm.xiaoerke.common.utils.excel.annotation.ExcelField;
+import com.cxqm.xiaoerke.modules.utils.excel.annotation.ExcelField;
 import com.cxqm.xiaoerke.modules.sys.utils.DictUtils;
 import com.google.common.collect.Lists;
 

@@ -80,10 +80,7 @@
 		insurance_register_service
 	WHERE
 		baby_id = #{babyId}
-	AND (
-		start_time &gt; now()
-		OR end_time &lt; NOW()
-	) 
+		AND  end_time &gt; NOW()
 	AND state != 6
   </select>
 

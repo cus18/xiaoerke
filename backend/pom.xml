@@ -7,8 +7,9 @@
   </parent>
   <artifactId>backend</artifactId>
   <packaging>war</packaging>
-  
-  <dependencies> 
+  <properties> <poi.version>3.9</poi.version> </properties>
+
+  <dependencies>
        <dependency> 
            <groupId>com.cxqm</groupId> 
            <artifactId>xiaoerke-common</artifactId>
@@ -60,6 +61,24 @@
           <artifactId>xiaoerke-insurance-service</artifactId>
           <version>0.0.1-SNAPSHOT</version>
       </dependency>
+
+      <!-- poi office -->
+      <dependency>
+          <groupId>org.apache.poi</groupId>
+          <artifactId>poi</artifactId>
+          <version>${poi.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.poi</groupId>
+          <artifactId>poi-ooxml</artifactId>
+          <version>${poi.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.poi</groupId>
+          <artifactId>poi-ooxml-schemas</artifactId>
+          <version>${poi.version}</version>
+      </dependency>
+
     </dependencies>
-    
+
 </project>
