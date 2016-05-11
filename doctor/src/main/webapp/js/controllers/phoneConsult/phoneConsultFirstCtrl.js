@@ -11,7 +11,7 @@ angular.module('controllers', ['ionic']).controller('phoneConsultFirstCtrl', [
         var num ;//判断上下周次数
         var saveSunday ;//保存每周周日的日期
         var saveSaturday ;//保存每周周六的日期
-        //var saveCurrDate ;//记录当前选中的日期
+        var savePravNext ;//记录当前选中的日期
 
         $scope.$on('$ionicView.enter', function(){
             $scope.pageLoading = true;
@@ -28,25 +28,50 @@ angular.module('controllers', ['ionic']).controller('phoneConsultFirstCtrl', [
                     var changeDate ;
                     if($stateParams.date==""&&sessionStorage.getItem("curr")==undefined){
                         changeDate = getCurrDate();
+                        num = 0;
+                        $("button").eq(0).addClass("changWeekCom");
+                        $scope.cusultList = [];
+                        getDateList(changeDate);
+                        $scope.selectItem = getWeekNum(changeDate);
+                        getDateWeek($scope.selectItem);
+                        getConsultDateList(changeDate);
                     }else if(sessionStorage.getItem("curr")!=undefined){
                         changeDate = sessionStorage.getItem("curr");
+                        num = parseInt(sessionStorage.getItem("num"));
+                        if(num==0){
+                            $("button").eq(0).addClass("changWeekCom");
+                            $("button").eq(1).removeClass("changWeekCom");
+                            setPrevNext(true,false);
+                        }else if(num==3){
+                            $("button").eq(1).addClass("changWeekCom");
+                            $("button").eq(0).removeClass("changWeekCom");
+                            setPrevNext(false,true);
+                        }else{
+                            $("button").eq(0).removeClass("changWeekCom");
+                            $("button").eq(1).removeClass("changWeekCom");
+                        }
+                        $scope.cusultList = [];
+                        getDateList(changeDate);
+                        $scope.selectItem = getWeekNum(changeDate);
+                        getDateWeek($scope.selectItem);
+                        getConsultDateList(changeDate);
                     }else if($stateParams.date!=""&&sessionStorage.getItem("curr")==undefined){
                         changeDate = $stateParams.date;
+                        num = 0;
+                        $("button").eq(0).addClass("changWeekCom");
+                        $scope.cusultList = [];
+                        getDateList(changeDate);
+                        $scope.selectItem = getWeekNum(changeDate);
+                        getDateWeek($scope.selectItem);
+                        getConsultDateList(changeDate);
                     }
-                    num = 0;
-                    $("button").eq(0).addClass("changWeekCom");
-                    $scope.cusultList = [];
-                    getDateList(changeDate);
-                    $scope.selectItem = getWeekNum(changeDate);
-                    getDateWeek($scope.selectItem);
-                    getConsultDateList(changeDate);
-
                 }
             });
         });
 
         //上、下周选择
         $scope.selectWeek = function (index) {
+            savePravNext = index;
             $scope.cusultList = [];
             if(num==0){
                 if("next"==index){
@@ -70,7 +95,7 @@ angular.module('controllers', ['ionic']).controller('phoneConsultFirstCtrl', [
                     }
                 }
                 if("next"==index){
-                    num++
+                    num++;
                     if(num==3){
                         $("button").eq(1).addClass("changWeekCom");
                         $("button").eq(0).removeClass("changWeekCom");
@@ -99,6 +124,8 @@ angular.module('controllers', ['ionic']).controller('phoneConsultFirstCtrl', [
         $scope.goDetails = function (index) {
             if($scope.consultDetalisList[index].state=="1"){
                 sessionStorage.setItem("curr",$scope.currDate);
+                sessionStorage.setItem("num",String(num));
+
                 $state.go("phoneConsultDetails",{id:$scope.consultDetalisList[index].id,doctorId:doctorId});
             }
         }
