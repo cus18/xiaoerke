@@ -224,7 +224,7 @@ var chooseDoctorGroup = function(){
                     var imgList = value.doctorIdList.split(";");
                     var imgVal = "";
                     $.each(imgList,function(index,val){
-                        imgVal = imgVal + '<img class="doctor" src="http://xiaoerke-doctor-pic.oss-cn-' +
+                        imgVal = imgVal + '<img class="doctor" width="20" height=20 src="http://xiaoerke-doctor-pic.oss-cn-' +
                             'beijing.aliyuncs.com/'+val+'">';
                     })
 
