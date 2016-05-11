@@ -4,6 +4,11 @@ import java.util.Date;
 
 import com.cxqm.xiaoerke.modules.utils.excel.annotation.ExcelField;
 
+/**
+ * 防犬宝vo
+ * sunxiao 2016-5-11
+ */
+ 
 public class InsuranceRegisterService {
 
     private String id;
