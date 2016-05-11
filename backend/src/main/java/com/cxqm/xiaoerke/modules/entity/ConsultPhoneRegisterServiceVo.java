@@ -4,6 +4,11 @@ import com.cxqm.xiaoerke.modules.utils.excel.annotation.ExcelField;
 
 import java.util.Date;
 
+/**
+ * 电话咨询订单vo
+ * sunxiao 2016-5-11
+ */
+ 
 public class ConsultPhoneRegisterServiceVo {
 
     private Integer id;
