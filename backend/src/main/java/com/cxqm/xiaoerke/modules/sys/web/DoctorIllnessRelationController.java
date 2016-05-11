@@ -182,7 +182,7 @@ public class DoctorIllnessRelationController extends BaseController {
             model.addAttribute("page", page);
             DoctorIllnessRelationVo doctorIllnessRelationVo = new DoctorIllnessRelationVo();
             doctorIllnessRelationVo.setSys_doctor_id(doctorId);
-            model.addAttribute("doctorIllnessRelationVO", doctorIllnessRelationVo);
+            model.addAttribute("doctorIllnessRelationVo", doctorIllnessRelationVo);
         }
         return "modules/sys/doctorAndIllnessRelation";
     }
