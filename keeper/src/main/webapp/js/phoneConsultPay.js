@@ -257,7 +257,7 @@ var caseLength=function(){
 
 //页面初始化执行,用户初始化页面参数信息以及微信的支付接口
 var pay = function(){
-    console.log("Dd",$('#connectphone').val()+$('#babyName').val()+bodBirthday+$('#case').val()+bodBirthday);
+    $('#payButton').attr('disabled',"true");//添加disabled属性
     if($('#connectphone').val()==""||$('#connectphone').val()==undefined||
         $('#babyName').val()==""||$('#babyName').val()==undefined||
         bodBirthday==""||bodBirthday==undefined
@@ -291,7 +291,6 @@ var pay = function(){
 }
 
 var wxPay = function (consultPhoneServiceId) {
-    $('#payButton').attr('disabled',"true");//添加disabled属性
     $.ajax({
         url:"account/user/consultPhonePay",// 跳转到 action
         async:true,
@@ -299,7 +298,6 @@ var wxPay = function (consultPhoneServiceId) {
         data:{patientRegisterId:consultPhoneServiceId},
         cache:false,
         success:function(data) {
-            $('#payButton').removeAttr("disabled");
             var obj = eval('(' + data + ')');
             if(parseInt(obj.agent)<5){
                 alert("您的微信版本低于5.0无法使用微信支付");

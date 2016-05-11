@@ -505,6 +505,7 @@ define(['appAppoint'], function(app){
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.withdrawCtrl',
                                     ['js/controllers/appoint/my/withdrawCtrl.js',
+                                        'js/libs/moment.min.js',
                                         'styles/appoint/my/withdraw.less?ver'+appointVersion],
                                     'js/views/appoint/my/withdraw.html?ver='+appointVersion);
                             }

@@ -39,23 +39,16 @@ public class RouteController extends BaseController {
     @Autowired
     private BabyEmrService babyEmrService;
 
-//    /**
-//     * appoint 预约 原生首页
-//     */
-//    @RequestMapping(value ="",method = {RequestMethod.POST, RequestMethod.GET})
-//    public String redirectPage() {
-//        return "native/phoneConsultFirstPage";
-//    }
 
     /**
-     * appoint 预约 原生首页
+     * appoint 预约挂号
      */
     @RequestMapping(value ="/appoint",method = {RequestMethod.POST, RequestMethod.GET})
     public String appointmentFirstPage() {
         return "native/appointmentFirstPage";
     }
     /**
-     * phoneConsult 电话咨询 原生首页
+     * phoneConsult 电话咨询
      */
     @RequestMapping(value ="/phoneConsult",method = {RequestMethod.POST, RequestMethod.GET})
     public String phoneConsultFirstPage() {
@@ -63,7 +56,7 @@ public class RouteController extends BaseController {
     }
 
     /**
-     * 应用首页
+     * 知识库
      */
     @RequestMapping(value ="/knowledge",method = {RequestMethod.POST, RequestMethod.GET})
     public String knowledgeFirstPage(HttpServletRequest request,HttpSession session) {
@@ -78,7 +71,7 @@ public class RouteController extends BaseController {
     }
 
     /**
-     * 应用首页
+     * 健康管理
      */
     @RequestMapping(value ="/healthPlan",method = {RequestMethod.POST, RequestMethod.GET})
     public String healthPlanIndex() {
@@ -86,7 +79,7 @@ public class RouteController extends BaseController {
     }
 
     /**
-     * 应用首页
+     * market 妈妈营养测试
      */
     @RequestMapping(value ="/momNutritionTest",method = {RequestMethod.POST, RequestMethod.GET})
     public String momNutritionTestFirst() {
@@ -94,7 +87,15 @@ public class RouteController extends BaseController {
     }
 
     /**
-     * 应用首页
+     * market 宝妈爱心接力
+     */
+    @RequestMapping(value ="/lovePlan",method = {RequestMethod.POST, RequestMethod.GET})
+    public String lovePlanFirst() {
+        return "native/lovePlanFirst";
+    }
+
+    /**
+     * titan 防犬宝
      */
     @RequestMapping(value ="/antiDogFirst",method = {RequestMethod.POST, RequestMethod.GET})
     public String antiDogFirst() {
@@ -102,7 +103,7 @@ public class RouteController extends BaseController {
     }
 
     /**
-     * 咨询打赏首页
+     * 咨询打赏
      */
     @RequestMapping(value ="/playtour",method = {RequestMethod.POST, RequestMethod.GET})
     public String playTour() {

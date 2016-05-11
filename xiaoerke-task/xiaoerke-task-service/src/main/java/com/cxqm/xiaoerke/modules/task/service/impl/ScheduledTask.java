@@ -1083,7 +1083,7 @@ public class ScheduledTask {
         if(consultSessionStatusVos != null && consultSessionStatusVos.size() > 0){
             for(ConsultSessionStatusVo consultSessionStatusVo : consultSessionStatusVos){
                     if(consultSessionStatusVo !=null && consultSessionStatusVo.getLastMessageTime()!=null){
-                        if(DateUtils.pastMinutes(consultSessionStatusVo.getLastMessageTime())>60L){
+                        if(DateUtils.pastMinutes(consultSessionStatusVo.getLastMessageTime())>120L){
                             //根据sessionId查询consult_conversation_forward_records表，状态为waiting不执行
                             ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = new ConsultSessionForwardRecordsVo();
                             consultSessionForwardRecordsVo.setConversationId(Long.parseLong(consultSessionStatusVo.getSessionId()));
@@ -1097,41 +1097,6 @@ public class ScheduledTask {
                     }
             }
         }
-
-//        ConsultSession consultSession = new ConsultSession();
-//        consultSession.setStatus(ConsultSession.STATUS_ONGOING);
-//        List<ConsultSession> consultSessionVOs = consultSessionService.selectBySelective(consultSession);
-//        for(ConsultSession consultSessionVO:consultSessionVOs){
-//            Query queryAgain = new Query(where("sessionId").is(String.valueOf(consultSessionVO.getId())));
-//            List<ConsultSessionStatusVo> consultSessionStatusAgainVos = consultRecordService.querySessionStatusList(queryAgain);
-//            if(consultSessionStatusAgainVos.size()>0){
-//                if(consultSessionStatusAgainVos.get(0).getStatus().equals("complete")){
-//                    consultSessionService.clearSession(consultSessionStatusAgainVos.get(0).getSessionId(),
-//                            consultSessionStatusAgainVos.get(0).getUserId());
-//                }
-//            }
-//        }
-
-//        List<Object> consultSessions = sessionRedisCache.getConsultSessionsByKey();
-//        if(consultSessions.size()>0){
-//            for(Object consultSessionObject:consultSessions){
-//                RichConsultSession consultSessionValue = ConsultUtil.transferMapToRichConsultSession((HashMap<String,Object>) consultSessionObject);
-//                Query queryAgain = new Query(where("sessionId").is(String.valueOf(consultSessionValue.getId())));
-//                List<ConsultSessionStatusVo> consultSessionStatusAgainVos = consultRecordService.querySessionStatusList(queryAgain);
-//                if(consultSessionStatusAgainVos.size()>0){
-//                    if(consultSessionStatusAgainVos.get(0).getStatus().equals("complete")){
-//                        //清除redis内的残留数据
-//                        sessionRedisCache.removeConsultSessionBySessionId(Integer.parseInt(consultSessionStatusAgainVos.get(0).getSessionId()));
-//                        sessionRedisCache.removeUserIdSessionIdPair(consultSessionStatusAgainVos.get(0).getUserId());
-//                    }
-//                }else{
-//                    //if consultSessionStatusAgainVos have no data, it proved that the data in redis is dirty data, delete it
-//                    sessionRedisCache.removeConsultSessionBySessionId(consultSessionValue.getId());
-//                    sessionRedisCache.removeUserIdSessionIdPair(consultSessionValue.getUserId());
-//                }
-//            }
-//        }
-
     }
 
 
@@ -1198,6 +1163,8 @@ public class ScheduledTask {
      * @Scheduled(cron = "0 0 20 * * ?")
      */
     public void sendMsgToDocAtNightPhoneConsult(){
+        System.out.println("package.controller scheduled test -->sendMsgToDocAtNight_PhoneConsult");
+
         Map tokenMap = systemService.getDoctorWechatParameter();
         String token = (String)tokenMap.get("token");
 
@@ -1237,6 +1204,8 @@ public class ScheduledTask {
      * @Scheduled(cron = "0 0 7 * * ?")
      */
     public void sendMsgToDocAtMorningPhoneConsult(){
+        System.out.println("package.controller scheduled test -->sendMsgToDocAtMorning_PhoneConsult");
+
         Map tokenMap = systemService.getDoctorWechatParameter();
         String token = (String)tokenMap.get("token");
 
@@ -1328,11 +1297,12 @@ public class ScheduledTask {
 
     //预约咨询成功5min后
     public void sendMsgToDoc5minAfterSuccess(){
+        System.out.println(new Date() + " package.controller scheduled test --> sendMsgToDoc5minAfterSuccess_PhoneConsult");
+
         Date date=new Date();
         DateFormat format=new SimpleDateFormat("HH");
         int time=Integer.parseInt(format.format(date));
         if(20>time&&time>7){
-            System.out.println(new Date() + " package.controller scheduled test --> sendMsgToDoc_PhoneConsult");
             List<HashMap<String, Object>> doctorMsg = scheduleTaskService.getOrderInfoToDocSuccess5minBefore();
             for (HashMap<String, Object> map : doctorMsg) {
                 String doctorName = (String)map.get("doctorName");
@@ -1362,7 +1332,8 @@ public class ScheduledTask {
 
     //接听前5min
     public void sendMsgToDoc5minBeforeConnect(){
-        System.out.println(new Date() + " package.controller scheduled test --> sendMsgToDoc_PhoneConsult");
+        System.out.println(new Date() + " package.controller scheduled test --> sendMsgToDoc5minBeforeConnect_PhoneConsult");
+
         List<HashMap<String, Object>> doctorMsg = scheduleTaskService.getOrderInfoToDocConnect5minAfter();
         for (HashMap<String, Object> map : doctorMsg) {
             String doctorName = (String)map.get("doctorName");

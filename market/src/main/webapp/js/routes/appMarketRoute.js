@@ -58,40 +58,41 @@ define(['appMarket'], function(app){
                         }
                     })
                /* 宝妈爱心接力*/
-                .state('loveRelayIndex', {
-                        url: '/loveRelayIndex',
+                .state('lovePlanPoster', {
+                        url: '/lovePlanPoster',
                         templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'loveRelayIndexCtrl',
+                        controller: 'lovePlanPosterCtrl',
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.loveRelayIndexCtrl',
-                                    ['js/controllers/loveRelay/loveRelayIndexCtrl.js',
-                                        'styles/loveRelay/loveRelayIndex.less?ver='+marketVersion,
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.lovePlanPosterCtrl',
+                                    ['js/controllers/lovePlan/lovePlanPosterCtrl.js',
+                                        'styles/lovePlan/lovePlanPoster.less?ver='+marketVersion,
                                     ],
-                                    'js/views/loveRelay/loveRelayIndex.html?ver='+marketVersion);
+                                    'js/views/lovePlan/lovePlanPoster.html?ver='+marketVersion);
                             }
                         },
                         data: {
                             public: true
                         }
                     })
-                .state('loveRelayPoster', {
-                        url: '/loveRelayPoster',
+                .state('lovePlanList', {
+                        url: '/lovePlanList',
                         templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'loveRelayPosterCtrl',
+                        controller: 'lovePlanListCtrl',
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.loveRelayPosterCtrl',
-                                    ['js/controllers/loveRelay/loveRelayPosterCtrl.js',
-                                        'styles/loveRelay/loveRelayPoster.less?ver='+marketVersion,
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.lovePlanListCtrl',
+                                    ['js/controllers/lovePlan/lovePlanListCtrl.js',
+                                        'styles/lovPlan/lovePlanList.less?ver='+marketVersion,
                                     ],
-                                    'js/views/loveRelay/loveRelayPoster.html?ver='+marketVersion);
+                                    'js/views/lovePlan/lovePlanList.html?ver='+marketVersion);
                             }
                         },
                         data: {
                             public: true
                         }
                     })
+
 
 
                 $urlRouterProvider.otherwise('momNutritionTest');

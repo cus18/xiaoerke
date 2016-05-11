@@ -57,13 +57,8 @@ public class ConsultDoctorController extends BaseController {
     private SystemService systemService;
 
     @Autowired
-    private PatientRegisterPraiseService patientRegisterPraiseService;
-
-    @Autowired
     private WechatAttentionService wechatAttentionService;
 
-    @Autowired
-    private SessionRedisCache sessionRedisCache;
 
     @RequestMapping(value = "/getCurrentUserHistoryRecord", method = {RequestMethod.POST, RequestMethod.GET})
     public

@@ -184,15 +184,20 @@ public class AccountUserController {
 	String consultPhonePay(HttpServletRequest request,HttpSession session) throws Exception {
 		String consultPhoneServiceId = request.getParameter("patientRegisterId");
 		Map<String,Object> consultMap = consultPhonePatientService.getPatientRegisterInfo(Integer.parseInt(consultPhoneServiceId));
-		request.setAttribute("payPrice", consultMap.get("price"));
-		//获取统一支付接口参数
-		Map prepayInfo = accountService.getPrepayInfo(request, session, "consultPhone");
-		prepayInfo.put("feeType", "consultPhone");
-		System.out.println("feeType:"+prepayInfo.get("feeType").toString());
-		//拼装jsPay所需参数,如果prepay_id生成成功则将信息放入account_pay_record表
-		String userId = UserUtils.getUser().getId();//patientRegisterService.getUserIdByPatientRegisterId(patientRegisterId);
-		String payParameter = accountService.assemblyPayParameter(request,prepayInfo,session,userId, null);
-		return payParameter;
+		if("待支付".equals(consultMap.get("state"))){
+			request.setAttribute("payPrice", consultMap.get("price"));
+			//获取统一支付接口参数
+			Map prepayInfo = accountService.getPrepayInfo(request, session, "consultPhone");
+			prepayInfo.put("feeType", "consultPhone");
+			System.out.println("feeType:"+prepayInfo.get("feeType").toString());
+			//拼装jsPay所需参数,如果prepay_id生成成功则将信息放入account_pay_record表
+			String userId = UserUtils.getUser().getId();//patientRegisterService.getUserIdByPatientRegisterId(patientRegisterId);
+			String payParameter = accountService.assemblyPayParameter(request,prepayInfo,session,userId, null);
+			return payParameter;
+		}
+		SortedMap<Object,Object> params = new TreeMap<Object,Object>();
+		params.put("agent","7");
+		return JSONObject.fromObject(params).toString();
 	}
 
 }
