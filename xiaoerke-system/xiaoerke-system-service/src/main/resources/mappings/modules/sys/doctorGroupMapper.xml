@@ -50,7 +50,7 @@
     <!--获取所有的医院分页信息  @author zdl-->
     <select id="findPageAllDoctorGroup" resultMap="doctorGroupVo" resultType="com.cxqm.xiaoerke.common.persistence.Page">
        SELECT sdg.* FROM sys_doctor_group sdg
-        <if test="is_consultPhone != ''">
+        <if test="is_consultPhone != null">
             where sdg.is_consultPhone = #{is_consultPhone}
         </if>
        ORDER BY sdg.rank asc
