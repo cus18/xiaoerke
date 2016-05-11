@@ -2,7 +2,6 @@ package com.cxqm.xiaoerke.modules.member.entity;
 
 import java.util.Date;
 
-import com.cxqm.xiaoerke.common.utils.excel.annotation.ExcelField;
 
 public class MemberservicerelItemservicerelRelationVo {
     private Integer id;
@@ -57,7 +56,6 @@ public class MemberservicerelItemservicerelRelationVo {
 
     private String isPay;//是否收费
     
-    @ExcelField(title="是否收费", align=2, sort=9)
     public String getIsPay() {
 		return isPay;
 	}
@@ -74,7 +72,6 @@ public class MemberservicerelItemservicerelRelationVo {
         this.remark = remark;
     }
 
-    @ExcelField(title="状态", align=2, sort=10)
     public String getStatus() {
         return status;
     }
@@ -83,7 +80,6 @@ public class MemberservicerelItemservicerelRelationVo {
         this.status = status;
     }
 
-    @ExcelField(title="微信名", align=2, sort=2)
     public String getNickName() {
 		return nickName;
 	}
@@ -92,7 +88,6 @@ public class MemberservicerelItemservicerelRelationVo {
 		this.nickName = nickName;
 	}
 
-	@ExcelField(title="手机号", align=2, sort=3)
 	public String getPhone() {
 		return phone;
 	}
@@ -101,7 +96,6 @@ public class MemberservicerelItemservicerelRelationVo {
 		this.phone = phone;
 	}
 
-	@ExcelField(title="服务有效期", align=2, sort=6)
 	public long getServiceValidityPeriod() {
 		return serviceValidityPeriod;
 	}
@@ -110,7 +104,6 @@ public class MemberservicerelItemservicerelRelationVo {
 		this.serviceValidityPeriod = serviceValidityPeriod;
 	}
 
-	@ExcelField(title="预约有效期", align=2, sort=7)
 	public long getReservationPeriod() {
 		return reservationPeriod;
 	}
@@ -119,7 +112,6 @@ public class MemberservicerelItemservicerelRelationVo {
 		this.reservationPeriod = reservationPeriod;
 	}
 
-	@ExcelField(title="购买日期", align=2, sort=5)
 	public String getActivateDateStr() {
 		return activateDateStr;
 	}
@@ -136,7 +128,6 @@ public class MemberservicerelItemservicerelRelationVo {
         this.openid = openid;
     }
 
-    @ExcelField(title="来源渠道", align=2, sort=1)
     public String getName() {
         return name;
     }
@@ -153,7 +144,6 @@ public class MemberservicerelItemservicerelRelationVo {
         this.qrCode = qrCode;
     }
 
-    @ExcelField(title="服务类型", align=2, sort=4)
     public String getType() {
         return type;
     }
@@ -194,7 +184,6 @@ public class MemberservicerelItemservicerelRelationVo {
         this.source = source;
     }
 
-    @ExcelField(title="id", align=2, sort=0)
     public Integer getId() {
         return id;
     }
@@ -227,7 +216,6 @@ public class MemberservicerelItemservicerelRelationVo {
         this.memberItemserviceRelationId = memberItemserviceRelationId;
     }
 
-    @ExcelField(title="剩余预约次数", align=2, sort=8)
     public Integer getLeftTimes() {
         return leftTimes;
     }

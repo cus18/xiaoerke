@@ -11,7 +11,6 @@ import java.io.ByteArrayInputStream;
 import com.cxqm.xiaoerke.common.bean.AccessToken;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
-import org.apache.poi.ss.formula.functions.T;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;

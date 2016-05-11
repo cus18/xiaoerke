@@ -2,7 +2,6 @@ package com.cxqm.xiaoerke.modules.insurance.entity;
 
 import java.util.Date;
 
-import com.cxqm.xiaoerke.common.utils.excel.annotation.ExcelField;
 
 public class InsuranceRegisterService {
 
@@ -72,7 +71,6 @@ public class InsuranceRegisterService {
 		this.birthday = birthday;
 	}
 
-	@ExcelField(title="来源", align=2, sort=13)
 	public String getSource() {
 		return source;
 	}
@@ -107,7 +105,6 @@ public class InsuranceRegisterService {
 
 	private String name;
 
-	@ExcelField(title="宝宝姓名", align=2, sort=6)
 	public String getName() {
 		return name;
 	}
@@ -116,7 +113,6 @@ public class InsuranceRegisterService {
 		this.name = name;
 	}
 
-	@ExcelField(title="操作人", align=2, sort=11)
 	public String getUpdateBy() {
 		return updateBy;
 	}
@@ -125,7 +121,6 @@ public class InsuranceRegisterService {
 		this.updateBy = updateBy;
 	}
 
-	@ExcelField(title="微信名", align=2, sort=2)
 	public String getNickName() {
 		return nickName;
 	}
@@ -175,7 +170,6 @@ public class InsuranceRegisterService {
 		this.toStartDate = toStartDate;
 	}
 
-	@ExcelField(title="开始时间", align=2, sort=8)
 	public Date getStartTime() {
 		return startTime;
 	}
@@ -184,7 +178,6 @@ public class InsuranceRegisterService {
 		this.startTime = startTime;
 	}
 
-	@ExcelField(title="结束时间", align=2, sort=9)
 	public Date getEndTime() {
 		return endTime;
 	}
@@ -193,7 +186,6 @@ public class InsuranceRegisterService {
 		this.endTime = endTime;
 	}
 
-	@ExcelField(title="订单号", align=2, sort=1)
 	public String getId() {
 		return id;
 	}
@@ -218,7 +210,6 @@ public class InsuranceRegisterService {
 		this.insuranceType = insuranceType;
 	}
 
-	@ExcelField(title="购买人", align=2, sort=4)
 	public String getParentName() {
 		return parentName;
 	}
@@ -227,7 +218,6 @@ public class InsuranceRegisterService {
 		this.parentName = parentName;
 	}
 
-	@ExcelField(title="状态", align=2, sort=12)
 	public String getState() {
 		return state;
 	}
@@ -236,7 +226,6 @@ public class InsuranceRegisterService {
 		this.state = state;
 	}
 
-	@ExcelField(title="手机号", align=2, sort=3)
 	public String getParentPhone() {
 		return parentPhone;
 	}
@@ -245,7 +234,6 @@ public class InsuranceRegisterService {
 		this.parentPhone = parentPhone;
 	}
 
-	@ExcelField(title="身份证号", align=2, sort=5)
 	public String getIdCard() {
 		return idCard;
 	}
@@ -254,7 +242,6 @@ public class InsuranceRegisterService {
 		this.idCard = idCard;
 	}
 
-	@ExcelField(title="下单时间", align=2, sort=7)
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -263,7 +250,6 @@ public class InsuranceRegisterService {
 		this.createTime = createTime;
 	}
 
-	@ExcelField(title="最后操作时间", align=2, sort=10)
 	public Date getUpdateTime() {
 		return updateTime;
 	}

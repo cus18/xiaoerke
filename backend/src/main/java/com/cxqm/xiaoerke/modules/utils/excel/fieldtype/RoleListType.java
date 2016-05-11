@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2012-2014 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
-package com.cxqm.xiaoerke.common.utils.excel.fieldtype;
+package com.cxqm.xiaoerke.modules.utils.excel.fieldtype;
 
 import java.util.List;
 
