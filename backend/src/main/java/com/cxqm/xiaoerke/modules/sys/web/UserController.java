@@ -153,7 +153,7 @@ public class UserController extends BaseController {
 		try {
             String fileName = "用户数据"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
             Page<User> page = systemService.findUser(new Page<User>(), user);
-    		new ExportExcel("用户数据", User.class).setDataList(page.getList()).write(response, fileName).dispose();
+    		new ExportExcel("用户数据", com.cxqm.xiaoerke.modules.entity.User.class).setDataList(page.getList()).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导出用户失败！失败信息："+e.getMessage());

@@ -115,7 +115,7 @@ public class InsuranceController extends BaseController {
 		try {
 			String fileName = "订单数据"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
 			List<InsuranceRegisterService> list = insuranceRegisterService.getInsuranceServiceList(insuranceRegisterVo);
-			new ExportExcel("订单数据", InsuranceRegisterService.class).setDataList(list).write(response, fileName).dispose();
+			new ExportExcel("订单数据", com.cxqm.xiaoerke.modules.entity.InsuranceRegisterService.class).setDataList(list).write(response, fileName).dispose();
 			return null;
 		} catch (Exception e) {
 			e.printStackTrace();

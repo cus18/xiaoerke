@@ -255,6 +255,7 @@
 
     <select id="getOrderInfoByDate" resultType="java.util.HashMap">
         select sbb.name as babyName,
+        crs.id AS patient_register_service_id,
         case when shc.sys_hospital_name is null then "" else shc.sys_hospital_name end hospitalName,
         DATE_FORMAT(scs.beginTime,"%H:%i") begin_time,
         DATE_FORMAT(scs.endTime,"%H:%i") end_time,

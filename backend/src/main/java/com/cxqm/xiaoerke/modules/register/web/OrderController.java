@@ -181,7 +181,7 @@ public class OrderController extends BaseController {
 		try {
             String fileName = "订单数据"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
             List<PatientRegisterServiceVo> list = patientRegisterService.getPatientRegisterList(patientRegisterServiceVo);
-    		new ExportExcel("订单数据", PatientRegisterServiceVo.class).setDataList(list).write(response, fileName).dispose();
+    		new ExportExcel("订单数据", com.cxqm.xiaoerke.modules.entity.PatientRegisterServiceVo.class).setDataList(list).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
 			e.printStackTrace();

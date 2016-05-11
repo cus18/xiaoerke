@@ -32,7 +32,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by wangbaowei on 16/3/18.
@@ -191,14 +194,16 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
             PatientMsgTemplate.consultPhoneCancel2Wechat(doctorName,date, week, beginTime,(String) map.get("endTime"), (String) map.get("phone"),(String) map.get("orderNo"),(BigDecimal) map.get("price")+"",(String) map.get("openid"),token,url);
             PatientMsgTemplate.consultPhoneRefund2Msg(doctorName, (BigDecimal) map.get("price")+"", (String) map.get("phone"),(String) map.get("date"), week, (String) map.get("beginTime"),(String) map.get("orderNo"));
 
-            //医生-短信
-            DoctorMsgTemplate.cancelDoctorPhoneConsult2Sms(doctorName, babyName, doctorPhone, date, week, beginTime);
-            //医生-微信
-            Map<String, Object> tokenMap = systemService.getDoctorWechatParameter();
-            String doctorToken = (String) tokenMap.get("token");
-            String openId = doctorInfoService.findOpenIdByDoctorId((String) map.get("doctorId"));
-            if (StringUtils.isNotNull(openId)) {
-                DoctorMsgTemplate.cancelDoctorPhoneConsult2Wechat(babyName, doctorName, date, week, beginTime, doctorToken, "", openId);
+            if("1".equals((String)map.get("status")) && "3".equals((String)map.get("types"))) {
+                //医生-短信
+                DoctorMsgTemplate.cancelDoctorPhoneConsult2Sms(doctorName, babyName, doctorPhone, date, week, beginTime);
+                //医生-微信
+                Map<String, Object> tokenMap = systemService.getDoctorWechatParameter();
+                String doctorToken = (String) tokenMap.get("token");
+                String openId = doctorInfoService.findOpenIdByDoctorId((String) map.get("doctorId"));
+                if (StringUtils.isNotNull(openId)) {
+                    DoctorMsgTemplate.cancelDoctorPhoneConsult2Wechat(babyName, doctorName, date, week, beginTime, doctorToken, "", openId);
+                }
             }
         }
         if(sysOrderState== 0){

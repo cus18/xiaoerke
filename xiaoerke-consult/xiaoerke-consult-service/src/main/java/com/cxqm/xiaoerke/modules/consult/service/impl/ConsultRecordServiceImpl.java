@@ -238,7 +238,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     public void modifyConsultSessionStatusVo(RichConsultSession consultSession) {
         ConsultSessionStatusVo consultSessionStatusVo = new ConsultSessionStatusVo();
         consultSessionStatusVo.setSessionId(String.valueOf(consultSession.getId()));
-        consultSessionStatusVo.setCsUserId(consultSession.getCsUserId());
+        consultSessionStatusVo.setCsUserId(""+consultSession.getCsUserId());
         consultRecordMongoDBService.modifyConsultSessionStatusVo(consultSessionStatusVo);
     }
 
