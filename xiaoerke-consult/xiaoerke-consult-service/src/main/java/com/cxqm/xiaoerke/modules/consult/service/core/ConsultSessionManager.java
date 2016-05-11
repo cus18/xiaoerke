@@ -399,6 +399,16 @@ public class ConsultSessionManager {
 			Channel channelFromCsUser = userChannelMapping.get(session.getCsUserId());
 			if(channelFromCsUser.isActive()){
 
+				ConsultSessionForwardRecordsVo forwardRecord = new ConsultSessionForwardRecordsVo();
+				forwardRecord.setConversationId(sessionId.longValue());
+				forwardRecord.setCreateBy(session.getCsUserId());
+				forwardRecord.setCreateTime(new Date());
+				forwardRecord.setFromUserId(session.getCsUserId());
+				forwardRecord.setToUserId(toCsUserId);
+				forwardRecord.setRemark(remark);
+				forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_WAITING);
+				consultSessionForwardRecordsService.save(forwardRecord);
+
 				//通知发起转接的人，转接正在处理中在5秒钟内，接诊员有机会取消转接，如果，5秒后，接诊员不取消，则接诊员不能再取消转接
 				JSONObject jsonObj = new JSONObject();
 				jsonObj.put("type", "4");
@@ -409,16 +419,6 @@ public class ConsultSessionManager {
 				jsonObj.put("toCsUserName", toCsUser.getName());
 				TextWebSocketFrame frameFromCsUser = new TextWebSocketFrame(jsonObj.toJSONString());
 				channelFromCsUser.writeAndFlush(frameFromCsUser.retain());
-
-				ConsultSessionForwardRecordsVo forwardRecord = new ConsultSessionForwardRecordsVo();
-				forwardRecord.setConversationId(sessionId.longValue());
-				forwardRecord.setCreateBy(session.getCsUserId());
-				forwardRecord.setCreateTime(new Date());
-				forwardRecord.setFromUserId(session.getCsUserId());
-				forwardRecord.setToUserId(toCsUserId);
-				forwardRecord.setRemark(remark);
-				forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_WAITING);
-				consultSessionForwardRecordsService.save(forwardRecord);
 
 				Runnable thread = new processTransferThread(forwardRecord.getId(),channelToCsUser,channelFromCsUser,session,toCsUser,remark);
 				threadExecutor.execute(thread);

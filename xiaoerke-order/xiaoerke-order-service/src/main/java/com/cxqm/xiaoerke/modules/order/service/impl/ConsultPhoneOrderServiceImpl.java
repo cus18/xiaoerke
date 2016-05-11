@@ -188,7 +188,7 @@ public class ConsultPhoneOrderServiceImpl implements ConsultPhoneOrderService {
                 map.put("name",resultMap.get("name"));
                 map.put("price",resultMap.get("price"));
                 timeList.add(map);
-                totalPrice += (Float)resultMap.get("price");
+                totalPrice += Float.valueOf(String.valueOf(resultMap.get("price")));
             }
         }
         response.put("totalNum", resultList.size());

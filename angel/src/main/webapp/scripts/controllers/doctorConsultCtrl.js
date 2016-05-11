@@ -39,8 +39,6 @@ angular.module('controllers', ['luegg.directives'])
             $scope.tapImgButton = function (key,value) {
                 $scope.showFlag[key] = !$scope.showFlag[key];
                 $scope.imageSrc = value;
-                console.log(key)
-                console.log(value)
             };
             //初始化医生端登录，建立socket链接，获取基本信息
             $scope.doctorConsultInit = function () {
@@ -290,15 +288,17 @@ angular.module('controllers', ['luegg.directives'])
                         var consultData = JSON.parse(event.data);
                         if(consultData.type==4){
                             processNotifyMessage(consultData);
+                            $scope.triggerVoice();
                         }else{
                             filterMediaData(consultData);
                             processPatientSendMessage(consultData);
+                            $scope.triggerqqVoice();
                         }
                         $scope.$apply();
-                        $scope.triggerVoice();
                     };
 
                     $scope.socketServer1.onopen = function (event) {
+                        console.log("onopen",event.data);
                     };
 
                     $scope.socketServer1.onclose = function (event) {
@@ -367,7 +367,6 @@ angular.module('controllers', ['luegg.directives'])
                         data: encodeURI(dataJsonValue),
                         file: file
                     }).progress(function(evt) {
-                        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
                     }).success(function(data, status, headers, config){
                         if(data.source == "wxcxqm"){
                             var consultValMessage = {
@@ -454,13 +453,25 @@ angular.module('controllers', ['luegg.directives'])
                 }
             };
 
-            //触发qq声音
-            $scope.triggerVoice = function () {
+            //触发信息声音
+            $scope.triggerqqVoice = function () {
                 var audio = document.createElement('audio');
                 var source = document.createElement('source');
                 source.type = "audio/mpeg";
                 source.type = "audio/mpeg";
                 source.src = "http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/18.ogg";
+                source.autoplay = "autoplay";
+                source.controls = "controls";
+                audio.appendChild(source);
+                audio.play();
+            };
+            //触发转接声音
+            $scope.triggerVoice = function () {
+                var audio = document.createElement('audio');
+                var source = document.createElement('source');
+                source.type = "audio/mpeg";
+                source.type = "audio/mpeg";
+                source.src = "http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/%E9%93%81%E9%94%B9%E5%99%B9%E7%9A%84%E4%B8%80%E5%A3%B0.mp3";
                 source.autoplay = "autoplay";
                 source.controls = "controls";
                 audio.appendChild(source);
@@ -649,7 +660,6 @@ angular.module('controllers', ['luegg.directives'])
                 if($scope.showFlag.publicReplyList){
                     if($scope.publicReplyIndex!=-1&&$scope.publicReplyIndex!=undefined){
                         if($scope.publicReplySecondIndex==-1||$scope.publicReplyIndex==undefined){
-                            console.log('$scope.publicReplySecondIndex',$scope.publicReplySecondIndex);
                             $scope.editGroupFlag = true;
                             $scope.editContentFlag = false;
                         }else{
@@ -660,7 +670,6 @@ angular.module('controllers', ['luegg.directives'])
                 }
             };
             $scope.editGroupSubmit = function () {
-                console.log($scope.showFlag);
                 if($scope.showFlag.myReplyList){
                     $scope.myAnswer[$scope.myReplyIndex].name = $scope.info.editGroup;
                     saveMyAnswer();
@@ -744,7 +753,6 @@ angular.module('controllers', ['luegg.directives'])
             var getAlreadyJoinConsultPatientList = function () {
                 //获取跟医生的会话还保存的用户列表
                 GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
-                    console.log(data);
                     if(data.alreadyJoinPatientConversation!=""&&data.alreadyJoinPatientConversation!=undefined){
                         $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                         $.each($scope.alreadyJoinPatientConversation,function(index,value){
@@ -1241,7 +1249,7 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.imageSrc = value;
             };
             //公共点击按钮，用来触发弹出对应的子窗口
-            $scope.tapShowButton = function(type){
+            $scope.tapShowButton = function(key){
                 $scope.showFlag[key] = !$scope.showFlag[key];
             };
         }])

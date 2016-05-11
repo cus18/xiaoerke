@@ -1,10 +1,10 @@
 /**
  * Copyright &copy; 2012-2014 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
-package com.cxqm.xiaoerke.common.utils.excel.fieldtype;
+package com.cxqm.xiaoerke.modules.utils.excel.fieldtype;
 
 import com.cxqm.xiaoerke.common.utils.StringUtils;
-import com.cxqm.xiaoerke.modules.sys.entity.Area;
+import com.cxqm.xiaoerke.modules.sys.entity.Office;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 
 /**
@@ -12,13 +12,13 @@ import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
  * @author ThinkGem
  * @version 2013-03-10
  */
-public class AreaType {
+public class OfficeType {
 
 	/**
 	 * 获取对象值（导入）
 	 */
 	public static Object getValue(String val) {
-		for (Area e : UserUtils.getAreaList()){
+		for (Office e : UserUtils.getOfficeList()){
 			if (StringUtils.trimToEmpty(val).equals(e.getName())){
 				return e;
 			}
@@ -27,11 +27,11 @@ public class AreaType {
 	}
 
 	/**
-	 * 获取对象值（导出）
+	 * 设置对象值（导出）
 	 */
 	public static String setValue(Object val) {
-		if (val != null && ((Area)val).getName() != null){
-			return ((Area)val).getName();
+		if (val != null && ((Office)val).getName() != null){
+			return ((Office)val).getName();
 		}
 		return "";
 	}
