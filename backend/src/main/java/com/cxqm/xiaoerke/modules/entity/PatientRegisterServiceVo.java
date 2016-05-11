@@ -10,10 +10,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 工作流Entity
- *
- * @author ThinkGem
- * @version 2013-11-03
+ * 挂号订单vo
+ * sunxiao 2016-5-11
  */
 public class PatientRegisterServiceVo{
 
