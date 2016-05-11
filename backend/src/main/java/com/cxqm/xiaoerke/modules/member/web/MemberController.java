@@ -83,7 +83,7 @@ public class MemberController extends BaseController {
 		try {
             String fileName = "订单数据"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
             List<MemberservicerelItemservicerelRelationVo> list = memberService.getAllMemberServiceList(vo,"exportData");
-    		new ExportExcel("订单数据", MemberservicerelItemservicerelRelationVo.class).setDataList(list).write(response, fileName).dispose();
+    		new ExportExcel("订单数据", com.cxqm.xiaoerke.modules.entity.MemberservicerelItemservicerelRelationVo.class).setDataList(list).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
 			e.printStackTrace();

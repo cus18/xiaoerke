@@ -300,7 +300,7 @@ public class ConsultPhoneController extends BaseController {
 		try {
 			String fileName = "订单数据"+ DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
 			List<ConsultPhoneRegisterServiceVo> list = consultPhonePatientService.getAllConsultPhoneRegisterListByInfo(vo);
-			new ExportExcel("订单数据", ConsultPhoneRegisterServiceVo.class).setDataList(list).write(response, fileName).dispose();
+			new ExportExcel("订单数据", com.cxqm.xiaoerke.modules.entity.ConsultPhoneRegisterServiceVo.class).setDataList(list).write(response, fileName).dispose();
 			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
