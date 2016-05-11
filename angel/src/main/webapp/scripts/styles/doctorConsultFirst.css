@@ -122,12 +122,12 @@ span.emotion:hover{background-position:2px -28px}
 .qqFace table td img{cursor:pointer;border:1px #fff solid;}
 .qqFace table td img:hover{border:1px #0066cc solid;}
 /*聊天框的头部*/
-.chatlistin{font: 12px/20px 'Microsoft Yahei';height: 285px;overflow-y:scroll;background-color: #f8f8f8;width: 100%;color:#333;}
+.chatlistin{font: 16px/20px 'Microsoft Yahei';height: 285px;overflow-y:scroll;background-color: #f8f8f8;width: 100%;color:#333;}
 .chatlistin::-webkit-scrollbar {width:10px;height:10px;}
 .chatlistin::-webkit-scrollbar-track-piece {background:#eee;border-radius:5px;}
 .chatlistin::-webkit-scrollbar-thumb{background:#08b7c2;border-radius:5px;}
 /*消息列表*/
-.consultList{height: 428px;font: 12px/20px 'Microsoft Yahei';overflow-y:scroll;background-color: #fff;width: 100%;color:#333;}
+.consultList{height: 428px;font: 16px/20px 'Microsoft Yahei';overflow-y:scroll;background-color: #fff;width: 100%;color:#333;}
 .consultList::-webkit-scrollbar {width:10px;height:10px;}
 .consultList::-webkit-scrollbar-track-piece {background:#eee;border-radius:5px;}
 .consultList::-webkit-scrollbar-thumb{background:#08b7c2;border-radius:5px;}
@@ -155,7 +155,7 @@ p.historymessage span {display: block;background: url("http://xiaoerke-pc-baodf-
 .inputcontent,.facebox,.chatlist,.nametop{padding-left: 175px;padding-right: 405px;}
 textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 100%;height: 100px;box-sizing: border-box;border: 1px solid #dcdcdc;vertical-align: top;resize: none;}
 .sendbtn {height: 41px;border-top:1px solid #acacac;border-bottom: 1px solid #acacac;background-color: #f8f8f8;}
-.sendbtn div {cursor: pointer;margin:10px 20px;display: inline-block;color:#fff;float: right;font: 12px/20px 'Microsoft Yahei';padding: 0 15px;border-radius: 4px;}
+.sendbtn div {cursor: pointer;margin:10px 20px;display: inline-block;color:#fff;float: right;font: 16px/20px 'Microsoft Yahei';padding: 0 15px;border-radius: 4px;}
 .sendbtn div:nth-child(1){background-color: #08b7c2;}
 .sendbtn div:nth-child(2){background-color: #fe717b;}
 .historymessage {float: right;}
