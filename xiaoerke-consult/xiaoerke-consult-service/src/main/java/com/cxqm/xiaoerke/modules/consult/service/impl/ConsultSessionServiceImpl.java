@@ -81,9 +81,8 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
             if(consultSessionList.size() > 0){
                 consultSession = consultSessionList.get(0);
                 consultSession.setStatus(ConsultSession.STATUS_COMPLETED);
+                this.updateSessionInfo(consultSession);
             }
-
-            this.updateSessionInfo(consultSession);
 
             //清除redis内的数据
             sessionRedisCache.removeConsultSessionBySessionId(Integer.parseInt(sessionId));
