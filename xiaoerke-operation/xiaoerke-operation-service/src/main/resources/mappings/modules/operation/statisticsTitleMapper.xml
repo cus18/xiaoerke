@@ -387,7 +387,7 @@ and apr.`status`='success' and DATE_FORMAT(prs.create_date,'%Y-%m-%d')=DATE_FORM
 
 	<select id="getTotalConsultNum" resultType="Integer">
 		SELECT
-			count(*) AS count
+			count(DISTINCT sys_user_id) AS count
 		FROM
 			consult_session
 		WHERE

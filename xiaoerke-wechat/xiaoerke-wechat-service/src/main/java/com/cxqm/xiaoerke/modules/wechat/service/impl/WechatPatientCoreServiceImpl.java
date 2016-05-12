@@ -674,11 +674,13 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 //			insertHealthRecordMsg(healthRecordMsgVo);
 //		}
 
+
 			return "<xml><ToUserName><![CDATA[" + xmlEntity.getFromUserName()  +
 					"]]></ToUserName><FromUserName><![CDATA[" + xmlEntity.getToUserName() +
 					"]]></FromUserName><CreateTime><![CDATA[" + new Date().getTime() +
 					"]]></CreateTime><MsgType><![CDATA[transfer_customer_service]]></MsgType>" +
 					"</xml>";
+
 	}
 
     /***
