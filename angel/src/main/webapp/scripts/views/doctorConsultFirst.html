@@ -215,7 +215,7 @@
                         <div ng-repeat="item in currentUserConversation.consultValue" class="information">
                             <div class="doctorContent">
                                 <div ng-if="item.senderId==doctorId&&item.type!='4'" class="doctorReplyContent">
-                                    <div class="doctorName">
+                                    <div class="doctorName" style="font-size:15px">
                                         <span>{{doctorName}}</span>
                                         <span>{{item.dateTime}}</span>
                                     </div>
@@ -227,7 +227,7 @@
                             </div>
                             <div class="patientContent">
                                 <div ng-if="item.senderId!=doctorId&&item.type!='4'" class="patientConsultContent">
-                                    <div class="senderName">
+                                    <div class="senderName" style="font-size:15px">
                                         <span>{{item.senderName}}</span>
                                         <span>{{item.dateTime}}</span>
                                     </div>

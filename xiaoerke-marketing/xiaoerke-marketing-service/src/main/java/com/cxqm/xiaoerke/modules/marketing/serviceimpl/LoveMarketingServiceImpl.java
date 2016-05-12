@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.marketing.serviceimpl;
 
+import com.cxqm.xiaoerke.modules.marketing.dao.LoveMarketingDao;
+import com.cxqm.xiaoerke.modules.marketing.entity.LoveMarketing;
 import com.cxqm.xiaoerke.modules.marketing.service.LoveMarketingService;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import net.sf.json.JSONObject;
@@ -7,11 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,9 @@ public class LoveMarketingServiceImpl implements LoveMarketingService {
 
     @Autowired
     private SystemService systemService;
+
+    @Autowired
+    private LoveMarketingDao loveMarketingDao;
 
     @Override
     public Map<String, Object> getNicknameAndHeadImageByOpenid(String openid) {
@@ -40,6 +44,19 @@ public class LoveMarketingServiceImpl implements LoveMarketingService {
         userAlone.put("headImage", jo.get("headimgurl"));
         userAlone.put("name", jo.get("nickname"));
         return userAlone;
+    }
+
+    @Override
+    public String getUserQRcode(String id) throws Exception{
+        String url= "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token="+systemService.getWechatParameter();
+        String jsonData="{\"expire_seconds\": 604800, \"action_name\": \"QR_SCENE\",\"action_info\": {\"scene\": {\"scene_id\": "+id+"}}}";
+        String reJson=this.post(url, jsonData,"POST");
+        System.out.println(reJson);
+        JSONObject jb=JSONObject.fromObject(reJson);
+        String qrTicket=jb.getString("ticket");
+        String QRCodeURI="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket="+qrTicket;
+        this.download(QRCodeURI,id+".jpg","/Users/feibendechayedan/Downloads/");
+        return "/Users/feibendechayedan/Downloads/"+id;
     }
 
     /**
@@ -94,4 +111,58 @@ public class LoveMarketingServiceImpl implements LoveMarketingService {
         }
         return null; // 自定义错误信息
     }
+
+    /**
+     * 下载图片
+     * @param urlString
+     * @param filename
+     * @param savePath
+     * @throws Exception
+     */
+    @Override
+    public  void download(String urlString, String filename,String savePath) throws Exception {
+        // 构造URL
+        URL url = new URL(urlString);
+        // 打开连接
+        URLConnection con = url.openConnection();
+        //设置请求超时为5s
+        con.setConnectTimeout(5*1000);
+        // 输入流
+        InputStream is = con.getInputStream();
+
+        // 1K的数据缓冲
+        byte[] bs = new byte[1024];
+        // 读取到的数据长度
+        int len;
+        // 输出的文件流
+        File sf=new File(savePath);
+        if(!sf.exists()){
+            sf.mkdirs();
+        }
+        OutputStream os = new FileOutputStream(sf.getPath()+"\\"+filename);
+        // 开始读取
+        while ((len = is.read(bs)) != -1) {
+            os.write(bs, 0, len);
+        }
+        // 完毕，关闭所有链接
+        os.close();
+        is.close();
+    }
+
+    @Override
+    public Map<String, Object> getLoveMarketingByOpenid(String openid) {
+        return loveMarketingDao.getLoveMarketingByOpenid(openid);
+    }
+
+    @Override
+    public int saveLoveMarketing(LoveMarketing loveMarketing) {
+        return loveMarketingDao.saveLoveMarketing(loveMarketing);
+    }
+
+    @Override
+    public int updateLoveMarketing(LoveMarketing loveMarketing) {
+        return loveMarketingDao.updateLoveMarketing(loveMarketing);
+    }
 }
+
+
