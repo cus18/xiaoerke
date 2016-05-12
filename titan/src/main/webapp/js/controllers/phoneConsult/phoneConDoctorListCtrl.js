@@ -3,12 +3,12 @@
     'ListHospitalDoctor','ListAppointmentTimeDoctor',
     'ListHospital','ListAppointmentTimeHospital',
     'ListHospitalDepartment','ListHospitalDepartmentDoctor','ListSecondIllnessDoctor',
-    'ListHospitalByIllnessSecond','SearchDoctors',
+    'ListHospitalByIllnessSecond','SearchDoctors','ListDepartmentHospital',
     function ($rootScope,$scope,$state,$stateParams,
               ListHospitalDoctor,ListAppointmentTimeDoctor,
               ListHospital,ListAppointmentTimeHospital,
               ListHospitalDepartment,ListHospitalDepartmentDoctor,ListSecondIllnessDoctor,
-              ListHospitalByIllnessSecond,SearchDoctors) {
+              ListHospitalByIllnessSecond,SearchDoctors,ListDepartmentHospital) {
 
         $scope.title = $stateParams.titleName.length > 8 ? $stateParams.titleName.substr(0,8)+"...":$stateParams.titleName;
         $scope.title0 = "宝大夫（400-623-7120）";
@@ -447,6 +447,70 @@
                     $scope.pageLoading = true;
                     $scope.remark = "hospital";
 
+                }else if($stateParams.action =="searchDoctorByDepartment"){
+
+                    if($scope.reloadMoreDataMark=="reloadDoctorInDepartment")
+                    {
+                        $scope.pageLoading = true;
+                        ListHospitalDoctor.save({
+                                "pageNo":page+"",
+                                "pageSize":"10",
+                                "orderBy":orderBy,
+                                "hospitalId":infoParam.hospitalId,
+                                "departmentLevel1Name":$stateParams.searchName},
+                            function (data) {
+                                console.log(data)
+                                $scope.pageLoading = false;
+                                $scope.scrollLoading = page < data.pageTotal;
+                                $scope.infoPage.page = page;
+                                $scope.doctorData = page == 1 ? [] : $scope.doctorData;
+                                $scope.doctorData = $scope.doctorData.concat(data.doctorDataVo || []);
+                                var hospitalInfo = [];
+                                for(var i=0;i<data.doctorDataVo.length;i++){
+                                    hospitalInfo[i] = data.doctorDataVo[i].hospitalName;
+                                }
+                                $scope.hospitalData =hospitalInfo;
+                                $scope.doctorStar();
+                                $scope.$broadcast('scroll.refreshComplete');
+                                $scope.$broadcast('scroll.infiniteScrollComplete');
+                            });
+                    }else {
+                        $scope.pageLoading = true;
+                        ListHospitalDoctor.save({
+                                "pageNo":page+"",
+                                "pageSize":"10",
+                                "orderBy":orderBy,
+                                "hospitalId":infoParam.hospitalId,
+                                "departmentLevel1Name":$stateParams.searchName},
+                            function (data) {
+                                console.log(data)
+                                $scope.pageLoading = false;
+                                $scope.scrollLoading = page < data.pageTotal;
+                                $scope.infoPage.page = page;
+                                $scope.doctorData = page == 1 ? [] : $scope.doctorData;
+                                $scope.doctorData = $scope.doctorData.concat(data.doctorDataVo || []);
+                                var hospitalInfo = [];
+                                var hospitalList = [];
+                                $scope.doctorStar();
+                                $scope.$broadcast('scroll.refreshComplete');
+                                $scope.$broadcast('scroll.infiniteScrollComplete');
+                            });
+                    }
+
+                    $scope.pageLoading = true;
+                    ListDepartmentHospital.save({
+                        "pageNo": "1",
+                        "pageSize": "100",
+                        "orderBy": orderBy,
+                        "departmentLevel1Name": $stateParams.searchName,
+                        "consultPhone":"1"
+                    }, function (data) {
+                        $scope.pageLoading = false;
+                        $scope.hospitalData = data.departmentData;
+                        console.log( $scope.hospitalData);
+                    });
+                    $scope.remark = "hospital";
+                    $scope.title = $stateParams.searchName;
                 }
             }
         }
