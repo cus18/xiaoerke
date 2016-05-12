@@ -281,9 +281,7 @@
         FROM
         sys_consultphone_service srs
         RIGHT JOIN consultPhone_register_service prs ON srs.id = prs.sys_phoneConsult_service_id
-        AND prs. state = "2"
-        AND prs. state = "3"
-        AND prs. state = "5"
+        AND (prs. state = "2" OR prs. state = "3" OR prs. state = "5")
         LEFT JOIN healthrecord_illness_describe hid on hid.id = prs.illness_describe_id
         LEFT JOIN sys_baby_baseInfo sbb ON sbb.id = hid.babyinfo_Id
         INNER JOIN sys_doctor sd ON sd.id = srs.sys_doctor_id
