@@ -11,8 +11,7 @@
                     <div class="patientHeaderImg">
                         <img width="25px" ng-src="{{item.avatar}}">
                     </div>
-                    <div class="message" ng-if="item.type=='0'">
-                        {{item.content}}
+                    <div class="message" ng-if="item.type=='0'"  ng-bind-html="item.content">
                     </div>
                     <div ng-if="item.type=='1'" class="message">
                         <img width="100px" ng-src="{{item.content}}" ng-click="tapImgButton('magnifyImg',item.content)">
@@ -22,8 +21,7 @@
                     <div class="doctorHeaderImg">
                         <img width="25px" ng-src="{{item.avatar}}">
                     </div>
-                    <div class="message" ng-if="item.type=='0'">
-                        {{item.content}}
+                    <div class="message" ng-if="item.type=='0'"  ng-bind-html="item.content">
                     </div>
                     <div class="message" ng-if="item.type=='1'">
                         <img width="100px" ng-src="{{item.content}}" ng-click="tapImgButton('magnifyImg',item.content)">
@@ -50,8 +48,8 @@
                 <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_4.png" alt=""/>
             </div>
             <div class="textInput">
-                <textarea placeholder="请输入咨询内容" ng-model="info.consultInputValue" style="border-style:none"></textarea>
-                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_6.png" alt=""/>
+                <textarea placeholder="请输入咨询内容" id="saytext" ng-model="info.consultInputValue" style="border-style:none"></textarea>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_6.png" alt="" id="face" ng-click="getQQExpression()"/>
             </div>
             <div ng-if="!sendItem" ng-click="openFileList()" ng-if="sendItem">
                 <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_5.png" alt=""/>
