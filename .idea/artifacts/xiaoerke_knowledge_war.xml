@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="xiaoerke-knowledge:war">
-    <output-path>$PROJECT_DIR$/xiaoerke-knowledge/target</output-path>
-    <root id="archive" name="xiaoerke-knowledge.war">
-      <element id="artifact" artifact-name="xiaoerke-knowledge:war exploded" />
-    </root>
-  </artifact>
-</component>

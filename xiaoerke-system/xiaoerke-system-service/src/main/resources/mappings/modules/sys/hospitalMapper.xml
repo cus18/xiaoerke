@@ -77,6 +77,28 @@
         GROUP BY hos_rel.department_level1
     </select>
 
+    <!--根据科室查找医院-->
+    <select id="listDepartmentHospital" resultMap="DepartmentVo"
+            resultType="com.cxqm.xiaoerke.common.persistence.Page">
+        select sd.hospitalName,dhr.sys_hospital_id
+        FROM
+        sys_illness si
+        LEFT JOIN doctor_illness_relation dir ON si.id = dir.sys_illness_id
+        LEFT JOIN sys_consultphone_service scs ON dir.sys_doctor_id = scs.sys_doctor_id
+        LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
+        LEFT JOIN patient_register_praise prp ON sd.id = prp.sys_doctor_id
+        LEFT JOIN doctor_hospital_relation dhr ON dhr.sys_doctor_id = sd.id
+        WHERE
+        dhr.relation_type = '1'
+        and scs.state = '0'
+        <if test="departmentLevel1Name !=null">
+            and si.level_1 = #{departmentLevel1Name}
+        </if>
+        and (DATE_ADD((DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s')), INTERVAL -5 MINUTE))>NOW()
+        AND  (DATE_ADD(NOW(), INTERVAL 6 day))>(DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))
+        group by sd.hospitalName
+    </select>
+
     <select id="findPageHospitalByTime" resultMap="HospitalVo"
             resultType="com.cxqm.xiaoerke.common.persistence.Page">
         select hos.* FROM

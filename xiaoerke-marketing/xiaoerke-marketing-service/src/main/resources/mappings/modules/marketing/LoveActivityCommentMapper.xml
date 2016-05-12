@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.marketing.dao.LoveActivityCommentDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.marketing.entity.LoveActivityComment" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="openid" property="userId" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="VARCHAR" />
+ 	<result column="content" property="content" jdbcType="VARCHAR" />
+  </resultMap>
+  
+
+  <select id="findOneLoveActivityComment" resultMap="BaseResultMap" >
+    select 
+    *
+    from sys_loveactivitycomment
+    ORDER BY create_date desc
+  </select>
+
+    <insert id="saveLoveActivityComment" parameterType="com.cxqm.xiaoerke.modules.marketing.entity.LoveActivityComment" useGeneratedKeys="true" keyProperty="id">
+      insert sys_loveactivitycomment (openid,create_date, content)
+      values (#{userId,jdbcType=VARCHAR}, #{createDate,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR})
+    </insert>
+
+</mapper>

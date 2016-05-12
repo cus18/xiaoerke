@@ -29,6 +29,10 @@ define(['appPhoneConsult'], function (app) {
         .factory('ListHospitalByIllnessSecond', ['$resource', function ($resource) {
             return $resource(user_appoint + 'sys/illness/second/hospital');
         }])
+        //查询科室关联的医院
+        .factory('ListDepartmentHospital', ['$resource', function ($resource) {
+            return $resource(user_appoint + 'sys/hospital/listDepartmentHospital');
+        }])
         //获取某个预约日期下的可预约的医院
         .factory('ListAppointmentTimeHospital', ['$resource', function ($resource) {
             return $resource(user_appoint + 'register/user/time/hospital');

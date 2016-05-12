@@ -73,6 +73,7 @@
                 }
             }
             var doctorId = $("input:hidden[name='doctorId']").val();
+            alert(doctorId);
             //发送数据
             $.ajax({
                 type: "post",

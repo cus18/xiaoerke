@@ -133,22 +133,46 @@
     <select id="findPageConsultaDoctorByDepartment"  resultMap="DoctorVoMap"
             resultType="com.cxqm.xiaoerke.common.persistence.Page">
 
-        select sd.id, sd.name,sd.position2,sd.career_time,sd.hospitalName,FORMAT(avg(prp.star+prp.major_star)/2, 2) star ,DATE_FORMAT(min(DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s')),'%k:%i') as latest_time,
-        TIMESTAMPDIFF(DAY,DATE_FORMAT(NOW(),'%Y:%c:%d'),DATE_FORMAT(MIN(scs.date),'%Y:%c:%d')) available_time
-        from sys_doctor sd
-        left join doctor_hospital_relation dhr
-        on dhr.sys_doctor_id = sd.id
-        left join patient_register_praise prp
-        on sd.id = prp.sys_doctor_id
-        left join sys_consultphone_service scs
-        on scs.sys_doctor_id = sd.id
-        where dhr.relation_type = '1'
+        SELECT
+        sd.id,
+        sd. NAME,
+        sd.position2,
+        sd.career_time,
+        sd.hospitalName,
+        FORMAT(
+        avg(prp.star + prp.major_star) / 2,
+        2
+        ) star,
+        DATE_FORMAT(
+        min(
+        DATE_FORMAT(
+        CONCAT(
+        DATE_FORMAT(scs.date, '%Y:%c:%d'),
+        DATE_FORMAT(scs.beginTime, ' %k:%i:%s')
+        ),
+        '%Y-%m-%d %k:%i:%s'
+        )
+        ),
+        '%k:%i'
+        ) AS latest_time,
+        TIMESTAMPDIFF(
+        DAY,
+        DATE_FORMAT(NOW(), '%Y:%c:%d'),
+        DATE_FORMAT(MIN(scs.date), '%Y:%c:%d')
+        ) available_time
+        FROM sys_illness si
+        LEFT JOIN doctor_illness_relation dir ON si.id = dir.sys_illness_id
+        LEFT JOIN sys_consultphone_service scs ON dir.sys_doctor_id = scs.sys_doctor_id
+        LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
+        LEFT JOIN patient_register_praise prp ON sd.id = prp.sys_doctor_id
+        LEFT JOIN doctor_hospital_relation dhr ON dhr.sys_doctor_id = sd.id
+        WHERE dhr.relation_type = '1'
         and scs.state = '0'
         <if test="hospitalId!=null">
             and  dhr.sys_hospital_id = #{hospitalId}
         </if>
         <if test="departmentName!=null">
-            and dhr.department_level1 = #{departmentName}
+            and si.level_1  = #{departmentName}
         </if>
         and (DATE_ADD((DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s')), INTERVAL -5 MINUTE))>NOW()
         AND  (DATE_ADD(NOW(), INTERVAL 6 day))>(DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))

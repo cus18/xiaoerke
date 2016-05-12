@@ -82,4 +82,7 @@ public interface HospitalDao {
      */
     void updateSysHospital(Map<String, Object> param);
 
+    Page<HashMap<String, Object>> listDepartmentHospital(HashMap<String, Object> hospitalInfo,
+                                                               Page<HashMap<String, Object>> page);
+
 }

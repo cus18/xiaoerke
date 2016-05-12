@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="xiaoerke-runTimeTask:war">
-    <output-path>$PROJECT_DIR$/xiaoerke-runTimeTask/target</output-path>
-    <root id="archive" name="xiaoerke-runTimeTask.war">
-      <element id="artifact" artifact-name="xiaoerke-runTimeTask:war exploded" />
-    </root>
-  </artifact>
-</component>
