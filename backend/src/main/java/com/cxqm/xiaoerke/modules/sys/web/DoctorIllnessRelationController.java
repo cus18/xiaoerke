@@ -196,36 +196,40 @@ public class DoctorIllnessRelationController extends BaseController {
     @ResponseBody
     public String DoctorIllnessRelationData(Model model, HttpServletRequest request, String tArray, String doctorId) {
         //用户修改之后保存操作
-        if (StringUtils.isNotNull(tArray)) {
+        if (tArray != null) {
             DoctorIllnessRelationVo temVo = new DoctorIllnessRelationVo();
             temVo.setSys_doctor_id(doctorId);
             //根据doctorId删除医生与疾病的所有关联信息（先删除，后保存）
             DoctorIllnessRelationServiceImpl.deleteDoctorAndIllnessRelation(temVo);
+            if(!tArray.equals("")){
             String[] str = tArray.split(",");
             StringBuffer stringBuffer = new StringBuffer();//用于存放疾病表主键
-            for (int i = 0; i < str.length; i++) {
-                String[] save_str = str[i].split("-");
-                DoctorIllnessRelationVo doctorIllnessRelationVo = new DoctorIllnessRelationVo();
-                doctorIllnessRelationVo.setSys_doctor_id(doctorId);
-                //根据一级疾病和二级疾病查询疾病主键
-                doctorIllnessRelationVo.setLevel_1(save_str[0]);
-                doctorIllnessRelationVo.setLevel_2(save_str[1]);
-                IllnessVo illnessVo = DoctorIllnessRelationServiceImpl.findSysIllnessInfo(doctorIllnessRelationVo);
-                if (illnessVo != null) {
-                    doctorIllnessRelationVo.setSys_illness_id(illnessVo.getId());
 
-                    //医生与疾病关系保存操作
-                    doctorIllnessRelationVo.setId(IdGen.uuid());
-                    DoctorIllnessRelationServiceImpl.insertDoctorIllnessRelationData(doctorIllnessRelationVo);
+                for (int i = 0; i < str.length; i++) {
+                    String[] save_str = str[i].split("-");
+                    DoctorIllnessRelationVo doctorIllnessRelationVo = new DoctorIllnessRelationVo();
+                    doctorIllnessRelationVo.setSys_doctor_id(doctorId);
+                    //根据一级疾病和二级疾病查询疾病主键
+                    doctorIllnessRelationVo.setLevel_1(save_str[0]);
+                    doctorIllnessRelationVo.setLevel_2(save_str[1]);
+                    IllnessVo illnessVo = DoctorIllnessRelationServiceImpl.findSysIllnessInfo(doctorIllnessRelationVo);
+                    if (illnessVo != null) {
+                        doctorIllnessRelationVo.setSys_illness_id(illnessVo.getId());
+
+                        //医生与疾病关系保存操作
+                        doctorIllnessRelationVo.setId(IdGen.uuid());
+                        DoctorIllnessRelationServiceImpl.insertDoctorIllnessRelationData(doctorIllnessRelationVo);
+                    }
+                    stringBuffer.append("'");
+                    stringBuffer.append(illnessVo.getId());
+                    stringBuffer.append("',");
                 }
-                stringBuffer.append("'");
-                stringBuffer.append(illnessVo.getId());
-                stringBuffer.append("',");
-            }
+
+
             stringBuffer.deleteCharAt(stringBuffer.length()-1);//去掉最后一个,
             //生成并保存医生与热词关系
             RdsDataSourceJDBC.insertDoctorAndHotWordsRelationToRds(stringBuffer.toString(),doctorId);
-
+            }
         } else {//界面初始化（加载当前医生与疾病关联数据）
             JSONObject resultMap = new JSONObject();
             List<String> arrayList = new ArrayList<String>();
