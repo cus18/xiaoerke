@@ -1,10 +1,10 @@
 
 package com.cxqm.xiaoerke.modules.consult.web;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
-import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
@@ -20,6 +20,8 @@ import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
+import io.netty.channel.Channel;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -59,6 +61,11 @@ public class ConsultDoctorController extends BaseController {
     @Autowired
     private WechatAttentionService wechatAttentionService;
 
+    @Autowired
+    private PatientRegisterPraiseService patientRegisterPraiseService;
+
+    @Autowired
+    private SessionRedisCache sessionRedisCache;
 
     @RequestMapping(value = "/getCurrentUserHistoryRecord", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -342,24 +349,52 @@ public class ConsultDoctorController extends BaseController {
     @ResponseBody
     Map<String, Object> sessionEnd(@RequestParam(required = true) String sessionId,
                                    @RequestParam(required = true) String userId) {
-//        Map<String, Object> params = new HashMap<String, Object>();
-//        params.put("openid", userId);
-//        params.put("uuid", UUID.randomUUID().toString().replaceAll("-", ""));
-//        params.put("starNum1", 0);
-//        params.put("starNum2", 0);
-//        params.put("starNum3", 0);
-//        params.put("doctorId", UserUtils.getUser().getId());
-//        params.put("content", "");
-//        params.put("dissatisfied", null);
-//        params.put("redPacket", null);
-//        patientRegisterPraiseService.saveCustomerEvaluation(params);
-//        String st = "本次咨询体验怎么样?赶快来评价吧!【" +
-//                "<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" + params.get("uuid") + "'>点击这里去评价</a>】";
-//        Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-//        WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
-        String result = consultSessionService.clearSession(sessionId, userId);
-        Map<String, Object> response = new HashMap<String, Object>();
-        response.put("result", result);
-        return response;
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("openid", userId);
+        params.put("uuid", UUID.randomUUID().toString().replaceAll("-", ""));
+        params.put("starNum1", 0);
+        params.put("starNum2", 0);
+        params.put("starNum3", 0);
+        params.put("doctorId", UserUtils.getUser().getId());
+        params.put("content", "");
+        params.put("dissatisfied", null);
+        params.put("redPacket", null);
+        patientRegisterPraiseService.saveCustomerEvaluation(params);
+        String st = "本次咨询体验怎么样?赶快来评价吧!【" +
+            "<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" + params.get("uuid") + "'>点击这里去评价</a>】";
+        if (StringUtils.isNotNull(sessionId)) {
+            RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(Integer.valueOf(sessionId));
+            if (richConsultSession != null) {
+                if (richConsultSession.getSource() != null && "h5cxqm".equalsIgnoreCase(richConsultSession.getSource())) {
+                    String patientId = richConsultSession.getUserId();
+                    Channel userChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(patientId);
+                    JSONObject obj = new JSONObject();
+                    if (userChannel != null && userChannel.isActive()) {
+                        obj.put("type", "4");
+                        obj.put("notifyType", "1003");
+                        TextWebSocketFrame csframe = new TextWebSocketFrame(obj.toJSONString());
+                        userChannel.writeAndFlush(csframe.retain());
+                    } else {
+                        String doctorId = richConsultSession.getCsUserId();
+                        Channel doctorChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(doctorId);
+                        obj.put("type", "4");
+                        obj.put("notifyType", "0015");
+                        TextWebSocketFrame csframe = new TextWebSocketFrame(obj.toJSONString());
+                        doctorChannel.writeAndFlush(csframe.retain());
+                    }
+                    //                }else if(richConsultSession.getSource() != null &&"wxcxqm".equalsIgnoreCase(richConsultSession.getSource())){
+                    //                    Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                    //                    WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
+                } else {
+                    return null;
+                }
+            }
+            String result = consultSessionService.clearSession(sessionId, userId);
+            Map<String, Object> response = new HashMap<String, Object>();
+            response.put("result", result);
+            return response;
+        } else {
+            return null;
+        }
     }
 }

@@ -224,10 +224,19 @@ public class ConsultSessionManager {
 						}else{
 							csUserChannelMapping.remove(doctorOnLineList.get(indexCS).get("csUserId"));
 						}
-					}
+					}else{
+              JSONObject obj = new JSONObject();
+              obj.put("type", 4);
+              obj.put("notifyType", "1002");
+              TextWebSocketFrame msg = new TextWebSocketFrame(obj.toJSONString());
+              channel.writeAndFlush(msg);
+          }
 				}else{
-					//TextWebSocketFrame msg = new TextWebSocketFrame("no distributor");
-					//channel.writeAndFlush(msg);
+            JSONObject obj = new JSONObject();
+            obj.put("type", 4);
+            obj.put("notifyType", "1002");
+					TextWebSocketFrame msg = new TextWebSocketFrame(obj.toJSONString());
+					channel.writeAndFlush(msg);
 					return;
 				}
 			}
@@ -237,30 +246,13 @@ public class ConsultSessionManager {
 			sessionId = consultSession.getId();
 			sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
 			sessionRedisCache.putUserIdSessionIdPair(userId, sessionId);
-			
-			//send doctor or distributor
-			JSONObject obj = new JSONObject();
-      JSONObject csobj = new JSONObject();
-      if(distributorChannel != null ){
-          obj.put("type", 4);
-          obj.put("notifyType", "0001");
-          obj.put("session", consultSession);
-          obj.put("content", "");
-          TextWebSocketFrame frame = new TextWebSocketFrame(obj.toJSONString());
-          distributorChannel.writeAndFlush(frame.retain());
 
+      JSONObject csobj = new JSONObject();
           //sender，告诉会有哪个医生或者接诊员提供服务
-          csobj.put("type",5);
-          csobj.put("notifyType","0003");
-          csobj.put("doctorName",consultSession.getCsUserName());
-          csobj.put("content", "您好,您当前已进入宝大夫咨询平台,接下来可以进行咨询!");
+          csobj.put("type",4);
+          csobj.put("notifyType","1001");
           TextWebSocketFrame csframe = new TextWebSocketFrame(csobj.toJSONString());
           channel.writeAndFlush(csframe.retain());
-      }else{
-          TextWebSocketFrame csframe = new TextWebSocketFrame("no distribute,please wait a while ...");
-          channel.writeAndFlush(csframe.retain());
-          return;
-      }
 		}
 		
 		userChannelMapping.put(userId, channel);
@@ -479,7 +471,7 @@ public class ConsultSessionManager {
 
 					try {
 						//一分钟后判断，如果，该会话，没有被医生转接走，则取消该次转接，将会话，还给接诊员
-						Thread.sleep(60000);
+						Thread.sleep(180000);
 						ConsultSessionForwardRecordsVo sessionForwardRecordsVoLater = consultSessionForwardRecordsService.selectByPrimaryKey(forwardRecordId);
 						if(sessionForwardRecordsVoLater.getStatus().equals(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_WAITING)){
 							Long sessionId = sessionForwardRecordsVoLater.getConversationId();
