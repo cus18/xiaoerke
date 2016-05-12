@@ -11,8 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.cxqm.xiaoerke.modules.marketing.entity.LoveMarketing;
+import com.cxqm.xiaoerke.modules.marketing.service.LoveMarketingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,8 +30,29 @@ import com.cxqm.xiaoerke.common.utils.WechatUtil;
 @RequestMapping(value = "loveMarketing")
 public class LoveMarketingController {
 
+    @Autowired
+    LoveMarketingService loveMarketingService;
 
-
+    /**
+     * 生成海报
+     * */
+    @RequestMapping(value = "/MarkeImage", method = {RequestMethod.POST, RequestMethod.GET})
+    public @ResponseBody
+    Map<String, Object> MarkeImage(HttpSession session)throws  Exception {
+        Map<String,Object> map=new HashMap<String, Object>();
+        String openid=session.getAttribute("openId").toString();
+        LoveMarketing modle=new LoveMarketing();
+        modle.setOpenid(openid);
+        loveMarketingService.saveLoveMarketing(modle);
+        String id=modle.getId();
+        if(id!=null){
+           Map<String,Object> m= loveMarketingService.getNicknameAndHeadImageByOpenid(openid);
+        }else{
+            map.put("src","addFault");
+            return  map;
+        }
+        return map;
+    }
 
 
 
