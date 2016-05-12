@@ -230,5 +230,13 @@ public class HospitalInfoController extends BaseController {
 		resultMap.put("medicalProcess",medicalProcess);
 		return resultMap;
 	}
-	
+
+	@RequestMapping(value = "/listDepartmentHospital", method = {RequestMethod.POST, RequestMethod.GET})
+	public
+	@ResponseBody
+	Map<String, Object> listDepartmentHospital(@RequestBody Map<String, Object> params) {
+		return hospitalInfoService.listDepartmentHospital(params);
+	}
+
+
 }
