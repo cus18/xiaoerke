@@ -150,8 +150,8 @@
             }
 
             SendWechatMessageToUser.save({}, function (data) {
-                WeixinJSBridge.call('closeWindow');
             });
+            WeixinJSBridge.call('closeWindow');
         }
 
         $scope.goToMemberService = function () {
