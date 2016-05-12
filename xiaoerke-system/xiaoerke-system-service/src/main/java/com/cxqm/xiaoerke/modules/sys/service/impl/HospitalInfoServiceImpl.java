@@ -254,4 +254,40 @@ public class HospitalInfoServiceImpl implements HospitalInfoService {
 		return  list;
 	}
 
+	@Override
+	public Map<String, Object> listDepartmentHospital(Map<String, Object> params) {
+
+		HashMap<String, Object> response = new HashMap<String, Object>();
+
+		String departmentLevel1Name = (String) params.get("departmentLevel1Name");
+		String currentPage = ((String) params.get("pageNo"));
+		String pageSize = ((String) params.get("pageSize"));
+		String consultPhone = ((String) params.get("consultPhone"));
+
+
+		Page<HashMap<String, Object>> page = FrontUtils.generatorPage(currentPage,
+				pageSize);
+		HashMap<String, Object> hospitalInfo = new HashMap<String, Object>();
+		hospitalInfo.put("departmentLevel1Name", departmentLevel1Name);
+		hospitalInfo.put("consultPhone", consultPhone);
+
+		Page<HashMap<String, Object>> resultPage = hospitalDao.listDepartmentHospital(hospitalInfo, page);
+
+		response.put("pageNo", resultPage.getPageNo());
+		response.put("pageSize", resultPage.getPageSize());
+		long tmp = FrontUtils.generatorTotalPage(resultPage);
+		response.put("pageTotal", tmp + "");
+		List<HashMap<String, Object>> list = resultPage.getList();
+		List<HashMap<String, Object>> departmentDataList = new ArrayList<HashMap<String, Object>>();
+		if (list != null && !list.isEmpty()) {
+			for (Map departmentDataMap : list) {
+				HashMap<String, Object> dataMap = new HashMap<String, Object>();
+				dataMap.put("hospitalId", departmentDataMap.get("sys_hospital_id"));
+				dataMap.put("hospitalName", departmentDataMap.get("hospitalName"));
+				departmentDataList.add(dataMap);
+			}
+		}
+		response.put("departmentData", departmentDataList);
+		return response;
+	}
 }
