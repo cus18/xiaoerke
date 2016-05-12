@@ -84,8 +84,6 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
                 this.updateSessionInfo(consultSession);
             }
 
-
-
             //清除redis内的数据
             sessionRedisCache.removeConsultSessionBySessionId(Integer.parseInt(sessionId));
             sessionRedisCache.removeUserIdSessionIdPair(userId);
