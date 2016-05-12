@@ -2,6 +2,8 @@ package com.cxqm.xiaoerke.modules.marketing.serviceimpl;
 
 import com.cxqm.xiaoerke.modules.marketing.dao.LoveMarketingDao;
 import com.cxqm.xiaoerke.modules.marketing.entity.LoveMarketing;
+import com.cxqm.xiaoerke.modules.marketing.dao.LoveActivityCommentDao;
+import com.cxqm.xiaoerke.modules.marketing.entity.LoveActivityComment;
 import com.cxqm.xiaoerke.modules.marketing.service.LoveMarketingService;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import net.sf.json.JSONObject;
@@ -30,6 +32,9 @@ public class LoveMarketingServiceImpl implements LoveMarketingService {
     @Autowired
     private LoveMarketingDao loveMarketingDao;
 
+    @Autowired
+    private LoveActivityCommentDao loveActivityCommentDao;
+
     @Override
     public Map<String, Object> getNicknameAndHeadImageByOpenid(String openid) {
         Map<String,Object> userAlone=new HashMap<String, Object>();
@@ -44,6 +49,22 @@ public class LoveMarketingServiceImpl implements LoveMarketingService {
         userAlone.put("headImage", jo.get("headimgurl"));
         userAlone.put("name", jo.get("nickname"));
         return userAlone;
+    }
+
+    @Override
+    public void saveLoveActivityComment(LoveActivityComment loveActivityComment) {
+         loveActivityCommentDao.saveLoveActivityComment(loveActivityComment);
+    }
+
+    @Override
+    public LoveActivityComment findLoveActivityComment() {
+        List<LoveActivityComment> loveActivityCommentlist= loveActivityCommentDao.findLoveActivityComment();
+        if(loveActivityCommentlist != null && loveActivityCommentlist.size() >0){
+            LoveActivityComment loveActivityComment = loveActivityCommentlist.get(0);
+            return loveActivityComment;
+        }else{
+            return null;
+        }
     }
 
     @Override

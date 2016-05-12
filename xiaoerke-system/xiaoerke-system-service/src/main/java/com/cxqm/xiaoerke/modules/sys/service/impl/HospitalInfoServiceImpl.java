@@ -113,10 +113,26 @@ public class HospitalInfoServiceImpl implements HospitalInfoService {
 		HashMap<String,Object> result = new HashMap<String,Object>();
 		result.put("hospitalName",hVo.getName());
 		result.put("hospitalDetails",hVo.getDetails()); //医院简介
-		result.put("medicalExamination",hVo.getMedicalExamination()); //开药及检查
-		result.put("chargeStandard",hVo.getChargeStandard()); //收费标准
-		result.put("specialDiscount",hVo.getSpecialDiscount());//特别优惠
-		result.put("medicalProcess",hVo.getMedicalProcess());//特别优惠
+
+		Map<String,Object> param = new HashMap<String,Object>();
+		param.put("hospitalId",hospitalId);
+		List<SysHospitalContactVo> contactVoList = sysHospitalContactDao.getHospitalContactByInfo(param);
+		if(contactVoList.size()!=0){
+			SysHospitalContactVo contactVo = contactVoList.get(0);
+			result.put("contactName",contactVo.getContactName()); //合作机构联系人姓名
+			result.put("contactPhone",contactVo.getContactPhone()); //合作机构联系人电话
+			result.put("costReduction",contactVo.getCostReduction()); //费用减免
+			result.put("greenChannel",contactVo.getGreenChannel()); //绿色通道
+			result.put("limitStandard",contactVo.getLimitStandard()); //限价标准
+			result.put("limitRange",contactVo.getLimitRange()); //限价范围
+			result.put("limitDisease",contactVo.getLimitDisease()); //限价疾病
+			result.put("chineseMedicine",contactVo.getChineseMedicine()); //中药
+			result.put("westernMedicine",contactVo.getWesternMedicine()); //西药
+			result.put("inspectionItems",contactVo.getInspectionItems()); //检查项目
+			result.put("medicineFee",contactVo.getMedicineFee()); //药费
+			result.put("inspectionFee",contactVo.getInspectionFee()); //检查费
+			result.put("clinicItems",contactVo.getClinicItems());//诊疗项目
+		}
 
 		return result;
 	}

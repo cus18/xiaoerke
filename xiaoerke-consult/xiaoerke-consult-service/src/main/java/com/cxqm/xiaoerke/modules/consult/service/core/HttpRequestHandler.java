@@ -39,7 +39,7 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 		String url = msg.getUri();
 		if(url.startsWith(wsUri)){
 			msg.setUri(wsUri);
-			ConsultSessionManager.getSessionManager().createSession(ctx, url);
+			ConsultSessionManager.getSessionManager().createSocket(ctx, url);
 			ctx.fireChannelRead(msg.retain());
 		}else{
 			if(HttpHeaders.is100ContinueExpected(msg)){

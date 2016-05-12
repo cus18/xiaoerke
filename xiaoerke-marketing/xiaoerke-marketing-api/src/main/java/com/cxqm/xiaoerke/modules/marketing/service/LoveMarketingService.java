@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.marketing.service;
 
+import com.cxqm.xiaoerke.modules.marketing.entity.LoveActivityComment;
 import com.cxqm.xiaoerke.modules.marketing.entity.LoveMarketing;
 
 import java.util.Map;
@@ -38,4 +39,9 @@ public interface LoveMarketingService {
     int saveLoveMarketing(LoveMarketing loveMarketing);
 
     int updateLoveMarketing(LoveMarketing loveMarketing);
+
+    void saveLoveActivityComment(LoveActivityComment loveActivityComment);
+
+    LoveActivityComment findLoveActivityComment();
+
 }

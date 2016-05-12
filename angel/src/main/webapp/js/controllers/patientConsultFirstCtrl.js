@@ -9,6 +9,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             $scope.sessionId = "";
             $scope.socketServer = "";
             $scope.glued = true;//angular滚动条的插件预制参数，让对话滚动条，当新的聊天数据到达时，每次都定位底部
+            $scope.source = "h5cxqmUser";
 
             $scope.openFileListFlag = false;
             $location.hash("fileInput");
@@ -57,11 +58,13 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     window.WebSocket = window.MozWebSocket;
                 }
                 if (window.WebSocket) {
-                    console.log($scope.patientId);
-                    $scope.socketServer = new WebSocket("ws://192.168.191.2:2048/ws&user&"
+
+                    $scope.socketServer = new ReconnectingWebSocket("ws://101.201.154.201:2048/ws&user&"
                         + $scope.patientId +"&h5cxqm");//cs,user,distributor
+
                     $scope.socketServer.onmessage = function(event) {
                         var consultData = JSON.parse(event.data);
+                        console.log("onmessage",consultData);
                         if(consultData.type==4){
                             processNotifyMessage(consultData);
                         }else{
@@ -70,6 +73,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                         }
                         $scope.$apply();
                     };
+
                     $scope.socketServer.onopen = function(event) {
                         console.log("onopen"+event.data);
                         GetSessionId.get({"userId":$scope.patientId},function(data){
@@ -85,6 +89,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                             }
                         });
                     };
+
                     $scope.socketServer.onclose = function(event) {
                         console.log("onclose",event.data);
                     };
@@ -108,13 +113,14 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             var processNotifyMessage = function(notifyData){
                 if(notifyData.notifyType=="1001"){
                     //有医生或者接诊员在线1001
+                    $scope.sessionId = notifyData.sessionId;
                     console.log("有医生或者接诊员在线");
                 } else if(notifyData.notifyType=="1002"){
                     //没有医生或者接诊员在线1002
-                    console.log("有医生或者接诊员在线");
+                    console.log("没有医生或者接诊员在线");
                 }else if(notifyData.notifyType=="1003"){
                     //没有医生或者接诊员在线1003
-                    console.log("有医生或者接诊员在线");
+                    console.log("没有医生或者接诊员在线");
                 }
             };
             //发送消息
@@ -125,7 +131,8 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     "dateTime": moment().format("YYYY-MM-DD HH:mm:ss"),
                     "senderId":$scope.patientId,
                     "senderName":$scope.patientName,
-                    "sessionId":$scope.sessionId,
+                    "sessionId":parseInt($scope.sessionId),
+                    "source":$scope.source,
                     "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
                 };
                 if (!window.WebSocket) {
