@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
@@ -360,12 +361,10 @@ public class ConsultDoctorController extends BaseController {
         params.put("dissatisfied", null);
         params.put("redPacket", null);
         patientRegisterPraiseService.saveCustomerEvaluation(params);
-        String st = "本次咨询体验怎么样?赶快来评价吧!【" +
-            "<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" + params.get("uuid") + "'>点击这里去评价</a>】";
         if (StringUtils.isNotNull(sessionId)) {
             RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(Integer.valueOf(sessionId));
             if (richConsultSession != null) {
-                if (richConsultSession.getSource() != null && "h5cxqm".equalsIgnoreCase(richConsultSession.getSource())) {
+                if ("h5cxqm".equalsIgnoreCase(richConsultSession.getSource())) {
                     String patientId = richConsultSession.getUserId();
                     Channel userChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(patientId);
                     JSONObject obj = new JSONObject();
@@ -382,11 +381,12 @@ public class ConsultDoctorController extends BaseController {
                         TextWebSocketFrame csframe = new TextWebSocketFrame(obj.toJSONString());
                         doctorChannel.writeAndFlush(csframe.retain());
                     }
-                    //                }else if(richConsultSession.getSource() != null &&"wxcxqm".equalsIgnoreCase(richConsultSession.getSource())){
-                    //                    Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-                    //                    WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
-                } else {
-                    return null;
+                } else if("wxcxqm".equalsIgnoreCase(richConsultSession.getSource())){
+                    String st = "本次咨询体验怎么样?赶快来评价吧!【" +
+                            "<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
+                            params.get("uuid") + "'>点击这里去评价</a>】";
+                    Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                    WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
                 }
             }
             String result = consultSessionService.clearSession(sessionId, userId);

@@ -25,10 +25,10 @@ public class ConstantUtil {
 //	public static String PAYRESULT = "https://api.mch.weixin.qq.com/pay/orderquery";//获取支付结果
 //	public static String SIGN_METHOD = "MD5";//签名算法常量值
 //
-	public static String NOTIFY_APPOINT_URL = "http://s68.baodf.com:8081/titan/user/getPayNotifyInfo";
-	public static String NOTIFY_INSURANCE_URL = "http://s68.baodf.com:8081/titan/user/getInsurancePayNotifyInfo";
-	public static String NOTIFY_CUSTOMER_URL = "http://s68.baodf.com:8081/titan/user/getCustomerPayNotifyInfo";
-	public static String NOTIFY_CONSULTPHONE_URL = "hhttp://s68.baodf.com:8081/titan/user/getPhoneConsultPayNotifyInfo";
+	public static String NOTIFY_APPOINT_URL = "http://s68.baodf.com/titan/user/getPayNotifyInfo";
+	public static String NOTIFY_INSURANCE_URL = "http://s68.baodf.com/titan/user/getInsurancePayNotifyInfo";
+	public static String NOTIFY_CUSTOMER_URL = "http://s68.baodf.com/titan/user/getCustomerPayNotifyInfo";
+	public static String NOTIFY_CONSULTPHONE_URL = "hhttp://s68.baodf.com/titan/user/getPhoneConsultPayNotifyInfo";
 
 	public static int DAY_QUARTER_NUMBER = 96;
 	public static int VISIT_INTERVAL = 15;

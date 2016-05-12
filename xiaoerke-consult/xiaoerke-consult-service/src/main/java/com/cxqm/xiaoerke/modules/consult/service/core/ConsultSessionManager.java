@@ -84,7 +84,7 @@ public class ConsultSessionManager {
 		return sessionManager;
 	}
 	
-	void createSession(ChannelHandlerContext ctx, String url) {
+	void createSocket(ChannelHandlerContext ctx, String url) {
 
 		Channel channel = ctx.channel();
 		
@@ -96,24 +96,24 @@ public class ConsultSessionManager {
 			if(fromType.equals("user")) {
 				String userId = args[2];
 				String source = args[3];
-				doCreateSessionInitiatedByUser(userId,source,channel);
+				doCreateSocketInitiatedByUser(userId, source, channel);
 			}else if(fromType.equals("cs")) {
 				String userId = args[2];
-				doCreateSessionInitiatedByCs(userId,channel);
+				doCreateSocketInitiatedByCs(userId, channel);
 			} else if(fromType.equals("distributor")) {
 				String userId = args[2];
-				doCreateSessionInitiatedByDistributor(userId, channel);
+				doCreateSocketInitiatedByDistributor(userId, channel);
 			}
 		}
 	}
 	
-	private void doCreateSessionInitiatedByCs(String csUserId, Channel channel){
+	private void doCreateSocketInitiatedByCs(String csUserId, Channel channel){
 		csUserChannelMapping.put(csUserId, channel);
 		userChannelMapping.put(csUserId, channel);
 		channelUserMapping.put(channel, csUserId);
 	}
 
-	private void doCreateSessionInitiatedByDistributor(String distributorUserId, Channel channel){
+	private void doCreateSocketInitiatedByDistributor(String distributorUserId, Channel channel){
 		if(distributorsList.contains(distributorUserId)) {
 			distributors.put(distributorUserId, channel);
 			csUserChannelMapping.put(distributorUserId, channel);
@@ -124,24 +124,19 @@ public class ConsultSessionManager {
 		}
 	}
 
-	public void removeUserSession(String userId){
-		Iterator iterator = userChannelMapping.keySet().iterator();
-		while (iterator.hasNext()){
-			String key = (String) iterator.next();
-			if (userId.equals(key)) {
-				iterator.remove();
-				userChannelMapping.remove(key);
-			}
-		}
+	private void doCreateSocketInitiatedByUser(String userId, String source,Channel channel){
+		userChannelMapping.put(userId, channel);
+		channelUserMapping.put(channel, userId);
 	}
 
-	private void doCreateSessionInitiatedByUser(String userId, String source,Channel channel){
+	public RichConsultSession createUserH5ConsultSession(String userId,Channel channel,String source){
+
 		Integer sessionId = sessionRedisCache.getSessionIdByUserId(userId);
-		
 		RichConsultSession consultSession = null;
+
 		if(sessionId != null)
 			consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
-		
+
 		if(consultSession == null) {
 			User user = systemService.getUserById(userId);
 			consultSession = new RichConsultSession();
@@ -155,7 +150,7 @@ public class ConsultSessionManager {
 			int number = accessNumber.getAndDecrement();
 			if(number < 10)
 				accessNumber.set(1000);
-			
+
 			int distributorsListSize = distributorsList.size();
 			int index = number % distributorsListSize;
 			Channel distributorChannel;
@@ -225,38 +220,39 @@ public class ConsultSessionManager {
 							csUserChannelMapping.remove(doctorOnLineList.get(indexCS).get("csUserId"));
 						}
 					}else{
-              JSONObject obj = new JSONObject();
-              obj.put("type", 4);
-              obj.put("notifyType", "1002");
-              TextWebSocketFrame msg = new TextWebSocketFrame(obj.toJSONString());
-              channel.writeAndFlush(msg);
-          }
+						JSONObject obj = new JSONObject();
+						obj.put("type", 4);
+						obj.put("notifyType", "1002");
+						TextWebSocketFrame msg = new TextWebSocketFrame(obj.toJSONString());
+						channel.writeAndFlush(msg.retain());
+						return null;
+					}
 				}else{
-            JSONObject obj = new JSONObject();
-            obj.put("type", 4);
-            obj.put("notifyType", "1002");
+					JSONObject obj = new JSONObject();
+					obj.put("type", 4);
+					obj.put("notifyType", "1002");
 					TextWebSocketFrame msg = new TextWebSocketFrame(obj.toJSONString());
-					channel.writeAndFlush(msg);
-					return;
+					channel.writeAndFlush(msg.retain());
+					return null;
 				}
 			}
-			
+
 			consultSessionService.saveConsultInfo(consultSession);
-			
+
 			sessionId = consultSession.getId();
 			sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
 			sessionRedisCache.putUserIdSessionIdPair(userId, sessionId);
 
-      JSONObject csobj = new JSONObject();
-          //sender，告诉会有哪个医生或者接诊员提供服务
-          csobj.put("type",4);
-          csobj.put("notifyType","1001");
-          TextWebSocketFrame csframe = new TextWebSocketFrame(csobj.toJSONString());
-          channel.writeAndFlush(csframe.retain());
+			JSONObject csobj = new JSONObject();
+			//通知用户，告诉会有哪个医生或者接诊员提供服务
+			csobj.put("type",4);
+			csobj.put("notifyType","1001");
+			csobj.put("sessionId",consultSession.getId());
+			TextWebSocketFrame csframe = new TextWebSocketFrame(csobj.toJSONString());
+			channel.writeAndFlush(csframe.retain());
 		}
-		
-		userChannelMapping.put(userId, channel);
-		channelUserMapping.put(channel, userId);
+
+		return consultSession;
 	}
 
 	public HashMap<String,Object> createUserWXConsultSession(RichConsultSession consultSession){
@@ -550,16 +546,13 @@ public class ConsultSessionManager {
 
 	}
 
-
-
 	public  void  putSessionIdConsultSessionPair(Integer sessionId,RichConsultSession session){
 		sessionRedisCache.putSessionIdConsultSessionPair(sessionId, session);
 	}
 
 	public void putUserIdSessionIdPair(String userId, Integer sessionId) {
-		sessionRedisCache.putUserIdSessionIdPair(userId,sessionId);
+		sessionRedisCache.putUserIdSessionIdPair(userId, sessionId);
 	}
-
 
 	public void cancelTransferringSession(Integer sessionId, String toCsUserId, String remark){
 		RichConsultSession session = sessionRedisCache.getConsultSessionBySessionId(sessionId);
@@ -602,4 +595,14 @@ public class ConsultSessionManager {
 		return csUserChannelMapping;
 	}
 
+	public void removeUserSession(String userId){
+		Iterator iterator = userChannelMapping.keySet().iterator();
+		while (iterator.hasNext()){
+			String key = (String) iterator.next();
+			if (userId.equals(key)) {
+				iterator.remove();
+				userChannelMapping.remove(key);
+			}
+		}
+	}
 }

@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.consult.service.core;
 
+import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
@@ -99,6 +100,23 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 			}
 			//更新会话操作时间
 			consultRecordService.saveConsultSessionStatus(consultSession);
+		}else if(sessionId==null){
+			//如果sessionId为空，首先看，消息，是不是从一个用户的H5channel过来的
+			if(msgMap.get("source").equals("h5cxqmUser") && msgMap.get("senderId")!=null) {
+				RichConsultSession consultSession = ConsultSessionManager.getSessionManager().
+						createUserH5ConsultSession((String) msgMap.get("senderId"),channel,"h5cxqm");
+
+				//保存聊天记录
+				if(consultSession!=null){
+					//将用户发过来的第一条消息，推送给分配好的接诊员，或者医生
+					msgMap.put("sessionId",consultSession.getId());
+					Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
+					TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(msgMap));
+					csChannel.writeAndFlush(csUserMsg.retain());
+					consultRecordService.buildRecordMongoVo((String) msgMap.get("senderId"), String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
+				}
+
+			}
 		}
 	}
 
