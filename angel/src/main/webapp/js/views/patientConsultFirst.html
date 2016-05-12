@@ -11,8 +11,7 @@
                     <div class="patientHeaderImg">
                         <img width="25px" ng-src="{{item.avatar}}">
                     </div>
-                    <div class="message" ng-if="item.type=='0'">
-                        {{item.content}}
+                    <div class="message" ng-if="item.type=='0'"  ng-bind-html="item.content">
                     </div>
                     <div ng-if="item.type=='1'" class="message">
                         <img width="100px" ng-src="{{item.content}}" ng-click="tapImgButton('magnifyImg',item.content)">
@@ -22,8 +21,7 @@
                     <div class="doctorHeaderImg">
                         <img width="25px" ng-src="{{item.avatar}}">
                     </div>
-                    <div class="message" ng-if="item.type=='0'">
-                        {{item.content}}
+                    <div class="message" ng-if="item.type=='0'"  ng-bind-html="item.content">
                     </div>
                     <div class="message" ng-if="item.type=='1'">
                         <img width="100px" ng-src="{{item.content}}" ng-click="tapImgButton('magnifyImg',item.content)">

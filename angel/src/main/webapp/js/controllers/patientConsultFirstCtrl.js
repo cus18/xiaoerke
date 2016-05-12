@@ -133,12 +133,13 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     "source":$scope.source,
                     "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
                 };
+                patientValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($scope.info.consultInputValue)));
                 if (!window.WebSocket) {
                     return;
                 }
                 if ($scope.socketServer.readyState == WebSocket.OPEN) {
                     $scope.consultContent.push(patientValMessage);
-                    $scope.socketServer.send(JSON.stringify(patientValMessage));
+                    $scope.socketServer.send(emotionSendFilter(JSON.stringify(patientValMessage)));
                     $scope.info.consultInputValue = "";
                 } else {
                     alert("连接没有开启.");
@@ -151,8 +152,8 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     "senderId": $scope.patientId,
                     "sessionId":$scope.sessionId
                 };
-                console.log(JSON.stringify(dataValue));
                 var dataJsonValue = JSON.stringify(dataValue);
+                console.log('dataJsonValue',JSON.stringify(dataValue));
                 for (var i = 0; i < $files.length; i++) {
                     var file = $files[i];
                     $scope.upload = $upload.upload({
@@ -160,7 +161,6 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                         data: encodeURI(dataJsonValue),
                         file: file
                     }).progress(function(evt) {
-
                         console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
                     }).success(function(data, status, headers, config){
                         var patientValMessage = {
@@ -194,6 +194,21 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     path: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fqqface%2F'
                     //表情存放的路径
                 });
+            };
+
+            //过滤媒体数据
+            var filterMediaData = function (val) {
+                if(val.senderId==$scope.patientId){
+                    if (val.type == "0") {
+                        val.content = $sce.trustAsHtml(replace_em(angular.copy(val.content)));
+                    }
+                }else{
+                    if (val.type == "2"||val.type == "3") {
+                        val.content = $sce.trustAsResourceUrl(angular.copy(val.content));
+                    }else if(val.type == "0"){
+                        val.content = $sce.trustAsHtml(replace_em(emotionReceiveFilter(angular.copy(val.content))));
+                    }
+                }
             };
             //查看结果
             var replace_em = function (str) {
@@ -248,17 +263,6 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 val = val.replace(/\[em_69\]/g, '/:ok');val = val.replace(/\[em_70\]/g, '/:no');val = val.replace(/\[em_71\]/g, '/:rose');val = val.replace(/\[em_72\]/g, '/:fade');
                 val = val.replace(/\[em_73\]/g, '/:showlove');val = val.replace(/\[em_74\]/g, '/:love');val = val.replace(/\[em_75\]/g, '/<L>');
                 return val;
-            };
-            //过滤媒体数据
-            var filterMediaData = function (val) {
-                if(val.senderId==$scope.patientId){
-                    if (val.type == "0") {
-                    }
-                }else{
-                    if (val.type == "2"||val.type == "3") {
-                    }else if(val.type == "0"){
-                    }
-                }
             };
             //各个子窗口的开关变量
             $scope.showFlag = {
