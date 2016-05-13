@@ -139,14 +139,14 @@ public class ConsultDoctorAnswerController extends BaseController {
         if(answerType.equals("myAnswer")){
             tranMap.put("myAnswer",params.get("answer"));
         }else if(answerType.equals("commonAnswer")){
-            String doctorManagerStr = Global.getConfig("doctorManager.list");
-            String csUserId = UserUtils.getUser().getId();
-            if (doctorManagerStr.indexOf(csUserId) != -1) {
+//            String doctorManagerStr = Global.getConfig("doctorManager.list");
+//            String csUserId = UserUtils.getUser().getId();
+//            if (doctorManagerStr.indexOf(csUserId) != -1) {
                 tranMap.put("commonAnswer",params.get("answer"));
-            }else {
-                response.put("result","NoPermission");
-                return response;
-            }
+//            }else {
+//                response.put("result","NoPermission");
+//                return response;
+//            }
         }
 
         String answer = JSON.toJSONString(tranMap);
