@@ -1,21 +1,5 @@
 package com.cxqm.xiaoerke.modules.insurance.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.insurance.entity.InsuranceHospitalVo;
 import com.cxqm.xiaoerke.modules.insurance.entity.InsuranceRegisterService;
@@ -23,6 +7,19 @@ import com.cxqm.xiaoerke.modules.insurance.service.InsuranceHospitalService;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
 import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "insurance")
@@ -70,11 +67,13 @@ public class InsuranceController {
 	   @RequestMapping(value = "/getInsuranceRegisterServiceListByUserid", method = {RequestMethod.POST, RequestMethod.GET})
 	   public
 	   @ResponseBody
-	   Map<String,Object> getInsuranceRegisterServiceListByUserid(){
+	   Map<String,Object> getInsuranceRegisterServiceListByUserid(String insuranceType){
 		   Map<String, Object> resultMap = new HashMap<String, Object>();
-		   String userid=UserUtils.getUser().getId();
-		   List<Map<String,Object>> insuranceViedList=insuranceRegisterServiceService.getValidInsuranceRegisterServiceListByUserid(userid);
-		   List<Map<String,Object>> insuranceInvalidList=insuranceRegisterServiceService.getInvalidInsuranceRegisterServiceListByUserid(userid);
+           Map<String, Object> dataMap = new HashMap<String, Object>();
+           dataMap.put("userid",UserUtils.getUser().getId());
+           dataMap.put("insuranceType",insuranceType);
+		   List<Map<String,Object>> insuranceViedList=insuranceRegisterServiceService.getValidInsuranceRegisterServiceListByUserid(dataMap);
+		   List<Map<String,Object>> insuranceInvalidList=insuranceRegisterServiceService.getInvalidInsuranceRegisterServiceListByUserid(dataMap);
 		   resultMap.put("insuranceInvalidList", insuranceInvalidList);
 		   resultMap.put("insuranceViedList", insuranceViedList);
 	     return resultMap;
@@ -86,7 +85,12 @@ public class InsuranceController {
 	   Map<String,Object> getInsuranceRegisterServiceIfValid(@RequestBody Map<String, Object> params){
 		   Map<String, Object> resultMap = new HashMap<String, Object>();
 		   String babyId=params.get("babyId").toString();
-		   resultMap.put("valid", insuranceRegisterServiceService.getInsuranceRegisterServiceIfValid(babyId).size());
+           String insuranceType = (String)params.get("insuranceType");
+
+           Map<String, Object> dataMap = new HashMap<String, Object>();
+           dataMap.put("babyId",babyId);
+           dataMap.put("insuranceType",insuranceType);
+		   resultMap.put("valid", insuranceRegisterServiceService.getInsuranceRegisterServiceIfValid(dataMap).size());
 	     return resultMap;
 	   }
 	   

@@ -27,7 +27,7 @@ angular.module('controllers', ['ionic']).controller('antiDogOrderListCtrl', [
                 } else if(data.status=="8"){
                     window.location.href = ata.redirectURL+"?targeturl="+routePath;
                 }else {
-                    getInsuranceRegisterServiceListByUserid.get(function (data){
+                    getInsuranceRegisterServiceListByUserid.get({insuranceType:'1'},function (data){
                         console.log("dd",data);
                         $scope.insuranceViedList=data.insuranceViedList;
                         $scope.insuranceInvalidList=data.insuranceInvalidList;
