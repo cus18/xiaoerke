@@ -40,10 +40,14 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.showFlag[key] = !$scope.showFlag[key];
                 $scope.imageSrc = value;
             };
+            var acceptOperationFlag = false;
+            var waitProcessLock = false;
+
             //初始化医生端登录，建立socket链接，获取基本信息
             $scope.doctorConsultInit = function () {
                 var routePath = "/doctor/consultBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath: routePath}, function (data) {
+                    console.log(data);
                     $scope.pageLoading = false;
                     if (data.status == "9") {
                         window.location.href = data.redirectURL;
@@ -111,7 +115,13 @@ angular.module('controllers', ['luegg.directives'])
             $scope.tapShowButton = function(type){
                 $.each($scope.showFlag,function(key,value){
                     if(key==type){
-                        $scope.showFlag[key] = !$scope.showFlag[key];
+                        if(type=="waitProcess"){
+                            if(!waitProcessLock){
+                                $scope.showFlag[key] = !$scope.showFlag[key];
+                            }
+                        }else{
+                            $scope.showFlag[key] = !$scope.showFlag[key];
+                        }
                         if(type == "replyContent"){
                             if($scope.showFlag.replyContent == false){
                                 $scope.showFlag.advisoryContent =true;
@@ -151,7 +161,6 @@ angular.module('controllers', ['luegg.directives'])
             };
 
             /**转接功能区**/
-            var acceptOperationFlag = false;
             $scope.acceptTransfer = function(){
                 if(!acceptOperationFlag){
                     $scope.tapShowButton('waitProcess');
@@ -162,9 +171,11 @@ angular.module('controllers', ['luegg.directives'])
                         }
                     });
                     acceptOperationFlag = true;
+                    waitProcessLock = true;
                     React2Transfer.save({operation:"accept",
                         forwardSessionIds:waitJoinChooseUserList},function(data){
                         acceptOperationFlag = false;
+                        waitProcessLock = false
                         if(data.result=="success"){
                             //将转接成功的用户，都加入会话列表中来
                             var indexClose = 0;
@@ -198,7 +209,6 @@ angular.module('controllers', ['luegg.directives'])
                         }
                     });
                 }
-
             };
 
             var rejectOperationFlag = false;
@@ -276,10 +286,10 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 if (window.WebSocket) {
                     if($scope.userType=="distributor"){
-                        $scope.socketServer1 = new ReconnectingWebSocket("ws://localhost:2048/ws&" +
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://xiaork.com:2048/ws&" +
                             "distributor&" + $scope.doctorId);//cs,user,distributor
                     }else if($scope.userType=="consultDoctor"){
-                        $scope.socketServer1 = new ReconnectingWebSocket("ws://localhost:2048/ws&" +
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://xiaork.com:2048/ws&" +
                             "cs&" + $scope.doctorId);//cs,user,distributor
                     }
 

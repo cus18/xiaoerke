@@ -527,7 +527,6 @@ public class ConsultSessionManager {
 				if(ConsultSessionForwardRecordsVo.REACT_TRANSFER_OPERATION_ACCEPT.equalsIgnoreCase(operation)){
 					if(session!=null){
 						sessionRedisCache.putSessionIdConsultSessionPair(sessionId, session);
-
 						ConsultSession consultSession = new ConsultSession();
 						consultSession.setId(sessionId);
 						consultSession.setCsUserId(session.getCsUserId());
