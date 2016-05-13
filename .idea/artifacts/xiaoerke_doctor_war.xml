@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="xiaoerke-doctor:war">
-    <output-path>$PROJECT_DIR$/xiaoerke-doctor/target</output-path>
-    <root id="archive" name="xiaoerke-doctor.war">
-      <element id="artifact" artifact-name="xiaoerke-doctor:war exploded" />
-    </root>
-  </artifact>
-</component>

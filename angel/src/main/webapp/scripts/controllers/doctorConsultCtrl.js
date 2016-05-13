@@ -277,10 +277,10 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 if (window.WebSocket) {
                     if($scope.userType=="distributor"){
-                        $scope.socketServer1 = new ReconnectingWebSocket("ws://xiaork.com:2048/ws&" +
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://localhost:2048/ws&" +
                             "distributor&" + $scope.doctorId);//cs,user,distributor
                     }else if($scope.userType=="consultDoctor"){
-                        $scope.socketServer1 = new ReconnectingWebSocket("ws://xiaork.com:2048/ws&" +
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://localhost:2048/ws&" +
                             "cs&" + $scope.doctorId);//cs,user,distributor
                     }
 
@@ -453,8 +453,8 @@ angular.module('controllers', ['luegg.directives'])
                 }
             };
 
-            //触发信息声音
-            $scope.triggerqqVoice = function () {
+            //触发转接声音
+            $scope.triggerVoice = function () {
                 var audio = document.createElement('audio');
                 var source = document.createElement('source');
                 source.type = "audio/mpeg";
@@ -465,8 +465,8 @@ angular.module('controllers', ['luegg.directives'])
                 audio.appendChild(source);
                 audio.play();
             };
-            //触发转接声音
-            $scope.triggerVoice = function () {
+            //触发信息声音
+            $scope.triggerqqVoice = function () {
                 var audio = document.createElement('audio');
                 var source = document.createElement('source');
                 source.type = "audio/mpeg";
@@ -770,16 +770,35 @@ angular.module('controllers', ['luegg.directives'])
 
             //处理用户发送过来的会话消息    看到这里了
             var processPatientSendMessage = function(conversationData){
-                var currentConsultValue = {};
                 var chooseFlag = false;
+                var currentConsultValue = {
+                    'type':conversationData.type,
+                    'content':conversationData.content,
+                    'dateTime':conversationData.dateTime,
+                    'senderId':conversationData.senderId,
+                    'senderName':conversationData.senderName,
+                    'sessionId':conversationData.sessionId
+                };
+/*                var currentConsultValue = {};
                 currentConsultValue.type = conversationData.type;
                 currentConsultValue.content = conversationData.content;
                 currentConsultValue.dateTime = conversationData.dateTime;
                 currentConsultValue.senderId = conversationData.senderId;
                 currentConsultValue.senderName = conversationData.senderName;
-                currentConsultValue.sessionId = conversationData.sessionId;
+                currentConsultValue.sessionId = conversationData.sessionId;*/
                 if(JSON.stringify($scope.currentUserConversation)=='{}'){
-                    $scope.currentUserConversation.patientId = conversationData.senderId;
+                    $scope.currentUserConversation = {
+                        'patientId':conversationData.senderId,
+                        'source':conversationData.source,
+                        'fromServer':conversationData.fromServer,
+                        'sessionId':conversationData.sessionId,
+                        'messageNotSee':true,
+                        'isOnline':true,
+                        'dateTime':conversationData.dateTime,
+                        'patientName':conversationData.senderName,
+                        'consultValue':[]
+                    }
+                   /* $scope.currentUserConversation.patientId = conversationData.senderId;
                     $scope.currentUserConversation.source = conversationData.source;
                     $scope.currentUserConversation.fromServer = conversationData.fromServer;
                     $scope.currentUserConversation.sessionId = conversationData.sessionId;
@@ -787,7 +806,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.currentUserConversation.dateTime = conversationData.dateTime;
                     $scope.currentUserConversation.messageNotSee = false;
                     $scope.currentUserConversation.patientName = conversationData.senderName;
-                    $scope.currentUserConversation.consultValue = [];
+                    $scope.currentUserConversation.consultValue = [];*/
                     $scope.currentUserConversation.consultValue.push(currentConsultValue);
                     chooseFlag = true;
                 }

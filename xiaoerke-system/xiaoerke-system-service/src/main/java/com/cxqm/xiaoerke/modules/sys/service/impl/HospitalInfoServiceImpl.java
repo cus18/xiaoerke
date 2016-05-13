@@ -113,10 +113,26 @@ public class HospitalInfoServiceImpl implements HospitalInfoService {
 		HashMap<String,Object> result = new HashMap<String,Object>();
 		result.put("hospitalName",hVo.getName());
 		result.put("hospitalDetails",hVo.getDetails()); //医院简介
-		result.put("medicalExamination",hVo.getMedicalExamination()); //开药及检查
-		result.put("chargeStandard",hVo.getChargeStandard()); //收费标准
-		result.put("specialDiscount",hVo.getSpecialDiscount());//特别优惠
-		result.put("medicalProcess",hVo.getMedicalProcess());//特别优惠
+
+		Map<String,Object> param = new HashMap<String,Object>();
+		param.put("hospitalId",hospitalId);
+		List<SysHospitalContactVo> contactVoList = sysHospitalContactDao.getHospitalContactByInfo(param);
+		if(contactVoList.size()!=0){
+			SysHospitalContactVo contactVo = contactVoList.get(0);
+			result.put("contactName",contactVo.getContactName()); //合作机构联系人姓名
+			result.put("contactPhone",contactVo.getContactPhone()); //合作机构联系人电话
+			result.put("costReduction",contactVo.getCostReduction()); //费用减免
+			result.put("greenChannel",contactVo.getGreenChannel()); //绿色通道
+			result.put("limitStandard",contactVo.getLimitStandard()); //限价标准
+			result.put("limitRange",contactVo.getLimitRange()); //限价范围
+			result.put("limitDisease",contactVo.getLimitDisease()); //限价疾病
+			result.put("chineseMedicine",contactVo.getChineseMedicine()); //中药
+			result.put("westernMedicine",contactVo.getWesternMedicine()); //西药
+			result.put("inspectionItems",contactVo.getInspectionItems()); //检查项目
+			result.put("medicineFee",contactVo.getMedicineFee()); //药费
+			result.put("inspectionFee",contactVo.getInspectionFee()); //检查费
+			result.put("clinicItems",contactVo.getClinicItems());//诊疗项目
+		}
 
 		return result;
 	}
@@ -238,4 +254,40 @@ public class HospitalInfoServiceImpl implements HospitalInfoService {
 		return  list;
 	}
 
+	@Override
+	public Map<String, Object> listDepartmentHospital(Map<String, Object> params) {
+
+		HashMap<String, Object> response = new HashMap<String, Object>();
+
+		String departmentLevel1Name = (String) params.get("departmentLevel1Name");
+		String currentPage = ((String) params.get("pageNo"));
+		String pageSize = ((String) params.get("pageSize"));
+		String consultPhone = ((String) params.get("consultPhone"));
+
+
+		Page<HashMap<String, Object>> page = FrontUtils.generatorPage(currentPage,
+				pageSize);
+		HashMap<String, Object> hospitalInfo = new HashMap<String, Object>();
+		hospitalInfo.put("departmentLevel1Name", departmentLevel1Name);
+		hospitalInfo.put("consultPhone", consultPhone);
+
+		Page<HashMap<String, Object>> resultPage = hospitalDao.listDepartmentHospital(hospitalInfo, page);
+
+		response.put("pageNo", resultPage.getPageNo());
+		response.put("pageSize", resultPage.getPageSize());
+		long tmp = FrontUtils.generatorTotalPage(resultPage);
+		response.put("pageTotal", tmp + "");
+		List<HashMap<String, Object>> list = resultPage.getList();
+		List<HashMap<String, Object>> departmentDataList = new ArrayList<HashMap<String, Object>>();
+		if (list != null && !list.isEmpty()) {
+			for (Map departmentDataMap : list) {
+				HashMap<String, Object> dataMap = new HashMap<String, Object>();
+				dataMap.put("hospitalId", departmentDataMap.get("sys_hospital_id"));
+				dataMap.put("hospitalName", departmentDataMap.get("hospitalName"));
+				departmentDataList.add(dataMap);
+			}
+		}
+		response.put("departmentData", departmentDataList);
+		return response;
+	}
 }

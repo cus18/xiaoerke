@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="xiaoerke-insurance-webapp:war">
-    <output-path>$PROJECT_DIR$/xiaoerke-insurance-webapp/target</output-path>
-    <root id="archive" name="xiaoerke-insurance-webapp-0.0.1-SNAPSHOT.war">
-      <element id="artifact" artifact-name="xiaoerke-insurance-webapp:war exploded" />
-    </root>
-  </artifact>
-</component>

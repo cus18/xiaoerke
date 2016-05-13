@@ -1,25 +1,9 @@
 package com.cxqm.xiaoerke.modules.marketing.web;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+import com.cxqm.xiaoerke.modules.marketing.entity.LoveActivityComment;
 import com.cxqm.xiaoerke.modules.marketing.entity.LoveMarketing;
 import com.cxqm.xiaoerke.modules.marketing.service.LoveMarketingService;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +21,9 @@ public class LoveMarketingController {
     @Autowired
     LoveMarketingService loveMarketingService;
 
+    @Autowired
+    private SystemService systemService;
+
     /**
      * 生成海报
      * */
@@ -51,11 +38,6 @@ public class LoveMarketingController {
         String id=modle.getId();
         if(id!=null){
            Map<String,Object> m= loveMarketingService.getNicknameAndHeadImageByOpenid(openid);
-            if(m.get("headImage")!=null){
-                loveMarketingService.download(m.get("headImage").toString(),modle.getId(),"/Users/feibendechayedan/Downloads/headImage/");
-                String qrcodeurl=loveMarketingService.getUserQRcode(modle.getId());
-
-            }
         }else{
             map.put("src","addFault");
             return  map;
@@ -63,6 +45,38 @@ public class LoveMarketingController {
         return map;
     }
 
+    @RequestMapping(value="/addComment",method = {RequestMethod.POST, RequestMethod.GET})
+    public @ResponseBody
+    Map<String, Object> saveLoveActivityComment(HttpSession session, HttpServletRequest request){
+        HashMap<String, Object> map = new HashMap<String, Object>() ;
+        LoveActivityComment loveActivityComment = new LoveActivityComment();
+        String openId = session.getAttribute("openId").toString();
+        Date nowDate = new Date();
+        loveActivityComment.setUserId(session.getAttribute("openId").toString());
+        loveActivityComment.setContent(request.getParameter("content"));
+        loveActivityComment.setCreateDate(nowDate);
+        loveMarketingService.saveLoveActivityComment(loveActivityComment);
+        if(loveActivityComment.getId() !=null){
+            String loveActivityCommentId = loveActivityComment.getId();
+            map.put("status","success");
+            return map;
+        }else{
+            map.put("status","falure");
+            return map;
+        }
+    }
+
+    @RequestMapping(value="/findFirstComment",method = {RequestMethod.POST, RequestMethod.GET})
+    public @ResponseBody HashMap<String , Object> findOneLoveActivityComment(){
+        HashMap<String,Object> response = new HashMap<String, Object>();
+        LoveActivityComment  loveActivityComment = loveMarketingService.findLoveActivityComment();
+        if(loveActivityComment != null ){
+            response.put("content",loveActivityComment);
+            return response;
+        }else{
+            return null ;
+        }
+    }
 
     /**
      * 添加图片水印

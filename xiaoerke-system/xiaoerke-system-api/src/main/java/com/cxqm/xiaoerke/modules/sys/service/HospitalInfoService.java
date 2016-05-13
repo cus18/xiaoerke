@@ -48,4 +48,6 @@ public interface HospitalInfoService {
 
 	//获取合作医院信息sunxiao
 	List<SysHospitalContactVo> getHospitalContact(Map map);
+
+	Map<String, Object> listDepartmentHospital(Map<String, Object> params);
 }
