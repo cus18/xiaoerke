@@ -70,9 +70,9 @@ public class InsuranceRegisterServiceServiceImpl implements
 
 	@Override
 	public List<Map<String, Object>> getInsuranceRegisterServiceIfValid(
-			String babyId) {
+            Map<String, Object> dataMap) {
 		// TODO Auto-generated method stub
-		return insuranceRegisterServiceDao.getInsuranceRegisterServiceIfValid(babyId);
+		return insuranceRegisterServiceDao.getInsuranceRegisterServiceIfValid(dataMap);
 	}
 
 	@Override

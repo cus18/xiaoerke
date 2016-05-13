@@ -85,7 +85,12 @@ public class InsuranceController {
 	   Map<String,Object> getInsuranceRegisterServiceIfValid(@RequestBody Map<String, Object> params){
 		   Map<String, Object> resultMap = new HashMap<String, Object>();
 		   String babyId=params.get("babyId").toString();
-		   resultMap.put("valid", insuranceRegisterServiceService.getInsuranceRegisterServiceIfValid(babyId).size());
+           String insuranceType = (String)params.get("insuranceType");
+
+           Map<String, Object> dataMap = new HashMap<String, Object>();
+           dataMap.put("babyId",babyId);
+           dataMap.put("insuranceType",insuranceType);
+		   resultMap.put("valid", insuranceRegisterServiceService.getInsuranceRegisterServiceIfValid(dataMap).size());
 	     return resultMap;
 	   }
 	   

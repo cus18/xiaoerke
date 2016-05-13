@@ -55,7 +55,7 @@ public interface InsuranceRegisterServiceService {
 	 */
 	List<InsuranceRegisterService> getInsuranceServiceList(InsuranceRegisterService vo);
 	
-	public List<Map<String,Object>> getInsuranceRegisterServiceIfValid(String babyId);
+	public List<Map<String,Object>> getInsuranceRegisterServiceIfValid(Map<String, Object> dataMap);
 	
 	/**
 	 *  验证此Openid是否查看过Lead页

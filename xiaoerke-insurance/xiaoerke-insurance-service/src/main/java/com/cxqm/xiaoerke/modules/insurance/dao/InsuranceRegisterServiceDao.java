@@ -39,10 +39,10 @@ public interface InsuranceRegisterServiceDao {
 
 	/**
 	 * 验证宝宝是否已经存在订单
-	 * @param babyId
+	 * @param dataMap
 	 * @return
 	 */
-	public List<Map<String,Object>> getInsuranceRegisterServiceIfValid(@Param("babyId")String babyId);
+	public List<Map<String,Object>> getInsuranceRegisterServiceIfValid(Map<String, Object> dataMap);
 	
 
 	/**

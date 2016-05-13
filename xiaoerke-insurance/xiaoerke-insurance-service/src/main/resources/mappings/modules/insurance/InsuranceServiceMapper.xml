@@ -80,6 +80,9 @@
 		insurance_register_service
 	WHERE
 		baby_id = #{babyId}
+        <if test="insuranceType != null">
+           AND irs.Insurance_type=#{insuranceType}
+        </if>
 		AND  end_time &gt; NOW()
 	AND state != 6
   </select>
