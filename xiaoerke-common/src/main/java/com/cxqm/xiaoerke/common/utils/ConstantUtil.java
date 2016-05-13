@@ -34,10 +34,12 @@ public class ConstantUtil {
 	public static int VISIT_INTERVAL = 15;
 	public static String MARKET_WEB_URL = "http://xiaork.com/";
 	public static String WISDOM_WEB_URL = "http://s165.baodf.com:8081/";
-	public static String ANGEL_WEB_URL = "http://s34.baodf.com:8081/";
+	//public static String ANGEL_WEB_URL = "http://s34.baodf.com:8081/";
 	public static String KEEPER_WEB_URL = "http://s251.baodf.com:8081/";
 	public static String DOCTOR_WEB_URL = "http://s68.baodf.com:8081/";
 	public static String TITAN_WEB_URL = "http://s68.baodf.com/";
+
+	public static String ANGEL_WEB_URL = "http://xiaork.com/";
 
 
 

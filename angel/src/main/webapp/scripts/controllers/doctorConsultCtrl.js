@@ -778,13 +778,6 @@ angular.module('controllers', ['luegg.directives'])
                     'senderName':conversationData.senderName,
                     'sessionId':conversationData.sessionId
                 };
-/*                var currentConsultValue = {};
-                currentConsultValue.type = conversationData.type;
-                currentConsultValue.content = conversationData.content;
-                currentConsultValue.dateTime = conversationData.dateTime;
-                currentConsultValue.senderId = conversationData.senderId;
-                currentConsultValue.senderName = conversationData.senderName;
-                currentConsultValue.sessionId = conversationData.sessionId;*/
                 if(JSON.stringify($scope.currentUserConversation)=='{}'){
                     $scope.currentUserConversation = {
                         'patientId':conversationData.senderId,
@@ -797,15 +790,6 @@ angular.module('controllers', ['luegg.directives'])
                         'patientName':conversationData.senderName,
                         'consultValue':[]
                     }
-                   /* $scope.currentUserConversation.patientId = conversationData.senderId;
-                    $scope.currentUserConversation.source = conversationData.source;
-                    $scope.currentUserConversation.fromServer = conversationData.fromServer;
-                    $scope.currentUserConversation.sessionId = conversationData.sessionId;
-                    $scope.currentUserConversation.isOnline = true;
-                    $scope.currentUserConversation.dateTime = conversationData.dateTime;
-                    $scope.currentUserConversation.messageNotSee = false;
-                    $scope.currentUserConversation.patientName = conversationData.senderName;
-                    $scope.currentUserConversation.consultValue = [];*/
                     $scope.currentUserConversation.consultValue.push(currentConsultValue);
                     chooseFlag = true;
                 }
