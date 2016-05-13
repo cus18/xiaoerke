@@ -161,6 +161,23 @@ define(['appInsurance'], function(app){
                             public: true
                         }
                     })
+                    .state('handfootmouthIndex', {
+                        url: '/handfootmouthIndex',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'handfootmouthIndexCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.handfootmouthIndexCtrl',
+                                    ['js/controllers/handfootmouth/handfootmouthIndexCtrl.js',
+                                        'styles/handfootmouth/handfootmouthIndex.less?ver='+insuranceVersion,
+                                    ],
+                                    'js/views/handfootmouth/handfootmouthIndex.html?ver='+insuranceVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
 
 
 
