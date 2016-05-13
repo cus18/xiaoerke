@@ -195,7 +195,40 @@ define(['appInsurance'], function(app){
                             public: true
                         }
                     })
-
+                    .state('insuranceOrderList', {
+                        url: '/insuranceOrderList',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'insuranceOrderListCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.insuranceOrderListCtrl',
+                                    ['js/controllers/insurance/insuranceOrderListCtrl.js',
+                                        'styles/insurance/insuranceOrderList.less?ver='+insuranceVersion,
+                                    ],
+                                    'js/views/insurance/insuranceOrderList.html?ver='+insuranceVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                    .state('insuranceOrderDetail', {
+                        url: '/insuranceOrderDetail',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'insuranceOrderDetailCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.insuranceOrderDetailCtrl',
+                                    ['js/controllers/insurance/insuranceOrderDetailCtrl.js',
+                                        'styles/insurance/insuranceOrderDetail.less?ver='+insuranceVersion,
+                                    ],
+                                    'js/views/insurance/insuranceOrderDetail.html?ver='+insuranceVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
 
 
                 $urlRouterProvider.otherwise('antiDogLead');
