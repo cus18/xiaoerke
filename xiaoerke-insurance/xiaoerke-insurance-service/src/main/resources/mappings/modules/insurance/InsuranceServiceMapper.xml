@@ -148,12 +148,18 @@
 	       SELECT irs.*,sbb.`name` FROM insurance_register_service irs
 			INNER JOIN sys_baby_baseInfo sbb ON irs.baby_id=sbb.id
 			where sbb.userid=#{userid} and ( irs.state=1 or irs.state=2 or irs.state=0 )
+			<if test="insuranceType != null">
+			  AND irs.Insurance_type=#{insuranceType}
+            </if>
 		     ORDER BY create_time desc 
 	  </select>
 	  <select id="getInvalidInsuranceRegisterServiceListByUserid" resultType="java.util.HashMap" parameterType="java.lang.String" >
 	       SELECT irs.*,sbb.`name` FROM insurance_register_service irs
 			INNER JOIN sys_baby_baseInfo sbb ON irs.baby_id=sbb.id
 			where sbb.userid=#{userid} and ( irs.state=3 or irs.state=4 or irs.state=5 )
+            <if test="insuranceType != null">
+              AND irs.Insurance_type=#{insuranceType}
+            </if>
 		     ORDER BY create_time desc 
 	  </select>
 

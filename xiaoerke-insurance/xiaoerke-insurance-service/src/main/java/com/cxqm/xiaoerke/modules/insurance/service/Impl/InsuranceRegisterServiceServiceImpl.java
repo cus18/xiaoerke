@@ -1,16 +1,5 @@
 package com.cxqm.xiaoerke.modules.insurance.service.Impl;
 
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.cxqm.xiaoerke.modules.sys.entity.Office;
-import com.cxqm.xiaoerke.modules.sys.service.SystemService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.IdGen;
 import com.cxqm.xiaoerke.modules.insurance.dao.InsuranceRegisterServiceDao;
@@ -18,12 +7,22 @@ import com.cxqm.xiaoerke.modules.insurance.entity.InsuranceRegisterService;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
 import com.cxqm.xiaoerke.modules.sys.dao.UserDao;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
+import com.cxqm.xiaoerke.modules.sys.entity.Office;
 import com.cxqm.xiaoerke.modules.sys.entity.PatientVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.BabyBaseInfoService;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.UserInfoService;
 import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional(readOnly = false)
@@ -92,16 +91,16 @@ public class InsuranceRegisterServiceServiceImpl implements
 
 	@Override
 	public List<Map<String, Object>> getValidInsuranceRegisterServiceListByUserid(
-			String userid) {
+            Map<String, Object> dataMap) {
 		// TODO Auto-generated method stub
-		return insuranceRegisterServiceDao.getValidInsuranceRegisterServiceListByUserid(userid);
+		return insuranceRegisterServiceDao.getValidInsuranceRegisterServiceListByUserid(dataMap);
 	}
 
 	@Override
 	public List<Map<String, Object>> getInvalidInsuranceRegisterServiceListByUserid(
-			String userid) {
+            Map<String, Object> dataMap) {
 		// TODO Auto-generated method stub
-		return insuranceRegisterServiceDao.getInvalidInsuranceRegisterServiceListByUserid(userid);
+		return insuranceRegisterServiceDao.getInvalidInsuranceRegisterServiceListByUserid(dataMap);
 	}
 
 	@Override

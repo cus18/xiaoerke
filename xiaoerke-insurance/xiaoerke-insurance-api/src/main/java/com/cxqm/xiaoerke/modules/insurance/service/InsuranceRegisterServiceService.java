@@ -76,14 +76,14 @@ public interface InsuranceRegisterServiceService {
 	 * @param userid
 	 * @return
 	 */
-	public List<Map<String,Object>> getValidInsuranceRegisterServiceListByUserid(String userid);
+	public List<Map<String,Object>> getValidInsuranceRegisterServiceListByUserid(Map<String, Object> dataMap);
 	
 	/**
 	 * 获取当前用户下的无效保险信息
 	 * @param userid
 	 * @return
 	 */
-	public List<Map<String,Object>> getInvalidInsuranceRegisterServiceListByUserid(String userid);
+	public List<Map<String,Object>> getInvalidInsuranceRegisterServiceListByUserid(Map<String, Object> dataMap);
 	
 	/**
 	 * 修改所有状态为0或1的保险订单

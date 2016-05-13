@@ -71,17 +71,17 @@ public interface InsuranceRegisterServiceDao {
 	
 	/**
 	 * 获取当前用户下的有效保险信息
-	 * @param userid
+	 * @param dataMap
 	 * @return
 	 */
-	public List<Map<String,Object>> getValidInsuranceRegisterServiceListByUserid(String userid);
+	public List<Map<String,Object>> getValidInsuranceRegisterServiceListByUserid(Map<String, Object> dataMap);
 	
 	/**
 	 * 获取当前用户下的无效保险信息
-	 * @param userid
+	 * @param dataMap
 	 * @return
 	 */
-	public List<Map<String,Object>> getInvalidInsuranceRegisterServiceListByUserid(String userid);
+	public List<Map<String,Object>> getInvalidInsuranceRegisterServiceListByUserid(Map<String, Object> dataMap);
 	
 	/**
 	 * 获取所有状态为0或1的保险订单
