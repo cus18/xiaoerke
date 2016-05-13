@@ -225,22 +225,21 @@ angular.module('controllers', ['luegg.directives'])
             $scope.chooseTransferCsUser = function(csUserId,csUserName){
                 $scope.transferCsUserId = csUserId;
                 $scope.csTransferUserName = csUserName;
+                $scope.transferUserName = angular.copy($scope.currentUserConversation.patientName);
             };
 
             $scope.transferToCsUser = function(){
+                $scope.tapShowButton('switchOver');
                 TransferToOtherCsUser.save({doctorId: $scope.transferCsUserId,
                     sessionId:$scope.currentUserConversation.sessionId,
                     remark: $scope.info.transferRemark},function(data){
                     if(data.result=="success"){
-                        $scope.tapShowButton('switchOver');
                         //转接请求成功后，在接诊员侧，保留了此会话，只到被转接的医生收到为止，
                         // 才将会话拆除，在此过程中，允许接诊员，取消转接。
                     }else if(data.result=="failure"){
-                        alert("转接失败，请转接给其他医生");
-                        $scope.tapShowButton('switchOver');
+                        alert("转接会话给"+$scope.csTransferUserName+"失败，请转接给其他医生");
                     }else if(data.result=="transferring"){
-                        alert("此会话正在被转接中，不能再次转接");
-                        $scope.tapShowButton('switchOver');
+                        alert("与用户" + $scope.transferUserName +"的会话正在被转接中，不能再次转接");
                     }
                 });
             };
