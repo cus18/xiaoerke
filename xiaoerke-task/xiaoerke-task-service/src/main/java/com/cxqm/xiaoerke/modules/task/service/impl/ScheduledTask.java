@@ -3,6 +3,7 @@ package com.cxqm.xiaoerke.modules.task.service.impl;
 import com.cxqm.xiaoerke.common.bean.CustomBean;
 import com.cxqm.xiaoerke.common.bean.WechatRecord;
 import com.cxqm.xiaoerke.common.utils.*;
+import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
@@ -23,6 +24,7 @@ import com.cxqm.xiaoerke.modules.sys.service.MessageService;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
 import com.cxqm.xiaoerke.modules.sys.utils.DoctorMsgTemplate;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import com.cxqm.xiaoerke.modules.task.service.ScheduleTaskService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
@@ -1033,13 +1035,14 @@ public class ScheduledTask {
           Integer orderId = (Integer)map.get("id");
           List<ConsultPhoneRecordVo> list = consultPhoneService.getConsultRecordInfo(orderId + "", "CallAuth");
           if(list.size()<1){
+
               Integer conversationLength =  (Integer)map.get("conversationLength")*60;
               HashMap<String, Object> result = CCPRestSDK.callback(userPhone,doctorPhone,
                       "01057115120", "01057115120", null,
                       "true", null, orderId+"",
                       conversationLength+"", null, "0",
                       "1", "60", null);
-
+              System.out.println("发起电话咨询:"+result);
               if("000000".equals((String) result.get("statusCode"))){
                   HashMap<String, Object> dataMap = (HashMap) result.get("data");
                   HashMap<String, Object> callBackMap = (HashMap)dataMap.get("CallBack");
@@ -1052,6 +1055,8 @@ public class ScheduledTask {
                   vo.setCallSid(callSid);
                   consultPhonePatientService.updateOrderInfoBySelect(vo);
 
+              }else{
+                  LogUtils.saveLog(Servlets.getRequest(), "00000107", "电话咨询定时器" + result);//用户发起微信支付
               }
           }
       }
