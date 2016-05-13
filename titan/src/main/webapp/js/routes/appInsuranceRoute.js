@@ -178,6 +178,23 @@ define(['appInsurance'], function(app){
                             public: true
                         }
                     })
+                    .state('handfootmouthPaySuccess', {
+                        url: '/handfootmouthPaySuccess',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'handfootmouthPaySuccessCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.handfootmouthPaySuccessCtrl',
+                                    ['js/controllers/handfootmouth/handfootmouthPaySuccessCtrl.js',
+                                        'styles/handfootmouth/handfootmouthPaySuccess.less?ver='+insuranceVersion,
+                                    ],
+                                    'js/views/handfootmouth/handfootmouthPaySuccess.html?ver='+insuranceVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
 
 
 
