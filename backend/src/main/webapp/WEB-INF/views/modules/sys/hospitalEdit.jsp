@@ -35,7 +35,7 @@
 
 <form:form id="inputForm" modelAttribute="contactVo" action="${ctx}/sys/hospital/hospitalSave" method="post"
 		   class="form-horizontal">
-	<input id="sysHospitalId" name="sysHospitalId" type="hidden" value="${contactVo.sysHospitalId}"  class="input-xlarge"/>
+	<input id="sysHospitalId" name="sysHospitalId" type="hidden" value="${hospitalVo.id}"  class="input-xlarge"/>
 	<sys:message content="${message}"/>
 	<div class="control-group">
 		<label class="control-label">医院名称:</label>

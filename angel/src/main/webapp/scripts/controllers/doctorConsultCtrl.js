@@ -225,22 +225,21 @@ angular.module('controllers', ['luegg.directives'])
             $scope.chooseTransferCsUser = function(csUserId,csUserName){
                 $scope.transferCsUserId = csUserId;
                 $scope.csTransferUserName = csUserName;
+                $scope.transferUserName = angular.copy($scope.currentUserConversation.patientName);
             };
 
             $scope.transferToCsUser = function(){
+                $scope.tapShowButton('switchOver');
                 TransferToOtherCsUser.save({doctorId: $scope.transferCsUserId,
                     sessionId:$scope.currentUserConversation.sessionId,
                     remark: $scope.info.transferRemark},function(data){
                     if(data.result=="success"){
-                        $scope.tapShowButton('switchOver');
                         //转接请求成功后，在接诊员侧，保留了此会话，只到被转接的医生收到为止，
                         // 才将会话拆除，在此过程中，允许接诊员，取消转接。
                     }else if(data.result=="failure"){
-                        alert("转接失败，请转接给其他医生");
-                        $scope.tapShowButton('switchOver');
+                        alert("转接会话给"+$scope.csTransferUserName+"失败，请转接给其他医生");
                     }else if(data.result=="transferring"){
-                        alert("此会话正在被转接中，不能再次转接");
-                        $scope.tapShowButton('switchOver');
+                        alert("与用户" + $scope.transferUserName +"的会话正在被转接中，不能再次转接");
                     }
                 });
             };
@@ -779,13 +778,6 @@ angular.module('controllers', ['luegg.directives'])
                     'senderName':conversationData.senderName,
                     'sessionId':conversationData.sessionId
                 };
-/*                var currentConsultValue = {};
-                currentConsultValue.type = conversationData.type;
-                currentConsultValue.content = conversationData.content;
-                currentConsultValue.dateTime = conversationData.dateTime;
-                currentConsultValue.senderId = conversationData.senderId;
-                currentConsultValue.senderName = conversationData.senderName;
-                currentConsultValue.sessionId = conversationData.sessionId;*/
                 if(JSON.stringify($scope.currentUserConversation)=='{}'){
                     $scope.currentUserConversation = {
                         'patientId':conversationData.senderId,
@@ -798,15 +790,6 @@ angular.module('controllers', ['luegg.directives'])
                         'patientName':conversationData.senderName,
                         'consultValue':[]
                     }
-                   /* $scope.currentUserConversation.patientId = conversationData.senderId;
-                    $scope.currentUserConversation.source = conversationData.source;
-                    $scope.currentUserConversation.fromServer = conversationData.fromServer;
-                    $scope.currentUserConversation.sessionId = conversationData.sessionId;
-                    $scope.currentUserConversation.isOnline = true;
-                    $scope.currentUserConversation.dateTime = conversationData.dateTime;
-                    $scope.currentUserConversation.messageNotSee = false;
-                    $scope.currentUserConversation.patientName = conversationData.senderName;
-                    $scope.currentUserConversation.consultValue = [];*/
                     $scope.currentUserConversation.consultValue.push(currentConsultValue);
                     chooseFlag = true;
                 }

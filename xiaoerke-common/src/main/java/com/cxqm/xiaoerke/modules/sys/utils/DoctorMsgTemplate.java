@@ -123,14 +123,14 @@ public class DoctorMsgTemplate {
 
 
     public static void doctorPhoneConsultRemindAt5minBefore2Sms(String token,String doctorName,String babyName,String phone,String userPhone,String url){
-        String content = "【接听提醒】尊敬的"+doctorName+"医生，"+babyName+"小朋友家长将在5min以后接通电话咨询，到时您会接到号码为"+userPhone+"的来电，请保持电话畅通。在这之前，您可以打开链接，查看患者详细的病情资料"+ WechatUtil.getShortUrl(token,url);
+        String content = "【接听提醒】尊敬的"+doctorName+"医生，"+babyName+"小朋友家长将在5min以后接通电话咨询，到时您会接到号码为010-57115120的来电，请保持电话畅通。在这之前，您可以打开链接，查看患者详细的病情资料"+ WechatUtil.getShortUrl(token,url);
         SMSMessageUtil.sendMsg(phone, content);
     }
 
     public static void doctorPhoneConsultRemindAt5minBefore2Wechat(String babyName,String date,String userPhone, String registerNo,String token,String url,String openId){
         String templateId = "oG_hw4gJy5N9vSDxpZzu12Lzku3obhbwYEWHhrX3Hfk";
         WechatMessageUtil.templateModel(babyName+"小朋友家长将在5min以后接通电话咨询，请保持电话畅通。",
-                babyName,date,userPhone,registerNo,"若您因特殊情况不能接听，请联系客服！",
+                babyName,date,"010-57115120",registerNo,"若您因特殊情况不能接听，请联系客服！",
                 token,url,openId,templateId);
     }
 
