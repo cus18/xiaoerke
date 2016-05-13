@@ -55,7 +55,7 @@ public class LoveMarketingServiceImpl implements LoveMarketingService {
         JSONObject jb=JSONObject.fromObject(reJson);
         String qrTicket=jb.getString("ticket");
         String QRCodeURI="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket="+qrTicket;
-        this.download(QRCodeURI,id+".jpg","/Users/feibendechayedan/Downloads/");
+        this.download(QRCodeURI,id,"/Users/feibendechayedan/Downloads/");
         return "/Users/feibendechayedan/Downloads/"+id;
     }
 
@@ -163,6 +163,8 @@ public class LoveMarketingServiceImpl implements LoveMarketingService {
     public int updateLoveMarketing(LoveMarketing loveMarketing) {
         return loveMarketingDao.updateLoveMarketing(loveMarketing);
     }
+
+
 }
 
 
