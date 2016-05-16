@@ -34,10 +34,10 @@
             </div>
             <div class="intro declare">
                 <h3 class="f4 c3 fw0 margin0 hfm1">重要声明:
-                    <div class="read" onclick="read()">
+                    <div class="read" ng-click="read()">
                         已阅读
                         <a>
-                            <img id="readLock" width="18" height="auto"
+                            <img ng-if="readLock" width="18" height="auto"
                                  src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Fread.png">
                         </a>
                     </div>
@@ -54,7 +54,7 @@
     <a href="tel:4006237120"><img  class="icon-pay"  width="68" height="auto"
              src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2Fhandfootmouth%2Fhfmindex_kefu.png">
     </a>
-    <button  class=" bottom-btn bg3">
+    <button ng-disabled="readFlag" class=" bottom-btn bg3" ng-click="goPay()">
         立即购买  ￥26.8（一年）
     </button>
 </ion-view>

@@ -103,6 +103,15 @@ public class RouteController extends BaseController {
     }
 
     /**
+     * titan 保险
+     */
+    @RequestMapping(value ="/insurance",method = {RequestMethod.POST, RequestMethod.GET})
+    public String insuranceFirst() {
+        return "native/insuranceFirstPage";
+    }
+
+
+    /**
      * 咨询打赏
      */
     @RequestMapping(value ="/playtour",method = {RequestMethod.POST, RequestMethod.GET})
