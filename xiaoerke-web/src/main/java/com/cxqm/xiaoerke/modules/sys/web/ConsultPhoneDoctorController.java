@@ -228,14 +228,14 @@ public class ConsultPhoneDoctorController {
         String currentPage = (String) params.get("pageNo");
         String pageSize = (String) params.get("pageSize");
         String orderBy = (String) params.get("orderBy");
-//        String hospitalId = (String) params.get("hospitalId");
+        String hospitalId = (String) params.get("hospitalId");
         String departmentLevel1Name = (String) params.get("department_level1");
         Page<HashMap<String, Object>> page = FrontUtils.generatorPage(
                 currentPage, pageSize);
         HashMap<String, Object> dateInfo = new HashMap<String, Object>();
         dateInfo.put("orderBy", orderBy);
         dateInfo.put("date", date);
-//        dateInfo.put("hospitalId", hospitalId);
+        dateInfo.put("hospitalId", hospitalId);
         dateInfo.put("department_level1", departmentLevel1Name);
 
         Page<HashMap<String, Object>> resultPage = doctorInfoService.findPageDoctorByTime4Consult(dateInfo, page);
@@ -261,7 +261,7 @@ public class ConsultPhoneDoctorController {
                         .getTime()) / (24 * 60 * 60 * 1000)) / 365 + 1));
 
                 String doctorId = (String) doctorDataVoMap.get("id");
-                String hospitalId = (String) doctorDataVoMap.get("sysHospitalId");
+//                String hospitalId = (String) doctorDataVoMap.get("sysHospitalId");
 
                 dataMap.put("expertise", doctorInfoService
                         .getDoctorExpertiseById(doctorId, hospitalId, departmentLevel1Name == null ? null : (String) departmentLevel1Name));
