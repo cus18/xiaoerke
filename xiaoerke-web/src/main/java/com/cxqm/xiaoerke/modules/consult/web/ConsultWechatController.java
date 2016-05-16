@@ -101,7 +101,7 @@ public class ConsultWechatController extends BaseController {
 
             SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
             sysWechatAppintInfoVo.setOpen_id(openId);
-            SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
+            SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.getAttentionInfoByOpenId(sysWechatAppintInfoVo);
             String userName = openId.substring(openId.length()-8,openId.length());
             String userId = openId;
             if(wechatAttentionVo!=null){
