@@ -180,16 +180,16 @@ public class ConsultDoctorController extends BaseController {
             pageSize = (Integer) params.get("pageSize");
         }
         if (recordType.equals("all") && StringUtils.isNotNull(userId) && pageSize > 0) {
-            query = new Query(where("userId").is(userId)).with(new Sort(Direction.DESC, "createDate"));//用户端获取与平台的所有聊天记录
+            query = new Query(where("userId").is(userId)).with(new Sort(Direction.ASC, "createDate"));//用户端获取与平台的所有聊天记录
             pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "permanent");
 
         } else if (recordType.equals("doctor") && StringUtils.isNotNull(userId) && StringUtils.isNotNull(fromUserId)) {//医生端获取与自己有关的所有聊天记录
             query = new Query(where("toUserId").is(userId).and("fromUserId")
-                    .is(fromUserId)).with(new Sort(Direction.DESC, "createDate"));
+                    .is(fromUserId)).with(new Sort(Direction.ASC, "createDate"));
             pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "permanent");
         } else if (recordType.equals("1") || recordType.equals("2")) {//查询语音、图片
             query = new Query(where("userId").is(userId).and("type")
-                    .is(recordType)).with(new Sort(Direction.DESC, "createDate"));
+                    .is(recordType)).with(new Sort(Direction.ASC, "createDate"));
             pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "permanent");
         }
         List<ConsultRecordMongoVo> recordMongoVos = new ArrayList<ConsultRecordMongoVo>();
