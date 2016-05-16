@@ -40,8 +40,10 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.showFlag[key] = !$scope.showFlag[key];
                 $scope.imageSrc = value;
             };
+            $scope.loseConnectionFlag = false;
             var acceptOperationFlag = false;
             var waitProcessLock = false;
+            var heartBeatNum = 3;
 
             //初始化医生端登录，建立socket链接，获取基本信息
             $scope.doctorConsultInit = function () {
@@ -59,6 +61,7 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.doctorPhone = data.userPhone;
                         $scope.userType = data.userType;
 
+                        //创建与平台的socket连接
                         $scope.initConsultSocket1();
 
                         getIframeSrc();
@@ -107,6 +110,7 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 })
             };
+
             $scope.tapImgButton = function (key,value) {
                 $scope.showFlag[key] = !$scope.showFlag[key];
                 $scope.imageSrc = value;
@@ -297,25 +301,52 @@ angular.module('controllers', ['luegg.directives'])
                         var consultData = JSON.parse(event.data);
                         if(consultData.type==4){
                             processNotifyMessage(consultData);
-                            $scope.triggerVoice();
+                            $scope.$apply();
+                        }else if(consultData.type==5){
+                            heartBeatNum = 3;
                         }else{
                             filterMediaData(consultData);
                             processPatientSendMessage(consultData);
                             $scope.triggerqqVoice();
+                            $scope.$apply();
                         }
-                        $scope.$apply();
                     };
 
                     $scope.socketServer1.onopen = function (event) {
                         console.log("onopen",event.data);
+                        //启动心跳监测
+                        heartBeatCheck();
                     };
 
                     $scope.socketServer1.onclose = function (event) {
                     };
+
                 } else {
                     alert("你的浏览器不支持！");
                 }
             };
+
+            var heartBeatCheck = function(){
+                //启动定时器，周期性的发送心跳信息
+                setInterval(sendHeartBeat,3000);
+            }
+
+            var sendHeartBeat = function(){
+                heartBeatNum--;
+                if(heartBeatNum < 0){
+                    heartBeatNum = -1;
+                    $scope.loseConnectionFlag = true;
+                }else{
+                    $scope.loseConnectionFlag = false;
+                }
+                var heartBeatMessage = {
+                    "type": 5,
+                    "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                    "senderId": angular.copy($scope.doctorId)
+                };
+                $scope.socketServer1.send(JSON.stringify(heartBeatMessage));
+                $scope.$apply();
+            }
 
             //处理用户按键事件
             document.onkeydown = function () {
@@ -862,6 +893,7 @@ angular.module('controllers', ['luegg.directives'])
                 if(notifyData.notifyType=="0009"){
                     //有转接的用户过来
                     $scope.refreshWaitJoinUserList();
+                    $scope.triggerVoice();
                 } else if(notifyData.notifyType=="0012"){
                     //取消转接过来的用户
                     $scope.refreshWaitJoinUserList();
