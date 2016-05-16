@@ -29,8 +29,9 @@ div#ddjr {border-right: 1px solid #fff;}
 }
 /*聊天对话框的图片*/
 .consultNowList{height: 40px;cursor: pointer;font: 12px/40px 'Microsoft Yahei';overflow: hidden;position: relative;}
-.consultNowList img{margin-top: 3%;margin-left: 3%;width: 13%;height: 3%;}
-
+.consultNowList div {float: left;padding: 0 6px 0 0;}
+.consultNowList div:nth-child(1) {width: 50px;overflow:hidden;text-overflow:ellipsis;margin-left: 10px;}
+.consultNowList img{margin-left: 5px;margin-top: 10px;}
 [scroll-glue-bottom],{height: 340px;overflow-y: scroll;/*border: 1px solid gray;*/}
 
 
@@ -158,6 +159,7 @@ textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 10
 .sendbtn div {cursor: pointer;margin:10px 20px;display: inline-block;color:#fff;float: right;font: 16px/20px 'Microsoft Yahei';padding: 0 15px;border-radius: 4px;}
 .sendbtn div:nth-child(1){background-color: #08b7c2;}
 .sendbtn div:nth-child(2){background-color: #fe717b;}
+.sendbtn div:nth-child(3){color:#666;float:left;border:1px solid #666;}
 .historymessage {float: right;}
 .historymessage img{margin:0 10px;}
 /*添加分组*/
@@ -177,8 +179,8 @@ textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 10
 .doctorReplyContent .message,.patientConsultContent .message{font: 16px/20px 'Microsoft Yahei';padding: 8px;max-width: 100%;border: 1px solid #ccc;border-radius: 5px;background-color: #fff;margin: 20px 10px 10px 10px;}
 .doctorReplyContent div:nth-child(1){color:#08b7c2;}
 .patientConsultContent div:nth-child(1){color:#7fc700;}
-.senderName{position: absolute;left: 10px;min-width: 250px;}
-.doctorName{position: absolute;right: 10px;min-width: 250px;}
+.senderName{position: absolute;left: 10px;min-width: 300px;}
+.doctorName{position: absolute;right: 10px;min-width: 300px;}
 .moreInformation{text-align: center;padding-top: 10px;}
 .moreInformation a{display: inline-block;color: #08b7c2;padding-left: 15px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fyh_12.png") no-repeat center left;}
 .moreInformation a:hover{text-decoration: underline;}
@@ -187,3 +189,74 @@ textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 10
 .advisory-content::-webkit-scrollbar {width: 0;height: 0;}
 .advisory-content {overflow: auto;height: 450px;width: 403px;}
 .messageMark{width: 16px;height: 16px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_3.png") center no-repeat;position: absolute;top: 50%;margin-top: -8px;left: 80%;}
+.specialistTransfer {
+    position: absolute;
+    width: 182px;
+    height: 70px;
+    top: 50%;
+    left: 50%;
+    background-color: #fff;
+    margin-left: -111px;
+    margin-top: -70px;
+    border-radius: 5px;
+    font: 14px/20px 'Microsoft Yahei';
+    text-align: center;
+    padding: 30px 20px;
+}
+.specialistTransfer span select{
+    color:#333;
+    margin: 0 0 0 10px;
+}
+
+.specialistTransfer button{
+    width: 60px;
+    height: 30px;
+    font: 14px/20px 'Microsoft Yahei';
+    margin: 20px 5px;
+}
+.specialistList{
+    width: 550px;
+    height: 386px;
+}
+.specialistListContent {
+    margin: 20px 24px;
+}
+.specialistListContent ul{
+    overflow: hidden;
+    height: 35px;
+}
+.specialistListContent ul li{
+    width: 75px;
+    float: left;
+    margin: 5px 5px;
+    font: 12px/24px 'Microsoft Yahei';
+    text-align: center;
+}
+.specialistListContent ul li:nth-child(1){
+    width: 40px;
+}
+ul li input{
+    float: left;
+    margin-top: 6px;
+    margin-left: 2px;
+}
+.specialistContent{
+    height: 225px;
+    border: 1px solid #eee;
+}
+.background{
+    background-color: #8aa1a8;
+}
+.specialistContent input{
+    margin-left: 15px;
+}
+.specialistBottom{
+    border-top: 1px solid #eee;
+    width: 100%;
+}
+.specialistBottom button {
+    float: right;
+    margin: 8px 20px;
+    width: 70px;
+    height: 30px;
+}

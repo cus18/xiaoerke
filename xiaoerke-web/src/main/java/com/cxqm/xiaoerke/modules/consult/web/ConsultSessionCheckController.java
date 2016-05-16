@@ -1,9 +1,12 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
+import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
 import org.springframework.data.mongodb.core.query.Query;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
@@ -34,11 +37,34 @@ public class ConsultSessionCheckController extends BaseController{
     @Autowired
     private ConsultRecordService consultRecordService;
 
+    @Autowired
+    private ConsultSessionForwardRecordsService consultSessionForwardRecordsService;
+
     /**
      * 手动清理残留的session
      */
     @RequestMapping(value="/sessionCheck",method = {RequestMethod.POST, RequestMethod.GET})
     public @ResponseBody HashMap<String,Object> sessionCheck() throws UnsupportedEncodingException {
+        //获取用户与平台最后交流时间
+        Query query = new Query(where("status").is("ongoing"));
+        List<ConsultSessionStatusVo> consultSessionStatusVos = consultRecordService.querySessionStatusList(query);
+        if(consultSessionStatusVos != null && consultSessionStatusVos.size() > 0){
+            for(ConsultSessionStatusVo consultSessionStatusVo : consultSessionStatusVos){
+                if(consultSessionStatusVo !=null && consultSessionStatusVo.getLastMessageTime()!=null){
+                    if(DateUtils.pastMinutes(consultSessionStatusVo.getLastMessageTime())>120L){
+                        //根据sessionId查询consult_conversation_forward_records表，状态为waiting不执行
+                        ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = new ConsultSessionForwardRecordsVo();
+                        consultSessionForwardRecordsVo.setConversationId(Long.parseLong(consultSessionStatusVo.getSessionId()));
+                        consultSessionForwardRecordsVo.setStatus("waiting");
+                        List<ConsultSessionForwardRecordsVo> consultSessionForwardRecordsVos = consultSessionForwardRecordsService.selectConsultForwardList(consultSessionForwardRecordsVo);
+                        if(consultSessionForwardRecordsVos.size() == 0){
+                            consultSessionService.clearSession(consultSessionStatusVo.getSessionId(),
+                                    consultSessionStatusVo.getUserId());
+                        }
+                    }
+                }
+            }
+        }
 
         ConsultSession consultSession = new ConsultSession();
         consultSession.setStatus(ConsultSession.STATUS_ONGOING);

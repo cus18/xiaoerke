@@ -1,4 +1,4 @@
-angular.module('controllers', ['ionic']).controller('antiDogOrderListCtrl', [
+angular.module('controllers', ['ionic']).controller('insuranceOrderListCtrl', [
     '$scope','$state','$stateParams','getInsuranceRegisterServiceListByUserid','$location','GetUserLoginStatus',
     function ($scope,$state,$stateParams,getInsuranceRegisterServiceListByUserid,$location,GetUserLoginStatus) {
 
@@ -16,11 +16,11 @@ angular.module('controllers', ['ionic']).controller('antiDogOrderListCtrl', [
             }
         };
         $scope.lookDetail = function(select){
-             $state.go('antiDogOrderDetail',{index:select});
+            $state.go('antiDogOrderDetail',{index:select});
         };
 
         $scope.$on('$ionicView.enter', function(){
-        	var routePath = "/insuranceBBBBBB" + $location.path();
+            /*var routePath = "/insuranceBBBBBB" + $location.path();
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 if(data.status=="9") {
                     window.location.href = data.redirectURL;
@@ -33,9 +33,10 @@ angular.module('controllers', ['ionic']).controller('antiDogOrderListCtrl', [
                         $scope.insuranceInvalidList=data.insuranceInvalidList;
                     });
                 }
-            });
-        	
+            });*/
+
 
         })
     }]);
+
 

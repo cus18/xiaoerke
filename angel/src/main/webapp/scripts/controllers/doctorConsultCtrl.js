@@ -40,10 +40,14 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.showFlag[key] = !$scope.showFlag[key];
                 $scope.imageSrc = value;
             };
+            var acceptOperationFlag = false;
+            var waitProcessLock = false;
+
             //初始化医生端登录，建立socket链接，获取基本信息
             $scope.doctorConsultInit = function () {
                 var routePath = "/doctor/consultBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath: routePath}, function (data) {
+                    console.log(data);
                     $scope.pageLoading = false;
                     if (data.status == "9") {
                         window.location.href = data.redirectURL;
@@ -111,7 +115,13 @@ angular.module('controllers', ['luegg.directives'])
             $scope.tapShowButton = function(type){
                 $.each($scope.showFlag,function(key,value){
                     if(key==type){
-                        $scope.showFlag[key] = !$scope.showFlag[key];
+                        if(type=="waitProcess"){
+                            if(!waitProcessLock){
+                                $scope.showFlag[key] = !$scope.showFlag[key];
+                            }
+                        }else{
+                            $scope.showFlag[key] = !$scope.showFlag[key];
+                        }
                         if(type == "replyContent"){
                             if($scope.showFlag.replyContent == false){
                                 $scope.showFlag.advisoryContent =true;
@@ -151,7 +161,6 @@ angular.module('controllers', ['luegg.directives'])
             };
 
             /**转接功能区**/
-            var acceptOperationFlag = false;
             $scope.acceptTransfer = function(){
                 if(!acceptOperationFlag){
                     $scope.tapShowButton('waitProcess');
@@ -162,9 +171,11 @@ angular.module('controllers', ['luegg.directives'])
                         }
                     });
                     acceptOperationFlag = true;
+                    waitProcessLock = true;
                     React2Transfer.save({operation:"accept",
                         forwardSessionIds:waitJoinChooseUserList},function(data){
                         acceptOperationFlag = false;
+                        waitProcessLock = false
                         if(data.result=="success"){
                             //将转接成功的用户，都加入会话列表中来
                             var indexClose = 0;
@@ -198,7 +209,6 @@ angular.module('controllers', ['luegg.directives'])
                         }
                     });
                 }
-
             };
 
             var rejectOperationFlag = false;
@@ -225,22 +235,21 @@ angular.module('controllers', ['luegg.directives'])
             $scope.chooseTransferCsUser = function(csUserId,csUserName){
                 $scope.transferCsUserId = csUserId;
                 $scope.csTransferUserName = csUserName;
+                $scope.transferUserName = angular.copy($scope.currentUserConversation.patientName);
             };
 
             $scope.transferToCsUser = function(){
+                $scope.tapShowButton('switchOver');
                 TransferToOtherCsUser.save({doctorId: $scope.transferCsUserId,
                     sessionId:$scope.currentUserConversation.sessionId,
                     remark: $scope.info.transferRemark},function(data){
                     if(data.result=="success"){
-                        $scope.tapShowButton('switchOver');
                         //转接请求成功后，在接诊员侧，保留了此会话，只到被转接的医生收到为止，
                         // 才将会话拆除，在此过程中，允许接诊员，取消转接。
                     }else if(data.result=="failure"){
-                        alert("转接失败，请转接给其他医生");
-                        $scope.tapShowButton('switchOver');
+                        alert("转接会话给"+$scope.csTransferUserName+"失败，请转接给其他医生");
                     }else if(data.result=="transferring"){
-                        alert("此会话正在被转接中，不能再次转接");
-                        $scope.tapShowButton('switchOver');
+                        alert("与用户" + $scope.transferUserName +"的会话正在被转接中，不能再次转接");
                     }
                 });
             };
@@ -277,10 +286,10 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 if (window.WebSocket) {
                     if($scope.userType=="distributor"){
-                        $scope.socketServer1 = new ReconnectingWebSocket("ws://localhost:2048/ws&" +
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://xiaork.com:2048/ws&" +
                             "distributor&" + $scope.doctorId);//cs,user,distributor
                     }else if($scope.userType=="consultDoctor"){
-                        $scope.socketServer1 = new ReconnectingWebSocket("ws://localhost:2048/ws&" +
+                        $scope.socketServer1 = new ReconnectingWebSocket("ws://xiaork.com:2048/ws&" +
                             "cs&" + $scope.doctorId);//cs,user,distributor
                     }
 
@@ -779,13 +788,6 @@ angular.module('controllers', ['luegg.directives'])
                     'senderName':conversationData.senderName,
                     'sessionId':conversationData.sessionId
                 };
-/*                var currentConsultValue = {};
-                currentConsultValue.type = conversationData.type;
-                currentConsultValue.content = conversationData.content;
-                currentConsultValue.dateTime = conversationData.dateTime;
-                currentConsultValue.senderId = conversationData.senderId;
-                currentConsultValue.senderName = conversationData.senderName;
-                currentConsultValue.sessionId = conversationData.sessionId;*/
                 if(JSON.stringify($scope.currentUserConversation)=='{}'){
                     $scope.currentUserConversation = {
                         'patientId':conversationData.senderId,
@@ -798,15 +800,6 @@ angular.module('controllers', ['luegg.directives'])
                         'patientName':conversationData.senderName,
                         'consultValue':[]
                     }
-                   /* $scope.currentUserConversation.patientId = conversationData.senderId;
-                    $scope.currentUserConversation.source = conversationData.source;
-                    $scope.currentUserConversation.fromServer = conversationData.fromServer;
-                    $scope.currentUserConversation.sessionId = conversationData.sessionId;
-                    $scope.currentUserConversation.isOnline = true;
-                    $scope.currentUserConversation.dateTime = conversationData.dateTime;
-                    $scope.currentUserConversation.messageNotSee = false;
-                    $scope.currentUserConversation.patientName = conversationData.senderName;
-                    $scope.currentUserConversation.consultValue = [];*/
                     $scope.currentUserConversation.consultValue.push(currentConsultValue);
                     chooseFlag = true;
                 }

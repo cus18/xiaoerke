@@ -35,7 +35,7 @@
 
 <form:form id="inputForm" modelAttribute="contactVo" action="${ctx}/sys/hospital/hospitalSave" method="post"
 		   class="form-horizontal">
-	<input id="sysHospitalId" name="sysHospitalId" type="hidden" value="${contactVo.sysHospitalId}"  class="input-xlarge"/>
+	<input id="sysHospitalId" name="sysHospitalId" type="hidden" value="${hospitalVo.id}"  class="input-xlarge"/>
 	<sys:message content="${message}"/>
 	<div class="control-group">
 		<label class="control-label">医院名称:</label>
@@ -106,8 +106,8 @@
 			<label class="control-label">限价标准:</label>
 
 			<div class="controls">
-				<input id="limitStandard" name="limitStandard" type="text" value="${contactVo.limitStandard}"
-					   class="input-xlarge"/>
+				<input id="limitStandard" name="limitStandard" type="text" value="${contactVo.limitStandard}" class="input-xlarge"/>
+				<span class="help-inline"><font color="red">例：单次就诊最高花费500元（只限二类疾病）</font> </span>
 			</div>
 		</div>
 
@@ -115,8 +115,8 @@
 			<label class="control-label">1）限价范围:</label>
 
 			<div class="controls">
-				<input id="limitRange" name="limitRange" type="text" value="${contactVo.limitRange}"
-					   class="input-xlarge"/>
+				<input id="limitRange" name="limitRange" type="text" value="${contactVo.limitRange}"  class="input-xlarge"/>
+				<span class="help-inline"><font color="red">例：① 根管治疗1颗    ② 树脂填充2颗</font> </span>
 			</div>
 		</div>
 
@@ -124,56 +124,70 @@
 			<label class="control-label">2）限价疾病:</label>
 
 			<div class="controls">
-				<input id="limitDisease" name="limitDisease" type="text" value="${contactVo.limitDisease}"
-					   class="input-xlarge"/>
+				<input id="limitDisease" name="limitDisease" type="text" value="${contactVo.limitDisease}" class="input-xlarge"/>
+				<span class="help-inline"><font color="red">注：录入内容时，小标题与内容之间用  “；” 分隔</font> </span>
 			</div>
 		</div>
 
 		<div class="control-group">
-			<label class="control-label">中药:</label>
+			<label class="control-label">开药及检查:</label>
 
 			<div class="controls">
-				<input id="chineseMedicine" name="chineseMedicine" type="text" value="${contactVo.chineseMedicine}"
-					   class="required"/>
+				<div class="control-group">
+					<label class="control-label">中药:</label>
+
+					<div class="controls">
+						<input id="chineseMedicine" name="chineseMedicine" type="text" value="${contactVo.chineseMedicine}"
+							   class="input-xlarge"/>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">西药:</label>
+
+					<div class="controls">
+						<input id="westernMedicine" name="westernMedicine" type="text" value="${contactVo.westernMedicine}"
+							   class="input-xlarge"/>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">检查项目:</label>
+
+					<div class="controls">
+						<input id="inspectionItems" name="inspectionItems" type="text" value="${contactVo.inspectionItems}"
+							   class="required"/>
+						<span class="help-inline"><font color="red">*</font> </span>
+					</div>
+				</div>
 			</div>
 		</div>
+
 
 		<div class="control-group">
-			<label class="control-label">西药:</label>
+			<label class="control-label">收费标准:</label>
 
 			<div class="controls">
-				<input id="westernMedicine" name="westernMedicine" type="text" value="${contactVo.westernMedicine}"
-					   class="required"/>
+				<div class="control-group">
+					<label class="control-label">药费:</label>
+
+					<div class="controls">
+						<input id="medicineFee" name="medicineFee" type="text" value="${contactVo.medicineFee}"
+							   class="input-xlarge"/>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">检查费:</label>
+
+					<div class="controls">
+						<input id="inspectionFee" name="inspectionFee" type="text" value="${contactVo.inspectionFee}"
+							   class="input-xlarge"/>
+					</div>
+				</div>
 			</div>
 		</div>
 
-		<div class="control-group">
-			<label class="control-label">检查项目:</label>
-
-			<div class="controls">
-				<input id="inspectionItems" name="inspectionItems" type="text" value="${contactVo.inspectionItems}"
-					   class="required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-
-		<div class="control-group">
-			<label class="control-label">药费:</label>
-
-			<div class="controls">
-				<input id="medicineFee" name="medicineFee" type="text" value="${contactVo.medicineFee}"
-					   class="input-xlarge"/>
-			</div>
-		</div>
-
-		<div class="control-group">
-			<label class="control-label">检查费:</label>
-
-			<div class="controls">
-				<input id="inspectionFee" name="inspectionFee" type="text" value="${contactVo.inspectionFee}"
-					   class="input-xlarge"/>
-			</div>
-		</div>
 
 		<div class="control-group">
 			<label class="control-label">诊疗项目:</label>
@@ -200,7 +214,7 @@
 		<label class="control-label">医院的详细信息描述:</label>
 
 		<div class="controls">
-			<textarea name="details" rows="4" maxlength="200" class="required" style="width:270px;">${hospitalVo.details}</textarea>
+			<textarea name="details" rows="4" maxlength="2000" class="required" style="width:270px;">${hospitalVo.details}</textarea>
 			<span class="help-inline"><font color="red">*</font> </span>
 		</div>
 	</div>
@@ -241,7 +255,7 @@
 		<label class="control-label">就诊流程:</label>
 
 		<div class="controls">
-			<textarea name="medicalProcess" rows="4" maxlength="200" class="required" style="width:270px;">${hospitalVo.medicalProcess}</textarea>
+			<textarea name="medicalProcess" rows="4" maxlength="5000" class="required" style="width:270px;">${hospitalVo.medicalProcess}</textarea>
 			<span class="help-inline"><font color="red">*</font> </span>
 		</div>
 	</div>

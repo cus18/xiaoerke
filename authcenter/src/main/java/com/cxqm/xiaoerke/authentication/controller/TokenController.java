@@ -23,7 +23,6 @@ public class TokenController extends BaseController {
 		cookie.setDomain(ConstantUtil.DOMAIN_VALUE);
 		cookie.setMaxAge(60*60*24*90);
 		response.addCookie(cookie);
-		
 		return "redirect:"+toUrl+"?token="+token;
 	}
 
