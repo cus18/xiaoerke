@@ -190,7 +190,7 @@ public class ConsultPhoneDoctorController {
             for (Map doctorDataVoMap : list) {
                 HashMap<String, Object> dataMap = new HashMap<String, Object>();
                 dataMap.put("doctorId", doctorDataVoMap.get("id"));
-                dataMap.put("doctorName", doctorDataVoMap.get("name"));
+                dataMap.put("doctorName", doctorDataVoMap.get("NAME"));
                 dataMap.put("hospitalName",doctorDataVoMap.get("hospital"));
                 dataMap.put("position2", doctorDataVoMap.get("position2"));
                 dataMap.put("latestTime", doctorDataVoMap.get("latest_time"));
