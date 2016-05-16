@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cxqm.xiaoerke.modules.marketing.entity.MarketingActivities;
 import com.cxqm.xiaoerke.modules.marketing.service.MarketingActivitiesService;
 
+
 @Service
 @Transactional(readOnly = false)
 public class MarketingActivitiesServiceImpl implements
@@ -39,5 +40,7 @@ public class MarketingActivitiesServiceImpl implements
 		// TODO Auto-generated method stub
 		return marketingActivitiesDao.updateMarketingActivities(marketingActivities);
 	}
+
+
 
 }

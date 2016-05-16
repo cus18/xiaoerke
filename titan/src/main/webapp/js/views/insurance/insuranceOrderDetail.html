@@ -1,0 +1,82 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="订单详情" ng-init="doRefresh()">
+    <ion-content class="insuranceOrderDetail" style="top:0;">
+        <!--补贴弹框提示-->
+        <div class="shadow" ng-if="parRemindLock" ng-click="cancelPayRemind()"></div>
+        <div class="remind-box" ng-if="parRemindLock">
+            <img ng-click="cancelPayRemind()"  width="30" height="30" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fclose.png">
+            <div>
+                <p>
+                    如需领取互助补贴<br>
+                    请联系宝大夫客服<a href="tel:4006237120">400-623-7120</a>
+                </p>
+                <button class="button foot-btn" ng-click="cancelPayRemind()">我知道了</button>
+            </div>
+        </div>
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="banner">
+                <img class="my-img-block"  width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Findex_banner.png">
+            </div>
+            <!--  <div class="text">
+                  待审核
+                   <div> 您已成功提交材料</div>
+                   <p>
+                       我们将在<span class="color1">3个工作日</span>内进行审核，请耐心等待。
+                   </p>
+
+                   审核成功
+                  <div>   恭喜您，您的补贴申请已通过审核</div>
+                  <p>
+                      补贴金额<span class="color1">200.0元</span>已返还到宝大夫账户。
+                  </p>
+
+                   审核失败
+                  <div> 很抱歉，您的补贴申请未通过审核</div>
+                  <p>
+                      <span class="color1">原因是：所上传的图片不符合要求</span>
+                  </p>
+              </div>-->
+            <div class="order-info">
+                <ul>
+                    <i class="state color1">{{insurance.state==0?'待生效':''}}{{insurance.state==1?'有效':''}}{{insurance.state==2?'待审核':''}}{{insurance.state==3?'已补贴':''}}{{insurance.state==4?'已到期':''}}{{insurance.state==5?'审核失败':''}}</i>
+                    <li>
+                        <span>订单号：</span>{{insurance.id}}
+                    </li>
+                    <li>
+                        <span>宝宝姓名：</span>{{insurance.babyName}}
+                    </li>
+                    <li>
+                        <span>服务开始：</span>{{insurance.startTime | date:'yyyy-MM-dd HH:mm:ss'}}
+                    </li>
+                    <li>
+                        <span>服务结束：</span>{{insurance.endTime | date:'yyyy-MM-dd HH:mm:ss'}}
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        <span>购买人：</span>{{insurance.parentName}}
+                    </li>
+                    <li>
+                        <span>身份证号：</span>{{insurance.idCard}}
+                    </li>
+                    <!--                     <li> -->
+                    <!--                         <span style="width:85px;">已上传图片：</span> -->
+                    <!--                         <div class="pic"> -->
+                    <!--                             <img width="70" height="70" src="images/a1.png"> -->
+                    <!--                             <img width="70" height="70" src="images/a2.png"> -->
+                    <!--                         </div> -->
+                    <!--                     </li> -->
+
+                </ul>
+            </div>
+            <div class="tel">
+                如有疑问，请联系宝大夫客服<a class="color2" href="tel:4006237120">400-623-7120</a>。
+            </div>
+            <br><br><br><br>
+
+        </ion-scroll>
+    </ion-content>
+    <div class="btn-bottom" ng-click="receiveMoney()" style="background-color: #88d9dd;">
+        我要领互助补贴
+    </div>
+</ion-view>

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -164,6 +165,9 @@ public class FieldworkWechatController {
             url = ConstantUtil.TITAN_WEB_URL + "titan/firstPage/antiDogFirst";
         }else if ("28".equals(url)){
             url = ConstantUtil.TITAN_WEB_URL + "/titan/firstPage/phoneConsult";
+        }else if (url.indexOf("consultPhone")>-1){
+            String departmentName  = URLEncoder.encode(url.replace("consultPhone",""), "UTF-8");
+            url =ConstantUtil.TITAN_WEB_URL +"titan/phoneConsult#/phoneConDoctorList/"+departmentName+",searchDoctorByDepartment,";
         }
 
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
