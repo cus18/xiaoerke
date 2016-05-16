@@ -36,6 +36,16 @@ public class WechatAttentionServiceImpl implements WechatAttentionService {
     }
 
     @Override
+    public SysWechatAppintInfoVo getAttentionInfoByOpenId(SysWechatAppintInfoVo sysWechatAppintInfoVo) {
+        List<SysWechatAppintInfoVo> resultVo = wechatattentionDao.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
+        SysWechatAppintInfoVo wechatAppintInfoVo = new SysWechatAppintInfoVo();
+        if(resultVo!=null && resultVo.size()>0){
+            wechatAppintInfoVo = resultVo.get(0);
+        }
+        return wechatAppintInfoVo;
+    }
+
+    @Override
     public List<SysWechatAppintInfoVo> findAttentionInfo(SysWechatAppintInfoVo sysWechatAppintInfoVo) {
         List<SysWechatAppintInfoVo> resultVo = wechatattentionDao.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
         return resultVo;
