@@ -1,8 +1,6 @@
 package com.cxqm.xiaoerke.modules.consult.entity;
 
 
-import org.springframework.data.annotation.Transient;
-
 import java.util.Date;
 
 /**
@@ -13,27 +11,19 @@ public class ConsultTransferListVo {
 
     private Integer id;        //主键ID
     private Integer sessionId;  //会话ID
-    private Date create_date ;  //转诊列表创建时间
-    private String create_by;   //转诊列表创建者
-    private Date update_date ;  //转诊列表更新时间
-    private String sys_user_id ;    //用户userID
-    private String sys_user_name ;    //用户userName
-    private String sys_user_id_cs;  //咨询医生userID
-    private String sys_user_name_cs;  //咨询医生userName
-    private String del_flag ;   //是否删除标识
+    private Date createDate ;  //转诊列表创建时间
+    private String createBy;   //转诊列表创建者
+    private Date updateDate ;  //转诊列表更新时间
+    private String sysUserId ;    //用户userID
+    private String sysUserName ;    //用户userName
+    private String sysUserIdCs;  //咨询医生userID
+    private String sysUserNameCs;  //咨询医生userName
+    private String delFlag ;   //是否删除标识
     private String status ;     //转诊状态
     private String department ; //转诊科室名称
-    private String department_id;   //转诊科室ID
-    @Transient
+    private String departmentId;   //转诊科室ID
+
     private String order;       //是否排序
-
-    public String getOrder() {
-        return order;
-    }
-
-    public void setOrder(String order) {
-        this.order = order;
-    }
 
     public Integer getId() {
         return id;
@@ -51,52 +41,68 @@ public class ConsultTransferListVo {
         this.sessionId = sessionId;
     }
 
-    public Date getCreate_date() {
-        return create_date;
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public void setCreate_date(Date create_date) {
-        this.create_date = create_date;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
-    public String getCreate_by() {
-        return create_by;
+    public String getCreateBy() {
+        return createBy;
     }
 
-    public void setCreate_by(String create_by) {
-        this.create_by = create_by;
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
     }
 
-    public Date getUpdate_date() {
-        return update_date;
+    public Date getUpdateDate() {
+        return updateDate;
     }
 
-    public void setUpdate_date(Date update_date) {
-        this.update_date = update_date;
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 
-    public String getSys_user_id() {
-        return sys_user_id;
+    public String getSysUserId() {
+        return sysUserId;
     }
 
-    public void setSys_user_id(String sys_user_id) {
-        this.sys_user_id = sys_user_id;
+    public void setSysUserId(String sysUserId) {
+        this.sysUserId = sysUserId;
     }
 
-    public String getSys_user_id_cs() {
-        return sys_user_id_cs;
+    public String getSysUserName() {
+        return sysUserName;
     }
 
-    public void setSys_user_id_cs(String sys_user_id_cs) {
-        this.sys_user_id_cs = sys_user_id_cs;
+    public void setSysUserName(String sysUserName) {
+        this.sysUserName = sysUserName;
     }
 
-    public String getDel_flag() {
-        return del_flag;
+    public String getSysUserIdCs() {
+        return sysUserIdCs;
     }
 
-    public void setDel_flag(String del_flag) {
-        this.del_flag = del_flag;
+    public void setSysUserIdCs(String sysUserIdCs) {
+        this.sysUserIdCs = sysUserIdCs;
+    }
+
+    public String getSysUserNameCs() {
+        return sysUserNameCs;
+    }
+
+    public void setSysUserNameCs(String sysUserNameCs) {
+        this.sysUserNameCs = sysUserNameCs;
+    }
+
+    public String getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(String delFlag) {
+        this.delFlag = delFlag;
     }
 
     public String getStatus() {
@@ -115,28 +121,19 @@ public class ConsultTransferListVo {
         this.department = department;
     }
 
-    public String getDepartment_id() {
-        return department_id;
+    public String getDepartmentId() {
+        return departmentId;
     }
 
-    public void setDepartment_id(String department_id) {
-        this.department_id = department_id;
+    public void setDepartmentId(String departmentId) {
+        this.departmentId = departmentId;
     }
 
-    public String getSys_user_name() {
-        return sys_user_name;
+    public String getOrder() {
+        return order;
     }
 
-    public void setSys_user_name(String sys_user_name) {
-        this.sys_user_name = sys_user_name;
+    public void setOrder(String order) {
+        this.order = order;
     }
-
-    public String getSys_user_name_cs() {
-        return sys_user_name_cs;
-    }
-
-    public void setSys_user_name_cs(String sys_user_name_cs) {
-        this.sys_user_name_cs = sys_user_name_cs;
-    }
-
 }

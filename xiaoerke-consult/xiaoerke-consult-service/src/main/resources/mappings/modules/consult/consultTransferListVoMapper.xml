@@ -4,17 +4,17 @@
   <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.consult.entity.ConsultTransferListVo" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="session_id" property="sessionId" jdbcType="INTEGER" />
-    <result column="create_date" property="create_date" jdbcType="TIMESTAMP" />
-    <result column="create_by" property="create_by" jdbcType="VARCHAR" />
-    <result column="update_date" property="update_date" jdbcType="TIMESTAMP" />
-    <result column="sys_user_id" property="sys_user_id" jdbcType="VARCHAR" />
-    <result column="sys_user_name" property="sys_user_name" jdbcType="VARCHAR" />
-    <result column="sys_user_id_cs" property="sys_user_id_cs" jdbcType="VARCHAR" />
-    <result column="sys_user_name_cs" property="sys_user_name_cs" jdbcType="VARCHAR" />
-    <result column="del_flag" property="del_flag" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="DATETIME" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+    <result column="sys_user_name" property="sysUserName" jdbcType="VARCHAR" />
+    <result column="sys_user_id_cs" property="sysUserIdCs" jdbcType="VARCHAR" />
+    <result column="sys_user_name_cs" property="sysUserNameCs" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="department" property="department" jdbcType="VARCHAR" />
-    <result column="department_id" property="department_id" jdbcType="VARCHAR" />
+    <result column="department_id" property="departmentId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, session_id, create_date, create_by, update_date, sys_user_id, sys_user_name, sys_user_id_cs, sys_user_name_cs, del_flag, status,
@@ -25,10 +25,10 @@
     <include refid="Base_Column_List" />
     from consult_transfer_list
     where 1=1  order by
-    <if test="order != null and order =  ''">
+    <if test="order != null and order !=  ''">
       department desc,
     </if>
-      create_time desc
+      create_date desc
   </select>
 
   <delete id="deleteConsultTransferListVoByPrimaryKey" parameterType="java.lang.Integer">
@@ -38,14 +38,13 @@
 
   <insert id="addConsultTransferListVo" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultTransferListVo" useGeneratedKeys="true"
           keyProperty="id">
-    insert into consult_session (id, session_id, create_date,create_by, update_date,
+    insert into consult_transfer_list (id, session_id, create_date,create_by, update_date,
     sys_user_id, sys_user_name,sys_user_id_cs,sys_user_name_cs,del_flag,status,department, department_id
     )
-    values (#{id,jdbcType=INTEGER}, #{sessionId,jdbcType=INTEGER}, #{create_date,jdbcType=TIMESTAMP},
-    #{status,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP} ,#{csUserId,jdbcType=VARCHAR}
-    ,#{create_by,jdbcType=VARCHAR},#{update_date,jdbcType=TIMESTAMP},#{sys_user_id,jdbcType=VARCHAR},
-    #{sys_user_name,jdbcType=VARCHAR},#{sys_user_id_cs,jdbcType=VARCHAR},#{sys_user_name_cs,jdbcType=VARCHAR},
-    #{del_flag,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{department,jdbcType=VARCHAR},#{department_id,jdbcType=VARCHAR}
+    values (#{id,jdbcType=INTEGER}, #{sessionId,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP},
+    #{createBy,jdbcType=VARCHAR},#{updateDate,jdbcType=TIMESTAMP},#{sysUserId,jdbcType=VARCHAR},
+    #{sysUserName,jdbcType=VARCHAR},#{sysUserIdCs,jdbcType=VARCHAR},#{sysUserNameCs,jdbcType=VARCHAR},
+    #{delFlag,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{department,jdbcType=VARCHAR},#{departmentId,jdbcType=VARCHAR}
     )
   </insert>
 </mapper>
