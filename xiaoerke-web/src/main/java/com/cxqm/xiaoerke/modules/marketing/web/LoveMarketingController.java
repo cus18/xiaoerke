@@ -38,7 +38,8 @@ public class LoveMarketingController {
     Map<String, Object> MarkeImage(HttpSession session)throws  Exception {
         Map<String,Object> map=new HashMap<String, Object>();
 //        String openid=session.getAttribute("openId").toString();
-        String openid="o3_NPwmiC4TtjQSiGZjBOQhK_ab0";
+        String openid="o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y";
+//         openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         Map<String,Object> map1=loveMarketingService.getLoveMarketingByOpenid(openid);
         String id="";
         if(map1!=null){

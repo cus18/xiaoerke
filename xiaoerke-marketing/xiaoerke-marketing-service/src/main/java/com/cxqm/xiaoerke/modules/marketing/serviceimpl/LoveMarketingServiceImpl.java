@@ -110,7 +110,7 @@ public class LoveMarketingServiceImpl implements LoveMarketingService {
             nickname.put("type", "nickname");
             nickname.put("text", "我是"+m.get("name").toString());
             nickname.put("x", "302");
-            nickname.put("y", "515");
+            nickname.put("y", "525");
         ImageList.add(nickname);
             Map<String,String> nums=new HashMap<String, String>();
             nums.put("type", "text");
@@ -285,6 +285,7 @@ public class LoveMarketingServiceImpl implements LoveMarketingService {
             // 加载海报原图
             File file = new File(posterImagePath);
             Image image = ImageIO.read(file);
+            BufferedImage bi=ImageIO.read(file);
             int width = image.getWidth(null);
             int height = image.getHeight(null);
 
@@ -372,14 +373,15 @@ public class LoveMarketingServiceImpl implements LoveMarketingService {
                     g.drawString(pressText, x, y + height_1);
                 }else if(type.equals("nickname")){
                     String pressText=imageObject.get("text");
-                    g.setFont(new Font("微软雅黑", Font.PLAIN, 40));
+                    g.setFont(new Font("微软雅黑", Font.BOLD, 40));
                     g.setColor(Color.white);
                     // 设置水印图片的位置。
-                    int width_1 = 30 * getLength(pressText);
+                    int width_1 = 20 * getLength(pressText);
                     int height_1 = 30;
                     int widthDiff = width - width_1;
                     int heightDiff = height - height_1;
-                    int x=Integer.parseInt(imageObject.get("x"));
+                    int x=(bi.getWidth()-width_1)/2;
+//                    int x=Integer.parseInt(imageObject.get("x"));
                     int y=Integer.parseInt(imageObject.get("y"));
                     if (x < 0) {
                         x = widthDiff / 2;
