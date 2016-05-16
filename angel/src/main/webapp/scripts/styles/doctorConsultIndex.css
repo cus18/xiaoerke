@@ -7,14 +7,16 @@ header{position: relative;}
 .bdf-dkf-nav span:nth-child(1) img{margin: 6px 30px;}
 .bdf-dkf-nav span:nth-child(2){width: 1px;height: 40px;background-color: #646465;margin:6px 25px 0 0;}
 .bdf-dkf-nav span:nth-child(3){margin-right: 20px;}
+/*.bdf-dkf-nav span:nth-child(4){border:1px solid #fff;border-radius: 2px;margin-top: 16px;line-height: 20px;padding: 0 5px;cursor: pointer;}*/
 .bdf-dkf-nav span img{margin-left: -44px;margin-bottom: -5px;}
 .bdf-dkf-content-right .kjrk {float: right;}
 .bdf-dkf-content-right div {float: right;color: #fff;margin-right: 30px;cursor: pointer;font: 13px/55px 'Microsoft Yahei';}
+.bdf-dkf-content-right div:nth-child(1) div{border: 1px solid #FFF;font: 13px/20px 'Microsoft Yahei';margin-top: 17px;padding: 0 6px;border-radius: 2px;}
 .xtsz img{margin-right: 10px;}
 /*总体布局的样式*/
 .fl {float: left;}
 .fr {float: right;}
-/*.w10 {width: 100%;}*/
+.w10 {width: 100%;}
 .w5 {width: 50%;}
 .w6 {width: 60%;}
 .w4 {width: 40%;}
