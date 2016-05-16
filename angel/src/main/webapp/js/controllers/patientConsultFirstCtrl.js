@@ -133,13 +133,13 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     "source":$scope.source,
                     "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
                 };
-                patientValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($scope.info.consultInputValue)));
                 if (!window.WebSocket) {
                     return;
                 }
                 if ($scope.socketServer.readyState == WebSocket.OPEN) {
                     $scope.consultContent.push(patientValMessage);
                     $scope.socketServer.send(emotionSendFilter(JSON.stringify(patientValMessage)));
+                    patientValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($scope.info.consultInputValue)));
                     $scope.info.consultInputValue = "";
                 } else {
                     alert("连接没有开启.");

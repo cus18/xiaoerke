@@ -352,7 +352,7 @@
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
- 				<!--<ref bean="updateWechatInfoQuarzCronTrigger"/>-->
+ 				<ref bean="updateWechatInfoQuarzCronTrigger"/>
  				<!--<ref bean="getWechatRecoderTrigger"/>-->
 				<!--<ref bean="sendMessageForCustomerReturnAMTrigger"/>-->
 				<!--<ref bean="sendMessageForCustomerReturnPMTrigger"/>-->

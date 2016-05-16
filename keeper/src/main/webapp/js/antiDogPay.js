@@ -258,7 +258,7 @@ function payInsurance(){
             type: 'POST',
             async:false,
             url: "insurance/getInsuranceRegisterServiceIfValid",
-            data: "{'babyId':'"+babyid+"'}",
+            data: "{'babyId':'"+babyid+"','insuranceType':'1'}",
             contentType: "application/json; charset=utf-8",
             success: function(result){
                 if(result.valid!=""){
