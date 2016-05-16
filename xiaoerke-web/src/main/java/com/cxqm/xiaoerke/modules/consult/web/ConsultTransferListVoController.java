@@ -24,26 +24,25 @@ import java.util.List;
 public class ConsultTransferListVoController {
 
     @Autowired
-    ConsultTransferListVoService consultTransferListVoService;
+    private ConsultTransferListVoService consultTransferListVoService;
 
     @Autowired
-    DictService dictService ;
+    private DictService dictService ;
 
     @Autowired
-    ConsultSessionService consultSessionService ;
+    private ConsultSessionService consultSessionService ;
 
     @RequestMapping(value="/findConsultTransferList",method = {RequestMethod.POST, RequestMethod.GET})
     public @ResponseBody
     HashMap<String,Object> findAllConsultTransferListVo(@RequestParam(required=false) String orderOrNot){
         HashMap<String,Object> response = new HashMap<String, Object>();
         ConsultTransferListVo consultTransferListVo = new ConsultTransferListVo();
-        if(StringUtils.isNotNull(orderOrNot ) && "order".equalsIgnoreCase(orderOrNot)){
-            consultTransferListVo.setOrder("department");
-        }
+  /*      if(StringUtils.isNotNull(orderOrNot ) && "order".equalsIgnoreCase(orderOrNot)){
+            consultTransferListVo.setOrderBy("department");
+        }*/
         List<ConsultTransferListVo> list= consultTransferListVoService.findAllConsultTransferListVo(consultTransferListVo);
         if(list!= null && list.size()>0){
-            for(int i=0;i<list.size();i++){
-                ConsultTransferListVo consultTransfer = list.get(i);
+            for(ConsultTransferListVo consultTransfer:list){
                 RichConsultSession richConsultSession = new RichConsultSession();
                 richConsultSession.setUserId(consultTransfer.getSysUserId());
                 richConsultSession.setStatus("ongoing");
@@ -95,7 +94,7 @@ public class ConsultTransferListVoController {
 
     @RequestMapping(value="/deleteConsultTransfer",method = {RequestMethod.POST, RequestMethod.GET})
     public @ResponseBody
-    String deleteConsultTransfer(@RequestParam(required=true) String id){
+    String deleteConsultTransfer(@RequestParam(required=true) Integer id){
         int count = consultTransferListVoService.deleteConsultTransferListVo(id);
         if(count != 0){
             return "success";
@@ -111,10 +110,9 @@ public class ConsultTransferListVoController {
         List<HashMap<String,Object>> listmap = new ArrayList<HashMap<String, Object>>();
         Dict dict = new Dict();
         dict.setType("department_type");
-        List list = dictService.findList(dict);
+        List<Dict> list = dictService.findList(dict);
         if(list !=null && list.size()>0){
-            for(int i=0 ; i<list.size() ;i++){
-                Dict dict1 = (Dict)list.get(i);
+            for(Dict dict1 :list){
                 String dictId = dict1.getId();
                 String dictValue = dict1.getDescription();
                 response.put("dictId",dictId);

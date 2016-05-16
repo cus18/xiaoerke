@@ -6,7 +6,6 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultTransferListVoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 /**
@@ -21,12 +20,16 @@ public class ConsultTransferListVoServiceImpl implements ConsultTransferListVoSe
 
     @Override
     public List<ConsultTransferListVo> findAllConsultTransferListVo(ConsultTransferListVo consultTransferListVo) {
-
-        return null;
+        List<ConsultTransferListVo> list = consultTransferListVoDao.findAllConsultTransferListVo(consultTransferListVo);
+        if(list != null && list.size()>0) {
+            return list;
+        }else{
+            return null;
+        }
     }
 
     @Override
-    public int deleteConsultTransferListVo(String id) {
+    public int deleteConsultTransferListVo(Integer id) {
         int count = consultTransferListVoDao.deleteConsultTransferListVoByPrimaryKey(id);
         if(count !=0){
             return count;

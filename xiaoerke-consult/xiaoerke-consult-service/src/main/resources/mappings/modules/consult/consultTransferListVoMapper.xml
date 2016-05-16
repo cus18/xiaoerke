@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.consult.entity.ConsultTransferListVo" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="session_id" property="sessionId" jdbcType="INTEGER" />
-    <result column="create_date" property="createDate" jdbcType="DATETIME" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="create_by" property="createBy" jdbcType="VARCHAR" />
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
     <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
@@ -16,6 +16,7 @@
     <result column="department" property="department" jdbcType="VARCHAR" />
     <result column="department_id" property="departmentId" jdbcType="VARCHAR" />
   </resultMap>
+
   <sql id="Base_Column_List" >
     id, session_id, create_date, create_by, update_date, sys_user_id, sys_user_name, sys_user_id_cs, sys_user_name_cs, del_flag, status,
     department, department_id
@@ -25,7 +26,7 @@
     <include refid="Base_Column_List" />
     from consult_transfer_list
     where 1=1  order by
-    <if test="order != null and order !=  ''">
+    <if test="orderBy != null and orderBy !=  ''">
       department desc,
     </if>
       create_date desc
@@ -38,10 +39,9 @@
 
   <insert id="addConsultTransferListVo" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultTransferListVo" useGeneratedKeys="true"
           keyProperty="id">
-    insert into consult_transfer_list (id, session_id, create_date,create_by, update_date,
-    sys_user_id, sys_user_name,sys_user_id_cs,sys_user_name_cs,del_flag,status,department, department_id
-    )
-    values (#{id,jdbcType=INTEGER}, #{sessionId,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP},
+    insert into consult_transfer_list(id,session_id, create_date,create_by, update_date,
+    sys_user_id, sys_user_name,sys_user_id_cs,sys_user_name_cs,del_flag,status,department, department_id)
+    values (#{id,jdbcType=INTEGER},#{sessionId,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP},
     #{createBy,jdbcType=VARCHAR},#{updateDate,jdbcType=TIMESTAMP},#{sysUserId,jdbcType=VARCHAR},
     #{sysUserName,jdbcType=VARCHAR},#{sysUserIdCs,jdbcType=VARCHAR},#{sysUserNameCs,jdbcType=VARCHAR},
     #{delFlag,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{department,jdbcType=VARCHAR},#{departmentId,jdbcType=VARCHAR}

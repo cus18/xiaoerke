@@ -9,10 +9,10 @@ import java.util.List;
  */
 public interface ConsultTransferListVoService {
 
-    public List<ConsultTransferListVo> findAllConsultTransferListVo(ConsultTransferListVo consultTransferListVo);
+    List<ConsultTransferListVo> findAllConsultTransferListVo(ConsultTransferListVo consultTransferListVo);
 
-    public int deleteConsultTransferListVo(String id);
+    int deleteConsultTransferListVo(Integer id);
 
-    public int addConsultTransferListVo(ConsultTransferListVo consultTransferListVo);
+    int addConsultTransferListVo(ConsultTransferListVo consultTransferListVo);
 
 }

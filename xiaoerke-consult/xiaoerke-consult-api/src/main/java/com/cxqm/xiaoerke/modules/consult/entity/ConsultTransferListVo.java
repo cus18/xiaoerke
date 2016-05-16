@@ -22,8 +22,7 @@ public class ConsultTransferListVo {
     private String status ;     //转诊状态
     private String department ; //转诊科室名称
     private String departmentId;   //转诊科室ID
-
-    private String order;       //是否排序
+    private String orderBy;       //是否排序
 
     public Integer getId() {
         return id;
@@ -129,11 +128,11 @@ public class ConsultTransferListVo {
         this.departmentId = departmentId;
     }
 
-    public String getOrder() {
-        return order;
+    public String getOrderBy() {
+        return orderBy;
     }
 
-    public void setOrder(String order) {
-        this.order = order;
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
     }
 }
