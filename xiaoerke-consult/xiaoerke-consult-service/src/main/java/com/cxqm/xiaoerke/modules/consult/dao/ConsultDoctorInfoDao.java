@@ -23,4 +23,6 @@ public interface ConsultDoctorInfoDao {
     int updateByPrimaryKeySelective(ConsultDoctorInfoVo record);
 
     int updateByPrimaryKey(ConsultDoctorInfoVo record);
+
+    List<Object> getConsultDoctorDepartment();
 }
