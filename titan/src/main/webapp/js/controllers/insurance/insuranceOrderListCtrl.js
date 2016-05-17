@@ -7,6 +7,24 @@ angular.module('controllers', ['ionic']).controller('insuranceOrderListCtrl', [
         $scope.insuranceViedList=[];
         $scope.insuranceInvalidList=[];
 
+
+
+        $scope.$on('$ionicView.enter', function(){
+            var routePath = "/insuranceBBBBBB" + $location.path();
+            GetUserLoginStatus.save({routePath:routePath},function(data){
+                if(data.status=="9") {
+                    window.location.href = data.redirectURL;
+                } else if(data.status=="8"){
+                    window.location.href = ata.redirectURL+"?targeturl="+routePath;
+                }else {
+                    getInsuranceRegisterServiceListByUserid.get({insuranceType:""},function (data){
+                        $scope.insuranceViedList=data.insuranceViedList;
+                        $scope.insuranceInvalidList=data.insuranceInvalidList;
+                    });
+                }
+            });
+        });
+
         $scope.selectService = function(select){
             if(select=="current"){
                 $scope.service = "current";
@@ -15,28 +33,10 @@ angular.module('controllers', ['ionic']).controller('insuranceOrderListCtrl', [
                 $scope.service = "history";
             }
         };
-        $scope.lookDetail = function(select){
-            $state.go('antiDogOrderDetail',{index:select});
+        $scope.lookDetail = function(id){
+            $state.go('insuranceOrderDetail',{id:id});
         };
 
-        $scope.$on('$ionicView.enter', function(){
-            /*var routePath = "/insuranceBBBBBB" + $location.path();
-            GetUserLoginStatus.save({routePath:routePath},function(data){
-                if(data.status=="9") {
-                    window.location.href = data.redirectURL;
-                } else if(data.status=="8"){
-                    window.location.href = ata.redirectURL+"?targeturl="+routePath;
-                }else {
-                    getInsuranceRegisterServiceListByUserid.get({insuranceType:'1'},function (data){
-                        console.log("dd",data);
-                        $scope.insuranceViedList=data.insuranceViedList;
-                        $scope.insuranceInvalidList=data.insuranceInvalidList;
-                    });
-                }
-            });*/
-
-
-        })
     }]);
 
 

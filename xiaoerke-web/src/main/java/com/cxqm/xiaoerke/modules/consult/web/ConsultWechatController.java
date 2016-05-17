@@ -10,9 +10,12 @@ import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.entity.RpcRequest;
+import com.cxqm.xiaoerke.modules.consult.entity.RpcResponse;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
+import com.cxqm.xiaoerke.modules.consult.service.core.RpcClient;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
@@ -32,6 +35,7 @@ import java.net.URLDecoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -92,6 +96,19 @@ public class ConsultWechatController extends BaseController {
         }
 
         public void run() {
+            //RPC测试
+            RpcRequest request = new RpcRequest(); // 创建并初始化 RPC 请求
+            request.setRequestId(UUID.randomUUID().toString());
+            request.setContent("chenjiaketest+++");
+            RpcClient client = new RpcClient("123.57.45.33", 8010); // 初始化 RPC 客户端
+            RpcResponse response = null; // 通过 RPC 客户端发送 RPC 请求并获取 RPC 响应
+            try {
+                response = client.send(request);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
             //需要根据openId获取到nickname，如果拿不到nickName，则用利用openId换算出一个编号即可
             String openId = (String) this.param.get("openId");
             String messageType = (String) this.param.get("messageType");

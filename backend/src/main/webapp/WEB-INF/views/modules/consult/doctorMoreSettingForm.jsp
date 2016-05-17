@@ -223,17 +223,17 @@
 									onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
 					<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询" onclick="return page();"/>
 				<hr>
-				接待人数：${sessionCount}  人     回复消息总数：150  人<p>
+				接待人数：${sessionCount}  人     <%--回复消息总数：150  人--%><p>
 			</form:form>
 			<table id="contentTable" class="table table-striped table-bordered table-condensed">
-				<thead><tr><th>日期</th><th>接待人数</th><th>回复消息总数</th>
+				<thead><tr><th>日期</th><th>接待人数</th><%--<th>回复消息总数</th>--%>
 				</tr></thead>
 				<tbody>
 				<c:forEach items="${sessionMap}" var="map">
 					<tr>
 						<td>${map.key}</td>
 						<td>${map.value}</td>
-						<td>${map.value}</td>
+						<%--<td>${map.value}</td>--%>
 					</tr>
 				</c:forEach>
 				</tbody>
@@ -255,7 +255,7 @@
 		<form:form id="inputForm" modelAttribute="doctor" action="${ctx}/consult/doctorOper" method="post" class="form-horizontal"><%--
 			<form:hidden path="email" htmlEscape="false" maxlength="255" class="input-xlarge"/>
 			<sys:ckfinder input="email" type="files" uploadPath="/mytask" selectMultiple="false"/> --%>
-			<input type="text" value="${doctor.id}"/>
+			<input type="hidden" value="${doctor.id}"/>
 			<div class="control-group">
 				<label class="control-label">性别:</label>
 				<div class="controls">

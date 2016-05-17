@@ -68,11 +68,16 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
         int satisfy = 0;
         int unsatisfy = 0;
         for(Map<String,Object> temp : praiseList){
-            if(StringUtils.isNotNull((String) temp.get(redPacket))){
-                redPacket += (Integer)temp.get(redPacket);
-                satisfy += 1;
-            }else{
-                unsatisfy += 1;
+            if(StringUtils.isNotNull((String) temp.get("serviceAttitude"))){
+                if("1".equals((String) temp.get("serviceAttitude"))){
+                    unsatisfy += 1;
+                }else if("3".equals((String) temp.get("serviceAttitude"))||"5".equals((String) temp.get("serviceAttitude"))){
+                    satisfy += 1;
+                }
+            }
+
+            if(StringUtils.isNotNull((String) temp.get("redPacket"))){
+                redPacket += Integer.parseInt((String)temp.get("redPacket"));
             }
         }
         map.put("redPacket",redPacket);
@@ -114,5 +119,20 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
             count = consultDoctorInfoDao.updateByPrimaryKeySelective(vo);
         }
         return count;
+    }
+
+    /**
+     * 获取咨询医生所有科室
+     * @author jiangzg
+     * 2016-5-17
+     */
+    @Override
+    public List<Object> getConsultDoctorDepartment() {
+        List<Object> departmentList= consultDoctorInfoDao.getConsultDoctorDepartment();
+        if(departmentList != null && departmentList.size() > 0){
+            return departmentList;
+        }else{
+            return null;
+        }
     }
 }
