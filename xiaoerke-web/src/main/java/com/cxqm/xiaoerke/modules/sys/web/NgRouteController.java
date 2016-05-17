@@ -24,14 +24,9 @@ public class NgRouteController extends BaseController {
         return "redirect:"+"/ap#/"+redirectParam;
     }
 
-    /**
-     *  PC端官网
-     */
-    @SystemControllerLog(description = "00000079")
-    @RequestMapping(value ="/baodaifuFirst",method = {RequestMethod.POST, RequestMethod.GET})
-    public String baodaifuIndex() {
-        return "angular/baodaifuFirstPage";
-    }
+    /*
+        titan 项目
+    */
 
     /**
      *  appoint 客户端预约
@@ -52,6 +47,15 @@ public class NgRouteController extends BaseController {
     }
 
     /**
+     * insurance 类保险
+     */
+    @SystemControllerLog(description = "00000079")
+    @RequestMapping(value ="/insurance",method = {RequestMethod.POST, RequestMethod.GET})
+    public String insuranceIndex() {
+        return "angular/insuranceIndex";
+    }
+
+    /**
      *  baoFansCamp 宝粉营
      */
     @SystemControllerLog(description = "00000079")
@@ -60,6 +64,18 @@ public class NgRouteController extends BaseController {
         return "angular/baoFansCampIndex";
     }
 
+    /*
+        wisdom 项目
+    */
+
+    /**
+     *  PC端官网
+     */
+    @SystemControllerLog(description = "00000079")
+    @RequestMapping(value ="/baodaifuFirst",method = {RequestMethod.POST, RequestMethod.GET})
+    public String baodaifuIndex() {
+        return "angular/baodaifuFirstPage";
+    }
 
     /**
      *   knowledge 知识库
@@ -90,6 +106,15 @@ public class NgRouteController extends BaseController {
     }
 
     /**
+     *  umbrella 宝护伞
+     */
+    @SystemControllerLog(description = "00000079")
+    @RequestMapping(value ="/umbrella",method = {RequestMethod.POST, RequestMethod.GET})
+    public String umbrellaIndex() {
+        return "angular/umbrellaIndex";
+    }
+
+    /**
      * doctor 医生端
      */
     @SystemControllerLog(description = "00000079")
@@ -108,7 +133,7 @@ public class NgRouteController extends BaseController {
     }
 
     /**
-     * healthManage 健康档案
+     * healthManage 微信多客服 健康档案
      */
     @SystemControllerLog(description = "00000079")
     @RequestMapping(value ="/health",method = {RequestMethod.POST, RequestMethod.GET})
@@ -143,14 +168,7 @@ public class NgRouteController extends BaseController {
         return "patientConsultIndex";
     }
 
-    /**
-     * insurance 类保险
-     */
-    @SystemControllerLog(description = "00000079")
-    @RequestMapping(value ="/insurance",method = {RequestMethod.POST, RequestMethod.GET})
-    public String insuranceIndex() {
-        return "angular/insuranceIndex";
-    }
+
 
     /**
      * 咨询打赏
