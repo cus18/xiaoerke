@@ -17,8 +17,8 @@
 <link rel="stylesheet" href="/keeper/styles/handfootmouthPay.less" type="text/css" />
 <body onload="doRefresh()" >
 <!--一年购买过此服务，再次购买提醒 -->
-<div class="c-shadow"  onclick="cancelRemind()"> </div>
-<div class="c-remind" >
+<div class="c-shadow" id="getShadow"  onclick="cancelRemind()"> </div>
+<div class="c-remind" id="getRemind" >
     <div class="remind-main">
         <img class="close" onclick="cancelRemind()" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fclose.png" width="31" height="31">
         <p >
@@ -33,7 +33,7 @@
     </div>
 </div>
 
-<div class="baby-list" >
+<div class="baby-list" id="getBaby">
     <dl>
         <dt id="selectBabyTitle">
             <i class="line"></i>

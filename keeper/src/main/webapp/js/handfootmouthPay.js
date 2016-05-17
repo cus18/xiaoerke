@@ -1,5 +1,8 @@
 var babyList = [];
-var sex = 1;//男孩
+var babySex = 1;//男孩
+var parentSex = 0;//妈妈
+var needPayMoney = 26.8;//手足口保险
+var babyID;
 
 $(function(){
     var param = '{routePath:"/wxPay/patientPay.do?serviceType=handfootmouth"}';
@@ -24,10 +27,9 @@ $(function(){
 
 
 var doRefresh = function(){
-    $('.c-shadow').hide();
-    $('.c-remind').hide();
-    $('.selectBaby').hide();
-    $('#payButton').attr("disabled",true);
+    $('#getShadow').hide();
+    $('#getRemind').hide();
+    $('#getBaby').hide();
     initDate();
 }
 //获取宝宝基本信息
@@ -38,12 +40,15 @@ var getBabyInfo = function(){
         data: "{'openid':''}",
         contentType: "application/json; charset=utf-8",
         success: function(data){
-            console.log("dd",data);
             $('#phone').val(data.userPhone);
             if(data.babyInfoList.length!=0){
                 babyList = data.babyInfoList;
                 getBaby(data.babyInfoList[0]);
-                isHaveInsurance(babyList[0].id);
+                var op ="";
+                $.each(data.babyInfoList, function (index,value) {
+                    op += "<dd class=\"select\" onclick=\"selectedBaby("+index+")\" ><span >"+value.name+"</span></dd>";
+                });
+                $("#selectBabyTitle").after(op);
             }else{
                 $('.sex a').eq(0).addClass('select');
             }
@@ -60,9 +65,9 @@ var isHaveInsurance = function (object) {
         data: "{'babyId':'"+object.id+"','insuranceType':'2'}",
         contentType: "application/json; charset=utf-8",
         success: function(data){
-            console.log("ddd",data);
             if(data.valid!=0){
-                $('.c-remind').show();
+                $('#getRemind').show();
+                $('#getShadow').show();
             }else{
                 getBaby(object);
             }
@@ -73,15 +78,7 @@ var isHaveInsurance = function (object) {
 
 //选择宝宝
 var selectBaby = function () {
-    $('.selectBaby').removeAttr("onclick");
-    if(babyList.length!=0){
-        var op ="";
-        $.each(babyList, function (index,value) {
-            op += "<dd class=\"select\" onclick=\"selectedBaby("+index+")\" ><span >"+value.name+"</span></dd>";
-        });
-        $("#selectBabyTitle").after(op);
-    }
-    $('.selectBaby').show();
+    $('#getBaby').show();
 }
 
 //选择已有的宝宝
@@ -92,23 +89,22 @@ var selectedBaby = function (index) {
 
 //添加宝宝
 var addBaby =function(){
-    window.location.href = "http://localhost/titan/insurance#/antiDogAddBaby";
+    window.location.href = "http://localhost/titan/insurance#/handfootmouthAddBaby";
 }
 
 //取消选择宝宝
 var cancelSelectBaby = function(){
-    $('.selectBaby').attr("onclick","selectBaby()");
-    $('.selectBaby').hide();
+    $('#getBaby').hide();
 }
 
 //孩子性别
 var selectSex = function (item) {
     if(item=="boy"){
-        sex = 1;
+        babySex = 1;
         $('.sex a').eq(0).addClass('select');
         $('.sex a').eq(1).removeClass('select');
     }else{
-        sex = 0;
+        babySex = 0;
         $('.sex a').eq(1).addClass('select');
         $('.sex a').eq(0).removeClass('select');
     }
@@ -116,9 +112,11 @@ var selectSex = function (item) {
 //父母性别
 var selectParent = function (item) {
     if(item=="father"){
+        parentSex = 1;
         $('.parent a').eq(0).addClass('select');
         $('.parent a').eq(1).removeClass('select');
     }else{
+        parentSex = 0;
         $('.parent a').eq(1).addClass('select');
         $('.parent a').eq(0).removeClass('select');
     }
@@ -128,6 +126,7 @@ var selectParent = function (item) {
 var getBaby = function (object) {
     $('#babyName').val(object.name);
     $('#birthday').val(changeDate(object.birthday));
+    babyID = object.id;
     if(object.sex=="1"){
         $('.sex a').eq(0).addClass('select');
         $('.sex a').eq(1).removeClass('select');
@@ -135,11 +134,119 @@ var getBaby = function (object) {
         $('.sex a').eq(1).addClass('select');
         $('.sex a').eq(0).removeClass('select');
     }
-
+}
+//查看订单
+var lookOrderInfo = function () {
+    window.location.href = "http://localhost/titan/insurance#/insuranceOrderList";
 }
 
-var changeDate = function (time) {
+//取消重新填写宝宝信息
+var cancelRemind = function () {
+    $('#getRemind').hide();
+    $('#getShadow').hide();
+}
 
+//支付
+var payInsurance = function () {
+    var flag = 0;
+    if($('#babyName').val()!=undefined&&$('#babyName').val()!=""&&$('#birthday').val()!=undefined&&$('#birthday').val()!=""
+        &&$("#parentName").val()!=undefined&&$("#parentName").val()!=""&&$("#IdCard").val()!=undefined&&$("#IdCard").val()!=""){
+
+        $.each(babyList, function (index,value) {
+            if(value.name!=$('#babyName').val()){
+                flag++;
+            }else{
+                return;
+            }
+        });
+        if(flag==babyList.length){
+            saveBaby($('#babyName').val(),babySex.toString(),$('#birthday').val());
+        }else{
+            payLast(babyID,$("#IdCard").val(),$('#phone').val(),$("#parentName").val(),parentSex.toString());
+        }
+    }else{
+        alert("信息不能为空！");
+    }
+}
+
+//保存宝宝信息
+var saveBaby = function (name,sex,birthday) {
+    $.ajax({
+        type: 'GET',
+        url: "healthRecord/saveBabyInfo",
+        data: {name:name,sex:sex,birthDay:birthday},
+        contentType: "application/json; charset=utf-8",
+        success: function(data){
+            if(data.resultCode=='1'){
+                payLast(data.autoId,$("#IdCard").val(),$('#phone').val(),$("#parentName").val(),parentSex.toString());
+            }else{
+                alert("保存信息失败！");
+            }
+        },
+        dataType: "json"
+    });
+}
+
+//保存订单并进行支付
+var payLast = function (id,card,phone,parentname,parentSex) {
+    recordLogs("SZKB_DDTX_WXZF");
+    $.ajax({
+        type: 'POST',
+        async:false,
+        url: "insurance/saveInsuranceRegisterService",
+        data: "{'babyId':'"+id+"','idCard':'"+card+"','parentPhone':'"+phone+"','insuranceType':'2','parentName':'"+parentname+"','parentType':'"+parentSex+"'}",
+        contentType: "application/json; charset=utf-8",
+        success: function(result){
+            if(result.id!=""){
+                var insuranceId=result.id;
+                $('#payButton').attr('disabled',"true");//添加disabled属性
+                //window.location.href="http://localhost/titan/insurance#/handfootmouthPaySuccess/"+insuranceId;
+                $.ajax({
+                    url:"account/user/antiDogPay",// 跳转到 action
+                    async:true,
+                    type:'get',
+                    data:{patientRegisterId:insuranceId,payPrice:needPayMoney*100},
+                    cache:false,
+                    success:function(data) {
+                        $('#payButton').removeAttr("disabled");
+                        var obj = eval('(' + data + ')');
+                        if(parseInt(obj.agent)<5){
+                            alert("您的微信版本低于5.0无法使用微信支付");
+                            return;
+                        }
+                        //打开微信支付控件
+                        wx.chooseWXPay({
+                            appId:obj.appId,
+                            timestamp:obj.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                            nonceStr:obj.nonceStr,  // 支付签名随机串，不长于 32 位
+                            package:obj.package,// 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+                            signType:obj.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                            paySign:obj.paySign,  // 支付签名
+                            success: function (res) {
+                                if(res.errMsg == "chooseWXPay:ok" ) {
+                                    window.location.href="http://localhost/titan/insurance#/handfootmouthPaySuccess/"+insuranceId;
+                                }else{
+                                    alert("支付失败,请重新支付")
+                                }
+                            },
+                            fail: function (res) {
+                                alert(res.errMsg)
+                            }
+                        });
+                    },
+                    error : function() {
+                    }
+                });
+            }
+        },
+        dataType: "json"
+    });
+}
+
+
+
+
+var changeDate = function (time) {
     return moment(time).format("YYYY-MM-DD");
 }
 

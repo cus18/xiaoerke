@@ -2,7 +2,7 @@
 <ion-view view-title="订单详情" ng-init="doRefresh()">
     <ion-content class="insuranceOrderDetail" style="top:0;">
         <!--补贴弹框提示-->
-        <div class="shadow" ng-if="parRemindLock" ng-click="cancelPayRemind()"></div>
+        <div class="c-shadow" ng-if="parRemindLock" ng-click="cancelPayRemind()"></div>
         <div class="remind-box" ng-if="parRemindLock">
             <img ng-click="cancelPayRemind()"  width="30" height="30" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fclose.png">
             <div>
@@ -15,7 +15,8 @@
         </div>
         <ion-scroll direction="y" has-bouncing="true">
             <div class="banner">
-                <img class="my-img-block"  width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Findex_banner.png">
+                <img ng-if="insurance.Insurance_type==1" class="my-img-block"  width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FbigDog.png">
+                <img ng-if="insurance.Insurance_type==2" class="my-img-block"  width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FbigHandfootmouth.png">
             </div>
             <!--  <div class="text">
                   待审核
@@ -76,7 +77,7 @@
 
         </ion-scroll>
     </ion-content>
-    <div class="btn-bottom" ng-click="receiveMoney()" style="background-color: #88d9dd;">
+    <div class="bottom-btn" ng-click="receiveMoney()" style="background-color: #88d9dd;">
         我要领互助补贴
     </div>
 </ion-view>
