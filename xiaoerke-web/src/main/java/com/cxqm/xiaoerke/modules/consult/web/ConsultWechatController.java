@@ -96,18 +96,6 @@ public class ConsultWechatController extends BaseController {
         }
 
         public void run() {
-            //RPC测试
-            RpcRequest request = new RpcRequest(); // 创建并初始化 RPC 请求
-            request.setRequestId(UUID.randomUUID().toString());
-            request.setContent("chenjiaketest+++");
-            RpcClient client = new RpcClient("123.57.45.33", 8010); // 初始化 RPC 客户端
-            RpcResponse response = null; // 通过 RPC 客户端发送 RPC 请求并获取 RPC 响应
-            try {
-                response = client.send(request);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
 
             //需要根据openId获取到nickname，如果拿不到nickName，则用利用openId换算出一个编号即可
             String openId = (String) this.param.get("openId");
