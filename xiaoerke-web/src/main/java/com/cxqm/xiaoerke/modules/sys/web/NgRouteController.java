@@ -69,21 +69,21 @@ public class NgRouteController extends BaseController {
     }
 
     /**
-     * insurance 类保险
-     */
-    @SystemControllerLog(description = "00000079")
-    @RequestMapping(value ="/insurance",method = {RequestMethod.POST, RequestMethod.GET})
-    public String insuranceIndex() {
-        return "angular/insuranceIndex";
-    }
-
-    /**
      *  baoFansCamp 宝粉营
      */
     @SystemControllerLog(description = "00000079")
     @RequestMapping(value ="/baoFansCamp",method = {RequestMethod.POST, RequestMethod.GET})
     public String baoFansIndex() {
         return "angular/baoFansCampIndex";
+    }
+
+    /**
+     * insurance 类保险
+     */
+    @SystemControllerLog(description = "00000079")
+    @RequestMapping(value ="/insurance",method = {RequestMethod.POST, RequestMethod.GET})
+    public String insuranceIndex() {
+        return "angular/insuranceIndex";
     }
 
     /*
@@ -141,7 +141,7 @@ public class NgRouteController extends BaseController {
     */
 
     /**
-     * doctor 医生端
+     * doctor 医生个人中心
      */
     @SystemControllerLog(description = "00000079")
     @RequestMapping(value ="/doctor",method = {RequestMethod.POST, RequestMethod.GET})
