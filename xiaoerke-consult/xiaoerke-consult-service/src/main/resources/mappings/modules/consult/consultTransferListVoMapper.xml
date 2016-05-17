@@ -6,7 +6,6 @@
     <result column="session_id" property="sessionId" jdbcType="INTEGER" />
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="create_by" property="createBy" jdbcType="VARCHAR" />
-    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
     <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
     <result column="sys_user_name" property="sysUserName" jdbcType="VARCHAR" />
     <result column="sys_user_id_cs" property="sysUserIdCs" jdbcType="VARCHAR" />
@@ -17,7 +16,7 @@
   </resultMap>
 
   <sql id="Base_Column_List" >
-    id, session_id, create_date, create_by, update_date, sys_user_id, sys_user_name, sys_user_id_cs, sys_user_name_cs, del_flag, status,
+    id, session_id, create_date, create_by, sys_user_id, sys_user_name, sys_user_id_cs, sys_user_name_cs, del_flag, status,
     department
   </sql>
   <select id="findAllConsultTransferListVo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultTransferListVo" >
