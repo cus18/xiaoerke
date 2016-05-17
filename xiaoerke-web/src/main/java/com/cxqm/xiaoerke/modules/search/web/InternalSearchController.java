@@ -91,7 +91,7 @@ public class InternalSearchController {
         "pageSize": 10
     }
 	 */
-    @RequestMapping(value = "Doctors", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "searchDoctors", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> listSearchDoctor(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpServletResponse httpResponse) {
