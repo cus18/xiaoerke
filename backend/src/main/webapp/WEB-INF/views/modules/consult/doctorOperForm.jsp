@@ -57,7 +57,7 @@
 	<form:form id="inputForm" modelAttribute="user" action="${ctx}/consult/doctorOper" method="post" class="form-horizontal"><%--
 		<form:hidden path="email" htmlEscape="false" maxlength="255" class="input-xlarge"/>
 		<sys:ckfinder input="email" type="files" uploadPath="/mytask" selectMultiple="false"/> --%>
-		<input type="text" value="${user.id}"/>
+		<input type="hidden" value="${user.id}"/>
 		<div class="control-group">
 			<label class="control-label">姓名:</label>
 			<div class="controls">

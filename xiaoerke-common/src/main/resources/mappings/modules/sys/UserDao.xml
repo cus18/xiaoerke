@@ -346,8 +346,11 @@
 		<if test="id != '' and id !=null">
 			AND id = #{id}
 		</if>
+		<if test="phone != '' and phone !=null">
+			AND phone = #{phone}
+		</if>
 		<if test="name != '' and name !=null">
-			and name= #{name}
+			and name like '%${name}%'
 		</if>
 		<if test="userType != '' and userType != null">
 			<if test="userType == 'both'">

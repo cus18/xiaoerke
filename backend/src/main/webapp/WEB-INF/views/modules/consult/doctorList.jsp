@@ -44,6 +44,9 @@
 			<li><label>医生姓名：</label>
 				<form:input path="name" htmlEscape="false" maxlength="50" class="input-medium"/>
 			</li>
+			<li><label>手机号：</label>
+				<form:input path="phone" htmlEscape="false" maxlength="50" class="input-medium"/>
+			</li>
 			<li class="btns">
 				<input class="btn btn-primary" type="button" onclick="searchSub()" value="查询" />
 				<input class="btn btn-primary" type="button" onclick="doctorOperForm('${ctx}/consult/consultOperForm?','新增医生')" value="新增医生" />
