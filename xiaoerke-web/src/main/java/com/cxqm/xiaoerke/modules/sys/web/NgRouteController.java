@@ -25,6 +25,28 @@ public class NgRouteController extends BaseController {
     }
 
     /*
+        angel 独立咨询系统 项目
+     */
+
+    /**
+     * 独立咨询系统 医生端
+     */
+    @SystemControllerLog(description = "00000079")
+    @RequestMapping(value ="doctor/consult",method = {RequestMethod.POST, RequestMethod.GET})
+    public String doctorConsult() {
+        return "doctorConsultIndex";
+    }
+
+    /**
+     * 独立咨询系统 用户端
+     */
+    @SystemControllerLog(description = "00000079")
+    @RequestMapping(value ="patient/consult",method = {RequestMethod.POST, RequestMethod.GET})
+    public String patientConsult() {
+        return "patientConsultIndex";
+    }
+
+    /*
         titan 项目
     */
 
@@ -114,6 +136,10 @@ public class NgRouteController extends BaseController {
         return "angular/umbrellaIndex";
     }
 
+     /*
+        doctor 项目
+    */
+
     /**
      * doctor 医生端
      */
@@ -132,14 +158,10 @@ public class NgRouteController extends BaseController {
         return "angular/phoneConsultIndex";
     }
 
-    /**
-     * healthManage 微信多客服 健康档案
+
+      /*
+        market 项目
      */
-    @SystemControllerLog(description = "00000079")
-    @RequestMapping(value ="/health",method = {RequestMethod.POST, RequestMethod.GET})
-    public String healthManageIndex() {
-        return "angular/healthManage";
-    }
 
     /**
      *  market 运营活动
@@ -150,25 +172,19 @@ public class NgRouteController extends BaseController {
         return "angular/marketIndex";
     }
 
-    /**
-     * 应用首页
-     */
-    @SystemControllerLog(description = "00000079")
-    @RequestMapping(value ="doctor/consult",method = {RequestMethod.POST, RequestMethod.GET})
-    public String doctorConsult() {
-        return "doctorConsultIndex";
-    }
+
+     /*
+        keeper 项目
+    */
 
     /**
-     * 应用首页  模块
+     * healthManage 微信多客服 健康档案
      */
     @SystemControllerLog(description = "00000079")
-    @RequestMapping(value ="patient/consult",method = {RequestMethod.POST, RequestMethod.GET})
-    public String patientConsult() {
-        return "patientConsultIndex";
+    @RequestMapping(value ="/health",method = {RequestMethod.POST, RequestMethod.GET})
+    public String healthManageIndex() {
+        return "angular/healthManage";
     }
-
-
 
     /**
      * 咨询打赏
