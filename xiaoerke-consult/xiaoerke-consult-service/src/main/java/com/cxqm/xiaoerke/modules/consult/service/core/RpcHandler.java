@@ -32,11 +32,7 @@ public class RpcHandler extends SimpleChannelInboundHandler<RpcRequest> {
 	}
 
 	private Object handle(RpcRequest request) throws Throwable {
-		String className = request.getClassName();
-
-		String methodName = request.getMethodName();
-		Class<?>[] parameterTypes = request.getParameterTypes();
-		Object[] parameters = request.getParameters();
+		String content = request.getContent();
 
 		return null;
 	}
