@@ -67,7 +67,7 @@ public class InsuranceController {
 	   @RequestMapping(value = "/getInsuranceRegisterServiceListByUserid", method = {RequestMethod.POST, RequestMethod.GET})
 	   public
 	   @ResponseBody
-	   Map<String,Object> getInsuranceRegisterServiceListByUserid(String insuranceType){
+	   Map<String,Object> getInsuranceRegisterServiceListByUserid(@RequestParam(required = false)String insuranceType){
 		   Map<String, Object> resultMap = new HashMap<String, Object>();
            Map<String, Object> dataMap = new HashMap<String, Object>();
            dataMap.put("userid",UserUtils.getUser().getId());
