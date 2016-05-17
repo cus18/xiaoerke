@@ -92,7 +92,6 @@ public class ConsultSessionManager {
 		String[] args = url.split("&");
 		String fromType = args[1];
 
-		User user = UserUtils.getUser();
 		if(args.length>2){
 			if(fromType.equals("user")) {
 				String userId = args[2];

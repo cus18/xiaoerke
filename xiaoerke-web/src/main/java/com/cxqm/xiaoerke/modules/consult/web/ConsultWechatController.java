@@ -10,6 +10,7 @@ import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.entity.RpcResponse;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
@@ -92,6 +93,9 @@ public class ConsultWechatController extends BaseController {
         }
 
         public void run() {
+            //RPC测试
+            RpcResponse rpc = new RpcResponse();
+
             //需要根据openId获取到nickname，如果拿不到nickName，则用利用openId换算出一个编号即可
             String openId = (String) this.param.get("openId");
             String messageType = (String) this.param.get("messageType");

@@ -97,5 +97,10 @@
 	<!-- 开启注解 -->
 	<mvc:annotation-driven/>
 
+	<!-- 配置 RPC 服务器 -->
+	<bean id="rpcServer" class="com.cxqm.xiaoerke.webapp.bootstrap.RpcServer">
+		<constructor-arg name="serverAddress" value="${server.address}"/>
+	</bean>
+
 	<!--<import resource="runTimeTask.xml"></import>-->
 </beans>
