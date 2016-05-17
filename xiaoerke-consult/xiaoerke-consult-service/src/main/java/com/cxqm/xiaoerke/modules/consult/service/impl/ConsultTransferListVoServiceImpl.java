@@ -19,6 +19,16 @@ public class ConsultTransferListVoServiceImpl implements ConsultTransferListVoSe
     ConsultTransferListVoDao consultTransferListVoDao;
 
     @Override
+    public int updateConsultTransferByPrimaryKey(ConsultTransferListVo consultTransferListVo) {
+        int count = consultTransferListVoDao.updateConsultTransferByPrimaryKeySelective(consultTransferListVo);
+        if(count !=0){
+            return count;
+        }else{
+            return 0;
+        }
+    }
+
+    @Override
     public List<ConsultTransferListVo> findAllConsultTransferListVo(ConsultTransferListVo consultTransferListVo) {
         List<ConsultTransferListVo> list = consultTransferListVoDao.findAllConsultTransferListVo(consultTransferListVo);
         if(list != null && list.size()>0) {
