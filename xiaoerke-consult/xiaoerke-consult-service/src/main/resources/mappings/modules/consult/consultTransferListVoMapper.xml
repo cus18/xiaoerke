@@ -25,7 +25,8 @@
     select 
     <include refid="Base_Column_List" />
     from consult_transfer_list
-    where 1=1  order by
+    where 1=1 and (status = '1' or status = '1')
+    order by
     <if test="orderBy != null and orderBy !=  ''">
       department desc,
     </if>
@@ -47,4 +48,16 @@
     #{delFlag,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{department,jdbcType=VARCHAR},#{departmentId,jdbcType=VARCHAR}
     )
   </insert>
+  <update id="updateConsultTransferByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultTransferListVo">
+    update consult_transfer_list
+    <set>
+      <if test="status != null and status != ''">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null and delFlag != ''">
+        del_flag = #{delFlag,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
 </mapper>

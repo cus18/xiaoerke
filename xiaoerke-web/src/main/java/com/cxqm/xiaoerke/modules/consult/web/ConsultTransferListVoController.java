@@ -7,6 +7,8 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultTransferListVoService;
 import com.cxqm.xiaoerke.modules.sys.entity.Dict;
 import com.cxqm.xiaoerke.modules.sys.service.DictService;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -37,9 +39,11 @@ public class ConsultTransferListVoController {
     HashMap<String,Object> findAllConsultTransferListVo(@RequestParam(required=false) String orderOrNot){
         HashMap<String,Object> response = new HashMap<String, Object>();
         ConsultTransferListVo consultTransferListVo = new ConsultTransferListVo();
-  /*      if(StringUtils.isNotNull(orderOrNot ) && "order".equalsIgnoreCase(orderOrNot)){
+        if(StringUtils.isNotNull(orderOrNot ) && "order".equalsIgnoreCase(orderOrNot)){
             consultTransferListVo.setOrderBy("department");
-        }*/
+        }
+        consultTransferListVo.setStatus("0");
+        consultTransferListVo.setDelFlag("0");
         List<ConsultTransferListVo> list= consultTransferListVoService.findAllConsultTransferListVo(consultTransferListVo);
         if(list!= null && list.size()>0){
             for(ConsultTransferListVo consultTransfer:list){
@@ -84,7 +88,7 @@ public class ConsultTransferListVoController {
         consultTransferListVo.setStatus((String) params.get(""));
 
         int count = consultTransferListVoService.addConsultTransferListVo(consultTransferListVo);
-        if(count != 0){
+        if(count > 0){
             responseResult.put("status","success");
         }else{
             responseResult.put("status","failure");
@@ -94,9 +98,9 @@ public class ConsultTransferListVoController {
 
     @RequestMapping(value="/deleteConsultTransfer",method = {RequestMethod.POST, RequestMethod.GET})
     public @ResponseBody
-    String deleteConsultTransfer(@RequestParam(required=true) Integer id){
-        int count = consultTransferListVoService.deleteConsultTransferListVo(id);
-        if(count != 0){
+    String deleteConsultTransfer(@RequestParam(value = "id",required=true) String id){
+        int count = consultTransferListVoService.deleteConsultTransferListVo(Integer.valueOf(id));
+        if(count > 0){
             return "success";
         }else{
             return "failure" ;
@@ -105,21 +109,45 @@ public class ConsultTransferListVoController {
 
     @RequestMapping(value="/findDoctorDepartment",method = {RequestMethod.POST, RequestMethod.GET})
     public @ResponseBody
-    List<HashMap<String,Object>> findDoctorDepartment(){
+    HashMap<String,Object> findDoctorDepartment(){
         HashMap<String,Object> response = new HashMap<String, Object>();
-        List<HashMap<String,Object>> listmap = new ArrayList<HashMap<String, Object>>();
         Dict dict = new Dict();
         dict.setType("department_type");
-        List<Dict> list = dictService.findList(dict);
-        if(list !=null && list.size()>0){
-            for(Dict dict1 :list){
+        List<Dict> dictList = dictService.findList(dict);
+        JSONObject jsonObject ;
+        JSONArray jsonArray =new JSONArray();
+        if(dictList !=null && dictList.size()>0){
+            for(Dict dict1 :dictList){
+                jsonObject = new JSONObject();
                 String dictId = dict1.getId();
                 String dictValue = dict1.getDescription();
-                response.put("dictId",dictId);
-                response.put("dictValue", dictValue);
-                listmap.add(response);
+                jsonObject.put("dictId",dictId);
+                jsonObject.put("dictValue",dictValue);
+                jsonArray.put(jsonObject);
             }
+            response.put("data",jsonArray);
         }
-        return listmap ;
+        return response ;
+    }
+
+    @RequestMapping(value ="/updateConsultTransferByPrimaryKey",method = {RequestMethod.POST,RequestMethod.GET})
+    public @ResponseBody
+    String updateConsultTransferByPrimaryKey(@RequestParam(value = "id",required=true)String id,
+                                             @RequestParam(value ="status",required = false)String status,
+                                             @RequestParam(value ="delFlag",required = false)String delFlag){
+        ConsultTransferListVo consultTransferListVo = new ConsultTransferListVo();
+        if(StringUtils.isNotNull(status)){
+            consultTransferListVo.setStatus("1");
+        }
+        if(StringUtils.isNotNull(delFlag)){
+            consultTransferListVo.setDelFlag("1");
+        }
+        consultTransferListVo.setId(Integer.valueOf(id));
+        int count = consultTransferListVoService.updateConsultTransferByPrimaryKey(consultTransferListVo);
+        if(count > 0){
+            return "success";
+        }else{
+            return "failure";
+        }
     }
 }
