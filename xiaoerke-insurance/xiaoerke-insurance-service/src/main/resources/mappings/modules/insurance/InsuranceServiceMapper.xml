@@ -77,7 +77,7 @@
     SELECT
 		*
 	FROM
-		insurance_register_service
+		insurance_register_service irs
 	WHERE
 		baby_id = #{babyId}
         <if test="insuranceType != null">

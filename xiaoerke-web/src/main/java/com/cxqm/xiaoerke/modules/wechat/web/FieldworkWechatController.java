@@ -168,6 +168,9 @@ public class FieldworkWechatController {
         }else if (url.indexOf("consultPhone")>-1){
             String departmentName  = URLEncoder.encode(url.replace("consultPhone",""), "UTF-8");
             url =ConstantUtil.TITAN_WEB_URL +"titan/phoneConsult#/phoneConDoctorList/"+departmentName+",searchDoctorByDepartment,";
+        }else if("29".equals(url)){
+            //保险
+            url = ConstantUtil.TITAN_WEB_URL + "titan/firstPage/insurance";
         }
 
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +

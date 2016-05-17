@@ -20,6 +20,6 @@ public interface ConsultTransferListVoDao {
 
     int addConsultTransferListVo(ConsultTransferListVo consultTransferListVo);
 
-    int updateConsultTransferByPrimaryKeySelective(ConsultTransferListVo consultTransferListVo);
+    int updateConsultTransferByPrimaryKey(ConsultTransferListVo consultTransferListVo);
 
 }

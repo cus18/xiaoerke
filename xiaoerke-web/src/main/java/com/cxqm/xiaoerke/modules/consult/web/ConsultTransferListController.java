@@ -121,12 +121,12 @@ public class ConsultTransferListController {
     public @ResponseBody
     HashMap<String,Object> findDoctorDepartment(){
         HashMap<String,Object> response = new HashMap<String, Object>();
-        List<Object> departmentList = consultDoctorInfoService.getConsultDoctorDepartment();
+        List<String> departmentList = consultDoctorInfoService.getConsultDoctorDepartment();
         JSONObject jsonObject;
         JSONArray jsonArray = new JSONArray();
         if(departmentList != null && departmentList.size()>0){
             for(int i=0; i<departmentList.size(); i++){
-                String departmentName = (String)departmentList.get(i);
+                String departmentName = departmentList.get(i);
                 jsonObject = new JSONObject();
                 jsonObject.put("departmentName",departmentName);
                 jsonArray.add(jsonObject);

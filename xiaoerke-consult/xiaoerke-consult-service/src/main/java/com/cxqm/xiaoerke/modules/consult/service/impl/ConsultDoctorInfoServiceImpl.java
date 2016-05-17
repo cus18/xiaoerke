@@ -127,8 +127,8 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
      * 2016-5-17
      */
     @Override
-    public List<Object> getConsultDoctorDepartment() {
-        List<Object> departmentList= consultDoctorInfoDao.getConsultDoctorDepartment();
+    public List<String> getConsultDoctorDepartment() {
+        List<String> departmentList= consultDoctorInfoDao.getConsultDoctorDepartment();
         if(departmentList != null && departmentList.size() > 0){
             return departmentList;
         }else{

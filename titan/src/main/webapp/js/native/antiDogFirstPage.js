@@ -45,9 +45,9 @@ var doRefresh = function(){
                 wx.ready(function () {
                     // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                     wx.onMenuShareTimeline({
-                        title: '小区里的猫狗打过疫苗吗？遛狗不牵着？野猫到处跑？', // 分享标题
+                        title: '宝宝对新鲜事物充满了好奇心，看见小动物就想摸摸，万一被咬伤或抓伤怎么办？', // 分享标题
                         link: window.location.href.replace("true","false"), // 分享链接
-                        imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Findex_banner.png', // 分享图标
+                        imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2Fdog.jpg', // 分享图标
                         success: function (res) {
                             //记录用户分享文章
                                         recordLogs("FXJG_FXPYQDog");
@@ -58,9 +58,9 @@ var doRefresh = function(){
 
                     wx.onMenuShareAppMessage({
                         title: '小区里的猫狗打过疫苗吗？遛狗不牵着？野猫到处跑？', // 分享标题
-                        desc: '小区里的猫狗打过疫苗吗？遛狗不牵着？野猫到处跑？', // 分享描述
+                        desc: '宝宝对新鲜事物充满了好奇心，看见小动物就想摸摸，万一被咬伤或抓伤怎么办？', // 分享描述
                         link:window.location.href.replace("true","false"), // 分享链接
-                        imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Findex_banner.png', // 分享图标
+                        imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2Fdog.jpg', // 分享图标
                         success: function (res) {
                                         recordLogs("FXJG_FXPYDog");
                         },
