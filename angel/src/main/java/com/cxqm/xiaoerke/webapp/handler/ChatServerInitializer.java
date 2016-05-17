@@ -26,11 +26,17 @@ public class ChatServerInitializer extends ChannelInitializer<Channel> {
 	@Override
 	protected void initChannel(Channel ch) throws Exception {
 		ChannelPipeline pipeline = ch.pipeline();
+
+		pipeline.addLast(new RpcDecoder(RpcRequest.class)); // 将 RPC 请求进行解码（为了处理请求）
+
+		pipeline.addLast(new RpcEncoder(RpcResponse.class)); // 将 RPC 响应进行编码（为了返回响应）
+
+		pipeline.addLast(new RpcHandler()); // 处理 RPC 请求
 		
 		pipeline.addLast(new HttpServerCodec());
-		
+
 		pipeline.addLast(new ChunkedWriteHandler());
-		
+
 		pipeline.addLast(new HttpObjectAggregator(64*1024));
 		
 		pipeline.addLast(new HttpRequestHandler("/ws"));
@@ -39,12 +45,6 @@ public class ChatServerInitializer extends ChannelInitializer<Channel> {
 		
 		pipeline.addLast(new TextWebSocketFrameHandler());
 
-		pipeline.addLast(new RpcDecoder(RpcRequest.class)); // 将 RPC 请求进行解码（为了处理请求）
-
-		pipeline.addLast(new RpcEncoder(RpcResponse.class)); // 将 RPC 响应进行编码（为了返回响应）
-
-		pipeline.addLast(new RpcHandler()); // 处理 RPC 请求
-		
 	}
 
 }
