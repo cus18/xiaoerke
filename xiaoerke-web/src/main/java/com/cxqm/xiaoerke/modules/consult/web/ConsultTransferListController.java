@@ -45,13 +45,13 @@ public class ConsultTransferListController {
 
     @RequestMapping(value="/findConsultTransferList",method = {RequestMethod.POST, RequestMethod.GET})
     public @ResponseBody
-    HashMap<String,Object> findAllConsultTransferListVo(@RequestParam(required=false) String orderOrNot){
+    HashMap<String,Object> findAllConsultTransferListVo(@RequestParam(value ="sortBy",required=false) String sortBy){
         HashMap<String,Object> response = new HashMap<String, Object>();
         ConsultTransferListVo consultTransferListVo = new ConsultTransferListVo();
-        if(StringUtils.isNotNull(orderOrNot ) && "order".equalsIgnoreCase(orderOrNot)){
+        if(StringUtils.isNotNull(sortBy ) && "order".equalsIgnoreCase(sortBy)){
             consultTransferListVo.setOrderBy("department");
         }
-        consultTransferListVo.setStatus("0");
+        consultTransferListVo.setStatus("ongoing");
         consultTransferListVo.setDelFlag("0");
         List<ConsultTransferListVo> consultTransferListVos= consultTransferListVoService.findAllConsultTransferListVo(consultTransferListVo);
         if(consultTransferListVos!= null && consultTransferListVos.size()>0){
@@ -121,21 +121,20 @@ public class ConsultTransferListController {
     public @ResponseBody
     HashMap<String,Object> findDoctorDepartment(){
         HashMap<String,Object> response = new HashMap<String, Object>();
-        Dict dict = new Dict();
-        dict.setType("department_type");
-        List<Dict> dictList = dictService.findList(dict);
-        JSONObject jsonObject ;
-        JSONArray jsonArray =new JSONArray();
-        if(dictList !=null && dictList.size()>0){
-            for(Dict dict1 :dictList){
+        List<Object> departmentList = consultDoctorInfoService.getConsultDoctorDepartment();
+        JSONObject jsonObject;
+        JSONArray jsonArray = new JSONArray();
+        if(departmentList != null && departmentList.size()>0){
+            for(int i=0; i<departmentList.size(); i++){
+                String departmentName = (String)departmentList.get(i);
                 jsonObject = new JSONObject();
-                String dictId = dict1.getId();
-                String dictValue = dict1.getDescription();
-                jsonObject.put("dictId",dictId);
-                jsonObject.put("dictValue",dictValue);
+                jsonObject.put("departmentName",departmentName);
                 jsonArray.add(jsonObject);
             }
             response.put("data",jsonArray);
+            response.put("status","success");
+        }else{
+            response.put("status","failure");
         }
         return response ;
     }

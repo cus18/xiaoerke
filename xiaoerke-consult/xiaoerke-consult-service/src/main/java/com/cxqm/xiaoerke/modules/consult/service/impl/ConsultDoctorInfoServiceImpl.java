@@ -120,4 +120,19 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
         }
         return count;
     }
+
+    /**
+     * 获取咨询医生所有科室
+     * @author jiangzg
+     * 2016-5-17
+     */
+    @Override
+    public List<Object> getConsultDoctorDepartment() {
+        List<Object> departmentList= consultDoctorInfoDao.getConsultDoctorDepartment();
+        if(departmentList != null && departmentList.size() > 0){
+            return departmentList;
+        }else{
+            return null;
+        }
+    }
 }
