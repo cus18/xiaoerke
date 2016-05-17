@@ -100,10 +100,16 @@ public class ConsultSessionManager {
 				doCreateSocketInitiatedByUser(userId, source, channel);
 			}else if(fromType.equals("cs")) {
 				String userId = args[2];
-				doCreateSocketInitiatedByCs(userId, channel);
+				User csUser = systemService.getUserById(userId);
+				if(csUser.getUserType().equals("consultDoctor")){
+					doCreateSocketInitiatedByCs(userId, channel);
+				}
 			} else if(fromType.equals("distributor")) {
 				String userId = args[2];
-				doCreateSocketInitiatedByDistributor(userId, channel);
+				User csUser = systemService.getUserById(userId);
+				if(csUser.getUserType().equals("distributor")){
+					doCreateSocketInitiatedByDistributor(userId, channel);
+				}
 			}
 		}
 	}
@@ -251,7 +257,6 @@ public class ConsultSessionManager {
 		}
 
 		/***接诊员不在线，随机分配在线医生***/
-
 		if(distributorChannel == null) {
 			if(csUserChannelMapping.size()!=0){
 				//所有的接诊员不在线，随机分配一个在线医生

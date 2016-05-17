@@ -553,7 +553,6 @@ angular.module('controllers', ['luegg.directives'])
             };
             /**会话操作区**/
 
-
                 //更新咨询医生当日咨询用户数的排名列表
             $scope.refreshRankList = function(){
                 var currDate = new moment().format("YYYY-MM-DD");
