@@ -28,16 +28,18 @@ public class ConstantUtil {
 	public static String NOTIFY_APPOINT_URL = "http://s68.baodf.com/titan/user/getPayNotifyInfo";
 	public static String NOTIFY_INSURANCE_URL = "http://s68.baodf.com/titan/user/getInsurancePayNotifyInfo";
 	public static String NOTIFY_CUSTOMER_URL = "http://s68.baodf.com/titan/user/getCustomerPayNotifyInfo";
-	public static String NOTIFY_CONSULTPHONE_URL = "hhttp://s68.baodf.com/titan/user/getPhoneConsultPayNotifyInfo";
+	public static String NOTIFY_CONSULTPHONE_URL = "http://s68.baodf.com/titan/user/getPhoneConsultPayNotifyInfo";
 
 	public static int DAY_QUARTER_NUMBER = 96;
 	public static int VISIT_INTERVAL = 15;
 	public static String MARKET_WEB_URL = "http://xiaork.com/";
 	public static String WISDOM_WEB_URL = "http://s165.baodf.com:8081/";
-	public static String ANGEL_WEB_URL = "http://s34.baodf.com:8081/";
+	//public static String ANGEL_WEB_URL = "http://s34.baodf.com:8081/";
 	public static String KEEPER_WEB_URL = "http://s251.baodf.com:8081/";
 	public static String DOCTOR_WEB_URL = "http://s68.baodf.com:8081/";
 	public static String TITAN_WEB_URL = "http://s68.baodf.com/";
+
+	public static String ANGEL_WEB_URL = "http://xiaork.com/";
 
 
 

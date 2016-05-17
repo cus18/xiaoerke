@@ -3,6 +3,7 @@ package com.cxqm.xiaoerke.modules.consult.service.core;
 import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
@@ -66,6 +67,16 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 				null : (Integer) msgMap.get(ConsultSessionManager.KEY_SESSION_ID);
 		int msgType = msgMap.get(ConsultSessionManager.KEY_REQUEST_TYPE)== null ?
 				0 : (Integer) msgMap.get(ConsultSessionManager.KEY_REQUEST_TYPE);
+
+		if(msgType == 5){
+			//来的是医生心跳消息，回心跳确认消息给医生
+			JSONObject jsonObj = new JSONObject();
+			jsonObj.put("type", "5");
+			TextWebSocketFrame heartBeatCsUser = new TextWebSocketFrame(jsonObj.toJSONString());
+			channel.writeAndFlush(heartBeatCsUser.retain());
+			return;
+		}
+
 		Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
 		if(sessionId != null ) {
 			RichConsultSession consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);

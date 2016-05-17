@@ -179,7 +179,6 @@ public class ConsultDoctorTransferController extends BaseController {
         String operation = (String) params.get("operation");
         String[] forwardSessionIdArray = forwardSessionIds.split(";");
         for(int i=0;i<forwardSessionIdArray.length;i++){
-            System.out.println(forwardSessionIdArray[i]);
             HashMap<String,Object> param = new HashMap<String, Object>();
             ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = consultSessionForwardRecordsService.selectByPrimaryKey(Long.parseLong(forwardSessionIdArray[i]));
             if(consultSessionForwardRecordsVo!=null){

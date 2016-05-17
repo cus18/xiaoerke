@@ -3,6 +3,7 @@ package com.cxqm.xiaoerke.modules.marketing.service;
 import com.cxqm.xiaoerke.modules.marketing.entity.LoveActivityComment;
 import com.cxqm.xiaoerke.modules.marketing.entity.LoveMarketing;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,14 +25,7 @@ public interface LoveMarketingService {
      */
     String getUserQRcode(String openid) throws Exception;
 
-    /**
-     * 根据链接下载文件
-     * @param urlString
-     * @param filename
-     * @param savePath
-     * @return
-     */
-    void download(String urlString, String filename,String savePath) throws Exception;
+
 
 
     Map<String,Object> getLoveMarketingByOpenid(String openid);
@@ -43,5 +37,16 @@ public interface LoveMarketingService {
     void saveLoveActivityComment(LoveActivityComment loveActivityComment);
 
     LoveActivityComment findLoveActivityComment();
+
+    String getNewPosterImage(Map<String,Object> m) throws Exception;
+
+
+    String UpdatePosterImage(Map<String,Object> m) throws Exception;
+
+
+    List<Map<String,Object>> getOpenidByMarketer(String id);
+
+    void updateInviteMan(String id,String openid);
+
 
 }

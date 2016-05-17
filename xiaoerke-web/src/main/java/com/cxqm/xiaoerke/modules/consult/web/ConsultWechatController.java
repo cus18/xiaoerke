@@ -102,8 +102,16 @@ public class ConsultWechatController extends BaseController {
             SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
             sysWechatAppintInfoVo.setOpen_id(openId);
             SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
-            String userName = openId.substring(openId.length()-8,openId.length());
+
+            String userName = openId;
             String userId = openId;
+            if(openId.length() > 20){
+                userName = openId.substring(openId.length()-8,openId.length());
+            }else{
+                userName = openId.substring(0,10);
+                userId = openId.substring(0,10);
+            }
+
             if(wechatAttentionVo!=null){
                 if(StringUtils.isNotNull(wechatAttentionVo.getWechat_name())){
                     userName = wechatAttentionVo.getWechat_name();
@@ -115,6 +123,7 @@ public class ConsultWechatController extends BaseController {
             String source = "wxcxqm";
 
             Channel csChannel = null;
+            System.out.println("userId------"+userId);
             //根据用户的openId，判断redis中，是否有用户正在进行的session
             Integer sessionId = sessionRedisCache.getSessionIdByUserId(userId);
             HashMap<String,Object> createWechatConsultSessionMap = null;

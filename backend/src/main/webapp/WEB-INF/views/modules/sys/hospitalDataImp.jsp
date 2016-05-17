@@ -205,7 +205,7 @@
         <label class="control-label"><span class="icon-retweet"></span>&nbsp;&nbsp;医院地理位置:</label>
 
         <div class="controls">
-            <textarea name="position" rows="4" maxlength="200" class="required" style="width:270px;"></textarea>
+            <textarea name="position" rows="4" maxlength="500" class="required" style="width:270px;"></textarea>
             <span class="help-inline"><font color="red">*</font> </span>
         </div>
     </div>
@@ -213,7 +213,7 @@
         <label class="control-label">医院的详细信息描述:</label>
 
         <div class="controls">
-            <textarea name="details" rows="4" maxlength="200" class="required" style="width:270px;"></textarea>
+            <textarea name="details" rows="4" maxlength="2000" class="required" style="width:270px;"></textarea>
             <span class="help-inline"><font color="red">*</font> </span>
         </div>
     </div>
@@ -235,7 +235,7 @@
         <label class="control-label">就诊流程:</label>
 
         <div class="controls">
-            <textarea name="medicalProcess" rows="4" maxlength="200" class="required" style="width:270px;"></textarea>
+            <textarea name="medicalProcess" rows="4" maxlength="5000" class="required" style="width:270px;"></textarea>
             <span class="help-inline"><font color="red">*</font> </span>
         </div>
     </div>

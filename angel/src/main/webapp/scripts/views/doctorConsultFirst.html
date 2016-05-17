@@ -1,14 +1,28 @@
-<link rel="stylesheet" href="scripts/styles/doctorConsultFirst.css?ver=1.0.1" type="text/css"/>
+<link rel="stylesheet" href="scripts/styles/doctorConsultFirst.css?ver=1.0.7" type="text/css"/>
 <div ui-view ng-init="doctorConsultInit()" class="messageList">
     <!--头部-->
     <header class="head w10">
         <div class="head-t w10 qf">
-            <div class="bdf-dkf-nav w5 fl h4 bg-h1">
+            <div class="bdf-dkf-nav w10 fl h4 bg-h1">
                 <span>
                     <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png" alt=""/>
                 </span>
                 <span></span>
                 <span>（{{doctorName}}），宝大夫欢迎您！！</span>
+                <span ng-if="loseConnectionFlag">您已与平台断开了连接，请检查您的网络情况，谢谢！</span>
+                <span ng-if="!loseConnectionFlag">您目前与平台连接正常！</span>
+                <!--<div class="bdf-dkf-content-right">-->
+                   <!--&lt;!&ndash; <div class="cjgl">退出</div>-->
+                    <!--<div class="xtsz" ng-click="tapShowButton('systemSetup')">-->
+                        <!--<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_06.png" alt=""/>-->
+                        <!--系统设置-->
+                    <!--</div>&ndash;&gt;-->
+                    <!--<div ng-click="tapShowButton('specialistList')"-->
+                         <!--ng-style="userType==distributor?{'display':'none'}:{'display':'block'}"-->
+                            <!-->-->
+                        <!--<div>专科列表</div>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <!--<span>自动回复-->
                     <!--<select>-->
                         <!--<option>无</option>-->
@@ -27,15 +41,6 @@
                     <!--</select>-->
                     <!--<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>-->
                 <!--</span>-->
-            </div>
-            <div class="w5 fr h4 bg-h1">
-                <div class="bdf-dkf-content-right">
-                    <!--<div class="cjgl">退出</div>-->
-                    <!--<div class="xtsz" ng-click="tapShowButton('systemSetup')">-->
-                        <!--<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_06.png" alt=""/>-->
-                        <!--系统设置-->
-                    <!--</div>-->
-                </div>
             </div>
         </div>
         <div class="head-m wid1 qf tab">
@@ -68,9 +73,10 @@
                      ng-repeat="item in alreadyJoinPatientConversation | orderBy:'dateTime':true"
                      ng-click="chooseAlreadyJoinConsultPatient(item.patientId,item.patientName)"
                      alt="">
-                    <nobr>&nbsp;&nbsp;{{item.patientName|limitTo:6}}&nbsp;&nbsp;{{transformDate(item.dateTime)}}</nobr>
-                    <img ng-if="item.messageNotSee" style="width:15px;height:15px;margin-top:5%;margin-left:10%;"
-                         src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/newMessage.png" />
+                    <div><nobr>{{item.patientName|limitTo:6}}</nobr></div>
+                    <div><nobr>{{transformDate(item.dateTime)}}</nobr></div>
+                    <div><img ng-style="item.messageNotSee?{'display':'block'}:{'display':'none'}"
+                              src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/newMessage.png" /></div>
                 </div>
             </div>
         </div>
@@ -115,7 +121,6 @@
                                                 {{item2.name}}
                                             </nobr>
                                         </div>
-                                        <!--<div class="refloat"  ng-mouseover="alert('aaa')" ng-init="count=0">休息一下休息一下休息一下休息一下休息一下休息一下休息一下</div>-->
                                     </li>
                                 </ul>
                             </li>
@@ -141,7 +146,6 @@
                                                   ng-style="publicReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}">{{item2.name}}
                                             </nobr>
                                         </div>
-                                        <!--<div class="refloat"  ng-mouseover="alert('aaa')" ng-init="count=0">休息一下休息一下休息一下休息一下休息一下休息一下休息一下</div>-->
                                     </li>
                                 </ul>
                             </li>
@@ -189,7 +193,6 @@
                     </div>
                 </div>
             </div>
-            <!-- http://xiaork.com/keeper/scripts/views/customerss.html-->
             <iframe src="http://s34.baodf.com:8081/angel/scripts/views/customerss.html" frameborder="0"
                     class="advisory-content" ng-show='showFlag.advisoryContent'>
             </iframe>
@@ -293,6 +296,10 @@
                 <div ng-click="closeConsult()">
                     <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(9).png" alt=""/>
                     关闭</div>
+                <!--<div ng-click="tapShowButton('specialistTransfer')"
+                     ng-style="userType==distributor?{'display':'none'}:{'display':'block'}"
+                        >
+                    专科转移</div>-->
             </div>
         </div>
     </div>
@@ -394,6 +401,63 @@
             <button>取消</button>
             <button ng-click="">确定</button>
         </div>
+    </div>
+    <!--专科医生列表-->
+    <div class="xtsz-up specialistList" ng-show='showFlag.specialistList'>
+        <div class="hd">专科列表
+            <span class="close" ng-click="tapShowButton('specialistList')">【关闭】</span>
+        </div>
+        <div class="specialistListContent">
+            <ul class="specialist">
+                <li><input type="checkbox">全选</li>
+                <li>用户</li>
+                <li>当前回复医生</li>
+                <li>需转接的科室需转接的科室需转接的科室</li>
+                <li>按科室排序</li>
+                <li></li>
+            </ul>
+            <div class="specialistContent">
+                <ul class="background">
+                    <li><input type="checkbox"></li>
+                    <li>用户</li>
+                    <li>当前回复医生</li>
+                    <li>需转接的科室</li>
+                    <li>发起会话</li>
+                    <li>删除</li>
+                </ul>
+                <ul>
+                    <li><input type="checkbox"></li>
+                    <li>用户</li>
+                    <li>当前回复医生</li>
+                    <li>需转接的科室</li>
+                    <li>发起会话</li>
+                    <li>删除</li>
+                </ul>
+            </div>
+        </div>
+        <div class="specialistBottom">
+            <button>发起会话</button>
+        </div>
+    </div>
+    <!--专科转移-->
+    <div class="specialistTransfer" ng-show='showFlag.specialistTransfer'>
+        <div class="selectSpecialist">
+            <span>选择科室
+            <select>
+            <option>皮肤科</option>
+            <option>眼科</option>
+            <option>口腔科</option>
+            <option>耳鼻喉科</option>
+            <option>妇产科</option>
+            <option>营养保健科</option>
+            <option>外科</option>
+            <option>中医科</option>
+            <option>预防接种科</option>
+            </select>
+            </span>
+        </div>
+        <button>确定</button>
+        <button>取消</button>
     </div>
     <!--等待接入-->
     <div class="xtsz-up  ddjr-up" id="ddjr_up" ng-show='showFlag.waitProcess'>

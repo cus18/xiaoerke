@@ -672,7 +672,9 @@ public class WechatUtil {
             sendWXUser = new URL(sendUrl);
             HttpURLConnection httpURLConnection = (HttpURLConnection) sendWXUser.openConnection();
             httpURLConnection.setRequestMethod("POST");
-            httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+//            httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            httpURLConnection.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式
+            httpURLConnection.setRequestProperty("Content-Type", "application/json"); // 设置发送数据的格式
             httpURLConnection.setDoOutput(true);
             httpURLConnection.setDoInput(true);
             System.setProperty("sun.net.client.defaultConnectTimeout", "30000");// 连接超时30秒

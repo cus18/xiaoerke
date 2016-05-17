@@ -1,10 +1,12 @@
 package com.cxqm.xiaoerke.modules.phoneConsult.web;
 
 import com.cxqm.xiaoerke.common.utils.XMLUtil;
+import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultPhoneService;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhoneOrderService;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +56,7 @@ public class PhoneConsultaController {
             inStream.close();
             String result = new String(outSteam.toByteArray(), "utf-8");
             Map<String, Object> map = XMLUtil.doXMLParse(result);
+            LogUtils.saveLog(Servlets.getRequest(), "00000109", "电话咨询鉴权" + map);//用户发起微信支付
             String action = (String)map.get("action");
             if (action.equals("CallAuth")) {
                 // 解析呼叫鉴权

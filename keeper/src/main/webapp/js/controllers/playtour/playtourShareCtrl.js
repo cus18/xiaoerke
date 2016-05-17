@@ -76,7 +76,7 @@ angular.module('controllers', ['ionic']).controller('playtourShareCtrl', [
                             // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                             wx.onMenuShareTimeline({
                                 title: '你知道吗？微信竟然能免费咨询三甲医院的儿科专家！回答的超详细！', // 分享标题
-                                link: "", // 分享链接
+                                link: "http://s251.baodf.com/keeper/playtour#/playtourShare/6", // 分享链接
                                 imgUrl: 'http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fbaodf_logo.jpg', // 分享图标
                                 success: function (res) {
                                     //记录用户分享文章
@@ -90,7 +90,7 @@ angular.module('controllers', ['ionic']).controller('playtourShareCtrl', [
                             wx.onMenuShareAppMessage({
                                 title: '哇！宝妈们都为之震惊啦。。。', // 分享标题
                                 desc: '你知道吗？微信竟然能免费咨询三甲医院的儿科专家！回答的超详细！', // 分享描述
-                                link:window.location.href.replace("true","false"), // 分享链接
+                                link:'http://s251.baodf.com/keeper/playtour#/playtourShare/6', // 分享链接
                                 imgUrl: 'http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fbaodf_logo.jpg', // 分享图标
                                 success: function (res) {
                                     var pData = {logContent:encodeURI("ZXFX")};

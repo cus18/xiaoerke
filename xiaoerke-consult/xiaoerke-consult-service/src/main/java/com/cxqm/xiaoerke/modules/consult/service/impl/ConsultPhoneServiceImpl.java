@@ -3,6 +3,7 @@ package com.cxqm.xiaoerke.modules.consult.service.impl;
 import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultPhoneRecordDao;
 import com.cxqm.xiaoerke.modules.consult.entity.CallResponse;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo;
@@ -13,6 +14,7 @@ import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.DoctorInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.DoctorMsgTemplate;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -173,6 +175,7 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
             //没接通
             //取消用户订单
             if("待接听".equals(consultOrder.get("state"))){
+                LogUtils.saveLog(Servlets.getRequest(), "00000110", "电话咨询未接通取消" + consultOrder);//用户发起微信支付
                 ConsultPhoneRegisterServiceVo registerServiceVo =  new ConsultPhoneRegisterServiceVo();
                 registerServiceVo.setId(Integer.parseInt(userData));
                 registerServiceVo.setUpdateTime(new Date());

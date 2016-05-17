@@ -291,19 +291,37 @@
 <!-- 	修改评价内容 -->
 	<update id="updateCustomerEvaluation">
 	 update customerEvaluation
-	 set
+	 <!--set-->
 
-        <if test="starNum1 != null" >
-            redPacket=#{redPacket},serviceAttitude=#{starNum1},content=#{content},dissatisfied=#{dissatisfied}
-        </if>
+        <!--<if test="starNum1 != null" >-->
+            <!--redPacket=#{redPacket},serviceAttitude=#{starNum1},content=#{content},dissatisfied=#{dissatisfied}-->
+        <!--</if>-->
 
-        <if test="starNum1 == null" >
-            redPacket=#{redPacket}
-        </if>
+        <!--<if test="starNum1 == null" >-->
+            <!--redPacket=#{redPacket}-->
+        <!--</if>-->
 
-        <if test="payStatus != null" >
-            payStatus=#{payStatus}
-        </if>
+        <!--<if test="payStatus != null" >-->
+            <!--payStatus=#{payStatus}-->
+        <!--</if>-->
+
+        <set >
+            <if test="redPacket != null" >
+                redPacket=#{redPacket},
+            </if>
+            <if test="serviceAttitude != null" >
+                serviceAttitude=#{starNum1},
+            </if>
+            <if test="content != null" >
+                content=#{content},
+            </if>
+            <if test="dissatisfied != null" >
+                dissatisfied=#{dissatisfied},
+            </if>
+            <if test="payStatus != null" >
+                payStatus = #{payStatus},
+            </if>
+        </set>
 
        where id=#{id}
 	</update>

@@ -7,6 +7,7 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
 import com.cxqm.xiaoerke.modules.interaction.dao.PatientRegisterPraiseDao;
+import com.cxqm.xiaoerke.modules.marketing.service.LoveMarketingService;
 import com.cxqm.xiaoerke.modules.member.service.MemberService;
 import com.cxqm.xiaoerke.modules.sys.entity.*;
 import com.cxqm.xiaoerke.modules.sys.service.ActivityService;
@@ -76,6 +77,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
 	@Autowired
 	private PatientRegisterPraiseDao patientRegisterPraiseDao;
+
+	@Autowired
+	LoveMarketingService loveMarketingService;
 
 
 	private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
@@ -270,6 +274,14 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setPicUrl(ConstantUtil.TITAN_WEB_URL+"/titan/images/Follow.jpg");
 			article.setUrl(ConstantUtil.TITAN_WEB_URL+"/titan/appoint#/knowledgeIndex");
 			articleList.add(article);
+		}else if(EventKey.indexOf("521")>-1){
+			article.setTitle("宝大夫关爱儿童公益活动");
+			article.setDescription("赶快去邀请更多的人传递爱吧！");
+			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/MessageImage/10.pic_hd.jpg");
+			article.setUrl(ConstantUtil.TITAN_WEB_URL+"/titan/appoint#/knowledgeIndex");
+			articleList.add(article);
+			//更新二维码拥有者善款
+			loveMarketingService.updateInviteMan(EventKey,xmlEntity.getFromUserName());
 		}
 		else if(EventKey.indexOf("month")>-1)
 		{

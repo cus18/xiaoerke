@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.modules.sys.utils.DoctorMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,11 +69,11 @@ class OrderMessageService {
 					(String)resultMap.get("date"),dayWeek,(String)resultMap.get("begin_time"),
 					(String)resultMap.get("end_time"),(String)resultMap.get("position"),
 					(String)resultMap.get("contactHospitalName"),(String)resultMap.get("location"),
-							"http://s68.baodf.com:8081/titan/appoint#/toBeTreatedDetail/" + params.get("patient_register_service_id") + ",1");
+					ConstantUtil.TITAN_WEB_URL+"titan/appoint#/toBeTreatedDetail/" + params.get("patient_register_service_id") + ",1");
 
 			if(params.containsKey("openId")&&params.get("openId")!=null)
 			{
-				PatientMsgTemplate.appointmentSuccess2Wechat((String)resultMap.get("babyName"),(String)resultMap.get("doctorName"),(String)resultMap.get("date"),(String)dayWeek,(String)resultMap.get("begin_time"),(String)resultMap.get("end_time"),(String)resultMap.get("position"),(String)resultMap.get("contactHospitalName"),(String)resultMap.get("location"),(String)resultMap.get("register_no"),(String) params.get("openId"),(String) parameter.get("token"),"http://s68.baodf.com:8081//titan/appoint#/toBeTreatedDetail/" + params.get("patient_register_service_id") + ",1");
+				PatientMsgTemplate.appointmentSuccess2Wechat((String)resultMap.get("babyName"),(String)resultMap.get("doctorName"),(String)resultMap.get("date"),(String)dayWeek,(String)resultMap.get("begin_time"),(String)resultMap.get("end_time"),(String)resultMap.get("position"),(String)resultMap.get("contactHospitalName"),(String)resultMap.get("location"),(String)resultMap.get("register_no"),(String) params.get("openId"),(String) parameter.get("token"),ConstantUtil.TITAN_WEB_URL+"titan/appoint#/toBeTreatedDetail/" + params.get("patient_register_service_id") + ",1");
 			}
 			/**
 			 * 【交通信息】

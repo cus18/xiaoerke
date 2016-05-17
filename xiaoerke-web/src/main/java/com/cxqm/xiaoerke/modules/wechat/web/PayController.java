@@ -137,6 +137,10 @@ public class PayController {
             return  "native/playtourIndex";
         }else if(serviceType.equals("playtourPay")){
             return  "native/playtourEvaluate";
+        }else if("handfootmouth".equals(serviceType)){
+            model.addAttribute("payPrice", 26.8);
+            model.addAttribute("intervalFlag", "1");
+            return "native/handfootmouthPay";
         }else{
             return null;
         }

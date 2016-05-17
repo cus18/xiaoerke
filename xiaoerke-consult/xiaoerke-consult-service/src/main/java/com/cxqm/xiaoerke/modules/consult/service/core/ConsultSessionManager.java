@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.consult.service.core;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.config.Global;
+import com.cxqm.xiaoerke.common.utils.RandomUtils;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
@@ -99,10 +100,16 @@ public class ConsultSessionManager {
 				doCreateSocketInitiatedByUser(userId, source, channel);
 			}else if(fromType.equals("cs")) {
 				String userId = args[2];
-				doCreateSocketInitiatedByCs(userId, channel);
+				User csUser = systemService.getUserById(userId);
+				if(csUser.getUserType().equals("consultDoctor")){
+					doCreateSocketInitiatedByCs(userId, channel);
+				}
 			} else if(fromType.equals("distributor")) {
 				String userId = args[2];
-				doCreateSocketInitiatedByDistributor(userId, channel);
+				User csUser = systemService.getUserById(userId);
+				if(csUser.getUserType().equals("distributor")){
+					doCreateSocketInitiatedByDistributor(userId, channel);
+				}
 			}
 		}
 	}
@@ -133,6 +140,7 @@ public class ConsultSessionManager {
 
 		Integer sessionId = sessionRedisCache.getSessionIdByUserId(userId);
 		RichConsultSession consultSession = null;
+		Channel distributorChannel = null;
 
 		if(sessionId != null)
 			consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
@@ -147,49 +155,20 @@ public class ConsultSessionManager {
 			consultSession.setUserName(user.getName() == null ? user.getLoginName() : user.getName());
 			consultSession.setSource(source);
 
-			int number = accessNumber.getAndDecrement();
-			if(number < 10)
-				accessNumber.set(1000);
+			for(int i = 0;  i < distributorsList.size(); i ++) {
+				String distributorId = RandomUtils.getRandomKeyFromMap(distributors);
+				distributorChannel = distributors.get(distributorId);
 
-			int distributorsListSize = distributorsList.size();
-			int index = number % distributorsListSize;
-			Channel distributorChannel;
-
-			/***在此处，先随机为用户分配一个在线的接诊员，如果，此接诊员不在线，再顺序分配一个在线接诊员***/
-			String distributorUserId = distributorsList.get(index);
-			distributorChannel = distributors.get(distributorUserId);
-			if(distributorChannel != null) {
-				if(distributorChannel.isActive()){
-					consultSession.setCsUserId(distributorUserId);
-					User csUser = systemService.getUserById(distributorUserId);
+				if(distributorChannel.isActive()) {
+					consultSession.setCsUserId(distributorId);
+					User csUser = systemService.getUserById(distributorId);
 					consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
-				}else{
-					distributorChannel = null;
-					distributors.remove(distributorUserId);
-					csUserChannelMapping.remove(distributorUserId);
+					break;
+				} else {
+					distributors.remove(distributorId);
+					csUserChannelMapping.remove(distributorId);
 				}
 			}
-
-			//顺序分配在线的接诊员
-			if(distributorChannel==null){
-				int length = index + distributorsListSize + 2;
-				for(int i = index + 1;  i < length; i ++) {
-					distributorUserId = distributorsList.get(i % distributorsListSize);
-					distributorChannel = distributors.get(distributorUserId);
-					if(distributorChannel != null) {
-						if(distributorChannel.isActive()) {
-							consultSession.setCsUserId(distributorUserId);
-							User csUser = systemService.getUserById(distributorUserId);
-							consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
-							break;
-						} else {
-							distributors.remove(distributorUserId);
-							csUserChannelMapping.remove(distributorUserId);
-						}
-					}
-				}
-			}
-			/***在此处，先随机为用户分配一个在线的接诊员，如果，此接诊员不在线，再顺序分配一个在线接诊员***/
 
 			if(distributorChannel == null) {
 				if(csUserChannelMapping.size()!=0){
@@ -259,51 +238,25 @@ public class ConsultSessionManager {
 
 		HashMap<String,Object> response = new HashMap<String, Object>();
 		Channel  csChannel = null;
+		Channel distributorChannel = null;
 
-		int number = accessNumber.getAndDecrement();
-		if(number < 10)
-			accessNumber.set(1000);
-		int distributorsListSize = distributorsList.size();
-		int index = number % distributorsListSize;
-		Channel distributorChannel;
+		for(int i = 0;  i < distributorsList.size(); i ++) {
+			String distributorId = RandomUtils.getRandomKeyFromMap(distributors);
+			distributorChannel = distributors.get(distributorId);
 
-		/***在此处，先随机为用户分配一个在线的接诊员，如果，此接诊员不在线，再顺序分配一个在线接诊员***/
-		String distributorUserId = distributorsList.get(index);
-		distributorChannel = distributors.get(distributorUserId);
-		if(distributorChannel != null) {
-			if(distributorChannel.isActive()){
-				consultSession.setCsUserId(distributorUserId);
-				User csUser = systemService.getUserById(distributorUserId);
+			if(distributorChannel.isActive()) {
+				consultSession.setCsUserId(distributorId);
+				User csUser = systemService.getUserById(distributorId);
 				consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
 				csChannel = distributorChannel;
-			}else{
-				distributorChannel = null;
-				distributors.remove(distributorUserId);
-				csUserChannelMapping.remove(distributorUserId);
+				break;
+			} else {
+				distributors.remove(distributorId);
+				csUserChannelMapping.remove(distributorId);
 			}
 		}
 
-		if(distributorChannel==null){
-			int length = index + distributorsListSize + 2;
-			for(int i = index + 1;  i < length; i ++) {
-				distributorUserId = distributorsList.get(i % distributorsListSize);
-				distributorChannel = distributors.get(distributorUserId);
-				if(distributorChannel != null) {
-					if(distributorChannel.isActive()) {
-						consultSession.setCsUserId(distributorUserId);
-						User csUser = systemService.getUserById(distributorUserId);
-						consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
-						csChannel = distributorChannel;
-						break;
-					} else {
-						distributors.remove(distributorUserId);
-						csUserChannelMapping.remove(distributorUserId);
-					}
-				}
-			}
-		}
-		/***在此处，先随机为用户分配一个在线的接诊员，如果，此接诊员不在线，再顺序分配一个在线接诊员***/
-
+		/***接诊员不在线，随机分配在线医生***/
 		if(distributorChannel == null) {
 			if(csUserChannelMapping.size()!=0){
 				//所有的接诊员不在线，随机分配一个在线医生
@@ -322,7 +275,7 @@ public class ConsultSessionManager {
 				//通过一个随机方法，从doctorOnLineList选择一个医生，为用户提供服务
 				Random rand = new Random();
 				if(doctorOnLineList!=null && doctorOnLineList.size()>0){
-					int indexCS = rand.nextInt(doctorOnLineList.size());
+					int indexCS = rand.nextInt(doctorOnLineList.size()+1);
 					consultSession.setCsUserId((String) doctorOnLineList.get(indexCS).get("csUserId"));
 					csChannel = (Channel) doctorOnLineList.get(indexCS).get("channel");
 					if(csChannel.isActive()){
@@ -527,7 +480,6 @@ public class ConsultSessionManager {
 				if(ConsultSessionForwardRecordsVo.REACT_TRANSFER_OPERATION_ACCEPT.equalsIgnoreCase(operation)){
 					if(session!=null){
 						sessionRedisCache.putSessionIdConsultSessionPair(sessionId, session);
-
 						ConsultSession consultSession = new ConsultSession();
 						consultSession.setId(sessionId);
 						consultSession.setCsUserId(session.getCsUserId());
