@@ -23,7 +23,7 @@
     select 
     <include refid="Base_Column_List" />
     from consult_transfer_list
-    where 1=1 and (status = '1' or status = '1')
+    where 1=1 and status = 'ongoing' and del_flag = '0'
     order by
     <if test="orderBy != null and orderBy !=  ''">
       department desc,
@@ -38,10 +38,10 @@
 
   <insert id="addConsultTransferListVo" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultTransferListVo" useGeneratedKeys="true"
           keyProperty="id">
-    insert into consult_transfer_list(id,session_id, create_date,create_by, update_date,
+    insert into consult_transfer_list(id,session_id, create_date,create_by,
     sys_user_id, sys_user_name,sys_user_id_cs,sys_user_name_cs,del_flag,status,department)
     values (#{id,jdbcType=INTEGER},#{sessionId,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP},
-    #{createBy,jdbcType=VARCHAR},#{updateDate,jdbcType=TIMESTAMP},#{sysUserId,jdbcType=VARCHAR},
+    #{createBy,jdbcType=VARCHAR},#{sysUserId,jdbcType=VARCHAR},
     #{sysUserName,jdbcType=VARCHAR},#{sysUserIdCs,jdbcType=VARCHAR},#{sysUserNameCs,jdbcType=VARCHAR},
     #{delFlag,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{department,jdbcType=VARCHAR}
     )

@@ -2,12 +2,14 @@ package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultTransferListVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultTransferListVoService;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.sys.entity.Dict;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.DictService;
@@ -38,6 +40,8 @@ public class ConsultTransferListController {
 
     @Autowired
     private ConsultDoctorInfoService consultDoctorInfoService ;
+
+    private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
 
     @RequestMapping(value="/findConsultTransferList",method = {RequestMethod.POST, RequestMethod.GET})
     public @ResponseBody
@@ -83,20 +87,16 @@ public class ConsultTransferListController {
         consultTransferListVo.setCreateBy(user.getId());
         consultTransferListVo.setCreateDate(date);
         consultTransferListVo.setDelFlag("0");
-        consultTransferListVo.setDepartment((String) params.get(""));
-        consultTransferListVo.setSessionId((Integer) params.get(""));
-        /**
-         * 查userId
-         */
-        consultTransferListVo.setSysUserId((String) params.get(""));
+        consultTransferListVo.setDepartment((String) params.get("department"));
+        consultTransferListVo.setSessionId((Integer) params.get("sessionId"));
+        RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId((Integer) params.get("sessionId"));
+        if(richConsultSession !=null){
+            consultTransferListVo.setSysUserId(richConsultSession.getUserId());
+            consultTransferListVo.setSysUserName(richConsultSession.getUserName());
+        }
         consultTransferListVo.setSysUserIdCs(user.getId());
-        /**
-         * 查询nickName
-         */
-        consultTransferListVo.setSysUserName((String) params.get(""));
         consultTransferListVo.setSysUserNameCs(user.getName());
         consultTransferListVo.setStatus("ongoing");
-
         int count = consultTransferListVoService.addConsultTransferListVo(consultTransferListVo);
         if(count > 0){
             responseResult.put("status","success");
@@ -146,10 +146,10 @@ public class ConsultTransferListController {
                                              @RequestParam(value ="status",required = false)String status,
                                              @RequestParam(value ="delFlag",required = false)String delFlag){
         ConsultTransferListVo consultTransferListVo = new ConsultTransferListVo();
-        if(StringUtils.isNotNull(status)){
-            consultTransferListVo.setStatus("1");
+        if(StringUtils.isNotNull(status) && !"ongoing".equalsIgnoreCase(status)){
+            consultTransferListVo.setStatus("complete");
         }
-        if(StringUtils.isNotNull(delFlag)){
+        if(StringUtils.isNotNull(delFlag) && !"0".equalsIgnoreCase(delFlag)){
             consultTransferListVo.setDelFlag("1");
         }
         consultTransferListVo.setId(Integer.valueOf(id));
