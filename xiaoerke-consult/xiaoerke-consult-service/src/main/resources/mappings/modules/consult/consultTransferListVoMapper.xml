@@ -14,12 +14,11 @@
     <result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="department" property="department" jdbcType="VARCHAR" />
-    <result column="department_id" property="departmentId" jdbcType="VARCHAR" />
   </resultMap>
 
   <sql id="Base_Column_List" >
     id, session_id, create_date, create_by, update_date, sys_user_id, sys_user_name, sys_user_id_cs, sys_user_name_cs, del_flag, status,
-    department, department_id
+    department
   </sql>
   <select id="findAllConsultTransferListVo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultTransferListVo" >
     select 
@@ -41,11 +40,11 @@
   <insert id="addConsultTransferListVo" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultTransferListVo" useGeneratedKeys="true"
           keyProperty="id">
     insert into consult_transfer_list(id,session_id, create_date,create_by, update_date,
-    sys_user_id, sys_user_name,sys_user_id_cs,sys_user_name_cs,del_flag,status,department, department_id)
+    sys_user_id, sys_user_name,sys_user_id_cs,sys_user_name_cs,del_flag,status,department)
     values (#{id,jdbcType=INTEGER},#{sessionId,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP},
     #{createBy,jdbcType=VARCHAR},#{updateDate,jdbcType=TIMESTAMP},#{sysUserId,jdbcType=VARCHAR},
     #{sysUserName,jdbcType=VARCHAR},#{sysUserIdCs,jdbcType=VARCHAR},#{sysUserNameCs,jdbcType=VARCHAR},
-    #{delFlag,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{department,jdbcType=VARCHAR},#{departmentId,jdbcType=VARCHAR}
+    #{delFlag,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{department,jdbcType=VARCHAR}
     )
   </insert>
   <update id="updateConsultTransferByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultTransferListVo">

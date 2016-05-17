@@ -1,19 +1,18 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultTransferListVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultTransferListVoService;
 import com.cxqm.xiaoerke.modules.sys.entity.Dict;
 import com.cxqm.xiaoerke.modules.sys.service.DictService;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +32,9 @@ public class ConsultTransferListVoController {
 
     @Autowired
     private ConsultSessionService consultSessionService ;
+
+    @Autowired
+    private ConsultDoctorInfoService consultDoctorInfoService ;
 
     @RequestMapping(value="/findConsultTransferList",method = {RequestMethod.POST, RequestMethod.GET})
     public @ResponseBody
@@ -78,7 +80,6 @@ public class ConsultTransferListVoController {
         consultTransferListVo.setCreateDate(date);
         consultTransferListVo.setDelFlag((String) params.get(""));
         consultTransferListVo.setDepartment((String) params.get(""));
-        consultTransferListVo.setDepartmentId((String) params.get(""));
         consultTransferListVo.setSessionId((Integer) params.get(""));
         consultTransferListVo.setSysUserId((String) params.get(""));
         consultTransferListVo.setSysUserIdCs((String) params.get(""));
@@ -123,7 +124,7 @@ public class ConsultTransferListVoController {
                 String dictValue = dict1.getDescription();
                 jsonObject.put("dictId",dictId);
                 jsonObject.put("dictValue",dictValue);
-                jsonArray.put(jsonObject);
+                jsonArray.add(jsonObject);
             }
             response.put("data",jsonArray);
         }
