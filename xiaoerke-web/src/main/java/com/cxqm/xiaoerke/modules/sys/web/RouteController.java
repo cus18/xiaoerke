@@ -39,6 +39,9 @@ public class RouteController extends BaseController {
     @Autowired
     private BabyEmrService babyEmrService;
 
+    /*
+        titan 项目
+    */
 
     /**
      * appoint 预约挂号
@@ -47,6 +50,7 @@ public class RouteController extends BaseController {
     public String appointmentFirstPage() {
         return "native/appointmentFirstPage";
     }
+
     /**
      * phoneConsult 电话咨询
      */
@@ -54,6 +58,26 @@ public class RouteController extends BaseController {
     public String phoneConsultFirstPage() {
         return "native/phoneConsultFirstPage";
     }
+
+    /**
+     * antiDog 防犬宝
+     */
+    @RequestMapping(value ="/antiDogFirst",method = {RequestMethod.POST, RequestMethod.GET})
+    public String antiDogFirst() {
+        return "native/antiDogFirstPage";
+    }
+
+    /**
+     * insurance 类保险
+     */
+    @RequestMapping(value ="/insurance",method = {RequestMethod.POST, RequestMethod.GET})
+    public String insuranceFirst() {
+        return "native/insuranceFirstPage";
+    }
+
+     /*
+        wisdom 项目
+     */
 
     /**
      * 知识库
@@ -78,6 +102,11 @@ public class RouteController extends BaseController {
         return "native/healthPlanFirstPage";
     }
 
+
+    /*
+        market 项目
+    */
+
     /**
      * market 妈妈营养测试
      */
@@ -94,22 +123,10 @@ public class RouteController extends BaseController {
         return "native/lovePlanFirst";
     }
 
-    /**
-     * titan 防犬宝
-     */
-    @RequestMapping(value ="/antiDogFirst",method = {RequestMethod.POST, RequestMethod.GET})
-    public String antiDogFirst() {
-        return "native/antiDogFirstPage";
-    }
 
-    /**
-     * titan 保险
-     */
-    @RequestMapping(value ="/insurance",method = {RequestMethod.POST, RequestMethod.GET})
-    public String insuranceFirst() {
-        return "native/insuranceFirstPage";
-    }
-
+     /*
+        keeper 项目
+    */
 
     /**
      * 咨询打赏
