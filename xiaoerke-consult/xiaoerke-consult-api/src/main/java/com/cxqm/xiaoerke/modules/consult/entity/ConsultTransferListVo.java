@@ -21,7 +21,6 @@ public class ConsultTransferListVo {
     private String delFlag ;   //是否删除标识
     private String status ;     //转诊状态
     private String department ; //转诊科室名称
-    private String departmentId;   //转诊科室ID
     private String orderBy;       //是否排序
 
     public Integer getId() {
@@ -118,14 +117,6 @@ public class ConsultTransferListVo {
 
     public void setDepartment(String department) {
         this.department = department;
-    }
-
-    public String getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(String departmentId) {
-        this.departmentId = departmentId;
     }
 
     public String getOrderBy() {
