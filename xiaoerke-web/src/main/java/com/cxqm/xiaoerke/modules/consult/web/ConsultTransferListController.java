@@ -9,10 +9,13 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultTransferListVoService;
 import com.cxqm.xiaoerke.modules.sys.entity.Dict;
+import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.DictService;
+import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +25,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "consult/transfer")
-public class ConsultTransferListVoController {
+public class ConsultTransferListController {
 
     @Autowired
     private ConsultTransferListVoService consultTransferListVoService;
@@ -46,9 +49,9 @@ public class ConsultTransferListVoController {
         }
         consultTransferListVo.setStatus("0");
         consultTransferListVo.setDelFlag("0");
-        List<ConsultTransferListVo> list= consultTransferListVoService.findAllConsultTransferListVo(consultTransferListVo);
-        if(list!= null && list.size()>0){
-            for(ConsultTransferListVo consultTransfer:list){
+        List<ConsultTransferListVo> consultTransferListVos= consultTransferListVoService.findAllConsultTransferListVo(consultTransferListVo);
+        if(consultTransferListVos!= null && consultTransferListVos.size()>0){
+            for(ConsultTransferListVo consultTransfer:consultTransferListVos){
                 RichConsultSession richConsultSession = new RichConsultSession();
                 richConsultSession.setUserId(consultTransfer.getSysUserId());
                 richConsultSession.setStatus("ongoing");
@@ -76,17 +79,23 @@ public class ConsultTransferListVoController {
         HashMap<String,Object> responseResult = new HashMap<String, Object>();
         ConsultTransferListVo consultTransferListVo = new ConsultTransferListVo();
         Date date = new Date();
-        consultTransferListVo.setCreateBy((String) params.get(""));
+        User user = UserUtils.getUser();
+        consultTransferListVo.setCreateBy(user.getId());
         consultTransferListVo.setCreateDate(date);
-        consultTransferListVo.setDelFlag((String) params.get(""));
+        consultTransferListVo.setDelFlag("0");
         consultTransferListVo.setDepartment((String) params.get(""));
         consultTransferListVo.setSessionId((Integer) params.get(""));
+        /**
+         * 查userId
+         */
         consultTransferListVo.setSysUserId((String) params.get(""));
-        consultTransferListVo.setSysUserIdCs((String) params.get(""));
+        consultTransferListVo.setSysUserIdCs(user.getId());
+        /**
+         * 查询nickName
+         */
         consultTransferListVo.setSysUserName((String) params.get(""));
-        consultTransferListVo.setSysUserNameCs((String) params.get(""));
-        consultTransferListVo.setUpdateDate(date);
-        consultTransferListVo.setStatus((String) params.get(""));
+        consultTransferListVo.setSysUserNameCs(user.getName());
+        consultTransferListVo.setStatus("ongoing");
 
         int count = consultTransferListVoService.addConsultTransferListVo(consultTransferListVo);
         if(count > 0){
