@@ -39,11 +39,11 @@ public class ChatServerInitializer extends ChannelInitializer<Channel> {
 		
 		pipeline.addLast(new TextWebSocketFrameHandler());
 
-		pipeline.addLast(new RpcDecoder(RpcRequest.class));
+		pipeline.addLast(new RpcDecoder(RpcRequest.class)); // 将 RPC 请求进行解码（为了处理请求）
 
-		pipeline.addLast(new RpcEncoder(RpcResponse.class));
+		pipeline.addLast(new RpcEncoder(RpcResponse.class)); // 将 RPC 响应进行编码（为了返回响应）
 
-		pipeline.addLast(new RpcHandler());
+		pipeline.addLast(new RpcHandler()); // 处理 RPC 请求
 		
 	}
 
