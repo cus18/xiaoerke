@@ -2,10 +2,7 @@ package com.cxqm.xiaoerke.webapp.bootstrap;
 
 import com.cxqm.xiaoerke.webapp.handler.ChatServerInitializer;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
@@ -18,7 +15,9 @@ public class ChatServer {
 	
 	public ChannelFuture start(InetSocketAddress address){
 		ServerBootstrap boot = new ServerBootstrap();
-		boot.group(workerGroup).channel(NioServerSocketChannel.class).childHandler(createInitializer());
+		boot.group(workerGroup).channel(NioServerSocketChannel.class).childHandler(createInitializer())
+				.option(ChannelOption.SO_BACKLOG, 128)
+				.childOption(ChannelOption.SO_KEEPALIVE, true);;
 
         //绑定端口
 		ChannelFuture f = boot.bind(address).syncUninterruptibly();

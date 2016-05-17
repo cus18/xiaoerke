@@ -1,9 +1,14 @@
 package com.cxqm.xiaoerke.webapp.handler;
 
 
+import com.cxqm.xiaoerke.modules.consult.entity.RpcRequest;
+import com.cxqm.xiaoerke.modules.consult.entity.RpcResponse;
 import com.cxqm.xiaoerke.modules.consult.service.core.HttpRequestHandler;
+import com.cxqm.xiaoerke.modules.consult.service.core.RpcHandler;
 import com.cxqm.xiaoerke.modules.consult.service.core.TextWebSocketFrameHandler;
 
+import com.cxqm.xiaoerke.modules.consult.service.util.RpcDecoder;
+import com.cxqm.xiaoerke.modules.consult.service.util.RpcEncoder;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -33,6 +38,12 @@ public class ChatServerInitializer extends ChannelInitializer<Channel> {
 		pipeline.addLast(new WebSocketServerProtocolHandler("/ws"));
 		
 		pipeline.addLast(new TextWebSocketFrameHandler());
+
+		pipeline.addLast(new RpcDecoder(RpcRequest.class));
+
+		pipeline.addLast(new RpcEncoder(RpcResponse.class));
+
+		pipeline.addLast(new RpcHandler());
 		
 	}
 
