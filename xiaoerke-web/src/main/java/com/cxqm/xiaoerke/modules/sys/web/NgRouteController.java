@@ -25,6 +25,50 @@ public class NgRouteController extends BaseController {
     }
 
     /**
+     *  titan模块
+     */
+
+    /**
+     *    appoint 客户端预约
+     */
+    @SystemControllerLog(description = "00000079")
+    @RequestMapping(value ="/appoint",method = {RequestMethod.POST, RequestMethod.GET})
+    public String appointIndex() {
+        return "angular/appointIndex";
+    }
+
+    /**
+     *   phoneConsult 电话咨询
+     */
+    @SystemControllerLog(description = "00000079")
+    @RequestMapping(value ="/phoneConsult",method = {RequestMethod.POST, RequestMethod.GET})
+    public String phoneConsultIndex() {
+        return "angular/phoneConsultIndex";
+    }
+
+    /**
+     * insurance 类保险
+     */
+    @SystemControllerLog(description = "00000079")
+    @RequestMapping(value ="/insurance",method = {RequestMethod.POST, RequestMethod.GET})
+    public String insuranceIndex() {
+        return "angular/insuranceIndex";
+    }
+
+    /**
+     *   baoFansCamp 宝粉营
+     */
+    @SystemControllerLog(description = "00000079")
+    @RequestMapping(value ="/baoFansCamp",method = {RequestMethod.POST, RequestMethod.GET})
+    public String baoFansIndex() {
+        return "angular/baoFansCampIndex";
+    }
+
+    /**
+     *  wisdom模块
+     */
+
+    /**
      *  PC端官网
      */
     @SystemControllerLog(description = "00000079")
@@ -34,35 +78,7 @@ public class NgRouteController extends BaseController {
     }
 
     /**
-     *  appoint 客户端预约
-     */
-    @SystemControllerLog(description = "00000079")
-    @RequestMapping(value ="/appoint",method = {RequestMethod.POST, RequestMethod.GET})
-    public String appointIndex() {
-        return "angular/appointIndex";
-    }
-
-    /**
-     *  phoneConsult 电话咨询
-     */
-    @SystemControllerLog(description = "00000079")
-    @RequestMapping(value ="/phoneConsult",method = {RequestMethod.POST, RequestMethod.GET})
-    public String phoneConsultIndex() {
-        return "angular/phoneConsultIndex";
-    }
-
-    /**
-     *  baoFansCamp 宝粉营
-     */
-    @SystemControllerLog(description = "00000079")
-    @RequestMapping(value ="/baoFansCamp",method = {RequestMethod.POST, RequestMethod.GET})
-    public String baoFansIndex() {
-        return "angular/baoFansCampIndex";
-    }
-
-
-    /**
-     *   knowledge 知识库
+     *    knowledge 知识库
      */
     @SystemControllerLog(description = "00000079")
     @RequestMapping(value ="/knowledge",method = {RequestMethod.POST, RequestMethod.GET})
@@ -90,6 +106,15 @@ public class NgRouteController extends BaseController {
     }
 
     /**
+     *  umbrella 宝护伞
+     */
+    @SystemControllerLog(description = "00000079")
+    @RequestMapping(value ="/umbrella",method = {RequestMethod.POST, RequestMethod.GET})
+    public String umbrellaIndex() {
+        return "angular/umbrellaIndex";
+    }
+
+    /**
      * doctor 医生端
      */
     @SystemControllerLog(description = "00000079")
@@ -107,8 +132,9 @@ public class NgRouteController extends BaseController {
         return "angular/phoneConsultIndex";
     }
 
+
     /**
-     * healthManage 健康档案
+     * healthManage 微信咨询 健康档案
      */
     @SystemControllerLog(description = "00000079")
     @RequestMapping(value ="/health",method = {RequestMethod.POST, RequestMethod.GET})
@@ -143,14 +169,7 @@ public class NgRouteController extends BaseController {
         return "patientConsultIndex";
     }
 
-    /**
-     * insurance 类保险
-     */
-    @SystemControllerLog(description = "00000079")
-    @RequestMapping(value ="/insurance",method = {RequestMethod.POST, RequestMethod.GET})
-    public String insuranceIndex() {
-        return "angular/insuranceIndex";
-    }
+
 
     /**
      * 咨询打赏
