@@ -102,6 +102,14 @@ public class RouteController extends BaseController {
         return "native/healthPlanFirstPage";
     }
 
+    /**
+     * 宝护伞
+     */
+    @RequestMapping(value ="/umbrella",method = {RequestMethod.POST, RequestMethod.GET})
+    public String umbrellaIndex() {
+        return "native/umbrellaFirstPage";
+    }
+
 
     /*
         market 项目
