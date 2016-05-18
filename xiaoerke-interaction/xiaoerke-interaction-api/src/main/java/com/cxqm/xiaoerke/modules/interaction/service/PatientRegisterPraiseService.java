@@ -65,4 +65,20 @@ public interface PatientRegisterPraiseService {
     HashMap<String,Object> getDoctorEvaluate(HashMap<String, Object> params);
 
     void saveCustomerEvaluation(Map<String, Object> params);
+
+    /**
+     * 查询送心意数据
+     * @param map
+     * @return
+     * @author sunxiao
+     */
+    List<Map<String,Object>> findReceiveTheMindList(Map map);
+
+    /**
+     * 查询差评数据
+     * @param map
+     * @return
+     * @author sunxiao
+     */
+    List<Map<String,Object>> findDissatisfiedList(Map map);
 }

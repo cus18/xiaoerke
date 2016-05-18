@@ -30,6 +30,17 @@
 				}
 			});
 		}
+
+		function dataExport(type){
+			href="${ctx}/consult/exportForm?type="+type;
+			top.$.jBox.open('iframe:'+href,'导出统计表',$(top.document).width()-860,$(top.document).height()-330,{
+				buttons:{"关闭":true},
+				closed: function () {
+					$("#searchForm").attr("action","${ctx}/consult/consultDoctorList?");
+					$("#searchForm").submit();
+				}
+			});
+		}
 	</script>
 </head>
 <body>
@@ -41,6 +52,11 @@
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<sys:message content="${message}"/>
 		<ul class="ul-form">
+			<li class="btns">
+				<input class="btn btn-primary" type="button" onclick="dataExport('receiveTheMindExport')" value="导出收到心意"/>
+				<input class="btn btn-primary" type="button" onclick="dataExport('dissatisfiedExport')" value="导出不满意"/>
+			</li>
+			<li class="clearfix"></li>
 			<li><label>医生姓名：</label>
 				<form:input path="name" htmlEscape="false" maxlength="50" class="input-medium"/>
 			</li>

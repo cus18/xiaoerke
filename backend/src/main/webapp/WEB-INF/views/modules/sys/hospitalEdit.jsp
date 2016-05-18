@@ -115,7 +115,7 @@
 			<label class="control-label">1）限价范围:</label>
 
 			<div class="controls">
-				<input id="limitRange" name="limitRange" type="text" value="${contactVo.limitRange}"  class="input-xlarge"/>
+				<textarea id="limitRange" name="limitRange" rows="4" maxlength="5000" style="width:270px;" class="input-xlarge">${contactVo.limitRange}</textarea>
 				<span class="help-inline"><font color="red">例：① 根管治疗1颗    ② 树脂填充2颗</font> </span>
 			</div>
 		</div>
@@ -124,7 +124,7 @@
 			<label class="control-label">2）限价疾病:</label>
 
 			<div class="controls">
-				<input id="limitDisease" name="limitDisease" type="text" value="${contactVo.limitDisease}" class="input-xlarge"/>
+				<textarea id="limitDisease" name="limitDisease" rows="4" maxlength="5000" style="width:270px;" class="input-xlarge">${contactVo.limitDisease}</textarea>
 				<span class="help-inline"><font color="red">注：录入内容时，小标题与内容之间用  “；” 分隔</font> </span>
 			</div>
 		</div>

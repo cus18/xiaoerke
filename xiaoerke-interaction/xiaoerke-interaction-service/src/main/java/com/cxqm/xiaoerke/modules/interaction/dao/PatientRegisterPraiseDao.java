@@ -79,4 +79,20 @@ public interface PatientRegisterPraiseDao {
      */
     Page<PatientRegisterPraise> getDoctorEvaluate(HashMap<String, Object> dataMap, Page<PatientRegisterPraise> page);
 
+    /**
+     * 查询送心意数据
+     * @param map
+     * @return
+     * @author sunxiao
+     */
+    List<Map<String,Object>> findReceiveTheMindList(Map map);
+
+    /**
+     * 查询差评数据
+     * @param map
+     * @return
+     * @author sunxiao
+     */
+    List<Map<String,Object>> findDissatisfiedList(Map map);
+
 }
