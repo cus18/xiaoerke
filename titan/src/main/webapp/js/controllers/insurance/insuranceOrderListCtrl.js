@@ -17,7 +17,7 @@ angular.module('controllers', ['ionic']).controller('insuranceOrderListCtrl', [
                 } else if(data.status=="8"){
                     window.location.href = ata.redirectURL+"?targeturl="+routePath;
                 }else {
-                    getInsuranceRegisterServiceListByUserid.get({insuranceType:"null"},function (data){
+                    getInsuranceRegisterServiceListByUserid.get({},function (data){
                         $scope.insuranceViedList=data.insuranceViedList;
                         $scope.insuranceInvalidList=data.insuranceInvalidList;
                     });
