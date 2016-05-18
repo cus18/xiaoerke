@@ -12,7 +12,8 @@ angular.module('controllers', ['ionic']).controller('antiDogPaySuccessCtrl', [
         	var pData = {logContent:encodeURI("FQB_GMCC_FHSY")};
             $http({method:'post',url:'util/recordLogs',params:pData});
         	/*$state.go('antiDogIndex');*/
-            window.location.href="firstPage/antiDogFirst";
+            //window.location.href="firstPage/antiDogFirst";
+            window.location.href = "firstPage/insurance";
         };
         
         $scope.$on('$ionicView.enter', function(){
