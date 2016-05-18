@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.webapp.listener;
 
+import com.cxqm.xiaoerke.webapp.bootstrap.RpcServer;
 import io.netty.channel.ChannelFuture;
 
 import java.net.InetSocketAddress;
@@ -16,16 +17,22 @@ public class StartupListener implements ServletContextListener {
 		
 		Runnable rn = new Runnable() {
 		    public void run() {
-		    	final ChatServer server = new ChatServer();
-				ChannelFuture f = server.start(new InetSocketAddress(2048));
+		    	final ChatServer chatServer = new ChatServer();
+				ChannelFuture f1 = chatServer.start(new InetSocketAddress(2048));
+
+				final RpcServer rpcServer = new RpcServer();
+				ChannelFuture f2 = rpcServer.start(new InetSocketAddress(2049));
+
 				System.out.println("server start................");
-				Runtime.getRuntime().addShutdownHook(new Thread(){
+				Runtime.getRuntime().addShutdownHook(new Thread() {
 					@Override
 					public void run() {
-						server.destroy();
+						chatServer.destroy();
+						rpcServer.destroy();
 					}
 				});
-				f.channel().closeFuture().syncUninterruptibly();
+				f1.channel().closeFuture().syncUninterruptibly();
+				f2.channel().closeFuture().syncUninterruptibly();
 		    }
 		};
 		

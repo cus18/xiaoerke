@@ -24,6 +24,9 @@
     <include refid="Base_Column_List" />
     from consult_transfer_list
     where 1=1 and status = 'ongoing' and del_flag = '0'
+    <if test="sysUserId != null and sysUserId != ''">
+      and sys_user_id = #{sysUserId,jdbcType=VARCHAR}
+    </if>
     order by
     <if test="orderBy != null and orderBy !=  ''">
       department desc,
