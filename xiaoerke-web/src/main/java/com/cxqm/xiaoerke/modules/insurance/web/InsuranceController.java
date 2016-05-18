@@ -40,8 +40,8 @@ public class InsuranceController {
 	   public
 	   @ResponseBody
 	   Map<String,Object> saveInsuranceRegisterService(@RequestBody Map<String, Object> params){
-           String sex = params.get("sex").toString();
-           String birthday = params.get("birthday").toString();
+           String sex = (String)params.get("sex");
+           String birthday = (String)params.get("birthday");
            if(StringUtils.isNotNull(sex) && StringUtils.isNotNull(birthday)){
                BabyBaseInfoVo babyBaseInfoVo = new BabyBaseInfoVo();
                babyBaseInfoVo.setId(Integer.valueOf(params.get("babyId").toString()));
