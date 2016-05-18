@@ -72,6 +72,18 @@ public class ConsultWechatController extends BaseController {
                         @RequestParam(required=false) String mediaId) {
         HashMap<String,Object> result = new HashMap<String,Object>();
 
+//        //RPC测试
+//        RpcRequest request1 = new RpcRequest(); // 创建并初始化 RPC 请求
+//        request1.setRequestId(UUID.randomUUID().toString());
+//        request1.setContent("chenjiaketest+++");
+//        RpcClient client = new RpcClient("123.57.45.33", 2049); // 初始化 RPC 客户端
+//        RpcResponse response = null; // 通过 RPC 客户端发送 RPC 请求并获取 RPC 响应
+//        try {
+//            response = client.send(request1);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
         HashMap<String,Object> paramMap = new HashMap<String,Object>();
         paramMap.put("openId",openId);
         paramMap.put("messageType",messageType);

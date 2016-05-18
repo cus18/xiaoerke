@@ -3,6 +3,7 @@ package com.cxqm.xiaoerke.modules.consult.service;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 
 import javax.websocket.Session;
+import java.net.InetSocketAddress;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,11 @@ public interface SessionRedisCache {
 	void putUserIdSessionIdPair(String userId, Integer sessionId);
 	
 	RichConsultSession getConsultSessionBySessionId(Integer sessionId);
-	
+
+	InetSocketAddress getIpAddressByUserId(String userId);
+
+	void removeIpAddressByUserId(String userId);
+
 	Integer getSessionIdByUserId(String userId);
 
 	Map getWeChatParamFromRedis(String paramType);
@@ -31,4 +36,5 @@ public interface SessionRedisCache {
 
 	List<Object> getConsultSessionsBySessionIds(Collection<Object> sessionIds);
 
+	void putUserIdIpAddressPair(InetSocketAddress inetSocketAddress, String csUserId);
 }

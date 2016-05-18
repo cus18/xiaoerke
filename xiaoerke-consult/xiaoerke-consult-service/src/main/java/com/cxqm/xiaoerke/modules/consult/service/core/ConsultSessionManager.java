@@ -15,7 +15,6 @@ import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.impl.UserInfoServiceImpl;
-import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
@@ -117,6 +116,8 @@ public class ConsultSessionManager {
 		csUserChannelMapping.put(csUserId, channel);
 		userChannelMapping.put(csUserId, channel);
 		channelUserMapping.put(channel, csUserId);
+		//将医生的ID和IP地址放入到redis中
+		sessionRedisCache.putUserIdIpAddressPair((InetSocketAddress) channel.localAddress(), csUserId);
 	}
 
 	private void doCreateSocketInitiatedByDistributor(String distributorUserId, Channel channel){
@@ -125,6 +126,8 @@ public class ConsultSessionManager {
 			csUserChannelMapping.put(distributorUserId, channel);
 			userChannelMapping.put(distributorUserId, channel);
 			channelUserMapping.put(channel, distributorUserId);
+			//将接诊员的ID和IP地址放入到redis中
+			sessionRedisCache.putUserIdIpAddressPair((InetSocketAddress) channel.localAddress(), distributorUserId);
 		} else {
 			log.warn("Maybe a Simulated Distributor: The userId is " + distributorUserId);
 		}
@@ -133,6 +136,8 @@ public class ConsultSessionManager {
 	private void doCreateSocketInitiatedByUser(String userId, String source,Channel channel){
 		userChannelMapping.put(userId, channel);
 		channelUserMapping.put(channel, userId);
+		//将普通用户的ID和IP地址放入到redis中
+		sessionRedisCache.putUserIdIpAddressPair((InetSocketAddress) channel.localAddress(), userId);
 	}
 
 	public RichConsultSession createUserH5ConsultSession(String userId,Channel channel,String source){
@@ -538,10 +543,6 @@ public class ConsultSessionManager {
 		return channelUserMapping;
 	}
 
-	public Integer getSessionIdByUser(String userId) {
-		return sessionRedisCache.getSessionIdByUserId(userId);
-	}
-
 	public List<Object> getCurrentSessions(List<Object> sessionIds) {
 		return sessionRedisCache.getConsultSessionsBySessionIds(sessionIds);
 	}
@@ -557,6 +558,7 @@ public class ConsultSessionManager {
 			if (userId.equals(key)) {
 				iterator.remove();
 				userChannelMapping.remove(key);
+				sessionRedisCache.removeIpAddressByUserId(key);
 			}
 		}
 	}
