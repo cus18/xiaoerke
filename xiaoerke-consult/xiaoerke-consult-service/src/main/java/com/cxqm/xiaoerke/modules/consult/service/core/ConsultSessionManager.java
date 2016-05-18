@@ -116,8 +116,6 @@ public class ConsultSessionManager {
 		csUserChannelMapping.put(csUserId, channel);
 		userChannelMapping.put(csUserId, channel);
 		channelUserMapping.put(channel, csUserId);
-		//将医生的ID和IP地址放入到redis中
-		sessionRedisCache.putUserIdIpAddressPair((InetSocketAddress) channel.localAddress(), csUserId);
 	}
 
 	private void doCreateSocketInitiatedByDistributor(String distributorUserId, Channel channel){
@@ -126,8 +124,6 @@ public class ConsultSessionManager {
 			csUserChannelMapping.put(distributorUserId, channel);
 			userChannelMapping.put(distributorUserId, channel);
 			channelUserMapping.put(channel, distributorUserId);
-			//将接诊员的ID和IP地址放入到redis中
-			sessionRedisCache.putUserIdIpAddressPair((InetSocketAddress) channel.localAddress(), distributorUserId);
 		} else {
 			log.warn("Maybe a Simulated Distributor: The userId is " + distributorUserId);
 		}
