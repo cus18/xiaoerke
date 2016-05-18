@@ -175,7 +175,7 @@ var saveBaby = function (name,sex,birthday) {
     $.ajax({
         type: 'GET',
         url: "healthRecord/saveBabyInfo",
-        data: {name:name,sex:sex,birthDay:birthday},
+        data: {name:encodeURI(name),sex:sex,birthDay:birthday},
         contentType: "application/json; charset=utf-8",
         success: function(data){
             if(data.resultCode=='1'){
