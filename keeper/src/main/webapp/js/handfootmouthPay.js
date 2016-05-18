@@ -152,7 +152,9 @@ var payInsurance = function () {
     var flag = 0;
     if($('#babyName').val()!=undefined&&$('#babyName').val()!=""&&$('#birthday').val()!=undefined&&$('#birthday').val()!=""
         &&$("#parentName").val()!=undefined&&$("#parentName").val()!=""&&$("#IdCard").val()!=undefined&&$("#IdCard").val()!=""){
-
+        if(checkIdCard()==false){
+            return;
+        }
         $.each(babyList, function (index,value) {
             if(value.name!=$('#babyName').val()){
                 flag++;
@@ -175,7 +177,7 @@ var saveBaby = function (name,sex,birthday) {
     $.ajax({
         type: 'GET',
         url: "healthRecord/saveBabyInfo",
-        data: {name:name,sex:sex,birthDay:birthday},
+        data: {name:encodeURI(name),sex:sex,birthDay:birthday},
         contentType: "application/json; charset=utf-8",
         success: function(data){
             if(data.resultCode=='1'){
