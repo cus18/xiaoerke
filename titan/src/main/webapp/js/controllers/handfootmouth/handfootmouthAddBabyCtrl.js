@@ -10,6 +10,7 @@ angular.module('controllers', ['ionic']).controller('handfootmouthAddBabyCtrl', 
         $scope.girlLock = false;
         $scope.titleLock = true;// 隐藏顶部菜单
         $scope.baby = {};
+        var Ip = "localhost";
 
 
         $scope.$on('$ionicView.enter',function() {
@@ -54,7 +55,7 @@ angular.module('controllers', ['ionic']).controller('handfootmouthAddBabyCtrl', 
             saveBabyInfo.get({"sex":sex,"name":encodeURI(name),"birthDay":birthday}, function (data){
                 if(data.resultCode=='1'){
                     var babyid=data.autoId;
-                    window.location.href="http://localhost/keeper/wxPay/patientPay.do?serviceType=handfootmouth";
+                    window.location.href="http://"+Ip+"/keeper/wxPay/patientPay.do?serviceType=handfootmouth";
                 }
             });
 

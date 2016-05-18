@@ -3,6 +3,7 @@ angular.module('controllers', ['ionic']).controller('handfootmouthIndexCtrl', [
     function ($scope,$state,$stateParams,$location,$http) {
         $scope.readLock = true;
         $scope.readFlag = false;
+        var Ip = "localhost";
 
 
         $scope.$on('$ionicView.enter', function(){
@@ -18,7 +19,7 @@ angular.module('controllers', ['ionic']).controller('handfootmouthIndexCtrl', [
         //支付
         $scope.goPay = function(){
             setLog("SZKB_FWXQ_LJGM_");
-            window.location.href = "http://localhost/keeper/wxPay/patientPay.do?serviceType=handfootmouth";
+            window.location.href = "http://"+Ip+"/keeper/wxPay/patientPay.do?serviceType=handfootmouth";
         }
 
         //日志
