@@ -96,8 +96,9 @@ public class ConsultTransferListController {
         consultTransferListVo.setCreateBy(user.getId());
         consultTransferListVo.setCreateDate(date);
         consultTransferListVo.setDelFlag("0");
-        consultTransferListVo.setDepartment((String) params.get("department"));
-        consultTransferListVo.setSessionId((Integer) params.get("sessionId"));
+        HashMap<String,Object> requestData = (HashMap<String,Object>)params.get("consultData");
+        consultTransferListVo.setDepartment((String)requestData.get("department"));
+        consultTransferListVo.setSessionId((Integer)requestData.get("sessionId"));
         RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId((Integer) params.get("sessionId"));
         if(richConsultSession !=null) {
             consultTransferListVo.setSysUserId(richConsultSession.getUserId());
