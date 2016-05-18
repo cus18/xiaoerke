@@ -152,7 +152,9 @@ var payInsurance = function () {
     var flag = 0;
     if($('#babyName').val()!=undefined&&$('#babyName').val()!=""&&$('#birthday').val()!=undefined&&$('#birthday').val()!=""
         &&$("#parentName").val()!=undefined&&$("#parentName").val()!=""&&$("#IdCard").val()!=undefined&&$("#IdCard").val()!=""){
-
+        if(checkIdCard()==false){
+            return;
+        }
         $.each(babyList, function (index,value) {
             if(value.name!=$('#babyName').val()){
                 flag++;
