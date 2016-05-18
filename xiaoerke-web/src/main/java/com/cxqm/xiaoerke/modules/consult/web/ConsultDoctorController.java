@@ -351,6 +351,7 @@ public class ConsultDoctorController extends BaseController {
     Map<String, Object> sessionEnd(@RequestParam(required = true) String sessionId,
                                    @RequestParam(required = true) String userId) {
         Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> response = new HashMap<String, Object>();
         params.put("openid", userId);
         params.put("uuid", UUID.randomUUID().toString().replaceAll("-", ""));
         params.put("starNum1", 0);
@@ -360,6 +361,16 @@ public class ConsultDoctorController extends BaseController {
         params.put("content", "");
         params.put("dissatisfied", null);
         params.put("redPacket", null);
+        //判断有没有正在转接的会话
+        ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = new ConsultSessionForwardRecordsVo();
+        consultSessionForwardRecordsVo.setConversationId(Long.valueOf(sessionId));
+        consultSessionForwardRecordsVo.setStatus("waiting");
+        List<ConsultSessionForwardRecordsVo> consultSessionForwardRecordsVos = consultSessionForwardRecordsService.selectConsultForwardList(consultSessionForwardRecordsVo);
+        if (consultSessionForwardRecordsVos.size() > 0) {
+            response.put("result", "existTransferSession");
+            return response;
+        }
+
         patientRegisterPraiseService.saveCustomerEvaluation(params);
         if (StringUtils.isNotNull(sessionId)) {
             RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(Integer.valueOf(sessionId));
@@ -381,16 +392,16 @@ public class ConsultDoctorController extends BaseController {
                         TextWebSocketFrame csframe = new TextWebSocketFrame(obj.toJSONString());
                         doctorChannel.writeAndFlush(csframe.retain());
                     }
-                } /*else if("wxcxqm".equalsIgnoreCase(richConsultSession.getSource())){
+                }else if("wxcxqm".equalsIgnoreCase(richConsultSession.getSource())){
                     String st = "本次咨询体验怎么样?赶快来评价吧!【" +
                             "<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
                             params.get("uuid") + "'>点击这里去评价</a>】";
                     Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
                     WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
-                }*/
+                }
             }
             String result = consultSessionService.clearSession(sessionId, userId);
-            Map<String, Object> response = new HashMap<String, Object>();
+
             response.put("result", result);
             return response;
         } else {

@@ -14,6 +14,7 @@ import com.cxqm.xiaoerke.modules.sys.entity.Dict;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.DictService;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
+import io.netty.channel.Channel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by jiangzhongge on 2016-5-13.
@@ -47,6 +50,8 @@ public class ConsultTransferListController {
     public @ResponseBody
     HashMap<String,Object> findAllConsultTransferListVo(@RequestParam(value ="sortBy",required=false) String sortBy){
         HashMap<String,Object> response = new HashMap<String, Object>();
+        JSONObject jsonObject;
+        JSONArray jsonArray = new JSONArray();
         ConsultTransferListVo consultTransferListVo = new ConsultTransferListVo();
         if(StringUtils.isNotNull(sortBy ) && "order".equalsIgnoreCase(sortBy)){
             consultTransferListVo.setOrderBy("department");
@@ -56,22 +61,26 @@ public class ConsultTransferListController {
         List<ConsultTransferListVo> consultTransferListVos= consultTransferListVoService.findAllConsultTransferListVo(consultTransferListVo);
         if(consultTransferListVos!= null && consultTransferListVos.size()>0){
             for(ConsultTransferListVo consultTransfer:consultTransferListVos){
+                jsonObject = new JSONObject();
                 RichConsultSession richConsultSession = new RichConsultSession();
                 richConsultSession.setUserId(consultTransfer.getSysUserId());
                 richConsultSession.setStatus("ongoing");
                 List<RichConsultSession> richConsultSessionlist = consultSessionService.selectRichConsultSessions(richConsultSession);
                 if(richConsultSessionlist != null && richConsultSessionlist.size()>0){
-                    response.put("currentDoctor", richConsultSessionlist.get(0).getCsUserName());
+                    jsonObject.put("currentDoctor", richConsultSessionlist.get(0).getCsUserName());
                 }else{
-                    response.put("currentDoctor", "无");
+                    jsonObject.put("currentDoctor", "无");
                 }
-                response.put("userName",consultTransfer.getSysUserName());
-                response.put("createDate",consultTransfer.getCreateDate());
-                response.put("department",consultTransfer.getDepartment());
-                response.put("id",consultTransfer.getId());
-                response.put("status","success");
+                jsonObject.put("userName",consultTransfer.getSysUserName());
+                jsonObject.put("createDate",consultTransfer.getCreateDate());
+                jsonObject.put("department",consultTransfer.getDepartment());
+                jsonObject.put("id", consultTransfer.getId());
+                jsonArray.add(jsonObject);
             }
+            response.put("data",jsonArray);
+            response.put("status","success");
         }else{
+            response.put("data",jsonArray);
             response.put("status","failure");
         }
         return response;
@@ -90,18 +99,23 @@ public class ConsultTransferListController {
         consultTransferListVo.setDepartment((String) params.get("department"));
         consultTransferListVo.setSessionId((Integer) params.get("sessionId"));
         RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId((Integer) params.get("sessionId"));
-        if(richConsultSession !=null){
+        if(richConsultSession !=null) {
             consultTransferListVo.setSysUserId(richConsultSession.getUserId());
             consultTransferListVo.setSysUserName(richConsultSession.getUserName());
         }
-        consultTransferListVo.setSysUserIdCs(user.getId());
-        consultTransferListVo.setSysUserNameCs(user.getName());
-        consultTransferListVo.setStatus("ongoing");
-        int count = consultTransferListVoService.addConsultTransferListVo(consultTransferListVo);
-        if(count > 0){
-            responseResult.put("status","success");
+        List<ConsultTransferListVo> consultTransferListVos = consultTransferListVoService.findAllConsultTransferListVo(consultTransferListVo);
+        if(consultTransferListVos !=null && consultTransferListVos.size()>0){
+            responseResult.put("status","exist");
         }else{
-            responseResult.put("status","failure");
+            consultTransferListVo.setSysUserIdCs(user.getId());
+            consultTransferListVo.setSysUserNameCs(user.getName());
+            consultTransferListVo.setStatus("ongoing");
+            int count = consultTransferListVoService.addConsultTransferListVo(consultTransferListVo);
+            if(count > 0){
+                responseResult.put("status","success");
+            }else{
+                responseResult.put("status","failure");
+            }
         }
         return responseResult;
     }
@@ -141,22 +155,31 @@ public class ConsultTransferListController {
 
     @RequestMapping(value ="/updateConsultTransferByPrimaryKey",method = {RequestMethod.POST,RequestMethod.GET})
     public @ResponseBody
-    String updateConsultTransferByPrimaryKey(@RequestParam(value = "id",required=true)String id,
-                                             @RequestParam(value ="status",required = false)String status,
-                                             @RequestParam(value ="delFlag",required = false)String delFlag){
+    String updateConsultTransferByPrimaryKeys(@RequestBody HashMap<String,Object> params){
+        String response = "failure";
         ConsultTransferListVo consultTransferListVo = new ConsultTransferListVo();
-        if(StringUtils.isNotNull(status) && !"ongoing".equalsIgnoreCase(status)){
+        if(StringUtils.isNotNull((String)params.get("status")) && !"ongoing".equalsIgnoreCase((String)params.get("status"))){
             consultTransferListVo.setStatus("complete");
         }
-        if(StringUtils.isNotNull(delFlag) && !"0".equalsIgnoreCase(delFlag)){
+        if(StringUtils.isNotNull((String)params.get("delFlag")) && !"0".equalsIgnoreCase((String)params.get("delFlag"))){
             consultTransferListVo.setDelFlag("1");
         }
-        consultTransferListVo.setId(Integer.valueOf(id));
-        int count = consultTransferListVoService.updateConsultTransferByPrimaryKey(consultTransferListVo);
-        if(count > 0){
-            return "success";
-        }else{
-            return "failure";
+        String[] allId =(String[])params.get("updateIds");
+        int count =0;
+        if(allId != null && allId.length >0){
+            for(int i =0 ; i<allId.length;i++){
+                consultTransferListVo.setId(Integer.valueOf(allId[i]));
+                int result = consultTransferListVoService.updateConsultTransferByPrimaryKey(consultTransferListVo);
+                if(result >0){
+                    count ++;
+                }else{
+                    break ;
+                }
+            }
+            if(count == allId.length){
+                response = "success";
+            }
         }
+        return response;
     }
 }
