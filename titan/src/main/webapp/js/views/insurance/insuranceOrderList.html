@@ -15,13 +15,14 @@
             <div class="info-list">
                 <ul ng-if="service=='current'">
                     <li ng-repeat="item in insuranceViedList" ng-click="lookDetail(item.id)">
-                        <img class="my-img-block" width="64" height="64" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Forder_img.png">
+                        <img ng-if="item.Insurance_type==1" class="my-img-block" width="64" height="64" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2Fdog.jpg">
+                        <img ng-if="item.Insurance_type==2" class="my-img-block" width="64" height="64" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2Fhandfootmouth.jpg">
                         <div class="text">
-                            <span>{{item.Insurance_type==1?'宝大夫小儿防犬宝':item.Insurance_type}}</span>
+                            <span>{{item.Insurance_type==1?'宝大夫小儿防犬宝':'宝大夫小儿手足口宝'}}</span>
                             <span>宝宝姓名：{{item.name}}</span>
                             <span>有效期至 {{item.end_time | date:'yyyy-MM-dd'}}</span>
                         </div>
-                        <div class="price"> &nbsp;{{item.Insurance_type==1?'￥19.8':item.Insurance_type}}</div>
+                        <div class="price"> &nbsp;{{item.Insurance_type==1?'￥19.8':'￥26.8'}}</div>
                         <span class="state">{{item.state==0?'待生效':''}}{{item.state==1?'有效':''}}{{item.state==2?'待审核':''}}</span>
                     </li>
                     <!--无 当前服务 订单时显示-->
@@ -31,13 +32,14 @@
                 </ul>
                 <ul ng-if="service=='history'">
                     <li ng-repeat="items in insuranceInvalidList" ng-click="lookDetail(items.id)">
-                        <img class="my-img-block" width="80" height="80" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Forder_img.png">
+                        <img ng-if="items.Insurance_type==1" class="my-img-block" width="80" height="80" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2Fdog.jpg">
+                        <img ng-if="items.Insurance_type==2" class="my-img-block" width="80" height="80" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2Fhandfootmouth.jpg">
                         <div class="text">
-                            <span>{{items.Insurance_type==1?'宝大夫小儿防犬宝':items.Insurance_type}}</span>
+                            <span>{{items.Insurance_type==1?'宝大夫小儿防犬宝':'宝大夫小儿手足口宝'}}</span>
                             <span>{{items.name}}</span>
                             <span>有效期至 {{items.end_time | date:'yyyy-MM-dd'}}</span>
                         </div>
-                        <div class="price">{{items.Insurance_type==1?'￥19.8':items.Insurance_type}}</div>
+                        <div class="price">{{items.Insurance_type==1?'￥19.8':'￥26.8'}}</div>
                         <span class="state">{{items.state==3?'已补贴':''}}{{items.state==4?'已到期':''}}{{items.state==5?'审核失败':''}}</span>
                     </li>
                     <!--无 历史服务 订单时显示-->

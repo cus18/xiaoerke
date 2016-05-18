@@ -20,7 +20,7 @@ public class ConsultTransferListVoServiceImpl implements ConsultTransferListVoSe
 
     @Override
     public int updateConsultTransferByPrimaryKey(ConsultTransferListVo consultTransferListVo) {
-        int count = consultTransferListVoDao.updateConsultTransferByPrimaryKeySelective(consultTransferListVo);
+        int count = consultTransferListVoDao.updateConsultTransferByPrimaryKey(consultTransferListVo);
         if(count !=0){
             return count;
         }else{

@@ -9,10 +9,7 @@ import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -67,7 +64,7 @@ public class InsuranceController {
 	   @RequestMapping(value = "/getInsuranceRegisterServiceListByUserid", method = {RequestMethod.POST, RequestMethod.GET})
 	   public
 	   @ResponseBody
-	   Map<String,Object> getInsuranceRegisterServiceListByUserid(String insuranceType){
+	   Map<String,Object> getInsuranceRegisterServiceListByUserid(@RequestParam(required = false)String insuranceType){
 		   Map<String, Object> resultMap = new HashMap<String, Object>();
            Map<String, Object> dataMap = new HashMap<String, Object>();
            dataMap.put("userid",UserUtils.getUser().getId());

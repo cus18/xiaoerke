@@ -11,6 +11,7 @@ require.config({
         "angular-route" : "libs/angular-route.min",
         "ocLazyLoad":"libs/ocLazyLoad.require.min",
         "jquery":"libs/jquery-2.1.3.min",
+        "wisdomCommonFactory": "services/wisdomCommonFactory",
         "constipationFactory" : "services/constipationFactory",
         "constipationDirective" : "directives/constipationDirective",
         "appConstipationRoute" : "routes/appConstipationRoute",
@@ -39,7 +40,7 @@ require.config({
 });
 
 require(['angular','angular-resource','angular-sanitize','angular-route',
-    'ocLazyLoad','jquery','constipationFactory','constipationDirective','appConstipationRoute','appConstipation'],
+    'ocLazyLoad','jquery','wisdomCommonFactory','constipationFactory','constipationDirective','appConstipationRoute','appConstipation'],
     function (angular){
         angular.bootstrap(document,["constipationApp"]);
     });

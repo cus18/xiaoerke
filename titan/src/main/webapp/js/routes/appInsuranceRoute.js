@@ -179,7 +179,7 @@ define(['appInsurance'], function(app){
                         }
                     })
                     .state('handfootmouthPaySuccess', {
-                        url: '/handfootmouthPaySuccess',
+                        url: '/handfootmouthPaySuccess/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'handfootmouthPaySuccessCtrl',
                         resolve: {
@@ -213,7 +213,7 @@ define(['appInsurance'], function(app){
                         }
                     })
                     .state('insuranceOrderDetail', {
-                        url: '/insuranceOrderDetail',
+                        url: '/insuranceOrderDetail/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'insuranceOrderDetailCtrl',
                         resolve: {
@@ -223,6 +223,26 @@ define(['appInsurance'], function(app){
                                         'styles/insurance/insuranceOrderDetail.less?ver='+insuranceVersion,
                                     ],
                                     'js/views/insurance/insuranceOrderDetail.html?ver='+insuranceVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                    .state('handfootmouthAddBaby', {
+                        url: '/handfootmouthAddBaby',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'handfootmouthAddBabyCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.handfootmouthAddBabyCtrl',
+                                    ['js/controllers/handfootmouth/handfootmouthAddBabyCtrl.js',
+                                        'js/libs/mobiscroll.custom-2.17.0.min.js',
+                                        'styles/lib/mobiscroll.custom-2.17.0.min.css',
+                                        'js/libs/moment.min.js',
+                                        'styles/handfootmouth/handfootmouthAddBaby.less?ver='+insuranceVersion,
+                                    ],
+                                    'js/views/handfootmouth/handfootmouthAddBaby.html?ver='+insuranceVersion);
                             }
                         },
                         data: {
