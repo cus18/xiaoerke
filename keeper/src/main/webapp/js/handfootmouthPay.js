@@ -70,6 +70,8 @@ var isHaveInsurance = function (object) {
                 $('#getRemind').show();
                 $('#getShadow').show();
             }else{
+                $('#getRemind').hide();
+                $('#getShadow').hide();
                 getBaby(object);
             }
         },
@@ -138,6 +140,8 @@ var getBaby = function (object) {
 }
 //查看订单
 var lookOrderInfo = function () {
+    $('#getRemind').hide();
+    $('#getShadow').hide();
     window.location.href = "http://"+Ip+"/titan/insurance#/insuranceOrderList";
 }
 
