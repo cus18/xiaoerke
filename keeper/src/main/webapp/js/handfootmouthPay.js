@@ -66,13 +66,13 @@ var isHaveInsurance = function (object) {
         data: "{'babyId':'"+object.id+"','insuranceType':'2'}",
         contentType: "application/json; charset=utf-8",
         success: function(data){
+            getBaby(object);
             if(data.valid!=0){
                 $('#getRemind').show();
                 $('#getShadow').show();
             }else{
                 $('#getRemind').hide();
                 $('#getShadow').hide();
-                getBaby(object);
             }
         },
         dataType: "json"
@@ -149,6 +149,10 @@ var lookOrderInfo = function () {
 var cancelRemind = function () {
     $('#getRemind').hide();
     $('#getShadow').hide();
+    $('#babyName').val("");
+    $('#birthday').val("");
+    babySex = 1;
+    $('.sex a').eq(0).addClass('select');
 }
 
 //支付
