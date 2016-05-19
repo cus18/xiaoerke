@@ -179,7 +179,7 @@ textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 10
 .doctorReplyContent .message,.patientConsultContent .message{font: 16px/20px 'Microsoft Yahei';padding: 8px;max-width: 100%;border: 1px solid #ccc;border-radius: 5px;background-color: #fff;margin: 20px 10px 10px 10px;}
 .doctorReplyContent div:nth-child(1){color:#08b7c2;}
 .patientConsultContent div:nth-child(1){color:#7fc700;}
-.senderName{position: absolute;left: 10px;min-width: 300px;}
+.senderName{position: relative;left: 10px;min-width: 300px;}
 .doctorName{position: absolute;right: 10px;min-width: 300px;}
 .moreInformation{text-align: center;padding-top: 10px;}
 .moreInformation a{display: inline-block;color: #08b7c2;padding-left: 15px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fyh_12.png") no-repeat center left;}
@@ -243,7 +243,11 @@ ul li input{
 .specialistContent{
     height: 225px;
     border: 1px solid #eee;
+    overflow-y: scroll;
 }
+.specialistContent::-webkit-scrollbar {width:10px;height:10px;}
+.specialistContent::-webkit-scrollbar-track-piece {background:#eee;border-radius:5px;}
+.specialistContent::-webkit-scrollbar-thumb{background:#08b7c2;border-radius:5px;}
 .background{
     background-color: #8aa1a8;
 }
@@ -254,7 +258,7 @@ ul li input{
     border-top: 1px solid #eee;
     width: 100%;
 }
-.specialistBottom button {
+.specialistBottom .button {
     float: right;
     margin: 8px 20px;
     width: 70px;
