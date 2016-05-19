@@ -98,4 +98,24 @@ angular.module('services', ['ngResource'])
     .factory('CancelTransfer', ['$resource', function ($resource) {
         return $resource(public + 'consult/doctor/cancelTransfer');
     }])
+    //查询所有的专科转移
+    .factory('GetFindTransferSpecialist', ['$resource', function ($resource) {
+        return $resource(public + 'consult/transfer/findConsultTransferList');
+    }])
+    //删除的转接列表的科室
+    .factory('GetRemoveTransferSpecialist', ['$resource', function ($resource) {
+        return $resource(public + 'consult/transfer/updateConsultTransferByPrimaryKey');
+    }])
+    //添加转接科室
+    .factory('GetAddTransferSpecialist', ['$resource', function ($resource) {
+        return $resource(public + 'consult/transfer/saveConsultTransfer');
+    }])
+    //查询所有专科列表
+    .factory('GetFindAllTransferSpecialist', ['$resource', function ($resource) {
+        return $resource(public + 'consult/transfer/findDoctorDepartment');
+    }])
+    //发起专科的会话
+    .factory('CreateTransferSpecialist', ['$resource', function ($resource) {
+        return $resource(public + 'consultSession/transfer/createMoreUserConsultSession');
+    }])
 
