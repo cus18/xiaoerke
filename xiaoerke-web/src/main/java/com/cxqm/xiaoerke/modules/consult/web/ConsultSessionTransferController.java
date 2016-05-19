@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
+import com.alibaba.fastjson.JSONArray;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultTransferListVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultTransferListVoService;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
@@ -42,12 +43,14 @@ public class ConsultSessionTransferController {
                 data.put("userId", requestData.get(i).get("userId"));
                 transferList.add(data);
             }
-            HashMap failureMap ;
             if(transferList != null && transferList.size()>0){
+
+                JSONArray jsonArray = new JSONArray();
+                JSONArray failureIdArray = new JSONArray();
                 for(HashMap<String,Object> hashMap : transferList){
                     try{
-                        response = consultSessionManager.createConsultSession((String)hashMap.get("userId"));
-                        if(response!= null && "success".equalsIgnoreCase((String) response.get("status"))){
+                        HashMap<String,Object> resultMap = consultSessionManager.createConsultSession((String)hashMap.get("userId"));
+                        if(resultMap!= null && "success".equalsIgnoreCase((String) resultMap.get("status"))){
                             ConsultTransferListVo consultTransferListVo;
                             String status = "complete";
                             String delFlag = "0";
@@ -60,11 +63,12 @@ public class ConsultSessionTransferController {
                                 response.put("status","success");
                                 consultSessionManager.refreshConsultTransferList(UserUtils.getUser().getId());
                             }
+                            jsonArray.add(resultMap.get("userId"));
                         }else{
-                             failureMap= new HashMap();
-                             failureMap.put("id", hashMap.get("id"));
-                             response.put("failureMap",failureMap);
+                            failureIdArray.add(hashMap.get("id"));
                         }
+                        response.put("userIds",jsonArray);
+                        response.put("failureUserIds",failureIdArray);
                     }catch(Exception exception){
                         exception.getStackTrace();
                     }

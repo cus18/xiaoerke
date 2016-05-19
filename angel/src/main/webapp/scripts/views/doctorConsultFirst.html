@@ -11,18 +11,18 @@
                 <span>（{{doctorName}}），宝大夫欢迎您！！</span>
                 <span ng-if="loseConnectionFlag">您已与平台断开了连接，请检查您的网络情况，谢谢！</span>
                 <span ng-if="!loseConnectionFlag">您目前与平台连接正常！</span>
-                <!--<div class="bdf-dkf-content-right">-->
-                   <!--&lt;!&ndash; <div class="cjgl">退出</div>-->
-                    <!--<div class="xtsz" ng-click="tapShowButton('systemSetup')">-->
-                        <!--<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_06.png" alt=""/>-->
-                        <!--系统设置-->
-                    <!--</div>&ndash;&gt;-->
-                    <!--<div ng-click="tapShowButton('specialistList')"-->
-                         <!--ng-style="userType==distributor?{'display':'none'}:{'display':'block'}"-->
-                            <!-->-->
-                        <!--<div>专科列表</div>-->
-                    <!--</div>-->
-                <!--</div>-->
+                <div class="bdf-dkf-content-right">
+                   <!-- <div class="cjgl">退出</div>
+                    <div class="xtsz" ng-click="tapShowButton('systemSetup')">
+                        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_06.png" alt=""/>
+                        系统设置
+                    </div>-->
+                    <div ng-click="tapShowButton('specialistList')"
+                            >
+                        <!--ng-style="userType==distributor?{'display':'block'}:{'display':'none'}"-->
+                        <div>专科列表</div>
+                    </div>
+                </div>
                 <!--<span>自动回复-->
                     <!--<select>-->
                         <!--<option>无</option>-->
@@ -71,7 +71,7 @@
                 <div class="consultNowList"
                      ng-style="chooseAlreadyJoinConsultPatientId==item.patientId?{'background':'#08b7c2', color: '#fff'}:{'background':'#fff', color: '#333'}"
                      ng-repeat="item in alreadyJoinPatientConversation | orderBy:'dateTime':true"
-                     ng-click="chooseAlreadyJoinConsultPatient(item.patientId,item.patientName)"
+                     ng-click="chooseAlreadyJoinConsultPatient(item.patientId,item.patientName,item.sessionId)"
                      alt="">
                     <div><nobr>{{item.patientName|limitTo:6}}</nobr></div>
                     <div><nobr>{{transformDate(item.dateTime)}}</nobr></div>
@@ -296,10 +296,10 @@
                 <div ng-click="closeConsult()">
                     <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(9).png" alt=""/>
                     关闭</div>
-                <!--<div ng-click="tapShowButton('specialistTransfer')"
-                     ng-style="userType==distributor?{'display':'none'}:{'display':'block'}"
+                <div ng-click="tapShowButton('specialistTransfer')"
                         >
-                    专科转移</div>-->
+                    <!--ng-style="userType==distributor?{'display':'block'}:{'display':'none'}"-->
+                    专科转移</div>
             </div>
         </div>
     </div>
@@ -409,55 +409,41 @@
         </div>
         <div class="specialistListContent">
             <ul class="specialist">
-                <li><input type="checkbox">全选</li>
+                <li ng-click="selectedAllTransferSpecialist()"><input type="checkbox" ng-checked="selectetAllSpecialistPatient">全选</li>
                 <li>用户</li>
                 <li>当前回复医生</li>
                 <li>需转接的科室需转接的科室需转接的科室</li>
-                <li>按科室排序</li>
+                <li ng-click="getWaitTransferSpecialist()">按科室排序</li>
                 <li></li>
             </ul>
+            <!--ng-click="createSomeSpecialistPatient($index)"-->
             <div class="specialistContent">
-                <ul class="background">
-                    <li><input type="checkbox"></li>
-                    <li>用户</li>
-                    <li>当前回复医生</li>
-                    <li>需转接的科室</li>
-                    <li>发起会话</li>
-                    <li>删除</li>
-                </ul>
-                <ul>
-                    <li><input type="checkbox"></li>
-                    <li>用户</li>
-                    <li>当前回复医生</li>
-                    <li>需转接的科室</li>
-                    <li>发起会话</li>
-                    <li>删除</li>
+                <ul ng-repeat="item in alreadyJoinTransferSpecialist">
+                    <li><input type="checkbox" ng-checked="item.selectedAll" ng-disabled="item.currentDoctor != '无'" ng-click="choseOnePatient($index)"></li>
+                    <li>{{item.userName}}</li>
+                    <li>{{item.currentDoctor}}</li>
+                    <li>{{item.department}}</li>
+                    <li ng-click="createOneSpecialistPatient($index)"><input type="button" value="发起会话"/></li>
+                    <li ng-click="disposeTransferSpecialist($index)"><input type="button" value="删除" ng-disabled="item.currentDoctor != '无'"/></li>
                 </ul>
             </div>
         </div>
         <div class="specialistBottom">
-            <button>发起会话</button>
+            <input type="button" class="button" ng-click="createSomeSpecialistPatient()" value="发起会话"/>
         </div>
     </div>
     <!--专科转移-->
     <div class="specialistTransfer" ng-show='showFlag.specialistTransfer'>
         <div class="selectSpecialist">
             <span>选择科室
-            <select>
-            <option>皮肤科</option>
-            <option>眼科</option>
-            <option>口腔科</option>
-            <option>耳鼻喉科</option>
-            <option>妇产科</option>
-            <option>营养保健科</option>
-            <option>外科</option>
-            <option>中医科</option>
-            <option>预防接种科</option>
-            </select>
+                <select ng-model="info.selectedSpecialist"
+                        ng-options="date.departmentName for date in selectedSpecialistType">
+                    <option value="">-请选择-</option>
+                </select>
             </span>
         </div>
-        <button>确定</button>
-        <button>取消</button>
+        <button ng-click="addTransferSpecialistSubmit()">确定</button>
+        <button ng-click="closeSpecialistTransfer()">取消</button>
     </div>
     <!--等待接入-->
     <div class="xtsz-up  ddjr-up" id="ddjr_up" ng-show='showFlag.waitProcess'>

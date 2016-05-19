@@ -35,14 +35,14 @@ public class DoctorGroupInfoServiceImpl implements DoctorGroupInfoService {
             String list="";
             int times = 0;
             for(DoctorVo doctorMap:doctorList){
-                if(times==2){
+                if(times==4){
                     list = list.substring(0,list.length()-1);
                     break;
                 }
                 list = list + doctorMap.getId() + ";";
                 times++;
             }
-            list = doctorId + ";" + list;
+//            list = doctorId + ";" + list;
             doctorGroup.put("doctorGroupId",resultMap.getDoctorGroupId());
             doctorGroup.put("doctorGroupName",resultMap.getName());
             doctorGroup.put("description",resultMap.getDescription());
