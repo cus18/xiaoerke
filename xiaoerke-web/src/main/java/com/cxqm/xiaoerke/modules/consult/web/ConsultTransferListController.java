@@ -10,6 +10,7 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultTransferListVoService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.sys.entity.Dict;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.DictService;
@@ -19,10 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -74,6 +72,7 @@ public class ConsultTransferListController {
                 jsonObject.put("userName",consultTransfer.getSysUserName());
                 jsonObject.put("createDate",consultTransfer.getCreateDate());
                 jsonObject.put("department",consultTransfer.getDepartment());
+                jsonObject.put("userId",consultTransfer.getSysUserId());
                 jsonObject.put("id", consultTransfer.getId());
                 jsonArray.add(jsonObject);
             }
@@ -158,18 +157,27 @@ public class ConsultTransferListController {
     public @ResponseBody
     String updateConsultTransferByPrimaryKeys(@RequestBody HashMap<String,Object> params){
         String response = "failure";
+        List<HashMap<String,Object>> reqeustData =  (List<HashMap<String,Object>>)params.get("content");
+        ConsultSessionManager consultSessionManager=ConsultSessionManager.getSessionManager();
         ConsultTransferListVo consultTransferListVo = new ConsultTransferListVo();
+        List allId = new ArrayList();
+        HashMap<String,Object> data ;
+        if(reqeustData != null && reqeustData.size()>0){
+            for(int i=0;i<reqeustData.size();i++){
+                data = reqeustData.get(i);
+                allId.add(data.get("id"));
+            }
+        }
         if(StringUtils.isNotNull((String)params.get("status")) && !"ongoing".equalsIgnoreCase((String)params.get("status"))){
             consultTransferListVo.setStatus("complete");
         }
         if(StringUtils.isNotNull((String)params.get("delFlag")) && !"0".equalsIgnoreCase((String)params.get("delFlag"))){
             consultTransferListVo.setDelFlag("1");
         }
-        String[] allId =(String[])params.get("updateIds");
         int count =0;
-        if(allId != null && allId.length >0){
-            for(int i =0 ; i<allId.length;i++){
-                consultTransferListVo.setId(Integer.valueOf(allId[i]));
+        if(allId != null && allId.size() >0){
+            for(int i =0 ; i<allId.size();i++){
+                consultTransferListVo.setId((Integer)allId.get(i));
                 int result = consultTransferListVoService.updateConsultTransferByPrimaryKey(consultTransferListVo);
                 if(result >0){
                     count ++;
@@ -177,10 +185,12 @@ public class ConsultTransferListController {
                     break ;
                 }
             }
-            if(count == allId.length){
+            if(count == allId.size()){
                 response = "success";
+                consultSessionManager.refreshConsultTransferList(UserUtils.getUser().getId());
             }
         }
         return response;
     }
+
 }
