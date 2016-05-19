@@ -1,10 +1,13 @@
 package com.cxqm.xiaoerke.modules.insurance.web;
 
+import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.insurance.entity.InsuranceHospitalVo;
 import com.cxqm.xiaoerke.modules.insurance.entity.InsuranceRegisterService;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceHospitalService;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
+import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
+import com.cxqm.xiaoerke.modules.sys.service.BabyBaseInfoService;
 import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,10 +33,28 @@ public class InsuranceController {
 	@Autowired
 	InsuranceHospitalService insuranceHospitalService;
 
+    @Autowired
+    BabyBaseInfoService babyBaseInfoService;
+
 	   @RequestMapping(value = "/saveInsuranceRegisterService", method = {RequestMethod.POST, RequestMethod.GET})
 	   public
 	   @ResponseBody
 	   Map<String,Object> saveInsuranceRegisterService(@RequestBody Map<String, Object> params){
+           String sex = (String)params.get("sex");
+           String birthday = (String)params.get("birthday");
+           if(StringUtils.isNotNull(sex) && StringUtils.isNotNull(birthday)){
+               BabyBaseInfoVo babyBaseInfoVo = new BabyBaseInfoVo();
+               babyBaseInfoVo.setId(Integer.valueOf(params.get("babyId").toString()));
+               babyBaseInfoVo.setSex(sex);
+               SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+               try {
+                   babyBaseInfoVo.setBirthday(format.parse(birthday));
+               } catch (ParseException e) {
+                   e.printStackTrace();
+               }
+               babyBaseInfoService.updateByPrimaryKeySelective(babyBaseInfoVo);
+           }
+
 		   Map<String, Object> resultMap = new HashMap<String, Object>();
 		   InsuranceRegisterService insuranceRegisterService=new InsuranceRegisterService();
 		   insuranceRegisterService.setId(ChangzhuoMessageUtil.createRandom(true, 10));

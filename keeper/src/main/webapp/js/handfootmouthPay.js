@@ -3,6 +3,7 @@ var babySex = 1;//男孩
 var parentSex = 0;//妈妈
 var needPayMoney = 26.8;//手足口保险
 var babyID;
+var Ip = "localhost";
 
 $(function(){
     var param = '{routePath:"/wxPay/patientPay.do?serviceType=handfootmouth"}';
@@ -25,13 +26,13 @@ $(function(){
     });
 });
 
-
 var doRefresh = function(){
     $('#getShadow').hide();
     $('#getRemind').hide();
     $('#getBaby').hide();
     initDate();
 }
+
 //获取宝宝基本信息
 var getBabyInfo = function(){
     $.ajax({
@@ -65,11 +66,13 @@ var isHaveInsurance = function (object) {
         data: "{'babyId':'"+object.id+"','insuranceType':'2'}",
         contentType: "application/json; charset=utf-8",
         success: function(data){
+            getBaby(object);
             if(data.valid!=0){
                 $('#getRemind').show();
                 $('#getShadow').show();
             }else{
-                getBaby(object);
+                $('#getRemind').hide();
+                $('#getShadow').hide();
             }
         },
         dataType: "json"
@@ -89,7 +92,7 @@ var selectedBaby = function (index) {
 
 //添加宝宝
 var addBaby =function(){
-    window.location.href = "http://localhost/titan/insurance#/handfootmouthAddBaby";
+    window.location.href = "http://"+Ip+"/titan/insurance#/handfootmouthAddBaby";
 }
 
 //取消选择宝宝
@@ -137,13 +140,19 @@ var getBaby = function (object) {
 }
 //查看订单
 var lookOrderInfo = function () {
-    window.location.href = "http://localhost/titan/insurance#/insuranceOrderList";
+    $('#getRemind').hide();
+    $('#getShadow').hide();
+    window.location.href = "http://"+Ip+"/titan/insurance#/insuranceOrderList";
 }
 
 //取消重新填写宝宝信息
 var cancelRemind = function () {
     $('#getRemind').hide();
     $('#getShadow').hide();
+    $('#babyName').val("");
+    $('#birthday').val("");
+    babySex = 1;
+    $('.sex a').eq(0).addClass('select');
 }
 
 //支付
@@ -151,7 +160,9 @@ var payInsurance = function () {
     var flag = 0;
     if($('#babyName').val()!=undefined&&$('#babyName').val()!=""&&$('#birthday').val()!=undefined&&$('#birthday').val()!=""
         &&$("#parentName").val()!=undefined&&$("#parentName").val()!=""&&$("#IdCard").val()!=undefined&&$("#IdCard").val()!=""){
-
+        if(checkIdCard()==false){
+            return;
+        }
         $.each(babyList, function (index,value) {
             if(value.name!=$('#babyName').val()){
                 flag++;
@@ -162,7 +173,7 @@ var payInsurance = function () {
         if(flag==babyList.length){
             saveBaby($('#babyName').val(),babySex.toString(),$('#birthday').val());
         }else{
-            payLast(babyID,$("#IdCard").val(),$('#phone').val(),$("#parentName").val(),parentSex.toString());
+            payLast(babyID,babySex.toString(),$('#birthday').val(),$("#IdCard").val(),$('#phone').val(),$("#parentName").val(),parentSex.toString());
         }
     }else{
         alert("信息不能为空！");
@@ -174,11 +185,11 @@ var saveBaby = function (name,sex,birthday) {
     $.ajax({
         type: 'GET',
         url: "healthRecord/saveBabyInfo",
-        data: {name:name,sex:sex,birthDay:birthday},
+        data: {name:encodeURI(name),sex:sex,birthDay:birthday},
         contentType: "application/json; charset=utf-8",
         success: function(data){
             if(data.resultCode=='1'){
-                payLast(data.autoId,$("#IdCard").val(),$('#phone').val(),$("#parentName").val(),parentSex.toString());
+                payLast(data.autoId,babySex.toString(),$('#birthday').val(),$("#IdCard").val(),$('#phone').val(),$("#parentName").val(),parentSex.toString());
             }else{
                 alert("保存信息失败！");
             }
@@ -188,19 +199,19 @@ var saveBaby = function (name,sex,birthday) {
 }
 
 //保存订单并进行支付
-var payLast = function (id,card,phone,parentname,parentSex) {
+var payLast = function (id,babySex,babyBirthday,card,phone,parentname,parentSex) {
     recordLogs("SZKB_DDTX_WXZF");
     $.ajax({
         type: 'POST',
         async:false,
         url: "insurance/saveInsuranceRegisterService",
-        data: "{'babyId':'"+id+"','idCard':'"+card+"','parentPhone':'"+phone+"','insuranceType':'2','parentName':'"+parentname+"','parentType':'"+parentSex+"'}",
+        data: "{'babyId':'"+id+"','sex':'"+babySex+"','birthday':'"+babyBirthday+"','idCard':'"+card+"','parentPhone':'"+phone+"','insuranceType':'2','parentName':'"+parentname+"','parentType':'"+parentSex+"'}",
         contentType: "application/json; charset=utf-8",
         success: function(result){
             if(result.id!=""){
                 var insuranceId=result.id;
                 $('#payButton').attr('disabled',"true");//添加disabled属性
-                //window.location.href="http://localhost/titan/insurance#/handfootmouthPaySuccess/"+insuranceId;
+                //window.location.href="http://"+Ip+"/titan/insurance#/handfootmouthPaySuccess/"+insuranceId;
                 $.ajax({
                     url:"account/user/antiDogPay",// 跳转到 action
                     async:true,
@@ -224,7 +235,7 @@ var payLast = function (id,card,phone,parentname,parentSex) {
                             paySign:obj.paySign,  // 支付签名
                             success: function (res) {
                                 if(res.errMsg == "chooseWXPay:ok" ) {
-                                    window.location.href="http://localhost/titan/insurance#/handfootmouthPaySuccess/"+insuranceId;
+                                    window.location.href="http://"+Ip+"/titan/insurance#/handfootmouthPaySuccess/"+insuranceId;
                                 }else{
                                     alert("支付失败,请重新支付")
                                 }

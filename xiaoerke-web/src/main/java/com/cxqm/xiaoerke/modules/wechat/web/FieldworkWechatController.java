@@ -86,8 +86,9 @@ public class FieldworkWechatController {
      */
     @RequestMapping(value = "/getUserWechatMenId", method = {RequestMethod.POST, RequestMethod.GET})
     public String getUserWechatMenu(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
-            String code = request.getParameter("code");
+        String code = request.getParameter("code");
         String url = java.net.URLDecoder.decode(request.getParameter("url"), "utf-8");
+        System.out.println("yuanxing"+url);
         if ("1".equals(url)) {
             //引导页
             url = ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/guide";
@@ -166,8 +167,10 @@ public class FieldworkWechatController {
         }else if ("28".equals(url)){
             url = ConstantUtil.TITAN_WEB_URL + "/titan/firstPage/phoneConsult";
         }else if (url.indexOf("consultPhone")>-1){
+            System.out.println("begin"+url);
             String departmentName  = URLEncoder.encode(url.replace("consultPhone",""), "UTF-8");
             url =ConstantUtil.TITAN_WEB_URL +"titan/phoneConsult#/phoneConDoctorList/"+departmentName+",searchDoctorByDepartment,";
+            System.out.println("end"+url);
         }else if("29".equals(url)){
             //保险
             url = ConstantUtil.TITAN_WEB_URL + "titan/firstPage/insurance";

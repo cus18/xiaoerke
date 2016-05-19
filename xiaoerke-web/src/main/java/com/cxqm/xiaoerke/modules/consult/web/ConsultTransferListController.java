@@ -10,17 +10,18 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultTransferListVoService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.sys.entity.Dict;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.DictService;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
+import io.netty.channel.Channel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by jiangzhongge on 2016-5-13.
@@ -45,9 +46,12 @@ public class ConsultTransferListController {
 
     @RequestMapping(value="/findConsultTransferList",method = {RequestMethod.POST, RequestMethod.GET})
     public @ResponseBody
-    HashMap<String,Object> findAllConsultTransferListVo(@RequestParam(value ="sortBy",required=false) String sortBy){
+    HashMap<String,Object> findAllConsultTransferListVo(@RequestBody HashMap<String,Object> params){
         HashMap<String,Object> response = new HashMap<String, Object>();
+        JSONObject jsonObject;
+        JSONArray jsonArray = new JSONArray();
         ConsultTransferListVo consultTransferListVo = new ConsultTransferListVo();
+        String sortBy = (String)params.get("sortBy");
         if(StringUtils.isNotNull(sortBy ) && "order".equalsIgnoreCase(sortBy)){
             consultTransferListVo.setOrderBy("department");
         }
@@ -56,22 +60,27 @@ public class ConsultTransferListController {
         List<ConsultTransferListVo> consultTransferListVos= consultTransferListVoService.findAllConsultTransferListVo(consultTransferListVo);
         if(consultTransferListVos!= null && consultTransferListVos.size()>0){
             for(ConsultTransferListVo consultTransfer:consultTransferListVos){
+                jsonObject = new JSONObject();
                 RichConsultSession richConsultSession = new RichConsultSession();
                 richConsultSession.setUserId(consultTransfer.getSysUserId());
                 richConsultSession.setStatus("ongoing");
                 List<RichConsultSession> richConsultSessionlist = consultSessionService.selectRichConsultSessions(richConsultSession);
                 if(richConsultSessionlist != null && richConsultSessionlist.size()>0){
-                    response.put("currentDoctor", richConsultSessionlist.get(0).getCsUserName());
+                    jsonObject.put("currentDoctor", richConsultSessionlist.get(0).getCsUserName());
                 }else{
-                    response.put("currentDoctor", "无");
+                    jsonObject.put("currentDoctor", "无");
                 }
-                response.put("userName",consultTransfer.getSysUserName());
-                response.put("createDate",consultTransfer.getCreateDate());
-                response.put("department",consultTransfer.getDepartment());
-                response.put("id",consultTransfer.getId());
-                response.put("status","success");
+                jsonObject.put("userName",consultTransfer.getSysUserName());
+                jsonObject.put("createDate",consultTransfer.getCreateDate());
+                jsonObject.put("department",consultTransfer.getDepartment());
+                jsonObject.put("userId",consultTransfer.getSysUserId());
+                jsonObject.put("id", consultTransfer.getId());
+                jsonArray.add(jsonObject);
             }
+            response.put("data",jsonArray);
+            response.put("status","success");
         }else{
+            response.put("data",jsonArray);
             response.put("status","failure");
         }
         return response;
@@ -87,21 +96,27 @@ public class ConsultTransferListController {
         consultTransferListVo.setCreateBy(user.getId());
         consultTransferListVo.setCreateDate(date);
         consultTransferListVo.setDelFlag("0");
-        consultTransferListVo.setDepartment((String) params.get("department"));
-        consultTransferListVo.setSessionId((Integer) params.get("sessionId"));
+        HashMap<String,Object> requestData = (HashMap<String,Object>)params.get("consultData");
+        consultTransferListVo.setDepartment((String)requestData.get("department"));
+        consultTransferListVo.setSessionId((Integer)requestData.get("sessionId"));
         RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId((Integer) params.get("sessionId"));
-        if(richConsultSession !=null){
+        if(richConsultSession !=null) {
             consultTransferListVo.setSysUserId(richConsultSession.getUserId());
             consultTransferListVo.setSysUserName(richConsultSession.getUserName());
         }
-        consultTransferListVo.setSysUserIdCs(user.getId());
-        consultTransferListVo.setSysUserNameCs(user.getName());
-        consultTransferListVo.setStatus("ongoing");
-        int count = consultTransferListVoService.addConsultTransferListVo(consultTransferListVo);
-        if(count > 0){
-            responseResult.put("status","success");
+        List<ConsultTransferListVo> consultTransferListVos = consultTransferListVoService.findAllConsultTransferListVo(consultTransferListVo);
+        if(consultTransferListVos !=null && consultTransferListVos.size()>0){
+            responseResult.put("status","exist");
         }else{
-            responseResult.put("status","failure");
+            consultTransferListVo.setSysUserIdCs(user.getId());
+            consultTransferListVo.setSysUserNameCs(user.getName());
+            consultTransferListVo.setStatus("ongoing");
+            int count = consultTransferListVoService.addConsultTransferListVo(consultTransferListVo);
+            if(count > 0){
+                responseResult.put("status","success");
+            }else{
+                responseResult.put("status","failure");
+            }
         }
         return responseResult;
     }
@@ -121,12 +136,12 @@ public class ConsultTransferListController {
     public @ResponseBody
     HashMap<String,Object> findDoctorDepartment(){
         HashMap<String,Object> response = new HashMap<String, Object>();
-        List<Object> departmentList = consultDoctorInfoService.getConsultDoctorDepartment();
+        List<String> departmentList = consultDoctorInfoService.getConsultDoctorDepartment();
         JSONObject jsonObject;
         JSONArray jsonArray = new JSONArray();
         if(departmentList != null && departmentList.size()>0){
             for(int i=0; i<departmentList.size(); i++){
-                String departmentName = (String)departmentList.get(i);
+                String departmentName = departmentList.get(i);
                 jsonObject = new JSONObject();
                 jsonObject.put("departmentName",departmentName);
                 jsonArray.add(jsonObject);
@@ -141,22 +156,42 @@ public class ConsultTransferListController {
 
     @RequestMapping(value ="/updateConsultTransferByPrimaryKey",method = {RequestMethod.POST,RequestMethod.GET})
     public @ResponseBody
-    String updateConsultTransferByPrimaryKey(@RequestParam(value = "id",required=true)String id,
-                                             @RequestParam(value ="status",required = false)String status,
-                                             @RequestParam(value ="delFlag",required = false)String delFlag){
+    String updateConsultTransferByPrimaryKeys(@RequestBody HashMap<String,Object> params){
+        String response = "failure";
+        List<HashMap<String,Object>> reqeustData =  (List<HashMap<String,Object>>)params.get("content");
+        ConsultSessionManager consultSessionManager=ConsultSessionManager.getSessionManager();
         ConsultTransferListVo consultTransferListVo = new ConsultTransferListVo();
-        if(StringUtils.isNotNull(status) && !"ongoing".equalsIgnoreCase(status)){
+        List allId = new ArrayList();
+        HashMap<String,Object> data ;
+        if(reqeustData != null && reqeustData.size()>0){
+            for(int i=0;i<reqeustData.size();i++){
+                data = reqeustData.get(i);
+                allId.add(data.get("id"));
+            }
+        }
+        if(StringUtils.isNotNull((String)params.get("status")) && !"ongoing".equalsIgnoreCase((String)params.get("status"))){
             consultTransferListVo.setStatus("complete");
         }
-        if(StringUtils.isNotNull(delFlag) && !"0".equalsIgnoreCase(delFlag)){
+        if(StringUtils.isNotNull((String)params.get("delFlag")) && !"0".equalsIgnoreCase((String)params.get("delFlag"))){
             consultTransferListVo.setDelFlag("1");
         }
-        consultTransferListVo.setId(Integer.valueOf(id));
-        int count = consultTransferListVoService.updateConsultTransferByPrimaryKey(consultTransferListVo);
-        if(count > 0){
-            return "success";
-        }else{
-            return "failure";
+        int count =0;
+        if(allId != null && allId.size() >0){
+            for(int i =0 ; i<allId.size();i++){
+                consultTransferListVo.setId((Integer)allId.get(i));
+                int result = consultTransferListVoService.updateConsultTransferByPrimaryKey(consultTransferListVo);
+                if(result >0){
+                    count ++;
+                }else{
+                    break ;
+                }
+            }
+            if(count == allId.size()){
+                response = "success";
+                consultSessionManager.refreshConsultTransferList(UserUtils.getUser().getId());
+            }
         }
+        return response;
     }
+
 }

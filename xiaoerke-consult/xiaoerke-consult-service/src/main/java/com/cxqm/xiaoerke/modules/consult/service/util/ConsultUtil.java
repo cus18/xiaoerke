@@ -1,10 +1,7 @@
 package com.cxqm.xiaoerke.modules.consult.service.util;
 
-import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
-import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 
 import java.util.ArrayList;
 import java.util.Date;

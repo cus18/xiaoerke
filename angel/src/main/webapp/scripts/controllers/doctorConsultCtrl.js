@@ -17,8 +17,7 @@ angular.module('controllers', ['luegg.directives'])
                 }
             };
             $scope.loadingFlag = false;
-            $scope.socketServer1 = ""; //如果用了两台netty服务器，则需要开启两个socket链接，分别取链接不同的netty服务
-            $scope.socketServer2 = "";
+            $scope.socketServer = "";
             $scope.alreadyJoinPatientConversation = []; //已经加入会话的用户数据，一个医生可以有多个对话的用户，这些用户的数据，都保存在此集合中
             $scope.currentUserConversation = {}; //医生与当前正在进行对话用户的聊天数据，医生在切换不同用户时，数据变更到切换的用户上来。
             $scope.waitJoinNum = 0; //医生待接入的用户数，是动态变化的数
@@ -62,7 +61,7 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.userType = data.userType;
 
                         //创建与平台的socket连接
-                        $scope.initConsultSocket1();
+                        $scope.initConsultSocket();
 
                         getIframeSrc();
                         //获取通用回复列表
@@ -284,20 +283,20 @@ angular.module('controllers', ['luegg.directives'])
 
             /**会话操作区**/
                 //初始化socket链接
-            $scope.initConsultSocket1 = function () {
+            $scope.initConsultSocket = function () {
                 if (!window.WebSocket) {
                     window.WebSocket = window.MozWebSocket;
                 }
                 if (window.WebSocket) {
                     if($scope.userType=="distributor"){
-                        $scope.socketServer1 = new ReconnectingWebSocket("ws://xiaork.com:2048/ws&" +
+                        $scope.socketServer = new ReconnectingWebSocket("ws://xiaork.com:2048/ws&" +
                             "distributor&" + $scope.doctorId);//cs,user,distributor
                     }else if($scope.userType=="consultDoctor"){
-                        $scope.socketServer1 = new ReconnectingWebSocket("ws://xiaork.com:2048/ws&" +
+                        $scope.socketServer = new ReconnectingWebSocket("ws://xiaork.com:2048/ws&" +
                             "cs&" + $scope.doctorId);//cs,user,distributor
                     }
 
-                    $scope.socketServer1.onmessage = function (event) {
+                    $scope.socketServer.onmessage = function (event) {
                         var consultData = JSON.parse(event.data);
                         if(consultData.type==4){
                             processNotifyMessage(consultData);
@@ -312,13 +311,13 @@ angular.module('controllers', ['luegg.directives'])
                         }
                     };
 
-                    $scope.socketServer1.onopen = function (event) {
+                    $scope.socketServer.onopen = function (event) {
                         console.log("onopen",event.data);
                         //启动心跳监测
                         heartBeatCheck();
                     };
 
-                    $scope.socketServer1.onclose = function (event) {
+                    $scope.socketServer.onclose = function (event) {
                     };
 
                 } else {
@@ -344,7 +343,7 @@ angular.module('controllers', ['luegg.directives'])
                     "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                     "senderId": angular.copy($scope.doctorId)
                 };
-                $scope.socketServer1.send(JSON.stringify(heartBeatMessage));
+                $scope.socketServer.send(JSON.stringify(heartBeatMessage));
                 $scope.$apply();
             }
 
@@ -362,7 +361,7 @@ angular.module('controllers', ['luegg.directives'])
                 if (!window.WebSocket) {
                     return;
                 }
-                if ($scope.socketServer1.readyState == WebSocket.OPEN) {
+                if ($scope.socketServer.readyState == WebSocket.OPEN) {
                     var consultValMessage = "";
                     if($scope.userType=="distributor"){
                         var consultValMessage = {
@@ -384,7 +383,7 @@ angular.module('controllers', ['luegg.directives'])
                         };
                     }
 
-                    $scope.socketServer1.send(emotionSendFilter(JSON.stringify(consultValMessage)));
+                    $scope.socketServer.send(emotionSendFilter(JSON.stringify(consultValMessage)));
                     consultValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($scope.info.consultMessage)));
                     $scope.info.consultMessage = "";
                     updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
@@ -431,8 +430,8 @@ angular.module('controllers', ['luegg.directives'])
                         if (!window.WebSocket) {
                             return;
                         }
-                        if ($scope.socketServer1.readyState == WebSocket.OPEN) {
-                            $scope.socketServer1.send(JSON.stringify(consultValMessage));
+                        if ($scope.socketServer.readyState == WebSocket.OPEN) {
+                            $scope.socketServer.send(JSON.stringify(consultValMessage));
                             updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                         } else {
                             alert("连接没有开启.");

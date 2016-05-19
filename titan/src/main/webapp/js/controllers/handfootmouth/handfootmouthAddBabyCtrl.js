@@ -5,11 +5,12 @@ angular.module('controllers', ['ionic']).controller('handfootmouthAddBabyCtrl', 
               $location) {
         $scope.title = "添加宝宝";
         $scope.title0 = "添加宝宝";
-        $scope.sex1 = "boy";
+        $scope.sex = 1;
         $scope.boyLock = true;
         $scope.girlLock = false;
         $scope.titleLock = true;// 隐藏顶部菜单
         $scope.baby = {};
+        var Ip = "localhost";
 
 
         $scope.$on('$ionicView.enter',function() {
@@ -28,33 +29,28 @@ angular.module('controllers', ['ionic']).controller('handfootmouthAddBabyCtrl', 
         /* 选择性别*/
         $scope.selectSex = function(sex){
             if(sex=="boy"){
-                $scope.sex1 = "boy";
-                $scope.boyLock = true;
+                $scope.sex = 1;
             }
             else{
-                $scope.sex1 = "girl";
-                $scope.boyLock = false;
+                $scope.sex = 0;
             }
         };
         /**
          * 添加宝宝
          */
         $scope.saveBabyInfo = function(){
-            var name=$scope.baby.name;
-            var birthday=$("#birthday").val();
-            var sex=$scope.boyLock == true?1:0;
-            if(typeof(name) == "undefined"){
+
+            if($scope.baby.name==undefined||$scope.baby.name==""){
                 alert("姓名不能为空");
                 return;
             }
-            if(birthday == ""){
+            if($("#birthday").val() == ""||$("#birthday").val()==undefined){
                 alert("请选择宝宝生日");
                 return;
             }
-            saveBabyInfo.get({"sex":sex,"name":encodeURI(name),"birthDay":birthday}, function (data){
+            saveBabyInfo.get({"sex":$scope.sex.toString(),"name":encodeURI($scope.baby.name),"birthDay":$("#birthday").val()}, function (data){
                 if(data.resultCode=='1'){
-                    var babyid=data.autoId;
-                    window.location.href="http://localhost/keeper/wxPay/patientPay.do?serviceType=handfootmouth";
+                    window.location.href="http://"+Ip+"/keeper/wxPay/patientPay.do?serviceType=handfootmouth";
                 }
             });
 

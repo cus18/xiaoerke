@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.consult.service.impl;
 
+import java.net.InetSocketAddress;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +30,8 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 	private static final String WECHAT_USER_PARAM = "wechat.user.param";
 
 	private static final String WECHAT_DOCTOR_PARAM = "wechat.doctor.param";
+
+	private static final String USER_ADDRESS = "user.address";
 	
 	@Override
 	public RichConsultSession getConsultSessionBySessionId(Integer sessionId) {
@@ -60,6 +63,28 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 	public List<Object> getConsultSessionsBySessionIds(Collection<Object> sessionIds) {
 		List<Object> sessions = redisTemplate.opsForHash().multiGet(SESSIONID_CONSULTSESSION_KEY, sessionIds);
 		return sessions;
+	}
+
+	@Override
+	public void putUserIdIpAddressPair(InetSocketAddress inetSocketAddress, String userId) {
+		if(StringUtils.isNotNull(userId)||inetSocketAddress!=null){
+			redisTemplate.opsForHash().put(USER_ADDRESS, userId, inetSocketAddress);
+		}
+	}
+
+	@Override
+	public InetSocketAddress getIpAddressByUserId(String userId) {
+		if(StringUtils.isNotNull(userId)){
+			Object userIpAddress = redisTemplate.opsForHash().get(USER_ADDRESS, userId);
+			return userIpAddress == null ? null : (InetSocketAddress) userIpAddress;
+		}else{
+			return null;
+		}
+	}
+
+	@Override
+	public void removeIpAddressByUserId(String userId){
+		redisTemplate.opsForHash().delete(USER_ADDRESS, userId);
 	}
 
 	@Override
