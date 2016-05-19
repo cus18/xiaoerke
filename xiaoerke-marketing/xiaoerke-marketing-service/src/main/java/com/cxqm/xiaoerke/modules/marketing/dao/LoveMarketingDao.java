@@ -23,4 +23,10 @@ public interface LoveMarketingDao {
     Map<String,Object> getOpenidById(String id);
 
     Map<String,Object> getOpenidByTopMarketer(String id);
+
+    int transcendNum(String loveMoney);
+
+    int countMoney();
+
+    List<Map<String,Object>> getAll();
 }

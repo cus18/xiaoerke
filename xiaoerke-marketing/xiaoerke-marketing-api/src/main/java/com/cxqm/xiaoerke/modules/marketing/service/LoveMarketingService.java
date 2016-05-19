@@ -26,8 +26,6 @@ public interface LoveMarketingService {
     String getUserQRcode(String openid) throws Exception;
 
 
-
-
     Map<String,Object> getLoveMarketingByOpenid(String openid);
 
     int saveLoveMarketing(LoveMarketing loveMarketing);
@@ -38,15 +36,13 @@ public interface LoveMarketingService {
 
     LoveActivityComment findLoveActivityComment();
 
-    String getNewPosterImage(Map<String,Object> m) throws Exception;
-
-
-    String UpdatePosterImage(Map<String,Object> m) throws Exception;
-
-
     List<Map<String,Object>> getOpenidByMarketer(String id);
 
     void updateInviteMan(String id,String openid);
 
+    Map<String,Object> getUserInfo(String openid);
 
+    List<Map<String,Object>> getAll();
+
+    int countMoney();
 }

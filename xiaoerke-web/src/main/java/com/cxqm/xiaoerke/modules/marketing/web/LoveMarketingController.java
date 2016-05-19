@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Controller
@@ -30,45 +27,7 @@ public class LoveMarketingController {
     @Autowired
     private SystemService systemService;
 
-    /**
-     * 生成海报
-     * */
-    @RequestMapping(value = "/MarkeImage", method = {RequestMethod.POST, RequestMethod.GET})
-    public @ResponseBody
-    Map<String, Object> MarkeImage(HttpSession session)throws  Exception {
-        Map<String,Object> map=new HashMap<String, Object>();
-//        String openid=session.getAttribute("openId").toString();
-        String openid="o3_NPwoQ8c9RZTTM_Y5npZ_kQ02Y";
-//         openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
-        Map<String,Object> map1=loveMarketingService.getLoveMarketingByOpenid(openid);
-        String id="";
-        if(map1!=null){
-             id=map1.get("id").toString();
-        }else {
-            LoveMarketing modle = new LoveMarketing();
-            modle.setOpenid(openid);
-            loveMarketingService.saveLoveMarketing(modle);
-        }
-        if(!id.equals("")){
-            Map<String,Object> m= loveMarketingService.getNicknameAndHeadImageByOpenid(openid);
-            m.put("openid",openid);
-            m.put("id",Integer.parseInt(id)-521000000);
-            List<Map<String,Object>> openidList=loveMarketingService.getOpenidByMarketer(id);
-            if(openidList.size()>0){
-                m.put("openidList",openidList);
-                String posterImage = loveMarketingService.UpdatePosterImage(m);
-                map.put("src",posterImage);
-                return  map;
-            }else {
-                String posterImage = loveMarketingService.getNewPosterImage(m);
-                map.put("src",posterImage);
-                return  map;
-            }
-        }else{
-            map.put("src","addFault");
-            return  map;
-        }
-    }
+
 
     @RequestMapping(value="/addComment",method = {RequestMethod.POST, RequestMethod.GET})
     public @ResponseBody
@@ -103,6 +62,45 @@ public class LoveMarketingController {
         }
     }
 
+    @RequestMapping(value="/visitPage",method = {RequestMethod.POST, RequestMethod.GET})
+    public @ResponseBody Map<String , Object> visitPage(HttpSession session){
+        //        String openid=session.getAttribute("openId").toString();
+        String openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+        session.setAttribute("openId","o3_NPwrrWyKRi8O_Hk8WrkOvvNOk");
+        Map<String , Object> m= loveMarketingService.getUserInfo(openid);
+        if(m==null){
+            m=new HashMap<String, Object>();
+            m.put("fault","null");
+            return  m;
+        }
+        m.put("headImage",loveMarketingService.getNicknameAndHeadImageByOpenid(openid));
+        return  m;
+    }
+
+    @RequestMapping(value="/getAllLoverHeart",method = {RequestMethod.POST, RequestMethod.GET})
+    public @ResponseBody Map<String , Object> getAll(HttpSession session){
+       List<Map<String,Object>> list=loveMarketingService.getAll();
+        List<Map<String,Object>> userList=new ArrayList<Map<String, Object>>();
+        for(int i=0;i<list.size();i++){
+            String openid=list.get(i).get("openid").toString();
+            Map<String,Object> user=loveMarketingService.getNicknameAndHeadImageByOpenid(openid);
+            String subscribe=user.get("subscribe").toString();
+            if(subscribe.equals(0)){
+                continue;
+            }else{
+                userList.add(user);
+                if(userList.size()==5){
+                    break;
+                }
+            }
+        }
+        Map<String,Object> result=new HashMap<String, Object>();
+        result.put("countMoney",loveMarketingService.countMoney());
+        result.put("counts", list.size());
+        result.put("userImageList",userList);
+        return result;
+
+    }
 
 
 

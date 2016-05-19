@@ -391,7 +391,7 @@ and apr.`status`='success' and DATE_FORMAT(prs.create_date,'%Y-%m-%d')=DATE_FORM
 		FROM
 			consult_session
 		WHERE
-			DATE_FORMAT(update_time, '%Y-%m-%d') = DATE_FORMAT(#{create_date}, '%Y-%m-%d')
+			DATE_FORMAT(create_time, '%Y-%m-%d') = DATE_FORMAT(#{create_date}, '%Y-%m-%d')
 		AND state = 'completed'
 	</select>
 
