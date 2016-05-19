@@ -14,6 +14,10 @@
 
 
             $scope.doRefresh = function(){
+
+                var pData = {logContent:encodeURI("YFMM_OPEN")};
+                $http({method:'post',url:'util/recordLogs',params:pData});
+
                 var  host2=document.domain;
                 var timestamp;//时间戳
                 var nonceStr;//随机字符串

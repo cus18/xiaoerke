@@ -156,8 +156,9 @@ public class ConsultTransferListController {
 
     @RequestMapping(value ="/updateConsultTransferByPrimaryKey",method = {RequestMethod.POST,RequestMethod.GET})
     public @ResponseBody
-    String updateConsultTransferByPrimaryKeys(@RequestBody HashMap<String,Object> params){
-        String response = "failure";
+    HashMap<String,Object> updateConsultTransferByPrimaryKeys(@RequestBody HashMap<String,Object> params){
+        HashMap<String,Object> response = new HashMap<String,Object>();
+        response.put("status","failure");
         List<HashMap<String,Object>> reqeustData =  (List<HashMap<String,Object>>)params.get("content");
         ConsultSessionManager consultSessionManager=ConsultSessionManager.getSessionManager();
         ConsultTransferListVo consultTransferListVo = new ConsultTransferListVo();
@@ -187,7 +188,7 @@ public class ConsultTransferListController {
                 }
             }
             if(count == allId.size()){
-                response = "success";
+                response.put("status","success");
                 consultSessionManager.refreshConsultTransferList(UserUtils.getUser().getId());
             }
         }

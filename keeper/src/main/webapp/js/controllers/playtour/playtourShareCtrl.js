@@ -8,7 +8,9 @@ angular.module('controllers', ['ionic']).controller('playtourShareCtrl', [
         var imgType = 6;
         $scope.title0="分享";
         $scope.$on('$ionicView.enter', function(){
-            
+
+            var pData = {logContent:encodeURI("ZXFX_OPEN")};
+            $http({method:'post',url:'util/recordLogs',params:pData});
             $scope.sharetou = false;
             $scope.shareimg = false;//分享图片
             imgType=$stateParams.id;
@@ -30,6 +32,8 @@ angular.module('controllers', ['ionic']).controller('playtourShareCtrl', [
                     $scope.shareImg = shareimgList[2];
                 }
             }else {
+                var pData = {logContent:encodeURI("ZXFX_OPEN_SHARE")};
+                $http({method:'post',url:'util/recordLogs',params:pData});
                 imgType=1;
             }
         }
