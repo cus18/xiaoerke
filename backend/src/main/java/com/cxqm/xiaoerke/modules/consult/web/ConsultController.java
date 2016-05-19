@@ -176,6 +176,10 @@ public class ConsultController extends BaseController {
 	 */
 	@RequestMapping(value = "exportForm")
 	public String exportForm(HttpServletRequest request,HttpServletResponse response, Model model) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		calendar.add(Calendar.DATE, -1);
+		model.addAttribute("yesterday",DateUtils.DateToStr(calendar.getTime(),"date"));
 		model.addAttribute("type",request.getParameter("type"));
 		return "modules/consult/exportForm";
 	}

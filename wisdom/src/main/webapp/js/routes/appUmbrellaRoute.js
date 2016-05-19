@@ -6,7 +6,7 @@ define(['appUmbrella'], function(app){
         .config(['$stateProvider','$urlRouterProvider',
             function($stateProvider,$urlRouterProvider) {
                 var loadFunction = function($templateCache, $ocLazyLoad, $q, $http,name,files,htmlURL){
-                    lazyDeferred = $q.defer();
+                   var lazyDeferred = $q.defer();
                     return $ocLazyLoad.load ({
                         name: name,
                         files: files

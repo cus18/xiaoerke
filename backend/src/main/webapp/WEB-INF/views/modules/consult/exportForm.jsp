@@ -28,7 +28,7 @@
 	<form:form id="inputForm" modelAttribute="" action="${ctx}/consult/dataExport" method="post" class="form-horizontal"><%--
 		<form:hidden path="email" htmlEscape="false" maxlength="255" class="input-xlarge"/>
 		<sys:ckfinder input="email" type="files" uploadPath="/mytask" selectMultiple="false"/> --%>
-		<input type="text" name="type" value="${type}"/>
+		<input type="hidden" name="type" value="${type}"/>
 		<div class="control-group">
 			<label class="control-label">选择时间:</label>
 			<div class="controls">
