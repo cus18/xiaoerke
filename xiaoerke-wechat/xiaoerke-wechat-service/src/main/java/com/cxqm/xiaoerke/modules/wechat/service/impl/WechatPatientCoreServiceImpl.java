@@ -544,7 +544,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			textMessage.setCreateTime(new Date().getTime());
 			textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
 			textMessage.setFuncFlag(0);
-			textMessage.setContent("1、点击左下角“小键盘”输入文字或语音,即可咨询疾病或保健问题\t\t\n 2、免费在线咨询时间:\n小儿内科:   24小时全天\n小儿皮肤科:   8:00~17:00\n小儿其他专科:(小儿外科、小儿眼科、小儿耳鼻喉科、小儿口腔科、小儿营养保健科、小儿中医科)   19:00~21:00 \n妇产科   19:00~21:00");
+			textMessage.setContent("1、点击左下角“小键盘”输入文字或语音,即可咨询疾病或保健问题\t\t\n 2、免费在线咨询时间:\n小儿内科:   24小时全天\n小儿皮肤科:   9:00~22:00\n营养保健科:   9:00~22:00\n小儿其他专科:(外科、眼科、耳鼻喉科、口腔科、预防保健科、中医科)   19:00~21:00 \n妇产科   19:00~22:00");
 
 			respMessage = MessageUtil.textMessageToXml(textMessage);
 			memberService.sendExtendOldMemberWechatMessage(xmlEntity.getFromUserName());
