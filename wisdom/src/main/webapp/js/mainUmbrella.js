@@ -35,7 +35,7 @@ require.config({
             exports: 'angular-sanitize'
         },
         'ocLazyLoad': ['angular'],
-        'appNutrition':['ocLazyLoad'],
+        'appUmbrella':['ocLazyLoad'],
     }
 });
 
