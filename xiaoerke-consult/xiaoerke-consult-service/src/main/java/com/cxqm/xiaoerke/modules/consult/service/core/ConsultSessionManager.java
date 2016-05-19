@@ -279,7 +279,7 @@ public class ConsultSessionManager {
 				//通过一个随机方法，从doctorOnLineList选择一个医生，为用户提供服务
 				Random rand = new Random();
 				if(doctorOnLineList!=null && doctorOnLineList.size()>0){
-					int indexCS = rand.nextInt(doctorOnLineList.size()+1);
+					int indexCS = rand.nextInt(doctorOnLineList.size());
 					consultSession.setCsUserId((String) doctorOnLineList.get(indexCS).get("csUserId"));
 					csChannel = (Channel) doctorOnLineList.get(indexCS).get("channel");
 					if(csChannel.isActive()){

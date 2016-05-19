@@ -418,4 +418,55 @@
     VALUES
     (#{praiseId},#{patientRegisterServiceId},#{patientId},#{phone},#{appraise},#{star},#{praise_date},#{symptom},#{impression},#{zan},#{sys_doctor_id},#{reason});
   </insert>
+
+    <!--导出不满意数据 @author sunxiao-->
+    <select id="findDissatisfiedList" resultType="java.util.Map"
+            parameterType="java.util.Map">
+        SELECT
+        c.serviceAttitude,
+        c.openid,
+        c.doctorid,
+        c.createtime,
+        c.content,
+        c.dissatisfied,
+        su.name as doctorName,
+        su.email,
+        su.phone,
+        sa.nickname
+        FROM
+        customerEvaluation c
+        LEFT JOIN sys_user su ON c.doctorId = su.id
+        LEFT JOIN sys_doctor sd ON su.id = sd.sys_user_id
+        LEFT JOIN sys_attention sa ON c.openid = sa.openid
+        WHERE
+        serviceAttitude = '1'
+        AND c.createtime BETWEEN #{fromDate}
+        AND #{toDate}
+    </select>
+
+    <!--导出送心意数据 @author sunxiao-->
+    <select id="findReceiveTheMindList" resultType="java.util.Map"
+            parameterType="java.util.Map">
+        SELECT
+        ce.serviceAttitude,
+        ce.openid,
+        ce.doctorid,
+        ce.createtime,
+        ce.content,
+        ce.redpacket,
+        su.name as doctorName,
+        su.phone,
+        sa.nickname
+        FROM
+        customerEvaluation ce
+        LEFT JOIN sys_user su ON su.id = ce.doctorId
+        LEFT JOIN sys_doctor sd ON sd.sys_user_id = su.id
+        LEFT JOIN sys_attention sa ON sa.openid = ce.openid
+        WHERE
+        serviceAttitude in ('3','5')
+        AND createtime BETWEEN #{fromDate}
+        AND #{toDate}
+        GROUP BY
+        openid
+    </select>
 </mapper>
