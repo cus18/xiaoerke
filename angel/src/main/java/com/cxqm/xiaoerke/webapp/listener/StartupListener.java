@@ -20,19 +20,19 @@ public class StartupListener implements ServletContextListener {
 		    	final ChatServer chatServer = new ChatServer();
 				ChannelFuture f1 = chatServer.start(new InetSocketAddress(2048));
 
-				final RpcServer rpcServer = new RpcServer();
-				ChannelFuture f2 = rpcServer.start(new InetSocketAddress(2049));
+//				final RpcServer rpcServer = new RpcServer();
+//				ChannelFuture f2 = rpcServer.start(new InetSocketAddress(2049));
 
 				System.out.println("server start................");
 				Runtime.getRuntime().addShutdownHook(new Thread() {
 					@Override
 					public void run() {
 						chatServer.destroy();
-						rpcServer.destroy();
+//						rpcServer.destroy();
 					}
 				});
 				f1.channel().closeFuture().syncUninterruptibly();
-				f2.channel().closeFuture().syncUninterruptibly();
+//				f2.channel().closeFuture().syncUninterruptibly();
 		    }
 		};
 		
