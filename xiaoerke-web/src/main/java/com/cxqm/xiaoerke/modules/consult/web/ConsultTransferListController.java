@@ -46,11 +46,12 @@ public class ConsultTransferListController {
 
     @RequestMapping(value="/findConsultTransferList",method = {RequestMethod.POST, RequestMethod.GET})
     public @ResponseBody
-    HashMap<String,Object> findAllConsultTransferListVo(@RequestParam(value ="sortBy",required=false) String sortBy){
+    HashMap<String,Object> findAllConsultTransferListVo(@RequestBody HashMap<String,Object> params){
         HashMap<String,Object> response = new HashMap<String, Object>();
         JSONObject jsonObject;
         JSONArray jsonArray = new JSONArray();
         ConsultTransferListVo consultTransferListVo = new ConsultTransferListVo();
+        String sortBy = (String)params.get("sortBy");
         if(StringUtils.isNotNull(sortBy ) && "order".equalsIgnoreCase(sortBy)){
             consultTransferListVo.setOrderBy("department");
         }
