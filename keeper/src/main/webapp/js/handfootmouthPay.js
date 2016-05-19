@@ -66,11 +66,13 @@ var isHaveInsurance = function (object) {
         data: "{'babyId':'"+object.id+"','insuranceType':'2'}",
         contentType: "application/json; charset=utf-8",
         success: function(data){
+            getBaby(object);
             if(data.valid!=0){
                 $('#getRemind').show();
                 $('#getShadow').show();
             }else{
-                getBaby(object);
+                $('#getRemind').hide();
+                $('#getShadow').hide();
             }
         },
         dataType: "json"
@@ -138,6 +140,8 @@ var getBaby = function (object) {
 }
 //查看订单
 var lookOrderInfo = function () {
+    $('#getRemind').hide();
+    $('#getShadow').hide();
     window.location.href = "http://"+Ip+"/titan/insurance#/insuranceOrderList";
 }
 
@@ -145,6 +149,10 @@ var lookOrderInfo = function () {
 var cancelRemind = function () {
     $('#getRemind').hide();
     $('#getShadow').hide();
+    $('#babyName').val("");
+    $('#birthday').val("");
+    babySex = 1;
+    $('.sex a').eq(0).addClass('select');
 }
 
 //支付

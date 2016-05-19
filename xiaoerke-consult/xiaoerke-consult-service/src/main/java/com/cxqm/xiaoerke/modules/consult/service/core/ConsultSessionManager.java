@@ -2,11 +2,13 @@ package com.cxqm.xiaoerke.modules.consult.service.core;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.config.Global;
+import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.RandomUtils;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
@@ -15,11 +17,17 @@ import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.impl.UserInfoServiceImpl;
+import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
+import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
+import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.net.InetSocketAddress;
 import java.util.*;
@@ -29,8 +37,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+
 public class ConsultSessionManager {
-	
+
+	@Autowired
+	private WechatAttentionService wechatAttentionService;
+
 	private transient static final Logger log = LoggerFactory.getLogger(ConsultSessionManager.class);
 	
 	public static final String REQUEST_TYPE_CHAT = "chat";
@@ -279,7 +292,7 @@ public class ConsultSessionManager {
 				//通过一个随机方法，从doctorOnLineList选择一个医生，为用户提供服务
 				Random rand = new Random();
 				if(doctorOnLineList!=null && doctorOnLineList.size()>0){
-					int indexCS = rand.nextInt(doctorOnLineList.size()+1);
+					int indexCS = rand.nextInt(doctorOnLineList.size());
 					consultSession.setCsUserId((String) doctorOnLineList.get(indexCS).get("csUserId"));
 					csChannel = (Channel) doctorOnLineList.get(indexCS).get("channel");
 					if(csChannel.isActive()){
@@ -555,6 +568,124 @@ public class ConsultSessionManager {
 				iterator.remove();
 				userChannelMapping.remove(key);
 				sessionRedisCache.removeIpAddressByUserId(key);
+			}
+		}
+	}
+
+	/**
+	 * Created by jiangzhongge on 2016-5-18.
+	 * 医生选择一个用户，主动跟用户发起咨询会话
+	 */
+	public HashMap<String, Object> createConsultSession(String userId) {
+		//根据用户ID去查询，从历史会话记录中，获取用户最近的一条聊天记录，根据source判断会话来源
+		HashMap<String, Object> response= new HashMap<String, Object>();
+		RichConsultSession richConsultSession = new RichConsultSession();
+		richConsultSession.setStatus(null);
+		richConsultSession.setUserId(userId);
+		List<RichConsultSession> richConsultSessions = consultSessionService.selectRichConsultSessions(richConsultSession);
+		if (StringUtils.listNotNull(richConsultSessions)) {
+			richConsultSession = richConsultSessions.get(0);
+		}
+
+		if (null != richConsultSession.getSource() && richConsultSession.getSource().equals("wxcxqm")) {
+
+			SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
+			sysWechatAppintInfoVo.setOpen_id(userId);
+			SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
+			String userName = userId.substring(userId.length() - 8, userId.length());
+			if (wechatAttentionVo != null) {
+				if (StringUtils.isNotNull(wechatAttentionVo.getWechat_name())) {
+					userName = wechatAttentionVo.getWechat_name();
+				}
+			}
+			//判断此用户是否有正在处于转接状态的会话，如果有正在转接(waitting状态)的会话,返回提示此次会话创建失败
+			ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = new ConsultSessionForwardRecordsVo();
+			consultSessionForwardRecordsVo.setConversationId(Long.valueOf(richConsultSession.getId()));
+			consultSessionForwardRecordsVo.setStatus("waiting");
+			List<ConsultSessionForwardRecordsVo> consultSessionForwardRecordsVos = consultSessionForwardRecordsService.selectConsultForwardList(consultSessionForwardRecordsVo);
+			if (consultSessionForwardRecordsVos.size() > 0) {
+				response.put("result", "existTransferSession");
+			} else {
+				Query query = (new Query()).addCriteria(where("userId").is(richConsultSession.getUserId())).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
+				ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(query);
+
+				if (DateUtils.pastHour(consultSessionStatusVo.getLastMessageTime()) < 48L) {
+					//如果目前用户没有正在转接的会话，而存在正在进行的会话
+					if (richConsultSession.getStatus().equals("ongoing")) {
+						String doctorManagerStr = Global.getConfig("doctorManager.list");
+						String csUserId = UserUtils.getUser().getId();
+						if (doctorManagerStr.indexOf(csUserId) != -1) {
+							//此医生为管理员医生，有权限抢过会话，将会话抢过来
+							richConsultSession.setCsUserId(csUserId);
+							setRichConsultSession(response, richConsultSession, userName);
+						} else {
+							//如果是普通医生，没有权限抢断会话，直接返回提升没有权限操作
+							response.put("result", "noLicenseTransfer");
+						}
+						//如果用户当前没有任何会话建立，判断用户最近的一次咨询时间，
+						// 是否在48小时以内，如果已经超过了48小时，则提示医生已经超过48小时，
+						// 无法创建会话，如果没有超过48小时，则成功创建会话
+					} else {
+						richConsultSession.setCsUserId(UserUtils.getUser().getId());
+						setRichConsultSession(response, richConsultSession, userName);
+					}
+				} else {
+					response.put("result", "exceed48Hours");
+				}
+			}
+		} else if (null != richConsultSession.getSource() && richConsultSession.getSource().equals("h5cxqm")) {
+			User user = systemService.getUser(userId);
+			if (user != null) {
+			}
+			response.put("result", "notOnLine");
+		} else {
+			response.put("result", "failure");
+		}
+		return response;
+	}
+
+	private void setRichConsultSession(HashMap<String, Object> response, RichConsultSession richConsultSession, String userName) {
+		richConsultSession.setCsUserName(UserUtils.getUser().getName());
+		richConsultSession.setUserName(userName);
+		richConsultSession.setNickName(userName);
+		ConsultSessionManager.getSessionManager().putSessionIdConsultSessionPair(richConsultSession.getId(), richConsultSession);
+		ConsultSessionManager.getSessionManager().putUserIdSessionIdPair(richConsultSession.getUserId(), richConsultSession.getId());
+		ConsultSession consultSession = new ConsultSession();
+		consultSession.setId(richConsultSession.getId());
+		consultSession.setCsUserId(richConsultSession.getCsUserId());
+		consultSession.setStatus("ongoing");
+		int flag = consultSessionService.updateSessionInfo(consultSession);
+		if (flag > 0) {
+			response.put("result", "success");
+			response.put("userId", richConsultSession.getUserId());
+		} else {
+			response.put("result", "failure");
+		}
+	}
+
+	/**
+	 * Created by jiangzhongge on 2016-5-18.
+	 * 通知所有在线接诊员刷新转诊列表
+	 */
+	public void refreshConsultTransferList(String distributorId){
+		Map<String,Channel>  csUserChannelMap= ConsultSessionManager.getSessionManager().getCsUserChannelMapping();
+		String distributorsStr = Global.getConfig("distributors.list");
+		List distributorsList = Arrays.asList(distributorsStr.split(";"));
+		JSONObject csobj = new JSONObject();
+		//通知用户，告诉会有哪个医生或者接诊员提供服务
+		csobj.put("type",4);
+		csobj.put("notifyType","3001");
+		TextWebSocketFrame csframe = new TextWebSocketFrame(csobj.toJSONString());
+		distributorsList.remove(distributorId);
+		if(distributorsList != null && distributorsList.size()>0){
+			for(Object object : distributorsList){
+				String distributorid = (String)object;
+				if(csUserChannelMap !=null  && csUserChannelMap.size()>0){
+					Channel channel = csUserChannelMap.get(distributorid);
+					if(channel.isActive()){
+						channel.writeAndFlush(csframe.retain());
+					}
+				}
 			}
 		}
 	}

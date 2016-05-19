@@ -399,4 +399,15 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 		return patientRegisterPraiseDao.getCustomerEvaluationListByInfo(map);
 	}
 
+	//查询送心意数据， sunxiao
+	@Override
+	public List<Map<String, Object>> findReceiveTheMindList(Map map) {
+		return patientRegisterPraiseDao.findReceiveTheMindList(map);
+	}
+
+	//查询不满意数据， sunxiao
+	@Override
+	public List<Map<String, Object>> findDissatisfiedList(Map map) {
+		return patientRegisterPraiseDao.findDissatisfiedList(map);
+	}
 }
