@@ -209,7 +209,31 @@ public class WechatDoctorCoreServiceImpl implements WechatDoctorCoreService {
                     map.put("openid",xmlEntity.getFromUserName());
                     map.put("longitude",xmlEntity.getLongitude());
                     wechatInfoDao.insertCustomerLocation(map);
+                }   else if (eventType.equals(MessageUtil.EVENT_TYPE_CLICK)){
+                    if("38".equals(xmlEntity.getEventKey())){
+                        List<Article> articleList = new ArrayList<Article>();
+                        // 创建图文消息
+                        NewsMessage newsMessage = new NewsMessage();
+                        newsMessage.setToUserName(xmlEntity.getFromUserName());
+                        newsMessage.setFromUserName(xmlEntity.getToUserName());
+                        newsMessage.setCreateTime(new Date().getTime());
+                        newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+                        newsMessage.setFuncFlag(0);
+                        Article article = new Article();
+                        article.setTitle("宝大夫专家版功能介绍");
+                        article.setDescription("医生大大,向您讲讲宝大夫专家版如何使用!");
+                        article.setPicUrl("http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/%E7%BC%A9%E7%95%A5%E5%9B%BE.png");
+                        article.setUrl("http://url.cn/28OjeMa");
+                        articleList.add(article);
+                        // 设置图文消息个数
+                        newsMessage.setArticleCount(articleList.size());
+                        // 设置图文消息包含的图文集合
+                        newsMessage.setArticles(articleList);
+                        // 将图文消息对象转换成xml字符串
+                        respMessage = MessageUtil.newsMessageToXml(newsMessage);
+                    }
                 }
+
             }
         }
         else
