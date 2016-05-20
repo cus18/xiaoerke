@@ -509,7 +509,6 @@ angular.module('controllers', ['luegg.directives'])
                 if (!window.WebSocket) {
                     return;
                 }
-                console.log($scope.currentUserConversation.serverAddress);
                 if($scope.currentUserConversation.serverAddress==$scope.firstAddress){
                     if ($scope.socketServerFirst.readyState == WebSocket.OPEN) {
                         var consultValMessage = "";
@@ -540,7 +539,7 @@ angular.module('controllers', ['luegg.directives'])
                     } else {
                         alert("连接没有开启.");
                     }
-                }else if($scope.currentUserConversation.serverAddress==$scope.secondAddress){
+                }else{
                     if ($scope.socketServerSecond.readyState == WebSocket.OPEN) {
                         var consultValMessage = "";
                         if($scope.userType=="distributor"){
