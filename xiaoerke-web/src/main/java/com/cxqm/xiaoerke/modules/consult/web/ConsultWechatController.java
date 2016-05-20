@@ -141,15 +141,11 @@ public class ConsultWechatController extends BaseController {
                 consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
                 csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
                 if(!csChannel.isActive()){
-                    consultSession.setStatus(ConsultSession.STATUS_COMPLETED);
-                    consultSessionService.updateSessionInfo(consultSession);
+                    //保存聊天记录
+                    consultRecordService.buildRecordMongoVo(userId, String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)), messageContent, consultSession);
 
-                    createWechatConsultSessionMap = ConsultSessionManager.getSessionManager().createUserWXConsultSession(consultSession);
-                    if(createWechatConsultSessionMap!=null){
-                        csChannel = (Channel)createWechatConsultSessionMap.get("csChannel");
-                        consultSession = (RichConsultSession)createWechatConsultSessionMap.get("consultSession");
-                        sessionId = consultSession.getId();
-                    }
+                    //更新会话操作时间
+                    consultRecordService.saveConsultSessionStatus(consultSession);
                 }
             }else{//如果此用户是第一次发送消息，则sessionId为空
                 consultSession.setCreateTime(new Date());
