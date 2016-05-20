@@ -142,8 +142,6 @@ public class ConsultSessionManager {
 	private void doCreateSocketInitiatedByUser(String userId, String source,Channel channel){
 		userChannelMapping.put(userId, channel);
 		channelUserMapping.put(channel, userId);
-		//将普通用户的ID和IP地址放入到redis中
-		sessionRedisCache.putUserIdIpAddressPair((InetSocketAddress) channel.localAddress(), userId);
 	}
 
 	public RichConsultSession createUserH5ConsultSession(String userId,Channel channel,String source){
@@ -160,7 +158,7 @@ public class ConsultSessionManager {
 			consultSession = new RichConsultSession();
 			consultSession.setCreateTime(new Date());
 			InetSocketAddress address = (InetSocketAddress) channel.localAddress();
-			consultSession.setServerAddress(address.getHostName());
+			consultSession.setServerAddress(String.valueOf(address.getAddress()).replace("/",""));
 			consultSession.setUserId(userId);
 			consultSession.setUserName(user.getName() == null ? user.getLoginName() : user.getName());
 			consultSession.setSource(source);
@@ -564,7 +562,6 @@ public class ConsultSessionManager {
 			if (userId.equals(key)) {
 				iterator.remove();
 				userChannelMapping.remove(key);
-				sessionRedisCache.removeIpAddressByUserId(key);
 			}
 		}
 	}
