@@ -120,7 +120,6 @@ angular.module('controllers', ['luegg.directives'])
                         }
                     }
                 });
-                getFindTransferSpecialist();
             };
             
             //公共点击按钮，用来触发弹出对应的子窗口
@@ -166,6 +165,9 @@ angular.module('controllers', ['luegg.directives'])
                             }else if(type=="waitProcess"){
                                 //获取待接入用户列表
                                 $scope.refreshWaitJoinUserList();
+                            }else if(type=="specialistList"){
+                                //获取待接入用户列表
+                                getFindTransferSpecialist();
                             }
                         }
                     }
@@ -196,7 +198,7 @@ angular.module('controllers', ['luegg.directives'])
                                     $scope.currentUserConversation = {
                                         'patientId':value.userId,
                                         'source':value.source,
-                                        'fromServer':value.serverAddress,
+                                        'serverAddress':value.serverAddress,
                                         'sessionId':value.sessionId,
                                         'isOnline':true,
                                         'dateTime':value.sessionCreateTime,
@@ -285,7 +287,7 @@ angular.module('controllers', ['luegg.directives'])
                             if (value.remark == remark && value.toCsUserId==toCsUserId) {
                                 indexClose = index;
                             }
-                        })
+                        });
                         $scope.currentUserConversation.consultValue.splice(indexClose, 1);
                     }
                 })
@@ -303,7 +305,6 @@ angular.module('controllers', ['luegg.directives'])
                 });
             };
 
-
             //查询所有的转移列表
             var getFindTransferSpecialist = function () {
                 $scope.alreadyJoinTransferSpecialist = [];
@@ -314,7 +315,7 @@ angular.module('controllers', ['luegg.directives'])
                     });
                     console.log("alreadyJoinTransferSpecialist",$scope.alreadyJoinTransferSpecialist);
                 });
-            }
+            };
 
             //查询专科列表
             GetFindAllTransferSpecialist.save({}, function (data) {
@@ -358,66 +359,6 @@ angular.module('controllers', ['luegg.directives'])
                 }
 
             };
-            //实现全选
-            /*$scope.selectetAllSpecialistPatient = false;
-            $scope.selectedAllTransferSpecialist = function () {
-                $scope.selectetAllSpecialistPatient =! $scope.selectetAllSpecialistPatient;
-                //console.log($scope.selectetAllSpecialistPatient);
-                if($scope.selectetAllSpecialistPatient == false){
-                    $.each($scope.alreadyJoinTransferSpecialist, function (index,value) {
-                        value.selectedAll = false;
-                    });
-                    $scope.choosedAlreadyJoinTransferSpecialist = [];
-                }
-                if($scope.selectetAllSpecialistPatient == true){
-                    $.each($scope.alreadyJoinTransferSpecialist, function (index,value){
-                        value.selectedAll = true;
-                    });
-                    $scope.choosedAlreadyJoinTransferSpecialist = $scope.alreadyJoinTransferSpecialist;
-                    console.log("choosedAlreadyJoinTransferSpecialist",$scope.choosedAlreadyJoinTransferSpecialist)
-                }
-            };*/
-            $scope.choosedAlreadyJoinTransferSpecialist = [];
-            $scope.choseOnePatient = function (index) {
-                $scope.alreadyJoinTransferSpecialist[index].selectedAll =! $scope.alreadyJoinTransferSpecialist[index].selectedAll;
-                if($scope.alreadyJoinTransferSpecialist[index].selectedAll == true){
-                    $scope.choosedAlreadyJoinTransferSpecialist.push($scope.alreadyJoinTransferSpecialist[index])
-                }else{
-                    $scope.choosedAlreadyJoinTransferSpecialist.splice($scope.alreadyJoinTransferSpecialist[index],1)
-                }
-                console.log($scope.choosedAlreadyJoinTransferSpecialist);
-            };
-            //发起多个会话
-            /*$scope.createSomeSpecialistPatient = function () {
-                $.each($scope.choosedAlreadyJoinTransferSpecialist, function (index,value) {
-                    if(value.selectedAll = true){
-                        $scope.selectetAllSpecialistPatient = true;
-                    }
-                });
-                console.log($scope.choosedAlreadyJoinTransferSpecialist);
-                CreateTransferSpecialist.save({content:$scope.choosedAlreadyJoinTransferSpecialist},function(data){
-                    console.log(data.userIds);
-                    if(data.status == "success"){
-                        $.each($scope.choosedAlreadyJoinTransferSpecialist, function (index,value) {
-                            for (var i = 0; i < data.userIds.length; i++) {
-                                if(data.userIds[i] == value.userId){
-                                    $state.go('doctorConsultFirst', {userId:data.userIds[i],action:'createUserSession'});
-                                }
-                            }
-                        });
-                    }else if(data.status == "failure"){
-                        if(data.failureUserIds.result == "failure"){
-                            alert("无法发起会话，请稍后重试");
-                        }else if(data.failureUserIds.result == "existTransferSession"){
-                            alert("此用户正有会话处于转接状态，无法向其发起会话，请稍后重试");
-                        }else if(data.failureUserIds.result == "noLicenseTransfer"){
-                            alert("对不起，你没有权限，抢断一个正在咨询用户的会话");
-                        }else if(data.failureUserIds.result == "exceed48Hours"){
-                            alert("对不起，用户咨询已经超过了48小时，无法再向其发起会话");
-                        }
-                    }
-                })
-            };*/
 
             //分诊员发起一个针对用户的会话
             $scope.createOneSpecialistPatient = function(index){
@@ -442,7 +383,6 @@ angular.module('controllers', ['luegg.directives'])
                         alert("此用户正有会话处于转接状态，无法向其发起会话，请稍后重试")
                     }
                 })
-
             };
             /**转接功能区**/
 
@@ -535,7 +475,7 @@ angular.module('controllers', ['luegg.directives'])
             var heartBeatCheck = function(){
                 //启动定时器，周期性的发送心跳信息
                 setInterval(sendHeartBeat,3000);
-            }
+            };
 
             var sendHeartBeat = function(){
                 heartBeatNum--;
@@ -553,7 +493,7 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.socketServerFirst.send(JSON.stringify(heartBeatMessage));
                 $scope.socketServerSecond.send(JSON.stringify(heartBeatMessage));
                 $scope.$apply();
-            }
+            };
 
             //处理用户按键事件
             document.onkeydown = function () {
@@ -569,7 +509,8 @@ angular.module('controllers', ['luegg.directives'])
                 if (!window.WebSocket) {
                     return;
                 }
-                if($scope.currentUserConversation.fromServer==$scope.firstAddress){
+                console.log($scope.currentUserConversation.serverAddress);
+                if($scope.currentUserConversation.serverAddress==$scope.firstAddress){
                     if ($scope.socketServerFirst.readyState == WebSocket.OPEN) {
                         var consultValMessage = "";
                         if($scope.userType=="distributor"){
@@ -599,7 +540,7 @@ angular.module('controllers', ['luegg.directives'])
                     } else {
                         alert("连接没有开启.");
                     }
-                }else if($scope.currentUserConversation.fromServer==$scope.secondAddress){
+                }else if($scope.currentUserConversation.serverAddress==$scope.secondAddress){
                     if ($scope.socketServerSecond.readyState == WebSocket.OPEN) {
                         var consultValMessage = "";
                         if($scope.userType=="distributor"){
@@ -690,7 +631,7 @@ angular.module('controllers', ['luegg.directives'])
                             if (value.patientId == $scope.chooseAlreadyJoinConsultPatientId) {
                                 indexClose = index;
                             }
-                        })
+                        });
                         $scope.alreadyJoinPatientConversation.splice(indexClose, 1);
                         if($scope.alreadyJoinPatientConversation.length!=0){
                             $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
@@ -1035,7 +976,7 @@ angular.module('controllers', ['luegg.directives'])
                             value.messageNotSee = false;
                             $.each(value.consultValue,function(index1,value1){
                                 filterMediaData(value1);
-                            })
+                            });
                         });
                         var patientId = angular.copy($scope.alreadyJoinPatientConversation[0].patientId);
                         var patientName = angular.copy($scope.alreadyJoinPatientConversation[0].patientName);
@@ -1059,7 +1000,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.currentUserConversation = {
                         'patientId':conversationData.senderId,
                         'source':conversationData.source,
-                        'fromServer':conversationData.fromServer,
+                        'serverAddress':conversationData.serverAddress,
                         'sessionId':conversationData.sessionId,
                         'messageNotSee':true,
                         'isOnline':true,
@@ -1100,7 +1041,7 @@ angular.module('controllers', ['luegg.directives'])
                     var conversationContent = {
                         'patientId':conversationData.senderId,
                         'source':conversationData.source,
-                        'fromServer':conversationData.fromServer,
+                        'serverAddress':conversationData.serverAddress,
                         'sessionId':conversationData.sessionId,
                         'isOnline':true,
                         'dateTime':conversationData.dateTime,
