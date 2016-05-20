@@ -1145,14 +1145,6 @@ public class ScheduledTask {
         consultRecordService.removeConsultRankRecord(new Query());
     }
 
-    //对redis中，记录的建立websocket链接的用户，进行清理
-    private void userWebSocketCheckTask(){
-
-
-
-        int k = 0;
-    }
-
     //插入监听器
     private void insertMonitor(String register_no, String type, String status) {
         HashMap<String, Object> monitorMap = new HashMap<String, Object>();

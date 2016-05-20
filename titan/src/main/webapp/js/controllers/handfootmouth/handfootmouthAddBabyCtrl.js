@@ -10,7 +10,7 @@ angular.module('controllers', ['ionic']).controller('handfootmouthAddBabyCtrl', 
         $scope.girlLock = false;
         $scope.titleLock = true;// 隐藏顶部菜单
         $scope.baby = {};
-        var Ip = "localhost";
+        var Ip = "s251.baodf.com";
 
 
         $scope.$on('$ionicView.enter',function() {

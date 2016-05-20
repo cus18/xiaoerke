@@ -3,7 +3,7 @@ angular.module('controllers', ['ionic']).controller('handfootmouthIndexCtrl', [
     function ($scope,$state,$stateParams,$location,$http) {
         $scope.readLock = true;
         $scope.readFlag = false;
-        var Ip = "localhost";
+        var Ip = "s251.baodf.com";
 
 
         $scope.$on('$ionicView.enter', function(){
