@@ -327,8 +327,8 @@ angular.module('controllers', ['luegg.directives'])
             $scope.addTransferSpecialistSubmit = function () {
                 //添加转接科室
                 var consultData = {
-                    sessionId:$scope.chooseAlreadyJoinConsultPatientsessionId,
-                    department:$scope.info.selectedSpecialist.departmentName
+                    sessionId: angular.copy($scope.currentUserConversation.sessionId),
+                    department: angular.copy($scope.info.selectedSpecialist.departmentName)
                 };
                 console.log("consultData",consultData);
                 GetAddTransferSpecialist.save({consultData:consultData},function(data){

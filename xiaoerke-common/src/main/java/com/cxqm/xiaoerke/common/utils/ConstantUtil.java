@@ -2,7 +2,8 @@ package com.cxqm.xiaoerke.common.utils;
 
 public class ConstantUtil {
 
-	public static final String DOMAIN_VALUE = ".baodf.com";
+	public static final String DOMAIN_VALUE = ".xiaork.com";
+	//public static final String DOMAIN_VALUE = ".baodf.com";
 	public static final String AMR_TOMP3_WINDOWSPATH = "E:\\ffmpeg\\ffmpeg\\bin\\";
 	public static final String AMR_TOMP3_WINDOWSPATHTEMP = "E:\\ffmpeg\\temp\\";
 	public static final String AMR_TOMP3_LINUXPATH = "/mnt/temp/";
@@ -39,7 +40,7 @@ public class ConstantUtil {
 	public static String DOCTOR_WEB_URL = "http://s68.baodf.com:8081/";
 	public static String TITAN_WEB_URL = "http://s68.baodf.com/";
 
-	public static String ANGEL_WEB_URL = "xiaoxiaoerke.com";//"http://xiaork.com/";
+	public static String ANGEL_WEB_URL = "http://xiaoxiaoerke.com";//"http://xiaork.com/";
 
 
 
