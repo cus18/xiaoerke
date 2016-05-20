@@ -67,15 +67,16 @@ public class ConsultSessionTransferController {
                                 consultSessionManager.refreshConsultTransferList(UserUtils.getUser().getId());
                             }
                             jsonArray.add(resultMap.get("userId"));
+                            response.put("status", "success");
                         }else{
                             HashMap<Object,Object> failureReson =  new HashMap<Object, Object>();
                             failureReson.put("id",hashMap.get("id"));
                             failureReson.put("result",resultMap.get("result"));
                             failureIdArray.add(failureReson);
+                            response.put("status","failure");
                         }
                         response.put("userIds",jsonArray);
                         response.put("failureUserIds",failureIdArray);
-                        response.put("status","success");
                     }catch(Exception exception){
                         exception.getStackTrace();
                     }

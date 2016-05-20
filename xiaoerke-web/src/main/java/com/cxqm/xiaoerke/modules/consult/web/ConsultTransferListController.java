@@ -14,6 +14,7 @@ import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.sys.entity.Dict;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.DictService;
+import com.cxqm.xiaoerke.modules.sys.service.UserInfoService;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import io.netty.channel.Channel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by jiangzhongge on 2016-5-13.
+ * 咨询列表接口
  */
 @Controller
 @RequestMapping(value = "consult/transfer")
@@ -34,13 +36,13 @@ public class ConsultTransferListController {
     private ConsultTransferListVoService consultTransferListVoService;
 
     @Autowired
-    private DictService dictService ;
-
-    @Autowired
     private ConsultSessionService consultSessionService ;
 
     @Autowired
     private ConsultDoctorInfoService consultDoctorInfoService ;
+
+    @Autowired
+    private UserInfoService userInfoService;
 
     private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
 
@@ -66,7 +68,17 @@ public class ConsultTransferListController {
                 richConsultSession.setStatus("ongoing");
                 List<RichConsultSession> richConsultSessionlist = consultSessionService.selectRichConsultSessions(richConsultSession);
                 if(richConsultSessionlist != null && richConsultSessionlist.size()>0){
-                    jsonObject.put("currentDoctor", richConsultSessionlist.get(0).getCsUserName());
+                    String csUserId = richConsultSessionlist.get(0).getCsUserId();
+                    User user = new User();
+                    user.setId(csUserId);
+                    List<User> list = userInfoService.getUserListByInfo(user);
+                    if(list !=null && list.size()>0){
+                        User getUser = list.get(0);
+                        jsonObject.put("currentDoctor", StringUtils.isNotNull(getUser.getName()) ? getUser.getName() : "无");
+                    }else{
+                        jsonObject.put("currentDoctor", "无");
+                    }
+
                 }else{
                     jsonObject.put("currentDoctor", "无");
                 }
@@ -99,7 +111,7 @@ public class ConsultTransferListController {
         HashMap<String,Object> requestData = (HashMap<String,Object>)params.get("consultData");
         consultTransferListVo.setDepartment((String)requestData.get("department"));
         consultTransferListVo.setSessionId((Integer)requestData.get("sessionId"));
-        RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId((Integer) params.get("sessionId"));
+        RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId((Integer)requestData.get("sessionId"));
         if(richConsultSession !=null) {
             consultTransferListVo.setSysUserId(richConsultSession.getUserId());
             consultTransferListVo.setSysUserName(richConsultSession.getUserName());
@@ -183,8 +195,6 @@ public class ConsultTransferListController {
                 int result = consultTransferListVoService.updateConsultTransferByPrimaryKey(consultTransferListVo);
                 if(result >0){
                     count ++;
-                }else{
-                    break ;
                 }
             }
             if(count == allId.size()){
