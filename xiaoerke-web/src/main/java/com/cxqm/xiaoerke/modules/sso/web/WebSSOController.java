@@ -97,7 +97,7 @@ public class WebSSOController {
 				targeturl = URLEncoder.encode(targeturl, "utf-8");
 				Cookie cookie = new Cookie("targeturl",targeturl);
 				cookie.setPath(request.getContextPath());
-				cookie.setMaxAge(-1);
+				cookie.setMaxAge(30*24*60*1000);
 				response.addCookie(cookie);
 			}
 			return url;
