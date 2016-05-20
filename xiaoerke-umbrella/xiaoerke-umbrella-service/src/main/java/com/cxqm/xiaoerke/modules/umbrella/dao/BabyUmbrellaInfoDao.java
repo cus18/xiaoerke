@@ -4,7 +4,7 @@ import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
  * Created by feibendechayedan on 16/5/20.
  */
 @MyBatisDao
-public interface BabyUmberllaInfoDao {
+public interface BabyUmbrellaInfoDao {
 
     /**
      * 添加保障金信息
