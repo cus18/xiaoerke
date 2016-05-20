@@ -9,10 +9,12 @@ import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.RpcRequest;
 import com.cxqm.xiaoerke.modules.consult.entity.RpcResponse;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.core.RpcClient;
@@ -32,10 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -58,6 +57,9 @@ public class ConsultWechatController extends BaseController {
 
     @Autowired
     private ConsultRecordService consultRecordService;
+
+    @Autowired
+    private ConsultSessionService consultSessionService;
 
 
     private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
@@ -138,6 +140,12 @@ public class ConsultWechatController extends BaseController {
             if(sessionId!=null){
                 consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
                 csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
+                if(!csChannel.isActive()){
+                    //保存聊天记录
+                    consultRecordService.buildRecordMongoVo(userId, String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)), messageContent, consultSession);
+                    //更新会话操作时间
+                    consultRecordService.saveConsultSessionStatus(consultSession);
+                }
             }else{//如果此用户是第一次发送消息，则sessionId为空
                 consultSession.setCreateTime(new Date());
                 consultSession.setUserId(userId);
@@ -153,7 +161,7 @@ public class ConsultWechatController extends BaseController {
             }
 
             //会话创建成功，拿到了csChannel,给接诊员(或是医生)发送消息
-            if(csChannel!=null){
+            if(csChannel!=null&&csChannel.isActive()){
                 try {
                     JSONObject obj = new JSONObject();
                     obj.put("sessionId", sessionId);

@@ -39,7 +39,7 @@ public class ConstantUtil {
 	public static String DOCTOR_WEB_URL = "http://s68.baodf.com:8081/";
 	public static String TITAN_WEB_URL = "http://s68.baodf.com/";
 
-	public static String ANGEL_WEB_URL = "http://xiaork.com/";
+	public static String ANGEL_WEB_URL = "xiaoxiaoerke.com";//"http://xiaork.com/";
 
 
 
