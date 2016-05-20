@@ -9,10 +9,12 @@ import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.RpcRequest;
 import com.cxqm.xiaoerke.modules.consult.entity.RpcResponse;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.core.RpcClient;
@@ -32,10 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -58,6 +57,9 @@ public class ConsultWechatController extends BaseController {
 
     @Autowired
     private ConsultRecordService consultRecordService;
+
+    @Autowired
+    private ConsultSessionService consultSessionService;
 
 
     private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
@@ -139,6 +141,9 @@ public class ConsultWechatController extends BaseController {
                 consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
                 csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
                 if(!csChannel.isActive()){
+                    consultSession.setStatus(ConsultSession.STATUS_COMPLETED);
+                    consultSessionService.updateSessionInfo(consultSession);
+
                     createWechatConsultSessionMap = ConsultSessionManager.getSessionManager().createUserWXConsultSession(consultSession);
                     if(createWechatConsultSessionMap!=null){
                         csChannel = (Channel)createWechatConsultSessionMap.get("csChannel");
