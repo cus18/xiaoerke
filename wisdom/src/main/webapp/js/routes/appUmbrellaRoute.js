@@ -6,7 +6,7 @@ define(['appUmbrella'], function(app){
         .config(['$stateProvider','$urlRouterProvider',
             function($stateProvider,$urlRouterProvider) {
                 var loadFunction = function($templateCache, $ocLazyLoad, $q, $http,name,files,htmlURL){
-                   var lazyDeferred = $q.defer();
+                     lazyDeferred = $q.defer();
                     return $ocLazyLoad.load ({
                         name: name,
                         files: files
@@ -22,17 +22,49 @@ define(['appUmbrella'], function(app){
                 };
 
                 $stateProvider
-                   /* 营养管理*/
-                    .state('umbrellaIndex', {
-                        url: '/umbrellaIndex',
+                    /* 宝护伞 */
+                    .state('umbrellaJoin', {
+                        url: '/umbrellaJoin',
                         templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'umbrellaIndexCtrl',
+                        controller: 'umbrellaJoinCtrl',
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaIndexCtrl',
-                                    ['js/controllers/umbrella/umbrellaIndexCtrl.js',
-                                        'styles/umbrella/umbrellaIndex.less?ver='+umbrellaVersion],
-                                    'js/views/umbrella/umbrellaIndex.html?ver='+umbrellaVersion);
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaJoinCtrl',
+                                    ['js/controllers/umbrella/umbrellaJoinCtrl.js',
+                                        'styles/umbrella/umbrellaJoin.less?ver='+umbrellaVersion],
+                                    'js/views/umbrella/umbrellaJoin.html?ver='+umbrellaVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                    .state('umbrellaFillInfo', {
+                        url: '/umbrellaFillInfo',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'umbrellaFillInfoCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaFillInfoCtrl',
+                                    ['js/controllers/umbrella/umbrellaFillInfoCtrl.js',
+                                        'styles/umbrella/umbrellaFillInfo.less?ver='+umbrellaVersion],
+                                    'js/views/umbrella/umbrellaFillInfo.html?ver='+umbrellaVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                    .state('myGuarantee', {
+                        url: '/myGuarantee',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'myGuaranteeCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.myGuaranteeCtrl',
+                                    ['js/controllers/umbrella/myGuaranteeCtrl.js',
+                                        'styles/umbrella/myGuarantee.less?ver='+umbrellaVersion],
+                                    'js/views/umbrella/myGuarantee.html?ver='+umbrellaVersion);
                             }
                         },
                         data: {
@@ -41,7 +73,7 @@ define(['appUmbrella'], function(app){
                     })
 
 
-                $urlRouterProvider.otherwise('umbrellaIndex');
+                $urlRouterProvider.otherwise('myGuarantee');
             }])
         .run(function ($rootScope){
             $rootScope.unBindUserPhoneNum = '';

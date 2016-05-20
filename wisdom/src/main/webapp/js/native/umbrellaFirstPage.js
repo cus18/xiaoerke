@@ -15,4 +15,7 @@ var umbrellaFirstPageInit = function() {
 
 }
 
+var goJoin = function() {
+    window.location.href = "umbrella#/umbrellaJoin";
 
+}
