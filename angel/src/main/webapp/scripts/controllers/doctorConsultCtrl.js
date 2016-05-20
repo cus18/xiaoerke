@@ -198,7 +198,7 @@ angular.module('controllers', ['luegg.directives'])
                                     $scope.currentUserConversation = {
                                         'patientId':value.userId,
                                         'source':value.source,
-                                        'fromServer':value.serverAddress,
+                                        'serverAddress':value.serverAddress,
                                         'sessionId':value.sessionId,
                                         'isOnline':true,
                                         'dateTime':value.sessionCreateTime,
@@ -509,8 +509,8 @@ angular.module('controllers', ['luegg.directives'])
                 if (!window.WebSocket) {
                     return;
                 }
-                console.log($scope.currentUserConversation.fromServer);
-                if($scope.currentUserConversation.fromServer==$scope.firstAddress){
+                console.log($scope.currentUserConversation.serverAddress);
+                if($scope.currentUserConversation.serverAddress==$scope.firstAddress){
                     if ($scope.socketServerFirst.readyState == WebSocket.OPEN) {
                         var consultValMessage = "";
                         if($scope.userType=="distributor"){
@@ -540,7 +540,7 @@ angular.module('controllers', ['luegg.directives'])
                     } else {
                         alert("连接没有开启.");
                     }
-                }else if($scope.currentUserConversation.fromServer==$scope.secondAddress){
+                }else if($scope.currentUserConversation.serverAddress==$scope.secondAddress){
                     if ($scope.socketServerSecond.readyState == WebSocket.OPEN) {
                         var consultValMessage = "";
                         if($scope.userType=="distributor"){
@@ -1000,7 +1000,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.currentUserConversation = {
                         'patientId':conversationData.senderId,
                         'source':conversationData.source,
-                        'fromServer':conversationData.fromServer,
+                        'serverAddress':conversationData.serverAddress,
                         'sessionId':conversationData.sessionId,
                         'messageNotSee':true,
                         'isOnline':true,
@@ -1041,7 +1041,7 @@ angular.module('controllers', ['luegg.directives'])
                     var conversationContent = {
                         'patientId':conversationData.senderId,
                         'source':conversationData.source,
-                        'fromServer':conversationData.fromServer,
+                        'serverAddress':conversationData.serverAddress,
                         'sessionId':conversationData.sessionId,
                         'isOnline':true,
                         'dateTime':conversationData.dateTime,
