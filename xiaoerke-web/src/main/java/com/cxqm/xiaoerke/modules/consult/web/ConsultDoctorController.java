@@ -252,7 +252,7 @@ public class ConsultDoctorController extends BaseController {
         String userId = (String) params.get("userId");
 
         //根据用户ID去查询，从历史会话记录中，获取用户最近的一条聊天记录，根据source判断会话来源
-        response = ConsultSessionManager.getSessionManager().createConsultSession(userId);
+        response = ConsultSessionManager.getSessionManager().createConsultSession(wechatAttentionService,userId);
 
         return response;
     }

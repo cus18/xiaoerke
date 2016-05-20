@@ -5,6 +5,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultTransferListVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultTransferListVoService;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
+import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +25,9 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "consultSession/transfer")
 public class ConsultSessionTransferController {
+
+    @Autowired
+    private WechatAttentionService wechatAttentionService;
 
     @Autowired
     private ConsultTransferListVoService consultTransferListVoService;
@@ -49,8 +53,8 @@ public class ConsultSessionTransferController {
                 JSONArray failureIdArray = new JSONArray();
                 for(HashMap<String,Object> hashMap : transferList){
                     try{
-                        HashMap<String,Object> resultMap = consultSessionManager.createConsultSession((String)hashMap.get("userId"));
-                        if(resultMap!= null && "success".equalsIgnoreCase((String) resultMap.get("status"))){
+                        HashMap<String,Object> resultMap = consultSessionManager.createConsultSession(wechatAttentionService,(String)hashMap.get("userId"));
+                        if(resultMap!= null && "success".equalsIgnoreCase((String) resultMap.get("result"))){
                             ConsultTransferListVo consultTransferListVo;
                             String status = "complete";
                             String delFlag = "0";
@@ -60,15 +64,18 @@ public class ConsultSessionTransferController {
                             consultTransferListVo.setId((Integer)hashMap.get("id"));
                             int count = consultTransferListVoService.updateConsultTransferByPrimaryKey(consultTransferListVo);
                             if(count > 0){
-                                response.put("status","success");
                                 consultSessionManager.refreshConsultTransferList(UserUtils.getUser().getId());
                             }
                             jsonArray.add(resultMap.get("userId"));
                         }else{
-                            failureIdArray.add(hashMap.get("id"));
+                            HashMap<Object,Object> failureReson =  new HashMap<Object, Object>();
+                            failureReson.put("id",hashMap.get("id"));
+                            failureReson.put("result",resultMap.get("result"));
+                            failureIdArray.add(failureReson);
                         }
                         response.put("userIds",jsonArray);
                         response.put("failureUserIds",failureIdArray);
+                        response.put("status","success");
                     }catch(Exception exception){
                         exception.getStackTrace();
                     }

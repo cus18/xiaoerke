@@ -41,9 +41,6 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 public class ConsultSessionManager {
 
-	@Autowired
-	private WechatAttentionService wechatAttentionService;
-
 	private transient static final Logger log = LoggerFactory.getLogger(ConsultSessionManager.class);
 	
 	public static final String REQUEST_TYPE_CHAT = "chat";
@@ -576,7 +573,7 @@ public class ConsultSessionManager {
 	 * Created by jiangzhongge on 2016-5-18.
 	 * 医生选择一个用户，主动跟用户发起咨询会话
 	 */
-	public HashMap<String, Object> createConsultSession(String userId) {
+	public HashMap<String, Object> createConsultSession(WechatAttentionService wechatAttentionService ,String userId) {
 		//根据用户ID去查询，从历史会话记录中，获取用户最近的一条聊天记录，根据source判断会话来源
 		HashMap<String, Object> response= new HashMap<String, Object>();
 		RichConsultSession richConsultSession = new RichConsultSession();
@@ -674,16 +671,23 @@ public class ConsultSessionManager {
 		JSONObject csobj = new JSONObject();
 		//通知用户，告诉会有哪个医生或者接诊员提供服务
 		csobj.put("type",4);
-		csobj.put("notifyType","3001");
+		csobj.put("notifyType", "3001");
 		TextWebSocketFrame csframe = new TextWebSocketFrame(csobj.toJSONString());
-		distributorsList.remove(distributorId);
 		if(distributorsList != null && distributorsList.size()>0){
 			for(Object object : distributorsList){
-				String distributorid = (String)object;
-				if(csUserChannelMap !=null  && csUserChannelMap.size()>0){
-					Channel channel = csUserChannelMap.get(distributorid);
-					if(channel.isActive()){
-						channel.writeAndFlush(csframe.retain());
+				String distributor = (String)object;
+				if(!distributorId.equals(distributor)){
+					if(csUserChannelMap !=null  && csUserChannelMap.size()>0){
+						Channel channel = csUserChannelMap.get(distributor);
+						if(channel != null){
+							if(channel.isActive()){
+								channel.writeAndFlush(csframe.retain());
+							}else{
+								continue ;
+							}
+						}else{
+							continue ;
+						}
 					}
 				}
 			}
