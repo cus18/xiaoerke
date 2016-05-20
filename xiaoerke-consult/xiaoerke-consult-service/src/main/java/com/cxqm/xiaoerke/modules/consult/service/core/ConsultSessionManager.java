@@ -165,20 +165,21 @@ public class ConsultSessionManager {
 			consultSession.setUserName(user.getName() == null ? user.getLoginName() : user.getName());
 			consultSession.setSource(source);
 
-			for(int i = 0;  i < distributorsList.size(); i ++) {
-				if(distributors.size()!=0){
-					String distributorId = RandomUtils.getRandomKeyFromMap(distributors);
-					distributorChannel = distributors.get(distributorId);
+			if(distributors.size()!=0){
+				for(int i = 0;  i < distributorsList.size(); i ++) {
 
-					if(distributorChannel.isActive()) {
-						consultSession.setCsUserId(distributorId);
-						User csUser = systemService.getUserById(distributorId);
-						consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
-						break;
-					} else {
-						distributors.remove(distributorId);
-						csUserChannelMapping.remove(distributorId);
-					}
+						String distributorId = RandomUtils.getRandomKeyFromMap(distributors);
+						distributorChannel = distributors.get(distributorId);
+
+						if(distributorChannel.isActive()) {
+							consultSession.setCsUserId(distributorId);
+							User csUser = systemService.getUserById(distributorId);
+							consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
+							break;
+						} else {
+							distributors.remove(distributorId);
+							csUserChannelMapping.remove(distributorId);
+						}
 				}
 			}
 
@@ -251,23 +252,23 @@ public class ConsultSessionManager {
 		HashMap<String,Object> response = new HashMap<String, Object>();
 		Channel  csChannel = null;
 		Channel distributorChannel = null;
+		if(distributors.size()!=0){
+			for(int i = 0;  i < distributorsList.size(); i ++) {
 
-		for(int i = 0;  i < distributorsList.size(); i ++) {
-			if(distributors.size()!=0){
-				String distributorId = RandomUtils.getRandomKeyFromMap(distributors);
-				distributorChannel = distributors.get(distributorId);
+					String distributorId = RandomUtils.getRandomKeyFromMap(distributors);
+					distributorChannel = distributors.get(distributorId);
 
-				if(distributorChannel.isActive()) {
-					consultSession.setCsUserId(distributorId);
-					User csUser = systemService.getUserById(distributorId);
-					consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
-					csChannel = distributorChannel;
-					break;
-				} else {
-					distributors.remove(distributorId);
-					csUserChannelMapping.remove(distributorId);
+					if(distributorChannel.isActive()) {
+						consultSession.setCsUserId(distributorId);
+						User csUser = systemService.getUserById(distributorId);
+						consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
+						csChannel = distributorChannel;
+						break;
+					} else {
+						distributors.remove(distributorId);
+						csUserChannelMapping.remove(distributorId);
+					}
 				}
-			}
 		}
 
 		/***接诊员不在线，随机分配在线医生***/
