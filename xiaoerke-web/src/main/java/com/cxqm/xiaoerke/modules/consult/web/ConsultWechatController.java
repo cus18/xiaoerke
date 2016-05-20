@@ -33,7 +33,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
 import java.net.URLDecoder;
+import java.net.UnknownHostException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -81,7 +83,11 @@ public class ConsultWechatController extends BaseController {
         if(messageType.contains("voice")||messageType.contains("video")||messageType.contains("image")){
             paramMap.put("mediaId",mediaId);
         }
-        paramMap.put("serverAddress",StringUtils.getRemoteAddr(request));
+        try {
+            paramMap.put("serverAddress",InetAddress.getLocalHost().getHostAddress());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
 
         Runnable thread = new processUserMessageThread(paramMap);
         threadExecutor.execute(thread);
