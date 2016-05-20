@@ -345,7 +345,7 @@ angular.module('controllers', ['luegg.directives'])
             //删除转接科室中的一个
             $scope.disposeTransferSpecialist = function (index) {
                 var specialistId  = [$scope.alreadyJoinTransferSpecialist[index]];
-                if ($window.confirm("确定要删除该组回复?")) {
+                if ($window.confirm("确定要删除该转诊内容?")) {
                     GetRemoveTransferSpecialist.save({content:specialistId,status:'ongoing',delFlag:'1'},function(data){
                         if(data.status == 'failure'){
                             alert("删除失败");
