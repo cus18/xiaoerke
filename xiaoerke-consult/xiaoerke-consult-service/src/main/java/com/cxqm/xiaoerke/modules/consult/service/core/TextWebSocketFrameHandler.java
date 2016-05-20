@@ -121,7 +121,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 				if(consultSession!=null){
 					//将用户发过来的第一条消息，推送给分配好的接诊员，或者医生
 					msgMap.put("sessionId",consultSession.getId());
-					msgMap.put("fromServer",consultSession.getServerAddress());
+					msgMap.put("serverAddress",consultSession.getServerAddress());
 					Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
 					TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(msgMap));
 					csChannel.writeAndFlush(csUserMsg.retain());

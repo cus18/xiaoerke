@@ -104,7 +104,7 @@ public class ConsultDoctorTransferController extends BaseController {
             "sessionId":53534534,
             "patientName":"liutao",
             "transferer":"frank",
-            "fromServer":""
+            "serverAddress":""
         }
          @return
          {

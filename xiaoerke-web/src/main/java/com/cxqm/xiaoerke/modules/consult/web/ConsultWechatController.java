@@ -168,7 +168,7 @@ public class ConsultWechatController extends BaseController {
                     obj.put("senderId", userId);
                     obj.put("dateTime", DateUtils.DateToStr(new Date()));
                     obj.put("senderName",userName);
-                    obj.put("fromServer",serverAddress);
+                    obj.put("serverAddress",serverAddress);
                     obj.put("source",consultSession.getSource());
 
 

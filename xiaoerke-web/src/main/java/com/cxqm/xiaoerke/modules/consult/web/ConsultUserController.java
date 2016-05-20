@@ -233,7 +233,7 @@ public class ConsultUserController extends BaseController {
                         searchMap.put("patientId",userId);
                         searchMap.put("source",richConsultSession.getSource());
                         searchMap.put("patientName", richConsultSession.getUserName());
-                        searchMap.put("fromServer",richConsultSession.getServerAddress());
+                        searchMap.put("serverAddress",richConsultSession.getServerAddress());
                         searchMap.put("sessionId",richConsultSession.getId());
                         searchMap.put("isOnline",true);
                         searchMap.put("messageNotSee",true);
