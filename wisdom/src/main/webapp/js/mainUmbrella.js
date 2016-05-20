@@ -11,7 +11,7 @@ require.config({
         "angular-route" : "libs/angular-route.min",
         "ocLazyLoad":"libs/ocLazyLoad.require.min",
         "jquery":"libs/jquery-2.1.3.min",
-        "wisdomCommonFactory": "services/wisdomCommonFactory",
+      /*  "wisdomCommonFactory": "services/wisdomCommonFactory",*/
         "umbrellaFactory" : "services/umbrellaFactory",
         "umbrellaDirective" : "directives/umbrellaDirective",
         "appUmbrellaRoute" : "routes/appUmbrellaRoute",
@@ -40,7 +40,7 @@ require.config({
 });
 
 require(['angular','angular-resource','angular-sanitize','angular-route',
-    'ocLazyLoad','jquery','wisdomCommonFactory','umbrellaFactory','umbrellaDirective','appUmbrellaRoute','appUmbrella'],
+    'ocLazyLoad','jquery','umbrellaFactory','umbrellaDirective','appUmbrellaRoute','appUmbrella'],
     function (angular){
         angular.bootstrap(document,["umbrellaApp"]);
     });

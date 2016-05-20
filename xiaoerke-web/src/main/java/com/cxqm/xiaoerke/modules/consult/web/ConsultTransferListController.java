@@ -63,25 +63,26 @@ public class ConsultTransferListController {
         if(consultTransferListVos!= null && consultTransferListVos.size()>0){
             for(ConsultTransferListVo consultTransfer:consultTransferListVos){
                 jsonObject = new JSONObject();
-                RichConsultSession richConsultSession = new RichConsultSession();
-                richConsultSession.setUserId(consultTransfer.getSysUserId());
-                richConsultSession.setStatus("ongoing");
-                List<RichConsultSession> richConsultSessionlist = consultSessionService.selectRichConsultSessions(richConsultSession);
-                if(richConsultSessionlist != null && richConsultSessionlist.size()>0){
-                    String csUserId = richConsultSessionlist.get(0).getCsUserId();
-                    User user = new User();
-                    user.setId(csUserId);
-                    List<User> list = userInfoService.getUserListByInfo(user);
-                    if(list !=null && list.size()>0){
-                        User getUser = list.get(0);
-                        jsonObject.put("currentDoctor", StringUtils.isNotNull(getUser.getName()) ? getUser.getName() : "无");
-                    }else{
-                        jsonObject.put("currentDoctor", "无");
-                    }
+                /*RichConsultSession richConsultSession = new RichConsultSession();
+                    richConsultSession.setUserId(consultTransfer.getSysUserId());
+                    richConsultSession.setStatus("ongoing");
+                    List<RichConsultSession> richConsultSessionlist = consultSessionService.selectRichConsultSessions(richConsultSession);
+                    if(richConsultSessionlist != null && richConsultSessionlist.size()>0){
+                        String csUserId = richConsultSessionlist.get(0).getCsUserId();
+                        User user = new User();
+                        user.setId(csUserId);
+                        List<User> list = userInfoService.getUserListByInfo(user);
+                        if(list !=null && list.size()>0){
+                            User getUser = list.get(0);
+                            jsonObject.put("currentDoctor", StringUtils.isNotNull(getUser.getName()) ? getUser.getName() : "无");
+                        }else{
+                            jsonObject.put("currentDoctor", "无");
+                        }
 
                 }else{
                     jsonObject.put("currentDoctor", "无");
-                }
+                }*/
+                jsonObject.put("currentDoctor",StringUtils.isNotNull(consultTransfer.getSysUserNameCs()) ? consultTransfer.getSysUserNameCs() :"无");
                 jsonObject.put("userName",consultTransfer.getSysUserName());
                 jsonObject.put("createDate",consultTransfer.getCreateDate());
                 jsonObject.put("department",consultTransfer.getDepartment());
@@ -103,6 +104,7 @@ public class ConsultTransferListController {
     HashMap<String,Object> saveConsultTransferListVo(@RequestBody HashMap<String,Object> params){
         HashMap<String,Object> responseResult = new HashMap<String, Object>();
         ConsultTransferListVo consultTransferListVo = new ConsultTransferListVo();
+        ConsultSessionManager consultSessionManager=ConsultSessionManager.getSessionManager();
         Date date = new Date();
         User user = UserUtils.getUser();
         consultTransferListVo.setCreateBy(user.getId());
@@ -126,6 +128,7 @@ public class ConsultTransferListController {
             int count = consultTransferListVoService.addConsultTransferListVo(consultTransferListVo);
             if(count > 0){
                 responseResult.put("status","success");
+                consultSessionManager.refreshConsultTransferList(UserUtils.getUser().getId());
             }else{
                 responseResult.put("status","failure");
             }

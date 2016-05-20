@@ -1,8 +1,12 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.alibaba.fastjson.JSONArray;
+import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultTransferListVo;
+import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultTransferListVoService;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
@@ -32,6 +36,8 @@ public class ConsultSessionTransferController {
     @Autowired
     private ConsultTransferListVoService consultTransferListVoService;
 
+    private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
+
     @RequestMapping(value = "/createMoreUserConsultSession", method = {RequestMethod.POST, RequestMethod.GET})
     public @ResponseBody
     HashMap<String, Object> createMoreWXUserConsultSession(@RequestBody Map<String, Object> params){
@@ -45,6 +51,16 @@ public class ConsultSessionTransferController {
                 HashMap<String,Object> data = new HashMap<String, Object>();
                 data.put("id", requestData.get(i).get("id"));
                 data.put("userId", requestData.get(i).get("userId"));
+                Integer sessionId = sessionRedisCache.getSessionIdByUserId((String) requestData.get(i).get("userId"));
+                if(sessionId != null){
+                    RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
+                    if(richConsultSession != null){
+                        if(ConsultSession.STATUS_ONGOING.equalsIgnoreCase(richConsultSession.getStatus())){
+                            response.put("status","ongoing");
+                            break ;
+                        }
+                    }
+                }
                 transferList.add(data);
             }
             if(transferList != null && transferList.size()>0){
