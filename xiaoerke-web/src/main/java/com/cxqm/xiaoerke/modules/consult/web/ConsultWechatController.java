@@ -109,7 +109,6 @@ public class ConsultWechatController extends BaseController {
             String openId = (String) this.param.get("openId");
             String messageType = (String) this.param.get("messageType");
             String messageContent = (String) this.param.get("messageContent");
-            System.out.println(messageContent);
             String serverAddress = (String) this.param.get("serverAddress");
 
             SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
@@ -157,6 +156,7 @@ public class ConsultWechatController extends BaseController {
                 consultSession.setUserId(userId);
                 consultSession.setUserName(userName);
                 consultSession.setSource(source);
+                consultSession.setServerAddress(serverAddress);
                 //创建会话，发送消息给用户，给用户分配接诊员
                 createWechatConsultSessionMap = ConsultSessionManager.getSessionManager().createUserWXConsultSession(consultSession);
                 if(createWechatConsultSessionMap!=null){
