@@ -3,7 +3,7 @@ var babySex = 1;//男孩
 var parentSex = 0;//妈妈
 var needPayMoney = 26.8;//手足口保险
 var babyID;
-var Ip = "localhost";
+var Ip = "s68.baodf.com";
 
 $(function(){
     var param = '{routePath:"/wxPay/patientPay.do?serviceType=handfootmouth"}';
