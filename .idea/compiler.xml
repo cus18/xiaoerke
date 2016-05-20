@@ -318,6 +318,18 @@
         <processorPath useClasspath="true" />
         <module name="wisdom" />
       </profile>
+      <profile default="false" name="Annotation profile for xiaoerke-protectiveUmbrella-api" enabled="true">
+        <sourceOutputDir name="target\generated-sources\annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+      </profile>
+      <profile default="false" name="Annotation profile for xiaoerke-protectiveUmbrella-service" enabled="true">
+        <sourceOutputDir name="target\generated-sources\annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="angel" target="1.6" />
@@ -365,6 +377,9 @@
       <module name="xiaoerke-plan" target="1.6" />
       <module name="xiaoerke-plan-api" target="1.6" />
       <module name="xiaoerke-plan-service" target="1.6" />
+      <module name="xiaoerke-protectiveUmbrella" target="1.6" />
+      <module name="xiaoerke-protectiveUmbrella-api" target="1.6" />
+      <module name="xiaoerke-protectiveUmbrella-service" target="1.6" />
       <module name="xiaoerke-search" target="1.6" />
       <module name="xiaoerke-search-api" target="1.6" />
       <module name="xiaoerke-search-service" target="1.6" />

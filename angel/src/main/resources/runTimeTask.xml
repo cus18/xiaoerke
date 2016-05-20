@@ -42,24 +42,11 @@
 		<property name="cronExpression" value="0 0 0 * * ?"/>
 	</bean>
 
-	<!-- redis中,对建立socket链接的用户，进行在线清理工作  -->
-	<bean id="userWebSocketCheckTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject" ref="scheduledQuarz"/>
-		<property name="targetMethod" value="userWebSocketCheckTask"/>
-		<property name="concurrent" value="false"/>
-	</bean>
-	<!--事件触发时间点 每五秒执行一次  -->
-	<bean id="userWebSocketCheckTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="userWebSocketCheckTask"/>
-		<property name="cronExpression" value="*/5 * * * * ?"/>
-	</bean>
-
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-				<!--<ref bean="consultManagementCronTrigger"/>-->
-				<!--<ref bean="deleteTempRecordTrigger"/>-->
-				<ref bean="userWebSocketCheckTrigger"/>
+				<ref bean="consultManagementCronTrigger"/>
+				<ref bean="deleteTempRecordTrigger"/>
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>
