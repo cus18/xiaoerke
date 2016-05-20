@@ -569,7 +569,6 @@ angular.module('controllers', ['luegg.directives'])
                 if (!window.WebSocket) {
                     return;
                 }
-                console.log($scope.currentUserConversation.fromServer)
                 if($scope.currentUserConversation.fromServer==$scope.firstAddress){
                     if ($scope.socketServerFirst.readyState == WebSocket.OPEN) {
                         var consultValMessage = "";

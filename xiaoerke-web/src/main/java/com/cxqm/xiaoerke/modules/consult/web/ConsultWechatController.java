@@ -143,7 +143,6 @@ public class ConsultWechatController extends BaseController {
                 if(!csChannel.isActive()){
                     //保存聊天记录
                     consultRecordService.buildRecordMongoVo(userId, String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)), messageContent, consultSession);
-
                     //更新会话操作时间
                     consultRecordService.saveConsultSessionStatus(consultSession);
                 }
@@ -162,7 +161,7 @@ public class ConsultWechatController extends BaseController {
             }
 
             //会话创建成功，拿到了csChannel,给接诊员(或是医生)发送消息
-            if(csChannel!=null){
+            if(csChannel!=null&&csChannel.isActive()){
                 try {
                     JSONObject obj = new JSONObject();
                     obj.put("sessionId", sessionId);
