@@ -252,7 +252,7 @@
 
     <select id="getOnlineCsListInfo" resultType="java.util.HashMap">
         SELECT su.*,cdi.department from sys_user su
-        INNER JOIN consult_doctor_info cdi on cdi.sys_user_id = su.id
+        left JOIN consult_doctor_info cdi on cdi.sys_user_id = su.id
         where su.id in
         <foreach collection="list" item="classIdList" open="(" separator="," close=")">
             #{classIdList}
