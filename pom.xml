@@ -1061,7 +1061,6 @@
 		<module>xiaoerke-consult</module>
 		<module>xiaoerke-marketing</module>
 		<module>xiaoerke-insurance</module>
-		<module>xiaoerke-protectiveUmbrella</module>
 	</modules>
 
     <distributionManagement>
