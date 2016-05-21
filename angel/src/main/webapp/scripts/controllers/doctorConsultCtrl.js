@@ -705,6 +705,7 @@ angular.module('controllers', ['luegg.directives'])
                         dateTime: moment().format('YYYY-MM-DD HH:mm:ss'),
                         pageSize:100},function(data){
                         if(data.consultDataList!=""){
+                            console.log(data.consultDataList);
                             $.each(data.consultDataList,function(index,value){
                                 $scope.currentUserConversation.consultValue.splice(0, 0, value);
                             });
