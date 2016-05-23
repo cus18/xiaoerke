@@ -15,18 +15,33 @@ input{
 }
 .index_ban div:nth-child(1){
   position: absolute;
-  font-size: 16px;
+  font-size: 32px;
   top: 30px;
   left: 32%;
   color: #22c4c6;
 }
 .index_ban div:nth-child(2){
   position: absolute;
-  font-size: 13px;
-  top: 65px;
+  font-size: 26px;
+  top: 90px;
   left: 43%;
   color: #22c4c6;
 }
+.index_ban .ban_img{
+  position: absolute;
+  top: 30px;
+  right: 24%;
+}
+.index_ban .ban_img div{
+  vertical-align: top;
+  text-align: center;
+  margin-top: 16px;
+  font-size: 8px;
+  color: #909090;
+  width: 110px;
+  margin-left: -45px; ;
+}
+
 .index_zhuan{
   text-align: center;
 }
@@ -53,10 +68,17 @@ input{
   position: absolute;
   top: 160px;
   background: #000000;
-  opacity: 0.5;
+  opacity: 0.8;
   -moz-opacity: 0.5;
   width: 250px;
   height: 158px;
+  padding: 12px 0;
+
+}
+.index_zhuan .item_1_1 .info div{
+  text-align: center;
+  margin-top: 10px;
+  color: #FFFFFF;
 }
 .index_zhuan .item_1_1:hover .info{
   top: 0;
@@ -92,6 +114,7 @@ input{
   padding-top: 41px;
   text-align: center;
   position: relative;
+  height: 450px;
 }
 .index_doctor .yao{
   position: absolute;
@@ -108,10 +131,14 @@ input{
 }
 .index_doctor ul .doc_name{
   margin-top: 12px;
-  font-size: 10px ;
+  font-size: 20px ;
+}
+.index_doctor ul .doc_name_info{
+  font-size: 0 ;
 }
 .index_doctor ul .doc_hosp {
-  margin-top: 8px;
+  margin-top: 2px;
+  font-size: 0 ;
 }
 .index_doctor .doc_img{
   vertical-align: baseline;
@@ -130,25 +157,29 @@ input{
   border: hidden;!important;
   box-shadow: none;
 }
-.index_doctor a .mb-scrollButtons .mb-left:hover{
+.index_doctor a.mb-scrollButtons.mb-left:hover{
   background-position: center;
-  background: transparent url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_left_png.png") no-repeat;
+  background-image:  url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_left_png.png);
+  background-repeat:no-repeat ;
 }
-.index_doctor a .mb-scrollButtons .mb-right:hover{
+.index_doctor a.mb-scrollButtons.mb-right:hover{
   background-position: center;
-  background: transparent url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_right_png.png") no-repeat;
+  background-image:  url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_right_png.png);
+  background-repeat:no-repeat ;
 }
-.index_doctor a .mb-scrollButtons .mb-left{
+.index_doctor a.mb-scrollButtons.mb-left{
   left: -100px;
   background-position: center;
-  background: transparent url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_left_png.png) no-repeat;
+  background-image:  url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_left_png.png);
+  background-repeat:no-repeat ;
 }
-.index_doctor a .mb-scrollButtons .mb-right{
+.index_doctor a.mb-scrollButtons.mb-right{
   right: -100px;
   background-position: center;
-  background: transparent url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_right_png.png) no-repeat;
+  background-image:  url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_right_png.png);
+  background-repeat:no-repeat ;
 }
-.index_doctor a .mb-scrollButtons{
+.index_doctor a.mb-scrollButtons{
   background: none;
   background-position: center;
 }
@@ -187,7 +218,7 @@ input{
   padding-top: 41px;
 }
 .index_yu .yu_content{
-  margin-left: 45%;
+  margin-left: 49%;
   margin-top: 41px;
   position: relative;
 }
@@ -202,7 +233,8 @@ input{
   color: #333;
   line-height: 32px;
   vertical-align: top;
-  margin-left: -210px;
+  margin-left: -35%;
+  text-align: left;
 }
 .index_yu .yu_mor{
   margin-top: 55px;
@@ -238,15 +270,24 @@ input{
   font-size: 7px;
   color: #FFFFFF;
   padding:25px 0;
+  position: relative;
 }
 .bdf-foot .but_guanzhu{
   display: inline-block;
   vertical-align: top;
+  text-align: center;
+  position: relative;
 }
-.bdf-foot .but_guanzhu div:last-child{
+.bdf-foot .but_guanzhu .img_weixin{
+  position: absolute;
+  z-index: 3;
+  bottom: 35px;
+  left: -48px;
+}
+.bdf-foot .but_guanzhu .but_weiwo{
   margin-top: 11px;
 }
-.bdf-foot .but_guanzhu div:last-child img:last-child{
+.bdf-foot .but_guanzhu .but_weiwo .img_2{
   margin-left: 23px;
 }
 .bdf-foot .img_3{
