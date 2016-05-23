@@ -163,16 +163,16 @@ public class UserInfoController extends BaseController {
 		result.put("userId",user.getId());
 		result.put("userName",user.getName());
 		result.put("userType",user.getUserType());
-		if(StringUtils.isNotNull(user.getOpenid())){
-			result.put("openId",user.getOpenid());
-		}else{
+//		if(StringUtils.isNotNull(user.getOpenid())){
+//			result.put("openId",user.getOpenid());
+//		}else{
 			String openId = WechatUtil.getOpenId(session,request);
 			if(StringUtils.isNotNull(openId)){
 				result.put("openId",openId);
 			}else{
 				result.put("openId","noOpenId");
 			}
-		}
+//		}
 		return result;
 	}
 
