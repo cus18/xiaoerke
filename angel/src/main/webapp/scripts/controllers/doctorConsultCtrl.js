@@ -24,8 +24,8 @@ angular.module('controllers', ['luegg.directives'])
             $scope.loadingFlag = false;
             $scope.socketServerFirst = "";
             $scope.socketServerSecond = "";
-            $scope.firstAddress = "101.201.154.201";
-            $scope.secondAddress = "123.57.45.33";
+            $scope.firstAddress = "123.57.45.33";
+            //$scope.secondAddress = "123.57.45.33";
             $scope.alreadyJoinPatientConversation = []; //已经加入会话的用户数据，一个医生可以有多个对话的用户，这些用户的数据，都保存在此集合中
             $scope.currentUserConversation = {}; //医生与当前正在进行对话用户的聊天数据，医生在切换不同用户时，数据变更到切换的用户上来。
             $scope.waitJoinNum = 0; //医生待接入的用户数，是动态变化的数
@@ -397,7 +397,7 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.socketServerFirst = new ReconnectingWebSocket("ws://" + $scope.firstAddress +":2048/ws&" +
                             "distributor&" + $scope.doctorId);//cs,user,distributor
                     }else if($scope.userType=="consultDoctor"){
-                        $scope.socketServerFirst = new ReconnectingWebSocket("ws://" + $scope.secondAddress +":2048/ws&" +
+                        $scope.socketServerFirst = new ReconnectingWebSocket("ws://" + $scope.firstAddress +":2048/ws&" +
                             "cs&" + $scope.doctorId);//cs,user,distributor
                     }
 
@@ -509,7 +509,7 @@ angular.module('controllers', ['luegg.directives'])
                 if (!window.WebSocket) {
                     return;
                 }
-                if($scope.currentUserConversation.serverAddress==$scope.firstAddress){
+                //if($scope.currentUserConversation.serverAddress==$scope.firstAddress){
                     if ($scope.socketServerFirst.readyState == WebSocket.OPEN) {
                         var consultValMessage = "";
                         if($scope.userType=="distributor"){
@@ -539,37 +539,37 @@ angular.module('controllers', ['luegg.directives'])
                     } else {
                         alert("连接没有开启.");
                     }
-                }else{
-                    if ($scope.socketServerSecond.readyState == WebSocket.OPEN) {
-                        var consultValMessage = "";
-                        if($scope.userType=="distributor"){
-                            var consultValMessage = {
-                                "type": 0,
-                                "content": "分诊" +$scope.doctorName+"："+ $scope.info.consultMessage,
-                                "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                                "senderId": angular.copy($scope.doctorId),
-                                "senderName": angular.copy($scope.doctorName),
-                                "sessionId": angular.copy($scope.currentUserConversation.sessionId)
-                            };
-                        }else if($scope.userType=="consultDoctor"){
-                            var consultValMessage = {
-                                "type": 0,
-                                "content": $scope.doctorName + "医生：" + $scope.info.consultMessage,
-                                "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                                "senderId": angular.copy($scope.doctorId),
-                                "senderName": angular.copy($scope.doctorName),
-                                "sessionId": angular.copy($scope.currentUserConversation.sessionId)
-                            };
-                        }
-
-                        $scope.socketServerSecond.send(emotionSendFilter(JSON.stringify(consultValMessage)));
-                        consultValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($scope.info.consultMessage)));
-                        $scope.info.consultMessage = "";
-                        updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
-                    } else {
-                        alert("连接没有开启.");
-                    }
-                }
+                //}else{
+                //    if ($scope.socketServerSecond.readyState == WebSocket.OPEN) {
+                //        var consultValMessage = "";
+                //        if($scope.userType=="distributor"){
+                //            var consultValMessage = {
+                //                "type": 0,
+                //                "content": "分诊" +$scope.doctorName+"："+ $scope.info.consultMessage,
+                //                "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                //                "senderId": angular.copy($scope.doctorId),
+                //                "senderName": angular.copy($scope.doctorName),
+                //                "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                //            };
+                //        }else if($scope.userType=="consultDoctor"){
+                //            var consultValMessage = {
+                //                "type": 0,
+                //                "content": $scope.doctorName + "医生：" + $scope.info.consultMessage,
+                //                "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                //                "senderId": angular.copy($scope.doctorId),
+                //                "senderName": angular.copy($scope.doctorName),
+                //                "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                //            };
+                //        }
+                //
+                //        $scope.socketServerSecond.send(emotionSendFilter(JSON.stringify(consultValMessage)));
+                //        consultValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($scope.info.consultMessage)));
+                //        $scope.info.consultMessage = "";
+                //        updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
+                //    } else {
+                //        alert("连接没有开启.");
+                //    }
+                //}
             };
             //向用户发送咨询图片
             $scope.uploadFiles = function($files,fileType) {
@@ -581,7 +581,7 @@ angular.module('controllers', ['luegg.directives'])
                 var dataJsonValue = JSON.stringify(dataValue);
                 for (var i = 0; i < $files.length; i++) {
                     var file = $files[i];
-                    if($scope.currentUserConversation.serverAddress==$scope.firstAddress){
+                    //if($scope.currentUserConversation.serverAddress==$scope.firstAddress){
                         $scope.upload = $upload.upload({
                             url: 'consult/h5/uploadMediaFile',
                             data: encodeURI(dataJsonValue),
@@ -618,7 +618,7 @@ angular.module('controllers', ['luegg.directives'])
                                 alert("连接没有开启.");
                             }
                         });
-                    }
+                    //}
                     //else{
                     //    $scope.upload = $upload.upload({
                     //        url: 'consult/h5/uploadMediaFile',
