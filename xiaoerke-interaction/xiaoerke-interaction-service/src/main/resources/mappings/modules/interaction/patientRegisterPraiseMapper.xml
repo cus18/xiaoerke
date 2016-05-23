@@ -309,7 +309,7 @@
             <if test="redPacket != null" >
                 redPacket=#{redPacket},
             </if>
-            <if test="serviceAttitude != null" >
+            <if test="starNum1 != null" >
                 serviceAttitude=#{starNum1},
             </if>
             <if test="content != null" >
