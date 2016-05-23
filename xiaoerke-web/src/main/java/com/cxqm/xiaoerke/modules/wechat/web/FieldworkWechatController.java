@@ -168,7 +168,6 @@ public class FieldworkWechatController {
             url = ConstantUtil.TITAN_WEB_URL + "/titan/firstPage/phoneConsult";
         }else if (url.indexOf("consultPhone")>-1){
             System.out.println("begin"+url);
-//            String departmentName  = URLEncoder.encode(url.replace("consultPhone",""), "UTF-8");
             url =ConstantUtil.TITAN_WEB_URL +"titan/phoneConsult#/phoneConDoctorList/"+url.replace("consultPhone","")+",searchDoctorByDepartment,";
             System.out.println("end"+url);
         }else if("29".equals(url)){
@@ -176,34 +175,34 @@ public class FieldworkWechatController {
             url = ConstantUtil.TITAN_WEB_URL + "titan/firstPage/insurance";
         }
 
-//        String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
-//                "appid=APPID" +
-//                "&secret=SECRET&" +
-//                "code=CODE&grant_type=authorization_code";
-//        get_access_token_url = get_access_token_url.replace("APPID", WechatUtil.CORPID);
-//        get_access_token_url = get_access_token_url.replace("SECRET", WechatUtil.SECTET);
-//        get_access_token_url = get_access_token_url.replace("CODE", code);
-//        String access_token = "";
-//        String openid = "";
-//        if (access_token.isEmpty() && openid.isEmpty()) {
-//            WechatBean wechat;
-//            int countNum = 0;
-//            do {
-//                System.out.print("wechatURL:"+get_access_token_url);
-//                String json = HttpRequestUtil.getConnectionResult(get_access_token_url, "GET", "");
-//                System.out.print("json:"+json);
-//                wechat = JsonUtil.getObjFromJsonStr(json, WechatBean.class);
-//                if (countNum++ > 3) {
-//                    break;
-//                }
-//                ;
-//            } while (wechat == null);
-//
-//            openid = wechat.getOpenid();
-//            session.setAttribute("openId", openid);
-//            CookieUtils.setCookie(response, "openId", openid==null?"":openid,60*60*24*30,".baodf.com");
-//            memberService.sendExtendOldMemberWechatMessage(openid);
-//        }
+        String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
+                "appid=APPID" +
+                "&secret=SECRET&" +
+                "code=CODE&grant_type=authorization_code";
+        get_access_token_url = get_access_token_url.replace("APPID", WechatUtil.CORPID);
+        get_access_token_url = get_access_token_url.replace("SECRET", WechatUtil.SECTET);
+        get_access_token_url = get_access_token_url.replace("CODE", code);
+        String access_token = "";
+        String openid = "";
+        if (access_token.isEmpty() && openid.isEmpty()) {
+            WechatBean wechat;
+            int countNum = 0;
+            do {
+                System.out.print("wechatURL:"+get_access_token_url);
+                String json = HttpRequestUtil.getConnectionResult(get_access_token_url, "GET", "");
+                System.out.print("json:"+json);
+                wechat = JsonUtil.getObjFromJsonStr(json, WechatBean.class);
+                if (countNum++ > 3) {
+                    break;
+                }
+                ;
+            } while (wechat == null);
+
+            openid = wechat.getOpenid();
+            session.setAttribute("openId", openid);
+            CookieUtils.setCookie(response, "openId", openid==null?"":openid,60*60*24*30,".baodf.com");
+            memberService.sendExtendOldMemberWechatMessage(openid);
+        }
         return "redirect:" + url;
     }
 
