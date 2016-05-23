@@ -370,7 +370,6 @@
 				<!--<ref bean="nutritionManagementSendWechatMessageCronTrigger"/>-->
 				<!--<ref bean="insuranceUpdateCronTrigger"/>-->
 				<!--<ref bean="consultPhoneCronTrigger"/>-->
-				<!--<ref bean="consultManagementCronTrigger"/>-->
 				<!--<ref bean="timingDialCronTrigger"/>-->
                 <!--<ref bean="sendMsgToDocAtNightPhoneConsultCronTrigger"/>-->
                 <!--<ref bean="sendMsgToDocAtMorningPhoneConsultCronTrigger"/>-->
