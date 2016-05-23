@@ -8,7 +8,13 @@ angular.module('app2', ['angularFileUpload', 'ui.router', 'ui.bootstrap', 'contr
                 url: '/index',
                 templateUrl: root + '/index.html',
                 controller: 'indexCtrl',
-                title: '新页面'
+                title: '首页'
+            })
+            .state('callMine', {
+                url: '/callMine',
+                templateUrl: root + '/callMine.html',
+                controller: 'callMineCtrl',
+                title: '联系我们'
             })
 
         $urlRouterProvider.otherwise('index');

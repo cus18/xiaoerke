@@ -74,6 +74,7 @@ angular.module('controllers2', [])
                 });
             })
 
+            //底部微信二维码显示
             $(".img_1").mouseenter(function () {
                 $(".img_weixin").show();
 
@@ -83,4 +84,28 @@ angular.module('controllers2', [])
 
             });
 
+            //联系我们
+            $scope.goCallMine = function () {
+                $state.go("callMine");
+            }
+
+
+        }])
+    //联系我们
+    .controller('callMineCtrl',['$scope','$state','$stateParams',
+        function ($scope,$state,$stateParams) {
+
+            $(function () {
+                $(".img_weixin").hide();
+            });
+
+            //底部微信二维码显示
+            $(".img_1").mouseenter(function () {
+                $(".img_weixin").show();
+
+            });
+            $(".img_1").mouseout(function () {
+                $(".img_weixin").hide();
+
+            });
         }]);
