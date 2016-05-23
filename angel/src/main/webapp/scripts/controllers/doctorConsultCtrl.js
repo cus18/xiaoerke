@@ -313,7 +313,6 @@ angular.module('controllers', ['luegg.directives'])
                         value.selectedAll = false;
                         $scope.alreadyJoinTransferSpecialist.push(value);
                     });
-                    console.log("alreadyJoinTransferSpecialist",$scope.alreadyJoinTransferSpecialist);
                 });
             };
 
@@ -325,6 +324,7 @@ angular.module('controllers', ['luegg.directives'])
 
             //添加转接科室确定
             $scope.addTransferSpecialistSubmit = function () {
+                $scope.showFlag.specialistTransfer = false;
                 //添加转接科室
                 var consultData = {
                     sessionId: angular.copy($scope.currentUserConversation.sessionId),
@@ -337,12 +337,12 @@ angular.module('controllers', ['luegg.directives'])
                         alert("添加转诊成功");
                     }
                 });
-                $scope.showFlag.specialistTransfer = false;
             };
             $scope.closeSpecialistTransfer = function(){$scope.showFlag.specialistTransfer = false;};
 
             //删除转接科室中的一个
             $scope.disposeTransferSpecialist = function (index) {
+                $scope.showFlag.specialistList = false;
                 var specialistId  = [$scope.alreadyJoinTransferSpecialist[index]];
                 if ($window.confirm("确定要删除该转诊内容?")) {
                     GetRemoveTransferSpecialist.save({content:specialistId,status:'ongoing',delFlag:'1'},function(data){
@@ -360,6 +360,9 @@ angular.module('controllers', ['luegg.directives'])
 
             //分诊员发起一个针对用户的会话
             $scope.createOneSpecialistPatient = function(index){
+                alert($scope.showFlag.specialistList);
+                $scope.showFlag.specialistList = false;
+                alert($scope.showFlag.specialistList);
                 $scope.choosedAlreadyJoinTransferSpecialist = [];
                 $scope.choosedAlreadyJoinTransferSpecialist.push($scope.alreadyJoinTransferSpecialist[index]);
                 var specialistPatientId  = $scope.choosedAlreadyJoinTransferSpecialist;
