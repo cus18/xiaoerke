@@ -1,3 +1,5 @@
+package com.cxqm.xiaoerke.modules.umbrella.entity;
+
 import java.util.Date;
 
 /**
