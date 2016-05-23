@@ -330,9 +330,7 @@ angular.module('controllers', ['luegg.directives'])
                     sessionId: angular.copy($scope.currentUserConversation.sessionId),
                     department: angular.copy($scope.info.selectedSpecialist.departmentName)
                 };
-                console.log("consultData",consultData);
                 GetAddTransferSpecialist.save({consultData:consultData},function(data){
-                    console.log("添加的转接",data);
                     if(data.status == "exist"){
                         alert("用户已添加过转诊");
                     }else if (data.status == "success"){
