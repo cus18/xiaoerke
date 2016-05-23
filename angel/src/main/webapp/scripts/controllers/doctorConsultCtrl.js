@@ -73,7 +73,7 @@ angular.module('controllers', ['luegg.directives'])
 
                         //创建与平台的socket连接
                         $scope.initConsultSocketFirst();
-                        $scope.initConsultSocketSecond();
+                        //$scope.initConsultSocketSecond();
 
                         getIframeSrc();
                         //获取通用回复列表
@@ -491,7 +491,7 @@ angular.module('controllers', ['luegg.directives'])
                     "senderId": angular.copy($scope.doctorId)
                 };
                 $scope.socketServerFirst.send(JSON.stringify(heartBeatMessage));
-                $scope.socketServerSecond.send(JSON.stringify(heartBeatMessage));
+                //$scope.socketServerSecond.send(JSON.stringify(heartBeatMessage));
                 $scope.$apply();
             };
 
@@ -598,7 +598,7 @@ angular.module('controllers', ['luegg.directives'])
                                     "senderName": angular.copy($scope.doctorName),
                                     "sessionId": angular.copy($scope.currentUserConversation.sessionId)
                                 };
-                            }else{
+                            } else{
                                 var consultValMessage = {
                                     "type": 1,
                                     "content": data.showFile,
@@ -618,44 +618,45 @@ angular.module('controllers', ['luegg.directives'])
                                 alert("连接没有开启.");
                             }
                         });
-                    }else{
-                        $scope.upload = $upload.upload({
-                            url: 'consult/h5/uploadMediaFile',
-                            data: encodeURI(dataJsonValue),
-                            file: file
-                        }).progress(function(evt) {
-                        }).success(function(data, status, headers, config){
-                            if(data.source == "wxcxqm"){
-                                var consultValMessage = {
-                                    "type": 1,
-                                    "content": data.showFile,
-                                    "wscontent": data.WS_File,
-                                    "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                                    "senderId": angular.copy($scope.doctorId),
-                                    "senderName": angular.copy($scope.doctorName),
-                                    "sessionId": angular.copy($scope.currentUserConversation.sessionId)
-                                };
-                            }else{
-                                var consultValMessage = {
-                                    "type": 1,
-                                    "content": data.showFile,
-                                    "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                                    "senderId": angular.copy($scope.doctorId),
-                                    "senderName": angular.copy($scope.doctorName),
-                                    "sessionId": angular.copy($scope.currentUserConversation.sessionId)
-                                };
-                            }
-                            if (!window.WebSocket) {
-                                return;
-                            }
-                            if ($scope.socketServerSecond.readyState == WebSocket.OPEN) {
-                                $scope.socketServerSecond.send(JSON.stringify(consultValMessage));
-                                updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
-                            } else {
-                                alert("连接没有开启.");
-                            }
-                        });
                     }
+                    //else{
+                    //    $scope.upload = $upload.upload({
+                    //        url: 'consult/h5/uploadMediaFile',
+                    //        data: encodeURI(dataJsonValue),
+                    //        file: file
+                    //    }).progress(function(evt) {
+                    //    }).success(function(data, status, headers, config){
+                    //        if(data.source == "wxcxqm"){
+                    //            var consultValMessage = {
+                    //                "type": 1,
+                    //                "content": data.showFile,
+                    //                "wscontent": data.WS_File,
+                    //                "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                    //                "senderId": angular.copy($scope.doctorId),
+                    //                "senderName": angular.copy($scope.doctorName),
+                    //                "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                    //            };
+                    //        }else{
+                    //            var consultValMessage = {
+                    //                "type": 1,
+                    //                "content": data.showFile,
+                    //                "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                    //                "senderId": angular.copy($scope.doctorId),
+                    //                "senderName": angular.copy($scope.doctorName),
+                    //                "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                    //            };
+                    //        }
+                    //        if (!window.WebSocket) {
+                    //            return;
+                    //        }
+                    //        if ($scope.socketServerSecond.readyState == WebSocket.OPEN) {
+                    //            $scope.socketServerSecond.send(JSON.stringify(consultValMessage));
+                    //            updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
+                    //        } else {
+                    //            alert("连接没有开启.");
+                    //        }
+                    //    });
+                    //}
                 }
             };
 

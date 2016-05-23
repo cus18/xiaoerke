@@ -487,20 +487,29 @@ public class WechatUtil {
             String mediaNameAmr = mediaName+".amr";
             String mediaNameMp3 = mediaName+".mp3";
             BufferedInputStream bis = new BufferedInputStream(inputStream);
-//            FileOutputStream fos = new FileOutputStream(ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP+mediaNameAmr);
-            FileOutputStream fos = new FileOutputStream(ConstantUtil.AMR_TOMP3_LINUXPATH+mediaNameAmr);
-            byte[] buf = new byte[8096];
-            int size = 0;
-            while ((size = bis.read(buf)) != -1)
-                fos.write(buf, 0, size);
-            fos.close();
-            bis.close();
-//            ToMp3(ConstantUtil.AMR_TOMP3_WINDOWSPATH, ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP + mediaName);
-//            inputStream = new FileInputStream(new File(ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP+mediaNameMp3));
-//            StringUtils.deleteFile(new File(ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP));
-            ToMp3(ConstantUtil.AMR_TOMP3_WINDOWSPATH, ConstantUtil.AMR_TOMP3_LINUXPATH + mediaName);
-            inputStream = new FileInputStream(new File(ConstantUtil.AMR_TOMP3_LINUXPATH+mediaNameMp3));
-            StringUtils.deleteFile(new File(ConstantUtil.AMR_TOMP3_LINUXPATH));
+            if(ConstantUtil.AMR_TOMP3_FUNC.equals("windows")){
+                FileOutputStream fos = new FileOutputStream(ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP+mediaNameAmr);
+                byte[] buf = new byte[8096];
+                int size = 0;
+                while ((size = bis.read(buf)) != -1)
+                    fos.write(buf, 0, size);
+                fos.close();
+                bis.close();
+                ToMp3(ConstantUtil.AMR_TOMP3_WINDOWSPATH, ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP + mediaName);
+                inputStream = new FileInputStream(new File(ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP+mediaNameMp3));
+                StringUtils.deleteFile(new File(ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP));
+            }else if(ConstantUtil.AMR_TOMP3_FUNC.equals("linux")){
+                FileOutputStream fos = new FileOutputStream(ConstantUtil.AMR_TOMP3_LINUXPATH+mediaNameAmr);
+                byte[] buf = new byte[8096];
+                int size = 0;
+                while ((size = bis.read(buf)) != -1)
+                    fos.write(buf, 0, size);
+                fos.close();
+                bis.close();
+                ToMp3(ConstantUtil.AMR_TOMP3_WINDOWSPATH, ConstantUtil.AMR_TOMP3_LINUXPATH + mediaName);
+                inputStream = new FileInputStream(new File(ConstantUtil.AMR_TOMP3_LINUXPATH+mediaNameMp3));
+                StringUtils.deleteFile(new File(ConstantUtil.AMR_TOMP3_LINUXPATH));
+            }
             mediaName = mediaNameMp3;
         }else if(messageType.contains("video")){
             mediaName = mediaName+".mp4";
@@ -519,19 +528,19 @@ public class WechatUtil {
         try {
             run = Runtime.getRuntime();
             long start=System.currentTimeMillis();
-//            String path = webroot + "ffmpeg -i "+sourcePath+".amr"+" -acodec libmp3lame "+targetPath;
-            String path = "ffmpeg -i "+sourcePath+".amr"+" -acodec libmp3lame "+targetPath;
-            Process p=run.exec(path);
+            String path = "";
+            if(ConstantUtil.AMR_TOMP3_FUNC.equals("windows")){
+                path = webroot + "ffmpeg -i "+sourcePath+".amr"+" -acodec libmp3lame "+targetPath;
+            }else if(ConstantUtil.AMR_TOMP3_FUNC.equals("linux")){
+                path = "ffmpeg -i "+sourcePath+".amr"+" -acodec libmp3lame "+targetPath;
+            }
+            Process p = run.exec(path);
             p.getOutputStream().close();
             p.getInputStream().close();
             p.getErrorStream().close();
             p.waitFor();
             long end=System.currentTimeMillis();
             System.out.println(sourcePath+" convert success, costs:"+(end-start)+"ms");
-            //删除原来的文件
-            //if(file.exists()){
-            //file.delete();
-            //}
         } catch (Exception e) {
             e.printStackTrace();
         }finally{
