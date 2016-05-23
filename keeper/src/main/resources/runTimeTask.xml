@@ -374,7 +374,6 @@
                 <!--<ref bean="sendMsgToDocAtNightPhoneConsultCronTrigger"/>-->
                 <!--<ref bean="sendMsgToDocAtMorningPhoneConsultCronTrigger"/>-->
                 <!--<ref bean="phoneConsultReminder2DocCronTrigger"/>-->
-                <ref bean="consultRecordMongoTransMySqlCronTrigger"/>
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>
