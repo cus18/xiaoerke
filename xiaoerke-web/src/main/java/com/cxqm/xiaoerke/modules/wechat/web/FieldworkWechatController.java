@@ -87,7 +87,8 @@ public class FieldworkWechatController {
     @RequestMapping(value = "/getUserWechatMenId", method = {RequestMethod.POST, RequestMethod.GET})
     public String getUserWechatMenu(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
         String code = request.getParameter("code");
-        String url = java.net.URLDecoder.decode(request.getParameter("url"), "utf-8");
+        String url = request.getParameter("url");
+
         System.out.println("yuanxing"+url);
         if ("1".equals(url)) {
             //引导页
