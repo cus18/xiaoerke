@@ -35,13 +35,14 @@
 </head>
 <body>
 <ul class="nav nav-tabs">
-	<li class="active"><a href="${ctx}/insurance/insuranceList?">订单列表</a></li>
-	<li><a href="${ctx}/insurance/insuranceList?stateFlag=2">待审核</a></li>
-	<li><a href="${ctx}/insurance/insuranceList?stateFlag=3">已补贴</a></li>
+	<li class="active"><a href="${ctx}/insurance/insuranceList?insuranceType=1">订单列表</a></li>
+	<li><a href="${ctx}/insurance/insuranceList?stateFlag=2&insuranceType=1">待审核</a></li>
+	<li><a href="${ctx}/insurance/insuranceList?stateFlag=3&insuranceType=1">已补贴</a></li>
 </ul>
 <form:form id="searchForm" modelAttribute="vo" action="${ctx}/insurance/insuranceList?" method="post" class="breadcrumb form-search ">
 	<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 	<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
+	<input id="insuranceType" name="insuranceType" type="hidden" value="1"/>
 	<sys:message content="${message}"/>
 	<ul class="ul-form">
 		<li><label>宝宝姓名：</label>

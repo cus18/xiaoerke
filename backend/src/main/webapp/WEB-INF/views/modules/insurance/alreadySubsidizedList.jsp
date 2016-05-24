@@ -35,9 +35,9 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/insurance/insuranceList?">订单列表</a></li>
-		<li><a href="${ctx}/insurance/insuranceList?stateFlag=2">待审核</a></li>
-		<li class="active"><a href="${ctx}/insurance/insuranceList?stateFlag=3">已补贴</a></li>
+		<li><a href="${ctx}/insurance/insuranceList?insuranceType=1">订单列表</a></li>
+		<li><a href="${ctx}/insurance/insuranceList?stateFlag=2&insuranceType=1">待审核</a></li>
+		<li class="active"><a href="${ctx}/insurance/insuranceList?stateFlag=3&insuranceType=1">已补贴</a></li>
 	</ul>
 	<sys:message content="${message}"/>
 	<table id="contentTable" class="table table-bordered table-condensed">

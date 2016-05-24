@@ -133,6 +133,9 @@
 	<if test="babyName != null and babyName != ''">
     	 and sbb.name = #{babyName}
    	</if>
+	<if test="insuranceType != null and insuranceType != ''">
+		and irs.Insurance_type = #{insuranceType}
+	</if>
    	group by irs.id ORDER BY irs.create_time desc
   </select>
 
