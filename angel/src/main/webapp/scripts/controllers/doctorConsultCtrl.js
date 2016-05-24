@@ -397,6 +397,67 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 })
             };
+            //实现全选
+            $scope.selectetAllSpecialistPatient = false;
+            $scope.selectedAllTransferSpecialist = function() {
+                $scope.selectetAllSpecialistPatient = !$scope.selectetAllSpecialistPatient;
+                //console.log($scope.selectetAllSpecialistPatient);
+                if ($scope.selectetAllSpecialistPatient == false) {
+                    $.each($scope.alreadyJoinTransferSpecialist, function(index, value) {
+                        value.selectedAll = false;
+                    });
+                    $scope.choosedAlreadyJoinTransferSpecialist = [];
+                }
+                if ($scope.selectetAllSpecialistPatient == true) {
+                    $.each($scope.alreadyJoinTransferSpecialist, function(index, value) {
+                        value.selectedAll = true;
+                    });
+                    $scope.choosedAlreadyJoinTransferSpecialist = $scope.alreadyJoinTransferSpecialist;
+                    console.log("choosedAlreadyJoinTransferSpecialist", $scope.choosedAlreadyJoinTransferSpecialist)
+                }
+            };
+            $scope.choosedAlreadyJoinTransferSpecialist = [];
+            $scope.choseOnePatient = function(index) {
+                $scope.alreadyJoinTransferSpecialist[index].selectedAll = !$scope.alreadyJoinTransferSpecialist[index].selectedAll;
+                if ($scope.alreadyJoinTransferSpecialist[index].selectedAll == true) {
+                    $scope.choosedAlreadyJoinTransferSpecialist.push($scope.alreadyJoinTransferSpecialist[index])
+                } else {
+                    $scope.choosedAlreadyJoinTransferSpecialist.splice($scope.alreadyJoinTransferSpecialist[index], 1)
+                }
+                console.log($scope.choosedAlreadyJoinTransferSpecialist);
+            };
+            //发起多个会话
+            $scope.createSomeSpecialistPatient = function() {
+                $.each($scope.choosedAlreadyJoinTransferSpecialist, function(index, value) {
+                    if (value.selectedAll = true) {
+                        $scope.selectetAllSpecialistPatient = true;
+                    }
+                });
+                console.log($scope.choosedAlreadyJoinTransferSpecialist);
+                CreateTransferSpecialist.save({ content: $scope.choosedAlreadyJoinTransferSpecialist }, function(data) {
+                    console.log(data.userIds);
+                    if (data.status == "success") {
+                        $.each($scope.choosedAlreadyJoinTransferSpecialist, function(index, value) {
+                            for (var i = 0; i < data.userIds.length; i++) {
+                                if (data.userIds[i] == value.userId) {
+                                    $state.go('doctorConsultFirst', { userId: data.userIds[i], action: 'createUserSession' });
+                                }
+                            }
+                        });
+                    } else if (data.status == "failure") {
+                        if (data.failureUserIds.result == "failure") {
+                            alert("无法发起会话，请稍后重试");
+                        } else if (data.failureUserIds.result == "existTransferSession") {
+                            alert("此用户正有会话处于转接状态，无法向其发起会话，请稍后重试");
+                        } else if (data.failureUserIds.result == "noLicenseTransfer") {
+                            alert("对不起，你没有权限，抢断一个正在咨询用户的会话");
+                        } else if (data.failureUserIds.result == "exceed48Hours") {
+                            alert("对不起，用户咨询已经超过了48小时，无法再向其发起会话");
+                        }
+                    }
+                })
+            };
+            //建立一个新的会话
             /**转接功能区**/
 
             /**会话操作区**/
