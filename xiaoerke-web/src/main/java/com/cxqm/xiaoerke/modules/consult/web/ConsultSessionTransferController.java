@@ -44,7 +44,7 @@ public class ConsultSessionTransferController {
 
         HashMap<String ,Object> response = new HashMap<String, Object>();
         List<HashMap<String,Object>> requestData = (List<HashMap<String,Object>>) params.get("content");
-        ConsultSessionManager consultSessionManager=ConsultSessionManager.getSessionManager();
+        ConsultSessionManager consultSessionManager = ConsultSessionManager.getSessionManager();
         List<HashMap<String,Object>> transferList = new ArrayList<HashMap<String, Object>>();
         if(requestData !=null && requestData.size() >0){
             for(int i=0 ; i<requestData.size();i++){

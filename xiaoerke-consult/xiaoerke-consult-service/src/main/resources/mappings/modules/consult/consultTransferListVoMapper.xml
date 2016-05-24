@@ -49,6 +49,7 @@
     #{delFlag,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{department,jdbcType=VARCHAR}
     )
   </insert>
+
   <update id="updateConsultTransferByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultTransferListVo">
     update consult_transfer_list
     <set>

@@ -22,7 +22,7 @@ $(function(){
                 if(data.openId=="noOpenId"){
                     window.location.href = "http://s251.baodf.com/keeper/wechatInfo/" +
                         "fieldwork/wechat/author?url=http://s251.baodf.com/" +
-                        "keeper/wechatInfo/getUserWechatMenId?url=29";
+                        "keeper/wechatInfo/getUserWechatMenId?url=30";
                 }else{
                     initWx();//初始化微信
                     getBabyInfo();//获取宝宝信息
