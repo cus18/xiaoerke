@@ -11,7 +11,7 @@ angular.module('app2', ['angularFileUpload', 'ui.router', 'ui.bootstrap', 'contr
                 title: '首页'
             })
             .state('callMine', {
-                url: '/callMine',
+                url: '/callMine/:id',
                 templateUrl: root + '/callMine.html',
                 controller: 'callMineCtrl',
                 title: '联系我们'
