@@ -1056,7 +1056,7 @@ public class ScheduledTask {
                   consultPhonePatientService.updateOrderInfoBySelect(vo);
 
               }else{
-                  LogUtils.saveLog(Servlets.getRequest(), "00000107", "电话咨询定时器" + result);//用户发起微信支付
+//                  LogUtils.saveLog(Servlets.getRequest(), "00000107", "电话咨询定时器" + result);//用户发起微信支付
               }
           }
       }
@@ -1072,7 +1072,7 @@ public class ScheduledTask {
           String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String)consultOrder.get("date"),"yyyy/MM/dd"));
           String dateTime = (String) consultOrder.get("date")+" "+week+ " "+(String) consultOrder.get("beginTime");
           PatientMsgTemplate.returnPayPhoneRefund2Wechat((String) consultOrder.get("babyName"),(String) consultOrder.get("doctorName"),dateTime, (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"), (Float) consultOrder.get("price") + "",(String) consultOrder.get("openid"),token,url);
-          LogUtils.saveLog(Servlets.getRequest(), "00000108", "电话咨询-退费" + map);//用户发起微信支付
+//          LogUtils.saveLog(Servlets.getRequest(), "00000108", "电话咨询-退费" + map);//用户发起微信支付
         }
 
         //将半小时钱的未支付的订单释放

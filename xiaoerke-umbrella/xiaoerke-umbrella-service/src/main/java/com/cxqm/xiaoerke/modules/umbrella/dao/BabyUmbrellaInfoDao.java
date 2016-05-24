@@ -30,6 +30,6 @@ public interface BabyUmbrellaInfoDao {
      * 查询全部
      * @return
      */
-    List<Map<String,Object>>  getBabyUmbrellaInfo();
+    List<Map<String,Object>>  getBabyUmbrellaInfo(Map<String, Object> map);
 
 }

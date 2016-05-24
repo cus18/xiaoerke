@@ -32,7 +32,7 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
     }
 
     @Override
-    public List<Map<String, Object>> getBabyUmbrellaInfo() {
-        return babyUmbrellaInfoDao.getBabyUmbrellaInfo();
+    public List<Map<String, Object>> getBabyUmbrellaInfo(Map<String, Object> map) {
+        return babyUmbrellaInfoDao.getBabyUmbrellaInfo(map);
     }
 }
