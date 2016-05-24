@@ -1,9 +1,68 @@
 <ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
 <ion-view view-title="{{title}}">
-    <ion-content class="umbrellaFillInfo" overflow-scroll="true" style="top:0;">
+    <ion-content class="umbrellaFillInfo bg1" overflow-scroll="true" style="top:0;">
         <ion-scroll direction="y" has-bouncing="true" >
-           信息填写页面
-            <button ui-sref="umbrellaJoin"> 返回领取</button>
+            <div class="fillCommon">
+                    <dl>
+                        <dt>宝宝信息</dt>
+                        <dd>
+                            <span>姓名：</span>
+                            <input type="hidden" id="babyId"/>
+                            <input type="text" id="babyName" placeholder="宝宝的真实姓名" >
+                        </dd>
+                        <dd>
+                            <span>性别：</span>
+                            <div class="selectItem sex" >
+                                <a  ng-click="selectSex('boy')"  ng-class="{'select':sexItem=='boy'}">男</a>
+                                <a  ng-click="selectSex('girl')" ng-class="{'select':sexItem=='girl'}">女</a>
+                            </div>
+
+                        </dd>
+                        <dd>
+                            <span>出生日期：</span>
+                            <input type="text" readonly="readonly" id="birthday" placeholder="选择宝宝的出生日期" >
+                        </dd>
+
+                    </dl>
+                    <dl>
+                        <dt>家长信息</dt>
+                        <dd>
+                            <span>姓名：</span>
+                            <input type="text" id="parentName"  placeholder="家长的真实姓名" >
+
+                        </dd>
+                        <dd>
+                            <span>您是孩子的：</span>
+                            <div class="selectItem parent" >
+                                <a  ng-click="selectParent('father')" ng-class="{'select':parentItem=='father'}">宝爸</a>
+                                <a  ng-click="selectParent('mother')" ng-class="{'select':parentItem=='mother'}">宝妈</a>
+                            </div>
+
+                        </dd>
+                        <dd>
+                            <span>手机号：</span>
+                            <input type="text" id="phone"  ng-model="info.phoneNum" placeholder="填写手机号" maxlength="11"  ng-blur="checkPhone()" >
+                        </dd>
+                        <dd>
+                            <span>验证码：</span>
+                            <input type="text" id="testCode"    maxlength="6"   ng-blur="checkCode();" >
+                            <a class="getCode">获取验证码</a>
+                        </dd>
+                        <dd >
+                            <span>身份证号：</span>
+                            <input type="text" id="IdCard" ng-model="info.IdCard" placeholder="填写正确的身份证号" maxlength="18"  ng-blur="checkCode();"  >
+                        </dd>
+                    </dl>
+                <br>
+                    <div class="tips" ng-show="!checkLock">
+                        <img class="my-img" width="12.5" height="auto" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fremind_icon.png">
+                        <span>{{tipsText}}</span>
+                    </div>
+                </div>
+            <br> <br> <br> <br> <br> <br> <br>
         </ion-scroll>
+        <div ng-click="immediateActive()" id="payButton" class="button bottom-btn" >
+            立即激活
+        </div>
     </ion-content>
 </ion-view>

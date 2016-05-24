@@ -1,9 +1,78 @@
 <ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
 <ion-view view-title="{{title}}">
-    <ion-content class="umbrellaJoin" overflow-scroll="true" style="top:0;">
+    <ion-content class="umbrellaJoin bg1" overflow-scroll="true" style="top:0;">
         <ion-scroll direction="y" has-bouncing="true" >
-           领取成功页面
-            <button ui-sref="myGuarantee">我的保障</button>
+          <!--  顶部-->
+           <div class="top tc c0">
+             <!-- 首次进来-->
+              <div>
+                  <img class="pic my-img2" width="79" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/congratulate.png" >
+                  <div class="f5 text">成功获得互助保障金</div>
+               </div>
+               <!-- 待激活 和参与成功 -->
+               <div >
+                  <div class="f5 text">已有互助保障金额</div>
+               </div>
+              <div class="money">20000元</div>
+           </div>
+
+            <!-- 第二部分-->
+
+            <!-- 首次进来-->
+            <div class="join" >
+                <img class="my-img2"  width="100%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/join_first.png" >
+            </div>
+            <!-- 待激活  -->
+            <div class="join" >
+                <img class="my-img2" width="100%" height="150" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/join_bg.png" >
+                <div class="main tc">
+                    <div class="order f4 c3">你是第<span class="c11">123</span>位加入的成员</div>
+                    <div class="state f5 c13">您的宝宝信息<span class="c11">待激活</span></div>
+                    <button class="c0 f6" ng-click="goActive()">去激活</button>
+                    <div class="remind f5 c3">完善宝宝信息才可获取保障金</div>
+                </div>
+            </div>
+            <!--参与成功 -->
+            <div class="join join3" >
+                <img class="my-img2"  width="100%" height="160" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/join_bg.png" >
+                <div class="main tc">
+                    <div class="order f4 c3">你是第<span class="c11">123</span>位加入的成员</div>
+                    <div class="state f5 c13">你正处于<span class="c11">观察期</span></div>
+                    <div class="day tc">
+                        <img width="39" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/countdowm1.png">
+                        <img width="39" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/countdowm2.png">
+                        <img width="39" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/countdowm3.png">
+                    </div>
+                    <div class="remind">天后即可享受保障</div>
+                </div>
+            </div>
+
+
+            <!--拼图模块 -->
+            <div class="pinTu tc">
+                <p class="f8 c3">
+                    只需邀请<span class="c12">10</span>位好友，完成拼图<br>
+                    即可获40万保障金
+                </p>
+                <img class="my-img2" width="80%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/pintu1.png" >
+            </div>
+
+            <br><br><br><br><br>
         </ion-scroll>
     </ion-content>
+    <!--底部按钮-->
+    <div class="myBottom-btn2 tc">
+        <div class="account f4 c4 ">保障金账户余额:  <span class="bold">5</span>元</div>
+        <div class="btn">
+            <button class="f8 c0" ng-click="goDetail()">查看详情</button>
+            <button class="f8 c0" ng-click="goShare()">邀请好友</button>
+        </div>
+    </div>
+
+    <!--分享浮层-->
+    <div class="c-shadow"  ng-click="cancelShare()" ng-if="shareLock"></div>
+    <div class="shadow-content share tc"  ng-click="cancelShare()"  ng-if="shareLock">
+        <img class="arr" width="49" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/share_arr.png">
+        <img  class="remind" width="80%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/share_remind.png">
+    </div>
 </ion-view>

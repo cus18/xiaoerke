@@ -47,6 +47,9 @@ define(['appUmbrella'], function(app){
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaFillInfoCtrl',
                                     ['js/controllers/umbrella/umbrellaFillInfoCtrl.js',
+                                        'js/libs/mobiscroll.custom-2.17.0.min.js',
+                                        'styles/lib/mobiscroll.custom-2.17.0.min.css',
+                                        'styles/umbrella/fillInfoCommon.less?ver='+umbrellaVersion,
                                         'styles/umbrella/umbrellaFillInfo.less?ver='+umbrellaVersion],
                                     'js/views/umbrella/umbrellaFillInfo.html?ver='+umbrellaVersion);
                             }
@@ -55,28 +58,12 @@ define(['appUmbrella'], function(app){
                             public: true
                         }
                     })
-                    .state('myGuarantee', {
-                        url: '/myGuarantee',
-                        templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'myGuaranteeCtrl',
-                        resolve: {
-                            load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.myGuaranteeCtrl',
-                                    ['js/controllers/umbrella/myGuaranteeCtrl.js',
-                                        'styles/umbrella/myGuarantee.less?ver='+umbrellaVersion],
-                                    'js/views/umbrella/myGuarantee.html?ver='+umbrellaVersion);
-                            }
-                        },
-                        data: {
-                            public: true
-                        }
-                    })
 
 
-                $urlRouterProvider.otherwise('myGuarantee');
+                $urlRouterProvider.otherwise('umbrellaJoin');
             }])
         .run(function ($rootScope){
             $rootScope.unBindUserPhoneNum = '';
-            $rootScope.picVer = picVersion;;
+            $rootScope.picVer = picVersion;
         })
 })
