@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.umbrella.dao;
 
 import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -17,14 +18,14 @@ public interface BabyUmbrellaInfoDao {
      * @param babyUmbrellaInfo
      * @return
      */
-    int saveBabyUmberllaInfo(BabyUmbrellaInfo babyUmbrellaInfo);
+    int saveBabyUmbrellaInfo(BabyUmbrellaInfo babyUmbrellaInfo);
 
     /**
      * 更新保障金信息
      * @param babyUmbrellaInfo
      * @return
      */
-    int updateBabyUmberllaInfo(BabyUmbrellaInfo babyUmbrellaInfo);
+    int updateBabyUmbrellaInfo(BabyUmbrellaInfo babyUmbrellaInfo);
 
     /**
      * 查询全部
@@ -32,4 +33,12 @@ public interface BabyUmbrellaInfoDao {
      */
     List<Map<String,Object>>  getBabyUmbrellaInfo(Map<String, Object> map);
 
+    Integer getUserShareNums(@Param("id")String id);
+
+
+    /**
+     * 查询参加数量
+     * @return
+     */
+    Integer  getBabyUmbrellaInfoTotal(Map<String, Object> map);
 }

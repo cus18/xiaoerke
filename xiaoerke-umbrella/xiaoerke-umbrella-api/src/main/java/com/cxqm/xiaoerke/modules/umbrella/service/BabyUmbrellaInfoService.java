@@ -15,19 +15,30 @@ public interface BabyUmbrellaInfoService {
      * @param babyUmbrellaInfo
      * @return
      */
-    int saveBabyUmberllaInfo(BabyUmbrellaInfo babyUmbrellaInfo);
+    int saveBabyUmbrellaInfo(BabyUmbrellaInfo babyUmbrellaInfo);
 
     /**
      * 更新保障金信息
      * @param babyUmbrellaInfo
      * @return
      */
-    int updateBabyUmberllaInfo(BabyUmbrellaInfo babyUmbrellaInfo);
+    int updateBabyUmbrellaInfo(BabyUmbrellaInfo babyUmbrellaInfo);
 
     /**
      * 查询全部
      * @return
      */
     List<Map<String,Object>> getBabyUmbrellaInfo(Map<String, Object> map);
+
+    Integer getUserShareNums(String id);
+
+
+    String getUserQRCode(String id);
+
+    /**
+     * 查询参加数量
+     * @return
+     */
+    Integer  getBabyUmbrellaInfoTotal(Map<String, Object> map);
 
 }
