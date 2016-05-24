@@ -319,7 +319,6 @@ angular.module('controllers', ['luegg.directives'])
             //查询专科列表
             GetFindAllTransferSpecialist.save({}, function (data) {
                 $scope.selectedSpecialistType = data.data;
-                console.log("专科列表",$scope.selectedSpecialistType);
             });
 
             //添加转接科室确定
@@ -360,15 +359,28 @@ angular.module('controllers', ['luegg.directives'])
 
             //分诊员发起一个针对用户的会话
             $scope.createOneSpecialistPatient = function(index){
-                alert($scope.showFlag.specialistList);
                 $scope.showFlag.specialistList = false;
-                alert($scope.showFlag.specialistList);
                 $scope.choosedAlreadyJoinTransferSpecialist = [];
                 $scope.choosedAlreadyJoinTransferSpecialist.push($scope.alreadyJoinTransferSpecialist[index]);
                 var specialistPatientId  = $scope.choosedAlreadyJoinTransferSpecialist;
                 CreateTransferSpecialist.save({content:specialistPatientId},function(data){
                     if(data.status == "success"){
-                        $state.go('doctorConsultFirst', {userId:data.userIds[index],action:'createUserSession'});
+                        var patientId = data.userIds[index];
+                        var patientName = "";
+                        GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
+                            if(data.alreadyJoinPatientConversation!=""&&data.alreadyJoinPatientConversation!=undefined){
+                                $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
+                                $.each($scope.alreadyJoinPatientConversation,function(index,value){
+                                    if(value.patientId==patientId){
+                                        patientName = value.patientName;
+                                    }
+                                    $.each(value.consultValue,function(index1,value1){
+                                        filterMediaData(value1);
+                                    })
+                                });
+                                $scope.chooseAlreadyJoinConsultPatient(patientId,patientName);
+                            }
+                        })
                         getFindTransferSpecialist();
                     }else if(data.status == "failure"){
                         if(data.failureUserIds[0].result == "failure"){
