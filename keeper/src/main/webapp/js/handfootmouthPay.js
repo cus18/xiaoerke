@@ -19,8 +19,14 @@ $(function(){
             } else if (data.status == "8") {
                 window.location.href = data.redirectURL;
             } else if (data.status == "20") {
-                initWx();//初始化微信
-                getBabyInfo();//获取宝宝信息
+                if(data.openId=="noOpenId"){
+                    window.location.href = "http://s251.baodf.com/keeper/wechatInfo/" +
+                        "fieldwork/wechat/author?url=http://s251.baodf.com/" +
+                        "keeper/wechatInfo/getUserWechatMenId?url=30";
+                }else{
+                    initWx();//初始化微信
+                    getBabyInfo();//获取宝宝信息
+                }
             }
         }
     });

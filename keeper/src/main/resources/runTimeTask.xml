@@ -370,12 +370,10 @@
 				<!--<ref bean="nutritionManagementSendWechatMessageCronTrigger"/>-->
 				<!--<ref bean="insuranceUpdateCronTrigger"/>-->
 				<!--<ref bean="consultPhoneCronTrigger"/>-->
-				<!--<ref bean="consultManagementCronTrigger"/>-->
 				<!--<ref bean="timingDialCronTrigger"/>-->
                 <!--<ref bean="sendMsgToDocAtNightPhoneConsultCronTrigger"/>-->
                 <!--<ref bean="sendMsgToDocAtMorningPhoneConsultCronTrigger"/>-->
                 <!--<ref bean="phoneConsultReminder2DocCronTrigger"/>-->
-                <ref bean="consultRecordMongoTransMySqlCronTrigger"/>
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>

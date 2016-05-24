@@ -22,8 +22,6 @@ public interface ConsultSessionService {
 
     List<ConsultSession> selectBySelective(ConsultSession consultSession);
 
-    List<RichConsultSession> selectRichConsultSessions(RichConsultSession consultSession);
-
     List<ConsultSession> getCsUserByUserId(ConsultSession consultSession);
 
     List<HashMap<String, Object>> getOnlineCsListInfo(List<String> userList);

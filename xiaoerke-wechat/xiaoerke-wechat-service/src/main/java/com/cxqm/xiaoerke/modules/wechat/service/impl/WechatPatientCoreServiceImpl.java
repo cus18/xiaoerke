@@ -129,12 +129,12 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			}
 		}
 		else {
-			String customservice = Global.getConfig("wechat.customservice");
-			if("false".equals(customservice)){
+			String customerService = Global.getConfig("wechat.customservice");
+			if("false".equals(customerService)){
 				Runnable thread = new processConsultMessageThread(xmlEntity);
 				threadExecutor.execute(thread);
 				return "";
-			}else{
+			}else if("true".equals(customerService)){
 			  respMessage = transferToCustomer(xmlEntity);
 			}
 		}
@@ -522,7 +522,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 	{
 		// TODO 自定义菜单
 		String respMessage = null;
-		if("38".equals(xmlEntity.getEventKey())){
+		if("39".equals(xmlEntity.getEventKey())){
 			TextMessage textMessage = new TextMessage();
 			textMessage.setToUserName(xmlEntity.getFromUserName());
 			textMessage.setFromUserName(xmlEntity.getToUserName());
@@ -533,7 +533,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			textMessage.setContent(st);
 			respMessage = MessageUtil.textMessageToXml(textMessage);
 		}
-		else if("37".equals(xmlEntity.getEventKey()))
+		else if("38".equals(xmlEntity.getEventKey()))
 		{
 			HttpSession session = request.getSession();
 			session .setAttribute("openId",xmlEntity.getFromUserName());

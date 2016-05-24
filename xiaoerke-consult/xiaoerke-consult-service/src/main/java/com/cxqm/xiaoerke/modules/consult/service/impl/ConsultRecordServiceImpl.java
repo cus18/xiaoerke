@@ -231,6 +231,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
         consultSessionStatusVo.setUserName(consultSession.getUserName());
         consultSessionStatusVo.setCsUserName(consultSession.getCsUserName());
         consultSessionStatusVo.setCsUserId(consultSession.getCsUserId());
+        consultSessionStatusVo.setSource(consultSession.getSource());
         consultRecordMongoDBService.upsertConsultSessionStatusVo(consultSessionStatusVo);
     }
 

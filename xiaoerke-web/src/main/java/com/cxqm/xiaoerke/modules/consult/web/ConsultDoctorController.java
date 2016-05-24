@@ -251,9 +251,10 @@ public class ConsultDoctorController extends BaseController {
     HashMap<String, Object> createDoctorConsultSession(@RequestBody Map<String, Object> params) {
         HashMap<String, Object> response = new HashMap<String, Object>();
         String userId = (String) params.get("userId");
+        String userName = (String) params.get("userName");
 
         //根据用户ID去查询，从历史会话记录中，获取用户最近的一条聊天记录，根据source判断会话来源
-        response = ConsultSessionManager.getSessionManager().createConsultSession(wechatAttentionService,userId);
+        response = ConsultSessionManager.getSessionManager().createConsultSession(userName,userId);
 
         return response;
     }

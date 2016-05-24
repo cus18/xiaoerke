@@ -9,10 +9,12 @@ import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.RpcRequest;
 import com.cxqm.xiaoerke.modules.consult.entity.RpcResponse;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.core.RpcClient;
@@ -31,11 +33,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
 import java.net.URLDecoder;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.net.UnknownHostException;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -59,6 +60,9 @@ public class ConsultWechatController extends BaseController {
     @Autowired
     private ConsultRecordService consultRecordService;
 
+    @Autowired
+    private ConsultSessionService consultSessionService;
+
 
     private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
@@ -79,7 +83,11 @@ public class ConsultWechatController extends BaseController {
         if(messageType.contains("voice")||messageType.contains("video")||messageType.contains("image")){
             paramMap.put("mediaId",mediaId);
         }
-        paramMap.put("serverAddress",StringUtils.getRemoteAddr(request));
+        try {
+            paramMap.put("serverAddress",InetAddress.getLocalHost().getHostAddress());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
 
         Runnable thread = new processUserMessageThread(paramMap);
         threadExecutor.execute(thread);
@@ -101,7 +109,6 @@ public class ConsultWechatController extends BaseController {
             String openId = (String) this.param.get("openId");
             String messageType = (String) this.param.get("messageType");
             String messageContent = (String) this.param.get("messageContent");
-            System.out.println(messageContent);
             String serverAddress = (String) this.param.get("serverAddress");
 
             SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
@@ -138,11 +145,18 @@ public class ConsultWechatController extends BaseController {
             if(sessionId!=null){
                 consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
                 csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
+                if(!csChannel.isActive()){
+                    //保存聊天记录
+                    consultRecordService.buildRecordMongoVo(userId, String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)), messageContent, consultSession);
+                    //更新会话操作时间
+                    consultRecordService.saveConsultSessionStatus(consultSession);
+                }
             }else{//如果此用户是第一次发送消息，则sessionId为空
                 consultSession.setCreateTime(new Date());
                 consultSession.setUserId(userId);
                 consultSession.setUserName(userName);
                 consultSession.setSource(source);
+                consultSession.setServerAddress(serverAddress);
                 //创建会话，发送消息给用户，给用户分配接诊员
                 createWechatConsultSessionMap = ConsultSessionManager.getSessionManager().createUserWXConsultSession(consultSession);
                 if(createWechatConsultSessionMap!=null){
@@ -153,14 +167,14 @@ public class ConsultWechatController extends BaseController {
             }
 
             //会话创建成功，拿到了csChannel,给接诊员(或是医生)发送消息
-            if(csChannel!=null){
+            if(csChannel!=null&&csChannel.isActive()){
                 try {
                     JSONObject obj = new JSONObject();
                     obj.put("sessionId", sessionId);
                     obj.put("senderId", userId);
                     obj.put("dateTime", DateUtils.DateToStr(new Date()));
                     obj.put("senderName",userName);
-                    obj.put("fromServer",serverAddress);
+                    obj.put("serverAddress",serverAddress);
                     obj.put("source",consultSession.getSource());
 
 
