@@ -6,10 +6,6 @@ public class ConsultSessionForwardRecordsVo {
 	
 	public static final String REACT_TRANSFER_OPERATION_ACCEPT = "accept";
 	
-	public static final String REACT_TRANSFER_OPERATION_REJECT = "reject";
-	
-	public static final String REACT_TRANSFER_OPERATION_CANCEL = "cancel";
-	
 	public static final String REACT_TRANSFER_STATUS_ACCEPT = "accepted";
 	
 	public static final String REACT_TRANSFER_STATUS_REJECT = "rejected";

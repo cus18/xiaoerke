@@ -43,63 +43,44 @@ public class ConsultSessionTransferController {
     HashMap<String, Object> createMoreWXUserConsultSession(@RequestBody Map<String, Object> params){
 
         HashMap<String ,Object> response = new HashMap<String, Object>();
-        List<HashMap<String,Object>> requestData = (List<HashMap<String,Object>>) params.get("content");
-        ConsultSessionManager consultSessionManager = ConsultSessionManager.getSessionManager();
-        List<HashMap<String,Object>> transferList = new ArrayList<HashMap<String, Object>>();
-        if(requestData !=null && requestData.size() >0){
-            for(int i=0 ; i<requestData.size();i++){
-                HashMap<String,Object> data = new HashMap<String, Object>();
-                data.put("id", requestData.get(i).get("id"));
-                data.put("userId", requestData.get(i).get("userId"));
-                Integer sessionId = sessionRedisCache.getSessionIdByUserId((String) requestData.get(i).get("userId"));
-                if(sessionId != null){
-                    RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
-                    if(richConsultSession != null){
-                        if(ConsultSession.STATUS_ONGOING.equalsIgnoreCase(richConsultSession.getStatus())){
-                            response.put("status","ongoing");
-                            break ;
-                        }
-                    }
-                }
-                transferList.add(data);
-            }
-            if(transferList != null && transferList.size()>0){
-
-                JSONArray jsonArray = new JSONArray();
-                JSONArray failureIdArray = new JSONArray();
-                for(HashMap<String,Object> hashMap : transferList){
-                    try{
-                        HashMap<String,Object> resultMap = consultSessionManager.createConsultSession(wechatAttentionService,(String)hashMap.get("userId"));
-                        if(resultMap!= null && "success".equalsIgnoreCase((String) resultMap.get("result"))){
-                            ConsultTransferListVo consultTransferListVo;
-                            String status = "complete";
-                            String delFlag = "0";
-                            consultTransferListVo = new ConsultTransferListVo();
-                            consultTransferListVo.setStatus(status);
-                            consultTransferListVo.setDelFlag(delFlag);
-                            consultTransferListVo.setId((Integer)hashMap.get("id"));
-                            int count = consultTransferListVoService.updateConsultTransferByPrimaryKey(consultTransferListVo);
-                            if(count > 0){
-                                consultSessionManager.refreshConsultTransferList(UserUtils.getUser().getId());
-                            }
-                            jsonArray.add(resultMap.get("userId"));
-                            response.put("status", "success");
-                        }else{
-                            HashMap<Object,Object> failureReson =  new HashMap<Object, Object>();
-                            failureReson.put("id",hashMap.get("id"));
-                            failureReson.put("result",resultMap.get("result"));
-                            failureIdArray.add(failureReson);
-                            response.put("status","failure");
-                        }
-                        response.put("userIds",jsonArray);
-                        response.put("failureUserIds",failureIdArray);
-                    }catch(Exception exception){
-                        exception.getStackTrace();
-                    }
-
+        Map<String, Object> specialistPatientContent = (Map<String, Object>) params.get("specialistPatientContent");
+        Integer sessionId = sessionRedisCache.getSessionIdByUserId((String) specialistPatientContent.get("userId"));
+        if(sessionId != null){
+            RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
+            if(richConsultSession != null){
+                if(ConsultSession.STATUS_ONGOING.equalsIgnoreCase(richConsultSession.getStatus())){
+                    response.put("status","ongoing");
+                    return response ;
                 }
             }
         }
+
+        try{
+            HashMap<String,Object> resultMap = ConsultSessionManager.getSessionManager().createConsultSession((String) specialistPatientContent.get("userName"),(String) specialistPatientContent.get("userId"));
+            if(resultMap!= null && "success".equalsIgnoreCase((String) resultMap.get("result"))){
+                ConsultTransferListVo consultTransferListVo;
+                String status = "complete";
+                String delFlag = "0";
+                consultTransferListVo = new ConsultTransferListVo();
+                consultTransferListVo.setStatus(status);
+                consultTransferListVo.setDelFlag(delFlag);
+                consultTransferListVo.setId((Integer)specialistPatientContent.get("id"));
+                int count = consultTransferListVoService.updateConsultTransferByPrimaryKey(consultTransferListVo);
+                if(count > 0){
+                    ConsultSessionManager.getSessionManager().refreshConsultTransferList(UserUtils.getUser().getId());
+                }
+                response.put("userId",specialistPatientContent.get("userId"));
+                response.put("userName",specialistPatientContent.get("userName"));
+                response.put("status", "success");
+            }else{
+                response.put("id",specialistPatientContent.get("id"));
+                response.put("result", resultMap.get("result"));
+                response.put("status","failure");
+            }
+        }catch(Exception exception){
+            exception.getStackTrace();
+        }
+
         return response;
     }
 }

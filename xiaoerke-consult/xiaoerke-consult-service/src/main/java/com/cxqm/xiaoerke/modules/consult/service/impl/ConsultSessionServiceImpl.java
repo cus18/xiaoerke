@@ -53,11 +53,6 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
 		return consultSessionDao.selectBySelective(consultSession);
 	}
 
-    @Override
-    public List<RichConsultSession> selectRichConsultSessions(RichConsultSession richConsultSession) {
-        return consultSessionDao.selectRichConsultSessions(richConsultSession);
-    }
-
 
     @Override
     public List<ConsultSession> getCsUserByUserId(ConsultSession consultSession) {

@@ -567,91 +567,88 @@ public class ConsultSessionManager {
 	 * Created by jiangzhongge on 2016-5-18.
 	 * 医生选择一个用户，主动跟用户发起咨询会话
 	 */
-	public HashMap<String, Object> createConsultSession(WechatAttentionService wechatAttentionService ,String userId) {
+	public HashMap<String, Object> createConsultSession(String userName,String userId) {
 		//根据用户ID去查询，从历史会话记录中，获取用户最近的一条聊天记录，根据source判断会话来源
 		HashMap<String, Object> response= new HashMap<String, Object>();
 		RichConsultSession richConsultSession = new RichConsultSession();
-		richConsultSession.setStatus(null);
-		richConsultSession.setUserId(userId);
-		List<RichConsultSession> richConsultSessions = consultSessionService.selectRichConsultSessions(richConsultSession);
-		if (StringUtils.listNotNull(richConsultSessions)) {
-			richConsultSession = richConsultSessions.get(0);
-		}
+		ConsultSession consultSession = new ConsultSession();
+		consultSession.setStatus("ongoing");
+		consultSession.setUserId(userId);
+		List<ConsultSession> consultSessions = consultSessionService.selectBySelective(consultSession);
 
-		if (null != richConsultSession.getSource() && richConsultSession.getSource().equals("wxcxqm")) {
-
-			SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
-			sysWechatAppintInfoVo.setOpen_id(userId);
-			SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
-			String userName = userId.substring(userId.length() - 8, userId.length());
-			if (wechatAttentionVo != null) {
-				if (StringUtils.isNotNull(wechatAttentionVo.getWechat_name())) {
-					userName = wechatAttentionVo.getWechat_name();
-				}
-			}
-			//判断此用户是否有正在处于转接状态的会话，如果有正在转接(waitting状态)的会话,返回提示此次会话创建失败
+		if (consultSessions.size()>0) {
+			//如果会话处于转接中，则不能抢过会话，如果会话非转接状态，则超级医生具有权限抢过会话
 			ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = new ConsultSessionForwardRecordsVo();
-			consultSessionForwardRecordsVo.setConversationId(Long.valueOf(richConsultSession.getId()));
+			consultSessionForwardRecordsVo.setConversationId(Long.valueOf(consultSessions.get(0).getId()));
 			consultSessionForwardRecordsVo.setStatus("waiting");
 			List<ConsultSessionForwardRecordsVo> consultSessionForwardRecordsVos = consultSessionForwardRecordsService.selectConsultForwardList(consultSessionForwardRecordsVo);
 			if (consultSessionForwardRecordsVos.size() > 0) {
 				response.put("result", "existTransferSession");
-			} else {
-				Query query = (new Query()).addCriteria(where("userId").is(richConsultSession.getUserId())).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
-				ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(query);
-
-				if (DateUtils.pastHour(consultSessionStatusVo.getLastMessageTime()) < 48L) {
-					//如果目前用户没有正在转接的会话，而存在正在进行的会话
-					if (richConsultSession.getStatus().equals("ongoing")) {
-						String doctorManagerStr = Global.getConfig("doctorManager.list");
-						String csUserId = UserUtils.getUser().getId();
-						if (doctorManagerStr.indexOf(csUserId) != -1) {
-							//此医生为管理员医生，有权限抢过会话，将会话抢过来
-							richConsultSession.setCsUserId(csUserId);
-							setRichConsultSession(response, richConsultSession, userName);
-						} else {
-							//如果是普通医生，没有权限抢断会话，直接返回提升没有权限操作
-							response.put("result", "noLicenseTransfer");
-						}
-						//如果用户当前没有任何会话建立，判断用户最近的一次咨询时间，
-						// 是否在48小时以内，如果已经超过了48小时，则提示医生已经超过48小时，
-						// 无法创建会话，如果没有超过48小时，则成功创建会话
+			}else{
+				if(consultSessions.get(0).getSource().contains("h5")){
+					response.put("result", "notOnLine");
+				}else{
+					String doctorManagerStr = Global.getConfig("doctorManager.list");
+					String csUserId = UserUtils.getUser().getId();
+					if (doctorManagerStr.indexOf(csUserId) != -1) {
+						//此医生为管理员医生，有权限抢过会话，将会话抢过来
+						richConsultSession.setCsUserId(csUserId);
+						richConsultSession.setCsUserName(UserUtils.getUser().getName());
+						richConsultSession.setUserId(userId);
+						richConsultSession.setUserName(userName);
+						richConsultSession.setId(consultSessions.get(0).getId());
+						setRichConsultSession(response, richConsultSession);
 					} else {
-						richConsultSession.setCsUserId(UserUtils.getUser().getId());
-						setRichConsultSession(response, richConsultSession, userName);
+						//如果是普通医生，没有权限抢断会话，直接返回提升没有权限操作
+						response.put("result", "noLicenseTransfer");
 					}
-				} else {
-					response.put("result", "exceed48Hours");
 				}
 			}
-		} else if (null != richConsultSession.getSource() && richConsultSession.getSource().equals("h5cxqm")) {
-			User user = systemService.getUser(userId);
-			if (user != null) {
+		}else {
+			//用户目前没有任何进行的会话，切用户距离最近一次咨询，没有超过48小时，则可为用户重新创建一个会话
+			Query query = (new Query()).addCriteria(where("userId").is(userId)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
+			ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(query);
+			if (DateUtils.pastHour(consultSessionStatusVo.getLastMessageTime()) < 48L) {
+				if(consultSessionStatusVo.getSource().contains("h5")){
+					response.put("result", "notOnLine");
+				}else{
+					richConsultSession.setCsUserId(UserUtils.getUser().getId());
+					richConsultSession.setUserId(userId);
+					richConsultSession.setUserName(userName);
+					richConsultSession.setCsUserName(UserUtils.getUser().getName());
+					setRichConsultSession(response, richConsultSession);
+				}
+			}else{
+				response.put("result", "exceed48Hours");
 			}
-			response.put("result", "notOnLine");
-		} else {
-			response.put("result", "failure");
 		}
 		return response;
 	}
 
-	private void setRichConsultSession(HashMap<String, Object> response, RichConsultSession richConsultSession, String userName) {
-		richConsultSession.setCsUserName(UserUtils.getUser().getName());
-		richConsultSession.setUserName(userName);
-		richConsultSession.setNickName(userName);
-		ConsultSessionManager.getSessionManager().putSessionIdConsultSessionPair(richConsultSession.getId(), richConsultSession);
-		ConsultSessionManager.getSessionManager().putUserIdSessionIdPair(richConsultSession.getUserId(), richConsultSession.getId());
+	private void setRichConsultSession(HashMap<String, Object> response, RichConsultSession richConsultSession) {
 		ConsultSession consultSession = new ConsultSession();
-		consultSession.setId(richConsultSession.getId());
-		consultSession.setCsUserId(richConsultSession.getCsUserId());
-		consultSession.setStatus("ongoing");
-		int flag = consultSessionService.updateSessionInfo(consultSession);
+		int flag = 0;
+		if(richConsultSession.getId()!=null){
+			consultSession.setId(richConsultSession.getId());
+			consultSession.setCsUserId(richConsultSession.getCsUserId());
+			consultSession.setStatus("ongoing");
+			flag = consultSessionService.updateSessionInfo(consultSession);
+		}else{
+			consultSession.setCsUserId(richConsultSession.getCsUserId());
+			consultSession.setStatus("ongoing");
+			consultSession.setUserId(richConsultSession.getUserId());
+			flag = consultSessionService.saveConsultInfo(consultSession);
+			richConsultSession.setId(consultSession.getId());
+		}
 		if (flag > 0) {
 			response.put("result", "success");
 			response.put("userId", richConsultSession.getUserId());
 		} else {
 			response.put("result", "failure");
 		}
+		ConsultSessionManager.getSessionManager().putSessionIdConsultSessionPair(richConsultSession.getId(), richConsultSession);
+		ConsultSessionManager.getSessionManager().putUserIdSessionIdPair(richConsultSession.getUserId(), richConsultSession.getId());
+
 	}
 
 	/**

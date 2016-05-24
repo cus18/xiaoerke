@@ -23,6 +23,8 @@ public class ConsultSessionStatusVo {
 
     private String csUserId;
 
+    private String source;
+
     public String getCsUserId() {
         return csUserId;
     }
@@ -85,5 +87,13 @@ public class ConsultSessionStatusVo {
 
     public void setLastMessageTime(Date lastMessageTime) {
         this.lastMessageTime = lastMessageTime;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 }

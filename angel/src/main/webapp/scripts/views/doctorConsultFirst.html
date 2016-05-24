@@ -193,9 +193,9 @@
                     </div>
                 </div>
             </div>
-            <iframe src="http://s34.baodf.com:8081/angel/scripts/views/customerss.html" frameborder="0"
-                    class="advisory-content" ng-show='showFlag.advisoryContent'>
-            </iframe>
+            <!--<iframe src="http://s34.baodf.com:8081/angel/scripts/views/customerss.html" frameborder="0"-->
+                    <!--class="advisory-content" ng-show='showFlag.advisoryContent'>-->
+            <!--</iframe>-->
             <textarea type="text" name="messageData" id="patientIdData" class="textarea" style="display:none;">{{currentUserConversation.patientId}}</textarea>
             <textarea type="text" name="messageData" id="doctorIdData" class="textarea" style="display:none;">{{doctorId}}</textarea>
             <textarea type="text" name="messageData" id="sourceData" class="textarea" style="display:none;">{{currentUserConversation.source}}</textarea>
@@ -409,17 +409,14 @@
         </div>
         <div class="specialistListContent">
             <ul class="specialist">
-                <li ng-click="selectedAllTransferSpecialist()"><!--<input type="checkbox" ng-checked="selectetAllSpecialistPatient">全选--></li>
                 <li>用户</li>
                 <li>当前回复医生</li>
                 <li>需转接的科室需转接的科室需转接的科室</li>
                 <li ng-click="getWaitTransferSpecialist()">按科室排序</li>
                 <li></li>
             </ul>
-            <!--ng-click="createSomeSpecialistPatient($index)"-->
             <div class="specialistContent">
                 <ul ng-repeat="item in alreadyJoinTransferSpecialist">
-                    <li><input type="checkbox" ng-checked="item.selectedAll" ng-disabled="item.currentDoctor != '无'" ng-click="choseOnePatient($index)"></li>
                     <li>{{item.userName}}</li>
                     <li>{{item.currentDoctor}}</li>
                     <li>{{item.department}}</li>
@@ -427,9 +424,6 @@
                     <li ng-click="disposeTransferSpecialist($index)"><input type="button" value="删除"/></li>
                 </ul>
             </div>
-        </div>
-        <div class="specialistBottom">
-            <input type="button" class="button" ng-click="createSomeSpecialistPatient()" value="发起会话" ng-disabled="true"/>
         </div>
     </div>
     <!--专科转移-->

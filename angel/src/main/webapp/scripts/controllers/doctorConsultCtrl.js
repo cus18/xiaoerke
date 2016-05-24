@@ -24,8 +24,8 @@ angular.module('controllers', ['luegg.directives'])
             $scope.loadingFlag = false;
             $scope.socketServerFirst = "";
             $scope.socketServerSecond = "";
-            $scope.firstAddress = "101.201.154.201";
-            $scope.secondAddress = "123.57.45.33";
+            $scope.firstAddress = "123.57.45.33";
+            $scope.secondAddress = "101.201.154.201";
             $scope.alreadyJoinPatientConversation = []; //已经加入会话的用户数据，一个医生可以有多个对话的用户，这些用户的数据，都保存在此集合中
             $scope.currentUserConversation = {}; //医生与当前正在进行对话用户的聊天数据，医生在切换不同用户时，数据变更到切换的用户上来。
             $scope.waitJoinNum = 0; //医生待接入的用户数，是动态变化的数
@@ -59,7 +59,6 @@ angular.module('controllers', ['luegg.directives'])
             $scope.doctorConsultInit = function () {
                 var routePath = "/doctor/consultBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath: routePath}, function (data) {
-                    //console.log(data);
                     $scope.pageLoading = false;
                     if (data.status == "9") {
                         window.location.href = data.redirectURL;
@@ -72,7 +71,7 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.userType = data.userType;
 
                         //创建与平台的socket连接
-                        $scope.initConsultSocketFirst();
+                        //$scope.initConsultSocketFirst();
                         $scope.initConsultSocketSecond();
 
                         getIframeSrc();
@@ -360,18 +359,17 @@ angular.module('controllers', ['luegg.directives'])
             //分诊员发起一个针对用户的会话
             $scope.createOneSpecialistPatient = function(index){
                 $scope.showFlag.specialistList = false;
-                $scope.choosedAlreadyJoinTransferSpecialist = [];
-                $scope.choosedAlreadyJoinTransferSpecialist.push($scope.alreadyJoinTransferSpecialist[index]);
-                var specialistPatientId  = $scope.choosedAlreadyJoinTransferSpecialist;
-                CreateTransferSpecialist.save({content:specialistPatientId},function(data){
+                CreateTransferSpecialist.save({specialistPatientContent:$scope.alreadyJoinTransferSpecialist[index]},function(data){
                     if(data.status == "success"){
-                        var patientId = data.userIds[index];
-                        var patientName = "";
+                        var patientId = data.userId;
+                        var patientName = data.userName;
+                        console.log("patientName",patientName);
                         GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
                             if(data.alreadyJoinPatientConversation!=""&&data.alreadyJoinPatientConversation!=undefined){
                                 $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                                 $.each($scope.alreadyJoinPatientConversation,function(index,value){
                                     if(value.patientId==patientId){
+                                        console.log("value",value)
                                         patientName = value.patientName;
                                     }
                                     $.each(value.consultValue,function(index1,value1){
@@ -397,67 +395,6 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 })
             };
-            //实现全选
-            $scope.selectetAllSpecialistPatient = false;
-            $scope.selectedAllTransferSpecialist = function() {
-                $scope.selectetAllSpecialistPatient = !$scope.selectetAllSpecialistPatient;
-                //console.log($scope.selectetAllSpecialistPatient);
-                if ($scope.selectetAllSpecialistPatient == false) {
-                    $.each($scope.alreadyJoinTransferSpecialist, function(index, value) {
-                        value.selectedAll = false;
-                    });
-                    $scope.choosedAlreadyJoinTransferSpecialist = [];
-                }
-                if ($scope.selectetAllSpecialistPatient == true) {
-                    $.each($scope.alreadyJoinTransferSpecialist, function(index, value) {
-                        value.selectedAll = true;
-                    });
-                    $scope.choosedAlreadyJoinTransferSpecialist = $scope.alreadyJoinTransferSpecialist;
-                    console.log("choosedAlreadyJoinTransferSpecialist", $scope.choosedAlreadyJoinTransferSpecialist)
-                }
-            };
-            $scope.choosedAlreadyJoinTransferSpecialist = [];
-            $scope.choseOnePatient = function(index) {
-                $scope.alreadyJoinTransferSpecialist[index].selectedAll = !$scope.alreadyJoinTransferSpecialist[index].selectedAll;
-                if ($scope.alreadyJoinTransferSpecialist[index].selectedAll == true) {
-                    $scope.choosedAlreadyJoinTransferSpecialist.push($scope.alreadyJoinTransferSpecialist[index])
-                } else {
-                    $scope.choosedAlreadyJoinTransferSpecialist.splice($scope.alreadyJoinTransferSpecialist[index], 1)
-                }
-                console.log($scope.choosedAlreadyJoinTransferSpecialist);
-            };
-            //发起多个会话
-            $scope.createSomeSpecialistPatient = function() {
-                $.each($scope.choosedAlreadyJoinTransferSpecialist, function(index, value) {
-                    if (value.selectedAll = true) {
-                        $scope.selectetAllSpecialistPatient = true;
-                    }
-                });
-                console.log($scope.choosedAlreadyJoinTransferSpecialist);
-                CreateTransferSpecialist.save({ content: $scope.choosedAlreadyJoinTransferSpecialist }, function(data) {
-                    console.log(data.userIds);
-                    if (data.status == "success") {
-                        $.each($scope.choosedAlreadyJoinTransferSpecialist, function(index, value) {
-                            for (var i = 0; i < data.userIds.length; i++) {
-                                if (data.userIds[i] == value.userId) {
-                                    $state.go('doctorConsultFirst', { userId: data.userIds[i], action: 'createUserSession' });
-                                }
-                            }
-                        });
-                    } else if (data.status == "failure") {
-                        if (data.failureUserIds.result == "failure") {
-                            alert("无法发起会话，请稍后重试");
-                        } else if (data.failureUserIds.result == "existTransferSession") {
-                            alert("此用户正有会话处于转接状态，无法向其发起会话，请稍后重试");
-                        } else if (data.failureUserIds.result == "noLicenseTransfer") {
-                            alert("对不起，你没有权限，抢断一个正在咨询用户的会话");
-                        } else if (data.failureUserIds.result == "exceed48Hours") {
-                            alert("对不起，用户咨询已经超过了48小时，无法再向其发起会话");
-                        }
-                    }
-                })
-            };
-            //建立一个新的会话
             /**转接功能区**/
 
             /**会话操作区**/
@@ -564,8 +501,11 @@ angular.module('controllers', ['luegg.directives'])
                     "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                     "senderId": angular.copy($scope.doctorId)
                 };
-                $scope.socketServerFirst.send(JSON.stringify(heartBeatMessage));
-                $scope.socketServerSecond.send(JSON.stringify(heartBeatMessage));
+                if($scope.socketServerFirst!=""){
+                    $scope.socketServerFirst.send(JSON.stringify(heartBeatMessage));
+                }else if($scope.socketServerSecond!=""){
+                    $scope.socketServerSecond.send(JSON.stringify(heartBeatMessage));
+                }
                 $scope.$apply();
             };
 
@@ -613,7 +553,8 @@ angular.module('controllers', ['luegg.directives'])
                     } else {
                         alert("连接没有开启.");
                     }
-                }else{
+                }
+                else if($scope.currentUserConversation.serverAddress==$scope.secondAddress){
                     if ($scope.socketServerSecond.readyState == WebSocket.OPEN) {
                         var consultValMessage = "";
                         if($scope.userType=="distributor"){
@@ -644,7 +585,18 @@ angular.module('controllers', ['luegg.directives'])
                         alert("连接没有开启.");
                     }
                 }
+                else{
+                    if($scope.currentUserConversation.serverAddress==""||$scope.currentUserConversation.serverAddress==null){
+                        if($scope.socketServerFirst!=""){
+                            $scope.currentUserConversation.serverAddress = angular.copy($scope.firstAddress);
+                        }else if($scope.socketServerSecond!=""){
+                            $scope.currentUserConversation.serverAddress = angular.copy($scope.secondAddress);
+                        }
+                        $scope.sendConsultMessage();
+                    }
+                }
             };
+
             //向用户发送咨询图片
             $scope.uploadFiles = function($files,fileType) {
                 var dataValue = {
@@ -655,81 +607,72 @@ angular.module('controllers', ['luegg.directives'])
                 var dataJsonValue = JSON.stringify(dataValue);
                 for (var i = 0; i < $files.length; i++) {
                     var file = $files[i];
-                    if($scope.currentUserConversation.serverAddress==$scope.firstAddress){
-                        $scope.upload = $upload.upload({
-                            url: 'consult/h5/uploadMediaFile',
-                            data: encodeURI(dataJsonValue),
-                            file: file
-                        }).progress(function(evt) {
-                        }).success(function(data, status, headers, config){
-                            if(data.source == "wxcxqm"){
-                                var consultValMessage = {
-                                    "type": 1,
-                                    "content": data.showFile,
-                                    "wscontent": data.WS_File,
-                                    "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                                    "senderId": angular.copy($scope.doctorId),
-                                    "senderName": angular.copy($scope.doctorName),
-                                    "sessionId": angular.copy($scope.currentUserConversation.sessionId)
-                                };
-                            } else{
-                                var consultValMessage = {
-                                    "type": 1,
-                                    "content": data.showFile,
-                                    "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                                    "senderId": angular.copy($scope.doctorId),
-                                    "senderName": angular.copy($scope.doctorName),
-                                    "sessionId": angular.copy($scope.currentUserConversation.sessionId)
-                                };
-                            }
-                            if (!window.WebSocket) {
-                                return;
-                            }
+
+                    $scope.upload = $upload.upload({
+                        url: 'consult/h5/uploadMediaFile',
+                        data: encodeURI(dataJsonValue),
+                        file: file
+                    }).progress(function(evt) {
+                    }).success(function(data, status, headers, config){
+                        if(data.source == "wxcxqm"){
+                            var consultValMessage = {
+                                "type": 1,
+                                "content": data.showFile,
+                                "wscontent": data.WS_File,
+                                "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                                "senderId": angular.copy($scope.doctorId),
+                                "senderName": angular.copy($scope.doctorName),
+                                "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                            };
+                        } else{
+                            var consultValMessage = {
+                                "type": 1,
+                                "content": data.showFile,
+                                "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                                "senderId": angular.copy($scope.doctorId),
+                                "senderName": angular.copy($scope.doctorName),
+                                "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                            };
+                        }
+                        if (!window.WebSocket) {
+                            return;
+                        }
+                        if($scope.currentUserConversation.serverAddress==$scope.firstAddress){
                             if ($scope.socketServerFirst.readyState == WebSocket.OPEN) {
                                 $scope.socketServerFirst.send(JSON.stringify(consultValMessage));
                                 updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                             } else {
                                 alert("连接没有开启.");
                             }
-                        });
-                    }else{
-                        $scope.upload = $upload.upload({
-                            url: 'consult/h5/uploadMediaFile',
-                            data: encodeURI(dataJsonValue),
-                            file: file
-                        }).progress(function(evt) {
-                        }).success(function(data, status, headers, config){
-                            if(data.source == "wxcxqm"){
-                                var consultValMessage = {
-                                    "type": 1,
-                                    "content": data.showFile,
-                                    "wscontent": data.WS_File,
-                                    "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                                    "senderId": angular.copy($scope.doctorId),
-                                    "senderName": angular.copy($scope.doctorName),
-                                    "sessionId": angular.copy($scope.currentUserConversation.sessionId)
-                                };
-                            }else{
-                                var consultValMessage = {
-                                    "type": 1,
-                                    "content": data.showFile,
-                                    "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                                    "senderId": angular.copy($scope.doctorId),
-                                    "senderName": angular.copy($scope.doctorName),
-                                    "sessionId": angular.copy($scope.currentUserConversation.sessionId)
-                                };
-                            }
-                            if (!window.WebSocket) {
-                                return;
-                            }
+                        }else if($scope.currentUserConversation.serverAddress==$scope.secondAddress){
                             if ($scope.socketServerSecond.readyState == WebSocket.OPEN) {
                                 $scope.socketServerSecond.send(JSON.stringify(consultValMessage));
                                 updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                             } else {
                                 alert("连接没有开启.");
                             }
+                        }else{
+                            if($scope.currentUserConversation.serverAddress==""||$scope.currentUserConversation.serverAddress==null){
+                                if($scope.socketServerFirst!=""){
+                                    if ($scope.socketServerFirst.readyState == WebSocket.OPEN) {
+                                        $scope.socketServerFirst.send(JSON.stringify(consultValMessage));
+                                        updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
+                                    } else {
+                                        alert("连接没有开启.");
+                                    }
+                                }else if($scope.socketServerSecond!=""){
+                                    if ($scope.socketServerSecond.readyState == WebSocket.OPEN) {
+                                        $scope.socketServerSecond.send(JSON.stringify(consultValMessage));
+                                        updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
+                                    } else {
+                                        alert("连接没有开启.");
+                                    }
+                                }
+                            }
+                        }
+
                         });
-                    }
+
                 }
             };
 
@@ -1402,6 +1345,7 @@ angular.module('controllers', ['luegg.directives'])
             //获取用户的详细聊天记录
             $scope.getUserRecordDetail = function (userName,userId,index) {
                 $scope.doctorCreateConsultSessionChoosedUserId = userId;
+                $scope.doctorCreateConsultSessionChoosedUserName = userName;
                 $scope.setSessoin = index;
                 $scope.loadingFlag = true;
                 GetUserRecordDetail.save({pageNo:1,pageSize:$scope.userRecordDetailPageSize,
@@ -1517,7 +1461,8 @@ angular.module('controllers', ['luegg.directives'])
 
             //医生发起一个针对用户的会话
             $scope.createDoctorConsultSession = function(){
-                CreateDoctorConsultSession.save({userId:$scope.doctorCreateConsultSessionChoosedUserId},function(data){
+                CreateDoctorConsultSession.save({userName:$scope.doctorCreateConsultSessionChoosedUserName,
+                    userId:$scope.doctorCreateConsultSessionChoosedUserId},function(data){
                     if(data.result == "failure"){
                         alert("无法发起会话，请稍后重试");
                     }else if(data.result == "existTransferSession"){

@@ -10,20 +10,6 @@
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="sys_user_id_cs" property="csUserId" jdbcType="VARCHAR"/>
         <result column="sys_user_id" property="userId" jdbcType="VARCHAR"/>
-        <result column="nickname" property="nickName" jdbcType="VARCHAR"/>
-
-    </resultMap>
-
-    <resultMap id="BaseResultRichConsultSessionsMap" type="com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession">
-        <id column="id" property="id" jdbcType="INTEGER"/>
-        <result column="title" property="title" jdbcType="VARCHAR"/>
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
-        <result column="source" property="source" jdbcType="VARCHAR"/>
-        <result column="state" property="status" jdbcType="VARCHAR"/>
-        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
-        <result column="sys_user_id_cs" property="csUserId" jdbcType="VARCHAR"/>
-        <result column="sys_user_id" property="userId" jdbcType="VARCHAR"/>
-        <result column="nickname" property="nickName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -67,8 +53,8 @@
 
     </select>
 
-    <select id="selectRichConsultSessions" resultMap="BaseResultRichConsultSessionsMap"
-            parameterType="com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession">
+    <select id="selectConsultSession" resultMap="BaseResultMap"
+            parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession">
         select
         <include refid="Base_Column_List"/>
         from consult_session
@@ -94,7 +80,6 @@
         <if test="source != null">
             and source = #{source,jdbcType=VARCHAR}
         </if>
-
     </select>
 
     <select id="getCsUserByUserId" resultMap="BaseResultMap"
