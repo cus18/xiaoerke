@@ -79,7 +79,7 @@ public class UmbrellaController  {
         }
         BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
         babyUmbrellaInfo.setOpenid(openid);
-        babyUmbrellaInfo.setUmberllaMoney(20000);
+        babyUmbrellaInfo.setUmberllaMoney(200000);
         Integer res=babyUmbrellaInfoSerivce.saveBabyUmbrellaInfo(babyUmbrellaInfo);
         Map<String, Object> result=new HashMap<String, Object>();
         result.put("result",res);

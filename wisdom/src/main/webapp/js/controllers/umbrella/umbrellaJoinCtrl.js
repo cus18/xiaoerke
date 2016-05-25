@@ -31,10 +31,17 @@
                     }else if(data.result==2){
                         $scope.updateJoin=true;
                         $scope.umbrellaMoney=data.umbrella.umbrella_money;
+                        $scope.num=data.umbrella.id-120000000;
                     }else if(data.result==3){
                         $scope.finally=true;
                         $scope.umbrellaMoney=data.umbrella.umbrella_money;
                         $scope.num=data.umbrella.id-120000000;
+                        
+                        var targetDate = new Date(data.umbrella.activation_time);
+                            targetDate.setDate(new Date().getDate() + 180);
+                        var targetDateUTC = targetDate.getTime();
+                        var afterDate=	Math.round(new Date().getTime());
+                        $scope.days=Math.ceil((targetDateUTC-afterDate)/1000/60/60/24);
                     }
                     $scope.person=(400000-$scope.umbrellaMoney)/20000;
                 });
