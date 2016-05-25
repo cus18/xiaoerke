@@ -17,7 +17,7 @@
             $scope.fillFinish = function(){
                 $scope.fillLock = false;
             };
-            /*填写宝宝姓名 失去焦点*/
+            /*填写宝宝姓名 选择宝宝*/
             $scope.selectBaby = function(selectItem){
                 $scope.info.babyName = selectItem;
             };
