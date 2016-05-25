@@ -636,9 +636,11 @@ public class ConsultSessionManager {
 		}else{
 			consultSession.setCsUserId(richConsultSession.getCsUserId());
 			consultSession.setStatus("ongoing");
+			consultSession.setSource("wxcxqm");
 			consultSession.setUserId(richConsultSession.getUserId());
 			flag = consultSessionService.saveConsultInfo(consultSession);
 			richConsultSession.setId(consultSession.getId());
+			richConsultSession.setSource(consultSession.getSource());
 		}
 		if (flag > 0) {
 			response.put("result", "success");

@@ -363,13 +363,11 @@ angular.module('controllers', ['luegg.directives'])
                     if(data.status == "success"){
                         var patientId = data.userId;
                         var patientName = data.userName;
-                        console.log("patientName",patientName);
                         GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
                             if(data.alreadyJoinPatientConversation!=""&&data.alreadyJoinPatientConversation!=undefined){
                                 $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                                 $.each($scope.alreadyJoinPatientConversation,function(index,value){
                                     if(value.patientId==patientId){
-                                        console.log("value",value)
                                         patientName = value.patientName;
                                     }
                                     $.each(value.consultValue,function(index1,value1){
@@ -380,6 +378,7 @@ angular.module('controllers', ['luegg.directives'])
                             }
                         })
                         getFindTransferSpecialist();
+
                     }else if(data.status == "failure"){
                         if(data.failureUserIds[0].result == "failure"){
                             alert("无法发起会话，请稍后重试");
@@ -576,7 +575,6 @@ angular.module('controllers', ['luegg.directives'])
                                 "sessionId": angular.copy($scope.currentUserConversation.sessionId)
                             };
                         }
-
                         $scope.socketServerSecond.send(emotionSendFilter(JSON.stringify(consultValMessage)));
                         consultValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($scope.info.consultMessage)));
                         $scope.info.consultMessage = "";
@@ -589,10 +587,11 @@ angular.module('controllers', ['luegg.directives'])
                     if($scope.currentUserConversation.serverAddress==""||$scope.currentUserConversation.serverAddress==null){
                         if($scope.socketServerFirst!=""){
                             $scope.currentUserConversation.serverAddress = angular.copy($scope.firstAddress);
+                            $scope.sendConsultMessage();
                         }else if($scope.socketServerSecond!=""){
                             $scope.currentUserConversation.serverAddress = angular.copy($scope.secondAddress);
+                            $scope.sendConsultMessage();
                         }
-                        $scope.sendConsultMessage();
                     }
                 }
             };
@@ -705,7 +704,6 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.chooseAlreadyJoinConsultPatientId = patientId;
                 $scope.chooseAlreadyJoinConsultPatientName = patientName;
                 $scope.chooseAlreadyJoinConsultPatientsessionId = sessionId;
-                console.log($scope.chooseAlreadyJoinConsultPatientsessionId);
                 getIframeSrc();
                 var updateFlag = false;
                 $.each($scope.alreadyJoinPatientConversation, function (index, value) {
