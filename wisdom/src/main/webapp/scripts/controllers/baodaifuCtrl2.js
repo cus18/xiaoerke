@@ -163,19 +163,6 @@ angular.module('controllers2', [])
                 $('.mine_con').css({'height': '1000px'});
                 Ps.initialize(document.getElementById('content_scroll'));
 
-                //var item = getQueryString("id");
-                //console.log("item",item);
-                //if(item ==null){
-                //    $("#guanyumine").show();
-                //    $("#lianximine").hide();
-                //    $("#fuwuxieyi").hide();
-                //    $("#yinsibaohu").hide();
-                //    $("#GuanYu").css("color","#22c4c6");
-                //    $("#LianXi").css("color","#333");
-                //    $("#FuWu").css("color","#333");
-                //    $("#YinSi").css("color","#333");
-                //}
-
 
             });
 
@@ -228,8 +215,7 @@ angular.module('controllers2', [])
                 css2.css("color","#333");
                 css3.css("color","#333");
                 css4.css("color","#333");
-
-                $(".mine_con").animate({scrollTop:id1.offset().top},1000);
+                $(".mine_conright").animate({scrollTop:0},1000);
 
             }
 
