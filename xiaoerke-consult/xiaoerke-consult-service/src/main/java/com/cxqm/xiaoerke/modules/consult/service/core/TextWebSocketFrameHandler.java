@@ -30,9 +30,6 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 	@Autowired
 	private ConsultRecordService consultRecordService = SpringContextHolder.getBean("consultRecordServiceImpl");
 
-	@Autowired
-	private WechatAttentionService wechatAttentionService = SpringContextHolder.getBean("wechatAttentionServiceImpl");
-
 	public TextWebSocketFrameHandler() {
 		super();
 	}
@@ -79,38 +76,38 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 
 		Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
 		if(sessionId != null ) {
-			RichConsultSession consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
-			if(consultSession == null)
+			RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
+			if(richConsultSession == null)
 				return;
-			String csUserId = consultSession.getCsUserId();
-			String userId = consultSession.getUserId();
+			String csUserId = richConsultSession.getCsUserId();
+			String userId = richConsultSession.getUserId();
 			Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(csUserId);
 
 			if(channel != csChannel && csChannel != null) {
 				csChannel.writeAndFlush(msg.retain());
 				//保存聊天记录
-				consultRecordService.buildRecordMongoVo(userId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
+				consultRecordService.buildRecordMongoVo(userId, String.valueOf(msgType), (String) msgMap.get("content"), richConsultSession);
 
 			} else {
-				if(consultSession.getSource().equals("h5cxqm")){
+				if(richConsultSession.getSource().equals("h5cxqm")){
 					Channel userChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(userId);
 					userChannel.writeAndFlush(msg.retain());
-				}else if(consultSession.getSource().equals("wxcxqm")){
+				}else if(richConsultSession.getSource().equals("wxcxqm")){
 					if(msgType==0){
 						//直接发送文本消息
 						String st = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
-						WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(), st);
+						WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), st);
 					}else if(msgType!=0){
 						//发送多媒体消息
 						String noTextMsg = (String) msgMap.get("wscontent");
-						WechatUtil.sendNoTextMsgToWechat((String) userWechatParam.get("token"),consultSession.getUserId(),noTextMsg,msgType);
+						WechatUtil.sendNoTextMsgToWechat((String) userWechatParam.get("token"),richConsultSession.getUserId(),noTextMsg,msgType);
 					}
 				}
 				//保存聊天记录
-				consultRecordService.buildRecordMongoVo(csUserId, String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
+				consultRecordService.buildRecordMongoVo(csUserId, String.valueOf(msgType), (String) msgMap.get("content"), richConsultSession);
 			}
 			//更新会话操作时间
-			consultRecordService.saveConsultSessionStatus(consultSession);
+			consultRecordService.saveConsultSessionStatus(richConsultSession);
 		}else if(sessionId==null){
 			//如果sessionId为空，首先看，消息，是不是从一个用户的H5channel过来的
 			if(msgMap.get("source").equals("h5cxqmUser") && msgMap.get("senderId")!=null) {
