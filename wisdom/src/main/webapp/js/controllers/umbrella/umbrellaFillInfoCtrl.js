@@ -20,7 +20,6 @@
             /*填写宝宝姓名 失去焦点*/
             $scope.selectBaby = function(selectItem){
                 $scope.info.babyName = selectItem;
-                console.log("babyName"+ $scope.selectItem);
             };
             /*选择性别*/
             $scope.selectSex = function(sex){
