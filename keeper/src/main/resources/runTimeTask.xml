@@ -316,15 +316,15 @@
 
 	<!--==========================================咨詢部分================================================-->
 	<!--@Scheduled(cron = "0 0/1 * * * ?") -->
-	<bean id="consultManagementQuarzTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject" ref="scheduledQuarz"/>
-		<property name="targetMethod" value="consultManagement4Session"/>
-		<property name="concurrent" value="false"/>
-	</bean>
-	<bean id="consultManagementCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="consultManagementQuarzTask"/>
-		<property name="cronExpression" value="0 */2 * * * ?"/>
-	</bean>
+	<!--<bean id="consultManagementQuarzTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
+		<!--<property name="targetObject" ref="scheduledQuarz"/>-->
+		<!--<property name="targetMethod" value="consultManagement4Session"/>-->
+		<!--<property name="concurrent" value="false"/>-->
+	<!--</bean>-->
+	<!--<bean id="consultManagementCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
+		<!--<property name="jobDetail" ref="consultManagementQuarzTask"/>-->
+		<!--<property name="cronExpression" value="0 */2 * * * ?"/>-->
+	<!--</bean>-->
 
 	<!--每天晚上1点备份咨询数据0 0 1 * * ?-->
 	<bean id="consultRecordMongoTransMySqlTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
