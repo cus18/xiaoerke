@@ -1,6 +1,6 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
-import com.alibaba.fastjson.JSONArray;
+import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultTransferListVo;
@@ -9,7 +9,6 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultTransferListVoService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
-import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,61 +25,74 @@ import java.util.Map;
  * Created by jiangzhongge on 2016-5-18.
  * 转接列表发起会话
  */
-@Controller
-@RequestMapping(value = "consultSession/transfer")
-public class ConsultSessionTransferController {
-
-    @Autowired
-    private WechatAttentionService wechatAttentionService;
+@Controller @RequestMapping(value = "consultSession/transfer") public class ConsultSessionTransferController {
 
     @Autowired
     private ConsultTransferListVoService consultTransferListVoService;
 
+    @Autowired
     private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
 
     @RequestMapping(value = "/createMoreUserConsultSession", method = {RequestMethod.POST, RequestMethod.GET})
-    public @ResponseBody
-    HashMap<String, Object> createMoreWXUserConsultSession(@RequestBody Map<String, Object> params){
+    public @ResponseBody HashMap<String, Object> createMoreWXUserConsultSession(@RequestBody Map<String, Object> params) {
 
-        HashMap<String ,Object> response = new HashMap<String, Object>();
+        HashMap<String, Object> response = new HashMap<String, Object>();
         Map<String, Object> specialistPatientContent = (Map<String, Object>) params.get("specialistPatientContent");
         Integer sessionId = sessionRedisCache.getSessionIdByUserId((String) specialistPatientContent.get("userId"));
-        if(sessionId != null){
+        String distributorsStr = Global.getConfig("distributors.list");
+        List distributorsList = Arrays.asList(distributorsStr.split(";"));
+        if (sessionId != null) {
             RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
-            if(richConsultSession != null){
-                if(ConsultSession.STATUS_ONGOING.equalsIgnoreCase(richConsultSession.getStatus())){
-                    response.put("status","ongoing");
-                    return response ;
+            if (richConsultSession != null) {
+                if (ConsultSession.STATUS_ONGOING.equalsIgnoreCase(richConsultSession.getStatus())) {
+                    response.put("status", "ongoing");
+                    if (distributorsList.contains(richConsultSession.getCsUserId())) {
+                        response.put("csuserName", richConsultSession.getCsUserName() + "护士");
+                    } else {
+                        response.put("csuserName", richConsultSession.getCsUserName() + "医生");
+                    }
+                    return response;
                 }
             }
         }
-
-        try{
-            HashMap<String,Object> resultMap = ConsultSessionManager.getSessionManager().createConsultSession((String) specialistPatientContent.get("userName"),(String) specialistPatientContent.get("userId"));
-            if(resultMap!= null && "success".equalsIgnoreCase((String) resultMap.get("result"))){
-                ConsultTransferListVo consultTransferListVo;
-                String status = "complete";
-                String delFlag = "0";
-                consultTransferListVo = new ConsultTransferListVo();
-                consultTransferListVo.setStatus(status);
-                consultTransferListVo.setDelFlag(delFlag);
-                consultTransferListVo.setId((Integer)specialistPatientContent.get("id"));
-                int count = consultTransferListVoService.updateConsultTransferByPrimaryKey(consultTransferListVo);
-                if(count > 0){
-                    ConsultSessionManager.getSessionManager().refreshConsultTransferList(UserUtils.getUser().getId());
+        try {
+            synchronized (this) {
+                ConsultTransferListVo consultTransfer = new ConsultTransferListVo();
+                consultTransfer.setId((Integer) specialistPatientContent.get("id"));
+                ConsultTransferListVo consultTransferListVo1 = consultTransferListVoService.findOneConsultTransferListVo(consultTransfer);
+                if (consultTransferListVo1 != null) {
+                    if ("complete".equalsIgnoreCase(consultTransferListVo1.getStatus())) {
+                        response.put("status", "complete");
+                        return response;
+                    } else {
+                        HashMap<String, Object> resultMap = ConsultSessionManager.getSessionManager().createConsultSession((String) specialistPatientContent.get("userName"), (String) specialistPatientContent.get("userId"));
+                        if (resultMap != null && "success".equalsIgnoreCase((String) resultMap.get("result"))) {
+                            ConsultTransferListVo consultTransferListVo;
+                            String status = "complete";
+                            String delFlag = "0";
+                            consultTransferListVo = new ConsultTransferListVo();
+                            consultTransferListVo.setStatus(status);
+                            consultTransferListVo.setDelFlag(delFlag);
+                            consultTransferListVo.setId((Integer) specialistPatientContent.get("id"));
+                            int count = consultTransferListVoService.updateConsultTransferByPrimaryKey(consultTransferListVo);
+                            if (count > 0) {
+                                ConsultSessionManager.getSessionManager().refreshConsultTransferList(UserUtils.getUser().getId());
+                            }
+                            response.put("userId", specialistPatientContent.get("userId"));
+                            response.put("userName", specialistPatientContent.get("userName"));
+                            response.put("result", resultMap.get("result"));
+                            response.put("status", "success");
+                        } else {
+                            response.put("id", specialistPatientContent.get("id"));
+                            response.put("result", resultMap.get("result"));
+                            response.put("status", "failure");
+                        }
+                    }
                 }
-                response.put("userId",specialistPatientContent.get("userId"));
-                response.put("userName",specialistPatientContent.get("userName"));
-                response.put("status", "success");
-            }else{
-                response.put("id",specialistPatientContent.get("id"));
-                response.put("result", resultMap.get("result"));
-                response.put("status","failure");
             }
-        }catch(Exception exception){
+        } catch (Exception exception) {
             exception.getStackTrace();
         }
-
         return response;
     }
 }

@@ -22,4 +22,6 @@ public interface ConsultTransferListVoDao {
 
     int updateConsultTransferByPrimaryKey(ConsultTransferListVo consultTransferListVo);
 
+    ConsultTransferListVo findOneConsultTransferListVo(ConsultTransferListVo consultTransferListVo);
+
 }

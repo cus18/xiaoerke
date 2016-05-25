@@ -17,4 +17,6 @@ public interface ConsultTransferListVoService {
 
     int updateConsultTransferByPrimaryKey(ConsultTransferListVo consultTransferListVo);
 
+    ConsultTransferListVo findOneConsultTransferListVo(ConsultTransferListVo consultTransferListVo);
+
 }

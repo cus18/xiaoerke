@@ -62,4 +62,25 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="findOneConsultTransferListVo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultTransferListVo" >
+    select
+    <include refid="Base_Column_List" />
+    from consult_transfer_list
+    where 1=1
+    <if test="sysUserId != null and sysUserId != ''">
+      and sys_user_id = #{sysUserId,jdbcType=VARCHAR}
+    </if>
+    <if test="id != null and id != ''">
+      and id = #{id,jdbcType=INTEGER}
+    </if>
+    <if test="delFlag != null and delFlag != ''">
+      and del_flag = #{delFlag,jdbcType=VARCHAR}
+    </if>
+    order by
+    <if test="orderBy != null and orderBy !=  ''">
+      department desc,
+    </if>
+    create_date desc
+  </select>
 </mapper>
