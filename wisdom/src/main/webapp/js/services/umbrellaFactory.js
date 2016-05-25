@@ -18,12 +18,8 @@ define(['appUmbrella'], function (app) {
         .factory('RecordLogs',['$resource',function ($resource){
             return $resource(user_h5 + 'util/recordLogs');
         }])
-        //send WechatMessage To User
-        .factory('SendWechatMessageToUser',['$resource',function ($resource){
-            return $resource(wxChat + 'postInfoToWechat');
-        }])
-        .factory('SendWechatMessageToUserOnline',['$resource',function ($resource){
-            return $resource(wxChat + 'postInfoToWechatOnline');
+        .factory('JoinUs',['$resource',function ($resource){
+            return $resource(user_h5 + 'umbrella/joinUs');
         }])
 
 })
