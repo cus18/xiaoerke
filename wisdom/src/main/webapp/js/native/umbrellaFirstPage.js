@@ -83,7 +83,7 @@ var umbrellaFirstPageInit = function() {
                     wx.onMenuShareTimeline({
                         title: '我为您的宝宝领取了最高40万保障金', // 分享标题
                         link: window.location.href.replace("true","false"), // 分享链接
-                        imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2Fdog.jpg', // 分享图标
+                        imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                         success: function (res) {
                             //记录用户分享文章
                             recordLogs("FXJG_FXPYQDog");
@@ -96,7 +96,7 @@ var umbrellaFirstPageInit = function() {
                         title: '我为您的宝宝领取了最高40万保障金', // 分享标题
                         desc: '前20万用户免费加入即可获取最高40万60种儿童重疾保障', // 分享描述
                         link:window.location.href.replace("true","false"), // 分享链接
-                        imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2Fdog.jpg', // 分享图标
+                        imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                         success: function (res) {
                             recordLogs("FXJG_FXPYDog");
                         },

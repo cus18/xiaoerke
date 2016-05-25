@@ -42,6 +42,7 @@
                         var targetDateUTC = targetDate.getTime();
                         var afterDate=	Math.round(new Date().getTime());
                         $scope.days=Math.ceil((targetDateUTC-afterDate)/1000/60/60/24);
+                        console.log("a",$scope.days);
                     }
                     $scope.person=(400000-$scope.umbrellaMoney)/20000;
                 });

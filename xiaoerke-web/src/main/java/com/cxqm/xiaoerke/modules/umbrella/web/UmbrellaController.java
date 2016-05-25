@@ -97,7 +97,6 @@ public class UmbrellaController  {
     Map<String, Object>  updateInfo(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) {
         Map<String, Object> result=new HashMap<String, Object>();
 
-
         String phone=params.get("phone").toString();
         String code=params.get("code").toString();
         String openid= WechatUtil.getOpenId(session, request);
@@ -165,6 +164,7 @@ public class UmbrellaController  {
         String  id=babyUmbrellaInfoSerivce.getOpenidStatus(openid).get("status").toString();
         Map<String, Object> result=new HashMap<String, Object>();
         result.put("status",id);
+        result.put("openid",openid);
         return result;
     }
 
