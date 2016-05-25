@@ -5,6 +5,26 @@ angular.module('controllers2', [])
             $scope.initial = function(){
                 $(function(){
                     $(".img_weixin").hide();
+
+                    var $headBar = $('.index_title'), initTop = 0, isScroll = true;
+                    $(window).on('scroll', function(e) {
+                        var scrollY = $(this).scrollTop();
+                        if(scrollY > 126){
+                            if(scrollY > initTop){
+                                $headBar.addClass('active');
+                            }else{
+                                $headBar.removeClass('active');
+                            }
+                        } else{
+                            $headBar.removeClass('active');
+                        }
+                        initTop = scrollY;
+                        //if(scrollY >= (3000 - $(window).height())){
+                        //    $('.sy-connect .left').animate({'margin-left': '0'}, '1000');
+                        //    $('.sy-connect .right').animate({'margin-right': '0'}, '1000');
+                        //}
+                    });
+
                     $('#mov_doctor').movingBoxes({
                         width: 1000,
                         reducedSize : 0.5,
