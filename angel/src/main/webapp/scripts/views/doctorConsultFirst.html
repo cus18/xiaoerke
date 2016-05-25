@@ -411,6 +411,7 @@
             <ul class="specialist">
                 <li>用户</li>
                 <li>记录人</li>
+                <li>记录时间</li>
                 <li>需转接的科室需转接的科室需转接的科室</li>
                 <li ng-click="getWaitTransferSpecialist()">按科室排序</li>
                 <li></li>
@@ -419,6 +420,7 @@
                 <ul ng-repeat="item in alreadyJoinTransferSpecialist">
                     <li>{{item.userName}}</li>
                     <li>{{item.currentDoctor}}</li>
+                    <li>{{item.createDate}}</li>
                     <li>{{item.department}}</li>
                     <li ng-click="createOneSpecialistPatient($index)"><input type="button" value="发起会话"/></li>
                     <li ng-click="disposeTransferSpecialist($index)"><input type="button" value="删除"/></li>

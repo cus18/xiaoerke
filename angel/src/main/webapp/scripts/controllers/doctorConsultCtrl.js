@@ -117,9 +117,24 @@ angular.module('controllers', ['luegg.directives'])
                         }else if($stateParams.action == ""){
                             getAlreadyJoinConsultPatientList();
                         }
+
+                        setInterval(sessionCheck,20000);
                     }
                 });
             };
+
+            //每20秒，检测一次医生跟平台的会话是否失效
+            var sessionCheck = function(){
+                var routePath = "/doctor/consultBBBBBB" + $location.path();
+                GetUserLoginStatus.save({routePath: routePath}, function (data) {
+                    $scope.pageLoading = false;
+                    if (data.status == "9") {
+                        window.location.href = data.redirectURL;
+                    } else if (data.status == "8") {
+                        window.location.href = data.redirectURL + "?targeturl=" + routePath;
+                    }
+                })
+            }
             
             //公共点击按钮，用来触发弹出对应的子窗口
             $scope.tapShowButton = function(type){
@@ -514,8 +529,10 @@ angular.module('controllers', ['luegg.directives'])
             //处理用户按键事件
             document.onkeydown = function () {
                 if (window.event.keyCode == 13){
-                    $scope.sendConsultMessage();
-                    $scope.$apply();
+                    if($scope.info.consultMessage!=""){
+                        $scope.sendConsultMessage();
+                        $scope.$apply();
+                    }
                 }
             };//当onkeydown 事件发生时调用函数
 
@@ -546,7 +563,6 @@ angular.module('controllers', ['luegg.directives'])
                                 "sessionId": angular.copy($scope.currentUserConversation.sessionId)
                             };
                         }
-
                         $scope.socketServerFirst.send(emotionSendFilter(JSON.stringify(consultValMessage)));
                         consultValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($scope.info.consultMessage)));
                         $scope.info.consultMessage = "";
