@@ -83,7 +83,7 @@ input{
 }
 .index_zhuan .item_1_1:hover .info{
   top: 0;
-  transition: 5s;
+  transition: 0.5s;
   -moz-transition:top 0.5s; /* Firefox 4 */
   -webkit-transition:top 0.5s; /* Safari and Chrome */
   -o-transition:top 0.5s;
@@ -133,13 +133,25 @@ input{
 .index_doctor ul .doc_name{
   margin-top: 12px;
   font-size: 15px ;
+  width: 100%;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
 }
 .index_doctor ul .doc_name_info{
   font-size: 0 ;
+  width: 100%;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
 }
 .index_doctor ul .doc_hosp {
   margin-top: 2px;
   font-size: 0 ;
+  width: 100%;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
 }
 .index_doctor .doc_img{
   vertical-align: baseline;
@@ -153,6 +165,8 @@ input{
 
 .index_doctor .mb-inside{
   border: none;
+  box-shadow:1px 1px 1px 1px rgba(0.1,0.1,0.1,0.1);
+  border-radius: 10px;
 }
 .index_doctor .mb-wrapper{
   border: hidden;!important;
@@ -230,7 +244,7 @@ input{
 }
 .index_yu .yu_content .yu_content_con{
   display: inline-block;
-  font-size: 10px;
+  font-size: 20px;
   color: #333;
   line-height: 32px;
   vertical-align: top;

@@ -38,36 +38,36 @@ angular.module('controllers2', [])
                             slider.$curPanel.find('.doc_hosp').css("font-size","18px");
                         }
 
-                    });
-                    $('#mov_hosp').movingBoxes({
-                        width: 1000,
-                        reducedSize : 0.5,
-                        startPanel : 2,
-                        currentPanel : 'svccurrent',
-                        hashTags: false,
-                        fixedHeight:false,
-                        wrap: false,
-                        initialized: function(e, slider, tar){
-                            //console.log("1",e);
-                            //console.log("2",slider);
-                            //console.log("3",tar);
-                            slider.curWidth = 250;
-                            slider.regWidth = 125;
-                            slider.$curPanel.find('.doc_name').css("margin-top","0px");
-                            slider.$curPanel.find('.doc_name').css("font-size","18px");
-                        },
-                        initChange: function(e, slider, tar){
-                            slider.curWidth = 250;
-                            slider.regWidth = 125;
-                            slider.$curPanel.find('.doc_name').css("margin-top","0px");
-                            slider.$curPanel.find('.doc_name').css("font-size","15px");
-                        },
-                        completed: function(e, slider){
-                            slider.curWidth = 250;
-                            slider.regWidth = 125;
-                            slider.$curPanel.find('.doc_name').css("margin-top","0px");
-                            slider.$curPanel.find('.doc_name').css("font-size","18px");
-                        }
+                });
+                $('#mov_hosp').movingBoxes({
+                    width: 1000,
+                    reducedSize : 0.5,
+                    startPanel : 2,
+                    currentPanel : 'svccurrent',
+                    hashTags: false,
+                    fixedHeight:false,
+                    wrap: false,
+                    initialized: function(e, slider, tar){
+                        //console.log("1",e);
+                        //console.log("2",slider);
+                        //console.log("3",tar);
+                        slider.curWidth = 250;
+                        slider.regWidth = 125;
+                        slider.$curPanel.find('.doc_name').css("margin-top","2px");
+                        slider.$curPanel.find('.doc_name').css("font-size","18px");
+                    },
+                    initChange: function(e, slider, tar){
+                        slider.curWidth = 250;
+                        slider.regWidth = 125;
+                        slider.$curPanel.find('.doc_name').css("margin-top","0px");
+                        slider.$curPanel.find('.doc_name').css("font-size","15px");
+                    },
+                    completed: function(e, slider){
+                        slider.curWidth = 250;
+                        slider.regWidth = 125;
+                        slider.$curPanel.find('.doc_name').css("margin-top","2px");
+                        slider.$curPanel.find('.doc_name').css("font-size","18px");
+                    }
 
                     });
                 })
@@ -134,37 +134,35 @@ angular.module('controllers2', [])
                     //}
                 });
 
-                //$('#content_scroll').perfectScrollbar();
                 // with vanilla JS!
                 $('.mine_con').css({'height': '1000px'});
                 Ps.initialize(document.getElementById('content_scroll'));
 
-                $("#guanyumine").show();
-                $("#lianximine").hide();
-                $("#fuwuxieyi").hide();
-                $("#yinsibaohu").hide();
-                $("#GuanYu").css("color","#22c4c6");
-                $("#LianXi").css("color","#333");
-                $("#FuWu").css("color","#333");
-                $("#YinSi").css("color","#333");
-                //changeMine($("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#GuanYu"),$("#LianXi"),$("#FuWu"),$("#YinSi"));
+                //var item = getQueryString("id");
+                //console.log("item",item);
+                //if(item ==null){
+                //    $("#guanyumine").show();
+                //    $("#lianximine").hide();
+                //    $("#fuwuxieyi").hide();
+                //    $("#yinsibaohu").hide();
+                //    $("#GuanYu").css("color","#22c4c6");
+                //    $("#LianXi").css("color","#333");
+                //    $("#FuWu").css("color","#333");
+                //    $("#YinSi").css("color","#333");
+                //}
 
 
             });
 
-
-            $scope.$on('$ionicView.enter', function() {
-                if($stateParams.id==1){
-                    $scope.goGuanYu();
-                }else if($stateParams.id==2){
-                    $scope.goLianXi();
-                }else if($stateParams.id==3){
-                    $scope.goFuWu();
-                }else if($stateParams.id==4){
-                    $scope.goYinSi();
-                }
-
-            });
+            if($stateParams.id==1){
+                changeMine($("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#GuanYu"),$("#LianXi"),$("#FuWu"),$("#YinSi"));
+            }else if($stateParams.id==2){
+                changeMine($("#lianximine"),$("#guanyumine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#LianXi"),$("#GuanYu"),$("#FuWu"),$("#YinSi"));
+            }else if($stateParams.id==3){
+                changeMine($("#fuwuxieyi"),$("#guanyumine"),$("#lianximine"),$("#yinsibaohu"),$("#FuWu"),$("#GuanYu"),$("#LianXi"),$("#YinSi"));
+            }else if($stateParams.id==4){
+                changeMine($("#yinsibaohu"),$("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#YinSi"),$("#GuanYu"),$("#LianXi"),$("#FuWu"));
+            }
 
 
             //首页
@@ -193,8 +191,10 @@ angular.module('controllers2', [])
             $scope.goYinSi = function () {
                 changeMine($("#yinsibaohu"),$("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#YinSi"),$("#GuanYu"),$("#LianXi"),$("#FuWu"));
             }
-            
-            var changeMine = function (id1,id2,id3,id4,css1,css2,css3,css4) {
+
+
+
+            function  changeMine(id1,id2,id3,id4,css1,css2,css3,css4) {
                 id1.show();
                 id2.hide();
                 id3.hide();
@@ -204,9 +204,25 @@ angular.module('controllers2', [])
                 css3.css("color","#333");
                 css4.css("color","#333");
 
+                $(".mine_con").animate({scrollTop:id1.offset().top},1000);
+
             }
-            
-            
+
+            //function getQueryString(name) {
+            //
+            //    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+            //
+            //    var r = window.location.search.substr(1).match(reg);
+            //
+            //    if (r != null) {
+            //
+            //        return unescape(r[2]);
+            //
+            //    }
+            //
+            //    return null;
+            //
+            //}
 
             //底部微信二维码显示
             $(".img_1").mouseenter(function () {
