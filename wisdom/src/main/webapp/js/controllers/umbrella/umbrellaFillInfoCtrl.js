@@ -5,7 +5,23 @@
             $scope.sexItem = "boy";
             $scope.parentItem = "mother";
             $scope.checkLock = true;
-            $scope.info={}
+            $scope.fillLock = false;
+            $scope.selectItem = "";
+            $scope.info={};
+
+            /*填写宝宝姓名 获取焦点*/
+            $scope.fillName = function(){
+                $scope.fillLock = true;
+            };
+            /*填写宝宝姓名 失去焦点*/
+            $scope.fillFinish = function(){
+                $scope.fillLock = false;
+            };
+            /*填写宝宝姓名 失去焦点*/
+            $scope.selectBaby = function(selectItem){
+                $scope.info.babyName = selectItem;
+                console.log("babyName"+ $scope.selectItem);
+            };
             /*选择性别*/
             $scope.selectSex = function(sex){
                 $scope.sexItem=sex;
