@@ -514,9 +514,10 @@ angular.module('controllers', ['luegg.directives'])
             //处理用户按键事件
             document.onkeydown = function () {
                 if (window.event.keyCode == 13){
-                    console.log("message",$scope.info.consultMessage);
-                    $scope.sendConsultMessage();
-                    $scope.$apply();
+                    if($scope.info.consultMessage!=""){
+                        $scope.sendConsultMessage();
+                        $scope.$apply();
+                    }
                 }
             };//当onkeydown 事件发生时调用函数
 
