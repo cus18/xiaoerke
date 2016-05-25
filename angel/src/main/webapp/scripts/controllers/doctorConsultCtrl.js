@@ -71,7 +71,7 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.userType = data.userType;
 
                         //创建与平台的socket连接
-                        //$scope.initConsultSocketFirst();
+                        $scope.initConsultSocketFirst();
                         $scope.initConsultSocketSecond();
 
                         getIframeSrc();
