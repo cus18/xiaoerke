@@ -39,9 +39,9 @@
                     <div class="order f4 c3">你是第<span class="c11">{{num}}</span>位加入的成员</div>
                     <div class="state f5 c13">你正处于<span class="c11">观察期</span></div>
                     <div class="day tc">
-                        <img width="39" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/countdowm1.png">
-                        <img width="39" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/countdowm2.png">
-                        <img width="39" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/countdowm3.png">
+                        <img width="39" height="auto" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/countdowm{{minusDays1}}.png">
+                        <img width="39" height="auto" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/countdowm{{minusDays2}}.png">
+                        <img width="39" height="auto" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/countdowm{{minusDays3}}.png">
                     </div>
                     <div class="remind">天后即可享受保障</div>
                 </div>
@@ -50,11 +50,15 @@
 
             <!--拼图模块 -->
             <div class="pinTu tc">
-                <p class="f8 c3">
+                <p class="f8 c3" ng-if="person>0">
                     只需邀请<span class="c12">{{person}}</span>位好友，完成拼图<br>
                     即可获40万保障金
                 </p>
-                <img class="my-img2" width="80%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/pintu1.png" >
+                <p class="f8 c3" ng-if="person==0">
+                    已成功邀请<span class="c12">10</span>位好友<br>
+                    享40万保障金
+                </p>
+                <img class="my-img2" width="80%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/pintu{{person}}.png" >
             </div>
 
             <br><br><br><br><br>
