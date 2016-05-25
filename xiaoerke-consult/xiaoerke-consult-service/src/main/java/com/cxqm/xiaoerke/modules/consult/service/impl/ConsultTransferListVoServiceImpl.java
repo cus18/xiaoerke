@@ -29,6 +29,17 @@ public class ConsultTransferListVoServiceImpl implements ConsultTransferListVoSe
     }
 
     @Override
+    public ConsultTransferListVo findOneConsultTransferListVo(ConsultTransferListVo consultTransferListVo) {
+        if(consultTransferListVo !=null){
+            ConsultTransferListVo consultTransferListVo1 = consultTransferListVoDao.findOneConsultTransferListVo(consultTransferListVo);
+            if(consultTransferListVo1 != null){
+                return consultTransferListVo1;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public List<ConsultTransferListVo> findAllConsultTransferListVo(ConsultTransferListVo consultTransferListVo) {
         List<ConsultTransferListVo> list = consultTransferListVoDao.findAllConsultTransferListVo(consultTransferListVo);
         if(list != null && list.size()>0) {

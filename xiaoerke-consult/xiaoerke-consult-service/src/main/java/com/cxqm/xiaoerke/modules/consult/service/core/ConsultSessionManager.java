@@ -585,7 +585,7 @@ public class ConsultSessionManager {
 			if (consultSessionForwardRecordsVos.size() > 0) {
 				response.put("result", "existTransferSession");
 			}else{
-				if(consultSessions.get(0).getSource().contains("h5")){
+				if(consultSessions.get(0).getSource() != null && consultSessions.get(0).getSource().contains("h5")){
 					response.put("result", "notOnLine");
 				}else{
 					String doctorManagerStr = Global.getConfig("doctorManager.list");
@@ -609,7 +609,7 @@ public class ConsultSessionManager {
 			Query query = (new Query()).addCriteria(where("userId").is(userId)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
 			ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(query);
 			if (DateUtils.pastHour(consultSessionStatusVo.getLastMessageTime()) < 48L) {
-				if(consultSessionStatusVo.getSource().contains("h5")){
+				if(consultSessionStatusVo.getSource() !=null && consultSessionStatusVo.getSource().contains("h5")){
 					response.put("result", "notOnLine");
 				}else{
 					richConsultSession.setCsUserId(UserUtils.getUser().getId());

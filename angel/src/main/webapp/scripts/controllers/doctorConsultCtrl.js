@@ -358,7 +358,6 @@ angular.module('controllers', ['luegg.directives'])
 
             //分诊员发起一个针对用户的会话
             $scope.createOneSpecialistPatient = function(index){
-                $scope.showFlag.specialistList = false;
                 CreateTransferSpecialist.save({specialistPatientContent:$scope.alreadyJoinTransferSpecialist[index]},function(data){
                     if(data.status == "success"){
                         var patientId = data.userId;
@@ -369,7 +368,7 @@ angular.module('controllers', ['luegg.directives'])
                                 $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                                 $.each($scope.alreadyJoinPatientConversation,function(index,value){
                                     if(value.patientId==patientId){
-                                        console.log("value",value)
+                                        console.log("value",value);
                                         patientName = value.patientName;
                                     }
                                     $.each(value.consultValue,function(index1,value1){
@@ -378,7 +377,8 @@ angular.module('controllers', ['luegg.directives'])
                                 });
                                 $scope.chooseAlreadyJoinConsultPatient(patientId,patientName);
                             }
-                        })
+                        });
+                        $scope.showFlag.specialistList = false;
                         getFindTransferSpecialist();
                     }else if(data.status == "failure"){
                         if(data.failureUserIds[0].result == "failure"){
@@ -391,7 +391,9 @@ angular.module('controllers', ['luegg.directives'])
                             alert("对不起，用户咨询已经超过了48小时，无法再向其发起会话");
                         }
                     }else if(data.status == "ongoing"){
-                        alert("此用户正有会话处于转接状态，无法向其发起会话，请稍后重试")
+                        alert("此用户正与"+data.csuserName+"会话中，无法向其发起会话，请稍后重试")
+                    }else if(data.status == "complete"){
+                        alert("当前会话已转出，请刷新列表")
                     }
                 })
             };
@@ -1236,7 +1238,7 @@ angular.module('controllers', ['luegg.directives'])
                 val = val.replace(/\/:ok/g, '[em_69]');val = val.replace(/\/:no/g, '[em_70]');val = val.replace(/\/:rose/g, '[em_71]');val = val.replace(/\/:fade/g, '[em_72]');
                 val = val.replace(/\/:showlove/g, '[em_73]');val = val.replace(/\/:love/g, '[em_74]');val = val.replace(/\/:<L>/g, '[em_75]');
                 return val;
-            }
+            };
 
             var emotionSendFilter = function(val){
                 val = val.replace(/\[em_1\]/g, '/::)');val = val.replace(/\[em_2\]/g, '/::~');val = val.replace(/\[em_3\]/g, '/::B');val = val.replace(/\[em_4\]/g, '/::|');
@@ -1259,7 +1261,7 @@ angular.module('controllers', ['luegg.directives'])
                 val = val.replace(/\[em_69\]/g, '/:ok');val = val.replace(/\[em_70\]/g, '/:no');val = val.replace(/\[em_71\]/g, '/:rose');val = val.replace(/\[em_72\]/g, '/:fade');
                 val = val.replace(/\[em_73\]/g, '/:showlove');val = val.replace(/\[em_74\]/g, '/:love');val = val.replace(/\[em_75\]/g, '/<L>');
                 return val;
-            }
+            };
         }])
 
     .controller('messageListCtrl', ['$scope', '$log', '$state','$sce', 'GetUserConsultListInfo',
