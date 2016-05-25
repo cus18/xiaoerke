@@ -358,6 +358,7 @@ angular.module('controllers', ['luegg.directives'])
 
             //分诊员发起一个针对用户的会话
             $scope.createOneSpecialistPatient = function(index){
+                $scope.showFlag.specialistList = false;
                 CreateTransferSpecialist.save({specialistPatientContent:$scope.alreadyJoinTransferSpecialist[index]},function(data){
                     if(data.status == "success"){
                         var patientId = data.userId;
@@ -367,7 +368,6 @@ angular.module('controllers', ['luegg.directives'])
                                 $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                                 $.each($scope.alreadyJoinPatientConversation,function(index,value){
                                     if(value.patientId==patientId){
-                                        console.log("value",value);
                                         patientName = value.patientName;
                                     }
                                     $.each(value.consultValue,function(index1,value1){
@@ -513,7 +513,6 @@ angular.module('controllers', ['luegg.directives'])
 
             //处理用户按键事件
             document.onkeydown = function () {
-                //if (window.event.ctrlKey && window.event.keyCode == 13)
                 if (window.event.keyCode == 13){
                     $scope.sendConsultMessage();
                     $scope.$apply();

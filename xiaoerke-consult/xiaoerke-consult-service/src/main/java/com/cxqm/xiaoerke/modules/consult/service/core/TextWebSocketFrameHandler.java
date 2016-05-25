@@ -30,9 +30,6 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 	@Autowired
 	private ConsultRecordService consultRecordService = SpringContextHolder.getBean("consultRecordServiceImpl");
 
-	@Autowired
-	private WechatAttentionService wechatAttentionService = SpringContextHolder.getBean("wechatAttentionServiceImpl");
-
 	public TextWebSocketFrameHandler() {
 		super();
 	}
