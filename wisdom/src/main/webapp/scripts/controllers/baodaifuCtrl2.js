@@ -34,28 +34,33 @@ angular.module('controllers2', [])
                         hashTags: false,
                         wrap: false,
                         initialized: function(e, slider, tar){
-                            slider.curWidth = 210;
-                            slider.regWidth = 110;
+                            //slider.curWidth = 210;
+                            //slider.regWidth = 110;
                             slider.$curPanel.find('.doc_name').hide();
                             slider.$curPanel.find('.doc_name_info').css("font-size","20px");
+                            slider.$curPanel.find('.doc_name_info').css("margin-top","12px");
                             slider.$curPanel.find('.doc_hosp').css("font-size","18px");
+                            slider.$curPanel.find('.doc_hosp').css("margin-top","8px");
 
                         },
                         initChange: function(e, slider, tar){
-                            slider.curWidth = 210;
-                            slider.regWidth = 110;
+                            //slider.curWidth = 210;
+                            //slider.regWidth = 110;
                             slider.$curPanel.find('.doc_name').show();
+                            slider.$curPanel.find('.doc_name').css("margin-top","12px")
                             slider.$curPanel.find('.doc_name_info').css("font-size","0px");
                             slider.$curPanel.find('.doc_hosp').css("font-size","0px");
                         },
                         completed: function(e, slider){
-                            console.log("1",e);
-                            console.log("2",slider);
-                            slider.curWidth = 210;
-                            slider.regWidth = 110;
+                            //console.log("1",e);
+                            //console.log("2",slider);
+                            //slider.curWidth = 210;
+                            //slider.regWidth = 110;
                             slider.$curPanel.find('.doc_name').hide();
                             slider.$curPanel.find('.doc_name_info').css("font-size","20px");
+                            slider.$curPanel.find('.doc_name_info').css("margin-top","12px");
                             slider.$curPanel.find('.doc_hosp').css("font-size","18px");
+                            slider.$curPanel.find('.doc_hosp').css("margin-top","8px");
                         }
 
                 });
@@ -71,22 +76,22 @@ angular.module('controllers2', [])
                         //console.log("1",e);
                         //console.log("2",slider);
                         //console.log("3",tar);
-                        slider.curWidth = 250;
-                        slider.regWidth = 125;
-                        slider.$curPanel.find('.doc_name').css("margin-top","2px");
-                        slider.$curPanel.find('.doc_name').css("font-size","18px");
+                        //slider.curWidth = 250;
+                        //slider.regWidth = 125;
+                        slider.$curPanel.find('.doc_name').css("margin-top","24px");
+                        slider.$curPanel.find('.doc_name').css("font-size","20px");
                     },
                     initChange: function(e, slider, tar){
-                        slider.curWidth = 250;
-                        slider.regWidth = 125;
-                        slider.$curPanel.find('.doc_name').css("margin-top","0px");
+                        //slider.curWidth = 250;
+                        //slider.regWidth = 125;
+                        slider.$curPanel.find('.doc_name').css("margin-top","24px");
                         slider.$curPanel.find('.doc_name').css("font-size","15px");
                     },
                     completed: function(e, slider){
-                        slider.curWidth = 250;
-                        slider.regWidth = 125;
-                        slider.$curPanel.find('.doc_name').css("margin-top","2px");
-                        slider.$curPanel.find('.doc_name').css("font-size","18px");
+                        //slider.curWidth = 250;
+                        //slider.regWidth = 125;
+                        slider.$curPanel.find('.doc_name').css("margin-top","24px");
+                        slider.$curPanel.find('.doc_name').css("font-size","20px");
                     }
 
                     });

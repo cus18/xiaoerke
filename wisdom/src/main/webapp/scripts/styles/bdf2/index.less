@@ -59,9 +59,18 @@ input{
 
 .index_zhuan{
   text-align: center;
-  padding: 41px 0 43px 0;
+  padding: 82px 0 86px 0;
+  position: relative;
 }
-.index_zhuan .img{
+.index_zhuan .zhu_tingzhenqi{
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.index_zhuan .zhu_title{
+  margin-bottom: 82px;
+  width: 20%;
+  height: auto;
 }
 .index_zhuan .ite{
   height: 316px;
@@ -126,23 +135,22 @@ input{
 }
 .index_doctor{
   background-color: #fafafc;
-  padding-top: 41px;
   text-align: center;
   position: relative;
-  height: 450px;
+  height: 598px;
 }
 .index_doctor .yao{
   position: absolute;
   top: 0;
   right: 0;
 }
-.index_doctor ul{
-  margin-top: 41px;
-}
+//.index_doctor ul li img{
+//  border-radius: 10px;
+//  -webkit-border-radius: 10px;
+//  -moz-border-radius: 10px;
+//}
 .index_doctor ul li{
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
+
 }
 .index_doctor ul .doc_name{
   margin-top: 12px;
@@ -168,8 +176,9 @@ input{
   text-overflow:ellipsis;
 }
 .index_doctor .doc_img{
-  vertical-align: baseline;
-  font-size: 100%;
+  width: 20%;
+  height: auto;
+  margin:82px 0 82px;
 }
 #mov_doctor{
   border: hidden;
@@ -179,8 +188,6 @@ input{
 
 .index_doctor .mb-inside{
   border: none;
-  box-shadow:1px 1px 1px 1px rgba(0.1,0.1,0.1,0.1);
-  border-radius: 10px;
 }
 .index_doctor .mb-wrapper{
   border: hidden;!important;
@@ -222,6 +229,8 @@ input{
 }
 .hosp{
   background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_pinzhiyiyuan.png);!important;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 .index_doctor .doc_mor{
   text-align: center;
@@ -242,14 +251,19 @@ input{
 }
 .index_yu{
   background-image: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_yuerpindao.png);
-  background-size: 100% 375px;
+  background-position: center;
+  background-repeat: no-repeat;
   text-align: center;
-  padding-top: 41px;
+}
+.index_yu .yu_title{
+  margin:82px 0 82px ;
+  width: 20%;
+  height: auto;
 }
 .index_yu .yu_content{
-  margin-left: 49%;
-  margin-top: 41px;
+  margin-left: 50%;
   position: relative;
+  width: 1000px;
 }
 .index_yu .yu_content img{
   display: inline-block;
@@ -260,10 +274,12 @@ input{
   display: inline-block;
   font-size: 20px;
   color: #333;
-  line-height: 32px;
   vertical-align: top;
   margin-left: -35%;
   text-align: left;
+}
+.index_yu .yu_content .yu_content_con dd{
+  margin-bottom: 32px;
 }
 .index_yu .yu_mor{
   margin-top: 55px;
