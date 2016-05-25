@@ -41,4 +41,9 @@ public interface BabyUmbrellaInfoDao {
      * @return
      */
     Integer  getBabyUmbrellaInfoTotal(Map<String, Object> map);
+
+
+    Integer getTotalBabyUmbrellaInfoMoney(Map<String, Object> map);
+
+    Map<String,Object> getOpenidStatus(@Param("openid")String openid);
 }
