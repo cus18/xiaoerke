@@ -1106,7 +1106,7 @@ public class ScheduledTask {
     }
 
     /**
-     *  扫描转接表转接状态超过4分钟，将状态置为取消状态
+     *  扫描转接表转接状态超过4分钟，将状态置为退回状态
      */
     public void modifyConsultConversationForwardRecords(){
         ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = new ConsultSessionForwardRecordsVo();
