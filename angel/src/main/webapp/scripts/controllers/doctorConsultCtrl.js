@@ -125,7 +125,6 @@ angular.module('controllers', ['luegg.directives'])
 
             //每20秒，检测一次医生跟平台的会话是否失效
             var sessionCheck = function(){
-                console.log("sessionCheck");
                 var routePath = "/doctor/consultBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath: routePath}, function (data) {
                     $scope.pageLoading = false;
