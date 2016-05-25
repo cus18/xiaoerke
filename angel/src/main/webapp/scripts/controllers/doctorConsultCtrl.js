@@ -514,6 +514,7 @@ angular.module('controllers', ['luegg.directives'])
             //处理用户按键事件
             document.onkeydown = function () {
                 if (window.event.keyCode == 13){
+                    console.log("message",$scope.info.consultMessage);
                     $scope.sendConsultMessage();
                     $scope.$apply();
                 }
@@ -546,7 +547,6 @@ angular.module('controllers', ['luegg.directives'])
                                 "sessionId": angular.copy($scope.currentUserConversation.sessionId)
                             };
                         }
-
                         $scope.socketServerFirst.send(emotionSendFilter(JSON.stringify(consultValMessage)));
                         consultValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($scope.info.consultMessage)));
                         $scope.info.consultMessage = "";
