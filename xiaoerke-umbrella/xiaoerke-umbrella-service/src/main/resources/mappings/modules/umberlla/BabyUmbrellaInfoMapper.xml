@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.umbrella.dao.BabyUmbrellaInfoDao" >
+    <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="openid" property="openid" jdbcType="VARCHAR" />
+        <result column="money" property="money" jdbcType="INTEGER" />
+        <result column="umbrella_money" property="umbrellaMoney" jdbcType="INTEGER" />
+        <result column="baby_id" property="babyId" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="DATE" />
+        <result column="parent_idcard" property="parentIdCard" jdbcType="VARCHAR" />
+        <result column="parent_phone" property="parentPhone" jdbcType="VARCHAR" />
+        <result column="parent_name" property="parentName" jdbcType="VARCHAR" />
+        <result column="activation_time" property="activationTime" jdbcType="DATE" />
+    </resultMap>
+
+
+    <select id="getBabyUmbrellaInfo" resultType="java.util.HashMap" >
+        select * from baby_umbrellainfo
+        where 1=1
+        <if test="today != null">
+            and create_time like '${today}%'
+        </if>
+        <if test="openid != null">
+            and openid = #{openid}
+        </if>
+    </select>
+
+    <select id="getBabyUmbrellaInfoTotal" resultType="java.lang.Integer" >
+        select count(*) from baby_umbrellainfo
+        where 1=1
+        <if test="today != null">
+            and create_time like '${today}%'
+        </if>
+        <if test="openid != null">
+            and openid = #{openid}
+        </if>
+    </select>
+
+    <select id="getTotalBabyUmbrellaInfoMoney" resultType="java.lang.Integer" >
+        select sum(umbrella_money) from baby_umbrellainfo
+        where 1=1
+        <if test="openid != null">
+            and openid = #{openid}
+        </if>
+    </select>
+
+
+    <insert id="saveBabyUmbrellaInfo" parameterType="com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `baby_umbrellainfo` ( `openid`,create_time,umbrella_money)
+        VALUES
+        ( #{openid},now(),#{umbrellaMoney});
+    </insert>
+
+
+    <update id="updateBabyUmbrellaInfo" parameterType="com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo" >
+        update baby_umbrellainfo
+        set
+        money = 5,
+        parent_idcard=#{parentIdCard},
+        parent_phone=#{parentPhone},
+        parent_name=#{parentName},
+        umberlla_money=#{umberllaMoney},
+        baby_id=#{babyId},
+        activation_time=now()
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="getUserShareNums" resultType="java.lang.Integer" >
+        select count(DISTINCT openid) from `sys_attention` where `marketer`=#{id} and status=0
+    </select>
+
+    <select id="getOpenidStatus" resultType="java.util.HashMap" >
+        select * from `sys_attention` sa where sa.`openid`=#{openid} order by date desc limit 1
+    </select>
+
+</mapper>

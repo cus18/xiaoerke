@@ -2,43 +2,61 @@ angular.module('controllers2', [])
     .controller('indexCtrl',['$scope','$state','$stateParams',
         function ($scope,$state,$stateParams) {
 
-            $(function(){
-                $(".img_weixin").hide();
-                $('#mov_doctor').movingBoxes({
-                    width: 1000,
-                    reducedSize : 0.5,
-                    startPanel : 2,
-                    currentPanel : 'svccurrent',
-                    fixedHeight:false,
-                    hashTags: false,
-                    wrap: false,
-                    initialized: function(e, slider, tar){
-                        //console.log("1",e);
-                        //console.log("2",slider);
-                        //console.log("3",tar);
-                        slider.curWidth = 210;
-                        slider.regWidth = 110;
-                        slider.$curPanel.find('.doc_name').hide();
-                        slider.$curPanel.find('.doc_name_info').css("font-size","20px");
-                        slider.$curPanel.find('.doc_hosp').css("font-size","18px");
+            $scope.initial = function(){
+                $(function(){
+                    $(".img_weixin").hide();
 
-                },
-                    initChange: function(e, slider, tar){
-                        slider.curWidth = 210;
-                        slider.regWidth = 110;
-                        slider.$curPanel.find('.doc_name').show();
-                        slider.$curPanel.find('.doc_name_info').css("font-size","0px");
-                        slider.$curPanel.find('.doc_hosp').css("font-size","0px");
-                    },
-                    completed: function(e, slider){
-                        console.log("1",e);
-                        console.log("2",slider);
-                        slider.curWidth = 210;
-                        slider.regWidth = 110;
-                        slider.$curPanel.find('.doc_name').hide();
-                        slider.$curPanel.find('.doc_name_info').css("font-size","20px");
-                        slider.$curPanel.find('.doc_hosp').css("font-size","18px");
-                    }
+                    var $headBar = $('.index_title'), initTop = 0, isScroll = true;
+                    $(window).on('scroll', function(e) {
+                        var scrollY = $(this).scrollTop();
+                        if(scrollY > 126){
+                            if(scrollY > initTop){
+                                $headBar.addClass('active');
+                            }else{
+                                $headBar.removeClass('active');
+                            }
+                        } else{
+                            $headBar.removeClass('active');
+                        }
+                        initTop = scrollY;
+                        //if(scrollY >= (3000 - $(window).height())){
+                        //    $('.sy-connect .left').animate({'margin-left': '0'}, '1000');
+                        //    $('.sy-connect .right').animate({'margin-right': '0'}, '1000');
+                        //}
+                    });
+
+                    $('#mov_doctor').movingBoxes({
+                        width: 1000,
+                        reducedSize : 0.5,
+                        startPanel : 2,
+                        currentPanel : 'svccurrent',
+                        fixedHeight:false,
+                        hashTags: false,
+                        wrap: false,
+                        initialized: function(e, slider, tar){
+                            slider.curWidth = 210;
+                            slider.regWidth = 110;
+                            slider.$curPanel.find('.doc_name').hide();
+                            slider.$curPanel.find('.doc_name_info').css("font-size","20px");
+                            slider.$curPanel.find('.doc_hosp').css("font-size","18px");
+
+                        },
+                        initChange: function(e, slider, tar){
+                            slider.curWidth = 210;
+                            slider.regWidth = 110;
+                            slider.$curPanel.find('.doc_name').show();
+                            slider.$curPanel.find('.doc_name_info').css("font-size","0px");
+                            slider.$curPanel.find('.doc_hosp').css("font-size","0px");
+                        },
+                        completed: function(e, slider){
+                            console.log("1",e);
+                            console.log("2",slider);
+                            slider.curWidth = 210;
+                            slider.regWidth = 110;
+                            slider.$curPanel.find('.doc_name').hide();
+                            slider.$curPanel.find('.doc_name_info').css("font-size","20px");
+                            slider.$curPanel.find('.doc_hosp').css("font-size","18px");
+                        }
 
                 });
                 $('#mov_hosp').movingBoxes({
@@ -55,7 +73,7 @@ angular.module('controllers2', [])
                         //console.log("3",tar);
                         slider.curWidth = 250;
                         slider.regWidth = 125;
-                        slider.$curPanel.find('.doc_name').css("margin-top","0px");
+                        slider.$curPanel.find('.doc_name').css("margin-top","2px");
                         slider.$curPanel.find('.doc_name').css("font-size","18px");
                     },
                     initChange: function(e, slider, tar){
@@ -67,22 +85,21 @@ angular.module('controllers2', [])
                     completed: function(e, slider){
                         slider.curWidth = 250;
                         slider.regWidth = 125;
-                        slider.$curPanel.find('.doc_name').css("margin-top","0px");
+                        slider.$curPanel.find('.doc_name').css("margin-top","2px");
                         slider.$curPanel.find('.doc_name').css("font-size","18px");
                     }
 
+                    });
+                })
+                //底部微信二维码显示
+                $(".img_1").mouseenter(function () {
+                    $(".img_weixin").show();
+
                 });
-            })
-
-            //底部微信二维码显示
-            $(".img_1").mouseenter(function () {
-                $(".img_weixin").show();
-
-            });
-            $(".img_1").mouseout(function () {
-                $(".img_weixin").hide();
-
-            });
+                $(".img_1").mouseout(function () {
+                    $(".img_weixin").hide();
+                });
+            }
 
             //联系我们
             $scope.goCallMine = function () {
@@ -110,11 +127,6 @@ angular.module('controllers2', [])
             $scope.goYinSi = function () {
                 $state.go("callMine",{id:4});
             }
-
-
-
-
-
         }])
     //联系我们
     .controller('callMineCtrl',['$scope','$state','$stateParams',
@@ -142,37 +154,35 @@ angular.module('controllers2', [])
                     //}
                 });
 
-                //$('#content_scroll').perfectScrollbar();
                 // with vanilla JS!
                 $('.mine_con').css({'height': '1000px'});
                 Ps.initialize(document.getElementById('content_scroll'));
 
-                $("#guanyumine").show();
-                $("#lianximine").hide();
-                $("#fuwuxieyi").hide();
-                $("#yinsibaohu").hide();
-                $("#GuanYu").css("color","#22c4c6");
-                $("#LianXi").css("color","#333");
-                $("#FuWu").css("color","#333");
-                $("#YinSi").css("color","#333");
-                //changeMine($("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#GuanYu"),$("#LianXi"),$("#FuWu"),$("#YinSi"));
+                //var item = getQueryString("id");
+                //console.log("item",item);
+                //if(item ==null){
+                //    $("#guanyumine").show();
+                //    $("#lianximine").hide();
+                //    $("#fuwuxieyi").hide();
+                //    $("#yinsibaohu").hide();
+                //    $("#GuanYu").css("color","#22c4c6");
+                //    $("#LianXi").css("color","#333");
+                //    $("#FuWu").css("color","#333");
+                //    $("#YinSi").css("color","#333");
+                //}
 
 
             });
 
-
-            $scope.$on('$ionicView.enter', function() {
-                if($stateParams.id==1){
-                    $scope.goGuanYu();
-                }else if($stateParams.id==2){
-                    $scope.goLianXi();
-                }else if($stateParams.id==3){
-                    $scope.goFuWu();
-                }else if($stateParams.id==4){
-                    $scope.goYinSi();
-                }
-
-            });
+            if($stateParams.id==1){
+                changeMine($("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#GuanYu"),$("#LianXi"),$("#FuWu"),$("#YinSi"));
+            }else if($stateParams.id==2){
+                changeMine($("#lianximine"),$("#guanyumine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#LianXi"),$("#GuanYu"),$("#FuWu"),$("#YinSi"));
+            }else if($stateParams.id==3){
+                changeMine($("#fuwuxieyi"),$("#guanyumine"),$("#lianximine"),$("#yinsibaohu"),$("#FuWu"),$("#GuanYu"),$("#LianXi"),$("#YinSi"));
+            }else if($stateParams.id==4){
+                changeMine($("#yinsibaohu"),$("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#YinSi"),$("#GuanYu"),$("#LianXi"),$("#FuWu"));
+            }
 
 
             //首页
@@ -201,8 +211,10 @@ angular.module('controllers2', [])
             $scope.goYinSi = function () {
                 changeMine($("#yinsibaohu"),$("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#YinSi"),$("#GuanYu"),$("#LianXi"),$("#FuWu"));
             }
-            
-            var changeMine = function (id1,id2,id3,id4,css1,css2,css3,css4) {
+
+
+
+            function  changeMine(id1,id2,id3,id4,css1,css2,css3,css4) {
                 id1.show();
                 id2.hide();
                 id3.hide();
@@ -212,9 +224,25 @@ angular.module('controllers2', [])
                 css3.css("color","#333");
                 css4.css("color","#333");
 
+                $(".mine_con").animate({scrollTop:id1.offset().top},1000);
+
             }
-            
-            
+
+            //function getQueryString(name) {
+            //
+            //    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+            //
+            //    var r = window.location.search.substr(1).match(reg);
+            //
+            //    if (r != null) {
+            //
+            //        return unescape(r[2]);
+            //
+            //    }
+            //
+            //    return null;
+            //
+            //}
 
             //底部微信二维码显示
             $(".img_1").mouseenter(function () {

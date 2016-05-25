@@ -41,4 +41,8 @@ public interface BabyUmbrellaInfoService {
      */
     Integer  getBabyUmbrellaInfoTotal(Map<String, Object> map);
 
+
+    Map<String,Object> getOpenidStatus(String openid);
+
+    Integer getTotalBabyUmbrellaInfoMoney(Map<String, Object> map);
 }
