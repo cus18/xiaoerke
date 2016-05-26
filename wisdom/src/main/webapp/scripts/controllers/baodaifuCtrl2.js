@@ -45,12 +45,15 @@ angular.module('controllers2', [])
                             slider.$curPanel.find('.doc_name_info').css("margin-top","10px");
                             slider.$curPanel.find('.doc_hosp').css("font-size","18px");
                             slider.$curPanel.find('.doc_hosp').css("margin-top","6px");
+                            slider.$curPanel.find('.index_com').css("font-size","16px");
+
                         },
                         initChange: function(e, slider, tar){
                             slider.$curPanel.find('.doc_name').show();
                             slider.$curPanel.find('.doc_name').css("margin-top","12px");
                             slider.$curPanel.find('.doc_name_info').css("font-size","0px");
                             slider.$curPanel.find('.doc_hosp').css("font-size","0px");
+                            slider.$curPanel.find('.index_com').css("font-size","0px");
                         },
                         completed: function(e, slider){
                             slider.$curPanel.find('.doc_name').hide();
@@ -58,6 +61,7 @@ angular.module('controllers2', [])
                             slider.$curPanel.find('.doc_name_info').css("margin-top","10px");
                             slider.$curPanel.find('.doc_hosp').css("font-size","18px");
                             slider.$curPanel.find('.doc_hosp').css("margin-top","6px");
+                            slider.$curPanel.find('.index_com').css("font-size","16px");
                         }
 
                     });
