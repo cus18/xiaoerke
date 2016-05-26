@@ -530,7 +530,7 @@ public class ConsultSessionManager {
 		Iterator<Entry<String, Channel>> it = csUserChannelMapping.entrySet().iterator();
 		while(it.hasNext()){
 			Entry<String, Channel> entry = it.next();
-			if(entry.getValue().isOpen())
+			if(entry.getValue().isActive())
 				userIds.add(entry.getKey());
 		}
 		return userIds;
@@ -636,9 +636,13 @@ public class ConsultSessionManager {
 		}else{
 			consultSession.setCsUserId(richConsultSession.getCsUserId());
 			consultSession.setStatus("ongoing");
+			consultSession.setSource("wxcxqm");
 			consultSession.setUserId(richConsultSession.getUserId());
+			consultSession.setCreateTime(new Date());
 			flag = consultSessionService.saveConsultInfo(consultSession);
 			richConsultSession.setId(consultSession.getId());
+			richConsultSession.setSource(consultSession.getSource());
+			richConsultSession.setCreateTime(consultSession.getCreateTime());
 		}
 		if (flag > 0) {
 			response.put("result", "success");

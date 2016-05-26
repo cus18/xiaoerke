@@ -8,7 +8,10 @@
                         <dd>
                             <span>姓名：</span>
                             <input type="hidden" id="babyId"/>
-                            <input type="text" id="babyName" placeholder="宝宝的真实姓名" >
+                            <input type="text" id="babyName" placeholder="宝宝的真实姓名" ng-focus="fillName()" ng-blur="fillFinish()" ng-model="info.babyName">
+                            <ul class="babyList" ng-if="fillLock">
+                                <li class="f4 c6" ng-repeat="item in [1,2,3]" ng-click="selectBaby(item)">{{item}}</li>
+                            </ul>
                         </dd>
                         <dd>
                             <span>性别：</span>
@@ -53,11 +56,12 @@
                             <input type="text" id="IdCard" ng-model="info.IdCard" placeholder="填写正确的身份证号" maxlength="18"  ng-blur="checkCode();"  >
                         </dd>
                     </dl>
-                <br>
+                 <br>
                     <div class="tips" ng-show="!checkLock">
                         <img class="my-img" width="12.5" height="auto" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fremind_icon.png">
                         <span>{{tipsText}}</span>
                     </div>
+                <div class=" f2 c5 tc">未经您的允许，宝大夫不会泄露您的个人信息。</div>
                 </div>
             <br> <br> <br> <br> <br> <br> <br>
         </ion-scroll>

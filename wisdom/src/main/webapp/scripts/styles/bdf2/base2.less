@@ -5,45 +5,57 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, 
 input{
   border:0;
 }
+body{
+  font-family: consolas,微软雅黑;
+}
 
-.index_title{
+.bdf_title{
   background-color: #323232;
   height: 60px;
-  margin: 0 auto;
-  padding: 0 20px;
   position: fixed;
   z-index: 9999;
   width: 100%;
   top: 0;
 }
-.index_title ul{
-  list-style: none;
-  display: inline-block;
-  margin-left: 32%
+.bdf_title .bdf_main{
+  width: 1135px;
+  margin: 0 auto;
 }
-
-.index_title img{
+.bdf_title .bdf_main .bdf_logo{
   display: inline-block;
-  margin-left: 22%;
-  margin-bottom: 0px;
+  background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_logo_png.png) no-repeat;
   width: 172px;
   height: 58px;
   float: left;
+  margin-top: 3px;
 }
-.index_title li{
+
+.bdf_title .bdf_main ul{
+  list-style: none;
+  display: inline-block;
+  float: right;
+}
+
+.bdf_title ul li{
   display: inline-block;
   width: 90px;
   text-align: center;
-  vertical-align: middle;
   font-size: 14px;
   color: #FFFFFF;
-  float: left;
   line-height: 60px;
 }
-.index_title li:hover{
+.bdf_title ul li:hover{
   background-color: #22c4c6;!important;
 }
 
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
 
 
 
@@ -51,7 +63,7 @@ input{
   margin-top: 30px;
   text-align: center;
   background-color: #323232;
-  font-size: 7px;
+  font-size: 14px;
   color: #FFFFFF;
   padding:25px 0;
   position: relative;

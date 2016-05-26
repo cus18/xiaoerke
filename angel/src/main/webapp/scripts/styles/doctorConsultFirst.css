@@ -219,7 +219,7 @@ textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 10
     height: 386px;
 }
 .specialistListContent {
-    margin: 20px 24px;
+    margin: 20px 20px;
 }
 .specialistListContent ul{
     overflow: hidden;
@@ -228,17 +228,16 @@ textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 10
 .specialistListContent ul li{
     width: 75px;
     float: left;
-    margin: 5px 5px;
+    margin: 5px 0 5px;
     font: 12px/24px 'Microsoft Yahei';
     text-align: center;
 }
-.specialistListContent ul li:nth-child(1){
-    width: 40px;
+.specialistListContent ul li:nth-child(3){
+    width: 123px;
 }
 ul li input{
     float: left;
-    margin-top: 6px;
-    margin-left: 2px;
+    margin: 2px 0 0 2px;
 }
 .specialistContent{
     height: 225px;
@@ -252,7 +251,7 @@ ul li input{
     background-color: #8aa1a8;
 }
 .specialistContent input{
-    margin-left: 15px;
+    margin-left: 10px;
 }
 .specialistBottom{
     border-top: 1px solid #eee;

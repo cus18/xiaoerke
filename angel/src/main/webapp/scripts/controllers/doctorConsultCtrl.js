@@ -71,7 +71,7 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.userType = data.userType;
 
                         //创建与平台的socket连接
-                        //$scope.initConsultSocketFirst();
+                        $scope.initConsultSocketFirst();
                         $scope.initConsultSocketSecond();
 
                         getIframeSrc();
@@ -117,9 +117,24 @@ angular.module('controllers', ['luegg.directives'])
                         }else if($stateParams.action == ""){
                             getAlreadyJoinConsultPatientList();
                         }
+
+                        setInterval(sessionCheck,20000);
                     }
                 });
             };
+
+            //每20秒，检测一次医生跟平台的会话是否失效
+            var sessionCheck = function(){
+                var routePath = "/doctor/consultBBBBBB" + $location.path();
+                GetUserLoginStatus.save({routePath: routePath}, function (data) {
+                    $scope.pageLoading = false;
+                    if (data.status == "9") {
+                        window.location.href = data.redirectURL;
+                    } else if (data.status == "8") {
+                        window.location.href = data.redirectURL + "?targeturl=" + routePath;
+                    }
+                })
+            }
             
             //公共点击按钮，用来触发弹出对应的子窗口
             $scope.tapShowButton = function(type){
@@ -358,17 +373,16 @@ angular.module('controllers', ['luegg.directives'])
 
             //分诊员发起一个针对用户的会话
             $scope.createOneSpecialistPatient = function(index){
+                $scope.showFlag.specialistList = false;
                 CreateTransferSpecialist.save({specialistPatientContent:$scope.alreadyJoinTransferSpecialist[index]},function(data){
                     if(data.status == "success"){
                         var patientId = data.userId;
                         var patientName = data.userName;
-                        console.log("patientName",patientName);
                         GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
                             if(data.alreadyJoinPatientConversation!=""&&data.alreadyJoinPatientConversation!=undefined){
                                 $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                                 $.each($scope.alreadyJoinPatientConversation,function(index,value){
                                     if(value.patientId==patientId){
-                                        console.log("value",value);
                                         patientName = value.patientName;
                                     }
                                     $.each(value.consultValue,function(index1,value1){
@@ -380,6 +394,7 @@ angular.module('controllers', ['luegg.directives'])
                         });
                         $scope.showFlag.specialistList = false;
                         getFindTransferSpecialist();
+
                     }else if(data.status == "failure"){
                         if(data.failureUserIds[0].result == "failure"){
                             alert("无法发起会话，请稍后重试");
@@ -513,10 +528,11 @@ angular.module('controllers', ['luegg.directives'])
 
             //处理用户按键事件
             document.onkeydown = function () {
-                //if (window.event.ctrlKey && window.event.keyCode == 13)
                 if (window.event.keyCode == 13){
-                    $scope.sendConsultMessage();
-                    $scope.$apply();
+                    if($scope.info.consultMessage!=""){
+                        $scope.sendConsultMessage();
+                        $scope.$apply();
+                    }
                 }
             };//当onkeydown 事件发生时调用函数
 
@@ -547,7 +563,6 @@ angular.module('controllers', ['luegg.directives'])
                                 "sessionId": angular.copy($scope.currentUserConversation.sessionId)
                             };
                         }
-
                         $scope.socketServerFirst.send(emotionSendFilter(JSON.stringify(consultValMessage)));
                         consultValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($scope.info.consultMessage)));
                         $scope.info.consultMessage = "";
@@ -707,7 +722,6 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.chooseAlreadyJoinConsultPatientId = patientId;
                 $scope.chooseAlreadyJoinConsultPatientName = patientName;
                 $scope.chooseAlreadyJoinConsultPatientsessionId = sessionId;
-                console.log($scope.chooseAlreadyJoinConsultPatientsessionId);
                 getIframeSrc();
                 var updateFlag = false;
                 $.each($scope.alreadyJoinPatientConversation, function (index, value) {
@@ -1238,7 +1252,7 @@ angular.module('controllers', ['luegg.directives'])
                 val = val.replace(/\/:ok/g, '[em_69]');val = val.replace(/\/:no/g, '[em_70]');val = val.replace(/\/:rose/g, '[em_71]');val = val.replace(/\/:fade/g, '[em_72]');
                 val = val.replace(/\/:showlove/g, '[em_73]');val = val.replace(/\/:love/g, '[em_74]');val = val.replace(/\/:<L>/g, '[em_75]');
                 return val;
-            };
+            }
 
             var emotionSendFilter = function(val){
                 val = val.replace(/\[em_1\]/g, '/::)');val = val.replace(/\[em_2\]/g, '/::~');val = val.replace(/\[em_3\]/g, '/::B');val = val.replace(/\[em_4\]/g, '/::|');
@@ -1261,7 +1275,7 @@ angular.module('controllers', ['luegg.directives'])
                 val = val.replace(/\[em_69\]/g, '/:ok');val = val.replace(/\[em_70\]/g, '/:no');val = val.replace(/\[em_71\]/g, '/:rose');val = val.replace(/\[em_72\]/g, '/:fade');
                 val = val.replace(/\[em_73\]/g, '/:showlove');val = val.replace(/\[em_74\]/g, '/:love');val = val.replace(/\[em_75\]/g, '/<L>');
                 return val;
-            };
+            }
         }])
 
     .controller('messageListCtrl', ['$scope', '$log', '$state','$sce', 'GetUserConsultListInfo',

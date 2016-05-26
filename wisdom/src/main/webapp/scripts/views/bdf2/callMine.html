@@ -1,11 +1,13 @@
 <link rel="stylesheet" href="scripts/styles/bdf2/callMine.less?ver='0.9'" type="text/css" />
-<div style="min-width: 1024px">
-    <div class="index_title">
-        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_logo_png.png"/>
-        <ul>
-            <li ng-click="goIndex()">首页</li>
-            <li>关于我们</li>
-        </ul>
+<div style="min-width: 1024px" ng-init="initial()">
+    <div class="bdf_title ">
+        <div class="bdf_main clearfix">
+            <div class="bdf_logo"></div>
+            <ul>
+                <li ng-click="goIndex()">首页</li>
+                <li >关于我们</li>
+            </ul>
+        </div>
     </div>
     <div class="mine_ban"></div>
     <div class="mine_content clearfix">
@@ -18,7 +20,7 @@
                 <dd ng-click="goYinSi()" id="YinSi">隐私保护</dd>
             </dl>
         </div>
-        <div class="mine_conright" id="content_scroll">
+        <div class="mine_conright ps-container ps-active-x ps-active-y" id="content_scroll">
             <div id="guanyumine">
                 <div class="mine_con">
                     <dl class="company_intro">
@@ -102,10 +104,10 @@
                             <span class="c6">联系人 : </span>王女士
                         </dd>
                         <dd class="c2 c5">
-                            <span class="c6">Q&nbsp;&nbsp;Q : </span>2904149273
+                            <span class="c6">Q&nbsp;&nbsp;&nbsp;Q  : </span>2904149273
                         </dd>
                         <dd class="c2 c5">
-                            <span class="c6">邮&nbsp;箱 : </span>wanghua@baodf.com
+                            <span class="c6">邮&nbsp;&nbsp;箱 : </span>wanghua@baodf.com
                         </dd>
                     </dl>
                     <dl class="c12">
@@ -225,16 +227,18 @@
                 <img class="img_weixin" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_dibuerweima.png" width="276px" height="293px"/>
                 <div class="but_weiwo">
                     <img class="img_1" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_weixin.png" />
-                    <img class="img_2" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_weibo.png" />
+                    <a href="http://weibo.com/u/5698085071?refer_flag=0000015012_&from=feed&loc=nickname&is_hot=1#_loginLayer_1464144696132">
+                        <img class="img_2" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_weibo.png"/>
+                    </a>
                 </div>
             </div>
             <img class="img_3" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_dibufengexian.png"/>
             <div class="but_guanyu">
                 <div class="foot_1">
-                    <a href="">关于我们</a>
-                    <a href="">联系我们</a>
-                    <a href="">服务协议</a>
-                    <a href="">隐私保护</a>
+                    <a ng-click="goGuanYu()">关于我们</a>
+                    <a ng-click="goLianXi()">联系我们</a>
+                    <a ng-click="goFuWu()">服务协议</a>
+                    <a ng-click="goYinSi()">隐私保护</a>
                 </div>
                 <div class="foot_2">
                     <span>京ICP备15035618号-1</span>

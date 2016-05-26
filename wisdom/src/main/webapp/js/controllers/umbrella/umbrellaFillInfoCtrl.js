@@ -1,11 +1,26 @@
 ﻿angular.module('controllers', ['ionic']).controller('umbrellaFillInfoCtrl', [
-        '$scope','$state','$stateParams',
-        function ($scope,$state,$stateParams) {
+        '$scope','$state','$stateParams','getBabyinfoList','getOpenidStatus',
+        function ($scope,$state,$stateParams,getBabyinfoList,getOpenidStatus) {
             $scope.title="宝护伞";
             $scope.sexItem = "boy";
             $scope.parentItem = "mother";
             $scope.checkLock = true;
-            $scope.info={}
+            $scope.fillLock = false;
+            $scope.selectItem = "";
+            $scope.info={};
+
+            /*填写宝宝姓名 获取焦点*/
+            $scope.fillName = function(){
+                $scope.fillLock = true;
+            };
+            /*填写宝宝姓名 失去焦点*/
+            $scope.fillFinish = function(){
+                $scope.fillLock = false;
+            };
+            /*填写宝宝姓名 选择宝宝*/
+            $scope.selectBaby = function(selectItem){
+                $scope.info.babyName = selectItem;
+            };
             /*选择性别*/
             $scope.selectSex = function(sex){
                 $scope.sexItem=sex;
@@ -97,4 +112,11 @@
                 $("#birthday").mobiscroll(opt);
             });
 
+            getOpenidStatus.save({"openId":""},function (data){
+                $scope.babyInfoList=data.babyInfoList;
+            });
+            //获取用户下宝宝信息列表
+            getBabyinfoList.save({"openId":"o3_NPwrrWyKRi8O_Hk8WrkOvvNOk"},function (data){
+                $scope.babyInfoList=data.babyInfoList;
+            });
     }]);

@@ -1105,6 +1105,23 @@ public class ScheduledTask {
         }
     }
 
+    /**
+     *  扫描转接表转接状态超过4分钟，将状态置为退回状态
+     */
+    public void modifyConsultConversationForwardRecords(){
+        ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = new ConsultSessionForwardRecordsVo();
+        consultSessionForwardRecordsVo.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_WAITING);
+        List<ConsultSessionForwardRecordsVo> consultSessionForwardRecordsVos = consultSessionForwardRecordsService.selectConsultForwardList(consultSessionForwardRecordsVo);
+        for(ConsultSessionForwardRecordsVo forwardRecordsVo : consultSessionForwardRecordsVos){
+            if(DateUtils.pastMinutes(forwardRecordsVo.getCreateTime()) > 4L ){
+                ConsultSessionForwardRecordsVo recordsVo = new ConsultSessionForwardRecordsVo();
+                recordsVo.setId(forwardRecordsVo.getId());
+                recordsVo.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_REJECT);
+                consultSessionForwardRecordsService.updateRejectedTransfer(recordsVo);
+            }
+        }
+    }
+
 
     /**
      *  每天晚上1点，将前一天的咨询数据备份到数据库中
@@ -1116,7 +1133,7 @@ public class ScheduledTask {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         Date newDate = calendar.getTime();
-        calendar.add(Calendar.DATE, -6);
+        calendar.add(Calendar.DATE, -1);
         Date oldDate = calendar.getTime();
         Query query = new Query().addCriteria(Criteria.where("createDate").gte(oldDate).andOperator(Criteria.where("createDate").lte(newDate)));
 

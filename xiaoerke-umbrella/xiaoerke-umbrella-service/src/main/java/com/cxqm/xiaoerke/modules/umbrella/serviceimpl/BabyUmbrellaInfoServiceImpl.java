@@ -72,6 +72,16 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
         return babyUmbrellaInfoDao.getBabyUmbrellaInfoTotal(map);
     }
 
+    @Override
+    public Map<String, Object> getOpenidStatus(String openid) {
+        return babyUmbrellaInfoDao.getOpenidStatus(openid);
+    }
+
+    @Override
+    public Integer getTotalBabyUmbrellaInfoMoney(Map<String, Object> map) {
+        return babyUmbrellaInfoDao.getTotalBabyUmbrellaInfoMoney(map);
+    }
+
 
     /**
      * 发送HttpPost请求
