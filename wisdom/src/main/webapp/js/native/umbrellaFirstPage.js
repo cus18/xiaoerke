@@ -10,7 +10,7 @@ document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.event.drag-1.5.mi
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.touchSlider.js"></scr'+'ipt>');
 
 var attentionLock=false;
-var version="b"; /*方案版本*/
+var version="a"; /*方案版本*/
 var umbrellaFirstPageInit = function() {
     /*获取当前年月日*/
     var date = new Date();
@@ -179,7 +179,9 @@ var myGuarantee = function() {
 }
 /*跳转到领取成功页面*/
 var goJoin = function() {
-   /* window.location.href = "umbrella#/umbrellaJoin";*/
+    if(version=="a"){
+        window.location.href = "/keeper/wxPay/patientPay.do?serviceType=umbrellaPay";
+    }
     if(!attentionLock){
         $(".c-shadow").show();
         $(".shadow-content.attention").show();
@@ -190,8 +192,6 @@ var goJoin = function() {
 
 
 }
-
-
 var recordLogs = function(val){
     $.ajax({
         url:"util/recordLogs",// 跳转到 action
