@@ -6,48 +6,70 @@ input{
   border:0;
 }
 
+.active{
+  top: -126px !important;
+  transition: top 0.5s linear;
+  -webkit-transition: top 0.5s linear;
+  -moz-transition: top 0.5s linear;
+  -o-transition: top 0.5s linear;
+  transition: top 0.5s linear;
+}
+
 .index_ban{
   background-image: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_banner_png.png");
-  background-size: 100% 600px;
+  background-repeat: no-repeat;
+  background-position: center;
   height: 600px;
-  position: relative;
-  width: 100%;
-  margin-top: 60px;
+  margin-top: 45px;
+  text-align: center;
 }
-.index_ban div:nth-child(1){
+.index_ban .ban_out{
+  position: relative;
+  margin: 0 auto;
+  width: 1024px;
+}
+.index_ban .ban_out div:nth-child(1){
   position: absolute;
   font-size: 32px;
-  top: 30px;
-  left: 32%;
+  top: 60px;
+  left: 20%;
   color: #22c4c6;
 }
-.index_ban div:nth-child(2){
+.index_ban .ban_out div:nth-child(2){
   position: absolute;
   font-size: 26px;
-  top: 90px;
-  left: 43%;
+  top: 120px;
+  left: 35%;
   color: #22c4c6;
 }
-.index_ban .ban_img{
+.index_ban .ban_out .ban_img{
   position: absolute;
-  top: 30px;
-  right: 24%;
+  top: 60px;
+  right: -4%;
 }
-.index_ban .ban_img div{
+.index_ban .ban_out .ban_img div{
   vertical-align: top;
   text-align: center;
-  margin-top: 16px;
-  font-size: 8px;
+  margin-top: 100px;
+  font-size: 16px;
   color: #909090;
-  width: 110px;
-  margin-left: -45px; ;
+  width: 150px;
+  margin-left: -55px; ;
 }
 
 .index_zhuan{
   text-align: center;
+  padding: 82px 0 86px 0;
+  position: relative;
 }
-.index_zhuan .img{
-  margin-top: 41px;
+.index_zhuan .zhu_tingzhenqi{
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.index_zhuan .zhu_title{
+  margin-bottom: 82px;
+  height: auto;
 }
 .index_zhuan .ite{
   height: 316px;
@@ -83,7 +105,7 @@ input{
 }
 .index_zhuan .item_1_1:hover .info{
   top: 0;
-  transition: 5s;
+  transition: 0.5s;
   -moz-transition:top 0.5s; /* Firefox 4 */
   -webkit-transition:top 0.5s; /* Safari and Chrome */
   -o-transition:top 0.5s;
@@ -112,38 +134,49 @@ input{
 }
 .index_doctor{
   background-color: #fafafc;
-  padding-top: 41px;
   text-align: center;
   position: relative;
-  height: 450px;
+  padding-bottom: 55px;
 }
 .index_doctor .yao{
   position: absolute;
   top: 0;
   right: 0;
 }
-.index_doctor ul{
-  margin-top: 41px;
-}
+//.index_doctor ul li img{
+//  border-radius: 10px;
+//  -webkit-border-radius: 10px;
+//  -moz-border-radius: 10px;
+//}
 .index_doctor ul li{
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
+
 }
 .index_doctor ul .doc_name{
   margin-top: 12px;
-  font-size: 20px ;
+  font-size: 15px ;
+  width: 100%;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
 }
 .index_doctor ul .doc_name_info{
   font-size: 0 ;
+  width: 100%;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
 }
 .index_doctor ul .doc_hosp {
   margin-top: 2px;
   font-size: 0 ;
+  width: 100%;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
 }
 .index_doctor .doc_img{
-  vertical-align: baseline;
-  font-size: 100%;
+  height: auto;
+  margin:82px 0 82px;
 }
 #mov_doctor{
   border: hidden;
@@ -194,11 +227,12 @@ input{
 }
 .hosp{
   background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_pinzhiyiyuan.png);!important;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 .index_doctor .doc_mor{
   text-align: center;
   margin-top: 55px;
-  margin-bottom: 55px;
 }
 .index_doctor .doc_mor span{
   display: inline-block;
@@ -214,14 +248,18 @@ input{
 }
 .index_yu{
   background-image: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_yuerpindao.png);
-  background-size: 100% 375px;
+  background-position: center;
+  background-repeat: no-repeat;
   text-align: center;
-  padding-top: 41px;
+}
+.index_yu .yu_title{
+  margin:82px 0 82px ;
+  height: auto;
 }
 .index_yu .yu_content{
-  margin-left: 49%;
-  margin-top: 41px;
+  margin-left: 50%;
   position: relative;
+  width: 1000px;
 }
 .index_yu .yu_content img{
   display: inline-block;
@@ -230,12 +268,14 @@ input{
 }
 .index_yu .yu_content .yu_content_con{
   display: inline-block;
-  font-size: 10px;
+  font-size: 20px;
   color: #333;
-  line-height: 32px;
   vertical-align: top;
   margin-left: -35%;
   text-align: left;
+}
+.index_yu .yu_content .yu_content_con dd{
+  margin-bottom: 32px;
 }
 .index_yu .yu_mor{
   margin-top: 55px;

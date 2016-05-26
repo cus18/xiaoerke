@@ -177,18 +177,6 @@ a{
   line-height:20px;
   margin-bottom: 0!important;
 }
-.c-shadow{
-  position: absolute;
-  width:100%;
-  height:100%;
-  left:0;
-  top:0;
-  z-index:2;
-  opacity: 0.5;
-  filter:alpha(Opacity=50);
-  -moz-opacity:0.5;
-  background-color: #000;
-}
 .my-img1{
   vertical-align: middle;
   margin-top: -3px;
@@ -210,7 +198,7 @@ a{
 .apart1{
   margin-bottom: 7.5px;
 }
-.button{
+.button,button{
   border:none;
 }
 .foot-btn{
@@ -250,4 +238,26 @@ a{
 .button.disabled, button[disabled] {
   opacity: 1!important;
   background-color: #ccc!important;
+}
+.c-shadow{
+  position: absolute;
+  width:100%;
+  height:100%;
+  left:0;
+  top:0;
+  z-index:2;
+  opacity: 0.5;
+  filter:alpha(Opacity=50);
+  -moz-opacity:0.5;
+  background-color: #000;
+}
+.shadow-content{
+  position: absolute;
+  width:100%;
+  left:0;
+  top:0;
+  z-index:3;
+}
+h1, h2, h3, h4, h5, h6 {
+ margin:0;
 }

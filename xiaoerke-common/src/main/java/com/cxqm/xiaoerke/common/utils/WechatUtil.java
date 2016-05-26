@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.common.utils;
 
 import com.cxqm.xiaoerke.common.bean.*;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -699,6 +700,7 @@ public class WechatUtil {
             is.read(jsonBytes);
             reResult = new String(jsonBytes, "UTF-8");
             System.out.println("请求返回结果:"+reResult);
+            LogUtils.saveLog(json+"----"+reResult);
             is.close();
         } catch (Exception e) {
             e.printStackTrace();

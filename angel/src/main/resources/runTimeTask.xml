@@ -30,6 +30,18 @@
 		<property name="cronExpression" value="0 */2 * * * ?"/>
 	</bean>
 
+	<!--扫描转接表转接状态超过4分钟，将状态置为取消状态-->
+	<bean id="modifyConsultConversationForwardRecordsTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="scheduledQuarz"/>
+		<property name="targetMethod" value="modifyConsultConversationForwardRecords"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+	<bean id="modifyConsultConversationForwardRecordsTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="modifyConsultConversationForwardRecordsTask"/>
+		<property name="cronExpression" value="0 */1 * * * ?"/>
+	</bean>
+
+
 	<!-- 咨询定时操作（天）-->
 	<bean id="consultManagementDayTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="scheduledQuarz"/>
@@ -46,6 +58,7 @@
 		<property name="triggers">
 			<list>
 				<ref bean="consultManagementCronTrigger"/>
+				<ref bean="modifyConsultConversationForwardRecordsTrigger"/>
 				<ref bean="deleteTempRecordTrigger"/>
 			</list>
 		</property>

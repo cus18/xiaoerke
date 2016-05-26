@@ -530,7 +530,7 @@ public class ConsultSessionManager {
 		Iterator<Entry<String, Channel>> it = csUserChannelMapping.entrySet().iterator();
 		while(it.hasNext()){
 			Entry<String, Channel> entry = it.next();
-			if(entry.getValue().isOpen())
+			if(entry.getValue().isActive())
 				userIds.add(entry.getKey());
 		}
 		return userIds;
@@ -585,7 +585,7 @@ public class ConsultSessionManager {
 			if (consultSessionForwardRecordsVos.size() > 0) {
 				response.put("result", "existTransferSession");
 			}else{
-				if(consultSessions.get(0).getSource().contains("h5")){
+				if(consultSessions.get(0).getSource() != null && consultSessions.get(0).getSource().contains("h5")){
 					response.put("result", "notOnLine");
 				}else{
 					String doctorManagerStr = Global.getConfig("doctorManager.list");
@@ -609,7 +609,7 @@ public class ConsultSessionManager {
 			Query query = (new Query()).addCriteria(where("userId").is(userId)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
 			ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(query);
 			if (DateUtils.pastHour(consultSessionStatusVo.getLastMessageTime()) < 48L) {
-				if(consultSessionStatusVo.getSource().contains("h5")){
+				if(consultSessionStatusVo.getSource() !=null && consultSessionStatusVo.getSource().contains("h5")){
 					response.put("result", "notOnLine");
 				}else{
 					richConsultSession.setCsUserId(UserUtils.getUser().getId());
@@ -636,9 +636,13 @@ public class ConsultSessionManager {
 		}else{
 			consultSession.setCsUserId(richConsultSession.getCsUserId());
 			consultSession.setStatus("ongoing");
+			consultSession.setSource("wxcxqm");
 			consultSession.setUserId(richConsultSession.getUserId());
+			consultSession.setCreateTime(new Date());
 			flag = consultSessionService.saveConsultInfo(consultSession);
 			richConsultSession.setId(consultSession.getId());
+			richConsultSession.setSource(consultSession.getSource());
+			richConsultSession.setCreateTime(consultSession.getCreateTime());
 		}
 		if (flag > 0) {
 			response.put("result", "success");

@@ -77,7 +77,7 @@ public class UtilServiceImpl implements UtilService {
             String identify = ChangzhuoMessageUtil.sendIdentifying(num);
 
             //根据手机号查询或创建用户  有则查，没有则创建
-            identify = "123456";
+//            identify = "123456";
             //PatientVo PatientVo = CreateUser(num);
             ValidateBean bean = new ValidateBean();
             bean.setId(UUID.randomUUID().toString().replaceAll("-", ""));
@@ -295,11 +295,13 @@ public class UtilServiceImpl implements UtilService {
                 }
 
                 //绑定后同步宝宝信息到数据库
-                BabyBaseInfoVo vo = new BabyBaseInfoVo();
-                vo.setUserid(sys_user_id);
-                vo.setState("0");
-                vo.setOpenid(openid);
-                babyBaseInfoService.updateUserId(vo);
+                if(StringUtils.isNotNull(openid)){
+                    BabyBaseInfoVo vo = new BabyBaseInfoVo();
+                    vo.setUserid(sys_user_id);
+                    vo.setState("0");
+                    vo.setOpenid(openid);
+                    babyBaseInfoService.updateUserId(vo);
+                }
                 //patient创建成功后，根据user的login_name来重新获取patientId
                 user = userDao.getUserByLoginName(userSearch);
             } else {

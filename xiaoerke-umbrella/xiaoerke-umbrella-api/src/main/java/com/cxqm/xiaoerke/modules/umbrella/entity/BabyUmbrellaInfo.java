@@ -10,12 +10,31 @@ public class BabyUmbrellaInfo {
     private Integer id;
     private String openid;
     private String money;
-    private Integer umberllaMoney;
+    private Integer umbrellaMoney;
     private Date createTime;
     private String babyId;
     private String parentIdCard;
     private String parentPhone;
     private String parentName;
+    private Date activationTime;
+
+    public Integer getUmbrellaMoney() {
+        return umbrellaMoney;
+    }
+
+    public void setUmbrellaMoney(Integer umbrellaMoney) {
+        this.umbrellaMoney = umbrellaMoney;
+    }
+
+    public Date getActivationTime() {
+        return activationTime;
+    }
+
+    public void setActivationTime(Date activationTime) {
+        this.activationTime = activationTime;
+    }
+
+
 
     public Integer getId() {
         return id;
@@ -42,11 +61,11 @@ public class BabyUmbrellaInfo {
     }
 
     public Integer getUmberllaMoney() {
-        return umberllaMoney;
+        return umbrellaMoney;
     }
 
-    public void setUmberllaMoney(Integer umberllaMoney) {
-        this.umberllaMoney = umberllaMoney;
+    public void setUmberllaMoney(Integer umbrellaMoney) {
+        this.umbrellaMoney = umbrellaMoney;
     }
 
     public Date getCreateTime() {

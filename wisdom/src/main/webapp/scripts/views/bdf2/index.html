@@ -1,21 +1,26 @@
-<div style="min-width: 1024px" >
-    <div class="index_title">
-        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_logo_png.png"/>
-        <ul>
-            <li >首页</li>
-            <li ng-click="goCallMine()">关于我们</li>
-        </ul>
+<div style="min-width: 1024px"  ng-init="initial()">
+    <div class="bdf_title ">
+        <div class="bdf_main clearfix">
+            <div class="bdf_logo"></div>
+            <ul>
+                <li >首页</li>
+                <li ng-click="goCallMine()">关于我们</li>
+            </ul>
+        </div>
     </div>
     <div class="index_ban">
-        <div >全国首家专业的在线儿童医院</div>
-        <div >最专业的服务 最贴心的呵护</div>
-        <div class="ban_img">
-            <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_dingbubannererweima.png" width="100px" height="100px"/>
-            <div>微信扫码关注宝大夫</div>
+        <div class="ban_out">
+            <div >全国首家专业的在线儿童医院</div>
+            <div >最专业的服务 最贴心的呵护</div>
+            <div class="ban_img">
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_dingbubannererweima.png" width="195px" height="195px"/>
+                <div>微信扫码关注宝大夫</div>
+            </div>
         </div>
     </div>
     <div class="index_zhuan">
-        <img class="img" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_zhuan.png" width="293px" height="50px"/>
+        <img class="zhu_tingzhenqi" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_tingjianqi_png.png"/>
+        <img class="zhu_title" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_zhuan.png"/>
         <div class="ite">
             <div class="item_1">
                 <div class="item_1_1">
@@ -76,62 +81,107 @@
         </div>
     </div>
     <div class="index_doctor">
-        <img class="doc_img" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_pin.png" width="293px" height="50px"/>
+        <img class="doc_img" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_pin.png"/>
         <img class="yao" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_yao_png.png"/>
         <ul id="mov_doctor">
             <li>
-                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_c_3.png"  alt="picture"/>
-                <div class="doc_name">梁平</div>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/doctor/zhouzhongshu.png"  alt="picture"/>
+                <div class="doc_name">周忠蜀</div>
                 <div class="doc_name_info">
-                    <span>梁平</span>
-                    <span>皮肤科</span>
+                    <span>周忠蜀</span>
+                    <span>儿内科</span>
                 </div>
-                <div class="doc_hosp">北京什么医院</div>
+                <div class="doc_hosp">北京中日友好医院</div>
             </li>
             <li>
-                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_c_3.png"  alt="picture"/>
-                <div class="doc_name">梁平</div>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/doctor/qinjiong.png"  alt="picture"/>
+                <div class="doc_name">秦炯</div>
                 <div class="doc_name_info">
-                    <span>梁平</span>
-                    <span>皮肤科</span>
+                    <span>秦炯</span>
+                    <span>神经内科</span>
                 </div>
-                <div class="doc_hosp">北京什么医院</div>
+                <div class="doc_hosp">北京大学人民医院</div>
             </li>
             <li>
-                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_c_3.png"  alt="picture"/>
-                <div class="doc_name">梁平</div>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/doctor/yangwenying.png"  alt="picture"/>
+                <div class="doc_name">杨文英</div>
                 <div class="doc_name_info">
-                    <span>梁平</span>
-                    <span>皮肤科</span>
+                    <span>杨文英</span>
+                    <span>精神康复科</span>
                 </div>
-                <div class="doc_hosp">北京什么医院</div>
+                <div class="doc_hosp">北京回龙观医院</div>
             </li>
             <li>
-                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_c_3.png"  alt="picture"/>
-                <div class="doc_name">梁平</div>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/doctor/yangyanling.png"  alt="picture"/>
+                <div class="doc_name">杨艳玲</div>
                 <div class="doc_name_info">
-                    <span>梁平</span>
-                    <span>皮肤科</span>
+                    <span>杨艳玲</span>
+                    <span>神经内科</span>
                 </div>
-                <div class="doc_hosp">北京什么医院</div>
+                <div class="doc_hosp">北京大学第一医院</div>
             </li>
             <li>
-                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_c_3.png"  alt="picture"/>
-                <div class="doc_name">梁平</div>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/doctor/wuliqun.png"  alt="picture"/>
+                <div class="doc_name">吴力群</div>
                 <div class="doc_name_info">
-                    <span>梁平</span>
-                    <span>皮肤科</span>
+                    <span>吴力群</span>
+                    <span>中医儿科</span>
                 </div>
-                <div class="doc_hosp">北京什么医院</div>
+                <div class="doc_hosp">北京中医药大学附属东方医院</div>
             </li>
             <li>
-                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_c_3.png"  alt="picture"/>
-                <div class="doc_name">梁平</div>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/doctor/liangaimin.png"  alt="picture"/>
+                <div class="doc_name">梁爱民 </div>
                 <div class="doc_name_info">
-                    <span>梁平</span>
+                    <span>梁爱民 </span>
+                    <span>营养保健科</span>
+                </div>
+                <div class="doc_hosp">北京儿童医院</div>
+            </li>
+            <li>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/doctor/zhaofei.png"  alt="picture"/>
+                <div class="doc_name">赵绯</div>
+                <div class="doc_name_info">
+                    <span>赵绯</span>
+                    <span>耳鼻喉科</span>
+                </div>
+                <div class="doc_hosp">北京儿童医院</div>
+            </li>
+            <li>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/doctor/liubing.png"  alt="picture"/>
+                <div class="doc_name">刘冰</div>
+                <div class="doc_name_info">
+                    <span>刘冰</span>
                     <span>皮肤科</span>
                 </div>
-                <div class="doc_hosp">北京什么医院</div>
+                <div class="doc_hosp">首都儿科研究所</div>
+            </li>
+            <li>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/doctor/wanghongling.png"  alt="picture"/>
+                <div class="doc_name">王洪玲</div>
+                <div class="doc_name_info">
+                    <span>王洪玲</span>
+                    <span>儿内科</span>
+                </div>
+                <div class="doc_hosp">北京中医药大学东直门医院</div>
+            </li>
+            <li>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/doctor/renyisun.png"  alt="picture"/>
+                <div class="doc_name">任仪荪</div>
+                <div class="doc_name_info">
+                    <span>任仪荪</span>
+                    <span>儿科</span>
+                </div>
+                <div class="doc_hosp">北京儿童医院</div>
+            </li>
+            <li>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/doctor/zhutao.png"  alt="picture"/>
+                <div class="doc_name">朱涛</div>
+                <div class="doc_name_info">
+                    <span>朱涛</span>
+                    <span>口腔科</span>
+                </div>
+                <div class="doc_hosp">北大口腔</div>
             </li>
         </ul>
         <div class="doc_mor">
@@ -140,31 +190,39 @@
         </div>
     </div>
     <div class="index_doctor hosp">
-        <img class="doc_img" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_doctor.png" width="293px" height="50px"/>
+        <img class="doc_img" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_doctor.png" />
         <ul id="mov_hosp">
             <li>
-                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_c_3.png"  alt="picture"/>
-                <div class="doc_name">北京儿童医院</div>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/hospital/xingfujiayuan.png"  alt="picture"/>
+                <div class="doc_name">北京幸福嘉园儿童医院定福庄北街分院</div>
             </li>
             <li>
-                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_c_3.png"  alt="picture"/>
-                <div class="doc_name">北京儿童医院</div>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/hospital/jingduertongyiyuan.png"  alt="picture"/>
+                <div class="doc_name">京都儿童医院</div>
             </li>
             <li>
-                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_c_3.png"  alt="picture"/>
-                <div class="doc_name">北京儿童医院</div>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/hospital/dongquertongyiyuan.png"  alt="picture"/>
+                <div class="doc_name">东区儿童医院</div>
             </li>
             <li>
-                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_c_3.png"  alt="picture"/>
-                <div class="doc_name">北京儿童医院</div>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/hospital/tongrentang.png"  alt="picture"/>
+                <div class="doc_name">北京同仁堂王府井中医医院</div>
             </li>
             <li>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/hospital/balizhuang.png"  alt="picture"/>
+                <div class="doc_name">八里庄第二社区卫生服务中心</div>
+            </li>
+            <!--<li>
                 <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_c_3.png"  alt="picture"/>
-                <div class="doc_name">北京儿童医院</div>
+                <div class="doc_name">爱育华妇化医院</div>
+            </li>-->
+            <li>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/hospital/tiantanhuapu.png"  alt="picture"/>
+                <div class="doc_name">北京天坛普华医院</div>
             </li>
             <li>
-                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_c_3.png"  alt="picture"/>
-                <div class="doc_name">北京儿童医院</div>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/hospital/weienkouqiang.png"  alt="picture"/>
+                <div class="doc_name">维恩口腔</div>
             </li>
         </ul>
         <div class="doc_mor">
@@ -173,54 +231,41 @@
         </div>
     </div>
     <div class="index_yu">
-        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_yu.png" width="293px" height="50px"/>
+        <img class="yu_title" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_yu.png" />
         <div class="yu_content">
-            <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_yuerpindao_fengexian.png" height="125px"/>
-            <div class="yu_content_con">
-                提升孩子记忆能力的方法有哪些，你造吗?
-                <br/>提升孩子记忆能力的方法有哪些，你造吗?
-                <br/>提升孩子记忆能力的方法有哪些，你造吗?
-                <br/>提升孩子记忆能力的方法有哪些，你造吗?
-                <br/>ddfdf
-                <br/>fdfg
-            </div>
+            <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_yuerpindao_fengexian.png" height="250px"/>
+            <dl class="yu_content_con">
+                <dd>提升孩子记忆能力的方法有哪些，你造吗?</dd>
+                <dd>提升孩子记忆能力的方法有哪些，你造吗?</dd>
+                <dd>提升孩子记忆能力的方法有哪些，你造吗?</dd>
+                <dd>提升孩子记忆能力的方法有哪些，你造吗?</dd>
+                <dd>提升孩子记忆能力的方法有哪些，你造吗?</dd>
+                <dd>提升孩子记忆能力的方法有哪些，你造吗?</dd>
+            </dl>
         </div>
         <div class="yu_mor">
             <span>更多</span>
-        </div>
-    </div>
-    <div class="index_lian">
-        <div>友情链接</div>
-        <div>
-            <a href="">宝宝知道</a>
-            <a href="">宝宝知道</a>
-            <a href="">宝宝知道</a>
-            <a href="">宝宝知道</a>
-            <a href="">宝宝知道</a>
-            <a href="">宝宝知道</a>
-            <a href="">宝宝知道</a>
-            <a href="">宝宝知道</a>
-            <a href="">宝宝知道</a>
-            <a href="">宝宝知道</a>
         </div>
     </div>
     <div class="bdf-foot">
         <div class="foot_but">
             <div class="but_guanzhu">
                 <div>关注我们</div>
-                <img class="img_weixin" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_dibuerweima.png" width="138px" height="146px"/>
+                <img class="img_weixin" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_dibuerweima.png" width="276px" height="293px"/>
                 <div class="but_weiwo">
                     <img class="img_1" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_weixin.png" />
-                    <img class="img_2" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_weibo.png" />
+                    <a href="http://weibo.com/u/5698085071?refer_flag=0000015012_&from=feed&loc=nickname&is_hot=1#_loginLayer_1464144696132">
+                        <img class="img_2" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_weibo.png"/>
+                    </a>
                 </div>
             </div>
             <img class="img_3" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_dibufengexian.png"/>
             <div class="but_guanyu">
                 <div class="foot_1">
-                    <a href="">关于我们</a>
-                    <a href="">联系我们</a>
-                    <a href="">服务协议</a>
-                    <a href="">隐私保护</a>
+                    <a ng-click="goGuanYu()">关于我们</a>
+                    <a ng-click="goLianXi()">联系我们</a>
+                    <a ng-click="goFuWu()">服务协议</a>
+                    <a ng-click="goYinSi()">隐私保护</a>
                 </div>
                 <div class="foot_2">
                     <span>京ICP备15035618号-1</span>
@@ -229,9 +274,5 @@
             </div>
         </div>
     </div>
-
-
-
 </div>
-
 

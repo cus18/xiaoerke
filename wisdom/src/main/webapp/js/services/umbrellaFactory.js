@@ -4,6 +4,7 @@
  */
 var user_h5 = ''
 var wxChat = '/wechatInfo/'
+var healthRecord='healthRecord/'
 
 define(['appUmbrella'], function (app) {
     app
@@ -18,12 +19,17 @@ define(['appUmbrella'], function (app) {
         .factory('RecordLogs',['$resource',function ($resource){
             return $resource(user_h5 + 'util/recordLogs');
         }])
-        //send WechatMessage To User
-        .factory('SendWechatMessageToUser',['$resource',function ($resource){
-            return $resource(wxChat + 'postInfoToWechat');
+        .factory('JoinUs',['$resource',function ($resource){
+            return $resource(user_h5 + 'umbrella/joinUs');
         }])
-        .factory('SendWechatMessageToUserOnline',['$resource',function ($resource){
-            return $resource(wxChat + 'postInfoToWechatOnline');
+
+        //获取用户下宝宝信息
+        .factory('getBabyinfoList',['$resource',function ($resource){
+            return $resource(healthRecord + 'getBabyinfoList');
+        }])
+
+        .factory('getOpenidStatus',['$resource',function ($resource){
+            return $resource(user_h5 + 'umbrella/getOpenidStatus');
         }])
 
 })

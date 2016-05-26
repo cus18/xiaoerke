@@ -15,12 +15,230 @@ input{
   transition: top 0.5s linear;
 }
 
+.mine_ban{
+  background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/mine_banner.png);
+  margin-top: 60px;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 308px;
+}
+.mine_content{
+  padding-top: 70px;
+  margin: 0 auto;
+  width: 1200px;
+}
+.mine_conleft{
+  width: 265px;
+  padding-right: 65px;
+  height: 1000px;
+  float: left;
+}
+.mine_conleft .mcl_img_1{
+  float: right;
+}
+.mine_conleft dl{
+  margin-top: 169px;
+  float: right;
+  margin-right: -70px;
+}
+.mine_conleft dl dd{
+  margin: 60px 0;
+  font-size: 18px;
+  color: #333;
+}
+.mine_conleft dl dd:hover{
+  color: #22c4c6;
+}
+.mine_conright{
+  width: 869px;
+  height: 1000px;
+  position: relative;
+  float: left;
+  padding: 0;
+}
+.mine_conright .mine_con{
+  padding-left: 65px;
+  float: left;
+}
+.clearfix:after{
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+.company_intro dd{
+  margin-top: 30px;
+}
+.product_intro{
+  margin-top: 110px;
+}
+.founder_intro{
+  margin-top: 110px;
+}
+.founder_intro .founder_img{
+  background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/mine_fenge.png");
+  background-size: 100% 600px;
+  background-position: center;
+  width: 100%;
+  height: 600px;
+  margin-top: 44px;
+  position: relative;
+}
+.founder_intro .founderx_com{
+  position: absolute;
+}
+.founder_intro .founder_1{
+  top: 250px;
+  left: 0;
+}
+.founder_intro .founder_2{
+  top: 310px;
+  left: 0;
+}
+.founder_intro .founder_3{
+  top: 350px;
+  right: 0;
+}
+.founder_intro .founder_4{
+  top: 405px;
+  right: 0;
+}
+.founder_intro .founder_5{
+  top: 440px;
+  left: 0;
+}
+.founder_intro .founder_6{
+  top: 503px;
+  left: 0;
+  width: 320px;
+  line-height: 25px;
+}
+.founder_intro .founder_7{
+  padding-top: 20px;
+  text-align: center;
+}
+.founder_intro .founder_8{
+  padding-top: 20px;
+  text-align: center;
+  line-height: 30px;
+}
 
+//滑动条
+.ps-container{
+  -ms-touch-action:none;
+  overflow:hidden !important
+}
+.ps-container.ps-active-x>.ps-scrollbar-x-rail{
+  display:block
+}
+.ps-container.ps-active-y>.ps-scrollbar-y-rail{
+  display:block
+}
+.ps-container.ps-in-scrolling{
+  pointer-events:none
+}
+.ps-container.ps-in-scrolling.ps-x>.ps-scrollbar-x-rail,
+.ps-container.ps-in-scrolling.ps-y>.ps-scrollbar-y-rail{
+  background-color:#eee;opacity:1
+}
+.ps-scrollbar-x-rail>.ps-scrollbar-x,
+.ps-scrollbar-y-rail>.ps-scrollbar-y{
+  position: absolute;
+}
+.ps-scrollbar-y-rail>.ps-scrollbar-y{
+  width: 8px;
+  left: -3px;
+}
+.ps-container>.ps-scrollbar-x-rail,
+.ps-container>.ps-scrollbar-y-rail{
+  display: none;
+  position: absolute;
+  opacity: 1;
+  -webkit-transition: background-color 0.2s linear;
+  -moz-transition: background-color 0.2s linear;
+  -o-transition: background-color 0.2s linear;
+  transition: background-color 0.2s linear;
+  bottom: 3px;
+  height: 1px;
+}
+.ps-container>.ps-scrollbar-x-rail>.ps-scrollbar-x{
+  position: absolute;
+  bottom: -2px;
+  height: 6px;
+}
+.ps-container>.ps-scrollbar-y-rail {
+  position: absolute; /* please don't change 'position' */
+  left: 3px; /* there must be 'right' for ps-scrollbar-y-rail */
+  width: 1px;
+}
+.ps-container.ps-active-x>.ps-scrollbar-x-rail, .ps-container.ps-active-y>.ps-scrollbar-y-rail{
+  display: block;
+  background-color: #ccc;
+}
+.ps-container>.ps-scrollbar-y-rail>.ps-scrollbar-y{
+  background-color: #999;
+}
+.ps-container>.ps-scrollbar-x-rail, .ps-container>.ps-scrollbar-y-rail {
+  opacity: 0.6;
+}
+.ps-container:hover>.ps-scrollbar-x-rail, .ps-container:hover>.ps-scrollbar-y-rail {
+  opacity: 1;
+}
 
-
-
-
-
-
-
-
+.c1{
+  font-size: 22px;
+  color: #333;
+}
+.c2{
+  font-size: 16px;
+  color: #666;
+  line-height: 50px;
+}
+.c3{
+  margin-top: 30px;
+  color: #333;
+  font-size: 18px;
+}
+.c4{
+  margin-top: 24px;
+}
+.c5{
+  position: relative;
+  padding-left: 90px;
+}
+.c6{
+  position: absolute;
+  left: 0;
+}
+.c7{
+  padding-left: 105px;!important;
+}
+.c8{
+  font-size: 26px;
+  color: #333;
+}
+.c9{
+  font-size: 16px;
+  color: #333;
+}
+.c10{
+  color: #22c4c6;!important;
+}
+.c11{
+  margin-top: 30px;
+}
+.c12{
+  margin-top: 110px;
+}
+.c13{
+  position: relative;
+  padding-left: 20px;
+}
+.c14{
+  font-weight: bold;
+}
+.c15{
+  color: #fe717b;
+}
