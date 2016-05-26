@@ -23,4 +23,6 @@ public interface ConsultDoctorInfoService {
     int consultDoctorInfoOper(ConsultDoctorInfoVo vo);
 
     List<String> getConsultDoctorDepartment();
+
+    ConsultDoctorInfoVo getConsultDoctorInfoByUserId(String userId);
 }
