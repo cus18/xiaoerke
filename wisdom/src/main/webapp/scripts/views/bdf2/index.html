@@ -3,7 +3,7 @@
         <div class="bdf_main clearfix">
             <div class="bdf_logo"></div>
             <ul>
-                <li >首页</li>
+                <li class="curr">首页</li>
                 <li ng-click="goCallMine()">关于我们</li>
             </ul>
         </div>
@@ -185,8 +185,8 @@
             </li>
         </ul>
         <div class="doc_mor">
-            <span>更多</span>
-            <span>加入我们</span>
+            <!--<span>更多</span>-->
+            <span ng-click="goLianXi()">加入我们</span>
         </div>
     </div>
     <div class="index_doctor hosp">
@@ -226,11 +226,11 @@
             </li>
         </ul>
         <div class="doc_mor">
-            <span>更多</span>
-            <span>加入我们</span>
+            <!--<span>更多</span>-->
+            <span ng-click="goLianXi()">加入我们</span>
         </div>
     </div>
-    <div class="index_yu">
+    <!--<div class="index_yu">
         <img class="yu_title" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_yu.png" />
         <div class="yu_content">
             <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_yuerpindao_fengexian.png" height="250px"/>
@@ -246,7 +246,7 @@
         <div class="yu_mor">
             <span>更多</span>
         </div>
-    </div>
+    </div>-->
     <div class="bdf-foot">
         <div class="foot_but">
             <div class="but_guanzhu">
@@ -262,10 +262,10 @@
             <img class="img_3" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_dibufengexian.png"/>
             <div class="but_guanyu">
                 <div class="foot_1">
-                    <a ng-click="goGuanYu()">关于我们</a>
-                    <a ng-click="goLianXi()">联系我们</a>
-                    <a ng-click="goFuWu()">服务协议</a>
-                    <a ng-click="goYinSi()">隐私保护</a>
+                    <a href="" ng-click="goGuanYu()">关于我们</a>
+                    <a href="" ng-click="goLianXi()">联系我们</a>
+                    <a href="" ng-click="goFuWu()">服务协议</a>
+                    <a href="" ng-click="goYinSi()">隐私保护</a>
                 </div>
                 <div class="foot_2">
                     <span>京ICP备15035618号-1</span>
