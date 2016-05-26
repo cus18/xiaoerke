@@ -22,7 +22,7 @@ angular.module('controllers2', [])
                     $('#mov_doctor').movingBoxes({
                         width: 1000,
                         reducedSize : 0.5,
-                        startPanel : 2,
+                        startPanel : 3,
                         currentPanel : 'svccurrent',
                         fixedHeight:false,
                         hashTags: false,
@@ -30,29 +30,29 @@ angular.module('controllers2', [])
                         initialized: function(e, slider, tar){
                             slider.$curPanel.find('.doc_name').hide();
                             slider.$curPanel.find('.doc_name_info').css("font-size","20px");
-                            slider.$curPanel.find('.doc_name_info').css("margin-top","12px");
+                            slider.$curPanel.find('.doc_name_info').css("margin-top","10px");
                             slider.$curPanel.find('.doc_hosp').css("font-size","18px");
-                            slider.$curPanel.find('.doc_hosp').css("margin-top","8px");
+                            slider.$curPanel.find('.doc_hosp').css("margin-top","6px");
                         },
                         initChange: function(e, slider, tar){
                             slider.$curPanel.find('.doc_name').show();
-                            slider.$curPanel.find('.doc_name').css("margin-top","12px")
+                            slider.$curPanel.find('.doc_name').css("margin-top","12px");
                             slider.$curPanel.find('.doc_name_info').css("font-size","0px");
                             slider.$curPanel.find('.doc_hosp').css("font-size","0px");
                         },
                         completed: function(e, slider){
                             slider.$curPanel.find('.doc_name').hide();
                             slider.$curPanel.find('.doc_name_info').css("font-size","20px");
-                            slider.$curPanel.find('.doc_name_info').css("margin-top","12px");
+                            slider.$curPanel.find('.doc_name_info').css("margin-top","10px");
                             slider.$curPanel.find('.doc_hosp').css("font-size","18px");
-                            slider.$curPanel.find('.doc_hosp').css("margin-top","8px");
+                            slider.$curPanel.find('.doc_hosp').css("margin-top","6px");
                         }
 
                     });
                     $('#mov_hosp').movingBoxes({
                         width: 1000,
                         reducedSize : 0.5,
-                        startPanel : 2,
+                        startPanel : 3,
                         currentPanel : 'svccurrent',
                         hashTags: false,
                         fixedHeight:false,
@@ -121,35 +121,34 @@ angular.module('controllers2', [])
     //联系我们
     .controller('callMineCtrl',['$scope','$state','$stateParams',
         function ($scope,$state,$stateParams) {
-
-            $(function () {
-                $(".img_weixin").hide();
-                //顶部菜单效果
-                var $headBar = $('.index_title'), initTop = 0, isScroll = true;
-                $(window).on('scroll', function(e) {
-                    var scrollY = $(this).scrollTop();
-                    if(scrollY > 126){
-                        if(scrollY > initTop){
-                            $headBar.addClass('active');
-                        }else{
+            $scope.initial = function(){
+                setTimeout(function(){
+                    $(".img_weixin").hide();
+                    //顶部菜单效果
+                    var $headBar = $('.index_title'), initTop = 0, isScroll = true;
+                    $(window).on('scroll', function(e) {
+                        var scrollY = $(this).scrollTop();
+                        if(scrollY > 126){
+                            if(scrollY > initTop){
+                                $headBar.addClass('active');
+                            }else{
+                                $headBar.removeClass('active');
+                            }
+                        } else{
                             $headBar.removeClass('active');
                         }
-                    } else{
-                        $headBar.removeClass('active');
-                    }
-                    initTop = scrollY;
-                    //if(scrollY >= (3000 - $(window).height())){
-                    //    $('.sy-connect .left').animate({'margin-left': '0'}, '1000');
-                    //    $('.sy-connect .right').animate({'margin-right': '0'}, '1000');
-                    //}
-                });
+                        initTop = scrollY;
+                        //if(scrollY >= (3000 - $(window).height())){
+                        //    $('.sy-connect .left').animate({'margin-left': '0'}, '1000');
+                        //    $('.sy-connect .right').animate({'margin-right': '0'}, '1000');
+                        //}
+                    });
 
-                // with vanilla JS!
-                $('.mine_con').css({'height': '1000px'});
-                Ps.initialize(document.getElementById('content_scroll'));
-
-
-            });
+                    // with vanilla JS!
+                    $('.mine_con').css({'height': '1000px'});
+                    Ps.initialize(document.getElementById('content_scroll'));
+                },300);
+            }
 
             if($stateParams.id==1){
                 changeMine($("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#GuanYu"),$("#LianXi"),$("#FuWu"),$("#YinSi"));
