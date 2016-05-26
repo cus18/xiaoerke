@@ -12,6 +12,7 @@ angular.module('controllers2', [])
                 $(".img_1").mouseout(function () {
                     $(".img_weixin").hide();
                 });
+                $(".curr").css("background-color","#22c4c6");
 
                 var $headBar = $('.bdf_title'), initTop = 0, isScroll = true;
                 $(window).on('scroll', function(e) {
@@ -127,6 +128,7 @@ angular.module('controllers2', [])
     .controller('callMineCtrl',['$scope','$state','$stateParams',
         function ($scope,$state,$stateParams) {
             $scope.initial = function(){
+                $(".curr").css("background-color","#22c4c6");
                 setTimeout(function(){
                     $(".img_weixin").hide();
                     //顶部菜单效果
@@ -205,7 +207,7 @@ angular.module('controllers2', [])
                 css3.css("color","#333");
                 css4.css("color","#333");
                 $(".mine_conright").animate({scrollTop:0},1000);
-
+                $(window).scrollTop(0);
             }
 
             //function getQueryString(name) {
