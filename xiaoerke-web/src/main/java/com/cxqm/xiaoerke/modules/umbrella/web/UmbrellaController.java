@@ -168,8 +168,14 @@ public class UmbrellaController  {
     Map<String, Object>  getOpenidStatus(HttpServletRequest request,HttpSession session) {
         String openid= WechatUtil.getOpenId(session, request);
 //        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
-        String  id=babyUmbrellaInfoSerivce.getOpenidStatus(openid).get("status").toString();
         Map<String, Object> result=new HashMap<String, Object>();
+        Map<String,Object> openIdStatus=babyUmbrellaInfoSerivce.getOpenidStatus(openid);
+        if(openIdStatus!=null){
+            result.put("status","1");
+            result.put("openid",openid);
+            return  result;
+        }
+        String  id=openIdStatus.get("status").toString();
         result.put("status",id);
         result.put("openid",openid);
         return result;
