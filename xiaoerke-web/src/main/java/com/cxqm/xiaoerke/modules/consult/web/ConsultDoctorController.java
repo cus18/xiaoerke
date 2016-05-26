@@ -315,7 +315,7 @@ public class ConsultDoctorController extends BaseController {
                         doctorChannel.writeAndFlush(csframe.retain());
                     }
                 }else if("wxcxqm".equalsIgnoreCase(richConsultSession.getSource())){
-                    String st = "本次咨询体验怎么样?赶快来评价吧!【" +
+                    String st = "医生太棒,要给好评;\n 服务不好,留言吐槽. \n ----------\n【" +
                             "<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
                             params.get("uuid") + "'>点击这里去评价</a>】";
                     Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");

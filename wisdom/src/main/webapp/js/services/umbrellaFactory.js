@@ -32,4 +32,21 @@ define(['appUmbrella'], function (app) {
             return $resource(user_h5 + 'umbrella/getOpenidStatus');
         }])
 
+        .factory('ifExistOrder',['$resource',function ($resource){
+            return $resource(user_h5 + 'umbrella/ifExistOrder');
+        }])
+
+        //添加宝宝信息
+        .factory('saveBabyInfo',['$resource',function ($resource){
+            return $resource(healthRecord + 'saveBabyInfo');
+        }])
+        //修改宝宝信息
+        .factory('updateBabyInfo',['$resource',function ($resource){
+            return $resource(healthRecord + 'updateBabyInfo');
+        }])
+
+        //更新保障信息
+        .factory('updateInfo',['$resource',function ($resource){
+            return $resource(user_h5 + 'umbrella/updateInfo');
+        }])
 })
