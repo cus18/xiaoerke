@@ -1,11 +1,13 @@
 <link rel="stylesheet" href="scripts/styles/bdf2/callMine.less?ver='0.9'" type="text/css" />
 <div style="min-width: 1024px" ng-init="initial()">
-    <div class="index_title">
-        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_logo_png.png"/>
-        <ul>
-            <li ng-click="goIndex()">首页</li>
-            <li>关于我们</li>
-        </ul>
+    <div class="bdf_title ">
+        <div class="bdf_main clearfix">
+            <div class="bdf_logo"></div>
+            <ul>
+                <li ng-click="goIndex()">首页</li>
+                <li class="curr">关于我们</li>
+            </ul>
+        </div>
     </div>
     <div class="mine_ban"></div>
     <div class="mine_content clearfix">
@@ -101,11 +103,11 @@
                         <dd class="c2 c5 c11">
                             <span class="c6">联系人 : </span>王女士
                         </dd>
-                        <dd class="c2 c5">
-                            <span class="c6">Q&nbsp;&nbsp;&nbsp;Q  : </span>2904149273
+                        <dd class="c2 c5 c17">
+                            <span class="c6">QQ : </span>2904149273
                         </dd>
-                        <dd class="c2 c5">
-                            <span class="c6">邮&nbsp;&nbsp;箱 : </span>wanghua@baodf.com
+                        <dd class="c2 c5 c16">
+                            <span class="c6">邮箱 : </span>wanghua@baodf.com
                         </dd>
                     </dl>
                     <dl class="c12">
@@ -216,8 +218,6 @@
         </div>
     </div>
 
-
-
     <div class="bdf-foot">
         <div class="foot_but">
             <div class="but_guanzhu">
@@ -233,10 +233,10 @@
             <img class="img_3" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_dibufengexian.png"/>
             <div class="but_guanyu">
                 <div class="foot_1">
-                    <a ng-click="goGuanYu()">关于我们</a>
-                    <a ng-click="goLianXi()">联系我们</a>
-                    <a ng-click="goFuWu()">服务协议</a>
-                    <a ng-click="goYinSi()">隐私保护</a>
+                    <a href="" ng-click="goGuanYu()">关于我们</a>
+                    <a href="" ng-click="goLianXi()">联系我们</a>
+                    <a href="" ng-click="goFuWu()">服务协议</a>
+                    <a href="" ng-click="goYinSi()">隐私保护</a>
                 </div>
                 <div class="foot_2">
                     <span>京ICP备15035618号-1</span>

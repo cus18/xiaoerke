@@ -1,10 +1,12 @@
 <div style="min-width: 1024px"  ng-init="initial()">
-    <div class="index_title">
-        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_logo_png.png"/>
-        <ul>
-            <li >首页</li>
-            <li ng-click="goCallMine()">关于我们</li>
-        </ul>
+    <div class="bdf_title ">
+        <div class="bdf_main clearfix">
+            <div class="bdf_logo"></div>
+            <ul>
+                <li class="curr">首页</li>
+                <li ng-click="goCallMine()">关于我们</li>
+            </ul>
+        </div>
     </div>
     <div class="index_ban">
         <div class="ban_out">
@@ -64,7 +66,7 @@
             </div>
             <div class="item_1">
                 <div class="item_1_2">
-                    <div>保护伞</div>
+                    <div>宝护伞</div>
                     <div>宝贝重疾大家帮</div>
                     <div>彼此关爱渡难关</div>
                 </div>
@@ -183,8 +185,8 @@
             </li>
         </ul>
         <div class="doc_mor">
-            <span>更多</span>
-            <span>加入我们</span>
+            <!--<span>更多</span>-->
+            <span ng-click="goLianXi()">加入我们</span>
         </div>
     </div>
     <div class="index_doctor hosp">
@@ -224,11 +226,11 @@
             </li>
         </ul>
         <div class="doc_mor">
-            <span>更多</span>
-            <span>加入我们</span>
+            <!--<span>更多</span>-->
+            <span ng-click="goLianXi()">加入我们</span>
         </div>
     </div>
-    <div class="index_yu">
+    <!--<div class="index_yu">
         <img class="yu_title" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_yu.png" />
         <div class="yu_content">
             <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_yuerpindao_fengexian.png" height="250px"/>
@@ -244,7 +246,7 @@
         <div class="yu_mor">
             <span>更多</span>
         </div>
-    </div>
+    </div>-->
     <div class="bdf-foot">
         <div class="foot_but">
             <div class="but_guanzhu">
@@ -260,10 +262,10 @@
             <img class="img_3" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_dibufengexian.png"/>
             <div class="but_guanyu">
                 <div class="foot_1">
-                    <a ng-click="goGuanYu()">关于我们</a>
-                    <a ng-click="goLianXi()">联系我们</a>
-                    <a ng-click="goFuWu()">服务协议</a>
-                    <a ng-click="goYinSi()">隐私保护</a>
+                    <a href="" ng-click="goGuanYu()">关于我们</a>
+                    <a href="" ng-click="goLianXi()">联系我们</a>
+                    <a href="" ng-click="goFuWu()">服务协议</a>
+                    <a href="" ng-click="goYinSi()">隐私保护</a>
                 </div>
                 <div class="foot_2">
                     <span>京ICP备15035618号-1</span>
