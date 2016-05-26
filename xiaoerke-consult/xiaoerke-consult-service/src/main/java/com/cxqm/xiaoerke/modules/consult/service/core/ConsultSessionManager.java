@@ -530,7 +530,7 @@ public class ConsultSessionManager {
 		Iterator<Entry<String, Channel>> it = csUserChannelMapping.entrySet().iterator();
 		while(it.hasNext()){
 			Entry<String, Channel> entry = it.next();
-			if(entry.getValue().isOpen())
+			if(entry.getValue().isActive())
 				userIds.add(entry.getKey());
 		}
 		return userIds;

@@ -118,4 +118,8 @@ angular.module('services', ['ngResource'])
     .factory('CreateTransferSpecialist', ['$resource', function ($resource) {
         return $resource(public + 'consultSession/transfer/createMoreUserConsultSession');
     }])
+    //获取医生所属的科室
+    .factory('GetCurrentDoctorDepartment', ['$resource', function ($resource) {
+        return $resource(public + 'consult/transfer/getCurrentDoctorDepartment');
+    }])
 
