@@ -160,10 +160,10 @@ angular.module('controllers2', [])
                     Ps.initialize(document.getElementById('content_scroll'));
                 },300);
 
-                $("#content_scroll").scroll(function(e){
+                /*$("#content_scroll").scroll(function(e){
                     var scrollY = $(this).scrollTop();
                     console.log("scd",scrollY);
-                });
+                });*/
 
             }
 
