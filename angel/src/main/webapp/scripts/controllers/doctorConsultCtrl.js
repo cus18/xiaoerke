@@ -510,6 +510,13 @@ angular.module('controllers', ['luegg.directives'])
                 if(heartBeatNum < 0){
                     heartBeatNum = -1;
                     $scope.loseConnectionFlag = true;
+                    if($scope.userType=="distributor"){
+                        $scope.socketServerSecond = new ReconnectingWebSocket("ws://" + $scope.secondAddress +":2048/ws&" +
+                            "distributor&" + $scope.doctorId);//cs,user,distributor
+                    }else if($scope.userType=="consultDoctor"){
+                        $scope.socketServerSecond = new ReconnectingWebSocket("ws://" + $scope.secondAddress +":2048/ws&" +
+                            "cs&" + $scope.doctorId);//cs,user,distributor
+                    }
                 }else{
                     $scope.loseConnectionFlag = false;
                 }

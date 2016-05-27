@@ -11,6 +11,7 @@
         <result column="parent_idcard" property="parentIdCard" jdbcType="VARCHAR" />
         <result column="parent_phone" property="parentPhone" jdbcType="VARCHAR" />
         <result column="parent_name" property="parentName" jdbcType="VARCHAR" />
+        <result column="parent_type" property="parentType" jdbcType="INTEGER" />
         <result column="activation_time" property="activationTime" jdbcType="DATE" />
     </resultMap>
 
@@ -60,7 +61,7 @@
         parent_idcard=#{parentIdCard},
         parent_phone=#{parentPhone},
         parent_name=#{parentName},
-        umberlla_money=#{umberllaMoney},
+        parent_type=#{parentType},
         baby_id=#{babyId},
         activation_time=now()
         where id = #{id,jdbcType=VARCHAR}
