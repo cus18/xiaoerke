@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -31,7 +32,7 @@ public class WechatUserController extends BaseController {
   @RequestMapping(value = "/patient/wxChat", method = {RequestMethod.POST, RequestMethod.GET})
   public
   @ResponseBody
-  String wxPatientChat(HttpServletRequest request) {
+  String wxPatientChat(HttpServletRequest request,HttpServletResponse response) {
       String method = request.getMethod().toUpperCase();
       if ("GET".equals(method)) {
           // 微信加密签名
@@ -51,7 +52,7 @@ public class WechatUserController extends BaseController {
           // 调用核心业务类接收消息、处理消息
           String respMessage = null;
           try {
-              respMessage = wechatPatientCoreService.processPatientRequest(request);
+              respMessage = wechatPatientCoreService.processPatientRequest(request,response);
           } catch (IOException e) {
               e.printStackTrace();
           }

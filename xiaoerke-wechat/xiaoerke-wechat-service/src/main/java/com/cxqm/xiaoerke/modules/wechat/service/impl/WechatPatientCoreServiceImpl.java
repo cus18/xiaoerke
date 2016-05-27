@@ -15,10 +15,14 @@ import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
+import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
+import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
+import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import com.cxqm.xiaoerke.modules.wechat.dao.WechatAttentionDao;
 import com.cxqm.xiaoerke.modules.wechat.dao.WechatInfoDao;
 import com.cxqm.xiaoerke.modules.wechat.entity.HealthRecordMsgVo;
 import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
+import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatPatientCoreService;
 import com.cxqm.xiaoerke.modules.wechat.service.util.MessageUtil;
 
@@ -29,6 +33,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import java.io.*;
@@ -81,6 +86,11 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 	@Autowired
 	LoveMarketingService loveMarketingService;
 
+	@Autowired
+	private BabyUmbrellaInfoService babyUmbrellaInfoService;
+
+	@Autowired
+	private WechatAttentionService wechatAttentionService;
 
 	private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
@@ -91,7 +101,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 	 * @return
 	 */
 	@Override
-	public String processPatientRequest(HttpServletRequest request) throws IOException {
+	public String processPatientRequest(HttpServletRequest request,HttpServletResponse response) throws IOException {
 		System.out.println("processPatientRequest===================================");
 		String respMessage = null;
 
@@ -106,10 +116,10 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			if(eventType.equals(MessageUtil.SCAN)){
 				//已关注公众号的情况下扫描
 				this.updateAttentionInfo(xmlEntity);
-				respMessage = processScanEvent(xmlEntity,"oldUser");
+				respMessage = processScanEvent(xmlEntity,"oldUser",request,response);
 			}else if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)){
 				//扫描关注公众号或者搜索关注公众号都在其中
-				respMessage = processSubscribeEvent(xmlEntity, request);
+				respMessage = processSubscribeEvent(xmlEntity, request,response);
 			}
 			// 取消订阅
 			else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)){
@@ -117,11 +127,11 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			}
 			// 自定义菜单点击事件
 			else if (eventType.equals(MessageUtil.EVENT_TYPE_CLICK)){
-				respMessage = processClickMenuEvent(xmlEntity,request);
+				respMessage = processClickMenuEvent(xmlEntity,request,response);
 			}
 			// 结束咨询对话
 			else if(eventType.equals(MessageUtil.KF_CLOSE)){
-				processCloseEvent(xmlEntity,request);
+				respMessage = processCloseEvent(xmlEntity,request,response);
 			}
 			//获取用户位置
 			else if (eventType.equals(MessageUtil.REQ_MESSAGE_TYPE_LOCATION)){
@@ -245,7 +255,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		return sb.toString();
 	}
 
-	private String processScanEvent(ReceiveXmlEntity xmlEntity,String userType)
+	private String processScanEvent(ReceiveXmlEntity xmlEntity,String userType,HttpServletRequest request,HttpServletResponse response)
 	{
 		String EventKey = xmlEntity.getEventKey();
 		Article article = new Article();
@@ -256,6 +266,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		newsMessage.setCreateTime(new Date().getTime());
 		newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
 		newsMessage.setFuncFlag(0);
+		boolean umbrellascan = false;
 		if(EventKey.indexOf("doc")>-1)
 		{
 			Map<String,Object> map = wechatInfoDao.getDoctorInfo(EventKey.replace("doc",""));
@@ -366,10 +377,76 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setPicUrl("http://oss-cn-beijing.aliyuncs.com/xiaoerke-article-pic/FQBTGXX.png");
 			article.setUrl(ConstantUtil.KEEPER_WEB_URL+"/wechatInfo/fieldwork/wechat/author?url=http://s165.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=26");
 			articleList.add(article);
-		}
-		System.out.println(EventKey + "===================================");
-		System.out.println(EventKey.indexOf("FQBTG") > -1);
+		}else if(EventKey.indexOf("homepage_qualityservices_kuaizixun")>-1){//官网快咨询
+			TextMessage textMessage = new TextMessage();
+			textMessage.setToUserName(xmlEntity.getFromUserName());
+			textMessage.setFromUserName(xmlEntity.getToUserName());
+			textMessage.setCreateTime(new Date().getTime());
+			textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
+			textMessage.setFuncFlag(0);
+			textMessage.setContent("1、点击左下角“小键盘”输入文字或语音,即可咨询疾病或保健问题\t\t\n 2、免费在线咨询时间:\n小儿内科:   24小时全天\n小儿皮肤科:   9:00~22:00\n营养保健科:   9:00~22:00\n小儿其他专科:(外科、眼科、耳鼻喉科、口腔科、预防保健科、中医科)   19:00~21:00 \n妇产科   19:00~22:00");
+			return MessageUtil.textMessageToXml(textMessage);
+		}else if(EventKey.indexOf("homepage_qualityservices_mingyimianzhen")>-1){//官网名医面诊
+			article.setTitle("名医面诊");
+			article.setDescription("三甲医院儿科专家，线上准时预约，线下准时就诊。");
+			article.setPicUrl("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/gw%2Fmingyimianzhen");
+			article.setUrl(ConstantUtil.TITAN_WEB_URL+"/titan/firstPage/appoint");
+			articleList.add(article);
+		}else if(EventKey.indexOf("homepage_qualityservices_mingyidianhua")>-1){//官网名医电话
+			article.setTitle("名医电话");
+			article.setDescription("权威儿科专家，10分钟通话，个性化就诊和康复指导。");
+			article.setPicUrl("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/gw%2Fmingyidianhua");
+			article.setUrl(ConstantUtil.TITAN_WEB_URL+"/titan/firstPage/phoneConsult");
+			articleList.add(article);
+		}else if(EventKey.indexOf("12")>-1 && "newUser".equals(userType)){//扫码分享
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("id",EventKey);
+			List<Map<String,Object>> list = babyUmbrellaInfoService.getBabyUmbrellaInfo(param);
+			if(list.size()!=0){
+				String fromOpenId = (String)list.get(0).get("openid");//分享者openid
+				String babyId = (String)list.get(0).get("baby_id");
+				String toOpenId = xmlEntity.getFromUserName();//扫码者openid
+				Map parameter = systemService.getWechatParameter();
+				String token = (String)parameter.get("token");
 
+				HashMap<String,Object> hmap = new HashMap<String, Object>();
+				hmap = wechatAttentionService.getAttention(toOpenId);
+				String nickname = "";
+				if(hmap!=null){
+					nickname = (String)hmap.get("nickname");
+				}
+				BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
+				babyUmbrellaInfo.setId(Integer.parseInt(EventKey));
+				babyUmbrellaInfo.setUmberllaMoney((Integer) list.get(0).get("umbrella_money")+2);
+				babyUmbrellaInfoService.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
+				int count = babyUmbrellaInfoService.getUmbrellaCount();
+				String title = "恭喜您，您的好友"+nickname+"已成功加入。您既帮助了朋友，也提升了2万保障金！";
+				String templateId = "b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg";
+				String keyword1 = "您已拥有28万的保障金，还需邀请_位好友即可获得最高40万保障金。";
+				String keyword2 = StringUtils.isNotNull(babyId)?"观察期":"待激活";
+				String remark = "邀请一位好友，增加2万保额，最高可享受40万保障！";
+				String url = "";
+				WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, fromOpenId, templateId);
+			}
+			article.setTitle("宝大夫送你一份见面礼");
+			article.setDescription("恭喜您已成功领取专属于宝宝的40万高额保障金");
+			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
+			article.setUrl("");
+			articleList.add(article);
+			umbrellascan = true;
+		}
+
+		if("newUser".equals(userType) && !umbrellascan){//新用户关注发送保护伞信息
+			if(!"umbrellaSendWechatMessageNewUserAttention".equals(CookieUtils.getCookie(request, "umbrellaSendWechatMessageNewUserAttention"))){//新用户关注，推送保护伞消息
+				CookieUtils.setCookie(response, "umbrellaSendWechatMessageNewUserAttention", "umbrellaSendWechatMessageNewUserAttention", 3600 * 24 * 365);
+				int count = babyUmbrellaInfoService.getUmbrellaCount();
+				article.setTitle("宝大夫送你一份见面礼");
+				article.setDescription("专属于宝宝的40万高额保障金免费送，目前已有" + count + "位妈妈们领取，你也赶紧加入吧！");
+				article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
+				article.setUrl("");
+				articleList.add(article);
+			}
+		}
 
 		if(articleList.size() == 0){
 			return "";
@@ -383,7 +460,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		return respMessage;
 	}
 
-	private String processSubscribeEvent(ReceiveXmlEntity xmlEntity,HttpServletRequest request)
+	private String processSubscribeEvent(ReceiveXmlEntity xmlEntity,HttpServletRequest request,HttpServletResponse response)
 	{
 		Map parameter = systemService.getWechatParameter();
 		Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
@@ -394,7 +471,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			marketer = EventKey.replace("qrscene_", "");
 		}
 		this.insertAttentionInfo(xmlEntity, token, marketer);
-		return sendSubScribeMessage(xmlEntity, request, marketer, token);
+		return sendSubScribeMessage(xmlEntity, request,response, marketer, token);
 	}
 
 	private void insertAttentionInfo(ReceiveXmlEntity xmlEntity,String token,String marketer)
@@ -459,7 +536,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		wechatInfoDao.updateAttentionInfo(updateTimeMap);
 	}
 
-	private String sendSubScribeMessage(ReceiveXmlEntity xmlEntity,HttpServletRequest request,String marketer,String token)
+	private String sendSubScribeMessage(ReceiveXmlEntity xmlEntity,HttpServletRequest request,HttpServletResponse response,String marketer,String token)
 	{
 		String st = "";
 		HttpSession session = request.getSession();
@@ -476,7 +553,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 					"如需人工协助预约儿科专家,请您拨打：400-623-7120。";
 			WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
 		}
-		return processScanEvent(xmlEntity,"newUser");
+
+		return processScanEvent(xmlEntity,"newUser",request,response);
 	}
 
 	private void processUnSubscribeEvent(ReceiveXmlEntity xmlEntity,HttpServletRequest request)
@@ -518,7 +596,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		}
 	}
 
-	private String processClickMenuEvent(ReceiveXmlEntity xmlEntity,HttpServletRequest request)
+	private String processClickMenuEvent(ReceiveXmlEntity xmlEntity,HttpServletRequest request,HttpServletResponse response)
 	{
 		// TODO 自定义菜单
 		String respMessage = null;
@@ -573,11 +651,13 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			// 将图文消息对象转换成xml字符串
 			respMessage = MessageUtil.newsMessageToXml(newsMessage);
 		}
+
 		return respMessage;
 	}
 
-	private void processCloseEvent(ReceiveXmlEntity xmlEntity,HttpServletRequest request)
+	private String processCloseEvent(ReceiveXmlEntity xmlEntity,HttpServletRequest request,HttpServletResponse response)
 	{
+		String respMessage = null;
 		String openId=xmlEntity.getFromUserName();
 		Map<String,Object> params=new HashMap<String,Object>();
 		params.put("openid", openId);
@@ -596,6 +676,32 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		 String token = (String)parameter.get("token");
 		 WechatUtil.sendMsgToWechat(token, openId, st);
 		 LogUtils.saveLog(request, "00000004");//注：00000004表示“客服评价”
+
+		if(!"umbrellaSendWechatMessageCloseConsult".equals(CookieUtils.getCookie(request, "umbrellaSendWechatMessageCloseConsult"))){//关闭咨询，推送保护伞消息
+			CookieUtils.setCookie(response, "umbrellaSendWechatMessageCloseConsult", "umbrellaSendWechatMessageCloseConsult", 3600 * 24 * 365);
+			int count = babyUmbrellaInfoService.getUmbrellaCount();
+			List<Article> articleList = new ArrayList<Article>();
+			// 创建图文消息
+			NewsMessage newsMessage = new NewsMessage();
+			newsMessage.setToUserName(xmlEntity.getFromUserName());
+			newsMessage.setFromUserName(xmlEntity.getToUserName());
+			newsMessage.setCreateTime(new Date().getTime());
+			newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+			newsMessage.setFuncFlag(0);
+			Article article = new Article();
+			article.setTitle("小病问医生，大病有互助");
+			article.setDescription("6月宝贝福利免费送，40万高额大病保障等你拿，目前已有" + count + "位妈妈们领取，你也赶紧加入吧！");
+			article.setPicUrl("");
+			article.setUrl("");
+			articleList.add(article);
+			// 设置图文消息个数
+			newsMessage.setArticleCount(articleList.size());
+			// 设置图文消息包含的图文集合
+			newsMessage.setArticles(articleList);
+			// 将图文消息对象转换成xml字符串
+			respMessage = MessageUtil.newsMessageToXml(newsMessage);
+		}
+		return respMessage;
 	}
 
 	private void processGetLocationEvent(ReceiveXmlEntity xmlEntity,HttpServletRequest request)

@@ -40,7 +40,7 @@ define(['appUmbrella'], function(app){
                         }
                     })
                     .state('umbrellaFillInfo', {
-                        url: '/umbrellaFillInfo',
+                        url: '/umbrellaFillInfo/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'umbrellaFillInfoCtrl',
                         resolve: {

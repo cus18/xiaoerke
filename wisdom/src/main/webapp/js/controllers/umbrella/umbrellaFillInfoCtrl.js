@@ -1,6 +1,8 @@
 ﻿angular.module('controllers', ['ionic']).controller('umbrellaFillInfoCtrl', [
-        '$scope','$state','$stateParams','getBabyinfoList','getOpenidStatus',
-        function ($scope,$state,$stateParams,getBabyinfoList,getOpenidStatus) {
+        '$scope','$state','$stateParams','getBabyinfoList','getOpenidStatus','ifExistOrder','$filter','IdentifyUser',
+        'saveBabyInfo','updateBabyInfo','updateInfo',
+        function ($scope,$state,$stateParams,getBabyinfoList,getOpenidStatus,ifExistOrder,$filter,IdentifyUser
+            ,saveBabyInfo,updateBabyInfo,updateInfo) {
             $scope.title="宝护伞";
             $scope.sexItem = "boy";
             $scope.parentItem = "mother";
@@ -8,6 +10,13 @@
             $scope.fillLock = false;
             $scope.selectItem = "";
             $scope.info={};
+
+
+            $scope.selectedBaby="";
+            $scope.codeSecond="获取验证码";
+            $scope.openid="";
+            $scope.babyInfoList={};
+            $scope.umbrellaId=$stateParams.id;
 
             /*填写宝宝姓名 获取焦点*/
             $scope.fillName = function(){
@@ -17,14 +26,25 @@
             $scope.fillFinish = function(){
                 $scope.fillLock = false;
             };
-            /*填写宝宝姓名 选择宝宝*/
-            $scope.selectBaby = function(selectItem){
-                $scope.info.babyName = selectItem;
-            };
             /*选择性别*/
             $scope.selectSex = function(sex){
                 $scope.sexItem=sex;
             };
+            /*填写宝宝姓名 选择宝宝*/
+            $scope.selectBaby = function(selectItem){
+                if(selectItem.name!="添加") {
+                    $scope.info.babyName = selectItem.name;
+                    $scope.selectedBaby=selectItem;
+                    $("#birthday").val($filter('date')(selectItem.birthday, 'yyyy-MM-dd'));
+                    if (selectItem.sex == "1") {
+                        $scope.selectSex('boy');
+                    } else {
+                        $scope.selectSex('girl');
+                    }
+                }
+                $scope.info.id=selectItem.id;
+            };
+
             /*选择父母*/
             $scope.selectParent = function(parent){
                 $scope.parentItem=parent;
@@ -84,9 +104,161 @@
                 }
             }
             $scope.immediateActive=function(){
-                $state.go("umbrellaJoin");
+
+                if($scope.info.id!="add"||$scope.info.id!="undefined"){
+                    var sname=$scope.selectedBaby.name;
+                    var sbirthday=$filter('date')($scope.selectedBaby.birthday, 'yyyy-MM-dd');
+                    var ssex=$scope.selectedBaby.sex;
+                    var ssid=$scope.selectedBaby.id;
+
+                    var name=$scope.info.babyName;
+                    var birthday=$("#birthday").val();
+                    var sex=$scope.sexItem == "boy"?1:0;
+                    var id=parseInt($scope.info.id);
+                    if(id==ssid){
+                        if(sname!=name||sbirthday!=birthday||ssex!=sex){
+                            $scope.updateBabyInfo();
+                        }else{
+                            $scope.updateUmbrellaInfo();
+                        }
+                    }else{
+                        $scope.saveBabyInfo();
+                    }
+                }else{
+                    $scope.saveBabyInfo();
+                }
             };
+
+
+            /*填写宝宝姓名 选择宝宝*/
+            $scope.getCode = function(){
+                IdentifyUser.save({"userPhone":$scope.info.phoneNum},function (data){
+                    if(data.status=="1") {
+                        $scope.codeSecond=60;
+                        $scope.getCodeSecond();
+                    }else{
+                        $scope.codeSecond="重新发送";
+                    }
+                });
+            };
+
+             $scope.getCodeSecond=function () {
+                 $scope.codeSecond=$scope.codeSecond-1;
+                console.log("s",$scope.codeSecond);
+                var t;
+                if($scope.codeSecond>0) {
+                    t=setTimeout(function(){$scope.getCodeSecond()}, 1000);
+                    $scope.$digest();
+                }else{
+                    clearTimeout(t);
+                    $scope.codeSecond="再次获取验证码";
+                    $scope.$digest();
+                }
+            };
+            //添加宝宝
+            $scope.saveBabyInfo = function(){
+                var name=$scope.info.babyName;
+                var birthday=$("#birthday").val();
+                var sex=$scope.sexItem == "boy"?1:0;
+                if(typeof(name) == "undefined"){
+                    alert("姓名不能为空");
+                    return;
+                }
+                if(birthday == ""){
+                    alert("请选择宝宝生日");
+                    return;
+                }
+                saveBabyInfo.get({"sex":sex,"name":encodeURI(name),"birthDay":birthday}, function (data){
+                    if(data.resultCode=='1'){
+                        $scope.info.id=data.autoId;
+                        $scope.updateUmbrellaInfo();
+                    }
+                });
+            };
+
+            /*保存宝宝信息*/
+            $scope.updateBabyInfo = function(){
+                var name=$scope.info.babyName;
+                var birthday=$("#birthday").val();
+                var sex=$scope.sexItem == "boy"?1:0;
+                var id=parseInt($scope.info.id);
+                if(typeof(name) == "undefined"){
+                    alert("姓名不能为空");
+                    return;
+                }
+                if(birthday == ""){
+                    alert("请选择宝宝生日");
+                    return;
+                }
+                updateBabyInfo.get({"id":id,"sex":sex,"name":encodeURI(name),"birthDay":birthday}, function (data){
+                    if(data.resultCode=='1'){
+                        $scope.updateUmbrellaInfo();
+                    }
+                });
+            };
+
+            //更新保障信息
+            $scope.updateUmbrellaInfo = function(){
+                if($scope.info.id==""){
+                    alerrt("请选择或添加一个宝宝");
+                    return;
+                }
+                if($scope.info.parentName==""){
+                    alerrt("请输入父(母)的姓名");
+                    return;
+                }
+                if($scope.info.phoneNum==""){
+                    alerrt("请输入手机号");
+                    return;
+                }
+                if($scope.info.code==""){
+                    alerrt("请输入验证码");
+                    return;
+                }
+                if($scope.info.IdCard==""){
+                    alerrt("请输入身份证号");
+                    return;
+                }
+                $scope.parentType=$scope.parentItem=="father"?0:1;
+                updateInfo.save({"phone":$scope.info.phoneNum,"code":$scope.info.code,"babyId":$scope.info.id,
+                    "idCard":$scope.info.IdCard,"parentName":encodeURI($scope.info.parentName),
+                    "parentType":$scope.parentType,"umbrellaId":$scope.umbrellaId}, function (data){
+                    if(data.result=='1'){
+                        $state.go("umbrellaJoin");
+                    }else if(data.result=='3'){
+                        alert("验证码无效");
+                        return;
+                    }else{
+                        alert("更新保障信息失败");
+                        return;
+                    }
+                });
+            };
+            
             $scope.$on('$ionicView.enter', function(){
+                //根据Openid 判断用户是否领取过
+                ifExistOrder.save(function (data){
+                    if(data.result=="1"){
+                        window.location.href="../wisdom/firstPage/umbrella";
+                    }else if(data.result=="3"){
+                        window.location.href="../wisdom/umbrella#/umbrellaJoin";
+                    }else{
+                        getOpenidStatus.save(function (data){
+                            $scope.openid=data.openid;
+                            //获取用户下宝宝信息列表
+                            getBabyinfoList.save({"openId":$scope.openid},function (data){
+                                if(data.babyInfoList!="") {
+                                    $scope.babyInfoList = data.babyInfoList;
+                                    var addBaby=new Object();
+                                    addBaby.name="添加";
+                                    addBaby.id="add";
+                                    $scope.babyInfoList.unshift(addBaby);
+                                }
+                            });
+                        });
+                    }
+                });
+
                 var date = new Date(+new Date()+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'');
                 $("#birthday").mobiscroll().date();
                 //初始化日期控件
@@ -112,11 +284,5 @@
                 $("#birthday").mobiscroll(opt);
             });
 
-            getOpenidStatus.save({"openId":""},function (data){
-                $scope.babyInfoList=data.babyInfoList;
-            });
-            //获取用户下宝宝信息列表
-            getBabyinfoList.save({"openId":"o3_NPwrrWyKRi8O_Hk8WrkOvvNOk"},function (data){
-                $scope.babyInfoList=data.babyInfoList;
-            });
+
     }]);

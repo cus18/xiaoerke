@@ -28,6 +28,13 @@ public interface BabyUmbrellaInfoDao {
     int updateBabyUmbrellaInfo(BabyUmbrellaInfo babyUmbrellaInfo);
 
     /**
+     * 更新保障金信息
+     * @param babyUmbrellaInfo
+     * @return
+     */
+    int updateBabyUmbrellaInfoById(BabyUmbrellaInfo babyUmbrellaInfo);
+
+    /**
      * 查询全部
      * @return
      */
@@ -46,4 +53,8 @@ public interface BabyUmbrellaInfoDao {
     Integer getTotalBabyUmbrellaInfoMoney(Map<String, Object> map);
 
     Map<String,Object> getOpenidStatus(@Param("openid")String openid);
+
+    List getNotShareInfoFromLog(Map<String, Object> map);
+
+    int getUmbrellaCount();
 }

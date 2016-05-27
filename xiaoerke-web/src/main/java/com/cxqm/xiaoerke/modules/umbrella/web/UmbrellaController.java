@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -61,7 +64,7 @@ public class UmbrellaController  {
     Map<String, Object>  joinUs(HttpServletRequest request,HttpSession session) {
         Map<String, Object> map=new HashMap<String, Object>();
         String openid= WechatUtil.getOpenId(session, request);
-        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
         List<Map<String, Object>> list=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
@@ -83,6 +86,7 @@ public class UmbrellaController  {
         Integer res=babyUmbrellaInfoSerivce.saveBabyUmbrellaInfo(babyUmbrellaInfo);
         Map<String, Object> result=new HashMap<String, Object>();
         result.put("result",res);
+        result.put("id",babyUmbrellaInfo.getId());
         return result;
     }
 
@@ -94,24 +98,26 @@ public class UmbrellaController  {
     @RequestMapping(value = "/updateInfo", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object>  updateInfo(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) {
+    Map<String, Object>  updateInfo(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) throws UnsupportedEncodingException {
         Map<String, Object> result=new HashMap<String, Object>();
 
         String phone=params.get("phone").toString();
         String code=params.get("code").toString();
         String openid= WechatUtil.getOpenId(session, request);
-        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         String res=utilService.bindUser(phone,code,openid);
         if(res.equals("0")){
-            result.put("result",res);
+            result.put("result","3");
             return result;
         }
         BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
         babyUmbrellaInfo.setBabyId(params.get("babyId").toString());
         babyUmbrellaInfo.setParentIdCard(params.get("idCard").toString());
         babyUmbrellaInfo.setParentPhone(params.get("phone").toString());
-        babyUmbrellaInfo.setParentName(params.get("parentName").toString());
-        babyUmbrellaInfo.setUmberllaMoney(Integer.parseInt(params.get("umberllaMoney").toString()));
+        babyUmbrellaInfo.setParentName(URLDecoder.decode(params.get("parentName").toString(),"UTF-8"));
+        babyUmbrellaInfo.setParentType(Integer.parseInt(params.get("parentType").toString()));
+        babyUmbrellaInfo.setId(Integer.parseInt(params.get("umbrellaId").toString()));
+//        babyUmbrellaInfo.setUmberllaMoney(Integer.parseInt(params.get("umberllaMoney").toString()));
         res=babyUmbrellaInfoSerivce.updateBabyUmbrellaInfo(babyUmbrellaInfo)+"";
 
         result.put("result",res);
@@ -127,7 +133,7 @@ public class UmbrellaController  {
     Map<String, Object>  userShareNum(HttpServletRequest request,HttpSession session) {
         Map<String, Object> map=new HashMap<String, Object>();
         String openid= WechatUtil.getOpenId(session, request);
-        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
         String  id=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map).get(0).get("id").toString();
         Map<String, Object> result=new HashMap<String, Object>();
@@ -141,12 +147,13 @@ public class UmbrellaController  {
     @RequestMapping(value = "/getUserQRCode", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object>  getUserQRCode(HttpServletRequest request,HttpSession session) {
-        Map<String, Object> map=new HashMap<String, Object>();
-        String openid= WechatUtil.getOpenId(session, request);
-        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
-        map.put("openid",openid);
-        String  id=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map).get(0).get("id").toString();
+    Map<String, Object>  getUserQRCode(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) {
+//        Map<String, Object> map=new HashMap<String, Object>();
+//        String openid= WechatUtil.getOpenId(session, request);
+//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+//        map.put("openid",openid);
+//        String  id=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map).get(0).get("id").toString();
+        String id=params.get("id").toString();
         Map<String, Object> result=new HashMap<String, Object>();
         result.put("qrcode",babyUmbrellaInfoSerivce.getUserQRCode(id));
         return result;
@@ -160,13 +167,46 @@ public class UmbrellaController  {
     @ResponseBody
     Map<String, Object>  getOpenidStatus(HttpServletRequest request,HttpSession session) {
         String openid= WechatUtil.getOpenId(session, request);
-        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
-        String  id=babyUmbrellaInfoSerivce.getOpenidStatus(openid).get("status").toString();
+//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         Map<String, Object> result=new HashMap<String, Object>();
+        Map<String,Object> openIdStatus=babyUmbrellaInfoSerivce.getOpenidStatus(openid);
+        if(openIdStatus!=null){
+            result.put("status","1");
+            result.put("openid",openid);
+            return  result;
+        }
+        String  id=openIdStatus.get("status").toString();
         result.put("status",id);
         result.put("openid",openid);
         return result;
     }
 
 
+    /**
+     * 判断用户是否存在过数据
+     */
+    @RequestMapping(value = "/ifExistOrder", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object>  ifExistOrder(HttpServletRequest request,HttpSession session) {
+        Map<String, Object> map=new HashMap<String, Object>();
+        Map<String, Object> result=new HashMap<String, Object>();
+        String openid= WechatUtil.getOpenId(session, request);
+//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+        map.put("openid",openid);
+        List<Map<String, Object>> list=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
+        if(list.size()>0){
+            Map<String, Object> m=list.get(0);
+            if(m.get("baby_id")!=null&&!m.get("baby_id").equals("")){
+                result.put("result",3);
+                result.put("umbrella",m);
+                return result;
+            }
+            result.put("result",2);
+            result.put("umbrella",m);
+            return result;
+        }
+        result.put("result",1);
+        return result;
+    }
 }

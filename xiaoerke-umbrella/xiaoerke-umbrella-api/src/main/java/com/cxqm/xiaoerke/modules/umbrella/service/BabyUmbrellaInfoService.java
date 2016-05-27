@@ -25,6 +25,13 @@ public interface BabyUmbrellaInfoService {
     int updateBabyUmbrellaInfo(BabyUmbrellaInfo babyUmbrellaInfo);
 
     /**
+     * 更新保障金信息
+     * @param babyUmbrellaInfo
+     * @return
+     */
+    int updateBabyUmbrellaInfoById(BabyUmbrellaInfo babyUmbrellaInfo);
+
+    /**
      * 查询全部
      * @return
      */
@@ -45,4 +52,8 @@ public interface BabyUmbrellaInfoService {
     Map<String,Object> getOpenidStatus(String openid);
 
     Integer getTotalBabyUmbrellaInfoMoney(Map<String, Object> map);
+
+    List getNotShareInfoFromLog(Map<String, Object> map);
+
+    int getUmbrellaCount();
 }

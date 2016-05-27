@@ -159,6 +159,12 @@ angular.module('controllers2', [])
                     $('.mine_con').css({'height': '1000px'});
                     Ps.initialize(document.getElementById('content_scroll'));
                 },300);
+
+                /*$("#content_scroll").scroll(function(e){
+                    var scrollY = $(this).scrollTop();
+                    console.log("scd",scrollY);
+                });*/
+
             }
 
             if($stateParams.id==1){
@@ -191,11 +197,13 @@ angular.module('controllers2', [])
 
             //服务协议
             $scope.goFuWu = function () {
+
                 changeMine($("#fuwuxieyi"),$("#guanyumine"),$("#lianximine"),$("#yinsibaohu"),$("#FuWu"),$("#GuanYu"),$("#LianXi"),$("#YinSi"));
             }
 
             //隐私保护
             $scope.goYinSi = function () {
+
                 changeMine($("#yinsibaohu"),$("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#YinSi"),$("#GuanYu"),$("#LianXi"),$("#FuWu"));
             }
 
@@ -206,10 +214,13 @@ angular.module('controllers2', [])
                 id2.hide();
                 id3.hide();
                 id4.hide();
+
+                css1.css("color","");
+                css2.css("color","");
+                css3.css("color","");
+                css4.css("color","");
                 css1.css("color","#22c4c6");
-                css2.css("color","#333");
-                css3.css("color","#333");
-                css4.css("color","#333");
+
                 $(".mine_conright").animate({scrollTop:0},1000);
                 $(window).scrollTop(0);
             }
@@ -239,4 +250,6 @@ angular.module('controllers2', [])
                 $(".img_weixin").hide();
 
             });
+
+
         }]);

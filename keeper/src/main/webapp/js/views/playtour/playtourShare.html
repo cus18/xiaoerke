@@ -3,47 +3,18 @@
     <div class="playtourSharejiantou" ng-if="sharetou">
         <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fsharejiantou.png" width="81px" height="81px"/>
     </div>
-    <div class="playtourSharecom" ng-if="shareimg" >
+    <div class="playtourSharecom " ng-if="shareimg" >
         <img ng-src="{{shareImg}}" width="312px" height="auto" ng-click="cancleShare()"/>
     </div>
-    <ion-content class="playtourShare"  style="top:0;" >
-        <!--<ion-scroll direction="y" has-bouncing="true">
-        <div class="playtourSharetitle">
-            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fsharelaba.png" width="13px" height="13px"/>
-            <span>宝大夫</span>专家团来啦！
-        </div>
-        <div class="playtourSharebao">
-            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fsharepiaodai.png" width="219.5px" height="45px"/>
-        </div>
-        <div class="playtourSharephone">
-            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fsharephoto.png" width="212px" height="102.5px">
-        </div>
-        <div class="playtourSharesys">
-            <div class="playtourSharesys_1">
-                <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fsharexiaoshi.png" width="38px" height="38px">
-                <br/><span>24小时在线</span>
-            </div>
-            <div class="playtourSharesys_2">
-                <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fsharefenzhong.png" width="38px" height="38px">
-                <br/><span>1分钟极速回复</span>
-            </div>
-        </div>
-        <div class="playtourShareerweima">
-            <span>长按二维码，</span>立即关注宝大夫！<br>
-            咨询专家，给宝宝一对一专属健康呵护！
-        </div>
-        <div class="playtourShareerweimaimg">
-            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fshareerweima.png" width="302.5px" height="143.5px"/>
-        </div>
-        <div class="playtourSharebut" ng-click="goShare()">
-            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fsharebutton.png" width="100%" height="auto"/>
-        </div>
-            <br><br><br><br>-->
+    <ion-content class="playtourShare "  style="top:0;" >
+       <ion-scroll direction="y" has-bouncing="true">
         <div class="main">
-            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fshare_yemian.png" width="100%" height="auto"/>
-            <img width="50%" height="auto" class="code" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fshare_erweima.png" data-tap-disabled="true" />
+            <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour/consultShare1.png" />
+            <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour/consultShare2.png" />
+            <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour/consultShare3.png" data-tap-disabled="true"  />
+            <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour/consultShare4.png" />
         </div>
         </ion-scroll>
     </ion-content>
-    <img class="box-share" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fsharebutton.png" ng-click="goShare()" height="auto">
+    <button class="button bottom-btn" ng-click="goShare()">分享给更多宝妈</button>
 </ion-view>
