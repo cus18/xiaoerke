@@ -3,22 +3,34 @@ angular.module('controllers2', [])
         function ($scope,$state,$stateParams) {
 
             $scope.initial = function(){
-                setTimeout(function(){
+                $(".img_weixin").hide();
+                //底部微信二维码显示
+                $(".img_1").mouseenter(function () {
+                    $(".img_weixin").show();
+
+                });
+                $(".img_1").mouseout(function () {
                     $(".img_weixin").hide();
-                    var $headBar = $('.index_title'), initTop = 0, isScroll = true;
-                    $(window).on('scroll', function(e) {
-                        var scrollY = $(this).scrollTop();
-                        if(scrollY > 126){
-                            if(scrollY > initTop){
-                                $headBar.addClass('active');
-                            }else{
-                                $headBar.removeClass('active');
-                            }
-                        } else{
+                });
+                $(".curr").css("background-color","#22c4c6");
+
+                var $headBar = $('.bdf_title'), initTop = 0, isScroll = true;
+                $(window).on('scroll', function(e) {
+                    var scrollY = $(this).scrollTop();
+                    if(scrollY > 126){
+                        if(scrollY > initTop){
+                            $headBar.addClass('active');
+                        }else{
                             $headBar.removeClass('active');
                         }
-                        initTop = scrollY;
-                    });
+                    } else{
+                        $headBar.removeClass('active');
+                    }
+                    initTop = scrollY;
+                });
+
+                setTimeout(function(){
+
                     $('#mov_doctor').movingBoxes({
                         width: 1000,
                         reducedSize : 0.5,
@@ -33,12 +45,15 @@ angular.module('controllers2', [])
                             slider.$curPanel.find('.doc_name_info').css("margin-top","10px");
                             slider.$curPanel.find('.doc_hosp').css("font-size","18px");
                             slider.$curPanel.find('.doc_hosp').css("margin-top","6px");
+                            slider.$curPanel.find('.index_com').css("font-size","16px");
+
                         },
                         initChange: function(e, slider, tar){
                             slider.$curPanel.find('.doc_name').show();
                             slider.$curPanel.find('.doc_name').css("margin-top","12px");
                             slider.$curPanel.find('.doc_name_info').css("font-size","0px");
                             slider.$curPanel.find('.doc_hosp').css("font-size","0px");
+                            slider.$curPanel.find('.index_com').css("font-size","0px");
                         },
                         completed: function(e, slider){
                             slider.$curPanel.find('.doc_name').hide();
@@ -46,6 +61,7 @@ angular.module('controllers2', [])
                             slider.$curPanel.find('.doc_name_info').css("margin-top","10px");
                             slider.$curPanel.find('.doc_hosp').css("font-size","18px");
                             slider.$curPanel.find('.doc_hosp').css("margin-top","6px");
+                            slider.$curPanel.find('.index_com').css("font-size","16px");
                         }
 
                     });
@@ -80,16 +96,9 @@ angular.module('controllers2', [])
                         }
 
                     });
-                    //底部微信二维码显示
-                    $(".img_1").mouseenter(function () {
-                        $(".img_weixin").show();
-
-                    });
-                    $(".img_1").mouseout(function () {
-                        $(".img_weixin").hide();
-                    });
-                },500);
+                },2000);
             }
+
 
             //联系我们
             $scope.goCallMine = function () {
@@ -117,15 +126,17 @@ angular.module('controllers2', [])
             $scope.goYinSi = function () {
                 $state.go("callMine",{id:4});
             }
+
         }])
     //联系我们
     .controller('callMineCtrl',['$scope','$state','$stateParams',
         function ($scope,$state,$stateParams) {
             $scope.initial = function(){
+                $(".curr").css("background-color","#22c4c6");
                 setTimeout(function(){
                     $(".img_weixin").hide();
                     //顶部菜单效果
-                    var $headBar = $('.index_title'), initTop = 0, isScroll = true;
+                    var $headBar = $('.bdf_title'), initTop = 0, isScroll = true;
                     $(window).on('scroll', function(e) {
                         var scrollY = $(this).scrollTop();
                         if(scrollY > 126){
@@ -148,6 +159,12 @@ angular.module('controllers2', [])
                     $('.mine_con').css({'height': '1000px'});
                     Ps.initialize(document.getElementById('content_scroll'));
                 },300);
+
+                /*$("#content_scroll").scroll(function(e){
+                    var scrollY = $(this).scrollTop();
+                    console.log("scd",scrollY);
+                });*/
+
             }
 
             if($stateParams.id==1){
@@ -180,11 +197,13 @@ angular.module('controllers2', [])
 
             //服务协议
             $scope.goFuWu = function () {
+
                 changeMine($("#fuwuxieyi"),$("#guanyumine"),$("#lianximine"),$("#yinsibaohu"),$("#FuWu"),$("#GuanYu"),$("#LianXi"),$("#YinSi"));
             }
 
             //隐私保护
             $scope.goYinSi = function () {
+
                 changeMine($("#yinsibaohu"),$("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#YinSi"),$("#GuanYu"),$("#LianXi"),$("#FuWu"));
             }
 
@@ -195,12 +214,15 @@ angular.module('controllers2', [])
                 id2.hide();
                 id3.hide();
                 id4.hide();
-                css1.css("color","#22c4c6");
-                css2.css("color","#333");
-                css3.css("color","#333");
-                css4.css("color","#333");
-                $(".mine_conright").animate({scrollTop:0},1000);
 
+                css1.css("color","");
+                css2.css("color","");
+                css3.css("color","");
+                css4.css("color","");
+                css1.css("color","#22c4c6");
+
+                $(".mine_conright").animate({scrollTop:0},1000);
+                $(window).scrollTop(0);
             }
 
             //function getQueryString(name) {
@@ -228,4 +250,6 @@ angular.module('controllers2', [])
                 $(".img_weixin").hide();
 
             });
+
+
         }]);

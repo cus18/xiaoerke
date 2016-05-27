@@ -10,12 +10,35 @@ document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.event.drag-1.5.mi
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.touchSlider.js"></scr'+'ipt>');
 
 var attentionLock=false;
+var version="b"; /*方案版本*/
 
+var shareUmbrellaId="0";
 var umbrellaFirstPageInit = function() {
     /*获取当前年月日*/
     var date = new Date();
      date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
      $("#date").html(date);
+    /*a版本和b版本的内容变化*/
+    var content="";
+    var textIntro="";
+    if(version=="a"){
+         content='<img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic1a.png" >'
+           + '<div class="f4 c3"><span class="c12">5元</span>即加入</div>'
+            +'<div class="f4 c3">免单随时享</div>'
+        textIntro=' 您只需支付<span class="c11">最多5元即可加入</span>' ;
+        $('.introPic li').eq(0).html(content);
+        $('#textIntro').html(textIntro);
+        $(".helpPlan .pic img").attr("src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/help_pic1a.png");
+    }
+    else{
+        content='<img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic1b.png" >'
+            + '<div class="f4 c3">现在参与</div>'
+            +'<div class="f4 c3"><span class="c12">免费</span>加入 </div>';
+        textIntro=' <span class="c11">现阶段免费加入</span>' ;
+        $('.introPic li').eq(0).html(content);
+        $('#textIntro').html(textIntro);
+        $(".helpPlan .pic img").attr("src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/help_pic1b.png");
+    }
 
     //通过openid 获取当前用户是否关注
     $.ajax({
@@ -25,6 +48,7 @@ var umbrellaFirstPageInit = function() {
         success: function(result){
             var count=result.count;
             var todayCount=result.todayCount;
+            var totalUmbrellaMoney=result.totalUmbrellaMoney;
             $("#count").html(count);
             $("#todayCount").html(todayCount);
             $("#totalUmbrellaMoney").html(totalUmbrellaMoney);
@@ -46,7 +70,7 @@ var umbrellaFirstPageInit = function() {
         dataType: "json"
     });
 
-    recordLogs("FQB_FWXQ");
+    recordLogs("umbrella_FirstPage");
     $("#readBuy").attr("disabled",false);
     $("#readLock").show();
     var timestamp;//时间戳
@@ -82,11 +106,11 @@ var umbrellaFirstPageInit = function() {
                     // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                     wx.onMenuShareTimeline({
                         title: '我为您的宝宝领取了最高40万保障金', // 分享标题
-                        link: window.location.href.replace("true","false"), // 分享链接
+                        link: window.location.href.replace("true","false")+"?id="+shareUmbrellaId, // 分享链接
                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                         success: function (res) {
                             //记录用户分享文章
-                            recordLogs("FXJG_FXPYQDog");
+                            recordLogs("Umbrella_shareMoment");
                         },
                         fail: function (res) {
                         }
@@ -95,10 +119,10 @@ var umbrellaFirstPageInit = function() {
                     wx.onMenuShareAppMessage({
                         title: '我为您的宝宝领取了最高40万保障金', // 分享标题
                         desc: '前20万用户免费加入即可获取最高40万60种儿童重疾保障', // 分享描述
-                        link:window.location.href.replace("true","false"), // 分享链接
+                        link:window.location.href.replace("true","false")+"?id="+shareUmbrellaId, // 分享链接
                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                         success: function (res) {
-                            recordLogs("FXJG_FXPYDog");
+                            recordLogs("Umbrella_shareFirend");
                         },
                         fail: function (res) {
                         }
@@ -111,7 +135,43 @@ var umbrellaFirstPageInit = function() {
         error : function() {
         }
     });
+   
 }
+
+function scanQRCode(){
+    var shareid=GetQueryString("id");
+    if(shareid!="0") {
+        $.ajax({
+            type: 'POST',
+            url: "umbrella/getUserQRCode",
+            data:{"id":shareid},
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $("#QRCode").attr("qrcode",data.result);
+            },
+            dataType: "json"
+        });
+    }
+}
+
+function  joinUs(){
+    $.ajax({
+        type: 'POST',
+        url: "umbrella/joinUs",
+        contentType: "application/json; charset=utf-8",
+        success: function(data){
+            if(data.result==1){
+                shareUmbrellaId=data.id;
+            }else if(data.result==2){
+                shareUmbrellaId=data.umbrella.id;
+            }else if(data.result==3){
+                shareUmbrellaId=data.umbrella.id;
+            }
+        },
+        dataType: "json"
+    });
+}
+
 
 /*重大疾病名称及定义 展开隐藏*/
 var lookHelpPlan = function() {
@@ -158,7 +218,9 @@ var myGuarantee = function() {
 }
 /*跳转到领取成功页面*/
 var goJoin = function() {
-   /* window.location.href = "umbrella#/umbrellaJoin";*/
+    if(version=="a"){
+        window.location.href = "/keeper/wxPay/patientPay.do?serviceType=umbrellaPay";
+    }
     if(!attentionLock){
         $(".c-shadow").show();
         $(".shadow-content.attention").show();
@@ -169,8 +231,12 @@ var goJoin = function() {
 
 
 }
-
-
+var GetQueryString = function(name)
+{
+    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if(r!=null)return  unescape(r[2]); return null;
+}
 var recordLogs = function(val){
     $.ajax({
         url:"util/recordLogs",// 跳转到 action

@@ -77,7 +77,7 @@ public class UtilServiceImpl implements UtilService {
             String identify = ChangzhuoMessageUtil.sendIdentifying(num);
 
             //根据手机号查询或创建用户  有则查，没有则创建
-//            identify = "123456";
+            identify = "123456";
             //PatientVo PatientVo = CreateUser(num);
             ValidateBean bean = new ValidateBean();
             bean.setId(UUID.randomUUID().toString().replaceAll("-", ""));

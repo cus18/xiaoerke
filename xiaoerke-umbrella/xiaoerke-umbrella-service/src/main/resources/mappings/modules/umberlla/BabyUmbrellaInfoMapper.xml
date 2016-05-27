@@ -11,6 +11,7 @@
         <result column="parent_idcard" property="parentIdCard" jdbcType="VARCHAR" />
         <result column="parent_phone" property="parentPhone" jdbcType="VARCHAR" />
         <result column="parent_name" property="parentName" jdbcType="VARCHAR" />
+        <result column="parent_type" property="parentType" jdbcType="INTEGER" />
         <result column="activation_time" property="activationTime" jdbcType="DATE" />
     </resultMap>
 
@@ -23,6 +24,12 @@
         </if>
         <if test="openid != null">
             and openid = #{openid}
+        </if>
+        <if test="notActive != null">
+            and baby_id is NULL
+        </if>
+        <if test="notShareOrActiveDays != null">
+            and DATEDIFF(NOW(),create_time) = #{notShareOrActiveDays}
         </if>
     </select>
 
@@ -60,9 +67,19 @@
         parent_idcard=#{parentIdCard},
         parent_phone=#{parentPhone},
         parent_name=#{parentName},
-        umberlla_money=#{umberllaMoney},
+        parent_type=#{parentType},
         baby_id=#{babyId},
         activation_time=now()
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateBabyUmbrellaInfoById" parameterType="com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo" >
+        update baby_umbrellainfo
+        <set>
+            <if test="umberllaMoney != null">
+                umberlla_money = #{umberllaMoney},
+            </if>
+        </set>
         where id = #{id,jdbcType=VARCHAR}
     </update>
 
@@ -72,6 +89,14 @@
 
     <select id="getOpenidStatus" resultType="java.util.HashMap" >
         select * from `sys_attention` sa where sa.`openid`=#{openid} order by date desc limit 1
+    </select>
+
+    <select id="getNotShareInfoFromLog" resultType="java.util.Map" >
+        select title from sys_log where open_id = #{openid} and title in ('Umbrella_shareMoment','Umbrella_shareFirend')
+    </select>
+
+    <select id="getUmbrellaCount" resultType="java.lang.Integer" >
+        select count(*) from baby_umbrellainfo
     </select>
 
 </mapper>
