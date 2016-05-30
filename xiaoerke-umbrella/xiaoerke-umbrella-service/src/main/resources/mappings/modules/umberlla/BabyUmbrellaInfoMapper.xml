@@ -28,6 +28,9 @@
         <if test="notActive != null">
             and baby_id is NULL
         </if>
+        <if test="id != null">
+            and id = #{id}
+        </if>
         <if test="notShareOrActiveDays != null">
             and DATEDIFF(NOW(),create_time) = #{notShareOrActiveDays}
         </if>
@@ -77,7 +80,7 @@
         update baby_umbrellainfo
         <set>
             <if test="umberllaMoney != null">
-                umberlla_money = #{umberllaMoney},
+                umbrella_money = #{umberllaMoney},
             </if>
         </set>
         where id = #{id,jdbcType=VARCHAR}
