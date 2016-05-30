@@ -54,12 +54,25 @@
 		<property name="cronExpression" value="0 0 0 * * ?"/>
 	</bean>
 
+	<!-- 咨询定时操作（天）-->
+	<bean id="testMappingTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="scheduledQuarz"/>
+		<property name="targetMethod" value="testMappingTask"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+	<bean id="testMappingTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="testMappingTask"/>
+		<property name="cronExpression" value="0 */1 * * * ?"/>
+	</bean>
+
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-				<ref bean="consultManagementCronTrigger"/>
-				<ref bean="modifyConsultConversationForwardRecordsTrigger"/>
-				<ref bean="deleteTempRecordTrigger"/>
+				<!--<ref bean="consultManagementCronTrigger"/>-->
+				<!--<ref bean="modifyConsultConversationForwardRecordsTrigger"/>-->
+				<!--<ref bean="deleteTempRecordTrigger"/>-->
+				<ref bean="testMappingTrigger"/>
+
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>

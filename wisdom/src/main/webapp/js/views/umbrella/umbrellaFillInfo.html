@@ -3,7 +3,7 @@
     <ion-content class="babyList" ng-if="fillLock">
         <ion-scroll>
             <ul class="" ng-if="fillLock">
-                <li class="f4 c6" ng-repeat="item in babyInfoList" ng-click="selectBaby(item)">{{item}}</li>
+                <li class="f4 c6" ng-repeat="item in babyInfoList" ng-click="selectBaby(item)"><span ng-class="{'add':$first}" >{{item.name}}</span></li>
             </ul>
         </ion-scroll>
     </ion-content>

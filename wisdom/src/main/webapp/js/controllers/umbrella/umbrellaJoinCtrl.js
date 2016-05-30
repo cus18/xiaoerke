@@ -87,7 +87,7 @@
                                 // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                                 wx.onMenuShareTimeline({
                                     title: '我为您的宝宝领取了最高40万保障金', // 分享标题
-                                    link: "../firstPage/umbrella?id="+$scope.umbrellaId, // 分享链接
+                                    link: "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=31&id=0?id="+$scope.umbrellaId, // 分享链接
                                     imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                     success: function (res) {
                                         //记录用户分享文章
@@ -100,7 +100,7 @@
                                 wx.onMenuShareAppMessage({
                                     title: '我为您的宝宝领取了最高40万保障金', // 分享标题
                                     desc: '前20万用户免费加入即可获取最高40万60种儿童重疾保障', // 分享描述
-                                    link:"../firstPage/umbrella?id="+$scope.umbrellaId, // 分享链接
+                                    link:"http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=31&id=0?id="+$scope.umbrellaId, // 分享链接
                                     imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                     success: function (res) {
                                         recordLogs("Umbrella_shareFirend");

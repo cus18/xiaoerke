@@ -39,8 +39,8 @@ var umbrellaFirstPageInit = function() {
         $('#textIntro').html(textIntro);
         $(".helpPlan .pic img").attr("src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/help_pic1b.png");
     }
-
-    //通过openid 获取当前用户是否关注
+    ifExistOrder();
+    //获取首页数据
     $.ajax({
         type: 'POST',
         url: "umbrella/firstPageData",
@@ -63,7 +63,7 @@ var umbrellaFirstPageInit = function() {
         contentType: "application/json; charset=utf-8",
         success: function(result){
             var status=result.status;
-            if(status=="0"){
+            if(status=="1"){
                 attentionLock=true;
             }
         },
@@ -73,6 +73,8 @@ var umbrellaFirstPageInit = function() {
     recordLogs("umbrella_FirstPage");
     $("#readBuy").attr("disabled",false);
     $("#readLock").show();
+
+    joinUs();
     var timestamp;//时间戳
     var nonceStr;//随机字符串
     var signature;//得到的签名
@@ -106,11 +108,12 @@ var umbrellaFirstPageInit = function() {
                     // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                     wx.onMenuShareTimeline({
                         title: '我为您的宝宝领取了最高40万保障金', // 分享标题
-                        link: window.location.href.replace("true","false")+"?id="+shareUmbrellaId, // 分享链接
+                        link: "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=31&id=0?id="+shareUmbrellaId, // 分享链接
                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                         success: function (res) {
                             //记录用户分享文章
                             recordLogs("Umbrella_shareMoment");
+
                         },
                         fail: function (res) {
                         }
@@ -119,10 +122,11 @@ var umbrellaFirstPageInit = function() {
                     wx.onMenuShareAppMessage({
                         title: '我为您的宝宝领取了最高40万保障金', // 分享标题
                         desc: '前20万用户免费加入即可获取最高40万60种儿童重疾保障', // 分享描述
-                        link:window.location.href.replace("true","false")+"?id="+shareUmbrellaId, // 分享链接
+                        link:"http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=31&id=0?id="+shareUmbrellaId, // 分享链接
                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                         success: function (res) {
                             recordLogs("Umbrella_shareFirend");
+
                         },
                         fail: function (res) {
                         }
@@ -135,7 +139,7 @@ var umbrellaFirstPageInit = function() {
         error : function() {
         }
     });
-   
+
 }
 
 function scanQRCode(){
@@ -144,10 +148,12 @@ function scanQRCode(){
         $.ajax({
             type: 'POST',
             url: "umbrella/getUserQRCode",
-            data:{"id":shareid},
             contentType: "application/json; charset=utf-8",
+            async:false,
+            data:"{'id':'"+shareid+"'}",
             success: function (data) {
-                $("#QRCode").attr("qrcode",data.result);
+                console.log("s",data.qrcode);
+                $("#QRCode").attr("src",data.qrcode);
             },
             dataType: "json"
         });
@@ -172,6 +178,22 @@ function  joinUs(){
     });
 }
 
+
+function  ifExistOrder(){
+    $.ajax({
+        type: 'POST',
+        url: "umbrella/ifExistOrder",
+        contentType: "application/json; charset=utf-8",
+        success: function(data){
+            if(data.result==1){
+                $("#changeButton").html("马上领取");
+            }else{
+                $("#changeButton").html("我的保障");
+            }
+        },
+        dataType: "json"
+    });
+}
 
 /*重大疾病名称及定义 展开隐藏*/
 var lookHelpPlan = function() {
@@ -202,9 +224,10 @@ var lookProtocol = function(index) {
 
 /*分享好友*/
 var goShare = function() {
-    joinUs();
+    
     $(".c-shadow").show();
     $(".shadow-content.share").show();
+    
 }
 /*关闭分享提示*/
 var cancelRemind = function() {

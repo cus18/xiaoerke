@@ -56,8 +56,6 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
         return babyUmbrellaInfoDao.getUserShareNums(id);
     }
 
-
-
     @Override
     public String getUserQRCode(String id) {
         Map<String,Object> parameter = systemService.getWechatParameter();
