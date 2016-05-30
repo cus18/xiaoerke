@@ -271,6 +271,16 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
 		newsMessage.setFuncFlag(0);
 		boolean umbrellascan = false;
+		if(EventKey.indexOf("baoxian_000001")>-1){
+			TextMessage textMessage = new TextMessage();
+			textMessage.setToUserName(xmlEntity.getFromUserName());
+			textMessage.setFromUserName(xmlEntity.getToUserName());
+			textMessage.setCreateTime(new Date().getTime());
+			textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
+			textMessage.setFuncFlag(0);
+			textMessage.setContent("尊敬的诺安康VIP客户，您好！欢迎加入宝大夫，让您从此育儿不用愁！\n【咨询大夫】直接咨询北京三甲医院儿科专家，一分钟内急速回复！\n【妈妈活动】添加宝大夫客服微信：bdfdxb，加入宝大夫家长群，与众多宝爸宝妈一起交流分享，参与更多好玩的活动！\n\n如需人工协助，请您拨打：400-623-7120。\n");
+			return MessageUtil.textMessageToXml(textMessage);
+		}else
 		if(EventKey.indexOf("doc")>-1)
 		{
 			Map<String,Object> map = wechatInfoDao.getDoctorInfo(EventKey.replace("doc",""));
