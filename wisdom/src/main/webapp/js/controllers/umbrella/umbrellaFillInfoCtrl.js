@@ -18,6 +18,12 @@
             $scope.babyInfoList={};
             $scope.umbrellaId=$stateParams.id;
 
+            /*点击输入框跳转到相应位置*/
+            $scope.skip = function(item){
+                $(".view,html,body").stop().animate({"scrollTop":$("#"+item).offset().top},0);
+
+            }
+
             /*填写宝宝姓名 获取焦点*/
             $scope.fillName = function(){
                 $scope.fillLock = true;
