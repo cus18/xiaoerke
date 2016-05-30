@@ -24,6 +24,24 @@
             $scope.cancelShare=function(){
                 $scope.shareLock=false;
             };
+            var compareDate = function (start,end){
+                if(start==null||start.length==0||end==null||end.length==0){
+                    return 0;
+                }
+
+                var arr=start.split("-");
+                var starttime=new Date(arr[0],parseInt(arr[1]-1),arr[2]);
+                var starttimes=starttime.getTime();
+
+                var arrs=end.split("-");
+                var endtime=new Date(arrs[0],parseInt(arrs[1]-1),arrs[2]);
+                var endtimes=endtime.getTime();
+
+                var intervalTime = endtimes-starttimes;//两个日期相差的毫秒数 一天86400000毫秒
+                var Inter_Days = ((intervalTime).toFixed(2)/86400000)+1;//加1，是让同一天的两个日期返回一天
+
+                return Inter_Days;
+            }
             $scope.$on('$ionicView.enter', function(){
                 JoinUs.save(function(data){
                     if(data.result==1){
@@ -39,17 +57,18 @@
                         $scope.finally=true;
                         $scope.umbrellaMoney=data.umbrella.umbrella_money;
                         $scope.num=data.umbrella.id-120000000;
-                        
+
+                        // console.log("targetDateUTC",data.umbrella.activation_time);
                         var targetDate = new Date(data.umbrella.activation_time);
                             targetDate.setDate(new Date().getDate() + 180);
                         var targetDateUTC = targetDate.getTime();
-                        var afterDate=	new Date().getTime();
-                        // var afterDate=	new Date();
-                        console.log("targetDateUTC",targetDateUTC);
-                        console.log("afterDate",afterDate);
-                        console.log("afterDate",targetDateUTC-afterDate);
-                        console.log("afterDate",(targetDateUTC-afterDate)/1000/60/60/24);
-                        $scope.days=Math.ceil((targetDateUTC-afterDate)/1000/60/60/24);
+                        // var afterDate=	new Date().getTime();
+                        // // var afterDate=	new Date();
+                        // console.log("targetDateUTC",targetDateUTC);
+                        // console.log("afterDate",afterDate);
+                        // console.log("afterDate",targetDateUTC-afterDate);
+                        // console.log("afterDate",(targetDateUTC-afterDate)/1000/60/60/24);
+                        // $scope.days=Math.ceil((targetDateUTC-afterDate)/1000/60/60/24);
 
 
                         // var a = moment([targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate()]);
@@ -57,7 +76,16 @@
                         // $scope.minusDays=a.from(b); // "a day ago"
                         // console.log("a",$scope.minusDays);
 
-                        $scope.minusDays = $scope.days.toString();
+                        var selsDate = moment(data.umbrella.activation_time).format("YYYY-MM-DD");
+                        var sedd =moment(selsDate).add(180,'days').format("YYYY-MM-DD");
+                        var last = moment(sedd).subtract(1,'days').format("YYYY-MM-DD");
+
+
+
+
+                        var day = compareDate(moment().format("YYYY-MM-DD"),last);
+                        console.log("targetDateUTC",day);
+                        $scope.minusDays = day.toString();
                         $scope.minusDays1 =  $scope.minusDays.substring(0,1);
                         $scope.minusDays2 = $scope.minusDays.substring(1,2);
                         $scope.minusDays3 = $scope.minusDays.substring(2,3);

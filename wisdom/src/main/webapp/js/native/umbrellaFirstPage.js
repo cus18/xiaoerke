@@ -165,6 +165,7 @@ function  joinUs(){
         type: 'POST',
         url: "umbrella/joinUs",
         contentType: "application/json; charset=utf-8",
+        async:false,
         success: function(data){
             if(data.result==1){
                 shareUmbrellaId=data.id;
