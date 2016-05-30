@@ -141,7 +141,7 @@ public class HealthRecordsController {
   @RequestMapping(value = "/updateBabyInfo", method = {RequestMethod.POST, RequestMethod.GET})
   public
   @ResponseBody
-  Map<String, Object> updateBabyInfo(@RequestParam String id,@RequestParam String sex,@RequestParam String name,@RequestParam String birthDay) throws UnsupportedEncodingException{
+  Map<String, Object> updateBabyInfo(@RequestParam String id,@RequestParam String sex,@RequestParam String name,@RequestParam String birthDay,HttpServletRequest request, HttpSession session) throws UnsupportedEncodingException{
     Map<String, Object> resultMap = new HashMap<String, Object>();
 
     BabyBaseInfoVo vo = new BabyBaseInfoVo();
@@ -150,7 +150,11 @@ public class HealthRecordsController {
     vo.setBirthday(this.toDate(birthDay));
     vo.setName(URLDecoder.decode(name, "utf-8"));
     vo.setUserid(UserUtils.getUser().getId());
-    vo.setOpenid(UserUtils.getUser().getOpenid());
+    String openid=UserUtils.getUser().getOpenid();
+    if(openid.equals("")||openid==null){
+      openid= WechatUtil.getOpenId(session, request);
+    }
+    vo.setOpenid(openid);
     int result = healthRecordsService.updateBabyInfo(vo);
     resultMap.put("resultCode",result);
     return resultMap;
