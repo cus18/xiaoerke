@@ -236,9 +236,29 @@
 
 
     <select id="getOnlineCsListInfo" resultType="java.util.HashMap">
-        SELECT su.*,cdi.department from sys_user su
-        left JOIN consult_doctor_info cdi on cdi.sys_user_id = su.id
-        where su.id in
+        SELECT su.*, cdi.department, consultSession.currentCount currentCount
+        FROM sys_user su
+        LEFT JOIN consult_doctor_info cdi ON cdi.sys_user_id = su.id
+        LEFT JOIN (
+            SELECT
+            sys_user_id_cs id,
+            count(*) CurrentCount
+            FROM
+            consult_session
+            WHERE
+            DATE_FORMAT(create_time, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
+            AND sys_user_id_cs IN
+            <foreach collection="list" item="classIdList" open="(" separator="," close=")">
+                #{classIdList}
+            </foreach>
+        AND state = 'ongoing'
+        GROUP BY
+        sys_user_id_cs
+        ORDER BY
+        NULL
+        ) consultSession ON cdi.sys_user_id = consultSession.id
+        WHERE
+        su.id IN
         <foreach collection="list" item="classIdList" open="(" separator="," close=")">
             #{classIdList}
         </foreach>
