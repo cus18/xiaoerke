@@ -74,7 +74,72 @@ var umbrellaFirstPageInit = function() {
     $("#readBuy").attr("disabled",false);
     $("#readLock").show();
 
-   
+    joinUs();
+    var timestamp;//时间戳
+    var nonceStr;//随机字符串
+    var signature;//得到的签名
+    var appid;//得到的签名
+    $.ajax({
+        url:"wechatInfo/getConfig",// 跳转到 action
+        async:true,
+        type:'get',
+        data:{url:location.href.split('#')[0]},//得到需要分享页面的url
+        cache:false,
+        dataType:'json',
+        success:function(data) {
+            if(data!=null ){
+                timestamp=data.timestamp;//得到时间戳
+                nonceStr=data.nonceStr;//得到随机字符串
+                signature=data.signature;//得到签名
+                appid=data.appid;//appid
+                //微信配置
+                wx.config({
+                    debug: false,
+                    appId: appid,
+                    timestamp:timestamp,
+                    nonceStr: nonceStr,
+                    signature: signature,
+                    jsApiList: [
+                        'onMenuShareTimeline',
+                        'onMenuShareAppMessage'
+                    ] // 功能列表
+                });
+                wx.ready(function () {
+                    // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
+                    wx.onMenuShareTimeline({
+                        title: '我为您的宝宝领取了最高40万保障金', // 分享标题
+                        link: "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=31&id=0?id="+shareUmbrellaId, // 分享链接
+                        imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
+                        success: function (res) {
+                            //记录用户分享文章
+                            recordLogs("Umbrella_shareMoment");
+
+                        },
+                        fail: function (res) {
+                        }
+                    });
+
+                    wx.onMenuShareAppMessage({
+                        title: '我为您的宝宝领取了最高40万保障金', // 分享标题
+                        desc: '前20万用户免费加入即可获取最高40万60种儿童重疾保障', // 分享描述
+                        link:"http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=31&id=0?id="+shareUmbrellaId, // 分享链接
+                        imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
+                        success: function (res) {
+                            recordLogs("Umbrella_shareFirend");
+
+                        },
+                        fail: function (res) {
+                        }
+                    });
+
+                })
+            }else{
+            }
+        },
+        error : function() {
+        }
+    });
+
 }
 
 function scanQRCode(){
@@ -159,74 +224,10 @@ var lookProtocol = function(index) {
 
 /*分享好友*/
 var goShare = function() {
-    joinUs();
+    
     $(".c-shadow").show();
     $(".shadow-content.share").show();
-    var timestamp;//时间戳
-    var nonceStr;//随机字符串
-    var signature;//得到的签名
-    var appid;//得到的签名
-    $.ajax({
-        url:"wechatInfo/getConfig",// 跳转到 action
-        async:true,
-        type:'get',
-        data:{url:location.href.split('#')[0]},//得到需要分享页面的url
-        cache:false,
-        dataType:'json',
-        success:function(data) {
-            if(data!=null ){
-                timestamp=data.timestamp;//得到时间戳
-                nonceStr=data.nonceStr;//得到随机字符串
-                signature=data.signature;//得到签名
-                appid=data.appid;//appid
-                //微信配置
-                wx.config({
-                    debug: false,
-                    appId: appid,
-                    timestamp:timestamp,
-                    nonceStr: nonceStr,
-                    signature: signature,
-                    jsApiList: [
-                        'onMenuShareTimeline',
-                        'onMenuShareAppMessage'
-                    ] // 功能列表
-                });
-                wx.ready(function () {
-                    // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
-                    wx.onMenuShareTimeline({
-                        title: '我为您的宝宝领取了最高40万保障金', // 分享标题
-                        link: "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=31&id=0?id="+shareUmbrellaId, // 分享链接
-                        imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
-                        success: function (res) {
-                            //记录用户分享文章
-                            recordLogs("Umbrella_shareMoment");
-
-                        },
-                        fail: function (res) {
-                        }
-                    });
-
-                    wx.onMenuShareAppMessage({
-                        title: '我为您的宝宝领取了最高40万保障金', // 分享标题
-                        desc: '前20万用户免费加入即可获取最高40万60种儿童重疾保障', // 分享描述
-                        link:"http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=31&id=0?id="+shareUmbrellaId, // 分享链接
-                        imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
-                        success: function (res) {
-                            recordLogs("Umbrella_shareFirend");
-                           
-                        },
-                        fail: function (res) {
-                        }
-                    });
-
-                })
-            }else{
-            }
-        },
-        error : function() {
-        }
-    });
-
+    
 }
 /*关闭分享提示*/
 var cancelRemind = function() {
