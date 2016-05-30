@@ -103,14 +103,14 @@ angular.module('controllers2', [])
             //顶部关于我们
             $scope.goCallMine = function () {
                 setLog("GW_TOP_GYWM");
-                $state.go("callMine",{id:1});
+                $state.go("callMine",{id:6});
             }
 
 
             //关于我们
             $scope.goGuanYu = function (log) {
                 setLog(log);
-                $state.go("callMine",{id:1});
+                $state.go("callMine",{id:6});
 
             }
 
@@ -202,6 +202,9 @@ angular.module('controllers2', [])
                 changeMine($("#yinsibaohu"),$("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#YinSi"),$("#GuanYu"),$("#LianXi"),$("#FuWu"));
             }else if($stateParams.id==5){
                 changeMine($("#lianximine"),$("#guanyumine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#LianXi"),$("#GuanYu"),$("#FuWu"),$("#YinSi"));
+            }else if($stateParams.id==6){
+                changeMine($("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#GuanYu"),$("#LianXi"),$("#FuWu"),$("#YinSi"));
+                $(window).scrollTop(0);
             }
 
 
