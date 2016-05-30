@@ -122,7 +122,7 @@ public class HealthRecordsController {
     vo.setName(URLDecoder.decode(name, "utf-8"));
     String id=UserUtils.getUser().getId();
     String openid=UserUtils.getUser().getOpenid();
-    if(openid.equals("")||openid==null){
+    if(openid==null||openid.equals("")){
       openid= WechatUtil.getOpenId(session, request);
     }
     vo.setUserid(id);
@@ -151,7 +151,7 @@ public class HealthRecordsController {
     vo.setName(URLDecoder.decode(name, "utf-8"));
     vo.setUserid(UserUtils.getUser().getId());
     String openid=UserUtils.getUser().getOpenid();
-    if(openid.equals("")||openid==null){
+    if(openid==null||openid.equals("")){
       openid= WechatUtil.getOpenId(session, request);
     }
     vo.setOpenid(openid);
