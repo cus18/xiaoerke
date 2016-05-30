@@ -271,13 +271,24 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
 		newsMessage.setFuncFlag(0);
 		boolean umbrellascan = false;
+		if(EventKey.indexOf("baoxian_000001")>-1){
+			TextMessage textMessage = new TextMessage();
+			textMessage.setToUserName(xmlEntity.getFromUserName());
+			textMessage.setFromUserName(xmlEntity.getToUserName());
+			textMessage.setCreateTime(new Date().getTime());
+			textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
+			textMessage.setFuncFlag(0);
+			textMessage.setContent("尊敬的诺安康VIP客户，您好！欢迎加入宝大夫，让您从此育儿不用愁！\n【咨询大夫】直接咨询北京三甲医院儿科专家，一分钟内极速回复！\n【妈妈活动】添加宝大夫客服微信：bdfdxb，加入宝大夫家长群，与众多宝爸宝妈一起交流分享，参与更多好玩的活动！\n\n如需人工协助，请您拨打：400-623-7120。\n");
+			return MessageUtil.textMessageToXml(textMessage);
+
+		}else
 		if(EventKey.indexOf("doc")>-1)
 		{
 			Map<String,Object> map = wechatInfoDao.getDoctorInfo(EventKey.replace("doc",""));
 			article.setTitle("您已经成功关注" + map.get("hospitalName") + map.get("name") + "医生，点击即可预约");
 			article.setDescription("");
-			article.setPicUrl(ConstantUtil.TITAN_WEB_URL+"/titan/images/attentionDoc.jpg");
-			article.setUrl(ConstantUtil.TITAN_WEB_URL+"/titan/appoint#/doctorAppointment/" + map.get("id") + ",,,,,doctorShare,,");
+			article.setPicUrl(ConstantUtil.TITAN_WEB_URL + "/titan/images/attentionDoc.jpg");
+			article.setUrl(ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/doctorAppointment/" + map.get("id") + ",,,,,doctorShare,,");
 			articleList.add(article);
 		}else if(EventKey.indexOf("267")>-1){
 			article.setTitle("恭喜您,通过‘糖盒儿(tanghe2)’关注宝大夫,不仅可以随时免费咨询儿科专家,还可获赠一次预约名医的机会。");
@@ -286,8 +297,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		}else if(EventKey.indexOf("263")>-1){
 			article.setTitle("【郑玉巧育儿经】--宝大夫");
 			article.setDescription("智能匹配月龄，获取针对一对一育儿指导，建立宝宝专属健康档案，一路呵护，茁壮成长！");
-			article.setPicUrl(ConstantUtil.TITAN_WEB_URL+"/titan/images/Follow.jpg");
-			article.setUrl(ConstantUtil.TITAN_WEB_URL+"/titan/appoint#/knowledgeIndex");
+			article.setPicUrl(ConstantUtil.TITAN_WEB_URL + "/titan/images/Follow.jpg");
+			article.setUrl(ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/knowledgeIndex");
 			articleList.add(article);
 		}else if(EventKey.indexOf("521")>-1){
 			article.setTitle("宝大夫关爱儿童公益活动");
@@ -370,7 +381,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		}
 		else if(EventKey.indexOf("xuanjianghuodong_zhengyuqiao_saoma")>-1)
 		{
-			article.setDescription("您好，欢迎关注！"+
+			article.setDescription("您好，欢迎关注！" +
 					"\n\n点击进入宝大夫-郑玉巧育儿经，一起交流学习育儿健康管理知识！");
 			article.setUrl("http://baodf.com/titan/wechatInfo/fieldwork/wechat/author?" +
 					"url=http://baodf.com/titan/wechatInfo/getUserWechatMenId?url=4");
@@ -379,7 +390,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setTitle("防犬宝,一份温馨的安全保障");
 			article.setDescription("只要19.8元，打狂犬疫苗最高可获得互助补贴1000元。不幸患狂犬病可获得互助补贴5万元！");
 			article.setPicUrl("http://oss-cn-beijing.aliyuncs.com/xiaoerke-article-pic/FQBTGXX.png");
-			article.setUrl(ConstantUtil.KEEPER_WEB_URL+"/wechatInfo/fieldwork/wechat/author?url=http://s165.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=26");
+			article.setUrl(ConstantUtil.KEEPER_WEB_URL + "/wechatInfo/fieldwork/wechat/author?url=http://s165.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=26");
 			articleList.add(article);
 		}else if(EventKey.indexOf("homepage_qualityservices_kuaizixun")>-1){//官网快咨询
 			TextMessage textMessage = new TextMessage();
@@ -400,7 +411,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setTitle("名医电话");
 			article.setDescription("权威儿科专家，10分钟通话，个性化就诊和康复指导。");
 			article.setPicUrl("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/gw%2Fmingyidianhua");
-			article.setUrl(ConstantUtil.TITAN_WEB_URL+"/titan/firstPage/phoneConsult");
+			article.setUrl(ConstantUtil.TITAN_WEB_URL + "/titan/firstPage/phoneConsult");
 			articleList.add(article);
 		}else if(EventKey.indexOf("12")>-1 && "newUser".equals(userType)){//扫码分享
 			Map<String, Object> param = new HashMap<String, Object>();
@@ -469,8 +480,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 	private String processSubscribeEvent(ReceiveXmlEntity xmlEntity,HttpServletRequest request,HttpServletResponse response)
 	{
 		Map parameter = systemService.getWechatParameter();
-		Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-		String token = (String) userWechatParam.get("token");
+//		Map userWechatParam = parameter.getWeChatParamFromRedis("user");
+		String token = (String) parameter.get("token");
 		String EventKey = xmlEntity.getEventKey();
 		String marketer = "";
 		if(StringUtils.isNotNull(EventKey)){

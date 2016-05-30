@@ -44,6 +44,8 @@
                             targetDate.setDate(new Date().getDate() + 180);
                         var targetDateUTC = targetDate.getTime();
                         var afterDate=	Math.round(new Date().getTime());
+                        console.log("targetDateUTC",targetDateUTC);
+                        console.log("afterDate",afterDate);
                         $scope.days=Math.ceil((targetDateUTC-afterDate)/1000/60/60/24);
                         $scope.minusDays = $scope.days.toString();
                         $scope.minusDays1 =  $scope.minusDays.substring(0,1);

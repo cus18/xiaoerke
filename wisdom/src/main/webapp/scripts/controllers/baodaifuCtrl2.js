@@ -103,14 +103,14 @@ angular.module('controllers2', [])
             //顶部关于我们
             $scope.goCallMine = function () {
                 setLog("GW_TOP_GYWM");
-                $state.go("callMine",{id:6});
+                $state.go("callMine",{id:1});
             }
 
 
             //关于我们
             $scope.goGuanYu = function (log) {
                 setLog(log);
-                $state.go("callMine",{id:6});
+                $state.go("callMine",{id:1});
 
             }
 
@@ -191,19 +191,20 @@ angular.module('controllers2', [])
 
             }
 
-            if($stateParams.id==1){
+            if($stateParams.id==1){//首页顶部导航关于我们
                 changeMine($("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#GuanYu"),$("#LianXi"),$("#FuWu"),$("#YinSi"));
-            }else if($stateParams.id==2){
+                $(window).scrollTop(0);
+            }else if($stateParams.id==2){//医生、医院联系我们
                 changeMine($("#lianximine"),$("#guanyumine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#LianXi"),$("#GuanYu"),$("#FuWu"),$("#YinSi"));
-                $(window).scrollTop(650);
+                $(window).scrollTop(1000);
             }else if($stateParams.id==3){
                 changeMine($("#fuwuxieyi"),$("#guanyumine"),$("#lianximine"),$("#yinsibaohu"),$("#FuWu"),$("#GuanYu"),$("#LianXi"),$("#YinSi"));
+                $(window).scrollTop(0);
             }else if($stateParams.id==4){
                 changeMine($("#yinsibaohu"),$("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#YinSi"),$("#GuanYu"),$("#LianXi"),$("#FuWu"));
+                $(window).scrollTop(0);
             }else if($stateParams.id==5){
                 changeMine($("#lianximine"),$("#guanyumine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#LianXi"),$("#GuanYu"),$("#FuWu"),$("#YinSi"));
-            }else if($stateParams.id==6){
-                changeMine($("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#GuanYu"),$("#LianXi"),$("#FuWu"),$("#YinSi"));
                 $(window).scrollTop(0);
             }
 

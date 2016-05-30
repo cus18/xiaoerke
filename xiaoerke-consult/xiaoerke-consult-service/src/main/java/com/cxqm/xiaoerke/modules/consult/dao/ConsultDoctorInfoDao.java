@@ -25,4 +25,6 @@ public interface ConsultDoctorInfoDao {
     int updateByPrimaryKey(ConsultDoctorInfoVo record);
 
     List<String> getConsultDoctorDepartment();
+
+    ConsultDoctorInfoVo getConsultDoctorInfoByUserId(@Param("userId")String userId);
 }
