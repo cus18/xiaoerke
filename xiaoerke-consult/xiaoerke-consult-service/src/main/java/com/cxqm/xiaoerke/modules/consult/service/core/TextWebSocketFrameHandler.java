@@ -94,7 +94,6 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 					//保存聊天记录
 					consultRecordService.buildRecordMongoVo(userId, String.valueOf(msgType), (String) msgMap.get("content"), richConsultSession);
 				}
-
 			}else if(senderId.equals(csUserId)){
 				//如果是医生作为发送者，则用户接收
 				if(richConsultSession.getSource().equals("h5cxqm")){

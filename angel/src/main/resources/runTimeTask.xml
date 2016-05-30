@@ -72,7 +72,6 @@
 				<!--<ref bean="modifyConsultConversationForwardRecordsTrigger"/>-->
 				<!--<ref bean="deleteTempRecordTrigger"/>-->
 				<ref bean="testMappingTrigger"/>
-
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>
