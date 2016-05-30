@@ -178,6 +178,7 @@
 
             /*保存宝宝信息*/
             $scope.updateBabyInfo = function(){
+                compareDate();
                 var name=$scope.info.babyName;
                 var birthday=$("#birthday").val();
                 var sex=$scope.sexItem == "boy"?1:0;
@@ -234,7 +235,37 @@
                     }
                 });
             };
-            
+
+            function compareDate() {
+                var last = new Date();
+                var now = $("#birthday").val();
+                now = new Date(Date.parse(now.replace(/-/g, "/")));
+                var days = compareDate(new Date(now).Format("yyyy-MM-dd"), new Date(last).Format("yyyy-MM-dd"));
+                var fourthDay = 14 * 365;
+                if (days > fourthDay) {
+                    alert("目前还只服务于0-14岁的宝宝哦~ ");
+                    return;
+                }
+            }
+            //计算两个日期的时间间隔
+            function compareDate(start,end){
+                if(start==null||start.length==0||end==null||end.length==0){
+                    return 0;
+                }
+
+                var arr=start.split("-");
+                var starttime=new Date(arr[0],parseInt(arr[1]-1),arr[2]);
+                var starttimes=starttime.getTime();
+
+                var arrs=end.split("-");
+                var endtime=new Date(arrs[0],parseInt(arrs[1]-1),arrs[2]);
+                var endtimes=endtime.getTime();
+
+                var intervalTime = endtimes-starttimes;//两个日期相差的毫秒数 一天86400000毫秒
+                var Inter_Days = ((intervalTime).toFixed(2)/86400000)+1;//加1，是让同一天的两个日期返回一天
+
+                return Inter_Days;
+            }
             $scope.$on('$ionicView.enter', function(){
                 //根据Openid 判断用户是否领取过
                 ifExistOrder.save(function (data){

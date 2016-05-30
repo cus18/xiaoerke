@@ -33,7 +33,7 @@ angular.module('controllers2', [])
 
                     $('#mov_doctor').movingBoxes({
                         width: 1000,
-                        reducedSize : 0.6,
+                        reducedSize : 0.7,
                         startPanel : 3,
                         currentPanel : 'svccurrent',
                         fixedHeight:false,
@@ -67,7 +67,7 @@ angular.module('controllers2', [])
                     });
                     $('#mov_hosp').movingBoxes({
                         width: 1000,
-                        reducedSize : 0.5,
+                        reducedSize : 0.6,
                         startPanel : 3,
                         currentPanel : 'svccurrent',
                         hashTags: false,
