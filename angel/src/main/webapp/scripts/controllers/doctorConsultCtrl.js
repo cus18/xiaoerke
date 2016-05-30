@@ -417,7 +417,8 @@ angular.module('controllers', ['luegg.directives'])
             /**转接功能区**/
 
             /**会话操作区**/
-                //初始化socket链接
+
+            //初始化socket链接
             $scope.initConsultSocketFirst = function () {
                 if (!window.WebSocket) {
                     window.WebSocket = window.MozWebSocket;
@@ -459,7 +460,6 @@ angular.module('controllers', ['luegg.directives'])
                     alert("你的浏览器不支持！");
                 }
             };
-
             $scope.initConsultSocketSecond = function () {
                 if (!window.WebSocket) {
                     window.WebSocket = window.MozWebSocket;
@@ -506,20 +506,20 @@ angular.module('controllers', ['luegg.directives'])
                 //启动定时器，周期性的发送心跳信息
                 setInterval(sendHeartBeat,2000);
             };
-
             var sendHeartBeat = function(){
+                var heartBeatMessage = {
+                    "type": 5,
+                    "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                    "csUserId": angular.copy($scope.doctorId)
+                };
+
                 heartBeatFirstNum--;
                 if(heartBeatFirstNum < 0){
-                    heartBeatFirstNum = -1;
+                    heartBeatFirstNum = 3;
                     $scope.loseConnectionFirstFlag = true;
                     $scope.initConsultSocketFirst();
                 }else{
                     $scope.loseConnectionFirstFlag = false;
-                    var heartBeatMessage = {
-                        "type": 5,
-                        "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                        "csUserId": angular.copy($scope.doctorId)
-                    };
                     if($scope.socketServerFirst!=""){
                         $scope.socketServerFirst.send(JSON.stringify(heartBeatMessage));
                     }
@@ -527,16 +527,11 @@ angular.module('controllers', ['luegg.directives'])
 
                 heartBeatSecondNum--;
                 if(heartBeatSecondNum < 0){
-                    heartBeatSecondNum = -1;
+                    heartBeatSecondNum = 3;
                     $scope.loseConnectionSecondFlag = true;
                     $scope.initConsultSocketSecond();
                 }else{
                     $scope.loseConnectionSecondFlag = false;
-                    var heartBeatMessage = {
-                        "type": 5,
-                        "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                        "csUserId": angular.copy($scope.doctorId)
-                    };
                     if($scope.socketServerSecond!=""){
                         $scope.socketServerSecond.send(JSON.stringify(heartBeatMessage));
                     }
@@ -820,7 +815,7 @@ angular.module('controllers', ['luegg.directives'])
             };
             /**会话操作区**/
 
-                //更新咨询医生当日咨询用户数的排名列表
+            //更新咨询医生当日咨询用户数的排名列表
             $scope.refreshRankList = function(){
                 var currDate = new moment().format("YYYY-MM-DD");
                 GetTodayRankingList.save({"rankDate": currDate}, function (data) {
@@ -846,7 +841,8 @@ angular.module('controllers', ['luegg.directives'])
             };
 
             /***回复操作区**/
-                //我的回复内容
+
+            //我的回复内容
             $scope.tapMyReplyContent = function (parentIndex) {
                 if($scope.myReplyIndex==parentIndex){
                     $scope.myReplyIndex = -1;

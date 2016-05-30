@@ -52,7 +52,9 @@ public class ConsultSessionManager {
 	public static final String KEY_REQUEST_TYPE = "type";
 
 	public static final String KEY_CONSULT_CONTENT = "content";
-	
+
+	private final Map<String, String> testMapping = new ConcurrentHashMap<String, String>();
+
 	//<userId or cs-userId, Channel>
 	private final Map<String, Channel> userChannelMapping = new ConcurrentHashMap<String, Channel>();
 	
