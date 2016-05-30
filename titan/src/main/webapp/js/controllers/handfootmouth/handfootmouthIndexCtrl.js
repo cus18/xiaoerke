@@ -29,6 +29,7 @@ angular.module('controllers', ['ionic']).controller('handfootmouthIndexCtrl', [
         }
         
         $scope.doRefresh = function(){
+            var share = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=30";
             var timestamp;//时间戳
             var nonceStr;//随机字符串
             var signature;//得到的签名
@@ -61,8 +62,8 @@ angular.module('controllers', ['ionic']).controller('handfootmouthIndexCtrl', [
                         wx.ready(function () {
                             // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                             wx.onMenuShareTimeline({
-                                title: '妈妈要当心，手足口病又来了！儿童感染高发季节，预防和保障一个不能少。', // 分享标题
-                                link: window.location.href.replace("true","false"), // 分享链接
+                                title: '妈妈要当心，儿童最高发的传染病——手足口病又来了，预防和保障一个不能少！', // 分享标题
+                                link: share, // 分享链接
                                 imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2Fhandfootmouth.jpg', // 分享图标
                                 success: function (res) {
 
@@ -74,8 +75,8 @@ angular.module('controllers', ['ionic']).controller('handfootmouthIndexCtrl', [
 
                             wx.onMenuShareAppMessage({
                                 title: '小儿手足口宝', // 分享标题
-                                desc: '妈妈要当心，手足口病又来了！儿童感染高发季节，预防和保障一个不能少。', // 分享描述
-                                link:window.location.href.replace("true","false"), // 分享链接
+                                desc: '妈妈要当心，儿童最高发的传染病——手足口病又来了，预防和保障一个不能少！', // 分享描述
+                                link:share, // 分享链接
                                 imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2Fhandfootmouth.jpg', // 分享图标
                                 success: function (res) {
 

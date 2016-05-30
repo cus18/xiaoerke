@@ -69,7 +69,7 @@ var umbrellaFirstPageInit = function() {
         },
         dataType: "json"
     });
-
+    scanQRCode();
     recordLogs("umbrella_FirstPage");
     $("#readBuy").attr("disabled",false);
     $("#readLock").show();
@@ -202,6 +202,7 @@ var lookProtocol = function(index) {
 
 /*分享好友*/
 var goShare = function() {
+    joinUs();
     $(".c-shadow").show();
     $(".shadow-content.share").show();
 }
