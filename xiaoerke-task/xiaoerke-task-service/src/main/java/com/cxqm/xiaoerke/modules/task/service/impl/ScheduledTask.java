@@ -1167,6 +1167,12 @@ public class ScheduledTask {
     public void testMappingTask(){
         //删除会话排名中的临时数据
         System.out.println("userChannelMapping的大小为：" + ConsultSessionManager.getSessionManager().userChannelMapping.size());
+        Iterator iterator = ConsultSessionManager.getSessionManager().userChannelMapping.keySet().iterator();
+        while (iterator.hasNext()){
+            String key = (String) iterator.next();
+            System.out.println("key==" + key + "|||" + "value==" + ConsultSessionManager.getSessionManager().userChannelMapping.get(key));
+        }
+
     }
 
     //插入监听器
