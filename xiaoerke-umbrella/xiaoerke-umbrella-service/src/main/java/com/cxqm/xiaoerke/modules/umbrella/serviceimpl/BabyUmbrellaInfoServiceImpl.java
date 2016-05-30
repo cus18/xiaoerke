@@ -42,6 +42,11 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
     }
 
     @Override
+    public int updateBabyUmbrellaInfoById(BabyUmbrellaInfo babyUmbrellaInfo) {
+        return babyUmbrellaInfoDao.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
+    }
+
+    @Override
     public List<Map<String, Object>> getBabyUmbrellaInfo(Map<String, Object> map) {
         return babyUmbrellaInfoDao.getBabyUmbrellaInfo(map);
     }
@@ -50,8 +55,6 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
     public Integer getUserShareNums(String id) {
         return babyUmbrellaInfoDao.getUserShareNums(id);
     }
-
-
 
     @Override
     public String getUserQRCode(String id) {
@@ -81,7 +84,6 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
     public Integer getTotalBabyUmbrellaInfoMoney(Map<String, Object> map) {
         return babyUmbrellaInfoDao.getTotalBabyUmbrellaInfoMoney(map);
     }
-
 
     /**
      * 发送HttpPost请求
@@ -135,4 +137,15 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
         }
         return null; // 自定义错误信息
     }
+
+    @Override
+    public List getNotShareInfoFromLog(Map<String, Object> map) {
+        return babyUmbrellaInfoDao.getNotShareInfoFromLog(map);
+    }
+
+    @Override
+    public int getUmbrellaCount() {
+        return babyUmbrellaInfoDao.getUmbrellaCount();
+    }
+
 }

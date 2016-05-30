@@ -24,7 +24,7 @@ define(['appUmbrella'], function(app){
                 $stateProvider
                     /* 宝护伞 */
                     .state('umbrellaJoin', {
-                        url: '/umbrellaJoin',
+                        url: '/umbrellaJoin/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'umbrellaJoinCtrl',
                         resolve: {
@@ -40,7 +40,7 @@ define(['appUmbrella'], function(app){
                         }
                     })
                     .state('umbrellaFillInfo', {
-                        url: '/umbrellaFillInfo',
+                        url: '/umbrellaFillInfo/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'umbrellaFillInfoCtrl',
                         resolve: {

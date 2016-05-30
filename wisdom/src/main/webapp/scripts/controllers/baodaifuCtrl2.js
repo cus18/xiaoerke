@@ -1,27 +1,39 @@
 angular.module('controllers2', [])
-    .controller('indexCtrl',['$scope','$state','$stateParams',
-        function ($scope,$state,$stateParams) {
+    .controller('indexCtrl',['$scope','$state','$stateParams','$http',
+        function ($scope,$state,$stateParams,$http) {
 
             $scope.initial = function(){
-                setTimeout(function(){
+                $(".img_weixin").hide();
+                //底部微信二维码显示
+                $(".img_1").mouseenter(function () {
+                    $(".img_weixin").show();
+
+                });
+                $(".img_1").mouseout(function () {
                     $(".img_weixin").hide();
-                    var $headBar = $('.index_title'), initTop = 0, isScroll = true;
-                    $(window).on('scroll', function(e) {
-                        var scrollY = $(this).scrollTop();
-                        if(scrollY > 126){
-                            if(scrollY > initTop){
-                                $headBar.addClass('active');
-                            }else{
-                                $headBar.removeClass('active');
-                            }
-                        } else{
+                });
+                $(".curr").css("background-color","#22c4c6");
+                setLog("GW_PV");
+                var $headBar = $('.bdf_title'), initTop = 0, isScroll = true;
+                $(window).on('scroll', function(e) {
+                    var scrollY = $(this).scrollTop();
+                    if(scrollY > 126){
+                        if(scrollY > initTop){
+                            $headBar.addClass('active');
+                        }else{
                             $headBar.removeClass('active');
                         }
-                        initTop = scrollY;
-                    });
+                    } else{
+                        $headBar.removeClass('active');
+                    }
+                    initTop = scrollY;
+                });
+
+                setTimeout(function(){
+
                     $('#mov_doctor').movingBoxes({
                         width: 1000,
-                        reducedSize : 0.5,
+                        reducedSize : 0.7,
                         startPanel : 3,
                         currentPanel : 'svccurrent',
                         fixedHeight:false,
@@ -33,12 +45,15 @@ angular.module('controllers2', [])
                             slider.$curPanel.find('.doc_name_info').css("margin-top","10px");
                             slider.$curPanel.find('.doc_hosp').css("font-size","18px");
                             slider.$curPanel.find('.doc_hosp').css("margin-top","6px");
+                            slider.$curPanel.find('.index_com').css("font-size","16px");
+
                         },
                         initChange: function(e, slider, tar){
                             slider.$curPanel.find('.doc_name').show();
                             slider.$curPanel.find('.doc_name').css("margin-top","12px");
                             slider.$curPanel.find('.doc_name_info').css("font-size","0px");
                             slider.$curPanel.find('.doc_hosp').css("font-size","0px");
+                            slider.$curPanel.find('.index_com').css("font-size","0px");
                         },
                         completed: function(e, slider){
                             slider.$curPanel.find('.doc_name').hide();
@@ -46,12 +61,13 @@ angular.module('controllers2', [])
                             slider.$curPanel.find('.doc_name_info').css("margin-top","10px");
                             slider.$curPanel.find('.doc_hosp').css("font-size","18px");
                             slider.$curPanel.find('.doc_hosp').css("margin-top","6px");
+                            slider.$curPanel.find('.index_com').css("font-size","16px");
                         }
 
                     });
                     $('#mov_hosp').movingBoxes({
                         width: 1000,
-                        reducedSize : 0.5,
+                        reducedSize : 0.6,
                         startPanel : 3,
                         currentPanel : 'svccurrent',
                         hashTags: false,
@@ -80,52 +96,70 @@ angular.module('controllers2', [])
                         }
 
                     });
-                    //底部微信二维码显示
-                    $(".img_1").mouseenter(function () {
-                        $(".img_weixin").show();
-
-                    });
-                    $(".img_1").mouseout(function () {
-                        $(".img_weixin").hide();
-                    });
-                },500);
+                },2000);
             }
 
-            //联系我们
+
+            //顶部关于我们
             $scope.goCallMine = function () {
-                $state.go("callMine",{id:1});
+                setLog("GW_TOP_GYWM");
+                $state.go("callMine",{id:6});
             }
 
 
             //关于我们
-            $scope.goGuanYu = function () {
-                $state.go("callMine",{id:1});
+            $scope.goGuanYu = function (log) {
+                setLog(log);
+                $state.go("callMine",{id:6});
 
             }
 
             //联系我们
-            $scope.goLianXi = function () {
+            $scope.goLianXi = function (log) {
+                setLog(log);
                 $state.go("callMine",{id:2});
             }
 
+            //联系我们
+            $scope.goLianXi2 = function (log) {
+                setLog(log);
+                $state.go("callMine",{id:5});
+            }
+
             //服务协议
-            $scope.goFuWu = function () {
+            $scope.goFuWu = function (log) {
+                setLog(log);
                 $state.go("callMine",{id:3});
             }
 
             //隐私保护
-            $scope.goYinSi = function () {
+            $scope.goYinSi = function (log) {
+                setLog(log);
                 $state.go("callMine",{id:4});
             }
+
+            //微博
+            $scope.goWeiBo = function (log) {
+                setLog(log);
+            }
+
+            //记录日志
+            function setLog(log){
+                var pData = {logContent:encodeURI(log)};
+                $http({method:'post',url:'util/recordLogs',params:pData});
+            }
+
         }])
     //联系我们
-    .controller('callMineCtrl',['$scope','$state','$stateParams',
-        function ($scope,$state,$stateParams) {
+    .controller('callMineCtrl',['$scope','$state','$stateParams','$http',
+        function ($scope,$state,$stateParams,$http) {
+            var scrollTop;
             $scope.initial = function(){
+                $(".curr").css("background-color","#22c4c6");
                 setTimeout(function(){
                     $(".img_weixin").hide();
                     //顶部菜单效果
-                    var $headBar = $('.index_title'), initTop = 0, isScroll = true;
+                    var $headBar = $('.bdf_title'), initTop = 0, isScroll = true;
                     $(window).on('scroll', function(e) {
                         var scrollY = $(this).scrollTop();
                         if(scrollY > 126){
@@ -148,16 +182,29 @@ angular.module('controllers2', [])
                     $('.mine_con').css({'height': '1000px'});
                     Ps.initialize(document.getElementById('content_scroll'));
                 },300);
+
+
+                /*var scrollHeight = $(document).height();
+                var windowHeight = $(window).height();
+
+                scrollTop = scrollHeight-windowHeight;*/
+
             }
 
             if($stateParams.id==1){
                 changeMine($("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#GuanYu"),$("#LianXi"),$("#FuWu"),$("#YinSi"));
             }else if($stateParams.id==2){
                 changeMine($("#lianximine"),$("#guanyumine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#LianXi"),$("#GuanYu"),$("#FuWu"),$("#YinSi"));
+                $(window).scrollTop(650);
             }else if($stateParams.id==3){
                 changeMine($("#fuwuxieyi"),$("#guanyumine"),$("#lianximine"),$("#yinsibaohu"),$("#FuWu"),$("#GuanYu"),$("#LianXi"),$("#YinSi"));
             }else if($stateParams.id==4){
                 changeMine($("#yinsibaohu"),$("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#YinSi"),$("#GuanYu"),$("#LianXi"),$("#FuWu"));
+            }else if($stateParams.id==5){
+                changeMine($("#lianximine"),$("#guanyumine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#LianXi"),$("#GuanYu"),$("#FuWu"),$("#YinSi"));
+            }else if($stateParams.id==6){
+                changeMine($("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#GuanYu"),$("#LianXi"),$("#FuWu"),$("#YinSi"));
+                $(window).scrollTop(0);
             }
 
 
@@ -167,27 +214,33 @@ angular.module('controllers2', [])
             }
 
             //关于我们
-            $scope.goGuanYu = function () {
-
+            $scope.goGuanYu = function (log) {
+                setLog(log);
                 changeMine($("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#GuanYu"),$("#LianXi"),$("#FuWu"),$("#YinSi"));
             }
 
             //联系我们
-            $scope.goLianXi = function () {
-
+            $scope.goLianXi = function (log) {
+                setLog(log);
                 changeMine($("#lianximine"),$("#guanyumine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#LianXi"),$("#GuanYu"),$("#FuWu"),$("#YinSi"));
             }
 
             //服务协议
-            $scope.goFuWu = function () {
+            $scope.goFuWu = function (log) {
+                setLog(log);
                 changeMine($("#fuwuxieyi"),$("#guanyumine"),$("#lianximine"),$("#yinsibaohu"),$("#FuWu"),$("#GuanYu"),$("#LianXi"),$("#YinSi"));
             }
 
             //隐私保护
-            $scope.goYinSi = function () {
+            $scope.goYinSi = function (log) {
+                setLog(log);
                 changeMine($("#yinsibaohu"),$("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#YinSi"),$("#GuanYu"),$("#LianXi"),$("#FuWu"));
             }
 
+            //微博
+            $scope.goWeiBo = function (log) {
+                setLog(log);
+            }
 
 
             function  changeMine(id1,id2,id3,id4,css1,css2,css3,css4) {
@@ -195,12 +248,15 @@ angular.module('controllers2', [])
                 id2.hide();
                 id3.hide();
                 id4.hide();
-                css1.css("color","#22c4c6");
-                css2.css("color","#333");
-                css3.css("color","#333");
-                css4.css("color","#333");
-                $(".mine_conright").animate({scrollTop:0},1000);
 
+                css1.css("color","");
+                css2.css("color","");
+                css3.css("color","");
+                css4.css("color","");
+                css1.css("color","#22c4c6");
+
+                $(".mine_conright").animate({scrollTop:0},1000);
+                $(window).scrollTop(360);
             }
 
             //function getQueryString(name) {
@@ -228,4 +284,12 @@ angular.module('controllers2', [])
                 $(".img_weixin").hide();
 
             });
+
+            //记录日志
+            function setLog(log){
+                var pData = {logContent:encodeURI(log)};
+                $http({method:'post',url:'util/recordLogs',params:pData});
+            }
+
+
         }]);

@@ -16,6 +16,16 @@ public class BabyUmbrellaInfo {
     private String parentIdCard;
     private String parentPhone;
     private String parentName;
+    private Integer parentType;
+
+    public Integer getParentType() {
+        return parentType;
+    }
+
+    public void setParentType(Integer parentType) {
+        this.parentType = parentType;
+    }
+
     private Date activationTime;
 
     public Integer getUmbrellaMoney() {

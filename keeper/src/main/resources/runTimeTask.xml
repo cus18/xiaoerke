@@ -338,15 +338,27 @@
 	<!--</bean>-->
 
 	<!-- 咨询定时操作（天）-->
-	<bean id="consultManagementDayTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	<!--<bean id="consultManagementDayTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
+		<!--<property name="targetObject" ref="scheduledQuarz"/>-->
+		<!--<property name="targetMethod" value="consultManagementDayTask"/>-->
+		<!--<property name="concurrent" value="false"/>-->
+	<!--</bean>-->
+	<!--&lt;!&ndash;事件触发时间点 每天凌晨零点执行一次  &ndash;&gt;-->
+	<!--<bean id="deleteTempRecordTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
+		<!--<property name="jobDetail" ref="consultManagementDayTask"/>-->
+		<!--<property name="cronExpression" value="0 0 0 * * ?"/>-->
+	<!--</bean>-->
+
+	<!-- 保护伞未激活和未领取发送微信消息 -->
+	<bean id="umbrellaMessageQuarzTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="scheduledQuarz"/>
-		<property name="targetMethod" value="consultManagementDayTask"/>
+		<property name="targetMethod" value="umbrellaSendWechatMessage"/>
 		<property name="concurrent" value="false"/>
 	</bean>
-	<!--事件触发时间点 每天凌晨零点执行一次  -->
-	<bean id="deleteTempRecordTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="consultManagementDayTask"/>
-		<property name="cronExpression" value="0 0 0 * * ?"/>
+	<!--事件触发时间点 每天中午10点执行一次  -->
+	<bean id="umbrellaMessageCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="umbrellaMessageQuarzTask"/>
+		<property name="cronExpression" value="0 0 10 * * ?"/>
 	</bean>
 
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -374,6 +386,7 @@
                 <!--<ref bean="sendMsgToDocAtNightPhoneConsultCronTrigger"/>-->
                 <!--<ref bean="sendMsgToDocAtMorningPhoneConsultCronTrigger"/>-->
                 <!--<ref bean="phoneConsultReminder2DocCronTrigger"/>-->
+				<ref bean="umbrellaMessageCronTrigger"/>
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>

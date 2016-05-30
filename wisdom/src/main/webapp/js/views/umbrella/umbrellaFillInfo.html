@@ -1,5 +1,12 @@
 <ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
 <ion-view view-title="{{title}}">
+    <ion-content class="babyList" ng-if="fillLock">
+        <ion-scroll>
+            <ul class="" ng-if="fillLock">
+                <li class="f4 c6" ng-repeat="item in babyInfoList" ng-click="selectBaby(item)"><span ng-class="{'add':$first}" >{{item.name}}</span></li>
+            </ul>
+        </ion-scroll>
+    </ion-content>
     <ion-content class="umbrellaFillInfo bg1" overflow-scroll="true" style="top:0;">
         <ion-scroll direction="y" has-bouncing="true" >
             <div class="fillCommon">
@@ -8,10 +15,10 @@
                         <dd>
                             <span>姓名：</span>
                             <input type="hidden" id="babyId"/>
-                            <input type="text" id="babyName" placeholder="宝宝的真实姓名" ng-focus="fillName()" ng-blur="fillFinish()" ng-model="info.babyName">
-                            <ul class="babyList" ng-if="fillLock">
-                                <li class="f4 c6" ng-repeat="item in [1,2,3]" ng-click="selectBaby(item)">{{item}}</li>
-                            </ul>
+                            <input type="text" id="babyName" placeholder="宝宝的真实姓名" ng-click="skip('babyName')" ng-focus="fillName()" ng-blur="fillFinish()" ng-model="info.babyName">
+                            <!--<ul class="babyList" ng-if="fillLock">-->
+                                <!--<li class="f4 c6" ng-repeat="item in [1,2,3]" ng-click="selectBaby(item)">{{item}}</li>-->
+                            <!--</ul>-->
                         </dd>
                         <dd>
                             <span>性别：</span>
@@ -31,7 +38,7 @@
                         <dt>家长信息</dt>
                         <dd>
                             <span>姓名：</span>
-                            <input type="text" id="parentName"  placeholder="家长的真实姓名" >
+                            <input type="text" id="parentName"  ng-click="skip('parentName')" ng-model="info.parentName"  placeholder="家长的真实姓名" >
 
                         </dd>
                         <dd>
@@ -44,12 +51,12 @@
                         </dd>
                         <dd>
                             <span>手机号：</span>
-                            <input type="text" id="phone"  ng-model="info.phoneNum" placeholder="填写手机号" maxlength="11"  ng-blur="checkPhone()" >
+                            <input type="text" id="phone"  ng-click="skip('phone')"  ng-model="info.phoneNum" placeholder="填写手机号" maxlength="11"  ng-blur="checkPhone()" >
                         </dd>
                         <dd>
                             <span>验证码：</span>
-                            <input type="text" id="testCode"    maxlength="6"   ng-blur="checkCode();" >
-                            <a class="getCode">获取验证码</a>
+                            <input type="text" id="testCode"   ng-click="skip('testCode')" ng-model="info.code"   maxlength="6"   ng-blur="checkCode();" >
+                            <a class="getCode" ng-click="getCode()">{{codeSecond}}</a>
                         </dd>
                         <dd >
                             <span>身份证号：</span>

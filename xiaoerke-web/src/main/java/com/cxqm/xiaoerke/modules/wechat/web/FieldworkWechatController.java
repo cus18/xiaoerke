@@ -168,7 +168,8 @@ public class FieldworkWechatController {
             url = ConstantUtil.TITAN_WEB_URL + "/titan/firstPage/phoneConsult";
         }else if (url.indexOf("consultPhone")>-1){
             System.out.println("begin"+url);
-            url =ConstantUtil.TITAN_WEB_URL +"titan/phoneConsult#/phoneConDoctorList/"+url.replace("consultPhone","")+",searchDoctorByDepartment,";
+            String departmentName  = URLEncoder.encode(url.replace("consultPhone",""), "UTF-8");
+            url =ConstantUtil.TITAN_WEB_URL +"titan/phoneConsult#/phoneConDoctorList/"+departmentName+",searchDoctorByDepartment,";
             System.out.println("end"+url);
         }else if("29".equals(url)){
             //保险
@@ -176,6 +177,10 @@ public class FieldworkWechatController {
         }else if("30".equals(url)){
             //保险
             url = ConstantUtil.TITAN_WEB_URL + "titan/insurance#/handfootmouthIndex";
+        }else if("31".equals(url)){
+            String state = request.getParameter("id");
+            //保险
+            url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/umbrella?id="+state;
         }
 
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +

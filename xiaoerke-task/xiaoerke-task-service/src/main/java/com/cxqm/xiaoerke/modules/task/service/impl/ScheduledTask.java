@@ -8,6 +8,7 @@ import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
 import com.cxqm.xiaoerke.modules.consult.service.*;
+import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
 import com.cxqm.xiaoerke.modules.operation.service.BaseDataService;
 import com.cxqm.xiaoerke.modules.operation.service.DataStatisticService;
@@ -22,11 +23,9 @@ import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.service.CustomerService;
 import com.cxqm.xiaoerke.modules.sys.service.MessageService;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
-import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
-import com.cxqm.xiaoerke.modules.sys.utils.DoctorMsgTemplate;
-import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
-import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
+import com.cxqm.xiaoerke.modules.sys.utils.*;
 import com.cxqm.xiaoerke.modules.task.service.ScheduleTaskService;
+import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -100,6 +99,9 @@ public class ScheduledTask {
 
     @Autowired
     private ConsultSessionService consultSessionService;
+
+    @Autowired
+    private BabyUmbrellaInfoService babyUmbrellaInfoService;
 
     //将所有任务放到一个定时器里，减少并发
     //@Scheduled(cron = "0 */1 * * * ?")
@@ -1162,6 +1164,11 @@ public class ScheduledTask {
         consultRecordService.removeConsultRankRecord(new Query());
     }
 
+    public void testMappingTask(){
+        //删除会话排名中的临时数据
+        System.out.println("userChannelMapping的大小为：" + ConsultSessionManager.getSessionManager().userChannelMapping.size());
+    }
+
     //插入监听器
     private void insertMonitor(String register_no, String type, String status) {
         HashMap<String, Object> monitorMap = new HashMap<String, Object>();
@@ -1434,6 +1441,46 @@ public class ScheduledTask {
                 String time = format.format(date)+" "+week+" "+format1.format(beginTime)+"-"+format1.format(endTime);
                 DoctorMsgTemplate.doctorPhoneConsultRemindAt5minBefore2Wechat(babyName,time,userPhone,(String)map.get("register_no"),token,url,openid);
             }
+        }
+    }
+
+    public void umbrellaSendWechatMessage(){
+        Map<String, Object> notShareParam = new HashMap<String, Object>();
+        notShareParam.put("notShareOrActiveDays","1");
+        List<Map<String,Object>> notShareList = babyUmbrellaInfoService.getBabyUmbrellaInfo(notShareParam);
+        Map tokenMap = systemService.getDoctorWechatParameter();
+        String token = (String)tokenMap.get("token");
+
+        for(Map<String, Object> map : notShareList){//一天未分享
+            Map<String, Object> notShareLogParam = new HashMap<String, Object>();
+            notShareLogParam.put("openid",map.get("openid"));
+            List list = babyUmbrellaInfoService.getNotShareInfoFromLog(notShareLogParam);
+            if(list.size() == 0){
+                String title = "非保险，亦可保障自己；非慈善，亦能帮助他人。邀请好友的同时提升保障，利人利己！";
+                String templateId = "b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg";
+                String keyword1 = "保障金处于最低额度";
+                String keyword2 = StringUtils.isNotNull((String)map.get("baby_id"))?"观察期":"待激活";
+                String remark = "邀请一位好友，增加2万保额，最高可享受40万保障！";
+                String url = "";
+                String openid = (String)map.get("openid");
+                WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, openid, templateId);
+            }
+        }
+
+        Map<String, Object> notActiveParam = new HashMap<String, Object>();
+        notActiveParam.put("notActive","notActive");
+        notShareParam.put("notShareOrActiveDays","30");
+        List<Map<String,Object>> notActivelist = babyUmbrellaInfoService.getBabyUmbrellaInfo(notActiveParam);
+
+        for(Map<String, Object> map : notActivelist){//30天未激活
+            String title = "您刚领取的20万保障金还未激活";
+            String templateId = "lJIuV_O_zRMav4Fcv32e9cD7YG7cb0WVOPXNjhg_UpU";
+            String keyword1 = (String)map.get("id");
+            String keyword2 = "保护伞——宝大夫儿童重疾互助计划";
+            String remark = "马上点击，完善信息即可激活保障金! ";
+            String url = "";
+            String openid = (String)map.get("openid");
+            WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, openid, templateId);
         }
     }
 }

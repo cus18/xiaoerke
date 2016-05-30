@@ -53,10 +53,27 @@ public class PayController {
         CookieUtils.setCookie(response, "chargePrice", chargePrice);
         return "pay";
     }
-
     /**
      *
      * 处理来自微信服务器的请求
+     * 宝护伞
+     *
+     */
+    @RequestMapping(value = "/umbrellaPay/patientPay.do", method = {RequestMethod.POST, RequestMethod.GET})
+    public String umbrellaPay(@RequestParam(required=false) String patient_register_service_id,
+                             @RequestParam(required=false) String chargePrice,
+                             HttpServletResponse response) {
+//        if(!StringUtils.isNotNull(patient_register_service_id)){
+//            patient_register_service_id = "noData";
+//        }
+//        CookieUtils.setCookie(response,"patient_register_service_id", patient_register_service_id);
+//        CookieUtils.setCookie(response, "chargePrice", chargePrice);
+        return "umbrella";
+    }
+    /**
+     *
+     * 处理来自微信服务器的请求
+     * 防犬宝
      *
      */
     @RequestMapping(value = "/antiDogPay/patientPay.do", method = {RequestMethod.POST, RequestMethod.GET})
@@ -122,26 +139,37 @@ public class PayController {
             model.addAttribute("payPrice", 19.8);
             model.addAttribute("intervalFlag", "1");
             return "antiDogPay";
-        }else if(serviceType.equals("phoneConsult")){
+        }
+        else if(serviceType.equals("phoneConsult")){
             model.addAttribute("ceshi", "");
             model.addAttribute("phoneConDoctorDetail", phoneConDoctorDetail);
             model.addAttribute("doctorId", doctorId);
             return "phoneConsultPay";
-        }else if(serviceType.equals("appointment")){
+        }
+        else if(serviceType.equals("appointment")){
             model.addAttribute("payPrice", 200);
             model.addAttribute("intervalFlag", "1");
             return "appointmentPay";
-        }else if(serviceType.equals("orderDetail")){
+        }
+        else if(serviceType.equals("orderDetail")){
            return  "orderDetailPay";
-        }else if(serviceType.equals("customerPay")){
+        }
+        else if(serviceType.equals("customerPay")){
             return  "native/playtourIndex";
-        }else if(serviceType.equals("playtourPay")){
+        }
+        else if(serviceType.equals("playtourPay")){
             return  "native/playtourEvaluate";
-        }else if("handfootmouth".equals(serviceType)){
+        }
+        else if("handfootmouth".equals(serviceType)){
             model.addAttribute("payPrice", 26.8);
             model.addAttribute("intervalFlag", "1");
             return "native/handfootmouthPay";
-        }else{
+        }else if("umbrellaPay".equals(serviceType)){
+            model.addAttribute("payPrice", 5.0);
+            model.addAttribute("intervalFlag", "1");
+            return "pay/umbrellaPay";
+        }
+        else{
             return null;
         }
     }

@@ -103,7 +103,7 @@ public class NgRouteController extends BaseController {
      *  PC端官网2
      */
     @SystemControllerLog(description = "00000079")
-    @RequestMapping(value ="/baodaifuFirst2",method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value ="/baodaifu",method = {RequestMethod.POST, RequestMethod.GET})
     public String baodaifuIndex2() {
         return "angular/baodaifuFirstPage2";
     }
