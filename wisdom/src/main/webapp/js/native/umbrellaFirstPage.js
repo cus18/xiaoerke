@@ -86,7 +86,7 @@ function scanQRCode(){
             data:{"id":shareid},
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-                $("#QRCode").attr("qrcode",data.result);
+                $("#QRCode").attr("src",data.result);
             },
             dataType: "json"
         });
@@ -142,6 +142,8 @@ var lookProtocol = function(index) {
 /*分享好友*/
 var goShare = function() {
     joinUs();
+    $(".c-shadow").show();
+    $(".shadow-content.share").show();
     var timestamp;//时间戳
     var nonceStr;//随机字符串
     var signature;//得到的签名
@@ -180,8 +182,7 @@ var goShare = function() {
                         success: function (res) {
                             //记录用户分享文章
                             recordLogs("Umbrella_shareMoment");
-                            $(".c-shadow").show();
-                            $(".shadow-content.share").show();
+
                         },
                         fail: function (res) {
                         }
@@ -194,8 +195,7 @@ var goShare = function() {
                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                         success: function (res) {
                             recordLogs("Umbrella_shareFirend");
-                            $(".c-shadow").show();
-                            $(".shadow-content.share").show();
+                           
                         },
                         fail: function (res) {
                         }
