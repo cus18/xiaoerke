@@ -132,6 +132,11 @@
 
             /*填写宝宝姓名 选择宝宝*/
             $scope.getCode = function(){
+                var phone=$scope.info.phoneNum
+                if(typeof(phone) == "undefined"||phone==""){
+                    alert("手机号不能为空");
+                    return;
+                }
                 IdentifyUser.save({"userPhone":$scope.info.phoneNum},function (data){
                     if(data.status=="1") {
                         $scope.codeSecond=60;
