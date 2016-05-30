@@ -31,6 +31,7 @@ define(['appUmbrella'], function(app){
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaJoinCtrl',
                                     ['js/controllers/umbrella/umbrellaJoinCtrl.js',
+                                        'js/libs/moment.min.js',
                                         'styles/umbrella/umbrellaJoin.less?ver='+umbrellaVersion],
                                     'js/views/umbrella/umbrellaJoin.html?ver='+umbrellaVersion);
                             }
