@@ -66,11 +66,13 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 				0 : (Integer) msgMap.get(ConsultSessionManager.KEY_REQUEST_TYPE);
 
 		if(msgType == 5){
+			String csUserId = (String) msgMap.get("csUserId");
 			//来的是医生心跳消息，回心跳确认消息给医生
 			JSONObject jsonObj = new JSONObject();
 			jsonObj.put("type", "5");
+			Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(csUserId);
 			TextWebSocketFrame heartBeatCsUser = new TextWebSocketFrame(jsonObj.toJSONString());
-			channel.writeAndFlush(heartBeatCsUser.retain());
+			csChannel.writeAndFlush(heartBeatCsUser.retain());
 			return;
 		}
 
