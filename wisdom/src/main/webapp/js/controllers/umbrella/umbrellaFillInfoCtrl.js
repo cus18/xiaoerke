@@ -18,6 +18,12 @@
             $scope.babyInfoList={};
             $scope.umbrellaId=$stateParams.id;
 
+            /*点击输入框跳转到相应位置*/
+            $scope.skip = function(item){
+                $(".view,html,body").stop().animate({"scrollTop":$("#"+item).offset().top},0);
+
+            }
+
             /*填写宝宝姓名 获取焦点*/
             $scope.fillName = function(){
                 $scope.fillLock = true;
@@ -230,7 +236,7 @@
                     "idCard":$scope.info.IdCard,"parentName":encodeURI($scope.info.parentName),
                     "parentType":$scope.parentType,"umbrellaId":$scope.umbrellaId}, function (data){
                     if(data.result=='1'){
-                        $state.go("umbrellaJoin","/"+new Date().getTime());
+                        $state.go("umbrellaJoin",{id:new Date().getTime()});
                     }else if(data.result=='3'){
                         alert("验证码无效");
                         return;
