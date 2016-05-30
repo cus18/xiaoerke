@@ -87,8 +87,8 @@ function scanQRCode(){
             async:false,
             data:"{'id':'"+shareid+"'}",
             success: function (data) {
-                console.log("s",data.result);
-                $("#QRCode").attr("src",data.result);
+                console.log("s",data.qrcode);
+                $("#QRCode").attr("src",data.qrcode);
             },
             dataType: "json"
         });
