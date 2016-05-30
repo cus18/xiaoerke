@@ -1172,7 +1172,6 @@ public class ScheduledTask {
             String key = (String) iterator.next();
             System.out.println("key==" + key + "|||" + "value==" + ConsultSessionManager.getSessionManager().userChannelMapping.get(key));
         }
-
     }
 
     //插入监听器
