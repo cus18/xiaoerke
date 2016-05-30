@@ -83,7 +83,7 @@ function scanQRCode(){
         $.ajax({
             type: 'POST',
             url: "umbrella/getUserQRCode",
-            data:{"id":shareid},
+            data:{id:shareid},
             contentType: "application/json; charset=utf-8",
             success: function (data) {
                 console.log("s",data.result);
