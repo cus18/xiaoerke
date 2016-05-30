@@ -415,7 +415,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			articleList.add(article);
 		}else if(EventKey.indexOf("12")>-1 && "newUser".equals(userType)){//扫码分享
 			Map<String, Object> param = new HashMap<String, Object>();
-			param.put("id",EventKey);
+			String id = EventKey.split("_")[1];
+			param.put("id",id);
 			List<Map<String,Object>> list = babyUmbrellaInfoService.getBabyUmbrellaInfo(param);
 			if(list.size()!=0){
 				if((Integer) list.get(0).get("umbrella_money")<400000){
@@ -432,7 +433,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 						nickname = (String)hmap.get("nickname");
 					}
 					BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
-					babyUmbrellaInfo.setId(Integer.parseInt(EventKey));
+					babyUmbrellaInfo.setId(Integer.parseInt(id));
 					int umbrellaMoney = (Integer) list.get(0).get("umbrella_money")+20000;
 					babyUmbrellaInfo.setUmberllaMoney(umbrellaMoney);
 					babyUmbrellaInfoService.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
