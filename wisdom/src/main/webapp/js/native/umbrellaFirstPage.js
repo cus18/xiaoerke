@@ -39,8 +39,8 @@ var umbrellaFirstPageInit = function() {
         $('#textIntro').html(textIntro);
         $(".helpPlan .pic img").attr("src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/help_pic1b.png");
     }
-
-    //通过openid 获取当前用户是否关注
+    ifExistOrder();
+    //获取首页数据
     $.ajax({
         type: 'POST',
         url: "umbrella/firstPageData",
@@ -113,6 +113,22 @@ function  joinUs(){
     });
 }
 
+
+function  ifExistOrder(){
+    $.ajax({
+        type: 'POST',
+        url: "umbrella/ifExistOrder",
+        contentType: "application/json; charset=utf-8",
+        success: function(data){
+            if(data.result==1){
+                $("#changeButton").html("马上领取");
+            }else{
+                $("#changeButton").html("我的保障");
+            }
+        },
+        dataType: "json"
+    });
+}
 
 /*重大疾病名称及定义 展开隐藏*/
 var lookHelpPlan = function() {
