@@ -121,9 +121,9 @@ function  ifExistOrder(){
         contentType: "application/json; charset=utf-8",
         success: function(data){
             if(data.result==1){
-                $("#changeButton").html("马上领取");
+                $("#changeButton").val("马上领取");
             }else{
-                $("#changeButton").html("我的保障");
+                $("#changeButton").val("我的保障");
             }
         },
         dataType: "json"
