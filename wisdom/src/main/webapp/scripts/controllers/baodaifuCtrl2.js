@@ -120,6 +120,12 @@ angular.module('controllers2', [])
                 $state.go("callMine",{id:2});
             }
 
+            //联系我们
+            $scope.goLianXi2 = function (log) {
+                setLog(log);
+                $state.go("callMine",{id:5});
+            }
+
             //服务协议
             $scope.goFuWu = function (log) {
                 setLog(log);
@@ -147,6 +153,7 @@ angular.module('controllers2', [])
     //联系我们
     .controller('callMineCtrl',['$scope','$state','$stateParams','$http',
         function ($scope,$state,$stateParams,$http) {
+            var scrollTop;
             $scope.initial = function(){
                 $(".curr").css("background-color","#22c4c6");
                 setTimeout(function(){
@@ -176,10 +183,11 @@ angular.module('controllers2', [])
                     Ps.initialize(document.getElementById('content_scroll'));
                 },300);
 
-                /*$("#content_scroll").scroll(function(e){
-                    var scrollY = $(this).scrollTop();
-                    console.log("scd",scrollY);
-                });*/
+
+                /*var scrollHeight = $(document).height();
+                var windowHeight = $(window).height();
+
+                scrollTop = scrollHeight-windowHeight;*/
 
             }
 
@@ -187,11 +195,13 @@ angular.module('controllers2', [])
                 changeMine($("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#GuanYu"),$("#LianXi"),$("#FuWu"),$("#YinSi"));
             }else if($stateParams.id==2){
                 changeMine($("#lianximine"),$("#guanyumine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#LianXi"),$("#GuanYu"),$("#FuWu"),$("#YinSi"));
-                $(window).scrollTop(600);
+                $(window).scrollTop(650);
             }else if($stateParams.id==3){
                 changeMine($("#fuwuxieyi"),$("#guanyumine"),$("#lianximine"),$("#yinsibaohu"),$("#FuWu"),$("#GuanYu"),$("#LianXi"),$("#YinSi"));
             }else if($stateParams.id==4){
                 changeMine($("#yinsibaohu"),$("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#YinSi"),$("#GuanYu"),$("#LianXi"),$("#FuWu"));
+            }else if($stateParams.id==5){
+                changeMine($("#lianximine"),$("#guanyumine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#LianXi"),$("#GuanYu"),$("#FuWu"),$("#YinSi"));
             }
 
 
@@ -210,7 +220,6 @@ angular.module('controllers2', [])
             $scope.goLianXi = function (log) {
                 setLog(log);
                 changeMine($("#lianximine"),$("#guanyumine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#LianXi"),$("#GuanYu"),$("#FuWu"),$("#YinSi"));
-                $(window).scrollTop(600);
             }
 
             //服务协议
