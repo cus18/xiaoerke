@@ -518,6 +518,7 @@
                                     <th>工号</th>
                                     <th>昵称</th>
                                     <th>科室</th>
+                                    <th>正在咨询人数</th>
                                     <th>角色</th>
                                 </tr>
                                 <tr ng-repeat="item in info.onLineCsUserList"
@@ -527,6 +528,7 @@
                                     <td>{{item.email}}</td>
                                     <td>{{item.name}}</td>
                                     <td>{{item.department}}</td>
+                                    <td>{{item.currentCount}}</td>
                                     <td>{{info.role[item.user_type]}}</td>
                                 </tr>
                                 <tr ng-repeat="item in info.onLineCsUserList"
@@ -536,6 +538,7 @@
                                     <td>{{item.email}}</td>
                                     <td>{{item.name}}</td>
                                     <td>{{item.department}}</td>
+                                    <td>{{item.currentCount}}</td>
                                     <td>{{info.role[item.user_type]}}</td>
                                 </tr>
                             </table>
