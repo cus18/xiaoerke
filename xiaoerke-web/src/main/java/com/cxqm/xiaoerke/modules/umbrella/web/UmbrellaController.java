@@ -103,7 +103,7 @@ public class UmbrellaController  {
         String code=params.get("code").toString();
         String openid= WechatUtil.getOpenId(session, request);
 //        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
-        String res = utilService.bindUser(phone,code,openid);
+        String res=utilService.bindUser(phone,code,openid);
         if(res.equals("0")){
             result.put("result","3");
             return result;
@@ -169,14 +169,23 @@ public class UmbrellaController  {
         Map<String, Object> result = new HashMap<String, Object>();
         Map<String,Object> openIdStatus = babyUmbrellaInfoSerivce.getOpenidStatus(openid);
         if(openIdStatus != null){
-            result.put("status","1");
-            result.put("openid",openid);
-            return  result;
+            String status=openIdStatus.get("status").toString();
+            if(status.equals("0")) {
+                result.put("status", "1");
+                result.put("openid", openid);
+                return result;
+            }else{
+                String id = openIdStatus.get("status").toString();
+                result.put("status",id);
+                result.put("openid",openid);
+                return result;
+            }
+        }else {
+            String id = openIdStatus.get("status").toString();
+            result.put("status", id);
+            result.put("openid", openid);
+            return result;
         }
-        String id = openIdStatus.get("status").toString();
-        result.put("status",id);
-        result.put("openid",openid);
-        return result;
     }
 
 
@@ -187,14 +196,14 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  ifExistOrder(HttpServletRequest request,HttpSession session) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        Map<String, Object> result = new HashMap<String, Object>();
-        String openid = WechatUtil.getOpenId(session, request);
+        Map<String, Object> map=new HashMap<String, Object>();
+        Map<String, Object> result=new HashMap<String, Object>();
+        String openid= WechatUtil.getOpenId(session, request);
 //        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
-        List<Map<String, Object>> list = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
+        List<Map<String, Object>> list=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
-            Map<String, Object> m = list.get(0);
+            Map<String, Object> m=list.get(0);
             if(m.get("baby_id")!=null&&!m.get("baby_id").equals("")){
                 result.put("result",3);
                 result.put("umbrella",m);
