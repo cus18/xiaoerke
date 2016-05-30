@@ -230,7 +230,7 @@
                     "idCard":$scope.info.IdCard,"parentName":encodeURI($scope.info.parentName),
                     "parentType":$scope.parentType,"umbrellaId":$scope.umbrellaId}, function (data){
                     if(data.result=='1'){
-                        $state.go("umbrellaJoin","/"+new Date().getTime());
+                        $state.go("umbrellaJoin",{id:new Date().getTime()});
                     }else if(data.result=='3'){
                         alert("验证码无效");
                         return;
