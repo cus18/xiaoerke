@@ -110,6 +110,10 @@ public class MessageUtil {
 	 * */
 	public static final String KF_CLOSE = "kf_close_session";
 
+	/**
+	 * 点击菜单链接
+	 * */
+	public static final String EVENT_TYPE_VIEW = "VIEW";
 
 
 	/**

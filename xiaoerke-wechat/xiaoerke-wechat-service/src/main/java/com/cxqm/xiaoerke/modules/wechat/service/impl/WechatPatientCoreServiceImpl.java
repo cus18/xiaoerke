@@ -137,6 +137,10 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			else if (eventType.equals(MessageUtil.REQ_MESSAGE_TYPE_LOCATION)){
 				processGetLocationEvent(xmlEntity,request);
 			}
+			//点击菜单中的链接
+			else if (eventType.equals(MessageUtil.EVENT_TYPE_VIEW)){
+				//respMessage = processClickMenulinkEvent(xmlEntity,request,response);
+			}
 		}
 		else {
 			String customerService = Global.getConfig("wechat.customservice");
@@ -403,35 +407,37 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			param.put("id",EventKey);
 			List<Map<String,Object>> list = babyUmbrellaInfoService.getBabyUmbrellaInfo(param);
 			if(list.size()!=0){
-				String fromOpenId = (String)list.get(0).get("openid");//分享者openid
-				String babyId = (String)list.get(0).get("baby_id");
-				String toOpenId = xmlEntity.getFromUserName();//扫码者openid
-				Map parameter = systemService.getWechatParameter();
-				String token = (String)parameter.get("token");
+				if((Integer) list.get(0).get("umbrella_money")<400000){
+					String fromOpenId = (String)list.get(0).get("openid");//分享者openid
+					String babyId = (String)list.get(0).get("baby_id");
+					String toOpenId = xmlEntity.getFromUserName();//扫码者openid
+					Map parameter = systemService.getWechatParameter();
+					String token = (String)parameter.get("token");
 
-				HashMap<String,Object> hmap = new HashMap<String, Object>();
-				hmap = wechatAttentionService.getAttention(toOpenId);
-				String nickname = "";
-				if(hmap!=null){
-					nickname = (String)hmap.get("nickname");
+					HashMap<String,Object> hmap = new HashMap<String, Object>();
+					hmap = wechatAttentionService.getAttention(toOpenId);
+					String nickname = "";
+					if(hmap!=null){
+						nickname = (String)hmap.get("nickname");
+					}
+					BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
+					babyUmbrellaInfo.setId(Integer.parseInt(EventKey));
+					int umbrellaMoney = (Integer) list.get(0).get("umbrella_money")+20000;
+					babyUmbrellaInfo.setUmberllaMoney(umbrellaMoney);
+					babyUmbrellaInfoService.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
+					String title = "恭喜您，您的好友"+nickname+"已成功加入。您既帮助了朋友，也提升了2万保障金！";
+					String templateId = "b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg";
+					String keyword1 = "您已拥有"+babyUmbrellaInfo.getUmberllaMoney()+"万的保障金，还需邀请"+(400000-umbrellaMoney)/20000+"位好友即可获得最高40万保障金。";
+					String keyword2 = StringUtils.isNotNull(babyId)?"观察期":"待激活";
+					String remark = "邀请一位好友，增加2万保额，最高可享受40万保障！";
+					String url = "";
+					WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, fromOpenId, templateId);
 				}
-				BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
-				babyUmbrellaInfo.setId(Integer.parseInt(EventKey));
-				babyUmbrellaInfo.setUmberllaMoney((Integer) list.get(0).get("umbrella_money")+2);
-				babyUmbrellaInfoService.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
-				int count = babyUmbrellaInfoService.getUmbrellaCount();
-				String title = "恭喜您，您的好友"+nickname+"已成功加入。您既帮助了朋友，也提升了2万保障金！";
-				String templateId = "b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg";
-				String keyword1 = "您已拥有28万的保障金，还需邀请_位好友即可获得最高40万保障金。";
-				String keyword2 = StringUtils.isNotNull(babyId)?"观察期":"待激活";
-				String remark = "邀请一位好友，增加2万保额，最高可享受40万保障！";
-				String url = "";
-				WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, fromOpenId, templateId);
 			}
 			article.setTitle("宝大夫送你一份见面礼");
 			article.setDescription("恭喜您已成功领取专属于宝宝的40万高额保障金");
 			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
-			article.setUrl("");
+			article.setUrl("http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=31&id=0");
 			articleList.add(article);
 			umbrellascan = true;
 		}
@@ -443,7 +449,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				article.setTitle("宝大夫送你一份见面礼");
 				article.setDescription("专属于宝宝的40万高额保障金免费送，目前已有" + count + "位妈妈们领取，你也赶紧加入吧！");
 				article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
-				article.setUrl("");
+				article.setUrl("http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=31&id=0");
 				articleList.add(article);
 			}
 		}
@@ -691,8 +697,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			Article article = new Article();
 			article.setTitle("小病问医生，大病有互助");
 			article.setDescription("6月宝贝福利免费送，40万高额大病保障等你拿，目前已有" + count + "位妈妈们领取，你也赶紧加入吧！");
-			article.setPicUrl("");
-			article.setUrl("");
+			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
+			article.setUrl("http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=31&id=0");
 			articleList.add(article);
 			// 设置图文消息个数
 			newsMessage.setArticleCount(articleList.size());

@@ -310,7 +310,7 @@
             <img class="show1" width="18" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/share_icon.png"><br>
             分享好友
         </button>
-        <button class="fl tc c0 f6" onclick="goJoin()" >马上领取</button>
+        <button class="fl tc c0 f6" onclick="goJoin()" id="changeButton" >马上领取</button>
     </div>
     <!--底部按钮 第二种情况 领取之后-->
     <div class="myBottom-btn myBottom-btn2" hidden>
@@ -326,7 +326,11 @@
     <!--关注浮层-->
     <div class="shadow-content attention tc"  hidden>
         <img onclick="cancelRemind()" class="close" width="20" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/attention_close.png">
-        <img  class="code" width="26%" id="QRCode" height="auto" data-tap-disabled="true"  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/attention_code.png">
+        <div class="code">
+            <img  class="" width="100%" id="QRCode" height="auto" data-tap-disabled="true"  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/attention_code.png">
+            <img  class="logo" width="20" height="20" data-tap-disabled="true"  src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg">
+        </div>
+
         <img  class="remind" width="80%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/attention_pic.png">
     </div>
     <!--宝大夫儿童重疾互助计划公约 浮层-->

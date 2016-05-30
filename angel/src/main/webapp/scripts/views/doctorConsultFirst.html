@@ -269,8 +269,19 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="magnifyImg" ng-show='showFlag.magnifyImg' ng-click="tapShowButton('magnifyImg')">
+                        <!--<div class="magnifyImg" ng-show='showFlag.magnifyImg' ng-click="tapShowButton('magnifyImg')">
                             <img width="400px" ng-src="{{imageSrc}}">
+                        </div>-->
+                        <div class="magnifyImg" onMouseOver="drag=1;" onMouseOut="" drag="0" ng-show='showFlag.magnifyImg'>
+                            <div class="box">
+                                <button ng-click="tapShowButton('magnifyImg')">关闭</button>
+                                <button onClick="bigit();">放大</button>
+                                <button onClick="smallit();">缩小</button>
+                                <button onclick="rotateDIV()">旋转</button>
+                            </div>
+                            <div class="imageBig" id="rotate1">
+                                <img onmousewheel="return onWheelZoom(this)" style="zoom: 0.7" ng-src="{{imageSrc}}" name="images1">
+                            </div>
                         </div>
                     </div>
                 </div>
