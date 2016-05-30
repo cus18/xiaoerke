@@ -62,7 +62,7 @@ public class ConsultTransferListController {
                 jsonObject = new JSONObject();
                 jsonObject.put("currentDoctor",StringUtils.isNotNull(consultTransfer.getSysUserNameCs()) ? consultTransfer.getSysUserNameCs() :"无");
                 jsonObject.put("userName",consultTransfer.getSysUserName());
-                jsonObject.put("createDate", DateUtils.formatDateTime(consultTransfer.getCreateDate()));
+                jsonObject.put("createDate",DateUtils.formatDateTime(consultTransfer.getCreateDate()));
                 jsonObject.put("department",consultTransfer.getDepartment());
                 jsonObject.put("userId",consultTransfer.getSysUserId());
                 jsonObject.put("id", consultTransfer.getId());
