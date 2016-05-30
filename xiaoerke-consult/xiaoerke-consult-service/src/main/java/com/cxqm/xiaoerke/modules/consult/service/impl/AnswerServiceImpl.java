@@ -31,7 +31,7 @@ public class AnswerServiceImpl implements AnswerService {
         Query query = new Query();
         if ("myAnswer".equals(type)) {
             query.addCriteria(where("type").is(type).andOperator(new Criteria().where("userId").is(UserUtils.getUser().getId())));
-        } else {
+        }else {
             query.addCriteria(where("type").is(type));
         }
         List<AnswerMongoVo> answerMongoVos = answerMongoVoMongoDBService.queryList(query);
@@ -56,6 +56,9 @@ public class AnswerServiceImpl implements AnswerService {
                     new Update().update("answerContent", answer));
         }else if(answerType.equals("commonAnswer")){
             writeResult = answerMongoVoMongoDBService.upsert((new Query(where("type").is("commonAnswer"))),
+                    new Update().update("answerContent", answer));
+        }else if(answerType.equals("diagnosis")){
+            writeResult = answerMongoVoMongoDBService.upsert((new Query(where("type").is("diagnosis"))),
                     new Update().update("answerContent", answer));
         }
         return writeResult;
