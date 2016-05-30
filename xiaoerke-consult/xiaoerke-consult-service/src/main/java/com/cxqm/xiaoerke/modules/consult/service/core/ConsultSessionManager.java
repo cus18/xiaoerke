@@ -23,6 +23,7 @@ import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import org.apache.batik.css.engine.value.StringValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,11 +54,8 @@ public class ConsultSessionManager {
 
 	public static final String KEY_CONSULT_CONTENT = "content";
 
-	private final Map<String, String> testMapping = new ConcurrentHashMap<String, String>();
-
 	//<userId or cs-userId, Channel>
-	private final Map<String, Channel> userChannelMapping = new ConcurrentHashMap<String, Channel>();
-	
+	public final Map<String, Channel> userChannelMapping = new ConcurrentHashMap<String, Channel>();
 	//<cs-userId, Channel>
 	private final Map<String, Channel> csUserChannelMapping = new ConcurrentHashMap<String, Channel>();
 	
