@@ -33,7 +33,7 @@ angular.module('controllers2', [])
 
                     $('#mov_doctor').movingBoxes({
                         width: 1000,
-                        reducedSize : 0.5,
+                        reducedSize : 0.6,
                         startPanel : 3,
                         currentPanel : 'svccurrent',
                         fixedHeight:false,
@@ -187,6 +187,7 @@ angular.module('controllers2', [])
                 changeMine($("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#GuanYu"),$("#LianXi"),$("#FuWu"),$("#YinSi"));
             }else if($stateParams.id==2){
                 changeMine($("#lianximine"),$("#guanyumine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#LianXi"),$("#GuanYu"),$("#FuWu"),$("#YinSi"));
+                $(window).scrollTop(600);
             }else if($stateParams.id==3){
                 changeMine($("#fuwuxieyi"),$("#guanyumine"),$("#lianximine"),$("#yinsibaohu"),$("#FuWu"),$("#GuanYu"),$("#LianXi"),$("#YinSi"));
             }else if($stateParams.id==4){
@@ -209,6 +210,7 @@ angular.module('controllers2', [])
             $scope.goLianXi = function (log) {
                 setLog(log);
                 changeMine($("#lianximine"),$("#guanyumine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#LianXi"),$("#GuanYu"),$("#FuWu"),$("#YinSi"));
+                $(window).scrollTop(600);
             }
 
             //服务协议
