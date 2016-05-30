@@ -75,6 +75,52 @@ var umbrellaFirstPageInit = function() {
     $("#readLock").show();
 
     joinUs();
+
+
+}
+
+function scanQRCode(){
+    var shareid=GetQueryString("id");
+    if(shareid!="0") {
+        $.ajax({
+            type: 'POST',
+            url: "umbrella/getUserQRCode",
+            contentType: "application/json; charset=utf-8",
+            async:false,
+            data:"{'id':'"+shareid+"'}",
+            success: function (data) {
+                console.log("s",data.qrcode);
+                $("#QRCode").attr("src",data.qrcode);
+            },
+            dataType: "json"
+        });
+    }
+}
+
+function  joinUs(){
+    $.ajax({
+        type: 'POST',
+        url: "umbrella/joinUs",
+        contentType: "application/json; charset=utf-8",
+        async:false,
+        success: function(data){
+            if(data.result==1){
+                shareUmbrellaId=data.id;
+                loadShare();
+            }else if(data.result==2){
+                shareUmbrellaId=data.umbrella.id;
+                loadShare();
+            }else if(data.result==3){
+                shareUmbrellaId=data.umbrella.id;
+                loadShare();
+            }
+
+        },
+        dataType: "json"
+    });
+}
+
+function loadShare(){
     var timestamp;//时间戳
     var nonceStr;//随机字符串
     var signature;//得到的签名
@@ -139,46 +185,7 @@ var umbrellaFirstPageInit = function() {
         error : function() {
         }
     });
-
 }
-
-function scanQRCode(){
-    var shareid=GetQueryString("id");
-    if(shareid!="0") {
-        $.ajax({
-            type: 'POST',
-            url: "umbrella/getUserQRCode",
-            contentType: "application/json; charset=utf-8",
-            async:false,
-            data:"{'id':'"+shareid+"'}",
-            success: function (data) {
-                console.log("s",data.qrcode);
-                $("#QRCode").attr("src",data.qrcode);
-            },
-            dataType: "json"
-        });
-    }
-}
-
-function  joinUs(){
-    $.ajax({
-        type: 'POST',
-        url: "umbrella/joinUs",
-        contentType: "application/json; charset=utf-8",
-        async:false,
-        success: function(data){
-            if(data.result==1){
-                shareUmbrellaId=data.id;
-            }else if(data.result==2){
-                shareUmbrellaId=data.umbrella.id;
-            }else if(data.result==3){
-                shareUmbrellaId=data.umbrella.id;
-            }
-        },
-        dataType: "json"
-    });
-}
-
 
 function  ifExistOrder(){
     $.ajax({
