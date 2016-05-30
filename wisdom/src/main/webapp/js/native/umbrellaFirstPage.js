@@ -63,7 +63,7 @@ var umbrellaFirstPageInit = function() {
         contentType: "application/json; charset=utf-8",
         success: function(result){
             var status=result.status;
-            if(status=="0"){
+            if(status=="1"){
                 attentionLock=true;
             }
         },
