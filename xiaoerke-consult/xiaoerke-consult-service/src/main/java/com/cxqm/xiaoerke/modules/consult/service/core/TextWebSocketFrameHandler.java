@@ -83,17 +83,25 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 				return;
 			String csUserId = richConsultSession.getCsUserId();
 			String userId = richConsultSession.getUserId();
-			Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(csUserId);
 
-			if(channel != csChannel && csChannel != null) {
-				csChannel.writeAndFlush(msg.retain());
-				//保存聊天记录
-				consultRecordService.buildRecordMongoVo(userId, String.valueOf(msgType), (String) msgMap.get("content"), richConsultSession);
+			String senderId = (String) msgMap.get("senderId");
 
-			} else {
+			if(senderId.equals(userId)){
+				//如果是用户作为发送者，则发给医生接收
+				Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(csUserId);
+				if(csChannel != null&&csChannel.isActive()){
+					csChannel.writeAndFlush(msg.retain());
+					//保存聊天记录
+					consultRecordService.buildRecordMongoVo(userId, String.valueOf(msgType), (String) msgMap.get("content"), richConsultSession);
+				}
+
+			}else if(senderId.equals(csUserId)){
+				//如果是医生作为发送者，则用户接收
 				if(richConsultSession.getSource().equals("h5cxqm")){
 					Channel userChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(userId);
-					userChannel.writeAndFlush(msg.retain());
+					if(userChannel != null&&userChannel.isActive()){
+						userChannel.writeAndFlush(msg.retain());
+					}
 				}else if(richConsultSession.getSource().equals("wxcxqm")){
 					if(msgType==0){
 						//直接发送文本消息
@@ -108,9 +116,10 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 				//保存聊天记录
 				consultRecordService.buildRecordMongoVo(csUserId, String.valueOf(msgType), (String) msgMap.get("content"), richConsultSession);
 			}
+
 			//更新会话操作时间
 			consultRecordService.saveConsultSessionStatus(richConsultSession);
-		}else if(sessionId==null){
+		}else if(sessionId == null){
 			//如果sessionId为空，首先看，消息，是不是从一个用户的H5channel过来的
 			if(msgMap.get("source").equals("h5cxqmUser") && msgMap.get("senderId")!=null) {
 				RichConsultSession consultSession = ConsultSessionManager.getSessionManager().
