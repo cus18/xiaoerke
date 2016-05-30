@@ -15,9 +15,9 @@
             <img class="mcl_img_1" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/mine_guanyuwomen.png"/>
             <dl>
                 <dd ng-click="goGuanYu()" id="GuanYu">关于我们</dd>
-                <dd ng-click="goLianXi()" id="LianXi">联系我们</dd>
-                <dd ng-click="goFuWu()" id="FuWu">服务协议</dd>
-                <dd ng-click="goYinSi()" id="YinSi">隐私保护</dd>
+                <dd ng-click="goLianXi('GW_GYWM_LXWM')" id="LianXi">联系我们</dd>
+                <dd ng-click="goFuWu('GW_GYWM_FWXY')" id="FuWu">服务协议</dd>
+                <dd ng-click="goYinSi('GW_GYWM_YSBH')" id="YinSi">隐私保护</dd>
             </dl>
         </div>
         <div class="mine_conright ps-container ps-active-x ps-active-y" id="content_scroll">
@@ -225,7 +225,7 @@
                 <img class="img_weixin" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_dibuerweima.png" width="276px" height="293px"/>
                 <div class="but_weiwo">
                     <img class="img_1" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_weixin.png" />
-                    <a href="http://weibo.com/u/5698085071?refer_flag=0000015012_&from=feed&loc=nickname&is_hot=1#_loginLayer_1464144696132" target="_blank">
+                    <a href="http://weibo.com/u/5698085071?refer_flag=0000015012_&from=feed&loc=nickname&is_hot=1#_loginLayer_1464144696132" target="_blank" ng-click="goWeiBo('GW_BOT_SINA')">
                         <img class="img_2" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_weibo.png"/>
                     </a>
                 </div>
@@ -233,10 +233,10 @@
             <img class="img_3" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/index_dibufengexian.png"/>
             <div class="but_guanyu">
                 <div class="foot_1">
-                    <a  ng-click="goGuanYu()">关于我们</a>
-                    <a  ng-click="goLianXi()">联系我们</a>
-                    <a  ng-click="goFuWu()">服务协议</a>
-                    <a  ng-click="goYinSi()">隐私保护</a>
+                    <a  ng-click="goGuanYu('GW_BOT_GYWM')">关于我们</a>
+                    <a  ng-click="goLianXi('GW_BOT_LXWM')">联系我们</a>
+                    <a  ng-click="goFuWu('GW_BOT_FWXY')">服务协议</a>
+                    <a  ng-click="goYinSi('GW_BOT_YSBH')">隐私保护</a>
                 </div>
                 <div class="foot_2">
                     <span>京ICP备15035618号-1</span>
