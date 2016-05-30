@@ -512,7 +512,7 @@ angular.module('controllers', ['luegg.directives'])
                 if(heartBeatFirstNum < 0){
                     heartBeatFirstNum = -1;
                     $scope.loseConnectionFirstFlag = true;
-                    $scope.initConsultSocketSecond();
+                    $scope.initConsultSocketFirst();
                 }else{
                     $scope.loseConnectionFirstFlag = false;
                     var heartBeatMessage = {
