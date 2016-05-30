@@ -83,11 +83,32 @@ function scanQRCode(){
         $.ajax({
             type: 'POST',
             url: "umbrella/getUserQRCode",
-            data:"{'id':'"+shareid+"'}",
             contentType: "application/json; charset=utf-8",
+            async:false,
+            data:"{'id':'"+shareid+"'}",
             success: function (data) {
                 console.log("s",data.result);
                 $("#QRCode").attr("src",data.result);
+            },
+            dataType: "json"
+        });
+
+
+        $.ajax({
+            type: 'POST',
+            url: "../../customer/saveIllness",
+            contentType: "application/json; charset=utf-8",
+            async:false,
+            data: "{'illness':'"+customerID+"'}",
+            success: function(results){
+                var type=results.type;
+                getIllness(1);
+                if(type==1){
+                    cancelSaveSections();
+                }else{
+                    alertD("保存失败,请联系技术人员");
+                    cancelSaveSections();
+                }
             },
             dataType: "json"
         });
