@@ -178,7 +178,6 @@
 
             /*保存宝宝信息*/
             $scope.updateBabyInfo = function(){
-                compareDate();
                 var name=$scope.info.babyName;
                 var birthday=$("#birthday").val();
                 var sex=$scope.sexItem == "boy"?1:0;
@@ -200,6 +199,7 @@
 
             //更新保障信息
             $scope.updateUmbrellaInfo = function(){
+                compareDate();
                 if($scope.info.id==""){
                     alerrt("请选择或添加一个宝宝");
                     return;
