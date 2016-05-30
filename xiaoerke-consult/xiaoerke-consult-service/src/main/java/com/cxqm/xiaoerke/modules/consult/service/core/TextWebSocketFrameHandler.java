@@ -124,7 +124,8 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 					Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
 					TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(msgMap));
 					csChannel.writeAndFlush(csUserMsg.retain());
-					consultRecordService.buildRecordMongoVo((String) msgMap.get("senderId"), String.valueOf(msgType), (String) msgMap.get("content"), consultSession);
+					consultRecordService.buildRecordMongoVo((String) msgMap.get("senderId"), String.valueOf(msgType),
+							(String) msgMap.get("content"), consultSession);
 				}
 
 			}
