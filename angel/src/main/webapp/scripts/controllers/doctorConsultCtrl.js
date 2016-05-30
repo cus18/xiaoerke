@@ -508,8 +508,6 @@ angular.module('controllers', ['luegg.directives'])
             };
             var sendHeartBeat = function(){
 
-                console.log("status", $scope.socketServerFirst.status);
-
                 var heartBeatMessage = {
                     "type": 5,
                     "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
@@ -523,7 +521,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.initConsultSocketFirst();
                 }else{
                     $scope.loseConnectionFirstFlag = false;
-                    if($scope.socketServerFirst!=""){
+                    if($scope.socketServerFirst!=""&&$scope.socketServerFirst.readyState==1){
                         $scope.socketServerFirst.send(JSON.stringify(heartBeatMessage));
                     }
                 }
@@ -535,7 +533,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.initConsultSocketSecond();
                 }else{
                     $scope.loseConnectionSecondFlag = false;
-                    if($scope.socketServerSecond!=""){
+                    if($scope.socketServerSecond!=""&&$scope.socketServerSecond.readyState==1){
                         $scope.socketServerSecond.send(JSON.stringify(heartBeatMessage));
                     }
                 }
