@@ -25,7 +25,9 @@ import java.util.Map;
  * Created by jiangzhongge on 2016-5-18.
  * 转接列表发起会话
  */
-@Controller @RequestMapping(value = "consultSession/transfer") public class ConsultSessionTransferController {
+@Controller
+@RequestMapping(value = "consultSession/transfer")
+public class ConsultSessionTransferController {
 
     @Autowired
     private ConsultTransferListVoService consultTransferListVoService;
@@ -34,7 +36,9 @@ import java.util.Map;
     private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
 
     @RequestMapping(value = "/createMoreUserConsultSession", method = {RequestMethod.POST, RequestMethod.GET})
-    public @ResponseBody HashMap<String, Object> createMoreWXUserConsultSession(@RequestBody Map<String, Object> params) {
+    public
+    @ResponseBody
+    HashMap<String, Object> createMoreWXUserConsultSession(@RequestBody Map<String, Object> params) {
 
         HashMap<String, Object> response = new HashMap<String, Object>();
         Map<String, Object> specialistPatientContent = (Map<String, Object>) params.get("specialistPatientContent");

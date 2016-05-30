@@ -2,8 +2,10 @@ package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultTransferListVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
@@ -36,14 +38,9 @@ public class ConsultTransferListController {
     private ConsultTransferListVoService consultTransferListVoService;
 
     @Autowired
-    private ConsultSessionService consultSessionService ;
-
-    @Autowired
     private ConsultDoctorInfoService consultDoctorInfoService ;
 
     @Autowired
-    private UserInfoService userInfoService;
-
     private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
 
     @RequestMapping(value="/findConsultTransferList",method = {RequestMethod.POST, RequestMethod.GET})
@@ -65,7 +62,7 @@ public class ConsultTransferListController {
                 jsonObject = new JSONObject();
                 jsonObject.put("currentDoctor",StringUtils.isNotNull(consultTransfer.getSysUserNameCs()) ? consultTransfer.getSysUserNameCs() :"无");
                 jsonObject.put("userName",consultTransfer.getSysUserName());
-                jsonObject.put("createDate",consultTransfer.getCreateDate());
+                jsonObject.put("createDate",DateUtils.formatDateTime(consultTransfer.getCreateDate()));
                 jsonObject.put("department",consultTransfer.getDepartment());
                 jsonObject.put("userId",consultTransfer.getSysUserId());
                 jsonObject.put("id", consultTransfer.getId());
@@ -80,6 +77,11 @@ public class ConsultTransferListController {
         return response;
     }
 
+    /**
+     * 将用户添加进转诊
+     * @param params
+     * @return
+     */
     @RequestMapping(value="/saveConsultTransfer",method = {RequestMethod.POST, RequestMethod.GET})
     public @ResponseBody
     HashMap<String,Object> saveConsultTransferListVo(@RequestBody HashMap<String,Object> params){
@@ -93,7 +95,7 @@ public class ConsultTransferListController {
         consultTransferListVo.setDelFlag("0");
         HashMap<String,Object> requestData = (HashMap<String,Object>)params.get("consultData");
         consultTransferListVo.setDepartment((String)requestData.get("department"));
-        consultTransferListVo.setSessionId((Integer)requestData.get("sessionId"));
+        consultTransferListVo.setSessionId((Integer) requestData.get("sessionId"));
         RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId((Integer)requestData.get("sessionId"));
         if(richConsultSession !=null) {
             consultTransferListVo.setSysUserId(richConsultSession.getUserId());
@@ -128,6 +130,10 @@ public class ConsultTransferListController {
         }
     }
 
+    /**
+     * 列出所有科室
+     * @return
+     */
     @RequestMapping(value="/findDoctorDepartment",method = {RequestMethod.POST, RequestMethod.GET})
     public @ResponseBody
     HashMap<String,Object> findDoctorDepartment(){
@@ -150,6 +156,11 @@ public class ConsultTransferListController {
         return response ;
     }
 
+    /**
+     * 更新转诊列表用户状态
+     * @param params
+     * @return
+     */
     @RequestMapping(value ="/updateConsultTransferByPrimaryKey",method = {RequestMethod.POST,RequestMethod.GET})
     public @ResponseBody
     HashMap<String,Object> updateConsultTransferByPrimaryKeys(@RequestBody HashMap<String,Object> params){
@@ -189,4 +200,25 @@ public class ConsultTransferListController {
         return response;
     }
 
+
+    /**
+     * 通过医生ID查询医生信息
+     * @author jiangzg 2016年5月25日12:23:17
+     * @param
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/getCurrentDoctorDepartment", method= RequestMethod.POST)
+    public @ResponseBody HashMap<String,Object> getConsultDoctorInfoByUserId(@RequestBody String userId){
+        HashMap<String,Object> response = new HashMap<String, Object>();
+        response.put("status","failure");
+        if(StringUtils.isNotNull(userId)){
+            ConsultDoctorInfoVo consultDoctorInfoVo = consultDoctorInfoService.getConsultDoctorInfoByUserId(userId);
+            if(consultDoctorInfoVo != null){
+                response.put("department",consultDoctorInfoVo.getDepartment());
+                response.put("status","success");
+            }
+        }
+        return response;
+    }
 }
