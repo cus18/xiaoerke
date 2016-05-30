@@ -256,7 +256,7 @@ angular.module('controllers2', [])
                 css1.css("color","#22c4c6");
 
                 $(".mine_conright").animate({scrollTop:0},1000);
-                $(window).scrollTop(380);
+                $(window).scrollTop(360);
             }
 
             //function getQueryString(name) {

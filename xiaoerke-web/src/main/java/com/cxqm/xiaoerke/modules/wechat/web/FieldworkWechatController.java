@@ -168,7 +168,8 @@ public class FieldworkWechatController {
             url = ConstantUtil.TITAN_WEB_URL + "/titan/firstPage/phoneConsult";
         }else if (url.indexOf("consultPhone")>-1){
             System.out.println("begin"+url);
-            url =ConstantUtil.TITAN_WEB_URL +"titan/phoneConsult#/phoneConDoctorList/"+url.replace("consultPhone","")+",searchDoctorByDepartment,";
+            String departmentName  = URLEncoder.encode(url.replace("consultPhone",""), "UTF-8");
+            url =ConstantUtil.TITAN_WEB_URL +"titan/phoneConsult#/phoneConDoctorList/"+departmentName+",searchDoctorByDepartment,";
             System.out.println("end"+url);
         }else if("29".equals(url)){
             //保险
