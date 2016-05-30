@@ -92,26 +92,6 @@ function scanQRCode(){
             },
             dataType: "json"
         });
-
-
-        $.ajax({
-            type: 'POST',
-            url: "../../customer/saveIllness",
-            contentType: "application/json; charset=utf-8",
-            async:false,
-            data: "{'illness':'"+customerID+"'}",
-            success: function(results){
-                var type=results.type;
-                getIllness(1);
-                if(type==1){
-                    cancelSaveSections();
-                }else{
-                    alertD("保存失败,请联系技术人员");
-                    cancelSaveSections();
-                }
-            },
-            dataType: "json"
-        });
     }
 }
 
