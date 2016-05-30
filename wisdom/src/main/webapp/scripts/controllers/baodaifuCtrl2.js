@@ -195,7 +195,7 @@ angular.module('controllers2', [])
                 changeMine($("#guanyumine"),$("#lianximine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#GuanYu"),$("#LianXi"),$("#FuWu"),$("#YinSi"));
             }else if($stateParams.id==2){
                 changeMine($("#lianximine"),$("#guanyumine"),$("#fuwuxieyi"),$("#yinsibaohu"),$("#LianXi"),$("#GuanYu"),$("#FuWu"),$("#YinSi"));
-                $(window).scrollTop(650);
+                $(window).scrollTop(1000);
             }else if($stateParams.id==3){
                 changeMine($("#fuwuxieyi"),$("#guanyumine"),$("#lianximine"),$("#yinsibaohu"),$("#FuWu"),$("#GuanYu"),$("#LianXi"),$("#YinSi"));
             }else if($stateParams.id==4){
