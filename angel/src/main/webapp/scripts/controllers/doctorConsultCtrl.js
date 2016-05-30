@@ -507,6 +507,9 @@ angular.module('controllers', ['luegg.directives'])
                 setInterval(sendHeartBeat,2000);
             };
             var sendHeartBeat = function(){
+
+                console.log("status", $scope.socketServerFirst.status);
+
                 var heartBeatMessage = {
                     "type": 5,
                     "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
