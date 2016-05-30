@@ -135,4 +135,13 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
             return null;
         }
     }
+
+    @Override
+    public ConsultDoctorInfoVo getConsultDoctorInfoByUserId(String userId) {
+        ConsultDoctorInfoVo consultDoctorInfoVo = consultDoctorInfoDao.getConsultDoctorInfoByUserId(userId);
+        if(consultDoctorInfoVo !=null){
+            return consultDoctorInfoVo;
+        }
+        return null;
+    }
 }
