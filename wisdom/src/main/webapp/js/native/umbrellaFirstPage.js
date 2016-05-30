@@ -237,7 +237,7 @@ var cancelRemind = function() {
 
 /*跳转到参与成功页面*/
 var myGuarantee = function() {
-    window.location.href = "umbrella#/umbrellaJoin/"+new Date().getTime;
+    window.location.href = "umbrella#/umbrellaJoin/"+new Date().getTime();
 
 }
 /*跳转到领取成功页面*/
@@ -250,7 +250,7 @@ var goJoin = function() {
         $(".shadow-content.attention").show();
     }
     else{
-        window.location.href = "umbrella#/umbrellaJoin"+new Date().getTime;
+        window.location.href = "umbrella#/umbrellaJoin/"+new Date().getTime();
     }
 
 

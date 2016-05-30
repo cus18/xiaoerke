@@ -317,7 +317,6 @@ angular.module('controllers', ['luegg.directives'])
                         value.selectedAll = false;
                         $scope.alreadyJoinTransferSpecialist.push(value);
                     });
-                    console.log("$scope.alreadyJoinTransferSpecialist",$scope.alreadyJoinTransferSpecialist)
                 });
             };
 
