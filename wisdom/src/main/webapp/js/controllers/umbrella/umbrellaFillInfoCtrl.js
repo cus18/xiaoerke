@@ -105,7 +105,7 @@
             }
             $scope.immediateActive=function(){
 
-                if($scope.info.id!="add"||$scope.info.id!="undefined"){
+                if($scope.info.id!="add"||$scope.info.id!="undefined"||$scope.info.id!=""){
                     var sname=$scope.selectedBaby.name;
                     var sbirthday=$filter('date')($scope.selectedBaby.birthday, 'yyyy-MM-dd');
                     var ssex=$scope.selectedBaby.sex;
