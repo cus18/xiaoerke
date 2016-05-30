@@ -145,13 +145,24 @@ public class ConsultWechatController extends BaseController {
             if(sessionId!=null){
                 consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
                 csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
-                if(!csChannel.isActive()){
-                    //保存聊天记录
-                    consultRecordService.buildRecordMongoVo(userId, String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)), messageContent, consultSession);
-                    //更新会话操作时间
-                    consultRecordService.saveConsultSessionStatus(consultSession);
+                if(csChannel == null){
+                    consultSessionService.clearSession(String.valueOf(sessionId),userId);
+                    //重新未用户分配到接诊员，开启新的会话
+                    consultSession.setCreateTime(new Date());
+                    consultSession.setUserId(userId);
+                    consultSession.setUserName(userName);
+                    consultSession.setSource(source);
+                    consultSession.setServerAddress(serverAddress);
+                    //创建会话，发送消息给用户，给用户分配接诊员
+                    createWechatConsultSessionMap = ConsultSessionManager.getSessionManager().createUserWXConsultSession(consultSession);
+                    if(createWechatConsultSessionMap!=null){
+                        csChannel = (Channel)createWechatConsultSessionMap.get("csChannel");
+                        consultSession = (RichConsultSession)createWechatConsultSessionMap.get("consultSession");
+                        sessionId = consultSession.getId();
+                    }
                 }
-            }else{//如果此用户是第一次发送消息，则sessionId为空
+            }else{
+                //如果此用户是第一次发送消息，则sessionId为空
                 consultSession.setCreateTime(new Date());
                 consultSession.setUserId(userId);
                 consultSession.setUserName(userName);
@@ -176,7 +187,6 @@ public class ConsultWechatController extends BaseController {
                     obj.put("senderName",userName);
                     obj.put("serverAddress",serverAddress);
                     obj.put("source",consultSession.getSource());
-
 
                     StringBuffer sbf = new StringBuffer();
                     if(messageType.equals("text")) {
@@ -218,7 +228,8 @@ public class ConsultWechatController extends BaseController {
                     csChannel.writeAndFlush(frame.retain());
 
                     //保存聊天记录
-                    consultRecordService.buildRecordMongoVo(userId,String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)), messageContent, consultSession);
+                    consultRecordService.buildRecordMongoVo(userId,String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)),
+                            messageContent, consultSession);
 
                     //更新会话操作时间
                     consultRecordService.saveConsultSessionStatus(consultSession);
