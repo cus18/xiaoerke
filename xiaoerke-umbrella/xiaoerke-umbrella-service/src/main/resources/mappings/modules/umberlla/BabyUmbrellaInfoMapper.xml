@@ -80,7 +80,7 @@
         update baby_umbrellainfo
         <set>
             <if test="umberllaMoney != null">
-                umberlla_money = #{umberllaMoney},
+                umbrella_money = #{umberllaMoney},
             </if>
         </set>
         where id = #{id,jdbcType=VARCHAR}
