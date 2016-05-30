@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.healthRecords.web;
 
 import com.cxqm.xiaoerke.common.utils.IdGen;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.healthRecords.entity.BabyIllnessInfoVo;
@@ -17,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.ParseException;
@@ -110,7 +113,7 @@ public class HealthRecordsController {
   @RequestMapping(value = "/saveBabyInfo", method = {RequestMethod.POST, RequestMethod.GET})
   public
   @ResponseBody
-  Map<String, Object> saveBabyInfo(@RequestParam String sex,@RequestParam String name,@RequestParam String birthDay) throws UnsupportedEncodingException{
+  Map<String, Object> saveBabyInfo(@RequestParam String sex, @RequestParam String name, @RequestParam String birthDay, HttpServletRequest request, HttpSession session) throws UnsupportedEncodingException{
     Map<String, Object> resultMap = new HashMap<String, Object>();
 
     BabyBaseInfoVo vo = new BabyBaseInfoVo();
@@ -119,6 +122,9 @@ public class HealthRecordsController {
     vo.setName(URLDecoder.decode(name, "utf-8"));
     String id=UserUtils.getUser().getId();
     String openid=UserUtils.getUser().getOpenid();
+    if(openid.equals("")||openid==null){
+      openid= WechatUtil.getOpenId(session, request);
+    }
     vo.setUserid(id);
     vo.setOpenid(openid);
     int result = healthRecordsService.insertBabyInfo(vo);
@@ -135,7 +141,7 @@ public class HealthRecordsController {
   @RequestMapping(value = "/updateBabyInfo", method = {RequestMethod.POST, RequestMethod.GET})
   public
   @ResponseBody
-  Map<String, Object> updateBabyInfo(@RequestParam String id,@RequestParam String sex,@RequestParam String name,@RequestParam String birthDay) throws UnsupportedEncodingException{
+  Map<String, Object> updateBabyInfo(@RequestParam String id,@RequestParam String sex,@RequestParam String name,@RequestParam String birthDay,HttpServletRequest request, HttpSession session) throws UnsupportedEncodingException{
     Map<String, Object> resultMap = new HashMap<String, Object>();
 
     BabyBaseInfoVo vo = new BabyBaseInfoVo();
@@ -144,7 +150,11 @@ public class HealthRecordsController {
     vo.setBirthday(this.toDate(birthDay));
     vo.setName(URLDecoder.decode(name, "utf-8"));
     vo.setUserid(UserUtils.getUser().getId());
-    vo.setOpenid(UserUtils.getUser().getOpenid());
+    String openid=UserUtils.getUser().getOpenid();
+    if(openid.equals("")||openid==null){
+      openid= WechatUtil.getOpenId(session, request);
+    }
+    vo.setOpenid(openid);
     int result = healthRecordsService.updateBabyInfo(vo);
     resultMap.put("resultCode",result);
     return resultMap;
