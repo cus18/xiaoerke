@@ -177,7 +177,7 @@ public class FieldworkWechatController {
             //保险
             url = ConstantUtil.TITAN_WEB_URL + "titan/insurance#/handfootmouthIndex";
         }else if("31".equals(url)){
-            String state = request.getParameter("state");
+            String state = request.getParameter("id");
             //保险
             url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/umbrella?id="+state;
         }
