@@ -103,6 +103,7 @@
         <if test="hospitalId != null">
             AND sys_hospital_id=#{hospitalId}
         </if>
+        and relation_type = '1'
     </select>
 
     <select id="getDoctorHospitalRelationVo" resultType="com.cxqm.xiaoerke.modules.sys.entity.DoctorHospitalRelationVo">
