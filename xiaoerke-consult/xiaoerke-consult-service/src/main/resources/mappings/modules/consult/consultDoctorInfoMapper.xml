@@ -217,4 +217,11 @@
   <select id="getConsultDoctorDepartment" resultType="java.lang.String">
     select DISTINCT(department) from consult_doctor_info
   </select>
+
+  <select id="getConsultDoctorInfoByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from consult_doctor_info
+    where sys_user_id = #{userId,jdbcType=VARCHAR}
+  </select>
 </mapper>
