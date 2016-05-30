@@ -707,27 +707,34 @@ angular.module('controllers', ['luegg.directives'])
             };
 
             //关闭跟某个用户的会话
+            var closeConsultLock = false;
             $scope.closeConsult = function () {
-                SessionEnd.get({sessionId:$scope.currentUserConversation.sessionId,
-                    userId:$scope.currentUserConversation.patientId},function(data){
-                    if(data.result=="success"){
-                        var indexClose = 0;
-                        $.each($scope.alreadyJoinPatientConversation, function (index, value) {
-                            if (value.patientId == $scope.chooseAlreadyJoinConsultPatientId) {
-                                indexClose = index;
+                if(!closeConsultLock){
+                    closeConsultLock = true;
+                    SessionEnd.get({sessionId:$scope.currentUserConversation.sessionId,
+                        userId:$scope.currentUserConversation.patientId},function(data){
+                        closeConsultLock = false;
+                        if(data.result=="success"){
+                            var indexClose = 0;
+                            $.each($scope.alreadyJoinPatientConversation, function (index, value) {
+                                if (value.patientId == $scope.chooseAlreadyJoinConsultPatientId) {
+                                    indexClose = index;
+                                }
+                            });
+                            $scope.alreadyJoinPatientConversation.splice(indexClose, 1);
+                            if($scope.alreadyJoinPatientConversation.length!=0){
+                                $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
+                                    $scope.alreadyJoinPatientConversation[0].patientName);
+                            }else{
+                                $scope.currentUserConversation = {};
                             }
-                        });
-                        $scope.alreadyJoinPatientConversation.splice(indexClose, 1);
-                        if($scope.alreadyJoinPatientConversation.length!=0){
-                            $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
-                                $scope.alreadyJoinPatientConversation[0].patientName);
                         }else{
-                            $scope.currentUserConversation = {};
+                            alert("会话关闭失败，请重试");
                         }
-                    }else{
-                        alert("会话关闭失败，请重试");
-                    }
-                })
+                    })
+                }else{
+                    alert("正在关闭当前用户的会话，请稍后，等关闭此用户成功后，再关闭其他用户");
+                }
             };
 
             //在通话列表中，选取一个用户进行会话

@@ -43,10 +43,20 @@
                         var targetDate = new Date(data.umbrella.activation_time);
                             targetDate.setDate(new Date().getDate() + 180);
                         var targetDateUTC = targetDate.getTime();
-                        var afterDate=	Math.round(new Date().getTime());
+                        var afterDate=	new Date().getTime();
+                        // var afterDate=	new Date();
                         console.log("targetDateUTC",targetDateUTC);
                         console.log("afterDate",afterDate);
+                        console.log("afterDate",targetDateUTC-afterDate);
+                        console.log("afterDate",(targetDateUTC-afterDate)/1000/60/60/24);
                         $scope.days=Math.ceil((targetDateUTC-afterDate)/1000/60/60/24);
+
+
+                        // var a = moment([targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate()]);
+                        // var b = moment([afterDate.getFullYear(), afterDate.getMonth(), afterDate.getDate()]);
+                        // $scope.minusDays=a.from(b); // "a day ago"
+                        // console.log("a",$scope.minusDays);
+
                         $scope.minusDays = $scope.days.toString();
                         $scope.minusDays1 =  $scope.minusDays.substring(0,1);
                         $scope.minusDays2 = $scope.minusDays.substring(1,2);

@@ -118,7 +118,7 @@ public class ConsultDoctorAnswerController extends BaseController {
 
 
     /***
-     * 该接口有两个功能：1、医生修改自己的回复,没有的话先执行插入操作    2、修改公共回复，没有的话先执行插入操作
+     * 该接口有两个功能：1、医生修改自己的回复,没有的话先执行插入操作    2、修改公共回复，没有的话先执行插入操作 3、修改诊断描述
      *
      * @param
         {
@@ -138,11 +138,15 @@ public class ConsultDoctorAnswerController extends BaseController {
         String answerType = String.valueOf(params.get("answerType"));
         if(answerType.equals("myAnswer")){
             tranMap.put("myAnswer",params.get("answer"));
-        }else if(answerType.equals("commonAnswer")){
+        }else if(answerType.equals("commonAnswer") || answerType.equals("diagnosis")){
             String doctorManagerStr = Global.getConfig("doctorManager.list");
             String csUserId = UserUtils.getUser().getId();
             if (doctorManagerStr.indexOf(csUserId) != -1) {
-                tranMap.put("commonAnswer",params.get("answer"));
+                if(answerType.equals("diagnosis")){
+                    tranMap.put("diagnosis",params.get("answer"));
+                }else{
+                    tranMap.put("commonAnswer",params.get("answer"));
+                }
             }else {
                 response.put("result","NoPermission");
                 return response;
