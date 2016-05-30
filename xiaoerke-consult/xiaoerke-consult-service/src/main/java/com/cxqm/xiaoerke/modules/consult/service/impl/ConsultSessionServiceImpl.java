@@ -83,8 +83,8 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
             sessionRedisCache.removeConsultSessionBySessionId(Integer.parseInt(sessionId));
             sessionRedisCache.removeUserIdSessionIdPair(userId);
 
-            //清除内存内的数据
-            ConsultSessionManager.getSessionManager().removeUserSession(userId);
+            //清除内存内的数据，此处代码有问题，清除session，并不需要清除服务器内存中，用户的channel
+            //ConsultSessionManager.getSessionManager().removeUserSession(userId);
 
             //更新最后一次会话
             consultRecordService.updateConsultSessionStatusVo(new Query().addCriteria(new Criteria().where("sessionId").is(sessionId)),"complete");
