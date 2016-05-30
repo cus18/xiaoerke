@@ -8,6 +8,7 @@ import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
 import com.cxqm.xiaoerke.modules.consult.service.*;
+import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
 import com.cxqm.xiaoerke.modules.operation.service.BaseDataService;
 import com.cxqm.xiaoerke.modules.operation.service.DataStatisticService;
@@ -1161,6 +1162,11 @@ public class ScheduledTask {
     public void consultManagementDayTask(){
         //删除会话排名中的临时数据
         consultRecordService.removeConsultRankRecord(new Query());
+    }
+
+    public void testMappingTask(){
+        //删除会话排名中的临时数据
+        System.out.println("userChannelMapping的大小为：" + ConsultSessionManager.getSessionManager().userChannelMapping.size());
     }
 
     //插入监听器
