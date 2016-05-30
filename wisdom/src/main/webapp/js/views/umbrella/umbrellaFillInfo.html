@@ -2,8 +2,8 @@
 <ion-view view-title="{{title}}">
     <ion-content class="babyList" ng-if="fillLock">
         <ion-scroll>
-            <ul class="" >
-                <li class="f4 c6" ng-repeat="item in [1,2,3,4,5,6]" ng-click="selectBaby(item)"><span ng-class="{'add':$first}" >{{item}}</span></li>
+            <ul class="" ">
+                <li class="f4 c6" ng-repeat="item in babyInfoList" ng-click="selectBaby(item)"><span ng-class="{'add':$first}" >{{item.name}}</span></li>
             </ul>
         </ion-scroll>
     </ion-content>
