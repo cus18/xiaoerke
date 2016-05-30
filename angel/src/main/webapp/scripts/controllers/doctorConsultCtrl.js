@@ -508,6 +508,12 @@ angular.module('controllers', ['luegg.directives'])
             };
 
             var sendHeartBeat = function(){
+                var heartBeatMessage = {
+                    "type": 5,
+                    "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                    "csUserId": angular.copy($scope.doctorId)
+                };
+
                 heartBeatFirstNum--;
                 if(heartBeatFirstNum < 0){
                     heartBeatFirstNum = -1;
@@ -515,11 +521,6 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.initConsultSocketFirst();
                 }else{
                     $scope.loseConnectionFirstFlag = false;
-                    var heartBeatMessage = {
-                        "type": 5,
-                        "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                        "csUserId": angular.copy($scope.doctorId)
-                    };
                     if($scope.socketServerFirst!=""){
                         $scope.socketServerFirst.send(JSON.stringify(heartBeatMessage));
                     }
@@ -532,11 +533,6 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.initConsultSocketSecond();
                 }else{
                     $scope.loseConnectionSecondFlag = false;
-                    var heartBeatMessage = {
-                        "type": 5,
-                        "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                        "csUserId": angular.copy($scope.doctorId)
-                    };
                     if($scope.socketServerSecond!=""){
                         $scope.socketServerSecond.send(JSON.stringify(heartBeatMessage));
                     }
