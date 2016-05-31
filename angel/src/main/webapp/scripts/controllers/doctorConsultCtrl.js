@@ -4,12 +4,12 @@ angular.module('controllers', ['luegg.directives'])
         '$location', 'GetCurrentUserHistoryRecord','GetMyAnswerModify','GetCurrentUserConsultListInfo',
         'TransferToOtherCsUser','SessionEnd','GetWaitJoinList','React2Transfer','CancelTransfer','$upload',
         'GetFindTransferSpecialist','GetRemoveTransferSpecialist','GetAddTransferSpecialist','GetFindAllTransferSpecialist',
-        'CreateTransferSpecialist',
+        'CreateTransferSpecialist','$state',
         function ($scope, $sce, $window,$stateParams,GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
                   GetUserLoginStatus, $location, GetCurrentUserHistoryRecord,GetMyAnswerModify,
                   GetCurrentUserConsultListInfo,TransferToOtherCsUser,SessionEnd,GetWaitJoinList,React2Transfer,CancelTransfer,$upload,
                   GetFindTransferSpecialist,GetRemoveTransferSpecialist,GetAddTransferSpecialist,GetFindAllTransferSpecialist,
-                  CreateTransferSpecialist) {
+                  CreateTransferSpecialist,$state) {
             //初始化info参数
             $scope.info = {
                 effect:"true",
@@ -453,7 +453,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.socketServerFirst.onopen = function (event) {
                         console.log("onopen",event.data);
                         //启动心跳监测
-                        heartBeatCheck();
+                        heartBeatCheckFirst();
                     };
 
                     $scope.socketServerFirst.onclose = function (event) {
@@ -494,7 +494,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.socketServerSecond.onopen = function (event) {
                         console.log("onopen",event.data);
                         //启动心跳监测
-                        heartBeatCheck();
+                        heartBeatCheckSecond();
                     };
 
                     $scope.socketServerSecond.onclose = function (event) {
@@ -505,19 +505,22 @@ angular.module('controllers', ['luegg.directives'])
                 }
             };
 
-            var heartBeatCheck = function(){
-                //启动定时器，周期性的发送心跳信息
-                setInterval(sendHeartBeat,2000);
-            };
-            var sendHeartBeat = function(){
-                console.log("heartBeatFirstNum",heartBeatFirstNum);
+            $scope.messageList = function(){
+                clearInterval($scope.heartBeatFirstId);
+                clearInterval($scope.heartBeatSecondId);
+                $state.go('messageList');
+            }
 
+            var heartBeatCheckFirst = function(){
+                //启动定时器，周期性的发送心跳信息
+                $scope.heartBeatFirstId = setInterval(sendHeartBeatFirst,2000);
+            };
+            var sendHeartBeatFirst = function(){
                 var heartBeatMessage = {
                     "type": 5,
                     "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                     "csUserId": angular.copy($scope.doctorId)
                 };
-
                 heartBeatFirstNum--;
                 if(heartBeatFirstNum < 0){
                     heartBeatFirstNum = 3;
@@ -529,7 +532,19 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.socketServerFirst.send(JSON.stringify(heartBeatMessage));
                     }
                 }
+                $scope.$apply();
+            };
 
+            var heartBeatCheckSecond = function(){
+                //启动定时器，周期性的发送心跳信息
+                $scope.heartBeatSecondId = setInterval(sendHeartBeatSecond,2000);
+            };
+            var sendHeartBeatSecond = function(){
+                var heartBeatMessage = {
+                    "type": 5,
+                    "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                    "csUserId": angular.copy($scope.doctorId)
+                };
                 heartBeatSecondNum--;
                 if(heartBeatSecondNum < 0){
                     heartBeatSecondNum = 3;
