@@ -75,7 +75,7 @@ public class ConsultWechatController extends BaseController {
                         @RequestParam(required=false) String messageContent,
                         @RequestParam(required=false) String mediaId) {
         HashMap<String,Object> result = new HashMap<String,Object>();
-
+        System.out.println("openId="+openId);
         HashMap<String,Object> paramMap = new HashMap<String,Object>();
         paramMap.put("openId",openId);
         paramMap.put("messageType",messageType);
@@ -120,8 +120,8 @@ public class ConsultWechatController extends BaseController {
             if(openId.length() > 20){
                 userName = openId.substring(openId.length()-8,openId.length());
             }else{
-                userName = openId.substring(0,5);
-                userId = openId.substring(0,5);
+                userName = openId.substring(0,10);
+                userId = openId.substring(0,10);
             }
 
             if(wechatAttentionVo!=null){
@@ -135,9 +135,9 @@ public class ConsultWechatController extends BaseController {
             String source = "wxcxqm";
 
             Channel csChannel = null;
-            System.out.println("userId------"+userId);
             //根据用户的openId，判断redis中，是否有用户正在进行的session
             Integer sessionId = sessionRedisCache.getSessionIdByUserId(userId);
+            System.out.println("sessionId------"+sessionId);
             HashMap<String,Object> createWechatConsultSessionMap = null;
             RichConsultSession consultSession = new RichConsultSession();
 
@@ -145,12 +145,14 @@ public class ConsultWechatController extends BaseController {
             if(sessionId!=null){
                 consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
                 csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
+                System.out.println("csChannel------"+csChannel);
                 if(csChannel==null){
                     //保存聊天记录
                     consultRecordService.buildRecordMongoVo(userId, String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)), messageContent, consultSession);
                     //更新会话操作时间
                     consultRecordService.saveConsultSessionStatus(consultSession);
                 }else{
+                    System.out.println("csChannel.isActive()------"+csChannel.isActive());
                     if(!csChannel.isActive()){
                         //保存聊天记录
                         consultRecordService.buildRecordMongoVo(userId, String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)), messageContent, consultSession);
@@ -183,6 +185,7 @@ public class ConsultWechatController extends BaseController {
                     obj.put("dateTime", DateUtils.DateToStr(new Date()));
                     obj.put("senderName",userName);
                     obj.put("serverAddress",serverAddress);
+                    System.out.println("serverAddress------"+serverAddress);
                     obj.put("source",consultSession.getSource());
 
 
@@ -217,11 +220,13 @@ public class ConsultWechatController extends BaseController {
                                         (String) this.param.get("mediaId"),messageType);
                                 obj.put("content", mediaURL);
                                 messageContent = mediaURL;
+
                             }catch (IOException e){
                                 e.printStackTrace();
                             }
                         }
                     }
+                    System.out.println("here csChannel is"+csChannel);
                     TextWebSocketFrame frame = new TextWebSocketFrame(obj.toJSONString());
                     csChannel.writeAndFlush(frame.retain());
 

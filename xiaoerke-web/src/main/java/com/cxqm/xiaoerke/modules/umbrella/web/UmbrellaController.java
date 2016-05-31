@@ -65,22 +65,28 @@ public class UmbrellaController  {
         Map<String, Object> map=new HashMap<String, Object>();
         Map<String, Object> numm=new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session, request);
-        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
         List<Map<String, Object>> list = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Map<String, Object> m = list.get(0);
             if(m.get("baby_id")!=null&&!m.get("baby_id").equals("")){
                 Map<String, Object> result = new HashMap<String, Object>();
                 result.put("result",3);
                 result.put("umbrella",m);
-                result.put("num",babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(numm));
+                numm.put("userNums","1");
+                numm.put("date",sdf.format(new Date()));
+//                result.put("num",babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(numm));
                 return result;
             }
             Map<String, Object> result = new HashMap<String, Object>();
             result.put("result", 2);
             result.put("umbrella", m);
-            result.put("num",babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(numm));
+
+            numm.put("date",sdf.format(new Date()));
+            numm.put("userNums","1");
+//            result.put("num",babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(numm));
             return result;
         }
         BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
@@ -90,6 +96,7 @@ public class UmbrellaController  {
         Map<String, Object> result=new HashMap<String, Object>();
         result.put("result",res);
         result.put("id",babyUmbrellaInfo.getId());
+        result.put("umbrella","");
         return result;
     }
 
@@ -105,7 +112,7 @@ public class UmbrellaController  {
         String phone=params.get("phone").toString();
         String code=params.get("code").toString();
         String openid= WechatUtil.getOpenId(session, request);
-        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         String res=utilService.bindUser(phone,code,openid);
         if(res.equals("0")){
             result.put("result","3");
@@ -134,7 +141,7 @@ public class UmbrellaController  {
     Map<String, Object>  userShareNum(HttpServletRequest request,HttpSession session) {
         Map<String, Object> map=new HashMap<String, Object>();
         String openid= WechatUtil.getOpenId(session, request);
-        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
         String  id=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map).get(0).get("id").toString();
         Map<String, Object> result=new HashMap<String, Object>();
@@ -168,7 +175,7 @@ public class UmbrellaController  {
     @ResponseBody
     Map<String, Object>  getOpenidStatus(HttpServletRequest request,HttpSession session) {
         String openid= WechatUtil.getOpenId(session, request);
-        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         Map<String, Object> result = new HashMap<String, Object>();
         Map<String,Object> openIdStatus = babyUmbrellaInfoSerivce.getOpenidStatus(openid);
         if(openIdStatus != null){

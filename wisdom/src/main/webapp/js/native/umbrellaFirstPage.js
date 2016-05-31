@@ -73,10 +73,6 @@ var umbrellaFirstPageInit = function() {
     recordLogs("umbrella_FirstPage");
     $("#readBuy").attr("disabled",false);
     $("#readLock").show();
-
-    joinUs();
-
-
 }
 
 function scanQRCode(){
@@ -114,7 +110,6 @@ function  joinUs(){
                 shareUmbrellaId=data.umbrella.id;
                 loadShare();
             }
-
         },
         dataType: "json"
     });
@@ -193,12 +188,16 @@ function  ifExistOrder(){
         url: "umbrella/ifExistOrder",
         contentType: "application/json; charset=utf-8",
         success: function(data){
-            if(data.result==3){
+            if(data.result==2||data.result==3){
                 $("#NoShareDiv").hide();
                 $("#shareDiv").show();
+                shareUmbrellaId=data.umbrella.id;
+                loadShare();
             }else{
                 $("#NoShareDiv").show();
                 $("#shareDiv").hide();
+                shareUmbrellaId=120000000;
+                loadShare();
             }
         },
         dataType: "json"
@@ -252,18 +251,15 @@ var myGuarantee = function() {
 }
 /*跳转到领取成功页面*/
 var goJoin = function() {
-    if(version=="a"){
-        window.location.href = "/keeper/wxPay/patientPay.do?serviceType=umbrellaPay";
-    }
+
     if(!attentionLock){
         $(".c-shadow").show();
         $(".shadow-content.attention").show();
-    }
-    else{
+    }else if(version=="b"){
         window.location.href = "umbrella#/umbrellaJoin/"+new Date().getTime();
+    }else if(version=="a"){
+        window.location.href = "/keeper/wxPay/patientPay.do?serviceType=umbrellaPay";
     }
-
-
 }
 var GetQueryString = function(name)
 {

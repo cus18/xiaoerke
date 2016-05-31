@@ -17,7 +17,8 @@
             $scope.openid="";
             $scope.babyInfoList={};
             $scope.umbrellaId=$stateParams.id;
-
+            $scope.codeButton=false;
+            
             /*点击输入框跳转到相应位置*/
             $scope.skip = function(item){
                 $(".view,html,body").stop().animate({"scrollTop":$("#"+item).offset().top},0);
@@ -146,16 +147,18 @@
                 IdentifyUser.save({"userPhone":$scope.info.phoneNum},function (data){
                     if(data.status=="1") {
                         $scope.codeSecond=60;
+                        $scope.codeButton=true;
                         $scope.getCodeSecond();
                     }else{
                         $scope.codeSecond="重新发送";
+                        $scope.codeButton=false;
                     }
                 });
             };
 
              $scope.getCodeSecond=function () {
                  $scope.codeSecond=$scope.codeSecond-1;
-                console.log("s",$scope.codeSecond);
+                // console.log("s",$scope.codeSecond);
                 var t;
                 if($scope.codeSecond>0) {
                     t=setTimeout(function(){$scope.getCodeSecond()}, 1000);
@@ -163,6 +166,7 @@
                 }else{
                     clearTimeout(t);
                     $scope.codeSecond="再次获取验证码";
+                    $scope.codeButton=false;
                     $scope.$digest();
                 }
             };
