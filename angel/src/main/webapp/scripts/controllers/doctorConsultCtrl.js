@@ -4,12 +4,12 @@ angular.module('controllers', ['luegg.directives'])
         '$location', 'GetCurrentUserHistoryRecord','GetMyAnswerModify','GetCurrentUserConsultListInfo',
         'TransferToOtherCsUser','SessionEnd','GetWaitJoinList','React2Transfer','CancelTransfer','$upload',
         'GetFindTransferSpecialist','GetRemoveTransferSpecialist','GetAddTransferSpecialist','GetFindAllTransferSpecialist',
-        'CreateTransferSpecialist',
+        'CreateTransferSpecialist','$state',
         function ($scope, $sce, $window,$stateParams,GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
                   GetUserLoginStatus, $location, GetCurrentUserHistoryRecord,GetMyAnswerModify,
                   GetCurrentUserConsultListInfo,TransferToOtherCsUser,SessionEnd,GetWaitJoinList,React2Transfer,CancelTransfer,$upload,
                   GetFindTransferSpecialist,GetRemoveTransferSpecialist,GetAddTransferSpecialist,GetFindAllTransferSpecialist,
-                  CreateTransferSpecialist) {
+                  CreateTransferSpecialist,$state) {
             //初始化info参数
             $scope.info = {
                 effect:"true",
@@ -73,8 +73,12 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.userType = data.userType;
 
                         //创建与平台的socket连接
-                        $scope.initConsultSocketFirst();
-                        $scope.initConsultSocketSecond();
+                        if($scope.socketServerFirst==""||$scope.socketServerFirst.readyState!=1){
+                            $scope.initConsultSocketFirst();
+                        }
+                        if($scope.socketServerSecond==""||$scope.socketServerSecond.readyState!=1){
+                            $scope.initConsultSocketSecond();
+                        }
 
                         getIframeSrc();
                         //获取通用回复列表
@@ -501,11 +505,17 @@ angular.module('controllers', ['luegg.directives'])
                 }
             };
 
+            $scope.messageList = function(){
+                clearInterval($scope.timer);
+                $state.go('messageList');
+            }
+
             var heartBeatCheck = function(){
                 //启动定时器，周期性的发送心跳信息
-                setInterval(sendHeartBeat,2000);
+                $scope.timer = setInterval(sendHeartBeat,2000);
             };
             var sendHeartBeat = function(){
+                console.log("heartBeatFirstNum",heartBeatFirstNum);
 
                 var heartBeatMessage = {
                     "type": 5,
