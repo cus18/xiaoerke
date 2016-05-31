@@ -194,9 +194,11 @@ function  ifExistOrder(){
         contentType: "application/json; charset=utf-8",
         success: function(data){
             if(data.result==1){
-                $("#changeButton").html("马上领取");
+                $("#NoShareDiv").show();
+                $("#shareDiv").hide();
             }else{
-                $("#changeButton").html("我的保障");
+                $("#NoShareDiv").hide();
+                $("#shareDiv").show();
             }
         },
         dataType: "json"
