@@ -83,11 +83,7 @@ public class ConsultWechatController extends BaseController {
         if(messageType.contains("voice")||messageType.contains("video")||messageType.contains("image")){
             paramMap.put("mediaId",mediaId);
         }
-        try {
-            paramMap.put("serverAddress",InetAddress.getLocalHost().getHostAddress());
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
+        paramMap.put("serverAddress",ConstantUtil.SERVER_ADDRESS);
 
         Runnable thread = new processUserMessageThread(paramMap);
         threadExecutor.execute(thread);
