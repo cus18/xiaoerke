@@ -588,7 +588,7 @@ public class ConsultSessionManager {
 				if(consultSessions.get(0).getSource() != null && consultSessions.get(0).getSource().contains("h5")){
 					response.put("result", "notOnLine");
 				}else{
-					String doctorManagerStr = Global.getConfig("doctorManager.list");
+					String doctorManagerStr = Global.getConfig("createConsult.list");
 					String csUserId = UserUtils.getUser().getId();
 					if (doctorManagerStr.indexOf(csUserId) != -1) {
 						//此医生为管理员医生，有权限抢过会话，将会话抢过来
