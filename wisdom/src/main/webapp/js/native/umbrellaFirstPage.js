@@ -73,10 +73,6 @@ var umbrellaFirstPageInit = function() {
     recordLogs("umbrella_FirstPage");
     $("#readBuy").attr("disabled",false);
     $("#readLock").show();
-
-    joinUs();
-
-
 }
 
 function scanQRCode(){
@@ -195,9 +191,13 @@ function  ifExistOrder(){
             if(data.result==2||data.result==3){
                 $("#NoShareDiv").hide();
                 $("#shareDiv").show();
+                shareUmbrellaId=data.umbrella.id;
+                loadShare();
             }else{
                 $("#NoShareDiv").show();
                 $("#shareDiv").hide();
+                shareUmbrellaId=120000000;
+                loadShare();
             }
         },
         dataType: "json"
@@ -260,8 +260,6 @@ var goJoin = function() {
     }else if(version=="a"){
         window.location.href = "/keeper/wxPay/patientPay.do?serviceType=umbrellaPay";
     }
-
-
 }
 var GetQueryString = function(name)
 {
