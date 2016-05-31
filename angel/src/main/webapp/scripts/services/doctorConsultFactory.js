@@ -61,6 +61,10 @@ angular.module('services', ['ngResource'])
     .factory('GetChatHistory', ['$resource', function ($resource) {
         return $resource(public + 'consult/doctor/produceRecord');
     }])
+    //获取系统时间
+    .factory('GetSystemTime', ['$resource', function ($resource) {
+        return $resource(public + 'consult/doctor/getSystemTime');
+    }])
     //获取聊天记录分页
     .factory('GetRecordList', ['$resource', function ($resource) {
         return $resource(public + 'consult/doctor/recordList');

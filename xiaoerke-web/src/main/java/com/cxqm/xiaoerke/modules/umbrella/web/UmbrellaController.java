@@ -63,21 +63,30 @@ public class UmbrellaController  {
     @ResponseBody
     Map<String, Object>  joinUs(HttpServletRequest request,HttpSession session) {
         Map<String, Object> map=new HashMap<String, Object>();
+        Map<String, Object> numm=new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session, request);
 //        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
         List<Map<String, Object>> list = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Map<String, Object> m = list.get(0);
             if(m.get("baby_id")!=null&&!m.get("baby_id").equals("")){
                 Map<String, Object> result = new HashMap<String, Object>();
                 result.put("result",3);
                 result.put("umbrella",m);
+                numm.put("userNums","1");
+                numm.put("date",sdf.format(new Date()));
+//                result.put("num",babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(numm));
                 return result;
             }
             Map<String, Object> result = new HashMap<String, Object>();
             result.put("result", 2);
             result.put("umbrella", m);
+
+            numm.put("date",sdf.format(new Date()));
+            numm.put("userNums","1");
+//            result.put("num",babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(numm));
             return result;
         }
         BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
@@ -87,6 +96,7 @@ public class UmbrellaController  {
         Map<String, Object> result=new HashMap<String, Object>();
         result.put("result",res);
         result.put("id",babyUmbrellaInfo.getId());
+        result.put("umbrella","");
         return result;
     }
 
@@ -171,7 +181,7 @@ public class UmbrellaController  {
         if(openIdStatus != null){
             String status=openIdStatus.get("status").toString();
             if(status.equals("0")) {
-                result.put("status", "1");
+                result.put("status", "0");
                 result.put("openid", openid);
                 return result;
             }else{
@@ -181,8 +191,7 @@ public class UmbrellaController  {
                 return result;
             }
         }else {
-            String id = openIdStatus.get("status").toString();
-            result.put("status", id);
+            result.put("status", "1");
             result.put("openid", openid);
             return result;
         }
@@ -214,6 +223,23 @@ public class UmbrellaController  {
             return result;
         }
         result.put("result",1);
+        return result;
+    }
+
+    /**
+     * 判断用户是否存在过数据
+     */
+    @RequestMapping(value = "/updateActivationTime", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object>  updateActivationTime(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) {
+        Map<String, Object> map=new HashMap<String, Object>();
+        Map<String, Object> result=new HashMap<String, Object>();
+        BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
+        babyUmbrellaInfo.setId(Integer.parseInt(params.get("id").toString()));
+        babyUmbrellaInfo.setActivationTime(new Date());
+        String res=babyUmbrellaInfoSerivce.updateBabyUmbrellaInfoById(babyUmbrellaInfo)+"";
+        result.put("result",res);
         return result;
     }
 }

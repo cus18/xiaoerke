@@ -2,12 +2,13 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
-import com.cxqm.xiaoerke.modules.consult.entity.*;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
+import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
@@ -19,7 +20,6 @@ import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
-import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
@@ -254,7 +254,7 @@ public class ConsultDoctorController extends BaseController {
         String userName = (String) params.get("userName");
 
         //根据用户ID去查询，从历史会话记录中，获取用户最近的一条聊天记录，根据source判断会话来源
-        response = ConsultSessionManager.getSessionManager().createConsultSession(userName,userId);
+        response = ConsultSessionManager.getSessionManager().createConsultSession(userName, userId);
 
         return response;
     }
@@ -272,6 +272,7 @@ public class ConsultDoctorController extends BaseController {
     @ResponseBody
     Map<String, Object> sessionEnd(@RequestParam(required = true) String sessionId,
                                    @RequestParam(required = true) String userId) {
+        System.out.println("close session========" + sessionId + "==========userId========" + userId);
         Map<String, Object> params = new HashMap<String, Object>();
         Map<String, Object> response = new HashMap<String, Object>();
         params.put("openid", userId);
@@ -314,8 +315,8 @@ public class ConsultDoctorController extends BaseController {
                         TextWebSocketFrame csframe = new TextWebSocketFrame(obj.toJSONString());
                         doctorChannel.writeAndFlush(csframe.retain());
                     }
-                }else if("wxcxqm".equalsIgnoreCase(richConsultSession.getSource())){
-                    String st = "医生太棒,要给好评;\n 服务不好,留言吐槽. \n ----------\n【" +
+                } else if ("wxcxqm".equalsIgnoreCase(richConsultSession.getSource())) {
+                    String st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
                             "<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
                             params.get("uuid") + "'>点击这里去评价</a>】";
                     Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
@@ -329,5 +330,17 @@ public class ConsultDoctorController extends BaseController {
         } else {
             return null;
         }
+    }
+
+    /**
+     * 医生选择一个用户，主动跟用户发起咨询会话  qwe
+     */
+    @RequestMapping(value = "/getSystemTime", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    HashMap<String, Object> getSystemTime() {
+        HashMap<String, Object> response = new HashMap<String, Object>();
+        response.put("dateTime", new Date());
+        return response;
     }
 }

@@ -49,4 +49,9 @@ define(['appUmbrella'], function (app) {
         .factory('updateInfo',['$resource',function ($resource){
             return $resource(user_h5 + 'umbrella/updateInfo');
         }])
+
+        //更新激活时间
+        .factory('updateActivationTime',['$resource',function ($resource){
+            return $resource(user_h5 + 'umbrella/updateActivationTime');
+        }])
 })
