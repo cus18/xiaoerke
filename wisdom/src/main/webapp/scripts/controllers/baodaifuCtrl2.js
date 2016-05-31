@@ -183,11 +183,13 @@ angular.module('controllers2', [])
                     Ps.initialize(document.getElementById('content_scroll'));
                 },300);
 
+                /*$('.mine_conright').scroll(function () {
+                    var scr = $(this).scrollTop();
+                    var scrollHeight = document.body.scrollHeight;
+                    console.log("sc1",scr);
+                    console.log("sc2",scrollHeight);
 
-                /*var scrollHeight = $(document).height();
-                var windowHeight = $(window).height();
-
-                scrollTop = scrollHeight-windowHeight;*/
+                });*/
 
             }
 
@@ -293,4 +295,86 @@ angular.module('controllers2', [])
             }
 
 
-        }]);
+        }])
+    //医互助
+    .controller('doctorHelpCtrl',['$scope','$state','$stateParams','$http',
+        function ($scope,$state,$stateParams,$http) {
+
+            $scope.initial = function(){
+                $(".img_weixin").hide();
+                //底部微信二维码显示
+                $(".img_1").mouseenter(function () {
+                    $(".img_weixin").show();
+
+                });
+                $(".img_1").mouseout(function () {
+                    $(".img_weixin").hide();
+                });
+                $(".curr").css("background-color","#22c4c6");
+                setLog("GW_PV");
+                var $headBar = $('.bdf_title'), initTop = 0, isScroll = true;
+                $(window).on('scroll', function(e) {
+                    var scrollY = $(this).scrollTop();
+                    if(scrollY > 126){
+                        if(scrollY > initTop){
+                            $headBar.addClass('active');
+                        }else{
+                            $headBar.removeClass('active');
+                        }
+                    } else{
+                        $headBar.removeClass('active');
+                    }
+                    initTop = scrollY;
+                });
+
+            }
+
+            //点击logo跳转到首页
+            $scope.goLogo = function () {
+                $state.go("index");
+            }
+
+            //顶部关于我们
+            $scope.goCallMine = function () {
+                setLog("GW_TOP_GYWM");
+                $state.go("callMine",{id:1});
+            }
+
+
+            //关于我们
+            $scope.goGuanYu = function (log) {
+                setLog(log);
+                $state.go("callMine",{id:1});
+
+            }
+
+            //联系我们
+            $scope.goLianXi2 = function (log) {
+                setLog(log);
+                $state.go("callMine",{id:5});
+            }
+
+            //服务协议
+            $scope.goFuWu = function (log) {
+                setLog(log);
+                $state.go("callMine",{id:3});
+            }
+
+            //隐私保护
+            $scope.goYinSi = function (log) {
+                setLog(log);
+                $state.go("callMine",{id:4});
+            }
+
+            //微博
+            $scope.goWeiBo = function (log) {
+                setLog(log);
+            }
+
+            //记录日志
+            function setLog(log){
+                var pData = {logContent:encodeURI(log)};
+                $http({method:'post',url:'util/recordLogs',params:pData});
+            }
+
+    }])
