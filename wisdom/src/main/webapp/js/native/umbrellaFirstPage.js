@@ -114,7 +114,6 @@ function  joinUs(){
                 shareUmbrellaId=data.umbrella.id;
                 loadShare();
             }
-
         },
         dataType: "json"
     });

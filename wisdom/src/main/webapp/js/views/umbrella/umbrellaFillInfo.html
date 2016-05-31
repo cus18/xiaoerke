@@ -56,7 +56,7 @@
                         <dd>
                             <span>验证码：</span>
                             <input type="text" id="testCode"   ng-click="skip('testCode')" ng-model="info.code"   maxlength="6"   ng-blur="checkCode();" >
-                            <a class="getCode" ng-click="getCode()">{{codeSecond}}</a>
+                            <a class="getCode" ng-disabled="codeButton" ng-click="getCode()">{{codeSecond}}</a>
                         </dd>
                         <dd >
                             <span>身份证号：</span>
@@ -72,7 +72,7 @@
                 </div>
             <br> <br> <br> <br> <br> <br> <br>
         </ion-scroll>
-        <div ng-click="immediateActive()" id="payButton" class="button bottom-btn" >
+        <div ng-click="immediateActive()"  id="payButton" class="button bottom-btn" >
             立即激活
         </div>
     </ion-content>
