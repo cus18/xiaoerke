@@ -632,6 +632,7 @@ public class ConsultSessionManager {
 			consultSession.setId(richConsultSession.getId());
 			consultSession.setCsUserId(richConsultSession.getCsUserId());
 			consultSession.setStatus("ongoing");
+			consultSession.setCreateTime(richConsultSession.getCreateTime());
 			flag = consultSessionService.updateSessionInfo(consultSession);
 		}else{
 			consultSession.setCsUserId(richConsultSession.getCsUserId());

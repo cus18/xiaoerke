@@ -453,7 +453,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.socketServerFirst.onopen = function (event) {
                         console.log("onopen",event.data);
                         //启动心跳监测
-                        heartBeatCheck();
+                        heartBeatCheckFirst();
                     };
 
                     $scope.socketServerFirst.onclose = function (event) {
@@ -494,7 +494,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.socketServerSecond.onopen = function (event) {
                         console.log("onopen",event.data);
                         //启动心跳监测
-                        heartBeatCheck();
+                        heartBeatCheckSecond();
                     };
 
                     $scope.socketServerSecond.onclose = function (event) {
@@ -506,23 +506,21 @@ angular.module('controllers', ['luegg.directives'])
             };
 
             $scope.messageList = function(){
-                window.clearInterval($scope.timer);
+                clearInterval($scope.heartBeatFirstId);
+                clearInterval($scope.heartBeatSecondId);
                 $state.go('messageList');
             }
 
-            var heartBeatCheck = function(){
+            var heartBeatCheckFirst = function(){
                 //启动定时器，周期性的发送心跳信息
-                $scope.timer = window.setInterval(sendHeartBeat,2000);
+                $scope.heartBeatFirstId = setInterval(sendHeartBeatFirst,2000);
             };
-            var sendHeartBeat = function(){
-                console.log("heartBeatFirstNum",heartBeatFirstNum);
-
+            var sendHeartBeatFirst = function(){
                 var heartBeatMessage = {
                     "type": 5,
                     "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                     "csUserId": angular.copy($scope.doctorId)
                 };
-
                 heartBeatFirstNum--;
                 if(heartBeatFirstNum < 0){
                     heartBeatFirstNum = 3;
@@ -534,7 +532,19 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.socketServerFirst.send(JSON.stringify(heartBeatMessage));
                     }
                 }
+                $scope.$apply();
+            };
 
+            var heartBeatCheckSecond = function(){
+                //启动定时器，周期性的发送心跳信息
+                $scope.heartBeatSecondId = setInterval(sendHeartBeatSecond,2000);
+            };
+            var sendHeartBeatSecond = function(){
+                var heartBeatMessage = {
+                    "type": 5,
+                    "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                    "csUserId": angular.copy($scope.doctorId)
+                };
                 heartBeatSecondNum--;
                 if(heartBeatSecondNum < 0){
                     heartBeatSecondNum = 3;

@@ -44,8 +44,7 @@
             }
             $scope.$on('$ionicView.enter', function(){
                 JoinUs.save(function(data){
-                    alert(data.umbrella.activation_time);
-                    if(data.result==1){
+                    if(data.umbrella.activation_time==null){
                         $scope.firstJoin=true;
                         $scope.umbrellaMoney=20000;
                         $scope.umbrellaId=data.id;
