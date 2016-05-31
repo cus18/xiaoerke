@@ -77,7 +77,7 @@ public class UmbrellaController  {
                 result.put("umbrella",m);
                 numm.put("userNums","1");
                 numm.put("date",sdf.format(new Date()));
-                result.put("num",babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(numm));
+//                result.put("num",babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(numm));
                 return result;
             }
             Map<String, Object> result = new HashMap<String, Object>();
@@ -86,7 +86,7 @@ public class UmbrellaController  {
 
             numm.put("date",sdf.format(new Date()));
             numm.put("userNums","1");
-            result.put("num",babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(numm));
+//            result.put("num",babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(numm));
             return result;
         }
         BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
