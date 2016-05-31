@@ -227,7 +227,7 @@ public class UmbrellaController  {
         Map<String, Object> map=new HashMap<String, Object>();
         Map<String, Object> result=new HashMap<String, Object>();
         BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
-        babyUmbrellaInfo.setBabyId(params.get("babyId").toString());
+        babyUmbrellaInfo.setId(Integer.parseInt(params.get("id").toString()));
         babyUmbrellaInfo.setActivationTime(new Date());
         String res=babyUmbrellaInfoSerivce.updateBabyUmbrellaInfoById(babyUmbrellaInfo)+"";
         result.put("result",res);
