@@ -240,7 +240,7 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 
         if(type == null){
             HashMap<String, Object> resultMap  = patientRegisterService.getOrderInfoById(searchMap);
-            PatientMsgTemplate.shareRemind2Wechat(openId,token,(String)resultMap.get("babyName"),(String)resultMap.get("doctorName") ,"http://baodf.com/titan/appoint#/sharedDetail/"+patientRegisterServiceId+",false,");
+            PatientMsgTemplate.shareRemind2Wechat(openId,token,(String)resultMap.get("babyName"),(String)resultMap.get("doctorName") ,"http://s68.baodf.com/titan/appoint#/sharedDetail/"+patientRegisterServiceId+",false,");
         }
 
 		response.put("patient_register_service_id", patientRegisterServiceId);
