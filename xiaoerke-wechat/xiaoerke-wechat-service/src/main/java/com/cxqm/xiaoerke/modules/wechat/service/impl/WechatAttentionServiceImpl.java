@@ -3,6 +3,7 @@ package com.cxqm.xiaoerke.modules.wechat.service.impl;
 import com.cxqm.xiaoerke.modules.wechat.dao.WechatAttentionDao;
 import com.cxqm.xiaoerke.modules.wechat.entity.DoctorAttentionVo;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
+import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,11 @@ public class WechatAttentionServiceImpl implements WechatAttentionService {
     @Override
     public HashMap<String,Object> getAttention(String open_id){
     	return wechatattentionDao.getAttention(open_id);
+    }
+
+    @Override
+    public WechatAttention getAttentionByOpenId(String open_id){
+        return wechatattentionDao.getAttentionByOpenId(open_id);
     }
     
     //根据openId查询关注信息列表

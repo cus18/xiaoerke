@@ -194,6 +194,10 @@
       select marketer, nickname,date_format(min(date),'%Y-%m-%d') date from sys_attention where openid=#{open_id}
   </select>
 
+    <select id="getAttentionByOpenId" resultType="com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention">
+        select marketer, nickname,min(date) date from sys_attention where openid=#{open_id}
+    </select>
+
   <!--用户最近关注的marketer-->
   <select id="findMarketerByOpeinid" resultMap="BaseResultMap">
     SELECT

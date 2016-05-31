@@ -4,6 +4,7 @@ package com.cxqm.xiaoerke.modules.wechat.service;
 import com.cxqm.xiaoerke.modules.wechat.entity.DoctorAttentionVo;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 
+import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,8 @@ public interface WechatAttentionService {
 	List<SysWechatAppintInfoVo> findAttentionInfo(SysWechatAppintInfoVo sysWechatAppintInfoVo);
 
 	HashMap<String,Object> getAttention(String open_id);
+
+	WechatAttention getAttentionByOpenId(String open_id);
 
 	List<SysWechatAppintInfoVo> findAttentionInfoByOpenIdLists(
 			SysWechatAppintInfoVo sysWechatAppintInfoVo);
