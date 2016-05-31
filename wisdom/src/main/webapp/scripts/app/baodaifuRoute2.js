@@ -16,6 +16,12 @@ angular.module('app2', ['angularFileUpload', 'ui.router', 'ui.bootstrap', 'contr
                 controller: 'callMineCtrl',
                 title: '联系我们'
             })
+            .state('doctorHelp', {
+                url: '/doctorHelp',
+                templateUrl: root + '/doctorHelp.html',
+                controller: 'doctorHelpCtrl',
+                title: '医互助'
+            })
 
         $urlRouterProvider.otherwise('index');
     })

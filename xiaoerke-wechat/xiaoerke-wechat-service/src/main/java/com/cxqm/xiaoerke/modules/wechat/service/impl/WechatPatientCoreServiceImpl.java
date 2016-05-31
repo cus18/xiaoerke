@@ -391,7 +391,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setTitle("防犬宝,一份温馨的安全保障");
 			article.setDescription("只要19.8元，打狂犬疫苗最高可获得互助补贴1000元。不幸患狂犬病可获得互助补贴5万元！");
 			article.setPicUrl("http://oss-cn-beijing.aliyuncs.com/xiaoerke-article-pic/FQBTGXX.png");
-			article.setUrl(ConstantUtil.KEEPER_WEB_URL + "/wechatInfo/fieldwork/wechat/author?url=http://s165.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=26");
+			article.setUrl(ConstantUtil.KEEPER_WEB_URL + "/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=26");
 			articleList.add(article);
 		}else if(EventKey.indexOf("homepage_qualityservices_kuaizixun")>-1){//官网快咨询
 			TextMessage textMessage = new TextMessage();
@@ -463,7 +463,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			umbrellascan = false;
 		}
 
-		if("newUser".equals(userType) && umbrellascan){//新用户关注发送保护伞信息
+		/*if("newUser".equals(userType) && umbrellascan){//新用户关注发送保护伞信息
 			if(!"umbrellaSendWechatMessageNewUserAttention".equals(CookieUtils.getCookie(request, "umbrellaSendWechatMessageNewUserAttention"))){//新用户关注，推送保护伞消息
 				CookieUtils.setCookie(response, "umbrellaSendWechatMessageNewUserAttention", "umbrellaSendWechatMessageNewUserAttention", 3600 * 24 * 365);
 				int count = babyUmbrellaInfoService.getUmbrellaCount();
@@ -473,7 +473,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				article.setUrl("http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrella");
 				articleList.add(article);
 			}
-		}
+		}*/
 
 		if(articleList.size() == 0){
 			return "";
@@ -698,13 +698,13 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		 params.put("redPacket", null);
 		 patientRegisterPraiseDao.saveCustomerEvaluation(params);
 		String st = "感谢您对我们的信任与支持，为了以后能更好的为您服务，请对本次服务做出评价！【" +
-			"<a href='http://s11.baodf.com/titan/appoint#/userEvaluate/"+params.get("uuid")+"'>我要评价</a>】";
+			"<a href='http://s68.baodf.com/titan/appoint#/userEvaluate/"+params.get("uuid")+"'>我要评价</a>】";
 		 Map parameter = systemService.getWechatParameter();
 		 String token = (String)parameter.get("token");
 		 WechatUtil.sendMsgToWechat(token, openId, st);
 		 LogUtils.saveLog(request, "00000004");//注：00000004表示“客服评价”
 
-		if(!"umbrellaSendWechatMessageCloseConsult".equals(CookieUtils.getCookie(request, "umbrellaSendWechatMessageCloseConsult"))){//关闭咨询，推送保护伞消息
+		/*if(!"umbrellaSendWechatMessageCloseConsult".equals(CookieUtils.getCookie(request, "umbrellaSendWechatMessageCloseConsult"))){//关闭咨询，推送保护伞消息
 			CookieUtils.setCookie(response, "umbrellaSendWechatMessageCloseConsult", "umbrellaSendWechatMessageCloseConsult", 3600 * 24 * 365);
 			int count = babyUmbrellaInfoService.getUmbrellaCount();
 			List<Article> articleList = new ArrayList<Article>();
@@ -727,7 +727,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			newsMessage.setArticles(articleList);
 			// 将图文消息对象转换成xml字符串
 			respMessage = MessageUtil.newsMessageToXml(newsMessage);
-		}
+		}*/
 		return respMessage;
 	}
 

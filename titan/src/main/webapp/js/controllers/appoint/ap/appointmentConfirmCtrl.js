@@ -203,7 +203,7 @@ angular.module('controllers', ['ionic']).controller('AppointmentConfirmCtrl', [
                                                 })
                                             }
                                             else if ($scope.status == "9" || $scope.status == "10") {
-                                                alert("您好，您的会员服务和免费预约券已过期，宝大夫免费赠送您周会员服务。");
+                                                //alert("您好，您的会员服务和免费预约券已过期，宝大夫免费赠送您周会员服务。");
                                                 $state.go("appointmentUseMember", {
                                                     patient_register_service_id: patient_register_service_id,
                                                     date: $scope.date,
@@ -221,7 +221,7 @@ angular.module('controllers', ['ionic']).controller('AppointmentConfirmCtrl', [
                                             }
                                             else if ($scope.status == "1" || $scope.status == "2" || $scope.status == "3" ||
                                                 $scope.status == "5" || $scope.status == "6" || $scope.status == "7" || $scope.status == "cattle" || $scope.status == "22") {
-                                                alert("您好，您的免费预约机会已用完，如需继续预约，请再次购买会员服务。");
+                                                //alert("您好，您的免费预约机会已用完，如需继续预约，请再次购买会员服务。");
                                                 window.location.href = "/titan/pay/patientPay.do?patient_register_service_id="
                                                     + patient_register_service_id + "&chargePrice=15000";
                                             }
@@ -236,7 +236,7 @@ angular.module('controllers', ['ionic']).controller('AppointmentConfirmCtrl', [
                                         else if ($stateParams.needPay == "tehui") {
                                             if ($scope.status == "1" || $scope.status == "2" || $scope.status == "5"
                                                 || $scope.status == "6" || $scope.status == "9" || $scope.status == "10") {
-                                                alert("您好，您的会员服务已过期，如需继续预约，请再次购买会员服务。");
+                                                //alert("您好，您的会员服务已过期，如需继续预约，请再次购买会员服务。");
                                                 window.location.href = "/titan/pay/patientPay.do?patient_register_service_id="
                                                     + patient_register_service_id + "&chargePrice=15000";
                                             }
