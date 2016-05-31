@@ -194,11 +194,11 @@ function  ifExistOrder(){
         contentType: "application/json; charset=utf-8",
         success: function(data){
             if(data.result==2||data.result==3){
-                $("#NoShareDiv").show();
-                $("#shareDiv").hide();
-            }else{
                 $("#NoShareDiv").hide();
                 $("#shareDiv").show();
+            }else{
+                $("#NoShareDiv").show();
+                $("#shareDiv").hide();
             }
         },
         dataType: "json"
