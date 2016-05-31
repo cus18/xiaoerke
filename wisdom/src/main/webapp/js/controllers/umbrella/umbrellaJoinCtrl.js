@@ -58,13 +58,13 @@
                     }else if(data.result==2){
                         $scope.updateJoin=true;
                         $scope.umbrellaMoney=data.umbrella.umbrella_money;
-                        $scope.num=data.umbrella.id-120000000;
+                        $scope.num=data.umbrella.num;
                         $scope.umbrellaId=data.umbrella.id;
                         $scope.loadShare();
                     }else if(data.result==3){
                         $scope.finally=true;
                         $scope.umbrellaMoney=data.umbrella.umbrella_money;
-                        $scope.num=data.umbrella.id-120000000;
+                        $scope.num=data.umbrella.num;
 
                         
                         var targetDate = new Date(data.umbrella.activation_time);
