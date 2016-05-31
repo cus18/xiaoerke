@@ -509,6 +509,7 @@ angular.module('controllers', ['luegg.directives'])
                 setInterval(sendHeartBeat,2000);
             };
             var sendHeartBeat = function(){
+                console.log("heartBeatFirstNum",heartBeatFirstNum);
 
                 var heartBeatMessage = {
                     "type": 5,
