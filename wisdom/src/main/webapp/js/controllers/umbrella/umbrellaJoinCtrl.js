@@ -43,8 +43,8 @@
                 return Inter_Days;
             }
             $scope.$on('$ionicView.enter', function(){
-                alert(data.umbrella.activation_time);
                 JoinUs.save(function(data){
+                    alert(data.umbrella.activation_time);
                     if(data.result==1){
                         $scope.firstJoin=true;
                         $scope.umbrellaMoney=20000;
