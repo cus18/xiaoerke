@@ -123,12 +123,14 @@ public class ConsultSessionManager {
 	}
 	
 	private void doCreateSocketInitiatedByCs(String csUserId, Channel channel){
+		System.out.println("doctor init ------"+csUserId);
 		csUserChannelMapping.put(csUserId, channel);
 		userChannelMapping.put(csUserId, channel);
 		channelUserMapping.put(channel, csUserId);
 	}
 
 	private void doCreateSocketInitiatedByDistributor(String distributorUserId, Channel channel){
+		System.out.println("doctor init ------"+distributorUserId);
 		if(distributorsList.contains(distributorUserId)) {
 			distributors.put(distributorUserId, channel);
 			csUserChannelMapping.put(distributorUserId, channel);
@@ -248,10 +250,12 @@ public class ConsultSessionManager {
 		HashMap<String,Object> response = new HashMap<String, Object>();
 		Channel  csChannel = null;
 		Channel distributorChannel = null;
+		System.out.println("distributors.size()-----"+distributors.size());
 		if(distributors.size()!=0){
 			for(int i = 0;  i < distributorsList.size(); i ++) {
 				String distributorId = RandomUtils.getRandomKeyFromMap(distributors);
 				distributorChannel = distributors.get(distributorId);
+				System.out.println("distributorChannel.isActive()-----"+distributorChannel.isActive());
 				if(distributorChannel.isActive()) {
 					consultSession.setCsUserId(distributorId);
 					User csUser = systemService.getUserById(distributorId);
@@ -259,6 +263,7 @@ public class ConsultSessionManager {
 					csChannel = distributorChannel;
 					break;
 				} else {
+					System.out.println("distributors.remove-----"+distributorId);
 					distributors.remove(distributorId);
 					csUserChannelMapping.remove(distributorId);
 				}
@@ -300,7 +305,7 @@ public class ConsultSessionManager {
 				return null;
 			}
 		}
-
+		System.out.println("distributorChannel-----"+distributorChannel);
 
 		HashMap<String, Object> perInfo = new HashMap<String, Object>();
 		if ( StringUtils.isNotNull(consultSession.getCsUserId())) {
@@ -312,6 +317,7 @@ public class ConsultSessionManager {
 		if(consultSession.getCsUserId()!=null){
 			consultSessionService.saveConsultInfo(consultSession);
 			Integer sessionId = consultSession.getId();
+			System.out.println("sessionId-----"+sessionId +"consultSession.getCsUserId()"+consultSession.getUserId());
 			sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
 			sessionRedisCache.putUserIdSessionIdPair(consultSession.getUserId(), sessionId);
 			response.put("csChannel", csChannel);
@@ -326,6 +332,7 @@ public class ConsultSessionManager {
 
 	public int transferSession(Integer sessionId, String toCsUserId, String remark){
 		try{
+			System.out.println("sessionId==="+sessionId+"toCsUserId===="+toCsUserId);
 			RichConsultSession session = sessionRedisCache.getConsultSessionBySessionId(sessionId);
 
 			ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = new ConsultSessionForwardRecordsVo();
@@ -347,6 +354,7 @@ public class ConsultSessionManager {
 			User toCsUser = systemService.getUser(toCsUserId);
 			Channel channelToCsUser = userChannelMapping.get(toCsUserId);
 			Channel channelFromCsUser = userChannelMapping.get(session.getCsUserId());
+			System.out.println("toCsUserId========"+toCsUserId+"CsUserId========"+session.getCsUserId()+"channelFromCsUser.isActive()========="+channelFromCsUser.isActive());
 			if(channelFromCsUser.isActive()){
 
 				ConsultSessionForwardRecordsVo forwardRecord = new ConsultSessionForwardRecordsVo();
@@ -405,6 +413,7 @@ public class ConsultSessionManager {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			System.out.println("forwardRecordId============"+forwardRecordId+"channelToCsUser=============="+channelToCsUser+"channelFromCsUser======="+channelFromCsUser+"channelFromCsUser===="+channelFromCsUser);
 			//查询SessionForwardRecords，如果此条记录，已经被接诊员取消，则不再通知医生转接
 			ConsultSessionForwardRecordsVo sessionForwardRecordsVo = consultSessionForwardRecordsService.selectByPrimaryKey(forwardRecordId);
 			if(!(sessionForwardRecordsVo.getStatus().equals(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_CANCELLED))){
@@ -469,6 +478,8 @@ public class ConsultSessionManager {
 	}
 	
 	public void react2Transfer(Integer sessionId, Integer forwardRecordId, String toCsUserId, String toCsUserName, String operation){
+		System.out.println("sessionId============"+sessionId+"forwardRecordId=============="+forwardRecordId+"toCsUserId======="+toCsUserId+"operation===="+operation);
+
 		RichConsultSession session = sessionRedisCache.getConsultSessionBySessionId(sessionId);
 		if(session!=null){
 			String fromCsUserId = session.getCsUserId();
@@ -508,14 +519,17 @@ public class ConsultSessionManager {
 	}
 
 	public  void  putSessionIdConsultSessionPair(Integer sessionId,RichConsultSession session){
+		System.out.println("putSessionIdConsultSessionPair====="+sessionId+"RichConsultSession"+session.getId());
 		sessionRedisCache.putSessionIdConsultSessionPair(sessionId, session);
 	}
 
 	public void putUserIdSessionIdPair(String userId, Integer sessionId) {
+		System.out.println("putUserIdSessionIdPair====="+userId+"sessionId"+sessionId);
 		sessionRedisCache.putUserIdSessionIdPair(userId, sessionId);
 	}
 
 	public void cancelTransferringSession(Integer sessionId, String toCsUserId, String remark){
+		System.out.println("cancelTransferringSession====="+sessionId+"toCsUserId"+toCsUserId);
 		RichConsultSession session = sessionRedisCache.getConsultSessionBySessionId(sessionId);
 		ConsultSessionForwardRecordsVo forwardRecord = new ConsultSessionForwardRecordsVo();
 		forwardRecord.setConversationId(sessionId.longValue());
@@ -568,6 +582,7 @@ public class ConsultSessionManager {
 	 * 医生选择一个用户，主动跟用户发起咨询会话
 	 */
 	public HashMap<String, Object> createConsultSession(String userName,String userId) {
+		System.out.println("userId createConsultSession ====="+userId);
 		//根据用户ID去查询，从历史会话记录中，获取用户最近的一条聊天记录，根据source判断会话来源
 		HashMap<String, Object> response= new HashMap<String, Object>();
 		RichConsultSession richConsultSession = new RichConsultSession();
@@ -575,13 +590,14 @@ public class ConsultSessionManager {
 		consultSession.setStatus("ongoing");
 		consultSession.setUserId(userId);
 		List<ConsultSession> consultSessions = consultSessionService.selectBySelective(consultSession);
-
+		System.out.println("consultSessions.size() ====="+consultSessions.size());
 		if (consultSessions.size()>0) {
 			//如果会话处于转接中，则不能抢过会话，如果会话非转接状态，则超级医生具有权限抢过会话
 			ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = new ConsultSessionForwardRecordsVo();
 			consultSessionForwardRecordsVo.setConversationId(Long.valueOf(consultSessions.get(0).getId()));
 			consultSessionForwardRecordsVo.setStatus("waiting");
 			List<ConsultSessionForwardRecordsVo> consultSessionForwardRecordsVos = consultSessionForwardRecordsService.selectConsultForwardList(consultSessionForwardRecordsVo);
+			System.out.println("consultSessionForwardRecordsVos.size() ====="+consultSessionForwardRecordsVos.size());
 			if (consultSessionForwardRecordsVos.size() > 0) {
 				response.put("result", "existTransferSession");
 			}else{
@@ -598,6 +614,7 @@ public class ConsultSessionManager {
 						richConsultSession.setUserName(userName);
 						richConsultSession.setId(consultSessions.get(0).getId());
 						richConsultSession.setSource(consultSessions.get(0).getSource());
+						System.out.println("richConsultSession.id =====" + richConsultSession.getId());
 						setRichConsultSession(response, richConsultSession);
 					} else {
 						//如果是普通医生，没有权限抢断会话，直接返回提升没有权限操作
@@ -609,6 +626,7 @@ public class ConsultSessionManager {
 			//用户目前没有任何进行的会话，切用户距离最近一次咨询，没有超过48小时，则可为用户重新创建一个会话
 			Query query = (new Query()).addCriteria(where("userId").is(userId)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
 			ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(query);
+			System.out.println("lastTime======="+consultSessionStatusVo.getLastMessageTime());
 			if (DateUtils.pastHour(consultSessionStatusVo.getLastMessageTime()) < 48L) {
 				if(consultSessionStatusVo.getSource() !=null && consultSessionStatusVo.getSource().contains("h5")){
 					response.put("result", "notOnLine");
@@ -629,6 +647,7 @@ public class ConsultSessionManager {
 	private void setRichConsultSession(HashMap<String, Object> response, RichConsultSession richConsultSession) {
 		ConsultSession consultSession = new ConsultSession();
 		int flag = 0;
+		System.out.println("richConsultSession.getId()------"+richConsultSession.getId());
 		if(richConsultSession.getId()!=null){
 			consultSession.setId(richConsultSession.getId());
 			consultSession.setCsUserId(richConsultSession.getCsUserId());
@@ -647,6 +666,7 @@ public class ConsultSessionManager {
 			richConsultSession.setSource(consultSession.getSource());
 			richConsultSession.setCreateTime(consultSession.getCreateTime());
 		}
+		System.out.println("flag===="+flag);
 		if (flag > 0) {
 			response.put("result", "success");
 			response.put("userId", richConsultSession.getUserId());
