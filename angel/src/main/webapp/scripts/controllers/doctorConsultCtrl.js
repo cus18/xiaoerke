@@ -72,6 +72,9 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.doctorPhone = data.userPhone;
                         $scope.userType = data.userType;
 
+                        console.log($scope.socketServerFirst);
+                        console.log($scope.socketServerFirst.readyState);
+
                         //创建与平台的socket连接
                         if($scope.socketServerFirst==""||$scope.socketServerFirst.readyState!=1){
                             $scope.initConsultSocketFirst();
