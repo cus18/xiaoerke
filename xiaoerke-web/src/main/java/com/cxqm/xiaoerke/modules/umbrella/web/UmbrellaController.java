@@ -63,6 +63,7 @@ public class UmbrellaController  {
     @ResponseBody
     Map<String, Object>  joinUs(HttpServletRequest request,HttpSession session) {
         Map<String, Object> map=new HashMap<String, Object>();
+        Map<String, Object> numm=new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session, request);
         openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
@@ -73,11 +74,13 @@ public class UmbrellaController  {
                 Map<String, Object> result = new HashMap<String, Object>();
                 result.put("result",3);
                 result.put("umbrella",m);
+                result.put("num",babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(numm));
                 return result;
             }
             Map<String, Object> result = new HashMap<String, Object>();
             result.put("result", 2);
             result.put("umbrella", m);
+            result.put("num",babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(numm));
             return result;
         }
         BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
