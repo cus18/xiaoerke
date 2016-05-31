@@ -597,6 +597,7 @@ public class ConsultSessionManager {
 						richConsultSession.setUserId(userId);
 						richConsultSession.setUserName(userName);
 						richConsultSession.setId(consultSessions.get(0).getId());
+						richConsultSession.setSource(consultSessions.get(0).getSource());
 						setRichConsultSession(response, richConsultSession);
 					} else {
 						//如果是普通医生，没有权限抢断会话，直接返回提升没有权限操作
