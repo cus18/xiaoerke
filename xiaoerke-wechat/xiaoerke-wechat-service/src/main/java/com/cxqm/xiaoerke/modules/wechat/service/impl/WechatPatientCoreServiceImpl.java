@@ -463,7 +463,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			umbrellascan = false;
 		}
 
-		if("newUser".equals(userType) && umbrellascan){//新用户关注发送保护伞信息
+		/*if("newUser".equals(userType) && umbrellascan){//新用户关注发送保护伞信息
 			if(!"umbrellaSendWechatMessageNewUserAttention".equals(CookieUtils.getCookie(request, "umbrellaSendWechatMessageNewUserAttention"))){//新用户关注，推送保护伞消息
 				CookieUtils.setCookie(response, "umbrellaSendWechatMessageNewUserAttention", "umbrellaSendWechatMessageNewUserAttention", 3600 * 24 * 365);
 				int count = babyUmbrellaInfoService.getUmbrellaCount();
@@ -473,7 +473,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				article.setUrl("http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrella");
 				articleList.add(article);
 			}
-		}
+		}*/
 
 		if(articleList.size() == 0){
 			return "";
@@ -704,7 +704,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		 WechatUtil.sendMsgToWechat(token, openId, st);
 		 LogUtils.saveLog(request, "00000004");//注：00000004表示“客服评价”
 
-		if(!"umbrellaSendWechatMessageCloseConsult".equals(CookieUtils.getCookie(request, "umbrellaSendWechatMessageCloseConsult"))){//关闭咨询，推送保护伞消息
+		/*if(!"umbrellaSendWechatMessageCloseConsult".equals(CookieUtils.getCookie(request, "umbrellaSendWechatMessageCloseConsult"))){//关闭咨询，推送保护伞消息
 			CookieUtils.setCookie(response, "umbrellaSendWechatMessageCloseConsult", "umbrellaSendWechatMessageCloseConsult", 3600 * 24 * 365);
 			int count = babyUmbrellaInfoService.getUmbrellaCount();
 			List<Article> articleList = new ArrayList<Article>();
@@ -727,7 +727,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			newsMessage.setArticles(articleList);
 			// 将图文消息对象转换成xml字符串
 			respMessage = MessageUtil.newsMessageToXml(newsMessage);
-		}
+		}*/
 		return respMessage;
 	}
 
