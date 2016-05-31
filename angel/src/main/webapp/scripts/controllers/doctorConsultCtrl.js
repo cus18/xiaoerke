@@ -575,7 +575,6 @@ angular.module('controllers', ['luegg.directives'])
                     return;
                 }
                 GetSystemTime.save(function(data){
-                    console.log("dateTime",moment(data.dateTime).format("YYYY-MM-DD HH:mm:ss"));
                     if($scope.currentUserConversation.serverAddress==$scope.firstAddress){
                         if ($scope.socketServerFirst.readyState == WebSocket.OPEN) {
                             var consultValMessage = "";
