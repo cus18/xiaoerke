@@ -506,13 +506,13 @@ angular.module('controllers', ['luegg.directives'])
             };
 
             $scope.messageList = function(){
-                clearInterval($scope.timer);
+                window.clearInterval($scope.timer);
                 $state.go('messageList');
             }
 
             var heartBeatCheck = function(){
                 //启动定时器，周期性的发送心跳信息
-                $scope.timer = setInterval(sendHeartBeat,2000);
+                $scope.timer = window.setInterval(sendHeartBeat,2000);
             };
             var sendHeartBeat = function(){
                 console.log("heartBeatFirstNum",heartBeatFirstNum);
