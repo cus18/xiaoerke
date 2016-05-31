@@ -193,7 +193,7 @@ function  ifExistOrder(){
         url: "umbrella/ifExistOrder",
         contentType: "application/json; charset=utf-8",
         success: function(data){
-            if(data.result==2||data.result==3){
+            if(data.result==3){
                 $("#NoShareDiv").hide();
                 $("#shareDiv").show();
             }else{
