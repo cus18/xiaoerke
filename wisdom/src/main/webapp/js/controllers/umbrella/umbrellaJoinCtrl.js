@@ -1,6 +1,6 @@
 ﻿angular.module('controllers', ['ionic']).controller('umbrellaJoinCtrl', [
-        '$scope','$state','$stateParams','JoinUs',
-        function ($scope,$state,$stateParams,JoinUs) {
+        '$scope','$state','$stateParams','JoinUs','updateActivationTime',
+        function ($scope,$state,$stateParams,JoinUs,updateActivationTime) {
             $scope.title="宝护伞";
             $scope.shareLock=false;
 
@@ -43,12 +43,18 @@
                 return Inter_Days;
             }
             $scope.$on('$ionicView.enter', function(){
+                alert(data.umbrella.activation_time);
                 JoinUs.save(function(data){
                     if(data.result==1){
                         $scope.firstJoin=true;
                         $scope.umbrellaMoney=20000;
                         $scope.umbrellaId=data.id;
                         $scope.loadShare();
+                        updateActivationTime.save({id:data.id},function(data){
+                            if(data.result!="1"){
+                              alert("未知错误,请尝试刷新页面");
+                            }
+                        });
                     }else if(data.result==2){
                         $scope.updateJoin=true;
                         $scope.umbrellaMoney=data.umbrella.umbrella_money;
@@ -60,23 +66,11 @@
                         $scope.umbrellaMoney=data.umbrella.umbrella_money;
                         $scope.num=data.umbrella.id-120000000;
 
-                        // console.log("targetDateUTC",data.umbrella.activation_time);
+                        
                         var targetDate = new Date(data.umbrella.activation_time);
                             targetDate.setDate(new Date().getDate() + 180);
                         var targetDateUTC = targetDate.getTime();
-                        // var afterDate=	new Date().getTime();
-                        // // var afterDate=	new Date();
-                        // console.log("targetDateUTC",targetDateUTC);
-                        // console.log("afterDate",afterDate);
-                        // console.log("afterDate",targetDateUTC-afterDate);
-                        // console.log("afterDate",(targetDateUTC-afterDate)/1000/60/60/24);
-                        // $scope.days=Math.ceil((targetDateUTC-afterDate)/1000/60/60/24);
-
-
-                        // var a = moment([targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate()]);
-                        // var b = moment([afterDate.getFullYear(), afterDate.getMonth(), afterDate.getDate()]);
-                        // $scope.minusDays=a.from(b); // "a day ago"
-                        // console.log("a",$scope.minusDays);
+                        
 
                         var selsDate = moment(data.umbrella.activation_time).format("YYYY-MM-DD");
                         var sedd =moment(selsDate).add(180,'days').format("YYYY-MM-DD");

@@ -82,6 +82,9 @@
             <if test="umberllaMoney != null">
                 umbrella_money = #{umberllaMoney},
             </if>
+            <if test="activationTime != null">
+                activation_time = now(),
+            </if>
         </set>
         where id = #{id,jdbcType=VARCHAR}
     </update>
