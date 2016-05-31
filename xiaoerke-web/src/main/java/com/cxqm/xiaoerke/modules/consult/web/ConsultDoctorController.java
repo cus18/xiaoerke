@@ -254,7 +254,7 @@ public class ConsultDoctorController extends BaseController {
         String userName = (String) params.get("userName");
 
         //根据用户ID去查询，从历史会话记录中，获取用户最近的一条聊天记录，根据source判断会话来源
-        response = ConsultSessionManager.getSessionManager().createConsultSession(userName,userId);
+        response = ConsultSessionManager.getSessionManager().createConsultSession(userName, userId);
 
         return response;
     }
@@ -329,5 +329,17 @@ public class ConsultDoctorController extends BaseController {
         } else {
             return null;
         }
+    }
+
+    /**
+     * 医生选择一个用户，主动跟用户发起咨询会话  qwe
+     */
+    @RequestMapping(value = "/getSystemTime", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    HashMap<String, Object> getSystemTime() {
+        HashMap<String, Object> response = new HashMap<String, Object>();
+        response.put("dateTime",new Date());
+        return response;
     }
 }

@@ -272,7 +272,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
 		newsMessage.setFuncFlag(0);
 		boolean umbrellascan = false;
-		if(EventKey.indexOf("baoxian_000001")>-1){
+		if(EventKey.indexOf("baoxian_000001")>-1&&xmlEntity.getEvent().equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)){
 			TextMessage textMessage = new TextMessage();
 			textMessage.setToUserName(xmlEntity.getFromUserName());
 			textMessage.setFromUserName(xmlEntity.getToUserName());
