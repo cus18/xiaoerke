@@ -513,7 +513,7 @@ angular.module('controllers', ['luegg.directives'])
 
             var heartBeatCheckFirst = function(){
                 //启动定时器，周期性的发送心跳信息
-                window.heartBeatFirstId = setInterval(sendHeartBeatFirst,2000);
+                $scope.heartBeatFirstId = setInterval(sendHeartBeatFirst,2000);
             };
             var sendHeartBeatFirst = function(){
                 console.log("heartBeatFirstNum",heartBeatFirstNum);
