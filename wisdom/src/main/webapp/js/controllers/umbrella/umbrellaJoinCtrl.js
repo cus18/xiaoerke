@@ -46,12 +46,13 @@
                 JoinUs.save(function(data){
                     if(data.umbrella.activation_time==null){
                         $scope.firstJoin=true;
-                        $scope.umbrellaMoney=20000;
-                        $scope.umbrellaId=data.id;
+                        $scope.umbrellaMoney=200000;
+                        $scope.umbrellaId=data.umbrella.id;
                         $scope.loadShare();
-                        updateActivationTime.save({"id":$scope.umbrellaId},function(data){
-                            if(data.result!="1"){
-                              alert("未知错误,请尝试刷新页面");
+                        
+                        updateActivationTime.save({"id":$scope.umbrellaId}, function (data){
+                            if(data.result!='1'){
+                                alert("未知错误,请尝试刷新页面");
                             }
                         });
                     }else if(data.result==2){
