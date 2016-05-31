@@ -96,6 +96,7 @@ public class UmbrellaController  {
         Map<String, Object> result=new HashMap<String, Object>();
         result.put("result",res);
         result.put("id",babyUmbrellaInfo.getId());
+        result.put("umbrella","");
         return result;
     }
 
