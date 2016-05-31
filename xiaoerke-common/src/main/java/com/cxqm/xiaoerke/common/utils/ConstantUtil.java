@@ -2,8 +2,9 @@ package com.cxqm.xiaoerke.common.utils;
 
 public class ConstantUtil {
 
-//	public static final String AMR_TOMP3_FUNC = "windows";
-	public static final String AMR_TOMP3_FUNC = "linux";
+	public static final String AMR_TOMP3_FUNC = "windows";
+//	public static final String AMR_TOMP3_FUNC = "linux";
+	public static final String SERVER_ADDRESS = "101.200.194.68";
 	public static final String DOMAIN_VALUE = ".xiaork.com";
 	public static final String AMR_TOMP3_WINDOWSPATH = "C:\\ffmpeg\\ffmpeg\\bin\\";
 	public static final String AMR_TOMP3_WINDOWSPATHTEMP = "C:\\ffmpeg\\temp\\";
