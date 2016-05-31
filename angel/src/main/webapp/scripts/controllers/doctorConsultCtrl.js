@@ -4,12 +4,12 @@ angular.module('controllers', ['luegg.directives'])
         '$location', 'GetCurrentUserHistoryRecord','GetMyAnswerModify','GetCurrentUserConsultListInfo',
         'TransferToOtherCsUser','SessionEnd','GetWaitJoinList','React2Transfer','CancelTransfer','$upload',
         'GetFindTransferSpecialist','GetRemoveTransferSpecialist','GetAddTransferSpecialist','GetFindAllTransferSpecialist',
-        'CreateTransferSpecialist',
+        'CreateTransferSpecialist','$state',
         function ($scope, $sce, $window,$stateParams,GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
                   GetUserLoginStatus, $location, GetCurrentUserHistoryRecord,GetMyAnswerModify,
                   GetCurrentUserConsultListInfo,TransferToOtherCsUser,SessionEnd,GetWaitJoinList,React2Transfer,CancelTransfer,$upload,
                   GetFindTransferSpecialist,GetRemoveTransferSpecialist,GetAddTransferSpecialist,GetFindAllTransferSpecialist,
-                  CreateTransferSpecialist) {
+                  CreateTransferSpecialist,$state) {
             //初始化info参数
             $scope.info = {
                 effect:"true",
@@ -73,8 +73,12 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.userType = data.userType;
 
                         //创建与平台的socket连接
-                        $scope.initConsultSocketFirst();
-                        $scope.initConsultSocketSecond();
+                        if($scope.socketServerFirst==""||$scope.socketServerFirst.readyState!=1){
+                            $scope.initConsultSocketFirst();
+                        }
+                        if($scope.socketServerSecond==""||$scope.socketServerSecond.readyState!=1){
+                            $scope.initConsultSocketSecond();
+                        }
 
                         getIframeSrc();
                         //获取通用回复列表
@@ -317,7 +321,6 @@ angular.module('controllers', ['luegg.directives'])
                         value.selectedAll = false;
                         $scope.alreadyJoinTransferSpecialist.push(value);
                     });
-                    console.log("$scope.alreadyJoinTransferSpecialist",$scope.alreadyJoinTransferSpecialist)
                 });
             };
 
@@ -450,7 +453,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.socketServerFirst.onopen = function (event) {
                         console.log("onopen",event.data);
                         //启动心跳监测
-                        heartBeatCheck();
+                        heartBeatCheckFirst();
                     };
 
                     $scope.socketServerFirst.onclose = function (event) {
@@ -491,7 +494,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.socketServerSecond.onopen = function (event) {
                         console.log("onopen",event.data);
                         //启动心跳监测
-                        heartBeatCheck();
+                        heartBeatCheckSecond();
                     };
 
                     $scope.socketServerSecond.onclose = function (event) {
@@ -502,18 +505,22 @@ angular.module('controllers', ['luegg.directives'])
                 }
             };
 
-            var heartBeatCheck = function(){
-                //启动定时器，周期性的发送心跳信息
-                setInterval(sendHeartBeat,2000);
-            };
-            var sendHeartBeat = function(){
+            $scope.messageList = function(){
+                clearInterval($scope.heartBeatFirstId);
+                clearInterval($scope.heartBeatSecondId);
+                $state.go('messageList');
+            }
 
+            var heartBeatCheckFirst = function(){
+                //启动定时器，周期性的发送心跳信息
+                $scope.heartBeatFirstId = setInterval(sendHeartBeatFirst,2000);
+            };
+            var sendHeartBeatFirst = function(){
                 var heartBeatMessage = {
                     "type": 5,
                     "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                     "csUserId": angular.copy($scope.doctorId)
                 };
-
                 heartBeatFirstNum--;
                 if(heartBeatFirstNum < 0){
                     heartBeatFirstNum = 3;
@@ -525,7 +532,19 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.socketServerFirst.send(JSON.stringify(heartBeatMessage));
                     }
                 }
+                $scope.$apply();
+            };
 
+            var heartBeatCheckSecond = function(){
+                //启动定时器，周期性的发送心跳信息
+                $scope.heartBeatSecondId = setInterval(sendHeartBeatSecond,2000);
+            };
+            var sendHeartBeatSecond = function(){
+                var heartBeatMessage = {
+                    "type": 5,
+                    "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                    "csUserId": angular.copy($scope.doctorId)
+                };
                 heartBeatSecondNum--;
                 if(heartBeatSecondNum < 0){
                     heartBeatSecondNum = 3;
@@ -708,27 +727,34 @@ angular.module('controllers', ['luegg.directives'])
             };
 
             //关闭跟某个用户的会话
+            var closeConsultLock = false;
             $scope.closeConsult = function () {
-                SessionEnd.get({sessionId:$scope.currentUserConversation.sessionId,
-                    userId:$scope.currentUserConversation.patientId},function(data){
-                    if(data.result=="success"){
-                        var indexClose = 0;
-                        $.each($scope.alreadyJoinPatientConversation, function (index, value) {
-                            if (value.patientId == $scope.chooseAlreadyJoinConsultPatientId) {
-                                indexClose = index;
+                if(!closeConsultLock){
+                    closeConsultLock = true;
+                    SessionEnd.get({sessionId:$scope.currentUserConversation.sessionId,
+                        userId:$scope.currentUserConversation.patientId},function(data){
+                        closeConsultLock = false;
+                        if(data.result=="success"){
+                            var indexClose = 0;
+                            $.each($scope.alreadyJoinPatientConversation, function (index, value) {
+                                if (value.patientId == $scope.chooseAlreadyJoinConsultPatientId) {
+                                    indexClose = index;
+                                }
+                            });
+                            $scope.alreadyJoinPatientConversation.splice(indexClose, 1);
+                            if($scope.alreadyJoinPatientConversation.length!=0){
+                                $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
+                                    $scope.alreadyJoinPatientConversation[0].patientName);
+                            }else{
+                                $scope.currentUserConversation = {};
                             }
-                        });
-                        $scope.alreadyJoinPatientConversation.splice(indexClose, 1);
-                        if($scope.alreadyJoinPatientConversation.length!=0){
-                            $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
-                                $scope.alreadyJoinPatientConversation[0].patientName);
                         }else{
-                            $scope.currentUserConversation = {};
+                            alert("会话关闭失败，请重试");
                         }
-                    }else{
-                        alert("会话关闭失败，请重试");
-                    }
-                })
+                    })
+                }else{
+                    alert("正在关闭当前用户的会话，请稍后，等关闭此用户成功后，再关闭其他用户");
+                }
             };
 
             //在通话列表中，选取一个用户进行会话

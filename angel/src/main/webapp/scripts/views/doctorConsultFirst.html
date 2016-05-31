@@ -45,7 +45,7 @@
         </div>
         <div class="head-m wid1 qf tab">
             <div class="w5 fl h5 tac"><a ui-sref="doctorConsultFirst"><span>聊天窗口</span></a></div>
-            <div class="w5 fr h5 tac bg-m"><a ui-sref="messageList"><span class="cl">消息列表</span></a></div>
+            <div class="w5 fr h5 tac bg-m"><a ng-click="messageList()"><span class="cl">消息列表</span></a></div>
         </div>
     </header>
     <div class="msg">
@@ -215,7 +215,7 @@
                         <div class="moreInformation" ng-click="seeMoreConversationMessage()">
                             <a href="">查看更多消息</a>
                         </div>
-                        <div ng-repeat="item in currentUserConversation.consultValue" class="information">
+                        <div ng-repeat="item in currentUserConversation.consultValue | orderBy:'dateTime':true" class="information">
                             <div class="doctorContent">
                                 <div ng-if="item.senderId==doctorId&&item.type!='4'" class="doctorReplyContent">
                                     <div class="doctorName">
@@ -279,7 +279,7 @@
                                 <button onClick="smallit();">缩小</button>
                                 <button onclick="rotateDIV()">旋转</button>
                             </div>
-                            <div class="imageBig" id="rotate1">
+                            <div class="dragAble" id="rotate1" style="z-index: 10;left: 0px;position: absolute; top: 0px;float:left;">
                                 <img onmousewheel="return onWheelZoom(this)" style="zoom: 0.7" ng-src="{{imageSrc}}" name="images1">
                             </div>
                         </div>
@@ -518,6 +518,7 @@
                                     <th>工号</th>
                                     <th>昵称</th>
                                     <th>科室</th>
+                                    <th>正在咨询人数</th>
                                     <th>角色</th>
                                 </tr>
                                 <tr ng-repeat="item in info.onLineCsUserList"
@@ -527,6 +528,7 @@
                                     <td>{{item.email}}</td>
                                     <td>{{item.name}}</td>
                                     <td>{{item.department}}</td>
+                                    <td>{{item.currentCount}}</td>
                                     <td>{{info.role[item.user_type]}}</td>
                                 </tr>
                                 <tr ng-repeat="item in info.onLineCsUserList"
@@ -536,6 +538,7 @@
                                     <td>{{item.email}}</td>
                                     <td>{{item.name}}</td>
                                     <td>{{item.department}}</td>
+                                    <td>{{item.currentCount}}</td>
                                     <td>{{info.role[item.user_type]}}</td>
                                 </tr>
                             </table>

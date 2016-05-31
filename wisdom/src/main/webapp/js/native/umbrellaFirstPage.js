@@ -75,6 +75,52 @@ var umbrellaFirstPageInit = function() {
     $("#readLock").show();
 
     joinUs();
+
+
+}
+
+function scanQRCode(){
+    var shareid=GetQueryString("id");
+    if(shareid!="0") {
+        $.ajax({
+            type: 'POST',
+            url: "umbrella/getUserQRCode",
+            contentType: "application/json; charset=utf-8",
+            async:false,
+            data:"{'id':'"+shareid+"'}",
+            success: function (data) {
+                console.log("s",data.qrcode);
+                $("#QRCode").attr("src",data.qrcode);
+            },
+            dataType: "json"
+        });
+    }
+}
+
+function  joinUs(){
+    $.ajax({
+        type: 'POST',
+        url: "umbrella/joinUs",
+        contentType: "application/json; charset=utf-8",
+        async:false,
+        success: function(data){
+            if(data.result==1){
+                shareUmbrellaId=data.id;
+                loadShare();
+            }else if(data.result==2){
+                shareUmbrellaId=data.umbrella.id;
+                loadShare();
+            }else if(data.result==3){
+                shareUmbrellaId=data.umbrella.id;
+                loadShare();
+            }
+
+        },
+        dataType: "json"
+    });
+}
+
+function loadShare(){
     var timestamp;//时间戳
     var nonceStr;//随机字符串
     var signature;//得到的签名
@@ -107,8 +153,8 @@ var umbrellaFirstPageInit = function() {
                 wx.ready(function () {
                     // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                     wx.onMenuShareTimeline({
-                        title: '我为您的宝宝领取了最高40万保障金', // 分享标题
-                        link: "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=31&id=0?id="+shareUmbrellaId, // 分享链接
+                        title: '我已为宝宝免费领取一份40万的大病保障，你也赶紧加入吧!', // 分享标题
+                        link: "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+shareUmbrellaId, // 分享链接
                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                         success: function (res) {
                             //记录用户分享文章
@@ -120,9 +166,9 @@ var umbrellaFirstPageInit = function() {
                     });
 
                     wx.onMenuShareAppMessage({
-                        title: '我为您的宝宝领取了最高40万保障金', // 分享标题
-                        desc: '前20万用户免费加入即可获取最高40万60种儿童重疾保障', // 分享描述
-                        link:"http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=31&id=0?id="+shareUmbrellaId, // 分享链接
+                        title: '我已为宝宝免费领取一份40万的大病保障，你也赶紧加入吧!', // 分享标题
+                        desc: "现在加入即可免费获取最高40万60种儿童重疾保障，还等什么，妈妈们 let's go！", // 分享描述
+                        link:"http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+shareUmbrellaId, // 分享链接
                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                         success: function (res) {
                             recordLogs("Umbrella_shareFirend");
@@ -139,45 +185,7 @@ var umbrellaFirstPageInit = function() {
         error : function() {
         }
     });
-
 }
-
-function scanQRCode(){
-    var shareid=GetQueryString("id");
-    if(shareid!="0") {
-        $.ajax({
-            type: 'POST',
-            url: "umbrella/getUserQRCode",
-            contentType: "application/json; charset=utf-8",
-            async:false,
-            data:"{'id':'"+shareid+"'}",
-            success: function (data) {
-                console.log("s",data.qrcode);
-                $("#QRCode").attr("src",data.qrcode);
-            },
-            dataType: "json"
-        });
-    }
-}
-
-function  joinUs(){
-    $.ajax({
-        type: 'POST',
-        url: "umbrella/joinUs",
-        contentType: "application/json; charset=utf-8",
-        success: function(data){
-            if(data.result==1){
-                shareUmbrellaId=data.id;
-            }else if(data.result==2){
-                shareUmbrellaId=data.umbrella.id;
-            }else if(data.result==3){
-                shareUmbrellaId=data.umbrella.id;
-            }
-        },
-        dataType: "json"
-    });
-}
-
 
 function  ifExistOrder(){
     $.ajax({
@@ -185,10 +193,12 @@ function  ifExistOrder(){
         url: "umbrella/ifExistOrder",
         contentType: "application/json; charset=utf-8",
         success: function(data){
-            if(data.result==1){
-                $("#changeButton").html("马上领取");
+            if(data.result==3){
+                $("#NoShareDiv").hide();
+                $("#shareDiv").show();
             }else{
-                $("#changeButton").html("我的保障");
+                $("#NoShareDiv").show();
+                $("#shareDiv").hide();
             }
         },
         dataType: "json"
@@ -237,7 +247,7 @@ var cancelRemind = function() {
 
 /*跳转到参与成功页面*/
 var myGuarantee = function() {
-    window.location.href = "umbrella#/umbrellaJoin/"+new Date().getTime;
+    window.location.href = "umbrella#/umbrellaJoin/"+new Date().getTime();
 
 }
 /*跳转到领取成功页面*/
@@ -250,7 +260,7 @@ var goJoin = function() {
         $(".shadow-content.attention").show();
     }
     else{
-        window.location.href = "umbrella#/umbrellaJoin"+new Date().getTime;
+        window.location.href = "umbrella#/umbrellaJoin/"+new Date().getTime();
     }
 
 
