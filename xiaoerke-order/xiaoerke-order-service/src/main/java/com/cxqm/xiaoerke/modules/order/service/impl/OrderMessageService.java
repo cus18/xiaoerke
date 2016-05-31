@@ -127,7 +127,7 @@ class OrderMessageService {
 				String contetn = "医生:"+resultMap.get("doctorName")+"\n时间:"+resultMap.get("date")+" "+
 						dayWeek+" "+resultMap.get("begin_time")+"\n地点:"+resultMap.get("contactHospitalName")+" "+(String)resultMap.get("location")+"\n订单号:"+(String)resultMap.get("register_no")+"(已取消)";
 				PatientMsgTemplate.cancelNotice2Wechat((String)params.get("openId"), (String) parameter.get("token"),
-						contetn, "baodf.com/titan/appoint#/toBeTreatedDetail/" +
+						contetn, ConstantUtil.TITAN_WEB_URL+"titan/appoint#/toBeTreatedDetail/" +
 								params.get("patient_register_service_id") + ",3");
 			}
 
