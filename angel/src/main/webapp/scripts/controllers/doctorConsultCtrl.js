@@ -803,7 +803,7 @@ angular.module('controllers', ['luegg.directives'])
                 var audio = document.createElement('audio');
                 var source = document.createElement('source');
                 source.type = "audio/mpeg";
-                source.src = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc%2F6526%20-%20%E5%89%AF%E6%9C%AC.mp3";
+                source.src = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2F5097.wav";
                 source.autoplay = "autoplay";
                 source.controls = "controls";
                 audio.appendChild(source);
