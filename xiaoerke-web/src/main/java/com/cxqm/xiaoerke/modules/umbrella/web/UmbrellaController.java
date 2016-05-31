@@ -191,7 +191,7 @@ public class UmbrellaController  {
                 return result;
             }
         }else {
-            result.put("status", "0");
+            result.put("status", "1");
             result.put("openid", openid);
             return result;
         }
