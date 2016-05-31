@@ -225,6 +225,7 @@ public class ConsultDoctorTransferController extends BaseController {
                 dataValue.put("userName",richConsultSession.getUserName());
                 dataValue.put("source",richConsultSession.getSource());
                 dataValue.put("serverAddress",richConsultSession.getServerAddress());
+
                 if(richConsultSession.getCreateTime()!=null){
                     dataValue.put("sessionCreateTime",DateUtils.DateToStr(richConsultSession.getCreateTime()));
                 }else{
