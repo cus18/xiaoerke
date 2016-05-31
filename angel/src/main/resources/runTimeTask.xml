@@ -68,9 +68,9 @@
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-				<!--<ref bean="consultManagementCronTrigger"/>-->
-				<!--<ref bean="modifyConsultConversationForwardRecordsTrigger"/>-->
-				<!--<ref bean="deleteTempRecordTrigger"/>-->
+				<ref bean="consultManagementCronTrigger"/>
+				<ref bean="modifyConsultConversationForwardRecordsTrigger"/>
+				<ref bean="deleteTempRecordTrigger"/>
 				<!--<ref bean="testMappingTrigger"/>-->
 			</list>
 		</property>
