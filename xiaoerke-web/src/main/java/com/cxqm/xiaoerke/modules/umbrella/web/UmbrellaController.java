@@ -191,8 +191,7 @@ public class UmbrellaController  {
                 return result;
             }
         }else {
-            String id = openIdStatus.get("status").toString();
-            result.put("status", id);
+            result.put("status", "0");
             result.put("openid", openid);
             return result;
         }
