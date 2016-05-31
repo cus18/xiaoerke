@@ -72,12 +72,13 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.doctorPhone = data.userPhone;
                         $scope.userType = data.userType;
 
-                        heartBeatFirstNum = 3;
-                        heartBeatSecondNum = 3;
-
                         //创建与平台的socket连接
-                        $scope.initConsultSocketFirst();
-                        $scope.initConsultSocketSecond();
+                        if($scope.socketServerFirst!=""&&$scope.socketServerFirst.readyState==1){
+                            $scope.initConsultSocketFirst();
+                        }
+                        if($scope.socketServerSecond!=""&&$scope.socketServerSecond.readyState==1){
+                            $scope.initConsultSocketSecond();
+                        }
 
                         getIframeSrc();
                         //获取通用回复列表
