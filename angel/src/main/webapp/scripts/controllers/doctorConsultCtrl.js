@@ -829,7 +829,10 @@ angular.module('controllers', ['luegg.directives'])
 
             //查看更多的用户历史消息
             $scope.seeMoreConversationMessage = function(){
-                var mostFarCurrentConversationDateTime = $scope.currentUserConversation.consultValue[0].dateTime;
+                var mostFarCurrentConversationDateTime = moment().format("YYYY-MM-DD HH:mm:ss");
+                if($scope.currentUserConversation.consultValue[0]!=undefined){
+                    var mostFarCurrentConversationDateTime = $scope.currentUserConversation.consultValue[0].dateTime;
+                }
                 GetCurrentUserHistoryRecord.save({
                     userId:$scope.currentUserConversation.patientId,
                     dateTime:mostFarCurrentConversationDateTime,
