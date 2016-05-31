@@ -33,6 +33,8 @@ public interface WechatAttentionDao {
     
     HashMap<String,Object> getAttention(String open_id);
 
+    WechatAttention getAttentionByOpenId(String open_id);
+
     //根据openId查询关注信息列表
     List<SysWechatAppintInfoVo> findAttentionInfoByOpenIdLists(SysWechatAppintInfoVo sysWechatAppintInfoVo);
 
