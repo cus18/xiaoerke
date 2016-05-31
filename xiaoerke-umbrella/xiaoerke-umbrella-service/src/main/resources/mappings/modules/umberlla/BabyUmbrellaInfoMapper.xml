@@ -41,6 +41,7 @@
         where 1=1
         <if test="today != null">
             and create_time like '${today}%'
+            and baby_id is NOT null and baby_id==''
         </if>
         <if test="openid != null">
             and openid = #{openid}
@@ -52,6 +53,9 @@
         where 1=1
         <if test="openid != null">
             and openid = #{openid}
+        </if>
+        <if test="openid == null">
+            and baby_id is NOT null and baby_id==''
         </if>
     </select>
 
