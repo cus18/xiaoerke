@@ -422,7 +422,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			if(wa==null){
 				send = true;
 			}else if(wa!=null){
-				if(new Date().getTime() - wa.getDate().getTime() < 10000){//心关注用户和当前时间相差10秒内
+				if(new Date().getTime() - wa.getDate().getTime() < 60000){//心关注用户和当前时间相差10秒内
 					send = true;
 					nickname = wa.getNickname();
 				}
