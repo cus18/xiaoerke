@@ -156,8 +156,8 @@ angular.module('controllers2', [])
             var scrollTop;
             $scope.initial = function(){
                 $(".curr").css("background-color","#22c4c6");
+                $(".img_weixin").hide();
                 setTimeout(function(){
-                    $(".img_weixin").hide();
                     //顶部菜单效果
                     var $headBar = $('.bdf_title'), initTop = 0, isScroll = true;
                     $(window).on('scroll', function(e) {
