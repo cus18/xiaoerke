@@ -516,7 +516,6 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.heartBeatFirstId = setInterval(sendHeartBeatFirst,2000);
             };
             var sendHeartBeatFirst = function(){
-                console.log("heartBeatFirstNum",heartBeatFirstNum);
                 var heartBeatMessage = {
                     "type": 5,
                     "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
