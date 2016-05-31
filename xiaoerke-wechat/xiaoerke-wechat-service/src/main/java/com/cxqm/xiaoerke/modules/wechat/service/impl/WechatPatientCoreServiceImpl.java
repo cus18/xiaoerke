@@ -262,6 +262,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 	private String processScanEvent(ReceiveXmlEntity xmlEntity,String userType,HttpServletRequest request,HttpServletResponse response)
 	{
 		String EventKey = xmlEntity.getEventKey();
+		System.out.println(EventKey + "EventKey=========================================");
 		Article article = new Article();
 		List<Article> articleList = new ArrayList<Article>();
 		NewsMessage newsMessage = new NewsMessage();
