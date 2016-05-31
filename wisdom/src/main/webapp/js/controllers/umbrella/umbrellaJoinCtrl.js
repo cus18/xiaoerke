@@ -54,6 +54,7 @@
                         //       alert("未知错误,请尝试刷新页面");
                         //     }
                         // });
+                        console.log("id",$scope.umbrellaId);
                         updateActivationTime.save({"id":$scope.umbrellaId}, function (data){
                             if(data.result!='1'){
                                 alert("未知错误,请尝试刷新页面");
