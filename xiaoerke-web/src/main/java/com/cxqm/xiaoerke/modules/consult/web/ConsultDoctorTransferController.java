@@ -225,7 +225,11 @@ public class ConsultDoctorTransferController extends BaseController {
                 dataValue.put("userName",richConsultSession.getUserName());
                 dataValue.put("source",richConsultSession.getSource());
                 dataValue.put("serverAddress",richConsultSession.getServerAddress());
-                dataValue.put("sessionCreateTime",DateUtils.DateToStr(richConsultSession.getCreateTime()));
+                if(richConsultSession.getCreateTime()!=null){
+                    dataValue.put("sessionCreateTime",DateUtils.DateToStr(richConsultSession.getCreateTime()));
+                }else{
+                    dataValue.put("sessionCreateTime",DateUtils.DateToStr(new Date()));
+                }
                 dataValue.put("dateTime", DateUtils.DateToStr(new Date()));
                 User user = systemService.getUser(waitJoinListVo.getFromUserId());
                 dataValue.put("fromCsUserName",user.getName());
