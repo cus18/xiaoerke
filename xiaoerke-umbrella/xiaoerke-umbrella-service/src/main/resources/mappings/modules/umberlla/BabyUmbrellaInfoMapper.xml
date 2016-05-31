@@ -41,7 +41,7 @@
         where 1=1
         <if test="today != null">
             and create_time like '${today}%'
-            and baby_id is NOT null and baby_id==''
+            and baby_id is NOT null and baby_id=''
         </if>
         <if test="openid != null">
             and openid = #{openid}
@@ -49,13 +49,13 @@
     </select>
 
     <select id="getTotalBabyUmbrellaInfoMoney" resultType="java.lang.Integer" >
-        select sum(umbrella_money) from baby_umbrellainfo
+        select IFNULL(sum(umbrella_money),0) from baby_umbrellainfo
         where 1=1
         <if test="openid != null">
             and openid = #{openid}
         </if>
         <if test="openid == null">
-            and baby_id is NOT null and baby_id==''
+            and baby_id is NOT null and baby_id=''
         </if>
     </select>
 
