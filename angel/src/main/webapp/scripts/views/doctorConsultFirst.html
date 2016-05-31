@@ -215,7 +215,7 @@
                         <div class="moreInformation" ng-click="seeMoreConversationMessage()">
                             <a href="">查看更多消息</a>
                         </div>
-                        <div ng-repeat="item in currentUserConversation.consultValue | orderBy:'dateTime':true" class="information">
+                        <div ng-repeat="item in currentUserConversation.consultValue" class="information">
                             <div class="doctorContent">
                                 <div ng-if="item.senderId==doctorId&&item.type!='4'" class="doctorReplyContent">
                                     <div class="doctorName">
