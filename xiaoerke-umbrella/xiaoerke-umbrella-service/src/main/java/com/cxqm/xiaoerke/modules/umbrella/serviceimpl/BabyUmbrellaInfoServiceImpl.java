@@ -95,7 +95,7 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
      *            type (请求方式：POST,GET)
      * @return 成功:返回json字符串<br/>
      */
-    public  String post(String strURL, String params,String type) {
+    public String post(String strURL, String params,String type) {
         System.out.println(strURL);
         System.out.println(params);
         try {

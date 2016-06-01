@@ -22,15 +22,14 @@ var umbrellaFirstPageInit = function() {
     var content="";
     var textIntro="";
     if(version=="a"){
-         content='<img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic1a.png" >'
+        content='<img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic1a.png" >'
            + '<div class="f4 c3"><span class="c12">5元</span>即加入</div>'
             +'<div class="f4 c3">免单随时享</div>'
         textIntro=' 您只需支付<span class="c11">最多5元即可加入</span>' ;
         $('.introPic li').eq(0).html(content);
         $('#textIntro').html(textIntro);
         $(".helpPlan .pic img").attr("src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/help_pic1a.png");
-    }
-    else{
+    } else{
         content='<img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic1b.png" >'
             + '<div class="f4 c3">现在参与</div>'
             +'<div class="f4 c3"><span class="c12">免费</span>加入 </div>';
@@ -76,7 +75,7 @@ var umbrellaFirstPageInit = function() {
 }
 
 function scanQRCode(){
-    var shareid=GetQueryString("id");
+    var shareid = GetQueryString("id");
     if(shareid!="0") {
         $.ajax({
             type: 'POST',
@@ -159,7 +158,6 @@ function loadShare(){
                         fail: function (res) {
                         }
                     });
-
                     wx.onMenuShareAppMessage({
                         title: '我已为宝宝免费领取一份40万的大病保障，你也赶紧加入吧!', // 分享标题
                         desc: "现在加入即可免费获取最高40万60种儿童重疾保障，还等什么，妈妈们 let's go！", // 分享描述
@@ -167,12 +165,10 @@ function loadShare(){
                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                         success: function (res) {
                             recordLogs("Umbrella_shareFirend");
-
                         },
                         fail: function (res) {
                         }
                     });
-
                 })
             }else{
             }
@@ -191,7 +187,7 @@ function  ifExistOrder(){
             if(data.result==2||data.result==3){
                 $("#NoShareDiv").hide();
                 $("#shareDiv").show();
-                shareUmbrellaId=data.umbrella.id;
+                shareUmbrellaId = data.umbrella.id;
                 loadShare();
             }else{
                 $("#NoShareDiv").show();
@@ -210,12 +206,14 @@ var lookHelpPlan = function() {
     $(".helpPlan .foldText").toggleClass("change");
 
 }
+
 /*运营保障 关怀 展开隐藏*/
 var care = function() {
     $(".operation .text .care1").toggleClass("show");
     $(".operation .text .care2").toggleClass("change");
 
 }
+
 /*常见问题 展开隐藏*/
 var lookQuestion = function(index) {
     $(".questions dt").eq(index).siblings("dt").children("a").removeClass("show");
@@ -224,6 +222,7 @@ var lookQuestion = function(index) {
     $(".questions dd").eq(index).toggleClass("change");
 
 }
+
 /*宝大夫儿童重疾互助计划公约  60种重大疾病名称及定义 15种轻症名称及定义 名词释义*/
 var lookProtocol = function(index) {
     $(".c-shadow").show();
@@ -233,11 +232,11 @@ var lookProtocol = function(index) {
 
 /*分享好友*/
 var goShare = function() {
-    
     $(".c-shadow").show();
     $(".shadow-content.share").show();
     
 }
+
 /*关闭分享提示*/
 var cancelRemind = function() {
     $(".c-shadow").hide();
@@ -249,9 +248,9 @@ var myGuarantee = function() {
     window.location.href = "umbrella#/umbrellaJoin/"+new Date().getTime();
 
 }
+
 /*跳转到领取成功页面*/
 var goJoin = function() {
-
     if(attentionLock){
         $(".c-shadow").show();
         $(".shadow-content.attention").show();
@@ -261,12 +260,13 @@ var goJoin = function() {
         window.location.href = "/keeper/wxPay/patientPay.do?serviceType=umbrellaPay";
     }
 }
-var GetQueryString = function(name)
-{
+
+var GetQueryString = function(name) {
     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);
     if(r!=null)return  unescape(r[2]); return null;
 }
+
 var recordLogs = function(val){
     $.ajax({
         url:"util/recordLogs",// 跳转到 action

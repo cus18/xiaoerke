@@ -62,8 +62,8 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  joinUs(HttpServletRequest request,HttpSession session) {
-        Map<String, Object> map=new HashMap<String, Object>();
-        Map<String, Object> numm=new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> numm = new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session, request);
 //        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
@@ -106,14 +106,15 @@ public class UmbrellaController  {
     @RequestMapping(value = "/updateInfo", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object>  updateInfo(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) throws UnsupportedEncodingException {
+    Map<String, Object>  updateInfo(@RequestBody Map<String, Object> params,
+                                    HttpServletRequest request,
+                                    HttpSession session) throws UnsupportedEncodingException {
         Map<String, Object> result=new HashMap<String, Object>();
-
-        String phone=params.get("phone").toString();
-        String code=params.get("code").toString();
+        String phone = params.get("phone").toString();
+        String code = params.get("code").toString();
         String openid= WechatUtil.getOpenId(session, request);
 //        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
-        String res=utilService.bindUser(phone,code,openid);
+        String res = utilService.bindUser(phone,code,openid);
         if(res.equals("0")){
             result.put("result","3");
             return result;
@@ -126,8 +127,7 @@ public class UmbrellaController  {
         babyUmbrellaInfo.setParentType(Integer.parseInt(params.get("parentType").toString()));
         babyUmbrellaInfo.setId(Integer.parseInt(params.get("umbrellaId").toString()));
 //        babyUmbrellaInfo.setUmberllaMoney(Integer.parseInt(params.get("umberllaMoney").toString()));
-        res=babyUmbrellaInfoSerivce.updateBabyUmbrellaInfo(babyUmbrellaInfo)+"";
-
+        res = babyUmbrellaInfoSerivce.updateBabyUmbrellaInfo(babyUmbrellaInfo)+"";
         result.put("result",res);
         return result;
     }
@@ -143,7 +143,7 @@ public class UmbrellaController  {
         String openid= WechatUtil.getOpenId(session, request);
 //        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
-        String  id=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map).get(0).get("id").toString();
+        String id = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map).get(0).get("id").toString();
         Map<String, Object> result=new HashMap<String, Object>();
         result.put("count",babyUmbrellaInfoSerivce.getUserShareNums(id));
         return result;
@@ -155,12 +155,7 @@ public class UmbrellaController  {
     @RequestMapping(value = "/getUserQRCode", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object>  getUserQRCode(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) {
-//        Map<String, Object> map=new HashMap<String, Object>();
-//        String openid= WechatUtil.getOpenId(session, request);
-//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
-//        map.put("openid",openid);
-//        String  id=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map).get(0).get("id").toString();
+    Map<String, Object>  getUserQRCode(@RequestBody Map<String, Object> params) {
         String id = params.get("id").toString();
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("qrcode",babyUmbrellaInfoSerivce.getUserQRCode(id));
@@ -210,10 +205,10 @@ public class UmbrellaController  {
         String openid= WechatUtil.getOpenId(session, request);
 //        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
-        List<Map<String, Object>> list=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
+        List<Map<String, Object>> list = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
-            Map<String, Object> m=list.get(0);
-            if(m.get("baby_id")!=null&&!m.get("baby_id").equals("")){
+            Map<String, Object> m = list.get(0);
+            if(m.get("baby_id")!=null && !m.get("baby_id").equals("")){
                 result.put("result",3);
                 result.put("umbrella",m);
                 return result;
