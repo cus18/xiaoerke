@@ -114,16 +114,27 @@ angular.module('controllers2', [])
                 if(num==bannerList.length){
                     num = 0;
                 }
-                $(".index_ban").css("background",'url("'+bannerList[num]+'") no-repeat center');
-                $(".index_ban").css("background-size","cover");
-                if(num==2){
-                    $(".index_ban").css("cursor","pointer");
-                }else{
-                    $(".index_ban").css("cursor","");
-                }
-                $(".index_ban ul li").eq(num).css("background",'url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_bandianxuanzhong.png) no-repeat center').siblings().css("background","");
-                num++;
+                bannerImg();
             },5000);
+
+            //点击banner左箭头
+            $scope.goBannerLeft = function () {
+                if(num!=0){
+                    num--;
+                }else{
+                    num = 0;
+                }
+                bannerImg();
+            }
+            //点击banner右箭头
+            $scope.goBannerright = function () {
+                if(num!=2){
+                    num++;
+                }else{
+                    num = 2;
+                }
+                bannerImg();
+            }
 
 
             //顶部关于我们
@@ -192,6 +203,19 @@ angular.module('controllers2', [])
                 var pData = {logContent:encodeURI(log)};
                 $http({method:'post',url:'util/recordLogs',params:pData});
             }
+
+            function bannerImg(){
+                $(".index_ban").css("background",'url("'+bannerList[num]+'") no-repeat center');
+                $(".index_ban").css("background-size","cover");
+                if(num==2){
+                    $(".index_ban").css("cursor","pointer");
+                }else{
+                    $(".index_ban").css("cursor","");
+                }
+                $(".index_ban ul li").eq(num).css("background",'url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_bandianxuanzhong.png) no-repeat center').siblings().css("background","");
+                num++;
+            }
+
 
 
         }])
