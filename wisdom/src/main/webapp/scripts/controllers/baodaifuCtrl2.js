@@ -4,7 +4,7 @@ angular.module('controllers2', [])
             var bannerList = ["http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_banner1.png",
                 "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_banner3.png",
                 "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_banner2.png"];
-            var num = 1;
+            var num;
             $scope.initial = function(){
                 $(".img_weixin").hide();
                 //底部微信二维码显示
@@ -32,6 +32,7 @@ angular.module('controllers2', [])
                     initTop = scrollY;
                 });
 
+                num = 1;
                 //banner轮播图
                 angular.forEach(bannerList, function (value,index) {
                     var li = '<li/>';
