@@ -116,6 +116,11 @@ angular.module('controllers2', [])
                 }
                 $(".index_ban").css("background",'url("'+bannerList[num]+'") no-repeat center');
                 $(".index_ban").css("background-size","cover");
+                if(num==2){
+                    $(".index_ban").css("cursor","pointer");
+                }else{
+                    $(".index_ban").css("cursor","");
+                }
                 $(".index_ban ul li").eq(num).css("background",'url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_bandianxuanzhong.png) no-repeat center').siblings().css("background","");
                 num++;
             },5000);
