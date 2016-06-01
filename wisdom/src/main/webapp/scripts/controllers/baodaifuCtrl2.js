@@ -32,25 +32,6 @@ angular.module('controllers2', [])
                     initTop = scrollY;
                 });
 
-                num = 1;
-                //banner轮播图
-                angular.forEach(bannerList, function (value,index) {
-                    var li = '<li/>';
-                    $(".index_ban ul").append(li);
-                });
-
-                $(".index_ban ul li").eq(0).css("background",'url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_bandianxuanzhong.png) no-repeat center');
-                setInterval(function () {
-                    if(num==bannerList.length){
-                        num = 0;
-                    }
-                    $(".index_ban").css("background",'url("'+bannerList[num]+'") no-repeat center');
-                    $(".index_ban").css("background-size","cover");
-                    $(".index_ban ul li").eq(num).css("background",'url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_bandianxuanzhong.png) no-repeat center').siblings().css("background","");
-                    num++;
-
-                },8000);
-
 
                 setTimeout(function(){
                     $('#mov_doctor').movingBoxes({
@@ -121,10 +102,29 @@ angular.module('controllers2', [])
                 },2000);
             }
 
+            num = 1;
+            //banner轮播图
+            angular.forEach(bannerList, function (value,index) {
+                var li = '<li/>';
+                $(".index_ban ul").append(li);
+            });
+
+            $(".index_ban ul li").eq(0).css("background",'url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_bandianxuanzhong.png) no-repeat center');
+            var seti = setInterval(function () {
+                if(num==bannerList.length){
+                    num = 0;
+                }
+                $(".index_ban").css("background",'url("'+bannerList[num]+'") no-repeat center');
+                $(".index_ban").css("background-size","cover");
+                $(".index_ban ul li").eq(num).css("background",'url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_bandianxuanzhong.png) no-repeat center').siblings().css("background","");
+                num++;
+            },5000);
+
 
             //顶部关于我们
             $scope.goCallMine = function () {
                 setLog("GW_TOP_GYWM");
+                clearInterval(seti);
                 $state.go("callMine",{id:1});
             }
 
@@ -135,12 +135,14 @@ angular.module('controllers2', [])
                 }else if(num==2){
 
                 }else{
+                    clearInterval(seti);
                     $state.go("doctorHelp");
                 }
             }
 
             //关于我们
             $scope.goGuanYu = function (log) {
+                clearInterval(seti);
                 setLog(log);
                 $state.go("callMine",{id:1});
 
@@ -148,30 +150,35 @@ angular.module('controllers2', [])
 
             //联系我们
             $scope.goLianXi = function (log) {
+                clearInterval(seti);
                 setLog(log);
                 $state.go("callMine",{id:2});
             }
 
             //联系我们
             $scope.goLianXi2 = function (log) {
+                clearInterval(seti);
                 setLog(log);
                 $state.go("callMine",{id:5});
             }
 
             //服务协议
             $scope.goFuWu = function (log) {
+                clearInterval(seti);
                 setLog(log);
                 $state.go("callMine",{id:3});
             }
 
             //隐私保护
             $scope.goYinSi = function (log) {
+                clearInterval(seti);
                 setLog(log);
                 $state.go("callMine",{id:4});
             }
 
             //微博
             $scope.goWeiBo = function (log) {
+                clearInterval(seti);
                 setLog(log);
             }
 
@@ -180,6 +187,7 @@ angular.module('controllers2', [])
                 var pData = {logContent:encodeURI(log)};
                 $http({method:'post',url:'util/recordLogs',params:pData});
             }
+
 
         }])
     //联系我们
