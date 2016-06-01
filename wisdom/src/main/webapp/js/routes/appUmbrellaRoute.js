@@ -59,8 +59,6 @@ define(['appUmbrella'], function(app){
                             public: true
                         }
                     })
-
-
                 $urlRouterProvider.otherwise('umbrellaJoin');
             }])
         .run(function ($rootScope){

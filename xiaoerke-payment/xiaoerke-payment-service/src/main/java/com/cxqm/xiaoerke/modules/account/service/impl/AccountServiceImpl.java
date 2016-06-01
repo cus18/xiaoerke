@@ -385,9 +385,9 @@ public class AccountServiceImpl implements AccountService {
         if(!StringUtils.isNotNull(openId)){
             openId = CookieUtils.getCookie(request,"openId");
         }
-
+        Float a = (Float)request.getAttribute("payPrice");
         //获取需要支付的金额  单位(分)
-        String order_price =request.getAttribute("payPrice")!=null?String.valueOf(((Float)request.getAttribute("payPrice")).intValue()*100):request.getParameter("payPrice");
+        String order_price = request.getAttribute("payPrice")!=null?String.valueOf(((Float)request.getAttribute("payPrice")).intValue()*100):request.getParameter("payPrice");
         //生成的商户订单号
         String out_trade_no = IdGen.uuid();//Sha1Util.getNonceStr();
         String noncestr = IdGen.uuid();//Sha1Util.getNonceStr();//生成随机字符串

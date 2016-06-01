@@ -87,8 +87,7 @@ public class DoctorInfoServiceImpl implements DoctorInfoService {
         hashMap.put("hospitalId", hospitalId);
         if( departmentLevel1 == null ) {
         	Map relationInfo = doctorHospitalRelationDao.getDepartmentName(hashMap);
-        	Object departmentLevel1Obj = relationInfo.get("department_level1");
-        	departmentLevel1 = departmentLevel1Obj == null ? null : (String) departmentLevel1Obj;
+            departmentLevel1 = relationInfo == null ? "" : (String) relationInfo.get("department_level1");;
         }
         //获取医生所有的一类疾病
         List<IllnessVo> iVoList = illnessDao.findSysIllness_1BySysDoctorId(hashMap);
