@@ -2,7 +2,7 @@
 <ion-view view-title="饮食详细" ng-init="doRefresh()">
     <ion-content class="nutritionFood " style="top:0;">
         <ion-scroll direction="y" has-bouncing="true">
-            <div class="shadow" ng-if="buttonRemind1 || buttonRemind2" ng-click="cancelRemind()"></div>
+            <div class="c-shadow" ng-if="buttonRemind1 || buttonRemind2" ng-click="cancelRemind()"></div>
             <div class="food-list" ng-click="skip()" id="top">
                 <div class="task-deal2" ng-repeat="item in foodList" ng-class="{'even':$even,'odd':$odd,'last':$last}">
                     <dl class="box-s1" >
