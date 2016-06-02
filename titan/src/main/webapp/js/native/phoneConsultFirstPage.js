@@ -146,15 +146,13 @@ var chooseIllness = function(){
                 var illnessFirstList = "";
                 var initChoose = ";"
                 $.each(data.illnessData,function(index,value){
-                    if(index==0) {
-                        initChoose = value.illnessName;
-                    }
-                    var chooseFirstIllnessName = "'" + value.illnessName +"','firstIllnessItem" + index + "'";
-                    illnessFirstList = illnessFirstList + '<li class="border2" id="firstIllnessItem' + index + '" ' +
-                        'onclick="selectIllnessDetail(' + chooseFirstIllnessName + ')"><a class="f3 c3">'+ value.illnessName +'</a></li>';
+                    var param = "'" + value.illnessName +"','" + value.illnessName + "'";
+                    illnessFirstList = illnessFirstList + '<li class="border2 f3 c3" id="firstIllnessItem' + index + '" ' +
+                        'onclick="searchSecondIllness(' +param + ')">' +getLimitString(value.illnessName) +
+                        '</li>';
                 })
-                $('.ill-left').html(illnessFirstList);
-                selectIllnessDetail(initChoose,"firstIllnessItem0");
+                $('#illnessItem').html(illnessFirstList);
+              /*  selectIllnessDetail(initChoose,"firstIllnessItem0");*/
             }
         }});
 
@@ -187,7 +185,7 @@ var selectIllnessDetail = function(chooseFirstIllnessName,firstIllnessItem){
 }
 var searchSecondIllness = function(illnessSecondId,illnessSecondName){
     recordLogs("DHZX_SY_JB_YSLB");
-    window.location.href = window.location.href = "phoneConsult#/phoneConDoctorList/" + illnessSecondId + ",searchDoctorByIllnessSecondId," + illnessSecondName;
+    window.location.href = window.location.href = "phoneConsult#/phoneConDoctorList/" + illnessSecondId + ",searchDoctorByHospitalName," + illnessSecondName;
 }
 
 /*时间列表*/
