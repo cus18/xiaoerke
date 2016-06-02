@@ -45,10 +45,10 @@
 
     <!--批量插入疾病信息-->
     <insert id="insertIllnessExecute" parameterType="java.util.Map">
-        INSERT INTO sys_illness(id,level_1,level_2)
+        INSERT INTO sys_illness(id,level_1,level_2,isDisplay)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.id},#{item.level_1},#{item.level_2})
+            (#{item.id},#{item.level_1},#{item.level_2},#{item.isDisplay})
         </foreach>
     </insert>
 
@@ -65,8 +65,8 @@
     <!--==============================以下部分属于运维系统==============================================-->
     <!--单条插入疾病信息-->
     <insert id="insertIllness">
-       INSERT INTO sys_illness(id,level_1,level_2)
-        VALUES (#{id},#{level_1},#{level_2})
+       INSERT INTO sys_illness(id,level_1,level_2,isDisplay)
+        VALUES (#{id},#{level_1},#{level_2},#{isDisplay})
     </insert>
 
     <!--根据一类疾病和二类疾病查询疾病信息表主键-->
@@ -117,6 +117,9 @@
         </if>
         <if test="level_2 != null and level_2 !=''">
             and  level_2 like '%${level_2}%'
+        </if>
+        <if test="isDisplay != null and isDisplay !=''">
+            and  isDisplay = #{isDisplay}
         </if>
         order BY level_1
     </select>

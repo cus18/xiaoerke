@@ -232,10 +232,18 @@
 	</div>
 
 	<div class="control-group">
-		<label class="control-label">是否在客户端显示:</label>
+		<label class="control-label">名医面诊医院是否在客户端显示:</label>
 		<div class="controls">
 			<input id="isDisplay" name="isDisplay" type="text" value="${hospitalVo.isDisplay}" class="required"/>
 			<span class="help-inline"><font color="red">*</font>显示为 display，隐藏请填写 hidden </span>
+		</div>
+	</div>
+
+	<div class="control-group">
+		<label class="control-label">电话咨询医院是否在客户端显示:</label>
+		<div class="controls">
+			<input id="isConsultPhone" name="isConsultPhone" type="text" value="${hospitalVo.isConsultPhone}" class="required"/>
+			<span class="help-inline"><font color="red">*</font>显示为 1，隐藏请填写 0 </span>
 		</div>
 	</div>
 

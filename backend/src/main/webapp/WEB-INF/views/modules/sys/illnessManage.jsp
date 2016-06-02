@@ -62,6 +62,7 @@
         <%--</li>--%>
         <li><label>一级疾病：</label><form:input path="level_1" htmlEscape="false" class="input-medium"/></li>
         <li><label>二级疾病：</label><form:input path="level_2" htmlEscape="false" class="input-medium"/></li>
+        <li><label>是否在客户端显示：</label><form:input path="isDisplay" htmlEscape="false" class="input-medium"/></li>
         <li class="btns" style="margin-left:20px;"><input id="btnSubmit" class="btn btn-primary" type="submit"
                                                           value="查询" onclick="return page();"/></li>
         <li>&nbsp;&nbsp;&nbsp;</li>
@@ -83,6 +84,7 @@
         <th align="">二级疾病</th>
         <%--<th>一级疾病显示顺序</th>--%>
         <th>二级疾病显示顺序</th>
+        <th>是否在用户端显示</th>
         <th>操作</th>
         <%--confirmx('确认要删除已经选中的疾病吗？注意：所有医生与疾病的关联关系也会一并删除', deleteSelect())--%>
         <th><span onclick="confirmx2('确认要删除已经选中的疾病吗？注意：所有医生与疾病的关联关系也会一并删除')"><font color="red" onmouseover="this.style.cursor='pointer'">删除已选中</font></span></th>
@@ -96,6 +98,16 @@
             <td>${illnessVo.level_2}</td>
             <%--<td>${illnessVo.sort_level_1}</td>--%>
             <td>${illnessVo.sort}</td>
+            <td>
+                <c:choose>
+                    <c:when test="${illnessVo.isDisplay=='1'}">
+                        显示
+                    </c:when>
+                    <c:otherwise>
+                        不显示
+                    </c:otherwise>
+                </c:choose>
+            </td>
             <td>
                 <%--<a href="${ctx}/sys/illnessManage/illnessManagerEdit?level_1=${illnessVo.level_1}&level_2=${illnessVo.level_2}&id=${illnessVo.id}&isEdit=no">修改</a>--%>
                 <%--&nbsp;&nbsp;&nbsp;--%>
