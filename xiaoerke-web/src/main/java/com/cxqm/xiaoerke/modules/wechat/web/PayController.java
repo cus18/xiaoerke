@@ -168,8 +168,7 @@ public class PayController {
             model.addAttribute("payPrice", 5.0);
             model.addAttribute("intervalFlag", "1");
             return "pay/umbrellaPay";
-        }
-        else{
+        }else{
             return null;
         }
     }

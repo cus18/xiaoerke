@@ -178,9 +178,11 @@ public class FieldworkWechatController {
             //保险
             url = ConstantUtil.TITAN_WEB_URL + "titan/insurance#/handfootmouthIndex";
         }else if(url.indexOf("umbrella")>-1){
-            String state = url.replace("umbrella","");
+            String[] state = url.replace("umbrella","").split("_");
+            String id=state[1];
+            String status=state[0];
             //保险
-            url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/umbrella?id="+state;
+            url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/umbrella?status="+state+"&id="+id;
         }
 
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
