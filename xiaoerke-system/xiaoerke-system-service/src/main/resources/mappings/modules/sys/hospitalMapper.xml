@@ -180,7 +180,7 @@
     <!--医院信息修改后保存操作-->
     <update id="saveEditHospital">
         update sys_hospital set position=#{position},name=#{name},details=#{details},cityName=#{cityName},
-        sort=#{sort},medical_process=#{medicalProcess},is_display = #{isDisplay}
+        sort=#{sort},medical_process=#{medicalProcess},is_display = #{isDisplay},is_consultPhone = #{isConsultPhone}
 		where id=#{id};
     </update>
 

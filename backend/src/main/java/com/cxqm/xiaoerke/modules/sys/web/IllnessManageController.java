@@ -39,10 +39,11 @@ public class IllnessManageController extends BaseController {
      */
     @RequiresPermissions("user")
     @RequestMapping(value = {"illnessManage", ""})
-    public String illnessManage(String level_1, String level_2, Model model) {
+    public String illnessManage(String level_1, String level_2,String isDisplay, Model model) {
         HashMap<String, Object> searchMap = new HashMap<String, Object>();
         searchMap.put("level_1", level_1);
         searchMap.put("level_2", level_2);
+        searchMap.put("isDisplay", isDisplay);
         //获取疾病库信息
         Page<IllnessVo> page = illnessServiceImpl.findAllIllness(new Page<IllnessVo>(0, 10000), searchMap);
         model.addAttribute("page", page);
@@ -67,7 +68,7 @@ public class IllnessManageController extends BaseController {
             illnessVo.setId(id);
             illnessServiceImpl.updateIllness(illnessVo);
             model.addAttribute("message", "疾病信息修改成功！");
-            illnessManage("", "", model);
+            illnessManage("", "","", model);
             return "modules/sys/illnessManage";
         } else { //id为空执行保存操作
             if (StringUtils.isNotNull(level_1) && StringUtils.isNotNull(level_2)) {
@@ -124,7 +125,7 @@ public class IllnessManageController extends BaseController {
         //根据疾病id删除疾病
         illnessServiceImpl.deleteIllnessById(illnessVo);
         model.addAttribute("message", "删除成功！");
-        return illnessManage("", "", model);
+        return illnessManage("", "","", model);
     }
 
     /**
