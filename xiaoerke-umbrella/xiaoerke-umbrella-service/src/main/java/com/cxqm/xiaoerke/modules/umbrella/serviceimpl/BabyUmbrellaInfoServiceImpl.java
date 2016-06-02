@@ -1,6 +1,8 @@
 package com.cxqm.xiaoerke.modules.umbrella.serviceimpl;
 
+import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
 import com.cxqm.xiaoerke.modules.umbrella.dao.BabyUmbrellaInfoDao;
 import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
@@ -14,6 +16,7 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -95,7 +98,7 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
      *            type (请求方式：POST,GET)
      * @return 成功:返回json字符串<br/>
      */
-    public  String post(String strURL, String params,String type) {
+    public String post(String strURL, String params,String type) {
         System.out.println(strURL);
         System.out.println(params);
         try {
@@ -139,13 +142,48 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
     }
 
     @Override
-    public List getNotShareInfoFromLog(Map<String, Object> map) {
-        return babyUmbrellaInfoDao.getNotShareInfoFromLog(map);
-    }
-
-    @Override
     public int getUmbrellaCount() {
         return babyUmbrellaInfoDao.getUmbrellaCount();
     }
 
+    @Override
+    public void umbrellaSendWechatMessage(){
+        Map<String, Object> notShareParam = new HashMap<String, Object>();
+        notShareParam.put("notShareOrActiveDays","1");
+        List<Map<String,Object>> notShareList = babyUmbrellaInfoDao.getBabyUmbrellaInfo(notShareParam);
+        Map tokenMap = systemService.getDoctorWechatParameter();
+        String token = (String)tokenMap.get("token");
+
+        for(Map<String, Object> map : notShareList){//一天未分享
+            Map<String, Object> notShareLogParam = new HashMap<String, Object>();
+            notShareLogParam.put("openid",map.get("openid"));
+            List list = babyUmbrellaInfoDao.getNotShareInfoFromLog(notShareLogParam);
+            if(list.size() == 0){
+                String title = "非保险，亦可保障自己；非慈善，亦能帮助他人。邀请好友的同时提升保障，利人利己！";
+                String templateId = "cTAAFl0Qn1hIiwj_PV-O-HPQ1P6RRHj-TQHGcr_mUdo";//b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg
+                String keyword1 = "保障金处于最低额度";
+                String keyword2 = StringUtils.isNotNull((String) map.get("baby_id"))?"观察期":"待激活";
+                String remark = "邀请一位好友，增加2万保额，最高可享受40万保障！";
+                String url = "";
+                String openid = (String)map.get("openid");
+                //WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, openid, templateId);
+            }
+        }
+
+        Map<String, Object> notActiveParam = new HashMap<String, Object>();
+        notActiveParam.put("notActive","notActive");
+        notActiveParam.put("notShareOrActiveDays","30");
+        List<Map<String,Object>> notActivelist = babyUmbrellaInfoDao.getBabyUmbrellaInfo(notActiveParam);
+
+        for(Map<String, Object> map : notActivelist){//30天未激活
+            String title = "您刚领取的20万保障金还未激活";
+            String templateId = "XBBQe9zoNLKtmS7L5iipU_hk7WM4oj2MRDp1wVOQbpA";//lJIuV_O_zRMav4Fcv32e9cD7YG7cb0WVOPXNjhg_UpU
+            String keyword1 = map.get("id") + "";
+            String keyword2 = "保护伞——宝大夫儿童重疾互助计划";
+            String remark = "马上点击，完善信息即可激活保障金! ";
+            String url = "";
+            String openid = (String)map.get("openid");
+            //WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, openid, templateId);
+        }
+    }
 }

@@ -66,17 +66,13 @@
                         $scope.umbrellaMoney=data.umbrella.umbrella_money;
                         $scope.num=data.umbrella.id-120000000;
 
-                        
                         var targetDate = new Date(data.umbrella.activation_time);
                             targetDate.setDate(new Date().getDate() + 180);
                         var targetDateUTC = targetDate.getTime();
-                        
 
                         var selsDate = moment(data.umbrella.activation_time).format("YYYY-MM-DD");
                         var sedd =moment(selsDate).add(180,'days').format("YYYY-MM-DD");
                         var last = moment(sedd).subtract(1,'days').format("YYYY-MM-DD");
-
-                        
 
                         var day = compareDate(moment().format("YYYY-MM-DD"),last);
                         console.log("targetDateUTC",day);
@@ -89,10 +85,6 @@
                     }
                     $scope.person=(400000-$scope.umbrellaMoney)/20000;
                 });
-
-               
-
-
             });
 
             $scope.loadShare=function() {

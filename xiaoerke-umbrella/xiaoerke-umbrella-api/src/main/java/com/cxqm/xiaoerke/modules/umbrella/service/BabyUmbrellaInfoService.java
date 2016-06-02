@@ -53,7 +53,7 @@ public interface BabyUmbrellaInfoService {
 
     Integer getTotalBabyUmbrellaInfoMoney(Map<String, Object> map);
 
-    List getNotShareInfoFromLog(Map<String, Object> map);
-
     int getUmbrellaCount();
+
+    void umbrellaSendWechatMessage();
 }
