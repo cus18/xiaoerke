@@ -40,7 +40,7 @@ require.config({
 });
 
 require(['angular','angular-resource','angular-sanitize','angular-route',
-    'ocLazyLoad','jquery','wisdomCommonFactory',',nutritionFactory','nutritionDirective','appNutritionRoute','appNutrition'],
+    'ocLazyLoad','jquery','wisdomCommonFactory','nutritionFactory','nutritionDirective','appNutritionRoute','appNutrition'],
     function (angular){
         angular.bootstrap(document,["nutritionApp"]);
     });

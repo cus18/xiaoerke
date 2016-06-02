@@ -391,7 +391,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setTitle("防犬宝,一份温馨的安全保障");
 			article.setDescription("只要19.8元，打狂犬疫苗最高可获得互助补贴1000元。不幸患狂犬病可获得互助补贴5万元！");
 			article.setPicUrl("http://oss-cn-beijing.aliyuncs.com/xiaoerke-article-pic/FQBTGXX.png");
-			article.setUrl(ConstantUtil.KEEPER_WEB_URL + "/wechatInfo/fieldwork/wechat/author?url=http://s165.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=26");
+			article.setUrl(ConstantUtil.KEEPER_WEB_URL + "/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=26");
 			articleList.add(article);
 		}else if(EventKey.indexOf("homepage_qualityservices_kuaizixun")>-1){//官网快咨询
 			TextMessage textMessage = new TextMessage();
@@ -571,7 +571,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		LogUtils.saveLog(request, "00000001");//注：参数含义请参照sys_log_mapping表，如00000001表示“微信宝大夫用户版公众平台关注”
 
 		String EventKey = xmlEntity.getEventKey();
-		if(EventKey.indexOf("xuanjianghuodong_zhengyuqiao_saoma")<=-1)
+		if(EventKey.indexOf("xuanjianghuodong_zhengyuqiao_saoma")<=-1||EventKey.indexOf("baoxian_000001")<=-1)
 		{
 			st = "欢迎加入宝大夫，让您从此育儿不再愁！"+WechatUtil.emoji(0x1f339)+"\n\n"
 					+"【免费咨询】直接咨询北京三甲医院儿科专家，一分钟内回复！\n" +
@@ -698,7 +698,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		 params.put("redPacket", null);
 		 patientRegisterPraiseDao.saveCustomerEvaluation(params);
 		String st = "感谢您对我们的信任与支持，为了以后能更好的为您服务，请对本次服务做出评价！【" +
-			"<a href='http://s11.baodf.com/titan/appoint#/userEvaluate/"+params.get("uuid")+"'>我要评价</a>】";
+			"<a href='http://s68.baodf.com/titan/appoint#/userEvaluate/"+params.get("uuid")+"'>我要评价</a>】";
 		 Map parameter = systemService.getWechatParameter();
 		 String token = (String)parameter.get("token");
 		 WechatUtil.sendMsgToWechat(token, openId, st);

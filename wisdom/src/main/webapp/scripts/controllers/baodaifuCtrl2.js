@@ -1,7 +1,10 @@
 angular.module('controllers2', [])
     .controller('indexCtrl',['$scope','$state','$stateParams','$http',
         function ($scope,$state,$stateParams,$http) {
-
+            var bannerList = ["http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_banner1.png",
+                /*"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_banner3.png",*/
+                "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_banner2.png"];
+            var num;
             $scope.initial = function(){
                 $(".img_weixin").hide();
                 //底部微信二维码显示
@@ -29,8 +32,8 @@ angular.module('controllers2', [])
                     initTop = scrollY;
                 });
 
-                setTimeout(function(){
 
+                setTimeout(function(){
                     $('#mov_doctor').movingBoxes({
                         width: 1000,
                         reducedSize : 0.7,
@@ -99,16 +102,65 @@ angular.module('controllers2', [])
                 },2000);
             }
 
+            num = 0;
+            //banner轮播图
+            angular.forEach(bannerList, function (value,index) {
+                var li = '<li/>';
+                $(".index_ban ul").append(li);
+            });
+
+            $(".index_ban ul li").eq(0).css("background",'url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_bandianxuanzhong.png) no-repeat center');
+            var seti = setInterval(function () {
+                num++;
+                if(num==bannerList.length){
+                    num = 0;
+                }
+                bannerImg();
+            },8000);
+
+            //点击banner左箭头
+            $scope.goBannerLeft = function (event) {
+                stopMao(event);
+                if(num!=0){
+                    num--;
+                    bannerImg();
+                }else{
+                    //num = 0;
+                    return;
+                }
+            }
+            //点击banner右箭头
+            $scope.goBannerright = function (event) {
+                stopMao(event);
+                if(num!=(bannerList.length-1)){
+                    num++;
+                    bannerImg();
+                }else{
+                    //num = bannerList.length-1;
+                    return;
+                }
+            }
+
 
             //顶部关于我们
             $scope.goCallMine = function () {
                 setLog("GW_TOP_GYWM");
+                clearInterval(seti);
                 $state.go("callMine",{id:1});
             }
 
+            //点击banner
+            $scope.goBanner = function(){
+                 if(num==(bannerList.length-1)){
+                    clearInterval(seti);
+                     setLog("GW_BANNER_YHZ");
+                    $state.go("doctorHelp");
+                }
+            }
 
             //关于我们
             $scope.goGuanYu = function (log) {
+                clearInterval(seti);
                 setLog(log);
                 $state.go("callMine",{id:1});
 
@@ -116,24 +168,28 @@ angular.module('controllers2', [])
 
             //联系我们
             $scope.goLianXi = function (log) {
+                clearInterval(seti);
                 setLog(log);
                 $state.go("callMine",{id:2});
             }
 
             //联系我们
             $scope.goLianXi2 = function (log) {
+                clearInterval(seti);
                 setLog(log);
                 $state.go("callMine",{id:5});
             }
 
             //服务协议
             $scope.goFuWu = function (log) {
+                clearInterval(seti);
                 setLog(log);
                 $state.go("callMine",{id:3});
             }
 
             //隐私保护
             $scope.goYinSi = function (log) {
+                clearInterval(seti);
                 setLog(log);
                 $state.go("callMine",{id:4});
             }
@@ -148,6 +204,27 @@ angular.module('controllers2', [])
                 var pData = {logContent:encodeURI(log)};
                 $http({method:'post',url:'util/recordLogs',params:pData});
             }
+
+            function bannerImg(){
+                $(".index_ban").css("background",'url("'+bannerList[num]+'") no-repeat center');
+                $(".index_ban").css("background-size","cover");
+                if(num==(bannerList.length-1)){
+                    $(".index_ban").css("cursor","pointer");
+                }else{
+                    $(".index_ban").css("cursor","");
+                }
+                $(".index_ban ul li").eq(num).css("background",'url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_bandianxuanzhong.png) no-repeat center').siblings().css("background","");
+            }
+
+            function stopMao(event){
+                var event = event || window.event;
+                if (event && event.stopPropagation){
+                    event.stopPropagation();
+                }else {
+                    event.cancelBubble = true;
+                }
+            }
+
 
         }])
     //联系我们
@@ -210,6 +287,10 @@ angular.module('controllers2', [])
                 $(window).scrollTop(0);
             }
 
+            //点击logo跳转到首页
+            $scope.goLogo = function () {
+                $state.go("index");
+            }
 
             //首页
             $scope.goIndex = function () {

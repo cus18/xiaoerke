@@ -44,10 +44,10 @@ angular.module('controllers', ['ionic']).controller('constipationDefecateCtrl', 
             $scope.index2=index2;
 
            $scope.img= $(".play").eq(index2).attr("src");
-            if( $scope.img=="src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmusic_on.png"){
+            if( $scope.img=="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmusic_on.png"){
                 for(var i=0;i<8;i++){
                     $("audio")[i].pause();
-                    $(".play").attr("src","src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmusic_on.png");
+                    $(".play").attr("src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmusic_on.png");
                 }
                 $(".play").eq(index2).attr("src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation%2Fmusic_off.png");
                 $("audio")[index2].play();

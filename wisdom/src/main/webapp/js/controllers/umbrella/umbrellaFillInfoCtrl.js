@@ -146,8 +146,8 @@
                 }
                 IdentifyUser.save({"userPhone":$scope.info.phoneNum},function (data){
                     if(data.status=="1") {
-                        $scope.codeSecond=60;
-                        $scope.codeButton=true;
+                        $scope.codeSecond = 60;
+                        $scope.codeButton = true;
                         $scope.getCodeSecond();
                     }else{
                         $scope.codeSecond="重新发送";
@@ -158,10 +158,9 @@
 
              $scope.getCodeSecond=function () {
                  $scope.codeSecond=$scope.codeSecond-1;
-                // console.log("s",$scope.codeSecond);
                 var t;
                 if($scope.codeSecond>0) {
-                    t=setTimeout(function(){$scope.getCodeSecond()}, 1000);
+                    t = setTimeout(function(){$scope.getCodeSecond()}, 1000);
                     $scope.$digest();
                 }else{
                     clearTimeout(t);
