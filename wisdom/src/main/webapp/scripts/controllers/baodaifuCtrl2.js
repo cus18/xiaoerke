@@ -2,7 +2,7 @@ angular.module('controllers2', [])
     .controller('indexCtrl',['$scope','$state','$stateParams','$http',
         function ($scope,$state,$stateParams,$http) {
             var bannerList = ["http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_banner1.png",
-                "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_banner3.png",
+                /*"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_banner3.png",*/
                 "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_banner2.png"];
             var num;
             $scope.initial = function(){
@@ -102,7 +102,7 @@ angular.module('controllers2', [])
                 },2000);
             }
 
-            num = 1;
+            num = 0;
             //banner轮播图
             angular.forEach(bannerList, function (value,index) {
                 var li = '<li/>';
@@ -111,29 +111,34 @@ angular.module('controllers2', [])
 
             $(".index_ban ul li").eq(0).css("background",'url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_bandianxuanzhong.png) no-repeat center');
             var seti = setInterval(function () {
+                num++;
                 if(num==bannerList.length){
                     num = 0;
                 }
                 bannerImg();
-            },5000);
+            },8000);
 
             //点击banner左箭头
-            $scope.goBannerLeft = function () {
+            $scope.goBannerLeft = function (event) {
+                stopMao(event);
                 if(num!=0){
                     num--;
+                    bannerImg();
                 }else{
-                    num = 0;
+                    //num = 0;
+                    return;
                 }
-                bannerImg();
             }
             //点击banner右箭头
-            $scope.goBannerright = function () {
-                if(num!=2){
+            $scope.goBannerright = function (event) {
+                stopMao(event);
+                if(num!=(bannerList.length-1)){
                     num++;
+                    bannerImg();
                 }else{
-                    num = 2;
+                    //num = bannerList.length-1;
+                    return;
                 }
-                bannerImg();
             }
 
 
@@ -146,12 +151,9 @@ angular.module('controllers2', [])
 
             //点击banner
             $scope.goBanner = function(){
-                if(num==1){
-
-                }else if(num==2){
-
-                }else{
+                 if(num==(bannerList.length-1)){
                     clearInterval(seti);
+                     setLog("GW_BANNER_YHZ");
                     $state.go("doctorHelp");
                 }
             }
@@ -194,7 +196,6 @@ angular.module('controllers2', [])
 
             //微博
             $scope.goWeiBo = function (log) {
-                clearInterval(seti);
                 setLog(log);
             }
 
@@ -207,15 +208,22 @@ angular.module('controllers2', [])
             function bannerImg(){
                 $(".index_ban").css("background",'url("'+bannerList[num]+'") no-repeat center');
                 $(".index_ban").css("background-size","cover");
-                if(num==2){
+                if(num==(bannerList.length-1)){
                     $(".index_ban").css("cursor","pointer");
                 }else{
                     $(".index_ban").css("cursor","");
                 }
                 $(".index_ban ul li").eq(num).css("background",'url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_bandianxuanzhong.png) no-repeat center').siblings().css("background","");
-                num++;
             }
 
+            function stopMao(event){
+                var event = event || window.event;
+                if (event && event.stopPropagation){
+                    event.stopPropagation();
+                }else {
+                    event.cancelBubble = true;
+                }
+            }
 
 
         }])
