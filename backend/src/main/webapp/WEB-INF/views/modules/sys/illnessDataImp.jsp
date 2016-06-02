@@ -101,6 +101,15 @@
 				<input id="level_2" name="level_2" type="text" value="${illnessVo.level_2}" class="required" />
 			</div>
 		</div>
+
+		<div class="control-group">
+			<label class="control-label">是否在客户端显示:</label>
+			<div class="controls">
+				<input id="isDisplay" name="isDisplay" type="text" value="${illnessVo.isDisplay}" class="required"/>
+				<span class="help-inline"><font color="red">*</font>显示为 1，隐藏请填写 0 </span>
+			</div>
+		</div>
+
 		<div class="form-actions">
 			<input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>
 		</div>

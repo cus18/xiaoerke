@@ -319,10 +319,10 @@ public class ConsultDoctorController extends BaseController {
 
                     //判断是否有权限推送消息
                     Map param = new HashMap();
-                    param.put("userId",richConsultSession.getUserId());
+                    param.put("userId",richConsultSession.getCsUserId());
                     List<ConsultDoctorInfoVo> consultDoctorInfoVos = consultDoctorInfoService.getConsultDoctorByInfo(param);
                     if(consultDoctorInfoVos !=null && consultDoctorInfoVos.size() >0){
-                        if(consultDoctorInfoVos.get(0).getSendMessage().equals("1")){
+                        if(null !=consultDoctorInfoVos.get(0).getSendMessage() && consultDoctorInfoVos.get(0).getSendMessage().equals("1")){
                             String st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
                                     "<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
                                     params.get("uuid") + "'>点击这里去评价</a>】";
