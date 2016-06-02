@@ -116,7 +116,7 @@ angular.module('controllers2', [])
                     num = 0;
                 }
                 bannerImg();
-            },5000);
+            },8000);
 
             //点击banner左箭头
             $scope.goBannerLeft = function (event) {
