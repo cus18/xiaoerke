@@ -36,7 +36,7 @@ public class BabyBaseInfoServiceImpl implements BabyBaseInfoService {
 
     @Override
     public BabyBaseInfoVo selectByPrimaryKey(Integer id) {
-        return null;
+        return babyBaseInfoDao.selectByPrimaryKey(id);
     }
 
     @Override

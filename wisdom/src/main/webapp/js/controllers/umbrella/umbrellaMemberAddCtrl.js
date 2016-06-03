@@ -1,8 +1,9 @@
 ﻿angular.module('controllers', ['ionic']).controller('umbrellaMemberAddCtrl', [
-        '$scope','$state','$stateParams',
-        function ($scope,$state,$stateParams) {
+        '$scope','$state','$stateParams','addFamily',
+        function ($scope,$state,$stateParams,addFamily) {
             $scope.title="宝护伞";
             $scope.sexItem = "boy";
+            $scope.info = {}
             /*选择性别*/
             $scope.selectSex = function(sex){
                 $scope.sexItem=sex;
@@ -35,7 +36,13 @@
             };
 
             $scope.save=function(){
+                var birthday=$("#birthday").val();
+                var sex="0";
+                var name = "ts";
+                addFamily.save({"sex":sex,"name":encodeURI(name),"birthDay":birthday,"id":"120000023"},function(data){
+                    console.log(data)
 
+                });
             };
 
 

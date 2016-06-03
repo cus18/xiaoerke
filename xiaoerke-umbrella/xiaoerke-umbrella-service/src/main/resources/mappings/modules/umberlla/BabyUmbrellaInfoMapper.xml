@@ -17,6 +17,13 @@
         <result column="pay_result" property="payResult" jdbcType="VARCHAR" />
     </resultMap>
 
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+         *
+        from baby_umbrellainfo
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
 
     <select id="getBabyUmbrellaInfo" resultType="java.util.HashMap" >
         select * from baby_umbrellainfo
