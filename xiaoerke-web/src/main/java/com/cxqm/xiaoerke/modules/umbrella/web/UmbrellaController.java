@@ -3,6 +3,7 @@ package com.cxqm.xiaoerke.modules.umbrella.web;
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
 import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaFamilyInfo;
@@ -20,10 +21,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Controller
@@ -329,6 +327,49 @@ public class UmbrellaController  {
         result.put("result",res);
         result.put("id",babyUmbrellaInfo.getId());
         return result;
+    }
+
+/**
+ * 家庭版保护伞增加成员
+ */
+    @RequestMapping(value = "/addFamily", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> addFamilyUmbrella(@RequestBody Map<String, Object> params){
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        UmbrellaFamilyInfo familyInfo = new UmbrellaFamilyInfo();
+        Date birthDay = DateUtils.StrToDate(params.get("birthDay").toString(), "yyyy-MM-dd");
+        familyInfo.setBirthday(birthDay);
+        familyInfo.setUmbrellaId(Integer.parseInt((String)params.get("id")));
+        familyInfo.setName(params.get("name").toString());
+        familyInfo.setSex(Integer.parseInt((String) params.get("sex")));
+        int reusltStatus = babyUmbrellaInfoSerivce.saveFamilyUmbrellaInfo(familyInfo);
+        resultMap.put("reusltStatus",reusltStatus);
+      return resultMap;
+    }
+
+    /**
+     * 家庭版保护成员列表
+     */
+    @RequestMapping(value = "/familyList", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> familyUmbrellaList(@RequestBody Map<String, Object> params){
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        Integer id = Integer.parseInt((String) params.get("id"));
+        id = 120000002;
+        List<UmbrellaFamilyInfo> list = new ArrayList<UmbrellaFamilyInfo>();
+        list = babyUmbrellaInfoSerivce.getFamilyUmbrellaList(id);
+        BabyBaseInfoVo babyInfo = babyUmbrellaInfoSerivce.getBabyBaseInfo(id);
+        if(babyInfo!=null){
+            UmbrellaFamilyInfo familyInfo = new UmbrellaFamilyInfo();
+            familyInfo.setSex(Integer.parseInt(babyInfo.getSex()));
+            familyInfo.setName(babyInfo.getName());
+            familyInfo.setBirthday(babyInfo.getBirthday());
+            list.add(familyInfo);
+        }
+        resultMap.put("familyList",list);
+        return resultMap;
     }
 
 //    /**
