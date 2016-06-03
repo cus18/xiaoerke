@@ -1,0 +1,27 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="{{title}}">
+    <ion-content class="umbrellaMemberList bg1" overflow-scroll="true" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true" >
+           <div >
+               <dl class="">
+                   <dt class="f6 c3 fw0 tc">家庭成员</dt>
+                   <dd class="f3 c4" ng-repeat="item in [1,2,3,4]">
+                       <span class="name">某某某</span>
+                       <span class="role">宝妈</span>
+                       <span class="birth">1900年2月15日</span>
+                   </dd>
+               </dl>
+           </div>
+            <br> <br> <br> <br> <br> <br>
+
+        </ion-scroll>
+    </ion-content>
+    <div class="myBottom-btn bottom-btn bg4 tc">
+        <a class="bg3 c0 f4" ng-click="immediateActive()"  >
+            立即激活
+        </a>
+        <a class="bg3 c0 f4"  ng-click="addMember()"    >
+            添加成员
+        </a>
+    </div>
+</ion-view>
