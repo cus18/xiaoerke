@@ -355,7 +355,7 @@
         FROM
         customerEvaluation
         WHERE
-        doctorId =#{doctorId}
+        doctorId =#{doctorId} and serviceAttitude>0
     </select>
 
 

@@ -13,6 +13,8 @@
         <result column="parent_name" property="parentName" jdbcType="VARCHAR" />
         <result column="parent_type" property="parentType" jdbcType="INTEGER" />
         <result column="activation_time" property="activationTime" jdbcType="DATE" />
+        <result column="true_pay_moneys" property="truePayMoneys" jdbcType="VARCHAR" />
+        <result column="pay_result" property="payTrue" jdbcType="VARCHAR" />
     </resultMap>
 
 
@@ -20,7 +22,7 @@
         select * from baby_umbrellainfo
         where 1=1
         <if test="today != null">
-            and create_time like '${today}%'
+            and create_time like '${today}%' and pay_result!='fail'
         </if>
         <if test="openid != null">
             and openid = #{openid}
@@ -60,9 +62,17 @@
 
 
     <insert id="saveBabyUmbrellaInfo" parameterType="com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `baby_umbrellainfo` ( `openid`,create_time,umbrella_money)
+        INSERT INTO `baby_umbrellainfo` ( `openid`,create_time,umbrella_money
+        <if test="truePayMoneys != null">
+            ,true_pay_moneys,pay_result
+        </if>
+        )
         VALUES
-        ( #{openid},now(),#{umbrellaMoney});
+        ( #{openid},now(),#{umbrellaMoney}
+        <if test="truePayMoneys != null">
+         , #{truePayMoneys},#{payResult}
+        </if>
+        );
     </insert>
 
 
@@ -87,6 +97,12 @@
             </if>
             <if test="activationTime != null">
                 activation_time = now(),
+            </if>
+            <if test="truePayMoneys != null">
+                true_pay_moneys = #{truePayMoneys},
+            </if>
+            <if test="payTrue != null">
+                pay_result = #{payTrue},
             </if>
         </set>
         where id = #{id,jdbcType=VARCHAR}

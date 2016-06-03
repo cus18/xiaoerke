@@ -14,6 +14,7 @@ var version="b"; /*方案版本*/
 
 var shareUmbrellaId="0";
 var umbrellaFirstPageInit = function() {
+    version=GetQueryString("status");
     /*获取当前年月日*/
     var date = new Date();
      date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
@@ -257,7 +258,7 @@ var goJoin = function() {
     }else if(version=="b"){
         window.location.href = "umbrella#/umbrellaJoin/"+new Date().getTime();
     }else if(version=="a"){
-        window.location.href = "/keeper/wxPay/patientPay.do?serviceType=umbrellaPay";
+        window.location.href = "../keeper/wxPay/patientPay.do?serviceType=umbrellaPay";
     }
 }
 

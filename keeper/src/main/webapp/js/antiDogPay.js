@@ -495,7 +495,7 @@ function loginCheck(){
         data: {},
         complete: function(jqXHR){
             if(jqXHR.status=="404"){
-                window.location.href = "http://s68.baodf.com/keeper/wxPay/patientPay.do?serviceType=antiDogPay";
+                window.location.href = "http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=antiDogPay";
             }
         },
         success:function(data){

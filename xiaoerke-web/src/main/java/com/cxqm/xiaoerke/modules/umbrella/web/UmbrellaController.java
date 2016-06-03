@@ -62,8 +62,8 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  joinUs(HttpServletRequest request,HttpSession session) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        Map<String, Object> numm = new HashMap<String, Object>();
+        Map<String, Object> map=new HashMap<String, Object>();
+        Map<String, Object> numm=new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session, request);
 //        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
@@ -126,8 +126,10 @@ public class UmbrellaController  {
         babyUmbrellaInfo.setParentName(URLDecoder.decode(params.get("parentName").toString(),"UTF-8"));
         babyUmbrellaInfo.setParentType(Integer.parseInt(params.get("parentType").toString()));
         babyUmbrellaInfo.setId(Integer.parseInt(params.get("umbrellaId").toString()));
-//        babyUmbrellaInfo.setUmberllaMoney(Integer.parseInt(params.get("umberllaMoney").toString()));
-        res = babyUmbrellaInfoSerivce.updateBabyUmbrellaInfo(babyUmbrellaInfo)+"";
+        if(params.get("truePayMoney")!=null){
+            babyUmbrellaInfo.setTruePayMoneys(params.get("truePayMoney").toString());
+        }
+        res=babyUmbrellaInfoSerivce.updateBabyUmbrellaInfo(babyUmbrellaInfo)+"";
         result.put("result",res);
         return result;
     }
@@ -143,7 +145,7 @@ public class UmbrellaController  {
         String openid= WechatUtil.getOpenId(session, request);
 //        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
-        String id = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map).get(0).get("id").toString();
+        String  id=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map).get(0).get("id").toString();
         Map<String, Object> result=new HashMap<String, Object>();
         result.put("count",babyUmbrellaInfoSerivce.getUserShareNums(id));
         return result;
@@ -155,7 +157,12 @@ public class UmbrellaController  {
     @RequestMapping(value = "/getUserQRCode", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object>  getUserQRCode(@RequestBody Map<String, Object> params) {
+    Map<String, Object>  getUserQRCode(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) {
+//        Map<String, Object> map=new HashMap<String, Object>();
+//        String openid= WechatUtil.getOpenId(session, request);
+//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+//        map.put("openid",openid);
+//        String  id=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map).get(0).get("id").toString();
         String id = params.get("id").toString();
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("qrcode",babyUmbrellaInfoSerivce.getUserQRCode(id));
@@ -205,17 +212,22 @@ public class UmbrellaController  {
         String openid= WechatUtil.getOpenId(session, request);
 //        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
-        List<Map<String, Object>> list = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
+        List<Map<String, Object>> list=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
-            Map<String, Object> m = list.get(0);
-            if(m.get("baby_id")!=null && !m.get("baby_id").equals("")){
-                result.put("result",3);
-                result.put("umbrella",m);
+            Map<String, Object> m=list.get(0);
+            if(m.get("pay_result")!=null&&!m.get("pay_result").equals("fail")) {
+                if (m.get("baby_id") != null && !m.get("baby_id").equals("")) {
+                    result.put("result", 3);
+                    result.put("umbrella", m);
+                    return result;
+                }
+                result.put("result", 2);
+                result.put("umbrella", m);
+                return result;
+            }else{
+                result.put("result",1);
                 return result;
             }
-            result.put("result",2);
-            result.put("umbrella",m);
-            return result;
         }
         result.put("result",1);
         return result;
