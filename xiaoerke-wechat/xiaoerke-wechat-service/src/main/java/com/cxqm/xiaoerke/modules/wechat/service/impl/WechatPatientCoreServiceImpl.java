@@ -571,7 +571,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		LogUtils.saveLog(request, "00000001");//注：参数含义请参照sys_log_mapping表，如00000001表示“微信宝大夫用户版公众平台关注”
 
 		String EventKey = xmlEntity.getEventKey();
-		if(EventKey.indexOf("xuanjianghuodong_zhengyuqiao_saomabaoxian_000001")<=-1)
+		if(EventKey.indexOf("xuanjianghuodong_zhengyuqiao_saoma")<=-1&&EventKey.indexOf("baoxian_000001")<=-1)
 		{
 			st = "欢迎加入宝大夫，让您从此育儿不再愁！"+WechatUtil.emoji(0x1f339)+"\n\n"
 					+"【免费咨询】直接咨询北京三甲医院儿科专家，一分钟内回复！\n" +
