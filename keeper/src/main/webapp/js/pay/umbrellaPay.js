@@ -1,5 +1,7 @@
 var moneys="";
+var umbrelladId="";
 var umbrellaPayInit=function(){
+    
     $("#FreeOrder").hide();
     $("#payButton").attr("disabled","disabled");
     $.ajax({
@@ -23,6 +25,7 @@ var umbrellaPayInit=function(){
                     $("#payMoneyDis").html(moneys);
                     $("#FreeOrder").hide();
                     $("#payButton").removeAttr("disabled");
+                    umbrelladId=data.id;
                 }
             }
         },
@@ -109,7 +112,7 @@ function wechatPay() {
             url: "account/user/umbrellaPay",// 跳转到 action
             async: true,
             type: 'get',
-            data: {patientRegisterId: insuranceId, payPrice: moneys * 100},
+            data: {patientRegisterId: umbrelladId, payPrice: moneys * 100},
             cache: false,
             success: function (data) {
                 $('#payButton').removeAttr("disabled");
