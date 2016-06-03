@@ -1,9 +1,11 @@
 package com.cxqm.xiaoerke.modules.umbrella.web;
 
 
+import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
+import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaFamilyInfo;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -93,6 +95,8 @@ public class UmbrellaController  {
         babyUmbrellaInfo.setOpenid(openid);
         babyUmbrellaInfo.setUmberllaMoney(200000);
         Integer res = babyUmbrellaInfoSerivce.saveBabyUmbrellaInfo(babyUmbrellaInfo);
+
+
         Map<String, Object> result=new HashMap<String, Object>();
         result.put("result",res);
         result.put("id",babyUmbrellaInfo.getId());
@@ -129,6 +133,18 @@ public class UmbrellaController  {
             babyUmbrellaInfo.setTruePayMoneys(params.get("truePayMoney").toString());
         }
         res=babyUmbrellaInfoSerivce.updateBabyUmbrellaInfo(babyUmbrellaInfo)+"";
+
+        //插入家庭成员的信息
+        UmbrellaFamilyInfo familyInfo = new UmbrellaFamilyInfo();
+        familyInfo.setName(URLDecoder.decode(params.get("parentName").toString(), "UTF-8"));
+        familyInfo.setUmbrellaId(Integer.parseInt(params.get("umbrellaId").toString()));
+        familyInfo.setSex(Integer.parseInt(params.get("parentType").toString()));
+        String idCard = params.get("idCard").toString();
+        Date birthDay = DateUtils.StrToDate(idCard.substring(6,14),"yyyyMMdd");
+        familyInfo.setBirthday(birthDay);
+        babyUmbrellaInfoSerivce.saveFamilyUmbrellaInfo(familyInfo);
+
+
         result.put("result",res);
         return result;
     }
