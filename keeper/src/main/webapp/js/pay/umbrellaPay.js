@@ -105,11 +105,12 @@ var doRefresh = function(){
         error : function() {
         }
     });
-
+    wx.hideOptionMenu();
 }
 
 function wechatPay() {
-     moneys=0.01;
+    if (moneys == "0") {
+        moneys = 0.01;
         $.ajax({
             url: "account/user/umbrellaPay",// 跳转到 action
             async: true,
@@ -146,5 +147,7 @@ function wechatPay() {
             error: function () {
             }
         });
-
+    }else{
+        window.location.href = "http://s2.xiaork.cn/wisdom/firstPage/umbrella?status=a";
+    }
 }

@@ -66,11 +66,17 @@
         <if test="truePayMoneys != null">
             ,true_pay_moneys,pay_result
         </if>
+        <if test="activationTime != null">
+            ,activation_time
+        </if>
         )
         VALUES
         ( #{openid},now(),#{umbrellaMoney}
         <if test="truePayMoneys != null">
          , #{truePayMoneys},#{payResult}
+        </if>
+        <if test="activationTime != null">
+            ,now()
         </if>
         );
     </insert>
