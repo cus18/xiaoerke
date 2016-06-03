@@ -7,7 +7,7 @@ public class UmbrellaFamilyInfo {
 
     private String name;
 
-    private String sex;
+    private Integer sex;
 
     private Date birthday;
 
@@ -29,11 +29,11 @@ public class UmbrellaFamilyInfo {
         this.name = name;
     }
 
-    public String getSex() {
+    public Integer getSex() {
         return sex;
     }
 
-    public void setSex(String sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
 
