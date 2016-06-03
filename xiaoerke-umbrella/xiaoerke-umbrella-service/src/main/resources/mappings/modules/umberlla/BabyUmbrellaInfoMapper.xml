@@ -14,7 +14,7 @@
         <result column="parent_type" property="parentType" jdbcType="INTEGER" />
         <result column="activation_time" property="activationTime" jdbcType="DATE" />
         <result column="true_pay_moneys" property="truePayMoneys" jdbcType="VARCHAR" />
-        <result column="pay_result" property="payTrue" jdbcType="VARCHAR" />
+        <result column="pay_result" property="payResult" jdbcType="VARCHAR" />
     </resultMap>
 
 
@@ -102,7 +102,7 @@
                 true_pay_moneys = #{truePayMoneys},
             </if>
             <if test="payTrue != null">
-                pay_result = #{payTrue},
+                pay_result = #{payResult},
             </if>
         </set>
         where id = #{id,jdbcType=VARCHAR}
