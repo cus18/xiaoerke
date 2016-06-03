@@ -59,6 +59,41 @@ define(['appUmbrella'], function(app){
                             public: true
                         }
                     })
+                    .state('umbrellaMemberAdd', {
+                        url: '/umbrellaMemberAdd',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'umbrellaMemberAddCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaMemberAddCtrl',
+                                    ['js/controllers/umbrella/umbrellaMemberAddCtrl.js',
+                                        'js/libs/mobiscroll.custom-2.17.0.min.js',
+                                        'styles/lib/mobiscroll.custom-2.17.0.min.css',
+                                        'styles/umbrella/fillInfoCommon.less?ver='+umbrellaVersion,
+                                        'styles/umbrella/umbrellaMemberAdd.less?ver='+umbrellaVersion],
+                                    'js/views/umbrella/umbrellaMemberAdd.html?ver='+umbrellaVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                    .state('umbrellaMemberList', {
+                        url: '/umbrellaMemberList',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'umbrellaMemberListCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaMemberListCtrl',
+                                    ['js/controllers/umbrella/umbrellaMemberListCtrl.js',
+                                        'styles/umbrella/umbrellaMemberList.less?ver='+umbrellaVersion],
+                                    'js/views/umbrella/umbrellaMemberList.html?ver='+umbrellaVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
                 $urlRouterProvider.otherwise('umbrellaJoin');
             }])
         .run(function ($rootScope){
