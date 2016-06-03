@@ -4,6 +4,7 @@ package com.cxqm.xiaoerke.modules.umbrella.web;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.sys.service.UtilService;
+import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
 import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaFamilyInfo;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
@@ -117,11 +118,11 @@ public class UmbrellaController  {
         String code=params.get("code").toString();
         String openid= WechatUtil.getOpenId(session, request);
 //        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
-        String res=utilService.bindUser(phone,code,openid);
-        if(res.equals("0")){
-            result.put("result","3");
-            return result;
-        }
+//        String res=utilService.bindUser(phone,code,openid);
+//        if(res.equals("0")){
+//            result.put("result","3");
+//            return result;
+//        }
         BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
         babyUmbrellaInfo.setBabyId(params.get("babyId").toString());
         babyUmbrellaInfo.setParentIdCard(params.get("idCard").toString());
@@ -132,7 +133,7 @@ public class UmbrellaController  {
         if(params.get("truePayMoney")!=null){
             babyUmbrellaInfo.setTruePayMoneys(params.get("truePayMoney").toString());
         }
-        res=babyUmbrellaInfoSerivce.updateBabyUmbrellaInfo(babyUmbrellaInfo)+"";
+        String res=babyUmbrellaInfoSerivce.updateBabyUmbrellaInfo(babyUmbrellaInfo)+"";
 
         //插入家庭成员的信息
         UmbrellaFamilyInfo familyInfo = new UmbrellaFamilyInfo();
@@ -236,6 +237,7 @@ public class UmbrellaController  {
                     result.put("umbrella", m);
                     return result;
                 }
+                result.put("phone", UserUtils.getUser().getPhone());
                 result.put("result", 2);
                 result.put("umbrella", m);
                 return result;
