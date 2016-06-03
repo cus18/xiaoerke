@@ -110,7 +110,13 @@ public class RouteController extends BaseController {
         return "native/umbrellaFirstPage";
     }
 
-
+    /**
+     * 宝护伞 家庭版
+     */
+    @RequestMapping(value ="/umbrella",method = {RequestMethod.POST, RequestMethod.GET})
+    public String umbrellaIndex2() {
+        return "native/umbrellaHomePage";
+    }
     /*
         market 项目
     */
