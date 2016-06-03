@@ -45,7 +45,6 @@
                 });
             };
 
-
             $scope.$on('$ionicView.enter', function(){
                 $scope.selectBirthday();
             });
