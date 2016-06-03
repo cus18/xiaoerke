@@ -133,7 +133,7 @@ function wechatPay() {
                     paySign: obj.paySign,  // 支付签名
                     success: function (res) {
                         if (res.errMsg == "chooseWXPay:ok") {
-                            window.location.href = "http://localhost:8080/wisdom/firstPage/umbrella?status=a";
+                            window.location.href = "http://s2.xiaork.cn/wisdom/firstPage/umbrella?status=a";
                         } else {
                             alert("支付失败,请重新支付")
                         }
