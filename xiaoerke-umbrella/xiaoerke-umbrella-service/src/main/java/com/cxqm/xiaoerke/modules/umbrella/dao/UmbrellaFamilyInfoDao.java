@@ -1,7 +1,9 @@
 package com.cxqm.xiaoerke.modules.umbrella.dao;
 
+import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaFamilyInfo;
 
+@MyBatisDao
 public interface UmbrellaFamilyInfoDao {
     int deleteByPrimaryKey(Integer id);
 
