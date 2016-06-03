@@ -323,6 +323,7 @@ public class UmbrellaController  {
         babyUmbrellaInfo.setTruePayMoneys(res);
         if(res.equals("0")){
             babyUmbrellaInfo.setPayResult("success");
+            babyUmbrellaInfo.setActivationTime(new Date());
         }else {
             babyUmbrellaInfo.setPayResult("fail");
         }
