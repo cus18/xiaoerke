@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.umbrella.service;
 
+import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
 import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaFamilyInfo;
 
@@ -59,4 +60,8 @@ public interface BabyUmbrellaInfoService {
     void umbrellaSendWechatMessage();
 
     int saveFamilyUmbrellaInfo(UmbrellaFamilyInfo vo);
+
+    List<UmbrellaFamilyInfo> getFamilyUmbrellaList(Integer umbrella_id);
+
+    BabyBaseInfoVo getBabyBaseInfo(Integer umbrella_id);
 }

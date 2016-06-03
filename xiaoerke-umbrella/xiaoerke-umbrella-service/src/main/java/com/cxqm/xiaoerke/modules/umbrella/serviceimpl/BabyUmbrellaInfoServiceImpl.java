@@ -1,6 +1,8 @@
 package com.cxqm.xiaoerke.modules.umbrella.serviceimpl;
 
 import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
+import com.cxqm.xiaoerke.modules.sys.service.BabyBaseInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.umbrella.dao.BabyUmbrellaInfoDao;
 import com.cxqm.xiaoerke.modules.umbrella.dao.UmbrellaFamilyInfoDao;
@@ -37,6 +39,9 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
 
     @Autowired
     private UmbrellaFamilyInfoDao umbrellaFamilyInfoDao;
+
+    @Autowired
+    private BabyBaseInfoService babyBaseInfoService;
 
     @Override
     public int saveBabyUmbrellaInfo(BabyUmbrellaInfo babyUmbrellaInfo) {
@@ -194,5 +199,21 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
     @Override
     public int saveFamilyUmbrellaInfo(UmbrellaFamilyInfo vo) {
       return umbrellaFamilyInfoDao.insertSelective(vo);
+    }
+
+    @Override
+    public List<UmbrellaFamilyInfo> getFamilyUmbrellaList(Integer umbrella_id) {
+
+      return umbrellaFamilyInfoDao.selectByumbrellaId(umbrella_id);
+    }
+
+    @Override
+    public BabyBaseInfoVo getBabyBaseInfo(Integer umbrella_id) {
+        BabyUmbrellaInfo babyUmbrellaInfo = babyUmbrellaInfoDao.selectByPrimaryKey(umbrella_id);
+        if(StringUtils.isNotNull(babyUmbrellaInfo.getBabyId())){
+            Integer babyId = Integer.parseInt(babyUmbrellaInfo.getBabyId());
+            return babyBaseInfoService.selectByPrimaryKey(Integer.parseInt(babyUmbrellaInfo.getBabyId()));
+        }
+      return null;
     }
 }

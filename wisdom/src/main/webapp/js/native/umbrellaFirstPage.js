@@ -14,7 +14,7 @@ var version="b"; /*方案版本*/
 
 var shareUmbrellaId="0";
 var umbrellaFirstPageInit = function() {
-    version=GetQueryString("status");
+    //version=GetQueryString("status");
     /*获取当前年月日*/
     var date = new Date();
      date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
@@ -64,7 +64,7 @@ var umbrellaFirstPageInit = function() {
         success: function(result){
             var status=result.status;
             if(status=="1"){
-                attentionLock=true;
+                attentionLock=false;
             }
         },
         dataType: "json"

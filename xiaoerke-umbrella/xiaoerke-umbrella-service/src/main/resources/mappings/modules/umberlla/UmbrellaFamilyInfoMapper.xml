@@ -17,6 +17,15 @@
     from umbrella_familyinfo
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectByumbrellaId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from umbrella_familyinfo
+    where umbrella_id = #{umbrellaId,jdbcType=INTEGER}
+  </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from umbrella_familyinfo
     where id = #{id,jdbcType=INTEGER}
