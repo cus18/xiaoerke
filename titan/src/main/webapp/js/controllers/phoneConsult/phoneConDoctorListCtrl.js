@@ -469,6 +469,10 @@
                                 for(var i=0;i<data.doctorDataVo.length;i++){
                                     hospitalInfo[i] = data.doctorDataVo[i].hospitalName;
                                 }
+                                if( data.doctorDataVo.length==0){
+                                    $scope.care1 = "没有可约的医生哦，去看看其他医生吧!"
+                                    $scope.isBlank = true
+                                }
                                 $scope.hospitalData =hospitalInfo;
                                 $scope.doctorStar();
                                 $scope.$broadcast('scroll.refreshComplete');
@@ -491,6 +495,10 @@
                                 $scope.doctorData = $scope.doctorData.concat(data.doctorDataVo || []);
                                 var hospitalInfo = [];
                                 var hospitalList = [];
+                                if( data.doctorDataVo.length==0){
+                                    $scope.care1 = "没有可约的医生哦，去看看其他医生吧!"
+                                    $scope.isBlank = true
+                                }
                                 $scope.doctorStar();
                                 $scope.$broadcast('scroll.refreshComplete');
                                 $scope.$broadcast('scroll.infiniteScrollComplete');

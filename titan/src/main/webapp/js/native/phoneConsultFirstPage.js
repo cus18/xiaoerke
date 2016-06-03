@@ -185,7 +185,7 @@ var selectIllnessDetail = function(chooseFirstIllnessName,firstIllnessItem){
 }
 var searchSecondIllness = function(illnessSecondId,illnessSecondName){
     recordLogs("DHZX_SY_JB_YSLB");
-    window.location.href = window.location.href = "phoneConsult#/phoneConDoctorList/" + illnessSecondId + ",searchDoctorByHospitalName," + illnessSecondName;
+    window.location.href = window.location.href = "phoneConsult#/phoneConDoctorList/" + illnessSecondId + ",searchDoctorByDepartment," + illnessSecondName;
 }
 
 /*时间列表*/
