@@ -1062,7 +1062,8 @@
 		<module>xiaoerke-marketing</module>
 		<module>xiaoerke-insurance</module>
 		<module>xiaoerke-umbrella</module>
-	</modules>
+        <module>xiaoerke-mutualHelp</module>
+    </modules>
 
     <distributionManagement>
         <repository>
