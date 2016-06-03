@@ -110,7 +110,7 @@ var doRefresh = function(){
 }
 
 function wechatPay() {
-    if (moneys == "0") {
+    if (moneys != "0") {
         moneys = 0.01;
         $.ajax({
             url: "account/user/umbrellaPay",// 跳转到 action
