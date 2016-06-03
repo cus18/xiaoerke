@@ -35,6 +35,9 @@
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-member/xiaoerke-member.iml" filepath="$PROJECT_DIR$/xiaoerke-member/xiaoerke-member.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-member/xiaoerke-member-api/xiaoerke-member-api.iml" filepath="$PROJECT_DIR$/xiaoerke-member/xiaoerke-member-api/xiaoerke-member-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-member/xiaoerke-member-service/xiaoerke-member-service.iml" filepath="$PROJECT_DIR$/xiaoerke-member/xiaoerke-member-service/xiaoerke-member-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoerke-mutualHelp/xiaoerke-mutualHelp.iml" filepath="$PROJECT_DIR$/xiaoerke-mutualHelp/xiaoerke-mutualHelp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoerke-mutualHelp/xiaoerke-mutualHelp-api/xiaoerke-mutualHelp-api.iml" filepath="$PROJECT_DIR$/xiaoerke-mutualHelp/xiaoerke-mutualHelp-api/xiaoerke-mutualHelp-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoerke-mutualHelp/xiaoerke-mutualHelp-service/xiaoerke-mutualHelp-service.iml" filepath="$PROJECT_DIR$/xiaoerke-mutualHelp/xiaoerke-mutualHelp-service/xiaoerke-mutualHelp-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-operation/xiaoerke-operation.iml" filepath="$PROJECT_DIR$/xiaoerke-operation/xiaoerke-operation.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-operation/xiaoerke-operation-api/xiaoerke-operation-api.iml" filepath="$PROJECT_DIR$/xiaoerke-operation/xiaoerke-operation-api/xiaoerke-operation-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-operation/xiaoerke-operation-service/xiaoerke-operation-service.iml" filepath="$PROJECT_DIR$/xiaoerke-operation/xiaoerke-operation-service/xiaoerke-operation-service.iml" />
@@ -56,6 +59,9 @@
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-task/xiaoerke-task.iml" filepath="$PROJECT_DIR$/xiaoerke-task/xiaoerke-task.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-task/xiaoerke-task-api/xiaoerke-task-api.iml" filepath="$PROJECT_DIR$/xiaoerke-task/xiaoerke-task-api/xiaoerke-task-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-task/xiaoerke-task-service/xiaoerke-task-service.iml" filepath="$PROJECT_DIR$/xiaoerke-task/xiaoerke-task-service/xiaoerke-task-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoerke-umbrella/xiaoerke-umbrella.iml" filepath="$PROJECT_DIR$/xiaoerke-umbrella/xiaoerke-umbrella.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoerke-umbrella/xiaoerke-umbrella-api/xiaoerke-umbrella-api.iml" filepath="$PROJECT_DIR$/xiaoerke-umbrella/xiaoerke-umbrella-api/xiaoerke-umbrella-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoerke-umbrella/xiaoerke-umbrella-service/xiaoerke-umbrella-service.iml" filepath="$PROJECT_DIR$/xiaoerke-umbrella/xiaoerke-umbrella-service/xiaoerke-umbrella-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-user/xiaoerke-user.iml" filepath="$PROJECT_DIR$/xiaoerke-user/xiaoerke-user.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-user/xiaoerke-user-api/xiaoerke-user-api.iml" filepath="$PROJECT_DIR$/xiaoerke-user/xiaoerke-user-api/xiaoerke-user-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-user/xiaoerke-user-service/xiaoerke-user-service.iml" filepath="$PROJECT_DIR$/xiaoerke-user/xiaoerke-user-service/xiaoerke-user-service.iml" />
