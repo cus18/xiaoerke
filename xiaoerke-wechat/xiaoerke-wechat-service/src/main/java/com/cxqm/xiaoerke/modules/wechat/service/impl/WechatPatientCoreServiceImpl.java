@@ -16,8 +16,8 @@ import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
-import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
-import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
+//import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
+//import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import com.cxqm.xiaoerke.modules.wechat.dao.WechatAttentionDao;
 import com.cxqm.xiaoerke.modules.wechat.dao.WechatInfoDao;
 import com.cxqm.xiaoerke.modules.wechat.entity.HealthRecordMsgVo;
@@ -86,8 +86,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 	@Autowired
 	LoveMarketingService loveMarketingService;
 
-	@Autowired
-	private BabyUmbrellaInfoService babyUmbrellaInfoService;
+//	@Autowired
+//	private BabyUmbrellaInfoService babyUmbrellaInfoService;
 
 	@Autowired
 	private WechatAttentionService wechatAttentionService;
@@ -428,39 +428,39 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				}
 			}
 			if(send){//新用户第一次关注
-				Map<String, Object> param = new HashMap<String, Object>();
-				String id = EventKey.split("_")[1];
-				param.put("id",id);
-				List<Map<String,Object>> list = babyUmbrellaInfoService.getBabyUmbrellaInfo(param);
-				if(list.size()!=0){
-					if((Integer) list.get(0).get("umbrella_money")<400000){
-						String fromOpenId = (String)list.get(0).get("openid");//分享者openid
-						String babyId = (String)list.get(0).get("baby_id");
-						Map parameter = systemService.getWechatParameter();
-						String token = (String)parameter.get("token");
-
-						BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
-						babyUmbrellaInfo.setId(Integer.parseInt(id));
-						int umbrellaMoney = (Integer) list.get(0).get("umbrella_money")+20000;
-						babyUmbrellaInfo.setUmberllaMoney(umbrellaMoney);
-						babyUmbrellaInfoService.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
-						String title = "恭喜您，您的好友"+nickname+"已成功加入。您既帮助了朋友，也提升了2万保障金！";
-						String templateId = "cTAAFl0Qn1hIiwj_PV-O-HPQ1P6RRHj-TQHGcr_mUdo";//b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg
-						String keyword1 = "您已拥有"+babyUmbrellaInfo.getUmberllaMoney()/10000+"万的保障金，还需邀请"+(400000-umbrellaMoney)/20000+"位好友即可获得最高40万保障金。";
-						String keyword2 = StringUtils.isNotNull(babyId)?"观察期":"待激活";
-						String remark = "邀请一位好友，增加2万保额，最高可享受40万保障！";
-						String url = "";
-						WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, fromOpenId, templateId);
+//				Map<String, Object> param = new HashMap<String, Object>();
+//				String id = EventKey.split("_")[1];
+//				param.put("id",id);
+//				List<Map<String,Object>> list = babyUmbrellaInfoService.getBabyUmbrellaInfo(param);
+//				if(list.size()!=0){
+//					if((Integer) list.get(0).get("umbrella_money")<400000){
+//						String fromOpenId = (String)list.get(0).get("openid");//分享者openid
+//						String babyId = (String)list.get(0).get("baby_id");
+//						Map parameter = systemService.getWechatParameter();
+//						String token = (String)parameter.get("token");
+//
+//						BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
+//						babyUmbrellaInfo.setId(Integer.parseInt(id));
+//						int umbrellaMoney = (Integer) list.get(0).get("umbrella_money")+20000;
+//						babyUmbrellaInfo.setUmberllaMoney(umbrellaMoney);
+//						babyUmbrellaInfoService.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
+//						String title = "恭喜您，您的好友"+nickname+"已成功加入。您既帮助了朋友，也提升了2万保障金！";
+//						String templateId = "cTAAFl0Qn1hIiwj_PV-O-HPQ1P6RRHj-TQHGcr_mUdo";//b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg
+//						String keyword1 = "您已拥有"+babyUmbrellaInfo.getUmberllaMoney()/10000+"万的保障金，还需邀请"+(400000-umbrellaMoney)/20000+"位好友即可获得最高40万保障金。";
+//						String keyword2 = StringUtils.isNotNull(babyId)?"观察期":"待激活";
+//						String remark = "邀请一位好友，增加2万保额，最高可享受40万保障！";
+//						String url = "";
+//						WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, fromOpenId, templateId);
 					}
-				}
-			}
+//				}
+//			}
 
-			article.setTitle("宝大夫送你一份见面礼");
-			article.setDescription("恭喜您已成功领取专属于宝宝的40万高额保障金");
-			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
-			article.setUrl("http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrella");
-			articleList.add(article);
-			umbrellascan = false;
+//			article.setTitle("宝大夫送你一份见面礼");
+//			article.setDescription("恭喜您已成功领取专属于宝宝的40万高额保障金");
+//			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
+//			article.setUrl("http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrella");
+//			articleList.add(article);
+//			umbrellascan = false;
 		}
 
 		/*if("newUser".equals(userType) && umbrellascan){//新用户关注发送保护伞信息
@@ -571,7 +571,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		LogUtils.saveLog(request, "00000001");//注：参数含义请参照sys_log_mapping表，如00000001表示“微信宝大夫用户版公众平台关注”
 
 		String EventKey = xmlEntity.getEventKey();
-		if(EventKey.indexOf("xuanjianghuodong_zhengyuqiao_saoma")<=-1||EventKey.indexOf("baoxian_000001")<=-1)
+		if(EventKey.indexOf("xuanjianghuodong_zhengyuqiao_saomabaoxian_000001")<=-1)
 		{
 			st = "欢迎加入宝大夫，让您从此育儿不再愁！"+WechatUtil.emoji(0x1f339)+"\n\n"
 					+"【免费咨询】直接咨询北京三甲医院儿科专家，一分钟内回复！\n" +
