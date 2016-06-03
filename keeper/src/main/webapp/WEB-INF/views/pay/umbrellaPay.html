@@ -22,11 +22,11 @@
             充值5元
         </div>
        <!-- 减1到4元的情况-->
-        <div class="f7">
-            恭喜您获得随机立减金额 <img class="my-img1" width="15" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/pay/icon_money.png"> <span>3</span>元
+        <div class="f7" id="payOrder">
+            恭喜您获得随机立减金额 <img class="my-img1" width="15" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/pay/icon_money.png"> <span id="payMoney"></span>元
         </div>
        <!-- 减5元的情况-->
-        <div class="f7">
+        <div class="f7" id="FreeOrder">
             恭喜您获得随机免单机会
         </div>
     </div>
@@ -36,11 +36,11 @@
             微信支付
         </div>
         <div class=" fr">
-            2元
+            <span id="payMoneyDis"></span>元
             &nbsp;<img class="my-img1 line2" width="20" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/pay/icon_select.png">
         </div>
     </div>
-    <div onclick="payUmbrella()" id="payButton" class="button bottom-btn" >
+    <div onclick="wechatPay()" id="payButton"  class="button bottom-btn" >
         立即领取
     </div>
 </div>

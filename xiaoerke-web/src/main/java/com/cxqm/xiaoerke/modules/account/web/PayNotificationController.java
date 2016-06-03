@@ -20,6 +20,8 @@ import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
+import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
+import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -65,6 +67,9 @@ public class PayNotificationController {
 
 	@Autowired
 	private PatientRegisterPraiseService patientRegisterPraiseService;
+
+	@Autowired
+	private BabyUmbrellaInfoService babyUmbrellaInfoService;
 
 	private static Lock lock = new ReentrantLock();
 
@@ -285,6 +290,61 @@ public class PayNotificationController {
 		}
 		return "";
 	}
+
+
+	/**
+	 * 接收支付成后微信notify_url参数中传来的参数
+	 * 支付完成 后服务器故障 事物无法回滚
+	 * */
+	@RequestMapping(value = "/user/getUmbrellaPayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
+	public synchronized
+	@ResponseBody String getUmbrellaPayNotifyInfo(HttpServletRequest request) {
+		lock.lock();
+		InputStream inStream = null;
+		try {
+			inStream = request.getInputStream();
+			ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
+			byte[] buffer = new byte[1024];
+			int len = 0;
+			while ((len = inStream.read(buffer)) != -1) {
+				outSteam.write(buffer, 0, len);
+			}
+			outSteam.close();
+			inStream.close();
+			String result  = new String(outSteam.toByteArray(),"utf-8");
+			Map<String, Object> map = XMLUtil.doXMLParse(result);
+
+			//放入service层进行事物控制
+			if("SUCCESS".equals(map.get("return_code"))){
+				LogUtils.saveLog(Servlets.getRequest(), "00000048","用户微信支付完成:" + map.get("out_trade_no"));
+				PayRecord payRecord = new PayRecord();
+				payRecord.setId((String) map.get("out_trade_no"));
+				payRecord.setStatus("success");
+				payRecord.setReceiveDate(new Date());
+				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
+				String insuranceId= insuranceMap.get("order_id").toString();
+				System.out.println("orderId:" + insuranceId);
+				if(insuranceMap.get("fee_type").toString().equals("umbrella")){
+					BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
+					babyUmbrellaInfo.setId(Integer.parseInt(insuranceId));
+					babyUmbrellaInfo.setPayResult("success");
+					babyUmbrellaInfo.setActivationTime(new Date());
+					babyUmbrellaInfoService.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
+					payRecord.getId();//修改pay_record表状态
+					payRecord.setStatus("success");
+					payRecord.setReceiveDate(new Date());
+					payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
+				}
+			}
+			return  XMLUtil.setXML("SUCCESS", "");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			lock.unlock();
+		}
+		return "";
+	}
+
 
 
 
