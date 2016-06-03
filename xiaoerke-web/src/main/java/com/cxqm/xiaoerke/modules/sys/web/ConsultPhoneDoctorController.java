@@ -202,7 +202,7 @@ public class ConsultPhoneDoctorController {
 
                 String doctorId = (String) doctorDataVoMap.get("id");
                 dataMap.put("expertise", doctorInfoService
-                        .getDoctorExpertiseById(doctorId, hospitalId, departmentLevel1Name == null ? null : (String) departmentLevel1Name));
+                        .getDoctorExpertiseById(doctorId, hospitalId,  null));
                 Object departmentLevel2Obj = doctorDataVoMap.get("department_level2");
                 boolean departmentLevel2IsEmpty = StringUtils.isEmpty( departmentLevel2Obj == null ? "" : (String) departmentLevel2Obj);
                 String departmentFullName = departmentLevel1Name == null ? null : departmentLevel1Name + (departmentLevel2IsEmpty ? "" : "  " + departmentLevel2Obj);
