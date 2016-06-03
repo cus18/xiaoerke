@@ -2,9 +2,10 @@ package com.cxqm.xiaoerke.modules.umbrella.serviceimpl;
 
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
-import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
 import com.cxqm.xiaoerke.modules.umbrella.dao.BabyUmbrellaInfoDao;
+import com.cxqm.xiaoerke.modules.umbrella.dao.UmbrellaFamilyInfoDao;
 import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
+import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaFamilyInfo;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
 
     @Autowired
     private BabyUmbrellaInfoDao babyUmbrellaInfoDao;
+
+    @Autowired
+    private UmbrellaFamilyInfoDao umbrellaFamilyInfoDao;
 
     @Override
     public int saveBabyUmbrellaInfo(BabyUmbrellaInfo babyUmbrellaInfo) {
@@ -185,5 +189,10 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
             String openid = (String)map.get("openid");
             //WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, openid, templateId);
         }
+    }
+
+    @Override
+    public int saveFamilyUmbrellaInfo(UmbrellaFamilyInfo vo) {
+      return umbrellaFamilyInfoDao.insertSelective(vo);
     }
 }
