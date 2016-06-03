@@ -101,7 +101,7 @@
             <if test="truePayMoneys != null">
                 true_pay_moneys = #{truePayMoneys},
             </if>
-            <if test="payTrue != null">
+            <if test="payResult != null">
                 pay_result = #{payResult},
             </if>
         </set>
