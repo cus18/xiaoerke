@@ -328,6 +328,7 @@ public class PayNotificationController {
 					BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
 					babyUmbrellaInfo.setId(Integer.parseInt(insuranceId));
 					babyUmbrellaInfo.setPayResult("success");
+					babyUmbrellaInfo.setActivationTime(new Date());
 					babyUmbrellaInfoService.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
 					payRecord.getId();//修改pay_record表状态
 					payRecord.setStatus("success");
