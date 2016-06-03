@@ -316,7 +316,7 @@ angular.module('controllers', ['luegg.directives'])
                         });
                         $scope.currentUserConversation.consultValue.splice(indexClose, 1);
                     }
-                })
+                });
             };
 
             //按照科室排序
@@ -383,7 +383,7 @@ angular.module('controllers', ['luegg.directives'])
             };
 
             //分诊员发起一个针对用户的会话
-            $scope.createOneSpecialistPatient = function(index){
+            $scope.createOneSpecialistPatient = function(index,department){
                 $scope.showFlag.specialistList = false;
                 CreateTransferSpecialist.save({specialistPatientContent:$scope.alreadyJoinTransferSpecialist[index]},function(data){
                     if(data.status == "success"){
@@ -395,6 +395,7 @@ angular.module('controllers', ['luegg.directives'])
                                 $.each($scope.alreadyJoinPatientConversation,function(index,value){
                                     if(value.patientId==patientId){
                                         patientName = value.patientName;
+                                        value.transferDepartment = department;
                                     }
                                     $.each(value.consultValue,function(index1,value1){
                                         filterMediaData(value1);
@@ -515,7 +516,7 @@ angular.module('controllers', ['luegg.directives'])
                 clearInterval($scope.heartBeatFirstId);
                 clearInterval($scope.heartBeatSecondId);
                 $state.go('messageList');
-            }
+            };
 
             var heartBeatCheckFirst = function(){
                 //启动定时器，周期性的发送心跳信息
@@ -1243,7 +1244,7 @@ angular.module('controllers', ['luegg.directives'])
                             if (value.patientId == notifyData.session.userId) {
                                 indexClose = index;
                             }
-                        })
+                        });
                         $scope.alreadyJoinPatientConversation.splice(indexClose, 1);
                         if($scope.alreadyJoinPatientConversation.length==0){
                             $scope.currentUserConversation = {};
