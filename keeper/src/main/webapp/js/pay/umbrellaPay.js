@@ -105,7 +105,7 @@ var doRefresh = function(){
         error : function() {
         }
     });
-
+    wx.hideOptionMenu();
 }
 
 function wechatPay() {
