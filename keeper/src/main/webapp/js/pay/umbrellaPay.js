@@ -32,6 +32,7 @@ var umbrellaPayInit=function(){
         error : function() {
         }
     });
+    doRefresh();
 };
 var payUmbrella=function(){
     window.location.href="/wisdom/umbrella#/umbrellaJoin"
