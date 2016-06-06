@@ -7,6 +7,7 @@
             $scope.firstJoin=false;
             $scope.updateJoin=false;
             $scope.finally=false;
+            $scope.addFamily=false;
             $scope.umbrellaMoney=0;
             $scope.num=0;
             $scope.person=0;
@@ -67,6 +68,7 @@
                         $scope.loadShare();
                     }else if(data.result==3){
                         $scope.finally=true;
+                        $scope.addFamily=true;
                         $scope.umbrellaMoney=data.umbrella.umbrella_money;
                         $scope.num=data.umbrella.id-120000000;
 
