@@ -64,7 +64,7 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
         Map praiseParam = new HashMap();
         praiseParam.put("doctorId",user.getId());
         List<Map<String,Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParam);
-        int redPacket = 0;
+        float redPacket = 0;
         int satisfy = 0;
         int unsatisfy = 0;
         for(Map<String,Object> temp : praiseList){
@@ -77,7 +77,7 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
             }
 
             if(StringUtils.isNotNull((String) temp.get("redPacket"))){
-                redPacket += Integer.parseInt((String)temp.get("redPacket"));
+                redPacket += Float.parseFloat((String)temp.get("redPacket"));
             }
         }
         map.put("redPacket",redPacket);

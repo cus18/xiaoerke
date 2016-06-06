@@ -1,27 +1,38 @@
 <ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
 <ion-view view-title="{{title}}">
-    <ion-content class="umbrellaMemberList bg1" overflow-scroll="true" style="top:0;">
+    <ion-content class="umbrellaMemberList " overflow-scroll="true" style="top:0;">
         <ion-scroll direction="y" has-bouncing="true" >
-           <div >
-               <dl class="">
-                   <dt class="f6 c3 fw0 tc">家庭成员</dt>
-                   <dd class="f3 c4" ng-repeat="item in [1,2,3,4]">
-                       <span class="name">某某某</span>
-                       <span class="role">宝妈</span>
-                       <span class="birth">1900年2月15日</span>
+            <div class="banner">
+                <img class="my-img2" width="88%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/memberList_top.png">
+                <img class="my-img2" width="88%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/memberList_banner.png">
+            </div>
+           <div class="member">
+               <dl >
+                   <dd class=" " ng-repeat="item in [1,2,3]">
+                       <img class="my-img2" width="200" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/memberList_line.png">
+                       <div class="f7 bg1 info">
+                           <span class="role fl c3">宝妈</span>
+                           <span class="name fl ">某某某</span>
+                           <span class="birth fl c3">1900-2-12</span>
+                       </div>
+                   </dd>
+                   <dd class=" ">
+                       <img class="my-img2" width="200" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/memberList_line.png">
+                       <div class="tc c0 f8 bg7 info" ng-click="addMember()">
+                           <img class="my-img1" width="16" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/add_icon.png">&nbsp;
+                           添加成员
+                       </div>
                    </dd>
                </dl>
            </div>
-            <br> <br> <br> <br> <br> <br>
-
+            <div class="tc f2 c0 myRemind">
+                <img class="my-img1" width="18" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/remind_icon.png">&nbsp;
+                添加的成员只能是宝宝的直系爸爸妈妈和兄弟姐妹哦
+            </div>
+            <br> <br> <br> <br>
         </ion-scroll>
     </ion-content>
-    <div class="myBottom-btn bottom-btn bg4 tc">
-        <a class="bg3 c0 f4" ng-click="immediateActive()"  >
+    <div class="button bottom-btn" ng-click="immediateActive()">
             立即激活
-        </a>
-        <a class="bg3 c0 f4"  ng-click="addMember()"    >
-            添加成员
-        </a>
     </div>
 </ion-view>
