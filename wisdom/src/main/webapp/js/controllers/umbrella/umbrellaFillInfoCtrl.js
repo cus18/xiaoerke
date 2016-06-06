@@ -248,7 +248,7 @@
                     "idCard":$scope.info.IdCard,"parentName":encodeURI($scope.info.parentName),
                     "parentType":$scope.parentType,"umbrellaId":$scope.umbrellaId}, function (data){
                     if(data.result=='1'){
-                        $state.go("umbrellaMemberList",{id:$scope.info.id});
+                        $state.go("umbrellaMemberList",{id:$scope.umbrellaId});
                     }else if(data.result=='3'){
                         alert("验证码无效");
                         return;
