@@ -22,6 +22,9 @@
             /*点击输入框跳转到相应位置*/
             $scope.skip = function(item){
                 $(".view,html,body").stop().animate({"scrollTop":$("#"+item).offset().top},0);
+                if(item=="babyName"){
+                    $scope.fillLock = true;
+                }
 
             }
 
