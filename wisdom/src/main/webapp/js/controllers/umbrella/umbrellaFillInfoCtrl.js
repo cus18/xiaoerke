@@ -40,6 +40,7 @@
             /*填写宝宝姓名 选择宝宝*/
             $scope.selectBaby = function(selectItem){
                 if(selectItem.name!="添加") {
+                    $scope.info.id=selectItem.id;
                     $scope.info.babyName = selectItem.name;
                     $scope.selectedBaby=selectItem;
                     $("#birthday").val($filter('date')(selectItem.birthday, 'yyyy-MM-dd'));
