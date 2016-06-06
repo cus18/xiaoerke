@@ -292,9 +292,9 @@
                         //根据Openid 判断用户是否领取过
                         ifExistOrder.save(function (data){
                             if(data.result=="1"){
-                                //window.location.href="../wisdom/firstPage/umbrella";
+                                window.location.href="../wisdom/firstPage/umbrella";
                             }else if(data.result=="3"){
-                                //window.location.href="../wisdom/umbrella#/umbrellaJoin";
+                                window.location.href="../wisdom/umbrella#/umbrellaJoin";
                             }else{
                                 getOpenidStatus.save(function (data){
                                     $scope.openid=data.openid;
