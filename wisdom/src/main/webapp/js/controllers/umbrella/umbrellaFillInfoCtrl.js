@@ -48,8 +48,12 @@
                     } else {
                         $scope.selectSex('girl');
                     }
+                }else{
+                    $scope.info.id=selectItem.id;
+                    $scope.info.babyName = "";
+                    $("#birthday").val("");
                 }
-                $scope.info.id=selectItem.id;
+
             };
 
             /*选择父母*/
