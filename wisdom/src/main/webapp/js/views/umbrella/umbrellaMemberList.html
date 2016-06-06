@@ -8,12 +8,12 @@
             </div>
            <div class="member">
                <dl >
-                   <dd class=" " ng-repeat="item in [1,2,3]">
+                   <dd class=" " ng-repeat="item in familyList">
                        <img class="my-img2" width="200" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/memberList_line.png">
                        <div class="f7 bg1 info">
-                           <span class="role fl c3">宝妈</span>
-                           <span class="name fl ">某某某</span>
-                           <span class="birth fl c3">1900-2-12</span>
+                           <span class="role fl c3">{{item.sex}}</span>
+                           <span class="name fl ">{{item.name}}</span>
+                           <span class="birth fl c3">{{item.birthday}}</span>
                        </div>
                    </dd>
                    <dd class=" ">
