@@ -6,13 +6,13 @@
                 <dl>
                         <dt class="f8 c3 tc fw0 ">成员信息</dt>
                         <dd class="f5 c3">
-                            <span class="fl w1">姓名：</span>
+                            <span class=" w1">姓&nbsp;&nbsp;&nbsp;&nbsp;名：</span>
                             <input type="hidden" id="babyId"/>
-                            <input class="fl w2" type="text" id="babyName" ng-click="skip('babyName')" ng-focus="fillName()" ng-blur="fillFinish()" ng-model="info.babyName">
+                            <input class=" w2" type="text" id="babyName" ng-click="skip('babyName')" ng-focus="fillName()" ng-blur="fillFinish()" ng-model="info.babyName">
                         </dd>
                         <dd>
-                            <span class="fl w1">关系：</span>
-                            <div class="selectItem sex fl w2" >
+                            <span class=" w1">关&nbsp;&nbsp;&nbsp;&nbsp;系：</span>
+                            <div class="selectItem sex  w2" >
                                 <img ng-click="selectSex('1')"  width="30%" height="auto" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{sexItem=='1' ? 'member_boy2':'member_boy1'}}.png">
                                 <img ng-click="selectSex('0')" width="30%" height="auto" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{sexItem=='0' ? 'member_girl2':'member_girl1'}}.png">
                                 <img ng-click="selectSex('3')" ng-if="selectInfo.showMother" width="30%" height="auto" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{sexItem=='3' ? 'member_mom2':'member_mom1'}}.png">
@@ -21,8 +21,8 @@
 
                         </dd>
                         <dd>
-                            <span class="fl w1">出生日期：</span>
-                            <input class="fl w2" type="text" readonly="readonly" id="birthday" placeholder="选择宝宝的出生日期" >
+                            <span class=" w1">出生日期：</span>
+                            <input class=" w2" type="text" readonly="readonly" id="birthday" placeholder="选择宝宝的出生日期" >
                         </dd>
                     </dl>
             </div>
