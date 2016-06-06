@@ -422,10 +422,10 @@ public class UmbrellaController  {
         List<UmbrellaFamilyInfo> list = new ArrayList<UmbrellaFamilyInfo>();
         list = babyUmbrellaInfoSerivce.getFamilyUmbrellaList(id);
         for(UmbrellaFamilyInfo info:list){
-          Date date=new Date();
-          long day=(date.getTime()-info.getBirthday().getTime())/(24*60*60*1000) + 1;
-          String year=new java.text.DecimalFormat("#").format(day/365f);
-          if(Integer.parseInt(year)>18){
+//          Date date=new Date();
+//          long day=(date.getTime()-info.getBirthday().getTime())/(24*60*60*1000) + 1;
+//          String year=new java.text.DecimalFormat("#").format(day/365f);
+//          if(Integer.parseInt(year)>18){
               //0 男 1 女
             if(info.getSex()==2){
               showFather = false;
@@ -433,7 +433,7 @@ public class UmbrellaController  {
               showMother = false;
             }
 
-          }
+//          }
         }
         resultMap.put("showFather",showFather);
         resultMap.put("showMother",showMother);
