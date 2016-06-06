@@ -14,7 +14,8 @@ var version="b"; /*方案版本*/
 
 var shareUmbrellaId="0";
 var umbrellaFirstPageInit = function() {
-    //version=GetQueryString("status");
+    version=GetQueryString("status");
+    ifExistOrder();
     /*获取当前年月日*/
     var date = new Date();
      date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
@@ -39,7 +40,6 @@ var umbrellaFirstPageInit = function() {
         $('#textIntro').html(textIntro);
         $(".helpPlan .pic img").attr("src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/help_pic1b.png");
     }
-    ifExistOrder();
     //获取首页数据
     $.ajax({
         type: 'POST',
@@ -209,6 +209,9 @@ function  ifExistOrder(){
                 shareUmbrellaId = data.umbrella.id;
                 loadShare();
             }else{
+                if(data.type=="pay"){
+                    version="a";
+                }
                 $("#NoShareDiv").show();
                 $("#shareDiv").hide();
                 shareUmbrellaId=120000000;
