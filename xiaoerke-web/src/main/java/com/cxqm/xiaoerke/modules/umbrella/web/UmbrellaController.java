@@ -459,4 +459,19 @@ public class UmbrellaController  {
         return resultMap;
     }
 
+    /**
+     * 支付页面openid
+     */
+    @RequestMapping(value = "/updateBabyUmbrellaInfoIfShare", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> updateBabyUmbrellaInfoIfShare(@RequestBody Map<String, Object> params){
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
+        babyUmbrellaInfo.setId(Integer.parseInt(params.get("id").toString()));
+        Integer res=babyUmbrellaInfoSerivce.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
+        resultMap.put("result",res);
+        return resultMap;
+    }
+
 }

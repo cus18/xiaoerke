@@ -137,4 +137,11 @@
         select count(*) from baby_umbrellainfo
     </select>
 
+    <update id="updateBabyUmbrellaInfoIfShare" parameterType="com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo" >
+        update baby_umbrellainfo
+        set
+        ifshare = 1,
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
 </mapper>

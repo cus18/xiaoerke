@@ -64,4 +64,12 @@ public interface BabyUmbrellaInfoService {
     List<UmbrellaFamilyInfo> getFamilyUmbrellaList(Integer umbrella_id);
 
     BabyBaseInfoVo getBabyBaseInfo(Integer umbrella_id);
+
+
+    /**
+     * 更新保障金分享信息
+     * @param babyUmbrellaInfo
+     * @return
+     */
+    int updateBabyUmbrellaInfoIfShare(BabyUmbrellaInfo babyUmbrellaInfo);
 }
