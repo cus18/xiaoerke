@@ -374,6 +374,38 @@ public class UmbrellaController  {
         return resultMap;
     }
 
+//    判定绑定用户
+    /**
+     * 家庭版保护成员列表
+     */
+    @RequestMapping(value = "/cheackFamilyMembers", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> cheackFamilyMembers(@RequestBody Map<String, Object> params){
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        Boolean showFather = true;
+        Boolean showMather = true;
+        Integer id = Integer.parseInt((String) params.get("id"));
+        List<UmbrellaFamilyInfo> list = new ArrayList<UmbrellaFamilyInfo>();
+        list = babyUmbrellaInfoSerivce.getFamilyUmbrellaList(id);
+        for(UmbrellaFamilyInfo info:list){
+          Date date=new Date();
+          long day=(date.getTime()-info.getBirthday().getTime())/(24*60*60*1000) + 1;
+          String year=new java.text.DecimalFormat("#.00").format(day/365f);
+          if(Integer.parseInt(year)>18){
+            if(info.getSex()>0){
+              showFather = false;
+            }else{
+              showMather = false;
+            }
+
+          }
+        }
+        resultMap.put("showFather",showFather);
+        resultMap.put("showMather",showMather);
+        return resultMap;
+    }
+
 
 //    /**
 //     * 付费加入保护伞
