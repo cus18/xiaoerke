@@ -36,25 +36,53 @@ public class UmbrellaController  {
     @Autowired
     private UtilService utilService;
 
-  /**
-  *获取保护伞首页信息
-  */
-  @RequestMapping(value = "/firstPageData", method = {RequestMethod.POST, RequestMethod.GET})
-  public
-  @ResponseBody
+    /**
+     *获取保护伞首页信息
+     */
+    @RequestMapping(value = "/firstPageDataCount", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
     Map<String, Object>  firstPageData() {
-      Map<String, Object> map=new HashMap<String, Object>();
-      Integer count = babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(map);
-      Integer totalUmbrellaMoney = babyUmbrellaInfoSerivce.getTotalBabyUmbrellaInfoMoney(map);
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-      map.put("today",sdf.format(new Date()));
-      Integer todayCount = babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(map);
-      Map<String, Object> result = new HashMap<String, Object>();
-      result.put("count", count);
-      result.put("todayCount", todayCount);
-      result.put("totalUmbrellaMoney", totalUmbrellaMoney);
-     return result;
-  }
+        Map<String, Object> map=new HashMap<String, Object>();
+        Integer count = babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(map);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("count", count);
+        return result;
+    }
+
+    /**
+     *获取保护伞首页信息
+     */
+    @RequestMapping(value = "/firstPageDataTodayCount", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object>  firstPageDataTodayCount() {
+        Map<String, Object> map=new HashMap<String, Object>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        map.put("today",sdf.format(new Date()));
+        Integer todayCount = babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(map);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("todayCount", todayCount);
+        return result;
+    }
+
+    /**
+     *获取保护伞首页信息
+     */
+    @RequestMapping(value = "/firstPageDataTotalUmbrellaMoney", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object>  firstPageDataTotalUmbrellaMoney() {
+        Map<String, Object> map=new HashMap<String, Object>();
+        Integer totalUmbrellaMoney = babyUmbrellaInfoSerivce.getTotalBabyUmbrellaInfoMoney(map);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        map.put("today",sdf.format(new Date()));
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("totalUmbrellaMoney", totalUmbrellaMoney);
+        return result;
+    }
+
 
     /**
      * 加入保护伞
