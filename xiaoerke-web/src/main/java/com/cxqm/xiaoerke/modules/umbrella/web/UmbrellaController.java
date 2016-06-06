@@ -66,7 +66,7 @@ public class UmbrellaController  {
         Map<String, Object> map=new HashMap<String, Object>();
         Map<String, Object> numm=new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session, request);
-//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+        openid="abc";
         map.put("openid",openid);
         List<Map<String, Object>> list = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
@@ -386,7 +386,7 @@ public class UmbrellaController  {
     Map<String, Object> cheackFamilyMembers(@RequestBody Map<String, Object> params){
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Boolean showFather = true;
-        Boolean showMather = true;
+        Boolean showMother = true;
         Integer id = Integer.parseInt((String) params.get("id"));
         List<UmbrellaFamilyInfo> list = new ArrayList<UmbrellaFamilyInfo>();
         list = babyUmbrellaInfoSerivce.getFamilyUmbrellaList(id);
@@ -399,13 +399,13 @@ public class UmbrellaController  {
             if(info.getSex()==0){
               showFather = false;
             }else{
-              showMather = false;
+              showMother = false;
             }
 
           }
         }
         resultMap.put("showFather",showFather);
-        resultMap.put("showMather",showMather);
+        resultMap.put("showMother",showMother);
         return resultMap;
     }
 
