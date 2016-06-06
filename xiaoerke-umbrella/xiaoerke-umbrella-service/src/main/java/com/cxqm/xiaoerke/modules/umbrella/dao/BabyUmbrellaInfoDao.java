@@ -60,4 +60,13 @@ public interface BabyUmbrellaInfoDao {
     List getNotShareInfoFromLog(Map<String, Object> map);
 
     int getUmbrellaCount();
+
+
+    /**
+     * 更新保障金分享信息
+     * @param babyUmbrellaInfo
+     * @return
+     */
+    int updateBabyUmbrellaInfoIfShare(BabyUmbrellaInfo babyUmbrellaInfo);
+
 }

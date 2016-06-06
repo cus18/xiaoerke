@@ -131,7 +131,17 @@
                                     imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                     success: function (res) {
                                         //记录用户分享文章
-                                        recordLogs("Umbrella_shareMoment");
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: "umbrella/updateBabyUmbrellaInfoIfShare",
+                                            data:{id:shareUmbrellaId},
+                                            contentType: "application/json; charset=utf-8",
+                                            success: function(result){
+                                                var todayCount=result.todayCount;
+                                                $("#todayCount").html(todayCount);
+                                            },
+                                            dataType: "json"
+                                        });
                                     },
                                     fail: function (res) {
                                     }
@@ -143,7 +153,17 @@
                                     link: "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrella" + $scope.umbrellaId, // 分享链接
                                     imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                     success: function (res) {
-                                        recordLogs("Umbrella_shareFirend");
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: "umbrella/updateBabyUmbrellaInfoIfShare",
+                                            data:{id:shareUmbrellaId},
+                                            contentType: "application/json; charset=utf-8",
+                                            success: function(result){
+                                                var todayCount=result.todayCount;
+                                                $("#todayCount").html(todayCount);
+                                            },
+                                            dataType: "json"
+                                        });
                                     },
                                     fail: function (res) {
                                     }
