@@ -291,6 +291,7 @@
                     }else {
                         //根据Openid 判断用户是否领取过
                         ifExistOrder.save(function (data){
+                            $scope.info.phoneNum=data.phone;
                             if(data.result=="1"){
                                 window.location.href="../wisdom/firstPage/umbrella";
                             }else if(data.result=="3"){
@@ -306,7 +307,7 @@
                                             addBaby.name="添加";
                                             addBaby.id="add";
                                             $scope.babyInfoList.unshift(addBaby);
-                                            $scope.info.phoneNum=data.phone;
+
                                         }
                                     });
                                 });
