@@ -244,7 +244,7 @@
                     alerrt("请输入身份证号");
                     return;
                 }
-                $scope.parentType=$scope.parentItem=="father"?3:4;
+                $scope.parentType=$scope.parentItem=="father"?2:3;
                 updateInfo.save({"phone":$scope.info.phoneNum,"babyId":$scope.info.id,
                     "idCard":$scope.info.IdCard,"parentName":encodeURI($scope.info.parentName),
                     "parentType":$scope.parentType,"umbrellaId":$scope.umbrellaId}, function (data){
