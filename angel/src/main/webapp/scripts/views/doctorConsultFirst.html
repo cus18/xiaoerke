@@ -75,8 +75,9 @@
                      alt="">
                     <div><nobr>{{item.patientName|limitTo:6}}</nobr></div>
                     <div><nobr>{{transformDate(item.dateTime)}}</nobr></div>
-                    <div><img ng-style="item.messageNotSee?{'display':'block'}:{'display':'none'}"
-                              src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/newMessage.png" /></div>
+                    <div  ng-style="item.messageNotSee?{'display':'block'}:{'display':'none'}">
+                        <span>{{item.number}}</span>
+                    </div>
                 </div>
             </div>
         </div>
