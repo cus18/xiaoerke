@@ -27,9 +27,9 @@
                     dayText: '日', monthText: '月', yearText: '年', //面板中年月日文字
                     showNow: false,
                     nowText: "今",
-                    //startYear:1980, //开始年份
+                    startYear:1960, //开始年份
                     //endYear:currYear //结束年份
-                    minDate: new Date(2002,date.substring(5,7)-1,date.substring(8,10)),
+                    /*minDate: new Date(2002,date.substring(5,7)-1,date.substring(8,10)),*/
                     maxDate: new Date(date.substring(0,4), date.substring(5,7)-1, date.substring(8,10))
                     //endYear:2099 //结束年份
                 };
