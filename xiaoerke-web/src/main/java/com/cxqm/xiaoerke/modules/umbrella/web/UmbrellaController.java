@@ -116,11 +116,11 @@ public class UmbrellaController  {
         String code=params.get("code").toString();
         String openid= WechatUtil.getOpenId(session, request);
 //        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
-//        String res=utilService.bindUser(phone,code,openid);
-//        if(res.equals("0")){
-//            result.put("result","3");
-//            return result;
-//        }
+        String res=utilService.bindUser(phone,code,openid);
+        if(res.equals("0")){
+            result.put("result","3");
+            return result;
+        }
         BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
         babyUmbrellaInfo.setBabyId(params.get("babyId").toString());
         babyUmbrellaInfo.setParentIdCard(params.get("idCard").toString());
@@ -131,7 +131,7 @@ public class UmbrellaController  {
         if(params.get("truePayMoney")!=null){
             babyUmbrellaInfo.setTruePayMoneys(params.get("truePayMoney").toString());
         }
-        String res=babyUmbrellaInfoSerivce.updateBabyUmbrellaInfo(babyUmbrellaInfo)+"";
+        res=babyUmbrellaInfoSerivce.updateBabyUmbrellaInfo(babyUmbrellaInfo)+"";
 
         //插入家庭成员的信息
         UmbrellaFamilyInfo familyInfo = new UmbrellaFamilyInfo();
@@ -291,9 +291,7 @@ public class UmbrellaController  {
     @ResponseBody
     Map<String, Object>  randomMoney(HttpServletRequest request,HttpSession session) {
         Map<String, Object> map=new HashMap<String, Object>();
-        Map<String, Object> numm=new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session, request);
-//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
         List<Map<String, Object>> list = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
@@ -389,8 +387,7 @@ public class UmbrellaController  {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Boolean showFather = true;
         Boolean showMather = true;
-        Integer id = null;//Integer.parseInt((String) params.get("id"));
-        id = 120000001;
+        Integer id = Integer.parseInt((String) params.get("id"));
         List<UmbrellaFamilyInfo> list = new ArrayList<UmbrellaFamilyInfo>();
         list = babyUmbrellaInfoSerivce.getFamilyUmbrellaList(id);
         for(UmbrellaFamilyInfo info:list){
