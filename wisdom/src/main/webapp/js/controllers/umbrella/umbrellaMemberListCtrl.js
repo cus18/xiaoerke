@@ -31,6 +31,10 @@
                 $state.go("umbrellaMemberAdd",{id:$stateParams.id});
             }
 
+            $scope.immediateActive=function(){
+                $state.go("umbrellaJoin",{id:new Date().getTime()});
+            }
+
             $scope.goActive=function(){
                 $state.go("umbrellaFillInfo",{id:$scope.umbrellaId});
             };
