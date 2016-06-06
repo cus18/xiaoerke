@@ -40,6 +40,7 @@
             /*填写宝宝姓名 选择宝宝*/
             $scope.selectBaby = function(selectItem){
                 if(selectItem.name!="添加") {
+                    $scope.info.id=selectItem.id;
                     $scope.info.babyName = selectItem.name;
                     $scope.selectedBaby=selectItem;
                     $("#birthday").val($filter('date')(selectItem.birthday, 'yyyy-MM-dd'));
@@ -243,12 +244,12 @@
                     alerrt("请输入身份证号");
                     return;
                 }
-                $scope.parentType=$scope.parentItem=="father"?0:1;
+                $scope.parentType=$scope.parentItem=="father"?3:4;
                 updateInfo.save({"phone":$scope.info.phoneNum,"babyId":$scope.info.id,
                     "idCard":$scope.info.IdCard,"parentName":encodeURI($scope.info.parentName),
                     "parentType":$scope.parentType,"umbrellaId":$scope.umbrellaId}, function (data){
                     if(data.result=='1'){
-                        $state.go("umbrellaMemberList",{id:$scope.info.id});
+                        $state.go("umbrellaMemberList",{id:$scope.umbrellaId});
                     }else if(data.result=='3'){
                         alert("验证码无效");
                         return;
