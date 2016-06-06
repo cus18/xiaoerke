@@ -31,7 +31,7 @@ div#ddjr {border-right: 1px solid #fff;}
 .consultNowList{height: 40px;cursor: pointer;font: 12px/40px 'Microsoft Yahei';overflow: hidden;position: relative;}
 .consultNowList div {float: left;padding: 0 6px 0 0;}
 .consultNowList div:nth-child(1) {width: 50px;overflow:hidden;text-overflow:ellipsis;margin-left: 10px;}
-.consultNowList img{margin-left: 5px;margin-top: 10px;}
+.consultNowList span{border-radius: 10px;background-color: red;color: #fff;padding: 0px 4px;}
 [scroll-glue-bottom],{height: 340px;overflow-y: scroll;/*border: 1px solid gray;*/}
 
 
