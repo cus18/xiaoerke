@@ -5,6 +5,7 @@
             $scope.sexItem = "boy";
             $scope.parentLock = false;//判断之前登录的时候选择的是宝爸还是宝妈
             $scope.info = {}
+            $scope.info.babyName = '';
 
             /*选择性别*/
             $scope.selectSex = function(sex){
@@ -41,6 +42,10 @@
                 var birthday=$("#birthday").val();
                 var sex=$scope.sexItem;
                 var name=$scope.info.babyName;
+                if(birthday==''||sex==''||name == ''){
+                    alert("信息缺失");
+                    return;
+                }
                 addFamily.save({"sex":sex,"name":name,"birthDay":birthday,"id":$stateParams.id},function(data){
                     if(data.reusltStatus == 1){
                         $state.go("umbrellaMemberList",{id:$stateParams.id});
