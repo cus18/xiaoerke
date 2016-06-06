@@ -41,8 +41,12 @@
                 var birthday=$("#birthday").val();
                 var sex="0";
                 var name = "ts";
-                addFamily.save({"sex":sex,"name":encodeURI(name),"birthDay":birthday,"id":"120000023"},function(data){
-                    console.log(data)
+                addFamily.save({"sex":sex,"name":encodeURI(name),"birthDay":birthday,"id":$stateParams.id},function(data){
+                    if(data.reusltStatus == 1){
+                        $state.go("umbrellaMemberAdd",{id:$stateParams.id});
+                    }else{
+                        alert("宝宝信息保存失败");
+                    }
 
                 });
             };
