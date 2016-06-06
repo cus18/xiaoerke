@@ -36,20 +36,20 @@ public class UmbrellaController  {
     @Autowired
     private UtilService utilService;
 
-  /**
-  *获取保护伞首页信息
-  */
-  @RequestMapping(value = "/firstPageDataCount", method = {RequestMethod.POST, RequestMethod.GET})
-  public
-  @ResponseBody
+    /**
+     *获取保护伞首页信息
+     */
+    @RequestMapping(value = "/firstPageDataCount", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
     Map<String, Object>  firstPageData() {
-      Map<String, Object> map=new HashMap<String, Object>();
-      Integer count = babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(map);
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-      Map<String, Object> result = new HashMap<String, Object>();
-      result.put("count", count);
-     return result;
-  }
+        Map<String, Object> map=new HashMap<String, Object>();
+        Integer count = babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(map);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("count", count);
+        return result;
+    }
 
     /**
      *获取保护伞首页信息
@@ -82,6 +82,7 @@ public class UmbrellaController  {
         result.put("totalUmbrellaMoney", totalUmbrellaMoney);
         return result;
     }
+
 
     /**
      * 加入保护伞
@@ -423,7 +424,7 @@ public class UmbrellaController  {
           String year=new java.text.DecimalFormat("#").format(day/365f);
           if(Integer.parseInt(year)>18){
               //0 男 1 女
-            if(info.getSex()==0){
+            if(info.getSex()==2){
               showFather = false;
             }else{
               showMother = false;
