@@ -3,7 +3,7 @@
         'saveBabyInfo','updateBabyInfo','updateInfo','GetUserLoginStatus','$location',
         function ($scope,$state,$stateParams,getBabyinfoList,getOpenidStatus,ifExistOrder,$filter,IdentifyUser
             ,saveBabyInfo,updateBabyInfo,updateInfo,GetUserLoginStatus,$location) {
-            $scope.title="宝护伞";
+            $scope.title="宝护伞-宝大夫儿童家庭重疾互助计划";
             $scope.sexItem = "boy";
             $scope.parentItem = "mother";
             $scope.checkLock = true;
