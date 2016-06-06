@@ -1,7 +1,7 @@
 ﻿angular.module('controllers', ['ionic']).controller('umbrellaJoinCtrl', [
         '$scope','$state','$stateParams','JoinUs','updateActivationTime',
         function ($scope,$state,$stateParams,JoinUs,updateActivationTime) {
-            $scope.title="宝护伞";
+            $scope.title="宝护伞-宝大夫儿童家庭重疾互助计划";
             $scope.shareLock=false;
 
             $scope.firstJoin=false;
