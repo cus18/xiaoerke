@@ -9,7 +9,7 @@ document.write('<scr'+'ipt src="' + webpath + '/js/libs/angular-route.min.js?ver
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.event.drag-1.5.min.js"></scr'+'ipt>');
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.touchSlider.js"></scr'+'ipt>');
 
-var attentionLock=false;
+var attentionLock=true;
 var version="b"; /*方案版本*/
 
 var shareUmbrellaId="0";
