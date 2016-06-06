@@ -31,7 +31,7 @@
             };
             /*填写宝宝姓名 失去焦点*/
             $scope.fillFinish = function(){
-                $scope.fillLock = false;
+               $scope.fillLock = false;
             };
             /*选择性别*/
             $scope.selectSex = function(sex){
@@ -56,6 +56,11 @@
             $scope.selectParent = function(parent){
                 $scope.parentItem=parent;
             };
+            /*触摸滑动区域时响应*/
+            $scope.onTouch = function(parent){
+                $scope.fillLock = false;
+            };
+
             /*校验手机号*/
             $scope.checkPhone= function(){
                 var phoneNumber = $scope.info.phoneNum+"";
