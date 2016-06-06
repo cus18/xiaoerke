@@ -24,6 +24,10 @@
             $scope.cancelShare=function(){
                 $scope.shareLock=false;
             };
+            //添加成员
+            $scope.addMember=function(){
+                $state.go("umbrellaMemberAdd",{id:$stateParams.id});
+            }
             var compareDate = function (start,end){
                 if(start==null||start.length==0||end==null||end.length==0){
                     return 0;
