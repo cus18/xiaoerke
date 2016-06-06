@@ -60,7 +60,7 @@ define(['appUmbrella'], function(app){
                         }
                     })
                     .state('umbrellaMemberAdd', {
-                        url: '/umbrellaMemberAdd',
+                        url: '/umbrellaMemberAdd/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'umbrellaMemberAddCtrl',
                         resolve: {
