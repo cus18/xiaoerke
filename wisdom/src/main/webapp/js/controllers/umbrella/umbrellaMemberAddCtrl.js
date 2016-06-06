@@ -55,13 +55,18 @@
 
                 });
             };
-            cheackFamilyMembers.save({id:$stateParams.id},function(data){
-                console.log(data)
-                $scope.selectInfo = data;
-            })
+
 
             $scope.$on('$ionicView.enter', function(){
                 $scope.selectBirthday();
+                $("#birthday").val("");
+                $scope.sexItem = '';
+                $scope.info.babyName = '';
+
+                cheackFamilyMembers.save({id:$stateParams.id},function(data){
+                    console.log(data)
+                    $scope.selectInfo = data;
+                })
             });
 
             

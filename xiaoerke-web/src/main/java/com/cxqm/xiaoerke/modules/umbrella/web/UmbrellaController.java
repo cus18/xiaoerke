@@ -257,7 +257,11 @@ public class UmbrellaController  {
         List<Map<String, Object>> list=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
             Map<String, Object> m=list.get(0);
-//            if(m.get("pay_result")!=null&&!m.get("pay_result").equals("fail")) {
+            if(m.get("pay_result")!=null&&m.get("pay_result").equals("fail")&& (m.get("baby_id") == null || m.get("baby_id").equals(""))) {
+                result.put("result",1);
+                result.put("type","pay");
+                return result;
+            }
                 if (m.get("baby_id") != null && !m.get("baby_id").equals("")) {
                     result.put("result", 3);
                     result.put("umbrella", m);
@@ -419,18 +423,18 @@ public class UmbrellaController  {
         List<UmbrellaFamilyInfo> list = new ArrayList<UmbrellaFamilyInfo>();
         list = babyUmbrellaInfoSerivce.getFamilyUmbrellaList(id);
         for(UmbrellaFamilyInfo info:list){
-          Date date=new Date();
-          long day=(date.getTime()-info.getBirthday().getTime())/(24*60*60*1000) + 1;
-          String year=new java.text.DecimalFormat("#").format(day/365f);
-          if(Integer.parseInt(year)>18){
+//          Date date=new Date();
+//          long day=(date.getTime()-info.getBirthday().getTime())/(24*60*60*1000) + 1;
+//          String year=new java.text.DecimalFormat("#").format(day/365f);
+//          if(Integer.parseInt(year)>18){
               //0 男 1 女
             if(info.getSex()==2){
               showFather = false;
-            }else{
+            }else if(info.getSex()==3){
               showMother = false;
             }
 
-          }
+//          }
         }
         resultMap.put("showFather",showFather);
         resultMap.put("showMother",showMother);

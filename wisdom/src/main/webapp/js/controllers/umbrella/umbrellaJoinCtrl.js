@@ -7,6 +7,7 @@
             $scope.firstJoin=false;
             $scope.updateJoin=false;
             $scope.finally=false;
+            $scope.addFamily=false;
             $scope.umbrellaMoney=0;
             $scope.num=0;
             $scope.person=0;
@@ -26,7 +27,7 @@
             };
             //添加成员
             $scope.addMember=function(){
-                $state.go("umbrellaMemberAdd",{id:$stateParams.id});
+                $state.go("umbrellaMemberAdd",{id:$scope.umbrellaId});
             }
             var compareDate = function (start,end){
                 if(start==null||start.length==0||end==null||end.length==0){
@@ -67,6 +68,7 @@
                         $scope.loadShare();
                     }else if(data.result==3){
                         $scope.finally=true;
+                        $scope.addFamily=true;
                         $scope.umbrellaMoney=data.umbrella.umbrella_money;
                         $scope.num=data.umbrella.id-120000000;
 
