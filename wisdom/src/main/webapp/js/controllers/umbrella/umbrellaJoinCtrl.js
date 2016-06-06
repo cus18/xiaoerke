@@ -50,7 +50,7 @@
                         $scope.umbrellaId=data.umbrella.id;
                         $scope.loadShare();
                         
-                        updateActivationTime.save({"id":$scope.umbrellaId}, function (data){
+                        updateActivationTime.save({"id":data.umbrella.id}, function (data){
                             if(data.result!='1'){
                                 alert("未知错误,请尝试刷新页面");
                             }
