@@ -312,7 +312,11 @@ public class UmbrellaController  {
 
         }
         Map<String, Object> result=new HashMap<String, Object>();
-        String res=String.format("%.0f", Math.random() * 5);
+        double ram=Math.random() * 5;
+        while (ram<1){
+            ram=Math.random() * 5;
+        }
+        String res=String.format("%.0f", ram);
         BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
         babyUmbrellaInfo.setOpenid(openid);
         babyUmbrellaInfo.setUmberllaMoney(200000);
@@ -405,22 +409,21 @@ public class UmbrellaController  {
         return resultMap;
     }
 
+    /**
+     * 支付页面openid
+     */
+    @RequestMapping(value = "/getOpenid", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> getOpenid(HttpServletRequest request,HttpSession session){
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        String openid= WechatUtil.getOpenId(session, request);
+        if(openid==null||openid.equals("")){
+            resultMap.put("openid","none");
+            return resultMap;
+        }
+        resultMap.put("openid",openid);
+        return resultMap;
+    }
 
-//    /**
-//     * 付费加入保护伞
-//     */
-//    @RequestMapping(value = "/payJoinUs", method = {RequestMethod.POST, RequestMethod.GET})
-//    public
-//    @ResponseBody
-//    Map<String, Object>  payJoinUs(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) {
-//        Map<String, Object> map=new HashMap<String, Object>();
-//        String openid = WechatUtil.getOpenId(session, request);
-//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
-//
-//
-//        Map<String, Object> result=new HashMap<String, Object>();
-//        result.put("result",res);
-//        result.put("id",babyUmbrellaInfo.getId());
-//        return result;
-//    }
 }
