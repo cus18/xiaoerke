@@ -54,4 +54,19 @@ define(['appUmbrella'], function (app) {
         .factory('updateActivationTime',['$resource',function ($resource){
             return $resource(user_h5 + 'umbrella/updateActivationTime');
         }])
+
+        //保护伞成员列表
+        .factory('getFamilyList',['$resource',function ($resource){
+            return $resource(user_h5 + 'umbrella/familyList');
+        }])
+
+        //保护伞成员添加
+        .factory('addFamily',['$resource',function ($resource){
+            return $resource(user_h5 + 'umbrella/addFamily');
+        }])
+
+        //保护伞成员检测
+        .factory('cheackFamilyMembers',['$resource',function ($resource){
+            return $resource(user_h5 + 'umbrella/cheackFamilyMembers');
+        }])
 })

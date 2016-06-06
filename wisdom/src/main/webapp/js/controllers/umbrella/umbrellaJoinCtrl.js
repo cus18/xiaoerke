@@ -1,12 +1,13 @@
 ﻿angular.module('controllers', ['ionic']).controller('umbrellaJoinCtrl', [
         '$scope','$state','$stateParams','JoinUs','updateActivationTime',
         function ($scope,$state,$stateParams,JoinUs,updateActivationTime) {
-            $scope.title="宝护伞";
+            $scope.title="宝护伞-宝大夫儿童家庭重疾互助计划";
             $scope.shareLock=false;
 
             $scope.firstJoin=false;
             $scope.updateJoin=false;
             $scope.finally=false;
+            $scope.addFamily=false;
             $scope.umbrellaMoney=0;
             $scope.num=0;
             $scope.person=0;
@@ -24,6 +25,10 @@
             $scope.cancelShare=function(){
                 $scope.shareLock=false;
             };
+            //添加成员
+            $scope.addMember=function(){
+                $state.go("umbrellaMemberAdd",{id:$scope.umbrellaId});
+            }
             var compareDate = function (start,end){
                 if(start==null||start.length==0||end==null||end.length==0){
                     return 0;
@@ -50,7 +55,7 @@
                         $scope.umbrellaId=data.id;
                         $scope.loadShare();
                         
-                        updateActivationTime.save({"id":$scope.umbrellaId}, function (data){
+                        updateActivationTime.save({"id":data.id}, function (data){
                             if(data.result!='1'){
                                 alert("未知错误,请尝试刷新页面");
                             }
@@ -63,6 +68,7 @@
                         $scope.loadShare();
                     }else if(data.result==3){
                         $scope.finally=true;
+                        $scope.addFamily=true;
                         $scope.umbrellaMoney=data.umbrella.umbrella_money;
                         $scope.num=data.umbrella.id-120000000;
 

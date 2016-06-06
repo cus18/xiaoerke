@@ -37,6 +37,15 @@ public class HospitalVo<T> extends BaseEntity<HospitalVo> {
     private String businessContactName;//合作机构联系人
     private String businessContactPhone;//合作机构联系人
     private String isDisplay;//是否在客户端显示
+    private String isConsultPhone;
+
+    public String getIsConsultPhone() {
+        return isConsultPhone;
+    }
+
+    public void setIsConsultPhone(String isConsultPhone) {
+        this.isConsultPhone = isConsultPhone;
+    }
 
     public String getIsDisplay() {
         return isDisplay;

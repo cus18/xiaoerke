@@ -6,13 +6,11 @@ import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
-import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
@@ -68,6 +66,8 @@ public class ConsultDoctorController extends BaseController {
     @Autowired
     private WechatAttentionService wechatAttentionService;
 
+    @Autowired
+    private ConsultDoctorInfoService consultDoctorInfoService;
 
     @RequestMapping(value = "/getCurrentUserHistoryRecord", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -316,11 +316,21 @@ public class ConsultDoctorController extends BaseController {
                         doctorChannel.writeAndFlush(csframe.retain());
                     }
                 } else if ("wxcxqm".equalsIgnoreCase(richConsultSession.getSource())) {
-                    String st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
-                            "<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
-                            params.get("uuid") + "'>点击这里去评价</a>】";
-                    Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-                    WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
+
+                    //判断是否有权限推送消息
+                    Map param = new HashMap();
+                    param.put("userId",richConsultSession.getCsUserId());
+                    List<ConsultDoctorInfoVo> consultDoctorInfoVos = consultDoctorInfoService.getConsultDoctorByInfo(param);
+                    if(consultDoctorInfoVos !=null && consultDoctorInfoVos.size() >0){
+                        if(null !=consultDoctorInfoVos.get(0).getSendMessage() && consultDoctorInfoVos.get(0).getSendMessage().equals("1")){
+                            String st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
+                                    "<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
+                                    params.get("uuid") + "'>点击这里去评价</a>】";
+                            Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                            WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
+                        }
+                    }
+
                 }
             }
             String result = consultSessionService.clearSession(sessionId, userId);

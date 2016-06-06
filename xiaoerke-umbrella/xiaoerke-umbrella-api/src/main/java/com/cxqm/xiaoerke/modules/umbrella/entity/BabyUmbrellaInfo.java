@@ -17,6 +17,24 @@ public class BabyUmbrellaInfo {
     private String parentPhone;
     private String parentName;
     private Integer parentType;
+    private String truePayMoneys;
+    private String payResult;
+
+    public String getTruePayMoneys() {
+        return truePayMoneys;
+    }
+
+    public void setTruePayMoneys(String truePayMoneys) {
+        this.truePayMoneys = truePayMoneys;
+    }
+
+    public String getPayResult() {
+        return payResult;
+    }
+
+    public void setPayResult(String payResult) {
+        this.payResult = payResult;
+    }
 
     public Integer getParentType() {
         return parentType;

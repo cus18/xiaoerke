@@ -100,7 +100,13 @@ angular.module('controllers', ['luegg.directives'])
                                 $scope.myAnswer = [];
                             }
                         });
-
+                        /*GetCurrentDoctorDepartment.save({userId:$scope.doctorId},function(data){
+                            if(data.status == 'success'){
+                                $scope.department = data.department;
+                            }else{
+                                $scope.department = 'default';
+                            }
+                        });*/
                         $scope.refreshWaitJoinUserList();
 
                         if($stateParams.action == "createUserSession"){
@@ -140,8 +146,8 @@ angular.module('controllers', ['luegg.directives'])
                         window.location.href = data.redirectURL + "?targeturl=" + routePath;
                     }
                 })
-            }
-
+            };
+            
             //公共点击按钮，用来触发弹出对应的子窗口
             $scope.tapShowButton = function(type){
                 $.each($scope.showFlag,function(key,value){
@@ -223,6 +229,7 @@ angular.module('controllers', ['luegg.directives'])
                                         'isOnline':true,
                                         'dateTime':value.sessionCreateTime,
                                         'messageNotSee':true,
+                                        'number':1,
                                         'patientName':value.userName,
                                         'consultValue':[]
                                     };
@@ -310,7 +317,7 @@ angular.module('controllers', ['luegg.directives'])
                         });
                         $scope.currentUserConversation.consultValue.splice(indexClose, 1);
                     }
-                })
+                });
             };
 
             //按照科室排序
@@ -377,7 +384,7 @@ angular.module('controllers', ['luegg.directives'])
             };
 
             //分诊员发起一个针对用户的会话
-            $scope.createOneSpecialistPatient = function(index){
+            $scope.createOneSpecialistPatient = function(index,department){
                 $scope.showFlag.specialistList = false;
                 CreateTransferSpecialist.save({specialistPatientContent:$scope.alreadyJoinTransferSpecialist[index]},function(data){
                     if(data.status == "success"){
@@ -389,6 +396,7 @@ angular.module('controllers', ['luegg.directives'])
                                 $.each($scope.alreadyJoinPatientConversation,function(index,value){
                                     if(value.patientId==patientId){
                                         patientName = value.patientName;
+                                        value.transferDepartment = department;
                                     }
                                     $.each(value.consultValue,function(index1,value1){
                                         filterMediaData(value1);
@@ -509,7 +517,7 @@ angular.module('controllers', ['luegg.directives'])
                 clearInterval($scope.heartBeatFirstId);
                 clearInterval($scope.heartBeatSecondId);
                 $state.go('messageList');
-            }
+            };
 
             var heartBeatCheckFirst = function(){
                 //启动定时器，周期性的发送心跳信息
@@ -674,6 +682,8 @@ angular.module('controllers', ['luegg.directives'])
                                 "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                                 "senderId": angular.copy($scope.doctorId),
                                 "senderName": angular.copy($scope.doctorName),
+                                /*"userType": angular.copy($scope.userType),
+                                "department": angular.copy($scope.department),*/
                                 "sessionId": angular.copy($scope.currentUserConversation.sessionId)
                             };
                         } else{
@@ -683,6 +693,8 @@ angular.module('controllers', ['luegg.directives'])
                                 "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                                 "senderId": angular.copy($scope.doctorId),
                                 "senderName": angular.copy($scope.doctorName),
+                               /* "userType": angular.copy($scope.userType),
+                                "department": angular.copy($scope.department),*/
                                 "sessionId": angular.copy($scope.currentUserConversation.sessionId)
                             };
                         }
@@ -727,7 +739,6 @@ angular.module('controllers', ['luegg.directives'])
 
                 }
             };
-
             //关闭跟某个用户的会话
             var closeConsultLock = false;
             $scope.closeConsult = function () {
@@ -771,6 +782,7 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.currentUserConversation = "";
                         $scope.currentUserConversation = value;
                         value.messageNotSee = false;
+                        value.number = 0;
                         updateFlag = true;
                     }
                 });
@@ -1091,6 +1103,7 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                         $.each($scope.alreadyJoinPatientConversation,function(index,value){
                             value.messageNotSee = false;
+                            value.number = 0;
                             $.each(value.consultValue,function(index1,value1){
                                 filterMediaData(value1);
                             });
@@ -1143,6 +1156,7 @@ angular.module('controllers', ['luegg.directives'])
                         value.dateTime = conversationData.dateTime;
                         value.consultValue.push(conversationData);
                         value.messageNotSee = true;
+                        value.number += 1;
                         updateFlag = true;
                     }
                 });
@@ -1163,6 +1177,7 @@ angular.module('controllers', ['luegg.directives'])
                         'isOnline':true,
                         'dateTime':conversationData.dateTime,
                         'messageNotSee':true,
+                        'number':1,//显示消息数量
                         'patientName':conversationData.senderName,
                         'consultValue':[]
                 };
@@ -1180,6 +1195,7 @@ angular.module('controllers', ['luegg.directives'])
                     if (value.patientId == $scope.currentUserConversation.patientId) {
                         value.consultValue.push(consultValMessage);
                         value.messageNotSee = false;
+                        value.number = 0;
                     }
                 });
             };
@@ -1211,6 +1227,7 @@ angular.module('controllers', ['luegg.directives'])
                             value.consultValue.push(notifyData);
                             if(value.patientId!=$scope.currentUserConversation.patientId){
                                 value.messageNotSee = true;
+                                value.number += 1;
                             }
                         }
                     });
@@ -1222,6 +1239,7 @@ angular.module('controllers', ['luegg.directives'])
                             value.consultValue.push(notifyData);
                             if(value.patientId!=$scope.currentUserConversation.patientId){
                                 value.messageNotSee = true;
+                                value.number += 1;
                             }
                         }
                     });
@@ -1234,7 +1252,7 @@ angular.module('controllers', ['luegg.directives'])
                             if (value.patientId == notifyData.session.userId) {
                                 indexClose = index;
                             }
-                        })
+                        });
                         $scope.alreadyJoinPatientConversation.splice(indexClose, 1);
                         if($scope.alreadyJoinPatientConversation.length==0){
                             $scope.currentUserConversation = {};
@@ -1251,6 +1269,7 @@ angular.module('controllers', ['luegg.directives'])
                                 value.consultValue.push(notifyData);
                                 if(value.patientId!=$scope.currentUserConversation.patientId){
                                     value.messageNotSee = true;
+                                    value.number += 1;
                                 }
                             }
                         });
@@ -1275,7 +1294,6 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 }
             };
-
             var emotionReceiveFilter = function(val){
                 val = val.replace(/\/::\)/g, '[em_1]');val = val.replace(/\/::~/g, '[em_2]');val = val.replace(/\/::B/g, '[em_3]');val = val.replace(/\/::\|/g, '[em_4]');
                 val = val.replace(/\/:8-\)/g, '[em_5]');val = val.replace(/\/::</g, '[em_6]');val = val.replace(/\/::X/g, '[em_7]');val = val.replace(/\/::Z/g, '[em_8]');
@@ -1297,8 +1315,7 @@ angular.module('controllers', ['luegg.directives'])
                 val = val.replace(/\/:ok/g, '[em_69]');val = val.replace(/\/:no/g, '[em_70]');val = val.replace(/\/:rose/g, '[em_71]');val = val.replace(/\/:fade/g, '[em_72]');
                 val = val.replace(/\/:showlove/g, '[em_73]');val = val.replace(/\/:love/g, '[em_74]');val = val.replace(/\/:<L>/g, '[em_75]');
                 return val;
-            }
-
+            };
             var emotionSendFilter = function(val){
                 val = val.replace(/\[em_1\]/g, '/::)');val = val.replace(/\[em_2\]/g, '/::~');val = val.replace(/\[em_3\]/g, '/::B');val = val.replace(/\[em_4\]/g, '/::|');
                 val = val.replace(/\[em_5\]/g, '/:8-)');val = val.replace(/\[em_6\]/g, '/::<');val = val.replace(/\[em_7\]/g, '/::X');val = val.replace(/\[em_8\]/g, '/::Z');
@@ -1320,7 +1337,7 @@ angular.module('controllers', ['luegg.directives'])
                 val = val.replace(/\[em_69\]/g, '/:ok');val = val.replace(/\[em_70\]/g, '/:no');val = val.replace(/\[em_71\]/g, '/:rose');val = val.replace(/\[em_72\]/g, '/:fade');
                 val = val.replace(/\[em_73\]/g, '/:showlove');val = val.replace(/\[em_74\]/g, '/:love');val = val.replace(/\[em_75\]/g, '/<L>');
                 return val;
-            }
+            };
         }])
 
     .controller('messageListCtrl', ['$scope', '$log', '$state','$sce', 'GetUserConsultListInfo',

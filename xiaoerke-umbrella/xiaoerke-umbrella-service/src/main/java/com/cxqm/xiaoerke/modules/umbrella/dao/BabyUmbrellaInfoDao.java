@@ -13,6 +13,9 @@ import java.util.Map;
 @MyBatisDao
 public interface BabyUmbrellaInfoDao {
 
+
+     BabyUmbrellaInfo selectByPrimaryKey(Integer id);
+
     /**
      * 添加保障金信息
      * @param babyUmbrellaInfo

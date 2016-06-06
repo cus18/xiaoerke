@@ -75,8 +75,9 @@
                      alt="">
                     <div><nobr>{{item.patientName|limitTo:6}}</nobr></div>
                     <div><nobr>{{transformDate(item.dateTime)}}</nobr></div>
-                    <div><img ng-style="item.messageNotSee?{'display':'block'}:{'display':'none'}"
-                              src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/newMessage.png" /></div>
+                    <div  ng-style="item.messageNotSee?{'display':'block'}:{'display':'none'}">
+                        <span>{{item.number}}</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -215,6 +216,9 @@
                         <div class="moreInformation" ng-click="seeMoreConversationMessage()">
                             <a href="">查看更多消息</a>
                         </div>
+                        <div class="moreInformation">
+                            {{currentUserConversation.transferDepartment}}
+                        </div>
                         <div ng-repeat="item in currentUserConversation.consultValue" class="information">
                             <div class="doctorContent">
                                 <div ng-if="item.senderId==doctorId&&item.type!='4'" class="doctorReplyContent">
@@ -269,9 +273,6 @@
                                 </a>
                             </div>
                         </div>
-                        <!--<div class="magnifyImg" ng-show='showFlag.magnifyImg' ng-click="tapShowButton('magnifyImg')">
-                            <img width="400px" ng-src="{{imageSrc}}">
-                        </div>-->
                         <div class="magnifyImg" onMouseOver="drag=1;" onMouseOut="" drag="0" ng-show='showFlag.magnifyImg'>
                             <div class="box">
                                 <button ng-click="tapShowButton('magnifyImg')">关闭</button>
@@ -433,7 +434,7 @@
                     <li>{{item.currentDoctor}}</li>
                     <li>{{item.createDate}}</li>
                     <li>{{item.department}}</li>
-                    <li ng-click="createOneSpecialistPatient($index)"><input type="button" value="发起会话"/></li>
+                    <li ng-click="createOneSpecialistPatient($index,item.department)"><input type="button" value="发起会话"/></li>
                     <li ng-click="disposeTransferSpecialist($index)"><input type="button" value="删除"/></li>
                 </ul>
             </div>

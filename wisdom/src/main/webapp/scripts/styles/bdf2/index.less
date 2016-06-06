@@ -16,18 +16,17 @@ input{
 }
 
 .index_ban{
-  background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_banner1.png");
-  background-repeat: no-repeat;
-  background-position: center;
+  background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_banner1.png") no-repeat center;
   background-size: cover;
   height: 585px;
-  margin-top: 45px;
+  margin: 60px auto 0;
   padding-bottom: 30px;
   text-align: center;
-  transition: background 3s;
-  -moz-transition: background 3s;	/* Firefox 4 */
-  -webkit-transition: background 3s;	/* Safari 和 Chrome */
-  -o-transition: background 3s;
+  transition: background 2s;
+  -moz-transition: background 2s;	/* Firefox 4 */
+  -webkit-transition: background 2s;	/* Safari 和 Chrome */
+  -o-transition: background 2s;
+  position: relative;
 }
 .index_ban .ban_out{
   position: relative;
@@ -62,10 +61,40 @@ input{
   width: 150px;
   margin-left: -48px; ;
 }
+.index_ban .arrow{
+  max-width:1300px;
+  min-width: 1000px;
+  margin:0 auto;
+  padding-top: 230px;
+}
+.ban_jiantou{
+  background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_bannerjianbei.png") no-repeat center;
+  width: 47px;
+  height:138px;
+  text-align: center;
+  cursor: pointer;
+  opacity:0.4;
+  filter:alpha(opacity=40);
+}
+.ban_jiantou:hover{
+  opacity: 0.9;
+  filter:alpha(opacity=90);
+}
+.ban_jiantou img{
+  margin-top: 26px;
+}
+.jian_left{
+  float: left;
+}
+.jian_right{
+  float: right;
+}
+
 .index_ban ul{
   list-style: none;
   display: inline-block;
-  margin-top: 572px;
+  //margin-top: 574px;
+  margin-top: 207px;
   text-align: center;
   padding: 0;
   width: 100%;

@@ -38,12 +38,13 @@ public class IllnessController extends BaseController {
 	 */
 	@RequiresPermissions("user")
 	@RequestMapping(value = "illnessDataImp")
-	public String hospitalDataImp(String level_1,String level_2,Model model) {
+	public String hospitalDataImp(String level_1,String level_2,String isDisplay,Model model) {
 		if(StringUtils.isNotNull(level_1) && StringUtils.isNotNull(level_2)){
 			IllnessVo illnessVo = new IllnessVo();
 			illnessVo.setId(IdGen.uuid());
 			illnessVo.setLevel_1(level_1);
 			illnessVo.setLevel_2(level_2);
+			illnessVo.setIsDisplay(isDisplay);
 			//根据一级疾病和二级疾病查询疾病是否已经存在
 			boolean illnessExist = illnessServceImpl.judgeIllnessExist(illnessVo);
 			if(illnessExist){

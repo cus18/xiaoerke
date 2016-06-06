@@ -24,8 +24,17 @@ public class IllnessVo<T> extends BaseEntity<IllnessVo> {
     private String doctorNum;
     private Integer sort;  //二级疾病显示顺序
     private String sort_level_1;//一级疾病显示顺序
+    private String isDisplay;
     public IllnessVo() {
         super();
+    }
+
+    public String getIsDisplay() {
+        return isDisplay;
+    }
+
+    public void setIsDisplay(String isDisplay) {
+        this.isDisplay = isDisplay;
     }
 
     private List<T> list = new ArrayList<T>();//当前Vo数据对象

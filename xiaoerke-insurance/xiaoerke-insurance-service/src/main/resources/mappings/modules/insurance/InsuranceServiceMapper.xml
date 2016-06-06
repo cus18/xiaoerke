@@ -256,6 +256,31 @@
 	LEFT JOIN sys_user su ON irs.parent_phone = su.phone
 	LEFT JOIN sys_attention sa ON sa.openid = su.openid
 	LEFT JOIN sys_baby_baseInfo sbb ON sbb.id = irs.baby_id
-	group by irs.id ORDER BY irs.create_time desc
+	  where 1=1
+	  <if test="state != null and state != ''">
+		  AND irs.state=#{state}
+	  </if>
+	  <if test="parentPhone != null and parentPhone != ''">
+		  AND irs.parent_phone=#{parentPhone}
+	  </if>
+	  <if test="fromOrderDate != null and fromOrderDate != ''">
+		  AND irs.create_time >= #{fromOrderDate}
+	  </if>
+	  <if test="toOrderDate != null and toOrderDate != ''">
+		  AND #{toOrderDate} >= irs.create_time
+	  </if>
+	  <if test="fromStartDate != null and fromStartDate != ''">
+		  AND irs.start_time >= #{fromStartDate}
+	  </if>
+	  <if test="toStartDate != null and toStartDate != ''">
+		  AND #{toStartDate} >= irs.start_time
+	  </if>
+	  <if test="babyName != null and babyName != ''">
+		  and sbb.name = #{babyName}
+	  </if>
+	  <if test="insuranceType != null and insuranceType != ''">
+		  and irs.Insurance_type = #{insuranceType}
+	  </if>
+	  group by irs.id ORDER BY irs.create_time desc
   </select>
 </mapper>
