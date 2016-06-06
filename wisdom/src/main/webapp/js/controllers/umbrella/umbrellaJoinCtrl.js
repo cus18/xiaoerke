@@ -51,10 +51,10 @@
                     if(data.umbrella.activation_time==null){
                         $scope.firstJoin=true;
                         $scope.umbrellaMoney=200000;
-                        $scope.umbrellaId=data.umbrella.id;
+                        $scope.umbrellaId=data.id;
                         $scope.loadShare();
                         
-                        updateActivationTime.save({"id":data.umbrella.id}, function (data){
+                        updateActivationTime.save({"id":data.id}, function (data){
                             if(data.result!='1'){
                                 alert("未知错误,请尝试刷新页面");
                             }
