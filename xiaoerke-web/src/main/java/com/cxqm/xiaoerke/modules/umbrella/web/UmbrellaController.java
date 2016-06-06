@@ -229,7 +229,7 @@ public class UmbrellaController  {
         List<Map<String, Object>> list=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
             Map<String, Object> m=list.get(0);
-            if(m.get("pay_result")!=null&&!m.get("pay_result").equals("fail")) {
+//            if(m.get("pay_result")!=null&&!m.get("pay_result").equals("fail")) {
                 if (m.get("baby_id") != null && !m.get("baby_id").equals("")) {
                     result.put("result", 3);
                     result.put("umbrella", m);
@@ -239,10 +239,10 @@ public class UmbrellaController  {
                 result.put("result", 2);
                 result.put("umbrella", m);
                 return result;
-            }else{
-                result.put("result",1);
-                return result;
-            }
+//            }else{
+//                result.put("result",1);
+//                return result;
+//            }
         }
         result.put("result",1);
         return result;
