@@ -8,7 +8,6 @@
             /*选择性别*/
             $scope.selectSex = function(sex){
                 $scope.sexItem=sex;
-                console.log("家庭成员"+sex);
             };
             /*生日插件*/
             $scope.selectBirthday=function(){
