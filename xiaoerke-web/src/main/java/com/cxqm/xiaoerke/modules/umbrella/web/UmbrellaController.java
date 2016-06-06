@@ -429,7 +429,7 @@ public class UmbrellaController  {
               //0 男 1 女
             if(info.getSex()==2){
               showFather = false;
-            }else{
+            }else if(info.getSex()==3){
               showMother = false;
             }
 
