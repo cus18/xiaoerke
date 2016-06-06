@@ -314,7 +314,11 @@ public class UmbrellaController  {
 
         }
         Map<String, Object> result=new HashMap<String, Object>();
-        String res=String.format("%.0f", Math.random() * 5);
+        double ram=Math.random() * 5;
+        while (ram<1){
+            ram=Math.random() * 5;
+        }
+        String res=String.format("%.0f", ram);
         BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
         babyUmbrellaInfo.setOpenid(openid);
         babyUmbrellaInfo.setUmberllaMoney(200000);
