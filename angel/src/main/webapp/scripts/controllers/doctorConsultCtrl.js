@@ -229,6 +229,7 @@ angular.module('controllers', ['luegg.directives'])
                                         'isOnline':true,
                                         'dateTime':value.sessionCreateTime,
                                         'messageNotSee':true,
+                                        'number':1,
                                         'patientName':value.userName,
                                         'consultValue':[]
                                     };
@@ -781,6 +782,7 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.currentUserConversation = "";
                         $scope.currentUserConversation = value;
                         value.messageNotSee = false;
+                        value.number = 0;
                         updateFlag = true;
                     }
                 });
@@ -1101,6 +1103,7 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                         $.each($scope.alreadyJoinPatientConversation,function(index,value){
                             value.messageNotSee = false;
+                            value.number = 0;
                             $.each(value.consultValue,function(index1,value1){
                                 filterMediaData(value1);
                             });
@@ -1153,6 +1156,7 @@ angular.module('controllers', ['luegg.directives'])
                         value.dateTime = conversationData.dateTime;
                         value.consultValue.push(conversationData);
                         value.messageNotSee = true;
+                        value.number += 1;
                         updateFlag = true;
                     }
                 });
@@ -1173,6 +1177,7 @@ angular.module('controllers', ['luegg.directives'])
                         'isOnline':true,
                         'dateTime':conversationData.dateTime,
                         'messageNotSee':true,
+                        'number':1,//显示消息数量
                         'patientName':conversationData.senderName,
                         'consultValue':[]
                 };
@@ -1190,6 +1195,7 @@ angular.module('controllers', ['luegg.directives'])
                     if (value.patientId == $scope.currentUserConversation.patientId) {
                         value.consultValue.push(consultValMessage);
                         value.messageNotSee = false;
+                        value.number = 0;
                     }
                 });
             };
@@ -1221,6 +1227,7 @@ angular.module('controllers', ['luegg.directives'])
                             value.consultValue.push(notifyData);
                             if(value.patientId!=$scope.currentUserConversation.patientId){
                                 value.messageNotSee = true;
+                                value.number += 1;
                             }
                         }
                     });
@@ -1232,6 +1239,7 @@ angular.module('controllers', ['luegg.directives'])
                             value.consultValue.push(notifyData);
                             if(value.patientId!=$scope.currentUserConversation.patientId){
                                 value.messageNotSee = true;
+                                value.number += 1;
                             }
                         }
                     });
@@ -1261,6 +1269,7 @@ angular.module('controllers', ['luegg.directives'])
                                 value.consultValue.push(notifyData);
                                 if(value.patientId!=$scope.currentUserConversation.patientId){
                                     value.messageNotSee = true;
+                                    value.number += 1;
                                 }
                             }
                         });
