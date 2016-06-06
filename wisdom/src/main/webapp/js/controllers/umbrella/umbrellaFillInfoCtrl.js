@@ -31,7 +31,7 @@
             };
             /*填写宝宝姓名 失去焦点*/
             $scope.fillFinish = function(){
-                $scope.fillLock = false;
+               $scope.fillLock = false;
             };
             /*选择性别*/
             $scope.selectSex = function(sex){
@@ -48,14 +48,23 @@
                     } else {
                         $scope.selectSex('girl');
                     }
+                }else{
+                    $scope.info.id=selectItem.id;
+                    $scope.info.babyName = "";
+                    $("#birthday").val("");
                 }
-                $scope.info.id=selectItem.id;
+
             };
 
             /*选择父母*/
             $scope.selectParent = function(parent){
                 $scope.parentItem=parent;
             };
+            /*触摸滑动区域时响应*/
+            $scope.onTouch = function(parent){
+                $scope.fillLock = false;
+            };
+
             /*校验手机号*/
             $scope.checkPhone= function(){
                 var phoneNumber = $scope.info.phoneNum+"";
@@ -291,6 +300,7 @@
                     }else {
                         //根据Openid 判断用户是否领取过
                         ifExistOrder.save(function (data){
+                            $scope.info.phoneNum=data.phone;
                             if(data.result=="1"){
                                 window.location.href="../wisdom/firstPage/umbrella";
                             }else if(data.result=="3"){
@@ -306,7 +316,7 @@
                                             addBaby.name="添加";
                                             addBaby.id="add";
                                             $scope.babyInfoList.unshift(addBaby);
-                                            $scope.info.phoneNum=data.phone;
+
                                         }
                                     });
                                 });
