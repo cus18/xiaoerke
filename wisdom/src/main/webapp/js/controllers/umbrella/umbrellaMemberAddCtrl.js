@@ -5,6 +5,7 @@
             $scope.sexItem = "boy";
             $scope.parentLock = false;//判断之前登录的时候选择的是宝爸还是宝妈
             $scope.info = {}
+
             /*选择性别*/
             $scope.selectSex = function(sex){
                 $scope.sexItem=sex;
@@ -45,8 +46,9 @@
 
                 });
             };
-            cheackFamilyMembers.save({},function(data){
+            cheackFamilyMembers.save({id:$stateParams.id},function(data){
                 console.log(data)
+                $scope.selectInfo = data;
             })
 
             $scope.$on('$ionicView.enter', function(){

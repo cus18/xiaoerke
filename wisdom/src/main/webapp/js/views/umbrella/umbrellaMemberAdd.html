@@ -15,8 +15,8 @@
                             <div class="selectItem sex fl w2" >
                                 <img ng-click="selectSex('boy')"  width="30%" height="auto" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{sexItem=='boy' ? 'member_boy2':'member_boy1'}}.png">
                                 <img ng-click="selectSex('girl')" width="30%" height="auto" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{sexItem=='girl' ? 'member_girl2':'member_girl1'}}.png">
-                                <img ng-click="selectSex('mother')" ng-if="parentLock" width="30%" height="auto" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{sexItem=='mother' ? 'member_mom2':'member_mom1'}}.png">
-                                <img ng-click="selectSex('father')" ng-if="!parentLock"  width="30%" height="auto" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{sexItem=='father' ? 'member_dad2':'member_dad1'}}.png">
+                                <img ng-click="selectSex('mother')" ng-if="selectInfo.showMother" width="30%" height="auto" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{sexItem=='mother' ? 'member_mom2':'member_mom1'}}.png">
+                                <img ng-click="selectSex('father')" ng-if="selectInfo.showFather"  width="30%" height="auto" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{sexItem=='father' ? 'member_dad2':'member_dad1'}}.png">
                             </div>
 
                         </dd>
