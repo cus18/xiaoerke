@@ -43,19 +43,37 @@ var umbrellaFirstPageInit = function() {
     //获取首页数据
     $.ajax({
         type: 'POST',
-        url: "umbrella/firstPageData",
+        url: "umbrella/firstPageDataCount",
         contentType: "application/json; charset=utf-8",
         success: function(result){
             var count=result.count;
-            var todayCount=result.todayCount;
-            var totalUmbrellaMoney=result.totalUmbrellaMoney;
             $("#count").html(count);
+        },
+        dataType: "json"
+    });
+
+    $.ajax({
+        type: 'POST',
+        url: "umbrella/firstPageDataTodayCount",
+        contentType: "application/json; charset=utf-8",
+        success: function(result){
+            var todayCount=result.todayCount;
             $("#todayCount").html(todayCount);
+        },
+        dataType: "json"
+    });
+
+    $.ajax({
+        type: 'POST',
+        url: "umbrella/firstPageDataTotalUmbrellaMoney",
+        contentType: "application/json; charset=utf-8",
+        success: function(result){
+            var totalUmbrellaMoney=result.totalUmbrellaMoney;
             $("#totalUmbrellaMoney").html(totalUmbrellaMoney);
         },
         dataType: "json"
     });
-    
+
     //通过openid 获取当前用户是否关注
     $.ajax({
         type: 'POST',
