@@ -259,6 +259,7 @@ public class UmbrellaController  {
             Map<String, Object> m=list.get(0);
             if(m.get("pay_result")!=null&&m.get("pay_result").equals("fail")&& (m.get("baby_id") == null || m.get("baby_id").equals(""))) {
                 result.put("result",1);
+                result.put("type","pay");
                 return result;
             }
                 if (m.get("baby_id") != null && !m.get("baby_id").equals("")) {

@@ -14,32 +14,13 @@ var version="b"; /*方案版本*/
 
 var shareUmbrellaId="0";
 var umbrellaFirstPageInit = function() {
-    //version=GetQueryString("status");
+    version=GetQueryString("status");
+    ifExistOrder();
     /*获取当前年月日*/
     var date = new Date();
      date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
      $("#date").html(date);
-    /*a版本和b版本的内容变化*/
-    var content="";
-    var textIntro="";
-    if(version=="a"){
-        content='<img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic1a.png" >'
-           + '<div class="f4 c3"><span class="c12">5元</span>即加入</div>'
-            +'<div class="f4 c3">免单随时享</div>'
-        textIntro=' 您只需支付<span class="c11">最多5元即可加入</span>' ;
-        $('.introPic li').eq(0).html(content);
-        $('#textIntro').html(textIntro);
-        $(".helpPlan .pic img").attr("src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/help_pic1a.png");
-    } else{
-        content='<img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic1b.png" >'
-            + '<div class="f4 c3">现在参与</div>'
-            +'<div class="f4 c3"><span class="c12">免费</span>加入 </div>';
-        textIntro=' <span class="c11">现阶段免费加入</span>' ;
-        $('.introPic li').eq(0).html(content);
-        $('#textIntro').html(textIntro);
-        $(".helpPlan .pic img").attr("src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/help_pic1b.png");
-    }
-    ifExistOrder();
+
     //获取首页数据
     $.ajax({
         type: 'POST',
@@ -209,10 +190,34 @@ function  ifExistOrder(){
                 shareUmbrellaId = data.umbrella.id;
                 loadShare();
             }else{
+                if(data.type=="pay"){
+                    version="a";
+                }
                 $("#NoShareDiv").show();
                 $("#shareDiv").hide();
                 shareUmbrellaId=120000000;
                 loadShare();
+            }
+
+            /*a版本和b版本的内容变化*/
+            var content="";
+            var textIntro="";
+            if(version=="a"){
+                content='<img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic1a.png" >'
+                    + '<div class="f4 c3"><span class="c12">5元</span>即加入</div>'
+                    +'<div class="f4 c3">免单随时享</div>'
+                textIntro=' 您只需支付<span class="c11">最多5元即可加入</span>' ;
+                $('.introPic li').eq(0).html(content);
+                $('#textIntro').html(textIntro);
+                $(".helpPlan .pic img").attr("src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/help_pic1a.png");
+            } else{
+                content='<img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic1b.png" >'
+                    + '<div class="f4 c3">现在参与</div>'
+                    +'<div class="f4 c3"><span class="c12">免费</span>加入 </div>';
+                textIntro=' <span class="c11">现阶段免费加入</span>' ;
+                $('.introPic li').eq(0).html(content);
+                $('#textIntro').html(textIntro);
+                $(".helpPlan .pic img").attr("src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/help_pic1b.png");
             }
         },
         dataType: "json"
