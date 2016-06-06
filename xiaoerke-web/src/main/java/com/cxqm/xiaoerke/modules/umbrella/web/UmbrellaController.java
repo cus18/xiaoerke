@@ -311,13 +311,10 @@ public class UmbrellaController  {
                 result.put("type","free");
                 return result;
             }
+
         }
         Map<String, Object> result=new HashMap<String, Object>();
-        double ram=Math.random() * 5;
-        while(ram<1){
-            ram=Math.random() * 5;
-        }
-        String res = String.format("%.0f", ram);
+        String res=String.format("%.0f", Math.random() * 5);
         BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
         babyUmbrellaInfo.setOpenid(openid);
         babyUmbrellaInfo.setUmberllaMoney(200000);
@@ -374,6 +371,40 @@ public class UmbrellaController  {
             list.add(familyInfo);
         }
         resultMap.put("familyList",list);
+        return resultMap;
+    }
+
+//    判定绑定用户
+    /**
+     * 家庭版保护成员列表
+     */
+    @RequestMapping(value = "/cheackFamilyMembers", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> cheackFamilyMembers(@RequestBody Map<String, Object> params){
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        Boolean showFather = true;
+        Boolean showMather = true;
+        Integer id = null;//Integer.parseInt((String) params.get("id"));
+        id = 120000001;
+        List<UmbrellaFamilyInfo> list = new ArrayList<UmbrellaFamilyInfo>();
+        list = babyUmbrellaInfoSerivce.getFamilyUmbrellaList(id);
+        for(UmbrellaFamilyInfo info:list){
+          Date date=new Date();
+          long day=(date.getTime()-info.getBirthday().getTime())/(24*60*60*1000) + 1;
+          String year=new java.text.DecimalFormat("#").format(day/365f);
+          if(Integer.parseInt(year)>18){
+              //0 男 1 女
+            if(info.getSex()==0){
+              showFather = false;
+            }else{
+              showMather = false;
+            }
+
+          }
+        }
+        resultMap.put("showFather",showFather);
+        resultMap.put("showMather",showMather);
         return resultMap;
     }
 
