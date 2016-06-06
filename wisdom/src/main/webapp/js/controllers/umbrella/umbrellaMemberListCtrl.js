@@ -13,19 +13,17 @@
                     var birth = moment(data.familyList[i].birthday);
                     var nowTime = moment();
                     var age = nowTime.diff(birth, 'years');       // 1
-                    if(age>18){
+                    //if(age>18){
                       if($scope.familyList[i].sex==0){
-                          $scope.familyList[i].sex = "宝爸"
-                      }else{
-                          $scope.familyList[i].sex = "宝妈"
-                      }
-                    }else{
-                        if($scope.familyList[i].sex==0){
-                            $scope.familyList[i].sex = "男宝"
+                          $scope.familyList[i].sex = "女宝"
+                      }else if($scope.familyList[i].sex==1){
+                          $scope.familyList[i].sex = "男宝"
+                      }else if($scope.familyList[i].sex==2){
+                            $scope.familyList[i].sex = "宝爸"
                         }else{
-                            $scope.familyList[i].sex = "女宝"
+                            $scope.familyList[i].sex = "宝妈"
                         }
-                    }
+                    //}
                 }
             })
 
