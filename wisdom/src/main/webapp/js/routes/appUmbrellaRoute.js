@@ -85,6 +85,7 @@ define(['appUmbrella'], function(app){
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaMemberListCtrl',
                                     ['js/controllers/umbrella/umbrellaMemberListCtrl.js',
+                                        'js/libs/moment.min.js',
                                         'styles/umbrella/umbrellaMemberList.less?ver='+umbrellaVersion],
                                     'js/views/umbrella/umbrellaMemberList.html?ver='+umbrellaVersion);
                             }

@@ -17,6 +17,8 @@ public class DissatisfiedVo {
 
     private String content;
 
+    private String createtime;
+
     private String dissatisfied;
 
     private String attitude;
@@ -110,6 +112,15 @@ public class DissatisfiedVo {
     @ExcelField(title="其他", align=2, sort=9)
     public String getOther() {
         return other;
+    }
+
+    @ExcelField(title="评价时间", align=2, sort=3)
+    public String getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(String createtime) {
+        this.createtime = createtime;
     }
 
     public void setOther(String other) {

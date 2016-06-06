@@ -5,6 +5,7 @@
             $scope.sexItem = "boy";
             $scope.parentLock = false;//判断之前登录的时候选择的是宝爸还是宝妈
             $scope.info = {}
+
             /*选择性别*/
             $scope.selectSex = function(sex){
                 $scope.sexItem=sex;
@@ -40,13 +41,18 @@
                 var birthday=$("#birthday").val();
                 var sex="0";
                 var name = "ts";
-                addFamily.save({"sex":sex,"name":encodeURI(name),"birthDay":birthday,"id":"120000023"},function(data){
-                    console.log(data)
+                addFamily.save({"sex":sex,"name":encodeURI(name),"birthDay":birthday,"id":$stateParams.id},function(data){
+                    if(data.reusltStatus == 1){
+                        $state.go("umbrellaMemberAdd",{id:$stateParams.id});
+                    }else{
+                        alert("宝宝信息保存失败");
+                    }
 
                 });
             };
-            cheackFamilyMembers.save({},function(data){
+            cheackFamilyMembers.save({id:$stateParams.id},function(data){
                 console.log(data)
+                $scope.selectInfo = data;
             })
 
             $scope.$on('$ionicView.enter', function(){

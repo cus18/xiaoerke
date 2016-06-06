@@ -423,25 +423,25 @@
     <select id="findDissatisfiedList" resultType="java.util.Map"
             parameterType="java.util.Map">
         SELECT
-        c.serviceAttitude,
-        c.openid,
-        c.doctorid,
-        c.createtime,
-        c.content,
-        c.dissatisfied,
+        ce.serviceAttitude,
+        ce.openid,
+        ce.doctorid,
+        ce.createtime,
+        ce.content,
+        ce.dissatisfied,
         su.name as doctorName,
         su.email,
         su.phone,
         sa.nickname
         FROM
-        customerEvaluation c
-        LEFT JOIN sys_user su ON c.doctorId = su.id
+        customerEvaluation ce
+        LEFT JOIN sys_user su ON ce.doctorId = su.id
         LEFT JOIN sys_doctor sd ON su.id = sd.sys_user_id
-        LEFT JOIN sys_attention sa ON c.openid = sa.openid
+        LEFT JOIN sys_attention sa ON ce.openid = sa.openid
         WHERE
         serviceAttitude = '1'
-        AND c.createtime BETWEEN #{fromDate}
-        AND #{toDate}
+        AND DATE_FORMAT(ce.createtime,'%Y-%m-%d') BETWEEN DATE_FORMAT(#{fromDate},'%Y-%m-%d')
+        AND DATE_FORMAT(#{toDate},'%Y-%m-%d')
     </select>
 
     <!--导出送心意数据 @author sunxiao-->
@@ -464,8 +464,8 @@
         LEFT JOIN sys_attention sa ON sa.openid = ce.openid
         WHERE
         serviceAttitude in ('3','5')
-        AND createtime BETWEEN #{fromDate}
-        AND #{toDate}
+        AND DATE_FORMAT(ce.createtime,'%Y-%m-%d') BETWEEN DATE_FORMAT(#{fromDate},'%Y-%m-%d')
+        AND DATE_FORMAT(#{toDate},'%Y-%m-%d')
         GROUP BY
         openid
     </select>

@@ -1,8 +1,8 @@
 ﻿angular.module('controllers', ['ionic']).controller('umbrellaFillInfoCtrl', [
         '$scope','$state','$stateParams','getBabyinfoList','getOpenidStatus','ifExistOrder','$filter','IdentifyUser',
-        'saveBabyInfo','updateBabyInfo','updateInfo',
+        'saveBabyInfo','updateBabyInfo','updateInfo','GetUserLoginStatus','$location',
         function ($scope,$state,$stateParams,getBabyinfoList,getOpenidStatus,ifExistOrder,$filter,IdentifyUser
-            ,saveBabyInfo,updateBabyInfo,updateInfo) {
+            ,saveBabyInfo,updateBabyInfo,updateInfo,GetUserLoginStatus,$location) {
             $scope.title="宝护伞";
             $scope.sexItem = "boy";
             $scope.parentItem = "mother";

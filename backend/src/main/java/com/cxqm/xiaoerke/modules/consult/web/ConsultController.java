@@ -212,7 +212,7 @@ public class ConsultController extends BaseController {
 					vo.setDoctorName((String) map.get("doctorName"));
 					vo.setNickname((String)map.get("nickname"));
 					vo.setServiceAttitude("3".equals((String)map.get("serviceAttitude"))?"满意":"非常满意");
-					vo.setRedPacket((String)map.get("redPacket"));
+					vo.setRedPacket((String)map.get("redpacket"));
 					vo.setPhone((String)map.get("phone"));
 					vo.setOpenid((String)map.get("openid"));
 					voList.add(vo);
@@ -226,6 +226,7 @@ public class ConsultController extends BaseController {
 					vo.setOpenid((String) map.get("openid"));
 					vo.setPhone((String) map.get("phone"));
 					vo.setNickname((String) map.get("nickname"));
+					vo.setCreatetime(DateUtils.DateToStr((Date) map.get("createtime")));
 					vo.setContent((String) map.get("content"));
 					vo.setDoctorName((String) map.get("doctorName"));
 					if(map.get("dissatisfied")!=null){
