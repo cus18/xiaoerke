@@ -385,15 +385,17 @@ public class UmbrellaController  {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Boolean showFather = true;
         Boolean showMather = true;
-        Integer id = Integer.parseInt((String) params.get("id"));
+        Integer id = null;//Integer.parseInt((String) params.get("id"));
+        id = 120000001;
         List<UmbrellaFamilyInfo> list = new ArrayList<UmbrellaFamilyInfo>();
         list = babyUmbrellaInfoSerivce.getFamilyUmbrellaList(id);
         for(UmbrellaFamilyInfo info:list){
           Date date=new Date();
           long day=(date.getTime()-info.getBirthday().getTime())/(24*60*60*1000) + 1;
-          String year=new java.text.DecimalFormat("#.00").format(day/365f);
+          String year=new java.text.DecimalFormat("#").format(day/365f);
           if(Integer.parseInt(year)>18){
-            if(info.getSex()>0){
+              //0 男 1 女
+            if(info.getSex()==0){
               showFather = false;
             }else{
               showMather = false;
