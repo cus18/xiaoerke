@@ -275,7 +275,7 @@ var myGuarantee = function() {
 
 /*跳转到领取成功页面*/
 var goJoin = function() {
-    if(!attentionLock){
+    if(attentionLock){
         $(".c-shadow").show();
         $(".shadow-content.attention").show();
     }else if(version=="b"){
