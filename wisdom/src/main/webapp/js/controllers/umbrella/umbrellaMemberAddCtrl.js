@@ -1,6 +1,6 @@
 ﻿angular.module('controllers', ['ionic']).controller('umbrellaMemberAddCtrl', [
-        '$scope','$state','$stateParams','addFamily',
-        function ($scope,$state,$stateParams,addFamily) {
+        '$scope','$state','$stateParams','addFamily','cheackFamilyMembers',
+        function ($scope,$state,$stateParams,addFamily,cheackFamilyMembers) {
             $scope.title="宝护伞";
             $scope.sexItem = "boy";
             $scope.parentLock = false;//判断之前登录的时候选择的是宝爸还是宝妈
@@ -45,6 +45,9 @@
 
                 });
             };
+            cheackFamilyMembers.save({},function(data){
+                console.log(data)
+            })
 
             $scope.$on('$ionicView.enter', function(){
                 $scope.selectBirthday();

@@ -210,7 +210,7 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
     @Override
     public BabyBaseInfoVo getBabyBaseInfo(Integer umbrella_id) {
         BabyUmbrellaInfo babyUmbrellaInfo = babyUmbrellaInfoDao.selectByPrimaryKey(umbrella_id);
-        if(StringUtils.isNotNull(babyUmbrellaInfo.getBabyId())){
+        if(null != babyUmbrellaInfo&&StringUtils.isNotNull(babyUmbrellaInfo.getBabyId())){
             Integer babyId = Integer.parseInt(babyUmbrellaInfo.getBabyId());
             return babyBaseInfoService.selectByPrimaryKey(Integer.parseInt(babyUmbrellaInfo.getBabyId()));
         }

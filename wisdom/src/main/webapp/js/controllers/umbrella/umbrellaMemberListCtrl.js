@@ -2,10 +2,16 @@
         '$scope','$state','$stateParams','getFamilyList',
         function ($scope,$state,$stateParams,getFamilyList) {
             $scope.title="宝护伞";
+            //$scope.id = $stateParams.id;
 
-            getFamilyList.save({"id":"23"},function(data){
+            getFamilyList.save({"id":$stateParams.id},function(data){
                 console.log(data);
             })
+
+            $scope.addMember=function(){
+                $state.go("umbrellaMemberAdd",{id:$stateParams.id});
+            }
+
             $scope.goActive=function(){
                 $state.go("umbrellaFillInfo",{id:$scope.umbrellaId});
             };

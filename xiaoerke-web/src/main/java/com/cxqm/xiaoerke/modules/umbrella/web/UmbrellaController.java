@@ -113,7 +113,7 @@ public class UmbrellaController  {
         Map<String, Object> result=new HashMap<String, Object>();
 
         String phone=params.get("phone").toString();
-        String code=params.get("code").toString();
+//        String code=params.get("code").toString();
         String openid= WechatUtil.getOpenId(session, request);
 //        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
 //        String res=utilService.bindUser(phone,code,openid);
@@ -291,9 +291,7 @@ public class UmbrellaController  {
     @ResponseBody
     Map<String, Object>  randomMoney(HttpServletRequest request,HttpSession session) {
         Map<String, Object> map=new HashMap<String, Object>();
-        Map<String, Object> numm=new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session, request);
-//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
         List<Map<String, Object>> list = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
@@ -314,7 +312,11 @@ public class UmbrellaController  {
 
         }
         Map<String, Object> result=new HashMap<String, Object>();
-        String res=String.format("%.0f", Math.random() * 5);
+        double ram=Math.random() * 5;
+        while (ram<1){
+            ram=Math.random() * 5;
+        }
+        String res=String.format("%.0f", ram);
         BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
         babyUmbrellaInfo.setOpenid(openid);
         babyUmbrellaInfo.setUmberllaMoney(200000);
@@ -374,22 +376,55 @@ public class UmbrellaController  {
         return resultMap;
     }
 
+//    判定绑定用户
+    /**
+     * 家庭版保护成员列表
+     */
+    @RequestMapping(value = "/cheackFamilyMembers", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> cheackFamilyMembers(@RequestBody Map<String, Object> params){
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        Boolean showFather = true;
+        Boolean showMather = true;
+        Integer id = Integer.parseInt((String) params.get("id"));
+        List<UmbrellaFamilyInfo> list = new ArrayList<UmbrellaFamilyInfo>();
+        list = babyUmbrellaInfoSerivce.getFamilyUmbrellaList(id);
+        for(UmbrellaFamilyInfo info:list){
+          Date date=new Date();
+          long day=(date.getTime()-info.getBirthday().getTime())/(24*60*60*1000) + 1;
+          String year=new java.text.DecimalFormat("#").format(day/365f);
+          if(Integer.parseInt(year)>18){
+              //0 男 1 女
+            if(info.getSex()==0){
+              showFather = false;
+            }else{
+              showMather = false;
+            }
 
-//    /**
-//     * 付费加入保护伞
-//     */
-//    @RequestMapping(value = "/payJoinUs", method = {RequestMethod.POST, RequestMethod.GET})
-//    public
-//    @ResponseBody
-//    Map<String, Object>  payJoinUs(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) {
-//        Map<String, Object> map=new HashMap<String, Object>();
-//        String openid = WechatUtil.getOpenId(session, request);
-//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
-//
-//
-//        Map<String, Object> result=new HashMap<String, Object>();
-//        result.put("result",res);
-//        result.put("id",babyUmbrellaInfo.getId());
-//        return result;
-//    }
+          }
+        }
+        resultMap.put("showFather",showFather);
+        resultMap.put("showMather",showMather);
+        return resultMap;
+    }
+
+
+    /**
+     * 支付页面openid
+     */
+    @RequestMapping(value = "/getOpenid", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> getOpenid(HttpServletRequest request,HttpSession session){
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        String openid= WechatUtil.getOpenId(session, request);
+        if(openid==null||openid.equals("")){
+            resultMap.put("openid","none");
+            return resultMap;
+        }
+        resultMap.put("openid",openid);
+        return resultMap;
+    }
+
 }
