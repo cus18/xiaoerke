@@ -10,10 +10,6 @@
                 $scope.familyList =data.familyList;
                 for(var i=0;i<data.familyList.length;i++){
                     $scope.familyList[i].birthday = moment(data.familyList[i].birthday).format("YYYY-MM-DD");
-                    var birth = moment(data.familyList[i].birthday);
-                    var nowTime = moment();
-                    var age = nowTime.diff(birth, 'years');       // 1
-                    //if(age>18){
                       if($scope.familyList[i].sex==0){
                           $scope.familyList[i].sex = "女宝"
                       }else if($scope.familyList[i].sex==1){
@@ -23,12 +19,15 @@
                         }else{
                             $scope.familyList[i].sex = "宝妈"
                         }
-                    //}
                 }
             })
 
             $scope.addMember=function(){
                 $state.go("umbrellaMemberAdd",{id:$stateParams.id});
+            }
+
+            $scope.immediateActive=function(){
+                $state.go("umbrellaJoin",{id:new Date().getTime()});
             }
 
             $scope.goActive=function(){
