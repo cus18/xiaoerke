@@ -62,6 +62,9 @@
 
             $scope.$on('$ionicView.enter', function(){
                 $scope.selectBirthday();
+                $("#birthday").val("");
+                $scope.sexItem = '';
+                $scope.info.babyName = '';
             });
 
             
