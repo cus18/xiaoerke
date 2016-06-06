@@ -75,21 +75,19 @@ var umbrellaFirstPageInit = function() {
 }
 
 function scanQRCode(){
-    var shareid = GetQueryString("id");
-    if(shareid!="0") {
-        $.ajax({
-            type: 'POST',
-            url: "umbrella/getUserQRCode",
-            contentType: "application/json; charset=utf-8",
-            async:false,
-            data:"{'id':'"+shareid+"'}",
-            success: function (data) {
-                console.log("s",data.qrcode);
-                $("#QRCode").attr("src",data.qrcode);
-            },
-            dataType: "json"
-        });
-    }
+    var shareid = GetQueryString("id")==null?120000000:GetQueryString("id");
+    $.ajax({
+        type: 'POST',
+        url: "umbrella/getUserQRCode",
+        contentType: "application/json; charset=utf-8",
+        async:false,
+        data:"{'id':'"+shareid+"'}",
+        success: function (data) {
+            console.log("s",data.qrcode);
+            $("#QRCode").attr("src",data.qrcode);
+        },
+        dataType: "json"
+    });
 }
 
 function  joinUs(){
