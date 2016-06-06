@@ -1,40 +1,40 @@
 <ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
 <ion-view view-title="{{title}}">
-    <ion-content class="umbrellaMemberAdd bg1" overflow-scroll="true" style="top:0;">
+    <ion-content class="umbrellaMemberAdd bg4" overflow-scroll="true" style="top:0;">
         <ion-scroll direction="y" has-bouncing="true" >
-            <div class="fillCommon">
-                    <dl>
-                        <dt>宝宝信息</dt>
-                        <dd>
-                            <span>姓名：</span>
+            <div class="addMember bg1">
+                <dl>
+                        <dt class="f8 c3 tc fw0 ">成员信息</dt>
+                        <dd class="f5 c3">
+                            <span class="fl w1">姓名：</span>
                             <input type="hidden" id="babyId"/>
-                            <input type="text" id="babyName" placeholder="宝宝的真实姓名" ng-click="skip('babyName')" ng-focus="fillName()" ng-blur="fillFinish()" ng-model="info.babyName">
-                            <!--<ul class="babyList" ng-if="fillLock">-->
-                                <!--<li class="f4 c6" ng-repeat="item in [1,2,3]" ng-click="selectBaby(item)">{{item}}</li>-->
-                            <!--</ul>-->
+                            <input class="fl w2" type="text" id="babyName" placeholder="宝宝的真实姓名" ng-click="skip('babyName')" ng-focus="fillName()" ng-blur="fillFinish()" ng-model="info.babyName">
                         </dd>
                         <dd>
-                            <span>性别：</span>
-                            <div class="selectItem sex" >
-                                <a  ng-click="selectSex('boy')"  ng-class="{'select':sexItem=='boy'}">男</a>
-                                <a  ng-click="selectSex('girl')" ng-class="{'select':sexItem=='girl'}">女</a>
+                            <span class="fl w1">关系：</span>
+                            <div class="selectItem sex fl w2" >
+                                <img ng-click="selectSex('boy')"  width="30%" height="auto" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{sexItem=='boy' ? 'member_boy2':'member_boy1'}}.png">
+                                <img ng-click="selectSex('girl')" width="30%" height="auto" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{sexItem=='girl' ? 'member_girl2':'member_girl1'}}.png">
+                                <img ng-click="selectSex('mother')" ng-if="parentLock" width="30%" height="auto" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{sexItem=='mother' ? 'member_mom2':'member_mom1'}}.png">
+                                <img ng-click="selectSex('father')" ng-if="!parentLock"  width="30%" height="auto" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{sexItem=='father' ? 'member_dad2':'member_dad1'}}.png">
                             </div>
 
                         </dd>
                         <dd>
-                            <span>出生日期：</span>
-                            <input type="text" readonly="readonly" id="birthday" placeholder="选择宝宝的出生日期" >
+                            <span class="fl w1">出生日期：</span>
+                            <input class="fl w2" type="text" readonly="readonly" id="birthday" placeholder="选择宝宝的出生日期" >
                         </dd>
-
                     </dl>
-
-                 <br>
-
-                <div class=" f2 c5 tc">未经您的允许，宝大夫不会泄露您的个人信息。</div>
-                </div>
-            <br> <br> <br> <br> <br> <br> <br>
+            </div>
+            <div class="tc f4 c3">
+                <img class="my-img1" width="18" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/remind_icon.png">&nbsp;
+                请您确认信息，一经保存，就不能修改了哦~
+            </div>
+            <div class="f3 c5 tc tel">如有问题，请致电<a  class="bold c7" href="tel:4001001000">客服电话：400-100-1000</a></div>
+            <br> <br> <br> <br>
         </ion-scroll>
-        <div ng-click="save()"  id="" class="button bottom-btn" >
+
+        <div ng-click="save()"  id="" class="button bottom-btn bg7" >
             保存
         </div>
     </ion-content>

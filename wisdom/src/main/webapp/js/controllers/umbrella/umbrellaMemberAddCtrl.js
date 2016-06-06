@@ -3,10 +3,12 @@
         function ($scope,$state,$stateParams,addFamily) {
             $scope.title="宝护伞";
             $scope.sexItem = "boy";
+            $scope.parentLock = false;//判断之前登录的时候选择的是宝爸还是宝妈
             $scope.info = {}
             /*选择性别*/
             $scope.selectSex = function(sex){
                 $scope.sexItem=sex;
+                console.log("家庭成员"+sex);
             };
             /*生日插件*/
             $scope.selectBirthday=function(){

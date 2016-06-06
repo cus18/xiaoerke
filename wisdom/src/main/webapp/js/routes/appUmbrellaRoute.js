@@ -69,7 +69,6 @@ define(['appUmbrella'], function(app){
                                     ['js/controllers/umbrella/umbrellaMemberAddCtrl.js',
                                         'js/libs/mobiscroll.custom-2.17.0.min.js',
                                         'styles/lib/mobiscroll.custom-2.17.0.min.css',
-                                        'styles/umbrella/fillInfoCommon.less?ver='+umbrellaVersion,
                                         'styles/umbrella/umbrellaMemberAdd.less?ver='+umbrellaVersion],
                                     'js/views/umbrella/umbrellaMemberAdd.html?ver='+umbrellaVersion);
                             }
