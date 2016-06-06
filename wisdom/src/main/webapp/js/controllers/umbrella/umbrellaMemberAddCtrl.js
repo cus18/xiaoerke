@@ -39,11 +39,11 @@
 
             $scope.save=function(){
                 var birthday=$("#birthday").val();
-                var sex="0";
-                var name = "ts";
-                addFamily.save({"sex":sex,"name":encodeURI(name),"birthDay":birthday,"id":$stateParams.id},function(data){
+                var sex=$scope.sexItem;
+                var name=$scope.info.babyName;
+                addFamily.save({"sex":sex,"name":name,"birthDay":birthday,"id":$stateParams.id},function(data){
                     if(data.reusltStatus == 1){
-                        $state.go("umbrellaMemberAdd",{id:$stateParams.id});
+                        $state.go("umbrellaMemberList",{id:$stateParams.id});
                     }else{
                         alert("宝宝信息保存失败");
                     }
