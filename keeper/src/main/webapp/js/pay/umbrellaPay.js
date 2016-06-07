@@ -13,7 +13,7 @@ var umbrellaPayInit=function(){
         dataType:'json',
         success:function(data) {
             if(data.type=="free"){
-                window.location.href = "http://localhost:8080/wisdom/firstPage/umbrella?status=b";
+                window.location.href = "http://s165.baodf.com/wisdom/firstPage/umbrella?status=b";
             }else {
                 moneys = data.result;
                 if (moneys == "0") {
@@ -36,7 +36,7 @@ var umbrellaPayInit=function(){
                     dataType:'json',
                     success:function(data) {
                         if(data.openid=="none"){
-                            window.location.href = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+                            window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
                         }
                     },
                     error : function() {
@@ -50,7 +50,7 @@ var umbrellaPayInit=function(){
     doRefresh();
 };
 var payUmbrella=function(){
-    window.location.href="/wisdom/umbrella#/umbrellaJoin"
+    window.location.href="http://s165.baodf.com/wisdom/umbrella#/umbrellaJoin"
 };
 var GetQueryString = function(name)
 {
@@ -174,7 +174,7 @@ function wechatPay() {
                                             dataType: "json"
                                         });
                                     }else{
-                                        window.location.href = "http://s2.xiaork.cn/wisdom/firstPage/umbrella?status=a";
+                                        window.location.href = "http://s251.baodf.com/wisdom/firstPage/umbrella?status=a";
                                     }
                                 },
                                 dataType: "json"
@@ -194,7 +194,7 @@ function wechatPay() {
             }
         });
     }else{
-        window.location.href = "http://s2.xiaork.cn/wisdom/firstPage/umbrella?status=a";
+        window.location.href = "http://s251.baodf.com/wisdom/firstPage/umbrella?status=a";
     }
 }
 /*关闭关注二维码提示*/
