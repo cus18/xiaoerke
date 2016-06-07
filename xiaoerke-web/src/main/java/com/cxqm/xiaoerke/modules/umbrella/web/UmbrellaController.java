@@ -121,6 +121,7 @@ public class UmbrellaController  {
         BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
         babyUmbrellaInfo.setOpenid(openid);
         babyUmbrellaInfo.setUmberllaMoney(200000);
+        babyUmbrellaInfo.setTruePayMoneys(5+"");
         Integer res = babyUmbrellaInfoSerivce.saveBabyUmbrellaInfo(babyUmbrellaInfo);
 
 
@@ -259,6 +260,7 @@ public class UmbrellaController  {
             Map<String, Object> m=list.get(0);
             if(m.get("pay_result")!=null&&m.get("pay_result").equals("fail")&& (m.get("baby_id") == null || m.get("baby_id").equals(""))) {
                 result.put("result",1);
+                result.put("type","pay");
                 return result;
             }
                 if (m.get("baby_id") != null && !m.get("baby_id").equals("")) {
@@ -352,6 +354,7 @@ public class UmbrellaController  {
         babyUmbrellaInfo.setOpenid(openid);
         babyUmbrellaInfo.setUmberllaMoney(200000);
         babyUmbrellaInfo.setTruePayMoneys(res);
+        babyUmbrellaInfo.setVersion("a");
         if(res.equals("0")){
             babyUmbrellaInfo.setPayResult("success");
             babyUmbrellaInfo.setActivationTime(new Date());
@@ -429,7 +432,7 @@ public class UmbrellaController  {
               //0 男 1 女
             if(info.getSex()==2){
               showFather = false;
-            }else{
+            }else if(info.getSex()==3){
               showMother = false;
             }
 
@@ -455,6 +458,21 @@ public class UmbrellaController  {
             return resultMap;
         }
         resultMap.put("openid",openid);
+        return resultMap;
+    }
+
+    /**
+     * 支付页面openid
+     */
+    @RequestMapping(value = "/updateBabyUmbrellaInfoIfShare", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> updateBabyUmbrellaInfoIfShare(@RequestBody Map<String, Object> params){
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
+        babyUmbrellaInfo.setId(Integer.parseInt(params.get("id").toString()));
+        Integer res=babyUmbrellaInfoSerivce.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
+        resultMap.put("result",res);
         return resultMap;
     }
 

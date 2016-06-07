@@ -216,4 +216,9 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
         }
       return null;
     }
+
+    @Override
+    public int updateBabyUmbrellaInfoIfShare(BabyUmbrellaInfo babyUmbrellaInfo) {
+        return babyUmbrellaInfoDao.updateBabyUmbrellaInfoIfShare(babyUmbrellaInfo);
+    }
 }

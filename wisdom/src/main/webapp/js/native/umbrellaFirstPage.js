@@ -9,44 +9,25 @@ document.write('<scr'+'ipt src="' + webpath + '/js/libs/angular-route.min.js?ver
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.event.drag-1.5.min.js"></scr'+'ipt>');
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.touchSlider.js"></scr'+'ipt>');
 
-var attentionLock=false;
+var attentionLock=true;
 var version="b"; /*方案版本*/
 
 var shareUmbrellaId="0";
 var umbrellaFirstPageInit = function() {
-    //version=GetQueryString("status");
+    version=GetQueryString("status");
+    ifExistOrder();
     /*获取当前年月日*/
     var date = new Date();
      date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
      $("#date").html(date);
-    /*a版本和b版本的内容变化*/
-    var content="";
-    var textIntro="";
-    if(version=="a"){
-        content='<img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic1a.png" >'
-           + '<div class="f4 c3"><span class="c12">5元</span>即加入</div>'
-            +'<div class="f4 c3">免单随时享</div>'
-        textIntro=' 您只需支付<span class="c11">最多5元即可加入</span>' ;
-        $('.introPic li').eq(0).html(content);
-        $('#textIntro').html(textIntro);
-        $(".helpPlan .pic img").attr("src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/help_pic1a.png");
-    } else{
-        content='<img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic1b.png" >'
-            + '<div class="f4 c3">现在参与</div>'
-            +'<div class="f4 c3"><span class="c12">免费</span>加入 </div>';
-        textIntro=' <span class="c11">现阶段免费加入</span>' ;
-        $('.introPic li').eq(0).html(content);
-        $('#textIntro').html(textIntro);
-        $(".helpPlan .pic img").attr("src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/help_pic1b.png");
-    }
-    ifExistOrder();
+
     //获取首页数据
     $.ajax({
         type: 'POST',
         url: "umbrella/firstPageDataCount",
         contentType: "application/json; charset=utf-8",
         success: function(result){
-            var count=result.count;
+            var count=result.count*2;
             $("#count").html(count);
         },
         dataType: "json"
@@ -57,7 +38,7 @@ var umbrellaFirstPageInit = function() {
         url: "umbrella/firstPageDataTodayCount",
         contentType: "application/json; charset=utf-8",
         success: function(result){
-            var todayCount=result.todayCount;
+            var todayCount=result.todayCount*2;
             $("#todayCount").html(todayCount);
         },
         dataType: "json"
@@ -94,27 +75,26 @@ var umbrellaFirstPageInit = function() {
 }
 
 function scanQRCode(){
-    var shareid = GetQueryString("id");
-    if(shareid!="0") {
-        $.ajax({
-            type: 'POST',
-            url: "umbrella/getUserQRCode",
-            contentType: "application/json; charset=utf-8",
-            async:false,
-            data:"{'id':'"+shareid+"'}",
-            success: function (data) {
-                console.log("s",data.qrcode);
-                $("#QRCode").attr("src",data.qrcode);
-            },
-            dataType: "json"
-        });
-    }
+    var shareid = GetQueryString("id")==null?120000000:GetQueryString("id");
+    $.ajax({
+        type: 'POST',
+        url: "umbrella/getUserQRCode",
+        contentType: "application/json; charset=utf-8",
+        async:false,
+        data:"{'id':'"+shareid+"'}",
+        success: function (data) {
+            console.log("s",data.qrcode);
+            $("#QRCode").attr("src",data.qrcode);
+        },
+        dataType: "json"
+    });
 }
 
 function  joinUs(){
     $.ajax({
         type: 'POST',
         url: "umbrella/joinUs",
+        data:"{'version':'"+version+"'}",
         contentType: "application/json; charset=utf-8",
         async:false,
         success: function(data){
@@ -171,7 +151,17 @@ function loadShare(){
                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                         success: function (res) {
                             //记录用户分享文章
-                            recordLogs("Umbrella_shareMoment");
+                            $.ajax({
+                                type: 'POST',
+                                url: "umbrella/updateBabyUmbrellaInfoIfShare",
+                                data:"{'id':'"+shareUmbrellaId+"'}",
+                                contentType: "application/json; charset=utf-8",
+                                success: function(result){
+                                    var todayCount=result.todayCount;
+                                    $("#todayCount").html(todayCount);
+                                },
+                                dataType: "json"
+                            });
 
                         },
                         fail: function (res) {
@@ -183,7 +173,17 @@ function loadShare(){
                         link:"http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+shareUmbrellaId, // 分享链接
                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                         success: function (res) {
-                            recordLogs("Umbrella_shareFirend");
+                            $.ajax({
+                                type: 'POST',
+                                url: "umbrella/updateBabyUmbrellaInfoIfShare",
+                                data:"{'id':'"+shareUmbrellaId+"'}",
+                                contentType: "application/json; charset=utf-8",
+                                success: function(result){
+                                    var todayCount=result.todayCount;
+                                    $("#todayCount").html(todayCount);
+                                },
+                                dataType: "json"
+                            });
                         },
                         fail: function (res) {
                         }
@@ -209,10 +209,34 @@ function  ifExistOrder(){
                 shareUmbrellaId = data.umbrella.id;
                 loadShare();
             }else{
+                if(data.type=="pay"){
+                    version="a";
+                }
                 $("#NoShareDiv").show();
                 $("#shareDiv").hide();
                 shareUmbrellaId=120000000;
                 loadShare();
+            }
+
+            /*a版本和b版本的内容变化*/
+            var content="";
+            var textIntro="";
+            if(version=="a"){
+                content='<img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic1a.png" >'
+                    + '<div class="f4 c3"><span class="c12">5元</span>即加入</div>'
+                    +'<div class="f4 c3">免单随时享</div>'
+                textIntro=' 您只需支付<span class="c11">最多5元即可加入</span>' ;
+                $('.introPic li').eq(0).html(content);
+                $('#textIntro').html(textIntro);
+                $(".helpPlan .pic img").attr("src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/help_pic1a.png");
+            } else{
+                content='<img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic1b.png" >'
+                    + '<div class="f4 c3">现在参与</div>'
+                    +'<div class="f4 c3"><span class="c12">免费</span>加入 </div>';
+                textIntro=' <span class="c11">现阶段免费加入</span>' ;
+                $('.introPic li').eq(0).html(content);
+                $('#textIntro').html(textIntro);
+                $(".helpPlan .pic img").attr("src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/help_pic1b.png");
             }
         },
         dataType: "json"
@@ -270,7 +294,7 @@ var myGuarantee = function() {
 
 /*跳转到领取成功页面*/
 var goJoin = function() {
-    if(attentionLock){
+    if(!attentionLock){
         $(".c-shadow").show();
         $(".shadow-content.attention").show();
     }else if(version=="b"){
