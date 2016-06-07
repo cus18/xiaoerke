@@ -153,7 +153,7 @@ function loadShare(){
                             $.ajax({
                                 type: 'POST',
                                 url: "umbrella/updateBabyUmbrellaInfoIfShare",
-                                data:{id:shareUmbrellaId},
+                                data:"{'id':'"+shareUmbrellaId+"'}",
                                 contentType: "application/json; charset=utf-8",
                                 success: function(result){
                                     var todayCount=result.todayCount;
@@ -175,7 +175,7 @@ function loadShare(){
                             $.ajax({
                                 type: 'POST',
                                 url: "umbrella/updateBabyUmbrellaInfoIfShare",
-                                data:{id:shareUmbrellaId},
+                                data:"{'id':'"+shareUmbrellaId+"'}",
                                 contentType: "application/json; charset=utf-8",
                                 success: function(result){
                                     var todayCount=result.todayCount;
