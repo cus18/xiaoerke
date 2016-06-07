@@ -36,7 +36,6 @@
                     //endYear:2099 //结束年份
                 };
                 $("#birthday").mobiscroll(opt);
-                alert("chushiha");
             };
 
             $scope.save=function(){
