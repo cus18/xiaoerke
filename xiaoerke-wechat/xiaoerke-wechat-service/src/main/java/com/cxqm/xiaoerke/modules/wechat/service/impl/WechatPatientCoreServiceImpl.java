@@ -456,6 +456,19 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 					if("a".equals(list.get(0).get("version"))){
 						tourl = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
 						newBabyUmbrellaInfo.setVersion("a");
+						Map<String, Object> result=new HashMap<String, Object>();
+						double ram=Math.random() * 5;
+						while (ram<1){
+							ram=Math.random() * 5;
+						}
+						String res=String.format("%.0f", ram);
+						newBabyUmbrellaInfo.setTruePayMoneys(res);
+						if(res.equals("0")){
+							newBabyUmbrellaInfo.setPayResult("success");
+							newBabyUmbrellaInfo.setActivationTime(new Date());
+						}else {
+							newBabyUmbrellaInfo.setPayResult("fail");
+						}
 					}else{
 						tourl = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellab";
 					}
