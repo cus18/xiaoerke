@@ -288,7 +288,8 @@ var cancelRemind = function() {
 
 /*跳转到参与成功页面*/
 var myGuarantee = function() {
-    window.location.href = "umbrella#/umbrellaJoin/"+new Date().getTime();
+    var shareid = GetQueryString("id")==null?120000000:GetQueryString("id");
+    window.location.href = "umbrella#/umbrellaJoin/"+new Date().getTime()+"/"+shareid;
 
 }
 
