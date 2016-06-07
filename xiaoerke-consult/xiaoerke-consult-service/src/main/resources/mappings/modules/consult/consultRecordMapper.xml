@@ -163,4 +163,13 @@
     senderName = #{senderName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <insert id="insertIllnessRelationExecute" parameterType="java.util.Map">
+    INSERT INTO doctor_illness_relation(id,sys_doctor_id,sys_illness_id)
+    VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.id},#{item.doctorId},#{item.sys_illness_id})
+    </foreach>
+  </insert>
+
 </mapper>

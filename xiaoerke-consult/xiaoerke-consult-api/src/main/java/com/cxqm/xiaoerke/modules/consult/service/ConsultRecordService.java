@@ -23,6 +23,8 @@ public interface ConsultRecordService {
 
     int insert(ConsultRecordVo record);
 
+    int insertList(List<ConsultRecordVo> record);
+
     int insertSelective(ConsultRecordVo record);
 
     ConsultRecordVo selectByPrimaryKey(Long id);

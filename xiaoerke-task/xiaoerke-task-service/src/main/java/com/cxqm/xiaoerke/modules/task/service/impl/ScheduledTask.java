@@ -1139,7 +1139,7 @@ public class ScheduledTask {
         calendar.add(Calendar.DATE, -1);
         Date oldDate = calendar.getTime();
         Query query = new Query().addCriteria(Criteria.where("createDate").gte(oldDate).andOperator(Criteria.where("createDate").lte(newDate)));
-
+        List<ConsultRecordVo> consultRecordVoList = new ArrayList<ConsultRecordVo>();
         List<ConsultRecordMongoVo> consultRecordMongoVos = consultRecordService.getCurrentUserHistoryRecord(query);
         Iterator<ConsultRecordMongoVo> iterator = consultRecordMongoVos.iterator();
         while (iterator.hasNext()){
@@ -1152,10 +1152,11 @@ public class ScheduledTask {
             consultRecordVo.setCreateDate(consultRecordMongoVo.getCreateDate());
             consultRecordVo.setDoctorName(consultRecordMongoVo.getDoctorName());
             consultRecordVo.setSenderName(consultRecordMongoVo.getSenderName());
-            consultRecordVo.setMessage( EmojiFilter.coverEmoji(consultRecordMongoVo.getMessage()));
+            consultRecordVo.setMessage(EmojiFilter.coverEmoji(consultRecordMongoVo.getMessage()));
             consultRecordVo.setCsuserId(consultRecordMongoVo.getCsUserId());
             consultRecordVo.setSenderId(consultRecordMongoVo.getSenderId());
-            consultRecordService.insert(consultRecordVo);
+            consultRecordVoList.add(consultRecordVo);
+            consultRecordService.insertList(consultRecordVoList);
         }
     }
 
