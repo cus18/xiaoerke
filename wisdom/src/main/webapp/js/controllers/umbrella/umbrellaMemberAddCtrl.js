@@ -43,7 +43,7 @@
                 var sex=$scope.sexItem;
                 var name=$scope.info.babyName;
                 if(birthday==''||sex==''||name == ''){
-                    alert("信息缺失");
+                    alert("资料信息不完整,请完善");
                     return;
                 }
                 addFamily.save({"sex":sex,"name":name,"birthDay":birthday,"id":$stateParams.id},function(data){
