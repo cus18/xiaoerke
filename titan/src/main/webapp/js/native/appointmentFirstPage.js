@@ -92,8 +92,6 @@ var chooseMenu=function(item,index){
 
 }
 
-
-
 /*医院列表*/
 var chooseHospital = function(){
 

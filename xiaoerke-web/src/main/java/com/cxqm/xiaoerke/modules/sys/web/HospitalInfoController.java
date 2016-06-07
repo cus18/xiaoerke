@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.sys.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.FrontUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
@@ -55,6 +57,7 @@ public class HospitalInfoController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> listHospital(@RequestBody Map<String, Object> params) {
+//		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         return hospitalInfoService.listAllHospital(params);
 	}
 

@@ -60,10 +60,6 @@ public class ConsultWechatController extends BaseController {
     @Autowired
     private ConsultRecordService consultRecordService;
 
-    @Autowired
-    private ConsultSessionService consultSessionService;
-
-
     private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
     @RequestMapping(value = "/conversation", method = {RequestMethod.POST, RequestMethod.GET})
