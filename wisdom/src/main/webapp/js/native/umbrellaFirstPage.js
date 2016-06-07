@@ -28,6 +28,7 @@ var umbrellaFirstPageInit = function() {
         contentType: "application/json; charset=utf-8",
         success: function(result){
             var count=result.count*2;
+            $("#totalUmbrellaMoney").html(result.count*5);
             $("#count").html(count);
         },
         dataType: "json"
@@ -44,16 +45,16 @@ var umbrellaFirstPageInit = function() {
         dataType: "json"
     });
 
-    $.ajax({
-        type: 'POST',
-        url: "umbrella/firstPageDataTotalUmbrellaMoney",
-        contentType: "application/json; charset=utf-8",
-        success: function(result){
-            var totalUmbrellaMoney=result.totalUmbrellaMoney;
-            $("#totalUmbrellaMoney").html(totalUmbrellaMoney);
-        },
-        dataType: "json"
-    });
+    // $.ajax({
+    //     type: 'POST',
+    //     url: "umbrella/firstPageDataTotalUmbrellaMoney",
+    //     contentType: "application/json; charset=utf-8",
+    //     success: function(result){
+    //         var totalUmbrellaMoney=result.totalUmbrellaMoney;
+    //         $("#totalUmbrellaMoney").html(totalUmbrellaMoney);
+    //     },
+    //     dataType: "json"
+    // });
 
     //通过openid 获取当前用户是否关注
     $.ajax({
