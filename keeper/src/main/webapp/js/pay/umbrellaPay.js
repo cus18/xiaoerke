@@ -180,3 +180,8 @@ function wechatPay() {
         window.location.href = "http://s2.xiaork.cn/wisdom/firstPage/umbrella?status=a";
     }
 }
+/*关闭关注二维码提示*/
+var cancelRemind = function() {
+    $(".c-shadow").hide();
+    $(".shadow-content").hide();
+}
