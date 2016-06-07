@@ -19,6 +19,15 @@ public class BabyUmbrellaInfo {
     private Integer parentType;
     private String truePayMoneys;
     private String payResult;
+    private String version;
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
 
     public String getTruePayMoneys() {
         return truePayMoneys;
