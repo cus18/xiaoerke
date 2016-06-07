@@ -30,7 +30,8 @@
             };
             //添加成员
             $scope.addMember=function(){
-                $state.go("umbrellaMemberAdd",{id:$scope.umbrellaId});
+                // $state.go("umbrellaMemberAdd",{id:$scope.umbrellaId});
+                window.location.href ="../wisdom/umbrella?value="+new Date().getTime()+"#/umbrellaMemberAdd/"+$scope.umbrellaId;
             }
             var compareDate = function (start,end){
                 if(start==null||start.length==0||end==null||end.length==0){

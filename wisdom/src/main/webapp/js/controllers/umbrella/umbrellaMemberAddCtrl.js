@@ -56,14 +56,14 @@
                 });
             };
             $scope.initSelect = function () {
-                // $scope.selectBirthday();
+                $scope.selectBirthday();
             }
 
             $scope.$on('$ionicView.enter', function(){
                 $("#birthday").val("");
                 $scope.sexItem = '';
                 $scope.info.babyName = '';
-                $scope.selectBirthday();
+                // $scope.selectBirthday();
                 cheackFamilyMembers.save({id:$stateParams.id},function(data){
                     console.log(data)
                     $scope.selectInfo = data;

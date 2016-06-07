@@ -24,7 +24,7 @@
 
             $scope.addMember=function(){
                 // $state.go("umbrellaMemberAdd",{id:$stateParams.id});
-                window.location.href ="../wisdom/umbrella#/umbrellaMemberAdd/"+$stateParams.id;
+                window.location.href ="../wisdom/umbrella?value="+new Date().getTime()+"#/umbrellaMemberAdd/"+$stateParams.id;
             }
 
             $scope.immediateActive=function(){
