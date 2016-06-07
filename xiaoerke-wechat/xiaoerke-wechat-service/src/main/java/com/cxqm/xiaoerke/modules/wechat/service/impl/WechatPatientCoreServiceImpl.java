@@ -425,7 +425,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			String id = EventKey.split("_")[1];
 			param.put("id",id);
 			List<Map<String,Object>> list = babyUmbrellaInfoService.getBabyUmbrellaInfo(param);
-			String tourl = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellab";
+			String tourl = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellab";
 			if(list1.size()==0){//用户第一次加入保护伞
 				BabyUmbrellaInfo newBabyUmbrellaInfo = new BabyUmbrellaInfo();
 				if(list.size()!=0){
@@ -446,7 +446,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 							nickName = StringUtils.isNotNull(wa.getNickname())?wa.getNickname():"";
 						}
 						String title = "恭喜您，您的好友"+nickName+"已成功加入。您既帮助了朋友，也提升了2万保障金！";
-						String templateId = "cTAAFl0Qn1hIiwj_PV-O-HPQ1P6RRHj-TQHGcr_mUdo";//b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg
+						String templateId = "b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg";
 						String keyword1 = "您已拥有"+babyUmbrellaInfo.getUmberllaMoney()/10000+"万的保障金，还需邀请"+(400000-umbrellaMoney)/20000+"位好友即可获得最高40万保障金。";
 						String keyword2 = StringUtils.isNotNull(babyId)?"观察期":"待激活";
 						String remark = "邀请一位好友，增加2万保额，最高可享受40万保障！";
@@ -454,7 +454,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 						WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, fromOpenId, templateId);
 					}
 					if("a".equals(list.get(0).get("version"))){
-						tourl = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+						tourl = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
 						newBabyUmbrellaInfo.setVersion("a");
 						Map<String, Object> result=new HashMap<String, Object>();
 						double ram=Math.random() * 5;
@@ -510,7 +510,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 							nickName = StringUtils.isNotNull(wa.getNickname()) ? wa.getNickname() : "";
 						}
 						String title = "恭喜您，您的好友" + nickName + "已成功加入。您既帮助了朋友，也提升了2万保障金！";
-						String templateId = "cTAAFl0Qn1hIiwj_PV-O-HPQ1P6RRHj-TQHGcr_mUdo";//b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg
+						String templateId = "b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg";
 						String keyword1 = "您已拥有" + babyUmbrellaInfo.getUmberllaMoney() / 10000 + "万的保障金，还需邀请" + (400000 - umbrellaMoney) / 20000 + "位好友即可获得最高40万保障金。";
 						String keyword2 = StringUtils.isNotNull(babyId) ? "观察期" : "待激活";
 						String remark = "邀请一位好友，增加2万保额，最高可享受40万保障！";
@@ -523,7 +523,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setTitle("宝大夫送你一份见面礼");
 			article.setDescription("恭喜您已成功领取专属于宝宝的40万高额保障金");
 			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
-			article.setUrl("http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa");
+			article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa");
 			articleList.add(article);
 			umbrellascan = false;
 		}
