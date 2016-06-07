@@ -38,7 +38,7 @@ var umbrellaFirstPageInit = function() {
         url: "umbrella/firstPageDataTodayCount",
         contentType: "application/json; charset=utf-8",
         success: function(result){
-            var todayCount=result.todayCount;
+            var todayCount=result.todayCount*2;
             $("#todayCount").html(todayCount);
         },
         dataType: "json"
@@ -49,7 +49,7 @@ var umbrellaFirstPageInit = function() {
         url: "umbrella/firstPageDataTotalUmbrellaMoney",
         contentType: "application/json; charset=utf-8",
         success: function(result){
-            var totalUmbrellaMoney=result.totalUmbrellaMoney;
+            var totalUmbrellaMoney=result.totalUmbrellaMoney*2;
             $("#totalUmbrellaMoney").html(totalUmbrellaMoney);
         },
         dataType: "json"
