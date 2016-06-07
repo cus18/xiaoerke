@@ -14,6 +14,7 @@ var version="b"; /*方案版本*/
 
 var shareUmbrellaId="0";
 var umbrellaFirstPageInit = function() {
+    cancelRemind();
     version=GetQueryString("status");
     ifExistOrder();
     /*获取当前年月日*/
