@@ -150,7 +150,20 @@ function wechatPay() {
                     paySign: obj.paySign,  // 支付签名
                     success: function (res) {
                         if (res.errMsg == "chooseWXPay:ok") {
-                            window.location.href = "http://s2.xiaork.cn/wisdom/firstPage/umbrella?status=a";
+                            var shareid = GetQueryString("shareId")==null?130000000:GetQueryString("shareId");
+                            $.ajax({
+                                type: 'POST',
+                                url: "umbrella/getUserQRCode",
+                                contentType: "application/json; charset=utf-8",
+                                async:false,
+                                data:"{'id':'"+shareid+"'}",
+                                success: function (data) {
+                                    console.log("s",data.qrcode);
+                                    $("#QRCode").attr("src",data.qrcode);
+                                },
+                                dataType: "json"
+                            });
+                            // window.location.href = "http://s2.xiaork.cn/wisdom/firstPage/umbrella?status=a";
                         } else {
                             alert("支付失败,请重新支付")
                         }
