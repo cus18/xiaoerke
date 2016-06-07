@@ -150,19 +150,31 @@ function wechatPay() {
                     paySign: obj.paySign,  // 支付签名
                     success: function (res) {
                         if (res.errMsg == "chooseWXPay:ok") {
-                            var shareid = GetQueryString("shareId")==null?130000000:GetQueryString("shareId");
                             $.ajax({
                                 type: 'POST',
-                                url: "umbrella/getUserQRCode",
+                                url: "umbrella/getOpenidStatus",
                                 contentType: "application/json; charset=utf-8",
-                                async:false,
-                                data:"{'id':'"+shareid+"'}",
-                                success: function (data) {
-                                    console.log("s",data.qrcode);
-                                    $("#QRCode").attr("src",data.qrcode);
+                                success: function(result){
+                                    var status=result.status;
+                                    if(status=="1"){
+                                        var shareid = GetQueryString("shareId")==null?130000000:GetQueryString("shareId");
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: "umbrella/getUserQRCode",
+                                            contentType: "application/json; charset=utf-8",
+                                            async:false,
+                                            data:"{'id':'"+shareid+"'}",
+                                            success: function (data) {
+                                                $("#QRCode").attr("src",data.qrcode);
+                                                $("#QRCodeDIV").show();
+                                            },
+                                            dataType: "json"
+                                        });
+                                    }
                                 },
                                 dataType: "json"
                             });
+
                             // window.location.href = "http://s2.xiaork.cn/wisdom/firstPage/umbrella?status=a";
                         } else {
                             alert("支付失败,请重新支付")
