@@ -27,7 +27,7 @@ var umbrellaFirstPageInit = function() {
         url: "umbrella/firstPageDataCount",
         contentType: "application/json; charset=utf-8",
         success: function(result){
-            var count=result.count;
+            var count=result.count*2;
             $("#count").html(count);
         },
         dataType: "json"
@@ -38,7 +38,7 @@ var umbrellaFirstPageInit = function() {
         url: "umbrella/firstPageDataTodayCount",
         contentType: "application/json; charset=utf-8",
         success: function(result){
-            var todayCount=result.todayCount;
+            var todayCount=result.todayCount*2;
             $("#todayCount").html(todayCount);
         },
         dataType: "json"
@@ -153,7 +153,7 @@ function loadShare(){
                             $.ajax({
                                 type: 'POST',
                                 url: "umbrella/updateBabyUmbrellaInfoIfShare",
-                                data:{id:shareUmbrellaId},
+                                data:"{'id':'"+shareUmbrellaId+"'}",
                                 contentType: "application/json; charset=utf-8",
                                 success: function(result){
                                     var todayCount=result.todayCount;
@@ -175,7 +175,7 @@ function loadShare(){
                             $.ajax({
                                 type: 'POST',
                                 url: "umbrella/updateBabyUmbrellaInfoIfShare",
-                                data:{id:shareUmbrellaId},
+                                data:"{'id':'"+shareUmbrellaId+"'}",
                                 contentType: "application/json; charset=utf-8",
                                 success: function(result){
                                     var todayCount=result.todayCount;
