@@ -109,7 +109,7 @@ public class PayNotificationController {
 				payRecord.setStatus("success");
 				payRecord.setReceiveDate(new Date());
 				Map wechatParameter = systemService.getWechatParameter();
-				patientRegisterService.handleWxMemberServiceNotifyInfo(accountNeedPay,payRecord,
+				patientRegisterService.handleWxMemberServiceNotifyInfo(accountNeedPay, payRecord,
 						(String) wechatParameter.get("token"));
 			}
             return  XMLUtil.setXML("SUCCESS", "");
@@ -155,8 +155,8 @@ public class PayNotificationController {
 				System.out.println("orderId:" + insuranceId);
 				if(insuranceMap.get("fee_type").toString().equals("customer")){
 					Map<String, Object> params = new HashMap<String, Object>();
-					params.put("payStatus","success");
-					params.put("id",insuranceId);
+					params.put("payStatus", "success");
+					params.put("id", insuranceId);
 					patientRegisterPraiseService.updateCustomerEvaluation(params);
 					payRecord.getId();//修改pay_record表状态
 					payRecord.setStatus("success");
@@ -395,13 +395,13 @@ public class PayNotificationController {
 
 		String title = "宝大夫送你一份见面礼";
 		String description = "恭喜您已成功领取专属于宝宝的40万高额保障金";
-		String url = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellab";
+		String url = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
 		String picUrl = "http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella";
 		String message = "{\"touser\":\""+toOpenId+"\",\"msgtype\":\"news\",\"news\":{\"articles\": [{\"title\":\""+ title +"\",\"description\":\""+description+"\",\"url\":\""+ url +"\",\"picurl\":\""+picUrl+"\"}]}}";
 
 		String jsonobj = HttpRequestUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" +
 				token + "", "POST", message);
-		System.out.println(jsonobj+"===============================");
+		System.out.println(jsonobj + "===============================");
 	}
 
 
