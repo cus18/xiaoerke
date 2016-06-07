@@ -70,18 +70,18 @@
 
 
     <insert id="saveBabyUmbrellaInfo" parameterType="com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `baby_umbrellainfo` ( `openid`,create_time,umbrella_money
+        INSERT INTO `baby_umbrellainfo` ( `openid`,create_time,umbrella_money,version
         <if test="truePayMoneys != null">
-            ,true_pay_moneys,pay_result,version
+            ,true_pay_moneys,pay_result
         </if>
         <if test="activationTime != null">
             ,activation_time
         </if>
         )
         VALUES
-        ( #{openid},now(),#{umbrellaMoney}
+        ( #{openid},now(),#{umbrellaMoney},#{version}
         <if test="truePayMoneys != null">
-         , #{truePayMoneys},#{payResult},#{version}
+         , #{truePayMoneys},#{payResult}
         </if>
         <if test="activationTime != null">
             ,now()
