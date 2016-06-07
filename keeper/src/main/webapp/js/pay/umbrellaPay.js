@@ -170,6 +170,8 @@ function wechatPay() {
                                             },
                                             dataType: "json"
                                         });
+                                    }else{
+                                        window.location.href = "http://s2.xiaork.cn/wisdom/firstPage/umbrella?status=a";
                                     }
                                 },
                                 dataType: "json"
