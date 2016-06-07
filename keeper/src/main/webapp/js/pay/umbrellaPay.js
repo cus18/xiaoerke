@@ -1,7 +1,7 @@
 var moneys="";
 var umbrelladId="";
 var umbrellaPayInit=function(){
-
+    $("#QRCodeDIV").hide();
     $("#FreeOrder").hide();
     $("#payButton").attr("disabled","disabled");
     $.ajax({
