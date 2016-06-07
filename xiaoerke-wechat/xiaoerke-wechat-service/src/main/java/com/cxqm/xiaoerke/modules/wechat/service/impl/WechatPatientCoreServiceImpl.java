@@ -425,7 +425,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			String id = EventKey.split("_")[1];
 			param.put("id",id);
 			List<Map<String,Object>> list = babyUmbrellaInfoService.getBabyUmbrellaInfo(param);
-			String tourl = "";
+			String tourl = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellab";
 			if(list1.size()==0){//用户第一次加入保护伞
 				BabyUmbrellaInfo newBabyUmbrellaInfo = new BabyUmbrellaInfo();
 				if(list.size()!=0){
@@ -453,7 +453,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 						String url = "";
 						WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, fromOpenId, templateId);
 					}
-					if("a".equals(list.get(0).get("version"))&&!EventKey.contains("120000000")){
+					if("a".equals(list.get(0).get("version"))){
 						tourl = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
 						newBabyUmbrellaInfo.setVersion("a");
 						Map<String, Object> result=new HashMap<String, Object>();
@@ -469,8 +469,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 						}else {
 							newBabyUmbrellaInfo.setPayResult("fail");
 						}
-					}else{
-						tourl = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellab";
 					}
 				}
 				newBabyUmbrellaInfo.setOpenid(toOpenId);
@@ -525,7 +523,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setTitle("宝大夫送你一份见面礼");
 			article.setDescription("恭喜您已成功领取专属于宝宝的40万高额保障金");
 			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
-			article.setUrl("http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellab");
+			article.setUrl("http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa");
 			articleList.add(article);
 			umbrellascan = false;
 		}
