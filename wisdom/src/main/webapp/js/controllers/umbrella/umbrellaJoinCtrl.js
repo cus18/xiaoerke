@@ -54,7 +54,11 @@
                     if(data.umbrella.activation_time==null){
                         $scope.firstJoin=true;
                         $scope.umbrellaMoney=200000;
-                        $scope.umbrellaId=data.id;
+                        if(data.result==2){
+                            $scope.umbrellaId=data.umbrella.id;
+                        }else {
+                            $scope.umbrellaId = data.id;
+                        }
                         $scope.loadShare();
                         
                         updateActivationTime.save({"id":data.id}, function (data){
