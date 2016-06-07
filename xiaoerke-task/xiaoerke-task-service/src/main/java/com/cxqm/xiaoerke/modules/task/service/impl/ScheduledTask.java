@@ -1156,8 +1156,8 @@ public class ScheduledTask {
             consultRecordVo.setCsuserId(consultRecordMongoVo.getCsUserId());
             consultRecordVo.setSenderId(consultRecordMongoVo.getSenderId());
             consultRecordVoList.add(consultRecordVo);
-            consultRecordService.insertList(consultRecordVoList);
         }
+        consultRecordService.insertConsultRecordBatch(consultRecordVoList);
     }
 
 

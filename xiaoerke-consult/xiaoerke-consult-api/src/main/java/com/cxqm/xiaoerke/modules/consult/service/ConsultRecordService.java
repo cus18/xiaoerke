@@ -23,7 +23,7 @@ public interface ConsultRecordService {
 
     int insert(ConsultRecordVo record);
 
-    int insertList(List<ConsultRecordVo> record);
+    int insertConsultRecordBatch(List<ConsultRecordVo> record);
 
     int insertSelective(ConsultRecordVo record);
 
