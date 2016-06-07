@@ -3,11 +3,14 @@
  */
 package com.cxqm.xiaoerke.modules.sys.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.order.service.RegisterService;
+import com.cxqm.xiaoerke.modules.sys.dao.HospitalDao;
 import com.cxqm.xiaoerke.modules.sys.service.DoctorInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.HospitalInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.IllnessInfoService;
@@ -43,7 +46,7 @@ public class IllnessInfoController extends BaseController {
     
     @Autowired
 	private RegisterService registerService;
-	
+
     /**
      * 获取疾病一级分类
      * <p/>
