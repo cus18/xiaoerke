@@ -38,6 +38,9 @@
         <if test="notActive != null">
             and baby_id is NULL
         </if>
+        <if test="notShare != null">
+            and ifshare is NULL
+        </if>
         <if test="id != null">
             and id = #{id}
         </if>
