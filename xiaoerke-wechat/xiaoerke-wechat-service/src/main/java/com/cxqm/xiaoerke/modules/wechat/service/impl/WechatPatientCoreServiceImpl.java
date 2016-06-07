@@ -427,6 +427,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			List<Map<String,Object>> list = babyUmbrellaInfoService.getBabyUmbrellaInfo(param);
 			String tourl = "";
 			if(list1.size()==0&&!EventKey.contains("120000000")){//用户第一次加入保护伞
+				BabyUmbrellaInfo newBabyUmbrellaInfo = new BabyUmbrellaInfo();
 				if(list.size()!=0){
 					if((Integer) list.get(0).get("umbrella_money")<400000){
 						String fromOpenId = (String)list.get(0).get("openid");//分享者openid
@@ -442,7 +443,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 						WechatAttention wa = wechatAttentionService.getAttentionByOpenId(toOpenId);
 						String nickName = "";
 						if(wa!=null){
-							nickName = wa.getNickname();
+							nickName = StringUtils.isNotNull(wa.getNickname())?wa.getNickname():"";
 						}
 						String title = "恭喜您，您的好友"+nickName+"已成功加入。您既帮助了朋友，也提升了2万保障金！";
 						String templateId = "cTAAFl0Qn1hIiwj_PV-O-HPQ1P6RRHj-TQHGcr_mUdo";//b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg
@@ -454,10 +455,14 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 					}
 					if("a".equals(list.get(0).get("version"))){
 						tourl = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+						newBabyUmbrellaInfo.setVersion("a");
 					}else{
 						tourl = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellab";
 					}
 				}
+				newBabyUmbrellaInfo.setOpenid(toOpenId);
+				newBabyUmbrellaInfo.setUmberllaMoney(200000);
+				babyUmbrellaInfoService.saveBabyUmbrellaInfo(newBabyUmbrellaInfo);
 			}
 
 			article.setTitle("宝大夫送你一份见面礼");
