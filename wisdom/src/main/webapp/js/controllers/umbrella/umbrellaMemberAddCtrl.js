@@ -56,7 +56,7 @@
                 });
             };
             $scope.initSelect = function () {
-                $scope.selectBirthday();
+                // $scope.selectBirthday();
             }
 
             $scope.$on('$ionicView.enter', function(){
