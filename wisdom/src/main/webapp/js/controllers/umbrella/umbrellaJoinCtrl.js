@@ -12,11 +12,12 @@
             $scope.num=0;
             $scope.person=0;
             $scope.umbrellaId=0;
+            $scope.status="b";
 
             $scope.shareid=$stateParams.shareid;
 
             $scope.goDetail=function(){
-                window.location.href = "/wisdom/firstPage/umbrella";
+                window.location.href = "/wisdom/firstPage/umbrella?status="+$scope.status;
             };
             $scope.goActive=function(){
                 $state.go("umbrellaFillInfo",{id:$scope.umbrellaId});
@@ -71,13 +72,18 @@
                         $scope.umbrellaMoney=data.umbrella.umbrella_money;
                         $scope.num=data.umbrella.id-120000000;
                         $scope.umbrellaId=data.umbrella.id;
+                        if(data.umbrella.pay_result!="null"){
+                            $scope.status="a";
+                        }
                         $scope.loadShare();
                     }else if(data.result==3){
                         $scope.finally=true;
                         $scope.addFamily=true;
                         $scope.umbrellaMoney=data.umbrella.umbrella_money;
                         $scope.num=data.umbrella.id-120000000;
-
+                        if(data.umbrella.pay_result!="null"){
+                            $scope.status="a";
+                        }
                         var targetDate = new Date(data.umbrella.activation_time);
                             targetDate.setDate(new Date().getDate() + 180);
                         var targetDateUTC = targetDate.getTime();
