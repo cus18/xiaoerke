@@ -1,5 +1,5 @@
 <ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
-<ion-view view-title="{{title}}">
+<ion-view view-title="{{title}}" ng-init="initSelect()">
     <ion-content class="umbrellaMemberAdd bg4" overflow-scroll="true" style="top:0;">
         <ion-scroll direction="y" has-bouncing="true" >
             <div class="addMember bg1">
@@ -22,7 +22,8 @@
                         </dd>
                         <dd>
                             <span class=" w1">出生日期：</span>
-                            <input class=" w2" type="text" readonly="readonly" id="birthday" placeholder="选择宝宝的出生日期" >
+                            <!--<input class=" w2" type="text" readonly="readonly" id="birthday" placeholder="选择宝宝的出生日期" >-->
+                            <input class=" w2" type="text" readonly="readonly" id="birthday" placeholder="选择出生日期" >
                         </dd>
                     </dl>
             </div>
