@@ -426,10 +426,10 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			param.put("id",id);
 			List<Map<String,Object>> list = babyUmbrellaInfoService.getBabyUmbrellaInfo(param);
 			String tourl = "";
-			if(list1.size()==0&&!EventKey.contains("120000000")){//用户第一次加入保护伞
+			if(list1.size()==0){//用户第一次加入保护伞
 				BabyUmbrellaInfo newBabyUmbrellaInfo = new BabyUmbrellaInfo();
 				if(list.size()!=0){
-					if((Integer) list.get(0).get("umbrella_money")<400000){
+					if((Integer) list.get(0).get("umbrella_money")<400000&&!EventKey.contains("120000000")){
 						String fromOpenId = (String)list.get(0).get("openid");//分享者openid
 						String babyId = (String)list.get(0).get("baby_id");
 						Map parameter = systemService.getWechatParameter();
@@ -453,7 +453,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 						String url = "";
 						WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, fromOpenId, templateId);
 					}
-					if("a".equals(list.get(0).get("version"))){
+					if("a".equals(list.get(0).get("version"))&&!EventKey.contains("120000000")){
 						tourl = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
 						newBabyUmbrellaInfo.setVersion("a");
 						Map<String, Object> result=new HashMap<String, Object>();
@@ -484,9 +484,53 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setUrl(tourl);
 			articleList.add(article);
 			umbrellascan = false;
+		}else if(EventKey.indexOf("13")>-1){
+			String toOpenId = xmlEntity.getFromUserName();//扫码者openid
+			Map<String, Object> param1 = new HashMap<String, Object>();
+			param1.put("openid",toOpenId);
+			List<Map<String,Object>> list1 = babyUmbrellaInfoService.getBabyUmbrellaInfo(param1);
+			Map<String, Object> param = new HashMap<String, Object>();
+			String id = EventKey.split("_")[1];
+			param.put("id",id);
+			List<Map<String,Object>> list = babyUmbrellaInfoService.getBabyUmbrellaInfo(param);
+			if(list1.size()==0&&!EventKey.contains("130000000")){//用户第一次加入保护伞
+				if(list.size()!=0) {
+					if ((Integer) list.get(0).get("umbrella_money") < 400000) {
+						String fromOpenId = (String) list.get(0).get("openid");//分享者openid
+						String babyId = (String) list.get(0).get("baby_id");
+						Map parameter = systemService.getWechatParameter();
+						String token = (String) parameter.get("token");
+
+						BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
+						babyUmbrellaInfo.setId(Integer.parseInt(id));
+						int umbrellaMoney = (Integer) list.get(0).get("umbrella_money") + 20000;
+						babyUmbrellaInfo.setUmberllaMoney(umbrellaMoney);
+						babyUmbrellaInfoService.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
+						WechatAttention wa = wechatAttentionService.getAttentionByOpenId(toOpenId);
+						String nickName = "";
+						if (wa != null) {
+							nickName = StringUtils.isNotNull(wa.getNickname()) ? wa.getNickname() : "";
+						}
+						String title = "恭喜您，您的好友" + nickName + "已成功加入。您既帮助了朋友，也提升了2万保障金！";
+						String templateId = "cTAAFl0Qn1hIiwj_PV-O-HPQ1P6RRHj-TQHGcr_mUdo";//b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg
+						String keyword1 = "您已拥有" + babyUmbrellaInfo.getUmberllaMoney() / 10000 + "万的保障金，还需邀请" + (400000 - umbrellaMoney) / 20000 + "位好友即可获得最高40万保障金。";
+						String keyword2 = StringUtils.isNotNull(babyId) ? "观察期" : "待激活";
+						String remark = "邀请一位好友，增加2万保额，最高可享受40万保障！";
+						String url = "";
+						WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, fromOpenId, templateId);
+					}
+				}
+			}
+
+			article.setTitle("宝大夫送你一份见面礼");
+			article.setDescription("恭喜您已成功领取专属于宝宝的40万高额保障金");
+			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
+			article.setUrl("http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellab");
+			articleList.add(article);
+			umbrellascan = false;
 		}
 
-		if("newUser".equals(userType) && umbrellascan){//新用户关注发送保护伞信息
+		/*if("newUser".equals(userType) && umbrellascan){//新用户关注发送保护伞信息
 			if(!"umbrellaSendWechatMessageNewUserAttention".equals(CookieUtils.getCookie(request, "umbrellaSendWechatMessageNewUserAttention"))){//新用户关注，推送保护伞消息
 				CookieUtils.setCookie(response, "umbrellaSendWechatMessageNewUserAttention", "umbrellaSendWechatMessageNewUserAttention", 3600 * 24 * 365);
 				int count = babyUmbrellaInfoService.getUmbrellaCount();
@@ -496,7 +540,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				article.setUrl("http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrella");
 				articleList.add(article);
 			}
-		}
+		}*/
 
 		if(articleList.size() == 0){
 			return "";
