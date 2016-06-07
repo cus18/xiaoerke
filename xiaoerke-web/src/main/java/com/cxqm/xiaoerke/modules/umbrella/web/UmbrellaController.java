@@ -122,6 +122,7 @@ public class UmbrellaController  {
         babyUmbrellaInfo.setOpenid(openid);
         babyUmbrellaInfo.setUmberllaMoney(200000);
         babyUmbrellaInfo.setTruePayMoneys(5+"");
+        babyUmbrellaInfo.setVersion(params.get("version").toString());
         Integer res = babyUmbrellaInfoSerivce.saveBabyUmbrellaInfo(babyUmbrellaInfo);
 
 
