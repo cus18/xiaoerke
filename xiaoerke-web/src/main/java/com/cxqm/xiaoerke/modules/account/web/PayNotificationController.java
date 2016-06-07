@@ -379,7 +379,7 @@ public class PayNotificationController {
 					if(StringUtils.isNotNull(toOpenId)){
 						WechatAttention wa = wechatAttentionService.getAttentionByOpenId(toOpenId);
 						if(wa!=null){
-							nickName = wa.getNickname();
+							nickName = StringUtils.isNotNull(wa.getNickname())?wa.getNickname():"";
 						}
 					}
 				}
