@@ -90,7 +90,7 @@ public class UmbrellaController  {
     @RequestMapping(value = "/joinUs", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object>  joinUs(HttpServletRequest request,HttpSession session) {
+    Map<String, Object>  joinUs(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) {
         Map<String, Object> map=new HashMap<String, Object>();
         Map<String, Object> numm=new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session, request);
@@ -123,6 +123,8 @@ public class UmbrellaController  {
         babyUmbrellaInfo.setUmberllaMoney(200000);
         babyUmbrellaInfo.setTruePayMoneys(5+"");
         Integer res = babyUmbrellaInfoSerivce.saveBabyUmbrellaInfo(babyUmbrellaInfo);
+
+        String shareId=params.get("shareId").toString();
 
 
         Map<String, Object> result=new HashMap<String, Object>();
@@ -299,7 +301,7 @@ public class UmbrellaController  {
     }
 
     /**
-     * 判断用户是否存在过数据
+     *
      */
     @RequestMapping(value = "/updateTruePayMoney", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -471,7 +473,7 @@ public class UmbrellaController  {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
         babyUmbrellaInfo.setId(Integer.parseInt(params.get("id").toString()));
-        Integer res=babyUmbrellaInfoSerivce.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
+        Integer res=babyUmbrellaInfoSerivce.updateBabyUmbrellaInfoIfShare(babyUmbrellaInfo);
         resultMap.put("result",res);
         return resultMap;
     }

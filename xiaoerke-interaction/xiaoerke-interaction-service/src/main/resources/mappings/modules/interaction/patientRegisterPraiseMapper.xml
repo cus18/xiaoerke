@@ -463,7 +463,7 @@
         LEFT JOIN sys_doctor sd ON sd.sys_user_id = su.id
         LEFT JOIN sys_attention sa ON sa.openid = ce.openid
         WHERE
-        serviceAttitude in ('3','5')
+        serviceAttitude in ('3','5') AND ce.payStatus IS NOT NULL
         AND DATE_FORMAT(ce.createtime,'%Y-%m-%d') BETWEEN DATE_FORMAT(#{fromDate},'%Y-%m-%d')
         AND DATE_FORMAT(#{toDate},'%Y-%m-%d')
         GROUP BY

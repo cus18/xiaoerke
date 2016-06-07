@@ -323,10 +323,12 @@ public class PayNotificationController {
 				payRecord.setReceiveDate(new Date());
 				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
 				String insuranceId= insuranceMap.get("order_id").toString();
-				System.out.println("orderId:" + insuranceId);
+				String[] umbrellaId=insuranceId.split("_");
+				System.out.println("orderId:" + umbrellaId[0]);
+				System.out.println("shareId:" + umbrellaId[1]);
 				if(insuranceMap.get("fee_type").toString().equals("umbrella")){
 					BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
-					babyUmbrellaInfo.setId(Integer.parseInt(insuranceId));
+					babyUmbrellaInfo.setId(Integer.parseInt(umbrellaId[0]));
 					babyUmbrellaInfo.setPayResult("success");
 					babyUmbrellaInfo.setActivationTime(new Date());
 					babyUmbrellaInfoService.updateBabyUmbrellaInfoById(babyUmbrellaInfo);

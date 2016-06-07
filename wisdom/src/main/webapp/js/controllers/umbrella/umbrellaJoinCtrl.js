@@ -13,6 +13,8 @@
             $scope.person=0;
             $scope.umbrellaId=0;
 
+            $scope.shareid=$stateParams.shareid;
+
             $scope.goDetail=function(){
                 window.location.href = "/wisdom/firstPage/umbrella";
             };
@@ -48,7 +50,7 @@
                 return Inter_Days;
             }
             $scope.$on('$ionicView.enter', function(){
-                JoinUs.save(function(data){
+                JoinUs.save({"shareId":$scope.shareid},function(data){
                     if(data.umbrella.activation_time==null){
                         $scope.firstJoin=true;
                         $scope.umbrellaMoney=200000;

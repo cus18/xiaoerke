@@ -1,6 +1,8 @@
 package com.cxqm.xiaoerke.modules.sys.service.impl;
 
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.FrontUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
@@ -42,7 +44,7 @@ public class HospitalInfoServiceImpl implements HospitalInfoService {
 	 //查询系统内部所有医院
 	@Override
     public Page<HashMap<String, Object>> findPageAllHospital(Page<HashMap<String, Object>> page) {
-        return hospitalDao.findPageAllHospital(page);
+		return hospitalDao.findPageAllHospital(page);
     }
 
     @Override
@@ -146,6 +148,7 @@ public class HospitalInfoServiceImpl implements HospitalInfoService {
 		String pageSize = (String) params.get("pageSize");
 		Page<HashMap<String, Object>> page = FrontUtils.generatorPage(currentPage,
 				pageSize);
+
 		Page<HashMap<String, Object>> resultPage = hospitalDao.findPageAllHospital(page);
 
 		long tmp = FrontUtils.generatorTotalPage(resultPage);

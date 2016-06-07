@@ -294,13 +294,14 @@ var myGuarantee = function() {
 
 /*跳转到领取成功页面*/
 var goJoin = function() {
+    var shareid = GetQueryString("id")==null?120000000:GetQueryString("id");
     if(!attentionLock){
         $(".c-shadow").show();
         $(".shadow-content.attention").show();
     }else if(version=="b"){
-        window.location.href = "umbrella#/umbrellaJoin/"+new Date().getTime();
+        window.location.href = "umbrella#/umbrellaJoin/"+new Date().getTime()+"/"+shareid;
     }else if(version=="a"){
-        window.location.href = "../keeper/wxPay/patientPay.do?serviceType=umbrellaPay";
+        window.location.href = "../keeper/wxPay/patientPay.do?serviceType=umbrellaPay&shareId="+shareid;
     }
 }
 
