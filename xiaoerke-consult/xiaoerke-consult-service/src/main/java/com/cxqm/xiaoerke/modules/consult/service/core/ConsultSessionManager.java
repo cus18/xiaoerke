@@ -2,10 +2,7 @@ package com.cxqm.xiaoerke.modules.consult.service.core;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.config.Global;
-import com.cxqm.xiaoerke.common.utils.DateUtils;
-import com.cxqm.xiaoerke.common.utils.RandomUtils;
-import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
-import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
@@ -14,6 +11,7 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.impl.UserInfoServiceImpl;
@@ -23,6 +21,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -66,6 +65,8 @@ public class ConsultSessionManager {
     private AtomicInteger accessNumber = new AtomicInteger(1000);
 
     private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
+
+    private PatientRegisterPraiseService patientRegisterPraiseService = SpringContextHolder.getBean("patientRegisterPraiseServiceImpl");
 
     private ConsultSessionService consultSessionService = SpringContextHolder.getBean("consultSessionServiceImpl");
 
@@ -316,6 +317,7 @@ public class ConsultSessionManager {
             System.out.println("sessionId-----" + sessionId + "consultSession.getCsUserId()" + consultSession.getUserId());
             sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
             sessionRedisCache.putUserIdSessionIdPair(consultSession.getUserId(), sessionId);
+            saveCustomerEvaluation(consultSession);
             response.put("csChannel", csChannel);
             response.put("sessionId", sessionId);
             response.put("consultSession", consultSession);
@@ -324,6 +326,21 @@ public class ConsultSessionManager {
             return null;
         }
 
+    }
+    //记录评价信息
+    private void saveCustomerEvaluation(RichConsultSession consultSession) {
+        Map<String, Object> evaluationMap = new HashMap<String, Object>();
+        evaluationMap.put("openid", consultSession.getUserId());
+        evaluationMap.put("uuid", IdGen.uuid());
+        evaluationMap.put("starNum1", 0);
+        evaluationMap.put("starNum2", 0);
+        evaluationMap.put("starNum3", 0);
+        evaluationMap.put("doctorId", consultSession.getCsUserId());
+        evaluationMap.put("content", "");
+        evaluationMap.put("dissatisfied", null);
+        evaluationMap.put("redPacket", null);
+        evaluationMap.put("consultSessionId",consultSession.getId());
+        patientRegisterPraiseService.saveCustomerEvaluation(evaluationMap);
     }
 
     public int transferSession(Integer sessionId, String toCsUserId, String remark) {

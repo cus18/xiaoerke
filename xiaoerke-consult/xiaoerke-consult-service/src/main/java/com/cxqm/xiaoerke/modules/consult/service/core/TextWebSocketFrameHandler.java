@@ -114,30 +114,26 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 					}
 				}else if(richConsultSession.getSource().equals("wxcxqm")){
 					if(msgType==0){
-						//直接发送文本消息
-						Map<String, Object> evaluationMap = new HashMap<String, Object>();
-						evaluationMap.put("openid", userId);
-						evaluationMap.put("uuid", IdGen.uuid());
-						evaluationMap.put("starNum1", 0);
-						evaluationMap.put("starNum2", 0);
-						evaluationMap.put("starNum3", 0);
-						evaluationMap.put("doctorId", UserUtils.getUser().getId());
-						evaluationMap.put("content", "");
-						evaluationMap.put("dissatisfied", null);
-						evaluationMap.put("redPacket", null);
-						patientRegisterPraiseService.saveCustomerEvaluation(evaluationMap);
-
-						String content = ConsultSessionManager.KEY_CONSULT_CONTENT;
-						int nameIndex = content.indexOf(":");
+						String content = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
 						StringBuilder stringBuilder = new StringBuilder();
-						stringBuilder.append(content.substring(nameIndex, content.toCharArray().length - 1));
-						stringBuilder.append("\n ----------\n");
-						stringBuilder.append(content.substring(0,nameIndex));
-						stringBuilder.append(";");
-						stringBuilder.append("<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
-						stringBuilder.append(evaluationMap.get("uuid"));
-						stringBuilder.append("'>点击这里去评价</a>】");
-						WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());
+						//根据sessionId查询Evaluation表id
+						Map praiseParam = new HashMap();
+						praiseParam.put("consultSessionId", richConsultSession.getId());
+						List<Map<String,Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParam);
+						if(praiseList != null && praiseList.size()>0){
+							int nameIndex = content.indexOf("：");
+							stringBuilder.append(content.substring(nameIndex+1, content.toCharArray().length));
+							stringBuilder.append("\n ----------\n");
+							stringBuilder.append(content.substring(0,nameIndex));
+							stringBuilder.append(";【");
+							stringBuilder.append("<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
+							stringBuilder.append(praiseList.get(0).get("id"));
+							stringBuilder.append("'>评价医生</a>】");
+							WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());
+						}else {
+							WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), content);
+						}
+
 					}else if(msgType!=0){
 						//发送多媒体消息
 						String noTextMsg = (String) msgMap.get("wscontent");
