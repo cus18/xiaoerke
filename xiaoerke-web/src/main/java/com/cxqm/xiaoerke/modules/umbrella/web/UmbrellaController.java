@@ -299,7 +299,7 @@ public class UmbrellaController  {
     }
 
     /**
-     * 判断用户是否存在过数据
+     *
      */
     @RequestMapping(value = "/updateTruePayMoney", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -471,7 +471,7 @@ public class UmbrellaController  {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
         babyUmbrellaInfo.setId(Integer.parseInt(params.get("id").toString()));
-        Integer res=babyUmbrellaInfoSerivce.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
+        Integer res=babyUmbrellaInfoSerivce.updateBabyUmbrellaInfoIfShare(babyUmbrellaInfo);
         resultMap.put("result",res);
         return resultMap;
     }
