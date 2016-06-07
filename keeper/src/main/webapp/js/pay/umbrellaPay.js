@@ -1,6 +1,7 @@
 var moneys="";
 var umbrelladId="";
 var umbrellaPayInit=function(){
+    cancelRemind();
     $("#QRCodeDIV").hide();
     $("#FreeOrder").hide();
     $("#payButton").attr("disabled","disabled");
@@ -167,6 +168,8 @@ function wechatPay() {
                                             success: function (data) {
                                                 $("#QRCode").attr("src",data.qrcode);
                                                 $("#QRCodeDIV").show();
+                                                $(".c-shadow").show();
+                                                $(".shadow-content").show();
                                             },
                                             dataType: "json"
                                         });
