@@ -60,14 +60,7 @@ public class PayController {
      *
      */
     @RequestMapping(value = "/umbrellaPay/patientPay.do", method = {RequestMethod.POST, RequestMethod.GET})
-    public String umbrellaPay(@RequestParam(required=false) String patient_register_service_id,
-                             @RequestParam(required=false) String chargePrice,
-                             HttpServletResponse response) {
-//        if(!StringUtils.isNotNull(patient_register_service_id)){
-//            patient_register_service_id = "noData";
-//        }
-//        CookieUtils.setCookie(response,"patient_register_service_id", patient_register_service_id);
-//        CookieUtils.setCookie(response, "chargePrice", chargePrice);
+    public String umbrellaPay() {
         return "umbrella";
     }
     /**
@@ -77,14 +70,7 @@ public class PayController {
      *
      */
     @RequestMapping(value = "/antiDogPay/patientPay.do", method = {RequestMethod.POST, RequestMethod.GET})
-    public String antiDogPay(@RequestParam(required=false) String patient_register_service_id,
-                             @RequestParam(required=false) String chargePrice,
-                             HttpServletResponse response) {
-//        if(!StringUtils.isNotNull(patient_register_service_id)){
-//            patient_register_service_id = "noData";
-//        }
-//        CookieUtils.setCookie(response,"patient_register_service_id", patient_register_service_id);
-//        CookieUtils.setCookie(response, "chargePrice", chargePrice);
+    public String antiDogPay() {
         return "antiDogPay";
     }
     /**
@@ -118,9 +104,7 @@ public class PayController {
     *
     */
    @RequestMapping(value = "/customerPay/patientPay.do", method = {RequestMethod.POST, RequestMethod.GET})
-   public String customerPay(@RequestParam(required=false) String patient_register_service_id,
-                            @RequestParam(required=false) String chargePrice,
-                            HttpServletResponse response) {
+   public String customerPay() {
        return "customerPay";
    }
 

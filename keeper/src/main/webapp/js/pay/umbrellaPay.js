@@ -131,7 +131,7 @@ function wechatPay() {
             url: "account/user/umbrellaPay",// 跳转到 action
             async: true,
             type: 'get',
-            data: {patientRegisterId: umbrelladId, payPrice: moneys * 100},
+            data: {patientRegisterId: umbrelladId+"_"+GetQueryString("shareId"), payPrice: moneys * 100},
             cache: false,
             success: function (data) {
                 $('#payButton').removeAttr("disabled");

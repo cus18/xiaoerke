@@ -326,17 +326,6 @@
 		<!--<property name="cronExpression" value="0 */2 * * * ?"/>-->
 	<!--</bean>-->
 
-	<!--每天晚上1点备份咨询数据0 0 1 * * ?-->
-	<!--<bean id="consultRecordMongoTransMySqlTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
-		<!--<property name="targetObject" ref="scheduledQuarz"/>-->
-		<!--<property name="targetMethod" value="consultRecordMongoTransMySql"/>-->
-		<!--<property name="concurrent" value="false"/>-->
-	<!--</bean>-->
-	<!--<bean id="consultRecordMongoTransMySqlCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
-		<!--<property name="jobDetail" ref="consultRecordMongoTransMySqlTask"/>-->
-		<!--<property name="cronExpression" value="0 */1 * * * ?"/>-->
-	<!--</bean>-->
-
 	<!-- 咨询定时操作（天）-->
 	<!--<bean id="consultManagementDayTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
 		<!--<property name="targetObject" ref="scheduledQuarz"/>-->
@@ -386,7 +375,7 @@
                 <!--<ref bean="sendMsgToDocAtNightPhoneConsultCronTrigger"/>-->
                 <!--<ref bean="sendMsgToDocAtMorningPhoneConsultCronTrigger"/>-->
                 <!--<ref bean="phoneConsultReminder2DocCronTrigger"/>-->
-				<ref bean="umbrellaMessageCronTrigger"/>
+				<!--<ref bean="umbrellaMessageCronTrigger"/>-->
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>

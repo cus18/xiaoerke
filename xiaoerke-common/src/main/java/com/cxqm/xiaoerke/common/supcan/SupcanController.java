@@ -39,7 +39,7 @@ import com.google.common.collect.Maps;
 public class SupcanController extends BaseController {
 
 	private static final String SUPCAN_CACHE = "supcanCache";
-	
+
 	/**
 	 * 获取硕正树列表描述（根据注解获取XML）
 	 * @return
@@ -47,7 +47,7 @@ public class SupcanController extends BaseController {
 	@RequestMapping(value = "treeList/{typeAlias}.xml")
 	@ResponseBody
 	public TreeList treeList(@PathVariable("typeAlias") String typeAlias) {
-		
+
 		// 如果使用Cache，并且在Cache里存在，则直接返回。
 		boolean useCache = Global.getConfig("supcan.useCache") == "true";
 		if (useCache){
@@ -56,10 +56,10 @@ public class SupcanController extends BaseController {
 				return (TreeList)object;
 			}
 		}
-		
+
 		// 实体类型
 		Class<?> clazz;
-		
+
 		try{
 			// 根据别名获取MyBaits注册类型。
 			SqlSessionFactory sqlSessionFactory = SpringContextHolder.getBean(SqlSessionFactory.class);
@@ -68,7 +68,7 @@ public class SupcanController extends BaseController {
 			// 取不到类型，返回空。
 			return null;
 		}
-		
+
 		// 获取硕正注解配置
 		SupTreeList supTreeList = clazz.getAnnotation(SupTreeList.class);
 
@@ -76,10 +76,10 @@ public class SupcanController extends BaseController {
 		if (supTreeList == null){
 			return null;
 		}
-		
+
 		// 实例化硕正树列表对象
 		TreeList treeList = new TreeList(supTreeList);
-		
+
 		// 获取表头分组
 		Map<String, Group> groupMap = Maps.newHashMap();
 		if (supTreeList !=null && supTreeList.groups() != null){
@@ -87,19 +87,19 @@ public class SupcanController extends BaseController {
 				groupMap.put(supGroup.id(), new Group(supGroup));
 			}
 		}
-		
+
 		// 获取表头列
 		List<Object> cols = treeList.getCols();
 		for (Method m : clazz.getMethods()){
 			SupCol supCol = m.getAnnotation(SupCol.class);
 			if (supCol != null){
-				
+
 				// 转为为Col对象
 				Col col = new Col(supCol);
 				if (StringUtils.isBlank(col.getName())){
 					col.setName(StringUtils.uncapitalize(StringUtils.substring(m.getName(), 3)));
 				}
-				
+
 				// 无分组
 				if (StringUtils.isBlank(supCol.groupId())){
 					cols.add(col);
@@ -113,7 +113,7 @@ public class SupcanController extends BaseController {
 				}
 			}
 		}
-		
+
 		// 创建字段排序类
 		Comparator<Object> comparator = new Comparator<Object>() {
 			@Override
@@ -135,7 +135,7 @@ public class SupcanController extends BaseController {
 
 		// 将列表转换为树结构并排序
 		listToTree(cols, groupMap, null, comparator);
-		
+
 		// 整体排序
 		Collections.sort(cols, comparator);
 
@@ -143,10 +143,10 @@ public class SupcanController extends BaseController {
 		if (useCache){
 			CacheUtils.put(SUPCAN_CACHE, typeAlias, treeList);
 		}
-		
+
 		return treeList;
 	}
-	
+
 	/**
 	 * 将分组转换为树结构
 	 * @param list
@@ -173,7 +173,7 @@ public class SupcanController extends BaseController {
 			}
 		}
 	}
-	
+
 	/**
 	 * 获取硕正树列表描述（注册对象方法获取XML）  测试实例
 	 * @return
@@ -184,7 +184,7 @@ public class SupcanController extends BaseController {
 
 		// 创建树列表描述对象
 		TreeList treeList = new TreeList();
-		
+
 		// 设置树列表，表头
 		List<Object> cols = treeList.getCols();
 		cols.add(new Col("id", "编号"));
@@ -192,27 +192,27 @@ public class SupcanController extends BaseController {
 		cols.add(new Col("loginName", "登录名"));
 		cols.add(new Col("name", "名称"));
 		cols.add(new Col("remarks", "备注"));
-		
+
 		// 设置树列表，多层表头
-		
+
 		// 分组1
 		Group group = new Group("时间");
 		List<Object> groupCol = group.getCols();
 		groupCol.add(new Col("createDate", "创建时间"));
 		groupCol.add(new Col("updateDate", "更新时间"));
-		
+
 		// 分组2
 		Group group2 = new Group("时间2");
 		List<Object> group2Col = group2.getCols();
 		group2Col.add(new Col("createDate2", "创建时间2"));
 		group2Col.add(new Col("updateDate2", "更新时间2"));
-		
+
 		// 将分组2添加到，分组1的表头
 		groupCol.add(group2);
 
 		// 将分组1添加到，主表头
 		cols.add(group);
-		
+
 		// 返回TreeList描述对象
 		return treeList;
 	}

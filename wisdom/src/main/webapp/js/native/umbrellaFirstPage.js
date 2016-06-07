@@ -9,7 +9,7 @@ document.write('<scr'+'ipt src="' + webpath + '/js/libs/angular-route.min.js?ver
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.event.drag-1.5.min.js"></scr'+'ipt>');
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.touchSlider.js"></scr'+'ipt>');
 
-var attentionLock=false;
+var attentionLock=true;
 var version="b"; /*方案版本*/
 
 var shareUmbrellaId="0";
@@ -27,7 +27,7 @@ var umbrellaFirstPageInit = function() {
         url: "umbrella/firstPageDataCount",
         contentType: "application/json; charset=utf-8",
         success: function(result){
-            var count=result.count;
+            var count=result.count*2;
             $("#count").html(count);
         },
         dataType: "json"
@@ -38,7 +38,7 @@ var umbrellaFirstPageInit = function() {
         url: "umbrella/firstPageDataTodayCount",
         contentType: "application/json; charset=utf-8",
         success: function(result){
-            var todayCount=result.todayCount;
+            var todayCount=result.todayCount*2;
             $("#todayCount").html(todayCount);
         },
         dataType: "json"
@@ -94,6 +94,7 @@ function  joinUs(){
     $.ajax({
         type: 'POST',
         url: "umbrella/joinUs",
+        data:"{'version':'"+version+"'}",
         contentType: "application/json; charset=utf-8",
         async:false,
         success: function(data){
@@ -153,7 +154,7 @@ function loadShare(){
                             $.ajax({
                                 type: 'POST',
                                 url: "umbrella/updateBabyUmbrellaInfoIfShare",
-                                data:{id:shareUmbrellaId},
+                                data:"{'id':'"+shareUmbrellaId+"'}",
                                 contentType: "application/json; charset=utf-8",
                                 success: function(result){
                                     var todayCount=result.todayCount;
@@ -175,7 +176,7 @@ function loadShare(){
                             $.ajax({
                                 type: 'POST',
                                 url: "umbrella/updateBabyUmbrellaInfoIfShare",
-                                data:{id:shareUmbrellaId},
+                                data:"{'id':'"+shareUmbrellaId+"'}",
                                 contentType: "application/json; charset=utf-8",
                                 success: function(result){
                                     var todayCount=result.todayCount;
@@ -287,19 +288,21 @@ var cancelRemind = function() {
 
 /*跳转到参与成功页面*/
 var myGuarantee = function() {
-    window.location.href = "umbrella#/umbrellaJoin/"+new Date().getTime();
+    var shareid = GetQueryString("id")==null?120000000:GetQueryString("id");
+    window.location.href = "umbrella#/umbrellaJoin/"+new Date().getTime()+"/"+shareid;
 
 }
 
 /*跳转到领取成功页面*/
 var goJoin = function() {
-    if(attentionLock){
+    var shareid = GetQueryString("id")==null?120000000:GetQueryString("id");
+    if(!attentionLock){
         $(".c-shadow").show();
         $(".shadow-content.attention").show();
     }else if(version=="b"){
-        window.location.href = "umbrella#/umbrellaJoin/"+new Date().getTime();
+        window.location.href = "umbrella#/umbrellaJoin/"+new Date().getTime()+"/"+shareid;
     }else if(version=="a"){
-        window.location.href = "../keeper/wxPay/patientPay.do?serviceType=umbrellaPay";
+        window.location.href = "../keeper/wxPay/patientPay.do?serviceType=umbrellaPay&shareId="+shareid;
     }
 }
 

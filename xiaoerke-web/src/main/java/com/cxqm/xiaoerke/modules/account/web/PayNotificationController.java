@@ -1,9 +1,6 @@
 package com.cxqm.xiaoerke.modules.account.web;
 
-import com.cxqm.xiaoerke.common.utils.ConstantUtil;
-import com.cxqm.xiaoerke.common.utils.DateUtils;
-import com.cxqm.xiaoerke.common.utils.WechatUtil;
-import com.cxqm.xiaoerke.common.utils.XMLUtil;
+import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
@@ -20,8 +17,11 @@ import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
+import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
 import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
+import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
+import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +35,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -70,6 +71,9 @@ public class PayNotificationController {
 
 	@Autowired
 	private BabyUmbrellaInfoService babyUmbrellaInfoService;
+
+	@Autowired
+	private WechatAttentionService wechatAttentionService;
 
 	private static Lock lock = new ReentrantLock();
 
@@ -323,10 +327,14 @@ public class PayNotificationController {
 				payRecord.setReceiveDate(new Date());
 				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
 				String insuranceId= insuranceMap.get("order_id").toString();
-				System.out.println("orderId:" + insuranceId);
+				String[] umbrellaId=insuranceId.split("_");
+				System.out.println("orderId:" + umbrellaId[0]);
+				System.out.println("shareId:" + umbrellaId[1]);
+				sendWechatMessage(umbrellaId[0], umbrellaId[1]);
+
 				if(insuranceMap.get("fee_type").toString().equals("umbrella")){
 					BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
-					babyUmbrellaInfo.setId(Integer.parseInt(insuranceId));
+					babyUmbrellaInfo.setId(Integer.parseInt(umbrellaId[0]));
 					babyUmbrellaInfo.setPayResult("success");
 					babyUmbrellaInfo.setActivationTime(new Date());
 					babyUmbrellaInfoService.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
@@ -345,7 +353,56 @@ public class PayNotificationController {
 		return "";
 	}
 
+	private void sendWechatMessage(String toId, String fromId){
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("id",fromId);
+		List<Map<String,Object>> list = babyUmbrellaInfoService.getBabyUmbrellaInfo(param);
+		Map parameter = systemService.getWechatParameter();
+		String token = (String)parameter.get("token");
+		String toOpenId = "";
+		if(list.size()!=0){
+			if((Integer) list.get(0).get("umbrella_money")<400000){
+				String fromOpenId = (String)list.get(0).get("openid");//分享者openid
+				String babyId = (String)list.get(0).get("baby_id");
 
+				BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
+				babyUmbrellaInfo.setId(Integer.parseInt(fromId));
+				int umbrellaMoney = (Integer) list.get(0).get("umbrella_money")+20000;
+				babyUmbrellaInfo.setUmberllaMoney(umbrellaMoney);
+				babyUmbrellaInfoService.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
+				Map<String, Object> param_ = new HashMap<String, Object>();
+				param_.put("id", toId);
+				List<Map<String,Object>> tolist = babyUmbrellaInfoService.getBabyUmbrellaInfo(param_);
+				String nickName = "";
+				if(tolist.size()!=0){
+					toOpenId = (String)tolist.get(0).get("openid");
+					if(StringUtils.isNotNull(toOpenId)){
+						WechatAttention wa = wechatAttentionService.getAttentionByOpenId(toOpenId);
+						if(wa!=null){
+							nickName = wa.getNickname();
+						}
+					}
+				}
+				String title = "恭喜您，您的好友"+nickName+"已成功加入。您既帮助了朋友，也提升了2万保障金！";
+				String templateId = "cTAAFl0Qn1hIiwj_PV-O-HPQ1P6RRHj-TQHGcr_mUdo";//b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg
+				String keyword1 = "您已拥有"+babyUmbrellaInfo.getUmberllaMoney()/10000+"万的保障金，还需邀请"+(400000-umbrellaMoney)/20000+"位好友即可获得最高40万保障金。";
+				String keyword2 = StringUtils.isNotNull(babyId)?"观察期":"待激活";
+				String remark = "邀请一位好友，增加2万保额，最高可享受40万保障！";
+				String url = "";
+				WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, fromOpenId, templateId);
+			}
+		}
+
+		String title = "宝大夫送你一份见面礼";
+		String description = "恭喜您已成功领取专属于宝宝的40万高额保障金";
+		String url = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellab";
+		String picUrl = "http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella";
+		String message = "{\"touser\":\""+toOpenId+"\",\"msgtype\":\"news\",\"news\":{\"articles\": [{\"title\":\""+ title +"\",\"description\":\""+description+"\",\"url\":\""+ url +"\",\"picurl\":\""+picUrl+"\"}]}}";
+
+		String jsonobj = HttpRequestUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" +
+				token + "", "POST", message);
+		System.out.println(jsonobj+"===============================");
+	}
 
 
 	/**
@@ -361,4 +418,5 @@ public class PayNotificationController {
 		System.out.print(result);
 		return a;
 	}
+
 }

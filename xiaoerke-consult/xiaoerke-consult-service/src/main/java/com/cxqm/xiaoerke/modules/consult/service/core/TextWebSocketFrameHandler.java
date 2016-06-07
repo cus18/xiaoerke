@@ -4,11 +4,15 @@ import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import com.cxqm.xiaoerke.common.utils.IdGen;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
+import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -19,7 +23,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
 	
@@ -29,6 +36,10 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 
 	@Autowired
 	private ConsultRecordService consultRecordService = SpringContextHolder.getBean("consultRecordServiceImpl");
+
+	@Autowired
+	private PatientRegisterPraiseService patientRegisterPraiseService = SpringContextHolder.getBean("patientRegisterPraiseServiceImpl");
+
 
 	public TextWebSocketFrameHandler() {
 		super();
@@ -103,9 +114,26 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 					}
 				}else if(richConsultSession.getSource().equals("wxcxqm")){
 					if(msgType==0){
-						//直接发送文本消息
-						String st = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
-						WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), st);
+						String content = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
+						StringBuilder stringBuilder = new StringBuilder();
+						//根据sessionId查询Evaluation表id
+						Map praiseParam = new HashMap();
+						praiseParam.put("consultSessionId", richConsultSession.getId());
+						List<Map<String,Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParam);
+						if(praiseList != null && praiseList.size()>0){
+							int nameIndex = content.indexOf("：");
+							stringBuilder.append(content.substring(nameIndex+1, content.toCharArray().length));
+							stringBuilder.append("\n ----------\n");
+							stringBuilder.append(content.substring(0,nameIndex));
+							stringBuilder.append(";【");
+							stringBuilder.append("<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
+							stringBuilder.append(praiseList.get(0).get("id"));
+							stringBuilder.append("'>评价医生</a>】");
+							WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());
+						}else {
+							WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), content);
+						}
+
 					}else if(msgType!=0){
 						//发送多媒体消息
 						String noTextMsg = (String) msgMap.get("wscontent");

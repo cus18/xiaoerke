@@ -15,6 +15,7 @@
         <result column="activation_time" property="activationTime" jdbcType="DATE" />
         <result column="true_pay_moneys" property="truePayMoneys" jdbcType="VARCHAR" />
         <result column="pay_result" property="payResult" jdbcType="VARCHAR" />
+        <result column="version" property="version" jdbcType="VARCHAR" />
     </resultMap>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -36,6 +37,9 @@
         </if>
         <if test="notActive != null">
             and baby_id is NULL
+        </if>
+        <if test="notShare != null">
+            and ifshare is NULL
         </if>
         <if test="id != null">
             and id = #{id}
@@ -69,7 +73,7 @@
 
 
     <insert id="saveBabyUmbrellaInfo" parameterType="com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `baby_umbrellainfo` ( `openid`,create_time,umbrella_money
+        INSERT INTO `baby_umbrellainfo` ( `openid`,create_time,umbrella_money,version
         <if test="truePayMoneys != null">
             ,true_pay_moneys,pay_result
         </if>
@@ -78,7 +82,7 @@
         </if>
         )
         VALUES
-        ( #{openid},now(),#{umbrellaMoney}
+        ( #{openid},now(),#{umbrellaMoney},#{version}
         <if test="truePayMoneys != null">
          , #{truePayMoneys},#{payResult}
         </if>

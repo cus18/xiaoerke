@@ -8,6 +8,7 @@ import java.util.Date;
  * 2016-04-26
  */
 public class ConsultDoctorInfoVo {
+
     private Integer id;
 
     private String userId;

@@ -2,13 +2,19 @@ package com.cxqm.xiaoerke.modules.umbrella.web;
 
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.utils.HttpRequestUtil;
+import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
+import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
 import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
 import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaFamilyInfo;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
+import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
+import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +38,11 @@ public class UmbrellaController  {
     @Autowired
     private BabyUmbrellaInfoService babyUmbrellaInfoSerivce;
 
+    @Autowired
+    private SystemService systemService;
+
+    @Autowired
+    private WechatAttentionService wechatAttentionService;
 
     @Autowired
     private UtilService utilService;
@@ -90,7 +101,7 @@ public class UmbrellaController  {
     @RequestMapping(value = "/joinUs", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object>  joinUs(HttpServletRequest request,HttpSession session) {
+    Map<String, Object>  joinUs(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) {
         Map<String, Object> map=new HashMap<String, Object>();
         Map<String, Object> numm=new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session, request);
@@ -121,14 +132,60 @@ public class UmbrellaController  {
         BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
         babyUmbrellaInfo.setOpenid(openid);
         babyUmbrellaInfo.setUmberllaMoney(200000);
+        babyUmbrellaInfo.setTruePayMoneys(5+"");
         Integer res = babyUmbrellaInfoSerivce.saveBabyUmbrellaInfo(babyUmbrellaInfo);
 
+        String shareId=params.get("shareId").toString();
+
+        sendWechatMessage(openid,shareId);
 
         Map<String, Object> result=new HashMap<String, Object>();
         result.put("result",res);
         result.put("id",babyUmbrellaInfo.getId());
         result.put("umbrella","");
         return result;
+    }
+
+    private void sendWechatMessage(String toOpenId, String fromId){
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("id",fromId);
+        List<Map<String,Object>> list = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(param);
+        Map parameter = systemService.getWechatParameter();
+        String token = (String)parameter.get("token");
+        if(list.size()!=0){
+            if((Integer) list.get(0).get("umbrella_money")<400000){
+                String fromOpenId = (String)list.get(0).get("openid");//分享者openid
+                String babyId = (String)list.get(0).get("baby_id");
+
+                BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
+                babyUmbrellaInfo.setId(Integer.parseInt(fromId));
+                int umbrellaMoney = (Integer) list.get(0).get("umbrella_money")+20000;
+                babyUmbrellaInfo.setUmberllaMoney(umbrellaMoney);
+                babyUmbrellaInfoSerivce.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
+                WechatAttention wa = wechatAttentionService.getAttentionByOpenId(toOpenId);
+                String nickName = "";
+                if(wa!=null){
+                    nickName = wa.getNickname();
+                }
+                String title = "恭喜您，您的好友"+nickName+"已成功加入。您既帮助了朋友，也提升了2万保障金！";
+                String templateId = "cTAAFl0Qn1hIiwj_PV-O-HPQ1P6RRHj-TQHGcr_mUdo";//b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg
+                String keyword1 = "您已拥有"+babyUmbrellaInfo.getUmberllaMoney()/10000+"万的保障金，还需邀请"+(400000-umbrellaMoney)/20000+"位好友即可获得最高40万保障金。";
+                String keyword2 = StringUtils.isNotNull(babyId)?"观察期":"待激活";
+                String remark = "邀请一位好友，增加2万保额，最高可享受40万保障！";
+                String url = "";
+                WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, fromOpenId, templateId);
+            }
+        }
+
+        String title = "宝大夫送你一份见面礼";
+        String description = "恭喜您已成功领取专属于宝宝的40万高额保障金";
+        String url = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellab";
+        String picUrl = "http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella";
+        String message = "{\"touser\":\""+toOpenId+"\",\"msgtype\":\"news\",\"news\":{\"articles\": [{\"title\":\""+ title +"\",\"description\":\""+description+"\",\"url\":\""+ url +"\",\"picurl\":\""+picUrl+"\"}]}}";
+
+        String jsonobj = HttpRequestUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" +
+                token + "", "POST", message);
+        System.out.println(jsonobj+"===============================");
     }
 
     /**
@@ -298,7 +355,7 @@ public class UmbrellaController  {
     }
 
     /**
-     * 判断用户是否存在过数据
+     *
      */
     @RequestMapping(value = "/updateTruePayMoney", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -353,6 +410,7 @@ public class UmbrellaController  {
         babyUmbrellaInfo.setOpenid(openid);
         babyUmbrellaInfo.setUmberllaMoney(200000);
         babyUmbrellaInfo.setTruePayMoneys(res);
+        babyUmbrellaInfo.setVersion("a");
         if(res.equals("0")){
             babyUmbrellaInfo.setPayResult("success");
             babyUmbrellaInfo.setActivationTime(new Date());
@@ -469,7 +527,7 @@ public class UmbrellaController  {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
         babyUmbrellaInfo.setId(Integer.parseInt(params.get("id").toString()));
-        Integer res=babyUmbrellaInfoSerivce.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
+        Integer res=babyUmbrellaInfoSerivce.updateBabyUmbrellaInfoIfShare(babyUmbrellaInfo);
         resultMap.put("result",res);
         return resultMap;
     }

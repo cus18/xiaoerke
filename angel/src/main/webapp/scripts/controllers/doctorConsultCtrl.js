@@ -570,15 +570,15 @@ angular.module('controllers', ['luegg.directives'])
             //处理用户按键事件
             document.onkeydown = function () {
                 if (window.event.keyCode == 13){
-                    if($scope.info.consultMessage!=""){
+                    if($("#saytext").val()!=""){
                         $scope.sendConsultMessage();
-                        $scope.$apply();
                     }
                 }
             };//当onkeydown 事件发生时调用函数
 
             //向用户发送咨询消息
             $scope.sendConsultMessage = function () {
+                console.log('saytext',$('#saytext').val());
                 if (!window.WebSocket) {
                     return;
                 }
@@ -589,7 +589,7 @@ angular.module('controllers', ['luegg.directives'])
                             if($scope.userType=="distributor"){
                                 var consultValMessage = {
                                     "type": 0,
-                                    "content": "分诊" +$scope.doctorName+"："+ $scope.info.consultMessage,
+                                    "content": "分诊" +$scope.doctorName+"："+ $("#saytext").val(),
                                     "dateTime": moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
                                     "senderId": angular.copy($scope.doctorId),
                                     "senderName": angular.copy($scope.doctorName),
@@ -598,7 +598,7 @@ angular.module('controllers', ['luegg.directives'])
                             }else if($scope.userType=="consultDoctor"){
                                 var consultValMessage = {
                                     "type": 0,
-                                    "content": $scope.doctorName + "医生：" + $scope.info.consultMessage,
+                                    "content": $scope.doctorName + "医生：" + $("#saytext").val(),
                                     "dateTime": moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
                                     "senderId": angular.copy($scope.doctorId),
                                     "senderName": angular.copy($scope.doctorName),
@@ -606,8 +606,8 @@ angular.module('controllers', ['luegg.directives'])
                                 };
                             }
                             $scope.socketServerFirst.send(emotionSendFilter(JSON.stringify(consultValMessage)));
-                            consultValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($scope.info.consultMessage)));
-                            $scope.info.consultMessage = "";
+                            consultValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($("#saytext").val())));
+                            $("#saytext").val('');
                             updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                         } else {
                             alert("连接没有开启.");
@@ -619,7 +619,7 @@ angular.module('controllers', ['luegg.directives'])
                             if($scope.userType=="distributor"){
                                 var consultValMessage = {
                                     "type": 0,
-                                    "content": "分诊" +$scope.doctorName+"："+ $scope.info.consultMessage,
+                                    "content": "分诊" +$scope.doctorName+"："+ $("#saytext").val(),
                                     "dateTime":  moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
                                     "senderId": angular.copy($scope.doctorId),
                                     "senderName": angular.copy($scope.doctorName),
@@ -628,7 +628,7 @@ angular.module('controllers', ['luegg.directives'])
                             }else if($scope.userType=="consultDoctor"){
                                 var consultValMessage = {
                                     "type": 0,
-                                    "content": $scope.doctorName + "医生：" + $scope.info.consultMessage,
+                                    "content": $scope.doctorName + "医生：" + $("#saytext").val(),
                                     "dateTime": moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
                                     "senderId": angular.copy($scope.doctorId),
                                     "senderName": angular.copy($scope.doctorName),
@@ -637,8 +637,8 @@ angular.module('controllers', ['luegg.directives'])
                             }
 
                             $scope.socketServerSecond.send(emotionSendFilter(JSON.stringify(consultValMessage)));
-                            consultValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($scope.info.consultMessage)));
-                            $scope.info.consultMessage = "";
+                            consultValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($("#saytext").val())));
+                            $("#saytext").val('');
                             updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                         } else {
                             alert("连接没有开启.");
