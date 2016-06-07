@@ -426,7 +426,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			param.put("id",id);
 			List<Map<String,Object>> list = babyUmbrellaInfoService.getBabyUmbrellaInfo(param);
 			String tourl = "";
-			if(list1.size()==0){//用户第一次加入保护伞
+			if(list1.size()==0&&!EventKey.contains("120000000")){//用户第一次加入保护伞
 				if(list.size()!=0){
 					if((Integer) list.get(0).get("umbrella_money")<400000){
 						String fromOpenId = (String)list.get(0).get("openid");//分享者openid
