@@ -94,6 +94,7 @@ function  joinUs(){
     $.ajax({
         type: 'POST',
         url: "umbrella/joinUs",
+        data:"{'version':'"+version+"'}",
         contentType: "application/json; charset=utf-8",
         async:false,
         success: function(data){

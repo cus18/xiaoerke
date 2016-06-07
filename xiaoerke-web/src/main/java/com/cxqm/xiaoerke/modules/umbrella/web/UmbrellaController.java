@@ -121,6 +121,7 @@ public class UmbrellaController  {
         BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
         babyUmbrellaInfo.setOpenid(openid);
         babyUmbrellaInfo.setUmberllaMoney(200000);
+        babyUmbrellaInfo.setTruePayMoneys(5+"");
         Integer res = babyUmbrellaInfoSerivce.saveBabyUmbrellaInfo(babyUmbrellaInfo);
 
 
@@ -353,6 +354,7 @@ public class UmbrellaController  {
         babyUmbrellaInfo.setOpenid(openid);
         babyUmbrellaInfo.setUmberllaMoney(200000);
         babyUmbrellaInfo.setTruePayMoneys(res);
+        babyUmbrellaInfo.setVersion("a");
         if(res.equals("0")){
             babyUmbrellaInfo.setPayResult("success");
             babyUmbrellaInfo.setActivationTime(new Date());
