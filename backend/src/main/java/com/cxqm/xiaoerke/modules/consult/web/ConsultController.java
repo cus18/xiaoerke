@@ -119,6 +119,7 @@ public class ConsultController extends BaseController {
 		model.addAttribute("user", map.get("user"));
 		model.addAttribute("doctor", map.get("doctor"));
 		model.addAttribute("redPacket", map.get("redPacket"));
+		model.addAttribute("redPacketPerson", map.get("redPacketPerson"));
 		model.addAttribute("satisfy", map.get("satisfy"));
 		model.addAttribute("unsatisfy", map.get("unsatisfy"));
 		model.addAttribute("sessionCount", map.get("sessionCount"));

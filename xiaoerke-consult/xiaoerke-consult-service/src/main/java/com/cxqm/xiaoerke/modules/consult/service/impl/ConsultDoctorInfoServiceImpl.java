@@ -67,6 +67,7 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
         float redPacket = 0;
         int satisfy = 0;
         int unsatisfy = 0;
+        int redPacketPerson = 0;
         for(Map<String,Object> temp : praiseList){
             if(StringUtils.isNotNull((String) temp.get("serviceAttitude"))){
                 if("1".equals((String) temp.get("serviceAttitude"))){
@@ -76,13 +77,15 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
                 }
             }
 
-            if(StringUtils.isNotNull((String) temp.get("redPacket"))){
+            if(StringUtils.isNotNull((String) temp.get("redPacket"))&&temp.get("payStatus")!=null){
                 redPacket += Float.parseFloat((String)temp.get("redPacket"));
+                redPacketPerson++;
             }
         }
         map.put("redPacket",redPacket);
         map.put("satisfy",satisfy);
         map.put("unsatisfy", unsatisfy);
+        map.put("redPacketPerson", redPacketPerson);
         Integer sessionCount = consultSessionService.getConsultSessionUserCount(praiseParam);
         map.put("sessionCount", sessionCount);
         List<ConsultSession> sessionList = consultSessionService.getConsultSessionListByInfo(praiseParam);
