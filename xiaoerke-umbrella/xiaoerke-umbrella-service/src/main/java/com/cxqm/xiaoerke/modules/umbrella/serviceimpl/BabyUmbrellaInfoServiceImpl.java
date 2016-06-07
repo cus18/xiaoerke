@@ -159,24 +159,20 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
     public void umbrellaSendWechatMessage(){
         Map<String, Object> notShareParam = new HashMap<String, Object>();
         notShareParam.put("notShareOrActiveDays","1");
+        notShareParam.put("notShare","notShare");
         List<Map<String,Object>> notShareList = babyUmbrellaInfoDao.getBabyUmbrellaInfo(notShareParam);
         Map tokenMap = systemService.getDoctorWechatParameter();
         String token = (String)tokenMap.get("token");
 
         for(Map<String, Object> map : notShareList){//一天未分享
-            Map<String, Object> notShareLogParam = new HashMap<String, Object>();
-            notShareLogParam.put("openid",map.get("openid"));
-            List list = babyUmbrellaInfoDao.getNotShareInfoFromLog(notShareLogParam);
-            if(list.size() == 0){
-                String title = "非保险，亦可保障自己；非慈善，亦能帮助他人。邀请好友的同时提升保障，利人利己！";
-                String templateId = "cTAAFl0Qn1hIiwj_PV-O-HPQ1P6RRHj-TQHGcr_mUdo";//b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg
-                String keyword1 = "保障金处于最低额度";
-                String keyword2 = StringUtils.isNotNull((String) map.get("baby_id"))?"观察期":"待激活";
-                String remark = "邀请一位好友，增加2万保额，最高可享受40万保障！";
-                String url = "";
-                String openid = (String)map.get("openid");
-                //WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, openid, templateId);
-            }
+            String title = "非保险，亦可保障自己；非慈善，亦能帮助他人。邀请好友的同时提升保障，利人利己！";
+            String templateId = "cTAAFl0Qn1hIiwj_PV-O-HPQ1P6RRHj-TQHGcr_mUdo";//b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg
+            String keyword1 = "保障金处于最低额度";
+            String keyword2 = StringUtils.isNotNull((String) map.get("baby_id"))?"观察期":"待激活";
+            String remark = "邀请一位好友，增加2万保额，最高可享受40万保障！";
+            String url = "";
+            String openid = (String)map.get("openid");
+            //WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, openid, templateId);
         }
 
         Map<String, Object> notActiveParam = new HashMap<String, Object>();
