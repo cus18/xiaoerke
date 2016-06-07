@@ -157,7 +157,7 @@ function wechatPay() {
                                 success: function(result){
                                     var status=result.status;
                                     if(status=="1"){
-                                        var shareid = GetQueryString("shareId")==null?130000000:GetQueryString("shareId");
+                                        var shareid = GetQueryString("shareId")==null||GetQueryString("shareId")=="120000000"?130000000:GetQueryString("shareId");
                                         $.ajax({
                                             type: 'POST',
                                             url: "umbrella/getUserQRCode",
