@@ -27,7 +27,7 @@ var umbrellaFirstPageInit = function() {
         url: "umbrella/firstPageDataCount",
         contentType: "application/json; charset=utf-8",
         success: function(result){
-            var count=result.count;
+            var count=result.count*2;
             $("#count").html(count);
         },
         dataType: "json"
@@ -49,7 +49,7 @@ var umbrellaFirstPageInit = function() {
         url: "umbrella/firstPageDataTotalUmbrellaMoney",
         contentType: "application/json; charset=utf-8",
         success: function(result){
-            var totalUmbrellaMoney=result.totalUmbrellaMoney*2;
+            var totalUmbrellaMoney=result.totalUmbrellaMoney;
             $("#totalUmbrellaMoney").html(totalUmbrellaMoney);
         },
         dataType: "json"
