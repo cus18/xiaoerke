@@ -12,6 +12,8 @@ public interface ConsultRecordDao {
 
     int insert(ConsultRecordVo record);
 
+    int insertConsultRecordBatch(List<ConsultRecordVo> consultRecordVos);
+
     int insertSelective(ConsultRecordVo record);
 
     ConsultRecordVo selectByPrimaryKey(Long id);

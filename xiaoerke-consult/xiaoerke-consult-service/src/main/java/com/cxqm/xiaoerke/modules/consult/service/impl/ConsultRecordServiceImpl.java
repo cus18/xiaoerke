@@ -66,6 +66,11 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     }
 
     @Override
+    public int insertConsultRecordBatch(List<ConsultRecordVo> consultRecordVos) {
+        return consultRecordDao.insertConsultRecordBatch(consultRecordVos);
+    }
+
+    @Override
     public int insertSelective(ConsultRecordVo consultRecordVo) {
         return consultRecordDao.insert(consultRecordVo);
     }

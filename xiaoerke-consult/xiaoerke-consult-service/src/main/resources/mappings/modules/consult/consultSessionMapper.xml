@@ -134,6 +134,8 @@
           )
    </insert>
 
+
+
     <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession"
             useGeneratedKeys="true" keyProperty="id">
         insert into consult_session
