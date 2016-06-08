@@ -258,7 +258,7 @@ public class WechatUtil {
      * @param openId  用户的唯一标示
      * @param content 发送内容
      */
-    public static void sendMsgToWechat(String token, String openId, String content) {
+    public static String sendMsgToWechat(String token, String openId, String content) {
         String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + token;
         try {
             String json = "{\"touser\":\"" + openId + "\",\"msgtype\":\"text\",\"text\":" +
@@ -266,9 +266,14 @@ public class WechatUtil {
             json = json.replace("CONTENT", content);
             String re = HttpRequestUtil.getConnectionResult(url, "POST", json);
             System.out.print(json + "--" + re);
+            JSONObject obj = new JSONObject(re);
+            String resultStatus = (String)obj.get("errcode");
+            return resultStatus;
         } catch (Exception e) {
             e.printStackTrace();
         }
+      return "";
+
     }
 
     /**
