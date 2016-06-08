@@ -1440,7 +1440,8 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 }else if(action == "SkipPage"){
                     if($scope.info.recordDetailSkipNum > 0){
-                        pageNum = $scope.info.recordDetailSkipNum;
+
+                        pageNum = parseInt($scope.info.recordDetailSkipNum);
                     }else{
                         alert("请输入大于0的数字！");
                         return;
@@ -1561,7 +1562,6 @@ angular.module('controllers', ['luegg.directives'])
                         pageNum = $scope.currentUserConsultListDataPage+1;
                     }
                 }else if(action == "SkipPage" ){
-                    alert(angular.isNumber($scope.info.userConsultListInfoSkipNum ));
                     if($scope.info.userConsultListInfoSkipNum > 0){
                         pageNum = parseInt($scope.info.userConsultListInfoSkipNum);
 
