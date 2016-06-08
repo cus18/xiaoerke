@@ -89,13 +89,13 @@
                 </ul>
                 <a id="bottom"></a>
             </div>
-            <div class="clientListPage" style="margin-left:85px;">
+            <div class="clientListPage" style="margin-left:45px;">
                 <a href="" ng-click="chooseUserConsultListDataPage('firstPage')"><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_27.png"/></a>
                 <a href="" ng-click="chooseUserConsultListDataPage('upPage')"><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_29.png" alt=""/></a>
                 {{currentUserConsultListDataPage}}/{{totalUserConsultListDataPage}}页
                 <a href="" ng-click="chooseUserConsultListDataPage('nextPage')"><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_22.png" alt=""/></a>
                 <a href="" ng-click="chooseUserConsultListDataPage('lastPage')"><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_24.png" alt=""/></a>
-                <a href="" ng-click="chooseUserRecordDetail('',recordType)">到第<input type="tel"/>页<input type="submit" value="确定" /></a>
+                <a href="" >第<input ng-model="info.userConsultListInfoSkipNum" required maxlength="1"  type="number"/>页</a>&nbsp;<input type="submit" value="跳" ng-click="chooseUserConsultListDataPage('SkipPage')" />
             </div>
         </div>
         <div class="content-r" style='margin-left: 496px;'>
@@ -120,7 +120,7 @@
                     {{currentUserRecordDetailPage}}/{{totalUserRecordDetailPage}}页
                     <a href="" ng-click="chooseUserRecordDetail('nextPage',recordType)"><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_22.png" /></a>
                     <a href="" ng-click="chooseUserRecordDetail('lastPage',recordType)"><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_24.png" /></a>
-                    <a href="" ng-click="chooseUserRecordDetail('',recordType)">到第<input type="tel"/>页<input type="submit" value="确定" /></a>
+                    <a href="" >第<input ng-model="info.recordDetailSkipNum" required maxlength="1"  type="number"/>页</a>&nbsp;<input type="submit" value="跳" ng-click="chooseUserRecordDetail('SkipPage',recordType)" />
                 </div>
             </div>
             <div class='w10 h20 h2r examinecontent bl1'>
