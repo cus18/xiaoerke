@@ -1349,6 +1349,8 @@ angular.module('controllers', ['luegg.directives'])
 
             $scope.searchMessageContent = "";
 
+            $scope.userConsultListInfoSkipNum = "";
+
             $scope.messageType = "";
 
             $scope.currentClickUserName = "";
@@ -1568,6 +1570,12 @@ angular.module('controllers', ['luegg.directives'])
                 }else if(action == "nextPage"){
                     if($scope.currentUserConsultListDataPage<$scope.totalUserConsultListDataPage){
                         pageNum = $scope.currentUserConsultListDataPage+1;
+                    }
+                }else if(action == "SkipNumPage" ){
+                    if($scope.info.userConsultListInfoSkipNum > 0){
+                        pageNum = $scope.info.userConsultListInfoSkipNum;
+                    }else{
+                        alert("请输入大于0的数子！");
                     }
                 }
                 $scope.loadingFlag = true;
