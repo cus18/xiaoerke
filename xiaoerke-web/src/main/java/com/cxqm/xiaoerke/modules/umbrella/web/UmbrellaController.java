@@ -165,7 +165,7 @@ public class UmbrellaController  {
                 WechatAttention wa = wechatAttentionService.getAttentionByOpenId(toOpenId);
                 String nickName = "";
                 if(wa!=null){
-                    nickName = wa.getNickname();
+                    nickName = StringUtils.isNotNull(wa.getNickname())?wa.getNickname():"";
                 }
                 String title = "恭喜您，您的好友"+nickName+"已成功加入。您既帮助了朋友，也提升了2万保障金！";
                 String templateId = "b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg";
