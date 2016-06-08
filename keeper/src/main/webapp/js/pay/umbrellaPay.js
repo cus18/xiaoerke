@@ -127,7 +127,7 @@ var doRefresh = function(){
 
 function wechatPay() {
     if (moneys != "0") {
-        moneys = 0.01;
+        // moneys = 0.01;
         $.ajax({
             url: "account/user/umbrellaPay",// 跳转到 action
             async: true,
@@ -174,7 +174,8 @@ function wechatPay() {
                                             dataType: "json"
                                         });
                                     }else{
-                                        window.location.href = "http://s251.baodf.com/wisdom/firstPage/umbrella?status=a";
+                                        // window.location.href = "http://s165.baodf.com/wisdom/firstPage/umbrella?status=a";
+                                        window.location.href = "http://s165.baodf.com/wisdom/umbrella#/umbrellaJoin/"+new Date().getTime()+"/"+120000000;
                                     }
                                 },
                                 dataType: "json"
@@ -194,7 +195,7 @@ function wechatPay() {
             }
         });
     }else{
-        window.location.href = "http://s251.baodf.com/wisdom/firstPage/umbrella?status=a";
+        window.location.href = "http://s165.baodf.com/wisdom/firstPage/umbrella?status=a";
     }
 }
 /*关闭关注二维码提示*/

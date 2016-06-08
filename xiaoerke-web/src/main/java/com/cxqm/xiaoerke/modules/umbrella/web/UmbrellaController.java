@@ -58,7 +58,9 @@ public class UmbrellaController  {
         Integer count = babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(map);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Map<String, Object> result = new HashMap<String, Object>();
-        result.put("count", count);
+        Map<String,Object> maps = babyUmbrellaInfoSerivce.getUmbrellaNum();
+        Long familyNum = (Long)maps.get("familyNum");
+        result.put("count", count+familyNum);
         return result;
     }
 
@@ -413,7 +415,7 @@ public class UmbrellaController  {
         babyUmbrellaInfo.setVersion("a");
         if(res.equals("0")){
             babyUmbrellaInfo.setPayResult("success");
-            babyUmbrellaInfo.setActivationTime(new Date());
+//            babyUmbrellaInfo.setActivationTime(new Date());
         }else {
             babyUmbrellaInfo.setPayResult("fail");
         }
@@ -514,8 +516,8 @@ public class UmbrellaController  {
       Map<String, Object> resultMap = new HashMap<String, Object>();
       Map<String,Object> map = babyUmbrellaInfoSerivce.getUmbrellaNum();
       Long familyNum = (Long)map.get("familyNum");
-      Long umbrellaNum = (Long)map.get("umbrellaNum");
-      resultMap.put("umbrellaCount",familyNum+umbrellaNum);
+//      Long umbrellaNum = (Long)map.get("umbrellaNum");
+      resultMap.put("umbrellaCount",familyNum);
       return resultMap;
     }
 
