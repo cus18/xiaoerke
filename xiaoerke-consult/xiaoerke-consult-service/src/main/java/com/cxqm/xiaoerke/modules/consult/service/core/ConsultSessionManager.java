@@ -21,7 +21,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -339,7 +338,7 @@ public class ConsultSessionManager {
         evaluationMap.put("content", "");
         evaluationMap.put("dissatisfied", null);
         evaluationMap.put("redPacket", null);
-        evaluationMap.put("consultSessionId",consultSession.getId());
+        evaluationMap.put("consultSessionId", consultSession.getId());
         patientRegisterPraiseService.saveCustomerEvaluation(evaluationMap);
     }
 
@@ -499,7 +498,7 @@ public class ConsultSessionManager {
             session.setCsUserId(toCsUserId);
             session.setCsUserName(toCsUserName);
             Channel channelFromCsUser = userChannelMapping.get(fromCsUserId);
-            if (channelFromCsUser.isActive()) {
+            if (channelFromCsUser != null && channelFromCsUser.isActive()) {
                 JSONObject jsonObj = new JSONObject();
                 jsonObj.put("type", "4");
                 jsonObj.put("notifyType", "0010");
@@ -522,6 +521,13 @@ public class ConsultSessionManager {
                     consultSessionForwardRecordsService.updateAcceptedTransfer(forwardRecord);
                     session.setCsUserId(forwardRecord.getToUserId());
                     consultRecordService.modifyConsultSessionStatusVo(session);
+                    Map praiseParam = new HashMap();
+                    praiseParam.put("consultSessionId", session.getId());
+                    praiseParam.put("doctorId",forwardRecord.getToUserId());
+                    List<Map<String,Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParam);
+                    if(praiseList !=null && praiseList.size() == 0){
+                        saveCustomerEvaluation(session);
+                    }
                 } else {
                     forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_REJECT);
                     consultSessionForwardRecordsService.updateRejectedTransfer(forwardRecord);
@@ -683,6 +689,13 @@ public class ConsultSessionManager {
         if (flag > 0) {
             response.put("result", "success");
             response.put("userId", richConsultSession.getUserId());
+            Map praiseParam = new HashMap();
+            praiseParam.put("consultSessionId", richConsultSession.getId());
+            praiseParam.put("doctorId",richConsultSession.getCsUserId());
+            List<Map<String,Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParam);
+            if(praiseList !=null && praiseList.size() == 0){
+                saveCustomerEvaluation(richConsultSession);
+            }
         } else {
             response.put("result", "failure");
         }
