@@ -474,6 +474,12 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				newBabyUmbrellaInfo.setOpenid(toOpenId);
 				newBabyUmbrellaInfo.setUmberllaMoney(200000);
 				babyUmbrellaInfoService.saveBabyUmbrellaInfo(newBabyUmbrellaInfo);
+			}else{
+				if(list.size()!=0){
+					if("a".equals(list.get(0).get("version"))){
+						tourl = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+					}
+				}
 			}
 
 			article.setTitle("宝大夫送你一份见面礼");

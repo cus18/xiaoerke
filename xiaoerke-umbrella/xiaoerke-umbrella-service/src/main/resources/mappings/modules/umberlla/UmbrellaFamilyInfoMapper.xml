@@ -25,6 +25,9 @@
     where umbrella_id = #{umbrellaId,jdbcType=INTEGER}
   </select>
 
+  <select id="getUmbrellaNum" resultType="java.util.Map" >
+     select count(id) familyNum,count(DISTINCT(umbrella_id)) umbrellaNum from umbrella_familyinfo
+  </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from umbrella_familyinfo
