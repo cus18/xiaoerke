@@ -65,6 +65,8 @@ public interface BabyUmbrellaInfoService {
 
     BabyBaseInfoVo getBabyBaseInfo(Integer umbrella_id);
 
+    Map getUmbrellaNum();
+
 
     /**
      * 更新保障金分享信息

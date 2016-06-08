@@ -165,7 +165,7 @@ public class UmbrellaController  {
                 WechatAttention wa = wechatAttentionService.getAttentionByOpenId(toOpenId);
                 String nickName = "";
                 if(wa!=null){
-                    nickName = wa.getNickname();
+                    nickName = StringUtils.isNotNull(wa.getNickname())?wa.getNickname():"";
                 }
                 String title = "恭喜您，您的好友"+nickName+"已成功加入。您既帮助了朋友，也提升了2万保障金！";
                 String templateId = "b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg";
@@ -450,6 +450,7 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object> familyUmbrellaList(@RequestBody Map<String, Object> params){
+        boolean activation = false;
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Integer id = Integer.parseInt((String) params.get("id"));
         List<UmbrellaFamilyInfo> list = new ArrayList<UmbrellaFamilyInfo>();
@@ -461,8 +462,12 @@ public class UmbrellaController  {
             familyInfo.setName(babyInfo.getName());
             familyInfo.setBirthday(babyInfo.getBirthday());
             list.add(familyInfo);
+            activation = true;
         }
+
+//        babyInfo.getUserid()
         resultMap.put("familyList",list);
+        resultMap.put("activation",activation);
         return resultMap;
     }
 
@@ -497,6 +502,21 @@ public class UmbrellaController  {
         resultMap.put("showFather",showFather);
         resultMap.put("showMother",showMother);
         return resultMap;
+    }
+
+    /**
+     *
+     */
+    @RequestMapping(value = "/getUmbrellaNum", method = {RequestMethod.POST, RequestMethod.GET} )
+    public
+    @ResponseBody
+    Map<String, Object>  getUmbrellaNum(@RequestBody Map<String, Object> params){
+      Map<String, Object> resultMap = new HashMap<String, Object>();
+      Map<String,Object> map = babyUmbrellaInfoSerivce.getUmbrellaNum();
+      Long familyNum = (Long)map.get("familyNum");
+      Long umbrellaNum = (Long)map.get("umbrellaNum");
+      resultMap.put("umbrellaCount",familyNum+umbrellaNum);
+      return resultMap;
     }
 
 
