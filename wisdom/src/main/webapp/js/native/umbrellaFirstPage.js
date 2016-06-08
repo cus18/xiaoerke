@@ -15,6 +15,7 @@ var version="b"; /*方案版本*/
 var shareUmbrellaId="0";
 var umbrellaFirstPageInit = function() {
     cancelRemind();
+    $(".shadow-content.share").hide();//每次页面加载时先隐藏提示浮层
     version=GetQueryString("status");
     ifExistOrder();
     /*获取当前年月日*/
