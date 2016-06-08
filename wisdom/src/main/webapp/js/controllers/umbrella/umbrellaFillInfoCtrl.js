@@ -252,7 +252,8 @@
                     "idCard":$scope.info.IdCard,"parentName":encodeURI($scope.info.parentName),
                     "parentType":$scope.parentType,"umbrellaId":$scope.umbrellaId}, function (data){
                     if(data.result=='1'){
-                        $state.go("umbrellaMemberList",{id:$scope.umbrellaId});
+                        // $state.go("umbrellaMemberList",{id:$scope.umbrellaId});
+                        window.location.href ="../wisdom/umbrella?value="+new Date().getTime()+"#/umbrellaMemberList/"+$stateParams.id;
                     }else if(data.result=='3'){
                         alert("验证码无效");
                         return;

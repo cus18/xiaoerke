@@ -12,11 +12,12 @@
             $scope.num=0;
             $scope.person=0;
             $scope.umbrellaId=0;
+            $scope.status="b";
 
             $scope.shareid=$stateParams.shareid;
 
             $scope.goDetail=function(){
-                window.location.href = "/wisdom/firstPage/umbrella";
+                window.location.href = "/wisdom/firstPage/umbrella?status="+$scope.status;
             };
             $scope.goActive=function(){
                 $state.go("umbrellaFillInfo",{id:$scope.umbrellaId});
@@ -29,7 +30,8 @@
             };
             //添加成员
             $scope.addMember=function(){
-                $state.go("umbrellaMemberAdd",{id:$scope.umbrellaId});
+                // $state.go("umbrellaMemberAdd",{id:$scope.umbrellaId});
+                window.location.href ="../wisdom/umbrella?value="+new Date().getTime()+"#/umbrellaMemberAdd/"+$scope.umbrellaId;
             }
             var compareDate = function (start,end){
                 if(start==null||start.length==0||end==null||end.length==0){
@@ -54,10 +56,14 @@
                     if(data.umbrella.activation_time==null){
                         $scope.firstJoin=true;
                         $scope.umbrellaMoney=200000;
-                        $scope.umbrellaId=data.id;
+                        if(data.result==2){
+                            $scope.umbrellaId=data.umbrella.id;
+                        }else {
+                            $scope.umbrellaId = data.id;
+                        }
                         $scope.loadShare();
                         
-                        updateActivationTime.save({"id":data.id}, function (data){
+                        updateActivationTime.save({"id":$scope.umbrellaId}, function (data){
                             if(data.result!='1'){
                                 alert("未知错误,请尝试刷新页面");
                             }
@@ -67,13 +73,18 @@
                         $scope.umbrellaMoney=data.umbrella.umbrella_money;
                         $scope.num=data.umbrella.id-120000000;
                         $scope.umbrellaId=data.umbrella.id;
+                        if(data.umbrella.pay_result!="null"){
+                            $scope.status="a";
+                        }
                         $scope.loadShare();
                     }else if(data.result==3){
                         $scope.finally=true;
                         $scope.addFamily=true;
                         $scope.umbrellaMoney=data.umbrella.umbrella_money;
                         $scope.num=data.umbrella.id-120000000;
-
+                        if(data.umbrella.pay_result!="null"){
+                            $scope.status="a";
+                        }
                         var targetDate = new Date(data.umbrella.activation_time);
                             targetDate.setDate(new Date().getDate() + 180);
                         var targetDateUTC = targetDate.getTime();
@@ -129,7 +140,7 @@
                                 // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                                 wx.onMenuShareTimeline({
                                     title: '我已为宝宝免费领取一份40万的大病保障，你也赶紧加入吧!', // 分享标题
-                                    link: "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrella" + $scope.umbrellaId, // 分享链接
+                                    link: "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella" + $scope.umbrellaId, // 分享链接
                                     imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                     success: function (res) {
                                         //记录用户分享文章
@@ -152,7 +163,7 @@
                                 wx.onMenuShareAppMessage({
                                     title: '我已为宝宝免费领取一份40万的大病保障，你也赶紧加入吧!', // 分享标题
                                     desc: "现在加入即可免费获取最高40万60种儿童重疾保障，还等什么，妈妈们 let's go！", // 分享描述
-                                    link: "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrella" + $scope.umbrellaId, // 分享链接
+                                    link: "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella" + $scope.umbrellaId, // 分享链接
                                     imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                     success: function (res) {
                                         $.ajax({

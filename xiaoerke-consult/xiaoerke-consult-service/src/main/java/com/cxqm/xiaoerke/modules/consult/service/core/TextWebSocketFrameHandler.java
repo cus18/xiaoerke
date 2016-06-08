@@ -123,7 +123,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 						if(praiseList != null && praiseList.size()>0){
 							int nameIndex = content.indexOf("：");
 							stringBuilder.append(content.substring(nameIndex+1, content.toCharArray().length));
-							stringBuilder.append("\n ----------\n");
+							stringBuilder.append("\n ---------------\n");
 							stringBuilder.append(content.substring(0,nameIndex));
 							stringBuilder.append(";【");
 							stringBuilder.append("<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");

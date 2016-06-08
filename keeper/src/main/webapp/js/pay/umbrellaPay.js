@@ -1,7 +1,8 @@
 var moneys="";
 var umbrelladId="";
 var umbrellaPayInit=function(){
-
+    cancelRemind();
+    $("#QRCodeDIV").hide();
     $("#FreeOrder").hide();
     $("#payButton").attr("disabled","disabled");
     $.ajax({
@@ -12,7 +13,7 @@ var umbrellaPayInit=function(){
         dataType:'json',
         success:function(data) {
             if(data.type=="free"){
-                window.location.href = "http://localhost:8080/wisdom/firstPage/umbrella?status=b";
+                window.location.href = "http://s165.baodf.com/wisdom/firstPage/umbrella?status=b";
             }else {
                 moneys = data.result;
                 if (moneys == "0") {
@@ -35,7 +36,7 @@ var umbrellaPayInit=function(){
                     dataType:'json',
                     success:function(data) {
                         if(data.openid=="none"){
-                            window.location.href = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+                            window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
                         }
                     },
                     error : function() {
@@ -49,7 +50,7 @@ var umbrellaPayInit=function(){
     doRefresh();
 };
 var payUmbrella=function(){
-    window.location.href="/wisdom/umbrella#/umbrellaJoin"
+    window.location.href="http://s165.baodf.com/wisdom/umbrella#/umbrellaJoin"
 };
 var GetQueryString = function(name)
 {
@@ -150,7 +151,36 @@ function wechatPay() {
                     paySign: obj.paySign,  // 支付签名
                     success: function (res) {
                         if (res.errMsg == "chooseWXPay:ok") {
-                            window.location.href = "http://s2.xiaork.cn/wisdom/firstPage/umbrella?status=a";
+                            $.ajax({
+                                type: 'POST',
+                                url: "umbrella/getOpenidStatus",
+                                contentType: "application/json; charset=utf-8",
+                                success: function(result){
+                                    var status=result.status;
+                                    if(status=="1"){
+                                        var shareid = GetQueryString("shareId")==null||GetQueryString("shareId")=="120000000"?130000000:GetQueryString("shareId");
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: "umbrella/getUserQRCode",
+                                            contentType: "application/json; charset=utf-8",
+                                            async:false,
+                                            data:"{'id':'"+shareid+"'}",
+                                            success: function (data) {
+                                                $("#QRCode").attr("src",data.qrcode);
+                                                $("#QRCodeDIV").show();
+                                                $(".c-shadow").show();
+                                                $(".shadow-content").show();
+                                            },
+                                            dataType: "json"
+                                        });
+                                    }else{
+                                        window.location.href = "http://s251.baodf.com/wisdom/firstPage/umbrella?status=a";
+                                    }
+                                },
+                                dataType: "json"
+                            });
+
+                            // window.location.href = "http://s2.xiaork.cn/wisdom/firstPage/umbrella?status=a";
                         } else {
                             alert("支付失败,请重新支付")
                         }
@@ -164,6 +194,11 @@ function wechatPay() {
             }
         });
     }else{
-        window.location.href = "http://s2.xiaork.cn/wisdom/firstPage/umbrella?status=a";
+        window.location.href = "http://s251.baodf.com/wisdom/firstPage/umbrella?status=a";
     }
+}
+/*关闭关注二维码提示*/
+var cancelRemind = function() {
+    $(".c-shadow").hide();
+    $(".shadow-content").hide();
 }
