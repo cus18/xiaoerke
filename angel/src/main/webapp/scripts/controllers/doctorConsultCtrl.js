@@ -388,21 +388,23 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.showFlag.specialistList = false;
                 CreateTransferSpecialist.save({specialistPatientContent:$scope.alreadyJoinTransferSpecialist[index]},function(data){
                     if(data.status == "success"){
+                        var patientId = data.userId;
+                        var patientName = data.userName;
                         GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
                             if(data.alreadyJoinPatientConversation!=""&&data.alreadyJoinPatientConversation!=undefined){
                                 $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                                 $.each($scope.alreadyJoinPatientConversation,function(index,value){
                                     value.messageNotSee = false;
                                     value.number = 0;
-                                    if(value.patientId==data.userId){
-                                        data.userNam = value.patientName;
+                                    if(value.patientId==patientId){
+                                        patientName = value.patientName;
                                         value.transferDepartment = department;
                                     }
                                     $.each(value.consultValue,function(index1,value1){
                                         filterMediaData(value1);
                                     })
                                 });
-                                $scope.chooseAlreadyJoinConsultPatient(data.userId,data.userNam);
+                                $scope.chooseAlreadyJoinConsultPatient(patientId,patientName);
                             }
                         });
                         $scope.showFlag.specialistList = false;
@@ -1440,7 +1442,7 @@ angular.module('controllers', ['luegg.directives'])
                     if($scope.info.recordDetailSkipNum > 0){
                         pageNum = $scope.info.recordDetailSkipNum;
                     }else{
-                        alert("请输入大于0的数子！");
+                        alert("请输入大于0的数字！");
                         return;
                     }
                 }
@@ -1562,7 +1564,7 @@ angular.module('controllers', ['luegg.directives'])
                     if($scope.info.userConsultListInfoSkipNum > 0){
                         pageNum = $scope.info.userConsultListInfoSkipNum;
                     }else{
-                        alert("请输入大于0的数子！");
+                        alert("请输入大于0的数字！");
                         return;
                     }
                 }
