@@ -14,14 +14,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
- * Created by guozengguang on 2016/4/22.
+ * Created by guozengguang on 2016/06/07.
  */
 public class TestUmbrellaDemo {
 
     //public  boolean isFinished = false;
     //private static String url = "http://localhost:8080/keeper/patient/wxChat";
-    private static String url = "http://s2.xiaork.cn/wisdom/umbrella/addFamily";
-    private static final int MAX_THREADS_COUNT = 1;//初始化开启最大线程数
+    //private static String url = "http://s2.xiaork.cn/wisdom/umbrella/addFamily";
+    private static String url = "http://xiaork.com/wisdom/umbrella/addFamily";
+    //private static String url = "http://xiaork.com/umbrella/cheackFamilyMembers";
+    //private static String url = "http://xiaork.com/umbrella/cheackFamilyMembers";
+    private static final int MAX_THREADS_COUNT = 200;//初始化开启最大线程数
     //private static final int MAX_THREADS_COUNT = 1;
     private static final int MESSAGE_COUNT = 10;//模拟一个用户向服务器发送的消息总数
 
@@ -36,10 +39,10 @@ public class TestUmbrellaDemo {
         //ExecutorService executorService =  Executors.newFixedThreadPool(5000);
         //executorService.execute(new TestSimulator(1));
         int maxThreadsCount = MAX_THREADS_COUNT;
-        for (int i = 120000001; i < maxThreadsCount +120000001; i++) {
+        for (int i = 120000200; i < maxThreadsCount +120000200; i++) {
 
             new Thread(new TestSimulator(i,"线程" + i)).start();
-            //System.out.println("线程" +i);
+            System.out.println("线程" +i);
         }
     }
 
