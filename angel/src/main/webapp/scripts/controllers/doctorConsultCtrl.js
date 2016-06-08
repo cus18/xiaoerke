@@ -1442,7 +1442,7 @@ angular.module('controllers', ['luegg.directives'])
                     if($scope.info.recordDetailSkipNum > 0){
                         pageNum = $scope.info.recordDetailSkipNum;
                     }else{
-                        alert("请输入大于0的数子！");
+                        alert("请输入大于0的数字！");
                         return;
                     }
                 }
@@ -1564,7 +1564,7 @@ angular.module('controllers', ['luegg.directives'])
                     if($scope.info.userConsultListInfoSkipNum > 0){
                         pageNum = $scope.info.userConsultListInfoSkipNum;
                     }else{
-                        alert("请输入大于0的数子！");
+                        alert("请输入大于0的数字！");
                         return;
                     }
                 }

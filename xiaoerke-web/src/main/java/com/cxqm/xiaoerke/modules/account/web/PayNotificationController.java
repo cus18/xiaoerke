@@ -388,7 +388,7 @@ public class PayNotificationController {
 				String keyword1 = "您已拥有"+babyUmbrellaInfo.getUmberllaMoney()/10000+"万的保障金，还需邀请"+(400000-umbrellaMoney)/20000+"位好友即可获得最高40万保障金。";
 				String keyword2 = StringUtils.isNotNull(babyId)?"观察期":"待激活";
 				String remark = "邀请一位好友，增加2万保额，最高可享受40万保障！";
-				String url = "";
+				String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
 				WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, fromOpenId, templateId);
 			}
 		}
