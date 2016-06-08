@@ -450,6 +450,7 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object> familyUmbrellaList(@RequestBody Map<String, Object> params){
+        boolean activation = false;
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Integer id = Integer.parseInt((String) params.get("id"));
         List<UmbrellaFamilyInfo> list = new ArrayList<UmbrellaFamilyInfo>();
@@ -461,8 +462,12 @@ public class UmbrellaController  {
             familyInfo.setName(babyInfo.getName());
             familyInfo.setBirthday(babyInfo.getBirthday());
             list.add(familyInfo);
+            activation = true;
         }
+
+//        babyInfo.getUserid()
         resultMap.put("familyList",list);
+        resultMap.put("activation",activation);
         return resultMap;
     }
 
@@ -497,6 +502,21 @@ public class UmbrellaController  {
         resultMap.put("showFather",showFather);
         resultMap.put("showMother",showMother);
         return resultMap;
+    }
+
+    /**
+     *
+     */
+    @RequestMapping(value = "/getUmbrellaNum", method = {RequestMethod.POST, RequestMethod.GET} )
+    public
+    @ResponseBody
+    Map<String, Object>  getUmbrellaNum(@RequestBody Map<String, Object> params){
+      Map<String, Object> resultMap = new HashMap<String, Object>();
+      Map<String,Object> map = babyUmbrellaInfoSerivce.getUmbrellaNum();
+      Long familyNum = (Long)map.get("familyNum");
+      Long umbrellaNum = (Long)map.get("umbrellaNum");
+      resultMap.put("umbrellaCount",familyNum+umbrellaNum);
+      return resultMap;
     }
 
 
