@@ -20,9 +20,10 @@
 .messagelistn div select {border:none;height: 20px;color:#acacac;margin:10px 0 0 0;}
 .messagelistn {border-bottom: 1px solid #ccc;height: 34px;}
 .messagelistn input {width: 30px;}
-.messagelistn img{margin:0 10px;}
+.messagelistn img{margin:0 5px;}
 .messagelistn div {margin: 0 10px 0 5px;cursor: pointer;}
-.messagelistn div:nth-child(1){width: 150px;overflow: hidden;text-overflow: ellipsis;}
+.messagelistn div:nth-child(1){width: 105px;overflow: hidden;text-overflow: ellipsis;}
+.messagelistn div:nth-child(6){margin-right: 30px;float: right;}
 .nicknamecontentlist li{height: 35px;}
 .nicknamecontentlist li div {overflow: hidden;height: 35px;float: left;font: 12px/35px 'Microsoft Yahei';cursor: pointer;}
 .nicknamecontentlist li .nickname{width: 88px;margin-left: 20px;}
@@ -34,3 +35,14 @@
 .clientListPage{padding: 4px 20px;font-size: 12px;color: #acacac;}
 .clientListPage img{margin: 0 20px;}
 .clientListPage input{width: 60px;}
+.searchCss{
+    
+}
+.searchCss input:nth-child(1){
+    width: 20px;
+    margin: 0 5px;
+}
+.searchCss input:nth-child(2){
+    width: 35px;
+    margin: 0 0 0 5px;
+}
