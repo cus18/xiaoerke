@@ -58,7 +58,9 @@ public class UmbrellaController  {
         Integer count = babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(map);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Map<String, Object> result = new HashMap<String, Object>();
-        result.put("count", count);
+        Map<String,Object> maps = babyUmbrellaInfoSerivce.getUmbrellaNum();
+        Long familyNum = (Long)maps.get("familyNum");
+        result.put("count", count+familyNum);
         return result;
     }
 
@@ -172,7 +174,7 @@ public class UmbrellaController  {
                 String keyword1 = "您已拥有"+babyUmbrellaInfo.getUmberllaMoney()/10000+"万的保障金，还需邀请"+(400000-umbrellaMoney)/20000+"位好友即可获得最高40万保障金。";
                 String keyword2 = StringUtils.isNotNull(babyId)?"观察期":"待激活";
                 String remark = "邀请一位好友，增加2万保额，最高可享受40万保障！";
-                String url = "";
+                String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellab";
                 WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, fromOpenId, templateId);
             }
         }
@@ -413,7 +415,7 @@ public class UmbrellaController  {
         babyUmbrellaInfo.setVersion("a");
         if(res.equals("0")){
             babyUmbrellaInfo.setPayResult("success");
-            babyUmbrellaInfo.setActivationTime(new Date());
+//            babyUmbrellaInfo.setActivationTime(new Date());
         }else {
             babyUmbrellaInfo.setPayResult("fail");
         }
@@ -514,8 +516,8 @@ public class UmbrellaController  {
       Map<String, Object> resultMap = new HashMap<String, Object>();
       Map<String,Object> map = babyUmbrellaInfoSerivce.getUmbrellaNum();
       Long familyNum = (Long)map.get("familyNum");
-      Long umbrellaNum = (Long)map.get("umbrellaNum");
-      resultMap.put("umbrellaCount",familyNum+umbrellaNum);
+//      Long umbrellaNum = (Long)map.get("umbrellaNum");
+      resultMap.put("umbrellaCount",familyNum);
       return resultMap;
     }
 

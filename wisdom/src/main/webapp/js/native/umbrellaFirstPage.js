@@ -150,7 +150,7 @@ function loadShare(){
                     wx.ready(function () {
                         // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                         wx.onMenuShareTimeline({
-                            title: '运气太棒了，5块钱就能给宝宝领了一份40万的60种重疾保障 ，还能随机立减，你也来试试吧！', // 分享标题
+                            title: '运气太棒了，5块钱就能给宝宝领一份40万的60种重疾保障 ，还能随机立减，你也来试试吧！', // 分享标题
                             link: "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+shareUmbrellaId, // 分享链接
                             imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                             success: function (res) {
@@ -172,7 +172,7 @@ function loadShare(){
                             }
                         });
                         wx.onMenuShareAppMessage({
-                            title: '运气太棒了，5块钱就能给宝宝领了一份40万的大病保障，还能随机立减 ', // 分享标题
+                            title: '运气太棒了，5块钱就能给宝宝领一份40万的大病保障，还能随机立减 ', // 分享标题
                             desc: "现在加入5元即可获取最高40万报障，运气好还能免单哦，lets go! ", // 分享描述
                             link:"http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+shareUmbrellaId, // 分享链接
                             imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
@@ -232,7 +232,7 @@ function loadShare(){
                     wx.ready(function () {
                         // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                         wx.onMenuShareTimeline({
-                            title: '我已为宝宝免费领取一份40万的大病保障，你也赶紧加入吧!', // 分享标题
+                            title: '我已为宝宝免费领取了一份40万的大病保障，你也赶紧加入吧!', // 分享标题
                             link: "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+shareUmbrellaId, // 分享链接
                             imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                             success: function (res) {
@@ -254,7 +254,7 @@ function loadShare(){
                             }
                         });
                         wx.onMenuShareAppMessage({
-                            title: '我已为宝宝免费领取一份40万的大病保障，你也赶紧加入吧!', // 分享标题
+                            title: '我已为宝宝免费领取了一份40万的大病保障，你也赶紧加入吧!', // 分享标题
                             desc: "现在加入即可免费获取最高40万60种儿童重疾保障，还等什么，妈妈们 let's go！", // 分享描述
                             link:"http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+shareUmbrellaId, // 分享链接
                             imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
@@ -292,6 +292,9 @@ function  ifExistOrder(){
         contentType: "application/json; charset=utf-8",
         success: function(data){
             if(data.result==2||data.result==3){
+                if(data.umbrella.version=="a"){
+                    version="a";
+                }
                 $("#NoShareDiv").hide();
                 $("#shareDiv").show();
                 shareUmbrellaId = data.umbrella.id;
