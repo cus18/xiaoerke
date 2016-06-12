@@ -1,6 +1,7 @@
 package com.cxqm.xiaoerke.common.utils;
 
 import com.cxqm.xiaoerke.common.bean.*;
+import com.cxqm.xiaoerke.modules.sys.entity.Article;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import org.json.JSONArray;
@@ -281,18 +282,19 @@ public class WechatUtil {
      *
      * @param token       唯一票据
      * @param openId      用户的唯一标示
-     * @param title       标题
-     * @param description 内容
-     * @param linkUrl     链接
-     * @param picurl      图片链接
+     * @param articleList 图文集合
      */
-    public static void senImgMsgToWechat(String token, String openId, String title, String description, String linkUrl, String picurl) {
+    public static void senImgMsgToWechat(String token, String openId, List<Article> articleList) {
         String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + token;
         try {
+            String newStr =   "";
+            for(Article article:articleList){
+                newStr +=  "{\"title\":\"" + article.getTitle() + "\",\"description\":\"" + article.getDescription() + "\",\"url\":\"" + article.getUrl()+ "\",\"picurl\":\"" + article.getPicUrl() + "\"}," ;
+            }
             String json = "{\"touser\":\"" + openId + "\",\"msgtype\":\"news\",\"news\":" +
-                    "{\"articles\":[{\"title\":\"" + title + "\",\"description\":\"" + description + "\",\"url\":\"" + linkUrl + "\",\"picurl\":\"" + picurl + "\"]}}" + "}";
-            HttpRequestUtil.post(url, json);
-        } catch (IOException e) {
+                    "{\"articles\":[" +newStr+"]" + "}";
+            String s = HttpRequestUtil.getConnectionResult(url, "POST", json.substring(0,json.length()-1));
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
