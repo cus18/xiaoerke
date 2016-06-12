@@ -416,7 +416,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setPicUrl("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/gw%2Fmingyidianhua");
 			article.setUrl(ConstantUtil.TITAN_WEB_URL + "/titan/firstPage/phoneConsult");
 			articleList.add(article);
-		}else if(EventKey.indexOf("12")>-1){//扫码分享
+		}else if(EventKey.indexOf("qrscene_12")>-1){//扫码分享
 			String toOpenId = xmlEntity.getFromUserName();//扫码者openid
 			Map<String, Object> param1 = new HashMap<String, Object>();
 			param1.put("openid",toOpenId);
@@ -446,7 +446,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 							newBabyUmbrellaInfo.setPayResult("fail");
 						}
 					}
-					if((Integer) list.get(0).get("umbrella_money")<400000&&!EventKey.contains("120000000")){
+					if((Integer) list.get(0).get("umbrella_money")<400000&&!EventKey.contains("qrscene_120000000")){
 						String fromOpenId = (String)list.get(0).get("openid");//分享者openid
 						String babyId = (String)list.get(0).get("baby_id");
 						Map parameter = systemService.getWechatParameter();
@@ -488,7 +488,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setUrl(tourl);
 			articleList.add(article);
 			umbrellascan = false;
-		}else if(EventKey.indexOf("13")>-1){
+		}else if(EventKey.indexOf("qrscene_13")>-1){
 			String toOpenId = xmlEntity.getFromUserName();//扫码者openid
 			Map<String, Object> param1 = new HashMap<String, Object>();
 			param1.put("openid",toOpenId);
@@ -497,7 +497,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			String id = EventKey.split("_")[1];
 			param.put("id",id);
 			List<Map<String,Object>> list = babyUmbrellaInfoService.getBabyUmbrellaInfo(param);
-			if(list1.size()==0&&!EventKey.contains("130000000")){//用户第一次加入保护伞
+			if(list1.size()==0&&!EventKey.contains("qrscene_130000000")){//用户第一次加入保护伞
 				if(list.size()!=0) {
 					if ((Integer) list.get(0).get("umbrella_money") < 400000) {
 						String fromOpenId = (String) list.get(0).get("openid");//分享者openid

@@ -29,7 +29,7 @@
 .nicknamecontentlist li .insert{width: 190px;text-align: center;}
 .examinecontent ul li {margin: 15px 0 0 20px;font: 12px/28px 'Microsoft Yahei';}
 .examinecontent ul li .name{color:#08b7c2;}
-.examinecontent ul li .chatcontent{color:#666;font: 12px/20px 'Microsoft Yahei';margin-top: 10px;}
+.examinecontent ul li .chatcontent{color:#666;font: 12px/20px 'Microsoft Yahei';margin-top: 10px;display: inline-block;}
 .clientListPage{padding: 4px 20px;font-size: 12px;color: #acacac;}
 .clientListPage img{margin: 0 20px;}
 .clientListPage input{width: 60px;}
