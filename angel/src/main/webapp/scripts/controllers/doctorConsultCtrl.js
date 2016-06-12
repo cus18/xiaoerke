@@ -411,13 +411,13 @@ angular.module('controllers', ['luegg.directives'])
                         getFindTransferSpecialist();
 
                     }else if(data.status == "failure"){
-                        if(data.failureUserIds[0].result == "failure"){
+                        if(data.result == "failure"){
                             alert("无法发起会话，请稍后重试");
-                        }else if(data.failureUserIds[0].result == "existTransferSession"){
+                        }else if(data.result == "existTransferSession"){
                             alert("此用户正有会话处于转接状态，无法向其发起会话，请稍后重试");
-                        }else if(data.failureUserIds[0].result == "noLicenseTransfer"){
+                        }else if(data.result == "noLicenseTransfer"){
                             alert("对不起，你没有权限，抢断一个正在咨询用户的会话");
-                        }else if(data.failureUserIds[0].result == "exceed48Hours"){
+                        }else if(data.result == "exceed48Hours"){
                             alert("对不起，用户咨询已经超过了48小时，无法再向其发起会话");
                         }
                     }else if(data.status == "ongoing"){
