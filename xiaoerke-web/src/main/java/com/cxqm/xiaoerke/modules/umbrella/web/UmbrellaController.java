@@ -60,7 +60,7 @@ public class UmbrellaController  {
         Map<String, Object> result = new HashMap<String, Object>();
         Map<String,Object> maps = babyUmbrellaInfoSerivce.getUmbrellaNum();
         Long familyNum = (Long)maps.get("familyNum");
-        result.put("count", count+familyNum);
+        result.put("count", count*2+familyNum);
         return result;
     }
 
@@ -404,9 +404,14 @@ public class UmbrellaController  {
         }
         Map<String, Object> result=new HashMap<String, Object>();
         double ram=Math.random() * 5;
-        while (ram<1){
+//        while (ram < 1){
+//            ram=Math.random() * 5;
+//        }
+
+        do{
             ram=Math.random() * 5;
-        }
+        }while(ram<1);
+
         String res=String.format("%.0f", ram);
         BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
         babyUmbrellaInfo.setOpenid(openid);
