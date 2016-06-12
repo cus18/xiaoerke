@@ -398,7 +398,7 @@ angular.module('controllers', ['luegg.directives'])
                                     value.number = 0;
                                     if(value.patientId==patientId){
                                         patientName = value.patientName;
-                                        value.transferDepartment = department;
+                                        value.transferDepartment = '需要转给'+department;
                                     }
                                     $.each(value.consultValue,function(index1,value1){
                                         filterMediaData(value1);
