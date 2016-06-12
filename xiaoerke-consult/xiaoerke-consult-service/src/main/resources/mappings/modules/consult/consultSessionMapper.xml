@@ -10,10 +10,11 @@
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="sys_user_id_cs" property="csUserId" jdbcType="VARCHAR"/>
         <result column="sys_user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="flag" property="flag" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, title, create_time, state, update_time,sys_user_id_cs, sys_user_id ,source
+        id, title, create_time, state, update_time,sys_user_id_cs, sys_user_id ,source,flag
     </sql>
     
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -50,7 +51,9 @@
         <if test="source != null">
             and source = #{source,jdbcType=VARCHAR}
         </if>
-
+        <if test="flag != null">
+            and flag = #{flag,jdbcType=VARCHAR}
+        </if>
     </select>
 
     <select id="selectConsultSession" resultMap="BaseResultMap"
@@ -79,6 +82,9 @@
         </if>
         <if test="source != null">
             and source = #{source,jdbcType=VARCHAR}
+        </if>
+        <if test="flag != null">
+            and flag = #{flag,jdbcType=VARCHAR}
         </if>
     </select>
 
@@ -126,11 +132,11 @@
     <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession" useGeneratedKeys="true"
             keyProperty="id">
         insert into consult_session (id, title, create_time,
-          state, update_time,sys_user_id_cs, sys_user_id,source
+          state, update_time,sys_user_id_cs, sys_user_id,source,flag
           )
         values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
            #{status,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP} ,#{csUserId,jdbcType=VARCHAR}
-          ,#{userId,jdbcType=VARCHAR},#{source,jdbcType=VARCHAR}
+          ,#{userId,jdbcType=VARCHAR},#{source,jdbcType=VARCHAR},#{flag,jdbcType=VARCHAR}
           )
    </insert>
 
@@ -164,6 +170,9 @@
             <if test="source != null">
                 source,
             </if>
+            <if test="flag != null">
+                flag,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -190,6 +199,9 @@
             </if>
             <if test="source != null">
                 #{source,jdbcType=VARCHAR},
+            </if>
+            <if test="flag != null">
+                #{flag,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -218,23 +230,26 @@
             <if test="source != null">
                 source = #{source,jdbcType=VARCHAR},
             </if>
+            <if test="flag != null">
+                flag = #{flag,jdbcType=VARCHAR},
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
 
 
     <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession">
-    update consult_session
-    set title = #{title,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-
-      state = #{status,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      sys_user_id_cs = #{csUserId,jdbcType=VARCHAR},
-      sys_user_id = #{userId,jdbcType=VARCHAR},
-      source = #{source,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+        update consult_session
+        set title = #{title,jdbcType=VARCHAR},
+          create_time = #{createTime,jdbcType=TIMESTAMP},
+          state = #{status,jdbcType=VARCHAR},
+          update_time = #{updateTime,jdbcType=TIMESTAMP},
+          sys_user_id_cs = #{csUserId,jdbcType=VARCHAR},
+          sys_user_id = #{userId,jdbcType=VARCHAR},
+          source = #{source,jdbcType=VARCHAR},
+          flag = #{flag,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 
 
     <select id="getOnlineCsListInfo" resultType="java.util.HashMap">
