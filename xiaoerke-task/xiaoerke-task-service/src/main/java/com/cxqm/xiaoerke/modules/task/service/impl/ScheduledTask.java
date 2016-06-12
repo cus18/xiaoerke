@@ -1454,4 +1454,10 @@ public class ScheduledTask {
     public void umbrellaSendWechatMessage(){
         babyUmbrellaInfoService.umbrellaSendWechatMessage();
     }
+
+    /***每五分钟检查一次医生的在线状态，如果医生出现异常断网的情况，则废除此channel***/
+    public void checkDoctorChannelStatusTask(){
+        ConsultSessionManager.getSessionManager().checkDoctorChannelStatus();
+    }
+
 }

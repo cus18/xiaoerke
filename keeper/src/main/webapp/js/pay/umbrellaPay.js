@@ -1,6 +1,7 @@
 var moneys="";
 var umbrelladId="";
-var umbrellaPayInit=function(){
+
+var umbrellaPayInit = function(){
     cancelRemind();
     $("#QRCodeDIV").hide();
     $("#FreeOrder").hide();
@@ -49,15 +50,18 @@ var umbrellaPayInit=function(){
     });
     doRefresh();
 };
-var payUmbrella=function(){
+
+var payUmbrella = function(){
     window.location.href="http://s165.baodf.com/wisdom/umbrella#/umbrellaJoin"
 };
+
 var GetQueryString = function(name)
 {
     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);
     if(r!=null)return  unescape(r[2]); return null;
 }
+
 var recordLogs = function(val){
     $.ajax({
         url:"util/recordLogs",// 跳转到 action
@@ -72,6 +76,7 @@ var recordLogs = function(val){
         }
     });
 };
+
 /*
  以前支付代码
  */
@@ -132,7 +137,7 @@ function wechatPay() {
             url: "account/user/umbrellaPay",// 跳转到 action
             async: true,
             type: 'get',
-            data: {patientRegisterId: umbrelladId+"_"+GetQueryString("shareId"), payPrice: moneys * 100},
+            data: {patientRegisterId:umbrelladId + "_" + GetQueryString("shareId"), payPrice: moneys * 100},
             cache: false,
             success: function (data) {
                 $('#payButton').removeAttr("disabled");
@@ -198,6 +203,7 @@ function wechatPay() {
         window.location.href = "http://s165.baodf.com/wisdom/firstPage/umbrella?status=a";
     }
 }
+
 /*关闭关注二维码提示*/
 var cancelRemind = function() {
     $(".c-shadow").hide();
