@@ -73,9 +73,9 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.userType = data.userType;
 
                         //创建与平台的socket连接
-                        if($scope.socketServerFirst==""||$scope.socketServerFirst.readyState!=1){
-                            $scope.initConsultSocketFirst();
-                        }
+                        //if($scope.socketServerFirst==""||$scope.socketServerFirst.readyState!=1){
+                        //    $scope.initConsultSocketFirst();
+                        //}
                         if($scope.socketServerSecond==""||$scope.socketServerSecond.readyState!=1){
                             $scope.initConsultSocketSecond();
                         }
@@ -1181,6 +1181,7 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 });
             };
+
             //处理系统发送过来的通知类消息
             var processNotifyMessage = function(notifyData){
                 if(notifyData.notifyType=="0009"){
@@ -1258,6 +1259,22 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 else if(notifyData.notifyType=="3001"){
                     getFindTransferSpecialist();
+                }
+                else if(notifyData.notifyType=="0015"){
+                    //收到服务器发送过来的心跳消息
+                    var heartBeatServerMessage = {
+                        "type": 6,
+                        "csUserId": angular.copy($scope.doctorId)
+                    };
+                    if(notifyData.notifyAddress == $scope.firstAddress){
+                        if($scope.socketServerFirst!=""&&$scope.socketServerFirst.readyState==1){
+                            $scope.socketServerFirst.send(JSON.stringify(heartBeatServerMessage));
+                        }
+                    }else if(notifyData.notifyAddress == $scope.secondAddress){
+                        if($scope.socketServerSecond!=""&&$scope.socketServerSecond.readyState==1){
+                            $scope.socketServerSecond.send(JSON.stringify(heartBeatServerMessage));
+                        }
+                    }
                 }
             };
             //过滤媒体数据

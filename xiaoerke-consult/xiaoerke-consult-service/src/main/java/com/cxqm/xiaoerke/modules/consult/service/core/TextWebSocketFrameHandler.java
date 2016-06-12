@@ -19,9 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
 	
@@ -82,6 +80,18 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 			return;
 		}
 
+		if(msgType == 6){
+			String csUserId = (String) msgMap.get("csUserId");
+			Iterator<Map.Entry<String, Date>> it2 =  ConsultSessionManager.getSessionManager().getCsUserConnectionTimeMapping().entrySet().iterator();
+			while (it2.hasNext()) {
+				Map.Entry<String, Date> entry = it2.next();
+				if(csUserId.equals(entry.getKey())){
+					ConsultSessionManager.getSessionManager().getCsUserConnectionTimeMapping().put(entry.getKey(),new Date());
+				}
+			}
+			return;
+		}
+
 		Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
 		if(sessionId != null ) {
 			RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
@@ -114,11 +124,11 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 						//根据sessionId查询Evaluation表id
 						Map praiseParam = new HashMap();
 						praiseParam.put("consultSessionId", richConsultSession.getId());
-            praiseParam.put("doctorId",csUserId);
-              List<Map<String,Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParam);
+						praiseParam.put("doctorId",csUserId);
+						List<Map<String,Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParam);
 						if(praiseList != null && praiseList.size()>0){
 							int nameIndex = content.indexOf("：");
-							stringBuilder.append(content.substring(nameIndex+1, content.toCharArray().length));
+							stringBuilder.append(content.substring(nameIndex + 1,content.toCharArray().length));
 							stringBuilder.append("\n ---------------\n");
 							stringBuilder.append(content.substring(0,nameIndex));
 							stringBuilder.append(";【");
@@ -129,7 +139,6 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 						}else {
 							WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), content);
 						}
-
 					}else if(msgType!=0){
 						//发送多媒体消息
 						String noTextMsg = (String) msgMap.get("wscontent");
