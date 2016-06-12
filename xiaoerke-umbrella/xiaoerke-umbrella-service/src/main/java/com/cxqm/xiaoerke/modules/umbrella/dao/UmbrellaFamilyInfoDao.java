@@ -4,6 +4,7 @@ import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaFamilyInfo;
 
 import java.util.List;
+import java.util.Map;
 
 @MyBatisDao
 public interface UmbrellaFamilyInfoDao {
@@ -20,4 +21,6 @@ public interface UmbrellaFamilyInfoDao {
     int updateByPrimaryKeySelective(UmbrellaFamilyInfo record);
 
     int updateByPrimaryKey(UmbrellaFamilyInfo record);
+
+    Map getUmbrellaNum();
 }

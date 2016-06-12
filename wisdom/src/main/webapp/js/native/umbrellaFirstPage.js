@@ -10,16 +10,18 @@ document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.event.drag-1.5.mi
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.touchSlider.js"></scr'+'ipt>');
 
 var attentionLock=true;
-var version="b"; /*方案版本*/
+var version = "b"; /*方案版本*/
 
-var shareUmbrellaId="0";
+var shareUmbrellaId = "0";
 var umbrellaFirstPageInit = function() {
-    version=GetQueryString("status");
+    cancelRemind();
+    $(".shadow-content").hide();//每次页面加载时先隐藏提示浮层
+    version = GetQueryString("status");
     ifExistOrder();
     /*获取当前年月日*/
     var date = new Date();
-     date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
-     $("#date").html(date);
+    date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+    $("#date").html(date);
 
     //获取首页数据
     $.ajax({
@@ -27,7 +29,8 @@ var umbrellaFirstPageInit = function() {
         url: "umbrella/firstPageDataCount",
         contentType: "application/json; charset=utf-8",
         success: function(result){
-            var count=result.count*2;
+            var count = result.count*2;
+            $("#totalUmbrellaMoney").html(result.count*5);
             $("#count").html(count);
         },
         dataType: "json"
@@ -44,30 +47,20 @@ var umbrellaFirstPageInit = function() {
         dataType: "json"
     });
 
-    $.ajax({
-        type: 'POST',
-        url: "umbrella/firstPageDataTotalUmbrellaMoney",
-        contentType: "application/json; charset=utf-8",
-        success: function(result){
-            var totalUmbrellaMoney=result.totalUmbrellaMoney;
-            $("#totalUmbrellaMoney").html(totalUmbrellaMoney);
-        },
-        dataType: "json"
-    });
-
     //通过openid 获取当前用户是否关注
     $.ajax({
         type: 'POST',
         url: "umbrella/getOpenidStatus",
         contentType: "application/json; charset=utf-8",
         success: function(result){
-            var status=result.status;
+            var status = result.status;
             if(status=="1"){
                 attentionLock=false;
             }
         },
         dataType: "json"
     });
+
     scanQRCode();
     recordLogs("umbrella_FirstPage");
     $("#readBuy").attr("disabled",false);
@@ -114,87 +107,172 @@ function  joinUs(){
 }
 
 function loadShare(){
-    var timestamp;//时间戳
-    var nonceStr;//随机字符串
-    var signature;//得到的签名
-    var appid;//得到的签名
-    $.ajax({
-        url:"wechatInfo/getConfig",// 跳转到 action
-        async:true,
-        type:'get',
-        data:{url:location.href.split('#')[0]},//得到需要分享页面的url
-        cache:false,
-        dataType:'json',
-        success:function(data) {
-            if(data!=null ){
-                timestamp=data.timestamp;//得到时间戳
-                nonceStr=data.nonceStr;//得到随机字符串
-                signature=data.signature;//得到签名
-                appid=data.appid;//appid
-                //微信配置
-                wx.config({
-                    debug: false,
-                    appId: appid,
-                    timestamp:timestamp,
-                    nonceStr: nonceStr,
-                    signature: signature,
-                    jsApiList: [
-                        'onMenuShareTimeline',
-                        'onMenuShareAppMessage'
-                    ] // 功能列表
-                });
-                wx.ready(function () {
-                    // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
-                    wx.onMenuShareTimeline({
-                        title: '我已为宝宝免费领取一份40万的大病保障，你也赶紧加入吧!', // 分享标题
-                        link: "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+shareUmbrellaId, // 分享链接
-                        imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
-                        success: function (res) {
-                            //记录用户分享文章
-                            $.ajax({
-                                type: 'POST',
-                                url: "umbrella/updateBabyUmbrellaInfoIfShare",
-                                data:"{'id':'"+shareUmbrellaId+"'}",
-                                contentType: "application/json; charset=utf-8",
-                                success: function(result){
-                                    var todayCount=result.todayCount;
-                                    $("#todayCount").html(todayCount);
-                                },
-                                dataType: "json"
-                            });
+    if(version=="a"){
+        var timestamp;//时间戳
+        var nonceStr;//随机字符串
+        var signature;//得到的签名
+        var appid;//得到的签名
+        $.ajax({
+            url:"wechatInfo/getConfig",// 跳转到 action
+            async:true,
+            type:'get',
+            data:{url:location.href.split('#')[0]},//得到需要分享页面的url
+            cache:false,
+            dataType:'json',
+            success:function(data) {
+                if(data!=null ){
+                    timestamp=data.timestamp;//得到时间戳
+                    nonceStr=data.nonceStr;//得到随机字符串
+                    signature=data.signature;//得到签名
+                    appid=data.appid;//appid
+                    //微信配置
+                    wx.config({
+                        debug: false,
+                        appId: appid,
+                        timestamp:timestamp,
+                        nonceStr: nonceStr,
+                        signature: signature,
+                        jsApiList: [
+                            'onMenuShareTimeline',
+                            'onMenuShareAppMessage'
+                        ] // 功能列表
+                    });
+                    wx.ready(function () {
+                        // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
+                        wx.onMenuShareTimeline({
+                            title: '运气太棒了，5块钱就能给宝宝领一份40万的60种重疾保障 ，还能随机立减，你也来试试吧！', // 分享标题
+                            link: "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+shareUmbrellaId, // 分享链接
+                            imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
+                            success: function (res) {
+                                //记录用户分享文章
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "umbrella/updateBabyUmbrellaInfoIfShare",
+                                    data:"{'id':'"+shareUmbrellaId+"'}",
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function(result){
+                                        var todayCount=result.todayCount;
+                                        $("#todayCount").html(todayCount);
+                                    },
+                                    dataType: "json"
+                                });
 
-                        },
-                        fail: function (res) {
-                        }
-                    });
-                    wx.onMenuShareAppMessage({
-                        title: '我已为宝宝免费领取一份40万的大病保障，你也赶紧加入吧!', // 分享标题
-                        desc: "现在加入即可免费获取最高40万60种儿童重疾保障，还等什么，妈妈们 let's go！", // 分享描述
-                        link:"http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+shareUmbrellaId, // 分享链接
-                        imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
-                        success: function (res) {
-                            $.ajax({
-                                type: 'POST',
-                                url: "umbrella/updateBabyUmbrellaInfoIfShare",
-                                data:"{'id':'"+shareUmbrellaId+"'}",
-                                contentType: "application/json; charset=utf-8",
-                                success: function(result){
-                                    var todayCount=result.todayCount;
-                                    $("#todayCount").html(todayCount);
-                                },
-                                dataType: "json"
-                            });
-                        },
-                        fail: function (res) {
-                        }
-                    });
-                })
-            }else{
+                            },
+                            fail: function (res) {
+                            }
+                        });
+                        wx.onMenuShareAppMessage({
+                            title: '运气太棒了，5块钱就能给宝宝领一份40万的大病保障，还能随机立减 ', // 分享标题
+                            desc: "现在加入5元即可获取最高40万报障，运气好还能免单哦，lets go! ", // 分享描述
+                            link:"http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+shareUmbrellaId, // 分享链接
+                            imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
+                            success: function (res) {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "umbrella/updateBabyUmbrellaInfoIfShare",
+                                    data:"{'id':'"+shareUmbrellaId+"'}",
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function(result){
+                                        var todayCount=result.todayCount;
+                                        $("#todayCount").html(todayCount);
+                                    },
+                                    dataType: "json"
+                                });
+                            },
+                            fail: function (res) {
+                            }
+                        });
+                    })
+                }else{
+                }
+            },
+            error : function() {
             }
-        },
-        error : function() {
-        }
-    });
+        });
+    }else{
+        var timestamp;//时间戳
+        var nonceStr;//随机字符串
+        var signature;//得到的签名
+        var appid;//得到的签名
+        $.ajax({
+            url:"wechatInfo/getConfig",// 跳转到 action
+            async:true,
+            type:'get',
+            data:{url:location.href.split('#')[0]},//得到需要分享页面的url
+            cache:false,
+            dataType:'json',
+            success:function(data) {
+                if(data!=null ){
+                    timestamp=data.timestamp;//得到时间戳
+                    nonceStr=data.nonceStr;//得到随机字符串
+                    signature=data.signature;//得到签名
+                    appid=data.appid;//appid
+                    //微信配置
+                    wx.config({
+                        debug: false,
+                        appId: appid,
+                        timestamp:timestamp,
+                        nonceStr: nonceStr,
+                        signature: signature,
+                        jsApiList: [
+                            'onMenuShareTimeline',
+                            'onMenuShareAppMessage'
+                        ] // 功能列表
+                    });
+                    wx.ready(function () {
+                        // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
+                        wx.onMenuShareTimeline({
+                            title: '我已为宝宝免费领取了一份40万的大病保障，你也赶紧加入吧!', // 分享标题
+                            link: "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+shareUmbrellaId, // 分享链接
+                            imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
+                            success: function (res) {
+                                //记录用户分享文章
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "umbrella/updateBabyUmbrellaInfoIfShare",
+                                    data:"{'id':'"+shareUmbrellaId+"'}",
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function(result){
+                                        var todayCount=result.todayCount;
+                                        $("#todayCount").html(todayCount);
+                                    },
+                                    dataType: "json"
+                                });
+
+                            },
+                            fail: function (res) {
+                            }
+                        });
+                        wx.onMenuShareAppMessage({
+                            title: '我已为宝宝免费领取了一份40万的大病保障，你也赶紧加入吧!', // 分享标题
+                            desc: "现在加入即可免费获取最高40万60种儿童重疾保障，还等什么，妈妈们 let's go！", // 分享描述
+                            link:"http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+shareUmbrellaId, // 分享链接
+                            imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
+                            success: function (res) {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "umbrella/updateBabyUmbrellaInfoIfShare",
+                                    data:"{'id':'"+shareUmbrellaId+"'}",
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function(result){
+                                        var todayCount=result.todayCount;
+                                        $("#todayCount").html(todayCount);
+                                    },
+                                    dataType: "json"
+                                });
+                            },
+                            fail: function (res) {
+                            }
+                        });
+                    })
+                }else{
+                }
+            },
+            error : function() {
+            }
+        });
+    }
+
 }
 
 function  ifExistOrder(){
@@ -204,6 +282,9 @@ function  ifExistOrder(){
         contentType: "application/json; charset=utf-8",
         success: function(data){
             if(data.result==2||data.result==3){
+                if(data.umbrella.version=="a"){
+                    version="a";
+                }
                 $("#NoShareDiv").hide();
                 $("#shareDiv").show();
                 shareUmbrellaId = data.umbrella.id;
@@ -288,19 +369,23 @@ var cancelRemind = function() {
 
 /*跳转到参与成功页面*/
 var myGuarantee = function() {
-    window.location.href = "umbrella#/umbrellaJoin/"+new Date().getTime();
+    var shareid = GetQueryString("id")==null?120000000:GetQueryString("id");
+    window.location.href = "umbrella#/umbrellaJoin/"+new Date().getTime()+"/"+shareid;
 
 }
 
 /*跳转到领取成功页面*/
 var goJoin = function() {
-    if(!attentionLock){
+    var shareid = GetQueryString("id")==null?120000000:GetQueryString("id");
+    if(!attentionLock && version=="a"){
+        window.location.href = "http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=umbrellaPay&shareId="+shareid;
+    }else if(!attentionLock){
         $(".c-shadow").show();
         $(".shadow-content.attention").show();
     }else if(version=="b"){
-        window.location.href = "umbrella#/umbrellaJoin/"+new Date().getTime();
+        window.location.href = "umbrella#/umbrellaJoin/"+new Date().getTime()+"/"+shareid;
     }else if(version=="a"){
-        window.location.href = "../keeper/wxPay/patientPay.do?serviceType=umbrellaPay";
+        window.location.href = "http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=umbrellaPay&shareId="+shareid;
     }
 }
 

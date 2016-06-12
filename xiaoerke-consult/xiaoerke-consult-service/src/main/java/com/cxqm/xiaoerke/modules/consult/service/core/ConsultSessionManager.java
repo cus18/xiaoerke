@@ -2,10 +2,7 @@ package com.cxqm.xiaoerke.modules.consult.service.core;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.config.Global;
-import com.cxqm.xiaoerke.common.utils.DateUtils;
-import com.cxqm.xiaoerke.common.utils.RandomUtils;
-import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
-import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
@@ -14,6 +11,7 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.impl.UserInfoServiceImpl;
@@ -52,8 +50,12 @@ public class ConsultSessionManager {
 
     //<userId or cs-userId, Channel>
     public final Map<String, Channel> userChannelMapping = new ConcurrentHashMap<String, Channel>();
+
     //<cs-userId, Channel>
     private final Map<String, Channel> csUserChannelMapping = new ConcurrentHashMap<String, Channel>();
+
+    //<cs-userId, ConnectionHeartTime>
+    private final Map<String, Date> csUserConnectionTimeMapping = new ConcurrentHashMap<String, Date>();
 
     //<cs-userId, Channel>
     private final Map<String, Channel> distributors = new ConcurrentHashMap<String, Channel>();
@@ -66,6 +68,8 @@ public class ConsultSessionManager {
     private AtomicInteger accessNumber = new AtomicInteger(1000);
 
     private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
+
+    private PatientRegisterPraiseService patientRegisterPraiseService = SpringContextHolder.getBean("patientRegisterPraiseServiceImpl");
 
     private ConsultSessionService consultSessionService = SpringContextHolder.getBean("consultSessionServiceImpl");
 
@@ -123,6 +127,7 @@ public class ConsultSessionManager {
         csUserChannelMapping.put(csUserId, channel);
         userChannelMapping.put(csUserId, channel);
         channelUserMapping.put(channel, csUserId);
+        csUserConnectionTimeMapping.put(csUserId,new Date());
     }
 
     private void doCreateSocketInitiatedByDistributor(String distributorUserId, Channel channel) {
@@ -132,6 +137,7 @@ public class ConsultSessionManager {
             csUserChannelMapping.put(distributorUserId, channel);
             userChannelMapping.put(distributorUserId, channel);
             channelUserMapping.put(channel, distributorUserId);
+            csUserConnectionTimeMapping.put(distributorUserId,new Date());
         } else {
             log.warn("Maybe a Simulated Distributor: The userId is " + distributorUserId);
         }
@@ -316,6 +322,7 @@ public class ConsultSessionManager {
             System.out.println("sessionId-----" + sessionId + "consultSession.getCsUserId()" + consultSession.getUserId());
             sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
             sessionRedisCache.putUserIdSessionIdPair(consultSession.getUserId(), sessionId);
+            saveCustomerEvaluation(consultSession);
             response.put("csChannel", csChannel);
             response.put("sessionId", sessionId);
             response.put("consultSession", consultSession);
@@ -324,6 +331,21 @@ public class ConsultSessionManager {
             return null;
         }
 
+    }
+    //记录评价信息
+    private void saveCustomerEvaluation(RichConsultSession consultSession) {
+        Map<String, Object> evaluationMap = new HashMap<String, Object>();
+        evaluationMap.put("openid", consultSession.getUserId());
+        evaluationMap.put("uuid", IdGen.uuid());
+        evaluationMap.put("starNum1", 0);
+        evaluationMap.put("starNum2", 0);
+        evaluationMap.put("starNum3", 0);
+        evaluationMap.put("doctorId", consultSession.getCsUserId());
+        evaluationMap.put("content", "");
+        evaluationMap.put("dissatisfied", null);
+        evaluationMap.put("redPacket", null);
+        evaluationMap.put("consultSessionId", consultSession.getId());
+        patientRegisterPraiseService.saveCustomerEvaluation(evaluationMap);
     }
 
     public int transferSession(Integer sessionId, String toCsUserId, String remark) {
@@ -482,7 +504,7 @@ public class ConsultSessionManager {
             session.setCsUserId(toCsUserId);
             session.setCsUserName(toCsUserName);
             Channel channelFromCsUser = userChannelMapping.get(fromCsUserId);
-            if (channelFromCsUser.isActive()) {
+            if (channelFromCsUser != null && channelFromCsUser.isActive()) {
                 JSONObject jsonObj = new JSONObject();
                 jsonObj.put("type", "4");
                 jsonObj.put("notifyType", "0010");
@@ -505,6 +527,13 @@ public class ConsultSessionManager {
                     consultSessionForwardRecordsService.updateAcceptedTransfer(forwardRecord);
                     session.setCsUserId(forwardRecord.getToUserId());
                     consultRecordService.modifyConsultSessionStatusVo(session);
+                    Map praiseParam = new HashMap();
+                    praiseParam.put("consultSessionId", session.getId());
+                    praiseParam.put("doctorId",forwardRecord.getToUserId());
+                    List<Map<String,Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParam);
+                    if(praiseList !=null && praiseList.size() == 0){
+                        saveCustomerEvaluation(session);
+                    }
                 } else {
                     forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_REJECT);
                     consultSessionForwardRecordsService.updateRejectedTransfer(forwardRecord);
@@ -546,6 +575,40 @@ public class ConsultSessionManager {
         return userIds;
     }
 
+    public void checkDoctorChannelStatus(){
+        if(csUserConnectionTimeMapping!=null){
+            Iterator<Entry<String, Date>> it2 = csUserConnectionTimeMapping.entrySet().iterator();
+            while (it2.hasNext()) {
+                Entry<String, Date> entry = it2.next();
+                Date dateTime = entry.getValue();
+                long a = new Date().getTime();
+                long b = dateTime.getTime();
+                int c = (int)((a - b) / 1000);
+                if(c>140){
+                    //超过2分钟，没有收到心跳回馈信息，清除此channel
+                    removeUserSession(entry.getKey());
+                    csUserConnectionTimeMapping.remove(entry.getKey());
+                }
+            }
+        }
+
+        Iterator<Entry<String, Channel>> it = csUserChannelMapping.entrySet().iterator();
+        while (it.hasNext()) {
+            Entry<String, Channel> entry = it.next();
+            if (entry.getValue().isActive()){
+                //像医生端发送心跳包，如果2分钟内，没有得到回复，
+                // 则证明此医生已经掉线，将进行channel和已存在的会话清除处理工作
+                JSONObject jsonObj = new JSONObject();
+                jsonObj.put("type", "4");
+                jsonObj.put("notifyType", "0015");
+                jsonObj.put("notifyAddress", ConstantUtil.SERVER_ADDRESS);
+                TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
+                entry.getValue().writeAndFlush(frame.retain());
+                csUserConnectionTimeMapping.put(entry.getKey(),new Date());
+            }
+        }
+    }
+
     public Map<String, Channel> getUserChannelMapping() {
         return userChannelMapping;
     }
@@ -560,6 +623,10 @@ public class ConsultSessionManager {
 
     public Map<String, Channel> getCsUserChannelMapping() {
         return csUserChannelMapping;
+    }
+
+    public Map<String, Date> getCsUserConnectionTimeMapping() {
+        return csUserConnectionTimeMapping;
     }
 
     public void removeUserSession(String userId) {
@@ -666,6 +733,13 @@ public class ConsultSessionManager {
         if (flag > 0) {
             response.put("result", "success");
             response.put("userId", richConsultSession.getUserId());
+            Map praiseParam = new HashMap();
+            praiseParam.put("consultSessionId", richConsultSession.getId());
+            praiseParam.put("doctorId",richConsultSession.getCsUserId());
+            List<Map<String,Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParam);
+            if(praiseList !=null && praiseList.size() == 0){
+                saveCustomerEvaluation(richConsultSession);
+            }
         } else {
             response.put("result", "failure");
         }

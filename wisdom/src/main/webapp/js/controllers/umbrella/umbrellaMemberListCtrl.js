@@ -4,7 +4,6 @@
             $scope.title="宝护伞-宝大夫儿童家庭重疾互助计划";
             //$scope.id = $stateParams.id;
 
-
             getFamilyList.save({"id":$stateParams.id},function(data){
                 console.log(data);
                 $scope.familyList =data.familyList;
@@ -23,7 +22,8 @@
             })
 
             $scope.addMember=function(){
-                $state.go("umbrellaMemberAdd",{id:$stateParams.id});
+                // $state.go("umbrellaMemberAdd",{id:$stateParams.id});
+                window.location.href ="../wisdom/umbrella?value="+new Date().getTime()+"#/umbrellaMemberAdd/"+$stateParams.id;
             }
 
             $scope.immediateActive=function(){
@@ -41,5 +41,4 @@
 
             });
 
-            
     }]);

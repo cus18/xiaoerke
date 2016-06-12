@@ -505,11 +505,9 @@ function loginCheck(){
             });
             $.post('auth/info/loginStatus',param,
                 function(data) {
-
                     if(data.status=="9"){
                         window.location.href = (data.redirectURL)
                     }else if(data.status=="20"){
-
                         if(data.openId=="noOpenId"){
                             window.location.href = "http://s251.baodf.com/keeper/wechatInfo/" +
                                 "fieldwork/wechat/author?url=http://s251.baodf.com/" +

@@ -192,7 +192,7 @@
 				<p>
 				姓名:${user.name}<p>
 				总服务数量：${sessionCount}  人    满意：${satisfy}  人   不满意：${unsatisfy}  人<p>
-				收到赏金：${redPacket}  元
+				收到赏金：${redPacket}  元     打赏人数：${redPacketPerson}  人
 			</div>
 		</div>
 	</form:form>

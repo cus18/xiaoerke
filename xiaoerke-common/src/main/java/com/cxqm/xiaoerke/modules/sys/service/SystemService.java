@@ -394,7 +394,7 @@ public class SystemService extends BaseService {
 	public static boolean printKeyLoadMessage(){
 		StringBuilder sb = new StringBuilder();
 		sb.append("\r\n======================================================================\r\n");
-		sb.append("\r\n    欢迎使用 "+Global.getConfig("productName")+"  - Powered By http://jeesite.com\r\n");
+		sb.append("\r\n    欢迎使用  宝大夫平台"+"  -官网： http://www.baodaif.com/#/index\r\n");
 		sb.append("\r\n======================================================================\r\n");
 		System.out.println(sb.toString());
 		return true;

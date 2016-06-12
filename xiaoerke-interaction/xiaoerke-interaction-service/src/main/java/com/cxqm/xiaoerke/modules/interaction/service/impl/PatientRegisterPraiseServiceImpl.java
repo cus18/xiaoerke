@@ -184,7 +184,6 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
                     "<a href='http://xiaork.com/titan/appoint#/consultShare'>我要分享</a>】";
         Map<String,Object> parameter = systemService.getWechatParameter();
         String token = (String)parameter.get("token");
-			openId = "oogbDwCLH1_x-KLcQKqlrmUzG2ng";
         WechatUtil.sendMsgToWechat(token,openId,st);
             return "true";
         } catch (Exception ex) {
@@ -233,8 +232,6 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 		//进行评价
 		praiseHandle(type, action, patientRegisterServiceId, excuteMap);
 		//分享消息推送
-//		Map tokenMap = systemService.getWechatParameter();
-//		String token = (String)tokenMap.get("token");
 		HashMap<String, Object> searchMap = new HashMap<String, Object>();
 		searchMap.put("id", patientRegisterServiceId);
 
