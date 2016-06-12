@@ -636,20 +636,56 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
 	private String sendSubScribeMessage(ReceiveXmlEntity xmlEntity,HttpServletRequest request,HttpServletResponse response,String marketer,String token)
 	{
-		String st = "";
 		HttpSession session = request.getSession();
 		session.setAttribute("openId", xmlEntity.getFromUserName());
 		LogUtils.saveLog(request, "00000001");//注：参数含义请参照sys_log_mapping表，如00000001表示“微信宝大夫用户版公众平台关注”
-
 		String EventKey = xmlEntity.getEventKey();
 		if(EventKey.indexOf("xuanjianghuodong_zhengyuqiao_saoma")<=-1&&EventKey.indexOf("baoxian_000001")<=-1)
 		{
-			st = "欢迎加入宝大夫，让您从此育儿不再愁！"+WechatUtil.emoji(0x1f339)+"\n\n"
-					+"【免费咨询】直接咨询北京三甲医院儿科专家，一分钟内回复！\n" +
-					"【预约专家】急速预约北京儿科专家出诊时间，不用排队挂号！\n"+
-					"【妈妈活动】添加宝大夫客服微信：bdfdxb，加入宝大夫家长群，与众多宝妈一起交流分享，参与更多好玩儿的活动！\n\n"+
-					"如需人工协助预约儿科专家,请您拨打：400-623-7120。";
-			WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
+			List<Article> articleList = new ArrayList<Article>();
+			Article article = new Article();
+			article.setTitle("");
+			article.setDescription("");
+			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%AE%9D%E6%8A%A4%E4%BC%9E.png");
+			article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa");
+			articleList.add(article);
+
+			article = new Article();
+			article.setTitle("咨询大夫 \n\n三甲医院医生7X24全年无休   一分钟极速回复");
+			article.setDescription("三甲医院医生7X24全年无休   一分钟极速回复");
+			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%92%A8%E8%AF%A2%E5%A4%A7%E5%A4%AB.png");
+			article.setUrl("https://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236660&idx=1&sn=10d923526047a5276dd9452b7ed1e302&scene=1&srcid=0612OCo7d5ASBoGRr2TDgjfR&key=f5c31ae61525f82ed83c573369e70b8f9b853c238066190fb5eb7b8640946e0a090bbdb47e79b6d2e57b615c44bd82c5&ascene=0&uin=MzM2NjEyMzM1&devicetype=iMac+MacBookPro11%2C4+OSX+OSX+10.11.4+build(15E65)&version=11020201&pass_ticket=dG5W6eOP3JU1%2Fo3JXw19SFBAh1DgpSlQrAXTyirZuj970HMU7TYojM4D%2B2LdJI9n");
+			articleList.add(article);
+
+			article = new Article();
+			article.setTitle("名医面诊  \n\n三甲医院儿科专家，线上准时预约，线下准时就诊");
+			article.setDescription("三甲医院儿科专家，线上准时预约，线下准时就诊");
+			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%90%8D%E5%8C%BB%E9%9D%A2%E8%AF%8A.png");
+			article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=2");
+			articleList.add(article);
+
+			article = new Article();
+			article.setTitle("名医电话 \n\n与权威儿科专家通话10分钟，个性化就诊和康复指导");
+			article.setDescription("与权威儿科专家通话10分钟，个性化就诊和康复指导");
+			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%90%8D%E5%8C%BB%E7%94%B5%E8%AF%9D.png");
+			article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=28");
+			articleList.add(article);
+
+			article = new Article();
+			article.setTitle("妈妈活动 \n\n添加宝大夫客服微信：bdfdxb，加入宝大夫家长群，与众多宝妈一起交流分享，参与更多好玩儿的活动");
+			article.setDescription("添加宝大夫客服微信：bdfdxb，加入宝大夫家长群，与众多宝妈一起交流分享，参与更多好玩儿的活动");
+			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%A6%88%E5%A6%88%E6%B4%BB%E5%8A%A8.png");
+			article.setUrl("baodf.com");
+			articleList.add(article);
+
+			WechatUtil.senImgMsgToWechat(token,xmlEntity.getFromUserName(),articleList);
+
+//			st = "欢迎加入宝大夫，让您从此育儿不再愁！"+WechatUtil.emoji(0x1f339)+"\n\n"
+//					+"【免费咨询】直接咨询北京三甲医院儿科专家，一分钟内回复！\n" +
+//					"【预约专家】急速预约北京儿科专家出诊时间，不用排队挂号！\n"+
+//					"【妈妈活动】添加宝大夫客服微信：bdfdxb，加入宝大夫家长群，与众多宝妈一起交流分享，参与更多好玩儿的活动！\n\n"+
+//					"如需人工协助预约儿科专家,请您拨打：400-623-7120。";
+//			WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
 		}
 
 		return processScanEvent(xmlEntity,"newUser",request,response);
