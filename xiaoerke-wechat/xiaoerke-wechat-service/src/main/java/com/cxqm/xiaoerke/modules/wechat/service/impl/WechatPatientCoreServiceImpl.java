@@ -761,8 +761,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 //			respMessage = MessageUtil.textMessageToXml(textMessage);
 			Map parameter = systemService.getWechatParameter();
 			String token = (String) parameter.get("token");
-			token = "dtVU9veIKxg0NbOWBdUM9iFpHBnKth8frrkkoOx-ppaPlyM4L-6anbYDjkMvSjiAYA71Tuem4DG3cibhWZBGDBQzrY_XcKcw2R5OU99Jk4H1yX-vDoJRdzsoiorlzPEwDMZhAEANWJ";
-
 			List<Article> articleList = new ArrayList<Article>();
 			Article article = new Article();
 			article.setTitle("咨询大夫 - 三甲医院儿科专家  1分钟极速回复");
@@ -770,7 +768,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setPicUrl("");
 			article.setUrl("https://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236660&idx=1&sn=10d923526047a5276dd9452b7ed1e302&scene=1&srcid=0612OCo7d5ASBoGRr2TDgjfR&key=f5c31ae61525f82ed83c573369e70b8f9b853c238066190fb5eb7b8640946e0a090bbdb47e79b6d2e57b615c44bd82c5&ascene=0&uin=MzM2NjEyMzM1&devicetype=iMac+MacBookPro11%2C4+OSX+OSX+10.11.4+build(15E65)&version=11020201&pass_ticket=dG5W6eOP3JU1%2Fo3JXw19SFBAh1DgpSlQrAXTyirZuj970HMU7TYojM4D%2B2LdJI9n");
 			articleList.add(article);
-
 			WechatUtil.senImgMsgToWechat(token,xmlEntity.getFromUserName(),articleList);
 			memberService.sendExtendOldMemberWechatMessage(xmlEntity.getFromUserName());
 		}else if("36".equals(xmlEntity.getEventKey()))
