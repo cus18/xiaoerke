@@ -186,9 +186,6 @@ public class CustomerServiceImpl implements CustomerService {
 			startDate=sdf.format(now)+"  12:00:00";
 			endDate=sdf.format(now)+"  23:59:59";
 		}
-//		Map<String,Object> param=new HashMap<String, Object>();
-//		param.put("satarDate", startDate);
-//		param.put("endDate", endDate);
 		List<Map<String,Object>> list=customerReturnDao.getCustomerReturn(startDate, endDate);
 		for (Map<String, Object> map : list) {
 			String st = "您好，通过昨天在宝大夫的咨询，宝宝的情况有没有好转一些呢？"

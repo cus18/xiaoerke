@@ -49,6 +49,7 @@ public class WechatUtil {
 //    public static final String CORPID = "wxfb77729adf195622";
 //    public static final String SECTET = "c0192dc68e66eff74161e9cf266898bb";
 
+
     public static String getToken(String corpid, String sectet) throws IOException {
         String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + corpid + "&secret=" + sectet + "";
         String content = HttpRequestUtil.get(url);
@@ -67,7 +68,7 @@ public class WechatUtil {
         String url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + token + "&type=jsapi";
         String content = HttpRequestUtil.get(url);
         System.out.println("ticket:" + content);
-        JsApiTicket ticket = (JsApiTicket) JsonUtil.getObjFromJsonStr(content, JsApiTicket.class);
+        JsApiTicket ticket = JsonUtil.getObjFromJsonStr(content, JsApiTicket.class);
         return ticket.getTicket();
     }
 
@@ -267,14 +268,17 @@ public class WechatUtil {
             json = json.replace("CONTENT", content);
             String re = HttpRequestUtil.getConnectionResult(url, "POST", json);
             System.out.print(json + "--" + re);
+            if(re.contains("access_token is invalid")){
+                //token已经失效，重新获取新的token
+                return "tokenIsInvalid";
+            }
             JSONObject obj = new JSONObject(re);
             String resultStatus = (String)obj.get("errcode");
             return resultStatus;
         } catch (Exception e) {
             e.printStackTrace();
         }
-      return "";
-
+      return "messageOk";
     }
 
     /**
@@ -299,9 +303,6 @@ public class WechatUtil {
         }
     }
 
-    public void getOnlineCoust(String accessToken) {
-
-    }
 
     /**
      * 将日期转换成unix时间戳
@@ -330,16 +331,12 @@ public class WechatUtil {
         String fileName = file.getName();
         try {
             InputStream inputStream = new FileInputStream(file);
-            System.out.println("11111");
             JSONObject json = uploadNoTextMsgToWX(token,urlStr,msgType,fileName,inputStream);
             System.out.println(json.toString());
             System.out.println(json.optString("media_id"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-//        String filePath = "http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/1.jpg";
-        //       String tic = getShortUrl(token,url);
-        //     System.out.print(tic);
     }
 
     /**
@@ -594,7 +591,6 @@ public class WechatUtil {
         String sendUrl = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + token;
         String json = "{\"touser\": \""+openId+"\",\"msgtype\": \""+type+"\", \""+type+"\": {\"media_id\": \""+content+"\"}}";
         sendNoTextToWX(sendUrl,json);
-
     }
     /**
      * 上传H5医生向微信用户发送图片消息
@@ -689,14 +685,10 @@ public class WechatUtil {
             sendWXUser = new URL(sendUrl);
             HttpURLConnection httpURLConnection = (HttpURLConnection) sendWXUser.openConnection();
             httpURLConnection.setRequestMethod("POST");
-//            httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             httpURLConnection.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式
             httpURLConnection.setRequestProperty("Content-Type", "application/json"); // 设置发送数据的格式
             httpURLConnection.setDoOutput(true);
             httpURLConnection.setDoInput(true);
-            System.setProperty("sun.net.client.defaultConnectTimeout", "30000");// 连接超时30秒
-            System.setProperty("sun.net.client.defaultReadTimeout", "30000"); // 读取超时30秒
-//            httpURLConnection.connect();
             OutputStream os = httpURLConnection.getOutputStream();
             os.write(json.getBytes("UTF-8"));// 传入参数
             os.flush();
