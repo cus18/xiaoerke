@@ -456,7 +456,7 @@ public class ConsultSessionManager {
 
                     try {
                         //一分钟后判断，如果，该会话，没有被医生转接走，则取消该次转接，将会话，还给接诊员
-                        Thread.sleep(180000);
+                        Thread.sleep(120000);
                         ConsultSessionForwardRecordsVo sessionForwardRecordsVoLater = consultSessionForwardRecordsService.selectByPrimaryKey(forwardRecordId);
                         if (sessionForwardRecordsVoLater.getStatus().equals(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_WAITING)) {
                             Long sessionId = sessionForwardRecordsVoLater.getConversationId();
