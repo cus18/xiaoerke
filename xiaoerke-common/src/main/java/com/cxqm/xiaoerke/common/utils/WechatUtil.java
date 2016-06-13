@@ -39,11 +39,11 @@ public class WechatUtil {
     public static final String DOCTORSECTET = "d0460e461a3bcf8598ce6e87443b3d0f";
 
     //小儿科医生端微信参数
-    public static final String CORPID = "wxa19496b1076e7352";
-    public static final String SECTET = "f645d4bcf81c905b3ad628cda79bd7ee";
+    //public static final String CORPID = "wxa19496b1076e7352";
+    //public static final String SECTET = "f645d4bcf81c905b3ad628cda79bd7ee";
 
-//    public static final String CORPID = "wx0baf90e904df0117";
-//    public static final String SECTET = "b3dac0be3e1739af01fee0052ea7a68f";
+    public static final String CORPID = "wx674c2231dd94c285";
+    public static final String SECTET = "25c2b5ef041de8fc4b51ca35c2748476";
 
 //    //医生端微信参数
 //    public static final String CORPID = "wxfb77729adf195622";
