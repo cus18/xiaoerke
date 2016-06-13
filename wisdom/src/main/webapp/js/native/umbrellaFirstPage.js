@@ -10,18 +10,18 @@ document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.event.drag-1.5.mi
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.touchSlider.js"></scr'+'ipt>');
 
 var attentionLock=true;
-var version="b"; /*方案版本*/
+var version = "b"; /*方案版本*/
 
-var shareUmbrellaId="0";
+var shareUmbrellaId = "0";
 var umbrellaFirstPageInit = function() {
     cancelRemind();
     $(".shadow-content").hide();//每次页面加载时先隐藏提示浮层
-    version=GetQueryString("status");
+    version = GetQueryString("status");
     ifExistOrder();
     /*获取当前年月日*/
     var date = new Date();
-     date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
-     $("#date").html(date);
+    date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+    $("#date").html(date);
 
     //获取首页数据
     $.ajax({
@@ -29,7 +29,7 @@ var umbrellaFirstPageInit = function() {
         url: "umbrella/firstPageDataCount",
         contentType: "application/json; charset=utf-8",
         success: function(result){
-            var count=result.count*2;
+            var count = result.count*2;
             $("#totalUmbrellaMoney").html(result.count*5);
             $("#count").html(count);
         },
@@ -47,30 +47,20 @@ var umbrellaFirstPageInit = function() {
         dataType: "json"
     });
 
-    // $.ajax({
-    //     type: 'POST',
-    //     url: "umbrella/firstPageDataTotalUmbrellaMoney",
-    //     contentType: "application/json; charset=utf-8",
-    //     success: function(result){
-    //         var totalUmbrellaMoney=result.totalUmbrellaMoney;
-    //         $("#totalUmbrellaMoney").html(totalUmbrellaMoney);
-    //     },
-    //     dataType: "json"
-    // });
-
     //通过openid 获取当前用户是否关注
     $.ajax({
         type: 'POST',
         url: "umbrella/getOpenidStatus",
         contentType: "application/json; charset=utf-8",
         success: function(result){
-            var status=result.status;
+            var status = result.status;
             if(status=="1"){
                 attentionLock=false;
             }
         },
         dataType: "json"
     });
+
     scanQRCode();
     recordLogs("umbrella_FirstPage");
     $("#readBuy").attr("disabled",false);

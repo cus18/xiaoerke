@@ -50,8 +50,12 @@ public class ConsultSessionManager {
 
     //<userId or cs-userId, Channel>
     public final Map<String, Channel> userChannelMapping = new ConcurrentHashMap<String, Channel>();
+
     //<cs-userId, Channel>
     private final Map<String, Channel> csUserChannelMapping = new ConcurrentHashMap<String, Channel>();
+
+    //<cs-userId, ConnectionHeartTime>
+    private final Map<String, Date> csUserConnectionTimeMapping = new ConcurrentHashMap<String, Date>();
 
     //<cs-userId, Channel>
     private final Map<String, Channel> distributors = new ConcurrentHashMap<String, Channel>();
@@ -123,6 +127,7 @@ public class ConsultSessionManager {
         csUserChannelMapping.put(csUserId, channel);
         userChannelMapping.put(csUserId, channel);
         channelUserMapping.put(channel, csUserId);
+        csUserConnectionTimeMapping.put(csUserId,new Date());
     }
 
     private void doCreateSocketInitiatedByDistributor(String distributorUserId, Channel channel) {
@@ -132,6 +137,7 @@ public class ConsultSessionManager {
             csUserChannelMapping.put(distributorUserId, channel);
             userChannelMapping.put(distributorUserId, channel);
             channelUserMapping.put(channel, distributorUserId);
+            csUserConnectionTimeMapping.put(distributorUserId,new Date());
         } else {
             log.warn("Maybe a Simulated Distributor: The userId is " + distributorUserId);
         }
@@ -569,6 +575,40 @@ public class ConsultSessionManager {
         return userIds;
     }
 
+    public void checkDoctorChannelStatus(){
+        if(csUserConnectionTimeMapping!=null){
+            Iterator<Entry<String, Date>> it2 = csUserConnectionTimeMapping.entrySet().iterator();
+            while (it2.hasNext()) {
+                Entry<String, Date> entry = it2.next();
+                Date dateTime = entry.getValue();
+                long a = new Date().getTime();
+                long b = dateTime.getTime();
+                int c = (int)((a - b) / 1000);
+                if(c>140){
+                    //超过2分钟，没有收到心跳回馈信息，清除此channel
+                    removeUserSession(entry.getKey());
+                    csUserConnectionTimeMapping.remove(entry.getKey());
+                }
+            }
+        }
+
+        Iterator<Entry<String, Channel>> it = csUserChannelMapping.entrySet().iterator();
+        while (it.hasNext()) {
+            Entry<String, Channel> entry = it.next();
+            if (entry.getValue().isActive()){
+                //像医生端发送心跳包，如果2分钟内，没有得到回复，
+                // 则证明此医生已经掉线，将进行channel和已存在的会话清除处理工作
+                JSONObject jsonObj = new JSONObject();
+                jsonObj.put("type", "4");
+                jsonObj.put("notifyType", "0015");
+                jsonObj.put("notifyAddress", ConstantUtil.SERVER_ADDRESS);
+                TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
+                entry.getValue().writeAndFlush(frame.retain());
+                csUserConnectionTimeMapping.put(entry.getKey(),new Date());
+            }
+        }
+    }
+
     public Map<String, Channel> getUserChannelMapping() {
         return userChannelMapping;
     }
@@ -583,6 +623,10 @@ public class ConsultSessionManager {
 
     public Map<String, Channel> getCsUserChannelMapping() {
         return csUserChannelMapping;
+    }
+
+    public Map<String, Date> getCsUserConnectionTimeMapping() {
+        return csUserConnectionTimeMapping;
     }
 
     public void removeUserSession(String userId) {

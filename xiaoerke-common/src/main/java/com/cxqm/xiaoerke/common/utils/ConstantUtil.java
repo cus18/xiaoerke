@@ -7,7 +7,7 @@ public class ConstantUtil {
 	public static final String AMR_TOMP3_WINDOWSPATH = "E:\\ffmpeg\\ffmpeg\\bin\\";
 	public static final String AMR_TOMP3_WINDOWSPATHTEMP = "E:\\ffmpeg\\temp\\";
 	public static final String AMR_TOMP3_LINUXPATH = "/mnt/temp/";
-	public static final String SERVER_ADDRESS = "101.200.194.68";
+	public static final String SERVER_ADDRESS = "101.201.154.201";
 
 	//初始化
 	public static String APP_ID = "wx0baf90e904df0117";//微信开发平台应用id

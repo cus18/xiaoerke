@@ -152,11 +152,11 @@ textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 10
 .doctorContent,.patientContent{width: 100%;overflow: hidden;height: auto;}
 .doctorReplyContent {float: right;position: relative;}
 .patientConsultContent {float: left;position: relative;}
-.doctorReplyContent .message,.patientConsultContent .message{font: 16px/20px 'Microsoft Yahei';padding: 8px;max-width: 100%;border: 1px solid #ccc;border-radius: 5px;background-color: #fff;margin: 20px 10px 10px 10px;}
+.doctorReplyContent .message,.patientConsultContent .message{font: 16px/20px 'Microsoft Yahei';padding: 8px;max-width: 100%;border: 1px solid #ccc;border-radius: 5px;background-color: #fff;margin: 20px 10px 10px 10px;display: inline-block;}
 .doctorReplyContent div:nth-child(1){color:#08b7c2;}
 .patientConsultContent div:nth-child(1){color:#7fc700;}
 .senderName{position: relative;left: 10px;min-width: 300px;}
-.doctorName{position: absolute;right: 10px;min-width: 300px;}
+.doctorName{position: absolute;right: 10px;min-width: 300px;text-align: end;}
 .moreInformation{text-align: center;padding-top: 10px;}
 .moreInformation a{display: inline-block;color: #08b7c2;padding-left: 15px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fyh_12.png") no-repeat center left;}
 .moreInformation a:hover{text-decoration: underline;}

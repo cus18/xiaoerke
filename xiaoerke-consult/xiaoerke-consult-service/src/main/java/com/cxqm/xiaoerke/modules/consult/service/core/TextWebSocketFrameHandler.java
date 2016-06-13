@@ -6,10 +6,13 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
+import com.cxqm.xiaoerke.modules.task.service.ScheduleTaskService;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -19,9 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
 	
@@ -29,12 +30,13 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 
 	private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
 
-	@Autowired
 	private ConsultRecordService consultRecordService = SpringContextHolder.getBean("consultRecordServiceImpl");
 
-	@Autowired
+	private ConsultSessionService consultSessionService = SpringContextHolder.getBean("consultSessionServiceImpl");
+
 	private PatientRegisterPraiseService patientRegisterPraiseService = SpringContextHolder.getBean("patientRegisterPraiseServiceImpl");
 
+	private ScheduleTaskService scheduleTaskService = SpringContextHolder.getBean("scheduleTaskServiceImpl");
 
 	public TextWebSocketFrameHandler() {
 		super();
@@ -82,6 +84,18 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 			return;
 		}
 
+		if(msgType == 6){
+			String csUserId = (String) msgMap.get("csUserId");
+			Iterator<Map.Entry<String, Date>> it2 =  ConsultSessionManager.getSessionManager().getCsUserConnectionTimeMapping().entrySet().iterator();
+			while (it2.hasNext()) {
+				Map.Entry<String, Date> entry = it2.next();
+				if(csUserId.equals(entry.getKey())){
+					ConsultSessionManager.getSessionManager().getCsUserConnectionTimeMapping().put(entry.getKey(),new Date());
+				}
+			}
+			return;
+		}
+
 		Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
 		if(sessionId != null ) {
 			RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
@@ -108,26 +122,31 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 						userChannel.writeAndFlush(msg.retain());
 					}
 				}else if(richConsultSession.getSource().equals("wxcxqm")){
+					String sendResult = "";
 					if(msgType==0){
 						String content = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
 						StringBuilder stringBuilder = new StringBuilder();
 						//根据sessionId查询Evaluation表id
 						Map praiseParam = new HashMap();
 						praiseParam.put("consultSessionId", richConsultSession.getId());
-            praiseParam.put("doctorId",csUserId);
-              List<Map<String,Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParam);
+						praiseParam.put("doctorId",csUserId);
+						List<Map<String,Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParam);
 						if(praiseList != null && praiseList.size()>0){
 							int nameIndex = content.indexOf("：");
-							stringBuilder.append(content.substring(nameIndex+1, content.toCharArray().length));
-							stringBuilder.append("\n ---------------\n");
+							stringBuilder.append(content.substring(nameIndex + 1,content.toCharArray().length));
+							stringBuilder.append("---------------\n");
 							stringBuilder.append(content.substring(0,nameIndex));
 							stringBuilder.append(";【");
 							stringBuilder.append("<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
 							stringBuilder.append(praiseList.get(0).get("id"));
 							stringBuilder.append("'>评价医生</a>】");
-							WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());
+							sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());
 						}else {
-							WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), content);
+							sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), content);
+						}
+
+						if(sendResult.equals("tokenIsInvalid")){
+							updateWechatParameter();
 						}
 
 					}else if(msgType!=0){
@@ -138,6 +157,14 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 				}
 				//保存聊天记录
 				consultRecordService.buildRecordMongoVo(csUserId, String.valueOf(msgType), (String) msgMap.get("content"), richConsultSession);
+
+				if(!(msgMap.get("consultFlag").equals("noFlag"))){
+					System.out.print("sessionId===" + msgMap.get("sessionId"));
+					ConsultSession consultSessionVO = new ConsultSession();
+					consultSessionVO.setId((Integer) msgMap.get("sessionId"));
+					consultSessionVO.setFlag((String) msgMap.get("consultFlag"));
+					consultSessionService.updateSessionInfo(consultSessionVO);
+				}
 			}
 
 			//更新会话操作时间
@@ -188,8 +215,32 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 		ctx.close();
 		cause.printStackTrace();
 	}
-	
-	public static void main(String[] args){
+
+	public void updateWechatParameter(){
+		try {
+			System.out.print("用户端微信参数更新");
+			String token = WechatUtil.getToken(WechatUtil.CORPID,WechatUtil.SECTET);
+			String ticket = WechatUtil.getJsapiTicket(token);
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("token", token);
+			map.put("ticket",ticket);
+			map.put("id","1");
+			scheduleTaskService.updateWechatParameter(map);
+			sessionRedisCache.putWeChatParamToRedis(map);
+
+			System.out.print("医生端微信参数更新");
+			token = WechatUtil.getToken(WechatUtil.DOCTORCORPID,WechatUtil.DOCTORSECTET);
+			ticket = WechatUtil.getJsapiTicket(token);
+			map = new HashMap<String, Object>();
+			map.put("token",token);
+			map.put("ticket",ticket);
+			map.put("id", "2");
+			scheduleTaskService.updateWechatParameter(map);
+			sessionRedisCache.putWeChatParamToRedis(map);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 }

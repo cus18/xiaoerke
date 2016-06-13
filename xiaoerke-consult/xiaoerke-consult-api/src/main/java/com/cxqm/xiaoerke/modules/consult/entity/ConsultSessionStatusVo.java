@@ -25,6 +25,8 @@ public class ConsultSessionStatusVo {
 
     private String source;
 
+    private String flag;
+
     public String getCsUserId() {
         return csUserId;
     }
@@ -95,5 +97,13 @@ public class ConsultSessionStatusVo {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
     }
 }
