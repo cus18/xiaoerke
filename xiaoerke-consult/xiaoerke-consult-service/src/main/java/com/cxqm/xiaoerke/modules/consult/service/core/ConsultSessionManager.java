@@ -63,7 +63,7 @@ public class ConsultSessionManager {
     //<Channel, userId or cs-userId>
     private final Map<Channel, String> channelUserMapping = new ConcurrentHashMap<Channel, String>();
 
-    private List<String> distributorsList = null;
+    private List<String> distributorsList = new ArrayList<String>();
 
     private AtomicInteger accessNumber = new AtomicInteger(1000);
 
