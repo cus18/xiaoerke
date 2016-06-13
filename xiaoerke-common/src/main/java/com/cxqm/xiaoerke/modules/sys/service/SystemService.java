@@ -57,7 +57,9 @@ public class SystemService extends BaseService {
 	private SystemDao systemDao;
 	
 	//-- User Service --//
-	
+
+	@Autowired
+	private SwitchConfigureDao switchConfigureDao;
 	/**
 	 * 获取用户
 	 * @param id
@@ -420,5 +422,8 @@ public class SystemService extends BaseService {
         }
         return permissions;
     }
-	
+
+	public SwitchConfigure getUmbrellaSwitch(Map map){
+		return switchConfigureDao.getUmbrellaSwitch(map);
+	}
 }
