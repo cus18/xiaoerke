@@ -431,17 +431,22 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				if(list.size()!=0){
 					if("a".equals(list.get(0).get("version"))){
 						tourl = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
-						newBabyUmbrellaInfo.setVersion("a");
 						Map<String, Object> result=new HashMap<String, Object>();
 						double ram=Math.random() * 5;
-						while (ram<1){
+//        while (ram < 1){
+//            ram=Math.random() * 5;
+//        }
+
+						do{
 							ram=Math.random() * 5;
-						}
+						}while(ram<1);
+
 						String res=String.format("%.0f", ram);
 						newBabyUmbrellaInfo.setTruePayMoneys(res);
+						newBabyUmbrellaInfo.setVersion("a");
 						if(res.equals("0")){
 							newBabyUmbrellaInfo.setPayResult("success");
-							newBabyUmbrellaInfo.setActivationTime(new Date());
+//            babyUmbrellaInfo.setActivationTime(new Date());
 						}else {
 							newBabyUmbrellaInfo.setPayResult("fail");
 						}
@@ -486,7 +491,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setDescription("恭喜您已成功领取专属于宝宝的40万高额保障金");
 			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
 			//article.setUrl(tourl);
-			article.setUrl("http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=31");
+			article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31");
 			articleList.add(article);
 			umbrellascan = false;
 		}else if(EventKey.indexOf("qrscene_13")>-1){
@@ -531,7 +536,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setDescription("恭喜您已成功领取专属于宝宝的40万高额保障金");
 			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
 			//article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa");
-			article.setUrl("http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=31");
+			article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31");
 			articleList.add(article);
 			umbrellascan = false;
 		}
