@@ -73,7 +73,7 @@
 	</bean>
 	<bean id="consultRecordMongoTransMySqlCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="consultRecordMongoTransMySqlTask"/>
-		<property name="cronExpression" value="0 */1 * * * ?"/>
+		<property name="cronExpression" value="0 0 1 * * ?"/>
 	</bean>
 
 	<!--每两分钟，检查一下医生的链接情况，发送心跳包-->
@@ -94,7 +94,7 @@
 				<!--<ref bean="modifyConsultConversationForwardRecordsTrigger"/>-->
 				<!--<ref bean="deleteTempRecordTrigger"/>-->
 				<!--<ref bean="consultRecordMongoTransMySqlCronTrigger"/>-->
-				<ref bean="checkDoctorChannelStatus"/>
+				<!--<ref bean="checkDoctorChannelStatus"/>-->
 				<!--<ref bean="testMappingTrigger"/>-->
 			</list>
 		</property>

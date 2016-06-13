@@ -10,18 +10,33 @@ document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.event.drag-1.5.mi
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.touchSlider.js"></scr'+'ipt>');
 
 var attentionLock=true;
-var version = "b"; /*方案版本*/
+var version="b"; /*方案版本*/
 
-var shareUmbrellaId = "0";
+var shareUmbrellaId="0";
 var umbrellaFirstPageInit = function() {
+    $.ajax({
+        url:"umbrella/getOpenid",// 跳转到 action
+        async:true,
+        type:'post',
+        cache:false,
+        dataType:'json',
+        success:function(data) {
+            if(data.openid=="none"){
+                // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+            }
+        },
+        error : function() {
+        }
+    });
+    $("#NoShareDiv").hide();
     cancelRemind();
     $(".shadow-content").hide();//每次页面加载时先隐藏提示浮层
-    version = GetQueryString("status");
+    version=GetQueryString("status");
     ifExistOrder();
     /*获取当前年月日*/
     var date = new Date();
-    date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
-    $("#date").html(date);
+     date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+     $("#date").html(date);
 
     //获取首页数据
     $.ajax({
@@ -29,7 +44,7 @@ var umbrellaFirstPageInit = function() {
         url: "umbrella/firstPageDataCount",
         contentType: "application/json; charset=utf-8",
         success: function(result){
-            var count = result.count*2;
+            var count=result.count;
             $("#totalUmbrellaMoney").html(result.count*5);
             $("#count").html(count);
         },
@@ -41,11 +56,22 @@ var umbrellaFirstPageInit = function() {
         url: "umbrella/firstPageDataTodayCount",
         contentType: "application/json; charset=utf-8",
         success: function(result){
-            var todayCount=result.todayCount*2;
+            var todayCount=result.todayCount;
             $("#todayCount").html(todayCount);
         },
         dataType: "json"
     });
+
+    // $.ajax({
+    //     type: 'POST',
+    //     url: "umbrella/firstPageDataTotalUmbrellaMoney",
+    //     contentType: "application/json; charset=utf-8",
+    //     success: function(result){
+    //         var totalUmbrellaMoney=result.totalUmbrellaMoney;
+    //         $("#totalUmbrellaMoney").html(totalUmbrellaMoney);
+    //     },
+    //     dataType: "json"
+    // });
 
     //通过openid 获取当前用户是否关注
     $.ajax({
@@ -53,14 +79,13 @@ var umbrellaFirstPageInit = function() {
         url: "umbrella/getOpenidStatus",
         contentType: "application/json; charset=utf-8",
         success: function(result){
-            var status = result.status;
+            var status=result.status;
             if(status=="1"){
                 attentionLock=false;
             }
         },
         dataType: "json"
     });
-
     scanQRCode();
     recordLogs("umbrella_FirstPage");
     $("#readBuy").attr("disabled",false);
@@ -140,7 +165,7 @@ function loadShare(){
                     wx.ready(function () {
                         // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                         wx.onMenuShareTimeline({
-                            title: '运气太棒了，5块钱就能给宝宝领一份40万的60种重疾保障 ，还能随机立减，你也来试试吧！', // 分享标题
+                            title: '我用了几块零钱就变成了40万保障金了，你也来试试吧', // 分享标题
                             link: "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+shareUmbrellaId, // 分享链接
                             imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                             success: function (res) {
@@ -162,7 +187,7 @@ function loadShare(){
                             }
                         });
                         wx.onMenuShareAppMessage({
-                            title: '运气太棒了，5块钱就能给宝宝领一份40万的大病保障，还能随机立减 ', // 分享标题
+                            title: '我用了几块零钱就变成了40万保障金了，你也来试试吧 ', // 分享标题
                             desc: "现在加入5元即可获取最高40万报障，运气好还能免单哦，lets go! ", // 分享描述
                             link:"http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+shareUmbrellaId, // 分享链接
                             imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
@@ -284,6 +309,8 @@ function  ifExistOrder(){
             if(data.result==2||data.result==3){
                 if(data.umbrella.version=="a"){
                     version="a";
+                }else{
+                    version="b";
                 }
                 $("#NoShareDiv").hide();
                 $("#shareDiv").show();

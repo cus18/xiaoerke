@@ -63,7 +63,7 @@ public class ConsultSessionManager {
     //<Channel, userId or cs-userId>
     private final Map<Channel, String> channelUserMapping = new ConcurrentHashMap<Channel, String>();
 
-    private List<String> distributorsList = null;
+    private List<String> distributorsList = new ArrayList<String>();
 
     private AtomicInteger accessNumber = new AtomicInteger(1000);
 
@@ -86,8 +86,14 @@ public class ConsultSessionManager {
     private static ConsultSessionManager sessionManager = new ConsultSessionManager();
 
     private ConsultSessionManager() {
-        String distributorsStr = Global.getConfig("distributors.list");
-        distributorsList = Arrays.asList(distributorsStr.split(";"));
+//        String distributorsStr = Global.getConfig("distributors.list");
+//        distributorsList = Arrays.asList(distributorsStr.split(";"));
+        User user = new User();
+        user.setUserType("distributor");
+        List<User> users = systemService.findUserByUserType(user);
+        for(User u : users){
+            distributorsList.add(u.getId());
+        }
     }
 
     public static ConsultSessionManager getSessionManager() {
@@ -456,7 +462,7 @@ public class ConsultSessionManager {
 
                     try {
                         //一分钟后判断，如果，该会话，没有被医生转接走，则取消该次转接，将会话，还给接诊员
-                        Thread.sleep(180000);
+                        Thread.sleep(120000);
                         ConsultSessionForwardRecordsVo sessionForwardRecordsVoLater = consultSessionForwardRecordsService.selectByPrimaryKey(forwardRecordId);
                         if (sessionForwardRecordsVoLater.getStatus().equals(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_WAITING)) {
                             Long sessionId = sessionForwardRecordsVoLater.getConversationId();
