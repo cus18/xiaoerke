@@ -56,7 +56,7 @@ var umbrellaFirstPageInit = function() {
         url: "umbrella/firstPageDataTodayCount",
         contentType: "application/json; charset=utf-8",
         success: function(result){
-            var todayCount=result.todayCount*2;
+            var todayCount=result.todayCount;
             $("#todayCount").html(todayCount);
         },
         dataType: "json"
