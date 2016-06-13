@@ -22,12 +22,14 @@ import com.cxqm.xiaoerke.common.utils.Encodes;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.sys.dao.MenuDao;
 import com.cxqm.xiaoerke.modules.sys.dao.RoleDao;
+import com.cxqm.xiaoerke.modules.sys.dao.SwitchConfigureDao;
 import com.cxqm.xiaoerke.modules.sys.dao.SystemDao;
 import com.cxqm.xiaoerke.modules.sys.dao.UserDao;
 import com.cxqm.xiaoerke.modules.sys.entity.Menu;
 import com.cxqm.xiaoerke.modules.sys.entity.Office;
 import com.cxqm.xiaoerke.modules.sys.entity.Role;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
+import com.cxqm.xiaoerke.modules.sys.entity.SwitchConfigure;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 
