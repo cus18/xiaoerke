@@ -169,7 +169,6 @@ public class ConsultWechatController extends BaseController {
                     System.out.println("serverAddress------"+serverAddress);
                     obj.put("source",consultSession.getSource());
 
-
                     StringBuffer sbf = new StringBuffer();
                     if(messageType.equals("text")) {
                         obj.put("type", 0);

@@ -30,6 +30,8 @@ public class ConsultSession  implements Serializable {
 
     private transient String source;
 
+    private String flag;
+
     public Integer getId() {
         return id;
     }
@@ -100,5 +102,13 @@ public class ConsultSession  implements Serializable {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
     }
 }

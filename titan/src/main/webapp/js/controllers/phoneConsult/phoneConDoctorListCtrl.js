@@ -52,6 +52,8 @@
             $scope.dataLoading = true;
             $scope.reloadMoreDataMark="";
             $scope.shadowLock = false;
+            $scope.shadowLock1 = false;
+            $scope.shadowLock2 = false;
             $scope.orderBy = "0";
             $scope.departmentSelectName="全部科室";
             $scope.hospitalSelectName="全部医院";

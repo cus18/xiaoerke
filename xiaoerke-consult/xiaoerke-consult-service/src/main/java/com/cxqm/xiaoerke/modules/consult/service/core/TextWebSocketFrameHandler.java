@@ -6,8 +6,10 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.task.service.ScheduleTaskService;
@@ -29,6 +31,8 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 	private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
 
 	private ConsultRecordService consultRecordService = SpringContextHolder.getBean("consultRecordServiceImpl");
+
+	private ConsultSessionService consultSessionService = SpringContextHolder.getBean("consultSessionServiceImpl");
 
 	private PatientRegisterPraiseService patientRegisterPraiseService = SpringContextHolder.getBean("patientRegisterPraiseServiceImpl");
 
@@ -153,6 +157,14 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 				}
 				//保存聊天记录
 				consultRecordService.buildRecordMongoVo(csUserId, String.valueOf(msgType), (String) msgMap.get("content"), richConsultSession);
+
+				if(!(msgMap.get("consultFlag").equals("noFlag"))){
+					System.out.print("sessionId===" + msgMap.get("sessionId"));
+					ConsultSession consultSessionVO = new ConsultSession();
+					consultSessionVO.setId((Integer) msgMap.get("sessionId"));
+					consultSessionVO.setFlag((String) msgMap.get("consultFlag"));
+					consultSessionService.updateSessionInfo(consultSessionVO);
+				}
 			}
 
 			//更新会话操作时间

@@ -398,7 +398,7 @@ angular.module('controllers', ['luegg.directives'])
                                     value.number = 0;
                                     if(value.patientId==patientId){
                                         patientName = value.patientName;
-                                        value.transferDepartment = department;
+                                        value.transferDepartment = '需要转给'+department;
                                     }
                                     $.each(value.consultValue,function(index1,value1){
                                         filterMediaData(value1);
@@ -576,35 +576,41 @@ angular.module('controllers', ['luegg.directives'])
             };//当onkeydown 事件发生时调用函数
             //向用户发送咨询消息
             $scope.sendConsultMessage = function () {
-                console.log('saytext',$('#saytext').val());
                 if (!window.WebSocket) {
                     return;
                 }
                 GetSystemTime.save(function(data){
+                    var sayTextFlag = processSayTextFlag($("#saytext").val());
+                    var consultContent = $("#saytext").val();
+                    if(sayTextFlag!="noFlag"){
+                        consultContent = consultContent.substring(0,consultContent.length-8)+"\n";
+                    }
                     if($scope.currentUserConversation.serverAddress==$scope.firstAddress){
                         if ($scope.socketServerFirst.readyState == WebSocket.OPEN) {
                             var consultValMessage = "";
                             if($scope.userType=="distributor"){
                                 var consultValMessage = {
                                     "type": 0,
-                                    "content": "分诊" +$scope.doctorName+"："+ $("#saytext").val(),
+                                    "content": "分诊" +$scope.doctorName+"："+ consultContent,
                                     "dateTime": moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
                                     "senderId": angular.copy($scope.doctorId),
                                     "senderName": angular.copy($scope.doctorName),
-                                    "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                                    "sessionId": angular.copy($scope.currentUserConversation.sessionId),
+                                    "consultFlag": sayTextFlag
                                 };
                             }else if($scope.userType=="consultDoctor"){
                                 var consultValMessage = {
                                     "type": 0,
-                                    "content": $scope.doctorName + "医生：" + $("#saytext").val(),
+                                    "content": $scope.doctorName + "医生：" + consultContent,
                                     "dateTime": moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
                                     "senderId": angular.copy($scope.doctorId),
                                     "senderName": angular.copy($scope.doctorName),
-                                    "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                                    "sessionId": angular.copy($scope.currentUserConversation.sessionId),
+                                    "consultFlag": sayTextFlag
                                 };
                             }
                             $scope.socketServerFirst.send(emotionSendFilter(JSON.stringify(consultValMessage)));
-                            consultValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($("#saytext").val())));
+                            consultValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy(consultContent)));
                             $("#saytext").val('');
                             updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                         } else {
@@ -617,25 +623,27 @@ angular.module('controllers', ['luegg.directives'])
                             if($scope.userType=="distributor"){
                                 var consultValMessage = {
                                     "type": 0,
-                                    "content": "分诊" +$scope.doctorName+"："+ $("#saytext").val(),
+                                    "content": "分诊" +$scope.doctorName+"："+ consultContent,
                                     "dateTime":  moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
                                     "senderId": angular.copy($scope.doctorId),
                                     "senderName": angular.copy($scope.doctorName),
-                                    "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                                    "sessionId": angular.copy($scope.currentUserConversation.sessionId),
+                                    "consultFlag": sayTextFlag
                                 };
                             }else if($scope.userType=="consultDoctor"){
                                 var consultValMessage = {
                                     "type": 0,
-                                    "content": $scope.doctorName + "医生：" + $("#saytext").val(),
+                                    "content": $scope.doctorName + "医生：" + consultContent,
                                     "dateTime": moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
                                     "senderId": angular.copy($scope.doctorId),
                                     "senderName": angular.copy($scope.doctorName),
-                                    "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                                    "sessionId": angular.copy($scope.currentUserConversation.sessionId),
+                                    "consultFlag": sayTextFlag
                                 };
                             }
 
                             $scope.socketServerSecond.send(emotionSendFilter(JSON.stringify(consultValMessage)));
-                            consultValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($("#saytext").val())));
+                            consultValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy(consultContent)));
                             $("#saytext").val('');
                             updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                         } else {
@@ -654,6 +662,17 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 });
             };
+
+            var processSayTextFlag = function(data){
+                var sayTextValue = data.substring(data.length-8,data.length);
+                if(sayTextValue.indexOf("####")!=-1){
+                    flag = sayTextValue.substring(4,7);
+                }else{
+                    flag = "noFlag";
+                }
+                return flag;
+            }
+
             //向用户发送咨询图片
             $scope.uploadFiles = function($files,fileType) {
                 var dataValue = {
