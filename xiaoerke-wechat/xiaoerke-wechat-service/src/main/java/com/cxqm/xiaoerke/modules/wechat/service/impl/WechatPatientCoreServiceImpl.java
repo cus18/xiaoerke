@@ -416,7 +416,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setPicUrl("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/gw%2Fmingyidianhua");
 			article.setUrl(ConstantUtil.TITAN_WEB_URL + "/titan/firstPage/phoneConsult");
 			articleList.add(article);
-		}else if(EventKey.indexOf("12")>-1){//扫码分享
+		}else if(EventKey.indexOf("qrscene_12")>-1){//扫码分享
 			String toOpenId = xmlEntity.getFromUserName();//扫码者openid
 			Map<String, Object> param1 = new HashMap<String, Object>();
 			param1.put("openid",toOpenId);
@@ -446,7 +446,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 							newBabyUmbrellaInfo.setPayResult("fail");
 						}
 					}
-					if((Integer) list.get(0).get("umbrella_money")<400000&&!EventKey.contains("120000000")){
+					if((Integer) list.get(0).get("umbrella_money")<400000&&!EventKey.contains("qrscene_120000000")){
 						String fromOpenId = (String)list.get(0).get("openid");//分享者openid
 						String babyId = (String)list.get(0).get("baby_id");
 						Map parameter = systemService.getWechatParameter();
@@ -485,10 +485,11 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setTitle("宝大夫送你一份见面礼");
 			article.setDescription("恭喜您已成功领取专属于宝宝的40万高额保障金");
 			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
-			article.setUrl(tourl);
+			//article.setUrl(tourl);
+			article.setUrl("http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=31");
 			articleList.add(article);
 			umbrellascan = false;
-		}else if(EventKey.indexOf("13")>-1){
+		}else if(EventKey.indexOf("qrscene_13")>-1){
 			String toOpenId = xmlEntity.getFromUserName();//扫码者openid
 			Map<String, Object> param1 = new HashMap<String, Object>();
 			param1.put("openid",toOpenId);
@@ -497,7 +498,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			String id = EventKey.split("_")[1];
 			param.put("id",id);
 			List<Map<String,Object>> list = babyUmbrellaInfoService.getBabyUmbrellaInfo(param);
-			if(list1.size()==0&&!EventKey.contains("130000000")){//用户第一次加入保护伞
+			if(list1.size()==0&&!EventKey.contains("qrscene_130000000")){//用户第一次加入保护伞
 				if(list.size()!=0) {
 					if ((Integer) list.get(0).get("umbrella_money") < 400000) {
 						String fromOpenId = (String) list.get(0).get("openid");//分享者openid
@@ -529,7 +530,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setTitle("宝大夫送你一份见面礼");
 			article.setDescription("恭喜您已成功领取专属于宝宝的40万高额保障金");
 			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
-			article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa");
+			//article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa");
+			article.setUrl("http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=31");
 			articleList.add(article);
 			umbrellascan = false;
 		}
@@ -636,20 +638,56 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
 	private String sendSubScribeMessage(ReceiveXmlEntity xmlEntity,HttpServletRequest request,HttpServletResponse response,String marketer,String token)
 	{
-		String st = "";
 		HttpSession session = request.getSession();
 		session.setAttribute("openId", xmlEntity.getFromUserName());
 		LogUtils.saveLog(request, "00000001");//注：参数含义请参照sys_log_mapping表，如00000001表示“微信宝大夫用户版公众平台关注”
-
 		String EventKey = xmlEntity.getEventKey();
 		if(EventKey.indexOf("xuanjianghuodong_zhengyuqiao_saoma")<=-1&&EventKey.indexOf("baoxian_000001")<=-1)
 		{
-			st = "欢迎加入宝大夫，让您从此育儿不再愁！"+WechatUtil.emoji(0x1f339)+"\n\n"
-					+"【免费咨询】直接咨询北京三甲医院儿科专家，一分钟内回复！\n" +
-					"【预约专家】急速预约北京儿科专家出诊时间，不用排队挂号！\n"+
-					"【妈妈活动】添加宝大夫客服微信：bdfdxb，加入宝大夫家长群，与众多宝妈一起交流分享，参与更多好玩儿的活动！\n\n"+
-					"如需人工协助预约儿科专家,请您拨打：400-623-7120。";
-			WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
+			List<Article> articleList = new ArrayList<Article>();
+			Article article = new Article();
+			article.setTitle("");
+			article.setDescription("");
+			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%AE%9D%E6%8A%A4%E4%BC%9E.png");
+			article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa");
+			articleList.add(article);
+
+			article = new Article();
+			article.setTitle("咨询大夫 \n\n三甲医院医生7X24全年无休   一分钟极速回复");
+			article.setDescription("三甲医院医生7X24全年无休   一分钟极速回复");
+			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%92%A8%E8%AF%A2%E5%A4%A7%E5%A4%AB.png");
+			article.setUrl("https://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236660&idx=1&sn=10d923526047a5276dd9452b7ed1e302&scene=1&srcid=0612OCo7d5ASBoGRr2TDgjfR&key=f5c31ae61525f82ed83c573369e70b8f9b853c238066190fb5eb7b8640946e0a090bbdb47e79b6d2e57b615c44bd82c5&ascene=0&uin=MzM2NjEyMzM1&devicetype=iMac+MacBookPro11%2C4+OSX+OSX+10.11.4+build(15E65)&version=11020201&pass_ticket=dG5W6eOP3JU1%2Fo3JXw19SFBAh1DgpSlQrAXTyirZuj970HMU7TYojM4D%2B2LdJI9n");
+			articleList.add(article);
+
+			article = new Article();
+			article.setTitle("名医面诊  \n\n三甲医院儿科专家，线上准时预约，线下准时就诊");
+			article.setDescription("三甲医院儿科专家，线上准时预约，线下准时就诊");
+			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%90%8D%E5%8C%BB%E9%9D%A2%E8%AF%8A.png");
+			article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=2");
+			articleList.add(article);
+
+			article = new Article();
+			article.setTitle("名医电话 \n\n与权威儿科专家通话10分钟，个性化就诊和康复指导");
+			article.setDescription("与权威儿科专家通话10分钟，个性化就诊和康复指导");
+			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%90%8D%E5%8C%BB%E7%94%B5%E8%AF%9D.png");
+			article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=28");
+			articleList.add(article);
+
+			article = new Article();
+			article.setTitle("妈妈活动 \n\n添加宝大夫客服微信：bdfdxb，加入宝大夫家长群，与众多宝妈一起交流分享，参与更多好玩儿的活动");
+			article.setDescription("添加宝大夫客服微信：bdfdxb，加入宝大夫家长群，与众多宝妈一起交流分享，参与更多好玩儿的活动");
+			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%A6%88%E5%A6%88%E6%B4%BB%E5%8A%A8.png");
+			article.setUrl("baodf.com");
+			articleList.add(article);
+
+			WechatUtil.senImgMsgToWechat(token,xmlEntity.getFromUserName(),articleList);
+
+//			st = "欢迎加入宝大夫，让您从此育儿不再愁！"+WechatUtil.emoji(0x1f339)+"\n\n"
+//					+"【免费咨询】直接咨询北京三甲医院儿科专家，一分钟内回复！\n" +
+//					"【预约专家】急速预约北京儿科专家出诊时间，不用排队挂号！\n"+
+//					"【妈妈活动】添加宝大夫客服微信：bdfdxb，加入宝大夫家长群，与众多宝妈一起交流分享，参与更多好玩儿的活动！\n\n"+
+//					"如需人工协助预约儿科专家,请您拨打：400-623-7120。";
+//			WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
 		}
 
 		return processScanEvent(xmlEntity,"newUser",request,response);
@@ -714,15 +752,25 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			HttpSession session = request.getSession();
 			session .setAttribute("openId",xmlEntity.getFromUserName());
 			LogUtils.saveLog(request,"00000003");//注：参数含义请参照sys_log_mapping表，如00000003表示“咨询医生消息推送”
-			TextMessage textMessage = new TextMessage();
-			textMessage.setToUserName(xmlEntity.getFromUserName());
-			textMessage.setFromUserName(xmlEntity.getToUserName());
-			textMessage.setCreateTime(new Date().getTime());
-			textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
-			textMessage.setFuncFlag(0);
-			textMessage.setContent("1、点击左下角“小键盘”输入文字或语音,即可咨询疾病或保健问题\t\t\n 2、免费在线咨询时间:\n小儿内科:   24小时全天\n小儿皮肤科:   9:00~22:00\n营养保健科:   9:00~22:00\n小儿其他专科:(外科、眼科、耳鼻喉科、口腔科、预防保健科、中医科)   19:00~21:00 \n妇产科   19:00~22:00");
-
-			respMessage = MessageUtil.textMessageToXml(textMessage);
+//			TextMessage textMessage = new TextMessage();
+//			textMessage.setToUserName(xmlEntity.getFromUserName());
+//			textMessage.setFromUserName(xmlEntity.getToUserName());
+//			textMessage.setCreateTime(new Date().getTime());
+//			textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
+//			textMessage.setFuncFlag(0);
+//			textMessage.setContent("1、点击左下角“小键盘”输入文字或语音,即可咨询疾病或保健问题\t\t\n 2、免费在线咨询时间:\n小儿内科:   24小时全天\n小儿皮肤科:   9:00~22:00\n营养保健科:   9:00~22:00\n小儿其他专科:(外科、眼科、耳鼻喉科、口腔科、预防保健科、中医科)   19:00~21:00 \n妇产科   19:00~22:00");
+//
+//			respMessage = MessageUtil.textMessageToXml(textMessage);
+			Map parameter = systemService.getWechatParameter();
+			String token = (String) parameter.get("token");
+			List<Article> articleList = new ArrayList<Article>();
+			Article article = new Article();
+			article.setTitle("咨询大夫 - 三甲医院儿科专家  1分钟极速回复");
+			article.setDescription("小儿内科:       24小时全天 \n小儿皮肤科:   9:00 ~ 22:00\n小儿营养科:   9:00 ~ 22:00\n(外科、眼科、耳鼻喉科、口腔科、预防保健科、中医科)\n\n点击查看更多哦");
+			article.setPicUrl("");
+			article.setUrl("https://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236660&idx=1&sn=10d923526047a5276dd9452b7ed1e302&scene=1&srcid=0612OCo7d5ASBoGRr2TDgjfR&key=f5c31ae61525f82ed83c573369e70b8f9b853c238066190fb5eb7b8640946e0a090bbdb47e79b6d2e57b615c44bd82c5&ascene=0&uin=MzM2NjEyMzM1&devicetype=iMac+MacBookPro11%2C4+OSX+OSX+10.11.4+build(15E65)&version=11020201&pass_ticket=dG5W6eOP3JU1%2Fo3JXw19SFBAh1DgpSlQrAXTyirZuj970HMU7TYojM4D%2B2LdJI9n");
+			articleList.add(article);
+			WechatUtil.senImgMsgToWechat(token,xmlEntity.getFromUserName(),articleList);
 			memberService.sendExtendOldMemberWechatMessage(xmlEntity.getFromUserName());
 		}else if("36".equals(xmlEntity.getEventKey()))
 		{

@@ -1,42 +1,46 @@
 var moneys="";
 var umbrelladId="";
+var payLock = false;
 var umbrellaPayInit=function(){
+
     cancelRemind();
     $("#QRCodeDIV").hide();
     $("#FreeOrder").hide();
     $("#payButton").attr("disabled","disabled");
     $.ajax({
-        url:"umbrella/randomMoney",// 跳转到 action
+        url:"umbrella/getOpenid",// 跳转到 action
         async:true,
         type:'post',
         cache:false,
         dataType:'json',
         success:function(data) {
-            if(data.type=="free"){
-                window.location.href = "http://s165.baodf.com/wisdom/firstPage/umbrella?status=b";
-            }else {
-                moneys = data.result;
-                if (moneys == "0") {
-                    $("#payMoneyDis").html("0");
-                    $("#FreeOrder").show();
-                    $("#payOrder").hide();
-                    $("#payButton").removeAttr("disabled");
-                } else {
-                    $("#payMoney").html(5-moneys);
-                    $("#payMoneyDis").html(moneys);
-                    $("#FreeOrder").hide();
-                    $("#payButton").removeAttr("disabled");
-                    umbrelladId=data.id;
-                }
+            if(data.openid=="none"){
+                window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+            }else{
                 $.ajax({
-                    url:"umbrella/getOpenid",// 跳转到 action
+                    url:"umbrella/randomMoney",// 跳转到 action
                     async:true,
                     type:'post',
                     cache:false,
                     dataType:'json',
                     success:function(data) {
-                        if(data.openid=="none"){
-                            window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+                        if(data.type=="free"){
+                            window.location.href = "http://s165.baodf.com/wisdom/firstPage/umbrella?status=b";
+                        }else {
+                            moneys = data.result;
+                            if (moneys == "0") {
+                                $("#payMoneyDis").html("0");
+                                $("#FreeOrder").show();
+                                $("#payOrder").hide();
+                                $("#payButton").removeAttr("disabled");
+                            } else {
+                                $("#payMoney").html(5-moneys);
+                                $("#payMoneyDis").html(moneys);
+                                $("#FreeOrder").hide();
+                                $("#payButton").removeAttr("disabled");
+                                umbrelladId=data.id;
+                            }
+
                         }
                     },
                     error : function() {
@@ -47,6 +51,7 @@ var umbrellaPayInit=function(){
         error : function() {
         }
     });
+
     doRefresh();
 };
 var payUmbrella=function(){
@@ -126,76 +131,86 @@ var doRefresh = function(){
 }
 
 function wechatPay() {
-    if (moneys != "0") {
-        // moneys = 0.01;
-        $.ajax({
-            url: "account/user/umbrellaPay",// 跳转到 action
-            async: true,
-            type: 'get',
-            data: {patientRegisterId: umbrelladId+"_"+GetQueryString("shareId"), payPrice: moneys * 100},
-            cache: false,
-            success: function (data) {
-                $('#payButton').removeAttr("disabled");
-                var obj = eval('(' + data + ')');
-                if (parseInt(obj.agent) < 5) {
-                    alert("您的微信版本低于5.0无法使用微信支付");
-                    return;
-                }
-                //打开微信支付控件
-                wx.chooseWXPay({
-                    appId: obj.appId,
-                    timestamp: obj.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
-                    nonceStr: obj.nonceStr,  // 支付签名随机串，不长于 32 位
-                    package: obj.package,// 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
-                    signType: obj.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-                    paySign: obj.paySign,  // 支付签名
-                    success: function (res) {
-                        if (res.errMsg == "chooseWXPay:ok") {
-                            $.ajax({
-                                type: 'POST',
-                                url: "umbrella/getOpenidStatus",
-                                contentType: "application/json; charset=utf-8",
-                                success: function(result){
-                                    var status=result.status;
-                                    if(status=="1"){
-                                        var shareid = GetQueryString("shareId")==null||GetQueryString("shareId")=="120000000"?130000000:GetQueryString("shareId");
-                                        $.ajax({
-                                            type: 'POST',
-                                            url: "umbrella/getUserQRCode",
-                                            contentType: "application/json; charset=utf-8",
-                                            async:false,
-                                            data:"{'id':'"+shareid+"'}",
-                                            success: function (data) {
-                                                $("#QRCode").attr("src",data.qrcode);
-                                                $("#QRCodeDIV").show();
-                                                $(".c-shadow").show();
-                                                $(".shadow-content").show();
-                                            },
-                                            dataType: "json"
-                                        });
-                                    }else{
-                                        // window.location.href = "http://s165.baodf.com/wisdom/firstPage/umbrella?status=a";
-                                        window.location.href = "http://s165.baodf.com/wisdom/umbrella#/umbrellaJoin/"+new Date().getTime()+"/"+120000000;
-                                    }
-                                },
-                                dataType: "json"
-                            });
-
-                            // window.location.href = "http://s2.xiaork.cn/wisdom/firstPage/umbrella?status=a";
-                        } else {
-                            alert("支付失败,请重新支付")
-                        }
-                    },
-                    fail: function (res) {
-                        alert(res.errMsg)
+    var u = navigator.userAgent, app = navigator.appVersion;
+    var isAndroid = u.indexOf('Android') > -1 || u.indexOf('linux') > -1; //g
+    var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    if (isAndroid) {
+        payLock=true;
+    }
+    if(payLock) {
+        if (moneys != "0") {
+            // moneys = 0.01;
+            $.ajax({
+                url: "account/user/umbrellaPay",// 跳转到 action
+                async: true,
+                type: 'get',
+                data: {patientRegisterId: umbrelladId + "_" + GetQueryString("shareId"), payPrice: moneys * 100},
+                cache: false,
+                success: function (data) {
+                    $('#payButton').removeAttr("disabled");
+                    var obj = eval('(' + data + ')');
+                    if (parseInt(obj.agent) < 5) {
+                        alert("您的微信版本低于5.0无法使用微信支付");
+                        return;
                     }
-                });
-            },
-            error: function () {
-            }
-        });
+                    //打开微信支付控件
+                    wx.chooseWXPay({
+                        appId: obj.appId,
+                        timestamp: obj.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                        nonceStr: obj.nonceStr,  // 支付签名随机串，不长于 32 位
+                        package: obj.package,// 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+                        signType: obj.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                        paySign: obj.paySign,  // 支付签名
+                        success: function (res) {
+                            if (res.errMsg == "chooseWXPay:ok") {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "umbrella/getOpenidStatus",
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function (result) {
+                                        var status = result.status;
+                                        if (status == "1") {
+                                            var shareid = GetQueryString("shareId") == null || GetQueryString("shareId") == "120000000" ? 130000000 : GetQueryString("shareId");
+                                            $.ajax({
+                                                type: 'POST',
+                                                url: "umbrella/getUserQRCode",
+                                                contentType: "application/json; charset=utf-8",
+                                                async: false,
+                                                data: "{'id':'" + shareid + "'}",
+                                                success: function (data) {
+                                                    $("#QRCode").attr("src", data.qrcode);
+                                                    $("#QRCodeDIV").show();
+                                                    $(".c-shadow").show();
+                                                    $(".shadow-content").show();
+                                                },
+                                                dataType: "json"
+                                            });
+                                        } else {
+                                            // window.location.href = "http://s165.baodf.com/wisdom/firstPage/umbrella?status=a";
+                                            window.location.href = "http://s165.baodf.com/wisdom/umbrella#/umbrellaJoin/" + new Date().getTime() + "/" + 120000000;
+                                        }
+                                    },
+                                    dataType: "json"
+                                });
+
+                                // window.location.href = "http://s2.xiaork.cn/wisdom/firstPage/umbrella?status=a";
+                            } else {
+                                alert("支付失败,请重新支付")
+                            }
+                        },
+                        fail: function (res) {
+                            alert(res.errMsg)
+                        }
+                    });
+                },
+                error: function () {
+                }
+            });
+        } else {
+            window.location.href = "http://s165.baodf.com/wisdom/firstPage/umbrella?status=a";
+        }
     }else{
-        window.location.href = "http://s165.baodf.com/wisdom/firstPage/umbrella?status=a";
+        payLock=true;
     }
 }
 /*关闭关注二维码提示*/

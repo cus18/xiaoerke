@@ -39,6 +39,24 @@ define(['appPatientConsult'], function(app){
                             public: true
                         }
                     })
+                    .state('patientConsultWechat', {
+                        url: '/patientConsultWechat',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'patientConsultWechatCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientConsultWechatCtrl',
+                                    ['js/controllers/patientConsultWechatCtrl.js',
+                                        'js/libs/scrollglue.js','js/libs/moment.min.js',
+                                        'js/styles/patientConsultFirst.css'],
+                                    'js/views/patientConsultWechat.html?ver='+patientConsultVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+
                 $urlRouterProvider.otherwise('patientConsultFirst');
             }])
         .run(function ($rootScope){
