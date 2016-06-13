@@ -18,4 +18,20 @@ public class SwitchConfigure {
 	public void setId(int id) {
 		this.id = id;
 	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getFlag() {
+		return flag;
+	}
+
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
 }
