@@ -31,7 +31,7 @@ public class ConstantUtil {
 	public static String NOTIFY_INSURANCE_URL = "http://s68.baodf.com/titan/user/getInsurancePayNotifyInfo";
 	public static String NOTIFY_CUSTOMER_URL = "http://s68.baodf.com/titan/user/getCustomerPayNotifyInfo";
 	public static String NOTIFY_CONSULTPHONE_URL = "http://s68.baodf.com/titan/user/getPhoneConsultPayNotifyInfo";
-	public static String NOTIFY_UMBRELLA_URL = "http://s68.baodf.com/titan/user/getUmbrellaPayNotifyInfo";
+	public static String NOTIFY_UMBRELLA_URL = "http://s251.baodf.com/keeper/user/getUmbrellaPayNotifyInfo";
 
 	public static int DAY_QUARTER_NUMBER = 96;
 	public static int VISIT_INTERVAL = 15;
