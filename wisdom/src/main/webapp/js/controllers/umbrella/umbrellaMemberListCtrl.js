@@ -3,7 +3,24 @@
         function ($scope,$state,$stateParams,getFamilyList) {
             $scope.title="宝护伞-宝大夫儿童家庭重疾互助计划";
             //$scope.id = $stateParams.id;
+            $scope.shareLock=false;
 
+           /* 分享提示*/
+            $scope.goShare=function(){
+                $scope.shareLock=true;
+            };
+            /* 取消提示*/
+            $scope.cancelShare=function(){
+                $scope.shareLock=false;
+            };
+            /* 分享提示*/
+            $scope.goShare=function(){
+                $scope.shareLock=true;
+            };
+            /* 点击我的保障*/
+            $scope.myGuarantee=function(){
+                $state.go("umbrellaJoin",{});
+            };
             getFamilyList.save({"id":$stateParams.id},function(data){
                 console.log(data);
                 $scope.familyList =data.familyList;
