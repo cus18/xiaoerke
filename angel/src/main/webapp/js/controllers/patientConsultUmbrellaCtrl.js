@@ -140,7 +140,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     $scope.consultContent.push(patientValMessage);
                     $scope.socketServer.send(emotionSendFilter(JSON.stringify(patientValMessage)));
                     patientValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($("#saytext").val())));
-                    $scope.info.consultInputValue = "";
+                    $("#saytext").val('');
                 } else {
                     alert("连接没有开启.");
                 }
