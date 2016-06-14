@@ -1,5 +1,5 @@
 angular.module('controllers', ['luegg.directives','ngFileUpload'])
-    .controller('patientConsultWechatCtrl', ['$scope','$location','$anchorScroll',
+    .controller('patientConsultUmbrellaCtrl', ['$scope','$location','$anchorScroll',
         'GetSessionId','GetUserLoginStatus','$upload','$sce',
         function ($scope,$location,$anchorScroll,GetSessionId,GetUserLoginStatus,$upload,$sce) {
 
@@ -26,31 +26,22 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 }
             };
 
+            function GetRandomNum(Min,Max)
+            {
+                var Range = Max - Min;
+                var Rand = Math.random();
+                return(Min + Math.round(Rand * Range));
+            }
+
             $scope.patientConsultFirst = function(){
-
-                //判断用户有没有openId，如果没有openID，则获取openId
-
-
-
-                var routePath = "/patient/consultBBBBBB" + $location.path();
-                GetUserLoginStatus.save({routePath:routePath},function(data){
-                    $scope.pageLoading = false;
-                    if(data.status=="9") {
-                        window.location.href = data.redirectURL;
-                    }else if(data.status=="8"){
-                        window.location.href = data.redirectURL+"?targeturl="+routePath;
-                    }else if(data.status=="20"){
-                        $scope.patientId = data.userId;
-                        $scope.patientName = data.userName;
-                        $scope.patientPhone = data.userPhone;
-                        $scope.initConsultSocket();
-                    }
-                })
+                var num = GetRandomNum(1,10) + "";
+                $scope.patientId = num;
+                $scope.patientName = "保护伞"+num.substring(0,2);
+                $scope.initConsultSocket();
             };
 
             $scope.sendItem = false;
             $scope.$watch('info.consultInputValue', function(newVal, oldVal) {
-                console.log(newVal);
                 if(newVal==undefined||newVal == ""){
                     $scope.sendItem = false;
                 }else{
@@ -69,7 +60,6 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
 
                     $scope.socketServer.onmessage = function(event) {
                         var consultData = JSON.parse(event.data);
-                        console.log("onmessage",consultData);
                         if(consultData.type==4){
                             processNotifyMessage(consultData);
                         }else{
@@ -78,6 +68,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                         }
                         $scope.$apply();
                     };
+
                     $scope.socketServer.onopen = function(event) {
                         console.log("onopen"+event.data);
                         GetSessionId.get({"userId":$scope.patientId},function(data){
@@ -158,7 +149,6 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     "sessionId":$scope.sessionId
                 };
                 var dataJsonValue = JSON.stringify(dataValue);
-                console.log('dataJsonValue',JSON.stringify(dataValue));
                 for (var i = 0; i < $files.length; i++) {
                     var file = $files[i];
                     $scope.upload = $upload.upload({
@@ -177,7 +167,6 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                             "sessionId":$scope.sessionId,
                             "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png"
                         };
-                        console.log(patientValMessage.content);
                         if (!window.WebSocket) {
                             return;
                         }
@@ -192,7 +181,6 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 }
             };
             $scope.getQQExpression = function () {
-                console.log("aaaa");
                 $('#face').qqFace({
                     id: 'facebox', //表情盒子的ID
                     assign: 'saytext', //给那个控件赋值

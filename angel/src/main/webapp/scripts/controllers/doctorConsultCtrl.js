@@ -30,6 +30,7 @@ angular.module('controllers', ['luegg.directives'])
             $scope.currentUserConversation = {}; //医生与当前正在进行对话用户的聊天数据，医生在切换不同用户时，数据变更到切换的用户上来。
             $scope.waitJoinNum = 0; //医生待接入的用户数，是动态变化的数
             $scope.glued = true; //angular滚动条的插件预制参数，让对话滚动条，每次都定位底部，当新的聊天数据到达时
+            var umbrellaCustomerList = "d7606785b51a4b8db6041aca596cdfd6";
 
             //各个子窗口的开关变量
             $scope.showFlag = {
@@ -599,15 +600,27 @@ angular.module('controllers', ['luegg.directives'])
                                     "consultFlag": sayTextFlag
                                 };
                             }else if($scope.userType=="consultDoctor"){
-                                var consultValMessage = {
-                                    "type": 0,
-                                    "content": $scope.doctorName + "医生：" + consultContent,
-                                    "dateTime": moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
-                                    "senderId": angular.copy($scope.doctorId),
-                                    "senderName": angular.copy($scope.doctorName),
-                                    "sessionId": angular.copy($scope.currentUserConversation.sessionId),
-                                    "consultFlag": sayTextFlag
-                                };
+                                if(umbrellaCustomerList.indexOf($scope.doctorId)>-1){
+                                    var consultValMessage = {
+                                        "type": 0,
+                                        "content": "保护伞客服：" + consultContent,
+                                        "dateTime": moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
+                                        "senderId": angular.copy($scope.doctorId),
+                                        "senderName": angular.copy($scope.doctorName),
+                                        "sessionId": angular.copy($scope.currentUserConversation.sessionId),
+                                        "consultFlag": sayTextFlag
+                                    };
+                                }else{
+                                    var consultValMessage = {
+                                        "type": 0,
+                                        "content": $scope.doctorName + "医生：" + consultContent,
+                                        "dateTime": moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
+                                        "senderId": angular.copy($scope.doctorId),
+                                        "senderName": angular.copy($scope.doctorName),
+                                        "sessionId": angular.copy($scope.currentUserConversation.sessionId),
+                                        "consultFlag": sayTextFlag
+                                    };
+                                }
                             }
                             $scope.socketServerFirst.send(emotionSendFilter(JSON.stringify(consultValMessage)));
                             consultValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy(consultContent)));

@@ -39,17 +39,17 @@ define(['appPatientConsult'], function(app){
                             public: true
                         }
                     })
-                    .state('patientConsultWechat', {
-                        url: '/patientConsultWechat',
+                    .state('patientConsultUmbrella', {
+                        url: '/patientConsultUmbrella',
                         templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'patientConsultWechatCtrl',
+                        controller: 'patientConsultUmbrellaCtrl',
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientConsultWechatCtrl',
-                                    ['js/controllers/patientConsultWechatCtrl.js',
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientConsultUmbrellaCtrl',
+                                    ['js/controllers/patientConsultUmbrellaCtrl.js',
                                         'js/libs/scrollglue.js','js/libs/moment.min.js',
                                         'js/styles/patientConsultFirst.css'],
-                                    'js/views/patientConsultWechat.html?ver='+patientConsultVersion);
+                                    'js/views/patientConsultUmbrella.html?ver='+patientConsultVersion);
                             }
                         },
                         data: {
@@ -57,7 +57,7 @@ define(['appPatientConsult'], function(app){
                         }
                     })
 
-                $urlRouterProvider.otherwise('patientConsultFirst');
+                //$urlRouterProvider.otherwise('patientConsultFirst');
             }])
         .run(function ($rootScope){
         })
