@@ -40,9 +40,25 @@
 
             $scope.addMember=function(){
                 // $state.go("umbrellaMemberAdd",{id:$stateParams.id});
+                recordLogs("BHS_CYLB_TJCY");
                 window.location.href ="../wisdom/umbrella?value="+new Date().getTime()+"#/umbrellaMemberAdd/"+$stateParams.id+"/"+$stateParams.status;
             }
 
+            var recordLogs = function(val){
+                $.ajax({
+                    url:"util/recordLogs",// 跳转到 action
+                    async:true,
+                    type:'get',
+                    data:{logContent:encodeURI(val)},
+                    cache:false,
+                    dataType:'json',
+                    success:function(data) {
+                    },
+                    error : function() {
+                    }
+                });
+            };
+            
             $scope.immediateActive=function(){
                 $state.go("umbrellaJoin",{id:new Date().getTime()});
             }

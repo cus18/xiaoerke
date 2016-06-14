@@ -39,6 +39,10 @@ var umbrellaPayInit=function(){
                                 $("#FreeOrder").hide();
                                 $("#payButton").removeAttr("disabled");
                                 umbrelladId=data.id;
+                                if(5-moneys==0){
+                                    $("#FreeOrder").hide();
+                                    $("#payOrder").hide();
+                                }
                             }
 
                         }
@@ -131,6 +135,7 @@ var doRefresh = function(){
 }
 
 function wechatPay() {
+    recordLogs("BHS_ZFY_LJZF");
     var u = navigator.userAgent, app = navigator.appVersion;
     var isAndroid = u.indexOf('Android') > -1 || u.indexOf('linux') > -1; //g
     var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
@@ -178,6 +183,7 @@ function wechatPay() {
                                                 async: false,
                                                 data: "{'id':'" + shareid + "'}",
                                                 success: function (data) {
+                                                    recordLogs("BHS_ZFY_ZFCG");
                                                     $("#QRCode").attr("src", data.qrcode);
                                                     $("#QRCodeDIV").show();
                                                     $(".c-shadow").show();
@@ -207,6 +213,7 @@ function wechatPay() {
                 }
             });
         } else {
+            recordLogs("BHS_ZFY_ZFCG");
             window.location.href = "http://s165.baodf.com/wisdom/firstPage/umbrella?status=a";
         }
     }else{

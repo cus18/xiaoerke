@@ -17,9 +17,11 @@
             $scope.shareid=$stateParams.shareid;
 
             $scope.goDetail=function(){
+                recordLogs("BHS_WDBZ_CKXQ");
                 window.location.href = "/wisdom/firstPage/umbrella?status="+$scope.status;
             };
             $scope.goActive=function(){
+                recordLogs("BHS_WDBZ_JH");
                 $state.go("umbrellaFillInfo",{id:$scope.umbrellaId,status:$scope.status});
             };
             $scope.goShare=function(){
@@ -31,6 +33,7 @@
             //添加成员
             $scope.addMember=function(){
                 // $state.go("umbrellaMemberAdd",{id:$scope.umbrellaId});
+                recordLogs("BHS_WDBZ_JTCY");
                 window.location.href ="../wisdom/umbrella?value="+new Date().getTime()+"#/umbrellaMemberList/"+$scope.umbrellaId+"/"+$scope.status;
             }
             var compareDate = function (start,end){
@@ -66,6 +69,7 @@
                     error : function() {
                     }
                 });
+                recordLogs("BHS_WDBZ");
                 JoinUs.save({"shareId":$scope.shareid},function(data){
                     if(data.umbrella.activation_time==null){
                         $scope.firstJoin=true;
@@ -123,6 +127,21 @@
                 });
             });
 
+            var recordLogs = function(val){
+                $.ajax({
+                    url:"util/recordLogs",// 跳转到 action
+                    async:true,
+                    type:'get',
+                    data:{logContent:encodeURI(val)},
+                    cache:false,
+                    dataType:'json',
+                    success:function(data) {
+                    },
+                    error : function() {
+                    }
+                });
+            };
+
             $scope.loadShare=function() {
                 if($scope.status=="a"){
                     var timestamp;//时间戳
@@ -161,6 +180,7 @@
                                         link: "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+$scope.status+"_"+ $scope.umbrellaId, // 分享链接
                                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                         success: function (res) {
+                                            recordLogs("BHS_WDBZ_FXPYQ");
                                             //记录用户分享文章
                                             $.ajax({
                                                 type: 'POST',
@@ -184,6 +204,7 @@
                                         link:"http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+$scope.status+"_"+ $scope.umbrellaId, // 分享链接
                                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                         success: function (res) {
+                                            recordLogs("BHS_WDBZ_FXPY");
                                             $.ajax({
                                                 type: 'POST',
                                                 url: "umbrella/updateBabyUmbrellaInfoIfShare",
@@ -243,6 +264,7 @@
                                         link: "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+$scope.status+"_"+ $scope.umbrellaId, // 分享链接
                                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                         success: function (res) {
+
                                             //记录用户分享文章
                                             $.ajax({
                                                 type: 'POST',
@@ -266,6 +288,7 @@
                                         link:"http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+$scope.status+"_"+ $scope.umbrellaId, // 分享链接
                                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                         success: function (res) {
+                                            recordLogs("BHS_WDBZ_FXPY");
                                             $.ajax({
                                                 type: 'POST',
                                                 url: "umbrella/updateBabyUmbrellaInfoIfShare",

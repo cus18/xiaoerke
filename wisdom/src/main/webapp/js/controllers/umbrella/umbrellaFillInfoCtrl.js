@@ -253,6 +253,7 @@
                     "parentType":$scope.parentType,"umbrellaId":$scope.umbrellaId}, function (data){
                     if(data.result=='1'){
                         // $state.go("umbrellaMemberList",{id:$scope.umbrellaId});
+                        recordLogs("BHS_TXXX_LJJH");
                         window.location.href ="../wisdom/umbrella?value="+new Date().getTime()+"#/umbrellaMemberList/"+$stateParams.id+"/"+$stateParams.status;
                     }else if(data.result=='3'){
                         alert("验证码无效");
@@ -264,6 +265,21 @@
                 });
             };
 
+            var recordLogs = function(val){
+                $.ajax({
+                    url:"util/recordLogs",// 跳转到 action
+                    async:true,
+                    type:'get',
+                    data:{logContent:encodeURI(val)},
+                    cache:false,
+                    dataType:'json',
+                    success:function(data) {
+                    },
+                    error : function() {
+                    }
+                });
+            };
+            
             function compareDate() {
                 var last = new Date();
                 var now = $("#birthday").val();

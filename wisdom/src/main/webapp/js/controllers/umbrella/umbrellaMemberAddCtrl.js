@@ -48,11 +48,26 @@
                 }
                 addFamily.save({"sex":sex,"name":name,"birthDay":birthday,"id":$stateParams.id},function(data){
                     if(data.reusltStatus == 1){
+                        recordLogs("BHS_TJCY_BC");
                         $state.go("umbrellaMemberList",{id:$stateParams.id,status:$stateParams.status});
                     }else{
                         alert("宝宝信息保存失败");
                     }
 
+                });
+            };
+            var recordLogs = function(val){
+                $.ajax({
+                    url:"util/recordLogs",// 跳转到 action
+                    async:true,
+                    type:'get',
+                    data:{logContent:encodeURI(val)},
+                    cache:false,
+                    dataType:'json',
+                    success:function(data) {
+                    },
+                    error : function() {
+                    }
                 });
             };
             $scope.initSelect = function () {
