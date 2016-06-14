@@ -472,6 +472,13 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 						String keyword1 = "您已拥有"+babyUmbrellaInfo.getUmberllaMoney()/10000+"万的保障金，还需邀请"+(400000-umbrellaMoney)/20000+"位好友即可获得最高40万保障金。";
 						String keyword2 = StringUtils.isNotNull(babyId)?"观察期":"待激活";
 						String remark = "邀请一位好友，增加2万保额，最高可享受40万保障！";
+						if(umbrellaMoney == 400000){
+							title = "感谢您的爱心，第10位好友"+nickName+"已成功加入，一次分享，一份关爱，汇聚微小力量，传递大爱精神！";
+							templateId = "b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg";
+							keyword1 = "您已成功拥有40万的最高保障金。";
+							keyword2 = StringUtils.isNotNull(babyId)?"观察期":"待激活";
+							remark = "您还可以继续邀请好友，传递关爱精神，让更多的家庭拥有爱的保障！";
+						}
 						String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31";
 						WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, fromOpenId, templateId);
 					}
@@ -488,7 +495,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			}
 
 			article.setTitle("宝大夫送你一份见面礼");
-			article.setDescription("恭喜您已成功领取专属于宝宝的40万高额保障金");
+			article.setDescription("恭喜您已成功领取专属于宝宝的20万高额保障金");
 			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
 			//article.setUrl(tourl);
 			article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31");
@@ -526,6 +533,13 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 						String keyword1 = "您已拥有" + babyUmbrellaInfo.getUmberllaMoney() / 10000 + "万的保障金，还需邀请" + (400000 - umbrellaMoney) / 20000 + "位好友即可获得最高40万保障金。";
 						String keyword2 = StringUtils.isNotNull(babyId) ? "观察期" : "待激活";
 						String remark = "邀请一位好友，增加2万保额，最高可享受40万保障！";
+						if(umbrellaMoney == 400000){
+							title = "感谢您的爱心，第10位好友"+nickName+"已成功加入，一次分享，一份关爱，汇聚微小力量，传递大爱精神！";
+							templateId = "b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg";
+							keyword1 = "您已成功拥有40万的最高保障金。";
+							keyword2 = StringUtils.isNotNull(babyId)?"观察期":"待激活";
+							remark = "您还可以继续邀请好友，传递关爱精神，让更多的家庭拥有爱的保障！";
+						}
 						String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31";
 						WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, fromOpenId, templateId);
 					}
@@ -533,7 +547,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			}
 
 			article.setTitle("宝大夫送你一份见面礼");
-			article.setDescription("恭喜您已成功领取专属于宝宝的40万高额保障金");
+			article.setDescription("恭喜您已成功领取专属于宝宝的20万高额保障金");
 			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
 			//article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa");
 			article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31");
@@ -841,7 +855,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			newsMessage.setFuncFlag(0);
 			Article article = new Article();
 			article.setTitle("小病问医生，大病有互助");
-			article.setDescription("6月宝贝福利免费送，40万高额大病保障等你拿，目前已有" + count + "位妈妈们领取，你也赶紧加入吧！");
+			article.setDescription("感谢您对宝大夫的信任，现在宝大夫联合中国儿童少年基金会，共同推出家庭重疾40万高额保障互助计划，目前已有" + count + "妈妈加入，现在就等你了，赶紧加入吧！");
 			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
 			article.setUrl("http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrella");
 			articleList.add(article);
