@@ -5,6 +5,7 @@ var noManYi = [];
 var moneyNum = 0;
 var ptm3Flag = 1;//显示输入其它金额
 var showDocList = ["他们说我收到心意后开心得像个小孩子","宝宝在长大，医生会变老","谢谢妈妈们的好评和心意","让宝宝更健康是宝大夫团队的信仰"];
+var indexFlag = 0;
 
 //点击选择是否满意
 var setEvaluate = function (index) {
@@ -92,32 +93,73 @@ var setNo = function(index){
 
 //点击选择心意金额
 var getPtm2 = function (index) {
-    $(".ptm2 span").removeClass("action");
-    $(".ptm2 span").eq(index).addClass("action");
     //收起输入其它金额
     $(".ptm3_but img").attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour/index2_money.png");
     $(".ptm3_input").hide();
     ptm3Flag = 1;
     $('#getMoney').val("");
 
-    if(index == 0){
-        recordLogs("ZXPJSXY_one");
-        moneyNum = 2;
-    }else if(index==1){
-        recordLogs("ZXPJSXY_two");
-        moneyNum = 6.6;
-    }else if(index==2){
-        recordLogs("ZXPJSXY_three");
-        moneyNum = 10;
-    }else if(index==3){
-        recordLogs("ZXPJSXY_four");
-        moneyNum = 18.8;
-    }else if(index==4){
-        recordLogs("ZXPJSXY_five");
-        moneyNum = 52;
-    }else if(index==5){
-        recordLogs("ZXPJSXY_six");
-        moneyNum = 99;
+    if(moneyNum == 0){
+        $(".ptm2 span").eq(index).addClass("action");
+        if(index == 0){
+            indexFlag = 0;
+            recordLogs("ZXPJSXY_one");
+            moneyNum = 2;
+        }else if(index==1){
+            indexFlag = 1;
+            recordLogs("ZXPJSXY_two");
+            moneyNum = 6.6;
+        }else if(index==2){
+            indexFlag = 2;
+            recordLogs("ZXPJSXY_three");
+            moneyNum = 10;
+        }else if(index==3){
+            indexFlag = 3;
+            recordLogs("ZXPJSXY_four");
+            moneyNum = 18.8;
+        }else if(index==4){
+            indexFlag = 4;
+            recordLogs("ZXPJSXY_five");
+            moneyNum = 52;
+        }else if(index==5){
+            indexFlag = 5;
+            recordLogs("ZXPJSXY_six");
+            moneyNum = 99;
+        }
+    }else{
+        if(indexFlag == index){
+            $(".ptm2 span").eq(index).removeClass("action");
+            moneyNum = 0;
+        }else{
+            $(".ptm2 span").removeClass("action");
+            $(".ptm2 span").eq(index).addClass("action");
+            if(index == 0){
+                indexFlag = 0;
+                recordLogs("ZXPJSXY_one");
+                moneyNum = 2;
+            }else if(index==1){
+                indexFlag = 1;
+                recordLogs("ZXPJSXY_two");
+                moneyNum = 6.6;
+            }else if(index==2){
+                indexFlag = 2;
+                recordLogs("ZXPJSXY_three");
+                moneyNum = 10;
+            }else if(index==3){
+                indexFlag = 3;
+                recordLogs("ZXPJSXY_four");
+                moneyNum = 18.8;
+            }else if(index==4){
+                indexFlag = 4;
+                recordLogs("ZXPJSXY_five");
+                moneyNum = 52;
+            }else if(index==5){
+                indexFlag = 5;
+                recordLogs("ZXPJSXY_six");
+                moneyNum = 99;
+            }
+        }
+
     }
 }
 
