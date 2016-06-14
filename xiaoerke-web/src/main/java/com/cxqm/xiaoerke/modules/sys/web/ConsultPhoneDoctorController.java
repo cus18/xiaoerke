@@ -10,11 +10,13 @@ import com.cxqm.xiaoerke.modules.order.service.PhoneConsultDoctorRelationService
 import com.cxqm.xiaoerke.modules.order.service.RegisterService;
 import com.cxqm.xiaoerke.modules.order.service.SysConsultPhoneService;
 import com.cxqm.xiaoerke.modules.sys.entity.DoctorCaseVo;
+import com.cxqm.xiaoerke.modules.sys.entity.IllnessVo;
 import com.cxqm.xiaoerke.modules.sys.service.DoctorCaseService;
 import com.cxqm.xiaoerke.modules.sys.service.DoctorInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.HospitalInfoService;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.support.ManagedMap;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -186,6 +188,7 @@ public class ConsultPhoneDoctorController {
         response.put("pageTotal", tmp + "");
         List<HashMap<String, Object>> list = resultPage.getList();
         List<HashMap<String, Object>> doctorDataVoList = new ArrayList<HashMap<String, Object>>();
+        List<Map> departmentList = new ArrayList<Map>();
         if (list != null && !list.isEmpty()) {
             for (Map doctorDataVoMap : list) {
                 HashMap<String, Object> dataMap = new HashMap<String, Object>();
@@ -201,16 +204,25 @@ public class ConsultPhoneDoctorController {
                         .getTime()) / (24 * 60 * 60 * 1000)) / 365 + 1));
 
                 String doctorId = (String) doctorDataVoMap.get("id");
-                dataMap.put("expertise", doctorInfoService
-                        .getDoctorExpertiseById(doctorId, hospitalId,  null));
+
+                Map<String,Object> expertiseMap = doctorInfoService.getPhoneExpertiseById(doctorId, hospitalId,  null);
+                dataMap.put("expertise", expertiseMap.get("expertise"));
                 Object departmentLevel2Obj = doctorDataVoMap.get("department_level2");
                 boolean departmentLevel2IsEmpty = StringUtils.isEmpty( departmentLevel2Obj == null ? "" : (String) departmentLevel2Obj);
                 String departmentFullName = departmentLevel1Name == null ? null : departmentLevel1Name + (departmentLevel2IsEmpty ? "" : "  " + departmentLevel2Obj);
                 // 根据医生ID和医院ID，获取医生的所处科室
                 dataMap.put("departmentFullName", departmentFullName);
                 doctorDataVoList.add(dataMap);
+
+                List<IllnessVo> iVoList =(List<IllnessVo>) expertiseMap.get("iVoList");
+                for (IllnessVo vo : iVoList) {
+                    Map map = new HashMap();
+                    map.put("departmentLevel1Name",vo.getLevel_1());
+                    departmentList.add(map);
+                }
             }
         }
+        response.put("departmentList",departmentList);
         response.put("doctorDataVo", doctorDataVoList);
         return response;
     }
