@@ -140,7 +140,6 @@
         sd.career_time,
         sd.hospitalName,
 
-
         DATE_FORMAT(
         min(
         DATE_FORMAT(
@@ -166,6 +165,7 @@
         LEFT JOIN doctor_hospital_relation dhr ON dhr.sys_doctor_id = sd.id
         WHERE dhr.relation_type = '1'
         and scs.state = '0'
+        and sd.is_consultPhone = '1'
         <if test="hospitalId!=null">
             and  dhr.sys_hospital_id = #{hospitalId}
         </if>

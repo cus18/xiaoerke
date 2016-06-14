@@ -1,9 +1,6 @@
+<link rel="stylesheet" href="js/styles/patientConsultUmbrella.css" type="text/css"/>
 <div ui-view class="container-fluid" ng-init="patientConsultFirst()">
-    <div class="consultTitle">
-        <span><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_2.png" alt=""/></span>
-        宝大夫
-        <span><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_1.png" alt=""/></span>
-    </div>
+    <div class="consultTitle">宝大夫</div>
     <div class="consultDisplay">
         <div class="consulChatList">
             <div class="chatBox" ng-repeat="item in consultContent">
@@ -43,25 +40,10 @@
         </div>
     </div>
     <div class="consultInput">
-        <div class="consultInputTop">
-            <div class="videoInput">
-                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_4.png" alt=""/>
-            </div>
-            <div class="textInput">
-                <textarea placeholder="请输入咨询内容" id="saytext" ng-model="info.consultInputValue" style="border-style:none"></textarea>
-                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_6.png" alt="" id="face" ng-click="getQQExpression()"/>
-            </div>
-            <div ng-if="!sendItem" ng-click="openFileList()" ng-if="sendItem">
-                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_5.png" alt=""/>
-            </div>
-            <div class="sendConsultContent" ng-if="sendItem" id="sendConsultContent">
-                <button ng-click="sendConsultContent()">发送</button>
-            </div>
+        <div class="textInput">
+            <textarea placeholder="请输入咨询内容" id="saytext" ng-model="info.consultInputValue" style="border-style:none"></textarea>
+            <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_6.png" alt="" id="face" ng-click="getQQExpression()"/>
         </div>
-        <div ng-if="openFileListFlag&&!sendItem" id="fileInputList" class="fileInputList">
-            <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_7.png" type="file" ng-file-select="uploadFiles($files,'image')" accept="image/*" ng-file-max-height="2000" ng-file-max-size="2MB">
-            <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_8.png" type="file" ng-file-select="uploadFiles($files,'audio')" accept="audio/*">
-            <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_9.png" type="file" ng-file-select="uploadFiles($files,'video')" accept="video/*">
-        </div>
+        <input ng-click="sendConsultContent()" type="button" value="发送">
     </div>
 </div>
