@@ -5,6 +5,7 @@ var resultList=["","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playt
 
 var moneyNum = 0;
 var ptm3Flag = 1;//显示输入其它金额
+var indexFlag = 0;
 
 $(function(){
    // $('.evalhavemoney').hide();//收到心意钱
@@ -90,32 +91,79 @@ var setMoney = function (index) {
 
 //点击选择心意金额
 var getPtm2 = function (index) {
-    $(".ptm2 span").removeClass("action");
-    $(".ptm2 span").eq(index).addClass("action");
     //收起输入其它金额
     $(".ptm3_but img").attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour/index2_money.png");
     $(".ptm3_input").hide();
     ptm3Flag = 1;
     $('#getMoney').val("");
 
-    if(index == 0){
-        recordLogs("ZXPJSXY_one");
-        moneyNum = 2;
-    }else if(index==1){
-        recordLogs("ZXPJSXY_two");
-        moneyNum = 6.6;
-    }else if(index==2){
-        recordLogs("ZXPJSXY_three");
-        moneyNum = 10;
-    }else if(index==3){
-        recordLogs("ZXPJSXY_four");
-        moneyNum = 18.8;
-    }else if(index==4){
-        recordLogs("ZXPJSXY_five");
-        moneyNum = 52;
-    }else if(index==5){
-        recordLogs("ZXPJSXY_six");
-        moneyNum = 99;
+    if(moneyNum == 0){
+        $(".ptm2 span").eq(index).addClass("action");
+        if(index == 0){
+            indexFlag = 0;
+            recordLogs("ZXPJSXY_one");
+            moneyNum = 2;
+        }else if(index==1){
+            indexFlag = 1;
+            recordLogs("ZXPJSXY_two");
+            moneyNum = 6.6;
+        }else if(index==2){
+            indexFlag = 2;
+            recordLogs("ZXPJSXY_three");
+            moneyNum = 10;
+        }else if(index==3){
+            indexFlag = 3;
+            recordLogs("ZXPJSXY_four");
+            moneyNum = 18.8;
+        }else if(index==4){
+            indexFlag = 4;
+            recordLogs("ZXPJSXY_five");
+            moneyNum = 52;
+        }else if(index==5){
+            indexFlag = 5;
+            recordLogs("ZXPJSXY_six");
+            moneyNum = 99;
+        }
+        $("#but").removeAttr('disable');
+        $("#but").attr("style","background-color:#fe717b");
+    }else{
+        if(indexFlag == index){
+            $(".ptm2 span").eq(index).removeClass("action");
+            moneyNum = 0;
+            $("#but").attr('disable','disabled');
+            $("#but").attr("style","background-color:#E8E8E8");
+        }else{
+            $(".ptm2 span").removeClass("action");
+            $(".ptm2 span").eq(index).addClass("action");
+            if(index == 0){
+                indexFlag = 0;
+                recordLogs("ZXPJSXY_one");
+                moneyNum = 2;
+            }else if(index==1){
+                indexFlag = 1;
+                recordLogs("ZXPJSXY_two");
+                moneyNum = 6.6;
+            }else if(index==2){
+                indexFlag = 2;
+                recordLogs("ZXPJSXY_three");
+                moneyNum = 10;
+            }else if(index==3){
+                indexFlag = 3;
+                recordLogs("ZXPJSXY_four");
+                moneyNum = 18.8;
+            }else if(index==4){
+                indexFlag = 4;
+                recordLogs("ZXPJSXY_five");
+                moneyNum = 52;
+            }else if(index==5){
+                indexFlag = 5;
+                recordLogs("ZXPJSXY_six");
+                moneyNum = 99;
+            }
+            $("#but").removeAttr('disable');
+            $("#but").attr("style","background-color:#fe717b");
+        }
+
     }
 }
 
@@ -133,6 +181,16 @@ var getPtm3 = function () {
         $(".ptm3_input").hide();
         ptm3Flag = 1;
         $('#getMoney').val("");
+    }
+}
+
+var moreMoney2 = function () {
+    if($('#getMoney').val()>0){
+        $("#but").removeAttr('disable');
+        $("#but").attr("style","background-color:#fe717b");
+    }else{
+        $("#but").attr('disable','disabled');
+        $("#but").attr("style","background-color:#E8E8E8");
     }
 }
 
