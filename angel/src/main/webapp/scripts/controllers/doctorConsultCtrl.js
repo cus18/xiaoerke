@@ -816,8 +816,9 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.chooseAlreadyJoinConsultPatientId = patientId;
                 $scope.chooseAlreadyJoinConsultPatientName = patientName;
                 $scope.chooseAlreadyJoinConsultPatientsessionId = sessionId;
-                GetUserSessionTimesByUserId.save(function(data){
-                    $scope.chooseAlreadyJoinConsultPatientSessionTimes ='是'+ data + '次接入';
+                GetUserSessionTimesByUserId.get({userId:patientId},function(data){
+                    console.log(data);
+                    $scope.chooseAlreadyJoinConsultPatientSessionTimes ='是'+ data.userSessionTimes + '次接入';
                 });
                 getIframeSrc();
                 var updateFlag = false;

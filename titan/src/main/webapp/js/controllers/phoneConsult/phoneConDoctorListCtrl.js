@@ -57,6 +57,7 @@
             $scope.orderBy = "0";
             $scope.departmentSelectName="全部科室";
             $scope.hospitalSelectName="全部医院";
+            infoParam.hospitalId = null;
             $scope.doRefresh($scope.orderBy,1,'');
             $scope.allItemLock = false;//选择列表中全部科室 或 全部医院 是否显示
         };

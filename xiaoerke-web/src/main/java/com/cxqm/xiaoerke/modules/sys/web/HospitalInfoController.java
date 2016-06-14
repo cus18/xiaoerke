@@ -57,7 +57,7 @@ public class HospitalInfoController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> listHospital(@RequestBody Map<String, Object> params) {
-//		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+		//DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         return hospitalInfoService.listAllHospital(params);
 	}
 

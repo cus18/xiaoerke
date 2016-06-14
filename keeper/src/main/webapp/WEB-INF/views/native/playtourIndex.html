@@ -87,51 +87,55 @@
     </div>
 </div>
 <div class="playtourmoney">
-    <div class="ptmdoc" >
-        <!--<img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fxinyi_png.png" width="144px" height="17px"/>-->
+    <!--<div class="ptmdoc" >
+        &lt;!&ndash;<img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fxinyi_png.png" width="144px" height="17px"/>&ndash;&gt;
         <span class="ptmdoc_com"></span>
-        <!--<div>
-            <span>梁平</span>:他们说我收到心意后开心得像个小孩子
-        </div>-->
         <span>给医生的一点心意</span>
         <span class="ptmdoc_com"></span>
-    </div>
-    <div class="ptm">
+    </div>-->
+    <!--<div class="ptm">
         <img onclick="setMoney(0)" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png" width="43px" height="44px">
 
         <input  type="number" maxlength="4" id="getMoney" placeholder="0元" onfocus="this.type='number'" onblur="this.type='text'" oninput="moreMoney()"/>
 
         <img onclick="setMoney(1)" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjia_xuanzhong.png" width="43px" height="44px">
+    </div>-->
+    <div class="ptmdoc2">
+        <div class="doc2">
+            <div id="doctitle">
+                <span>梁平</span>:<span>宝宝在长大，医生会变老</span>
+            </div>
+        </div>
     </div>
-    <!--<ul class="ptm2">
-        <li class="money_com">
+    <ul class="ptm2">
+        <li class="money_com" onclick="getPtm2(0)">
             <span>2元</span>
         </li>
-        <li class="money_com ptm2_m">
+        <li class="money_com ptm2_m" onclick="getPtm2(1)">
             <span>6.6元</span>
         </li>
-        <li class="money_com">
+        <li class="money_com" onclick="getPtm2(2)">
             <span>10元</span>
         </li>
-        <li class="money_com ptm2_m2">
+        <li class="money_com ptm2_m2" onclick="getPtm2(3)">
             <span>18.8元</span>
         </li>
-        <li class="money_com ptm2_m ptm2_m2">
+        <li class="money_com ptm2_m ptm2_m2" onclick="getPtm2(4)">
             <span>52元</span>
         </li>
-        <li class="money_com ptm2_m2">
+        <li class="money_com ptm2_m2" onclick="getPtm2(5)">
             <span>99元</span>
         </li>
-    </ul>-->
-    <!--<div class="ptm3">
-        <div class="ptm3_but">
+    </ul>
+    <div class="ptm3">
+        <div class="ptm3_but" onclick="getPtm3()">
             <div>其它金额</div>
             <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour/index2_money.png" width="13px" height="13px" />
         </div>
-        <div class="put3_input">
-            <input type="number" maxlength="3" placeholder="可输入1-200元"/>
+        <div class="ptm3_input">
+            <input type="number" maxlength="3" id="getMoney" placeholder="可输入1-200元" oninput="moreMoney2()"/>
         </div>
-    </div>-->
+    </div>
     <div id="moneyDiff" class="ptmfu">
         <span>金额不可以为负哦~</span>
     </div>
@@ -160,9 +164,9 @@
 <div class="playtourjianyi">
     <textarea placeholder="更多留言..." maxlength="100" id="content"></textarea>
 </div>
-<!--<div class="playtourshenming">
+<div class="playtourshenming">
     您的心意会转入相应的医生账户，作为服务和科研经费
-</div>-->
+</div>
 <div class="playtourwenti" style="display:none">
     亲，支付出现问题哦~
 </div>
