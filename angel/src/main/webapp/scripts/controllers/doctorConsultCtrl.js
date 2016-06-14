@@ -4,12 +4,12 @@ angular.module('controllers', ['luegg.directives'])
         '$location', 'GetCurrentUserHistoryRecord','GetMyAnswerModify','GetCurrentUserConsultListInfo',
         'TransferToOtherCsUser','SessionEnd','GetWaitJoinList','React2Transfer','CancelTransfer','$upload',
         'GetFindTransferSpecialist','GetRemoveTransferSpecialist','GetAddTransferSpecialist','GetFindAllTransferSpecialist',
-        'CreateTransferSpecialist','$state','GetSystemTime',
+        'CreateTransferSpecialist','$state','GetSystemTime','GetUserSessionTimesByUserId',
         function ($scope, $sce, $window,$stateParams,GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
                   GetUserLoginStatus, $location, GetCurrentUserHistoryRecord,GetMyAnswerModify,
                   GetCurrentUserConsultListInfo,TransferToOtherCsUser,SessionEnd,GetWaitJoinList,React2Transfer,CancelTransfer,$upload,
                   GetFindTransferSpecialist,GetRemoveTransferSpecialist,GetAddTransferSpecialist,GetFindAllTransferSpecialist,
-                  CreateTransferSpecialist,$state,GetSystemTime) {
+                  CreateTransferSpecialist,$state,GetSystemTime,GetUserSessionTimesByUserId) {
             //初始化info参数
             $scope.info = {
                 effect:"true",
@@ -40,6 +40,7 @@ angular.module('controllers', ['luegg.directives'])
                 switchOver: false,
                 myReplyList: false,
                 publicReplyList: false,
+                diagnosisReplyList: false,
                 replyContent: true,
                 advisoryContent: false,
                 magnifyImg:false,
@@ -99,6 +100,15 @@ angular.module('controllers', ['luegg.directives'])
                                 $scope.myAnswer = answerData.myAnswer;
                             }else{
                                 $scope.myAnswer = [];
+                            }
+                        });
+                        //获取我的诊断列表
+                        GetAnswerValueList.save({"type":"diagnosis"},function(data){
+                            if(data.result=="success"){
+                                var answerData = JSON.parse(data.answerValue);
+                                $scope.diagnosis = answerData.diagnosis;
+                            }else{
+                                $scope.diagnosis = [];
                             }
                         });
                         /*GetCurrentDoctorDepartment.save({userId:$scope.doctorId},function(data){
@@ -181,6 +191,9 @@ angular.module('controllers', ['luegg.directives'])
                             }else if(type == "publicReplyList"){
                                 $scope.publicReplyIndex = -1;
                                 $scope.publicReplySecondIndex = -1;
+                            }else if(type == "diagnosisReplyList"){
+                                $scope.diagnosisReplyIndex = -1;
+                                $scope.diagnosisReplySecondIndex = -1;
                             }
                         }else{
                             if(type=="rankList"){
@@ -803,6 +816,9 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.chooseAlreadyJoinConsultPatientId = patientId;
                 $scope.chooseAlreadyJoinConsultPatientName = patientName;
                 $scope.chooseAlreadyJoinConsultPatientsessionId = sessionId;
+                GetUserSessionTimesByUserId.save(function(data){
+                    $scope.chooseAlreadyJoinConsultPatientSessionTimes ='是'+ data + '次接入';
+                });
                 getIframeSrc();
                 var updateFlag = false;
                 $.each($scope.alreadyJoinPatientConversation, function (index, value) {
@@ -950,6 +966,27 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.publicReplySecondIndex = childIndex;
                 $scope.info.editContent = $scope.commonAnswer[parentIndex].secondAnswer[childIndex].name;
             };
+            //诊断回复内容
+            $scope.chooseDiagnosisContent = function(parentIndex, childIndex){
+                $scope.info.consultMessage = angular.copy($scope.diagnosis[parentIndex].secondAnswer[childIndex].name);
+            };
+            $scope.tapDiagnosisReplyContent = function (parentIndex){
+                if($scope.diagnosisReplyIndex==parentIndex){
+                    $scope.diagnosisReplyIndex = -1;
+                    $scope.diagnosisReplySecondIndex = -1;
+                    $scope.info.editGroup = "";
+                    $scope.info.editContent = "";
+                }else{
+                    $scope.diagnosisReplyIndex = parentIndex;
+                    $scope.diagnosisReplySecondIndex = -1;
+                    $scope.info.editGroup = $scope.diagnosis[parentIndex].name;
+                    $scope.info.editContent = "";
+                }
+            };
+            $scope.tapEditDiagnosisContent = function(parentIndex, childIndex){
+                $scope.diagnosisReplySecondIndex = childIndex;
+                $scope.info.editContent = $scope.diagnosis[parentIndex].secondAnswer[childIndex].name;
+            };
             //添加分组
             $scope.add = function() {
                 $scope.info.addGroup = '';
@@ -965,6 +1002,15 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 if($scope.showFlag.publicReplyList){
                     if($scope.publicReplyIndex==-1||$scope.publicReplyIndex==undefined){
+                        $scope.addGroupFlag = true;
+                        $scope.addContentFlag = false;
+                    }else{
+                        $scope.addGroupFlag = false;
+                        $scope.addContentFlag = true;
+                    }
+                }
+                if($scope.showFlag.diagnosisReplyList){
+                    if($scope.diagnosisReplyIndex==-1||$scope.diagnosisReplyIndex==undefined){
                         $scope.addGroupFlag = true;
                         $scope.addContentFlag = false;
                     }else{
@@ -990,6 +1036,10 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.commonAnswer.push(setGroupContent);
                     saveCommonAnswer();
                 }
+                if($scope.showFlag.diagnosisReplyList){
+                    $scope.diagnosis.push(setGroupContent);
+                    saveDiagnosis();
+                }
                 $scope.addGroupFlag = false;
             };
             //添加内容
@@ -1004,6 +1054,10 @@ angular.module('controllers', ['luegg.directives'])
                 if($scope.showFlag.publicReplyList){
                     $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer.push(setContent);
                     saveCommonAnswer();
+                }
+                if($scope.showFlag.diagnosisReplyList){
+                    $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer.push(setContent);
+                    saveDiagnosis();
                 }
                 $scope.addContentFlag=false;
             };
@@ -1033,6 +1087,17 @@ angular.module('controllers', ['luegg.directives'])
                         }
                     }
                 }
+                if($scope.showFlag.diagnosisReplyList){
+                    if($scope.diagnosisReplyIndex!=-1&&$scope.diagnosisReplyIndex!=undefined){
+                        if($scope.diagnosisReplySecondIndex==-1||$scope.diagnosisReplyIndex==undefined){
+                            $scope.editGroupFlag = true;
+                            $scope.editContentFlag = false;
+                        }else{
+                            $scope.editGroupFlag = false;
+                            $scope.editContentFlag = true;
+                        }
+                    }
+                }
             };
             $scope.editGroupSubmit = function () {
                 if($scope.showFlag.myReplyList){
@@ -1043,6 +1108,10 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.commonAnswer[$scope.publicReplyIndex].name = $scope.info.editGroup;
                     saveCommonAnswer();
                 }
+                if($scope.showFlag.diagnosisReplyList){
+                    $scope.diagnosis[$scope.diagnosisReplyIndex].name = $scope.info.editGroup;
+                    saveDiagnosis();
+                }
                 $scope.editGroupFlag=false;
             };
             $scope.editContentSubmit = function () {
@@ -1052,6 +1121,10 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 if($scope.showFlag.publicReplyList){
                     $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex].name = $scope.info.editContent;
+                    saveCommonAnswer();
+                }
+                if($scope.showFlag.diagnosisReplyList){
+                    $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex].name = $scope.info.editContent;
                     saveCommonAnswer();
                 }
                 $scope.editContentFlag=false;
@@ -1088,6 +1161,21 @@ angular.module('controllers', ['luegg.directives'])
                         }
                     }
                 }
+                if($scope.showFlag.diagnosisReplyList){
+                    if($scope.diagnosisReplyIndex!=-1&&$scope.diagnosisReplyIndex!=undefined){
+                        if($scope.diagnosisReplySecondIndex==-1||$scope.diagnosisReplyIndex==undefined){
+                            if ($window.confirm("确定要删除该组回复?")) {
+                                $scope.diagnosis.splice($scope.diagnosisReplyIndex, 1);
+                                saveDiagnosis();
+                            }
+                        }else{
+                            if($window.confirm("确定要删除该回复?")) {
+                                $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer.splice($scope.diagnosisReplySecondIndex, 1);
+                                saveDiagnosis();
+                            }
+                        }
+                    }
+                }
             };
             //保存我的回复
             var saveMyAnswer = function() {
@@ -1097,6 +1185,11 @@ angular.module('controllers', ['luegg.directives'])
             //保存公共回复
             var saveCommonAnswer = function() {
                 GetMyAnswerModify.save({answer: $scope.commonAnswer, answerType: "commonAnswer"}, function (data) {
+                });
+            };
+            //保存诊断回复
+            var saveDiagnosis = function() {
+                GetMyAnswerModify.save({answer: $scope.diagnosis, answerType: "diagnosis"}, function (data) {
                 });
             };
             /***回复操作区**/
@@ -1151,7 +1244,7 @@ angular.module('controllers', ['luegg.directives'])
                         'dateTime':conversationData.dateTime,
                         'patientName':conversationData.senderName,
                         'consultValue':[]
-                    }
+                    };
                     $scope.currentUserConversation.consultValue.push(currentConsultValue);
                     chooseFlag = true;
                 }

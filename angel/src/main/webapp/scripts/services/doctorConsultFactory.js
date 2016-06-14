@@ -89,6 +89,10 @@ angular.module('services', ['ngResource'])
     .factory('GetHistoryRecordDoctor', ['$resource', function ($resource) {
         return $resource(public + 'consult/historyRecord/doctor');
     }])
+    //用户获取当前会话用户的接入次数
+    .factory('GetUserSessionTimesByUserId', ['$resource', function ($resource) {
+        return $resource(public + 'consult/user/getUserSessionTimesByUserId');
+    }])
     //转发会话到其他客服
     .factory('TransferToOtherCsUser', ['$resource', function ($resource) {
         return $resource(public + 'consult/doctor/transfer');

@@ -10,11 +10,10 @@ div#ddjr {border-right: 1px solid #fff;}
 .bdf-dkf-sever a{display: inline-block;width: 199px;line-height: 50px;cursor: pointer;text-align: center;}
 .replayContent{overflow: auto;height: 419px;}
 .replayContent::-webkit-scrollbar {width: 0;height: 0;}
-.reply-content .myreply{cursor: pointer;font: 12px/35px 'Microsoft Yahei';color:#333;}
-.reply-content .pubilcreply{cursor: pointer;font: 12px/35px 'Microsoft Yahei';color:#333;}
+.reply-content .myreply,.reply-content .pubilcreply,.reply-content .diagnosis{cursor: pointer;font: 12px/35px 'Microsoft Yahei';color:#333;}
 .rtitle {margin-left: 10px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(4).png") no-repeat 0 0;padding-left: 20px;}
 .myreply ul li img,.pubilcreply ul li img {margin-left: 25px;}
-.rcontent {margin-left: 50px;color:#666;}
+.rcontent {margin-left: 50px;color:#666;position: relative;}
 .rcontentContent{ height:35px;width: 325px;overflow: hidden;text-overflow: ellipsis;position: relative;}
 .group-title{margin-left: 30px;padding-left:20px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(4).png") no-repeat 0 0;}
 .group-title nobr {float: left;display: inline-block;width: 106px;overflow: hidden;text-overflow: ellipsis;}
@@ -114,7 +113,7 @@ p.historymessage span {display: block;background: url("http://xiaoerke-pc-baodf-
 .facein{width: 100%;border-bottom: 1px solid #acacac;font: 12px/38px 'Microsoft Yahei';border-top: 1px solid #acacac;background-color: #f2f2f2;height: 38px;}
 .facein p span {display: inline-block;padding-left:20px;margin: 0 10px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fyh_06.png") left top no-repeat;cursor: pointer;}
 .facein p:nth-child(2) span {background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(6).png") left center no-repeat;}
-.nametopin div.fr {line-height: 50px;margin-right: 20px;cursor: pointer;padding-left: 25px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(10).png") left center no-repeat;}
+.nametopin span.fr {line-height: 50px;margin-right: 20px;cursor: pointer;padding-left: 25px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(10).png") left center no-repeat;}
 .headimg {float: left;width: 40px;margin: 5px 10px 5px 20px;}
 .nametopin span {display: inline-block;line-height: 50px;}
 .nametopin {border-bottom: 1px solid #acacac;font-size:12px;height: 52px;}
