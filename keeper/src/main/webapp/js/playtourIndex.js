@@ -15,7 +15,6 @@ var setEvaluate = function (index) {
     $(".playtourjianyi").show();
     $(".playtourpingjie").show();
     $('#but').show();
-    $(".playtourshenming").show();
     if(index==0){
         $(".ptm2 span").removeClass("action");
         $(".ptm3_but img").attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour/index2_money.png");
@@ -24,6 +23,7 @@ var setEvaluate = function (index) {
         moneyNum = 0;
         $("#getMoney").val("");
         starNum1=1;
+        $(".playtourshenming").hide();
         $('.playtourpj_1 img').attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fbumanyi_xuanzhong_01.png");
         $('.center1 div').removeClass("c1");
         $('.playtourpj_2 div').removeClass("c1");
@@ -35,6 +35,7 @@ var setEvaluate = function (index) {
         recordLogs("ZXPJSXY_BMY");
     }else if(index==1){
         starNum1=3;
+        $(".playtourshenming").show();
         changeDocTitle();
         $('.playtourmoney').show();
         $('.playtourno').hide();
@@ -47,6 +48,7 @@ var setEvaluate = function (index) {
         recordLogs("ZXPJSXY_MY");
     }else if(index==2){
         starNum1=5;
+        $(".playtourshenming").show();
         changeDocTitle();
         $('.playtourmoney').show();
         $('.playtourno').hide();
