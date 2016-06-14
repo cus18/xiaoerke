@@ -12,6 +12,7 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
+import com.cxqm.xiaoerke.modules.task.service.ScheduleTaskService;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -24,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.*;
 
 public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
-	
+
 	private transient static final Logger log = LoggerFactory.getLogger(TextWebSocketFrameHandler.class);
 
 	private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
@@ -35,11 +36,12 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 
 	private PatientRegisterPraiseService patientRegisterPraiseService = SpringContextHolder.getBean("patientRegisterPraiseServiceImpl");
 
+	private ScheduleTaskService scheduleTaskService = SpringContextHolder.getBean("scheduleTaskServiceImpl");
 
 	public TextWebSocketFrameHandler() {
 		super();
 	}
-	
+
 	@Override
 	public void userEventTriggered(ChannelHandlerContext ctx, Object evt)
 			throws Exception {
@@ -53,11 +55,11 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx,
-			TextWebSocketFrame msg) throws Exception {
+								TextWebSocketFrame msg) throws Exception {
 		String msgText = msg.text();
 		Channel channel = ctx.channel();
 		Map<String, Object> msgMap = null;
-		
+
 		try {
 			msgMap = (Map<String, Object>) JSON.parse(msgText);
 		} catch (JSONException ex) {
@@ -141,8 +143,8 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 						}else {
 							sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), content);
 						}
-
 						if(sendResult.equals("tokenIsInvalid")){
+							updateWechatParameter();
 						}
 
 					}else if(msgType!=0){
@@ -198,13 +200,13 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 		log.info("enter channelInactive()");
 		String userId = ConsultSessionManager.getSessionManager().getChannelUserMapping().get(ctx.channel());
 		ConsultSessionManager.getSessionManager().getChannelUserMapping().remove(ctx.channel());
-		if(userId != null) {
+		if (userId != null) {
 			ConsultSessionManager.getSessionManager().getUserChannelMapping().remove(userId);
 			ConsultSessionManager.getSessionManager().getCsUserChannelMapping().remove(userId);
 		}
 		log.info("finish channelInactive()");
 	}
-	
+
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
 			throws Exception {
@@ -212,4 +214,30 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 		cause.printStackTrace();
 	}
 
+	public void updateWechatParameter(){
+		try {
+			System.out.print("用户端微信参数更新");
+			String token = WechatUtil.getToken(WechatUtil.CORPID,WechatUtil.SECTET);
+			String ticket = WechatUtil.getJsapiTicket(token);
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("token", token);
+			map.put("ticket",ticket);
+			map.put("id","1");
+			scheduleTaskService.updateWechatParameter(map);
+			sessionRedisCache.putWeChatParamToRedis(map);
+
+			System.out.print("医生端微信参数更新");
+			token = WechatUtil.getToken(WechatUtil.DOCTORCORPID,WechatUtil.DOCTORSECTET);
+			ticket = WechatUtil.getJsapiTicket(token);
+			map = new HashMap<String, Object>();
+			map.put("token",token);
+			map.put("ticket",ticket);
+			map.put("id", "2");
+			scheduleTaskService.updateWechatParameter(map);
+			sessionRedisCache.putWeChatParamToRedis(map);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
