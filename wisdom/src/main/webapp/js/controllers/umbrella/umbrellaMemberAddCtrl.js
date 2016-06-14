@@ -48,7 +48,7 @@
                 }
                 addFamily.save({"sex":sex,"name":name,"birthDay":birthday,"id":$stateParams.id},function(data){
                     if(data.reusltStatus == 1){
-                        $state.go("umbrellaMemberList",{id:$stateParams.id});
+                        $state.go("umbrellaMemberList",{id:$stateParams.id,status:$stateParams.status});
                     }else{
                         alert("宝宝信息保存失败");
                     }

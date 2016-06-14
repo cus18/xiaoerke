@@ -63,7 +63,7 @@ public class ConsultSessionManager {
     //<Channel, userId or cs-userId>
     private final Map<Channel, String> channelUserMapping = new ConcurrentHashMap<Channel, String>();
 
-    private List<String> distributorsList = null;
+    private List<String> distributorsList = new ArrayList<String>();
 
     private AtomicInteger accessNumber = new AtomicInteger(1000);
 
@@ -86,8 +86,14 @@ public class ConsultSessionManager {
     private static ConsultSessionManager sessionManager = new ConsultSessionManager();
 
     private ConsultSessionManager() {
-        String distributorsStr = Global.getConfig("distributors.list");
-        distributorsList = Arrays.asList(distributorsStr.split(";"));
+//        String distributorsStr = Global.getConfig("distributors.list");
+//        distributorsList = Arrays.asList(distributorsStr.split(";"));
+        User user = new User();
+        user.setUserType("distributor");
+        List<User> users = systemService.findUserByUserType(user);
+        for(User u : users){
+            distributorsList.add(u.getId());
+        }
     }
 
     public static ConsultSessionManager getSessionManager() {

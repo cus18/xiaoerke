@@ -22,7 +22,7 @@ var umbrellaFirstPageInit = function() {
         dataType:'json',
         success:function(data) {
             if(data.openid=="none"){
-                window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+                // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
             }
         },
         error : function() {
@@ -56,7 +56,7 @@ var umbrellaFirstPageInit = function() {
         url: "umbrella/firstPageDataTodayCount",
         contentType: "application/json; charset=utf-8",
         success: function(result){
-            var todayCount=result.todayCount*2;
+            var todayCount=result.todayCount;
             $("#todayCount").html(todayCount);
         },
         dataType: "json"

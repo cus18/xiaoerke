@@ -175,11 +175,11 @@
 <div>
 	<div id="backgroundColor"  style="display:none;position: absolute;width:100%;;z-index: 998;height:100%;background: #000;filter:alpha(Opacity=50);-moz-opacity:0.5;-webkit-opacity:0.5;-ms-opacity:0.5;opacity: 0.5;"></div>
 	<!--用户信息-->
-	<div class="module">
+	<div class="module" id="userInfoDIV">
 		<table class="table1">
 			<tr class="title">
 				<th colspan="2">
-					<h3>用户信息<span id='vip'>(VIP)</span>：</h3>
+					<h3>用户信息 <input type="submit" class="more" id="displayUserInfoButton"   onClick="hiddenUserInfo();"  value="收起更多"/> <span id='vip'>(VIP)</span>：</h3>
 				</th>
 			</tr>
 			<tr>
@@ -293,11 +293,11 @@
 		</table>
 	</div>
 	<!--添加咨询记录-->
-	<div class="module">
+	<div class="module" >
 		<table class="table4">
 			<tr class="title">
 				<th  colspan="2">
-					<h3>添加咨询记录：</h3>
+					<h3>添加咨询记录：<input type="submit" class="more" id="displayAddConsultButton"   onClick="hiddenAddConsult();"  value="收起更多"/> </h3>
 				</th>
 			</tr>
 			<tr>
@@ -1256,5 +1256,30 @@
 			},
 			dataType: "json"
 		});
+	}
+	function hiddenUserInfo(){
+		$(".table1").parent().css("height","50px");
+		$(".table1 td").css("display","none");
+		$("#displayUserInfoButton").val("查看更多");
+		$("#displayUserInfoButton").attr("onClick","showUserInfo()");
+	}
+	function showUserInfo(){
+		$(".table1").parent().css("height","230px");
+		$(".table1 td").css("display","");
+		$("#displayUserInfoButton").val("收起更多");
+		$("#displayUserInfoButton").attr("onClick","hiddenUserInfo()");
+	}
+
+	function hiddenAddConsult(){
+		$(".table4").parent().css("height","50px");
+		$(".table4 td").css("display","none");
+		$("#displayAddConsultButton").val("查看更多");
+		$("#displayAddConsultButton").attr("onClick","showAddConsult()");
+	}
+	function showAddConsult(){
+		$(".table4").parent().css("height","230px");
+		$(".table4 td").css("display","");
+		$("#displayAddConsultButton").val("收起更多");
+		$("#displayAddConsultButton").attr("onClick","hiddenAddConsult()");
 	}
 </script><!--[if !IE]>|xGv00|539017d66e4e60b1c82cbc86aa9a5d50<![endif]-->

@@ -72,6 +72,24 @@ public class ConsultUserController extends BaseController {
         return response;
     }
 
+
+    /**
+     * 获取会话接入次数
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value = "/getUserSessionTimesByUserId", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> getUserSessionTimesByUserId(@RequestParam(required=true) String userId) {
+        HashMap<String,Object> response = new HashMap<String, Object>();
+        ConsultSession consultSession = new ConsultSession();
+        consultSession.setUserId(userId);
+        List<ConsultSession> consultSessions = consultSessionService.selectBySelective(consultSession);
+        response.put("userSessionTimes",consultSessions == null ? 1 : consultSessions.size());
+        return response;
+    }
+
     @RequestMapping(value = "/getCurrentUserByCSId", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
