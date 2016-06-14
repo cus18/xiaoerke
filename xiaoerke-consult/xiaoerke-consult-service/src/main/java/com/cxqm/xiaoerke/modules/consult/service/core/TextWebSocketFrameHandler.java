@@ -58,7 +58,6 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 			TextWebSocketFrame msg) throws Exception {
 		String msgText = msg.text();
 		Channel channel = ctx.channel();
-		
 		Map<String, Object> msgMap = null;
 		
 		try {
