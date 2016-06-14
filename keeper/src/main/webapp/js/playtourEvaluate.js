@@ -3,7 +3,8 @@ var resultList=["","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playt
     "","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fmanyiweixuanzhong.png",//满意
     "","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Ffeichangmanyiweixuanzhong.png"]//非常满意
 
-var moneyNum = 0;;
+var moneyNum = 0;
+var ptm3Flag = 1;//显示输入其它金额
 
 $(function(){
    // $('.evalhavemoney').hide();//收到心意钱
@@ -14,7 +15,7 @@ $(function(){
     
 })
 
-//判断输入心意钱
+/*//判断输入心意钱
 var moreMoney = function () {
    // recordLogs("ZXPJSXY_JE");
     
@@ -84,6 +85,54 @@ var setMoney = function (index) {
         $('#getMoney').val(moneyNum);
         $('.ptm img').eq(1).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjia_xuanzhong.png");
         $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
+    }
+}*/
+
+//点击选择心意金额
+var getPtm2 = function (index) {
+    $(".ptm2 span").removeClass("action");
+    $(".ptm2 span").eq(index).addClass("action");
+    //收起输入其它金额
+    $(".ptm3_but img").attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour/index2_money.png");
+    $(".ptm3_input").hide();
+    ptm3Flag = 1;
+    $('#getMoney').val("");
+
+    if(index == 0){
+        recordLogs("ZXPJSXY_one");
+        moneyNum = 2;
+    }else if(index==1){
+        recordLogs("ZXPJSXY_two");
+        moneyNum = 6.6;
+    }else if(index==2){
+        recordLogs("ZXPJSXY_three");
+        moneyNum = 10;
+    }else if(index==3){
+        recordLogs("ZXPJSXY_four");
+        moneyNum = 18.8;
+    }else if(index==4){
+        recordLogs("ZXPJSXY_five");
+        moneyNum = 52;
+    }else if(index==5){
+        recordLogs("ZXPJSXY_six");
+        moneyNum = 99;
+    }
+}
+
+//输入其它金额
+var getPtm3 = function () {
+    recordLogs("ZXPJSXY_other");
+    $(".ptm2 span").removeClass("action");
+    moneyNum = 0;
+    if(ptm3Flag == 1){
+        $(".ptm3_but img").attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour/index2_money2.png");
+        $(".ptm3_input").show();
+        ptm3Flag = 0;
+    }else{
+        $(".ptm3_but img").attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour/index2_money.png");
+        $(".ptm3_input").hide();
+        ptm3Flag = 1;
+        $('#getMoney').val("");
     }
 }
 
@@ -157,6 +206,10 @@ function getCustomerInfo(){
                     $(".evalinputmoney").show();
                     $('.evalsharebut').hide();//分享按钮
                     $('#but').show();//分享按钮
+                    $(".ptm3_but img").attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour/index2_money.png");
+                    $(".ptm3_input").hide();
+                    ptm3Flag = 1;
+                    $('#getMoney').val("");
                 }
             }else if(evaluation.serviceAttitude==5){
                 $("#playtourStar").html("非常满意");
@@ -175,6 +228,10 @@ function getCustomerInfo(){
                     $(".evalinputmoney").show();
                     $('.evalsharebut').hide();//分享按钮
                     $('#but').show();//分享按钮
+                    $(".ptm3_but img").attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour/index2_money.png");
+                    $(".ptm3_input").hide();
+                    ptm3Flag = 1;
+                    $('#getMoney').val("");
                 }
             }
                 var star=starInfo.startNum+"";
@@ -264,10 +321,15 @@ var doRefresh = function(){
 
 function updateCustomerInfo() {
     customerId = GetQueryString("customerId");
-    var redPacket = $("#getMoney").val();
+    var redPacket;
+    if(moneyNum == 0){
+        redPacket = $("#getMoney").val();
+    }else{
+        redPacket = moneyNum;
+    }
     if (redPacket != "" && redPacket > 0  ) {
-        if(redPacket>1000){
-            alert("感谢您的支持,目前最大金额为1000哦!");
+        if(redPacket>200){
+            alert("感谢您的支持,目前最大金额为200哦!");
             return;
         }
         var num = new Number(redPacket);
