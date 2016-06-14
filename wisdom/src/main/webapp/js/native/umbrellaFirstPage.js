@@ -332,9 +332,9 @@ function  ifExistOrder(){
             }
 
             /*a版本和b版本的内容变化*/
-            var content="";
+            /* var content="";
             var textIntro="";
-            if(version=="a"){
+          if(version=="a"){
                 content='<img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic1a.png" >'
                     + '<div class="f4 c3"><span class="c12">5元</span>即加入</div>'
                     +'<div class="f4 c3">免单随时享</div>'
@@ -342,7 +342,8 @@ function  ifExistOrder(){
                 $('.introPic li').eq(0).html(content);
                 $('#textIntro').html(textIntro);
                 $(".helpPlan .pic img").attr("src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/help_pic1a.png");
-            } else{
+            }
+            else{
                 content='<img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic1b.png" >'
                     + '<div class="f4 c3">现在参与</div>'
                     +'<div class="f4 c3"><span class="c12">免费</span>加入 </div>';
@@ -350,7 +351,7 @@ function  ifExistOrder(){
                 $('.introPic li').eq(0).html(content);
                 $('#textIntro').html(textIntro);
                 $(".helpPlan .pic img").attr("src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/help_pic1b.png");
-            }
+            }*/
         },
         dataType: "json"
     });
