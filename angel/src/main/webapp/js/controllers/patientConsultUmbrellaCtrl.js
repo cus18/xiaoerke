@@ -26,16 +26,20 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 }
             };
 
-            function GetRandomNum(Min,Max)
-            {
-                var Range = Max - Min;
-                var Rand = Math.random();
-                return(Min + Math.round(Rand * Range));
+            function randomString(len) {
+                len = len || 32;
+                var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';/****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+                var maxPos = $chars.length;
+                var pwd = '';
+                for (i = 0; i < len; i++) {
+                    pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+                }
+                return pwd;
             }
 
             $scope.patientConsultFirst = function(){
-                var num = GetRandomNum(1,10) + "";
-                $scope.patientId = num;
+                var num = randomString(32);
+                $scope.patientId = num.substring(0,6);
                 $scope.patientName = "保护伞"+num.substring(0,2);
                 $scope.initConsultSocket();
             };
@@ -54,10 +58,8 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     window.WebSocket = window.MozWebSocket;
                 }
                 if (window.WebSocket) {
-                    //$scope.socketServer = new ReconnectingWebSocket("ws://101.201.154.201:2048/ws&user&"
-                    //    + $scope.patientId +"&h5cxqm");//cs,user,distributor
 
-                    $scope.socketServer = new ReconnectingWebSocket("ws://s202.xiaork.com:2048/ws&user&"
+                    $scope.socketServer = new ReconnectingWebSocket("ws://s202.xiaork.com/wsbackend/ws&user&"
                         + $scope.patientId +"&h5cxqm");//cs,user,distributor
 
                     $scope.socketServer.onmessage = function(event) {
