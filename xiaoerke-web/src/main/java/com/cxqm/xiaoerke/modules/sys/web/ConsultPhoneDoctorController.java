@@ -189,6 +189,7 @@ public class ConsultPhoneDoctorController {
         List<HashMap<String, Object>> list = resultPage.getList();
         List<HashMap<String, Object>> doctorDataVoList = new ArrayList<HashMap<String, Object>>();
         List<Map> departmentList = new ArrayList<Map>();
+        HashSet<String> departmentListTrem = new HashSet<String>();
         if (list != null && !list.isEmpty()) {
             for (Map doctorDataVoMap : list) {
                 HashMap<String, Object> dataMap = new HashMap<String, Object>();
@@ -216,12 +217,17 @@ public class ConsultPhoneDoctorController {
 
                 List<IllnessVo> iVoList =(List<IllnessVo>) expertiseMap.get("iVoList");
                 for (IllnessVo vo : iVoList) {
-                    Map map = new HashMap();
-                    map.put("departmentLevel1Name",vo.getLevel_1());
-                    departmentList.add(map);
+                    departmentListTrem.add(vo.getLevel_1());
                 }
             }
         }
+
+        for(String str:departmentListTrem){
+            Map map = new HashMap();
+            map.put("departmentLevel1Name",str);
+            departmentList.add(map);
+        }
+
         response.put("departmentList",departmentList);
         response.put("doctorDataVo", doctorDataVoList);
         return response;
