@@ -40,7 +40,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             $scope.patientConsultFirst = function(){
                 var num = randomString(32);
                 $scope.patientId = num.substring(0,6);
-                $scope.patientName = "保护伞"+num.substring(0,2);
+                $scope.patientName = "保护伞"+num.substring(0,1);
                 $scope.initConsultSocket();
             };
 
