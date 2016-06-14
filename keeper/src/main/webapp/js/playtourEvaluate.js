@@ -124,10 +124,14 @@ var getPtm2 = function (index) {
             recordLogs("ZXPJSXY_six");
             moneyNum = 99;
         }
+        $("#but").removeAttr('disable');
+        $("#but").attr("style","background-color:#fe717b");
     }else{
         if(indexFlag == index){
             $(".ptm2 span").eq(index).removeClass("action");
             moneyNum = 0;
+            $("#but").attr('disable','disabled');
+            $("#but").attr("style","background-color:#E8E8E8");
         }else{
             $(".ptm2 span").removeClass("action");
             $(".ptm2 span").eq(index).addClass("action");
@@ -156,6 +160,8 @@ var getPtm2 = function (index) {
                 recordLogs("ZXPJSXY_six");
                 moneyNum = 99;
             }
+            $("#but").removeAttr('disable');
+            $("#but").attr("style","background-color:#fe717b");
         }
 
     }
