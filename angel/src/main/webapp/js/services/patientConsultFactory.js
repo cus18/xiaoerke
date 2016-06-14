@@ -10,4 +10,8 @@ define(['appPatientConsult'], function (app) {
         .factory('GetUserLoginStatus', ['$resource', function ($resource) {
             return $resource('auth/info/loginStatus');
         }])
+        //获取用户的openId
+        .factory('GetUserOpenId', ['$resource', function ($resource) {
+            return $resource('util/getOpenid');
+        }])
 })

@@ -210,4 +210,21 @@ public class UtilController extends BaseController {
             return "false";
         }
     }
+
+    /**
+     * 用户登出操作
+     */
+    @RequestMapping(value = "/getOpenid", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> getOpenid(HttpServletRequest request,HttpSession session){
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        String openid= WechatUtil.getOpenId(session, request);
+        if(openid==null||openid.equals("")){
+            resultMap.put("openid","none");
+            return resultMap;
+        }
+        resultMap.put("openid", openid);
+        return resultMap;
+    }
 }
