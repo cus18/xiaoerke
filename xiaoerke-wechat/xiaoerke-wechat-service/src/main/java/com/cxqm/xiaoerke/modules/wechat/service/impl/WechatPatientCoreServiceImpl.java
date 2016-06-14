@@ -168,12 +168,12 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			try {
 				System.out.println(xmlEntity.getContent());
 				if(xmlEntity.getMsgType().equals("text")){
-					this.sendPost(ConstantUtil.ANGEL_WEB_URL + "/angel/consult/wechat/conversation",
+					this.sendPost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/conversation",
 							"openId=" + xmlEntity.getFromUserName() +
 							"&messageType=" + xmlEntity.getMsgType() +
 							"&messageContent=" + URLEncoder.encode(xmlEntity.getContent(), "UTF-8"));
 				}else{
-					this.sendPost(ConstantUtil.ANGEL_WEB_URL + "/angel/consult/wechat/conversation",
+					this.sendPost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/conversation",
 							"openId=" + xmlEntity.getFromUserName() +
 							"&messageType=" + xmlEntity.getMsgType() +
 							"&mediaId=" + xmlEntity.getMediaId());
