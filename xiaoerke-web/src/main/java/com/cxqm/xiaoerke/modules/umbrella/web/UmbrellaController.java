@@ -76,7 +76,9 @@ public class UmbrellaController  {
         map.put("today",sdf.format(new Date()));
         Integer todayCount = babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(map);
         Map<String, Object> result = new HashMap<String, Object>();
-        result.put("todayCount", todayCount);
+        Map<String,Object> maps = babyUmbrellaInfoSerivce.getUmbrellaNum();
+        Long familyNum = (Long)maps.get("familyNum");
+        result.put("todayCount", todayCount*2+familyNum);
         return result;
     }
 

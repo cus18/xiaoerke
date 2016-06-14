@@ -188,7 +188,7 @@ function loadShare(){
                         });
                         wx.onMenuShareAppMessage({
                             title: '我用了几块零钱就变成了40万保障金了，你也来试试吧 ', // 分享标题
-                            desc: "现在加入5元即可获取最高40万报障，运气好还能免单哦，lets go! ", // 分享描述
+                            desc: "现在加入5元即可获取最高40万保障，运气好还能免单哦，let's go! ", // 分享描述
                             link:"http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+shareUmbrellaId, // 分享链接
                             imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                             success: function (res) {
