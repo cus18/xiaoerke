@@ -417,7 +417,7 @@ public class UmbrellaController  {
         Map<String, Object> result=new HashMap<String, Object>();
         Map maps = new HashMap();
         maps.put("type","umbrella");
-        SwitchConfigure switchConfigure = systemService.getUmbrellaSwitch(map);
+        SwitchConfigure switchConfigure = systemService.getUmbrellaSwitch(maps);
         String flag = switchConfigure.getFlag();
 //        flag为1是打开，0是关闭
         double ram=0;

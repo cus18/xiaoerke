@@ -431,17 +431,23 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				if(list.size()!=0){
 					if("a".equals(list.get(0).get("version"))){
 						tourl = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
-						Map<String, Object> result=new HashMap<String, Object>();
-						double ram=Math.random() * 5;
+						Map maps = new HashMap();
+						maps.put("type","umbrella");
+						SwitchConfigure switchConfigure = systemService.getUmbrellaSwitch(maps);
+						String flag = switchConfigure.getFlag();
+						//        flag为1是打开，0是关闭
+						double ram=0;
+						if(flag.equals("1")) {
+							ram = Math.random() * 5;
 //        while (ram < 1){
 //            ram=Math.random() * 5;
 //        }
 
-						do{
-							ram=Math.random() * 5;
-						}while(ram<1);
-
-						String res=String.format("%.0f", ram);
+							do {
+								ram = Math.random() * 5;
+							} while (ram < 1);
+						}
+						String res = String.format("%.0f", ram);
 						newBabyUmbrellaInfo.setTruePayMoneys(res);
 						newBabyUmbrellaInfo.setVersion("a");
 						if(res.equals("0")){
