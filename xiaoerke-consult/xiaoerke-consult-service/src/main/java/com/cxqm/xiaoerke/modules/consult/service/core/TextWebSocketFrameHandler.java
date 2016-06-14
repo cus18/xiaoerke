@@ -143,7 +143,6 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 						}else {
 							sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), content);
 						}
-
 						if(sendResult.equals("tokenIsInvalid")){
 							updateWechatParameter();
 						}
