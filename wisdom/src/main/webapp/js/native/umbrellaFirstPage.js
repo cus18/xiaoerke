@@ -385,8 +385,13 @@ var lookQuestion = function(index) {
 
 /*宝大夫儿童重疾互助计划公约  60种重大疾病名称及定义 15种轻症名称及定义 名词释义*/
 var lookProtocol = function(index) {
-    recordLogs("BHS_HDSY_CJWT");
+    
     $(".c-shadow").show();
+    if(index==4){
+        recordLogs("BHS_HDSY_EJH");
+    }else{
+        recordLogs("BHS_HDSY_CJWT");
+    }
     $(".protocol").eq(index).show();
 
 }
