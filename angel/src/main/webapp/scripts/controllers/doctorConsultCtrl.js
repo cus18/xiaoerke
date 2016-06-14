@@ -583,47 +583,81 @@ angular.module('controllers', ['luegg.directives'])
             //处理用户按键事件
             document.onkeydown = function () {
                 if (window.event.keyCode == 13){
-                    if($("#saytext").val()!=""){
+                    if($("#saytext").val().replace(/\s+/g,"")!=""){
                         $scope.sendConsultMessage();
                     }
                 }
             };//当onkeydown 事件发生时调用函数
             //向用户发送咨询消息
             $scope.sendConsultMessage = function () {
-                if (!window.WebSocket) {
-                    return;
-                }
-                GetSystemTime.save(function(data){
-                    var sayTextFlag = processSayTextFlag($("#saytext").val());
-                    var consultContent = $("#saytext").val();
-                    if(sayTextFlag!="noFlag"){
-                        consultContent = consultContent.substring(0,consultContent.length-8)+"\n";
+                if($("#saytext").val().replace(/\s+/g,"")!=""){
+                    if (!window.WebSocket) {
+                        return;
                     }
-                    if($scope.currentUserConversation.serverAddress==$scope.firstAddress){
-                        if ($scope.socketServerFirst.readyState == WebSocket.OPEN) {
-                            var consultValMessage = "";
-                            if($scope.userType=="distributor"){
-                                var consultValMessage = {
-                                    "type": 0,
-                                    "content": "分诊" +$scope.doctorName+"："+ consultContent,
-                                    "dateTime": moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
-                                    "senderId": angular.copy($scope.doctorId),
-                                    "senderName": angular.copy($scope.doctorName),
-                                    "sessionId": angular.copy($scope.currentUserConversation.sessionId),
-                                    "consultFlag": sayTextFlag
-                                };
-                            }else if($scope.userType=="consultDoctor"){
-                                if(umbrellaCustomerList.indexOf($scope.doctorId)>-1){
+                    GetSystemTime.save(function(data){
+                        var sayTextFlag = processSayTextFlag($("#saytext").val());
+                        var consultContent = $("#saytext").val();
+                        if(sayTextFlag!="noFlag"){
+                            consultContent = consultContent.substring(0,consultContent.length-8)+"\n";
+                        }
+                        if($scope.currentUserConversation.serverAddress==$scope.firstAddress){
+                            if ($scope.socketServerFirst.readyState == WebSocket.OPEN) {
+                                var consultValMessage = "";
+                                if($scope.userType=="distributor"){
                                     var consultValMessage = {
                                         "type": 0,
-                                        "content": "保护伞客服：" + consultContent,
+                                        "content": "分诊" +$scope.doctorName+"："+ consultContent,
                                         "dateTime": moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
                                         "senderId": angular.copy($scope.doctorId),
                                         "senderName": angular.copy($scope.doctorName),
                                         "sessionId": angular.copy($scope.currentUserConversation.sessionId),
                                         "consultFlag": sayTextFlag
                                     };
-                                }else{
+                                }else if($scope.userType=="consultDoctor"){
+                                    if(umbrellaCustomerList.indexOf($scope.doctorId)>-1){
+                                        var consultValMessage = {
+                                            "type": 0,
+                                            "content": "保护伞客服：" + consultContent,
+                                            "dateTime": moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
+                                            "senderId": angular.copy($scope.doctorId),
+                                            "senderName": angular.copy($scope.doctorName),
+                                            "sessionId": angular.copy($scope.currentUserConversation.sessionId),
+                                            "consultFlag": sayTextFlag
+                                        };
+                                    }else{
+                                        var consultValMessage = {
+                                            "type": 0,
+                                            "content": $scope.doctorName + "医生：" + consultContent,
+                                            "dateTime": moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
+                                            "senderId": angular.copy($scope.doctorId),
+                                            "senderName": angular.copy($scope.doctorName),
+                                            "sessionId": angular.copy($scope.currentUserConversation.sessionId),
+                                            "consultFlag": sayTextFlag
+                                        };
+                                    }
+                                }
+                                $scope.socketServerFirst.send(emotionSendFilter(JSON.stringify(consultValMessage)));
+                                consultValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy(consultContent)));
+                                $("#saytext").val('');
+                                updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
+                            } else {
+                                alert("连接没有开启.");
+                            }
+                        }
+                        else if($scope.currentUserConversation.serverAddress==$scope.secondAddress){
+                            if ($scope.socketServerSecond.readyState == WebSocket.OPEN) {
+                                var consultValMessage = "";
+                                if($scope.userType=="distributor"){
+                                    var consultValMessage = {
+                                        "type": 0,
+                                        "content": "分诊" +$scope.doctorName+"："+ consultContent,
+                                        "dateTime":  moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
+                                        "senderId": angular.copy($scope.doctorId),
+                                        "senderName": angular.copy($scope.doctorName),
+                                        "sessionId": angular.copy($scope.currentUserConversation.sessionId),
+                                        "consultFlag": sayTextFlag
+                                    };
+                                }else if($scope.userType=="consultDoctor"){
                                     var consultValMessage = {
                                         "type": 0,
                                         "content": $scope.doctorName + "医生：" + consultContent,
@@ -634,59 +668,27 @@ angular.module('controllers', ['luegg.directives'])
                                         "consultFlag": sayTextFlag
                                     };
                                 }
-                            }
-                            $scope.socketServerFirst.send(emotionSendFilter(JSON.stringify(consultValMessage)));
-                            consultValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy(consultContent)));
-                            $("#saytext").val('');
-                            updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
-                        } else {
-                            alert("连接没有开启.");
-                        }
-                    }
-                    else if($scope.currentUserConversation.serverAddress==$scope.secondAddress){
-                        if ($scope.socketServerSecond.readyState == WebSocket.OPEN) {
-                            var consultValMessage = "";
-                            if($scope.userType=="distributor"){
-                                var consultValMessage = {
-                                    "type": 0,
-                                    "content": "分诊" +$scope.doctorName+"："+ consultContent,
-                                    "dateTime":  moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
-                                    "senderId": angular.copy($scope.doctorId),
-                                    "senderName": angular.copy($scope.doctorName),
-                                    "sessionId": angular.copy($scope.currentUserConversation.sessionId),
-                                    "consultFlag": sayTextFlag
-                                };
-                            }else if($scope.userType=="consultDoctor"){
-                                var consultValMessage = {
-                                    "type": 0,
-                                    "content": $scope.doctorName + "医生：" + consultContent,
-                                    "dateTime": moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
-                                    "senderId": angular.copy($scope.doctorId),
-                                    "senderName": angular.copy($scope.doctorName),
-                                    "sessionId": angular.copy($scope.currentUserConversation.sessionId),
-                                    "consultFlag": sayTextFlag
-                                };
-                            }
 
-                            $scope.socketServerSecond.send(emotionSendFilter(JSON.stringify(consultValMessage)));
-                            consultValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy(consultContent)));
-                            $("#saytext").val('');
-                            updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
-                        } else {
-                            alert("连接没有开启.");
-                        }
-                    }
-                    else{
-                        if($scope.currentUserConversation.serverAddress==""||$scope.currentUserConversation.serverAddress==null){
-                            if($scope.socketServerFirst!=""){
-                                $scope.currentUserConversation.serverAddress = angular.copy($scope.firstAddress);
-                            }else if($scope.socketServerSecond!=""){
-                                $scope.currentUserConversation.serverAddress = angular.copy($scope.secondAddress);
+                                $scope.socketServerSecond.send(emotionSendFilter(JSON.stringify(consultValMessage)));
+                                consultValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy(consultContent)));
+                                $("#saytext").val('');
+                                updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
+                            } else {
+                                alert("连接没有开启.");
                             }
-                            $scope.sendConsultMessage();
                         }
-                    }
-                });
+                        else{
+                            if($scope.currentUserConversation.serverAddress==""||$scope.currentUserConversation.serverAddress==null){
+                                if($scope.socketServerFirst!=""){
+                                    $scope.currentUserConversation.serverAddress = angular.copy($scope.firstAddress);
+                                }else if($scope.socketServerSecond!=""){
+                                    $scope.currentUserConversation.serverAddress = angular.copy($scope.secondAddress);
+                                }
+                                $scope.sendConsultMessage();
+                            }
+                        }
+                    });
+                }
             };
 
             var processSayTextFlag = function(data){

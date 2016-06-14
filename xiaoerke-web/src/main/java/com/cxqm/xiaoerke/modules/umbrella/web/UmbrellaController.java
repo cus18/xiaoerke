@@ -6,6 +6,7 @@ import com.cxqm.xiaoerke.common.utils.HttpRequestUtil;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
+import com.cxqm.xiaoerke.modules.sys.entity.SwitchConfigure;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
@@ -414,16 +415,24 @@ public class UmbrellaController  {
 
         }
         Map<String, Object> result=new HashMap<String, Object>();
-        double ram=Math.random() * 5;
+        Map maps = new HashMap();
+        maps.put("type","umbrella");
+        SwitchConfigure switchConfigure = systemService.getUmbrellaSwitch(maps);
+        String flag = switchConfigure.getFlag();
+//        flag为1是打开，0是关闭
+        double ram=0;
+        if(flag.equals("1")) {
+            ram = Math.random() * 5;
 //        while (ram < 1){
 //            ram=Math.random() * 5;
 //        }
 
-        do{
-            ram=Math.random() * 5;
-        }while(ram<1);
+            do {
+                ram = Math.random() * 5;
+            } while (ram < 1);
+        }
+            String res = String.format("%.0f", ram);
 
-        String res=String.format("%.0f", ram);
         BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
         babyUmbrellaInfo.setOpenid(openid);
         babyUmbrellaInfo.setUmberllaMoney(200000);

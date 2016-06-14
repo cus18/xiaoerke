@@ -14,6 +14,7 @@ var version="b"; /*方案版本*/
 
 var shareUmbrellaId="0";
 var umbrellaFirstPageInit = function() {
+    recordLogs("BHS_HDSY");
     $.ajax({
         url:"umbrella/getOpenid",// 跳转到 action
         async:true,
@@ -22,7 +23,7 @@ var umbrellaFirstPageInit = function() {
         dataType:'json',
         success:function(data) {
             if(data.openid=="none"){
-                // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+                window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
             }
         },
         error : function() {
@@ -87,12 +88,12 @@ var umbrellaFirstPageInit = function() {
         dataType: "json"
     });
     scanQRCode();
-    recordLogs("umbrella_FirstPage");
     $("#readBuy").attr("disabled",false);
     $("#readLock").show();
 }
 
 function scanQRCode(){
+
     var shareid = GetQueryString("id")==null?120000000:GetQueryString("id");
     $.ajax({
         type: 'POST',
@@ -169,6 +170,7 @@ function loadShare(){
                             link: "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+shareUmbrellaId, // 分享链接
                             imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                             success: function (res) {
+                                recordLogs("BHS_HDSY_FXPYQ");
                                 //记录用户分享文章
                                 $.ajax({
                                     type: 'POST',
@@ -198,6 +200,7 @@ function loadShare(){
                                     data:"{'id':'"+shareUmbrellaId+"'}",
                                     contentType: "application/json; charset=utf-8",
                                     success: function(result){
+                                        recordLogs("BHS_HDSY_FXPY");
                                         var todayCount=result.todayCount;
                                         $("#todayCount").html(todayCount);
                                     },
@@ -251,6 +254,7 @@ function loadShare(){
                             link: "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+shareUmbrellaId, // 分享链接
                             imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                             success: function (res) {
+                                recordLogs("BHS_HDSY_FXPYQ");
                                 //记录用户分享文章
                                 $.ajax({
                                     type: 'POST',
@@ -274,6 +278,7 @@ function loadShare(){
                             link:"http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+shareUmbrellaId, // 分享链接
                             imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                             success: function (res) {
+                                recordLogs("BHS_HDSY_FXPY");
                                 $.ajax({
                                     type: 'POST',
                                     url: "umbrella/updateBabyUmbrellaInfoIfShare",
@@ -327,9 +332,9 @@ function  ifExistOrder(){
             }
 
             /*a版本和b版本的内容变化*/
-            var content="";
+            /* var content="";
             var textIntro="";
-            if(version=="a"){
+          if(version=="a"){
                 content='<img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic1a.png" >'
                     + '<div class="f4 c3"><span class="c12">5元</span>即加入</div>'
                     +'<div class="f4 c3">免单随时享</div>'
@@ -337,7 +342,8 @@ function  ifExistOrder(){
                 $('.introPic li').eq(0).html(content);
                 $('#textIntro').html(textIntro);
                 $(".helpPlan .pic img").attr("src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/help_pic1a.png");
-            } else{
+            }
+            else{
                 content='<img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic1b.png" >'
                     + '<div class="f4 c3">现在参与</div>'
                     +'<div class="f4 c3"><span class="c12">免费</span>加入 </div>';
@@ -345,7 +351,7 @@ function  ifExistOrder(){
                 $('.introPic li').eq(0).html(content);
                 $('#textIntro').html(textIntro);
                 $(".helpPlan .pic img").attr("src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/help_pic1b.png");
-            }
+            }*/
         },
         dataType: "json"
     });
@@ -353,6 +359,7 @@ function  ifExistOrder(){
 
 /*重大疾病名称及定义 展开隐藏*/
 var lookHelpPlan = function() {
+    recordLogs("BHS_HDSY_CJWT");
     $(".helpPlan .fold").toggleClass("show");
     $(".helpPlan .foldText").toggleClass("change");
 
@@ -360,6 +367,7 @@ var lookHelpPlan = function() {
 
 /*运营保障 关怀 展开隐藏*/
 var care = function() {
+    recordLogs("BHS_HDSY_CJWT");
     $(".operation .text .care1").toggleClass("show");
     $(".operation .text .care2").toggleClass("change");
 
@@ -367,6 +375,7 @@ var care = function() {
 
 /*常见问题 展开隐藏*/
 var lookQuestion = function(index) {
+    recordLogs("BHS_HDSY_CJWT");
     $(".questions dt").eq(index).siblings("dt").children("a").removeClass("show");
     $(".questions dd").eq(index).siblings("dd").removeClass("change");
     $(".questions dt a").eq(index).toggleClass("show");
@@ -376,7 +385,13 @@ var lookQuestion = function(index) {
 
 /*宝大夫儿童重疾互助计划公约  60种重大疾病名称及定义 15种轻症名称及定义 名词释义*/
 var lookProtocol = function(index) {
+    
     $(".c-shadow").show();
+    if(index==4){
+        recordLogs("BHS_HDSY_EJH");
+    }else{
+        recordLogs("BHS_HDSY_CJWT");
+    }
     $(".protocol").eq(index).show();
 
 }
@@ -396,6 +411,7 @@ var cancelRemind = function() {
 
 /*跳转到参与成功页面*/
 var myGuarantee = function() {
+
     var shareid = GetQueryString("id")==null?120000000:GetQueryString("id");
     window.location.href = "umbrella#/umbrellaJoin/"+new Date().getTime()+"/"+shareid;
 
@@ -403,6 +419,7 @@ var myGuarantee = function() {
 
 /*跳转到领取成功页面*/
 var goJoin = function() {
+    recordLogs("BHS_HDSY_LJLQ");
     var shareid = GetQueryString("id")==null?120000000:GetQueryString("id");
     if(!attentionLock && version=="a"){
         window.location.href = "http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=umbrellaPay&shareId="+shareid;
