@@ -74,9 +74,9 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.userType = data.userType;
 
                         //创建与平台的socket连接
-                        //if($scope.socketServerFirst==""||$scope.socketServerFirst.readyState!=1){
-                        //    $scope.initConsultSocketFirst();
-                        //}
+                        if($scope.socketServerFirst==""||$scope.socketServerFirst.readyState!=1){
+                            $scope.initConsultSocketFirst();
+                        }
                         if($scope.socketServerSecond==""||$scope.socketServerSecond.readyState!=1){
                             $scope.initConsultSocketSecond();
                         }
