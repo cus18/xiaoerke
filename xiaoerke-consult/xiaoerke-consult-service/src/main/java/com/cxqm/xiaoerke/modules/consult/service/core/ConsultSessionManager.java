@@ -170,7 +170,11 @@ public class ConsultSessionManager {
             InetSocketAddress address = (InetSocketAddress) channel.localAddress();
             consultSession.setServerAddress(String.valueOf(address.getAddress()).replace("/", ""));
             consultSession.setUserId(userId);
-            consultSession.setUserName(user.getName() == null ? user.getLoginName() : user.getName());
+            if(user!=null){
+                consultSession.setUserName(user.getName() == null ? user.getLoginName() : user.getName());
+            }else{
+                consultSession.setUserName(userId);
+            }
             consultSession.setSource(source);
 
             if (distributors.size() != 0) {

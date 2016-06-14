@@ -188,9 +188,7 @@ public class FieldworkWechatController {
                 url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/umbrella?status="+status;
             }
         }else if("31".equals(url)){
-
-                url = ConstantUtil.WISDOM_WEB_URL + "wisdom/umbrella#/umbrellaJoin/"+new Date().getTime()+"/120000000";
-
+            url = ConstantUtil.WISDOM_WEB_URL + "wisdom/umbrella#/umbrellaJoin/"+new Date().getTime()+"/120000000";
         }
 
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
@@ -213,12 +211,11 @@ public class FieldworkWechatController {
                 if (countNum++ > 3) {
                     break;
                 }
-                ;
             } while (wechat == null);
 
             openid = wechat.getOpenid();
             session.setAttribute("openId", openid);
-            CookieUtils.setCookie(response, "openId", openid==null?"":openid,60*60*24*30,".baodf.com");
+            CookieUtils.setCookie(response, "openId", openid==null?"":openid,60*60*24*30,ConstantUtil.DOMAIN_VALUE);
             memberService.sendExtendOldMemberWechatMessage(openid);
         }
         return "redirect:" + url;
