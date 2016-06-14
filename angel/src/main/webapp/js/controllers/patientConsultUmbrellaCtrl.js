@@ -125,7 +125,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             $scope.sendConsultContent = function(){
                 var patientValMessage = {
                     "type": 0,
-                    "content": $scope.info.consultInputValue,
+                    "content": $("#saytext").val(),
                     "dateTime": moment().format("YYYY-MM-DD HH:mm:ss"),
                     "senderId":$scope.patientId,
                     "senderName":$scope.patientName,
@@ -139,49 +139,10 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 if ($scope.socketServer.readyState == WebSocket.OPEN) {
                     $scope.consultContent.push(patientValMessage);
                     $scope.socketServer.send(emotionSendFilter(JSON.stringify(patientValMessage)));
-                    patientValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($scope.info.consultInputValue)));
+                    patientValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($("#saytext").val())));
                     $scope.info.consultInputValue = "";
                 } else {
                     alert("连接没有开启.");
-                }
-            };
-            //提交图片
-            $scope.uploadFiles = function($files,fileType) {
-                var dataValue = {
-                    "fileType": fileType,
-                    "senderId": $scope.patientId,
-                    "sessionId":$scope.sessionId
-                };
-                var dataJsonValue = JSON.stringify(dataValue);
-                for (var i = 0; i < $files.length; i++) {
-                    var file = $files[i];
-                    $scope.upload = $upload.upload({
-                        url: 'consult/h5/uploadMediaFile',
-                        data: encodeURI(dataJsonValue),
-                        file: file
-                    }).progress(function(evt) {
-                        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-                    }).success(function(data, status, headers, config){
-                        var patientValMessage = {
-                            "type": 1,
-                            "content": data.showFile,
-                            "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                            "senderId": $scope.patientId,
-                            "senderName": $scope.senderName,
-                            "sessionId":$scope.sessionId,
-                            "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png"
-                        };
-                        if (!window.WebSocket) {
-                            return;
-                        }
-                        if ($scope.socketServer.readyState == WebSocket.OPEN) {
-                            $scope.consultContent.push(patientValMessage);
-                            $scope.socketServer.send(JSON.stringify(patientValMessage));
-                            $scope.info.consultInputValue = "";
-                        } else {
-                            alert("连接没有开启.");
-                        }
-                    });
                 }
             };
             $scope.getQQExpression = function () {

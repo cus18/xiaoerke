@@ -43,45 +43,40 @@ a:focus,input:focus{-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-user-modif
     width: 0;
     height: 0;
 }
-.consultInputTop img {
+.consultInput img {
     width: 25px;
     height: 25px;
 }
-.consultInputTop div{
+.consultInput div{
     float: left;
     padding: 8px 10px;
     line-height: 25px;
     border-radius: 5px;
 }
-.consultInputTop .textInput img{
+.consultInput .textInput img{
     width: 20px;
     height: 20px;
     margin-top: 2px;
     float: right;
 }
-.consultInputTop .textInput{
+.consultInput .textInput{
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 0 10px;
-    margin: 8px 0;
-    width: 262px;
+    width: 70%;
+    margin: 5px 0px 5px 5px;
 }
-.consultInputTop .sendConsultContent {
-    float: right;
-    margin-top: -43px;
-}
-.consultInputTop input{
+.consultInput input{
     font: 13px/25px 'Microsoft Yahei';
+    width: 20%;
+    display: inline-block;
+    float: right;
     color:#fff;
     background-color: #1FC3C5;
     border: none;
     padding: 1px 8px;
     border-radius: 5px;
-}
-.fileInputList img{
-    width: 60px;
-    height: 60px;
-    margin: 0 30px;
+    margin: 5px 5px 5px 0;
 }
 textarea {
     overflow:auto;
