@@ -48,7 +48,7 @@ define(['appPatientConsult'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientConsultUmbrellaCtrl',
                                     ['js/controllers/patientConsultUmbrellaCtrl.js',
                                         'js/libs/scrollglue.js','js/libs/moment.min.js',
-                                        'js/styles/patientConsultFirst.css'],
+                                        'js/styles/patientConsultUmbrella.css'],
                                     'js/views/patientConsultUmbrella.html?ver='+patientConsultVersion);
                             }
                         },
@@ -58,6 +58,7 @@ define(['appPatientConsult'], function(app){
                     })
 
                 //$urlRouterProvider.otherwise('patientConsultFirst');
+                $urlRouterProvider.otherwise('patientConsultUmbrella');
             }])
         .run(function ($rootScope){
         })

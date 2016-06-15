@@ -8,7 +8,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             $scope.upFile = {};
             $scope.sessionId = "";
             $scope.socketServer = "";
-            $scope.glued = true;//angular滚动条的插件预制参数，让对话滚动条，当新的聊天数据到达时，每次都定位底部
+            $scope.glued = true;
             $scope.source = "h5cxqmUser";
 
             $scope.openFileListFlag = false;
