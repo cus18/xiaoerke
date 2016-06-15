@@ -537,4 +537,26 @@ public class WechatUtil {
         }
         return reResult;
     }
+
+    /**
+     * 调用多客服接口指定发送消息
+     *
+     * @param token       唯一票据
+     * @param openId      用户的唯一标示
+     * @param articleList 图文集合
+     */
+    public static void senImgMsgToWechat(String token, String openId, List<Article> articleList) {
+        String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + token;
+        try {
+            String newStr =   "";
+            for(Article article:articleList){
+                newStr +=  "{\"title\":\"" + article.getTitle() + "\",\"description\":\"" + article.getDescription() + "\",\"url\":\"" + article.getUrl()+ "\",\"picurl\":\"" + article.getPicUrl() + "\"}," ;
+            }
+            String json = "{\"touser\":\"" + openId + "\",\"msgtype\":\"news\",\"news\":" +
+                    "{\"articles\":[" +newStr+"]" + "}";
+            String s = HttpRequestUtil.getConnectionResult(url, "POST", json.substring(0,json.length()-1));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
