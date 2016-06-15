@@ -9,12 +9,13 @@ table{border-collapse:collapse;border-spacing:0}
 p{word-wrap:break-word}
 a:focus,input:focus{-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-user-modify:read-write-plaintext-only;}
 .container-fluid{background-color: #fff;width: 100%;}
-.consultTitle{height: 44px;font: 16px/44px 'Microsoft Yahei';color:#fff;width: 100%;background-color: #1FC3C5;text-align: center;}
+.consultTitle{height: 44px;font: 16px/44px 'Microsoft Yahei';color:#fff;width: 100%;background-color: #1FC3C5;text-align: center;position: fixed;}
 .consultTitle span {display: inline-block;float: left;padding: 9px 10px;line-height: 24px;}
 .consultTitle span img{width: 25px;height: 25px;}
 .consultTitle span:nth-child(2){float: right;}
-.consultDisplay {height: 400px;background-color: #f9f9f9;border-bottom: 1px solid #ccc;overflow: auto;}
+.consultDisplay {padding: 44px;}
 .consultDisplay::-webkit-scrollbar {width: 0;height: 0;}
+.consultInput {height: 35px;position: fixed;bottom: 0;width: 100%;background-color: #fff;}
 .consultInput img {width: 25px;height: 25px;}
 .consultInput div{float: left;padding: 8px 10px;line-height: 25px;border-radius: 5px;}
 .consultInput .textInput img{width: 20px;height: 20px;margin-top: 2px;float: right;}
