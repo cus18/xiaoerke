@@ -3,6 +3,7 @@
  */
 package com.cxqm.xiaoerke.modules.sys.dao;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,5 +85,7 @@ public interface HospitalDao {
 
     Page<HashMap<String, Object>> listDepartmentHospital(HashMap<String, Object> hospitalInfo,
                                                                Page<HashMap<String, Object>> page);
+
+    List<HashMap<String, Object>> findConsultHospitalByTime(@Param("date")Date date);
 
 }
