@@ -90,7 +90,6 @@ public class RegisterServiceImpl implements RegisterService {
         return registerServiceDao.getDoctorVisitInfoByLocation(data);
     }
 
-
 	@Override
 	public Map<String, Object> listAppointmentTimeHospital(Map<String, Object> params) {
 		HashMap<String, Object> response = new HashMap<String, Object>();
