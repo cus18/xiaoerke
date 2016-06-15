@@ -167,7 +167,7 @@ function loadShare(){
                     wx.ready(function () {
                         // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                         wx.onMenuShareTimeline({
-                            title: '我用了几块零钱就变成了40万保障金了，你也来试试吧', // 分享标题
+                            title: '不敢相信，一根雪糕钱就换来了40万重疾保障!', // 分享标题
                             link: "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+shareUmbrellaId, // 分享链接
                             imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                             success: function (res) {
@@ -190,8 +190,8 @@ function loadShare(){
                             }
                         });
                         wx.onMenuShareAppMessage({
-                            title: '我用了几块零钱就变成了40万保障金了，你也来试试吧 ', // 分享标题
-                            desc: "现在加入5元即可获取最高40万保障，运气好还能免单哦，let's go! ", // 分享描述
+                            title: '不敢相信，一根雪糕钱就换来了40万重疾保障!', // 分享标题
+                            desc: "保护伞是由宝大夫联合中国儿童少年基金会发起的非盈利性公益组织！", // 分享描述
                             link:"http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+shareUmbrellaId, // 分享链接
                             imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                             success: function (res) {
