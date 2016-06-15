@@ -55,7 +55,6 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 			}
 		}
 		response.put("dateList",consultDateList);
-
 		return response;
 	}
 

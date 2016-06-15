@@ -89,7 +89,7 @@ public class RegisterServiceImpl implements RegisterService {
     public List<HashMap<String, Object>> getDoctorVisitInfoByLocation(Map data) {
         return registerServiceDao.getDoctorVisitInfoByLocation(data);
     }
-	
+
 	@Override
 	public Map<String, Object> listAppointmentTimeHospital(Map<String, Object> params) {
 		HashMap<String, Object> response = new HashMap<String, Object>();
@@ -106,28 +106,31 @@ public class RegisterServiceImpl implements RegisterService {
 		hospitalInfo.put("date", date);
 		hospitalInfo.put("consultPhone", consultPhone);
 
-		Page<HashMap<String, Object>> resultPage = hospitalInfoService
-				.findPageHospitalByTime(hospitalInfo, page);
-
-		// 记录日志
-		LogUtils.saveLog(Servlets.getRequest(), "00000034" ,"date:"+ date);//获取某个预约日期下的可预约的医院
-
-		response.put("pageNo", resultPage.getPageNo());
-		response.put("pageSize", resultPage.getPageSize());
-		long tmp = FrontUtils.generatorTotalPage(resultPage);
-		response.put("pageTotal", tmp + "");
-		List<HashMap<String, Object>> list = resultPage.getList();
-		List<HashMap<String, Object>> hospitalVoList = new ArrayList<HashMap<String, Object>>();
-		if (list != null && !list.isEmpty()) {
-			for (Map hospitalVoMap : list) {
-				HashMap<String, Object> dataMap = new HashMap<String, Object>();
-				dataMap.put("hospitalId", hospitalVoMap.get("id"));
-				dataMap.put("hospitalName", hospitalVoMap.get("name"));
-				dataMap.put("hospitalLocation", hospitalVoMap.get("position"));
-				hospitalVoList.add(dataMap);
+		if(StringUtils.isNotNull(consultPhone)){
+			List<HashMap<String, Object>> list = hospitalInfoService.findConsultHospitalByTime(date);
+			response.put("hospitalData", list);
+		}else{
+			Page<HashMap<String, Object>> resultPage = hospitalInfoService
+					.findPageHospitalByTime(hospitalInfo, page);
+			// 记录日志
+			LogUtils.saveLog(Servlets.getRequest(), "00000034" ,"date:"+ date);//获取某个预约日期下的可预约的医院
+			response.put("pageNo", resultPage.getPageNo());
+			response.put("pageSize", resultPage.getPageSize());
+			long tmp = FrontUtils.generatorTotalPage(resultPage);
+			response.put("pageTotal", tmp + "");
+			List<HashMap<String, Object>> list = resultPage.getList();
+			List<HashMap<String, Object>> hospitalVoList = new ArrayList<HashMap<String, Object>>();
+			if (list != null && !list.isEmpty()) {
+				for (Map hospitalVoMap : list) {
+					HashMap<String, Object> dataMap = new HashMap<String, Object>();
+					dataMap.put("hospitalId", hospitalVoMap.get("id"));
+					dataMap.put("hospitalName", hospitalVoMap.get("name"));
+					dataMap.put("hospitalLocation", hospitalVoMap.get("position"));
+					hospitalVoList.add(dataMap);
+				}
 			}
+			response.put("hospitalData", hospitalVoList);
 		}
-		response.put("hospitalData", hospitalVoList);
 
 		return response;
 	}
@@ -1760,5 +1763,4 @@ public class RegisterServiceImpl implements RegisterService {
 		dataMap.put("visitInfo", formatInfo);
 		return dataMap;
 	}
-
 }

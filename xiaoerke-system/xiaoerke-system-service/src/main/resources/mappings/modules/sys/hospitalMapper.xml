@@ -130,6 +130,8 @@
         dhr.relation_type = '1'
         and scs.state = '0'
        and scs.date =#{date}
+       and (DATE_ADD((DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s')), INTERVAL -5 MINUTE))>NOW()
+        AND  (DATE_ADD(NOW(), INTERVAL 6 day))>(DATE_FORMAT(CONCAT(DATE_FORMAT(scs.date,'%Y:%c:%d'),DATE_FORMAT(scs.beginTime,' %k:%i:%s')),'%Y-%m-%d %k:%i:%s'))
         group by sd.hospitalName
     </select>
 
