@@ -215,8 +215,8 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
     }
 
     @Override
-    public Map getUmbrellaNum() {
-      return  umbrellaFamilyInfoDao.getUmbrellaNum();
+    public Map getUmbrellaNum(Map<String, Object> map) {
+      return  umbrellaFamilyInfoDao.getUmbrellaNum(map);
     }
 
     @Override

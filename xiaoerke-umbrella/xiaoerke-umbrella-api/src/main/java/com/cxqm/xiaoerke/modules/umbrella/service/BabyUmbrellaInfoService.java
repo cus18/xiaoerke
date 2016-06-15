@@ -65,7 +65,7 @@ public interface BabyUmbrellaInfoService {
 
     BabyBaseInfoVo getBabyBaseInfo(Integer umbrella_id);
 
-    Map getUmbrellaNum();
+    Map getUmbrellaNum(Map<String, Object> map);
 
 
     /**

@@ -14,7 +14,7 @@ var version="b"; /*方案版本*/
 
 var shareUmbrellaId="0";
 var umbrellaFirstPageInit = function() {
-    recordLogs("BHS_HDSY");
+
     $.ajax({
         url:"umbrella/getOpenid",// 跳转到 action
         async:true,
@@ -30,10 +30,11 @@ var umbrellaFirstPageInit = function() {
         }
     });
     $("#NoShareDiv").hide();
-    cancelRemind();
     $(".shadow-content").hide();//每次页面加载时先隐藏提示浮层
     version=GetQueryString("status");
     ifExistOrder();
+    recordLogs("BHS_HDSY");
+    cancelRemind();
     /*获取当前年月日*/
     var date = new Date();
      date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
@@ -109,28 +110,28 @@ function scanQRCode(){
     });
 }
 
-function  joinUs(){
-    $.ajax({
-        type: 'POST',
-        url: "umbrella/joinUs",
-        data:"{'version':'"+version+"'}",
-        contentType: "application/json; charset=utf-8",
-        async:false,
-        success: function(data){
-            if(data.result==1){
-                shareUmbrellaId=data.id;
-                loadShare();
-            }else if(data.result==2){
-                shareUmbrellaId=data.umbrella.id;
-                loadShare();
-            }else if(data.result==3){
-                shareUmbrellaId=data.umbrella.id;
-                loadShare();
-            }
-        },
-        dataType: "json"
-    });
-}
+// function  joinUs(){
+//     $.ajax({
+//         type: 'POST',
+//         url: "umbrella/joinUs",
+//         data:"{'version':'"+version+"'}",
+//         contentType: "application/json; charset=utf-8",
+//         async:false,
+//         success: function(data){
+//             if(data.result==1){
+//                 shareUmbrellaId=data.id;
+//                 loadShare();
+//             }else if(data.result==2){
+//                 shareUmbrellaId=data.umbrella.id;
+//                 loadShare();
+//             }else if(data.result==3){
+//                 shareUmbrellaId=data.umbrella.id;
+//                 loadShare();
+//             }
+//         },
+//         dataType: "json"
+//     });
+// }
 
 function loadShare(){
     if(version=="a"){
