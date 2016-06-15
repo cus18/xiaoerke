@@ -39,11 +39,11 @@ public class WechatUtil {
     public static final String DOCTORSECTET = "d0460e461a3bcf8598ce6e87443b3d0f";
 
     //小儿科医生端微信参数
-    //public static final String CORPID = "wxa19496b1076e7352";
-    //public static final String SECTET = "f645d4bcf81c905b3ad628cda79bd7ee";
+    public static final String CORPID = "wxa19496b1076e7352";
+    public static final String SECTET = "f645d4bcf81c905b3ad628cda79bd7ee";
 
-    public static final String CORPID = "wx674c2231dd94c285";
-    public static final String SECTET = "25c2b5ef041de8fc4b51ca35c2748476";
+//    public static final String CORPID = "wx674c2231dd94c285";
+//    public static final String SECTET = "25c2b5ef041de8fc4b51ca35c2748476";
 
 //    //医生端微信参数
 //    public static final String CORPID = "wxfb77729adf195622";
@@ -93,25 +93,6 @@ public class WechatUtil {
             e.printStackTrace();
         }
         return result;
-    }
-
-
-    /**
-     * 生成微信带参二维码
-     *
-     * @param accessToken 场景值ID
-     * @param scene_str   token值
-     */
-    public static String createQrcode(String accessToken, String scene_str) {
-        String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=" + accessToken;
-        String json = "{\"action_name\": \"QR_LIMIT_STR_SCENE\", \"action_info\": {\"scene\": {\"scene_str\": \"SCENESTR\"}}}";
-        json = json.replace("SCENESTR", scene_str);
-        System.out.println("chenjiaketest---" + json + "===========" + url);
-        String object = HttpRequestUtil.httpPost(json, url);
-        System.out.println("chenjiaketest---" + object);
-        JSONObject resultJson = new JSONObject(object);
-        String ticket = (String) resultJson.get("ticket");
-        return ticket;
     }
 
     /**
@@ -202,30 +183,6 @@ public class WechatUtil {
     }
 
     /**
-     * 获取多客服会话状态 当会话超过10分钟未接通则通知相关人员
-     *
-     * @param accessToken
-     */
-    public static void getConversationInfo(String accessToken) {
-        String url = " https://api.weixin.qq.com/customservice/kfsession/getwaitcase?access_token=" + accessToken;
-        String json = HttpRequestUtil.getConnectionResult(url, "GET", "");
-        JSONObject jsonObj = new JSONObject(json);
-        JSONArray array = jsonObj.getJSONArray("waitcaselist");
-        for (int i = 0; i < array.length(); i++) {
-            JSONObject jo = (JSONObject) array.get(i);
-            Integer opercode = (Integer) jo.get("openid");//操作ID（会话状态）
-            Integer createtime = (Integer) jo.get("createtime");//操作时间
-            Long timestamp = Long.parseLong(createtime.toString()) * 1000;
-            Date date = new Date(timestamp);
-            boolean flag = (date.getTime() + 1000 * 60 * 10) < new Date().getTime();
-            if (flag) {
-                //发短信给医生
-                System.out.println("短信");
-            }
-        }
-    }
-
-    /**
      * 获取微信用户基本信息
      *
      * @param token  access_token
@@ -236,21 +193,6 @@ public class WechatUtil {
         String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" + token + "&openid=" + openid + "&lang=zh_CN";
         String json = HttpRequestUtil.getConnectionResult(url, "GET", "");
         return JsonUtil.getObjFromJsonStr(json, WechatBean.class);
-    }
-
-    /**
-     * 获取关注列表
-     *
-     * @param token      标示
-     * @param nextopenid 拉去的第一个openid
-     */
-    public static String getAttentionList(String token, String nextopenid) {
-        String url = "https://api.weixin.qq.com/cgi-bin/user/get?access_token=" + token + "&next_openid=" + nextopenid + "";
-        String jsonObj = HttpRequestUtil.getConnectionResult(url, "GET", "");
-        JSONObject obj = new JSONObject(jsonObj);
-        JSONObject mapJson = (JSONObject) obj.get("data");
-        System.out.println((mapJson.get("openid")).toString());
-        return (mapJson.get("openid")).toString().replace("[", "").replace("]", "");
     }
 
     /**
@@ -281,118 +223,6 @@ public class WechatUtil {
       return "messageOk";
     }
 
-    /**
-     * 调用多客服接口指定发送消息
-     *
-     * @param token       唯一票据
-     * @param openId      用户的唯一标示
-     * @param articleList 图文集合
-     */
-    public static void senImgMsgToWechat(String token, String openId, List<Article> articleList) {
-        String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + token;
-        try {
-            String newStr =   "";
-            for(Article article:articleList){
-                newStr +=  "{\"title\":\"" + article.getTitle() + "\",\"description\":\"" + article.getDescription() + "\",\"url\":\"" + article.getUrl()+ "\",\"picurl\":\"" + article.getPicUrl() + "\"}," ;
-            }
-            String json = "{\"touser\":\"" + openId + "\",\"msgtype\":\"news\",\"news\":" +
-                    "{\"articles\":[" +newStr+"]" + "}";
-            String s = HttpRequestUtil.getConnectionResult(url, "POST", json.substring(0,json.length()-1));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    /**
-     * 将日期转换成unix时间戳
-     *
-     * @param dateTime 需转化时间
-     * @return 时间戳
-     */
-    public static long String2TimeStamp(String dateTime) {
-        try {
-            SimpleDateFormat myFmt = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            Date date = myFmt.parse(dateTime);
-            return date.getTime() / 1000;
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return 0l;
-    }
-
-    public static void main(String args[]) {
-        String token = "3w-3nfC1IzbX0mcxSsaKMbJizcdoinbn_0DzvsVbMr3yqC38p3lhYJB0NdDE0OmDt5dYDdlu5j0XWpSpjSdcqphlY7Z6g5o9m2XKkwzEJscavjQhEiq9ZINtXGFHeMovTGGeAHAWJJ";
-//        String url = "http://xiaork.cn//titan/phoneConsult#/phoneConReconnection/165";
-        String urlStr = "https://api.weixin.qq.com/cgi-bin/media/upload";
-        String msgType = "image";
-        File file = new File("F://1.jpg");
-        String fileName = file.getName();
-        try {
-            InputStream inputStream = new FileInputStream(file);
-            JSONObject json = uploadNoTextMsgToWX(token,urlStr,msgType,fileName,inputStream);
-            System.out.println(json.toString());
-            System.out.println(json.optString("media_id"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 字符串转换成十六进制字符串
-     */
-    public static String str2HexStr(String str) {
-        char[] chars = "0123456789ABCDEF".toCharArray();
-        StringBuilder sb = new StringBuilder("");
-        byte[] bs = str.getBytes();
-        int bit;
-        for (int i = 0; i < bs.length; i++) {
-            bit = (bs[i] & 0x0f0) >> 4;
-            sb.append(chars[bit]);
-            bit = bs[i] & 0x0f;
-            sb.append(chars[bit]);
-        }
-        return sb.toString();
-    }
-
-    /**
-     * 把16进制字符串转换成字节数组
-     *
-     * @return byte[]
-     */
-    public static byte[] hexStringToByte(String hex) {
-        int len = (hex.length() / 2);
-        byte[] result = new byte[len];
-        char[] achar = hex.toCharArray();
-        for (int i = 0; i < len; i++) {
-            int pos = i * 2;
-            result[i] = (byte) (toByte(achar[pos]) << 4 | toByte(achar[pos + 1]));
-        }
-        return result;
-    }
-
-    private static int toByte(char c) {
-        byte b = (byte) "0123456789ABCDEF".indexOf(c);
-        return b;
-    }
-
-    /**
-     * 数组转换成十六进制字符串
-     *
-     * @return HexString
-     */
-    public static final String bytesToHexString(byte[] bArray) {
-        StringBuffer sb = new StringBuffer(bArray.length);
-        String sTemp;
-        for (int i = 0; i < bArray.length; i++) {
-            sTemp = Integer.toHexString(0xFF & bArray[i]);
-            if (sTemp.length() < 2)
-                sb.append(0);
-            sb.append(sTemp.toUpperCase());
-        }
-        return sb.toString();
-    }
 
     /**
      * emoji表情转换(hex -> utf-16)
@@ -592,6 +422,7 @@ public class WechatUtil {
         String json = "{\"touser\": \""+openId+"\",\"msgtype\": \""+type+"\", \""+type+"\": {\"media_id\": \""+content+"\"}}";
         sendNoTextToWX(sendUrl,json);
     }
+
     /**
      * 上传H5医生向微信用户发送图片消息
      * @param  token 微信唯一票据
