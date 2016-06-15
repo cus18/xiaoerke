@@ -22,5 +22,5 @@ public interface UmbrellaFamilyInfoDao {
 
     int updateByPrimaryKey(UmbrellaFamilyInfo record);
 
-    Map getUmbrellaNum();
+    Map getUmbrellaNum(Map<String, Object> map);
 }

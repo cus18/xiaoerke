@@ -80,10 +80,7 @@
                     $scope.tipsText="手机号有误";
                 }
             }
-            /*校验验证码*/
-            $scope.checkCode= function(){
-
-            }
+            
             /*校验身份证号*/
             $scope.checkCode= function(){
                 var sId =$scope.info.IdCard;

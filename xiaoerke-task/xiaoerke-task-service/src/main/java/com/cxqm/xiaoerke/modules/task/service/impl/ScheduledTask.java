@@ -1138,6 +1138,15 @@ public class ScheduledTask {
         Date newDate = calendar.getTime();
         calendar.add(Calendar.DATE, -1);
         Date oldDate = calendar.getTime();
+
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(Calendar.HOUR, 0);
+//        calendar.set(Calendar.MINUTE, 0);
+//        calendar.set(Calendar.SECOND, 0);
+//        calendar.set(2016, 05, 15, 00, 00, 00);
+//        Date newDate = calendar.getTime();
+//        calendar.set(2016,05,14,00,00,00);
+
         Query query = new Query().addCriteria(Criteria.where("createDate").gte(oldDate).andOperator(Criteria.where("createDate").lte(newDate)));
         List<ConsultRecordVo> consultRecordVoList = new ArrayList<ConsultRecordVo>();
         List<ConsultRecordMongoVo> consultRecordMongoVos = consultRecordService.getCurrentUserHistoryRecord(query);

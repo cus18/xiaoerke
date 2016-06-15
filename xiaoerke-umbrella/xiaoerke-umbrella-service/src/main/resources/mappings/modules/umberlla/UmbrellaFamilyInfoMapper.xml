@@ -25,8 +25,12 @@
     where umbrella_id = #{umbrellaId,jdbcType=INTEGER}
   </select>
 
-  <select id="getUmbrellaNum" resultType="java.util.Map" >
+  <select id="getUmbrellaNum" resultType="java.util.Map" parameterType="java.util.Map">
      select count(id) familyNum,count(DISTINCT(umbrella_id)) umbrellaNum from umbrella_familyinfo
+      where 1=1
+    <if test="date != null">
+      and create_time like '${date}%'
+    </if>
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
