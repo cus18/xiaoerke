@@ -134,12 +134,13 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             int nameIndex = content.indexOf("：");
                             String newContent = content.substring(nameIndex + 1, content.toCharArray().length);
                             if (StringUtils.isNotNull(newContent) && !"\n".equalsIgnoreCase(newContent)) {
-                                /*if (newContent.endsWith("\n")) {
+                                if (newContent.endsWith("\n")) {
+                                    newContent = newContent.substring(0,newContent.lastIndexOf("\n"));
                                     stringBuilder.append(newContent);
                                 } else {
-                                    stringBuilder.append(newContent + "\n");
-                                }*/
-                                stringBuilder.append(newContent);
+                                    // stringBuilder.append(newContent + "\n");
+                                    stringBuilder.append(newContent);
+                                }
                             } else {
                                 return;
                             }
