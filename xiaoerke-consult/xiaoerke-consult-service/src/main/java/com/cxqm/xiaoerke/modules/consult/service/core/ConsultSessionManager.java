@@ -647,6 +647,7 @@ public class ConsultSessionManager {
             if (userId.equals(key)) {
                 iterator.remove();
                 userChannelMapping.remove(key);
+                csUserChannelMapping.remove(key);
             }
         }
     }
