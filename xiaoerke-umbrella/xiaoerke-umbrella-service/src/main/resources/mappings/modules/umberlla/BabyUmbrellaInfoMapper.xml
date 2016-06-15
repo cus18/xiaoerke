@@ -121,6 +121,9 @@
             <if test="payResult != null">
                 pay_result = #{payResult},
             </if>
+            <if test="friendJoinNum != null">
+                friendJoinNum = #{friendJoinNum},
+            </if>
         </set>
         where id = #{id,jdbcType=VARCHAR}
     </update>
