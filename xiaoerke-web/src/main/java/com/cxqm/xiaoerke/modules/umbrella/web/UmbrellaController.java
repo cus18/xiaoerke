@@ -421,6 +421,7 @@ public class UmbrellaController  {
         maps.put("type","umbrella");
         SwitchConfigure switchConfigure = systemService.getUmbrellaSwitch(maps);
         String flag = switchConfigure.getFlag();
+        System.out.println(flag+"flag=======================switchConfigure========================");
 //        flag为1是打开，0是关闭
         double ram=0;
         if(flag.equals("1")) {

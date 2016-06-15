@@ -97,5 +97,6 @@ public interface DoctorInfoService {
 	Page<HashMap<String, Object>>findPageConsultaDoctorByDepartment(HashMap<String, Object> hospitalInfo, Page<HashMap<String, Object>> page);
 
     String findOpenIdByDoctorId(String doctorId);
-	Map<String,Object> getPhoneExpertiseById(String doctorId, String hospitalId, String departmentLevel1);
+
+	List<Map<String, Object>> findPageConsultaDoctorByDepartment(String hospitalInfo);
 }
