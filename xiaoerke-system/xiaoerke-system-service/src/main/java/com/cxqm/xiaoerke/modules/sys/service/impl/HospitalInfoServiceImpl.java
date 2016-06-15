@@ -20,10 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = false)
@@ -226,6 +223,11 @@ public class HospitalInfoServiceImpl implements HospitalInfoService {
 			HashMap<String, Object> hospitalInfo,
 			Page<HashMap<String, Object>> page) {
 		return hospitalDao.findPageHospitalByTime(hospitalInfo, page);
+	}
+
+	@Override
+	public List<HashMap<String, Object>> findConsultHospitalByTime(Date date) {
+		return hospitalDao.findConsultHospitalByTime(date);
 	}
 
 	@Override
