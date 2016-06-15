@@ -361,25 +361,25 @@ public class PayNotificationController {
 		Map parameter = systemService.getWechatParameter();
 		String token = (String)parameter.get("token");
 		String toOpenId = "";
+		Map<String, Object> param_ = new HashMap<String, Object>();
+		param_.put("id", toId);
+		List<Map<String,Object>> tolist = babyUmbrellaInfoService.getBabyUmbrellaInfo(param_);
+		String nickName = "";
+		if(tolist.size()!=0){
+			toOpenId = (String)tolist.get(0).get("openid");
+			if(StringUtils.isNotNull(toOpenId)){
+				WechatAttention wa = wechatAttentionService.getAttentionByOpenId(toOpenId);
+				if(wa!=null){
+					nickName = StringUtils.isNotNull(wa.getNickname())?wa.getNickname():"";
+				}
+			}
+		}
 		if(list.size()!=0){
 			String fromOpenId = (String)list.get(0).get("openid");//分享者openid
 			String babyId = (String)list.get(0).get("baby_id");
 			int oldUmbrellaMoney = (Integer) list.get(0).get("umbrella_money");
 			int newUmbrellaMoney = (Integer) list.get(0).get("umbrella_money")+20000;
 			int friendJoinNum = (Integer) list.get(0).get("friendJoinNum");
-			Map<String, Object> param_ = new HashMap<String, Object>();
-			param_.put("id", toId);
-			List<Map<String,Object>> tolist = babyUmbrellaInfoService.getBabyUmbrellaInfo(param_);
-			String nickName = "";
-			if(tolist.size()!=0){
-				toOpenId = (String)tolist.get(0).get("openid");
-				if(StringUtils.isNotNull(toOpenId)){
-					WechatAttention wa = wechatAttentionService.getAttentionByOpenId(toOpenId);
-					if(wa!=null){
-						nickName = StringUtils.isNotNull(wa.getNickname())?wa.getNickname():"";
-					}
-				}
-			}
 			String title = "恭喜您，您的好友"+nickName+"已成功加入。您既帮助了朋友，也提升了2万保障金！";
 			String templateId = "b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg";
 			String keyword1 = "您已拥有"+newUmbrellaMoney/10000+"万的保障金，还需邀请"+(400000-newUmbrellaMoney)/20000+"位好友即可获得最高40万保障金。";
