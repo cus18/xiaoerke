@@ -6,6 +6,7 @@ import com.cxqm.xiaoerke.modules.sys.entity.HospitalVo;
 import com.cxqm.xiaoerke.modules.sys.entity.SysHospitalContactVo;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,4 +51,6 @@ public interface HospitalInfoService {
 	List<SysHospitalContactVo> getHospitalContact(Map map);
 
 	Map<String, Object> listDepartmentHospital(Map<String, Object> params);
+
+	List<HashMap<String, Object>> findConsultHospitalByTime(Date date);
 }
