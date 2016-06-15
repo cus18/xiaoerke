@@ -117,8 +117,7 @@
                                     <li ng-repeat="item2 in item.secondAnswer" class="rcontent">
                                         <div class="rcontentContent">
                                             <nobr ng-click="tapEditMyContent($parent.$index,$index)"
-                                                  ng-style="myReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}"
-                                                  ng-dblclick="chooseMyContent($parent.$index,$index)"><a title="{{item2.name}}">{{item2.name}}</a></nobr>
+                                                  ng-dblclick="chooseMyContent($parent.$index,$index)"><a title="{{item2.name}}" ng-style="myReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}">{{item2.name}}</a></nobr>
                                         </div>
                                     </li>
                                 </ul>
@@ -141,8 +140,7 @@
                                     <li ng-repeat="item2 in item.secondAnswer" class="rcontent">
                                         <div class="rcontentContent">
                                             <nobr ng-click="tapEditCommonContent($parent.$index,$index)"
-                                                  ng-dblclick="chooseCommonContent($parent.$index,$index)"
-                                                  ng-style="publicReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}"><a title="{{item2.name}}">{{item2.name}}</a></nobr>
+                                                  ng-dblclick="chooseCommonContent($parent.$index,$index)"><a title="{{item2.name}}" ng-style="publicReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}">{{item2.name}}</a></nobr>
                                         </div>
                                     </li>
                                 </ul>
@@ -165,8 +163,7 @@
                                     <li ng-repeat="item2 in item.secondAnswer" class="rcontent">
                                         <div class="rcontentContent">
                                             <nobr ng-click="tapEditDiagnosisContent($parent.$index,$index)"
-                                                  ng-dblclick="chooseDiagnosisContent($parent.$index,$index)"
-                                                  ng-style="diagnosisReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}"><a title="{{item2.name}}">{{item2.name}}</a></nobr>
+                                                  ng-dblclick="chooseDiagnosisContent($parent.$index,$index)"><a title="{{item2.name}}" ng-style="diagnosisReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}">{{item2.name}}</a></nobr>
                                         </div>
                                     </li>
                                 </ul>
