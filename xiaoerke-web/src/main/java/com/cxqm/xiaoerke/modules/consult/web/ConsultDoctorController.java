@@ -255,7 +255,6 @@ public class ConsultDoctorController extends BaseController {
 
         //根据用户ID去查询，从历史会话记录中，获取用户最近的一条聊天记录，根据source判断会话来源
         response = ConsultSessionManager.getSessionManager().createConsultSession(userName, userId);
-
         return response;
     }
 
@@ -273,17 +272,17 @@ public class ConsultDoctorController extends BaseController {
     Map<String, Object> sessionEnd(@RequestParam(required = true) String sessionId,
                                    @RequestParam(required = true) String userId) {
         System.out.println("close session========" + sessionId + "==========userId========" + userId);
-//        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<String, Object>();
         Map<String, Object> response = new HashMap<String, Object>();
-//        params.put("openid", userId);
-//        params.put("uuid", UUID.randomUUID().toString().replaceAll("-", ""));
-//        params.put("starNum1", 0);
-//        params.put("starNum2", 0);
-//        params.put("starNum3", 0);
-//        params.put("doctorId", UserUtils.getUser().getId());
-//        params.put("content", "");
-//        params.put("dissatisfied", null);
-//        params.put("redPacket", null);
+        params.put("openid", userId);
+        params.put("uuid", UUID.randomUUID().toString().replaceAll("-", ""));
+        params.put("starNum1", 0);
+        params.put("starNum2", 0);
+        params.put("starNum3", 0);
+        params.put("doctorId", UserUtils.getUser().getId());
+        params.put("content", "");
+        params.put("dissatisfied", null);
+        params.put("redPacket", null);
         //判断有没有正在转接的会话
         ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = new ConsultSessionForwardRecordsVo();
         consultSessionForwardRecordsVo.setConversationId(Long.valueOf(sessionId));
@@ -294,7 +293,7 @@ public class ConsultDoctorController extends BaseController {
             return response;
         }
 
-//        patientRegisterPraiseService.saveCustomerEvaluation(params);
+        patientRegisterPraiseService.saveCustomerEvaluation(params);
         if (StringUtils.isNotNull(sessionId)) {
             RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(Integer.valueOf(sessionId));
             if (richConsultSession != null) {
@@ -318,18 +317,18 @@ public class ConsultDoctorController extends BaseController {
                 } else if ("wxcxqm".equalsIgnoreCase(richConsultSession.getSource())) {
 
                     //判断是否有权限推送消息
-//                    Map param = new HashMap();
-//                    param.put("userId",richConsultSession.getCsUserId());
-//                    List<ConsultDoctorInfoVo> consultDoctorInfoVos = consultDoctorInfoService.getConsultDoctorByInfo(param);
-//                    if(consultDoctorInfoVos !=null && consultDoctorInfoVos.size() >0){
-//                        if(null !=consultDoctorInfoVos.get(0).getSendMessage() && consultDoctorInfoVos.get(0).getSendMessage().equals("1")){
-//                            String st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
-//                                    "<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
-//                                    params.get("uuid") + "'>点击这里去评价</a>】";
-//                            Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-//                            WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
-//                        }
-//                    }
+                    Map param = new HashMap();
+                    param.put("userId",richConsultSession.getCsUserId());
+                    List<ConsultDoctorInfoVo> consultDoctorInfoVos = consultDoctorInfoService.getConsultDoctorByInfo(param);
+                    if(consultDoctorInfoVos !=null && consultDoctorInfoVos.size() >0){
+                        if(null !=consultDoctorInfoVos.get(0).getSendMessage() && consultDoctorInfoVos.get(0).getSendMessage().equals("1")){
+                            String st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
+                                    "<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
+                                    params.get("uuid") + "'>点击这里去评价</a>】";
+                            Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                            WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
+                        }
+                    }
 
                 }
             }

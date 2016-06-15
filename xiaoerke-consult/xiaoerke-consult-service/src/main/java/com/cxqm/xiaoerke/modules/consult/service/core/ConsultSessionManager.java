@@ -332,7 +332,7 @@ public class ConsultSessionManager {
             System.out.println("sessionId-----" + sessionId + "consultSession.getCsUserId()" + consultSession.getUserId());
             sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
             sessionRedisCache.putUserIdSessionIdPair(consultSession.getUserId(), sessionId);
-            saveCustomerEvaluation(consultSession);
+//            saveCustomerEvaluation(consultSession);
             response.put("csChannel", csChannel);
             response.put("sessionId", sessionId);
             response.put("consultSession", consultSession);
@@ -343,7 +343,7 @@ public class ConsultSessionManager {
 
     }
     //记录评价信息
-    private void saveCustomerEvaluation(RichConsultSession consultSession) {
+   /* private void saveCustomerEvaluation(RichConsultSession consultSession) {
         Map<String, Object> evaluationMap = new HashMap<String, Object>();
         evaluationMap.put("openid", consultSession.getUserId());
         evaluationMap.put("uuid", IdGen.uuid());
@@ -356,7 +356,7 @@ public class ConsultSessionManager {
         evaluationMap.put("redPacket", null);
         evaluationMap.put("consultSessionId", consultSession.getId());
         patientRegisterPraiseService.saveCustomerEvaluation(evaluationMap);
-    }
+    }*/
 
     public int transferSession(Integer sessionId, String toCsUserId, String remark) {
         try {
@@ -537,13 +537,14 @@ public class ConsultSessionManager {
                     consultSessionForwardRecordsService.updateAcceptedTransfer(forwardRecord);
                     session.setCsUserId(forwardRecord.getToUserId());
                     consultRecordService.modifyConsultSessionStatusVo(session);
-                    Map praiseParam = new HashMap();
+                    //生成评价
+                    /*Map praiseParam = new HashMap();
                     praiseParam.put("consultSessionId", session.getId());
                     praiseParam.put("doctorId",forwardRecord.getToUserId());
                     List<Map<String,Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParam);
                     if(praiseList !=null && praiseList.size() == 0){
                         saveCustomerEvaluation(session);
-                    }
+                    }*/
                 } else {
                     forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_REJECT);
                     consultSessionForwardRecordsService.updateRejectedTransfer(forwardRecord);
@@ -743,13 +744,14 @@ public class ConsultSessionManager {
         if (flag > 0) {
             response.put("result", "success");
             response.put("userId", richConsultSession.getUserId());
-            Map praiseParam = new HashMap();
+            //生成评价
+            /*Map praiseParam = new HashMap();
             praiseParam.put("consultSessionId", richConsultSession.getId());
             praiseParam.put("doctorId",richConsultSession.getCsUserId());
             List<Map<String,Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParam);
             if(praiseList !=null && praiseList.size() == 0){
                 saveCustomerEvaluation(richConsultSession);
-            }
+            }*/
         } else {
             response.put("result", "failure");
         }

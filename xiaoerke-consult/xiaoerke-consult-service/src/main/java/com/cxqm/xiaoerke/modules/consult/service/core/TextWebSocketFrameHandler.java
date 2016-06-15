@@ -142,12 +142,12 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                 }else{
                     return ;
                 }
-							stringBuilder.append("------------------\n");
+							/* stringBuilder.append("------------------\n");
 							stringBuilder.append(content.substring(0,nameIndex));
-							stringBuilder.append(",");
+							stringBuilder.append(";【");
 							stringBuilder.append("<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
 							stringBuilder.append(praiseList.get(0).get("id"));
-							stringBuilder.append("'>评价</a>");
+							stringBuilder.append("'>评价医生</a>】");*/
 							sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());
 						}else {
 							sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), content);
