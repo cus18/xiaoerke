@@ -102,11 +102,11 @@ var getPtm2 = function (index) {
         if(index == 0){
             indexFlag = 0;
             recordLogs("ZXPJSXY_one");
-            moneyNum = 2;
+            moneyNum = 5;
         }else if(index==1){
             indexFlag = 1;
             recordLogs("ZXPJSXY_two");
-            moneyNum = 5.2;
+            moneyNum = 8.6;
         }else if(index==2){
             indexFlag = 2;
             recordLogs("ZXPJSXY_three");
@@ -138,11 +138,11 @@ var getPtm2 = function (index) {
             if(index == 0){
                 indexFlag = 0;
                 recordLogs("ZXPJSXY_one");
-                moneyNum = 2;
+                moneyNum = 5;
             }else if(index==1){
                 indexFlag = 1;
                 recordLogs("ZXPJSXY_two");
-                moneyNum = 5.2;
+                moneyNum = 8.6;
             }else if(index==2){
                 indexFlag = 2;
                 recordLogs("ZXPJSXY_three");
