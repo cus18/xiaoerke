@@ -799,6 +799,8 @@ angular.module('controllers', ['luegg.directives'])
                                 }
                             });
                             $scope.alreadyJoinPatientConversation.splice(indexClose, 1);
+                            $scope.chooseAlreadyJoinConsultPatientSessionTimes ='';
+
                             if($scope.alreadyJoinPatientConversation.length!=0){
                                 $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
                                     $scope.alreadyJoinPatientConversation[0].patientName);
