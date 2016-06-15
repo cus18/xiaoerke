@@ -142,7 +142,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                 }else{
                     return ;
                 }
-							/*stringBuilder.append("------------------\n");
+							/* stringBuilder.append("------------------\n");
 							stringBuilder.append(content.substring(0,nameIndex));
 							stringBuilder.append(";【");
 							stringBuilder.append("<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
