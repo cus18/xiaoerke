@@ -177,7 +177,7 @@ public class ConsultSessionManager {
             }
             consultSession.setSource(source);
 
-            if (distributors.size() != 0) {
+            if (distributors.size() > 0) {
                 for (int i = 0; i < distributorsList.size(); i++) {
                     String distributorId = RandomUtils.getRandomKeyFromMap(distributors);
                     distributorChannel = distributors.get(distributorId);
@@ -263,7 +263,7 @@ public class ConsultSessionManager {
         Channel csChannel = null;
         Channel distributorChannel = null;
         System.out.println("distributors.size()-----" + distributors.size());
-        if (distributors.size() != 0) {
+        if (distributors.size() > 0) {
             for (int i = 0; i < distributorsList.size(); i++) {
                 String distributorId = RandomUtils.getRandomKeyFromMap(distributors);
                 distributorChannel = distributors.get(distributorId);

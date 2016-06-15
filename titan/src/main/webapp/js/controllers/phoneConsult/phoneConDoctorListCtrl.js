@@ -219,6 +219,7 @@
                                 "hospitalId":infoParam.hospitalId,
                                 "departmentLevel1Name":infoParam.departmentLevel1Name},
                             function (data) {
+                                $scope.departmentData = data.departmentList;
                                 $scope.pageLoading = false;
                                 $scope.scrollLoading = page < data.pageTotal;
                                 $scope.infoPage.page = page;
@@ -238,6 +239,7 @@
                             hospitalId: $stateParams.searchName,
                             department_level1:infoParam.departmentLevel1Name
                         }, function (data) {
+                            $scope.departmentData = data.departmentList;
                             $scope.pageLoading = false;
                             $scope.scrollLoading = page < data.pageTotal;
                             $scope.infoPage.page = page;
@@ -253,17 +255,17 @@
                             }
                         });
                     }
-                    $scope.pageLoading = true;
-                    ListHospitalDepartment.save({
-                        pageNo: "1",
-                        pageSize: "100",
-                        orderBy: orderBy,
-                        "consultPhone": "1",
-                        hospitalId: $stateParams.searchName
-                    }, function (data) {
-                        $scope.pageLoading = false;
-                        $scope.departmentData = data.departmentData;
-                    });
+                    // $scope.pageLoading = true;
+                    // ListHospitalDepartment.save({
+                    //     pageNo: "1",
+                    //     pageSize: "100",
+                    //     orderBy: orderBy,
+                    //     "consultPhone": "1",
+                    //     hospitalId: $stateParams.searchName
+                    // }, function (data) {
+                    //     $scope.pageLoading = false;
+                    //     $scope.departmentData = data.departmentData;
+                    // });
                     $scope.remark = "department";
                 }
                 else if ($stateParams.action == "searchDoctorByIllnessSecondId") {

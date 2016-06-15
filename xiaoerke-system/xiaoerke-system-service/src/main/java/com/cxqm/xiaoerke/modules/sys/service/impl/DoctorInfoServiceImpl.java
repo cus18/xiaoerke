@@ -99,6 +99,31 @@ public class DoctorInfoServiceImpl implements DoctorInfoService {
         }
         return expertise.toString();
     }
+
+    //获取一个医院的专业擅长领域
+    @Override
+    public Map<String,Object> getPhoneExpertiseById(String doctorId, String hospitalId, String departmentLevel1) {
+        //获取医生所在的科室
+        Map<String,Object> resultMap = new HashMap<String, Object>();
+        HashMap<String, Object> hashMap = new HashMap<String, Object>();
+        hashMap.put("doctorId", doctorId);
+        hashMap.put("hospitalId", hospitalId);
+        if( departmentLevel1 == null ) {
+            Map relationInfo = doctorHospitalRelationDao.getDepartmentName(hashMap);
+            departmentLevel1 = relationInfo == null ? "" : (String) relationInfo.get("department_level1");;
+        }
+        //获取医生所有的一类疾病
+        List<IllnessVo> iVoList = illnessDao.findSysIllness_1BySysDoctorId(hashMap);
+        //医生擅长 = 医生所在科室 + 医生所擅长的一类疾病
+        StringBuffer expertise = new StringBuffer();
+        expertise.append(departmentLevel1);
+        for (IllnessVo vo : iVoList) {
+            expertise.append("  " + vo.getLevel_1() );
+        }
+        resultMap.put("expertise",expertise.toString());
+        resultMap.put("iVoList",iVoList);
+        return resultMap;
+    }
     
     //查询系统内部所有医生
     @Override

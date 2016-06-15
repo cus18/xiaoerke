@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
+import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
@@ -20,7 +21,6 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 
@@ -132,8 +132,17 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 						List<Map<String,Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParam);
 						if(praiseList != null && praiseList.size()>0){
 							int nameIndex = content.indexOf("：");
-							stringBuilder.append(content.substring(nameIndex + 1,content.toCharArray().length));
-							stringBuilder.append("---------------\n");
+                String newContent = content.substring(nameIndex + 1, content.toCharArray().length);
+                if(StringUtils.isNotNull(newContent) && !"\n".equalsIgnoreCase(newContent)){
+                    if(newContent.endsWith("\n")){
+                        stringBuilder.append(newContent);
+                    }else{
+                        stringBuilder.append(newContent+"\n");
+                    }
+                }else{
+                    return ;
+                }
+							stringBuilder.append("------------------\n");
 							stringBuilder.append(content.substring(0,nameIndex));
 							stringBuilder.append(";【");
 							stringBuilder.append("<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");

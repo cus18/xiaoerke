@@ -70,11 +70,11 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
             consultSession.setUserId(userId);
             consultSession.setStatus(ConsultSession.STATUS_ONGOING);
             List<ConsultSession> consultSessionList = this.selectBySelective(consultSession);
-            System.out.println("consultSessionList.size()=====" + consultSessionList.size() + "consultSessionList.get(0)====" + consultSessionList.get(0));
             if (consultSessionList.size() > 0) {
                 consultSession = consultSessionList.get(0);
                 consultSession.setStatus(ConsultSession.STATUS_COMPLETED);
                 this.updateSessionInfo(consultSession);
+                System.out.println("consultSessionList.size()=====" + consultSessionList.size() + "consultSessionList.get(0)====" + consultSessionList.get(0));
             }
 
             //清除redis内的数据

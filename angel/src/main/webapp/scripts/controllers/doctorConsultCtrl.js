@@ -24,8 +24,8 @@ angular.module('controllers', ['luegg.directives'])
             $scope.loadingFlag = false;
             $scope.socketServerFirst = "";
             $scope.socketServerSecond = "";
-            $scope.firstAddress = "123.57.45.33";
-            $scope.secondAddress = "101.201.154.201";
+            $scope.firstAddress = "120.25.161.33";
+            $scope.secondAddress = "101.201.154.75";
             $scope.alreadyJoinPatientConversation = []; //已经加入会话的用户数据，一个医生可以有多个对话的用户，这些用户的数据，都保存在此集合中
             $scope.currentUserConversation = {}; //医生与当前正在进行对话用户的聊天数据，医生在切换不同用户时，数据变更到切换的用户上来。
             $scope.waitJoinNum = 0; //医生待接入的用户数，是动态变化的数
@@ -799,6 +799,8 @@ angular.module('controllers', ['luegg.directives'])
                                 }
                             });
                             $scope.alreadyJoinPatientConversation.splice(indexClose, 1);
+                            $scope.chooseAlreadyJoinConsultPatientSessionTimes ='';
+
                             if($scope.alreadyJoinPatientConversation.length!=0){
                                 $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
                                     $scope.alreadyJoinPatientConversation[0].patientName);
