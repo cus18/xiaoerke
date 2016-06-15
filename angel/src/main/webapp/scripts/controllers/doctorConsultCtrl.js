@@ -30,7 +30,7 @@ angular.module('controllers', ['luegg.directives'])
             $scope.currentUserConversation = {}; //医生与当前正在进行对话用户的聊天数据，医生在切换不同用户时，数据变更到切换的用户上来。
             $scope.waitJoinNum = 0; //医生待接入的用户数，是动态变化的数
             $scope.glued = true; //angular滚动条的插件预制参数，让对话滚动条，每次都定位底部，当新的聊天数据到达时
-            var umbrellaCustomerList = "d7606785b51a4b8db6041aca596cdfd6";
+            var umbrellaCustomerList = "75cefafe00364bbaaaf7b61089994e22,3b91fe8b7ce143918012ef3ab4baf1e0";
 
             //各个子窗口的开关变量
             $scope.showFlag = {
