@@ -1763,5 +1763,4 @@ public class RegisterServiceImpl implements RegisterService {
 		dataMap.put("visitInfo", formatInfo);
 		return dataMap;
 	}
-
 }
