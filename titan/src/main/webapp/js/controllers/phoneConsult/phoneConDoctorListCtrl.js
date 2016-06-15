@@ -237,7 +237,7 @@
                             pageSize: "10",
                             orderBy: orderBy,
                             hospitalId: $stateParams.searchName,
-                            department_level1:infoParam.departmentLevel1Name
+                            departmentLevel1Name:infoParam.departmentLevel1Name
                         }, function (data) {
                             $scope.departmentData = data.departmentList;
                             $scope.pageLoading = false;
