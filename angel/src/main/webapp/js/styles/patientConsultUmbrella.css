@@ -13,7 +13,7 @@ a:focus,input:focus{-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-user-modif
 .consultTitle span {display: inline-block;float: left;padding: 9px 10px;line-height: 24px;}
 .consultTitle span img{width: 25px;height: 25px;}
 .consultTitle span:nth-child(2){float: right;}
-.consultDisplay {padding: 44px;}
+.consultDisplay {padding: 44px 0;}
 .consultDisplay::-webkit-scrollbar {width: 0;height: 0;}
 .consultInput {height: 35px;position: fixed;bottom: 0;width: 100%;background-color: #fff;}
 .consultInput img {width: 25px;height: 25px;}
