@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/angel/angel.iml" filepath="$PROJECT_DIR$/angel/angel.iml" />
       <module fileurl="file://$PROJECT_DIR$/authcenter/authcenter.iml" filepath="$PROJECT_DIR$/authcenter/authcenter.iml" />
       <module fileurl="file://$PROJECT_DIR$/backend/backend.iml" filepath="$PROJECT_DIR$/backend/backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bdfApp/bdfApp.iml" filepath="$PROJECT_DIR$/bdfApp/bdfApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/doctor/doctor.iml" filepath="$PROJECT_DIR$/doctor/doctor.iml" />
       <module fileurl="file://$PROJECT_DIR$/keeper/keeper.iml" filepath="$PROJECT_DIR$/keeper/keeper.iml" />
       <module fileurl="file://$PROJECT_DIR$/market/market.iml" filepath="$PROJECT_DIR$/market/market.iml" />
