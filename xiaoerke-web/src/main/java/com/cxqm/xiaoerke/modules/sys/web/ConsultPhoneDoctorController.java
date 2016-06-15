@@ -207,6 +207,7 @@ public class ConsultPhoneDoctorController {
                         .getTime()) / (24 * 60 * 60 * 1000)) / 365 + 1));
 
                 String doctorId = (String) doctorDataVoMap.get("id");
+                departmentLevel1Name = (String)doctorDataVoMap.get("department_level1");
                 dataMap.put("expertise", doctorInfoService
                         .getDoctorExpertiseById(doctorId, hospitalId, departmentLevel1Name == null ? null : (String) departmentLevel1Name));
                 Object departmentLevel2Obj = doctorDataVoMap.get("department_level2");
