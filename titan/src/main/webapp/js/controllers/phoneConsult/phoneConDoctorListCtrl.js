@@ -216,7 +216,7 @@
                                 "pageNo":page+"",
                                 "pageSize":"10",
                                 "orderBy":orderBy,
-                                "hospitalId":infoParam.hospitalId,
+                                "hospitalId":$stateParams.searchName,
                                 "departmentLevel1Name":infoParam.departmentLevel1Name},
                             function (data) {
                                 $scope.departmentData = data.departmentList;

@@ -167,6 +167,7 @@ public class ConsultPhoneDoctorController {
     public
     @ResponseBody
     Map<String, Object>  getDoctorListByHospital(@RequestBody Map<String, Object> params){
+        System.out.println("begin:"+new Date().getTime());
         HashMap<String, Object> response = new HashMap<String, Object>();
         HashMap<String, Object> hospitalInfo = new HashMap<String, Object>();
         String hospitalId = (String) params.get("hospitalId");
@@ -180,6 +181,7 @@ public class ConsultPhoneDoctorController {
         hospitalInfo.put("departmentName", departmentLevel1Name);
         hospitalInfo.put("orderBy", orderBy);
         Page<HashMap<String, Object>> page = FrontUtils.generatorPage(pageNo,pageSize);
+
         Page<HashMap<String, Object>> resultPage = doctorInfoService.findPageConsultaDoctorByDepartment(hospitalInfo, page);
 
         response.put("pageNo", resultPage.getPageNo());
@@ -205,9 +207,9 @@ public class ConsultPhoneDoctorController {
                         .getTime()) / (24 * 60 * 60 * 1000)) / 365 + 1));
 
                 String doctorId = (String) doctorDataVoMap.get("id");
-
-                Map<String,Object> expertiseMap = doctorInfoService.getPhoneExpertiseById(doctorId, hospitalId,  null);
-                dataMap.put("expertise", expertiseMap.get("expertise"));
+                departmentLevel1Name = (String)doctorDataVoMap.get("department_level1");
+                dataMap.put("expertise", doctorInfoService
+                        .getDoctorExpertiseById(doctorId, hospitalId, departmentLevel1Name == null ? null : (String) departmentLevel1Name));
                 Object departmentLevel2Obj = doctorDataVoMap.get("department_level2");
                 boolean departmentLevel2IsEmpty = StringUtils.isEmpty( departmentLevel2Obj == null ? "" : (String) departmentLevel2Obj);
                 String departmentFullName = departmentLevel1Name == null ? null : departmentLevel1Name + (departmentLevel2IsEmpty ? "" : "  " + departmentLevel2Obj);
@@ -215,21 +217,12 @@ public class ConsultPhoneDoctorController {
                 dataMap.put("departmentFullName", departmentFullName);
                 doctorDataVoList.add(dataMap);
 
-                List<IllnessVo> iVoList =(List<IllnessVo>) expertiseMap.get("iVoList");
-                for (IllnessVo vo : iVoList) {
-                    departmentListTrem.add(vo.getLevel_1());
-                }
             }
         }
 
-        for(String str:departmentListTrem){
-            Map map = new HashMap();
-            map.put("departmentLevel1Name",str);
-            departmentList.add(map);
-        }
-
-        response.put("departmentList",departmentList);
+        response.put("departmentList",doctorInfoService.findPageConsultaDoctorByDepartment(hospitalId));
         response.put("doctorDataVo", doctorDataVoList);
+        System.out.println("end:"+new Date().getTime());
         return response;
     }
 

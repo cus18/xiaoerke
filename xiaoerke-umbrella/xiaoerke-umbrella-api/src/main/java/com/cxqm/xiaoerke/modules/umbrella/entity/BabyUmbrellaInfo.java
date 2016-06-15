@@ -20,6 +20,7 @@ public class BabyUmbrellaInfo {
     private String truePayMoneys;
     private String payResult;
     private String version;
+    private Integer friendJoinNum;
 
     public String getVersion() {
         return version;
@@ -99,6 +100,14 @@ public class BabyUmbrellaInfo {
 
     public Integer getUmberllaMoney() {
         return umbrellaMoney;
+    }
+
+    public Integer getFriendJoinNum() {
+        return friendJoinNum;
+    }
+
+    public void setFriendJoinNum(Integer friendJoinNum) {
+        this.friendJoinNum = friendJoinNum;
     }
 
     public void setUmberllaMoney(Integer umbrellaMoney) {
