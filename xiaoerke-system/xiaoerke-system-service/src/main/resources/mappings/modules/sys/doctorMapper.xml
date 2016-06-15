@@ -139,7 +139,7 @@
         sd.position2,
         sd.career_time,
         sd.hospitalName,
-
+        dhr.department_level1,
         DATE_FORMAT(
         min(
         DATE_FORMAT(
