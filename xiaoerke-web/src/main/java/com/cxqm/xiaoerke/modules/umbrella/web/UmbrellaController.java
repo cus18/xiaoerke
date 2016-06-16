@@ -155,8 +155,11 @@ public class UmbrellaController  {
 
     private void sendWechatMessage(String toOpenId, String fromId){
         Map<String, Object> param = new HashMap<String, Object>();
-        param.put("id",fromId);
-        List<Map<String,Object>> list = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(param);
+        List<Map<String,Object>> list = new ArrayList<Map<String, Object>>();
+        if(StringUtils.isNotNull(fromId)){
+            param.put("id",fromId);
+            list = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(param);
+        }
         Map parameter = systemService.getWechatParameter();
         String token = (String)parameter.get("token");
         if(list.size()!=0){

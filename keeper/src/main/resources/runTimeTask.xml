@@ -347,7 +347,7 @@
 	<!--事件触发时间点 每天中午10点执行一次  -->
 	<bean id="umbrellaMessageCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="umbrellaMessageQuarzTask"/>
-		<property name="cronExpression" value="0 0 11 * * ?"/>
+		<property name="cronExpression" value="22 17 11 * * ?"/>
 	</bean>
 
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
