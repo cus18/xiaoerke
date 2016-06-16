@@ -7,14 +7,15 @@
                <a class="add-member f2 c0 " ng-if="addFamily" ng-click="addMember()">家庭成员</a>
              <!-- 首次进来-->
               <div ng-if="firstJoin">
-                  <img class="pic my-img2" width="79" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/congratulate.png" >
-                  <div class="f5 text">成功获得互助保障金</div>
+                  <img class="pic my-img2" width="80%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/congratulate.png" >
+                  <div class="f5 text text1 ">您的信息待激活</div>
+                  <img ng-click="goActive()" class="pic my-img2" width="150" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/btn_active.png" >
                </div>
                <!-- 待激活 和参与成功 -->
                <div ng-if="!firstJoin">
                   <div class="f5 text">已有互助保障金额</div>
                </div>
-              <div class="money" >{{umbrellaMoney}}元</div><!--ng-if="!firstJoin"-->
+              <div class="money" ng-if="!firstJoin">{{umbrellaMoney}}元</div>
            </div>
 
             <!-- 第二部分-->
