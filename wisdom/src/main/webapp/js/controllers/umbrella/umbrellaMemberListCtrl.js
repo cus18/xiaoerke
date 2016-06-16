@@ -25,7 +25,8 @@
                 console.log(data);
                 $scope.familyList =data.familyList;
                 for(var i=0;i<data.familyList.length;i++){
-                    $scope.familyList[i].birthday = moment(data.familyList[i].birthday).format("YYYY-MM-DD");
+                    $scope.familyList[i].birthday = moment(data.familyList[i].birthday).utc().zone(-9).format("YYYY-MM-DD");
+                    // $scope.familyList[i].birthday = moment(data.familyList[i].birthday).format("YYYY-MM-DD HH:ss");
                       if($scope.familyList[i].sex==0){
                           $scope.familyList[i].sex = "女宝"
                       }else if($scope.familyList[i].sex==1){
