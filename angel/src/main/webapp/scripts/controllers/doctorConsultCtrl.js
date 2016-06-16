@@ -595,8 +595,10 @@ angular.module('controllers', ['luegg.directives'])
                         return;
                     }
                     GetSystemTime.save(function(data){
+                        $scope.info.consultMessage = "";
                         var sayTextFlag = processSayTextFlag($("#saytext").val());
                         var consultContent = $("#saytext").val();
+                        $("#saytext").val('');
                         if(sayTextFlag!="noFlag"){
                             consultContent = consultContent.substring(0,consultContent.length-8)+"\n";
                         }
