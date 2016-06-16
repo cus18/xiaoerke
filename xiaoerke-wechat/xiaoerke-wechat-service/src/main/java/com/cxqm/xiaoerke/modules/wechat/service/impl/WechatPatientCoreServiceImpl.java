@@ -701,18 +701,18 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=2");
 			articleList.add(article);
 
-			article = new Article();
-			article.setTitle("名医电话|通话10分钟，宝宝康复指导全Get");
-			article.setDescription("与权威儿科专家通话10分钟，个性化就诊和康复指导");
-			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%90%8D%E5%8C%BB%E7%94%B5%E8%AF%9D.png");
-			article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=28");
-			articleList.add(article);
+//			article = new Article();
+//			article.setTitle("名医电话|通话10分钟，宝宝康复指导全Get");
+//			article.setDescription("与权威儿科专家通话10分钟，个性化就诊和康复指导");
+//			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%90%8D%E5%8C%BB%E7%94%B5%E8%AF%9D.png");
+//			article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=28");
+//			articleList.add(article);
 
 			article = new Article();
-			article.setTitle("妈妈活动|育儿交流找组织，客服微信：bdfdxb");
+			article.setTitle("妈妈社群|育儿交流找组织，客服微信：bdfdxb");
 			article.setDescription("添加宝大夫客服微信：bdfdxb，加入宝大夫家长群，与众多宝妈一起交流分享，参与更多好玩儿的活动");
 			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%A6%88%E5%A6%88%E6%B4%BB%E5%8A%A8.png");
-			article.setUrl("baodf.com");
+			article.setUrl("https://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236661&idx=3&sn=4c1fd3ee4eb99e6aca415f60dceb6834&scene=1&srcid=0616uPcrUKz7FVGgrmOcZqqq&from=singlemessage&isappinstalled=0&key=18e81ac7415f67c44d3973b3eb8e53f264f47c1109eceefa8d6be994349fa7f152bb8cfdfab15b36bd16a4400cd1bd87&ascene=0&uin=MzM2NjEyMzM1&devicetype=iMac+MacBookPro11%2C4+OSX+OSX+10.11.4+build(15E65)&version=11020201&pass_ticket=ZgGIH5%2B8%2FkhHiHeeRG9v6qbPZmK5qPlBL02k0Qo%2FHCK7eLMOZexAypBy0dzPjzaZ");
 			articleList.add(article);
 
 //			WechatUtil.senImgMsgToWechat(token,xmlEntity.getFromUserName(),articleList);
