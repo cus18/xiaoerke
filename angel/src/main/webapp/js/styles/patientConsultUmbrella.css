@@ -7,6 +7,7 @@ li{list-style:none}
 img{border:0;vertical-align:middle}
 table{border-collapse:collapse;border-spacing:0}
 p{word-wrap:break-word}
+.h100{height: 95%;}
 a:focus,input:focus{-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-user-modify:read-write-plaintext-only;}
 .container-fluid{background-color: #fff;width: 100%;}
 .consultTitle{height: 44px;font: 16px/44px 'Microsoft Yahei';color:#fff;width: 100%;background-color: #1FC3C5;text-align: center;position: fixed;z-index:999;}
@@ -41,7 +42,9 @@ textarea {overflow:auto;word-break:break-all;width: 90%;height: 25px;line-height
 .input{width:99%; height:60px; border:1px solid #ccc}
 .com_form p{height:28px; line-height:28px; position:relative; margin-top:10px;}
 .qqFace{margin-top:4px;background:#fff;padding:2px;border:1px #dfe6f6 solid;}
-.qqFace table td{padding:0px;}
+.qqFace table td{padding:0;}
 .qqFace table td img{cursor:pointer;border:1px #fff solid;}
 .qqFace table td img:hover{border:1px #0066cc solid;}
-[scroll-glue-bottom],{height: 340px;overflow-y: scroll;}
+.consulChatList {overflow-y: scroll;}
+.consulChatList::-webkit-scrollbar {width: 0;height: 0;}
+[scroll-glue-bottom],{overflow-y: scroll;}

@@ -1,8 +1,7 @@
-<link rel="stylesheet" href="js/styles/patientConsultUmbrella.css" type="text/css"/>
-<div ui-view class="container-fluid" ng-init="patientConsultFirst()">
+<div ui-view class="container-fluid h100" ng-init="patientConsultFirst()">
     <div class="consultTitle">宝大夫</div>
-    <div class="consultDisplay">
-        <div class="consulChatList">
+    <div class="consultDisplay h100">
+        <div class="consulChatList h100" scroll-glue-bottom="glued">
             <div class="chatBox" ng-repeat="item in consultContent">
                 <div class="patientConsultContent" ng-if="item.senderId==patientId&&item.type!='4'">
                     <div class="patientHeaderImg">
