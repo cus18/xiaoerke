@@ -116,8 +116,9 @@
                                 <ul ng-show="myReplyIndex==$index">
                                     <li ng-repeat="item2 in item.secondAnswer" class="rcontent">
                                         <div class="rcontentContent">
-                                            <nobr ng-click="tapEditMyContent($parent.$index,$index)"
-                                                  ng-dblclick="chooseMyContent($parent.$index,$index)"><a title="{{item2.name}}" ng-style="myReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}">{{item2.name}}</a></nobr>
+                                            <nobr><a title="{{item2.name}}" ng-click="tapEditMyContent($parent.$index,$index)"
+                                                     ng-dblclick="chooseMyContent($parent.$index,$index)"
+                                                     ng-style="myReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}">{{item2.name}}</a></nobr>
                                         </div>
                                     </li>
                                 </ul>
@@ -139,8 +140,10 @@
                                 <ul ng-show='publicReplyIndex==$index'>
                                     <li ng-repeat="item2 in item.secondAnswer" class="rcontent">
                                         <div class="rcontentContent">
-                                            <nobr ng-click="tapEditCommonContent($parent.$index,$index)"
-                                                  ng-dblclick="chooseCommonContent($parent.$index,$index)"><a title="{{item2.name}}" ng-style="publicReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}">{{item2.name}}</a></nobr>
+                                            <nobr><a title="{{item2.name}}"
+                                                     ng-click="tapEditCommonContent($parent.$index,$index)"
+                                                     ng-dblclick="chooseCommonContent($parent.$index,$index)"
+                                                     ng-style="publicReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}">{{item2.name}}</a></nobr>
                                         </div>
                                     </li>
                                 </ul>
@@ -162,8 +165,9 @@
                                 <ul ng-show='diagnosisReplyIndex==$index'>
                                     <li ng-repeat="item2 in item.secondAnswer" class="rcontent">
                                         <div class="rcontentContent">
-                                            <nobr ng-click="tapEditDiagnosisContent($parent.$index,$index)"
-                                                  ng-dblclick="chooseDiagnosisContent($parent.$index,$index)"><a title="{{item2.name}}" ng-style="diagnosisReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}">{{item2.name}}</a></nobr>
+                                            <nobr><a title="{{item2.name}}" ng-click="tapEditDiagnosisContent($parent.$index,$index)"
+                                                     ng-dblclick="chooseDiagnosisContent($parent.$index,$index)"
+                                                     ng-style="diagnosisReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}">{{item2.name}}</a></nobr>
                                         </div>
                                     </li>
                                 </ul>
@@ -210,9 +214,6 @@
                         <input class="btn" type="submit" value="确定" ng-click="editContentSubmit()">
                         <input class="btn" type="submit" value="取消" ng-click="closeEditContent()">
                     </div>
-                </div>
-                <!--鼠标经过显示更多的回复内容-->
-                <div class="moreWord" ng-show="particularWord">
                 </div>
             </div>
             <!--<iframe src="http://s132.baodf.com/angel/scripts/views/customerss.html" frameborder="0"-->
