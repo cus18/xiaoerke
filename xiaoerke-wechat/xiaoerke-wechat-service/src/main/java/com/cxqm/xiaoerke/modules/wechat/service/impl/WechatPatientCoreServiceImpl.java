@@ -679,9 +679,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		{
 			List<Article> articleList = new ArrayList<Article>();
 			Article article = new Article();
-			article.setTitle("");
+			article.setTitle("宝大夫送你一份见面礼");
 			article.setDescription("");
-			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E4%BF%9D%E6%8A%A4%E4%BC%9E.png");
+			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E4%BF%9D%E6%8A%A4%E4%BC%9E.jpg");
 			article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa");
 			articleList.add(article);
 
@@ -713,14 +713,14 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setUrl("https://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236661&idx=3&sn=4c1fd3ee4eb99e6aca415f60dceb6834&scene=1&srcid=0616uPcrUKz7FVGgrmOcZqqq&from=singlemessage&isappinstalled=0&key=18e81ac7415f67c44d3973b3eb8e53f264f47c1109eceefa8d6be994349fa7f152bb8cfdfab15b36bd16a4400cd1bd87&ascene=0&uin=MzM2NjEyMzM1&devicetype=iMac+MacBookPro11%2C4+OSX+OSX+10.11.4+build(15E65)&version=11020201&pass_ticket=ZgGIH5%2B8%2FkhHiHeeRG9v6qbPZmK5qPlBL02k0Qo%2FHCK7eLMOZexAypBy0dzPjzaZ");
 			articleList.add(article);
 
-//			WechatUtil.senImgMsgToWechat(token,xmlEntity.getFromUserName(),articleList);
+			WechatUtil.senImgMsgToWechat(token,xmlEntity.getFromUserName(),articleList);
 
-			String st = "欢迎加入宝大夫，让您从此育儿不再愁！"+WechatUtil.emoji(0x1f339)+"\n\n"
-					+"【免费咨询】直接咨询北京三甲医院儿科专家，一分钟内回复！\n" +
-					"【预约专家】急速预约北京儿科专家出诊时间，不用排队挂号！\n"+
-					"【妈妈活动】添加宝大夫客服微信：bdfdxb，加入宝大夫家长群，与众多宝妈一起交流分享，参与更多好玩儿的活动！\n\n"+
-					"如需人工协助预约儿科专家,请您拨打：400-623-7120。";
-			WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
+//			String st = "欢迎加入宝大夫，让您从此育儿不再愁！"+WechatUtil.emoji(0x1f339)+"\n\n"
+//					+"【免费咨询】直接咨询北京三甲医院儿科专家，一分钟内回复！\n" +
+//					"【预约专家】急速预约北京儿科专家出诊时间，不用排队挂号！\n"+
+//					"【妈妈活动】添加宝大夫客服微信：bdfdxb，加入宝大夫家长群，与众多宝妈一起交流分享，参与更多好玩儿的活动！\n\n"+
+//					"如需人工协助预约儿科专家,请您拨打：400-623-7120。";
+//			WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
 		}
 
 		return processScanEvent(xmlEntity,"newUser",request,response);
@@ -785,15 +785,15 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			HttpSession session = request.getSession();
 			session .setAttribute("openId",xmlEntity.getFromUserName());
 			LogUtils.saveLog(request,"00000003");//注：参数含义请参照sys_log_mapping表，如00000003表示“咨询医生消息推送”
-			TextMessage textMessage = new TextMessage();
-			textMessage.setToUserName(xmlEntity.getFromUserName());
-			textMessage.setFromUserName(xmlEntity.getToUserName());
-			textMessage.setCreateTime(new Date().getTime());
-			textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
-			textMessage.setFuncFlag(0);
-			textMessage.setContent("1、点击左下角“小键盘”输入文字或语音,即可咨询疾病或保健问题\t\t\n 2、免费在线咨询时间:\n小儿内科:   24小时全天\n小儿皮肤科:   9:00~22:00\n营养保健科:   9:00~22:00\n小儿其他专科:(外科、眼科、耳鼻喉科、口腔科、预防保健科、中医科)   19:00~21:00 \n妇产科   19:00~22:00");
+//			TextMessage textMessage = new TextMessage();
+//			textMessage.setToUserName(xmlEntity.getFromUserName());
+//			textMessage.setFromUserName(xmlEntity.getToUserName());
+//			textMessage.setCreateTime(new Date().getTime());
+//			textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
+//			textMessage.setFuncFlag(0);
+//			textMessage.setContent("1、点击左下角“小键盘”输入文字或语音,即可咨询疾病或保健问题\t\t\n 2、免费在线咨询时间:\n小儿内科:   24小时全天\n小儿皮肤科:   9:00~22:00\n营养保健科:   9:00~22:00\n小儿其他专科:(外科、眼科、耳鼻喉科、口腔科、预防保健科、中医科)   19:00~21:00 \n妇产科   19:00~22:00");
 
-			respMessage = MessageUtil.textMessageToXml(textMessage);
+//			respMessage = MessageUtil.textMessageToXml(textMessage);
 			Map parameter = systemService.getWechatParameter();
 			String token = (String) parameter.get("token");
 			List<Article> articleList = new ArrayList<Article>();
@@ -803,7 +803,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E6%8E%A8%E9%80%81%E6%B6%88%E6%81%AF1.png");
 			article.setUrl("https://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236660&idx=1&sn=10d923526047a5276dd9452b7ed1e302&scene=1&srcid=0612OCo7d5ASBoGRr2TDgjfR&key=f5c31ae61525f82ed83c573369e70b8f9b853c238066190fb5eb7b8640946e0a090bbdb47e79b6d2e57b615c44bd82c5&ascene=0&uin=MzM2NjEyMzM1&devicetype=iMac+MacBookPro11%2C4+OSX+OSX+10.11.4+build(15E65)&version=11020201&pass_ticket=dG5W6eOP3JU1%2Fo3JXw19SFBAh1DgpSlQrAXTyirZuj970HMU7TYojM4D%2B2LdJI9n");
 			articleList.add(article);
-//			WechatUtil.senImgMsgToWechat(token,xmlEntity.getFromUserName(),articleList);
+			WechatUtil.senImgMsgToWechat(token,xmlEntity.getFromUserName(),articleList);
 			memberService.sendExtendOldMemberWechatMessage(xmlEntity.getFromUserName());
 		}else if("36".equals(xmlEntity.getEventKey()))
 		{
