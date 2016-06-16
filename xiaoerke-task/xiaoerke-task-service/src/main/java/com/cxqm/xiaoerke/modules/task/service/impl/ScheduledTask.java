@@ -1102,7 +1102,7 @@ public class ScheduledTask {
         User user = new User();
         user.setUserType("distributor");
         List<User> users = systemService.findUserByUserType(user);
-        if (null != distributorList && null != users && distributorList.size() > 0 && users.size() > 0 && users.size() > distributorList.size()) {
+        if (null != distributorList && null != users && distributorList.size() > 0 && users.size() > 0 || users.size() != distributorList.size()) {
             ConsultSessionManager.getSessionManager().distributorsList = new ArrayList<String>();
             for (User u : users) {
                 ConsultSessionManager.getSessionManager().distributorsList.add(u.getId());

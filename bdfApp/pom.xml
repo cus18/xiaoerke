@@ -9,12 +9,12 @@
   <packaging>war</packaging>
   
   <dependencies>
-	  <dependency>
-           <groupId>com.cxqm</groupId>
+	  <dependency> 
+           <groupId>com.cxqm</groupId> 
            <artifactId>xiaoerke-web</artifactId>
            <version>0.0.1-SNAPSHOT</version>
        </dependency>
-
+       
        <dependency> 
            <groupId>com.cxqm</groupId> 
            <artifactId>xiaoerke-collector-4service</artifactId>
