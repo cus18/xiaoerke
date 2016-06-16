@@ -1,0 +1,12 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="{{title}}">
+    <ion-content class="umbrellaTest " overflow-scroll="true" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <swipe-cards>
+                <swipe-card ng-repeat="card in cards" on-destroy="cardDestroyed($index)" on-swipe="cardSwiped($index)">
+                    <!-- Card content here -->
+                </swipe-card>
+            </swipe-cards>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

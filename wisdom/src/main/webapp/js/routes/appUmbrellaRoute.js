@@ -111,7 +111,7 @@ define(['appUmbrella'], function(app){
                             public: true
                         }
                     })
-                  /*  .state('umbrellaTest', {
+                    .state('umbrellaTest', {
                         url: '/umbrellaTest',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'umbrellaTestCtrl',
@@ -119,7 +119,6 @@ define(['appUmbrella'], function(app){
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaTestCtrl',
                                     ['js/controllers/umbrella/umbrellaTestCtrl.js',
-                                        'js/libs/umbrellaDemo.js',
                                         'styles/umbrella/umbrellaLead.less?ver='+umbrellaVersion],
                                     'js/views/umbrella/umbrellaTest.html?ver='+umbrellaVersion);
                             }
@@ -127,7 +126,7 @@ define(['appUmbrella'], function(app){
                         data: {
                             public: true
                         }
-                    })*/
+                    })
                 $urlRouterProvider.otherwise('umbrellaLead');
             }])
         .run(function ($rootScope){
