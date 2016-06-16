@@ -225,27 +225,31 @@
             $scope.updateUmbrellaInfo = function(){
                 compareDate();
                 if($scope.info.id==""){
-                    alerrt("请选择或添加一个宝宝");
+                    alert("请选择或添加一个宝宝");
                     return;
                 }
                 if($scope.info.parentName==""){
-                    alerrt("请输入父(母)的姓名");
+                    alert("请输入父(母)的姓名");
                     return;
                 }
                 if($scope.info.phoneNum==""){
-                    alerrt("请输入手机号");
+                    alert("请输入手机号");
                     return;
                 }
-                // if($scope.info.code==""){
-                //     alerrt("请输入验证码");
-                //     return;
-                // }
+                if($scope.info.code==""){
+                    alerrt("请输入验证码");
+                    return;
+                }
                 if($scope.info.IdCard==""){
-                    alerrt("请输入身份证号");
+                    alert("请输入身份证号");
+                    return;
+                }
+                var id=$scope.checkCode();
+                if(!id){
                     return;
                 }
                 $scope.parentType=$scope.parentItem=="father"?2:3;
-                updateInfo.save({"phone":$scope.info.phoneNum,"babyId":$scope.info.id,
+                updateInfo.save({"phone":$scope.info.phoneNum,"code":$scope.info.code,"babyId":$scope.info.id,
                     "idCard":$scope.info.IdCard,"parentName":encodeURI($scope.info.parentName),
                     "parentType":$scope.parentType,"umbrellaId":$scope.umbrellaId}, function (data){
                     if(data.result=='1'){
@@ -309,16 +313,31 @@
             }
             $scope.$on('$ionicView.enter', function(){
 
-                var routePath = "/umbrellaBBBBBB" + $location.path();
-                GetUserLoginStatus.save({routePath:routePath},function(data){
-                    if(data.status=="9") {
-                        window.location.href = data.redirectURL;
-                    } else if(data.status=="8"){
-                        window.location.href = data.redirectURL+"?targeturl="+routePath;
-                    }else {
-                        //根据Openid 判断用户是否领取过
+                $.ajax({
+                    url:"umbrella/getOpenid",// 跳转到 action
+                    async:true,
+                    type:'post',
+                    cache:false,
+                    dataType:'json',
+                    success:function(data) {
+                        if(data.openid=="none"){
+                            // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+                        }
+                    },
+                    error : function() {
+                    }
+                });
+                
+                // var routePath = "/umbrellaBBBBBB" + $location.path();
+                // GetUserLoginStatus.save({routePath:routePath},function(data){
+                //     if(data.status=="9") {
+                //         window.location.href = data.redirectURL;
+                //     } else if(data.status=="8"){
+                //         window.location.href = data.redirectURL+"?targeturl="+routePath;
+                //     }else {
+                //         //根据Openid 判断用户是否领取过
                         ifExistOrder.save(function (data){
-                            $scope.info.phoneNum=data.phone;
+                            // $scope.info.phoneNum=data.phone;
                             if(data.result=="1"){
                                 window.location.href="../wisdom/firstPage/umbrella";
                             }else if(data.result=="3"){
@@ -330,16 +349,16 @@
                                     getBabyinfoList.save({"openId":$scope.openid},function (data){
                                         if(data.babyInfoList!="") {
                                             $scope.babyInfoList = data.babyInfoList;
-                                            var addBaby=new Object();
-                                            addBaby.name="添加";
-                                            addBaby.id="add";
-                                            $scope.babyInfoList.unshift(addBaby);
+                                            // var addBaby=new Object();
+                                            // addBaby.name="添加";
+                                            // addBaby.id="add";
+                                            // $scope.babyInfoList.unshift(addBaby);
 
                                         }
                                     });
                                 });
-                            }
-                        });
+                        //     }
+                        // });
 
                         var date = new Date(+new Date()+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'');
                         $("#birthday").mobiscroll().date();

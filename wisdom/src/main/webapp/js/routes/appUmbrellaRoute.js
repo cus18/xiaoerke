@@ -96,7 +96,7 @@ define(['appUmbrella'], function(app){
                         }
                     })
                     .state('umbrellaLead', {
-                        url: '/umbrellaLead',
+                        url: '/umbrellaLead/:id/:status',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'umbrellaLeadCtrl',
                         resolve: {
