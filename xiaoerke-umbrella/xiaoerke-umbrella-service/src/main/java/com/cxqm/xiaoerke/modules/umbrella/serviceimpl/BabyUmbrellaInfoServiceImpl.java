@@ -162,7 +162,7 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
         notShareParam.put("notShareOrActiveDays","1");
         notShareParam.put("notShare","notShare");
         List<Map<String,Object>> notShareList = babyUmbrellaInfoDao.getBabyUmbrellaInfo(notShareParam);
-        Map tokenMap = systemService.getDoctorWechatParameter();
+        Map tokenMap = systemService.getWechatParameter();
         String token = (String)tokenMap.get("token");
 
         for(Map<String, Object> map : notShareList){//一天未分享
@@ -171,7 +171,7 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
             String keyword1 = "保障金处于最低额度";
             String keyword2 = StringUtils.isNotNull((String) map.get("baby_id"))?"观察期":"待激活";
             String remark = "邀请一位好友，增加2万保额，最高可享受40万保障！";
-            String url = "";
+            String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31";
             String openid = (String)map.get("openid");
             WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, openid, templateId);
         }
@@ -187,7 +187,7 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
             String keyword1 = map.get("id") + "";
             String keyword2 = "保护伞——宝大夫儿童重疾互助计划";
             String remark = "马上点击，完善信息即可激活保障金! ";
-            String url = "";
+            String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31";
             String openid = (String)map.get("openid");
             WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, openid, templateId);
         }
