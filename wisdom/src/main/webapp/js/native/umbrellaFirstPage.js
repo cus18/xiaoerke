@@ -14,7 +14,7 @@ var version="b"; /*方案版本*/
 
 var shareUmbrellaId="0";
 var umbrellaFirstPageInit = function() {
-
+    recordLogs("BHS_HDSY");
     $.ajax({
         url:"umbrella/getOpenid",// 跳转到 action
         async:true,
@@ -30,11 +30,10 @@ var umbrellaFirstPageInit = function() {
         }
     });
     $("#NoShareDiv").hide();
+    cancelRemind();
     $(".shadow-content").hide();//每次页面加载时先隐藏提示浮层
     version=GetQueryString("status");
     ifExistOrder();
-    recordLogs("BHS_HDSY");
-    cancelRemind();
     /*获取当前年月日*/
     var date = new Date();
      date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
@@ -110,28 +109,28 @@ function scanQRCode(){
     });
 }
 
-// function  joinUs(){
-//     $.ajax({
-//         type: 'POST',
-//         url: "umbrella/joinUs",
-//         data:"{'version':'"+version+"'}",
-//         contentType: "application/json; charset=utf-8",
-//         async:false,
-//         success: function(data){
-//             if(data.result==1){
-//                 shareUmbrellaId=data.id;
-//                 loadShare();
-//             }else if(data.result==2){
-//                 shareUmbrellaId=data.umbrella.id;
-//                 loadShare();
-//             }else if(data.result==3){
-//                 shareUmbrellaId=data.umbrella.id;
-//                 loadShare();
-//             }
-//         },
-//         dataType: "json"
-//     });
-// }
+function  joinUs(){
+    $.ajax({
+        type: 'POST',
+        url: "umbrella/joinUs",
+        data:"{'version':'"+version+"'}",
+        contentType: "application/json; charset=utf-8",
+        async:false,
+        success: function(data){
+            if(data.result==1){
+                shareUmbrellaId=data.id;
+                loadShare();
+            }else if(data.result==2){
+                shareUmbrellaId=data.umbrella.id;
+                loadShare();
+            }else if(data.result==3){
+                shareUmbrellaId=data.umbrella.id;
+                loadShare();
+            }
+        },
+        dataType: "json"
+    });
+}
 
 function loadShare(){
     if(version=="a"){
@@ -167,7 +166,7 @@ function loadShare(){
                     wx.ready(function () {
                         // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                         wx.onMenuShareTimeline({
-                            title: '不敢相信，一根雪糕钱就换来了40万重疾保障!', // 分享标题
+                            title: '我用了几块零钱就变成了40万保障金了，你也来试试吧', // 分享标题
                             link: "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+shareUmbrellaId, // 分享链接
                             imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                             success: function (res) {
@@ -190,8 +189,8 @@ function loadShare(){
                             }
                         });
                         wx.onMenuShareAppMessage({
-                            title: '不敢相信，一根雪糕钱就换来了40万重疾保障!', // 分享标题
-                            desc: "保护伞是由宝大夫联合中国儿童少年基金会发起的非盈利性公益组织！", // 分享描述
+                            title: '我用了几块零钱就变成了40万保障金了，你也来试试吧 ', // 分享标题
+                            desc: "现在加入5元即可获取最高40万保障，运气好还能免单哦，let's go! ", // 分享描述
                             link:"http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+shareUmbrellaId, // 分享链接
                             imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                             success: function (res) {
@@ -454,3 +453,22 @@ var recordLogs = function(val){
         }
     });
 };
+/*预览图片*/
+/*
+var previewPic = function(Imgsrc){
+    var imgList0=$('.ejh');
+    var imgList1=[];
+    for(var i=0;i<imgList0.length;i++){
+        imgList1[i]=imgList0[i].src;
+        console.log(i +imgList1[i])
+    };
+    wx.previewImage({
+        current: Imgsrc, // 当前显示图片的http链接
+        urls:  imgList1// 需要预览的图片http链接列表
+    });
+};*/
+
+/*宝护伞咨询*/
+var umbrellaConsult = function(){
+
+}
