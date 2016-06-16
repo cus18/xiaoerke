@@ -91,12 +91,11 @@
 		<property name="triggers">
 			<list>
 				<!--<ref bean="consultManagementCronTrigger"/>-->
-				<ref bean="modifyConsultConversationForwardRecordsTrigger"/>
-				<ref bean="deleteTempRecordTrigger"/>
-				<ref bean="consultRecordMongoTransMySqlCronTrigger"/>
-				<ref bean="checkDoctorChannelStatus"/>
-				<ref bean="testMappingTrigger"/>
-				<ref bean="testMappingTrigger"/>
+				<!--<ref bean="modifyConsultConversationForwardRecordsTrigger"/>-->
+				<!--<ref bean="deleteTempRecordTrigger"/>-->
+				<!--<ref bean="consultRecordMongoTransMySqlCronTrigger"/>-->
+				<!--<ref bean="checkDoctorChannelStatus"/>-->
+				<!--<ref bean="testMappingTrigger"/>-->
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>
