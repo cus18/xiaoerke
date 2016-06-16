@@ -1,0 +1,62 @@
+.umbrellaLead{
+  background-color: #CCE9FA;
+}
+.slider{
+  height:100%;
+}
+.umbrellaLead .lead{
+  position: relative;
+  height:100%;
+}
+.umbrellaLead .lead .btn{
+  position: absolute;
+  bottom:15px;
+  left:50%;
+  margin-left:-110px;
+}
+.umbrellaLead .lead .arr{
+   position: absolute;
+   right:15px;
+   top:50%;
+   margin-top: -15px;
+  -webkit-animation-name: flash;
+  animation-name: flash;
+  -webkit-animation-duration: 3s;
+  animation-duration: 3s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  animation-iteration-count:infinite;
+  -webkit-animation-iteration-count:infinite;
+ }
+@keyframes flash
+{
+  0% {
+    opacity: 1;
+    right:10px;
+  }
+  50%  {
+    opacity: 0.1;
+    right:15px;
+  }
+  100% {
+    opacity: 1;
+    right:10px;
+  }
+}
+
+@-webkit-keyframes flash /* Safari and Chrome */
+{
+  0% {
+    opacity: 1;
+    right:10px;
+  }
+  50%  {
+    opacity: 0.1;
+    right:15px;
+  }
+  100% {
+    opacity: 1;
+    right:10px;
+  }
+}
+

@@ -95,7 +95,40 @@ define(['appUmbrella'], function(app){
                             public: true
                         }
                     })
-                $urlRouterProvider.otherwise('umbrellaJoin');
+                    .state('umbrellaLead', {
+                        url: '/umbrellaLead',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'umbrellaLeadCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaLeadCtrl',
+                                    ['js/controllers/umbrella/umbrellaLeadCtrl.js',
+                                        'styles/umbrella/umbrellaLead.less?ver='+umbrellaVersion],
+                                    'js/views/umbrella/umbrellaLead.html?ver='+umbrellaVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                  /*  .state('umbrellaTest', {
+                        url: '/umbrellaTest',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'umbrellaTestCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaTestCtrl',
+                                    ['js/controllers/umbrella/umbrellaTestCtrl.js',
+                                        'js/libs/umbrellaDemo.js',
+                                        'styles/umbrella/umbrellaLead.less?ver='+umbrellaVersion],
+                                    'js/views/umbrella/umbrellaTest.html?ver='+umbrellaVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })*/
+                $urlRouterProvider.otherwise('umbrellaLead');
             }])
         .run(function ($rootScope){
             $rootScope.unBindUserPhoneNum = '';
