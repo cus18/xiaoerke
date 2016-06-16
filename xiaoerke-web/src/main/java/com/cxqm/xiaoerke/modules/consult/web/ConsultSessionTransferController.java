@@ -43,8 +43,7 @@ public class ConsultSessionTransferController {
         HashMap<String, Object> response = new HashMap<String, Object>();
         Map<String, Object> specialistPatientContent = (Map<String, Object>) params.get("specialistPatientContent");
         Integer sessionId = sessionRedisCache.getSessionIdByUserId((String) specialistPatientContent.get("userId"));
-        String distributorsStr = Global.getConfig("distributors.list");
-        List distributorsList = Arrays.asList(distributorsStr.split(";"));
+        List<String> distributorsList = ConsultSessionManager.getSessionManager().distributorsList;
         if (sessionId != null) {
             RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
             if (richConsultSession != null) {
