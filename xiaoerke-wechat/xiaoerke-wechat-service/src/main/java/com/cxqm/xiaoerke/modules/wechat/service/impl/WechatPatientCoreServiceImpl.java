@@ -507,7 +507,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 					sendsucmes = true;
 				}
 			}
-
+			System.out.println(sendsucmes+"sendsucmes=============sendsucmes============================");
 			if(sendsucmes){
 				article.setTitle("宝大夫送你一份见面礼");
 				article.setDescription("恭喜您已成功领取专属于宝宝的20万高额保障金");
@@ -582,7 +582,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 					sendsucmes = true;
 				}
 			}
-
+			System.out.println(sendsucmes+"sendsucmes=============sendsucmes============================");
 			if(sendsucmes){
 				article.setTitle("宝大夫送你一份见面礼");
 				article.setDescription("恭喜您已成功领取专属于宝宝的20万高额保障金");
