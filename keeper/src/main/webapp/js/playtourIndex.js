@@ -104,19 +104,19 @@ var getPtm2 = function (index) {
         if(index == 0){
             indexFlag = 0;
             recordLogs("ZXPJSXY_one");
-            moneyNum = 8.8;
+            moneyNum = 8;
         }else if(index==1){
             indexFlag = 1;
             recordLogs("ZXPJSXY_two");
-            moneyNum = 12.6;
+            moneyNum = 12;
         }else if(index==2){
             indexFlag = 2;
             recordLogs("ZXPJSXY_three");
-            moneyNum = 19.9;
+            moneyNum = 20;
         }else if(index==3){
             indexFlag = 3;
             recordLogs("ZXPJSXY_four");
-            moneyNum = 28.6;
+            moneyNum = 26;
         }else if(index==4){
             indexFlag = 4;
             recordLogs("ZXPJSXY_five");
@@ -136,19 +136,19 @@ var getPtm2 = function (index) {
             if(index == 0){
                 indexFlag = 0;
                 recordLogs("ZXPJSXY_one");
-                moneyNum = 8.8;
+                moneyNum = 8;
             }else if(index==1){
                 indexFlag = 1;
                 recordLogs("ZXPJSXY_two");
-                moneyNum = 12.6;
+                moneyNum = 12;
             }else if(index==2){
                 indexFlag = 2;
                 recordLogs("ZXPJSXY_three");
-                moneyNum = 19.9;
+                moneyNum = 20;
             }else if(index==3){
                 indexFlag = 3;
                 recordLogs("ZXPJSXY_four");
-                moneyNum = 28.6;
+                moneyNum = 26;
             }else if(index==4){
                 indexFlag = 4;
                 recordLogs("ZXPJSXY_five");
