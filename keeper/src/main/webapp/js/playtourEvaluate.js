@@ -102,27 +102,27 @@ var getPtm2 = function (index) {
         if(index == 0){
             indexFlag = 0;
             recordLogs("ZXPJSXY_one");
-            moneyNum = 5;
+            moneyNum = 8.8;
         }else if(index==1){
             indexFlag = 1;
             recordLogs("ZXPJSXY_two");
-            moneyNum = 8.6;
+            moneyNum = 12.6;
         }else if(index==2){
             indexFlag = 2;
             recordLogs("ZXPJSXY_three");
-            moneyNum = 10;
+            moneyNum = 19.9;
         }else if(index==3){
             indexFlag = 3;
             recordLogs("ZXPJSXY_four");
-            moneyNum = 18.8;
+            moneyNum = 28.6;
         }else if(index==4){
             indexFlag = 4;
             recordLogs("ZXPJSXY_five");
-            moneyNum = 66;
+            moneyNum = 52;
         }else if(index==5){
             indexFlag = 5;
             recordLogs("ZXPJSXY_six");
-            moneyNum = 99;
+            moneyNum = 98;
         }
         $("#but").removeAttr('disable');
         $("#but").attr("style","background-color:#fe717b");
@@ -138,27 +138,27 @@ var getPtm2 = function (index) {
             if(index == 0){
                 indexFlag = 0;
                 recordLogs("ZXPJSXY_one");
-                moneyNum = 5;
+                moneyNum = 8.8;
             }else if(index==1){
                 indexFlag = 1;
                 recordLogs("ZXPJSXY_two");
-                moneyNum = 8.6;
+                moneyNum = 12.6;
             }else if(index==2){
                 indexFlag = 2;
                 recordLogs("ZXPJSXY_three");
-                moneyNum = 10;
+                moneyNum = 19.9;
             }else if(index==3){
                 indexFlag = 3;
                 recordLogs("ZXPJSXY_four");
-                moneyNum = 18.8;
+                moneyNum = 28.6;
             }else if(index==4){
                 indexFlag = 4;
                 recordLogs("ZXPJSXY_five");
-                moneyNum = 66;
+                moneyNum = 52;
             }else if(index==5){
                 indexFlag = 5;
                 recordLogs("ZXPJSXY_six");
-                moneyNum = 99;
+                moneyNum = 98;
             }
             $("#but").removeAttr('disable');
             $("#but").attr("style","background-color:#fe717b");
