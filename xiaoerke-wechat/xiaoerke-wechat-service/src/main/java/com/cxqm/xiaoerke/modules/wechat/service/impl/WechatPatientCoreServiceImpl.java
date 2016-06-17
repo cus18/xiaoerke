@@ -704,7 +704,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			Article article = new Article();
 			article.setTitle("宝大夫送你一份见面礼");
 			article.setDescription("");
-			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E4%BF%9D%E6%8A%A4%E4%BC%9E.jpg");
+			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%AE%9D%E6%8A%A4%E4%BC%9Ebanner2%20-%20%E5%89%AF%E6%9C%AC%20%E6%8B%B7%E8%B4%9D.png");
 			article.setUrl("http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000000/a");
 			articleList.add(article);
 
@@ -823,7 +823,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			Article article = new Article();
 			article.setTitle("咨询大夫 | 三甲医院儿科专家  1分钟极速回复");
 			article.setDescription("小儿内科:       24小时全天 \n\n小儿皮肤科:   9:00 ~ 22:00\n\n小儿营养科:   9:00 ~ 22:00\n\n(外科、眼科、耳鼻喉科、口腔科、预防保健科、中医科)\n\n点击查看更多哦");
-			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E6%8E%A8%E9%80%81%E6%B6%88%E6%81%AF1.png");
+			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E6%8E%A8%E9%80%81%E6%B6%88%E6%81%AF2.png");
 			article.setUrl("https://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236660&idx=1&sn=10d923526047a5276dd9452b7ed1e302&scene=1&srcid=0612OCo7d5ASBoGRr2TDgjfR&key=f5c31ae61525f82ed83c573369e70b8f9b853c238066190fb5eb7b8640946e0a090bbdb47e79b6d2e57b615c44bd82c5&ascene=0&uin=MzM2NjEyMzM1&devicetype=iMac+MacBookPro11%2C4+OSX+OSX+10.11.4+build(15E65)&version=11020201&pass_ticket=dG5W6eOP3JU1%2Fo3JXw19SFBAh1DgpSlQrAXTyirZuj970HMU7TYojM4D%2B2LdJI9n");
 			articleList.add(article);
 			WechatUtil.senImgMsgToWechat(token,xmlEntity.getFromUserName(),articleList);
