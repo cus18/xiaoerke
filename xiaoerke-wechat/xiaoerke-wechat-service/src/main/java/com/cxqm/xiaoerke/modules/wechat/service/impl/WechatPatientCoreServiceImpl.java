@@ -522,9 +522,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 					CookieUtils.setCookie(response, "umbrellaSendWechatMessageOldUserScan", "umbrellaSendWechatMessageOldUserScan", 3600 * 24 * 365);
 					int count = babyUmbrellaInfoService.getUmbrellaCount();
 					article.setTitle("宝大夫送你一份见面礼");
-					article.setDescription("专属于宝宝的40万高额保障金免费送，目前已有" + count + "位妈妈们领取，你也赶紧加入吧！");
+					article.setDescription("专属于宝宝的40万高额保障金5元即送，目前已有" + count + "位妈妈们领取，你也赶紧加入吧，运气好还能免单哦！");
 					article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
-					article.setUrl("http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrella");
+					article.setUrl("http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000000/a");
 					articleList.add(article);
 				}
 			}
@@ -596,9 +596,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 					CookieUtils.setCookie(response, "umbrellaSendWechatMessageOldUserScan", "umbrellaSendWechatMessageOldUserScan", 3600 * 24 * 365);
 					int count = babyUmbrellaInfoService.getUmbrellaCount();
 					article.setTitle("宝大夫送你一份见面礼");
-					article.setDescription("专属于宝宝的40万高额保障金免费送，目前已有" + count + "位妈妈们领取，你也赶紧加入吧！");
+					article.setDescription("专属于宝宝的40万高额保障金5元即送，目前已有" + count + "位妈妈们领取，你也赶紧加入吧，运气好还能免单哦！");
 					article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
-					article.setUrl("http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrella");
+					article.setUrl("http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000000/a");
 					articleList.add(article);
 				}
 			}
@@ -885,7 +885,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			String title = "小病问医生，大病有互助";
 			String description = "感谢您对宝大夫的信任，现在宝大夫联合中国儿童少年基金会，共同推出家庭重疾40万高额保障互助计划，目前已有" + count + "位妈妈加入，现在就等你了，赶紧加入吧！";
 			//String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellab";
-			String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31";
+			String url = "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000000/a";
 			String picUrl = "http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella";
 			String message = "{\"touser\":\""+openId+"\",\"msgtype\":\"news\",\"news\":{\"articles\": [{\"title\":\""+ title +"\",\"description\":\""+description+"\",\"url\":\""+ url +"\",\"picurl\":\""+picUrl+"\"}]}}";
 
