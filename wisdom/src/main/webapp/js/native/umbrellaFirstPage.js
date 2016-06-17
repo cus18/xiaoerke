@@ -23,7 +23,7 @@ var umbrellaFirstPageInit = function() {
         dataType:'json',
         success:function(data) {
             if(data.openid=="none"){
-                // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+ shareUmbrellaId;
+                window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+ shareUmbrellaId;
             }
         },
         error : function() {
@@ -191,7 +191,7 @@ function loadShare(){
                         });
                         wx.onMenuShareAppMessage({
                             title: '不敢相信，一根雪糕钱就换来了40万重疾保障!', // 分享标题
-                            desc: "保护伞是由宝大夫联合中国儿童少年基金会发起的非盈利性公益项目！", // 分享描述
+                            desc: "宝护伞是由宝大夫联合中国儿童少年基金会发起的非盈利性公益项目！", // 分享描述
                             link: "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+shareUmbrellaId+"/"+version, // 分享链接
                             imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                             success: function (res) {
@@ -457,5 +457,5 @@ var recordLogs = function(val){
 
 
 var umbrellaConsult = function (){
-    window.location.href='http://s132.baodf.com/angel/patient/consult#/patientConsultUmbrella#fileInput';
+    window.location.href='http://s165.baodf.com/wisdom/umbrella#/umbrellaTest';
 }
