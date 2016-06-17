@@ -872,14 +872,14 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		 params.put("dissatisfied", null);
 		 params.put("redPacket", null);
 		 patientRegisterPraiseDao.saveCustomerEvaluation(params);
-		String st = "感谢您对我们的信任与支持，为了以后能更好的为您服务，请对本次服务做出评价！【" +
+		 String st = "感谢您对我们的信任与支持，为了以后能更好的为您服务，请对本次服务做出评价！【" +
 			"<a href='http://s68.baodf.com/titan/appoint#/userEvaluate/"+params.get("uuid")+"'>我要评价</a>】";
 		 Map parameter = systemService.getWechatParameter();
 		 String token = (String)parameter.get("token");
 		 WechatUtil.sendMsgToWechat(token, openId, st);
 		 LogUtils.saveLog(request, "00000004");//注：00000004表示“客服评价”
 
-		if(!"umbrellaSendWechatMessageCloseConsult".equals(CookieUtils.getCookie(request, "umbrellaSendWechatMessageCloseConsult"))){//关闭咨询，推送保护伞消息
+		/*if(!"umbrellaSendWechatMessageCloseConsult".equals(CookieUtils.getCookie(request, "umbrellaSendWechatMessageCloseConsult"))){//关闭咨询，推送保护伞消息
 			CookieUtils.setCookie(response, "umbrellaSendWechatMessageCloseConsult", "umbrellaSendWechatMessageCloseConsult", 3600 * 24 * 365);
 			int count = babyUmbrellaInfoService.getUmbrellaCount();
 			String title = "小病问医生，大病有互助";
@@ -892,7 +892,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			String jsonobj = HttpRequestUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" +
 					token + "", "POST", message);
 			System.out.println(jsonobj+"===============================");
-		}
+		}*/
 		return respMessage;
 	}
 
