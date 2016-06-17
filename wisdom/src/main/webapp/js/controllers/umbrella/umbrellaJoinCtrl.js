@@ -13,6 +13,7 @@
             $scope.person=0;
             $scope.umbrellaId=0;
             $scope.status="b";
+            $scope.pintu=0;
 
             $scope.shareid=$stateParams.shareid;
 
@@ -123,7 +124,9 @@
                         $scope.umbrellaId=data.umbrella.id;
                         $scope.loadShare();
                     }
-                    $scope.person=data.umbrella.friendJoinNum<10?10-data.umbrella.friendJoinNum:data.umbrella.friendJoinNum;
+                    // $scope.person=data.umbrella.friendJoinNum<10?10-data.umbrella.friendJoinNum:data.umbrella.friendJoinNum;
+                    $scope.person=data.umbrella.friendJoinNum;
+                    $scope.pintu=data.umbrella.friendJoinNum>=10?0:10-data.umbrella.friendJoinNum;
                 });
             });
 
