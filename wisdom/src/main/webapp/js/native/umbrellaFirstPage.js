@@ -454,3 +454,8 @@ var recordLogs = function(val){
         }
     });
 };
+
+
+var umbrellaConsult = function (){
+    window.location.href='http://s2.xiaork.cn/angel/patient/consult#/patientConsultUmbrella#fileInput';
+}
