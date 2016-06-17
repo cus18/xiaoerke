@@ -1,11 +1,11 @@
-<div ui-view class="container-fluid" ng-init="patientConsultFirst()">
+<div ui-view class="container-fluid h100" ng-init="patientConsultFirst()">
     <div class="consultTitle">
         <span><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_2.png" alt=""/></span>
         宝大夫
         <span><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_1.png" alt=""/></span>
     </div>
-    <div class="consultDisplay">
-        <div class="consulChatList">
+    <div class="consultDisplay h100">
+        <div class="consulChatList h100" scroll-glue-bottom="glued">
             <div class="chatBox" ng-repeat="item in consultContent">
                 <div class="patientConsultContent" ng-if="item.senderId==patientId&&item.type!='4'">
                     <div class="patientHeaderImg">
@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="magnifyImg" ng-show='showFlag.magnifyImg' ng-click="tapShowButton('magnifyImg')">
-                <img width="400px" ng-src="{{imageSrc}}">
+                <img width="374px" ng-src="{{imageSrc}}">
             </div>
         </div>
     </div>
@@ -55,7 +55,7 @@
                 <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_5.png" alt=""/>
             </div>
             <div class="sendConsultContent" ng-if="sendItem" id="sendConsultContent">
-                <button ng-click="sendConsultContent()">发送</button>
+                <input ng-click="sendConsultContent()" type="button" value="发送">
             </div>
         </div>
         <div ng-if="openFileListFlag&&!sendItem" id="fileInputList" class="fileInputList">

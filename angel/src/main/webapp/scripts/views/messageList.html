@@ -94,7 +94,7 @@
                 {{currentUserConsultListDataPage}}/{{totalUserConsultListDataPage}}页
                 <a href="" ng-click="chooseUserConsultListDataPage('nextPage')"><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_22.png" alt=""/></a>
                 <a href="" ng-click="chooseUserConsultListDataPage('lastPage')"><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_24.png" alt=""/></a>
-                <a class="searchCss">第<input ng-model='info.userConsultListInfoSkipNum' required maxlength="1"  type="tel"/>页<input type="submit" value="跳" ng-click="chooseUserConsultListDataPage('SkipPage')" /></a>
+                <a class="searchCss">第<input ng-model='info.userConsultListInfoSkipNum' required maxlength="3"  type="tel"/>页<input type="submit" value="跳" ng-click="chooseUserConsultListDataPage('SkipPage')" /></a>
             </div>
         </div>
         <div class="content-r" style='margin-left: 496px;'>
@@ -119,7 +119,7 @@
                     {{currentUserRecordDetailPage}}/{{totalUserRecordDetailPage}}页
                     <a ng-click="chooseUserRecordDetail('nextPage',recordType)"><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_22.png" /></a>
                     <a ng-click="chooseUserRecordDetail('lastPage',recordType)"><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_24.png" /></a>
-                    <a class="searchCss">第<input ng-model="info.recordDetailSkipNum" required maxlength="1"  type="tel"/>页<input type="submit" value="跳" ng-click="chooseUserRecordDetail('SkipPage',recordType)" /></a>
+                    <a class="searchCss">第<input ng-model="info.recordDetailSkipNum" required maxlength="3"  type="tel"/>页<input type="submit" value="跳" ng-click="chooseUserRecordDetail('SkipPage',recordType)" /></a>
                 </div>
             </div>
             <div class='w10 h20 h2r examinecontent bl1'>

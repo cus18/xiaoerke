@@ -2,7 +2,7 @@ angular.module('controllers2', [])
     .controller('indexCtrl',['$scope','$state','$stateParams','$http',
         function ($scope,$state,$stateParams,$http) {
             var bannerList = ["http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_banner1.png",
-                /*"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_banner3.png",*/
+                "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_banner3.png",
                 "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_banner2.png"];
             var num;
             $scope.initial = function(){

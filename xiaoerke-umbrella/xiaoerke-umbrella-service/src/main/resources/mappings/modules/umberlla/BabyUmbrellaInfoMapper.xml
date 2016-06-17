@@ -141,7 +141,7 @@
     </select>
 
     <select id="getUmbrellaCount" resultType="java.lang.Integer" >
-        select count(*) from baby_umbrellainfo
+        select count(*) from baby_umbrellainfo where openid!='' and openid is not null
     </select>
 
     <update id="updateBabyUmbrellaInfoIfShare" parameterType="com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo" >

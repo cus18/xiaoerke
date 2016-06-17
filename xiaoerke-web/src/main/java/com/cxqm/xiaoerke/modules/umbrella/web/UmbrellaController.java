@@ -221,14 +221,14 @@ public class UmbrellaController  {
         Map<String, Object> result=new HashMap<String, Object>();
 
         String phone=params.get("phone").toString();
-//        String code=params.get("code").toString();
+        String code=params.get("code").toString();
         String openid= WechatUtil.getOpenId(session, request);
 //        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
-//        String res=utilService.bindUser(phone,code,openid);
-//        if(res.equals("0")){
-//            result.put("result","3");
-//            return result;
-//        }
+        String codeAuth=utilService.bindUser(phone,code,openid);
+        if(codeAuth.equals("0")){
+            result.put("result","3");
+            return result;
+        }
         BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
         babyUmbrellaInfo.setBabyId(params.get("babyId").toString());
         babyUmbrellaInfo.setParentIdCard(params.get("idCard").toString());
@@ -347,7 +347,7 @@ public class UmbrellaController  {
                     result.put("umbrella", m);
                     return result;
                 }
-                result.put("phone", UserUtils.getUser().getPhone());
+//                result.put("phone", UserUtils.getUser().getPhone());
                 result.put("result", 2);
                 result.put("umbrella", m);
                 return result;
