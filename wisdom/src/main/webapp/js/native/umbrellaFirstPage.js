@@ -457,5 +457,5 @@ var recordLogs = function(val){
 
 
 var umbrellaConsult = function (){
-    window.location.href='http://s2.xiaork.cn/angel/patient/consult#/patientConsultUmbrella#fileInput';
+    window.location.href='http://s132.baodf.com/angel/patient/consult#/patientConsultUmbrella#fileInput';
 }
