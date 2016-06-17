@@ -366,6 +366,7 @@ public class PayNotificationController {
 			param_.put("id", toId);
 			List<Map<String,Object>> tolist = babyUmbrellaInfoService.getBabyUmbrellaInfo(param_);
 			String nickName = "";
+			System.out.println(tolist.size()+"tolist.size()=============tolist.size()============================");
 			if(tolist.size()!=0){
 				toOpenId = (String)tolist.get(0).get("openid");
 				if(StringUtils.isNotNull(toOpenId)){
@@ -375,6 +376,7 @@ public class PayNotificationController {
 					}
 				}
 			}
+			System.out.println(list.size()+"list.size()=============list.size()============================");
 			if(list.size()!=0){
 				String fromOpenId = (String)list.get(0).get("openid");//分享者openid
 				String babyId = (String)list.get(0).get("baby_id");
