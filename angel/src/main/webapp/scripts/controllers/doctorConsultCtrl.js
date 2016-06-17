@@ -24,13 +24,13 @@ angular.module('controllers', ['luegg.directives'])
             $scope.loadingFlag = false;
             $scope.socketServerFirst = "";
             $scope.socketServerSecond = "";
-            $scope.firstAddress = "120.25.161.33";
-            $scope.secondAddress = "101.201.154.75";
+            $scope.firstAddress = "localhost";
+            $scope.secondAddress = "120.25.161.33";
             $scope.alreadyJoinPatientConversation = []; //已经加入会话的用户数据，一个医生可以有多个对话的用户，这些用户的数据，都保存在此集合中
             $scope.currentUserConversation = {}; //医生与当前正在进行对话用户的聊天数据，医生在切换不同用户时，数据变更到切换的用户上来。
             $scope.waitJoinNum = 0; //医生待接入的用户数，是动态变化的数
             $scope.glued = true; //angular滚动条的插件预制参数，让对话滚动条，每次都定位底部，当新的聊天数据到达时
-            var umbrellaCustomerList = "75cefafe00364bbaaaf7b61089994e22,3b91fe8b7ce143918012ef3ab4baf1e0";
+            var umbrellaCustomerList = "75cefafe00364bbaaaf7b61089994e22,3b91fe8b7ce143918012ef3ab4baf1e0,00032bd90d724d0sa63a4d6esa0e8dbf";
 
             //各个子窗口的开关变量
             $scope.showFlag = {
@@ -112,12 +112,12 @@ angular.module('controllers', ['luegg.directives'])
                             }
                         });
                         /*GetCurrentDoctorDepartment.save({userId:$scope.doctorId},function(data){
-                            if(data.status == 'success'){
-                                $scope.department = data.department;
-                            }else{
-                                $scope.department = 'default';
-                            }
-                        });*/
+                         if(data.status == 'success'){
+                         $scope.department = data.department;
+                         }else{
+                         $scope.department = 'default';
+                         }
+                         });*/
                         $scope.refreshWaitJoinUserList();
 
                         if($stateParams.action == "createUserSession"){
@@ -158,7 +158,7 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 })
             };
-            
+
             //公共点击按钮，用来触发弹出对应的子窗口
             $scope.tapShowButton = function(type){
                 $.each($scope.showFlag,function(key,value){
@@ -445,7 +445,7 @@ angular.module('controllers', ['luegg.directives'])
 
             /**会话操作区**/
 
-            //初始化socket链接
+                //初始化socket链接
             $scope.initConsultSocketFirst = function () {
                 if (!window.WebSocket) {
                     window.WebSocket = window.MozWebSocket;
@@ -602,7 +602,6 @@ angular.module('controllers', ['luegg.directives'])
                         if(sayTextFlag!="noFlag"){
                             var valueData = consultContent.split("####");
                             consultContent = valueData[0];
-                            //consultContent = consultContent.substring(0,consultContent.length-7)+"\n";
                         }
                         if($scope.currentUserConversation.serverAddress==$scope.firstAddress){
                             if ($scope.socketServerFirst.readyState == WebSocket.OPEN) {
@@ -662,15 +661,27 @@ angular.module('controllers', ['luegg.directives'])
                                         "consultFlag": sayTextFlag
                                     };
                                 }else if($scope.userType=="consultDoctor"){
-                                    var consultValMessage = {
-                                        "type": 0,
-                                        "content": $scope.doctorName + "医生：" + consultContent,
-                                        "dateTime": moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
-                                        "senderId": angular.copy($scope.doctorId),
-                                        "senderName": angular.copy($scope.doctorName),
-                                        "sessionId": angular.copy($scope.currentUserConversation.sessionId),
-                                        "consultFlag": sayTextFlag
-                                    };
+                                    if(umbrellaCustomerList.indexOf($scope.doctorId)>-1){
+                                        var consultValMessage = {
+                                            "type": 0,
+                                            "content": "保护伞客服：" + consultContent,
+                                            "dateTime": moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
+                                            "senderId": angular.copy($scope.doctorId),
+                                            "senderName": angular.copy($scope.doctorName),
+                                            "sessionId": angular.copy($scope.currentUserConversation.sessionId),
+                                            "consultFlag": sayTextFlag
+                                        };
+                                    }else{
+                                        var consultValMessage = {
+                                            "type": 0,
+                                            "content": $scope.doctorName + "医生：" + consultContent,
+                                            "dateTime": moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
+                                            "senderId": angular.copy($scope.doctorId),
+                                            "senderName": angular.copy($scope.doctorName),
+                                            "sessionId": angular.copy($scope.currentUserConversation.sessionId),
+                                            "consultFlag": sayTextFlag
+                                        };
+                                    }
                                 }
 
                                 $scope.socketServerSecond.send(emotionSendFilter(JSON.stringify(consultValMessage)));
@@ -697,21 +708,11 @@ angular.module('controllers', ['luegg.directives'])
 
             var processSayTextFlag = function(data){
                 var flag = "noFlag";
-                if(data.indexOf("####")!=-1){
+                if (data.indexOf("####") != -1) {
                     var textValue = data.split("####");
                     flag = textValue[1];
-
                 }
                 return flag;
-                //
-                //
-                //var sayTextValue = data.substring(data.length-7,data.length);
-                //if(sayTextValue.indexOf("####")!=-1){
-                //    flag = sayTextValue.substring(4,7);
-                //}else{
-                //    flag = "noFlag";
-                //}
-                //return flag;
             }
 
             //向用户发送咨询图片
@@ -740,7 +741,7 @@ angular.module('controllers', ['luegg.directives'])
                                 "senderId": angular.copy($scope.doctorId),
                                 "senderName": angular.copy($scope.doctorName),
                                 /*"userType": angular.copy($scope.userType),
-                                "department": angular.copy($scope.department),*/
+                                 "department": angular.copy($scope.department),*/
                                 "sessionId": angular.copy($scope.currentUserConversation.sessionId)
                             };
                         } else{
@@ -750,8 +751,8 @@ angular.module('controllers', ['luegg.directives'])
                                 "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                                 "senderId": angular.copy($scope.doctorId),
                                 "senderName": angular.copy($scope.doctorName),
-                               /* "userType": angular.copy($scope.userType),
-                                "department": angular.copy($scope.department),*/
+                                /* "userType": angular.copy($scope.userType),
+                                 "department": angular.copy($scope.department),*/
                                 "sessionId": angular.copy($scope.currentUserConversation.sessionId)
                             };
                         }
@@ -792,7 +793,7 @@ angular.module('controllers', ['luegg.directives'])
                             }
                         }
 
-                        });
+                    });
 
                 }
             };
@@ -918,7 +919,7 @@ angular.module('controllers', ['luegg.directives'])
                 })
             };
             /**会话操作区**/
-            //更新咨询医生当日咨询用户数的排名列表
+                //更新咨询医生当日咨询用户数的排名列表
             $scope.refreshRankList = function(){
                 var currDate = new moment().format("YYYY-MM-DD");
                 GetTodayRankingList.save({"rankDate": currDate}, function (data) {
@@ -942,7 +943,7 @@ angular.module('controllers', ['luegg.directives'])
             };
 
             /***回复操作区**/
-            //我的回复内容
+                //我的回复内容
             $scope.tapMyReplyContent = function (parentIndex) {
                 if($scope.myReplyIndex==parentIndex){
                     $scope.myReplyIndex = -1;
@@ -1305,7 +1306,7 @@ angular.module('controllers', ['luegg.directives'])
                         'number':1,//显示消息数量
                         'patientName':conversationData.senderName,
                         'consultValue':[]
-                };
+                    };
                     conversationContent.consultValue.push(consultValue);
                     $scope.alreadyJoinPatientConversation.push(conversationContent);
                 }
