@@ -705,7 +705,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setTitle("宝大夫送你一份见面礼");
 			article.setDescription("");
 			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E4%BF%9D%E6%8A%A4%E4%BC%9E.jpg");
-			article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa");
+			article.setUrl("http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000000/a");
 			articleList.add(article);
 
 			article = new Article();
