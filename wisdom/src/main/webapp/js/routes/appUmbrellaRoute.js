@@ -30,7 +30,7 @@ define(['appUmbrella'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaJoinCtrl',
-                                    ['js/controllers/umbrella/umbrellaJoinCtrl.js',
+                                    ['js/controllers/umbrella/umbrellaJoinCtrl.js?ver='+umbrellaVersion,
                                         'js/libs/moment.min.js',
                                         'styles/umbrella/umbrellaJoin.less?ver='+umbrellaVersion],
                                     'js/views/umbrella/umbrellaJoin.html?ver='+umbrellaVersion);
@@ -47,7 +47,7 @@ define(['appUmbrella'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaFillInfoCtrl',
-                                    ['js/controllers/umbrella/umbrellaFillInfoCtrl.js',
+                                    ['js/controllers/umbrella/umbrellaFillInfoCtrl.js?ver='+umbrellaVersion,
                                         'js/libs/mobiscroll.custom-2.17.0.min.js',
                                         'styles/lib/mobiscroll.custom-2.17.0.min.css',
                                         'styles/umbrella/fillInfoCommon.less?ver='+umbrellaVersion,
@@ -66,7 +66,7 @@ define(['appUmbrella'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaMemberAddCtrl',
-                                    ['js/controllers/umbrella/umbrellaMemberAddCtrl.js',
+                                    ['js/controllers/umbrella/umbrellaMemberAddCtrl.js?ver='+umbrellaVersion,
                                         'js/libs/mobiscroll.custom-2.17.0.min.js',
                                         'styles/lib/mobiscroll.custom-2.17.0.min.css',
                                         'styles/umbrella/umbrellaMemberAdd.less?ver='+umbrellaVersion],
@@ -84,7 +84,7 @@ define(['appUmbrella'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaMemberListCtrl',
-                                    ['js/controllers/umbrella/umbrellaMemberListCtrl.js',
+                                    ['js/controllers/umbrella/umbrellaMemberListCtrl.js?ver='+umbrellaVersion,
                                         'js/libs/moment.min.js',
                                         'styles/umbrella/umbrellaCommon.less?ver='+umbrellaVersion,
                                         'styles/umbrella/umbrellaMemberList.less?ver='+umbrellaVersion],
@@ -102,7 +102,7 @@ define(['appUmbrella'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaLeadCtrl',
-                                    ['js/controllers/umbrella/umbrellaLeadCtrl.js',
+                                    ['js/controllers/umbrella/umbrellaLeadCtrl.js?ver='+umbrellaVersion,
                                         'styles/umbrella/umbrellaLead.less?ver='+umbrellaVersion],
                                     'js/views/umbrella/umbrellaLead.html?ver='+umbrellaVersion);
                             }
@@ -118,7 +118,7 @@ define(['appUmbrella'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaTestCtrl',
-                                    ['js/controllers/umbrella/umbrellaTestCtrl.js',
+                                    ['js/controllers/umbrella/umbrellaTestCtrl.js?ver='+umbrellaVersion,
                                         'styles/umbrella/umbrellaLead.less?ver='+umbrellaVersion],
                                     'js/views/umbrella/umbrellaTest.html?ver='+umbrellaVersion);
                             }
