@@ -180,7 +180,7 @@
                                     // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                                     wx.onMenuShareTimeline({
                                         title: '不敢相信，一根雪糕钱就换来了40万重疾保障!', // 分享标题
-                                        link: "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+$scope.status+"_"+ $scope.umbrellaId, // 分享链接
+                                        link:  "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$scope.umbrellaId+"/"+$scope.status,
                                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                         success: function (res) {
                                             recordLogs("BHS_WDBZ_FXPYQ");
@@ -204,7 +204,7 @@
                                     wx.onMenuShareAppMessage({
                                         title: '不敢相信，一根雪糕钱就换来了40万重疾保障!', // 分享标题
                                         desc: "保护伞是由宝大夫联合中国儿童少年基金会发起的非盈利性公益项目！", // 分享描述
-                                        link:"http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+$scope.status+"_"+ $scope.umbrellaId, // 分享链接
+                                        link:  "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$scope.umbrellaId+"/"+$scope.status, // 分享链接
                                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                         success: function (res) {
                                             recordLogs("BHS_WDBZ_FXPY");
