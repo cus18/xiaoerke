@@ -44,14 +44,6 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 $scope.initConsultSocket();
             };
 
-            $scope.sendItem = false;
-            $scope.$watch('info.consultInputValue', function(newVal, oldVal) {
-                if(newVal==undefined||newVal == ""){
-                    $scope.sendItem = false;
-                }else{
-                    $scope.sendItem = true;
-                }
-            });
             //初始化接口
             $scope.initConsultSocket = function(){
                 if (!window.WebSocket) {
@@ -123,7 +115,8 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             };
             //发送消息
             $scope.sendConsultContent = function(){
-                var patientValMessage = {
+                if($("#saytext").val().replace(/\s+/g,"")!=""){
+                    var patientValMessage = {
                     "type": 0,
                     "content": $("#saytext").val(),
                     "dateTime": moment().format("YYYY-MM-DD HH:mm:ss"),
@@ -132,17 +125,18 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     "sessionId":parseInt($scope.sessionId),
                     "source":$scope.source,
                     "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
-                };
-                if (!window.WebSocket) {
-                    return;
-                }
-                if ($scope.socketServer.readyState == WebSocket.OPEN) {
-                    $scope.consultContent.push(patientValMessage);
-                    $scope.socketServer.send(emotionSendFilter(JSON.stringify(patientValMessage)));
-                    patientValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($("#saytext").val())));
-                    $("#saytext").val('');
-                } else {
-                    alert("连接没有开启.");
+                    };
+                    if (!window.WebSocket) {
+                        return;
+                    }
+                    if ($scope.socketServer.readyState == WebSocket.OPEN) {
+                        $scope.consultContent.push(patientValMessage);
+                        $scope.socketServer.send(emotionSendFilter(JSON.stringify(patientValMessage)));
+                        patientValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($("#saytext").val())));
+                        $("#saytext").val('');
+                    } else {
+                        alert("连接没有开启.");
+                    }
                 }
             };
             $scope.getQQExpression = function () {

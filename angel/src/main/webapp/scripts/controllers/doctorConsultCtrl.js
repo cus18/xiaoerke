@@ -600,7 +600,9 @@ angular.module('controllers', ['luegg.directives'])
                         var consultContent = $("#saytext").val();
                         $("#saytext").val('');
                         if(sayTextFlag!="noFlag"){
-                            consultContent = consultContent.substring(0,consultContent.length-7)+"\n";
+                            var valueData = consultContent.split("####");
+                            consultContent = valueData[0];
+                            //consultContent = consultContent.substring(0,consultContent.length-7)+"\n";
                         }
                         if($scope.currentUserConversation.serverAddress==$scope.firstAddress){
                             if ($scope.socketServerFirst.readyState == WebSocket.OPEN) {
@@ -694,13 +696,22 @@ angular.module('controllers', ['luegg.directives'])
             };
 
             var processSayTextFlag = function(data){
-                var sayTextValue = data.substring(data.length-7,data.length);
-                if(sayTextValue.indexOf("####")!=-1){
-                    flag = sayTextValue.substring(4,7);
-                }else{
-                    flag = "noFlag";
+                var flag = "noFlag";
+                if(data.indexOf("####")!=-1){
+                    var textValue = data.split("####");
+                    flag = textValue[1];
+
                 }
                 return flag;
+                //
+                //
+                //var sayTextValue = data.substring(data.length-7,data.length);
+                //if(sayTextValue.indexOf("####")!=-1){
+                //    flag = sayTextValue.substring(4,7);
+                //}else{
+                //    flag = "noFlag";
+                //}
+                //return flag;
             }
 
             //向用户发送咨询图片
