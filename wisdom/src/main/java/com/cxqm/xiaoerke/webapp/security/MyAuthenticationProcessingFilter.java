@@ -129,21 +129,18 @@ public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProc
         } catch (AuthenticationException failed) {
             // Authentication failed
             unsuccessfulAuthentication(request, response, failed);
-
             return;
         }
 
         synchronized(MyAuthenticationProcessingFilter.class) {
         	AuthenticationSuccessHandler originalSuccessHandler = this.getSuccessHandler();
 	        try {
-		        AuthenticationSuccessHandler appLogAuthenticationSuccessHandler = (AuthenticationSuccessHandler) SpringContextHolder.getBean("appLogAuthenticationSuccessHandler");
+		        AuthenticationSuccessHandler appLogAuthenticationSuccessHandler = SpringContextHolder.getBean("appLogAuthenticationSuccessHandler");
 		    	this.setAuthenticationSuccessHandler(appLogAuthenticationSuccessHandler);
-		    	
 		        successfulAuthentication(request, response, chain, authResult);
 	        } finally {
 	        	this.setAuthenticationSuccessHandler(originalSuccessHandler);
 	        }
         }
     }
-    
 }

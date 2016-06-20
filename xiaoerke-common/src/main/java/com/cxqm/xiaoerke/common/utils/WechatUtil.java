@@ -42,13 +42,6 @@ public class WechatUtil {
     public static final String CORPID = "wxa19496b1076e7352";
     public static final String SECTET = "f645d4bcf81c905b3ad628cda79bd7ee";
 
-//    public static final String CORPID = "wx674c2231dd94c285";
-//    public static final String SECTET = "25c2b5ef041de8fc4b51ca35c2748476";
-
-//    //医生端微信参数
-//    public static final String CORPID = "wxfb77729adf195622";
-//    public static final String SECTET = "c0192dc68e66eff74161e9cf266898bb";
-
 
     public static String getToken(String corpid, String sectet) throws IOException {
         String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + corpid + "&secret=" + sectet + "";
