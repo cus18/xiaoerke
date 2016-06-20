@@ -145,11 +145,13 @@ function wechatPay() {
     if(payLock) {
         if (moneys != "0") {
             // moneys = 0.01;
+            var shareId=GetQueryString("shareId")==null?120000000:GetQueryString("shareId");
+            console.log("shareId",shareId);
             $.ajax({
                 url: "account/user/umbrellaPay",// 跳转到 action
                 async: true,
                 type: 'get',
-                data: {patientRegisterId: umbrelladId + "_" + GetQueryString("shareId"), payPrice: moneys * 100},
+                data: {patientRegisterId: umbrelladId + "_" +shareId, payPrice: moneys * 100},
                 cache: false,
                 success: function (data) {
                     $('#payButton').removeAttr("disabled");
@@ -214,7 +216,7 @@ function wechatPay() {
             });
         } else {
             recordLogs("BHS_ZFY_ZFCG");
-            window.location.href = "http://s165.baodf.com/wisdom/firstPage/umbrella?status=a";
+            window.location.href = "http://s165.baodf.com/wisdom/umbrella#/umbrellaJoin/" + new Date().getTime() + "/" + 120000000;
         }
     }else{
         payLock=true;
