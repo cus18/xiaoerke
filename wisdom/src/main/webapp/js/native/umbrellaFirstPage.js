@@ -11,10 +11,10 @@ document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.touchSlider.js"><
 
 var attentionLock=true;
 var version="b"; /*方案版本*/
-
+var orderResult = 2;
 var shareUmbrellaId="0";
-var umbrellaFirstPageInit = function() {
 
+$(document).ready(function() {
     $.ajax({
         url:"umbrella/getOpenid",// 跳转到 action
         async:true,
@@ -23,16 +23,30 @@ var umbrellaFirstPageInit = function() {
         dataType:'json',
         success:function(data) {
             if(data.openid=="none"){
-                window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+ shareUmbrellaId;
+                window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?" +
+                    "url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+ shareUmbrellaId;
             }
         },
         error : function() {
         }
     });
-    $("#NoShareDiv").hide();
-    $(".shadow-content").hide();//每次页面加载时先隐藏提示浮层
     version = GetQueryString("status");
     ifExistOrder();
+});
+
+var umbrellaFirstPageInit = function() {
+
+    $("#NoShareDiv").hide();
+    $(".shadow-content").hide();//每次页面加载时先隐藏提示浮层
+
+    if(orderResult==2||orderResult==3){
+        $("#NoShareDiv").hide();
+        $("#shareDiv").show();
+    }else {
+        $("#NoShareDiv").show();
+        $("#shareDiv").hide();
+    }
+
     recordLogs("BHS_HDSY");
     cancelRemind();
     /*获取当前年月日*/
@@ -63,17 +77,6 @@ var umbrellaFirstPageInit = function() {
         },
         dataType: "json"
     });
-
-    // $.ajax({
-    //     type: 'POST',
-    //     url: "umbrella/firstPageDataTotalUmbrellaMoney",
-    //     contentType: "application/json; charset=utf-8",
-    //     success: function(result){
-    //         var totalUmbrellaMoney=result.totalUmbrellaMoney;
-    //         $("#totalUmbrellaMoney").html(totalUmbrellaMoney);
-    //     },
-    //     dataType: "json"
-    // });
 
     //通过openid 获取当前用户是否关注
     $.ajax({
@@ -109,29 +112,6 @@ function scanQRCode(){
         dataType: "json"
     });
 }
-
-// function  joinUs(){
-//     $.ajax({
-//         type: 'POST',
-//         url: "umbrella/joinUs",
-//         data:"{'version':'"+version+"'}",
-//         contentType: "application/json; charset=utf-8",
-//         async:false,
-//         success: function(data){
-//             if(data.result==1){
-//                 shareUmbrellaId=data.id;
-//                 loadShare();
-//             }else if(data.result==2){
-//                 shareUmbrellaId=data.umbrella.id;
-//                 loadShare();
-//             }else if(data.result==3){
-//                 shareUmbrellaId=data.umbrella.id;
-//                 loadShare();
-//             }
-//         },
-//         dataType: "json"
-//     });
-// }
 
 function loadShare(){
     if(version=="a"){
@@ -318,41 +298,16 @@ function  ifExistOrder(){
                 }else{
                     version="b";
                 }
-                $("#NoShareDiv").hide();
-                $("#shareDiv").show();
                 shareUmbrellaId = data.umbrella.id;
                 loadShare();
             }else{
                 if(data.type=="pay"){
                     version="a";
                 }
-                $("#NoShareDiv").show();
-                $("#shareDiv").hide();
                 shareUmbrellaId = 120000000;
                 loadShare();
             }
-
-            /*a版本和b版本的内容变化*/
-            /* var content="";
-            var textIntro="";
-          if(version=="a"){
-                content='<img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic1a.png" >'
-                    + '<div class="f4 c3"><span class="c12">5元</span>即加入</div>'
-                    +'<div class="f4 c3">免单随时享</div>'
-                textIntro=' 您只需支付<span class="c11">最多5元即可加入</span>' ;
-                $('.introPic li').eq(0).html(content);
-                $('#textIntro').html(textIntro);
-                $(".helpPlan .pic img").attr("src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/help_pic1a.png");
-            }
-            else{
-                content='<img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic1b.png" >'
-                    + '<div class="f4 c3">现在参与</div>'
-                    +'<div class="f4 c3"><span class="c12">免费</span>加入 </div>';
-                textIntro=' <span class="c11">现阶段免费加入</span>' ;
-                $('.introPic li').eq(0).html(content);
-                $('#textIntro').html(textIntro);
-                $(".helpPlan .pic img").attr("src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/help_pic1b.png");
-            }*/
+            orderResult = data.result;
         },
         dataType: "json"
     });
@@ -412,10 +367,8 @@ var cancelRemind = function() {
 
 /*跳转到参与成功页面*/
 var myGuarantee = function() {
-
     var shareid = GetQueryString("id")==null?120000000:GetQueryString("id");
     window.location.href = "umbrella#/umbrellaJoin/"+new Date().getTime()+"/"+shareid;
-
 }
 
 /*跳转到领取成功页面*/
@@ -454,7 +407,6 @@ var recordLogs = function(val){
         }
     });
 };
-
 
 var umbrellaConsult = function (){
     window.location.href='http://s165.baodf.com/wisdom/umbrella#/umbrellaTest';
