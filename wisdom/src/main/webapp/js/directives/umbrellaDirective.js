@@ -36,9 +36,23 @@ define(['appUmbrella','jquery'], function (app,$) {
                 transclude: true,
                 scope: {},
                 controller: function($scope, $element) {
+                    var SwipeableCardController = ionic.controllers.ViewController.inherit({
+                        initialize: function(opts) {
+                            this.cards = [];
+                            // 根据opts进行初始化
+                        },
+                        pushCard: function(card) {
+                            this.cards.push(card);
+                            // 显示卡片
+                        },
+                        popCard: function() {
+                            var card = this.cards.pop();
+                            // 卡片消失的动画
+                        }
+                    })
+
                     // Instantiate the controller
-                    var swipeController = new SwipeableCardController({
-                    });
+                    var swipeController = new SwipeableCardController({});
 
                     // We add a root scope event listener to facilitate interacting with the
                     // directive incase of no direct scope access
@@ -69,6 +83,55 @@ define(['appUmbrella','jquery'], function (app,$) {
                 compile: function(element, attr) {
                     return function($scope, $element, $attr, swipeCards) {
                         var el = $element[0];
+
+                        var SwipeableCardView = ionic.views.View.inherit({
+                            initialize: function(opts) {
+                                // 保存卡片元素
+                                this.el = opts.el;
+                                this.bindEvents();
+                            },
+                            bindEvents: function() {
+                                var self = this;
+
+                                ionic.onGesture('dragstart', function(e) {
+                                    // 拖动过程开始
+                                }, this.el);
+
+                                ionic.onGesture('drag', function(e) {
+                                    // 拖动的过程
+                                    window.rAF(function() {
+                                        self._doDrag(e);
+                                    });
+                                }, this.el);
+
+                                ionic.onGesture('dragend', function(e) {
+                                    // 拖动过程结束
+                                }, this.el);
+                            },
+                            _doDrag: function(e) {
+                                // 在拖动的过程中计算出我们已经拖多远
+                                var o = e.gesture.deltaY / 3;
+
+                                // Get the angle of rotation based on the
+                                // drag distance and our distance from the
+                                // center of the card (computed in dragstart),
+                                // and the side of the card we are dragging from
+                                this.rotationAngle = Math.atan(o/this.touchDistance) * this.rotationDirection;
+
+                                // Don't rotate if dragging up
+                                if(e.gesture.deltaY < 0) {
+                                    this.rotationAngle = 0;
+                                }
+
+                                // Update the y position of this view
+                                this.y = this.startY + (e.gesture.deltaY * 0.4);
+
+                                // Apply the CSS transformation to the card,
+                                // translating it up or down, and rotating
+                                // it based on the computed angle
+                                this.el.style[ionic.CSS.TRANSFORM] = 'translate3d(' + this.x + 'px, ' + this.y  + 'px, 0) rotate(' + (this.rotationAngle || 0) + 'rad)';
+                            }
+                        });
 
                         // Instantiate our card view
                         var swipeableCard = new SwipeableCardView({

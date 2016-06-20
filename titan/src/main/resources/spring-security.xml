@@ -22,6 +22,7 @@
 	<authentication-manager alias="authenticationManager">
 		<authentication-provider user-service-ref="myUserDetailsService" />
 	</authentication-manager>
+
 	<!-- 登录验证器 -->
 	<beans:bean id="myAuthenticationProcessingFilter"
 		class="com.cxqm.xiaoerke.webapp.security.MyAuthenticationProcessingFilter">

@@ -311,11 +311,19 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
       </profile>
+      <profile default="false" name="Annotation profile for bdfApp" enabled="true">
+        <sourceOutputDir name="target\generated-sources\annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="bdfApp" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="angel" target="1.6" />
       <module name="authcenter" target="1.6" />
       <module name="backend" target="1.6" />
+      <module name="bdfApp" target="1.6" />
       <module name="doctor" target="1.6" />
       <module name="keeper" target="1.6" />
       <module name="market" target="1.6" />
