@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.web.DefaultRedirectStrategy;
 
 public class MyRedirectStrategy extends DefaultRedirectStrategy {
-
 	public void sendRedirect(HttpServletRequest request, HttpServletResponse response, String url) throws IOException {
 		String toUrl = request.getParameter("toUrl");//客户端回调地址
 		String redirectUrl = "";

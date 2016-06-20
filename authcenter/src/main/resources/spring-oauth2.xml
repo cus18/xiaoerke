@@ -21,9 +21,7 @@
         <security:custom-filter ref="clientCredentialsTokenEndpointFilter" before="BASIC_AUTH_FILTER"/>
     </security:http>
     
-    <bean id="exceptionTranslator"
-          class="com.cxqm.xiaoerke.authentication.assistant.MyWebResponseExceptionTranslator">
-    </bean>
+    <bean id="exceptionTranslator" class="com.cxqm.xiaoerke.authentication.assistant.MyWebResponseExceptionTranslator"></bean>
     
     <bean id="oauth2ClientDetails" class="com.cxqm.xiaoerke.authentication.service.MyClientDetailsService">
         <property name="list">
@@ -44,8 +42,7 @@
         </property>
     </bean>
     
-    <bean id="oauth2ClientDetailsUserService"
-          class="org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService">
+    <bean id="oauth2ClientDetailsUserService" class="org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService">
         <constructor-arg ref="oauth2ClientDetails"/>
     </bean>
     
@@ -69,13 +66,11 @@
 		<property name="authenticationEntryPoint" ref="clientAuthenticationEntryPoint2"/>
 	</bean>
 
-	<bean id="defaultAccessTokenConverter"
-          class="org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter">
+	<bean id="defaultAccessTokenConverter" class="org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter">
 		<property name="userTokenConverter" ref="myUserAuthenticationConverter"/>
 	</bean>
 
-	<bean id="myUserAuthenticationConverter"
-          class="com.cxqm.xiaoerke.authentication.assistant.MyUserAuthenticationConverter">
+	<bean id="myUserAuthenticationConverter" class="com.cxqm.xiaoerke.authentication.assistant.MyUserAuthenticationConverter">
 	</bean>
 	
 	<bean id="tokenStore" class="org.springframework.security.oauth2.provider.token.store.JdbcTokenStore">
@@ -89,8 +84,7 @@
         <property name="clientDetailsService" ref="oauth2ClientDetails" />
     </bean>
     
-	<bean id="customUserAuthenticationProvider"
-          class="com.cxqm.xiaoerke.authentication.assistant.UserAuthenticationProvider">
+	<bean id="customUserAuthenticationProvider" class="com.cxqm.xiaoerke.authentication.assistant.UserAuthenticationProvider">
     </bean>
 
 	<sec:authentication-manager id="userAuthenticationManager">
@@ -106,10 +100,7 @@
 	<sec:http pattern="/oauth/check_token" security="none"/>
 	
 	<!-- 拦截请求，未登录跳转登录页 -->
-	<sec:http pattern="${ssoPath}/**"
-              use-expressions="true"
-              entry-point-ref="authenticationProcessingFilterEntryPoint"
-              authentication-manager-ref="userAuthenticationManager">
+	<sec:http pattern="${ssoPath}/**" use-expressions="true" entry-point-ref="authenticationProcessingFilterEntryPoint" authentication-manager-ref="userAuthenticationManager">
         <sec:anonymous enabled="false" />
         <sec:intercept-url pattern="${ssoPath}/**" access="isAuthenticated()"/>
         <sec:csrf disabled="true"/>
@@ -126,8 +117,7 @@
     </sec:http>
     
     
-    <bean id="oauthAuthenticationEntryPoint"
-          class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
+    <bean id="oauthAuthenticationEntryPoint" class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
         <property name="realmName" value="test" />
     </bean>
     
@@ -142,26 +132,22 @@
 		<beans:property name="authenticationManager" ref="userAuthenticationManager" />
 	</beans:bean>
 
-	<beans:bean id="loginLogAuthenticationSuccessHandler"
-                class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+	<beans:bean id="loginLogAuthenticationSuccessHandler" class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
 		<beans:property name="alwaysUseDefaultTargetUrl" value="false" />
 		<beans:property name="redirectStrategy" ref="redirectStrategy"/>
 	</beans:bean>
 	
-	<beans:bean id="redirectStrategy"
-                class="com.cxqm.xiaoerke.authentication.assistant.MyRedirectStrategy">
+	<beans:bean id="redirectStrategy" class="com.cxqm.xiaoerke.authentication.assistant.MyRedirectStrategy">
 	</beans:bean>
 	
-	<beans:bean id="simpleUrlAuthenticationFailureHandler"
-                class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+	<beans:bean id="simpleUrlAuthenticationFailureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
 		<!-- 可以配置相应的跳转方式。属性forwardToDestination为true采用forward false为sendRedirect -->
 		<beans:property name="defaultFailureUrl" value="${ssoPath}/login" />
 		<beans:property name="redirectStrategy" ref="redirectStrategy"/>
 	</beans:bean>
 	
-    <!-- 未登录的切入点 -->
-	<beans:bean id="authenticationProcessingFilterEntryPoint"
-                class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+		<!-- 未登录的切入点 -->
+	<beans:bean id="authenticationProcessingFilterEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
 		<constructor-arg name="loginFormUrl" value="${ssoPath}/login"/>
 	</beans:bean>
 	
@@ -171,8 +157,7 @@
     <!-- authorization-server defines all the attributes needed for token management-->
 
     <!-- PART :1 Authorization Service -->
-    <oauth:authorization-server user-approval-page="forward:/oauthconfirm"
-                                client-details-service-ref="oauth2ClientDetails" token-services-ref="tokenServices">
+    <oauth:authorization-server user-approval-page="forward:/oauthconfirm" client-details-service-ref="oauth2ClientDetails" token-services-ref="tokenServices">
         <oauth:authorization-code />
          <!-- a way for clients to obtain an access token by obtaining an authorization code. -->
         <oauth:implicit />

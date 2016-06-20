@@ -47,24 +47,4 @@
         <constructor-arg ref="userCredentials" />
     </bean>
 
-    <!--zdl-->
-    <!--<bean id="mongoClientURI" class="com.mongodb.MongoClientURI">-->
-        <!--<constructor-arg name="uri" value="${mongodb.uri}" />-->
-    <!--</bean>-->
-
-    <!--<bean id="mongoClient" class="com.mongodb.MongoClient">-->
-        <!--<constructor-arg ref="mongoClientURI" />-->
-    <!--</bean>-->
-
-    <!--<bean id="simpleMongoDbFactory" class="org.springframework.data.mongodb.core.SimpleMongoDbFactory">-->
-        <!--<constructor-arg ref="mongoClient" />-->
-        <!--<constructor-arg name="databaseName" value="${mongo.dbName}"/>-->
-    <!--</bean>-->
-
-    <!--<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">-->
-        <!--<constructor-arg ref="simpleMongoDbFactory" />-->
-    <!--</bean>-->
-
-
-
 </beans>
