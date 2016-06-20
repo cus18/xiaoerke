@@ -5,27 +5,11 @@
             /*$scope.myActiveSlide =0;*/
 
             /*立即加入*/
-            $scope.goJoin=function(index){
-                recordLogs("BHS_H5_LJJR"+index);
+            $scope.goJoin=function(){
                 window.location.href="http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+$stateParams.status+"_"+ $stateParams.id;
             };
             $scope.slideHasChanged=function(index){
-                recordLogs("BHS_H5_"+index);
-            };
-
-            var recordLogs = function(val){
-                $.ajax({
-                    url:"util/recordLogs",// 跳转到 action
-                    async:true,
-                    type:'get',
-                    data:{logContent:encodeURI(val)},
-                    cache:false,
-                    dataType:'json',
-                    success:function(data) {
-                    },
-                    error : function() {
-                    }
-                });
+               console.log("num"+index);
             };
 
             $scope.$on('$ionicView.enter', function(){
