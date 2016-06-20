@@ -620,7 +620,7 @@ angular.module('controllers', ['luegg.directives'])
                                     if(umbrellaCustomerList.indexOf($scope.doctorId)>-1){
                                         var consultValMessage = {
                                             "type": 0,
-                                            "content": "保护伞客服：" + consultContent,
+                                            "content": "宝护伞客服：" + consultContent,
                                             "dateTime": moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
                                             "senderId": angular.copy($scope.doctorId),
                                             "senderName": angular.copy($scope.doctorName),
@@ -664,7 +664,7 @@ angular.module('controllers', ['luegg.directives'])
                                     if(umbrellaCustomerList.indexOf($scope.doctorId)>-1){
                                         var consultValMessage = {
                                             "type": 0,
-                                            "content": "保护伞客服：" + consultContent,
+                                            "content": "宝护伞客服：" + consultContent,
                                             "dateTime": moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
                                             "senderId": angular.copy($scope.doctorId),
                                             "senderName": angular.copy($scope.doctorName),

@@ -79,12 +79,9 @@ public class LoginController extends BaseController{
 						return "redirect:"+toUrl+"?token="+token;
 					else
 						return "redirect:"+toUrl+"&token="+token;
-				}else{
-					
 				}
 			}
 		}
-		
 		return url;
 	}
 	

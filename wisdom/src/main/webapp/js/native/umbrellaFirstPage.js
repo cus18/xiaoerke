@@ -31,14 +31,14 @@ var umbrellaFirstPageInit = function() {
     });
     $("#NoShareDiv").hide();
     $(".shadow-content").hide();//每次页面加载时先隐藏提示浮层
-    version=GetQueryString("status");
+    version = GetQueryString("status");
     ifExistOrder();
     recordLogs("BHS_HDSY");
     cancelRemind();
     /*获取当前年月日*/
     var date = new Date();
-     date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
-     $("#date").html(date);
+    date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+    $("#date").html(date);
 
     //获取首页数据
     $.ajax({
@@ -179,7 +179,7 @@ function loadShare(){
                                     data:"{'id':'"+shareUmbrellaId+"'}",
                                     contentType: "application/json; charset=utf-8",
                                     success: function(result){
-                                        var todayCount=result.todayCount;
+                                        var todayCount = result.todayCount;
                                         $("#todayCount").html(todayCount);
                                     },
                                     dataType: "json"
@@ -328,7 +328,7 @@ function  ifExistOrder(){
                 }
                 $("#NoShareDiv").show();
                 $("#shareDiv").hide();
-                shareUmbrellaId=120000000;
+                shareUmbrellaId = 120000000;
                 loadShare();
             }
 
