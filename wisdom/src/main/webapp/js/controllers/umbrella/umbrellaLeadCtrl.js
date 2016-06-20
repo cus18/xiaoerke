@@ -2,12 +2,18 @@
         '$scope','$state','$stateParams',
         function ($scope,$state,$stateParams) {
             $scope.title="宝大夫儿童家庭重疾互助计划";
+            /*$scope.myActiveSlide =0;*/
 
             /*立即加入*/
             $scope.goJoin=function(){
                 window.location.href="http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+$stateParams.status+"_"+ $stateParams.id;
             };
+            $scope.slideHasChanged=function(index){
+               console.log("num"+index);
+            };
+
             $scope.$on('$ionicView.enter', function(){
+
                 var timestamp;//时间戳
                 var nonceStr;//随机字符串
                 var signature;//得到的签名
