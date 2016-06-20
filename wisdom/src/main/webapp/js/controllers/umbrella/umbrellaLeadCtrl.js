@@ -1,4 +1,4 @@
-﻿angular.module('controllers', ['ionic']).controller('umbrellaLeadCtrl', [
+﻿﻿angular.module('controllers', ['ionic']).controller('umbrellaLeadCtrl', [
         '$scope','$state','$stateParams',
         function ($scope,$state,$stateParams) {
             $scope.title="宝大夫儿童家庭重疾互助计划";
