@@ -11,7 +11,6 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
-import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.impl.UserInfoServiceImpl;
@@ -30,7 +29,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
@@ -65,11 +63,11 @@ public class ConsultSessionManager {
 
     public List<String> distributorsList = new ArrayList<String>();
 
-    private AtomicInteger accessNumber = new AtomicInteger(1000);
+    private Map<String, Channel> onLineDistributors = new ConcurrentHashMap<String, Channel>();//在线分诊员
+
+    private Map<String, Channel> onLineCsUserChannelMapping = new ConcurrentHashMap<String, Channel>();//在线医生
 
     private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
-
-    private PatientRegisterPraiseService patientRegisterPraiseService = SpringContextHolder.getBean("patientRegisterPraiseServiceImpl");
 
     private ConsultSessionService consultSessionService = SpringContextHolder.getBean("consultSessionServiceImpl");
 
@@ -134,6 +132,7 @@ public class ConsultSessionManager {
         userChannelMapping.put(csUserId, channel);
         channelUserMapping.put(channel, csUserId);
         csUserConnectionTimeMapping.put(csUserId, new Date());
+        onLineCsUserChannelMapping.put(csUserId, channel);//在线医生
     }
 
     private void doCreateSocketInitiatedByDistributor(String distributorUserId, Channel channel) {
@@ -144,6 +143,7 @@ public class ConsultSessionManager {
             userChannelMapping.put(distributorUserId, channel);
             channelUserMapping.put(channel, distributorUserId);
             csUserConnectionTimeMapping.put(distributorUserId, new Date());
+            onLineDistributors.put(distributorUserId, channel);//在线分诊员
         } else {
             log.warn("Maybe a Simulated Distributor: The userId is " + distributorUserId);
         }
@@ -262,11 +262,11 @@ public class ConsultSessionManager {
         HashMap<String, Object> response = new HashMap<String, Object>();
         Channel csChannel = null;
         Channel distributorChannel = null;
-        System.out.println("distributors.size()-----" + distributors.size());
-        if (distributors.size() > 0) {
-            for (int i = 0; i < distributorsList.size(); i++) {
-                String distributorId = RandomUtils.getRandomKeyFromMap(distributors);
-                distributorChannel = distributors.get(distributorId);
+        System.out.println("distributors.size()-----" + onLineDistributors.size());
+        if (onLineDistributors.size() > 0) {
+            for (int i = 0; i < onLineDistributors.size(); i++) {
+                String distributorId = RandomUtils.getRandomKeyFromMap(onLineDistributors);
+                distributorChannel = onLineDistributors.get(distributorId);
                 System.out.println("distributorChannel.isActive()-----" + distributorChannel.isActive());
                 if (distributorChannel.isActive()) {
                     consultSession.setCsUserId(distributorId);
@@ -276,48 +276,38 @@ public class ConsultSessionManager {
                     break;
                 } else {
                     System.out.println("distributors.remove-----" + distributorId);
+                    onLineDistributors.remove(distributorId);
                     distributors.remove(distributorId);
-                    csUserChannelMapping.remove(distributorId);
+                    userChannelMapping.remove(distributorId);
                 }
             }
         }
 
         /***接诊员不在线，随机分配在线医生***/
         if (distributorChannel == null) {
-            if (csUserChannelMapping.size() != 0) {
+            if (onLineCsUserChannelMapping.size() > 0) {
                 //所有的接诊员不在线，随机分配一个在线医生
-                Iterator<Entry<String, Channel>> csUserChannel = csUserChannelMapping.entrySet().iterator();
-                List<HashMap<String, Object>> doctorOnLineList = new ArrayList();
-                while (csUserChannel.hasNext()) {
-                    HashMap<String, Object> doctorOnLineMap = new HashMap<String, Object>();
-                    Map.Entry<String, Channel> entry = csUserChannel.next();
-                    Channel csTempChannel = entry.getValue();
-                    if (csTempChannel.isActive()) {
-                        doctorOnLineMap.put("csUserId", entry.getKey());
-                        doctorOnLineMap.put("channel", entry.getValue());
-                        doctorOnLineList.add(doctorOnLineMap);
-                    }
-                }
-                //通过一个随机方法，从doctorOnLineList选择一个医生，为用户提供服务
-                Random rand = new Random();
-                if (doctorOnLineList != null && doctorOnLineList.size() > 0) {
-                    int indexCS = rand.nextInt(doctorOnLineList.size());
-                    consultSession.setCsUserId((String) doctorOnLineList.get(indexCS).get("csUserId"));
-                    csChannel = (Channel) doctorOnLineList.get(indexCS).get("channel");
+                for (int i = 0; i < onLineCsUserChannelMapping.size(); i++) {
+                    String csUserid = RandomUtils.getRandomKeyFromMap(onLineCsUserChannelMapping);
+                    csChannel = onLineCsUserChannelMapping.get(csUserid);
                     if (csChannel.isActive()) {
-                        //csChannel如果活着的话，证明，此医生处于登陆状态
-                        User csUser = systemService.getUserById((String) doctorOnLineList.get(indexCS).get("csUserId"));
+                        User csUser = systemService.getUserById(csUserid);
                         consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
+                        break;
                     } else {
-                        csUserChannelMapping.remove(doctorOnLineList.get(indexCS).get("csUserId"));
+                        csUserChannelMapping.remove(csUserid);
+                        onLineCsUserChannelMapping.remove(csUserid);
+                        userChannelMapping.remove(csUserid);
                     }
                 }
             } else {
                 //如果没有任何医生在线，给用户推送微信消息，告知没有医生在线，稍后在使用服务
+                Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                String content = "抱歉，暂时没有医生在线，请稍后使用服务！";
+                WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(), content);
                 return null;
             }
         }
-        System.out.println("distributorChannel-----" + distributorChannel);
 
         HashMap<String, Object> perInfo = new HashMap<String, Object>();
         if (StringUtils.isNotNull(consultSession.getCsUserId())) {
