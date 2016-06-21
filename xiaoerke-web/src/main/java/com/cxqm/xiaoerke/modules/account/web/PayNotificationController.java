@@ -328,9 +328,11 @@ public class PayNotificationController {
 				String[] umbrellaId=insuranceId.split("_");
 				System.out.println("orderId:" + umbrellaId[0]);
 				System.out.println("shareId:" + umbrellaId[1]);
-				sendWechatMessage(umbrellaId[0], umbrellaId[1]);
 
 				if(insuranceMap.get("fee_type").toString().equals("umbrella")){
+					if(!"success".equals(insuranceMap.get("status").toString())){
+						sendWechatMessage(umbrellaId[0], umbrellaId[1]);
+					}
 					BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
 					babyUmbrellaInfo.setId(Integer.parseInt(umbrellaId[0]));
 					babyUmbrellaInfo.setPayResult("success");
