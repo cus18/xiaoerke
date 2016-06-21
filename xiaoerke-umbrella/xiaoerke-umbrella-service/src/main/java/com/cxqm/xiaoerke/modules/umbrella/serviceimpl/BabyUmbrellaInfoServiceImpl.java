@@ -232,6 +232,21 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
     }
 
     @Override
+    public int getUmbrellaActivationCount(Map<String, Object> map) {
+        return babyUmbrellaInfoDao.getUmbrellaActivationCount(map);
+    }
+
+    @Override
+    public int getUmbrellaNotActivationCount(Map<String, Object> map) {
+        return babyUmbrellaInfoDao.getUmbrellaNotActivationCount(map);
+    }
+
+    @Override
+    public int getUmbrellaActivationFamilyPeopleCount(Map<String, Object> map) {
+        return babyUmbrellaInfoDao.getUmbrellaActivationFamilyPeopleCount(map);
+    }
+
+    @Override
     public int saveOpenidToMongoDB(UmbrellaMongoDBVo entity) {
         umbrellaMongoDBService.insert(entity);
         return 0;

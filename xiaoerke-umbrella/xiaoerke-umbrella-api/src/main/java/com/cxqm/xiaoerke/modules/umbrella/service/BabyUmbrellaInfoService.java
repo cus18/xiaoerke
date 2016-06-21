@@ -77,6 +77,28 @@ public interface BabyUmbrellaInfoService {
      */
     int updateBabyUmbrellaInfoIfShare(BabyUmbrellaInfo babyUmbrellaInfo);
 
+
+    /**
+     * 查询激活人数
+     * @param map
+     * @return
+     */
+    int getUmbrellaActivationCount(Map<String, Object> map);
+
+    /**
+     * 查询未激活人数
+     * @param map
+     * @return
+     */
+    int getUmbrellaNotActivationCount(Map<String, Object> map);
+
+    /**
+     * 查询激活家庭人数
+     * @param map
+     * @return
+     */
+    int getUmbrellaActivationFamilyPeopleCount(Map<String, Object> map);
+
     int saveOpenidToMongoDB(UmbrellaMongoDBVo entity);
 
     List<UmbrellaMongoDBVo> getUmbrellaMongoDBVoList(Query query);
