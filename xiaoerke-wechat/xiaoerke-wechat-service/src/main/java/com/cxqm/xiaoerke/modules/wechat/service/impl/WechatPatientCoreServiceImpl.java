@@ -879,24 +879,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		 WechatUtil.sendMsgToWechat(token, openId, st);
 		 LogUtils.saveLog(request, "00000004");//注：00000004表示“客服评价”
 
-		/*if(!"umbrellaSendWechatMessageCloseConsult".equals(CookieUtils.getCookie(request, "umbrellaSendWechatMessageCloseConsult"))){//关闭咨询，推送保护伞消息
-			Map<String, Object> param = new HashMap<String, Object>();
-			param.put("openid", "zixunguanbi");
-			List<Map<String,Object>> list = babyUmbrellaInfoService.getBabyUmbrellaInfo(param);
-			if(list.size()==0||!"success".equals(list.get(0).get("pay_result"))){
-				int count = babyUmbrellaInfoService.getUmbrellaCount();
-				String title = "小病问医生，大病有互助";
-				String description = "感谢您对宝大夫的信任，现在宝大夫联合中国儿童少年基金会，共同推出家庭重疾40万高额保障互助计划，目前已有" + count + "位妈妈加入，现在就等你了，赶紧加入吧！";
-				//String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellab";
-				String url = "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000000/a";
-				String picUrl = "http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella";
-				String message = "{\"touser\":\""+openId+"\",\"msgtype\":\"news\",\"news\":{\"articles\": [{\"title\":\""+ title +"\",\"description\":\""+description+"\",\"url\":\""+ url +"\",\"picurl\":\""+picUrl+"\"}]}}";
-
-				String jsonobj = HttpRequestUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" +
-						token + "", "POST", message);
-				System.out.println(jsonobj+"===============================");
-			}
-		}*/
 		return respMessage;
 	}
 
