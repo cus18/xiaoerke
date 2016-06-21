@@ -4,6 +4,7 @@ import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
@@ -228,7 +229,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
     public void updateWechatParameter() {
         try {
             System.out.print("用户端微信参数更新");
-            String token = WechatUtil.getToken(WechatUtil.CORPID, WechatUtil.SECTET);
+            String token = WechatUtil.getToken(ConstantUtil.CORPID, ConstantUtil.SECTET);
             String ticket = WechatUtil.getJsapiTicket(token);
             HashMap<String, Object> map = new HashMap<String, Object>();
             map.put("token", token);
@@ -238,7 +239,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
             sessionRedisCache.putWeChatParamToRedis(map);
 
             System.out.print("医生端微信参数更新");
-            token = WechatUtil.getToken(WechatUtil.DOCTORCORPID, WechatUtil.DOCTORSECTET);
+            token = WechatUtil.getToken(ConstantUtil.DOCTORCORPID, ConstantUtil.DOCTORSECTET);
             ticket = WechatUtil.getJsapiTicket(token);
             map = new HashMap<String, Object>();
             map.put("token", token);
