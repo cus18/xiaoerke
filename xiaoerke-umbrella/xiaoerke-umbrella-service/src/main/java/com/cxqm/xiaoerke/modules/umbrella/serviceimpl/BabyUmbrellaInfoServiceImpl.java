@@ -223,4 +223,19 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
     public int updateBabyUmbrellaInfoIfShare(BabyUmbrellaInfo babyUmbrellaInfo) {
         return babyUmbrellaInfoDao.updateBabyUmbrellaInfoIfShare(babyUmbrellaInfo);
     }
+
+    @Override
+    public int getUmbrellaActivationCount(Map<String, Object> map) {
+        return babyUmbrellaInfoDao.getUmbrellaActivationCount(map);
+    }
+
+    @Override
+    public int getUmbrellaNotActivationCount(Map<String, Object> map) {
+        return babyUmbrellaInfoDao.getUmbrellaNotActivationCount(map);
+    }
+
+    @Override
+    public int getUmbrellaActivationFamilyPeopleCount(Map<String, Object> map) {
+        return babyUmbrellaInfoDao.getUmbrellaActivationFamilyPeopleCount(map);
+    }
 }
