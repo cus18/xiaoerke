@@ -518,15 +518,12 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			}
 
 			if("oldUser".equals(userType)&&!sendsucmes){//老用户扫码发送保护伞信息
-				if(!"umbrellaSendWechatMessageOldUserScan".equals(CookieUtils.getCookie(request, "umbrellaSendWechatMessageOldUserScan"))){
-					CookieUtils.setCookie(response, "umbrellaSendWechatMessageOldUserScan", "umbrellaSendWechatMessageOldUserScan", 3600 * 24 * 365);
-					int count = babyUmbrellaInfoService.getUmbrellaCount();
-					article.setTitle("宝大夫送你一份见面礼");
-					article.setDescription("专属于宝宝的40万高额保障金5元即送，目前已有" + count + "位妈妈们领取，你也赶紧加入吧，运气好还能免单哦！");
-					article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
-					article.setUrl("http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000000/a");
-					articleList.add(article);
-				}
+				int count = babyUmbrellaInfoService.getUmbrellaCount();
+				article.setTitle("宝大夫送你一份见面礼");
+				article.setDescription("专属于宝宝的40万高额保障金5元即送，目前已有" + count + "位妈妈们领取，你也赶紧加入吧，运气好还能免单哦！");
+				article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
+				article.setUrl("http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000000/a");
+				articleList.add(article);
 			}
 		}else if(EventKey.indexOf("qrscene_13")>-1){
 			String toOpenId = xmlEntity.getFromUserName();//扫码者openid
