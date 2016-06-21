@@ -63,10 +63,12 @@ public class UmbrellaController  {
 //        Map<String,Object> maps = babyUmbrellaInfoSerivce.getUmbrellaNum(result);
 //        Long familyNum = (Long)maps.get("familyNum");
 //        result.put("count", count*2+familyNum);
-        Integer activationCount =babyUmbrellaInfoSerivce.getUmbrellaActivationCount(map);
-        Integer notActivationCount =babyUmbrellaInfoSerivce.getUmbrellaNotActivationCount(map);
-        Integer familyPeopleCount = babyUmbrellaInfoSerivce.getUmbrellaActivationFamilyPeopleCount(map);
-        result.put("count", activationCount+notActivationCount+familyPeopleCount);
+        Integer count =babyUmbrellaInfoSerivce.getUmbrellaActivationCount(map)+
+                babyUmbrellaInfoSerivce.getUmbrellaNotActivationCount(map)+
+                babyUmbrellaInfoSerivce.getUmbrellaActivationFamilyPeopleCount(map)+
+                babyUmbrellaInfoSerivce.getUmbrellaFreeActivationCount(map)+
+                babyUmbrellaInfoSerivce.getUmbrellaFreeNotActivationCount(map);
+        result.put("count", 2000+count);
         return result;
     }
 
@@ -88,9 +90,17 @@ public class UmbrellaController  {
 //        Map<String,Object> maps = babyUmbrellaInfoSerivce.getUmbrellaNum(countmap);
 //        Long familyNum = (Long)maps.get("familyNum");
 //        result.put("todayCount", todayCount*2+familyNum);
-        Integer Count =babyUmbrellaInfoSerivce.getUmbrellaActivationCount(map)+babyUmbrellaInfoSerivce.getUmbrellaNotActivationCount(map)+babyUmbrellaInfoSerivce.getUmbrellaActivationFamilyPeopleCount(map);
+        Integer Count =babyUmbrellaInfoSerivce.getUmbrellaActivationCount(map)+
+                babyUmbrellaInfoSerivce.getUmbrellaNotActivationCount(map)+
+                babyUmbrellaInfoSerivce.getUmbrellaActivationFamilyPeopleCount(map)+
+                babyUmbrellaInfoSerivce.getUmbrellaFreeActivationCount(map)+
+                babyUmbrellaInfoSerivce.getUmbrellaFreeNotActivationCount(map);
         map.put("ifLastDate","1");
-        Integer Counts =babyUmbrellaInfoSerivce.getUmbrellaActivationCount(map)+babyUmbrellaInfoSerivce.getUmbrellaNotActivationCount(map)+babyUmbrellaInfoSerivce.getUmbrellaActivationFamilyPeopleCount(map);
+        Integer Counts =babyUmbrellaInfoSerivce.getUmbrellaActivationCount(map)+
+                babyUmbrellaInfoSerivce.getUmbrellaNotActivationCount(map)+
+                babyUmbrellaInfoSerivce.getUmbrellaActivationFamilyPeopleCount(map)+
+                babyUmbrellaInfoSerivce.getUmbrellaFreeActivationCount(map)+
+                babyUmbrellaInfoSerivce.getUmbrellaFreeNotActivationCount(map);
         result.put("todayCount", Count-Counts);
         return result;
     }

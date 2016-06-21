@@ -102,4 +102,21 @@ public interface BabyUmbrellaInfoService {
     int saveOpenidToMongoDB(UmbrellaMongoDBVo entity);
 
     List<UmbrellaMongoDBVo> getUmbrellaMongoDBVoList(Query query);
+
+
+
+
+    /**
+     * 查询免费激活
+     * @param map
+     * @return
+     */
+    int getUmbrellaFreeActivationCount(Map<String, Object> map);
+
+    /**
+     * 查询免费未激活
+     * @param map
+     * @return
+     */
+    int getUmbrellaFreeNotActivationCount(Map<String, Object> map);
 }

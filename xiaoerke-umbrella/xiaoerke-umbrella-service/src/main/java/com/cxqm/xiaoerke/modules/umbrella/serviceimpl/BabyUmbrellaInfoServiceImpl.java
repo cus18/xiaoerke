@@ -256,4 +256,18 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
     public List<UmbrellaMongoDBVo> getUmbrellaMongoDBVoList(Query query) {
         return umbrellaMongoDBService.queryList(query);
     }
+
+
+
+    @Override
+    public int getUmbrellaFreeActivationCount(Map<String, Object> map) {
+        return babyUmbrellaInfoDao.getUmbrellaFreeActivationCount(map);
+    }
+
+    @Override
+    public int getUmbrellaFreeNotActivationCount(Map<String, Object> map) {
+        return babyUmbrellaInfoDao.getUmbrellaFreeNotActivationCount(map);
+    }
+
+
 }
