@@ -28,6 +28,7 @@
             });
         };
         $scope.$on('$ionicView.enter', function(){
+            recordLogs("UmbrellaShareLeadPage_"+ $stateParams.id);
             var timestamp;//时间戳
             var nonceStr;//随机字符串
             var signature;//得到的签名

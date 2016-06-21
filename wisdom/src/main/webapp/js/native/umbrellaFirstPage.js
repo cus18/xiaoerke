@@ -13,8 +13,11 @@ var attentionLock=true;
 var version="b"; /*方案版本*/
 
 var shareUmbrellaId="0";
-var umbrellaFirstPageInit = function() {
 
+
+$(document).ready(function() {
+    version = a;
+    shareUmbrellaId = GetQueryString("id")==null?120000000:GetQueryString("id");
     $.ajax({
         url:"umbrella/getOpenid",// 跳转到 action
         async:true,
@@ -23,17 +26,38 @@ var umbrellaFirstPageInit = function() {
         dataType:'json',
         success:function(data) {
             if(data.openid=="none"){
-                window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+ shareUmbrellaId;
+                window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?" +
+                    "url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+ shareUmbrellaId;
             }
         },
         error : function() {
         }
     });
+    ifExistOrder("1");
+});
+
+var umbrellaFirstPageInit = function() {
+
+    // $.ajax({
+    //     url:"umbrella/getOpenid",// 跳转到 action
+    //     async:true,
+    //     type:'post',
+    //     cache:false,
+    //     dataType:'json',
+    //     success:function(data) {
+    //         if(data.openid=="none"){
+    //             window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+ shareUmbrellaId;
+    //         }
+    //     },
+    //     error : function() {
+    //     }
+    // });
     $("#NoShareDiv").hide();
     $(".shadow-content").hide();//每次页面加载时先隐藏提示浮层
-    version=GetQueryString("status");
-    ifExistOrder();
+    // version=GetQueryString("status");
+    ifExistOrder("2");
     recordLogs("BHS_HDSY");
+    recordLogs("UmbrellaShareFirstPage_"+ shareUmbrellaId);
     cancelRemind();
     /*获取当前年月日*/
     var date = new Date();
@@ -307,7 +331,7 @@ function loadShare(){
 
 }
 
-function  ifExistOrder(){
+function  ifExistOrder(model){
     $.ajax({
         type: 'POST',
         url: "umbrella/ifExistOrder",
@@ -322,7 +346,9 @@ function  ifExistOrder(){
                 $("#NoShareDiv").hide();
                 $("#shareDiv").show();
                 shareUmbrellaId = data.umbrella.id;
-                loadShare();
+                if(model=="1"){
+                    loadShare();
+                }
             }else{
                 if(data.type=="pay"){
                     version="a";
@@ -330,7 +356,9 @@ function  ifExistOrder(){
                 $("#NoShareDiv").show();
                 $("#shareDiv").hide();
                 shareUmbrellaId=120000000;
-                loadShare();
+                if(model=="1"){
+                    loadShare();
+                }
             }
 
             /*a版本和b版本的内容变化*/
