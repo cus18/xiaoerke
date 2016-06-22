@@ -128,6 +128,23 @@ define(['appUmbrella'], function(app){
                             public: true
                         }
                     })
+                    .state('umbrellaSwipe', {
+                        url: '/umbrellaSwipe',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'umbrellaSwipeCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaSwipeCtrl',
+                                    ['js/controllers/umbrella/umbrellaSwipeCtrl.js?ver='+umbrellaVersion,
+                                    'js/libs/ionic.swipecards.js',
+                                        'styles/umbrella/umbrellaSwipe.less?ver='+umbrellaVersion],
+                                    'js/views/umbrella/umbrellaSwipe.html?ver='+umbrellaVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
                     .state('umbrellaPaySuccess', {
                         url: '/umbrellaPaySuccess',
                         templateProvider: function() { return lazyDeferred.promise; },
