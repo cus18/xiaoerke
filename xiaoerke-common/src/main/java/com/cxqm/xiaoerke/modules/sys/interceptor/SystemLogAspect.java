@@ -219,8 +219,8 @@ public class SystemLogAspect {
             }
 
             log.preInsert();
-            logDao.insert(log);
-
+            //日志只存入mongodb，不再存入mysql
+//            logDao.insert(log);
             if ("true".equalsIgnoreCase(mongoEnabled)) {
                 MongoLog mongoLog = LogMongoDBServiceImpl.buildMongoLog(log);
                 mongoDBService.insert(mongoLog);
