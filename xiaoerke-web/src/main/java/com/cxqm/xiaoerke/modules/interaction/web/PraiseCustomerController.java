@@ -3,6 +3,8 @@
  */
 package com.cxqm.xiaoerke.modules.interaction.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
@@ -39,7 +41,8 @@ public class PraiseCustomerController extends BaseController {
     @RequestMapping(value = "/user/customerEvaluation", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    String customerEvaluation(@RequestBody Map<String, Object> params, HttpSession session) {
+    String customerEvaluation(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         String openId = UserUtils.getUser().getOpenid();
         return patientRegisterPraiseService.customerEvaluation(params, StringUtils.isNotNull(openId)?openId:"");
     }
@@ -54,6 +57,7 @@ public class PraiseCustomerController extends BaseController {
     public
     @ResponseBody
     String updateCustomerEvaluation(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         return patientRegisterPraiseService.updateCustomerEvaluation(params)+"";
     }
 
@@ -67,6 +71,7 @@ public class PraiseCustomerController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> findCustomerEvaluation(@RequestBody Map<String, Object> params, HttpSession session) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
     	String id=params.get("id").toString();
     	Map<String, Object> result =new HashMap<String, Object>();
     	Map<String, Object> map=patientRegisterPraiseService.selectCustomerEvaluation(id);

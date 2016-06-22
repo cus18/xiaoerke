@@ -3,6 +3,8 @@
  */
 package com.cxqm.xiaoerke.modules.interaction.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.interaction.service.ConcernService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,7 @@ public class ConcernDoctorController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> listSearchConcern(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         HashMap<String, Object> response = new HashMap<String, Object>();
         concernService.getMyConcernedDoctorList(params,response);
         return response;
@@ -56,6 +59,7 @@ public class ConcernDoctorController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> doctorConcern(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         concernService.userConcernDoctor(params);
         return null;
     }
@@ -69,6 +73,7 @@ public class ConcernDoctorController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> doctorConcernYesOrFalse(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         HashMap<String, Object> response = new HashMap<String, Object>();
         concernService.judgeIfUserConcernDoctor(params,response);
         return response;
@@ -84,6 +89,7 @@ public class ConcernDoctorController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> myFansList(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         HashMap<String, Object> response = new HashMap<String, Object>();
         concernService.getMyFansList(params,response);
         return response;

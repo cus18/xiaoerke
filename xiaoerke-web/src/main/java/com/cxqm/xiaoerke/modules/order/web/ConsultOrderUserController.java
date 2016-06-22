@@ -43,9 +43,6 @@ public class ConsultOrderUserController {
     @Autowired
     private ConsultPhoneOrderService consultPhoneOrderService;
 
-    @Autowired
-    private SystemService systemService;
-
     /**
      * 根据订单号查询订单详情
      * @param phoneConsultaServiceId

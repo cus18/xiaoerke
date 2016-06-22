@@ -3,6 +3,8 @@
  */
 package com.cxqm.xiaoerke.modules.order.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
@@ -69,7 +71,9 @@ public class OrderUserController extends BaseController {
     @RequestMapping(value = "/order/user/orderAppointOperation", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> orderAppointOperation(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) throws Exception {
+    Map<String, Object> orderAppointOperation(@RequestBody Map<String, Object> params,
+                                              HttpSession session, HttpServletRequest request) throws Exception {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         return patientRegisterService.orderAppointOperation(params, session,request);
     }
 
@@ -78,6 +82,7 @@ public class OrderUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> orderPayOperation(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) throws Exception {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 
         //判断此订单是不是扫码预约用户（根据openid查marketer）
         SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
@@ -99,6 +104,7 @@ public class OrderUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> orderPraiseOperation(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) throws Exception {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         return patientRegisterPraiseService.orderPraiseOperation(params, session, request);
     }
 
@@ -107,6 +113,7 @@ public class OrderUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> orderShareOperation(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) throws Exception {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         return shareService.orderShareOperation(params, session, request);
     }
 
@@ -115,6 +122,8 @@ public class OrderUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> orderCancelOperation(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) throws Exception {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
         HashMap<String, Object> excuteMap = new HashMap<String, Object>();
         Map<String, Object> result = patientRegisterService.orderCancelOperation(params, excuteMap,session);
 
@@ -135,6 +144,8 @@ public class OrderUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> msgAppointment(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
         Map<String, Object> resultMap = new HashMap<String, Object>();
         int result = messageService.addMsgAppointment(params);
         resultMap.put("status",result);
@@ -145,6 +156,7 @@ public class OrderUserController extends BaseController {
     public
     @ResponseBody
     String msgAppointmentStatus(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return messageService.getMsgAppointmentStatus(params);
     }
 
@@ -152,6 +164,7 @@ public class OrderUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> checkUserAppointment(@RequestBody Map<String, Object> params,HttpSession session) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return patientRegisterService.checkUserAppointment(params, session);
     }
 
@@ -159,6 +172,7 @@ public class OrderUserController extends BaseController {
     public
     @ResponseBody
     void insertUserAppointmentNum(@RequestBody Map<String, Object> params, HttpSession session) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         patientRegisterService.insertUserAppointmentNum(params,session);
     }
 
@@ -181,6 +195,7 @@ public class OrderUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> myselfInfoAppointmentDetail(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return patientRegisterService.getUserOrderDetail(params);
     }
 
@@ -206,6 +221,7 @@ public class OrderUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> myselfInfoAppointment(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return patientRegisterService.getUserOrderList(params);
     }
 
@@ -213,6 +229,7 @@ public class OrderUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> myselfInfoAppointment1(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         Map<String, Object> dataMap = patientRegisterService.getUserOrderList(params);
         Map<String, Object> response = new HashMap<String, Object>();
         //组装json数据
@@ -248,6 +265,7 @@ public class OrderUserController extends BaseController {
     @ResponseBody
     Map<String, Object> checkOrderInfo(@RequestBody Map<String, Object> params,HttpServletRequest request,
                                        HttpServletResponse httpResponse) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return patientRegisterService.checkOrderInfo(params, request, httpResponse);
     }
 
@@ -259,6 +277,7 @@ public class OrderUserController extends BaseController {
     @ResponseBody
     Map<String, Object> appointmentByPhone(@RequestBody Map<String, Object> params,HttpServletRequest request,
                                            HttpServletResponse httpResponse) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return patientRegisterService.getOrderListByUserPhone(params, request, httpResponse);
     }
 
@@ -266,6 +285,7 @@ public class OrderUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> getUnNormalCheckOrder(@RequestBody Map<String, Object> params) throws Exception {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return patientRegisterService.getUnNormalCheckOrder(params);
     }
 
@@ -275,17 +295,15 @@ public class OrderUserController extends BaseController {
     @SystemControllerLog(description = "00000062")//扫码来预约
     Map<String, Object> checkIfAppointmentNeedPay(@RequestBody Map<String, Object> params, HttpSession session,
                                                   HttpServletRequest request) {
-        String openId = WechatUtil.getOpenId(session, request);
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
+        String openId = WechatUtil.getOpenId(session, request);
         HashMap<String, Object> response = new HashMap<String, Object>();
         String register_service_id = (String) params.get("register_service_id");
         int chargePrice = patientRegisterService.getNeedPayStatusByRegisterService(register_service_id,openId);
-        if(chargePrice==0)
-        {
+        if(chargePrice==0) {
             response.put("needPay","false");
-        }
-        else
-        {
+        } else {
             response.put("needPay","true");
             response.put("chargePrice",chargePrice);
         }
@@ -298,6 +316,8 @@ public class OrderUserController extends BaseController {
     @ResponseBody
     Map<String, Object> getCheckOrder(@RequestBody Map<String, Object> params,HttpSession session,
                                       HttpServletRequest request) throws Exception {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         String openId = WechatUtil.getOpenId(session,request);
         HashMap<String, Object> m = new HashMap<String, Object>();
         if(!StringUtils.isNotNull(openId)){
@@ -317,7 +337,8 @@ public class OrderUserController extends BaseController {
     @RequestMapping(value = "/order/user/getOrderPayInfo", method = {RequestMethod.POST})
     public
     @ResponseBody
-    Map<String, Object> getOrderPayInfo(@RequestBody Map<String, Object> params,HttpSession session,HttpServletRequest request) {
+    Map<String, Object> getOrderPayInfo(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         Map<String,Object> response = new HashMap<String, Object>();
         String patient_register_service_id  = (String)params.get("patient_register_service_id");
 
@@ -380,6 +401,7 @@ public class OrderUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> DoctorAppointmentInfoDetail(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return registerService.doctorAppointmentInfoDetailOfDay(params);
     }
 }
