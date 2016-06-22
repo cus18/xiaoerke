@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.sys.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.FrontUtils;
 import com.cxqm.xiaoerke.modules.sys.service.HospitalInfoService;
@@ -38,6 +40,7 @@ public class ConsultPhoneHospitalController {
     Map<String,Object> getAllHospitalList(@RequestParam(value="pageNo", required=true) String pageNo,
                                           @RequestParam(value="pageSize", required=false) String pageSize,
                                           @RequestParam(value="orderBy", required=false) String orderBy){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         HashMap<String, Object> response = new HashMap<String, Object>();
         Page<HashMap<String, Object>> page = FrontUtils.generatorPage(pageNo, pageSize);
         Page<HashMap<String, Object>> resultPage = hospitalInfoService.getHospitalListByConsulta(page);
