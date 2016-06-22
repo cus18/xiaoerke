@@ -1,14 +1,8 @@
-package com.cxqm.xiaoerke.webapp.handler;
+package com.cxqm.xiaoerke.bdfApp.handler;
 
 
-import com.cxqm.xiaoerke.modules.consult.entity.RpcRequest;
-import com.cxqm.xiaoerke.modules.consult.entity.RpcResponse;
 import com.cxqm.xiaoerke.modules.consult.service.core.HttpRequestHandler;
-import com.cxqm.xiaoerke.modules.consult.service.core.RpcHandler;
 import com.cxqm.xiaoerke.modules.consult.service.core.TextWebSocketFrameHandler;
-
-import com.cxqm.xiaoerke.modules.consult.service.util.RpcDecoder;
-import com.cxqm.xiaoerke.modules.consult.service.util.RpcEncoder;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;

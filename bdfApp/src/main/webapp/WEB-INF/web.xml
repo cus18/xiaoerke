@@ -19,7 +19,7 @@
 	</context-param>
 
 	<listener>
-        <listener-class>com.cxqm.xiaoerke.webapp.listener.StartupListener</listener-class>
+        <listener-class>com.cxqm.xiaoerke.bdfApp.listener.StartupListener</listener-class>
 	</listener>
 
 	<listener>
@@ -185,8 +185,8 @@
 	<filter>
 		<filter-name>jsessionid</filter-name>
 		<filter-class>
-			com.cxqm.xiaoerke.webapp.filter.DisableUrlSessionFilter
-		</filter-class>
+            com.cxqm.xiaoerke.bdfApp.filter.DisableUrlSessionFilter
+        </filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>jsessionid</filter-name>

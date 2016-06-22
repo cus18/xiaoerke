@@ -1,7 +1,6 @@
-package com.cxqm.xiaoerke.webapp.bootstrap;
+package com.cxqm.xiaoerke.bdfApp.bootstrap;
 
-import com.cxqm.xiaoerke.webapp.handler.ChatServerInitializer;
-import com.cxqm.xiaoerke.webapp.handler.RpcServerInitializer;
+import com.cxqm.xiaoerke.bdfApp.handler.ChatServerInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -9,16 +8,14 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 import java.net.InetSocketAddress;
 
-public class RpcServer {
+public class ChatServer {
 	private final EventLoopGroup workerGroup = new NioEventLoopGroup();
 	
 	private Channel channel;
 	
 	public ChannelFuture start(InetSocketAddress address){
 		ServerBootstrap boot = new ServerBootstrap();
-		boot.group(workerGroup).channel(NioServerSocketChannel.class).childHandler(createInitializer())
-				.option(ChannelOption.SO_BACKLOG, 128)
-				.childOption(ChannelOption.SO_KEEPALIVE, true);;
+		boot.group(workerGroup).channel(NioServerSocketChannel.class).childHandler(createInitializer());
 
         //绑定端口
 		ChannelFuture f = boot.bind(address).syncUninterruptibly();
@@ -27,7 +24,7 @@ public class RpcServer {
 	}
 
 	protected ChannelHandler createInitializer() {
-		return new RpcServerInitializer();
+		return new ChatServerInitializer();
 	}
 	
 	public void destroy(){
@@ -37,8 +34,8 @@ public class RpcServer {
 	}
 	
 	public static void main(String[] args) {
-		final RpcServer server = new RpcServer();
-		ChannelFuture f = server.start(new InetSocketAddress(2049));
+		final ChatServer server = new ChatServer();
+		ChannelFuture f = server.start(new InetSocketAddress(2048));
 		System.out.println("server start................");
 		Runtime.getRuntime().addShutdownHook(new Thread(){
 			@Override

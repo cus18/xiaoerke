@@ -1,4 +1,4 @@
-package com.cxqm.xiaoerke.webapp.test;
+package com.cxqm.xiaoerke.bdfApp.test;
 
 /**
  * Created by guozengguang on 2016/4/22.

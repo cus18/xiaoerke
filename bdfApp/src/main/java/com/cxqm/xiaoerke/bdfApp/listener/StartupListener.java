@@ -1,14 +1,11 @@
-package com.cxqm.xiaoerke.webapp.listener;
+package com.cxqm.xiaoerke.bdfApp.listener;
 
-import com.cxqm.xiaoerke.webapp.bootstrap.RpcServer;
+import com.cxqm.xiaoerke.bdfApp.bootstrap.ChatServer;
 import io.netty.channel.ChannelFuture;
-
-import java.net.InetSocketAddress;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-
-import com.cxqm.xiaoerke.webapp.bootstrap.ChatServer;
+import java.net.InetSocketAddress;
 
 public class StartupListener implements ServletContextListener {
 

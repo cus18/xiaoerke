@@ -1,4 +1,4 @@
-package com.cxqm.xiaoerke.webapp.test;
+package com.cxqm.xiaoerke.bdfApp.test;
 
 import com.cxqm.xiaoerke.common.web.BaseController;
 import org.springframework.stereotype.Controller;

@@ -1,4 +1,4 @@
-package com.cxqm.xiaoerke.webapp.security;
+package com.cxqm.xiaoerke.bdfApp.security;
 
 import java.io.IOException;
 import java.net.URLDecoder;
