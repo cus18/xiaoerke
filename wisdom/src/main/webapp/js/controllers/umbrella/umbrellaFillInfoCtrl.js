@@ -13,12 +13,13 @@
 
 
             $scope.selectedBaby="";
-            $scope.codeSecond="获取验证码";
+            $scope.codeSecond="获取";
             $scope.openid="";
             $scope.babyInfoList={};
             $scope.umbrellaId=$stateParams.id;
             $scope.codeButton=false;
-            
+            $scope.protocolLock=false;
+
             /*点击输入框跳转到相应位置*/
             $scope.skip = function(item){
                 $(".view,html,body").stop().animate({"scrollTop":$("#"+item).offset().top},0);
@@ -69,6 +70,14 @@
                 $scope.fillLock = false;
             };
 
+            /*查看宝大夫儿童家庭重疾互助计划公约*/
+            $scope.lookProtocol = function(){
+                $scope.protocolLock=true;
+            };
+            /*关闭 查看宝大夫儿童家庭重疾互助计划公约*/
+            $scope.cancelProtocol = function(){
+                $scope.protocolLock=false;
+            };
             /*校验手机号*/
             $scope.checkPhone= function(){
                 var phoneNumber = $scope.info.phoneNum+"";
@@ -321,7 +330,7 @@
                     dataType:'json',
                     success:function(data) {
                         if(data.openid=="none"){
-                            // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+                            window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
                         }
                     },
                     error : function() {
