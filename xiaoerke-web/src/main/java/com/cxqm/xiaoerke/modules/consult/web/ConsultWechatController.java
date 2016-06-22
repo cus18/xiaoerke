@@ -1,6 +1,8 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
@@ -59,6 +61,8 @@ public class ConsultWechatController extends BaseController {
                         @RequestParam(required=true) String messageType,
                         @RequestParam(required=false) String messageContent,
                         @RequestParam(required=false) String mediaId) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
         HashMap<String,Object> result = new HashMap<String,Object>();
         System.out.println("openId="+openId);
         HashMap<String,Object> paramMap = new HashMap<String,Object>();

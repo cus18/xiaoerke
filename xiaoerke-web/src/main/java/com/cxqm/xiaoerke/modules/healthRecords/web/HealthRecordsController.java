@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.healthRecords.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.IdGen;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
@@ -57,8 +59,10 @@ public class HealthRecordsController {
    public
    @ResponseBody
    Map<String,Object> getLastOrderBabyInfo(){
-	   Map<String, Object> resultMap = new HashMap<String, Object>();
-	   resultMap.put("lastOrderBabyInfo",patientRegisterService.getlastPatientRegisterInfo(UserUtils.getUser().getPhone()));
+     DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
+     Map<String, Object> resultMap = new HashMap<String, Object>();
+     resultMap.put("lastOrderBabyInfo",patientRegisterService.getlastPatientRegisterInfo(UserUtils.getUser().getPhone()));
      return resultMap;
    }
 
@@ -71,6 +75,8 @@ public class HealthRecordsController {
   public
   @ResponseBody
   Map<String, Object> getUserBabyInfolist(@RequestBody Map<String, Object> params){
+    DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
     Map<String, Object> resultMap = new HashMap<String, Object>();
     List<BabyBaseInfoVo> babyInfoList = new ArrayList<BabyBaseInfoVo>();
     String openId = (String)params.get("openId");
@@ -96,6 +102,7 @@ public class HealthRecordsController {
   public
   @ResponseBody
   Map<String, Object> getAppointmentInfo(@RequestParam String babyId) throws UnsupportedEncodingException{
+    DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
     Map<String, Object> map=new HashMap<String, Object>();
     //根据上述两个参数查询预约详情记录
@@ -114,8 +121,9 @@ public class HealthRecordsController {
   public
   @ResponseBody
   Map<String, Object> saveBabyInfo(@RequestParam String sex, @RequestParam String name, @RequestParam String birthDay, HttpServletRequest request, HttpSession session) throws UnsupportedEncodingException{
-    Map<String, Object> resultMap = new HashMap<String, Object>();
+    DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 
+    Map<String, Object> resultMap = new HashMap<String, Object>();
     BabyBaseInfoVo vo = new BabyBaseInfoVo();
     vo.setSex(sex);
     vo.setBirthday(this.toDate(birthDay));
@@ -142,8 +150,9 @@ public class HealthRecordsController {
   public
   @ResponseBody
   Map<String, Object> updateBabyInfo(@RequestParam String id,@RequestParam String sex,@RequestParam String name,@RequestParam String birthDay,HttpServletRequest request, HttpSession session) throws UnsupportedEncodingException{
-    Map<String, Object> resultMap = new HashMap<String, Object>();
+    DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 
+    Map<String, Object> resultMap = new HashMap<String, Object>();
     BabyBaseInfoVo vo = new BabyBaseInfoVo();
     vo.setId(Integer.parseInt(id));
     vo.setSex(sex);
@@ -168,6 +177,8 @@ public class HealthRecordsController {
   public
   @ResponseBody
   Map<String, Object> deleteBabyInfo(@RequestParam String id){
+    DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
     Map<String, Object> resultMap = new HashMap<String, Object>();
     //对删除宝宝行为不做物理删除
     //张博  2016年3月24日
@@ -190,6 +201,7 @@ public class HealthRecordsController {
   public
   @ResponseBody
   Map<String, Object> getConsultationInfo(@RequestParam Integer babyId){
+    DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
     return customerService.getCustomerLogByBabyId(babyId);
   }
 
@@ -204,6 +216,7 @@ public class HealthRecordsController {
   public
   @ResponseBody
   Map<String, Object> modifyBabyIndfo(@RequestBody Map<String, Object> params) throws UnsupportedEncodingException{
+    DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 
     BabyIllnessInfoVo bean = new BabyIllnessInfoVo();
     if(StringUtils.isNotNull((String)params.get("illnessDescribe"))){
@@ -280,6 +293,8 @@ public class HealthRecordsController {
   public
   @ResponseBody
   Map<String, Object>  addDoctorCase(@RequestParam String PatientRegisterId,@RequestParam String caseName) throws UnsupportedEncodingException{
+    DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
     PerAppDetInfoVo vo = new PerAppDetInfoVo();
     vo.setId(PatientRegisterId);
     Map result = patientRegisterService.findPersonAppointDetailInfo(vo);
@@ -306,6 +321,7 @@ public class HealthRecordsController {
   public
   @ResponseBody
   Map<String,Object> getConsultInfo(@RequestBody Map<String,Object> map){
+    DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
       String openId=map.get("openId").toString();
 	  Map<String,Object> result = new HashMap<String, Object>();
     List<Map<String,Object>> resultList = consultConversationService.getConsultInfo(openId);
@@ -321,6 +337,7 @@ public class HealthRecordsController {
     public
     @ResponseBody
     Map<String,Object> consultHistory(@RequestParam String openId){
+    DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
       Map<String,Object> result = new HashMap<String, Object>();
       result.put("consultHistoryList",consultConversationService.getConsultInfo(openId));
       return result;
@@ -333,6 +350,7 @@ public class HealthRecordsController {
   public
   @ResponseBody
   Map<String,Object> updateConversationInfo(@RequestParam Integer id){
+    DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
     Map<String,Object> result = new HashMap<String, Object>();
     ConsultSession consultSession = new ConsultSession();
     consultSession.setId(id);

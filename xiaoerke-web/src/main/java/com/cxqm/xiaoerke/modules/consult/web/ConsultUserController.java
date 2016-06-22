@@ -3,6 +3,8 @@
  */
 package com.cxqm.xiaoerke.modules.consult.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.FrontUtils;
@@ -55,6 +57,8 @@ public class ConsultUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> getCurrentSessions(@RequestParam(required=true) String csUserId) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         ConsultSession consultSession = new ConsultSession();
         consultSession.setCsUserId(csUserId);
         consultSession.setStatus(ConsultSession.STATUS_ONGOING);
@@ -82,6 +86,8 @@ public class ConsultUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> getUserSessionTimesByUserId(@RequestParam(required=true) String userId) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         HashMap<String,Object> response = new HashMap<String, Object>();
         ConsultSession consultSession = new ConsultSession();
         consultSession.setUserId(userId);
@@ -94,6 +100,7 @@ public class ConsultUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> getCurrentUserByCSId(@RequestParam(required=true) String csUserId) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
         Map<String, Object> response = new HashMap<String, Object>();
         ConsultSession consultSession = new ConsultSession();
@@ -133,6 +140,8 @@ public class ConsultUserController extends BaseController {
     @RequestMapping(value = "/getUserList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody Map<String, Object> getUserList(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         Map<String,Object> response = new HashMap<String, Object>();
         Integer pageNo = (Integer) params.get("pageNo");
         Integer pageSize = (Integer) params.get("pageSize");
@@ -226,6 +235,8 @@ public class ConsultUserController extends BaseController {
     public
     @ResponseBody
     HashMap<String, Object> getCurrentUserList(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         HashMap<String,Object> response = new HashMap<String, Object>();
         PaginationVo<ConsultRecordMongoVo> pagination = null;
         String csUserId = String.valueOf(params.get("csUserId"));
@@ -304,6 +315,7 @@ public class ConsultUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> recordSearchList(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
         int pageNo = 0;
         int pageSize = 1;
