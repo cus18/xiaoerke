@@ -129,10 +129,10 @@ p.historymessage span {display: block;background: url("http://xiaoerke-pc-baodf-
 .inputcontent,.facebox,.chatlist,.nametop{padding-left: 175px;padding-right: 405px;}
 textarea {overflow:auto;word-break:break-all;background-color: #f8f8f8;width: 100%;height: 100px;box-sizing: border-box;border: 1px solid #dcdcdc;vertical-align: top;resize: none;}
 .sendbtn {height: 41px;border-top:1px solid #acacac;border-bottom: 1px solid #acacac;background-color: #f8f8f8;}
-.sendbtn div {cursor: pointer;margin:10px 20px;display: inline-block;color:#fff;float: right;font: 16px/20px 'Microsoft Yahei';padding: 0 15px;border-radius: 4px;}
+.sendbtn div {cursor: pointer;margin:8px 20px;display: inline-block;color:#fff;float: right;font: 16px/20px 'Microsoft Yahei';padding: 3px 15px;border-radius: 4px;}
 .sendbtn div:nth-child(1){background-color: #08b7c2;}
-.sendbtn div:nth-child(2){background-color: #fe717b;}
-.sendbtn div:nth-child(3){color:#666;float:left;border:1px solid #666;}
+.sendbtn div:nth-child(2){background-color: #fe717b;float: left;}
+.sendbtn div:nth-child(3){color:#666;float:left;border:1px solid #666;padding:1px 15px;}
 .historymessage {float: right;}
 .historymessage img{margin:0 10px;}
 /*添加分组*/
