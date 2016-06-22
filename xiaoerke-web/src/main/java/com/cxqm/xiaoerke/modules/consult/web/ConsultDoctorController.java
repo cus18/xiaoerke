@@ -2,6 +2,8 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
@@ -64,9 +66,6 @@ public class ConsultDoctorController extends BaseController {
     private SessionRedisCache sessionRedisCache;
 
     @Autowired
-    private WechatAttentionService wechatAttentionService;
-
-    @Autowired
     private ConsultDoctorInfoService consultDoctorInfoService;
 
     @RequestMapping(value = "/getCurrentUserHistoryRecord", method = {RequestMethod.POST, RequestMethod.GET})
@@ -123,6 +122,8 @@ public class ConsultDoctorController extends BaseController {
     public
     @ResponseBody
     HashMap<String, Object> findConversationRankList(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         Map<String, Object> searchMap = new HashMap<String, Object>();
         HashMap<String, Object> resultMap = new HashMap<String, Object>();
         try {
@@ -226,6 +227,8 @@ public class ConsultDoctorController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> GetCSDoctorList(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         Map<String, Object> response = new HashMap<String, Object>();
         List<User> users;
         User user = new User();
@@ -249,12 +252,13 @@ public class ConsultDoctorController extends BaseController {
     public
     @ResponseBody
     HashMap<String, Object> createDoctorConsultSession(@RequestBody Map<String, Object> params) {
-        HashMap<String, Object> response = new HashMap<String, Object>();
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
         String userId = (String) params.get("userId");
         String userName = (String) params.get("userName");
 
         //根据用户ID去查询，从历史会话记录中，获取用户最近的一条聊天记录，根据source判断会话来源
-        response = ConsultSessionManager.getSessionManager().createConsultSession(userName, userId);
+        HashMap<String, Object> response = ConsultSessionManager.getSessionManager().createConsultSession(userName, userId);
         return response;
     }
 
@@ -271,6 +275,8 @@ public class ConsultDoctorController extends BaseController {
     @ResponseBody
     Map<String, Object> sessionEnd(@RequestParam(required = true) String sessionId,
                                    @RequestParam(required = true) String userId) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
         System.out.println("close session========" + sessionId + "==========userId========" + userId);
         Map<String, Object> params = new HashMap<String, Object>();
         Map<String, Object> response = new HashMap<String, Object>();

@@ -41,17 +41,13 @@ angular.module('services', ['ngResource'])
     .factory('GetMessageRecordInfo', ['$resource', function ($resource) {
         return $resource(public + 'consult/user/recordSearchList');
     }])
-    //修改回复
-    .factory('AnswerModify', ['$resource', function ($resource) {
-        return $resource(public + 'consult/doctor/Answer/modify');
-    }])
     //获取客户的聊天记录
     .factory('GetUserRecordDetail', ['$resource', function ($resource) {
         return $resource(public + 'consult/doctor/recordList');
     }])
     //医生修改的自己的回复
     .factory('GetMyAnswerModify', ['$resource', function ($resource) {
-        return $resource(public + 'consult/doctor/Answer/modify');
+        return $resource(public + 'consult/doctor/answer/modify');
     }])
     //医生删除的自己的回复
     .factory('GetMyAnswerDelete', ['$resource', function ($resource) {

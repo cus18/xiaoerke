@@ -195,7 +195,6 @@ public class HospitalInfoController extends BaseController {
 		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
 		HashMap<String, Object> response = new HashMap<String, Object>();
-
 		String hospitalId = (String) params.get("hospitalId");
 		String departmentName = (String) params.get("departmentLevel1Name");
 		String currentPage = ((String) params.get("pageNo"));
