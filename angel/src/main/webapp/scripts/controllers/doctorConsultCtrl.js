@@ -4,21 +4,21 @@ angular.module('controllers', ['luegg.directives'])
         '$location', 'GetCurrentUserHistoryRecord','GetMyAnswerModify','GetCurrentUserConsultListInfo',
         'TransferToOtherCsUser','SessionEnd','GetWaitJoinList','React2Transfer','CancelTransfer','$upload',
         'GetFindTransferSpecialist','GetRemoveTransferSpecialist','GetAddTransferSpecialist','GetFindAllTransferSpecialist',
-        'CreateTransferSpecialist','$state','GetSystemTime','GetUserSessionTimesByUserId',
+        'CreateTransferSpecialist','$state','GetSystemTime','GetUserSessionTimesByUserId','GetCustomerLogByOpenID',
         function ($scope, $sce, $window,$stateParams,GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
                   GetUserLoginStatus, $location, GetCurrentUserHistoryRecord,GetMyAnswerModify,
                   GetCurrentUserConsultListInfo,TransferToOtherCsUser,SessionEnd,GetWaitJoinList,React2Transfer,CancelTransfer,$upload,
                   GetFindTransferSpecialist,GetRemoveTransferSpecialist,GetAddTransferSpecialist,GetFindAllTransferSpecialist,
-                  CreateTransferSpecialist,$state,GetSystemTime,GetUserSessionTimesByUserId) {
-            //åˆå§‹åŒ–infoå‚æ•°
+                  CreateTransferSpecialist,$state,GetSystemTime,GetUserSessionTimesByUserId,GetCustomerLogByOpenID) {
+            //³õÊ¼»¯info²ÎÊı
             $scope.info = {
                 effect:"true",
                 transferRemark:"",
                 searchCsUserValue:"",
                 selectedSpecialist:"",
                 role:{
-                    "distributor":"æ¥è¯Šå‘˜",
-                    "consultDoctor":"ä¸“ä¸šåŒ»ç”Ÿ"
+                    "distributor":"½ÓÕïÔ±",
+                    "consultDoctor":"×¨ÒµÒ½Éú"
                 }
             };
             $scope.loadingFlag = false;
@@ -26,13 +26,12 @@ angular.module('controllers', ['luegg.directives'])
             $scope.socketServerSecond = "";
             $scope.firstAddress = "localhost";
             $scope.secondAddress = "120.25.161.33";
-            $scope.alreadyJoinPatientConversation = []; //å·²ç»åŠ å…¥ä¼šè¯çš„ç”¨æˆ·æ•°æ®ï¼Œä¸€ä¸ªåŒ»ç”Ÿå¯ä»¥æœ‰å¤šä¸ªå¯¹è¯çš„ç”¨æˆ·ï¼Œè¿™äº›ç”¨æˆ·çš„æ•°æ®ï¼Œéƒ½ä¿å­˜åœ¨æ­¤é›†åˆä¸­
-            $scope.currentUserConversation = {}; //åŒ»ç”Ÿä¸å½“å‰æ­£åœ¨è¿›è¡Œå¯¹è¯ç”¨æˆ·çš„èŠå¤©æ•°æ®ï¼ŒåŒ»ç”Ÿåœ¨åˆ‡æ¢ä¸åŒç”¨æˆ·æ—¶ï¼Œæ•°æ®å˜æ›´åˆ°åˆ‡æ¢çš„ç”¨æˆ·ä¸Šæ¥ã€‚
-            $scope.waitJoinNum = 0; //åŒ»ç”Ÿå¾…æ¥å…¥çš„ç”¨æˆ·æ•°ï¼Œæ˜¯åŠ¨æ€å˜åŒ–çš„æ•°
-            $scope.glued = true; //angularæ»šåŠ¨æ¡çš„æ’ä»¶é¢„åˆ¶å‚æ•°ï¼Œè®©å¯¹è¯æ»šåŠ¨æ¡ï¼Œæ¯æ¬¡éƒ½å®šä½åº•éƒ¨ï¼Œå½“æ–°çš„èŠå¤©æ•°æ®åˆ°è¾¾æ—¶
+            $scope.alreadyJoinPatientConversation = []; //ÒÑ¾­¼ÓÈë»á»°µÄÓÃ»§Êı¾İ£¬Ò»¸öÒ½Éú¿ÉÒÔÓĞ¶à¸ö¶Ô»°µÄÓÃ»§£¬ÕâĞ©ÓÃ»§µÄÊı¾İ£¬¶¼±£´æÔÚ´Ë¼¯ºÏÖĞ
+            $scope.currentUserConversation = {}; //Ò½ÉúÓëµ±Ç°ÕıÔÚ½øĞĞ¶Ô»°ÓÃ»§µÄÁÄÌìÊı¾İ£¬Ò½ÉúÔÚÇĞ»»²»Í¬ÓÃ»§Ê±£¬Êı¾İ±ä¸üµ½ÇĞ»»µÄÓÃ»§ÉÏÀ´¡£
+            $scope.waitJoinNum = 0; //Ò½Éú´ı½ÓÈëµÄÓÃ»§Êı£¬ÊÇ¶¯Ì¬±ä»¯µÄÊı
+            $scope.glued = true;
             var umbrellaCustomerList = "75cefafe00364bbaaaf7b61089994e22,3b91fe8b7ce143918012ef3ab4baf1e0,00032bd90d724d0sa63a4d6esa0e8dbf";
-
-            //å„ä¸ªå­çª—å£çš„å¼€å…³å˜é‡
+            //¸÷¸ö×Ó´°¿ÚµÄ¿ª¹Ø±äÁ¿
             $scope.showFlag = {
                 rankList: false,
                 systemSetup: false,
@@ -45,7 +44,11 @@ angular.module('controllers', ['luegg.directives'])
                 advisoryContent: false,
                 magnifyImg:false,
                 specialistList:false,
-                specialistTransfer:false
+                specialistTransfer:false,
+                userTable:false,
+                recentTable:false,
+                addConsultTable:false,
+                historyTable:false
             };
             $scope.searchFlag = false;
             $scope.tapImgButton = function (key,value) {
@@ -59,7 +62,7 @@ angular.module('controllers', ['luegg.directives'])
             var heartBeatFirstNum = 3;
             var heartBeatSecondNum = 3;
 
-            //åˆå§‹åŒ–åŒ»ç”Ÿç«¯ç™»å½•ï¼Œå»ºç«‹socketé“¾æ¥ï¼Œè·å–åŸºæœ¬ä¿¡æ¯
+            //³õÊ¼»¯Ò½Éú¶ËµÇÂ¼£¬½¨Á¢socketÁ´½Ó£¬»ñÈ¡»ù±¾ĞÅÏ¢
             $scope.doctorConsultInit = function () {
                 var routePath = "/doctor/consultBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath: routePath}, function (data) {
@@ -74,7 +77,7 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.doctorPhone = data.userPhone;
                         $scope.userType = data.userType;
 
-                        //åˆ›å»ºä¸å¹³å°çš„socketè¿æ¥
+                        //´´½¨ÓëÆ½Ì¨µÄsocketÁ¬½Ó
                         if($scope.socketServerFirst==""||$scope.socketServerFirst.readyState!=1){
                             $scope.initConsultSocketFirst();
                         }
@@ -83,7 +86,7 @@ angular.module('controllers', ['luegg.directives'])
                         }
 
                         getIframeSrc();
-                        //è·å–é€šç”¨å›å¤åˆ—è¡¨
+                        //»ñÈ¡Í¨ÓÃ»Ø¸´ÁĞ±í
                         GetAnswerValueList.save({"type": "commonAnswer"}, function (data) {
                             if(data.result=="success"){
                                 var answerData = JSON.parse(data.answerValue);
@@ -93,7 +96,7 @@ angular.module('controllers', ['luegg.directives'])
                             }
                         });
 
-                        //è·å–æˆ‘çš„å›å¤åˆ—è¡¨
+                        //»ñÈ¡ÎÒµÄ»Ø¸´ÁĞ±í
                         GetAnswerValueList.save({"type":"myAnswer"},function(data){
                             if(data.result=="success"){
                                 var answerData = JSON.parse(data.answerValue);
@@ -102,7 +105,7 @@ angular.module('controllers', ['luegg.directives'])
                                 $scope.myAnswer = [];
                             }
                         });
-                        //è·å–æˆ‘çš„è¯Šæ–­åˆ—è¡¨
+                        //»ñÈ¡ÎÒµÄÕï¶ÏÁĞ±í
                         GetAnswerValueList.save({"type":"diagnosis"},function(data){
                             if(data.result=="success"){
                                 var answerData = JSON.parse(data.answerValue);
@@ -146,7 +149,7 @@ angular.module('controllers', ['luegg.directives'])
                 });
             };
 
-            //æ¯20ç§’ï¼Œæ£€æµ‹ä¸€æ¬¡åŒ»ç”Ÿè·Ÿå¹³å°çš„ä¼šè¯æ˜¯å¦å¤±æ•ˆ
+            //Ã¿20Ãë£¬¼ì²âÒ»´ÎÒ½Éú¸úÆ½Ì¨µÄ»á»°ÊÇ·ñÊ§Ğ§
             var sessionCheck = function(){
                 var routePath = "/doctor/consultBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath: routePath}, function (data) {
@@ -159,7 +162,7 @@ angular.module('controllers', ['luegg.directives'])
                 })
             };
 
-            //å…¬å…±ç‚¹å‡»æŒ‰é’®ï¼Œç”¨æ¥è§¦å‘å¼¹å‡ºå¯¹åº”çš„å­çª—å£
+            //¹«¹²µã»÷°´Å¥£¬ÓÃÀ´´¥·¢µ¯³ö¶ÔÓ¦µÄ×Ó´°¿Ú
             $scope.tapShowButton = function(type){
                 $.each($scope.showFlag,function(key,value){
                     if(key==type){
@@ -197,16 +200,16 @@ angular.module('controllers', ['luegg.directives'])
                             }
                         }else{
                             if(type=="rankList"){
-                                //å·²æ¥å…¥ä¼šè¯å’¨è¯¢åŒ»ç”Ÿä»Šæ—¥æ’å
+                                //ÒÑ½ÓÈë»á»°×ÉÑ¯Ò½Éú½ñÈÕÅÅÃû
                                 $scope.refreshRankList();
                             } else if(type == "switchOver"){
-                                //è·å–åœ¨çº¿åŒ»ç”Ÿåˆ—è¡¨
+                                //»ñÈ¡ÔÚÏßÒ½ÉúÁĞ±í
                                 $scope.refreshOnLineCsUserList();
                             }else if(type=="waitProcess"){
-                                //è·å–å¾…æ¥å…¥ç”¨æˆ·åˆ—è¡¨
+                                //»ñÈ¡´ı½ÓÈëÓÃ»§ÁĞ±í
                                 $scope.refreshWaitJoinUserList();
                             }else if(type=="specialistList"){
-                                //è·å–å¾…æ¥å…¥ç”¨æˆ·åˆ—è¡¨
+                                //»ñÈ¡´ı½ÓÈëÓÃ»§ÁĞ±í
                                 getFindTransferSpecialist();
                             }
                         }
@@ -214,7 +217,7 @@ angular.module('controllers', ['luegg.directives'])
                 })
             };
 
-            /**è½¬æ¥åŠŸèƒ½åŒº**/
+            /**×ª½Ó¹¦ÄÜÇø**/
             $scope.acceptTransfer = function(){
                 if(!acceptOperationFlag){
                     $scope.tapShowButton('waitProcess');
@@ -231,7 +234,7 @@ angular.module('controllers', ['luegg.directives'])
                         acceptOperationFlag = false;
                         waitProcessLock = false;
                         if(data.result=="success"){
-                            //å°†è½¬æ¥æˆåŠŸçš„ç”¨æˆ·ï¼Œéƒ½åŠ å…¥ä¼šè¯åˆ—è¡¨ä¸­æ¥
+                            //½«×ª½Ó³É¹¦µÄÓÃ»§£¬¶¼¼ÓÈë»á»°ÁĞ±íÖĞÀ´
                             var indexClose = 0;
                             $.each($scope.waitJoinUserList,function(index,value){
                                 if(value.chooseFlag){
@@ -288,7 +291,7 @@ angular.module('controllers', ['luegg.directives'])
                 }
             };
 
-            //é€‰æ‹©è½¬æ¥å¯¹è±¡
+            //Ñ¡Ôñ×ª½Ó¶ÔÏó
             $scope.chooseTransferCsUser = function(csUserId,csUserName){
                 $scope.transferCsUserId = csUserId;
                 $scope.csTransferUserName = csUserName;
@@ -301,12 +304,12 @@ angular.module('controllers', ['luegg.directives'])
                     sessionId:$scope.currentUserConversation.sessionId,
                     remark: $scope.info.transferRemark},function(data){
                     if(data.result=="success"){
-                        //è½¬æ¥è¯·æ±‚æˆåŠŸåï¼Œåœ¨æ¥è¯Šå‘˜ä¾§ï¼Œä¿ç•™äº†æ­¤ä¼šè¯ï¼Œåªåˆ°è¢«è½¬æ¥çš„åŒ»ç”Ÿæ”¶åˆ°ä¸ºæ­¢ï¼Œ
-                        // æ‰å°†ä¼šè¯æ‹†é™¤ï¼Œåœ¨æ­¤è¿‡ç¨‹ä¸­ï¼Œå…è®¸æ¥è¯Šå‘˜ï¼Œå–æ¶ˆè½¬æ¥ã€‚
+                        //×ª½ÓÇëÇó³É¹¦ºó£¬ÔÚ½ÓÕïÔ±²à£¬±£ÁôÁË´Ë»á»°£¬Ö»µ½±»×ª½ÓµÄÒ½ÉúÊÕµ½ÎªÖ¹£¬
+                        // ²Å½«»á»°²ğ³ı£¬ÔÚ´Ë¹ı³ÌÖĞ£¬ÔÊĞí½ÓÕïÔ±£¬È¡Ïû×ª½Ó¡£
                     }else if(data.result=="failure"){
-                        alert("è½¬æ¥ä¼šè¯ç»™"+$scope.csTransferUserName+"å¤±è´¥ï¼Œè¯·è½¬æ¥ç»™å…¶ä»–åŒ»ç”Ÿ");
+                        alert("×ª½Ó»á»°¸ø"+$scope.csTransferUserName+"Ê§°Ü£¬Çë×ª½Ó¸øÆäËûÒ½Éú");
                     }else if(data.result=="transferring"){
-                        alert("ä¸ç”¨æˆ·" + $scope.transferUserName +"çš„ä¼šè¯æ­£åœ¨è¢«è½¬æ¥ä¸­ï¼Œä¸èƒ½å†æ¬¡è½¬æ¥");
+                        alert("ÓëÓÃ»§" + $scope.transferUserName +"µÄ»á»°ÕıÔÚ±»×ª½ÓÖĞ£¬²»ÄÜÔÙ´Î×ª½Ó");
                     }
                 });
             };
@@ -322,7 +325,7 @@ angular.module('controllers', ['luegg.directives'])
             $scope.cancelTransfer = function(sessionId,toCsUserId,remark){
                 CancelTransfer.save({sessionId:sessionId,toCsUserId:toCsUserId,remark:remark},function(data){
                     if(data.result=="success"){
-                        //åˆ é™¤å–æ¶ˆé€šçŸ¥
+                        //É¾³ıÈ¡ÏûÍ¨Öª
                         var indexClose = 0;
                         $.each($scope.currentUserConversation.consultValue, function (index, value) {
                             if (value.remark == remark && value.toCsUserId==toCsUserId) {
@@ -334,7 +337,7 @@ angular.module('controllers', ['luegg.directives'])
                 });
             };
 
-            //æŒ‰ç…§ç§‘å®¤æ’åº
+            //°´ÕÕ¿ÆÊÒÅÅĞò
             $scope.getWaitTransferSpecialist = function () {
                 $scope.alreadyJoinTransferSpecialist = [];
                 GetFindTransferSpecialist.save({sortBy:"order"},function(data){
@@ -345,7 +348,7 @@ angular.module('controllers', ['luegg.directives'])
                 });
             };
 
-            //æŸ¥è¯¢æ‰€æœ‰çš„è½¬ç§»åˆ—è¡¨
+            //²éÑ¯ËùÓĞµÄ×ªÒÆÁĞ±í
             var getFindTransferSpecialist = function () {
                 $scope.alreadyJoinTransferSpecialist = [];
                 GetFindTransferSpecialist.save({sortBy:"no"},function(data){
@@ -356,39 +359,39 @@ angular.module('controllers', ['luegg.directives'])
                 });
             };
 
-            //æŸ¥è¯¢ä¸“ç§‘åˆ—è¡¨
+            //²éÑ¯×¨¿ÆÁĞ±í
             GetFindAllTransferSpecialist.save({}, function (data) {
                 $scope.selectedSpecialistType = data.data;
             });
 
-            //æ·»åŠ è½¬æ¥ç§‘å®¤ç¡®å®š
+            //Ìí¼Ó×ª½Ó¿ÆÊÒÈ·¶¨
             $scope.addTransferSpecialistSubmit = function () {
                 $scope.showFlag.specialistTransfer = false;
-                //æ·»åŠ è½¬æ¥ç§‘å®¤
+                //Ìí¼Ó×ª½Ó¿ÆÊÒ
                 var consultData = {
                     sessionId: angular.copy($scope.currentUserConversation.sessionId),
                     department: angular.copy($scope.info.selectedSpecialist.departmentName)
                 };
                 GetAddTransferSpecialist.save({consultData:consultData},function(data){
                     if(data.status == "exist"){
-                        alert("ç”¨æˆ·å·²æ·»åŠ è¿‡è½¬è¯Š");
+                        alert("ÓÃ»§ÒÑÌí¼Ó¹ı×ªÕï");
                     }else if (data.status == "success"){
-                        alert("æ·»åŠ è½¬è¯ŠæˆåŠŸ");
+                        alert("Ìí¼Ó×ªÕï³É¹¦");
                     }
                 });
             };
             $scope.closeSpecialistTransfer = function(){$scope.showFlag.specialistTransfer = false;};
 
-            //åˆ é™¤è½¬æ¥ç§‘å®¤ä¸­çš„ä¸€ä¸ª
+            //É¾³ı×ª½Ó¿ÆÊÒÖĞµÄÒ»¸ö
             $scope.disposeTransferSpecialist = function (index) {
                 $scope.showFlag.specialistList = false;
                 var specialistId  = [$scope.alreadyJoinTransferSpecialist[index]];
-                if ($window.confirm("ç¡®å®šè¦åˆ é™¤è¯¥è½¬è¯Šå†…å®¹?")) {
+                if ($window.confirm("È·¶¨ÒªÉ¾³ı¸Ã×ªÕïÄÚÈİ?")) {
                     GetRemoveTransferSpecialist.save({content:specialistId,status:'ongoing',delFlag:'1'},function(data){
                         if(data.status == 'failure'){
-                            alert("åˆ é™¤å¤±è´¥");
+                            alert("É¾³ıÊ§°Ü");
                         }else if(data.status == "success"){
-                            alert("åˆ é™¤æˆåŠŸ");
+                            alert("É¾³ı³É¹¦");
                             $scope.alreadyJoinTransferSpecialist.splice(index, 1);
                             getFindTransferSpecialist();
                         }
@@ -397,7 +400,7 @@ angular.module('controllers', ['luegg.directives'])
 
             };
 
-            //åˆ†è¯Šå‘˜å‘èµ·ä¸€ä¸ªé’ˆå¯¹ç”¨æˆ·çš„ä¼šè¯
+            //·ÖÕïÔ±·¢ÆğÒ»¸öÕë¶ÔÓÃ»§µÄ»á»°
             $scope.createOneSpecialistPatient = function(index,department){
                 $scope.showFlag.specialistList = false;
                 CreateTransferSpecialist.save({specialistPatientContent:$scope.alreadyJoinTransferSpecialist[index]},function(data){
@@ -412,7 +415,7 @@ angular.module('controllers', ['luegg.directives'])
                                     value.number = 0;
                                     if(value.patientId==patientId){
                                         patientName = value.patientName;
-                                        value.transferDepartment = 'éœ€è¦è½¬ç»™'+department;
+                                        value.transferDepartment = 'ĞèÒª×ª¸ø'+department;
                                     }
                                     $.each(value.consultValue,function(index1,value1){
                                         filterMediaData(value1);
@@ -426,26 +429,26 @@ angular.module('controllers', ['luegg.directives'])
 
                     }else if(data.status == "failure"){
                         if(data.result == "failure"){
-                            alert("æ— æ³•å‘èµ·ä¼šè¯ï¼Œè¯·ç¨åé‡è¯•");
+                            alert("ÎŞ·¨·¢Æğ»á»°£¬ÇëÉÔºóÖØÊÔ");
                         }else if(data.result == "existTransferSession"){
-                            alert("æ­¤ç”¨æˆ·æ­£æœ‰ä¼šè¯å¤„äºè½¬æ¥çŠ¶æ€ï¼Œæ— æ³•å‘å…¶å‘èµ·ä¼šè¯ï¼Œè¯·ç¨åé‡è¯•");
+                            alert("´ËÓÃ»§ÕıÓĞ»á»°´¦ÓÚ×ª½Ó×´Ì¬£¬ÎŞ·¨ÏòÆä·¢Æğ»á»°£¬ÇëÉÔºóÖØÊÔ");
                         }else if(data.result == "noLicenseTransfer"){
-                            alert("å¯¹ä¸èµ·ï¼Œä½ æ²¡æœ‰æƒé™ï¼ŒæŠ¢æ–­ä¸€ä¸ªæ­£åœ¨å’¨è¯¢ç”¨æˆ·çš„ä¼šè¯");
+                            alert("¶Ô²»Æğ£¬ÄãÃ»ÓĞÈ¨ÏŞ£¬ÇÀ¶ÏÒ»¸öÕıÔÚ×ÉÑ¯ÓÃ»§µÄ»á»°");
                         }else if(data.result == "exceed48Hours"){
-                            alert("å¯¹ä¸èµ·ï¼Œç”¨æˆ·å’¨è¯¢å·²ç»è¶…è¿‡äº†48å°æ—¶ï¼Œæ— æ³•å†å‘å…¶å‘èµ·ä¼šè¯");
+                            alert("¶Ô²»Æğ£¬ÓÃ»§×ÉÑ¯ÒÑ¾­³¬¹ıÁË48Ğ¡Ê±£¬ÎŞ·¨ÔÙÏòÆä·¢Æğ»á»°");
                         }
                     }else if(data.status == "ongoing"){
-                        alert("æ­¤ç”¨æˆ·æ­£ä¸"+data.csuserName+"ä¼šè¯ä¸­ï¼Œæ— æ³•å‘å…¶å‘èµ·ä¼šè¯ï¼Œè¯·ç¨åé‡è¯•")
+                        alert("´ËÓÃ»§ÕıÓë"+data.csuserName+"»á»°ÖĞ£¬ÎŞ·¨ÏòÆä·¢Æğ»á»°£¬ÇëÉÔºóÖØÊÔ")
                     }else if(data.status == "complete"){
-                        alert("å½“å‰ä¼šè¯å·²è½¬å‡ºï¼Œè¯·åˆ·æ–°åˆ—è¡¨")
+                        alert("µ±Ç°»á»°ÒÑ×ª³ö£¬ÇëË¢ĞÂÁĞ±í")
                     }
                 })
             };
-            /**è½¬æ¥åŠŸèƒ½åŒº**/
+            /**×ª½Ó¹¦ÄÜÇø**/
 
-            /**ä¼šè¯æ“ä½œåŒº**/
+            /**»á»°²Ù×÷Çø**/
 
-                //åˆå§‹åŒ–socketé“¾æ¥
+                //³õÊ¼»¯socketÁ´½Ó
             $scope.initConsultSocketFirst = function () {
                 if (!window.WebSocket) {
                     window.WebSocket = window.MozWebSocket;
@@ -476,7 +479,7 @@ angular.module('controllers', ['luegg.directives'])
 
                     $scope.socketServerFirst.onopen = function (event) {
                         console.log("onopen",event.data);
-                        //å¯åŠ¨å¿ƒè·³ç›‘æµ‹
+                        //Æô¶¯ĞÄÌø¼à²â
                         heartBeatCheckFirst();
                     };
 
@@ -484,7 +487,7 @@ angular.module('controllers', ['luegg.directives'])
                     };
 
                 } else {
-                    alert("ä½ çš„æµè§ˆå™¨ä¸æ”¯æŒï¼");
+                    alert("ÄãµÄä¯ÀÀÆ÷²»Ö§³Ö£¡");
                 }
             };
             $scope.initConsultSocketSecond = function () {
@@ -517,7 +520,7 @@ angular.module('controllers', ['luegg.directives'])
 
                     $scope.socketServerSecond.onopen = function (event) {
                         console.log("onopen",event.data);
-                        //å¯åŠ¨å¿ƒè·³ç›‘æµ‹
+                        //Æô¶¯ĞÄÌø¼à²â
                         heartBeatCheckSecond();
                     };
 
@@ -525,7 +528,7 @@ angular.module('controllers', ['luegg.directives'])
                     };
 
                 } else {
-                    alert("ä½ çš„æµè§ˆå™¨ä¸æ”¯æŒï¼");
+                    alert("ÄãµÄä¯ÀÀÆ÷²»Ö§³Ö£¡");
                 }
             };
             $scope.messageList = function(){
@@ -533,9 +536,9 @@ angular.module('controllers', ['luegg.directives'])
                 clearInterval($scope.heartBeatSecondId);
                 $state.go('messageList');
             };
-            //å¿ƒè·³
+            //ĞÄÌø
             var heartBeatCheckFirst = function(){
-                //å¯åŠ¨å®šæ—¶å™¨ï¼Œå‘¨æœŸæ€§çš„å‘é€å¿ƒè·³ä¿¡æ¯
+                //Æô¶¯¶¨Ê±Æ÷£¬ÖÜÆÚĞÔµÄ·¢ËÍĞÄÌøĞÅÏ¢
                 $scope.heartBeatFirstId = setInterval(sendHeartBeatFirst,2000);
             };
             var sendHeartBeatFirst = function(){
@@ -558,7 +561,7 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.$apply();
             };
             var heartBeatCheckSecond = function(){
-                //å¯åŠ¨å®šæ—¶å™¨ï¼Œå‘¨æœŸæ€§çš„å‘é€å¿ƒè·³ä¿¡æ¯
+                //Æô¶¯¶¨Ê±Æ÷£¬ÖÜÆÚĞÔµÄ·¢ËÍĞÄÌøĞÅÏ¢
                 $scope.heartBeatSecondId = setInterval(sendHeartBeatSecond,2000);
             };
             var sendHeartBeatSecond = function(){
@@ -580,15 +583,15 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 $scope.$apply();
             };
-            //å¤„ç†ç”¨æˆ·æŒ‰é”®äº‹ä»¶
+            //´¦ÀíÓÃ»§°´¼üÊÂ¼ş
             document.onkeydown = function () {
                 if (window.event.keyCode == 13){
                     if($("#saytext").val().replace(/\s+/g,"")!=""){
                         $scope.sendConsultMessage();
                     }
                 }
-            };//å½“onkeydown äº‹ä»¶å‘ç”Ÿæ—¶è°ƒç”¨å‡½æ•°
-            //å‘ç”¨æˆ·å‘é€å’¨è¯¢æ¶ˆæ¯
+            };//µ±onkeydown ÊÂ¼ş·¢ÉúÊ±µ÷ÓÃº¯Êı
+            //ÏòÓÃ»§·¢ËÍ×ÉÑ¯ÏûÏ¢
             $scope.sendConsultMessage = function () {
                 if($("#saytext").val().replace(/\s+/g,"")!=""){
                     if (!window.WebSocket) {
@@ -609,7 +612,7 @@ angular.module('controllers', ['luegg.directives'])
                                 if($scope.userType=="distributor"){
                                     var consultValMessage = {
                                         "type": 0,
-                                        "content": "åˆ†è¯Š" +$scope.doctorName+"ï¼š"+ consultContent,
+                                        "content": "·ÖÕï" +$scope.doctorName+"£º"+ consultContent,
                                         "dateTime": moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
                                         "senderId": angular.copy($scope.doctorId),
                                         "senderName": angular.copy($scope.doctorName),
@@ -620,7 +623,7 @@ angular.module('controllers', ['luegg.directives'])
                                     if(umbrellaCustomerList.indexOf($scope.doctorId)>-1){
                                         var consultValMessage = {
                                             "type": 0,
-                                            "content": "å®æŠ¤ä¼å®¢æœï¼š" + consultContent,
+                                            "content": "±£»¤É¡¿Í·ş£º" + consultContent,
                                             "dateTime": moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
                                             "senderId": angular.copy($scope.doctorId),
                                             "senderName": angular.copy($scope.doctorName),
@@ -630,7 +633,7 @@ angular.module('controllers', ['luegg.directives'])
                                     }else{
                                         var consultValMessage = {
                                             "type": 0,
-                                            "content": $scope.doctorName + "åŒ»ç”Ÿï¼š" + consultContent,
+                                            "content": $scope.doctorName + "Ò½Éú£º" + consultContent,
                                             "dateTime": moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
                                             "senderId": angular.copy($scope.doctorId),
                                             "senderName": angular.copy($scope.doctorName),
@@ -644,7 +647,7 @@ angular.module('controllers', ['luegg.directives'])
                                 $("#saytext").val('');
                                 updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                             } else {
-                                alert("è¿æ¥æ²¡æœ‰å¼€å¯.");
+                                alert("Á¬½ÓÃ»ÓĞ¿ªÆô.");
                             }
                         }
                         else if($scope.currentUserConversation.serverAddress==$scope.secondAddress){
@@ -653,7 +656,7 @@ angular.module('controllers', ['luegg.directives'])
                                 if($scope.userType=="distributor"){
                                     var consultValMessage = {
                                         "type": 0,
-                                        "content": "åˆ†è¯Š" +$scope.doctorName+"ï¼š"+ consultContent,
+                                        "content": "·ÖÕï" +$scope.doctorName+"£º"+ consultContent,
                                         "dateTime":  moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
                                         "senderId": angular.copy($scope.doctorId),
                                         "senderName": angular.copy($scope.doctorName),
@@ -664,7 +667,7 @@ angular.module('controllers', ['luegg.directives'])
                                     if(umbrellaCustomerList.indexOf($scope.doctorId)>-1){
                                         var consultValMessage = {
                                             "type": 0,
-                                            "content": "å®æŠ¤ä¼å®¢æœï¼š" + consultContent,
+                                            "content": "±£»¤É¡¿Í·ş£º" + consultContent,
                                             "dateTime": moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
                                             "senderId": angular.copy($scope.doctorId),
                                             "senderName": angular.copy($scope.doctorName),
@@ -674,7 +677,7 @@ angular.module('controllers', ['luegg.directives'])
                                     }else{
                                         var consultValMessage = {
                                             "type": 0,
-                                            "content": $scope.doctorName + "åŒ»ç”Ÿï¼š" + consultContent,
+                                            "content": $scope.doctorName + "Ò½Éú£º" + consultContent,
                                             "dateTime": moment(data.dateTime).format('YYYY-MM-DD HH:mm:ss'),
                                             "senderId": angular.copy($scope.doctorId),
                                             "senderName": angular.copy($scope.doctorName),
@@ -689,7 +692,7 @@ angular.module('controllers', ['luegg.directives'])
                                 $("#saytext").val('');
                                 updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                             } else {
-                                alert("è¿æ¥æ²¡æœ‰å¼€å¯.");
+                                alert("Á¬½ÓÃ»ÓĞ¿ªÆô.");
                             }
                         }
                         else{
@@ -705,8 +708,7 @@ angular.module('controllers', ['luegg.directives'])
                     });
                 }
             };
-
-            var processSayTextFlag = function(data) {
+            var processSayTextFlag = function(data){
                 var flag = "noFlag";
                 if (data.indexOf("####") != -1) {
                     var textValue = data.split("####");
@@ -714,8 +716,7 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 return flag;
             }
-
-            //å‘ç”¨æˆ·å‘é€å’¨è¯¢å›¾ç‰‡
+            //ÏòÓÃ»§·¢ËÍ×ÉÑ¯Í¼Æ¬
             $scope.uploadFiles = function($files,fileType) {
                 var dataValue = {
                     "fileType": fileType,
@@ -764,14 +765,14 @@ angular.module('controllers', ['luegg.directives'])
                                 $scope.socketServerFirst.send(JSON.stringify(consultValMessage));
                                 updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                             } else {
-                                alert("è¿æ¥æ²¡æœ‰å¼€å¯.");
+                                alert("Á¬½ÓÃ»ÓĞ¿ªÆô.");
                             }
                         }else if($scope.currentUserConversation.serverAddress==$scope.secondAddress){
                             if ($scope.socketServerSecond.readyState == WebSocket.OPEN) {
                                 $scope.socketServerSecond.send(JSON.stringify(consultValMessage));
                                 updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                             } else {
-                                alert("è¿æ¥æ²¡æœ‰å¼€å¯.");
+                                alert("Á¬½ÓÃ»ÓĞ¿ªÆô.");
                             }
                         }else{
                             if($scope.currentUserConversation.serverAddress==""||$scope.currentUserConversation.serverAddress==null){
@@ -780,14 +781,14 @@ angular.module('controllers', ['luegg.directives'])
                                         $scope.socketServerFirst.send(JSON.stringify(consultValMessage));
                                         updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                                     } else {
-                                        alert("è¿æ¥æ²¡æœ‰å¼€å¯.");
+                                        alert("Á¬½ÓÃ»ÓĞ¿ªÆô.");
                                     }
                                 }else if($scope.socketServerSecond!=""){
                                     if ($scope.socketServerSecond.readyState == WebSocket.OPEN) {
                                         $scope.socketServerSecond.send(JSON.stringify(consultValMessage));
                                         updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                                     } else {
-                                        alert("è¿æ¥æ²¡æœ‰å¼€å¯.");
+                                        alert("Á¬½ÓÃ»ÓĞ¿ªÆô.");
                                     }
                                 }
                             }
@@ -797,7 +798,7 @@ angular.module('controllers', ['luegg.directives'])
 
                 }
             };
-            //å…³é—­è·ŸæŸä¸ªç”¨æˆ·çš„ä¼šè¯
+            //¹Ø±Õ¸úÄ³¸öÓÃ»§µÄ»á»°
             var closeConsultLock = false;
             $scope.closeConsult = function () {
                 if(!closeConsultLock){
@@ -822,21 +823,21 @@ angular.module('controllers', ['luegg.directives'])
                                 $scope.currentUserConversation = {};
                             }
                         }else{
-                            alert("ä¼šè¯å…³é—­å¤±è´¥ï¼Œè¯·é‡è¯•");
+                            alert("»á»°¹Ø±ÕÊ§°Ü£¬ÇëÖØÊÔ");
                         }
                     })
                 }else{
-                    alert("æ­£åœ¨å…³é—­å½“å‰ç”¨æˆ·çš„ä¼šè¯ï¼Œè¯·ç¨åï¼Œç­‰å…³é—­æ­¤ç”¨æˆ·æˆåŠŸåï¼Œå†å…³é—­å…¶ä»–ç”¨æˆ·");
+                    alert("ÕıÔÚ¹Ø±Õµ±Ç°ÓÃ»§µÄ»á»°£¬ÇëÉÔºó£¬µÈ¹Ø±Õ´ËÓÃ»§³É¹¦ºó£¬ÔÙ¹Ø±ÕÆäËûÓÃ»§");
                 }
             };
-            //åœ¨é€šè¯åˆ—è¡¨ä¸­ï¼Œé€‰å–ä¸€ä¸ªç”¨æˆ·è¿›è¡Œä¼šè¯
+            //ÔÚÍ¨»°ÁĞ±íÖĞ£¬Ñ¡È¡Ò»¸öÓÃ»§½øĞĞ»á»°
             $scope.chooseAlreadyJoinConsultPatient = function (patientId, patientName,sessionId) {
                 $scope.chooseAlreadyJoinConsultPatientId = patientId;
                 $scope.chooseAlreadyJoinConsultPatientName = patientName;
                 $scope.chooseAlreadyJoinConsultPatientsessionId = sessionId;
                 GetUserSessionTimesByUserId.get({userId:patientId},function(data){
                     console.log(data);
-                    $scope.chooseAlreadyJoinConsultPatientSessionTimes ='æ˜¯'+ data.userSessionTimes + 'æ¬¡æ¥å…¥';
+                    $scope.chooseAlreadyJoinConsultPatientSessionTimes ='ÊÇ'+ data.userSessionTimes + '´Î½ÓÈë';
                 });
                 getIframeSrc();
                 var updateFlag = false;
@@ -862,7 +863,7 @@ angular.module('controllers', ['luegg.directives'])
                     })
                 }
             };
-            //è§¦å‘è½¬æ¥å£°éŸ³
+            //´¥·¢×ª½ÓÉùÒô
             $scope.triggerVoice = function () {
                 var audio = document.createElement('audio');
                 var source = document.createElement('source');
@@ -873,7 +874,7 @@ angular.module('controllers', ['luegg.directives'])
                 audio.appendChild(source);
                 audio.play();
             };
-            //è§¦å‘ä¿¡æ¯å£°éŸ³
+            //´¥·¢ĞÅÏ¢ÉùÒô
             $scope.triggerqqVoice = function () {
                 var audio = document.createElement('audio');
                 var source = document.createElement('source');
@@ -886,13 +887,13 @@ angular.module('controllers', ['luegg.directives'])
             };
             $scope.getQQExpression = function () {
                 $('#face').qqFace({
-                    id: 'facebox', //è¡¨æƒ…ç›’å­çš„ID
-                    assign: 'saytext', //ç»™é‚£ä¸ªæ§ä»¶èµ‹å€¼
+                    id: 'facebox', //±íÇéºĞ×ÓµÄID
+                    assign: 'saytext', //¸øÄÇ¸ö¿Ø¼ş¸³Öµ
                     path: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fqqface%2F'
-                    //è¡¨æƒ…å­˜æ”¾çš„è·¯å¾„
+                    //±íÇé´æ·ÅµÄÂ·¾¶
                 });
             };
-            //æŸ¥çœ‹ç»“æœ
+            //²é¿´½á¹û
             var replace_em = function (str) {
                 str = str.replace(/\</g,'&lt;');
                 str = str.replace(/\>/g,'&gt;');
@@ -900,7 +901,7 @@ angular.module('controllers', ['luegg.directives'])
                 str = str.replace(/\[em_([0-9]*)\]/g,'<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fqqface%2F$1.gif" border="0" />');
                 return str;
             };
-            //æŸ¥çœ‹æ›´å¤šçš„ç”¨æˆ·å†å²æ¶ˆæ¯
+            //²é¿´¸ü¶àµÄÓÃ»§ÀúÊ·ÏûÏ¢
             $scope.seeMoreConversationMessage = function(){
                 var mostFarCurrentConversationDateTime = moment().format("YYYY-MM-DD HH:mm:ss");
                 if($scope.currentUserConversation.consultValue[0]!=undefined){
@@ -918,15 +919,15 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 })
             };
-            /**ä¼šè¯æ“ä½œåŒº**/
-                //æ›´æ–°å’¨è¯¢åŒ»ç”Ÿå½“æ—¥å’¨è¯¢ç”¨æˆ·æ•°çš„æ’ååˆ—è¡¨
+            /**»á»°²Ù×÷Çø**/
+                //¸üĞÂ×ÉÑ¯Ò½Éúµ±ÈÕ×ÉÑ¯ÓÃ»§ÊıµÄÅÅÃûÁĞ±í
             $scope.refreshRankList = function(){
                 var currDate = new moment().format("YYYY-MM-DD");
                 GetTodayRankingList.save({"rankDate": currDate}, function (data) {
                     $scope.info.rankListValue = data.rankListValue;
                 });
             };
-            //è·å–åœ¨çº¿çš„å’¨è¯¢åŒ»ç”Ÿåˆ—è¡¨
+            //»ñÈ¡ÔÚÏßµÄ×ÉÑ¯Ò½ÉúÁĞ±í
             $scope.refreshOnLineCsUserList = function(){
                 $scope.searchFlag = false;
                 $scope.info.searchCsUserValue = "";
@@ -934,7 +935,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.info.onLineCsUserList = data.onLineCsUserList;
                 });
             };
-            //è·å–å¾…æ¥å…¥ä¼šè¯ç”¨æˆ·åˆ—è¡¨
+            //»ñÈ¡´ı½ÓÈë»á»°ÓÃ»§ÁĞ±í
             $scope.refreshWaitJoinUserList = function(){
                 GetWaitJoinList.save({csUserId:$scope.doctorId},function(data){
                     $scope.waitJoinNum = data.waitJoinNum;
@@ -942,8 +943,8 @@ angular.module('controllers', ['luegg.directives'])
                 })
             };
 
-            /***å›å¤æ“ä½œåŒº**/
-                //æˆ‘çš„å›å¤å†…å®¹
+            /***»Ø¸´²Ù×÷Çø**/
+                //ÎÒµÄ»Ø¸´ÄÚÈİ
             $scope.tapMyReplyContent = function (parentIndex) {
                 if($scope.myReplyIndex==parentIndex){
                     $scope.myReplyIndex = -1;
@@ -964,7 +965,7 @@ angular.module('controllers', ['luegg.directives'])
             $scope.chooseMyContent = function(parentIndex, childIndex){
                 $scope.info.consultMessage = angular.copy($scope.myAnswer[parentIndex].secondAnswer[childIndex].name);
             };
-            //å…¬å…±å›å¤å†…å®¹
+            //¹«¹²»Ø¸´ÄÚÈİ
             $scope.chooseCommonContent = function(parentIndex, childIndex){
                 $scope.info.consultMessage = angular.copy($scope.commonAnswer[parentIndex].secondAnswer[childIndex].name);
             };
@@ -985,7 +986,7 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.publicReplySecondIndex = childIndex;
                 $scope.info.editContent = $scope.commonAnswer[parentIndex].secondAnswer[childIndex].name;
             };
-            //è¯Šæ–­å›å¤å†…å®¹
+            //Õï¶Ï»Ø¸´ÄÚÈİ
             $scope.chooseDiagnosisContent = function(parentIndex, childIndex){
                 $scope.info.consultMessage = angular.copy($scope.diagnosis[parentIndex].secondAnswer[childIndex].name);
             };
@@ -1006,7 +1007,7 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.diagnosisReplySecondIndex = childIndex;
                 $scope.info.editContent = $scope.diagnosis[parentIndex].secondAnswer[childIndex].name;
             };
-            //æ·»åŠ åˆ†ç»„
+            //Ìí¼Ó·Ö×é
             $scope.add = function() {
                 $scope.info.addGroup = '';
                 $scope.info.addContent = '';
@@ -1061,7 +1062,7 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 $scope.addGroupFlag = false;
             };
-            //æ·»åŠ å†…å®¹
+            //Ìí¼ÓÄÚÈİ
             $scope.closeAddContent = function(){$scope.addContentFlag=false;};
             $scope.addContentSubmit = function () {
                 var setContent = {};
@@ -1080,7 +1081,7 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 $scope.addContentFlag=false;
             };
-            //ç¼–è¾‘åˆ†ç»„
+            //±à¼­·Ö×é
             $scope.closeEditGroup = function(){$scope.editGroupFlag = false;};
             $scope.closeEditContent = function(){$scope.editContentFlag = false;};
             $scope.edit = function() {
@@ -1090,10 +1091,8 @@ angular.module('controllers', ['luegg.directives'])
                             $scope.editGroupFlag = true;
                             $scope.editContentFlag = false;
                         }else{
-                            console.log($scope.myReplySecondIndex);
                             $scope.editGroupFlag = false;
                             $scope.editContentFlag = true;
-
                         }
                     }
                 }
@@ -1150,17 +1149,17 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 $scope.editContentFlag=false;
             };
-            //åˆ é™¤
+            //É¾³ı
             $scope.remove = function(){
                 if($scope.showFlag.myReplyList){
                     if($scope.myReplyIndex!=-1&&$scope.myReplyIndex!=undefined){
                         if($scope.myReplySecondIndex==-1||$scope.myReplyIndex==undefined){
-                            if ($window.confirm("ç¡®å®šè¦åˆ é™¤è¯¥ç»„å›å¤?")) {
+                            if ($window.confirm("È·¶¨ÒªÉ¾³ı¸Ã×é»Ø¸´?")) {
                                 $scope.myAnswer.splice($scope.myReplyIndex, 1);
                                 saveMyAnswer();
                             }
                         }else{
-                            if($window.confirm("ç¡®å®šè¦åˆ é™¤è¯¥å›å¤?")) {
+                            if($window.confirm("È·¶¨ÒªÉ¾³ı¸Ã»Ø¸´?")) {
                                 $scope.myAnswer[$scope.myReplyIndex].secondAnswer.splice($scope.myReplySecondIndex, 1);
                                 saveMyAnswer();
                             }
@@ -1170,12 +1169,12 @@ angular.module('controllers', ['luegg.directives'])
                 if($scope.showFlag.publicReplyList){
                     if($scope.publicReplyIndex!=-1&&$scope.publicReplyIndex!=undefined){
                         if($scope.publicReplySecondIndex==-1||$scope.publicReplyIndex==undefined){
-                            if ($window.confirm("ç¡®å®šè¦åˆ é™¤è¯¥ç»„å›å¤?")) {
+                            if ($window.confirm("È·¶¨ÒªÉ¾³ı¸Ã×é»Ø¸´?")) {
                                 $scope.commonAnswer.splice($scope.publicReplyIndex, 1);
                                 saveCommonAnswer();
                             }
                         }else{
-                            if($window.confirm("ç¡®å®šè¦åˆ é™¤è¯¥å›å¤?")) {
+                            if($window.confirm("È·¶¨ÒªÉ¾³ı¸Ã»Ø¸´?")) {
                                 $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer.splice($scope.publicReplySecondIndex, 1);
                                 saveCommonAnswer();
                             }
@@ -1185,12 +1184,12 @@ angular.module('controllers', ['luegg.directives'])
                 if($scope.showFlag.diagnosisReplyList){
                     if($scope.diagnosisReplyIndex!=-1&&$scope.diagnosisReplyIndex!=undefined){
                         if($scope.diagnosisReplySecondIndex==-1||$scope.diagnosisReplyIndex==undefined){
-                            if ($window.confirm("ç¡®å®šè¦åˆ é™¤è¯¥ç»„å›å¤?")) {
+                            if ($window.confirm("È·¶¨ÒªÉ¾³ı¸Ã×é»Ø¸´?")) {
                                 $scope.diagnosis.splice($scope.diagnosisReplyIndex, 1);
                                 saveDiagnosis();
                             }
                         }else{
-                            if($window.confirm("ç¡®å®šè¦åˆ é™¤è¯¥å›å¤?")) {
+                            if($window.confirm("È·¶¨ÒªÉ¾³ı¸Ã»Ø¸´?")) {
                                 $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer.splice($scope.diagnosisReplySecondIndex, 1);
                                 saveDiagnosis();
                             }
@@ -1198,124 +1197,44 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 }
             };
-            //å›å¤çš„æ’åº
-            $scope.moveUp = function(){
-                if($scope.showFlag.myReplyList){
-                    if($scope.myReplyIndex!=-1&&$scope.myReplyIndex!=undefined){
-                        if($scope.myReplySecondIndex > 0){
-                            var changeAnswerContent = $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex - 1];
-                            $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex - 1] = $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex];
-                            $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex] = changeAnswerContent;
-                        }else if($scope.myReplySecondIndex == -1){
-                            var changeAnswerGroup = $scope.myAnswer[$scope.myReplyIndex - 1];
-                            $scope.myAnswer[$scope.myReplyIndex - 1] = $scope.myAnswer[$scope.myReplyIndex];
-                            $scope.myAnswer[$scope.myReplyIndex] = changeAnswerGroup;
-                        }
-                        saveMyAnswer();
-                    }
-                }
-                if($scope.showFlag.publicReplyList){
-                    if($scope.publicReplyIndex!=-1&&$scope.publicReplyIndex!=undefined){
-                        if($scope.publicReplySecondIndex > 0){
-                            var changeAnswerContent = $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex - 1];
-                            $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex - 1] = $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex];
-                            $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex] = changeAnswerContent;
-                        }else if($scope.publicReplySecondIndex == -1){
-                                var changeAnswerGroup = $scope.commonAnswer[$scope.publicReplyIndex - 1];
-                                $scope.commonAnswer[$scope.publicReplyIndex - 1] = $scope.commonAnswer[$scope.publicReplyIndex];
-                                $scope.commonAnswer[$scope.publicReplyIndex] = changeAnswerGroup;
-                        }
-                        saveCommonAnswer();
-                    }
-                }
-                if($scope.showFlag.diagnosisReplyList){
-                    if($scope.diagnosisReplyIndex!=-1&&$scope.diagnosisReplyIndex!=undefined){
-                        if($scope.diagnosisReplySecondIndex > 0){
-                            var changeAnswerContent = $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex - 1];
-                            $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex - 1] = $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex];
-                            $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex] = changeAnswerContent;
-                        }else if($scope.diagnosisReplySecondIndex == -1){
-                            var changeAnswerGroup = $scope.commonAnswer[$scope.diagnosisReplyIndex - 1];
-                            $scope.diagnosis[$scope.diagnosisReplyIndex - 1] = $scope.diagnosis[$scope.diagnosisReplyIndex];
-                            $scope.diagnosis[$scope.diagnosisReplyIndex] = changeAnswerGroup;
-                        }
-                        saveDiagnosis();
-                    }
-                }
-            };
-            $scope.moveDown = function(){
-                if($scope.showFlag.myReplyList){
-                    if($scope.myReplyIndex!=-1&&$scope.myReplyIndex!=undefined){
-                        if($scope.myReplySecondIndex >= 0 && $scope.myReplySecondIndex < $scope.myAnswer[$scope.myReplyIndex].secondAnswer.length){
-                            var changeAnswerContent = $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex + 1];
-                            $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex + 1] = $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex];
-                            $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex] = changeAnswerContent;
-                        }else if($scope.myReplySecondIndex == -1 && $scope.myReplyIndex < $scope.myAnswer.length){
-                            var changeAnswerGroup = $scope.myAnswer[$scope.myReplyIndex + 1];
-                            $scope.myAnswer[$scope.myReplyIndex + 1] = $scope.myAnswer[$scope.myReplyIndex];
-                            $scope.myAnswer[$scope.myReplyIndex] = changeAnswerGroup;
-                        }
-                        saveMyAnswer();
-                    }
-                }
-                if($scope.showFlag.publicReplyList){
-                    if($scope.publicReplyIndex!=-1&&$scope.publicReplyIndex!=undefined){
-                        if($scope.publicReplySecondIndex >= 0 && $scope.publicReplySecondIndex < $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer.length){
-                            var changeAnswerContent = $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex - 1];
-                            $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex - 1] = $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex];
-                            $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex] = changeAnswerContent;
-                        }else if($scope.publicReplySecondIndex == -1 && $scope.publicReplyIndex < $scope.commonAnswer.length){
-                            var changeAnswerGroup = $scope.commonAnswer[$scope.publicReplyIndex - 1];
-                            $scope.commonAnswer[$scope.publicReplyIndex - 1] = $scope.commonAnswer[$scope.publicReplyIndex];
-                            $scope.commonAnswer[$scope.publicReplyIndex] = changeAnswerGroup;
-                        }
-                        saveCommonAnswer();
-                    }
-                }
-                if($scope.showFlag.diagnosisReplyList){
-                    if($scope.diagnosisReplyIndex!=-1&&$scope.diagnosisReplyIndex!=undefined){
-                        if($scope.diagnosisReplySecondIndex >= 0 && $scope.diagnosisReplySecondIndex < $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer.length){
-                            var changeAnswerContent = $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex + 1];
-                            $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex + 1] = $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex];
-                            $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex] = changeAnswerContent;
-                        }else if($scope.diagnosisReplySecondIndex == -1 && $scope.diagnosisReplyIndex < $scope.diagnosis.length){
-                            var changeAnswerGroup = $scope.diagnosis[$scope.diagnosisReplyIndex + 1];
-                            $scope.diagnosis[$scope.diagnosisReplyIndex + 1] = $scope.diagnosis[$scope.diagnosisReplyIndex];
-                            $scope.diagnosis[$scope.diagnosisReplyIndex] = changeAnswerGroup;
-                        }
-                        saveDiagnosis();
-                    }
-                }
-            };
-            //ä¿å­˜æˆ‘çš„å›å¤
+            //±£´æÎÒµÄ»Ø¸´
             var saveMyAnswer = function() {
                 GetMyAnswerModify.save({answer: $scope.myAnswer, answerType: "myAnswer"}, function (data) {
                 });
             };
-            //ä¿å­˜å…¬å…±å›å¤
+            //±£´æ¹«¹²»Ø¸´
             var saveCommonAnswer = function() {
                 GetMyAnswerModify.save({answer: $scope.commonAnswer, answerType: "commonAnswer"}, function (data) {
                 });
             };
-            //ä¿å­˜è¯Šæ–­å›å¤
+            //±£´æÕï¶Ï»Ø¸´
             var saveDiagnosis = function() {
                 GetMyAnswerModify.save({answer: $scope.diagnosis, answerType: "diagnosis"}, function (data) {
                 });
             };
-            /***å›å¤æ“ä½œåŒº**/
+            /***»Ø¸´²Ù×÷Çø**/
+            /***×ÉÑ¯·şÎñ**/
+            //¸ù¾İopenid»ñÈ¡ÀúÊ·×ÉÑ¯
+            GetCustomerLogByOpenID.save({answer: $scope.currentUserConversation.patientId}, function (data) {
+                console.log('aaa');
+            });
+
+
             var getIframeSrc = function(){
                 var newSrc = $(".advisory-content").attr("src");
                 $(".advisory-content").attr("src","");
                 $(".advisory-content").attr("src",newSrc);
             };
-            //æ—¥æœŸè½¬æ¢
+            /***×ÉÑ¯·şÎñ**/
+
+            //ÈÕÆÚ×ª»»
             $scope.transformDate = function(dateTime){
                 var dateValue = new moment(dateTime).format("HH:mm:ss");
                 return dateValue;
             };
-            //å¾—åˆ°å·²ç»åŠ å…¥ä¼šè¯çš„ç—…äººçš„åˆ—è¡¨
+            //µÃµ½ÒÑ¾­¼ÓÈë»á»°µÄ²¡ÈËµÄÁĞ±í
             var getAlreadyJoinConsultPatientList = function () {
-                //è·å–è·ŸåŒ»ç”Ÿçš„ä¼šè¯è¿˜ä¿å­˜çš„ç”¨æˆ·åˆ—è¡¨
+                //»ñÈ¡¸úÒ½ÉúµÄ»á»°»¹±£´æµÄÓÃ»§ÁĞ±í
                 GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
                     if(data.alreadyJoinPatientConversation!=""&&data.alreadyJoinPatientConversation!=undefined){
                         $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
@@ -1332,7 +1251,7 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 })
             };
-            //å¤„ç†ç”¨æˆ·å‘é€è¿‡æ¥çš„ä¼šè¯æ¶ˆæ¯
+            //´¦ÀíÓÃ»§·¢ËÍ¹ıÀ´µÄ»á»°ÏûÏ¢
             var processPatientSendMessage = function(conversationData){
                 var chooseFlag = false;
                 var currentConsultValue = {
@@ -1365,7 +1284,7 @@ angular.module('controllers', ['luegg.directives'])
                     getIframeSrc();
                 }
             };
-            //ç—…äººä¼šè¯çš„å†…å®¹çš„å‘é€
+            //²¡ÈË»á»°µÄÄÚÈİµÄ·¢ËÍ
             var updateAlreadyJoinPatientConversationFromPatient = function(conversationData){
                 var updateFlag = false;
                 $.each($scope.alreadyJoinPatientConversation, function (index, value) {
@@ -1394,7 +1313,7 @@ angular.module('controllers', ['luegg.directives'])
                         'isOnline':true,
                         'dateTime':conversationData.dateTime,
                         'messageNotSee':true,
-                        'number':1,//æ˜¾ç¤ºæ¶ˆæ¯æ•°é‡
+                        'number':1,//ÏÔÊ¾ÏûÏ¢ÊıÁ¿
                         'patientName':conversationData.senderName,
                         'consultValue':[]
                     };
@@ -1406,7 +1325,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.currentUserConversation.messageNotSee = false;
                 }
             };
-            //åŒ»ç”Ÿä¼šè¯çš„å†…å®¹çš„å‘é€
+            //Ò½Éú»á»°µÄÄÚÈİµÄ·¢ËÍ
             var updateAlreadyJoinPatientConversationFromDoctor = function(consultValMessage){
                 $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                     if (value.patientId == $scope.currentUserConversation.patientId) {
@@ -1417,14 +1336,14 @@ angular.module('controllers', ['luegg.directives'])
                 });
             };
 
-            //å¤„ç†ç³»ç»Ÿå‘é€è¿‡æ¥çš„é€šçŸ¥ç±»æ¶ˆæ¯
+            //´¦ÀíÏµÍ³·¢ËÍ¹ıÀ´µÄÍ¨ÖªÀàÏûÏ¢
             var processNotifyMessage = function(notifyData){
                 if(notifyData.notifyType=="0009"){
-                    //æœ‰è½¬æ¥çš„ç”¨æˆ·è¿‡æ¥
+                    //ÓĞ×ª½ÓµÄÓÃ»§¹ıÀ´
                     $scope.refreshWaitJoinUserList();
                     $scope.triggerVoice();
                 } else if(notifyData.notifyType=="0012"){
-                    //å–æ¶ˆè½¬æ¥è¿‡æ¥çš„ç”¨æˆ·
+                    //È¡Ïû×ª½Ó¹ıÀ´µÄÓÃ»§
                     $scope.refreshWaitJoinUserList();
                 }
                 else if(notifyData.notifyType=="0013"){
@@ -1450,7 +1369,7 @@ angular.module('controllers', ['luegg.directives'])
                     });
                 }
                 else if(notifyData.notifyType=="0011"){
-                    //é€šçŸ¥æ¥è¯Šå‘˜ï¼Œè½¬æ¥æ­£åœ¨è¿›è¡Œä¸­ï¼Œè¿˜æœªè¢«åŒ»ç”Ÿå—ç†
+                    //Í¨Öª½ÓÕïÔ±£¬×ª½ÓÕıÔÚ½øĞĞÖĞ£¬»¹Î´±»Ò½ÉúÊÜÀí
                     $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                         if (value.patientId == notifyData.session.userId) {
                             value.consultValue.push(notifyData);
@@ -1462,7 +1381,7 @@ angular.module('controllers', ['luegg.directives'])
                     });
                 }
                 else if(notifyData.notifyType=="0010"){
-                    //é€šçŸ¥æ¥è¯Šå‘˜ï¼Œè½¬æ¥çš„å¤„ç†æƒ…å†µï¼Œrejectedä¸ºæ‹’ç»ï¼Œacceptä¸ºè½¬æ¥å—ç†äº†
+                    //Í¨Öª½ÓÕïÔ±£¬×ª½ÓµÄ´¦ÀíÇé¿ö£¬rejectedÎª¾Ü¾ø£¬acceptÎª×ª½ÓÊÜÀíÁË
                     if(notifyData.operation=="accept"){
                         var indexClose = 0;
                         $.each($scope.alreadyJoinPatientConversation, function (index, value) {
@@ -1496,7 +1415,7 @@ angular.module('controllers', ['luegg.directives'])
                     getFindTransferSpecialist();
                 }
                 else if(notifyData.notifyType=="0015"){
-                    //æ”¶åˆ°æœåŠ¡å™¨å‘é€è¿‡æ¥çš„å¿ƒè·³æ¶ˆæ¯
+                    //ÊÕµ½·şÎñÆ÷·¢ËÍ¹ıÀ´µÄĞÄÌøÏûÏ¢
                     var heartBeatServerMessage = {
                         "type": 6,
                         "csUserId": angular.copy($scope.doctorId)
@@ -1512,7 +1431,7 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 }
             };
-            //è¿‡æ»¤åª’ä½“æ•°æ®
+            //¹ıÂËÃ½ÌåÊı¾İ
             var filterMediaData = function (val) {
                 if(val.senderId==$scope.doctorId){
                     if (val.type == "0") {
@@ -1571,7 +1490,6 @@ angular.module('controllers', ['luegg.directives'])
                 return val;
             };
         }])
-
     .controller('messageListCtrl', ['$scope', '$log', '$state','$sce', 'GetUserConsultListInfo',
         'GetUserRecordDetail', 'GetCSDoctorList', 'GetMessageRecordInfo','GetUserLoginStatus','$location','CreateDoctorConsultSession',
         function ($scope, $log, $state,$sce, GetUserConsultListInfo, GetUserRecordDetail,
@@ -1596,25 +1514,25 @@ angular.module('controllers', ['luegg.directives'])
             $scope.searchMessageType = [
                 {
                     searchType:"user",
-                    searchContent: "æŸ¥æ‰¾å®¢æˆ·"
+                    searchContent: "²éÕÒ¿Í»§"
                 }
                 //,{
                 //searchType:"message",
-                //searchContent: "æŸ¥æ‰¾æ¶ˆæ¯"
+                //searchContent: "²éÕÒÏûÏ¢"
                 //}
             ];
 
             $scope.searchDate = [{
-                name: "ä»Šå¤©",
+                name: "½ñÌì",
                 value: 0
             }, {
-                name: "æœ€è¿‘7å¤©",
+                name: "×î½ü7Ìì",
                 value: 7
             }, {
-                name: "æœ€è¿‘30å¤©",
+                name: "×î½ü30Ìì",
                 value: 30
             },{
-                name: "æ‰€æœ‰æ—¶é—´",
+                name: "ËùÓĞÊ±¼ä",
                 value: 10000
             }];
 
@@ -1632,7 +1550,7 @@ angular.module('controllers', ['luegg.directives'])
                     } else if (data.status == "8") {
                         window.location.href = data.redirectURL + "?targeturl=" + routePath;
                     } else if (data.status == "20") {
-                        //è·å–ä¼šè¯å®¢æˆ·åˆ—è¡¨ï¼ˆå«ä¼šè¯è½¬æ¥è¿‡ç¨‹ä¸­ï¼Œç»å†è¿‡å‡ ä¸ªå®¢æœï¼‰
+                        //»ñÈ¡»á»°¿Í»§ÁĞ±í£¨º¬»á»°×ª½Ó¹ı³ÌÖĞ£¬¾­Àú¹ı¼¸¸ö¿Í·ş£©
                         $scope.selectedDate = $scope.searchDate[0];
                         $scope.selectedMessage = $scope.searchMessageType[0];
                         $scope.setSearchMessageType("user");
@@ -1642,9 +1560,9 @@ angular.module('controllers', ['luegg.directives'])
                             refreshUserConsultListData(data);
                         });
 
-                        //è·å–å®¢æœåŒ»ç”Ÿåˆ—è¡¨
+                        //»ñÈ¡¿Í·şÒ½ÉúÁĞ±í
                         GetCSDoctorList.save({}, function (data) {
-                            $scope.CSList = [{"id":"allCS","name":"æ‰€æœ‰å®¢æœ"}];
+                            $scope.CSList = [{"id":"allCS","name":"ËùÓĞ¿Í·ş"}];
                             $.each(data.CSList,function(index,value){
                                 $scope.CSList.push(value);
                             });
@@ -1656,7 +1574,7 @@ angular.module('controllers', ['luegg.directives'])
                 })
             };
 
-            //è·å–ç”¨æˆ·çš„è¯¦ç»†èŠå¤©è®°å½•
+            //»ñÈ¡ÓÃ»§µÄÏêÏ¸ÁÄÌì¼ÇÂ¼
             $scope.getUserRecordDetail = function (userName,userId,index) {
                 $scope.doctorCreateConsultSessionChoosedUserId = userId;
                 $scope.doctorCreateConsultSessionChoosedUserName = userName;
@@ -1695,7 +1613,7 @@ angular.module('controllers', ['luegg.directives'])
 
                         pageNum = parseInt($scope.info.recordDetailSkipNum);
                     }else{
-                        alert("è¯·è¾“å…¥å¤§äº0çš„æ•°å­—ï¼");
+                        alert("ÇëÊäÈë´óÓÚ0µÄÊı×Ö£¡");
                         return;
                     }
                 }
@@ -1715,13 +1633,13 @@ angular.module('controllers', ['luegg.directives'])
                 });
             };
 
-            //æŸ¥æ‰¾æ¶ˆæ¯è®°å½•ï¼ˆç‚¹å‡»å…¨éƒ¨ã€å›¾ç‰‡ç­‰ï¼‰
+            //²éÕÒÏûÏ¢¼ÇÂ¼£¨µã»÷È«²¿¡¢Í¼Æ¬µÈ£©
             $scope.setRecordType = function (searchRecordType) {
                 $scope.recordType = searchRecordType;
                 $scope.chooseUserRecordDetail("firstPage",$scope.recordType);
             };
 
-            //æŸ¥è¯¢æŸä¸ªå®¢æœä¿¡æ¯ä½äºæŸä¸ªæ—¶é—´æ®µçš„ä¿¡æ¯
+            //²éÑ¯Ä³¸ö¿Í·şĞÅÏ¢Î»ÓÚÄ³¸öÊ±¼ä¶ÎµÄĞÅÏ¢
             $scope.getCsInfoByUserAndDate = function(Object){
                 if (Object == 10000 || Object == 0 || Object == 7 || Object == 30) {
                     $scope.dateNumValue = angular.copy(Object);
@@ -1737,13 +1655,13 @@ angular.module('controllers', ['luegg.directives'])
                 })
             };
 
-            //æŸ¥æ‰¾å’¨è¯¢è®°å½•ï¼ˆæ¶ˆæ¯åˆ—è¡¨å³ä¸Šè§’çš„æœç´¢åŠŸèƒ½ï¼‰
+            //²éÕÒ×ÉÑ¯¼ÇÂ¼£¨ÏûÏ¢ÁĞ±íÓÒÉÏ½ÇµÄËÑË÷¹¦ÄÜ£©
             $scope.searchMessage = function () {
                 if($scope.info.searchMessageContent == '' || $scope.info.searchMessageContent == null){
-                    alert('è¯·é€‰æ‹©æŸ¥è¯¢å†…å®¹ï¼');
+                    alert('ÇëÑ¡Ôñ²éÑ¯ÄÚÈİ£¡');
                     return ;
                 }else if($scope.messageType == '' || $scope.messageType == null){
-                    alert('è¯·é€‰æ‹©æŸ¥è¯¢ç±»å‹ï¼');
+                    alert('ÇëÑ¡Ôñ²éÑ¯ÀàĞÍ£¡');
                     return ;
                 }else{
                     $scope.loadingFlag = true;
@@ -1759,12 +1677,12 @@ angular.module('controllers', ['luegg.directives'])
                 }
             };
 
-            //æŸ¥æ‰¾å’¨è¯¢è®°å½•
+            //²éÕÒ×ÉÑ¯¼ÇÂ¼
             $scope.setSearchMessageType = function (searchType) {
                 $scope.messageType = searchType;
             };
 
-            //å·¦ä¸Šè§’çš„åˆ·æ–°æ¶ˆæ¯
+            //×óÉÏ½ÇµÄË¢ĞÂÏûÏ¢
             $scope.refreshUserList = function () {
                 $scope.loadingFlag = true;
                 GetUserConsultListInfo.save({dateNum: $scope.dateNumValue,
@@ -1776,23 +1694,23 @@ angular.module('controllers', ['luegg.directives'])
                 })
             };
 
-            //å³ä¸Šè§’çš„æ¶ˆæ¯åˆ·æ–°
+            //ÓÒÉÏ½ÇµÄÏûÏ¢Ë¢ĞÂ
             $scope.refreshCurrentUserRecordDetail = function(){
                 $scope.getUserRecordDetail($scope.userConsultListInfo[0].userName,$scope.userConsultListInfo[0].userId,0);
             };
 
-            //åŒ»ç”Ÿå‘èµ·ä¸€ä¸ªé’ˆå¯¹ç”¨æˆ·çš„ä¼šè¯
+            //Ò½Éú·¢ÆğÒ»¸öÕë¶ÔÓÃ»§µÄ»á»°
             $scope.createDoctorConsultSession = function(){
                 CreateDoctorConsultSession.save({userName:$scope.doctorCreateConsultSessionChoosedUserName,
                     userId:$scope.doctorCreateConsultSessionChoosedUserId},function(data){
                     if(data.result == "failure"){
-                        alert("æ— æ³•å‘èµ·ä¼šè¯ï¼Œè¯·ç¨åé‡è¯•");
+                        alert("ÎŞ·¨·¢Æğ»á»°£¬ÇëÉÔºóÖØÊÔ");
                     }else if(data.result == "existTransferSession"){
-                        alert("æ­¤ç”¨æˆ·æ­£æœ‰ä¼šè¯å¤„äºè½¬æ¥çŠ¶æ€ï¼Œæ— æ³•å‘å…¶å‘èµ·ä¼šè¯ï¼Œè¯·ç¨åé‡è¯•");
+                        alert("´ËÓÃ»§ÕıÓĞ»á»°´¦ÓÚ×ª½Ó×´Ì¬£¬ÎŞ·¨ÏòÆä·¢Æğ»á»°£¬ÇëÉÔºóÖØÊÔ");
                     }else if(data.result == "noLicenseTransfer"){
-                        alert("å¯¹ä¸èµ·ï¼Œä½ æ²¡æœ‰æƒé™ï¼ŒæŠ¢æ–­ä¸€ä¸ªæ­£åœ¨å’¨è¯¢ç”¨æˆ·çš„ä¼šè¯");
+                        alert("¶Ô²»Æğ£¬ÄãÃ»ÓĞÈ¨ÏŞ£¬ÇÀ¶ÏÒ»¸öÕıÔÚ×ÉÑ¯ÓÃ»§µÄ»á»°");
                     }else if(data.result == "exceed48Hours"){
-                        alert("å¯¹ä¸èµ·ï¼Œç”¨æˆ·å’¨è¯¢å·²ç»è¶…è¿‡äº†48å°æ—¶ï¼Œæ— æ³•å†å‘å…¶å‘èµ·ä¼šè¯");
+                        alert("¶Ô²»Æğ£¬ÓÃ»§×ÉÑ¯ÒÑ¾­³¬¹ıÁË48Ğ¡Ê±£¬ÎŞ·¨ÔÙÏòÆä·¢Æğ»á»°");
                     }else if(data.result == "success"){
                         $state.go('doctorConsultFirst', {userId:data.userId,action:'createUserSession'});
                     }
@@ -1819,7 +1737,7 @@ angular.module('controllers', ['luegg.directives'])
 
                         $scope.currentUserConsultListDataPage = $scope.info.userConsultListInfoSkipNum;
                     }else{
-                        alert("è¯·è¾“å…¥å¤§äº0çš„æ•°å­—ï¼");
+                        alert("ÇëÊäÈë´óÓÚ0µÄÊı×Ö£¡");
                         return;
                     }
                 }
@@ -1849,13 +1767,13 @@ angular.module('controllers', ['luegg.directives'])
                 }
             };
 
-            //è¿‡æ»¤åª’ä½“æ•°æ®
+            //¹ıÂËÃ½ÌåÊı¾İ
             var filterMediaData = function (val) {
                 if (val.type == "1"||val.type == "2" || val.type == "3") {
                     val.message = $sce.trustAsResourceUrl(angular.copy(val.message));
                 }
             };
-            //å„ä¸ªå­çª—å£çš„å¼€å…³å˜é‡
+            //¸÷¸ö×Ó´°¿ÚµÄ¿ª¹Ø±äÁ¿
             $scope.showFlag = {
                 magnifyImg:false
             };
@@ -1863,7 +1781,7 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.showFlag[key] = !$scope.showFlag[key];
                 $scope.imageSrc = value;
             };
-            //å…¬å…±ç‚¹å‡»æŒ‰é’®ï¼Œç”¨æ¥è§¦å‘å¼¹å‡ºå¯¹åº”çš„å­çª—å£
+            //¹«¹²µã»÷°´Å¥£¬ÓÃÀ´´¥·¢µ¯³ö¶ÔÓ¦µÄ×Ó´°¿Ú
             $scope.tapShowButton = function(key){
                 $scope.showFlag[key] = !$scope.showFlag[key];
             };

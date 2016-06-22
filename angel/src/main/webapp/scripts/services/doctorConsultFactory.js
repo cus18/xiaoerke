@@ -126,4 +126,10 @@ angular.module('services', ['ngResource'])
     .factory('GetCurrentDoctorDepartment', ['$resource', function ($resource) {
         return $resource(public + 'consult/transfer/getCurrentDoctorDepartment');
     }])
+    //根据openid获取历史咨询
+    .factory('GetCustomerLogByOpenID', ['$resource', function ($resource) {
+        return $resource(public + 'customer/getCustomerLogByOpenID');
+    }])
+
+
 
