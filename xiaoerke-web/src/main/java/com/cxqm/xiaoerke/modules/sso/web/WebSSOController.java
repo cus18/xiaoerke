@@ -63,7 +63,6 @@ public class WebSSOController {
 	public String loginBack(String token, String targeturl, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		
 		String authcenterUrl = request.getParameter("authcenterurl");
-		
 		request.getSession().setAttribute("authcenterurl", authcenterUrl);
 		
 		//认证中心登录成功，回调客户端，客户端直接发起授权申请
@@ -153,8 +152,6 @@ public class WebSSOController {
 					if(cookie.getName().equals("targeturl")){
 						targeturl = cookie.getValue();
 						//认证中心拿到token回传客户端，由客户端发起验证token请求
-					}else{
-						
 					}
 				}
 			}
@@ -174,27 +171,11 @@ public class WebSSOController {
 		String[] pathArray=new String[]{"/titan/","/keeper/","/authcenter/","/angel/","/doctor/","/market/","/wisdom/"};
 		for(int j = 0;j < pathArray.length;  j++){
 			Cookie cookie = new Cookie("JSESSIONID", null);
-//			cookie.setDomain("localhost");
 			cookie.setMaxAge(0);
 			cookie.setPath(pathArray[j]);
 			response.addCookie(cookie);
 		}
 		return "redirect:" + Global.getConfig("authentication.basePath") + "/sso/logout?toUrl=" + WebUtil.getWebPath(request) + "/firstPage/appoint";
 	}
-	
-	private Cookie getCookie(HttpServletRequest request, String cookieName){
-		Cookie[] cookies = request.getCookies();
-		if(cookies != null){
-			for(Cookie cookie : cookies){
-				if(cookie.getName().equals(cookieName)){
-					return cookie;//认证中心拿到token回传客户端，由客户端发起验证token请求
-				}else{
-					
-				}
-			}
-		}
-		
-		return null;
-	}
-	
+
 }
