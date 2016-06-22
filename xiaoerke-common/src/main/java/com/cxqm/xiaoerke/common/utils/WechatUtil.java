@@ -374,8 +374,12 @@ public class WechatUtil {
         shortUrlCreate.setLong_url(longUrl);
         String object = HttpRequestUtil.httpsRequest(url, "POST", net.sf.json.JSONObject.fromObject(shortUrlCreate).toString());
         JSONObject resultJson = new JSONObject(object);
-        String shortUrl = (String) resultJson.get("short_url");
-        return shortUrl;
+        try{
+            String shortUrl = (String) resultJson.get("short_url");
+            return shortUrl;
+        }catch (Exception var){
+            return  null;
+        }
     }
 
     /**

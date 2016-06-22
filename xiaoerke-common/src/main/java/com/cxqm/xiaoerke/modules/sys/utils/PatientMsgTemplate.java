@@ -40,8 +40,8 @@ public class PatientMsgTemplate {
     public void appointmentSuccess2Sms(String phone,String babyName,String doctorName,String visitDate,String week,String beginTime,String endTime,String hospitalAddress,String hospitalName,String consultingAddress,String url){
         Map<String,Object> parameter = systemService.getWechatParameter();
         String token = (String)parameter.get("token");
-      String content = "（预约成功）"+babyName+"小朋友家长，您已成功预约"+doctorName+"医生，"+visitDate+"（"+week+"）"+beginTime+"~"+endTime+"，"+hospitalAddress+" "+hospitalName+" "+consultingAddress+"。客服电话：400-623-7120，详情请点击"+WechatUtil.getShortUrl(token, url);
-      SMSMessageUtil.sendMsg(phone,content);
+        String content = "（预约成功）"+babyName+"小朋友家长，您已成功预约"+doctorName+"医生，"+visitDate+"（"+week+"）"+beginTime+"~"+endTime+"，"+hospitalAddress+" "+hospitalName+" "+consultingAddress+"。客服电话：400-623-7120，详情请点击"+WechatUtil.getShortUrl(token, url);
+        SMSMessageUtil.sendMsg(phone,content);
     };
 
     /**
