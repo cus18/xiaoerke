@@ -66,7 +66,7 @@ define(['appUmbrella'], function (app) {
         }])
 
         //保护伞成员检测
-        .factory('cheackFamilyMembers',['$resource',function ($resource){
-            return $resource(user_h5 + 'umbrella/cheackFamilyMembers');
+        .factory('checkFamilyMembers',['$resource',function ($resource){
+            return $resource(user_h5 + 'umbrella/checkFamilyMembers');
         }])
 })

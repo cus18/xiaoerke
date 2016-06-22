@@ -1,6 +1,8 @@
 package com.cxqm.xiaoerke.modules.umbrella.web;
 
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.HttpRequestUtil;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
@@ -55,13 +57,15 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  firstPageData() {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         Map<String, Object> map=new HashMap<String, Object>();
         Integer count = babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(map);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Map<String, Object> result = new HashMap<String, Object>();
         Map<String,Object> maps = babyUmbrellaInfoSerivce.getUmbrellaNum(result);
         Long familyNum = (Long)maps.get("familyNum");
-        result.put("count", count*2+familyNum);
+        result.put("count",count*2+familyNum);
         return result;
     }
 
@@ -72,6 +76,8 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  firstPageDataTodayCount() {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         Map<String, Object> map=new HashMap<String, Object>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         map.put("today",sdf.format(new Date()));
@@ -92,6 +98,8 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  firstPageDataTotalUmbrellaMoney() {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         Map<String, Object> map=new HashMap<String, Object>();
         Integer totalUmbrellaMoney = babyUmbrellaInfoSerivce.getTotalBabyUmbrellaInfoMoney(map);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -109,10 +117,11 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  joinUs(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
         Map<String, Object> map=new HashMap<String, Object>();
         Map<String, Object> numm=new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session, request);
-//        openid="abc";
         map.put("openid",openid);
         List<Map<String, Object>> list = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
@@ -124,7 +133,6 @@ public class UmbrellaController  {
                 result.put("umbrella",m);
                 numm.put("userNums","1");
                 numm.put("date",sdf.format(new Date()));
-//                result.put("num",babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(numm));
                 return result;
             }
             Map<String, Object> result = new HashMap<String, Object>();
@@ -133,7 +141,6 @@ public class UmbrellaController  {
 
             numm.put("date",sdf.format(new Date()));
             numm.put("userNums","1");
-//            result.put("num",babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(numm));
             return result;
         }
         BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
@@ -141,11 +148,8 @@ public class UmbrellaController  {
         babyUmbrellaInfo.setUmberllaMoney(200000);
         babyUmbrellaInfo.setTruePayMoneys(5+"");
         Integer res = babyUmbrellaInfoSerivce.saveBabyUmbrellaInfo(babyUmbrellaInfo);
-
         String shareId=params.get("shareId").toString();
-
         sendWechatMessage(openid,shareId);
-
         Map<String, Object> result=new HashMap<String, Object>();
         result.put("result",res);
         result.put("id",babyUmbrellaInfo.getId());
@@ -218,12 +222,12 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  updateInfo(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) throws UnsupportedEncodingException {
-        Map<String, Object> result=new HashMap<String, Object>();
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 
+        Map<String, Object> result=new HashMap<String, Object>();
         String phone=params.get("phone").toString();
         String code=params.get("code").toString();
         String openid= WechatUtil.getOpenId(session, request);
-//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         String codeAuth=utilService.bindUser(phone,code,openid);
         if(codeAuth.equals("0")){
             result.put("result","3");
@@ -263,9 +267,10 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  userShareNum(HttpServletRequest request,HttpSession session) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         Map<String, Object> map=new HashMap<String, Object>();
         String openid= WechatUtil.getOpenId(session, request);
-//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
         String  id=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map).get(0).get("id").toString();
         Map<String, Object> result=new HashMap<String, Object>();
@@ -279,12 +284,9 @@ public class UmbrellaController  {
     @RequestMapping(value = "/getUserQRCode", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object>  getUserQRCode(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) {
-//        Map<String, Object> map=new HashMap<String, Object>();
-//        String openid= WechatUtil.getOpenId(session, request);
-//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
-//        map.put("openid",openid);
-//        String  id=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map).get(0).get("id").toString();
+    Map<String, Object>  getUserQRCode(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         String id = params.get("id").toString();
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("qrcode",babyUmbrellaInfoSerivce.getUserQRCode(id));
@@ -298,8 +300,9 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  getOpenidStatus(HttpServletRequest request,HttpSession session) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         String openid= WechatUtil.getOpenId(session, request);
-//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         Map<String, Object> result = new HashMap<String, Object>();
         Map<String,Object> openIdStatus = babyUmbrellaInfoSerivce.getOpenidStatus(openid);
         if(openIdStatus != null){
@@ -329,10 +332,11 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  ifExistOrder(HttpServletRequest request,HttpSession session) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         Map<String, Object> map=new HashMap<String, Object>();
         Map<String, Object> result=new HashMap<String, Object>();
         String openid= WechatUtil.getOpenId(session, request);
-//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
         List<Map<String, Object>> list=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
@@ -347,14 +351,9 @@ public class UmbrellaController  {
                     result.put("umbrella", m);
                     return result;
                 }
-//                result.put("phone", UserUtils.getUser().getPhone());
                 result.put("result", 2);
                 result.put("umbrella", m);
                 return result;
-//            }else{
-//                result.put("result",1);
-//                return result;
-//            }
         }
         result.put("result",1);
         return result;
@@ -366,7 +365,9 @@ public class UmbrellaController  {
     @RequestMapping(value = "/updateActivationTime", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object>  updateActivationTime(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) {
+    Map<String, Object>  updateActivationTime(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
         Map<String, Object> map=new HashMap<String, Object>();
         Map<String, Object> result=new HashMap<String, Object>();
         BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
@@ -384,6 +385,8 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  updateTruePayMoney(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
         Map<String, Object> map=new HashMap<String, Object>();
         Map<String, Object> result=new HashMap<String, Object>();
         BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
@@ -402,6 +405,8 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  randomMoney(HttpServletRequest request,HttpSession session) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
         Map<String, Object> map=new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session, request);
         map.put("openid",openid);
@@ -433,10 +438,6 @@ public class UmbrellaController  {
         double ram=0;
         if(flag.equals("1")) {
             ram = Math.random() * 5;
-//        while (ram < 1){
-//            ram=Math.random() * 5;
-//        }
-
             do {
                 ram = Math.random() * 5;
             } while (ram < 1);
@@ -450,7 +451,6 @@ public class UmbrellaController  {
         babyUmbrellaInfo.setVersion("a");
         if(res.equals("0")){
             babyUmbrellaInfo.setPayResult("success");
-//            babyUmbrellaInfo.setActivationTime(new Date());
         }else {
             babyUmbrellaInfo.setPayResult("fail");
         }
@@ -468,6 +468,8 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object> addFamilyUmbrella(@RequestBody Map<String, Object> params){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
         Map<String, Object> resultMap = new HashMap<String, Object>();
         UmbrellaFamilyInfo familyInfo = new UmbrellaFamilyInfo();
         Date birthDay = DateUtils.StrToDate(params.get("birthDay").toString(), "yyyy-MM-dd");
@@ -487,6 +489,8 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object> familyUmbrellaList(@RequestBody Map<String, Object> params){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         boolean activation = false;
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Integer id = Integer.parseInt((String) params.get("id"));
@@ -501,8 +505,6 @@ public class UmbrellaController  {
             list.add(familyInfo);
             activation = true;
         }
-
-//        babyInfo.getUserid()
         resultMap.put("familyList",list);
         resultMap.put("activation",activation);
         return resultMap;
@@ -512,29 +514,24 @@ public class UmbrellaController  {
     /**
      * 家庭版保护成员列表
      */
-    @RequestMapping(value = "/cheackFamilyMembers", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/checkFamilyMembers", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> cheackFamilyMembers(@RequestBody Map<String, Object> params){
+    Map<String, Object> checkFamilyMembers(@RequestBody Map<String, Object> params){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Boolean showFather = true;
         Boolean showMother = true;
         Integer id = Integer.parseInt((String) params.get("id"));
-        List<UmbrellaFamilyInfo> list = new ArrayList<UmbrellaFamilyInfo>();
-        list = babyUmbrellaInfoSerivce.getFamilyUmbrellaList(id);
+        List<UmbrellaFamilyInfo> list = babyUmbrellaInfoSerivce.getFamilyUmbrellaList(id);
         for(UmbrellaFamilyInfo info:list){
-//          Date date=new Date();
-//          long day=(date.getTime()-info.getBirthday().getTime())/(24*60*60*1000) + 1;
-//          String year=new java.text.DecimalFormat("#").format(day/365f);
-//          if(Integer.parseInt(year)>18){
               //0 男 1 女
             if(info.getSex()==2){
               showFather = false;
             }else if(info.getSex()==3){
               showMother = false;
             }
-
-//          }
         }
         resultMap.put("showFather",showFather);
         resultMap.put("showMother",showMother);
@@ -547,13 +544,14 @@ public class UmbrellaController  {
     @RequestMapping(value = "/getUmbrellaNum", method = {RequestMethod.POST, RequestMethod.GET} )
     public
     @ResponseBody
-    Map<String, Object>  getUmbrellaNum(@RequestBody Map<String, Object> params){
-      Map<String, Object> resultMap = new HashMap<String, Object>();
-      Map<String,Object> map = babyUmbrellaInfoSerivce.getUmbrellaNum(resultMap);
-      Long familyNum = (Long)map.get("familyNum");
-//      Long umbrellaNum = (Long)map.get("umbrellaNum");
-      resultMap.put("umbrellaCount",familyNum);
-      return resultMap;
+    Map<String, Object> getUmbrellaNum(){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        Map<String,Object> map = babyUmbrellaInfoSerivce.getUmbrellaNum(resultMap);
+        Long familyNum = (Long)map.get("familyNum");
+        resultMap.put("umbrellaCount",familyNum);
+        return resultMap;
     }
 
 
@@ -581,6 +579,8 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object> updateBabyUmbrellaInfoIfShare(@RequestBody Map<String, Object> params){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
         Map<String, Object> resultMap = new HashMap<String, Object>();
         BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
         babyUmbrellaInfo.setId(Integer.parseInt(params.get("id").toString()));
