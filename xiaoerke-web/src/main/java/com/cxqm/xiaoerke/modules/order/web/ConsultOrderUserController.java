@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.order.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.IdGen;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
@@ -54,6 +56,7 @@ public class ConsultOrderUserController {
     public
     @ResponseBody
     Map<String,Object> getConsultPhoneRegisterInfoById(@RequestParam Integer phoneConsultaServiceId){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return consultPhonePatientService.getPatientRegisterInfo(phoneConsultaServiceId);
     }
 
@@ -66,6 +69,7 @@ public class ConsultOrderUserController {
     public
     @ResponseBody
     Map<String,Object> getConsultPhoneList(){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         Map<String,Object> resultMap = new HashMap<String, Object>();
         String userId = UserUtils.getUser().getId();
         List<HashMap<String,Object>> orderList = consultPhonePatientService.getOrderList(userId);
@@ -82,6 +86,7 @@ public class ConsultOrderUserController {
     public
     @ResponseBody
     Map<String, Object> myselfInfoOrderListAll(Map<String,Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         HashMap<String, Object> response = new HashMap<String, Object>();
         return consultPhoneOrderService.getOrderListAll(params);
     }
@@ -95,6 +100,7 @@ public class ConsultOrderUserController {
     public
     @ResponseBody
     Map<String,Object> getConsultPhonePageList(@RequestBody Map<String,Object> params){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return consultPhoneOrderService.getUserOrderPhoneConsultList(params);
     }
 
@@ -106,6 +112,7 @@ public class ConsultOrderUserController {
     public
     @ResponseBody
     Map<String,Object> createOrder(@RequestBody Map<String, Object> params){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         String babyId =(String)params.get("babyId");
         String  babyName =(String)params.get("babyName");
         String  phoneNum =(String)params.get("phoneNum");
@@ -147,6 +154,7 @@ public class ConsultOrderUserController {
     public synchronized
     @ResponseBody
     Map<String,Object> cancelOrder(@RequestBody Map<String, Object> params){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         BigDecimal resultState =new BigDecimal(0);
         Integer phoneConsultaServiceId = Integer.parseInt((String) params.get("phoneConsultaServiceId"));
         String cancelReason = (String)params.get("cancelReason");
