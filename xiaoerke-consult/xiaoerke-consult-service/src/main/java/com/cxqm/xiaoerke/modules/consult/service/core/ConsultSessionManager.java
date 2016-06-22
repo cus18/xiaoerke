@@ -84,8 +84,6 @@ public class ConsultSessionManager {
     private static ConsultSessionManager sessionManager = new ConsultSessionManager();
 
     private ConsultSessionManager() {
-//        String distributorsStr = Global.getConfig("distributors.list");
-//        distributorsList = Arrays.asList(distributorsStr.split(";"));
         User user = new User();
         user.setUserType("distributor");
         List<User> users = systemService.findUserByUserType(user);

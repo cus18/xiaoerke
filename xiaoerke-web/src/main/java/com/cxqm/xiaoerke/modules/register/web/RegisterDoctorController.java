@@ -71,8 +71,8 @@ public class RegisterDoctorController extends BaseController {
 		if(from.getTime() < to.getTime()){
 			if(!fromTime.equals(toTime)){
 				Date temp = new Date();
-				for(int i=0;i < ConstantUtil.DAY_QUARTER_NUMBER;i++){
-					temp.setTime(from.getTime() + ConstantUtil.VISIT_INTERVAL*60*1000*i);
+				for(int i=0;i < Integer.parseInt(ConstantUtil.DAY_QUARTER_NUMBER);i++){
+					temp.setTime(from.getTime() + Integer.parseInt(ConstantUtil.VISIT_INTERVAL)*60*1000*i);
 					String toTimeStr =DateUtils.DateToStr(temp,"time");
 					if(!toTime.equals(toTimeStr)){
 						timeList.add(toTimeStr);

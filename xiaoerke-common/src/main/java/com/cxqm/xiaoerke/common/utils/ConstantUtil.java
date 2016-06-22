@@ -38,8 +38,8 @@ public class ConstantUtil {
 	public static String NOTIFY_CONSULTPHONE_URL = Global.getConfig("NOTIFY_CONSULTPHONE_URL");
 	public static String NOTIFY_UMBRELLA_URL = Global.getConfig("NOTIFY_UMBRELLA_URL");
 
-	public static int DAY_QUARTER_NUMBER = Integer.parseInt(Global.getConfig("DAY_QUARTER_NUMBER"));
-	public static int VISIT_INTERVAL = Integer.parseInt(Global.getConfig("VISIT_INTERVAL"));
+	public static String DAY_QUARTER_NUMBER = Global.getConfig("DAY_QUARTER_NUMBER");
+	public static String VISIT_INTERVAL = Global.getConfig("VISIT_INTERVAL");
 	public static String MARKET_WEB_URL = Global.getConfig("MARKET_WEB_URL");
 	public static String WISDOM_WEB_URL = Global.getConfig("WISDOM_WEB_URL");
 	public static String ANGEL_WEB_URL = Global.getConfig("ANGEL_WEB_URL");
