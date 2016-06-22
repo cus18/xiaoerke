@@ -50,7 +50,6 @@ public class MemberController extends BaseController {
 
     @Autowired
     private RegisterService registerService;
-    @SystemControllerLog(description = "用户通过推广码来获取")
     @RequestMapping(value = "/extendMemberService", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
@@ -71,7 +70,8 @@ public class MemberController extends BaseController {
             User user = UserUtils.getUser();
             Boolean status = memberService.produceExtendMember(memberType, openId, user.getId(), memberType, "");
             if (status == true) {
-                List<MemberservicerelItemservicerelRelationVo> memberservicerelItemservicerelRelationVos = memberService.findMemberPropertyAppAvailable();
+                List<MemberservicerelItemservicerelRelationVo> memberservicerelItemservicerelRelationVos =
+                        memberService.findMemberPropertyAppAvailable();
                 if (memberservicerelItemservicerelRelationVos != null && memberservicerelItemservicerelRelationVos.size() > 0) {
                     response.put("result", "true");
                     response.put("startDate", DateUtils.formatDateToStr(memberservicerelItemservicerelRelationVos.get(0).getActivateDate(), "yyyy/MM/dd"));

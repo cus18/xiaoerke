@@ -61,12 +61,6 @@ public class ArticleService extends CrudService<ArticleDao, Article> {
 	private CategoryDao categoryDao;
 
 	@Autowired
-	private ArticleDataService articleDataService;
-
-	@Autowired
-	private MongoDBService<MongoLog> mongoDBService;
-	
-	@Autowired
 	private BabyEmrService babyEmrService;
 	
 	@Autowired
