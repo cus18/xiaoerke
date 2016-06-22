@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.sys.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.modules.sys.entity.IllnessVo;
 import com.cxqm.xiaoerke.modules.sys.service.IllnessInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,7 @@ public class ConsultPhoneIllnessController {
     public
     @ResponseBody
     List<IllnessVo> getFirstIllnessList(){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return illnessInfoService.getFirstIllnessList();
     }
 
@@ -40,6 +43,7 @@ public class ConsultPhoneIllnessController {
     public
     @ResponseBody
     List<IllnessVo> getSecondIllnessList(@RequestParam String illnessName){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return illnessInfoService.findSecondIllnessByName(illnessName);
     }
 }
