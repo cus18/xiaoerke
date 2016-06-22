@@ -181,7 +181,6 @@ public class DoctorInfoController extends BaseController {
     public
     @ResponseBody
     @SystemControllerLog(description = "00000074")
-//搜索医生7天内的出诊位置信息
     Map<String, Object> GetDoctorVisitInfo(@RequestBody Map<String, Object> params) throws Exception {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 

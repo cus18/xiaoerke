@@ -15,6 +15,7 @@ import com.cxqm.xiaoerke.modules.plan.service.PlanMessageService;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.interceptor.SystemControllerLog;
 import com.cxqm.xiaoerke.modules.sys.service.UtilService;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -207,16 +208,15 @@ public class UtilController extends BaseController {
     /**
      * 供前台调用 保存页面点击的日志文件
      */
-    @SystemControllerLog(description = "")
     @RequestMapping(value = "/recordLogs", method = {RequestMethod.GET, RequestMethod.POST},
             produces = "text/plain;charset=UTF-8")
     public
     @ResponseBody
     String recordLogs(HttpServletRequest request) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
-
         try {
             String logContent = URLDecoder.decode(request.getParameter("logContent"), "UTF-8");
+            LogUtils.saveLog(request,logContent);
             return "success";
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

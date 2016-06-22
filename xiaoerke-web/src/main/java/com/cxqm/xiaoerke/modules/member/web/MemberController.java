@@ -87,7 +87,7 @@ public class MemberController extends BaseController {
         return response;
     }
 
-    @SystemServiceLog(description = "00000062")//123
+    @SystemServiceLog(description = "00000062")
     @RequestMapping(value = "/checkIfAppScanDoctor", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody

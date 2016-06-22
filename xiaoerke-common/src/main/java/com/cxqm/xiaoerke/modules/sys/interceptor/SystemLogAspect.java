@@ -72,7 +72,6 @@ public class SystemLogAspect {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
         try {
-//            String  userId=
             String title = getControllerMethodDescription(joinPoint);
             saveLog(request, null, null, title);
         } catch (Exception e) {

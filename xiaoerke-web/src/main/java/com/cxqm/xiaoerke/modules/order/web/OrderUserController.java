@@ -292,7 +292,7 @@ public class OrderUserController extends BaseController {
     @RequestMapping(value = "/order/user/checkIfAppointmentNeedPay", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    @SystemControllerLog(description = "00000062")//扫码来预约
+//    @SystemControllerLog(description = "00000062")//扫码来预约
     Map<String, Object> checkIfAppointmentNeedPay(@RequestBody Map<String, Object> params, HttpSession session,
                                                   HttpServletRequest request) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);

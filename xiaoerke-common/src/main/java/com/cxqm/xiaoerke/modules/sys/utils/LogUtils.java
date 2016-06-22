@@ -232,6 +232,4 @@ public class LogUtils {
 		}
 		return menuNamePath;
 	}
-
-	
 }
