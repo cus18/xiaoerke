@@ -3,6 +3,8 @@
  */
 package com.cxqm.xiaoerke.modules.sys.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.interaction.entity.PraiseVo;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
@@ -84,6 +86,8 @@ public class DoctorInfoController extends BaseController {
     @SystemControllerLog(description = "00000073")
     //获取某个医生的详细信息
     Map<String, Object> DoctorDetail(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         String doctorId = (String) params.get("doctorId");
         if(doctorId == null || "".equals(doctorId)){
             Map<String,Object> paramsMap = new HashMap<String, Object>();
@@ -179,6 +183,8 @@ public class DoctorInfoController extends BaseController {
     @SystemControllerLog(description = "00000074")
 //搜索医生7天内的出诊位置信息
     Map<String, Object> GetDoctorVisitInfo(@RequestBody Map<String, Object> params) throws Exception {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         HashMap<String, Object> response = new HashMap<String, Object>();
         String doctorId = (String) params.get("doctorId");
         List<HashMap<String, Object>> doctorInfo = registerService.getDoctorVisitInfo(doctorId);
@@ -224,6 +230,7 @@ public class DoctorInfoController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> GetDoctorVisitInfoByLocation(@RequestBody Map<String, Object> params) throws Exception {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return registerService.GetDoctorVisitInfoByLocation(params);
     }
 
@@ -246,6 +253,7 @@ public class DoctorInfoController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> findDoctorLocationByDoctorId(@RequestBody Map<String, Object> params) throws Exception {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return doctorLocationService.findDoctorLocationByDoctorId(params);
     }
 
@@ -258,6 +266,7 @@ public class DoctorInfoController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> findDoctorCaseEvaluation(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         String doctorId = (String)params.get("doctorId");
         if(doctorId == null || "".equals(doctorId)){
             //获取医生的案例信息
@@ -285,7 +294,8 @@ public class DoctorInfoController extends BaseController {
     @RequestMapping(value = "/sys/doctor/doctorInfo", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    HashMap<String, Object> getDoctorInfo(@RequestBody Map<String, Object> params) {
+    HashMap<String, Object> getDoctorInfo() {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         HashMap<String, Object> response = new HashMap<String, Object>();
         String userId = UserUtils.getUser().getId();
         if (userId != null && !"".equals(userId)) {
@@ -311,6 +321,8 @@ public class DoctorInfoController extends BaseController {
     @SystemControllerLog(description = "00000073")
         //获取某个医生的详细信息
     Map<String, Object> DoctorBaseInfo(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         String doctorId = (String) params.get("doctorId");
         if(doctorId == null || "".equals(doctorId)){
             Map<String,Object> paramsMap = new HashMap<String, Object>();

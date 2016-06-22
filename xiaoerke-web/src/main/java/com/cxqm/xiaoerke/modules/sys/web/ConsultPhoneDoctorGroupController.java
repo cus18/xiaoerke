@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.sys.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.FrontUtils;
 import com.cxqm.xiaoerke.modules.sys.service.DoctorGroupInfoService;
@@ -34,8 +36,7 @@ public class ConsultPhoneDoctorGroupController {
     Map<String,Object> getAllDoctorGroupList(@RequestParam(value="pageNo", required=true) String pageNo,
                                              @RequestParam(value="pageSize", required=false) String pageSize,
                                              @RequestParam(value="orderBy", required=false) String orderBy){
-        HashMap<String, Object> response = new HashMap<String,Object>();
-
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         Page<HashMap<String, Object>> page = FrontUtils.generatorPage(pageNo, pageSize);
         HashMap<String, Object> param = new HashMap<String, Object>();
         param.put("is_consultPhone","1");

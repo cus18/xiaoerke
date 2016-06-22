@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +32,8 @@ public class UnCertifiedDoctorInfoController {
 	 @RequestMapping(value = "unCertifiedDoctorInfo/save", method = {RequestMethod.POST, RequestMethod.GET})
 	 public @ResponseBody
 	    Map<String, Object>  saveUnCertifiedDoctorInfo(@RequestBody Map<String, Object> params){
+		 DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		 	UnCertifiedDoctorInfo  doctorInfo=new UnCertifiedDoctorInfo();
 	        HashMap<String, Object> response = new HashMap<String, Object>();
 	        doctorInfo.setName((String)params.get("name"));
@@ -50,7 +54,7 @@ public class UnCertifiedDoctorInfoController {
 	        	unCertifiedDoctorInfo.updateByPrimaryKeySelective(udi);
 	        	 response.put("status", 0);
 	        }else{
-		        int i=unCertifiedDoctorInfo.insertUnCertifiedDoctorInfo(doctorInfo);
+		        unCertifiedDoctorInfo.insertUnCertifiedDoctorInfo(doctorInfo);
 		        response.put("status", 1);
 	        }
 	        return response;
