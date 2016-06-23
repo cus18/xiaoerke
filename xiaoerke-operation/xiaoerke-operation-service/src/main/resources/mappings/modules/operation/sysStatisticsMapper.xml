@@ -338,8 +338,8 @@
             <if test="id != null" >
                 id,
             </if>
-            <if test="create_by != null" >
-                create_by,
+            <if test="operater != null" >
+                operater,
             </if>
             <if test="department != null" >
                 department,
@@ -355,8 +355,8 @@
             <if test="id != null" >
                 #{id,jdbcType=BIGINT},
             </if>
-            <if test="create_by != null" >
-                #{create_by,jdbcType=VARCHAR},
+            <if test="operater != null" >
+                #{operater,jdbcType=VARCHAR},
             </if>
             <if test="department != null" >
                 #{department,jdbcType=VARCHAR},
@@ -370,8 +370,8 @@
         </trim>
     </insert>
     <!--查询渠道信息-->
-    <select id="getChannelInfos" resultMap="com.cxqm.xiaoerke.modules.operation.entity.ChannelInfo">
-        SELECT id,create_by,department,marketer,channel from channel_info
-        GROUP BY department
+    <select id="getChannelInfos" resultType="com.cxqm.xiaoerke.modules.operation.entity.ChannelInfo">
+        SELECT id,operater,department,marketer,channel from channel_info
+        ORDER BY department
    </select>
 </mapper>

@@ -16,7 +16,7 @@
                     type : 'POST',
                     url : "${ctx}/sys/Channel/addChannel",
                     data : {
-                        'create_by' : $("#txtCreate_by").val(),
+                        'operater' : $("#txtOperater").val(),
                         'department' : $("#txtDepartment").val(),
                         'marker' : $("#txtMarker").val(),
                         'channel' : $("#txtChannel").val()
@@ -43,7 +43,7 @@
 
 <form:form id="searchForm" modelAttribute="registerServiceVo" action="${ctx}/sys/Channel/ChannelMain" method="post" class="form-search">
     <sys:message content="${message}"/>
-    添加人 ：<input ID="txtCreate_by" name="create_by" type="text">
+    添加人 ：<input id="txtOperater" name="operater" type="text">
     部  门 ：
     <select name="department" id="txtDepartment">
         <c:forEach items="${departs}" var="depart" step="1">
@@ -53,7 +53,7 @@
 
 
     二维码 ：<input id="txtMarker" name="marker" type="text">
-    渠道 ：<input id="txtChannel" name="channel" type="text">
+    渠道细分 ：<input id="txtChannel" name="channel" type="text">
     <input id="btnSave" class="btn btn-primary"  type="button" value="保存"/>
     <input id="btnSubmit" class="btn btn-primary" type="submit" value="查看"/>
 </form:form>
@@ -72,7 +72,7 @@
     <c:forEach items="${channelList}" var="channelVo">
         <tr id="${menu.id}" pId="${menu.parent.id ne '1'?menu.parent.id:'0'}">
             <td>${channelVo.marketer}</td>
-            <td>${channelVo.create_by}</td>
+            <td>${channelVo.operater}</td>
             <td>${channelVo.department}</td>
             <td>${channelVo.channel}</td>
         </tr>
