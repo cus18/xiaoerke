@@ -1,16 +1,15 @@
 package com.cxqm.xiaoerke.modules.operation.service.impl;
 
+import com.cxqm.xiaoerke.modules.operation.dao.SysStatisticsDao;
+import com.cxqm.xiaoerke.modules.operation.entity.ChannelInfo;
 import com.cxqm.xiaoerke.modules.operation.service.ChannelService;
 import com.cxqm.xiaoerke.modules.operation.service.OperationsComprehensiveService;
-import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 渠道统计 实现
@@ -25,6 +24,8 @@ public class ChannelServiceImpl implements ChannelService {
     @Autowired
 //    private OperationComprehensiveDao operationComprehensiveDao;
     private OperationsComprehensiveService operationsComprehensiveService;
+    @Autowired
+    public SysStatisticsDao sysStatisticsDao;
 
     @Override
     public List<HashMap<String, Object>> getTuiStatisticData(HashMap hashMap) {
@@ -121,5 +122,13 @@ public class ChannelServiceImpl implements ChannelService {
 //        left join (select marketer,count(*) from sys_attention where date BETWEEN '2016-02-20 00:00:00' and now()  and STATUS = '1' GROUP BY marketer ) b
 //        on a.marketer = b.marketer
 
+    }
+
+    public int insertChannel(ChannelInfo channelInfo){
+        return sysStatisticsDao.insertChannel(channelInfo);
+    }
+
+    public List<ChannelInfo> getChannelInfos(){
+        return sysStatisticsDao.getChannelInfos();
     }
 }
