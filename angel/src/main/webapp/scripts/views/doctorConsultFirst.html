@@ -9,13 +9,13 @@
                 </span>
                 <span></span>
                 <span>（{{doctorName}}），宝大夫欢迎您！！</span>
-                <span>
-                    <select>
-                        <option>在线</option>
-                        <option>不在线</option>
-                    </select>
-                    <!--<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>-->
-                </span>
+                <!--<span>-->
+                    <!--<select>-->
+                        <!--<option>在线</option>-->
+                        <!--<option>不在线</option>-->
+                    <!--</select>-->
+                    <!--&lt;!&ndash;<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>&ndash;&gt;-->
+                <!--</span>-->
                 <span ng-if="loseConnectionFirstFlag||loseConnectionSecondFlag">您已与平台断开了连接，请检查您的网络情况，谢谢！</span>
                 <span ng-if="!loseConnectionFirstFlag&&!loseConnectionSecondFlag">您目前与平台连接正常！</span>
                 <div class="bdf-dkf-content-right">
@@ -96,7 +96,7 @@
                     <span ng-click="edit()">编辑</span>
                     <span ng-click="remove()">删除</span>
                     <span ng-click="moveUp()">向上</span>
-                    <span >向下</span>
+                    <span ng-click="moveDown()">向下</span>
                     <span>同步</span>
                 </div>
                 <div class="replayContent">
