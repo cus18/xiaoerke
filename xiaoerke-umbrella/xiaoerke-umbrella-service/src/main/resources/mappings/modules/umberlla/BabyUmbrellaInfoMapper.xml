@@ -160,7 +160,7 @@
         <if test="ifLastDate != null">
             and DATE_FORMAT(create_time, '%Y-%m-%d')
             &lt;=
-            date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -1 day)
+            date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -5 day)
         </if>
 
     </select>
@@ -174,19 +174,45 @@
         <if test="ifLastDate != null">
             and DATE_FORMAT(create_time, '%Y-%m-%d')
             &lt;=
-            date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -1 day)
+            date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -5 day)
         </if>
     </select>
 
     <select id="getUmbrellaActivationFamilyPeopleCount" resultType="java.lang.Integer" >
         select count(*) from `umbrella_familyinfo`
         where `umbrella_id`
-        in ( select id from `baby_umbrellainfo` bl where bl.pay_result='success' and bl.openid !='')
+        in ( select id from `baby_umbrellainfo` bl where (bl.pay_result='success' or pay_result is null ) and bl.openid
+        !=''
         <if test="ifLastDate != null">
             and DATE_FORMAT(create_time, '%Y-%m-%d')
             &lt;=
-            date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -1 day)
+            date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -5 day)
+        </if>
+        )
+    </select>
+
+    <select id="getUmbrellaFreeActivationCount" resultType="java.lang.Integer" >
+        select count(*) from baby_umbrellainfo
+        where pay_result is null
+        and openid !=''
+        and baby_id is  not null
+        and baby_id !=''
+        <if test="ifLastDate != null">
+            and DATE_FORMAT(create_time, '%Y-%m-%d')
+            &lt;=
+            date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -5 day)
         </if>
     </select>
 
+    <select id="getUmbrellaFreeNotActivationCount" resultType="java.lang.Integer" >
+        select count(*)*2 from baby_umbrellainfo
+        where pay_result is null
+        and openid !=''
+        and `baby_id` is null
+        <if test="ifLastDate != null">
+            and DATE_FORMAT(create_time, '%Y-%m-%d')
+            &lt;=
+            date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -5 day)
+        </if>
+    </select>
 </mapper>
