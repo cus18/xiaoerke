@@ -4,18 +4,24 @@ angular.module('controllers', ['luegg.directives'])
         '$location', 'GetCurrentUserHistoryRecord','GetMyAnswerModify','GetCurrentUserConsultListInfo',
         'TransferToOtherCsUser','SessionEnd','GetWaitJoinList','React2Transfer','CancelTransfer','$upload',
         'GetFindTransferSpecialist','GetRemoveTransferSpecialist','GetAddTransferSpecialist','GetFindAllTransferSpecialist',
-        'CreateTransferSpecialist','$state','GetSystemTime','GetUserSessionTimesByUserId','GetCustomerLogByOpenID',
+        'CreateTransferSpecialist','$state','GetSystemTime','GetUserSessionTimesByUserId','GetCustomerLogByOpenID','SaveCustomerLog',
+        'SearchIllnessList',
         function ($scope, $sce, $window,$stateParams,GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
                   GetUserLoginStatus, $location, GetCurrentUserHistoryRecord,GetMyAnswerModify,
                   GetCurrentUserConsultListInfo,TransferToOtherCsUser,SessionEnd,GetWaitJoinList,React2Transfer,CancelTransfer,$upload,
                   GetFindTransferSpecialist,GetRemoveTransferSpecialist,GetAddTransferSpecialist,GetFindAllTransferSpecialist,
-                  CreateTransferSpecialist,$state,GetSystemTime,GetUserSessionTimesByUserId,GetCustomerLogByOpenID) {
+                  CreateTransferSpecialist,$state,GetSystemTime,GetUserSessionTimesByUserId,GetCustomerLogByOpenID,SaveCustomerLog,
+                  SearchIllnessList) {
             //初始化info参数
             $scope.info = {
                 effect:"true",
+                illness:"",//诊断
+                show:"",//表现
+                result:"",//处理
                 transferRemark:"",
                 searchCsUserValue:"",
                 selectedSpecialist:"",
+                selectedIllnessList:"",
                 role:{
                     "distributor":"接诊员",
                     "consultDoctor":"专业医生"
@@ -890,13 +896,11 @@ angular.module('controllers', ['luegg.directives'])
             };
             $scope.getQQExpression = function () {
                 $('#face').qqFace({
-                    id: 'facebox', //表情盒子的ID
-                    assign: 'saytext', //给那个控件赋值
+                    id: 'facebox',
+                    assign: 'saytext',
                     path: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fqqface%2F'
-                    //表情存放的路径
                 });
             };
-            //查看结果
             var replace_em = function (str) {
                 str = str.replace(/\</g,'&lt;');
                 str = str.replace(/\>/g,'&gt;');
@@ -1317,8 +1321,28 @@ angular.module('controllers', ['luegg.directives'])
             /***咨询服务**/
             //根据openid获取历史咨询
             GetCustomerLogByOpenID.save({answer: $scope.currentUserConversation.patientId}, function (data) {
-                console.log('aaa');
             });
+            //添加诊断记录
+            $scope.addDiagnosisRecords = function () {
+                //$scope.currentUserConversation.patientId(openid)病人的id
+                //$scope.doctorId
+                //$scope.todayTime
+            }
+            //{'openid':'o8gDqvh8u9dYch9lEVRQSFOOsVhw','create_date':'2016-6-23','illness':'ddd','sections':'挂号相关',
+            // 'customerID':'00032b390d744d0sa63a4d6e7a0e8dbf','id':'','show':'aaa','result':'cccc'}
+            SearchIllnessList.save(function (data) {
+                $scope.illnessList = data.illnessList;
+                console.log($scope.illnessList);
+            });
+            SaveCustomerLog.save({answer: $scope.currentUserConversation.patientId}, function (data) {
+            });
+            // 获取当前的时间
+            $scope.todayTime = '';
+            var newTime = function(){
+                var d = new Date();
+                $scope.todayTime = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+            }
+
             $scope.userTableMore = "查看更多";
             $scope.tapUserTable = function (key) {
                 $scope.showFlag[key] = !$scope.showFlag[key];
@@ -1339,6 +1363,7 @@ angular.module('controllers', ['luegg.directives'])
             };
             $scope.addConsultTableMore = "查看更多";
             $scope.tapAddConsultTable = function (key) {
+                newTime()
                 $scope.showFlag[key] = !$scope.showFlag[key];
                 if($scope.showFlag[key]){
                     $scope.addConsultTableMore = "收起更多";

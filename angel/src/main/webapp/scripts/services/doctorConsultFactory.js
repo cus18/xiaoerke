@@ -130,6 +130,14 @@ angular.module('services', ['ngResource'])
     .factory('GetCustomerLogByOpenID', ['$resource', function ($resource) {
         return $resource(public + 'customer/getCustomerLogByOpenID');
     }])
+    //添加诊断记录
+    .factory('SaveCustomerLog', ['$resource', function ($resource) {
+        return $resource(public + 'customer/saveCustomerLog');
+    }])
+    //添加诊断记录
+    .factory('SearchIllnessList', ['$resource', function ($resource) {
+        return $resource(public + 'customer/searchIllnessList');
+    }])
 
 
 
