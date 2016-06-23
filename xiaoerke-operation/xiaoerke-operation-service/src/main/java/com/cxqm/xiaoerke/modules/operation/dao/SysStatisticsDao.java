@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.operation.dao;
 
 import com.cxqm.xiaoerke.common.persistence.CrudDao;
 import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
+import com.cxqm.xiaoerke.modules.operation.entity.ChannelInfo;
 import com.cxqm.xiaoerke.modules.operation.entity.SysStatistics;
 
 import java.util.List;
@@ -22,4 +23,9 @@ public interface SysStatisticsDao extends CrudDao<SysStatisticsDao> {
 
     //获取业务综合统计数据
     List<SysStatistics> getOperationsComprehensiveList(SysStatistics sysStatisticsVo);
+
+    //添加渠道
+    int insertChannel(ChannelInfo channelInfo);
+    //渠道查询
+    List<ChannelInfo> getChannelInfos();
 }
