@@ -175,22 +175,24 @@ function wechatPay() {
                                     success: function (result) {
                                         var status = result.status;
                                         if (status == "1") {
-                                            var shareid = GetQueryString("shareId") == null || GetQueryString("shareId") == "120000000" ? 130000000 : GetQueryString("shareId");
-                                            $.ajax({
-                                                type: 'POST',
-                                                url: "umbrella/getUserQRCode",
-                                                contentType: "application/json; charset=utf-8",
-                                                async: false,
-                                                data: "{'id':'" + shareid + "'}",
-                                                success: function (data) {
-                                                    recordLogs("BHS_ZFY_ZFCG");
-                                                    $("#QRCode").attr("src", data.qrcode);
-                                                    $("#QRCodeDIV").show();
-                                                    $(".c-shadow").show();
-                                                    $(".shadow-content").show();
-                                                },
-                                                dataType: "json"
-                                            });
+                                            var shareId = GetQueryString("shareId") == null || GetQueryString("shareId") == "120000000" ? 130000000 : GetQueryString("shareId");
+                                            window.location.href="http://s165.baodf.com/wisdom/umbrella#/umbrellaPaySuccess/"+shareId;
+                                            // $.ajax({
+                                            //     type: 'POST',
+                                            //     url: "umbrella/getUserQRCode",
+                                            //     contentType: "application/json; charset=utf-8",
+                                            //     async: false,
+                                            //     data: "{'id':'" + shareid + "'}",
+                                            //     success: function (data) {
+                                            //         recordLogs("BHS_ZFY_ZFCG");
+                                            //         $("#QRCode").attr("src", data.qrcode);
+                                            //         $("#QRCodeDIV").show();
+                                            //         $(".c-shadow").show();
+                                            //         $(".shadow-content").show();
+                                            //     },
+                                            //     dataType: "json"
+                                            // });
+                                            
                                         } else {
                                             // window.location.href = "http://s165.baodf.com/wisdom/firstPage/umbrella?status=a";
                                             window.location.href = "http://s165.baodf.com/wisdom/umbrella#/umbrellaJoin/" + new Date().getTime() + "/" + 120000000;

@@ -70,12 +70,18 @@
                     error : function() {
                     }
                 });
+                ifExistOrder.save(function (data) {
+                    // $scope.info.phoneNum=data.phone;
+                    if (data.result == "3") {
+                        window.location.href = "../wisdom/firstPage/umbrella?id=" + $stateParams.id;
+                    }
+
                 recordLogs("BHS_WDBZ");
                 JoinUs.save({"shareId":$scope.shareid},function(data){
                     if(data.umbrella.activation_time==null){
                         $scope.firstJoin=true;
                         $scope.umbrellaMoney=200000;
-                        if(data.result==2){
+                        if(data.result==3){
                             $scope.umbrellaId=data.umbrella.id;
                         }else {
                             $scope.umbrellaId = data.id;
@@ -129,6 +135,7 @@
                     $scope.pintu=data.umbrella.friendJoinNum>=10?0:10-data.umbrella.friendJoinNum;
                 });
             });
+        });
 
             var recordLogs = function(val){
                 $.ajax({

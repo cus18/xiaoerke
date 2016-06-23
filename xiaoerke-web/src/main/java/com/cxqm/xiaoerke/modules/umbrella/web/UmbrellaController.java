@@ -122,6 +122,7 @@ public class UmbrellaController  {
         Map<String, Object> map=new HashMap<String, Object>();
         Map<String, Object> numm=new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session, request);
+        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
         List<Map<String, Object>> list = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
@@ -303,6 +304,7 @@ public class UmbrellaController  {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
         String openid= WechatUtil.getOpenId(session, request);
+        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         Map<String, Object> result = new HashMap<String, Object>();
         Map<String,Object> openIdStatus = babyUmbrellaInfoSerivce.getOpenidStatus(openid);
         if(openIdStatus != null){
@@ -337,6 +339,7 @@ public class UmbrellaController  {
         Map<String, Object> map=new HashMap<String, Object>();
         Map<String, Object> result=new HashMap<String, Object>();
         String openid= WechatUtil.getOpenId(session, request);
+        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
         List<Map<String, Object>> list=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
@@ -564,6 +567,7 @@ public class UmbrellaController  {
     Map<String, Object> getOpenid(HttpServletRequest request,HttpSession session){
         Map<String, Object> resultMap = new HashMap<String, Object>();
         String openid= WechatUtil.getOpenId(session, request);
+        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         if(openid==null||openid.equals("")){
             resultMap.put("openid","none");
             return resultMap;
@@ -587,6 +591,49 @@ public class UmbrellaController  {
         Integer res=babyUmbrellaInfoSerivce.updateBabyUmbrellaInfoIfShare(babyUmbrellaInfo);
         resultMap.put("result",res);
         return resultMap;
+    }
+
+    /**
+     *  新版加入保护伞
+     */
+    @RequestMapping(value = "/newJoinUs", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object>  newJoinUs(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) throws UnsupportedEncodingException {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
+        Map<String, Object> result=new HashMap<String, Object>();
+        //验证手机号是否正确
+        String phone=params.get("phone").toString();
+        String code=params.get("code").toString();
+        String openid= WechatUtil.getOpenId(session, request);
+        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+        String codeAuth=utilService.bindUser(phone,code,openid);
+        if(codeAuth.equals("0")){
+             codeAuth=utilService.bindUser4Doctor(phone,code,openid);
+            if(codeAuth.equals("0")){
+                codeAuth=utilService.bindUser4ConsultDoctor(phone,code,openid);
+                if(codeAuth.equals("0")){
+                    result.put("result","3");
+                    return result;
+                }
+            }
+        }
+        //添加保护伞初始信息
+        BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
+        babyUmbrellaInfo.setOpenid(openid);
+        babyUmbrellaInfo.setBabyId(params.get("babyId").toString());
+        babyUmbrellaInfo.setParentIdCard(params.get("idCard").toString());
+        babyUmbrellaInfo.setParentPhone(params.get("phone").toString());
+        babyUmbrellaInfo.setParentName(URLDecoder.decode(params.get("parentName").toString(),"UTF-8"));
+        babyUmbrellaInfo.setParentType(Integer.parseInt(params.get("parentType").toString()));
+        Integer res = babyUmbrellaInfoSerivce.newSaveBabyUmbrellaInfo(babyUmbrellaInfo);
+//        String shareId=params.get("shareId").toString();
+//        sendWechatMessage(openid,shareId);
+
+        result.put("result",res);
+        result.put("id",babyUmbrellaInfo.getId());
+        return result;
     }
 
 }

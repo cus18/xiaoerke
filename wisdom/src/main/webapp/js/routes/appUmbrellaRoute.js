@@ -129,7 +129,7 @@ define(['appUmbrella'], function(app){
                         }
                     })
                     .state('umbrellaPaySuccess', {
-                        url: '/umbrellaPaySuccess',
+                        url: '/umbrellaPaySuccess/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'umbrellaPaySuccessCtrl',
                         resolve: {

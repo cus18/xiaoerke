@@ -69,4 +69,14 @@ define(['appUmbrella'], function (app) {
         .factory('checkFamilyMembers',['$resource',function ($resource){
             return $resource(user_h5 + 'umbrella/checkFamilyMembers');
         }])
+
+        //新版添加保障信息
+        .factory('newJoinUs',['$resource',function ($resource){
+            return $resource(user_h5 + 'umbrella/newJoinUs');
+        }])
+
+        //新版添加保障信息
+        .factory('getUserQRCode',['$resource',function ($resource){
+            return $resource(user_h5 + 'umbrella/getUserQRCode');
+        }])
 })

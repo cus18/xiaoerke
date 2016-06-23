@@ -69,4 +69,12 @@ public interface BabyUmbrellaInfoDao {
      */
     int updateBabyUmbrellaInfoIfShare(BabyUmbrellaInfo babyUmbrellaInfo);
 
+    /**
+     * 新版添加保障金信息
+     * @param babyUmbrellaInfo
+     * @return
+     */
+    int newSaveBabyUmbrellaInfo(BabyUmbrellaInfo babyUmbrellaInfo);
+
+
 }
