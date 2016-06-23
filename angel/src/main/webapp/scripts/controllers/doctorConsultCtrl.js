@@ -603,6 +603,9 @@ angular.module('controllers', ['luegg.directives'])
                             var valueData = consultContent.split("####");
                             consultContent = valueData[0];
                         }
+                        if($scope.currentUserConversation.serverAddress==""){
+                            $scope.currentUserConversation.serverAddress = $scope.firstAddress;
+                        }
                         if($scope.currentUserConversation.serverAddress==$scope.firstAddress){
                             if ($scope.socketServerFirst.readyState == WebSocket.OPEN) {
                                 var consultValMessage = "";
@@ -1153,7 +1156,7 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 if($scope.showFlag.diagnosisReplyList){
                     $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex].name = $scope.info.editContent;
-                    saveCommonAnswer();
+                    saveDiagnosis();
                 }
                 $scope.editContentFlag=false;
             };
