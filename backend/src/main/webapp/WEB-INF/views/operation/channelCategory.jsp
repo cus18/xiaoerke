@@ -19,7 +19,7 @@
     <li><a href="${ctx}/sys/Channel/ChannelDetail"><font color="#006400">渠道细分</font></a></li>
 </ul>
 
-<form:form id="searchForm" modelAttribute="registerServiceVo" action="${ctx}/sys/Channel/ChannelMain" method="post" class="form-search">
+<form:form id="searchForm" modelAttribute="registerServiceVo" action="${ctx}/sys/Channel/ChannelCategory" method="post" class="form-search">
     <sys:message content="${message}"/>
     <form:input id="startDate" path="startDate" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
                 onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>

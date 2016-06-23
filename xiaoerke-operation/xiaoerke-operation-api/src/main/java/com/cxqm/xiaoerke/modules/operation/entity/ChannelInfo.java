@@ -5,9 +5,9 @@ package com.cxqm.xiaoerke.modules.operation.entity;
  */
 public class ChannelInfo {
     private Integer id; //渠道添加主键
-    private String create_by;   //渠道添加人
+    private String operater;   //渠道添加人
     private String department;  //部门
-    private String marker;      //二维码
+    private String marketer;      //二维码
     private String channel;     //渠道
 
     public Integer getId() {
@@ -18,12 +18,12 @@ public class ChannelInfo {
         this.id = id;
     }
 
-    public String getCreate_by() {
-        return create_by;
+    public String getOperater() {
+        return operater;
     }
 
-    public void setCreate_by(String create_by) {
-        this.create_by = create_by;
+    public void setOperater(String operater) {
+        this.operater = operater;
     }
 
     public String getDepartment() {
@@ -34,12 +34,12 @@ public class ChannelInfo {
         this.department = department;
     }
 
-    public String getMarker() {
-        return marker;
+    public String getMarketer() {
+        return marketer;
     }
 
-    public void setMarker(String marker) {
-        this.marker = marker;
+    public void setMarketer(String marketer) {
+        this.marketer = marketer;
     }
 
     public String getChannel() {

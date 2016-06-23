@@ -127,15 +127,15 @@ public class ChannelController extends BaseController {
     //@RequestMapping(value = "addChannel", produces = { "application/json;charset=UTF-8" })
     @RequestMapping(value = {"addChannel"})
     public @ResponseBody String addChannel(HttpServletRequest request) throws Exception{
-        String create_by = request.getParameter("create_by");
+        String operater = request.getParameter("operater");
         String department = request.getParameter("department");
-        String marker = request.getParameter("marker");
+        String marketer = request.getParameter("marker");
         String channel = request.getParameter("channel");
 
         ChannelInfo channelInfo = new ChannelInfo();
-        channelInfo.setCreate_by(create_by);
+        channelInfo.setOperater(operater);
         channelInfo.setDepartment(department);
-        channelInfo.setMarker(marker);
+        channelInfo.setMarketer(marketer);
         channelInfo.setChannel(channel);
 
         channelService.insertChannel(channelInfo);

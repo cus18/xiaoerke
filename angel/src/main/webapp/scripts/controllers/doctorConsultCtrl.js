@@ -603,6 +603,9 @@ angular.module('controllers', ['luegg.directives'])
                             var valueData = consultContent.split("####");
                             consultContent = valueData[0];
                         }
+                        if($scope.currentUserConversation.serverAddress==""){
+                            $scope.currentUserConversation.serverAddress = $scope.firstAddress;
+                        }
                         if($scope.currentUserConversation.serverAddress==$scope.firstAddress){
                             if ($scope.socketServerFirst.readyState == WebSocket.OPEN) {
                                 var consultValMessage = "";
@@ -945,6 +948,9 @@ angular.module('controllers', ['luegg.directives'])
             /***回复操作区**/
                 //我的回复内容
             $scope.tapMyReplyContent = function (parentIndex) {
+                $scope.showFlag.myReplyList = true;
+                $scope.showFlag.publicReplyList = false;
+                $scope.showFlag.diagnosisReplyList = false
                 if($scope.myReplyIndex==parentIndex){
                     $scope.myReplyIndex = -1;
                     $scope.myReplySecondIndex = -1;
@@ -982,6 +988,9 @@ angular.module('controllers', ['luegg.directives'])
                 }
             };
             $scope.tapEditCommonContent = function(parentIndex, childIndex){
+                $scope.showFlag.myReplyList = false;
+                $scope.showFlag.publicReplyList = true;
+                $scope.showFlag.diagnosisReplyList = false;
                 $scope.publicReplySecondIndex = childIndex;
                 $scope.info.editContent = $scope.commonAnswer[parentIndex].secondAnswer[childIndex].name;
             };
@@ -1003,6 +1012,9 @@ angular.module('controllers', ['luegg.directives'])
                 }
             };
             $scope.tapEditDiagnosisContent = function(parentIndex, childIndex){
+                $scope.showFlag.myReplyList = false;
+                $scope.showFlag.publicReplyList = false;
+                $scope.showFlag.diagnosisReplyList = true;
                 $scope.diagnosisReplySecondIndex = childIndex;
                 $scope.info.editContent = $scope.diagnosis[parentIndex].secondAnswer[childIndex].name;
             };
@@ -1144,7 +1156,7 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 if($scope.showFlag.diagnosisReplyList){
                     $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex].name = $scope.info.editContent;
-                    saveCommonAnswer();
+                    saveDiagnosis();
                 }
                 $scope.editContentFlag=false;
             };
