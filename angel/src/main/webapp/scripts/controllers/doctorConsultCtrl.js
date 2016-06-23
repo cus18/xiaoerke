@@ -24,9 +24,9 @@ angular.module('controllers', ['luegg.directives'])
             $scope.loadingFlag = false;
             $scope.socketServerFirst = "";
             $scope.socketServerSecond = "";
-            $scope.firstAddress = "localhost";
+            $scope.firstAddress = "101.201.154.75";
             $scope.secondAddress = "120.25.161.33";
-            $scope.alreadyJoinPatientConversation = []; //已经加入会话的用户数据，一个医生可以有多个对话的用户，这些用户的数据，都保存在此集合中
+            $scope.alreadyJoinPatientConversation = []; //已经加入会话的用户数据，一个医生可以有多个对话的用户，这些用户的数据，都保存在此集合中 乱码
             $scope.currentUserConversation = {}; //医生与当前正在进行对话用户的聊天数据，医生在切换不同用户时，数据变更到切换的用户上来。
             $scope.waitJoinNum = 0; //医生待接入的用户数，是动态变化的数
             $scope.glued = true; //angular滚动条的插件预制参数，让对话滚动条，每次都定位底部，当新的聊天数据到达时
@@ -710,7 +710,7 @@ angular.module('controllers', ['luegg.directives'])
                 }
             };
 
-            var processSayTextFlag = function(data) {
+            var processSayTextFlag = function(data){
                 var flag = "noFlag";
                 if (data.indexOf("####") != -1) {
                     var textValue = data.split("####");
@@ -949,6 +949,9 @@ angular.module('controllers', ['luegg.directives'])
             /***回复操作区**/
                 //我的回复内容
             $scope.tapMyReplyContent = function (parentIndex) {
+                $scope.showFlag.myReplyList = true;
+                $scope.showFlag.publicReplyList = false;
+                $scope.showFlag.diagnosisReplyList = false
                 if($scope.myReplyIndex==parentIndex){
                     $scope.myReplyIndex = -1;
                     $scope.myReplySecondIndex = -1;
@@ -986,6 +989,9 @@ angular.module('controllers', ['luegg.directives'])
                 }
             };
             $scope.tapEditCommonContent = function(parentIndex, childIndex){
+                $scope.showFlag.myReplyList = false;
+                $scope.showFlag.publicReplyList = true;
+                $scope.showFlag.diagnosisReplyList = false;
                 $scope.publicReplySecondIndex = childIndex;
                 $scope.info.editContent = $scope.commonAnswer[parentIndex].secondAnswer[childIndex].name;
             };
@@ -1007,6 +1013,9 @@ angular.module('controllers', ['luegg.directives'])
                 }
             };
             $scope.tapEditDiagnosisContent = function(parentIndex, childIndex){
+                $scope.showFlag.myReplyList = false;
+                $scope.showFlag.publicReplyList = false;
+                $scope.showFlag.diagnosisReplyList = true;
                 $scope.diagnosisReplySecondIndex = childIndex;
                 $scope.info.editContent = $scope.diagnosis[parentIndex].secondAnswer[childIndex].name;
             };
@@ -1223,9 +1232,9 @@ angular.module('controllers', ['luegg.directives'])
                             $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex - 1] = $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex];
                             $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex] = changeAnswerContent;
                         }else if($scope.publicReplySecondIndex == -1){
-                                var changeAnswerGroup = $scope.commonAnswer[$scope.publicReplyIndex - 1];
-                                $scope.commonAnswer[$scope.publicReplyIndex - 1] = $scope.commonAnswer[$scope.publicReplyIndex];
-                                $scope.commonAnswer[$scope.publicReplyIndex] = changeAnswerGroup;
+                            var changeAnswerGroup = $scope.commonAnswer[$scope.publicReplyIndex - 1];
+                            $scope.commonAnswer[$scope.publicReplyIndex - 1] = $scope.commonAnswer[$scope.publicReplyIndex];
+                            $scope.commonAnswer[$scope.publicReplyIndex] = changeAnswerGroup;
                         }
                         saveCommonAnswer();
                     }
@@ -1263,12 +1272,12 @@ angular.module('controllers', ['luegg.directives'])
                 if($scope.showFlag.publicReplyList){
                     if($scope.publicReplyIndex!=-1&&$scope.publicReplyIndex!=undefined){
                         if($scope.publicReplySecondIndex >= 0 && $scope.publicReplySecondIndex < $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer.length){
-                            var changeAnswerContent = $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex - 1];
-                            $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex - 1] = $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex];
+                            var changeAnswerContent = $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex + 1];
+                            $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex + 1] = $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex];
                             $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex] = changeAnswerContent;
                         }else if($scope.publicReplySecondIndex == -1 && $scope.publicReplyIndex < $scope.commonAnswer.length){
-                            var changeAnswerGroup = $scope.commonAnswer[$scope.publicReplyIndex - 1];
-                            $scope.commonAnswer[$scope.publicReplyIndex - 1] = $scope.commonAnswer[$scope.publicReplyIndex];
+                            var changeAnswerGroup = $scope.commonAnswer[$scope.publicReplyIndex + 1];
+                            $scope.commonAnswer[$scope.publicReplyIndex + 1] = $scope.commonAnswer[$scope.publicReplyIndex];
                             $scope.commonAnswer[$scope.publicReplyIndex] = changeAnswerGroup;
                         }
                         saveCommonAnswer();
@@ -1313,13 +1322,39 @@ angular.module('controllers', ['luegg.directives'])
             $scope.userTableMore = "查看更多";
             $scope.tapUserTable = function (key) {
                 $scope.showFlag[key] = !$scope.showFlag[key];
-                console.log($scope.showFlag[key]);
                 if($scope.showFlag[key]){
                     $scope.userTableMore = "收起更多";
                 }else{
                     $scope.userTableMore = "查看更多";
                 }
-            }
+            };
+            $scope.recentTableMore = "查看更多";
+            $scope.tapRecentTable = function (key) {
+                $scope.showFlag[key] = !$scope.showFlag[key];
+                if($scope.showFlag[key]){
+                    $scope.recentTableMore = "收起更多";
+                }else{
+                    $scope.recentTableMore = "查看更多";
+                }
+            };
+            $scope.addConsultTableMore = "查看更多";
+            $scope.tapAddConsultTable = function (key) {
+                $scope.showFlag[key] = !$scope.showFlag[key];
+                if($scope.showFlag[key]){
+                    $scope.addConsultTableMore = "收起更多";
+                }else{
+                    $scope.addConsultTableMore = "查看更多";
+                }
+            };
+            $scope.historyTableMore = "查看更多";
+            $scope.tapHistoryTable = function (key) {
+                $scope.showFlag[key] = !$scope.showFlag[key];
+                if($scope.showFlag[key]){
+                    $scope.historyTableMore = "收起更多";
+                }else{
+                    $scope.historyTableMore = "查看更多";
+                }
+            };
             /***咨询服务**/
             var getIframeSrc = function(){
                 var newSrc = $(".advisory-content").attr("src");
@@ -1589,6 +1624,7 @@ angular.module('controllers', ['luegg.directives'])
                 return val;
             };
         }])
+
     .controller('messageListCtrl', ['$scope', '$log', '$state','$sce', 'GetUserConsultListInfo',
         'GetUserRecordDetail', 'GetCSDoctorList', 'GetMessageRecordInfo','GetUserLoginStatus','$location','CreateDoctorConsultSession',
         function ($scope, $log, $state,$sce, GetUserConsultListInfo, GetUserRecordDetail,

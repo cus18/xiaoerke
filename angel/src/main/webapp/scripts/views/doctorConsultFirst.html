@@ -256,7 +256,7 @@
                 <!--近期就诊记录-->
                 <div class="module">
                     <div class="title">
-                        <h3>近期就诊记录<input type="submit" class="more" value="收起更多" ng-click="tapShowButton('recentTable')"/></h3>
+                        <h3>近期就诊记录<input type="submit" class="more" value="{{recentTableMore}}" ng-click="tapRecentTable('recentTable')"/></h3>
                     </div>
                     <table class="table2" ng-show="showFlag.recentTable">
                         <tr>
@@ -301,7 +301,7 @@
                 <!--添加咨询记录-->
                 <div class="module" >
                     <div class="title">
-                        <h3>添加咨询记录<input type="submit" class="more" value="收起更多" ng-click="tapShowButton('addConsultTable')"/> </h3>
+                        <h3>添加咨询记录<input type="submit" class="more" value="{{addConsultTableMore}}" ng-click="tapAddConsultTable('addConsultTable')"/> </h3>
                     </div>
                     <table class="table3" ng-show="showFlag.addConsultTable">
                         <tr>
@@ -353,7 +353,7 @@
                 <!--历史咨询档案-->
                 <div class="module">
                     <div class="title">
-                        <h3 >历史咨询档案<input type="submit" class="more" value="收起更多" ng-click="tapShowButton('historyTable')"/></h3>
+                        <h3 >历史咨询档案<input type="submit" class="more" value="{{historyTableMore}}" ng-click="tapHistoryTable('historyTable')"/></h3>
                     </div>
                     <table class="table4" ng-show="showFlag.historyTable">
                         <tr class="higher">
