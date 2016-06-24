@@ -357,9 +357,6 @@ public class ConsultDoctorController extends BaseController {
         queryDate.addCriteria(Criteria.where("openid").is(openId));
         List<UmbrellaMongoDBVo> openidlist = babyUmbrellaInfoService.getUmbrellaMongoDBVoList(queryDate);
         if(openidlist.size()==0){//没有发过的才发，只发一次
-            UmbrellaMongoDBVo vo = new UmbrellaMongoDBVo();
-            vo.setOpenid(openId);
-            babyUmbrellaInfoService.saveOpenidToMongoDB(vo);
             Map<String, Object> param = new HashMap<String, Object>();
             param.put("openid", openId);
             List<Map<String,Object>> list = babyUmbrellaInfoService.getBabyUmbrellaInfo(param);
@@ -377,6 +374,9 @@ public class ConsultDoctorController extends BaseController {
                 String jsonobj = HttpRequestUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" +
                         token + "", "POST", message);
                 System.out.println(jsonobj+"===============================");
+                UmbrellaMongoDBVo vo = new UmbrellaMongoDBVo();
+                vo.setOpenid(openId);
+                babyUmbrellaInfoService.saveOpenidToMongoDB(vo);
             }
         }
     }
