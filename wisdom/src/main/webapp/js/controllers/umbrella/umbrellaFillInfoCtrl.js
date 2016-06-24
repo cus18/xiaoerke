@@ -304,15 +304,18 @@
                 //         return;
                 //     }
                 // });
+                var bname=$scope.info.babyName;
+                var bbirthday=$("#birthday").val();
+                var bsex=$scope.sexItem == "boy"?1:0;
                 newJoinUs.save({"phone":$scope.info.phoneNum,"code":$scope.info.code,"babyId":$scope.info.id,
-                    "idCard":$scope.info.IdCard,"parentName":encodeURI($scope.info.parentName),
-                    "parentType":$scope.parentType}, function (data){
+                    "idCard":$scope.info.IdCard,"parentName":encodeURI($scope.info.parentName),"bname":bname,
+                    "parentType":$scope.parentType,"bbirthDay":bbirthday,"bsex":bsex}, function (data){
                     if(data.result=='1'){
                         // $state.go("umbrellaMemberList",{id:$scope.umbrellaId});
                         recordLogs("BHS_TXXX_LJJH");
                         // window.location.href ="../wisdom/umbrella?value="+new Date().getTime()+"#/umbrellaMemberList/"+$stateParams.id+"/"+$stateParams.status;
-                        window.location.href ="umbrella#/umbrellaJoin/"+new Date().getTime()+"/"+$stateParams.id;
-                        // window.location.href = "http://localhost:8080/keeper/wxPay/patientPay.do?serviceType=umbrellaPay&shareId="+$stateParams.id;
+                        // window.location.href ="umbrella#/umbrellaJoin/"+new Date().getTime()+"/"+$stateParams.id;
+                        window.location.href = "http://localhost:8080/keeper/wxPay/patientPay.do?serviceType=umbrellaPay&shareId="+$stateParams.id;
                     }else if(data.result=='3'){
                         alert("验证码无效");
                         return;
@@ -378,7 +381,8 @@
                     dataType:'json',
                     success:function(data) {
                         if(data.openid=="none"){
-                            window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+                            // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+                            window.location.href = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
                         }
                     },
                     error : function() {

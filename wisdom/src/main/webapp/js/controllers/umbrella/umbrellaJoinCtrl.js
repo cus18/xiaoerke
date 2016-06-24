@@ -1,6 +1,6 @@
 ﻿angular.module('controllers', ['ionic']).controller('umbrellaJoinCtrl', [
-        '$scope','$state','$stateParams','JoinUs','updateActivationTime',
-        function ($scope,$state,$stateParams,JoinUs,updateActivationTime) {
+        '$scope','$state','$stateParams','JoinUs','updateActivationTime','ifExistOrder',
+        function ($scope,$state,$stateParams,JoinUs,updateActivationTime,ifExistOrder) {
             $scope.title="宝护伞-宝大夫儿童家庭重疾互助计划";
             $scope.shareLock=false;
 
@@ -23,7 +23,7 @@
             };
             $scope.goActive=function(){
                 recordLogs("BHS_WDBZ_JH");
-                $state.go("umbrellaFillInfo",{id:$scope.umbrellaId,status:$scope.status});
+                $state.go("umbrellaMemberList",{id:$scope.umbrellaId,status:$scope.status});
             };
             $scope.goShare=function(){
                 $scope.shareLock=true;
@@ -65,6 +65,7 @@
                     success:function(data) {
                         if(data.openid=="none"){
                             // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+                            window.location.href = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
                         }
                     },
                     error : function() {
@@ -72,40 +73,30 @@
                 });
                 ifExistOrder.save(function (data) {
                     // $scope.info.phoneNum=data.phone;
-                    if (data.result == "3") {
+                    if (data.result == "1") {
                         window.location.href = "../wisdom/firstPage/umbrella?id=" + $stateParams.id;
+                    }else if(data.umbrella.pay_result=="fail"){
+                        window.location.href = "http://localhost:8080/keeper/wxPay/patientPay.do?serviceType=umbrellaPay&shareId="+$stateParams.id;
                     }
-
-                recordLogs("BHS_WDBZ");
-                JoinUs.save({"shareId":$scope.shareid},function(data){
-                    if(data.umbrella.activation_time==null){
-                        $scope.firstJoin=true;
-                        $scope.umbrellaMoney=200000;
-                        if(data.result==3){
-                            $scope.umbrellaId=data.umbrella.id;
-                        }else {
+                    if(data.umbrella.activation_time==null) {
+                        $scope.firstJoin = true;
+                        $scope.umbrellaMoney = 200000;
+                        if (data.result == 3) {
+                            $scope.umbrellaId = data.umbrella.id;
+                        } else {
                             $scope.umbrellaId = data.id;
                         }
-                        if(data.umbrella.pay_result!="null"&&typeof(data.umbrella.pay_result)!="undefined"){
-                            $scope.status="a";
+                        if (data.umbrella.pay_result != "null" && typeof(data.umbrella.pay_result) != "undefined") {
+                            $scope.status = "a";
                         }
                         $scope.loadShare();
-                        
-                        updateActivationTime.save({"id":$scope.umbrellaId}, function (data){
-                            if(data.result!='1'){
+
+                        updateActivationTime.save({"id": $scope.umbrellaId}, function (data) {
+                            if (data.result != '1') {
                                 alert("未知错误,请尝试刷新页面");
                             }
                         });
-                    }else if(data.result==2){
-                        $scope.updateJoin=true;
-                        $scope.umbrellaMoney=data.umbrella.umbrella_money;
-                        $scope.num=data.umbrella.id-120000000;
-                        $scope.umbrellaId=data.umbrella.id;
-                        if(data.umbrella.pay_result!="null"&&typeof(data.umbrella.pay_result)!="undefined"){
-                            $scope.status="a";
-                        }
-                        $scope.loadShare();
-                    }else if(data.result==3){
+                    }else{
                         $scope.finally=true;
                         $scope.addFamily=true;
                         $scope.umbrellaMoney=data.umbrella.umbrella_money;
@@ -129,11 +120,68 @@
                         $scope.minusDays3 = $scope.minusDays.substring(2,3);
                         $scope.umbrellaId=data.umbrella.id;
                         $scope.loadShare();
-                    }
                     // $scope.person=data.umbrella.friendJoinNum<10?10-data.umbrella.friendJoinNum:data.umbrella.friendJoinNum;
                     $scope.person=data.umbrella.friendJoinNum;
                     $scope.pintu=data.umbrella.friendJoinNum>=10?0:10-data.umbrella.friendJoinNum;
-                });
+                    }
+                recordLogs("BHS_WDBZ");
+            //     JoinUs.save({"shareId":$scope.shareid},function(data){
+            //         if(data.umbrella.activation_time==null){
+            //             $scope.firstJoin=true;
+            //             $scope.umbrellaMoney=200000;
+            //             if(data.result==3){
+            //                 $scope.umbrellaId=data.umbrella.id;
+            //             }else {
+            //                 $scope.umbrellaId = data.id;
+            //             }
+            //             if(data.umbrella.pay_result!="null"&&typeof(data.umbrella.pay_result)!="undefined"){
+            //                 $scope.status="a";
+            //             }
+            //             $scope.loadShare();
+            //
+            //             updateActivationTime.save({"id":$scope.umbrellaId}, function (data){
+            //                 if(data.result!='1'){
+            //                     alert("未知错误,请尝试刷新页面");
+            //                 }
+            //             });
+            //         }else if(data.result==2){
+            //             $scope.updateJoin=true;
+            //             $scope.umbrellaMoney=data.umbrella.umbrella_money;
+            //             $scope.num=data.umbrella.id-120000000;
+            //             $scope.umbrellaId=data.umbrella.id;
+            //             if(data.umbrella.pay_result!="null"&&typeof(data.umbrella.pay_result)!="undefined"){
+            //                 $scope.status="a";
+            //             }
+            //             $scope.loadShare();
+            //         }else if(data.result==3){
+            //             $scope.finally=true;
+            //             $scope.addFamily=true;
+            //             $scope.umbrellaMoney=data.umbrella.umbrella_money;
+            //             $scope.num=data.umbrella.id-120000000;
+            //             if(data.umbrella.pay_result!="null"&&typeof(data.umbrella.pay_result)!="undefined"){
+            //                 $scope.status="a";
+            //             }
+            //             var targetDate = new Date(data.umbrella.activation_time);
+            //                 targetDate.setDate(new Date().getDate() + 180);
+            //             var targetDateUTC = targetDate.getTime();
+            //
+            //             var selsDate = moment(data.umbrella.activation_time).format("YYYY-MM-DD");
+            //             var sedd =moment(selsDate).add(180,'days').format("YYYY-MM-DD");
+            //             var last = moment(sedd).subtract(1,'days').format("YYYY-MM-DD");
+            //
+            //             var day = compareDate(moment().format("YYYY-MM-DD"),last);
+            //             console.log("targetDateUTC",day);
+            //             $scope.minusDays = day.toString();
+            //             $scope.minusDays1 =  $scope.minusDays.substring(0,1);
+            //             $scope.minusDays2 = $scope.minusDays.substring(1,2);
+            //             $scope.minusDays3 = $scope.minusDays.substring(2,3);
+            //             $scope.umbrellaId=data.umbrella.id;
+            //             $scope.loadShare();
+            //         }
+            //         // $scope.person=data.umbrella.friendJoinNum<10?10-data.umbrella.friendJoinNum:data.umbrella.friendJoinNum;
+            //         $scope.person=data.umbrella.friendJoinNum;
+            //         $scope.pintu=data.umbrella.friendJoinNum>=10?0:10-data.umbrella.friendJoinNum;
+            //     });
             });
         });
 

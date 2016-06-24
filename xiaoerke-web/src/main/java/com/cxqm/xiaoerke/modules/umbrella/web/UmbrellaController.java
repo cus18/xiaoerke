@@ -412,6 +412,7 @@ public class UmbrellaController  {
 
         Map<String, Object> map=new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session, request);
+        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
         List<Map<String, Object>> list = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
@@ -499,15 +500,15 @@ public class UmbrellaController  {
         Integer id = Integer.parseInt((String) params.get("id"));
         List<UmbrellaFamilyInfo> list = new ArrayList<UmbrellaFamilyInfo>();
         list = babyUmbrellaInfoSerivce.getFamilyUmbrellaList(id);
-        BabyBaseInfoVo babyInfo = babyUmbrellaInfoSerivce.getBabyBaseInfo(id);
-        if(babyInfo!=null){
-            UmbrellaFamilyInfo familyInfo = new UmbrellaFamilyInfo();
-            familyInfo.setSex(Integer.parseInt(babyInfo.getSex()));
-            familyInfo.setName(babyInfo.getName());
-            familyInfo.setBirthday(babyInfo.getBirthday());
-            list.add(familyInfo);
-            activation = true;
-        }
+//        BabyBaseInfoVo babyInfo = babyUmbrellaInfoSerivce.getBabyBaseInfo(id);
+//        if(babyInfo!=null){
+//            UmbrellaFamilyInfo familyInfo = new UmbrellaFamilyInfo();
+//            familyInfo.setSex(Integer.parseInt(babyInfo.getSex()));
+//            familyInfo.setName(babyInfo.getName());
+//            familyInfo.setBirthday(babyInfo.getBirthday());
+//            list.add(familyInfo);
+//            activation = true;
+//        }
         resultMap.put("familyList",list);
         resultMap.put("activation",activation);
         return resultMap;
@@ -627,9 +628,55 @@ public class UmbrellaController  {
         babyUmbrellaInfo.setParentPhone(params.get("phone").toString());
         babyUmbrellaInfo.setParentName(URLDecoder.decode(params.get("parentName").toString(),"UTF-8"));
         babyUmbrellaInfo.setParentType(Integer.parseInt(params.get("parentType").toString()));
+        babyUmbrellaInfo.setMoney("5");
+        babyUmbrellaInfo.setUmberllaMoney(200000);
+        //随机立减
+        Map maps = new HashMap();
+        maps.put("type","umbrella");
+        SwitchConfigure switchConfigure = systemService.getUmbrellaSwitch(maps);
+        String flag = switchConfigure.getFlag();
+        System.out.println(flag+"flag=======================switchConfigure========================");
+//        flag为1是打开，0是关闭
+        double ram=0;
+        if(flag.equals("1")) {
+            ram = Math.random() * 5;
+            do {
+                ram = Math.random() * 5;
+            } while (ram < 1);
+        }
+        String ress = String.format("%.0f", ram);
+
+        babyUmbrellaInfo.setTruePayMoneys(ress);
+
+        if(ress.equals("0")){
+            babyUmbrellaInfo.setPayResult("success");
+        }else {
+            babyUmbrellaInfo.setPayResult("fail");
+        }
+
         Integer res = babyUmbrellaInfoSerivce.newSaveBabyUmbrellaInfo(babyUmbrellaInfo);
 //        String shareId=params.get("shareId").toString();
 //        sendWechatMessage(openid,shareId);
+
+        //插入家庭成员的信息
+        //宝爸宝妈
+        UmbrellaFamilyInfo familyInfo = new UmbrellaFamilyInfo();
+        familyInfo.setName(URLDecoder.decode(params.get("parentName").toString(), "UTF-8"));
+        familyInfo.setUmbrellaId(babyUmbrellaInfo.getId());
+        familyInfo.setSex(Integer.parseInt(params.get("parentType").toString()));
+        String idCard = params.get("idCard").toString();
+        Date birthDay = DateUtils.StrToDate(idCard.substring(6,14),"yyyyMMdd");
+        familyInfo.setBirthday(birthDay);
+        babyUmbrellaInfoSerivce.saveFamilyUmbrellaInfo(familyInfo);
+
+        //宝宝的信息
+        UmbrellaFamilyInfo bFamilyInfo = new UmbrellaFamilyInfo();
+        Date bbirthDay = DateUtils.StrToDate(params.get("bbirthDay").toString(), "yyyy-MM-dd");
+        bFamilyInfo.setBirthday(bbirthDay);
+        bFamilyInfo.setUmbrellaId(babyUmbrellaInfo.getId());
+        bFamilyInfo.setName(params.get("bname").toString());
+        bFamilyInfo.setSex(Integer.parseInt(params.get("bsex").toString()));
+        int reusltStatus = babyUmbrellaInfoSerivce.saveFamilyUmbrellaInfo(bFamilyInfo);
 
         result.put("result",res);
         result.put("id",babyUmbrellaInfo.getId());

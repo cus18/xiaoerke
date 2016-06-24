@@ -15,7 +15,8 @@ var umbrellaPayInit=function(){
         dataType:'json',
         success:function(data) {
             if(data.openid=="none"){
-                window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+                // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+                window.location.href = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
             }else{
                 $.ajax({
                     url:"umbrella/randomMoney",// 跳转到 action
@@ -158,7 +159,7 @@ function wechatPay() {
                         alert("您的微信版本低于5.0无法使用微信支付");
                         return;
                     }
-                    //打开微信支付控件
+    //                 //打开微信支付控件
                     wx.chooseWXPay({
                         appId: obj.appId,
                         timestamp: obj.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
@@ -176,32 +177,35 @@ function wechatPay() {
                                         var status = result.status;
                                         if (status == "1") {
                                             var shareId = GetQueryString("shareId") == null || GetQueryString("shareId") == "120000000" ? 130000000 : GetQueryString("shareId");
-                                            window.location.href="http://s165.baodf.com/wisdom/umbrella#/umbrellaPaySuccess/"+shareId;
-                                            // $.ajax({
-                                            //     type: 'POST',
-                                            //     url: "umbrella/getUserQRCode",
-                                            //     contentType: "application/json; charset=utf-8",
-                                            //     async: false,
-                                            //     data: "{'id':'" + shareid + "'}",
-                                            //     success: function (data) {
-                                            //         recordLogs("BHS_ZFY_ZFCG");
-                                            //         $("#QRCode").attr("src", data.qrcode);
-                                            //         $("#QRCodeDIV").show();
-                                            //         $(".c-shadow").show();
-                                            //         $(".shadow-content").show();
-                                            //     },
-                                            //     dataType: "json"
-                                            // });
+                                            // window.location.href="http://s165.baodf.com/wisdom/umbrella#/umbrellaPaySuccess/"+shareId;
+                                            window.location.href="http://localhost:8080/wisdom/umbrella#/umbrellaPaySuccess/"+shareId;
+                                            $.ajax({
+                                                type: 'POST',
+                                                url: "umbrella/getUserQRCode",
+                                                contentType: "application/json; charset=utf-8",
+                                                async: false,
+                                                data: "{'id':'" + shareid + "'}",
+                                                success: function (data) {
+                                                    recordLogs("BHS_ZFY_ZFCG");
+                                                    $("#QRCode").attr("src", data.qrcode);
+                                                    $("#QRCodeDIV").show();
+                                                    $(".c-shadow").show();
+                                                    $(".shadow-content").show();
+                                                },
+                                                dataType: "json"
+                                            });
                                             
                                         } else {
                                             // window.location.href = "http://s165.baodf.com/wisdom/firstPage/umbrella?status=a";
-                                            window.location.href = "http://s165.baodf.com/wisdom/umbrella#/umbrellaJoin/" + new Date().getTime() + "/" + 120000000;
+                                            var shareId = GetQueryString("shareId") == null || GetQueryString("shareId") == "120000000" ? 130000000 : GetQueryString("shareId");
+                                            // window.location.href = "http://s165.baodf.com/wisdom/umbrella#/umbrellaJoin/" + new Date().getTime() + "/" + shareId;
+                                            window.location.href = "http://localhost:8080/wisdom/umbrella#/umbrellaJoin/" + new Date().getTime() + "/" + shareId;
                                         }
                                     },
                                     dataType: "json"
                                 });
-
-                                // window.location.href = "http://s2.xiaork.cn/wisdom/firstPage/umbrella?status=a";
+    //
+    //                             // window.location.href = "http://s2.xiaork.cn/wisdom/firstPage/umbrella?status=a";
                             } else {
                                 alert("支付失败,请重新支付")
                             }
