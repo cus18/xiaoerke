@@ -286,16 +286,17 @@ public class ConsultSessionManager {
             if (onLineCsUserChannelMapping.size() > 0) {
                 //所有的接诊员不在线，随机分配一个在线医生
                 for (int i = 0; i < onLineCsUserChannelMapping.size(); i++) {
-                    String csUserid = RandomUtils.getRandomKeyFromMap(onLineCsUserChannelMapping);
-                    csChannel = onLineCsUserChannelMapping.get(csUserid);
+                    String csUserId = RandomUtils.getRandomKeyFromMap(onLineCsUserChannelMapping);
+                    csChannel = onLineCsUserChannelMapping.get(csUserId);
                     if (csChannel.isActive()) {
-                        User csUser = systemService.getUserById(csUserid);
+                        consultSession.setCsUserId(csUserId);
+                        User csUser = systemService.getUserById(csUserId);
                         consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
                         break;
                     } else {
-                        csUserChannelMapping.remove(csUserid);
-                        onLineCsUserChannelMapping.remove(csUserid);
-                        userChannelMapping.remove(csUserid);
+                        csUserChannelMapping.remove(csUserId);
+                        onLineCsUserChannelMapping.remove(csUserId);
+                        userChannelMapping.remove(csUserId);
                     }
                 }
             } else {
@@ -307,12 +308,6 @@ public class ConsultSessionManager {
             }
         }
 
-        HashMap<String, Object> perInfo = new HashMap<String, Object>();
-        if (StringUtils.isNotNull(consultSession.getCsUserId())) {
-            perInfo = userInfoService.findPersonDetailInfoByUserId(consultSession.getCsUserId());
-        }
-        consultSession.setCsUserName((String) perInfo.get("name"));
-
         //可开启线程进行记录
         if (consultSession.getCsUserId() != null) {
             consultSessionService.saveConsultInfo(consultSession);
@@ -320,7 +315,6 @@ public class ConsultSessionManager {
             System.out.println("sessionId-----" + sessionId + "consultSession.getCsUserId()" + consultSession.getUserId());
             sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
             sessionRedisCache.putUserIdSessionIdPair(consultSession.getUserId(), sessionId);
-//            saveCustomerEvaluation(consultSession);
             response.put("csChannel", csChannel);
             response.put("sessionId", sessionId);
             response.put("consultSession", consultSession);
