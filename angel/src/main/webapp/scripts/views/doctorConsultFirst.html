@@ -309,12 +309,12 @@
                                 <span>客服：</span><input type="text" value="{{currentUserConversation.patientId}}"/>
                             </td>
                             <td class="td-l">
-                                <span>归档日期：</span><span>{{doctorId}}</span>
+                                <span>归档日期：</span><span>{{todayTime}}</span>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <span>诊断：</span><input type="text"/>
+                                <span>诊断：</span><input type="text" ng-model="info.illness"/>
                                 <ul class="search-remind">
                                     <li>咨询咨询咨询咨询</li>
                                     <li>咨询咨询咨询咨询</li>
@@ -323,17 +323,20 @@
                                 </ul>
                             </td>
                             <td class="td-l">
-                                <span>咨询类别：<select><option value="addIllness">添加</option></select></span>
+                                <span>咨询类别：<select ng-model="info.selectedIllnessList" ng-options="date.illness for date in illnessList">
+                                        <option value="">-添加-</option><!--addIllness-->
+                                    </select>
+                                </span>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">
-                                表现：<input type="text" maxlength="30" value="" class="big-input" placeholder="可编辑（可选）30个字以内"/>
+                                表现：<input type="text" maxlength="30" ng-model="info.show" class="big-input" placeholder="可编辑（可选）30个字以内"/>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">
-                                处理：<input type="text" maxlength="30" value="" class="big-input" placeholder="可编辑（可选）30个字以内"/>
+                                处理：<input type="text" maxlength="30" ng-model="info.result" class="big-input" placeholder="可编辑（可选）30个字以内"/>
                             </td>
                         </tr>
                         <tr class="save">
