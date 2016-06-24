@@ -665,9 +665,9 @@ public class UmbrellaController  {
 
         if(flag.equals("1")){
             if(babyUmbrellaInfo.getTruePayMoneys()!=null&&!babyUmbrellaInfo.getTruePayMoneys().equals("")) {
-                ram = Math.random() * 5;
-            }else{
                 ram = Integer.parseInt(babyUmbrellaInfo.getTruePayMoneys().toString());
+            }else{
+                ram = Math.random() * 5;
             }
         }
         String ress = String.format("%.0f", ram);
