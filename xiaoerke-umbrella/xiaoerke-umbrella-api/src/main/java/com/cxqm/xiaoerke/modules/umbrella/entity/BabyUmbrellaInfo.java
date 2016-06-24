@@ -21,6 +21,15 @@ public class BabyUmbrellaInfo {
     private String payResult;
     private String version;
     private Integer friendJoinNum;
+    private Date updateTime;
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
     public String getVersion() {
         return version;

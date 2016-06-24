@@ -339,7 +339,7 @@ public class UmbrellaController  {
         Map<String, Object> map=new HashMap<String, Object>();
         Map<String, Object> result=new HashMap<String, Object>();
         String openid= WechatUtil.getOpenId(session, request);
-//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
         List<Map<String, Object>> list=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
@@ -350,6 +350,10 @@ public class UmbrellaController  {
                 return result;
             }
                 if (m.get("baby_id") != null && !m.get("baby_id").equals("")) {
+                    if (m.get("activation_time") != null && !m.get("activation_time").equals("")) {
+                        map.put("createTime",m.get("create_time"));
+                        result.put("rank", babyUmbrellaInfoSerivce.getUmbrellaRank(map));
+                    }
                     result.put("result", 3);
                     result.put("umbrella", m);
                     return result;
@@ -644,7 +648,7 @@ public class UmbrellaController  {
                 ram = Math.random() * 5;
             } while (ram < 1);
         }
-        String ress = String.format("%.0f", ram);
+        String ress = String.format("%.0f", 5-ram);
 
         babyUmbrellaInfo.setTruePayMoneys(ress);
 
@@ -654,6 +658,16 @@ public class UmbrellaController  {
             babyUmbrellaInfo.setPayResult("fail");
         }
 
+        //先删除以前可能存在的旧数据
+
+        maps.put("openid",openid);
+        List<Map<String, Object>> list = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(maps);
+        if(list.size()>0){
+            babyUmbrellaInfoSerivce.deleteUmbrellaByOpenid(babyUmbrellaInfo.getOpenid());
+            babyUmbrellaInfoSerivce.deleteByUmbrellaId(Integer.parseInt(list.get(0).get("id").toString()));
+        }
+
+        //完成添加动作
         Integer res = babyUmbrellaInfoSerivce.newSaveBabyUmbrellaInfo(babyUmbrellaInfo);
 //        String shareId=params.get("shareId").toString();
 //        sendWechatMessage(openid,shareId);

@@ -100,7 +100,7 @@
                         $scope.finally=true;
                         $scope.addFamily=true;
                         $scope.umbrellaMoney=data.umbrella.umbrella_money;
-                        $scope.num=data.umbrella.id-120000000;
+                        $scope.num=data.rank+1;
                         if(data.umbrella.pay_result!="null"&&typeof(data.umbrella.pay_result)!="undefined"){
                             $scope.status="a";
                         }

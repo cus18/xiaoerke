@@ -329,9 +329,12 @@ function  ifExistOrder(load){
                 }else{
                     version="b";
                 }
-                if(load=="2"){
-                $("#NoShareDiv").hide();
-                $("#shareDiv").show();
+                if(data.umbrella.pay_result=="fail"){
+                    $("#NoShareDiv").show();
+                    $("#shareDiv").hide();
+                }else if(load=="2"){
+                    $("#NoShareDiv").hide();
+                    $("#shareDiv").show();
                 }
                 shareUmbrellaId = data.umbrella.id;
                 if(load=="1"){
@@ -343,8 +346,8 @@ function  ifExistOrder(load){
                     version="a";
                 }
                 if(load=="2"){
-                $("#NoShareDiv").show();
-                $("#shareDiv").hide();
+                    $("#NoShareDiv").show();
+                    $("#shareDiv").hide();
                 }
                 shareUmbrellaId=120000000;
                 if(load=="1"){

@@ -106,4 +106,9 @@
       umbrella_id = #{umbrellaId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <delete id="deleteByUmbrellaId" parameterType="java.lang.Integer" >
+    delete from umbrella_familyinfo
+    where umbrella_id = #{id,jdbcType=INTEGER}
+  </delete>
 </mapper>

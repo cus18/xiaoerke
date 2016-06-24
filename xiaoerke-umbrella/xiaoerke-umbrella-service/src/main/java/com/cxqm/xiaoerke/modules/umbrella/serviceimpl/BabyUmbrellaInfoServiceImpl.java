@@ -228,4 +228,26 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
     public int newSaveBabyUmbrellaInfo(BabyUmbrellaInfo babyUmbrellaInfo) {
         return babyUmbrellaInfoDao.newSaveBabyUmbrellaInfo(babyUmbrellaInfo);
     }
+
+    @Override
+    public int deleteUmbrellaByOpenid(String openid) {
+        return babyUmbrellaInfoDao.deleteUmbrellaByOpenid(openid);
+    }
+
+    @Override
+    public int updateBabyUmbrellaInfoStatus(BabyUmbrellaInfo babyUmbrellaInfo) {
+        return babyUmbrellaInfoDao.updateBabyUmbrellaInfoStatus(babyUmbrellaInfo);
+    }
+
+    @Override
+    public int deleteByUmbrellaId(Integer id) {
+        return umbrellaFamilyInfoDao.deleteByUmbrellaId(id);
+    }
+
+    @Override
+    public int getUmbrellaRank(Map<String, Object> map) {
+        return babyUmbrellaInfoDao.getUmbrellaRank(map);
+    }
+
+
 }
