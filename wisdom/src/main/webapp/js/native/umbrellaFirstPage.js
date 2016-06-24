@@ -27,7 +27,7 @@ $(document).ready(function() {
             if(data.openid=="none"){
                 // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?" +
                 //     "url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+ shareUmbrellaId;
-                 window.location.href = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+ shareUmbrellaId;
+                  window.location.href = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+ shareUmbrellaId;
             }
         },
         error : function() {
@@ -436,8 +436,23 @@ var cancelRemind = function() {
 /*跳转到参与成功页面*/
 var myGuarantee = function() {
 
-    var shareid = GetQueryString("id")==null?120000000:GetQueryString("id");
-    window.location.href = "umbrella#/umbrellaJoin/"+new Date().getTime()+"/"+shareid;
+    var shareId = GetQueryString("id")==null?120000000:GetQueryString("id");
+    //通过openid 获取当前用户是否关注
+    $.ajax({
+        type: 'POST',
+        url: "umbrella/getOpenidStatus",
+        contentType: "application/json; charset=utf-8",
+        success: function(result){
+            var status=result.status;
+            if(status=="1"){
+                window.location.href="../wisdom/umbrella#/umbrellaPaySuccess/"+shareId;
+            }else{
+                window.location.href = "../wisdom/umbrella#/umbrellaJoin/"+new Date().getTime()+"/"+shareId;
+            }
+        },
+        dataType: "json"
+    });
+
 
 }
 
