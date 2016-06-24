@@ -664,7 +664,7 @@ public class UmbrellaController  {
 //        }
 
         if(flag.equals("1")){
-            if(babyUmbrellaInfo.getTruePayMoneys().equals("")&&babyUmbrellaInfo.getTruePayMoneys()!=null) {
+            if(!babyUmbrellaInfo.getTruePayMoneys().equals("")&&babyUmbrellaInfo.getTruePayMoneys()!=null) {
                 ram = Math.random() * 5;
             }else{
                 ram = Integer.parseInt(babyUmbrellaInfo.getTruePayMoneys().toString());
