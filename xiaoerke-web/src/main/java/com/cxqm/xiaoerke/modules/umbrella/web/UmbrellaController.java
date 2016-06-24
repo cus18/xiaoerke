@@ -636,27 +636,7 @@ public class UmbrellaController  {
         babyUmbrellaInfo.setUmberllaMoney(200000);
         //随机立减
         Map maps = new HashMap();
-        maps.put("type","umbrella");
-        SwitchConfigure switchConfigure = systemService.getUmbrellaSwitch(maps);
-        String flag = switchConfigure.getFlag();
-        System.out.println(flag+"flag=======================switchConfigure========================");
-//        flag为1是打开，0是关闭
-        double ram=0;
-        if(flag.equals("1")) {
-            ram = Math.random() * 5;
-            do {
-                ram = Math.random() * 5;
-            } while (ram < 1);
-        }
-        String ress = String.format("%.0f", 5-ram);
 
-        babyUmbrellaInfo.setTruePayMoneys(ress);
-
-        if(ress.equals("0")){
-            babyUmbrellaInfo.setPayResult("success");
-        }else {
-            babyUmbrellaInfo.setPayResult("fail");
-        }
 
         //先删除以前可能存在的旧数据
 
@@ -665,6 +645,39 @@ public class UmbrellaController  {
         if(list.size()>0){
             babyUmbrellaInfoSerivce.deleteUmbrellaByOpenid(babyUmbrellaInfo.getOpenid());
             babyUmbrellaInfoSerivce.deleteByUmbrellaId(Integer.parseInt(list.get(0).get("id").toString()));
+            if (list.get(0).get("true_pay_moneys") != null && !list.get(0).get("true_pay_moneys").equals("")) {
+                babyUmbrellaInfo.setTruePayMoneys(list.get(0).get("true_pay_moneys").toString());
+            }
+        }
+
+        maps.put("type","umbrella");
+        SwitchConfigure switchConfigure = systemService.getUmbrellaSwitch(maps);
+        String flag = switchConfigure.getFlag();
+        System.out.println(flag+"flag=======================switchConfigure========================");
+//        flag为1是打开，0是关闭
+        double ram=0;
+//        if(flag.equals("1")) {
+//            ram = Math.random() * 5;
+//            do {
+//                ram = Math.random() * 5;
+//            } while (ram < 1);
+//        }
+
+        if(flag.equals("1")){
+            if(babyUmbrellaInfo.getTruePayMoneys().equals("")&&babyUmbrellaInfo.getTruePayMoneys()!=null) {
+                ram = Math.random() * 5;
+            }else{
+                ram = Integer.parseInt(babyUmbrellaInfo.getTruePayMoneys().toString());
+            }
+        }
+        String ress = String.format("%.0f", ram);
+
+        babyUmbrellaInfo.setTruePayMoneys(ress);
+
+        if(ress.equals("0")){
+            babyUmbrellaInfo.setPayResult("success");
+        }else {
+            babyUmbrellaInfo.setPayResult("fail");
         }
 
         //完成添加动作
