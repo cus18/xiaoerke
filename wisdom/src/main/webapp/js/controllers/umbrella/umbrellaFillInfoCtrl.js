@@ -382,7 +382,7 @@
                     success:function(data) {
                         if(data.openid=="none"){
                             // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
-                            window.location.href = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+                             window.location.href = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
                         }
                     },
                     error : function() {
@@ -391,11 +391,11 @@
                 
 
                   //根据Openid 判断用户是否领取过
-                    ifExistOrder.save(function (data){
+                  //   ifExistOrder.save(function (data){
                         // $scope.info.phoneNum=data.phone;
-                         if(data.result=="3"){
-                            window.location.href="../wisdom/firstPage/umbrella?id="+$stateParams.id;
-                        }else{
+                        //  if(data.result=="3"){
+                        //     window.location.href="../wisdom/firstPage/umbrella?id="+$stateParams.id;
+                        // }else{
                             getOpenidStatus.save(function (data){
                                 $scope.openid=data.openid;
                                 //获取用户下宝宝信息列表
@@ -434,8 +434,8 @@
                             //endYear:2099 //结束年份
                         };
                         $("#birthday").mobiscroll(opt);
-                    }
-                });
+                    // }
+                // });
 
             });
 
