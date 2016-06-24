@@ -5,13 +5,13 @@ angular.module('controllers', ['luegg.directives'])
         'TransferToOtherCsUser','SessionEnd','GetWaitJoinList','React2Transfer','CancelTransfer','$upload',
         'GetFindTransferSpecialist','GetRemoveTransferSpecialist','GetAddTransferSpecialist','GetFindAllTransferSpecialist',
         'CreateTransferSpecialist','$state','GetSystemTime','GetUserSessionTimesByUserId','GetCustomerLogByOpenID','SaveCustomerLog',
-        'SearchIllnessList',
+        'SearchIllnessList','SearchBabyInfo',
         function ($scope, $sce, $window,$stateParams,GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
                   GetUserLoginStatus, $location, GetCurrentUserHistoryRecord,GetMyAnswerModify,
                   GetCurrentUserConsultListInfo,TransferToOtherCsUser,SessionEnd,GetWaitJoinList,React2Transfer,CancelTransfer,$upload,
                   GetFindTransferSpecialist,GetRemoveTransferSpecialist,GetAddTransferSpecialist,GetFindAllTransferSpecialist,
                   CreateTransferSpecialist,$state,GetSystemTime,GetUserSessionTimesByUserId,GetCustomerLogByOpenID,SaveCustomerLog,
-                  SearchIllnessList) {
+                  SearchIllnessList,SearchBabyInfo) {
             //初始化info参数
             $scope.info = {
                 effect:"true",
@@ -128,6 +128,19 @@ angular.module('controllers', ['luegg.directives'])
                          $scope.department = 'default';
                          }
                          });*/
+                        //查找所属科室
+                        SearchIllnessList.save(function (data) {
+                            var addIllness = {
+                                'value':'',
+                                'illness':'添加'
+                            };
+                            data.illnessList.push(addIllness);
+                            $scope.illnessList = data.illnessList;
+                        });
+                        //查询专科列表
+                        GetFindAllTransferSpecialist.save({}, function (data) {
+                            $scope.selectedSpecialistType = data.data;
+                        });
                         $scope.refreshWaitJoinUserList();
 
                         if($stateParams.action == "createUserSession"){
@@ -366,11 +379,6 @@ angular.module('controllers', ['luegg.directives'])
                 });
             };
 
-            //查询专科列表
-            GetFindAllTransferSpecialist.save({}, function (data) {
-                $scope.selectedSpecialistType = data.data;
-            });
-
             //添加转接科室确定
             $scope.addTransferSpecialistSubmit = function () {
                 $scope.showFlag.specialistTransfer = false;
@@ -463,7 +471,7 @@ angular.module('controllers', ['luegg.directives'])
                 if (window.WebSocket) {
                     if($scope.userType=="distributor"){
                         $scope.socketServerFirst = new WebSocket("ws://" + $scope.firstAddress +":2048/ws&" +
-                            "distributor&" + $scope.doctorId);//cs,user,distributor
+                        "distributor&" + $scope.doctorId);//cs,user,distributor
                     }else if($scope.userType=="consultDoctor"){
                         $scope.socketServerFirst = new WebSocket("ws://" + $scope.firstAddress +":2048/ws&" +
                             "cs&" + $scope.doctorId);//cs,user,distributor
@@ -1319,21 +1327,47 @@ angular.module('controllers', ['luegg.directives'])
             };
             /***回复操作区**/
             /***咨询服务**/
+            Date.prototype.Format = function (fmt) { //author: meizz
+                var o = {
+                    "M+": this.getMonth() + 1, //月份
+                    "d+": this.getDate(), //日
+                    "h+": this.getHours(), //小时
+                    "m+": this.getMinutes(), //分
+                    "s+": this.getSeconds(), //秒
+                    "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                    "S": this.getMilliseconds() //毫秒
+                };
+                if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+                for (var k in o)
+                    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+                return fmt;
+            }
             //根据openid获取历史咨询
-            GetCustomerLogByOpenID.save({answer: $scope.currentUserConversation.patientId}, function (data) {
+            $scope.historyConsult = '';
+            GetCustomerLogByOpenID.save({openid:$scope.currentUserConversation.patientId}, function (data) {
+                $scope.historyConsult = data.logList;
+                console.log($scope.historyConsult);
+            });
+            //初始化宝宝的信息o3_NPwrrWyKRi8O_Hk8WrkOvvNOk
+            SearchBabyInfo.save({openid: 'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk'}, function (data) {
+                console.log(data);
             });
             //添加诊断记录
             $scope.addDiagnosisRecords = function () {
                 //$scope.currentUserConversation.patientId(openid)病人的id
                 //$scope.doctorId
                 //$scope.todayTime
+                //$scope.info.illness:"",
+                //$scope.info.show:"",
+                //$scope.info.result:"",
+                console.log($scope.info.result);
+                console.log($scope.info.show);
+                console.log($scope.info.illness);
+                console.log($scope.todayTime)
             }
-            //{'openid':'o8gDqvh8u9dYch9lEVRQSFOOsVhw','create_date':'2016-6-23','illness':'ddd','sections':'挂号相关',
-            // 'customerID':'00032b390d744d0sa63a4d6e7a0e8dbf','id':'','show':'aaa','result':'cccc'}
-            SearchIllnessList.save(function (data) {
-                $scope.illnessList = data.illnessList;
-                console.log($scope.illnessList);
-            });
+            //{'openid':'$scope.currentUserConversation.patientId','create_date':'$scope.todayTime','illness':'$scope.info.illness','sections':'$scope.info.selectedIllnessList',
+            // 'customerID':'$scope.doctorId','id':'','show':'$scope.info.show','result':'$scope.info.result'}
+
             SaveCustomerLog.save({answer: $scope.currentUserConversation.patientId}, function (data) {
             });
             // 获取当前的时间

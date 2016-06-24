@@ -134,9 +134,13 @@ angular.module('services', ['ngResource'])
     .factory('SaveCustomerLog', ['$resource', function ($resource) {
         return $resource(public + 'customer/saveCustomerLog');
     }])
-    //添加诊断记录
+    //查找所属科室
     .factory('SearchIllnessList', ['$resource', function ($resource) {
         return $resource(public + 'customer/searchIllnessList');
+    }])
+    //查找宝宝的初始信息
+    .factory('SearchBabyInfo', ['$resource', function ($resource) {
+        return $resource(public + 'customer/searchBabyInfo');
     }])
 
 
