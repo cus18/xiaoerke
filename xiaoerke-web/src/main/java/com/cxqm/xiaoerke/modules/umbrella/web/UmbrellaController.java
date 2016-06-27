@@ -304,7 +304,7 @@ public class UmbrellaController  {
 
 
         String openid= WechatUtil.getOpenId(session, request);
-//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         Map<String, Object> result = new HashMap<String, Object>();
         Map<String,Object> openIdStatus = babyUmbrellaInfoSerivce.getOpenidStatus(openid);
         if(openIdStatus != null){
@@ -339,7 +339,7 @@ public class UmbrellaController  {
         Map<String, Object> map=new HashMap<String, Object>();
         Map<String, Object> result=new HashMap<String, Object>();
         String openid= WechatUtil.getOpenId(session, request);
-//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
         List<Map<String, Object>> list=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
@@ -360,6 +360,7 @@ public class UmbrellaController  {
                 }
                 result.put("result", 2);
                 result.put("umbrella", m);
+                result.put("rank", babyUmbrellaInfoSerivce.getUmbrellaRank(map));
                 return result;
         }
         result.put("result",1);
@@ -494,15 +495,15 @@ public class UmbrellaController  {
         Integer id = Integer.parseInt((String) params.get("id"));
         List<UmbrellaFamilyInfo> list = new ArrayList<UmbrellaFamilyInfo>();
         list = babyUmbrellaInfoSerivce.getFamilyUmbrellaList(id);
-//        BabyBaseInfoVo babyInfo = babyUmbrellaInfoSerivce.getBabyBaseInfo(id);
-//        if(babyInfo!=null){
-//            UmbrellaFamilyInfo familyInfo = new UmbrellaFamilyInfo();
-//            familyInfo.setSex(Integer.parseInt(babyInfo.getSex()));
-//            familyInfo.setName(babyInfo.getName());
-//            familyInfo.setBirthday(babyInfo.getBirthday());
-//            list.add(familyInfo);
-//            activation = true;
-//        }
+        BabyBaseInfoVo babyInfo = babyUmbrellaInfoSerivce.getBabyBaseInfo(id);
+        if(babyInfo!=null){
+            UmbrellaFamilyInfo familyInfo = new UmbrellaFamilyInfo();
+            familyInfo.setSex(Integer.parseInt(babyInfo.getSex()));
+            familyInfo.setName(babyInfo.getName());
+            familyInfo.setBirthday(babyInfo.getBirthday());
+            list.add(familyInfo);
+            activation = true;
+        }
         resultMap.put("familyList",list);
         resultMap.put("activation",activation);
         return resultMap;
@@ -681,13 +682,13 @@ public class UmbrellaController  {
         babyUmbrellaInfoSerivce.saveFamilyUmbrellaInfo(familyInfo);
 
         //宝宝的信息
-        UmbrellaFamilyInfo bFamilyInfo = new UmbrellaFamilyInfo();
-        Date bbirthDay = DateUtils.StrToDate(params.get("bbirthDay").toString(), "yyyy-MM-dd");
-        bFamilyInfo.setBirthday(bbirthDay);
-        bFamilyInfo.setUmbrellaId(babyUmbrellaInfo.getId());
-        bFamilyInfo.setName(params.get("bname").toString());
-        bFamilyInfo.setSex(Integer.parseInt(params.get("bsex").toString()));
-        int reusltStatus = babyUmbrellaInfoSerivce.saveFamilyUmbrellaInfo(bFamilyInfo);
+//        UmbrellaFamilyInfo bFamilyInfo = new UmbrellaFamilyInfo();
+//        Date bbirthDay = DateUtils.StrToDate(params.get("bbirthDay").toString(), "yyyy-MM-dd");
+//        bFamilyInfo.setBirthday(bbirthDay);
+//        bFamilyInfo.setUmbrellaId(babyUmbrellaInfo.getId());
+//        bFamilyInfo.setName(params.get("bname").toString());
+//        bFamilyInfo.setSex(Integer.parseInt(params.get("bsex").toString()));
+//        int reusltStatus = babyUmbrellaInfoSerivce.saveFamilyUmbrellaInfo(bFamilyInfo);
 
         result.put("result",res);
         result.put("id",babyUmbrellaInfo.getId());

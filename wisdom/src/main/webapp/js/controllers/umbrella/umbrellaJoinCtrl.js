@@ -23,7 +23,8 @@
             };
             $scope.goActive=function(){
                 recordLogs("BHS_WDBZ_JH");
-                $state.go("umbrellaMemberList",{id:$scope.umbrellaId,status:$scope.status});
+                // $state.go("umbrellaMemberList",{id:$scope.umbrellaId,status:$scope.status});
+                window.location.href = "../wisdom/umbrella#/umbrellaFillInfo/"+$scope.umbrellaId+"/a";
             };
             $scope.goShare=function(){
                 $scope.shareLock=true;
@@ -65,7 +66,7 @@
                     success:function(data) {
                         if(data.openid=="none"){
                             // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
-                            window.location.href = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+                            // window.location.href = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
                         }
                     },
                     error : function() {
@@ -77,20 +78,10 @@
                         window.location.href = "../wisdom/firstPage/umbrella?id=" + $stateParams.id;
                     }else if(data.umbrella.pay_result=="fail"){
                         window.location.href = "http://localhost:8080/keeper/wxPay/patientPay.do?serviceType=umbrellaPay&shareId="+$stateParams.id;
-                    }else if(data.result==2){
-                        $scope.updateJoin=true;
-                        $scope.umbrellaMoney=data.umbrella.umbrella_money;
-                        $scope.num=data.umbrella.id-120000000;
-                        $scope.umbrellaId=data.umbrella.id;
-                        if(data.umbrella.pay_result!="null"&&typeof(data.umbrella.pay_result)!="undefined"){
-                            $scope.status="a";
-                        }
-                        $scope.loadShare();
                     }
-                    if(data.umbrella.activation_time==null) {
-                        $scope.firstJoin = true;
+                    if(data.result==2 || data.umbrella.activation_time==null) {
                         $scope.umbrellaMoney = 200000;
-                        if (data.result == 3) {
+                        if (data.result == 3 || data.result == 2) {
                             $scope.umbrellaId = data.umbrella.id;
                         } else {
                             $scope.umbrellaId = data.id;
@@ -99,7 +90,11 @@
                             $scope.status = "a";
                         }
                         $scope.loadShare();
-
+                        if(data.result == 2){
+                            $scope.updateJoin=true;
+                        }else{
+                            $scope.firstJoin = true;
+                        }
                         updateActivationTime.save({"id": $scope.umbrellaId}, function (data) {
                             if (data.result != '1') {
                                 alert("未知错误,请尝试刷新页面");
