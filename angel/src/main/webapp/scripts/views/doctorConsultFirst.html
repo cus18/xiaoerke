@@ -324,7 +324,6 @@
                             </td>
                             <td class="td-l">
                                 <span>咨询类别：<select ng-model="info.selectedIllnessList" ng-options="date.illness for date in illnessList">
-                                        <option value="">-添加-</option><!--addIllness-->
                                     </select>
                                 </span>
                             </td>
@@ -341,7 +340,7 @@
                         </tr>
                         <tr class="save">
                             <td colspan="3">
-                                <input type="submit" value="添加记录"/>
+                                <input type="submit" value="添加记录" ng-click="addDiagnosisRecords()"/>
                                 <input type="submit" value="取消保存"/>
                                 <input type="submit" value="推荐医生"/>
                             </td>
@@ -361,34 +360,19 @@
                     <table class="table4" ng-show="showFlag.historyTable">
                         <tr class="higher">
                             <td>
-                                <dl ng-repeat="item in diagnosis">
+                                <dl ng-repeat="item in historyConsult">
                                     <dt>
-                                        客服：<input type="text" value="{{currentUserConversation.patientId}}"/>
-                                        <a class="fr">2015/11/12</a>
+                                        客服：<input type="text" value="{{item.customerId}}"/>
+                                        <a class="fr">{{item.create_date|date:"yyyy-MM-dd"}}</a>
                                     </dt>
                                     <dd>
-                                        <span>诊断：</span>诊断内容诊断内容诊断内容诊断内容
+                                        <span>诊断：</span>{{item.sys_customer_illness_id}}
                                     </dd>
                                     <dd>
-                                        <span>表现：</span>诊断内容诊断内容诊断内容诊断内容
+                                        <span>表现：</span>{{item.show}}
                                     </dd>
                                     <dd>
-                                        <span>处理：</span>诊断内容诊断内容诊断内容诊断内容
-                                    </dd>
-                                </dl>
-                                <dl>
-                                    <dt>
-                                        客服：<input type="text"/>
-                                        <a class="fr">2015/11/12</a>
-                                    </dt>
-                                    <dd>
-                                        <span>诊断：</span>诊断内容诊断内容诊断内容诊断内容
-                                    </dd>
-                                    <dd>
-                                        <span>表现：</span>诊断内容诊断内容诊断内容诊断内容
-                                    </dd>
-                                    <dd>
-                                        <span>处理：</span>诊断内容诊断内容诊断内容诊断内容
+                                        <span>处理：</span>{{item.result}}
                                     </dd>
                                 </dl>
                             </td>

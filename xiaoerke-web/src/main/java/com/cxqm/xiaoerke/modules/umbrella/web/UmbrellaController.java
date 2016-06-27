@@ -122,7 +122,7 @@ public class UmbrellaController  {
         Map<String, Object> map=new HashMap<String, Object>();
         Map<String, Object> numm=new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session, request);
-        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
         List<Map<String, Object>> list = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
@@ -304,7 +304,7 @@ public class UmbrellaController  {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
         String openid= WechatUtil.getOpenId(session, request);
-        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         Map<String, Object> result = new HashMap<String, Object>();
         Map<String,Object> openIdStatus = babyUmbrellaInfoSerivce.getOpenidStatus(openid);
         if(openIdStatus != null){
@@ -350,6 +350,10 @@ public class UmbrellaController  {
                 return result;
             }
                 if (m.get("baby_id") != null && !m.get("baby_id").equals("")) {
+                    if (m.get("activation_time") != null && !m.get("activation_time").equals("")) {
+                        map.put("createTime",m.get("create_time"));
+                        result.put("rank", babyUmbrellaInfoSerivce.getUmbrellaRank(map));
+                    }
                     result.put("result", 3);
                     result.put("umbrella", m);
                     return result;
@@ -412,6 +416,7 @@ public class UmbrellaController  {
 
         Map<String, Object> map=new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session, request);
+//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
         List<Map<String, Object>> list = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
@@ -499,15 +504,15 @@ public class UmbrellaController  {
         Integer id = Integer.parseInt((String) params.get("id"));
         List<UmbrellaFamilyInfo> list = new ArrayList<UmbrellaFamilyInfo>();
         list = babyUmbrellaInfoSerivce.getFamilyUmbrellaList(id);
-        BabyBaseInfoVo babyInfo = babyUmbrellaInfoSerivce.getBabyBaseInfo(id);
-        if(babyInfo!=null){
-            UmbrellaFamilyInfo familyInfo = new UmbrellaFamilyInfo();
-            familyInfo.setSex(Integer.parseInt(babyInfo.getSex()));
-            familyInfo.setName(babyInfo.getName());
-            familyInfo.setBirthday(babyInfo.getBirthday());
-            list.add(familyInfo);
-            activation = true;
-        }
+//        BabyBaseInfoVo babyInfo = babyUmbrellaInfoSerivce.getBabyBaseInfo(id);
+//        if(babyInfo!=null){
+//            UmbrellaFamilyInfo familyInfo = new UmbrellaFamilyInfo();
+//            familyInfo.setSex(Integer.parseInt(babyInfo.getSex()));
+//            familyInfo.setName(babyInfo.getName());
+//            familyInfo.setBirthday(babyInfo.getBirthday());
+//            list.add(familyInfo);
+//            activation = true;
+//        }
         resultMap.put("familyList",list);
         resultMap.put("activation",activation);
         return resultMap;
@@ -567,7 +572,7 @@ public class UmbrellaController  {
     Map<String, Object> getOpenid(HttpServletRequest request,HttpSession session){
         Map<String, Object> resultMap = new HashMap<String, Object>();
         String openid= WechatUtil.getOpenId(session, request);
-        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         if(openid==null||openid.equals("")){
             resultMap.put("openid","none");
             return resultMap;
@@ -607,7 +612,7 @@ public class UmbrellaController  {
         String phone=params.get("phone").toString();
         String code=params.get("code").toString();
         String openid= WechatUtil.getOpenId(session, request);
-        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         String codeAuth=utilService.bindUser(phone,code,openid);
         if(codeAuth.equals("0")){
              codeAuth=utilService.bindUser4Doctor(phone,code,openid);
@@ -627,9 +632,78 @@ public class UmbrellaController  {
         babyUmbrellaInfo.setParentPhone(params.get("phone").toString());
         babyUmbrellaInfo.setParentName(URLDecoder.decode(params.get("parentName").toString(),"UTF-8"));
         babyUmbrellaInfo.setParentType(Integer.parseInt(params.get("parentType").toString()));
+        babyUmbrellaInfo.setMoney("5");
+        babyUmbrellaInfo.setUmberllaMoney(200000);
+        //随机立减
+        Map maps = new HashMap();
+
+
+        //先删除以前可能存在的旧数据
+
+        maps.put("openid",openid);
+        List<Map<String, Object>> list = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(maps);
+        if(list.size()>0){
+            babyUmbrellaInfoSerivce.deleteUmbrellaByOpenid(babyUmbrellaInfo.getOpenid());
+            babyUmbrellaInfoSerivce.deleteByUmbrellaId(Integer.parseInt(list.get(0).get("id").toString()));
+            if (list.get(0).get("true_pay_moneys") != null && !list.get(0).get("true_pay_moneys").equals("")) {
+                babyUmbrellaInfo.setTruePayMoneys(list.get(0).get("true_pay_moneys").toString());
+            }
+        }
+
+        maps.put("type","umbrella");
+        SwitchConfigure switchConfigure = systemService.getUmbrellaSwitch(maps);
+        String flag = switchConfigure.getFlag();
+        System.out.println(flag+"flag=======================switchConfigure========================");
+//        flag为1是打开，0是关闭
+        double ram=0;
+//        if(flag.equals("1")) {
+//            ram = Math.random() * 5;
+//            do {
+//                ram = Math.random() * 5;
+//            } while (ram < 1);
+//        }
+
+        if(flag.equals("1")){
+            if(babyUmbrellaInfo.getTruePayMoneys()!=null&&!babyUmbrellaInfo.getTruePayMoneys().equals("")) {
+                ram = Integer.parseInt(babyUmbrellaInfo.getTruePayMoneys().toString());
+            }else{
+                ram = Math.random() * 5;
+            }
+        }
+        String ress = String.format("%.0f", ram);
+
+        babyUmbrellaInfo.setTruePayMoneys(ress);
+
+        if(ress.equals("0")){
+            babyUmbrellaInfo.setPayResult("success");
+        }else {
+            babyUmbrellaInfo.setPayResult("fail");
+        }
+
+        //完成添加动作
         Integer res = babyUmbrellaInfoSerivce.newSaveBabyUmbrellaInfo(babyUmbrellaInfo);
 //        String shareId=params.get("shareId").toString();
 //        sendWechatMessage(openid,shareId);
+
+        //插入家庭成员的信息
+        //宝爸宝妈
+        UmbrellaFamilyInfo familyInfo = new UmbrellaFamilyInfo();
+        familyInfo.setName(URLDecoder.decode(params.get("parentName").toString(), "UTF-8"));
+        familyInfo.setUmbrellaId(babyUmbrellaInfo.getId());
+        familyInfo.setSex(Integer.parseInt(params.get("parentType").toString()));
+        String idCard = params.get("idCard").toString();
+        Date birthDay = DateUtils.StrToDate(idCard.substring(6,14),"yyyyMMdd");
+        familyInfo.setBirthday(birthDay);
+        babyUmbrellaInfoSerivce.saveFamilyUmbrellaInfo(familyInfo);
+
+        //宝宝的信息
+        UmbrellaFamilyInfo bFamilyInfo = new UmbrellaFamilyInfo();
+        Date bbirthDay = DateUtils.StrToDate(params.get("bbirthDay").toString(), "yyyy-MM-dd");
+        bFamilyInfo.setBirthday(bbirthDay);
+        bFamilyInfo.setUmbrellaId(babyUmbrellaInfo.getId());
+        bFamilyInfo.setName(params.get("bname").toString());
+        bFamilyInfo.setSex(Integer.parseInt(params.get("bsex").toString()));
+        int reusltStatus = babyUmbrellaInfoSerivce.saveFamilyUmbrellaInfo(bFamilyInfo);
 
         result.put("result",res);
         result.put("id",babyUmbrellaInfo.getId());
