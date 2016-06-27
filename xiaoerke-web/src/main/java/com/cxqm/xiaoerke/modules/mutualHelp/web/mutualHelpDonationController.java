@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.mutualHelp.web;
 
+import com.cxqm.xiaoerke.modules.mutualHelp.entity.MutualHelpDonation;
 import com.cxqm.xiaoerke.modules.mutualHelp.service.MutualHelpDonationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -7,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,15 +89,14 @@ public class MutualHelpDonationController {
     @RequestMapping(value = "/addNoteAndDonation", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public Map<String,Object> addNoteAndDonation(Map<String, Object> paramMap){
-        HashMap<String,Object> searchMap = new HashMap<String, Object>();
-        searchMap.put("openId", (String) paramMap.get("openId"));
-        searchMap.put("userId", (String) paramMap.get("userId"));
-        searchMap.put("money", (Double) paramMap.get("money"));
-        searchMap.put("leaveNote", (String) paramMap.get("leaveNote"));
-        searchMap.put("createTime", (Date) paramMap.get("createTime"));
-        searchMap.put("donationType", (Integer) paramMap.get("donationType"));
+        MutualHelpDonation mutualHelpDonation = new MutualHelpDonation();
+        mutualHelpDonation.setOpenId((String) paramMap.get("openId"));
+        mutualHelpDonation.setUserId((String) paramMap.get("userId"));
+        mutualHelpDonation.setMoney((Double) paramMap.get("money"));
+        mutualHelpDonation.setLeaveNote((String) paramMap.get("leaveNote"));
+        mutualHelpDonation.setDonationType((Integer) paramMap.get("donationType"));
 
-        int n = service.saveNoteAndDonation(searchMap);
+        int n = service.saveNoteAndDonation(mutualHelpDonation);
         Map<String,Object> response = new HashMap<String, Object>();
         if(n>0){
             response.put("insert","success");

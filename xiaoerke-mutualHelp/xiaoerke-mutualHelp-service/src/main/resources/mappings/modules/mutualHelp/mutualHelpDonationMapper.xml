@@ -78,7 +78,7 @@
       #{userId,jdbcType=VARCHAR},
       #{money,jdbcType=DOUBLE},
       #{leaveNote,jdbcType=VARCHAR},
-      #{createTime,jdbcType=TIMESTAMP},
+      now(),
       #{donationType,jdbcType=VARCHAR}
       )
     </insert>
