@@ -121,9 +121,9 @@
                         $scope.umbrellaId=data.umbrella.id;
                         $scope.loadShare();
                     // $scope.person=data.umbrella.friendJoinNum<10?10-data.umbrella.friendJoinNum:data.umbrella.friendJoinNum;
+                    }
                     $scope.person=data.umbrella.friendJoinNum;
                     $scope.pintu=data.umbrella.friendJoinNum>=10?0:10-data.umbrella.friendJoinNum;
-                    }
                 recordLogs("BHS_WDBZ");
             //     JoinUs.save({"shareId":$scope.shareid},function(data){
             //         if(data.umbrella.activation_time==null){
