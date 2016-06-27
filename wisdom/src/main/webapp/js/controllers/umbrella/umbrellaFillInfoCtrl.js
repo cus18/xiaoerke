@@ -405,7 +405,7 @@
                          if(data.result=="3"){
                             window.location.href="../wisdom/firstPage/umbrella?id="+$stateParams.id;
                         }else{
-                             if(data.result=="2"){
+                             if(data.result=="2" && data.umbrella.pay_result=="success"){
                                  $scope.ifExist=true;
                              }
                             getOpenidStatus.save(function (data){
