@@ -74,7 +74,7 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
         Map<String,Object> parameter = systemService.getWechatParameter();
         String token = (String)parameter.get("token");
         String url= "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token="+token;
-        String jsonData="{\"expire_seconds\": 604800, \"action_name\": \"QR_SCENE\",\"action_info\": {\"scene\": {\"scene_id\": "+id+"}}}";
+        String jsonData="{\"expire_seconds\": 604800, \"action_name\": \"QR_SCENE\",\"action_info\": {\"scene\": {\"scene_id\"" + ":" + Integer.parseInt(id) + "}}}";
         String reJson=this.post(url, jsonData,"POST");
         System.out.println(reJson);
         JSONObject jb=JSONObject.fromObject(reJson);
@@ -177,8 +177,8 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
         }
 
         Map<String, Object> notActiveParam = new HashMap<String, Object>();
-        notActiveParam.put("notActive","notActive");
-        notActiveParam.put("notShareOrActiveDays","30");
+        notActiveParam.put("notActive", "notActive");
+        notActiveParam.put("notShareOrActiveDays", "30");
         List<Map<String,Object>> notActivelist = babyUmbrellaInfoDao.getBabyUmbrellaInfo(notActiveParam);
 
         for(Map<String, Object> map : notActivelist){//30天未激活
