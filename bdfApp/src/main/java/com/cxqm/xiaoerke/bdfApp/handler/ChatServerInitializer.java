@@ -1,8 +1,8 @@
 package com.cxqm.xiaoerke.bdfApp.handler;
 
 
-import com.cxqm.xiaoerke.modules.consult.service.core.HttpRequestHandler;
-import com.cxqm.xiaoerke.modules.consult.service.core.TextWebSocketFrameHandler;
+import com.cxqm.xiaoerke.bdfApp.core.HttpRequestHandler_App;
+import com.cxqm.xiaoerke.bdfApp.core.TextWebSocketFrameHandler_App;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -27,11 +27,11 @@ public class ChatServerInitializer extends ChannelInitializer<Channel> {
 
 		pipeline.addLast(new HttpObjectAggregator(64*1024));
 		
-		pipeline.addLast(new HttpRequestHandler("/ws"));
+		pipeline.addLast(new HttpRequestHandler_App("/ws"));
 		
 		pipeline.addLast(new WebSocketServerProtocolHandler("/ws"));
 		
-		pipeline.addLast(new TextWebSocketFrameHandler());
+		pipeline.addLast(new TextWebSocketFrameHandler_App());
 
 	}
 
