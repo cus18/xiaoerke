@@ -166,7 +166,7 @@
     <update id="updateBabyUmbrellaInfoStatus" parameterType="com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo" >
         update baby_umbrellainfo
         set
-        pay_result = 'success' and update_time = now()
+        pay_result = 'success' , update_time = now()
         where id = #{id,jdbcType=VARCHAR}
     </update>
 
@@ -177,7 +177,7 @@
 
     <select id="getUmbrellaRank" resultType="java.lang.Integer" >
         select count(*) from baby_umbrellainfo
-        where create_time&lt;#{createTime}
+        where create_time&lt;#{createTime} and pay_result='success'
     </select>
 
 </mapper>

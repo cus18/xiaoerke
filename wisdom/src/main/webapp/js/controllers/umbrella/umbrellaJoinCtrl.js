@@ -77,6 +77,15 @@
                         window.location.href = "../wisdom/firstPage/umbrella?id=" + $stateParams.id;
                     }else if(data.umbrella.pay_result=="fail"){
                         window.location.href = "http://localhost:8080/keeper/wxPay/patientPay.do?serviceType=umbrellaPay&shareId="+$stateParams.id;
+                    }else if(data.result==2){
+                        $scope.updateJoin=true;
+                        $scope.umbrellaMoney=data.umbrella.umbrella_money;
+                        $scope.num=data.umbrella.id-120000000;
+                        $scope.umbrellaId=data.umbrella.id;
+                        if(data.umbrella.pay_result!="null"&&typeof(data.umbrella.pay_result)!="undefined"){
+                            $scope.status="a";
+                        }
+                        $scope.loadShare();
                     }
                     if(data.umbrella.activation_time==null) {
                         $scope.firstJoin = true;
@@ -121,9 +130,9 @@
                         $scope.umbrellaId=data.umbrella.id;
                         $scope.loadShare();
                     // $scope.person=data.umbrella.friendJoinNum<10?10-data.umbrella.friendJoinNum:data.umbrella.friendJoinNum;
+                    }
                     $scope.person=data.umbrella.friendJoinNum;
                     $scope.pintu=data.umbrella.friendJoinNum>=10?0:10-data.umbrella.friendJoinNum;
-                    }
                 recordLogs("BHS_WDBZ");
             //     JoinUs.save({"shareId":$scope.shareid},function(data){
             //         if(data.umbrella.activation_time==null){
@@ -234,7 +243,7 @@
                                 wx.ready(function () {
                                     // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                                     wx.onMenuShareTimeline({
-                                        title: '5元＝40万？原来做公益，只要一根雪糕钱！我已成为宝护伞互助公益爱心大使，领到了40万的健康保障，你也快来加入吧！', // 分享标题
+                                        title: '5元＝40万？原来做公益，只要一根雪糕钱！', // 分享标题
                                         link:  "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$scope.umbrellaId+"/"+$scope.status,
                                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                         success: function (res) {
@@ -257,8 +266,8 @@
                                         }
                                     });
                                     wx.onMenuShareAppMessage({
-                                        title: '5元＝40万？原来做公益，只要一根雪糕钱！我已成为宝护伞互助公益爱心大使，领到了40万的健康保障，你也快来加入吧！', // 分享标题
-                                        desc: "宝护伞是由宝大夫联合中国儿童少年基金会发起的非盈利性公益项目！", // 分享描述
+                                        title: '5元＝40万？原来做公益，只要一根雪糕钱！', // 分享标题
+                                        desc: "我已成为宝护伞互助公益爱心大使，领到了40万的健康保障，你也快来加入吧！", // 分享描述
                                         link:  "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$scope.umbrellaId+"/"+$scope.status, // 分享链接
                                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                         success: function (res) {

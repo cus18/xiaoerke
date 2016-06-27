@@ -178,7 +178,7 @@ function wechatPay() {
                                         if (status == "1") {
                                             var shareId = GetQueryString("shareId") == null || GetQueryString("shareId") == "120000000" ? 130000000 : GetQueryString("shareId");
                                             // window.location.href="http://s165.baodf.com/wisdom/umbrella#/umbrellaPaySuccess/"+shareId;
-                                            window.location.href="http://localhost:8080/wisdom/umbrella#/umbrellaPaySuccess/"+shareId;
+                                            window.location.href="http://s2.xiaork.cn/wisdom/umbrella#/umbrellaPaySuccess/"+shareId;
                                             $.ajax({
                                                 type: 'POST',
                                                 url: "umbrella/getUserQRCode",
