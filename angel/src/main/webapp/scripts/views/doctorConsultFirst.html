@@ -9,13 +9,13 @@
                 </span>
                 <span></span>
                 <span>（{{doctorName}}），宝大夫欢迎您！！</span>
-                <span>
+                <!--<span>
                     <select>
                         <option>在线</option>
                         <option>不在线</option>
                     </select>
-                    <!--<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>-->
-                </span>
+                    &lt;!&ndash;<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>&ndash;&gt;
+                </span>-->
                 <span ng-if="loseConnectionFirstFlag||loseConnectionSecondFlag">您已与平台断开了连接，请检查您的网络情况，谢谢！</span>
                 <span ng-if="!loseConnectionFirstFlag&&!loseConnectionSecondFlag">您目前与平台连接正常！</span>
                 <div class="bdf-dkf-content-right">
@@ -216,7 +216,7 @@
                     </div>
                 </div>
             </div>
-            <iframe src="http://localhost:8080/angel/scripts/views/customerss.html" frameborder="0"
+            <iframe src="http://s132.baodf.com/angel/scripts/views/customerss.html" frameborder="0"
             class="advisory-content" ng-show='showFlag.advisoryContent'>
             </iframe>
             <textarea type="text" name="messageData" id="patientIdData" class="textarea" style="display:none;">{{currentUserConversation.patientId}}</textarea>
