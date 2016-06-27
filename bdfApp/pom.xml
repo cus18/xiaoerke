@@ -9,6 +9,7 @@
   <packaging>war</packaging>
   
   <dependencies>
+
 	  <dependency> 
            <groupId>com.cxqm</groupId> 
            <artifactId>xiaoerke-web</artifactId>

@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,6 +52,8 @@ public class NutritionManagementController {
 	@RequestMapping(value = "/saveBabyInfo", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  saveBabyInfo(@RequestBody Map<String, Object> params){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		try {
 			Map<String, Object> planInfoMap = new HashMap<String, Object>();
@@ -86,6 +90,8 @@ public class NutritionManagementController {
 	@RequestMapping(value = "/judgeUserManage", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  judgeUserManage(@RequestParam Map<String, Object> params,HttpServletRequest request,HttpServletResponse response){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		try {
 			StringBuffer sb = new StringBuffer();
@@ -126,6 +132,8 @@ public class NutritionManagementController {
 	@RequestMapping(value = "/saveManagementInfo", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  saveManagementInfo(@RequestParam short planTemplateId,HttpServletRequest request,HttpSession session){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		String userId=UserUtils.getUser().getId();
 		String openId = WechatUtil.getOpenId(session,request);
@@ -171,12 +179,13 @@ public class NutritionManagementController {
 	/**
 	 * 返回宝宝信息，extra_info中包括宝宝的性别，生日，身高，体重；用;分隔
 	 * sunxiao
-	 * @param params
 	 * @return
 	 */
 	@RequestMapping(value = "/getBabyInfo", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
-	Map<String, Object>  getBabyInfo(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session){
+	Map<String, Object>  getBabyInfo(){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		try {
 			Map<String, Object> planInfoMap = new HashMap<String, Object>();
@@ -208,7 +217,9 @@ public class NutritionManagementController {
 	 */
 	@RequestMapping(value = "/updateBabyInfo", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
-	Map<String, Object>  updateBabyInfo(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session){
+	Map<String, Object>  updateBabyInfo(@RequestBody Map<String, Object> params){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		try {
 			Map<String, Object> planInfoMap = new HashMap<String, Object>();
@@ -250,7 +261,9 @@ public class NutritionManagementController {
 	 */
 	@RequestMapping(value = "/getRecipes", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
-	Map<String, Object>  getRecipes(@RequestParam String birthday,HttpServletRequest request,HttpSession session){
+	Map<String, Object>  getRecipes(@RequestParam String birthday){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		try {
 			map = nutritionManagementService.getRecipes(birthday);
@@ -268,12 +281,13 @@ public class NutritionManagementController {
 	/**
 	 * 获取一天的食谱
 	 * sunxiao
-	 * @param params
 	 * @return
 	 */
 	@RequestMapping(value = "/getTodayRead", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
-	Map<String, Object>  getTodayRead(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session){
+	Map<String, Object>  getTodayRead(){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		try {
 			map = nutritionManagementService.getTodayRead();
@@ -296,7 +310,9 @@ public class NutritionManagementController {
 	 */
 	@RequestMapping(value = "/saveUpdateEvaluate", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
-	Map<String, Object>  saveUpdateEvaluate(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session){
+	Map<String, Object>  saveUpdateEvaluate(@RequestBody Map<String, Object> params){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		try {
 			params.put("userId", UserUtils.getUser().getId());
@@ -320,7 +336,9 @@ public class NutritionManagementController {
 	 */
 	@RequestMapping(value = "/getEvaluate", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
-	Map<String, Object>  getEvaluate(@RequestParam String flag,HttpServletRequest request,HttpSession session){
+	Map<String, Object>  getEvaluate(@RequestParam String flag){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		try {
 			Map<String, Object> param = new HashMap<String, Object>();
@@ -346,7 +364,9 @@ public class NutritionManagementController {
 	 */
 	@RequestMapping(value = "/updateSendWechatMessage", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
-	Map<String, Object>  updateSendWechatMessage(@RequestParam String flag,HttpServletRequest request,HttpSession session){
+	Map<String, Object>  updateSendWechatMessage(@RequestParam String flag){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		try {
 			Map<String, Object> param = new HashMap<String, Object>();
@@ -367,15 +387,14 @@ public class NutritionManagementController {
 	/**
 	 * 重新评估
 	 * sunxiao
-	 * @param params
 	 * @return
 	 */
 	@RequestMapping(value = "/reEvaluate", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
-	Map<String, Object>  reEvaluate(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session){
+	Map<String, Object>  reEvaluate(){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 		Map<String ,Object> map=new HashMap<String, Object>();
 		try {
-			Map<String, Object> param = new HashMap<String, Object>();
 			nutritionManagementService.reEvaluate(UserUtils.getUser().getId());
 			map.put("resultCode", 0);
 			map.put("resultMsg", "OK");

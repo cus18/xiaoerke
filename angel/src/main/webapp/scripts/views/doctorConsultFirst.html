@@ -9,13 +9,13 @@
                 </span>
                 <span></span>
                 <span>（{{doctorName}}），宝大夫欢迎您！！</span>
-                <span>
-                    <select>
-                        <option>在线</option>
-                        <option>不在线</option>
-                    </select>
-                    <!--<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>-->
-                </span>
+                <!--<span>-->
+                    <!--<select>-->
+                        <!--<option>在线</option>-->
+                        <!--<option>不在线</option>-->
+                    <!--</select>-->
+                    <!--&lt;!&ndash;<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>&ndash;&gt;-->
+                <!--</span>-->
                 <span ng-if="loseConnectionFirstFlag||loseConnectionSecondFlag">您已与平台断开了连接，请检查您的网络情况，谢谢！</span>
                 <span ng-if="!loseConnectionFirstFlag&&!loseConnectionSecondFlag">您目前与平台连接正常！</span>
                 <div class="bdf-dkf-content-right">
@@ -96,7 +96,7 @@
                     <span ng-click="edit()">编辑</span>
                     <span ng-click="remove()">删除</span>
                     <span ng-click="moveUp()">向上</span>
-                    <span >向下</span>
+                    <span ng-click="moveDown()">向下</span>
                     <span>同步</span>
                 </div>
                 <div class="replayContent">
@@ -216,218 +216,12 @@
                     </div>
                 </div>
             </div>
-            <div class="advisory-content" ng-show='showFlag.advisoryContent'>
-                <div>
-                    <!--用户信息-->
-                    <div class="module">
-                        <table class="table1">
-                            <tr class="title">
-                                <th  colspan="3">
-                                    <h3>用户信息<input type="submit" class="more" value="收起更多"/> <span>(VIP)</span>：</h3>
-                                </th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    姓名：<span><select></select></span>
-                                </td>
-                                <td>微信名：&nbsp;&nbsp;&nbsp;<span type="text" ><input type="text"/></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    生日：<span type="text"><input type="text" class="Wdate" onFocus="WdatePicker({lang:'zh-cn'})"/></span>
-                                </td>
-                                <td>
-                                    <span>联系电话：&nbsp;&nbsp;</span><span type="text"><input type="text"/></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    性别：<select type="text"><option value="1">男</option><option value="0">女</option></select>
-                                </td>
-                                <td >
-                                    会员有效期：&nbsp;<span><input type="text"/></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    备注：<input type="text"/>
-                                </td>
-                                <td>
-                                    <span style="">最近就诊日期：</span><span type="text"><input type="text"/></span>
-                                </td>
-                            </tr>
-                            <tr class="save">
-                                <td colspan="3">
-                                    <input  type="submit" value="保存档案"/>
-                                    <input  type="submit" value="取消保存"/>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="module">
-                        <table class="table3">
-                            <tr class="title">
-                                <th colspan="2">
-                                    <h3>近期就诊记录<input type="submit" class="more" value="收起更多"/></h3>
-                                </th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span>姓名：</span><select><option>小雪</option></select>
-                                </td>
-                                <td>
-                                    <span>医院：</span><input type="text"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span>生日：</span><input type="text"/>
-                                </td>
-                                <td>
-                                    <span>科室：</span><input type="text"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span>电话：</span><input type="text"/>
-                                </td>
-                                <td>
-                                    <span>医生：</span><input type="text"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span>症状：</span><input type="text"/>
-                                </td>
-                                <td>
-                                    <span>日期：</span><input type="text"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span>订单类型：</span><input type="text"/>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <!--添加咨询记录-->
-                    <div class="module" >
-                        <table class="table4">
-                            <tr class="title">
-                                <th colspan="2">
-                                    <h3>添加咨询记录：<input type="submit" class="more" value="收起更多"/> </h3>
-                                </th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span>客服：</span><input type="text"/>
-                                </td>
-                                <td class="td-l">
-                                    <span>归档日期：</span><span>2016.12.14</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span>诊断：</span><input type="text"/>
-                                </td>
-                                <td class="td-l">
-                                    <span>咨询类别：<select><option value="addIllness">添加</option></select></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    表现：<input type="text" maxlength="30" value="" class="big-input" placeholder="可编辑（可选）30个字以内"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    处理：<input type="text" maxlength="30" value="" class="big-input" placeholder="可编辑（可选）30个字以内"/>
-                                </td>
-                            </tr>
-                            <tr class="save">
-                                <td colspan="3">
-                                    <input type="submit" value="添加记录"/>
-                                    <input type="submit" value="取消保存"/>
-                                    <input type="submit" value="推荐医生"/>
-                                </td>
-                            </tr>
-                            <tr class="save">
-                                <td>
-                                    <span>定时回访：<input type="submit" value="添加定时回访"/></span>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <!--历史咨询档案-->
-                    <div class="module">
-                        <table class="table5">
-                            <tr class="title">
-                                <th colspan="2">
-                                    <h3 >历史咨询档案：
-                                        <input type="submit" class="more" id="displayCustomerButton"  onClick="hiddenTableCustomer();"  value="收起更多"/>
-                                    </h3>
-                                </th>
-                            </tr>
-                            <tr class="higher">
-                                <td>
-                                    <dl>
-                                        <dt>
-                                            客服：<input type="text"/>
-                                            <a class="fr">2015/11/12</a>
-                                        </dt>
-                                        <dd>
-                                            <span>诊断：</span>诊断内容诊断内容诊断内容诊断内容
-                                        </dd>
-                                        <dd>
-                                            <span>表现：</span>诊断内容诊断内容诊断内容诊断内容
-                                        </dd>
-                                        <dd>
-                                            <span>处理：</span>诊断内容诊断内容诊断内容诊断内容
-                                        </dd>
-                                    </dl>
-                                    <dl>
-                                        <dt>
-                                            客服：<input type="text"/>
-                                            <a class="fr">2015/11/12</a>
-                                        </dt>
-                                        <dd>
-                                            <span>诊断：</span>诊断内容诊断内容诊断内容诊断内容
-                                        </dd>
-                                        <dd>
-                                            <span>表现：</span>诊断内容诊断内容诊断内容诊断内容
-                                        </dd>
-                                        <dd>
-                                            <span>处理：</span>诊断内容诊断内容诊断内容诊断内容
-                                        </dd>
-                                    </dl>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div>
-                        <span style="">科室/类别：</span><input type="text" id="addSections"/>
-                        <br/>
-                        <center>
-                            <input type="submit" value="保存"/>
-                            <input type="submit"  value="取消"/>
-                        </center>
-                    </div>
-                    <div>
-                        <br/>
-                        <center>
-                            <span></span>
-                            <br/><br/><br/><br/>
-                            <input type="submit" value="关闭"/>
-                        </center>
-                    </div>
-                    <!--<tr class="save">
-                        <td>
-                            <input type="submit" value="查看更多"/>
-                        </td>
-                    </tr>-->
-                </div>
-            </div>
+            <iframe src="http://s132.baodf.com/angel/scripts/views/customerss.html" frameborder="0"
+            class="advisory-content" ng-show='showFlag.advisoryContent'>
+            </iframe>
+            <textarea type="text" name="messageData" id="patientIdData" class="textarea" style="display:none;">{{currentUserConversation.patientId}}</textarea>
+            <textarea type="text" name="messageData" id="doctorIdData" class="textarea" style="display:none;">{{doctorId}}</textarea>
+            <textarea type="text" name="messageData" id="sourceData" class="textarea" style="display:none;">{{currentUserConversation.source}}</textarea>
         </div>
         <div class="msg-m h30" ng-if="chooseAlreadyJoinConsultPatientId!=''">
             <div class="headportrait">

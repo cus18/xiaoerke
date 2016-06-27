@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.register.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.modules.order.entity.SysConsultPhoneServiceVo;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhoneOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,7 @@ public class ConsultPhoneRegisterController {
     public
     @ResponseBody
     SysConsultPhoneServiceVo getConsultPhoneList(@RequestParam(value="consultPhoneServiceId", required=true) Integer consultPhoneServiceId){
+      DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
       return consultPhoneOrderService.getConsultServiceInfo(consultPhoneServiceId);
     }
 

@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.phoneConsult.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.XMLUtil;
 import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
@@ -30,9 +32,6 @@ public class PhoneConsultaController {
     private ConsultPhoneService consultPhoneService;
 
     @Autowired
-    private AccountService accountService;
-
-    @Autowired
     private ConsultPhoneOrderService consultPhoneOrderService;
 
     /**
@@ -43,6 +42,8 @@ public class PhoneConsultaController {
     public
     @ResponseBody
     String rongLianAuth(HttpServletRequest request){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
         InputStream inStream = null;
         try {
             inStream = request.getInputStream();
@@ -83,6 +84,8 @@ public class PhoneConsultaController {
     public
     @ResponseBody
     Map consultReconnect(@RequestParam Integer phoneConsultaServiceId){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         Map<String,Object> resultMap = new HashMap<String, Object>();
         Map<String,Object> orderInfo = consultPhoneOrderService.getConsultConnectInfo(phoneConsultaServiceId);
         Integer orderId = (Integer)orderInfo.get("id");
@@ -90,10 +93,6 @@ public class PhoneConsultaController {
         String doctorPhone = (String)orderInfo.get("doctorPhone");
         Long conversationLength = (Long)orderInfo.get("surplusTime")/1000;
         Date updateTime = (Date)orderInfo.get("update_time");
-//        CCPRestSDK sdk = new CCPRestSDK();
-//        sdk.init("sandboxapp.cloopen.com", "8883");// 初始化服务器地址和端口，格式如下，服务器地址不需要写https://
-//        sdk.setSubAccount("2fa43378da0a11e59288ac853d9f54f2", "0ad73d75ac5bcb7e68fb191830b06d6b");
-//        sdk.setAppId("aaf98f8952f7367a0153084e29992035");
         String statusCode = "111111";
         if(conversationLength>10&&updateTime.getTime()+1000*60*5>new Date().getTime()){
             HashMap<String, Object> result = CCPRestSDK.callback(userPhone,doctorPhone,

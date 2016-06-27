@@ -3,6 +3,8 @@
  */
 package com.cxqm.xiaoerke.modules.interaction.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
@@ -39,7 +41,7 @@ public class PraiseDoctorController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> getUserEvaluate(@RequestBody Map<String, Object> params) {
-
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         HashMap<String, Object> response = new HashMap<String, Object>();
         patientRegisterPraiseService.getUserEvaluate(params,response);
         LogUtils.saveLog(Servlets.getRequest(), "00000049","获取医生的评价信息:" + params.get("doctorId"));
@@ -57,7 +59,8 @@ public class PraiseDoctorController extends BaseController {
     public
     @ResponseBody
     Map<String,Object> evaluateDoctor(@RequestBody HashMap<String, Object> params){
-        HashMap<String, Object> response = new HashMap<String, Object>();
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+        HashMap<String, Object> response;
         response = patientRegisterPraiseService.getDoctorEvaluate(params);
         LogUtils.saveLog(Servlets.getRequest(), "00000049","获取医生的评价信息:" + params.get("doctorId"));
         return response;

@@ -24,9 +24,9 @@ angular.module('controllers', ['luegg.directives'])
             $scope.loadingFlag = false;
             $scope.socketServerFirst = "";
             $scope.socketServerSecond = "";
-            $scope.firstAddress = "localhost";
-            $scope.secondAddress = "120.25.161.33";
-            $scope.alreadyJoinPatientConversation = []; //已经加入会话的用户数据，一个医生可以有多个对话的用户，这些用户的数据，都保存在此集合中
+            $scope.firstAddress = "101.201.154.75";
+            $scope.secondAddress = "101.201.154.201";
+            $scope.alreadyJoinPatientConversation = []; //已经加入会话的用户数据，一个医生可以有多个对话的用户，这些用户的数据，都保存在此集合中 乱码
             $scope.currentUserConversation = {}; //医生与当前正在进行对话用户的聊天数据，医生在切换不同用户时，数据变更到切换的用户上来。
             $scope.waitJoinNum = 0; //医生待接入的用户数，是动态变化的数
             $scope.glued = true; //angular滚动条的插件预制参数，让对话滚动条，每次都定位底部，当新的聊天数据到达时
@@ -75,9 +75,9 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.userType = data.userType;
 
                         //创建与平台的socket连接
-                        if($scope.socketServerFirst==""||$scope.socketServerFirst.readyState!=1){
-                            $scope.initConsultSocketFirst();
-                        }
+                        //if($scope.socketServerFirst==""||$scope.socketServerFirst.readyState!=1){
+                        //    $scope.initConsultSocketFirst();
+                        //}
                         if($scope.socketServerSecond==""||$scope.socketServerSecond.readyState!=1){
                             $scope.initConsultSocketSecond();
                         }
@@ -603,6 +603,9 @@ angular.module('controllers', ['luegg.directives'])
                             var valueData = consultContent.split("####");
                             consultContent = valueData[0];
                         }
+                        if($scope.currentUserConversation.serverAddress==""){
+                            $scope.currentUserConversation.serverAddress = $scope.firstAddress;
+                        }
                         if($scope.currentUserConversation.serverAddress==$scope.firstAddress){
                             if ($scope.socketServerFirst.readyState == WebSocket.OPEN) {
                                 var consultValMessage = "";
@@ -945,6 +948,9 @@ angular.module('controllers', ['luegg.directives'])
             /***回复操作区**/
                 //我的回复内容
             $scope.tapMyReplyContent = function (parentIndex) {
+                $scope.showFlag.myReplyList = true;
+                $scope.showFlag.publicReplyList = false;
+                $scope.showFlag.diagnosisReplyList = false
                 if($scope.myReplyIndex==parentIndex){
                     $scope.myReplyIndex = -1;
                     $scope.myReplySecondIndex = -1;
@@ -982,6 +988,9 @@ angular.module('controllers', ['luegg.directives'])
                 }
             };
             $scope.tapEditCommonContent = function(parentIndex, childIndex){
+                $scope.showFlag.myReplyList = false;
+                $scope.showFlag.publicReplyList = true;
+                $scope.showFlag.diagnosisReplyList = false;
                 $scope.publicReplySecondIndex = childIndex;
                 $scope.info.editContent = $scope.commonAnswer[parentIndex].secondAnswer[childIndex].name;
             };
@@ -1003,6 +1012,9 @@ angular.module('controllers', ['luegg.directives'])
                 }
             };
             $scope.tapEditDiagnosisContent = function(parentIndex, childIndex){
+                $scope.showFlag.myReplyList = false;
+                $scope.showFlag.publicReplyList = false;
+                $scope.showFlag.diagnosisReplyList = true;
                 $scope.diagnosisReplySecondIndex = childIndex;
                 $scope.info.editContent = $scope.diagnosis[parentIndex].secondAnswer[childIndex].name;
             };
@@ -1144,7 +1156,7 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 if($scope.showFlag.diagnosisReplyList){
                     $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex].name = $scope.info.editContent;
-                    saveCommonAnswer();
+                    saveDiagnosis();
                 }
                 $scope.editContentFlag=false;
             };
@@ -1193,6 +1205,95 @@ angular.module('controllers', ['luegg.directives'])
                                 saveDiagnosis();
                             }
                         }
+                    }
+                }
+            };
+
+            $scope.moveUp = function(){
+                if($scope.showFlag.myReplyList){
+                    if($scope.myReplyIndex!=-1&&$scope.myReplyIndex!=undefined){
+                        if($scope.myReplySecondIndex > 0){
+                            var changeAnswerContent = $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex - 1];
+                            $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex - 1] = $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex];
+                            $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex] = changeAnswerContent;
+                        }else if($scope.myReplySecondIndex == -1){
+                            var changeAnswerGroup = $scope.myAnswer[$scope.myReplyIndex - 1];
+                            $scope.myAnswer[$scope.myReplyIndex - 1] = $scope.myAnswer[$scope.myReplyIndex];
+                            $scope.myAnswer[$scope.myReplyIndex] = changeAnswerGroup;
+                        }
+                        saveMyAnswer();
+                    }
+                }
+                if($scope.showFlag.publicReplyList){
+                    if($scope.publicReplyIndex!=-1&&$scope.publicReplyIndex!=undefined){
+                        if($scope.publicReplySecondIndex > 0){
+                            var changeAnswerContent = $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex - 1];
+                            $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex - 1] = $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex];
+                            $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex] = changeAnswerContent;
+                        }else if($scope.publicReplySecondIndex == -1){
+                            var changeAnswerGroup = $scope.commonAnswer[$scope.publicReplyIndex - 1];
+                            $scope.commonAnswer[$scope.publicReplyIndex - 1] = $scope.commonAnswer[$scope.publicReplyIndex];
+                            $scope.commonAnswer[$scope.publicReplyIndex] = changeAnswerGroup;
+                        }
+                        saveCommonAnswer();
+                    }
+                }
+                if($scope.showFlag.diagnosisReplyList){
+                    if($scope.diagnosisReplyIndex!=-1&&$scope.diagnosisReplyIndex!=undefined){
+                        if($scope.diagnosisReplySecondIndex > 0){
+                            var changeAnswerContent = $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex - 1];
+                            $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex - 1] = $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex];
+                            $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex] = changeAnswerContent;
+                        }else if($scope.diagnosisReplySecondIndex == -1){
+                            var changeAnswerGroup = $scope.commonAnswer[$scope.diagnosisReplyIndex - 1];
+                            $scope.diagnosis[$scope.diagnosisReplyIndex - 1] = $scope.diagnosis[$scope.diagnosisReplyIndex];
+                            $scope.diagnosis[$scope.diagnosisReplyIndex] = changeAnswerGroup;
+                        }
+                        saveDiagnosis();
+                    }
+                }
+            };
+            $scope.moveDown = function(){
+                if($scope.showFlag.myReplyList){
+                    if($scope.myReplyIndex!=-1&&$scope.myReplyIndex!=undefined){
+                        if($scope.myReplySecondIndex >= 0 && $scope.myReplySecondIndex < $scope.myAnswer[$scope.myReplyIndex].secondAnswer.length){
+                            var changeAnswerContent = $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex + 1];
+                            $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex + 1] = $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex];
+                            $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex] = changeAnswerContent;
+                        }else if($scope.myReplySecondIndex == -1 && $scope.myReplyIndex < $scope.myAnswer.length){
+                            var changeAnswerGroup = $scope.myAnswer[$scope.myReplyIndex + 1];
+                            $scope.myAnswer[$scope.myReplyIndex + 1] = $scope.myAnswer[$scope.myReplyIndex];
+                            $scope.myAnswer[$scope.myReplyIndex] = changeAnswerGroup;
+                        }
+                        saveMyAnswer();
+                    }
+                }
+                if($scope.showFlag.publicReplyList){
+                    if($scope.publicReplyIndex!=-1&&$scope.publicReplyIndex!=undefined){
+                        if($scope.publicReplySecondIndex >= 0 && $scope.publicReplySecondIndex < $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer.length){
+                            var changeAnswerContent = $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex + 1];
+                            $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex + 1] = $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex];
+                            $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex] = changeAnswerContent;
+                        }else if($scope.publicReplySecondIndex == -1 && $scope.publicReplyIndex < $scope.commonAnswer.length){
+                            var changeAnswerGroup = $scope.commonAnswer[$scope.publicReplyIndex + 1];
+                            $scope.commonAnswer[$scope.publicReplyIndex + 1] = $scope.commonAnswer[$scope.publicReplyIndex];
+                            $scope.commonAnswer[$scope.publicReplyIndex] = changeAnswerGroup;
+                        }
+                        saveCommonAnswer();
+                    }
+                }
+                if($scope.showFlag.diagnosisReplyList){
+                    if($scope.diagnosisReplyIndex!=-1&&$scope.diagnosisReplyIndex!=undefined){
+                        if($scope.diagnosisReplySecondIndex >= 0 && $scope.diagnosisReplySecondIndex < $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer.length){
+                            var changeAnswerContent = $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex + 1];
+                            $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex + 1] = $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex];
+                            $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex] = changeAnswerContent;
+                        }else if($scope.diagnosisReplySecondIndex == -1 && $scope.diagnosisReplyIndex < $scope.diagnosis.length){
+                            var changeAnswerGroup = $scope.diagnosis[$scope.diagnosisReplyIndex + 1];
+                            $scope.diagnosis[$scope.diagnosisReplyIndex + 1] = $scope.diagnosis[$scope.diagnosisReplyIndex];
+                            $scope.diagnosis[$scope.diagnosisReplyIndex] = changeAnswerGroup;
+                        }
+                        saveDiagnosis();
                     }
                 }
             };

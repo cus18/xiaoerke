@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.sys.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.FrontUtils;
@@ -62,6 +64,7 @@ public class ConsultPhoneDoctorController {
     public
     @ResponseBody
     Page<HashMap<String, Object>> getAllDoctorList(@RequestParam String pageSize,@RequestParam String pageNo,@RequestParam String order){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         Page<HashMap<String, Object>> page = FrontUtils.generatorPage(pageNo, pageSize);
         Page<HashMap<String, Object>> hospitalPage = hospitalInfoService.getHospitalListByConsulta(page);
         return hospitalPage;
@@ -80,6 +83,7 @@ public class ConsultPhoneDoctorController {
     public
     @ResponseBody
     Map<String,Object> getDoctorInfo(@RequestParam String doctorId){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         Map map = new HashMap();
         map.put("doctorId",doctorId);
         return doctorInfoService.findDoctorDetailInfo(map);
@@ -95,6 +99,7 @@ public class ConsultPhoneDoctorController {
     public
     @ResponseBody
     Map<String,Object> getDoctorEvaluateInfo(@RequestParam String doctorId){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         Map map = new HashMap();
         map.put("doctorId", doctorId);
         return doctorInfoService.findDoctorDetailInfo(map);
@@ -117,6 +122,7 @@ public class ConsultPhoneDoctorController {
     public
     @ResponseBody
     Map<String, Object> getConsultInfo(@RequestBody Map<String, Object> params){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         String doctorId = (String) params.get("doctorId");
         if(doctorId == null || "".equals(doctorId)){
             Map<String,Object> paramsMap = new HashMap<String, Object>();
@@ -141,6 +147,7 @@ public class ConsultPhoneDoctorController {
     public
     @ResponseBody
     Map<String, Object> getConsultDateInfo(@RequestBody Map<String, Object> params){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         String doctorId = (String) params.get("doctorId");
         if(doctorId == null || "".equals(doctorId)){
             Map<String,Object> paramsMap = new HashMap<String, Object>();
@@ -167,6 +174,7 @@ public class ConsultPhoneDoctorController {
     public
     @ResponseBody
     Map<String, Object>  getDoctorListByHospital(@RequestBody Map<String, Object> params){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         System.out.println("begin:"+new Date().getTime());
         HashMap<String, Object> response = new HashMap<String, Object>();
         HashMap<String, Object> hospitalInfo = new HashMap<String, Object>();
@@ -234,6 +242,7 @@ public class ConsultPhoneDoctorController {
     public
     @ResponseBody
     HashMap<String, Object> getDoctorListByTime(@RequestBody Map<String, Object> params){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         HashMap<String, Object> response = new HashMap<String, Object>();
         Date date = DateUtils.formatDate(params);
         String currentPage = (String) params.get("pageNo");
@@ -296,6 +305,7 @@ public class ConsultPhoneDoctorController {
     public
     @ResponseBody
     HashMap<String, Object> getDoctorListByIllness(@RequestBody Map<String, Object> params){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         HashMap<String, Object> response = new HashMap<String, Object>();
         String illnessSecondId = (String) params.get("illnessSecondId");
         String hospitalId = (String) params.get("hospitalId");
@@ -358,6 +368,7 @@ public class ConsultPhoneDoctorController {
     public
     @ResponseBody
     Page<HashMap<String, Object>> getDoctorListByDoctorGroup(@RequestParam String doctorId){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         Map<String, Object> params = new HashMap<String, Object>();
 
         return null;
@@ -374,7 +385,7 @@ public class ConsultPhoneDoctorController {
     public
     @ResponseBody
     Map<String, Object> doctorDetail(@RequestParam String doctorId){
-
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         HashMap<String, Object> params = new HashMap<String, Object>();
         params.put("doctorId",doctorId);
         Map<String, Object> response = phoneConsultDoctorRelationService.findDoctorDetailInfo(doctorId);
@@ -428,7 +439,7 @@ public class ConsultPhoneDoctorController {
     public
     @ResponseBody
     Map<String,Object> earliestVisiteInfo(@RequestParam String doctorId){
-
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         Map<String,Object> resultMap = registerService.getEarliestVisiteInfo(doctorId);
         resultMap.size();
         return resultMap;

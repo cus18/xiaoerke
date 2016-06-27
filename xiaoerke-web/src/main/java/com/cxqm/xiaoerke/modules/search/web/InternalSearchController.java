@@ -2,6 +2,8 @@ package com.cxqm.xiaoerke.modules.search.web;
 
 import java.util.*;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.Cookiebean;
 import com.cxqm.xiaoerke.common.utils.FrontUtils;
@@ -95,7 +97,9 @@ public class InternalSearchController {
     public
     @ResponseBody
     Map<String, Object> listSearchDoctor(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpServletResponse httpResponse) {
-		HashMap<String, Object> response = new HashMap<String, Object>();
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
+        HashMap<String, Object> response = new HashMap<String, Object>();
 		String queryStr = (String)params.get("queryStr");
 		Integer pageNo = (Integer)params.get("pageNo");
 		Integer pageSize = (Integer)params.get("pageSize");
@@ -153,6 +157,8 @@ public class InternalSearchController {
     public
     @ResponseBody
     Map<String, Object> keywordsIllnessRelImportt() {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
     	HashMap<String, Object> response = new HashMap<String, Object>();
     	internalSearchService.keywordsIllnessRelImport();
         return response;
@@ -162,6 +168,8 @@ public class InternalSearchController {
     public
     @ResponseBody
     Map<String, Object> getPatientSearchList(HttpServletRequest request) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         ArrayList<Cookiebean> li = SearchCook.getSearchPatientS(request);
         Collections.reverse(li);
         HashMap<String, Object> response = new HashMap<String, Object>();
@@ -173,6 +181,7 @@ public class InternalSearchController {
     public
     @ResponseBody
     String removeAllSearchHistory(HttpServletRequest request, HttpServletResponse response) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         SearchCook.removeAllSearchHistory(request, response);
         return "";
     }
@@ -181,6 +190,7 @@ public class InternalSearchController {
     public
     @ResponseBody
     Map<String, Object>  autoPrompting(@RequestBody Map<String, Object> params) throws Exception{
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         Map<String,Object> resultMap = new HashMap<String, Object>();
         String queryStr = (String)params.get("queryStr");
         if(StringUtils.isNotNull(queryStr)){

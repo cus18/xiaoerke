@@ -3,6 +3,8 @@
  */
 package com.cxqm.xiaoerke.modules.member.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.CookieUtils;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
@@ -48,13 +50,13 @@ public class MemberController extends BaseController {
 
     @Autowired
     private RegisterService registerService;
-    @SystemControllerLog(description = "用户通过推广码来获取")
     @RequestMapping(value = "/extendMemberService", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     HashMap<String, Object> extendMemberService(@RequestParam(required = true) String memberType,
                                                 HttpSession session,
                                                 HttpServletRequest request) throws Exception {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 
         HashMap<String, Object> response = new HashMap<String, Object>();
         LogUtils.saveLog(Servlets.getRequest(), "00000063","用户通过推广码来获取" + memberType + "会员服务");
@@ -68,7 +70,8 @@ public class MemberController extends BaseController {
             User user = UserUtils.getUser();
             Boolean status = memberService.produceExtendMember(memberType, openId, user.getId(), memberType, "");
             if (status == true) {
-                List<MemberservicerelItemservicerelRelationVo> memberservicerelItemservicerelRelationVos = memberService.findMemberPropertyAppAvailable();
+                List<MemberservicerelItemservicerelRelationVo> memberservicerelItemservicerelRelationVos =
+                        memberService.findMemberPropertyAppAvailable();
                 if (memberservicerelItemservicerelRelationVos != null && memberservicerelItemservicerelRelationVos.size() > 0) {
                     response.put("result", "true");
                     response.put("startDate", DateUtils.formatDateToStr(memberservicerelItemservicerelRelationVos.get(0).getActivateDate(), "yyyy/MM/dd"));
@@ -84,13 +87,15 @@ public class MemberController extends BaseController {
         return response;
     }
 
-    @SystemServiceLog(description = "00000062")//123
+    @SystemServiceLog(description = "00000062")
     @RequestMapping(value = "/checkIfAppScanDoctor", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> checkIfAppScanDoctor(@RequestBody Map<String, Object> params,
                                              HttpSession session,
                                              HttpServletRequest request) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         String openId = WechatUtil.getOpenId(session, request);
         HashMap<String, Object> response = new HashMap<String, Object>();
         response.put("status", "1");
@@ -131,6 +136,7 @@ public class MemberController extends BaseController {
     Map<String, Object> orderFreePayOperation(@RequestParam(required = true) String patient_register_service_id,
                                               HttpSession session,
                                               HttpServletRequest request) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 
         HashMap<String, Object> response = new HashMap<String, Object>();
 
@@ -159,6 +165,7 @@ public class MemberController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> GetMemberServiceStatus(HttpSession session, HttpServletRequest request) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
         HashMap<String, Object> response = new HashMap<String, Object>();
         String status = memberService.getMemberServiceStatus("");
@@ -195,6 +202,7 @@ public class MemberController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> getUserMemberService() {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
         HashMap<String, Object> response = new HashMap<String, Object>();
         List<MemberservicerelItemservicerelRelationVo> list = memberService.findMemberProperty();// .findMemberPropertyAppAvailable();
@@ -219,6 +227,7 @@ public class MemberController extends BaseController {
     @ResponseBody
     Map<String, Object> OrderPayMemberServiceOperation(@RequestParam(required = true) String patient_register_service_id,
                                                        @RequestParam(required = true) String memSrsItemSrsRelId) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 
         HashMap<String, Object> response = new HashMap<String, Object>();
         //判断订单状态
@@ -240,6 +249,8 @@ public class MemberController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> checkUserFirstOrder(HttpSession session, HttpServletRequest request) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         HashMap<String, Object> response = new HashMap<String, Object>();
 
         Boolean orderRelation = patientRegisterService.judgeUserOrderRealtion(session, request);
@@ -257,6 +268,8 @@ public class MemberController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> memberServiceDetail(@RequestParam(required = true) String memberServiceId) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         HashMap<String, Object> response = new HashMap<String, Object>();
         MemberservicerelItemservicerelRelationVo memberVo = memberService.findMemberProperty(memberServiceId);
         response.put("memberVo", memberVo);

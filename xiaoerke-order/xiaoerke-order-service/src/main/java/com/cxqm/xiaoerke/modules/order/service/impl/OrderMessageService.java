@@ -89,19 +89,7 @@ class OrderMessageService {
 			//短信用户提示
 			shot_message = shot_message.substring(shot_message.lastIndexOf("；") + 1, shot_message.length());
 			if(params.containsKey("openId")&&params.get("openId")!=null) {
-				//消息修改
-//				PatientMsgTemplate.trafficRemind2Wechat((String) params.get("openId"),
-//						(String) parameter.get("token"), shot_message,params.get("urlPath") +
-//								"/ap#/route/" + resultMap.get("sysRegisterId"));
 			}
-			//======================交通信息消息插入结束=====================
-			//判定黄牛的信息
-//			Integer orderNum = patientRegisterServiceDao.checkCattleOrder((String)params.get("openId"));
-//			if(orderNum>0){
-//				ChangzhuoMessageUtil.sendMsg((String) resultMap.get("phone"), "凡涉嫌通过黄牛不当使用宝大夫平台预约的用户，" +
-//						"会被拒绝接诊；为保障您的权益，请直接在宝大夫平台进行预约。如需帮助，请关注微信公众号（宝大夫），" +
-//						"或致电400-623-7120。");
-//			}
 			ChangzhuoMessageUtil.sendMsg((String) resultMap.get("phone"), "亲爱的宝妈宝爸，就诊前如果您对宝宝的病情有任何疑问，" +
 					"请及时到宝大夫平台在线咨询，专业儿科医生将为您提供服务，祝宝宝早日康复。微信公众号：宝大夫。");
 		} else {
@@ -139,7 +127,6 @@ class OrderMessageService {
 				ChangzhuoMessageUtil.sendMsg((String) resultMap.get("hospitalContactPhone"),content);
 			}
 			else{
-
 				messageService.sendMsg2Doctor((String) params.get("patient_register_service_id"), (String) resultMap.get("doctorName"), (String) resultMap.get("babyName"), (String) resultMap.get("phone"), (String) resultMap.get("date"), dayWeek, (String) resultMap.get("begin_time"), (String) resultMap.get("contactHospitalName"));
 			}
 		}

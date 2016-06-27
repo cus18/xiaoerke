@@ -292,6 +292,7 @@ public class ConsultSessionManager {
                     csChannel = onLineCsUserChannelMapping.get(csUserid);
                     if (csChannel.isActive()) {
                         User csUser = systemService.getUserById(csUserid);
+                        consultSession.setCsUserId(csUserid);
                         consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
                         break;
                     } else {
@@ -309,12 +310,6 @@ public class ConsultSessionManager {
             }
         }
 
-        HashMap<String, Object> perInfo = new HashMap<String, Object>();
-        if (StringUtils.isNotNull(consultSession.getCsUserId())) {
-            perInfo = userInfoService.findPersonDetailInfoByUserId(consultSession.getCsUserId());
-        }
-        consultSession.setCsUserName((String) perInfo.get("name"));
-
         //可开启线程进行记录
         if (consultSession.getCsUserId() != null) {
             consultSessionService.saveConsultInfo(consultSession);
@@ -322,7 +317,6 @@ public class ConsultSessionManager {
             System.out.println("sessionId-----" + sessionId + "consultSession.getCsUserId()" + consultSession.getUserId());
             sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
             sessionRedisCache.putUserIdSessionIdPair(consultSession.getUserId(), sessionId);
-//            saveCustomerEvaluation(consultSession);
             response.put("csChannel", csChannel);
             response.put("sessionId", sessionId);
             response.put("consultSession", consultSession);

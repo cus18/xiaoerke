@@ -4,6 +4,8 @@
 package com.cxqm.xiaoerke.modules.util.web;
 
 import com.cxqm.xiaoerke.common.config.Global;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
@@ -59,6 +61,8 @@ public class UtilController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> checkBind(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         HashMap<String, Object> response = new HashMap<String, Object>();
         //判断用户是否绑定了手机号，如果没有绑定，将让用户跳转到手机号的绑定页面
         User user = UserUtils.getUser();
@@ -109,6 +113,8 @@ public class UtilController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> getUserCode(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
         String userPhone = (String) params.get("userPhone");
         return utilService.sendIdentifying(userPhone);
     }
@@ -118,6 +124,8 @@ public class UtilController extends BaseController {
     @ResponseBody
     Map<String, Object> recordHealthPlanAddItem(@RequestBody Map<String, Object> params,
                                                 HttpServletRequest request,HttpSession session) throws Exception{
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
         String openId = WechatUtil.getOpenId(session, request);
         String addValue = (String) params.get("addValue");
         HashMap<String ,Object> response = new HashMap<String,Object>();
@@ -144,6 +152,8 @@ public class UtilController extends BaseController {
     public
     @ResponseBody
     List<HealthPlanAddItemVo> findHealthPlanAddItem(HttpServletRequest request,HttpSession session) throws Exception {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         String openId = WechatUtil.getOpenId(session, request);
         User user = UserUtils.getUser();
         if(user.getLoginName()!=null||openId!=null){
@@ -177,6 +187,7 @@ public class UtilController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> getDoctorCode(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         String userPhone = String.valueOf(params.get("userPhone"));
         return utilService.sendIdentifying(userPhone);
     }
@@ -202,6 +213,7 @@ public class UtilController extends BaseController {
     public
     @ResponseBody
     String recordLogs(HttpServletRequest request) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         try {
             String logContent = URLDecoder.decode(request.getParameter("logContent"), "UTF-8");
             return "success";

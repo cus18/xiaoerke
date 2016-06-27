@@ -3,6 +3,8 @@
  */
 package com.cxqm.xiaoerke.modules.sys.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.common.web.Servlets;
@@ -84,6 +86,8 @@ public class RouteController extends BaseController {
      */
     @RequestMapping(value ="/knowledge",method = {RequestMethod.POST, RequestMethod.GET})
     public String knowledgeFirstPage(HttpServletRequest request,HttpSession session) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         String openId = WechatUtil.getOpenId(session, request);
         List<BabyEmrVo> list = babyEmrService.getBabyEmrList(openId);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");

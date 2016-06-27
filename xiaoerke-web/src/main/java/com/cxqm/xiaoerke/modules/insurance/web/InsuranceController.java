@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.insurance.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.insurance.entity.InsuranceHospitalVo;
@@ -40,6 +42,8 @@ public class InsuranceController {
 	   public
 	   @ResponseBody
 	   Map<String,Object> saveInsuranceRegisterService(@RequestBody Map<String, Object> params){
+		   DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
            String sex = (String)params.get("sex");
            String birthday = (String)params.get("birthday");
            if(StringUtils.isNotNull(sex) && StringUtils.isNotNull(birthday)){
@@ -75,6 +79,8 @@ public class InsuranceController {
 	   public
 	   @ResponseBody
 	   Map<String,Object> getInsuranceRegisterServiceById(@RequestBody Map<String, Object> params){
+		   DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		   Map<String, Object> resultMap = new HashMap<String, Object>();
 		   String id=params.get("id").toString();
 		   InsuranceRegisterService  Insurance=insuranceRegisterServiceService.getInsuranceRegisterServiceById(id);
@@ -88,6 +94,8 @@ public class InsuranceController {
 	   public
 	   @ResponseBody
 	   Map<String,Object> getInsuranceRegisterServiceListByUserid(@RequestParam(required = false)String insuranceType){
+		   DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		   Map<String, Object> resultMap = new HashMap<String, Object>();
            Map<String, Object> dataMap = new HashMap<String, Object>();
            dataMap.put("userid",UserUtils.getUser().getId());
@@ -103,6 +111,8 @@ public class InsuranceController {
 	   public
 	   @ResponseBody
 	   Map<String,Object> getInsuranceRegisterServiceIfValid(@RequestBody Map<String, Object> params){
+		   DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		   Map<String, Object> resultMap = new HashMap<String, Object>();
 		   String babyId=params.get("babyId").toString();
            String insuranceType = (String)params.get("insuranceType");
@@ -118,6 +128,8 @@ public class InsuranceController {
 	   public
 	   @ResponseBody
 	   Map<String,Object> getInsuranceRegisterServiceVisitLeadPageLogByOpenid(HttpServletRequest request,HttpSession session){
+		   DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		   Map<String, Object> resultMap = new HashMap<String, Object>();
 		   String openid=WechatUtil.getOpenId(session, request);
 		   resultMap.put("log", insuranceRegisterServiceService.getInsuranceRegisterServiceVisitLeadPageLogByOpenid(openid).size());
@@ -128,6 +140,8 @@ public class InsuranceController {
 	   public
 	   @ResponseBody
 	   Map<String,Object> getInsuranceRegisterServiceByOpenid(HttpServletRequest request,HttpSession session){
+		   DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		   Map<String, Object> resultMap = new HashMap<String, Object>();
 		   String openid=WechatUtil.getOpenId(session, request);
 		   resultMap.put("insurance", insuranceRegisterServiceService.getInsuranceRegisterServiceByOpenid(openid).size());
@@ -142,6 +156,8 @@ public class InsuranceController {
 	   public
 	   @ResponseBody
 	   Map<String,Object> getInsuranceHospitalListByInfo(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session){
+		   DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		   Map<String, Object> resultMap = new HashMap<String, Object>();
 		   InsuranceHospitalVo vo = new InsuranceHospitalVo();
 		   vo.setDistrict((String)params.get("district"));

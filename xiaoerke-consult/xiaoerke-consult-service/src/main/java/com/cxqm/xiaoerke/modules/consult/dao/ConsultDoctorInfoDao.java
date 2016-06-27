@@ -6,6 +6,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,4 +28,7 @@ public interface ConsultDoctorInfoDao {
     List<String> getConsultDoctorDepartment();
 
     ConsultDoctorInfoVo getConsultDoctorInfoByUserId(@Param("userId")String userId);
+
+    //jiangzg add 2016年6月20日11:17:47
+    List<Map> getDoctorInfoMoreByUserId(@Param("userId")String userId);
 }

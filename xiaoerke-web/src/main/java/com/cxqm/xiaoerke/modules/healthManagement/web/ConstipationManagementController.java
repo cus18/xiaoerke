@@ -10,6 +10,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.modules.sys.interceptor.SystemServiceLog;
 
 import net.sf.json.JSONObject;
@@ -85,6 +87,8 @@ public class ConstipationManagementController {
 	@RequestMapping(value = "/pushTicket", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  pushTicket(@RequestBody Map<String, Object> params){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		try {
 			if(params.get("plan_info_task_id")==null){
@@ -120,6 +124,8 @@ public class ConstipationManagementController {
 	public
 	@ResponseBody
 	HashMap<String, Object> cancelPlan(@RequestParam long id, HttpServletRequest request) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		try{
 			PlanInfo planInfo = new PlanInfo();
@@ -146,6 +152,8 @@ public class ConstipationManagementController {
 	public
 	@ResponseBody
 	HashMap<String, Object> confirmDetail(@RequestParam long planInfoId,@RequestParam String type, HttpServletRequest request) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		try{
 			PlanInfoTask planInfoTask = new PlanInfoTask();
@@ -171,7 +179,9 @@ public class ConstipationManagementController {
 	@RequestMapping(value = "/taskListConfirm", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
-	HashMap<String, Object> taskListConfirm(@RequestParam long planInfoId, HttpServletRequest request) {
+	HashMap<String, Object> taskListConfirm(@RequestParam long planInfoId) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		try{
 			response = planInfoTaskConfirmService.taskListConfirm(String.valueOf(planInfoId));
@@ -194,7 +204,9 @@ public class ConstipationManagementController {
 	@RequestMapping(value = "/getConfirmSituation", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
-	HashMap<String, Object> getConfirmSituation(@RequestParam long planId, HttpServletRequest request) {
+	HashMap<String, Object> getConfirmSituation(@RequestParam long planId) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		try{
 			PlanInfo planInfo = new PlanInfo();
@@ -220,7 +232,9 @@ public class ConstipationManagementController {
 	@RequestMapping(value = "/appraisal/saveAppraisal", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
-	HashMap<String, Object> saveAppraisal(@RequestBody Map<String, Object> params,  HttpServletRequest request,HttpSession session) {
+	HashMap<String, Object> saveAppraisal(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		try{
 			String openId = WechatUtil.getOpenId(session,request);
@@ -265,11 +279,14 @@ public class ConstipationManagementController {
 	public
 	@ResponseBody
 	HashMap<String, Object> appraisalList(@RequestParam short id, @RequestParam int pageNo,@RequestParam int pageSize,HttpServletRequest request) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		try{
 			PlanTemplateAppraisal planTemplateAppraisal = new PlanTemplateAppraisal();
 			planTemplateAppraisal.setPlanTemplateId(id);
-			Page<PlanTemplateAppraisal> page = planTemplateAppraisalService.findAppraisalList(new Page<PlanTemplateAppraisal>(pageNo,pageSize),planTemplateAppraisal);
+			Page<PlanTemplateAppraisal> page = planTemplateAppraisalService.
+					findAppraisalList(new Page<PlanTemplateAppraisal>(pageNo, pageSize), planTemplateAppraisal);
 			List<HashMap<String,Object>> appraisalList = new ArrayList();
 			for(PlanTemplateAppraisal p : page.getList())
 			{
@@ -303,6 +320,8 @@ public class ConstipationManagementController {
 	public
 	@ResponseBody
 	HashMap<String, Object> getTasksInfo(@RequestParam String type,HttpServletRequest request) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		try{
 			response = planInfoTaskService.getTasksInfo(type);
@@ -326,6 +345,8 @@ public class ConstipationManagementController {
 	public
 	@ResponseBody
 	HashMap<String, Object> updatePlanTask(@RequestBody List<Map<String, Object>> params,HttpServletRequest request,HttpSession session) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		try{
 			String userId=UserUtils.getUser().getId();
@@ -429,13 +450,14 @@ public class ConstipationManagementController {
 	 * 修改计划更新时间，用于周期提示打卡情况
 	 * sunxiao
 	 * @param planInfoId
-	 * @param request
 	 * @return
 	 */
 	@RequestMapping(value = "/updatePlanInfoForCycleTip", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
-	HashMap<String, Object> updatePlanInfoForCycleTip(@RequestParam long planInfoId,HttpServletRequest request,HttpSession session) {
+	HashMap<String, Object> updatePlanInfoForCycleTip(@RequestParam long planInfoId) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		try{
 			PlanInfo planInfo = new PlanInfo();
@@ -462,7 +484,9 @@ public class ConstipationManagementController {
 	@SystemServiceLog(description = "00000065")
 	@RequestMapping(value = "/getTasksList", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
-	Map<String, Object>  getTasksList(){
+	Map<String, Object> getTasksList(){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		try {
 			String userId=UserUtils.getUser().getId();
@@ -519,13 +543,16 @@ public class ConstipationManagementController {
 	@RequestMapping(value = "/getTemplateTasks", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  getTemplateTasks(@RequestBody Map<String, Object> params){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		try {
 			List<Map<String, Object>>  planTemplateList=planTemplateService.getPlanTemplateList(params.get("type").toString());
 			Map<String,Object> resultObjectMap=new HashMap<String,Object>();
 			for (int i = 0; i < planTemplateList.size(); i++) {
 				String PlanTemplateId=planTemplateList.get(i).get("id").toString();
-				List<Map<String, Object>> PlanTemplateTask=planTemplateTaskService.getPlanTemplateTaskListByPlanTemplateId(PlanTemplateId);
+				List<Map<String, Object>> PlanTemplateTask=planTemplateTaskService
+						.getPlanTemplateTaskListByPlanTemplateId(PlanTemplateId);
 				List<Map<String,Object>> planList=new ArrayList<Map<String,Object>>();
 				for (Map<String, Object> PlanTemplate : PlanTemplateTask) {
 					Map<String,Object> plan=new HashMap<String,Object>();
@@ -563,7 +590,9 @@ public class ConstipationManagementController {
 	@SystemServiceLog(description = "获取食材列表")
 	@RequestMapping(value = "/getFoodList", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
-	Map<String, Object>  getFoodList(){
+	Map<String, Object> getFoodList(){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		try {
 			String userId=UserUtils.getUser().getId();
@@ -593,7 +622,9 @@ public class ConstipationManagementController {
 	@SystemServiceLog(description = "00000069")//保存食材
 	@RequestMapping(value = "/saveFoodList", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
-	Map<String, Object>  saveFoodList(@RequestBody Map<String, Object> params){
+	Map<String, Object> saveFoodList(@RequestBody Map<String, Object> params){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		try {
 			String food=params.get("foodList").toString();
@@ -625,6 +656,8 @@ public class ConstipationManagementController {
 	@RequestMapping(value = "/getDietList", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  getDietList(@RequestBody Map<String, Object> params){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		try {
 			String userId=UserUtils.getUser().getId();
@@ -666,7 +699,9 @@ public class ConstipationManagementController {
 	 */
 	@RequestMapping(value = "/SendSMS", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
-	Map<String, Object>  SendSMS() {
+	Map<String, Object>  SendSMS(){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			planMessageService.TimingSendWechatMessage();
@@ -692,6 +727,8 @@ public class ConstipationManagementController {
 	@RequestMapping(value = "/saveShopping", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	void saveShopping(@RequestBody Map<String, Object> params){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		String userId = UserUtils.getUser().getId();
 		Map<String, Object> planInfoMap = new HashMap<String, Object>();
 		planInfoMap.put("userId",userId);
@@ -733,6 +770,8 @@ public class ConstipationManagementController {
 	@RequestMapping(value = "/getquestion", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	void getQuestion(@RequestBody Map<String, Object> params){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		String userId = UserUtils.getUser().getId();
 		LogUtils.saveLog(Servlets.getRequest(), "00000103",params.get("type").toString()+userId);
 	}

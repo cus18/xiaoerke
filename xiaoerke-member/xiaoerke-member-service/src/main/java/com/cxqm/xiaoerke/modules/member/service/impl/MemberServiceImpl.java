@@ -693,7 +693,7 @@ public class MemberServiceImpl implements MemberService {
                 "点击后登录并领取\n" +
                 "【<a href='" + ConstantUtil.TITAN_WEB_URL + "/titan/wechatInfo/fieldwork/wechat/author?url=" + ConstantUtil.TITAN_WEB_URL
                 + "/titan/wechatInfo/getUserWechatMenId?url=23'>查看详情</a>】\n ";
-        WechatUtil.sendMsgToWechat(token, openid, st);
+//        WechatUtil.sendMsgToWechat(token, openid, st);
     }
 
     @Override

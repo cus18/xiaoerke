@@ -4,22 +4,22 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 
-	<display-name>angel</display-name>
+	<display-name>bdfApp</display-name>
 
 	<!-- Context ConfigLocation -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			classpath*:/spring-context.xml
-			classpath*:/spring-context-jedis.xml
+			classpath*:/spring-context-mysql.xml
+			classpath*:/spring-context-redis.xml
 			classpath*:/spring-context-mongodb.xml
 			classpath*:/spring-security.xml
-			 <!--classpath*:/spring-oauth2.xml-->
 		</param-value>
 	</context-param>
 
 	<listener>
-        <listener-class>com.cxqm.xiaoerke.webapp.listener.StartupListener</listener-class>
+        <listener-class>com.cxqm.xiaoerke.bdfApp.listener.StartupListener</listener-class>
 	</listener>
 
 	<listener>
@@ -185,8 +185,8 @@
 	<filter>
 		<filter-name>jsessionid</filter-name>
 		<filter-class>
-			com.cxqm.xiaoerke.webapp.filter.DisableUrlSessionFilter
-		</filter-class>
+            com.cxqm.xiaoerke.bdfApp.filter.DisableUrlSessionFilter
+        </filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>jsessionid</filter-name>

@@ -66,7 +66,17 @@ define(['appUmbrella'], function (app) {
         }])
 
         //保护伞成员检测
-        .factory('cheackFamilyMembers',['$resource',function ($resource){
-            return $resource(user_h5 + 'umbrella/cheackFamilyMembers');
+        .factory('checkFamilyMembers',['$resource',function ($resource){
+            return $resource(user_h5 + 'umbrella/checkFamilyMembers');
+        }])
+
+        //新版添加保障信息
+        .factory('newJoinUs',['$resource',function ($resource){
+            return $resource(user_h5 + 'umbrella/newJoinUs');
+        }])
+
+        //新版添加保障信息
+        .factory('getUserQRCode',['$resource',function ($resource){
+            return $resource(user_h5 + 'umbrella/getUserQRCode');
         }])
 })

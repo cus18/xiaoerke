@@ -1,26 +1,15 @@
 package com.cxqm.xiaoerke.modules.consult.service.impl;
 
-import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultDoctorInfoDao;
-import com.cxqm.xiaoerke.modules.consult.dao.ConsultPhoneRecordDao;
-import com.cxqm.xiaoerke.modules.consult.entity.CallResponse;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultPhoneService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
-import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
-import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
-import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.UserInfoService;
-import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -146,5 +135,14 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
             return consultDoctorInfoVo;
         }
         return null;
+    }
+
+    @Override
+    public List<Map> getDoctorInfoMoreByUserId(String userId) {
+        List<Map> result = null;
+        if(StringUtils.isNotNull(userId)){
+            result = consultDoctorInfoDao.getDoctorInfoMoreByUserId(userId);
+        }
+        return result;
     }
 }

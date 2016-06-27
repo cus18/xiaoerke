@@ -242,12 +242,12 @@ function payInsurance(){
 	if(checkIdCard()==false){
 		return;
 	}
-    // recordLogs("FQB_FWXQ_WXZF");
-    // var wechatInfo = navigator.userAgent.match(/MicroMessenger\/([\d\.]+)/i) ;
-    // if ( wechatInfo[1] < "5.0" ) {
-    //     alert("请使用微信5.0以上版本进行支付") ;
-    //     return ;
-    // }
+     recordLogs("FQB_FWXQ_WXZF");
+     var wechatInfo = navigator.userAgent.match(/MicroMessenger\/([\d\.]+)/i) ;
+     if ( wechatInfo[1] < "5.0" ) {
+         alert("请使用微信5.0以上版本进行支付") ;
+         return ;
+     }
     var name=$("#babyName").val();
     var birthDay=$("#birthday").val();
     var babyid=$("#babyId").val();

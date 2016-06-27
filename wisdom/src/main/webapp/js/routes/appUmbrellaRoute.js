@@ -6,7 +6,7 @@ define(['appUmbrella'], function(app){
         .config(['$stateProvider','$urlRouterProvider',
             function($stateProvider,$urlRouterProvider) {
                 var loadFunction = function($templateCache, $ocLazyLoad, $q, $http,name,files,htmlURL){
-                     lazyDeferred = $q.defer();
+                    lazyDeferred = $q.defer();
                     return $ocLazyLoad.load ({
                         name: name,
                         files: files
@@ -22,7 +22,7 @@ define(['appUmbrella'], function(app){
                 };
 
                 $stateProvider
-                    /* 宝护伞 */
+                /* 宝护伞 */
                     .state('umbrellaJoin', {
                         url: '/umbrellaJoin/:id/:shareid',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -51,7 +51,7 @@ define(['appUmbrella'], function(app){
                                     ['js/controllers/umbrella/umbrellaFillInfoCtrl.js?ver='+umbrellaVersion,
                                         'js/libs/mobiscroll.custom-2.17.0.min.js',
                                         'styles/lib/mobiscroll.custom-2.17.0.min.css',
-                                        'styles/umbrella/fillInfoCommon.less?ver='+umbrellaVersion,
+                                        'styles/umbrella/umbrellaCommon.less?ver=',
                                         'styles/umbrella/umbrellaFillInfo.less?ver='+umbrellaVersion],
                                     'js/views/umbrella/umbrellaFillInfo.html?ver='+umbrellaVersion);
                             }
@@ -128,23 +128,23 @@ define(['appUmbrella'], function(app){
                             public: true
                         }
                     })
-                    .state('umbrellaSwipe', {
-                        url: '/umbrellaSwipe',
+                    .state('umbrellaPaySuccess', {
+                        url: '/umbrellaPaySuccess/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'umbrellaSwipeCtrl',
+                        controller: 'umbrellaPaySuccessCtrl',
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaSwipeCtrl',
-                                    ['js/controllers/umbrella/umbrellaSwipeCtrl.js?ver='+umbrellaVersion,
-                                    'js/libs/ionic.swipecards.js',
-                                        'styles/umbrella/umbrellaSwipe.less?ver='+umbrellaVersion],
-                                    'js/views/umbrella/umbrellaSwipe.html?ver='+umbrellaVersion);
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaPaySuccessCtrl',
+                                    ['js/controllers/umbrella/umbrellaPaySuccessCtrl.js?ver='+umbrellaVersion,
+                                        'styles/umbrella/umbrellaPaySuccess.less?ver='+umbrellaVersion],
+                                    'js/views/umbrella/umbrellaPaySuccess.html?ver='+umbrellaVersion);
                             }
                         },
                         data: {
                             public: true
                         }
                     })
+
                 $urlRouterProvider.otherwise('umbrellaLead');
             }])
         .run(function ($rootScope){

@@ -17,7 +17,7 @@ import com.cxqm.xiaoerke.authentication.common.BaseController;
 public class TokenController extends BaseController {
 	
 	@RequestMapping(value = "sendToken")
-	public String sendToken(@RequestParam String toUrl, @RequestParam String token, HttpServletRequest request, HttpServletResponse response, Model model){
+	public String sendToken(@RequestParam String toUrl, @RequestParam String token, HttpServletResponse response){
 		Cookie cookie = new Cookie("ssoToken",token);
 		cookie.setPath("/");
 		cookie.setDomain(ConstantUtil.DOMAIN_VALUE);
