@@ -23,7 +23,7 @@
       CONCAT('%',#{openId,jdbcType=VARCHAR},'%')
     </if>
     <if test="csUserName != null and csUserName != ''">
-      OR sys_user_name_cs LIKE
+      and sys_user_name_cs LIKE
       CONCAT('%', #{csUserName,jdbcType=VARCHAR}, '%')
     </if>
       order by create_date desc
