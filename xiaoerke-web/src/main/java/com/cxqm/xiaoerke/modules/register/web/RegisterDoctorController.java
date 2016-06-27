@@ -35,13 +35,13 @@ import com.cxqm.xiaoerke.modules.order.service.RegisterService;
 @Controller
 @RequestMapping(value = "register/doctor")
 public class RegisterDoctorController extends BaseController {
-	
+
 	@Autowired
     private RegisterService registerService;
 
 	@Autowired
 	private PatientRegisterService patientRegisterService;
-	
+
     @RequestMapping(value = "/date", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
@@ -54,7 +54,7 @@ public class RegisterDoctorController extends BaseController {
         response.put("dates", dates);
         return response;
     }
-	
+
 	@RequestMapping(value = "/arrange", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
@@ -75,8 +75,8 @@ public class RegisterDoctorController extends BaseController {
 		if(from.getTime() < to.getTime()){
 			if(!fromTime.equals(toTime)){
 				Date temp = new Date();
-				for(int i=0;i < Integer.parseInt(ConstantUtil.DAY_QUARTER_NUMBER);i++){
-					temp.setTime(from.getTime() + Integer.parseInt(ConstantUtil.VISIT_INTERVAL)*60*1000*i);
+				for(int i=0;i < ConstantUtil.DAY_QUARTER_NUMBER;i++){
+					temp.setTime(from.getTime() + ConstantUtil.VISIT_INTERVAL*60*1000*i);
 					String toTimeStr =DateUtils.DateToStr(temp,"time");
 					if(!toTime.equals(toTimeStr)){
 						timeList.add(toTimeStr);
@@ -97,7 +97,7 @@ public class RegisterDoctorController extends BaseController {
 		response.put("reason", ret.get("doctor"));
         return response;
     }
-	
+
 	@RequestMapping(value = "/remove", method = {RequestMethod.POST})
     public
     @ResponseBody
@@ -117,12 +117,12 @@ public class RegisterDoctorController extends BaseController {
 			vo.setSysHospitalId(hospitalId);
 			vo.setLocationId(locationId);
 			count += registerService.deleteRegisters(vo,times,date,operRepeat,"doctor");
-	    	//TODO should be in the same transaction, but now using 
+	    	//TODO should be in the same transaction, but now using
     	}
     	HashMap<String, Object> response = new HashMap<String, Object>(4);
     	response.put("status", "OK");
     	response.put("count", count);
-    	
+
         return response;
     }
 

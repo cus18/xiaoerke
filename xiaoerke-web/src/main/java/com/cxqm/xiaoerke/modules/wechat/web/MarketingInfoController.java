@@ -61,8 +61,8 @@ public class MarketingInfoController {
 	                "appid=APPID" +
 	                "&secret=SECRET&" +
 	                "code=CODE&grant_type=authorization_code";
-	        get_access_token_url=get_access_token_url.replace("APPID", ConstantUtil.CORPID);
-	        get_access_token_url=get_access_token_url.replace("SECRET", ConstantUtil.SECTET);
+	        get_access_token_url=get_access_token_url.replace("APPID", WechatUtil.CORPID);
+	        get_access_token_url=get_access_token_url.replace("SECRET", WechatUtil.SECTET);
 	        get_access_token_url=get_access_token_url.replace("CODE", code);
 	        String access_token = "";
 	        String openid = "";

@@ -71,12 +71,6 @@
         <module name="xiaoerke-wechat-api" />
         <module name="xiaoerke-wechat-service" />
       </profile>
-      <profile default="false" name="Annotation profile for bdfApp" enabled="true">
-        <sourceOutputDir name="target\generated-sources\annotations" />
-        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="angel" target="1.6" />
