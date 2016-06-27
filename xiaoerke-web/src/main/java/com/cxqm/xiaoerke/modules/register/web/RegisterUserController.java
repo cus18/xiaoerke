@@ -3,6 +3,8 @@
  */
 package com.cxqm.xiaoerke.modules.register.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.order.service.RegisterService;
@@ -59,6 +61,7 @@ public class RegisterUserController extends BaseController {
     @ResponseBody
     @SystemControllerLog(description = "00000071")//获取往后七天日期数据
     Map<String, Object> listAppointmentTime(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         HashMap<String, Object> response = new HashMap<String, Object>();
         List<HashMap<String, Object>> timeDataList = new ArrayList<HashMap<String, Object>>();
         String pageSize = ((String) params.get("pageSize"));
@@ -111,6 +114,7 @@ public class RegisterUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> listAppointmentTimeHospital(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return registerService.listAppointmentTimeHospital(params);
     }
 
@@ -136,6 +140,7 @@ public class RegisterUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> listAppointmentTimeDoctor(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return registerService.listAppointmentTimeDoctor(params);
     }
 
@@ -160,6 +165,7 @@ public class RegisterUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> listAppointmentTimeHospitalDoctor(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return registerService.listAppointmentTimeHospitalDoctor(params);
     }
 
@@ -205,6 +211,7 @@ public class RegisterUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> doctorAppointmentInfo(@RequestBody Map<String, Object> params) throws Exception {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return registerService.doctorAppointmentInfoOfDay(params);
     }
 
@@ -234,6 +241,7 @@ public class RegisterUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> doctorConsultPhoneInfo(@RequestBody Map<String, Object> params) throws Exception {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         String date = (String)params.get("date");
         if(date.contains("-")){
             date = date.replaceAll("-","/");
@@ -258,6 +266,7 @@ public class RegisterUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> appointmentSourceRoute(@RequestBody Map<String, Object> params) throws Exception {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return registerService.orderSourceRoute(params);
     }
 

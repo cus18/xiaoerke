@@ -4,6 +4,8 @@
 package com.cxqm.xiaoerke.modules.sys.web;
 
 import com.cxqm.xiaoerke.common.config.Global;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.CookieUtils;
 import com.cxqm.xiaoerke.common.utils.FrontUtils;
@@ -75,6 +77,7 @@ public class UserInfoController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> myselfInfo(@RequestBody Map<String, Object> params,HttpSession session,HttpServletRequest request,HttpServletResponse httpResponse) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		String unBindUserPhoneNum = (String)params.get("unBindUserPhoneNum");

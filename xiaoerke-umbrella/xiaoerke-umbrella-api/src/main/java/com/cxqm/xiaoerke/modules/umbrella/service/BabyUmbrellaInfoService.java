@@ -3,8 +3,6 @@ package com.cxqm.xiaoerke.modules.umbrella.service;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
 import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaFamilyInfo;
-import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaMongoDBVo;
-import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
 import java.util.Map;
@@ -79,44 +77,41 @@ public interface BabyUmbrellaInfoService {
 
 
     /**
-     * 查询激活人数
-     * @param map
+     * 新版添加保障金信息
+     * @param babyUmbrellaInfo
      * @return
      */
-    int getUmbrellaActivationCount(Map<String, Object> map);
-
-    /**
-     * 查询未激活人数
-     * @param map
-     * @return
-     */
-    int getUmbrellaNotActivationCount(Map<String, Object> map);
-
-    /**
-     * 查询激活家庭人数
-     * @param map
-     * @return
-     */
-    int getUmbrellaActivationFamilyPeopleCount(Map<String, Object> map);
-
-    int saveOpenidToMongoDB(UmbrellaMongoDBVo entity);
-
-    List<UmbrellaMongoDBVo> getUmbrellaMongoDBVoList(Query query);
-
-
+    int newSaveBabyUmbrellaInfo(BabyUmbrellaInfo babyUmbrellaInfo);
 
 
     /**
-     * 查询免费激活
-     * @param map
+     * 根据Openid 删除一个宝护伞信息
+     * @param openid
      * @return
      */
-    int getUmbrellaFreeActivationCount(Map<String, Object> map);
+    int deleteUmbrellaByOpenid(String openid);
+
 
     /**
-     * 查询免费未激活
+     * 更新支付信息
+     * @param babyUmbrellaInfo
+     * @return
+     */
+    int updateBabyUmbrellaInfoStatus(BabyUmbrellaInfo babyUmbrellaInfo);
+
+
+    /**
+     * 根据宝护伞ID 删除成员信息
+     * @param id
+     * @return
+     */
+    int deleteByUmbrellaId(Integer id);
+
+
+    /**
+     * 获取用户第几位加入
      * @param map
      * @return
      */
-    int getUmbrellaFreeNotActivationCount(Map<String, Object> map);
+    int getUmbrellaRank(Map<String, Object> map);
 }

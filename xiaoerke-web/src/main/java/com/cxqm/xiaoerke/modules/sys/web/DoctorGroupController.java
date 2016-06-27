@@ -3,6 +3,8 @@
  */
 package com.cxqm.xiaoerke.modules.sys.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.FrontUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
@@ -59,6 +61,8 @@ public class DoctorGroupController extends BaseController {
     @ResponseBody
     @SystemControllerLog(description = "00000073")
     Map<String, Object> getDoctorGroupList(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         HashMap<String, Object> response = new HashMap<String,Object>();
         String pageNo = (String) params.get("pageNo");
         String pageSize = (String) params.get("pageSize");
@@ -81,8 +85,9 @@ public class DoctorGroupController extends BaseController {
     @ResponseBody
     @SystemControllerLog(description = "00000073")
     Map<String, Object> getDoctorGroupInfo(@RequestParam(required=true) String doctorGroupId) {
-        HashMap<String, Object> response = new HashMap<String,Object>();
-        response = doctorGroupInfoService.getDoctorGroupInfo(doctorGroupId);
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
+        HashMap<String, Object> response = doctorGroupInfoService.getDoctorGroupInfo(doctorGroupId);
         return response;
     }
 
@@ -91,6 +96,8 @@ public class DoctorGroupController extends BaseController {
     @ResponseBody
     @SystemControllerLog(description = "00000073")
     Map<String, Object> getDoctorListInDoctorGroup(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         HashMap<String, Object> response = new HashMap<String, Object>();
 
         String doctorGroupId = (String) params.get("doctorGroupId");

@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
@@ -45,6 +47,8 @@ public class ConsultSessionCheckController extends BaseController{
      */
     @RequestMapping(value="/sessionCheck",method = {RequestMethod.POST, RequestMethod.GET})
     public @ResponseBody HashMap<String,Object> sessionCheck() throws UnsupportedEncodingException {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
         //获取用户与平台最后交流时间
         Query query = new Query(where("status").is("ongoing"));
         List<ConsultSessionStatusVo> consultSessionStatusVos = consultRecordService.querySessionStatusList(query);

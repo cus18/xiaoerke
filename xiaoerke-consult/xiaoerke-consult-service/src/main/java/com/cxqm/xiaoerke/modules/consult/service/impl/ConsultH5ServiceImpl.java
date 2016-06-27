@@ -69,7 +69,6 @@ public class ConsultH5ServiceImpl implements ConsultH5Service {
                         User user = systemService.getUserById(senderId);
                         String userType = user.getUserType();
                         if(StringUtils.isNotNull(userType) && ("distributor".equalsIgnoreCase(userType) || "consultDoctor".equalsIgnoreCase(userType))){
-//                            Integer sessionId = sessionRedisCache.getSessionIdByUserId(senderId);
                             RichConsultSession consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
                             if("wxcxqm".equalsIgnoreCase(consultSession.getSource())){
                                 String upLoadUrl = "https://api.weixin.qq.com/cgi-bin/media/upload";

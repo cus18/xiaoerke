@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.account.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.XMLUtil;
 import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
@@ -52,18 +54,6 @@ public class AccountUserController {
 	private PatientRegisterService patientRegisterService;
 
 	@Autowired
-	private SystemService systemService;
-
-	@Autowired
-	private MemberService memberService;
-
-	@Autowired
-	private InsuranceRegisterServiceService insuranceService;
-
-	@Autowired
-	private PayRecordService payRecordService;
-
-	@Autowired
 	private ConsultPhonePatientService consultPhonePatientService;
 
 	private static Lock lock = new ReentrantLock();
@@ -75,6 +65,8 @@ public class AccountUserController {
 	public
 	@ResponseBody
 	Map<String, Object> accountInfo() {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		accountService.getUserAccountInfo(response);
 		return response;
@@ -87,6 +79,8 @@ public class AccountUserController {
 	public synchronized
 	@ResponseBody
 	Map<String,Object>  returnPay(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		lock.lock();
 		Map<String,Object> response = new HashMap<String, Object>();
 		try {
@@ -114,6 +108,8 @@ public class AccountUserController {
 	public
 	@ResponseBody
 	String userPay(HttpServletRequest request,HttpSession session) throws Exception {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		//查询当前订单状态是否是待支付
 		String patientRegisterId =request.getParameter("patientRegisterId");
 
@@ -139,6 +135,7 @@ public class AccountUserController {
 	public
 	@ResponseBody
 	String antiDogPay(HttpServletRequest request,HttpSession session) throws Exception {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 
 		//获取统一支付接口参数
 		Map prepayInfo = accountService.getPrepayInfo(request, session, "insuranceService");
@@ -160,6 +157,7 @@ public class AccountUserController {
 	public
 	@ResponseBody
 	String customerPay(HttpServletRequest request,HttpSession session) throws Exception {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 
 		//获取统一支付接口参数
 		Map prepayInfo = accountService.getPrepayInfo(request, session, "customerService");
@@ -179,6 +177,8 @@ public class AccountUserController {
 	public
 	@ResponseBody
 	String consultPhonePay(HttpServletRequest request,HttpSession session) throws Exception {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		String consultPhoneServiceId = request.getParameter("patientRegisterId");
 		Map<String,Object> consultMap = consultPhonePatientService.getPatientRegisterInfo(Integer.parseInt(consultPhoneServiceId));
 		if("待支付".equals(consultMap.get("state"))){
@@ -206,6 +206,7 @@ public class AccountUserController {
 	public
 	@ResponseBody
 	String umbrellaPay(HttpServletRequest request,HttpSession session) throws Exception {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 
 		//获取统一支付接口参数
 		Map prepayInfo = accountService.getPrepayInfo(request, session, "umbrellaService");

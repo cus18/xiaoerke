@@ -1,6 +1,8 @@
 package com.cxqm.xiaoerke.modules.umbrella.web;
 
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.HttpRequestUtil;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
@@ -55,20 +57,15 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  firstPageData() {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         Map<String, Object> map=new HashMap<String, Object>();
+        Integer count = babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(map);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Map<String, Object> result = new HashMap<String, Object>();
-//        Integer count = babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(map);
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//        Map<String, Object> result = new HashMap<String, Object>();
-//        Map<String,Object> maps = babyUmbrellaInfoSerivce.getUmbrellaNum(result);
-//        Long familyNum = (Long)maps.get("familyNum");
-//        result.put("count", count*2+familyNum);
-        Integer count =babyUmbrellaInfoSerivce.getUmbrellaActivationCount(map)+
-                babyUmbrellaInfoSerivce.getUmbrellaNotActivationCount(map)+
-                babyUmbrellaInfoSerivce.getUmbrellaActivationFamilyPeopleCount(map)+
-                babyUmbrellaInfoSerivce.getUmbrellaFreeActivationCount(map)+
-                babyUmbrellaInfoSerivce.getUmbrellaFreeNotActivationCount(map);
-        result.put("count", 2000+count);
+        Map<String,Object> maps = babyUmbrellaInfoSerivce.getUmbrellaNum(result);
+        Long familyNum = (Long)maps.get("familyNum");
+        result.put("count",count*2+familyNum);
         return result;
     }
 
@@ -79,29 +76,18 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  firstPageDataTodayCount() {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         Map<String, Object> map=new HashMap<String, Object>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        map.put("today",sdf.format(new Date()));
+        Integer todayCount = babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(map);
         Map<String, Object> result = new HashMap<String, Object>();
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//        map.put("today",sdf.format(new Date()));
-//        Integer todayCount = babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(map);
-//        Map<String, Object> result = new HashMap<String, Object>();
-//        Map<String, Object> countmap = new HashMap<String, Object>();
-//        countmap.put("date",new Date());
-//        Map<String,Object> maps = babyUmbrellaInfoSerivce.getUmbrellaNum(countmap);
-//        Long familyNum = (Long)maps.get("familyNum");
-//        result.put("todayCount", todayCount*2+familyNum);
-        Integer Count =babyUmbrellaInfoSerivce.getUmbrellaActivationCount(map)+
-                babyUmbrellaInfoSerivce.getUmbrellaNotActivationCount(map)+
-                babyUmbrellaInfoSerivce.getUmbrellaActivationFamilyPeopleCount(map)+
-                babyUmbrellaInfoSerivce.getUmbrellaFreeActivationCount(map)+
-                babyUmbrellaInfoSerivce.getUmbrellaFreeNotActivationCount(map);
-        map.put("ifLastDate","1");
-        Integer Counts =babyUmbrellaInfoSerivce.getUmbrellaActivationCount(map)+
-                babyUmbrellaInfoSerivce.getUmbrellaNotActivationCount(map)+
-                babyUmbrellaInfoSerivce.getUmbrellaActivationFamilyPeopleCount(map)+
-                babyUmbrellaInfoSerivce.getUmbrellaFreeActivationCount(map)+
-                babyUmbrellaInfoSerivce.getUmbrellaFreeNotActivationCount(map);
-        result.put("todayCount", Count-Counts);
+        Map<String, Object> countmap = new HashMap<String, Object>();
+        countmap.put("date",new Date());
+        Map<String,Object> maps = babyUmbrellaInfoSerivce.getUmbrellaNum(countmap);
+        Long familyNum = (Long)maps.get("familyNum");
+        result.put("todayCount", todayCount*2+familyNum);
         return result;
     }
 
@@ -112,6 +98,8 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  firstPageDataTotalUmbrellaMoney() {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         Map<String, Object> map=new HashMap<String, Object>();
         Integer totalUmbrellaMoney = babyUmbrellaInfoSerivce.getTotalBabyUmbrellaInfoMoney(map);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -129,10 +117,12 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  joinUs(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
         Map<String, Object> map=new HashMap<String, Object>();
         Map<String, Object> numm=new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session, request);
-//        openid="abc";
+//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
         List<Map<String, Object>> list = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
@@ -144,7 +134,6 @@ public class UmbrellaController  {
                 result.put("umbrella",m);
                 numm.put("userNums","1");
                 numm.put("date",sdf.format(new Date()));
-//                result.put("num",babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(numm));
                 return result;
             }
             Map<String, Object> result = new HashMap<String, Object>();
@@ -153,7 +142,6 @@ public class UmbrellaController  {
 
             numm.put("date",sdf.format(new Date()));
             numm.put("userNums","1");
-//            result.put("num",babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(numm));
             return result;
         }
         BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
@@ -161,11 +149,8 @@ public class UmbrellaController  {
         babyUmbrellaInfo.setUmberllaMoney(200000);
         babyUmbrellaInfo.setTruePayMoneys(5+"");
         Integer res = babyUmbrellaInfoSerivce.saveBabyUmbrellaInfo(babyUmbrellaInfo);
-
         String shareId=params.get("shareId").toString();
-
         sendWechatMessage(openid,shareId);
-
         Map<String, Object> result=new HashMap<String, Object>();
         result.put("result",res);
         result.put("id",babyUmbrellaInfo.getId());
@@ -238,12 +223,12 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  updateInfo(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) throws UnsupportedEncodingException {
-        Map<String, Object> result=new HashMap<String, Object>();
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 
+        Map<String, Object> result=new HashMap<String, Object>();
         String phone=params.get("phone").toString();
         String code=params.get("code").toString();
         String openid= WechatUtil.getOpenId(session, request);
-//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         String codeAuth=utilService.bindUser(phone,code,openid);
         if(codeAuth.equals("0")){
             result.put("result","3");
@@ -283,9 +268,10 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  userShareNum(HttpServletRequest request,HttpSession session) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         Map<String, Object> map=new HashMap<String, Object>();
         String openid= WechatUtil.getOpenId(session, request);
-//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
         String  id=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map).get(0).get("id").toString();
         Map<String, Object> result=new HashMap<String, Object>();
@@ -299,12 +285,9 @@ public class UmbrellaController  {
     @RequestMapping(value = "/getUserQRCode", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object>  getUserQRCode(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) {
-//        Map<String, Object> map=new HashMap<String, Object>();
-//        String openid= WechatUtil.getOpenId(session, request);
-//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
-//        map.put("openid",openid);
-//        String  id=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map).get(0).get("id").toString();
+    Map<String, Object>  getUserQRCode(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         String id = params.get("id").toString();
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("qrcode",babyUmbrellaInfoSerivce.getUserQRCode(id));
@@ -318,6 +301,8 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  getOpenidStatus(HttpServletRequest request,HttpSession session) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         String openid= WechatUtil.getOpenId(session, request);
 //        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         Map<String, Object> result = new HashMap<String, Object>();
@@ -349,6 +334,8 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  ifExistOrder(HttpServletRequest request,HttpSession session) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         Map<String, Object> map=new HashMap<String, Object>();
         Map<String, Object> result=new HashMap<String, Object>();
         String openid= WechatUtil.getOpenId(session, request);
@@ -363,18 +350,17 @@ public class UmbrellaController  {
                 return result;
             }
                 if (m.get("baby_id") != null && !m.get("baby_id").equals("")) {
+                    if (m.get("activation_time") != null && !m.get("activation_time").equals("")) {
+                        map.put("createTime",m.get("create_time"));
+                        result.put("rank", babyUmbrellaInfoSerivce.getUmbrellaRank(map));
+                    }
                     result.put("result", 3);
                     result.put("umbrella", m);
                     return result;
                 }
-//                result.put("phone", UserUtils.getUser().getPhone());
                 result.put("result", 2);
                 result.put("umbrella", m);
                 return result;
-//            }else{
-//                result.put("result",1);
-//                return result;
-//            }
         }
         result.put("result",1);
         return result;
@@ -424,6 +410,7 @@ public class UmbrellaController  {
     Map<String, Object>  randomMoney(HttpServletRequest request,HttpSession session) {
         Map<String, Object> map=new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session, request);
+//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
         List<Map<String, Object>> list = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
@@ -453,10 +440,6 @@ public class UmbrellaController  {
         double ram=0;
         if(flag.equals("1")) {
             ram = Math.random() * 5;
-//        while (ram < 1){
-//            ram=Math.random() * 5;
-//        }
-
             do {
                 ram = Math.random() * 5;
             } while (ram < 1);
@@ -470,7 +453,6 @@ public class UmbrellaController  {
         babyUmbrellaInfo.setVersion("a");
         if(res.equals("0")){
             babyUmbrellaInfo.setPayResult("success");
-//            babyUmbrellaInfo.setActivationTime(new Date());
         }else {
             babyUmbrellaInfo.setPayResult("fail");
         }
@@ -512,17 +494,15 @@ public class UmbrellaController  {
         Integer id = Integer.parseInt((String) params.get("id"));
         List<UmbrellaFamilyInfo> list = new ArrayList<UmbrellaFamilyInfo>();
         list = babyUmbrellaInfoSerivce.getFamilyUmbrellaList(id);
-        BabyBaseInfoVo babyInfo = babyUmbrellaInfoSerivce.getBabyBaseInfo(id);
-        if(babyInfo!=null){
-            UmbrellaFamilyInfo familyInfo = new UmbrellaFamilyInfo();
-            familyInfo.setSex(Integer.parseInt(babyInfo.getSex()));
-            familyInfo.setName(babyInfo.getName());
-            familyInfo.setBirthday(babyInfo.getBirthday());
-            list.add(familyInfo);
-            activation = true;
-        }
-
-//        babyInfo.getUserid()
+//        BabyBaseInfoVo babyInfo = babyUmbrellaInfoSerivce.getBabyBaseInfo(id);
+//        if(babyInfo!=null){
+//            UmbrellaFamilyInfo familyInfo = new UmbrellaFamilyInfo();
+//            familyInfo.setSex(Integer.parseInt(babyInfo.getSex()));
+//            familyInfo.setName(babyInfo.getName());
+//            familyInfo.setBirthday(babyInfo.getBirthday());
+//            list.add(familyInfo);
+//            activation = true;
+//        }
         resultMap.put("familyList",list);
         resultMap.put("activation",activation);
         return resultMap;
@@ -540,21 +520,14 @@ public class UmbrellaController  {
         Boolean showFather = true;
         Boolean showMother = true;
         Integer id = Integer.parseInt((String) params.get("id"));
-        List<UmbrellaFamilyInfo> list = new ArrayList<UmbrellaFamilyInfo>();
-        list = babyUmbrellaInfoSerivce.getFamilyUmbrellaList(id);
+        List<UmbrellaFamilyInfo> list = babyUmbrellaInfoSerivce.getFamilyUmbrellaList(id);
         for(UmbrellaFamilyInfo info:list){
-//          Date date=new Date();
-//          long day=(date.getTime()-info.getBirthday().getTime())/(24*60*60*1000) + 1;
-//          String year=new java.text.DecimalFormat("#").format(day/365f);
-//          if(Integer.parseInt(year)>18){
               //0 男 1 女
             if(info.getSex()==2){
               showFather = false;
             }else if(info.getSex()==3){
               showMother = false;
             }
-
-//          }
         }
         resultMap.put("showFather",showFather);
         resultMap.put("showMother",showMother);
@@ -567,13 +540,14 @@ public class UmbrellaController  {
     @RequestMapping(value = "/getUmbrellaNum", method = {RequestMethod.POST, RequestMethod.GET} )
     public
     @ResponseBody
-    Map<String, Object>  getUmbrellaNum(@RequestBody Map<String, Object> params){
-      Map<String, Object> resultMap = new HashMap<String, Object>();
-      Map<String,Object> map = babyUmbrellaInfoSerivce.getUmbrellaNum(resultMap);
-      Long familyNum = (Long)map.get("familyNum");
-//      Long umbrellaNum = (Long)map.get("umbrellaNum");
-      resultMap.put("umbrellaCount",familyNum);
-      return resultMap;
+    Map<String, Object> getUmbrellaNum(){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        Map<String,Object> map = babyUmbrellaInfoSerivce.getUmbrellaNum(resultMap);
+        Long familyNum = (Long)map.get("familyNum");
+        resultMap.put("umbrellaCount",familyNum);
+        return resultMap;
     }
 
 
@@ -586,6 +560,7 @@ public class UmbrellaController  {
     Map<String, Object> getOpenid(HttpServletRequest request,HttpSession session){
         Map<String, Object> resultMap = new HashMap<String, Object>();
         String openid= WechatUtil.getOpenId(session, request);
+//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         if(openid==null||openid.equals("")){
             resultMap.put("openid","none");
             return resultMap;
@@ -601,12 +576,126 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object> updateBabyUmbrellaInfoIfShare(@RequestBody Map<String, Object> params){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
         Map<String, Object> resultMap = new HashMap<String, Object>();
         BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
         babyUmbrellaInfo.setId(Integer.parseInt(params.get("id").toString()));
         Integer res=babyUmbrellaInfoSerivce.updateBabyUmbrellaInfoIfShare(babyUmbrellaInfo);
         resultMap.put("result",res);
         return resultMap;
+    }
+
+    /**
+     *  新版加入保护伞
+     */
+    @RequestMapping(value = "/newJoinUs", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object>  newJoinUs(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) throws UnsupportedEncodingException {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
+        Map<String, Object> result=new HashMap<String, Object>();
+        //验证手机号是否正确
+        String phone=params.get("phone").toString();
+        String code=params.get("code").toString();
+        String openid= WechatUtil.getOpenId(session, request);
+//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+        String codeAuth=utilService.bindUser(phone,code,openid);
+        if(codeAuth.equals("0")){
+             codeAuth=utilService.bindUser4Doctor(phone,code,openid);
+            if(codeAuth.equals("0")){
+                codeAuth=utilService.bindUser4ConsultDoctor(phone,code,openid);
+                if(codeAuth.equals("0")){
+                    result.put("result","3");
+                    return result;
+                }
+            }
+        }
+        //添加保护伞初始信息
+        BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
+        babyUmbrellaInfo.setOpenid(openid);
+        babyUmbrellaInfo.setBabyId(params.get("babyId").toString());
+        babyUmbrellaInfo.setParentIdCard(params.get("idCard").toString());
+        babyUmbrellaInfo.setParentPhone(params.get("phone").toString());
+        babyUmbrellaInfo.setParentName(URLDecoder.decode(params.get("parentName").toString(),"UTF-8"));
+        babyUmbrellaInfo.setParentType(Integer.parseInt(params.get("parentType").toString()));
+        babyUmbrellaInfo.setMoney("5");
+        babyUmbrellaInfo.setUmberllaMoney(200000);
+        //随机立减
+        Map maps = new HashMap();
+
+
+        //先删除以前可能存在的旧数据
+
+        maps.put("openid",openid);
+        List<Map<String, Object>> list = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(maps);
+        if(list.size()>0){
+            babyUmbrellaInfoSerivce.deleteUmbrellaByOpenid(babyUmbrellaInfo.getOpenid());
+            babyUmbrellaInfoSerivce.deleteByUmbrellaId(Integer.parseInt(list.get(0).get("id").toString()));
+            if (list.get(0).get("true_pay_moneys") != null && !list.get(0).get("true_pay_moneys").equals("")) {
+                babyUmbrellaInfo.setTruePayMoneys(list.get(0).get("true_pay_moneys").toString());
+            }
+        }
+
+        maps.put("type","umbrella");
+        SwitchConfigure switchConfigure = systemService.getUmbrellaSwitch(maps);
+        String flag = switchConfigure.getFlag();
+        System.out.println(flag+"flag=======================switchConfigure========================");
+//        flag为1是打开，0是关闭
+        double ram=0;
+//        if(flag.equals("1")) {
+//            ram = Math.random() * 5;
+//            do {
+//                ram = Math.random() * 5;
+//            } while (ram < 1);
+//        }
+
+        if(flag.equals("1")){
+            if(babyUmbrellaInfo.getTruePayMoneys()!=null&&!babyUmbrellaInfo.getTruePayMoneys().equals("")) {
+                ram = Integer.parseInt(babyUmbrellaInfo.getTruePayMoneys().toString());
+            }else{
+                ram = Math.random() * 5;
+            }
+        }
+        String ress = String.format("%.0f", ram);
+
+        babyUmbrellaInfo.setTruePayMoneys(ress);
+
+        if(ress.equals("0")){
+            babyUmbrellaInfo.setPayResult("success");
+        }else {
+            babyUmbrellaInfo.setPayResult("fail");
+        }
+
+        //完成添加动作
+        Integer res = babyUmbrellaInfoSerivce.newSaveBabyUmbrellaInfo(babyUmbrellaInfo);
+//        String shareId=params.get("shareId").toString();
+//        sendWechatMessage(openid,shareId);
+
+        //插入家庭成员的信息
+        //宝爸宝妈
+        UmbrellaFamilyInfo familyInfo = new UmbrellaFamilyInfo();
+        familyInfo.setName(URLDecoder.decode(params.get("parentName").toString(), "UTF-8"));
+        familyInfo.setUmbrellaId(babyUmbrellaInfo.getId());
+        familyInfo.setSex(Integer.parseInt(params.get("parentType").toString()));
+        String idCard = params.get("idCard").toString();
+        Date birthDay = DateUtils.StrToDate(idCard.substring(6,14),"yyyyMMdd");
+        familyInfo.setBirthday(birthDay);
+        babyUmbrellaInfoSerivce.saveFamilyUmbrellaInfo(familyInfo);
+
+        //宝宝的信息
+        UmbrellaFamilyInfo bFamilyInfo = new UmbrellaFamilyInfo();
+        Date bbirthDay = DateUtils.StrToDate(params.get("bbirthDay").toString(), "yyyy-MM-dd");
+        bFamilyInfo.setBirthday(bbirthDay);
+        bFamilyInfo.setUmbrellaId(babyUmbrellaInfo.getId());
+        bFamilyInfo.setName(params.get("bname").toString());
+        bFamilyInfo.setSex(Integer.parseInt(params.get("bsex").toString()));
+        int reusltStatus = babyUmbrellaInfoSerivce.saveFamilyUmbrellaInfo(bFamilyInfo);
+
+        result.put("result",res);
+        result.put("id",babyUmbrellaInfo.getId());
+        return result;
     }
 
 }

@@ -2,6 +2,8 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.HttpRequestUtil;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
@@ -67,9 +69,6 @@ public class ConsultDoctorController extends BaseController {
     private SessionRedisCache sessionRedisCache;
 
     @Autowired
-    private WechatAttentionService wechatAttentionService;
-
-    @Autowired
     private ConsultDoctorInfoService consultDoctorInfoService;
 
     @Autowired
@@ -129,6 +128,8 @@ public class ConsultDoctorController extends BaseController {
     public
     @ResponseBody
     HashMap<String, Object> findConversationRankList(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         Map<String, Object> searchMap = new HashMap<String, Object>();
         HashMap<String, Object> resultMap = new HashMap<String, Object>();
         try {
@@ -232,6 +233,8 @@ public class ConsultDoctorController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> GetCSDoctorList(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         Map<String, Object> response = new HashMap<String, Object>();
         List<User> users;
         User user = new User();
@@ -255,12 +258,13 @@ public class ConsultDoctorController extends BaseController {
     public
     @ResponseBody
     HashMap<String, Object> createDoctorConsultSession(@RequestBody Map<String, Object> params) {
-        HashMap<String, Object> response = new HashMap<String, Object>();
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
         String userId = (String) params.get("userId");
         String userName = (String) params.get("userName");
 
         //根据用户ID去查询，从历史会话记录中，获取用户最近的一条聊天记录，根据source判断会话来源
-        response = ConsultSessionManager.getSessionManager().createConsultSession(userName, userId);
+        HashMap<String, Object> response = ConsultSessionManager.getSessionManager().createConsultSession(userName, userId);
         return response;
     }
 
@@ -277,6 +281,8 @@ public class ConsultDoctorController extends BaseController {
     @ResponseBody
     Map<String, Object> sessionEnd(@RequestParam(required = true) String sessionId,
                                    @RequestParam(required = true) String userId) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
         System.out.println("close session========" + sessionId + "==========userId========" + userId);
         Map<String, Object> params = new HashMap<String, Object>();
         Map<String, Object> response = new HashMap<String, Object>();
@@ -326,20 +332,28 @@ public class ConsultDoctorController extends BaseController {
                     Map param = new HashMap();
                     param.put("userId",richConsultSession.getCsUserId());
                     List<ConsultDoctorInfoVo> consultDoctorInfoVos = consultDoctorInfoService.getConsultDoctorByInfo(param);
+                    Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
                     if(consultDoctorInfoVos !=null && consultDoctorInfoVos.size() >0){
                         if(null !=consultDoctorInfoVos.get(0).getSendMessage() && consultDoctorInfoVos.get(0).getSendMessage().equals("1")){
                             String st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
                                     "<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
                                     params.get("uuid") + "'>点击这里去评价</a>】";
-                            Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
                             WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
                         }
                     }
-
+                    //jiangzg 2016年6月21日16:22:59 add ps:在线咨询仅供参考
+                    String csUserId = richConsultSession.getCsUserId();
+                    if(StringUtils.isNotNull(csUserId)){
+                        List<Map> consultDoctorInfo = consultDoctorInfoService.getDoctorInfoMoreByUserId(csUserId);
+                        if(consultDoctorInfo != null && consultDoctorInfo.size() > 0){
+                            if(consultDoctorInfo.get(0).get("userType") !=null && "consultDoctor".equalsIgnoreCase((String)consultDoctorInfo.get(0).get("userType"))){
+                                WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, "感谢您咨询宝大夫，因不能面诊，在线咨询回复仅供参考！");
+                            }
+                        }
+                    }
                 }
             }
             String result = consultSessionService.clearSession(sessionId, userId);
-
             response.put("result", result);
             try{
                 sendUmbrellaWechatMessage(userId);//咨询完毕发送保护伞消息，每个用户只发一次

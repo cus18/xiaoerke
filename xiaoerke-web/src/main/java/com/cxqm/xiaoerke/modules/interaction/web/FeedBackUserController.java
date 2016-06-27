@@ -3,6 +3,8 @@
  */
 package com.cxqm.xiaoerke.modules.interaction.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.CookieUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
@@ -44,6 +46,7 @@ public class FeedBackUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> sendAdvice(@RequestBody Map<String, Object> params,HttpSession session,HttpServletRequest request) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         String openId = WechatUtil.getOpenId(session, request);
         params.put("user",openId);
         params.put("project", "web-app");
@@ -58,6 +61,7 @@ public class FeedBackUserController extends BaseController {
     public
     @ResponseBody
     String wxPayAdvice(@RequestBody Map<String, Object> params,HttpSession session,HttpServletRequest request) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         String openId = WechatUtil.getOpenId(session,request);
         params.put("user",openId);
         params.put("project", "wechatPay");
@@ -84,7 +88,8 @@ public class FeedBackUserController extends BaseController {
     @RequestMapping(value = "/user/consultVisit", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    String consultVisit(@RequestBody Map<String, Object> params,HttpSession session,HttpServletRequest request) {
+    String consultVisit(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         params.put("user",params.get("openId"));
         params.put("project", "consultVisit");
         feedbackService.sendAdvice(params);

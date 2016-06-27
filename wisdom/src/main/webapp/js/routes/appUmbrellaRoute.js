@@ -6,7 +6,7 @@ define(['appUmbrella'], function(app){
         .config(['$stateProvider','$urlRouterProvider',
             function($stateProvider,$urlRouterProvider) {
                 var loadFunction = function($templateCache, $ocLazyLoad, $q, $http,name,files,htmlURL){
-                     lazyDeferred = $q.defer();
+                    lazyDeferred = $q.defer();
                     return $ocLazyLoad.load ({
                         name: name,
                         files: files
@@ -22,7 +22,7 @@ define(['appUmbrella'], function(app){
                 };
 
                 $stateProvider
-                    /* 宝护伞 */
+                /* 宝护伞 */
                     .state('umbrellaJoin', {
                         url: '/umbrellaJoin/:id/:shareid',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -129,7 +129,7 @@ define(['appUmbrella'], function(app){
                         }
                     })
                     .state('umbrellaPaySuccess', {
-                        url: '/umbrellaPaySuccess',
+                        url: '/umbrellaPaySuccess/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'umbrellaPaySuccessCtrl',
                         resolve: {
@@ -144,25 +144,7 @@ define(['appUmbrella'], function(app){
                             public: true
                         }
                     })
-                    .state('umbrellaSwipe', {
-                        url: '/umbrellaSwipe',
-                        templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'umbrellaSwipeCtrl',
-                        resolve: {
-                            load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaSwipeCtrl',
-                                    ['js/controllers/umbrella/umbrellaSwipeCtrl.js?ver='+umbrellaVersion,
-                                    'js/libs/zepto.min.js',
-                                    'js/libs/zepto.fullpage.js',
-                                    'styles/lib/zepto.fullpage.css?ver='+umbrellaVersion,
-                                    'styles/umbrella/umbrellaSwipe.less?ver='+umbrellaVersion],
-                                    'js/views/umbrella/umbrellaSwipe.html?ver='+umbrellaVersion);
-                            }
-                        },
-                        data: {
-                            public: true
-                        }
-                    })
+
                 $urlRouterProvider.otherwise('umbrellaLead');
             }])
         .run(function ($rootScope){

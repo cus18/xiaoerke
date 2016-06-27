@@ -182,6 +182,7 @@ public class PatientRegisterServiceImpl implements PatientRegisterService {
         messageMap.put("urlPath", "s68.baodf.com/titan");
         orderMessageService.sendMessage(messageMap, true);
     }
+
     @SystemServiceLog(description = "判断用户与订单的关系")
     @Override
     public Boolean judgeUserOrderRealtion(HttpSession session, HttpServletRequest request) {

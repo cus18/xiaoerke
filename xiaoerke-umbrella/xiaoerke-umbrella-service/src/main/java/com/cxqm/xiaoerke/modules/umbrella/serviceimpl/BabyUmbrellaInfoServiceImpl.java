@@ -1,21 +1,17 @@
 package com.cxqm.xiaoerke.modules.umbrella.serviceimpl;
 
-import com.cxqm.xiaoerke.common.bean.WechatRecord;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.service.BabyBaseInfoService;
-import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
 import com.cxqm.xiaoerke.modules.umbrella.dao.BabyUmbrellaInfoDao;
 import com.cxqm.xiaoerke.modules.umbrella.dao.UmbrellaFamilyInfoDao;
 import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
 import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaFamilyInfo;
-import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaMongoDBVo;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,9 +43,6 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
 
     @Autowired
     private BabyBaseInfoService babyBaseInfoService;
-
-    @Autowired
-    private MongoDBService<UmbrellaMongoDBVo> umbrellaMongoDBService;
 
     @Override
     public int saveBabyUmbrellaInfo(BabyUmbrellaInfo babyUmbrellaInfo) {
@@ -232,41 +225,28 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
     }
 
     @Override
-    public int getUmbrellaActivationCount(Map<String, Object> map) {
-        return babyUmbrellaInfoDao.getUmbrellaActivationCount(map);
+    public int newSaveBabyUmbrellaInfo(BabyUmbrellaInfo babyUmbrellaInfo) {
+        return babyUmbrellaInfoDao.newSaveBabyUmbrellaInfo(babyUmbrellaInfo);
     }
 
     @Override
-    public int getUmbrellaNotActivationCount(Map<String, Object> map) {
-        return babyUmbrellaInfoDao.getUmbrellaNotActivationCount(map);
+    public int deleteUmbrellaByOpenid(String openid) {
+        return babyUmbrellaInfoDao.deleteUmbrellaByOpenid(openid);
     }
 
     @Override
-    public int getUmbrellaActivationFamilyPeopleCount(Map<String, Object> map) {
-        return babyUmbrellaInfoDao.getUmbrellaActivationFamilyPeopleCount(map);
+    public int updateBabyUmbrellaInfoStatus(BabyUmbrellaInfo babyUmbrellaInfo) {
+        return babyUmbrellaInfoDao.updateBabyUmbrellaInfoStatus(babyUmbrellaInfo);
     }
 
     @Override
-    public int saveOpenidToMongoDB(UmbrellaMongoDBVo entity) {
-        umbrellaMongoDBService.insert(entity);
-        return 0;
+    public int deleteByUmbrellaId(Integer id) {
+        return umbrellaFamilyInfoDao.deleteByUmbrellaId(id);
     }
 
     @Override
-    public List<UmbrellaMongoDBVo> getUmbrellaMongoDBVoList(Query query) {
-        return umbrellaMongoDBService.queryList(query);
-    }
-
-
-
-    @Override
-    public int getUmbrellaFreeActivationCount(Map<String, Object> map) {
-        return babyUmbrellaInfoDao.getUmbrellaFreeActivationCount(map);
-    }
-
-    @Override
-    public int getUmbrellaFreeNotActivationCount(Map<String, Object> map) {
-        return babyUmbrellaInfoDao.getUmbrellaFreeNotActivationCount(map);
+    public int getUmbrellaRank(Map<String, Object> map) {
+        return babyUmbrellaInfoDao.getUmbrellaRank(map);
     }
 
 

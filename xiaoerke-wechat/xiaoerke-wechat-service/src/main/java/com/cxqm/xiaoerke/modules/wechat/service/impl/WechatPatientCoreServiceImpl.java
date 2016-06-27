@@ -616,7 +616,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 	private String processSubscribeEvent(ReceiveXmlEntity xmlEntity,HttpServletRequest request,HttpServletResponse response)
 	{
 		Map parameter = systemService.getWechatParameter();
-//		Map userWechatParam = parameter.getWeChatParamFromRedis("user");
 		String token = (String) parameter.get("token");
 		String EventKey = xmlEntity.getEventKey();
 		String marketer = "";

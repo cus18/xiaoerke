@@ -53,7 +53,7 @@ public class JsApiTicketUtil {
         ret.put("nonceStr", nonce_str);
         ret.put("timestamp", timestamp);
         ret.put("signature", signature);
-        ret.put("appid", WechatUtil.CORPID);
+        ret.put("appid", ConstantUtil.CORPID);
         return ret;
     }
 
