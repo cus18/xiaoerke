@@ -4,24 +4,26 @@ angular.module('controllers', ['luegg.directives'])
         '$location', 'GetCurrentUserHistoryRecord','GetMyAnswerModify','GetCurrentUserConsultListInfo',
         'TransferToOtherCsUser','SessionEnd','GetWaitJoinList','React2Transfer','CancelTransfer','$upload',
         'GetFindTransferSpecialist','GetRemoveTransferSpecialist','GetAddTransferSpecialist','GetFindAllTransferSpecialist',
-        'CreateTransferSpecialist','$state','GetSystemTime','GetUserSessionTimesByUserId','GetCustomerLogByOpenID','SaveCustomerLog',
-        'SearchIllnessList','SearchBabyInfo',
+        'CreateTransferSpecialist','$state','GetSystemTime','GetUserSessionTimesByUserId',
         function ($scope, $sce, $window,$stateParams,GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
                   GetUserLoginStatus, $location, GetCurrentUserHistoryRecord,GetMyAnswerModify,
                   GetCurrentUserConsultListInfo,TransferToOtherCsUser,SessionEnd,GetWaitJoinList,React2Transfer,CancelTransfer,$upload,
                   GetFindTransferSpecialist,GetRemoveTransferSpecialist,GetAddTransferSpecialist,GetFindAllTransferSpecialist,
-                  CreateTransferSpecialist,$state,GetSystemTime,GetUserSessionTimesByUserId,GetCustomerLogByOpenID,SaveCustomerLog,
-                  SearchIllnessList,SearchBabyInfo) {
+                  CreateTransferSpecialist,$state,GetSystemTime,GetUserSessionTimesByUserId) {
             //初始化info参数
+            //'GetCustomerLogByOpenID','SaveCustomerLog','SearchIllnessList','SearchBabyInfo',
+            //,GetCustomerLogByOpenID,SaveCustomerLog,SearchIllnessList,SearchBabyInfo
             $scope.info = {
                 effect:"true",
-                illness:"",//诊断
+                /*illness:"",//诊断
                 show:"",//表现
                 result:"",//处理
+                birthday:"",//生日*/
                 transferRemark:"",
                 searchCsUserValue:"",
-                selectedSpecialist:"",
-                selectedIllnessList:"",
+                /*selectedSpecialist:"",
+                selectedIllnessList:"",*/
+                selectedBabyName:"",
                 role:{
                     "distributor":"接诊员",
                     "consultDoctor":"专业医生"
@@ -52,10 +54,10 @@ angular.module('controllers', ['luegg.directives'])
                 magnifyImg:false,
                 specialistList:false,
                 specialistTransfer:false,
-                userTable:false,
+                /*userTable:false,
                 recentTable:false,
                 addConsultTable:false,
-                historyTable:false
+                historyTable:false*/
             };
             $scope.searchFlag = false;
             $scope.tapImgButton = function (key,value) {
@@ -129,14 +131,14 @@ angular.module('controllers', ['luegg.directives'])
                          }
                          });*/
                         //查找所属科室
-                        SearchIllnessList.save(function (data) {
+                        /*SearchIllnessList.save(function (data) {
                             var addIllness = {
-                                'value':'',
+                                'value':'addIllness',
                                 'illness':'添加'
                             };
                             data.illnessList.push(addIllness);
                             $scope.illnessList = data.illnessList;
-                        });
+                        });*/
                         //查询专科列表
                         GetFindAllTransferSpecialist.save({}, function (data) {
                             $scope.selectedSpecialistType = data.data;
@@ -606,6 +608,7 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 }
             };//当onkeydown 事件发生时调用函数
+
             //向用户发送咨询消息
             $scope.sendConsultMessage = function () {
                 if($("#saytext").val().replace(/\s+/g,"")!=""){
@@ -724,6 +727,7 @@ angular.module('controllers', ['luegg.directives'])
                 }
             };
 
+            //为无效咨询打标记
             var processSayTextFlag = function(data){
                 var flag = "noFlag";
                 if (data.indexOf("####") != -1) {
@@ -1327,56 +1331,60 @@ angular.module('controllers', ['luegg.directives'])
             };
             /***回复操作区**/
             /***咨询服务**/
-            Date.prototype.Format = function (fmt) { //author: meizz
-                var o = {
-                    "M+": this.getMonth() + 1, //月份
-                    "d+": this.getDate(), //日
-                    "h+": this.getHours(), //小时
-                    "m+": this.getMinutes(), //分
-                    "s+": this.getSeconds(), //秒
-                    "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-                    "S": this.getMilliseconds() //毫秒
-                };
-                if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-                for (var k in o)
-                    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-                return fmt;
-            }
             //根据openid获取历史咨询
-            $scope.historyConsult = '';
+            /*$scope.historyConsult = '';
             GetCustomerLogByOpenID.save({openid:$scope.currentUserConversation.patientId}, function (data) {
                 $scope.historyConsult = data.logList;
-                console.log($scope.historyConsult);
             });
-            //初始化宝宝的信息o3_NPwrrWyKRi8O_Hk8WrkOvvNOk
-            SearchBabyInfo.save({openid: 'o3_NPwrrWyKRi8O_Hk8WrkOvvNOk'}, function (data) {
-                console.log(data);
+            //初始化宝宝的信息$scope.currentUserConversation.patientId
+            $scope.babyNameList=[];
+            SearchBabyInfo.save({openid:''}, function (data) {
+                if(data.babyList == ""){
+                    var addBabyName = {
+                        name:'添加',
+                        value:'addBabyInfo'
+                    };
+                    data.babyList.push(addBabyName);
+                }
+                $scope.babyNameList = data.babyList;
+                console.log("$scope.babyNameList",$scope.babyNameList);
+
             });
             //添加诊断记录
             $scope.addDiagnosisRecords = function () {
-                //$scope.currentUserConversation.patientId(openid)病人的id
-                //$scope.doctorId
-                //$scope.todayTime
-                //$scope.info.illness:"",
-                //$scope.info.show:"",
-                //$scope.info.result:"",
                 console.log($scope.info.result);
                 console.log($scope.info.show);
                 console.log($scope.info.illness);
-                console.log($scope.todayTime)
-            }
-            //{'openid':'$scope.currentUserConversation.patientId','create_date':'$scope.todayTime','illness':'$scope.info.illness','sections':'$scope.info.selectedIllnessList',
-            // 'customerID':'$scope.doctorId','id':'','show':'$scope.info.show','result':'$scope.info.result'}
+                console.log($scope.info.selectedIllnessList);
+                console.log($scope.todayTime);
+                console.log($scope.doctorId);
+                //添加诊断记录
+                SaveCustomerLog.save({
+                    openid:$scope.currentUserConversation.patientId,
+                    create_date:$scope.todayTime,
+                    illness:$scope.info.illness,
+                    sections:$scope.info.selectedIllnessList,
+                    customerID:$scope.doctorId,
+                    id:$scope.info.selectedIllnessList.id,
+                    show:$scope.info.show,
+                    result:$scope.info.result
+                    }, function (data) {
+                    if(data.type == 1){
+                        $('#addCustomerLog').attr('disabled',"true");
+                        $("#addCustomerLog").css("background","gray");
+                    }
+                });
+                $scope.info.result='';
+                $scope.info.show='';
+                $scope.info.illness='';
+            };
 
-            SaveCustomerLog.save({answer: $scope.currentUserConversation.patientId}, function (data) {
-            });
             // 获取当前的时间
             $scope.todayTime = '';
             var newTime = function(){
                 var d = new Date();
                 $scope.todayTime = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
-            }
-
+            };
             $scope.userTableMore = "查看更多";
             $scope.tapUserTable = function (key) {
                 $scope.showFlag[key] = !$scope.showFlag[key];
@@ -1413,7 +1421,7 @@ angular.module('controllers', ['luegg.directives'])
                 }else{
                     $scope.historyTableMore = "查看更多";
                 }
-            };
+            };*/
             /***咨询服务**/
             var getIframeSrc = function(){
                 var newSrc = $(".advisory-content").attr("src");
@@ -1782,6 +1790,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.currentUserConsultRecordDetail = data.records;
                     $scope.currentUserRecordDetailPage = data.currentPage;
                     $scope.totalUserRecordDetailPage = data.totalPage;
+                    console.log($scope.currentUserConsultRecordDetail)
                     $.each($scope.currentUserConsultRecordDetail,function(index,value){
                         filterMediaData(value);
                     });
