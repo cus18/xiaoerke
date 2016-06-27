@@ -270,8 +270,6 @@ public class ConsultSessionManager {
                 System.out.println("distributorChannel.isActive()-----" + distributorChannel.isActive());
                 if (distributorChannel.isActive()) {
                     consultSession.setCsUserId(distributorId);
-                    User csUser = systemService.getUserById(distributorId);
-                    consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
                     csChannel = distributorChannel;
                     break;
                 } else {
@@ -292,8 +290,6 @@ public class ConsultSessionManager {
                     csChannel = csUserChannelMapping.get(csUserId);
                     if (csChannel.isActive()) {
                         consultSession.setCsUserId(csUserId);
-                        User csUser = systemService.getUserById(csUserId);
-                        consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
                         break;
                     } else {
                         csUserChannelMapping.remove(csUserId);
@@ -311,11 +307,10 @@ public class ConsultSessionManager {
         }
         System.out.println("distributorChannel-----" + distributorChannel);
 
-        HashMap<String, Object> perInfo = new HashMap<String, Object>();
         if (StringUtils.isNotNull(consultSession.getCsUserId())) {
-            perInfo = userInfoService.findPersonDetailInfoByUserId(consultSession.getCsUserId());
+            HashMap<String, Object> perInfo = userInfoService.findPersonDetailInfoByUserId(consultSession.getCsUserId());
+            consultSession.setCsUserName((String) perInfo.get("name"));
         }
-        consultSession.setCsUserName((String) perInfo.get("name"));
 
         //可开启线程进行记录
         if (consultSession.getCsUserId() != null) {
