@@ -1,48 +1,42 @@
 <ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
 <ion-view view-title="{{title}}" ng-init="doRefresh()">
-    <ion-content class="lovePlanList" style="top:0;">
+    <ion-content class="lovePlanList bg1" style="top:0;">
         <ion-scroll direction="y" has-bouncing="true">
             <div>
-                <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2FlovePlan_baner.png">
+                <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2FlovePlan_banner.png">
             </div>
-            <dl class="rank">
-                <dt class="bg1 info fw0">
-                    <div class="text fl">
-                        <div>
-                            <h4 class="fw0 c3 f5 ">某女子</h4>
-                            <p class=" c4 f2 margin0">太可怜太可怜太可怜太可怜太可怜太可怜太可怜太可怜太可怜太可怜</p>
-                        </div>
+            <div class="self user " >
+                <div class="info">
+                    <img class="photo radius fl" width="40" height="40" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fbaodf_logo.jpg">
+                    <div class="middle fl">
+                        <div class="name f5 c11">宝护伞</div>
                     </div>
-                    <div class="photo fl tc">
-                        <img class=" radius" width="39" height="39" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fbaodf_logo.jpg"><br>
-                        <div class="f5 c5">
-                            <span class="c3">20</span>名
-                        </div>
+                    <div class="money f2 c11 ">
+                        <span class="">22</span>元
                     </div>
-                    <div class="money f2 c11 fl">
-                        <span class="">180</span>元
+                </div>
+            </div>
+            <div class="bg4" ></div>
+            <dl class="user-list">
+                <dd class="user " ng-repeat="item in user">
+                    <div class="info">
+                         <img class="photo radius fl" width="40" height="40" ng-src="{{item.img}}">
+                         <div class="middle fl">
+                            <div class="name f5 c3">{{item.name}}</div>
+                            <div class="time f3 c5">{{item.time}}</div>
+                         </div>
+                         <div ng-if="item.price>0" class="money f2" ng-class="{'c12':$index<3,'c13':$index>=3}">
+                             <span class="">{{item.price}}</span>元
+                         </div>
                     </div>
-
-                </dt>
-                <dd class="bg1 info " ng-repeat="item in [1,2,3,4,5,6,7,8]">
-                    <div class="text fl">
-                        <div>
-                            <h4 class="fw0 c3 f5 ">某女子</h4>
-                            <p class=" c4 f2 margin0" ng-if="$index==0">太可怜太可怜太可怜太可怜太可怜太可怜太可怜太可怜太可怜太可怜</p>
-                        </div>
+                    <div ng-if="item.words!=''" class="words f3 c4">
+                        {{item.words}}
                     </div>
-                    <div class="photo fl">
-                        <span class="index  f8" ng-class="{'c12':$index<3,'c13':$index>=3}">{{$index+1}}</span>
-                        <img class="crown" ng-if="$index==0" width="39" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2FlovePlan_crown.png">
-                        <img class="radius" width="39" height="39" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fbaodf_logo.jpg">
-                    </div>
-                    <div class="money f2 c11 fl" ng-class="{'c12':$index<3,'c11':$index>=3}">
-                        <span class="">180</span>元
-                    </div>
-
                 </dd>
+
             </dl>
-            <br> <br>
+            <br> <br> <br> <br>
         </ion-scroll>
     </ion-content>
+     <button class="bottom-btn" ng-click="goContribute()" style="background-color:#ff7112 ">我要捐款</button>
 </ion-view>
