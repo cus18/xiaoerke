@@ -129,7 +129,7 @@ public class ConsultDoctorAnswerController extends BaseController {
      "result":"success",
      }
      */
-    @RequestMapping(value="/Answer/modify",method=RequestMethod.POST, headers = {"content-type=application/json","content-type=application/xml"})
+    @RequestMapping(value="/answer/modify",method=RequestMethod.POST, headers = {"content-type=application/json","content-type=application/xml"})
     public
     @ResponseBody Map<String, Object> modify(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
         Map<String, Object> response = new HashMap<String, Object>();

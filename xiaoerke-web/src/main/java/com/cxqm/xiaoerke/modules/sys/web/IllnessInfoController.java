@@ -65,6 +65,7 @@ public class IllnessInfoController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> listFirstIllness(@RequestBody Map<String, Object> params) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return illnessInfoService.listFirstIllness(params);
     }
 
@@ -84,6 +85,7 @@ public class IllnessInfoController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> listSecondIllness(@RequestBody Map<String, Object> params) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return illnessInfoService.listSecondIllness(params);
     }
 
@@ -105,6 +107,7 @@ public class IllnessInfoController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> listSecondIllnessHospital(@RequestBody Map<String, Object> params) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return hospitalInfoService.listSecondIllnessHospital(params);
     }
 
@@ -129,7 +132,7 @@ public class IllnessInfoController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> listSecondIllnessDoctor(@RequestBody Map<String, Object> params) {
-    	
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
     	HashMap<String, Object> response = new HashMap<String, Object>();
 
 		String illnessSecondId = (String) params.get("illnessSecondId");

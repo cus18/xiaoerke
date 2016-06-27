@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,29 +35,31 @@ import com.cxqm.xiaoerke.modules.order.service.RegisterService;
 @Controller
 @RequestMapping(value = "register/doctor")
 public class RegisterDoctorController extends BaseController {
-	
+
 	@Autowired
     private RegisterService registerService;
 
 	@Autowired
 	private PatientRegisterService patientRegisterService;
-	
+
     @RequestMapping(value = "/date", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> getDatesHasRegisters(@RequestParam String doctorId, String locationId,
                                              @RequestParam Integer days, @RequestParam String date) throws Exception {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         HashMap<String, Object> response = new HashMap<String, Object>(2);
         Date currentDate = DateUtils.StrToDate(date, "date");
         List<Date> dates = registerService.getDatesWithRegisters(doctorId, locationId, currentDate, days);
         response.put("dates", dates);
         return response;
     }
-	
+
 	@RequestMapping(value = "/arrange", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> arrangeRegister(@RequestBody Map<String, Object> params) throws Exception {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
     	String doctorId = (String) params.get("doctorId");
     	String hospitalId = (String) params.get("hospitalId");
     	String locationId = (String) params.get("locationId");
@@ -93,13 +97,14 @@ public class RegisterDoctorController extends BaseController {
 		response.put("reason", ret.get("doctor"));
         return response;
     }
-	
+
 	@RequestMapping(value = "/remove", method = {RequestMethod.POST})
     public
     @ResponseBody
     Map<String, Object> removeRegister(@RequestBody List<Map<String, Object>> params) throws Exception {
     	int count = 0;
     	for(Map<String, Object> param : params) {
+			DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 	    	String doctorId = (String) param.get("doctorId");
 	    	String hospitalId = (String) param.get("hospitalId");
 	    	String locationId = (String) param.get("locationId");
@@ -112,12 +117,12 @@ public class RegisterDoctorController extends BaseController {
 			vo.setSysHospitalId(hospitalId);
 			vo.setLocationId(locationId);
 			count += registerService.deleteRegisters(vo,times,date,operRepeat,"doctor");
-	    	//TODO should be in the same transaction, but now using 
+	    	//TODO should be in the same transaction, but now using
     	}
     	HashMap<String, Object> response = new HashMap<String, Object>(4);
     	response.put("status", "OK");
     	response.put("count", count);
-    	
+
         return response;
     }
 
@@ -163,6 +168,7 @@ public class RegisterDoctorController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> getDoctorAppointments4Doctor(@RequestBody Map<String, Object> params) throws Exception {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return registerService.getDoctorAppointments4Doctor(params);
     }
 
@@ -170,14 +176,12 @@ public class RegisterDoctorController extends BaseController {
     public
     @ResponseBody
     HashMap<String, Object> saveDoctorAppointmentInfo(@RequestBody Map<String, Object> params) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         HashMap<String, Object> response = new HashMap<String, Object>();
         int status = patientRegisterService.saveDoctorAppointmentInfo(params);
-        if(status==1)
-        {
+        if(status==1) {
             response.put("result","true");
-        }
-        else
-        {
+        } else {
             response.put("result", "false");
         }
         return response;
@@ -187,6 +191,7 @@ public class RegisterDoctorController extends BaseController {
 	public
 	@ResponseBody
 	Map<String, Object> getBookedRegisters(@RequestBody List<Map<String, Object>> params) throws Exception {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 		int count = 0;
 		for(Map<String, Object> param : params) {
 			String doctorId = (String) param.get("doctorId");
@@ -229,10 +234,10 @@ public class RegisterDoctorController extends BaseController {
 	public
 	@ResponseBody
 	HashMap<String, Object> getDoctorTimeInfo(@RequestBody Map<String, Object> params) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		patientRegisterService.findDoctorAppointmentInfoByDate((String) params.get("doctorId"),
 				(String) params.get("date"), response);
 		return response;
 	}
-
 }

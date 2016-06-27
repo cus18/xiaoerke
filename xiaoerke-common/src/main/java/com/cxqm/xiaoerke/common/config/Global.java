@@ -31,7 +31,7 @@ public class Global {
 	/**
 	 * 属性文件加载对象
 	 */
-	private static PropertiesLoader propertiesLoader = new PropertiesLoader("jeesite.properties");
+	private static PropertiesLoader propertiesLoader = new PropertiesLoader("system.properties");
 	
 	/**
 	 * 获取当前对象实例

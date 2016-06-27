@@ -4,6 +4,8 @@
 package com.cxqm.xiaoerke.modules.order.web;
 
 import com.cxqm.xiaoerke.common.config.Global;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhoneOrderService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
@@ -48,6 +50,7 @@ public class OrderDoctorController extends BaseController {
 	public
 	@ResponseBody
 	Map<String, Object> getReminderOrder(@RequestBody Map<String, Object> params) throws Exception {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 		return patientRegisterService.getReminderOrder(params);
 	}
 
@@ -69,6 +72,7 @@ public class OrderDoctorController extends BaseController {
 	public
 	@ResponseBody
 	HashMap<String, Object> SettlementInfo(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		String userId = UserUtils.getUser().getId();
 		String doctorId = (String) params.get("doctorId");
@@ -76,7 +80,6 @@ public class OrderDoctorController extends BaseController {
 		if(params.get("type").equals("appointment"))
 		{
 			patientRegisterService.findDoctorSettlementAppointmentInfoByDate(doctorId,userId,date,response);
-
 			String recommendedFee = Global.getConfig("sys.recommended.fee");
 			int recommendedFeeInt =  Global.RECOMMENDED_FEE;
 			try {
@@ -87,7 +90,6 @@ public class OrderDoctorController extends BaseController {
 			for(Map<String, Object> fanes : fanses ) {
 				fanes.put("price", recommendedFeeInt);
 			}
-
 			response.put("attention",fanses);
 			response.put("attentionTotal", fanses.size());
 		}
@@ -103,6 +105,7 @@ public class OrderDoctorController extends BaseController {
     @RequestMapping(value="/order/doctor/getDayList",method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public Map<String,Object> getDayList(@RequestBody Map<String,Object> params){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         Map<String,Object> response = new HashMap<String, Object>();
         String userId = UserUtils.getUser().getId();
         String doctorId = (String) params.get("doctorId");

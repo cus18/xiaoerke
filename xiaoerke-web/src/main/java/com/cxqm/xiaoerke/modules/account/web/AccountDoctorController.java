@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.account.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.modules.account.entity.WithdrawRecord;
 import com.cxqm.xiaoerke.modules.account.exception.AccountNotExistException;
@@ -38,6 +40,8 @@ public class AccountDoctorController {
     public
     @ResponseBody
     Map<String, Object> getWithDrawlList(@RequestParam Integer pageSize, @RequestParam Integer pageNo) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
     	HashMap<String, Object> response = new HashMap<String, Object>(4);
     	String userId = UserUtils.getUser().getId();
     	Page<WithdrawRecord> pageParam = new Page<WithdrawRecord>(pageNo, pageSize);
@@ -60,6 +64,8 @@ public class AccountDoctorController {
     public
     @ResponseBody
     Map<String, Object> withdraw(@RequestParam Float money) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
     	HashMap<String, Object> response = new HashMap<String, Object>(4);
     	String userId = UserUtils.getUser().getId();
     	try {

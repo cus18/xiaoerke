@@ -23,4 +23,12 @@ public interface UmbrellaFamilyInfoDao {
     int updateByPrimaryKey(UmbrellaFamilyInfo record);
 
     Map getUmbrellaNum(Map<String, Object> map);
+
+
+    /**
+     * 根据宝护伞ID 删除成员信息
+     * @param id
+     * @return
+     */
+    int deleteByUmbrellaId(Integer id);
 }

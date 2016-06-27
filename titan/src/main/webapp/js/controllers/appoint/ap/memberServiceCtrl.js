@@ -39,12 +39,9 @@
                         }
                     })
                 }
-                else if($stateParams.action=="charge")
-                {
+                else if($stateParams.action=="charge") {
                     $scope.extendMember = "false";
-                }
-                else if($stateParams.action=="showInfo")
-                {
+                } else if($stateParams.action=="showInfo") {
                     $scope.extendMember = "showInfo";
                 }
 

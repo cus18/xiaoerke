@@ -32,9 +32,6 @@ import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 public class DoctorCaseManageController extends BaseController {
 
     @Autowired
-    private SystemService systemService;
-
-    @Autowired
     private DoctorCaseDao doctorCaseDao;
 
 

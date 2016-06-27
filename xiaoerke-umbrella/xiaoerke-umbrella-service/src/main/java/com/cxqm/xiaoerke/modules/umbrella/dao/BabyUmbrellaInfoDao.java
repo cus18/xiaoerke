@@ -70,37 +70,35 @@ public interface BabyUmbrellaInfoDao {
     int updateBabyUmbrellaInfoIfShare(BabyUmbrellaInfo babyUmbrellaInfo);
 
     /**
-     * 查询激活人数
-     * @param map
+     * 新版添加保障金信息
+     * @param babyUmbrellaInfo
      * @return
      */
-    int getUmbrellaActivationCount(Map<String, Object> map);
+    int newSaveBabyUmbrellaInfo(BabyUmbrellaInfo babyUmbrellaInfo);
 
     /**
-     * 查询未激活人数
-     * @param map
+     * 根据Openid 删除一个宝护伞信息
+     * @param openid
      * @return
      */
-    int getUmbrellaNotActivationCount(Map<String, Object> map);
+    int deleteUmbrellaByOpenid(String openid);
 
     /**
-     * 查询激活家庭人数
-     * @param map
+     * 更新支付信息
+     * @param babyUmbrellaInfo
      * @return
      */
-    int getUmbrellaActivationFamilyPeopleCount(Map<String, Object> map);
+    int updateBabyUmbrellaInfoStatus(BabyUmbrellaInfo babyUmbrellaInfo);
+
 
     /**
-     * 查询免费激活
+     * 获取用户第几位加入
      * @param map
      * @return
      */
-    int getUmbrellaFreeActivationCount(Map<String, Object> map);
+    int getUmbrellaRank(Map<String, Object> map);
 
-    /**
-     * 查询免费未激活
-     * @param map
-     * @return
-     */
-    int getUmbrellaFreeNotActivationCount(Map<String, Object> map);
+
+
+
 }

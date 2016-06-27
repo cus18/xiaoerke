@@ -57,7 +57,7 @@ public class HospitalInfoController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> listHospital(@RequestBody Map<String, Object> params) {
-		//DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return hospitalInfoService.listAllHospital(params);
 	}
 
@@ -65,6 +65,7 @@ public class HospitalInfoController extends BaseController {
 	public
 	@ResponseBody
 	HashMap<String, Object> getCooperationHospitalInfo(@RequestParam(required=true) String hospitalId) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 		HashMap<String,Object> result = new HashMap<String,Object>();
 		HashMap<String,Object> response = new HashMap<String,Object>();
 		HashMap<String, Object> HospitalInfo = hospitalInfoService.getHospitalDetailInfo(hospitalId);
@@ -102,6 +103,7 @@ public class HospitalInfoController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> listHospitalDepartment(@RequestBody Map<String, Object> params) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         return hospitalInfoService.listHospitalDepartment(params);
     }
 
@@ -127,8 +129,9 @@ public class HospitalInfoController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> listHospitalDoctor(@RequestBody Map<String, Object> params) {
-		HashMap<String, Object> response = new HashMap<String, Object>();
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
+		HashMap<String, Object> response = new HashMap<String, Object>();
 		String hospitalId = (String) params.get("hospitalId");
 		String currentPage = (String) params.get("pageNo");
 		String pageSize = (String) params.get("pageSize");
@@ -189,8 +192,9 @@ public class HospitalInfoController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> listHospitalDepartmentDoctor(@RequestBody Map<String, Object> params) {
-		HashMap<String, Object> response = new HashMap<String, Object>();
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
+		HashMap<String, Object> response = new HashMap<String, Object>();
 		String hospitalId = (String) params.get("hospitalId");
 		String departmentName = (String) params.get("departmentLevel1Name");
 		String currentPage = ((String) params.get("pageNo"));
@@ -227,6 +231,8 @@ public class HospitalInfoController extends BaseController {
 	public
 	@ResponseBody
 	Map<String, Object> getHospicalInfo(@RequestBody Map<String, Object> params){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		Map<String,Object> resultMap = new HashMap<String, Object>();
 		HashMap<String,Object> result = hospitalInfoService.getHospitalDetailInfo((String) params.get("id"));
 		String medicalProcess = (String)result.get("medicalProcess");
@@ -238,8 +244,8 @@ public class HospitalInfoController extends BaseController {
 	public
 	@ResponseBody
 	Map<String, Object> listDepartmentHospital(@RequestBody Map<String, Object> params) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 		return hospitalInfoService.listDepartmentHospital(params);
 	}
-
 
 }

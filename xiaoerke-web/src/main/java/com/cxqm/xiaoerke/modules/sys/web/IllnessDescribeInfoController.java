@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.sys.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.modules.healthRecords.service.BabyIllnessInfoService;
 import com.cxqm.xiaoerke.modules.order.entity.ConsulPhonetDoctorRelationVo;
 import com.cxqm.xiaoerke.modules.order.service.PhoneConsultDoctorRelationService;
@@ -34,6 +36,8 @@ public class IllnessDescribeInfoController {
     @RequestMapping(value="illnessDescribe/detail")
     @ResponseBody
     public Map<String,Object> getIllnessDetail(@RequestBody Map<String,Object> params){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         Map<String,Object> response = new HashMap<String, Object>();
         Integer sys_phoneConsult_id = Integer.parseInt((String)params.get("sys_phoneConsult_id"));
         String doctorId = (String)params.get("doctorId");

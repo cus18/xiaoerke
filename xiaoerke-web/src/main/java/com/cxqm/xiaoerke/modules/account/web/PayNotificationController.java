@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.account.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
@@ -82,6 +84,8 @@ public class PayNotificationController {
 	public synchronized
 	@ResponseBody
 	String getPayNotifyInfo(HttpServletRequest request) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		lock.lock();
         InputStream inStream = null;
         try {
@@ -125,6 +129,8 @@ public class PayNotificationController {
 	@RequestMapping(value = "/user/getCustomerPayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
 	public synchronized
 	@ResponseBody String getCustomerPayNotifyInfo(HttpServletRequest request) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		lock.lock();
 		InputStream inStream = null;
 		try {
@@ -177,6 +183,8 @@ public class PayNotificationController {
 	@RequestMapping(value = "/user/getInsurancePayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
 	public synchronized
 	@ResponseBody String getInsurancePayNotifyInfo(HttpServletRequest request) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		lock.lock();
 		InputStream inStream = null;
 		try {
@@ -230,6 +238,8 @@ public class PayNotificationController {
 	public synchronized
 	@ResponseBody
 	String getConsultPhonePayNotifyInfo(HttpServletRequest request) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		lock.lock();
 		InputStream inStream = null;
 		try {
@@ -300,6 +310,8 @@ public class PayNotificationController {
 	@RequestMapping(value = "/user/getUmbrellaPayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
 	public synchronized
 	@ResponseBody String getUmbrellaPayNotifyInfo(HttpServletRequest request) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		lock.lock();
 		InputStream inStream = null;
 		try {
@@ -321,8 +333,8 @@ public class PayNotificationController {
 				LogUtils.saveLog(Servlets.getRequest(), "BHS_ZFY_ZFCG","用户微信支付完成:" + map.get("out_trade_no"));
 				PayRecord payRecord = new PayRecord();
 				payRecord.setId((String) map.get("out_trade_no"));
-				payRecord.setStatus("success");
-				payRecord.setReceiveDate(new Date());
+//				payRecord.setStatus("success");
+//				payRecord.setReceiveDate(new Date());
 				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
 				String insuranceId= insuranceMap.get("order_id").toString();
 				String[] umbrellaId=insuranceId.split("_");
@@ -335,9 +347,8 @@ public class PayNotificationController {
 					}
 					BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
 					babyUmbrellaInfo.setId(Integer.parseInt(umbrellaId[0]));
-					babyUmbrellaInfo.setPayResult("success");
-//					babyUmbrellaInfo.setActivationTime(new Date());
-					babyUmbrellaInfoService.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
+//					babyUmbrellaInfo.setPayResult("success");
+					babyUmbrellaInfoService.updateBabyUmbrellaInfoStatus(babyUmbrellaInfo);
 					payRecord.getId();//修改pay_record表状态
 					payRecord.setStatus("success");
 					payRecord.setReceiveDate(new Date());
@@ -422,21 +433,6 @@ public class PayNotificationController {
 					token + "", "POST", message);
 			System.out.println(jsonobj + "===============================");
 		}
-	}
-
-
-	/**
-	 *检查订单的支付情况
-	 * 支付完成 后服务器故障 事物无法回滚
-	 * */
-	@RequestMapping(value = "user/checkAppointment", method = {RequestMethod.POST, RequestMethod.GET})
-	public
-	@ResponseBody
-	Map<String,Object> checkAppointment(){
-		Map a = new HashMap();
-		Boolean result = accountService.checkAppointmentPayState("0ed32992422e4aafafd92b83b428531d");
-		System.out.print(result);
-		return a;
 	}
 
 }

@@ -41,17 +41,13 @@ angular.module('services', ['ngResource'])
     .factory('GetMessageRecordInfo', ['$resource', function ($resource) {
         return $resource(public + 'consult/user/recordSearchList');
     }])
-    //修改回复
-    .factory('AnswerModify', ['$resource', function ($resource) {
-        return $resource(public + 'consult/doctor/Answer/modify');
-    }])
     //获取客户的聊天记录
     .factory('GetUserRecordDetail', ['$resource', function ($resource) {
         return $resource(public + 'consult/doctor/recordList');
     }])
     //医生修改的自己的回复
     .factory('GetMyAnswerModify', ['$resource', function ($resource) {
-        return $resource(public + 'consult/doctor/Answer/modify');
+        return $resource(public + 'consult/doctor/answer/modify');
     }])
     //医生删除的自己的回复
     .factory('GetMyAnswerDelete', ['$resource', function ($resource) {
@@ -130,4 +126,22 @@ angular.module('services', ['ngResource'])
     .factory('GetCurrentDoctorDepartment', ['$resource', function ($resource) {
         return $resource(public + 'consult/transfer/getCurrentDoctorDepartment');
     }])
+    //根据openid获取历史咨询
+    .factory('GetCustomerLogByOpenID', ['$resource', function ($resource) {
+        return $resource(public + 'customer/getCustomerLogByOpenID');
+    }])
+    //添加诊断记录
+    .factory('SaveCustomerLog', ['$resource', function ($resource) {
+        return $resource(public + 'customer/saveCustomerLog');
+    }])
+    //查找所属科室
+    .factory('SearchIllnessList', ['$resource', function ($resource) {
+        return $resource(public + 'customer/searchIllnessList');
+    }])
+    //查找宝宝的初始信息
+    .factory('SearchBabyInfo', ['$resource', function ($resource) {
+        return $resource(public + 'customer/searchBabyInfo');
+    }])
+
+
 

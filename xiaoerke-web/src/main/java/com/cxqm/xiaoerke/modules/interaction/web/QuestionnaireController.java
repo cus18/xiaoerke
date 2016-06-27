@@ -3,6 +3,8 @@
  */
 package com.cxqm.xiaoerke.modules.interaction.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.interaction.service.FeedbackService;
@@ -32,6 +34,7 @@ public class QuestionnaireController extends BaseController {
     @RequestMapping(value = "/user/questionnaireSurvey", method = {RequestMethod.GET, RequestMethod.POST})
     public String questionnaireSurvey(@RequestBody Map<String, Object> params, HttpSession session,
                                       HttpServletRequest request) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         String openId = WechatUtil.getOpenId(session,request);
         return feedbackService.questionnaireSurvey(params,openId);
     }

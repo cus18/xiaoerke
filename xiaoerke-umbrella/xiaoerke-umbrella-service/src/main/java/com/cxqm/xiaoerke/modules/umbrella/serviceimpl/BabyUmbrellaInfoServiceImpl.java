@@ -1,6 +1,5 @@
 package com.cxqm.xiaoerke.modules.umbrella.serviceimpl;
 
-import com.cxqm.xiaoerke.common.bean.WechatRecord;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.service.BabyBaseInfoService;
@@ -13,9 +12,9 @@ import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
 import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaFamilyInfo;
 import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaMongoDBVo;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
+import org.springframework.data.mongodb.core.query.Query;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,7 +80,7 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
         Map<String,Object> parameter = systemService.getWechatParameter();
         String token = (String)parameter.get("token");
         String url= "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token="+token;
-        String jsonData="{\"expire_seconds\": 604800, \"action_name\": \"QR_SCENE\",\"action_info\": {\"scene\": {\"scene_id\": "+id+"}}}";
+        String jsonData="{\"expire_seconds\": 604800, \"action_name\": \"QR_SCENE\",\"action_info\": {\"scene\": {\"scene_id\"" + ":" + Integer.parseInt(id) + "}}}";
         String reJson=this.post(url, jsonData,"POST");
         System.out.println(reJson);
         JSONObject jb=JSONObject.fromObject(reJson);
@@ -184,8 +183,8 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
         }
 
         Map<String, Object> notActiveParam = new HashMap<String, Object>();
-        notActiveParam.put("notActive","notActive");
-        notActiveParam.put("notShareOrActiveDays","30");
+        notActiveParam.put("notActive", "notActive");
+        notActiveParam.put("notShareOrActiveDays", "30");
         List<Map<String,Object>> notActivelist = babyUmbrellaInfoDao.getBabyUmbrellaInfo(notActiveParam);
 
         for(Map<String, Object> map : notActivelist){//30天未激活
@@ -232,19 +231,30 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
     }
 
     @Override
-    public int getUmbrellaActivationCount(Map<String, Object> map) {
-        return babyUmbrellaInfoDao.getUmbrellaActivationCount(map);
+    public int newSaveBabyUmbrellaInfo(BabyUmbrellaInfo babyUmbrellaInfo) {
+        return babyUmbrellaInfoDao.newSaveBabyUmbrellaInfo(babyUmbrellaInfo);
     }
 
     @Override
-    public int getUmbrellaNotActivationCount(Map<String, Object> map) {
-        return babyUmbrellaInfoDao.getUmbrellaNotActivationCount(map);
+    public int deleteUmbrellaByOpenid(String openid) {
+        return babyUmbrellaInfoDao.deleteUmbrellaByOpenid(openid);
     }
 
     @Override
-    public int getUmbrellaActivationFamilyPeopleCount(Map<String, Object> map) {
-        return babyUmbrellaInfoDao.getUmbrellaActivationFamilyPeopleCount(map);
+    public int updateBabyUmbrellaInfoStatus(BabyUmbrellaInfo babyUmbrellaInfo) {
+        return babyUmbrellaInfoDao.updateBabyUmbrellaInfoStatus(babyUmbrellaInfo);
     }
+
+    @Override
+    public int deleteByUmbrellaId(Integer id) {
+        return umbrellaFamilyInfoDao.deleteByUmbrellaId(id);
+    }
+
+    @Override
+    public int getUmbrellaRank(Map<String, Object> map) {
+        return babyUmbrellaInfoDao.getUmbrellaRank(map);
+    }
+
 
     @Override
     public int saveOpenidToMongoDB(UmbrellaMongoDBVo entity) {
@@ -257,17 +267,6 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
         return umbrellaMongoDBService.queryList(query);
     }
 
-
-
-    @Override
-    public int getUmbrellaFreeActivationCount(Map<String, Object> map) {
-        return babyUmbrellaInfoDao.getUmbrellaFreeActivationCount(map);
-    }
-
-    @Override
-    public int getUmbrellaFreeNotActivationCount(Map<String, Object> map) {
-        return babyUmbrellaInfoDao.getUmbrellaFreeNotActivationCount(map);
-    }
 
 
 }

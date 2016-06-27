@@ -3,6 +3,8 @@
  */
 package com.cxqm.xiaoerke.modules.interaction.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.interaction.service.FeedbackService;
@@ -46,6 +48,7 @@ public class ShareUserController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> myselfInfoShareDetail(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         // 记录日志
         LogUtils.saveLog(Servlets.getRequest(), "00000050","获取个人分享信息详情:" + params.get("patientRegisterServiceId"));
         Map<String, Object> response = shareService.getMyShareDetail(params);

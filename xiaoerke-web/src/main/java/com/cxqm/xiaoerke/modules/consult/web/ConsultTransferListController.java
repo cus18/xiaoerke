@@ -2,6 +2,8 @@ package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
@@ -46,6 +48,8 @@ public class ConsultTransferListController {
     @RequestMapping(value="/findConsultTransferList",method = {RequestMethod.POST, RequestMethod.GET})
     public @ResponseBody
     HashMap<String,Object> findAllConsultTransferListVo(@RequestBody HashMap<String,Object> params){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         HashMap<String,Object> response = new HashMap<String, Object>();
         JSONObject jsonObject;
         JSONArray jsonArray = new JSONArray();
@@ -85,6 +89,8 @@ public class ConsultTransferListController {
     @RequestMapping(value="/saveConsultTransfer",method = {RequestMethod.POST, RequestMethod.GET})
     public @ResponseBody
     HashMap<String,Object> saveConsultTransferListVo(@RequestBody HashMap<String,Object> params){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
         HashMap<String,Object> responseResult = new HashMap<String, Object>();
         ConsultTransferListVo consultTransferListVo = new ConsultTransferListVo();
         ConsultSessionManager consultSessionManager = ConsultSessionManager.getSessionManager();
@@ -122,6 +128,8 @@ public class ConsultTransferListController {
     @RequestMapping(value="/deleteConsultTransfer",method = {RequestMethod.POST, RequestMethod.GET})
     public @ResponseBody
     String deleteConsultTransfer(@RequestParam(value = "id",required=true) String id){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
         int count = consultTransferListVoService.deleteConsultTransferListVo(Integer.valueOf(id));
         if(count > 0){
             return "success";
@@ -137,6 +145,8 @@ public class ConsultTransferListController {
     @RequestMapping(value="/findDoctorDepartment",method = {RequestMethod.POST, RequestMethod.GET})
     public @ResponseBody
     HashMap<String,Object> findDoctorDepartment(){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
         HashMap<String,Object> response = new HashMap<String, Object>();
         List<String> departmentList = consultDoctorInfoService.getConsultDoctorDepartment();
         JSONObject jsonObject;
@@ -164,6 +174,8 @@ public class ConsultTransferListController {
     @RequestMapping(value ="/updateConsultTransferByPrimaryKey",method = {RequestMethod.POST,RequestMethod.GET})
     public @ResponseBody
     HashMap<String,Object> updateConsultTransferByPrimaryKeys(@RequestBody HashMap<String,Object> params){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
         HashMap<String,Object> response = new HashMap<String,Object>();
         response.put("status","failure");
         List<HashMap<String,Object>> reqeustData =  (List<HashMap<String,Object>>)params.get("content");
@@ -210,6 +222,8 @@ public class ConsultTransferListController {
      */
     @RequestMapping(value = "/getCurrentDoctorDepartment", method= RequestMethod.POST)
     public @ResponseBody HashMap<String,Object> getConsultDoctorInfoByUserId(@RequestBody String userId){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
         HashMap<String,Object> response = new HashMap<String, Object>();
         response.put("status","failure");
         if(StringUtils.isNotNull(userId)){

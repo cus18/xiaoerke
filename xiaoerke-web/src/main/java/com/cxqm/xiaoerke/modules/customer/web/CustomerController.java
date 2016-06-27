@@ -8,6 +8,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,6 +50,8 @@ public class CustomerController {
 	@RequestMapping(value = "/saveBaby", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  saveCustomerBaby(@RequestBody Map<String, Object> params){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		try {
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
@@ -86,6 +90,8 @@ public class CustomerController {
 	@RequestMapping(value = "/searchBabyInfo", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  searchBabyInfo(@RequestBody Map<String, Object> params){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		try {
 			String openid=params.get("openid").toString();
@@ -108,6 +114,8 @@ public class CustomerController {
 	@RequestMapping(value = "/searchIllnessList", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  searchIllnessList(){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		try {
 			List<Map<String, Object>> babyList=cs.getIllnessList();
@@ -129,6 +137,8 @@ public class CustomerController {
 	@RequestMapping(value = "/saveIllness", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  searchCustomer(@RequestBody Map<String, Object> params){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		try {
 			String illness=params.get("illness").toString();
@@ -152,6 +162,8 @@ public class CustomerController {
 	@RequestMapping(value = "/saveCustomerLog", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  saveCustomerLog(@RequestBody Map<String, Object> params){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		try {
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
@@ -194,6 +206,8 @@ public class CustomerController {
 	@RequestMapping(value = "/getOrderInfoByOpenid", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  getOrderInfoByOpenid(@RequestBody Map<String, Object> params){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		String openid;
 		if(params.get("openid")==null||params.get("openid").equals("")){
@@ -211,6 +225,8 @@ public class CustomerController {
 	@RequestMapping(value = "/getCustomerLogByOpenID", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  getCustomerLogByOpenID(@RequestBody Map<String, Object> params){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		String openid;
 		if(params.get("openid")==null||params.get("openid").equals("")){
@@ -229,6 +245,8 @@ public class CustomerController {
 	@RequestMapping(value = "/onIllnessKeydown", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  onIllnessKeydown(@RequestBody Map<String, Object> params){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		String illness=params.get("illness").toString();
 		if(illness==null||illness.equals("")){
@@ -246,6 +264,8 @@ public class CustomerController {
 	@RequestMapping(value = "/saveOpenidAndKeywords", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  saveOpenidAndKeywords(@RequestBody Map<String, Object> params){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		try {
 			String openid=params.get("openid").toString();
@@ -269,6 +289,8 @@ public class CustomerController {
 	@RequestMapping(value = "/getDocotrByIllness", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  getDocotrByIllness(@RequestBody Map<String, Object> params){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		String illness=params.get("illness").toString();
 		try {
@@ -288,6 +310,8 @@ public class CustomerController {
 	@RequestMapping(value = "/getKeywordsByOpenID", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  getKeywordsByOpenID(@RequestBody Map<String, Object> params){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		String openid=params.get("openid").toString();
 		if(openid==null||openid.equals("")){
@@ -304,6 +328,8 @@ public class CustomerController {
 	@RequestMapping(value = "/getLastOrderDate", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  getLastOrderDate(@RequestBody Map<String, Object> params){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		String openid=params.get("openid").toString();
 		if(openid==null||openid.equals("")){
@@ -321,6 +347,8 @@ public class CustomerController {
 	@RequestMapping(value = "/getMemberInfo", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  getMemberInfo(@RequestBody Map<String, Object> params){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		String openid=params.get("openid").toString();
 		map.put("memberInfo", memberService.getMemberServiceStatus(openid));
@@ -330,6 +358,8 @@ public class CustomerController {
 	@RequestMapping(value = "/saveReturnService", method = {RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody
 	Map<String, Object>  saveReturnService(@RequestBody Map<String, Object> params){
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 		Map<String ,Object> map=new HashMap<String, Object>();
 		CustomerReturn customerReturn=new CustomerReturn();
 		customerReturn.setOpenID(params.get("openid").toString());
