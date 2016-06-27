@@ -9,14 +9,13 @@ document.write('<scr'+'ipt src="' + webpath + '/js/libs/angular-route.min.js?ver
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.event.drag-1.5.min.js"></scr'+'ipt>');
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.touchSlider.js"></scr'+'ipt>');
 
-var attentionLock=true;
+var attentionLock = true;
 var version="b"; /*方案版本*/
-
-var shareUmbrellaId="0";
+var shareUmbrellaId = "0";
 
 $(document).ready(function() {
     version = GetQueryString("status");
-    shareUmbrellaId = GetQueryString("id")==null?120000000:GetQueryString("id");
+    shareUmbrellaId = GetQueryString("id") == null?120000000:GetQueryString("id");
     recordLogs("UmbrellaShareFirstPage_"+ shareUmbrellaId);
     $.ajax({
         url:"umbrella/getOpenid",// 跳转到 action
@@ -39,7 +38,6 @@ $(document).ready(function() {
 });
 
 var umbrellaFirstPageInit = function() {
-
 
     $("#NoShareDiv").hide();
     $(".shadow-content").hide();//每次页面加载时先隐藏提示浮层
@@ -105,7 +103,6 @@ var umbrellaFirstPageInit = function() {
 }
 
 function scanQRCode(){
-
     var shareid = GetQueryString("id")==null?120000000:GetQueryString("id");
     $.ajax({
         type: 'POST',
