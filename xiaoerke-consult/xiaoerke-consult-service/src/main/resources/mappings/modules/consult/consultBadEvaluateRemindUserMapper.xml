@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.consult.dao.ConsultBadEvaluateRemindUserDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.consult.entity.ConsultBadEvaluateRemindUserVo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="openid" property="openId" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="sys_user_name_cs" property="csUserName" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, openid, sys_user_name_cs, create_date, del_flag
+  </sql>
+  <select id="findConsultRemindUser" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultBadEvaluateRemindUserVo" >
+    select 
+    <include refid="Base_Column_List" />
+    from consult_evaluate_remind
+    where 1=1 and del_flag = '0'
+    <if test="openId != null and openId != ''">
+      and openid LIKE
+      <!--<if test="dbName == 'oracle'">'%,'||#{openId,jdbcType=VARCHAR}||',%')</if>-->
+      CONCAT('%',#{openId,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="csUserName != null and csUserName != ''">
+      OR sys_user_name_cs LIKE
+      CONCAT('%', #{csUserName,jdbcType=VARCHAR}, '%')
+    </if>
+      order by create_date desc
+  </select>
+
+  <select id="getCsUserOpenIds" resultType="java.lang.String">
+    select DISTINCT(openid) from consult_evaluate_remind where 1=1 and del_flag = '0'
+  </select>
+
+<!--  <delete id="deleteConsultTransferListVoByPrimaryKey" parameterType="java.lang.Integer">
+    delete from consult_transfer_list
+    where id = #{id,jdbcType=INTEGER}
+  </delete>-->
+
+  <insert id="addNoticeCSUser" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultBadEvaluateRemindUserVo" useGeneratedKeys="true"
+          keyProperty="id">
+    insert into consult_evaluate_remind(id,openid, create_date,sys_user_name_cs,del_flag)
+    values (#{id,jdbcType=INTEGER},#{openId,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+    #{csUserName,jdbcType=VARCHAR},#{delFlag,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateNoticeCSUser" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultBadEvaluateRemindUserVo">
+    update consult_evaluate_remind
+    <set>
+        del_flag = #{delFlag,jdbcType=VARCHAR},
+    </set>
+    where openid = #{openId,jdbcType=INTEGER}
+  </update>
+
+<!--  <select id="findOneConsultTransferListVo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultTransferListVo" >
+    select
+    <include refid="Base_Column_List" />
+    from consult_transfer_list
+    where 1=1
+    <if test="sysUserId != null and sysUserId != ''">
+      and sys_user_id = #{sysUserId,jdbcType=VARCHAR}
+    </if>
+    <if test="id != null and id != ''">
+      and id = #{id,jdbcType=INTEGER}
+    </if>
+    <if test="delFlag != null and delFlag != ''">
+      and del_flag = #{delFlag,jdbcType=VARCHAR}
+    </if>
+    order by
+    <if test="orderBy != null and orderBy !=  ''">
+      department desc,
+    </if>
+    create_date desc
+  </select>-->
+</mapper>

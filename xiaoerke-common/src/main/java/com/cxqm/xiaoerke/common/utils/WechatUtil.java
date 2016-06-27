@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.common.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.cxqm.xiaoerke.common.bean.*;
 import com.cxqm.xiaoerke.modules.sys.entity.Article;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
@@ -538,5 +539,35 @@ public class WechatUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    /**
+     *  向用户发送模板消息
+     *  @author jiangzg
+     *  @version 1.0
+     *  2016年6月27日12:28:59
+     */
+    public static String sendTemplateMsgToUser(String token , String openId ,String templateId ,String content){
+        String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+token;
+        try {
+            String json = "{\"touser\":\"" + openId + "\",\"template_id\":\""+templateId+"\",\"url\":\"http://weixin.qq.com/download\"," +
+                    "\"data\":" + "{"+content+"}}";
+            String re = HttpRequestUtil.getConnectionResult(url, "POST", json);
+            System.out.print(json + "--" + re);
+            JSONObject jsonObject = new JSONObject(re);
+            if(re.contains("access_token is invalid")){
+                //token已经失效，重新获取新的token
+                return "tokenIsInvalid";
+            }
+            String resultStatus = (String)jsonObject.get("errcode");
+            if(resultStatus !=null && "0".equalsIgnoreCase(resultStatus)){
+                return "messageOk";
+            }else{
+                System.out.println(jsonObject.get("errmsg"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "messageOk";
     }
 }
