@@ -349,7 +349,7 @@ public class UmbrellaController  {
                 result.put("type","pay");
                 return result;
             }
-                if (m.get("baby_id") != null && !m.get("baby_id").equals("")) {
+                if (m.get("baby_id") != null && !m.get("baby_id").equals("") && !m.get("pay_result").equals("success")) {
                     if (m.get("activation_time") != null && !m.get("activation_time").equals("")) {
                         map.put("createTime",m.get("create_time"));
                         result.put("rank", babyUmbrellaInfoSerivce.getUmbrellaRank(map));
