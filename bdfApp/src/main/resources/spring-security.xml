@@ -22,7 +22,7 @@
 
 	<!-- 登录验证器 -->
 	<beans:bean id="myAuthenticationProcessingFilter"
-		class="com.cxqm.xiaoerke.webapp.security.MyAuthenticationProcessingFilter">
+		class="com.cxqm.xiaoerke.bdfApp.security.MyAuthenticationProcessingFilter">
 		<!-- 处理登录的action -->
 		<beans:property name="filterProcessesUrl" value="/auth/auth_center/form" />
 		<!-- 验证成功后的处理 -->
@@ -69,7 +69,7 @@
 		<beans:property name="redirectStrategy" ref="redirectStrategy" />
 	</beans:bean>
 
-	<beans:bean id="redirectStrategy" class="com.cxqm.xiaoerke.webapp.security.MyRedirectStrategy" />
+	<beans:bean id="redirectStrategy" class="com.cxqm.xiaoerke.bdfApp.security.MyRedirectStrategy" />
 
 	<beans:bean id="simpleUrlAuthenticationFailureHandler"
 				class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
@@ -78,7 +78,7 @@
 	</beans:bean>
 
 	<!-- 未登录的切入点 -->
-	<beans:bean id="authenticationProcessingFilterEntryPoint" class="com.cxqm.xiaoerke.webapp.security.MyLoginUrlAuthenticationEntryPoint">
+	<beans:bean id="authenticationProcessingFilterEntryPoint" class="com.cxqm.xiaoerke.bdfApp.security.MyLoginUrlAuthenticationEntryPoint">
 		<beans:constructor-arg name="loginFormUrl" value="/sso/checkLogin"/>
 	</beans:bean>
 
