@@ -77,6 +77,15 @@
                         window.location.href = "../wisdom/firstPage/umbrella?id=" + $stateParams.id;
                     }else if(data.umbrella.pay_result=="fail"){
                         window.location.href = "http://localhost:8080/keeper/wxPay/patientPay.do?serviceType=umbrellaPay&shareId="+$stateParams.id;
+                    }else if(data.result==2){
+                        $scope.updateJoin=true;
+                        $scope.umbrellaMoney=data.umbrella.umbrella_money;
+                        $scope.num=data.umbrella.id-120000000;
+                        $scope.umbrellaId=data.umbrella.id;
+                        if(data.umbrella.pay_result!="null"&&typeof(data.umbrella.pay_result)!="undefined"){
+                            $scope.status="a";
+                        }
+                        $scope.loadShare();
                     }
                     if(data.umbrella.activation_time==null) {
                         $scope.firstJoin = true;
