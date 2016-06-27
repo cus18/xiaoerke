@@ -57,7 +57,7 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  firstPageData() {
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 
         Map<String, Object> map=new HashMap<String, Object>();
         Integer count = babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(map);
@@ -76,7 +76,7 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  firstPageDataTodayCount() {
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 
         Map<String, Object> map=new HashMap<String, Object>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -223,7 +223,7 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  updateInfo(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) throws UnsupportedEncodingException {
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 
         Map<String, Object> result=new HashMap<String, Object>();
         String phone=params.get("phone").toString();
@@ -268,7 +268,7 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  userShareNum(HttpServletRequest request,HttpSession session) {
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 
         Map<String, Object> map=new HashMap<String, Object>();
         String openid= WechatUtil.getOpenId(session, request);
@@ -301,7 +301,7 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  getOpenidStatus(HttpServletRequest request,HttpSession session) {
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 
         String openid= WechatUtil.getOpenId(session, request);
 //        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
@@ -334,7 +334,7 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  ifExistOrder(HttpServletRequest request,HttpSession session) {
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 
         Map<String, Object> map=new HashMap<String, Object>();
         Map<String, Object> result=new HashMap<String, Object>();
@@ -541,7 +541,7 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object> getUmbrellaNum(){
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Map<String,Object> map = babyUmbrellaInfoSerivce.getUmbrellaNum(resultMap);
@@ -576,8 +576,6 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object> updateBabyUmbrellaInfoIfShare(@RequestBody Map<String, Object> params){
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
-
         Map<String, Object> resultMap = new HashMap<String, Object>();
         BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
         babyUmbrellaInfo.setId(Integer.parseInt(params.get("id").toString()));
@@ -593,8 +591,6 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  newJoinUs(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) throws UnsupportedEncodingException {
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
-
         Map<String, Object> result=new HashMap<String, Object>();
         //验证手机号是否正确
         String phone=params.get("phone").toString();
