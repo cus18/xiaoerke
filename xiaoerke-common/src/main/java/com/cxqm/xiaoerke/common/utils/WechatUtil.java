@@ -27,6 +27,23 @@ import java.util.UUID;
  */
 public class WechatUtil {
 
+//    //用户端微信参数
+    public static final String CORPID = "wx0baf90e904df0117";
+    public static final String SECTET = "b3dac0be3e1739af01fee0052ea7a68f";
+//
+//    //宝大夫医生端微信参数
+    public static final String  DOCTORCORPID= "wxb6b6ad2a55af0567";
+    public static final String   DOCTORSECTET= "1822bb2703511da89fa7bfa1a5549b31";
+
+    //小儿科用户端微信参数
+//    public static final String DOCTORCORPID = "wx9b663cd46164130c";
+//    public static final String DOCTORSECTET = "d0460e461a3bcf8598ce6e87443b3d0f";
+
+    //小儿科医生端微信参数
+//    public static final String CORPID = "wxa19496b1076e7352";
+//    public static final String SECTET = "f645d4bcf81c905b3ad628cda79bd7ee";
+
+
     public static String getToken(String corpid, String sectet) throws IOException {
         String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + corpid + "&secret=" + sectet + "";
         String content = HttpRequestUtil.get(url);
@@ -58,7 +75,7 @@ public class WechatUtil {
     public static String getOauth2Url(String backUrl) {
         backUrl = urlEncodeUTF8(backUrl);
         return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
-                ConstantUtil.CORPID + "&redirect_uri=" + backUrl + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect";
+                WechatUtil.CORPID + "&redirect_uri=" + backUrl + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect";
     }
 
 
@@ -375,12 +392,8 @@ public class WechatUtil {
         shortUrlCreate.setLong_url(longUrl);
         String object = HttpRequestUtil.httpsRequest(url, "POST", net.sf.json.JSONObject.fromObject(shortUrlCreate).toString());
         JSONObject resultJson = new JSONObject(object);
-        try{
-            String shortUrl = (String) resultJson.get("short_url");
-            return shortUrl;
-        }catch (Exception var){
-            return  null;
-        }
+        String shortUrl = (String) resultJson.get("short_url");
+        return shortUrl;
     }
 
     /**

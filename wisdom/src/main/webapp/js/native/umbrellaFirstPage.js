@@ -27,7 +27,7 @@ $(document).ready(function() {
             if(data.openid=="none"){
                 // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?" +
                 //     "url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+ shareUmbrellaId;
-                  window.location.href = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/ukeeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+ shareUmbrellaId;
+                //   window.location.href = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/ukeeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+ shareUmbrellaId;
             }
         },
         error : function() {

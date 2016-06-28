@@ -57,7 +57,7 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  firstPageData() {
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 
         Map<String, Object> map=new HashMap<String, Object>();
         Integer count = babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(map);
@@ -76,7 +76,7 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  firstPageDataTodayCount() {
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 
         Map<String, Object> map=new HashMap<String, Object>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -223,7 +223,7 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  updateInfo(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) throws UnsupportedEncodingException {
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
 
         Map<String, Object> result=new HashMap<String, Object>();
         String phone=params.get("phone").toString();
@@ -268,7 +268,7 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  userShareNum(HttpServletRequest request,HttpSession session) {
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 
         Map<String, Object> map=new HashMap<String, Object>();
         String openid= WechatUtil.getOpenId(session, request);
@@ -300,10 +300,10 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  getOpenidStatus(HttpServletRequest request,HttpSession session) {
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 
         String openid= WechatUtil.getOpenId(session, request);
-//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         Map<String, Object> result = new HashMap<String, Object>();
         Map<String,Object> openIdStatus = babyUmbrellaInfoSerivce.getOpenidStatus(openid);
         if(openIdStatus != null){
@@ -333,12 +333,12 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  ifExistOrder(HttpServletRequest request,HttpSession session) {
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 
         Map<String, Object> map=new HashMap<String, Object>();
         Map<String, Object> result=new HashMap<String, Object>();
         String openid= WechatUtil.getOpenId(session, request);
-//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
         List<Map<String, Object>> list=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
@@ -348,7 +348,7 @@ public class UmbrellaController  {
                 result.put("type","pay");
                 return result;
             }
-                if (m.get("baby_id") != null && !m.get("baby_id").equals("")) {
+                if (m.get("baby_id") != null && !m.get("baby_id").equals("") && !m.get("pay_result").equals("success")) {
                     if (m.get("activation_time") != null && !m.get("activation_time").equals("")) {
                         map.put("createTime",m.get("create_time"));
                         result.put("rank", babyUmbrellaInfoSerivce.getUmbrellaRank(map));
@@ -359,6 +359,7 @@ public class UmbrellaController  {
                 }
                 result.put("result", 2);
                 result.put("umbrella", m);
+                result.put("rank", babyUmbrellaInfoSerivce.getUmbrellaRank(map));
                 return result;
         }
         result.put("result",1);
@@ -371,9 +372,7 @@ public class UmbrellaController  {
     @RequestMapping(value = "/updateActivationTime", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object>  updateActivationTime(@RequestBody Map<String, Object> params) {
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
-
+    Map<String, Object>  updateActivationTime(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) {
         Map<String, Object> map=new HashMap<String, Object>();
         Map<String, Object> result=new HashMap<String, Object>();
         BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
@@ -391,8 +390,6 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  updateTruePayMoney(@RequestBody Map<String, Object> params) {
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
-
         Map<String, Object> map=new HashMap<String, Object>();
         Map<String, Object> result=new HashMap<String, Object>();
         BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
@@ -411,8 +408,6 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  randomMoney(HttpServletRequest request,HttpSession session) {
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
-
         Map<String, Object> map=new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session, request);
 //        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
@@ -475,8 +470,6 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object> addFamilyUmbrella(@RequestBody Map<String, Object> params){
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
-
         Map<String, Object> resultMap = new HashMap<String, Object>();
         UmbrellaFamilyInfo familyInfo = new UmbrellaFamilyInfo();
         Date birthDay = DateUtils.StrToDate(params.get("birthDay").toString(), "yyyy-MM-dd");
@@ -496,22 +489,20 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object> familyUmbrellaList(@RequestBody Map<String, Object> params){
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
-
         boolean activation = false;
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Integer id = Integer.parseInt((String) params.get("id"));
         List<UmbrellaFamilyInfo> list = new ArrayList<UmbrellaFamilyInfo>();
         list = babyUmbrellaInfoSerivce.getFamilyUmbrellaList(id);
-//        BabyBaseInfoVo babyInfo = babyUmbrellaInfoSerivce.getBabyBaseInfo(id);
-//        if(babyInfo!=null){
-//            UmbrellaFamilyInfo familyInfo = new UmbrellaFamilyInfo();
-//            familyInfo.setSex(Integer.parseInt(babyInfo.getSex()));
-//            familyInfo.setName(babyInfo.getName());
-//            familyInfo.setBirthday(babyInfo.getBirthday());
-//            list.add(familyInfo);
-//            activation = true;
-//        }
+        BabyBaseInfoVo babyInfo = babyUmbrellaInfoSerivce.getBabyBaseInfo(id);
+        if(babyInfo!=null){
+            UmbrellaFamilyInfo familyInfo = new UmbrellaFamilyInfo();
+            familyInfo.setSex(Integer.parseInt(babyInfo.getSex()));
+            familyInfo.setName(babyInfo.getName());
+            familyInfo.setBirthday(babyInfo.getBirthday());
+            list.add(familyInfo);
+            activation = true;
+        }
         resultMap.put("familyList",list);
         resultMap.put("activation",activation);
         return resultMap;
@@ -521,12 +512,10 @@ public class UmbrellaController  {
     /**
      * 家庭版保护成员列表
      */
-    @RequestMapping(value = "/checkFamilyMembers", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/cheackFamilyMembers", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> checkFamilyMembers(@RequestBody Map<String, Object> params){
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
-
+    Map<String, Object> cheackFamilyMembers(@RequestBody Map<String, Object> params){
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Boolean showFather = true;
         Boolean showMother = true;
@@ -552,7 +541,7 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object> getUmbrellaNum(){
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
 
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Map<String,Object> map = babyUmbrellaInfoSerivce.getUmbrellaNum(resultMap);
@@ -587,8 +576,6 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object> updateBabyUmbrellaInfoIfShare(@RequestBody Map<String, Object> params){
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
-
         Map<String, Object> resultMap = new HashMap<String, Object>();
         BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
         babyUmbrellaInfo.setId(Integer.parseInt(params.get("id").toString()));
@@ -604,8 +591,6 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  newJoinUs(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) throws UnsupportedEncodingException {
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
-
         Map<String, Object> result=new HashMap<String, Object>();
         //验证手机号是否正确
         String phone=params.get("phone").toString();
@@ -696,13 +681,13 @@ public class UmbrellaController  {
         babyUmbrellaInfoSerivce.saveFamilyUmbrellaInfo(familyInfo);
 
         //宝宝的信息
-        UmbrellaFamilyInfo bFamilyInfo = new UmbrellaFamilyInfo();
-        Date bbirthDay = DateUtils.StrToDate(params.get("bbirthDay").toString(), "yyyy-MM-dd");
-        bFamilyInfo.setBirthday(bbirthDay);
-        bFamilyInfo.setUmbrellaId(babyUmbrellaInfo.getId());
-        bFamilyInfo.setName(params.get("bname").toString());
-        bFamilyInfo.setSex(Integer.parseInt(params.get("bsex").toString()));
-        int reusltStatus = babyUmbrellaInfoSerivce.saveFamilyUmbrellaInfo(bFamilyInfo);
+//        UmbrellaFamilyInfo bFamilyInfo = new UmbrellaFamilyInfo();
+//        Date bbirthDay = DateUtils.StrToDate(params.get("bbirthDay").toString(), "yyyy-MM-dd");
+//        bFamilyInfo.setBirthday(bbirthDay);
+//        bFamilyInfo.setUmbrellaId(babyUmbrellaInfo.getId());
+//        bFamilyInfo.setName(params.get("bname").toString());
+//        bFamilyInfo.setSex(Integer.parseInt(params.get("bsex").toString()));
+//        int reusltStatus = babyUmbrellaInfoSerivce.saveFamilyUmbrellaInfo(bFamilyInfo);
 
         result.put("result",res);
         result.put("id",babyUmbrellaInfo.getId());
