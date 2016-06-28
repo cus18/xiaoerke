@@ -184,7 +184,7 @@
 
     <select id="getUmbrellaRank" resultType="java.lang.Integer" >
         select count(*) from baby_umbrellainfo
-        where create_time&lt;#{createTime} and pay_result='success' and openid = #{openid}
+        where create_time&lt;#{createTime} and pay_result='success'
     </select>
 
 </mapper>
