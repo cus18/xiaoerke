@@ -323,7 +323,7 @@
                         if($scope.ifExist){
                             window.location.href ="umbrella#/umbrellaJoin/"+new Date().getTime()+"/"+$stateParams.id;
                         }else{
-                            window.location.href = "http://s202.xiaork.com/keeper/wxPay/patientPay.do?serviceType=umbrellaPay&shareId="+$stateParams.id;
+                            window.location.href = "http://s2.xiaork.cn/keeper/wxPay/patientPay.do?serviceType=umbrellaPay&shareId="+$stateParams.id;
                         }
                     }else if(data.result=='3'){
                         alert("验证码无效");
