@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.mutualHelp.web;
 
+import com.cxqm.xiaoerke.common.utils.CookieUtils;
 import com.cxqm.xiaoerke.modules.mutualHelp.entity.MutualHelpDonation;
 import com.cxqm.xiaoerke.modules.mutualHelp.service.MutualHelpDonationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,9 +30,14 @@ public class MutualHelpDonationController {
      */
     @RequestMapping(value = "/photoWall", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public Map<String, Object> getDetail(Map<String, Object> paramMap){
+    public Map<String, Object> getDetail(HttpServletRequest request, Map<String, Object> paramMap){
+        String openId = (String) paramMap.get("openId");
+        if(openId ==null){
+            openId = CookieUtils.getCookie(request,"openId");
+        }
+
         HashMap<String,Object> searchMap = new HashMap<String, Object>();
-        searchMap.put("openId", (Integer) paramMap.get("openId"));
+        searchMap.put("openId", openId);
         searchMap.put("userId", (Integer) paramMap.get("userId"));
         searchMap.put("donationType", (Integer) paramMap.get("donationType"));
         return service.getDonatonDetail(searchMap);
@@ -88,9 +95,14 @@ public class MutualHelpDonationController {
      */
     @RequestMapping(value = "/addNoteAndDonation", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public Map<String,Object> addNoteAndDonation(Map<String, Object> paramMap){
+    public Map<String,Object> addNoteAndDonation(HttpServletRequest request, Map<String, Object> paramMap){
+        String openId = (String) paramMap.get("openId");
+        if(openId ==null){
+            openId = CookieUtils.getCookie(request,"openId");
+        }
+
         MutualHelpDonation mutualHelpDonation = new MutualHelpDonation();
-        mutualHelpDonation.setOpenId((String) paramMap.get("openId"));
+        mutualHelpDonation.setOpenId(openId);
         mutualHelpDonation.setUserId((String) paramMap.get("userId"));
         mutualHelpDonation.setMoney((Double) paramMap.get("money"));
         mutualHelpDonation.setLeaveNote((String) paramMap.get("leaveNote"));
