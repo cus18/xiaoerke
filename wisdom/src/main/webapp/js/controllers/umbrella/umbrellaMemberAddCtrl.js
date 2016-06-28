@@ -1,4 +1,4 @@
-﻿﻿angular.module('controllers', ['ionic']).controller('umbrellaMemberAddCtrl', [
+﻿﻿﻿angular.module('controllers', ['ionic']).controller('umbrellaMemberAddCtrl', [
         '$scope','$state','$stateParams','addFamily','checkFamilyMembers',
         function ($scope,$state,$stateParams,addFamily,checkFamilyMembers) {
             $scope.title="宝护伞-宝大夫儿童家庭重疾互助计划";
@@ -118,7 +118,7 @@
                                     // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                                     wx.onMenuShareTimeline({
                                         title: '5元＝40万？原来做公益，只要一根雪糕钱！', // 分享标题
-                                        link:  "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$stateParams.id+"/"+$stateParams.status, // 分享链接
+                                        link:  "http://s202.xiaork.com/wisdom/umbrella#/umbrellaLead/"+$stateParams.id+"/"+$stateParams.status, // 分享链接
                                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                         success: function (res) {
                                             //记录用户分享文章
@@ -141,7 +141,7 @@
                                     wx.onMenuShareAppMessage({
                                         title: '5元＝40万？原来做公益，只要一根雪糕钱！', // 分享标题
                                         desc: "我已成为宝护伞互助公益爱心大使，领到了40万的健康保障，你也快来加入吧！", // 分享描述
-                                        link:"http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$stateParams.id+"/"+$stateParams.status,  // 分享链接
+                                        link:"http://s202.xiaork.com/wisdom/umbrella#/umbrellaLead/"+$stateParams.id+"/"+$stateParams.status,  // 分享链接
                                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                         success: function (res) {
                                             $.ajax({
