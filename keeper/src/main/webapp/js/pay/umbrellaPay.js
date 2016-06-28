@@ -16,7 +16,7 @@ var umbrellaPayInit=function(){
         success:function(data) {
             if(data.openid=="none"){
                 // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
-                window.location.href = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+                window.location.href = "http://s202.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
             }else{
                 $.ajax({
                     url:"umbrella/randomMoney",// 跳转到 action
@@ -180,7 +180,7 @@ function wechatPay() {
                                         if (status == "1") {
                                             var shareId = GetQueryString("shareId") == null || GetQueryString("shareId") == "120000000" ? 130000000 : GetQueryString("shareId");
                                             // window.location.href="http://s165.baodf.com/wisdom/umbrella#/umbrellaPaySuccess/"+shareId;
-                                            window.location.href="http://s2.xiaork.cn/wisdom/umbrella#/umbrellaPaySuccess/"+shareId;
+                                            window.location.href="http://s202.xiaork.com/wisdom/umbrella#/umbrellaPaySuccess/"+shareId;
                                             $.ajax({
                                                 type: 'POST',
                                                 url: "umbrella/getUserQRCode",
@@ -201,7 +201,7 @@ function wechatPay() {
                                             // window.location.href = "http://s165.baodf.com/wisdom/firstPage/umbrella?status=a";
                                             var shareId = GetQueryString("shareId") == null || GetQueryString("shareId") == "120000000" ? 130000000 : GetQueryString("shareId");
                                             // window.location.href = "http://s165.baodf.com/wisdom/umbrella#/umbrellaJoin/" + new Date().getTime() + "/" + shareId;
-                                            window.location.href = "http://localhost:8080/wisdom/umbrella#/umbrellaJoin/" + new Date().getTime() + "/" + shareId;
+                                            window.location.href = "http://s202.xiaork.com/wisdom/umbrella#/umbrellaJoin/" + new Date().getTime() + "/" + shareId;
                                         }
                                     },
                                     dataType: "json"
@@ -222,7 +222,7 @@ function wechatPay() {
             });
         } else {
             recordLogs("BHS_ZFY_ZFCG");
-            window.location.href = "http://s165.baodf.com/wisdom/umbrella#/umbrellaJoin/" + new Date().getTime() + "/" + 120000000;
+            window.location.href = "http://s202.xiaork.com/wisdom/umbrella#/umbrellaJoin/" + new Date().getTime() + "/" + 120000000;
         }
     }else{
         payLock=true;
