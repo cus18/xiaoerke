@@ -25,9 +25,17 @@ var cancelComment = function(){
 var goLovePlanList = function(){
     window.location.href="market#/lovePlanList"
 }
-var createPoster = function(){
-    window.location.href="market#/lovePlanPoster"
+// 点击 我要捐款
+var goContribute = function(){
+    window.location.href="http://localhost:8080/keeper/wxPay/patientPay.do?serviceType=lovePlanPay"
 }
+// 宝护伞 查看详情
+var goUmbrella = function(){
+    window.location.href="http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000000/a"
+}
+/*var createPoster = function(){
+    window.location.href="market#/lovePlanPoster"
+}*/
 
 $(function(){
     getUserInfo();

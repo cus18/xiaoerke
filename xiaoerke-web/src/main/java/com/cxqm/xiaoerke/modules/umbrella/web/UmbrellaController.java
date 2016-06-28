@@ -287,7 +287,6 @@ public class UmbrellaController  {
     @ResponseBody
     Map<String, Object>  getUserQRCode(@RequestBody Map<String, Object> params) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
-
         String id = params.get("id").toString();
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("qrcode",babyUmbrellaInfoSerivce.getUserQRCode(id));

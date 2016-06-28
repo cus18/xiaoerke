@@ -77,9 +77,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     @Autowired
 	private MemberService memberService;
 
-	@Autowired
-	private SessionRedisCache sessionRedisCache;
-
 	private String mongoEnabled = Global.getConfig("mongo.enabled");
 
 	@Autowired
@@ -138,10 +135,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			//获取用户位置
 			else if (eventType.equals(MessageUtil.REQ_MESSAGE_TYPE_LOCATION)){
 				processGetLocationEvent(xmlEntity,request);
-			}
-			//点击菜单中的链接
-			else if (eventType.equals(MessageUtil.EVENT_TYPE_VIEW)){
-				//respMessage = processClickMenulinkEvent(xmlEntity,request,response);
 			}
 		}
 		else {
@@ -584,7 +577,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				article.setTitle("宝大夫送你一份见面礼");
 				article.setDescription("恭喜您已成功领取专属于宝宝的20万高额保障金");
 				article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
-				//article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa");
 				article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31");
 				articleList.add(article);
 			}
