@@ -1,6 +1,6 @@
 ﻿﻿﻿angular.module('controllers', ['ionic']).controller('umbrellaMemberAddCtrl', [
-        '$scope','$state','$stateParams','addFamily','checkFamilyMembers',
-        function ($scope,$state,$stateParams,addFamily,checkFamilyMembers) {
+        '$scope','$state','$stateParams','addFamily','checkFamilyMembers','ifExistOrder',
+        function ($scope,$state,$stateParams,addFamily,checkFamilyMembers,ifExistOrder) {
             $scope.title="宝护伞-宝大夫儿童家庭重疾互助计划";
             $scope.sexItem = "boy";
             $scope.parentLock = false;//判断之前登录的时候选择的是宝爸还是宝妈
@@ -98,8 +98,10 @@
                     if(data.result==2 || data.umbrella.activation_time==null) {
                         window.location.href = "../wisdom/firstPage/umbrella?id=" + $stateParams.id;
                     }else{
-                        $scope.umbrellaId=data.umbrella.id;
-                        window.location.href ="../wisdom/umbrella?value="+new Date().getTime()+"#/umbrellaMemberList/"+$scope.umbrellaId+"/a";
+                        if(data.umbrella.id!=$stateParams.id) {
+                            $scope.umbrellaId = data.umbrella.id;
+                            window.location.href = "../wisdom/umbrella?value=" + new Date().getTime() + "#/umbrellaMemberList/" + $scope.umbrellaId + "/a";
+                        }
                     }
                 });
                 

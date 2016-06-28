@@ -1,6 +1,6 @@
 ﻿angular.module('controllers', ['ionic']).controller('umbrellaMemberListCtrl', [
-        '$scope','$state','$stateParams','getFamilyList',
-        function ($scope,$state,$stateParams,getFamilyList) {
+        '$scope','$state','$stateParams','getFamilyList','ifExistOrder',
+        function ($scope,$state,$stateParams,getFamilyList,ifExistOrder) {
             $scope.title="宝护伞-宝大夫儿童家庭重疾互助计划";
             //$scope.id = $stateParams.id;
             $scope.shareLock=false;
@@ -96,8 +96,10 @@
                     if(data.result==2 || data.umbrella.activation_time==null) {
                         window.location.href = "../wisdom/firstPage/umbrella?id=" + $stateParams.id;
                     }else{
-                        $scope.umbrellaId=data.umbrella.id;
-                        window.location.href ="../wisdom/umbrella?value="+new Date().getTime()+"#/umbrellaMemberList/"+$scope.umbrellaId+"/a";
+                        if(data.umbrella.id!=$stateParams.id) {
+                            $scope.umbrellaId = data.umbrella.id;
+                            window.location.href = "../wisdom/umbrella?value=" + new Date().getTime() + "#/umbrellaMemberList/" + $scope.umbrellaId + "/a";
+                        }
                     }
                 });
                 
