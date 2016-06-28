@@ -36,7 +36,6 @@ public class ExceptionHandlerForAPI {
  		Map<String, String[]> paramMap = request.getParameterMap();
  		logger.error("api error message:<" + ex.getMessage() + "> 请求地址:<"
  				+ request.getRequestURI() + ">  请求参数:<" + JSONObject.fromObject(paramMap) + ">");
- 		//logger.info("api error message ：" + ex.getMessage());
  		ex.printStackTrace();
  		if (ex instanceof MissingServletRequestParameterException)
  			mav.addObject("resultCode", "0002");

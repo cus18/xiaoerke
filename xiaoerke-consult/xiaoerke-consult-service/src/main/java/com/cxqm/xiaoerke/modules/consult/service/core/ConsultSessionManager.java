@@ -7,8 +7,10 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
-import com.cxqm.xiaoerke.modules.consult.service.*;
-import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.impl.UserInfoServiceImpl;
@@ -27,7 +29,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
@@ -62,11 +63,11 @@ public class ConsultSessionManager {
 
     public List<String> distributorsList = new ArrayList<String>();
 
-    private AtomicInteger accessNumber = new AtomicInteger(1000);
+    private Map<String, Channel> onLineDistributors = new ConcurrentHashMap<String, Channel>();//在线分诊员
+
+    private Map<String, Channel> onLineCsUserChannelMapping = new ConcurrentHashMap<String, Channel>();//在线医生
 
     private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
-
-    private PatientRegisterPraiseService patientRegisterPraiseService = SpringContextHolder.getBean("patientRegisterPraiseServiceImpl");
 
     private ConsultSessionService consultSessionService = SpringContextHolder.getBean("consultSessionServiceImpl");
 
@@ -81,9 +82,6 @@ public class ConsultSessionManager {
     private static ExecutorService threadExecutor = Executors.newCachedThreadPool();
 
     private static ConsultSessionManager sessionManager = new ConsultSessionManager();
-
-    //jiangzg add 2016年6月17日16:26:01
-    private ConsultDoctorInfoService consultDoctorInfoService = SpringContextHolder.getBean("consultDoctorInfoServiceImpl");
 
     private ConsultSessionManager() {
 //        String distributorsStr = Global.getConfig("distributors.list");
@@ -134,6 +132,7 @@ public class ConsultSessionManager {
         userChannelMapping.put(csUserId, channel);
         channelUserMapping.put(channel, csUserId);
         csUserConnectionTimeMapping.put(csUserId, new Date());
+        onLineCsUserChannelMapping.put(csUserId, channel);//在线医生
     }
 
     private void doCreateSocketInitiatedByDistributor(String distributorUserId, Channel channel) {
@@ -144,6 +143,7 @@ public class ConsultSessionManager {
             userChannelMapping.put(distributorUserId, channel);
             channelUserMapping.put(channel, distributorUserId);
             csUserConnectionTimeMapping.put(distributorUserId, new Date());
+            onLineDistributors.put(distributorUserId, channel);//在线分诊员
         } else {
             log.warn("Maybe a Simulated Distributor: The userId is " + distributorUserId);
         }
@@ -262,20 +262,22 @@ public class ConsultSessionManager {
         HashMap<String, Object> response = new HashMap<String, Object>();
         Channel csChannel = null;
         Channel distributorChannel = null;
-        System.out.println("distributors.size()-----" + distributors.size());
-        if (distributors.size() > 0) {
-            for (int i = 0; i < distributorsList.size(); i++) {
-                String distributorId = RandomUtils.getRandomKeyFromMap(distributors);
-                distributorChannel = distributors.get(distributorId);
+        System.out.println("distributors.size()-----" + onLineDistributors.size());
+        if (onLineDistributors.size() > 0) {
+            for (int i = 0; i < onLineDistributors.size(); i++) {
+                String distributorId = RandomUtils.getRandomKeyFromMap(onLineDistributors);
+                distributorChannel = onLineDistributors.get(distributorId);
                 System.out.println("distributorChannel.isActive()-----" + distributorChannel.isActive());
                 if (distributorChannel.isActive()) {
                     consultSession.setCsUserId(distributorId);
+                    User csUser = systemService.getUserById(distributorId);
+                    consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
                     csChannel = distributorChannel;
                     break;
                 } else {
                     System.out.println("distributors.remove-----" + distributorId);
+                    onLineDistributors.remove(distributorId);
                     distributors.remove(distributorId);
-                    csUserChannelMapping.remove(distributorId);
                     userChannelMapping.remove(distributorId);
                 }
             }
@@ -283,18 +285,20 @@ public class ConsultSessionManager {
 
         /***接诊员不在线，随机分配在线医生***/
         if (distributorChannel == null) {
-            if (csUserChannelMapping.size() > 0) {
+            if (onLineCsUserChannelMapping.size() > 0) {
                 //所有的接诊员不在线，随机分配一个在线医生
-                for (int i = 0; i < csUserChannelMapping.size(); i++) {
-                    String csUserId = RandomUtils.getRandomKeyFromMap(csUserChannelMapping);
-                    csChannel = csUserChannelMapping.get(csUserId);
+                for (int i = 0; i < onLineCsUserChannelMapping.size(); i++) {
+                    String csUserid = RandomUtils.getRandomKeyFromMap(onLineCsUserChannelMapping);
+                    csChannel = onLineCsUserChannelMapping.get(csUserid);
                     if (csChannel.isActive()) {
-                        consultSession.setCsUserId(csUserId);
+                        User csUser = systemService.getUserById(csUserid);
+                        consultSession.setCsUserId(csUserid);
+                        consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
                         break;
                     } else {
-                        csUserChannelMapping.remove(csUserId);
-                        csUserChannelMapping.remove(csUserId);
-                        userChannelMapping.remove(csUserId);
+                        csUserChannelMapping.remove(csUserid);
+                        onLineCsUserChannelMapping.remove(csUserid);
+                        userChannelMapping.remove(csUserid);
                     }
                 }
             } else {
@@ -305,12 +309,6 @@ public class ConsultSessionManager {
                 return null;
             }
         }
-        System.out.println("distributorChannel-----" + distributorChannel);
-
-        if (StringUtils.isNotNull(consultSession.getCsUserId())) {
-            HashMap<String, Object> perInfo = userInfoService.findPersonDetailInfoByUserId(consultSession.getCsUserId());
-            consultSession.setCsUserName((String) perInfo.get("name"));
-        }
 
         //可开启线程进行记录
         if (consultSession.getCsUserId() != null) {
@@ -319,7 +317,6 @@ public class ConsultSessionManager {
             System.out.println("sessionId-----" + sessionId + "consultSession.getCsUserId()" + consultSession.getUserId());
             sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
             sessionRedisCache.putUserIdSessionIdPair(consultSession.getUserId(), sessionId);
-//            saveCustomerEvaluation(consultSession);
             response.put("csChannel", csChannel);
             response.put("sessionId", sessionId);
             response.put("consultSession", consultSession);
@@ -509,44 +506,6 @@ public class ConsultSessionManager {
                     consultSessionForwardRecordsService.updateAcceptedTransfer(forwardRecord);
                     session.setCsUserId(forwardRecord.getToUserId());
                     consultRecordService.modifyConsultSessionStatusVo(session);
-
-                    //如果接收转接的是医生，那么给用户推送消息"我是XX科XX医生，希望能帮到您！"，其他不推送
-                    List<Map> result = consultDoctorInfoService.getDoctorInfoMoreByUserId(toCsUserId);
-                    if(result != null && result.size() > 0) {
-                        if(StringUtils.isNotNull((String)result.get(0).get("userType")) && "consultDoctor".equalsIgnoreCase((String)result.get(0).get("userType"))){
-                            StringBuffer responseNews = new StringBuffer();
-                            responseNews.append("我是");
-                            if(StringUtils.isNotNull((String)result.get(0).get("department"))){
-                                responseNews.append(result.get(0).get("department"));
-                            }else{
-                                responseNews.append("宝大夫");
-                            }
-                            if(StringUtils.isNotNull(toCsUserName)){
-                                responseNews.append(toCsUserName);
-                            }else{
-                                responseNews.append("特约");
-                            }
-                            responseNews.append("医生，希望能帮到您O(∩_∩)O~");
-                            String source = session.getSource();
-                            if(StringUtils.isNotNull(source) && "wxcxqm".equalsIgnoreCase(source)){
-                                Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-                                WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"),session.getUserId(),responseNews.toString());
-                            }else if(StringUtils.isNotNull(source) && "h5cxqm".equalsIgnoreCase(source)){
-                                //暂时注掉H5
-                                /*Channel userChannel = userChannelMapping.get(session.getUserId());
-                                if(userChannel != null && userChannel.isActive()){
-                                    JSONObject resToUser= new JSONObject();
-                                    resToUser.put("type", "4");
-                                    resToUser.put("notifyType", "1004");
-                                    resToUser.put("operation", operation);
-                                    resToUser.put("session", session);
-                                    resToUser.put("content", responseNews.toString());
-                                    TextWebSocketFrame resToUserFrame = new TextWebSocketFrame(resToUser.toJSONString());
-                                    userChannel.writeAndFlush(resToUserFrame.retain());
-                                }*/
-                            }
-                        }
-                    }
                     //生成评价
                     /*Map praiseParam = new HashMap();
                     praiseParam.put("consultSessionId", session.getId());

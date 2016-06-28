@@ -35,13 +35,13 @@ import com.cxqm.xiaoerke.modules.order.service.RegisterService;
 @Controller
 @RequestMapping(value = "register/doctor")
 public class RegisterDoctorController extends BaseController {
-	
+
 	@Autowired
     private RegisterService registerService;
 
 	@Autowired
 	private PatientRegisterService patientRegisterService;
-	
+
     @RequestMapping(value = "/date", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
@@ -54,7 +54,7 @@ public class RegisterDoctorController extends BaseController {
         response.put("dates", dates);
         return response;
     }
-	
+
 	@RequestMapping(value = "/arrange", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
@@ -97,7 +97,7 @@ public class RegisterDoctorController extends BaseController {
 		response.put("reason", ret.get("doctor"));
         return response;
     }
-	
+
 	@RequestMapping(value = "/remove", method = {RequestMethod.POST})
     public
     @ResponseBody
@@ -117,12 +117,12 @@ public class RegisterDoctorController extends BaseController {
 			vo.setSysHospitalId(hospitalId);
 			vo.setLocationId(locationId);
 			count += registerService.deleteRegisters(vo,times,date,operRepeat,"doctor");
-	    	//TODO should be in the same transaction, but now using 
+	    	//TODO should be in the same transaction, but now using
     	}
     	HashMap<String, Object> response = new HashMap<String, Object>(4);
     	response.put("status", "OK");
     	response.put("count", count);
-    	
+
         return response;
     }
 

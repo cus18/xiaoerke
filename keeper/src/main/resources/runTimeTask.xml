@@ -59,7 +59,7 @@
 		<property name="jobDetail" ref="getCustomerOnlineTimeQuarzTask"/>
 		<property name="cronExpression" value="0 */5 * * * ?"/>
 	</bean>
-	
+
 	<!-- 多客服回访向用户发送客服消息 -->
 	<!-- 	早上八点 -->
 	<bean id="sendMessageForCustomerReturnAMQuarzTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -277,7 +277,7 @@
 		<property name="jobDetail" ref="nutritionManagementSendWechatMessageQuarzTask"/>
 		<property name="cronExpression" value="0 0 7,12,19 * * ?"/>
 	</bean>
-	
+
 	<!--每一分钟遍历一次更新保险订单状态-->
 	<!--@Scheduled(cron = "0 0/1 * * * ?") -->
 	<bean id="insuranceUpdateQuarzTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -354,28 +354,28 @@
 		<property name="triggers">
 			<list>
  				<ref bean="updateWechatInfoQuarzCronTrigger"/>
- 				<!--<ref bean="getWechatRecoderTrigger"/>-->
-				<!--<ref bean="sendMessageForCustomerReturnAMTrigger"/>-->
-				<!--<ref bean="sendMessageForCustomerReturnPMTrigger"/>-->
-				<!--<ref bean="letsGoReminderCronTrigger"/>-->
-				<!--<ref bean="updateSrSerStatusCronTrigger"/>-->
-				<!--<ref bean="repeatSettingRegisterCronTrigger"/>-->
-				<!--<ref bean="repeatSettingConsultPhoneRegisterCronTrigger"/>-->
-				<!--<ref bean="statisticsTrigger"/>-->
-				<!--<ref bean="prepareOperationStatisticDataTrigger"/>-->
-				<!--<ref bean="insertStatisticsTitleCronTrigger"/>-->
-				<!--<ref bean="sendMsgToDocAtNightCronTrigger"/>-->
-				<!--<ref bean="sendMsgToDocAtMorningCronTrigger"/>-->
-				<!--<ref bean="everyMorningSendMessageCronTrigger"/>-->
-				<!--<ref bean="everyMinuteSendWechatMessageCronTrigger"/>-->
-				<!--<ref bean="nutritionManagementSendWechatMessageCronTrigger"/>-->
-				<!--<ref bean="insuranceUpdateCronTrigger"/>-->
-				<!--<ref bean="consultPhoneCronTrigger"/>-->
-				<!--<ref bean="timingDialCronTrigger"/>-->
-                <!--<ref bean="sendMsgToDocAtNightPhoneConsultCronTrigger"/>-->
-                <!--<ref bean="sendMsgToDocAtMorningPhoneConsultCronTrigger"/>-->
-                <!--<ref bean="phoneConsultReminder2DocCronTrigger"/>-->
-				<!--<ref bean="umbrellaMessageCronTrigger"/>-->
+ 				<ref bean="getWechatRecoderTrigger"/>
+				<ref bean="sendMessageForCustomerReturnAMTrigger"/>
+				<ref bean="sendMessageForCustomerReturnPMTrigger"/>
+				<ref bean="letsGoReminderCronTrigger"/>
+				<ref bean="updateSrSerStatusCronTrigger"/>
+				<ref bean="repeatSettingRegisterCronTrigger"/>
+				<ref bean="repeatSettingConsultPhoneRegisterCronTrigger"/>
+				<ref bean="statisticsTrigger"/>
+				<ref bean="prepareOperationStatisticDataTrigger"/>
+				<ref bean="insertStatisticsTitleCronTrigger"/>
+				<ref bean="sendMsgToDocAtNightCronTrigger"/>
+				<ref bean="sendMsgToDocAtMorningCronTrigger"/>
+				<ref bean="everyMorningSendMessageCronTrigger"/>
+				<ref bean="everyMinuteSendWechatMessageCronTrigger"/>
+				<ref bean="nutritionManagementSendWechatMessageCronTrigger"/>
+				<ref bean="insuranceUpdateCronTrigger"/>
+				<ref bean="consultPhoneCronTrigger"/>
+				<ref bean="timingDialCronTrigger"/>
+                <ref bean="sendMsgToDocAtNightPhoneConsultCronTrigger"/>
+                <ref bean="sendMsgToDocAtMorningPhoneConsultCronTrigger"/>
+                <ref bean="phoneConsultReminder2DocCronTrigger"/>
+				<ref bean="umbrellaMessageCronTrigger"/>
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>

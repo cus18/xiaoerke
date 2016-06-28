@@ -3,6 +3,8 @@ package com.cxqm.xiaoerke.modules.umbrella.service;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
 import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaFamilyInfo;
+import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaMongoDBVo;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
 import java.util.Map;
@@ -114,4 +116,8 @@ public interface BabyUmbrellaInfoService {
      * @return
      */
     int getUmbrellaRank(Map<String, Object> map);
+
+    int saveOpenidToMongoDB(UmbrellaMongoDBVo entity);
+
+    List<UmbrellaMongoDBVo> getUmbrellaMongoDBVoList(Query query);
 }
