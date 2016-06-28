@@ -102,7 +102,7 @@
                             wx.onMenuShareAppMessage({
                                 title: '5元变成40万,看完我就激动了!', // 分享标题
                                 desc: "我已成为宝护伞互助公益爱心大使，领到了40万的健康保障，你也快来加入吧！", // 分享描述
-                                link:"http://s251.baodf.com/wisdom/umbrella#/umbrellaLead/"+$stateParams.id+"/"+$stateParams.status,
+                                link:"http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$stateParams.id+"/"+$stateParams.status,
                                 imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                 success: function (res) {
                                     recordLogs("BHS_WDBZ_FXPY");

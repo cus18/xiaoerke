@@ -24,7 +24,7 @@
             $scope.goActive=function(){
                 recordLogs("BHS_WDBZ_JH");
                 // $state.go("umbrellaMemberList",{id:$scope.umbrellaId,status:$scope.status});
-                window.location.href = "../wisdom/umbrella#/umbrellaFillInfo/"+$scope.umbrellaId+"/a";
+                window.location.href = "/wisdom/umbrella#/umbrellaFillInfo/"+$scope.umbrellaId+"/a";
             };
             $scope.goShare=function(){
                 $scope.shareLock=true;
