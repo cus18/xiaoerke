@@ -96,8 +96,10 @@
                     if(data.result==2 || data.umbrella.activation_time==null) {
                         window.location.href = "../wisdom/firstPage/umbrella?id=" + $stateParams.id;
                     }else{
-                        $scope.umbrellaId=data.umbrella.id;
-                        window.location.href ="../wisdom/umbrella?value="+new Date().getTime()+"#/umbrellaMemberList/"+$scope.umbrellaId+"/a";
+                        if(data.umbrella.id!=$stateParams.id) {
+                            $scope.umbrellaId = data.umbrella.id;
+                            window.location.href = "../wisdom/umbrella?value=" + new Date().getTime() + "#/umbrellaMemberList/" + $scope.umbrellaId + "/a";
+                        }
                     }
                 });
                 
