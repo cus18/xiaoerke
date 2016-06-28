@@ -31,7 +31,7 @@ define(['appMarket'], function(app){
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.momNutritionTestCtrl',
                                     ['js/controllers/momNutrition/momNutritionTestCtrl.js',
-                                        'styles/momNutrition/momNutritionTest.less?ver='+marketVersion,
+                                        'styles/momNutrition/momNutritionTest.less?ver='+marketVersion
                                       ],
                                     'js/views/momNutrition/momNutritionTest.html?ver='+marketVersion);
                             }
@@ -48,7 +48,7 @@ define(['appMarket'], function(app){
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.momNutritionResultCtrl',
                                     ['js/controllers/momNutrition/momNutritionResultCtrl.js',
-                                        'styles/momNutrition/momNutritionResult.less?ver='+marketVersion,
+                                        'styles/momNutrition/momNutritionResult.less?ver='+marketVersion
                                     ],
                                     'js/views/momNutrition/momNutritionResult.html?ver='+marketVersion);
                             }
@@ -66,7 +66,7 @@ define(['appMarket'], function(app){
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.lovePlanPosterCtrl',
                                     ['js/controllers/lovePlan/lovePlanPosterCtrl.js',
-                                        'styles/lovePlan/lovePlanPoster.less?ver='+marketVersion,
+                                        'styles/lovePlan/lovePlanPoster.less?ver='+marketVersion
                                     ],
                                     'js/views/lovePlan/lovePlanPoster.html?ver='+marketVersion);
                             }
@@ -83,7 +83,7 @@ define(['appMarket'], function(app){
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.lovePlanListCtrl',
                                     ['js/controllers/lovePlan/lovePlanListCtrl.js',
-                                        'styles/lovePlan/lovePlanList.less?ver='+marketVersion,
+                                        'styles/lovePlan/lovePlanList.less?ver='+marketVersion
                                     ],
                                     'js/views/lovePlan/lovePlanList.html?ver='+marketVersion);
                             }
@@ -92,13 +92,27 @@ define(['appMarket'], function(app){
                             public: true
                         }
                     })
-
-
-
+                .state('lovePlanPaySuccess', {
+                        url: '/lovePlanPaySuccess',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'lovePlanPaySuccessCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.lovePlanPaySuccessCtrl',
+                                    ['js/controllers/lovePlan/lovePlanPaySuccessCtrl.js',
+                                        'styles/lovePlan/lovePlanPaySuccess.less?ver='+marketVersion
+                                    ],
+                                    'js/views/lovePlan/lovePlanPaySuccess.html?ver='+marketVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    });
                 $urlRouterProvider.otherwise('momNutritionTest');
             }])
         .run(function ($rootScope){
             $rootScope.unBindUserPhoneNum = '';
-            $rootScope.picVer = picVersion;;
+            $rootScope.picVer = picVersion;
         })
 })

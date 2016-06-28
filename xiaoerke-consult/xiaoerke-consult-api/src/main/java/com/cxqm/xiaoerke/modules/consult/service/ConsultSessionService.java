@@ -31,6 +31,8 @@ public interface ConsultSessionService {
     //根据条件查询接待人数 sunxiao
     Integer getConsultSessionUserCount(Map map);
 
+    Integer getConsultSessionByUserId(Map map);
+
     //根据条件查询会话列表 sunxiao
     List<ConsultSession> getConsultSessionListByInfo(Map map);
 }
