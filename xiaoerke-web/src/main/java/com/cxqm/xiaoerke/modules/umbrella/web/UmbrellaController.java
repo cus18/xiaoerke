@@ -359,6 +359,7 @@ public class UmbrellaController  {
                 }
                 result.put("result", 2);
                 result.put("umbrella", m);
+                map.put("createTime",m.get("create_time"));
                 result.put("rank", babyUmbrellaInfoSerivce.getUmbrellaRank(map));
                 return result;
         }
@@ -518,10 +519,10 @@ public class UmbrellaController  {
     /**
      * 家庭版保护成员列表
      */
-    @RequestMapping(value = "/cheackFamilyMembers", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/checkFamilyMembers", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> cheackFamilyMembers(@RequestBody Map<String, Object> params){
+    Map<String, Object> checkFamilyMembers(@RequestBody Map<String, Object> params){
         DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
         Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -707,5 +708,7 @@ public class UmbrellaController  {
         result.put("id",babyUmbrellaInfo.getId());
         return result;
     }
+
+
 
 }
