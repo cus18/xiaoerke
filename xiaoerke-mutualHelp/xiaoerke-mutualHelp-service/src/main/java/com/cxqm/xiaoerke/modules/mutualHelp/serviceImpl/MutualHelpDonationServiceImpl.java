@@ -69,7 +69,8 @@ public class MutualHelpDonationServiceImpl implements MutualHelpDonationService 
             HashMap<String, Object> map = new HashMap<String, Object>();
             map.put("id",mutualHelpDonation.getId());
             String openId = mutualHelpDonation.getOpenId();
-            map.put("openid",openId);
+            map.put("openId",openId);
+            map.put("userId",mutualHelpDonation.getUserId());
             Map<String,Object> wechatMap = getWechatMessage(openId);
             map.put("wechatName",wechatMap.get("wechatName"));
             map.put("headImgUrl",wechatMap.get("headImgUrl"));
@@ -90,16 +91,11 @@ public class MutualHelpDonationServiceImpl implements MutualHelpDonationService 
         if(mutualHelpDonation != null) {
             response.put("id", mutualHelpDonation.getId());
             String openId = mutualHelpDonation.getOpenId();
-            response.put("openid", openId);
-            if (openId != null) {
-                Map<String, Object> wechatMap = getWechatMessage(mutualHelpDonation.getOpenId());
-                response.put("wechatName", wechatMap.get("wechatName"));
-                response.put("headImgUrl", wechatMap.get("headImgUrl"));
-            } else {
-                response.put("wechatName", "宝粉");
-                response.put("headImgUrl", "");
-            }
-
+            response.put("openId", openId);
+            response.put("userId", mutualHelpDonation.getUserId());
+            Map<String, Object> wechatMap = getWechatMessage(openId);
+            response.put("wechatName", wechatMap.get("wechatName"));
+            response.put("headImgUrl", wechatMap.get("headImgUrl"));
             response.put("money", mutualHelpDonation.getMoney());
             response.put("leaveNote", mutualHelpDonation.getLeaveNote());
             response.put("createTime", mutualHelpDonation.getCreateTime());
