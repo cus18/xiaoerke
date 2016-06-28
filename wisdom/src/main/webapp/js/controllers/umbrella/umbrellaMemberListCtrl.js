@@ -1,4 +1,4 @@
-﻿﻿angular.module('controllers', ['ionic']).controller('umbrellaMemberListCtrl', [
+﻿angular.module('controllers', ['ionic']).controller('umbrellaMemberListCtrl', [
         '$scope','$state','$stateParams','getFamilyList',
         function ($scope,$state,$stateParams,getFamilyList) {
             $scope.title="宝护伞-宝大夫儿童家庭重疾互助计划";

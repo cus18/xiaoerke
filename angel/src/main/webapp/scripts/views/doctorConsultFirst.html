@@ -9,13 +9,13 @@
                 </span>
                 <span></span>
                 <span>（{{doctorName}}），宝大夫欢迎您！！</span>
-                <!--<span>-->
-                    <!--<select>-->
-                        <!--<option>在线</option>-->
-                        <!--<option>不在线</option>-->
-                    <!--</select>-->
-                    <!--&lt;!&ndash;<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>&ndash;&gt;-->
-                <!--</span>-->
+                <span>
+                    <select>
+                        <option>在线</option>
+                        <option>不在线</option>
+                    </select>
+                    <!--<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>-->
+                </span>
                 <span ng-if="loseConnectionFirstFlag||loseConnectionSecondFlag">您已与平台断开了连接，请检查您的网络情况，谢谢！</span>
                 <span ng-if="!loseConnectionFirstFlag&&!loseConnectionSecondFlag">您目前与平台连接正常！</span>
                 <div class="bdf-dkf-content-right">
@@ -222,6 +222,180 @@
             <textarea type="text" name="messageData" id="patientIdData" class="textarea" style="display:none;">{{currentUserConversation.patientId}}</textarea>
             <textarea type="text" name="messageData" id="doctorIdData" class="textarea" style="display:none;">{{doctorId}}</textarea>
             <textarea type="text" name="messageData" id="sourceData" class="textarea" style="display:none;">{{currentUserConversation.source}}</textarea>
+            <div class="advisory-content" ng-show='showFlag.advisoryContent'>
+                <!--用户信息-->
+                <div class="module">
+                    <div class="title">
+                        <h3>用户信息<input type="submit" class="more" value="{{userTableMore}}" ng-click="tapUserTable('userTable')"/> <span>(VIP)</span>：</h3>
+                    </div>
+                    <table class="table1" ng-show="showFlag.userTable">
+                        <tr>
+                            <td>姓名：<span><select></select></span></td>
+                            <td>微信名：&nbsp;&nbsp;&nbsp;<span><input type="text" value="{{currentUserConversation.patientName}}"/></span></td>
+                        </tr>
+                        <tr>
+                            <td>生日：<span><input type="text" class="Wdate" onFocus="WdatePicker({lang:'zh-cn'})"/></span></td>
+                            <td>联系电话：&nbsp;&nbsp;<span><input type="text"/></span></td>
+                        </tr>
+                        <tr>
+                            <td>性别：<select><option value="1">男</option><option value="0">女</option></select></td>
+                            <td >会员有效期：&nbsp;<span><input type="text"/></span></td>
+                        </tr>
+                        <tr>
+                            <td>备注：<input type="text"/></td>
+                            <td>最近就诊日期：<span><input type="text"/></span></td>
+                        </tr>
+                        <tr class="save">
+                            <td colspan="3">
+                                <input  type="submit" value="保存档案"/>
+                                <input  type="submit" value="取消保存"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!--近期就诊记录-->
+                <div class="module">
+                    <div class="title">
+                        <h3>近期就诊记录<input type="submit" class="more" value="{{recentTableMore}}" ng-click="tapRecentTable('recentTable')"/></h3>
+                    </div>
+                    <table class="table2" ng-show="showFlag.recentTable">
+                        <tr>
+                            <td>
+                                <span>姓名：</span><select><option>小雪</option></select>
+                            </td>
+                            <td>
+                                <span>医院：</span><input type="text"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>生日：</span><input type="text"/>
+                            </td>
+                            <td>
+                                <span>科室：</span><input type="text"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>电话：</span><input type="text"/>
+                            </td>
+                            <td>
+                                <span>医生：</span><input type="text"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>症状：</span><input type="text"/>
+                            </td>
+                            <td>
+                                <span>日期：</span><input type="text"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>订单类型：</span><input type="text"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!--添加咨询记录-->
+                <div class="module" >
+                    <div class="title">
+                        <h3>添加咨询记录<input type="submit" class="more" value="{{addConsultTableMore}}" ng-click="tapAddConsultTable('addConsultTable')"/> </h3>
+                    </div>
+                    <table class="table3" ng-show="showFlag.addConsultTable">
+                        <tr>
+                            <td>
+                                <span>客服：</span><input type="text" value="{{currentUserConversation.patientId}}"/>
+                            </td>
+                            <td class="td-l">
+                                <span>归档日期：</span><span>{{todayTime}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>诊断：</span><input type="text" ng-model="info.illness"/>
+                                <ul class="search-remind">
+                                    <li>咨询咨询咨询咨询</li>
+                                    <li>咨询咨询咨询咨询</li>
+                                    <li>咨询咨询咨询咨询</li>
+                                    <li>咨询咨询咨询咨询</li>
+                                </ul>
+                            </td>
+                            <td class="td-l">
+                                <span>咨询类别：<select ng-model="info.selectedIllnessList" ng-options="date.illness for date in illnessList">
+                                    </select>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                表现：<input type="text" maxlength="30" ng-model="info.show" class="big-input" placeholder="可编辑（可选）30个字以内"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                处理：<input type="text" maxlength="30" ng-model="info.result" class="big-input" placeholder="可编辑（可选）30个字以内"/>
+                            </td>
+                        </tr>
+                        <tr class="save">
+                            <td colspan="3">
+                                <input type="submit" value="添加记录" ng-click="addDiagnosisRecords()"/>
+                                <input type="submit" value="取消保存"/>
+                                <input type="submit" value="推荐医生"/>
+                            </td>
+                        </tr>
+                        <tr class="save">
+                            <td>
+                                <span>定时回访：<input type="submit" value="添加定时回访"/></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!--历史咨询档案-->
+                <div class="module">
+                    <div class="title">
+                        <h3 >历史咨询档案<input type="submit" class="more" value="{{historyTableMore}}" ng-click="tapHistoryTable('historyTable')"/></h3>
+                    </div>
+                    <table class="table4" ng-show="showFlag.historyTable">
+                        <tr class="higher">
+                            <td>
+                                <dl ng-repeat="item in historyConsult">
+                                    <dt>
+                                        客服：<input type="text" value="{{item.customerId}}"/>
+                                        <a class="fr">{{item.create_date|date:"yyyy-MM-dd"}}</a>
+                                    </dt>
+                                    <dd>
+                                        <span>诊断：</span>{{item.sys_customer_illness_id}}
+                                    </dd>
+                                    <dd>
+                                        <span>表现：</span>{{item.show}}
+                                    </dd>
+                                    <dd>
+                                        <span>处理：</span>{{item.result}}
+                                    </dd>
+                                </dl>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!--<div>
+                       <span style="">科室/类别：</span><input type="text" id="addSections"/>
+                       <br/>
+                       <center>
+                           <input type="submit" value="保存"/>
+                           <input type="submit"  value="取消"/>
+                       </center>
+                   </div>
+                   <div>
+                       <br/>
+                       <center>
+                           <span></span>
+                           <br/><br/><br/><br/>
+                           <input type="submit" value="关闭"/>
+                       </center>
+                   </div>-->
+            </div>
         </div>
         <div class="msg-m h30" ng-if="chooseAlreadyJoinConsultPatientId!=''">
             <div class="headportrait">

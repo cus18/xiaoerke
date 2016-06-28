@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.common.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.cxqm.xiaoerke.common.bean.*;
 import com.cxqm.xiaoerke.modules.sys.entity.Article;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
@@ -25,23 +26,6 @@ import java.util.UUID;
  * Created by baoweiw on 2015/7/27.
  */
 public class WechatUtil {
-
-//    //用户端微信参数
-    public static final String CORPID = "wx0baf90e904df0117";
-    public static final String SECTET = "b3dac0be3e1739af01fee0052ea7a68f";
-//
-//    //宝大夫医生端微信参数
-    public static final String  DOCTORCORPID= "wxb6b6ad2a55af0567";
-    public static final String   DOCTORSECTET= "1822bb2703511da89fa7bfa1a5549b31";
-
-    //小儿科用户端微信参数
-//    public static final String DOCTORCORPID = "wx9b663cd46164130c";
-//    public static final String DOCTORSECTET = "d0460e461a3bcf8598ce6e87443b3d0f";
-
-    //小儿科医生端微信参数
-//    public static final String CORPID = "wxa19496b1076e7352";
-//    public static final String SECTET = "f645d4bcf81c905b3ad628cda79bd7ee";
-
 
     public static String getToken(String corpid, String sectet) throws IOException {
         String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + corpid + "&secret=" + sectet + "";
@@ -74,7 +58,7 @@ public class WechatUtil {
     public static String getOauth2Url(String backUrl) {
         backUrl = urlEncodeUTF8(backUrl);
         return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
-                WechatUtil.CORPID + "&redirect_uri=" + backUrl + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect";
+                ConstantUtil.CORPID + "&redirect_uri=" + backUrl + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect";
     }
 
 
@@ -551,5 +535,35 @@ public class WechatUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    /**
+     *  向用户发送模板消息
+     *  @author jiangzg
+     *  @version 1.0
+     *  2016年6月27日12:28:59
+     */
+    public static String sendTemplateMsgToUser(String token , String openId ,String templateId ,String content){
+        String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+token;
+        try {
+            String json = "{\"touser\":\"" + openId + "\",\"template_id\":\""+templateId+"\",\"url\":\"http://weixin.qq.com/download\"," +
+                    "\"data\":" + "{"+content+"}}";
+            String re = HttpRequestUtil.getConnectionResult(url, "POST", json);
+            System.out.print(json + "--" + re);
+            JSONObject jsonObject = new JSONObject(re);
+            if(re.contains("access_token is invalid")){
+                //token已经失效，重新获取新的token
+                return "tokenIsInvalid";
+            }
+            String resultStatus = (String)jsonObject.get("errcode");
+            if(resultStatus !=null && "0".equalsIgnoreCase(resultStatus)){
+                return "messageOk";
+            }else{
+                System.out.println(jsonObject.get("errmsg"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "messageOk";
     }
 }

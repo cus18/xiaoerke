@@ -11,10 +11,10 @@
 	task:executor/@queue-capacity：等待执行的任务队列的容量
 	task:executor/@rejection-policy：当等待队已满时的策略，分为丢弃、由任务执行器直接运行等方式
 	-->
-	<!--<task:scheduler id="scheduler" pool-size="10" />-->
-	<!--<task:executor id="executor" keep-alive="3600" pool-size="100-200"-->
-				   <!--queue-capacity="500" rejection-policy="CALLER_RUNS" />-->
-	<!--<task:annotation-driven executor="executor" scheduler="scheduler" />-->
+	<task:scheduler id="scheduler" pool-size="10" />
+	<task:executor id="executor" keep-alive="3600" pool-size="100-200"
+				   queue-capacity="500" rejection-policy="CALLER_RUNS" />
+	<task:annotation-driven executor="executor" scheduler="scheduler" />
 
 	<bean id="scheduledQuarz" class="com.cxqm.xiaoerke.modules.task.service.impl.ScheduledTask" />
 
