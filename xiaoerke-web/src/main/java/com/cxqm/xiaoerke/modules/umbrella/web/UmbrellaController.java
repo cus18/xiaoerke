@@ -231,8 +231,14 @@ public class UmbrellaController  {
         String openid= WechatUtil.getOpenId(session, request);
         String codeAuth=utilService.bindUser(phone,code,openid);
         if(codeAuth.equals("0")){
-            result.put("result","3");
-            return result;
+            codeAuth=utilService.bindUser4Doctor(phone,code,openid);
+            if(codeAuth.equals("0")){
+                codeAuth=utilService.bindUser4ConsultDoctor(phone,code,openid);
+                if(codeAuth.equals("0")){
+                    result.put("result","3");
+                    return result;
+                }
+            }
         }
         BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
         babyUmbrellaInfo.setBabyId(params.get("babyId").toString());
