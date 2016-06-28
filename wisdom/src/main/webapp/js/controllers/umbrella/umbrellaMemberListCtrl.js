@@ -73,6 +73,19 @@
             };
 
             $scope.$on('$ionicView.enter', function(){
+                ifExistOrder.save(function (data) {
+                    // $scope.info.phoneNum=data.phone;
+                    if (data.result == "1") {
+                        window.location.href = "../wisdom/firstPage/umbrella?id=" + $stateParams.id;
+                    }
+                    if(data.result==2 || data.umbrella.activation_time==null) {
+                        window.location.href = "../wisdom/firstPage/umbrella?id=" + $stateParams.id;
+                    }else{
+                        $scope.umbrellaId=data.umbrella.id;
+                        window.location.href ="../wisdom/umbrella?value="+new Date().getTime()+"#/umbrellaMemberList/"+$scope.umbrellaId+"/a";
+                    }
+                });
+                
                 // if($stateParams.status=="a"){
                     var timestamp;//时间戳
                     var nonceStr;//随机字符串
