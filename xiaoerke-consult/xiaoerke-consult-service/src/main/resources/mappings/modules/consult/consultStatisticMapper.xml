@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.account.dao.consultStatisticMapper" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.consult.dao.ConsultStatisticDao" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="day_number" property="dayNumber" jdbcType="INTEGER" />
+    <result column="titile_number" property="titileNumber" jdbcType="INTEGER" />
+    <result column="evaluate_number" property="evaluateNumber" jdbcType="INTEGER" />
+    <result column="unevaluate_number" property="unevaluateNumber" jdbcType="INTEGER" />
+    <result column="satisfied_number" property="satisfiedNumber" jdbcType="INTEGER" />
+    <result column="day_satisfied_degree" property="daySatisfiedDegree" jdbcType="VARCHAR" />
+    <result column="weed_satisfied_degree" property="weedSatisfiedDegree" jdbcType="VARCHAR" />
+    <result column="month_satisfied_degree" property="monthSatisfiedDegree" jdbcType="VARCHAR" />
+    <result column="day_yawp_number" property="dayYawpNumber" jdbcType="INTEGER" />
+    <result column="week_yawp_number" property="weekYawpNumber" jdbcType="INTEGER" />
+    <result column="month_yawp_number" property="monthYawpNumber" jdbcType="INTEGER" />
+    <result column="reward_number" property="rewardNumber" jdbcType="INTEGER" />
+    <result column="reward_degree" property="rewardDegree" jdbcType="VARCHAR" />
+    <result column="first_consult_cancle_Attention_number" property="firstConsultCancleAttentionNumber" jdbcType="INTEGER" />
+    <result column="more_consult_cancle_Attention_number" property="moreConsultCancleAttentionNumber" jdbcType="INTEGER" />
+    <result column="first_consult_number" property="firstConsultNumber" jdbcType="INTEGER" />
+    <result column="first_consult_degree" property="firstConsultDegree" jdbcType="VARCHAR" />
+    <result column="second_consult_number" property="secondConsultNumber" jdbcType="INTEGER" />
+    <result column="second_consult_degree" property="secondConsultDegree" jdbcType="VARCHAR" />
+    <result column="more_conuslt_number" property="moreConusltNumber" jdbcType="INTEGER" />
+    <result column="more_consult_degree" property="moreConsultDegree" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, day_number, titile_number, evaluate_number, unevaluate_number, satisfied_number, 
+    day_satisfied_degree, weed_satisfied_degree, month_satisfied_degree, day_yawp_number, 
+    week_yawp_number, month_yawp_number, reward_number, reward_degree, first_consult_cancle_Attention_number, 
+    more_consult_cancle_Attention_number, first_consult_number, first_consult_degree, 
+    second_consult_number, second_consult_degree, more_conuslt_number, more_consult_degree
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from consult_statistic
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from consult_statistic
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo" >
+    insert into consult_statistic (id, day_number, titile_number, 
+      evaluate_number, unevaluate_number, satisfied_number, 
+      day_satisfied_degree, weed_satisfied_degree, 
+      month_satisfied_degree, day_yawp_number, week_yawp_number, 
+      month_yawp_number, reward_number, reward_degree, 
+      first_consult_cancle_Attention_number, more_consult_cancle_Attention_number, 
+      first_consult_number, first_consult_degree, 
+      second_consult_number, second_consult_degree, 
+      more_conuslt_number, more_consult_degree)
+    values (#{id,jdbcType=INTEGER}, #{dayNumber,jdbcType=INTEGER}, #{titileNumber,jdbcType=INTEGER}, 
+      #{evaluateNumber,jdbcType=INTEGER}, #{unevaluateNumber,jdbcType=INTEGER}, #{satisfiedNumber,jdbcType=INTEGER}, 
+      #{daySatisfiedDegree,jdbcType=VARCHAR}, #{weedSatisfiedDegree,jdbcType=VARCHAR}, 
+      #{monthSatisfiedDegree,jdbcType=VARCHAR}, #{dayYawpNumber,jdbcType=INTEGER}, #{weekYawpNumber,jdbcType=INTEGER}, 
+      #{monthYawpNumber,jdbcType=INTEGER}, #{rewardNumber,jdbcType=INTEGER}, #{rewardDegree,jdbcType=VARCHAR}, 
+      #{firstConsultCancleAttentionNumber,jdbcType=INTEGER}, #{moreConsultCancleAttentionNumber,jdbcType=INTEGER}, 
+      #{firstConsultNumber,jdbcType=INTEGER}, #{firstConsultDegree,jdbcType=VARCHAR}, 
+      #{secondConsultNumber,jdbcType=INTEGER}, #{secondConsultDegree,jdbcType=VARCHAR}, 
+      #{moreConusltNumber,jdbcType=INTEGER}, #{moreConsultDegree,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo" >
+    insert into consult_statistic
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="dayNumber != null" >
+        day_number,
+      </if>
+      <if test="titileNumber != null" >
+        titile_number,
+      </if>
+      <if test="evaluateNumber != null" >
+        evaluate_number,
+      </if>
+      <if test="unevaluateNumber != null" >
+        unevaluate_number,
+      </if>
+      <if test="satisfiedNumber != null" >
+        satisfied_number,
+      </if>
+      <if test="daySatisfiedDegree != null" >
+        day_satisfied_degree,
+      </if>
+      <if test="weedSatisfiedDegree != null" >
+        weed_satisfied_degree,
+      </if>
+      <if test="monthSatisfiedDegree != null" >
+        month_satisfied_degree,
+      </if>
+      <if test="dayYawpNumber != null" >
+        day_yawp_number,
+      </if>
+      <if test="weekYawpNumber != null" >
+        week_yawp_number,
+      </if>
+      <if test="monthYawpNumber != null" >
+        month_yawp_number,
+      </if>
+      <if test="rewardNumber != null" >
+        reward_number,
+      </if>
+      <if test="rewardDegree != null" >
+        reward_degree,
+      </if>
+      <if test="firstConsultCancleAttentionNumber != null" >
+        first_consult_cancle_Attention_number,
+      </if>
+      <if test="moreConsultCancleAttentionNumber != null" >
+        more_consult_cancle_Attention_number,
+      </if>
+      <if test="firstConsultNumber != null" >
+        first_consult_number,
+      </if>
+      <if test="firstConsultDegree != null" >
+        first_consult_degree,
+      </if>
+      <if test="secondConsultNumber != null" >
+        second_consult_number,
+      </if>
+      <if test="secondConsultDegree != null" >
+        second_consult_degree,
+      </if>
+      <if test="moreConusltNumber != null" >
+        more_conuslt_number,
+      </if>
+      <if test="moreConsultDegree != null" >
+        more_consult_degree,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="dayNumber != null" >
+        #{dayNumber,jdbcType=INTEGER},
+      </if>
+      <if test="titileNumber != null" >
+        #{titileNumber,jdbcType=INTEGER},
+      </if>
+      <if test="evaluateNumber != null" >
+        #{evaluateNumber,jdbcType=INTEGER},
+      </if>
+      <if test="unevaluateNumber != null" >
+        #{unevaluateNumber,jdbcType=INTEGER},
+      </if>
+      <if test="satisfiedNumber != null" >
+        #{satisfiedNumber,jdbcType=INTEGER},
+      </if>
+      <if test="daySatisfiedDegree != null" >
+        #{daySatisfiedDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="weedSatisfiedDegree != null" >
+        #{weedSatisfiedDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="monthSatisfiedDegree != null" >
+        #{monthSatisfiedDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="dayYawpNumber != null" >
+        #{dayYawpNumber,jdbcType=INTEGER},
+      </if>
+      <if test="weekYawpNumber != null" >
+        #{weekYawpNumber,jdbcType=INTEGER},
+      </if>
+      <if test="monthYawpNumber != null" >
+        #{monthYawpNumber,jdbcType=INTEGER},
+      </if>
+      <if test="rewardNumber != null" >
+        #{rewardNumber,jdbcType=INTEGER},
+      </if>
+      <if test="rewardDegree != null" >
+        #{rewardDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="firstConsultCancleAttentionNumber != null" >
+        #{firstConsultCancleAttentionNumber,jdbcType=INTEGER},
+      </if>
+      <if test="moreConsultCancleAttentionNumber != null" >
+        #{moreConsultCancleAttentionNumber,jdbcType=INTEGER},
+      </if>
+      <if test="firstConsultNumber != null" >
+        #{firstConsultNumber,jdbcType=INTEGER},
+      </if>
+      <if test="firstConsultDegree != null" >
+        #{firstConsultDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="secondConsultNumber != null" >
+        #{secondConsultNumber,jdbcType=INTEGER},
+      </if>
+      <if test="secondConsultDegree != null" >
+        #{secondConsultDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="moreConusltNumber != null" >
+        #{moreConusltNumber,jdbcType=INTEGER},
+      </if>
+      <if test="moreConsultDegree != null" >
+        #{moreConsultDegree,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo" >
+    update consult_statistic
+    <set >
+      <if test="dayNumber != null" >
+        day_number = #{dayNumber,jdbcType=INTEGER},
+      </if>
+      <if test="titileNumber != null" >
+        titile_number = #{titileNumber,jdbcType=INTEGER},
+      </if>
+      <if test="evaluateNumber != null" >
+        evaluate_number = #{evaluateNumber,jdbcType=INTEGER},
+      </if>
+      <if test="unevaluateNumber != null" >
+        unevaluate_number = #{unevaluateNumber,jdbcType=INTEGER},
+      </if>
+      <if test="satisfiedNumber != null" >
+        satisfied_number = #{satisfiedNumber,jdbcType=INTEGER},
+      </if>
+      <if test="daySatisfiedDegree != null" >
+        day_satisfied_degree = #{daySatisfiedDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="weedSatisfiedDegree != null" >
+        weed_satisfied_degree = #{weedSatisfiedDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="monthSatisfiedDegree != null" >
+        month_satisfied_degree = #{monthSatisfiedDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="dayYawpNumber != null" >
+        day_yawp_number = #{dayYawpNumber,jdbcType=INTEGER},
+      </if>
+      <if test="weekYawpNumber != null" >
+        week_yawp_number = #{weekYawpNumber,jdbcType=INTEGER},
+      </if>
+      <if test="monthYawpNumber != null" >
+        month_yawp_number = #{monthYawpNumber,jdbcType=INTEGER},
+      </if>
+      <if test="rewardNumber != null" >
+        reward_number = #{rewardNumber,jdbcType=INTEGER},
+      </if>
+      <if test="rewardDegree != null" >
+        reward_degree = #{rewardDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="firstConsultCancleAttentionNumber != null" >
+        first_consult_cancle_Attention_number = #{firstConsultCancleAttentionNumber,jdbcType=INTEGER},
+      </if>
+      <if test="moreConsultCancleAttentionNumber != null" >
+        more_consult_cancle_Attention_number = #{moreConsultCancleAttentionNumber,jdbcType=INTEGER},
+      </if>
+      <if test="firstConsultNumber != null" >
+        first_consult_number = #{firstConsultNumber,jdbcType=INTEGER},
+      </if>
+      <if test="firstConsultDegree != null" >
+        first_consult_degree = #{firstConsultDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="secondConsultNumber != null" >
+        second_consult_number = #{secondConsultNumber,jdbcType=INTEGER},
+      </if>
+      <if test="secondConsultDegree != null" >
+        second_consult_degree = #{secondConsultDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="moreConusltNumber != null" >
+        more_conuslt_number = #{moreConusltNumber,jdbcType=INTEGER},
+      </if>
+      <if test="moreConsultDegree != null" >
+        more_consult_degree = #{moreConsultDegree,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo" >
+    update consult_statistic
+    set day_number = #{dayNumber,jdbcType=INTEGER},
+      titile_number = #{titileNumber,jdbcType=INTEGER},
+      evaluate_number = #{evaluateNumber,jdbcType=INTEGER},
+      unevaluate_number = #{unevaluateNumber,jdbcType=INTEGER},
+      satisfied_number = #{satisfiedNumber,jdbcType=INTEGER},
+      day_satisfied_degree = #{daySatisfiedDegree,jdbcType=VARCHAR},
+      weed_satisfied_degree = #{weedSatisfiedDegree,jdbcType=VARCHAR},
+      month_satisfied_degree = #{monthSatisfiedDegree,jdbcType=VARCHAR},
+      day_yawp_number = #{dayYawpNumber,jdbcType=INTEGER},
+      week_yawp_number = #{weekYawpNumber,jdbcType=INTEGER},
+      month_yawp_number = #{monthYawpNumber,jdbcType=INTEGER},
+      reward_number = #{rewardNumber,jdbcType=INTEGER},
+      reward_degree = #{rewardDegree,jdbcType=VARCHAR},
+      first_consult_cancle_Attention_number = #{firstConsultCancleAttentionNumber,jdbcType=INTEGER},
+      more_consult_cancle_Attention_number = #{moreConsultCancleAttentionNumber,jdbcType=INTEGER},
+      first_consult_number = #{firstConsultNumber,jdbcType=INTEGER},
+      first_consult_degree = #{firstConsultDegree,jdbcType=VARCHAR},
+      second_consult_number = #{secondConsultNumber,jdbcType=INTEGER},
+      second_consult_degree = #{secondConsultDegree,jdbcType=VARCHAR},
+      more_conuslt_number = #{moreConusltNumber,jdbcType=INTEGER},
+      more_consult_degree = #{moreConsultDegree,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!--咨询统计  deliang-->
+  <select id="getConsultStatistic" resultType="java.lang.Integer">
+    select count(DISTINCT(sys_user_id)) countNumber from consult_session where create_time like '${createDate}%'
+    UNION ALL
+    select count(DISTINCT(sys_user_id)) countNumber from consult_session
+    UNION ALL
+    select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime like '${createDate}%' and (serviceAttitude != '0')
+    UNION ALL
+    select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime like '${createDate}%' and (serviceAttitude = '3' or serviceAttitude = '5')
+    UNION ALL
+    select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between '{weekBeginDate}' and '{weekEndDate}' and (serviceAttitude = '3' or serviceAttitude = '5')
+    UNION ALL
+    select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between '{monthBeginDate}' and '{monthEndDate}' and (serviceAttitude = '3' or serviceAttitude = '5')
+    UNION ALL
+    select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime like '${createDate}%' and (serviceAttitude = '1')
+    UNION ALL
+    select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between '{weekBeginDate}' and '{weekEndDate}' and (serviceAttitude = '1')
+    UNION ALL
+    select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between '{monthBeginDate}' and '{monthEndDate}' and (serviceAttitude = '1')
+    UNION ALL
+    select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime like '${createDate}%' and payStatus = 'success'
+    UNION ALL
+    SELECT count(*) countNumber from sys_attention where date LIKE '${createDate}%' and STATUS='1' and openid in (
+             select sys_user_id from consult_session where consult_number = 1 and create_time like '${createDate}%' GROUP BY sys_user_id ORDER BY null
+             )
+    UNION ALL
+    SELECT count(*) countNumber from sys_attention where date LIKE '${createDate}%' and STATUS='1' and openid in (
+             select sys_user_id from consult_session where consult_number > 1 and create_time like '${createDate}%' GROUP BY sys_user_id ORDER BY null
+             )
+    UNION ALL
+    select count(*) countNumber from consult_session where consult_number = 1 and create_time like '${createDate}%'
+    UNION ALL
+    select count(*) countNumber from consult_session where consult_number > 1 and create_time like '${createDate}%'
+    UNION ALL
+    select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between '{weekBeginDate}' and '{weekEndDate}' and (serviceAttitude != '0')
+    UNION ALL
+    select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between '{monthBeginDate}' and '{monthEndDate}' and (serviceAttitude != '0')
+  </select>
+</mapper>
