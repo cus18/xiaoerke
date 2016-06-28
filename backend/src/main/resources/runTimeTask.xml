@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:task="http://www.springframework.org/schema/task"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	   http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd">
+
+	<task:scheduler id="scheduler" pool-size="10" />
+	<task:executor id="executor" keep-alive="3600" pool-size="100-200"
+				   queue-capacity="500" rejection-policy="CALLER_RUNS" />
+	<task:annotation-driven executor="executor" scheduler="scheduler" />
+
+	<bean id="scheduledQuarz" class="com.cxqm.xiaoerke.modules.schedule.web.ScheduleTaskController" />
+
+	<!--==========================================backend================================================-->
+	<bean id="consultStatisticQuarzTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="scheduledQuarz"/>
+		<property name="targetMethod" value="consultStatistic"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+	<bean id="consultStatisticCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="consultStatisticQuarzTask"/>
+		<property name="cronExpression" value="0 */1 * * * ?"/>
+	</bean>
+
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="consultStatisticCronTrigger"/>
+			</list>
+		</property>
+		<property name="autoStartup" value="true"/>
+	</bean>
+
+</beans>
