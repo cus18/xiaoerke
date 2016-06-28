@@ -66,12 +66,10 @@
                     success:function(data) {
                         if(data.openid=="none"){
                             // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
-                            // window.location.href = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
-                        }
-                    },
-                    error : function() {
-                    }
-                });
+                            window.location.href = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+                        }else{
+                            
+                        
                 ifExistOrder.save(function (data) {
                     // $scope.info.phoneNum=data.phone;
                     if (data.result == "1") {
@@ -188,6 +186,11 @@
             //         $scope.pintu=data.umbrella.friendJoinNum>=10?0:10-data.umbrella.friendJoinNum;
             //     });
             });
+                        }
+                    },
+                    error : function() {
+                    }
+                });
         });
 
             var recordLogs = function(val){

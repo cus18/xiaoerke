@@ -11,7 +11,7 @@
 
         function deleteNoticeUser(obj){
             $("#openId").val(obj);
-            alert($("#openId").val());
+//            alert($("#openId").val());
             if(!confirm("确认删除该用户？")){
                 window.event.returnValue = false;
             }else{

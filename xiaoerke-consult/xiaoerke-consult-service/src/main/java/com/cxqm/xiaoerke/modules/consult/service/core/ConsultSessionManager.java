@@ -7,10 +7,8 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
-import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.consult.service.*;
+import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.impl.UserInfoServiceImpl;
@@ -65,6 +63,8 @@ public class ConsultSessionManager {
 
     private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
 
+    private PatientRegisterPraiseService patientRegisterPraiseService = SpringContextHolder.getBean("patientRegisterPraiseServiceImpl");
+
     private ConsultSessionService consultSessionService = SpringContextHolder.getBean("consultSessionServiceImpl");
 
     private ConsultSessionForwardRecordsService consultSessionForwardRecordsService = SpringContextHolder.getBean("consultSessionForwardRecordsServiceImpl");
@@ -78,6 +78,9 @@ public class ConsultSessionManager {
     private static ExecutorService threadExecutor = Executors.newCachedThreadPool();
 
     private static ConsultSessionManager sessionManager = new ConsultSessionManager();
+
+    //jiangzg add 2016年6月17日16:26:01
+    private ConsultDoctorInfoService consultDoctorInfoService = SpringContextHolder.getBean("consultDoctorInfoServiceImpl");
 
     private ConsultSessionManager() {
 //        String distributorsStr = Global.getConfig("distributors.list");
@@ -289,7 +292,9 @@ public class ConsultSessionManager {
                     String csUserId = RandomUtils.getRandomKeyFromMap(csUserChannelMapping);
                     csChannel = csUserChannelMapping.get(csUserId);
                     if (csChannel.isActive()) {
+                        User csUser = systemService.getUserById(csUserId);
                         consultSession.setCsUserId(csUserId);
+                        consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
                         break;
                     } else {
                         csUserChannelMapping.remove(csUserId);
@@ -514,6 +519,44 @@ public class ConsultSessionManager {
                     consultSessionForwardRecordsService.updateAcceptedTransfer(forwardRecord);
                     session.setCsUserId(forwardRecord.getToUserId());
                     consultRecordService.modifyConsultSessionStatusVo(session);
+
+                    //如果接收转接的是医生，那么给用户推送消息"我是XX科XX医生，希望能帮到您！"，其他不推送
+                    List<Map> result = consultDoctorInfoService.getDoctorInfoMoreByUserId(toCsUserId);
+                    if(result != null && result.size() > 0) {
+                        if(StringUtils.isNotNull((String)result.get(0).get("userType")) && "consultDoctor".equalsIgnoreCase((String)result.get(0).get("userType"))){
+                            StringBuffer responseNews = new StringBuffer();
+                            responseNews.append("我是");
+                            if(StringUtils.isNotNull((String)result.get(0).get("department"))){
+                                responseNews.append(result.get(0).get("department"));
+                            }else{
+                                responseNews.append("宝大夫");
+                            }
+                            if(StringUtils.isNotNull(toCsUserName)){
+                                responseNews.append(toCsUserName);
+                            }else{
+                                responseNews.append("特约");
+                            }
+                            responseNews.append("医生，希望能帮到您O(∩_∩)O~");
+                            String source = session.getSource();
+                            if(StringUtils.isNotNull(source) && "wxcxqm".equalsIgnoreCase(source)){
+                                Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                                WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"),session.getUserId(),responseNews.toString());
+                            }else if(StringUtils.isNotNull(source) && "h5cxqm".equalsIgnoreCase(source)){
+                                //暂时注掉H5
+                                /*Channel userChannel = userChannelMapping.get(session.getUserId());
+                                if(userChannel != null && userChannel.isActive()){
+                                    JSONObject resToUser= new JSONObject();
+                                    resToUser.put("type", "4");
+                                    resToUser.put("notifyType", "1004");
+                                    resToUser.put("operation", operation);
+                                    resToUser.put("session", session);
+                                    resToUser.put("content", responseNews.toString());
+                                    TextWebSocketFrame resToUserFrame = new TextWebSocketFrame(resToUser.toJSONString());
+                                    userChannel.writeAndFlush(resToUserFrame.retain());
+                                }*/
+                            }
+                        }
+                    }
                     //生成评价
                     /*Map praiseParam = new HashMap();
                     praiseParam.put("consultSessionId", session.getId());
