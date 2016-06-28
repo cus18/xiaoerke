@@ -50,16 +50,13 @@ public class MutualHelpDonationServiceImpl implements MutualHelpDonationService 
         searchMap.put("donationType",donationType);
         Date lastTime = dao.getLastTime(searchMap);
         if(lastTime != null) {
+            myMap.put("userId",userId);
+            myMap.put("openId",myOpenId);
             myMap.put("lastTime",lastTime);
             myMap.put("sumMoney", dao.getSumMoney(searchMap));
-            if (myOpenId != null) {
-                Map<String, Object> myWechatMap = getWechatMessage(myOpenId);
-                myMap.put("wechatName", myWechatMap.get("wechatName"));
-                myMap.put("headImgUrl", myWechatMap.get("headImgUrl"));
-            } else {
-                myMap.put("wechatName", "宝粉");
-                myMap.put("headImgUrl", "");
-            }
+            Map<String, Object> myWechatMap = getWechatMessage(myOpenId);
+            myMap.put("wechatName", myWechatMap.get("wechatName"));
+            myMap.put("headImgUrl", myWechatMap.get("headImgUrl"));
         }
         response.put("myMap",myMap);
 
@@ -73,15 +70,9 @@ public class MutualHelpDonationServiceImpl implements MutualHelpDonationService 
             map.put("id",mutualHelpDonation.getId());
             String openId = mutualHelpDonation.getOpenId();
             map.put("openid",openId);
-            if(openId != null){
-                Map<String,Object> wechatMap = getWechatMessage(mutualHelpDonation.getOpenId());
-                map.put("wechatName",wechatMap.get("wechatName"));
-                map.put("headImgUrl",wechatMap.get("headImgUrl"));
-            }else{
-                map.put("wechatName","宝粉");
-                map.put("headImgUrl","");
-            }
-
+            Map<String,Object> wechatMap = getWechatMessage(openId);
+            map.put("wechatName",wechatMap.get("wechatName"));
+            map.put("headImgUrl",wechatMap.get("headImgUrl"));
             map.put("money",mutualHelpDonation.getMoney());
             map.put("leaveNote",mutualHelpDonation.getLeaveNote());
             map.put("createTime",mutualHelpDonation.getCreateTime());
@@ -132,19 +123,23 @@ public class MutualHelpDonationServiceImpl implements MutualHelpDonationService 
         Map<String,Object> parameter = systemService.getWechatParameter();
         String token = (String)parameter.get("token");
 
-        String strURL="https://api.weixin.qq.com/cgi-bin/user/info?access_token="+token+"&openid="+openId+"&lang=zh_CN";
-        String param="";
-        String json= WechatUtil.post(strURL, param, "GET");
-        JSONObject jasonObject = JSONObject.fromObject(json);
-        Map<String, Object> jsonMap = (Map) jasonObject;
+        if(openId != null) {
+            String strURL = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" + token + "&openid=" + openId + "&lang=zh_CN";
+            String param = "";
+            String json = WechatUtil.post(strURL, param, "GET");
+            JSONObject jasonObject = JSONObject.fromObject(json);
+            Map<String, Object> jsonMap = (Map) jasonObject;
 
-        if(jsonMap.get("subscribe")!=null && (Integer)jsonMap.get("subscribe") == 1){
-            wechatMap.put("wechatName",(String) jsonMap.get("nickname"));
-            wechatMap.put("headImgUrl",(String) jsonMap.get("headimgurl"));
-
+            if (jsonMap.get("subscribe") != null && (Integer) jsonMap.get("subscribe") == 1) {
+                wechatMap.put("wechatName", (String) jsonMap.get("nickname"));
+                wechatMap.put("headImgUrl", (String) jsonMap.get("headimgurl"));
+            } else {
+                wechatMap.put("wechatName", "宝粉");
+                wechatMap.put("headImgUrl", "");
+            }
         }else{
-            wechatMap.put("wechatName","宝粉");
-            wechatMap.put("headImgUrl","");
+            wechatMap.put("wechatName", "宝粉");
+            wechatMap.put("headImgUrl", "");
         }
 
         return wechatMap;
