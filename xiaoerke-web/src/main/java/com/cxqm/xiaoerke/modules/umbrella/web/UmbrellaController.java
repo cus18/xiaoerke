@@ -57,16 +57,20 @@ public class UmbrellaController  {
     public
     @ResponseBody
     Map<String, Object>  firstPageData() {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
+//        Map<String, Object> map=new HashMap<String, Object>();
+//        Integer count = babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(map);
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        Map<String, Object> result = new HashMap<String, Object>();
+//        Map<String,Object> maps = babyUmbrellaInfoSerivce.getUmbrellaNum(result);
+//        Long familyNum = (Long)maps.get("familyNum");
+//        result.put("count",count*2+familyNum);
 
         Map<String, Object> map=new HashMap<String, Object>();
         Integer count = babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(map);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Map<String, Object> result = new HashMap<String, Object>();
-        Map<String,Object> maps = babyUmbrellaInfoSerivce.getUmbrellaNum(result);
-        Long familyNum = (Long)maps.get("familyNum");
-        result.put("count",count*2+familyNum);
-        return result;
+        map.put("count",count);
+        return map;
     }
 
     /**
