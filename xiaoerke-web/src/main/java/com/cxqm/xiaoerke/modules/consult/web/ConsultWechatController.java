@@ -225,7 +225,7 @@ public class ConsultWechatController extends BaseController {
                                         consultVoiceRecordMongoVo.setUserName(consultSession.getUserName());
                                         consultVoiceRecordMongoVo.setContent(mediaURL);
                                         consultVoiceRecordMongoService.insert(consultVoiceRecordMongoVo);
-                                        WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(), "友情提示：为了更好地提高咨询质量，暂时不支持语音聊天，建议您使用文字聊天，谢谢O(∩_∩)O~");
+                                        WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(), "亲，医生听不到语音哦，发送图文吧！");
                                     }
                                 }
                             }catch (IOException e){
