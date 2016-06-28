@@ -312,6 +312,11 @@ public class ConsultSessionManager {
 
         //可开启线程进行记录
         if (consultSession.getCsUserId() != null) {
+            //查询该用户之前咨询次数
+            Map praiseParam = new HashMap();
+            praiseParam.put("userId", consultSession.getUserId());
+            Integer sessionCount = consultSessionService.getConsultSessionByUserId(praiseParam);
+            consultSession.setConsultNumber(sessionCount + 1);
             consultSessionService.saveConsultInfo(consultSession);
             Integer sessionId = consultSession.getId();
             System.out.println("sessionId-----" + sessionId + "consultSession.getCsUserId()" + consultSession.getUserId());
