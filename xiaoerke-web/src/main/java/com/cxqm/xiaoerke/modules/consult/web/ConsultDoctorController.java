@@ -342,7 +342,7 @@ public class ConsultDoctorController extends BaseController {
                         }
                     }
                     //jiangzg 2016年6月21日16:22:59 add ps:在线咨询仅供参考
-                    String csUserId = richConsultSession.getCsUserId();
+                    /*String csUserId = richConsultSession.getCsUserId();
                     if(StringUtils.isNotNull(csUserId)){
                         List<Map> consultDoctorInfo = consultDoctorInfoService.getDoctorInfoMoreByUserId(csUserId);
                         if(consultDoctorInfo != null && consultDoctorInfo.size() > 0){
@@ -350,7 +350,7 @@ public class ConsultDoctorController extends BaseController {
                                 WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, "感谢您咨询宝大夫，因不能面诊，在线咨询回复仅供参考！");
                             }
                         }
-                    }
+                    }*/
                 }
             }
             String result = consultSessionService.clearSession(sessionId, userId);
