@@ -1,13 +1,13 @@
 <ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
 <ion-view view-title="{{title}}">
-    <ion-content class="umbrellaPaySuccess bg1 " overflow-scroll="true" style="top:0;">
-        <ion-scroll direction="y" has-bouncing="true" >
+    <div class="umbrellaPaySuccess"  style="top:0;">
+        <div class="box">
             <!-- <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/umbrellaPaySuccess1.png">-->
             <!-- <img class="my-img2" width="84%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/umbrellaPaySuccess11.png">-->
             <div class="code tc ">
                 <img data-tap-disabled="true" class="my-img1" width="30%" height="auto" src="{{QRCodeURI}}">
                 <div class="f4 c3">长按识别二维码&nbsp;&nbsp;立即关注宝大夫</div>
             </div>
-        </ion-scroll>
-    </ion-content>
+        </div>
+    </div>
 </ion-view>
