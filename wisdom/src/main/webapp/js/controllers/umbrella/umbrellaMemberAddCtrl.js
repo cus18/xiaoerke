@@ -1,6 +1,6 @@
 ﻿﻿﻿angular.module('controllers', ['ionic']).controller('umbrellaMemberAddCtrl', [
-        '$scope','$state','$stateParams','addFamily','checkFamilyMembers',
-        function ($scope,$state,$stateParams,addFamily,checkFamilyMembers) {
+        '$scope','$state','$stateParams','addFamily','checkFamilyMembers','ifExistOrder',
+        function ($scope,$state,$stateParams,addFamily,checkFamilyMembers,ifExistOrder) {
             $scope.title="宝护伞-宝大夫儿童家庭重疾互助计划";
             $scope.sexItem = "boy";
             $scope.parentLock = false;//判断之前登录的时候选择的是宝爸还是宝妈
