@@ -32,6 +32,16 @@ public class ConsultSession  implements Serializable {
 
     private String flag;
 
+    private Integer consultNumber;
+
+    public Integer getConsultNumber() {
+        return consultNumber;
+    }
+
+    public void setConsultNumber(Integer consultNumber) {
+        this.consultNumber = consultNumber;
+    }
+
     public Integer getId() {
         return id;
     }

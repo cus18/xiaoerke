@@ -104,6 +104,11 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
         return consultSessionDao.getConsultSessionUserCount(map);
     }
 
+    @Override
+    public Integer getConsultSessionByUserId(Map map) {
+        return consultSessionDao.getConsultSessionByUserId(map);
+    }
+
     //根据条件查询会话列表 sunxiao
     @Override
     public List<ConsultSession> getConsultSessionListByInfo(Map map) {
