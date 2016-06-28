@@ -69,7 +69,7 @@ public class UmbrellaController  {
 
         Map<String, Object> map=new HashMap<String, Object>();
         Integer count = babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(map);
-        map.put("count",count);
+        map.put("count",count+2000);
         return map;
     }
 
