@@ -103,20 +103,27 @@ public class MutualHelpDonationController {
             openId = CookieUtils.getCookie(request,"openId");
         }
 
-        MutualHelpDonation mutualHelpDonation = new MutualHelpDonation();
-        mutualHelpDonation.setOpenId(openId);
-        mutualHelpDonation.setUserId((String) params.get("userId"));
-        mutualHelpDonation.setMoney((Double) params.get("money"));
-        mutualHelpDonation.setLeaveNote((String) params.get("leaveNote"));
-        mutualHelpDonation.setDonationType((Integer) params.get("donationType"));
+        Double money = (Double) params.get("money");
+        String leaveNote = (String) params.get("leaveNote");
 
-        int n = service.saveNoteAndDonation(mutualHelpDonation);
-        Map<String,Object> response = new HashMap<String, Object>();
-        if(n>0){
-            response.put("insert","success");
+        Map<String, Object> response = new HashMap<String, Object>();
+
+        if((money == null || money <= 0) && !StringUtils.isNotNull(leaveNote)) {
+            response.put("insert", "failed：捐款和留言都为空");
         }else{
-            response.put("insert","failed");
+            MutualHelpDonation mutualHelpDonation = new MutualHelpDonation();
+            mutualHelpDonation.setOpenId(openId);
+            mutualHelpDonation.setUserId((String) params.get("userId"));
+            mutualHelpDonation.setMoney(money);
+            mutualHelpDonation.setLeaveNote(leaveNote);
+            mutualHelpDonation.setDonationType((Integer) params.get("donationType"));
+            int n = service.saveNoteAndDonation(mutualHelpDonation);if (n > 0) {
+                response.put("insert", "success");
+            } else {
+                response.put("insert", "failed");
+            }
         }
+
         return response;
     }
 }
