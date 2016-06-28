@@ -387,9 +387,10 @@ public class ConsultDoctorController extends BaseController {
 
                 String jsonobj = HttpRequestUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" +
                         token + "", "POST", message);
-                System.out.println(jsonobj+"===============================");
+                System.out.println(jsonobj + "===============================");
                 UmbrellaMongoDBVo vo = new UmbrellaMongoDBVo();
                 vo.setOpenid(openId);
+                vo.setCreateDate(new Date());
                 babyUmbrellaInfoService.saveOpenidToMongoDB(vo);
             }
         }
