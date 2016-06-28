@@ -1,45 +1,45 @@
 package com.cxqm.xiaoerke.common.utils;
 
+import com.cxqm.xiaoerke.common.config.Global;
+
 public class ConstantUtil {
 
-	public static final String AMR_TOMP3_FUNC = "linux";
-	public static final String DOMAIN_VALUE = "baodf.com";
-	public static final String AMR_TOMP3_WINDOWSPATH = "E:\\ffmpeg\\ffmpeg\\bin\\";
-	public static final String AMR_TOMP3_WINDOWSPATHTEMP = "E:\\ffmpeg\\temp\\";
-	public static final String AMR_TOMP3_LINUXPATH = "/mnt/temp/";
-	public static final String SERVER_ADDRESS = "101.201.154.201";
+	//小儿科用户端微信参数
+	public static final String DOCTORCORPID = Global.getConfig("DOCTORCORPID");
+	public static final String DOCTORSECTET = Global.getConfig("DOCTORSECTET");
+
+	//小儿科医生端微信参数
+	public static final String CORPID = Global.getConfig("CORPID");
+	public static final String SECTET = Global.getConfig("SECTET");
+
+	public static  String AMR_TOMP3_FUNC = Global.getConfig("AMR_TOMP3_FUNC");
+	public static  String DOMAIN_VALUE = Global.getConfig("DOMAIN_VALUE");
+	public static  String AMR_TOMP3_WINDOWSPATH = Global.getConfig("AMR_TOMP3_WINDOWSPATH");
+	public static  String AMR_TOMP3_WINDOWSPATHTEMP = Global.getConfig("AMR_TOMP3_WINDOWSPATHTEMP");
+	public static  String AMR_TOMP3_LINUXPATH = Global.getConfig("AMR_TOMP3_LINUXPATH");
+	public static  String SERVER_ADDRESS = Global.getConfig("SERVER_ADDRESS");
 
 	//初始化
-	public static String APP_ID = "wx0baf90e904df0117";//微信开发平台应用id
-	public static String PARTNER = "1260344901";//财付通商户号
-	public static String PARTNER_KEY = "chenxingqiming00chenxingqiming00";//商户号对应的密钥
-	public static String GATEURL = "https://api.mch.weixin.qq.com/pay/unifiedorder";//获取预支付id的接口url
-	public static String TRANSFERS = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";//获取预支付id的接口url
-	public static String PAYRESULT = "https://api.mch.weixin.qq.com/pay/orderquery";//获取支付结果
-	public static String SIGN_METHOD = "MD5";//签名算法常量值
+	public static String APP_ID = Global.getConfig("APP_ID");
+	public static String PARTNER = Global.getConfig("PARTNER");
+	public static String PARTNER_KEY = Global.getConfig("PARTNER_KEY");
+	public static String GATEURL = Global.getConfig("GATEURL");
+	public static String TRANSFERS = Global.getConfig("TRANSFERS");
+	public static String PAYRESULT = Global.getConfig("PAYRESULT");
+	public static String SIGN_METHOD = Global.getConfig("SIGN_METHOD");
 
-	//初始化
-//	public static String APP_ID = "wxa19496b1076e7352";//微信开发平台应用id
-//	public static String PARTNER = "1252031301";//财付通商户号
-//	public static String PARTNER_KEY = "chenxingqiming00chenxingqiming00";//商户号对应的密钥
-//	public static String GATEURL = "https://api.mch.weixin.qq.com/pay/unifiedorder";//获取预支付id的接口url
-//	public static String TRANSFERS = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";//获取预支付id的接口url
-//	public static String PAYRESULT = "https://api.mch.weixin.qq.com/pay/orderquery";//获取支付结果
-//	public static String SIGN_METHOD = "MD5";//签名算法常量值
-//
-	public static String NOTIFY_APPOINT_URL = "http://s68.baodf.com/titan/user/getPayNotifyInfo";
-	public static String NOTIFY_INSURANCE_URL = "http://s68.baodf.com/titan/user/getInsurancePayNotifyInfo";
-	public static String NOTIFY_CUSTOMER_URL = "http://s68.baodf.com/titan/user/getCustomerPayNotifyInfo";
-	public static String NOTIFY_CONSULTPHONE_URL = "http://s68.baodf.com/titan/user/getPhoneConsultPayNotifyInfo";
-	public static String NOTIFY_UMBRELLA_URL = "http://s251.baodf.com/keeper/user/getUmbrellaPayNotifyInfo";
+	public static String NOTIFY_APPOINT_URL = Global.getConfig("NOTIFY_APPOINT_URL");
+	public static String NOTIFY_INSURANCE_URL = Global.getConfig("NOTIFY_INSURANCE_URL");
+	public static String NOTIFY_CUSTOMER_URL = Global.getConfig("NOTIFY_CUSTOMER_URL");
+	public static String NOTIFY_CONSULTPHONE_URL = Global.getConfig("NOTIFY_CONSULTPHONE_URL");
+	public static String NOTIFY_UMBRELLA_URL = Global.getConfig("NOTIFY_UMBRELLA_URL");
 
-	public static int DAY_QUARTER_NUMBER = 96;
-	public static int VISIT_INTERVAL = 15;
-	public static String MARKET_WEB_URL = "http://xiaork.com/";
-	public static String WISDOM_WEB_URL = "http://s165.baodf.com/";
-	public static String ANGEL_WEB_URL = "http://s132.baodf.com/";
-	public static String KEEPER_WEB_URL = "http://s251.baodf.com/";
-	public static String DOCTOR_WEB_URL = "http://s68.baodf.com:8081/";
-	public static String TITAN_WEB_URL = "http://s68.baodf.com/";
-//	public static String ANGEL_WEB_URL = "http://s132.baodf.com/";
+	public static String DAY_QUARTER_NUMBER = Global.getConfig("DAY_QUARTER_NUMBER");
+	public static String VISIT_INTERVAL = Global.getConfig("VISIT_INTERVAL");
+	public static String MARKET_WEB_URL = Global.getConfig("MARKET_WEB_URL");
+	public static String WISDOM_WEB_URL = Global.getConfig("WISDOM_WEB_URL");
+	public static String ANGEL_WEB_URL = Global.getConfig("ANGEL_WEB_URL");
+	public static String KEEPER_WEB_URL = Global.getConfig("KEEPER_WEB_URL");
+	public static String DOCTOR_WEB_URL = Global.getConfig("DOCTOR_WEB_URL");
+	public static String TITAN_WEB_URL = Global.getConfig("TITAN_WEB_URL");
 }

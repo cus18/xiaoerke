@@ -610,7 +610,7 @@ public class ScheduledTask {
     public void persistRecord() {
         try {
             System.out.print("用户端微信参数更新");
-            String token = WechatUtil.getToken(WechatUtil.CORPID, WechatUtil.SECTET);
+            String token = WechatUtil.getToken(ConstantUtil.CORPID, ConstantUtil.SECTET);
             String ticket = WechatUtil.getJsapiTicket(token);
             HashMap<String, Object> map = new HashMap<String, Object>();
             map.put("token", token);
@@ -620,7 +620,7 @@ public class ScheduledTask {
             sessionRedisCache.putWeChatParamToRedis(map);
 
             System.out.print("医生端微信参数更新");
-            token = WechatUtil.getToken(WechatUtil.DOCTORCORPID, WechatUtil.DOCTORSECTET);
+            token = WechatUtil.getToken(ConstantUtil.DOCTORCORPID, ConstantUtil.DOCTORSECTET);
             ticket = WechatUtil.getJsapiTicket(token);
             map = new HashMap<String, Object>();
             map.put("token", token);
