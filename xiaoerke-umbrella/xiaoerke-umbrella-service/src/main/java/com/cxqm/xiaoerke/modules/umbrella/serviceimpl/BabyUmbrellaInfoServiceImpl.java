@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.umbrella.serviceimpl;
 
+import com.cxqm.xiaoerke.common.bean.WechatRecord;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.service.BabyBaseInfoService;
@@ -12,9 +13,9 @@ import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
 import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaFamilyInfo;
 import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaMongoDBVo;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
-import org.springframework.data.mongodb.core.query.Query;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -172,19 +173,19 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
         String token = (String)tokenMap.get("token");
 
         for(Map<String, Object> map : notShareList){//一天未分享
-            String title = "非保险，亦可保障自己；非慈善，亦能帮助他人。邀请好友的同时提升保障，利人利己！";
+            String title = "快把宝护伞分享给好友吧，每个通过你分享而来的朋友都会为你助力2万保障，呼朋唤友来领取40万最高保障吧！";
             String templateId = "b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg";
             String keyword1 = "保障金处于最低额度";
             String keyword2 = StringUtils.isNotNull((String) map.get("baby_id"))?"观察期":"待激活";
-            String remark = "邀请一位好友，增加2万保额，最高可享受40万保障！";
+            String remark = "点击分享";
             String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31";
             String openid = (String)map.get("openid");
             WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, openid, templateId);
         }
 
-        Map<String, Object> notActiveParam = new HashMap<String, Object>();
-        notActiveParam.put("notActive", "notActive");
-        notActiveParam.put("notShareOrActiveDays", "30");
+        /*Map<String, Object> notActiveParam = new HashMap<String, Object>();
+        notActiveParam.put("notActive","notActive");
+        notActiveParam.put("notShareOrActiveDays","30");
         List<Map<String,Object>> notActivelist = babyUmbrellaInfoDao.getBabyUmbrellaInfo(notActiveParam);
 
         for(Map<String, Object> map : notActivelist){//30天未激活
@@ -196,7 +197,7 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
             String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31";
             String openid = (String)map.get("openid");
             WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, openid, templateId);
-        }
+        }*/
     }
 
     @Override

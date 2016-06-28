@@ -415,37 +415,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			param.put("id",id);
 			List<Map<String,Object>> list = babyUmbrellaInfoService.getBabyUmbrellaInfo(param);
 			String tourl = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellab";
-			BabyUmbrellaInfo newBabyUmbrellaInfo = new BabyUmbrellaInfo();
 			System.out.println(list1.size()+"list1.size()++++++++++++++++++++++++++++++++++++++++++++++");
 			boolean sendsucmes = false;
 			if(list1.size()==0){//用户第一次加入保护伞
-				tourl = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
-				Map maps = new HashMap();
-				maps.put("type","umbrella");
-				SwitchConfigure switchConfigure = systemService.getUmbrellaSwitch(maps);
-				String flag = switchConfigure.getFlag();
-				//        flag为1是打开，0是关闭
-				double ram=0;
-				if(flag.equals("1")) {
-					ram = Math.random() * 5;
-//        while (ram < 1){
-//            ram=Math.random() * 5;
-//        }
-
-					do {
-						ram = Math.random() * 5;
-					} while (ram < 1);
-				}
-				String res = String.format("%.0f", ram);
-				newBabyUmbrellaInfo.setTruePayMoneys(res);
-				newBabyUmbrellaInfo.setVersion("a");
-				if(res.equals("0")){
-					newBabyUmbrellaInfo.setPayResult("success");
-					sendsucmes = true;
-//            babyUmbrellaInfo.setActivationTime(new Date());
-				}else {
-					newBabyUmbrellaInfo.setPayResult("fail");
-				}
 				if(list.size()!=0){//有分享者时，修改分享者信息并发送给分享者信息
 					String fromOpenId = (String)list.get(0).get("openid");//分享者openid
 					String babyId = (String)list.get(0).get("baby_id");
@@ -484,9 +456,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 					String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31";
 					WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, fromOpenId, templateId);
 				}
-				newBabyUmbrellaInfo.setOpenid(toOpenId);
-				newBabyUmbrellaInfo.setUmberllaMoney(200000);
-				babyUmbrellaInfoService.saveBabyUmbrellaInfo(newBabyUmbrellaInfo);
 			}else{
 				/*if(list.size()!=0){
 					if("a".equals(list.get(0).get("version"))){
