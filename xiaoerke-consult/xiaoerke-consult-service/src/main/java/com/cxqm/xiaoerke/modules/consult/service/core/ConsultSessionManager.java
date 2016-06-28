@@ -27,7 +27,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
@@ -61,8 +60,6 @@ public class ConsultSessionManager {
     private final Map<Channel, String> channelUserMapping = new ConcurrentHashMap<Channel, String>();
 
     public List<String> distributorsList = new ArrayList<String>();
-
-    private AtomicInteger accessNumber = new AtomicInteger(1000);
 
     private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
 
@@ -239,6 +236,10 @@ public class ConsultSessionManager {
                 }
             }
 
+            Map praiseParam = new HashMap();
+            praiseParam.put("userId", consultSession.getUserId());
+            Integer sessionCount = consultSessionService.getConsultSessionByUserId(praiseParam);
+            consultSession.setConsultNumber(sessionCount + 1);
             consultSessionService.saveConsultInfo(consultSession);
 
             sessionId = consultSession.getId();
@@ -270,6 +271,8 @@ public class ConsultSessionManager {
                 System.out.println("distributorChannel.isActive()-----" + distributorChannel.isActive());
                 if (distributorChannel.isActive()) {
                     consultSession.setCsUserId(distributorId);
+                    User csUser = systemService.getUserById(distributorId);
+                    consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
                     csChannel = distributorChannel;
                     break;
                 } else {
@@ -289,7 +292,9 @@ public class ConsultSessionManager {
                     String csUserId = RandomUtils.getRandomKeyFromMap(csUserChannelMapping);
                     csChannel = csUserChannelMapping.get(csUserId);
                     if (csChannel.isActive()) {
+                        User csUser = systemService.getUserById(csUserId);
                         consultSession.setCsUserId(csUserId);
+                        consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
                         break;
                     } else {
                         csUserChannelMapping.remove(csUserId);
@@ -314,6 +319,11 @@ public class ConsultSessionManager {
 
         //可开启线程进行记录
         if (consultSession.getCsUserId() != null) {
+            //查询该用户之前咨询次数
+            Map praiseParam = new HashMap();
+            praiseParam.put("userId", consultSession.getUserId());
+            Integer sessionCount = consultSessionService.getConsultSessionByUserId(praiseParam);
+            consultSession.setConsultNumber(sessionCount + 1);
             consultSessionService.saveConsultInfo(consultSession);
             Integer sessionId = consultSession.getId();
             System.out.println("sessionId-----" + sessionId + "consultSession.getCsUserId()" + consultSession.getUserId());

@@ -610,6 +610,10 @@
 		return Inter_Days;
 	}
 	function loadData(){
+		hiddenUserInfo();
+		hiddenAddConsult();
+		hiddenTableOrder();
+		hiddenTableCustomer();
 		var id=$("#patientIdData",parent.document).html();
 		var sourth=$("#sourceData",parent.document).html();
 		$("#openid").val(id);

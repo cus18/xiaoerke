@@ -375,12 +375,8 @@ public class WechatUtil {
         shortUrlCreate.setLong_url(longUrl);
         String object = HttpRequestUtil.httpsRequest(url, "POST", net.sf.json.JSONObject.fromObject(shortUrlCreate).toString());
         JSONObject resultJson = new JSONObject(object);
-        try{
-            String shortUrl = (String) resultJson.get("short_url");
-            return shortUrl;
-        }catch (Exception var){
-            return  null;
-        }
+        String shortUrl = (String) resultJson.get("short_url");
+        return shortUrl;
     }
 
     /**
@@ -549,7 +545,7 @@ public class WechatUtil {
     public static String sendTemplateMsgToUser(String token , String openId ,String templateId ,String content){
         String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+token;
         try {
-            String json = "{\"touser\":\"" + openId + "\",\"template_id\":\""+templateId+"\",\"url\":\"http://weixin.qq.com/download\"," +
+            String json = "{\"touser\":\"" + openId + "\",\"template_id\":\""+templateId+"\",\"url\":\"\"," +
                     "\"data\":" + "{"+content+"}}";
             String re = HttpRequestUtil.getConnectionResult(url, "POST", json);
             System.out.print(json + "--" + re);
