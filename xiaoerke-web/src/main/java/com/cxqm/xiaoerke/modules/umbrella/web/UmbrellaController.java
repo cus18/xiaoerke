@@ -684,11 +684,17 @@ public class UmbrellaController  {
         }else {
             babyUmbrellaInfo.setPayResult("fail");
         }
-
+        String shareId=params.get("shareId").toString();
+        if(StringUtils.isNotNull(shareId)){
+            babyUmbrellaInfo.setSource(shareId);
+        }else{
+            babyUmbrellaInfo.setSource("no");
+        }
         //完成添加动作
         Integer res = babyUmbrellaInfoSerivce.newSaveBabyUmbrellaInfo(babyUmbrellaInfo);
-//        String shareId=params.get("shareId").toString();
-//        sendWechatMessage(openid,shareId);
+        if(res==1&&"success".equals(babyUmbrellaInfo.getPayResult())){
+            sendWechatMessage(openid,shareId);
+        }
 
         //插入家庭成员的信息
         //宝爸宝妈
