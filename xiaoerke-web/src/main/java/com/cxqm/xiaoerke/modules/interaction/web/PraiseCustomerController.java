@@ -80,7 +80,7 @@ public class PraiseCustomerController extends BaseController {
     String updateCustomerEvaluation(@RequestBody Map<String, Object> params) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         int result = patientRegisterPraiseService.updateCustomerEvaluation(params);
-        if ("1".equalsIgnoreCase((String)params.get("starNum1")) && result > 0) {
+        if ("1".equalsIgnoreCase((String)params.get("starNum1")) && result >0) {
             List<String> openIds = consultBadEvaluateRemindUserService.findConsultRemindUserId();
             String customerId = (String) params.get("id");
             Map registerPraiseInfo = patientRegisterPraiseService.selectCustomerEvaluation(customerId);
