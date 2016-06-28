@@ -239,6 +239,10 @@ public class ConsultSessionManager {
                 }
             }
 
+            Map praiseParam = new HashMap();
+            praiseParam.put("userId", consultSession.getUserId());
+            Integer sessionCount = consultSessionService.getConsultSessionByUserId(praiseParam);
+            consultSession.setConsultNumber(sessionCount + 1);
             consultSessionService.saveConsultInfo(consultSession);
 
             sessionId = consultSession.getId();
