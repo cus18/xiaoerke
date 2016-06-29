@@ -1,5 +1,6 @@
 var payLock = false;
 var moneys = "0";
+var leaveNotes = "";
 var lovePlanPayInit=function(){
     $.ajax({
         url:"umbrella/getOpenid",// 跳转到 action
@@ -104,6 +105,7 @@ function wechatPay() {
     }
     if(payLock) {
         moneys = $('#money').val();
+        leaveNotes = $("#leaveNotes").val();
         if (moneys != "0" && moneys!="") {
             $.ajax({
                 url: "account/user/lovePlanPay",// 跳转到 action
@@ -136,7 +138,6 @@ function wechatPay() {
                                         var status = result.status;
                                         if (status == "1") {
                                             var shareId = GetQueryString("shareId") == null || GetQueryString("shareId") == "120000000" ? 130000000 : GetQueryString("shareId");
-                                            // window.location.href="http://s165.baodf.com/wisdom/umbrella#/umbrellaPaySuccess/"+shareId;
                                             window.location.href="http://s2.xiaork.cn/wisdom/umbrella#/umbrellaPaySuccess/"+shareId;
                                             $.ajax({
                                                 type: 'POST',
@@ -155,16 +156,13 @@ function wechatPay() {
                                             });
 
                                         } else {
-                                            // window.location.href = "http://s165.baodf.com/wisdom/firstPage/umbrella?status=a";
                                             var shareId = GetQueryString("shareId") == null || GetQueryString("shareId") == "120000000" ? 130000000 : GetQueryString("shareId");
-                                            // window.location.href = "http://s165.baodf.com/wisdom/umbrella#/umbrellaJoin/" + new Date().getTime() + "/" + shareId;
                                             window.location.href = "http://localhost:8080/wisdom/umbrella#/umbrellaJoin/" + new Date().getTime() + "/" + shareId;
                                         }
                                     },
                                     dataType: "json"
                                 });
-                                //
-                                //                             // window.location.href = "http://s2.xiaork.cn/wisdom/firstPage/umbrella?status=a";
+                                // window.location.href = "http://s2.xiaork.cn/wisdom/firstPage/umbrella?status=a";
                             } else {
                                 alert("支付失败,请重新支付")
                             }
