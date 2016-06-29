@@ -40,6 +40,7 @@ public class RegisterServiceVo extends DataEntity<RegisterServiceVo> {
     private String priceRange;
     private String repeatFlag;//0是每周重复，1是隔周重复，2是不重复
     private String relationType;
+    private String channel;
     
     public String getRelationType() {
 		return relationType;
@@ -252,6 +253,14 @@ public class RegisterServiceVo extends DataEntity<RegisterServiceVo> {
 	public void setId(String id) {
 		this.id = id;
 	}
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
 }
 
 

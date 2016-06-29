@@ -329,4 +329,157 @@
       newZhengYuQiao = #{newZhengYuQiao,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+    <!--添加渠道-->
+    <insert id="insertChannel" parameterType="com.cxqm.xiaoerke.modules.operation.entity.ChannelInfo"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into channel_info
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="operater != null" >
+                operater,
+            </if>
+            <if test="department != null" >
+                department,
+            </if>
+            <if test="marketer != null" >
+                marketer,
+            </if>
+            <if test="channel != null" >
+                channel
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="operater != null" >
+                #{operater,jdbcType=VARCHAR},
+            </if>
+            <if test="department != null" >
+                #{department,jdbcType=VARCHAR},
+            </if>
+            <if test="marketer != null" >
+                #{marketer,jdbcType=VARCHAR},
+            </if>
+            <if test="channel != null" >
+                #{channel,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <!--查询全部渠道二维码信息-->
+    <select id="getChannelInfos" resultType="com.cxqm.xiaoerke.modules.operation.entity.ChannelInfo">
+        SELECT id,operater,department,marketer,channel from channel_info
+        ORDER BY department
+    </select>
+    <!--查询所有渠道-->
+    <select id="getAllChannels" resultType="java.lang.String">
+        SELECT DISTINCT channel from channel_info
+    </select>
+    <!--查询渠道分类统计数据-->
+    <select id="getChannelCategoryStatistics" resultType="java.util.Map">
+        SELECT attention.department,attention.attentionCount,attention.cancleAttentionCount,attention.leijiAttentionCount,attention.leijiCancleAttentionCount,IFNULL(chat.chatCount,0) chatCount
+        ,IFNULL(chat.validChatCount,0) validChatCount,IFNULL(chat.invalidChatCount,0) invalidChatCount,IFNULL(chat.chatScale,'0.00%') chatScale
+        from (SELECT attentionLeiji1.department,attentionLeiji1.leijiAttentionCount,attentionLeiji1.leijiCancleAttentionCount,attentionLeiji2.attentionCount,attentionLeiji2.cancleAttentionCount from
+        (SELECT
+        chi.department,
+        count(case sa.status when '0' then 1 end) as leijiAttentionCount,
+        count(case sa.status when '1' then 1 end) as leijiCancleAttentionCount
+        from
+        channel_info chi
+        INNER JOIN sys_attention sa ON sa.marketer = chi.marketer
+        where sa.date &lt;= #{endDate}
+        GROUP BY chi.department) attentionLeiji1
+        LEFT JOIN
+        (SELECT
+        chi.department,
+        count(case sa.status when '0' then 1 end) as attentionCount,
+        count(case sa.status when '1' then 1 end) as cancleAttentionCount
+        from
+        channel_info chi
+        INNER JOIN sys_attention sa ON sa.marketer = chi.marketer
+        where sa.date &gt;= #{startDate} and sa.date &lt;= #{endDate}
+        GROUP BY chi.department) attentionLeiji2
+        on attentionLeiji1.department=attentionLeiji2.department
+        ) attention
+        LEFT JOIN
+        (SELECT chi.department,IFNULL(cs.flag,0),COUNT(*) as chatCount,
+        count(case cs.flag when  0 then 1 end) as validChatCount,
+        count(case when cs.flag!=0 then 1 end) as invalidChatCount,
+        concat ( left (count(case cs.flag when  0 then 1 end)/COUNT(*)*100,5),'%') as chatScale
+        from consult_session cs
+        INNER JOIN sys_attention sa
+        on cs.sys_user_id=sa.openid
+        INNER JOIN channel_info chi
+        on sa.marketer=chi.marketer
+        where cs.create_time &gt;= #{startDate} and cs.create_time &lt;= #{endDate}
+        GROUP BY chi.department) chat
+        on attention.department=chat.department
+        <if test="department!='all'">
+            where attention.department = #{department}
+        </if>
+        ORDER BY attention.department
+    </select>
+    <!--查询渠道细分统计数据-->
+    <select id="getChannelDetailStatistics" resultType="java.util.Map">
+        SELECT attention.marketer,attention.attentionCount,attention.cancleAttentionCount,attention.leijiAttentionCount,attention.leijiCancleAttentionCount,IFNULL(chat.chatCount,0) chatCount
+        ,IFNULL(chat.validChatCount,0) validChatCount,IFNULL(chat.invalidChatCount,0) invalidChatCount,IFNULL(chat.chatScale,'0.00%') chatScale,attention.channel,attention.department
+        from (SELECT attentionLeiji1.marketer,attentionLeiji1.leijiAttentionCount,attentionLeiji1.leijiCancleAttentionCount,attentionLeiji2.attentionCount,attentionLeiji2.cancleAttentionCount
+        ,attentionLeiji1.channel,attentionLeiji1.department
+        from
+        (SELECT
+        chi.marketer,
+        chi.channel,
+        chi.department,
+        count(case sa.status when '0' then 1 end) as leijiAttentionCount,
+        count(case sa.status when '1' then 1 end) as leijiCancleAttentionCount
+        from
+        channel_info chi
+        INNER JOIN sys_attention sa ON sa.marketer = chi.marketer
+        where sa.date &lt;= #{endDate}
+        GROUP BY chi.marketer) attentionLeiji1
+        LEFT JOIN
+        (SELECT
+        chi.marketer,
+        chi.channel,
+        chi.department,
+        count(case sa.status when '0' then 1 end) as attentionCount,
+        count(case sa.status when '1' then 1 end) as cancleAttentionCount
+        from
+        channel_info chi
+        INNER JOIN sys_attention sa ON sa.marketer = chi.marketer
+        where sa.date &gt;= #{startDate} and sa.date &lt;= #{endDate}
+        GROUP BY chi.marketer) attentionLeiji2
+        on attentionLeiji1.marketer=attentionLeiji2.marketer
+        ) attention
+        LEFT JOIN
+        (SELECT chi.marketer,chi.channel,chi.department,IFNULL(cs.flag,0),COUNT(*) as chatCount,
+        count(case cs.flag when  0 then 1 end) as validChatCount,
+        count(case when cs.flag!=0 then 1 end) as invalidChatCount,
+        concat ( left (count(case cs.flag when  0 then 1 end)/COUNT(*)*100,5),'%') as chatScale
+        from consult_session cs
+        INNER JOIN sys_attention sa
+        on cs.sys_user_id=sa.openid
+        INNER JOIN channel_info chi
+        on sa.marketer=chi.marketer
+        where cs.create_time &gt;= #{startDate} and cs.create_time &lt;= #{endDate}
+        GROUP BY chi.marketer) chat
+        on attention.marketer=chat.marketer
+        <if test="department!='all'">
+            <if test="channel!='all'">
+                where attention.department = #{department} and attention.channel = #{channel}
+            </if>
+            <if test="channel=='all'">
+                where attention.department = #{department}
+            </if>
+        </if>
+        <if test="department=='all'">
+            <if test="channel!='all'">
+                where  attention.channel = #{channel}
+            </if>
+        </if>
+        ORDER BY attention.marketer
+    </select>
 </mapper>
