@@ -45,20 +45,4 @@ define(['appMarket'], function (app) {
         .factory('PhotoWall',['$resource',function ($resource){
             return $resource(user_h5 + 'mutualHelp/donation/photoWall');
         }])
-        //保护伞捐款总人数
-        .factory('Count',['$resource',function ($resource){
-            return $resource(user_h5 + 'mutualHelp/donation/count');
-        }])
-        //保护伞捐款总钱数
-        .factory('SumMoney',['$resource',function ($resource){
-            return $resource(user_h5 + 'mutualHelp/donation/sumMoney');
-        }])
-        //保护伞最新留言
-        .factory('LastNote',['$resource',function ($resource){
-            return $resource(user_h5 + 'mutualHelp/donation/lastNote');
-        }])
-        //保护伞最新留言并捐款
-        .factory('AddNoteAndDonation',['$resource',function ($resource){
-            return $resource(user_h5 + 'mutualHelp/donation/addNoteAndDonation');
-        }])
 })
