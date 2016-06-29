@@ -115,5 +115,6 @@
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
 		<property name="maxUploadSize" value="${web.maxUploadSize}" />  
 	</bean>
-	
+
+	<import resource="runTimeTask.xml"></import>
 </beans>

@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.mutualHelp.web;
 
 import com.cxqm.xiaoerke.common.utils.CookieUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.mutualHelp.entity.MutualHelpDonation;
 import com.cxqm.xiaoerke.modules.mutualHelp.service.MutualHelpDonationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +37,7 @@ public class MutualHelpDonationController {
     public Map<String, Object> getDetail(HttpServletRequest request, @RequestBody Map<String, Object> params){
         String openId = (String) params.get("openId");
         if(!StringUtils.isNotNull(openId)){
-            openId = CookieUtils.getCookie(request,"openId");
+            openId = CookieUtils.getCookie(request, "openId");
         }
 
         HashMap<String,Object> searchMap = new HashMap<String, Object>();
@@ -102,8 +104,7 @@ public class MutualHelpDonationController {
         if(!StringUtils.isNotNull(openId)){
             openId = CookieUtils.getCookie(request,"openId");
         }
-
-        Double money = (Double) params.get("money");
+        Integer money = Integer.valueOf(((Float)params.get("money")).intValue()*100);
         String leaveNote = (String) params.get("leaveNote");
 
         Map<String, Object> response = new HashMap<String, Object>();
@@ -125,5 +126,23 @@ public class MutualHelpDonationController {
         }
 
         return response;
+    }
+
+    /**
+     * 支付页面openid
+     */
+    @RequestMapping(value = "/getOpenid", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> getOpenid(HttpServletRequest request,HttpSession session){
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        String openid= WechatUtil.getOpenId(session, request);
+//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+        if(openid==null||openid.equals("")){
+            resultMap.put("openid","none");
+            return resultMap;
+        }
+        resultMap.put("openid",openid);
+        return resultMap;
     }
 }

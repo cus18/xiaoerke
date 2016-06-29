@@ -163,8 +163,6 @@ public class PayController {
             model.addAttribute("intervalFlag", "1");
             return "pay/umbrellaPay";
         }else if("lovePlanPay".equals(serviceType)){
-            model.addAttribute("payPrice", 5.0);
-            model.addAttribute("intervalFlag", "1");
             return "pay/lovePlanPay";
         }
         else{

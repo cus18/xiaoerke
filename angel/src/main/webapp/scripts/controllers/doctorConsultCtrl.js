@@ -1405,7 +1405,7 @@ angular.module('controllers', ['luegg.directives'])
             };
             $scope.addConsultTableMore = "查看更多";
             $scope.tapAddConsultTable = function (key) {
-                newTime()
+                newTime();
                 $scope.showFlag[key] = !$scope.showFlag[key];
                 if($scope.showFlag[key]){
                     $scope.addConsultTableMore = "收起更多";
