@@ -372,7 +372,7 @@
     <!--查询全部渠道二维码信息-->
     <select id="getChannelInfos" resultType="com.cxqm.xiaoerke.modules.operation.entity.ChannelInfo">
         SELECT id,operater,department,marketer,channel from channel_info
-        ORDER BY department
+        ORDER BY marketer
     </select>
     <!--查询所有渠道-->
     <select id="getAllChannels" resultType="java.lang.String">

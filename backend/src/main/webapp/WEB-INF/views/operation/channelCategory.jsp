@@ -53,8 +53,16 @@
     <c:forEach items="${channelCategoryVo}" var="channelVo">
         <tr id="${menu.id}" pId="${menu.parent.id ne '1'?menu.parent.id:'0'}">
             <td>${channelVo.department}</td>
-            <td>${channelVo.attentionCount}</td>
-            <td>${channelVo.cancleAttentionCount}</td>
+            <td>
+                <c:if test="${empty channelVo.attentionCount}">0</c:if>
+                <c:if test="${not empty channelVo.attentionCount}">${channelVo.attentionCount}</c:if>
+            </td>
+            <td>
+                <c:if test="${empty channelVo.cancleAttentionCount}">0</c:if>
+                <c:if test="${not empty channelVo.cancleAttentionCount}">${channelVo.cancleAttentionCount}</c:if>
+            </td>
+            <%--<td>${channelVo.attentionCount}</td>
+            <td>${channelVo.cancleAttentionCount}</td>--%>
             <td>${channelVo.leijiAttentionCount}</td>
             <td>${channelVo.leijiCancleAttentionCount}</td>
             <td>${channelVo.chatCount}</td>
