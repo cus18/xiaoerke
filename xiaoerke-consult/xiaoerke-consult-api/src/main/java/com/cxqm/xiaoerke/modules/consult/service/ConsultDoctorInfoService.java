@@ -4,6 +4,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,4 +26,6 @@ public interface ConsultDoctorInfoService {
     List<String> getConsultDoctorDepartment();
 
     ConsultDoctorInfoVo getConsultDoctorInfoByUserId(String userId);
+
+    List<Map> getDoctorInfoMoreByUserId(String userId);
 }

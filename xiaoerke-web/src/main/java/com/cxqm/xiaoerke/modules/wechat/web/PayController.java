@@ -66,6 +66,16 @@ public class PayController {
     /**
      *
      * 处理来自微信服务器的请求
+     * 爱心传递计划
+     *
+     */
+    @RequestMapping(value = "/lovePlanPay/patientPay.do", method = {RequestMethod.POST, RequestMethod.GET})
+    public String lovePlanPay() {
+        return "lovePlan";
+    }
+    /**
+     *
+     * 处理来自微信服务器的请求
      * 防犬宝
      *
      */
@@ -152,7 +162,12 @@ public class PayController {
             model.addAttribute("payPrice", 5.0);
             model.addAttribute("intervalFlag", "1");
             return "pay/umbrellaPay";
-        }else{
+        }else if("lovePlanPay".equals(serviceType)){
+            model.addAttribute("payPrice", 5.0);
+            model.addAttribute("intervalFlag", "1");
+            return "pay/lovePlanPay";
+        }
+        else{
             return null;
         }
     }

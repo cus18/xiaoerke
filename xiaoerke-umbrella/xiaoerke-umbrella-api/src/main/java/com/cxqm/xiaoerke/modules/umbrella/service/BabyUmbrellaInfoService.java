@@ -3,6 +3,8 @@ package com.cxqm.xiaoerke.modules.umbrella.service;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
 import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaFamilyInfo;
+import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaMongoDBVo;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
 import java.util.Map;
@@ -74,4 +76,48 @@ public interface BabyUmbrellaInfoService {
      * @return
      */
     int updateBabyUmbrellaInfoIfShare(BabyUmbrellaInfo babyUmbrellaInfo);
+
+
+    /**
+     * 新版添加保障金信息
+     * @param babyUmbrellaInfo
+     * @return
+     */
+    int newSaveBabyUmbrellaInfo(BabyUmbrellaInfo babyUmbrellaInfo);
+
+
+    /**
+     * 根据Openid 删除一个宝护伞信息
+     * @param openid
+     * @return
+     */
+    int deleteUmbrellaByOpenid(String openid);
+
+
+    /**
+     * 更新支付信息
+     * @param babyUmbrellaInfo
+     * @return
+     */
+    int updateBabyUmbrellaInfoStatus(BabyUmbrellaInfo babyUmbrellaInfo);
+
+
+    /**
+     * 根据宝护伞ID 删除成员信息
+     * @param id
+     * @return
+     */
+    int deleteByUmbrellaId(Integer id);
+
+
+    /**
+     * 获取用户第几位加入
+     * @param map
+     * @return
+     */
+    int getUmbrellaRank(Map<String, Object> map);
+
+    int saveOpenidToMongoDB(UmbrellaMongoDBVo entity);
+
+    List<UmbrellaMongoDBVo> getUmbrellaMongoDBVoList(Query query);
 }

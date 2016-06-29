@@ -69,4 +69,36 @@ public interface BabyUmbrellaInfoDao {
      */
     int updateBabyUmbrellaInfoIfShare(BabyUmbrellaInfo babyUmbrellaInfo);
 
+    /**
+     * 新版添加保障金信息
+     * @param babyUmbrellaInfo
+     * @return
+     */
+    int newSaveBabyUmbrellaInfo(BabyUmbrellaInfo babyUmbrellaInfo);
+
+    /**
+     * 根据Openid 删除一个宝护伞信息
+     * @param openid
+     * @return
+     */
+    int deleteUmbrellaByOpenid(String openid);
+
+    /**
+     * 更新支付信息
+     * @param babyUmbrellaInfo
+     * @return
+     */
+    int updateBabyUmbrellaInfoStatus(BabyUmbrellaInfo babyUmbrellaInfo);
+
+
+    /**
+     * 获取用户第几位加入
+     * @param map
+     * @return
+     */
+    int getUmbrellaRank(Map<String, Object> map);
+
+
+
+
 }

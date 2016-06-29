@@ -7,11 +7,15 @@ import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.common.web.BaseController;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultVoiceRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
+import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultRecordMongoDBServiceImpl;
+import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultVoiceRecordMongoServiceImpl;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
@@ -27,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -52,6 +57,9 @@ public class ConsultWechatController extends BaseController {
     private ConsultRecordService consultRecordService;
 
     private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
+
+    @Autowired
+    private ConsultVoiceRecordMongoServiceImpl consultVoiceRecordMongoService;
 
     @RequestMapping(value = "/conversation", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -194,7 +202,7 @@ public class ConsultWechatController extends BaseController {
                         }else if(messageType.contains("video")){
                             obj.put("type", 3);
                         }
-
+                        //收到语音，发送通知给用户，提示为了更好地咨询，最好文字聊天
                         //根据mediaId，从微信服务器上，获取到媒体文件，再将媒体文件，放置阿里云服务器，获取URL
                         if(messageType.contains("voice")||messageType.contains("video")||messageType.contains("image")){
                             try{
@@ -204,7 +212,22 @@ public class ConsultWechatController extends BaseController {
                                         (String) this.param.get("mediaId"),messageType);
                                 obj.put("content", mediaURL);
                                 messageContent = mediaURL;
-
+                                if(messageType.contains("voice")){
+                                    ConsultVoiceRecordMongoVo consultVoiceRecordMongoVo = new ConsultVoiceRecordMongoVo();
+                                    consultVoiceRecordMongoVo.setCsUserId(consultSession.getCsUserId());
+                                    consultVoiceRecordMongoVo.setSessionId(sessionId);
+                                    long consultCount = consultVoiceRecordMongoService.countConsultByVoice(consultVoiceRecordMongoVo);
+                                    if(consultCount < 1){
+                                        consultVoiceRecordMongoVo.setCreateDate(new Date());
+                                        consultVoiceRecordMongoVo.setType(messageType);
+                                        consultVoiceRecordMongoVo.setUserId(consultSession.getUserId());
+                                        consultVoiceRecordMongoVo.setCsUserName(consultSession.getCsUserName());
+                                        consultVoiceRecordMongoVo.setUserName(consultSession.getUserName());
+                                        consultVoiceRecordMongoVo.setContent(mediaURL);
+                                        consultVoiceRecordMongoService.insert(consultVoiceRecordMongoVo);
+                                        WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(), "亲，医生听不到语音哦，发送图文吧！");
+                                    }
+                                }
                             }catch (IOException e){
                                 e.printStackTrace();
                             }

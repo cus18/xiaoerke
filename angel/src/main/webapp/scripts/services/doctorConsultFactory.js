@@ -126,10 +126,22 @@ angular.module('services', ['ngResource'])
     .factory('GetCurrentDoctorDepartment', ['$resource', function ($resource) {
         return $resource(public + 'consult/transfer/getCurrentDoctorDepartment');
     }])
-    //根据openid获取历史咨询
+/*    //根据openid获取历史咨询
     .factory('GetCustomerLogByOpenID', ['$resource', function ($resource) {
         return $resource(public + 'customer/getCustomerLogByOpenID');
     }])
+    //添加诊断记录
+    .factory('SaveCustomerLog', ['$resource', function ($resource) {
+        return $resource(public + 'customer/saveCustomerLog');
+    }])
+    //查找所属科室
+    .factory('SearchIllnessList', ['$resource', function ($resource) {
+        return $resource(public + 'customer/searchIllnessList');
+    }])
+    //查找宝宝的初始信息
+    .factory('SearchBabyInfo', ['$resource', function ($resource) {
+        return $resource(public + 'customer/searchBabyInfo');
+    }])*/
 
 
 

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.utils.HttpRequestUtil;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
@@ -20,6 +21,8 @@ import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
+import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaMongoDBVo;
+import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
@@ -67,6 +70,9 @@ public class ConsultDoctorController extends BaseController {
 
     @Autowired
     private ConsultDoctorInfoService consultDoctorInfoService;
+
+    @Autowired
+    private BabyUmbrellaInfoService babyUmbrellaInfoService;
 
     @RequestMapping(value = "/getCurrentUserHistoryRecord", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -326,24 +332,66 @@ public class ConsultDoctorController extends BaseController {
                     Map param = new HashMap();
                     param.put("userId",richConsultSession.getCsUserId());
                     List<ConsultDoctorInfoVo> consultDoctorInfoVos = consultDoctorInfoService.getConsultDoctorByInfo(param);
+                    Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
                     if(consultDoctorInfoVos !=null && consultDoctorInfoVos.size() >0){
                         if(null !=consultDoctorInfoVos.get(0).getSendMessage() && consultDoctorInfoVos.get(0).getSendMessage().equals("1")){
                             String st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
                                     "<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
                                     params.get("uuid") + "'>点击这里去评价</a>】";
-                            Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
                             WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
                         }
                     }
-
+                    //jiangzg 2016年6月21日16:22:59 add ps:在线咨询仅供参考
+                    /*String csUserId = richConsultSession.getCsUserId();
+                    if(StringUtils.isNotNull(csUserId)){
+                        List<Map> consultDoctorInfo = consultDoctorInfoService.getDoctorInfoMoreByUserId(csUserId);
+                        if(consultDoctorInfo != null && consultDoctorInfo.size() > 0){
+                            if(consultDoctorInfo.get(0).get("userType") !=null && "consultDoctor".equalsIgnoreCase((String)consultDoctorInfo.get(0).get("userType"))){
+                                WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, "感谢您咨询宝大夫，因不能面诊，在线咨询回复仅供参考！");
+                            }
+                        }
+                    }*/
                 }
             }
             String result = consultSessionService.clearSession(sessionId, userId);
-
             response.put("result", result);
+            try{
+                sendUmbrellaWechatMessage(userId);//咨询完毕发送保护伞消息，每个用户只发一次
+            }catch (Exception e){
+                System.out.println("咨询关闭发送保护伞消息"+e);
+            }
             return response;
         } else {
             return null;
+        }
+    }
+
+    private void sendUmbrellaWechatMessage(String openId){
+        Query queryDate = new Query();
+        queryDate.addCriteria(Criteria.where("openid").is(openId));
+        List<UmbrellaMongoDBVo> openidlist = babyUmbrellaInfoService.getUmbrellaMongoDBVoList(queryDate);
+        if(openidlist.size()==0){//没有发过的才发，只发一次
+            Map<String, Object> param = new HashMap<String, Object>();
+            param.put("openid", openId);
+            List<Map<String,Object>> list = babyUmbrellaInfoService.getBabyUmbrellaInfo(param);
+            if(list.size()==0||!"success".equals(list.get(0).get("pay_result"))){
+                Map parameter = systemService.getWechatParameter();
+                String token = (String)parameter.get("token");
+                int count = babyUmbrellaInfoService.getUmbrellaCount();
+                String title = "小病问医生，大病有互助";
+                String description = "感谢您的咨询，现在宝大夫推出家庭重疾40万高额保障互助计划，目前已有" + count + "位妈妈加入，现在就等你了，赶紧加入吧！";
+                //String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellab";
+                String url = "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000000/a";
+                String picUrl = "http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella";
+                String message = "{\"touser\":\""+ openId+"\",\"msgtype\":\"news\",\"news\":{\"articles\": [{\"title\":\""+ title +"\",\"description\":\""+description+"\",\"url\":\""+ url +"\",\"picurl\":\""+picUrl+"\"}]}}";
+
+                String jsonobj = HttpRequestUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" +
+                        token + "", "POST", message);
+                System.out.println(jsonobj+"===============================");
+                UmbrellaMongoDBVo vo = new UmbrellaMongoDBVo();
+                vo.setOpenid(openId);
+                babyUmbrellaInfoService.saveOpenidToMongoDB(vo);
+            }
         }
     }
 

@@ -222,8 +222,8 @@
             <textarea type="text" name="messageData" id="patientIdData" class="textarea" style="display:none;">{{currentUserConversation.patientId}}</textarea>
             <textarea type="text" name="messageData" id="doctorIdData" class="textarea" style="display:none;">{{doctorId}}</textarea>
             <textarea type="text" name="messageData" id="sourceData" class="textarea" style="display:none;">{{currentUserConversation.source}}</textarea>
-            <div class="advisory-content" ng-show='showFlag.advisoryContent'>
-                <!--用户信息-->
+            <!--<div class="advisory-content" ng-show='showFlag.advisoryContent'>
+                &lt;!&ndash;用户信息&ndash;&gt;
                 <div class="module">
                     <div class="title">
                         <h3>用户信息<input type="submit" class="more" value="{{userTableMore}}" ng-click="tapUserTable('userTable')"/> <span>(VIP)</span>：</h3>
@@ -253,10 +253,10 @@
                         </tr>
                     </table>
                 </div>
-                <!--近期就诊记录-->
+                &lt;!&ndash;近期就诊记录&ndash;&gt;
                 <div class="module">
                     <div class="title">
-                        <h3>近期就诊记录<input type="submit" class="more" value="收起更多" ng-click="tapShowButton('recentTable')"/></h3>
+                        <h3>近期就诊记录<input type="submit" class="more" value="{{recentTableMore}}" ng-click="tapRecentTable('recentTable')"/></h3>
                     </div>
                     <table class="table2" ng-show="showFlag.recentTable">
                         <tr>
@@ -298,10 +298,10 @@
                         </tr>
                     </table>
                 </div>
-                <!--添加咨询记录-->
+                &lt;!&ndash;添加咨询记录&ndash;&gt;
                 <div class="module" >
                     <div class="title">
-                        <h3>添加咨询记录<input type="submit" class="more" value="收起更多" ng-click="tapShowButton('addConsultTable')"/> </h3>
+                        <h3>添加咨询记录<input type="submit" class="more" value="{{addConsultTableMore}}" ng-click="tapAddConsultTable('addConsultTable')"/> </h3>
                     </div>
                     <table class="table3" ng-show="showFlag.addConsultTable">
                         <tr>
@@ -309,12 +309,12 @@
                                 <span>客服：</span><input type="text" value="{{currentUserConversation.patientId}}"/>
                             </td>
                             <td class="td-l">
-                                <span>归档日期：</span><span>{{doctorId}}</span>
+                                <span>归档日期：</span><span>{{todayTime}}</span>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <span>诊断：</span><input type="text"/>
+                                <span>诊断：</span><input type="text" ng-model="info.illness"/>
                                 <ul class="search-remind">
                                     <li>咨询咨询咨询咨询</li>
                                     <li>咨询咨询咨询咨询</li>
@@ -323,22 +323,24 @@
                                 </ul>
                             </td>
                             <td class="td-l">
-                                <span>咨询类别：<select><option value="addIllness">添加</option></select></span>
+                                <span>咨询类别：<select ng-model="info.selectedIllnessList" ng-options="date.illness for date in illnessList">
+                                    </select>
+                                </span>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">
-                                表现：<input type="text" maxlength="30" value="" class="big-input" placeholder="可编辑（可选）30个字以内"/>
+                                表现：<input type="text" maxlength="30" ng-model="info.show" class="big-input" placeholder="可编辑（可选）30个字以内"/>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">
-                                处理：<input type="text" maxlength="30" value="" class="big-input" placeholder="可编辑（可选）30个字以内"/>
+                                处理：<input type="text" maxlength="30" ng-model="info.result" class="big-input" placeholder="可编辑（可选）30个字以内"/>
                             </td>
                         </tr>
                         <tr class="save">
                             <td colspan="3">
-                                <input type="submit" value="添加记录"/>
+                                <input type="submit" value="添加记录" ng-click="addDiagnosisRecords()"/>
                                 <input type="submit" value="取消保存"/>
                                 <input type="submit" value="推荐医生"/>
                             </td>
@@ -350,49 +352,34 @@
                         </tr>
                     </table>
                 </div>
-                <!--历史咨询档案-->
+                &lt;!&ndash;历史咨询档案&ndash;&gt;
                 <div class="module">
                     <div class="title">
-                        <h3 >历史咨询档案<input type="submit" class="more" value="收起更多" ng-click="tapShowButton('historyTable')"/></h3>
+                        <h3 >历史咨询档案<input type="submit" class="more" value="{{historyTableMore}}" ng-click="tapHistoryTable('historyTable')"/></h3>
                     </div>
                     <table class="table4" ng-show="showFlag.historyTable">
                         <tr class="higher">
                             <td>
-                                <dl ng-repeat="item in diagnosis">
+                                <dl ng-repeat="item in historyConsult">
                                     <dt>
-                                        客服：<input type="text" value="{{currentUserConversation.patientId}}"/>
-                                        <a class="fr">2015/11/12</a>
+                                        客服：<input type="text" value="{{item.customerId}}"/>
+                                        <a class="fr">{{item.create_date|date:"yyyy-MM-dd"}}</a>
                                     </dt>
                                     <dd>
-                                        <span>诊断：</span>诊断内容诊断内容诊断内容诊断内容
+                                        <span>诊断：</span>{{item.sys_customer_illness_id}}
                                     </dd>
                                     <dd>
-                                        <span>表现：</span>诊断内容诊断内容诊断内容诊断内容
+                                        <span>表现：</span>{{item.show}}
                                     </dd>
                                     <dd>
-                                        <span>处理：</span>诊断内容诊断内容诊断内容诊断内容
-                                    </dd>
-                                </dl>
-                                <dl>
-                                    <dt>
-                                        客服：<input type="text"/>
-                                        <a class="fr">2015/11/12</a>
-                                    </dt>
-                                    <dd>
-                                        <span>诊断：</span>诊断内容诊断内容诊断内容诊断内容
-                                    </dd>
-                                    <dd>
-                                        <span>表现：</span>诊断内容诊断内容诊断内容诊断内容
-                                    </dd>
-                                    <dd>
-                                        <span>处理：</span>诊断内容诊断内容诊断内容诊断内容
+                                        <span>处理：</span>{{item.result}}
                                     </dd>
                                 </dl>
                             </td>
                         </tr>
                     </table>
                 </div>
-                <!--<div>
+                &lt;!&ndash;<div>
                        <span style="">科室/类别：</span><input type="text" id="addSections"/>
                        <br/>
                        <center>
@@ -407,8 +394,8 @@
                            <br/><br/><br/><br/>
                            <input type="submit" value="关闭"/>
                        </center>
-                   </div>-->
-            </div>
+                   </div>&ndash;&gt;
+            </div>-->
         </div>
         <div class="msg-m h30" ng-if="chooseAlreadyJoinConsultPatientId!=''">
             <div class="headportrait">

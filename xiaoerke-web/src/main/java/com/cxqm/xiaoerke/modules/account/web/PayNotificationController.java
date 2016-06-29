@@ -333,20 +333,22 @@ public class PayNotificationController {
 				LogUtils.saveLog(Servlets.getRequest(), "BHS_ZFY_ZFCG","用户微信支付完成:" + map.get("out_trade_no"));
 				PayRecord payRecord = new PayRecord();
 				payRecord.setId((String) map.get("out_trade_no"));
-				payRecord.setStatus("success");
-				payRecord.setReceiveDate(new Date());
+//				payRecord.setStatus("success");
+//				payRecord.setReceiveDate(new Date());
 				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
 				String insuranceId= insuranceMap.get("order_id").toString();
 				String[] umbrellaId=insuranceId.split("_");
 				System.out.println("orderId:" + umbrellaId[0]);
 				System.out.println("shareId:" + umbrellaId[1]);
-				sendWechatMessage(umbrellaId[0], umbrellaId[1]);
 
 				if(insuranceMap.get("fee_type").toString().equals("umbrella")){
+					if(!"success".equals(insuranceMap.get("status").toString())){
+						sendWechatMessage(umbrellaId[0], umbrellaId[1]);
+					}
 					BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
 					babyUmbrellaInfo.setId(Integer.parseInt(umbrellaId[0]));
-					babyUmbrellaInfo.setPayResult("success");
-					babyUmbrellaInfoService.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
+//					babyUmbrellaInfo.setPayResult("success");
+					babyUmbrellaInfoService.updateBabyUmbrellaInfoStatus(babyUmbrellaInfo);
 					payRecord.getId();//修改pay_record表状态
 					payRecord.setStatus("success");
 					payRecord.setReceiveDate(new Date());

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.mutualHelp.dao.MutualHelpDonationDao">
+    <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.mutualHelp.entity.MutualHelpDonation" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="openid" property="openId" jdbcType="VARCHAR" />
+        <result column="money" property="money" jdbcType="DOUBLE" />
+        <result column="leave_note" property="leaveNote" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="donation_type" property="donationType" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, openid,userid, money, leave_note, create_time, donation_type
+    </sql>
+
+    <!-- 捐款总条数  -->
+    <select id="getCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select count(*) from mutualhelp_donation
+        where money is not null
+        and money>0
+        <if test="donationType != null">
+            and donation_type=#{donationType,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <!-- 捐款总金额 -->
+    <select id="getSumMoney" resultType="java.lang.Double" parameterType="java.util.HashMap">
+        select sum(money) from mutualhelp_donation
+        where 1=1
+        <if test="openId != null">
+            and openid=#{openId,jdbcType=VARCHAR}
+        </if>
+        <if test="donationType != null">
+            and donation_type=#{donationType,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <!-- 最后一次捐款或留言时间 -->
+    <select id="getLastTime" resultType="java.util.Date" parameterType="java.util.HashMap">
+        select create_Time from mutualhelp_donation
+        where 1=1
+        <if test="openId != null">
+            and openid=#{openId,jdbcType=VARCHAR}
+        </if>
+        <if test="donationType != null">
+            and donation_type=#{donationType,jdbcType=VARCHAR}
+        </if>
+        ORDER BY create_Time desc LIMIT 1
+    </select>
+
+    <!-- 最后一条留言信息 -->
+    <select id="getLastNote" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select <include refid="Base_Column_List" />
+        from mutualhelp_donation
+        where 1=1
+        <if test="donationType != null">
+            and donation_type=#{donationType,jdbcType=VARCHAR}
+        </if>
+        ORDER BY create_Time desc LIMIT 1
+    </select>
+
+    <!-- 获取捐款留言记录 -->
+    <select id="getDonationDetail" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+      select <include refid="Base_Column_List" />
+        from mutualhelp_donation
+        where 1=1
+        <if test="donationType != null">
+            and donation_type=#{donationType,jdbcType=VARCHAR}
+        </if>
+        ORDER BY create_Time desc
+    </select>
+
+    <!-- 添加捐款或留言 -->
+    <insert id="saveNoteAndDonation" parameterType="com.cxqm.xiaoerke.modules.mutualHelp.entity.MutualHelpDonation" useGeneratedKeys="true" keyProperty="id">
+      insert into mutualhelp_donation (openid,userid,money,leave_note,create_time,donation_type)
+      values (
+      #{openId,jdbcType=VARCHAR},
+      #{userId,jdbcType=VARCHAR},
+      #{money,jdbcType=DOUBLE},
+      #{leaveNote,jdbcType=VARCHAR},
+      now(),
+      #{donationType,jdbcType=VARCHAR}
+      )
+    </insert>
+</mapper>
