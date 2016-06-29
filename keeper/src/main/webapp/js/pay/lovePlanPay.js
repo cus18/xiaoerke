@@ -3,15 +3,13 @@ var moneys = "0";
 var leaveNotes = "";
 var lovePlanPayInit=function(){
     $.ajax({
-        url:"umbrella/getOpenid",// 跳转到 action
+        url:"umbrella/getOpenid",
         async:true,
         type:'post',
         cache:false,
         dataType:'json',
         success:function(data) {
-            if(data.openid=="none"){
-                window.location.href = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
-            }else{
+            if(data.openid != ''){
                 doRefresh();
             }
         },
@@ -20,16 +18,9 @@ var lovePlanPayInit=function(){
     });
 };
 
-var GetQueryString = function(name)
-{
-    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-    var r = window.location.search.substr(1).match(reg);
-    if(r!=null)return  unescape(r[2]); return null;
-}
-
 var recordLogs = function(val){
     $.ajax({
-        url:"util/recordLogs",// 跳转到 action
+        url:"util/recordLogs",
         async:true,
         type:'get',
         data:{logContent:encodeURI(val)},
@@ -93,7 +84,7 @@ var doRefresh = function(){
         }
     });
 
-}
+};
 
 function wechatPay() {
     recordLogs("LOVE_PLAN_001");
@@ -108,10 +99,10 @@ function wechatPay() {
         leaveNotes = $("#leaveNotes").val();
         if (moneys != "0" && moneys!="") {
             $.ajax({
-                url: "account/user/lovePlanPay",// 跳转到 action
+                url: "account/user/lovePlanPay",
                 async: true,
                 type: 'get',
-                data: {patientRegisterId: umbrelladId + "_" +shareId, payPrice: moneys * 100},
+                data: {leaveNotes: leaveNotes, payPrice: moneys * 100},
                 cache: false,
                 success: function (data) {
                     $('#payButton').removeAttr("disabled");
@@ -131,38 +122,17 @@ function wechatPay() {
                         success: function (res) {
                             if (res.errMsg == "chooseWXPay:ok") {
                                 $.ajax({
-                                    type: 'POST',
-                                    url: "umbrella/getOpenidStatus",
+                                    url:"mutualHelp/donation/addNoteAndDonation",
+                                    type:'POST',
+                                    data: {leaveNotes: leaveNotes, money: moneys * 100},
                                     contentType: "application/json; charset=utf-8",
-                                    success: function (result) {
-                                        var status = result.status;
-                                        if (status == "1") {
-                                            var shareId = GetQueryString("shareId") == null || GetQueryString("shareId") == "120000000" ? 130000000 : GetQueryString("shareId");
-                                            window.location.href="http://s2.xiaork.cn/wisdom/umbrella#/umbrellaPaySuccess/"+shareId;
-                                            $.ajax({
-                                                type: 'POST',
-                                                url: "umbrella/getUserQRCode",
-                                                contentType: "application/json; charset=utf-8",
-                                                async: false,
-                                                data: "{'id':'" + shareid + "'}",
-                                                success: function (data) {
-                                                    recordLogs("BHS_ZFY_ZFCG");
-                                                    $("#QRCode").attr("src", data.qrcode);
-                                                    $("#QRCodeDIV").show();
-                                                    $(".c-shadow").show();
-                                                    $(".shadow-content").show();
-                                                },
-                                                dataType: "json"
-                                            });
-
-                                        } else {
-                                            var shareId = GetQueryString("shareId") == null || GetQueryString("shareId") == "120000000" ? 130000000 : GetQueryString("shareId");
-                                            window.location.href = "http://localhost:8080/wisdom/umbrella#/umbrellaJoin/" + new Date().getTime() + "/" + shareId;
-                                        }
+                                    dataType:'json',
+                                    success:function() {
                                     },
-                                    dataType: "json"
-                                });
-                                // window.location.href = "http://s2.xiaork.cn/wisdom/firstPage/umbrella?status=a";
+                                    error : function() {
+                                    }
+                                }, 'json');
+                                window.location.href="http://localhost:8080/market/market#/lovePlanPaySuccess";
                             } else {
                                 alert("支付失败,请重新支付")
                             }

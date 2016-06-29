@@ -1,9 +1,7 @@
 angular.module('controllers', ['ionic']).controller('lovePlanListCtrl', [
     '$scope','$state','$stateParams','PhotoWall','$filter',
     function ($scope,$state,$stateParams,PhotoWall,$filter) {
-        PhotoWall.save({
-            openid:'"o3_NPwvfAE_v-LfjpER1V4L3ZUIE"'
-        }, function (data) {
+        PhotoWall.save({}, function (data) {
             console.log(data);
             $scope.user = data.donationList;
             $scope.nincName = data.myMap.wechatName;
