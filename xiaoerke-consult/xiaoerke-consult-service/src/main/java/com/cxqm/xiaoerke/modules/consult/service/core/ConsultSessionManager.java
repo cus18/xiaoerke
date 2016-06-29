@@ -339,6 +339,21 @@ public class ConsultSessionManager {
         }
 
     }
+    //记录评价信息
+   /* private void saveCustomerEvaluation(RichConsultSession consultSession) {
+        Map<String, Object> evaluationMap = new HashMap<String, Object>();
+        evaluationMap.put("openid", consultSession.getUserId());
+        evaluationMap.put("uuid", IdGen.uuid());
+        evaluationMap.put("starNum1", 0);
+        evaluationMap.put("starNum2", 0);
+        evaluationMap.put("starNum3", 0);
+        evaluationMap.put("doctorId", consultSession.getCsUserId());
+        evaluationMap.put("content", "");
+        evaluationMap.put("dissatisfied", null);
+        evaluationMap.put("redPacket", null);
+        evaluationMap.put("consultSessionId", consultSession.getId());
+        patientRegisterPraiseService.saveCustomerEvaluation(evaluationMap);
+    }*/
 
     public int transferSession(Integer sessionId, String toCsUserId, String remark) {
         try {
