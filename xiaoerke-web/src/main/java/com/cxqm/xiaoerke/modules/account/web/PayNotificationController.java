@@ -390,7 +390,7 @@ public class PayNotificationController {
 				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
 				String insuranceId = insuranceMap.get("order_id").toString();
 				String[] umbrellaId = insuranceId.split("_");
-				if(insuranceMap.get("fee_type").toString().equals("umbrella")){
+				if(insuranceMap.get("fee_type").toString().equals("lovePlan")){
 					if(!"success".equals(insuranceMap.get("status").toString())){
 						sendWechatMessage(umbrellaId[0], umbrellaId[1]);
 					}
@@ -471,7 +471,6 @@ public class PayNotificationController {
 
 			String title = "宝大夫送你一份见面礼";
 			String description = "恭喜您已成功领取专属于宝宝的20万高额保障金";
-			//String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
 			String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31";
 			String picUrl = "http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella";
 			String message = "{\"touser\":\""+toOpenId+"\",\"msgtype\":\"news\",\"news\":{\"articles\": [{\"title\":\""+ title +"\",\"description\":\""+description+"\",\"url\":\""+ url +"\",\"picurl\":\""+picUrl+"\"}]}}";
