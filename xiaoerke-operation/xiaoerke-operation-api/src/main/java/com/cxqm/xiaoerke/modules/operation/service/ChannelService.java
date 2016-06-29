@@ -20,4 +20,10 @@ public interface ChannelService  {
     int insertChannel(ChannelInfo channelInfo);
     //渠道查询
     List<ChannelInfo> getChannelInfos();
+    //渠道分类统计数据
+    List<HashMap<String, Object>> getChannelCategoryStatistics(HashMap hashMap);
+    //渠道明细统计数据
+    List<HashMap<String, Object>> getChannelDetailStatistics(HashMap hashMap);
+    //获取所有的渠道
+    List<String> getAllChannels();
 }
