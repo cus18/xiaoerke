@@ -54,25 +54,24 @@
                 <div class="angel">
                     <img class="" width="66" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2Fangel.png">
                 </div>
-                <h4 class="tc f7 c11">感谢<span id="counts">n</span>位爱心天使</h4>
+                <h4 class="tc f7 c11">感谢<span id="counts"></span>位爱心天使</h4>
                 <ul class="bg1" onclick="goLovePlanList()">
                     <li class="fl tc">
                         <img class="radius" width="36"  height="36" id="loverHearts0" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fbaodf_logo.jpg">
                     </li>
                     <li class="fl tc">
-                        <img class="radius" width="36" height="36" id="loverHearts1" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fbaodf_logo.jpg">
+                        <img class="radius" width="36"  height="36" id="loverHearts1" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fbaodf_logo.jpg">
                     </li>
                     <li class="fl tc">
-                        <img class="radius" width="36" height="36" id="loverHearts2" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fbaodf_logo.jpg">
+                        <img class="radius" width="36"  height="36" id="loverHearts2" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fbaodf_logo.jpg">
                     </li>
                     <li class="fl tc">
-                        <img class="radius" width="36" height="36" id="loverHearts3" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fbaodf_logo.jpg">
+                        <img class="radius" width="36"  height="36" id="loverHearts3" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fbaodf_logo.jpg">
                     </li>
                     <li class="fl tc">
-                        <img class="radius" width="36" height="36" id="loverHearts4" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fbaodf_logo.jpg">
+                        <img class="radius" width="36"  height="36" id="loverHearts4" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fbaodf_logo.jpg">
                     </li>
                     <img class="arr fr" width="6" height="auto" src=" http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2FlovePlan_arr.png">
-
                 </ul>
                 <div class="money">
                     <div class="name c11 f5">为蛋蛋筹集了</div>
@@ -81,7 +80,7 @@
                             <div class="num tc">
                                 <img class="heart" width="46" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2Fmoney_heart.png">
                                 <div class="have c11 f7 tc">
-                                    <span class="" id="lovemoneyCount"> 9000</span>元
+                                    <span class="" id="lovemoneyCount"></span>元
                                     <div class="f3"> 已筹集</div>
                                 </div>
                             </div>
@@ -110,10 +109,10 @@
                 <img class=" my-img1" width="70" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2FleaveWord_title.png">
             </h3>
             <div class="main">
-                <img class="photo my-img1 radius" width="50" height="50" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fbaodf_logo.jpg">
+                <img class="photo my-img1 radius" id="headImgUrl" width="50" height="50" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fbaodf_logo.jpg">
                 <div>
-                    <p class="c3 f5 ">好可怜！好可怜！希望更多地人能够伸出援助之手，帮助可爱的孩子们!</p>
-                    <span class="c4 f3">2016-05-20</span>
+                    <p class="c3 f5" id="newNoteContent">好可怜！好可怜！希望更多地人能够伸出援助之手，帮助可爱的孩子们!</p>
+                    <span class="c4 f3" id="createTime">2016-05-20</span>
                     <a class=" word-btn" onclick="goComment()"></a>
                 </div>
             </div>
@@ -129,8 +128,8 @@
        <!-- 评论-->
         <div class="c-shadow"  onclick="cancelComment()" hidden></div>
         <div class="real-edit" hidden>
-            <textarea  placeholder="写评论(最多可输入50字)..." maxlength="50" ng-model="info.content" ></textarea>
-            <span ng-click="save()">发布</span>
+            <textarea  placeholder="写评论(最多可输入50字)..." maxlength="50" id="leaveNoteContent" ></textarea>
+            <span onclick="addNoteAndDonation()">发布</span>
         </div>
     </div>
 </body>

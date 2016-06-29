@@ -27,8 +27,8 @@
     <select id="getSumMoney" resultType="java.lang.Double" parameterType="java.util.HashMap">
         select sum(money) from mutualhelp_donation
         where 1=1
-        <if test="userId != null">
-            and userid=#{userId,jdbcType=VARCHAR}
+        <if test="openId != null">
+            and openid=#{openId,jdbcType=VARCHAR}
         </if>
         <if test="donationType != null">
             and donation_type=#{donationType,jdbcType=VARCHAR}
@@ -39,8 +39,8 @@
     <select id="getLastTime" resultType="java.util.Date" parameterType="java.util.HashMap">
         select create_Time from mutualhelp_donation
         where 1=1
-        <if test="userId != null">
-            and userid=#{userId,jdbcType=VARCHAR}
+        <if test="openId != null">
+            and openid=#{openId,jdbcType=VARCHAR}
         </if>
         <if test="donationType != null">
             and donation_type=#{donationType,jdbcType=VARCHAR}
