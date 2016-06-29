@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.operation.service;
 
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +14,9 @@ import java.util.Map;
  */
 
 public interface ConsultStatisticService {
-    List<Integer> getConsultStatistic(Map map);
+
+    List<Integer> getConsultStatistic(HashMap hashMap);
+
 
     int insertSelective(ConsultStatisticVo record);
 }

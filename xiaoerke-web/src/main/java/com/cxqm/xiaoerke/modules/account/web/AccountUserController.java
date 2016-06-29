@@ -219,4 +219,23 @@ public class AccountUserController {
 		return payParameter;
 	}
 
+	/**
+	 * js支付
+	 *
+	 * */
+	@RequestMapping(value = "/account/user/lovePlanPay", method = {RequestMethod.POST, RequestMethod.GET})
+	public
+	@ResponseBody
+	String lovePlanPay(HttpServletRequest request,HttpSession session) throws Exception {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+		//获取统一支付接口参数
+		Map prepayInfo = accountService.getPrepayInfo(request, session, "lovePlanService");
+		prepayInfo.put("feeType", "lovePlan");
+		System.out.println("feeType:" + prepayInfo.get("feeType").toString());
+		//拼装jsPay所需参数,如果prepay_id生成成功则将信息放入account_pay_record表
+		String userId = UserUtils.getUser().getId();
+		String payParameter = accountService.assemblyPayParameter(request,prepayInfo,session,userId, null);
+		return payParameter;
+	}
+
 }

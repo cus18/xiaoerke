@@ -127,11 +127,32 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                         String content = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
                         StringBuilder stringBuilder = new StringBuilder();
                         //根据sessionId查询Evaluation表id
-                        Map praiseParam = new HashMap();
+                        //jiangzg 暂时注掉，发消息带评价信息
+                       /* Map praiseParam = new HashMap();
                         praiseParam.put("consultSessionId", richConsultSession.getId());
                         praiseParam.put("doctorId", csUserId);
                         List<Map<String, Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParam);
                         if (praiseList != null && praiseList.size() > 0) {
+                            int nameIndex = content.indexOf(":");
+                            String newContent = content.substring(nameIndex + 1, content.toCharArray().length);
+                            if (StringUtils.isNotNull(newContent) && !"\n".equalsIgnoreCase(newContent)) {
+                                if (newContent.endsWith("\n")) {
+                                    newContent = newContent.substring(0,newContent.lastIndexOf("\n"));
+                                    stringBuilder.append(newContent);
+                                } else {
+                                    // stringBuilder.append(newContent + "\n");
+                                    stringBuilder.append(newContent);
+                                }
+                            } else {
+                                return;
+                            }
+                            *//* stringBuilder.append("------------------\n");
+							stringBuilder.append(content.substring(0,nameIndex));
+							stringBuilder.append(";【");
+							stringBuilder.append("<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
+							stringBuilder.append(praiseList.get(0).get("id"));
+							stringBuilder.append("'>评价医生</a>】");*//*
+                            sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());*/
                             int nameIndex = content.indexOf("：");
                             String newContent = content.substring(nameIndex + 1, content.toCharArray().length);
                             if (StringUtils.isNotNull(newContent) && !"\n".equalsIgnoreCase(newContent)) {
@@ -145,19 +166,10 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             } else {
                                 return;
                             }
-                            /* stringBuilder.append("------------------\n");
-							stringBuilder.append(content.substring(0,nameIndex));
-							stringBuilder.append(";【");
-							stringBuilder.append("<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
-							stringBuilder.append(praiseList.get(0).get("id"));
-							stringBuilder.append("'>评价医生</a>】");*/
                             sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());
-                        } else {
-                            sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), content);
-                        }
-                        if (sendResult.equals("tokenIsInvalid")) {
-                            updateWechatParameter();
-                        }
+                            if (sendResult.equals("tokenIsInvalid")) {
+                                updateWechatParameter();
+                            }
 
                     } else if (msgType != 0) {
                         //发送多媒体消息
