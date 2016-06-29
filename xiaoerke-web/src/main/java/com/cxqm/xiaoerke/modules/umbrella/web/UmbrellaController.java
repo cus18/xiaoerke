@@ -59,14 +59,6 @@ public class UmbrellaController  {
     Map<String, Object>  firstPageData() {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
-//        Map<String, Object> map=new HashMap<String, Object>();
-//        Integer count = babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(map);
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//        Map<String, Object> result = new HashMap<String, Object>();
-//        Map<String,Object> maps = babyUmbrellaInfoSerivce.getUmbrellaNum(result);
-//        Long familyNum = (Long)maps.get("familyNum");
-//        result.put("count",count*2+familyNum);
-
         Map<String, Object> map=new HashMap<String, Object>();
         Integer count = babyUmbrellaInfoSerivce.getBabyUmbrellaInfoTotal(map);
         map.put("count",count+2000);
@@ -126,7 +118,6 @@ public class UmbrellaController  {
         Map<String, Object> map=new HashMap<String, Object>();
         Map<String, Object> numm=new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session, request);
-//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
         List<Map<String, Object>> list = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
@@ -358,7 +349,7 @@ public class UmbrellaController  {
                 result.put("type","pay");
                 return result;
             }
-                if (m.get("baby_id") != null && !m.get("baby_id").equals("") && m.get("pay_result").equals("success")) {
+                if (m.get("baby_id") != null && !m.get("baby_id").equals("") && ( m.get("pay_result")==null || m.get("pay_result").equals("success") )) {
                     if (m.get("activation_time") != null && !m.get("activation_time").equals("")) {
                         map.put("createTime",m.get("create_time"));
                         map.put("openid",openid);
