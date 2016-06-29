@@ -106,7 +106,7 @@ function wechatPay() {
         moneys = $('#money').val();
         if (moneys != "0" && moneys!="") {
             $.ajax({
-                url: "account/user/umbrellaPay",// 跳转到 action
+                url: "account/user/lovePlanPay",// 跳转到 action
                 async: true,
                 type: 'get',
                 data: {patientRegisterId: umbrelladId + "_" +shareId, payPrice: moneys * 100},

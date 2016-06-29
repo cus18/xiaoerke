@@ -388,7 +388,7 @@ public class PayNotificationController {
 				PayRecord payRecord = new PayRecord();
 				payRecord.setId((String) map.get("out_trade_no"));
 				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
-				String insuranceId= insuranceMap.get("order_id").toString();
+				String insuranceId = insuranceMap.get("order_id").toString();
 				String[] umbrellaId = insuranceId.split("_");
 				if(insuranceMap.get("fee_type").toString().equals("umbrella")){
 					if(!"success".equals(insuranceMap.get("status").toString())){

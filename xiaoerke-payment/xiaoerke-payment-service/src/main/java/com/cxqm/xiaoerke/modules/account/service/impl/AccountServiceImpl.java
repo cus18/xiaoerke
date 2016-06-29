@@ -381,11 +381,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Map<String,String> getPrepayInfo(HttpServletRequest request,HttpSession session,String serviceType) {
         Map<String,String> resultMap = new HashMap<String, String>();
-        String openId = (String)session.getAttribute("openId");
-        if(!StringUtils.isNotNull(openId)){
-            openId = CookieUtils.getCookie(request,"openId");
-        }
-        Float a = (Float)request.getAttribute("payPrice");
+        String openId = WechatUtil.getOpenId(session,request);
         //获取需要支付的金额  单位(分)
         String order_price = request.getAttribute("payPrice")!=null?String.valueOf(((Float)request.getAttribute("payPrice")).intValue()*100):request.getParameter("payPrice");
         //生成的商户订单号
@@ -431,12 +427,10 @@ public class AccountServiceImpl implements AccountService {
         if(StringUtils.isNull(patientRegisterId) || "undefined".equals(patientRegisterId)){
             patientRegisterId = "noData";
         }
-        String orderPrice =request.getAttribute("payPrice")!=null?String.valueOf(((Float)request.getAttribute("payPrice")).intValue()*100):request.getParameter("payPrice");
+        String orderPrice =request.getAttribute("payPrice")!=null?String.valueOf(((Float)request.getAttribute("payPrice")).
+                intValue()*100):request.getParameter("payPrice");
         String outTradeNo = PrepayInfo.get("out_trade_no");
-        String openId = (String)session.getAttribute("openId");
-        if(!StringUtils.isNotNull(openId)){
-            openId = CookieUtils.getCookie(request,"openId");
-        }
+        String openId = WechatUtil.getOpenId(session,request);
         try {
             Map<String, Object> map = XMLUtil.doXMLParse(PrepayInfo.get("result"));
             if (!"FAIL".equals(map.get("return_code"))){
@@ -445,7 +439,7 @@ public class AccountServiceImpl implements AccountService {
                 params.put("appId", ConstantUtil.APP_ID);
                 params.put("timeStamp",timestamp);
                 params.put("nonceStr", noncestr);
-                params.put("package", "prepay_id="+map.get("prepay_id"));
+                params.put("package", "prepay_id=" + map.get("prepay_id"));
                 params.put("signType", ConstantUtil.SIGN_METHOD);
                 String paySign =  JsApiTicketUtil.createSign("UTF-8", params);
                 params.put("paySign", paySign); //paySign的生成规则和Sign的生成规则一致
@@ -466,7 +460,6 @@ public class AccountServiceImpl implements AccountService {
                 payRecord.setAmount(Float.parseFloat(orderPrice));
                 payRecord.setPayType("wx");
                 payRecord.setStatus("wait");
-                payRecord.setFeeType("会员服务费");
                 payRecord.setPayDate(new Date());
                 payRecord.setCreatedBy(user.getId());
                 payRecord.setFeeType(PrepayInfo.get("feeType"));
