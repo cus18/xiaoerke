@@ -83,6 +83,8 @@ define(['appMarket'], function(app){
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.lovePlanListCtrl',
                                     ['js/controllers/lovePlan/lovePlanListCtrl.js',
+                                        //'js/libs/moment.min.js',
+                                        //'js/libs/zh-cn.js',
                                         'styles/lovePlan/lovePlanList.less?ver='+marketVersion
                                     ],
                                     'js/views/lovePlan/lovePlanList.html?ver='+marketVersion);

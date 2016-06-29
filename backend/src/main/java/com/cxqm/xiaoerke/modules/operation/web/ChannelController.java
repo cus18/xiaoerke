@@ -62,6 +62,10 @@ public class ChannelController extends BaseController {
     public String ChannelCategory(HttpServletRequest request,  Model model) throws Exception{
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
+        String department = request.getParameter("department");
+        if("所有".equals(department)){
+            department = "all";
+        }
 
         if (StringUtils.isNull(startDate)) {//默认查看最近5天的
             Calendar ca = Calendar.getInstance();
@@ -72,15 +76,22 @@ public class ChannelController extends BaseController {
             Date end = ca.getTime();
             endDate = DateUtils.formatDate(end, "yyyy-MM-dd");
         }
+
+        //获取所有部门
+        StringBuffer sbf = new StringBuffer("所有,");
+        String[] departs = sbf.append(Global.getConfig("backend.departments")).toString().split(",");
+        model.addAttribute("departs",departs);
         HashMap<String, Object> iniMap = new HashMap<String, Object>();
         iniMap.put("startDate",startDate);
         iniMap.put("endDate",endDate);
-        List<HashMap<String, Object>> listQdData = channelService.getTuiStatisticData(iniMap);
-        model.addAttribute("channelVo", listQdData);
+        iniMap.put("department",department);
+        List<HashMap<String, Object>> listQdData = channelService.getChannelCategoryStatistics(iniMap);
+        model.addAttribute("channelCategoryVo", listQdData);
 
         RegisterServiceVo registerServiceVo = new RegisterServiceVo();
         registerServiceVo.setStartDate(startDate);
         registerServiceVo.setEndDate(endDate);
+        registerServiceVo.setDepartment(department);
         model.addAttribute("registerServiceVo", registerServiceVo);
         return "operation/channelCategory";
     }
@@ -95,6 +106,14 @@ public class ChannelController extends BaseController {
     public String ChannelDetail(HttpServletRequest request,  Model model) throws Exception{
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
+        String department = request.getParameter("department");
+        String channel = request.getParameter("channel");
+        if("所有".equals(department)){
+            department = "all";
+        }
+        if("所有".equals(channel)){
+            channel = "all";
+        }
 
         if (StringUtils.isNull(startDate)) {//默认查看最近5天的
             Calendar ca = Calendar.getInstance();
@@ -105,15 +124,30 @@ public class ChannelController extends BaseController {
             Date end = ca.getTime();
             endDate = DateUtils.formatDate(end, "yyyy-MM-dd");
         }
+
+        //获取所有部门
+        StringBuffer sbf = new StringBuffer("所有,");
+        String[] departs = sbf.append(Global.getConfig("backend.departments")).toString().split(",");
+        model.addAttribute("departs",departs);
+
+        //获取所有渠道
+        List<String> channels = channelService.getAllChannels();
+        channels.add(0,"所有");
+        model.addAttribute("channels",channels);
+
         HashMap<String, Object> iniMap = new HashMap<String, Object>();
         iniMap.put("startDate",startDate);
         iniMap.put("endDate",endDate);
-        List<HashMap<String, Object>> listQdData = channelService.getTuiStatisticData(iniMap);
-        model.addAttribute("channelVo", listQdData);
+        iniMap.put("department",department);
+        iniMap.put("channel",channel);
+        List<HashMap<String, Object>> listQdData = channelService.getChannelDetailStatistics(iniMap);
+        model.addAttribute("channelDetailVo", listQdData);
 
         RegisterServiceVo registerServiceVo = new RegisterServiceVo();
         registerServiceVo.setStartDate(startDate);
         registerServiceVo.setEndDate(endDate);
+        registerServiceVo.setDepartment(department);
+        registerServiceVo.setChannel(channel);
         model.addAttribute("registerServiceVo", registerServiceVo);
         return "operation/channelDetail";
     }
