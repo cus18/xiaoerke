@@ -614,10 +614,10 @@ angular.module('controllers', ['luegg.directives'])
                             consultContent = valueData[0];
                         }
                         //医生发起会话，分配默认的serverAddress
-                        if($scope.currentUserConversation.serverAddress=="" && $scope.currentUserConversation.serverAddress == null){
-                            $scope.currentUserConversation.serverAddress==$scope.firstAddress;
+                        if($scope.currentUserConversation.serverAddress=="" || $scope.currentUserConversation.serverAddress==null){
+                            $scope.currentUserConversation.serverAddress = $scope.firstAddress;
                             if($scope.socketServerFirst.readyState != WebSocket.OPEN){
-                                $scope.currentUserConversation.serverAddress==$scope.secondAddress;
+                                $scope.currentUserConversation.serverAddress = $scope.secondAddress;
                             }
                         }
                         if($scope.currentUserConversation.serverAddress==$scope.firstAddress){
@@ -780,6 +780,7 @@ angular.module('controllers', ['luegg.directives'])
                         if($scope.currentUserConversation.serverAddress==$scope.firstAddress){
                             if ($scope.socketServerFirst.readyState == WebSocket.OPEN) {
                                 $scope.socketServerFirst.send(JSON.stringify(consultValMessage));
+                                $scope.initConsultSocketFirst();
                                 updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                             } else {
                                 alert("连接没有开启.");
@@ -787,6 +788,7 @@ angular.module('controllers', ['luegg.directives'])
                         }else if($scope.currentUserConversation.serverAddress==$scope.secondAddress){
                             if ($scope.socketServerSecond.readyState == WebSocket.OPEN) {
                                 $scope.socketServerSecond.send(JSON.stringify(consultValMessage));
+                                $scope.initConsultSocketSecond();
                                 updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                             } else {
                                 alert("连接没有开启.");
