@@ -1,334 +1,334 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cxqm.xiaoerke.modules.operation.dao.SysStatisticsDao" >
-  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.operation.entity.SysStatistics" >
-    <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="new_add_users" property="newAddUsers" jdbcType="VARCHAR" />
-    <result column="cancel_new_users" property="cancelNewUsers" jdbcType="VARCHAR" />
-    <result column="actual_new_user" property="actualNewUser" jdbcType="VARCHAR" />
-    <result column="sum_user" property="sumUser" jdbcType="VARCHAR" />
-    <result column="new_add_doctor" property="newAddDoctor" jdbcType="VARCHAR" />
-    <result column="total_doctor" property="totalDoctor" jdbcType="VARCHAR" />
-    <result column="new_order_number" property="newOrderNumber" jdbcType="VARCHAR" />
-    <result column="unsuccessful_order" property="unsuccessfulOrder" jdbcType="VARCHAR" />
-    <result column="successful_order" property="successfulOrder" jdbcType="VARCHAR" />
-    <result column="account_success_order" property="accountSuccessOrder" jdbcType="VARCHAR" />
-    <result column="new_add_consultation_number" property="newAddConsultationNumber" jdbcType="VARCHAR" />
-    <result column="count_consultation_number" property="countConsultationNumber" jdbcType="VARCHAR" />
-    <result column="activate_new_user" property="activateNewUser" jdbcType="VARCHAR" />
-    <result column="activate_order" property="activateOrder" jdbcType="VARCHAR" />
-    <result column="activate_order_consultation_number" property="activateOrderConsultationNumber" jdbcType="VARCHAR" />
-    <result column="consultation" property="consultation" jdbcType="VARCHAR" />
-    <result column="appoint" property="appoint" jdbcType="VARCHAR" />
-    <result column="alreadyCon" property="alreadycon" jdbcType="VARCHAR" />
-    <result column="sumcon" property="sumcon" jdbcType="VARCHAR" />
-    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
-    <result column="newZhengYuQiao" property="newZhengYuQiao" jdbcType="VARCHAR" />
-    <result column="oldZhengYuQiao" property="oldZhengYuQiao" jdbcType="VARCHAR" />
-    <result column="date" property="date" jdbcType="TIMESTAMP" />
-    <result column="sumAccount" property="sumAccount" jdbcType="VARCHAR" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    id, new_add_users, cancel_new_users, actual_new_user, sum_user, new_add_doctor, total_doctor, 
-    new_order_number, unsuccessful_order, successful_order, account_success_order, new_add_consultation_number, 
-    count_consultation_number, activate_new_user, activate_order, activate_order_consultation_number, 
-    consultation, appoint, alreadyCon, sumcon, create_date ,newZhengYuQiao,oldZhengYuQiao,sumAccount
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from sys_statistics
-    where id = #{id,jdbcType=VARCHAR}
-  </select>
+    <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.operation.entity.SysStatistics" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="new_add_users" property="newAddUsers" jdbcType="VARCHAR" />
+        <result column="cancel_new_users" property="cancelNewUsers" jdbcType="VARCHAR" />
+        <result column="actual_new_user" property="actualNewUser" jdbcType="VARCHAR" />
+        <result column="sum_user" property="sumUser" jdbcType="VARCHAR" />
+        <result column="new_add_doctor" property="newAddDoctor" jdbcType="VARCHAR" />
+        <result column="total_doctor" property="totalDoctor" jdbcType="VARCHAR" />
+        <result column="new_order_number" property="newOrderNumber" jdbcType="VARCHAR" />
+        <result column="unsuccessful_order" property="unsuccessfulOrder" jdbcType="VARCHAR" />
+        <result column="successful_order" property="successfulOrder" jdbcType="VARCHAR" />
+        <result column="account_success_order" property="accountSuccessOrder" jdbcType="VARCHAR" />
+        <result column="new_add_consultation_number" property="newAddConsultationNumber" jdbcType="VARCHAR" />
+        <result column="count_consultation_number" property="countConsultationNumber" jdbcType="VARCHAR" />
+        <result column="activate_new_user" property="activateNewUser" jdbcType="VARCHAR" />
+        <result column="activate_order" property="activateOrder" jdbcType="VARCHAR" />
+        <result column="activate_order_consultation_number" property="activateOrderConsultationNumber" jdbcType="VARCHAR" />
+        <result column="consultation" property="consultation" jdbcType="VARCHAR" />
+        <result column="appoint" property="appoint" jdbcType="VARCHAR" />
+        <result column="alreadyCon" property="alreadycon" jdbcType="VARCHAR" />
+        <result column="sumcon" property="sumcon" jdbcType="VARCHAR" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="newZhengYuQiao" property="newZhengYuQiao" jdbcType="VARCHAR" />
+        <result column="oldZhengYuQiao" property="oldZhengYuQiao" jdbcType="VARCHAR" />
+        <result column="date" property="date" jdbcType="TIMESTAMP" />
+        <result column="sumAccount" property="sumAccount" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, new_add_users, cancel_new_users, actual_new_user, sum_user, new_add_doctor, total_doctor,
+        new_order_number, unsuccessful_order, successful_order, account_success_order, new_add_consultation_number,
+        count_consultation_number, activate_new_user, activate_order, activate_order_consultation_number,
+        consultation, appoint, alreadyCon, sumcon, create_date ,newZhengYuQiao,oldZhengYuQiao,sumAccount
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from sys_statistics
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
 
-  <!--获取sys_statistic表数据-->
-  <select id="getOperationsComprehensiveList" resultMap="BaseResultMap">
-    select *,DATE_FORMAT(create_date,'%Y-%m-%d') date
-    from sys_statistics where 1=1
-    <if test="fromDate != null" >
-     and DATE_FORMAT(create_date,'%Y-%m-%d') between #{fromDate} and #{toDate}
-    </if>
-    ORDER BY DATE_FORMAT(create_date,'%Y-%m-%d') DESC
-  </select>
+    <!--获取sys_statistic表数据-->
+    <select id="getOperationsComprehensiveList" resultMap="BaseResultMap">
+        select *,DATE_FORMAT(create_date,'%Y-%m-%d') date
+        from sys_statistics where 1=1
+        <if test="fromDate != null" >
+            and DATE_FORMAT(create_date,'%Y-%m-%d') between #{fromDate} and #{toDate}
+        </if>
+        ORDER BY DATE_FORMAT(create_date,'%Y-%m-%d') DESC
+    </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from sys_statistics
-    where id = #{id,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.operation.entity.SysStatistics" >
-    insert into sys_statistics (id, new_add_users, cancel_new_users, 
-      actual_new_user, sum_user, new_add_doctor, 
-      total_doctor, new_order_number, unsuccessful_order, 
-      successful_order, account_success_order, new_add_consultation_number, 
-      count_consultation_number, activate_new_user, 
-      activate_order, activate_order_consultation_number, 
-      consultation, appoint, alreadyCon, 
-      sumcon, create_date ,newZhengYuQiao , oldZhengYuQiao,sumAccount)
-    values (#{id,jdbcType=VARCHAR}, #{newAddUsers,jdbcType=VARCHAR}, #{cancelNewUsers,jdbcType=VARCHAR}, 
-      #{actualNewUser,jdbcType=VARCHAR}, #{sumUser,jdbcType=VARCHAR}, #{newAddDoctor,jdbcType=VARCHAR}, 
-      #{totalDoctor,jdbcType=VARCHAR}, #{newOrderNumber,jdbcType=VARCHAR}, #{unsuccessfulOrder,jdbcType=VARCHAR}, 
-      #{successfulOrder,jdbcType=VARCHAR}, #{accountSuccessOrder,jdbcType=VARCHAR}, #{newAddConsultationNumber,jdbcType=VARCHAR}, 
-      #{countConsultationNumber,jdbcType=VARCHAR}, #{activateNewUser,jdbcType=VARCHAR}, 
-      #{activateOrder,jdbcType=VARCHAR}, #{activateOrderConsultationNumber,jdbcType=VARCHAR}, 
-      #{consultation,jdbcType=VARCHAR}, #{appoint,jdbcType=VARCHAR}, #{alreadycon,jdbcType=VARCHAR}, 
-      #{sumcon,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
-      #{newZhengYuQiao,jdbcType=VARCHAR}, #{oldZhengYuQiao,jdbcType=TIMESTAMP}, #{sumAccount,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.operation.entity.SysStatistics" >
-    insert into sys_statistics
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="newAddUsers != null" >
-        new_add_users,
-      </if>
-      <if test="cancelNewUsers != null" >
-        cancel_new_users,
-      </if>
-      <if test="actualNewUser != null" >
-        actual_new_user,
-      </if>
-      <if test="sumUser != null" >
-        sum_user,
-      </if>
-      <if test="newAddDoctor != null" >
-        new_add_doctor,
-      </if>
-      <if test="totalDoctor != null" >
-        total_doctor,
-      </if>
-      <if test="newOrderNumber != null" >
-        new_order_number,
-      </if>
-      <if test="unsuccessfulOrder != null" >
-        unsuccessful_order,
-      </if>
-      <if test="successfulOrder != null" >
-        successful_order,
-      </if>
-      <if test="accountSuccessOrder != null" >
-        account_success_order,
-      </if>
-      <if test="newAddConsultationNumber != null" >
-        new_add_consultation_number,
-      </if>
-      <if test="countConsultationNumber != null" >
-        count_consultation_number,
-      </if>
-      <if test="activateNewUser != null" >
-        activate_new_user,
-      </if>
-      <if test="activateOrder != null" >
-        activate_order,
-      </if>
-      <if test="activateOrderConsultationNumber != null" >
-        activate_order_consultation_number,
-      </if>
-      <if test="consultation != null" >
-        consultation,
-      </if>
-      <if test="appoint != null" >
-        appoint,
-      </if>
-      <if test="alreadycon != null" >
-        alreadyCon,
-      </if>
-      <if test="sumcon != null" >
-        sumcon,
-      </if>
-      <if test="createDate != null" >
-        create_date,
-      </if>
-      <if test="newZhengYuQiao != null" >
-        newZhengYuQiao,
-      </if>
-      <if test="oldZhengYuQiao != null" >
-        oldZhengYuQiao,
-      </if>
-      <if test="sumAccount != null" >
-        sumAccount,
-      </if>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+        delete from sys_statistics
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.operation.entity.SysStatistics" >
+        insert into sys_statistics (id, new_add_users, cancel_new_users,
+        actual_new_user, sum_user, new_add_doctor,
+        total_doctor, new_order_number, unsuccessful_order,
+        successful_order, account_success_order, new_add_consultation_number,
+        count_consultation_number, activate_new_user,
+        activate_order, activate_order_consultation_number,
+        consultation, appoint, alreadyCon,
+        sumcon, create_date ,newZhengYuQiao , oldZhengYuQiao,sumAccount)
+        values (#{id,jdbcType=VARCHAR}, #{newAddUsers,jdbcType=VARCHAR}, #{cancelNewUsers,jdbcType=VARCHAR},
+        #{actualNewUser,jdbcType=VARCHAR}, #{sumUser,jdbcType=VARCHAR}, #{newAddDoctor,jdbcType=VARCHAR},
+        #{totalDoctor,jdbcType=VARCHAR}, #{newOrderNumber,jdbcType=VARCHAR}, #{unsuccessfulOrder,jdbcType=VARCHAR},
+        #{successfulOrder,jdbcType=VARCHAR}, #{accountSuccessOrder,jdbcType=VARCHAR}, #{newAddConsultationNumber,jdbcType=VARCHAR},
+        #{countConsultationNumber,jdbcType=VARCHAR}, #{activateNewUser,jdbcType=VARCHAR},
+        #{activateOrder,jdbcType=VARCHAR}, #{activateOrderConsultationNumber,jdbcType=VARCHAR},
+        #{consultation,jdbcType=VARCHAR}, #{appoint,jdbcType=VARCHAR}, #{alreadycon,jdbcType=VARCHAR},
+        #{sumcon,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+        #{newZhengYuQiao,jdbcType=VARCHAR}, #{oldZhengYuQiao,jdbcType=TIMESTAMP}, #{sumAccount,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.operation.entity.SysStatistics" >
+        insert into sys_statistics
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="newAddUsers != null" >
+                new_add_users,
+            </if>
+            <if test="cancelNewUsers != null" >
+                cancel_new_users,
+            </if>
+            <if test="actualNewUser != null" >
+                actual_new_user,
+            </if>
+            <if test="sumUser != null" >
+                sum_user,
+            </if>
+            <if test="newAddDoctor != null" >
+                new_add_doctor,
+            </if>
+            <if test="totalDoctor != null" >
+                total_doctor,
+            </if>
+            <if test="newOrderNumber != null" >
+                new_order_number,
+            </if>
+            <if test="unsuccessfulOrder != null" >
+                unsuccessful_order,
+            </if>
+            <if test="successfulOrder != null" >
+                successful_order,
+            </if>
+            <if test="accountSuccessOrder != null" >
+                account_success_order,
+            </if>
+            <if test="newAddConsultationNumber != null" >
+                new_add_consultation_number,
+            </if>
+            <if test="countConsultationNumber != null" >
+                count_consultation_number,
+            </if>
+            <if test="activateNewUser != null" >
+                activate_new_user,
+            </if>
+            <if test="activateOrder != null" >
+                activate_order,
+            </if>
+            <if test="activateOrderConsultationNumber != null" >
+                activate_order_consultation_number,
+            </if>
+            <if test="consultation != null" >
+                consultation,
+            </if>
+            <if test="appoint != null" >
+                appoint,
+            </if>
+            <if test="alreadycon != null" >
+                alreadyCon,
+            </if>
+            <if test="sumcon != null" >
+                sumcon,
+            </if>
+            <if test="createDate != null" >
+                create_date,
+            </if>
+            <if test="newZhengYuQiao != null" >
+                newZhengYuQiao,
+            </if>
+            <if test="oldZhengYuQiao != null" >
+                oldZhengYuQiao,
+            </if>
+            <if test="sumAccount != null" >
+                sumAccount,
+            </if>
 
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=VARCHAR},
-      </if>
-      <if test="newAddUsers != null" >
-        #{newAddUsers,jdbcType=VARCHAR},
-      </if>
-      <if test="cancelNewUsers != null" >
-        #{cancelNewUsers,jdbcType=VARCHAR},
-      </if>
-      <if test="actualNewUser != null" >
-        #{actualNewUser,jdbcType=VARCHAR},
-      </if>
-      <if test="sumUser != null" >
-        #{sumUser,jdbcType=VARCHAR},
-      </if>
-      <if test="newAddDoctor != null" >
-        #{newAddDoctor,jdbcType=VARCHAR},
-      </if>
-      <if test="totalDoctor != null" >
-        #{totalDoctor,jdbcType=VARCHAR},
-      </if>
-      <if test="newOrderNumber != null" >
-        #{newOrderNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="unsuccessfulOrder != null" >
-        #{unsuccessfulOrder,jdbcType=VARCHAR},
-      </if>
-      <if test="successfulOrder != null" >
-        #{successfulOrder,jdbcType=VARCHAR},
-      </if>
-      <if test="accountSuccessOrder != null" >
-        #{accountSuccessOrder,jdbcType=VARCHAR},
-      </if>
-      <if test="newAddConsultationNumber != null" >
-        #{newAddConsultationNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="countConsultationNumber != null" >
-        #{countConsultationNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="activateNewUser != null" >
-        #{activateNewUser,jdbcType=VARCHAR},
-      </if>
-      <if test="activateOrder != null" >
-        #{activateOrder,jdbcType=VARCHAR},
-      </if>
-      <if test="activateOrderConsultationNumber != null" >
-        #{activateOrderConsultationNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="consultation != null" >
-        #{consultation,jdbcType=VARCHAR},
-      </if>
-      <if test="appoint != null" >
-        #{appoint,jdbcType=VARCHAR},
-      </if>
-      <if test="alreadycon != null" >
-        #{alreadycon,jdbcType=VARCHAR},
-      </if>
-      <if test="sumcon != null" >
-        #{sumcon,jdbcType=VARCHAR},
-      </if>
-      <if test="createDate != null" >
-        #{createDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="newZhengYuQiao != null" >
-        #{newZhengYuQiao,jdbcType=VARCHAR},
-      </if>
-      <if test="oldZhengYuQiao != null" >
-        #{oldZhengYuQiao,jdbcType=VARCHAR},
-      </if>
-      <if test="sumAccount != null" >
-        #{sumAccount,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.operation.entity.SysStatistics" >
-    update sys_statistics
-    <set >
-      <if test="newAddUsers != null" >
-        new_add_users = #{newAddUsers,jdbcType=VARCHAR},
-      </if>
-      <if test="cancelNewUsers != null" >
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="newAddUsers != null" >
+                #{newAddUsers,jdbcType=VARCHAR},
+            </if>
+            <if test="cancelNewUsers != null" >
+                #{cancelNewUsers,jdbcType=VARCHAR},
+            </if>
+            <if test="actualNewUser != null" >
+                #{actualNewUser,jdbcType=VARCHAR},
+            </if>
+            <if test="sumUser != null" >
+                #{sumUser,jdbcType=VARCHAR},
+            </if>
+            <if test="newAddDoctor != null" >
+                #{newAddDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="totalDoctor != null" >
+                #{totalDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="newOrderNumber != null" >
+                #{newOrderNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="unsuccessfulOrder != null" >
+                #{unsuccessfulOrder,jdbcType=VARCHAR},
+            </if>
+            <if test="successfulOrder != null" >
+                #{successfulOrder,jdbcType=VARCHAR},
+            </if>
+            <if test="accountSuccessOrder != null" >
+                #{accountSuccessOrder,jdbcType=VARCHAR},
+            </if>
+            <if test="newAddConsultationNumber != null" >
+                #{newAddConsultationNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="countConsultationNumber != null" >
+                #{countConsultationNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="activateNewUser != null" >
+                #{activateNewUser,jdbcType=VARCHAR},
+            </if>
+            <if test="activateOrder != null" >
+                #{activateOrder,jdbcType=VARCHAR},
+            </if>
+            <if test="activateOrderConsultationNumber != null" >
+                #{activateOrderConsultationNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="consultation != null" >
+                #{consultation,jdbcType=VARCHAR},
+            </if>
+            <if test="appoint != null" >
+                #{appoint,jdbcType=VARCHAR},
+            </if>
+            <if test="alreadycon != null" >
+                #{alreadycon,jdbcType=VARCHAR},
+            </if>
+            <if test="sumcon != null" >
+                #{sumcon,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null" >
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="newZhengYuQiao != null" >
+                #{newZhengYuQiao,jdbcType=VARCHAR},
+            </if>
+            <if test="oldZhengYuQiao != null" >
+                #{oldZhengYuQiao,jdbcType=VARCHAR},
+            </if>
+            <if test="sumAccount != null" >
+                #{sumAccount,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.operation.entity.SysStatistics" >
+        update sys_statistics
+        <set >
+            <if test="newAddUsers != null" >
+                new_add_users = #{newAddUsers,jdbcType=VARCHAR},
+            </if>
+            <if test="cancelNewUsers != null" >
+                cancel_new_users = #{cancelNewUsers,jdbcType=VARCHAR},
+            </if>
+            <if test="actualNewUser != null" >
+                actual_new_user = #{actualNewUser,jdbcType=VARCHAR},
+            </if>
+            <if test="sumUser != null" >
+                sum_user = #{sumUser,jdbcType=VARCHAR},
+            </if>
+            <if test="newAddDoctor != null" >
+                new_add_doctor = #{newAddDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="totalDoctor != null" >
+                total_doctor = #{totalDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="newOrderNumber != null" >
+                new_order_number = #{newOrderNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="unsuccessfulOrder != null" >
+                unsuccessful_order = #{unsuccessfulOrder,jdbcType=VARCHAR},
+            </if>
+            <if test="successfulOrder != null" >
+                successful_order = #{successfulOrder,jdbcType=VARCHAR},
+            </if>
+            <if test="accountSuccessOrder != null" >
+                account_success_order = #{accountSuccessOrder,jdbcType=VARCHAR},
+            </if>
+            <if test="newAddConsultationNumber != null" >
+                new_add_consultation_number = #{newAddConsultationNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="countConsultationNumber != null" >
+                count_consultation_number = #{countConsultationNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="activateNewUser != null" >
+                activate_new_user = #{activateNewUser,jdbcType=VARCHAR},
+            </if>
+            <if test="activateOrder != null" >
+                activate_order = #{activateOrder,jdbcType=VARCHAR},
+            </if>
+            <if test="activateOrderConsultationNumber != null" >
+                activate_order_consultation_number = #{activateOrderConsultationNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="consultation != null" >
+                consultation = #{consultation,jdbcType=VARCHAR},
+            </if>
+            <if test="appoint != null" >
+                appoint = #{appoint,jdbcType=VARCHAR},
+            </if>
+            <if test="alreadycon != null" >
+                alreadyCon = #{alreadycon,jdbcType=VARCHAR},
+            </if>
+            <if test="sumcon != null" >
+                sumcon = #{sumcon,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null" >
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+
+            <if test="newZhengYuQiao != null" >
+                #{newZhengYuQiao,jdbcType=VARCHAR},
+            </if>
+            <if test="oldZhengYuQiao != null" >
+                #{oldZhengYuQiao,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sumAccount != null" >
+                #{sumAccount,jdbcType=VARCHAR},
+            </if>
+
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.operation.entity.SysStatistics" >
+        update sys_statistics
+        set new_add_users = #{newAddUsers,jdbcType=VARCHAR},
         cancel_new_users = #{cancelNewUsers,jdbcType=VARCHAR},
-      </if>
-      <if test="actualNewUser != null" >
         actual_new_user = #{actualNewUser,jdbcType=VARCHAR},
-      </if>
-      <if test="sumUser != null" >
         sum_user = #{sumUser,jdbcType=VARCHAR},
-      </if>
-      <if test="newAddDoctor != null" >
         new_add_doctor = #{newAddDoctor,jdbcType=VARCHAR},
-      </if>
-      <if test="totalDoctor != null" >
         total_doctor = #{totalDoctor,jdbcType=VARCHAR},
-      </if>
-      <if test="newOrderNumber != null" >
         new_order_number = #{newOrderNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="unsuccessfulOrder != null" >
         unsuccessful_order = #{unsuccessfulOrder,jdbcType=VARCHAR},
-      </if>
-      <if test="successfulOrder != null" >
         successful_order = #{successfulOrder,jdbcType=VARCHAR},
-      </if>
-      <if test="accountSuccessOrder != null" >
         account_success_order = #{accountSuccessOrder,jdbcType=VARCHAR},
-      </if>
-      <if test="newAddConsultationNumber != null" >
         new_add_consultation_number = #{newAddConsultationNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="countConsultationNumber != null" >
         count_consultation_number = #{countConsultationNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="activateNewUser != null" >
         activate_new_user = #{activateNewUser,jdbcType=VARCHAR},
-      </if>
-      <if test="activateOrder != null" >
         activate_order = #{activateOrder,jdbcType=VARCHAR},
-      </if>
-      <if test="activateOrderConsultationNumber != null" >
         activate_order_consultation_number = #{activateOrderConsultationNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="consultation != null" >
         consultation = #{consultation,jdbcType=VARCHAR},
-      </if>
-      <if test="appoint != null" >
         appoint = #{appoint,jdbcType=VARCHAR},
-      </if>
-      <if test="alreadycon != null" >
         alreadyCon = #{alreadycon,jdbcType=VARCHAR},
-      </if>
-      <if test="sumcon != null" >
         sumcon = #{sumcon,jdbcType=VARCHAR},
-      </if>
-      <if test="createDate != null" >
-        create_date = #{createDate,jdbcType=TIMESTAMP},
-      </if>
-
-      <if test="newZhengYuQiao != null" >
-        #{newZhengYuQiao,jdbcType=VARCHAR},
-      </if>
-      <if test="oldZhengYuQiao != null" >
-        #{oldZhengYuQiao,jdbcType=TIMESTAMP},
-      </if>
-      <if test="sumAccount != null" >
-        #{sumAccount,jdbcType=VARCHAR},
-      </if>
-
-    </set>
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.operation.entity.SysStatistics" >
-    update sys_statistics
-    set new_add_users = #{newAddUsers,jdbcType=VARCHAR},
-      cancel_new_users = #{cancelNewUsers,jdbcType=VARCHAR},
-      actual_new_user = #{actualNewUser,jdbcType=VARCHAR},
-      sum_user = #{sumUser,jdbcType=VARCHAR},
-      new_add_doctor = #{newAddDoctor,jdbcType=VARCHAR},
-      total_doctor = #{totalDoctor,jdbcType=VARCHAR},
-      new_order_number = #{newOrderNumber,jdbcType=VARCHAR},
-      unsuccessful_order = #{unsuccessfulOrder,jdbcType=VARCHAR},
-      successful_order = #{successfulOrder,jdbcType=VARCHAR},
-      account_success_order = #{accountSuccessOrder,jdbcType=VARCHAR},
-      new_add_consultation_number = #{newAddConsultationNumber,jdbcType=VARCHAR},
-      count_consultation_number = #{countConsultationNumber,jdbcType=VARCHAR},
-      activate_new_user = #{activateNewUser,jdbcType=VARCHAR},
-      activate_order = #{activateOrder,jdbcType=VARCHAR},
-      activate_order_consultation_number = #{activateOrderConsultationNumber,jdbcType=VARCHAR},
-      consultation = #{consultation,jdbcType=VARCHAR},
-      appoint = #{appoint,jdbcType=VARCHAR},
-      alreadyCon = #{alreadycon,jdbcType=VARCHAR},
-      sumcon = #{sumcon,jdbcType=VARCHAR},
-      create_date = #{createDate,jdbcType=TIMESTAMP}
-      oldZhengYuQiao = #{oldZhengYuQiao,jdbcType=VARCHAR},
-      newZhengYuQiao = #{newZhengYuQiao,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
+        create_date = #{createDate,jdbcType=TIMESTAMP}
+        oldZhengYuQiao = #{oldZhengYuQiao,jdbcType=VARCHAR},
+        newZhengYuQiao = #{newZhengYuQiao,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
 
     <!--添加渠道-->
     <insert id="insertChannel" parameterType="com.cxqm.xiaoerke.modules.operation.entity.ChannelInfo"
@@ -369,9 +369,117 @@
             </if>
         </trim>
     </insert>
-    <!--查询渠道信息-->
+    <!--查询全部渠道二维码信息-->
     <select id="getChannelInfos" resultType="com.cxqm.xiaoerke.modules.operation.entity.ChannelInfo">
         SELECT id,operater,department,marketer,channel from channel_info
-        ORDER BY department
-   </select>
+        ORDER BY marketer
+    </select>
+    <!--查询所有渠道-->
+    <select id="getAllChannels" resultType="java.lang.String">
+        SELECT DISTINCT channel from channel_info
+    </select>
+    <!--查询渠道分类统计数据-->
+    <select id="getChannelCategoryStatistics" resultType="java.util.Map">
+        SELECT attention.department,attention.attentionCount,attention.cancleAttentionCount,attention.leijiAttentionCount,attention.leijiCancleAttentionCount,IFNULL(chat.chatCount,0) chatCount
+        ,IFNULL(chat.validChatCount,0) validChatCount,IFNULL(chat.invalidChatCount,0) invalidChatCount,IFNULL(chat.chatScale,'0.00%') chatScale
+        from (SELECT attentionLeiji1.department,attentionLeiji1.leijiAttentionCount,attentionLeiji1.leijiCancleAttentionCount,attentionLeiji2.attentionCount,attentionLeiji2.cancleAttentionCount from
+        (SELECT
+        chi.department,
+        count(case sa.status when '0' then 1 end) as leijiAttentionCount,
+        count(case sa.status when '1' then 1 end) as leijiCancleAttentionCount
+        from
+        channel_info chi
+        INNER JOIN sys_attention sa ON sa.marketer = chi.marketer
+        where sa.date &lt;= #{endDate}
+        GROUP BY chi.department) attentionLeiji1
+        LEFT JOIN
+        (SELECT
+        chi.department,
+        count(case sa.status when '0' then 1 end) as attentionCount,
+        count(case sa.status when '1' then 1 end) as cancleAttentionCount
+        from
+        channel_info chi
+        INNER JOIN sys_attention sa ON sa.marketer = chi.marketer
+        where sa.date &gt;= #{startDate} and sa.date &lt;= #{endDate}
+        GROUP BY chi.department) attentionLeiji2
+        on attentionLeiji1.department=attentionLeiji2.department
+        ) attention
+        LEFT JOIN
+        (SELECT chi.department,IFNULL(cs.flag,0),COUNT(*) as chatCount,
+        count(case cs.flag when  0 then 1 end) as validChatCount,
+        count(case when cs.flag!=0 then 1 end) as invalidChatCount,
+        concat ( left (count(case cs.flag when  0 then 1 end)/COUNT(*)*100,5),'%') as chatScale
+        from consult_session cs
+        INNER JOIN sys_attention sa
+        on cs.sys_user_id=sa.openid
+        INNER JOIN channel_info chi
+        on sa.marketer=chi.marketer
+        where cs.create_time &gt;= #{startDate} and cs.create_time &lt;= #{endDate}
+        GROUP BY chi.department) chat
+        on attention.department=chat.department
+        <if test="department!='all'">
+            where attention.department = #{department}
+        </if>
+        ORDER BY attention.department
+    </select>
+    <!--查询渠道细分统计数据-->
+    <select id="getChannelDetailStatistics" resultType="java.util.Map">
+        SELECT attention.marketer,attention.attentionCount,attention.cancleAttentionCount,attention.leijiAttentionCount,attention.leijiCancleAttentionCount,IFNULL(chat.chatCount,0) chatCount
+        ,IFNULL(chat.validChatCount,0) validChatCount,IFNULL(chat.invalidChatCount,0) invalidChatCount,IFNULL(chat.chatScale,'0.00%') chatScale,attention.channel,attention.department
+        from (SELECT attentionLeiji1.marketer,attentionLeiji1.leijiAttentionCount,attentionLeiji1.leijiCancleAttentionCount,attentionLeiji2.attentionCount,attentionLeiji2.cancleAttentionCount
+        ,attentionLeiji1.channel,attentionLeiji1.department
+        from
+        (SELECT
+        chi.marketer,
+        chi.channel,
+        chi.department,
+        count(case sa.status when '0' then 1 end) as leijiAttentionCount,
+        count(case sa.status when '1' then 1 end) as leijiCancleAttentionCount
+        from
+        channel_info chi
+        INNER JOIN sys_attention sa ON sa.marketer = chi.marketer
+        where sa.date &lt;= #{endDate}
+        GROUP BY chi.marketer) attentionLeiji1
+        LEFT JOIN
+        (SELECT
+        chi.marketer,
+        chi.channel,
+        chi.department,
+        count(case sa.status when '0' then 1 end) as attentionCount,
+        count(case sa.status when '1' then 1 end) as cancleAttentionCount
+        from
+        channel_info chi
+        INNER JOIN sys_attention sa ON sa.marketer = chi.marketer
+        where sa.date &gt;= #{startDate} and sa.date &lt;= #{endDate}
+        GROUP BY chi.marketer) attentionLeiji2
+        on attentionLeiji1.marketer=attentionLeiji2.marketer
+        ) attention
+        LEFT JOIN
+        (SELECT chi.marketer,chi.channel,chi.department,IFNULL(cs.flag,0),COUNT(*) as chatCount,
+        count(case cs.flag when  0 then 1 end) as validChatCount,
+        count(case when cs.flag!=0 then 1 end) as invalidChatCount,
+        concat ( left (count(case cs.flag when  0 then 1 end)/COUNT(*)*100,5),'%') as chatScale
+        from consult_session cs
+        INNER JOIN sys_attention sa
+        on cs.sys_user_id=sa.openid
+        INNER JOIN channel_info chi
+        on sa.marketer=chi.marketer
+        where cs.create_time &gt;= #{startDate} and cs.create_time &lt;= #{endDate}
+        GROUP BY chi.marketer) chat
+        on attention.marketer=chat.marketer
+        <if test="department!='all'">
+            <if test="channel!='all'">
+                where attention.department = #{department} and attention.channel = #{channel}
+            </if>
+            <if test="channel=='all'">
+                where attention.department = #{department}
+            </if>
+        </if>
+        <if test="department=='all'">
+            <if test="channel!='all'">
+                where  attention.channel = #{channel}
+            </if>
+        </if>
+        ORDER BY attention.marketer
+    </select>
 </mapper>

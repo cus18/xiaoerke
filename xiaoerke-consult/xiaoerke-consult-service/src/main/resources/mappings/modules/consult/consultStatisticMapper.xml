@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo" >
-  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.consult.dao.ConsultStatisticDao" >
+<mapper namespace="com.cxqm.xiaoerke.modules.consult.dao.ConsultStatisticDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="day_number" property="dayNumber" jdbcType="INTEGER" />
     <result column="titile_number" property="titileNumber" jdbcType="INTEGER" />
@@ -296,7 +296,8 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!--咨询统计  deliang-->
-  <select id="getConsultStatistic" resultType="java.lang.Integer">
+  <select id="getConsultStatistic" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+    select * from (
     select count(DISTINCT(sys_user_id)) countNumber from consult_session where create_time like '${createDate}%'
     UNION ALL
     select count(DISTINCT(sys_user_id)) countNumber from consult_session
@@ -305,15 +306,15 @@
     UNION ALL
     select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime like '${createDate}%' and (serviceAttitude = '3' or serviceAttitude = '5')
     UNION ALL
-    select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between '{weekBeginDate}' and '{weekEndDate}' and (serviceAttitude = '3' or serviceAttitude = '5')
+    select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between #{weekBeginDate} and #{weekEndDate} and (serviceAttitude = '3' or serviceAttitude = '5')
     UNION ALL
-    select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between '{monthBeginDate}' and '{monthEndDate}' and (serviceAttitude = '3' or serviceAttitude = '5')
+    select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between #{monthBeginDate} and #{monthEndDate} and (serviceAttitude = '3' or serviceAttitude = '5')
     UNION ALL
     select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime like '${createDate}%' and (serviceAttitude = '1')
     UNION ALL
-    select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between '{weekBeginDate}' and '{weekEndDate}' and (serviceAttitude = '1')
+    select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between #{weekBeginDate} and #{weekEndDate} and (serviceAttitude = '1')
     UNION ALL
-    select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between '{monthBeginDate}' and '{monthEndDate}' and (serviceAttitude = '1')
+    select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between #{monthBeginDate} and #{monthEndDate} and (serviceAttitude = '1')
     UNION ALL
     select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime like '${createDate}%' and payStatus = 'success'
     UNION ALL
@@ -329,8 +330,8 @@
     UNION ALL
     select count(*) countNumber from consult_session where consult_number > 1 and create_time like '${createDate}%'
     UNION ALL
-    select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between '{weekBeginDate}' and '{weekEndDate}' and (serviceAttitude != '0')
+    select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between #{weekBeginDate} and #{weekEndDate} and (serviceAttitude != '0')
     UNION ALL
-    select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between '{monthBeginDate}' and '{monthEndDate}' and (serviceAttitude != '0')
+    select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between #{monthBeginDate} and #{monthEndDate} and (serviceAttitude != '0')) a
   </select>
 </mapper>
