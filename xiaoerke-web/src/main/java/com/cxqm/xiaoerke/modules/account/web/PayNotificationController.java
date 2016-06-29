@@ -333,8 +333,6 @@ public class PayNotificationController {
 				LogUtils.saveLog(Servlets.getRequest(), "BHS_ZFY_ZFCG","用户微信支付完成:" + map.get("out_trade_no"));
 				PayRecord payRecord = new PayRecord();
 				payRecord.setId((String) map.get("out_trade_no"));
-//				payRecord.setStatus("success");
-//				payRecord.setReceiveDate(new Date());
 				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
 				String insuranceId= insuranceMap.get("order_id").toString();
 				String[] umbrellaId=insuranceId.split("_");
@@ -347,9 +345,58 @@ public class PayNotificationController {
 					}
 					BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
 					babyUmbrellaInfo.setId(Integer.parseInt(umbrellaId[0]));
-//					babyUmbrellaInfo.setPayResult("success");
 					babyUmbrellaInfoService.updateBabyUmbrellaInfoStatus(babyUmbrellaInfo);
 					payRecord.getId();//修改pay_record表状态
+					payRecord.setStatus("success");
+					payRecord.setReceiveDate(new Date());
+					payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
+				}
+			}
+			return  XMLUtil.setXML("SUCCESS", "");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			lock.unlock();
+		}
+		return "";
+	}
+
+	@RequestMapping(value = "/user/getLovePlanPayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
+	public synchronized
+	@ResponseBody String getLovePlanPayNotifyInfo(HttpServletRequest request) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
+		lock.lock();
+		InputStream inStream = null;
+		try {
+			inStream = request.getInputStream();
+			ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
+			byte[] buffer = new byte[1024];
+			int len = 0;
+			while ((len = inStream.read(buffer)) != -1) {
+				outSteam.write(buffer, 0, len);
+			}
+			outSteam.close();
+			inStream.close();
+			String result  = new String(outSteam.toByteArray(),"utf-8");
+			Map<String, Object> map = XMLUtil.doXMLParse(result);
+
+			//放入service层进行事物控制
+			if("SUCCESS".equals(map.get("return_code"))){
+				LogUtils.saveLog(Servlets.getRequest(), "00000048","用户微信支付完成:" + map.get("out_trade_no"));
+				LogUtils.saveLog(Servlets.getRequest(), "LOVEPLAN_ZFY_ZFCG","用户微信支付完成:" + map.get("out_trade_no"));
+				PayRecord payRecord = new PayRecord();
+				payRecord.setId((String) map.get("out_trade_no"));
+				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
+				String insuranceId= insuranceMap.get("order_id").toString();
+				String[] umbrellaId = insuranceId.split("_");
+				if(insuranceMap.get("fee_type").toString().equals("umbrella")){
+					if(!"success".equals(insuranceMap.get("status").toString())){
+						sendWechatMessage(umbrellaId[0], umbrellaId[1]);
+					}
+					BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
+					babyUmbrellaInfo.setId(Integer.parseInt(umbrellaId[0]));
+					babyUmbrellaInfoService.updateBabyUmbrellaInfoStatus(babyUmbrellaInfo);
 					payRecord.setStatus("success");
 					payRecord.setReceiveDate(new Date());
 					payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
