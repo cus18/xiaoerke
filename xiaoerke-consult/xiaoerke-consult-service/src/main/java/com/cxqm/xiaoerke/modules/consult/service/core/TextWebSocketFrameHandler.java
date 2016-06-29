@@ -153,7 +153,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 							stringBuilder.append(praiseList.get(0).get("id"));
 							stringBuilder.append("'>评价医生</a>】");*//*
                             sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());*/
-                            int nameIndex = content.indexOf(":");
+                            int nameIndex = content.indexOf("：");
                             String newContent = content.substring(nameIndex + 1, content.toCharArray().length);
                             if (StringUtils.isNotNull(newContent) && !"\n".equalsIgnoreCase(newContent)) {
                                 if (newContent.endsWith("\n")) {
