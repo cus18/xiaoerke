@@ -295,6 +295,9 @@ public class ConsultDoctorController extends BaseController {
         params.put("content", "");
         params.put("dissatisfied", null);
         params.put("redPacket", null);
+        if(StringUtils.isNotNull(sessionId)){
+            params.put("consultSessionId",Integer.valueOf(sessionId));
+        }
         //判断有没有正在转接的会话
         ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = new ConsultSessionForwardRecordsVo();
         consultSessionForwardRecordsVo.setConversationId(Long.valueOf(sessionId));
