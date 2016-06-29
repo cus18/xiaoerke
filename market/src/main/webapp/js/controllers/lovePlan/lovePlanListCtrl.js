@@ -16,7 +16,6 @@ angular.module('controllers', ['ionic']).controller('lovePlanListCtrl', [
             }
         });
         $scope.transformDate = function(dateTime){
-            console.log("dada",dateTime);
             moment.locale('zh-cn');
             var dateValue = moment().startOf('day').fromNow(dateTime);
             return dateValue;
