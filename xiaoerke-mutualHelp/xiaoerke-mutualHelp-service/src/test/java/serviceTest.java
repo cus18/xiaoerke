@@ -39,7 +39,7 @@ public class serviceTest extends SpringTransactionalContextTests {
         MutualHelpDonation mutualHelpDonation = new MutualHelpDonation();
 //        mutualHelpDonation.setOpenId(null);
         mutualHelpDonation.setLeaveNote("愿安好！");
-        mutualHelpDonation.setMoney(23.0);
+        mutualHelpDonation.setMoney(23);
 
         int n = service.saveNoteAndDonation(mutualHelpDonation);
         System.out.println();
