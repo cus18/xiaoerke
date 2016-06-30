@@ -229,6 +229,22 @@
     where order_id = #{orderId,jdbcType=VARCHAR} and status ='success'
   </select>
 
+  <select id="findRecordByOpenid" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    SELECT
+        apr.receive_date
+    FROM
+        account_pay_record apr
+    WHERE
+        apr.open_id = #{openid,jdbcType=VARCHAR}
+    AND apr.fee_type = #{type,jdbcType=VARCHAR}
+    AND apr.`status` = "success"
+    order by apr.receive_date desc
+    limit 1
+
+  </select>
+
+
+
 
   <update id="updateByOrderId" parameterType="com.cxqm.xiaoerke.modules.account.entity.PayRecord" >
     update account_pay_record
