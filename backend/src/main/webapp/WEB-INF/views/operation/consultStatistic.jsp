@@ -48,10 +48,18 @@
                 <th class="sort-column name">首次咨询比例</th>
                 <th class="sort-column name">多次咨询</th>
                 <th class="sort-column name">多次咨询比例</th>
+				<th class="sort-column name">最高金额</th>
+				<th class="sort-column name">最小金额</th>
+				<th class="sort-column name">打赏总数</th>
+				<th class="sort-column name">评价点击量</th>
+				<th class="sort-column name">评价占比</th>
+				<th class="sort-column name">分享点击量</th>
+				<th class="sort-column name">分享占比</th>
                 </thead>
 				<tbody id="treeTableList">
                 <c:forEach items="${consultStatisticVos}" var="vo">
                 <tr>
+					<td>${vo.displayDate}</td>
 					<td>${vo.dayNumber}</td>
 					<td>${vo.titileNumber}</td>
 					<td>${vo.daySatisfiedDegree}</td>
