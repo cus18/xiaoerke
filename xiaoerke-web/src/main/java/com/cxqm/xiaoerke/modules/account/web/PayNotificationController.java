@@ -10,6 +10,8 @@ import com.cxqm.xiaoerke.modules.account.service.PayRecordService;
 import com.cxqm.xiaoerke.modules.insurance.entity.InsuranceRegisterService;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
+import com.cxqm.xiaoerke.modules.mutualHelp.entity.MutualHelpDonation;
+import com.cxqm.xiaoerke.modules.mutualHelp.service.MutualHelpDonationService;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.*;
@@ -69,6 +72,9 @@ public class PayNotificationController {
 
 	@Autowired
 	private WechatAttentionService wechatAttentionService;
+
+    @Autowired
+    private MutualHelpDonationService mutualHelpDonationService;
 
 	private static Lock lock = new ReentrantLock();
 
@@ -359,7 +365,7 @@ public class PayNotificationController {
 
 	@RequestMapping(value = "/user/getLovePlanPayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
 	public synchronized
-	@ResponseBody String getLovePlanPayNotifyInfo(HttpServletRequest request) {
+	@ResponseBody String getLovePlanPayNotifyInfo(HttpServletRequest request,HttpSession session) {
 		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 
 		lock.lock();
@@ -388,6 +394,14 @@ public class PayNotificationController {
 					payRecord.setStatus("success");
 					payRecord.setReceiveDate(new Date());
 					payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
+
+                    MutualHelpDonation mutualHelpDonation = new MutualHelpDonation();
+                    mutualHelpDonation.setOpenId(WechatUtil.getOpenId(session,request));
+                    mutualHelpDonation.setLeaveNote((String) map.get("leaveNote"));
+                    mutualHelpDonation.setMoney((Integer) map.get("money"));
+                    mutualHelpDonation.setDonationType((Integer) map.get("donationType"));
+                    mutualHelpDonation.setCreateTime(new Date());
+                    mutualHelpDonationService.saveNoteAndDonation(mutualHelpDonation);
 				}
 			}
 			return  XMLUtil.setXML("SUCCESS", "");

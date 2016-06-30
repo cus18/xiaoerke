@@ -102,7 +102,7 @@ function wechatPay() {
                 url: "account/user/lovePlanPay",
                 async: true,
                 type: 'get',
-                data: {leaveNotes: leaveNotes, payPrice: moneys * 100},
+                data: {leaveNote: leaveNotes, payPrice: moneys * 100},
                 cache: false,
                 success: function (data) {
                     $('#payButton').removeAttr("disabled");
@@ -121,17 +121,17 @@ function wechatPay() {
                         paySign: obj.paySign,  // 支付签名
                         success: function (res) {
                             if (res.errMsg == "chooseWXPay:ok") {
-                                $.ajax({
-                                    url:"mutualHelp/donation/addNoteAndDonation",
-                                    type:'POST',
-                                    data: "{'leaveNote':'"+leaveNotes+"','money':'"+moneys * 100+"'}",
-                                    contentType: "application/json; charset=utf-8",
-                                    dataType:'json',
-                                    success:function() {
-                                    },
-                                    error : function() {
-                                    }
-                                }, 'json');
+                                //$.ajax({
+                                //    url:"mutualHelp/donation/addNoteAndDonation",
+                                //    type:'POST',
+                                //    data: "{'leaveNote':'"+leaveNotes+"','money':'"+moneys * 100+"'}",
+                                //    contentType: "application/json; charset=utf-8",
+                                //    dataType:'json',
+                                //    success:function() {
+                                //    },
+                                //    error : function() {
+                                //    }
+                                //}, 'json');
                                 window.location.href="http://xiaork.cn/market/market#/lovePlanPaySuccess";
                             } else {
                                 alert("支付失败,请重新支付")
