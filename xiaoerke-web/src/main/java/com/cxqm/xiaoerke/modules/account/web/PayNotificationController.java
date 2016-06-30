@@ -34,6 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -414,6 +415,54 @@ public class PayNotificationController {
 		}
 		return "";
 	}
+
+	@RequestMapping(value = "/user/getDoctorConsultPayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
+	public synchronized
+	@ResponseBody String getDoctorConsultPayNotifyInfo(HttpServletRequest request,HttpSession session) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+		lock.lock();
+		InputStream inStream = null;
+		try {
+			inStream = request.getInputStream();
+			ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
+			byte[] buffer = new byte[1024];
+			int len = 0;
+			while ((len = inStream.read(buffer)) != -1) {
+				outSteam.write(buffer, 0, len);
+			}
+			outSteam.close();
+			inStream.close();
+			String result  = new String(outSteam.toByteArray(),"utf-8");
+			Map<String, Object> map = XMLUtil.doXMLParse(result);
+
+			//放入service层进行事物控制
+			if("SUCCESS".equals(map.get("return_code"))){
+				LogUtils.saveLog(Servlets.getRequest(), "00000048","用户微信支付完成:" + map.get("out_trade_no"));
+				LogUtils.saveLog(Servlets.getRequest(), "LOVEPLAN_ZFY_ZFCG","用户微信支付完成:" + map.get("out_trade_no"));
+				PayRecord payRecord = new PayRecord();
+				payRecord.setId((String) map.get("out_trade_no"));
+				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
+				if(insuranceMap.get("fee_type").toString().equals("doctorConsultPay")){
+					payRecord.setStatus("success");
+					payRecord.setReceiveDate(new Date());
+					payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
+					String openid = (String)map.get("openid");
+					HttpRequestUtil.wechatpost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/conversation",
+							"openId=" + openid +
+									"&messageType=20001"+
+									"&messageContent=用户已付款 请尽快接入");
+				}
+			}
+			return  XMLUtil.setXML("SUCCESS", "");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			lock.unlock();
+		}
+		return "";
+	}
+
+
 
 	private void sendWechatMessage(String toId, String fromId){
 		if(StringUtils.isNotNull(toId)){
