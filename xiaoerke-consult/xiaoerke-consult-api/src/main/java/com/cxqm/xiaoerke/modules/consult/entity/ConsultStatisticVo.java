@@ -45,6 +45,20 @@ public class ConsultStatisticVo {
 
     private String moreConsultDegree;
 
+    private String maxMoney;
+
+    private String minMoney;
+
+    private String sumMoney;
+
+    private Integer evaluateClickNumber;
+
+    private String evaluateClickDegree;
+
+    private Integer shareClickNumber;
+
+    private String shareClickDegree;
+
     public Integer getId() {
         return id;
     }
@@ -219,5 +233,61 @@ public class ConsultStatisticVo {
 
     public void setMoreConsultDegree(String moreConsultDegree) {
         this.moreConsultDegree = moreConsultDegree;
+    }
+
+    public String getMaxMoney() {
+        return maxMoney;
+    }
+
+    public void setMaxMoney(String maxMoney) {
+        this.maxMoney = maxMoney;
+    }
+
+    public String getMinMoney() {
+        return minMoney;
+    }
+
+    public void setMinMoney(String minMoney) {
+        this.minMoney = minMoney;
+    }
+
+    public String getSumMoney() {
+        return sumMoney;
+    }
+
+    public void setSumMoney(String sumMoney) {
+        this.sumMoney = sumMoney;
+    }
+
+    public Integer getEvaluateClickNumber() {
+        return evaluateClickNumber;
+    }
+
+    public void setEvaluateClickNumber(Integer evaluateClickNumber) {
+        this.evaluateClickNumber = evaluateClickNumber;
+    }
+
+    public String getEvaluateClickDegree() {
+        return evaluateClickDegree;
+    }
+
+    public void setEvaluateClickDegree(String evaluateClickDegree) {
+        this.evaluateClickDegree = evaluateClickDegree;
+    }
+
+    public Integer getShareClickNumber() {
+        return shareClickNumber;
+    }
+
+    public void setShareClickNumber(Integer shareClickNumber) {
+        this.shareClickNumber = shareClickNumber;
+    }
+
+    public String getShareClickDegree() {
+        return shareClickDegree;
+    }
+
+    public void setShareClickDegree(String shareClickDegree) {
+        this.shareClickDegree = shareClickDegree;
     }
 }

@@ -5,8 +5,12 @@ import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo;
 import com.cxqm.xiaoerke.modules.operation.service.ChannelService;
 import com.cxqm.xiaoerke.modules.operation.service.ConsultStatisticService;
+import com.cxqm.xiaoerke.modules.sys.service.LogMongoDBServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -23,7 +27,7 @@ public class ScheduleTaskController extends BaseController {
     private ConsultStatisticService consultStatisticService;
 
     @Autowired
-    private ChannelService channelService;
+    private LogMongoDBServiceImpl logMongoDBService;
 
     /**
      * 咨询统计信息
@@ -34,6 +38,10 @@ public class ScheduleTaskController extends BaseController {
         HashMap<String, Object> searchMap = new HashMap<String, Object>();
         calendar.add(Calendar.DATE, -1);
         String createDate = DateUtils.formatDate(new Date(calendar.getTimeInMillis()), "yyyy-MM-dd");
+        setDate(calendar);
+        Date startDate = calendar.getTime();
+        calendar.add(Calendar.DATE, 1);
+        Date endDate = new Date();
 
         calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, -8);
@@ -204,9 +212,47 @@ public class ScheduleTaskController extends BaseController {
         if(monthEvaluateNumber!=0){
             monthDatisfiedDegree = String.valueOf((float)monthSatisfiedNumber / (float)monthEvaluateNumber * 100) + "%";
         }
+        //最小金额
+        /**
+         *select MIN(redpacket) countNumber from customerEvaluation where createtime like '2016-06-30%' and redPacket is not null and redPacket !=''
+         */
+        Integer minMoney = resultList.get(16);
+        //最高金额
+        /**
+         * select MAX(redpacket) countNumber from customerEvaluation where createtime like '2016-06-30%' and redPacket is not null and redPacket !=''
+         */
+        Integer maxMoney = resultList.get(17);
+        //打赏总额
+        /**
+         *select sum(redpacket) countNumber from customerEvaluation where createtime like '2016-06-30%' and redPacket is not null and redPacket !=''
+         */
+        Integer sumMoney = resultList.get(18);
+        //评价点击量
+        Query queryClick = new Query().addCriteria(Criteria.where("title").regex("ZXPJSXY_JE")).addCriteria(Criteria.where("create_date").gte(startDate).andOperator(Criteria.where("create_date").lte(endDate)));
+
+        Integer evaluateClickNumber = (int)logMongoDBService.queryCount(queryClick);
+        //评价占比
+        /**
+         *评价点击量/当天咨询数
+         */
+        String evaluateClickDegree = "";
+        if(dayNumber!=0){
+            evaluateClickDegree = String.valueOf((float)evaluateClickNumber / (float)dayNumber * 100) + "%";
+        }
+        //分享点击量
+        Query queryShare = new Query().addCriteria(Criteria.where("title").is("ZXFX")).addCriteria(Criteria.where("create_date").gte(startDate).andOperator(Criteria.where("create_date").lte(endDate)));
+
+        Integer shareClickNumber = (int)logMongoDBService.queryCount(queryShare);
+        //分享占比
+        /**
+         *分享数/当天咨询数
+         */
+        String shareClickDegree = "";
+        if(dayNumber!=0){
+            shareClickDegree = String.valueOf((float)shareClickNumber / (float)dayNumber * 100) + "%";
+        }
 
         ConsultStatisticVo consultStatisticVo = new ConsultStatisticVo();
-
         consultStatisticVo.setDayNumber(dayNumber);
         consultStatisticVo.setDaySatisfiedDegree(daySatisfiedDegree);
         consultStatisticVo.setDayYawpNumber(dayYawpNumber);
@@ -227,6 +273,13 @@ public class ScheduleTaskController extends BaseController {
         consultStatisticVo.setTitileNumber(titileNnumber);
         consultStatisticVo.setMoreConusltNumber(moreConusltNumber);
         consultStatisticVo.setRewardNumber(rewardNumber);
+        consultStatisticVo.setMinMoney(String.valueOf(minMoney));
+        consultStatisticVo.setMaxMoney(String.valueOf(maxMoney));
+        consultStatisticVo.setSumMoney(String.valueOf(sumMoney));
+        consultStatisticVo.setEvaluateClickNumber(evaluateClickNumber);
+        consultStatisticVo.setEvaluateClickDegree(evaluateClickDegree);
+        consultStatisticVo.setShareClickNumber(shareClickNumber);
+        consultStatisticVo.setShareClickDegree(shareClickDegree);
         consultStatisticService.insertSelective(consultStatisticVo);
 
     }
