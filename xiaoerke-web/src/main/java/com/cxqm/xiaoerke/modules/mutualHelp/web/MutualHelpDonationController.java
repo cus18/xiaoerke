@@ -99,11 +99,8 @@ public class MutualHelpDonationController {
      */
     @RequestMapping(value = "/addNoteAndDonation", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public Map<String,Object> addNoteAndDonation(HttpServletRequest request, @RequestBody Map<String, Object> params){
-        String openId = (String) params.get("openId");
-        if(!StringUtils.isNotNull(openId)){
-            openId = CookieUtils.getCookie(request,"openId");
-        }
+    public Map<String,Object> addNoteAndDonation(HttpServletRequest request, HttpSession session,@RequestBody Map<String, Object> params){
+        String openId = WechatUtil.getOpenId(session,request);
         Integer money = null;
         String moneyString = (String) params.get("money");
         if(StringUtils.isNotNull(moneyString)){
