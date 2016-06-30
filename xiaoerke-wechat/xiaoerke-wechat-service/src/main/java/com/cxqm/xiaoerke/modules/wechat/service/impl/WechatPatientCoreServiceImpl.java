@@ -710,13 +710,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=2");
 			articleList.add(article);
 
-//			article = new Article();
-//			article.setTitle("名医电话|通话10分钟，宝宝康复指导全Get");
-//			article.setDescription("与权威儿科专家通话10分钟，个性化就诊和康复指导");
-//			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%90%8D%E5%8C%BB%E7%94%B5%E8%AF%9D.png");
-//			article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=28");
-//			articleList.add(article);
-
 			article = new Article();
 			article.setTitle("妈妈社群\n育儿交流找组织，客服微信：bdfdxb");
 			article.setDescription("添加宝大夫客服微信：bdfdxb，加入宝大夫家长群，与众多宝妈一起交流分享，参与更多好玩儿的活动");
@@ -726,12 +719,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
 			WechatUtil.senImgMsgToWechat(token,xmlEntity.getFromUserName(),articleList);
 
-//			String st = "欢迎加入宝大夫，让您从此育儿不再愁！"+WechatUtil.emoji(0x1f339)+"\n\n"
-//					+"【免费咨询】直接咨询北京三甲医院儿科专家，一分钟内回复！\n" +
-//					"【预约专家】急速预约北京儿科专家出诊时间，不用排队挂号！\n"+
-//					"【妈妈活动】添加宝大夫客服微信：bdfdxb，加入宝大夫家长群，与众多宝妈一起交流分享，参与更多好玩儿的活动！\n\n"+
-//					"如需人工协助预约儿科专家,请您拨打：400-623-7120。";
-//			WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
 		}
 
 		return processScanEvent(xmlEntity,"newUser",request,response);

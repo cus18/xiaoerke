@@ -107,6 +107,21 @@ public class RouteController extends BaseController {
     }
 
     /**
+     * 宝护伞 宣传页
+     */
+    @RequestMapping(value ="/umbrellaDemo",method = {RequestMethod.POST, RequestMethod.GET})
+    public String umbrellaDemo() {
+        return "swipe/umbrellaDemo";
+    }
+    /**
+     * 宝护伞 宣传页demo
+     */
+    @RequestMapping(value ="/umbrellaSwipe",method = {RequestMethod.POST, RequestMethod.GET})
+    public String umbrellaSwipe() {
+        return "swipe/umbrellaSwipe";
+    }
+
+    /**
      * 宝护伞
      */
     @RequestMapping(value ="/umbrella",method = {RequestMethod.POST, RequestMethod.GET})

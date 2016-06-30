@@ -104,7 +104,11 @@ public class MutualHelpDonationController {
         if(!StringUtils.isNotNull(openId)){
             openId = CookieUtils.getCookie(request,"openId");
         }
-        Integer money = Integer.valueOf(((Float)params.get("money")).intValue()*100);
+        Integer money = null;
+        String moneyString = (String) params.get("money");
+        if(StringUtils.isNotNull(moneyString)){
+            money = Integer.valueOf(moneyString);
+        }
         String leaveNote = (String) params.get("leaveNote");
 
         Map<String, Object> response = new HashMap<String, Object>();
@@ -118,7 +122,8 @@ public class MutualHelpDonationController {
             mutualHelpDonation.setMoney(money);
             mutualHelpDonation.setLeaveNote(leaveNote);
             mutualHelpDonation.setDonationType((Integer) params.get("donationType"));
-            int n = service.saveNoteAndDonation(mutualHelpDonation);if (n > 0) {
+            int n = service.saveNoteAndDonation(mutualHelpDonation);
+            if (n > 0) {
                 response.put("insert", "success");
             } else {
                 response.put("insert", "failed");
