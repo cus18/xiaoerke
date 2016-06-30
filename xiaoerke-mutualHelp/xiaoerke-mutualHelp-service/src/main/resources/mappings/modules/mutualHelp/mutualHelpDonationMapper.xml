@@ -15,9 +15,8 @@
 
     <!-- 捐款总条数  -->
     <select id="getCount" resultType="java.lang.Integer" parameterType="java.lang.String">
-        select count(*) from mutualhelp_donation
-        where money is not null
-        and money>0
+        select count(DISTINCT(openid)) from mutualhelp_donation
+        where 1=1
         <if test="donationType != null">
             and donation_type=#{donationType,jdbcType=VARCHAR}
         </if>
