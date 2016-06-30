@@ -63,6 +63,8 @@ public class ConsultStatisticVo {
 
     private Date createDate;
 
+    private String displayDate;
+
     private String endDate;
 
     private String startDate;
@@ -321,5 +323,13 @@ public class ConsultStatisticVo {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    public String getDisplayDate() {
+        return displayDate;
+    }
+
+    public void setDisplayDate(String displayDate) {
+        this.displayDate = displayDate;
     }
 }

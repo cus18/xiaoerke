@@ -32,6 +32,7 @@
     <result column="share_click_number" property="shareClickNumber" jdbcType="INTEGER" />
     <result column="share_click_degree" property="shareClickDegree" jdbcType="VARCHAR" />
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+    <result column="displayDate" property="displayDate" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Base_Column_List" >
     id, day_number, titile_number, evaluate_number, unevaluate_number, satisfied_number,
@@ -40,7 +41,7 @@
     more_consult_cancle_Attention_number, first_consult_number, first_consult_degree,
     second_consult_number, second_consult_degree, more_conuslt_number, more_consult_degree,
     max_money, min_money, sum_money, evaluate_click_number, evaluate_click_degree, share_click_number,
-    share_click_degree,create_date
+    share_click_degree,create_date,DATE_FORMAT(create_date, '%Y-%m-%d') displayDate
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
