@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="/keeper/styles/main.less" type="text/css" />
 <link rel="stylesheet" href="/keeper/styles/pay/commonPay.less" type="text/css" />
 <link rel="stylesheet" href="/keeper/styles/pay/doctorConsultPay.less" type="text/css" />
-<body onload="doctorConsultInit()">
+<body onload="doRefresh()">
 <div class="doctorConsultPay bg1" >
     <div class="intro">
         <img class="my-img1 line2" width="100%" height="auto" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2FconsultPay%2Fe_01.png">
@@ -28,7 +28,7 @@
         <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2FconsultPay%2Fd_05.png" alt="right"/>
         <div>未来<span>24小时</span>享受医生秒回服务</div>
     </div>
-    <div onclick="wechatPay()" id="payButton"  class="button" >点我支付（￥8）</div>
+    <div onclick="wechatPay()" id="payButton"  class="button" >点我支付（￥<a id="money"></a>元）</div>
     <div class="bottomImg">
         <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2FconsultPay%2Fg_02.png" alt=""/>
     </div>
