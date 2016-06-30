@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.account.web;
 
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
+import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
@@ -212,9 +213,20 @@ public class AccountUserController {
 	public
 	@ResponseBody
 	String lovePlanPay(HttpServletRequest request,HttpSession session) throws Exception {
+		String leaveNote = request.getParameter("leaveNote");
+		if(leaveNote != null) {
+			leaveNote = new String(leaveNote.getBytes("ISO-8859-1"), "utf-8");
+		}
+		Integer donationType = null;
+		if(StringUtils.isNotNull(request.getParameter("donationType"))){
+			donationType = Integer.valueOf(request.getParameter("donationType"));
+		}
+
 		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 		//获取统一支付接口参数
-        request.setAttribute("feeType", "lovePlan");
+		request.setAttribute("feeType", "lovePlan");
+		request.setAttribute("leaveNote", leaveNote);
+		request.setAttribute("donationType", donationType);
 		Map prepayInfo = accountService.getPrepayInfo(request, session, "lovePlanService");
 		prepayInfo.put("feeType", "lovePlan");
 		System.out.println("feeType:" + prepayInfo.get("feeType").toString());

@@ -398,10 +398,10 @@ public class PayNotificationController {
 				if(insuranceMap.get("fee_type").toString().equals("lovePlan")){
                     if("success".equals(insuranceMap.get("status").toString())){
                         MutualHelpDonation mutualHelpDonation = new MutualHelpDonation();
-                        mutualHelpDonation.setOpenId(WechatUtil.getOpenId(session, request));
-						mutualHelpDonation.setLeaveNote((String) request.getParameter("leaveNote"));
-						mutualHelpDonation.setMoney(Integer.valueOf((String) request.getParameter("payPrice")));
-						mutualHelpDonation.setDonationType(Integer.valueOf((String) request.getParameter("donationType")));
+                        mutualHelpDonation.setOpenId((String) map.get("openid"));
+						mutualHelpDonation.setMoney(Integer.valueOf((String)map.get("total_fee")));
+						mutualHelpDonation.setLeaveNote((String) request.getAttribute("leaveNote"));
+						mutualHelpDonation.setDonationType((Integer) request.getAttribute("donationType"));
 						mutualHelpDonation.setCreateTime(new Date());
                         mutualHelpDonationService.saveNoteAndDonation(mutualHelpDonation);
                     }
@@ -437,8 +437,8 @@ public class PayNotificationController {
 
 			//放入service层进行事物控制
 			if("SUCCESS".equals(map.get("return_code"))){
-				LogUtils.saveLog(Servlets.getRequest(), "00000048","用户微信支付完成:" + map.get("out_trade_no"));
-				LogUtils.saveLog(Servlets.getRequest(), "LOVEPLAN_ZFY_ZFCG","用户微信支付完成:" + map.get("out_trade_no"));
+				LogUtils.saveLog(Servlets.getRequest(), "00000048", "用户微信支付完成:" + map.get("out_trade_no"));
+				LogUtils.saveLog(Servlets.getRequest(), "LOVEPLAN_ZFY_ZFCG", "用户微信支付完成:" + map.get("out_trade_no"));
 				PayRecord payRecord = new PayRecord();
 				payRecord.setId((String) map.get("out_trade_no"));
 				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
