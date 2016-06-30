@@ -14,7 +14,7 @@ public interface MutualHelpDonationService {
     public Integer getCount(Integer donationType);
 
     //捐款总金额
-    public Double getSumMoney(Integer donationType);
+    public Double getSumMoney(HashMap<String, Object> paramMap);
 
     //捐款和留言详情
     public Map<String,Object> getDonatonDetail(HashMap<String, Object> paramMap);

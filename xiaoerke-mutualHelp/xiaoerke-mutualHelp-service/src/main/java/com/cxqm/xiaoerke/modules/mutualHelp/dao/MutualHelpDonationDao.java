@@ -21,7 +21,7 @@ public interface MutualHelpDonationDao {
     int getSumMoney(@Param("donationType")Integer donationType);
 
     //捐款总额
-    int getSumMoney(HashMap<String,Object> searchMap);
+    double getSumMoney(HashMap<String,Object> searchMap);
 
     //最后留言或捐款的时间
     Date getLastTime(HashMap<String, Object> searchMap);
