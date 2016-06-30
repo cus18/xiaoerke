@@ -80,10 +80,11 @@ var count=function () {
         dataType:'json',
         success:function(data) {
             console.log('counts',data.count);
-            var count = data.count;
-            //var length = count / 300;
-            $("#counts").html(count);
-            //$(".lovePlanFirst .ruler .line").css('width',length);
+            if(data.count != undefined){
+                $("#counts").html(data.count);
+            }else{
+                $("#counts").html('30');
+            }
         },
         error : function() {
         }
@@ -98,8 +99,15 @@ var sumMoney=function () {
         contentType: "application/json; charset=utf-8",
         dataType:'json',
         success:function(data) {
-            console.log('sumMoney',data.count);
-            $("#lovemoneyCount").html(data.count);
+            if(data.count != undefined){
+                console.log('sumMoney',data.count);
+                var length = data.count / 300;
+                $(".lovePlanFirst .ruler .line").css('width',length+'%');
+                $("#lovemoneyCount").html(data.count);
+            }else{
+                $(".lovePlanFirst .ruler .line").css('width','20%');
+                $("#lovemoneyCount").html('3000');
+            }
         },
         error : function() {
         }
@@ -115,7 +123,6 @@ var lastNote=function () {
         dataType:'json',
         success:function(data) {
             var date = moment(data.createTime).format('YYYY-MM-DD');
-            console.log('lastNote',data);
             $("#newNoteContent").html(data.leaveNote);
             $("#createTime").html(date);
             if(data.headImgUrl != ''){
@@ -130,24 +137,24 @@ var lastNote=function () {
 //发布留言
 var addNoteAndDonation = function(){
     var leaveNote = $('#leaveNoteContent').val();
-    console.log("leav",leaveNote);
-    $.ajax({
-        url:"mutualHelp/donation/addNoteAndDonation",
-        //async:false,
-        type:'POST',
-        data: "{'leaveNote':'"+leaveNote+"'}",
-        contentType: "application/json; charset=utf-8",
-        dataType:'json',
-        success:function(data) {
-            if(leaveNote != ''){
+    if(leaveNote != ''){
+        $.ajax({
+            url:"mutualHelp/donation/addNoteAndDonation",
+            //async:false,
+            type:'POST',
+            data: "{'leaveNote':'"+leaveNote+"'}",
+            contentType: "application/json; charset=utf-8",
+            dataType:'json',
+            success:function() {
                 lastNote();
                 $('#leaveNoteContent').val('');
+                cancelComment();
+            },
+            error : function() {
             }
-            cancelComment();
-        },
-        error : function() {
-        }
-    }, 'json');
+        }, 'json');
+    }
+
 };
 var getUserListImage=function () {
     $.ajax({
