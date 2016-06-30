@@ -65,6 +65,7 @@ define(['appPatientConsult'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'customerServiceCtrl',
                                     ['js/controllers/customerServiceCtrl.js',
                                         'js/libs/scrollglue.js','js/libs/moment.min.js',
+                                        'https://res.wx.qq.com/open/js/jweixin-1.0.0.js',
                                         'js/styles/main.css','js/styles/customerService.css'],
                                     'js/views/customerService.html');
                             }
@@ -82,6 +83,7 @@ define(['appPatientConsult'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'doctorConsultPaySuccessCtrl',
                                     ['js/controllers/doctorConsultPaySuccessCtrl.js',
                                         'js/libs/scrollglue.js','js/libs/moment.min.js',
+                                        'https://res.wx.qq.com/open/js/jweixin-1.0.0.js',
                                         'js/styles/main.css','js/styles/doctorConsultPaySuccess.css'],
                                     'js/views/doctorConsultPaySuccess.html');
                             }
