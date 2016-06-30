@@ -34,12 +34,8 @@ public class MutualHelpDonationController {
      */
     @RequestMapping(value = "/photoWall", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public Map<String, Object> getDetail(HttpServletRequest request, @RequestBody Map<String, Object> params){
-        String openId = (String) params.get("openId");
-        if(!StringUtils.isNotNull(openId)){
-            openId = CookieUtils.getCookie(request, "openId");
-        }
-
+    public Map<String, Object> getDetail(HttpServletRequest request, HttpSession session, @RequestBody Map<String, Object> params){
+        String openId= WechatUtil.getOpenId(session, request);
         HashMap<String,Object> searchMap = new HashMap<String, Object>();
         searchMap.put("openId", openId);
         searchMap.put("userId", (Integer) params.get("userId"));
@@ -139,7 +135,6 @@ public class MutualHelpDonationController {
     Map<String, Object> getOpenid(HttpServletRequest request,HttpSession session){
         Map<String, Object> resultMap = new HashMap<String, Object>();
         String openid= WechatUtil.getOpenId(session, request);
-//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         if(openid==null||openid.equals("")){
             resultMap.put("openid","none");
             return resultMap;

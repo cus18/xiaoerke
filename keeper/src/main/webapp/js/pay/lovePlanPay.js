@@ -124,7 +124,7 @@ function wechatPay() {
                                 $.ajax({
                                     url:"mutualHelp/donation/addNoteAndDonation",
                                     type:'POST',
-                                    data: {leaveNotes: leaveNotes, money: moneys * 100},
+                                    data: "{'leaveNote':'"+leaveNotes+"','money':'"+moneys * 100+"'}",
                                     contentType: "application/json; charset=utf-8",
                                     dataType:'json',
                                     success:function() {
