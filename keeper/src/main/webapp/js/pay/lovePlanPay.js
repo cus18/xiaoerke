@@ -1,22 +1,22 @@
 var payLock = false;
 var moneys = "0";
 var leaveNotes = "";
-var lovePlanPayInit=function(){
-    $.ajax({
-        url:"umbrella/getOpenid",
-        async:true,
-        type:'post',
-        cache:false,
-        dataType:'json',
-        success:function(data) {
-            if(data.openid != ''){
-                doRefresh();
-            }
-        },
-        error : function() {
-        }
-    });
-};
+//var lovePlanPayInit=function(){
+//    $.ajax({
+//        url:"mutualHelp/getOpenid",
+//        async:true,
+//        type:'post',
+//        cache:false,
+//        dataType:'json',
+//        success:function(data) {
+//            if(data.openid != ''){
+//                doRefresh();
+//            }
+//        },
+//        error : function() {
+//        }
+//    });
+//};
 
 var recordLogs = function(val){
     $.ajax({
@@ -48,7 +48,7 @@ var doRefresh = function(){
         url:"wechatInfo/getConfig",// 跳转到 action
         async:true,
         type:'get',
-        data:{url:location.href.split('#')[0]},//得到需要分享页面的url
+        data:{url:location.href},//得到需要分享页面的url
         cache:false,
         dataType:'json',
         success:function(data) {
@@ -132,7 +132,7 @@ function wechatPay() {
                                     error : function() {
                                     }
                                 }, 'json');
-                                window.location.href="http://localhost:8080/market/market#/lovePlanPaySuccess";
+                                window.location.href="http://xiaork.cn/market/market#/lovePlanPaySuccess";
                             } else {
                                 alert("支付失败,请重新支付")
                             }
