@@ -1,9 +1,7 @@
 angular.module('controllers', ['ionic']).controller('lovePlanListCtrl', [
-    '$scope','$state','$stateParams','PhotoWall',
-    function ($scope,$state,$stateParams,PhotoWall) {
-        PhotoWall.save({
-            openid:'"o3_NPwvfAE_v-LfjpER1V4L3ZUIE"'
-        }, function (data) {
+    '$scope','$state','$stateParams','PhotoWall','$filter',
+    function ($scope,$state,$stateParams,PhotoWall,$filter) {
+        PhotoWall.save({}, function (data) {
             console.log(data);
             $scope.user = data.donationList;
             $scope.nincName = data.myMap.wechatName;
@@ -16,8 +14,8 @@ angular.module('controllers', ['ionic']).controller('lovePlanListCtrl', [
             }
         });
         $scope.transformDate = function(dateTime){
-            moment.locale('zh-cn');
-            var dateValue = moment().startOf('day').fromNow(dateTime);
+            var angularDay = $filter('date')(dateTime,"yyyy-MM-dd HH:mm:ss");
+            var dateValue = moment(angularDay).startOf('hour').fromNow();
             return dateValue;
         };
         $scope.title ="宝妈爱心接力";

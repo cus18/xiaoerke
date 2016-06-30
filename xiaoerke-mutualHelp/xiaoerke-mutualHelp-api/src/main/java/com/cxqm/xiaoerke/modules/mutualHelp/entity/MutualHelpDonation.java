@@ -12,7 +12,7 @@ public class MutualHelpDonation {
 
     private String userId;
 
-    private Double money;
+    private Integer money;
 
     private String leaveNote;
 
@@ -44,11 +44,11 @@ public class MutualHelpDonation {
         this.userId = userId;
     }
 
-    public Double getMoney() {
+    public Integer getMoney() {
         return money;
     }
 
-    public void setMoney(Double money) {
+    public void setMoney(Integer money) {
         this.money = money;
     }
 

@@ -1,4 +1,4 @@
-﻿﻿﻿angular.module('controllers', ['ionic']).controller('umbrellaMemberAddCtrl', [
+﻿angular.module('controllers', ['ionic']).controller('umbrellaMemberAddCtrl', [
         '$scope','$state','$stateParams','addFamily','checkFamilyMembers','ifExistOrder',
         function ($scope,$state,$stateParams,addFamily,checkFamilyMembers,ifExistOrder) {
             $scope.title="宝护伞-宝大夫儿童家庭重疾互助计划";
