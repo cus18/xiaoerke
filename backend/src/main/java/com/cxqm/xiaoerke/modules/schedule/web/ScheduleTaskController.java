@@ -281,6 +281,7 @@ public class ScheduleTaskController extends BaseController {
         consultStatisticVo.setEvaluateClickDegree(evaluateClickDegree);
         consultStatisticVo.setShareClickNumber(shareClickNumber);
         consultStatisticVo.setShareClickDegree(shareClickDegree);
+        consultStatisticVo.setCreateDate(new Date());
         consultStatisticService.insertSelective(consultStatisticVo);
 
     }

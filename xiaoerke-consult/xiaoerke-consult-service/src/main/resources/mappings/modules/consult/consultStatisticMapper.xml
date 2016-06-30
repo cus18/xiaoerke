@@ -31,6 +31,7 @@
     <result column="evaluate_click_degree" property="evaluateClickDegree" jdbcType="VARCHAR" />
     <result column="share_click_number" property="shareClickNumber" jdbcType="INTEGER" />
     <result column="share_click_degree" property="shareClickDegree" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
   </resultMap>
   <sql id="Base_Column_List" >
     id, day_number, titile_number, evaluate_number, unevaluate_number, satisfied_number,
@@ -39,13 +40,20 @@
     more_consult_cancle_Attention_number, first_consult_number, first_consult_degree,
     second_consult_number, second_consult_degree, more_conuslt_number, more_consult_degree,
     max_money, min_money, sum_money, evaluate_click_number, evaluate_click_degree, share_click_number,
-    share_click_degree
+    share_click_degree,create_date
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />
     from consult_statistic
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getConsultStatisticList" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select
+    <include refid="Base_Column_List" />
+    from consult_statistic
+    where create_date BETWEEN DATE_FORMAT(#{startDate},'%Y-%m-%d') and DATE_FORMAT(#{endDate},'%Y-%m-%d')
+    order by create_date  DESC
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from consult_statistic
@@ -63,7 +71,7 @@
     more_conuslt_number, more_consult_degree, max_money,
     min_money, sum_money, evaluate_click_number,
     evaluate_click_degree, share_click_number,
-    share_click_degree)
+    share_click_degree,create_date)
     values (#{id,jdbcType=INTEGER}, #{dayNumber,jdbcType=INTEGER}, #{titileNumber,jdbcType=INTEGER}, 
       #{evaluateNumber,jdbcType=INTEGER}, #{unevaluateNumber,jdbcType=INTEGER}, #{satisfiedNumber,jdbcType=INTEGER}, 
       #{daySatisfiedDegree,jdbcType=VARCHAR}, #{weedSatisfiedDegree,jdbcType=VARCHAR}, 
@@ -75,7 +83,7 @@
     #{moreConusltNumber,jdbcType=INTEGER}, #{moreConsultDegree,jdbcType=VARCHAR}, #{maxMoney,jdbcType=VARCHAR},
     #{minMoney,jdbcType=VARCHAR}, #{sumMoney,jdbcType=VARCHAR}, #{evaluateClickNumber,jdbcType=INTEGER},
     #{evaluateClickDegree,jdbcType=VARCHAR}, #{shareClickNumber,jdbcType=INTEGER},
-    #{shareClickDegree,jdbcType=VARCHAR})
+    #{shareClickDegree,jdbcType=VARCHAR},#{createDate})
   </insert>
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo" >
     insert into consult_statistic
@@ -167,6 +175,9 @@
       <if test="shareClickDegree != null" >
         share_click_degree,
       </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -255,6 +266,9 @@
       </if>
       <if test="shareClickDegree != null" >
         #{shareClickDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate},
       </if>
     </trim>
   </insert>

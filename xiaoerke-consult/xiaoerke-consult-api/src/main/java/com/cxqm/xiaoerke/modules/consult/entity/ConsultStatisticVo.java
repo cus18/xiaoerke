@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.consult.entity;
 
+import java.util.Date;
+
 public class ConsultStatisticVo {
     private Integer id;
 
@@ -58,6 +60,28 @@ public class ConsultStatisticVo {
     private Integer shareClickNumber;
 
     private String shareClickDegree;
+
+    private Date createDate;
+
+    private String endDate;
+
+    private String startDate;
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
 
     public Integer getId() {
         return id;
@@ -289,5 +313,13 @@ public class ConsultStatisticVo {
 
     public void setShareClickDegree(String shareClickDegree) {
         this.shareClickDegree = shareClickDegree;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 }
