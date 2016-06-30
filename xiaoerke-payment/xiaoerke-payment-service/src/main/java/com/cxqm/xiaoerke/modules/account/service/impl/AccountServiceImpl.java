@@ -29,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -384,6 +383,7 @@ public class AccountServiceImpl implements AccountService {
         String openId = WechatUtil.getOpenId(session,request);
         //获取需要支付的金额  单位(分)
         String order_price = request.getAttribute("payPrice")!=null?String.valueOf(((Float)request.getAttribute("payPrice")).intValue()*100):request.getParameter("payPrice");
+
         //生成的商户订单号
         String out_trade_no = IdGen.uuid();//Sha1Util.getNonceStr();
         String noncestr = IdGen.uuid();//Sha1Util.getNonceStr();//生成随机字符串
@@ -395,6 +395,12 @@ public class AccountServiceImpl implements AccountService {
         parameters.put("out_trade_no", out_trade_no);//商户订单号
         parameters.put("total_fee", order_price);//金额
         parameters.put("spbill_create_ip",request.getRemoteAddr());//终端ip
+
+        if("lovePlan".equals((String) request.getAttribute("feeType"))) {
+            parameters.put("leaveNote", request.getAttribute("leaveNote"));//捐款留言
+            parameters.put("money", request.getAttribute("payPrice"));//捐款
+            parameters.put("donationType", request.getAttribute("donationType"));
+        }
         if(serviceType.equals("appointService")){
             parameters.put("notify_url", ConstantUtil.NOTIFY_APPOINT_URL);//通知地址
         }else if(serviceType.equals("insuranceService")){
