@@ -104,7 +104,7 @@ public class MutualHelpDonationController {
         if(!StringUtils.isNotNull(openId)){
             openId = CookieUtils.getCookie(request,"openId");
         }
-        Integer money = (Integer) params.get("leaveNote");;
+        Integer money = Integer.valueOf((String) params.get("money"));;
         String leaveNote = (String) params.get("leaveNote");
 
         Map<String, Object> response = new HashMap<String, Object>();
