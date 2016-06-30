@@ -51,7 +51,7 @@
     <select id="getLastNote" resultMap="BaseResultMap" parameterType="java.util.HashMap">
         select <include refid="Base_Column_List" />
         from mutualhelp_donation
-        where 1=1
+        where leave_note is not null and leave_note &lt;&gt; ''
         <if test="donationType != null">
             and donation_type=#{donationType,jdbcType=VARCHAR}
         </if>
