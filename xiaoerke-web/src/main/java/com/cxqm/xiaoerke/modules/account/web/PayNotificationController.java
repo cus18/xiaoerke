@@ -389,19 +389,21 @@ public class PayNotificationController {
 				LogUtils.saveLog(Servlets.getRequest(), "LOVEPLAN_ZFY_ZFCG","用户微信支付完成:" + map.get("out_trade_no"));
 				PayRecord payRecord = new PayRecord();
 				payRecord.setId((String) map.get("out_trade_no"));
+                payRecord.setStatus("success");
+                payRecord.setReceiveDate(new Date());
+                payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
+
 				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
 				if(insuranceMap.get("fee_type").toString().equals("lovePlan")){
-					payRecord.setStatus("success");
-					payRecord.setReceiveDate(new Date());
-					payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
-
-                    MutualHelpDonation mutualHelpDonation = new MutualHelpDonation();
-                    mutualHelpDonation.setOpenId(WechatUtil.getOpenId(session,request));
-                    mutualHelpDonation.setLeaveNote((String) map.get("leaveNote"));
-                    mutualHelpDonation.setMoney((Integer) map.get("money"));
-                    mutualHelpDonation.setDonationType((Integer) map.get("donationType"));
-                    mutualHelpDonation.setCreateTime(new Date());
-                    mutualHelpDonationService.saveNoteAndDonation(mutualHelpDonation);
+                    if("success".equals(insuranceMap.get("status").toString())){
+                        MutualHelpDonation mutualHelpDonation = new MutualHelpDonation();
+                        mutualHelpDonation.setOpenId(WechatUtil.getOpenId(session,request));
+                        mutualHelpDonation.setLeaveNote((String) map.get("leaveNote"));
+                        mutualHelpDonation.setMoney((Integer) map.get("money"));
+                        mutualHelpDonation.setDonationType((Integer) map.get("donationType"));
+                        mutualHelpDonation.setCreateTime(new Date());
+                        mutualHelpDonationService.saveNoteAndDonation(mutualHelpDonation);
+                    }
 				}
 			}
 			return  XMLUtil.setXML("SUCCESS", "");
