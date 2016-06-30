@@ -71,7 +71,7 @@ public class MutualHelpDonationController {
         HashMap<String,Object> searchMap = new HashMap<String, Object>();
         searchMap.put("donationType", (Integer) params.get("donationType"));
         searchMap.put("openId", (Integer) params.get("openId"));
-        response.put("count",service.getSumMoney(searchMap)*1.0/100.0);
+        response.put("count",service.getSumMoney(searchMap));
 
         return response;
     }
