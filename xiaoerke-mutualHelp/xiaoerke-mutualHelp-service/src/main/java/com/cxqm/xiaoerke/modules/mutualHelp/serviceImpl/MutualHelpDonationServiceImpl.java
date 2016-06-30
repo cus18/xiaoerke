@@ -32,7 +32,7 @@ public class MutualHelpDonationServiceImpl implements MutualHelpDonationService 
 
     @Override
     public Double getSumMoney(Integer donationType) {
-        return dao.getSumMoney(donationType)/100.0;
+        return dao.getSumMoney(donationType)*1.0/100.0;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class MutualHelpDonationServiceImpl implements MutualHelpDonationService 
             myMap.put("userId",userId);
             myMap.put("openId",myOpenId);
             myMap.put("lastTime",lastTime);
-            myMap.put("sumMoney", dao.getSumMoney(searchMap)/100.0);
+            myMap.put("sumMoney", dao.getSumMoney(searchMap)*1.0/100.0);
             Map<String, Object> myWechatMap = getWechatMessage(myOpenId);
             myMap.put("wechatName", myWechatMap.get("wechatName"));
             myMap.put("headImgUrl", myWechatMap.get("headImgUrl"));
@@ -74,7 +74,7 @@ public class MutualHelpDonationServiceImpl implements MutualHelpDonationService 
             Map<String,Object> wechatMap = getWechatMessage(openId);
             map.put("wechatName",wechatMap.get("wechatName"));
             map.put("headImgUrl",wechatMap.get("headImgUrl"));
-            map.put("money",mutualHelpDonation.getMoney()/100.0);
+            map.put("money",mutualHelpDonation.getMoney()*1.0/100.0);
             map.put("leaveNote",mutualHelpDonation.getLeaveNote());
             map.put("createTime",mutualHelpDonation.getCreateTime());
             list.add(map);
@@ -96,7 +96,7 @@ public class MutualHelpDonationServiceImpl implements MutualHelpDonationService 
             Map<String, Object> wechatMap = getWechatMessage(openId);
             response.put("wechatName", wechatMap.get("wechatName"));
             response.put("headImgUrl", wechatMap.get("headImgUrl"));
-            response.put("money", mutualHelpDonation.getMoney()/100.0);
+            response.put("money", mutualHelpDonation.getMoney()*1.0/100.0);
             response.put("leaveNote", mutualHelpDonation.getLeaveNote());
             response.put("createTime", mutualHelpDonation.getCreateTime());
         }
