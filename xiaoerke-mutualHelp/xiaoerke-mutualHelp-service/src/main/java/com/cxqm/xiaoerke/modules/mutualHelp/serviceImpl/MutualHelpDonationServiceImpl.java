@@ -46,7 +46,7 @@ public class MutualHelpDonationServiceImpl implements MutualHelpDonationService 
         //我的捐款信息
         Map<String, Object> myMap = new HashMap<String, Object>();
         HashMap<String,Object> searchMap = new HashMap<String, Object>();
-        searchMap.put("userId",userId);
+        searchMap.put("openId",myOpenId);
         searchMap.put("donationType",donationType);
         Date lastTime = dao.getLastTime(searchMap);
         if(lastTime != null) {
