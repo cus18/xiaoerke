@@ -396,11 +396,6 @@ public class AccountServiceImpl implements AccountService {
         parameters.put("total_fee", order_price);//金额
         parameters.put("spbill_create_ip",request.getRemoteAddr());//终端ip
 
-        if("lovePlan".equals((String) request.getAttribute("feeType"))) {
-            parameters.put("leaveNote", request.getAttribute("leaveNote"));//捐款留言
-            parameters.put("money", request.getAttribute("payPrice"));//捐款
-            parameters.put("donationType", request.getAttribute("donationType"));
-        }
         if(serviceType.equals("appointService")){
             parameters.put("notify_url", ConstantUtil.NOTIFY_APPOINT_URL);//通知地址
         }else if(serviceType.equals("insuranceService")){

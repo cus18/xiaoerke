@@ -398,11 +398,11 @@ public class PayNotificationController {
 				if(insuranceMap.get("fee_type").toString().equals("lovePlan")){
                     if("success".equals(insuranceMap.get("status").toString())){
                         MutualHelpDonation mutualHelpDonation = new MutualHelpDonation();
-                        mutualHelpDonation.setOpenId(WechatUtil.getOpenId(session,request));
-                        mutualHelpDonation.setLeaveNote((String) map.get("leaveNote"));
-                        mutualHelpDonation.setMoney((Integer) map.get("money"));
-                        mutualHelpDonation.setDonationType((Integer) map.get("donationType"));
-                        mutualHelpDonation.setCreateTime(new Date());
+                        mutualHelpDonation.setOpenId(WechatUtil.getOpenId(session, request));
+						mutualHelpDonation.setLeaveNote((String) request.getParameter("leaveNote"));
+						mutualHelpDonation.setMoney(Integer.valueOf((String) request.getParameter("payPrice")));
+						mutualHelpDonation.setDonationType(Integer.valueOf((String) request.getParameter("donationType")));
+						mutualHelpDonation.setCreateTime(new Date());
                         mutualHelpDonationService.saveNoteAndDonation(mutualHelpDonation);
                     }
 				}
