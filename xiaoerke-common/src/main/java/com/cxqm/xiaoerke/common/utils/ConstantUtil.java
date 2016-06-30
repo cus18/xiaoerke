@@ -34,6 +34,7 @@ public class ConstantUtil {
 	public static String NOTIFY_CONSULTPHONE_URL = Global.getConfig("NOTIFY_CONSULTPHONE_URL");
 	public static String NOTIFY_UMBRELLA_URL = Global.getConfig("NOTIFY_UMBRELLA_URL");
 	public static String NOTIFY_LOVEPLAN_URL = Global.getConfig("NOTIFY_LOVEPLAN_URL");
+	public static String NOTIFY_DOCTORCONSULTPAY_URL = Global.getConfig("NOTIFY_DOCTORCONSULTPAY_URL");
 
 	public static String DAY_QUARTER_NUMBER = Global.getConfig("DAY_QUARTER_NUMBER");
 	public static String VISIT_INTERVAL = Global.getConfig("VISIT_INTERVAL");
