@@ -243,7 +243,7 @@ public class ConsultDoctorController extends BaseController {
         if (StringUtils.isNotNull(userId)) {
             user.setId(userId);
         }
-        users = systemService.findUserByUserType(user);
+        users = consultDoctorInfoService.findUserOrderByDepartment(user);
         if (users != null && users.size() > 0) {
             response.put("CSList", users);
             response.put("status", "success");
