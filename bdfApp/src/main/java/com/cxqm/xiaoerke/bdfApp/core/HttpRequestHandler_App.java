@@ -27,7 +27,8 @@ public class HttpRequestHandler_App extends SimpleChannelInboundHandler<FullHttp
 			msg.setUri(wsUri);
 			ConsultSessionManager_App.getSessionManager().createSocket(ctx, url);
 			ctx.fireChannelRead(msg.retain());
-		}
+        System.out.println(ctx.channel());
+    }
 	}
 	
 	@Override
