@@ -105,7 +105,7 @@ var sumMoney=function () {
             console.log(data)
             if(data.count != undefined){
                 console.log('sumMoney',data.count);
-                var length = data.count / 300;
+                var length = data.count / 300 + 10;
                 $(".lovePlanFirst .ruler .line").css('width',length+'%');
                 $("#lovemoneyCount").html(data.count);
             }else{
@@ -127,7 +127,7 @@ var lastNote=function () {
         contentType: "application/json; charset=utf-8",
         dataType:'json',
         success:function(data) {
-            var date = moment(data.createTime).format('YYYY-MM-DD');
+            var date = moment(data.createTime).format('hh:mm');
             $("#newNoteContent").html(data.leaveNote);
             $("#createTime").html(date);
             if(data.headImgUrl != ''){
@@ -219,22 +219,22 @@ var loadShare = function(){
                 wx.ready(function () {
                     // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                     wx.onMenuShareTimeline({
-                        title: '爱心捐赠', // 分享标题
+                        title: '我已为蛋蛋进行了公益捐赠，捐款和转发都是献爱心', // 分享标题
                         link: window.location.href.replace("true","false"), // 分享链接
-                        imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
+                        imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Faxjz.jpg', // 分享图标
                         success: function (res) {
-                            recordLogs("AXJZ_HDSY_FXPY");
+                            recordLogs("AXJZ_HDSY_FXPYQ");
                         },
                         fail: function (res) {
                         }
                     });
                     wx.onMenuShareAppMessage({
-                        title: '爱心捐赠', // 分享标题
-                        desc: '爱心捐赠爱心捐赠爱心捐赠爱心捐赠爱心捐赠', // 分享描述
+                        title: '我已为蛋蛋进行了公益捐赠，捐款和转发都是献爱心', // 分享标题
+                        desc: '蛋蛋正在接受化疗，你的一个小小善举，就能挽救一个鲜活生命！', // 分享描述
                         link:window.location.href.replace("true","false"), // 分享链接
-                        imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Findex_banner.png', // 分享图标
+                        imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Faxjz.jpg', // 分享图标
                         success: function (res) {
-                            recordLogs("AXJZ_HDSY_FXPYQ");
+                            recordLogs("AXJZ_HDSY_FXPY");
                         },
                         fail: function (res) {
                         }
