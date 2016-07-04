@@ -14,8 +14,8 @@
 </head>
 <body>
 <ul class="nav nav-tabs">
-    <li class="active"><a href="${ctx}/sys/BaseData/getBaseDataStatistics"><font color="#006400">基础数据统计</font></a>
-    </li>
+	<li class="active"><a href="${ctx}/sys/BaseData/getBaseDataStatistics"><font color="#8b0000">基础数据统计</font></a>
+	</li>
 	<li class="active"><a href="${ctx}/consultStatistic/consultStatisticBaseData"><font color="#006400">咨询数据统计</font></a>
 	</li>
 </ul>

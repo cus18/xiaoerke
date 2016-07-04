@@ -14,7 +14,7 @@
 </head>
 <body>
 <ul class="nav nav-tabs">
-	<li class="active"><a href="${ctx}/sys/BaseData/getBaseDataStatistics"><font color="#006400">基础数据统计</font></a>
+	<li class="active"><a href="${ctx}/sys/BaseData/getBaseDataStatistics"><font color="#8b0000">基础数据统计</font></a>
 	</li>
     <li class="active"><a href="${ctx}/consultStatistic/consultStatisticBaseData"><font color="#006400">咨询数据统计</font></a>
     </li>
@@ -30,31 +30,31 @@
     </form:form>
             <table class="table table-striped table-bordered table-condensed">
                 <thead>
-				<th class="sort-column name">日期\项目</th>
+				<th class="sort-column name"><font color="red">日期\项目</font></th>
 				<th class="sort-column name">日均</th>
 				<th class="sort-column name">累计</th>
-				<th class="sort-column name">日满意度</th>
-				<th class="sort-column name">周满意度</th>
-				<th class="sort-column name">月满意度</th>
-				<th class="sort-column name">日打赏比例</th>
-				<th class="sort-column name">日打赏人数</th>
-				<th class="sort-column name">日不满意</th>
-				<th class="sort-column name">周不满意</th>
-				<th class="sort-column name">月不满意</th>
-				<th class="sort-column name">不评价</th>
-				<th class="sort-column name">首次咨询取消关注</th>
-				<th class="sort-column name">多次咨询取消关注</th>
+				<th class="sort-column name"><font color="#8b4513">日满意度</font></th>
+				<th class="sort-column name"><font color="#8b4513">周满意度</font></th>
+				<th class="sort-column name"><font color="#8b4513">月满意度</font></th>
+				<th class="sort-column name"><font color="#8b4513">日打赏比例</font></th>
+				<th class="sort-column name"><font color="#8b4513">日打赏人数</font></th>
+				<th class="sort-column name"><font color="#7fff00">日不满意</font></th>
+				<th class="sort-column name"><font color="#7fff00">周不满意</font></th>
+				<th class="sort-column name"><font color="#7fff00">月不满意</font></th>
+				<th class="sort-column name"><font color="#8b008b">不评价</font></th>
+				<th class="sort-column name"><font color="#dc143c">首次咨询取消关注</font></th>
+				<th class="sort-column name"><font color="#dc143c">多次咨询取消关注</font></th>
 				<th class="sort-column name">首次咨询</th>
                 <th class="sort-column name">首次咨询比例</th>
                 <th class="sort-column name">多次咨询</th>
                 <th class="sort-column name">多次咨询比例</th>
-				<th class="sort-column name">最高金额</th>
-				<th class="sort-column name">最小金额</th>
-				<th class="sort-column name">打赏总数</th>
-				<th class="sort-column name">评价点击量</th>
-				<th class="sort-column name">评价占比</th>
-				<th class="sort-column name">分享点击量</th>
-				<th class="sort-column name">分享占比</th>
+				<th class="sort-column name"><font color="purple">最高金额</font></th>
+				<th class="sort-column name"><font color="purple">最小金额</font></th>
+				<th class="sort-column name"><font color="purple">打赏总数</font></th>
+				<th class="sort-column name"><font color="purple">评价点击量</font></th>
+				<th class="sort-column name"><font color="purple">评价占比</font></th>
+				<th class="sort-column name"><font color="purple">分享点击量</font></th>
+				<th class="sort-column name"><font color="purple">分享占比</font></th>
                 </thead>
 				<tbody id="treeTableList">
                 <c:forEach items="${consultStatisticVos}" var="vo">
