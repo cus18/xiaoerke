@@ -233,4 +233,12 @@
         and cdi.sys_user_id = #{userId,jdbcType=VARCHAR}
     </if>
   </select>
+
+  <!-- 根据type查询用户 -->
+  <select id="findUserOrderByDepartment" resultType="User" parameterType="User" >
+    SELECT * from sys_user su
+    left JOIN consult_doctor_info sdi on sdi.sys_user_id = su.id
+    and (su.user_type = #{userType} or su.user_type = 'distributor')
+    ORDER BY sdi.department
+  </select>
 </mapper>

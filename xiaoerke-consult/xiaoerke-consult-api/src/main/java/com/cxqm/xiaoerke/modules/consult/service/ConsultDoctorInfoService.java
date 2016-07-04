@@ -27,5 +27,7 @@ public interface ConsultDoctorInfoService {
 
     ConsultDoctorInfoVo getConsultDoctorInfoByUserId(String userId);
 
+    List<User> findUserOrderByDepartment(User user);
+
     List<Map> getDoctorInfoMoreByUserId(String userId);
 }
