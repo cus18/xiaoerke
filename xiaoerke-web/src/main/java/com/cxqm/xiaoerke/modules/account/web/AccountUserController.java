@@ -250,7 +250,7 @@ public class AccountUserController {
 		request.setAttribute("feeType", payType);
 		Map prepayInfo = accountService.getPrepayInfo(request, session, "doctorConsultPay");
 		prepayInfo.put("feeType",payType);
-		System.out.println("feeType:" + prepayInfo.get("feeType").toString());
+//		System.out.println("feeType:" + prepayInfo.get("feeType").toString());
 		//拼装jsPay所需参数,如果prepay_id生成成功则将信息放入account_pay_record表
 		String userId = UserUtils.getUser().getId();
 		String payParameter = accountService.assemblyPayParameter(request,prepayInfo,session,userId, null);

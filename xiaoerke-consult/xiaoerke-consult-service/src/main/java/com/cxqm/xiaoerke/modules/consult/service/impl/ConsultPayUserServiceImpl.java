@@ -112,18 +112,18 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
     public void sendMessageToConsult(String openid,int type) {
         Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
         String token = (String) userWechatParam.get("token");
-        token = "Anpvh5m521VA-M5vTkANy0c7TN4VzBKUKHm9CkNkwW7yhMx0s8PkcUHwfSUKL4meLw5yi3SWD2f9jnSM2uq80Yt2njDOjZdfIujhUh5VUvYGtW0hwmE3ROHzDWA8UiuKFPAjABAYIT";
-        String st = "";
+//        token = "Anpvh5m521VA-M5vTkANy0c7TN4VzBKUKHm9CkNkwW7yhMx0s8PkcUHwfSUKL4meLw5yi3SWD2f9jnSM2uq80Yt2njDOjZdfIujhUh5VUvYGtW0hwmE3ROHzDWA8UiuKFPAjABAYIT";
+        String st = "oa7t2wN2JGUP083zJgc6-orO6FwE";
         switch (type){
             case 1:
                 st = "咨询高峰期，医生姐姐忙前忙后帮了好多妈妈和宝宝。请她喝杯茶吧，她们也需要您关心。" +
-                        "\n》<a href='http://localhost:8080/keeper/wxPay/patientPay.do?serviceType=doctorConsultPay'>你请喝茶，医生秒答</a>" +
+                        "\n》<a href='http://s201.xiaork.com/keeper/wxPay/patientPay.do?serviceType=doctorConsultPay'>你请喝茶，医生秒答</a>" +
                         "\n------------------------"+
                         "\n》<a href='http://www.jd.com'>咨询客服</a>";
                 break;
             case 2:
                 st = "哎呀，遇到咨询高峰期，加个急诊费，即可让医生秒回。" +
-                        "\n》<a href='http://localhost:8080/keeper/wxPay/patientPay.do?serviceType=doctorConsultPay'>急诊100%秒达</a>" +
+                        "\n》<a href='http://s201.xiaork.com/keeper/wxPay/patientPay.do?serviceType=doctorConsultPay'>急诊100%秒达</a>" +
                         "\n------------------------"+
                         "\n》<a href='http://www.jd.com'>咨询客服</a>";
                 break;
