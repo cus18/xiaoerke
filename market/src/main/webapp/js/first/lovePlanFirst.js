@@ -11,16 +11,16 @@ document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.touchSlider.js"><
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/moment.min.js"></scr'+'ipt>');
 
 $(function(){
-    getUserInfo();
     getUserListImage();
     count();
     sumMoney();
     addNoteAndDonation();
     lastNote();
+    loadShare();
+    getUserInfo();
 });
 
 var lovePlanFirsInit = function(){
-
 };
 
 var goComment = function(){
@@ -47,7 +47,7 @@ var goContribute = function(){
 var goUmbrella = function(){
     window.location.href="http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000000/a"
 };
-
+//用户内容的初始化
 var getUserInfo=function () {
     $.ajax({
         url:"loveMarketing/visitPage",// 跳转到 action
@@ -71,6 +71,7 @@ var getUserInfo=function () {
         }
     }, 'json');
 };
+//所有的捐款人数
 var count=function () {
     $.ajax({
         url:"mutualHelp/donation/count",
@@ -91,6 +92,7 @@ var count=function () {
         }
     }, 'json');
 };
+//所有的捐款总和
 var sumMoney=function () {
     $.ajax({
         url:"mutualHelp/donation/sumMoney",
@@ -115,6 +117,7 @@ var sumMoney=function () {
         }
     }, 'json');
 };
+//最后的留言内容
 var lastNote=function () {
     $.ajax({
         url:"mutualHelp/donation/lastNote",
@@ -136,7 +139,6 @@ var lastNote=function () {
         }
     }, 'json');
 };
-
 //发布留言
 var addNoteAndDonation = function(){
     var leaveNote = $('#leaveNoteContent').val();
@@ -156,8 +158,8 @@ var addNoteAndDonation = function(){
             }
         }, 'json');
     }
-
 };
+//所有捐款的用户的头像
 var getUserListImage=function () {
     $.ajax({
         url:"mutualHelp/donation/photoWall",// 跳转到 action
@@ -180,4 +182,82 @@ var getUserListImage=function () {
         error : function() {
         }
     }, 'json');
-}
+};
+//分享到朋友圈或者微信
+var loadShare = function(){
+    // if(version=="a"){
+    version="a";
+    var timestamp;//时间戳
+    var nonceStr;//随机字符串
+    var signature;//得到的签名
+    var appid;//得到的签名
+    $.ajax({
+        url:"wechatInfo/getConfig",// 跳转到 action
+        async:true,
+        type:'get',
+        data:{url:location.href.split('#')[0]},//得到需要分享页面的url
+        cache:false,
+        dataType:'json',
+        success:function(data) {
+            if(data!=null ){
+                timestamp=data.timestamp;//得到时间戳
+                nonceStr=data.nonceStr;//得到随机字符串
+                signature=data.signature;//得到签名
+                appid=data.appid;//appid
+                //微信配置
+                wx.config({
+                    debug: false,
+                    appId: appid,
+                    timestamp:timestamp,
+                    nonceStr: nonceStr,
+                    signature: signature,
+                    jsApiList: [
+                        'onMenuShareTimeline',
+                        'onMenuShareAppMessage'
+                    ] // 功能列表
+                });
+                wx.ready(function () {
+                    // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
+                    wx.onMenuShareTimeline({
+                        title: '爱心捐赠', // 分享标题
+                        link: window.location.href.replace("true","false"), // 分享链接
+                        imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
+                        success: function (res) {
+                            recordLogs("AXJZ_HDSY_FXPY");
+                        },
+                        fail: function (res) {
+                        }
+                    });
+                    wx.onMenuShareAppMessage({
+                        title: '爱心捐赠', // 分享标题
+                        desc: '爱心捐赠爱心捐赠爱心捐赠爱心捐赠爱心捐赠', // 分享描述
+                        link:window.location.href.replace("true","false"), // 分享链接
+                        imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Findex_banner.png', // 分享图标
+                        success: function (res) {
+                            recordLogs("AXJZ_HDSY_FXPYQ");
+                        },
+                        fail: function (res) {
+                        }
+                    });
+                })
+            }else{
+            }
+        },
+        error : function() {
+        }
+    });
+};
+var recordLogs = function(val){
+    $.ajax({
+        url:"util/recordLogs",// 跳转到 action
+        async:true,
+        type:'get',
+        data:{logContent:encodeURI(val)},
+        cache:false,
+        dataType:'json',
+        success:function(data) {
+        },
+        error : function() {
+        }
+    });
+};
