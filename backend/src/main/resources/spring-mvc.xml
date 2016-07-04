@@ -95,7 +95,7 @@
 			<bean class="com.cxqm.xiaoerke.modules.sys.interceptor.LogInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
-	
+
 	<!-- 支持Shiro对Controller的方法级AOP安全控制 begin-->
 	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
 		<property name="proxyTargetClass" value="true" />
@@ -115,5 +115,6 @@
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
 		<property name="maxUploadSize" value="${web.maxUploadSize}" />  
 	</bean>
-	
+
+	<import resource="runTimeTask.xml"></import>
 </beans>

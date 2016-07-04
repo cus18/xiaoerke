@@ -7,12 +7,12 @@
             </div>
             <div class="self user " >
                 <div class="info">
-                    <img class="photo radius fl" width="40" height="40" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fbaodf_logo.jpg">
+                    <img class="photo radius fl" width="40" height="40" ng-src="{{headImg}}">
                     <div class="middle fl">
-                        <div class="name f5 c11">宝护伞</div>
+                        <div class="name f5 c11">{{nincName}}</div>
                     </div>
                     <div class="money f2 c11 ">
-                        <span class="">22</span>元
+                        <span>{{money}}</span>元
                     </div>
                 </div>
             </div>
@@ -20,17 +20,17 @@
             <dl class="user-list">
                 <dd class="user " ng-repeat="item in user">
                     <div class="info">
-                         <img class="photo radius fl" width="40" height="40" ng-src="{{item.img}}">
+                         <img class="photo radius fl" width="40" height="40" ng-src="{{item.headImgUrl}}">
                          <div class="middle fl">
-                            <div class="name f5 c3">{{item.name}}</div>
-                            <div class="time f3 c5">{{item.time}}</div>
+                            <div class="name f5 c3">{{item.wechatName}}</div>
+                            <div class="time f3 c5">{{transformDate(item.createTime)}}</div>
                          </div>
-                         <div ng-if="item.price>0" class="money f2" ng-class="{'c12':$index<3,'c13':$index>=3}">
-                             <span class="">{{item.price}}</span>元
+                         <div ng-if="item.money>0" class="money f2" ng-class="{'c12':$index<3,'c13':$index>=3}">
+                             <span>{{item.money}}</span>元
                          </div>
                     </div>
                     <div ng-if="item.words!=''" class="words f3 c4">
-                        {{item.words}}
+                        {{item.leaveNote}}
                     </div>
                 </dd>
 

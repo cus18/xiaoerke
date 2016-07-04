@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.utils.HttpRequestUtil;
 import com.cxqm.xiaoerke.common.utils.OSSObjectTool;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
@@ -12,11 +13,18 @@ import com.cxqm.xiaoerke.modules.entity.ReceiveTheMindVo;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.member.entity.MemberservicerelItemservicerelRelationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.UserInfoService;
+import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
+import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaMongoDBVo;
+import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
+import com.cxqm.xiaoerke.modules.umbrella.serviceimpl.UmbrellaMongoDBServiceImpl;
 import com.cxqm.xiaoerke.modules.utils.excel.ExportExcel;
 import net.sf.json.JSONObject;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,9 +36,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.*;
 
 /**
@@ -52,7 +60,7 @@ public class ConsultController extends BaseController {
 	private PatientRegisterPraiseService patientRegisterPraiseService;
 
 	/**
-	 * 咨询医生列表
+	 * 咨询的医生列表
 	 * sunxiao
 	 * @param
 	 * @param model
@@ -81,7 +89,7 @@ public class ConsultController extends BaseController {
 	 * @param model
 	 */
 	@RequestMapping(value = "consultOperForm")
-	public String consultOperForm(User user,HttpServletRequest request,HttpServletResponse response, Model model) {
+	public String consultOperForm(User user, Model model) {
 		List<User> list = userInfoService.getUserListByInfo(user);
 		model.addAttribute("user", list.get(0));
 		return "modules/consult/doctorOperForm";

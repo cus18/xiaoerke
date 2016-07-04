@@ -15,9 +15,8 @@
 
     <!-- 捐款总条数  -->
     <select id="getCount" resultType="java.lang.Integer" parameterType="java.lang.String">
-        select count(*) from mutualhelp_donation
-        where money is not null
-        and money>0
+        select count(DISTINCT(openid)) from mutualhelp_donation
+        where 1=1
         <if test="donationType != null">
             and donation_type=#{donationType,jdbcType=VARCHAR}
         </if>
@@ -27,8 +26,8 @@
     <select id="getSumMoney" resultType="java.lang.Double" parameterType="java.util.HashMap">
         select sum(money) from mutualhelp_donation
         where 1=1
-        <if test="userId != null">
-            and userid=#{userId,jdbcType=VARCHAR}
+        <if test="openId != null">
+            and openid=#{openId,jdbcType=VARCHAR}
         </if>
         <if test="donationType != null">
             and donation_type=#{donationType,jdbcType=VARCHAR}
@@ -39,8 +38,8 @@
     <select id="getLastTime" resultType="java.util.Date" parameterType="java.util.HashMap">
         select create_Time from mutualhelp_donation
         where 1=1
-        <if test="userId != null">
-            and userid=#{userId,jdbcType=VARCHAR}
+        <if test="openId != null">
+            and openid=#{openId,jdbcType=VARCHAR}
         </if>
         <if test="donationType != null">
             and donation_type=#{donationType,jdbcType=VARCHAR}
@@ -52,7 +51,7 @@
     <select id="getLastNote" resultMap="BaseResultMap" parameterType="java.util.HashMap">
         select <include refid="Base_Column_List" />
         from mutualhelp_donation
-        where 1=1
+        where leave_note is not null and leave_note &lt;&gt; ''
         <if test="donationType != null">
             and donation_type=#{donationType,jdbcType=VARCHAR}
         </if>

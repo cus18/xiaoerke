@@ -41,4 +41,8 @@ define(['appMarket'], function (app) {
         .factory('UpdateMarketingActivities',['$resource',function ($resource){
             return $resource(user_h5 + 'marketing/updateMarketingActivities');
         }])
+        //保护伞照片墙
+        .factory('PhotoWall',['$resource',function ($resource){
+            return $resource(user_h5 + 'mutualHelp/donation/photoWall');
+        }])
 })

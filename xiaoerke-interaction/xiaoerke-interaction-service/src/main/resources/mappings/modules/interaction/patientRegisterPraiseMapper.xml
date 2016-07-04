@@ -211,7 +211,7 @@
         select INSERT(prp.phone,4,5,'****') phone, prp.impression,DATE_FORMAT(prp.praise_date,'%c/%d %k:%i') date ,prp.star
         from patient_register_praise prp
         where prp.sys_doctor_id = #{doctorId}
-        and evaluateType is not "1"
+        and evaluateType != "1"
     </select>
 
     <!-- 评论总数 -->

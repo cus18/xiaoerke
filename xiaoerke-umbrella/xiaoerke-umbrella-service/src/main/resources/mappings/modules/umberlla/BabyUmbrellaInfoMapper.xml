@@ -50,18 +50,25 @@
         </if>
     </select>
 
+    <!--<select id="getBabyUmbrellaInfoTotal" resultType="java.lang.Integer" >-->
+        <!--select count(*) from baby_umbrellainfo-->
+        <!--where 1=1-->
+        <!--<if test="today != null">-->
+            <!--and create_time like '${today}%'-->
+        <!--</if>-->
+        <!--<if test="userNums != null">-->
+            <!--and create_time like '${date}%'-->
+        <!--</if>-->
+        <!--<if test="openid != null">-->
+            <!--and openid = #{openid}-->
+        <!--</if>-->
+    <!--</select>-->
+
+
     <select id="getBabyUmbrellaInfoTotal" resultType="java.lang.Integer" >
-        select count(*) from baby_umbrellainfo
-        where 1=1
-        <if test="today != null">
-            and create_time like '${today}%'
-        </if>
-        <if test="userNums != null">
-            and create_time like '${date}%'
-        </if>
-        <if test="openid != null">
-            and openid = #{openid}
-        </if>
+        select (select count(*) from `baby_umbrellainfo` bl where bl.`create_time` &lt; now() and (bl.`pay_result`='success' OR bl.`pay_result` is null) and `baby_id` is not null and `baby_id` !='' and bl.openid !='')
+        +(select count(*)*2 from `baby_umbrellainfo` bl where bl.`create_time` &lt; now()  and (bl.`pay_result`='success' OR bl.`pay_result` is null) and `baby_id` is  null and bl.openid !='')
+        +(select count(*) from `umbrella_familyinfo` where `umbrella_id` in ( select id from `baby_umbrellainfo` bl where bl.`create_time` &lt; now()  and (bl.`pay_result`='success' OR bl.`pay_result` is null) and bl.openid !='')) as a
     </select>
 
     <select id="getTotalBabyUmbrellaInfoMoney" resultType="java.lang.Integer" >
@@ -155,11 +162,11 @@
     <insert id="newSaveBabyUmbrellaInfo" parameterType="com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `baby_umbrellainfo`
         (
-        openid,create_time,baby_id,parent_idcard,parent_phone,parent_name,parent_type,true_pay_moneys,pay_result,umbrella_money,money
+        openid,create_time,baby_id,parent_idcard,parent_phone,parent_name,parent_type,true_pay_moneys,pay_result,umbrella_money,money,source
         )
         VALUES
         (
-         #{openid},now(),#{babyId},#{parentIdCard},#{parentPhone},#{parentName},#{parentType},#{truePayMoneys},#{payResult},#{umbrellaMoney},#{money}
+         #{openid},now(),#{babyId},#{parentIdCard},#{parentPhone},#{parentName},#{parentType},#{truePayMoneys},#{payResult},#{umbrellaMoney},#{money},#{source}
         )
     </insert>
 
@@ -177,7 +184,7 @@
 
     <select id="getUmbrellaRank" resultType="java.lang.Integer" >
         select count(*) from baby_umbrellainfo
-        where create_time&lt;#{createTime} and pay_result='success'
+        where create_time&lt;#{createTime} and (pay_result='success' or pay_result is null)
     </select>
 
 </mapper>

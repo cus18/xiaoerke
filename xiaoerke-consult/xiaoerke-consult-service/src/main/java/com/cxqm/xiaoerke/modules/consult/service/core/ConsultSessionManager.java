@@ -339,6 +339,21 @@ public class ConsultSessionManager {
         }
 
     }
+    //记录评价信息
+   /* private void saveCustomerEvaluation(RichConsultSession consultSession) {
+        Map<String, Object> evaluationMap = new HashMap<String, Object>();
+        evaluationMap.put("openid", consultSession.getUserId());
+        evaluationMap.put("uuid", IdGen.uuid());
+        evaluationMap.put("starNum1", 0);
+        evaluationMap.put("starNum2", 0);
+        evaluationMap.put("starNum3", 0);
+        evaluationMap.put("doctorId", consultSession.getCsUserId());
+        evaluationMap.put("content", "");
+        evaluationMap.put("dissatisfied", null);
+        evaluationMap.put("redPacket", null);
+        evaluationMap.put("consultSessionId", consultSession.getId());
+        patientRegisterPraiseService.saveCustomerEvaluation(evaluationMap);
+    }*/
 
     public int transferSession(Integer sessionId, String toCsUserId, String remark) {
         try {
@@ -749,6 +764,10 @@ public class ConsultSessionManager {
             consultSession.setStatus("ongoing");
             consultSession.setSource("wxcxqm");
             consultSession.setCreateTime(new Date());
+            Map praiseParam = new HashMap();
+            praiseParam.put("userId", consultSession.getUserId());
+            Integer sessionCount = consultSessionService.getConsultSessionByUserId(praiseParam);
+            consultSession.setConsultNumber(sessionCount + 1);
             flag = consultSessionService.updateSessionInfo(consultSession);
         } else {
             consultSession.setCsUserId(richConsultSession.getCsUserId());
@@ -756,6 +775,10 @@ public class ConsultSessionManager {
             consultSession.setSource("wxcxqm");
             consultSession.setUserId(richConsultSession.getUserId());
             consultSession.setCreateTime(new Date());
+            Map praiseParam = new HashMap();
+            praiseParam.put("userId", consultSession.getUserId());
+            Integer sessionCount = consultSessionService.getConsultSessionByUserId(praiseParam);
+            consultSession.setConsultNumber(sessionCount + 1);
             flag = consultSessionService.saveConsultInfo(consultSession);
             richConsultSession.setId(consultSession.getId());
             richConsultSession.setSource(consultSession.getSource());

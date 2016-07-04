@@ -22,6 +22,15 @@ public class BabyUmbrellaInfo {
     private String version;
     private Integer friendJoinNum;
     private Date updateTime;
+    private String source;
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
 
     public Date getUpdateTime() {
         return updateTime;

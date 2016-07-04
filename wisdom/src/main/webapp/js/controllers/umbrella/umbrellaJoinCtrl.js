@@ -24,7 +24,7 @@
             $scope.goActive=function(){
                 recordLogs("BHS_WDBZ_JH");
                 // $state.go("umbrellaMemberList",{id:$scope.umbrellaId,status:$scope.status});
-                window.location.href = "../wisdom/umbrella#/umbrellaFillInfo/"+$scope.umbrellaId+"/a";
+                window.location.href = "/wisdom/umbrella#/umbrellaFillInfo/"+$scope.umbrellaId+"/a";
             };
             $scope.goShare=function(){
                 $scope.shareLock=true;
@@ -66,7 +66,7 @@
                     success:function(data) {
                         if(data.openid=="none"){
                             // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
-                            window.location.href = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+                            window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
                         }else{
                             
                         
@@ -75,7 +75,7 @@
                     if (data.result == "1") {
                         window.location.href = "../wisdom/firstPage/umbrella?id=" + $stateParams.id;
                     }else if(data.umbrella.pay_result=="fail"){
-                        window.location.href = "http://s202.xiaork.com/keeper/wxPay/patientPay.do?serviceType=umbrellaPay&shareId="+$stateParams.id;
+                        window.location.href = "http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=umbrellaPay&shareId="+$stateParams.id;
                     }
                     if(data.result==2 || data.umbrella.activation_time==null) {
                         $scope.umbrellaMoney = 200000;
@@ -100,6 +100,7 @@
                             }
                         });
                     }else{
+                        $scope.loadShare();
                         $scope.finally=true;
                         $scope.addFamily=true;
                         $scope.umbrellaMoney=data.umbrella.umbrella_money;
@@ -242,8 +243,8 @@
                                 wx.ready(function () {
                                     // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                                     wx.onMenuShareTimeline({
-                                        title: '5元＝40万？原来做公益，只要一根雪糕钱！', // 分享标题
-                                        link:  "http://s202.xiaork.com/wisdom/umbrella#/umbrellaLead/"+$scope.umbrellaId+"/"+$scope.status,
+                                        title: '5元变成40万,看完我就激动了!', // 分享标题
+                                        link:  "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$scope.umbrellaId+"/"+$scope.status,
                                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                         success: function (res) {
                                             recordLogs("BHS_WDBZ_FXPYQ");
@@ -265,9 +266,9 @@
                                         }
                                     });
                                     wx.onMenuShareAppMessage({
-                                        title: '5元＝40万？原来做公益，只要一根雪糕钱！', // 分享标题
+                                        title: '5元变成40万,看完我就激动了!', // 分享标题
                                         desc: "我已成为宝护伞互助公益爱心大使，领到了40万的健康保障，你也快来加入吧！", // 分享描述
-                                        link:  "http://s202.xiaork.com/wisdom/umbrella#/umbrellaLead/"+$scope.umbrellaId+"/"+$scope.status, // 分享链接
+                                        link:  "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$scope.umbrellaId+"/"+$scope.status, // 分享链接
                                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                         success: function (res) {
                                             recordLogs("BHS_WDBZ_FXPY");

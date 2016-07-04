@@ -4,7 +4,10 @@ import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo;
 import com.cxqm.xiaoerke.modules.operation.service.ConsultStatisticService;
+import com.cxqm.xiaoerke.modules.sys.service.LogMongoDBServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -24,6 +27,9 @@ public class ScheduleTaskController extends BaseController {
     @Autowired
     private ConsultStatisticService consultStatisticService;
 
+    @Autowired
+    private LogMongoDBServiceImpl logMongoDBService;
+
     /**
      * 咨询统计信息
      */
@@ -32,7 +38,11 @@ public class ScheduleTaskController extends BaseController {
 
         HashMap<String, Object> searchMap = new HashMap<String, Object>();
         calendar.add(Calendar.DATE, -1);
-        String createDate = DateUtils.formatDate(new Date(calendar.getTimeInMillis()), 1);
+        String createDate = DateUtils.formatDate(new Date(calendar.getTimeInMillis()), "yyyy-MM-dd");
+        setDate(calendar);
+        Date startDate = calendar.getTime();
+        calendar.add(Calendar.DATE, 1);
+        Date endDate = new Date();
 
         calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, -8);
@@ -116,7 +126,10 @@ public class ScheduleTaskController extends BaseController {
         /**
          * 每天满意人数/每天评价人数
          */
-        String daySatisfiedDegree = String.valueOf(satisfiedNumber / evaluateNumber * 100) + "%";
+        String daySatisfiedDegree = "";
+        if (evaluateNumber != 0) {
+            daySatisfiedDegree = String.valueOf((float) satisfiedNumber / (float) evaluateNumber * 100) + "%";
+        }
 
         //打赏人数
         /**
@@ -128,7 +141,10 @@ public class ScheduleTaskController extends BaseController {
         /**
          * 打赏人数/评价人数
          */
-        String rewardDegree = String.valueOf(rewardNumber / evaluateNumber * 100) + "%";
+        String rewardDegree = "";
+        if (evaluateNumber != 0) {
+            rewardDegree = String.valueOf((float) rewardNumber / (float) evaluateNumber * 100) + "%";
+        }
         //首次咨询取消关注
         /**
          SELECT count(*) from sys_attention where date LIKE '2016-06-24%' and STATUS='1' and openid in (
@@ -152,7 +168,10 @@ public class ScheduleTaskController extends BaseController {
         /**
          * 首次咨询人数/当天咨询数
          */
-        String firstConsultDegree = String.valueOf(firstConsultNumber / dayNumber * 100) + "%";
+        String firstConsultDegree = "";
+        if (dayNumber != 0) {
+            firstConsultDegree = String.valueOf((float) firstConsultNumber / (float) dayNumber * 100) + "%";
+        }
         //多次咨询人数
         /**
          * select count(*) from consult_session where consult_number > 0 and create_time like '%%'
@@ -162,7 +181,10 @@ public class ScheduleTaskController extends BaseController {
         /**
          * 多次咨询人数 / 当天咨询数
          */
-        String moreConsultDegree = String.valueOf(moreConusltNumber / dayNumber * 100) + "%";
+        String moreConsultDegree = "";
+        if (dayNumber != 0) {
+            moreConsultDegree = String.valueOf((float) moreConusltNumber / (float) dayNumber * 100) + "%";
+        }
 
         //查询每周评价人数
         /**
@@ -179,19 +201,64 @@ public class ScheduleTaskController extends BaseController {
         /**
          * 每周满意人数/每周评价人数
          */
-        String weedSatisfiedDegree = String.valueOf(weekYawpNumber / weekEvaluateNumber * 100) + "%";
+        String weedSatisfiedDegree = "";
+        if (weekEvaluateNumber != 0) {
+            weedSatisfiedDegree = String.valueOf((float) weekSatisfiedNumber / (float) weekEvaluateNumber * 100) + "%";
+        }
         //月满意度
         /**
          * 每月满意人数/月评价人数
          */
-        String monthDatisfiedDegree = String.valueOf(monthYawpNumber / monthEvaluateNumber * 100) + "%";
+        String monthDatisfiedDegree = "";
+        if (monthEvaluateNumber != 0) {
+            monthDatisfiedDegree = String.valueOf((float) monthSatisfiedNumber / (float) monthEvaluateNumber * 100) + "%";
+        }
+        //最小金额
+        /**
+         *select MIN(redpacket) countNumber from customerEvaluation where createtime like '2016-06-30%' and redPacket is not null and redPacket !=''
+         */
+        Integer minMoney = resultList.get(16);
+        //最高金额
+        /**
+         * select MAX(redpacket) countNumber from customerEvaluation where createtime like '2016-06-30%' and redPacket is not null and redPacket !=''
+         */
+        Integer maxMoney = resultList.get(17);
+        //打赏总额
+        /**
+         *select sum(redpacket) countNumber from customerEvaluation where createtime like '2016-06-30%' and redPacket is not null and redPacket !=''
+         */
+        Integer sumMoney = resultList.get(18);
+        //评价点击量
+        Query queryClick = new Query().addCriteria(Criteria.where("title").regex("ZXPJSXY_JE")).addCriteria(Criteria.where("create_date").gte(startDate).andOperator(Criteria.where("create_date").lte(endDate)));
+
+        Integer evaluateClickNumber = (int) logMongoDBService.queryCount(queryClick);
+        //评价占比
+        /**
+         *评价点击量/当天咨询数
+         */
+        String evaluateClickDegree = "";
+        if (dayNumber != 0) {
+            evaluateClickDegree = String.valueOf((float) evaluateClickNumber / (float) dayNumber * 100) + "%";
+        }
+        //分享点击量
+        Query queryShare = new Query().addCriteria(Criteria.where("title").is("ZXFX")).addCriteria(Criteria.where("create_date").gte(startDate).andOperator(Criteria.where("create_date").lte(endDate)));
+
+        Integer shareClickNumber = (int) logMongoDBService.queryCount(queryShare);
+        //分享占比
+        /**
+         *分享数/当天咨询数
+         */
+        String shareClickDegree = "";
+        if (dayNumber != 0) {
+            shareClickDegree = String.valueOf((float) shareClickNumber / (float) dayNumber * 100) + "%";
+        }
 
         ConsultStatisticVo consultStatisticVo = new ConsultStatisticVo();
-
         consultStatisticVo.setDayNumber(dayNumber);
         consultStatisticVo.setDaySatisfiedDegree(daySatisfiedDegree);
         consultStatisticVo.setDayYawpNumber(dayYawpNumber);
         consultStatisticVo.setEvaluateNumber(evaluateNumber);
+        consultStatisticVo.setSatisfiedNumber(satisfiedNumber);
         consultStatisticVo.setFirstConsultCancleAttentionNumber(firstConsultCancleAttentionNumber);
         consultStatisticVo.setFirstConsultDegree(firstConsultDegree);
         consultStatisticVo.setMonthSatisfiedDegree(monthDatisfiedDegree);
@@ -207,12 +274,20 @@ public class ScheduleTaskController extends BaseController {
         consultStatisticVo.setTitileNumber(titileNnumber);
         consultStatisticVo.setMoreConusltNumber(moreConusltNumber);
         consultStatisticVo.setRewardNumber(rewardNumber);
+        consultStatisticVo.setMinMoney(String.valueOf(minMoney));
+        consultStatisticVo.setMaxMoney(String.valueOf(maxMoney));
+        consultStatisticVo.setSumMoney(String.valueOf(sumMoney));
+        consultStatisticVo.setEvaluateClickNumber(evaluateClickNumber);
+        consultStatisticVo.setEvaluateClickDegree(evaluateClickDegree);
+        consultStatisticVo.setShareClickNumber(shareClickNumber);
+        consultStatisticVo.setShareClickDegree(shareClickDegree);
+        consultStatisticVo.setCreateDate(new Date());
         consultStatisticService.insertSelective(consultStatisticVo);
 
     }
 
     private void setDate(Calendar calendar) {
-        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
     }
