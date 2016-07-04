@@ -89,7 +89,7 @@ public class ConsultController extends BaseController {
 	 * @param model
 	 */
 	@RequestMapping(value = "consultOperForm")
-	public String consultOperForm(User user,HttpServletResponse response, Model model) {
+	public String consultOperForm(User user, Model model) {
 		List<User> list = userInfoService.getUserListByInfo(user);
 		model.addAttribute("user", list.get(0));
 		return "modules/consult/doctorOperForm";
