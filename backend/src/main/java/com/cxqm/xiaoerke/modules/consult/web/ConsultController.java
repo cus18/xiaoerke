@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.utils.HttpRequestUtil;
 import com.cxqm.xiaoerke.common.utils.OSSObjectTool;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
@@ -12,11 +13,18 @@ import com.cxqm.xiaoerke.modules.entity.ReceiveTheMindVo;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.member.entity.MemberservicerelItemservicerelRelationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.UserInfoService;
+import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
+import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaMongoDBVo;
+import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
+import com.cxqm.xiaoerke.modules.umbrella.serviceimpl.UmbrellaMongoDBServiceImpl;
 import com.cxqm.xiaoerke.modules.utils.excel.ExportExcel;
 import net.sf.json.JSONObject;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +36,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -51,6 +61,12 @@ public class ConsultController extends BaseController {
 	@Autowired
 	private PatientRegisterPraiseService patientRegisterPraiseService;
 
+	@Autowired
+	private BabyUmbrellaInfoService babyUmbrellaInfoService;
+
+	@Autowired
+	private SystemService systemService;
+
 	/**
 	 * 咨询医生列表
 	 * sunxiao
@@ -59,6 +75,26 @@ public class ConsultController extends BaseController {
 	 */
 	@RequestMapping(value = "consultDoctorList")
 	public String consultDoctorList(User user,HttpServletRequest request,HttpServletResponse response, Model model) {
+		/*Query queryDate = new Query();
+		List<UmbrellaMongoDBVo> openidlist = babyUmbrellaInfoService.getUmbrellaMongoDBVoList(queryDate);
+		int count = 0;
+		StringBuffer sb = new StringBuffer("");
+		for(UmbrellaMongoDBVo vo : openidlist){
+			Map map = new HashMap();
+			map.put("openid",vo.getOpenid());
+			List<Map<String,Object>> list = babyUmbrellaInfoService.getBabyUmbrellaInfo(map);
+			if(list.size()!=0){
+				if("success".equals(list.get(0).get("pay_result"))){
+					count++;
+					sb.append("'"+list.get(0).get("openid")+"',");
+				}
+			}
+		}
+		System.out.print(count);
+		System.out.print(sb.toString());*/
+
+		sendWechatMessage();
+
 		String temp = ((String)request.getParameter("pageNo"));
 		Page<User> pagess = null;
 		if(temp==null){
@@ -74,6 +110,30 @@ public class ConsultController extends BaseController {
 		return "modules/consult/doctorList";
 	}
 
+	private void sendWechatMessage(){
+		try{
+			FileReader reader = new FileReader("d://openid.txt");
+			BufferedReader br = new BufferedReader(reader);
+			String openid = null;
+			Map tokenMap = systemService.getWechatParameter();
+			String token = (String)tokenMap.get("token");
+			String title = "您刚领取的20万保障金还未激活";
+			String templateId = "lJIuV_O_zRMav4Fcv32e9cD7YG7cb0WVOPXNjhg_UpU";
+			String keyword2 = "保护伞——宝大夫儿童重疾互助计划";
+			String remark = "马上点击，完善信息即可激活保障金! ";
+			String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31";
+			while((openid = br.readLine()) != null) {
+				Map<String, Object> param = new HashMap<String, Object>();
+				param.put("openid", openid);
+				List<Map<String,Object>> list = babyUmbrellaInfoService.getBabyUmbrellaInfo(param);
+
+				String keyword1 = list.get(0).get("id") + "";
+				WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, openid, templateId);
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+	}
 	/**
 	 * 咨询医生操作页面
 	 * sunxiao

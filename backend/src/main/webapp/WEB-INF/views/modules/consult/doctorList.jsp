@@ -7,6 +7,18 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 
+				$.ajax({
+					url:"util/recordLogs",// 跳转到 action
+					async:true,
+					type:'get',
+					data:{logContent:encodeURI("aaaaa")},
+					cache:false,
+					dataType:'json',
+					success:function(data) {
+					},
+					error : function() {
+					}
+				});
 		});
 		function page(n,s){
 			if(n) $("#pageNo").val(n);

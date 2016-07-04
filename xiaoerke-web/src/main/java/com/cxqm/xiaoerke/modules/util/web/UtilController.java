@@ -208,10 +208,8 @@ public class UtilController extends BaseController {
      * 供前台调用 保存页面点击的日志文件
      */
     @SystemControllerLog(description = "")
-    @RequestMapping(value = "/recordLogs", method = {RequestMethod.GET, RequestMethod.POST},
-            produces = "text/plain;charset=UTF-8")
-    public
-    @ResponseBody
+    @RequestMapping(value = "/recordLogs", method = {RequestMethod.GET, RequestMethod.POST},produces = "text/plain;charset=UTF-8")
+    public @ResponseBody
     String recordLogs(HttpServletRequest request) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         try {
