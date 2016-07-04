@@ -58,12 +58,6 @@ public class ConsultController extends BaseController {
 
 	@Autowired
 	private PatientRegisterPraiseService patientRegisterPraiseService;
-/*
-	@Autowired
-	private BabyUmbrellaInfoService babyUmbrellaInfoService;
-
-	@Autowired
-	private SystemService systemService;*/
 
 	/**
 	 * 咨询医生列表
