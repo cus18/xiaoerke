@@ -1,7 +1,7 @@
 angular.module('controllers', ['luegg.directives','ngFileUpload'])
     .controller('patientConsultFirstCtrl', ['$scope','$location','$anchorScroll',
-        'GetSessionId','GetUserLoginStatus','$upload','$sce',
-        function ($scope,$location,$anchorScroll,GetSessionId,GetUserLoginStatus,$upload,$sce) {
+        'GetSessionId','GetUserLoginStatus','$upload','$sce','$rootScope',
+        function ($scope,$location,$anchorScroll,GetSessionId,GetUserLoginStatus,$upload,$sce,$rootScope) {
 
             $scope.consultContent = [];
             $scope.info={};
@@ -25,7 +25,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     $anchorScroll();
                 }
             };
-
+            //病人第一次咨询
             $scope.patientConsultFirst = function(){
                 var routePath = "/patient/consultBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath:routePath},function(data){
@@ -42,26 +42,15 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     }
                 })
             };
-
-            $scope.sendItem = false;
-            $scope.$watch('info.consultInputValue', function(newVal, oldVal) {
-                console.log(newVal);
-                if(newVal==undefined||newVal == ""){
-                    $scope.sendItem = false;
-                }else{
-                    $scope.sendItem = true;
-                }
-            });
             //初始化接口
             $scope.initConsultSocket = function(){
                 if (!window.WebSocket) {
                     window.WebSocket = window.MozWebSocket;
                 }
                 if (window.WebSocket) {
-
-                    $scope.socketServer = new ReconnectingWebSocket("ws://101.201.154.201:2048/ws&user&"
+                    $scope.socketServer = new ReconnectingWebSocket("ws://101.201.154.75:2048/ws&user&"
                         + $scope.patientId +"&h5cxqm");//cs,user,distributor
-
+                    console.log($scope.socketServer);
                     $scope.socketServer.onmessage = function(event) {
                         var consultData = JSON.parse(event.data);
                         console.log("onmessage",consultData);
@@ -83,7 +72,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                                 var val = {
                                     "type": 4,
                                     "notifyType": "0000"
-                                }
+                                };
                                 $scope.consultContent.push(val);
                             }
                         });
@@ -105,9 +94,10 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     'senderName':conversationData.senderName,
                     'sessionId':conversationData.sessionId,
                     "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png"
-            };
+                    };
                 $scope.consultContent.push(doctorValMessage);
             };
+            //处理通知类的消息
             var processNotifyMessage = function(notifyData){
                 if(notifyData.notifyType=="1001"){
                     //有医生或者接诊员在线1001
@@ -123,9 +113,10 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             };
             //发送消息
             $scope.sendConsultContent = function(){
+                console.log($scope.info.consultInputValue);
                 var patientValMessage = {
                     "type": 0,
-                    "content": $scope.info.consultInputValue,
+                    "content": $scope.consultInputValue,
                     "dateTime": moment().format("YYYY-MM-DD HH:mm:ss"),
                     "senderId":$scope.patientId,
                     "senderName":$scope.patientName,
@@ -170,7 +161,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                             "senderId": $scope.patientId,
                             "senderName": $scope.senderName,
                             "sessionId":$scope.sessionId,
-                            "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png"
+                            "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
                         };
                         console.log(patientValMessage.content);
                         if (!window.WebSocket) {
@@ -186,6 +177,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     });
                 }
             };
+            //qq表情的获取
             $scope.getQQExpression = function () {
                 console.log("aaaa");
                 $('#face').qqFace({
@@ -194,8 +186,8 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     path: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fqqface%2F'
                     //表情存放的路径
                 });
-            };
 
+            };
             //过滤媒体数据
             var filterMediaData = function (val) {
                 if(val.senderId==$scope.patientId){
@@ -218,7 +210,6 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 str = str.replace(/\[em_([0-9]*)\]/g,'<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fqqface%2F$1.gif" border="0" />');
                 return str;
             };
-
             var emotionReceiveFilter = function(val){
                 val = val.replace(/\/::\)/g, '[em_1]');val = val.replace(/\/::~/g, '[em_2]');val = val.replace(/\/::B/g, '[em_3]');val = val.replace(/\/::\|/g, '[em_4]');
                 val = val.replace(/\/:8-\)/g, '[em_5]');val = val.replace(/\/::</g, '[em_6]');val = val.replace(/\/::X/g, '[em_7]');val = val.replace(/\/::Z/g, '[em_8]');
@@ -241,7 +232,6 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 val = val.replace(/\/:showlove/g, '[em_73]');val = val.replace(/\/:love/g, '[em_74]');val = val.replace(/\/:<L>/g, '[em_75]');
                 return val;
             };
-
             var emotionSendFilter = function(val){
                 val = val.replace(/\[em_1\]/g, '/::)');val = val.replace(/\[em_2\]/g, '/::~');val = val.replace(/\[em_3\]/g, '/::B');val = val.replace(/\[em_4\]/g, '/::|');
                 val = val.replace(/\[em_5\]/g, '/:8-)');val = val.replace(/\[em_6\]/g, '/::<');val = val.replace(/\[em_7\]/g, '/::X');val = val.replace(/\[em_8\]/g, '/::Z');
@@ -276,4 +266,28 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             $scope.tapShowButton = function(key){
                 $scope.showFlag[key] = !$scope.showFlag[key];
             };
+           //监视textarea里面有没有输入内容
+            $scope.sendItem = false;
+            $scope.$watch('info.consultInputValue', function(newVal, oldVal) {
+                //$rootScope.$digest();
+                console.log(newVal);
+                if(newVal==undefined||newVal == ""){
+                    $scope.sendItem = false;
+                }else{
+                    $scope.sendItem = true;
+                }
+            });
+
+
+
+            $rootScope.add = function () {
+                console.log(this.name);
+                //$scope.consultInputValue = this.name;
+            };
+            $scope.addScope = function () {
+                console.log('aaa');
+                var scope= $('#textBox').scope();
+                scope.name = "Hello World";
+            };
+
         }])

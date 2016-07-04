@@ -1,6 +1,7 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.ConstantUtil;
@@ -11,6 +12,7 @@ import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultVoiceRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultPayUserService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
@@ -56,6 +58,9 @@ public class ConsultWechatController extends BaseController {
     @Autowired
     private ConsultRecordService consultRecordService;
 
+    @Autowired
+    private ConsultPayUserService consultPayUserService;
+
     private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
     @Autowired
@@ -65,10 +70,10 @@ public class ConsultWechatController extends BaseController {
     public
     @ResponseBody
     Map<String,Object> conversation(HttpServletRequest request,
-                        @RequestParam(required=true) String openId,
-                        @RequestParam(required=true) String messageType,
-                        @RequestParam(required=false) String messageContent,
-                        @RequestParam(required=false) String mediaId) {
+                                    @RequestParam(required=true) String openId,
+                                    @RequestParam(required=true) String messageType,
+                                    @RequestParam(required=false) String messageContent,
+                                    @RequestParam(required=false) String mediaId) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 
         HashMap<String,Object> result = new HashMap<String,Object>();
@@ -81,7 +86,6 @@ public class ConsultWechatController extends BaseController {
             paramMap.put("mediaId",mediaId);
         }
         paramMap.put("serverAddress",ConstantUtil.SERVER_ADDRESS);
-
         Runnable thread = new processUserMessageThread(paramMap);
         threadExecutor.execute(thread);
 
@@ -126,6 +130,7 @@ public class ConsultWechatController extends BaseController {
             // 在所有的日志记录，还是缓存中，所有的会话，都引入一个字段，source，标示，这个会话，
             // 是基于微信，还是H5，还是合作第三方的来源，以便按照不同的逻辑来处理。
             String source = "wxcxqm";
+            Integer notifyType = 1001;
 
             Channel csChannel = null;
             //根据用户的openId，判断redis中，是否有用户正在进行的session
@@ -136,6 +141,12 @@ public class ConsultWechatController extends BaseController {
 
             //如果此用户不是第一次发送消息，则sessionId不为空
             if(sessionId!=null){
+                //检测是否给用户推送以下消息-- 每个会话只推一次(您需要花点时间排队，请耐心等待哦)
+                String sessionList = consultPayUserService.getChargeInfo(sessionId);
+                if(null == sessionList){
+                    consultPayUserService.saveChargeUser(sessionId,openId);
+                    consultPayUserService.sendMessageToConsult(openId,4);
+                }
                 consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
                 csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
                 System.out.println("csChannel------"+csChannel);
@@ -154,6 +165,7 @@ public class ConsultWechatController extends BaseController {
                     }
                 }
             }else{
+
                 //如果此用户是第一次发送消息，则sessionId为空
                 consultSession.setCreateTime(new Date());
                 consultSession.setUserId(userId);
@@ -167,7 +179,32 @@ public class ConsultWechatController extends BaseController {
                     consultSession = (RichConsultSession)createWechatConsultSessionMap.get("consultSession");
                     sessionId = consultSession.getId();
                 }
+                //检测用户是否是收费用户,1001 为正常用户(无标签) ,1002 需要付款用户(等待),1003 已付款用户;
+                try{
+                    Date moningStrarTime = DateUtils.StrToDate(Global.getConfig("consultMoningStrarTime"),"yyyy-MM-dd HH:mm");
+                    Date consultMoningEndTime = DateUtils.StrToDate(Global.getConfig("consultMoningEndTime"),"yyyy-MM-dd HH:mm");
+                    Date consultAfternoonStartTime = DateUtils.StrToDate(Global.getConfig("consultAfternoonStartTime"),"yyyy-MM-dd HH:mm");
+                    Date consultAfternoonEndTime = DateUtils.StrToDate(Global.getConfig("consultAfternoonEndTime"),"yyyy-MM-dd HH:mm");
+                    Date present = new Date();
+                    //判断日期条件是否满足要求
+                    if((moningStrarTime.getTime()<present.getTime() &&consultMoningEndTime.getTime()<present.getTime())
+                            ||(consultAfternoonStartTime.getTime()<present.getTime()&&consultAfternoonEndTime.getTime()<present.getTime()))
+                        if(consultPayUserService.angelChargeCheck(openId)){
+                            HashMap<String,Object> payInfo = new HashMap<String, Object>();
+                            payInfo.put("openid",openId);
+                            payInfo.put("create_time",new Date());
+                            consultPayUserService.putneepPayConsultSession(sessionId,payInfo);
+                            notifyType = 1002;
+                            int type  = Integer.parseInt(Global.getConfig("consultPayMsgType"));
+                            consultPayUserService.sendMessageToConsult(openId,type);
+                        }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+
             }
+
 
             //会话创建成功，拿到了csChannel,给接诊员(或是医生)发送消息
             if(csChannel!=null&&csChannel.isActive()){
@@ -177,6 +214,7 @@ public class ConsultWechatController extends BaseController {
                     obj.put("senderId", userId);
                     obj.put("dateTime", DateUtils.DateToStr(new Date()));
                     obj.put("senderName",userName);
+                    obj.put("notifyType",notifyType);
                     obj.put("serverAddress",serverAddress);
                     System.out.println("serverAddress------"+serverAddress);
                     obj.put("source",consultSession.getSource());
@@ -249,4 +287,38 @@ public class ConsultWechatController extends BaseController {
 
         }
     }
+
+    @RequestMapping(value = "/notifyPayInfo2Distributor", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String,Object> notifyPayInfo2Distributor(@RequestParam(required=true) String openId){
+        Channel csChannel = null;
+        //根据用户的openId，判断redis中，是否有用户正在进行的session
+        Integer sessionId = sessionRedisCache.getSessionIdByUserId(openId);
+        System.out.println("sessionId------"+sessionId);
+        HashMap<String,Object> createWechatConsultSessionMap = null;
+        RichConsultSession consultSession = new RichConsultSession();
+        consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
+        csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
+        System.out.println("csChannel------"+csChannel);
+
+        if(csChannel!=null&&csChannel.isActive()){
+            try {
+                JSONObject obj = new JSONObject();
+                obj.put("sessionId", sessionId);
+                obj.put("senderId", openId);
+                obj.put("dateTime", DateUtils.DateToStr(new Date()));
+//                obj.put("senderName", userName);
+                obj.put("notifyType", "notifyType");
+//                obj.put("serverAddress", serverAddress);
+                obj.put("source", consultSession.getSource());
+                TextWebSocketFrame frame = new TextWebSocketFrame(obj.toJSONString());
+                csChannel.writeAndFlush(frame.retain());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    };
 }

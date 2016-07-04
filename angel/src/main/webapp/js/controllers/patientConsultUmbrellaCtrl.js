@@ -51,11 +51,11 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 }
                 if (window.WebSocket) {
 
-                    //$scope.socketServer = new ReconnectingWebSocket("ws://xiaork.com/wsbackend/ws&user&"
-                    //    + $scope.patientId +"&h5cxqm");//cs,user,distributor
-
-                    $scope.socketServer = new ReconnectingWebSocket("ws://xiaork.com:2048/ws&user&"
+                    $scope.socketServer = new ReconnectingWebSocket("ws://s202.xiaork.com/wsbackend/ws&user&"
                         + $scope.patientId +"&h5cxqm");//cs,user,distributor
+
+                    /*$scope.socketServer = new ReconnectingWebSocket("ws://xiaork.com:2048/ws&user&"
+                        + $scope.patientId +"&h5cxqm");//cs,user,distributor*/
 
                     $scope.socketServer.onmessage = function(event) {
                         var consultData = JSON.parse(event.data);
@@ -144,10 +144,9 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             };
             $scope.getQQExpression = function () {
                 $('#face').qqFace({
-                    id: 'facebox', //表情盒子的ID
-                    assign: 'saytext', //给那个控件赋值
+                    id: 'facebox',
+                    assign: 'saytext',
                     path: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fqqface%2F'
-                    //表情存放的路径
                 });
             };
 

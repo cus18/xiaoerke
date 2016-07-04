@@ -27,5 +27,5 @@ public interface PayRecordService {
     int updateByOrderId(PayRecord record);
 
 
-
+    PayRecord findRecordByOpenid(String openid,String type);
 }

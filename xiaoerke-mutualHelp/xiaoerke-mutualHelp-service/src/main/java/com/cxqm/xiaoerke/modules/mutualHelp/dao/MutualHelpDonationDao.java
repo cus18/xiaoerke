@@ -15,13 +15,13 @@ import java.util.List;
 public interface MutualHelpDonationDao {
 
     //捐款总人数
-    Integer getCount(@Param("donationType")Integer donationType);
+    int getCount(@Param("donationType")Integer donationType);
 
     //捐款总金额
-    Double getSumMoney(@Param("donationType")Integer donationType);
+    int getSumMoney(@Param("donationType")Integer donationType);
 
     //捐款总额
-    Double getSumMoney(HashMap<String,Object> searchMap);
+    double getSumMoney(HashMap<String,Object> searchMap);
 
     //最后留言或捐款的时间
     Date getLastTime(HashMap<String, Object> searchMap);
