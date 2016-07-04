@@ -139,6 +139,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		}
 		else {
 			String customerService = Global.getConfig("wechat.customservice");
+			customerService = "false";
 			if("false".equals(customerService)){
 				Runnable thread = new processConsultMessageThread(xmlEntity);
 				threadExecutor.execute(thread);
@@ -796,8 +797,10 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			String token = (String) parameter.get("token");
 			List<Article> articleList = new ArrayList<Article>();
 			Article article = new Article();
-			article.setTitle("咨询大夫 | 三甲医院儿科专家  1分钟极速回复");
-			article.setDescription("小儿内科:       24小时全天 \n\n小儿皮肤科:   9:00 ~ 22:00\n\n小儿营养科:   9:00 ~ 22:00\n\n(外科、眼科、耳鼻喉科、口腔科、预防保健科、中医科)\n\n点击查看更多哦");
+			article.setTitle("三甲医院儿科专家    咨询秒回不等待");
+			article.setDescription("小儿内科:       24小时全天 \n\n小儿皮肤科/保健科:   8:00 ~ 23:00\n\n妇产科:   12:00-14:00，19:00-22:00\n" +
+					"\n小儿其他专科:   19:00 ~ 21:00\n\n" +
+					"(外科、眼科、耳鼻喉科、口腔科、预防接种科、中医科、心理科)\n\n好消息！可在线咨询北京儿童医院皮肤科专家啦！");
 			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E6%8E%A8%E9%80%81%E6%B6%88%E6%81%AF2.png");
 			article.setUrl("https://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236660&idx=1&sn=10d923526047a5276dd9452b7ed1e302&scene=1&srcid=0612OCo7d5ASBoGRr2TDgjfR&key=f5c31ae61525f82ed83c573369e70b8f9b853c238066190fb5eb7b8640946e0a090bbdb47e79b6d2e57b615c44bd82c5&ascene=0&uin=MzM2NjEyMzM1&devicetype=iMac+MacBookPro11%2C4+OSX+OSX+10.11.4+build(15E65)&version=11020201&pass_ticket=dG5W6eOP3JU1%2Fo3JXw19SFBAh1DgpSlQrAXTyirZuj970HMU7TYojM4D%2B2LdJI9n");
 			articleList.add(article);
