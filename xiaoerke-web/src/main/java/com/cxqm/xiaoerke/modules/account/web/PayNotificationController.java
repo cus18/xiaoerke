@@ -399,9 +399,9 @@ public class PayNotificationController {
                     if("success".equals(insuranceMap.get("status").toString())){
                         MutualHelpDonation mutualHelpDonation = new MutualHelpDonation();
                         mutualHelpDonation.setOpenId((String) map.get("openid"));
-						mutualHelpDonation.setMoney(Integer.valueOf((String)map.get("total_fee")));
-						mutualHelpDonation.setLeaveNote((String) request.getAttribute("leaveNote"));
-						mutualHelpDonation.setDonationType((Integer) request.getAttribute("donationType"));
+						mutualHelpDonation.setMoney(Integer.valueOf((String) map.get("total_fee")));
+						mutualHelpDonation.setLeaveNote(insuranceMap.get("leave_note").toString());
+//						mutualHelpDonation.setDonationType((Integer) insuranceMap.get("donationType"));
 						mutualHelpDonation.setCreateTime(new Date());
                         mutualHelpDonationService.saveNoteAndDonation(mutualHelpDonation);
                     }

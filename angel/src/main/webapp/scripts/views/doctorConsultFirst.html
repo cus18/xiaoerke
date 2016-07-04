@@ -9,13 +9,12 @@
                 </span>
                 <span></span>
                 <span>（{{doctorName}}），宝大夫欢迎您！！</span>
-                <span>
+                <!--<span>
                     <select>
                         <option>在线</option>
                         <option>不在线</option>
                     </select>
-                    <!--<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>-->
-                </span>
+                </span>-->
                 <span ng-if="loseConnectionFirstFlag||loseConnectionSecondFlag">您已与平台断开了连接，请检查您的网络情况，谢谢！</span>
                 <span ng-if="!loseConnectionFirstFlag&&!loseConnectionSecondFlag">您目前与平台连接正常！</span>
                 <div class="bdf-dkf-content-right">
@@ -73,7 +72,11 @@
                      ng-repeat="item in alreadyJoinPatientConversation | orderBy:'dateTime':true"
                      ng-click="chooseAlreadyJoinConsultPatient(item.patientId,item.patientName,item.sessionId)"
                      alt="">
-                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fduokefu_06.png" alt=""/>
+                    <div>
+                        <!-- item.type=='4'&&item.notifyType=='0011'-->
+                        <img ng-style="item.notifyType=='1002'?{'display':'block'}:{'display':'none'}" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fduokefu_06.png" alt=""/>
+                        <img ng-style="item.notifyType=='1003'?{'display':'block'}:{'display':'none'}" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fduokefu.png" alt=""/>
+                    </div>
                     <div><nobr>{{item.patientName|limitTo:6}}</nobr></div>
                     <div><nobr>{{transformDate(item.dateTime)}}</nobr></div>
                     <div  ng-style="item.messageNotSee?{'display':'block'}:{'display':'none'}">
@@ -223,8 +226,8 @@
             <textarea type="text" name="messageData" id="patientIdData" class="textarea" style="display:none;">{{currentUserConversation.patientId}}</textarea>
             <textarea type="text" name="messageData" id="doctorIdData" class="textarea" style="display:none;">{{doctorId}}</textarea>
             <textarea type="text" name="messageData" id="sourceData" class="textarea" style="display:none;">{{currentUserConversation.source}}</textarea>
-            <div class="advisory-content" ng-show='showFlag.advisoryContent'>
-                <!--用户信息-->
+            <!--<div class="advisory-content" ng-show='showFlag.advisoryContent'>
+                &lt;!&ndash;用户信息&ndash;&gt;
                 <div class="module">
                     <div class="title">
                         <h3>用户信息<input type="submit" class="more" value="{{userTableMore}}" ng-click="tapUserTable('userTable')"/> <span>(VIP)</span>：</h3>
@@ -254,7 +257,7 @@
                         </tr>
                     </table>
                 </div>
-                <!--近期就诊记录-->
+                &lt;!&ndash;近期就诊记录&ndash;&gt;
                 <div class="module">
                     <div class="title">
                         <h3>近期就诊记录<input type="submit" class="more" value="{{recentTableMore}}" ng-click="tapRecentTable('recentTable')"/></h3>
@@ -299,7 +302,7 @@
                         </tr>
                     </table>
                 </div>
-                <!--添加咨询记录-->
+                &lt;!&ndash;添加咨询记录&ndash;&gt;
                 <div class="module" >
                     <div class="title">
                         <h3>添加咨询记录<input type="submit" class="more" value="{{addConsultTableMore}}" ng-click="tapAddConsultTable('addConsultTable')"/> </h3>
@@ -347,7 +350,7 @@
                         </tr>
                     </table>
                 </div>
-                <!--历史咨询档案-->
+                &lt;!&ndash;历史咨询档案&ndash;&gt;
                 <div class="module">
                     <div class="title">
                         <h3 >历史咨询档案<input type="submit" class="more" value="{{historyTableMore}}" ng-click="tapHistoryTable('historyTable')"/></h3>
@@ -374,7 +377,7 @@
                         </tr>
                     </table>
                 </div>
-                <!--<div>
+                &lt;!&ndash;<div>
                        <span style="">科室/类别：</span><input type="text" id="addSections"/>
                        <br/>
                        <center>
@@ -389,8 +392,8 @@
                            <br/><br/><br/><br/>
                            <input type="submit" value="关闭"/>
                        </center>
-                   </div>-->
-            </div>
+                   </div>&ndash;&gt;
+            </div>-->
         </div>
         <div class="msg-m h30" ng-if="chooseAlreadyJoinConsultPatientId!=''">
             <div class="headportrait">

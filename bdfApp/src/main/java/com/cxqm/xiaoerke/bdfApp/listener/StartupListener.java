@@ -15,8 +15,8 @@ public class StartupListener implements ServletContextListener {
 		Runnable rn = new Runnable() {
 		    public void run() {
 		    	final ChatServer chatServer = new ChatServer();
-				ChannelFuture f1 = chatServer.start(new InetSocketAddress(2048));
-
+				//ChannelFuture f1 = chatServer.start(new InetSocketAddress(2048));
+        ChannelFuture f1 = chatServer.start(new InetSocketAddress(2050));
 //				final RpcServer rpcServer = new RpcServer();
 //				ChannelFuture f2 = rpcServer.start(new InetSocketAddress(2049));
 
