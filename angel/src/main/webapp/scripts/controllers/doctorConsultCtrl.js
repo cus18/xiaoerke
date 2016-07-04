@@ -32,13 +32,39 @@ angular.module('controllers', ['luegg.directives'])
             $scope.loadingFlag = false;
             $scope.socketServerFirst = "";
             $scope.socketServerSecond = "";
-            $scope.firstAddress = "101.201.154.201";
+            $scope.firstAddress = "101.201.154.75";
             $scope.secondAddress = "120.25.161.33";
             $scope.alreadyJoinPatientConversation = []; //已经加入会话的用户数据，一个医生可以有多个对话的用户，这些用户的数据，都保存在此集合中 乱码
             $scope.currentUserConversation = {}; //医生与当前正在进行对话用户的聊天数据，医生在切换不同用户时，数据变更到切换的用户上来。
             $scope.waitJoinNum = 0; //医生待接入的用户数，是动态变化的数
             $scope.glued = true; //angular滚动条的插件预制参数，让对话滚动条，每次都定位底部，当新的聊天数据到达时
             var umbrellaCustomerList = "75cefafe00364bbaaaf7b61089994e22,3b91fe8b7ce143918012ef3ab4baf1e0,00032bd90d724d0sa63a4d6esa0e8dbf";
+            /*//测试用的假数据
+            $scope.alreadyJoinPatientConversation=[
+                {
+                    'patientId':1,
+                    'dateTime':1111111111111,
+                    'messageNotSee':true,
+                    'number':1,
+                    'patientName':'大熊猫',
+                    'notifyType':1001
+                },{
+                    'patientId':2,
+                    'dateTime':111111111,
+                    'messageNotSee':true,
+                    'number':1,
+                    'patientName':'小熊猫',
+                    'notifyType':1002
+                },{
+                    'patientId':3,
+                    'dateTime':1111122221111,
+                    'messageNotSee':true,
+                    'number':1,
+                    'patientName':'熊猫',
+                    'notifyType':1003
+                }
+
+            ]*/
 
             //各个子窗口的开关变量
             $scope.showFlag = {
@@ -1610,6 +1636,30 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 else if(notifyData.notifyType=="3001"){
                     getFindTransferSpecialist();
+                }
+                //正常用户
+                else if(notifyData.notifyType=="1001"){
+                    $.each($scope.alreadyJoinPatientConversation, function (index, value) {
+                        if (value.patientId == notifyData.session.userId) {
+                            value.consultValue.push(notifyData);
+                        }
+                    });
+                }
+                //需要付款用户
+                else if(notifyData.notifyType=="1002"){
+                    $.each($scope.alreadyJoinPatientConversation, function (index, value) {
+                        if (value.patientId == notifyData.session.userId) {
+                            value.consultValue.push(notifyData);
+                        }
+                    });
+                }
+                //超时的用户
+                else if(notifyData.notifyType=="1003"){
+                    $.each($scope.alreadyJoinPatientConversation, function (index, value) {
+                        if (value.patientId == notifyData.session.userId) {
+                            value.consultValue.push(notifyData);
+                        }
+                    });
                 }
                 else if(notifyData.notifyType=="0015"){
                     //收到服务器发送过来的心跳消息
