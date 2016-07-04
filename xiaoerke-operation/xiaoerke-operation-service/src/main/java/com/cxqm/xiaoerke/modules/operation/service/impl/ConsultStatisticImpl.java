@@ -33,4 +33,12 @@ public class ConsultStatisticImpl implements ConsultStatisticService {
         return consultStatisticDao.insertSelective(record);
     }
 
+    @Override
+    public List<ConsultStatisticVo> getConsultStatisticList(String startDate, String endDate){
+        HashMap<String,String> hashMap = new HashMap<String, String>();
+        hashMap.put("startDate",startDate);
+        hashMap.put("endDate",endDate);
+        return consultStatisticDao.getConsultStatisticList(hashMap);
+    }
+
 }

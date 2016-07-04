@@ -5,7 +5,6 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 咨询统计 Service
@@ -20,4 +19,6 @@ public interface ConsultStatisticService {
 
 
     int insertSelective(ConsultStatisticVo record);
+
+    List<ConsultStatisticVo> getConsultStatisticList(String startDate,String endDate);
 }

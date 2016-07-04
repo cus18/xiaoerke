@@ -24,19 +24,37 @@
     <result column="second_consult_degree" property="secondConsultDegree" jdbcType="VARCHAR" />
     <result column="more_conuslt_number" property="moreConusltNumber" jdbcType="INTEGER" />
     <result column="more_consult_degree" property="moreConsultDegree" jdbcType="VARCHAR" />
+    <result column="max_money" property="maxMoney" jdbcType="VARCHAR" />
+    <result column="min_money" property="minMoney" jdbcType="VARCHAR" />
+    <result column="sum_money" property="sumMoney" jdbcType="VARCHAR" />
+    <result column="evaluate_click_number" property="evaluateClickNumber" jdbcType="INTEGER" />
+    <result column="evaluate_click_degree" property="evaluateClickDegree" jdbcType="VARCHAR" />
+    <result column="share_click_number" property="shareClickNumber" jdbcType="INTEGER" />
+    <result column="share_click_degree" property="shareClickDegree" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+    <result column="displayDate" property="displayDate" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, day_number, titile_number, evaluate_number, unevaluate_number, satisfied_number, 
-    day_satisfied_degree, weed_satisfied_degree, month_satisfied_degree, day_yawp_number, 
-    week_yawp_number, month_yawp_number, reward_number, reward_degree, first_consult_cancle_Attention_number, 
-    more_consult_cancle_Attention_number, first_consult_number, first_consult_degree, 
-    second_consult_number, second_consult_degree, more_conuslt_number, more_consult_degree
+    id, day_number, titile_number, evaluate_number, unevaluate_number, satisfied_number,
+    day_satisfied_degree, weed_satisfied_degree, month_satisfied_degree, day_yawp_number,
+    week_yawp_number, month_yawp_number, reward_number, reward_degree, first_consult_cancle_Attention_number,
+    more_consult_cancle_Attention_number, first_consult_number, first_consult_degree,
+    second_consult_number, second_consult_degree, more_conuslt_number, more_consult_degree,
+    max_money, min_money, sum_money, evaluate_click_number, evaluate_click_degree, share_click_number,
+    share_click_degree,create_date,DATE_FORMAT(create_date, '%Y-%m-%d') displayDate
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from consult_statistic
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getConsultStatisticList" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select
+    <include refid="Base_Column_List" />
+    from consult_statistic
+    where create_date BETWEEN DATE_FORMAT(#{startDate},'%Y-%m-%d') and DATE_FORMAT(#{endDate},'%Y-%m-%d')
+    order by create_date  DESC
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from consult_statistic
@@ -51,7 +69,10 @@
       first_consult_cancle_Attention_number, more_consult_cancle_Attention_number, 
       first_consult_number, first_consult_degree, 
       second_consult_number, second_consult_degree, 
-      more_conuslt_number, more_consult_degree)
+    more_conuslt_number, more_consult_degree, max_money,
+    min_money, sum_money, evaluate_click_number,
+    evaluate_click_degree, share_click_number,
+    share_click_degree,create_date)
     values (#{id,jdbcType=INTEGER}, #{dayNumber,jdbcType=INTEGER}, #{titileNumber,jdbcType=INTEGER}, 
       #{evaluateNumber,jdbcType=INTEGER}, #{unevaluateNumber,jdbcType=INTEGER}, #{satisfiedNumber,jdbcType=INTEGER}, 
       #{daySatisfiedDegree,jdbcType=VARCHAR}, #{weedSatisfiedDegree,jdbcType=VARCHAR}, 
@@ -60,7 +81,10 @@
       #{firstConsultCancleAttentionNumber,jdbcType=INTEGER}, #{moreConsultCancleAttentionNumber,jdbcType=INTEGER}, 
       #{firstConsultNumber,jdbcType=INTEGER}, #{firstConsultDegree,jdbcType=VARCHAR}, 
       #{secondConsultNumber,jdbcType=INTEGER}, #{secondConsultDegree,jdbcType=VARCHAR}, 
-      #{moreConusltNumber,jdbcType=INTEGER}, #{moreConsultDegree,jdbcType=VARCHAR})
+    #{moreConusltNumber,jdbcType=INTEGER}, #{moreConsultDegree,jdbcType=VARCHAR}, #{maxMoney,jdbcType=VARCHAR},
+    #{minMoney,jdbcType=VARCHAR}, #{sumMoney,jdbcType=VARCHAR}, #{evaluateClickNumber,jdbcType=INTEGER},
+    #{evaluateClickDegree,jdbcType=VARCHAR}, #{shareClickNumber,jdbcType=INTEGER},
+    #{shareClickDegree,jdbcType=VARCHAR},#{createDate})
   </insert>
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo" >
     insert into consult_statistic
@@ -131,6 +155,30 @@
       <if test="moreConsultDegree != null" >
         more_consult_degree,
       </if>
+      <if test="maxMoney != null" >
+        max_money,
+      </if>
+      <if test="minMoney != null" >
+        min_money,
+      </if>
+      <if test="sumMoney != null" >
+        sum_money,
+      </if>
+      <if test="evaluateClickNumber != null" >
+        evaluate_click_number,
+      </if>
+      <if test="evaluateClickDegree != null" >
+        evaluate_click_degree,
+      </if>
+      <if test="shareClickNumber != null" >
+        share_click_number,
+      </if>
+      <if test="shareClickDegree != null" >
+        share_click_degree,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -198,6 +246,30 @@
       </if>
       <if test="moreConsultDegree != null" >
         #{moreConsultDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="maxMoney != null" >
+        #{maxMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="minMoney != null" >
+        #{minMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="sumMoney != null" >
+        #{sumMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateClickNumber != null" >
+        #{evaluateClickNumber,jdbcType=INTEGER},
+      </if>
+      <if test="evaluateClickDegree != null" >
+        #{evaluateClickDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="shareClickNumber != null" >
+        #{shareClickNumber,jdbcType=INTEGER},
+      </if>
+      <if test="shareClickDegree != null" >
+        #{shareClickDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate},
       </if>
     </trim>
   </insert>
@@ -267,6 +339,27 @@
       <if test="moreConsultDegree != null" >
         more_consult_degree = #{moreConsultDegree,jdbcType=VARCHAR},
       </if>
+      <if test="maxMoney != null" >
+        max_money = #{maxMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="minMoney != null" >
+        min_money = #{minMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="sumMoney != null" >
+        sum_money = #{sumMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateClickNumber != null" >
+        evaluate_click_number = #{evaluateClickNumber,jdbcType=INTEGER},
+      </if>
+      <if test="evaluateClickDegree != null" >
+        evaluate_click_degree = #{evaluateClickDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="shareClickNumber != null" >
+        share_click_number = #{shareClickNumber,jdbcType=INTEGER},
+      </if>
+      <if test="shareClickDegree != null" >
+        share_click_degree = #{shareClickDegree,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -292,7 +385,14 @@
       second_consult_number = #{secondConsultNumber,jdbcType=INTEGER},
       second_consult_degree = #{secondConsultDegree,jdbcType=VARCHAR},
       more_conuslt_number = #{moreConusltNumber,jdbcType=INTEGER},
-      more_consult_degree = #{moreConsultDegree,jdbcType=VARCHAR}
+      more_consult_degree = #{moreConsultDegree,jdbcType=VARCHAR},
+      max_money = #{maxMoney,jdbcType=VARCHAR},
+      min_money = #{minMoney,jdbcType=VARCHAR},
+      sum_money = #{sumMoney,jdbcType=VARCHAR},
+      evaluate_click_number = #{evaluateClickNumber,jdbcType=INTEGER},
+      evaluate_click_degree = #{evaluateClickDegree,jdbcType=VARCHAR},
+      share_click_number = #{shareClickNumber,jdbcType=INTEGER},
+      share_click_degree = #{shareClickDegree,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!--咨询统计  deliang-->
@@ -333,5 +433,11 @@
     select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between #{weekBeginDate} and #{weekEndDate} and (serviceAttitude != '0')
     UNION ALL
     select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between #{monthBeginDate} and #{monthEndDate} and (serviceAttitude != '0')) a
+    union all
+    select ceil(MIN(redpacket)) countNumber from customerEvaluation where createtime like '${createDate}%' and redPacket is not null and redPacket !=''
+    union all
+    select ceil(MAX(redpacket)) countNumber from customerEvaluation where createtime like '${createDate}%' and redPacket is not null and redPacket !=''
+    union all
+    select ceil(sum(redpacket)) countNumber from customerEvaluation where createtime like '${createDate}%' and redPacket is not null and redPacket !=''
   </select>
 </mapper>
