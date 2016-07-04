@@ -398,7 +398,7 @@
   <!--咨询统计  deliang-->
   <select id="getConsultStatistic" resultType="java.lang.Integer" parameterType="java.util.HashMap">
     select * from (
-    select count(DISTINCT(sys_user_id)) countNumber from consult_session where create_time like '${createDate}%'
+    select count(DISTINCT(sys_user_id)) countNumber from consult_session where create_time like '${createDate}%' and flag is null
     UNION ALL
     select count(DISTINCT(sys_user_id)) countNumber from consult_session
     UNION ALL
