@@ -9,9 +9,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ConsultSessionManager_App {
 
     //<userId or cs-userId, Channel>
-    public final Map<String, Channel> userChannelMap = new ConcurrentHashMap<String, Channel>();
+    public final Map<String, Channel> userChannelMapping = new ConcurrentHashMap<String, Channel>();
     //<userId or cs-userId, Channel>
-    public final Map<Channel, String> channelUserMap = new ConcurrentHashMap<Channel, String>();
+    public final Map<Channel, String> channelUserMapping = new ConcurrentHashMap<Channel, String>();
 
 //    private SystemService systemService = SpringContextHolder.getBean("systemService");
 
@@ -31,19 +31,38 @@ public class ConsultSessionManager_App {
 
     void createSocket(ChannelHandlerContext ctx, String url) {
 
+        //Channel channel = ctx.channel();
+        //
+        //String[] args = url.split("&");
+        //String userId = args[2];
+        //userChannelMap.put(userId, channel);
+        //channelUserMap.put(channel,userId);
+
         Channel channel = ctx.channel();
 
         String[] args = url.split("&");
-        String userId = args[1];
-        userChannelMap.put(userId, channel);
-        channelUserMap.put(channel,userId);
+        String fromType = args[1];
+
+
+        if (args.length > 2) {
+            if (fromType.equals("user")) {
+                String userId = args[2];
+                String source = args[3];
+                doCreateSocketInitiatedByUser(userId, channel);
+            }
+        }
     }
 
-    public Map<String, Channel> getUserChannelMap() {
-        return userChannelMap;
+    private void doCreateSocketInitiatedByUser(String userId, Channel channel) {
+        userChannelMapping.put(userId, channel);
+        channelUserMapping.put(channel, userId);
     }
 
-    public Map<Channel, String> getChannelUserMap() {
-        return channelUserMap;
+    public Map<String, Channel> getUserChannelMapping() {
+        return userChannelMapping;
+    }
+
+    public Map<Channel, String> getChannelUserMapping() {
+        return channelUserMapping;
     }
 }

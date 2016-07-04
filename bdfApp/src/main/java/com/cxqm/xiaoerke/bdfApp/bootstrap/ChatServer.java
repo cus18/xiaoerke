@@ -35,7 +35,8 @@ public class ChatServer {
 	
 	public static void main(String[] args) {
 		final ChatServer server = new ChatServer();
-		ChannelFuture f = server.start(new InetSocketAddress(2048));
+		//ChannelFuture f = server.start(new InetSocketAddress(2048));
+      ChannelFuture f = server.start(new InetSocketAddress(2050));
 		System.out.println("server start................");
 		Runtime.getRuntime().addShutdownHook(new Thread(){
 			@Override

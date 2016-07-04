@@ -45,6 +45,9 @@ public class MutualHelpDonation {
     }
 
     public Integer getMoney() {
+        if(money == null){
+            return 0;
+        }
         return money;
     }
 

@@ -1,10 +1,13 @@
 package com.cxqm.xiaoerke.bdfApp.core;
 
+import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson.JSON;
 import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.task.service.ScheduleTaskService;
 import io.netty.channel.Channel;
@@ -15,12 +18,12 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -61,13 +64,24 @@ public class TextWebSocketFrameHandler_App extends SimpleChannelInboundHandler<T
     protected void channelRead0(ChannelHandlerContext ctx,
                                 TextWebSocketFrame msg) throws Exception {
         Channel channel = ctx.channel();
+        System.out.println(msg.text());
+        System.out.println(channel);
+        Map<String, Object> msgMap = null;
+        msgMap = (Map<String, Object>) JSON.parse(msg.text());
+        String userId = (String)msgMap.get("userId");
+        ConsultSessionManager_App consultSessionManager_App = ConsultSessionManager_App.getSessionManager();
+        Map<String, Channel> userChannelMapping= ConsultSessionManager_App.getSessionManager().getUserChannelMapping();
+        Channel userChannel = userChannelMapping.get(userId);
 
-        //发送post请求到angel
-        Runnable thread = new processConsultMessageThread(msg);
-        threadExecutor.execute(thread);
+        Map<String,Object> replyMap = new HashMap<String, Object>();
+        replyMap.put("reply_content","哈哈,小样,我已经收到你的消息了!");
+        replyMap.put("reply_doctor","宝大夫的专业医生");
+        TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(replyMap));
+        userChannel.writeAndFlush(csUserMsg.retain());
 
-//        channel.writeAndFlush("");
-
+        //发送post请求到angel(误删)
+        //Runnable thread = new processConsultMessageThread(msgMap);
+        //threadExecutor.execute(thread);
     }
 
     @Override
@@ -78,11 +92,11 @@ public class TextWebSocketFrameHandler_App extends SimpleChannelInboundHandler<T
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         log.info("enter channelInactive()");
-        String userId = ConsultSessionManager_App.getSessionManager().getChannelUserMap().get(ctx.channel());
-        ConsultSessionManager_App.getSessionManager().getChannelUserMap().remove(ctx.channel());
+        String userId = ConsultSessionManager.getSessionManager().getChannelUserMapping().get(ctx.channel());
+        ConsultSessionManager.getSessionManager().getChannelUserMapping().remove(ctx.channel());
         if (userId != null) {
-            ConsultSessionManager_App.getSessionManager().getUserChannelMap().remove(userId);
-            ConsultSessionManager_App.getSessionManager().getUserChannelMap().remove(userId);
+            ConsultSessionManager.getSessionManager().getUserChannelMapping().remove(userId);
+            //ConsultSessionManager.getSessionManager().getCsUserChannelMapping().remove(userId);
         }
         log.info("finish channelInactive()");
     }
@@ -96,16 +110,30 @@ public class TextWebSocketFrameHandler_App extends SimpleChannelInboundHandler<T
 
 
     public class processConsultMessageThread extends Thread {
-        private TextWebSocketFrame msg;
+        private Map<String,Object> msg;
 
-        public processConsultMessageThread(TextWebSocketFrame msg) {
+        public processConsultMessageThread(Map<String,Object> msg) {
             this.msg = msg;
         }
 
         public void run() {
-            System.out.println(msg.text());
-            this.sendPost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/bdfApp/conversation",
-                            "msg=" + msg);
+
+            try {
+                System.out.println(msg.get("content").toString());
+                if(msg.get("messageType").toString().equals("text")){
+                    this.sendPost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/conversation",
+                        "openId=" + msg.get("userId").toString() +
+                            "&messageType=" + msg.get("messageType").toString() +
+                            "&messageContent=" + URLEncoder.encode(msg.get("content").toString(), "UTF-8"));
+                }else{
+                    this.sendPost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/conversation",
+                        "openId=" + msg.get("userId").toString() +
+                            "&messageType=" + msg.get("messageType").toString() +
+                            "&mediaId=" + msg.get("mediaId").toString());
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
 
         /**

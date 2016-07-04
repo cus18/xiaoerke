@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.consult.dao.ConsultPayUserDao" >
+  <!--<resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo" >-->
+  <!--<id column="id" property="id" jdbcType="INTEGER" />-->
+  <!--<result column="sys_user_id" property="userId" jdbcType="VARCHAR" />-->
+  <!--<result column="gender" property="gender" jdbcType="VARCHAR" />-->
+  <!--<result column="title" property="title" jdbcType="VARCHAR" />-->
+  <!--<result column="hospital" property="hospital" jdbcType="VARCHAR" />-->
+  <!--<result column="department" property="department" jdbcType="VARCHAR" />-->
+  <!--<result column="skill" property="skill" jdbcType="VARCHAR" />-->
+  <!--<result column="description" property="description" jdbcType="VARCHAR" />-->
+  <!--<result column="grab_session" property="grabSession" jdbcType="VARCHAR" />-->
+  <!--<result column="send_message" property="sendMessage" jdbcType="VARCHAR" />-->
+  <!--<result column="receive_differential_notification" property="receiveDifferentialNotification" jdbcType="VARCHAR" />-->
+  <!--<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />-->
+  <!--<result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />-->
+  <!--<result column="type" property="type" jdbcType="VARCHAR" />-->
+  <!--</resultMap>-->
+
+  <select id="umbrellaCheck" resultType="java.lang.Integer" >
+    select count(bu.id) from sys_user su
+    right join baby_umbrellainfo bu
+    on su.login_name = bu.parent_phone
+    where su.openid = #{openid}
+  </select>
+
+  <select id="CheckInsuranceByOpenid" resultType="java.lang.Integer" >
+    select count(st.id) from sys_attention st
+    where st.openid = #{openid}
+    and st.marketer like 'yufangjiezhong%'
+  </select>
+
+</mapper>

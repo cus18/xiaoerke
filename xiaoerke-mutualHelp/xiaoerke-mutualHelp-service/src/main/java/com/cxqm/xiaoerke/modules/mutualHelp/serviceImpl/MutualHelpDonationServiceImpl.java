@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.mutualHelp.serviceImpl;
 
+import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.mutualHelp.dao.MutualHelpDonationDao;
 import com.cxqm.xiaoerke.modules.mutualHelp.entity.MutualHelpDonation;
@@ -31,8 +32,8 @@ public class MutualHelpDonationServiceImpl implements MutualHelpDonationService 
     }
 
     @Override
-    public Double getSumMoney(Integer donationType) {
-        return dao.getSumMoney(donationType);
+    public Double getSumMoney(HashMap<String, Object> paramMap) {
+        return dao.getSumMoney(paramMap)*1.0/100.0;
     }
 
     @Override
@@ -46,17 +47,19 @@ public class MutualHelpDonationServiceImpl implements MutualHelpDonationService 
         //我的捐款信息
         Map<String, Object> myMap = new HashMap<String, Object>();
         HashMap<String,Object> searchMap = new HashMap<String, Object>();
-        searchMap.put("userId",userId);
+        searchMap.put("openId",myOpenId);
         searchMap.put("donationType",donationType);
-        Date lastTime = dao.getLastTime(searchMap);
-        if(lastTime != null) {
-            myMap.put("userId",userId);
-            myMap.put("openId",myOpenId);
-            myMap.put("lastTime",lastTime);
-            myMap.put("sumMoney", dao.getSumMoney(searchMap));
-            Map<String, Object> myWechatMap = getWechatMessage(myOpenId);
-            myMap.put("wechatName", myWechatMap.get("wechatName"));
-            myMap.put("headImgUrl", myWechatMap.get("headImgUrl"));
+        Map<String, Object> myWechatMap = getWechatMessage(myOpenId);
+        myMap.put("wechatName", myWechatMap.get("wechatName"));
+        myMap.put("headImgUrl", myWechatMap.get("headImgUrl"));
+        if(StringUtils.isNotNull(myOpenId)) {
+            Date lastTime = dao.getLastTime(searchMap);
+            if (lastTime != null) {
+                myMap.put("userId", userId);
+                myMap.put("openId", myOpenId);
+                myMap.put("lastTime", lastTime);
+                myMap.put("sumMoney", dao.getSumMoney(searchMap) * 1.0 / 100.0);
+            }
         }
         response.put("myMap",myMap);
 
@@ -74,7 +77,7 @@ public class MutualHelpDonationServiceImpl implements MutualHelpDonationService 
             Map<String,Object> wechatMap = getWechatMessage(openId);
             map.put("wechatName",wechatMap.get("wechatName"));
             map.put("headImgUrl",wechatMap.get("headImgUrl"));
-            map.put("money",mutualHelpDonation.getMoney());
+            map.put("money",mutualHelpDonation.getMoney()*1.0/100.0);
             map.put("leaveNote",mutualHelpDonation.getLeaveNote());
             map.put("createTime",mutualHelpDonation.getCreateTime());
             list.add(map);
@@ -96,7 +99,7 @@ public class MutualHelpDonationServiceImpl implements MutualHelpDonationService 
             Map<String, Object> wechatMap = getWechatMessage(openId);
             response.put("wechatName", wechatMap.get("wechatName"));
             response.put("headImgUrl", wechatMap.get("headImgUrl"));
-            response.put("money", mutualHelpDonation.getMoney());
+            response.put("money", mutualHelpDonation.getMoney()*1.0/100.0);
             response.put("leaveNote", mutualHelpDonation.getLeaveNote());
             response.put("createTime", mutualHelpDonation.getCreateTime());
         }

@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans:beans xmlns="http://www.springframework.org/schema/security"
-	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="
-		http://www.springframework.org/schema/beans 
+			 xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
         http://www.springframework.org/schema/security 
         http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
-	<http pattern="${xiaoerkePath}/firstPage/momNutritionTest" security="none" />
-	<http pattern="${xiaoerkePath}/util/**" security="none" />
-	<http pattern="${xiaoerkePath}/wechatInfo/**" security="none" />
-	<http pattern="${xiaoerkePath}/sys/**" security="none" />
-	<http pattern="${xiaoerkePath}/market" security="none" />
-	<http pattern="${xiaoerkePath}/marketing/**" security="none"/>
-
-	<http pattern="/**" use-expressions="true" entry-point-ref="authenticationProcessingFilterEntryPoint" >
-		<intercept-url pattern="${xiaoerkePath}/**" access="isAuthenticated()" />
-		<logout logout-url="${xiaoerkePath}/logout" logout-success-url="${xiaoerkePath}/sso/logout" delete-cookies="JSESSIONID" />
+	<http pattern="/auth/**" use-expressions="true"
+		  entry-point-ref="authenticationProcessingFilterEntryPoint" >
+		<intercept-url pattern="/auth/**" access="isAuthenticated()" />
+		<logout logout-url="/logout" logout-success-url="/sso/appoint/logout" delete-cookies="JSESSIONID" />
 		<!-- 实现免登陆验证 -->
 		<remember-me user-service-ref="myUserDetailsService" />
 		<session-management invalid-session-url="/">
-			<concurrency-control max-sessions="10" error-if-maximum-exceeded="true" />
+			<concurrency-control max-sessions="3" error-if-maximum-exceeded="true" />
 		</session-management>
 		<custom-filter ref="myAuthenticationProcessingFilter" position="FORM_LOGIN_FILTER" />
 		<csrf disabled="true"/>
@@ -29,11 +22,12 @@
 	<authentication-manager alias="authenticationManager">
 		<authentication-provider user-service-ref="myUserDetailsService" />
 	</authentication-manager>
+
 	<!-- 登录验证器 -->
 	<beans:bean id="myAuthenticationProcessingFilter"
-		class="com.cxqm.xiaoerke.webapp.security.MyAuthenticationProcessingFilter">
+				class="com.cxqm.xiaoerke.webapp.security.MyAuthenticationProcessingFilter">
 		<!-- 处理登录的action -->
-		<beans:property name="filterProcessesUrl" value="${xiaoerkePath}/auth_center/form" />
+		<beans:property name="filterProcessesUrl" value="/auth/auth_center/form" />
 		<!-- 验证成功后的处理 -->
 		<beans:property name="authenticationSuccessHandler" ref="loginLogAuthenticationSuccessHandler" />
 		<!-- 验证失败后的处理 -->
@@ -49,14 +43,16 @@
 
 	<beans:bean id="redirectStrategy" class="com.cxqm.xiaoerke.webapp.security.MyRedirectStrategy">
 	</beans:bean>
-	
-	<beans:bean id="simpleUrlAuthenticationFailureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+
+	<beans:bean id="simpleUrlAuthenticationFailureHandler"
+				class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
 		<!-- 可以配置相应的跳转方式。属性forwardToDestination为true采用forward false为sendRedirect -->
 		<beans:property name="defaultFailureUrl" value="/sso/checkLogin" />
 	</beans:bean>
 
 	<!-- 未登录的切入点 -->
-	<beans:bean id="authenticationProcessingFilterEntryPoint" class="com.cxqm.xiaoerke.webapp.security.MyLoginUrlAuthenticationEntryPoint">
+	<beans:bean id="authenticationProcessingFilterEntryPoint"
+				class="com.cxqm.xiaoerke.webapp.security.MyLoginUrlAuthenticationEntryPoint">
 		<beans:constructor-arg name="loginFormUrl" value="/sso/checkLogin"/>
 	</beans:bean>
 

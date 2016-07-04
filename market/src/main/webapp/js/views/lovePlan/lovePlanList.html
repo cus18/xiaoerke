@@ -25,8 +25,8 @@
                             <div class="name f5 c3">{{item.wechatName}}</div>
                             <div class="time f3 c5">{{transformDate(item.createTime)}}</div>
                          </div>
-                         <div ng-if="item.price>0" class="money f2" ng-class="{'c12':$index<3,'c13':$index>=3}">
-                             <span class="">{{item.money}}</span>元
+                         <div ng-if="item.money>0" class="money f2" ng-class="{'c12':$index<3,'c13':$index>=3}">
+                             <span>{{item.money}}</span>元
                          </div>
                     </div>
                     <div ng-if="item.words!=''" class="words f3 c4">
