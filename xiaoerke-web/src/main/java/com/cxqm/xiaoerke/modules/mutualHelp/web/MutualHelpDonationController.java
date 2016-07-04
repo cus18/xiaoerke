@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.mutualHelp.web;
 
 import com.cxqm.xiaoerke.common.utils.CookieUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.mutualHelp.entity.MutualHelpDonation;
 import com.cxqm.xiaoerke.modules.mutualHelp.service.MutualHelpDonationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,12 +34,8 @@ public class MutualHelpDonationController {
      */
     @RequestMapping(value = "/photoWall", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public Map<String, Object> getDetail(HttpServletRequest request, @RequestBody Map<String, Object> params){
-        String openId = (String) params.get("openId");
-        if(!StringUtils.isNotNull(openId)){
-            openId = CookieUtils.getCookie(request, "openId");
-        }
-
+    public Map<String, Object> getDetail(HttpServletRequest request, HttpSession session, @RequestBody Map<String, Object> params){
+        String openId= WechatUtil.getOpenId(session, request);
         HashMap<String,Object> searchMap = new HashMap<String, Object>();
         searchMap.put("openId", openId);
         searchMap.put("userId", (Integer) params.get("userId"));
@@ -69,8 +67,11 @@ public class MutualHelpDonationController {
     @ResponseBody
     public Map<String, Object> getSumMoney(@RequestBody Map<String, Object> params){
         Map<String,Object> response = new HashMap<String, Object>();
-        Integer type = (Integer) params.get("donationType");
-        response.put("count",service.getCount(type));
+
+        HashMap<String,Object> searchMap = new HashMap<String, Object>();
+        searchMap.put("donationType", (Integer) params.get("donationType"));
+        searchMap.put("openId", (Integer) params.get("openId"));
+        response.put("count",service.getSumMoney(searchMap));
 
         return response;
     }
@@ -97,13 +98,13 @@ public class MutualHelpDonationController {
      */
     @RequestMapping(value = "/addNoteAndDonation", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public Map<String,Object> addNoteAndDonation(HttpServletRequest request, @RequestBody Map<String, Object> params){
-        String openId = (String) params.get("openId");
-        if(!StringUtils.isNotNull(openId)){
-            openId = CookieUtils.getCookie(request,"openId");
+    public Map<String,Object> addNoteAndDonation(HttpServletRequest request, HttpSession session,@RequestBody Map<String, Object> params){
+        String openId = WechatUtil.getOpenId(session,request);
+        Integer money = null;
+        String moneyString = (String) params.get("money");
+        if(StringUtils.isNotNull(moneyString)){
+            money = Integer.valueOf(moneyString);
         }
-
-        Double money = (Double) params.get("money");
         String leaveNote = (String) params.get("leaveNote");
 
         Map<String, Object> response = new HashMap<String, Object>();
@@ -117,7 +118,8 @@ public class MutualHelpDonationController {
             mutualHelpDonation.setMoney(money);
             mutualHelpDonation.setLeaveNote(leaveNote);
             mutualHelpDonation.setDonationType((Integer) params.get("donationType"));
-            int n = service.saveNoteAndDonation(mutualHelpDonation);if (n > 0) {
+            int n = service.saveNoteAndDonation(mutualHelpDonation);
+            if (n > 0) {
                 response.put("insert", "success");
             } else {
                 response.put("insert", "failed");
@@ -125,5 +127,22 @@ public class MutualHelpDonationController {
         }
 
         return response;
+    }
+
+    /**
+     * 支付页面openid
+     */
+    @RequestMapping(value = "/getOpenid", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> getOpenid(HttpServletRequest request,HttpSession session){
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        String openid= WechatUtil.getOpenId(session, request);
+        if(openid==null||openid.equals("")){
+            resultMap.put("openid","none");
+            return resultMap;
+        }
+        resultMap.put("openid",openid);
+        return resultMap;
     }
 }

@@ -270,8 +270,7 @@ var getDoctorGroupDescription = function(val){
 var getLimitString = function(val){
     if(val.length>13) {
         return val.substring(0,13)+"...";
-    }
-    else{
+    }else{
         return val;
     }
 }

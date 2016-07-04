@@ -747,7 +747,6 @@ angular.module('controllers', ['luegg.directives'])
                 var dataJsonValue = JSON.stringify(dataValue);
                 for (var i = 0; i < $files.length; i++) {
                     var file = $files[i];
-
                     $scope.upload = $upload.upload({
                         url: 'consult/h5/uploadMediaFile',
                         data: encodeURI(dataJsonValue),
@@ -1173,7 +1172,7 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 if($scope.showFlag.diagnosisReplyList){
                     $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex].name = $scope.info.editContent;
-                    saveCommonAnswer();
+                    saveDiagnosis();
                 }
                 $scope.editContentFlag=false;
             };
@@ -1184,14 +1183,13 @@ angular.module('controllers', ['luegg.directives'])
                         if($scope.myReplySecondIndex==-1||$scope.myReplyIndex==undefined){
                             if ($window.confirm("确定要删除该组回复?")) {
                                 $scope.myAnswer.splice($scope.myReplyIndex, 1);
-                                saveMyAnswer();
                             }
                         }else{
                             if($window.confirm("确定要删除该回复?")) {
                                 $scope.myAnswer[$scope.myReplyIndex].secondAnswer.splice($scope.myReplySecondIndex, 1);
-                                saveMyAnswer();
                             }
                         }
+                        saveMyAnswer();
                     }
                 }
                 if($scope.showFlag.publicReplyList){
@@ -1199,14 +1197,13 @@ angular.module('controllers', ['luegg.directives'])
                         if($scope.publicReplySecondIndex==-1||$scope.publicReplyIndex==undefined){
                             if ($window.confirm("确定要删除该组回复?")) {
                                 $scope.commonAnswer.splice($scope.publicReplyIndex, 1);
-                                saveCommonAnswer();
                             }
                         }else{
                             if($window.confirm("确定要删除该回复?")) {
                                 $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer.splice($scope.publicReplySecondIndex, 1);
-                                saveCommonAnswer();
                             }
                         }
+                        saveCommonAnswer();
                     }
                 }
                 if($scope.showFlag.diagnosisReplyList){
@@ -1214,26 +1211,25 @@ angular.module('controllers', ['luegg.directives'])
                         if($scope.diagnosisReplySecondIndex==-1||$scope.diagnosisReplyIndex==undefined){
                             if ($window.confirm("确定要删除该组回复?")) {
                                 $scope.diagnosis.splice($scope.diagnosisReplyIndex, 1);
-                                saveDiagnosis();
                             }
                         }else{
                             if($window.confirm("确定要删除该回复?")) {
                                 $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer.splice($scope.diagnosisReplySecondIndex, 1);
-                                saveDiagnosis();
                             }
                         }
+                        saveDiagnosis();
                     }
                 }
             };
             //回复的排序
             $scope.moveUp = function(){
                 if($scope.showFlag.myReplyList){
-                    if($scope.myReplyIndex!=-1&&$scope.myReplyIndex!=undefined){
+                    if($scope.myReplyIndex!=-1 && $scope.myReplyIndex!=undefined){
                         if($scope.myReplySecondIndex > 0){
                             var changeAnswerContent = $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex - 1];
                             $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex - 1] = $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex];
                             $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex] = changeAnswerContent;
-                        }else if($scope.myReplySecondIndex == -1){
+                        }else if($scope.myReplySecondIndex == -1 && $scope.myReplyIndex > 0){
                             var changeAnswerGroup = $scope.myAnswer[$scope.myReplyIndex - 1];
                             $scope.myAnswer[$scope.myReplyIndex - 1] = $scope.myAnswer[$scope.myReplyIndex];
                             $scope.myAnswer[$scope.myReplyIndex] = changeAnswerGroup;
@@ -1247,7 +1243,7 @@ angular.module('controllers', ['luegg.directives'])
                             var changeAnswerContent = $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex - 1];
                             $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex - 1] = $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex];
                             $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex] = changeAnswerContent;
-                        }else if($scope.publicReplySecondIndex == -1){
+                        }else if($scope.publicReplySecondIndex == -1 && $scope.publicReplyIndex > 0){
                             var changeAnswerGroup = $scope.commonAnswer[$scope.publicReplyIndex - 1];
                             $scope.commonAnswer[$scope.publicReplyIndex - 1] = $scope.commonAnswer[$scope.publicReplyIndex];
                             $scope.commonAnswer[$scope.publicReplyIndex] = changeAnswerGroup;
@@ -1261,8 +1257,8 @@ angular.module('controllers', ['luegg.directives'])
                             var changeAnswerContent = $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex - 1];
                             $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex - 1] = $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex];
                             $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex] = changeAnswerContent;
-                        }else if($scope.diagnosisReplySecondIndex == -1){
-                            var changeAnswerGroup = $scope.commonAnswer[$scope.diagnosisReplyIndex - 1];
+                        }else if($scope.diagnosisReplySecondIndex == -1 && $scope.diagnosisReplyIndex > 0){
+                            var changeAnswerGroup = $scope.diagnosis[$scope.diagnosisReplyIndex - 1];
                             $scope.diagnosis[$scope.diagnosisReplyIndex - 1] = $scope.diagnosis[$scope.diagnosisReplyIndex];
                             $scope.diagnosis[$scope.diagnosisReplyIndex] = changeAnswerGroup;
                         }
@@ -1273,11 +1269,11 @@ angular.module('controllers', ['luegg.directives'])
             $scope.moveDown = function(){
                 if($scope.showFlag.myReplyList){
                     if($scope.myReplyIndex!=-1&&$scope.myReplyIndex!=undefined){
-                        if($scope.myReplySecondIndex >= 0 && $scope.myReplySecondIndex < $scope.myAnswer[$scope.myReplyIndex].secondAnswer.length){
+                        if($scope.myReplySecondIndex >= 0 && $scope.myReplySecondIndex < $scope.myAnswer[$scope.myReplyIndex].secondAnswer.length - 1){
                             var changeAnswerContent = $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex + 1];
                             $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex + 1] = $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex];
                             $scope.myAnswer[$scope.myReplyIndex].secondAnswer[$scope.myReplySecondIndex] = changeAnswerContent;
-                        }else if($scope.myReplySecondIndex == -1 && $scope.myReplyIndex < $scope.myAnswer.length){
+                        }else if($scope.myReplySecondIndex == -1 && $scope.myReplyIndex < $scope.myAnswer.length - 1){
                             var changeAnswerGroup = $scope.myAnswer[$scope.myReplyIndex + 1];
                             $scope.myAnswer[$scope.myReplyIndex + 1] = $scope.myAnswer[$scope.myReplyIndex];
                             $scope.myAnswer[$scope.myReplyIndex] = changeAnswerGroup;
@@ -1287,11 +1283,11 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 if($scope.showFlag.publicReplyList){
                     if($scope.publicReplyIndex!=-1&&$scope.publicReplyIndex!=undefined){
-                        if($scope.publicReplySecondIndex >= 0 && $scope.publicReplySecondIndex < $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer.length){
+                        if($scope.publicReplySecondIndex >= 0 && $scope.publicReplySecondIndex < $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer.length - 1){
                             var changeAnswerContent = $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex + 1];
                             $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex + 1] = $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex];
                             $scope.commonAnswer[$scope.publicReplyIndex].secondAnswer[$scope.publicReplySecondIndex] = changeAnswerContent;
-                        }else if($scope.publicReplySecondIndex == -1 && $scope.publicReplyIndex < $scope.commonAnswer.length){
+                        }else if($scope.publicReplySecondIndex == -1 && $scope.publicReplyIndex < $scope.commonAnswer.length - 1){
                             var changeAnswerGroup = $scope.commonAnswer[$scope.publicReplyIndex + 1];
                             $scope.commonAnswer[$scope.publicReplyIndex + 1] = $scope.commonAnswer[$scope.publicReplyIndex];
                             $scope.commonAnswer[$scope.publicReplyIndex] = changeAnswerGroup;
@@ -1301,11 +1297,11 @@ angular.module('controllers', ['luegg.directives'])
                 }
                 if($scope.showFlag.diagnosisReplyList){
                     if($scope.diagnosisReplyIndex!=-1&&$scope.diagnosisReplyIndex!=undefined){
-                        if($scope.diagnosisReplySecondIndex >= 0 && $scope.diagnosisReplySecondIndex < $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer.length){
+                        if($scope.diagnosisReplySecondIndex >= 0 && $scope.diagnosisReplySecondIndex < $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer.length - 1){
                             var changeAnswerContent = $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex + 1];
                             $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex + 1] = $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex];
                             $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer[$scope.diagnosisReplySecondIndex] = changeAnswerContent;
-                        }else if($scope.diagnosisReplySecondIndex == -1 && $scope.diagnosisReplyIndex < $scope.diagnosis.length){
+                        }else if($scope.diagnosisReplySecondIndex == -1 && $scope.diagnosisReplyIndex < $scope.diagnosis.length - 1){
                             var changeAnswerGroup = $scope.diagnosis[$scope.diagnosisReplyIndex + 1];
                             $scope.diagnosis[$scope.diagnosisReplyIndex + 1] = $scope.diagnosis[$scope.diagnosisReplyIndex];
                             $scope.diagnosis[$scope.diagnosisReplyIndex] = changeAnswerGroup;

@@ -5,6 +5,7 @@ import java.util.List;
 import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
 import com.cxqm.xiaoerke.modules.account.entity.Record;
+import org.apache.ibatis.annotations.Param;
 
 @MyBatisDao
 public interface PayRecordDao {
@@ -30,5 +31,7 @@ public interface PayRecordDao {
     int updateByOrderId(PayRecord record);
 
     PayRecord selectByOrder(String orderId);
+
+    PayRecord findRecordByOpenid(@Param("openid")String openid,@Param("type") String type);
 
 }

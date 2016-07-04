@@ -10,15 +10,15 @@ import com.cxqm.xiaoerke.modules.account.service.PayRecordService;
 import com.cxqm.xiaoerke.modules.insurance.entity.InsuranceRegisterService;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
+import com.cxqm.xiaoerke.modules.mutualHelp.entity.MutualHelpDonation;
+import com.cxqm.xiaoerke.modules.mutualHelp.service.MutualHelpDonationService;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
-import com.cxqm.xiaoerke.modules.sys.entity.PerAppDetInfoVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
-import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
 import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
@@ -26,7 +26,6 @@ import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,6 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -73,6 +73,9 @@ public class PayNotificationController {
 
 	@Autowired
 	private WechatAttentionService wechatAttentionService;
+
+    @Autowired
+    private MutualHelpDonationService mutualHelpDonationService;
 
 	private static Lock lock = new ReentrantLock();
 
@@ -333,8 +336,6 @@ public class PayNotificationController {
 				LogUtils.saveLog(Servlets.getRequest(), "BHS_ZFY_ZFCG","用户微信支付完成:" + map.get("out_trade_no"));
 				PayRecord payRecord = new PayRecord();
 				payRecord.setId((String) map.get("out_trade_no"));
-//				payRecord.setStatus("success");
-//				payRecord.setReceiveDate(new Date());
 				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
 				String insuranceId= insuranceMap.get("order_id").toString();
 				String[] umbrellaId=insuranceId.split("_");
@@ -347,7 +348,6 @@ public class PayNotificationController {
 					}
 					BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
 					babyUmbrellaInfo.setId(Integer.parseInt(umbrellaId[0]));
-//					babyUmbrellaInfo.setPayResult("success");
 					babyUmbrellaInfoService.updateBabyUmbrellaInfoStatus(babyUmbrellaInfo);
 					payRecord.getId();//修改pay_record表状态
 					payRecord.setStatus("success");
@@ -363,6 +363,106 @@ public class PayNotificationController {
 		}
 		return "";
 	}
+
+	@RequestMapping(value = "/user/getLovePlanPayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
+	public synchronized
+	@ResponseBody String getLovePlanPayNotifyInfo(HttpServletRequest request,HttpSession session) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
+		lock.lock();
+		InputStream inStream = null;
+		try {
+			inStream = request.getInputStream();
+			ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
+			byte[] buffer = new byte[1024];
+			int len = 0;
+			while ((len = inStream.read(buffer)) != -1) {
+				outSteam.write(buffer, 0, len);
+			}
+			outSteam.close();
+			inStream.close();
+			String result  = new String(outSteam.toByteArray(),"utf-8");
+			Map<String, Object> map = XMLUtil.doXMLParse(result);
+
+			//放入service层进行事物控制
+			if("SUCCESS".equals(map.get("return_code"))){
+				LogUtils.saveLog(Servlets.getRequest(), "00000048","用户微信支付完成:" + map.get("out_trade_no"));
+				LogUtils.saveLog(Servlets.getRequest(), "LOVEPLAN_ZFY_ZFCG","用户微信支付完成:" + map.get("out_trade_no"));
+				PayRecord payRecord = new PayRecord();
+				payRecord.setId((String) map.get("out_trade_no"));
+                payRecord.setStatus("success");
+                payRecord.setReceiveDate(new Date());
+                payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
+
+				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
+				if(insuranceMap.get("fee_type").toString().equals("lovePlan")){
+                    if("success".equals(insuranceMap.get("status").toString())){
+                        MutualHelpDonation mutualHelpDonation = new MutualHelpDonation();
+                        mutualHelpDonation.setOpenId((String) map.get("openid"));
+						mutualHelpDonation.setMoney(Integer.valueOf((String)map.get("total_fee")));
+						mutualHelpDonation.setLeaveNote((String) request.getAttribute("leaveNote"));
+						mutualHelpDonation.setDonationType((Integer) request.getAttribute("donationType"));
+						mutualHelpDonation.setCreateTime(new Date());
+                        mutualHelpDonationService.saveNoteAndDonation(mutualHelpDonation);
+                    }
+				}
+			}
+			return  XMLUtil.setXML("SUCCESS", "");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			lock.unlock();
+		}
+		return "";
+	}
+
+	@RequestMapping(value = "/user/getDoctorConsultPayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
+	public synchronized
+	@ResponseBody String getDoctorConsultPayNotifyInfo(HttpServletRequest request,HttpSession session) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+		lock.lock();
+		InputStream inStream = null;
+		try {
+			inStream = request.getInputStream();
+			ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
+			byte[] buffer = new byte[1024];
+			int len = 0;
+			while ((len = inStream.read(buffer)) != -1) {
+				outSteam.write(buffer, 0, len);
+			}
+			outSteam.close();
+			inStream.close();
+			String result  = new String(outSteam.toByteArray(),"utf-8");
+			Map<String, Object> map = XMLUtil.doXMLParse(result);
+
+			//放入service层进行事物控制
+			if("SUCCESS".equals(map.get("return_code"))){
+				LogUtils.saveLog(Servlets.getRequest(), "00000048", "用户微信支付完成:" + map.get("out_trade_no"));
+				LogUtils.saveLog(Servlets.getRequest(), "LOVEPLAN_ZFY_ZFCG", "用户微信支付完成:" + map.get("out_trade_no"));
+				PayRecord payRecord = new PayRecord();
+				payRecord.setId((String) map.get("out_trade_no"));
+				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
+				if(insuranceMap.get("fee_type").toString().equals("doctorConsultPay")){
+					payRecord.setStatus("success");
+					payRecord.setReceiveDate(new Date());
+					payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
+					String openid = (String)map.get("openid");
+					HttpRequestUtil.wechatpost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/conversation",
+							"openId=" + openid +
+									"&messageType=20001"+
+									"&messageContent=用户已付款 请尽快接入");
+				}
+			}
+			return  XMLUtil.setXML("SUCCESS", "");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			lock.unlock();
+		}
+		return "";
+	}
+
+
 
 	private void sendWechatMessage(String toId, String fromId){
 		if(StringUtils.isNotNull(toId)){
@@ -424,7 +524,6 @@ public class PayNotificationController {
 
 			String title = "宝大夫送你一份见面礼";
 			String description = "恭喜您已成功领取专属于宝宝的20万高额保障金";
-			//String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
 			String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31";
 			String picUrl = "http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella";
 			String message = "{\"touser\":\""+toOpenId+"\",\"msgtype\":\"news\",\"news\":{\"articles\": [{\"title\":\""+ title +"\",\"description\":\""+description+"\",\"url\":\""+ url +"\",\"picurl\":\""+picUrl+"\"}]}}";

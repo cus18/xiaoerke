@@ -29,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -381,13 +380,10 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Map<String,String> getPrepayInfo(HttpServletRequest request,HttpSession session,String serviceType) {
         Map<String,String> resultMap = new HashMap<String, String>();
-        String openId = (String)session.getAttribute("openId");
-        if(!StringUtils.isNotNull(openId)){
-            openId = CookieUtils.getCookie(request,"openId");
-        }
-        Float a = (Float)request.getAttribute("payPrice");
+        String openId = WechatUtil.getOpenId(session,request);
         //获取需要支付的金额  单位(分)
         String order_price = request.getAttribute("payPrice")!=null?String.valueOf(((Float)request.getAttribute("payPrice")).intValue()*100):request.getParameter("payPrice");
+
         //生成的商户订单号
         String out_trade_no = IdGen.uuid();//Sha1Util.getNonceStr();
         String noncestr = IdGen.uuid();//Sha1Util.getNonceStr();//生成随机字符串
@@ -399,6 +395,7 @@ public class AccountServiceImpl implements AccountService {
         parameters.put("out_trade_no", out_trade_no);//商户订单号
         parameters.put("total_fee", order_price);//金额
         parameters.put("spbill_create_ip",request.getRemoteAddr());//终端ip
+
         if(serviceType.equals("appointService")){
             parameters.put("notify_url", ConstantUtil.NOTIFY_APPOINT_URL);//通知地址
         }else if(serviceType.equals("insuranceService")){
@@ -409,6 +406,10 @@ public class AccountServiceImpl implements AccountService {
             parameters.put("notify_url", ConstantUtil.NOTIFY_CONSULTPHONE_URL);//通知地址
         }else if(serviceType.equals("umbrellaService")){
             parameters.put("notify_url", ConstantUtil.NOTIFY_UMBRELLA_URL);//通知地址
+        }else if(serviceType.equals("lovePlanService")){
+            parameters.put("notify_url", ConstantUtil.NOTIFY_LOVEPLAN_URL);//通知地址
+        }if(serviceType.equals("doctorConsultPay")){
+            parameters.put("notify_url", ConstantUtil.NOTIFY_LOVEPLAN_URL);//通知地址
         }
         parameters.put("trade_type", "JSAPI");//交易类型
         parameters.put("openid", openId);//用户标示
@@ -429,12 +430,10 @@ public class AccountServiceImpl implements AccountService {
         if(StringUtils.isNull(patientRegisterId) || "undefined".equals(patientRegisterId)){
             patientRegisterId = "noData";
         }
-        String orderPrice =request.getAttribute("payPrice")!=null?String.valueOf(((Float)request.getAttribute("payPrice")).intValue()*100):request.getParameter("payPrice");
+        String orderPrice =request.getAttribute("payPrice")!=null?String.valueOf(((Float)request.getAttribute("payPrice")).
+                intValue()*100):request.getParameter("payPrice");
         String outTradeNo = PrepayInfo.get("out_trade_no");
-        String openId = (String)session.getAttribute("openId");
-        if(!StringUtils.isNotNull(openId)){
-            openId = CookieUtils.getCookie(request,"openId");
-        }
+        String openId = WechatUtil.getOpenId(session,request);
         try {
             Map<String, Object> map = XMLUtil.doXMLParse(PrepayInfo.get("result"));
             if (!"FAIL".equals(map.get("return_code"))){
@@ -443,7 +442,7 @@ public class AccountServiceImpl implements AccountService {
                 params.put("appId", ConstantUtil.APP_ID);
                 params.put("timeStamp",timestamp);
                 params.put("nonceStr", noncestr);
-                params.put("package", "prepay_id="+map.get("prepay_id"));
+                params.put("package", "prepay_id=" + map.get("prepay_id"));
                 params.put("signType", ConstantUtil.SIGN_METHOD);
                 String paySign =  JsApiTicketUtil.createSign("UTF-8", params);
                 params.put("paySign", paySign); //paySign的生成规则和Sign的生成规则一致
@@ -464,7 +463,6 @@ public class AccountServiceImpl implements AccountService {
                 payRecord.setAmount(Float.parseFloat(orderPrice));
                 payRecord.setPayType("wx");
                 payRecord.setStatus("wait");
-                payRecord.setFeeType("会员服务费");
                 payRecord.setPayDate(new Date());
                 payRecord.setCreatedBy(user.getId());
                 payRecord.setFeeType(PrepayInfo.get("feeType"));

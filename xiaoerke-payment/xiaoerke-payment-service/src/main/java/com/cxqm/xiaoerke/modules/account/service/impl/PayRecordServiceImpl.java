@@ -41,6 +41,11 @@ public class PayRecordServiceImpl implements PayRecordService {
 		return payRecordDao.updateByOrderId(record);
 	}
 
+	@Override
+	public PayRecord findRecordByOpenid(String openid,String type) {
+		return payRecordDao.findRecordByOpenid(openid,type);
+	}
+
 
 	@Override
 	public List<PayRecord> findNewestOrderByOrderId(String orderId) {

@@ -1,0 +1,31 @@
+.doctorConsultPaySuccess .intro{
+    text-align: center;
+    margin: 32px 0 28px 0;
+}
+.doctorConsultPaySuccess .intro img {
+    width: 70%;
+}
+.doctorConsultPaySuccess .consultButton {
+    border: 1px solid #1FC3C5;
+    color: #1FC3C5;
+    font-size: 14px;
+    height: 36px;
+    border-radius: 18px;
+    margin: 80px auto;
+    width: 274px;
+    text-align: center;
+    line-height: 36px;
+}
+.doctorConsultPaySuccess .weChat{
+    width: 100%;
+    text-align: center;
+}
+.doctorConsultPaySuccess .weChat div {
+    font-size: 17px;
+    color: #333;
+    padding: 5px;
+    margin: 12px;
+}
+.doctorConsultPaySuccess .weChat div span {
+    color: #ff1154;
+}

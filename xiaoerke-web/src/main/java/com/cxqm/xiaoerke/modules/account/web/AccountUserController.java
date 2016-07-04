@@ -2,40 +2,26 @@ package com.cxqm.xiaoerke.modules.account.web;
 
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
-import com.cxqm.xiaoerke.common.utils.XMLUtil;
-import com.cxqm.xiaoerke.common.web.Servlets;
-import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
+import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
-import com.cxqm.xiaoerke.modules.account.service.PayRecordService;
-import com.cxqm.xiaoerke.modules.insurance.entity.InsuranceRegisterService;
-import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
-import com.cxqm.xiaoerke.modules.interaction.entity.PatientRegisterPraise;
-import com.cxqm.xiaoerke.modules.member.service.MemberService;
-import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
-import com.cxqm.xiaoerke.modules.order.entity.OrderPropertyVo;
-import com.cxqm.xiaoerke.modules.order.entity.PatientRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
 import com.cxqm.xiaoerke.modules.sys.entity.PerAppDetInfoVo;
-import com.cxqm.xiaoerke.modules.sys.service.SystemService;
-import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
-import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
-import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
-
 import net.sf.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -215,6 +201,58 @@ public class AccountUserController {
 		//拼装jsPay所需参数,如果prepay_id生成成功则将信息放入account_pay_record表
 		String userId = UserUtils.getUser().getId();//patientRegisterService.getUserIdByPatientRegisterId(patientRegisterId);
 
+		String payParameter = accountService.assemblyPayParameter(request,prepayInfo,session,userId, null);
+		return payParameter;
+	}
+
+	/**
+	 * js支付
+	 *
+	 * */
+	@RequestMapping(value = "/account/user/lovePlanPay", method = {RequestMethod.POST, RequestMethod.GET})
+	public
+	@ResponseBody
+	String lovePlanPay(HttpServletRequest request,HttpSession session) throws Exception {
+		String leaveNote = request.getParameter("leaveNote");
+		if(leaveNote != null) {
+			leaveNote = new String(leaveNote.getBytes("ISO-8859-1"), "utf-8");
+		}
+		Integer donationType = null;
+		if(StringUtils.isNotNull(request.getParameter("donationType"))){
+			donationType = Integer.valueOf(request.getParameter("donationType"));
+		}
+
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+		//获取统一支付接口参数
+		request.setAttribute("feeType", "lovePlan");
+		request.setAttribute("leaveNote", leaveNote);
+		request.setAttribute("donationType", donationType);
+		Map prepayInfo = accountService.getPrepayInfo(request, session, "lovePlanService");
+		prepayInfo.put("feeType", "lovePlan");
+		System.out.println("feeType:" + prepayInfo.get("feeType").toString());
+		//拼装jsPay所需参数,如果prepay_id生成成功则将信息放入account_pay_record表
+		String userId = UserUtils.getUser().getId();
+		String payParameter = accountService.assemblyPayParameter(request,prepayInfo,session,userId, null);
+		return payParameter;
+	}
+
+	/**
+	 * js支付
+	 *
+	 * */
+	@RequestMapping(value = "/account/user/doctorConsultPay", method = {RequestMethod.POST, RequestMethod.GET})
+	public
+	@ResponseBody
+	String doctorConsultPay(HttpServletRequest request,HttpSession session) throws Exception {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+		//获取统一支付接口参数
+		String payType = (String)request.getAttribute("payType");
+		request.setAttribute("feeType", payType);
+		Map prepayInfo = accountService.getPrepayInfo(request, session, "doctorConsultPay");
+		prepayInfo.put("feeType",payType);
+		System.out.println("feeType:" + prepayInfo.get("feeType").toString());
+		//拼装jsPay所需参数,如果prepay_id生成成功则将信息放入account_pay_record表
+		String userId = UserUtils.getUser().getId();
 		String payParameter = accountService.assemblyPayParameter(request,prepayInfo,session,userId, null);
 		return payParameter;
 	}

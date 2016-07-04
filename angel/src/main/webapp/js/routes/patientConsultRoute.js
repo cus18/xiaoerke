@@ -56,9 +56,44 @@ define(['appPatientConsult'], function(app){
                             public: true
                         }
                     })
+                    .state('customerService', {
+                        url: '/customerService',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'customerServiceCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'customerServiceCtrl',
+                                    ['js/controllers/customerServiceCtrl.js',
+                                        'js/libs/scrollglue.js','js/libs/moment.min.js',
+                                        'js/styles/main.css','js/styles/customerService.css'],
+                                    'js/views/customerService.html');
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                    .state('doctorConsultPaySuccess', {
+                        url: '/doctorConsultPaySuccess',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'doctorConsultPaySuccessCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'doctorConsultPaySuccessCtrl',
+                                    ['js/controllers/doctorConsultPaySuccessCtrl.js',
+                                        'js/libs/scrollglue.js','js/libs/moment.min.js',
+                                        'js/styles/main.css','js/styles/doctorConsultPaySuccess.css'],
+                                    'js/views/doctorConsultPaySuccess.html');
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
 
                 //$urlRouterProvider.otherwise('patientConsultFirst');
-                $urlRouterProvider.otherwise('patientConsultUmbrella');
+                //$urlRouterProvider.otherwise('patientConsultUmbrella');
+                //$urlRouterProvider.otherwise('doctorConsultJumpFirst');
             }])
         .run(function ($rootScope){
         })

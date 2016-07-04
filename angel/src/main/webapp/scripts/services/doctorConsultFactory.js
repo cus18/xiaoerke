@@ -126,7 +126,7 @@ angular.module('services', ['ngResource'])
     .factory('GetCurrentDoctorDepartment', ['$resource', function ($resource) {
         return $resource(public + 'consult/transfer/getCurrentDoctorDepartment');
     }])
-/*    //根据openid获取历史咨询
+    //根据openid获取历史咨询
     .factory('GetCustomerLogByOpenID', ['$resource', function ($resource) {
         return $resource(public + 'customer/getCustomerLogByOpenID');
     }])
@@ -141,7 +141,7 @@ angular.module('services', ['ngResource'])
     //查找宝宝的初始信息
     .factory('SearchBabyInfo', ['$resource', function ($resource) {
         return $resource(public + 'customer/searchBabyInfo');
-    }])*/
+    }])
 
 
 
