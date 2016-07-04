@@ -1,0 +1,24 @@
+
+.customerService .leave-words img:nth-child(1){
+    width: 60%;
+    margin-top: 31px;
+}
+.customerService .leave-words img:nth-child(2){
+    width: 40%;
+    margin: 31px;
+}
+.customerService .leave-words{
+    text-align: center;
+    margin: 18px 0 20px 0;
+}
+.customerService .consultButton {
+    border: 1px solid #1FC3C5;
+    color: #1FC3C5;
+    font-size: 14px;
+    height: 36px;
+    border-radius: 18px;
+    margin: 40px auto;
+    width: 274px;
+    text-align: center;
+    line-height: 36px;
+}

@@ -20,7 +20,7 @@ angular.module('controllers', ['ionic']).controller('lovePlanListCtrl', [
         };
         $scope.title ="宝妈爱心接力";
         $scope.goContribute = function () {
-            window.location.href="http://localhost:8080/keeper/wxPay/patientPay.do?serviceType=lovePlanPay"
+            window.location.href="http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=lovePlanPay"
         };
         $scope.$on('$ionicView.enter', function(){
 

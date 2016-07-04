@@ -41,7 +41,7 @@ var goLovePlanList = function(){
 };*/
 // 点击 我要捐款
 var goContribute = function(){
-    window.location.href="http://localhost:8080/keeper/wxPay/patientPay.do?serviceType=lovePlanPay"
+    window.location.href="http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=lovePlanPay"
 };
 // 宝护伞 查看详情
 var goUmbrella = function(){
@@ -59,6 +59,7 @@ var getUserInfo=function () {
         success:function(data) {
             if(data.fault=="null"){
                 $(".info").hide();
+                $(".info").hide();
             }else{
                 $("#friendNums").html(data.friendNum);
                 $("#transcend").html(data.transcend);
@@ -75,7 +76,7 @@ var count=function () {
         url:"mutualHelp/donation/count",
         async:false,
         type:'POST',
-        data:"",
+        data:"{}",
         contentType: "application/json; charset=utf-8",
         dataType:'json',
         success:function(data) {
@@ -95,10 +96,11 @@ var sumMoney=function () {
         url:"mutualHelp/donation/sumMoney",
         async:false,
         type:'POST',
-        data:"",
+        data:"{}",
         contentType: "application/json; charset=utf-8",
         dataType:'json',
         success:function(data) {
+            console.log(data)
             if(data.count != undefined){
                 console.log('sumMoney',data.count);
                 var length = data.count / 300;
@@ -128,6 +130,7 @@ var lastNote=function () {
             if(data.headImgUrl != ''){
                 $("#headImgUrl").attr("src",data.headImgUrl);
             }
+            console.log('lastNote',data)
         },
         error : function() {
         }
@@ -140,7 +143,6 @@ var addNoteAndDonation = function(){
     if(leaveNote != ''){
         $.ajax({
             url:"mutualHelp/donation/addNoteAndDonation",
-            //async:false,
             type:'POST',
             data: "{'leaveNote':'"+leaveNote+"'}",
             contentType: "application/json; charset=utf-8",

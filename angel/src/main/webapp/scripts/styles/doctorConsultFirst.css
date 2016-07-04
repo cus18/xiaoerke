@@ -179,7 +179,7 @@ ul li input{float: left;margin: 2px 0 0 2px;}
 .specialistContent input{margin-left: 10px;}
 .specialistBottom{border-top: 1px solid #eee;width: 100%;}
 .specialistBottom .button {float: right;margin: 8px 20px;width: 70px;height: 30px;}
-/*.advisory-content .title{
+.advisory-content .title{
     font-size: 15px;
     margin-bottom:5px;
 }
@@ -329,4 +329,4 @@ ul li input{float: left;margin: 2px 0 0 2px;}
     left: 50%;
     margin-left: -15px;
     margin-top: 5px;
-}*/
+}
