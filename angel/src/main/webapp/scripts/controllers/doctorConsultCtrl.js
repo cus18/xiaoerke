@@ -39,7 +39,7 @@ angular.module('controllers', ['luegg.directives'])
             $scope.waitJoinNum = 0; //医生待接入的用户数，是动态变化的数
             $scope.glued = true; //angular滚动条的插件预制参数，让对话滚动条，每次都定位底部，当新的聊天数据到达时
             var umbrellaCustomerList = "75cefafe00364bbaaaf7b61089994e22,3b91fe8b7ce143918012ef3ab4baf1e0,00032bd90d724d0sa63a4d6esa0e8dbf";
-            /*//测试用的假数据
+            //测试用的假数据
             $scope.alreadyJoinPatientConversation=[
                 {
                     'patientId':1,
@@ -64,7 +64,7 @@ angular.module('controllers', ['luegg.directives'])
                     'notifyType':1003
                 }
 
-            ]*/
+            ]
 
             //各个子窗口的开关变量
             $scope.showFlag = {
@@ -99,6 +99,7 @@ angular.module('controllers', ['luegg.directives'])
 
             //初始化医生端登录，建立socket链接，获取基本信息
             $scope.doctorConsultInit = function () {
+                heartBeatCheckPay();
                 var routePath = "/doctor/consultBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath: routePath}, function (data) {
                     $scope.pageLoading = false;
@@ -633,7 +634,7 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.sendConsultMessage();
                     }
                 }
-            };//当onkeydown 事件发生时调用函数
+            };
 
             //向用户发送咨询消息
             $scope.sendConsultMessage = function () {
@@ -1399,14 +1400,12 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.info.show='';
                 $scope.info.illness='';
             };
-
             // 获取当前的时间
             $scope.todayTime = '';
             var newTime = function(){
                 var d = new Date();
                 $scope.todayTime = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
             };
-
             $scope.userTableMore = "查看更多";
             $scope.tapUserTable = function (key) {
                 $scope.showFlag[key] = !$scope.showFlag[key];
@@ -1507,6 +1506,22 @@ angular.module('controllers', ['luegg.directives'])
                     getIframeSrc();
                 }
             };
+            var setIntervalTimers = function(){
+                $.each($scope.alreadyJoinPatientConversation,function(index,value){
+                    console.log(index);
+                    var date = new Date().getTime();
+                    console.log('date',date);
+                    console.log('sum',date - value.dateTime);
+                    if(value.notifyType == 1002 && date - value.dateTime >= 30000 ){
+                        value.notifyType = 1001;
+                        console.log('notifyType',value.notifyType);
+                    }
+                });
+            };
+            var heartBeatCheckPay = function(){
+                //启动定时器，周期性的发送心跳信息
+                $scope.heartBeatPay = setInterval(setIntervalTimers,6000);
+            };
             //病人会话的内容的发送
             var updateAlreadyJoinPatientConversationFromPatient = function(conversationData){
                 var updateFlag = false;
@@ -1558,7 +1573,6 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 });
             };
-
             //处理系统发送过来的通知类消息
             var processNotifyMessage = function(notifyData){
                 if(notifyData.notifyType=="0009"){
