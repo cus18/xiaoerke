@@ -10,7 +10,6 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             $scope.socketServer = "";
             $scope.glued = true;
             $scope.source = "h5cxqmUser";
-
             $scope.openFileListFlag = false;
             $location.hash("fileInput");
             $anchorScroll();
@@ -38,6 +37,8 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             }
 
             $scope.patientConsultFirst = function(){
+                //getQQExpression();
+                $scope.getQQExpression();
                 var num = randomString(32);
                 $scope.patientId = num.substring(0,6);
                 $scope.patientName = "保护伞"+num.substring(0,1);
@@ -143,6 +144,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 }
             };
             $scope.getQQExpression = function () {
+                console.log('aaa');
                 $('#face').qqFace({
                     id: 'facebox',
                     assign: 'saytext',
