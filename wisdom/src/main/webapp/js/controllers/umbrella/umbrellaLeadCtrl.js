@@ -7,7 +7,9 @@
         /*立即加入*/
         $scope.goJoin=function(index){
             recordLogs("BHS_H5_LJJR"+index);
-            window.location.href="http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa_"+ $stateParams.id;
+            window.location.href="http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/" +
+                "author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=" +
+                "umbrellaa_"+ $stateParams.id;
         };
         $scope.slideHasChanged=function(index){
             recordLogs("BHS_H5_"+index);
