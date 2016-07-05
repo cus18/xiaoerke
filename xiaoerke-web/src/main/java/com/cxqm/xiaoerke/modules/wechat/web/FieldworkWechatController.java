@@ -182,10 +182,10 @@ public class FieldworkWechatController {
             if(state.length>1) {
                 String id = state[1];
                 String status = state[0];
-                url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/umbrella?status="+status+"&id="+id;
+                url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/umbrella?status="+status+"&id="+id+"&time="+new Date().getTime();
             }else{
                 String status = state[0];
-                url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/umbrella?status="+status;
+                url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/umbrella?status="+status+"&time="+new Date().getTime();
             }
         }else if("31".equals(url)){
             url = ConstantUtil.WISDOM_WEB_URL + "wisdom/umbrella#/umbrellaJoin/"+new Date().getTime()+"/120000000";

@@ -161,7 +161,7 @@
                     return;
                 }
                 if($scope.info.code==""){
-                    alerrt("请输入验证码");
+                    alert("请填写验证码");
                     return;
                 }
                 if($scope.info.IdCard==""){

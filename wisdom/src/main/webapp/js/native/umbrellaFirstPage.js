@@ -179,7 +179,7 @@ function loadShare(){
                         link: "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/" + shareUmbrellaId +"/"+version, // 分享链接
                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                         success: function (res) {
-                            recordLogs("BHS_HDSY_FXPYQ");
+                            recordLogs("BHS_HDSY_FXPYQ_"+shareUmbrellaId);
                             //记录用户分享文章
                             $.ajax({
                                 type: 'POST',
@@ -209,7 +209,7 @@ function loadShare(){
                                 data:"{'id':'"+shareUmbrellaId+"'}",
                                 contentType: "application/json; charset=utf-8",
                                 success: function(result){
-                                    recordLogs("BHS_HDSY_FXPY");
+                                    recordLogs("BHS_HDSY_FXPY_"+shareUmbrellaId);
                                     var todayCount=result.todayCount;
                                     $("#todayCount").html(todayCount);
                                 },
