@@ -1,6 +1,8 @@
 package com.cxqm.xiaoerke.modules.consult.service.impl;
 
+import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.ConstantUtil;
+import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
@@ -84,6 +86,15 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
         Integer insurace = consultPayUserDao.CheckInsuranceByOpenid(userId);
         //是否已经支付
         PayRecord payRecord = payRecordService.findRecordByOpenid(userId,"consultOnline");
+//        判断时间条件
+        Date moningStrarTime = DateUtils.StrToDate(Global.getConfig("consultMoningStrarTime"),"yyyy-MM-dd HH:mm");
+        Date consultMoningEndTime = DateUtils.StrToDate(Global.getConfig("consultMoningEndTime"),"yyyy-MM-dd HH:mm");
+        Date consultAfternoonStartTime = DateUtils.StrToDate(Global.getConfig("consultAfternoonStartTime"),"yyyy-MM-dd HH:mm");
+        Date consultAfternoonEndTime = DateUtils.StrToDate(Global.getConfig("consultAfternoonEndTime"),"yyyy-MM-dd HH:mm");
+        Date present = new Date();
+        //判断日期条件是否满足要求
+        if((moningStrarTime.getTime()<present.getTime() &&consultMoningEndTime.getTime()>present.getTime())
+                ||(consultAfternoonStartTime.getTime()<present.getTime()&&consultAfternoonEndTime.getTime()>present.getTime()))
         if( (null!=consultSessions&&consultSessions.size()>3)
                 ||insurace>0
                 ||(null !=payRecord && payRecord.getReceiveDate().getTime()+24*60*60*1000>new Date().getTime())
