@@ -264,8 +264,13 @@ public class ConsultSessionManager {
         Channel csChannel = null;
         Channel distributorChannel = null;
         System.out.println("distributors.size()-----" + distributors.size());
-        if (distributors.size() > 0) {
-            for (int i = 0; i < distributorsList.size(); i++) {
+        /**
+         *  为用户创建微信会话
+         *  jiangzhongge modify
+         *  2016年7月4日11:52:04
+         */
+        for (int i = 0; i < distributorsList.size(); i++) {
+            if(distributors.size() > 0){
                 String distributorId = RandomUtils.getRandomKeyFromMap(distributors);
                 distributorChannel = distributors.get(distributorId);
                 System.out.println("distributorChannel.isActive()-----" + distributorChannel.isActive());
@@ -281,14 +286,20 @@ public class ConsultSessionManager {
                     csUserChannelMapping.remove(distributorId);
                     userChannelMapping.remove(distributorId);
                 }
+            }else{
+                break ;
             }
         }
 
         /***接诊员不在线，随机分配在线医生***/
+        /**
+         *  jiangzhongge modify
+         *  2016年7月4日11:52:04
+         */
         if (distributorChannel == null) {
-            if (csUserChannelMapping.size() > 0) {
-                //所有的接诊员不在线，随机分配一个在线医生
-                for (int i = 0; i < csUserChannelMapping.size(); i++) {
+            for (int i = 0; i < csUserChannelMapping.size(); i++) {
+                if(csUserChannelMapping.size() > 0){
+                    //所有的接诊员不在线，随机分配一个在线医生
                     String csUserId = RandomUtils.getRandomKeyFromMap(csUserChannelMapping);
                     csChannel = csUserChannelMapping.get(csUserId);
                     if (csChannel.isActive()) {
@@ -301,13 +312,13 @@ public class ConsultSessionManager {
                         csUserChannelMapping.remove(csUserId);
                         userChannelMapping.remove(csUserId);
                     }
+                }else{
+                    //如果没有任何医生在线，给用户推送微信消息，告知没有医生在线，稍后在使用服务
+                    Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                    String content = "抱歉，暂时没有医生在线，请稍后使用服务！";
+                    WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(), content);
+                    return null;
                 }
-            } else {
-                //如果没有任何医生在线，给用户推送微信消息，告知没有医生在线，稍后在使用服务
-                Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-                String content = "抱歉，暂时没有医生在线，请稍后使用服务！";
-                WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(), content);
-                return null;
             }
         }
         System.out.println("distributorChannel-----" + distributorChannel);
