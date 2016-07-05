@@ -764,6 +764,10 @@ public class ConsultSessionManager {
             consultSession.setStatus("ongoing");
             consultSession.setSource("wxcxqm");
             consultSession.setCreateTime(new Date());
+            Map praiseParam = new HashMap();
+            praiseParam.put("userId", consultSession.getUserId());
+            Integer sessionCount = consultSessionService.getConsultSessionByUserId(praiseParam);
+            consultSession.setConsultNumber(sessionCount + 1);
             flag = consultSessionService.updateSessionInfo(consultSession);
         } else {
             consultSession.setCsUserId(richConsultSession.getCsUserId());
@@ -771,6 +775,10 @@ public class ConsultSessionManager {
             consultSession.setSource("wxcxqm");
             consultSession.setUserId(richConsultSession.getUserId());
             consultSession.setCreateTime(new Date());
+            Map praiseParam = new HashMap();
+            praiseParam.put("userId", consultSession.getUserId());
+            Integer sessionCount = consultSessionService.getConsultSessionByUserId(praiseParam);
+            consultSession.setConsultNumber(sessionCount + 1);
             flag = consultSessionService.saveConsultInfo(consultSession);
             richConsultSession.setId(consultSession.getId());
             richConsultSession.setSource(consultSession.getSource());

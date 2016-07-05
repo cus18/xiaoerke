@@ -60,7 +60,7 @@ public class ConsultController extends BaseController {
 	private PatientRegisterPraiseService patientRegisterPraiseService;
 
 	/**
-	 * 咨询医生列表
+	 * 咨询的医生列表
 	 * sunxiao
 	 * @param
 	 * @param model
