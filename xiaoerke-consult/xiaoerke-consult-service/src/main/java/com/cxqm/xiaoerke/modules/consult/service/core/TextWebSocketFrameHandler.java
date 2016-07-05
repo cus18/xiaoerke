@@ -153,23 +153,21 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 							stringBuilder.append(praiseList.get(0).get("id"));
 							stringBuilder.append("'>评价医生</a>】");*//*
                             sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());*/
-                            int nameIndex = content.indexOf("：");
-                            String newContent = content.substring(nameIndex + 1, content.toCharArray().length);
-                            if (StringUtils.isNotNull(newContent) && !"\n".equalsIgnoreCase(newContent)) {
-                                if (newContent.endsWith("\n")) {
-                                    newContent = newContent.substring(0,newContent.lastIndexOf("\n"));
-                                    stringBuilder.append(newContent);
-                                } else {
-                                    // stringBuilder.append(newContent + "\n");
-                                    stringBuilder.append(newContent);
-                                }
+                        if(StringUtils.isNotNull(content) && !"\n".equalsIgnoreCase(content)){
+                            if (content.endsWith("\n")) {
+                                content = content.substring(0,content.lastIndexOf("\n"));
+                                stringBuilder.append(content);
                             } else {
-                                return;
+                                // stringBuilder.append(newContent + "\n");
+                                stringBuilder.append(content);
                             }
-                            sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());
-                            if (sendResult.equals("tokenIsInvalid")) {
-                                updateWechatParameter();
-                            }
+                        }else{
+                            return ;
+                        }
+                        sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());
+                        if (sendResult.equals("tokenIsInvalid")) {
+                            updateWechatParameter();
+                        }
 
                     } else if (msgType != 0) {
                         //发送多媒体消息
