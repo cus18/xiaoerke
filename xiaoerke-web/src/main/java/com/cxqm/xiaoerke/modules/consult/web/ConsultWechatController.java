@@ -143,7 +143,7 @@ public class ConsultWechatController extends BaseController {
             if(sessionId!=null){
                 //检测是否给用户推送以下消息-- 每个会话只推一次(您需要花点时间排队，请耐心等待哦)
                 String sessionList = consultPayUserService.getChargeInfo(sessionId);
-                if(null == sessionList){
+                if(null == sessionList&&consultPayUserService.angelChargeCheck(openId)){
                     consultPayUserService.saveChargeUser(sessionId,openId);
                     consultPayUserService.sendMessageToConsult(openId,4);
                 }
@@ -181,23 +181,15 @@ public class ConsultWechatController extends BaseController {
                 }
                 //检测用户是否是收费用户,1001 为正常用户(无标签) ,1002 需要付款用户(等待),1003 已付款用户;
                 try{
-                    Date moningStrarTime = DateUtils.StrToDate(Global.getConfig("consultMoningStrarTime"),"yyyy-MM-dd HH:mm");
-                    Date consultMoningEndTime = DateUtils.StrToDate(Global.getConfig("consultMoningEndTime"),"yyyy-MM-dd HH:mm");
-                    Date consultAfternoonStartTime = DateUtils.StrToDate(Global.getConfig("consultAfternoonStartTime"),"yyyy-MM-dd HH:mm");
-                    Date consultAfternoonEndTime = DateUtils.StrToDate(Global.getConfig("consultAfternoonEndTime"),"yyyy-MM-dd HH:mm");
-                    Date present = new Date();
-                    //判断日期条件是否满足要求
-                    if((moningStrarTime.getTime()<present.getTime() &&consultMoningEndTime.getTime()<present.getTime())
-                            ||(consultAfternoonStartTime.getTime()<present.getTime()&&consultAfternoonEndTime.getTime()<present.getTime()))
-                        if(consultPayUserService.angelChargeCheck(openId)){
-                            HashMap<String,Object> payInfo = new HashMap<String, Object>();
-                            payInfo.put("openid",openId);
-                            payInfo.put("create_time",new Date());
-                            consultPayUserService.putneepPayConsultSession(sessionId,payInfo);
-                            notifyType = 1002;
-                            int type  = Integer.parseInt(Global.getConfig("consultPayMsgType"));
-                            consultPayUserService.sendMessageToConsult(openId,type);
-                        }
+                    if(consultPayUserService.angelChargeCheck(openId)){
+                        HashMap<String,Object> payInfo = new HashMap<String, Object>();
+                        payInfo.put("openid",openId);
+                        payInfo.put("create_time",new Date());
+                        consultPayUserService.putneepPayConsultSession(sessionId,payInfo);
+                        notifyType = 1002;
+                        int type  = Integer.parseInt(Global.getConfig("consultPayMsgType"));
+                        consultPayUserService.sendMessageToConsult(openId,type);
+                    }
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -308,9 +300,8 @@ public class ConsultWechatController extends BaseController {
                 obj.put("sessionId", sessionId);
                 obj.put("senderId", openId);
                 obj.put("dateTime", DateUtils.DateToStr(new Date()));
-//                obj.put("senderName", userName);
-                obj.put("notifyType", "notifyType");
-//                obj.put("serverAddress", serverAddress);
+                obj.put("notifyType", "1003");
+                obj.put("type", "4");
                 obj.put("source", consultSession.getSource());
                 TextWebSocketFrame frame = new TextWebSocketFrame(obj.toJSONString());
                 csChannel.writeAndFlush(frame.retain());
@@ -319,6 +310,44 @@ public class ConsultWechatController extends BaseController {
             }
         }
 
+        return null;
+    };
+
+
+
+    /**
+     * 只咨询客服调用此接口通知前台修改标示
+     * */
+    @RequestMapping(value = "/consultCustomOnly", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String,Object> consultCustomOnly(@RequestParam(required=true) String openId){
+        Channel csChannel = null;
+        //根据用户的openId，判断redis中，是否有用户正在进行的session
+        Integer sessionId = sessionRedisCache.getSessionIdByUserId(openId);
+        System.out.println("sessionId------"+sessionId);
+        HashMap<String,Object> createWechatConsultSessionMap = null;
+        RichConsultSession consultSession = new RichConsultSession();
+        if(null != sessionId){
+        consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
+        csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
+        System.out.println("csChannel------"+csChannel);
+        if(csChannel!=null&&csChannel.isActive()){
+            try {
+                JSONObject obj = new JSONObject();
+                obj.put("sessionId", sessionId);
+                obj.put("senderId", openId);
+                obj.put("dateTime", DateUtils.DateToStr(new Date()));
+                obj.put("notifyType", "1001");
+                obj.put("type", "4");
+                obj.put("source", consultSession.getSource());
+                TextWebSocketFrame frame = new TextWebSocketFrame(obj.toJSONString());
+                csChannel.writeAndFlush(frame.retain());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        }
         return null;
     };
 }
