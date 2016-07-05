@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.consult.service.impl;
 
+import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
@@ -83,11 +84,10 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
         Integer insurace = consultPayUserDao.CheckInsuranceByOpenid(userId);
         //是否已经支付
         PayRecord payRecord = payRecordService.findRecordByOpenid(userId,"consultOnline");
-
-        if(null!=consultSessions&&consultSessions.size()>3
-                ||insurace==0
-                ||(null == payRecord
-                ||(null !=payRecord && payRecord.getReceiveDate().getTime()+24*60*60*1000>new Date().getTime())))return true;
+        if( (null!=consultSessions&&consultSessions.size()>3)
+                ||insurace>0
+                ||(null !=payRecord && payRecord.getReceiveDate().getTime()+24*60*60*1000>new Date().getTime())
+ )return true;
         return false;
     }
 
@@ -113,19 +113,19 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
         Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
         String token = (String) userWechatParam.get("token");
 //        token = "Anpvh5m521VA-M5vTkANy0c7TN4VzBKUKHm9CkNkwW7yhMx0s8PkcUHwfSUKL4meLw5yi3SWD2f9jnSM2uq80Yt2njDOjZdfIujhUh5VUvYGtW0hwmE3ROHzDWA8UiuKFPAjABAYIT";
-        String st = "oa7t2wN2JGUP083zJgc6-orO6FwE";
+        String st = "";
         switch (type){
             case 1:
                 st = "咨询高峰期，医生姐姐忙前忙后帮了好多妈妈和宝宝。请她喝杯茶吧，她们也需要您关心。" +
-                        "\n》<a href='http://s201.xiaork.com/keeper/wxPay/patientPay.do?serviceType=doctorConsultPay'>你请喝茶，医生秒答</a>" +
+                        "\n》<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/wxPay/patientPay.do?serviceType=doctorConsultPay'>你请喝茶，医生秒答</a>" +
                         "\n------------------------"+
-                        "\n》<a href='http://www.jd.com'>咨询客服</a>";
+                        "\n》<a href='"+ConstantUtil.ANGEL_WEB_URL+"angel/patient/consult#/customerService'>咨询客服</a>";
                 break;
             case 2:
                 st = "哎呀，遇到咨询高峰期，加个急诊费，即可让医生秒回。" +
-                        "\n》<a href='http://s201.xiaork.com/keeper/wxPay/patientPay.do?serviceType=doctorConsultPay'>急诊100%秒达</a>" +
+                        "\n》<a href='"+ ConstantUtil.KEEPER_WEB_URL+"keeper/wxPay/patientPay.do?serviceType=doctorConsultPay'>急诊100%秒达</a>" +
                         "\n------------------------"+
-                        "\n》<a href='http://www.jd.com'>咨询客服</a>";
+                        "\n》<a href='"+ConstantUtil.ANGEL_WEB_URL+"angel/patient/consult#/customerService'>咨询客服</a>";
                 break;
             case 3:
                 st = "哎呀，遇到咨询高峰期，加个急诊费，即可让医生秒回。" +
