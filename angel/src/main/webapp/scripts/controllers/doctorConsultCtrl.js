@@ -39,7 +39,7 @@ angular.module('controllers', ['luegg.directives'])
             $scope.waitJoinNum = 0; //医生待接入的用户数，是动态变化的数
             $scope.glued = true; //angular滚动条的插件预制参数，让对话滚动条，每次都定位底部，当新的聊天数据到达时
             var umbrellaCustomerList = "75cefafe00364bbaaaf7b61089994e22,3b91fe8b7ce143918012ef3ab4baf1e0,00032bd90d724d0sa63a4d6esa0e8dbf";
-            //测试用的假数据
+            /*//测试用的假数据
             $scope.alreadyJoinPatientConversation=[
                 {
                     'patientId':1,
@@ -64,7 +64,7 @@ angular.module('controllers', ['luegg.directives'])
                     'notifyType':1003
                 }
 
-            ]
+            ]*/
 
             //各个子窗口的开关变量
             $scope.showFlag = {
@@ -100,6 +100,7 @@ angular.module('controllers', ['luegg.directives'])
             //初始化医生端登录，建立socket链接，获取基本信息
             $scope.doctorConsultInit = function () {
                 heartBeatCheckPay();
+                $scope.getQQExpression();
                 var routePath = "/doctor/consultBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath: routePath}, function (data) {
                     $scope.pageLoading = false;
@@ -354,7 +355,7 @@ angular.module('controllers', ['luegg.directives'])
                     remark: $scope.info.transferRemark},function(data){
                     if(data.result=="success"){
                         //转接请求成功后，在接诊员侧，保留了此会话，只到被转接的医生收到为止，
-                        // 才将会话拆除，在此过程中，允许接诊员，取消转接。
+                        //才将会话拆除，在此过程中，允许接诊员，取消转接。
                     }else if(data.result=="failure"){
                         alert("转接会话给"+$scope.csTransferUserName+"失败，请转接给其他医生");
                     }else if(data.result=="transferring"){
@@ -1493,6 +1494,7 @@ angular.module('controllers', ['luegg.directives'])
                         'messageNotSee':true,
                         'isOnline':true,
                         'dateTime':conversationData.dateTime,
+                        'notifyType':conversationData.notifyType,
                         'patientName':conversationData.senderName,
                         'consultValue':[]
                     };
@@ -1506,20 +1508,18 @@ angular.module('controllers', ['luegg.directives'])
                     getIframeSrc();
                 }
             };
+            //启动一个监控消息状态的定时器
             var setIntervalTimers = function(){
                 $.each($scope.alreadyJoinPatientConversation,function(index,value){
                     console.log(index);
                     var date = new Date().getTime();
-                    console.log('date',date);
-                    console.log('sum',date - value.dateTime);
-                    if(value.notifyType == 1002 && date - value.dateTime >= 30000 ){
+                    if(value.notifyType == 1002 && date - value.dateTime >= 300000 ){
                         value.notifyType = 1001;
                         console.log('notifyType',value.notifyType);
                     }
                 });
             };
             var heartBeatCheckPay = function(){
-                //启动定时器，周期性的发送心跳信息
                 $scope.heartBeatPay = setInterval(setIntervalTimers,6000);
             };
             //病人会话的内容的发送
@@ -1552,6 +1552,7 @@ angular.module('controllers', ['luegg.directives'])
                         'dateTime':conversationData.dateTime,
                         'messageNotSee':true,
                         'number':1,//显示消息数量
+                        'notifyType':conversationData.notifyType,
                         'patientName':conversationData.senderName,
                         'consultValue':[]
                     };
