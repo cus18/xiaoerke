@@ -127,7 +127,7 @@ var lastNote=function () {
         contentType: "application/json; charset=utf-8",
         dataType:'json',
         success:function(data) {
-            var date = moment(data.createTime).format('hh:mm');
+            var date = moment(data.createTime).format('HH:mm');
             $("#newNoteContent").html(data.leaveNote);
             $("#createTime").html(date);
             if(data.headImgUrl != ''){
