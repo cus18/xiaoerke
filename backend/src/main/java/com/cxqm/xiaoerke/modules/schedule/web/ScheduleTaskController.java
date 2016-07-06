@@ -38,6 +38,7 @@ public class ScheduleTaskController extends BaseController {
 
         HashMap<String, Object> searchMap = new HashMap<String, Object>();
         calendar.add(Calendar.DATE, -1);
+        Date createTime = calendar.getTime();
         String createDate = DateUtils.formatDate(new Date(calendar.getTimeInMillis()), "yyyy-MM-dd");
         setDate(calendar);
         Date startDate = calendar.getTime();
@@ -281,7 +282,7 @@ public class ScheduleTaskController extends BaseController {
         consultStatisticVo.setEvaluateClickDegree(evaluateClickDegree);
         consultStatisticVo.setShareClickNumber(shareClickNumber);
         consultStatisticVo.setShareClickDegree(shareClickDegree);
-        consultStatisticVo.setCreateDate(new Date());
+        consultStatisticVo.setCreateDate(createTime);
         consultStatisticService.insertSelective(consultStatisticVo);
 
     }
