@@ -31,7 +31,7 @@
             <table class="table table-striped table-bordered table-condensed">
                 <thead>
 				<th class="sort-column name"><font color="red">日期\项目</font></th>
-				<th class="sort-column name">日均</th>
+				<th class="sort-column name">日有效</th>
 				<th class="sort-column name">累计</th>
 				<th class="sort-column name"><font color="#8b4513">日满意度</font></th>
 				<th class="sort-column name"><font color="#8b4513">周满意度</font></th>
