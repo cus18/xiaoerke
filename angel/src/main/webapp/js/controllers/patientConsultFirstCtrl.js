@@ -8,7 +8,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             $scope.upFile = {};
             $scope.sessionId = "";
             $scope.socketServer = "";
-            $scope.glued = true;//angular滚动条的插件预制参数，让对话滚动条，当新的聊天数据到达时，每次都定位底部
+            $scope.glued = true;
             $scope.source = "h5cxqmUser";
 
             $scope.openFileListFlag = false;
@@ -266,20 +266,6 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             $scope.tapShowButton = function(key){
                 $scope.showFlag[key] = !$scope.showFlag[key];
             };
-           //监视textarea里面有没有输入内容
-            $scope.sendItem = false;
-            $scope.$watch('info.consultInputValue', function(newVal, oldVal) {
-                //$rootScope.$digest();
-                console.log(newVal);
-                if(newVal==undefined||newVal == ""){
-                    $scope.sendItem = false;
-                }else{
-                    $scope.sendItem = true;
-                }
-            });
-
-
-
             $rootScope.add = function () {
                 console.log(this.name);
                 //$scope.consultInputValue = this.name;
@@ -289,5 +275,4 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 var scope= $('#textBox').scope();
                 scope.name = "Hello World";
             };
-
         }])
