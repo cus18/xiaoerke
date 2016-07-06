@@ -92,9 +92,9 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
         //判断日期条件是否满足要求
         if((morningStartTime.getTime()<present.getTime() &&consultMorningEndTime.getTime()>present.getTime())
                 ||(consultAfternoonStartTime.getTime()<present.getTime()&&consultAfternoonEndTime.getTime()>present.getTime()))
-        if( (null!=consultSessions&&consultSessions.size()>3)
+        if( (null!=consultSessions&&consultSessions.size()>3&&(null !=payRecord && payRecord.getReceiveDate().getTime()+24*60*60*1000>new Date().getTime()))
                 ||insurance>0
-                ||(null !=payRecord && payRecord.getReceiveDate().getTime()+24*60*60*1000>new Date().getTime()))
+                )
             return true;
         return false;
     }
