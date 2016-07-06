@@ -66,9 +66,9 @@
                     success:function(data) {
                         if(data.openid=="none"){
                             // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
-                            window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+                            window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa_"+$stateParams.id;
                         }else{
-                            
+                            recordLogs("UmbrellaShareJoinPage_"+ $stateParams.id);
                         
                 ifExistOrder.save(function (data) {
                     // $scope.info.phoneNum=data.phone;
@@ -252,7 +252,7 @@
                                             $.ajax({
                                                 type: 'POST',
                                                 url: "umbrella/updateBabyUmbrellaInfoIfShare",
-                                                data:"{'id':'"+shareUmbrellaId+"'}",
+                                                data:"{'id':'"+$scope.umbrellaId+"'}",
                                                 contentType: "application/json; charset=utf-8",
                                                 success: function(result){
                                                     var todayCount=result.todayCount;
@@ -275,7 +275,7 @@
                                             $.ajax({
                                                 type: 'POST',
                                                 url: "umbrella/updateBabyUmbrellaInfoIfShare",
-                                                data:"{'id':'"+shareUmbrellaId+"'}",
+                                                data:"{'id':'"+$scope.umbrellaId+"'}",
                                                 contentType: "application/json; charset=utf-8",
                                                 success: function(result){
                                                     var todayCount=result.todayCount;

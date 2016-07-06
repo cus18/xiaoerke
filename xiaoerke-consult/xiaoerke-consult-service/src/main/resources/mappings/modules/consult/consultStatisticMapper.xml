@@ -53,7 +53,7 @@
     select
     <include refid="Base_Column_List" />
     from consult_statistic
-    where create_date BETWEEN DATE_FORMAT(#{startDate},'%Y-%m-%d') and DATE_FORMAT(#{endDate},'%Y-%m-%d')
+    where create_date BETWEEN #{startDate} and #{endDate}
     order by create_date  DESC
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >

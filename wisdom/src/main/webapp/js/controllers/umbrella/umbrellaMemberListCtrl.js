@@ -145,7 +145,7 @@
                                             $.ajax({
                                                 type: 'POST',
                                                 url: "umbrella/updateBabyUmbrellaInfoIfShare",
-                                                data:"{'id':'"+shareUmbrellaId+"'}",
+                                                data:"{'id':'"+$stateParams.id+"'}",
                                                 contentType: "application/json; charset=utf-8",
                                                 success: function(result){
                                                     var todayCount=result.todayCount;
@@ -168,7 +168,7 @@
                                             $.ajax({
                                                 type: 'POST',
                                                 url: "umbrella/updateBabyUmbrellaInfoIfShare",
-                                                data:"{'id':'"+shareUmbrellaId+"'}",
+                                                data:"{'id':'"+$stateParams.id+"'}",
                                                 contentType: "application/json; charset=utf-8",
                                                 success: function(result){
                                                     var todayCount=result.todayCount;
