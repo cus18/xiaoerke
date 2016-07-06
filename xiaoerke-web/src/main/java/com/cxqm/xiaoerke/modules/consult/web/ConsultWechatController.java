@@ -280,8 +280,7 @@ public class ConsultWechatController extends BaseController {
     @RequestMapping(value = "/notifyPayInfo2Distributor", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String,Object> notifyPayInfo2Distributor(HttpSession session, HttpServletRequest request){
-        String openId = WechatUtil.getOpenId(session,request);
+    Map<String,Object> notifyPayInfo2Distributor(@RequestParam(required=true) String openId){
         Channel csChannel = null;
         //根据用户的openId，判断redis中，是否有用户正在进行的session
         Integer sessionId = sessionRedisCache.getSessionIdByUserId(openId);
