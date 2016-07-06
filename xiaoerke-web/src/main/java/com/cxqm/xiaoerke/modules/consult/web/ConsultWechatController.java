@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -283,7 +284,8 @@ public class ConsultWechatController extends BaseController {
     @RequestMapping(value = "/notifyPayInfo2Distributor", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String,Object> notifyPayInfo2Distributor(@RequestParam(required=true) String openId){
+    Map<String,Object> notifyPayInfo2Distributor(HttpSession session, HttpServletRequest request){
+        String openId = WechatUtil.getOpenId(session,request);
         Channel csChannel = null;
         //根据用户的openId，判断redis中，是否有用户正在进行的session
         Integer sessionId = sessionRedisCache.getSessionIdByUserId(openId);
@@ -321,7 +323,8 @@ public class ConsultWechatController extends BaseController {
     @RequestMapping(value = "/consultCustomOnly", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String,Object> consultCustomOnly(@RequestParam(required=true) String openId){
+    Map<String,Object> consultCustomOnly(HttpSession session, HttpServletRequest request){
+        String openId = WechatUtil.getOpenId(session,request);
         Channel csChannel = null;
         //根据用户的openId，判断redis中，是否有用户正在进行的session
         Integer sessionId = sessionRedisCache.getSessionIdByUserId(openId);
