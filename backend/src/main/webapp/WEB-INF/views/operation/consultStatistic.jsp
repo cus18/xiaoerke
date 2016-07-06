@@ -21,11 +21,11 @@
 </ul>
     <form:form id="searchForm" modelAttribute="consultStatisticVo" action="${ctx}/consultStatistic/consultStatisticBaseData" method="post" class="form-search">
 	    <sys:message content="${message}"/>
-        <form:input id="startDate" path="startDate" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
-						onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+        <form:input id="startDate" path="startDate" type="text" readonly="readonly" maxlength="60" class="input-medium Wdate"
+						onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			至
-			<form:input id="endDate" path="endDate" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
-						onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+			<form:input id="endDate" path="endDate" type="text" readonly="readonly" maxlength="60" class="input-medium Wdate"
+						onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 		<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
     </form:form>
             <table class="table table-striped table-bordered table-condensed">
