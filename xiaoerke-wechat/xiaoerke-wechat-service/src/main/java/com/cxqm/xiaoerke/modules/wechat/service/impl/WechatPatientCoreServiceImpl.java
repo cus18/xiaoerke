@@ -4,6 +4,8 @@ import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
 import com.cxqm.xiaoerke.modules.interaction.dao.PatientRegisterPraiseDao;
 import com.cxqm.xiaoerke.modules.marketing.service.LoveMarketingService;
 import com.cxqm.xiaoerke.modules.member.service.MemberService;
@@ -14,6 +16,8 @@ import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
+//import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
+//import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import com.cxqm.xiaoerke.modules.wechat.dao.WechatAttentionDao;
@@ -23,6 +27,7 @@ import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatPatientCoreService;
 import com.cxqm.xiaoerke.modules.wechat.service.util.MessageUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -32,6 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
@@ -39,9 +45,6 @@ import java.net.URLEncoder;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-//import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
-//import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 
 @Service
 @Transactional(readOnly = false)
@@ -68,10 +71,10 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 	@Autowired
 	private MongoDBService<MongoLog> mongoLogService;
 
-    @Autowired
-    private MongoDBService<HealthRecordMsgVo> healthRecordMsgVoMongoDBService;
+	@Autowired
+	private MongoDBService<HealthRecordMsgVo> healthRecordMsgVoMongoDBService;
 
-    @Autowired
+	@Autowired
 	private MemberService memberService;
 
 	private String mongoEnabled = Global.getConfig("mongo.enabled");
@@ -141,7 +144,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				threadExecutor.execute(thread);
 				return "";
 			}else if("true".equals(customerService)){
-			  respMessage = transferToCustomer(xmlEntity);
+				respMessage = transferToCustomer(xmlEntity);
 			}
 		}
 		return respMessage;
@@ -160,13 +163,13 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				if(xmlEntity.getMsgType().equals("text")){
 					this.sendPost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/conversation",
 							"openId=" + xmlEntity.getFromUserName() +
-							"&messageType=" + xmlEntity.getMsgType() +
-							"&messageContent=" + URLEncoder.encode(xmlEntity.getContent(), "UTF-8"));
+									"&messageType=" + xmlEntity.getMsgType() +
+									"&messageContent=" + URLEncoder.encode(xmlEntity.getContent(), "UTF-8"));
 				}else{
 					this.sendPost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/conversation",
 							"openId=" + xmlEntity.getFromUserName() +
-							"&messageType=" + xmlEntity.getMsgType() +
-							"&mediaId=" + xmlEntity.getMediaId());
+									"&messageType=" + xmlEntity.getMsgType() +
+									"&mediaId=" + xmlEntity.getMediaId());
 				}
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
@@ -749,8 +752,10 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			String token = (String) parameter.get("token");
 			List<Article> articleList = new ArrayList<Article>();
 			Article article = new Article();
-			article.setTitle("咨询大夫 | 三甲医院儿科专家  1分钟极速回复");
-			article.setDescription("小儿内科:       24小时全天 \n\n小儿皮肤科:   9:00 ~ 22:00\n\n小儿营养科:   9:00 ~ 22:00\n\n(外科、眼科、耳鼻喉科、口腔科、预防保健科、中医科)\n\n点击查看更多哦");
+			article.setTitle("三甲医院儿科专家    咨询秒回不等待");
+			article.setDescription("小儿内科:       24小时全天 \n\n小儿皮肤科/保健科:   8:00 ~ 23:00\n\n妇产科:   12:00-14:00，19:00-22:00\n" +
+					"\n小儿其他专科:   19:00 ~ 21:00\n\n" +
+					"(外科、眼科、耳鼻喉科、口腔科、预防接种科、中医科、心理科)\n\n好消息！可在线咨询北京儿童医院皮肤科专家啦！");
 			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E6%8E%A8%E9%80%81%E6%B6%88%E6%81%AF2.png");
 			article.setUrl("https://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236660&idx=1&sn=10d923526047a5276dd9452b7ed1e302&scene=1&srcid=0612OCo7d5ASBoGRr2TDgjfR&key=f5c31ae61525f82ed83c573369e70b8f9b853c238066190fb5eb7b8640946e0a090bbdb47e79b6d2e57b615c44bd82c5&ascene=0&uin=MzM2NjEyMzM1&devicetype=iMac+MacBookPro11%2C4+OSX+OSX+10.11.4+build(15E65)&version=11020201&pass_ticket=dG5W6eOP3JU1%2Fo3JXw19SFBAh1DgpSlQrAXTyirZuj970HMU7TYojM4D%2B2LdJI9n");
 			articleList.add(article);
@@ -791,21 +796,21 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		String openId=xmlEntity.getFromUserName();
 		Map<String,Object> params=new HashMap<String,Object>();
 		params.put("openid", openId);
-		 params.put("uuid", UUID.randomUUID().toString().replaceAll("-", ""));
-		 params.put("starNum1", 0);
-		 params.put("starNum2", 0);
-		 params.put("starNum3", 0);
-		 params.put("doctorId", xmlEntity.getKfAccount());
-		 params.put("content", "");
-		 params.put("dissatisfied", null);
-		 params.put("redPacket", null);
-		 patientRegisterPraiseDao.saveCustomerEvaluation(params);
-		 String st = "感谢您对我们的信任与支持，为了以后能更好的为您服务，请对本次服务做出评价！【" +
-			"<a href='http://s68.baodf.com/titan/appoint#/userEvaluate/"+params.get("uuid")+"'>我要评价</a>】";
-		 Map parameter = systemService.getWechatParameter();
-		 String token = (String)parameter.get("token");
-		 WechatUtil.sendMsgToWechat(token, openId, st);
-		 LogUtils.saveLog(request, "00000004");//注：00000004表示“客服评价”
+		params.put("uuid", UUID.randomUUID().toString().replaceAll("-", ""));
+		params.put("starNum1", 0);
+		params.put("starNum2", 0);
+		params.put("starNum3", 0);
+		params.put("doctorId", xmlEntity.getKfAccount());
+		params.put("content", "");
+		params.put("dissatisfied", null);
+		params.put("redPacket", null);
+		patientRegisterPraiseDao.saveCustomerEvaluation(params);
+		String st = "感谢您对我们的信任与支持，为了以后能更好的为您服务，请对本次服务做出评价！【" +
+				"<a href='http://s68.baodf.com/titan/appoint#/userEvaluate/"+params.get("uuid")+"'>我要评价</a>】";
+		Map parameter = systemService.getWechatParameter();
+		String token = (String)parameter.get("token");
+		WechatUtil.sendMsgToWechat(token, openId, st);
+		LogUtils.saveLog(request, "00000004");//注：00000004表示“客服评价”
 
 		return respMessage;
 	}
@@ -899,43 +904,43 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 //		}
 
 
-			return "<xml><ToUserName><![CDATA[" + xmlEntity.getFromUserName()  +
-					"]]></ToUserName><FromUserName><![CDATA[" + xmlEntity.getToUserName() +
-					"]]></FromUserName><CreateTime><![CDATA[" + new Date().getTime() +
-					"]]></CreateTime><MsgType><![CDATA[transfer_customer_service]]></MsgType>" +
-					"</xml>";
+		return "<xml><ToUserName><![CDATA[" + xmlEntity.getFromUserName()  +
+				"]]></ToUserName><FromUserName><![CDATA[" + xmlEntity.getToUserName() +
+				"]]></FromUserName><CreateTime><![CDATA[" + new Date().getTime() +
+				"]]></CreateTime><MsgType><![CDATA[transfer_customer_service]]></MsgType>" +
+				"</xml>";
 
 	}
 
-    /***
-     * 根据openid查询消息发送记录
-     * @param openid type
-     * @return 有记录 true 无记录 false
-     */
+	/***
+	 * 根据openid查询消息发送记录
+	 * @param openid type
+	 * @return 有记录 true 无记录 false
+	 */
 	@Override
-    public boolean findHealthRecordMsgByOpenid(String openid, String type) {
-        HealthRecordMsgVo healthRecordMsgVo = new HealthRecordMsgVo();
-        healthRecordMsgVo.setOpenId(openid);
-        Query queryRecord = new Query();
-        Date date = new Date();
-        date.setHours(0);
-        queryRecord.addCriteria(Criteria.where("open_id").is(openid).and("create_date").gte(date));
-        Long RecordCount = healthRecordMsgVoMongoDBService.queryCount(queryRecord);
-        return RecordCount != 0l ? true : false;
-    }
+	public boolean findHealthRecordMsgByOpenid(String openid, String type) {
+		HealthRecordMsgVo healthRecordMsgVo = new HealthRecordMsgVo();
+		healthRecordMsgVo.setOpenId(openid);
+		Query queryRecord = new Query();
+		Date date = new Date();
+		date.setHours(0);
+		queryRecord.addCriteria(Criteria.where("open_id").is(openid).and("create_date").gte(date));
+		Long RecordCount = healthRecordMsgVoMongoDBService.queryCount(queryRecord);
+		return RecordCount != 0l ? true : false;
+	}
 
-    /***
-     * 插入消息发送记录
-     *
-     * @param
-     * @return
-     */
+	/***
+	 * 插入消息发送记录
+	 *
+	 * @param
+	 * @return
+	 */
 	@Override
-    public int insertHealthRecordMsg(HealthRecordMsgVo healthRecordMsgVo) {
+	public int insertHealthRecordMsg(HealthRecordMsgVo healthRecordMsgVo) {
 		healthRecordMsgVo.setId(IdGen.uuid());
-        healthRecordMsgVo.setCreate_date(new Date());
-        healthRecordMsgVo.setOpen_id(healthRecordMsgVo.getOpenId());
+		healthRecordMsgVo.setCreate_date(new Date());
+		healthRecordMsgVo.setOpen_id(healthRecordMsgVo.getOpenId());
 		healthRecordMsgVo.setOpenId(null);
-        return  healthRecordMsgVoMongoDBService.insert(healthRecordMsgVo);
-    }
+		return  healthRecordMsgVoMongoDBService.insert(healthRecordMsgVo);
+	}
 }

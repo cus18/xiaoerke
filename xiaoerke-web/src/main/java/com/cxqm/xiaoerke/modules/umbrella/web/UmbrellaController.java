@@ -669,6 +669,8 @@ public class UmbrellaController  {
             }else{
                 ram = Math.random() * 5;
             }
+        }else if(flag.equals("2")){
+            ram = 5;
         }
         String ress = String.format("%.0f", ram);
 
