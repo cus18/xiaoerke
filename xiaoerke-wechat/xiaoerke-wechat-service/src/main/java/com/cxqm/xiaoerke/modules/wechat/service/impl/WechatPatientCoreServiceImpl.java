@@ -276,6 +276,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			textMessage.setContent("尊敬的诺安康VIP客户，您好！欢迎加入宝大夫，让您从此育儿不用愁！\n\n【咨询大夫】直接咨询北京三甲医院儿科专家，一分钟内极速回复！\n\n【妈妈活动】添加宝大夫客服微信：bdfdxb，加入宝大夫家长群，与众多宝爸宝妈一起交流分享，参与更多好玩的活动！\n\n如需人工协助，请您拨打：400-623-7120。\n");
 			return MessageUtil.textMessageToXml(textMessage);
 
+		}else if(EventKey.indexOf("MKBJQD001")>-1&&xmlEntity.getEvent().equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)){
+
 		}else
 		if(EventKey.indexOf("doc")>-1)
 		{
