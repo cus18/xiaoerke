@@ -77,16 +77,7 @@ function wechatPay() {
                         paySign: obj.paySign,  // 支付签名
                         success: function (res) {
                             if (res.errMsg == "chooseWXPay:ok") {
-                                $.ajax({
-                                    url: "consult/wechat/notifyPayInfo2Distributor",
-                                    async: true,
-                                    type: 'get',
-                                    data: {payType: "doctorConsultPay", leaveNotes: leaveNotes, payPrice: moneys * 100},
-                                    cache: false,
-                                    success: function (data) {
-                                        window.location.href="http://s201.xiaork.com/angel/patient/consult#/doctorConsultPaySuccess";
-                                    }
-                                });
+                              window.location.href="http://s201.xiaork.com/angel/patient/consult#/doctorConsultPaySuccess";
                             } else {
                                 alert("支付失败,请重新支付")
                             }
