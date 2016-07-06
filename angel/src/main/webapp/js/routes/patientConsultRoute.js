@@ -66,6 +66,7 @@ define(['appPatientConsult'], function(app){
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'customerServiceCtrl',
                                     ['js/controllers/customerServiceCtrl.js',
+                                        'https://res.wx.qq.com/open/js/jweixin-1.0.0.js',
                                         'js/libs/scrollglue.js','js/libs/moment.min.js',
                                         'js/styles/main.css','js/styles/customerService.css'],
                                     'js/views/customerService.html?ver='+patientConsultVersion);
