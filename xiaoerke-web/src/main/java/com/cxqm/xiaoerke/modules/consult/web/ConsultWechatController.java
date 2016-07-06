@@ -321,6 +321,7 @@ public class ConsultWechatController extends BaseController {
     @ResponseBody
     Map<String,Object> consultCustomOnly(HttpSession session, HttpServletRequest request){
         String openId = WechatUtil.getOpenId(session,request);
+        openId = "oogbDwCLH1_x-KLcQKqlrmUzG2ng";
         Channel csChannel = null;
         //根据用户的openId，判断redis中，是否有用户正在进行的session
         Integer sessionId = sessionRedisCache.getSessionIdByUserId(openId);
