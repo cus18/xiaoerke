@@ -43,12 +43,14 @@ public class ConsultStatisticController extends BaseController {
         //用户行为统计分析
         if (StringUtils.isNull(startDate)) {//默认查看最近5天的
             Calendar ca = Calendar.getInstance();
+            setDate(ca);
             ca.set(ca.get(Calendar.YEAR), ca.get(Calendar.MONTH), ca.get(Calendar.DATE) - 5);
             Date start = ca.getTime();
-            startDate = DateUtils.formatDate(start, "yyyy-MM-dd");
-            ca.set(ca.get(Calendar.YEAR), ca.get(Calendar.MONTH), ca.get(Calendar.DATE) + 5);
+            startDate = DateUtils.formatDateTime(start);
+            ca.set(ca.get(Calendar.YEAR), ca.get(Calendar.MONTH), ca.get(Calendar.DATE) + 6);
+            setDate(ca);
             Date end = ca.getTime();
-            endDate = DateUtils.formatDate(end, "yyyy-MM-dd");
+            endDate = DateUtils.formatDateTime(end);
         }
         List<ConsultStatisticVo> consultStatisticVos = consultStatisticService.getConsultStatisticList(startDate, endDate);
         model.addAttribute("consultStatisticVos", consultStatisticVos);
@@ -59,6 +61,12 @@ public class ConsultStatisticController extends BaseController {
 
 
         return "operation/consultStatistic";
+    }
+
+    private void setDate(Calendar calendar) {
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
     }
 
 
