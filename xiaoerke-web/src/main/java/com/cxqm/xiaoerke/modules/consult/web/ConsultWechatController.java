@@ -297,7 +297,7 @@ public class ConsultWechatController extends BaseController {
                 obj.put("sessionId", sessionId);
                 obj.put("senderId", openId);
                 obj.put("dateTime", DateUtils.DateToStr(new Date()));
-                obj.put("notifyType", "1003");
+                obj.put("notifyType", "1001");
                 obj.put("type", "4");
                 obj.put("source", consultSession.getSource());
                 TextWebSocketFrame frame = new TextWebSocketFrame(obj.toJSONString());
