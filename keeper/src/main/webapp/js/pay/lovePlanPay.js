@@ -16,7 +16,9 @@ var recordLogs = function(val){
         }
     });
 };
-
+var skip=function(item){
+    $("html,body").stop().animate({"scrollTop":$("#"+item).offset().top},0);
+}
 /*
  以前支付代码
  */

@@ -19,12 +19,12 @@
         <img class="my-img1 line2" width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market/lovePlan/contribute_intro.png">
     </div>
     <div class="leave-words">
-        <textarea class="f5 c5" placeholder="写留言(最多可输入50字)..." maxlength="50" id="leaveNotes"></textarea>
+        <textarea onclick="skip('leaveNotes')" class="f5 c5" placeholder="写留言(最多可输入50字)..." maxlength="50" id="leaveNotes"></textarea>
     </div>
     <div class="weChat ">
         <label class="" for="money">
             <span class="f8 c3">支持金额：</span>
-            <input class="f5 c5" id="money" type="number" placeholder="请输入支持金额" >
+            <input onclick="skip('money')" class="f5 c5" id="money" type="number" placeholder="请输入支持金额" >
         </label>
         <div class="main f5 c3">
            <img class="my-img1" width="33" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market/lovePlan/wechat_icon.png">&nbsp;
@@ -32,6 +32,7 @@
             <img class="my-img1 " width="19.5" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market/lovePlan/wechat_select.png">
         </div>
     </div>
+    <br><br><br>
     <div onclick="wechatPay()" id="payButton"  class="button bottom-btn" >
         立即支付
     </div>
