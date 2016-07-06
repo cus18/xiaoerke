@@ -1513,7 +1513,8 @@ angular.module('controllers', ['luegg.directives'])
                 $.each($scope.alreadyJoinPatientConversation,function(index,value){
                     console.log(index);
                     var date = new Date().getTime();
-                    if(value.notifyType == 1002 && date - value.dateTime >= 300000 ){
+                   var flag = moment().subtract(1, 'minute').isAfter(value.dateTime);
+                    if(value.notifyType == 1002 && flag ){
                         value.notifyType = 1001;
                         console.log('notifyType',value.notifyType);
                     }
