@@ -77,12 +77,13 @@ public class BaseDataServiceImpl implements BaseDataService {
         StatisticsTitle st = new StatisticsTitle();
         try {
             List<HashMap<String, Object>> order = statisticsTitleDao.selectIntoOrder(m);
-            List<HashMap<String, Object>> zyqSay = statisticsTitleDao.selectIntoZYQSayStatistics(m);
+//            List<HashMap<String, Object>> zyqSay = statisticsTitleDao.selectIntoZYQSayStatistics(m);
             List<HashMap<String, Object>> userAndDoctor = statisticsTitleDao.selectIntoUserAndDoctorNumsStatistics(m);
 
-			int loginNum = statisticsTitleDao.getVisiteUserNum(m);
-			st.setVisiteNum(loginNum);
-			
+//			int loginNum = statisticsTitleDao.getVisiteUserNum(m);
+//			st.setVisiteNum(loginNum);
+			st.setVisiteNum(0);
+
 			//新增会员数量
 			int addVIP=statisticsTitleDao.getAddVipNum(m);
 			st.setAddVIP(addVIP);
@@ -102,7 +103,7 @@ public class BaseDataServiceImpl implements BaseDataService {
             //订单和咨询部分
             orderAndConsult(st, order, date);
             //郑玉巧说部分
-            zhengYuQiao(st, zyqSay, date);
+//            zhengYuQiao(st, zyqSay, date);
             //用户和医生部分
             userAndDoctor(st, userAndDoctor, date);
         } catch (Exception e) {
