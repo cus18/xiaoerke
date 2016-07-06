@@ -9,6 +9,7 @@ import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.entity.SwitchConfigure;
+import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
@@ -32,6 +33,8 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 @Controller
@@ -49,6 +52,8 @@ public class UmbrellaController  {
 
     @Autowired
     private UtilService utilService;
+
+    private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
     /**
      *获取保护伞首页信息
@@ -145,7 +150,7 @@ public class UmbrellaController  {
         babyUmbrellaInfo.setTruePayMoneys(5+"");
         Integer res = babyUmbrellaInfoSerivce.saveBabyUmbrellaInfo(babyUmbrellaInfo);
         String shareId=params.get("shareId").toString();
-        sendWechatMessage(openid,shareId);
+        sendUBWechatMessage(openid, shareId);
         Map<String, Object> result=new HashMap<String, Object>();
         result.put("result",res);
         result.put("id",babyUmbrellaInfo.getId());
@@ -153,7 +158,7 @@ public class UmbrellaController  {
         return result;
     }
 
-    private void sendWechatMessage(String toOpenId, String fromId){
+    private void sendUBWechatMessage(String toOpenId, String fromId){
         Map<String, Object> param = new HashMap<String, Object>();
         List<Map<String,Object>> list = new ArrayList<Map<String, Object>>();
         if(StringUtils.isNotNull(fromId)){
@@ -171,7 +176,12 @@ public class UmbrellaController  {
             WechatAttention wa = wechatAttentionService.getAttentionByOpenId(toOpenId);
             String nickName = "";
             if(wa!=null){
-                nickName = StringUtils.isNotNull(wa.getNickname())?wa.getNickname():"";
+                if(StringUtils.isNotNull(wa.getNickname())){
+                    nickName = wa.getNickname();
+                }else{
+                    WechatBean userinfo = WechatUtil.getWechatName(token, toOpenId);
+                    nickName = StringUtils.isNotNull(userinfo.getNickname())?userinfo.getNickname():"";
+                }
             }
             String title = "恭喜您，您的好友"+nickName+"已成功加入。您既帮助了朋友，也提升了2万保障金！";
             String templateId = "b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg";
@@ -690,7 +700,8 @@ public class UmbrellaController  {
         //完成添加动作
         Integer res = babyUmbrellaInfoSerivce.newSaveBabyUmbrellaInfo(babyUmbrellaInfo);
         if(res==1&&"success".equals(babyUmbrellaInfo.getPayResult())){
-            sendWechatMessage(openid,shareId);
+            Runnable thread = new sendUBWechatMessage(openid,shareId);
+            threadExecutor.execute(thread);
         }
 
         //插入家庭成员的信息
@@ -718,6 +729,20 @@ public class UmbrellaController  {
         return result;
     }
 
+    public class sendUBWechatMessage extends Thread {
+        private String toOpenId;
+        private String fromId;
+
+        public sendUBWechatMessage(String toOpenId,String fromId) {
+            this.toOpenId = toOpenId;
+            this.fromId = fromId;
+        }
+
+        @Override
+        public void run() {
+            sendUBWechatMessage(toOpenId, fromId);
+        }
+    }
 
 
 }
