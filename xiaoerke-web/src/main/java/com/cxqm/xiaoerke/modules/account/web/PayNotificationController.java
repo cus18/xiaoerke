@@ -16,6 +16,7 @@ import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
+import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
@@ -36,6 +37,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -78,6 +81,8 @@ public class PayNotificationController {
     private MutualHelpDonationService mutualHelpDonationService;
 
 	private static Lock lock = new ReentrantLock();
+
+	private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
 	/**
 	 * 接收支付成后微信notify_url参数中传来的参数
@@ -344,7 +349,8 @@ public class PayNotificationController {
 
 				if(insuranceMap.get("fee_type").toString().equals("umbrella")){
 					if(!"success".equals(insuranceMap.get("status").toString())){
-						sendWechatMessage(umbrellaId[0], umbrellaId[1]);
+						Runnable thread = new sendUBWechatMessage(umbrellaId[0], umbrellaId[1]);
+						threadExecutor.execute(thread);
 					}
 					BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
 					babyUmbrellaInfo.setId(Integer.parseInt(umbrellaId[0]));
@@ -362,6 +368,21 @@ public class PayNotificationController {
 			lock.unlock();
 		}
 		return "";
+	}
+
+	public class sendUBWechatMessage extends Thread {
+		private String toId;
+		private String fromId;
+
+		public sendUBWechatMessage(String toId,String fromId) {
+			this.toId = toId;
+			this.fromId = fromId;
+		}
+
+		@Override
+		public void run() {
+			sendUBWechatMessage(toId, fromId);
+		}
 	}
 
 	@RequestMapping(value = "/user/getLovePlanPayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
@@ -464,7 +485,7 @@ public class PayNotificationController {
 
 
 
-	private void sendWechatMessage(String toId, String fromId){
+	private void sendUBWechatMessage(String toId, String fromId){
 		if(StringUtils.isNotNull(toId)){
 			Map<String, Object> param = new HashMap<String, Object>();
 			List<Map<String,Object>> list = new ArrayList<Map<String, Object>>();
@@ -485,7 +506,12 @@ public class PayNotificationController {
 				if(StringUtils.isNotNull(toOpenId)){
 					WechatAttention wa = wechatAttentionService.getAttentionByOpenId(toOpenId);
 					if(wa!=null){
-						nickName = StringUtils.isNotNull(wa.getNickname())?wa.getNickname():"";
+						if(StringUtils.isNotNull(wa.getNickname())){
+							nickName = wa.getNickname();
+						}else{
+							WechatBean userinfo = WechatUtil.getWechatName(token, toOpenId);
+							nickName = StringUtils.isNotNull(userinfo.getNickname())?userinfo.getNickname():"";
+						}
 					}
 				}
 			}
