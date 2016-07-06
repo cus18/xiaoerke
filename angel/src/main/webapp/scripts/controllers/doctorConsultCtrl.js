@@ -1494,7 +1494,7 @@ angular.module('controllers', ['luegg.directives'])
                     var date = new Date().getTime();
                    var flag = moment().subtract(1, 'minute').isAfter(value.dateTime);
                     if(value.notifyType == 1002 && flag ){
-                        value.notifyType = 1001;
+                        value.notifyType = 1003;
                         console.log('notifyType',value.notifyType);
                     }
                 });
