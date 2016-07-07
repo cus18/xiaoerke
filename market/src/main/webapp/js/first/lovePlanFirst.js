@@ -98,7 +98,7 @@ var sumMoney=function () {
         url:"mutualHelp/donation/sumMoney",
         async:false,
         type:'POST',
-        data:"{}",
+        data:"{'page':'first'}",
         contentType: "application/json; charset=utf-8",
         dataType:'json',
         success:function(data) {
