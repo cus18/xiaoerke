@@ -98,7 +98,13 @@ public interface BabyUmbrellaInfoDao {
      */
     int getUmbrellaRank(Map<String, Object> map);
 
+    /**
+     *根据手机号查询该用户是否购买宝护伞
+     */
+    List<Map<String,Object>> getifBuyUmbrellaInfo(Map<String,Object> map);
 
-
-
+    /**
+     *根据手机号查询该用户是否购买宝护伞
+     */
+    Map<String,Object> getStatusByPhone(Map<String,Object> map);
 }
