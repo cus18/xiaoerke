@@ -33,7 +33,7 @@ var lookMore = function(){
        moreLock=true;
        $(".pic-list dd:gt(3)").show();
        $(".lookMore a").html("收起"+'&nbsp;&nbsp;'+'<i class="ion-ios-arrow-up"> </i>');
-       $("html,body").stop().animate({"scrollTop":$("#money").offset().bottom},0);
+       $("html,body").stop().animate({"scrollTop":$("#money").offset().top},0);
 
    }
 
