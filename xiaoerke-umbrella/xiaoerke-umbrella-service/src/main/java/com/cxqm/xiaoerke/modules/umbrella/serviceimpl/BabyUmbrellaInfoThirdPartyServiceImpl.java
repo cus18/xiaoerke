@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.umbrella.serviceimpl;
 
+import com.cxqm.xiaoerke.modules.sys.dao.UtilDao;
+import com.cxqm.xiaoerke.modules.sys.entity.ValidateBean;
 import com.cxqm.xiaoerke.modules.umbrella.dao.BabyUmbrellaInfoDao;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoThirdPartyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class BabyUmbrellaInfoThirdPartyServiceImpl implements BabyUmbrellaInfoTh
     @Autowired
     private BabyUmbrellaInfoDao babyUmbrellaInfoDao;
 
+    @Autowired
+    private UtilDao utilDao;
+
     /**
      *根据手机号查询该用户是否购买宝护伞
      */
@@ -37,5 +42,12 @@ public class BabyUmbrellaInfoThirdPartyServiceImpl implements BabyUmbrellaInfoTh
     public Map<String,Object> getStatusByPhone(Map<String,Object> map){
         Map<String,Object> statusMap = babyUmbrellaInfoDao.getStatusByPhone(map);
         return statusMap;
+    }
+
+    /**
+     *
+     */
+    public ValidateBean getIdentifying(String phoneNum){
+        return utilDao.getIdentifying(phoneNum);
     }
 }

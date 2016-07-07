@@ -37,6 +37,12 @@ public class TestConcurrentDemo {
         TestConcurrentDemo testConcurrentDemo = new TestConcurrentDemo();
         testConcurrentDemo.process();
         //System.out.println();
+        //Map<String,Object> map1 =new HashMap<String, Object>();
+        //Map<String,Object> map2 =new HashMap<String, Object>();
+        //map1.put("a",1);
+        //map2.put("b",2);
+        //map1.putAll(map2);
+        //System.out.println(map1);
     }
 
 }

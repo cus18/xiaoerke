@@ -6,6 +6,7 @@ import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
+import com.cxqm.xiaoerke.modules.sys.entity.ValidateBean;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
@@ -105,8 +106,9 @@ public class UmbrellaThirdPartyController  {
         }
         //未购买
         result.put("result","0");
-
-        return utilService.sendIdentifying(userPhone);
+        Map<String, Object> codeMap = utilService.sendIdentifying(userPhone);
+        result.putAll(codeMap);
+        return result;
     }
 
     /**
@@ -120,9 +122,25 @@ public class UmbrellaThirdPartyController  {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 
         Map<String, Object> result=new HashMap<String, Object>();
+        String phone = params.get("phone").toString();
+        String userCode=params.get("code").toString();
+        ValidateBean validateBean = babyUmbrellaInfoThirdPartyService.getIdentifying(phone);
+        String code = validateBean.getCode();
+        if (null == validateBean) {
+            result.put("result","0");
+            return result;
+        }
+        Date date = validateBean.getCreateTime();
+        boolean flag = (date.getTime() + 1000 * 60) > new Date().getTime();
+        if (validateBean != null && flag && userCode.equals(code)) {
+            //code有效，根据用户的手机号（切记，目前手机号，都是用户user表中的login_name）
+            System.out.println(userCode + "|||||||||||||" + code);
+            result.put("result","1");
+        } else {
+            result.put("result","0");
+            return result;
+        }
 
-
-        Map<String, Object> resultMap = new HashMap<String, Object>();
         BabyBaseInfoVo vo = new BabyBaseInfoVo();
         vo.setSex(params.get("sex").toString());
         vo.setBirthday(this.toDate(params.get("birthDay").toString()));
@@ -153,7 +171,7 @@ public class UmbrellaThirdPartyController  {
         familyInfo.setBirthday(birthDay);
         int res = babyUmbrellaInfoSerivce.saveFamilyUmbrellaInfo(familyInfo);
 
-        result.put("result",res);
+        result.put("status",res);
         return result;
     }
 
