@@ -447,7 +447,7 @@ public class PayNotificationController {
 					payRecord.setReceiveDate(new Date());
 					payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
 					String openid = (String)map.get("openid");
-					HttpRequestUtil.wechatpost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/notifyPayInfo2Distributor",
+					HttpRequestUtil.wechatpost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/notifyPayInfo2Distributor?openId="+openid,
 							"openId=" + openid);
 				}
 			}
