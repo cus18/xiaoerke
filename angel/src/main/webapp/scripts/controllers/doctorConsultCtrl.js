@@ -1635,15 +1635,15 @@ angular.module('controllers', ['luegg.directives'])
                 else if(notifyData.notifyType=="3001"){
                     getFindTransferSpecialist();
                 }
-                //正常用户
+                // 只咨询客服
                 else if(notifyData.notifyType=="1001"){
                     $.each($scope.alreadyJoinPatientConversation, function (index, value) {
-                        if (value.patientId == notifyData.session.userId) {
-                            value.consultValue.push(notifyData);
+                        if (value.sessionId == notifyData.sessionId) {
+                            value.consultValue.notifyType = 1001;
                         }
                     });
                 }
-                //需要付款用户
+                /*//需要付款用户
                 else if(notifyData.notifyType=="1002"){
                     $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                         if (value.patientId == notifyData.session.userId) {
@@ -1658,7 +1658,7 @@ angular.module('controllers', ['luegg.directives'])
                             value.consultValue.push(notifyData);
                         }
                     });
-                }
+                }*/
                 else if(notifyData.notifyType=="0015"){
                     //收到服务器发送过来的心跳消息
                     var heartBeatServerMessage = {
