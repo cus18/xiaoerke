@@ -64,12 +64,12 @@
                                     link: "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$stateParams.id+"/a",
                                     imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                     success: function (res) {
-                                        recordLogs("BHS_WDBZ_FXPYQ");
+                                        recordLogs("BHS_WDBZ_FXPYQ_"+$stateParams.id);
                                         //记录用户分享文章
                                         $.ajax({
                                             type: 'POST',
                                             url: "umbrella/updateBabyUmbrellaInfoIfShare",
-                                            data:"{'id':'"+shareUmbrellaId+"'}",
+                                            data:"{'id':'"+$stateParams.id+"'}",
                                             contentType: "application/json; charset=utf-8",
                                             success: function(result){
                                                 var todayCount=result.todayCount;
@@ -88,11 +88,11 @@
                                     link:"http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$stateParams.id+"/a",
                                     imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                     success: function (res) {
-                                        recordLogs("BHS_WDBZ_FXPY");
+                                        recordLogs("BHS_WDBZ_FXPY_"+$stateParams.id);
                                         $.ajax({
                                             type: 'POST',
                                             url: "umbrella/updateBabyUmbrellaInfoIfShare",
-                                            data:"{'id':'"+shareUmbrellaId+"'}",
+                                            data:"{'id':'"+$stateParams.id+"'}",
                                             contentType: "application/json; charset=utf-8",
                                             success: function(result){
                                                 var todayCount=result.todayCount;

@@ -53,7 +53,7 @@
     select
     <include refid="Base_Column_List" />
     from consult_statistic
-    where create_date BETWEEN DATE_FORMAT(#{startDate},'%Y-%m-%d') and DATE_FORMAT(#{endDate},'%Y-%m-%d')
+    where create_date BETWEEN #{startDate} and #{endDate}
     order by create_date  DESC
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -396,7 +396,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!--咨询统计  deliang-->
-  <select id="getConsultStatistic" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+  <select id="getConsultStatistic" resultType="java.lang.Float" parameterType="java.util.HashMap">
     select * from (
     select count(DISTINCT(sys_user_id)) countNumber from consult_session where create_time like '${createDate}%' and flag is null
     UNION ALL
@@ -418,25 +418,25 @@
     UNION ALL
     select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime like '${createDate}%' and payStatus = 'success'
     UNION ALL
-    SELECT count(*) countNumber from sys_attention where date LIKE '${createDate}%' and STATUS='1' and openid in (
+    SELECT count(DISTINCT(openid)) countNumber from sys_attention where date LIKE '${createDate}%' and STATUS='1' and openid in (
              select sys_user_id from consult_session where consult_number = 1 and create_time like '${createDate}%' GROUP BY sys_user_id ORDER BY null
              )
     UNION ALL
-    SELECT count(*) countNumber from sys_attention where date LIKE '${createDate}%' and STATUS='1' and openid in (
+    SELECT count(DISTINCT(openid)) countNumber from sys_attention where date LIKE '${createDate}%' and STATUS='1' and openid in (
              select sys_user_id from consult_session where consult_number > 1 and create_time like '${createDate}%' GROUP BY sys_user_id ORDER BY null
              )
     UNION ALL
-    select count(*) countNumber from consult_session where consult_number = 1 and create_time like '${createDate}%'
+    select count(DISTINCT(sys_user_id)) countNumber from consult_session where consult_number = 1 and create_time like '${createDate}%'
     UNION ALL
-    select count(*) countNumber from consult_session where consult_number > 1 and create_time like '${createDate}%'
+    select count(DISTINCT(sys_user_id)) countNumber from consult_session where consult_number > 1 and create_time like '${createDate}%'
     UNION ALL
     select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between #{weekBeginDate} and #{weekEndDate} and (serviceAttitude != '0')
     UNION ALL
     select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between #{monthBeginDate} and #{monthEndDate} and (serviceAttitude != '0')) a
     union all
-    select ceil(MIN(redpacket)) countNumber from customerEvaluation where createtime like '${createDate}%' and redPacket is not null and redPacket !=''
+    select min(redPacket) countNumber from customerEvaluation where createtime like '${createDate}%' and redPacket is not null and redPacket !=''
     union all
-    select ceil(MAX(redpacket)) countNumber from customerEvaluation where createtime like '${createDate}%' and redPacket is not null and redPacket !=''
+    select ceil(Max(cast(redPacket as SIGNED))) countNumber  from customerEvaluation where createtime like '${createDate}%' and redPacket is not null and redPacket !=''
     union all
     select ceil(sum(redpacket)) countNumber from customerEvaluation where createtime like '${createDate}%' and redPacket is not null and redPacket !=''
   </select>

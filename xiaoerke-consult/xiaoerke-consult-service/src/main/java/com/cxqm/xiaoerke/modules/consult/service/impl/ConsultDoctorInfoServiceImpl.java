@@ -55,14 +55,17 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
         List<Map<String,Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParam);
         float redPacket = 0;
         int satisfy = 0;
+        int verysatisfy = 0;
         int unsatisfy = 0;
         int redPacketPerson = 0;
         for(Map<String,Object> temp : praiseList){
             if(StringUtils.isNotNull((String) temp.get("serviceAttitude"))){
                 if("1".equals((String) temp.get("serviceAttitude"))){
                     unsatisfy += 1;
-                }else if("3".equals((String) temp.get("serviceAttitude"))||"5".equals((String) temp.get("serviceAttitude"))){
+                }else if("3".equals((String) temp.get("serviceAttitude"))){
                     satisfy += 1;
+                }else if("5".equals((String) temp.get("serviceAttitude"))){
+                    verysatisfy += 1;
                 }
             }
 
@@ -73,6 +76,7 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
         }
         map.put("redPacket",redPacket);
         map.put("satisfy",satisfy);
+        map.put("verysatisfy",verysatisfy);
         map.put("unsatisfy", unsatisfy);
         map.put("redPacketPerson", redPacketPerson);
         Integer sessionCount = consultSessionService.getConsultSessionUserCount(praiseParam);

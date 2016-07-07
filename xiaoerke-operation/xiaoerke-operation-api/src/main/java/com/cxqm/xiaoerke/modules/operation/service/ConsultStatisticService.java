@@ -15,7 +15,7 @@ import java.util.List;
 
 public interface ConsultStatisticService {
 
-    List<Integer> getConsultStatistic(HashMap hashMap);
+    List<Float> getConsultStatistic(HashMap hashMap);
 
 
     int insertSelective(ConsultStatisticVo record);

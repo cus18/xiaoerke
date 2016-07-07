@@ -447,6 +447,8 @@
         serviceAttitude = '1'
         AND DATE_FORMAT(ce.createtime,'%Y-%m-%d') BETWEEN DATE_FORMAT(#{fromDate},'%Y-%m-%d')
         AND DATE_FORMAT(#{toDate},'%Y-%m-%d')
+        GROUP BY
+        ce.openid
     </select>
 
     <!--导出送心意数据 @author sunxiao-->

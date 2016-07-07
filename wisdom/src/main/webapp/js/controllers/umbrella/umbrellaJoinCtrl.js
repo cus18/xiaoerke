@@ -66,9 +66,9 @@
                     success:function(data) {
                         if(data.openid=="none"){
                             // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
-                            window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+                            window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa_"+$stateParams.id;
                         }else{
-                            
+                            recordLogs("UmbrellaShareJoinPage_"+ $stateParams.id);
                         
                 ifExistOrder.save(function (data) {
                     // $scope.info.phoneNum=data.phone;
@@ -247,12 +247,12 @@
                                         link:  "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$scope.umbrellaId+"/"+$scope.status,
                                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                         success: function (res) {
-                                            recordLogs("BHS_WDBZ_FXPYQ");
+                                            recordLogs("BHS_WDBZ_FXPYQ_"+$scope.umbrellaId);
                                             //记录用户分享文章
                                             $.ajax({
                                                 type: 'POST',
                                                 url: "umbrella/updateBabyUmbrellaInfoIfShare",
-                                                data:"{'id':'"+shareUmbrellaId+"'}",
+                                                data:"{'id':'"+$scope.umbrellaId+"'}",
                                                 contentType: "application/json; charset=utf-8",
                                                 success: function(result){
                                                     var todayCount=result.todayCount;
@@ -271,11 +271,11 @@
                                         link:  "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$scope.umbrellaId+"/"+$scope.status, // 分享链接
                                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                         success: function (res) {
-                                            recordLogs("BHS_WDBZ_FXPY");
+                                            recordLogs("BHS_WDBZ_FXPY_"+$scope.umbrellaId);
                                             $.ajax({
                                                 type: 'POST',
                                                 url: "umbrella/updateBabyUmbrellaInfoIfShare",
-                                                data:"{'id':'"+shareUmbrellaId+"'}",
+                                                data:"{'id':'"+$scope.umbrellaId+"'}",
                                                 contentType: "application/json; charset=utf-8",
                                                 success: function(result){
                                                     var todayCount=result.todayCount;
