@@ -32,40 +32,13 @@ angular.module('controllers', ['luegg.directives'])
             $scope.loadingFlag = false;
             $scope.socketServerFirst = "";
             $scope.socketServerSecond = "";
-            $scope.firstAddress = "localhost";
+            $scope.firstAddress = "101.201.154.75";
             $scope.secondAddress = "120.25.161.33";
             $scope.alreadyJoinPatientConversation = []; //已经加入会话的用户数据，一个医生可以有多个对话的用户，这些用户的数据，都保存在此集合中 乱码
             $scope.currentUserConversation = {}; //医生与当前正在进行对话用户的聊天数据，医生在切换不同用户时，数据变更到切换的用户上来。
             $scope.waitJoinNum = 0; //医生待接入的用户数，是动态变化的数
             $scope.glued = true; //angular滚动条的插件预制参数，让对话滚动条，每次都定位底部，当新的聊天数据到达时
             var umbrellaCustomerList = "75cefafe00364bbaaaf7b61089994e22,3b91fe8b7ce143918012ef3ab4baf1e0,00032bd90d724d0sa63a4d6esa0e8dbf";
-            /*//测试用的假数据
-            $scope.alreadyJoinPatientConversation=[
-                {
-                    'patientId':1,
-                    'dateTime':1111111111111,
-                    'messageNotSee':true,
-                    'number':1,
-                    'patientName':'大熊猫',
-                    'notifyType':1001
-                },{
-                    'patientId':2,
-                    'dateTime':111111111,
-                    'messageNotSee':true,
-                    'number':1,
-                    'patientName':'小熊猫',
-                    'notifyType':1002
-                },{
-                    'patientId':3,
-                    'dateTime':1111122221111,
-                    'messageNotSee':true,
-                    'number':1,
-                    'patientName':'熊猫',
-                    'notifyType':1003
-                }
-
-            ]*/
-
             //各个子窗口的开关变量
             $scope.showFlag = {
                 rankList: false,
@@ -214,7 +187,7 @@ angular.module('controllers', ['luegg.directives'])
 
             //公共点击按钮，用来触发弹出对应的子窗口
             $scope.tapShowButton = function(type){
-                $.each($scope.showFlag,function(key,value){
+                $.each($scope.showFlag,function(key){
                     if(key==type){
                         if(type=="waitProcess"){
                             if(!waitProcessLock){
@@ -355,7 +328,7 @@ angular.module('controllers', ['luegg.directives'])
                     remark: $scope.info.transferRemark},function(data){
                     if(data.result=="success"){
                         //转接请求成功后，在接诊员侧，保留了此会话，只到被转接的医生收到为止，
-                        //才将会话拆除，在此过程中，允许接诊员，取消转接。
+                        // 才将会话拆除，在此过程中，允许接诊员，取消转接。
                     }else if(data.result=="failure"){
                         alert("转接会话给"+$scope.csTransferUserName+"失败，请转接给其他医生");
                     }else if(data.result=="transferring"){
@@ -635,7 +608,7 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.sendConsultMessage();
                     }
                 }
-            };
+            };//当onkeydown 事件发生时调用函数
 
             //向用户发送咨询消息
             $scope.sendConsultMessage = function () {
@@ -763,7 +736,7 @@ angular.module('controllers', ['luegg.directives'])
                     flag = textValue[1];
                 }
                 return flag;
-            }
+            };
 
             //向用户发送咨询图片
             $scope.uploadFiles = function($files,fileType) {
@@ -1356,10 +1329,13 @@ angular.module('controllers', ['luegg.directives'])
             /***回复操作区**/
             /***咨询服务**/
             //根据openid获取历史咨询
-            $scope.historyConsult = '';
-            GetCustomerLogByOpenID.save({openid:$scope.currentUserConversation.patientId}, function (data) {
-                $scope.historyConsult = data.logList;
-            });
+            var getHistoryConsultContent = function () {
+                $scope.historyConsult = '';
+                GetCustomerLogByOpenID.save({openid:$scope.currentUserConversation.patientId}, function (data) {
+                    console.log(data)
+                    $scope.historyConsult = data.logList;
+                });
+            };
             //初始化宝宝的信息$scope.currentUserConversation.patientId
             $scope.babyNameList=[];
             SearchBabyInfo.save({openid:''}, function (data) {
@@ -1395,18 +1371,21 @@ angular.module('controllers', ['luegg.directives'])
                     if(data.type == 1){
                         $('#addCustomerLog').attr('disabled',"true");
                         $("#addCustomerLog").css("background","gray");
+                        getHistoryConsultContent();
                     }
                 });
                 $scope.info.result='';
                 $scope.info.show='';
                 $scope.info.illness='';
             };
+
             // 获取当前的时间
             $scope.todayTime = '';
             var newTime = function(){
                 var d = new Date();
                 $scope.todayTime = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
             };
+
             $scope.userTableMore = "查看更多";
             $scope.tapUserTable = function (key) {
                 $scope.showFlag[key] = !$scope.showFlag[key];
@@ -1577,6 +1556,7 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 });
             };
+
             //处理系统发送过来的通知类消息
             var processNotifyMessage = function(notifyData){
                 if(notifyData.notifyType=="0009"){
@@ -1925,10 +1905,8 @@ angular.module('controllers', ['luegg.directives'])
             $scope.searchMessage = function () {
                 if($scope.info.searchMessageContent == '' || $scope.info.searchMessageContent == null){
                     alert('请选择查询内容！');
-                    return ;
                 }else if($scope.messageType == '' || $scope.messageType == null){
                     alert('请选择查询类型！');
-                    return ;
                 }else{
                     $scope.loadingFlag = true;
                     GetMessageRecordInfo.save({
