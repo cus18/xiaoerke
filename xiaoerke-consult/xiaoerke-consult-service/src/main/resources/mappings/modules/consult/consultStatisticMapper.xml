@@ -426,9 +426,9 @@
              select sys_user_id from consult_session where consult_number > 1 and create_time like '${createDate}%' GROUP BY sys_user_id ORDER BY null
              )
     UNION ALL
-    select count(DISTINCT(openid)) countNumber from consult_session where consult_number = 1 and create_time like '${createDate}%'
+    select count(DISTINCT(sys_user_id)) countNumber from consult_session where consult_number = 1 and create_time like '${createDate}%'
     UNION ALL
-    select count(DISTINCT(openid)) countNumber from consult_session where consult_number > 1 and create_time like '${createDate}%'
+    select count(DISTINCT(sys_user_id)) countNumber from consult_session where consult_number > 1 and create_time like '${createDate}%'
     UNION ALL
     select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between #{weekBeginDate} and #{weekEndDate} and (serviceAttitude != '0')
     UNION ALL
