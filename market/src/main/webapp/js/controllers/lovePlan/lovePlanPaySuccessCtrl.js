@@ -57,7 +57,7 @@ angular.module('controllers', ['ionic']).controller('lovePlanPaySuccessCtrl', [
                             wx.onMenuShareAppMessage({
                                 title: '我已为蛋蛋进行了公益捐赠，捐款和转发都是献爱心', // 分享标题
                                 desc: '蛋蛋正在接受化疗，你的一个小小善举，就能挽救一个鲜活生命！', // 分享描述
-                                link:window.location.href.replace("true","false"), // 分享链接
+                                link:share, // 分享链接
                                 imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Faxjz.jpg', // 分享图标
                                 success: function (res) {
                                     recordLogs("AXJZ_HDSY_FXPY");

@@ -21,7 +21,7 @@ angular.module('controllers', ['ionic']).controller('lovePlanListCtrl', [
         };
         $scope.title ="宝妈爱心接力";
         $scope.goContribute = function () {
-            window.location.href="http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=lovePlanPay"
+            window.location.href="http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=lovePlanPay"
         };
         $scope.doRefresh = function(){
             loadShare();
@@ -29,7 +29,7 @@ angular.module('controllers', ['ionic']).controller('lovePlanListCtrl', [
         //分享到朋友圈或者微信
         var loadShare = function(){
             // if(version=="a"){
-            var share = 'http://xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=32';
+            var share = 'http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=32';
             version="a";
             var timestamp;//时间戳
             var nonceStr;//随机字符串
@@ -75,7 +75,7 @@ angular.module('controllers', ['ionic']).controller('lovePlanListCtrl', [
                             wx.onMenuShareAppMessage({
                                 title: '我已为蛋蛋进行了公益捐赠，捐款和转发都是献爱心', // 分享标题
                                 desc: '蛋蛋正在接受化疗，你的一个小小善举，就能挽救一个鲜活生命！', // 分享描述
-                                link:window.location.href.replace("true","false"), // 分享链接
+                                link:share, // 分享链接
                                 imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Faxjz.jpg', // 分享图标
                                 success: function (res) {
                                     recordLogs("AXJZ_HDSY_FXPY");
