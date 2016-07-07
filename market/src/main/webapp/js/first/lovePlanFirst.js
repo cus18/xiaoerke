@@ -41,7 +41,7 @@ var goLovePlanList = function(){
 };*/
 // 点击 我要捐款
 var goContribute = function(){
-    window.location.href="http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=lovePlanPay"
+    window.location.href="http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=lovePlanPay"
 };
 // 宝护伞 查看详情
 var goUmbrella = function(){
