@@ -104,7 +104,7 @@ public class UmbrellaThirdPartyController  {
         //未购买
         Map<String, Object> codeMap = utilService.sendIdentifying(userPhone);
         result.putAll(codeMap);
-        result.put("result","0");
+        result.put("result", "0");
         return result;
     }
 
@@ -174,6 +174,20 @@ public class UmbrellaThirdPartyController  {
         int res = babyUmbrellaInfoSerivce.saveFamilyUmbrellaInfo(familyInfo);
 
         result.put("status",res);
+        return result;
+    }
+
+    /**
+     * 获取用户专属临时二维码
+     */
+    @RequestMapping(value = "/getUserQRCode", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object>  getUserQRCode(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+        String id = params.get("id").toString();
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("qrcode",babyUmbrellaInfoSerivce.getUserQRCode(id));
         return result;
     }
 
