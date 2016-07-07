@@ -102,9 +102,9 @@ public class UmbrellaThirdPartyController  {
             }
         }
         //未购买
-        result.put("result","0");
         Map<String, Object> codeMap = utilService.sendIdentifying(userPhone);
         result.putAll(codeMap);
+        result.put("result","0");
         return result;
     }
 
