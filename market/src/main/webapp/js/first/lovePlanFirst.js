@@ -22,7 +22,22 @@ $(function(){
 
 var lovePlanFirsInit = function(){
 };
+var moreLock=false;
+var lookMore = function(){
+   if(moreLock){
+        moreLock=false;
+       $(".pic-list dd:gt(3)").hide();
+       $(".lookMore a").html("点击查看全部"+'&nbsp;&nbsp;'+'<i class="ion-ios-arrow-down"> </i>');
+   }
+    else{
+       moreLock=true;
+       $(".pic-list dd:gt(3)").show();
+       $(".lookMore a").html("收起"+'&nbsp;&nbsp;'+'<i class="ion-ios-arrow-up"> </i>');
+       $("html,body").stop().animate({"scrollTop":$("#money").offset().top},0);
 
+   }
+
+};
 var goComment = function(){
     $(".c-shadow").show();
     $(".real-edit").show();
@@ -41,7 +56,7 @@ var goLovePlanList = function(){
 };*/
 // 点击 我要捐款
 var goContribute = function(){
-    window.location.href="http://xiaork.cn/keeper/wxPay/patientPay.do?serviceType=lovePlanPay"
+    window.location.href="http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=lovePlanPay"
 };
 // 宝护伞 查看详情
 var goUmbrella = function(){
