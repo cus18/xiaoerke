@@ -438,7 +438,7 @@ public class PayNotificationController {
 			//放入service层进行事物控制
 			if("SUCCESS".equals(map.get("return_code"))){
 				LogUtils.saveLog(Servlets.getRequest(), "00000048", "用户微信支付完成:" + map.get("out_trade_no"));
-				LogUtils.saveLog(Servlets.getRequest(), "LOVEPLAN_ZFY_ZFCG", "用户微信支付完成:" + map.get("out_trade_no"));
+				LogUtils.saveLog(Servlets.getRequest(), "doctorConsultPay", "用户微信支付完成:" + map.get("out_trade_no"));
 				PayRecord payRecord = new PayRecord();
 				payRecord.setId((String) map.get("out_trade_no"));
 				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
