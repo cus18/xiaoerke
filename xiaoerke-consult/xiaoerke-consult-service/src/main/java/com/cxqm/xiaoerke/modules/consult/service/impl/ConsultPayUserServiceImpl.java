@@ -36,9 +36,6 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
     private PayRecordService payRecordService;
 
     @Autowired
-    private InsuranceRegisterServiceService insuraceregisterservice;
-
-    @Autowired
     private SessionRedisCache sessionRedisCache;
 
     private RedisTemplate<String, Object> redisTemplate = SpringContextHolder.getBean("redisTemplate");
@@ -83,7 +80,7 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
         //历史咨询次数三次及以上
         List<ConsultSession> consultSessions = consultSessionService.selectBySelective(consultSession);
         //判断是否为预防接种系列渠道
-        Integer insurace = consultPayUserDao.CheckInsuranceByOpenid(userId);
+        Integer insurance = consultPayUserDao.CheckInsuranceByOpenid(userId);
         //是否已经支付
         PayRecord payRecord = payRecordService.findRecordByOpenid(userId,"consultOnline");
         //判断时间条件
@@ -96,9 +93,9 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
         if((morningStartTime.getTime()<present.getTime() &&consultMorningEndTime.getTime()>present.getTime())
                 ||(consultAfternoonStartTime.getTime()<present.getTime()&&consultAfternoonEndTime.getTime()>present.getTime()))
         if( (null!=consultSessions&&consultSessions.size()>3)
-                ||insurace>0
-                ||(null !=payRecord && payRecord.getReceiveDate().getTime()+24*60*60*1000>new Date().getTime())
- )return true;
+                ||insurance>0
+                ||(null !=payRecord && payRecord.getReceiveDate().getTime()+24*60*60*1000>new Date().getTime()))
+            return true;
         return false;
     }
 
