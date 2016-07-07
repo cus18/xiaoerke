@@ -125,15 +125,15 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
         switch (type){
             case 1:
                 st = "咨询高峰期，医生姐姐忙前忙后帮了好多妈妈和宝宝。请她喝杯茶吧，她们也需要您关心。" +
-                        "\n》<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/wxPay/patientPay.do?serviceType=doctorConsultPay'>你请喝茶，医生秒答</a>" +
+                        "\n》<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/getUserWechatMenId?url=33'>你请喝茶，医生秒答</a>" +
                         "\n------------------------"+
-                        "\n》<a href='"+ConstantUtil.ANGEL_WEB_URL+"angel/patient/consult#/customerService'>咨询客服</a>";
+                        "\n》<a href='\"+ConstantUtil.KEEPER_WEB_URL+\"keeper/wechatInfo/fieldwork/wechat/author?url=\"+ConstantUtil.KEEPER_WEB_URL+\"keeper/wechatInfo/getUserWechatMenId?url=34'>咨询客服</a>";
                 break;
             case 2:
                 st = "哎呀，遇到咨询高峰期，加个急诊费，即可让医生秒回。" +
-                        "\n》<a href='"+ ConstantUtil.KEEPER_WEB_URL+"keeper/wxPay/patientPay.do?serviceType=doctorConsultPay'>急诊100%秒达</a>" +
+                        "\n》<a href='\"+ConstantUtil.KEEPER_WEB_URL+\"keeper/wechatInfo/fieldwork/wechat/author?url=\"+ConstantUtil.KEEPER_WEB_URL+\"keeper/wechatInfo/getUserWechatMenId?url=33'>急诊100%秒达</a>" +
                         "\n------------------------"+
-                        "\n》<a href='"+ConstantUtil.ANGEL_WEB_URL+"angel/patient/consult#/customerService'>咨询客服</a>";
+                        "\n》<a href='\"+ConstantUtil.KEEPER_WEB_URL+\"keeper/wechatInfo/fieldwork/wechat/author?url=\"+ConstantUtil.KEEPER_WEB_URL+\"keeper/wechatInfo/getUserWechatMenId?url=34'>咨询客服</a>";
                 break;
             case 3:
                 st = "哎呀，遇到咨询高峰期，加个急诊费，即可让医生秒回。" +
