@@ -127,7 +127,7 @@ public class PraiseCustomerController extends BaseController {
                     "\"remark\":{\"value\":\"\",\"color\":\"#173177\"}";
             Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
             String tokenId = (String) userWechatParam.get("token");
-            String templateId = "33W9Sp-Px7bW3gxQWrHjqE5dL45Eino-9iwZAFU-QG8";
+            String templateId = "xP7QzdilUu1RRTFzVv8krwwMOyv-1pg9l0ABsooub14";
             if (openIds != null && openIds.size() > 0) {
                 for (String openId : openIds) {
                     WechatUtil.sendTemplateMsgToUser(tokenId, openId, templateId, message);
