@@ -193,10 +193,7 @@ public class ConsultWechatController extends BaseController {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-
-
             }
-
 
             //会话创建成功，拿到了csChannel,给接诊员(或是医生)发送消息
             if(csChannel!=null&&csChannel.isActive()){
