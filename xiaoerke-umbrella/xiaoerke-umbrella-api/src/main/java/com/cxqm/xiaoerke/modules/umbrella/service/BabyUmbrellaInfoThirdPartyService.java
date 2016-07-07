@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.umbrella.service;
 
+import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.entity.ValidateBean;
 
 import java.util.Map;
@@ -20,7 +21,12 @@ public interface BabyUmbrellaInfoThirdPartyService {
     Map<String,Object> getStatusByPhone(Map<String,Object> map);
 
     /**
-     *
+     *根据手机号查询验证码
      */
     ValidateBean getIdentifying(String phoneNum);
+
+    /**
+     * 根据手机号创建用户信息
+     */
+    User saveUserInfo(String phone);
 }

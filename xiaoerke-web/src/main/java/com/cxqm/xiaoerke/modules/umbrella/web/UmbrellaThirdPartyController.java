@@ -5,8 +5,7 @@ import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
-import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
-import com.cxqm.xiaoerke.modules.sys.entity.ValidateBean;
+import com.cxqm.xiaoerke.modules.sys.entity.*;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
@@ -27,9 +26,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**@author guozengguang
  * @version 16/7/6
@@ -141,10 +138,14 @@ public class UmbrellaThirdPartyController  {
             return result;
         }
 
+        //創建用戶
+        User user = babyUmbrellaInfoThirdPartyService.saveUserInfo(phone);
+
         BabyBaseInfoVo vo = new BabyBaseInfoVo();
         vo.setSex(params.get("sex").toString());
         vo.setBirthday(this.toDate(params.get("birthDay").toString()));
         vo.setName(URLDecoder.decode(params.get("name").toString(), "utf-8"));
+        vo.setUserid(user.getId());
         int babyResult = healthRecordsService.insertBabyInfo(vo);
 
         //添加保护伞初始信息
@@ -159,6 +160,7 @@ public class UmbrellaThirdPartyController  {
         babyUmbrellaInfo.setPayResult("fail");
         babyUmbrellaInfo.setVersion("a");
         babyUmbrellaInfo.setTruePayMoneys("5");
+
 
         //插入家庭成员的信息
         //宝爸宝妈
