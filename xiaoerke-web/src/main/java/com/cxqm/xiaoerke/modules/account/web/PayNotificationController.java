@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.net.URLEncoder;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -400,7 +399,7 @@ public class PayNotificationController {
                         MutualHelpDonation mutualHelpDonation = new MutualHelpDonation();
                         mutualHelpDonation.setOpenId((String) map.get("openid"));
 						mutualHelpDonation.setMoney(Integer.valueOf((String) map.get("total_fee")));
-						mutualHelpDonation.setLeaveNote(insuranceMap.get("leave_note").toString());
+						mutualHelpDonation.setLeaveNote((String)insuranceMap.get("leave_note"));
 //						mutualHelpDonation.setDonationType((Integer) insuranceMap.get("donationType"));
 						mutualHelpDonation.setCreateTime(new Date());
                         mutualHelpDonationService.saveNoteAndDonation(mutualHelpDonation);
