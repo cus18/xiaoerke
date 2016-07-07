@@ -16,7 +16,7 @@ angular.module('controllers', ['ionic']).controller('lovePlanListCtrl', [
         });
         $scope.transformDate = function(dateTime){
             var angularDay = $filter('date')(dateTime,"yyyy-MM-dd HH:mm:ss");
-            var dateValue = moment(angularDay).startOf('hour').fromNow();
+            var dateValue = moment(angularDay).startOf('minute').fromNow();
             return dateValue;
         };
         $scope.title ="宝妈爱心接力";

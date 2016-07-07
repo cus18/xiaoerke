@@ -96,12 +96,7 @@ var count=function () {
         contentType: "application/json; charset=utf-8",
         dataType:'json',
         success:function(data) {
-            console.log('counts',data.count);
-            if(data.count != undefined){
-                $("#counts").html(data.count);
-            }else{
-                $("#counts").html('30');
-            }
+            $("#counts").html(data.count);
         },
         error : function() {
         }
@@ -117,16 +112,10 @@ var sumMoney=function () {
         contentType: "application/json; charset=utf-8",
         dataType:'json',
         success:function(data) {
-            console.log(data)
-            if(data.count != undefined){
-                console.log('sumMoney',data.count);
-                var length = data.count / 300 + 10;
-                $(".lovePlanFirst .ruler .line").css('width',length+'%');
-                $("#lovemoneyCount").html(data.count);
-            }else{
-                $(".lovePlanFirst .ruler .line").css('width','20%');
-                $("#lovemoneyCount").html('3000');
-            }
+            var sumMoney = data.count + 20000;
+            var length = sumMoney / 2000;
+            $(".lovePlanFirst .ruler .line").css('width',length+'%');
+            $("#lovemoneyCount").html(sumMoney);
         },
         error : function() {
         }
