@@ -166,7 +166,6 @@ public class ConsultWechatController extends BaseController {
                     }
                 }
             }else{
-
                 //如果此用户是第一次发送消息，则sessionId为空
                 consultSession.setCreateTime(new Date());
                 consultSession.setUserId(userId);

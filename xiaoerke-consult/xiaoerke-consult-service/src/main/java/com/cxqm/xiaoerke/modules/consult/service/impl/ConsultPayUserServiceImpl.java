@@ -80,20 +80,20 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
     public boolean angelChargeCheck(String userId) {
         ConsultSession consultSession = new ConsultSession();
         consultSession.setUserId(userId);
-//       历史咨询次数三次及以上
+        //历史咨询次数三次及以上
         List<ConsultSession> consultSessions = consultSessionService.selectBySelective(consultSession);
         //判断是否为预防接种系列渠道
         Integer insurace = consultPayUserDao.CheckInsuranceByOpenid(userId);
         //是否已经支付
         PayRecord payRecord = payRecordService.findRecordByOpenid(userId,"consultOnline");
-//        判断时间条件
-        Date moningStrarTime = DateUtils.StrToDate(Global.getConfig("consultMoningStrarTime"),"yyyy-MM-dd HH:mm");
-        Date consultMoningEndTime = DateUtils.StrToDate(Global.getConfig("consultMoningEndTime"),"yyyy-MM-dd HH:mm");
+        //判断时间条件
+        Date morningStartTime = DateUtils.StrToDate(Global.getConfig("consultMorningStartTime"),"yyyy-MM-dd HH:mm");
+        Date consultMorningEndTime = DateUtils.StrToDate(Global.getConfig("consultMorningEndTime"),"yyyy-MM-dd HH:mm");
         Date consultAfternoonStartTime = DateUtils.StrToDate(Global.getConfig("consultAfternoonStartTime"),"yyyy-MM-dd HH:mm");
         Date consultAfternoonEndTime = DateUtils.StrToDate(Global.getConfig("consultAfternoonEndTime"),"yyyy-MM-dd HH:mm");
         Date present = new Date();
         //判断日期条件是否满足要求
-        if((moningStrarTime.getTime()<present.getTime() &&consultMoningEndTime.getTime()>present.getTime())
+        if((morningStartTime.getTime()<present.getTime() &&consultMorningEndTime.getTime()>present.getTime())
                 ||(consultAfternoonStartTime.getTime()<present.getTime()&&consultAfternoonEndTime.getTime()>present.getTime()))
         if( (null!=consultSessions&&consultSessions.size()>3)
                 ||insurace>0
