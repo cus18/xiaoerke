@@ -1,0 +1,916 @@
+<ion-view class="umbrellaFirstPage">
+    <ion-content  overflow-scroll="true" style="top:0;overflow: hidden;">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <!--顶部会员信息-->
+            <div class="memberInfo tc">
+                <!-- <div class="text f6">已有互助保障金额</div>
+                 <div class="date f4" id="date"></div>
+                 <div class="money f5">
+                     <span class="" id="totalUmbrellaMoney"> </span>元
+                 </div>-->
+                <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/index_banner.png">
+                <!-- <ul class="num">
+                     <span class="line"></span>
+                     <li class="fl">
+                         <div class="f2">
+                            <span class="" id="count"> </span>人
+                         </div>
+                         <p class="f4">已加入会员</p>
+                     </li>
+                     <li class="fl">
+                         <div class="f2">
+                            <span class="" id="todayCount"> </span>人
+                         </div>
+                         <p>近5日新增</p>
+                     </li>
+                 </ul>-->
+                <div class="all-num tc c0 f5">
+                    <img class="my-img1" width="20.5" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/icon_pepple.png">
+                    已有<span id="count" class="bold">{{joinNumber}}</span>人加入互助计划
+                </div>
+            </div>
+            <!--图文介绍-->
+            <div class="introPic">
+                <ul>
+                    <li class="fl tc">
+                        <img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic1a.png" >
+                        <div class="f4 c3">
+                            <span class="c12">5元</span>即加入
+                        </div>
+                        <div class="f4 c3">
+                            <span class="c12">免单随时享</span>
+                        </div>
+                    </li>
+                    <li class="fl tc">
+                        <img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic2.png" >
+                        <div class="f4 c3">
+                            邀请1位好友
+                        </div>
+                        <div class="f4 c3">
+                            增加<span class="c12">2万</span>保障
+                        </div>
+                    </li>
+                    <li class="fl tc">
+                        <img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic3.png" >
+                        <div class="f4 c3">
+                            最高可享
+                        </div>
+                        <div class="f4 c3">
+                            <span class="c12">40万</span>保障
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- 宝护伞互助计划介绍-->
+            <div class="box bg1 helpPlan">
+                <h3 class="tc f6  c11"><span >宝护伞</span>-宝大夫儿童家庭重疾互助计划</h3>
+                <p class="text f4 c3" >宝护伞是由宝大夫平台发起，<a class="c11 myLink" ng-click="lookProtocol(4)">中国儿童少年基金会</a>共同参与的非营利公益性互助计划。主要面向全国<span class="c11">0-14周岁儿童及其父母</span>，让大家保障共享，难关共度。<br>现在加入即可享受最高<span class="c11">40万元</span>保障金（<a class="c11 myLink" ng-click="lookProtocol(1)">60种重大疾病</a>+<a class="c11 myLink" ng-click="lookProtocol(2)">15种轻症</a>），一旦家庭成员发生疾病，计划中的每一个家庭将以微小资金伸出援助之手，共同汇聚成高额关爱基金，让每个家庭都能享受“人人为我，我为人人”的互助关爱！</p>
+                <div class="pic tc">
+                    <img width="80%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/help_pic1a.png">
+                </div>
+                <div class="fold">
+                    <h4 class="f4 c11 " ng-click="lookHelpPlan()">
+                        重大疾病名称及定义
+                        <img class="my-img1 arrow  arrow1" width="14" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/umbrella_arr_c_d.png">
+                        <img hidden class="my-img1  arrow arrow2" width="14" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/umbrella_arr_c_up.png">
+                    </h4>
+                    <div class="foldText f3" hidden>
+                        <i class="triangle"></i>
+                        <p class="c11" ng-click="lookProtocol(1)">
+                            <a class="myLink" >《60种重大疾病名称及定义》</a>
+                        </p>
+                        <p class="c4">
+                            第1至第20项为中国保险行业协会与中国医师协会共同制定的重大疾病保险的疾病定义，第21项至第60项为宝大夫平台根据权威儿科专家建议，自行增加的疾病种类和定义。其中包含多种儿科常见重大疾病，如白血病等。加入计划的孩子父母也拥有该项保障，金额为保障的25%。
+                        </p>
+                        <p class="c11" ng-click="lookProtocol(2)">
+                            <a class="myLink">《15种轻症名称及定义》</a>
+                        </p>
+                        <p class="c4">
+                            互助计划还包含15种轻症救助，金额为保障的20%。父母不享受该项责任。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 互助优势-->
+            <div class="box bg1 helpAdvantage">
+                <h3 class="tc f8  c11">互助优势</h3>
+                <p class="f4 c3">加入互助计划的家庭一旦有宝宝患重疾，所有互助成员将共同伸出援助之手。如果有80万用户参与互助计划，每个会员只需要付出<span class="c11">0.5元</span>，即可获得一份<span class="c11">40万</span>的医疗救助金；如果有800万用户参与互助计划，每个用户仅需<span class="c11">5分</span>钱，即可拯救一位重病儿童！加入互助计划，汇聚微小力量，传递大爱精神！</p>
+                <div class="pic">
+                    <div class="tc">
+                        <img width="84%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/helpAdvantage1.png">
+                        <p class="f3 c3">每人只需<span class="c11">5毛钱</span></p>
+                    </div>
+                    <div class="tc">
+                        <img width="84%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/helpAdvantage2.png">
+                        <p class="f3 c3">每人只需<span class="c11">5分钱</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 安全保证-->
+            <div class="box bg1 operation">
+                <h3 class="tc f8  c11">安全保证</h3>
+                <ul class="text">
+                    <li>
+                        <img class="icon" width="50" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/operation1.png">
+                        <div class="">
+                            <span class="f6 c11 ">公信</span>
+                            <p ><a class="f4 c11 myLink" ng-click="lookProtocol(4)">中国儿童少年基金会负责接收及支付保障金</a></p>
+                        </div>
+                    </li>
+                    <li>
+                        <img  class="icon" width="50" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/operation2.png">
+                        <div class="">
+                            <span class="f6 c11">透明</span>
+                            <p class="f4 c4">救助事件全程透明，接受所有会员监督</p>
+                        </div>
+                    </li>
+                    <li>
+                        <img  class="icon" width="50" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/operation3.png">
+                        <div class="">
+                            <span class="f6 c11">真实</span>
+                            <p class="f4 c4">专业第三方调查机构，确保救助事件真实性</p>
+                        </div>
+                    </li>
+                    <!-- <li>
+                         <img  class="icon" width="50" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/operation4.png">
+                         <div class="">
+                             <span class="f6 c11">关怀</span>
+                             <p class="f4 c4 care1" onclick="care(this)">
+                                 儿科专家全天在线即时咨询，治疗绿色通道
+                                 <img class="my-img1  arrow1" width="14" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/umbrella_arr_c_d.png">
+                                 <img hidden class="my-img1  arrow2" width="14" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/umbrella_arr_c_up.png">
+                             </p>
+                             <p hidden class="f4 c4 care2 ">宝大夫微信平台“咨询大夫”提供7x24小时儿科专家即时免费在线咨询。并且我们向每位申请救助的会员免费提供北京三甲医院儿科专家（副主任以上）门诊、住院、手术安排。</p>
+                         </div>
+                     </li>-->
+                    <li>
+                        <img class="icon"  width="50" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/operation5.png">
+                        <div class="">
+                            <span class="f6 c11">权威</span>
+                            <p class="f4 c4">权威儿科专家会诊团，确保合理治疗，保证救助金使用高效</p>
+                        </div>
+                    </li>
+                </ul>
+                <div class="doctor tc">
+                    <img width="32%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/operation_doctor1.png">
+                    <img width="32%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/operation_doctor2.png">
+                    <img width="32%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/operation_doctor3.png">
+
+                </div>
+            </div>
+
+            <!-- 会员福利-->
+            <div class="box bg1 welfare">
+                <h3 class="tc f8  c11">会员福利</h3>
+                <dl class=" tc">
+                    <dt class="f6 c3">小病随时问</dt>
+                    <dd class="f4 c3">
+                        <p>宝大夫微信平台“咨询大夫”提供<span class="c11">7*24</span>小时儿科专家免费在线咨询，<span class="c11">1分钟</span>内极速回复。</p>
+                        <img  class="mg-img2" width="179" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/welfare1.png">
+                    </dd>
+                    <dt class="f6 c3">大病有名医</dt>
+                    <dd class="f4 c3">
+                        <p>为申请互助的成员免费提供北京<span class="c11">三甲医院儿科专家</span>（副主任以上）门诊、住院、手术安排。</p>
+                        <img  class="mg-img2" width="96%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/welfare2.png">
+                    </dd>
+                </dl>
+            </div>
+
+            <!-- 申请流程-->
+            <div class="box bg1 process">
+                <h3 class="tc f8 c11  c11">申请流程</h3>
+                <ul>
+                    <img class="arr arr1" width="10" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/umbrella_arr_gray_r.png">
+                    <img class="arr arr2" width="10" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/umbrella_arr_gray_r.png">
+                    <li class="tc fl">
+                        <img width="65" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/process1.png">
+                        <div class="f5 c11">申请救助金</div>
+                        <div class="f3 c3">拨打客服热线<br>提交相关资料</div>
+                    </li>
+                    <li class="tc fl">
+                        <img width="65" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/process2.png">
+                        <div class="f5 c11">事件调查</div>
+                        <div class="f3 c3">权威公估机构调查</div>
+                    </li>
+                    <li class="tc fl">
+                        <img width="65" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/process3.png">
+                        <div class="f5 c11">  资金划款</div>
+                        <div class="f3 c3">公示无异议后<br>直接划款</div>
+                    </li>
+                </ul>
+
+            </div>
+            <!-- 社会现状-->
+            <!--<div class="box bg1 situation">
+                <h3 class="tc f8 c11">社会现状</h3>
+                <p class="text f4 c3">随着环境污染和饮食安全问题越来越严重，重大疾病的发病率越来越高，儿童群体也受到很大影响。例如：</p>
+                <div class="tc">
+                    <img width="80%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/situation1.png">
+                </div>
+                <p class="text f4 c3">医疗费中，花费最多的是感染和并发症。这些药大多是进口的，非常贵，社保不能报销。许多家长不知道自己是在走向希望，还是滑向深渊。</p>
+            </div>-->
+            <!-- 常见问题-->
+            <div class="box bg1 questions">
+                <h3 class="tc f8 c11">常见问题</h3>
+                <dl class="fold">
+                    <dt class="fw0"  ng-click="lookQuestion(0)">
+                        <span>Q1</span>什么人可以加入互助行动 ?
+                        <a class="show">
+                            <img class="show1" width="12" height="12" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/show1.png">
+                            <img hidden class="show2" width="11.5" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/show2.png" >
+                        </a>
+                    </dt>
+                    <dd class="foldText foldText2 change">
+                        <i class="triangle"></i>
+                        <img width="100%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/question3.png">
+                    </dd>
+
+                    <dt class="fw0" ng-click="lookQuestion(1)">
+                        <span>Q2</span>什么是观察期?
+                        <a>
+                            <img class="show1" width="12" height="12" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/show1.png">
+                            <img hidden class="show2" width="11.5" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/show2.png" >
+                        </a>
+                    </dt>
+                    <dd class="foldText">
+                        <i class="triangle"></i>
+                        又称等待期或免责期，时间为180天。是为了防止参与互助的会员明知道将发生风险事故，而马上加入以获得利益的行为。
+                    </dd>
+                    <dt class="fw0"  ng-click="lookQuestion(2)">
+                        <span>Q3</span>加入互助计划后，保障能管多久？
+                        <a>
+                            <img class="show1" width="12" height="12" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/show1.png">
+                            <img hidden class="show2" width="11.5" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/show2.png" >
+                        </a>
+                    </dt>
+                    <dd class="foldText" >
+                        <i class="triangle"></i>
+                        成员加入互助计划并度过观察期后，只要保证家庭账户有足够余额，能够履行其他成员需要时对其进行救助的义务，保障就能一直生效，直到孩子满18周岁退出互助计划。
+                    </dd>
+                    <dt class="fw0"  ng-click="lookQuestion(3)">
+                        <span>Q4</span>什么情况下可以获得救助?
+                        <a>
+                            <img class="show1" width="12" height="12" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/show1.png">
+                            <img hidden class="show2" width="11.5" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/show2.png" >
+                        </a>
+                    </dt>
+                    <dd class="foldText ">
+                        <i class="triangle"></i>
+                        当有会员在度过观察期后首次确诊保障中包含的《60种重大疾病》或《15种轻症》时，对还留在互助计划中的所有成员，从家庭账户中按每人最多3元进行扣除（三口之家最多扣除9元），以资助求助者。
+                        <p class="f3 c4">注：会员越多每人付出的金额将越少</p>
+                    </dd>
+                    <dt class="fw0"  ng-click="lookQuestion(4)">
+                        <span>Q5</span>什么情况下可以退出互助行动？
+                        <a>
+                            <img class="show1" width="12" height="12" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/show1.png">
+                            <img hidden class="show2" width="11.5" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/show2.png" >
+                        </a>
+                    </dt>
+                    <dd class="foldText foldText2">
+                        <i class="triangle"></i>
+                        <img width="100%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/question5.png">
+                    </dd>
+                    <dt class="fw0"  ng-click="lookQuestion(5)">
+                        <span>Q6</span>不予救助的事项
+                        <a>
+                            <img class="show1" width="12" height="12" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/show1.png">
+                            <img hidden class="show2" width="11.5" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/show2.png" >
+                        </a>
+                    </dt>
+                    <dd class="foldText f3 c3 foldText3" >
+                        <i class="triangle"></i>
+                        <p><span>1、</span>加入计划前曾经患过的重大疾病</p>
+                        <p><span>2、</span>会员主动吸食或注射毒品</p>
+                        <p><span>3、</span>核爆炸、核辐射或核污染</p>
+                        <p><span>4、</span>会员感染艾滋病病毒或患艾滋病期间因疾病导致的</p>
+                        <p><span>5、</span>遗传性疾病，先天性畸形、变形或染色体异常</p>
+                        <p><span>6、</span>在诊疗过程中发生的医疗事故</p>
+                        <p><span>7、</span>非法行为</p>
+                        <p><span>8、</span>在观察期内出现的与重大疾病相关的症状及体征，或者确诊的重大疾病</p>
+                        <p><span>9、</span>猝死</p>
+                    </dd>
+                    <dt class="fw0"  ng-click="lookQuestion(6)">
+                        <span>Q7</span>其它未说明的情况
+                        <a>
+                            <img class="show1" width="12" height="12" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/show1.png">
+                            <img hidden class="show2" width="11.5" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/show2.png" >
+                        </a>
+                    </dt>
+                    <dd class="foldText foldText4 ">
+                        <i class="triangle"></i>
+                        <div>
+                            <span class="c3 f3">详见</span>
+                            <p class="myLink c11 f3" ng-click="lookProtocol(0)">《宝大夫儿童家庭重疾互助计划公约》</p>
+                            <p class="myLink c11 f3" ng-click="lookProtocol(1)">《60种重大疾病名称及定义》</p>
+                            <p class="myLink c11 f3" ng-click="lookProtocol(2)">《15种轻症名称及定义》</p>
+                            <p class="myLink c11 f3" ng-click="lookProtocol(3)">《名词释义》</p>
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+            <!-- 宣传语-->
+            <div class="slogan tc">
+                <img width="80%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/index_slogan.png">
+            </div>
+
+            <br><br><br><br><br>
+            <!--底部客服电话图标-->
+            <!--&lt;!&ndash; <a class="icon-tel" href="tel:4006237120">-->
+            <!--<img  width="68" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2Fhandfootmouth%2Fhfmindex_kefu.png">-->
+            <!--</a>&ndash;&gt;-->
+
+            <!--<a href="#"  class="icon-tel" onclick="ysf.open();return false;"></a>-->
+
+
+        </ion-scroll>
+    </ion-content>
+    <!-- 新的客服咨询图标-->
+    <a class="icon-tel icon-tel2" ng-click="umbrellaConsult()"></a>
+    <!--底部按钮 第一种情况 首次进来-->
+    <div class="myBottom-btn tc" id="NoShareDiv" >
+        <div class="btn butcom" ng-click="goFillInfo()">
+            <!--<button class="f8 c0" ng-click="goShare()">邀请好友</button>
+            <button class="f8 c0" ng-click="goFillInfo()" id="changeButton" >马上领取</button>-->
+            马上领取
+        </div>
+    </div>
+    <!--底部按钮 第二种情况 领取之后-->
+    <div class="myBottom-btn tc" id="shareDiv" hidden>
+        <div class="btn">
+            <button class="f8 c0" ng-click="myGuarantee()">我的保障</button>
+            <button class="f8 c0"  ng-click="goShare()">邀请好友</button>
+        </div>
+    </div>
+    <!--分享浮层-->
+    <div class="c-shadow" hidden ng-click="cancelRemind()"></div>
+    <div class="shadow-content share tc" hidden onclick="cancelShare()">
+        <img class="arr" width="49" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/share_arr.png">
+        <img  class="remind" width="80%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/share_remind.png">
+    </div>
+    <!--关注浮层-->
+    <div class="shadow-content attention tc"  hidden>
+        <img ng-click="cancelRemind()" class="close" width="20" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/attention_close.png">
+        <div class="code">
+            <img  class="" width="100%" id="QRCode" height="auto" data-tap-disabled="true"  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/attention_code.png">
+            <img  class="logo" width="20" height="20" data-tap-disabled="true"  src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg">
+        </div>
+
+        <img  class="remind" width="80%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/attention_pic.png">
+    </div>
+    <!--宝大夫儿童家庭重疾互助计划公约 浮层-->
+    <div class="shadow-content protocol  bg1" hidden >
+        <h3 class="tc c3 f8">宝大夫儿童家庭重疾互助计划公约</h3>
+        <div class="main c3 f4" >
+            <dl>
+                <dt>第一章 前言</dt>
+                <dd>
+                    <p>随着环境污染和饮食安全问题越来越严重，重大疾病的发病率越来越高，儿童群体也不例外。例如，我国有大约400万白血病人，其中50%是儿童。治疗白血病对于普通家庭来说是一笔巨额开销。医疗费中，花费最多的是感染和并发症，这些药大多是进口的，非常贵，社保不能报销。许多家长不知道自己是在走向希望，还是滑向深渊。</p>
+                    <p>本计划就是根据该社会背景设立的，我们希望可以利用互联网的方式，以及互助计划的契约精神，汇集点滴之力缓解当前医疗救助事业存在的诸多问题，使病患家庭获得医疗上的经济援助，获得救治机会，重拾生活信心。</p>
+                    <p>您在确认加入本计划前请仔细阅读本公约，在您确认参与后即默认您已充分理解本公约的全部内容，并同意认真遵守本公约的权利义务。</p>
+                </dd>
+                <dt>第二章 释义</dt>
+                <dd>
+                    <p>宝大夫平台：是指由北京晨星启明科技有限公司设立的宝大夫品牌旗下的互联网平台。</p>
+                    <p>会员：是指符合本计划参与条件并确认参与本计划的会员</p>
+                    <p>互助申请人：是指发生本计划约定的救助情形，需要获得其他会员救助的会员本人或其监护人。</p>
+                    <p>互助计划：是指宝大夫平台针对各类风险或事项所制定的互助会员之间相互帮助的规则，互助会员遵照规则内容享受互助权利，履行互助义务。</p>
+                    <p>家庭保障金账户：会员定向捐助资金所存放的其在本计划的家庭互助账户，一般情况下，捐助后会员仅享有查看和继续捐助的权利。</p>
+
+                </dd>
+                <dt>第三章 公约效力</dt>
+                <dd>
+                    <p>1、本公约对所有会员均有法律效力。 </p>
+                    <p>2、宝大夫平台有权根据实际情况随时修订本公约，并进行公示。变更后的条款公示后，即发生法律效力。您若对变更后的条款有任何异议，请及时退出该计划。如您继续使用本计划提供的服务，则表示您同意并接受新条款的约束。</p>
+                    <p>3、 如您对本公约有任何疑问，应向宝大夫平台咨询。您不应以未阅读或不接受本公约的内容为由，主张本公约无效或要求撤销本公约。</p>
+                    <p>4、本计划属于创新型计划，可能会受到国家法律法规及政策的影响，导致本计划不能继续提供相应的服务。您成为会员时即表明您已充分了解本计划存在的风险，如因此使您遭受损失，您同意自行承担，宝大夫平台不承担任何责任。</p>
+
+                </dd>
+                <dt>第四章 参与标准</dt>
+                <dd>
+                    <p>1、会员加入：</p>
+                    <p>（1）0（出生满30天）-14周岁自然人及其父母；</p>
+                    <p>（2）加入本计划之时身体健康，无重大疾病史及相关症状就诊纪录，无慢性病史；</p>
+                    <p>（3）向本计划捐助，金额为家庭参与计划人数*5元，三口之家即为15元；；</p>
+                    <p>（4）认同并承诺遵守本公约。</p>
+                    <p>2、会员退出：</p>
+                    <p>（1）受到一次救助的会员，自动退出，家庭中其余成员需重新按剩余人数*5元缴费，方可留在计划中，否则自动退出；</p>
+                    <p>（2）孩子年满18周岁，自动退出；</p>
+                    <p>（3）家庭中最后一个孩子退出，父母也自动退出；</p>
+                    <p>（4）家庭互助账户中人均余额不足3元，保障中断；在30日内未补足的，自动退出；</p>
+                    <p>（5）父母离异后，非监护人一方自动退出计划；</p>
+                    <p>（6）计划公约所规定的其他情况；</p>
+                    <p>（7）丧失会员资格后，符合条件重新加入计划的，将重新计算180天等待期。</p>
+                </dd>
+                <dt>第五章 互助内容</dt>
+                <dd>
+                    <p>1、会员加入本计划180天后初次发生并被医院的专科医生确诊为本计划约定的重大疾病（60种），以及轻症疾病（15种），本计划下的其他会员会为其发起互助；该确诊会员将获得最高互助金额为40万元的重疾赔付，以及最高8万元的轻症赔付。</p>
+                    <p>2、会员资格存续期间，如其罹患本计划约定的60种重大疾病或者15种轻症，其他会员有义务进行均摊式互助。每人单次均摊基准上限为3元，平台将从其他会员家庭保障金账户进行扣除。。</p>
+                    <p>3、本计划中“重大疾病（60种）” 第1至第20项为中国保险行业协会与中国医师协会共同制定的重大疾病保险的疾病定义，第21项至第60项为宝大夫平台根据权威儿科专家建议，自行增加的疾病种类和定义。其中包含多种儿科常见重大疾病，如白血病等。</p>
+                    <p>4、本计划中“轻症疾病（15种）”，通常指重大疾病的前期轻度阶段，或未达到重大疾病标准的次轻一级同类疾病，在医学上均有明确的定义。</p>
+                    <p>5、重大疾病和轻症疾病的定义，会员可查看《60种重大疾病名称及定义》、《15种轻症名称及定义》。</p>
+                </dd>
+                <dt>第六章 会员的权利义务</dt>
+                <dd>
+                    <p>1、您有权查阅本计划公布的互助事件及活动信息。</p>
+                    <p>2、您有权参与本计划存续过程中发生的各种互助事件或活动。</p>
+                    <p>3、您有义务向宝大夫平台提供真实准确的身份信息。</p>
+                    <p>4、您有义务保证不在计划运行过程中发布包含诈骗、非法、色情、淫秽、暴力等违反国家法律法规、政策的内容，不发表含有攻击性、侮辱性的言论。</p>
+                    <p>5、会员有权在需要时获得其他会员的互助，也有义务根据互助事件向其他会员提供互助。</p>
+                    <p>6、您可获得本计划提供的信息、资料、咨询和服务，查看您本人参与互助事件的记录，了解您所参与的互助事件情况，并对该互助事件提出质疑。</p>
+                    <p>7、一旦出现互助申请人通过提供虚假资料和信息而获得互助的情形，您有权委托平台向互助申请人进行追偿。</p>
+                    <p>8、您对本计划有批评权、建议权和监督权。</p>
+                    <p>9、您应确保您在宝大夫平台注册信息、联系方式、银行卡信息是真实准确的，否则您将无法获得帮助。</p>
+                    <p>10、会员应及时关注本计划的互助事件信息，自行了解互助流程，认真履行义务；不能以未收到本计划的通知为由要求宝大夫平台承担任何责任。</p>
+                    <p>11、一旦加入本计划，即视为您授权宝大夫平台在相关会员符合互助条件时，提供相应的金额以用于互助事宜。</p>
+                    <p>12、会员应及时关注家庭保障金账户的资金情况，保证账户有足够余额（人均不低于3元）。</p>
+                    <p>13、您应妥善保管在宝大夫平台上注册的用户名和密码，凡使用您的用户名和密码登陆宝大夫平台进行的一切操作，均视为您本人的行为，一切责任由您本人承担。</p>
+                    <p>14、申请互助的会员有义务就互助事件提供真实完整的资料，否则将被取消获得互助的资格。</p>
+                    <p>15、您同意宝大夫平台可单方面判断并决定，如果您违反本公约，出现损害本计划和其他会员的行为，宝大夫平台可随时终止您的密码、账号或某些服务的使用，并可将您在平台中留存的任何内容加以移除或删除，同时对您终止部分或全部服务。</p>
+                    <p>16、您的账户因以上所述原因被终止使用或因停止运作等原因被关闭时，您无权要求宝大夫平台退回家庭保障金账户中显示的现金余额，也无权要求宝大夫平台或其他会员在您未来发生互助事件时对您发起互助。</p>
+                </dd>
+                <dt>第七章 宝大夫平台权利义务</dt>
+                <dd>
+                    <p>1、宝大夫平台不保证任何会员都能获得互助保障。</p>
+                    <p>2、宝大夫平台有权制定各项互助条款并协助会员互助。</p>
+                    <p>3、宝大夫平台或平台指定第三方有权对会员的互助申请进行审核，并最终决定申请会员是否可以获得互助。</p>
+                    <p>4、宝大夫平台对会员捐助的资金进行管理。</p>
+                    <p>5、在会员符合互助条件时，宝大夫平台将在其他会员家庭保障金账户里代为扣款并将互助资金划拨给互助申请人。</p>
+                    <p>6、在出现互助申请人通过提供虚假资料和信息而获得互助的情形时，宝大夫平台有义务代全体会员向互助申请人追偿；但若未能全额追偿，宝大夫平台无出资垫付的义务。</p>
+                    <p>7、宝大夫平台因客观或政策原因无法继续运作本计划，或会员数量低于一定数量（20万人）时，有权终止本计划。在此情形下，宝大夫平台将会员自行充值的剩余资金，退回到用户宝大夫平台账户余额中。</p>
+                    <p>8、宝大夫平台提供的技术服务可能会受到各个环节不稳定因素的影响。因此服务存在不可抗力、计算机病毒或黑客攻击、系统不稳定、会员所在地点以及其他任何技术、互联网络、通信线路原因等造成的服务中断或不能满足会员要求的风险，宝大夫平台不作任何担保。对因此导致会员损失，宝大夫平台不承担任何责任。</p>
+                    <p>9、如宝大夫平台的系统发生故障影响服务的正常运行，宝大夫平台承诺在第一时间内与相关单位配合，及时处理进行修复。但会员因此而产生的间接损失，宝大夫平台不承担责任。此外，宝大夫平台保留不经事先通知为维修保养、升级或其他目的暂停服务任何部分的权利。</p>
+                    <p>10、参与本计划的会员之间除互助事件之外引发的任何纠纷宝大夫平台将不负责任。</p>
+                    <p>11、会员公然侮辱他人或者捏造事实诽谤他人，或者进行其他恶意攻击的，宝大夫平台有权不为该会员提供服务并有权追偿该会员造成的损失。</p>
+                </dd>
+                <dt>第八章 资金</dt>
+                <dd>
+                    <p>1、宝大夫平台将为本计划提供独立账户，并对会员捐助资金使用情况进行公示。</p>
+                    <p>2、会员捐助资金仅用于本计划救助及因救助产生的相关费用和为本计划提供必要服务的第三方收取的服务费用（包括但不限于法律顾问服务费、救助情况审核服务费、审计服务费、计划资金监管服务费、信息服务费用等）。</p>
+                    <p>3、宝大夫平台对会员的捐助的资金进行管理。资金所产生的利息仅用于宝大夫平台运营的各项费用。</p>
+                </dd>
+                <dt>第九章 终止和退出</dt>
+                <dd>
+                    <p>1、以下任一情形出现，本计划可能终止:</p>
+                    <p>（1）本计划参与人数少于20万人的；</p>
+                    <p>（2）不可抗力、政策因素致本计划终止的。</p>
+                    <p>2、以下任一情形出现，您即退出本计划:</p>
+                    <p>（1）您违反了国家法律法规、政策、本公约或宝大夫平台发布的各类规则，平台将终止为您提供服务的；</p>
+                    <p>（2）您本人不同意接受本公约约定或宝大夫平台发布的各类规则的；</p>
+                    <p>（3）您不符合本公约规定的参与资格的。</p>
+                    <p>3、本公约终止或您退出本公约，不影响您受本公约约束时所做的行为应承担的义务和责任。</p>
+                    <p>4、本公约的解释权归宝大夫平台所有。</p>
+                </dd>
+            </dl>
+
+        </div>
+        <div class="read tc" ng-click="cancelRemind()">
+            <a class="c0 f6" >已阅读并同意</a>
+        </div>
+    </div >
+
+    <!--60种重大疾病名称及定义 浮层-->
+    <div class="shadow-content protocol  bg1"  hidden>
+        <h3 class="tc c3 f8">60种重大疾病名称及定义</h3>
+        <div class="main c3 f4" >
+            <dl>
+                <dt>1、恶性肿瘤</dt>
+                <dd>
+                    <p>指恶性细胞不受控制的进行性增长和扩散，浸润和破坏周围正常组织，可以经血管、淋巴管和体腔扩散转移到身体其它部位的疾病。经病理学检查结果明确诊断，临床诊断属于世界卫生组织《疾病和有关健康问题的国际统计分类》（ICD-10）的恶性肿瘤范畴。下列疾病不在保障范围内：（1）原位癌；（2）相当于Binet分期方案A期程度的慢性淋巴细胞白血病；（3）相当于Ann Arbor分期方案I期程度的何杰金氏病；（4）皮肤癌（不包括恶性黑色素瘤及已发生转移的皮肤癌）；（5）TNM分期为T1N0M0期或更轻分期的前列腺癌；（6）感染艾滋病病毒或罹患艾滋病期间所罹患恶性肿瘤。</p>
+                </dd>
+                <dt>2、重大器官移植术或造血干细胞移植术</dt>
+                <dd>
+                    <p>重大器官移植术，指因相应器官功能衰竭，已经实施了肾脏、肝脏、心脏或肺脏的异体移植手术。 造血干细胞移植术，指因造血功能损害或造血系统恶性肿瘤，已经实施了造血干细胞 （包括骨髓造血干细胞、外周造血干细胞和脐血造血干细胞）的异体移植手术。</p>
+                </dd>
+                <dt>3、终末期肾病</dt>
+                <dd>
+                    <p>指双肾功能慢性不可逆性衰竭，达到尿毒症期，经诊断后已经进行了至少90天的规律性透析治疗或实施了肾脏移植手术。</p>
+                </dd>
+                <dt>4、多个肢体缺失</dt>
+                <dd>
+                    <p>指因疾病或意外伤害导致两个或两个以上肢体自腕关节或踝关节近端（靠近躯干端）以上完全性断离。</p>
+                </dd>
+                <dt>5、急性或亚急性重症肝炎</dt>
+                <dd>
+                    <p>指因肝炎病毒感染引起肝组织弥漫性坏死，导致急性肝功能衰竭，且经血清学或病毒学检查证实，并须满足下列全部条件： （1）重度黄疸或黄疸迅速加重； （2）肝性脑病； （3）B超或其他影像学检查显示肝脏体积急速萎缩； （4）肝功能指标进行性恶化。</p>
+                </dd>
+                <dt>6、良性脑肿瘤</dt>
+                <dd>
+                    <p>指脑的良性肿瘤，已经引起颅内压增高，临床表现为视神经乳头水肿、精神症状、癫痫及运动感觉障碍等，并危及生命。须由头颅断层扫描（CT）、核磁共振检查（MRI） 或正电子发射断层扫描（PET）等影像学检查证实，并须满足下列至少一项条件： （1）实际实施了开颅进行的脑肿瘤完全切除或部分切除的手术； （2）实际实施了对脑肿瘤进行的放射治疗。 脑垂体瘤、脑囊肿、脑血管性疾病不在保障范围内。</p>
+                </dd>
+                <dt>7、慢性肝功能衰竭失代偿期</dt>
+                <dd>
+                    <p>指因慢性肝脏疾病导致肝功能衰竭，须满足下列全部条件： （1）持续性黄疸； （2）腹水； （3）肝性脑病； （4）充血性脾肿大伴脾功能亢进或食管胃底静脉曲张。 因酗酒或药物滥用导致的肝功能衰竭不在保障范围内。</p>
+                </dd>
+                <dt>8、脑炎后遗症或脑膜炎</dt>
+                <dd>
+                    <p>指因罹患脑炎或脑膜炎导致的神经系统永久性的功能障碍。神经系统永久性的功能障后遗症碍，指疾病确诊180天后，仍残留下列一种或一种以上障碍： （1）一肢或一肢以上肢体机能完全丧失； （2）语言能力或咀嚼吞咽能力完全丧失； （3）自主生活能力完全丧失，无法独立完成六项基本日常生活活动中的三项或三项以上。</p>
+                </dd>
+                <dt>9、深度昏迷</dt>
+                <dd>
+                    <p>指因疾病或意外伤害导致意识丧失,对外界刺激和体内需求均无反应，昏迷程度按照 格拉斯哥昏迷分级（Glasgow coma scale）结果为5分或5分以下，且已经持续使用呼 吸机及其它生命维持系统96小时以上。 由于酗酒或药物滥用导致的深度昏迷不在保障范围内。</p>
+                </dd>
+                <dt>10、双耳失聪</dt>
+                <dd>
+                    <p>指因疾病或意外伤害导致双耳听力永久不可逆性丧失，在500赫兹、1000 赫兹和2000赫兹语音频率下，平均听阈大于90分贝，且经纯音听力测试、声导抗检测或听觉诱发电位检测等证实。 申请救助金时年龄必须在三周岁以上，并且提供当时的听力丧失诊断及检查证据。</p>
+                </dd>
+                <dt>11、双目失明</dt>
+                <dd>
+                    <p>指因疾病或意外伤害导致双眼视力永久不可逆性丧失，双眼中较好眼须满足下列至少 一项条件： （1）眼球缺失或摘除； （2）矫正视力低于0.02（采用国际标准视力表，如果使用其他视力表应进行换算）； （3）视野半径小于5度。 申请救助金时年龄必须在三周岁以上，并且提供当时的视力丧失诊断及检查证据。</p>
+                </dd>
+                <dt>12、瘫痪</dt>
+                <dd>
+                    <p>指因疾病或意外伤害导致两肢或两肢以上肢体机能永久完全丧失。肢体机能永久完全丧失，指疾病确诊180天后或意外伤害发生180天后，每肢三大关节中的两大关节仍然完全僵硬，或不能随意识活动。</p>
+                </dd>
+                <dt>13、心脏瓣膜手术</dt>
+                <dd>
+                    <p>指为治疗心脏瓣膜疾病，实际实施了开胸进行的心脏瓣膜置换或修复的手术。</p>
+                </dd>
+                <dt>14、严重脑损伤</dt>
+                <dd>
+                    <p>指因头部遭受机械性外力，引起脑重要部位损伤，导致神经系统永久性的功能障碍。 须由头颅断层扫描（CT）、核磁共振检查（MRI）或正电子发射断层扫描（PET）等影像学检查证实。神经系统永久性的功能障碍，指脑损伤180天后，仍遗留下列一种或一种以上障碍： （1）一肢或一肢以上肢体机能完全丧失； （2）语言能力或咀嚼吞咽能力完全丧失； （3）自主生活能力完全丧失，无法独立完成六项基本日常生活活动中的三项或三项以上。</p>
+                </dd>
+                <dt>15、严重III度烧伤</dt>
+                <dd>
+                    <p>指烧伤程度为Ⅲ度，且Ⅲ度烧伤面积达到全身体表面积的20％或20％以上。体表面积根据《中国新九分法》计算。</p>
+                </dd>
+                <dt>16、严重原发性肺动脉高压</dt>
+                <dd>
+                    <p>指不明原因的肺动脉压力持续性增高，进行性发展而导致的慢性疾病，已经造成永久不可逆性的体力活动能力受限，达到美国纽约心脏病学会心功能状态分级IV级，静息状态下肺动脉平均压超过30mmHg。</p>
+                </dd>
+                <dt>17、严重运动神经元病</dt>
+                <dd>
+                    <p>是一组中枢神经系统运动神经元的进行性变性疾病，包括进行性脊肌萎缩症、进行性延髓麻痹症、原发性侧索硬化症、肌萎缩性侧索硬化症。须满足自主生活能力完全丧 失，无法独立完成六项基本日常生活活动中的三项或三项以上。</p>
+                </dd>
+                <dt>18、语言能力丧失</dt>
+                <dd>
+                    <p>指因疾病或意外伤害导致完全丧失语言能力，经过积极治疗至少12个月（声带完全切除不受此时间限制），仍无法通过现有医疗手段恢复。 精神心理因素所致的语言能力丧失不在保障范围内。 申请救助金时年龄必须在三周岁以上，并且提供当时的语言能力丧失诊断及检查证据。</p>
+                </dd>
+                <dt>19、重型再生障碍性贫血</dt>
+                <dd>
+                    <p>指因骨髓造血功能慢性持续性衰竭导致的贫血、中性粒细胞减少及血小板减少，须满足下列全部条件： （1）骨髓穿刺检查或骨髓活检结果支持诊断； （2）外周血象必须具备以下三项条件： ①中性粒细胞绝对值≤0.5×109/L； ②网织红细胞＜1%； ③血小板绝对值≤20×109/L。</p>
+                </dd>
+                <dt>20、主动脉手术</dt>
+                <dd>
+                    <p>指为治疗主动脉疾病，实际实施了开胸或开腹进行的切除、置换、修补病损主动脉血管的手术。主动脉指胸主动脉和腹主动脉，不包括胸主动脉和腹主动脉的分支血管。动脉内血管成形术不在保障范围内。</p>
+                </dd>
+                <dt>21、胰岛素依赖型糖尿病（Ｉ型糖尿病）</dt>
+                <dd>
+                    <p>胰岛素依赖型糖尿病是由于胰岛素分泌不足引起的慢性血糖升高，并需持续性地依赖外源性胰岛素维持一百八十天以上，须由有资格的内分泌医生确诊，满足下述至少一个条件： （1）内分泌医生确定已出现增殖性视网膜病变； （2）须植入心脏起搏器治疗心脏病； （3）因坏疽需切除一只或以上脚趾。</p>
+                </dd>
+                <dt>22、严重多发性硬化</dt>
+                <dd>
+                    <p>多发性硬化为中枢神经系统白质多灶性脱髓鞘病变，病变有时累及灰质。多发性硬化必须明确诊断，并且已经造成永久不可逆的神经系统功能损害。永久不可逆的神经系统损害指持续180天无法独立完成下列基本日常生活活动： （1）移动：自己从一个房间到另一个房间；或（2）进食：自己从已准备好的碗或碟中取食物放入口中。</p>
+                </dd>
+                <dt>23、终末期肺病</dt>
+                <dd>
+                    <p>慢性肺部疾病导致永久不可逆性的慢性呼吸功能衰竭，必须由呼吸专科医师确认并符合下列所有条件： （1）肺功能测试其FEV1持续低于0.75升； （2）病人缺氧必须广泛而持续地进行输氧治疗； （3）动脉血气分析氧分压低于55mmHg。 申请救助金时必须提供以上三项相应的证明文件或检查报告。</p>
+                </dd>
+                <dt>24、重症肌无力</dt>
+                <dd>
+                    <p>重症肌无力是一种神经肌肉接头传递障碍所致的疾病，表现为局部或全身骨骼肌（特别是眼外肌）极易疲劳。疾病可以累及呼吸肌、上肢或下肢的近端肌群或全身肌肉，必须满足下列全部条件： （1）经药物治疗和胸腺切除治疗一年以上仍无法控制病情； （2）自主生活能力完全丧失，无法独立完成六项基本日常生活活动中的三项或三项以上</p>
+                </dd>
+                <dt>25、脊髓灰质炎</dt>
+                <dd>
+                    <p>脊髓灰质炎是由于脊髓灰质炎病毒感染所致的瘫痪性疾病，临床表现为运动功能损害 或呼吸无力。脊髓灰质炎必须明确诊断。脊髓灰质炎造成的神经系统能损害导致一肢或一肢以上肢体机能永久完全丧失的情况方可申请救助金。肢体能永久完全丧失，指疾病确诊180天后，每肢三大关节中的两大关节仍然完全僵硬，或不能随意识活动。</p>
+                </dd>
+                <dt>26、严重克隆病</dt>
+                <dd>
+                    <p>克隆病是一种慢性肉芽肿性肠炎，具有特征性的克隆病病理组织学变化。诊断必须由病理检查结果证实。罹患的克隆病必须已经造成瘘管形成并伴有肠梗阻或肠穿孔。</p>
+                </dd>
+                <dt>27、严重心肌病</dt>
+                <dd>
+                    <p>指不明原因引起的一类心肌病变，包括原发性扩张型心肌病、原发性肥厚型心肌病及原发性限制型心肌病三种，本病须经专科医生明确诊断，且病变必须已造成事实上心室功能障碍而出现明显的心功能衰竭（指按照美国纽约心脏协会心功能分类标准心功能达四级*），且有相关住院医疗记录及检查显示四级心功能衰竭状态持续至少180天。 继发于全身性疾病或其它器官系统疾病以及由于酒精和药物滥用造成的心肌病变不在保障范围内。</p>
+                </dd>
+                <dt>28、肌营养不良症</dt>
+                <dd>
+                    <p>指一组原发于肌肉的遗传性疾病，临床表现为与神经系统无关的肌肉无力和肌肉萎缩。且须满足下列全部条件： （1）肌肉组织活检结果满足肌营养不良症的肌肉细胞变性、坏死等阳性改变； （2）自主生活能力完全丧失，无法独立完成六项基本日常生活活动中的三项或三项以上。</p>
+                </dd>
+                <dt>29、经输血感染艾滋病病毒</dt>
+                <dd>
+                    <p>感染上人类免疫缺陷病毒并且符合下列所有条件： （1）在保障起始日之后，因治疗必需而接受输血，并且因输血而感染人类免疫缺陷病毒； （2）提供输血治疗的输血中心或医疗机构出具该项输血感染属医疗责任事故的报告， 或法院终审裁定为医疗责任并且不准上诉； （3）提供输血治疗的输血中心或医疗机构必须拥有合法经营执照； （4）受感染者不是血友病罹患者； 在任何治愈艾滋病或阻止人类免疫缺陷病毒作用的疗法被发现以后，或能防止艾滋病发生的医疗方法被研究出来以后，本保障将不再予以赔付。 任何因其他传播方式（包括：性传播或静脉注射毒品）导致的人类免疫缺陷病毒感染不在保障范围内。 </p>
+                </dd>
+                <dt>30、严重慢性复发性胰腺炎</dt>
+                <dd>
+                    <p>指慢性反复发作的胰腺炎症导致胰腺的广泛纤维化、坏死、弥漫性钙化及假性囊肿形成，造成胰腺功能障碍出现严重糖尿病和营养不良。必须满足以下所有条件： （1）CT显示胰腺广泛钙化或逆行胰胆管造影（ERCP）显示胰管扭曲、扩张和狭窄； （2）接受胰岛素替代治疗和酶替代治疗180天以上。 酒精导致的慢性复发性胰腺炎不在本保障范围内。</p>
+                </dd>
+                <dt>31、肾髓质囊性病</dt>
+                <dd>class="icon-tel icon-tel2"
+                    <p>肾髓质囊性病的诊断必须同时符合下列要求： （1）肾髓质有囊肿、肾小管萎缩及间质纤维化等病理改变； （2）贫血、多尿及肾功能衰竭等临床表现； （3）诊断须由肾组织活检确定。</p>
+                </dd>
+                <dt>32、植物人</dt>
+                <dd>
+                    <p>指脑皮质广泛性坏死而导致对自身及周边的认知能力完全丧失,但脑干功能依然存 在，必须经神经科专科医生明确诊断,并有头颅断层扫描（CT），核磁共振检查（MRI） 或正电子发射断层扫描（PET）等影像学检查证实。上述情况必须有至少一个月的病历记录加以证实。由于酗酒或滥用药物所致的植物人状态不在保障范围内。</p>
+                </dd>
+                <dt>33、特定年龄的脊髓肌肉萎缩症</dt>
+                <dd>
+                    <p>脊髓前角细胞及脑干运动细胞核的退化病变，以近侧的肌肉无力和萎缩为主要特征， 由腿部为最先开始并逐步扩展至远侧的肌肉。有关病变必须在不涉及任何其他因素下直接导致永久不能完成基本日常生活活动的其中最少3项。诊断必须由专科医生证实并附有相应的神经肌肉检验如肌电图证明。 只有在5周岁后首次获确诊罹患上本项疾病才可获得救助金。</p>
+                </dd>
+                <dt>34、严重川崎病</dt>
+                <dd>
+                    <p>川崎病为一种病因不明的系统性血管炎。严重川崎病是指经心脏超声心动 图或冠脉造影检查证实川崎病并发冠状动脉瘤，并且实际接受了手术治疗的情况。</p>
+                </dd>
+                <dt>35、严重心肌炎</dt>
+                <dd>
+                    <p>因严重心肌炎性病变导致心功能损害造成持续的永久不可逆性的心功能衰竭。必须满足所有以下条件： （1）心功能衰竭程度达到纽约心脏病学会的心功能分级标准之心功能IV级，或左室 射血分数低于30%； （2）持续不间断180天以上； （3）永久不可逆性的体力活动能力受限，不能从事任何体力活动。</p>
+                </dd>
+                <dt>36、严重幼年型类风湿性关节炎</dt>
+                <dd>
+                    <p>幼年型类风湿关节炎是一种儿童期发病的慢性关节炎，其特点为在高热和系统性病征出现数月后发生关节炎。实际接受了膝关节或髋关节置换手术治疗的严重的幼年型类风湿关节炎可以申请救助金。</p>
+                </dd>
+                <dt>37、重症手足口病</dt>
+                <dd>
+                    <p>由肠道病毒引起的急性传染病，主要症状表现为手、足、口腔等部位的斑丘疹、疱疹。 经我们认可的医疗机构的儿科专科医生确诊为罹患有手足口病，并伴有下列三项中的任意一项并发症： （1）有脑膜炎或脑炎并发症，且导致意识障碍或瘫痪的临床表现及实验室检查证据； （2）有肺炎或肺水肿并发症，且导致呼吸衰竭的临床表现及实验室检查证据； （3）有心肌炎并发症，且导致心脏扩大或心力衰竭的临床表现及实验室检查证据。</p>
+                </dd>
+                <dt>38、肺淋巴管肌瘤病</dt>
+                <dd>
+                    <p>肺淋巴管肌瘤病是一种弥漫性肺部疾病，主要病理改变为肺间质、支气管、血管和淋巴管内出现未成熟的平滑肌异常增生，同时需满足下列全部条件： （1）经组织病理学诊断； （2）CT显示双肺弥漫性囊性改变； （3）血气提示低氧血症，动脉血氧分压（PaO2）持续<50mmHg。</p>
+                </dd>
+                <dt>39、严重瑞氏综合症</dt>
+                <dd>
+                    <p>瑞氏综合征是线粒体功能障碍性疾病。导致脂肪代谢障碍，引起短链脂肪酸、血氨升高，造成脑水肿。主要临床表现为急性发热、反复呕吐、惊厥及意识障碍等等。肝脏活检是确诊的重要手段。瑞氏综合征需由三级医疗机构的儿科专科医生确诊，并符合下列所有条件： （1）有脑水肿和颅内压升高的脑脊液检查和影像学检查证据；（2）血氨超过正常值的3倍； （3）临床出现昏迷，病程至少达到疾病分期第3期。</p>
+                </dd>
+                <dt>40、严重溃疡性结肠炎</dt>
+                <dd>
+                    <p>溃疡性结肠炎是指伴有致命性电解质紊乱的急性暴发性溃疡性结肠炎，病变累及全结肠，表现为严重的血便和系统性症状体征，治疗通常采取全结肠切 除和回肠造瘘术。溃疡性结肠炎必须根据组织病理学特点诊断，并且已经接 受了结肠切除和回肠造瘘术。</p>
+                </dd>
+                <dt>41、重症急性坏死性筋膜炎</dt>
+                <dd>
+                    <p>是一种由细菌侵入皮下组织和筋膜引起的急性坏死性软组织感染，可伴有毒血症、败血症、中毒性休克、弥漫性血管内凝血及多器官衰竭。必须满足以下所有条件： （1）细菌培养和临床表现符合坏死性筋膜炎诊断标准； （2）病情迅速恶化，有脓毒血症表现； （3）受感染肢体被截肢（自腕关节或踝关节近端）。</p>
+                </dd>
+                <dt>42、系统性硬皮病</dt>
+                <dd>
+                    <p>指一种以局限性或弥漫性皮肤增厚和皮肤、血管、内脏器官异常纤维化为特征的结缔 组织病。本病须经专科医师明确诊断，并须满足下列至少一项条件： （1）肺脏：肺部病变进而发展为肺间质纤维化和肺动脉高压； （2）心脏：心功能受损达到美国纽约心脏病学会心功能状态分级IV级； （3）肾脏：肾脏受损导致双肾功能慢性不可逆衰竭，达到尿毒症期。 下列疾病不在本险种保障范围内： （1）局部性硬皮病（如：带状硬皮病、硬斑病）； （2）嗜酸性粒细胞性筋膜炎； （3）CREST综合征。</p>
+                </dd>
+                <dt>43、急性坏死性胰腺炎</dt>
+                <dd>
+                    <p>是指由专科医师确诊为急性坏死性胰腺炎，需进行坏死组织清除、病灶切除或胰腺部分切除的手术治疗，但不包括因酒精中毒引起的急性坏死性胰腺炎。</p>
+                </dd>
+                <dt>44、Ⅱ级重症急性胰腺炎</dt>
+                <dd>
+                    <p>Ⅱ级重症急性胰腺炎是指急性胰腺炎伴有脏器功能障碍。罹患的Ⅱ级重症 急性胰腺炎必须经专科医生明确诊断，按APACHEⅡ评分达到8分或8分以上和 Balthazar分级系统达到Ⅱ级或Ⅱ级以上，并且接受了外科剖腹手术治疗，以进行坏 死组织清除、坏死病灶切除或胰腺切除。 因酗酒或饮酒过量所致的急性坏死性胰腺炎以及腹腔镜手术不在保障范围内。</p>
+                </dd>
+                <dt>45、严重原发性硬化性胆管炎</dt>
+                <dd>
+                    <p>原发性硬化性胆管炎指一种胆汁淤积综合征，其特征是肝内、肝外胆道因非细菌性炎症、慢性纤维化逐渐狭窄，并最终导致完全阻塞而发展为胆汁於积性肝硬化。须满足下列全部条件： （1）持续性黄疸病史； （2）总胆红素和直接胆红素同时升高，血清 ALP>200U/L； （3）经内镜逆行胰胆管造影（ERCP）影像学检查确诊； （4）出现胆汁於积性肝硬化或门脉高压。 因肿瘤或胆管损伤等继发性的硬化性胆管炎不在保障范围内。</p>
+                </dd>
+                <dt>46、颅脑手术</dt>
+                <dd>
+                    <p>确已实施全麻下的开颅手术（以切开硬脑膜为准）（不包括颅骨钻孔手术和 经鼻蝶窦入颅手术）。 因外伤而实施的脑外科手术不在保障范围之内。 必须提供由神经外科医生出具的诊断书及手术报告。</p>
+                </dd>
+                <dt>47、丝虫病所致象皮肿</dt>
+                <dd>
+                    <p>指因丝虫感染导致淋巴阻塞性出现严重淋巴水肿，达到国际淋巴学会淋巴肿分期第III期，临床表现为肢体象皮肿，罹患肢较键肢增粗30%以上，日常生活不能自理。此病症须经专科医生根据临床表现和微丝蚴的化验结果确诊。</p>
+                </dd>
+                <dt>48、肺源性心脏病</dt>
+                <dd>
+                    <p>因慢性肺部疾病导致慢性心功能损害造成永久不可逆性的心功能衰竭。心功能衰竭程度达到纽约心脏病学会的心功能分级标准之心功能IV级。造成永久不可 逆性的体力活动能力受限，不能从事任何体力活动。</p>
+                </dd>
+                <dt>49、慢性肾上腺皮质功能衰竭</dt>
+                <dd>
+                    <p>因为自身免疫功能紊乱，使肾上腺组织逐渐受损，而需要长期接受糖皮质激素及肾上腺皮质激素替代疗法。该病必须经国家机关认可的有合法资质的内分泌专科医生确 诊，并有以下报告作为证据： （1）促肾上腺皮质激素（ACTH）刺激试验； （2）胰岛素血糖减少测试； （3）血浆促肾上腺皮质激素（ACTH）水平测定； （4）血浆肾素活性（PRA）测定。 慢性肾上腺皮质功能衰竭只对由自身免疫功能紊乱引起的承担保障责任，其他原因引起的除外。</p>
+                </dd>
+                <dt>50、肝豆状核变性</dt>
+                <dd>
+                    <p>指一种常染色体隐性遗传的铜代谢缺陷病，以不同程度的肝细胞损害、脑退行性病变和角膜边缘有铜盐沉着环为其临床特征，并须满足下列全部条件： （1）典型症状； （2）角膜色素环（K-F 环）； （3）血清铜和血清铜蓝蛋白降低，尿铜增加； （4）经皮做肝脏活检来定量分析肝脏铜的含量。</p>
+                </dd>
+                <dt>51、疯牛病</dt>
+                <dd>
+                    <p>是一种传染性海绵状脑病，临床表现为快速进行性痴呆、肌阵挛和特征性脑电图变化。 本病须经三级医疗机构的专科医生根据WHO诊断标准明确诊断，并且自主生活能力完全丧失，无法独立完成六项基本日常生活活动中的三项或三项以上。疑似病例不在本保障范围内。</p>
+                </dd>
+                <dt>52、严重自身免疫性肝炎</dt>
+                <dd>
+                    <p>自身免疫性肝炎是一种原因不明的慢性肝脏的坏死性炎性疾病，机体免疫机制被破坏，产生针对肝脏自身抗原的抗体导致自身免疫反应，从而破坏肝细胞造成肝脏炎症坏死，进而发展为肝硬化。必须满足所有以下条件： （1）高γ球蛋白血症； （2）血液中存在高水平的自身免疫抗体，如ANA（抗核抗体）、SMA（抗平滑肌抗体）、 抗LKM1抗体或抗-SLA/LP抗体； （3）肝脏活检证实免疫性肝炎； （4）临床已经出现腹水、食道静脉曲张和脾肿大等肝硬化表现。</p>
+                </dd>
+                <dt>53、细菌性脑脊髓膜炎</dt>
+                <dd>
+                    <p>指因细菌引起脑和脊髓的脑脊膜炎性感染，经脑脊液细菌学检查确诊，且导致永久性神经损伤。永久性神经损伤是指经我们认可的神经专科医师明确诊断，遗留下列残疾之一而无法复原并持续达一百八十天以上者： （1）符合神经精神病学标准的严重认知功能障碍，而需持续监护； （2）听力丧失或失明； （3）语言机能丧失； （4）肌体功能障碍，导致无法完成其中三项或三项以上的日常生活活动。</p>
+                </dd>
+                <dt>54、需手术切除的嗜铬细胞瘤</dt>
+                <dd>
+                    <p>是指肾上腺或嗜铬外组织出现神经内分泌肿瘤，并分泌过多的儿茶酚胺类，需要确实进行手术以切除肿瘤。嗜铬细胞瘤的诊断必须由内分泌专科医生确定。</p>
+                </dd>
+                <dt>55、溶血性链球菌引起的坏疽</dt>
+                <dd>
+                    <p>包围肢体或躯干的浅筋膜和/或深筋膜受到溶血性链球菌的感染，病情在短时间内急剧恶化，必须立刻进行手术及清创术。最后的诊断必须由微生物或病理学专家进行相关检查后证实。</p>
+                </dd>
+                <dt>56、Ⅲ度房室传导阻滞</dt>
+                <dd>
+                    <p>指心房激动在房室交界区、房室束及其分支内发生阻滞，不能正常地传到心室的心脏传导性疾病，须满足下列所有条件： （1）心电图显示房室搏动彼此独立，心室率<50 次/分钟； （2）出现阿-斯综合征或心力衰竭的表现； （3）必须持续性依赖心脏起搏器维持心脏正常功能，且已经放置心脏起搏器。</p>
+                </dd>
+                <dt>57、严重感染性心内膜炎</dt>
+                <dd>
+                    <p>因感染性病原体造成心脏内膜发炎，并符合下列所有条件： （1）血液培养测试结果为阳性，证实存在感染病原体： ①微生物：在赘生物、栓塞的赘生物或心脏内脓疡经培养或组织检查证实有微生 物；或 ②病理性病灶：组织病理学检查证实赘生物或心脏内脓疡有活动性心内膜炎；或 ③分别两次血液培养证实有典型的病原体且与心内膜炎吻合；或 ④持续血液培养证实有病原体阳性反应，且与心内膜炎吻合。 （2）心内膜炎引起中度心瓣膜闭锁不全（指返流分数20%或以上）或中度心瓣膜狭窄 （指心瓣膜开口范围小于或等于正常的30%）；及 （3）心内膜炎及心瓣膜病损须经心脏专科医生确诊。</p>
+                </dd>
+                <dt>58、侵蚀性葡萄胎</dt>
+                <dd>
+                    <p>该类疾病是指异常增生的绒毛组织浸润性生长侵入子宫肌层或转移至其他器官或组织的葡萄胎，并已经进行化疗或手术治疗的。</p>
+                </dd>
+                <dt>59、严重的骨髓增生异常综合征</dt>
+                <dd>
+                    <p>严重骨髓增生异常综合征（myelodysplastic syndromes，MDS）是起源于造血干细胞 的一组异质性髓系克隆性疾病，特点是髓系细胞发育异常，表现为无效造血、难治性 血细胞减少，本计划所指的严重的骨髓异常增生综合征需满足下列所有条件：
+                        （1）由设有专门血液病专科的公立三级甲等医疗机构血液病专科的主治级别以上的医师确诊； （2）骨髓涂片检查同时符合发育异常细胞比例>10%、原始细胞比例>15%； （3）已接受至少累计三十日的化疗或已接受骨髓移植治疗。 化疗日数的计算以实际服用、注射化疗药物的天数为准。 疑似病例不在保障范围之内。</p>
+                </dd>
+                <dt>60、破裂脑动脉瘤夹闭手术</dt>
+                <dd>
+                    <p>指因脑动脉瘤破裂造成蛛网膜下腔出血，实际接受了在全麻下进行的开颅动脉瘤夹闭手术。脑动脉瘤（未破裂）预防性手术、颅骨打孔手术、动脉瘤栓塞手术、 血管内手术及其他颅脑手术不在本保障范围内。</p>
+                </dd>
+
+            </dl>
+
+        </div>
+        <div class="read tc" ng-click="cancelRemind()">
+            <a class="c0 f6">已阅读并同意</a>
+        </div>
+    </div>
+
+    <!--15种轻症名称及定义 浮层-->
+    <div class="shadow-content protocol  bg1" hidden  >
+        <h3 class="tc c3 f8">15种轻症名称及定义</h3>
+        <div class="main c3 f4" >
+            <dl>
+                <dt>1、极早期恶性肿瘤或恶性病变</dt>
+                <dd>
+                    <p>指经组织病理学检查被明确诊断为下列恶性病变，但未达到本计划所指重大疾病“恶性肿瘤”的标准：</p>
+                    <p>（1）原位癌（注）；</p>
+                    <p>（2）相当于Binet分期方案A期程度的慢性淋巴细胞白血病；</p>
+                    <p>（3）相当于Ann Arbor分期方案I期程度的何杰金氏病；</p>
+                    <p>（4）皮肤癌（不包括恶性黑色素瘤及已发生转移的皮肤癌）；</p>
+                    <p>（5）TNM分期为T1N0M0期或更轻分期的前列腺癌。</p>
+                    <p>注：原位癌指恶性细胞局限于上皮内尚未穿破基底膜浸润周围正常组织的癌细胞新生物。会员必须经对固定活组织的组织病理学检查明确诊断为原位癌，且已经接受了针对原位癌病灶的积极治疗。</p>
+                </dd>
+                <dt>2、轻度脑炎或脑膜炎后遗症</dt>
+                <dd>
+                    <p>指因罹患脑炎或脑膜炎导致的神经系统的永久功能障碍。神经系统永久性的功能障碍，指疾病确诊180 天后，仍存在自主活动能力完全丧失， 无法独立完成六项基本日常生活活动中的两项。</p>
+                </dd>
+                <dt>3、一肢缺失</dt>
+                <dd>
+                    <p>指因疾病或意外伤害导致一个肢体自腕关节或踝关节近端（靠近躯干端）以上完全断离。</p>
+                </dd>
+                <dt>4、 视力严重受损</dt>
+                <dd>
+                    <p>指因疾病或意外伤害导致双目视力永久不可逆性丧失，虽然未达到重大疾病“双目失明”的给付标准，但满足下列条件之一：（1)双眼中较好眼矫正视力低于0.1（采用国际标准视力表，如果使用其他视力表应进行换算）；（2）双眼中较好眼视野半径小于20 度。会员申请救助金时年龄须在三周岁以上，并且须提供当时的视力丧失诊断及检查证据。</p>
+                </dd>
+                <dt >5、中度听力受损</dt>
+                <dd>
+                    <p>指因疾病或意外伤害导致但而活双耳听力永久不可逆性丧失，在500 赫兹，1000 赫兹和2000 赫兹语音频率下，平均听阈大于80 分贝。需有纯音听力测试、声道抗检测或听觉诱发电位检测等证实。会员申请救助金时年龄必须在三周岁以上，并且提供当时的听力丧失诊断及检查证据。</p>
+                </dd>
+                <dt>6、重度头部外伤</dt>
+                <dd>
+                    <p>指因头部遭受机械性外力，引起脑重要部位损伤，导致神经系统永久性的功能障碍。须由头颅断层扫描（CT）、核磁共振检查（MRI）或正电子发射断层扫描（PET）等影像学检查证实。神经系统永久性的功能障碍，指脑损伤180 天后，仍完全丧失自主生活能力，无法独立完成六项基本日常生活活动中的二项或以上。</p>
+                </dd>
+                <dt>7、因意外伤害毁容而施行的面部整形手术</dt>
+                <dd>
+                    <p>指为修复意外伤害或暴力袭击造成的面部毁损，实际接受了在全身麻醉的情況下，由整形外科医生实施的对严重缺陷、缺失、损害或变形的面部形态和结构进行修复或重建的面部整形手术。面部整形手术必须在意外伤害后的180天内实施。因面部外伤后遗留的线条状瘢痕及色素沉着而施行的手术不在保障范围内。意外伤害必须满足下列全部条件：</p>
+                    <p>（1）由外在暴力引起并且造成表面可视性伤口和面部骨结构损害的，或面部皮肤三度或全层意外烧伤；</p>
+                    <p>（2）是造成面部毁损的直接和独立的原因。</p>
+                </dd>
+                <dt>8、可逆性再生障碍性贫血</dt>
+                <dd>
+                    <p>指因急性可逆性的骨髓造血功能衰竭而导致贫血、中性粒细胞减少和血小板减少，必须由血液科医生的诊断，且病历资料显示接受了下列任一治疗：（1）骨髓刺激疗法至少一个月；（2）免疫抑制剂治疗至少一个月；（3）接受了骨髓移植。</p>
+                </dd>
+                <dt>9、中度严重克隆症</dt>
+                <dd>
+                    <p>克隆病是一种慢性肉芽肿性肠炎，具有特征性的克隆病病理组织学变化。诊断必须由专科医生经过病理检查结果证实。会员所罹患的克隆症须经肠胃科专科医生以类固醇或免疫抑制剂连续治疗90天以上。</p>
+                </dd>
+                <dt>10、心脏瓣膜介入手术（非开胸手术）</dt>
+                <dd>
+                    <p>为了治疗心脏瓣膜疾病，实际实施了非开胸的经胸壁打孔内镜手术或经皮经导管介入手术进行的心脏瓣膜置换或修复手术。</p>
+                </dd>
+                <dt>11、主动脉内手术（非开胸手术）</dt>
+                <dd>
+                    <p>为了治疗主动脉疾病实际实施了经皮经导管进行的动脉内手术。主动脉指胸主动脉和腹主动脉，不包括胸主动脉和腹主动脉的分支血管。</p>
+                </dd>
+                <dt>12、脑垂体瘤、脑囊肿、脑动脉瘤及脑血管瘤</dt>
+                <dd>
+                    <p>指经头颅断层扫描（CT）、核磁共振（MRI）或其他影像学检查被确诊为下列病变，并实际接受了手术或放射治疗：</p>
+                    <p> （1）脑垂体瘤；</p>
+                    <p>（2）脑囊肿；</p>
+                    <p> （3）脑动脉瘤、脑血管瘤。</p>
+                </dd>
+                <dt>13、特定面积Ⅲ度烧伤</dt>
+                <dd>
+                    <p>指烧伤程度为Ⅲ度，且Ⅲ度烧伤面积为全身体表面积的10％或10%以上，但尚未达到20%。体表面积根据《中国新九分法》计算。</p>
+                </dd>
+                <dt>14、Ⅲ度房室传导阻滞-已放置心脏起搏器</dt>
+                <dd>
+                    <p>指心房激动在房室交界区、房室束及其分支内发生阻滞，不能正常地传到心室的心脏传导性疾病须满足下列所有条件：（1）心电图显示房室搏动彼此独立，心室率<50 次/分钟；（2）出现阿-斯综合征或心力衰竭的表现；（3）必须持续性依赖心脏起搏器维持心脏正常功能，且已经放置心脏起搏器。</p>
+                </dd>
+                <dt>15、轻度原发性肺动脉高压</dt>
+                <dd>
+                    <p>指不明原因的肺动脉压力持续性增高，进行性发展而导致右心室肥厚，已经造成永久不可逆性的体力活动能力受限，达到美国纽约心脏病学会心功能状态分级III 级，且静息状态下肺动脉平均压超过25mmHg。</p>
+                </dd>
+
+            </dl>
+
+        </div>
+        <div class="read tc" ng-click="cancelRemind()">
+            <a class="c0 f6">已阅读并同意</a>
+        </div>
+    </div>
+
+    <!--名词释义 浮层-->
+    <div class="shadow-content protocol  bg1" hidden >
+        <h3 class="tc c3 f8">名词释义</h3>
+        <div class="main c3 f4" >
+            <dl>
+                <dt>1、 周岁</dt>
+                <dd>
+                    <p>指按法定身份证明文件中记载的出生日期计算的年龄，自出生之日起为零周岁，每经过一年增加一岁，不足一年的不计。</p>
+                </dd>
+                <dt>2、医疗机构</dt>
+                <dd>
+                    <p>指经中华人民共和国卫生部门正式评定的二级或以上之公立医院，但不包括上述医院的分院、联合病房或联合病床，精神病院，专供康复、休养、戒毒、戒酒、护理、养老等非以直接诊治病人为目的之医疗机构。</p>
+                </dd>
+                <dt>3、初次确诊 </dt>
+                <dd>
+                    <p>指出生之日起第一次经医疗机构确诊罹患有某种疾病。</p>
+                </dd>
+                <dt>4、意外伤害 </dt>
+                <dd>
+                    <p>指遭受外来的、突发的、非本意的、非疾病的客观事件直接致使身体受到的伤害。</p>
+                </dd>
+                <dt>5、毒品 </dt>
+                <dd>
+                    <p>指中华人民共和国刑法规定的鸦片、海洛因、甲基苯丙胺（冰毒）、吗啡、大麻、可卡因以及国家规定管制的其他能够使人形成瘾癖的麻醉药品和精神药品，但不包括由医生开具并遵医嘱使用的用于治疗疾病但含有毒品成分的处方药品。</p>
+                </dd>
+                <dt>6、遗传性疾病 </dt>
+                <dd>
+                    <p>指生殖细胞或受精卵的遗传物质（染色体和基因）发生突变或畸变所引起的疾病，通常具有亲代传至后代的垂直传递的特征。</p>
+                </dd>
+                <dt>7、先天性畸形、变形或染色体异常</dt>
+                <dd>
+                    <p>指出生时就具有的畸形、变形或染色体异常。先天性畸形、变形或染色体异常按照世界卫生组织《疾病和有关健康问题的国际统计分类》（ICD-10）确定。</p>
+                </dd>
+                <dt>8、有效身份证件 </dt>
+                <dd>
+                    <p>指由政府主管部门规定的证明其身份的证件，如：居民身份证、按规定可使用的有效护照、军官证、警官证、士兵证、户口簿等证件。</p>
+                </dd>
+                <dt>9、专科医生 </dt>
+                <dd>
+                    <p>专科医生应当满足以下四项资格条件： </p>
+                    <p>(一)中华人民共和国《医师资格证书》；</p>
+                    <p>(二)具有有效的中华人民共和国《医师执业证书》，并按期到相关部门登记注册；</p>
+                    <p>(三)具有有效的中华人民共和国主治医师或主治医师以上职称的《医师职称证书》；</p>
+                    <p>(四)在二级或二级以上医疗机构的相应科室从事临床工作三年以上。</p>
+                </dd>
+                <dt>10、酗酒 </dt>
+                <dd>
+                    <p>是指酒精摄入过量。长期过量饮酒导致身体脏器严重损害，或一次大量饮酒导致急性酒精中毒或自制力丧失造成自身伤害、斗殴肇事或交通肇事。酒精过量由医疗机构或公安部门判定。</p>
+                </dd>
+                <dt>11、肢体机能完全丧失 </dt>
+                <dd>
+                    <p>指肢体的三大关节中的两大关节僵硬，或不能随意识活动。肢体是指包括肩关节的整个上肢或包括髋关节的整个下肢。</p>
+                </dd>
+                <dt>12、语言能力或咀嚼吞咽能力完全丧失</dt>
+                <dd>
+                    <p>语言能力完全丧失，指无法发出四种声音（包括口唇音、齿舌音、口盖音和喉头音）中的任何三音、或声带全部切除、或因大脑语言中枢受伤害而罹患失语症。咀嚼吞咽能力完全丧失，指因牙齿以外的原因导致器质障碍或机能障碍，以致不能作咀嚼吞咽运动，除流质食物外不能摄取或吞咽的状态。</p>
+                </dd>
+                <dt>13、六项基本日常生活活动</dt>
+                <dd>
+                    <p>(一)穿衣：自己能够穿衣及脱衣；</p>
+                    <p>(二)移动：自己从一个房间到另一个房间；</p>
+                    <p>(三)行动：自己上下床或上下轮椅；</p>
+                    <p>(四)如厕：自己控制进行大小便；</p>
+                    <p>(五)进食：自己从已准备好的碗或碟中取食物放入口中；</p>
+                    <p>(六)洗澡：自己进行淋浴或盆浴。</p>
+                </dd>
+                <dt>14、永久不可逆 </dt>
+                <dd>
+                    <p>指因疾病确诊或意外发生之日起，经过积极治疗180天后，仍无法通过现有医疗手段恢复。</p>
+                </dd>
+
+            </dl>
+
+        </div>
+        <div class="read tc" ng-click="cancelRemind()">
+            <a class="c0 f6" >已阅读并同意</a>
+        </div>
+    </div>
+
+    <!--中国儿童少年基金会 浮层-->
+    <div class="shadow-content protocol erjihui bg1" hidden >
+        <h3 class="tc c3 f8">中国儿童少年基金会</h3>
+        <div class="main c3 f4" >
+            <dl>
+                <dd style="margin-bottom: 45px;">
+                    <p>中国儿童少年基金会是新中国成立后的第一家国家级公募基金会，隶属于全国妇联，在中国基金会序列中，被民政部评定为最高等级——<span class="bold">5A级</span>。彭丽媛同志担任中国儿童少年基金会“春蕾计划促进女童教育特使”。</p>
+                </dd>
+                <!--<h3 class="tc c3 f8">基金会与我们</h3>
+                <dd>
+                    <p>宝大夫与儿基会通力合作，为您的健康增加一份保障!</p>
+                </dd>
+                <dd>
+                    <img  class="my-img2" width="90%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/erjihui1.png">
+                    <img  class="my-img2" width="230" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/erjihui2.png">
+                    <img  class="my-img2" width="230" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/erjihui3.png">
+                </dd>-->
+            </dl>
+
+        </div>
+        <div class="read tc" ng-click="cancelRemind()">
+            <a class="c0 f6" >已阅读</a>
+        </div>
+    </div>
+</ion-view>
