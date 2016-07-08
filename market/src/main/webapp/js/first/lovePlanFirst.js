@@ -10,6 +10,15 @@ document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.event.drag-1.5.mi
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.touchSlider.js"></scr'+'ipt>');
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/moment.min.js"></scr'+'ipt>');
 
+var imgList = ['http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2Fprove1.jpg',
+    'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2Fprove2.jpg',
+    'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2Fprove3.jpg',
+    'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2Fprove4.jpg',
+    'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2Fprove5.jpg',
+    'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2Fprove6.jpg',
+    'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2Fprove7.jpg',
+    'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2Fprove8.jpg'];
+
 $(function(){
     getUserListImage();
     count();
@@ -137,7 +146,6 @@ var lastNote=function () {
             if(data.headImgUrl != ''){
                 $("#headImgUrl").attr("src",data.headImgUrl);
             }
-            console.log('lastNote',data)
         },
         error : function() {
         }
@@ -174,7 +182,6 @@ var getUserListImage=function () {
         dataType:'json',
         success:function(data) {
             var userImage=data.donationList;
-            console.log("data",data);
             if(userImage.length != 0){
                 for(var i=0;i<userImage.length;i++){
                     if(userImage[i].headImgUrl != ''){
@@ -266,9 +273,10 @@ var recordLogs = function(val){
         }
     });
 };
-var previewImage = function (imgUrl) {
+var previewImage = function (index) {
+    var img = imgList[index];
     wx.previewImage({
-        current: imgUrl, // 当前显示图片的http链接
-        urls: [] // 需要预览的图片http链接列表
+        current: img, // 当前显示图片的http链接
+        urls:imgList  // 需要预览的图片http链接列表
     });
 };
