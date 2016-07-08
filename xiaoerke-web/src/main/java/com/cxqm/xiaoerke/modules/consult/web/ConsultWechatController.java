@@ -10,6 +10,7 @@ import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.common.web.BaseController;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultVoiceRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultPayUserService;
@@ -19,6 +20,7 @@ import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultRecordMongoDBServiceImpl;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultVoiceRecordMongoServiceImpl;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import io.netty.channel.Channel;
@@ -183,9 +185,8 @@ public class ConsultWechatController extends BaseController {
                 try{
                     if(consultPayUserService.angelChargeCheck(openId)){
                         HashMap<String,Object> payInfo = new HashMap<String, Object>();
-                        payInfo.put("openid",openId);
-                        payInfo.put("create_time",new Date());
-                        consultPayUserService.putneepPayConsultSession(sessionId,payInfo);
+                        payInfo.put(openId,new Date());
+                        consultPayUserService.putneepPayConsultSession(consultSession.getCsUserId(),payInfo);
                         notifyType = 1002;
                         int type  = Integer.parseInt(Global.getConfig("consultPayMsgType"));
                         consultPayUserService.sendMessageToConsult(openId,type);
