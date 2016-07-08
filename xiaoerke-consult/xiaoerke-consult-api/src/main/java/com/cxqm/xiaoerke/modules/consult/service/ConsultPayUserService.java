@@ -31,6 +31,4 @@ public interface ConsultPayUserService {
     //移除需要付费的用户信息
     void removePayConsultSession(String openid,String csuserid);
 
-    //通知接诊人员超时
-
 }
