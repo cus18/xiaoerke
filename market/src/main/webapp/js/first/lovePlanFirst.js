@@ -60,7 +60,7 @@ var goContribute = function(){
 };
 // 宝护伞 查看详情
 var goUmbrella = function(){
-    window.location.href="http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000000/a"
+    window.location.href="http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000005/a"
 };
 //用户内容的初始化
 var getUserInfo=function () {
@@ -217,7 +217,8 @@ var loadShare = function(){
                     signature: signature,
                     jsApiList: [
                         'onMenuShareTimeline',
-                        'onMenuShareAppMessage'
+                        'onMenuShareAppMessage',
+                        'previewImage'
                     ] // 功能列表
                 });
                 wx.ready(function () {
@@ -263,5 +264,11 @@ var recordLogs = function(val){
         },
         error : function() {
         }
+    });
+};
+var previewImage = function (imgUrl) {
+    wx.previewImage({
+        current: imgUrl, // 当前显示图片的http链接
+        urls: [] // 需要预览的图片http链接列表
     });
 };
