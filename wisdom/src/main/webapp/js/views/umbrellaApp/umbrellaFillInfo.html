@@ -1,0 +1,232 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="{{title}}">
+    <ion-content class="umbrellaFillInfo " overflow-scroll="true" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true" >
+            <div class="fillCommon ">
+                <dl class="info bg1">
+                    <dt >宝宝信息</dt>
+                    <dd >
+                        <label for="babyName">
+                            <span class="key">姓名：</span>
+                            <input class="value" type="text" id="babyName" placeholder="宝宝的真实姓名" ng-click="skip('babyName')" ng-blur="checkName(0)"  ng-model="info.babyName">
+                        </label>
+                    </dd>
+                    <dd class="select">
+                        <span class="key">性别：</span>
+                        <div class="selectItem sex" >
+                            <img width="65" height="auto"  ng-click="selectSex('boy')"  ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{sexItem=='boy' ? 'member_boy2':'member_boy1'}}.png" >
+                            <img width="65" height="auto"  ng-click="selectSex('girl')" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{sexItem=='girl'? 'member_girl2':'member_girl1'}}.png" >
+                        </div>
+
+                    </dd>
+                    <dd class="select">
+                        <span class="key">出生日期：</span>
+                        <input class="value" type="text" readonly="readonly" id="birthday" placeholder="选择宝宝的出生日期" ng-blur="checkName(1)" >
+                    </dd>
+
+                </dl>
+                <dl class="info bg1">
+                    <dt>家长信息</dt>
+                    <dd>
+                        <label for="parentName">
+                            <span class="key">姓名：</span>
+                            <input class="value" type="text" id="parentName"  ng-click="skip('parentName')" ng-model="info.parentName"  placeholder="家长的真实姓名" ng-blur="checkName(2)" >
+                        </label>
+                    </dd>
+                    <dd class="select">
+                        <span class="key">您是宝宝的：</span>
+                        <div class="selectItem parent" >
+                            <img width="65" height="auto"  ng-click="selectParent('mother')"  ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{parentItem=='mother'? 'member_mom2':'member_mom1'}}.png" >
+                            <img width="65" height="auto"  ng-click="selectParent('father')" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{parentItem=='father'? 'member_dad2':'member_dad1'}}.png" >
+                        </div>
+                    </dd>
+                    <dd>
+                        <label for="phone">
+                            <span class="key">手机号：</span>
+                            <input class="value" type="number" id="phone"  ng-click="skip('phone')"  ng-model="info.phoneNum" placeholder="填写手机号" maxlength="11"  ng-blur="checkPhone()" ng-focus="backCheck()" >
+                        </label>
+                    </dd>
+                    <dd>
+                        <label for="testCode">
+                            <span class="key">验证码：</span>
+                            <input  class="value" type="number" id="testCode"   ng-click="skip('testCode')" ng-model="info.code"   maxlength="6">
+                        </label>
+                        <a class="getCode f4 c0 tc" ng-disabled="codeButton" ng-click="getCode()">{{codeSecond}}</a>
+                    </dd>
+                    <dd >
+                        <label for="IdCard">
+                            <span class="key">身份证号：</span>
+                            <input  class="value" type="text" id="IdCard" ng-model="info.IdCard" placeholder="填写正确的身份证号" maxlength="18"  ng-blur="checkCode()" ng-focus="backCheck()">
+                        </label>
+                    </dd>
+                </dl>
+                <div class="tips" ng-show="!checkLock">
+                    <img class="my-img" width="12.5" height="auto" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fremind_icon.png">
+                    <span>{{tipsText}}</span>
+                </div>
+                <!-- <div class=" f2 c5 tc">未经您的允许，宝大夫不会泄露您的个人信息。</div>-->
+            </div>
+            <div class="protocol f2 c4 tc">
+                <img class="my-img1" width="14" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/protocol_select.png">
+                已阅读并同意<a class="" ng-click="lookProtocol()">宝大夫儿童家庭重疾互助计划公约</a>
+            </div>
+            <br> <br> <br> <br> <br> <br> <br>
+        </ion-scroll>
+        <div ng-click="immediateActive()"  id="payButton" ng-disabled="buttonDis" class="button bottom-btn" style="background-color: #2c9ee2;">
+            下一步
+        </div>
+    </ion-content>
+    <!--宝大夫儿童家庭重疾互助计划公约 浮层-->
+    <div class="c-shadow"  ng-if="protocolLock" ng-click="cancelProtocol()"></div>
+    <div class="c-shadow"  ng-if="pgLock" ng-click="cancelProtocol()"></div>
+    <div class="c-shadow"  ng-if="lgLock" ng-click="cancelProtocol()"></div>
+    <div class="shadow-content protocol  bg1" ng-if="protocolLock" >
+        <h3 class="tc c3 f8">宝大夫儿童家庭重疾互助计划公约</h3>
+        <div class="main c3 f4" >
+            <dl>
+                <dt>第一章 前言</dt>
+                <dd>
+                    <p>随着环境污染和饮食安全问题越来越严重，重大疾病的发病率越来越高，儿童群体也不例外。例如，我国有大约400万白血病人，其中50%是儿童。治疗白血病对于普通家庭来说是一笔巨额开销。医疗费中，花费最多的是感染和并发症，这些药大多是进口的，非常贵，社保不能报销。许多家长不知道自己是在走向希望，还是滑向深渊。</p>
+                    <p>本计划就是根据该社会背景设立的，我们希望可以利用互联网的方式，以及互助计划的契约精神，汇集点滴之力缓解当前医疗救助事业存在的诸多问题，使病患家庭获得医疗上的经济援助，获得救治机会，重拾生活信心。</p>
+                    <p>您在确认加入本计划前请仔细阅读本公约，在您确认参与后即默认您已充分理解本公约的全部内容，并同意认真遵守本公约的权利义务。</p>
+                </dd>
+                <dt>第二章 释义</dt>
+                <dd>
+                    <p>宝大夫平台：是指由北京晨星启明科技有限公司设立的宝大夫品牌旗下的互联网平台。</p>
+                    <p>会员：是指符合本计划参与条件并确认参与本计划的会员</p>
+                    <p>互助申请人：是指发生本计划约定的救助情形，需要获得其他会员救助的会员本人或其监护人。</p>
+                    <p>互助计划：是指宝大夫平台针对各类风险或事项所制定的互助会员之间相互帮助的规则，互助会员遵照规则内容享受互助权利，履行互助义务。</p>
+                    <p>家庭保障金账户：会员定向捐助资金所存放的其在本计划的虚拟家庭互助账户，一般情况下，捐助后会员仅享有查看和继续捐助的权利。</p>
+
+                </dd>
+                <dt>第三章 公约效力</dt>
+                <dd>
+                    <p>1、本公约对所有会员均有法律效力。 </p>
+                    <p>2、宝大夫平台有权根据实际情况随时修订本公约，并进行公示。变更后的条款公示后，即发生法律效力。您若对变更后的条款有任何异议，请及时退出该计划。如您继续使用本计划提供的服务，则表示您同意并接受新条款的约束。</p>
+                    <p>3、 如您对本公约有任何疑问，应向宝大夫平台咨询。您不应以未阅读或不接受本公约的内容为由，主张本公约无效或要求撤销本公约。</p>
+                    <p>4、本计划属于创新型计划，可能会受到国家法律法规及政策的影响，导致本计划不能继续提供相应的服务。您成为会员时即表明您已充分了解本计划存在的风险，如因此使您遭受损失，您同意自行承担，宝大夫平台不承担任何责任。</p>
+
+                </dd>
+                <dt>第四章 参与标准</dt>
+                <dd>
+                    <p>1、会员加入：</p>
+                    <p>（1）0（出生满30天）-14周岁自然人及其父母；</p>
+                    <p>（2）加入本计划之时身体健康，无重大疾病史及相关症状就诊纪录，无慢性病史；</p>
+                    <p>（3）向本计划捐助，金额为家庭参与计划人数*5元，三口之家即为15元；；</p>
+                    <p>（4）认同并承诺遵守本公约。</p>
+                    <p>2、会员退出：</p>
+                    <p>（1）受到一次救助的会员，自动退出，家庭中其余成员需重新按剩余人数*5元缴费，方可留在计划中，否则自动退出；</p>
+                    <p>（2）孩子年满18周岁，自动退出；</p>
+                    <p>（3）家庭中最后一个孩子退出，父母也自动退出；</p>
+                    <p>（4）家庭互助账户中人均余额不足3元，保障中断；在30日内未补足的，自动退出；</p>
+                    <p>（5）父母离异后，非监护人一方自动退出计划；</p>
+                    <p>（6）计划公约所规定的其他情况；</p>
+                    <p>（7）丧失会员资格后，符合条件重新加入计划的，将重新计算180天等待期。</p>
+                </dd>
+                <dt>第五章 互助内容</dt>
+                <dd>
+                    <p>1、会员加入本计划180天后初次发生并被医院的专科医生确诊为本计划约定的重大疾病（60种），以及轻症疾病（15种），本计划下的其他会员会为其发起互助；该确诊会员将获得最高互助金额为40万元的重疾赔付，以及最高8万元的轻症赔付。</p>
+                    <p>2、会员资格存续期间，如其罹患本计划约定的60种重大疾病或者15种轻症，其他会员有义务进行均摊式互助。每人单次均摊基准上限为3元，平台将从其他会员家庭保障金账户进行扣除。。</p>
+                    <p>3、本计划中“重大疾病（60种）” 第1至第20项为中国保险行业协会与中国医师协会共同制定的重大疾病保险的疾病定义，第21项至第60项为宝大夫平台根据权威儿科专家建议，自行增加的疾病种类和定义。其中包含多种儿科常见重大疾病，如白血病等。</p>
+                    <p>4、本计划中“轻症疾病（15种）”，通常指重大疾病的前期轻度阶段，或未达到重大疾病标准的次轻一级同类疾病，在医学上均有明确的定义。</p>
+                    <p>5、重大疾病和轻症疾病的定义，会员可查看《60种重大疾病名称及定义》、《15种轻症名称及定义》。</p>
+                </dd>
+                <dt>第六章 会员的权利义务</dt>
+                <dd>
+                    <p>1、您有权查阅本计划公布的互助事件及活动信息。</p>
+                    <p>2、您有权参与本计划存续过程中发生的各种互助事件或活动。</p>
+                    <p>3、您有义务向宝大夫平台提供真实准确的身份信息。</p>
+                    <p>4、您有义务保证不在计划运行过程中发布包含诈骗、非法、色情、淫秽、暴力等违反国家法律法规、政策的内容，不发表含有攻击性、侮辱性的言论。</p>
+                    <p>5、会员有权在需要时获得其他会员的互助，也有义务根据互助事件向其他会员提供互助。</p>
+                    <p>6、您可获得本计划提供的信息、资料、咨询和服务，查看您本人参与互助事件的记录，了解您所参与的互助事件情况，并对该互助事件提出质疑。</p>
+                    <p>7、一旦出现互助申请人通过提供虚假资料和信息而获得互助的情形，您有权委托平台向互助申请人进行追偿。</p>
+                    <p>8、您对本计划有批评权、建议权和监督权。</p>
+                    <p>9、您应确保您在宝大夫平台注册信息、联系方式、银行卡信息是真实准确的，否则您将无法获得帮助。</p>
+                    <p>10、会员应及时关注本计划的互助事件信息，自行了解互助流程，认真履行义务；不能以未收到本计划的通知为由要求宝大夫平台承担任何责任。</p>
+                    <p>11、一旦加入本计划，即视为您授权宝大夫平台在相关会员符合互助条件时，提供相应的金额以用于互助事宜。</p>
+                    <p>12、会员应及时关注家庭保障金账户的资金情况，保证账户有足够余额（人均不低于3元）。</p>
+                    <p>13、您应妥善保管在宝大夫平台上注册的用户名和密码，凡使用您的用户名和密码登陆宝大夫平台进行的一切操作，均视为您本人的行为，一切责任由您本人承担。</p>
+                    <p>14、申请互助的会员有义务就互助事件提供真实完整的资料，否则将被取消获得互助的资格。</p>
+                    <p>15、您同意宝大夫平台可单方面判断并决定，如果您违反本公约，出现损害本计划和其他会员的行为，宝大夫平台可随时终止您的密码、账号或某些服务的使用，并可将您在平台中留存的任何内容加以移除或删除，同时对您终止部分或全部服务。</p>
+                    <p>16、您的账户因以上所述原因被终止使用或因停止运作等原因被关闭时，您无权要求宝大夫平台退回家庭保障金账户中显示的现金余额，也无权要求宝大夫平台或其他会员在您未来发生互助事件时对您发起互助。</p>
+                </dd>
+                <dt>第七章 宝大夫平台权利义务</dt>
+                <dd>
+                    <p>1、宝大夫平台不保证任何会员都能获得互助保障。</p>
+                    <p>2、宝大夫平台有权制定各项互助条款并协助会员互助。</p>
+                    <p>3、宝大夫平台或平台指定第三方有权对会员的互助申请进行审核，并最终决定申请会员是否可以获得互助。</p>
+                    <p>4、宝大夫平台对会员捐助的资金进行管理。</p>
+                    <p>5、在会员符合互助条件时，宝大夫平台将在其他会员家庭保障金账户里代为扣款并将互助资金划拨给互助申请人。</p>
+                    <p>6、在出现互助申请人通过提供虚假资料和信息而获得互助的情形时，宝大夫平台有义务代全体会员向互助申请人追偿；但若未能全额追偿，宝大夫平台无出资垫付的义务。</p>
+                    <p>7、宝大夫平台因客观或政策原因无法继续运作本计划，或会员数量低于一定数量（20万人）时，有权终止本计划。在此情形下，宝大夫平台将会员自行充值的剩余资金，退回到用户宝大夫平台账户余额中。</p>
+                    <p>8、宝大夫平台提供的技术服务可能会受到各个环节不稳定因素的影响。因此服务存在不可抗力、计算机病毒或黑客攻击、系统不稳定、会员所在地点以及其他任何技术、互联网络、通信线路原因等造成的服务中断或不能满足会员要求的风险，宝大夫平台不作任何担保。对因此导致会员损失，宝大夫平台不承担任何责任。</p>
+                    <p>9、如宝大夫平台的系统发生故障影响服务的正常运行，宝大夫平台承诺在第一时间内与相关单位配合，及时处理进行修复。但会员因此而产生的间接损失，宝大夫平台不承担责任。此外，宝大夫平台保留不经事先通知为维修保养、升级或其他目的暂停服务任何部分的权利。</p>
+                    <p>10、参与本计划的会员之间除互助事件之外引发的任何纠纷宝大夫平台将不负责任。</p>
+                    <p>11、会员公然侮辱他人或者捏造事实诽谤他人，或者进行其他恶意攻击的，宝大夫平台有权不为该会员提供服务并有权追偿该会员造成的损失。</p>
+                </dd>
+                <dt>第八章 资金</dt>
+                <dd>
+                    <p>1、宝大夫平台将为本计划提供独立账户，并对会员捐助资金使用情况进行公示。</p>
+                    <p>2、会员捐助资金仅用于本计划救助及因救助产生的相关费用和为本计划提供必要服务的第三方收取的服务费用（包括但不限于法律顾问服务费、救助情况审核服务费、审计服务费、计划资金监管服务费、信息服务费用等）。</p>
+                    <p>3、宝大夫平台对会员的捐助的资金进行管理。资金所产生的利息仅用于宝大夫平台运营的各项费用。</p>
+                </dd>
+                <dt>第九章 终止和退出</dt>
+                <dd>
+                    <p>1、以下任一情形出现，本计划可能终止:</p>
+                    <p>（1）本计划参与人数少于20万人的；</p>
+                    <p>（2）不可抗力、政策因素致本计划终止的。</p>
+                    <p>2、以下任一情形出现，您即退出本计划:</p>
+                    <p>（1）您违反了国家法律法规、政策、本公约或宝大夫平台发布的各类规则，平台将终止为您提供服务的；</p>
+                    <p>（2）您本人不同意接受本公约约定或宝大夫平台发布的各类规则的；</p>
+                    <p>（3）您不符合本公约规定的参与资格的。</p>
+                    <p>3、本公约终止或您退出本公约，不影响您受本公约约束时所做的行为应承担的义务和责任。</p>
+                    <p>4、本公约的解释权归宝大夫平台所有。</p>
+                </dd>
+            </dl>
+
+        </div>
+        <div class="read tc" ng-click="cancelProtocol()">
+            <a class="c0 f6" >已阅读并同意</a>
+        </div>
+    </div >
+    <div class="pg" ng-if="pgLock">
+        <div class="pg_img">
+            <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/pg_guanbi.png" width="28px" height="49px" ng-click="cancelProtocol()"/>
+        </div>
+        <div class="pg_con">
+            <div class="pg_com pg_com2">{{pgcontent}}</div>
+            <div class="pg_com pg_com2">{{pgcontent2}}</div>
+            <div class="pg_com pg_com3" ng-if="pgbut" ng-click="lookSafeguard()">{{pgbutton}}</div>
+            <div class="pg_com pg_com3" ng-if="pgbut2" ng-click="cancelProtocol()">{{pgbutton}}</div>
+        </div>
+    </div>
+    <div class="ls" ng-if="lgLock">
+        <div class="ls_headimg">
+            <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/app/ls_headimg1.png" width="60%" height="60%"/>
+        </div>
+        <div class="ls_first ls_com">
+            第一步：使用手机截图功能，将此页面截屏
+        </div>
+        <div class="ls_erweima">
+            <div class="ls_1 ls_com3">
+                <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/app/ls_erweima.png" width="50%" height="50%"/>
+                <div class="ls_com">此二维码有效期为30天</div>
+            </div>
+            <div class="ls_2 ls_com3">
+                <img class="ls_com2" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/app/ls_1.png" />
+                <img class="ls_com2" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/app/ls_2.png" />
+                <img class="ls_com2" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/app/ls_3.png" />
+            </div>
+        </div>
+        <div class="ls_second ls_com">第二步：打开“微信--扫一扫”，点击相册，选择截屏图片</div>
+        <div class="ls_sao1">
+            <img src ="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/app/ls_sao1.png" width="50%" height="50%"/>
+        </div>
+        <div class="ls_sao2">
+            <img src ="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/app/ls_sao2.png" width="50%" height="50%"/>
+        </div>
+    </div>
+    <div class="close" ng-click="cancelProtocol()" ng-if="lgLock">
+        <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/app/ls_close.png" width="50%" height="50%"/>
+    </div>
+</ion-view>
