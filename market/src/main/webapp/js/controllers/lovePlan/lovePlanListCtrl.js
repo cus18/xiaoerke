@@ -3,7 +3,6 @@ angular.module('controllers', ['ionic']).controller('lovePlanListCtrl', [
     function ($scope,$state,$stateParams,PhotoWall,$filter) {
 
         PhotoWall.save({}, function (data) {
-            console.log(data);
             $scope.user = data.donationList;
             $scope.nincName = data.myMap.wechatName;
             $scope.money = data.myMap.sumMoney;
