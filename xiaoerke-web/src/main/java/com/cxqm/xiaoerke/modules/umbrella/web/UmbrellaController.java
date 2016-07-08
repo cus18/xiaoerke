@@ -19,6 +19,7 @@ import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaFamilyInfo;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +29,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -218,6 +224,8 @@ public class UmbrellaController  {
         String jsonobj = HttpRequestUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" +
                 token + "", "POST", message);
         System.out.println(jsonobj+"===============================");
+        String result=addUserType(toOpenId);
+        System.out.print(result+ "------------------------------------");
     }
 
     /**
@@ -744,5 +752,75 @@ public class UmbrellaController  {
         }
     }
 
+
+    public String addUserType(String id) {
+        Map<String,Object> parameter = systemService.getWechatParameter();
+        String token = (String)parameter.get("token");
+        String url= "https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging?access_token="+token;
+        String jsonData="{\"openid_list\":[\""+id+"\"],\"tagid\" : 105}";
+        String reJson=this.post(url, jsonData,"POST");
+        System.out.println(reJson);
+        JSONObject jb=JSONObject.fromObject(reJson);
+        String errmsg=jb.getString("errmsg");
+        if(errmsg.equals("ok")){
+            return "ok";
+        }else {
+            return errmsg;
+        }
+    }
+
+
+    /**
+     * 发送HttpPost请求
+     *
+     * @param strURL
+     *            服务地址
+     * @param params
+     *            json字符串,例如: "{ \"id\":\"12345\" }" ;其中属性名必须带双引号<br/>
+     *            type (请求方式：POST,GET)
+     * @return 成功:返回json字符串<br/>
+     */
+    public String post(String strURL, String params,String type) {
+        System.out.println(strURL);
+        System.out.println(params);
+        try {
+            URL url = new URL(strURL);// 创建连接
+            HttpURLConnection connection = (HttpURLConnection) url
+                    .openConnection();
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+            connection.setUseCaches(false);
+            connection.setInstanceFollowRedirects(true);
+            connection.setRequestMethod(type); // 设置请求方式
+            connection.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式
+            connection.setRequestProperty("Content-Type", "application/json"); // 设置发送数据的格式
+            connection.connect();
+            OutputStreamWriter out = new OutputStreamWriter(
+                    connection.getOutputStream(), "UTF-8"); // utf-8编码
+            out.append(params);
+            out.flush();
+            out.close();
+            // 读取响应
+            int length = (int) connection.getContentLength();// 获取长度
+            InputStream is = connection.getInputStream();
+            if (length != -1) {
+                byte[] data = new byte[length];
+                byte[] temp = new byte[512];
+                int readLen = 0;
+                int destPos = 0;
+                while ((readLen = is.read(temp)) > 0) {
+                    System.arraycopy(temp, 0, data, destPos, readLen);
+                    destPos += readLen;
+                }
+                String result = new String(data, "UTF-8"); // utf-8编码
+                System.out.println(result);
+                return result;
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null; // 自定义错误信息
+    }
 
 }
