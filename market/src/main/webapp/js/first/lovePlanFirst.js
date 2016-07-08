@@ -26,7 +26,7 @@ var moreLock=false;
 var lookMore = function(){
    if(moreLock){
         moreLock=false;
-       $(".pic-list dd:gt(3)").hide();
+       $(".pic-list dd:gt(2)").hide();
        $(".lookMore a").html("点击查看全部"+'&nbsp;&nbsp;'+'<i class="ion-ios-arrow-down"> </i>');
    }
     else{
