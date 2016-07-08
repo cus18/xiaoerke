@@ -61,7 +61,7 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
                 for (Map.Entry<String, Object> entry : payConsult.entrySet()) {
                     System.out.println("key= " + entry.getKey() + " and value= " + entry.getValue());
                     Date joinDate = (Date)entry.getValue();
-                    if(joinDate.getTime()+1000*60*5>new Date().getTime())
+                    if(joinDate.getTime()+1000*60*5<new Date().getTime())
                         payConsult.remove( entry.getKey());
                 }
             }
@@ -93,7 +93,7 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
         //判断日期条件是否满足要求
         if((morningStartTime.getTime()<present.getTime() &&consultMorningEndTime.getTime()>present.getTime())
                 ||(consultAfternoonStartTime.getTime()<present.getTime()&&consultAfternoonEndTime.getTime()>present.getTime()))
-        if( (null!=consultSessions&&consultSessions.size()>3&&(null ==payRecord || payRecord.getReceiveDate().getTime()+24*60*60*1000>new Date().getTime()))
+        if( (null!=consultSessions&&consultSessions.size()>3&&(null ==payRecord || payRecord.getReceiveDate().getTime()+24*60*60*1000<new Date().getTime()))
                 ||insurance>0
                 )
             return true;
@@ -148,7 +148,7 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
                 break;
         };
         WechatUtil.sendMsgToWechat(token,openid,st);
-        LogUtils.saveLog("consult_chargetest_once_information",openid+":"+type);
+        LogUtils.saveLog("consult_chargetest_once_information", openid + ":" + type);
     }
 
 }
