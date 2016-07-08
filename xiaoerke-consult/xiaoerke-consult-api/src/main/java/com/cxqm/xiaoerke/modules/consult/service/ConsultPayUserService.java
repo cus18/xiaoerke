@@ -28,6 +28,9 @@ public interface ConsultPayUserService {
     //保存需要付费的用户信息
     void putneepPayConsultSession(String csuserId, HashMap<String,Object> payInfo);
 
+    //移除需要付费的用户信息
+    void removePayConsultSession(String openid,String csuserid);
+
     //通知接诊人员超时
 
 }
