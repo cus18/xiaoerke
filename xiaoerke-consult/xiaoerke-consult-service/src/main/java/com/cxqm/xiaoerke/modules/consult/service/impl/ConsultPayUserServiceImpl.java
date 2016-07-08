@@ -75,6 +75,18 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
     }
 
     @Override
+    public void removePayConsultSession(String openid,String csuserid) {
+        HashMap<String,Object> payMap = getneepPayConsultSession(csuserid);
+        if(null !=payMap && payMap.size()>0){
+            for (Map.Entry<String, Object> entry : payMap.entrySet()) {
+                if(openid.equals(entry.getKey()))
+                    payMap.remove( entry.getKey());
+            }
+        }
+        putneepPayConsultSession(csuserid,payMap);
+    }
+
+    @Override
     public boolean angelChargeCheck(String userId) {
         ConsultSession consultSession = new ConsultSession();
         consultSession.setUserId(userId);
