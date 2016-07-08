@@ -82,7 +82,7 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
         //判断是否为预防接种系列渠道
         Integer insurance = consultPayUserDao.CheckInsuranceByOpenid(userId);
         //是否已经支付
-        PayRecord payRecord = payRecordService.findRecordByOpenid(userId,"consultOnline");
+        PayRecord payRecord = payRecordService.findRecordByOpenid(userId,"doctorConsultPay");
         //判断时间条件
         Date morningStartTime = DateUtils.StrToDate(Global.getConfig("consultMorningStartTime"),"yyyy-MM-dd HH:mm");
         Date consultMorningEndTime = DateUtils.StrToDate(Global.getConfig("consultMorningEndTime"),"yyyy-MM-dd HH:mm");
