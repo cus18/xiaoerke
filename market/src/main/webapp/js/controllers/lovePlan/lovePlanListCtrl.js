@@ -28,7 +28,7 @@ angular.module('controllers', ['ionic']).controller('lovePlanListCtrl', [
         //分享到朋友圈或者微信
         var loadShare = function(){
             // if(version=="a"){
-            var share = 'http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=32';
+            var share = 'http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=32';
             version="a";
             var timestamp;//时间戳
             var nonceStr;//随机字符串
