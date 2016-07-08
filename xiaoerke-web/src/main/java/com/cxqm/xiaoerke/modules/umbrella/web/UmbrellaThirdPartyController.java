@@ -5,7 +5,9 @@ import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
-import com.cxqm.xiaoerke.modules.sys.entity.*;
+import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
+import com.cxqm.xiaoerke.modules.sys.entity.User;
+import com.cxqm.xiaoerke.modules.sys.entity.ValidateBean;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
@@ -13,6 +15,7 @@ import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaFamilyInfo;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoThirdPartyService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
+import com.cxqm.xiaoreke.modules.alipay.service.AlipayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +29,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**@author guozengguang
  * @version 16/7/6
@@ -53,6 +59,9 @@ public class UmbrellaThirdPartyController  {
 
     @Autowired
     private HealthRecordsService healthRecordsService;
+
+    @Autowired
+    private AlipayService alipayService;
 
     /**
      *获取保护伞首页信息-已有多少人加入互助计划
@@ -210,6 +219,24 @@ public class UmbrellaThirdPartyController  {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * 非微信平台(第三方)支付宝支付
+     */
+    @RequestMapping(value = "/alipayment", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object>  alipayment(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+        String totleFee = params.get("totleFee").toString();
+        String body = params.get("body").toString();
+        String describe = params.get("describe").toString();
+        String showUrl = params.get("showUrl").toString();
+        String result = alipayService.alipayment(totleFee, body, describe, showUrl);
+        Map<String,Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("result",result);
+        return resultMap;
     }
 
 }
