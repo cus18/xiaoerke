@@ -562,7 +562,8 @@ public class PayNotificationController {
 			String jsonobj = HttpRequestUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" +
 					token + "", "POST", message);
 			System.out.println(jsonobj + "===============================");
-			addUserType(toOpenId);
+			String result=addUserType(toOpenId);
+			System.out.print(result+ "------------------------------------");
 		}
 	}
 
@@ -578,7 +579,7 @@ public class PayNotificationController {
 		if(errmsg.equals("ok")){
 			return "ok";
 		}else {
-			return "none";
+			return errmsg;
 		}
 	}
 
