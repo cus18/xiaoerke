@@ -291,7 +291,7 @@ public class ConsultWechatController extends BaseController {
         consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
         csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
         System.out.println("csChannel------"+csChannel);
-
+        consultPayUserService.removePayConsultSession(consultSession.getCsUserId(),openId);
         if(csChannel!=null&&csChannel.isActive()){
             try {
                 JSONObject obj = new JSONObject();
@@ -330,6 +330,7 @@ public class ConsultWechatController extends BaseController {
         RichConsultSession consultSession = new RichConsultSession();
         if(null != sessionId){
         consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
+        consultPayUserService.removePayConsultSession(consultSession.getCsUserId(),openId);
         csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
         System.out.println("csChannel------"+csChannel);
         if(csChannel!=null&&csChannel.isActive()){
@@ -349,5 +350,12 @@ public class ConsultWechatController extends BaseController {
         }
         }
         return null;
+    };
+
+    @RequestMapping(value = "/getneedPaylist", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String,Object> getList(@RequestParam(required=true) String csuserId){
+       return consultPayUserService.getneepPayConsultSession(csuserId);
     };
 }
