@@ -466,6 +466,7 @@ public class AccountServiceImpl implements AccountService {
                 payRecord.setPayDate(new Date());
                 payRecord.setCreatedBy(user.getId());
                 payRecord.setFeeType(PrepayInfo.get("feeType"));
+                payRecord.setLeaveNote((String) request.getAttribute("leaveNote"));
                 System.out.println("insert:"+PrepayInfo.get("feeType"));
 
                 LogUtils.saveLog(Servlets.getRequest(),"00000037","用户发起微信支付:" + outTradeNo);//用户发起微信支付

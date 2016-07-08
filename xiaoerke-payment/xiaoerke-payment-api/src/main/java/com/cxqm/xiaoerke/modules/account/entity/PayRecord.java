@@ -30,6 +30,8 @@ public class PayRecord extends Record{
 
     private Float amount;//金额
 
+    private String leaveNote;
+
     public String getReason() {
         return reason;
     }
@@ -144,5 +146,13 @@ public class PayRecord extends Record{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLeaveNote() {
+        return leaveNote;
+    }
+
+    public void setLeaveNote(String leaveNote) {
+        this.leaveNote = leaveNote;
     }
 }
