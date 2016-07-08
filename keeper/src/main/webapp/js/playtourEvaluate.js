@@ -385,20 +385,21 @@ function updateCustomerInfo() {
     }else{
         redPacket = moneyNum;
     }
+    redPacket = parseFloat(redPacket);
     if (redPacket != "" && redPacket > 0  ) {
         if(redPacket>200){
             alert("感谢您的支持,目前最大金额为200哦!");
             return;
         }
-        var num = new Number(redPacket);
-        redPacket = num.toFixed(1);
+        /*var num = new Number(redPacket);
+        redPacket = num.toFixed(1);*/
         recordLogs("ZXPJSXY_JE");
         $.ajax({
-            url: "account/user/customerPay",// 跳转到 action
-            async: true,
-            type: 'get',
-            data: {patientRegisterId: customerId, payPrice: redPacket * 100},
-            cache: false,
+            url:"account/user/customerPay",// 跳转到 action
+            async:true,
+            type:'get',
+            data:{patientRegisterId: customerId, payPrice: redPacket * 100},
+            cache:false,
             success: function (data) {
                 var obj = eval('(' + data + ')');
                 if (parseInt(obj.agent) < 5) {
