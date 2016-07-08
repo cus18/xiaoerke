@@ -12,5 +12,22 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     wx.closeWindow();
                 })
             };
+
+            var recordLogs = function(val){
+                $.ajax({
+                    url:"util/recordLogs",// 跳转到 action
+                    async:true,
+                    type:'get',
+                    data:{logContent:encodeURI(val)},
+                    cache:false,
+                    dataType:'json',
+                    success:function(data) {
+                    },
+                    error : function() {
+                    }
+                });
+            };
+
+            recordLogs("consult_chargetest_once_information_cs");
         }])
 

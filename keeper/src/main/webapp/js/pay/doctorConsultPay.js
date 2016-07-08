@@ -41,11 +41,11 @@ var doRefresh = function(){
         error : function() {
         }
     });
-
+    recordLogs("consult_chargetest_once_information");
 };
 
 function wechatPay() {
-    // recordLogs("");
+    recordLogs("consult_chargetest_once_paypage_paybutton");
     var u = navigator.userAgent, app = navigator.appVersion;
     var isAndroid = u.indexOf('Android') > -1 || u.indexOf('linux') > -1; //g
     var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
@@ -96,3 +96,18 @@ function wechatPay() {
         payLock=true;
     }
 }
+
+var recordLogs = function(val){
+    $.ajax({
+        url:"util/recordLogs",// 跳转到 action
+        async:true,
+        type:'get',
+        data:{logContent:encodeURI(val)},
+        cache:false,
+        dataType:'json',
+        success:function(data) {
+        },
+        error : function() {
+        }
+    });
+};
