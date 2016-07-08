@@ -13,6 +13,7 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultPayUserService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -44,16 +45,16 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
 
 
     @Override
-    public HashMap<String,Object> getneepPayConsultSession(Integer sessionid) {
-        HashMap<String,Object> sessionMap = (HashMap<String,Object>) redisTemplate.opsForHash().get(PAYINFO_CONSULTS_KEY, sessionid);
+    public HashMap<String,Object> getneepPayConsultSession(String csuserId) {
+        HashMap<String,Object> sessionMap = (HashMap<String,Object>) redisTemplate.opsForHash().get(PAYINFO_CONSULTS_KEY, csuserId);
         return sessionMap;
     }
 
     @Override
-    public void putneepPayConsultSession(Integer sessionid,
+    public void putneepPayConsultSession(String csuserId,
                                          HashMap<String,Object> payInfo) {
-        if(null !=sessionid||null !=payInfo){
-            HashMap<String,Object> payConsult = getneepPayConsultSession(sessionid);
+        if(null !=csuserId||null !=payInfo){
+            HashMap<String,Object> payConsult = getneepPayConsultSession(csuserId);
 
             System.out.println("通过Map.entrySet遍历key和value");
             if(null !=payConsult && payConsult.size()>0){
@@ -69,7 +70,7 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
                 payInfo.putAll(payConsult);
             }
             redisTemplate.opsForHash().put(PAYINFO_CONSULTS_KEY,
-                    sessionid, payInfo);
+                    csuserId, payInfo);
         }
     }
 
@@ -120,7 +121,6 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
     public void sendMessageToConsult(String openid,int type) {
         Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
         String token = (String) userWechatParam.get("token");
-//        token = "Anpvh5m521VA-M5vTkANy0c7TN4VzBKUKHm9CkNkwW7yhMx0s8PkcUHwfSUKL4meLw5yi3SWD2f9jnSM2uq80Yt2njDOjZdfIujhUh5VUvYGtW0hwmE3ROHzDWA8UiuKFPAjABAYIT";
         String st = "";
         switch (type){
             case 1:
@@ -148,6 +148,7 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
                 break;
         };
         WechatUtil.sendMsgToWechat(token,openid,st);
+        LogUtils.saveLog("consult_chargetest_once_information",openid+":"+type);
     }
 
 }
