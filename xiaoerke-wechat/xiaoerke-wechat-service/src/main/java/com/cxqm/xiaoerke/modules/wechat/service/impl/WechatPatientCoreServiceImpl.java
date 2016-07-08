@@ -4,22 +4,18 @@ import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
-import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
 import com.cxqm.xiaoerke.modules.interaction.dao.PatientRegisterPraiseDao;
 import com.cxqm.xiaoerke.modules.marketing.service.LoveMarketingService;
 import com.cxqm.xiaoerke.modules.member.service.MemberService;
 import com.cxqm.xiaoerke.modules.sys.entity.*;
-import com.cxqm.xiaoerke.modules.sys.service.ActivityService;
-import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
-import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.cxqm.xiaoerke.modules.sys.service.*;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
-//import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
-//import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
+import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoThirdPartyService;
 import com.cxqm.xiaoerke.modules.wechat.dao.WechatAttentionDao;
 import com.cxqm.xiaoerke.modules.wechat.dao.WechatInfoDao;
 import com.cxqm.xiaoerke.modules.wechat.entity.HealthRecordMsgVo;
@@ -27,7 +23,6 @@ import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatPatientCoreService;
 import com.cxqm.xiaoerke.modules.wechat.service.util.MessageUtil;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -37,7 +32,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
@@ -45,6 +39,9 @@ import java.net.URLEncoder;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+//import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
+//import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 
 @Service
 @Transactional(readOnly = false)
@@ -55,6 +52,15 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
 	@Autowired
 	private WechatAttentionDao wechatAttentionDao;
+
+  @Autowired
+  private UtilService utilService;
+
+  @Autowired
+  private HealthRecordsService healthRecordsService;
+
+  @Autowired
+  private BabyBaseInfoService babyBaseInfoService;
 
 	@Autowired
 	private SystemService systemService;
@@ -87,6 +93,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
 	@Autowired
 	private BabyUmbrellaInfoService babyUmbrellaInfoService;
+
+  @Autowired
+  private BabyUmbrellaInfoThirdPartyService babyUmbrellaInfoThirdPartyService;
 
 	@Autowired
 	private WechatAttentionService wechatAttentionService;
@@ -591,7 +600,68 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 					articleList.add(article);
 				}
 			}
-		}
+		}else if(EventKey.indexOf("qrscene_99")>-1){
+        //如果扫码者来自非微信平台
+        String openId = xmlEntity.getFromUserName();//扫码者openid
+        String marketer = EventKey.replace("qrscene_", "");//渠道
+        StringBuffer sbf = new StringBuffer("1");
+        Map<String,Object> map = new HashMap<String, Object>();
+
+        String umbrellaid = sbf.append(marketer.substring(2)).toString();
+        String userPhone = "";
+        map.put("id",umbrellaid);
+        List<Map<String, Object>> umbrellaList = babyUmbrellaInfoService.getBabyUmbrellaInfo(map);
+        if(umbrellaList!=null && umbrellaList.size() > 0){
+            userPhone = (String)umbrellaList.get(0).get("parent_phone");
+        }
+
+        Map<String,Object> openIdMap = new HashMap<String, Object>();
+        openIdMap.put("openId", openId);
+        List<Map<String, Object>> openIdList = babyUmbrellaInfoThirdPartyService.getIfBuyUmbrellaByOpenidOrPhone(openIdMap);
+        List<Map<String, Object>> openIdAndPhoneList = null;
+        if (openIdList != null && openIdList.size() > 0) {
+            //该微信已经购买
+            openIdMap.put("userPhone",userPhone);
+            openIdAndPhoneList = babyUmbrellaInfoThirdPartyService.getIfBuyUmbrellaByOpenidOrPhone(openIdMap);
+            if(openIdAndPhoneList != null && openIdAndPhoneList.size() > 0){
+                //此微信下已有宝护伞，并且该微信下的手机号与非微信平台购买的手机号一致,推送以下消息
+                article.setTitle("宝大夫送您一份见面礼");
+                article.setDescription("恭喜您已成功领取专属于宝宝的20万高额保障金");
+                article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
+                article.setUrl("http://s165.baodf.com/wisdom/umbrella#/umbrellaJoin/1467962511697/130000002");
+                articleList.add(article);
+            }else{
+                //此微信下已有宝护伞，并且该微信下的手机号与非微信平台购买的手机号不一致,推送以下消息
+                article.setTitle("您的微信已经加入宝护伞，请更换其他微信账号。");
+                article.setDescription("查看我的保障");
+                //article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
+                article.setUrl("http://s165.baodf.com/wisdom/umbrella#/umbrellaJoin/1467962511697/130000002");
+
+                articleList.add(article);
+            }
+        }else{
+            //全新用户，并且在非微信平台已购买宝护伞
+            //首先完成绑定，然后推送消息
+            PatientVo patientVo = utilService.bindUserForThirdParty(userPhone, openId);
+            BabyBaseInfoVo vo = new BabyBaseInfoVo();
+            vo.setUserid(patientVo.getSysUserId());
+            vo.setOpenid(openId);
+            int result = babyBaseInfoService.updateBabyInfoByUserId(vo);
+
+            BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
+            babyUmbrellaInfo.setId(Integer.valueOf(umbrellaid));
+            babyUmbrellaInfo.setSource(marketer);
+            babyUmbrellaInfo.setOpenid(openId);
+            babyUmbrellaInfoService.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
+
+            //推送消息
+            article.setTitle("宝大夫送您一份见面礼");
+            article.setDescription("恭喜您已成功领取专属于宝宝的20万高额保障金");
+            article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
+            article.setUrl("http://s165.baodf.com/wisdom/umbrella#/umbrellaJoin/1467962511697/130000002");
+            articleList.add(article);
+        }
+    }
 
 		if(articleList.size() == 0){
 			return "";

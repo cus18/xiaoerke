@@ -34,8 +34,8 @@ public class TestConcurrentDemo {
     }
 
     public static void main(String[] args) {
-        TestConcurrentDemo testConcurrentDemo = new TestConcurrentDemo();
-        testConcurrentDemo.process();
+        //TestConcurrentDemo testConcurrentDemo = new TestConcurrentDemo();
+        //testConcurrentDemo.process();
         //System.out.println();
         //Map<String,Object> map1 =new HashMap<String, Object>();
         //Map<String,Object> map2 =new HashMap<String, Object>();
@@ -43,6 +43,9 @@ public class TestConcurrentDemo {
         //map2.put("b",2);
         //map1.putAll(map2);
         //System.out.println(map1);
+        String id = "99" + "120006306".substring(1);
+        System.out.println("begin:"+id);
+        System.out.println("还原:1"+id.substring(2));
     }
 
 }

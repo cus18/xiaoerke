@@ -35,12 +35,9 @@ public class BabyUmbrellaInfoThirdPartyServiceImpl implements BabyUmbrellaInfoTh
     /**
      * 根据手机号查询该用户是否购买宝护伞
      */
-    public boolean ifBuyUmbrella(Map<String, Object> map) {
-        List<Map<String, Object>> list = babyUmbrellaInfoDao.getifBuyUmbrellaInfo(map);
-        if (list != null && list.size() > 0) {
-            return true;
-        }
-        return false;
+    public List<Map<String, Object>> getIfBuyUmbrellaByOpenidOrPhone(Map<String, Object> map) {
+        List<Map<String, Object>> list = babyUmbrellaInfoDao.getIfBuyUmbrellaByOpenidOrPhone(map);
+        return  list;
     }
 
     /**

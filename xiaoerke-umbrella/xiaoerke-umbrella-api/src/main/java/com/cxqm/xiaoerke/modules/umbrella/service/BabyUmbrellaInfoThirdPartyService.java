@@ -3,6 +3,7 @@ package com.cxqm.xiaoerke.modules.umbrella.service;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.entity.ValidateBean;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,7 +14,7 @@ public interface BabyUmbrellaInfoThirdPartyService {
     /**
      *根据手机号查询该用户是否购买宝护伞
      */
-    boolean ifBuyUmbrella(Map<String,Object> map);
+    List<Map<String, Object>> getIfBuyUmbrellaByOpenidOrPhone(Map<String,Object> map);
 
     /**
      *根据手机号查询该用户是否已经关注平台

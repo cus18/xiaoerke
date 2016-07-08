@@ -81,8 +81,15 @@ public class UmbrellaThirdPartyController  {
         Map<String,Object> map = new HashMap<String, Object>();
         map.put("userPhone",userPhone);
         Map<String,Object> result = new HashMap<String, Object>();
+        boolean flag = false;
+        Map<String,Object> umbreMap = null;
         //根据手机号查询该用户是否购买
-        boolean flag = babyUmbrellaInfoThirdPartyService.ifBuyUmbrella(map);
+        List<Map<String, Object>> list = babyUmbrellaInfoThirdPartyService.getIfBuyUmbrellaByOpenidOrPhone(map);
+        if (list != null && list.size() > 0) {
+            flag = true;
+            //根据手机号查询宝护伞id
+            umbreMap = list.get(0);
+        }
         //根据手机号查询该用户是否已经关注平台
         Map<String,Object> statusMap = babyUmbrellaInfoThirdPartyService.getStatusByPhone(map);
         if(flag){
@@ -94,10 +101,12 @@ public class UmbrellaThirdPartyController  {
                     return result;
                 }else{
                     result.put("result","1");
+                    result.put("umbrellaid",umbreMap.get("id"));
                     return result;
                 }
             }else{
                 result.put("result","1");
+                result.put("umbrellaid",umbreMap.get("id"));
                 return result;
             }
         }
@@ -185,9 +194,11 @@ public class UmbrellaThirdPartyController  {
     @ResponseBody
     Map<String, Object>  getUserQRCode(@RequestBody Map<String, Object> params) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
-        String id = params.get("id").toString();
+        StringBuffer sbf = new StringBuffer();
+        //二维码规则:99(渠道标识)+宝护伞id的后八位.
+        sbf.append("99").append(params.get("umbrellaid").toString().substring(1));
         Map<String, Object> result = new HashMap<String, Object>();
-        result.put("qrcode",babyUmbrellaInfoSerivce.getUserQRCode(id));
+        result.put("qrcode",babyUmbrellaInfoSerivce.getUserQRCode(sbf.toString()));
         return result;
     }
 
