@@ -39,32 +39,6 @@ angular.module('controllers', ['luegg.directives'])
             $scope.waitJoinNum = 0; //医生待接入的用户数，是动态变化的数
             $scope.glued = true; //angular滚动条的插件预制参数，让对话滚动条，每次都定位底部，当新的聊天数据到达时
             var umbrellaCustomerList = "75cefafe00364bbaaaf7b61089994e22,3b91fe8b7ce143918012ef3ab4baf1e0,00032bd90d724d0sa63a4d6esa0e8dbf";
-            //测试用的假数据
-            $scope.alreadyJoinPatientConversation=[
-                {
-                    'patientId':1,
-                    'dateTime':1111111111111,
-                    'messageNotSee':true,
-                    'number':1,
-                    'patientName':'大熊猫',
-                    'notifyType':1001
-                },{
-                    'patientId':2,
-                    'dateTime':111111111,
-                    'messageNotSee':true,
-                    'number':1,
-                    'patientName':'小熊猫',
-                    'notifyType':1002
-                },{
-                    'patientId':3,
-                    'dateTime':1111122221111,
-                    'messageNotSee':true,
-                    'number':1,
-                    'patientName':'熊猫',
-                    'notifyType':1003
-                }
-
-            ]
 
             //各个子窗口的开关变量
             $scope.showFlag = {
@@ -99,7 +73,6 @@ angular.module('controllers', ['luegg.directives'])
 
             //初始化医生端登录，建立socket链接，获取基本信息
             $scope.doctorConsultInit = function () {
-                setIntervalTimers();
                 var routePath = "/doctor/consultBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath: routePath}, function (data) {
                     $scope.pageLoading = false;
@@ -951,7 +924,7 @@ angular.module('controllers', ['luegg.directives'])
             $scope.seeMoreConversationMessage = function(){
                 var mostFarCurrentConversationDateTime = moment().format("YYYY-MM-DD HH:mm:ss");
                 if($scope.currentUserConversation.consultValue[0]!=undefined){
-                    var mostFarCurrentConversationDateTime = $scope.currentUserConversation.consultValue[0].dateTime;
+                    mostFarCurrentConversationDateTime = $scope.currentUserConversation.consultValue[0].dateTime;
                 }
                 GetCurrentUserHistoryRecord.save({
                     userId:$scope.currentUserConversation.patientId,
@@ -1514,17 +1487,6 @@ angular.module('controllers', ['luegg.directives'])
                     getIframeSrc();
                 }
             };
-            //循环会话列表创建定时器
-            var setIntervalTimers = function(){
-                $.each($scope.alreadyJoinPatientConversation,function(index,value){
-                    console.log(index);
-                    if(value.notifyType == 1001){
-                        setTimeout(function () {
-                            alert('aaaa')
-                        },30000);
-                    }
-                });
-            }
             //病人会话的内容的发送
             var updateAlreadyJoinPatientConversationFromPatient = function(conversationData){
                 var updateFlag = false;
