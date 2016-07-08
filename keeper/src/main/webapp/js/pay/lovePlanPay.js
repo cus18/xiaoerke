@@ -107,7 +107,7 @@ function wechatPay() {
                         paySign: obj.paySign,  // 支付签名
                         success: function (res) {
                             if (res.errMsg == "chooseWXPay:ok") {
-                                window.location.href="http://s132.baodf.com:8088/market/market#/lovePlanPaySuccess";
+                                window.location.href="http://s175.baodf.com/market/market#/lovePlanPaySuccess";
                             } else {
                                 alert("支付失败,请重新支付")
                             }
