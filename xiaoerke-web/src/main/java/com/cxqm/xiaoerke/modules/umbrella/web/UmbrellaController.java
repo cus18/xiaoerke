@@ -722,7 +722,7 @@ public class UmbrellaController  {
         Date birthDay = DateUtils.StrToDate(idCard.substring(6,14),"yyyyMMdd");
         familyInfo.setBirthday(birthDay);
         babyUmbrellaInfoSerivce.saveFamilyUmbrellaInfo(familyInfo);
-
+        addUserType(openid);
         //宝宝的信息
 //        UmbrellaFamilyInfo bFamilyInfo = new UmbrellaFamilyInfo();
 //        Date bbirthDay = DateUtils.StrToDate(params.get("bbirthDay").toString(), "yyyy-MM-dd");
