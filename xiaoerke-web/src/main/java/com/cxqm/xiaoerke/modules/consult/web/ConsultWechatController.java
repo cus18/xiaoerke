@@ -355,7 +355,7 @@ public class ConsultWechatController extends BaseController {
     @RequestMapping(value = "/getneedPaylist", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String,Object> getList(@RequestParam(required=true) String csuserId){
+        Map<String,Object> getList(@RequestParam(required=true) String csuserId){
        return consultPayUserService.getneepPayConsultSession(csuserId);
     };
 }
