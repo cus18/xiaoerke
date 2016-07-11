@@ -396,6 +396,11 @@ public class AccountServiceImpl implements AccountService {
         }else{
             parameters.put("body", "会员服务费");//描述
         }
+        if(serviceType.equals("lovePlanService")){
+            parameters.put("body", "爱心捐款");//描述
+        }else {
+            parameters.put("body", "会员服务费");//描述
+        }
         parameters.put("out_trade_no", out_trade_no);//商户订单号
         parameters.put("total_fee", order_price);//金额
         parameters.put("spbill_create_ip",request.getRemoteAddr());//终端ip
@@ -437,7 +442,7 @@ public class AccountServiceImpl implements AccountService {
         String orderPrice =request.getAttribute("payPrice")!=null?String.valueOf(((Float)request.getAttribute("payPrice")).
                 intValue()*100):request.getParameter("payPrice");
         String outTradeNo = PrepayInfo.get("out_trade_no");
-        String openId = WechatUtil.getOpenId(session,request);
+        String openId = WechatUtil.getOpenId(session, request);
         try {
             Map<String, Object> map = XMLUtil.doXMLParse(PrepayInfo.get("result"));
             if (!"FAIL".equals(map.get("return_code"))){

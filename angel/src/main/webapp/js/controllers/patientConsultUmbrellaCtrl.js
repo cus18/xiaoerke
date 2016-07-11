@@ -10,47 +10,19 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             $scope.socketServer = "";
             $scope.glued = true;
             $scope.source = "h5cxqmUser";
-
-            $scope.openFileListFlag = false;
-            $location.hash("fileInput");
-            $anchorScroll();
-            $scope.openFileList = function(){
-                if($scope.openFileListFlag == true){
-                    $scope.openFileListFlag = false;
-                    $location.hash("fileInput");
-                    $anchorScroll();
-                }else{
-                    $scope.openFileListFlag = true;
-                    $location.hash("fileInputList");
-                    $anchorScroll();
-                }
-            };
-
-            function randomString(len) {
-                len = len || 32;
-                var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';/****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
-                var maxPos = $chars.length;
-                var pwd = '';
-                for (i = 0; i < len; i++) {
-                    pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
-                }
-                return pwd;
-            }
-
+            //界面的初始化
             $scope.patientConsultFirst = function(){
                 var num = randomString(32);
                 $scope.patientId = num.substring(0,6);
                 $scope.patientName = "保护伞"+num.substring(0,1);
                 $scope.initConsultSocket();
             };
-
             //初始化接口
             $scope.initConsultSocket = function(){
                 if (!window.WebSocket) {
                     window.WebSocket = window.MozWebSocket;
                 }
                 if (window.WebSocket) {
-
                     $scope.socketServer = new ReconnectingWebSocket("ws://s202.xiaork.com/wsbackend/ws&user&"
                         + $scope.patientId +"&h5cxqm");//cs,user,distributor
 
@@ -78,7 +50,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                                 var val = {
                                     "type": 4,
                                     "notifyType": "0000"
-                                }
+                                };
                                 $scope.consultContent.push(val);
                             }
                         });
@@ -142,6 +114,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     }
                 }
             };
+            //qq表情
             $scope.getQQExpression = function () {
                 $('#face').qqFace({
                     id: 'facebox',
@@ -149,7 +122,17 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     path: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fqqface%2F'
                 });
             };
-
+            //保护伞的标识
+            var randomString = function (len) {
+                len = len || 32;
+                var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';/****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+                var maxPos = $chars.length;
+                var pwd = '';
+                for (i = 0; i < len; i++) {
+                    pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+                }
+                return pwd;
+            };
             //过滤媒体数据
             var filterMediaData = function (val) {
                 if(val.senderId==$scope.patientId){
@@ -172,7 +155,6 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 str = str.replace(/\[em_([0-9]*)\]/g,'<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fqqface%2F$1.gif" border="0" />');
                 return str;
             };
-
             var emotionReceiveFilter = function(val){
                 val = val.replace(/\/::\)/g, '[em_1]');val = val.replace(/\/::~/g, '[em_2]');val = val.replace(/\/::B/g, '[em_3]');val = val.replace(/\/::\|/g, '[em_4]');
                 val = val.replace(/\/:8-\)/g, '[em_5]');val = val.replace(/\/::</g, '[em_6]');val = val.replace(/\/::X/g, '[em_7]');val = val.replace(/\/::Z/g, '[em_8]');
@@ -195,7 +177,6 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 val = val.replace(/\/:showlove/g, '[em_73]');val = val.replace(/\/:love/g, '[em_74]');val = val.replace(/\/:<L>/g, '[em_75]');
                 return val;
             };
-
             var emotionSendFilter = function(val){
                 val = val.replace(/\[em_1\]/g, '/::)');val = val.replace(/\[em_2\]/g, '/::~');val = val.replace(/\[em_3\]/g, '/::B');val = val.replace(/\[em_4\]/g, '/::|');
                 val = val.replace(/\[em_5\]/g, '/:8-)');val = val.replace(/\[em_6\]/g, '/::<');val = val.replace(/\[em_7\]/g, '/::X');val = val.replace(/\[em_8\]/g, '/::Z');

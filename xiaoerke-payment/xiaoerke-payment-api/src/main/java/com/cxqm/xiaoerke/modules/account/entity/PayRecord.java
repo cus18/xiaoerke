@@ -32,6 +32,8 @@ public class PayRecord extends Record{
 
     private String leaveNote;
 
+    private String leaveNote;//留言
+
     public String getReason() {
         return reason;
     }

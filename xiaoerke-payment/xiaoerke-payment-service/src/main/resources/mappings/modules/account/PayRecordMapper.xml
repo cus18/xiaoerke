@@ -97,6 +97,9 @@
             leave_note,
         </if>
         
+      <if test="leaveNote != null" >
+        leave_note,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -144,6 +147,9 @@
         <if test="leaveNote != null" >
             #{leaveNote,jdbcType=VARCHAR},
         </if>
+      <if test="leaveNote != null" >
+        #{leaveNote,jdbcType=VARCHAR},
+      </if>
 
     </trim>
   </insert>

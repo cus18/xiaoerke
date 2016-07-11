@@ -95,6 +95,7 @@ angular.module('controllers', ['luegg.directives'])
                         }
 
                         getIframeSrc();
+                        getHistoryConsultContent();
                         //获取通用回复列表
                         GetAnswerValueList.save({"type": "commonAnswer"}, function (data) {
                             if(data.result=="success"){
@@ -186,7 +187,7 @@ angular.module('controllers', ['luegg.directives'])
 
             //公共点击按钮，用来触发弹出对应的子窗口
             $scope.tapShowButton = function(type){
-                $.each($scope.showFlag,function(key,value){
+                $.each($scope.showFlag,function(key){
                     if(key==type){
                         if(type=="waitProcess"){
                             if(!waitProcessLock){
@@ -744,7 +745,7 @@ angular.module('controllers', ['luegg.directives'])
                     flag = textValue[1];
                 }
                 return flag;
-            }
+            };
 
             //向用户发送咨询图片
             $scope.uploadFiles = function($files,fileType) {
@@ -934,7 +935,7 @@ angular.module('controllers', ['luegg.directives'])
             $scope.seeMoreConversationMessage = function(){
                 var mostFarCurrentConversationDateTime = moment().format("YYYY-MM-DD HH:mm:ss");
                 if($scope.currentUserConversation.consultValue[0]!=undefined){
-                    var mostFarCurrentConversationDateTime = $scope.currentUserConversation.consultValue[0].dateTime;
+                    mostFarCurrentConversationDateTime = $scope.currentUserConversation.consultValue[0].dateTime;
                 }
                 GetCurrentUserHistoryRecord.save({
                     userId:$scope.currentUserConversation.patientId,
@@ -1339,10 +1340,13 @@ angular.module('controllers', ['luegg.directives'])
             /***回复操作区**/
             /***咨询服务**/
             //根据openid获取历史咨询
-            $scope.historyConsult = '';
-            GetCustomerLogByOpenID.save({openid:$scope.currentUserConversation.patientId}, function (data) {
-                $scope.historyConsult = data.logList;
-            });
+            var getHistoryConsultContent = function () {
+                $scope.historyConsult = '';
+                GetCustomerLogByOpenID.save({openid:$scope.currentUserConversation.patientId}, function (data) {
+                    console.log(data)
+                    $scope.historyConsult = data.logList;
+                });
+            };
             //初始化宝宝的信息$scope.currentUserConversation.patientId
             $scope.babyNameList=[];
             SearchBabyInfo.save({openid:''}, function (data) {
@@ -1378,6 +1382,7 @@ angular.module('controllers', ['luegg.directives'])
                     if(data.type == 1){
                         $('#addCustomerLog').attr('disabled',"true");
                         $("#addCustomerLog").css("background","gray");
+                        getHistoryConsultContent();
                     }
                 });
                 $scope.info.result='';
@@ -1480,6 +1485,7 @@ angular.module('controllers', ['luegg.directives'])
                         'isOnline':true,
                         'dateTime':conversationData.dateTime,
                         'patientName':conversationData.senderName,
+                        'notifyType':conversationData.notifyType,
                         'consultValue':[]
                     };
                     $scope.currentUserConversation.consultValue.push(currentConsultValue);
@@ -1868,10 +1874,8 @@ angular.module('controllers', ['luegg.directives'])
             $scope.searchMessage = function () {
                 if($scope.info.searchMessageContent == '' || $scope.info.searchMessageContent == null){
                     alert('请选择查询内容！');
-                    return ;
                 }else if($scope.messageType == '' || $scope.messageType == null){
                     alert('请选择查询类型！');
-                    return ;
                 }else{
                     $scope.loadingFlag = true;
                     GetMessageRecordInfo.save({

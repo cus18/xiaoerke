@@ -130,7 +130,7 @@ public class ConsultWechatController extends BaseController {
             // 在所有的日志记录，还是缓存中，所有的会话，都引入一个字段，source，标示，这个会话，
             // 是基于微信，还是H5，还是合作第三方的来源，以便按照不同的逻辑来处理。
             String source = "wxcxqm";
-//            Integer notifyType = 1001;
+            Integer notifyType = 1001;
 
             Channel csChannel = null;
             //根据用户的openId，判断redis中，是否有用户正在进行的session
@@ -142,11 +142,11 @@ public class ConsultWechatController extends BaseController {
             //如果此用户不是第一次发送消息，则sessionId不为空
             if(sessionId!=null){
                 //检测是否给用户推送以下消息-- 每个会话只推一次(您需要花点时间排队，请耐心等待哦)
-//                String sessionList = consultPayUserService.getChargeInfo(sessionId);
-//                if(null == sessionList){
-//                    consultPayUserService.saveChargeUser(sessionId,openId);
-//                    consultPayUserService.sendMessageToConsult(openId,4);
-//                }
+                String sessionList = consultPayUserService.getChargeInfo(sessionId);
+                if(null == sessionList){
+                    consultPayUserService.saveChargeUser(sessionId,openId);
+                    consultPayUserService.sendMessageToConsult(openId,4);
+                }
                 consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
                 csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
                 System.out.println("csChannel------"+csChannel);
@@ -180,27 +180,27 @@ public class ConsultWechatController extends BaseController {
                     sessionId = consultSession.getId();
                 }
                 //检测用户是否是收费用户,1001 为正常用户(无标签) ,1002 需要付款用户(等待),1003 已付款用户;
-//                try{
-//                    Date moningStrarTime = DateUtils.StrToDate(Global.getConfig("consultMoningStrarTime"),"yyyy-MM-dd HH:mm");
-//                    Date consultMoningEndTime = DateUtils.StrToDate(Global.getConfig("consultMoningEndTime"),"yyyy-MM-dd HH:mm");
-//                    Date consultAfternoonStartTime = DateUtils.StrToDate(Global.getConfig("consultAfternoonStartTime"),"yyyy-MM-dd HH:mm");
-//                    Date consultAfternoonEndTime = DateUtils.StrToDate(Global.getConfig("consultAfternoonEndTime"),"yyyy-MM-dd HH:mm");
-//                    Date present = new Date();
-//                    //判断日期条件是否满足要求
-//                    if((moningStrarTime.getTime()<present.getTime() &&consultMoningEndTime.getTime()<present.getTime())
-//                            ||(consultAfternoonStartTime.getTime()<present.getTime()&&consultAfternoonEndTime.getTime()<present.getTime()))
-//                        if(consultPayUserService.angelChargeCheck(openId)){
-//                            HashMap<String,Object> payInfo = new HashMap<String, Object>();
-//                            payInfo.put("openid",openId);
-//                            payInfo.put("create_time",new Date());
-//                            consultPayUserService.putneepPayConsultSession(sessionId,payInfo);
-//                            notifyType = 1002;
-//                            int type  = Integer.parseInt(Global.getConfig("consultPayMsgType"));
-//                            consultPayUserService.sendMessageToConsult(openId,type);
-//                        }
-//                }catch (Exception e){
-//                    e.printStackTrace();
-//                }
+                try{
+                    Date moningStrarTime = DateUtils.StrToDate(Global.getConfig("consultMoningStrarTime"),"yyyy-MM-dd HH:mm");
+                    Date consultMoningEndTime = DateUtils.StrToDate(Global.getConfig("consultMoningEndTime"),"yyyy-MM-dd HH:mm");
+                    Date consultAfternoonStartTime = DateUtils.StrToDate(Global.getConfig("consultAfternoonStartTime"),"yyyy-MM-dd HH:mm");
+                    Date consultAfternoonEndTime = DateUtils.StrToDate(Global.getConfig("consultAfternoonEndTime"),"yyyy-MM-dd HH:mm");
+                    Date present = new Date();
+                    //判断日期条件是否满足要求
+                    if((moningStrarTime.getTime()<present.getTime() &&consultMoningEndTime.getTime()<present.getTime())
+                            ||(consultAfternoonStartTime.getTime()<present.getTime()&&consultAfternoonEndTime.getTime()<present.getTime()))
+                        if(consultPayUserService.angelChargeCheck(openId)){
+                            HashMap<String,Object> payInfo = new HashMap<String, Object>();
+                            payInfo.put("openid",openId);
+                            payInfo.put("create_time",new Date());
+                            consultPayUserService.putneepPayConsultSession(sessionId,payInfo);
+                            notifyType = 1002;
+                            int type  = Integer.parseInt(Global.getConfig("consultPayMsgType"));
+                            consultPayUserService.sendMessageToConsult(openId,type);
+                        }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
 
 
             }
@@ -214,7 +214,7 @@ public class ConsultWechatController extends BaseController {
                     obj.put("senderId", userId);
                     obj.put("dateTime", DateUtils.DateToStr(new Date()));
                     obj.put("senderName",userName);
-//                    obj.put("notifyType",notifyType);
+                    obj.put("notifyType",notifyType);
                     obj.put("serverAddress",serverAddress);
                     System.out.println("serverAddress------"+serverAddress);
                     obj.put("source",consultSession.getSource());
@@ -263,7 +263,7 @@ public class ConsultWechatController extends BaseController {
                                         consultVoiceRecordMongoVo.setUserName(consultSession.getUserName());
                                         consultVoiceRecordMongoVo.setContent(mediaURL);
                                         consultVoiceRecordMongoService.insert(consultVoiceRecordMongoVo);
-                                        WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(), "亲亲，语音会影响医生的判断哦，为了您的咨询更准确，要用文字提问呦~");
+                                        WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(), "亲，医生听不到语音哦，发送图文吧！");
                                     }
                                 }
                             }catch (IOException e){
