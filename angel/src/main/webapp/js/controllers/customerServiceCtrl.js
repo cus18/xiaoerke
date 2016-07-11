@@ -4,7 +4,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             $scope.customerServiceInit = function () {
             };
             $scope.doctorConsultPay = function () {
-                window.location.href="http://localhost:8080/keeper/wxPay/patientPay.do?serviceType=doctorConsultPay"
+                window.location.href="http://s201.xiaork.com/keeper/wxPay/patientPay.do?serviceType=doctorConsultPay"
             };
             $scope.closeCustomerService = function () {
 
