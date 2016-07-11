@@ -292,6 +292,7 @@ public class ConsultWechatController extends BaseController {
         csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
         System.out.println("csChannel------"+csChannel);
         consultPayUserService.removePayConsultSession(consultSession.getCsUserId(),openId);
+        consultPayUserService.saveChargeUser(sessionId,openId);
         if(csChannel!=null&&csChannel.isActive()){
             try {
                 JSONObject obj = new JSONObject();
@@ -321,7 +322,6 @@ public class ConsultWechatController extends BaseController {
     @ResponseBody
     Map<String,Object> consultCustomOnly(HttpSession session, HttpServletRequest request){
         String openId = WechatUtil.getOpenId(session,request);
-        openId = "oogbDwCLH1_x-KLcQKqlrmUzG2ng";
         Channel csChannel = null;
         //根据用户的openId，判断redis中，是否有用户正在进行的session
         Integer sessionId = sessionRedisCache.getSessionIdByUserId(openId);
@@ -331,6 +331,9 @@ public class ConsultWechatController extends BaseController {
         if(null != sessionId){
         consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
         consultPayUserService.removePayConsultSession(consultSession.getCsUserId(),openId);
+
+        consultPayUserService.saveChargeUser(sessionId,openId);
+
         csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
         System.out.println("csChannel------"+csChannel);
         if(csChannel!=null&&csChannel.isActive()){
