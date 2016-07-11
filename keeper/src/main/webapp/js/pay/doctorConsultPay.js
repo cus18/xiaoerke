@@ -41,6 +41,8 @@ var doRefresh = function(){
         error : function() {
         }
     });
+
+     $('#money').html(moneys);
     recordLogs("consult_chargetest_once_information");
 };
 
