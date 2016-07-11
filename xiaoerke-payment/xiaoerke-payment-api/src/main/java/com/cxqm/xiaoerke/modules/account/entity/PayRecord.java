@@ -30,8 +30,6 @@ public class PayRecord extends Record{
 
     private Float amount;//金额
 
-    private String leaveNote;
-
     private String leaveNote;//留言
 
     public String getReason() {
