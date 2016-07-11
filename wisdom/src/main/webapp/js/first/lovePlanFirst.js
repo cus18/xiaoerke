@@ -31,8 +31,74 @@ $(function(){
 });
 
 var lovePlanFirsInit = function(){
+    swipeInit();
 };
+//swipe
+var swipeInit=function(){
+    var imgHeight= document.getElementById('img').offsetHeight;
+    var boxHeight= document.getElementById('container');
+    boxHeight.style.height=imgHeight;
+    var mySwiper = new Swiper ('.swiper-container', {
+        direction : 'horizontal',
+        pagination: '.swiper-pagination',
+        //virtualTranslate : true,
+        mousewheelControl : true,
+        prevButton:'.swiper-button-prev',
+        nextButton:'.swiper-button-next',
+        onInit: function(swiper){
+            swiperAnimateCache(swiper);
+            swiperAnimate(swiper);
+        },
+        onSlideChangeEnd: function(swiper){
+            swiperAnimate(swiper);
+        },
+        onTransitionEnd: function(swiper){
+            swiperAnimate(swiper);
+        },
+        watchSlidesProgress: true,
 
+        onProgress: function(swiper){
+            for (var i = 0; i < swiper.slides.length; i++){
+                var slide = swiper.slides[i];
+                var progress = slide.progress;
+                var translate = progress*swiper.height/4;
+                scale = 1 - Math.min(Math.abs(progress * 0.5), 1);
+                var opacity = 1 - Math.min(Math.abs(progress/2),0.5);
+                slide.style.opacity = opacity;
+                es = slide.style;
+                es.webkitTransform = es.MsTransform = es.msTransform = es.MozTransform = es.OTransform = es.transform = 'translate3d(0,'+translate+'px,-'+translate+'px) scaleY(' + scale + ')';
+
+            }
+        },
+
+        onSetTransition: function(swiper, speed) {
+            for (var i = 0; i < swiper.slides.length; i++){
+                es = swiper.slides[i].style;
+                es.webkitTransitionDuration = es.MsTransitionDuration = es.msTransitionDuration = es.MozTransitionDuration = es.OTransitionDuration = es.transitionDuration = speed + 'ms';
+
+            }
+        },
+
+
+
+    })
+}
+var moreLock=false;
+var lookMore = function(){
+    if(moreLock){
+        moreLock=false;
+        $(".pic-list dd:gt(2)").hide();
+        $(".lookMore a").html("点击查看全部"+'&nbsp;&nbsp;'+'<i class="ion-ios-arrow-down"> </i>');
+    }
+    else{
+        moreLock=true;
+        $(".pic-list dd:gt(3)").show();
+        $(".lookMore a").html("收起"+'&nbsp;&nbsp;'+'<i class="ion-ios-arrow-up"> </i>');
+        $("html,body").stop().animate({"scrollTop":$("#money").offset.top},0);
+
+    }
+
+};
 var lookMore = function(){
    if(moreLock){
         moreLock=false;
