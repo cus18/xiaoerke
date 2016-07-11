@@ -11,10 +11,7 @@ import com.cxqm.xiaoerke.common.utils.FrontUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionForwardRecordsService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
-import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
@@ -29,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
@@ -49,6 +47,9 @@ public class ConsultUserController extends BaseController {
 
     @Autowired
     SessionRedisCache sessionRedisCache;
+
+    @Autowired
+    private ConsultPayUserService consultPayUserService;
 
     @Autowired
     private ConsultSessionForwardRecordsService consultSessionForwardRecordsService;
@@ -240,6 +241,11 @@ public class ConsultUserController extends BaseController {
         HashMap<String,Object> response = new HashMap<String, Object>();
         PaginationVo<ConsultRecordMongoVo> pagination = null;
         String csUserId = String.valueOf(params.get("csUserId"));
+        ConcurrentHashMap<String,Object> needPayList = new ConcurrentHashMap<String, Object>();
+        try{
+            needPayList = consultPayUserService.getneepPayConsultSession((String)params.get("csUserId"));
+        }catch (Exception e){e.printStackTrace();}
+
 
         if(StringUtils.isNotNull(csUserId)){
             int pageNo = (Integer) params.get("pageNo");
@@ -268,6 +274,14 @@ public class ConsultUserController extends BaseController {
                         searchMap.put("messageNotSee",true);
                         searchMap.put("dateTime",richConsultSession.getCreateTime());
                         searchMap.put("consultValue",ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
+
+                        Date creatTime =(Date) needPayList.get(userId);
+                        if(null!=creatTime&&creatTime.getTime()+1000*60*5>new Date().getTime()){
+                            searchMap.put("notifyType","1002");
+                        }else{
+                            searchMap.put("notifyType","1003");
+                        }
+
                         responseList.add(searchMap);
                     }
                 }
