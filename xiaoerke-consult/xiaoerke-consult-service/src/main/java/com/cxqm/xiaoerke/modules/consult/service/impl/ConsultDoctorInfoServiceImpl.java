@@ -82,7 +82,7 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
         Integer sessionCount = consultSessionService.getConsultSessionUserCount(praiseParam);
         map.put("sessionCount", sessionCount);
         List<ConsultSession> sessionList = consultSessionService.getConsultSessionListByInfo(praiseParam);
-        Map<String,Integer> sessionMap = new HashMap();
+        Map<String,Integer> sessionMap = new LinkedHashMap<String, Integer>();
         for(ConsultSession temp : sessionList){
             sessionMap.put(DateUtils.DateToStr(temp.getCreateTime(),"date"),sessionMap.get(DateUtils.DateToStr(temp.getCreateTime(),"date"))==null?1:sessionMap.get(DateUtils.DateToStr(temp.getCreateTime(),"date"))+1);
         }
