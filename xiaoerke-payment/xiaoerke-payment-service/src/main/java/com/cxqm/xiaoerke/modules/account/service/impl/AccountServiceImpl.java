@@ -396,11 +396,6 @@ public class AccountServiceImpl implements AccountService {
         }else{
             parameters.put("body", "会员服务费");//描述
         }
-        if(serviceType.equals("lovePlanService")){
-            parameters.put("body", "爱心捐款");//描述
-        }else {
-            parameters.put("body", "会员服务费");//描述
-        }
         parameters.put("out_trade_no", out_trade_no);//商户订单号
         parameters.put("total_fee", order_price);//金额
         parameters.put("spbill_create_ip",request.getRemoteAddr());//终端ip

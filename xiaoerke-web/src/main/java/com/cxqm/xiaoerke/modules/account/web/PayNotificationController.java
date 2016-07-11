@@ -342,8 +342,8 @@ public class PayNotificationController {
 
 			//放入service层进行事物控制
 			if("SUCCESS".equals(map.get("return_code"))){
-				LogUtils.saveLog(Servlets.getRequest(), "00000048","用户微信支付完成:" + map.get("out_trade_no"));
-				LogUtils.saveLog(Servlets.getRequest(), "BHS_ZFY_ZFCG","用户微信支付完成:" + map.get("out_trade_no"));
+				LogUtils.saveLog(Servlets.getRequest(), "00000048", "用户微信支付完成:" + map.get("out_trade_no"));
+				LogUtils.saveLog(Servlets.getRequest(), "BHS_ZFY_ZFCG", "用户微信支付完成:" + map.get("out_trade_no"));
 				PayRecord payRecord = new PayRecord();
 				payRecord.setId((String) map.get("out_trade_no"));
 				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
@@ -448,54 +448,7 @@ public class PayNotificationController {
 
 	@RequestMapping(value = "/user/getDoctorConsultPayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
 	public synchronized
-	@ResponseBody String getDoctorConsultPayNotifyInfo(HttpServletRequest request,HttpSession session) {
-		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
-		lock.lock();
-		InputStream inStream = null;
-		try {
-			inStream = request.getInputStream();
-			ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
-			byte[] buffer = new byte[1024];
-			int len = 0;
-			while ((len = inStream.read(buffer)) != -1) {
-				outSteam.write(buffer, 0, len);
-			}
-			outSteam.close();
-			inStream.close();
-			String result  = new String(outSteam.toByteArray(),"utf-8");
-			Map<String, Object> map = XMLUtil.doXMLParse(result);
-
-			//放入service层进行事物控制
-			if("SUCCESS".equals(map.get("return_code"))){
-				LogUtils.saveLog(Servlets.getRequest(), "00000048", "用户微信支付完成:" + map.get("out_trade_no"));
-				LogUtils.saveLog(Servlets.getRequest(), "LOVEPLAN_ZFY_ZFCG", "用户微信支付完成:" + map.get("out_trade_no"));
-				PayRecord payRecord = new PayRecord();
-				payRecord.setId((String) map.get("out_trade_no"));
-				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
-				if(insuranceMap.get("fee_type").toString().equals("doctorConsultPay")){
-                    if("success".equals(insuranceMap.get("status").toString())){
-                        MutualHelpDonation mutualHelpDonation = new MutualHelpDonation();
-                        mutualHelpDonation.setOpenId((String) map.get("openid"));
-						mutualHelpDonation.setMoney(Integer.valueOf((String) map.get("total_fee")));
-						mutualHelpDonation.setLeaveNote((String)insuranceMap.get("leave_note"));
-//						mutualHelpDonation.setDonationType((Integer) insuranceMap.get("donationType"));
-						mutualHelpDonation.setCreateTime(new Date());
-                        mutualHelpDonationService.saveNoteAndDonation(mutualHelpDonation);
-                    }
-				}
-			}
-			return  XMLUtil.setXML("SUCCESS", "");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			lock.unlock();
-		}
-		return "";
-	}
-
-	@RequestMapping(value = "/user/getDoctorConsultPayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
-	public synchronized
-	@ResponseBody String getDoctorConsultPayNotifyInfo(HttpServletRequest request,HttpSession session) {
+		@ResponseBody String getDoctorConsultPayNotifyInfo(HttpServletRequest request,HttpSession session) {
 		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 		lock.lock();
 		InputStream inStream = null;
@@ -598,7 +551,7 @@ public class PayNotificationController {
 				}
 				BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
 				babyUmbrellaInfo.setId(Integer.parseInt(fromId));
-				babyUmbrellaInfo.setFriendJoinNum(friendJoinNum+1);
+				babyUmbrellaInfo.setFriendJoinNum(friendJoinNum +1);
 				babyUmbrellaInfoService.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
 
 				String keyword2 = StringUtils.isNotNull(babyId)?"观察期":"待激活";
