@@ -1500,7 +1500,7 @@ angular.module('controllers', ['luegg.directives'])
                 });
             };
             var heartBeatCheckPay = function(){
-                $scope.heartBeatPay = setInterval(setIntervalTimers,6000);
+                $scope.heartBeatPay = setInterval(setIntervalTimers,6000*5);
             };
             //病人会话的内容的发送
             var updateAlreadyJoinPatientConversationFromPatient = function(conversationData){
