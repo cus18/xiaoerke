@@ -29,7 +29,58 @@ $(function(){
 });
 
 var lovePlanFirsInit = function(){
+    swipeInit();
 };
+//swipe
+var swipeInit=function(){
+   var imgHeight= document.getElementById('img').offsetHeight;
+   var boxHeight= document.getElementById('container');
+    boxHeight.style.height=imgHeight;
+    var mySwiper = new Swiper ('.swiper-container', {
+        direction : 'horizontal',
+        pagination: '.swiper-pagination',
+        //virtualTranslate : true,
+        mousewheelControl : true,
+        prevButton:'.swiper-button-prev',
+        nextButton:'.swiper-button-next',
+        onInit: function(swiper){
+            swiperAnimateCache(swiper);
+            swiperAnimate(swiper);
+        },
+        onSlideChangeEnd: function(swiper){
+            swiperAnimate(swiper);
+        },
+        onTransitionEnd: function(swiper){
+            swiperAnimate(swiper);
+        },
+        watchSlidesProgress: true,
+
+        onProgress: function(swiper){
+            for (var i = 0; i < swiper.slides.length; i++){
+                var slide = swiper.slides[i];
+                var progress = slide.progress;
+                var translate = progress*swiper.height/4;
+                scale = 1 - Math.min(Math.abs(progress * 0.5), 1);
+                var opacity = 1 - Math.min(Math.abs(progress/2),0.5);
+                slide.style.opacity = opacity;
+                es = slide.style;
+                es.webkitTransform = es.MsTransform = es.msTransform = es.MozTransform = es.OTransform = es.transform = 'translate3d(0,'+translate+'px,-'+translate+'px) scaleY(' + scale + ')';
+
+            }
+        },
+
+        onSetTransition: function(swiper, speed) {
+            for (var i = 0; i < swiper.slides.length; i++){
+                es = swiper.slides[i].style;
+                es.webkitTransitionDuration = es.MsTransitionDuration = es.msTransitionDuration = es.MozTransitionDuration = es.OTransitionDuration = es.transitionDuration = speed + 'ms';
+
+            }
+        },
+
+
+
+    })
+}
 var moreLock=false;
 var lookMore = function(){
    if(moreLock){
@@ -62,6 +113,10 @@ var goLovePlanList = function(){
 /*var createPoster = function(){
     window.location.href="market#/lovePlanPoster"
 };*/
+
+var goBaodf = function(){
+    window.location.href="http://www.baodf.com"
+};
 // 点击 我要捐款
 var goContribute = function(){
     window.location.href="http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=lovePlanPay"
