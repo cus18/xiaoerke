@@ -1455,6 +1455,10 @@ angular.module('controllers', ['luegg.directives'])
                         var patientName = angular.copy($scope.alreadyJoinPatientConversation[0].patientName);
                         $scope.chooseAlreadyJoinConsultPatient(patientId,patientName);
                     }
+
+                    GetneedPaylist.save({csuserId:$scope.doctorId},function (paydata) {
+                        console.log(paydata)
+                    });
                 })
             };
             //处理用户发送过来的会话消息
