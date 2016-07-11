@@ -107,7 +107,7 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
         if((morningStartTime.getTime()<present.getTime() &&consultMorningEndTime.getTime()>present.getTime())
                 ||(consultAfternoonStartTime.getTime()<present.getTime()&&consultAfternoonEndTime.getTime()>present.getTime()))
         if( (null!=consultSessions&&consultSessions.size()>2&&(null ==payRecord || payRecord.getReceiveDate().getTime()+24*60*60*1000<new Date().getTime()))
-                ||insurance>0
+                &&insurance == 0
                 )
             return true;
         return false;
