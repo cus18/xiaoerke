@@ -3,12 +3,8 @@ angular.module('controllers', ['ionic']).controller('lovePlanListCtrl', [
     function ($scope,$state,$stateParams,PhotoWall,$filter) {
 
         $scope.title ="宝妈爱心接力";
-        $scope.infiniteflag = true;
-        var num = 10;
-
-        $scope.$on('$ionicView.enter', function(){
-            photoWall(num);
-        });
+        $scope.flag = true;
+        var num = 0;
 
         $scope.transformDate = function(dateTime){
             var angularDay = $filter('date')(dateTime,"yyyy-MM-dd HH:mm:ss");
@@ -19,12 +15,14 @@ angular.module('controllers', ['ionic']).controller('lovePlanListCtrl', [
 
         //上拉刷新
         $scope.loadOlderStories = function () {
+            num = num + 10;
             photoWall(num);
         };
+
         var photoWall = function (number){
-            PhotoWall.save({pagNo:number}, function (data) {
+            PhotoWall.save({pageNo:number.toString()}, function (data) {
+                console.log(data);
                 $scope.user = data.donationList;
-                console.log(data.donationList);
                 $scope.nincName = data.myMap.wechatName;
                 $scope.money = data.myMap.sumMoney;
                 $scope.time = data.myMap.lastTime;
@@ -33,10 +31,10 @@ angular.module('controllers', ['ionic']).controller('lovePlanListCtrl', [
                 }else{
                     $scope.headImg = 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png';
                 }
-                if($scope.user.length > num){
-                    $scope.infiniteflag = false;
+                if($scope.user.length < num){
+                    $scope.flag = false;
                 }
-                $scope.$broadcast('scroll.refreshComplete');
+                $scope.$broadcast('scroll.infiniteScrollComplete');
             });
         };
         $scope.goContribute = function () {
@@ -126,8 +124,5 @@ angular.module('controllers', ['ionic']).controller('lovePlanListCtrl', [
                 }
             });
         };
-
-
-
     }]);
 

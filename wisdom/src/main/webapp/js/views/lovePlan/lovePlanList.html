@@ -35,12 +35,8 @@
                         {{item.leaveNote}}
                     </div>
                 </dd>
-                <ion-infinite-scroll
-                        ng-if="infiniteflag"
-                        on-infinite="loadOlderStories()"
-                        distance="1%">
-                </ion-infinite-scroll>
             </dl>
+            <ion-infinite-scroll ng-if="flag" on-infinite="loadOlderStories()" distance="1%"></ion-infinite-scroll>
             <br> <br> <br> <br>
         </ion-scroll>
     </ion-content>
