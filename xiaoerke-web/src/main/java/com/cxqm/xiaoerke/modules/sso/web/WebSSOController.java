@@ -28,7 +28,7 @@ public class WebSSOController {
 	private static String tokenCallbackurl = "/sso/checkToken";//客户端处理认证中心token地址
 	
 	@RequestMapping(value = "checkLogin")
-	public @ResponseBody String checkLogin(String targeturl, HttpServletRequest request, HttpServletResponse response) throws Exception{
+	public @ResponseBody String checkLogin(String targeturl, HttpServletRequest request) throws Exception{
 
 		StringBuilder sb = new StringBuilder("{\"status\":\"9\", \"redirectURL\": \"");
 		if(targeturl == null) {
