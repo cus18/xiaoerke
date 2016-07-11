@@ -59,6 +59,8 @@ public class ConsultDoctorTransferController extends BaseController {
     @Autowired
     private SystemService systemService;
 
+    @Autowired
+    private ConsultPayUserService consultPayUserService;
 
     /***
      * 获取在线医生列表（分页）
@@ -121,6 +123,9 @@ public class ConsultDoctorTransferController extends BaseController {
         String doctorId= String.valueOf(params.get("doctorId"));//转接的话，必须要用医生ID
         String remark = (String)params.get("remark");
         int status = 0;
+
+        consultPayUserService.saveChargeUser(sessionId,"");
+
         if(null != sessionId && StringUtils.isNotNull(doctorId)){
             status =consultSessionForwardRecordsService.transferSession(sessionId,doctorId,remark);
         }
