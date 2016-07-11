@@ -14,6 +14,14 @@ define(['appUmbrella2'], function (app) {
         .factory('CheckPhone', ['$resource', function ($resource) {
             return $resource(umbrella_app + 'checkIsBuyAndAttention');
         }])
+        //添加宝宝及父母信息
+        .factory('SaveMessage', ['$resource', function ($resource) {
+            return $resource(umbrella_app + 'joinUs');
+        }])
+        //获取临时二维码
+        .factory('GetUserQRCode', ['$resource', function ($resource) {
+            return $resource(umbrella_app + 'getUserQRCode');
+        }])
 
 })
 
