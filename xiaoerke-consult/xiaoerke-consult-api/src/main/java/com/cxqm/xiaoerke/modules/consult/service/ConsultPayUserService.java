@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by wangbaowei on 16/6/27.
@@ -23,10 +24,10 @@ public interface ConsultPayUserService {
     void sendMessageToConsult(String openid,int type);
 
     //查询需要付费的用户信息
-    HashMap<String,Object> getneepPayConsultSession(String csuserId);
+    ConcurrentHashMap<String,Object> getneepPayConsultSession(String csuserId);
 
     //保存需要付费的用户信息
-    void putneepPayConsultSession(String csuserId, HashMap<String,Object> payInfo);
+    void putneepPayConsultSession(String csuserId,  ConcurrentHashMap<String,Object> payInfo);
 
     //移除需要付费的用户信息
     void removePayConsultSession(String openid,String csuserid);
