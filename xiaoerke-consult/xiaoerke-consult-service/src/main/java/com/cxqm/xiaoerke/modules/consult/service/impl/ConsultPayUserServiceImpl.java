@@ -19,6 +19,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by wangbaowei on 16/6/27.
@@ -45,16 +46,16 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
 
 
     @Override
-    public HashMap<String,Object> getneepPayConsultSession(String csuserId) {
-        HashMap<String,Object> sessionMap = (HashMap<String,Object>) redisTemplate.opsForHash().get(PAYINFO_CONSULTS_KEY, csuserId);
+    public  ConcurrentHashMap<String,Object> getneepPayConsultSession(String csuserId) {
+        ConcurrentHashMap<String,Object> sessionMap = ( ConcurrentHashMap<String,Object>) redisTemplate.opsForHash().get(PAYINFO_CONSULTS_KEY, csuserId);
         return sessionMap;
     }
 
     @Override
     public void putneepPayConsultSession(String csuserId,
-                                         HashMap<String,Object> payInfo) {
+                                         ConcurrentHashMap<String,Object> payInfo) {
         if(null !=csuserId||null !=payInfo){
-            HashMap<String,Object> payConsult = getneepPayConsultSession(csuserId);
+            ConcurrentHashMap<String,Object> payConsult = getneepPayConsultSession(csuserId);
 
             System.out.println("通过Map.entrySet遍历key和value");
             if(null !=payConsult && payConsult.size()>0){
@@ -76,7 +77,7 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
 
     @Override
     public void removePayConsultSession(String openid,String csuserid) {
-        HashMap<String,Object> payMap = getneepPayConsultSession(csuserid);
+        ConcurrentHashMap<String,Object> payMap = getneepPayConsultSession(csuserid);
         if(null !=payMap && payMap.size()>0){
             for (Map.Entry<String, Object> entry : payMap.entrySet()) {
                 if(openid.equals(entry.getKey()))
