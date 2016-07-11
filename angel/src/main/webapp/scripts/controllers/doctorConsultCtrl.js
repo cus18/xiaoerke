@@ -149,7 +149,7 @@ angular.module('controllers', ['luegg.directives'])
                         if($stateParams.action == "createUserSession"){
                             var patientId = $stateParams.userId;
                             var patientName = "";
-                            GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
+                            GetCurrentUserConsultListInfo.save({userType:$scope.userType,csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
                                 if(data.alreadyJoinPatientConversation!=""&&data.alreadyJoinPatientConversation!=undefined){
                                     $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                                     $.each($scope.alreadyJoinPatientConversation,function(index,value){
@@ -425,7 +425,7 @@ angular.module('controllers', ['luegg.directives'])
                     if(data.status == "success"){
                         var patientId = data.userId;
                         var patientName = data.userName;
-                        GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
+                        GetCurrentUserConsultListInfo.save({userType:$scope.userType,csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
                             if(data.alreadyJoinPatientConversation!=""&&data.alreadyJoinPatientConversation!=undefined){
                                 $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                                 $.each($scope.alreadyJoinPatientConversation,function(index,value){
@@ -1437,7 +1437,7 @@ angular.module('controllers', ['luegg.directives'])
             //得到已经加入会话的病人的列表
             var getAlreadyJoinConsultPatientList = function () {
                 //获取跟医生的会话还保存的用户列表
-                GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
+                GetCurrentUserConsultListInfo.save({userType:$scope.userType,csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
                     if(data.alreadyJoinPatientConversation!=""&&data.alreadyJoinPatientConversation!=undefined){
                         $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                         $.each($scope.alreadyJoinPatientConversation,function(index,value){
