@@ -34,9 +34,6 @@ public class ConsultSessionTransferController {
     private ConsultTransferListVoService consultTransferListVoService;
 
     @Autowired
-    private ConsultPayUserService consultPayUserService;
-
-    @Autowired
     private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
 
     @RequestMapping(value = "/createMoreUserConsultSession", method = {RequestMethod.POST, RequestMethod.GET})
@@ -47,11 +44,6 @@ public class ConsultSessionTransferController {
         HashMap<String, Object> response = new HashMap<String, Object>();
         Map<String, Object> specialistPatientContent = (Map<String, Object>) params.get("specialistPatientContent");
         Integer sessionId = sessionRedisCache.getSessionIdByUserId((String) specialistPatientContent.get("userId"));
-
-        try{
-            consultPayUserService.saveChargeUser(sessionId,(String) specialistPatientContent.get("userId"));
-        }catch (Exception e){e.printStackTrace();}
-
         List<String> distributorsList = ConsultSessionManager.getSessionManager().distributorsList;
         if (sessionId != null) {
             RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
