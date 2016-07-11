@@ -38,6 +38,7 @@ public class MutualHelpDonationController {
         HashMap<String,Object> searchMap = new HashMap<String, Object>();
         searchMap.put("openId", openId);
         searchMap.put("userId", (Integer) params.get("userId"));
+        searchMap.put("pageNo", Integer.valueOf((String)params.get("pageNo")));
         searchMap.put("donationType", (Integer) params.get("donationType"));
         return service.getDonatonDetail(searchMap);
     }
@@ -72,7 +73,9 @@ public class MutualHelpDonationController {
         }
         HashMap<String,Object> searchMap = new HashMap<String, Object>();
         searchMap.put("donationType", (Integer) params.get("donationType"));
-        searchMap.put("openId", openId);
+        if(!"first".equals((String)params.get("page"))){
+            searchMap.put("openId", openId);
+        }
         response.put("count",service.getSumMoney(searchMap));
 
         return response;

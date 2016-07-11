@@ -43,6 +43,7 @@ public class MutualHelpDonationServiceImpl implements MutualHelpDonationService 
         String myOpenId = (String) paramMap.get("openId");
         String userId = (String) paramMap.get("userId");
         Integer donationType = (Integer) paramMap.get("donationType");
+        Integer pageNo = (Integer) paramMap.get("pageNo");
 
         //我的捐款信息
         Map<String, Object> myMap = new HashMap<String, Object>();
@@ -67,6 +68,7 @@ public class MutualHelpDonationServiceImpl implements MutualHelpDonationService 
         List<HashMap<String, Object>> list = new LinkedList<HashMap<String, Object>>();
         HashMap<String,Object> searchMap1 = new HashMap<String, Object>();
         searchMap1.put("donationType",donationType);
+        searchMap1.put("pageNo",pageNo);
         List<MutualHelpDonation> resultList = dao.getDonationDetail(searchMap1);
         for(MutualHelpDonation mutualHelpDonation:resultList){
             HashMap<String, Object> map = new HashMap<String, Object>();

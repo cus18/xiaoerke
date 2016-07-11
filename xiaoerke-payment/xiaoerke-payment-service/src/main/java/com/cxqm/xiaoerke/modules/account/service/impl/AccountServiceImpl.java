@@ -391,7 +391,11 @@ public class AccountServiceImpl implements AccountService {
         parameters.put("appid", ConstantUtil.APP_ID);//微信服务号的appid
         parameters.put("mch_id", ConstantUtil.PARTNER);//商户号
         parameters.put("nonce_str",noncestr);//随机字符串
-        parameters.put("body", "会员服务费");//描述
+        if(serviceType.equals("lovePlanService")){
+            parameters.put("body", "爱心捐款");//描述
+        }else {
+            parameters.put("body", "会员服务费");//描述
+        }
         parameters.put("out_trade_no", out_trade_no);//商户订单号
         parameters.put("total_fee", order_price);//金额
         parameters.put("spbill_create_ip",request.getRemoteAddr());//终端ip
@@ -434,7 +438,6 @@ public class AccountServiceImpl implements AccountService {
                 intValue()*100):request.getParameter("payPrice");
         String outTradeNo = PrepayInfo.get("out_trade_no");
         String openId = WechatUtil.getOpenId(session, request);
-        String leaveNote = (String) request.getAttribute("leaveNote");
         try {
             Map<String, Object> map = XMLUtil.doXMLParse(PrepayInfo.get("result"));
             if (!"FAIL".equals(map.get("return_code"))){
@@ -467,7 +470,7 @@ public class AccountServiceImpl implements AccountService {
                 payRecord.setPayDate(new Date());
                 payRecord.setCreatedBy(user.getId());
                 payRecord.setFeeType(PrepayInfo.get("feeType"));
-                payRecord.setLeaveNote(leaveNote);
+                payRecord.setLeaveNote((String) request.getAttribute("leaveNote"));
                 System.out.println("insert:"+PrepayInfo.get("feeType"));
 
                 LogUtils.saveLog(Servlets.getRequest(),"00000037","用户发起微信支付:" + outTradeNo);//用户发起微信支付
