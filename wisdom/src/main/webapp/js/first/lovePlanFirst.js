@@ -191,7 +191,6 @@ var getUserListImage=function () {
         contentType: "application/json; charset=utf-8",
         dataType:'json',
         success:function(data) {
-            console.log(data);
             var userImage=data.donationList;
             if(userImage.length != 0){
                 for(var i=0;i<userImage.length;i++){
