@@ -241,6 +241,7 @@ public class ConsultUserController extends BaseController {
         HashMap<String,Object> response = new HashMap<String, Object>();
         PaginationVo<ConsultRecordMongoVo> pagination = null;
         String csUserId = String.valueOf(params.get("csUserId"));
+        String csuserType =(String)params.get("userType");
         ConcurrentHashMap<String,Object> needPayList = new ConcurrentHashMap<String, Object>();
         try{
             needPayList = consultPayUserService.getneepPayConsultSession((String)params.get("csUserId"));
@@ -274,14 +275,14 @@ public class ConsultUserController extends BaseController {
                         searchMap.put("messageNotSee",true);
                         searchMap.put("dateTime",richConsultSession.getCreateTime());
                         searchMap.put("consultValue",ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
-
+                    if("distributor".equals(csuserType)){
                         Date creatTime =(Date) needPayList.get(userId);
                         if(null!=creatTime&&creatTime.getTime()+1000*60*5>new Date().getTime()){
                             searchMap.put("notifyType","1002");
                         }else{
                             searchMap.put("notifyType","1003");
                         }
-
+                    }
                         responseList.add(searchMap);
                     }
                 }
