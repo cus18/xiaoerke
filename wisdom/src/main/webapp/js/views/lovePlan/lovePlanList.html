@@ -1,0 +1,48 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="{{title}}" ng-init="doRefresh()">
+    <ion-content class="lovePlanList bg1" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div>
+                <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2FlovePlan_banner.png">
+            </div>
+            <div class="self user " >
+                <div class="info">
+                    <img class="photo radius fl" width="40" height="40" ng-src="{{headImg}}">
+                    <div class="middle fl">
+                        <div class="name f5 c11">{{nincName}}</div>
+                    </div>
+                    <div class="money f2 c11 ">
+                        <span>{{money}}</span>元
+                    </div>
+                </div>
+            </div>
+            <div class="bg4" ></div>
+            <dl class="user-list">
+                <!--<ion-refresher pulling-text="Pull to refresh..." on-refresh="loadNewerStories()"></ion-refresher>-->
+                <dd class="user " ng-repeat="item in user">
+                    <div class="info">
+                         <img ng-if="item.headImgUrl == ''" class="photo radius fl" width="40" height="40" ng-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png">
+                         <img ng-if="item.headImgUrl != ''" class="photo radius fl" width="40" height="40" ng-src="{{item.headImgUrl}}">
+                         <div class="middle fl">
+                            <div class="name f5 c3">{{item.wechatName}}</div>
+                            <div class="time f3 c5">{{transformDate(item.createTime)}}</div>
+                         </div>
+                         <div ng-if="item.money>0" class="money f2" ng-class="{'c12':$index<3,'c13':$index>=3}">
+                             <span>{{item.money}}</span>元
+                         </div>
+                    </div>
+                    <div ng-if="item.words!=''" class="words f3 c4">
+                        {{item.leaveNote}}
+                    </div>
+                </dd>
+                <ion-infinite-scroll
+                        ng-if="infiniteflag"
+                        on-infinite="loadOlderStories()"
+                        distance="1%">
+                </ion-infinite-scroll>
+            </dl>
+            <br> <br> <br> <br>
+        </ion-scroll>
+    </ion-content>
+     <button class="bottom-btn" ng-click="goContribute()" style="background-color:#ff7112 ">我要捐款</button>
+</ion-view>
