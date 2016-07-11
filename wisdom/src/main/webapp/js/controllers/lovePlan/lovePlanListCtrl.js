@@ -21,7 +21,6 @@ angular.module('controllers', ['ionic']).controller('lovePlanListCtrl', [
 
         var photoWall = function (number){
             PhotoWall.save({pageNo:number.toString()}, function (data) {
-                console.log(data);
                 $scope.user = data.donationList;
                 $scope.nincName = data.myMap.wechatName;
                 $scope.money = data.myMap.sumMoney;
