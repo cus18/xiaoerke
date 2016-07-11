@@ -17,6 +17,7 @@ var imgList = ["http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2F
     "http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2Fprove5.png",
     "http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2Fprove6.png",
     "http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2Fprove7.png"];
+var moreLock=false;
 
 $(function(){
     getUserListImage();
@@ -30,7 +31,7 @@ $(function(){
 
 var lovePlanFirsInit = function(){
 };
-var moreLock=false;
+
 var lookMore = function(){
    if(moreLock){
         moreLock=false;
@@ -46,10 +47,12 @@ var lookMore = function(){
    }
 
 };
+
 var goComment = function(){
     $(".c-shadow").show();
     $(".real-edit").show();
 };
+
 var cancelComment = function(){
     $(".c-shadow").hide();
     $(".real-edit").hide();
@@ -62,14 +65,17 @@ var goLovePlanList = function(){
 /*var createPoster = function(){
     window.location.href="market#/lovePlanPoster"
 };*/
+
 // 点击 我要捐款
 var goContribute = function(){
     window.location.href="http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=lovePlanPay"
 };
+
 // 宝护伞 查看详情
 var goUmbrella = function(){
     window.location.href="http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000005/a"
 };
+
 //用户内容的初始化
 var getUserInfo=function () {
     $.ajax({
@@ -94,6 +100,7 @@ var getUserInfo=function () {
         }
     }, 'json');
 };
+
 //所有的捐款人数
 var count=function () {
     $.ajax({
@@ -110,6 +117,7 @@ var count=function () {
         }
     }, 'json');
 };
+
 //所有的捐款总和
 var sumMoney=function () {
     $.ajax({
@@ -129,6 +137,7 @@ var sumMoney=function () {
         }
     }, 'json');
 };
+
 //最后的留言内容
 var lastNote=function () {
     $.ajax({
@@ -150,6 +159,7 @@ var lastNote=function () {
         }
     }, 'json');
 };
+
 //发布留言
 var addNoteAndDonation = function(){
     var leaveNote = $('#leaveNoteContent').val();
@@ -170,6 +180,7 @@ var addNoteAndDonation = function(){
         }, 'json');
     }
 };
+
 //所有捐款的用户的头像
 var getUserListImage=function () {
     $.ajax({
@@ -194,6 +205,7 @@ var getUserListImage=function () {
         }
     }, 'json');
 };
+
 //分享到朋友圈或者微信
 var loadShare = function(){
     var share = 'http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=32';
@@ -260,6 +272,7 @@ var loadShare = function(){
         }
     });
 };
+
 var recordLogs = function(val){
     $.ajax({
         url:"util/recordLogs",// 跳转到 action
@@ -274,6 +287,7 @@ var recordLogs = function(val){
         }
     });
 };
+
 var previewImage = function (index) {
     var img = imgList[index];
     wx.previewImage({
