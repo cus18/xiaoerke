@@ -38,6 +38,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -184,7 +185,7 @@ public class ConsultWechatController extends BaseController {
                 //检测用户是否是收费用户,1001 为正常用户(无标签) ,1002 需要付款用户(等待),1003 已付款用户;
                 try{
                     if(consultPayUserService.angelChargeCheck(openId)){
-                        HashMap<String,Object> payInfo = new HashMap<String, Object>();
+                        ConcurrentHashMap<String,Object> payInfo = new ConcurrentHashMap<String, Object>();
                         payInfo.put(openId,new Date());
                         consultPayUserService.putneepPayConsultSession(consultSession.getCsUserId(),payInfo);
                         notifyType = 1002;
