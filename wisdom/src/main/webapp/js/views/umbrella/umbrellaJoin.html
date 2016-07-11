@@ -77,8 +77,20 @@
 
     <!--分享浮层-->
     <div class="c-shadow"  ng-click="cancelShare()" ng-if="shareLock"></div>
-    <div class="shadow-content share tc"  ng-click="cancelShare()"  ng-if="shareLock">
-        <img class="arr" width="49" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/share_arr.png">
-        <img  class="remind" width="80%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/share_remind.png">
+    <div class="shadow-content share tc" ng-if="shareLock"  >
+        <img class="arr" width="47" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/shareNew_arr.png">
+        <div class="main tc">
+            <img class="my-img2" width="56%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/shareNew1.png">
+            <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/shareNew2.png">
+            <div class="word">
+                <div class="text" data-tap-disabled="true" >
+                    <img class="refer" width="59" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/shareNew_text.png">
+                    <p class="f3 c0" data-tap-disabled="true" >
+                        如今一颗雪糕钱什么都做不了？但 40万人同时拿出凑在一起，就能挽救一个重病的孩子，拯救一个不幸的家庭。这股力量是爱心，这种理念叫互助，也同时是一个时代的进步！
+                    </p>
+                    <!--<div class="f3 tc">（长按文字即可复制哦）</div>-->
+                </div>
+            </div>
+        </div>
     </div>
 </ion-view>

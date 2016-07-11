@@ -24,7 +24,7 @@ public class ConsultStatisticImpl implements ConsultStatisticService {
     private ConsultStatisticDao consultStatisticDao;
 
     @Override
-    public List<Integer> getConsultStatistic(HashMap hashmap){
+    public List<Float> getConsultStatistic(HashMap hashmap){
         return consultStatisticDao.getConsultStatistic(hashmap);
     }
 
