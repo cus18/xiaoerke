@@ -204,7 +204,7 @@ public class UmbrellaThirdPartyController  {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
         StringBuffer sbf = new StringBuffer();
         //二维码规则:99(渠道标识)+宝护伞id的后八位.
-        sbf.append("99").append(params.get("umbrellaid").toString().substring(1));
+        sbf.append("99").append(params.get("umbrellaid").toString().substring(2));
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("qrcode",babyUmbrellaInfoSerivce.getUserQRCode(sbf.toString()));
         return result;

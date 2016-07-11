@@ -604,7 +604,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         //如果扫码者来自非微信平台
         String openId = xmlEntity.getFromUserName();//扫码者openid
         String marketer = EventKey.replace("qrscene_", "");//渠道
-        StringBuffer sbf = new StringBuffer("1");
+        StringBuffer sbf = new StringBuffer("12");
         Map<String,Object> map = new HashMap<String, Object>();
 
         String umbrellaid = sbf.append(marketer.substring(2)).toString();
@@ -643,10 +643,10 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             //全新用户，并且在非微信平台已购买宝护伞
             //首先完成绑定，然后推送消息
             PatientVo patientVo = utilService.bindUserForThirdParty(userPhone, openId);
-            BabyBaseInfoVo vo = new BabyBaseInfoVo();
-            vo.setUserid(patientVo.getSysUserId());
-            vo.setOpenid(openId);
-            int result = babyBaseInfoService.updateBabyInfoByUserId(vo);
+            //BabyBaseInfoVo vo = new BabyBaseInfoVo();
+            //vo.setUserid(patientVo.getSysUserId());
+            //vo.setOpenid(openId);
+            //int result = babyBaseInfoService.updateBabyInfoByUserId(vo);
 
             BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
             babyUmbrellaInfo.setId(Integer.valueOf(umbrellaid));
