@@ -67,6 +67,10 @@
             and donation_type=#{donationType,jdbcType=VARCHAR}
         </if>
         ORDER BY create_Time desc
+
+        <if test="pageNo != null">
+            limit #{pageNo,jdbcType=INTEGER}
+        </if>
     </select>
 
     <!-- 添加捐款或留言 -->
