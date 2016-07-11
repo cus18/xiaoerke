@@ -137,6 +137,15 @@ public class NgRouteController extends BaseController {
     }
 
     /**
+     *  lovePlan
+     */
+    @SystemControllerLog(description = "00000079")
+    @RequestMapping(value ="/lovePlan",method = {RequestMethod.POST, RequestMethod.GET})
+    public String lovePlanIndex() {
+        return "angular/lovePlanIndex";
+    }
+
+    /**
      *  umbrella 宝护伞
      */
     @SystemControllerLog(description = "00000079")
@@ -144,6 +153,7 @@ public class NgRouteController extends BaseController {
     public String umbrellaIndex() {
         return "angular/umbrellaIndex";
     }
+
 
      /*
         doctor 项目
