@@ -1064,7 +1064,6 @@
 		<module>xiaoerke-umbrella</module>
         <module>xiaoerke-mutualHelp</module>
         <module>bdfApp</module>
-        <module>xiaoerke-alipay</module>
     </modules>
 
     <distributionManagement>

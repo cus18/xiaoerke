@@ -15,7 +15,6 @@ import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaFamilyInfo;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoThirdPartyService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
-import com.cxqm.xiaoreke.modules.alipay.service.AlipayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -60,8 +59,8 @@ public class UmbrellaThirdPartyController  {
     @Autowired
     private HealthRecordsService healthRecordsService;
 
-    @Autowired
-    private AlipayService alipayService;
+    //@Autowired
+    //private AlipayService alipayService;
 
     /**
      *获取保护伞首页信息-已有多少人加入互助计划
@@ -228,14 +227,14 @@ public class UmbrellaThirdPartyController  {
     public
     @ResponseBody
     Map<String, Object>  alipayment(@RequestBody Map<String, Object> params) {
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
-        String totleFee = params.get("totleFee").toString();
-        String body = params.get("body").toString();
-        String describe = params.get("describe").toString();
-        String showUrl = params.get("showUrl").toString();
-        String result = alipayService.alipayment(totleFee, body, describe, showUrl);
+        //DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+        //String totleFee = params.get("totleFee").toString();
+        //String body = params.get("body").toString();
+        //String describe = params.get("describe").toString();
+        //String showUrl = params.get("showUrl").toString();
+        //String result = alipayService.alipayment(totleFee, body, describe, showUrl);
         Map<String,Object> resultMap = new HashMap<String, Object>();
-        resultMap.put("result",result);
+        //resultMap.put("result",result);
         return resultMap;
     }
 
