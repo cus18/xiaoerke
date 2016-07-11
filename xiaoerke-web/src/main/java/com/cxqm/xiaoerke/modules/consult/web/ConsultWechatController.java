@@ -293,7 +293,7 @@ public class ConsultWechatController extends BaseController {
         csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
         System.out.println("csChannel------"+csChannel);
         consultPayUserService.removePayConsultSession(consultSession.getCsUserId(),openId);
-        consultPayUserService.saveChargeUser(sessionId,openId);
+
         if(csChannel!=null&&csChannel.isActive()){
             try {
                 JSONObject obj = new JSONObject();
