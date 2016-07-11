@@ -5,13 +5,13 @@ angular.module('controllers', ['luegg.directives'])
         'TransferToOtherCsUser','SessionEnd','GetWaitJoinList','React2Transfer','CancelTransfer','$upload',
         'GetFindTransferSpecialist','GetRemoveTransferSpecialist','GetAddTransferSpecialist','GetFindAllTransferSpecialist',
         'CreateTransferSpecialist','$state','GetSystemTime','GetUserSessionTimesByUserId','GetCustomerLogByOpenID','SaveCustomerLog',
-        'SearchIllnessList','SearchBabyInfo',
+        'SearchIllnessList','SearchBabyInfo','GetneedPaylist',
         function ($scope, $sce, $window,$stateParams,GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
                   GetUserLoginStatus, $location, GetCurrentUserHistoryRecord,GetMyAnswerModify,
                   GetCurrentUserConsultListInfo,TransferToOtherCsUser,SessionEnd,GetWaitJoinList,React2Transfer,CancelTransfer,$upload,
                   GetFindTransferSpecialist,GetRemoveTransferSpecialist,GetAddTransferSpecialist,GetFindAllTransferSpecialist,
                   CreateTransferSpecialist,$state,GetSystemTime,GetUserSessionTimesByUserId,GetCustomerLogByOpenID,SaveCustomerLog,
-                  SearchIllnessList,SearchBabyInfo) {
+                  SearchIllnessList,SearchBabyInfo,GetneedPaylist) {
             //初始化info参数
             $scope.info = {
                 effect:"true",
@@ -162,6 +162,10 @@ angular.module('controllers', ['luegg.directives'])
                                     });
                                     $scope.chooseAlreadyJoinConsultPatient(patientId,patientName);
                                 }
+
+                                GetneedPaylist.save({csuserId:$scope.doctorId},function (paydata) {
+                                    console.log(paydata)
+                                });
                             })
                         }else if($stateParams.action == ""){
                             getAlreadyJoinConsultPatientList();
