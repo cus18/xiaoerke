@@ -7,6 +7,7 @@ angular.module('controllers', ['ionic']).controller('lovePlanPaySuccessCtrl', [
         };
         $scope.doRefresh = function(){
             loadShare();
+            recordLogs("AXJZ_ZFCGY");
         };
         //分享到朋友圈或者微信
         var loadShare = function(){
@@ -49,7 +50,7 @@ angular.module('controllers', ['ionic']).controller('lovePlanPaySuccessCtrl', [
                                 link: share, // 分享链接
                                 imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Faxjz.jpg', // 分享图标
                                 success: function (res) {
-                                    recordLogs("AXJZ_HDSY_FXPYQ");
+                                    recordLogs("AXJZ_FXPYQ");
                                 },
                                 fail: function (res) {
                                 }
@@ -60,7 +61,7 @@ angular.module('controllers', ['ionic']).controller('lovePlanPaySuccessCtrl', [
                                 link:share, // 分享链接
                                 imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Faxjz.jpg', // 分享图标
                                 success: function (res) {
-                                    recordLogs("AXJZ_HDSY_FXPY");
+                                    recordLogs("AXJZ_FXPY");
                                 },
                                 fail: function (res) {
                                 }

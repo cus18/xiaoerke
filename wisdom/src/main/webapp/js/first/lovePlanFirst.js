@@ -27,6 +27,7 @@ $(function(){
     lastNote();
     loadShare();
     getUserInfo();
+    recordLogs("AXJZ_FirstPage");
 });
 
 var lovePlanFirsInit = function(){
@@ -68,6 +69,7 @@ var goLovePlanList = function(){
 
 // 点击 我要捐款
 var goContribute = function(){
+    recordLogs("AXJZ_WYJK");
     window.location.href="http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=lovePlanPay"
 };
 
@@ -247,7 +249,7 @@ var loadShare = function(){
                         link: share, // 分享链接
                         imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Faxjz.jpg', // 分享图标
                         success: function (res) {
-                            recordLogs("AXJZ_HDSY_FXPYQ");
+                            recordLogs("AXJZ_FXPYQ");
                         },
                         fail: function (res) {
                         }
@@ -258,7 +260,7 @@ var loadShare = function(){
                         link: share, // 分享链接
                         imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Faxjz.jpg', // 分享图标
                         success: function (res) {
-                            recordLogs("AXJZ_HDSY_FXPY");
+                            recordLogs("AXJZ_FXPY");
                         },
                         fail: function (res) {
                         }
