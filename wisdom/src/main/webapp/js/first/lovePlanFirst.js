@@ -176,10 +176,11 @@ var getUserListImage=function () {
         url:"mutualHelp/donation/photoWall",// 跳转到 action
         async:false,
         type:'POST',
-        data:"{}",
+        data:"{'pageNo':'6'}",
         contentType: "application/json; charset=utf-8",
         dataType:'json',
         success:function(data) {
+            console.log(data);
             var userImage=data.donationList;
             if(userImage.length != 0){
                 for(var i=0;i<userImage.length;i++){
