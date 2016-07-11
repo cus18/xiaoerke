@@ -1492,7 +1492,7 @@ angular.module('controllers', ['luegg.directives'])
                 $.each($scope.alreadyJoinPatientConversation,function(index,value){
                     console.log(index);
                     var date = new Date().getTime();
-                   var flag = moment().subtract(1, 'minute').isAfter(value.dateTime);
+                   var flag = moment().subtract(5, 'minute').isAfter(value.dateTime);
                     if(value.notifyType == 1002 && flag ){
                         value.notifyType = 1003;
                         console.log('notifyType',value.notifyType);
@@ -1500,7 +1500,7 @@ angular.module('controllers', ['luegg.directives'])
                 });
             };
             var heartBeatCheckPay = function(){
-                $scope.heartBeatPay = setInterval(setIntervalTimers,6000*5);
+                $scope.heartBeatPay = setInterval(setIntervalTimers,6000);
             };
             //病人会话的内容的发送
             var updateAlreadyJoinPatientConversationFromPatient = function(conversationData){
