@@ -620,7 +620,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         List<Map<String, Object>> openIdList = babyUmbrellaInfoThirdPartyService.getIfBuyUmbrellaByOpenidOrPhone(openIdMap);
         List<Map<String, Object>> openIdAndPhoneList = null;
         if (openIdList != null && openIdList.size() > 0) {
-            //该微信已经购买
+            //该微信已经购买(其实这种情况是不可能发生的,防止非微信平台填写信息时判断出错,多一份保障;)
             openIdMap.put("userPhone",userPhone);
             openIdAndPhoneList = babyUmbrellaInfoThirdPartyService.getIfBuyUmbrellaByOpenidOrPhone(openIdMap);
             if(openIdAndPhoneList != null && openIdAndPhoneList.size() > 0){
