@@ -6,6 +6,7 @@ var resultList=["","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playt
 var moneyNum = 0;
 var ptm3Flag = 1;//显示输入其它金额
 var indexFlag = 0;
+var customerId;
 
 $(function(){
    // $('.evalhavemoney').hide();//收到心意钱
@@ -398,9 +399,9 @@ function updateCustomerInfo() {
             url:"account/user/customerPay",// 跳转到 action
             async:true,
             type:'get',
-            data:{patientRegisterId: customerId, payPrice: redPacket * 100},
+            data:{patientRegisterId:customerId,payPrice:redPacket * 100},
             cache:false,
-            success: function (data) {
+            success:function (data) {
                 var obj = eval('(' + data + ')');
                 if (parseInt(obj.agent) < 5) {
                     alert("您的微信版本低于5.0无法使用微信支付");
