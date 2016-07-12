@@ -214,9 +214,9 @@ public class AccountUserController {
 	@ResponseBody
 	String lovePlanPay(HttpServletRequest request,HttpSession session) throws Exception {
 		String leaveNote = request.getParameter("leaveNote");
-		if(leaveNote != null) {
-			leaveNote = new String(leaveNote.getBytes("ISO-8859-1"), "utf-8");
-		}
+//		if(leaveNote != null) {
+//			leaveNote = new String(leaveNote.getBytes("ISO-8859-1"), "utf-8");
+//		}
 		Integer donationType = null;
 		if(StringUtils.isNotNull(request.getParameter("donationType"))){
 			donationType = Integer.valueOf(request.getParameter("donationType"));
