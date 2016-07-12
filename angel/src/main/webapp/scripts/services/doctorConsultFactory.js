@@ -143,5 +143,12 @@ angular.module('services', ['ngResource'])
         return $resource(public + 'customer/searchBabyInfo');
     }])
 
+    //查找宝宝的初始信息
+    .factory('GetneedPaylist', ['$resource', function ($resource) {
+        return $resource(public + 'consult/wechat/getneedPaylist');
+    }])
+
+
+
 
 

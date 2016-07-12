@@ -23,7 +23,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     window.WebSocket = window.MozWebSocket;
                 }
                 if (window.WebSocket) {
-                    $scope.socketServer = new ReconnectingWebSocket("ws://s202.xiaork.com/wsbackend/ws&user&"
+                    $scope.socketServer = new ReconnectingWebSocket("ws://s201.xiaork.com/wsbackend/ws&user&"
                         + $scope.patientId +"&h5cxqm");//cs,user,distributor
 
                     /*$scope.socketServer = new ReconnectingWebSocket("ws://xiaork.com:2048/ws&user&"
@@ -114,7 +114,6 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     }
                 }
             };
-            //qq表情
             $scope.getQQExpression = function () {
                 $('#face').qqFace({
                     id: 'facebox',
@@ -155,6 +154,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 str = str.replace(/\[em_([0-9]*)\]/g,'<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fqqface%2F$1.gif" border="0" />');
                 return str;
             };
+
             var emotionReceiveFilter = function(val){
                 val = val.replace(/\/::\)/g, '[em_1]');val = val.replace(/\/::~/g, '[em_2]');val = val.replace(/\/::B/g, '[em_3]');val = val.replace(/\/::\|/g, '[em_4]');
                 val = val.replace(/\/:8-\)/g, '[em_5]');val = val.replace(/\/::</g, '[em_6]');val = val.replace(/\/::X/g, '[em_7]');val = val.replace(/\/::Z/g, '[em_8]');
@@ -177,6 +177,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 val = val.replace(/\/:showlove/g, '[em_73]');val = val.replace(/\/:love/g, '[em_74]');val = val.replace(/\/:<L>/g, '[em_75]');
                 return val;
             };
+
             var emotionSendFilter = function(val){
                 val = val.replace(/\[em_1\]/g, '/::)');val = val.replace(/\[em_2\]/g, '/::~');val = val.replace(/\[em_3\]/g, '/::B');val = val.replace(/\[em_4\]/g, '/::|');
                 val = val.replace(/\[em_5\]/g, '/:8-)');val = val.replace(/\[em_6\]/g, '/::<');val = val.replace(/\[em_7\]/g, '/::X');val = val.replace(/\[em_8\]/g, '/::Z');

@@ -44,17 +44,17 @@
     </div>
     <div class="consultInput">
         <div class="consultInputTop">
-            <div class="videoInput">
+            <!--<div class="videoInput">
                 <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_4.png" alt=""/>
+            </div>-->
+            <div ng-if="!sendItem" ng-click="openFileList()">
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_5.png" alt=""/>
             </div>
             <div class="textInput">
                 <textarea placeholder="请输入咨询内容" id="saytext" ng-model="info.consultInputValue" style="border-style:none"></textarea>
                 <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_6.png" alt="" id="face" ng-click="getQQExpression()"/>
             </div>
-            <div ng-if="!sendItem" ng-click="openFileList()" ng-if="sendItem">
-                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_5.png" alt=""/>
-            </div>
-            <div class="sendConsultContent" ng-if="sendItem" id="sendConsultContent">
+            <div class="sendConsultContent" id="sendConsultContent">
                 <input ng-click="sendConsultContent()" type="button" value="发送">
             </div>
         </div>
