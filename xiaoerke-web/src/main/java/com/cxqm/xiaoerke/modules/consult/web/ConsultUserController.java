@@ -435,5 +435,4 @@ public class ConsultUserController extends BaseController {
 
         return response;
     }
-
 }
