@@ -3,6 +3,10 @@ angular.module('controllers',['ionic']).controller('umbrellaAppPaySuccessCtrl',
         $scope.lgLock = false;
 
 
+        $scope.$on('$ionicView.enter',function () {
+            localStorage.flag = true;
+        });
+
         $scope.goJoin = function () {
             $scope.lgLock = true;
         }
