@@ -7,7 +7,9 @@
         /*立即加入*/
         $scope.goJoin=function(index){
             recordLogs("BHS_H5_LJJR"+index);
-            window.location.href="http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa_"+ $stateParams.id;
+            window.location.href="http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/" +
+                "author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=" +
+                "umbrellaa_"+ $stateParams.id;
         };
         $scope.slideHasChanged=function(index){
             recordLogs("BHS_H5_"+index);
@@ -28,21 +30,21 @@
             });
         };
         $scope.$on('$ionicView.enter', function(){
-            $.ajax({
-                url:"umbrella/getOpenid",// 跳转到 action
-                async:true,
-                type:'post',
-                cache:false,
-                dataType:'json',
-                success:function(data) {
-                    if(data.openid=="none"){
-                        // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
-                        window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
-                    }
-                },
-                error : function() {
-                }
-            });
+            // $.ajax({
+            //     url:"umbrella/getOpenid",// 跳转到 action
+            //     async:true,
+            //     type:'post',
+            //     cache:false,
+            //     dataType:'json',
+            //     success:function(data) {
+            //         if(data.openid=="none"){
+            //             // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+            //             window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+            //         }
+            //     },
+            //     error : function() {
+            //     }
+            // });
             
             recordLogs("UmbrellaShareLeadPage_"+ $stateParams.id);
             var timestamp;//时间戳
@@ -81,12 +83,12 @@
                                 link: "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$stateParams.id+"/"+$stateParams.status,
                                 imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                 success: function (res) {
-                                    recordLogs("BHS_WDBZ_FXPYQ_Lead");
+                                    recordLogs("BHS_WDBZ_FXPYQ_Lead_"+$stateParams.id);
                                     //记录用户分享文章
                                     $.ajax({
                                         type: 'POST',
                                         url: "umbrella/updateBabyUmbrellaInfoIfShare",
-                                        data:"{'id':'"+shareUmbrellaId+"'}",
+                                        data:"{'id':'"+$stateParams.id+"'}",
                                         contentType: "application/json; charset=utf-8",
                                         success: function(result){
                                             var todayCount=result.todayCount;
@@ -105,11 +107,11 @@
                                 link:"http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$stateParams.id+"/"+$stateParams.status,
                                 imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                 success: function (res) {
-                                    recordLogs("BHS_WDBZ_FXPY_Lead");
+                                    recordLogs("BHS_WDBZ_FXPY_Lead_"+$stateParams.id);
                                     $.ajax({
                                         type: 'POST',
                                         url: "umbrella/updateBabyUmbrellaInfoIfShare",
-                                        data:"{'id':'"+shareUmbrellaId+"'}",
+                                        data:"{'id':'"+$stateParams.id+"'}",
                                         contentType: "application/json; charset=utf-8",
                                         success: function(result){
                                             var todayCount=result.todayCount;

@@ -1,8 +1,9 @@
 package com.cxqm.xiaoerke.modules.umbrella.serviceimpl;
 
-import com.cxqm.xiaoerke.common.bean.WechatRecord;
+import com.cxqm.xiaoerke.common.utils.IdGen;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
+import com.cxqm.xiaoerke.modules.sys.entity.MongoLog;
 import com.cxqm.xiaoerke.modules.sys.service.BabyBaseInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
@@ -24,6 +25,7 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +52,9 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
 
     @Autowired
     private MongoDBService<UmbrellaMongoDBVo> umbrellaMongoDBService;
+
+    @Autowired
+    private MongoDBService<MongoLog> mongoLogService;
 
     @Override
     public int saveBabyUmbrellaInfo(BabyUmbrellaInfo babyUmbrellaInfo) {
@@ -181,6 +186,13 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
             String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31";
             String openid = (String)map.get("openid");
             WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, openid, templateId);
+
+            MongoLog mongoLog = new MongoLog();
+            mongoLog.setId(IdGen.uuid());
+            mongoLog.setCreate_date(new Date());
+            mongoLog.setTitle("sendNotShareWechatMessage");//发送一天未分享消息
+            mongoLog.setOpen_id(openid);
+            mongoLogService.insert(mongoLog);
         }
 
         /*Map<String, Object> notActiveParam = new HashMap<String, Object>();

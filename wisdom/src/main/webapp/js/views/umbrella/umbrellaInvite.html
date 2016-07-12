@@ -1,0 +1,42 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="{{title}}">
+   <!-- <ion-content class="umbrellaInvite bg1" overflow-scroll="false" style="top:0;"  >
+        <ion-scroll direction="y" has-bouncing="true" >-->
+           <div class="umbrellaInvite bg1" >
+               <div class="top">
+                   <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/invite_top.png">
+               </div>
+               <div class="middle">
+                   <img class="my-img2 money" width="250" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/invite_money.png">
+                   <img class="my-img2 text1" width="80%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/invite_text1.png">
+                   <img ng-click="invite()" class="my-img2 btn " width="70%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/invite_btn1.png">
+                   <div class="tc f3 c4">
+                       已邀请{{person}}位好友，共获得保障{{umbrellaMoney}}W
+                   </div>
+               </div>
+               <div class="bottom">
+                   <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/invite_bottom.png">
+               </div>
+           </div>
+
+       <!-- </ion-scroll>
+    </ion-content>-->
+    <!--分享浮层-->
+    <div class="c-shadow" ng-if="shareLock" ng-click="cancelShare()"></div>
+    <div class="shadow-content share tc" ng-if="shareLock"  >
+        <img class="arr" width="47" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/shareNew_arr.png">
+        <div class="main tc">
+            <img class="my-img2" width="56%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/shareNew1.png">
+            <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/shareNew2.png">
+            <div class="word">
+                <div class="text" data-tap-disabled="true" >
+                    <img class="refer" width="59" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/shareNew_text.png">
+                    <span class="f3 c0" data-tap-disabled="true" >
+                        如今一颗雪糕钱什么都做不了？但 40万人同时拿出凑在一起，就能挽救一个重病的孩子，拯救一个不幸的家庭。这股力量是爱心，这种理念叫互助，也同时是一个时代的进步！
+                    </span>
+                  <!--  <div class="f3 tc">（长按文字即可复制哦）</div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</ion-view>

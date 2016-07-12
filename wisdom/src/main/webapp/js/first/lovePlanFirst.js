@@ -148,7 +148,7 @@ var goLovePlanList = function(){
 // 点击 我要捐款
 var goContribute = function(){
     recordLogs("AXJZ_WYJK");
-    window.location.href="http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=lovePlanPay"
+    window.location.href="http://s201.xiaork.com/keeper/wxPay/patientPay.do?serviceType=lovePlanPay"
 };
 
 // 宝护伞 查看详情
@@ -303,9 +303,9 @@ var loadShare = function(){
                 wx.ready(function () {
                     // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                     wx.onMenuShareTimeline({
-                        title: '我和任泉已为蛋蛋进行了公益捐款，捐款和转发都是献爱心', // 分享标题
+                        title: '两岁宝宝恶性肿瘤大如头，我和任泉都献了爱心！转发也是爱！', // 分享标题
                         link: share, // 分享链接
-                        imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Faxjz.jpg', // 分享图标
+                        imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Faxjz.png', // 分享图标
                         success: function (res) {
                             recordLogs("AXJZ_FXPYQ");
                         },
@@ -313,10 +313,10 @@ var loadShare = function(){
                         }
                     });
                     wx.onMenuShareAppMessage({
-                        title: '我和任泉已为蛋蛋进行了公益捐款，捐款和转发都是献爱心', // 分享标题
+                        title: '两岁宝宝恶性肿瘤大如头，我和任泉都献了爱心！转发也是爱！', // 分享标题
                         desc: '蛋蛋正在接受化疗，你的一个小小善举，就能挽救一个鲜活生命！', // 分享描述
                         link: share, // 分享链接
-                        imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Faxjz.jpg', // 分享图标
+                        imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Faxjz.png', // 分享图标
                         success: function (res) {
                             recordLogs("AXJZ_FXPY");
                         },

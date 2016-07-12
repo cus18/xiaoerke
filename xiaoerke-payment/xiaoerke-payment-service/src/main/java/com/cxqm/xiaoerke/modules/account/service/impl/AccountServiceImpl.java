@@ -391,9 +391,9 @@ public class AccountServiceImpl implements AccountService {
         parameters.put("appid", ConstantUtil.APP_ID);//微信服务号的appid
         parameters.put("mch_id", ConstantUtil.PARTNER);//商户号
         parameters.put("nonce_str",noncestr);//随机字符串
-        if(serviceType.equals("lovePlanService")){
+        if(serviceType.equals("lovePlanService")) {
             parameters.put("body", "爱心捐款");//描述
-        }else {
+        }else{
             parameters.put("body", "会员服务费");//描述
         }
         parameters.put("out_trade_no", out_trade_no);//商户订单号

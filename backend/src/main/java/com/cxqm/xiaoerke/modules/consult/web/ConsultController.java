@@ -60,7 +60,7 @@ public class ConsultController extends BaseController {
 	private PatientRegisterPraiseService patientRegisterPraiseService;
 
 	/**
-	 * 咨询的医生列表
+	 * 咨询的医生 列表
 	 * sunxiao
 	 * @param
 	 * @param model
@@ -129,6 +129,7 @@ public class ConsultController extends BaseController {
 		model.addAttribute("redPacket", map.get("redPacket"));
 		model.addAttribute("redPacketPerson", map.get("redPacketPerson"));
 		model.addAttribute("satisfy", map.get("satisfy"));
+		model.addAttribute("verysatisfy", map.get("verysatisfy"));
 		model.addAttribute("unsatisfy", map.get("unsatisfy"));
 		model.addAttribute("sessionCount", map.get("sessionCount"));
 		model.addAttribute("sessionMap", map.get("sessionMap"));

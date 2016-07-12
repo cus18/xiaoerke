@@ -32,7 +32,7 @@ angular.module('controllers', ['luegg.directives'])
             $scope.loadingFlag = false;
             $scope.socketServerFirst = "";
             $scope.socketServerSecond = "";
-            $scope.firstAddress = "101.201.154.201";
+            $scope.firstAddress = "101.201.154.75";
             $scope.secondAddress = "120.25.161.33";
             $scope.alreadyJoinPatientConversation = []; //已经加入会话的用户数据，一个医生可以有多个对话的用户，这些用户的数据，都保存在此集合中 乱码
             $scope.currentUserConversation = {}; //医生与当前正在进行对话用户的聊天数据，医生在切换不同用户时，数据变更到切换的用户上来。
@@ -627,6 +627,15 @@ angular.module('controllers', ['luegg.directives'])
                             var valueData = consultContent.split("####");
                             consultContent = valueData[0];
                         }
+                        if($scope.currentUserConversation.serverAddress=="" || $scope.currentUserConversation.serverAddress == null){
+                            $scope.currentUserConversation.serverAddress = $scope.firstAddress;
+                            if($scope.socketServerFirst.readyState != WebSocket.OPEN){
+                                $scope.currentUserConversation.serverAddress = $scope.secondAddress;
+                                if($scope.socketServerSecond.readyState != WebSocket.OPEN){
+                                    alert("连接没有开启！");
+                                }
+                            }
+                        }
                         if($scope.currentUserConversation.serverAddress==$scope.firstAddress){
                             if ($scope.socketServerFirst.readyState == WebSocket.OPEN) {
                                 var consultValMessage = "";
@@ -786,6 +795,7 @@ angular.module('controllers', ['luegg.directives'])
                         if($scope.currentUserConversation.serverAddress==$scope.firstAddress){
                             if ($scope.socketServerFirst.readyState == WebSocket.OPEN) {
                                 $scope.socketServerFirst.send(JSON.stringify(consultValMessage));
+                                $scope.initConsultSocketFirst();
                                 updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                             } else {
                                 alert("连接没有开启.");
@@ -793,6 +803,7 @@ angular.module('controllers', ['luegg.directives'])
                         }else if($scope.currentUserConversation.serverAddress==$scope.secondAddress){
                             if ($scope.socketServerSecond.readyState == WebSocket.OPEN) {
                                 $scope.socketServerSecond.send(JSON.stringify(consultValMessage));
+                                $scope.initConsultSocketSecond();
                                 updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                             } else {
                                 alert("连接没有开启.");
