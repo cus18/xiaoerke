@@ -3,7 +3,6 @@ package com.cxqm.xiaoerke.modules.sys.service;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by wangbaowei on 16/2/18.
@@ -37,4 +36,8 @@ public interface BabyBaseInfoService {
      * sunxiao
      */
     List<BabyBaseInfoVo> getBabyInfoByInfo(BabyBaseInfoVo vo);
+    /**
+     * 根据userId更新宝宝信息(openId)
+     */
+    int updateBabyInfoByUserId(BabyBaseInfoVo vo);
 }

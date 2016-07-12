@@ -1,0 +1,49 @@
+<ion-view>
+    <ion-content overflow-scroll="true" style="top:0;">
+        <ion-scroll class="umbrellaAppPaySuccess">
+            <div class="com ps1">
+                <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/app/ps1.png" width="50%" height="50%"/>
+            </div>
+            <div class="com ps2">
+                <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/app/ps2.png" width="50%" height="50%"/>
+            </div>
+            <div class="com ps3">
+                点击“<span>立即激活</span>”，还有更多惊喜等着您
+            </div>
+            <div class="com psbutton"  ng-click="goJoin()">
+                立即激活
+            </div>
+            <br/><br/><br/>
+        </ion-scroll>
+    </ion-content>
+    <div class="c-shadow"  ng-if="lgLock" ng-click="cancelProtocol()"></div>
+    <div class="ls" ng-if="lgLock">
+        <div class="ls_headimg">
+            <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/app/ls_headimg1.png" width="60%" height="60%"/>
+        </div>
+        <div class="ls_first ls_com">
+            第一步：使用手机截图功能，将此页面截屏
+        </div>
+        <div class="ls_erweima">
+            <div class="ls_1 ls_com3">
+                <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/app/ls_erweima.png" width="50%" height="50%"/>
+                <div class="ls_com">此二维码有效期为30天</div>
+            </div>
+            <div class="ls_2 ls_com3">
+                <img class="ls_com2" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/app/ls_1.png" />
+                <img class="ls_com2" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/app/ls_2.png" />
+                <img class="ls_com2" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/app/ls_3.png" />
+            </div>
+        </div>
+        <div class="ls_second ls_com">第二步：打开“微信--扫一扫”，点击相册，选择截屏图片</div>
+        <div class="ls_sao1">
+            <img src ="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/app/ls_sao1.png" width="50%" height="50%"/>
+        </div>
+        <div class="ls_sao2">
+            <img src ="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/app/ls_sao2.png" width="50%" height="50%"/>
+        </div>
+    </div>
+    <div class="close" ng-click="cancelProtocol()" ng-if="lgLock">
+        <img src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/app/ls_close.png" width="50%" height="50%"/>
+    </div>
+</ion-view>

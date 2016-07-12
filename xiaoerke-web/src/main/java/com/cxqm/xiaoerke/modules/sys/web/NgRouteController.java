@@ -154,6 +154,14 @@ public class NgRouteController extends BaseController {
         return "angular/umbrellaIndex";
     }
 
+    /**
+     *  umbrella 外接app宝护伞
+     */
+    @SystemControllerLog(description = "00000079")
+    @RequestMapping(value ="/appUmbrella",method = {RequestMethod.POST, RequestMethod.GET})
+    public String appUmbrellaIndex() {
+        return "angular/appUmbrellaIndex";
+    }
 
      /*
         doctor 项目

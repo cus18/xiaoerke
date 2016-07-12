@@ -91,6 +91,23 @@ define(['appPatientConsult'], function(app){
                             public: true
                         }
                     })
+                    .state('patientConsultWJY', {
+                        url: '/patientConsultWJY/:token',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'patientConsultWJYCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientConsultWJYCtrl',
+                                    ['js/controllers/patientConsultWJYCtrl.js',
+                                        'js/libs/scrollglue.js','js/libs/moment.min.js',
+                                        'js/styles/patientConsultWJY.css'],
+                                    'js/views/patientConsultWJY.html?ver='+patientConsultVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    });
 
                 //$urlRouterProvider.otherwise('patientConsultFirst');
                 //$urlRouterProvider.otherwise('patientConsultUmbrella');
