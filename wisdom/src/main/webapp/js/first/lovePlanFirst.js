@@ -17,7 +17,6 @@ var imgList = ["http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2F
     "http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2Fprove5.png",
     "http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2Fprove6.png",
     "http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2Fprove7.png"];
-var moreLock=false;
 
 $(function(){
     $.ajax({
