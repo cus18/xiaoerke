@@ -20,6 +20,20 @@ var imgList = ["http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2F
 var moreLock=false;
 
 $(function(){
+    $.ajax({
+        url:"umbrella/getOpenid",// 跳转到 action
+        async:true,
+        type:'post',
+        cache:false,
+        dataType:'json',
+        success:function(data) {
+            if(data.openid=="none"){
+                window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=32";
+            }
+        },
+        error : function() {
+        }
+    });
     getUserListImage();
     count();
     sumMoney();
@@ -142,6 +156,11 @@ var goContribute = function(){
 // 宝护伞 查看详情
 var goUmbrella = function(){
     window.location.href="http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000005/a"
+};
+
+//宝大夫官网
+var goBaodf = function(){
+    window.location.href="http://www.baodf.com"
 };
 
 //用户内容的初始化

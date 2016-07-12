@@ -5,6 +5,22 @@ angular.module('controllers', ['ionic']).controller('lovePlanPaySuccessCtrl', [
         $scope.goUmbrella =function(){
             window.location.href="http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000005/a"
         };
+        $scope.$on('$ionicView.enter', function(){
+            $.ajax({
+                url:"umbrella/getOpenid",// 跳转到 action
+                async:true,
+                type:'post',
+                cache:false,
+                dataType:'json',
+                success:function(data) {
+                    if(data.openid=="none"){
+                        window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=32";
+                    }
+                },
+                error : function() {
+                }
+            });
+        })
         $scope.doRefresh = function(){
             loadShare();
             recordLogs("AXJZ_ZFCGY");
