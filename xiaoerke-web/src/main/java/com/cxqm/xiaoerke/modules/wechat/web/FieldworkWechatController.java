@@ -194,7 +194,7 @@ public class FieldworkWechatController {
         }else if("33".equals(url)){
             url = ConstantUtil.WISDOM_WEB_URL + "wisdom/umbrella#/umbrellaInvite";
             url = ConstantUtil.MARKET_WEB_URL + "market/firstPage/lovePlan";
-        }else if("33".equals(url)){
+        }else if("35".equals(url)){
             url = ConstantUtil.KEEPER_WEB_URL + "keeper/wxPay/patientPay.do?serviceType=doctorConsultPay";
         }else if("34".equals(url)){
             url = ConstantUtil.ANGEL_WEB_URL + "angel/patient/consult#/customerService";
