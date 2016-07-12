@@ -476,7 +476,9 @@ public class AccountServiceImpl implements AccountService {
                 }
                 System.out.println("insert:" + PrepayInfo.get("feeType"));
 
-                if(!"lovePlan".equals(PrepayInfo.get("feeType"))){
+                if("lovePlan".equals(PrepayInfo.get("feeType"))){
+                    payRecord.setLeaveNote(URLDecoder.decode(request.getParameter("leaveNote"), "UTF-8"));
+                }else{
                     LogUtils.saveLog(Servlets.getRequest(),"00000037","用户发起微信支付:" + outTradeNo);//用户发起微信支付
                 }
 

@@ -32,7 +32,7 @@ header{position: relative;}
 .h2r{height: 428px;}
 .h30 {height: 520px;}
 .cl {color:#fff;}
-.bl1{border-left: 1px solid #ccc;}
+.bl1{border-left: 1px solid #ccc;margin-left: -1px;position: relative;}
 .tab div a span {display: inline-block; padding: 13px 0 14px 0;cursor: pointer;}
 .messageList {width: 100%;min-width: 1024px;height: auto;}
 .qf:after {content:'';display:table;clear:both;}
