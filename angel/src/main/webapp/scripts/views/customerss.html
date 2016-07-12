@@ -1078,6 +1078,7 @@
 	function closeSelectAbout(){
 		$("#illnessList").hide();
 	}
+	//所属科室的列表
 	var illnessName="";
 	function onChangeIllnessName(val){
 		switch(val){
@@ -1194,24 +1195,6 @@
 			dataType: "json"
 		});
 	}
-	/**
-	 * 获取会员服务状态  测
-	 *
-	 * @return 状态1，会员服务已过期，免费卷已过期，免费卷没用完
-	 * 状态2，会员服务已过期，免费卷已过期，免费卷已用完
-	 * 状态10，会员服务已过期，免费卷已过期，免费卷没用完，且用户从没有过订单
-	 * <p/>
-	 * 状态3，会员服务已过期，免费卷没过期，免费卷已用完
-	 * 状态4，会员服务已过期，免费卷没过期，免费卷没用完
-	 * <p/>
-	 * <p/>
-	 * 状态7，会员服务没过期，免费卷没过期，免费卷已用完
-	 * 状态8，会员服务没过期，免费卷没过期，免费卷没用完
-	 * <p/>
-	 * 状态5，会员服务没过期，免费卷已过期，免费卷没用完
-	 * 状态6，会员服务没过期，免费卷已过期，免费卷已用完
-	 * 状态9，会员服务没过期，免费卷已过期，免费卷没用完，且用户从没有过订单
-	 */
 	function sendGreetingsMessage(){
 		var customer=$("#costomerID").val();
 		if(customer=="110@BaodfWX"){
@@ -1241,7 +1224,7 @@
 			});
 		}
 	}
-
+	//添加诊断记录
 	function addReturnService(){
 		var costomerID=$("#costomerID").val();
 		$.ajax({
@@ -1261,6 +1244,7 @@
 			dataType: "json"
 		});
 	}
+	//查看更多
 	function hiddenUserInfo(){
 		$(".table1").parent().css("height","50px");
 		$(".table1 td").css("display","none");

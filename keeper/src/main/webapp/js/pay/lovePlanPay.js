@@ -16,7 +16,9 @@ var recordLogs = function(val){
         }
     });
 };
-
+var skip=function(item){
+    $("html,body").stop().animate({"scrollTop":$("#"+item).offset().top},0);
+}
 /*
  以前支付代码
  */
@@ -105,7 +107,7 @@ function wechatPay() {
                         paySign: obj.paySign,  // 支付签名
                         success: function (res) {
                             if (res.errMsg == "chooseWXPay:ok") {
-                                window.location.href="http://xiaork.cn/market/market#/lovePlanPaySuccess";
+                                window.location.href="http://s175.baodf.com/market/market#/lovePlanPaySuccess";
                             } else {
                                 alert("支付失败,请重新支付")
                             }
