@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.customer.web;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -229,15 +230,28 @@ public class CustomerController {
 
 		Map<String ,Object> map=new HashMap<String, Object>();
 		String openid;
-		if(params.get("openid")==null||params.get("openid").equals("")){
+		/*if(params.get("openid")==null||params.get("openid").equals("")){
 			openid=UserUtils.getUser().getOpenid();
 			if(openid==null||openid.equals("")){
 				return map;
 			}
 		}else{
 			openid=params.get("openid").toString();
-		}
-		List list=cs.getCustomerLogByBabyOpenID(openid);
+		}*/
+//		List list=cs.getCustomerLogByBabyOpenID(openid);
+		List list = new ArrayList();
+		HashMap hashMap = new HashMap();
+		hashMap.put("customerId","123456");
+		hashMap.put("show","头晕/发烧");
+		hashMap.put("zhenduan","感冒");
+		hashMap.put("result","吃药");
+		HashMap hashMap2 = new HashMap();
+		hashMap2.put("customerId","aaaa");
+		hashMap2.put("show","头晕/发烧");
+		hashMap2.put("zhenduan","dfdf");
+		hashMap2.put("result","吃药");
+		list.add(hashMap);
+		list.add(hashMap2);
 		map.put("logList", list);
 		return map;
 	}

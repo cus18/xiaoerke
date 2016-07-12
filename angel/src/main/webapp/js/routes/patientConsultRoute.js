@@ -31,7 +31,6 @@ define(['appPatientConsult'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientConsultFirstCtrl',
                                     ['js/controllers/patientConsultFirstCtrl.js',
                                         'js/libs/scrollglue.js','js/libs/moment.min.js',
-                                        'libs/jquery.browser.min','libs/jquery.qqFace',
                                         'js/styles/patientConsultFirst.css'],
                                     'js/views/patientConsultFirst.html?ver='+patientConsultVersion);
                             }
@@ -49,7 +48,7 @@ define(['appPatientConsult'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientConsultUmbrellaCtrl',
                                     ['js/controllers/patientConsultUmbrellaCtrl.js',
                                         'js/libs/scrollglue.js','js/libs/moment.min.js',
-                                        'libs/jquery.browser.min','libs/jquery.qqFace',
+                                        'js/libs/scrollglue.js','js/libs/moment.min.js',
                                         'js/styles/patientConsultUmbrella.css'],
                                     'js/views/patientConsultUmbrella.html?ver='+patientConsultVersion);
                             }
@@ -66,10 +65,9 @@ define(['appPatientConsult'], function(app){
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'customerServiceCtrl',
                                     ['js/controllers/customerServiceCtrl.js',
-                                        'https://res.wx.qq.com/open/js/jweixin-1.0.0.js',
                                         'js/libs/scrollglue.js','js/libs/moment.min.js',
                                         'js/styles/main.css','js/styles/customerService.css'],
-                                    'js/views/customerService.html?ver='+patientConsultVersion);
+                                    'js/views/customerService.html');
                             }
                         },
                         data: {
@@ -86,7 +84,7 @@ define(['appPatientConsult'], function(app){
                                     ['js/controllers/doctorConsultPaySuccessCtrl.js',
                                         'js/libs/scrollglue.js','js/libs/moment.min.js',
                                         'js/styles/main.css','js/styles/doctorConsultPaySuccess.css'],
-                                    'js/views/doctorConsultPaySuccess.html?ver='+patientConsultVersion);
+                                    'js/views/doctorConsultPaySuccess.html');
                             }
                         },
                         data: {
