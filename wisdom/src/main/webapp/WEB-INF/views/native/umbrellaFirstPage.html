@@ -328,8 +328,7 @@
         <div class="slogan tc">
             <img width="80%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/index_slogan.png">
         </div>
-
-        <br><br><br><br><br>
+        <br><br><br><br><br><br>
 
     </div>
     <!--底部客服电话图标-->
@@ -947,10 +946,12 @@
 <script src="js/native/umbrellaFirstPage.js"></script>
 <script src="js/libs/iscroll.js"></script>
 <script>
-    var myscroll;
+    var myScroll;
     function loaded(){
         setTimeout(function(){
-                    myscroll=new iScroll("wrapper"); },
+                    myScroll = new iScroll('wrapper', {
+                        hideScrollbar: true
+                      }) },
                 100 );
     }
     window.addEventListener("load",loaded,false); </script>
