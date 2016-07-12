@@ -17,16 +17,28 @@ var imgList = ["http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2F
     "http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2Fprove5.png",
     "http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2Fprove6.png",
     "http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2Fprove7.png"];
-var moreLock=false;
 
 $(function(){
+    $.ajax({
+        url:"umbrella/getOpenid",// 跳转到 action
+        async:true,
+        type:'post',
+        cache:false,
+        dataType:'json',
+        success:function(data) {
+            if(data.openid=="none"){
+                window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=32";
+            }
+        },
+        error : function() {
+        }
+    });
     getUserListImage();
     count();
     sumMoney();
     addNoteAndDonation();
     lastNote();
     loadShare();
-    getUserInfo();
     recordLogs("AXJZ_FirstPage");
 });
 
@@ -144,29 +156,9 @@ var goUmbrella = function(){
     window.location.href="http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000005/a"
 };
 
-//用户内容的初始化
-var getUserInfo=function () {
-    $.ajax({
-        url:"loveMarketing/visitPage",// 跳转到 action
-        async:false,
-        type:'POST',
-        data:"",
-        contentType: "application/json; charset=utf-8",
-        dataType:'json',
-        success:function(data) {
-            if(data.fault=="null"){
-                $(".info").hide();
-                $(".info").hide();
-            }else{
-                $("#friendNums").html(data.friendNum);
-                $("#transcend").html(data.transcend);
-                $("#loveMoney").html(data.lovemoney);
-                $("#headImage").attr("src",data.headImage);
-            }
-        },
-        error : function() {
-        }
-    }, 'json');
+//宝大夫官网
+var goBaodf = function(){
+    window.location.href="http://www.baodf.com"
 };
 
 //所有的捐款人数

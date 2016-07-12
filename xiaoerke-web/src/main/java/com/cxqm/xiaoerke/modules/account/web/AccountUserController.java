@@ -247,9 +247,9 @@ public class AccountUserController {
 		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 		//获取统一支付接口参数
 		String payType = (String)request.getAttribute("payType");
-		request.setAttribute("feeType", payType);
+		request.setAttribute("feeType", "doctorConsultPay");
 		Map prepayInfo = accountService.getPrepayInfo(request, session, "doctorConsultPay");
-		prepayInfo.put("feeType",payType);
+		prepayInfo.put("feeType","doctorConsultPay");
 //		System.out.println("feeType:" + prepayInfo.get("feeType").toString());
 		//拼装jsPay所需参数,如果prepay_id生成成功则将信息放入account_pay_record表
 		String userId = UserUtils.getUser().getId();

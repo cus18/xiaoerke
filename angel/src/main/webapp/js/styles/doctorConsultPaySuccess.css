@@ -5,7 +5,7 @@
 .doctorConsultPaySuccess .intro img {
     width: 70%;
 }
-.doctorConsultPaySuccess .consultButton {
+.doctorConsultPaySuccess .consultButton a {
     border: 1px solid #1FC3C5;
     color: #1FC3C5;
     font-size: 14px;
@@ -15,6 +15,12 @@
     width: 274px;
     text-align: center;
     line-height: 36px;
+    display: block;
+}
+.doctorConsultPaySuccess .consultButton a:hover{
+    border: none;
+    color: #fff;
+    background-color: #1FC3C5;
 }
 .doctorConsultPaySuccess .weChat{
     width: 100%;
