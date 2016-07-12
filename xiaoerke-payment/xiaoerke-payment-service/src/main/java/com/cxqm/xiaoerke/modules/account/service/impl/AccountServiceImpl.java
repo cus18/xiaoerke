@@ -471,7 +471,9 @@ public class AccountServiceImpl implements AccountService {
                 payRecord.setPayDate(new Date());
                 payRecord.setCreatedBy(user.getId());
                 payRecord.setFeeType(PrepayInfo.get("feeType"));
-                payRecord.setLeaveNote(URLDecoder.decode(request.getParameter("leaveNote"), "UTF-8"));
+                if("lovePlan".equals(PrepayInfo.get("feeType"))) {
+                    payRecord.setLeaveNote(URLDecoder.decode(request.getParameter("leaveNote"), "UTF-8"));
+                }
                 System.out.println("insert:" + PrepayInfo.get("feeType"));
 
                 if(!"lovePlan".equals(PrepayInfo.get("feeType"))){
