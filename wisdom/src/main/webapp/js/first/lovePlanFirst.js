@@ -39,7 +39,6 @@ $(function(){
     addNoteAndDonation();
     lastNote();
     loadShare();
-    getUserInfo();
     recordLogs("AXJZ_FirstPage");
 });
 
@@ -160,31 +159,6 @@ var goUmbrella = function(){
 //宝大夫官网
 var goBaodf = function(){
     window.location.href="http://www.baodf.com"
-};
-
-//用户内容的初始化
-var getUserInfo=function () {
-    $.ajax({
-        url:"loveMarketing/visitPage",// 跳转到 action
-        async:false,
-        type:'POST',
-        data:"",
-        contentType: "application/json; charset=utf-8",
-        dataType:'json',
-        success:function(data) {
-            if(data.fault=="null"){
-                $(".info").hide();
-                $(".info").hide();
-            }else{
-                $("#friendNums").html(data.friendNum);
-                $("#transcend").html(data.transcend);
-                $("#loveMoney").html(data.lovemoney);
-                $("#headImage").attr("src",data.headImage);
-            }
-        },
-        error : function() {
-        }
-    }, 'json');
 };
 
 //所有的捐款人数
