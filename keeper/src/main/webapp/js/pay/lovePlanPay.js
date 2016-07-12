@@ -87,7 +87,7 @@ function wechatPay() {
                 url: "account/user/lovePlanPay",
                 async: true,
                 type: 'get',
-                data: {leaveNote: leaveNotes, payPrice: moneys * 100},
+                data: {leaveNote: encodeURI(leaveNotes), payPrice: moneys * 100},
                 cache: false,
                 success: function (data) {
                     $('#payButton').removeAttr("disabled");
