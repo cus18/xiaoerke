@@ -40,7 +40,7 @@ define(['appPatientConsult'], function(app){
                         }
                     })
                     .state('patientConsultUmbrella', {
-                        url: '/patientConsultUmbrella/:token',
+                        url: '/patientConsultUmbrella',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'patientConsultUmbrellaCtrl',
                         resolve: {
