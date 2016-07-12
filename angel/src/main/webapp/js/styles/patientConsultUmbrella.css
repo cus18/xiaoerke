@@ -7,7 +7,7 @@ li{list-style:none}
 img{border:0;vertical-align:middle}
 table{border-collapse:collapse;border-spacing:0}
 p{word-wrap:break-word}
-.h100{height: 95%;}
+.h100{height: 100%;}
 a:focus,input:focus{-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-user-modify:read-write-plaintext-only;}
 .container-fluid{background-color: #fff;width: 100%;}
 .consultTitle{height: 44px;font: 16px/44px 'Microsoft Yahei';color:#fff;width: 100%;background-color: #1FC3C5;text-align: center;position: fixed;z-index:999;}
