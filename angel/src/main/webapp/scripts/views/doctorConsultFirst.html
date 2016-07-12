@@ -9,13 +9,12 @@
                 </span>
                 <span></span>
                 <span>（{{doctorName}}），宝大夫欢迎您！！</span>
-                <span>
-                    <!--<select>
+                <!--<span>
+                    <select>
                         <option>在线</option>
                         <option>不在线</option>
-                    </select>-->
-                    <!--<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>-->
-                </span>
+                    </select>
+                </span>-->
                 <span ng-if="loseConnectionFirstFlag||loseConnectionSecondFlag">您已与平台断开了连接，请检查您的网络情况，谢谢！</span>
                 <span ng-if="!loseConnectionFirstFlag&&!loseConnectionSecondFlag">您目前与平台连接正常！</span>
                 <div class="bdf-dkf-content-right">
@@ -73,7 +72,10 @@
                      ng-repeat="item in alreadyJoinPatientConversation | orderBy:'dateTime':true"
                      ng-click="chooseAlreadyJoinConsultPatient(item.patientId,item.patientName,item.sessionId)"
                      alt="">
-                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fduokefu_06.png" alt=""/>
+                    <div>
+                        <img ng-style="item.notifyType=='1002'?{'display':'block'}:{'display':'none'}" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fduokefu_06.png" alt=""/>
+                        <img ng-style="item.notifyType=='1003'?{'display':'block'}:{'display':'none'}" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fduokefu.png" alt=""/>
+                    </div>
                     <div><nobr>{{item.patientName|limitTo:6}}</nobr></div>
                     <div><nobr>{{transformDate(item.dateTime)}}</nobr></div>
                     <div  ng-style="item.messageNotSee?{'display':'block'}:{'display':'none'}">
@@ -270,7 +272,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <span>生日：</span><input type="text"/>
+                                <span>生日：</span><input type="text"/><span>{{babyAge}}</span>
                             </td>
                             <td>
                                 <span>科室：</span><input type="text"/>
@@ -357,7 +359,7 @@
                             <td>
                                 <dl ng-repeat="item in historyConsult">
                                     <dt>
-                                        客服：<input type="text" value="{{item.customerId}}"/>
+                                        客服：<input type="text" value="{{item.customerId}}" style="border: none;"/>
                                         <a class="fr">{{item.create_date|date:"yyyy-MM-dd"}}</a>
                                     </dt>
                                     <dd>
@@ -516,10 +518,10 @@
                 <th>会话（人次）</th>
             </tr>
             <tr ng-repeat="item in info.rankListValue">
-                <td>{{$index+1}}</td>
-                <td>{{item.doctorEmail}}</td>
-                <td>{{item.doctorName}}</td>
-                <td>{{item.consultNum}}</td>
+                <th>{{$index+1}}</th>
+                <th>{{item.doctorEmail}}</th>
+                <th>{{item.doctorName}}</th>
+                <th>{{item.consultNum}}</th>
             </tr>
         </table>
     </div>

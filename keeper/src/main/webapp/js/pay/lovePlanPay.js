@@ -1,22 +1,6 @@
 var payLock = false;
 var moneys = "0";
 var leaveNotes = "";
-//var lovePlanPayInit=function(){
-//    $.ajax({
-//        url:"mutualHelp/getOpenid",
-//        async:true,
-//        type:'post',
-//        cache:false,
-//        dataType:'json',
-//        success:function(data) {
-//            if(data.openid != ''){
-//                doRefresh();
-//            }
-//        },
-//        error : function() {
-//        }
-//    });
-//};
 
 var recordLogs = function(val){
     $.ajax({
@@ -32,7 +16,9 @@ var recordLogs = function(val){
         }
     });
 };
-
+var skip=function(item){
+    $("html,body").stop().animate({"scrollTop":$("#"+item).offset().top},0);
+}
 /*
  以前支付代码
  */
@@ -121,18 +107,7 @@ function wechatPay() {
                         paySign: obj.paySign,  // 支付签名
                         success: function (res) {
                             if (res.errMsg == "chooseWXPay:ok") {
-                                //$.ajax({
-                                //    url:"mutualHelp/donation/addNoteAndDonation",
-                                //    type:'POST',
-                                //    data: "{'leaveNote':'"+leaveNotes+"','money':'"+moneys * 100+"'}",
-                                //    contentType: "application/json; charset=utf-8",
-                                //    dataType:'json',
-                                //    success:function() {
-                                //    },
-                                //    error : function() {
-                                //    }
-                                //}, 'json');
-                                window.location.href="http://xiaork.cn/market/market#/lovePlanPaySuccess";
+                                window.location.href="http://s175.baodf.com/market/market#/lovePlanPaySuccess";
                             } else {
                                 alert("支付失败,请重新支付")
                             }
@@ -146,7 +121,7 @@ function wechatPay() {
                 }
             });
         } else {
-            alert("please input correct money value");
+            alert("请输入大于0的数字！");
         }
     }else{
         payLock=true;

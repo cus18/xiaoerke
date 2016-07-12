@@ -73,6 +73,8 @@ angular.module('controllers', ['luegg.directives'])
 
             //初始化医生端登录，建立socket链接，获取基本信息
             $scope.doctorConsultInit = function () {
+                heartBeatCheckPay();
+                $scope.getQQExpression();
                 var routePath = "/doctor/consultBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath: routePath}, function (data) {
                     $scope.pageLoading = false;
@@ -95,6 +97,7 @@ angular.module('controllers', ['luegg.directives'])
                         }
 
                         getIframeSrc();
+                        getHistoryConsultContent();
                         //获取通用回复列表
                         GetAnswerValueList.save({"type": "commonAnswer"}, function (data) {
                             if(data.result=="success"){
@@ -148,7 +151,7 @@ angular.module('controllers', ['luegg.directives'])
                         if($stateParams.action == "createUserSession"){
                             var patientId = $stateParams.userId;
                             var patientName = "";
-                            GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
+                            GetCurrentUserConsultListInfo.save({userType:$scope.userType,csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
                                 if(data.alreadyJoinPatientConversation!=""&&data.alreadyJoinPatientConversation!=undefined){
                                     $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                                     $.each($scope.alreadyJoinPatientConversation,function(index,value){
@@ -186,7 +189,7 @@ angular.module('controllers', ['luegg.directives'])
 
             //公共点击按钮，用来触发弹出对应的子窗口
             $scope.tapShowButton = function(type){
-                $.each($scope.showFlag,function(key,value){
+                $.each($scope.showFlag,function(key){
                     if(key==type){
                         if(type=="waitProcess"){
                             if(!waitProcessLock){
@@ -424,7 +427,7 @@ angular.module('controllers', ['luegg.directives'])
                     if(data.status == "success"){
                         var patientId = data.userId;
                         var patientName = data.userName;
-                        GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
+                        GetCurrentUserConsultListInfo.save({userType:$scope.userType,csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
                             if(data.alreadyJoinPatientConversation!=""&&data.alreadyJoinPatientConversation!=undefined){
                                 $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                                 $.each($scope.alreadyJoinPatientConversation,function(index,value){
@@ -735,7 +738,7 @@ angular.module('controllers', ['luegg.directives'])
                     flag = textValue[1];
                 }
                 return flag;
-            }
+            };
 
             //向用户发送咨询图片
             $scope.uploadFiles = function($files,fileType) {
@@ -856,7 +859,6 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.chooseAlreadyJoinConsultPatientName = patientName;
                 $scope.chooseAlreadyJoinConsultPatientsessionId = sessionId;
                 GetUserSessionTimesByUserId.get({userId:patientId},function(data){
-                    console.log(data);
                     $scope.chooseAlreadyJoinConsultPatientSessionTimes ='是'+ data.userSessionTimes + '次接入';
                 });
                 getIframeSrc();
@@ -966,7 +968,7 @@ angular.module('controllers', ['luegg.directives'])
             $scope.tapMyReplyContent = function (parentIndex) {
                 $scope.showFlag.myReplyList = true;
                 $scope.showFlag.publicReplyList = false;
-                $scope.showFlag.diagnosisReplyList = false
+                $scope.showFlag.diagnosisReplyList = false;
                 if($scope.myReplyIndex==parentIndex){
                     $scope.myReplyIndex = -1;
                     $scope.myReplySecondIndex = -1;
@@ -1328,10 +1330,13 @@ angular.module('controllers', ['luegg.directives'])
             /***回复操作区**/
             /***咨询服务**/
             //根据openid获取历史咨询
-            $scope.historyConsult = '';
-            GetCustomerLogByOpenID.save({openid:$scope.currentUserConversation.patientId}, function (data) {
-                $scope.historyConsult = data.logList;
-            });
+            var getHistoryConsultContent = function () {
+                $scope.historyConsult = '';
+                GetCustomerLogByOpenID.save({openid:$scope.currentUserConversation.patientId}, function (data) {
+                    console.log(data)
+                    $scope.historyConsult = data.logList;
+                });
+            };
             //初始化宝宝的信息$scope.currentUserConversation.patientId
             $scope.babyNameList=[];
             SearchBabyInfo.save({openid:''}, function (data) {
@@ -1367,6 +1372,7 @@ angular.module('controllers', ['luegg.directives'])
                     if(data.type == 1){
                         $('#addCustomerLog').attr('disabled',"true");
                         $("#addCustomerLog").css("background","gray");
+                        getHistoryConsultContent();
                     }
                 });
                 $scope.info.result='';
@@ -1432,7 +1438,7 @@ angular.module('controllers', ['luegg.directives'])
             //得到已经加入会话的病人的列表
             var getAlreadyJoinConsultPatientList = function () {
                 //获取跟医生的会话还保存的用户列表
-                GetCurrentUserConsultListInfo.save({csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
+                GetCurrentUserConsultListInfo.save({userType:$scope.userType,csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
                     if(data.alreadyJoinPatientConversation!=""&&data.alreadyJoinPatientConversation!=undefined){
                         $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                         $.each($scope.alreadyJoinPatientConversation,function(index,value){
@@ -1468,6 +1474,7 @@ angular.module('controllers', ['luegg.directives'])
                         'messageNotSee':true,
                         'isOnline':true,
                         'dateTime':conversationData.dateTime,
+                        'notifyType':conversationData.notifyType,
                         'patientName':conversationData.senderName,
                         'consultValue':[]
                     };
@@ -1480,6 +1487,21 @@ angular.module('controllers', ['luegg.directives'])
                         angular.copy(currentConsultValue.senderName));
                     getIframeSrc();
                 }
+            };
+            //启动一个监控消息状态的定时器
+            var setIntervalTimers = function(){
+                $.each($scope.alreadyJoinPatientConversation,function(index,value){
+                    console.log(index);
+                    var date = new Date().getTime();
+                   var flag = moment().subtract(5, 'minute').isAfter(value.dateTime);
+                    if(value.notifyType == 1002 && flag ){
+                        value.notifyType = 1003;
+                        console.log('notifyType',value.notifyType);
+                    }
+                });
+            };
+            var heartBeatCheckPay = function(){
+                $scope.heartBeatPay = setInterval(setIntervalTimers,6000);
             };
             //病人会话的内容的发送
             var updateAlreadyJoinPatientConversationFromPatient = function(conversationData){
@@ -1511,6 +1533,7 @@ angular.module('controllers', ['luegg.directives'])
                         'dateTime':conversationData.dateTime,
                         'messageNotSee':true,
                         'number':1,//显示消息数量
+                        'notifyType':conversationData.notifyType,
                         'patientName':conversationData.senderName,
                         'consultValue':[]
                     };
@@ -1520,6 +1543,8 @@ angular.module('controllers', ['luegg.directives'])
 
                 if(conversationData.senderId==$scope.currentUserConversation.patientId){
                     $scope.currentUserConversation.messageNotSee = false;
+                    if($scope.currentUserConversation.createTime==null)$scope.currentUserConversation.createTime=conversationData.dateTime;
+
                 }
             };
             //医生会话的内容的发送
@@ -1611,6 +1636,31 @@ angular.module('controllers', ['luegg.directives'])
                 else if(notifyData.notifyType=="3001"){
                     getFindTransferSpecialist();
                 }
+                // 只咨询客服
+                else if(notifyData.notifyType=="1001"){
+                    $.each($scope.alreadyJoinPatientConversation, function (index, value) {
+                        if (value.sessionId == notifyData.sessionId) {
+                            value.consultValue.notifyType = 1001;
+                            value.notifyType = 1001;
+                        }
+                    });
+                }
+                /*//需要付款用户
+                else if(notifyData.notifyType=="1002"){
+                    $.each($scope.alreadyJoinPatientConversation, function (index, value) {
+                        if (value.patientId == notifyData.session.userId) {
+                            value.consultValue.push(notifyData);
+                        }
+                    });
+                }
+                //超时的用户
+                else if(notifyData.notifyType=="1003"){
+                    $.each($scope.alreadyJoinPatientConversation, function (index, value) {
+                        if (value.patientId == notifyData.session.userId) {
+                            value.consultValue.push(notifyData);
+                        }
+                    });
+                }*/
                 else if(notifyData.notifyType=="0015"){
                     //收到服务器发送过来的心跳消息
                     var heartBeatServerMessage = {

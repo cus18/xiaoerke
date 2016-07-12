@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -383,7 +384,6 @@ public class AccountServiceImpl implements AccountService {
         String openId = WechatUtil.getOpenId(session,request);
         //获取需要支付的金额  单位(分)
         String order_price = request.getAttribute("payPrice")!=null?String.valueOf(((Float)request.getAttribute("payPrice")).intValue()*100):request.getParameter("payPrice");
-
         //生成的商户订单号
         String out_trade_no = IdGen.uuid();//Sha1Util.getNonceStr();
         String noncestr = IdGen.uuid();//Sha1Util.getNonceStr();//生成随机字符串
@@ -391,7 +391,11 @@ public class AccountServiceImpl implements AccountService {
         parameters.put("appid", ConstantUtil.APP_ID);//微信服务号的appid
         parameters.put("mch_id", ConstantUtil.PARTNER);//商户号
         parameters.put("nonce_str",noncestr);//随机字符串
-        parameters.put("body", "会员服务费");//描述
+        if(serviceType.equals("lovePlanService")){
+            parameters.put("body", "爱心捐款");//描述
+        }else {
+            parameters.put("body", "会员服务费");//描述
+        }
         parameters.put("out_trade_no", out_trade_no);//商户订单号
         parameters.put("total_fee", order_price);//金额
         parameters.put("spbill_create_ip",request.getRemoteAddr());//终端ip
@@ -409,7 +413,7 @@ public class AccountServiceImpl implements AccountService {
         }else if(serviceType.equals("lovePlanService")){
             parameters.put("notify_url", ConstantUtil.NOTIFY_LOVEPLAN_URL);//通知地址
         }if(serviceType.equals("doctorConsultPay")){
-            parameters.put("notify_url", ConstantUtil.NOTIFY_LOVEPLAN_URL);//通知地址
+            parameters.put("notify_url", ConstantUtil.NOTIFY_DOCTORCONSULTPAY_URL);//通知地址
         }
         parameters.put("trade_type", "JSAPI");//交易类型
         parameters.put("openid", openId);//用户标示
@@ -433,7 +437,7 @@ public class AccountServiceImpl implements AccountService {
         String orderPrice =request.getAttribute("payPrice")!=null?String.valueOf(((Float)request.getAttribute("payPrice")).
                 intValue()*100):request.getParameter("payPrice");
         String outTradeNo = PrepayInfo.get("out_trade_no");
-        String openId = WechatUtil.getOpenId(session,request);
+        String openId = WechatUtil.getOpenId(session, request);
         try {
             Map<String, Object> map = XMLUtil.doXMLParse(PrepayInfo.get("result"));
             if (!"FAIL".equals(map.get("return_code"))){
@@ -466,6 +470,7 @@ public class AccountServiceImpl implements AccountService {
                 payRecord.setPayDate(new Date());
                 payRecord.setCreatedBy(user.getId());
                 payRecord.setFeeType(PrepayInfo.get("feeType"));
+                payRecord.setLeaveNote((String) request.getAttribute("leaveNote"));
                 System.out.println("insert:"+PrepayInfo.get("feeType"));
 
                 LogUtils.saveLog(Servlets.getRequest(),"00000037","用户发起微信支付:" + outTradeNo);//用户发起微信支付

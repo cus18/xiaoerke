@@ -45,7 +45,7 @@ require.config({
             exports: 'angular-sanitize'
         },
         'ocLazyLoad': ['angular'],
-        'appPatientConsult':['ocLazyLoad'],
+        'appPatientConsult':['ocLazyLoad']
     }
 });
 

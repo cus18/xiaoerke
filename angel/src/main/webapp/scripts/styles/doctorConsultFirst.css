@@ -20,9 +20,10 @@ div#ddjr {border-right: 1px solid #fff;}
 .refloat {border: 1px solid #666;border-radius: 10px;background-color: #fff;position: absolute;width: 320px;padding: 10px;}
 /*聊天对话框的图片*/
 .consultNowList{height: 40px;cursor: pointer;font: 12px/40px 'Microsoft Yahei';overflow: hidden;position: relative;}
-.consultNowList div {float: left;padding: 0 6px 0 0;}
-.consultNowList div:nth-child(1) {width: 50px;overflow:hidden;text-overflow:ellipsis;margin-left: 10px;}
-.consultNowList span{border-radius: 10px;background-color: red;color: #fff;padding: 0px 4px;}
+.consultNowList div {float: left;padding: 0 6px 0 0;text-align: center;}
+.consultNowList div:nth-child(1) {padding: 12px 0 12px 3px;width: 16px;}
+.consultNowList div:nth-child(2) {width: 50px;overflow:hidden;text-overflow:ellipsis;margin-left: 10px;}
+.consultNowList span{border-radius: 10px;background-color: red;color: #fff;padding: 0 4px;}
 [scroll-glue-bottom],{height: 340px;overflow-y: scroll;/*border: 1px solid gray;*/}
 .close {float: right;cursor: pointer;}
 /* 等待接入 */
@@ -43,14 +44,16 @@ div#ddjr {border-right: 1px solid #fff;}
 .jrhhpm {height: auto;position: absolute;top: 101px;left: 176px;background-color: #fff;box-shadow: 1px 1px 1px 1px #aaa;overflow: hidden;}
 .jrhhpm-top {font: 12px/40px 'Microsoft Yahei';padding: 0 10px;}
 .jrhhpm-top a {display: inline-block;float: right;color:#08b7c2;}
-.jrhhpm-tb {margin:0 0 10px 0;background: #aaa;text-align: center;font: 12px/25px 'Microsoft Yahei';}
-.jrhhpm-tb th {margin: 10px;color:#fff;}
-.jrhhpm tr{text-align: center;}
-.jrhhpm tr td {display: inline-block;font: 12px/30px 'Microsoft Yahei';text-align: center;padding: 0 5px;}
-.jrhhpm tr:nth-child(1) td:nth-child(1){color:#fe717b;}
-.jrhhpm tr:nth-child(2) td:nth-child(1){color:#fe717b;padding: 0 20px;}
-.jrhhpm tr:nth-child(3) td:nth-child(1){color:#fe717b;}
-.getdata {max-height: 180px;overflow: auto;}
+.jrhhpm-tb {background: #aaa;font: 12px/25px 'Microsoft Yahei';}
+.jrhhpm th{
+    width: 60px;
+    display: inline-block;
+    overflow: hidden;
+}
+.jrhhpm-tb th:nth-child(4){
+    width: 80px;
+}
+
 table{border-collapse:collapse;}
 table,td,th{border:none;font-weight:300;font-size:12px;}
 /* 系统设置 */
