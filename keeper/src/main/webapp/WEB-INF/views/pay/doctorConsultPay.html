@@ -6,7 +6,7 @@
 <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
 <meta content="yes" name="apple-mobile-web-app-capable">
 <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
-<title>宝护伞</title>
+<title>咨询医生</title>
 <script src="js/libs/jquery-2.1.3.min.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script src="js/pay/doctorConsultPay.js"></script>
@@ -16,7 +16,7 @@
 <body onload="doRefresh()">
 <div class="doctorConsultPay bg1" >
     <div class="intro">
-        <img class="my-img1 line2" width="100%" height="280px" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2FconsultPay%2Fa_02.png">
+        <img class="my-img1 line2" width="100%" height="270px" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2FconsultPay%2Fa_02.png">
         <div class="poImg">
             <img class="my-img1 line2" width="100%" height="auto" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2FconsultPay%2Fbb_03.png">
             <div class="money">￥8</div>
@@ -31,10 +31,7 @@
         <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2FconsultPay%2Fd_05.png" alt="right"/>
         <div>未来<span>24小时</span>享受医生秒回服务</div>
     </div>
-    <div onclick="wechatPay()" id="payButton"  class="button" >点我支付（￥<a id="money"></a>元）</div>
-    <div class="bottomImg">
-        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2FconsultPay%2Fg_02.png" alt=""/>
-    </div>
+    <div onclick="wechatPay()" id="payButton"  class="button" ><a class="change">点我支付（￥<span id="money"></span>元）</a></div>
 </div>
 </body>
 </html>

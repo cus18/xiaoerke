@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.math.BigDecimal;
+import java.net.URLDecoder;
 import java.util.*;
 
 /**
@@ -461,6 +461,8 @@ public class AccountServiceImpl implements AccountService {
                 }else{
                     payRecord.setUserId(userId);
                 }
+
+                LogUtils.saveLog(Servlets.getRequest(),"00000037","用户发起微信支付:" + outTradeNo);//用户发起微信支付
                 payRecord.setId(outTradeNo);
                 payRecord.setOpenId(openId);
                 payRecord.setOrderId(patientRegisterId);
@@ -470,10 +472,9 @@ public class AccountServiceImpl implements AccountService {
                 payRecord.setPayDate(new Date());
                 payRecord.setCreatedBy(user.getId());
                 payRecord.setFeeType(PrepayInfo.get("feeType"));
-                payRecord.setLeaveNote((String) request.getAttribute("leaveNote"));
-                System.out.println("insert:"+PrepayInfo.get("feeType"));
+                payRecord.setLeaveNote(URLDecoder.decode(request.getParameter("leaveNote"), "UTF-8"));
+                System.out.println("insert:" + PrepayInfo.get("feeType"));
 
-                LogUtils.saveLog(Servlets.getRequest(),"00000037","用户发起微信支付:" + outTradeNo);//用户发起微信支付
                 payRecord.setDoctorId(doctorId);
                 payRecordDao.insertSelective(payRecord);
 

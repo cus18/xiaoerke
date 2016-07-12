@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
@@ -214,11 +213,6 @@ public class AccountUserController {
 	public
 	@ResponseBody
 	String lovePlanPay(HttpServletRequest request,HttpSession session) throws Exception {
-		String leaveNote = URLDecoder.decode(request.getParameter("leaveNote"), "UTF-8");
-//		if(leaveNote != null) {
-//			leaveNote = new String(leaveNote.getBytes("ISO-8859-1"), "utf-8");
-//		}
-
 		Integer donationType = null;
 		if(StringUtils.isNotNull(request.getParameter("donationType"))){
 			donationType = Integer.valueOf(request.getParameter("donationType"));
@@ -227,7 +221,6 @@ public class AccountUserController {
 		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 		//获取统一支付接口参数
 		request.setAttribute("feeType", "lovePlan");
-		request.setAttribute("leaveNote", leaveNote);
 		request.setAttribute("donationType", donationType);
 		Map prepayInfo = accountService.getPrepayInfo(request, session, "lovePlanService");
 		prepayInfo.put("feeType", "lovePlan");
