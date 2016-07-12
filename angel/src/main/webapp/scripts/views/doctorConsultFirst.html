@@ -225,8 +225,8 @@
             <textarea type="text" name="messageData" id="patientIdData" class="textarea" style="display:none;">{{currentUserConversation.patientId}}</textarea>
             <textarea type="text" name="messageData" id="doctorIdData" class="textarea" style="display:none;">{{doctorId}}</textarea>
             <textarea type="text" name="messageData" id="sourceData" class="textarea" style="display:none;">{{currentUserConversation.source}}</textarea>
-            <!--<div class="advisory-content" ng-show='showFlag.advisoryContent'>
-                &lt;!&ndash;用户信息&ndash;&gt;
+            <div class="advisory-content" ng-show='showFlag.advisoryContent'>
+                <!--用户信息-->
                 <div class="module">
                     <div class="title">
                         <h3>用户信息<input type="submit" class="more" value="{{userTableMore}}" ng-click="tapUserTable('userTable')"/> <span>(VIP)</span>：</h3>
@@ -256,7 +256,7 @@
                         </tr>
                     </table>
                 </div>
-                &lt;!&ndash;近期就诊记录&ndash;&gt;
+                <!--近期就诊记录-->
                 <div class="module">
                     <div class="title">
                         <h3>近期就诊记录<input type="submit" class="more" value="{{recentTableMore}}" ng-click="tapRecentTable('recentTable')"/></h3>
@@ -272,7 +272,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <span>生日：</span><input type="text"/>
+                                <span>生日：</span><input type="text"/><span>{{babyAge}}</span>
                             </td>
                             <td>
                                 <span>科室：</span><input type="text"/>
@@ -301,7 +301,7 @@
                         </tr>
                     </table>
                 </div>
-                &lt;!&ndash;添加咨询记录&ndash;&gt;
+                <!--添加咨询记录-->
                 <div class="module" >
                     <div class="title">
                         <h3>添加咨询记录<input type="submit" class="more" value="{{addConsultTableMore}}" ng-click="tapAddConsultTable('addConsultTable')"/> </h3>
@@ -349,7 +349,7 @@
                         </tr>
                     </table>
                 </div>
-                &lt;!&ndash;历史咨询档案&ndash;&gt;
+                <!--历史咨询档案-->
                 <div class="module">
                     <div class="title">
                         <h3 >历史咨询档案<input type="submit" class="more" value="{{historyTableMore}}" ng-click="tapHistoryTable('historyTable')"/></h3>
@@ -359,7 +359,7 @@
                             <td>
                                 <dl ng-repeat="item in historyConsult">
                                     <dt>
-                                        客服：<input type="text" value="{{item.customerId}}"/>
+                                        客服：<input type="text" value="{{item.customerId}}" style="border: none;"/>
                                         <a class="fr">{{item.create_date|date:"yyyy-MM-dd"}}</a>
                                     </dt>
                                     <dd>
@@ -376,7 +376,7 @@
                         </tr>
                     </table>
                 </div>
-                &lt;!&ndash;<div>
+                <!--<div>
                        <span style="">科室/类别：</span><input type="text" id="addSections"/>
                        <br/>
                        <center>
@@ -391,8 +391,8 @@
                            <br/><br/><br/><br/>
                            <input type="submit" value="关闭"/>
                        </center>
-                   </div>&ndash;&gt;
-            </div>-->
+                   </div>-->
+            </div>
         </div>
         <div class="msg-m h30" ng-if="chooseAlreadyJoinConsultPatientId!=''">
             <div class="headportrait">
@@ -518,10 +518,10 @@
                 <th>会话（人次）</th>
             </tr>
             <tr ng-repeat="item in info.rankListValue">
-                <td>{{$index+1}}</td>
-                <td>{{item.doctorEmail}}</td>
-                <td>{{item.doctorName}}</td>
-                <td>{{item.consultNum}}</td>
+                <th>{{$index+1}}</th>
+                <th>{{item.doctorEmail}}</th>
+                <th>{{item.doctorName}}</th>
+                <th>{{item.consultNum}}</th>
             </tr>
         </table>
     </div>

@@ -88,8 +88,5 @@ angular.module('controllers', ['ionic']).controller('lovePlanPaySuccessCtrl', [
                 }
             });
         };
-        $scope.$on('$ionicView.enter', function(){
-
-        })
     }]);
 

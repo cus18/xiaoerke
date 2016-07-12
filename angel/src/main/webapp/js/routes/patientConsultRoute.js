@@ -48,6 +48,7 @@ define(['appPatientConsult'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientConsultUmbrellaCtrl',
                                     ['js/controllers/patientConsultUmbrellaCtrl.js',
                                         'js/libs/scrollglue.js','js/libs/moment.min.js',
+                                        'js/libs/scrollglue.js','js/libs/moment.min.js',
                                         'js/styles/patientConsultUmbrella.css'],
                                     'js/views/patientConsultUmbrella.html?ver='+patientConsultVersion);
                             }

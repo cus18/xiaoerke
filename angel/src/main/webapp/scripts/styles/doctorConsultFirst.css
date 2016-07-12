@@ -23,7 +23,7 @@ div#ddjr {border-right: 1px solid #fff;}
 .consultNowList div {float: left;padding: 0 6px 0 0;text-align: center;}
 .consultNowList div:nth-child(1) {padding: 12px 0 12px 3px;width: 16px;}
 .consultNowList div:nth-child(2) {width: 50px;overflow:hidden;text-overflow:ellipsis;margin-left: 10px;}
-.consultNowList span{border-radius: 10px;background-color: red;color: #fff;padding: 0px 4px;}
+.consultNowList span{border-radius: 10px;background-color: red;color: #fff;padding: 0 4px;}
 [scroll-glue-bottom],{height: 340px;overflow-y: scroll;/*border: 1px solid gray;*/}
 .close {float: right;cursor: pointer;}
 /* 等待接入 */

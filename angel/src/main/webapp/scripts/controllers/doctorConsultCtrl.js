@@ -857,7 +857,6 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.chooseAlreadyJoinConsultPatientName = patientName;
                 $scope.chooseAlreadyJoinConsultPatientsessionId = sessionId;
                 GetUserSessionTimesByUserId.get({userId:patientId},function(data){
-                    console.log(data);
                     $scope.chooseAlreadyJoinConsultPatientSessionTimes ='是'+ data.userSessionTimes + '次接入';
                 });
                 getIframeSrc();
@@ -967,7 +966,7 @@ angular.module('controllers', ['luegg.directives'])
             $scope.tapMyReplyContent = function (parentIndex) {
                 $scope.showFlag.myReplyList = true;
                 $scope.showFlag.publicReplyList = false;
-                $scope.showFlag.diagnosisReplyList = false
+                $scope.showFlag.diagnosisReplyList = false;
                 if($scope.myReplyIndex==parentIndex){
                     $scope.myReplyIndex = -1;
                     $scope.myReplySecondIndex = -1;
