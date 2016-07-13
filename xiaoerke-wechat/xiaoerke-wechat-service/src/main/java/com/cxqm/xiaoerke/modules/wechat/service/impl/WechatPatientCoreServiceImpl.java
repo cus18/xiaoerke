@@ -426,8 +426,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			}else{
 				if("success".equals(list1.get(0).get("pay_result"))){
 					sendsucmes = true;
-					Runnable thread = new addUserType(toOpenId);
-					threadExecutor.execute(thread);
 				}
 			}
 			System.out.println(sendsucmes+"sendsucmes=============sendsucmes============================");
@@ -446,6 +444,21 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
 				article.setUrl("http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000000/a");
 				articleList.add(article);
+			}
+		}
+
+		String toOpenId = xmlEntity.getFromUserName();//扫码者openid
+		Map<String, Object> param1 = new HashMap<String, Object>();
+		param1.put("openid",toOpenId);
+		List<Map<String,Object>> list1 = babyUmbrellaInfoService.getBabyUmbrellaInfo(param1);
+
+		if(list1.size()==0){//用户第一次加入保护伞
+			Runnable thread = new sendUBWechatMessage(toOpenId,EventKey);
+			threadExecutor.execute(thread);
+		}else{
+			if("success".equals(list1.get(0).get("pay_result"))){
+				Runnable thread = new addUserType(toOpenId);
+				threadExecutor.execute(thread);
 			}
 		}
 
