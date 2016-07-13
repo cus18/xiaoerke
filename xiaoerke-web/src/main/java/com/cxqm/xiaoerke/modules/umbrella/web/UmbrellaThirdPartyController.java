@@ -4,6 +4,7 @@ package com.cxqm.xiaoerke.modules.umbrella.web;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.modules.alipay.service.AlipayService;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
@@ -59,12 +60,12 @@ public class UmbrellaThirdPartyController  {
     @Autowired
     private HealthRecordsService healthRecordsService;
 
-    //@Autowired
-    //private AlipayService alipayService;
+    @Autowired
+    private AlipayService alipayService;
 
     /**
      *获取保护伞首页信息-已有多少人加入互助计划
-     */
+    */
     @RequestMapping(value = "/firstPageMutualHelpCount", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody Map<String, Object> firstPageData() {
@@ -222,19 +223,40 @@ public class UmbrellaThirdPartyController  {
 
     /**
      * 非微信平台(第三方)支付宝支付
+     * @author guozengguang
      */
     @RequestMapping(value = "/alipayment", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object>  alipayment(@RequestBody Map<String, Object> params) {
-        //DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
-        //String totleFee = params.get("totleFee").toString();
-        //String body = params.get("body").toString();
-        //String describe = params.get("describe").toString();
-        //String showUrl = params.get("showUrl").toString();
-        //String result = alipayService.alipayment(totleFee, body, describe, showUrl);
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+        String totleFee = params.get("totleFee").toString();
+        String body = params.get("body").toString();
+        String describe = params.get("describe").toString();
+        String showUrl = params.get("showUrl").toString();
+        String result = alipayService.alipayment(totleFee, body, describe, showUrl);
         Map<String,Object> resultMap = new HashMap<String, Object>();
-        //resultMap.put("result",result);
+        resultMap.put("result",result);
+        return resultMap;
+    }
+
+    /**
+     * 根据宝护伞id更新支付状态pay_result
+     * 说明:只有支付成功时才调用该接口,保存信息的时候默认该状态为fail;
+     * @author guozengguang
+     */
+    @RequestMapping(value = "/updateBabyUmbrellaInfoById", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object>  updateBabyUmbrellaInfoById(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+        String umbrellaid = params.get("umbrellaid").toString();
+        BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
+        babyUmbrellaInfo.setId(Integer.valueOf(umbrellaid));
+        babyUmbrellaInfo.setPayResult("success");
+        int result = babyUmbrellaInfoSerivce.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("result",result);
         return resultMap;
     }
 
