@@ -243,7 +243,7 @@ public class UmbrellaThirdPartyController  {
     /**
      * 根据宝护伞id更新支付状态pay_result
      * 说明:只有支付成功时才调用该接口,保存信息的时候默认该状态为fail;
-     * @author guozengguang
+     * @author guozengguang  
      */
     @RequestMapping(value = "/updateBabyUmbrellaInfoById", method = {RequestMethod.POST, RequestMethod.GET})
     public
