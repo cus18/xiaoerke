@@ -26,6 +26,23 @@ var skip=function(item){
 //var chargePrice,patient_register_service_id,needPayMoney;
 //页面初始化执行,用户初始化页面参数信息以及微信的支付接口
 var doRefresh = function(){
+
+    $.ajax({
+        url:"umbrella/getOpenid",// 跳转到 action
+        async:true,
+        type:'post',
+        cache:false,
+        dataType:'json',
+        success:function(data) {
+            if(data.openid=="none"){
+                window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=32";
+            }
+        },
+        error : function() {
+        }
+    });
+
+
     var timestamp;//时间戳
     var nonceStr;//随机字符串
     var signature;//得到的签名
@@ -45,7 +62,7 @@ var doRefresh = function(){
                             appid = data.appid;//appid
                             //微信配置
                             wx.config({
-                                debug: true,
+                                debug: false,
                                 appId: appid,
                                 timestamp:timestamp,
                                 nonceStr: nonceStr,
@@ -106,7 +123,7 @@ function wechatPay() {
                         paySign: obj.paySign,  // 支付签名
                         success: function (res) {
                             if (res.errMsg == "chooseWXPay:ok") {
-                                window.location.href="http://s175.baodf.com/market/market#/lovePlanPaySuccess";
+                                window.location.href="http://s165.baodf.com/wisdom/lovePlan#/lovePlanPaySuccess";
                             } else {
                                 alert("支付失败,请重新支付")
                             }

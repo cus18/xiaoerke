@@ -28,6 +28,7 @@ import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatPatientCoreService;
 import com.cxqm.xiaoerke.modules.wechat.service.util.MessageUtil;
 
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -39,6 +40,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -276,8 +278,12 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			textMessage.setContent("尊敬的诺安康VIP客户，您好！欢迎加入宝大夫，让您从此育儿不用愁！\n\n【咨询大夫】直接咨询北京三甲医院儿科专家，一分钟内极速回复！\n\n【妈妈活动】添加宝大夫客服微信：bdfdxb，加入宝大夫家长群，与众多宝爸宝妈一起交流分享，参与更多好玩的活动！\n\n如需人工协助，请您拨打：400-623-7120。\n");
 			return MessageUtil.textMessageToXml(textMessage);
 
-		}else if(EventKey.indexOf("MKBJQD001")>-1&&xmlEntity.getEvent().equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)){
-
+		}else if((EventKey.indexOf("MKBJQD001")>-1||EventKey.indexOf("MKBJQD003")>-1||EventKey.indexOf("MKBJQD005")>-1)&&xmlEntity.getEvent().equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)){
+			article.setTitle("");
+			article.setDescription("");
+			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/baobaojiankang.jpg");
+			article.setUrl("http://viewer.maka.im/k/QKSSK4R4");
+			articleList.add(article);
 		}else
 		if(EventKey.indexOf("doc")>-1)
 		{
@@ -428,8 +434,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			}
 			System.out.println(sendsucmes+"sendsucmes=============sendsucmes============================");
 			if(sendsucmes){
-				article.setTitle("宝大夫送你一份见面礼");
-				article.setDescription("恭喜您已成功领取专属于宝宝的20万高额保障金");
+				article.setTitle("恭喜您");
+				article.setDescription("您已成功领到20万保障，分享1个好友，提升2万保障，最高可享受40万保障。\n\n点击进入，立即分享！");
 				article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
 				article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31");
 				articleList.add(article);
@@ -442,6 +448,21 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
 				article.setUrl("http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000000/a");
 				articleList.add(article);
+			}
+		}
+
+		String toOpenId = xmlEntity.getFromUserName();//扫码者openid
+		Map<String, Object> param1 = new HashMap<String, Object>();
+		param1.put("openid",toOpenId);
+		List<Map<String,Object>> list1 = babyUmbrellaInfoService.getBabyUmbrellaInfo(param1);
+
+		if(list1.size()==0){//用户第一次加入保护伞
+			Runnable thread = new sendUBWechatMessage(toOpenId,EventKey);
+			threadExecutor.execute(thread);
+		}else{
+			if("success".equals(list1.get(0).get("pay_result"))){
+				Runnable thread = new addUserType(toOpenId);
+				threadExecutor.execute(thread);
 			}
 		}
 
@@ -521,6 +542,92 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, fromOpenId, templateId);
 		}
 
+	}
+
+
+	//为保护伞用户,更改用户标签,匹配个性化菜单。
+
+	public class addUserType extends Thread {
+		private String toOpenId;
+
+		public addUserType(String toOpenId) {
+			this.toOpenId = toOpenId;
+		}
+
+		@Override
+		public void run() {
+			addUserType(toOpenId);
+		}
+	}
+
+	public String addUserType(String id) {
+		Map<String,Object> parameter = systemService.getWechatParameter();
+		String token = (String)parameter.get("token");
+		String url= "https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging?access_token="+token;
+		String jsonData="{\"openid_list\":[\""+id+"\"],\"tagid\" : 105}";
+		String reJson=this.post(url, jsonData,"POST");
+		System.out.println(reJson);
+		JSONObject jb=JSONObject.fromObject(reJson);
+		String errmsg=jb.getString("errmsg");
+		if(errmsg.equals("ok")){
+			return "ok";
+		}else {
+			return errmsg;
+		}
+	}
+
+
+	/**
+	 * 发送HttpPost请求
+	 *
+	 * @param strURL
+	 *            服务地址
+	 * @param params
+	 *            json字符串,例如: "{ \"id\":\"12345\" }" ;其中属性名必须带双引号<br/>
+	 *            type (请求方式：POST,GET)
+	 * @return 成功:返回json字符串<br/>
+	 */
+	public String post(String strURL, String params,String type) {
+		System.out.println(strURL);
+		System.out.println(params);
+		try {
+			URL url = new URL(strURL);// 创建连接
+			HttpURLConnection connection = (HttpURLConnection) url
+					.openConnection();
+			connection.setDoOutput(true);
+			connection.setDoInput(true);
+			connection.setUseCaches(false);
+			connection.setInstanceFollowRedirects(true);
+			connection.setRequestMethod(type); // 设置请求方式
+			connection.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式
+			connection.setRequestProperty("Content-Type", "application/json"); // 设置发送数据的格式
+			connection.connect();
+			OutputStreamWriter out = new OutputStreamWriter(
+					connection.getOutputStream(), "UTF-8"); // utf-8编码
+			out.append(params);
+			out.flush();
+			out.close();
+			// 读取响应
+			int length = (int) connection.getContentLength();// 获取长度
+			InputStream is = connection.getInputStream();
+			if (length != -1) {
+				byte[] data = new byte[length];
+				byte[] temp = new byte[512];
+				int readLen = 0;
+				int destPos = 0;
+				while ((readLen = is.read(temp)) > 0) {
+					System.arraycopy(temp, 0, data, destPos, readLen);
+					destPos += readLen;
+				}
+				String result = new String(data, "UTF-8"); // utf-8编码
+				System.out.println(result);
+				return result;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null; // 自定义错误信息
 	}
 
 	private String processSubscribeEvent(ReceiveXmlEntity xmlEntity,HttpServletRequest request,HttpServletResponse response)
@@ -604,11 +711,11 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		session.setAttribute("openId", xmlEntity.getFromUserName());
 		LogUtils.saveLog(request, "00000001");//注：参数含义请参照sys_log_mapping表，如00000001表示“微信宝大夫用户版公众平台关注”
 		String EventKey = xmlEntity.getEventKey();
-		if(EventKey.indexOf("xuanjianghuodong_zhengyuqiao_saoma")<=-1&&EventKey.indexOf("baoxian_000001")<=-1)
+		if(EventKey.indexOf("xuanjianghuodong_zhengyuqiao_saoma")<=-1&&EventKey.indexOf("baoxian_000001")<=-1&&(EventKey.indexOf("MKBJQD001")<=-1&&EventKey.indexOf("MKBJQD003")<=-1&&EventKey.indexOf("MKBJQD005")<=-1))
 		{
 			List<Article> articleList = new ArrayList<Article>();
 			Article article = new Article();
-			article.setTitle("宝大夫送你一份见面礼");
+			article.setTitle("【会员福利】5元变成40万，快来点击！");
 			article.setDescription("");
 			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%AE%9D%E6%8A%A4%E4%BC%9Ebanner2%20-%20%E5%89%AF%E6%9C%AC%20%E6%8B%B7%E8%B4%9D.png");
 			article.setUrl("http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000001/a");
@@ -629,8 +736,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			articleList.add(article);
 
 			article = new Article();
-			article.setTitle("妈妈社群\n育儿交流找组织，客服微信：bdfdxb");
-			article.setDescription("添加宝大夫客服微信：bdfdxb，加入宝大夫家长群，与众多宝妈一起交流分享，参与更多好玩儿的活动");
+			article.setTitle("妈妈社群\n育儿交流找组织，客服微信：1220636435");
+			article.setDescription("添加宝大夫客服微信：1220636435，加入宝大夫家长群，与众多宝妈一起交流分享，参与更多好玩儿的活动");
 			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%A6%88%E5%A6%88%E6%B4%BB%E5%8A%A8.png");
 			article.setUrl("https://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236661&idx=3&sn=4c1fd3ee4eb99e6aca415f60dceb6834&scene=1&srcid=0616uPcrUKz7FVGgrmOcZqqq&from=singlemessage&isappinstalled=0&key=18e81ac7415f67c44d3973b3eb8e53f264f47c1109eceefa8d6be994349fa7f152bb8cfdfab15b36bd16a4400cd1bd87&ascene=0&uin=MzM2NjEyMzM1&devicetype=iMac+MacBookPro11%2C4+OSX+OSX+10.11.4+build(15E65)&version=11020201&pass_ticket=ZgGIH5%2B8%2FkhHiHeeRG9v6qbPZmK5qPlBL02k0Qo%2FHCK7eLMOZexAypBy0dzPjzaZ");
 			articleList.add(article);
