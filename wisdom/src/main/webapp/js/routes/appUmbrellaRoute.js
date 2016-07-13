@@ -105,6 +105,13 @@ define(['appUmbrella'], function(app){
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaLeadCtrl',
                                     ['js/controllers/umbrella/umbrellaLeadCtrl.js?ver='+umbrellaVersion,
+                                        'swipe/swipeJs/swiper.min.js',
+                                        'swipe/swipeJs/swiper.animate.min.js',
+                                        'swipe/swipeJs/swiperMain.js',
+                                        'swipe/css/swiper.min.css?ver='+umbrellaVersion,
+                                        'swipe/css/animate.min.css?ver='+umbrellaVersion,
+                                        'swipe/css/swiperIndex.css?ver='+umbrellaVersion,
+                                        'swipe/css/swiperUmbrella.css?ver='+umbrellaVersion,
                                         'styles/umbrella/umbrellaLead.less?ver='+umbrellaVersion],
                                     'js/views/umbrella/umbrellaLead.html?ver='+umbrellaVersion);
                             }
