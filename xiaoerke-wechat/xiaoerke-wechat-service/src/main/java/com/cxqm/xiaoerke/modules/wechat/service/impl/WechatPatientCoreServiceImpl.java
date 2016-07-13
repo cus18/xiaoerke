@@ -711,7 +711,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		session.setAttribute("openId", xmlEntity.getFromUserName());
 		LogUtils.saveLog(request, "00000001");//注：参数含义请参照sys_log_mapping表，如00000001表示“微信宝大夫用户版公众平台关注”
 		String EventKey = xmlEntity.getEventKey();
-		if(EventKey.indexOf("xuanjianghuodong_zhengyuqiao_saoma")<=-1&&EventKey.indexOf("baoxian_000001")<=-1)
+		if(EventKey.indexOf("xuanjianghuodong_zhengyuqiao_saoma")<=-1&&EventKey.indexOf("baoxian_000001")<=-1&&(EventKey.indexOf("MKBJQD001")<=-1&&EventKey.indexOf("MKBJQD003")<=-1&&EventKey.indexOf("MKBJQD005")<=-1))
 		{
 			List<Article> articleList = new ArrayList<Article>();
 			Article article = new Article();
