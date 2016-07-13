@@ -9,14 +9,14 @@
         <groupId>com.cxqm</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <name>xiaoerke-alipay-service</name>
-    <description>xiaoerke-alipay-service</description>
-    <artifactId>xiaoerke-alipay-service</artifactId>
+    <name>xiaoerke-alipay-api</name>
+    <description>xiaoerke-alipay-api</description>
+    <artifactId>xiaoerke-alipay-api</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.cxqm</groupId>
-            <artifactId>xiaoerke-alipay-api</artifactId>
+            <artifactId>xiaoerke-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
