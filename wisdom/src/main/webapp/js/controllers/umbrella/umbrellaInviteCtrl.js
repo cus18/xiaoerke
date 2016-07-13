@@ -31,7 +31,7 @@
             
             $scope.$on('$ionicView.enter', function(){
                 ifExistOrder.save(function (data) {
-                    if(data.result="1"){
+                    if(data.result=="1"){
                         window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa_"+$stateParams.id;
                     }
                     $scope.umbrellaMoney=data.umbrella.umbrella_money/10000;

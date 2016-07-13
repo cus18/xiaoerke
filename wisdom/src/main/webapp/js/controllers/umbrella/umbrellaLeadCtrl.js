@@ -5,14 +5,11 @@
         /*$scope.myActiveSlide =0;*/
 
         /*立即加入*/
-        $scope.goJoin=function(index){
-            recordLogs("BHS_H5_LJJR"+index);
+        $scope.goJoin=function(){
+            recordLogs("BHS_H5_LJJR_5");
             window.location.href="http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/" +
                 "author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=" +
                 "umbrellaa_"+ $stateParams.id;
-        };
-        $scope.slideHasChanged=function(index){
-            recordLogs("BHS_H5_"+index);
         };
 
         var recordLogs = function(val){
@@ -71,6 +68,7 @@
                 },
                 onSlideChangeEnd: function(swiper){
                     swiperAnimate(swiper);
+                    recordLogs("BHS_H5_LJJR_"+(mySwiper.activeIndex+1));
                     if(mySwiper.activeIndex==5){
                         arrObj.style.display="none";
                     }
@@ -107,7 +105,7 @@
                 },
 
             })
-
+            recordLogs("BHS_H5_LJJR_1");
             recordLogs("UmbrellaShareLeadPage_"+ $stateParams.id);
             var timestamp;//时间戳
             var nonceStr;//随机字符串
