@@ -1,11 +1,10 @@
 angular.module('controllers', ['ionic']).controller('umbrellaFillInfoCtrl', [
-    '$scope','$state','CheckPhone',
-    function ($scope,$state,CheckPhone) {
+    '$scope','$state','CheckPhone','SaveMessage',
+    function ($scope,$state,CheckPhone,SaveMessage) {
         $scope.title="宝护伞-宝大夫儿童家庭重疾互助计划";
-        $scope.sexItem = "boy";
-        $scope.parentItem = "mother";
+        $scope.sexItem = 1;//男孩
+        $scope.parentItem = 3;//母亲
         $scope.checkLock = true;
-        $scope.selectItem = "";
         $scope.info={};
         $scope.codeSecond="获取";
         $scope.babyInfoList={};
@@ -106,11 +105,11 @@ angular.module('controllers', ['ionic']).controller('umbrellaFillInfoCtrl', [
             if($scope.checkLock==true&&$scope.info.phoneNum!=""&&$scope.info.phoneNum!=undefined){
                 CheckPhone.save({"userPhone":$scope.info.phoneNum.toString()},function (data) {
                     console.log("data",data);
-                    if(data.result=="1") {//该用户没有购买过保护伞
+                    if(data.result=="0") {//该用户没有购买过保护伞
                         $scope.codeSecond = 60;
                         $scope.codeButton = true;
                         getCodeSecond();
-                    }else if(data.result=="0"){//该用户已经购买过保护伞，但是没有关注宝大夫
+                    }else if(data.result=="1"){//该用户已经购买过保护伞，但是没有关注宝大夫
                         $scope.pgLock = true;
                         $scope.pgbut = true;
                         $scope.pgcontent = "您已经加入保护伞";
@@ -208,10 +207,21 @@ angular.module('controllers', ['ionic']).controller('umbrellaFillInfoCtrl', [
         //激活保存宝宝信息
         $scope.immediateActive=function() {
             if($scope.info.babyName==""||$scope.info.babyName==undefined||$("#birthday").val()==""||$("#birthday").val()==undefined||
-                $scope.info.parentName==""||$scope.info.parentName==undefined||$scope.info.phoneNum==""||$scope.info.phoneNum==undefined){
+                $scope.info.parentName==""||$scope.info.parentName==undefined||$scope.info.phoneNum==""||$scope.info.phoneNum==undefined
+                ||$scope.info.code==""||$scope.info.code==undefined){
                 alert("信息不能为空！");
             }else{
-                $state.go("umbrellaPay");
+                SaveMessage.save({"phone":$scope.info.phoneNum,"code":$scope.info.code,"sex":$scope.sexItem,"birthDay":$("#birthday").val(),
+                                "name":$scope.info.babyName,"idCard":$scope.info.IdCard,"parentName":$scope.info.parentName,"parentType":$scope.parentItem},
+                                function (data) {
+                                    console.log("data",data);
+                                    if(data.result=="0"){
+                                        alert("验证码有误，请重新输入！");
+                                    }else if(data.status==1&&data.result=="1"){
+                                        $state.go("umbrellaPay");
+                                    }
+                                })
+
             }
         }
 
@@ -219,7 +229,6 @@ angular.module('controllers', ['ionic']).controller('umbrellaFillInfoCtrl', [
         $scope.backCheck = function () {
             $scope.checkLock = true;
             $scope.tipsText="";
-
         }
 
         var recordLogs = function(val){

@@ -1,14 +1,24 @@
 angular.module('controllers', ['ionic']).controller('umbrellaIndexCtrl', [
-    '$scope','$state','$stateParams','GetJoinNumber',
-    function ($scope,$state,$stateParams,GetJoinNumber) {
-
+    '$scope','$state','$stateParams','GetJoinNumber','GetUserQRCode',
+    function ($scope,$state,$stateParams,GetJoinNumber,GetUserQRCode) {
+        $scope.lgLock = false;
 
         $scope.$on('$ionicView.beforeEnter',function () {
             GetJoinNumber.get(function (data) {
                 console.log("data",data);
                 $scope.joinNumber = data.mutualHelpCount;
-            })
-        })
+            });
+        });
+        $scope.$on('$ionicView.enter',function () {
+            if(localStorage.getItem("flag")==null){
+                $("#NoShareDiv").show();
+                $("#shareDiv").hide();
+            }else if(localStorage.getItem("flag")==true){
+                $("#NoShareDiv").hide();
+                $("#shareDiv").show();
+            }
+        });
+
 
         //宝大夫儿童重疾互助计划公约  60种重大疾病名称及定义 15种轻症名称及定义 名词释义
         $scope.lookProtocol = function (index) {
@@ -55,4 +65,13 @@ angular.module('controllers', ['ionic']).controller('umbrellaIndexCtrl', [
             $state.go("umbrellaFillInfo");
         }
 
+        //查看我的保障
+        $scope.goBaoZhang = function () {
+            $scope.lgLock = true;
+        }
+
+        //取消
+        $scope.cancelProtocol = function () {
+            $scope.lgLock = false;
+        }
     }]);

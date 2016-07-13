@@ -14,8 +14,8 @@
                     <dd class="select">
                         <span class="key">性别：</span>
                         <div class="selectItem sex" >
-                            <img width="65" height="auto"  ng-click="selectSex('boy')"  ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{sexItem=='boy' ? 'member_boy2':'member_boy1'}}.png" >
-                            <img width="65" height="auto"  ng-click="selectSex('girl')" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{sexItem=='girl'? 'member_girl2':'member_girl1'}}.png" >
+                            <img width="65" height="auto"  ng-click="selectSex(1)"  ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{sexItem==1 ? 'member_boy2':'member_boy1'}}.png" >
+                            <img width="65" height="auto"  ng-click="selectSex(0)" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{sexItem==0? 'member_girl2':'member_girl1'}}.png" >
                         </div>
 
                     </dd>
@@ -36,8 +36,8 @@
                     <dd class="select">
                         <span class="key">您是宝宝的：</span>
                         <div class="selectItem parent" >
-                            <img width="65" height="auto"  ng-click="selectParent('mother')"  ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{parentItem=='mother'? 'member_mom2':'member_mom1'}}.png" >
-                            <img width="65" height="auto"  ng-click="selectParent('father')" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{parentItem=='father'? 'member_dad2':'member_dad1'}}.png" >
+                            <img width="65" height="auto"  ng-click="selectParent(3)"  ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{parentItem==3? 'member_mom2':'member_mom1'}}.png" >
+                            <img width="65" height="auto"  ng-click="selectParent(2)" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{parentItem==2? 'member_dad2':'member_dad1'}}.png" >
                         </div>
                     </dd>
                     <dd>
