@@ -434,8 +434,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			}
 			System.out.println(sendsucmes+"sendsucmes=============sendsucmes============================");
 			if(sendsucmes){
-				article.setTitle("宝大夫送你一份见面礼");
-				article.setDescription("恭喜您已成功领取专属于宝宝的20万高额保障金");
+				article.setTitle("恭喜您");
+				article.setDescription("您已成功领到20万保障，分享1个好友，提升2万保障，最高可享受40万保障。\n\n点击进入，立即分享！");
 				article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
 				article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31");
 				articleList.add(article);
@@ -715,7 +715,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		{
 			List<Article> articleList = new ArrayList<Article>();
 			Article article = new Article();
-			article.setTitle("宝大夫送你一份见面礼");
+			article.setTitle("【会员福利】5元变成40万，快来点击！");
 			article.setDescription("");
 			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%AE%9D%E6%8A%A4%E4%BC%9Ebanner2%20-%20%E5%89%AF%E6%9C%AC%20%E6%8B%B7%E8%B4%9D.png");
 			article.setUrl("http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000001/a");
