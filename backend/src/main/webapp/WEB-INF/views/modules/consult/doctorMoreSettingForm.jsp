@@ -99,7 +99,7 @@
 			$.ajax({
 	             type: "post",
 	             url: "${ctx}/consult/doctorInfoOper",
-	             data: {userId:"${user.id}",gender:$("#gender").val(),type:$("#type").val(),title:$("#title").val(),hospital:$("#hospital").val(),department:$("#department").val(),skill:$("#skill").val(),description:$("#description").val()},
+	             data: {userId:"${user.id}",name:"${user.name}",gender:$("#gender").val(),type:$("#type").val(),title:$("#title").val(),hospital:$("#hospital").val(),department:$("#department").val(),skill:$("#skill").val(),description:$("#description").val()},
 	             dataType: "json",
 	             success: function(data){
 	             	if("suc"==data.result){
@@ -136,7 +136,7 @@
 			$.ajax({
 				type: "post",
 				url: "${ctx}/consult/doctorInfoOper",
-				data: {userId:"${user.id}",grabSession:$('input:radio[name="grabSession"]:checked').val(),sendMessage:$('input:radio[name="sendMessage"]:checked').val(),receiveDifferentialNotification:$('input:radio[name="receiveDifferentialNotification"]:checked').val()},
+				data: {userId:"${user.id}",name:"${user.name}",grabSession:$('input:radio[name="grabSession"]:checked').val(),sendMessage:$('input:radio[name="sendMessage"]:checked').val(),receiveDifferentialNotification:$('input:radio[name="receiveDifferentialNotification"]:checked').val()},
 				dataType: "json",
 				success: function(data){
 					if("suc"==data.result){
