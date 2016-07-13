@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="sys_user_id" property="userId" jdbcType="VARCHAR" />
     <result column="gender" property="gender" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="hospital" property="hospital" jdbcType="VARCHAR" />
     <result column="department" property="department" jdbcType="VARCHAR" />
@@ -18,7 +19,7 @@
     <result column="type" property="type" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, sys_user_id, gender, title, hospital, department, skill, description, grab_session, send_message, receive_differential_notification,
+    id, sys_user_id, gender,name, title, hospital, department, skill, description, grab_session, send_message, receive_differential_notification,
     create_date, update_date,type
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -36,6 +37,9 @@
     <if test="gender != null and gender != ''" >
       and gender =  #{gender,jdbcType=VARCHAR}
     </if>
+    <if test="name != null and gender != ''" >
+      and name =  #{name,jdbcType=VARCHAR}
+    </if>
     <if test="userId != null and userId != ''" >
       and sys_user_id =  #{userId,jdbcType=VARCHAR}
     </if>
@@ -52,10 +56,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo" >
-    insert into consult_doctor_info (id, sys_user_id, gender, title, hospital, department, skill,
+    insert into consult_doctor_info (id, sys_user_id, gender,name, title, hospital, department, skill,
     description, grab_session, send_message, receive_differential_notification,
     create_date, update_date,type)
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR},
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},
       #{title,jdbcType=VARCHAR}, #{hospital,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR},
       #{skill,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{grabSession,jdbcType=VARCHAR},
       #{sendMessage,jdbcType=VARCHAR}, #{receiveDifferentialNotification,jdbcType=TIMESTAMP}, #{createDate,jdbcType=VARCHAR},
@@ -72,6 +76,9 @@
       </if>
       <if test="gender != null" >
         gender,
+      </if>
+      <if test="name != null" >
+        name,
       </if>
       <if test="title != null" >
         title,
@@ -117,6 +124,9 @@
       <if test="gender != null" >
         #{gender,jdbcType=VARCHAR},
       </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
       <if test="title != null" >
         #{title,jdbcType=VARCHAR},
       </if>
@@ -161,6 +171,9 @@
       <if test="gender != null" >
         gender = #{gender,jdbcType=VARCHAR},
       </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
       <if test="title != null" >
         title = #{title,jdbcType=VARCHAR},
       </if>
@@ -201,6 +214,7 @@
     update consult_doctor_info
     set sys_user_id = #{userId,jdbcType=VARCHAR},
       gender = #{gender,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
       hospital = #{hospital,jdbcType=VARCHAR},
       department = #{department,jdbcType=VARCHAR},
