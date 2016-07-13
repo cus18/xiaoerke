@@ -7,20 +7,20 @@ li{list-style:none}
 img{border:0;vertical-align:middle}
 table{border-collapse:collapse;border-spacing:0}
 p{word-wrap:break-word}
-.h100{height: 95%;}
+.h100{height: 100%;}
 a:focus,input:focus{-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-user-modify:read-write-plaintext-only;}
 .container-fluid{background-color: #fff;width: 100%;}
 .consultTitle{height: 44px;font: 16px/44px 'Microsoft Yahei';color:#fff;width: 100%;background-color: #1FC3C5;text-align: center;}
 .consultTitle span {display: inline-block;float: left;padding: 9px 10px;line-height: 24px;}
 .consultTitle span img{width: 25px;height: 25px;}
 .consultTitle span:nth-child(2){float: right;}
-.consultDisplay {height: 500px;background-color: #f9f9f9;border-bottom: 1px solid #ccc;overflow: auto;}
+.consultDisplay {background-color: #f9f9f9;border-bottom: 1px solid #ccc;overflow: auto;}
 .consultDisplay::-webkit-scrollbar {width: 0;height: 0;}
 .consultInputTop{height: 50px;}
 .consultInputTop img {width: 25px;height: 25px;}
 .consultInputTop div{float: left;padding: 8px 10px;line-height: 25px;}
 .consultInputTop .textInput img{width: 20px;height: 20px;margin-top: 2px;float: right;}
-.consultInputTop .textInput{border: 1px solid #ccc;border-radius: 5px;padding: 0 10px;margin: 8px 0;width: 262px;}
+.consultInputTop .textInput{border: 1px solid #ccc;border-radius: 5px;padding: 0 10px;margin: 8px 8px;width: 262px;}
 .consultInputTop .sendConsultContent {float: right;}
 .consultInputTop .sendConsultContent input{font: 13px/25px 'Microsoft Yahei';color:#fff;background-color: #1FC3C5;border: none;padding: 1px 8px;border-radius: 0 5px 5px 0;}
 .fileInputList img{width: 60px;height: 60px;margin: 0 30px;}
@@ -35,8 +35,8 @@ textarea {overflow:auto;word-break:break-all;width: 90%;height: 25px;line-height
 .doctorReplyContent div:nth-child(2){background-color: #fff;}
 .patientConsultContent div:nth-child(2){background-color: #1fc3c5;color:#fff;}
 /*小三角*/
-.patientConsultContent .message::after {content: '';width: 0;height: 0;border-width: 4px;border-style: solid;border-color: transparent;border-left-color: #1FC3C5;position: absolute;top: 8px;right: -8px;}
-.doctorReplyContent .message::after {content: '';width: 0;height: 0;border-width: 4px;border-style: solid;border-color: transparent;border-right-color: #fff;position: absolute;top: 8px;left: -8px;}
+.patientConsultContent .message::after {content: '';width: 0;height: 0;border: 4px solid transparent;border-left-color: #1FC3C5;position: absolute;top: 8px;right: -8px;}
+.doctorReplyContent .message::after {content: '';width: 0;height: 0;border: 4px solid transparent;border-right-color: #fff;position: absolute;top: 8px;left: -8px;}
 /*qq表情*/
 .comment{width:680px; margin:20px auto; position:relative; background:#fff; padding:20px 50px 50px; border:1px solid #DDD; border-radius:5px;}
 .comment h3{height:28px; line-height:28px}

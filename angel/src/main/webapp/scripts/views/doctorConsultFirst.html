@@ -272,7 +272,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <span>生日：</span><input type="text"/>
+                                <span>生日：</span><input type="text"/><span>{{babyAge}}</span>
                             </td>
                             <td>
                                 <span>科室：</span><input type="text"/>
@@ -359,7 +359,7 @@
                             <td>
                                 <dl ng-repeat="item in historyConsult">
                                     <dt>
-                                        客服：<input type="text" value="{{item.customerId}}"/>
+                                        客服：<input type="text" value="{{item.customerId}}" style="border: none;"/>
                                         <a class="fr">{{item.create_date|date:"yyyy-MM-dd"}}</a>
                                     </dt>
                                     <dd>
@@ -518,10 +518,10 @@
                 <th>会话（人次）</th>
             </tr>
             <tr ng-repeat="item in info.rankListValue">
-                <td>{{$index+1}}</td>
-                <td>{{item.doctorEmail}}</td>
-                <td>{{item.doctorName}}</td>
-                <td>{{item.consultNum}}</td>
+                <th>{{$index+1}}</th>
+                <th>{{item.doctorEmail}}</th>
+                <th>{{item.doctorName}}</th>
+                <th>{{item.consultNum}}</th>
             </tr>
         </table>
     </div>

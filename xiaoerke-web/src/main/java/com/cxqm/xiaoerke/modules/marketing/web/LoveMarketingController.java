@@ -64,9 +64,9 @@ public class LoveMarketingController {
 
     @RequestMapping(value="/visitPage",method = {RequestMethod.POST, RequestMethod.GET})
     public @ResponseBody Map<String , Object> visitPage(HttpSession session){
-        //        String openid=session.getAttribute("openId").toString();
-        String openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
-        session.setAttribute("openId","o3_NPwrrWyKRi8O_Hk8WrkOvvNOk");
+                String openid=session.getAttribute("openId").toString();
+//        String openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
+//        session.setAttribute("openId","o3_NPwrrWyKRi8O_Hk8WrkOvvNOk");
         Map<String , Object> m= loveMarketingService.getUserInfo(openid);
         if(m==null){
             m=new HashMap<String, Object>();

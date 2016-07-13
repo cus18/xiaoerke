@@ -1,5 +1,8 @@
 package com.cxqm.xiaoerke.modules.consult.service.impl;
 
+import com.cxqm.xiaoerke.common.config.Global;
+import com.cxqm.xiaoerke.common.utils.ConstantUtil;
+import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
@@ -10,11 +13,13 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultPayUserService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by wangbaowei on 16/6/27.
@@ -33,9 +38,6 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
     private PayRecordService payRecordService;
 
     @Autowired
-    private InsuranceRegisterServiceService insuraceregisterservice;
-
-    @Autowired
     private SessionRedisCache sessionRedisCache;
 
     private RedisTemplate<String, Object> redisTemplate = SpringContextHolder.getBean("redisTemplate");
@@ -44,23 +46,23 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
 
 
     @Override
-    public HashMap<String,Object> getneepPayConsultSession(Integer sessionid) {
-        HashMap<String,Object> sessionMap = (HashMap<String,Object>) redisTemplate.opsForHash().get(PAYINFO_CONSULTS_KEY, sessionid);
+    public  ConcurrentHashMap<String,Object> getneepPayConsultSession(String csuserId) {
+        ConcurrentHashMap<String,Object> sessionMap = ( ConcurrentHashMap<String,Object>) redisTemplate.opsForHash().get(PAYINFO_CONSULTS_KEY, csuserId);
         return sessionMap;
     }
 
     @Override
-    public void putneepPayConsultSession(Integer sessionid,
-                                         HashMap<String,Object> payInfo) {
-        if(null !=sessionid||null !=payInfo){
-            HashMap<String,Object> payConsult = getneepPayConsultSession(sessionid);
+    public void putneepPayConsultSession(String csuserId,
+                                         ConcurrentHashMap<String,Object> payInfo) {
+        if(null !=csuserId||null !=payInfo){
+            ConcurrentHashMap<String,Object> payConsult = getneepPayConsultSession(csuserId);
 
             System.out.println("通过Map.entrySet遍历key和value");
             if(null !=payConsult && payConsult.size()>0){
                 for (Map.Entry<String, Object> entry : payConsult.entrySet()) {
                     System.out.println("key= " + entry.getKey() + " and value= " + entry.getValue());
                     Date joinDate = (Date)entry.getValue();
-                    if(joinDate.getTime()+1000*60*5>new Date().getTime())
+                    if(joinDate.getTime()+1000*60*5<new Date().getTime())
                         payConsult.remove( entry.getKey());
                 }
             }
@@ -69,25 +71,45 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
                 payInfo.putAll(payConsult);
             }
             redisTemplate.opsForHash().put(PAYINFO_CONSULTS_KEY,
-                    sessionid, payInfo);
+                    csuserId, payInfo);
         }
+    }
+
+    @Override
+    public void removePayConsultSession(String openid,String csuserid) {
+        ConcurrentHashMap<String,Object> payMap = getneepPayConsultSession(csuserid);
+        if(null !=payMap && payMap.size()>0){
+            for (Map.Entry<String, Object> entry : payMap.entrySet()) {
+                if(openid.equals(entry.getKey()))
+                    payMap.remove( entry.getKey());
+            }
+        }
+        putneepPayConsultSession(csuserid,payMap);
     }
 
     @Override
     public boolean angelChargeCheck(String userId) {
         ConsultSession consultSession = new ConsultSession();
         consultSession.setUserId(userId);
-//       历史咨询次数三次及以上
+        //历史咨询次数三次及以上
         List<ConsultSession> consultSessions = consultSessionService.selectBySelective(consultSession);
         //判断是否为预防接种系列渠道
-        Integer insurace = consultPayUserDao.CheckInsuranceByOpenid(userId);
+        Integer insurance = consultPayUserDao.CheckInsuranceByOpenid(userId);
         //是否已经支付
-        PayRecord payRecord = payRecordService.findRecordByOpenid(userId,"consultOnline");
-
-        if(null!=consultSessions&&consultSessions.size()>3
-                ||insurace==0
-                ||(null == payRecord
-                ||(null !=payRecord && payRecord.getReceiveDate().getTime()+24*60*60*1000>new Date().getTime())))return true;
+        PayRecord payRecord = payRecordService.findRecordByOpenid(userId,"doctorConsultPay");
+        //判断时间条件
+        Date morningStartTime = DateUtils.StrToDate(Global.getConfig("consultMorningStartTime"),"yyyy-MM-dd HH:mm");
+        Date consultMorningEndTime = DateUtils.StrToDate(Global.getConfig("consultMorningEndTime"),"yyyy-MM-dd HH:mm");
+        Date consultAfternoonStartTime = DateUtils.StrToDate(Global.getConfig("consultAfternoonStartTime"),"yyyy-MM-dd HH:mm");
+        Date consultAfternoonEndTime = DateUtils.StrToDate(Global.getConfig("consultAfternoonEndTime"),"yyyy-MM-dd HH:mm");
+        Date present = new Date();
+        //判断日期条件是否满足要求
+        if((morningStartTime.getTime()<present.getTime() &&consultMorningEndTime.getTime()>present.getTime())
+                ||(consultAfternoonStartTime.getTime()<present.getTime()&&consultAfternoonEndTime.getTime()>present.getTime()))
+        if( (null!=consultSessions&&consultSessions.size()>2&&(null ==payRecord || payRecord.getReceiveDate().getTime()+24*60*60*1000<new Date().getTime()))
+                &&insurance == 0
+                )
+            return true;
         return false;
     }
 
@@ -112,20 +134,19 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
     public void sendMessageToConsult(String openid,int type) {
         Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
         String token = (String) userWechatParam.get("token");
-//        token = "Anpvh5m521VA-M5vTkANy0c7TN4VzBKUKHm9CkNkwW7yhMx0s8PkcUHwfSUKL4meLw5yi3SWD2f9jnSM2uq80Yt2njDOjZdfIujhUh5VUvYGtW0hwmE3ROHzDWA8UiuKFPAjABAYIT";
-        String st = "oa7t2wN2JGUP083zJgc6-orO6FwE";
+        String st = "";
         switch (type){
             case 1:
                 st = "咨询高峰期，医生姐姐忙前忙后帮了好多妈妈和宝宝。请她喝杯茶吧，她们也需要您关心。" +
-                        "\n》<a href='http://s201.xiaork.com/keeper/wxPay/patientPay.do?serviceType=doctorConsultPay'>你请喝茶，医生秒答</a>" +
+                        "\n》<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/getUserWechatMenId?url=35'>你请喝茶，医生秒答</a>" +
                         "\n------------------------"+
-                        "\n》<a href='http://www.jd.com'>咨询客服</a>";
+                        "\n》<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/getUserWechatMenId?url=34'>咨询客服</a>";
                 break;
             case 2:
                 st = "哎呀，遇到咨询高峰期，加个急诊费，即可让医生秒回。" +
-                        "\n》<a href='http://s201.xiaork.com/keeper/wxPay/patientPay.do?serviceType=doctorConsultPay'>急诊100%秒达</a>" +
+                        "\n》<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/getUserWechatMenId?url=35'>急诊100%秒达</a>" +
                         "\n------------------------"+
-                        "\n》<a href='http://www.jd.com'>咨询客服</a>";
+                        "\n》<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/getUserWechatMenId?url=34'>咨询客服</a>";
                 break;
             case 3:
                 st = "哎呀，遇到咨询高峰期，加个急诊费，即可让医生秒回。" +
@@ -140,6 +161,7 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
                 break;
         };
         WechatUtil.sendMsgToWechat(token,openid,st);
+        LogUtils.saveLog("consult_chargetest_once_information", openid + ":" + type);
     }
 
 }

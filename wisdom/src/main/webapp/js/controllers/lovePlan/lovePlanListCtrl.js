@@ -12,7 +12,22 @@ angular.module('controllers', ['ionic']).controller('lovePlanListCtrl', [
             return dateValue;
         };
 
-
+        $scope.$on('$ionicView.enter', function(){
+            $.ajax({
+                url:"umbrella/getOpenid",// 跳转到 action
+                async:true,
+                type:'post',
+                cache:false,
+                dataType:'json',
+                success:function(data) {
+                    if(data.openid=="none"){
+                        window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=32";
+                    }
+                },
+                error : function() {
+                }
+            });
+        })
         //上拉刷新
         $scope.loadOlderStories = function () {
             num = num + 10;
