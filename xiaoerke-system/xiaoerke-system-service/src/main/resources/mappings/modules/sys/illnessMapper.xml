@@ -29,7 +29,7 @@
         doctor_illness_relation dr_rel
         WHERE
         dr.id = dr_rel.sys_doctor_id
-        <if test="isPhoneConsult=phoneConsult">
+        <if test="isPhoneConsult != null and isPhoneConsult !=''">
          and  ill.isDisplay = '1'
         </if>
         AND
