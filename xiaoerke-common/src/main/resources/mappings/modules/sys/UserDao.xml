@@ -105,11 +105,16 @@
 			<if test="dbName == 'oracle'">'%,'||#{company.id}||',%')</if>
 			<if test="dbName == 'mysql'">CONCAT('%,', #{company.id}, ',%'))</if>
 		</if>
-		<if test="office != null and office.id != null and office.id != ''">
-			AND (o.id = #{office.id} OR o.parent_ids LIKE
-			<if test="dbName == 'oracle'">'%,'||#{office.id}||',%')</if>
-			<if test="dbName == 'mysql'">CONCAT('%,', #{office.id}, ',%'))</if>
-		</if>
+		<choose>
+			<when test="office != null and office.id != null and office.id != ''">
+				AND (o.id = #{office.id} OR o.parent_ids LIKE
+				<if test="dbName == 'oracle'">'%,'||#{office.id}||',%')</if>
+				<if test="dbName == 'mysql'">CONCAT('%,', #{office.id}, ',%'))</if>
+			</when>
+			<otherwise>
+				AND (o.id = '0a059cdd258944278e63a6053785f2ed'  OR o.parent_ids LIKE CONCAT('%,', '0a059cdd258944278e63a6053785f2ed', ',%'))
+			</otherwise>
+		</choose>
 		<!-- 如果不是超级管理员，则不显示超级管理员用户 -->
 		<if test="!currentUser.admin">
 			AND a.id != '1'
