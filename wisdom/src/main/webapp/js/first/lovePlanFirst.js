@@ -148,7 +148,7 @@ var goLovePlanList = function(){
 // 点击 我要捐款
 var goContribute = function(){
     recordLogs("AXJZ_WYJK");
-    window.location.href="http://s201.xiaork.com/keeper/wxPay/patientPay.do?serviceType=lovePlanPay"
+    window.location.href="http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=lovePlanPay"
 };
 
 // 宝护伞 查看详情
