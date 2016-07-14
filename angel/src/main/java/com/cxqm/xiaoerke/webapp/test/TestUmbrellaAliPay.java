@@ -23,7 +23,7 @@ public class TestUmbrellaAliPay {
     //public  boolean isFinished = false;
     //private static String url = "http://localhost:8080/keeper/patient/wxChat";
     //private static String url = "http://s2.xiaork.cn/wisdom/umbrella/addFamily";
-    private static String url = "http://localhost:8080/wisdom/umbrella/thirdParty/alipayment";
+    private static String url = "http://101.201.154.75/wisdom/umbrella/thirdParty/alipayment";
     //private static String url = "http://xiaork.com/umbrella/checkFamilyMembers";
     //private static String url = "http://xiaork.com/umbrella/checkFamilyMembers";
     private static final int MAX_THREADS_COUNT = 1;//初始化开启最大线程数

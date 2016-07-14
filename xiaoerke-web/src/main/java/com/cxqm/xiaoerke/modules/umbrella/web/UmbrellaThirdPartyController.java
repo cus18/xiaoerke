@@ -4,6 +4,8 @@ package com.cxqm.xiaoerke.modules.umbrella.web;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
+import com.cxqm.xiaoerke.modules.account.service.PayRecordService;
 import com.cxqm.xiaoerke.modules.alipay.service.AlipayService;
 import com.cxqm.xiaoerke.modules.alipay.util.AlipayNotify;
 import com.cxqm.xiaoerke.modules.alipay.util.httpClient.HttpsUtil;
@@ -69,6 +71,9 @@ public class UmbrellaThirdPartyController  {
 
     @Autowired
     private AlipayService alipayService;
+
+    @Autowired
+    private PayRecordService payRecordService;
 
     /**
      *获取保护伞首页信息-已有多少人加入互助计划
@@ -184,8 +189,9 @@ public class UmbrellaThirdPartyController  {
         babyUmbrellaInfo.setUmberllaMoney(200000);
         babyUmbrellaInfo.setPayResult("fail");
         babyUmbrellaInfo.setVersion("a");
-        babyUmbrellaInfo.setTruePayMoneys("5");
-
+        babyUmbrellaInfo.setTruePayMoneys(params.get("truePayMoneys").toString());
+        babyUmbrellaInfo.setCreateTime(new Date());
+        babyUmbrellaInfoSerivce.newSaveBabyUmbrellaInfo(babyUmbrellaInfo);
 
         //插入家庭成员的信息
         //宝爸宝妈
@@ -235,7 +241,14 @@ public class UmbrellaThirdPartyController  {
     @RequestMapping(value = "/alipayment", method = {RequestMethod.POST, RequestMethod.GET})
     public
     String  alipayment(@RequestBody Map<String, Object> params,HttpServletResponse response) {
-        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+        //先在数据库里生成一份订单数据(account_pay_record表)
+        PayRecord payRecord = new PayRecord();
+
+        payRecordService.insertPayInfo(payRecord);
+
+
+
         String totleFee = params.get("totleFee").toString();//支付金额
         String body = params.get("body").toString();//可以为空
         String describe = params.get("describe").toString();//商品描述
