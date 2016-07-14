@@ -152,7 +152,7 @@ public class ConsultOrderUserController {
     @ResponseBody
     Map<String,Object> cancelOrder(@RequestBody Map<String, Object> params){
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
-        BigDecimal resultState =new BigDecimal(0);
+        Float resultState =0f;
         Integer phoneConsultaServiceId = Integer.parseInt((String) params.get("phoneConsultaServiceId"));
         String cancelReason = (String)params.get("cancelReason");
         HashMap<String,Object> resultMap = new HashMap<String, Object>();
@@ -176,7 +176,7 @@ public class ConsultOrderUserController {
             resultMap.put("praiseId", IdGen.uuid());
             resultMap.put("patientRegisterServiceId", phoneConsultaServiceId);
             resultMap.put("praise_date", new Date());
-            int i = resultState.compareTo(new BigDecimal(0));
+            int i = resultState.compareTo(0f);
             if(i>0){
                 patientRegisterPraiseService.insertCancelReason(resultMap);
             }
