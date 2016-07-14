@@ -76,7 +76,7 @@ define(['appUmbrella2'], function(app){
                         }
                     })
                     .state('umbrellaPay', {
-                        url: '/umbrellaPay',
+                        url: '/umbrellaPay/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'umbrellaPayCtrl',
                         resolve: {
