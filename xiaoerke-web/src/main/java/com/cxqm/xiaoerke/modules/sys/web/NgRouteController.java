@@ -144,6 +144,14 @@ public class NgRouteController extends BaseController {
     public String lovePlanIndex() {
         return "angular/lovePlanIndex";
     }
+    /**
+     *  heightForecast
+     */
+    @SystemControllerLog(description = "00000079")
+    @RequestMapping(value ="/heightForecast",method = {RequestMethod.POST, RequestMethod.GET})
+    public String heightForecastIndex() {
+        return "angular/heightForecastIndex";
+    }
 
     /**
      *  umbrella 宝护伞
