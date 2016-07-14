@@ -283,7 +283,7 @@ var pay = function(){
                 }else{
                     alert("预约失败,请重新预约或联系客服");
                 }
-                $('#payButton').attr('disabled',"false");//添加disabled属性
+                // $('#payButton').attr('disabled',"false");//添加disabled属性
             },
             error : function() {
             }
