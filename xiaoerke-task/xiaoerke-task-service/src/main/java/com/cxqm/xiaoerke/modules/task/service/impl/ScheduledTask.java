@@ -1142,6 +1142,36 @@ public class ScheduledTask {
             consultRecordVoList.add(consultRecordVo);
         }
         consultRecordService.insertConsultRecordBatch(consultRecordVoList);
+        //conuslt_session恢复数据
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(Calendar.HOUR_OF_DAY, 18);
+//        calendar.set(Calendar.MINUTE, 4);
+//        calendar.set(Calendar.SECOND, 0);
+//        calendar.add(Calendar.DATE, -2);
+//        Date newDate = calendar.getTime();
+//        calendar = Calendar.getInstance();
+//        calendar.set(Calendar.HOUR_OF_DAY, 0);
+//        calendar.set(Calendar.MINUTE, 0);
+//        calendar.set(Calendar.SECOND, 0);
+//        calendar.add(Calendar.DATE, -10);
+//        Date oldDate = calendar.getTime();
+//
+//        Query query = new Query().addCriteria(Criteria.where("lastMessageTime").gte(oldDate).andOperator(Criteria.where("lastMessageTime").lte(newDate)));
+//        List<ConsultSession> consultSessions = new ArrayList<ConsultSession>();
+//        List<ConsultSessionStatusVo> consultRecordVoList = consultRecordService.getConsultSessionStatusVo(query);
+//        Iterator<ConsultSessionStatusVo> iterator = consultRecordVoList.iterator();
+//        while (iterator.hasNext()) {
+//            ConsultSessionStatusVo consultSessionStatusVo = iterator.next();
+//            ConsultSession consultSession = new ConsultSession();
+//            consultSession.setId(Integer.parseInt(consultSessionStatusVo.getSessionId()));
+//            consultSession.setCreateTime(new Date(consultSessionStatusVo.getLastMessageTime().getTime() - 2 * 60 * 60 * 1000));
+//            consultSession.setUserId(consultSessionStatusVo.getUserId());
+//            consultSession.setStatus(consultSessionStatusVo.getStatus());
+//            consultSession.setSource(consultSessionStatusVo.getSource());
+//            consultSession.setCsUserId(consultSessionStatusVo.getCsUserId().split(" ")[0]);
+//            consultSessions.add(consultSession);
+//        }
+//        consultSessionService.insertConsultSessionBatch(consultSessions);
     }
 
 
