@@ -91,6 +91,7 @@
         WHERE
         dhr.relation_type = '1'
         and scs.state = '0'
+        and sd.is_consultPhone = '1'
         <if test="departmentLevel1Name !=null">
             and si.level_1 = #{departmentLevel1Name}
         </if>
