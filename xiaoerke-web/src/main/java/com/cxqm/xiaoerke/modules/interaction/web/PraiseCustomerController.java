@@ -10,12 +10,11 @@ import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultBadEvaluateRemindUserService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
-import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -30,9 +29,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpSession;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 测试Controller
@@ -53,9 +55,16 @@ public class PraiseCustomerController extends BaseController {
     @Autowired
     private ConsultDoctorInfoService consultDoctorInfoService;
 
+    @Autowired
+    private ConsultSessionService consultSessionService ;
+
     private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
 
     private ConsultRecordService consultRecordService = SpringContextHolder.getBean("consultRecordServiceImpl");
+
+    private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
+
+    private SystemService systemService = SpringContextHolder.getBean("systemService");
 
     @RequestMapping(value = "/user/customerEvaluation", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -81,18 +90,36 @@ public class PraiseCustomerController extends BaseController {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         int result = patientRegisterPraiseService.updateCustomerEvaluation(params);
         if ("1".equalsIgnoreCase((String)params.get("starNum1")) && result >0) {
+            Runnable thread = new SendBadEvaluationThread((HashMap)params);
+            threadExecutor.execute(thread);
+        }
+        return result + "";
+    }
+    /**
+     * @description 多线程发送差评提醒
+     * @author jiangzhongge
+     * @date 2016-7-7 11:01:26
+     */
+    public class SendBadEvaluationThread implements Runnable {
+        private HashMap<String, Object> params ;
+        public SendBadEvaluationThread(HashMap<String,Object> paramMap){
+            this.params = paramMap;
+        }
+        @Override
+        public void run() {
             List<String> openIds = consultBadEvaluateRemindUserService.findConsultRemindUserId();
             String customerId = (String) params.get("id");
+            Integer sessionId = Integer.valueOf((String)params.get("sessionId"));
             Map registerPraiseInfo = patientRegisterPraiseService.selectCustomerEvaluation(customerId);
             String userId = (String) registerPraiseInfo.get("openid");
             String csUserId = (String) registerPraiseInfo.get("doctorId");
             ConsultDoctorInfoVo consultDoctorInfoVo = consultDoctorInfoService.getConsultDoctorInfoByUserId(csUserId);
-            Integer sessionId = sessionRedisCache.getSessionIdByUserId(userId);
+//            Integer sessionId = sessionRedisCache.getSessionIdByUserId(userId);
             String userName = "";
             String csUserName = "";
             String csUserPhone = "暂无";
             String serviceTime = "";
-            if (sessionId != null) {
+            /*if (sessionId != null) {
                 Query query = new Query(Criteria.where("sessionId").is(sessionId));
                 query.with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
                 List<ConsultSessionStatusVo> list = consultRecordService.querySessionStatusList(query);
@@ -108,6 +135,24 @@ public class PraiseCustomerController extends BaseController {
                 csUserName = consultSessionStatusVo.getCsUserName();
                 userName = consultSessionStatusVo.getUserName();
                 serviceTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(consultSessionStatusVo.getLastMessageTime());
+            }*/
+            if(sessionId != null){
+                ConsultSession consultSession = new ConsultSession();
+                consultSession.setUserId(userId);
+                consultSession.setCsUserId(csUserId);
+                consultSession.setId(sessionId);
+                List<ConsultSession> consultSessionList = consultSessionService.selectBySelective(consultSession);
+                if(consultSessionList != null && consultSessionList.size() >0){
+                    ConsultSession conSession = consultSessionList.get(0);
+                    serviceTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(conSession.getUpdateTime());
+//                    userName = StringUtils.isNotNull((String)params.get("userName"))? (String)params.get("userName") :"暂无";
+                    userName = StringUtils.isNotNull(conSession.getUserId())?conSession.getUserId() : sessionId.toString();
+                    csUserName = StringUtils.isNotNull(consultDoctorInfoVo.getName()) ? consultDoctorInfoVo.getName() : "暂无";
+                }
+            }else{
+                serviceTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+                userName = "未查到";
+                csUserName = "暂无";
             }
             String message = "\"first\":{\"value\":\"有用户对咨询服务做出了评价，请及时处理！\",\"color\":\"#173177\"}," +
                     "\"keyword1\":{\"value\":\"" + userName + "\",\"color\":\"#173177\"}," +
@@ -128,15 +173,23 @@ public class PraiseCustomerController extends BaseController {
             Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
             String tokenId = (String) userWechatParam.get("token");
             String templateId = "xP7QzdilUu1RRTFzVv8krwwMOyv-1pg9l0ABsooub14";
+            String failureMessage = "";
             if (openIds != null && openIds.size() > 0) {
                 for (String openId : openIds) {
-                    WechatUtil.sendTemplateMsgToUser(tokenId, openId, templateId, message);
+                   String result = WechatUtil.sendTemplateMsgToUser(tokenId, openId, templateId, message);
+                   if("messageOk".equals(result)){
+                       continue ;
+                   }else{
+                       failureMessage = failureMessage + openId +",";
+                   }
                 }
             }
+            if(StringUtils.isNotNull(failureMessage)){
+                failureMessage = "以下用户差评提醒消息发送失败："+failureMessage+"请查看！";
+                WechatUtil.sendMsgToWechat(tokenId,"o3_NPwuDSb46Qv-nrWL-uTuHiB8U",failureMessage);
+            }
         }
-        return result + "";
     }
-
     /**
      * 新版评价
      *

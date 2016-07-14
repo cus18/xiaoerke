@@ -340,7 +340,7 @@ public class ConsultDoctorController extends BaseController {
                         if(null !=consultDoctorInfoVos.get(0).getSendMessage() && consultDoctorInfoVos.get(0).getSendMessage().equals("1")){
                             String st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
                                     "<a href='http://120.25.161.33/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
-                                    params.get("uuid") + "'>点击这里去评价</a>】";
+                                    params.get("uuid") +"&sessionId="+sessionId+ "'>点击这里去评价</a>】";
                             WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
                         }
                     }
