@@ -3,11 +3,9 @@ package com.cxqm.xiaoerke.modules.consult.service.core;
 import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.*;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
-import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.*;
+import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultVoiceRecordMongoServiceImpl;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
@@ -81,6 +79,9 @@ public class ConsultSessionManager {
 
     //jiangzg add 2016年6月17日16:26:01
     private ConsultDoctorInfoService consultDoctorInfoService = SpringContextHolder.getBean("consultDoctorInfoServiceImpl");
+
+    //jiangzg add
+    private ConsultVoiceRecordMongoServiceImpl consultVoiceRecordMongoService = SpringContextHolder.getBean("consultVoiceRecordMongoServiceImpl");
 
     private ConsultSessionManager() {
 //        String distributorsStr = Global.getConfig("distributors.list");
@@ -235,17 +236,14 @@ public class ConsultSessionManager {
                     return null;
                 }
             }
-
             Map praiseParam = new HashMap();
             praiseParam.put("userId", consultSession.getUserId());
             Integer sessionCount = consultSessionService.getConsultSessionByUserId(praiseParam);
             consultSession.setConsultNumber(sessionCount + 1);
             consultSessionService.saveConsultInfo(consultSession);
-
             sessionId = consultSession.getId();
             sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
             sessionRedisCache.putUserIdSessionIdPair(userId, sessionId);
-
             JSONObject csobj = new JSONObject();
             //通知用户，告诉会有哪个医生或者接诊员提供服务
             csobj.put("type", 4);
@@ -254,7 +252,6 @@ public class ConsultSessionManager {
             TextWebSocketFrame csframe = new TextWebSocketFrame(csobj.toJSONString());
             channel.writeAndFlush(csframe.retain());
         }
-
         return consultSession;
     }
 
@@ -264,64 +261,77 @@ public class ConsultSessionManager {
         Channel csChannel = null;
         Channel distributorChannel = null;
         System.out.println("distributors.size()-----" + distributors.size());
-        /**
-         *  为用户创建微信会话
-         *  jiangzhongge modify
-         *  2016年7月4日11:52:04
-         */
-        for (int i = 0; i < distributorsList.size(); i++) {
-            if(distributors.size() > 0){
-                String distributorId = RandomUtils.getRandomKeyFromMap(distributors);
-                distributorChannel = distributors.get(distributorId);
-                System.out.println("distributorChannel.isActive()-----" + distributorChannel.isActive());
-                if (distributorChannel.isActive()) {
-                    consultSession.setCsUserId(distributorId);
-                    User csUser = systemService.getUserById(distributorId);
-                    consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
-                    csChannel = distributorChannel;
-                    break;
+        ConsultCountTotal consultCountTotal = new ConsultCountTotal();
+        consultCountTotal.setUserId(consultSession.getUserId());
+        consultCountTotal.setCreateDate(new Date());
+        int count = this.getConsultTotal(consultCountTotal);
+        List currentDistributorChannel = new ArrayList();
+        if (distributors != null && distributors.size() > 0) {
+            for (Map.Entry<String, Channel> entry : distributors.entrySet()) {
+                if (entry.getValue().isActive()) {
+                    HashMap<String, Channel> currentActiveChannel = new HashMap<String, Channel>();
+                    currentActiveChannel.put(entry.getKey(), entry.getValue());
+                    currentDistributorChannel.add(currentActiveChannel);
                 } else {
-                    System.out.println("distributors.remove-----" + distributorId);
-                    distributors.remove(distributorId);
-                    csUserChannelMapping.remove(distributorId);
-                    userChannelMapping.remove(distributorId);
+                    distributors.remove(entry.getKey());
+                    csUserChannelMapping.remove(entry.getKey());
+                    userChannelMapping.remove(entry.getKey());
                 }
-            }else{
-                break ;
+            }
+            if (currentDistributorChannel != null && currentDistributorChannel.size() > 0) {
+                int number = count % currentDistributorChannel.size();
+                HashMap<String, Channel> hashMap = (HashMap) currentDistributorChannel.get(number);
+                for (Map.Entry<String, Channel> entry : hashMap.entrySet()) {
+                    consultSession.setCsUserId(entry.getKey());
+                    consultCountTotal.setCsUserId(entry.getKey());
+                    User csUser = systemService.getUserById(entry.getKey());
+                    consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
+                    csChannel = entry.getValue();
+                }
             }
         }
 
-        /***接诊员不在线，随机分配在线医生***/
-        /**
-         *  jiangzhongge modify
-         *  2016年7月4日11:52:04
-         */
-        if (distributorChannel == null) {
-            for (int i = 0; i < csUserChannelMapping.size(); i++) {
-                if(csUserChannelMapping.size() > 0){
+        if (csChannel != null) {
+            this.updateConsultCountTotal(consultCountTotal);
+        } else {
+            /***接诊员不在线，随机分配在线医生***/
+            /**
+             *  jiangzhongge modify
+             *  2016年7月4日11:52:04
+             */
+            this.deleteConsultCountTotal(consultCountTotal);
+            Map<String, Channel> currentCSUserChannelMap = csUserChannelMapping;
+            Channel nowChannel = null;
+            if (currentCSUserChannelMap.size() > 0) {
+                for (int i = 0; i < currentCSUserChannelMap.size(); i++) {
                     //所有的接诊员不在线，随机分配一个在线医生
-                    String csUserId = RandomUtils.getRandomKeyFromMap(csUserChannelMapping);
-                    csChannel = csUserChannelMapping.get(csUserId);
-                    if (csChannel.isActive()) {
+                    String csUserId = RandomUtils.getRandomKeyFromMap(currentCSUserChannelMap);
+                    nowChannel = currentCSUserChannelMap.get(csUserId);
+                    if (nowChannel != null && nowChannel.isActive()) {
                         User csUser = systemService.getUserById(csUserId);
                         consultSession.setCsUserId(csUserId);
                         consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
+                        csChannel = nowChannel;
                         break;
                     } else {
                         csUserChannelMapping.remove(csUserId);
                         csUserChannelMapping.remove(csUserId);
                         userChannelMapping.remove(csUserId);
+                        currentCSUserChannelMap.remove(csUserId);
                     }
-                }else{
-                    //如果没有任何医生在线，给用户推送微信消息，告知没有医生在线，稍后在使用服务
-                    Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-                    String content = "抱歉，暂时没有医生在线，请稍后使用服务！";
-                    WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(), content);
-                    return null;
                 }
             }
+            /**
+             * @author jiangzg
+             * @date 2016-7-7 10:33:29
+             */
+            if (csChannel == null) {
+                Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                String content = "抱歉，暂时没有医生在线，请稍后使用服务！";
+                WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(), content);
+                return null;
+            }
         }
-        System.out.println("distributorChannel-----" + distributorChannel);
 
         if (StringUtils.isNotNull(consultSession.getCsUserId())) {
             HashMap<String, Object> perInfo = userInfoService.findPersonDetailInfoByUserId(consultSession.getCsUserId());
@@ -350,6 +360,42 @@ public class ConsultSessionManager {
         }
 
     }
+
+    /**
+     * jiangzg add 2016-7-13 16:37:23
+     *
+     * @param consultCountTotal
+     * @return
+     */
+    public int getConsultTotal(ConsultCountTotal consultCountTotal) {
+        int count = 0;
+        synchronized (this) {
+            if (consultCountTotal != null) {
+                consultVoiceRecordMongoService.insertConsultCountTotal(consultCountTotal);
+                Long aa = consultVoiceRecordMongoService.getConsultCountTotal(consultCountTotal);
+                count = aa.intValue();
+            }
+        }
+        return count;
+    }
+
+    /**
+     * jiangzg add 2016-7-13 16:37:23
+     *
+     * @param consultCountTotal
+     * @return
+     */
+    public void updateConsultCountTotal(ConsultCountTotal consultCountTotal) {
+        if (consultCountTotal != null) {
+            consultVoiceRecordMongoService.findAndModify(consultCountTotal);
+        }
+    }
+
+    public void deleteConsultCountTotal(ConsultCountTotal consultCountTotal){
+        if(consultCountTotal != null){
+            consultVoiceRecordMongoService.deleteConsultCountTotal(consultCountTotal);
+        }
+    }
     //记录评价信息
    /* private void saveCustomerEvaluation(RichConsultSession consultSession) {
         Map<String, Object> evaluationMap = new HashMap<String, Object>();
@@ -366,6 +412,12 @@ public class ConsultSessionManager {
         patientRegisterPraiseService.saveCustomerEvaluation(evaluationMap);
     }*/
 
+    /**
+     * @param sessionId
+     * @param toCsUserId
+     * @param remark
+     * @return
+     */
     public int transferSession(Integer sessionId, String toCsUserId, String remark) {
         try {
             System.out.println("sessionId===" + sessionId + "toCsUserId====" + toCsUserId);
@@ -548,26 +600,26 @@ public class ConsultSessionManager {
 
                     //如果接收转接的是医生，那么给用户推送消息"我是XX科XX医生，希望能帮到您！"，其他不推送
                     List<Map> result = consultDoctorInfoService.getDoctorInfoMoreByUserId(toCsUserId);
-                    if(result != null && result.size() > 0) {
-                        if(StringUtils.isNotNull((String)result.get(0).get("userType")) && "consultDoctor".equalsIgnoreCase((String)result.get(0).get("userType"))){
+                    if (result != null && result.size() > 0) {
+                        if (StringUtils.isNotNull((String) result.get(0).get("userType")) && "consultDoctor".equalsIgnoreCase((String) result.get(0).get("userType"))) {
                             StringBuffer responseNews = new StringBuffer();
                             responseNews.append("我是");
-                            if(StringUtils.isNotNull((String)result.get(0).get("department"))){
+                            if (StringUtils.isNotNull((String) result.get(0).get("department"))) {
                                 responseNews.append(result.get(0).get("department"));
-                            }else{
+                            } else {
                                 responseNews.append("宝大夫");
                             }
-                            if(StringUtils.isNotNull(toCsUserName)){
+                            if (StringUtils.isNotNull(toCsUserName)) {
                                 responseNews.append(toCsUserName);
-                            }else{
+                            } else {
                                 responseNews.append("特约");
                             }
                             responseNews.append("医生，希望能帮到您O(∩_∩)O~");
                             String source = session.getSource();
-                            if(StringUtils.isNotNull(source) && "wxcxqm".equalsIgnoreCase(source)){
+                            if (StringUtils.isNotNull(source) && "wxcxqm".equalsIgnoreCase(source)) {
                                 Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-                                WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"),session.getUserId(),responseNews.toString());
-                            }else if(StringUtils.isNotNull(source) && "h5cxqm".equalsIgnoreCase(source)){
+                                WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), session.getUserId(), responseNews.toString());
+                            } else if (StringUtils.isNotNull(source) && "h5cxqm".equalsIgnoreCase(source)) {
                                 //暂时注掉H5
                                 /*Channel userChannel = userChannelMapping.get(session.getUserId());
                                 if(userChannel != null && userChannel.isActive()){
