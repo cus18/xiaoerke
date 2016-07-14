@@ -29,12 +29,16 @@
         doctor_illness_relation dr_rel
         WHERE
         dr.id = dr_rel.sys_doctor_id
+        <if test="isPhoneConsult=phoneConsult">
+         and  ill.isDisplay = '1'
+        </if>
         AND
         ill.id = dr_rel.sys_illness_id
         GROUP BY ill.level_1
         <if test="orderBy=1">
             ORDER BY  sort_level_1 IS  NULL ,sort_level_1
         </if>
+
     </select>
 
     <select id="findSecondIllnessByFirst" parameterType="java.lang.String" resultMap="IllnessVoMap">
