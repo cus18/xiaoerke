@@ -105,6 +105,7 @@
 	<sec:http pattern="${ssoPath}/token/**" security="none" />
 	<sec:http pattern="${ssoPath}/checklogin*" security="none" />
 	<sec:http pattern="/oauth/check_token" security="none"/>
+    <sec:http pattern="/consult/transfer" security="none"/>
 	
 	<!-- 拦截请求，未登录跳转登录页 -->
 	<sec:http pattern="${ssoPath}/**"

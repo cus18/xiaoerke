@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.net.URLEncoder;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -400,7 +399,7 @@ public class PayNotificationController {
                         MutualHelpDonation mutualHelpDonation = new MutualHelpDonation();
                         mutualHelpDonation.setOpenId((String) map.get("openid"));
 						mutualHelpDonation.setMoney(Integer.valueOf((String) map.get("total_fee")));
-						mutualHelpDonation.setLeaveNote(insuranceMap.get("leave_note").toString());
+						mutualHelpDonation.setLeaveNote((String)insuranceMap.get("leave_note"));
 //						mutualHelpDonation.setDonationType((Integer) insuranceMap.get("donationType"));
 						mutualHelpDonation.setCreateTime(new Date());
                         mutualHelpDonationService.saveNoteAndDonation(mutualHelpDonation);
@@ -438,7 +437,7 @@ public class PayNotificationController {
 			//放入service层进行事物控制
 			if("SUCCESS".equals(map.get("return_code"))){
 				LogUtils.saveLog(Servlets.getRequest(), "00000048", "用户微信支付完成:" + map.get("out_trade_no"));
-				LogUtils.saveLog(Servlets.getRequest(), "LOVEPLAN_ZFY_ZFCG", "用户微信支付完成:" + map.get("out_trade_no"));
+				LogUtils.saveLog(Servlets.getRequest(), "doctorConsultPay", "用户微信支付完成:" + map.get("out_trade_no"));
 				PayRecord payRecord = new PayRecord();
 				payRecord.setId((String) map.get("out_trade_no"));
 				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
@@ -447,10 +446,12 @@ public class PayNotificationController {
 					payRecord.setReceiveDate(new Date());
 					payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
 					String openid = (String)map.get("openid");
-					HttpRequestUtil.wechatpost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/conversation",
-							"openId=" + openid +
-									"&messageType=20001"+
-									"&messageContent=用户已付款 请尽快接入");
+					Map parameter = systemService.getWechatParameter();
+					String token = (String)parameter.get("token");
+					WechatUtil.sendMsgToWechat(token,openid,"哇哦,这么大方,不赞你一下可惜了。医生正在闪电般赶来为您服务");
+
+					HttpRequestUtil.wechatpost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/notifyPayInfo2Distributor?openId="+openid,
+							"openId=" + openid);
 				}
 			}
 			return  XMLUtil.setXML("SUCCESS", "");

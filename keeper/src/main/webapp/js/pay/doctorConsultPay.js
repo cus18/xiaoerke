@@ -2,28 +2,8 @@ var payLock = false;
 var moneys = 8;
 var leaveNotes = "reward";
 
-
-
-//log日志
-var recordLogs = function(val){
-    $.ajax({
-        url:"util/recordLogs",
-        async:true,
-        type:'get',
-        data:{logContent:encodeURI(val)},
-        cache:false,
-        dataType:'json',
-        success:function(data) {
-        },
-        error : function() {
-        }
-    });
-};
-
-
 //页面初始化执行,用户初始化页面参数信息以及微信的支付接口
 var doRefresh = function(){
-    $('#money').html(moneys);
     var timestamp;//时间戳
     var nonceStr;//随机字符串
     var signature;//得到的签名
@@ -62,10 +42,12 @@ var doRefresh = function(){
         }
     });
 
+     $('#money').html(moneys);
+    recordLogs("consult_chargetest_once_information");
 };
 
 function wechatPay() {
-    // recordLogs("");
+    recordLogs("consult_chargetest_once_paypage_paybutton");
     var u = navigator.userAgent, app = navigator.appVersion;
     var isAndroid = u.indexOf('Android') > -1 || u.indexOf('linux') > -1; //g
     var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
@@ -73,8 +55,6 @@ function wechatPay() {
         payLock=true;
     }
     if(payLock) {
-        // moneys = $('#money').val();
-        // leaveNotes = $("#leaveNotes").val();
         if (moneys != "0" && moneys!="") {
             $.ajax({
                 url: "account/user/doctorConsultPay",
@@ -99,18 +79,7 @@ function wechatPay() {
                         paySign: obj.paySign,  // 支付签名
                         success: function (res) {
                             if (res.errMsg == "chooseWXPay:ok") {
-                                // $.ajax({
-                                //     url:"mutualHelp/donation/addNoteAndDonation",
-                                //     type:'POST',
-                                //     data: {leaveNotes: leaveNotes, money: moneys * 100},
-                                //     contentType: "application/json; charset=utf-8",
-                                //     dataType:'json',
-                                //     success:function() {
-                                //     },
-                                //     error : function() {
-                                //     }
-                                // }, 'json');
-                                window.location.href="http://localhost:8080/market/market#/lovePlanPaySuccess";
+                              window.location.href="http://s201.xiaork.com/angel/patient/consult#/doctorConsultPaySuccess";
                             } else {
                                 alert("支付失败,请重新支付")
                             }
@@ -129,3 +98,18 @@ function wechatPay() {
         payLock=true;
     }
 }
+
+var recordLogs = function(val){
+    $.ajax({
+        url:"util/recordLogs",// 跳转到 action
+        async:true,
+        type:'get',
+        data:{logContent:encodeURI(val)},
+        cache:false,
+        dataType:'json',
+        success:function(data) {
+        },
+        error : function() {
+        }
+    });
+};

@@ -10,48 +10,20 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             $scope.socketServer = "";
             $scope.glued = true;
             $scope.source = "h5cxqmUser";
-
-            $scope.openFileListFlag = false;
-            $location.hash("fileInput");
-            $anchorScroll();
-            $scope.openFileList = function(){
-                if($scope.openFileListFlag == true){
-                    $scope.openFileListFlag = false;
-                    $location.hash("fileInput");
-                    $anchorScroll();
-                }else{
-                    $scope.openFileListFlag = true;
-                    $location.hash("fileInputList");
-                    $anchorScroll();
-                }
-            };
-
-            function randomString(len) {
-                len = len || 32;
-                var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';/****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
-                var maxPos = $chars.length;
-                var pwd = '';
-                for (i = 0; i < len; i++) {
-                    pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
-                }
-                return pwd;
-            }
-
+            //界面的初始化
             $scope.patientConsultFirst = function(){
                 var num = randomString(32);
                 $scope.patientId = num.substring(0,6);
                 $scope.patientName = "保护伞"+num.substring(0,1);
                 $scope.initConsultSocket();
             };
-
             //初始化接口
             $scope.initConsultSocket = function(){
                 if (!window.WebSocket) {
                     window.WebSocket = window.MozWebSocket;
                 }
                 if (window.WebSocket) {
-
-                    $scope.socketServer = new ReconnectingWebSocket("ws://s202.xiaork.com/wsbackend/ws&user&"
+                    $scope.socketServer = new ReconnectingWebSocket("ws://s201.xiaork.com/wsbackend/ws&user&"
                         + $scope.patientId +"&h5cxqm");//cs,user,distributor
 
                     /*$scope.socketServer = new ReconnectingWebSocket("ws://xiaork.com:2048/ws&user&"
@@ -78,7 +50,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                                 var val = {
                                     "type": 4,
                                     "notifyType": "0000"
-                                }
+                                };
                                 $scope.consultContent.push(val);
                             }
                         });
@@ -149,7 +121,17 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     path: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fqqface%2F'
                 });
             };
-
+            //保护伞的标识
+            var randomString = function (len) {
+                len = len || 32;
+                var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';/****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+                var maxPos = $chars.length;
+                var pwd = '';
+                for (i = 0; i < len; i++) {
+                    pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+                }
+                return pwd;
+            };
             //过滤媒体数据
             var filterMediaData = function (val) {
                 if(val.senderId==$scope.patientId){

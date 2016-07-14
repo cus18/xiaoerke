@@ -20,7 +20,8 @@
             <dl class="user-list">
                 <dd class="user " ng-repeat="item in user">
                     <div class="info">
-                         <img class="photo radius fl" width="40" height="40" ng-src="{{item.headImgUrl}}">
+                         <img ng-if="item.headImgUrl == ''" class="photo radius fl" width="40" height="40" ng-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png">
+                         <img ng-if="item.headImgUrl != ''" class="photo radius fl" width="40" height="40" ng-src="{{item.headImgUrl}}">
                          <div class="middle fl">
                             <div class="name f5 c3">{{item.wechatName}}</div>
                             <div class="time f3 c5">{{transformDate(item.createTime)}}</div>
@@ -33,8 +34,8 @@
                         {{item.leaveNote}}
                     </div>
                 </dd>
-
             </dl>
+            <ion-infinite-scroll ng-if="flag" on-infinite="loadOlderStories()" distance="1%"></ion-infinite-scroll>
             <br> <br> <br> <br>
         </ion-scroll>
     </ion-content>

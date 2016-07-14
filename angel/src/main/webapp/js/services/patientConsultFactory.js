@@ -14,4 +14,9 @@ define(['appPatientConsult'], function (app) {
         .factory('GetUserOpenId', ['$resource', function ($resource) {
             return $resource('util/getOpenid');
         }])
+
+        //只咨询医生
+        .factory('ConsultCustomOnly', ['$resource', function ($resource) {
+            return $resource('consult/wechat/consultCustomOnly');
+        }])
 })
