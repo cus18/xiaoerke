@@ -191,8 +191,8 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
             Map<String,Object> parameter = systemService.getWechatParameter();
             String token = (String)parameter.get("token");
             String url = ConstantUtil.TITAN_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(Integer) map.get("orderId")+",phone";
-            PatientMsgTemplate.consultPhoneCancel2Wechat(doctorName,date, week, beginTime,(String) map.get("endTime"), (String) map.get("phone"),(String) map.get("orderNo"),(BigDecimal) map.get("price")+"",(String) map.get("openid"),token,url);
-            PatientMsgTemplate.consultPhoneRefund2Msg(doctorName, (BigDecimal) map.get("price")+"", (String) map.get("phone"),(String) map.get("date"), week, (String) map.get("beginTime"),(String) map.get("orderNo"));
+            PatientMsgTemplate.consultPhoneCancel2Wechat(doctorName,date, week, beginTime,(String) map.get("endTime"), (String) map.get("phone"),(String) map.get("orderNo"),(Float) map.get("price")+"",(String) map.get("openid"),token,url);
+            PatientMsgTemplate.consultPhoneRefund2Msg(doctorName, (Float) map.get("price")+"", (String) map.get("phone"),(String) map.get("date"), week, (String) map.get("beginTime"),(String) map.get("orderNo"));
 
             if("1".equals((String)map.get("status")) && "3".equals((String)map.get("types"))) {
                 //医生-短信
