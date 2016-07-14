@@ -21,7 +21,7 @@ import java.util.Map;
 public class AlipayServiceImpl implements AlipayService {
 
     @Override
-    public String alipayment(String totleFee,String body,String describe,String showUrl)  {
+    public String alipayment(String totleFee,String body,String describe,String showUrl,String out_trade_no)  {
         String result = "";
         //生成订单日期
         Date date = new Date();
@@ -38,7 +38,7 @@ public class AlipayServiceImpl implements AlipayService {
         String return_url = AlipayConfig.return_url;
         // 商户网站订单系统中唯一订单号，必填
         //String out_trade_no = date.getTime() + "";
-        String out_trade_no = "120000001";
+        //String out_trade_no = "120000001";
         // 必填
         //describe = "充值测试";
         // 防钓鱼时间戳
@@ -70,7 +70,7 @@ public class AlipayServiceImpl implements AlipayService {
         sParaTemp.put("out_trade_no", out_trade_no);//商品订单编号
         sParaTemp.put("subject", describe);//商品名称
         sParaTemp.put("total_fee", totleFee);//价格
-        sParaTemp.put("seller_id", AlipayConfig.partner);//价格
+        sParaTemp.put("seller_id", AlipayConfig.partner);//收款支付宝账号
         sParaTemp.put("payment_type", payment_type);//支付类型
         sParaTemp.put("show_url", showUrl);
         sParaTemp.put("body", body);

@@ -39,6 +39,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+//import com.cxqm.xiaoerke.modules.alipay.service.AlipayService;
+
 /**@author guozengguang
  * @version 16/7/6
  * 非微信环境下的保护伞
@@ -196,7 +198,7 @@ public class UmbrellaThirdPartyController  {
         familyInfo.setBirthday(birthDay);
         int res = babyUmbrellaInfoSerivce.saveFamilyUmbrellaInfo(familyInfo);
 
-        result.put("status",res);
+        result.put("umbrellaid",babyUmbrellaInfo.getId());
         return result;
     }
 
@@ -238,7 +240,8 @@ public class UmbrellaThirdPartyController  {
         String body = params.get("body").toString();//可以为空
         String describe = params.get("describe").toString();//商品描述
         String showUrl = params.get("showUrl").toString();//商品展示地址
-        String result = alipayService.alipayment(totleFee, body, describe, showUrl);
+        String out_trade_no = params.get("umbrellaid").toString();//交易订单号,这里用宝护伞id
+        String result = alipayService.alipayment(totleFee, body, describe, showUrl,out_trade_no);
         try {
             StringUtil.writeToWeb(result, "html", response);
         } catch (IOException e) {
