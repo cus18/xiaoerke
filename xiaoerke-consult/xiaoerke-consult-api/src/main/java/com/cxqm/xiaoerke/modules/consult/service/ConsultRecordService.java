@@ -63,5 +63,8 @@ public interface ConsultRecordService {
 
     List<ConsultRecordMongoVo> getCurrentUserHistoryRecord(Query query);
 
+    List<ConsultSessionStatusVo> getConsultSessionStatusVo(Query query);
+
+
     WriteResult removeConsultRankRecord(Query query);
 }

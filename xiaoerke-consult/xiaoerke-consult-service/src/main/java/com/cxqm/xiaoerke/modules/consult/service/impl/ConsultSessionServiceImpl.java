@@ -51,6 +51,13 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
 
 
     @Override
+    public int insertConsultSessionBatch(List<ConsultSession> consultSessions){
+       return consultSessionDao.insertConsultSessionBatch(consultSessions);
+    }
+
+
+
+    @Override
     public List<ConsultSession> getCsUserByUserId(ConsultSession consultSession) {
         return consultSessionDao.getCsUserByUserId(consultSession);
     }
