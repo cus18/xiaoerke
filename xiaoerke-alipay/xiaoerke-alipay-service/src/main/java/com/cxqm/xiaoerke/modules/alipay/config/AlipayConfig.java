@@ -27,11 +27,14 @@ public class AlipayConfig {
 	
 
 	// 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	public static String notify_url = "http://商户网址/alipay.wap.create.direct.pay.by.user-JAVA-UTF-8/notify_url.jsp";
+	//public static String notify_url = "http://商户网址/alipay.wap.create.direct.pay.by.user-JAVA-UTF-8/notify_url.jsp";
+    public static String notify_url = "http://101.201.154.75:8080/wisdom/umbrella/thirdParty/notification";
+
 
 	// 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	public static String return_url = "http://商户网址/alipay.wap.create.direct.pay.by.user-JAVA-UTF-8/return_url.jsp";
+//	public static String return_url = "http://商户网址/alipay.wap.create.direct.pay.by.user-JAVA-UTF-8/return_url.jsp";
 
+    public static String return_url = "http://www.baidu.com";
 	// 签名方式
 	public static String sign_type = "MD5";
 	

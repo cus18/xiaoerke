@@ -5,6 +5,8 @@ import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.modules.alipay.service.AlipayService;
+import com.cxqm.xiaoerke.modules.alipay.util.httpClient.HttpsUtil;
+import com.cxqm.xiaoerke.modules.alipay.util.httpClient.StringUtil;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
@@ -24,7 +26,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.ParseException;
@@ -227,23 +231,43 @@ public class UmbrellaThirdPartyController  {
      */
     @RequestMapping(value = "/alipayment", method = {RequestMethod.POST, RequestMethod.GET})
     public
-    @ResponseBody
-    Map<String, Object>  alipayment(@RequestBody Map<String, Object> params) {
+    String  alipayment(HttpServletResponse response) {//@RequestBody Map<String, Object> params
         DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
-        String totleFee = params.get("totleFee").toString();
-        String body = params.get("body").toString();
-        String describe = params.get("describe").toString();
-        String showUrl = params.get("showUrl").toString();
+        String totleFee ="0.01"; //params.get("totleFee").toString();
+        String body = "ceshi";//params.get("body").toString();
+        String describe ="ceshi";// params.get("describe").toString();
+        String showUrl = "";//params.get("showUrl").toString();
         String result = alipayService.alipayment(totleFee, body, describe, showUrl);
-        Map<String,Object> resultMap = new HashMap<String, Object>();
-        resultMap.put("result",result);
-        return resultMap;
+        try {
+            StringUtil.writeToWeb(result, "html", response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+        //return result;
     }
+
+    /**
+     * 支付宝异步返回通知(支付结果信息)
+     * @author guozengguang
+     */
+    @RequestMapping(value = "/notification")
+    public void notification(HttpServletRequest request, HttpServletResponse response) {
+        // 获取请求数据
+        String reqText = null;
+        try {
+            reqText = HttpsUtil.getInfoFromRequest(request);
+            System.out.println(reqText);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * 根据宝护伞id更新支付状态pay_result
      * 说明:只有支付成功时才调用该接口,保存信息的时候默认该状态为fail;
-     * @author guozengguang  
+     * @author guozengguang
      */
     @RequestMapping(value = "/updateBabyUmbrellaInfoById", method = {RequestMethod.POST, RequestMethod.GET})
     public

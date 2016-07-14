@@ -30,14 +30,17 @@ public class AlipayServiceImpl implements AlipayService {
         String payment_type = "1";
         // 服务器异步通知页面路径
         // 需http://格式的完整路径，不能加?id=123这类自定义参数
-        String notify_url = "http://baodaifu.51mypc.cn/hearthBeat/alipay/aliResult";
+        //String notify_url = "http://baodaifu.51mypc.cn/hearthBeat/alipay/aliResult";
+        String notify_url = AlipayConfig.notify_url;
         // 页面跳转同步通知页面路径
         // 需http://格式的完整路径，不能加?id=123这类自定义参数，不能写成http://localhost/
-        String return_url = "http://baodaifu.51mypc.cn//hearthBeat/alipay/return_url";
+        //String return_url = "http://baodaifu.51mypc.cn//hearthBeat/alipay/return_url";
+        String return_url = AlipayConfig.return_url;
         // 商户网站订单系统中唯一订单号，必填
-        String out_trade_no = date.getTime() + "";
+        //String out_trade_no = date.getTime() + "";
+        String out_trade_no = "120000001";
         // 必填
-        describe = "充值测试";
+        //describe = "充值测试";
         // 防钓鱼时间戳
         // 若要使用请调用类文件submit中的query_timestamp函数
         String anti_phishing_key = "";
@@ -64,7 +67,7 @@ public class AlipayServiceImpl implements AlipayService {
         sParaTemp.put("return_url", return_url);//页面跳转同步通知页面
 
 
-        sParaTemp.put("out_trade_no", date.getTime()+payment_type);//商品订单编号
+        sParaTemp.put("out_trade_no", out_trade_no);//商品订单编号
         sParaTemp.put("subject", describe);//商品名称
         sParaTemp.put("total_fee", totleFee);//价格
         sParaTemp.put("seller_id", AlipayConfig.partner);//价格
