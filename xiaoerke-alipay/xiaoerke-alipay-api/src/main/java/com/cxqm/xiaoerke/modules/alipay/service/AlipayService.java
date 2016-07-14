@@ -8,7 +8,7 @@ import java.util.Map;
 public interface AlipayService {
 
     ////调用支付宝支付
-    String alipayment(String totleFee,String body,String describe,String showUrl);
+    String alipayment(String totleFee,String body,String describe,String showUrl,String out_trade_no);
 
     //异步接收支付信息
     String notification(Map requestParams, String out_trade_no, String tradeStatus);
