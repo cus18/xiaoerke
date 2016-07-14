@@ -5,6 +5,7 @@ import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.modules.alipay.service.AlipayService;
+import com.cxqm.xiaoerke.modules.alipay.util.AlipayNotify;
 import com.cxqm.xiaoerke.modules.alipay.util.httpClient.HttpsUtil;
 import com.cxqm.xiaoerke.modules.alipay.util.httpClient.StringUtil;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
@@ -231,12 +232,12 @@ public class UmbrellaThirdPartyController  {
      */
     @RequestMapping(value = "/alipayment", method = {RequestMethod.POST, RequestMethod.GET})
     public
-    String  alipayment(HttpServletResponse response) {//@RequestBody Map<String, Object> params
+    String  alipayment(@RequestBody Map<String, Object> params,HttpServletResponse response) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
-        String totleFee ="0.01"; //params.get("totleFee").toString();
-        String body = "ceshi";//params.get("body").toString();
-        String describe ="ceshi";// params.get("describe").toString();
-        String showUrl = "";//params.get("showUrl").toString();
+        String totleFee = params.get("totleFee").toString();//支付金额
+        String body = params.get("body").toString();//可以为空
+        String describe = params.get("describe").toString();//商品描述
+        String showUrl = params.get("showUrl").toString();//商品展示地址
         String result = alipayService.alipayment(totleFee, body, describe, showUrl);
         try {
             StringUtil.writeToWeb(result, "html", response);
@@ -244,22 +245,40 @@ public class UmbrellaThirdPartyController  {
             e.printStackTrace();
         }
         return null;
-        //return result;
     }
 
     /**
      * 支付宝异步返回通知(支付结果信息)
      * @author guozengguang
      */
-    @RequestMapping(value = "/notification")
-    public void notification(HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/notification",method = {RequestMethod.POST})
+    public String notification(HttpServletRequest request, HttpServletResponse response) {
         // 获取请求数据
         String reqText = null;
+        Map<String,String> map = new HashMap<String, String>();
         try {
             reqText = HttpsUtil.getInfoFromRequest(request);
-            System.out.println(reqText);
+            String[] paramArr = reqText.split("&");
+            for (int i = 0; i <paramArr.length ; i++) {
+                String[] arr = paramArr[i].split("=");
+                map.put(arr[0],arr[1]);
+            }
+
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+        }
+
+        String trade_status = map.get("trade_status").toString();
+        if(AlipayNotify.verify(map)){//验证成功
+            if("TRADE_FINISHED".equals(trade_status) || "TRADE_SUCCESS".equals(trade_status)) {
+                //要写的逻辑。自己按自己的要求写
+                //                log.error("ok.......");
+                //                System.out.println(">>>>>充值成功" + tradeNo);
+                System.out.println(map.get("out_trade_no"));
+            }
+            return "success";
+        }else{//验证失败
+            return "fail";
         }
     }
 

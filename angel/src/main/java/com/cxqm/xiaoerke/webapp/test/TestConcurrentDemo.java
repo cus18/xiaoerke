@@ -1,5 +1,8 @@
 package com.cxqm.xiaoerke.webapp.test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by guozengguang on 2016/4/22.
  */
@@ -43,9 +46,20 @@ public class TestConcurrentDemo {
         //map2.put("b",2);
         //map1.putAll(map2);
         //System.out.println(map1);
-        String id = "99" + "120006306".substring(1);
-        System.out.println("begin:"+id);
-        System.out.println("还原:1"+id.substring(2));
+        //String id = "99" + "120006306".substring(1);
+        //System.out.println("begin:"+id);
+        //System.out.println("还原:1"+id.substring(2));
+        String str = "payment_type=1&subject=ceshi&trade_no=2016071421001004310232035444&buyer_email=13552482692" + "&gmt_create=2016-07-14 11:39:46&notify_type=trade_status_sync&quantity=1&out_trade_no=120000003"
+            + "&seller_id=2088911946127712&notify_time=2016-07-14 12:03:05&body=ceshi&trade_status=TRADE_SUCCESS" + "&is_total_fee_adjust=N&total_fee=0.01&gmt_payment=2016-07-14 11:39:47&seller_email=chenxingqiming@163.com&price=0.01"
+            + "&buyer_id=2088022943838313&notify_id=b75b81779e44759007eb462c31e6283ie6&use_coupon=N&sign_type=MD5&sign=f196bd19ea85da314e55c82a87f265e7";
+        String[] strArr = str.split("&");
+        System.out.println(strArr.length);
+        Map<String,String> map = new HashMap<String, String>();
+        for (int i = 0; i <strArr.length ; i++) {
+            String[] arr = strArr[i].split("=");
+            map.put(arr[0],arr[1]);
+        }
+        System.out.println(map.size());
     }
 
 }
