@@ -31,6 +31,8 @@ define(['appHeightForecast'], function(app){
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.heightForecastBirthCtrl',
                                     ['js/controllers/heightForecast/heightForecastBirthCtrl.js',
+                                        'js/libs/mobiscroll.custom-2.17.0.min.js',
+                                        'styles/lib/mobiscroll.custom-2.17.0.min.css',
                                         'styles/heightForecast/heightForecastBirthTest.less?ver='+marketVersion
                                     ],
                                     'js/views/heightForecast/heightForecastBirthTest.html?ver='+marketVersion);
@@ -49,6 +51,8 @@ define(['appHeightForecast'], function(app){
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.heightForecastNoBirthCtrl',
                                     ['js/controllers/heightForecast/heightForecastNoBirthCtrl.js',
+                                        'js/libs/mobiscroll.custom-2.17.0.min.js',
+                                        'styles/lib/mobiscroll.custom-2.17.0.min.css',
                                         'styles/heightForecast/heightForecastNoBirthTest.less?ver='+marketVersion
                                     ],
                                     'js/views/heightForecast/heightForecastNoBirthTest.html?ver='+marketVersion);
@@ -60,7 +64,7 @@ define(['appHeightForecast'], function(app){
                     })
                /* 身高测评结论*/
                 .state('heightForecastResult', {
-                        url: '/heightForecastResult',
+                        url: '/heightForecastResult/:resultBoy,/:resultGirl',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'heightForecastResultCtrl',
                         resolve: {

@@ -7,55 +7,62 @@
             </div>
             <div class="outside">
                 <div class="question question1">
-                    <!--<img class="my-img2" width="100%" height="auto" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2Ftihao_a_png_03.png">-->
                     <div class="qContent">
                         <div class="qTitle">宝宝的性别？</div>
-                        <a class="qSelect">A&nbsp&nbsp男</a>
-                        <a class="qSelect">B&nbsp&nbsp女</a>
+                        <a class="qSelect" ng-click="selectSex(0)">A&nbsp&nbsp男</a>
+                        <a class="qSelect" ng-click="selectSex(1)">B&nbsp&nbsp女</a>
                     </div>
                 </div>
                 <div class="question question2">
                     <div class="qContent">
                         <div class="qTitle">宝宝的出生日期？</div>
-                        <a class="qSelect">2016-11-27</a>
+                        <a class="qSelect">
+                            <input type="text" readonly="readonly" id="babyBirthday" placeholder="选择宝宝的出生日期">
+                        </a>
                     </div>
                 </div>
                 <div class="question question3">
                     <div class="qContent">
                         <div class="qTitle">宝宝出生时足月吗？</div>
-                        <a class="qSelect">（1）足月，约9个月</a>
-                        <a class="qSelect">（2）不足，约8个月</a>
-                        <a class="qSelect">（3）不足，约7个月</a>
-                        <a class="qSelect">（4）不足，约6个月</a>
-                        <a class="qSelect">（5）不足6个月</a>
+                        <a class="qSelect" ng-click="selectMon(9)">（1）足月，约9个月</a>
+                        <a class="qSelect" ng-click="selectMon(8)">（2）不足，约8个月</a>
+                        <a class="qSelect" ng-click="selectMon(7)">（3）不足，约7个月</a>
+                        <a class="qSelect" ng-click="selectMon(6)">（4）不足，约6个月</a>
+                        <a class="qSelect" ng-click="selectMon(5)">（5）不足6个月</a>
                     </div>
                 </div>
                 <div class="question question4">
                     <div class="qContent">
                         <div class="qTitle">宝爸的出生日期？</div>
-                        <a class="qSelect">2016-11-27</a>
+                        <a class="qSelect">
+                            <input class="value" type="text" readonly="readonly" id="dadBirthday" placeholder="选择宝爸的出生日期">
+                        </a>
                     </div>
                 </div>
                 <div class="question question5">
                     <div class="qContent">
                         <div class="qTitle">宝爸的身高？</div>
-                        <a class="qSelect">2016-11-27</a>
+                        <a class="qSelect"><input class="height" required maxlength="3" type="tel" ng-model="info.dadHeight" placeholder="请输入身高"/>cm</a>
                     </div>
                 </div>
                 <div class="question question6">
                     <div class="qContent">
                         <div class="qTitle">宝妈的出生日期？</div>
-                        <a class="qSelect">2016-11-27</a>
+                        <a class="qSelect">
+                            <input class="value" type="text" readonly="readonly" id="mamBirthday" placeholder="选择宝妈的出生日期">
+                        </a>
                     </div>
                 </div>
                 <div class="question question7">
                     <div class="qContent">
                         <div class="qTitle">宝妈的身高？</div>
-                        <a class="qSelect">2016-11-27</a>
+                        <a class="qSelect"><input class="height" required maxlength="3" type="tel" ng-model="info.mamHeight" placeholder="请输入身高"/>cm</a>
                     </div>
                 </div>
             </div>
-            <div class="lookResult">我要看结果</div>
+            <div class="lookResult" ng-click="checkName()" >我要看结果</div>
+            <!--浮层-->
+            <div class="c-shadow" ng-if="lookResultFloat" ng-click="cancelFloat()"></div>
             <br> <br> <br>
         </ion-scroll>
     </ion-content>

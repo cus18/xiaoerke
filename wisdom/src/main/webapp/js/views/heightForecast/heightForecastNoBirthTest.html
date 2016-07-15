@@ -9,29 +9,35 @@
                 <div class="question question1">
                     <div class="qContent">
                         <div class="qTitle">宝爸的出生日期？</div>
-                        <a class="qSelect">2016-11-27</a>
+                        <a class="qSelect">
+                            <input class="value" type="text" readonly="readonly" id="dadBirthday" placeholder="选择宝爸的出生日期">
+                        </a>
                     </div>
                 </div>
                 <div class="question question2">
                     <div class="qContent">
                         <div class="qTitle">宝爸的身高？</div>
-                        <a class="qSelect">2016-11-27</a>
+                        <a class="qSelect"><input class="height" required maxlength="3" type="tel" ng-model="info.dadHeight" placeholder="请输入身高"/>cm</a>
                     </div>
                 </div>
                 <div class="question question3">
                     <div class="qContent">
                         <div class="qTitle">宝妈的出生日期？</div>
-                        <a class="qSelect">2016-11-27</a>
+                        <a class="qSelect">
+                            <input class="value" type="text" readonly="readonly" id="mamBirthday" placeholder="选择宝妈的出生日期">
+                        </a>
                     </div>
                 </div>
                 <div class="question question4">
                     <div class="qContent">
                         <div class="qTitle">宝妈的身高？</div>
-                        <a class="qSelect">2016-11-27</a>
+                        <a class="qSelect"><input class="height" required maxlength="3" type="tel" ng-model="info.mamHeight" placeholder="请输入身高"/>cm</a>
                     </div>
                 </div>
             </div>
-            <div class="lookResult">我要看结果</div>
+            <div class="lookResult" ng-click="checkName()" >我要看结果</div>
+            <!--浮层-->
+            <div class="c-shadow"  ng-if="lookResultFloat" ng-click="cancelFloat()"></div>
             <br> <br> <br>
         </ion-scroll>
     </ion-content>

@@ -3,14 +3,71 @@ angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl',
     function ($scope,$state,$stateParams,$filter) {
 
         $scope.title ="宝妈爱心接力";
-        $scope.goContribute = function () {
-            window.location.href="http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=lovePlanPay"
+        $scope.info = {
+            dadHeight:'',
+            mamHeight:''
         };
+        $scope.numberB = Math.ceil(Math.random()*5);//随机数
+        $scope.numberG = Math.ceil(Math.random()*3);//随机数
+/*
 
-        $scope.doRefresh = function(){
-            //loadShare();
+ */
+        $scope.lookResultFloat = false;
+        //判断问题是否为空
+        $scope.checkName = function () {
+            if($("#dadBirthday").val()==""||$("#dadBirthday").val()==undefined){
+                alert("宝爸生日不能为空！");
+                return;
+            }
+            if($("#mamBirthday").val()==""||$("#mamBirthday").val()==undefined){
+                alert("宝妈生日不能为空！");
+                return;
+            }
+            if($scope.info.dadHeight==""||$scope.info.dadHeight > 300){
+                alert("请重新输入宝爸的身高！");
+                return;
+            }
+            if($scope.info.mamHeight==""||$scope.info.mamHeight > 300){
+                alert("请重新输入宝妈的身高！");
+                return;
+            }
+            $scope.lookResultFloat = true;
+            $scope.resultBoy = (parseInt($scope.info.dadHeight) + parseInt($scope.info.mamHeight) + 13) / 2 + $scope.numberB;
+            $scope.resultGirl = (parseInt($scope.info.dadHeight)+ parseInt($scope.info.mamHeight) - 13) / 2 + $scope.numberG;
+            $state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
+            recordLogs('YYHD_SG_WCS_WYKJG');
         };
-
+        $scope.cancelFloat = function () {
+            $scope.lookResultFloat = false;
+        };
+        //初始化
+        $scope.$on('$ionicView.enter', function(){
+            loadShare();
+            var date = new Date(+new Date()+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'');
+            $("#dadBirthday").mobiscroll().date();
+            $("#mamBirthday").mobiscroll().date();
+            //初始化日期控件
+            var opt = {
+                preset: 'date', //日期，可选：date\datetime\time\tree_list\image_text\select
+                theme: 'default', //皮肤样式，可选：default\android\android-ics light\android-ics\ios\jqm\sense-ui\wp light\wp
+                display: 'modal', //显示方式 ，可选：modal\inline\bubble\top\bottom
+                mode: 'scroller', //日期选择模式，可选：scroller\clickpick\mixed
+                lang:'zh',
+                dateFormat: 'yyyy-mm-dd', // 日期格式
+                setText: '确定', //确认按钮名称
+                cancelText: '取消',//取消按钮名籍我
+                dateOrder: 'yyyymmdd', //面板中日期排列格式
+                dayText: '日', monthText: '月', yearText: '年', //面板中年月日文字
+                showNow: false,
+                nowText: "今",
+                minDate: new Date(1960,date.substring(5,7)-1,date.substring(8,10)),
+                maxDate: new Date(date.substring(0,4), date.substring(5,7)-1, date.substring(8,10)),
+                onSelect: function (valueText) {
+                }
+            };
+            $("#dadBirthday").mobiscroll(opt);
+            $("#mamBirthday").mobiscroll(opt);
+        });
         //分享到朋友圈或者微信
         var loadShare = function(){
             // if(version=="a"){
@@ -48,22 +105,24 @@ angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl',
                         wx.ready(function () {
                             // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                             wx.onMenuShareTimeline({
-                                title: '我和任泉已为蛋蛋进行了公益捐款，捐款和转发都是献爱心', // 分享标题
+                                title: '想知道宝宝能长多高，做个测试就知道', // 分享标题
                                 link: share, // 分享链接
                                 imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Faxjz.jpg', // 分享图标
                                 success: function (res) {
-                                    recordLogs("AXJZ_FXPYQ");
+                                    recordLogs("YYHD_SG_FXPYQ");
+                                    $state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
                                 },
                                 fail: function (res) {
                                 }
                             });
                             wx.onMenuShareAppMessage({
-                                title: '我和任泉已为蛋蛋进行了公益捐款，捐款和转发都是献爱心', // 分享标题
-                                desc: '蛋蛋正在接受化疗，你的一个小小善举，就能挽救一个鲜活生命！', // 分享描述
+                                title: '想知道宝宝能长多高，做个测试就知道', // 分享标题
+                                desc: '哇塞，我家宝宝居然能长这么高？据说99.8%精准哦！', // 分享描述
                                 link:share, // 分享链接
                                 imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Faxjz.jpg', // 分享图标
                                 success: function (res) {
-                                    recordLogs("AXJZ_FXPY");
+                                    recordLogs("YYHD_SG_FXPP");
+                                    $state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
                                 },
                                 fail: function (res) {
                                 }
