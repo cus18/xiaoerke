@@ -40,7 +40,7 @@ define(['appPatientConsult'], function(app){
                         }
                     })
                     .state('patientConsultUmbrella', {
-                        url: '/patientConsultUmbrella/:token',
+                        url: '/patientConsultUmbrella',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'patientConsultUmbrellaCtrl',
                         resolve: {
@@ -110,7 +110,7 @@ define(['appPatientConsult'], function(app){
                     });
 
                 //$urlRouterProvider.otherwise('patientConsultFirst');
-                //$urlRouterProvider.otherwise('patientConsultUmbrella');
+                $urlRouterProvider.otherwise('patientConsultUmbrella');
                 //$urlRouterProvider.otherwise('doctorConsultJumpFirst');
             }])
         .run(function ($rootScope){
