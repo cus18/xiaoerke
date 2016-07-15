@@ -33,7 +33,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -1042,10 +1041,10 @@ public class ScheduledTask {
             accountService.updateAccount(0F, (Integer) map.get("id") + "", response, false, (String) map.get("userId"), "电话咨询超时取消退款");
             Map<String, Object> consultOrder = consultPhonePatientService.getPatientRegisterInfo((Integer) map.get("id"));
             String url = ConstantUtil.TITAN_WEB_URL + "/titan/phoneConsult#/orderDetail" + (String) consultOrder.get("doctorId") + "," + (Integer) consultOrder.get("orderId") + ",phone";
-            PatientMsgTemplate.returnPayPhoneRefund2Msg((String) consultOrder.get("babyName"), (BigDecimal) consultOrder.get("price") + "", (String) consultOrder.get("phone"));
+            PatientMsgTemplate.returnPayPhoneRefund2Msg((String) consultOrder.get("babyName"), (Float) consultOrder.get("price") + "", (String) consultOrder.get("phone"));
             String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String) consultOrder.get("date"), "yyyy/MM/dd"));
             String dateTime = (String) consultOrder.get("date") + " " + week + " " + (String) consultOrder.get("beginTime");
-            PatientMsgTemplate.returnPayPhoneRefund2Wechat((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"), dateTime, (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"), (BigDecimal) consultOrder.get("price") + "", (String) consultOrder.get("openid"), token, url);
+            PatientMsgTemplate.returnPayPhoneRefund2Wechat((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"), dateTime, (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"), (Float) consultOrder.get("price") + "", (String) consultOrder.get("openid"), token, url);
 //          LogUtils.saveLog(Servlets.getRequest(), "00000108", "电话咨询-退费" + map);//用户发起微信支付
         }
 
