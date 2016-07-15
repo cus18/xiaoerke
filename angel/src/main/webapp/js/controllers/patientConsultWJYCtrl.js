@@ -51,7 +51,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 }
                 if (window.WebSocket) {
 
-                    $scope.socketServer = new ReconnectingWebSocket("ws://s202.xiaork.com/wsbackend/ws&user&"
+                    $scope.socketServer = new ReconnectingWebSocket("ws://s201.xiaork.com/wsbackend/ws&user&"
                         + $scope.patientId +"&h5cxqm");//cs,user,distributor
 
                     /*$scope.socketServer = new ReconnectingWebSocket("ws://xiaork.com:2048/ws&user&"
@@ -90,6 +90,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     alert("你的浏览器不支持！");
                 }
             };
+
             //处理用户发送过来的消息
             var processDoctorSendMessage = function (conversationData) {
                 var doctorValMessage = {
@@ -116,6 +117,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     console.log("没有医生或者接诊员在线");
                 }
             };
+
             //发送消息
             $scope.sendConsultContent = function(){
                 if($("#saytext").val().replace(/\s+/g,"")!=""){
