@@ -158,20 +158,20 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
         consultPhonevo.setUpdateTime(new Date());
         Map<String,Object> consultOrder = consultPhonePatientService.getPatientRegisterInfo(Integer.parseInt(userData));
         String type = (String)consultOrder.get("type");
-        if("1234".indexOf(vo.getByetype())>-1&&Integer.parseInt(talkDuration)>0&&"0".equals(type)){
+        if("1234".indexOf(vo.getByetype())>-1&&Integer.parseInt(talkDuration)>0){
 //             改状态
             consultPhonevo.setType("1");//已推送过消息
             consultPhonevo.setSurplusTime(serviceLength - Integer.parseInt(talkDuration) * 1000);//修改通话时间
             //发消息
-
-            User userInfo = systemService.getUserById((String)consultOrder.get("sys_user_id"));
-            String url = ConstantUtil.TITAN_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) consultOrder.get("doctorName")+","+userData+",phone";
-            String connectUrl = ConstantUtil.TITAN_WEB_URL+"/titan/phoneConsult#/phoneConReconnection/"+userData;
-            Map<String,Object> parameter = systemService.getWechatParameter();
-            String token = (String)parameter.get("token");
-            PatientMsgTemplate.consultPhoneEvaluateWaring2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"),(String) consultOrder.get("phone"), url,connectUrl,token);
-            PatientMsgTemplate.evaluationRemind2Wechat(userInfo.getOpenid(),token,url,"您的订单可以评价了哦!",(String) consultOrder.get("orderNo"), (String) consultOrder.get("date"),"");
-
+            if ("0".equals(type)){
+                User userInfo = systemService.getUserById((String)consultOrder.get("sys_user_id"));
+                String url = ConstantUtil.TITAN_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) consultOrder.get("doctorName")+","+userData+",phone";
+                String connectUrl = ConstantUtil.TITAN_WEB_URL+"/titan/phoneConsult#/phoneConReconnection/"+userData;
+                Map<String,Object> parameter = systemService.getWechatParameter();
+                String token = (String)parameter.get("token");
+                PatientMsgTemplate.consultPhoneEvaluateWaring2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"),(String) consultOrder.get("phone"), url,connectUrl,token);
+                PatientMsgTemplate.evaluationRemind2Wechat(userInfo.getOpenid(),token,url,"您的订单可以评价了哦!",(String) consultOrder.get("orderNo"), (String) consultOrder.get("date"),"");
+            }
         }else{
             //没接通
             //取消用户订单
