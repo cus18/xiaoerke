@@ -32,13 +32,6 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
                 minDate: new Date(1960,date.substring(5,7)-1,date.substring(8,10)),
                 maxDate: new Date(date.substring(0,4), date.substring(5,7)-1, date.substring(8,10)),
                 onSelect: function (valueText) {
-                    if(valueText != ''){
-                       /* $("#babyBirthday").
-                        $("#dadBirthday").
-                            $("#mamBirthday").*/
-                        console.log(valueText);
-                        console.log("aaa");
-                    }
                 }
             };
             $("#babyBirthday").mobiscroll(opt);
