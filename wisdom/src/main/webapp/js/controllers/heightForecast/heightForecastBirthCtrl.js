@@ -8,7 +8,7 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
         };
         $scope.lookResultFloat = false;
         $scope.numberB = Math.ceil(Math.random()*5);//随机数
-        $scope.numberG = Math.ceil(Math.random()*3);//随机数
+        $scope.numberG = Math.ceil(Math.random()*3);//随机数男宝
         $scope.$on('$ionicView.enter', function(){
             loadShare();
             var date = new Date(+new Date()+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'');
