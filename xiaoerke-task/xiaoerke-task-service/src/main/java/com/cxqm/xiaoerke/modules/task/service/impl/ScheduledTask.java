@@ -1471,10 +1471,17 @@ public class ScheduledTask {
     }
 
     /***
-     * 每五分钟检查一次医生的在线状态，如果医生出现异常断网的情况，则废除此channel
+     * 每two minutes分钟检查一次医生的在线状态，如果医生出现异常断网的情况，则废除此channel
      ***/
     public void checkDoctorChannelStatusTask() {
         ConsultSessionManager.getSessionManager().checkDoctorChannelStatus();
+    }
+
+    /***
+    * every two minutes to check the h5 user connection status
+     ***/
+    public void checkH5UserChannelStatusTask(){
+        ConsultSessionManager.getSessionManager().checkH5UserChannelStatus();
     }
 
 }

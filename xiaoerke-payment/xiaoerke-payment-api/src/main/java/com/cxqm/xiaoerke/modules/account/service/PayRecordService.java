@@ -1,10 +1,9 @@
 package com.cxqm.xiaoerke.modules.account.service;
 
-import java.util.List;
-
 import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
-
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Created by wangbaowei on 15/11/5.
@@ -28,4 +27,8 @@ public interface PayRecordService {
 
 
     PayRecord findRecordByOpenid(String openid,String type);
+    /**
+     *根据订单编号更新支付结果表(account_pay_record)
+     */
+    int updatePayRecordByOrderId(PayRecord payRecord);
 }

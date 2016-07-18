@@ -11,17 +11,13 @@ import com.cxqm.xiaoerke.modules.sys.dao.UserDao;
 import com.cxqm.xiaoerke.modules.sys.dao.UtilDao;
 import com.cxqm.xiaoerke.modules.sys.entity.*;
 import com.cxqm.xiaoerke.modules.sys.service.BabyBaseInfoService;
-import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 
 @Service
@@ -352,6 +348,21 @@ public class UtilServiceImpl implements UtilService {
         if (null != num) {
             ChangzhuoMessageUtil.sendMsg(num, content);
         }
+    }
+
+    /**
+     * 非微信(第三方平台购买宝护伞后通过用户专属临时二维码扫码关注后的用户绑定)
+     * @author guozengguang
+     * @param num 用户手机号
+     * @param openid 用户openid
+     * @return
+     */
+    @Override
+    public PatientVo bindUserForThirdParty(String num, String openid){
+        System.out.print("openid---------------------------------------------" + openid);
+        String response = null;
+        PatientVo patientVo = CreateUser(num, openid, "patient");//zdl 抽取
+        return patientVo;
     }
 
 

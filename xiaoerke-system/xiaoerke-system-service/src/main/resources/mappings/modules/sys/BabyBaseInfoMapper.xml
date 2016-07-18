@@ -170,4 +170,11 @@
         and userid = #{userid,jdbcType=VARCHAR}
       </if>
   </select>
+  <!--根据userId更新宝宝信息(openId)-->
+    <update id="updateBabyInfoByUserId" parameterType="com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo" >
+        update sys_baby_baseInfo
+        set
+        openid = #{openid,jdbcType=VARCHAR}
+        where userid = #{userid,jdbcType=VARCHAR}
+    </update>
 </mapper>
