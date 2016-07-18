@@ -4,7 +4,6 @@ package com.cxqm.xiaoerke.modules.umbrella.web;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
-import com.cxqm.xiaoerke.common.utils.IdGen;
 import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
 import com.cxqm.xiaoerke.modules.account.service.PayRecordService;
 import com.cxqm.xiaoerke.modules.alipay.service.AlipayService;
@@ -239,29 +238,70 @@ public class UmbrellaThirdPartyController  {
      * 非微信平台(第三方)支付宝支付
      * @author guozengguang
      */
+    //@RequestMapping(value = "/alipayment", method = {RequestMethod.POST, RequestMethod.GET})
+    //public
+    //String  alipayment(@RequestBody Map<String, Object> params,HttpServletResponse response) {
+    //    DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+    //    String totleFee = params.get("totleFee").toString();//支付金额
+    //    String body = params.get("body").toString();//可以为空
+    //    String describe = params.get("describe").toString();//商品描述
+    //    String showUrl = params.get("showUrl").toString();//商品展示地址
+    //    String out_trade_no = params.get("umbrellaid").toString();//交易订单号,这里用宝护伞id
+    //    String userId = params.get("userId").toString();//保存宝护伞信息时带过去的userId
+    //
+    //    //先在数据库里生成一份订单数据(account_pay_record表)
+    //    PayRecord payRecord = new PayRecord();
+    //    payRecord.setId(IdGen.uuid());
+    //    payRecord.setAmount(Float.parseFloat(totleFee)*100);
+    //    payRecord.setCreatedBy(userId);
+    //    payRecord.setUserId(userId);
+    //    payRecord.setPayType("zfb");
+    //    payRecord.setStatus("wait");
+    //    payRecord.setPayDate(new Date());
+    //    payRecord.setOrderId(out_trade_no);
+    //    payRecord.setFeeType("umbrellaApp");
+    //    payRecordService.insertPayInfo(payRecord);
+    //
+    //
+    //    //调用支付
+    //    String result = alipayService.alipayment(totleFee, body, describe, showUrl,out_trade_no);
+    //    try {
+    //        StringUtil.writeToWeb(result, "html", response);
+    //    } catch (IOException e) {
+    //        e.printStackTrace();
+    //    }
+    //    return null;
+    //}
+
     @RequestMapping(value = "/alipayment", method = {RequestMethod.POST, RequestMethod.GET})
     public
-    String  alipayment(@RequestBody Map<String, Object> params,HttpServletResponse response) {
+    String  alipayment(HttpServletRequest request,HttpServletResponse response) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
-        String totleFee = params.get("totleFee").toString();//支付金额
-        String body = params.get("body").toString();//可以为空
-        String describe = params.get("describe").toString();//商品描述
-        String showUrl = params.get("showUrl").toString();//商品展示地址
-        String out_trade_no = params.get("umbrellaid").toString();//交易订单号,这里用宝护伞id
-        String userId = params.get("userId").toString();//保存宝护伞信息时带过去的userId
+        String out_trade_no = request.getParameter("WIDout_trade_no");
+        String body = request.getParameter("WIDsubject");
+        String totleFee = request.getParameter("WIDtotal_fee");
+        String showUrl = request.getParameter("WIDshow_url");
+        String describe = request.getParameter("WIDbody");
+
+        //String totleFee = params.get("totleFee").toString();//支付金额
+        //String body = params.get("body").toString();//可以为空
+        //String describe = params.get("describe").toString();//商品描述
+        //String showUrl = params.get("showUrl").toString();//商品展示地址
+        //String out_trade_no = params.get("umbrellaid").toString();//交易订单号,这里用宝护伞id
+        //String userId = params.get("userId").toString();//保存宝护伞信息时带过去的userId
 
         //先在数据库里生成一份订单数据(account_pay_record表)
-        PayRecord payRecord = new PayRecord();
-        payRecord.setId(IdGen.uuid());
-        payRecord.setAmount(Float.parseFloat(totleFee)*100);
-        payRecord.setCreatedBy(userId);
-        payRecord.setUserId(userId);
-        payRecord.setPayType("zfb");
-        payRecord.setStatus("wait");
-        payRecord.setPayDate(new Date());
-        payRecord.setOrderId(out_trade_no);
-        payRecord.setFeeType("umbrellaApp");
-        payRecordService.insertPayInfo(payRecord);
+        //PayRecord payRecord = new PayRecord();
+        //payRecord.setId(IdGen.uuid());
+        //payRecord.setAmount(Float.parseFloat(totleFee)*100);
+        //payRecord.setCreatedBy(userId);
+        //payRecord.setUserId(userId);
+        //payRecord.setPayType("zfb");
+        //payRecord.setStatus("wait");
+        //payRecord.setPayDate(new Date());
+        //payRecord.setOrderId(out_trade_no);
+        //payRecord.setFeeType("umbrellaApp");
+        //payRecordService.insertPayInfo(payRecord);
 
 
         //调用支付
