@@ -79,4 +79,11 @@ public class BabyBaseInfoServiceImpl implements BabyBaseInfoService {
 		return babyBaseInfoDao.getBabyInfoByInfo(vo);
 	}
 
+    /**
+     * int updateBabyInfoByUserId();
+     */
+
+    public int updateBabyInfoByUserId(BabyBaseInfoVo record){
+        return babyBaseInfoDao.updateBabyInfoByUserId(record);
+    }
 }

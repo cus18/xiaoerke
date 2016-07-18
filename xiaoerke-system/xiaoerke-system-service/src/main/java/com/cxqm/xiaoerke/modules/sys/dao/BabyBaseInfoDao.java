@@ -5,7 +5,6 @@ import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 
 import java.util.List;
-import java.util.Map;
 
 @MyBatisDao
 public interface BabyBaseInfoDao {
@@ -34,5 +33,7 @@ public interface BabyBaseInfoDao {
      * sunxiao
      */
     List<BabyBaseInfoVo> getBabyInfoByInfo(BabyBaseInfoVo vo);
+
+    int updateBabyInfoByUserId(BabyBaseInfoVo vo);
     
 }

@@ -89,12 +89,10 @@ var swipeInit=function(){
                 es.webkitTransitionDuration = es.MsTransitionDuration = es.msTransitionDuration = es.MozTransitionDuration = es.OTransitionDuration = es.transitionDuration = speed + 'ms';
 
             }
-        },
-
-
+        }
 
     })
-}
+};
 var moreLock=false;
 var lookMore = function(){
     if(moreLock){

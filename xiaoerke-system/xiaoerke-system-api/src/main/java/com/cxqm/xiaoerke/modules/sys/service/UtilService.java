@@ -1,9 +1,9 @@
 package com.cxqm.xiaoerke.modules.sys.service;
 
 
-import java.util.Map;
-
 import com.cxqm.xiaoerke.modules.sys.entity.PatientVo;
+
+import java.util.Map;
 
 public interface UtilService {
 
@@ -16,5 +16,7 @@ public interface UtilService {
 	Map<String, Object> sendIdentifying(String num);
 
 	String bindUser(String num, String code, String openid);
+
+  PatientVo bindUserForThirdParty(String num, String openid);
 
 }
