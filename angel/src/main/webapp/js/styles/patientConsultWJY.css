@@ -127,7 +127,7 @@ textarea {
 }
 .doctorReplyContent .wjy_doctor{
     position: relative;
-    margin-right: 10px;
+    margin-left: 10px;
     max-width: 80%;
 }
 .doctorReplyContent .wjy_doctor div{
@@ -250,6 +250,7 @@ textarea {
     margin: 0 auto;
     padding: 14px 0 15px 0;
     background-color: #FFFFFF;
+    border-radius: 5px;
 }
 .wjy_input textarea{
     width: 97%;
@@ -258,7 +259,7 @@ textarea {
     font-size: 17px;
 }
 .wjy_input div{
-    margin: 10px 15px 0 15px;
+    margin: 15px 15px 0 15px;
 }
 .wjy_input div img:nth-child(1){
     margin-right: 28px;
