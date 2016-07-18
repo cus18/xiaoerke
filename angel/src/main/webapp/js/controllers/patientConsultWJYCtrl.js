@@ -67,7 +67,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     //$scope.socketServer = new ReconnectingWebSocket("ws://s202.xiaork.com/wsbackend/ws&user&"
                     //    + $scope.patientId +"&h5cxqm");//cs,user,distributor
 
-                    $scope.socketServer = new WebSocket("ws://s201.xiaork.com:2048/ws&user&"
+                    $scope.socketServer = new WebSocket("ws://s202.xiaork.com:2048/ws&user&"
                      + $scope.patientId +"&h5wjy");//cs,user,distributor*/
 
                     $scope.socketServer.onmessage = function(event) {
