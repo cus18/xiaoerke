@@ -275,7 +275,7 @@ public class ConsultUserController extends BaseController {
                         searchMap.put("messageNotSee",true);
                         searchMap.put("dateTime",richConsultSession.getCreateTime());
                         searchMap.put("consultValue",ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
-                            if(needPayList.size()>0&&consultPayUserService.angelChargeCheck(userId)){
+                            if(null != needPayList&&consultPayUserService.angelChargeCheck(userId)){
 
                                 if("distributor".equals(csuserType)){
                                     Date creatTime =(Date) needPayList.get(userId);
