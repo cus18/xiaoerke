@@ -67,7 +67,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     //$scope.socketServer = new ReconnectingWebSocket("ws://s202.xiaork.com/wsbackend/ws&user&"
                     //    + $scope.patientId +"&h5cxqm");//cs,user,distributor
 
-                    $scope.socketServer = new WebSocket("ws://s202.xiaork.com:2048/ws&user&"
+                    $scope.socketServer = new WebSocket("ws://s202.xiaork.com:2048/wsbackend/ws&user&"
                      + $scope.patientId +"&h5wjy");//cs,user,distributor*/
 
                     $scope.socketServer.onmessage = function(event) {
@@ -175,6 +175,48 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     }
                 }
                 $scope.$apply();
+            };
+
+            //提交图片
+            $scope.uploadFiles = function($files,fileType) {
+                var dataValue = {
+                    "fileType": fileType,
+                    "senderId": $scope.patientId,
+                    "sessionId":$scope.sessionId
+                };
+                var dataJsonValue = JSON.stringify(dataValue);
+                console.log('dataJsonValue',JSON.stringify(dataValue));
+                for (var i = 0; i < $files.length; i++) {
+                    var file = $files[i];
+                    $scope.upload = $upload.upload({
+                        url: 'consult/h5/uploadMediaFile',
+                        data: encodeURI(dataJsonValue),
+                        file: file
+                    }).progress(function(evt) {
+                        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+                    }).success(function(data, status, headers, config){
+                        var patientValMessage = {
+                            "type": 1,
+                            "content": data.showFile,
+                            "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                            "senderId": $scope.patientId,
+                            "senderName": $scope.senderName,
+                            "sessionId":$scope.sessionId,
+                            "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
+                        };
+                        console.log(patientValMessage.content);
+                        if (!window.WebSocket) {
+                            return;
+                        }
+                        if ($scope.socketServer.readyState == WebSocket.OPEN) {
+                            $scope.consultContent.push(patientValMessage);
+                            $scope.socketServer.send(JSON.stringify(patientValMessage));
+                            $scope.info.consultInputValue = "";
+                        } else {
+                            alert("连接没有开启.");
+                        }
+                    });
+                }
             };
 
             //发送消息
