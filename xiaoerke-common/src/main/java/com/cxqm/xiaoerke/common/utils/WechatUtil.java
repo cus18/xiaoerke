@@ -1,6 +1,5 @@
 package com.cxqm.xiaoerke.common.utils;
 
-import com.alibaba.fastjson.JSON;
 import com.cxqm.xiaoerke.common.bean.*;
 import com.cxqm.xiaoerke.modules.sys.entity.Article;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
@@ -15,8 +14,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -181,6 +178,7 @@ public class WechatUtil {
      */
     public static String sendMsgToWechat(String token, String openId, String content) {
         String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + token;
+        String result = "failure";
         try {
             String json = "{\"touser\":\"" + openId + "\",\"msgtype\":\"text\",\"text\":" +
                     "{\"content\":\"CONTENT\"}" + "}";
@@ -189,15 +187,17 @@ public class WechatUtil {
             System.out.print(json + "--" + re);
             if(re.contains("access_token is invalid")){
                 //token已经失效，重新获取新的token
-                return "tokenIsInvalid";
+                result = "tokenIsInvalid";
             }
             JSONObject obj = new JSONObject(re);
-            String resultStatus = (String)obj.get("errcode");
-            return resultStatus;
+            Integer resultStatus = (Integer)obj.get("errcode");
+            if(resultStatus != null && resultStatus == 0){
+                result = "messageOk";
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-      return "messageOk";
+      return result ;
     }
 
 
@@ -375,7 +375,7 @@ public class WechatUtil {
         shortUrlCreate.setLong_url(longUrl);
         String object = HttpRequestUtil.httpsRequest(url, "POST", net.sf.json.JSONObject.fromObject(shortUrlCreate).toString());
         JSONObject resultJson = new JSONObject(object);
-        String shortUrl = (String) resultJson.get("short_url");
+        String shortUrl = resultJson == null ?"":(String) resultJson.get("short_url");
         return shortUrl;
     }
 
@@ -544,6 +544,7 @@ public class WechatUtil {
      */
     public static String sendTemplateMsgToUser(String token , String openId ,String templateId ,String content){
         String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+token;
+        String result = "failure";
         try {
             String json = "{\"touser\":\"" + openId + "\",\"template_id\":\""+templateId+"\",\"url\":\"\"," +
                     "\"data\":" + "{"+content+"}}";
@@ -552,18 +553,54 @@ public class WechatUtil {
             JSONObject jsonObject = new JSONObject(re);
             if(re.contains("access_token is invalid")){
                 //token已经失效，重新获取新的token
-                return "tokenIsInvalid";
+                result = "tokenIsInvalid";
             }
-            String resultStatus = (String)jsonObject.get("errcode");
-            if(resultStatus !=null && "0".equalsIgnoreCase(resultStatus)){
-                return "messageOk";
-            }else{
-                System.out.println(jsonObject.get("errmsg"));
+            Integer resultStatus = (Integer)jsonObject.get("errcode");
+            if(resultStatus != null && resultStatus == 0){
+                result = "messageOk";
+                System.out.println("------"+resultStatus);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "messageOk";
+        return result;
     }
+
+   /* public static void main(String[] args){
+        List<String> openIds = new ArrayList<String>();
+        openIds.add("o3_NPwsDuiEk1LW1dFvpBlozafu4");
+        openIds.add("o3_NPwh8Jqkf9Dr2YsuFSSoAyzpc");
+        openIds.add("o3_NPwq71mM836w64VUVdKi7gNEA");
+        openIds.add("o3_NPwq71sdf36w64VeVxKi7defg");
+        openIds.add("o3_NPwsnm69zdjkDSZBSgNJwcecM");
+        openIds.add("o3_NPwjhZzRyR0-GndSzoJQOTB3k");
+        openIds.add("o3_NPwsTM1OZAA_doMkc5IOy2MFU");
+        openIds.add("o3_NPwhLIhjZ0OpyF2EVCKKsg0yE");
+        String tokenId = "3NjH5MIJTPhUm_pdhjihQZF3dR3GSt74Xo-eTvWdXdT2Jl_0nchJ22b8GweAoaqEYUhpHjYV8d10FeIATSyo8V8i7ZNwmYTH7a2UYzFCblfH8MxHlGLDyxqH0nuVdHkqMUZgAEACKP";
+        String templateId = "xP7QzdilUu1RRTFzVv8krwwMOyv-1pg9l0ABsooub14";
+        String message = "\"first\":{\"value\":\"有用户对咨询服务做出了评价，请及时处理！\",\"color\":\"#173177\"}," +
+                "\"keyword1\":{\"value\":\"" + "测试" + "\",\"color\":\"#173177\"}," +
+                "\"keyword2\":{\"value\":\"" + "测试" + "\",\"color\":\"#173177\"}," +
+                "\"keyword3\":{\"value\":\"" + new Date() + "\",\"color\":\"#173177\"},";
+
+            message = message + "\"keyword4\":{\"value\":\"" + "测试" + "\",\"color\":\"#173177\"},";
+
+        message = message + "\"keyword5\":{\"value\":\"" + "测试评价推送" + "\",\"color\":\"#173177\"}," +
+                "\"remark\":{\"value\":\"\",\"color\":\"#173177\"}";
+        String failureMessage = "";
+        if (openIds != null && openIds.size() > 0) {
+            for (String openId : openIds) {
+                String result = WechatUtil.sendTemplateMsgToUser(tokenId, openId, templateId, message);
+                if("messageOk".equals(result)){
+                    continue ;
+                }else{
+                    failureMessage = failureMessage + openId +","+"\n";
+                }
+            }
+        }
+        if(StringUtils.isNotNull(failureMessage)){
+            failureMessage = "以下用户差评提醒消息发送失败："+failureMessage+"请查看！";
+            WechatUtil.sendMsgToWechat(tokenId,"o3_NPwuDSb46Qv-nrWL-uTuHiB8U",failureMessage);
+        }
+    }*/
 }

@@ -79,7 +79,7 @@
                                     link:  "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$scope.umbrellaId+"/a",
                                     imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                     success: function (res) {
-                                        recordLogs("BHS_WDBZ_FXPYQ_"+$scope.umbrellaId);
+                                        recordLogs("BHS_YQTE_FXPYQ_"+$scope.umbrellaId);
                                         //记录用户分享文章
                                         $.ajax({
                                             type: 'POST',
@@ -103,7 +103,7 @@
                                     link:  "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$scope.umbrellaId+"/a", // 分享链接
                                     imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                     success: function (res) {
-                                        recordLogs("BHS_WDBZ_FXPY_"+$scope.umbrellaId);
+                                        recordLogs("BHS_YQTE_FXPY_"+$scope.umbrellaId);
                                         $.ajax({
                                             type: 'POST',
                                             url: "umbrella/updateBabyUmbrellaInfoIfShare",

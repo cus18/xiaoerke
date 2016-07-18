@@ -98,14 +98,24 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
         //是否已经支付
         PayRecord payRecord = payRecordService.findRecordByOpenid(userId,"doctorConsultPay");
         //判断时间条件
-        Date morningStartTime = DateUtils.StrToDate(Global.getConfig("consultMorningStartTime"),"yyyy-MM-dd HH:mm");
-        Date consultMorningEndTime = DateUtils.StrToDate(Global.getConfig("consultMorningEndTime"),"yyyy-MM-dd HH:mm");
-        Date consultAfternoonStartTime = DateUtils.StrToDate(Global.getConfig("consultAfternoonStartTime"),"yyyy-MM-dd HH:mm");
-        Date consultAfternoonEndTime = DateUtils.StrToDate(Global.getConfig("consultAfternoonEndTime"),"yyyy-MM-dd HH:mm");
-        Date present = new Date();
+//        Integer morningStartTime = Integer.parseInt(Global.getConfig("consultMorningStartTime"));
+//        Integer consultMorningEndTime = Integer.parseInt(Global.getConfig("consultMorningEndTime"));
+        Integer consultAfternoonStartTime = Integer.parseInt(Global.getConfig("consultAfternoonStartTime"));
+        Integer consultAfternoonEndTime = Integer.parseInt(Global.getConfig("consultAfternoonEndTime"));
+
+        Date consultBeginDate = DateUtils.StrToDate(Global.getConfig("consultBeginDate"),"yyyy-MM-dd");
+        Date consultEndDate = DateUtils.StrToDate(Global.getConfig("consultEndDate"),"yyyy-MM-dd");
+
+        Date nowDate = new Date();
+        Long nowTime = nowDate.getTime();
+
+        Calendar c1=Calendar.getInstance();
+        c1.setTime(nowDate);
+        int thisHour = c1.get(Calendar.HOUR_OF_DAY);
+
         //判断日期条件是否满足要求
-        if((morningStartTime.getTime()<present.getTime() &&consultMorningEndTime.getTime()>present.getTime())
-                ||(consultAfternoonStartTime.getTime()<present.getTime()&&consultAfternoonEndTime.getTime()>present.getTime()))
+        if(consultBeginDate.getTime()<nowTime&&consultEndDate.getTime()>nowTime)
+        if(consultAfternoonStartTime<=thisHour&&consultAfternoonEndTime>=thisHour)
         if( (null!=consultSessions&&consultSessions.size()>2&&(null ==payRecord || payRecord.getReceiveDate().getTime()+24*60*60*1000<new Date().getTime()))
                 &&insurance == 0
                 )
@@ -144,7 +154,7 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
                 break;
             case 2:
                 st = "哎呀，遇到咨询高峰期，加个急诊费，即可让医生秒回。" +
-                        "\n》<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/getUserWechatMenId?url=35'>急诊100%秒达</a>" +
+                        "\n》<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/getUserWechatMenId?url=35'>支付急诊费100%秒达</a>" +
                         "\n------------------------"+
                         "\n》<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/getUserWechatMenId?url=34'>咨询客服</a>";
                 break;

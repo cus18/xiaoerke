@@ -119,8 +119,8 @@ public class ConsultWechatController extends BaseController {
             if(openId.length() > 20){
                 userName = openId.substring(openId.length()-8,openId.length());
             }else{
-                userName = openId.substring(0,10);
-                userId = openId.substring(0,10);
+                userName = openId.substring(0,5);
+                userId = openId.substring(0,5);
             }
 
             if(wechatAttentionVo!=null){

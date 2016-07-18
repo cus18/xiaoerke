@@ -3,6 +3,7 @@ package com.cxqm.xiaoerke.modules.consult.dao;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.sys.entity.DoctorVo;
 
@@ -47,4 +48,6 @@ public interface ConsultSessionDao {
 
     //根据条件查询会话列表 sunxiao
     List<ConsultSession> getConsultSessionListByInfo(Map map);
+
+    int insertConsultSessionBatch(List<ConsultSession> consultSessionses);
 }

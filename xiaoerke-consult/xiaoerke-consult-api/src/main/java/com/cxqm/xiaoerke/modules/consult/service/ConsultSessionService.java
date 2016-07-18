@@ -3,6 +3,8 @@ package com.cxqm.xiaoerke.modules.consult.service;
 
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.sys.entity.DoctorVo;
 
@@ -21,6 +23,8 @@ public interface ConsultSessionService {
     int updateSessionInfo(ConsultSession consultSession);
 
     List<ConsultSession> selectBySelective(ConsultSession consultSession);
+
+    int insertConsultSessionBatch(List<ConsultSession> consultSession);
 
     List<ConsultSession> getCsUserByUserId(ConsultSession consultSession);
 

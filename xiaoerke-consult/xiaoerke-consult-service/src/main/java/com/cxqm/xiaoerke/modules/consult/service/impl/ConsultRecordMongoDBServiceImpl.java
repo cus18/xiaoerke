@@ -172,6 +172,10 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		return this.mongoTemplate.find(query, ConsultRecordMongoVo.class, "consultSessionStatusVo");
 	}
 
+	public List<ConsultSessionStatusVo> getConsultSessionStatusList(Query query){
+		return this.mongoTemplate.find(query, ConsultSessionStatusVo.class, "consultSessionStatusVo");
+	}
+
 	public List<ConsultRecordMongoVo> queryTempRecordList(Query query){
 		return this.mongoTemplate.find(query, ConsultRecordMongoVo.class, "consultRecordTemporary");
 	}
