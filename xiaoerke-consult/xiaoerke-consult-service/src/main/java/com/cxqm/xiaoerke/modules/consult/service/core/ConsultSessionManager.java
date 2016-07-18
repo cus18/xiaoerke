@@ -86,8 +86,6 @@ public class ConsultSessionManager {
     private ConsultDoctorInfoService consultDoctorInfoService = SpringContextHolder.getBean("consultDoctorInfoServiceImpl");
 
     private ConsultSessionManager() {
-//        String distributorsStr = Global.getConfig("distributors.list");
-//        distributorsList = Arrays.asList(distributorsStr.split(";"));
         User user = new User();
         user.setUserType("distributor");
         List<User> users = systemService.findUserByUserType(user);

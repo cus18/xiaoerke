@@ -139,12 +139,12 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                 }
             } else if (senderId.equals(csUserId)) {
                 //如果是医生作为发送者，则用户接收
-                if (richConsultSession.getSource().equals("h5cxqm")) {
+                if (richConsultSession.getSource().equals("h5cxqm")||richConsultSession.getSource().equals("h5wjy")) {
                     Channel userChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(userId);
                     if (userChannel != null && userChannel.isActive()) {
                         userChannel.writeAndFlush(msg.retain());
                     }
-                } else if (richConsultSession.getSource().equals("wxcxqm")) {
+                } if (richConsultSession.getSource().equals("wxcxqm")) {
                     String sendResult = "";
                     if (msgType == 0) {
                         String content = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
@@ -219,9 +219,21 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                     consultRecordService.buildRecordMongoVo((String) msgMap.get("senderId"), String.valueOf(msgType),
                             (String) msgMap.get("content"), consultSession);
                 }
+            }else if(msgMap.get("source").equals("h5wjyUser") && msgMap.get("senderId") != null){
+                RichConsultSession consultSession = ConsultSessionManager.getSessionManager().
+                        createUserH5ConsultSession((String) msgMap.get("senderId"), channel, "h5wjy");
 
-            }else if(msgMap.get("source").equals("h5cxqmUser") && msgMap.get("senderId") != null){
-
+                //保存聊天记录
+                if (consultSession != null) {
+                    //将用户发过来的第一条消息，推送给分配好的接诊员，或者医生
+                    msgMap.put("sessionId", consultSession.getId());
+                    msgMap.put("serverAddress", consultSession.getServerAddress());
+                    Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
+                    TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(msgMap));
+                    csChannel.writeAndFlush(csUserMsg.retain());
+                    consultRecordService.buildRecordMongoVo((String) msgMap.get("senderId"), String.valueOf(msgType),
+                            (String) msgMap.get("content"), consultSession);
+                }
             }
         }
     }

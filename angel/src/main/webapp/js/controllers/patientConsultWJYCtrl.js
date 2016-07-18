@@ -68,7 +68,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     //    + $scope.patientId +"&h5cxqm");//cs,user,distributor
 
                     $scope.socketServer = new WebSocket("ws://s201.xiaork.com:2048/ws&user&"
-                     + $scope.patientId +"&h5cxqm");//cs,user,distributor*/
+                     + $scope.patientId +"&h5wjy");//cs,user,distributor*/
 
                     $scope.socketServer.onmessage = function(event) {
                         var consultData = JSON.parse(event.data);
