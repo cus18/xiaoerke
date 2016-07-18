@@ -7,7 +7,7 @@ li{list-style:none}
 img{border:0;vertical-align:middle}
 table{border-collapse:collapse;border-spacing:0}
 p{word-wrap:break-word}
-.h100{height: 100%;}
+.h100{height: 93%;}
 a:focus,input:focus{-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-user-modify:read-write-plaintext-only;}
 .container-fluid{
     background-color: #fff;
@@ -37,7 +37,7 @@ a:focus,input:focus{-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-user-modif
     float: right;
 }
 .consultDisplay {
-    padding: 44px 0;
+    padding: 44px 0 100px 0;
     background-color: #f9f9f9;
 }
 .consultDisplay::-webkit-scrollbar {
@@ -251,6 +251,7 @@ textarea {
     padding: 14px 0 15px 0;
     background-color: #FFFFFF;
     border-radius: 5px;
+    z-index: 555;
 }
 .wjy_input textarea{
     width: 97%;
