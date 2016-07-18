@@ -32,8 +32,8 @@ angular.module('controllers', ['luegg.directives'])
             $scope.loadingFlag = false;
             $scope.socketServerFirst = "";
             $scope.socketServerSecond = "";
-            $scope.firstAddress = "101.201.154.75";
-            $scope.secondAddress = "120.25.161.33";
+            //$scope.firstAddress = "101.201.154.75";
+            $scope.secondAddress = "101.201.154.201";
             $scope.alreadyJoinPatientConversation = []; //已经加入会话的用户数据，一个医生可以有多个对话的用户，这些用户的数据，都保存在此集合中 乱码
             $scope.currentUserConversation = {}; //医生与当前正在进行对话用户的聊天数据，医生在切换不同用户时，数据变更到切换的用户上来。
             $scope.waitJoinNum = 0; //医生待接入的用户数，是动态变化的数
@@ -89,9 +89,9 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.userType = data.userType;
 
                         //创建与平台的socket连接
-                        if($scope.socketServerFirst==""||$scope.socketServerFirst.readyState!=1){
-                            $scope.initConsultSocketFirst();
-                        }
+                        //if($scope.socketServerFirst==""||$scope.socketServerFirst.readyState!=1){
+                        //    $scope.initConsultSocketFirst();
+                        //}
                         if($scope.socketServerSecond==""||$scope.socketServerSecond.readyState!=1){
                             $scope.initConsultSocketSecond();
                         }
@@ -1348,16 +1348,10 @@ angular.module('controllers', ['luegg.directives'])
                     data.babyList.push(addBabyName);
                 }
                 $scope.babyNameList = data.babyList;
-                console.log("$scope.babyNameList",$scope.babyNameList);
             });
+
             //添加诊断记录
             $scope.addDiagnosisRecords = function () {
-                console.log($scope.info.result);
-                console.log($scope.info.show);
-                console.log($scope.info.illness);
-                console.log($scope.info.selectedIllnessList);
-                console.log($scope.todayTime);
-                console.log($scope.doctorId);
                 //添加诊断记录
                 SaveCustomerLog.save({
                     openid:$scope.currentUserConversation.patientId,
@@ -1493,7 +1487,7 @@ angular.module('controllers', ['luegg.directives'])
                 $.each($scope.alreadyJoinPatientConversation,function(index,value){
                     console.log(index);
                     var date = new Date().getTime();
-                   var flag = moment().subtract(5, 'minute').isAfter(value.dateTime);
+                    var flag = moment().subtract(5, 'minute').isAfter(value.dateTime);
                     if(value.notifyType == 1002 && flag ){
                         value.notifyType = 1003;
                         console.log('notifyType',value.notifyType);
