@@ -2,6 +2,8 @@
     '$scope','$state','$stateParams',
     function ($scope,$state,$stateParams) {
         $scope.title="宝大夫儿童家庭重疾互助计划";
+        $scope.musicLock=false;
+        $scope.touchLock=true;
         /*$scope.myActiveSlide =0;*/
 
         /*立即加入*/
@@ -26,7 +28,32 @@
                 }
             });
         };
+
+        //播放视频
+
+        $scope.onTouch=function() {
+            if($scope.touchLock&&music.paused){
+                music.play();
+                $scope.musicLock=true;
+            }
+            $scope.touchLock=false;
+
+        }
+        $scope.playMusic=function() {
+            if ($scope.musicLock) { //判读是否播放
+                music.pause();
+                $scope.musicLock=false;
+
+            }
+            else{
+                music.play();
+                $scope.musicLock=true;
+
+            }
+
+        };
         $scope.$on('$ionicView.enter', function(){
+
             // $.ajax({
             //     url:"umbrella/getOpenid",// 跳转到 action
             //     async:true,
@@ -42,6 +69,11 @@
             //     error : function() {
             //     }
             // });
+            var music = document.getElementById("music");//获取ID
+            if(!music.paused){
+                $scope.musicLock=true;
+                console.log("111"+!music.paused)
+            }
 
             //页面swipe 初始化
             var arrObj=document.getElementById('array')

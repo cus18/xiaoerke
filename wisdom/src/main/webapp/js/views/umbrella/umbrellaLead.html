@@ -53,7 +53,11 @@
             </ion-slide-box>
         </ion-scroll>
     </ion-content>-->
-    <div class="swiper-container">
+    <div class="music">
+        <img ng-click="playMusic()" width="50" height="50" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/{{musicLock ? 'leadMusic_on.gif':'leadMusic_off.png'}}">
+        <audio id="music" loop="loop"  preload="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/lead_music.mp3"   preload="none"></audio>
+    </div>
+    <div class="swiper-container" on-touch="onTouch()" >
         <div class="swiper-wrapper">
             <!-------------slide1----------------->
             <section class="swiper-slide swiper-slide1 ">
