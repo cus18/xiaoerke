@@ -96,6 +96,29 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
             return;
         }
 
+        if(msgType == 7){
+            String userId = (String) msgMap.get("userId");
+            //来自用户H5的心跳，回心跳确认给用户
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("type", "7");
+            Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(userId);
+            TextWebSocketFrame heartBeatCsUser = new TextWebSocketFrame(jsonObj.toJSONString());
+            csChannel.writeAndFlush(heartBeatCsUser.retain());
+            return;
+        }
+
+        if(msgType==8){
+            String csUserId = (String) msgMap.get("csUserId");
+            Iterator<Map.Entry<String, Date>> it2 = ConsultSessionManager.getSessionManager().getCsUserConnectionTimeMapping().entrySet().iterator();
+            while (it2.hasNext()) {
+                Map.Entry<String, Date> entry = it2.next();
+                if (csUserId.equals(entry.getKey())) {
+                    ConsultSessionManager.getSessionManager().getUserConnectionTimeMapping().put(entry.getKey(), new Date());
+                }
+            }
+            return;
+        }
+
         Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
         if (sessionId != null) {
             RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
@@ -196,6 +219,8 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                     consultRecordService.buildRecordMongoVo((String) msgMap.get("senderId"), String.valueOf(msgType),
                             (String) msgMap.get("content"), consultSession);
                 }
+
+            }else if(msgMap.get("source").equals("h5cxqmUser") && msgMap.get("senderId") != null){
 
             }
         }

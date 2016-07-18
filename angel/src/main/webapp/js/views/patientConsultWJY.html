@@ -23,14 +23,23 @@
                         <img width="100px" ng-src="{{item.content}}" ng-click="tapImgButton('magnifyImg',item.content)">
                     </div>
                 </div>
-                <div ng-if="item.type=='4'&&item.notifyType=='1001'">
-                    亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^1001
+                <div ng-if="loseConnectionFlag"
+                        style="margin-left: 25px;margin-top:10px;">您目前的服务连接不正常，请检查您的网络情况，谢谢！</div>
+                <div ng-if="item.type=='4'&&item.notifyType=='1001'"
+                     style="margin-left: 25px;margin-top:10px;">
+                    亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^
                 </div>
-                <div ng-if="item.type=='4'&&item.notifyType=='1002'">
-                    亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^1002
+                <div ng-if="item.type=='4'&&item.notifyType=='1002'"
+                     style="margin-left: 25px;margin-top:10px;">
+                    亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^
                 </div>
-                <div ng-if="item.type=='4'&&item.notifyType=='1003'">
-                    亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^1003
+                <div ng-if="item.type=='4'&&item.notifyType=='1003'"
+                     style="margin-left: 25px;margin-top:10px;">
+                    亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^
+                </div>
+                <div ng-if="item.type=='4'&&item.notifyType=='0000'"
+                        style="margin-left: 25px;margin-top:10px;">
+                    亲，有什么问题，请向我们的医生们开始提问吧！！^_^
                 </div>
             </div>
             <div class="magnifyImg" ng-show='showFlag.magnifyImg' ng-click="tapShowButton('magnifyImg')">

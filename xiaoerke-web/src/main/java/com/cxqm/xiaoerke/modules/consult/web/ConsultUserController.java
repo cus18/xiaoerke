@@ -372,8 +372,8 @@ public class ConsultUserController extends BaseController {
                 }
             }
             response.put("totalPage",consultSessionStatusVoPaginationVo.getTotalPage());
-            response.put("pageNo",pageNo);
-            response.put("pageSize",pageSize);
+            response.put("pageNo", pageNo);
+            response.put("pageSize", pageSize);
             response.put("userList",resultList);
         }else if(searchType.equals("message")){
             Query query = new Query(where("message").regex(searchInfo)).with(new Sort(Sort.Direction.DESC, "createDate"));
@@ -435,4 +435,29 @@ public class ConsultUserController extends BaseController {
 
         return response;
     }
+
+    /**
+     * 根据userId查询会话sessionId
+     * @author guozengguang
+     * @return response 返回前台的响应数据
+     */
+    @RequestMapping(value = "/getUserCurrentConsultContent", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> getUserCurrentConsultContent(@RequestBody Map<String, Object> params) {
+
+        Map<String, Object> response = new HashMap<String, Object>();
+        Integer sessionId = (Integer) params.get("sessionId");
+        String userId = (String) params.get("userId");
+        Query query = new Query().addCriteria(Criteria.where("userId").is(userId).and("sessionId").is(sessionId)).
+                with(new Sort(Sort.Direction.DESC, "createDate")).limit(1000);
+        List<ConsultRecordMongoVo> currentUserHistoryRecord = consultRecordService.getCurrentUserHistoryRecord(query);
+        if (currentUserHistoryRecord != null) {
+            response.put("consultDataList", ConsultUtil.transformCurrentUserListData(currentUserHistoryRecord));
+        } else {
+            response.put("consultDataList", "");
+        }
+        return response;
+    }
+
 }

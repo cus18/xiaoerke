@@ -98,6 +98,7 @@ angular.module('controllers', ['luegg.directives'])
 
                         getIframeSrc();
                         getHistoryConsultContent();
+
                         //获取通用回复列表
                         GetAnswerValueList.save({"type": "commonAnswer"}, function (data) {
                             if(data.result=="success"){
@@ -126,6 +127,7 @@ angular.module('controllers', ['luegg.directives'])
                                 $scope.diagnosis = [];
                             }
                         });
+
                         /*GetCurrentDoctorDepartment.save({userId:$scope.doctorId},function(data){
                          if(data.status == 'success'){
                          $scope.department = data.department;
@@ -133,6 +135,7 @@ angular.module('controllers', ['luegg.directives'])
                          $scope.department = 'default';
                          }
                          });*/
+
                         //查找所属科室
                         SearchIllnessList.save(function (data) {
                             var addIllness = {
@@ -1327,6 +1330,7 @@ angular.module('controllers', ['luegg.directives'])
                 GetMyAnswerModify.save({answer: $scope.diagnosis, answerType: "diagnosis"}, function (data) {
                 });
             };
+
             /***回复操作区**/
             /***咨询服务**/
             //根据openid获取历史咨询
@@ -1337,6 +1341,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.historyConsult = data.logList;
                 });
             };
+
             //初始化宝宝的信息$scope.currentUserConversation.patientId
             $scope.babyNameList=[];
             SearchBabyInfo.save({openid:''}, function (data) {

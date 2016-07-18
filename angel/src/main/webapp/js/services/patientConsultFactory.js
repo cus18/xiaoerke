@@ -14,9 +14,17 @@ define(['appPatientConsult'], function (app) {
         .factory('GetUserOpenId', ['$resource', function ($resource) {
             return $resource('util/getOpenid');
         }])
-
         //只咨询医生
         .factory('ConsultCustomOnly', ['$resource', function ($resource) {
             return $resource('consult/wechat/consultCustomOnly');
+        }])
+        .factory('GetWYJPatientInfo', ['$resource', function ($resource) {
+            return $resource('consult/wechat/consultCustomOnly');
+        }])
+        .factory('CreateOrUpdateWJYPatientInfo', ['$resource', function ($resource) {
+            return $resource('consult/user/createOrUpdateWJYPatientInfo');
+        }])
+        .factory('GetUserCurrentConsultContent', ['$resource', function ($resource) {
+            return $resource('consult/user/getUserCurrentConsultContent');
         }])
 })
