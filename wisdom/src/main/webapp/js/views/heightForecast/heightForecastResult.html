@@ -3,17 +3,33 @@
     <ion-content class="heightForecastResult" style="top:0;">
         <ion-scroll direction="y" has-bouncing="true">
             <div class="intro">
-                <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2Fbwlsg_png_03.png">
+                <img class="my-img2" width="100%" height="auto" ng-src="{{heightImg}}">
             </div>
-            <div class="intro1">
-                <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2Fimage_c_png_03.png">
+            <div class="intro1" ng-if="showOne">
+                <img class="my-img2" width="60%" height="auto" ng-src="{{babyImg}}">
                 <div class="height">
-                    <span>17{{boyHeight}}</span>
+                    <span>{{babyHeight}}</span>
                     <span>cm</span>
                 </div>
+                <img class="my-img2" width="100%" height="auto" ng-src="{{starImg}}">
             </div>
-            <div class="outside">
-                <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2Fphoto_lin_png_03.png">
+            <div class="intro2" ng-if="showDouble">
+                <div class="baby">
+                    <img class="my-img2" width="80%" height="auto" ng-src="{{boyImg}}">
+                    <div class="height">
+                        <span>{{boyHeight}}</span>
+                        <span>cm</span>
+                    </div>
+                    <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2Fnanbao_png_03.png">
+                </div>
+                <div class="baby">
+                    <img class="my-img2" width="80%" height="auto" ng-src="{{girlImg}}">
+                    <div class="height">
+                        <span>{{girlHeight}}</span>
+                        <span>cm</span>
+                    </div>
+                    <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2Fnvbao_png_03.png">
+                </div>
             </div>
             <div class="lookResult">
                 <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2Fdi_png_02.png">

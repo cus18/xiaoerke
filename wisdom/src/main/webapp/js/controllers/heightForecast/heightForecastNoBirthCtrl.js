@@ -1,6 +1,6 @@
 angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl', [
-    '$scope','$state','$stateParams','$filter',
-    function ($scope,$state,$stateParams,$filter) {
+    '$scope','$state','SaveHeightPredictionInfo',
+    function ($scope,$state,SaveHeightPredictionInfo) {
 
         $scope.title ="宝妈爱心接力";
         $scope.info = {
@@ -32,6 +32,16 @@ angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl',
                 return;
             }
             $scope.lookResultFloat = true;
+            SaveHeightPredictionInfo.save({
+                dadBirthday:$("#dadBirthday").val(),
+                mamBirthday:$("#mamBirthday").val(),
+                dadHeight:$scope.info.dadHeight,
+                mamHeight:$scope.info.mamHeight,
+                resultGirl:$scope.resultGirl,
+                resultBoy:$scope.resultBoy
+            }, function (data) {
+                console.log('data',data)
+            });
             $scope.resultBoy = (parseInt($scope.info.dadHeight) + parseInt($scope.info.mamHeight) + 13) / 2 + $scope.numberB;
             $scope.resultGirl = (parseInt($scope.info.dadHeight)+ parseInt($scope.info.mamHeight) - 13) / 2 + $scope.numberG;
             $state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});

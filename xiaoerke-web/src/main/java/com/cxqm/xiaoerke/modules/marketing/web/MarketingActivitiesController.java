@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -70,4 +72,26 @@ public class MarketingActivitiesController {
 		map.put("updateResult", marketingActivitiesService.updateMarketingActivities(marketingActivities));
 		return map;
 	}
+
+	@RequestMapping(value = "/saveHeightPredictionInfo", method = {RequestMethod.POST, RequestMethod.GET})
+	public @ResponseBody
+	Map<String, Object> saveHeightPredictionInfo (@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session){
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			MarketingActivities marketingActivities = new MarketingActivities();
+			String openid = WechatUtil.getOpenId(session, request);
+			if(StringUtils.isNull(openid)){
+				openid = UserUtils.getUser().getId();
+			}
+			marketingActivities.setOpenid(StringUtils.isNull(openid)?"noOpenidOrUserId":openid);
+			marketingActivities.setCreateDate(new Date());
+			marketingActivities.setResult(params.toString());
+			marketingActivitiesService.saveMarketingActivities(marketingActivities);
+			map.put("result","suc");
+		}catch (Exception e){
+			map.put("result","fail");
+		}
+		return map;
+	}
+
 }

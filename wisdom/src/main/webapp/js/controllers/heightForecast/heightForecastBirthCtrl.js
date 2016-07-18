@@ -1,6 +1,6 @@
 angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
-    '$scope','$state','$stateParams',
-    function ($scope,$state,$stateParams) {
+    '$scope','$state','$stateParams','SaveHeightPredictionInfo',
+    function ($scope,$state,SaveHeightPredictionInfo) {
         $scope.title ="宝妈爱心接力";
         $scope.info = {
             dadHeight:'',
@@ -32,6 +32,13 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
                 minDate: new Date(1960,date.substring(5,7)-1,date.substring(8,10)),
                 maxDate: new Date(date.substring(0,4), date.substring(5,7)-1, date.substring(8,10)),
                 onSelect: function (valueText) {
+                    if(valueText != ''){
+                       /* $("#babyBirthday").
+                        $("#dadBirthday").
+                            $("#mamBirthday").*/
+                        console.log(valueText);
+                        console.log("aaa");
+                    }
                 }
             };
             $("#babyBirthday").mobiscroll(opt);
@@ -41,6 +48,10 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
         //选择孩子性别
         $scope.selectSex = function(sex){
             $scope.sexItem=sex;
+        };
+        //选择孩子性别
+        $scope.selectMon = function(age){
+            $scope.babyAge= age + '个月';
         };
         //判断问题是否为空
         $scope.checkName = function () {
@@ -69,7 +80,21 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
                 $scope.resultGirl = (parseInt($scope.info.dadHeight)+ parseInt($scope.info.mamHeight) - 13) / 2 + $scope.numberG;
                 $scope.resultBoy = 0;
             }
-            $state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
+            //console.log('babyBirthday',$("#babyBirthday").val());
+            SaveHeightPredictionInfo.save({
+                sexItem:$scope.sexItem,
+                babyBirthday:$("#babyBirthday").val(),
+                dadBirthday:$("#dadBirthday").val(),
+                mamBirthday:$("#mamBirthday").val(),
+                dadHeight:$scope.info.dadHeight,
+                mamHeight:$scope.info.mamHeight,
+                resultGirl:$scope.resultGirl,
+                resultBoy:$scope.resultBoy,
+                babyAge:$scope.babyAge
+            }, function (data) {
+
+            });
+            //$state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
             recordLogs('YYHD_SG_YCS_WYKJG');
         };
         //取消浮层
