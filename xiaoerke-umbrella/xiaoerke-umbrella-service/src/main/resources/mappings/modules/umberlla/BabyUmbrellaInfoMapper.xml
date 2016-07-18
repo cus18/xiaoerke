@@ -132,6 +132,12 @@
             <if test="friendJoinNum != null">
                 friendJoinNum = #{friendJoinNum},
             </if>
+            <if test="openid != null">
+                openid = #{openid},
+            </if>
+            <if test="source != null">
+                source = #{source}
+            </if>
         </set>
         where id = #{id,jdbcType=VARCHAR}
     </update>
@@ -187,4 +193,24 @@
         where create_time&lt;#{createTime} and (pay_result='success' or pay_result is null)
     </select>
 
+    <!--根据手机号或者openid查询该用户是否购买-->
+    <select id="getIfBuyUmbrellaByOpenidOrPhone" parameterType="java.util.Map" resultType="java.util.Map" >
+        SELECT id,parent_phone,parent_name,pay_result from baby_umbrellainfo
+        where pay_result='success'
+        <if test="userPhone != null and userPhone != ''">
+            and parent_phone=#{userPhone}
+        </if>
+        <if test="openId != null and openId != ''">
+            and openid=#{openId}
+        </if>
+    </select>
+
+    <!--根据手机号查询该用户是否关注平台-->
+    <select id="getStatusByPhone" parameterType="java.util.Map" resultType="java.util.Map" >
+        SELECT status from sys_attention sa
+        INNER JOIN baby_umbrellainfo bum
+        ON sa.openid=bum.openid
+        where bum.parent_phone=#{userPhone}
+        ORDER BY sa.date desc LIMIT 1
+    </select>
 </mapper>

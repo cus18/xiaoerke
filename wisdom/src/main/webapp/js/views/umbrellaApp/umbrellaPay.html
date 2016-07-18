@@ -1,0 +1,43 @@
+<ion-view>
+    <ion-content class="umbrellaPay bg1" overflow-scroll="true" style="top:0;">
+        <div class="top tc c0">
+            <div class="title">
+                <img class="my-img1 line1" width="100" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/pay/line_l.png">
+                <img class="my-img1 line2" width="100" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/pay/line_r.png">
+                充值5元
+            </div>
+            <!-- 减1到4元的情况
+            <div class="f7" id="payOrder">
+                恭喜您获得随机立减金额 <img class="my-img1" width="15" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/pay/icon_money.png"> <span id="payMoney"></span>元
+            </div>
+            &lt;!&ndash; 减5元的情况&ndash;&gt;
+            <div class="f7" id="FreeOrder">
+                恭喜您获得随机免单机会
+            </div>-->
+        </div>
+        <div class="weChat f5 c3">
+            <div class="fl">
+                <img class="my-img1 line2" width="25" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/app/zhifubao.png">&nbsp;
+                支付宝支付
+            </div>
+            <div class=" fr">
+                <span id="payMoneyDis">5</span>元
+                &nbsp;<img class="my-img1 line2" width="20" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/pay/icon_select.png">
+            </div>
+        </div>
+        <div ng-click="Pay()" id="payButton"  class="button bottom-btn" >
+            立即支付
+        </div>
+
+        <div class="c-shadow"   hidden></div>
+        <!--关注浮层-->
+        <!--<div class="shadow-content attention tc" id="QRCodeDIV" >-->
+        <!--<img onclick="cancelRemind()" class="close" width="20" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/attention_close.png">-->
+        <!--<div class="code">-->
+        <!--<img  class="" width="100%" id="QRCode" height="auto" data-tap-disabled="true"  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/attention_code.png">-->
+        <!--<img  class="logo" width="20" height="20" data-tap-disabled="true"  src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg">-->
+        <!--</div>-->
+        <!--<img  class="remind" width="80%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/attention_pic2.png">-->
+        <!--</div>-->
+    </ion-content>
+</ion-view>

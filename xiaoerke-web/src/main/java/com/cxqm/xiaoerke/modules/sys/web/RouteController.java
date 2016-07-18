@@ -142,6 +142,14 @@ public class RouteController extends BaseController {
         return "native/lovePlanFirst";
     }
 
+    /**
+     * wisdom 身高预测
+     */
+    @RequestMapping(value ="/heightForecast",method = {RequestMethod.POST, RequestMethod.GET})
+    public String heightForecastFirst() {
+        return "native/heightForecastFirst";
+    }
+
 
      /*
         keeper 项目

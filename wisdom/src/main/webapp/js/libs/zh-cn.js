@@ -103,7 +103,7 @@
         relativeTime : {
             future : '%s',
             past : '%s',
-            s : '几秒',
+            s : '1 分钟前',
             m : '1 分钟前',
             mm : '%d 分钟前',
             h : '1 小时前',
