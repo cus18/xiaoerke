@@ -365,6 +365,7 @@
       <module name="titan" target="1.6" />
       <module name="wisdom" target="1.6" />
       <module name="xiaoerke" target="1.6" />
+      <module name="xiaoerke-alipay-service" target="1.5" />
       <module name="xiaoerke-cms" target="1.6" />
       <module name="xiaoerke-cms-api" target="1.6" />
       <module name="xiaoerke-cms-service" target="1.6" />
