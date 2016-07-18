@@ -142,6 +142,14 @@ function scanQRCode(){
 
 function loadShare(){
     // if(version=="a"){
+     var shareTextArray=[
+         "有了这个相当于多了个重疾保险，5块钱就能换来40万，一确诊就能给钱，比保险快多了！",
+         "墙裂推荐，绝非广告，这个真的是很需要。是对孩子和家庭的负责！我已经加入啦，你还不快来！",
+         "5元变成40万,看完我就激动了",
+         "太好了，赶快分享吧",
+         "真不错，忍不住要分享"
+     ];
+    var randomNum=parseInt(5*Math.random())
     version="a";
     var timestamp;//时间戳
     var nonceStr;//随机字符串
@@ -175,7 +183,7 @@ function loadShare(){
                 wx.ready(function () {
                     // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                     wx.onMenuShareTimeline({
-                        title: '5元变成40万,看完我就激动了!', // 分享标题
+                        title: shareTextArray[randomNum], // 分享标题 '5元变成40万,看完我就激动了!'
                         link: "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+shareUmbrellaId+"/"+version, // 分享链接
                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                         success: function (res) {
@@ -198,7 +206,7 @@ function loadShare(){
                         }
                     });
                     wx.onMenuShareAppMessage({
-                        title: '5元变成40万,看完我就激动了!', // 分享标题
+                        title: shareTextArray[randomNum], // 分享标题 '5元变成40万,看完我就激动了!'
                         desc: "我已成为宝护伞互助公益爱心大使，领到了40万的健康保障，你也快来加入吧！", // 分享描述
                         link: "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+shareUmbrellaId+"/"+version, // 分享链接
                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
