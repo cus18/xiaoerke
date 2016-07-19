@@ -17,7 +17,7 @@
                 <div class="question question2">
                     <div class="qContent">
                         <div class="qTitle">宝爸的身高？</div>
-                        <a class="qSelect"><input class="height" required maxlength="3" type="tel" ng-model="info.dadHeight" placeholder="请输入身高"/>cm</a>
+                        <a class="qSelect" ng-style="info.dadHeight==''?{backgroundColor: '#ffffff'}:{backgroundColor: '#9fdcff'}"><input class="height" required maxlength="3" type="tel" ng-model="info.dadHeight" placeholder="请输入身高"/>cm</a>
                     </div>
                 </div>
                 <div class="question question3">
@@ -31,7 +31,7 @@
                 <div class="question question4">
                     <div class="qContent">
                         <div class="qTitle">宝妈的身高？</div>
-                        <a class="qSelect"><input class="height" required maxlength="3" type="tel" ng-model="info.mamHeight" placeholder="请输入身高"/>cm</a>
+                        <a class="qSelect" ng-style="info.mamHeight==''?{backgroundColor: '#ffffff'}:{backgroundColor: '#9fdcff'}"><input class="height" required maxlength="3" type="tel" ng-model="info.mamHeight" placeholder="请输入身高"/>cm</a>
                     </div>
                 </div>
             </div>

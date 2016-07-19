@@ -6,6 +6,11 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
             dadHeight:'',
             mamHeight:''
         };
+       /* $scope.babyBirthdaySelected = false;
+        $scope.dadBirthdaySelected = false;
+        $scope.mamBirthdaySelected = false;*/
+        $scope.babyAgeList = [{age:'（1）足月，约9个月'},{age:'（2）不足，约8个月'},{age:'（3）不足，约7个月'},{age:'（4）不足，约6个月'},
+            {age:'（5）不足6个月'}];
         $scope.lookResultFloat = false;
         $scope.numberB = Math.ceil(Math.random()*5);//随机数
         $scope.numberG = Math.ceil(Math.random()*3);//随机数男宝
@@ -32,19 +37,65 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
                 minDate: new Date(1960,date.substring(5,7)-1,date.substring(8,10)),
                 maxDate: new Date(date.substring(0,4), date.substring(5,7)-1, date.substring(8,10)),
                 onSelect: function (valueText) {
+                    ageChange();
+                    /*console.log(typeof(valueText));
+                    if(valueText != ''){
+                        console.log($scope.babyBirthdaySelected);
+                        $scope.babyBirthdaySelected = false;
+                        console.log('babyBirthdaySelected',$scope.babyBirthdaySelected);
+                    }*/
+                    //console.log("inst",inst.getInst());
                 }
             };
             $("#babyBirthday").mobiscroll(opt);
             $("#dadBirthday").mobiscroll(opt);
             $("#mamBirthday").mobiscroll(opt);
+
         });
+        //生日
+        /*var ageChange = function () {
+            console.log($scope.babyBirthdaySelected);
+            /!*console.log(index);
+            $(".first").addClass("intro")
+            $('.qSelect')[index].addClass('selected');*!/
+            if($("#babyBirthday").val() != ''){
+                $scope.babyBirthdaySelected = true;
+            }
+            if($("#dadBirthday").val() != ''){
+                $scope.dadBirthdaySelected = true;
+            }
+            if($("#mamBirthday").val() != ''){
+                $scope.mamBirthdaySelected = true;
+            }
+            console.log($scope.babyBirthdaySelected);
+        };*/
+        /*
+        //生日
+        $scope.ageChange = function (index) {
+            console.log(index);
+            $(".first").addClass("intro")
+            $('.qSelect')[index].addClass('selected');
+        };*/
         //选择孩子性别
         $scope.selectSex = function(sex){
             $scope.sexItem=sex;
+            if($scope.sexItem == 0){
+                $scope.isSelectedB = true;
+                $scope.isSelectedG = false;
+                console.log($scope.isSelectedB)
+            }
+            if($scope.sexItem == 1){
+                $scope.isSelectedG = true;
+                $scope.isSelectedB = false;
+                console.log($scope.isSelectedG)
+            }
         };
         //选择孩子性别
-        $scope.selectMon = function(age){
-            $scope.babyAge= age + '个月';
+        $scope.selectMon = function(index){
+            console.log(index);
+            $scope.babyAge = $scope.babyAgeList[index];
+            $scope.isSelected = index;
+
         };
         //判断问题是否为空
         $scope.checkName = function () {
