@@ -18,6 +18,7 @@
                         <div class="qTitle">宝宝的出生日期？</div>
                         <a class="qSelect" ng-style="babyBirthdaySelected?{backgroundColor: '#9fdcff'}:{backgroundColor: '#ffffff'}">
                             <input type="text" readonly="readonly" id="babyBirthday" placeholder="选择宝宝的出生日期">
+                            <div class="qSelect1" ng-click="showInput('babyBirthday')">点击</div>
                         </a>
                     </div>
                 </div>
@@ -30,8 +31,9 @@
                 <div class="question question4">
                     <div class="qContent">
                         <div class="qTitle">宝爸的出生日期？</div>
-                        <a class="qSelect">
+                        <a class="qSelect" ng-style="dadBirthdaySelected?{backgroundColor: '#9fdcff'}:{backgroundColor: '#ffffff'}">
                             <input class="value" type="text" readonly="readonly" id="dadBirthday" placeholder="选择宝爸的出生日期">
+                            <div class="qSelect1" ng-click="showInput('dadBirthday')">点击</div>
                         </a>
                     </div>
                 </div>
@@ -45,8 +47,9 @@
                 <div class="question question6">
                     <div class="qContent">
                         <div class="qTitle">宝妈的出生日期？</div>
-                        <a class="qSelect">
+                        <a class="qSelect" ng-style="mamBirthdaySelected?{backgroundColor: '#9fdcff'}:{backgroundColor: '#ffffff'}">
                             <input class="value" type="text" readonly="readonly" id="mamBirthday" placeholder="选择宝妈的出生日期">
+                            <div class="qSelect1" ng-click="showInput('mamBirthday')">点击</div>
                         </a>
                     </div>
                 </div>
