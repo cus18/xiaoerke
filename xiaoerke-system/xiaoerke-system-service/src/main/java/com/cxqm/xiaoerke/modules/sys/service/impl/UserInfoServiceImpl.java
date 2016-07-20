@@ -32,7 +32,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	private UserDao userdao;
 	
 	@Autowired
-	private MessageService messageService;
+	private UserDao userDao;
 
     //根据用户id获取当前用户的所有信息
     public HashMap<String, Object> findPersonDetailInfoByUserId(String userId) {
@@ -120,5 +120,39 @@ public class UserInfoServiceImpl implements UserInfoService {
             list = userdao.getUserListByInfo(map);
         }
         return list;
+    }
+
+    @Override
+    public String createOrUpdateThirdPartPatientInfo(String userPhone, String userName,String userSex,String source) {
+
+        User userNew = new User();
+        userNew.setLoginName(userPhone);
+        userNew.setMarketer(source);
+        if (userdao.get(userNew) == null) {
+            String sys_user_id = UUID.randomUUID().toString().replaceAll("-", "");
+            userNew.setId(sys_user_id);
+            userNew.setLoginName(userPhone);
+            userNew.setCreateDate(new Date());
+            userNew.setPhone(userPhone);
+            userNew.setCompany(new Office("1"));
+            userNew.setOffice(new Office("3"));
+            userNew.setPassword(SystemService.entryptPassword("ILoveXiaoErKe"));
+            userNew.setUserType(User.USER_TYPE_USER);
+            userNew.setMarketer(source);
+            userNew.setName(userName);
+            int result = userDao.insert(userNew);
+            if (result == 1) {
+                PatientVo patientVo = new PatientVo();
+                String sys_patient_id = UUID.randomUUID().toString().replaceAll("-", "");
+                patientVo.setId(sys_patient_id);
+                patientVo.setSysUserId(sys_user_id);
+                patientVo.setStatus("0");
+                patientVo.setGender(userSex);
+                patientDao.insert(patientVo);
+            }
+            return sys_user_id;
+        }else{
+            return userdao.get(userNew).getId();
+        }
     }
 }
