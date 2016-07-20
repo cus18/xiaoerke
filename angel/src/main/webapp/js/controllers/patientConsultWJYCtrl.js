@@ -44,9 +44,8 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             $scope.patientConsultFirst = function(){
                 //根据微家园的token来获取用的基本信息
                 var token = $stateParams.token;
-
                 $http.get('http://rest.ihiss.com:9000/user/current',{
-                    headers : {'X-Access-Token':'f09b10f3-a582-4164-987f-6663c1a7e82a'}
+                    headers : {'X-Access-Token':token}
                 }).success(function(data, status, headers, config) {
                     $scope.patientName = data.name==null?data.mobile:data.name;
                     CreateOrUpdateWJYPatientInfo.save({patientPhone:data.mobile,
