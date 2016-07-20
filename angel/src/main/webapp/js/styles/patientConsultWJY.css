@@ -259,12 +259,12 @@ textarea {
     margin-left: 8px;
     font-size: 17px;
 }
-.wjy_input div{
+.wjy_input .wjy_icon{
     margin: 15px 15px 0 15px;
 }
 .wjy_input div img:nth-child(1){
     margin-right: 28px;
 }
-.wjy_input div img:nth-child(3){
+.wjy_input .wjy_set{
     float: right;
 }
