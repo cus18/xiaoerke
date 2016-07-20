@@ -1,11 +1,16 @@
 angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
-    '$scope','$state','$stateParams','SaveHeightPredictionInfo',
-    function ($scope,$state,SaveHeightPredictionInfo) {
+    '$scope','$state','SaveHeightPredictionInfo','$ionicScrollDelegate',
+    function ($scope,$state,SaveHeightPredictionInfo,$ionicScrollDelegate) {
         $scope.title ="宝妈爱心接力";
         $scope.info = {
             dadHeight:'',
             mamHeight:''
         };
+        $scope.babyBirthdaySelected = false;
+        $scope.dadBirthdaySelected = false;
+        $scope.mamBirthdaySelected = false;
+        $scope.babyAgeList = [{age:'（1）足月，约9个月'},{age:'（2）不足，约8个月'},{age:'（3）不足，约7个月'},{age:'（4）不足，约6个月'},
+            {age:'（5）不足6个月'}];
         $scope.lookResultFloat = false;
         $scope.numberB = Math.ceil(Math.random()*5);//随机数
         $scope.numberG = Math.ceil(Math.random()*3);//随机数男宝
@@ -32,19 +37,47 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
                 minDate: new Date(1960,date.substring(5,7)-1,date.substring(8,10)),
                 maxDate: new Date(date.substring(0,4), date.substring(5,7)-1, date.substring(8,10)),
                 onSelect: function (valueText) {
+                    console.log("dd",valueText);
                 }
             };
             $("#babyBirthday").mobiscroll(opt);
             $("#dadBirthday").mobiscroll(opt);
             $("#mamBirthday").mobiscroll(opt);
+
         });
+        //出生日期
+        $scope.showInput = function (index) {
+            if(index=="babyBirthday"){
+                $("#babyBirthday").mobiscroll('show');
+                $scope.babyBirthdaySelected = true;
+            }
+            if(index=="dadBirthday"){
+                $("#dadBirthday").mobiscroll('show');
+                $scope.dadBirthdaySelected = true;
+            }
+            if(index=="mamBirthday"){
+                $("#mamBirthday").mobiscroll('show');
+                $scope.mamBirthdaySelected = true;
+            }
+        };
         //选择孩子性别
         $scope.selectSex = function(sex){
             $scope.sexItem=sex;
+            if($scope.sexItem == 0){
+                $scope.isSelectedB = true;
+                $scope.isSelectedG = false;
+            }
+            if($scope.sexItem == 1){
+                $scope.isSelectedG = true;
+                $scope.isSelectedB = false;
+            }
         };
         //选择孩子性别
-        $scope.selectMon = function(age){
-            $scope.babyAge= age + '个月';
+        $scope.selectMon = function(index){
+            console.log(index);
+            $scope.babyAge = $scope.babyAgeList[index];
+            $scope.isSelected = index;
+
         };
         //判断问题是否为空
         $scope.checkName = function () {
@@ -64,6 +97,7 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
                 alert("请重新输入宝妈的身高！");
                 return;
             }
+            $ionicScrollDelegate.scrollTop();
             $scope.lookResultFloat = true;
             if($scope.sexItem == 0){
                 $scope.resultBoy = (parseInt($scope.info.dadHeight) + parseInt($scope.info.mamHeight) + 13) / 2 + $scope.numberB;
@@ -73,7 +107,6 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
                 $scope.resultGirl = (parseInt($scope.info.dadHeight)+ parseInt($scope.info.mamHeight) - 13) / 2 + $scope.numberG;
                 $scope.resultBoy = 0;
             }
-            //console.log('babyBirthday',$("#babyBirthday").val());
             SaveHeightPredictionInfo.save({
                 sexItem:$scope.sexItem,
                 babyBirthday:$("#babyBirthday").val(),
@@ -87,7 +120,6 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
             }, function (data) {
 
             });
-            //$state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
             recordLogs('YYHD_SG_YCS_WYKJG');
         };
         //取消浮层
@@ -96,7 +128,7 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
         };
         //分享到朋友圈或者微信
         var loadShare = function(){
-            var share = '';
+            var share = 'http://120.25.161.33/wisdom/firstPage/heightForecast';
             version="a";
             var timestamp;//时间戳
             var nonceStr;//随机字符串

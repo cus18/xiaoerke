@@ -1,17 +1,16 @@
 angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl', [
-    '$scope','$state','SaveHeightPredictionInfo',
-    function ($scope,$state,SaveHeightPredictionInfo) {
+    '$scope','$state','SaveHeightPredictionInfo','$ionicScrollDelegate',
+    function ($scope,$state,SaveHeightPredictionInfo,$ionicScrollDelegate) {
 
         $scope.title ="宝妈爱心接力";
         $scope.info = {
             dadHeight:'',
             mamHeight:''
         };
+        $scope.dadBirthdaySelected = false;
+        $scope.mamBirthdaySelected = false;
         $scope.numberB = Math.ceil(Math.random()*5);//随机数
         $scope.numberG = Math.ceil(Math.random()*3);//随机数
-/*
-
- */
         $scope.lookResultFloat = false;
         //判断问题是否为空
         $scope.checkName = function () {
@@ -31,6 +30,7 @@ angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl',
                 alert("请重新输入宝妈的身高！");
                 return;
             }
+            $ionicScrollDelegate.scrollTop();
             $scope.lookResultFloat = true;
             SaveHeightPredictionInfo.save({
                 dadBirthday:$("#dadBirthday").val(),
@@ -44,7 +44,6 @@ angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl',
             });
             $scope.resultBoy = (parseInt($scope.info.dadHeight) + parseInt($scope.info.mamHeight) + 13) / 2 + $scope.numberB;
             $scope.resultGirl = (parseInt($scope.info.dadHeight)+ parseInt($scope.info.mamHeight) - 13) / 2 + $scope.numberG;
-            $state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
             recordLogs('YYHD_SG_WCS_WYKJG');
         };
         $scope.cancelFloat = function () {
@@ -78,10 +77,21 @@ angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl',
             $("#dadBirthday").mobiscroll(opt);
             $("#mamBirthday").mobiscroll(opt);
         });
+
+        //出生日期
+        $scope.showInput = function (index) {
+            if(index=="dadBirthday"){
+                $("#dadBirthday").mobiscroll('show');
+                $scope.dadBirthdaySelected = true;
+            }
+            if(index=="mamBirthday"){
+                $("#mamBirthday").mobiscroll('show');
+                $scope.mamBirthdaySelected = true;
+            }
+        };
         //分享到朋友圈或者微信
         var loadShare = function(){
-            // if(version=="a"){
-            var share = 'http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=32';
+            var share = 'http://120.25.161.33/wisdom/firstPage/heightForecast';
             version="a";
             var timestamp;//时间戳
             var nonceStr;//随机字符串
