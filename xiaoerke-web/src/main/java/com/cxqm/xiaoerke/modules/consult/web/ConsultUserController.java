@@ -436,7 +436,7 @@ public class ConsultUserController extends BaseController {
         Integer sessionId = sessionRedisCache.getSessionIdByUserId(userId);
         if(sessionId != null){
             response.put("status", 0);
-            response.put("sessionId", sessionId);
+            response.put("sessionId", String.valueOf(sessionId));
         }else{
             response.put("status", 1);
             response.put("sessionId", "");
@@ -456,7 +456,7 @@ public class ConsultUserController extends BaseController {
     Map<String, Object> getUserCurrentConsultContent(@RequestBody Map<String, Object> params) {
 
         Map<String, Object> response = new HashMap<String, Object>();
-        Integer sessionId = (Integer) params.get("sessionId");
+        String sessionId = (String) params.get("sessionId");
         String userId = (String) params.get("userId");
         Query query = new Query().addCriteria(Criteria.where("userId").is(userId).and("sessionId").is(sessionId)).
                 with(new Sort(Sort.Direction.DESC, "createDate")).limit(1000);
@@ -480,7 +480,7 @@ public class ConsultUserController extends BaseController {
     Map<String, Object> createOrUpdateWJYPatientInfo(@RequestBody Map<String, Object> params) {
 
         Map<String, Object> response = new HashMap<String, Object>();
-        String userPhone = (String) params.get("patientId");
+        String userPhone = (String) params.get("patientPhone");
         String userName = (String) params.get("patientName");
         Integer userSex = (Integer) params.get("patientSex");
         String patientId = userInfoService.createOrUpdateThirdPartPatientInfo(userPhone, userName,String.valueOf(userSex),"WJY");

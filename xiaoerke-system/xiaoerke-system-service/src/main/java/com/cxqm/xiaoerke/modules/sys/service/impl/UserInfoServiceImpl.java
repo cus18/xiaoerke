@@ -127,8 +127,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
         User userNew = new User();
         userNew.setLoginName(userPhone);
-        userNew.setMarketer(source);
-        if (userdao.get(userNew) == null) {
+        if (userdao.getUserByLoginName(new User(null,userPhone)) == null) {
             String sys_user_id = UUID.randomUUID().toString().replaceAll("-", "");
             userNew.setId(sys_user_id);
             userNew.setLoginName(userPhone);
@@ -152,7 +151,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             }
             return sys_user_id;
         }else{
-            return userdao.get(userNew).getId();
+            return (String) userdao.getUserByLoginName(new User(null, userPhone)).get("id");
         }
     }
 }
