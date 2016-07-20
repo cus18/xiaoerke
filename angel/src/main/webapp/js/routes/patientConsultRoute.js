@@ -110,7 +110,7 @@ define(['appPatientConsult'], function(app){
                     });
 
                 //$urlRouterProvider.otherwise('patientConsultFirst');
-                //$urlRouterProvider.otherwise('patientConsultUmbrella');
+                $urlRouterProvider.otherwise('patientConsultUmbrella');
                 //$urlRouterProvider.otherwise('doctorConsultJumpFirst');
             }])
         .run(function ($rootScope){

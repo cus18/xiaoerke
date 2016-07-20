@@ -1,9 +1,9 @@
 angular.module('controllers', ['luegg.directives','ngFileUpload'])
     .controller('patientConsultWJYCtrl', ['$scope','$location','$anchorScroll',
         'GetSessionId','GetUserLoginStatus','$upload','$sce','$stateParams',
-        'CreateOrUpdateWJYPatientInfo','GetUserCurrentConsultContent','$http',
+        'CreateOrUpdateWJYPatientInfo','GetUserCurrentConsultContent','$http','GetWJYHistoryRecord',
         function ($scope,$location,$anchorScroll,GetSessionId,GetUserLoginStatus,$upload,$sce,$stateParams,
-                  CreateOrUpdateWJYPatientInfo,GetUserCurrentConsultContent,$http) {
+                  CreateOrUpdateWJYPatientInfo,GetUserCurrentConsultContent,$http,GetWJYHistoryRecord) {
 
             $scope.consultContent = [];
             $scope.info={};
@@ -14,8 +14,10 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             $scope.source = "h5wjyUser";
             $scope.loseConnectionFlag = false;
             var heartBeatNum = 0;
-
-            $scope.openFileListFlag = false;
+            $scope.lookMore = false;
+            var num = 10;
+            var patientImg ;
+            /*$scope.openFileListFlag = false;
             $location.hash("fileInput");
             $anchorScroll();
             $scope.openFileList = function(){
@@ -29,6 +31,16 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     $anchorScroll();
                 }
             };
+*/
+            //提示语
+            var tishi = {
+                'type':"0",
+                'content':"欢迎咨询宝大夫,三甲医院儿科专家24小时在线，咨询秒回不等待。24小时全天：小儿内科全天分时段：小儿皮肤科、保健科、妇产科、外科、眼科、耳鼻喉科、口腔科、预防接种科、中医科、心理科",
+                'dateTime':"",
+                'senderId':"1",
+                'senderName':"",
+                'sessionId':""
+            }
 
             function randomString(len) {
                 len = len || 32;
@@ -41,12 +53,18 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 return pwd;
             }
 
+            //初始化
             $scope.patientConsultFirst = function(){
+
+                processDoctorSendMessage(tishi);
+
                 //根据微家园的token来获取用的基本信息
                 var token = $stateParams.token;
                 $http.get('http://rest.ihiss.com:9000/user/current',{
                     headers : {'X-Access-Token':token}
                 }).success(function(data, status, headers, config) {
+                    console.log("data",data);
+                    patientImg = data.avatar;
                     $scope.patientName = data.name==null?data.mobile:data.name;
                     CreateOrUpdateWJYPatientInfo.save({patientPhone:data.mobile,
                         patientName:$scope.patientName,patientSex:data.sex},function(data){
@@ -54,19 +72,19 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                         GetSessionId.get({"userId":$scope.patientId},function(data){
                             if(data.status=="0"){
                                 $scope.sessionId = data.sessionId;
-                                //如果用户有sessionId的话，将用户在此session中的当前会话记录给找回来
-                                GetUserCurrentConsultContent.save({userId:$scope.patientId,
-                                    sessionId:$scope.sessionId},function(data){
-                                    console.log("historyContent",data);
-                                    $scope.consultContent = data.consultDataList;
-                                });
+                                $scope.lookMore = true;
+
                             }else if(data.status=="1"){
                                 $scope.sessionId = "";
-                                var val = {
+                                /*var val = {
                                     "type": 4,
                                     "notifyType": "0000"
                                 }
-                                $scope.consultContent.push(val);
+                                $scope.consultContent.push(val);*/
+                              var state =  getMoreSess();//根据patientId获取用户聊天消息
+                                if(state!=undefined){
+                                    $scope.lookMore = true;
+                                }
                             }
                         });
                         $scope.initConsultSocket();
@@ -83,12 +101,13 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
 
                     //$scope.socketServer = new ReconnectingWebSocket("ws://s202.xiaork.com/wsbackend/ws&user&"
                     //    + $scope.patientId +"&h5cxqm");//cs,user,distributor
-
-                    $scope.socketServer = new WebSocket("ws://s201.xiaork.com:2048/ws&user&"
+                    //ws://s201.xiaork.com:2048;
+                    $scope.socketServer = new WebSocket("ws://120.25.161.33:2048/ws&user&"
                      + $scope.patientId +"&h5wjy");//cs,user,distributor*/
 
                     $scope.socketServer.onmessage = function(event) {
                         var consultData = JSON.parse(event.data);
+                        console.log("consultData",consultData);
                         if(consultData.type==4){
                             processNotifyMessage(consultData);
                         }else if(consultData.type==7){
@@ -115,6 +134,40 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 }
             };
 
+            //查看更多消息
+            $scope.goLookMore = function () {
+                if($scope.sessionId==""){
+                    num = num+10;
+                    var state = getMoreSess();
+                    if(state.length!=num){
+                        $scope.lookMore = false;
+                    }
+                    $.each(state,function (index,value) {
+                        console.log("value",value);
+                        filterMediaData(value);
+                    });
+                    $scope.consultContent = state;
+
+                }else{
+                    //如果用户有sessionId的话，将用户在此session中的当前会话记录给找回来
+                    GetUserCurrentConsultContent.save({userId:$scope.patientId,
+                        sessionId:$scope.sessionId},function(data){
+                        console.log("historyContent",data);
+                        $.each(data.consultDataList,function (index,value) {
+                            console.log("value",value);
+                            filterMediaData(value);
+                            if(value.senderId!=$scope.patientId){
+                                value.avatar = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png";
+                            }else{
+                                value.avatar = patientImg;
+                            }
+                        });
+                        $scope.consultContent = data.consultDataList;
+                        $scope.lookMore = false;
+                    });
+                }
+            }
+
             //处理用户发送过来的消息
             var processDoctorSendMessage = function (conversationData) {
                 var doctorValMessage = {
@@ -129,6 +182,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 $scope.consultContent.push(doctorValMessage);
             };
             var processNotifyMessage = function(notifyData){
+                console.log("notifyDate",notifyData);
                 if(notifyData.notifyType=="1001"){
                     //有医生或者接诊员在线1001
                     $scope.sessionId = notifyData.sessionId;
@@ -203,7 +257,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                             "sessionId":$scope.sessionId,
                             "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
                         };
-                        console.log(patientValMessage.content);
+                        console.log("patientValMessage",patientValMessage.content);
                         if (!window.WebSocket) {
                             return;
                         }
@@ -220,7 +274,11 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
 
             //发送消息
             $scope.sendConsultContent = function(){
-                if($("#saytext").val().replace(/\s+/g,"")!=""){
+                $(".wjy_set").attr("src","http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_go2.png");
+                if($("#saytext").val()==""||$("#saytext").val()==undefined){
+                    alert("消息不能为空！");
+                    $(".wjy_set").attr("src","http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_go.png");
+                }else if($("#saytext").val().replace(/\s+/g,"")!=""){
                     var patientValMessage = {
                         "type": 0,
                         "content": $("#saytext").val(),
@@ -229,7 +287,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                         "senderName":$scope.patientName,
                         "sessionId":parseInt($scope.sessionId),
                         "source":$scope.source,
-                        "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
+                        "avatar":patientImg //"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
                     };
                     if (!window.WebSocket) {
                         return;
@@ -239,6 +297,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                         $scope.socketServer.send(emotionSendFilter(JSON.stringify(patientValMessage)));
                         patientValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($("#saytext").val())));
                         $("#saytext").val('');
+                        $(".wjy_set").attr("src","http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_go.png");
                     } else {
                         alert("连接没有开启.");
                     }
@@ -257,7 +316,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             var filterMediaData = function (val) {
                 if(val.senderId==$scope.patientId){
                     if (val.type == "0") {
-                        val.content = $sce.trustAsHtml(replace_em(angular.copy(val.content)));
+                        val.content = $sce.trustAsHtml(replace_em(emotionReceiveFilter(angular.copy(val.content))));
                     }
                 }else{
                     if (val.type == "2"||val.type == "3") {
@@ -267,6 +326,31 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     }
                 }
             };
+
+            //各个子窗口的开关变量
+            $scope.showFlag = {
+                magnifyImg:false
+            };
+
+            $scope.tapImgButton = function (key,value) {
+                $scope.showFlag[key] = !$scope.showFlag[key];
+                $scope.imageSrc = value;
+            };
+
+            //公共点击按钮，用来触发弹出对应的子窗口
+            $scope.tapShowButton = function(key){
+                $scope.showFlag[key] = !$scope.showFlag[key];
+            };
+
+            //单独根据patientId获取用户消息
+            var getMoreSess = function () {
+                var now = moment().format("YYYY-MM-DD");
+                GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,"pageSize":num,"token":$stateParams.token},function (data) {
+                    console.log("dataxiaox",data);
+                    return data.consultDataList;
+                });
+            }
+
             //查看结果
             var replace_em = function (str) {
                 str = str.replace(/\</g,'&lt;');
@@ -321,18 +405,5 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 val = val.replace(/\[em_73\]/g, '/:showlove');val = val.replace(/\[em_74\]/g, '/:love');val = val.replace(/\[em_75\]/g, '/<L>');
                 return val;
             };
-            //各个子窗口的开关变量
-            $scope.showFlag = {
-                magnifyImg:false
-            };
 
-            $scope.tapImgButton = function (key,value) {
-                $scope.showFlag[key] = !$scope.showFlag[key];
-                $scope.imageSrc = value;
-            };
-
-            //公共点击按钮，用来触发弹出对应的子窗口
-            $scope.tapShowButton = function(key){
-                $scope.showFlag[key] = !$scope.showFlag[key];
-            };
-        }])
+        }]);

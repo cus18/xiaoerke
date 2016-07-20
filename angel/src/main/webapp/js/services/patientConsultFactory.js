@@ -24,5 +24,9 @@ define(['appPatientConsult'], function (app) {
         .factory('GetUserCurrentConsultContent', ['$resource', function ($resource) {
             return $resource('consult/user/getUserCurrentConsultContent');
         }])
+        //获取wjy用户消息聊天记录
+        .factory('GetWJYHistoryRecord', ['$resource', function ($resource) {
+            return $resource('consult/cooperate/getHistoryRecord');
+        }])
 
 })

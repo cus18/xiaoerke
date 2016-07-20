@@ -276,3 +276,9 @@ textarea {
     margin-top: 2px;
     float: right;
 }
+.wjy_lookmore{
+    text-align: center;
+    margin-top: 15px;
+    font-size: 15px;
+    color: #08b7c2;
+}
