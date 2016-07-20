@@ -65,12 +65,14 @@ public class ConsultH5CoopController {
                 String method = "GET";
                 String dataType = "json";
                 String result = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, access_token, "", 2);
-                String imgUrl = "";
+                String imgUrl = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png";
                 if(result != null){
                         JSONObject jsonObject = JSONObject.fromObject(result);
-                        imgUrl = (String)jsonObject.get("avatar");
+                        if(StringUtils.isNotNull((String)jsonObject.get("avatar"))){
+                                imgUrl = (String)jsonObject.get("avatar");
+                        }
                 }
-
+                String docHeaderImg = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png";
                 List<ConsultRecordMongoVo> currentUserHistoryRecord = null;
                 Date date = null;
                 if (dateTime.indexOf("-") != -1) {
@@ -85,16 +87,28 @@ public class ConsultH5CoopController {
                 if(currentUserHistoryRecord != null){
                         for(ConsultRecordMongoVo dataVo:currentUserHistoryRecord){
                                 HashMap<String,Object> dataMap = new HashMap<String, Object>();
-                                dataMap.put("type",dataVo.getType());
-                                dataMap.put("content", dataVo.getMessage());
-                                dataMap.put("dateTime", (new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(dataVo.getCreateDate()));
-                                dataMap.put("senderId",dataVo.getSenderId());
-                                dataMap.put("senderName",dataVo.getSenderName());
-                                dataMap.put("sessionId",dataVo.getSessionId());
-                                dataMap.put("userHeaderImg",imgUrl);
+                                if(StringUtils.isNotNull(dataVo.getSenderId())){
+                                        if(userId.equals(dataVo.getSenderId())){
+                                                dataMap.put("type",dataVo.getType());
+                                                dataMap.put("content", dataVo.getMessage());
+                                                dataMap.put("dateTime", (new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(dataVo.getCreateDate()));
+                                                dataMap.put("senderId",dataVo.getSenderId());
+                                                dataMap.put("senderName",dataVo.getSenderName());
+                                                dataMap.put("sessionId",dataVo.getSessionId());
+                                                dataMap.put("userHeaderImg",imgUrl);
+                                        }else{
+                                                dataMap.put("type",dataVo.getType());
+                                                dataMap.put("content", dataVo.getMessage());
+                                                dataMap.put("dateTime", (new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(dataVo.getCreateDate()));
+                                                dataMap.put("senderId",dataVo.getSenderId());
+                                                dataMap.put("senderName",dataVo.getSenderName());
+                                                dataMap.put("sessionId",dataVo.getSessionId());
+                                                dataMap.put("userHeaderImg",docHeaderImg);
+                                        }
+                                }
                                 listData.add(dataMap);
                         }
-                        response.put("consultDataList", ConsultUtil.transformCurrentUserListData(currentUserHistoryRecord));
+                        response.put("consultDataList",listData);
                 }else{
                         response.put("consultDataList", "");
                 }
