@@ -44,6 +44,7 @@ angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl',
             });
             $scope.resultBoy = (parseInt($scope.info.dadHeight) + parseInt($scope.info.mamHeight) + 13) / 2 + $scope.numberB;
             $scope.resultGirl = (parseInt($scope.info.dadHeight)+ parseInt($scope.info.mamHeight) - 13) / 2 + $scope.numberG;
+            $state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
             recordLogs('YYHD_SG_WCS_WYKJG');
         };
         $scope.cancelFloat = function () {
@@ -127,10 +128,10 @@ angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl',
                             wx.onMenuShareTimeline({
                                 title: '想知道宝宝能长多高，做个测试就知道', // 分享标题
                                 link: share, // 分享链接
-                                imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Faxjz.jpg', // 分享图标
+                                imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2FheightForecast.png', // 分享图标
                                 success: function (res) {
                                     recordLogs("YYHD_SG_FXPYQ");
-                                    $state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
+                                    //$state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
                                 },
                                 fail: function (res) {
                                 }
@@ -139,10 +140,10 @@ angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl',
                                 title: '想知道宝宝能长多高，做个测试就知道', // 分享标题
                                 desc: '哇塞，我家宝宝居然能长这么高？据说99.8%精准哦！', // 分享描述
                                 link:share, // 分享链接
-                                imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Faxjz.jpg', // 分享图标
+                                imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2FheightForecast.png', // 分享图标
                                 success: function (res) {
                                     recordLogs("YYHD_SG_FXPP");
-                                    $state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
+                                    //$state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
                                 },
                                 fail: function (res) {
                                 }
