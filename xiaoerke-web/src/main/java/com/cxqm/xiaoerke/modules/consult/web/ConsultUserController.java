@@ -3,6 +3,7 @@
  */
 package com.cxqm.xiaoerke.modules.consult.web;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.persistence.Page;
@@ -15,7 +16,11 @@ import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
+import com.cxqm.xiaoerke.modules.sys.entity.User;
+import com.cxqm.xiaoerke.modules.sys.service.UserInfoService;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
+import io.netty.channel.Channel;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -27,6 +32,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
@@ -52,7 +59,7 @@ public class ConsultUserController extends BaseController {
     private ConsultPayUserService consultPayUserService;
 
     @Autowired
-    private ConsultSessionForwardRecordsService consultSessionForwardRecordsService;
+    private UserInfoService userInfoService;
 
     @RequestMapping(value = "/getCurrentSessions", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -276,10 +283,9 @@ public class ConsultUserController extends BaseController {
                         searchMap.put("dateTime",richConsultSession.getCreateTime());
                         searchMap.put("consultValue",ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
                             if(null != needPayList&&consultPayUserService.angelChargeCheck(userId)){
-
                                 if("distributor".equals(csuserType)){
-                                    Date creatTime =(Date) needPayList.get(userId);
-                                    if(null!=creatTime&&creatTime.getTime()+1000*60*5>new Date().getTime()){
+                                    Date createTime =(Date) needPayList.get(userId);
+                                    if(null!=createTime&&createTime.getTime()+1000*60*5>new Date().getTime()){
                                         searchMap.put("notifyType","1002");
                                     }else{
                                         searchMap.put("notifyType","1003");
@@ -462,5 +468,27 @@ public class ConsultUserController extends BaseController {
         }
         return response;
     }
+
+    /**
+     * 根据userId查询会话sessionId
+     * @author guozengguang
+     * @return response 返回前台的响应数据
+     */
+    @RequestMapping(value = "/createOrUpdateWJYPatientInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> createOrUpdateWJYPatientInfo(@RequestBody Map<String, Object> params) {
+
+        Map<String, Object> response = new HashMap<String, Object>();
+        String userPhone = (String) params.get("patientId");
+        String userName = (String) params.get("patientName");
+        Integer userSex = (Integer) params.get("patientSex");
+        String patientId = userInfoService.createOrUpdateThirdPartPatientInfo(userPhone, userName,String.valueOf(userSex),"WJY");
+        response.put("patientId",patientId);
+        return response;
+    }
+
+
+
 
 }

@@ -18,13 +18,11 @@ define(['appPatientConsult'], function (app) {
         .factory('ConsultCustomOnly', ['$resource', function ($resource) {
             return $resource('consult/wechat/consultCustomOnly');
         }])
-        .factory('GetWYJPatientInfo', ['$resource', function ($resource) {
-            return $resource('consult/wechat/consultCustomOnly');
-        }])
         .factory('CreateOrUpdateWJYPatientInfo', ['$resource', function ($resource) {
             return $resource('consult/user/createOrUpdateWJYPatientInfo');
         }])
         .factory('GetUserCurrentConsultContent', ['$resource', function ($resource) {
             return $resource('consult/user/getUserCurrentConsultContent');
         }])
+
 })

@@ -31,4 +31,6 @@ public interface UserInfoService {
 
 	//根据条件查询用户信息sunxiao
 	List<User> getUserListByInfo(User user);
+
+	String createOrUpdateThirdPartPatientInfo(String userPhone,String userName,String userSex,String source);
 }
