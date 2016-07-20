@@ -262,9 +262,15 @@ textarea {
 .wjy_input .wjy_icon{
     margin: 15px 15px 0 15px;
 }
-.wjy_input div img:nth-child(1){
+.wjy_input .wjy_icon .wjy_icon_1{
     margin-right: 28px;
 }
-.wjy_input .wjy_set{
+.wjy_input .wjy_icon .wjy_set{
+    float: right;
+}
+.wjy_input .wjy_icon .qqFace table td img{
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
     float: right;
 }
