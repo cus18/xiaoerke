@@ -73,6 +73,16 @@
             };
 
             $scope.$on('$ionicView.enter', function(){
+                /* 随机分享文案*/
+                var shareTextArray=[
+                    "有了这个相当于多了个重疾保险，5块钱就能换来40万，一确诊就能给钱，比保险快多了！",
+                    "墙裂推荐，绝非广告，这个真的是很需要。是对孩子和家庭的负责！我已经加入啦，你还不快来！",
+                    "5元变成40万,看完我就激动了",
+                    "太好了，赶快分享吧",
+                    "真不错，忍不住要分享"
+                ];
+                var randomNum=parseInt(5*Math.random());//分享文案随机数
+                $(".share p").html( shareTextArray[randomNum]);
                 $.ajax({
                     url:"umbrella/getOpenid",// 跳转到 action
                     async:true,

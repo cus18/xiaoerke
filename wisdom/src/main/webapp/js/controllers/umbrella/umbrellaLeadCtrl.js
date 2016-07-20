@@ -38,7 +38,7 @@
             }
             $scope.touchLock=false;
 
-        }
+        };
         $scope.playMusic=function() {
             if ($scope.musicLock) { //判读是否播放
                 music.pause();
