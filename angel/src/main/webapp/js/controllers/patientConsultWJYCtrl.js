@@ -15,7 +15,6 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             $scope.loseConnectionFlag = false;
             var heartBeatNum = 0;
             $scope.lookMore = false;
-            var num = 10;
             var patientImg ;
             /*$scope.openFileListFlag = false;
             $location.hash("fileInput");
@@ -82,7 +81,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                                 }
                                 $scope.consultContent.push(val);*/
                                 var now = moment().format("YYYY-MM-DD HH:mm:ss");
-                                GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,"pageSize":num,"token":$stateParams.token},function (data) {
+                                GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,"pageSize":10,"token":$stateParams.token},function (data) {
                                     console.log("dataxiaox",data);
                                     if(data.consultDataList.length!=0){
                                         $scope.lookMore = true;
@@ -141,20 +140,18 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
 
             //查看更多消息
             $scope.goLookMore = function () {
-                if($scope.sessionId==""){
-                    num = num+10;
+                /*if($scope.sessionId==""){
                     var now = moment().format("YYYY-MM-DD HH:mm:ss");
-                    GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,"pageSize":num,"token":$stateParams.token},function (data) {
+                    if($scope.consultContent[1]!=undefined){
+                        now = $scope.consultContent[0].dateTime;
+                    }
+                    GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,"pageSize":10,"token":$stateParams.token},function (data) {
                         console.log("dataxiaox",data);
-                        if(data.consultDataList.length==num){
                             $.each(data.consultDataList,function (index,value) {
                                 console.log("value",value);
                                 filterMediaData(value);
+                                $scope.consultContent.splice(0,0,value);
                             });
-                            $scope.consultContent = data.consultDataList;
-                        }else{
-                            $scope.lookMore = false;
-                        }
                     });
                 }else{
                     //如果用户有sessionId的话，将用户在此session中的当前会话记录给找回来
@@ -173,7 +170,18 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                         $scope.consultContent = data.consultDataList;
                         $scope.lookMore = false;
                     });
+                }*/
+                var now = moment().format("YYYY-MM-DD HH:mm:ss");
+                if($scope.consultContent[1]!=undefined){
+                    now = $scope.consultContent[0].dateTime;
                 }
+                GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,"pageSize":10,"token":$stateParams.token},function (data) {
+                    console.log("dataxiaox",data);
+                    $.each(data.consultDataList,function (index,value) {
+                        filterMediaData(value);
+                        $scope.consultContent.splice(0,0,value);
+                    });
+                });
             }
 
             //处理用户发送过来的消息
