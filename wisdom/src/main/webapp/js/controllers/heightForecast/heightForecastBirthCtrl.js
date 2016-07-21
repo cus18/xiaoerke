@@ -97,8 +97,7 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
                 alert("请重新输入宝妈的身高！");
                 return;
             }
-            $ionicScrollDelegate.scrollTop();
-            $scope.lookResultFloat = true;
+            //$ionicScrollDelegate.scrollTop();
             if($scope.sexItem == 0){
                 $scope.resultBoy = (parseInt($scope.info.dadHeight) + parseInt($scope.info.mamHeight) + 13) / 2 + $scope.numberB;
                 $scope.resultGirl = 0;
@@ -107,7 +106,7 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
                 $scope.resultGirl = (parseInt($scope.info.dadHeight)+ parseInt($scope.info.mamHeight) - 13) / 2 + $scope.numberG;
                 $scope.resultBoy = 0;
             }
-            if($scope.resultGirl == 0 && $scope.resultBoy != ''){
+            /*if($scope.resultGirl == 0 && $scope.resultBoy != ''){
                 $scope.babyHeight = $scope.resultBoy;
                 if($scope.babyHeight < 170){
                     $scope.babyDes = '我家男宝的身高居然和何炅一样'+$scope.babyHeight+'，文质彬彬都说帅，你也来测下！';
@@ -134,7 +133,7 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
                 }else{
                     $scope.babyDes = '我家女宝的身高居然和林志玲一样'+$scope.babyHeight+'，维密超模大赢家，你也来测下！';
                 }
-            }
+            }*/
             $state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
             SaveHeightPredictionInfo.save({
                 sexItem:$scope.sexItem,
@@ -149,6 +148,7 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
             }, function (data) {
 
             });
+            //$scope.lookResultFloat = true;
             recordLogs('YYHD_SG_YCS_WYKJG');
         };
         //取消浮层
@@ -191,7 +191,7 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
                         wx.ready(function () {
                             // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                             wx.onMenuShareTimeline({
-                                title: '想知道宝宝能长多高，做个测试就知道', // 分享标题
+                                title: '哇塞，我家宝宝居然能长这么高？据说99.8%精准哦！', // 分享标题
                                 link: share, // 分享链接
                                 imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2FheightForecast.png', // 分享图标
                                 success: function (res) {

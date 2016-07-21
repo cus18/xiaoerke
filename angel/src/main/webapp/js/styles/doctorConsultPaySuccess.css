@@ -1,10 +1,12 @@
-.doctorConsultPaySuccess .intro{
+.doctorConsultPaySuccess .intro {
     text-align: center;
     margin: 32px 0 28px 0;
 }
+
 .doctorConsultPaySuccess .intro img {
     width: 70%;
 }
+
 .doctorConsultPaySuccess .consultButton a {
     border: 1px solid #1FC3C5;
     color: #1FC3C5;
@@ -17,21 +19,25 @@
     line-height: 36px;
     display: block;
 }
-.doctorConsultPaySuccess .consultButton a:hover{
+
+.doctorConsultPaySuccess .consultButton a:hover {
     border: none;
     color: #fff;
     background-color: #1FC3C5;
 }
-.doctorConsultPaySuccess .weChat{
+
+.doctorConsultPaySuccess .weChat {
     width: 100%;
     text-align: center;
 }
+
 .doctorConsultPaySuccess .weChat div {
     font-size: 17px;
     color: #333;
     padding: 5px;
     margin: 12px;
 }
+
 .doctorConsultPaySuccess .weChat div span {
     color: #ff1154;
 }
