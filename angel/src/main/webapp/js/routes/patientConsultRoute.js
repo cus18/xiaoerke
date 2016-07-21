@@ -100,6 +100,7 @@ define(['appPatientConsult'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientConsultWJYCtrl',
                                     ['js/controllers/patientConsultWJYCtrl.js',
                                         'js/libs/scrollglue.js','js/libs/moment.min.js',
+                                        "js/libs/jquery.qqFace.js","js/libs/jquery.browser.min.js",
                                         'js/styles/patientConsultWJY.css'],
                                     'js/views/patientConsultWJY.html?ver='+patientConsultVersion);
                             }

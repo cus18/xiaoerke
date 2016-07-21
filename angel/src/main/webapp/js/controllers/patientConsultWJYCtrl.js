@@ -54,7 +54,8 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
 
             //初始化
             $scope.patientConsultFirst = function(){
-
+                $scope.getQQExpression();
+                $scope.getQQExpression();
                 processDoctorSendMessage(tishi);
 
                 //根据微家园的token来获取用的基本信息
