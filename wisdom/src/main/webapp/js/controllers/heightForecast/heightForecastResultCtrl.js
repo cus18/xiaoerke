@@ -140,7 +140,7 @@ angular.module('controllers', ['ionic']).controller('heightForecastResultCtrl', 
                         wx.ready(function () {
                             // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                             wx.onMenuShareTimeline({
-                                title: '想知道宝宝能长多高，做个测试就知道', // 分享标题
+                                title: $scope.babyDes, // 分享标题
                                 link: share, // 分享链接
                                 imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2FheightForecast.png', // 分享图标
                                 success: function (res) {
