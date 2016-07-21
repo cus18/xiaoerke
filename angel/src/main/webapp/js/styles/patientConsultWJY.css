@@ -207,6 +207,11 @@ textarea {
     height:60px;
     border:1px solid #ccc
 }
+.input{
+    width:99%;
+    height:60px;
+    border:1px solid #ccc
+}
 .com_form p{
     height:28px;
     line-height:28px;
