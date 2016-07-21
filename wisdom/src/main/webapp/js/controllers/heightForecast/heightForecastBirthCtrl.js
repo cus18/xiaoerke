@@ -98,7 +98,6 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
                 return;
             }
             $ionicScrollDelegate.scrollTop();
-            $scope.lookResultFloat = true;
             if($scope.sexItem == 0){
                 $scope.resultBoy = (parseInt($scope.info.dadHeight) + parseInt($scope.info.mamHeight) + 13) / 2 + $scope.numberB;
                 $scope.resultGirl = 0;
@@ -107,7 +106,7 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
                 $scope.resultGirl = (parseInt($scope.info.dadHeight)+ parseInt($scope.info.mamHeight) - 13) / 2 + $scope.numberG;
                 $scope.resultBoy = 0;
             }
-            if($scope.resultGirl == 0 && $scope.resultBoy != ''){
+            /*if($scope.resultGirl == 0 && $scope.resultBoy != ''){
                 $scope.babyHeight = $scope.resultBoy;
                 if($scope.babyHeight < 170){
                     $scope.babyDes = '我家男宝的身高居然和何炅一样'+$scope.babyHeight+'，文质彬彬都说帅，你也来测下！';
@@ -134,7 +133,7 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
                 }else{
                     $scope.babyDes = '我家女宝的身高居然和林志玲一样'+$scope.babyHeight+'，维密超模大赢家，你也来测下！';
                 }
-            }
+            }*/
             $state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
             SaveHeightPredictionInfo.save({
                 sexItem:$scope.sexItem,
@@ -149,6 +148,7 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
             }, function (data) {
 
             });
+            //$scope.lookResultFloat = true;
             recordLogs('YYHD_SG_YCS_WYKJG');
         };
         //取消浮层
