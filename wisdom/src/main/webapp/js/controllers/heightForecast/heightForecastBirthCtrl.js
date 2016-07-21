@@ -97,7 +97,7 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
                 alert("请重新输入宝妈的身高！");
                 return;
             }
-            $ionicScrollDelegate.scrollTop();
+            //$ionicScrollDelegate.scrollTop();
             if($scope.sexItem == 0){
                 $scope.resultBoy = (parseInt($scope.info.dadHeight) + parseInt($scope.info.mamHeight) + 13) / 2 + $scope.numberB;
                 $scope.resultGirl = 0;

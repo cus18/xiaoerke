@@ -30,7 +30,6 @@ angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl',
                 alert("请重新输入宝妈的身高！");
                 return;
             }
-            $ionicScrollDelegate.scrollTop();
             SaveHeightPredictionInfo.save({
                 dadBirthday:$("#dadBirthday").val(),
                 mamBirthday:$("#mamBirthday").val(),
