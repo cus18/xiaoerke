@@ -37,7 +37,7 @@ a:focus,input:focus{-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-user-modif
     float: right;
 }
 .consultDisplay {
-    padding: 44px 0 100px 0;
+    padding: 0 0 100px 0;
     background-color: #f9f9f9;
 }
 .consultDisplay::-webkit-scrollbar {
@@ -278,7 +278,7 @@ textarea {
 }
 .wjy_lookmore{
     text-align: center;
-    margin-top: 15px;
+    margin-top: 25px;
     font-size: 15px;
     color: #08b7c2;
 }
