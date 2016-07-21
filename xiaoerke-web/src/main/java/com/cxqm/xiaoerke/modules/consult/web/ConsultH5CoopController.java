@@ -95,7 +95,7 @@ public class ConsultH5CoopController {
                                                 dataMap.put("senderId",dataVo.getSenderId());
                                                 dataMap.put("senderName",dataVo.getSenderName());
                                                 dataMap.put("sessionId",dataVo.getSessionId());
-                                                dataMap.put("userHeaderImg",imgUrl);
+                                                dataMap.put("avatar",imgUrl);
                                         }else{
                                                 dataMap.put("type",dataVo.getType());
                                                 dataMap.put("content", dataVo.getMessage());
@@ -103,7 +103,7 @@ public class ConsultH5CoopController {
                                                 dataMap.put("senderId",dataVo.getSenderId());
                                                 dataMap.put("senderName",dataVo.getSenderName());
                                                 dataMap.put("sessionId",dataVo.getSessionId());
-                                                dataMap.put("userHeaderImg",docHeaderImg);
+                                                dataMap.put("avatar",docHeaderImg);
                                         }
                                 }
                                 listData.add(dataMap);

@@ -81,10 +81,15 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                                     "notifyType": "0000"
                                 }
                                 $scope.consultContent.push(val);*/
-                              var state =  getMoreSess();//根据patientId获取用户聊天消息
-                                if(state!=undefined){
-                                    $scope.lookMore = true;
-                                }
+                                var now = moment().format("YYYY-MM-DD HH:mm:ss");
+                                GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,"pageSize":num,"token":$stateParams.token},function (data) {
+                                    console.log("dataxiaox",data);
+                                    if(data.consultDataList.length!=0){
+                                        $scope.lookMore = true;
+                                    }else{
+                                        $scope.lookMore = false;
+                                    }
+                                });
                             }
                         });
                         $scope.initConsultSocket();
@@ -138,16 +143,19 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             $scope.goLookMore = function () {
                 if($scope.sessionId==""){
                     num = num+10;
-                    var state = getMoreSess();
-                    if(state.length!=num){
-                        $scope.lookMore = false;
-                    }
-                    $.each(state,function (index,value) {
-                        console.log("value",value);
-                        filterMediaData(value);
+                    var now = moment().format("YYYY-MM-DD HH:mm:ss");
+                    GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,"pageSize":num,"token":$stateParams.token},function (data) {
+                        console.log("dataxiaox",data);
+                        if(data.consultDataList.length==num){
+                            $.each(data.consultDataList,function (index,value) {
+                                console.log("value",value);
+                                filterMediaData(value);
+                            });
+                            $scope.consultContent = data.consultDataList;
+                        }else{
+                            $scope.lookMore = false;
+                        }
                     });
-                    $scope.consultContent = state;
-
                 }else{
                     //如果用户有sessionId的话，将用户在此session中的当前会话记录给找回来
                     GetUserCurrentConsultContent.save({userId:$scope.patientId,
@@ -341,15 +349,6 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             $scope.tapShowButton = function(key){
                 $scope.showFlag[key] = !$scope.showFlag[key];
             };
-
-            //单独根据patientId获取用户消息
-            var getMoreSess = function () {
-                var now = moment().format("YYYY-MM-DD");
-                GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,"pageSize":num,"token":$stateParams.token},function (data) {
-                    console.log("dataxiaox",data);
-                    return data.consultDataList;
-                });
-            }
 
             //查看结果
             var replace_em = function (str) {
