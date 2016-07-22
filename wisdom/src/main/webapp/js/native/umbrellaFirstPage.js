@@ -43,25 +43,6 @@ var umbrellaFirstPageInit = function() {
     ifExistOrder("2");
     recordLogs("BHS_HDSY");
     cancelRemind();
-    /*获取当前年月日*/
-    var date = new Date();
-    date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
-    $("#date").html(date);
-    /* 随机分享文案*/
-    var shareTextArray=[
-        "有了这个相当于多了个重疾保险，5块钱就能换来40万，一确诊就能给钱，比保险快多了！",
-        "墙裂推荐，绝非广告，这个真的是很需要。是对孩子和家庭的负责！我已经加入啦，你还不快来！",
-        "我为孩子健康负责，免费领取了40万的大病治疗费，你也来领吧！",
-        "我为宝宝健康负责，竟然免费获得了40万的大病治疗费！你需要吗？",
-        "领取40万的大病治疗费，万一看病不用愁，限时免费，先到先得啦！",
-        "每天都有孩子因没钱治病而死。现在有40万治疗费，送给你！",
-        "没什么好送的，40万的大病治疗费，送给你！",
-        "最美的妈妈你别走，送你40万，让孩子健康去成长！",
-        "如需江湖救急，这有40万的大病治疗费，速速来拿！"
-
-    ];
-    var randomNum=parseInt(9*Math.random());//分享文案随机数
-    $(".share p").html( shareTextArray[randomNum]);
     //获取首页数据
     $.ajax({
         type: 'POST',
@@ -366,47 +347,12 @@ function  ifExistOrder(load){
                 }
             }
 
-            /*a版本和b版本的内容变化*/
-            /* var content="";
-             var textIntro="";
-             if(version=="a"){
-             content='<img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic1a.png" >'
-             + '<div class="f4 c3"><span class="c12">5元</span>即加入</div>'
-             +'<div class="f4 c3">免单随时享</div>'
-             textIntro=' 您只需支付<span class="c11">最多5元即可加入</span>' ;
-             $('.introPic li').eq(0).html(content);
-             $('#textIntro').html(textIntro);
-             $(".helpPlan .pic img").attr("src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/help_pic1a.png");
-             }
-             else{
-             content='<img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic1b.png" >'
-             + '<div class="f4 c3">现在参与</div>'
-             +'<div class="f4 c3"><span class="c12">免费</span>加入 </div>';
-             textIntro=' <span class="c11">现阶段免费加入</span>' ;
-             $('.introPic li').eq(0).html(content);
-             $('#textIntro').html(textIntro);
-             $(".helpPlan .pic img").attr("src","http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/help_pic1b.png");
-             }*/
         },
         dataType: "json"
     });
 }
 
-/*重大疾病名称及定义 展开隐藏*/
-var lookHelpPlan = function() {
-    recordLogs("BHS_HDSY_CJWT");
-    $(".helpPlan .fold").toggleClass("show");
-    $(".helpPlan .foldText").toggleClass("change");
 
-}
-
-/*运营保障 关怀 展开隐藏*/
-var care = function() {
-    recordLogs("BHS_HDSY_CJWT");
-    $(".operation .text .care1").toggleClass("show");
-    $(".operation .text .care2").toggleClass("change");
-
-}
 
 /*常见问题 展开隐藏*/
 var lookQuestion = function(index) {
@@ -437,6 +383,21 @@ var lookProtocol = function(index) {
 var goShare = function() {
     $(".c-shadow").show();
     $(".shadow-content.share").show();
+    /* 随机分享文案*/
+    var shareTextArray=[
+        "有了这个相当于多了个重疾保险，5块钱就能换来40万，一确诊就能给钱，比保险快多了！",
+        "墙裂推荐，绝非广告，这个真的是很需要。是对孩子和家庭的负责！我已经加入啦，你还不快来！",
+        "我为孩子健康负责，免费领取了40万的大病治疗费，你也来领吧！",
+        "我为宝宝健康负责，竟然免费获得了40万的大病治疗费！你需要吗？",
+        "领取40万的大病治疗费，万一看病不用愁，限时免费，先到先得啦！",
+        "每天都有孩子因没钱治病而死。现在有40万治疗费，送给你！",
+        "没什么好送的，40万的大病治疗费，送给你！",
+        "最美的妈妈你别走，送你40万，让孩子健康去成长！",
+        "如需江湖救急，这有40万的大病治疗费，速速来拿！"
+
+    ];
+    var randomNum=parseInt(9*Math.random());//分享文案随机数
+    $(".share p").html( shareTextArray[randomNum]);
 
 }
 
@@ -513,7 +474,7 @@ var recordLogs = function(val){
     });
 };
 
-
-var umbrellaConsult = function (){
+/*宝护伞咨询 */
+/*var umbrellaConsult = function (){
     window.location.href='http://s165.baodf.com/wisdom/umbrella#/umbrellaTest';
-}
+}*/
