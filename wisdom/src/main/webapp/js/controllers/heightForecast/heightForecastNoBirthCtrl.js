@@ -90,7 +90,7 @@ angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl',
         };
         //分享到朋友圈或者微信
         var loadShare = function(){
-            var share = 'http://120.25.161.33/wisdom/firstPage/heightForecast';
+            var share = 'http://s165.baodf.com/wisdom/firstPage/heightForecast';
             version="a";
             var timestamp;//时间戳
             var nonceStr;//随机字符串
