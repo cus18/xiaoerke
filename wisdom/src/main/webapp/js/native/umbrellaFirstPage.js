@@ -37,7 +37,6 @@ $(document).ready(function() {
 });
 
 var umbrellaFirstPageInit = function() {
-
     $("#NoShareDiv").hide();
     $(".shadow-content").hide();//每次页面加载时先隐藏提示浮层
     ifExistOrder("2");
@@ -58,10 +57,9 @@ var umbrellaFirstPageInit = function() {
         "没什么好送的，40万的大病治疗费，送给你！",
         "最美的妈妈你别走，送你40万，让孩子健康去成长！",
         "如需江湖救急，这有40万的大病治疗费，速速来拿！"
-
     ];
     var randomNum=parseInt(9*Math.random());//分享文案随机数
-    $(".share p").html( shareTextArray[randomNum]);
+    $(".share p").html(shareTextArray[randomNum]);
     //获取首页数据
     $.ajax({
         type: 'POST',
@@ -417,15 +415,18 @@ var lookQuestion = function(index) {
     $(".questions dd").eq(index).toggleClass("change");
 
 }
+
 /*锚链接跳转*/
 var skip=function(item){
     myScroll.scrollToElement('#'+item, 100)
 }
+
 /*第三方机构  儿科专家 微信咨询 */
 var lookOther = function(index) {
     $(".c-shadow").show();
     $(".shadow-content2").eq(index).show();
 }
+
 /*宝大夫儿童重疾互助计划公约  75种疾病名称及定义 名词释义*/
 var lookProtocol = function(index) {
     recordLogs("BHS_HDSY_CJWT");
@@ -448,7 +449,6 @@ var cancelRemind = function() {
 
 /*跳转到参与成功页面*/
 var myGuarantee = function() {
-
     var shareId = GetQueryString("id")==null?120000000:GetQueryString("id");
     //通过openid 获取当前用户是否关注
     $.ajax({
@@ -465,8 +465,6 @@ var myGuarantee = function() {
         },
         dataType: "json"
     });
-
-
 }
 
 /*跳转到领取成功页面*/
@@ -512,7 +510,6 @@ var recordLogs = function(val){
         }
     });
 };
-
 
 var umbrellaConsult = function (){
     window.location.href='http://s165.baodf.com/wisdom/umbrella#/umbrellaTest';

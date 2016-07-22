@@ -42,9 +42,6 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-//import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
-//import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
-
 @Service
 @Transactional(readOnly = false)
 public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
@@ -54,15 +51,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
 	@Autowired
 	private WechatAttentionDao wechatAttentionDao;
-
-  @Autowired
-  private UtilService utilService;
-
-  @Autowired
-  private HealthRecordsService healthRecordsService;
-
-  @Autowired
-  private BabyBaseInfoService babyBaseInfoService;
 
 	@Autowired
 	private SystemService systemService;
@@ -95,9 +83,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
 	@Autowired
 	private BabyUmbrellaInfoService babyUmbrellaInfoService;
-
-  @Autowired
-  private BabyUmbrellaInfoThirdPartyService babyUmbrellaInfoThirdPartyService;
 
 	@Autowired
 	private WechatAttentionService wechatAttentionService;
