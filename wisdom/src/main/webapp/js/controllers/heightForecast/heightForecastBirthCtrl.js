@@ -106,35 +106,6 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
                 $scope.resultGirl = (parseInt($scope.info.dadHeight)+ parseInt($scope.info.mamHeight) - 13) / 2 + $scope.numberG;
                 $scope.resultBoy = 0;
             }
-            /*if($scope.resultGirl == 0 && $scope.resultBoy != ''){
-                $scope.babyHeight = $scope.resultBoy;
-                if($scope.babyHeight < 170){
-                    $scope.babyDes = '我家男宝的身高居然和何炅一样'+$scope.babyHeight+'，文质彬彬都说帅，你也来测下！';
-                    //$scope.starImg = 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2Fphoto_hejiong_png_03.png';
-                }else if($scope.babyHeight < 175){
-                    $scope.babyDes = '我家男宝的身高居然和梁朝伟一样'+$scope.babyHeight+'，气宇轩昂人人夸，你也来测下！';
-                }else if($scope.babyHeight < 180){
-                    $scope.babyDes = '我家男宝的身高居然和宋仲基一样'+$scope.babyHeight+'，玉树临风全都爱，你也来测下！';
-                }else if($scope.babyHeight < 185){
-                    $scope.babyDes = '我家男宝的身高居然和吴彦祖一样'+$scope.babyHeight+'，长腿欧巴超羡慕，你也来测下！';
-                }else if($scope.babyHeight < 190){
-                    $scope.babyDes = '我家男宝的身高居然和吴亦凡一样'+$scope.babyHeight+'，顶天立地大气概，你也来测下！';
-                }else{
-                    $scope.babyDes = '我家男宝的身高居然和易建联一样'+$scope.babyHeight+'，篮球飞人绝对帅，你也来测下！';
-                }
-            }
-            if($scope.resultGirl != '' && $scope.resultBoy == 0){
-                if($scope.babyHeight < 160){
-                    $scope.babyDes = '我家女宝的身高居然和蔡依林一样'+$scope.babyHeight+'，小家碧玉惹人爱，你也来测下！';
-                }else if($scope.babyHeight < 165){
-                    $scope.babyDes = '我家女宝的身高居然和孙俪一样'+$scope.babyHeight+'，大家闺秀人人爱，你也来测下！';
-                }else if($scope.babyHeight < 170){
-                    $scope.babyDes = '我家女宝的身高居然和杨幂一样'+$scope.babyHeight+'，窈窕淑女君好逑，你也来测下！';
-                }else{
-                    $scope.babyDes = '我家女宝的身高居然和林志玲一样'+$scope.babyHeight+'，维密超模大赢家，你也来测下！';
-                }
-            }*/
-            $state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
             SaveHeightPredictionInfo.save({
                 sexItem:$scope.sexItem,
                 babyBirthday:$("#babyBirthday").val(),
@@ -146,9 +117,8 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
                 resultBoy:$scope.resultBoy,
                 babyAge:$scope.babyAge
             }, function (data) {
-
             });
-            //$scope.lookResultFloat = true;
+            $state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
             recordLogs('YYHD_SG_YCS_WYKJG');
         };
         //取消浮层

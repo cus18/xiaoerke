@@ -13,38 +13,6 @@ angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl',
         $scope.numberG = Math.ceil(Math.random()*3);//随机数
         $scope.lookResultFloat = false;
         //判断问题是否为空
-        $scope.checkName = function () {
-            if($("#dadBirthday").val()==""||$("#dadBirthday").val()==undefined){
-                alert("宝爸生日不能为空！");
-                return;
-            }
-            if($("#mamBirthday").val()==""||$("#mamBirthday").val()==undefined){
-                alert("宝妈生日不能为空！");
-                return;
-            }
-            if($scope.info.dadHeight==""||$scope.info.dadHeight > 300){
-                alert("请重新输入宝爸的身高！");
-                return;
-            }
-            if($scope.info.mamHeight==""||$scope.info.mamHeight > 300){
-                alert("请重新输入宝妈的身高！");
-                return;
-            }
-            SaveHeightPredictionInfo.save({
-                dadBirthday:$("#dadBirthday").val(),
-                mamBirthday:$("#mamBirthday").val(),
-                dadHeight:$scope.info.dadHeight,
-                mamHeight:$scope.info.mamHeight,
-                resultGirl:$scope.resultGirl,
-                resultBoy:$scope.resultBoy
-            }, function (data) {
-            });
-            //$scope.lookResultFloat = true;
-            $scope.resultBoy = (parseInt($scope.info.dadHeight) + parseInt($scope.info.mamHeight) + 13) / 2 + $scope.numberB;
-            $scope.resultGirl = (parseInt($scope.info.dadHeight)+ parseInt($scope.info.mamHeight) - 13) / 2 + $scope.numberG;
-            $state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
-            recordLogs('YYHD_SG_WCS_WYKJG');
-        };
         $scope.cancelFloat = function () {
             $scope.lookResultFloat = false;
         };
@@ -76,7 +44,39 @@ angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl',
             $("#dadBirthday").mobiscroll(opt);
             $("#mamBirthday").mobiscroll(opt);
         });
-
+        $scope.checkName = function () {
+            console.log($("#mamBirthday").val());
+            if($("#dadBirthday").val()==""){
+                alert("宝爸生日不能为空！");
+                return;
+            }
+            if($scope.info.dadHeight==""||$scope.info.dadHeight > 300 || $scope.info.dadHeight < 100){
+                alert("请重新输入宝爸的身高！");
+                return;
+            }
+            if($("#mamBirthday").val()==""){
+                alert("宝妈生日不能为空！");
+                return;
+            }
+            if($scope.info.mamHeight==""||$scope.info.mamHeight > 300 || $scope.info.mamHeight < 100){
+                alert("请重新输入宝妈的身高！");
+                return;
+            }
+            $scope.resultBoy = (parseInt($scope.info.dadHeight) + parseInt($scope.info.mamHeight) + 13) / 2 + $scope.numberB;
+            $scope.resultGirl = (parseInt($scope.info.dadHeight)+ parseInt($scope.info.mamHeight) - 13) / 2 + $scope.numberG;
+            SaveHeightPredictionInfo.save({
+                dadBirthday:$("#dadBirthday").val(),
+                mamBirthday:$("#mamBirthday").val(),
+                dadHeight:$scope.info.dadHeight,
+                mamHeight:$scope.info.mamHeight,
+                resultGirl:$scope.resultGirl,
+                resultBoy:$scope.resultBoy
+            }, function (data) {
+            });
+            $state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
+            recordLogs('YYHD_SG_WCS_WYKJG');
+        };
+        //$scope.lookResultFloat = true;
         //出生日期
         $scope.showInput = function (index) {
             if(index=="dadBirthday"){
