@@ -11,6 +11,7 @@ document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.touchSlider.js"><
 
 var heightForecastFirstInit = function () {
     recordLogs('YYHD_SG_YDY');
+    loadShare();
 };
 var goBirthTest = function () {
     recordLogs('YYHD_SG_YDY_YCS');
