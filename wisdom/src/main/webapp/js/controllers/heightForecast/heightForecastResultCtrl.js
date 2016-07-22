@@ -54,7 +54,7 @@ angular.module('controllers', ['ionic']).controller('heightForecastResultCtrl', 
                 }else if($scope.babyHeight < 175){
                     $scope.babyImg = 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2Fimage_q_png_03.png';
                     $scope.starImg = 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2Fphoto_liangchaowei_png_03.png';
-                    $scope.babyDes = '我家男宝的身高居然和梁朝伟一样'+$scope.babyHeight+'，气宇轩昂人人夸，你也来测下！';
+                    $scope.babyDes = '我家男宝的身高居然和权志龙一样'+$scope.babyHeight+'，气宇轩昂人人夸，你也来测下！';
                 }else if($scope.babyHeight < 180){
                     $scope.babyImg = 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2Fimage_y_png_03.png';
                     $scope.starImg = 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2Fphoto_songzhongji_png_03.png';
