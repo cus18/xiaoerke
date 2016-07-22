@@ -70,9 +70,6 @@
             };
             $scope.goShare=function(){
                 $scope.shareLock=true;
-            };
-
-            $scope.$on('$ionicView.enter', function(){
                 /* 随机分享文案*/
                 var shareTextArray=[
                     "有了这个相当于多了个重疾保险，5块钱就能换来40万，一确诊就能给钱，比保险快多了！",
@@ -88,6 +85,10 @@
                 ];
                 var randomNum=parseInt(9*Math.random());//分享文案随机数
                 $(".share p").html( shareTextArray[randomNum]);
+            };
+
+            $scope.$on('$ionicView.enter', function(){
+
                 $.ajax({
                     url:"umbrella/getOpenid",// 跳转到 action
                     async:true,
