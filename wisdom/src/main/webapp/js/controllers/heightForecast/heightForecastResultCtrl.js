@@ -13,7 +13,6 @@ angular.module('controllers', ['ionic']).controller('heightForecastResultCtrl', 
         $scope.showDouble = false;
         $scope.showOne = false;
         $scope.$on('$ionicView.enter', function(){
-            loadShare();
             if($stateParams.resultGirl != 0 && $stateParams.resultBoy != 0){
                 $scope.heightImg = 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2Fbiaoti_bb_png_03.png';
                 $scope.showDouble = true;
@@ -96,10 +95,9 @@ angular.module('controllers', ['ionic']).controller('heightForecastResultCtrl', 
                     $scope.babyDes = '我家女宝的身高居然和林志玲一样'+$scope.babyHeight+'，维密超模大赢家，你也来测下！';
                 }
             }
+            loadShare();
         });
 
-        console.log($stateParams.resultGirl);
-        console.log($stateParams.resultBoy);
         $scope.goUmbrella =function(){
             window.location.href="http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000005/a"
         };
