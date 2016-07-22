@@ -11,7 +11,6 @@
             $scope.selectItem = "";
             $scope.info={};
 
-
             $scope.selectedBaby="";
             $scope.codeSecond="获取";
             $scope.openid="";
@@ -29,7 +28,6 @@
                 if(item=="babyName"){
                     $scope.fillLock = true;
                 }
-
             }
 
             /*填写宝宝姓名 获取焦点*/
@@ -61,7 +59,6 @@
                     $scope.info.babyName = "";
                     $("#birthday").val("");
                 }
-
             };
 
             /*选择父母*/
@@ -298,7 +295,6 @@
                         "parentType": $scope.parentType, "umbrellaId": $scope.umbrellaId
                     }, function (data) {
                         if (data.result == '1') {
-                            // $state.go("umbrellaMemberList",{id:$scope.umbrellaId});
                             recordLogs("BHS_TXXX_LJJH");
                             window.location.href = "../wisdom/umbrella?value=" + new Date().getTime() + "#/umbrellaMemberList/" + $stateParams.id + "/" + $stateParams.status;
                         } else if (data.result == '3') {
@@ -321,10 +317,7 @@
                         "parentType": $scope.parentType, "bbirthDay": bbirthday, "bsex": bsex,"shareId":$stateParams.id
                     }, function (data) {
                         if (data.result == '1') {
-                            // $state.go("umbrellaMemberList",{id:$scope.umbrellaId});
                             recordLogs("BHS_TXXX_LJJH");
-                            // window.location.href ="../wisdom/umbrella?value="+new Date().getTime()+"#/umbrellaMemberList/"+$stateParams.id+"/"+$stateParams.status;
-                            // window.location.href ="umbrella#/umbrellaJoin/"+new Date().getTime()+"/"+$stateParams.id;
                             if ($scope.ifExist) {
                                 window.location.href = "umbrella#/umbrellaJoin/" + new Date().getTime() + "/" + $stateParams.id;
                             } else {
