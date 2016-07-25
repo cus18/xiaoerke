@@ -10,23 +10,16 @@
         $(document).ready(function () {
             $("#treeTable").treeTable({expandLevel: 1}).show();
         });
-        //改变部门下拉
-        function changeDepartment(){
-            $("#searchForm").submit();
-        }
-        //改变渠道下拉
-        function changeChannel(){
-            $("#searchForm").submit();
-        }
+
     </script>
 </head>
 <ul class="nav nav-tabs">
     <li><a href="${ctx}/sys/Channel/ChannelMain"><font color="#006400">渠道添加</font></a></li>
-    <li><a href="${ctx}/sys/Channel/ChannelCategory"><font color="#006400">渠道分类统计</font></a></li>
-    <li class="active"><a href="${ctx}/sys/Channel/ChannelDetail"><font color="#006400">渠道细分</font></a></li>
+    <li class="active"><a href="${ctx}/sys/Channel/ChannelConsultStatistics"><font color="#006400">渠道咨询统计</font></a></li>
+    <li><a href="${ctx}/sys/Channel/DepartmentConsultStatistics"><font color="#006400">部门咨询统计</font></a></li>
 </ul>
 
-<form:form id="searchForm" modelAttribute="registerServiceVo" action="${ctx}/sys/Channel/ChannelDetail" method="post" class="form-search">
+<form:form id="searchForm" modelAttribute="registerServiceVo" action="${ctx}/sys/Channel/ChannelConsultStatistics" method="post" class="form-search">
     <sys:message content="${message}"/>
     <form:input id="startDate" path="startDate" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
                 onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
@@ -34,7 +27,7 @@
     <form:input id="endDate" path="endDate" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
                 onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
     部  门 ：
-    <form:select name="department" id="txtDepartment" path="department" onchange="changeDepartment();">
+    <form:select name="department" id="txtDepartment" path="department">
         <c:forEach items="${departs}" var="depart" step="1">
             <form:option value="${depart}">${depart}</form:option>
         </c:forEach>
@@ -53,34 +46,24 @@
 <table id="treeTable" class="table table-striped table-bordered table-condensed hide">
     <thead>
     <tr>
-        <th class="sort-column name">二维码号</th>
-        <th class="sort-column name">关注</th>
-        <th class="sort-column name">取消</th>
-        <th class="sort-column name">累计关注</th>
-        <th class="sort-column name">累计取消</th>
-        <th class="sort-column name">咨询人数</th>
-        <th class="sort-column name">无效咨询</th>
-        <th class="sort-column name">咨询占比</th>
-        <th class="sort-column name">渠道细分</th>
+        <th class="sort-column name">二维码</th>
+        <th class="sort-column name">渠道细分名称</th>
+        <th class="sort-column name">新咨询</th>
+        <th class="sort-column name">总咨询</th>
     </thead>
     <tbody id="treeTableList">
-    <c:forEach items="${channelDetailVo}" var="channelVo">
+    <c:forEach items="${channelConsultVo}" var="channelConsultVo">
         <tr id="${menu.id}" pId="${menu.parent.id ne '1'?menu.parent.id:'0'}">
-            <td>${channelVo.marketer}</td>
+            <td>${channelConsultVo.marketer}</td>
+            <td>${channelConsultVo.channel}</td>
             <td>
-                <c:if test="${empty channelVo.attentionCount}">0</c:if>
-                <c:if test="${not empty channelVo.attentionCount}">${channelVo.attentionCount}</c:if>
+                <c:if test="${empty channelConsultVo.newConsultCounts}">0</c:if>
+                <c:if test="${not empty channelConsultVo.newConsultCounts}">${channelConsultVo.newConsultCounts}</c:if>
             </td>
             <td>
-                <c:if test="${empty channelVo.cancleAttentionCount}">0</c:if>
-                <c:if test="${not empty channelVo.cancleAttentionCount}">${channelVo.cancleAttentionCount}</c:if>
+                <c:if test="${empty channelConsultVo.totalConsultCounts}">0</c:if>
+                <c:if test="${not empty channelConsultVo.totalConsultCounts}">${channelConsultVo.totalConsultCounts}</c:if>
             </td>
-            <td>${channelVo.leijiAttentionCount}</td>
-            <td>${channelVo.leijiCancleAttentionCount}</td>
-            <td>${channelVo.chatCount}</td>
-            <td>${channelVo.invalidChatCount}</td>
-            <td>${channelVo.chatScale}</td>
-            <td>${channelVo.channel}</td>
         </tr>
     </c:forEach>
     </tbody>

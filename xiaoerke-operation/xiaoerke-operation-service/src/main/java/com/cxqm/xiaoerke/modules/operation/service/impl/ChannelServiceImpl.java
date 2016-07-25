@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 渠道统计 实现
@@ -145,5 +146,37 @@ public class ChannelServiceImpl implements ChannelService {
     @Override
     public List<String> getAllChannels(){
         return sysStatisticsDao.getAllChannels();
+    }
+
+    @Override
+    public List<HashMap<String, Object>> getAllConsultCountsByChannel(Map<String, Object> map){
+        List<HashMap<String, Object>> totalList = sysStatisticsDao.getTotalConsultCountsByChannel(map);
+        List<HashMap<String, Object>> newList = sysStatisticsDao.getNewConsultCountsByChannel(map);
+        for (int i = 0; i < totalList.size(); i++) {
+            Map<String,Object> totalMap = totalList.get(i);
+            for (int j = 0; j < newList.size(); j++) {
+                Map<String,Object> newMap = newList.get(j);
+                if(newMap.get("marketer").toString().equalsIgnoreCase(totalMap.get("marketer").toString())){
+                    totalMap.put("newConsultCounts",newMap.get("newConsultCounts").toString());
+                }
+            }
+        }
+        return totalList;
+    }
+
+    @Override
+    public List<HashMap<String, Object>> getAllConsultCountsByDepartment(Map<String, Object> map){
+        List<HashMap<String, Object>> totalList = sysStatisticsDao.getTotalConsultCountsByDepartment(map);
+        List<HashMap<String, Object>> newList = sysStatisticsDao.getNewConsultCountsByDepartment(map);
+        for (int i = 0; i < totalList.size(); i++) {
+            Map<String,Object> totalMap = totalList.get(i);
+            for (int j = 0; j < newList.size(); j++) {
+                Map<String,Object> newMap = newList.get(j);
+                if(newMap.get("department").toString().equalsIgnoreCase(totalMap.get("department").toString())){
+                    totalMap.put("newConsultCounts",newMap.get("newConsultCounts").toString());
+                }
+            }
+        }
+        return totalList;
     }
 }
