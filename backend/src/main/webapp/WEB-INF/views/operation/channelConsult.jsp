@@ -11,6 +11,13 @@
             $("#treeTable").treeTable({expandLevel: 1}).show();
         });
 
+        function changeDepartment(){
+            $("#searchForm").submit();
+        };
+
+        function changeChannel(){
+            $("#searchForm").submit();
+        };
     </script>
 </head>
 <ul class="nav nav-tabs">
@@ -27,7 +34,7 @@
     <form:input id="endDate" path="endDate" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
                 onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
     部  门 ：
-    <form:select name="department" id="txtDepartment" path="department">
+    <form:select name="department" id="txtDepartment" path="department" onchange="changeDepartment();">
         <c:forEach items="${departs}" var="depart" step="1">
             <form:option value="${depart}">${depart}</form:option>
         </c:forEach>

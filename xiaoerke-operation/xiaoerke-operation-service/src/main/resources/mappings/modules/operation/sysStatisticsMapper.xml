@@ -490,7 +490,7 @@
         INNER JOIN channel_info chi
         on sa.marketer=chi.marketer
         where chi.marketer IS NOT NULL and chi.marketer !=''
-        and sa.status='0' and cs.consult_number >= 1
+        and sa.status='0'
         and cs.create_time BETWEEN #{startDate} AND #{endDate}
         <if test="department!='all'">
             <if test="channel!='all'">
@@ -516,7 +516,7 @@
         INNER JOIN channel_info chi
         on sa.marketer=chi.marketer
         where chi.marketer IS NOT NULL and chi.marketer !=''
-        and sa.status='0' and cs.consult_number >= 1
+        and sa.status='0'
         and cs.create_time BETWEEN #{startDate} AND #{endDate}
         and sa.date BETWEEN #{startDate} and #{endDate}
         <if test="department!='all'">
@@ -543,7 +543,7 @@
         INNER JOIN channel_info chi
         on sa.marketer=chi.marketer
         where chi.marketer IS NOT NULL and chi.marketer !=''
-        and sa.status='0' and cs.consult_number >= 1
+        and sa.status='0'
         and cs.create_time BETWEEN #{startDate} AND #{endDate}
         <if test="department!='all'">
             and chi.department = #{department}
@@ -559,7 +559,7 @@
         INNER JOIN channel_info chi
         on sa.marketer=chi.marketer
         where chi.marketer IS NOT NULL and chi.marketer !=''
-        and sa.status='0' and cs.consult_number >= 1
+        and sa.status='0'
         and cs.create_time BETWEEN #{startDate} AND #{endDate}
         and sa.date BETWEEN #{startDate} and #{endDate}
         <if test="department!='all'">
