@@ -84,7 +84,8 @@
 
                 ];
                 var randomNum=parseInt(9*Math.random());//分享文案随机数
-                $(".share p").html( shareTextArray[randomNum]);
+                /*   $(".share p").html( shareTextArray[randomNum]);*/
+                $scope.shareRandomText=shareTextArray[randomNum];
             };
 
             $scope.$on('$ionicView.enter', function(){
