@@ -6,7 +6,7 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
             dadHeight:'',
             mamHeight:''
         };
-        $scope.babyDes = '';
+        $scope.babyDes = '哇塞，我家宝宝居然能长这么高？据说99.8%精准哦！';
         $scope.babyHeight = '';
         $scope.lookResultFloat = false;
         $scope.babyBirthdaySelected = false;
@@ -17,6 +17,7 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
         $scope.numberB = Math.ceil(Math.random()*5);//随机数
         $scope.numberG = Math.ceil(Math.random()*3);//随机数男宝
         $scope.$on('$ionicView.enter', function(){
+            loadShare();
             var date = new Date(+new Date()+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'');
             $("#babyBirthday").mobiscroll().date();
             $("#dadBirthday").mobiscroll().date();
