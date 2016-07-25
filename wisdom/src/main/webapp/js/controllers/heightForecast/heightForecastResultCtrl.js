@@ -98,8 +98,9 @@ angular.module('controllers', ['ionic']).controller('heightForecastResultCtrl', 
             loadShare();
         });
 
-        $scope.goUmbrella =function(){
-            window.location.href="http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000005/a"
+        $scope.goArticle =function(){
+            recordLogs("YYHD_SG_WZLJ");
+            window.location.href="http://mp.weixin.qq.com/s?__biz=MzIxMTE2MDAxOA==&mid=2653329561&idx=1&sn=a1c88ef5b0ff719d85e703e2182254ed&scene=1&srcid=0722WM6fGB2ruI9zsWDS2BCL#rd#wechat_redirect"
         };
 
         //分享到朋友圈或者微信
