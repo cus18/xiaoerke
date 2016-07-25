@@ -12,7 +12,7 @@ angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl',
         $scope.numberB = Math.ceil(Math.random()*5);//随机数
         $scope.numberG = Math.ceil(Math.random()*3);//随机数
         $scope.lookResultFloat = false;
-        //判断问题是否为空
+        //取消浮层
         $scope.cancelFloat = function () {
             $scope.lookResultFloat = false;
         };
@@ -73,10 +73,11 @@ angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl',
                 resultBoy:$scope.resultBoy
             }, function (data) {
             });
-            $state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
+            $ionicScrollDelegate.scrollTop();
+            $scope.lookResultFloat = true;
+            //$state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
             recordLogs('YYHD_SG_WCS_WYKJG');
         };
-        //$scope.lookResultFloat = true;
         //出生日期
         $scope.showInput = function (index) {
             if(index=="dadBirthday"){
@@ -129,7 +130,7 @@ angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl',
                                 imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2FheightForecast.png', // 分享图标
                                 success: function (res) {
                                     recordLogs("YYHD_SG_FXPYQ");
-                                    //$state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
+                                    $state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
                                 },
                                 fail: function (res) {
                                 }
@@ -141,7 +142,7 @@ angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl',
                                 imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2FheightForecast.png', // 分享图标
                                 success: function (res) {
                                     recordLogs("YYHD_SG_FXPP");
-                                    //$state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
+                                    $state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
                                 },
                                 fail: function (res) {
                                 }
