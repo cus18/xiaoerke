@@ -1395,6 +1395,8 @@ angular.module('controllers', ['luegg.directives'])
             $scope.todayTime = '';
             var newTime = function(){
                 var d = new Date();
+                var a = moment().format();
+                console.log('a',a);
                 $scope.todayTime = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
             };
 
@@ -1502,12 +1504,9 @@ angular.module('controllers', ['luegg.directives'])
             //启动一个监控消息状态的定时器
             var setIntervalTimers = function(){
                 $.each($scope.alreadyJoinPatientConversation,function(index,value){
-                    console.log(index);
-                    var date = new Date().getTime();
                    var flag = moment().subtract(5, 'minute').isAfter(value.dateTime);
                     if(value.notifyType == 1002 && flag ){
                         value.notifyType = 1003;
-                        console.log('notifyType',value.notifyType);
                     }
                 });
             };
