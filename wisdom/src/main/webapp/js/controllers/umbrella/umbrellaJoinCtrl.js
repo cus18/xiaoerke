@@ -14,12 +14,24 @@
             $scope.umbrellaId=0;
             $scope.status="b";
             $scope.pintu=0;
+            var u = navigator.userAgent, app = navigator.appVersion;
+            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('linux') > -1; //g
+            var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            var detailLock = "true";
 
             $scope.shareid=$stateParams.shareid;
 
             $scope.goDetail=function(){
                 recordLogs("BHS_WDBZ_CKXQ");
-                window.location.href = "/wisdom/firstPage/umbrella?status="+$scope.status;
+                if(isAndroid){
+                    window.location.href = "/wisdom/firstPage/umbrella?status="+$scope.status;
+                }else if(isIOS){
+                    if(detailLock=="true"){
+                        detailLock = "false";
+                    }else{
+                        window.location.href = "/wisdom/firstPage/umbrella?status="+$scope.status;
+                    }
+                }
             };
             $scope.goActive=function(){
                 recordLogs("BHS_WDBZ_JH");
@@ -90,6 +102,7 @@
                 ifExistOrder.save(function (data) {
                     // $scope.info.phoneNum=data.phone;
                     if (data.result == "1") {
+                        //alert("ifExistOrder");
                         window.location.href = "../wisdom/firstPage/umbrella?id=" + $stateParams.id;
                     }else if(data.umbrella.pay_result=="fail"){
                         window.location.href = "http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=umbrellaPay&shareId="+$stateParams.id;

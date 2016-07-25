@@ -298,23 +298,49 @@ var cancelRemind = function() {
 }
 
 /*跳转到参与成功页面*/
+var u = navigator.userAgent, app = navigator.appVersion;
+var isAndroid = u.indexOf('Android') > -1 || u.indexOf('linux') > -1; //g
+var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+var myGuaranteeLock = "true";
 var myGuarantee = function() {
     var shareId = GetQueryString("id")==null?120000000:GetQueryString("id");
-    //通过openid 获取当前用户是否关注
-    $.ajax({
-        type: 'POST',
-        url: "umbrella/getOpenidStatus",
-        contentType: "application/json; charset=utf-8",
-        success: function(result){
-            var status=result.status;
-            if(status=="1"){
-                window.location.href="../wisdom/umbrella#/umbrellaPaySuccess/"+shareId;
-            }else{
-                window.location.href = "../wisdom/umbrella#/umbrellaJoin/"+new Date().getTime()+"/"+shareId;
-            }
-        },
-        dataType: "json"
-    });
+    if(isAndroid){
+        //通过openid 获取当前用户是否关注
+        $.ajax({
+            type: 'POST',
+            url: "umbrella/getOpenidStatus",
+            contentType: "application/json; charset=utf-8",
+            success: function(result){
+                var status=result.status;
+                if(status=="1"){
+                    window.location.href="../wisdom/umbrella#/umbrellaPaySuccess/"+shareId;
+                }else{
+                    window.location.href = "../wisdom/umbrella#/umbrellaJoin/"+new Date().getTime()+"/"+shareId;
+                }
+            },
+            dataType: "json"
+        });
+    }else if(isIOS){
+        if(myGuaranteeLock=="true"){
+            myGuaranteeLock = "false";
+        }else{
+            //通过openid 获取当前用户是否关注
+            $.ajax({
+                type: 'POST',
+                url: "umbrella/getOpenidStatus",
+                contentType: "application/json; charset=utf-8",
+                success: function(result){
+                    var status=result.status;
+                    if(status=="1"){
+                        window.location.href="../wisdom/umbrella#/umbrellaPaySuccess/"+shareId;
+                    }else{
+                        window.location.href = "../wisdom/umbrella#/umbrellaJoin/"+new Date().getTime()+"/"+shareId;
+                    }
+                },
+                dataType: "json"
+            });
+        }
+    }
 }
 
 var goJoin = function() {
