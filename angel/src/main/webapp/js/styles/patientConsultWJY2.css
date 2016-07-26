@@ -219,3 +219,14 @@ input {
     font-size: 17px;
     color: #08b7c2;
 }
+.wjy_fuceng{
+    position: absolute;
+    z-index: 33;
+    top: 0;
+    padding: 47px 25px 0;
+    background-color: #f9f9f9;
+}
+.wjy_fuceng img:nth-child(2){
+    margin-top: 15px;
+    float: right;
+}

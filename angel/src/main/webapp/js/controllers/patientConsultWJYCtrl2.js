@@ -16,6 +16,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
             var heartBeatNum = 0;
             $scope.lookMore = false;
             var patientImg ;
+            $scope.fucengLock = true;
             /*$scope.openFileListFlag = false;
              $location.hash("fileInput");
              $anchorScroll();
@@ -32,14 +33,14 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
              };
              */
             //提示语
-            var tishi = {
+            /*var tishi = {
                 'type':"0",
                 'content':"欢迎咨询宝大夫,三甲医院儿科专家24小时在线，咨询秒回不等待。24小时全天：小儿内科全天分时段：小儿皮肤科、保健科、妇产科、外科、眼科、耳鼻喉科、口腔科、预防接种科、中医科、心理科",
                 'dateTime':"",
                 'senderId':"1",
                 'senderName':"",
                 'sessionId':""
-            }
+            }*/
 
             function randomString(len) {
                 len = len || 32;
@@ -56,7 +57,6 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
             $scope.patientConsultFirst = function(){
                 $scope.getQQExpression();
                 $scope.getQQExpression();
-                processDoctorSendMessage(tishi);
 
                 //根据微家园的token来获取用的基本信息
                 var token = $stateParams.token;
@@ -73,7 +73,6 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                             if(data.status=="0"){
                                 $scope.sessionId = data.sessionId;
                                 $scope.lookMore = true;
-
                             }else if(data.status=="1"){
                                 $scope.sessionId = "";
                                 /*var val = {
@@ -174,7 +173,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                  });
                  }*/
                 var now = moment().format("YYYY-MM-DD HH:mm:ss");
-                if($scope.consultContent[1]!=undefined){
+                if($scope.consultContent[0]!=undefined){
                     now = $scope.consultContent[0].dateTime;
                 }
                 console.log("now",now);
@@ -315,6 +314,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                         return;
                     }
                     if ($scope.socketServer.readyState == WebSocket.OPEN) {
+                        $scope.fucengLock = false;
                         $scope.consultContent.push(patientValMessage);
                         $scope.socketServer.send(emotionSendFilter(JSON.stringify(patientValMessage)));
                         patientValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($("#saytext").val())));
