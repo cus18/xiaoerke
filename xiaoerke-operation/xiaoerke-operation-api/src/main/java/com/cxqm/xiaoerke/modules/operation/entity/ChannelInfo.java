@@ -9,9 +9,27 @@ public class ChannelInfo {
     private String department;  //部门
     private String marketer;      //二维码
     private String channel;     //渠道
+    private String startDate;
+    private String endDate;
 
     public Integer getId() {
         return id;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
     public void setId(Integer id) {

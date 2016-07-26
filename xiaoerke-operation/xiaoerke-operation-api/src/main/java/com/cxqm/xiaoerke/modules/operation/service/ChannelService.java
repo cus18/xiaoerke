@@ -24,6 +24,10 @@ public interface ChannelService  {
     List<HashMap<String, Object>> getChannelCategoryStatistics(HashMap hashMap);
     //渠道明细统计数据
     List<HashMap<String, Object>> getChannelDetailStatistics(HashMap hashMap);
+    //获取用户统计（部门）
+    List<HashMap<String, Object>> getUserStatisticsDepartment(HashMap hashMap);
+    //获取用户统计（渠道）
+    List<HashMap<String, Object>> getUserStatisticsChannel(HashMap hashMap);
     //获取所有的渠道
     List<String> getAllChannels();
 }

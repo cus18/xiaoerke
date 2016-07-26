@@ -39,6 +39,8 @@
     <li class="active"><a href="${ctx}/sys/Channel/ChannelMain"><font color="#006400">渠道添加</font></a></li>
     <li><a href="${ctx}/sys/Channel/ChannelCategory"><font color="#006400">渠道分类统计</font></a></li>
     <li><a href="${ctx}/sys/Channel/ChannelDetail"><font color="#006400">渠道细分</font></a></li>
+    <li><a href="${ctx}/sys/Channel/userStatisticsChannel"><font color="#006400">用户统计（渠道）</font></a></li>
+    <li><a href="${ctx}/sys/Channel/userStatisticsDepartment"><font color="#006400">用户统计（部门）</font></a></li>
 </ul>
 
 <form:form id="searchForm" modelAttribute="registerServiceVo" action="${ctx}/sys/Channel/ChannelMain" method="post" class="form-search">

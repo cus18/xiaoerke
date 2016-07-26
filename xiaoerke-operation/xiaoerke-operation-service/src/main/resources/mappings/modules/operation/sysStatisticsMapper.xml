@@ -482,4 +482,110 @@
         </if>
         ORDER BY attention.marketer
     </select>
+
+    <!--查询用户（渠道）-->
+    <select id="getUserStatisticsChannel" resultType="java.util.Map">
+        SELECT attention.marketer,attention.attentionCount,attention.cancleAttentionCount,attention.leijiAttentionCount,attention.leijiCancleAttentionCount,attention.channel,attention.department
+        from (SELECT attentionLeiji1.marketer,attentionLeiji1.leijiAttentionCount,attentionLeiji1.leijiCancleAttentionCount,attentionLeiji2.attentionCount,attentionLeiji2.cancleAttentionCount
+        ,attentionLeiji1.channel,attentionLeiji1.department
+        from
+        (SELECT
+        chi.marketer,
+        chi.channel,
+        chi.department,
+        count(case sa.status when '0' then 1 end) as leijiAttentionCount,
+        count(case sa.status when '1' then 1 end) as leijiCancleAttentionCount
+        from
+        channel_info chi
+        INNER JOIN sys_attention sa ON sa.marketer = chi.marketer
+        where 1=1
+        <if test="startDate != null and startDate != ''">
+            and sa.date &gt;= #{startDate}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            and sa.date &lt;= #{endDate}
+        </if>
+        GROUP BY chi.marketer) attentionLeiji1
+        LEFT JOIN
+        (SELECT
+        chi.marketer,
+        chi.channel,
+        chi.department,
+        count(case sa.status when '0' then 1 end) as attentionCount,
+        count(case sa.status when '1' then 1 end) as cancleAttentionCount
+        from
+        channel_info chi
+        INNER JOIN sys_attention sa ON sa.marketer = chi.marketer
+        where 1=1
+        <if test="startDate != null and startDate != ''">
+            and sa.date &gt;= #{startDate}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            and sa.date &lt;= #{endDate}
+        </if>
+        GROUP BY chi.marketer) attentionLeiji2
+        on attentionLeiji1.marketer=attentionLeiji2.marketer
+        ) attention
+        where 1=1
+        <if test="department != null and department != ''">
+            and attention.department = #{department}
+        </if>
+        <if test="channel != null and channel != ''">
+            and attention.channel = #{channel}
+        </if>
+        ORDER BY attention.marketer
+    </select>
+
+    <!--查询用户（部门）-->
+    <select id="getUserStatisticsDepartment" resultType="java.util.Map">
+        SELECT attention.marketer,attention.attentionCount,attention.cancleAttentionCount,attention.leijiAttentionCount,attention.leijiCancleAttentionCount,attention.channel,attention.department
+        from (SELECT attentionLeiji1.marketer,attentionLeiji1.leijiAttentionCount,attentionLeiji1.leijiCancleAttentionCount,attentionLeiji2.attentionCount,attentionLeiji2.cancleAttentionCount
+        ,attentionLeiji1.channel,attentionLeiji1.department
+        from
+        (SELECT
+        chi.marketer,
+        chi.channel,
+        chi.department,
+        count(case sa.status when '0' then 1 end) as leijiAttentionCount,
+        count(case sa.status when '1' then 1 end) as leijiCancleAttentionCount
+        from
+        channel_info chi
+        INNER JOIN sys_attention sa ON sa.marketer = chi.marketer
+        where 1=1
+        <if test="startDate != null and startDate != ''">
+            and sa.date &gt;= #{startDate}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            and sa.date &lt;= #{endDate}
+        </if>
+        GROUP BY chi.department) attentionLeiji1
+        LEFT JOIN
+        (SELECT
+        chi.marketer,
+        chi.channel,
+        chi.department,
+        count(case sa.status when '0' then 1 end) as attentionCount,
+        count(case sa.status when '1' then 1 end) as cancleAttentionCount
+        from
+        channel_info chi
+        INNER JOIN sys_attention sa ON sa.marketer = chi.marketer
+        where 1=1
+        <if test="startDate != null and startDate != ''">
+            and sa.date &gt;= #{startDate}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            and sa.date &lt;= #{endDate}
+        </if>
+        GROUP BY chi.department) attentionLeiji2
+        on attentionLeiji1.marketer=attentionLeiji2.marketer
+        ) attention
+        where 1=1
+        <if test="department != null and department != ''">
+            and attention.department = #{department}
+        </if>
+        <if test="channel != null and channel != ''">
+            and attention.channel = #{channel}
+        </if>
+        ORDER BY attention.marketer
+    </select>
 </mapper>

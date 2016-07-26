@@ -143,6 +143,16 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
+    public List<HashMap<String, Object>> getUserStatisticsDepartment(HashMap hashMap){
+        return sysStatisticsDao.getUserStatisticsDepartment(hashMap);
+    }
+
+    @Override
+    public List<HashMap<String, Object>> getUserStatisticsChannel(HashMap hashMap) {
+        return sysStatisticsDao.getUserStatisticsChannel(hashMap);
+    }
+
+    @Override
     public List<String> getAllChannels(){
         return sysStatisticsDao.getAllChannels();
     }
