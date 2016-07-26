@@ -111,28 +111,29 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
             if($scope.resultGirl == 0 && $scope.resultBoy != ''){
                 $scope.babyHeight = $scope.resultBoy;
                 if($scope.babyHeight < 170){
-                    $scope.babyDes = '我家男宝的身高居然和何炅一样'+$scope.babyHeight+'，文质彬彬都说帅，你也来测下！';
+                    $scope.babyDes = '我家男宝的身高居然和何炅差不多'+$scope.babyHeight+'，文质彬彬都说帅，你也来测下！';
                 }else if($scope.babyHeight < 175){
-                    $scope.babyDes = '我家男宝的身高居然和权志龙一样'+$scope.babyHeight+'，气宇轩昂人人夸，你也来测下！';
+                    $scope.babyDes = '我家男宝的身高居然和权志龙差不多'+$scope.babyHeight+'，气宇轩昂人人夸，你也来测下！';
                 }else if($scope.babyHeight < 180){
-                    $scope.babyDes = '我家男宝的身高居然和宋仲基一样'+$scope.babyHeight+'，玉树临风全都爱，你也来测下！';
+                    $scope.babyDes = '我家男宝的身高居然和宋仲基差不多'+$scope.babyHeight+'，玉树临风全都爱，你也来测下！';
                 }else if($scope.babyHeight < 185){
-                    $scope.babyDes = '我家男宝的身高居然和吴彦祖一样'+$scope.babyHeight+'，长腿欧巴超羡慕，你也来测下！';
+                    $scope.babyDes = '我家男宝的身高居然和吴彦祖差不多'+$scope.babyHeight+'，长腿欧巴超羡慕，你也来测下！';
                 }else if($scope.babyHeight < 190){
-                    $scope.babyDes = '我家男宝的身高居然和吴亦凡一样'+$scope.babyHeight+'，顶天立地大气概，你也来测下！';
+                    $scope.babyDes = '我家男宝的身高居然和吴亦凡差不多'+$scope.babyHeight+'，顶天立地大气概，你也来测下！';
                 }else{
-                    $scope.babyDes = '我家男宝的身高居然和易建联一样'+$scope.babyHeight+'，篮球飞人绝对帅，你也来测下！';
+                    $scope.babyDes = '我家男宝的身高居然和易建联差不多'+$scope.babyHeight+'，篮球飞人绝对帅，你也来测下！';
                 }
             }
             if($scope.resultGirl != '' && $scope.resultBoy == 0){
+                $scope.babyHeight = $scope.resultGirl;
                 if($scope.babyHeight < 160){
-                    $scope.babyDes = '我家女宝的身高居然和蔡依林一样'+$scope.babyHeight+'，小家碧玉惹人爱，你也来测下！';
+                    $scope.babyDes = '我家女宝的身高居然和蔡依林差不多'+$scope.babyHeight+'，小家碧玉惹人爱，你也来测下！';
                 }else if($scope.babyHeight < 165){
-                    $scope.babyDes = '我家女宝的身高居然和孙俪一样'+$scope.babyHeight+'，大家闺秀人人爱，你也来测下！';
+                    $scope.babyDes = '我家女宝的身高居然和孙俪差不多'+$scope.babyHeight+'，大家闺秀人人爱，你也来测下！';
                 }else if($scope.babyHeight < 170){
-                    $scope.babyDes = '我家女宝的身高居然和杨幂一样'+$scope.babyHeight+'，窈窕淑女君好逑，你也来测下！';
+                    $scope.babyDes = '我家女宝的身高居然和杨幂差不多'+$scope.babyHeight+'，窈窕淑女君好逑，你也来测下！';
                 }else{
-                    $scope.babyDes = '我家女宝的身高居然和林志玲一样'+$scope.babyHeight+'，维密超模大赢家，你也来测下！';
+                    $scope.babyDes = '我家女宝的身高居然和林志玲差不多'+$scope.babyHeight+'，维密超模大赢家，你也来测下！';
                 }
             }
             loadShare();
