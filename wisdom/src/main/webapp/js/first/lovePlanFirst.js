@@ -171,7 +171,8 @@ var sumMoney=function () {
         contentType: "application/json; charset=utf-8",
         dataType:'json',
         success:function(data) {
-            var sumMoney = data.count + 20000;
+            var sum = data.count;
+            var sumMoney = sum.toFixed(2) + 20000;
             var length = sumMoney / 2000;
             $(".lovePlanFirst .ruler .line").css('width',length+'%');
             $("#lovemoneyCount").html(sumMoney);
