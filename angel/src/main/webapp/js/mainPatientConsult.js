@@ -8,6 +8,7 @@ require.config({
         "angular" : "libs/angular.min",
         "angular-resource" : "libs/angular-resource.min",
         "angular-sanitize" : "libs/angular-sanitize.min",
+        "angular-route" : "libs/angular-route.min",
         "angular-ui-router": "libs/angular-ui-router.min",
         "angular-file-upload": "libs/angular-file-upload.min",
         "angular-file-upload-shim":"libs/angular-file-upload-shim.min",
@@ -27,6 +28,10 @@ require.config({
         'angular-resource':{
             deps: ["angular"],
             exports: 'angular-resource'
+        },
+        'angular-route':{
+            deps: ['angular'],   //依赖什么模块
+            exports: 'angular-route'
         },
         'angular-ui-router':{
             deps: ['angular'],   //依赖什么模块
@@ -49,7 +54,7 @@ require.config({
     }
 });
 
-require(['angular','angular-resource','angular-sanitize','angular-ui-router',
+require(['angular','angular-resource','angular-sanitize','angular-route','angular-ui-router',
         'angular-file-upload','angular-file-upload-shim',
         'ocLazyLoad', 'jquery','patientConsultFactory','patientConsultDirective',
         'patientConsultRoute','appPatientConsult'],
