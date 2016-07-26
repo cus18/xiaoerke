@@ -19,7 +19,7 @@ var imgList = ["http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2F
     "http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2Fprove7.png"];
 
 $(function(){
-    $.ajax({
+    /*$.ajax({
         url:"umbrella/getOpenid",// 跳转到 action
         async:true,
         type:'post',
@@ -32,7 +32,7 @@ $(function(){
         },
         error : function() {
         }
-    });
+    });*/
     getUserListImage();
     count();
     sumMoney();
@@ -171,9 +171,9 @@ var sumMoney=function () {
         contentType: "application/json; charset=utf-8",
         dataType:'json',
         success:function(data) {
-            var sum = data.count;
-            var sumMoney = sum.toFixed(2) + 20000;
+            var sumMoney = data.count + 20000;
             var length = sumMoney / 2000;
+            sumMoney = sumMoney.toFixed(2);
             $(".lovePlanFirst .ruler .line").css('width',length+'%');
             $("#lovemoneyCount").html(sumMoney);
         },
