@@ -13,7 +13,7 @@ angular.module('controllers', ['ionic']).controller('lovePlanListCtrl', [
         };
 
         $scope.$on('$ionicView.enter', function(){
-            $.ajax({
+            /*$.ajax({
                 url:"umbrella/getOpenid",// 跳转到 action
                 async:true,
                 type:'post',
@@ -26,7 +26,7 @@ angular.module('controllers', ['ionic']).controller('lovePlanListCtrl', [
                 },
                 error : function() {
                 }
-            });
+            });*/
         })
         //上拉刷新
         $scope.loadOlderStories = function () {

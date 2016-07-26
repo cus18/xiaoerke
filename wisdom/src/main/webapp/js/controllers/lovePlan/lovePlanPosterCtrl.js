@@ -5,7 +5,7 @@ angular.module('controllers', ['ionic']).controller('lovePlanPosterCtrl', [
         $scope.title ="宝妈爱心接力";
 
         $scope.$on('$ionicView.enter', function(){
-            $.ajax({
+            /*$.ajax({
                 url:"umbrella/getOpenid",// 跳转到 action
                 async:true,
                 type:'post',
@@ -18,7 +18,7 @@ angular.module('controllers', ['ionic']).controller('lovePlanPosterCtrl', [
                 },
                 error : function() {
                 }
-            });
+            });*/
         })
     }]);
 
