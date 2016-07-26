@@ -267,6 +267,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                         console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
                     }).success(function(data, status, headers, config){
                         $ionicScrollDelegate.scrollBottom();
+                        $scope.fucengLock = false;
                         var patientValMessage = {
                             "type": 1,
                             "content": data.showFile,
@@ -274,7 +275,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                             "senderId": $scope.patientId,
                             "senderName": $scope.senderName,
                             "sessionId":$scope.sessionId,
-                            "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
+                            "avatar":patientImg //"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
                         };
                         console.log("patientValMessage",patientValMessage.content);
                         if (!window.WebSocket) {
