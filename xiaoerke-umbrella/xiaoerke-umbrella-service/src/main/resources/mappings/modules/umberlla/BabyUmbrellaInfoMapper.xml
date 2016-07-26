@@ -213,4 +213,54 @@
         where bum.parent_phone=#{userPhone}
         ORDER BY sa.date desc LIMIT 1
     </select>
+
+
+    <select id="getBabyUmbrellaInfoTotalUser" parameterType="java.util.Map" resultType="java.lang.Integer" >
+        select (
+            select count(*) from `baby_umbrellainfo` bl
+            where 1=1
+            <if test="date != null">
+                and bl.`create_time` &lt; #{date}
+            </if>
+            and (bl.`pay_result`='success' OR bl.`pay_result` is null)
+            and `baby_id` is not null
+            and `baby_id` !=''
+            and bl.openid !=''
+        )
+
+        +(select count(*)*2 from `baby_umbrellainfo` bl
+            where 1=1
+            <if test="date != null">
+                and bl.`create_time` &lt; #{date}
+            </if>
+            and (bl.`pay_result`='success' OR bl.`pay_result` is null)
+            and `baby_id` is null
+            and bl.openid !=''
+        )
+
+        +(select count(*) from `umbrella_familyinfo`
+        where `umbrella_id` in
+            (select id from `baby_umbrellainfo` bl
+            where 1=1
+            <if test="date != null">
+                and bl.`create_time` &lt; #{date}
+            </if>
+            and (bl.`pay_result`='success' OR bl.`pay_result` is null)
+            and bl.openid !=''
+            )
+        )
+
+        as a
+    </select>
+
+    <select id="getBabyUmbrellaInfoTotalFamily" parameterType="java.util.Map" resultType="java.lang.Integer" >
+        select count(*) from `baby_umbrellainfo` bl
+        where 1=1
+        <if test="date != null">
+            and  bl.`create_time` &lt; #{date}
+        </if>
+        and (bl.`pay_result`='success' OR bl.`pay_result` is null)
+        and bl.openid !=''
+    </select>
+
 </mapper>
