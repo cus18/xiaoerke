@@ -32,7 +32,8 @@ define(['appPatientConsult'], function(app){
                                     ['js/controllers/patientConsultFirstCtrl.js',
                                         'js/libs/scrollglue.js','js/libs/moment.min.js',
                                         'js/libs/jquery.qqFace.js',
-                                        'js/styles/patientConsultFirst.css'],
+                                        'js/styles/patientConsultFirst.css',
+                                        'js/styles/main.css'],
                                     'js/views/patientConsultFirst.html?ver='+patientConsultVersion);
                             }
                         },
