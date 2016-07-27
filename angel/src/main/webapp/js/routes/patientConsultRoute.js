@@ -31,6 +31,7 @@ define(['appPatientConsult'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientConsultFirstCtrl',
                                     ['js/controllers/patientConsultFirstCtrl.js',
                                         'js/libs/scrollglue.js','js/libs/moment.min.js',
+                                        'js/libs/jquery.qqFace.js',
                                         'js/styles/patientConsultFirst.css'],
                                     'js/views/patientConsultFirst.html?ver='+patientConsultVersion);
                             }
@@ -48,7 +49,7 @@ define(['appPatientConsult'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientConsultUmbrellaCtrl',
                                     ['js/controllers/patientConsultUmbrellaCtrl.js',
                                         'js/libs/scrollglue.js','js/libs/moment.min.js',
-                                        'js/libs/scrollglue.js','js/libs/moment.min.js',
+                                        'js/libs/jquery.qqFace.js',
                                         'js/styles/patientConsultUmbrella.css'],
                                     'js/views/patientConsultUmbrella.html?ver='+patientConsultVersion);
                             }
