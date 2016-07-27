@@ -45,33 +45,45 @@
         </div>
     </div>
     <div class="consultInput">
+        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_6.png" alt="表情符号" id="face" ng-click="getQQExpression()"/>
+        <textarea class="textInput" placeholder="请输入咨询内容" id="saytext" ng-model="info.consultInputValue"></textarea>
+        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_5.png" alt="打开文件"  ng-click="openFileList()"/>
+        <input ng-click="sendConsultContent()" type="button" value="发送">
+    </div>
+    <div ng-if="openFileListFlag&&!sendItem" id="fileInputList" class="fileInputList">
+        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_7.png" type="file"
+             ng-file-select="uploadFiles($files,'image')" accept="image/*" ng-file-max-height="2000"
+             ng-file-max-size="2MB">
+        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_8.png" type="file"
+             ng-file-select="uploadFiles($files,'audio')" accept="audio/*">
+        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_9.png" type="file"
+             ng-file-select="uploadFiles($files,'video')" accept="video/*">
+    </div>
+    <!--<div class="consultInput">
         <div class="consultInputTop">
-            <div class="videoInput">
-                <!--<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_4.png" alt=""/>-->
+            <div>
                 <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_6.png" alt=""
                      id="face" ng-click="getQQExpression()"/>
             </div>
             <div>
                 <textarea class="textInput" placeholder="请输入咨询内容" id="saytext" ng-model="info.consultInputValue"
                           style="border-style:none"></textarea>
-                <!--<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_6.png" alt="" id="face" ng-click="getQQExpression()"/>-->
             </div>
-            <div ng-if="!sendItem" ng-click="openFileList()" ng-if="sendItem">
+            <div ng-click="openFileList()">
                 <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_5.png" alt=""/>
             </div>
-            <!--  ng-if="sendItem" -->
             <div class="sendConsultContent" id="sendConsultContent">
                 <input ng-click="sendConsultContent()" type="button" value="发送">
             </div>
+            <div ng-if="openFileListFlag&&!sendItem" id="fileInputList" class="fileInputList">
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_7.png" type="file"
+                     ng-file-select="uploadFiles($files,'image')" accept="image/*" ng-file-max-height="2000"
+                     ng-file-max-size="2MB">
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_8.png" type="file"
+                     ng-file-select="uploadFiles($files,'audio')" accept="audio/*">
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_9.png" type="file"
+                     ng-file-select="uploadFiles($files,'video')" accept="video/*">
+            </div>
         </div>
-        <div ng-if="openFileListFlag&&!sendItem" id="fileInputList" class="fileInputList">
-            <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_7.png" type="file"
-                 ng-file-select="uploadFiles($files,'image')" accept="image/*" ng-file-max-height="2000"
-                 ng-file-max-size="2MB">
-            <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_8.png" type="file"
-                 ng-file-select="uploadFiles($files,'audio')" accept="audio/*">
-            <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_9.png" type="file"
-                 ng-file-select="uploadFiles($files,'video')" accept="video/*">
-        </div>
-    </div>
+    </div>-->
 </div>

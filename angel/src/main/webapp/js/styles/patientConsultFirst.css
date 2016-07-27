@@ -1,63 +1,12 @@
-
-.h100 {
-    height: 100%;
-}
-
-a:focus, input:focus {
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    -webkit-user-modify: read-write-plaintext-only;
-}
-
-.container-fluid {
-    background-color: #fff;
-    width: 100%;
-}
-
-.consultTitle {
-    height: 44px;
-    font: 16px/44px 'Microsoft Yahei';
-    color: #fff;
-    width: 100%;
-    background-color: #1FC3C5;
-    text-align: center;
-    position: absolute;
-    z-index: 999;
-}
-
-.consultTitle span {
-    display: inline-block;
-    float: left;
-    padding: 9px 10px;
-    line-height: 24px;
-}
-
-.consultTitle span img {
-    width: 25px;
-    height: 25px;
-}
-
-.consultTitle span:nth-child(2) {
-    float: right;
-}
-
-.consultDisplay {
-    background-color: #f9f9f9;
-    border-bottom: 1px solid #ccc;
-    overflow: auto;
-}
-
-.consultDisplay::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-}
+/*
 
 .consultInputTop {
     height: 30px;
-    padding: 30px 0;
+    padding: 10px 0;
+    background-color: #fff;
     position: absolute;
     bottom:0;
-    background-color: #fff;
-    width: 100%;
+    margin: 0 10px;
 }
 
 .consultInputTop img {
@@ -68,13 +17,6 @@ a:focus, input:focus {
 .consultInputTop div {
     float: left;
 }
-/*
-.consultInputTop .textInput img {
-    width: 20px;
-    height: 20px;
-    margin-top: 2px;
-    float: right;
-}*/
 
 .consultInputTop .textInput {
     border: 1px solid #ccc;
@@ -98,6 +40,17 @@ a:focus, input:focus {
     margin: 0 30px;
 }
 
+
+*/
+
+.h100 {
+    height: 100%;
+}
+img {
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+}
 textarea {
     overflow: auto;
     word-break: break-all;
@@ -108,8 +61,59 @@ textarea {
     border: none;
     vertical-align: top;
     resize: none;
+    border-style: none;
+    margin: 0 5px;
+}
+.container-fluid {
+    width: 100%;
 }
 
+.consultTitle {
+    height: 44px;
+    font: 16px/44px 'Microsoft Yahei';
+    color: #fff;
+    width: 100%;
+    background-color: #1FC3C5;
+    text-align: center;
+    position: absolute;
+    z-index: 999;
+}
+
+.consultTitle span {
+    display: inline-block;
+    float: left;
+    padding: 9px 10px;
+    line-height: 24px;
+}
+.consultTitle span:nth-child(2) {
+    float: right;
+}
+
+.consultDisplay {
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #ccc;
+    overflow: auto;
+}
+
+.consultDisplay::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.consulChatList {
+    overflow-y: scroll;
+    height: 84%;
+    padding: 44px 0 50px 0;
+}
+
+.consulChatList::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+[scroll-glue-bottom], {
+    overflow-y: scroll;
+}
 /*会话内容*/
 .doctorReplyContent, .patientConsultContent {
     width: 100%;
@@ -134,15 +138,6 @@ textarea {
     float: right;
 }
 
-.message {
-    border-radius: 2px;
-    padding: 7px 5px;
-    font: 12px/12px 'Microsoft Yahei';
-    position: relative;
-    margin: 0 10px;
-    max-width: 80%;
-}
-
 .doctorReplyContent div:nth-child(2) {
     background-color: #fff;
 }
@@ -152,7 +147,16 @@ textarea {
     color: #fff;
 }
 
-/*小三角*/
+.consulChatList .message {
+    border-radius: 2px;
+    padding: 7px 5px;
+    font: 12px/12px 'Microsoft Yahei';
+    position: relative;
+    margin: 0 10px;
+    max-width: 80%;
+}
+
+/**小三角**/
 .patientConsultContent .message::after {
     content: '';
     width: 0;
@@ -175,7 +179,27 @@ textarea {
     left: -8px;
 }
 
-/*qq表情*/
+/*底部*/
+
+.consultInput {
+    line-height: 25px;
+    padding: 10px 0;
+    background-color: #fff;
+    position: absolute;
+    bottom:0;
+    width: 100%;
+    text-align: center;
+}
+.consultInput input {
+    font: 13px/25px 'Microsoft Yahei';
+    color: #fff;
+    background-color: #1FC3C5;
+    border: none;
+    padding: 0 8px;
+    border-radius: 5px;
+    margin: 0 0 0 5px;
+}
+/**qq表情**/
 .comment {
     width: 680px;
     margin: 20px auto;
@@ -227,19 +251,4 @@ textarea {
 
 .qqFace table td img:hover {
     border: 1px #0066cc solid;
-}
-
-.consulChatList {
-    overflow-y: scroll;
-    height: 84%;
-    padding: 44px 0 50px 0;
-}
-
-.consulChatList::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-}
-
-[scroll-glue-bottom], {
-    overflow-y: scroll;
 }
