@@ -213,10 +213,6 @@ public class AccountUserController {
 	public
 	@ResponseBody
 	String lovePlanPay(HttpServletRequest request,HttpSession session) throws Exception {
-		String leaveNote = request.getParameter("leaveNote");
-		if(leaveNote != null) {
-			leaveNote = new String(leaveNote.getBytes("ISO-8859-1"), "utf-8");
-		}
 		Integer donationType = null;
 		if(StringUtils.isNotNull(request.getParameter("donationType"))){
 			donationType = Integer.valueOf(request.getParameter("donationType"));
@@ -225,7 +221,6 @@ public class AccountUserController {
 		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 		//获取统一支付接口参数
 		request.setAttribute("feeType", "lovePlan");
-		request.setAttribute("leaveNote", leaveNote);
 		request.setAttribute("donationType", donationType);
 		Map prepayInfo = accountService.getPrepayInfo(request, session, "lovePlanService");
 		prepayInfo.put("feeType", "lovePlan");
@@ -247,9 +242,9 @@ public class AccountUserController {
 		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 		//获取统一支付接口参数
 		String payType = (String)request.getAttribute("payType");
-		request.setAttribute("feeType", "doctorConsultPay");
+		request.setAttribute("feeType", payType);
 		Map prepayInfo = accountService.getPrepayInfo(request, session, "doctorConsultPay");
-		prepayInfo.put("feeType","doctorConsultPay");
+		prepayInfo.put("feeType",payType);
 //		System.out.println("feeType:" + prepayInfo.get("feeType").toString());
 		//拼装jsPay所需参数,如果prepay_id生成成功则将信息放入account_pay_record表
 		String userId = UserUtils.getUser().getId();

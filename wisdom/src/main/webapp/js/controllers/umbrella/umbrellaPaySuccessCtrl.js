@@ -7,6 +7,23 @@
             $scope.QRCodeURI="";
             
             $scope.$on('$ionicView.enter', function() {
+
+                $.ajax({
+                    url:"umbrella/getOpenid",// 跳转到 action
+                    async:true,
+                    type:'post',
+                    cache:false,
+                    dataType:'json',
+                    success:function(data) {
+                        if(data.openid=="none"){
+                            window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+                            
+                            
+                        }
+                    },
+                    error : function() {
+                    }
+                });
                 
                 getUserQRCode.save({"id":$stateParams.id}, function (data){
                     $scope.QRCodeURI=data.qrcode;
@@ -43,16 +60,16 @@
                             wx.ready(function () {
                                 // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                                 wx.onMenuShareTimeline({
-                                    title: '5元＝40万？原来做公益，只要一根雪糕钱！', // 分享标题
+                                    title: '没什么好送的，40万大病治疗费，送给你！', // 分享标题
                                     link: "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$stateParams.id+"/a",
                                     imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                     success: function (res) {
-                                        recordLogs("BHS_WDBZ_FXPYQ");
+                                        recordLogs("BHS_WDBZ_FXPYQ_"+$stateParams.id);
                                         //记录用户分享文章
                                         $.ajax({
                                             type: 'POST',
                                             url: "umbrella/updateBabyUmbrellaInfoIfShare",
-                                            data:"{'id':'"+shareUmbrellaId+"'}",
+                                            data:"{'id':'"+$stateParams.id+"'}",
                                             contentType: "application/json; charset=utf-8",
                                             success: function(result){
                                                 var todayCount=result.todayCount;
@@ -66,16 +83,16 @@
                                     }
                                 });
                                 wx.onMenuShareAppMessage({
-                                    title: '5元＝40万？原来做公益，只要一根雪糕钱！', // 分享标题
+                                    title: '没什么好送的，40万大病治疗费，送给你！', // 分享标题
                                     desc: "我已成为宝护伞互助公益爱心大使，领到了40万的健康保障，你也快来加入吧！", // 分享描述
                                     link:"http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$stateParams.id+"/a",
                                     imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                     success: function (res) {
-                                        recordLogs("BHS_WDBZ_FXPY");
+                                        recordLogs("BHS_WDBZ_FXPY_"+$stateParams.id);
                                         $.ajax({
                                             type: 'POST',
                                             url: "umbrella/updateBabyUmbrellaInfoIfShare",
-                                            data:"{'id':'"+shareUmbrellaId+"'}",
+                                            data:"{'id':'"+$stateParams.id+"'}",
                                             contentType: "application/json; charset=utf-8",
                                             success: function(result){
                                                 var todayCount=result.todayCount;

@@ -24,7 +24,7 @@ public interface ConsultPhonePatientService {
 
     List<HashMap<String,Object>> getOrderList(String userId);
 
-    BigDecimal cancelOrder(Integer phoneConsultaServiceId,String cancelReason,String cancelState) throws CancelOrderException;//cancelState:0是取消订单，号源设置为可用，2是删除号源
+    Float cancelOrder(Integer phoneConsultaServiceId,String cancelReason,String cancelState) throws CancelOrderException;//cancelState:0是取消订单，号源设置为可用，2是删除号源
 
     int updateOrderInfoBySelect(ConsultPhoneRegisterServiceVo vo);
 

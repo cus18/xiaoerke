@@ -13,7 +13,6 @@ require.config({
         "angular-file-upload-shim":"libs/angular-file-upload-shim.min",
         "ocLazyLoad":"libs/ocLazyLoad.require.min",
         "jquery":"libs/jquery-2.1.3.min",
-        "jqueryFace":"libs/jquery.qqFace",
         "browser":"libs/jquery.browser.min",
         "patientConsultFactory" : "services/patientConsultFactory",
         "patientConsultDirective" : "directives/patientConsultDirective",
@@ -51,7 +50,7 @@ require.config({
 
 require(['angular','angular-resource','angular-sanitize','angular-ui-router',
         'angular-file-upload','angular-file-upload-shim',
-        'ocLazyLoad', 'jquery','jqueryFace','browser','patientConsultFactory','patientConsultDirective',
+        'ocLazyLoad', 'jquery','browser','patientConsultFactory','patientConsultDirective',
         'patientConsultRoute','appPatientConsult'],
     function (angular){
         angular.bootstrap(document,["patientConsultApp"]);

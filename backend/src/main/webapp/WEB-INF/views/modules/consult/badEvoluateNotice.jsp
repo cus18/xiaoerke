@@ -11,7 +11,7 @@
 
         function deleteNoticeUser(obj){
             $("#openId").val(obj);
-            alert($("#openId").val());
+//            alert($("#openId").val());
             if(!confirm("确认删除该用户？")){
                 window.event.returnValue = false;
             }else{
@@ -126,10 +126,10 @@
     <sys:message content="${message}"/>
     <ul class="ul-form">
         <li><label>姓名：</label>
-            <input id="csUserName"  name="csUserName"htmlEscape="false" maxlength="50" class="input-medium"/>
+            <input id="csUserName"  name="csUserName" htmlEscape="false" maxlength="50" class="input-medium"/>
         </li>
         <li><label>openID：</label>
-            <input id="openId"  name="openId"htmlEscape="false" maxlength="50" class="input-medium"/>
+            <input id="openId"  name="openId" htmlEscape="false" maxlength="50" class="input-medium"/>
         </li>
         <li class="btns">
             <input class="btn btn-primary" type="button" onclick="searchSub()" value="查询" />

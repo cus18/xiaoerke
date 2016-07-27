@@ -9,40 +9,44 @@
                 <div class="question question1">
                     <div class="qContent">
                         <div class="qTitle">宝爸的出生日期？</div>
-                        <a class="qSelect">
+                        <div class="qSelect" ng-style="dadBirthdaySelected?{backgroundColor: '#9fdcff'}:{backgroundColor: '#ffffff'}">
                             <input class="value" type="text" readonly="readonly" id="dadBirthday" placeholder="选择宝爸的出生日期">
-                        </a>
+                            <div class="qSelect1" ng-click="showInput('dadBirthday')">点击</div>
+                        </div>
                     </div>
                 </div>
                 <div class="question question2">
                     <div class="qContent">
                         <div class="qTitle">宝爸的身高？</div>
-                        <a class="qSelect"><input class="height" required maxlength="3" type="tel" ng-model="info.dadHeight" placeholder="请输入身高"/>cm</a>
+                        <div class="qSelect qSelectEnt" ng-style="info.dadHeight==''?{backgroundColor: '#ffffff'}:{backgroundColor: '#9fdcff'}">
+                            <input class="height" required maxlength="3" type="tel" ng-model="info.dadHeight" placeholder="请输入身高"/>cm</div>
                     </div>
                 </div>
                 <div class="question question3">
                     <div class="qContent">
                         <div class="qTitle">宝妈的出生日期？</div>
-                        <a class="qSelect">
+                        <div class="qSelect" ng-style="mamBirthdaySelected?{backgroundColor: '#9fdcff'}:{backgroundColor: '#ffffff'}">
                             <input class="value" type="text" readonly="readonly" id="mamBirthday" placeholder="选择宝妈的出生日期">
-                        </a>
+                            <div class="qSelect1" ng-click="showInput('mamBirthday')">点sss击</div>
+                        </div>
                     </div>
                 </div>
                 <div class="question question4">
                     <div class="qContent">
                         <div class="qTitle">宝妈的身高？</div>
-                        <a class="qSelect"><input class="height" required maxlength="3" type="tel" ng-model="info.mamHeight" placeholder="请输入身高"/>cm</a>
+                        <div class="qSelect qSelectEnt" ng-style="info.mamHeight==''?{backgroundColor: '#ffffff'}:{backgroundColor: '#9fdcff'}">
+                            <input class="height" required maxlength="3" type="tel" ng-model="info.mamHeight" placeholder="请输入身高"/>cm</div>
                     </div>
                 </div>
             </div>
             <div class="lookResult" ng-click="checkName()" >我要看结果</div>
             <!--浮层-->
-            <div class="c-shadow"  ng-if="lookResultFloat" ng-click="cancelFloat()"></div>
+            <div class="c-shadow" ng-if="lookResultFloat" ng-click="cancelFloat()">
+            </div>
             <div class="floatImg" ng-if="lookResultFloat">
                 <img class="my-img2" height="auto" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2Fjiantou_png_03.png">
                 <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2Ffuceng_png_03.png">
             </div>
-            <br> <br> <br>
         </ion-scroll>
     </ion-content>
 </ion-view>

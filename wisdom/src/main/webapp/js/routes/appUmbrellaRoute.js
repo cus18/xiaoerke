@@ -31,7 +31,7 @@ define(['appUmbrella'], function(app){
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaJoinCtrl',
                                     ['js/controllers/umbrella/umbrellaJoinCtrl.js?ver='+umbrellaVersion,
-                                        'js/libs/moment.min.js',
+                                        //'js/libs/moment.min.js',
                                         'styles/umbrella/umbrellaCommon.less?ver='+umbrellaVersion,
                                         'styles/umbrella/umbrellaJoin.less?ver='+umbrellaVersion],
                                     'js/views/umbrella/umbrellaJoin.html?ver='+umbrellaVersion);
@@ -50,8 +50,9 @@ define(['appUmbrella'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaFillInfoCtrl',
                                     ['js/controllers/umbrella/umbrellaFillInfoCtrl.js?ver='+umbrellaVersion,
                                         'js/libs/mobiscroll.custom-2.17.0.min.js',
+                                        // 'js/libs/scrollglue.js',
                                         'styles/lib/mobiscroll.custom-2.17.0.min.css',
-                                        'styles/umbrella/umbrellaCommon.less?ver=',
+                                        'styles/umbrella/umbrellaCommon.less?ver='+umbrellaVersion,
                                         'styles/umbrella/umbrellaFillInfo.less?ver='+umbrellaVersion],
                                     'js/views/umbrella/umbrellaFillInfo.html?ver='+umbrellaVersion);
                             }
@@ -104,6 +105,13 @@ define(['appUmbrella'], function(app){
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaLeadCtrl',
                                     ['js/controllers/umbrella/umbrellaLeadCtrl.js?ver='+umbrellaVersion,
+                                        'swipe/swipeJs/swiper.min.js',
+                                        'swipe/swipeJs/swiper.animate.min.js',
+                                        'swipe/swipeJs/swiperMain.js',
+                                        'swipe/css/swiper.min.css?ver='+umbrellaVersion,
+                                        'swipe/css/animate.min.css?ver='+umbrellaVersion,
+                                        'swipe/css/swiperIndex.css?ver='+umbrellaVersion,
+                                        'swipe/css/swiperUmbrella.css?ver='+umbrellaVersion,
                                         'styles/umbrella/umbrellaLead.less?ver='+umbrellaVersion],
                                     'js/views/umbrella/umbrellaLead.html?ver='+umbrellaVersion);
                             }
@@ -138,6 +146,40 @@ define(['appUmbrella'], function(app){
                                     ['js/controllers/umbrella/umbrellaPaySuccessCtrl.js?ver='+umbrellaVersion,
                                         'styles/umbrella/umbrellaPaySuccess.less?ver='+umbrellaVersion],
                                     'js/views/umbrella/umbrellaPaySuccess.html?ver='+umbrellaVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                    .state('umbrellaInvite', {
+                        url: '/umbrellaInvite',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'umbrellaInviteCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaInviteCtrl',
+                                    ['js/controllers/umbrella/umbrellaInviteCtrl.js?ver='+umbrellaVersion,
+                                        'styles/umbrella/umbrellaCommon.less?ver='+umbrellaVersion,
+                                        'styles/umbrella/umbrellaInvite.less?ver='+umbrellaVersion],
+                                    'js/views/umbrella/umbrellaInvite.html?ver='+umbrellaVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                    .state('umbrellaDemo', {
+                        url: '/umbrellaDemo',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'umbrellaDemoCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaDemoCtrl',
+                                    ['js/controllers/umbrella/umbrellaDemoCtrl.js?ver='+umbrellaVersion,
+                                        'js/libs/scrollglue.js',
+                                        'styles/umbrella/umbrellaDemo.less?ver='+umbrellaVersion],
+                                    'js/views/umbrella/umbrellaDemo.html?ver='+umbrellaVersion);
                             }
                         },
                         data: {

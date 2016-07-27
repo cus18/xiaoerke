@@ -16,6 +16,7 @@ import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
+import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
@@ -24,6 +25,7 @@ import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,8 +35,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -77,6 +86,8 @@ public class PayNotificationController {
     private MutualHelpDonationService mutualHelpDonationService;
 
 	private static Lock lock = new ReentrantLock();
+
+	private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
 	/**
 	 * 接收支付成后微信notify_url参数中传来的参数
@@ -331,8 +342,8 @@ public class PayNotificationController {
 
 			//放入service层进行事物控制
 			if("SUCCESS".equals(map.get("return_code"))){
-				LogUtils.saveLog(Servlets.getRequest(), "00000048","用户微信支付完成:" + map.get("out_trade_no"));
-				LogUtils.saveLog(Servlets.getRequest(), "BHS_ZFY_ZFCG","用户微信支付完成:" + map.get("out_trade_no"));
+				LogUtils.saveLog(Servlets.getRequest(), "00000048", "用户微信支付完成:" + map.get("out_trade_no"));
+				LogUtils.saveLog(Servlets.getRequest(), "BHS_ZFY_ZFCG", "用户微信支付完成:" + map.get("out_trade_no"));
 				PayRecord payRecord = new PayRecord();
 				payRecord.setId((String) map.get("out_trade_no"));
 				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
@@ -343,7 +354,8 @@ public class PayNotificationController {
 
 				if(insuranceMap.get("fee_type").toString().equals("umbrella")){
 					if(!"success".equals(insuranceMap.get("status").toString())){
-						sendWechatMessage(umbrellaId[0], umbrellaId[1]);
+						Runnable thread = new sendUBWechatMessage(umbrellaId[0], umbrellaId[1]);
+						threadExecutor.execute(thread);
 					}
 					BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
 					babyUmbrellaInfo.setId(Integer.parseInt(umbrellaId[0]));
@@ -361,6 +373,21 @@ public class PayNotificationController {
 			lock.unlock();
 		}
 		return "";
+	}
+
+	public class sendUBWechatMessage extends Thread {
+		private String toId;
+		private String fromId;
+
+		public sendUBWechatMessage(String toId,String fromId) {
+			this.toId = toId;
+			this.fromId = fromId;
+		}
+
+		@Override
+		public void run() {
+			sendUBWechatMessage(toId, fromId);
+		}
 	}
 
 	@RequestMapping(value = "/user/getLovePlanPayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
@@ -389,21 +416,25 @@ public class PayNotificationController {
 				LogUtils.saveLog(Servlets.getRequest(), "LOVEPLAN_ZFY_ZFCG","用户微信支付完成:" + map.get("out_trade_no"));
 				PayRecord payRecord = new PayRecord();
 				payRecord.setId((String) map.get("out_trade_no"));
+				payRecord.setStatus("success");
+				payRecord.setReceiveDate(new Date());
+				payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
+
                 payRecord.setStatus("success");
                 payRecord.setReceiveDate(new Date());
                 payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
 
 				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
 				if(insuranceMap.get("fee_type").toString().equals("lovePlan")){
-                    if("success".equals(insuranceMap.get("status").toString())){
-                        MutualHelpDonation mutualHelpDonation = new MutualHelpDonation();
-                        mutualHelpDonation.setOpenId((String) map.get("openid"));
+					if("success".equals(insuranceMap.get("status").toString())){
+						MutualHelpDonation mutualHelpDonation = new MutualHelpDonation();
+						mutualHelpDonation.setOpenId((String) map.get("openid"));
 						mutualHelpDonation.setMoney(Integer.valueOf((String) map.get("total_fee")));
-						mutualHelpDonation.setLeaveNote((String)insuranceMap.get("leave_note"));
+						mutualHelpDonation.setLeaveNote(insuranceMap.get("leave_note").toString());
 //						mutualHelpDonation.setDonationType((Integer) insuranceMap.get("donationType"));
 						mutualHelpDonation.setCreateTime(new Date());
-                        mutualHelpDonationService.saveNoteAndDonation(mutualHelpDonation);
-                    }
+						mutualHelpDonationService.saveNoteAndDonation(mutualHelpDonation);
+					}
 				}
 			}
 			return  XMLUtil.setXML("SUCCESS", "");
@@ -417,7 +448,7 @@ public class PayNotificationController {
 
 	@RequestMapping(value = "/user/getDoctorConsultPayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
 	public synchronized
-	@ResponseBody String getDoctorConsultPayNotifyInfo(HttpServletRequest request,HttpSession session) {
+		@ResponseBody String getDoctorConsultPayNotifyInfo(HttpServletRequest request,HttpSession session) {
 		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 		lock.lock();
 		InputStream inStream = null;
@@ -465,7 +496,9 @@ public class PayNotificationController {
 
 
 
-	private void sendWechatMessage(String toId, String fromId){
+
+
+	private void sendUBWechatMessage(String toId, String fromId){
 		if(StringUtils.isNotNull(toId)){
 			Map<String, Object> param = new HashMap<String, Object>();
 			List<Map<String,Object>> list = new ArrayList<Map<String, Object>>();
@@ -486,7 +519,12 @@ public class PayNotificationController {
 				if(StringUtils.isNotNull(toOpenId)){
 					WechatAttention wa = wechatAttentionService.getAttentionByOpenId(toOpenId);
 					if(wa!=null){
-						nickName = StringUtils.isNotNull(wa.getNickname())?wa.getNickname():"";
+						if(StringUtils.isNotNull(wa.getNickname())){
+							nickName = wa.getNickname();
+						}else{
+							WechatBean userinfo = WechatUtil.getWechatName(token, toOpenId);
+							nickName = StringUtils.isNotNull(userinfo.getNickname())?userinfo.getNickname():"";
+						}
 					}
 				}
 			}
@@ -515,7 +553,7 @@ public class PayNotificationController {
 				}
 				BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
 				babyUmbrellaInfo.setId(Integer.parseInt(fromId));
-				babyUmbrellaInfo.setFriendJoinNum(friendJoinNum+1);
+				babyUmbrellaInfo.setFriendJoinNum(friendJoinNum +1);
 				babyUmbrellaInfoService.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
 
 				String keyword2 = StringUtils.isNotNull(babyId)?"观察期":"待激活";
@@ -523,16 +561,88 @@ public class PayNotificationController {
 				WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, fromOpenId, templateId);
 			}
 
-			String title = "宝大夫送你一份见面礼";
-			String description = "恭喜您已成功领取专属于宝宝的20万高额保障金";
+			String title = "恭喜您";
+			String description = "您已成功领到20万保障，分享1个好友，提升2万保障，最高可享受40万保障。\n\n点击进入，立即分享！";
 			String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31";
 			String picUrl = "http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella";
 			String message = "{\"touser\":\""+toOpenId+"\",\"msgtype\":\"news\",\"news\":{\"articles\": [{\"title\":\""+ title +"\",\"description\":\""+description+"\",\"url\":\""+ url +"\",\"picurl\":\""+picUrl+"\"}]}}";
 
 			String jsonobj = HttpRequestUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" +
 					token + "", "POST", message);
-			System.out.println(jsonobj + "===============================");
+			System.out.println(jsonobj + "====== =========================");
+			String result=addUserType(toOpenId);
+			System.out.print(result+ "------------------------------------");
 		}
+	}
+
+	public String addUserType(String id) {
+		Map<String,Object> parameter = systemService.getWechatParameter();
+		String token = (String)parameter.get("token");
+		String url= "https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging?access_token="+token;
+		String jsonData="{\"openid_list\":[\""+id+"\"],\"tagid\" : 105}";
+		String reJson=this.post(url, jsonData,"POST");
+		System.out.println(reJson);
+		JSONObject jb=JSONObject.fromObject(reJson);
+		String errmsg=jb.getString("errmsg");
+		if(errmsg.equals("ok")){
+			return "ok";
+		}else {
+			return errmsg;
+		}
+	}
+
+
+	/**
+	 * 发送HttpPost请求
+	 *
+	 * @param strURL
+	 *            服务地址
+	 * @param params
+	 *            json字符串,例如: "{ \"id\":\"12345\" }" ;其中属性名必须带双引号<br/>
+	 *            type (请求方式：POST,GET)
+	 * @return 成功:返回json字符串<br/>
+	 */
+	public String post(String strURL, String params,String type) {
+		System.out.println(strURL);
+		System.out.println(params);
+		try {
+			URL url = new URL(strURL);// 创建连接
+			HttpURLConnection connection = (HttpURLConnection) url
+					.openConnection();
+			connection.setDoOutput(true);
+			connection.setDoInput(true);
+			connection.setUseCaches(false);
+			connection.setInstanceFollowRedirects(true);
+			connection.setRequestMethod(type); // 设置请求方式
+			connection.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式
+			connection.setRequestProperty("Content-Type", "application/json"); // 设置发送数据的格式
+			connection.connect();
+			OutputStreamWriter out = new OutputStreamWriter(
+					connection.getOutputStream(), "UTF-8"); // utf-8编码
+			out.append(params);
+			out.flush();
+			out.close();
+			// 读取响应
+			int length = (int) connection.getContentLength();// 获取长度
+			InputStream is = connection.getInputStream();
+			if (length != -1) {
+				byte[] data = new byte[length];
+				byte[] temp = new byte[512];
+				int readLen = 0;
+				int destPos = 0;
+				while ((readLen = is.read(temp)) > 0) {
+					System.arraycopy(temp, 0, data, destPos, readLen);
+					destPos += readLen;
+				}
+				String result = new String(data, "UTF-8"); // utf-8编码
+				System.out.println(result);
+				return result;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null; // 自定义错误信息
 	}
 
 }

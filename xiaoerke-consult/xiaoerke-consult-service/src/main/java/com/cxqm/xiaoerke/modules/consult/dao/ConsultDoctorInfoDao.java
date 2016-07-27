@@ -4,6 +4,7 @@ package com.cxqm.xiaoerke.modules.consult.dao;
 import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo;
+import com.cxqm.xiaoerke.modules.sys.entity.User;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
@@ -31,4 +32,6 @@ public interface ConsultDoctorInfoDao {
 
     //jiangzg add 2016年6月20日11:17:47
     List<Map> getDoctorInfoMoreByUserId(@Param("userId")String userId);
+
+    List<User> findUserOrderByDepartment(User user);
 }

@@ -627,6 +627,15 @@ angular.module('controllers', ['luegg.directives'])
                             var valueData = consultContent.split("####");
                             consultContent = valueData[0];
                         }
+                        if($scope.currentUserConversation.serverAddress=="" || $scope.currentUserConversation.serverAddress == null){
+                            $scope.currentUserConversation.serverAddress = $scope.firstAddress;
+                            if($scope.socketServerFirst.readyState != WebSocket.OPEN){
+                                $scope.currentUserConversation.serverAddress = $scope.secondAddress;
+                                if($scope.socketServerSecond.readyState != WebSocket.OPEN){
+                                    alert("连接没有开启！");
+                                }
+                            }
+                        }
                         if($scope.currentUserConversation.serverAddress==$scope.firstAddress){
                             if ($scope.socketServerFirst.readyState == WebSocket.OPEN) {
                                 var consultValMessage = "";
@@ -786,6 +795,7 @@ angular.module('controllers', ['luegg.directives'])
                         if($scope.currentUserConversation.serverAddress==$scope.firstAddress){
                             if ($scope.socketServerFirst.readyState == WebSocket.OPEN) {
                                 $scope.socketServerFirst.send(JSON.stringify(consultValMessage));
+                                $scope.initConsultSocketFirst();
                                 updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                             } else {
                                 alert("连接没有开启.");
@@ -793,6 +803,7 @@ angular.module('controllers', ['luegg.directives'])
                         }else if($scope.currentUserConversation.serverAddress==$scope.secondAddress){
                             if ($scope.socketServerSecond.readyState == WebSocket.OPEN) {
                                 $scope.socketServerSecond.send(JSON.stringify(consultValMessage));
+                                $scope.initConsultSocketSecond();
                                 updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                             } else {
                                 alert("连接没有开启.");
@@ -1384,6 +1395,8 @@ angular.module('controllers', ['luegg.directives'])
             $scope.todayTime = '';
             var newTime = function(){
                 var d = new Date();
+                var a = moment().format();
+                console.log('a',a);
                 $scope.todayTime = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
             };
 
@@ -1491,12 +1504,9 @@ angular.module('controllers', ['luegg.directives'])
             //启动一个监控消息状态的定时器
             var setIntervalTimers = function(){
                 $.each($scope.alreadyJoinPatientConversation,function(index,value){
-                    console.log(index);
-                    var date = new Date().getTime();
                    var flag = moment().subtract(5, 'minute').isAfter(value.dateTime);
                     if(value.notifyType == 1002 && flag ){
                         value.notifyType = 1003;
-                        console.log('notifyType',value.notifyType);
                     }
                 });
             };

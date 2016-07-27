@@ -30,7 +30,7 @@ define(['appHeightForecast'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.heightForecastBirthCtrl',
-                                    ['js/controllers/heightForecast/heightForecastBirthCtrl.js',
+                                    ['js/controllers/heightForecast/heightForecastBirthCtrl.js?ver='+marketVersion,
                                         'js/libs/mobiscroll.custom-2.17.0.min.js',
                                         'styles/lib/mobiscroll.custom-2.17.0.min.css',
                                         'styles/heightForecast/heightForecastBirthTest.less?ver='+marketVersion
@@ -50,7 +50,7 @@ define(['appHeightForecast'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.heightForecastNoBirthCtrl',
-                                    ['js/controllers/heightForecast/heightForecastNoBirthCtrl.js',
+                                    ['js/controllers/heightForecast/heightForecastNoBirthCtrl.js?ver='+marketVersion,
                                         'js/libs/mobiscroll.custom-2.17.0.min.js',
                                         'styles/lib/mobiscroll.custom-2.17.0.min.css',
                                         'styles/heightForecast/heightForecastNoBirthTest.less?ver='+marketVersion
@@ -70,7 +70,7 @@ define(['appHeightForecast'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.heightForecastResultCtrl',
-                                    ['js/controllers/heightForecast/heightForecastResultCtrl.js',
+                                    ['js/controllers/heightForecast/heightForecastResultCtrl.js?ver='+marketVersion,
                                         'styles/heightForecast/heightForecastResult.less?ver='+marketVersion
                                     ],
                                     'js/views/heightForecast/heightForecastResult.html?ver='+marketVersion);

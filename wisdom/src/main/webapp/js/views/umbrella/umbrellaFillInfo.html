@@ -18,9 +18,6 @@
                            <input type="hidden" id="babyId"/>
                            <input class="value" type="text" id="babyName" placeholder="宝宝的真实姓名" ng-click="skip('babyName')"  ng-blur="fillFinish()" ng-model="info.babyName">
                        </label>
-                        <!--<ul class="babyList" ng-if="fillLock">-->
-                            <!--<li class="f4 c6" ng-repeat="item in [1,2,3]" ng-click="selectBaby(item)">{{item}}</li>-->
-                        <!--</ul>-->
                     </dd>
                     <dd class="select">
                        <span class="key">性别：</span>
@@ -83,7 +80,7 @@
             </div>
             <br> <br> <br> <br> <br> <br> <br>
         </ion-scroll>
-        <div ng-click="immediateActive()"  id="payButton" class="button bottom-btn" style="background-color: #2c9ee2;">
+        <div ng-click="immediateActive()"  id="payButton" ng-disabled="buttonDis" class="button bottom-btn" style="background-color: #2c9ee2;">
             激活
         </div>
     </ion-content>
@@ -105,7 +102,7 @@
                     <p>会员：是指符合本计划参与条件并确认参与本计划的会员</p>
                     <p>互助申请人：是指发生本计划约定的救助情形，需要获得其他会员救助的会员本人或其监护人。</p>
                     <p>互助计划：是指宝大夫平台针对各类风险或事项所制定的互助会员之间相互帮助的规则，互助会员遵照规则内容享受互助权利，履行互助义务。</p>
-                    <p>家庭保障金账户：会员定向捐助资金所存放的其在本计划的家庭互助账户，一般情况下，捐助后会员仅享有查看和继续捐助的权利。</p>
+                    <p>家庭保障金账户：会员定向捐助资金所存放的其在本计划的虚拟家庭互助账户，一般情况下，捐助后会员仅享有查看和继续捐助的权利。</p>
 
                 </dd>
                 <dt>第三章 公约效力</dt>

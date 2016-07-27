@@ -1,52 +1,18 @@
 angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl', [
-    '$scope','$state','SaveHeightPredictionInfo',
-    function ($scope,$state,SaveHeightPredictionInfo) {
+    '$scope','$state','SaveHeightPredictionInfo','$ionicScrollDelegate',
+    function ($scope,$state,SaveHeightPredictionInfo,$ionicScrollDelegate) {
 
         $scope.title ="宝妈爱心接力";
         $scope.info = {
             dadHeight:'',
             mamHeight:''
         };
+        $scope.dadBirthdaySelected = false;
+        $scope.mamBirthdaySelected = false;
         $scope.numberB = Math.ceil(Math.random()*5);//随机数
         $scope.numberG = Math.ceil(Math.random()*3);//随机数
-/*
-
- */
         $scope.lookResultFloat = false;
-        //判断问题是否为空
-        $scope.checkName = function () {
-            if($("#dadBirthday").val()==""||$("#dadBirthday").val()==undefined){
-                alert("宝爸生日不能为空！");
-                return;
-            }
-            if($("#mamBirthday").val()==""||$("#mamBirthday").val()==undefined){
-                alert("宝妈生日不能为空！");
-                return;
-            }
-            if($scope.info.dadHeight==""||$scope.info.dadHeight > 300){
-                alert("请重新输入宝爸的身高！");
-                return;
-            }
-            if($scope.info.mamHeight==""||$scope.info.mamHeight > 300){
-                alert("请重新输入宝妈的身高！");
-                return;
-            }
-            $scope.lookResultFloat = true;
-            SaveHeightPredictionInfo.save({
-                dadBirthday:$("#dadBirthday").val(),
-                mamBirthday:$("#mamBirthday").val(),
-                dadHeight:$scope.info.dadHeight,
-                mamHeight:$scope.info.mamHeight,
-                resultGirl:$scope.resultGirl,
-                resultBoy:$scope.resultBoy
-            }, function (data) {
-                console.log('data',data)
-            });
-            $scope.resultBoy = (parseInt($scope.info.dadHeight) + parseInt($scope.info.mamHeight) + 13) / 2 + $scope.numberB;
-            $scope.resultGirl = (parseInt($scope.info.dadHeight)+ parseInt($scope.info.mamHeight) - 13) / 2 + $scope.numberG;
-            $state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
-            recordLogs('YYHD_SG_WCS_WYKJG');
-        };
+        //取消浮层
         $scope.cancelFloat = function () {
             $scope.lookResultFloat = false;
         };
@@ -78,10 +44,54 @@ angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl',
             $("#dadBirthday").mobiscroll(opt);
             $("#mamBirthday").mobiscroll(opt);
         });
+        $scope.checkName = function () {
+            console.log($("#mamBirthday").val());
+            if($("#dadBirthday").val()==""){
+                alert("宝爸生日不能为空！");
+                return;
+            }
+            if($scope.info.dadHeight==""||$scope.info.dadHeight > 300 || $scope.info.dadHeight < 100){
+                alert("请重新输入宝爸的身高！");
+                return;
+            }
+            if($("#mamBirthday").val()==""){
+                alert("宝妈生日不能为空！");
+                return;
+            }
+            if($scope.info.mamHeight==""||$scope.info.mamHeight > 300 || $scope.info.mamHeight < 100){
+                alert("请重新输入宝妈的身高！");
+                return;
+            }
+            $scope.resultBoy = (parseInt($scope.info.dadHeight) + parseInt($scope.info.mamHeight) + 13) / 2 + $scope.numberB;
+            $scope.resultGirl = (parseInt($scope.info.dadHeight)+ parseInt($scope.info.mamHeight) - 13) / 2 + $scope.numberG;
+            SaveHeightPredictionInfo.save({
+                dadBirthday:$("#dadBirthday").val(),
+                mamBirthday:$("#mamBirthday").val(),
+                dadHeight:$scope.info.dadHeight,
+                mamHeight:$scope.info.mamHeight,
+                resultGirl:$scope.resultGirl,
+                resultBoy:$scope.resultBoy
+            }, function (data) {
+            });
+            $ionicScrollDelegate.scrollTop();
+            $scope.lookResultFloat = true;
+            //$state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
+            recordLogs('YYHD_SG_WCS_WYKJG');
+        };
+        //出生日期
+        $scope.showInput = function (index) {
+            if(index=="dadBirthday"){
+                $("#dadBirthday").mobiscroll('show');
+                $scope.dadBirthdaySelected = true;
+            }
+            if(index=="mamBirthday"){
+                $("#mamBirthday").mobiscroll('show');
+                $scope.mamBirthdaySelected = true;
+            }
+        };
         //分享到朋友圈或者微信
         var loadShare = function(){
-            // if(version=="a"){
-            var share = 'http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=32';
+            var share = 'http://s165.baodf.com/wisdom/firstPage/heightForecast';
             version="a";
             var timestamp;//时间戳
             var nonceStr;//随机字符串
@@ -115,9 +125,9 @@ angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl',
                         wx.ready(function () {
                             // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                             wx.onMenuShareTimeline({
-                                title: '想知道宝宝能长多高，做个测试就知道', // 分享标题
+                                title: '哇塞，我家宝宝居然能长这么高？据说99.8%精准哦！', // 分享标题
                                 link: share, // 分享链接
-                                imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Faxjz.jpg', // 分享图标
+                                imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2FheightForecast.png', // 分享图标
                                 success: function (res) {
                                     recordLogs("YYHD_SG_FXPYQ");
                                     $state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
@@ -129,7 +139,7 @@ angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl',
                                 title: '想知道宝宝能长多高，做个测试就知道', // 分享标题
                                 desc: '哇塞，我家宝宝居然能长这么高？据说99.8%精准哦！', // 分享描述
                                 link:share, // 分享链接
-                                imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Faxjz.jpg', // 分享图标
+                                imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2FheightForecast.png', // 分享图标
                                 success: function (res) {
                                     recordLogs("YYHD_SG_FXPP");
                                     $state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});

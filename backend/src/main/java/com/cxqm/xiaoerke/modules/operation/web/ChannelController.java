@@ -185,4 +185,156 @@ public class ChannelController extends BaseController {
         return jsonObject.toString();
     }
 
+    /**
+     * 用户统计（部门）
+     *  sunxiao
+     * @return
+     */
+    @RequiresPermissions("user")
+    @RequestMapping(value = {"userStatisticsDepartment", ""})
+    public String userStatisticsDepartment(ChannelInfo info,HttpServletRequest request,  Model model) throws Exception{
+        HashMap<String, Object> iniMap = new HashMap<String, Object>();
+        iniMap.put("startDate",info.getStartDate());
+        iniMap.put("endDate",info.getEndDate());
+        iniMap.put("department","所有".equals(info.getDepartment())?"":info.getDepartment());
+        List<HashMap<String, Object>> userDepartmentList = channelService.getUserStatisticsDepartment(iniMap);
+        //获取所有部门
+        StringBuffer sbf = new StringBuffer("所有,");
+        String[] departs = sbf.append(Global.getConfig("backend.departments")).toString().split(",");
+        model.addAttribute("departs", departs);
+        model.addAttribute("userDepartmentList", userDepartmentList);
+        //获取所有渠道
+        List<String> channels = channelService.getAllChannels();
+        channels.add(0, "所有");
+        model.addAttribute("channels", channels);
+        model.addAttribute("info",info);
+        return "operation/userStatisticsDepartment";
+    }
+
+    /**
+     * 用户统计（渠道）
+     * sunxiao
+     * @return
+     */
+    @RequiresPermissions("user")
+    @RequestMapping(value = {"userStatisticsChannel", ""})
+    public String userStatisticsChannel(ChannelInfo info,HttpServletRequest request,  Model model) throws Exception{
+        HashMap<String, Object> iniMap = new HashMap<String, Object>();
+        iniMap.put("startDate",info.getStartDate());
+        iniMap.put("endDate",info.getEndDate());
+        iniMap.put("department","所有".equals(info.getDepartment())?"":info.getDepartment());
+        iniMap.put("channel","所有".equals(info.getChannel())?"":info.getChannel());
+        List<HashMap<String, Object>> userChannelList = channelService.getUserStatisticsChannel(iniMap);
+        //获取所有部门
+        StringBuffer sbf = new StringBuffer("所有,");
+        String[] departs = sbf.append(Global.getConfig("backend.departments")).toString().split(",");
+        model.addAttribute("departs", departs);
+        model.addAttribute("userChannelList", userChannelList);
+        //获取所有渠道
+        List<String> channels = channelService.getAllChannels();
+        channels.add(0, "所有");
+        model.addAttribute("channels", channels);
+        model.addAttribute("info",info);
+        return "operation/userStatisticsChannel";
+    }
+
+    /**
+     * 渠道咨询统计
+     *
+     * @return
+     */
+    @RequiresPermissions("user")
+    @RequestMapping(value = {"ChannelConsultStatistics", ""})
+    public String ChannelConsultStatistics(HttpServletRequest request,  Model model) throws Exception{
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+        String department = request.getParameter("department");
+        String channel = request.getParameter("channel");
+        if("所有".equals(department)){
+            department = "all";
+        }
+        if("所有".equals(channel)){
+            channel = "all";
+        }
+
+        if (StringUtils.isNull(startDate)) {//默认查看最近5天的
+            Calendar ca = Calendar.getInstance();
+            ca.set(ca.get(Calendar.YEAR), ca.get(Calendar.MONTH), ca.get(Calendar.DATE) - 2);
+            Date start = ca.getTime();
+            startDate = DateUtils.formatDate(start, "yyyy-MM-dd");
+            ca.set(ca.get(Calendar.YEAR), ca.get(Calendar.MONTH), ca.get(Calendar.DATE)+2);
+            Date end = ca.getTime();
+            endDate = DateUtils.formatDate(end, "yyyy-MM-dd");
+        }
+
+        //获取所有部门
+        StringBuffer sbf = new StringBuffer("所有,");
+        String[] departs = sbf.append(Global.getConfig("backend.departments")).toString().split(",");
+        model.addAttribute("departs", departs);
+
+        //获取所有渠道
+        List<String> channels = channelService.getAllChannels();
+        channels.add(0,"所有");
+        model.addAttribute("channels",channels);
+
+        HashMap<String, Object> iniMap = new HashMap<String, Object>();
+        iniMap.put("startDate",startDate);
+        iniMap.put("endDate",endDate);
+        iniMap.put("department",department);
+        iniMap.put("channel",channel);
+        List<HashMap<String, Object>> listQdData = channelService.getAllConsultCountsByChannel(iniMap);
+        model.addAttribute("channelConsultVo", listQdData);
+
+        RegisterServiceVo registerServiceVo = new RegisterServiceVo();
+        registerServiceVo.setStartDate(startDate);
+        registerServiceVo.setEndDate(endDate);
+        registerServiceVo.setDepartment(department);
+        registerServiceVo.setChannel(channel);
+        model.addAttribute("registerServiceVo", registerServiceVo);
+        return "operation/channelConsult";
+    }
+
+    /**
+     * 部门咨询统计
+     *
+     * @return
+     */
+    @RequiresPermissions("user")
+    @RequestMapping(value = {"DepartmentConsultStatistics", ""})
+    public String DepartmentConsultStatistics(HttpServletRequest request,  Model model) throws Exception{
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+        String department = request.getParameter("department");
+        if("所有".equals(department)){
+            department = "all";
+        }
+
+        if (StringUtils.isNull(startDate)) {//默认查看最近5天的
+            Calendar ca = Calendar.getInstance();
+            ca.set(ca.get(Calendar.YEAR), ca.get(Calendar.MONTH), ca.get(Calendar.DATE) - 2);
+            Date start = ca.getTime();
+            startDate = DateUtils.formatDate(start, "yyyy-MM-dd");
+            ca.set(ca.get(Calendar.YEAR), ca.get(Calendar.MONTH), ca.get(Calendar.DATE)+2);
+            Date end = ca.getTime();
+            endDate = DateUtils.formatDate(end, "yyyy-MM-dd");
+        }
+
+        //获取所有部门
+        StringBuffer sbf = new StringBuffer("所有,");
+        String[] departs = sbf.append(Global.getConfig("backend.departments")).toString().split(",");
+        model.addAttribute("departs",departs);
+        HashMap<String, Object> iniMap = new HashMap<String, Object>();
+        iniMap.put("startDate",startDate);
+        iniMap.put("endDate",endDate);
+        iniMap.put("department",department);
+        List<HashMap<String, Object>> listQdData = channelService.getAllConsultCountsByDepartment(iniMap);
+        model.addAttribute("departmentConsultVo", listQdData);
+
+        RegisterServiceVo registerServiceVo = new RegisterServiceVo();
+        registerServiceVo.setStartDate(startDate);
+        registerServiceVo.setEndDate(endDate);
+        registerServiceVo.setDepartment(department);
+        model.addAttribute("registerServiceVo", registerServiceVo);
+        return "operation/departmentConsult";
+    }
 }

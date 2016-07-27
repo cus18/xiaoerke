@@ -306,6 +306,20 @@
     </select>
 
     <select id="getConsultSessionListByInfo" parameterType="java.util.Map" resultMap="BaseResultMap">
-        SELECT * FROM consult_session where sys_user_id_cs=#{doctorId} GROUP BY DATE_FORMAT(create_time,'%Y-%c-%d'),sys_user_id
+        SELECT * FROM consult_session where sys_user_id_cs=#{doctorId} GROUP BY DATE_FORMAT(create_time,'%Y-%c-%d'),sys_user_id ORDER BY create_time DESC
     </select>
+
+    <!--批量插入-->
+    <insert id="insertConsultSessionBatch" parameterType="java.util.List">
+        insert into consult_session (id,create_time,
+        state,sys_user_id_cs, sys_user_id,source,flag
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.createTime},
+            #{item.status} ,#{item.csUserId}
+            ,#{item.userId},#{item.source},#{item.flag}
+            )
+        </foreach>
+    </insert>
 </mapper>

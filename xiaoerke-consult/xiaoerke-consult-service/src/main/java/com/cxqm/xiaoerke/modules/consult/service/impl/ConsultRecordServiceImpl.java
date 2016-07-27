@@ -269,6 +269,12 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     }
 
     @Override
+    public List<ConsultSessionStatusVo> getConsultSessionStatusVo(Query query) {
+        return consultRecordMongoDBService.getConsultSessionStatusList(query);
+    }
+
+
+    @Override
     public WriteResult removeConsultRankRecord(Query query) {
         return consultRecordMongoDBService.removeConsultRankRecord(query);
     }

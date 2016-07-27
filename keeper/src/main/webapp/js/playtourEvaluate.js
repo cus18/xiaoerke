@@ -6,6 +6,7 @@ var resultList=["","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playt
 var moneyNum = 0;
 var ptm3Flag = 1;//显示输入其它金额
 var indexFlag = 0;
+var customerId;
 
 $(function(){
    // $('.evalhavemoney').hide();//收到心意钱
@@ -385,21 +386,22 @@ function updateCustomerInfo() {
     }else{
         redPacket = moneyNum;
     }
+    redPacket = parseFloat(redPacket);
     if (redPacket != "" && redPacket > 0  ) {
         if(redPacket>200){
             alert("感谢您的支持,目前最大金额为200哦!");
             return;
         }
-        var num = new Number(redPacket);
-        redPacket = num.toFixed(1);
+        /*var num = new Number(redPacket);
+        redPacket = num.toFixed(1);*/
         recordLogs("ZXPJSXY_JE");
         $.ajax({
-            url: "account/user/customerPay",// 跳转到 action
-            async: true,
-            type: 'get',
-            data: {patientRegisterId: customerId, payPrice: redPacket * 100},
-            cache: false,
-            success: function (data) {
+            url:"account/user/customerPay",// 跳转到 action
+            async:true,
+            type:'get',
+            data:{patientRegisterId:customerId,payPrice:redPacket * 100},
+            cache:false,
+            success:function (data) {
                 var obj = eval('(' + data + ')');
                 if (parseInt(obj.agent) < 5) {
                     alert("您的微信版本低于5.0无法使用微信支付");

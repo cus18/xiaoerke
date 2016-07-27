@@ -11,7 +11,6 @@
             $scope.selectItem = "";
             $scope.info={};
 
-
             $scope.selectedBaby="";
             $scope.codeSecond="获取";
             $scope.openid="";
@@ -21,6 +20,7 @@
             $scope.protocolLock=false;
             $scope.ifUpedateBabyInfo=false;
             $scope.ifExist=false;
+            $scope.buttonDis=false;
 
             /*点击输入框跳转到相应位置*/
             $scope.skip = function(item){
@@ -28,7 +28,6 @@
                 if(item=="babyName"){
                     $scope.fillLock = true;
                 }
-
             }
 
             /*填写宝宝姓名 获取焦点*/
@@ -60,7 +59,6 @@
                     $scope.info.babyName = "";
                     $("#birthday").val("");
                 }
-
             };
 
             /*选择父母*/
@@ -160,7 +158,7 @@
                     return;
                 }
                 if($scope.info.code==""){
-                    alerrt("请输入验证码");
+                    alert("请填写验证码");
                     return;
                 }
                 if($scope.info.IdCard==""){
@@ -191,7 +189,6 @@
                         $scope.saveBabyInfo();
                     }
                 }else{
-
                     $scope.saveBabyInfo();
                 }
             };
@@ -288,7 +285,7 @@
             //更新保障信息
             $scope.updateUmbrellaInfo = function(){
                 compareDate();
-                
+                $scope.buttonDis=true;
                 $scope.parentType=$scope.parentItem=="father"?2:3;
                 if($scope.ifExist) {
                     updateInfo.save({
@@ -297,42 +294,45 @@
                         "parentType": $scope.parentType, "umbrellaId": $scope.umbrellaId
                     }, function (data) {
                         if (data.result == '1') {
-                            // $state.go("umbrellaMemberList",{id:$scope.umbrellaId});
                             recordLogs("BHS_TXXX_LJJH");
                             window.location.href = "../wisdom/umbrella?value=" + new Date().getTime() + "#/umbrellaMemberList/" + $stateParams.id + "/" + $stateParams.status;
                         } else if (data.result == '3') {
                             alert("验证码无效");
+                            $scope.buttonDis=false;
                             return;
                         } else {
                             alert("更新保障信息失败");
+                            $scope.buttonDis=false;
+                            return;
+                        }
+                    });
+                }else {
+                    var bname = $scope.info.babyName;
+                    var bbirthday = $("#birthday").val();
+                    var bsex = $scope.sexItem == "boy" ? 1 : 0;
+                    newJoinUs.save({
+                        "phone": $scope.info.phoneNum, "code": $scope.info.code, "babyId": $scope.info.id,
+                        "idCard": $scope.info.IdCard, "parentName": encodeURI($scope.info.parentName), "bname": bname,
+                        "parentType": $scope.parentType, "bbirthDay": bbirthday, "bsex": bsex,"shareId":$stateParams.id
+                    }, function (data) {
+                        if (data.result == '1') {
+                            recordLogs("BHS_TXXX_LJJH");
+                            if ($scope.ifExist) {
+                                window.location.href = "umbrella#/umbrellaJoin/" + new Date().getTime() + "/" + $stateParams.id;
+                            } else {
+                                window.location.href = "http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=umbrellaPay&shareId=" + $stateParams.id;
+                            }
+                        } else if (data.result == '3') {
+                            alert("验证码无效");
+                            $scope.buttonDis=false;
+                            return;
+                        } else {
+                            alert("更新保障信息失败");
+                            $scope.buttonDis=false;
                             return;
                         }
                     });
                 }
-                var bname=$scope.info.babyName;
-                var bbirthday=$("#birthday").val();
-                var bsex=$scope.sexItem == "boy"?1:0;
-                newJoinUs.save({"phone":$scope.info.phoneNum,"code":$scope.info.code,"babyId":$scope.info.id,
-                    "idCard":$scope.info.IdCard,"parentName":encodeURI($scope.info.parentName),"bname":bname,
-                    "parentType":$scope.parentType,"bbirthDay":bbirthday,"bsex":bsex}, function (data){
-                    if(data.result=='1'){
-                        // $state.go("umbrellaMemberList",{id:$scope.umbrellaId});
-                        recordLogs("BHS_TXXX_LJJH");
-                        // window.location.href ="../wisdom/umbrella?value="+new Date().getTime()+"#/umbrellaMemberList/"+$stateParams.id+"/"+$stateParams.status;
-                        // window.location.href ="umbrella#/umbrellaJoin/"+new Date().getTime()+"/"+$stateParams.id;
-                        if($scope.ifExist){
-                            window.location.href ="umbrella#/umbrellaJoin/"+new Date().getTime()+"/"+$stateParams.id;
-                        }else{
-                            window.location.href = "http://s2.xiaork.cn/keeper/wxPay/patientPay.do?serviceType=umbrellaPay&shareId="+$stateParams.id;
-                        }
-                    }else if(data.result=='3'){
-                        alert("验证码无效");
-                        return;
-                    }else{
-                        alert("更新保障信息失败");
-                        return;
-                    }
-                });
             };
 
             var recordLogs = function(val){
@@ -390,7 +390,7 @@
                     dataType:'json',
                     success:function(data) {
                         if(data.openid=="none"){
-                            // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+                            window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
                             // window.location.href = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
                         }
                     },
@@ -421,7 +421,49 @@
                                     }
                                 });
                             });
+                             var timestamp;//时间戳
+                             var nonceStr;//随机字符串
+                             var signature;//得到的签名
+                             var appid;//得到的签名
+                             $.ajax({
+                                 url:"wechatInfo/getConfig",// 跳转到 action
+                                 async:true,
+                                 type:'get',
+                                 data:{url:location.href.split('#')[0]},//得到需要分享页面的url
+                                 cache:false,
+                                 dataType:'json',
+                                 success:function(data) {
+                                     if(data!=null ){
+                                         timestamp = data.timestamp;//得到时间戳
+                                         nonceStr = data.nonceStr;//得到随机字符串
+                                         signature = data.signature;//得到签名
+                                         appid = data.appid;//appid
+                                         //微信配置
+                                         wx.config({
+                                             debug: false,
+                                             appId: appid,
+                                             timestamp:timestamp,
+                                             nonceStr: nonceStr,
+                                             signature: signature,
+                                             jsApiList: [
+                                                 'chooseWXPay'
+                                             ] // 功能列表
+                                         });
+                                         wx.ready(function () {
+                                             wx.hideOptionMenu();
+                                             // config信息验证后会执行ready方法，
+                                             // 所有接口调用都必须在config接口获得结果之后，
+                                             // config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，
+                                             // 则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，
+                                             // 则可以直接调用，不需要放在ready函数中。
+                                         });
 
+                                     }else{
+                                     }
+                                 },
+                                 error : function() {
+                                 }
+                             });
 
                         var date = new Date(+new Date()+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'');
                         $("#birthday").mobiscroll().date();

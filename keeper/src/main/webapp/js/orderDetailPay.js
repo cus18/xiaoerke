@@ -37,8 +37,9 @@ $.ajax({
         $('#babyName').html(data.babyName);
         $('#phone').html(data.phone);
         $('#orderTime').html(data.orderTime);
-        $('#orderNo').html(data.orderNo);
-        $('#orderNo').html(data.orderNo);
+   //     $('#orderNo').html(data.orderNo);
+   //     $('#orderNo').html(data.orderNo);
+        $('#docimg').attr('src','http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/'+data.doctorId);;
     },
     error: function () {
     }

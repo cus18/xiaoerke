@@ -1,7 +1,25 @@
-.tc{
-    text-align: center;
+.swiper-slide1{
+    background: url("http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/intro/umbrellaIntro1_bg.png") no-repeat left top;
+    background-size: 100% 100%;
 }
-.swiper-slide img{
-    display: block;
-    margin:0 auto;
+.swiper-slide2{
+    background-color: #069abf;
 }
+.swiper-slide2 .bottom{
+    position: absolute;
+    left:0;
+    bottom:0;
+}
+.swiper-slide3{
+    background-color: #618dca;
+}
+.swiper-slide4{
+    background-color: #3dc6b4;
+}
+.swiper-slide5{
+    background-color: #e96b76;
+}
+.swiper-slide6{
+    background-color: #7abcfa;
+}
+

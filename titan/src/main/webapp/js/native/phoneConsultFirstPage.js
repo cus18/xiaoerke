@@ -136,7 +136,7 @@ var directHospital = function(hospitalId,hospitalName){
 /*疾病列表*/
 var chooseIllness = function(){
 
-    var param = '{"pageNo":"1","pageSize":"100","orderBy":"0"}';
+    var param = '{"pageNo":"1","pageSize":"100","orderBy":"0","phoneConsult":"phoneConsult"}';
     $.ajax({type : "POST",
         url : "sys/illness/first",
         contentType : 'application/json',

@@ -1,14 +1,21 @@
 angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
-    '$scope','$state','$stateParams','SaveHeightPredictionInfo',
-    function ($scope,$state,SaveHeightPredictionInfo) {
+    '$scope','$state','SaveHeightPredictionInfo','$ionicScrollDelegate',
+    function ($scope,$state,SaveHeightPredictionInfo,$ionicScrollDelegate) {
         $scope.title ="宝妈爱心接力";
         $scope.info = {
             dadHeight:'',
             mamHeight:''
         };
+        $scope.babyDes = '哇塞，我家宝宝居然能长这么高？据说99.8%精准哦！';
+        $scope.babyHeight = '';
         $scope.lookResultFloat = false;
+        $scope.babyBirthdaySelected = false;
+        $scope.dadBirthdaySelected = false;
+        $scope.mamBirthdaySelected = false;
+        $scope.babyAgeList = [{age:'（1）足月，约9个月'},{age:'（2）不足，约8个月'},{age:'（3）不足，约7个月'},{age:'（4）不足，约6个月'},
+            {age:'（5）不足6个月'}];
         $scope.numberB = Math.ceil(Math.random()*5);//随机数
-        $scope.numberG = Math.ceil(Math.random()*3);//随机数
+        $scope.numberG = Math.ceil(Math.random()*3);//随机数男宝
         $scope.$on('$ionicView.enter', function(){
             loadShare();
             var date = new Date(+new Date()+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'');
@@ -32,39 +39,66 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
                 minDate: new Date(1960,date.substring(5,7)-1,date.substring(8,10)),
                 maxDate: new Date(date.substring(0,4), date.substring(5,7)-1, date.substring(8,10)),
                 onSelect: function (valueText) {
+                    console.log("dd",valueText);
                 }
             };
             $("#babyBirthday").mobiscroll(opt);
             $("#dadBirthday").mobiscroll(opt);
             $("#mamBirthday").mobiscroll(opt);
+
         });
+        //出生日期
+        $scope.showInput = function (index) {
+            if(index=="babyBirthday"){
+                $("#babyBirthday").mobiscroll('show');
+                $scope.babyBirthdaySelected = true;
+            }
+            if(index=="dadBirthday"){
+                $("#dadBirthday").mobiscroll('show');
+                $scope.dadBirthdaySelected = true;
+            }
+            if(index=="mamBirthday"){
+                $("#mamBirthday").mobiscroll('show');
+                $scope.mamBirthdaySelected = true;
+            }
+        };
         //选择孩子性别
         $scope.selectSex = function(sex){
             $scope.sexItem=sex;
+            if($scope.sexItem == 0){
+                $scope.isSelectedB = true;
+                $scope.isSelectedG = false;
+            }
+            if($scope.sexItem == 1){
+                $scope.isSelectedG = true;
+                $scope.isSelectedB = false;
+            }
         };
         //选择孩子性别
-        $scope.selectMon = function(age){
-            $scope.babyAge= age + '个月';
+        $scope.selectMon = function(index){
+            console.log(index);
+            $scope.babyAge = $scope.babyAgeList[index];
+            $scope.isSelected = index;
+
         };
         //判断问题是否为空
         $scope.checkName = function () {
-            if($("#babyBirthday").val()==""||$("#babyBirthday").val()==undefined){
+            if($("#babyBirthday").val()==""){
                 alert("宝宝生日不能为空！");
                 return;
             }
-            if($("#dadBirthday").val()==""||$("#dadBirthday").val()==undefined){
+            if($("#dadBirthday").val()==""){
                 alert("宝爸生日不能为空！");
                 return;
             }
-            if($scope.info.dadHeight==""||$scope.info.dadHeight > 300){
+            if($scope.info.dadHeight==""||$scope.info.dadHeight > 300||$scope.info.dadHeight < 100){
                 alert("请重新输入宝爸的身高！");
                 return;
             }
-            if($scope.info.mamHeight==""||$scope.info.mamHeight > 300){
+            if($scope.info.mamHeight==""||$scope.info.mamHeight > 300||$scope.info.mamHeight <100 ){
                 alert("请重新输入宝妈的身高！");
                 return;
             }
-            $scope.lookResultFloat = true;
             if($scope.sexItem == 0){
                 $scope.resultBoy = (parseInt($scope.info.dadHeight) + parseInt($scope.info.mamHeight) + 13) / 2 + $scope.numberB;
                 $scope.resultGirl = 0;
@@ -73,7 +107,38 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
                 $scope.resultGirl = (parseInt($scope.info.dadHeight)+ parseInt($scope.info.mamHeight) - 13) / 2 + $scope.numberG;
                 $scope.resultBoy = 0;
             }
-            //console.log('babyBirthday',$("#babyBirthday").val());
+
+            if($scope.resultGirl == 0 && $scope.resultBoy != ''){
+                $scope.babyHeight = $scope.resultBoy;
+                if($scope.babyHeight < 170){
+                    $scope.babyDes = '我家男宝的身高居然和何炅差不多'+$scope.babyHeight+'，文质彬彬都说帅，你也来测下！';
+                }else if($scope.babyHeight < 175){
+                    $scope.babyDes = '我家男宝的身高居然和权志龙差不多'+$scope.babyHeight+'，气宇轩昂人人夸，你也来测下！';
+                }else if($scope.babyHeight < 180){
+                    $scope.babyDes = '我家男宝的身高居然和宋仲基差不多'+$scope.babyHeight+'，玉树临风全都爱，你也来测下！';
+                }else if($scope.babyHeight < 185){
+                    $scope.babyDes = '我家男宝的身高居然和吴彦祖差不多'+$scope.babyHeight+'，长腿欧巴超羡慕，你也来测下！';
+                }else if($scope.babyHeight < 190){
+                    $scope.babyDes = '我家男宝的身高居然和吴亦凡差不多'+$scope.babyHeight+'，顶天立地大气概，你也来测下！';
+                }else{
+                    $scope.babyDes = '我家男宝的身高居然和易建联差不多'+$scope.babyHeight+'，篮球飞人绝对帅，你也来测下！';
+                }
+            }
+            if($scope.resultGirl != '' && $scope.resultBoy == 0){
+                $scope.babyHeight = $scope.resultGirl;
+                if($scope.babyHeight < 160){
+                    $scope.babyDes = '我家女宝的身高居然和蔡依林差不多'+$scope.babyHeight+'，小家碧玉惹人爱，你也来测下！';
+                }else if($scope.babyHeight < 165){
+                    $scope.babyDes = '我家女宝的身高居然和孙俪差不多'+$scope.babyHeight+'，大家闺秀人人爱，你也来测下！';
+                }else if($scope.babyHeight < 170){
+                    $scope.babyDes = '我家女宝的身高居然和杨幂差不多'+$scope.babyHeight+'，窈窕淑女君好逑，你也来测下！';
+                }else{
+                    $scope.babyDes = '我家女宝的身高居然和林志玲差不多'+$scope.babyHeight+'，维密超模大赢家，你也来测下！';
+                }
+            }
+            loadShare();
+            $ionicScrollDelegate.scrollTop();
+            $scope.lookResultFloat = true;
             SaveHeightPredictionInfo.save({
                 sexItem:$scope.sexItem,
                 babyBirthday:$("#babyBirthday").val(),
@@ -85,7 +150,6 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
                 resultBoy:$scope.resultBoy,
                 babyAge:$scope.babyAge
             }, function (data) {
-
             });
             //$state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
             recordLogs('YYHD_SG_YCS_WYKJG');
@@ -96,7 +160,7 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
         };
         //分享到朋友圈或者微信
         var loadShare = function(){
-            var share = '';
+            var share = 'http://s165.baodf.com/wisdom/firstPage/heightForecast';
             version="a";
             var timestamp;//时间戳
             var nonceStr;//随机字符串
@@ -130,9 +194,9 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
                         wx.ready(function () {
                             // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                             wx.onMenuShareTimeline({
-                                title: '想知道宝宝能长多高，做个测试就知道', // 分享标题
+                                title: $scope.babyDes, // 分享标题
                                 link: share, // 分享链接
-                                imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Faxjz.jpg', // 分享图标
+                                imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2FheightForecast.png', // 分享图标
                                 success: function (res) {
                                     recordLogs("YYHD_SG_FXPYQ");
                                     $state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
@@ -142,9 +206,9 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
                             });
                             wx.onMenuShareAppMessage({
                                 title: '想知道宝宝能长多高，做个测试就知道', // 分享标题
-                                desc: '哇塞，我家宝宝居然能长这么高？据说99.8%精准哦！', // 分享描述
+                                desc: $scope.babyDes, // 分享描述
                                 link:share, // 分享链接
-                                imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Faxjz.jpg', // 分享图标
+                                imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2FheightForecast.png', // 分享图标
                                 success: function (res) {
                                     recordLogs("YYHD_SG_FXPP");
                                     $state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});

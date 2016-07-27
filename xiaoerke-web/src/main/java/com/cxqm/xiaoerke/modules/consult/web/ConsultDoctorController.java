@@ -243,7 +243,7 @@ public class ConsultDoctorController extends BaseController {
         if (StringUtils.isNotNull(userId)) {
             user.setId(userId);
         }
-        users = systemService.findUserByUserType(user);
+        users = consultDoctorInfoService.findUserOrderByDepartment(user);
         if (users != null && users.size() > 0) {
             response.put("CSList", users);
             response.put("status", "success");
@@ -295,6 +295,9 @@ public class ConsultDoctorController extends BaseController {
         params.put("content", "");
         params.put("dissatisfied", null);
         params.put("redPacket", null);
+        if(StringUtils.isNotNull(sessionId)){
+            params.put("consultSessionId",Integer.valueOf(sessionId));
+        }
         //判断有没有正在转接的会话
         ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = new ConsultSessionForwardRecordsVo();
         consultSessionForwardRecordsVo.setConversationId(Long.valueOf(sessionId));
@@ -336,8 +339,8 @@ public class ConsultDoctorController extends BaseController {
                     if(consultDoctorInfoVos !=null && consultDoctorInfoVos.size() >0){
                         if(null !=consultDoctorInfoVos.get(0).getSendMessage() && consultDoctorInfoVos.get(0).getSendMessage().equals("1")){
                             String st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
-                                    "<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
-                                    params.get("uuid") + "'>点击这里去评价</a>】";
+                                    "<a href='http://120.25.161.33/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
+                                    params.get("uuid") +"&sessionId="+sessionId+ "'>点击这里去评价</a>】";
                             WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
                         }
                     }
@@ -378,18 +381,19 @@ public class ConsultDoctorController extends BaseController {
                 Map parameter = systemService.getWechatParameter();
                 String token = (String)parameter.get("token");
                 int count = babyUmbrellaInfoService.getUmbrellaCount();
-                String title = "小病问医生，大病有互助";
-                String description = "感谢您的咨询，现在宝大夫推出家庭重疾40万高额保障互助计划，目前已有" + count + "位妈妈加入，现在就等你了，赶紧加入吧！";
+                String title = "宝大夫医生郑重推荐，不看后悔！";
+                String description = "已经有"+count+"位宝妈机智的行动，用一根雪糕钱为宝宝换来了40万的健康保障。聪明的你，赶紧来看看吧！";
                 //String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellab";
-                String url = "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000000/a";
+                String url = "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000003/a";
                 String picUrl = "http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella";
                 String message = "{\"touser\":\""+ openId+"\",\"msgtype\":\"news\",\"news\":{\"articles\": [{\"title\":\""+ title +"\",\"description\":\""+description+"\",\"url\":\""+ url +"\",\"picurl\":\""+picUrl+"\"}]}}";
 
                 String jsonobj = HttpRequestUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" +
                         token + "", "POST", message);
-                System.out.println(jsonobj+"===============================");
+                System.out.println(jsonobj + "===============================");
                 UmbrellaMongoDBVo vo = new UmbrellaMongoDBVo();
                 vo.setOpenid(openId);
+                vo.setCreateDate(new Date());
                 babyUmbrellaInfoService.saveOpenidToMongoDB(vo);
             }
         }

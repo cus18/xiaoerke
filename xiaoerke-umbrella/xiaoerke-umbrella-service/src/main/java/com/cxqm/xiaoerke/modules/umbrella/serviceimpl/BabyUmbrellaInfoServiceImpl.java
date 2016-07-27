@@ -1,7 +1,10 @@
 package com.cxqm.xiaoerke.modules.umbrella.serviceimpl;
 
+import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.utils.IdGen;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
+import com.cxqm.xiaoerke.modules.sys.entity.MongoLog;
 import com.cxqm.xiaoerke.modules.sys.service.BabyBaseInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
@@ -23,9 +26,7 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by feibendechayedan on 16/5/20.
@@ -49,6 +50,9 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
 
     @Autowired
     private MongoDBService<UmbrellaMongoDBVo> umbrellaMongoDBService;
+
+    @Autowired
+    private MongoDBService<MongoLog> mongoLogService;
 
     @Override
     public int saveBabyUmbrellaInfo(BabyUmbrellaInfo babyUmbrellaInfo) {
@@ -180,6 +184,13 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
             String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31";
             String openid = (String)map.get("openid");
             WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, openid, templateId);
+
+            MongoLog mongoLog = new MongoLog();
+            mongoLog.setId(IdGen.uuid());
+            mongoLog.setCreate_date(new Date());
+            mongoLog.setTitle("sendNotShareWechatMessage");//发送一天未分享消息
+            mongoLog.setOpen_id(openid);
+            mongoLogService.insert(mongoLog);
         }
 
         /*Map<String, Object> notActiveParam = new HashMap<String, Object>();
@@ -265,6 +276,42 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
     @Override
     public List<UmbrellaMongoDBVo> getUmbrellaMongoDBVoList(Query query) {
         return umbrellaMongoDBService.queryList(query);
+    }
+
+    @Override
+    public List<HashMap<String, Object>> findStatisticsList(String start, String end) {
+        Date startDate = DateUtils.StrToDate(start,"date");
+        Date endDate = DateUtils.StrToDate(end,"date");
+
+        List<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+        Map<String, Object> searchMap0 = new HashMap<String, Object>();
+        searchMap0.put("date", DateUtils.addDays(startDate,-1));
+        Integer totalUser0 = babyUmbrellaInfoDao.getBabyUmbrellaInfoTotalUser(searchMap0);
+
+        Integer totalFamily0 = babyUmbrellaInfoDao.getBabyUmbrellaInfoTotalFamily(searchMap0);
+
+        while(startDate.getTime() < endDate.getTime()){
+            Map<String, Object> searchMap = new HashMap<String, Object>();
+            searchMap.put("date", startDate);
+            Integer totalUser = babyUmbrellaInfoDao.getBabyUmbrellaInfoTotalUser(searchMap);
+            Integer totalFamily = babyUmbrellaInfoDao.getBabyUmbrellaInfoTotalFamily(searchMap);
+            Integer addUser = totalUser-totalUser0;
+            Integer addFamily = totalFamily-totalFamily0;
+
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            map.put("date",DateUtils.formatDate(startDate));
+            map.put("totalUser",totalUser);
+            map.put("totalFamily",totalFamily);
+            map.put("addUser",addUser);
+            map.put("addFamily",addFamily);
+            list.add(map);
+
+            startDate = DateUtils.addDays(startDate, 1);
+            totalFamily0 = totalFamily;
+            totalUser0 = totalUser;
+        }
+
+        return list;
     }
 
 

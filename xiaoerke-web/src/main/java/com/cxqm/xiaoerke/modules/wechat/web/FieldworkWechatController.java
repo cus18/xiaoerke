@@ -3,6 +3,7 @@ package com.cxqm.xiaoerke.modules.wechat.web;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.member.service.MemberService;
+import com.cxqm.xiaoerke.modules.sys.entity.Article;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.interceptor.SystemControllerLog;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
@@ -17,9 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 微信页面参数获取相关的控制类
@@ -182,16 +181,18 @@ public class FieldworkWechatController {
             if(state.length>1) {
                 String id = state[1];
                 String status = state[0];
-                url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/umbrella?status="+status+"&id="+id;
+                url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/umbrella?status="+status+"&id="+id+"&time="+new Date().getTime();
             }else{
                 String status = state[0];
-                url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/umbrella?status="+status;
+                url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/umbrella?time="+new Date().getTime()+"&status="+status;
             }
         }else if("31".equals(url)){
             url = ConstantUtil.WISDOM_WEB_URL + "wisdom/umbrella#/umbrellaJoin/"+new Date().getTime()+"/120000000";
         }else if("32".equals(url)){
-            url = ConstantUtil.MARKET_WEB_URL + "market/firstPage/lovePlan";
+            url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/lovePlan";
         }else if("33".equals(url)){
+            url = ConstantUtil.WISDOM_WEB_URL + "wisdom/umbrella#/umbrellaInvite";
+        }else if("35".equals(url)){
             url = ConstantUtil.KEEPER_WEB_URL + "keeper/wxPay/patientPay.do?serviceType=doctorConsultPay";
         }else if("34".equals(url)){
             url = ConstantUtil.ANGEL_WEB_URL + "angel/patient/consult#/customerService";
@@ -275,21 +276,20 @@ public class FieldworkWechatController {
 
         Map<String, Object> parameter = systemService.getWechatParameter();
         String token = (String) parameter.get("token");
-        String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + token;
-        try {
-            String str = "1、免费在线咨询（即时回复）\n内科:   24小时全天\n皮肤科:   9:00~18:00 (中午休息一小时)\n其他专科:(外科、眼科、耳鼻喉科、口腔科、营养保健科、中医科)   19:00~21:00  " +
-                    "\n\n2、点击左下角" +
-                    "“小键盘”输入文字或语音,即可咨询疾病或保健问题";
-            String json = "{\"touser\":\"" + openId + "\",\"msgtype\":\"text\",\"text\":" +
-                    "{\"content\":\"CONTENT\"}" + "}";
-            json = json.replace("CONTENT", str);
-            System.out.println(json);
-            HttpRequestUtil.httpPost(json, url);
-            if (openId != null) {
-                return "true";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        List<Article> articleList = new ArrayList<Article>();
+        Article article = new Article();
+        article.setTitle("三甲医院儿科专家    咨询秒回不等待");
+        article.setDescription("小儿内科:       24小时全天 \n\n小儿皮肤科/保健科:   8:00 ~ 23:00\n\n妇产科:   12:00-14:00，19:00-22:00\n" +
+                "\n小儿其他专科:   19:00 ~ 21:00\n\n" +
+                "(外科、眼科、耳鼻喉科、口腔科、预防接种科、中医科、心理科)\n\n好消息！可在线咨询北京儿童医院皮肤科专家啦！");
+        article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E6%8E%A8%E9%80%81%E6%B6%88%E6%81%AF2.png");
+        article.setUrl("https://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236660&idx=1&sn=10d923526047a5276dd9452b7ed1e302&scene=1&srcid=0612OCo7d5ASBoGRr2TDgjfR&key=f5c31ae61525f82ed83c573369e70b8f9b853c238066190fb5eb7b8640946e0a090bbdb47e79b6d2e57b615c44bd82c5&ascene=0&uin=MzM2NjEyMzM1&devicetype=iMac+MacBookPro11%2C4+OSX+OSX+10.11.4+build(15E65)&version=11020201&pass_ticket=dG5W6eOP3JU1%2Fo3JXw19SFBAh1DgpSlQrAXTyirZuj970HMU7TYojM4D%2B2LdJI9n");
+        articleList.add(article);
+        WechatUtil.senImgMsgToWechat(token,openId,articleList);
+
+        if (openId != null) {
+            return "true";
         }
         return "false";
     }

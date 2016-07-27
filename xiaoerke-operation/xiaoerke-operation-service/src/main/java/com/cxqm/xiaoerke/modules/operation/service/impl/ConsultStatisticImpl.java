@@ -24,13 +24,21 @@ public class ConsultStatisticImpl implements ConsultStatisticService {
     private ConsultStatisticDao consultStatisticDao;
 
     @Override
-    public List<Integer> getConsultStatistic(HashMap hashmap){
+    public List<Float> getConsultStatistic(HashMap hashmap){
         return consultStatisticDao.getConsultStatistic(hashmap);
     }
 
     @Override
     public int insertSelective(ConsultStatisticVo record){
         return consultStatisticDao.insertSelective(record);
+    }
+
+    @Override
+    public List<ConsultStatisticVo> getConsultStatisticList(String startDate, String endDate){
+        HashMap<String,String> hashMap = new HashMap<String, String>();
+        hashMap.put("startDate",startDate);
+        hashMap.put("endDate",endDate);
+        return consultStatisticDao.getConsultStatisticList(hashMap);
     }
 
 }

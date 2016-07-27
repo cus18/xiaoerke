@@ -2,67 +2,112 @@
 $(document).ready(function() {
 
 })*/
-var swipeUmbrella = function() {
-    setTimeout(function(){
-        scaleW=window.innerWidth/320;
-        scaleH=window.innerHeight/480;
-        var resizes = document.querySelectorAll('.resize');
-        for (var j=0; j<resizes.length; j++) {
-            resizes[j].style.width=parseInt(resizes[j].style.width)*scaleW+'px';
-            resizes[j].style.height=parseInt(resizes[j].style.height)*scaleH+'px';
-            resizes[j].style.top=parseInt(resizes[j].style.top)*scaleH+'px';
-            resizes[j].style.left=parseInt(resizes[j].style.left)*scaleW+'px';
+/*立即加入*/
+ var goJoin=function(index){
+    recordLogs("BHS_H5_LJJR"+index);
+    window.location.href="http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/" +
+        "author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=" +
+        "umbrellaa_"+ $stateParams.id;
+};
+var recordLogs = function(val){
+    $.ajax({
+        url:"util/recordLogs",// 跳转到 action
+        async:true,
+        type:'get',
+        data:{logContent:encodeURI(val)},
+        cache:false,
+        dataType:'json',
+        success:function(data) {
+        },
+        error : function() {
         }
+    });
+};
+var swipeUmbrellaInit = function(){
+        recordLogs("UmbrellaShareLeadPage_"+ $stateParams.id);
+        var timestamp;//时间戳
+        var nonceStr;//随机字符串
+        var signature;//得到的签名
+        var appid;//得到的签名
+        $.ajax({
+            url:"wechatInfo/getConfig",// 跳转到 action
+            async:true,
+            type:'get',
+            data:{url:location.href.split('#')[0]},//得到需要分享页面的url
+            cache:false,
+            dataType:'json',
+            success:function(data) {
+                if(data!=null ){
+                    timestamp=data.timestamp;//得到时间戳
+                    nonceStr=data.nonceStr;//得到随机字符串
+                    signature=data.signature;//得到签名
+                    appid=data.appid;//appid
+                    //微信配置
+                    wx.config({
+                        debug: false,
+                        appId: appid,
+                        timestamp:timestamp,
+                        nonceStr: nonceStr,
+                        signature: signature,
+                        jsApiList: [
+                            'onMenuShareTimeline',
+                            'onMenuShareAppMessage'
+                        ] // 功能列表
+                    });
+                    wx.ready(function () {
+                        // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
+                        wx.onMenuShareTimeline({
+                            title: '5元变成40万,看完我就激动了!', // 分享标题
+                            link: "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$stateParams.id+"/"+$stateParams.status,
+                            imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
+                            success: function (res) {
+                                recordLogs("BHS_WDBZ_FXPYQ_Lead_"+$stateParams.id);
+                                //记录用户分享文章
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "umbrella/updateBabyUmbrellaInfoIfShare",
+                                    data:"{'id':'"+$stateParams.id+"'}",
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function(result){
+                                        var todayCount=result.todayCount;
+                                        $("#todayCount").html(todayCount);
+                                    },
+                                    dataType: "json"
+                                });
 
-        var mySwiper = new Swiper ('.swiper-container', {
-            initialSlide:0,
-            direction : 'vertical',/*horizontal*/
-            pagination: '.swiper-pagination',
-            //virtualTranslate : true,
-            mousewheelControl : true,
-            onInit: function(swiper){
-                swiperAnimateCache(swiper);
-                swiperAnimate(swiper);
-            },
-            onSlideChangeEnd: function(swiper){
-                swiperAnimate(swiper);
-                /* console.log("num "+mySwiper.activeIndex)*/
-            },
-            onTransitionEnd: function(swiper){
-                swiperAnimate(swiper);
-            },
-
-
-            watchSlidesProgress: true,
-
-            onProgress: function(swiper){
-                for (var i = 0; i < swiper.slides.length; i++){
-                    var slide = swiper.slides[i];
-                    var progress = slide.progress;
-                    var translate = progress*swiper.height/4;
-                    scale = 1 - Math.min(Math.abs(progress * 0.5), 1);
-                    var opacity = 1 - Math.min(Math.abs(progress/2),0.5);
-                    slide.style.opacity = opacity;
-                    es = slide.style;
-                    es.webkitTransform = es.MsTransform = es.msTransform = es.MozTransform = es.OTransform = es.transform = 'translate3d(0,'+translate+'px,-'+translate+'px) scaleY(' + scale + ')';
-
+                            },
+                            fail: function (res) {
+                            }
+                        });
+                        wx.onMenuShareAppMessage({
+                            title: '5元变成40万,看完我就激动了!', // 分享标题
+                            desc: "我已成为宝护伞互助公益爱心大使，领到了40万的健康保障，你也快来加入吧！", // 分享描述
+                            link:"http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$stateParams.id+"/"+$stateParams.status,
+                            imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
+                            success: function (res) {
+                                recordLogs("BHS_WDBZ_FXPY_Lead_"+$stateParams.id);
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "umbrella/updateBabyUmbrellaInfoIfShare",
+                                    data:"{'id':'"+$stateParams.id+"'}",
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function(result){
+                                        var todayCount=result.todayCount;
+                                        $("#todayCount").html(todayCount);
+                                    },
+                                    dataType: "json"
+                                });
+                            },
+                            fail: function (res) {
+                            }
+                        });
+                    })
+                }else{
                 }
             },
+            error : function() {
+            }
+        });
+};
 
-            onSetTransition: function(swiper, speed) {
-                for (var i = 0; i < swiper.slides.length; i++){
-                    es = swiper.slides[i].style;
-                    es.webkitTransitionDuration = es.MsTransitionDuration = es.msTransitionDuration = es.MozTransitionDuration = es.OTransitionDuration = es.transitionDuration = speed + 'ms';
-
-                }
-            },
-
-
-
-        })
-    },10000);
-}
-var showPage=function(){
-    alert(mySwiper.activeIndex);
-}
 

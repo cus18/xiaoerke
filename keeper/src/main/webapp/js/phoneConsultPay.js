@@ -257,7 +257,6 @@ var caseLength=function(){
 
 //页面初始化执行,用户初始化页面参数信息以及微信的支付接口
 var pay = function(){
-    $('#payButton').attr('disabled',"true");//添加disabled属性
     if($('#connectphone').val()==""||$('#connectphone').val()==undefined||
         $('#babyName').val()==""||$('#babyName').val()==undefined||
         bodBirthday==""||bodBirthday==undefined
@@ -268,6 +267,7 @@ var pay = function(){
     }else if(readLock){
         alert("请勾选预约须知");
     }else{
+        $('#payButton').attr('disabled',"true");//添加disabled属性
         $.ajax({
             url:"consultPhone/consultOrder/createOrder",// 跳转到 action
             async:true,
@@ -283,11 +283,13 @@ var pay = function(){
                 }else{
                     alert("预约失败,请重新预约或联系客服");
                 }
+                // $('#payButton').attr('disabled',"false");//添加disabled属性
             },
             error : function() {
             }
         });
     }
+
 }
 
 var wxPay = function (consultPhoneServiceId) {

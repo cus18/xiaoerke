@@ -10,7 +10,6 @@ import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.common.web.BaseController;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultVoiceRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultPayUserService;
@@ -20,7 +19,6 @@ import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultRecordMongoDBServiceImpl;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultVoiceRecordMongoServiceImpl;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
-import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import io.netty.channel.Channel;
@@ -121,8 +119,8 @@ public class ConsultWechatController extends BaseController {
             if(openId.length() > 20){
                 userName = openId.substring(openId.length()-8,openId.length());
             }else{
-                userName = openId.substring(0,10);
-                userId = openId.substring(0,10);
+                userName = openId.substring(0,5);
+                userId = openId.substring(0,5);
             }
 
             if(wechatAttentionVo!=null){
@@ -254,7 +252,7 @@ public class ConsultWechatController extends BaseController {
                                         consultVoiceRecordMongoVo.setUserName(consultSession.getUserName());
                                         consultVoiceRecordMongoVo.setContent(mediaURL);
                                         consultVoiceRecordMongoService.insert(consultVoiceRecordMongoVo);
-                                        WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(), "亲，医生听不到语音哦，发送图文吧！");
+                                        WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(), "亲亲，语音会影响医生的判断哦，为了您的咨询更准确，要用文字提问呦~");
                                     }
                                 }
                             }catch (IOException e){

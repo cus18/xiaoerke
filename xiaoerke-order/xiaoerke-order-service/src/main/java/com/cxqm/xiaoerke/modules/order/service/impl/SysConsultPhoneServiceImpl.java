@@ -700,8 +700,8 @@ public class SysConsultPhoneServiceImpl implements SysConsultPhoneService {
 		return count;
 	}
 
-	private BigDecimal delRegister(SysConsultPhoneServiceVo vo) throws Exception {
-		BigDecimal price =new BigDecimal(0);
+	private Float delRegister(SysConsultPhoneServiceVo vo) throws Exception {
+		Float price =0f;
 		try {
 			if ("1".equals(vo.getState())) {//被预约了删除号源，删除订单，退费
 				HashMap<String, Object> executeMap1 = new HashMap<String, Object>();

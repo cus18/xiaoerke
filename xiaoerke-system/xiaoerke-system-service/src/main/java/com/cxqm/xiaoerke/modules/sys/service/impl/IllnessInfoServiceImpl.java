@@ -37,10 +37,12 @@ public class IllnessInfoServiceImpl implements IllnessInfoService {
 		String currentPage = ((String) params.get("pageNo"));
 		String pageSize = ((String) params.get("pageSize"));
 		String orderBy = (String) params.get("orderBy");
+		String isPhoneConsult = (String) params.get("phoneConsult");
 		Page<HashMap<String, Object>> page = FrontUtils.generatorPage(currentPage,
 				pageSize);
 		HashMap<String, Object> illnessInfo = new HashMap<String, Object>();
 		illnessInfo.put("orderBy", orderBy);
+		illnessInfo.put("isPhoneConsult",isPhoneConsult);
 
 		Page<IllnessVo> resultPage = illnessDao.findFirstIllness(illnessInfo, page);
 

@@ -3,11 +3,16 @@ package com.cxqm.xiaoerke.modules.schedule.web;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo;
-import com.cxqm.xiaoerke.modules.operation.service.ChannelService;
 import com.cxqm.xiaoerke.modules.operation.service.ConsultStatisticService;
+import com.cxqm.xiaoerke.modules.sys.service.LogMongoDBServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * backend定时器
@@ -23,7 +28,7 @@ public class ScheduleTaskController extends BaseController {
     private ConsultStatisticService consultStatisticService;
 
     @Autowired
-    private ChannelService channelService;
+    private LogMongoDBServiceImpl logMongoDBService;
 
     /**
      * 咨询统计信息
@@ -33,7 +38,12 @@ public class ScheduleTaskController extends BaseController {
 
         HashMap<String, Object> searchMap = new HashMap<String, Object>();
         calendar.add(Calendar.DATE, -1);
+        Date createTime = calendar.getTime();
         String createDate = DateUtils.formatDate(new Date(calendar.getTimeInMillis()), "yyyy-MM-dd");
+        setDate(calendar);
+        Date startDate = calendar.getTime();
+        calendar.add(Calendar.DATE, 1);
+        Date endDate = new Date();
 
         calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, -8);
@@ -61,80 +71,80 @@ public class ScheduleTaskController extends BaseController {
         searchMap.put("monthBeginDate", monthBeginDate);
         searchMap.put("monthEndDate", monthEndDate);
 
-        List<Integer> resultList = consultStatisticService.getConsultStatistic(searchMap);
+        List<Float> resultList = consultStatisticService.getConsultStatistic(searchMap);
 
         //查询当天咨询数
         /**
          ** select count(DISTINCT(sys_user_id)) from consult_session where create_time like '${searchDate}%'
          */
-        Integer dayNumber = resultList.get(0);
+        float dayNumber = resultList.get(0);
         //查询累计咨询数
         /**
          * select count(DISTINCT(sys_user_id)) from consult_session
          */
-        Integer titileNnumber = resultList.get(1);
+        float titileNnumber = resultList.get(1);
         //查询评价人数
         /**
          * select count(DISTINCT(openid)) from customerEvaluation where createtime like '2016-06-24%' and (serviceAttitude != '0')
          */
-        Integer evaluateNumber = resultList.get(2);
+        float evaluateNumber = resultList.get(2);
         //查询不评价人数
         /**
          * 查询当天咨询数 - 查询评价人数
          */
-        Integer unevaluateNumber = dayNumber - evaluateNumber;
+        float unevaluateNumber = dayNumber - evaluateNumber;
         //查询满意人数（天）
         /**
          * select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime like '2016-06-24%' and (serviceAttitude = '3' or serviceAttitude = '5')
          */
-        Integer satisfiedNumber = resultList.get(3);
+        float satisfiedNumber = resultList.get(3);
         //查询满意人数（周）
         /**
          * select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between '' and '' and (serviceAttitude = '3' or serviceAttitude = '5')
          */
-        Integer weekSatisfiedNumber = resultList.get(4);
+        float weekSatisfiedNumber = resultList.get(4);
         //查询满意人数（月）
         /**
          * select count(DISTINCT(openid)) countNumber from customerEvaluation where createtime between '' and '' and (serviceAttitude = '3' or serviceAttitude = '5')
          */
-        Integer monthSatisfiedNumber = resultList.get(5);
+        float monthSatisfiedNumber = resultList.get(5);
         //不满意人数（天）
         /**
          * select count(*) from customerEvaluation where createtime between '' and '' and (serviceAttitude = '1') group by openid order by null
          */
-        Integer dayYawpNumber = resultList.get(6);
+        float dayYawpNumber = resultList.get(6);
         //不满意人数（周）
         /**
          * select count(*) from customerEvaluation where createtime between '' and '' and (serviceAttitude = '1') group by openid order by null
          */
-        Integer weekYawpNumber = resultList.get(7);
+        float weekYawpNumber = resultList.get(7);
         //不满意人数（月）
         /**
          * select count(*) from customerEvaluation where createtime between '' and '' and (serviceAttitude = '1') group by openid order by null
          */
-        Integer monthYawpNumber = resultList.get(8);
+        float monthYawpNumber = resultList.get(8);
         //日满意度
         /**
          * 每天满意人数/每天评价人数
          */
-        String daySatisfiedDegree ="";
-        if(evaluateNumber != 0){
-            daySatisfiedDegree = String.valueOf((float)satisfiedNumber / (float)evaluateNumber * 100) + "%";
+        String daySatisfiedDegree = "";
+        if (evaluateNumber != 0) {
+            daySatisfiedDegree = String.valueOf((float) satisfiedNumber / (float) evaluateNumber * 100) + "%";
         }
 
         //打赏人数
         /**
          * select count(*) from customerEvaluation where createtime like '%' and (payStatus = 'success') group by openid order by null
          */
-        Integer rewardNumber = resultList.get(9);
+        float rewardNumber = resultList.get(9);
 
         //打赏比例
         /**
          * 打赏人数/评价人数
          */
         String rewardDegree = "";
-        if(evaluateNumber!=0){
-            rewardDegree = String.valueOf((float)rewardNumber / (float)evaluateNumber * 100) + "%";
+        if (evaluateNumber != 0) {
+            rewardDegree = String.valueOf((float) rewardNumber / (float) evaluateNumber * 100) + "%";
         }
         //首次咨询取消关注
         /**
@@ -142,91 +152,137 @@ public class ScheduleTaskController extends BaseController {
          select sys_user_id from consult_session where consult_number = 1 and create_time like '2016-06-24%' GROUP BY sys_user_id ORDER BY null
          )
          */
-        Integer firstConsultCancleAttentionNumber = resultList.get(10);
+        float firstConsultCancleAttentionNumber = resultList.get(10);
         //多次咨询后取消关注
         /**
          SELECT count(*) from sys_attention where date LIKE '2016-06-24%' and STATUS='1' and openid in (
          select sys_user_id from consult_session where consult_number > 1 and create_time like '2016-06-24%' GROUP BY sys_user_id ORDER BY null
          )
          */
-        Integer moreConsultCancleAttentionNumber = resultList.get(11);
+        float moreConsultCancleAttentionNumber = resultList.get(11);
         //首次咨询人数
         /**
          *select count(*) from consult_session where consult_number = 1 and create_time like '%%'
          */
-        Integer firstConsultNumber = resultList.get(12);
+        float firstConsultNumber = resultList.get(12);
         //首次咨询比例
         /**
          * 首次咨询人数/当天咨询数
          */
         String firstConsultDegree = "";
-        if(dayNumber != 0){
-            firstConsultDegree = String.valueOf((float)firstConsultNumber / (float)dayNumber * 100) + "%";
+        if (dayNumber != 0) {
+            firstConsultDegree = String.valueOf((float) firstConsultNumber / (float) dayNumber * 100) + "%";
         }
         //多次咨询人数
         /**
          * select count(*) from consult_session where consult_number > 0 and create_time like '%%'
          */
-        Integer moreConusltNumber = resultList.get(13);
+        float moreConusltNumber = resultList.get(13);
         //多次咨询比例
         /**
          * 多次咨询人数 / 当天咨询数
          */
         String moreConsultDegree = "";
-        if(dayNumber != 0){
-            moreConsultDegree = String.valueOf((float)moreConusltNumber / (float)dayNumber * 100) + "%";
+        if (dayNumber != 0) {
+            moreConsultDegree = String.valueOf((float) moreConusltNumber / (float) dayNumber * 100) + "%";
         }
 
         //查询每周评价人数
         /**
          * select count(DISTINCT(openid)) from customerEvaluation where createtime between '' and '' and (serviceAttitude != '0')
          */
-        Integer weekEvaluateNumber = resultList.get(14);
+        float weekEvaluateNumber = resultList.get(14);
         //查询每月评价人数
         /**
          *select count(DISTINCT(openid)) from customerEvaluation where createtime between '' and '' and (serviceAttitude != '0')
          */
-        Integer monthEvaluateNumber = resultList.get(15);
+        float monthEvaluateNumber = resultList.get(15);
 
         //周满意度
         /**
          * 每周满意人数/每周评价人数
          */
         String weedSatisfiedDegree = "";
-        if(weekEvaluateNumber !=0){
-            weedSatisfiedDegree = String.valueOf((float)weekSatisfiedNumber / (float)weekEvaluateNumber * 100) + "%";
+        if (weekEvaluateNumber != 0) {
+            weedSatisfiedDegree = String.valueOf((float) weekSatisfiedNumber / (float) weekEvaluateNumber * 100) + "%";
         }
         //月满意度
         /**
          * 每月满意人数/月评价人数
          */
         String monthDatisfiedDegree = "";
-        if(monthEvaluateNumber!=0){
-            monthDatisfiedDegree = String.valueOf((float)monthSatisfiedNumber / (float)monthEvaluateNumber * 100) + "%";
+        if (monthEvaluateNumber != 0) {
+            monthDatisfiedDegree = String.valueOf((float) monthSatisfiedNumber / (float) monthEvaluateNumber * 100) + "%";
+        }
+        //最小金额
+        /**
+         *select MIN(redpacket) countNumber from customerEvaluation where createtime like '2016-06-30%' and redPacket is not null and redPacket !=''
+         */
+        float minMoney = resultList.get(16);
+        //最高金额
+        /**
+         * select MAX(redpacket) countNumber from customerEvaluation where createtime like '2016-06-30%' and redPacket is not null and redPacket !=''
+         */
+        float maxMoney = resultList.get(17);
+        //打赏总额
+        /**
+         *select sum(redpacket) countNumber from customerEvaluation where createtime like '2016-06-30%' and redPacket is not null and redPacket !=''
+         */
+        float sumMoney = resultList.get(18);
+        //评价点击量
+        Query queryClick = new Query().addCriteria(Criteria.where("title").regex("ZXPJSXY_JE")).addCriteria(Criteria.where("create_date").gte(startDate).andOperator(Criteria.where("create_date").lte(endDate)));
+
+        int evaluateClickNumber = (int) logMongoDBService.queryCount(queryClick);
+        //评价占比
+        /**
+         *评价点击量/当天咨询数
+         */
+        String evaluateClickDegree = "";
+        if (dayNumber != 0) {
+            evaluateClickDegree = String.valueOf((float) evaluateClickNumber / (float) dayNumber * 100) + "%";
+        }
+        //分享点击量
+        Query queryShare = new Query().addCriteria(Criteria.where("title").is("ZXFX")).addCriteria(Criteria.where("create_date").gte(startDate).andOperator(Criteria.where("create_date").lte(endDate)));
+
+        int shareClickNumber = (int) logMongoDBService.queryCount(queryShare);
+        //分享占比
+        /**
+         *分享数/当天咨询数
+         */
+        String shareClickDegree = "";
+        if (dayNumber != 0) {
+            shareClickDegree = String.valueOf((float) shareClickNumber / (float) dayNumber * 100) + "%";
         }
 
         ConsultStatisticVo consultStatisticVo = new ConsultStatisticVo();
-
-        consultStatisticVo.setDayNumber(dayNumber);
+        consultStatisticVo.setDayNumber((int)dayNumber);
         consultStatisticVo.setDaySatisfiedDegree(daySatisfiedDegree);
-        consultStatisticVo.setDayYawpNumber(dayYawpNumber);
-        consultStatisticVo.setEvaluateNumber(evaluateNumber);
-        consultStatisticVo.setSatisfiedNumber(satisfiedNumber);
-        consultStatisticVo.setFirstConsultCancleAttentionNumber(firstConsultCancleAttentionNumber);
+        consultStatisticVo.setDayYawpNumber((int)dayYawpNumber);
+        consultStatisticVo.setEvaluateNumber((int)evaluateNumber);
+        consultStatisticVo.setSatisfiedNumber((int)satisfiedNumber);
+        consultStatisticVo.setFirstConsultCancleAttentionNumber((int)firstConsultCancleAttentionNumber);
         consultStatisticVo.setFirstConsultDegree(firstConsultDegree);
         consultStatisticVo.setMonthSatisfiedDegree(monthDatisfiedDegree);
-        consultStatisticVo.setMonthYawpNumber(monthYawpNumber);
-        consultStatisticVo.setMoreConsultCancleAttentionNumber(moreConsultCancleAttentionNumber);
+        consultStatisticVo.setMonthYawpNumber((int)monthYawpNumber);
+        consultStatisticVo.setMoreConsultCancleAttentionNumber((int)moreConsultCancleAttentionNumber);
         consultStatisticVo.setMoreConsultDegree(moreConsultDegree);
         consultStatisticVo.setRewardDegree(rewardDegree);
-        consultStatisticVo.setFirstConsultNumber(firstConsultNumber);
-        consultStatisticVo.setFirstConsultCancleAttentionNumber(firstConsultCancleAttentionNumber);
-        consultStatisticVo.setWeekYawpNumber(weekYawpNumber);
+        consultStatisticVo.setFirstConsultNumber((int)firstConsultNumber);
+        consultStatisticVo.setFirstConsultCancleAttentionNumber((int)firstConsultCancleAttentionNumber);
+        consultStatisticVo.setWeekYawpNumber((int)weekYawpNumber);
         consultStatisticVo.setWeedSatisfiedDegree(weedSatisfiedDegree);
-        consultStatisticVo.setUnevaluateNumber(unevaluateNumber);
-        consultStatisticVo.setTitileNumber(titileNnumber);
-        consultStatisticVo.setMoreConusltNumber(moreConusltNumber);
-        consultStatisticVo.setRewardNumber(rewardNumber);
+        consultStatisticVo.setUnevaluateNumber((int)unevaluateNumber);
+        consultStatisticVo.setTitileNumber((int)titileNnumber);
+        consultStatisticVo.setMoreConusltNumber((int)moreConusltNumber);
+        consultStatisticVo.setRewardNumber((int)rewardNumber);
+        consultStatisticVo.setMinMoney(String.valueOf(minMoney));
+        consultStatisticVo.setMaxMoney(String.valueOf(maxMoney));
+        consultStatisticVo.setSumMoney(String.valueOf(sumMoney));
+        consultStatisticVo.setEvaluateClickNumber(evaluateClickNumber);
+        consultStatisticVo.setEvaluateClickDegree(evaluateClickDegree);
+        consultStatisticVo.setShareClickNumber(shareClickNumber);
+        consultStatisticVo.setShareClickDegree(shareClickDegree);
+        consultStatisticVo.setCreateDate(createTime);
         consultStatisticService.insertSelective(consultStatisticVo);
 
     }

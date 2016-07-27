@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.mutualHelp.web;
 
 import com.cxqm.xiaoerke.common.utils.CookieUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.mutualHelp.entity.MutualHelpDonation;
 import com.cxqm.xiaoerke.modules.mutualHelp.service.MutualHelpDonationService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -33,7 +33,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -1042,10 +1041,10 @@ public class ScheduledTask {
             accountService.updateAccount(0F, (Integer) map.get("id") + "", response, false, (String) map.get("userId"), "电话咨询超时取消退款");
             Map<String, Object> consultOrder = consultPhonePatientService.getPatientRegisterInfo((Integer) map.get("id"));
             String url = ConstantUtil.TITAN_WEB_URL + "/titan/phoneConsult#/orderDetail" + (String) consultOrder.get("doctorId") + "," + (Integer) consultOrder.get("orderId") + ",phone";
-            PatientMsgTemplate.returnPayPhoneRefund2Msg((String) consultOrder.get("babyName"), (BigDecimal) consultOrder.get("price") + "", (String) consultOrder.get("phone"));
+            PatientMsgTemplate.returnPayPhoneRefund2Msg((String) consultOrder.get("babyName"), (Float) consultOrder.get("price") + "", (String) consultOrder.get("phone"));
             String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String) consultOrder.get("date"), "yyyy/MM/dd"));
             String dateTime = (String) consultOrder.get("date") + " " + week + " " + (String) consultOrder.get("beginTime");
-            PatientMsgTemplate.returnPayPhoneRefund2Wechat((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"), dateTime, (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"), (BigDecimal) consultOrder.get("price") + "", (String) consultOrder.get("openid"), token, url);
+            PatientMsgTemplate.returnPayPhoneRefund2Wechat((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"), dateTime, (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"), (Float) consultOrder.get("price") + "", (String) consultOrder.get("openid"), token, url);
 //          LogUtils.saveLog(Servlets.getRequest(), "00000108", "电话咨询-退费" + map);//用户发起微信支付
         }
 
@@ -1142,6 +1141,36 @@ public class ScheduledTask {
             consultRecordVoList.add(consultRecordVo);
         }
         consultRecordService.insertConsultRecordBatch(consultRecordVoList);
+        //conuslt_session恢复数据
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(Calendar.HOUR_OF_DAY, 18);
+//        calendar.set(Calendar.MINUTE, 4);
+//        calendar.set(Calendar.SECOND, 0);
+//        calendar.add(Calendar.DATE, -2);
+//        Date newDate = calendar.getTime();
+//        calendar = Calendar.getInstance();
+//        calendar.set(Calendar.HOUR_OF_DAY, 0);
+//        calendar.set(Calendar.MINUTE, 0);
+//        calendar.set(Calendar.SECOND, 0);
+//        calendar.add(Calendar.DATE, -10);
+//        Date oldDate = calendar.getTime();
+//
+//        Query query = new Query().addCriteria(Criteria.where("lastMessageTime").gte(oldDate).andOperator(Criteria.where("lastMessageTime").lte(newDate)));
+//        List<ConsultSession> consultSessions = new ArrayList<ConsultSession>();
+//        List<ConsultSessionStatusVo> consultRecordVoList = consultRecordService.getConsultSessionStatusVo(query);
+//        Iterator<ConsultSessionStatusVo> iterator = consultRecordVoList.iterator();
+//        while (iterator.hasNext()) {
+//            ConsultSessionStatusVo consultSessionStatusVo = iterator.next();
+//            ConsultSession consultSession = new ConsultSession();
+//            consultSession.setId(Integer.parseInt(consultSessionStatusVo.getSessionId()));
+//            consultSession.setCreateTime(new Date(consultSessionStatusVo.getLastMessageTime().getTime() - 2 * 60 * 60 * 1000));
+//            consultSession.setUserId(consultSessionStatusVo.getUserId());
+//            consultSession.setStatus(consultSessionStatusVo.getStatus());
+//            consultSession.setSource(consultSessionStatusVo.getSource());
+//            consultSession.setCsUserId(consultSessionStatusVo.getCsUserId().split(" ")[0]);
+//            consultSessions.add(consultSession);
+//        }
+//        consultSessionService.insertConsultSessionBatch(consultSessions);
     }
 
 

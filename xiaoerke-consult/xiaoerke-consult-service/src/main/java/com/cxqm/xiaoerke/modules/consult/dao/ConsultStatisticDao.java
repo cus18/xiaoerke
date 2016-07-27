@@ -20,5 +20,7 @@ public interface ConsultStatisticDao {
 
     int updateByPrimaryKey(ConsultStatisticVo record);
 
-    List<Integer> getConsultStatistic(HashMap<String,Object> map);
+    List<Float> getConsultStatistic(HashMap<String,Object> map);
+
+    List<ConsultStatisticVo> getConsultStatisticList(HashMap<String,String> map);
 }
