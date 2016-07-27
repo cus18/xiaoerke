@@ -6,6 +6,7 @@ import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaFamilyInfo;
 import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaMongoDBVo;
 import org.springframework.data.mongodb.core.query.Query;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -120,4 +121,6 @@ public interface BabyUmbrellaInfoService {
     int saveOpenidToMongoDB(UmbrellaMongoDBVo entity);
 
     List<UmbrellaMongoDBVo> getUmbrellaMongoDBVoList(Query query);
+
+    List<HashMap<String,Object>> findStatisticsList(String startDate, String endDate);
 }
