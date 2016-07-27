@@ -1,0 +1,45 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫" ng-init="doRefresh()">
+    <ion-content class="heightForecastResult" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="intro">
+                <img class="my-img2" width="100%" height="auto" ng-src="{{heightImg}}">
+            </div>
+            <div class="intro1"  ng-if="showOne">
+                <img class="my-img2" width="60%" height="auto" ng-src="{{babyImg}}">
+                <div class="height">
+                    <span>{{babyHeight}}</span>
+                    <span>cm</span>
+                </div>
+                <img class="my-img2" width="80%" height="auto" ng-src="{{starImg}}">
+            </div>
+            <div class="intro2" ng-if="showDouble">
+                <div class="baby">
+                    <img class="my-img2" width="80%" height="auto" ng-src="{{boyImg}}">
+                    <div class="height">
+                        <span>{{boyHeight}}</span>
+                        <span>cm</span>
+                    </div>
+                    <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2Fnanbao_png_03.png">
+                </div>
+                <div class="baby">
+                    <img class="my-img2" width="80%" height="auto" ng-src="{{girlImg}}">
+                    <div class="height">
+                        <span>{{girlHeight}}</span>
+                        <span>cm</span>
+                    </div>
+                    <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2Fnvbao_png_03.png">
+                </div>
+            </div>
+            <div class="lookResult" ng-if="showDouble">
+                <div class="linkArticle"><a ng-click="goArticle()">权威儿科发育专家讲座，教你如何长得更高！</a></div>
+                <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2Fdi_png_02.png">
+            </div>
+            <div class="lookResult1" ng-if="showOne">
+                <img class="my-img2" width="80%" height="auto" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2Fbiaoti_png_mc_03.png">
+                <div class="linkArticle"><a ng-click="goArticle()">权威儿科发育专家讲座，教你如何长得更高！</a></div>
+                <!--photo_songzhongji_png_03-->
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

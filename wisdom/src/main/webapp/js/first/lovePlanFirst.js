@@ -19,7 +19,7 @@ var imgList = ["http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2F
     "http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/market%2FlovePlan%2Fprove7.png"];
 
 $(function(){
-    $.ajax({
+    /*$.ajax({
         url:"umbrella/getOpenid",// 跳转到 action
         async:true,
         type:'post',
@@ -32,7 +32,7 @@ $(function(){
         },
         error : function() {
         }
-    });
+    });*/
     getUserListImage();
     count();
     sumMoney();
@@ -89,12 +89,10 @@ var swipeInit=function(){
                 es.webkitTransitionDuration = es.MsTransitionDuration = es.msTransitionDuration = es.MozTransitionDuration = es.OTransitionDuration = es.transitionDuration = speed + 'ms';
 
             }
-        },
-
-
+        }
 
     })
-}
+};
 var moreLock=false;
 var lookMore = function(){
     if(moreLock){
@@ -175,6 +173,7 @@ var sumMoney=function () {
         success:function(data) {
             var sumMoney = data.count + 20000;
             var length = sumMoney / 2000;
+            sumMoney = sumMoney.toFixed(2);
             $(".lovePlanFirst .ruler .line").css('width',length+'%');
             $("#lovemoneyCount").html(sumMoney);
         },

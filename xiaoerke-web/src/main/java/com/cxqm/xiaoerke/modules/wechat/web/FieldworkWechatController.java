@@ -184,7 +184,7 @@ public class FieldworkWechatController {
                 url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/umbrella?status="+status+"&id="+id+"&time="+new Date().getTime();
             }else{
                 String status = state[0];
-                url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/umbrella?status="+status+"&time="+new Date().getTime();
+                url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/umbrella?time="+new Date().getTime()+"&status="+status;
             }
         }else if("31".equals(url)){
             url = ConstantUtil.WISDOM_WEB_URL + "wisdom/umbrella#/umbrellaJoin/"+new Date().getTime()+"/120000000";

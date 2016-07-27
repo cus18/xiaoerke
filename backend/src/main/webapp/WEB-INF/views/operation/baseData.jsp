@@ -16,8 +16,10 @@
 <ul class="nav nav-tabs">
 	<li class="active"><a href="${ctx}/sys/BaseData/getBaseDataStatistics"><font color="#8b0000">基础数据统计</font></a>
 	</li>
-	<li class="active"><a href="${ctx}/consultStatistic/consultStatisticBaseData"><font color="#006400">咨询数据统计</font></a>
+	<li><a href="${ctx}/consultStatistic/consultStatisticBaseData"><font color="#006400">咨询数据统计</font></a>
 	</li>
+    <li><a href="${ctx}/sys/BaseData/getUmbrellaDataStatistics"><font color="#006400">保护伞数据统计</font></a>
+    </li>
 </ul>
 <%--<form id="searchForm" action="${ctx}/sys/BaseData/getBaseDataStatistics" method="post" class="form-search ">--%>
     <%--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>

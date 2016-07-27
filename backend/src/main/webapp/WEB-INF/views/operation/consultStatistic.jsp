@@ -14,9 +14,11 @@
 </head>
 <body>
 <ul class="nav nav-tabs">
-	<li class="active"><a href="${ctx}/sys/BaseData/getBaseDataStatistics"><font color="#8b0000">基础数据统计</font></a>
-	</li>
-    <li class="active"><a href="${ctx}/consultStatistic/consultStatisticBaseData"><font color="#006400">咨询数据统计</font></a>
+    <li><a href="${ctx}/sys/BaseData/getBaseDataStatistics"><font color="#006400">基础数据统计</font></a>
+    </li>
+    <li class="active"><a href="${ctx}/consultStatistic/consultStatisticBaseData"><font color="#8b0000">咨询数据统计</font></a>
+    </li>
+    <li><a href="${ctx}/sys/BaseData/getUmbrellaDataStatistics"><font color="#006400">保护伞数据统计</font></a>
     </li>
 </ul>
     <form:form id="searchForm" modelAttribute="consultStatisticVo" action="${ctx}/consultStatistic/consultStatisticBaseData" method="post" class="form-search">

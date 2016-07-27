@@ -4,6 +4,7 @@ import com.cxqm.xiaoerke.modules.operation.entity.ChannelInfo;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 渠道统计 Service
@@ -24,6 +25,14 @@ public interface ChannelService  {
     List<HashMap<String, Object>> getChannelCategoryStatistics(HashMap hashMap);
     //渠道明细统计数据
     List<HashMap<String, Object>> getChannelDetailStatistics(HashMap hashMap);
+    //获取用户统计（部门）
+    List<HashMap<String, Object>> getUserStatisticsDepartment(HashMap hashMap);
+    //获取用户统计（渠道）
+    List<HashMap<String, Object>> getUserStatisticsChannel(HashMap hashMap);
     //获取所有的渠道
     List<String> getAllChannels();
+    //所有用户咨询统计数据，根据渠道分组
+    List<HashMap<String, Object>> getAllConsultCountsByChannel(Map<String, Object> map);
+    //所有用户咨询统计数据，根据部门分组
+    List<HashMap<String, Object>> getAllConsultCountsByDepartment(Map<String, Object> map);
 }

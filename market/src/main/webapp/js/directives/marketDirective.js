@@ -28,5 +28,4 @@ define(['appMarket','jquery'], function (app,$) {
                     }
                 }
             }])
-
 })

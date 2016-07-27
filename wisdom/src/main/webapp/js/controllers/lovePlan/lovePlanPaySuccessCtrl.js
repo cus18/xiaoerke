@@ -6,7 +6,7 @@ angular.module('controllers', ['ionic']).controller('lovePlanPaySuccessCtrl', [
             window.location.href="http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000005/a"
         };
         $scope.$on('$ionicView.enter', function(){
-            $.ajax({
+            /*$.ajax({
                 url:"umbrella/getOpenid",// 跳转到 action
                 async:true,
                 type:'post',
@@ -19,7 +19,7 @@ angular.module('controllers', ['ionic']).controller('lovePlanPaySuccessCtrl', [
                 },
                 error : function() {
                 }
-            });
+            });*/
         })
         $scope.doRefresh = function(){
             loadShare();

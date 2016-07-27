@@ -5,6 +5,22 @@
             $scope.shareLock=false;
             $scope.invite=function(){
                 $scope.shareLock=true;
+                /* 随机分享文案*/
+                var shareTextArray=[
+                    "有了这个相当于多了个重疾保险，5块钱就能换来40万，一确诊就能给钱，比保险快多了！",
+                    "墙裂推荐，绝非广告，这个真的是很需要。是对孩子和家庭的负责！我已经加入啦，你还不快来！",
+                    "我为孩子健康负责，免费领取了40万的大病治疗费，你也来领吧！",
+                    "我为宝宝健康负责，竟然免费获得了40万的大病治疗费！你需要吗？",
+                    "领取40万的大病治疗费，万一看病不用愁，限时免费，先到先得啦！",
+                    "每天都有孩子因没钱治病而死。现在有40万治疗费，送给你！",
+                    "没什么好送的，40万的大病治疗费，送给你！",
+                    "最美的妈妈你别走，送你40万，让孩子健康去成长！",
+                    "如需江湖救急，这有40万的大病治疗费，速速来拿！"
+
+                ];
+                var randomNum=parseInt(9*Math.random());//分享文案随机数
+                /*   $(".share p").html( shareTextArray[randomNum]);*/
+                $scope.shareRandomText=shareTextArray[randomNum];
             };
             $scope.cancelShare=function(){
                 $scope.shareLock=false;
@@ -30,6 +46,7 @@
             };
             
             $scope.$on('$ionicView.enter', function(){
+
                 ifExistOrder.save(function (data) {
                     if(data.result=="1"){
                         window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa_"+$stateParams.id;
@@ -75,7 +92,7 @@
                             wx.ready(function () {
                                 // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                                 wx.onMenuShareTimeline({
-                                    title: '5元变成40万,看完我就激动了!', // 分享标题
+                                    title: '没什么好送的，40万大病治疗费，送给你！', // 分享标题
                                     link:  "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$scope.umbrellaId+"/a",
                                     imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                     success: function (res) {
@@ -98,7 +115,7 @@
                                     }
                                 });
                                 wx.onMenuShareAppMessage({
-                                    title: '5元变成40万,看完我就激动了!', // 分享标题
+                                    title: '没什么好送的，40万大病治疗费，送给你！', // 分享标题
                                     desc: "我已成为宝护伞互助公益爱心大使，领到了40万的健康保障，你也快来加入吧！", // 分享描述
                                     link:  "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$scope.umbrellaId+"/a", // 分享链接
                                     imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标

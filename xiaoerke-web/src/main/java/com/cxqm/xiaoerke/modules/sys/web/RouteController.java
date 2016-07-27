@@ -23,10 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 工具 Controller
@@ -140,6 +137,14 @@ public class RouteController extends BaseController {
     @RequestMapping(value ="/lovePlan",method = {RequestMethod.POST, RequestMethod.GET})
     public String lovePlanFirst() {
         return "native/lovePlanFirst";
+    }
+
+    /**
+     * wisdom 身高预测
+     */
+    @RequestMapping(value ="/heightForecast",method = {RequestMethod.POST, RequestMethod.GET})
+    public String heightForecastFirst() {
+        return "native/heightForecastFirst";
     }
 
 

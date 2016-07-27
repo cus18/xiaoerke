@@ -38,7 +38,7 @@
             }
             $scope.touchLock=false;
 
-        }
+        };
         $scope.playMusic=function() {
             if ($scope.musicLock) { //判读是否播放
                 music.pause();
@@ -171,9 +171,11 @@
                         wx.ready(function () {
                             // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                             wx.onMenuShareTimeline({
-                                title: '5元变成40万,看完我就激动了!', // 分享标题
+                                title: '没什么好送的，40万大病治疗费，送给你！', // 分享标题
                                 link: "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$stateParams.id+"/"+$stateParams.status,
                                 imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
+                                type: 'music', // 分享类型,music、video或link，不填默认为link
+                                dataUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/lead_music.mp3', // 如果type是music或video，则要提供数据链接，默认为空
                                 success: function (res) {
                                     recordLogs("BHS_WDBZ_FXPYQ_Lead_"+$stateParams.id);
                                     //记录用户分享文章
@@ -194,10 +196,12 @@
                                 }
                             });
                             wx.onMenuShareAppMessage({
-                                title: '5元变成40万,看完我就激动了!', // 分享标题
+                                title: '没什么好送的，40万大病治疗费，送给你！', // 分享标题
                                 desc: "我已成为宝护伞互助公益爱心大使，领到了40万的健康保障，你也快来加入吧！", // 分享描述
                                 link:"http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$stateParams.id+"/"+$stateParams.status,
                                 imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
+                                type: 'music', // 分享类型,music、video或link，不填默认为link
+                                dataUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/lead_music.mp3', // 如果type是music或video，则要提供数据链接，默认为空
                                 success: function (res) {
                                     recordLogs("BHS_WDBZ_FXPY_Lead_"+$stateParams.id);
                                     $.ajax({

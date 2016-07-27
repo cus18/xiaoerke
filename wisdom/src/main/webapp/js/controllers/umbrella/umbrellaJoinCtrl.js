@@ -14,12 +14,24 @@
             $scope.umbrellaId=0;
             $scope.status="b";
             $scope.pintu=0;
+            var u = navigator.userAgent, app = navigator.appVersion;
+            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('linux') > -1; //g
+            var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            var detailLock = "true";
 
             $scope.shareid=$stateParams.shareid;
 
             $scope.goDetail=function(){
                 recordLogs("BHS_WDBZ_CKXQ");
-                window.location.href = "/wisdom/firstPage/umbrella?status="+$scope.status;
+                if(isAndroid){
+                    window.location.href = "/wisdom/firstPage/umbrella?status="+$scope.status;
+                }else if(isIOS){
+                    if(detailLock=="true"){
+                        detailLock = "false";
+                    }else{
+                        window.location.href = "/wisdom/firstPage/umbrella?status="+$scope.status;
+                    }
+                }
             };
             $scope.goActive=function(){
                 recordLogs("BHS_WDBZ_JH");
@@ -28,6 +40,22 @@
             };
             $scope.goShare=function(){
                 $scope.shareLock=true;
+                /* 随机分享文案*/
+                var shareTextArray=[
+                    "有了这个相当于多了个重疾保险，5块钱就能换来40万，一确诊就能给钱，比保险快多了！",
+                    "墙裂推荐，绝非广告，这个真的是很需要。是对孩子和家庭的负责！我已经加入啦，你还不快来！",
+                    "我为孩子健康负责，免费领取了40万的大病治疗费，你也来领吧！",
+                    "我为宝宝健康负责，竟然免费获得了40万的大病治疗费！你需要吗？",
+                    "领取40万的大病治疗费，万一看病不用愁，限时免费，先到先得啦！",
+                    "每天都有孩子因没钱治病而死。现在有40万治疗费，送给你！",
+                    "没什么好送的，40万的大病治疗费，送给你！",
+                    "最美的妈妈你别走，送你40万，让孩子健康去成长！",
+                    "如需江湖救急，这有40万的大病治疗费，速速来拿！"
+
+                ];
+                var randomNum=parseInt(9*Math.random());//分享文案随机数
+             /*   $(".share p").html( shareTextArray[randomNum]);*/
+                $scope.shareRandomText=shareTextArray[randomNum];
             };
             $scope.cancelShare=function(){
                 $scope.shareLock=false;
@@ -57,6 +85,7 @@
                 return Inter_Days;
             }
             $scope.$on('$ionicView.enter', function(){
+
                 $.ajax({
                     url:"umbrella/getOpenid",// 跳转到 action
                     async:true,
@@ -73,6 +102,7 @@
                 ifExistOrder.save(function (data) {
                     // $scope.info.phoneNum=data.phone;
                     if (data.result == "1") {
+                        //alert("ifExistOrder");
                         window.location.href = "../wisdom/firstPage/umbrella?id=" + $stateParams.id;
                     }else if(data.umbrella.pay_result=="fail"){
                         window.location.href = "http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=umbrellaPay&shareId="+$stateParams.id;
@@ -243,7 +273,7 @@
                                 wx.ready(function () {
                                     // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                                     wx.onMenuShareTimeline({
-                                        title: '5元变成40万,看完我就激动了!', // 分享标题
+                                        title: '没什么好送的，40万大病治疗费，送给你！', // 分享标题
                                         link:  "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$scope.umbrellaId+"/"+$scope.status,
                                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                         success: function (res) {
@@ -266,7 +296,7 @@
                                         }
                                     });
                                     wx.onMenuShareAppMessage({
-                                        title: '5元变成40万,看完我就激动了!', // 分享标题
+                                        title: '没什么好送的，40万大病治疗费，送给你！', // 分享标题
                                         desc: "我已成为宝护伞互助公益爱心大使，领到了40万的健康保障，你也快来加入吧！", // 分享描述
                                         link:  "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$scope.umbrellaId+"/"+$scope.status, // 分享链接
                                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标

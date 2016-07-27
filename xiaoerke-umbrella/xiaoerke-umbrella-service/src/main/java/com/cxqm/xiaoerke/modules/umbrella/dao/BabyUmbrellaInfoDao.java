@@ -107,4 +107,10 @@ public interface BabyUmbrellaInfoDao {
      *根据手机号查询该用户是否购买宝护伞
      */
     Map<String,Object> getStatusByPhone(Map<String,Object> map);
+
+
+    Integer  getBabyUmbrellaInfoTotalUser(Map<String, Object> map);
+
+    Integer getBabyUmbrellaInfoTotalFamily(Map<String, Object> map);
+
 }

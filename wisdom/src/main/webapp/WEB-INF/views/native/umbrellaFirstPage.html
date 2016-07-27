@@ -8,235 +8,137 @@
 <meta content="yes" name="apple-mobile-web-app-capable">
 <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
 <title>宝护伞-宝大夫儿童家庭重疾互助计划</title>
-<link rel="stylesheet" href="/wisdom/styles/umbrella/umbrellaCommon.less" type="text/css" />
-<link rel="stylesheet" href="/wisdom/styles/native/firstPageCommon.less" type="text/css" />
-<link rel="stylesheet" href="/wisdom/styles/native/umbrellaFirstPage.less" type="text/css" />
+<link rel="stylesheet" href="/wisdom/styles/umbrella/umbrellaCommon.less?ver=1.0" type="text/css" />
+<link rel="stylesheet" href="/wisdom/styles/native/firstPageCommon.less?ver=1.0" type="text/css" />
+<link rel="stylesheet" href="/wisdom/styles/native/umbrellaFirstPage.less?ver=1.0" type="text/css" />
 <body onload="umbrellaFirstPageInit()">
 <div class="umbrellaFirstPage" id="wrapper">
     <div class="scroller">
-        <!--顶部会员信息-->
+        <!--参与人数-->
         <div class="memberInfo tc">
-            <!-- <div class="text f6">已有互助保障金额</div>
-             <div class="date f4" id="date"></div>
-             <div class="money f5">
-                 <span class="" id="totalUmbrellaMoney"> </span>元
-             </div>-->
             <img class="my-img2" width="100%" height="auto"
-                 src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/index_banner.png">
-            <!-- <ul class="num">
-                 <span class="line"></span>
-                 <li class="fl">
-                     <div class="f2">
-                        <span class="" id="count"> </span>人
-                     </div>
-                     <p class="f4">已加入会员</p>
-                 </li>
-                 <li class="fl">
-                     <div class="f2">
-                        <span class="" id="todayCount"> </span>人
-                     </div>
-                     <p>近5日新增</p>
-                 </li>
-             </ul>-->
-            <div class="all-num tc c0 f5">
-                <img class="my-img1" width="20.5" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/icon_pepple.png">
-                已有<span id="count" class="bold"></span>人加入互助计划
+                 src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/first/first_banner.png">
+            <div class="all-num tc bg1 c3 f5">
+                <img class="my-img1" width="20.5" height="auto"
+                     src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/first/icon_pepple.png">
+                已有<span id="count" class="bold c12"></span>人加入互助计划
             </div>
         </div>
-        <!--图文介绍-->
-        <div class="introPic">
+        <!--宝护伞介绍-->
+        <div class="myCard introPic">
+            <h3 class="headline">
+                <img class="my-img2" width="66%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/first/head_intro.png" >
+            </h3>
             <ul>
                 <li class="fl tc">
-                    <img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic1a.png" >
-                    <div class="f4 c3">
-                        <span class="c12">5元</span>即加入
-                    </div>
-                    <div class="f4 c3">
-                        <span class="c12">免单随时享</span>
-                    </div>
+                    <img width="60%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/first/introPic1.png" >
+                    <div class="f8 c3">最高40万保障</div>
                 </li>
-                <li class="fl tc">
-                    <img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic2.png" >
-                    <div class="f4 c3">
-                        邀请1位好友
-                    </div>
-                    <div class="f4 c3">
-                        增加<span class="c12">2万</span>保障
-                    </div>
+                <li class="fl tc" onclick="lookProtocol(1)">
+                    <img width="60%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/first/introPic2.png" >
+                    <div class="f8 c11  bold">75种疾病保障></div>
                 </li>
-                <li class="fl tc">
-                    <img width="60" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/introPic3.png" >
-                    <div class="f4 c3">
-                        最高可享
-                    </div>
-                    <div class="f4 c3">
-                        <span class="c12">40万</span>保障
-                    </div>
+                <li class="fl tc" onclick="skip('lightIllness')">
+                    <img width="60%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/first/introPic3.png" >
+                    <div class="f8 c11 bold ">小病随时问</div>
+                </li>
+                <li class="fl tc" onclick="skip('heaveIllness')">
+                    <img width="60%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/first/introPic4.png" >
+                    <div class="f8 c11 bold">大病绿色通道</div>
                 </li>
             </ul>
         </div>
-        <!-- 宝护伞互助计划介绍-->
-        <div class="box bg1 helpPlan">
-            <h3 class="tc f6  c11"><span >宝护伞</span>-宝大夫儿童家庭重疾互助计划</h3>
-            <p class="text f4 c3" >宝护伞是由宝大夫平台发起，<a class="c11 myLink" onclick="lookProtocol(4)">中国儿童少年基金会</a>共同参与的非营利公益性互助计划。主要面向全国<span class="c11">0-14周岁儿童及其父母</span>，让大家保障共享，难关共度。<br>现在加入即可享受最高<span class="c11">40万元</span>保障金（<a class="c11 myLink" onclick="lookProtocol(1)">60种重大疾病</a>+<a class="c11 myLink" onclick="lookProtocol(2)">15种轻症</a>），一旦家庭成员发生疾病，计划中的每一个家庭将以微小资金伸出援助之手，共同汇聚成高额关爱基金，让每个家庭都能享受“人人为我，我为人人”的互助关爱！</p>
-            <div class="pic tc">
-                <img width="80%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/help_pic1a.png">
-            </div>
-            <div class="fold">
-                <h4 class="f4 c11 " onclick="lookHelpPlan()">
-                    重大疾病名称及定义
-                    <img class="my-img1 arrow  arrow1" width="14" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/umbrella_arr_c_d.png">
-                    <img hidden class="my-img1  arrow arrow2" width="14" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/umbrella_arr_c_up.png">
-                </h4>
-                <div class="foldText f3" hidden>
-                    <i class="triangle"></i>
-                    <p class="c11" onclick="lookProtocol(1)">
-                        <a class="myLink" >《60种重大疾病名称及定义》</a>
-                    </p>
-                    <p class="c4">
-                        第1至第20项为中国保险行业协会与中国医师协会共同制定的重大疾病保险的疾病定义，第21项至第60项为宝大夫平台根据权威儿科专家建议，自行增加的疾病种类和定义。其中包含多种儿科常见重大疾病，如白血病等。加入计划的孩子父母也拥有该项保障，金额为保障的25%。
-                    </p>
-                    <p class="c11" onclick="lookProtocol(2)">
-                        <a class="myLink">《15种轻症名称及定义》</a>
-                    </p>
-                    <p class="c4">
-                        互助计划还包含15种轻症救助，金额为保障的20%。父母不享受该项责任。
-                    </p>
-                </div>
-            </div>
-        </div>
-
         <!-- 互助优势-->
-        <div class="box bg1 helpAdvantage">
-            <h3 class="tc f8  c11">互助优势</h3>
-            <p class="f4 c3">加入互助计划的家庭一旦有宝宝患重疾，所有互助成员将共同伸出援助之手。如果有80万用户参与互助计划，每个会员只需要付出<span class="c11">0.5元</span>，即可获得一份<span class="c11">40万</span>的医疗救助金；如果有800万用户参与互助计划，每个用户仅需<span class="c11">5分</span>钱，即可拯救一位重病儿童！加入互助计划，汇聚微小力量，传递大爱精神！</p>
-            <div class="pic">
-                <div class="tc">
-                    <img width="84%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/helpAdvantage1.png">
-                    <p class="f3 c3">每人只需<span class="c11">5毛钱</span></p>
-                </div>
-                <div class="tc">
-                    <img width="84%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/helpAdvantage2.png">
-                    <p class="f3 c3">每人只需<span class="c11">5分钱</span></p>
-                </div>
+        <div class="myCard helpPlan">
+            <h3 class="headline">
+                <img class="my-img2" width="72%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/first/head_help.png" >
+            </h3>
+            <div class="advantage advantage1">
+                <div class="tag  c0 bold">有人生病时，大家协力相助，每人分摊不超过3元</div>
+                <img class="my-img2 " width="88%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/first/advantage1.png" >
+            </div>
+            <div class="advantage advantage2" id="lightIllness">
+                <div class="tag  c0 bold">小病随时问</div>
+                <p class="f5 c3 tc">
+                    宝大夫微信平台“咨询大夫”提供<br>
+                    <span class="c12">7*24小时儿科专家</span>在线咨询<br>
+                    <span class="c12">秒回</span>不等待
+                </p>
+                <img class="my-img2 " width="88%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/first/advantage2.png" >
+            </div>
+            <div class="advantage advantage3" id="heaveIllness">
+                <div class="tag  c0 bold">大病有名医</div>
+                <p class="f5 c3 tc">
+                    为申请互助的成员免费提供<br>
+                   <span class="c12">北京三甲医院儿科专家</span>（副主任以上）<br>
+                    门诊、住院、手术安排
+                </p>
+                <img class="my-img2 " width="88%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/first/advantage3.png" >
             </div>
         </div>
-
         <!-- 安全保证-->
-        <div class="box bg1 operation">
-            <h3 class="tc f8  c11">安全保证</h3>
-            <ul class="text">
-                <li>
-                    <img class="icon" width="50" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/operation1.png">
-                    <div class="">
-                        <span class="f6 c11 ">公信</span>
-                        <p ><a class="f4 c11 myLink" onclick="lookProtocol(4)">中国儿童少年基金会负责接收及支付保障金</a></p>
-                    </div>
+        <div class="myCard safe">
+            <h3 class="headline">
+                <img class="my-img2" width="92" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/first/head_safe.png" >
+            </h3>
+            <div class="where tc">
+                <div class="f8 c3">钱在哪？</div>
+                <div class="f5 c4"><span class="c12">中国儿童少年基金会</span>为宝大夫提供公益支持</div>
+                <img class="my-img2" width="90%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/first/safe_where.png" >
+            </div>
+            <ul class="who">
+                <li class="fl">
+                    <div class="f8 c3 tc">谁监督</div>
+                    <img class="my-img2" width="90%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/first/safe_who1.png" >
                 </li>
-                <li>
-                    <img  class="icon" width="50" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/operation2.png">
-                    <div class="">
-                        <span class="f6 c11">透明</span>
-                        <p class="f4 c4">救助事件全程透明，接受所有会员监督</p>
-                    </div>
+                <li class="fl" onclick="lookOther(0)">
+                    <div class="f8 c3 tc">谁调查</div>
+                    <img class="my-img2" width="90%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/first/safe_who2.png" >
                 </li>
-                <li>
-                    <img  class="icon" width="50" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/operation3.png">
-                    <div class="">
-                        <span class="f6 c11">真实</span>
-                        <p class="f4 c4">专业第三方调查机构，确保救助事件真实性</p>
-                    </div>
-                </li>
-                <!-- <li>
-                     <img  class="icon" width="50" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/operation4.png">
-                     <div class="">
-                         <span class="f6 c11">关怀</span>
-                         <p class="f4 c4 care1" onclick="care(this)">
-                             儿科专家全天在线即时咨询，治疗绿色通道
-                             <img class="my-img1  arrow1" width="14" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/umbrella_arr_c_d.png">
-                             <img hidden class="my-img1  arrow2" width="14" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/umbrella_arr_c_up.png">
-                         </p>
-                         <p hidden class="f4 c4 care2 ">宝大夫微信平台“咨询大夫”提供7x24小时儿科专家即时免费在线咨询。并且我们向每位申请救助的会员免费提供北京三甲医院儿科专家（副主任以上）门诊、住院、手术安排。</p>
-                     </div>
-                 </li>-->
-                <li>
-                    <img class="icon"  width="50" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/operation5.png">
-                    <div class="">
-                        <span class="f6 c11">权威</span>
-                        <p class="f4 c4">权威儿科专家会诊团，确保合理治疗，保证救助金使用高效</p>
-                    </div>
+                <li class="fl" onclick="lookOther(1)">
+                    <div class="f8 c3 tc">谁会诊</div>
+                    <img class="my-img2" width="90%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/first/safe_who3.png" >
                 </li>
             </ul>
-            <div class="doctor tc">
-                <img width="32%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/operation_doctor1.png">
-                <img width="32%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/operation_doctor2.png">
-                <img width="32%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/operation_doctor3.png">
-
-            </div>
         </div>
-
-        <!-- 会员福利-->
-        <div class="box bg1 welfare">
-            <h3 class="tc f8  c11">会员福利</h3>
-            <dl class=" tc">
-                <dt class="f6 c3">小病随时问</dt>
-                <dd class="f4 c3">
-                    <p>宝大夫微信平台“咨询大夫”提供<span class="c11">7*24</span>小时儿科专家免费在线咨询，<span class="c11">1分钟</span>内极速回复。</p>
-                    <img  class="mg-img2" width="179" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/welfare1.png">
-                </dd>
-                <dt class="f6 c3">大病有名医</dt>
-                <dd class="f4 c3">
-                    <p>为申请互助的成员免费提供北京<span class="c11">三甲医院儿科专家</span>（副主任以上）门诊、住院、手术安排。</p>
-                    <img  class="mg-img2" width="96%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/welfare2.png">
-                </dd>
-            </dl>
-        </div>
-
         <!-- 申请流程-->
-        <div class="box bg1 process">
-            <h3 class="tc f8 c11  c11">申请流程</h3>
+        <div class="myCard process">
+            <h3 class="headline">
+                <img class="my-img2" width="92" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/first/head_process.png" >
+            </h3>
             <ul>
                 <img class="arr arr1" width="10" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/umbrella_arr_gray_r.png">
                 <img class="arr arr2" width="10" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/umbrella_arr_gray_r.png">
                 <li class="tc fl">
-                    <img width="65" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/process1.png">
+                    <img width="65" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/first/process1.png">
                     <div class="f5 c11">申请救助金</div>
                     <div class="f3 c3">拨打客服热线<br>提交相关资料</div>
                 </li>
                 <li class="tc fl">
-                    <img width="65" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/process2.png">
+                    <img width="65" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/first/process2.png">
                     <div class="f5 c11">事件调查</div>
                     <div class="f3 c3">权威公估机构调查</div>
                 </li>
                 <li class="tc fl">
-                    <img width="65" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/process3.png">
-                    <div class="f5 c11">  资金划款</div>
+                    <img width="65" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/first/process3.png">
+                    <div class="f5 c11"> 资金划款</div>
                     <div class="f3 c3">公示无异议后<br>直接划款</div>
                 </li>
             </ul>
 
         </div>
-        <!-- 社会现状-->
-        <!--<div class="box bg1 situation">
-            <h3 class="tc f8 c11">社会现状</h3>
-            <p class="text f4 c3">随着环境污染和饮食安全问题越来越严重，重大疾病的发病率越来越高，儿童群体也受到很大影响。例如：</p>
-            <div class="tc">
-                <img width="80%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/situation1.png">
-            </div>
-            <p class="text f4 c3">医疗费中，花费最多的是感染和并发症。这些药大多是进口的，非常贵，社保不能报销。许多家长不知道自己是在走向希望，还是滑向深渊。</p>
-        </div>-->
         <!-- 常见问题-->
-        <div class="box bg1 questions">
-            <h3 class="tc f8 c11">常见问题</h3>
+        <div class="myCard questions">
+            <h3 class="f6 c3 fw0">常见问题</h3>
             <dl class="fold">
                 <dt class="fw0"  onclick="lookQuestion(0)">
                     <span>Q1</span>什么人可以加入互助行动 ?
-                    <a class="show">
+                    <a class="">
                         <img class="show1" width="12" height="12" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/show1.png">
                         <img hidden class="show2" width="11.5" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/show2.png" >
                     </a>
                 </dt>
-                <dd class="foldText foldText2 change">
+                <dd class="foldText foldText2 ">
                     <i class="triangle"></i>
                     <img width="100%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/question3.png">
                 </dd>
@@ -264,30 +166,7 @@
                     成员加入互助计划并度过观察期后，只要保证家庭账户有足够余额，能够履行其他成员需要时对其进行救助的义务，保障就能一直生效，直到孩子满18周岁退出互助计划。
                 </dd>
                 <dt class="fw0"  onclick="lookQuestion(3)">
-                    <span>Q4</span>什么情况下可以获得救助?
-                    <a>
-                        <img class="show1" width="12" height="12" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/show1.png">
-                        <img hidden class="show2" width="11.5" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/show2.png" >
-                    </a>
-                </dt>
-                <dd class="foldText ">
-                    <i class="triangle"></i>
-                    当有会员在度过观察期后首次确诊保障中包含的《60种重大疾病》或《15种轻症》时，对还留在互助计划中的所有成员，从家庭账户中按每人最多3元进行扣除（三口之家最多扣除9元），以资助求助者。
-                    <p class="f3 c4">注：会员越多每人付出的金额将越少</p>
-                </dd>
-                <dt class="fw0"  onclick="lookQuestion(4)">
-                    <span>Q5</span>什么情况下可以退出互助行动？
-                    <a>
-                        <img class="show1" width="12" height="12" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/show1.png">
-                        <img hidden class="show2" width="11.5" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/show2.png" >
-                    </a>
-                </dt>
-                <dd class="foldText foldText2">
-                    <i class="triangle"></i>
-                    <img width="100%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/question5.png">
-                </dd>
-                <dt class="fw0"  onclick="lookQuestion(5)">
-                    <span>Q6</span>不予救助的事项
+                    <span>Q4</span>不予救助的事项
                     <a>
                         <img class="show1" width="12" height="12" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/show1.png">
                         <img hidden class="show2" width="11.5" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/show2.png" >
@@ -305,8 +184,8 @@
                     <p><span>8、</span>在观察期内出现的与重大疾病相关的症状及体征，或者确诊的重大疾病</p>
                     <p><span>9、</span>猝死</p>
                 </dd>
-                <dt class="fw0"  onclick="lookQuestion(6)">
-                    <span>Q7</span>其它未说明的情况
+                <dt class="fw0"  onclick="lookQuestion(4)">
+                    <span>Q5</span>其它未说明的情况
                     <a>
                         <img class="show1" width="12" height="12" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/show1.png">
                         <img hidden class="show2" width="11.5" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/show2.png" >
@@ -316,42 +195,49 @@
                     <i class="triangle"></i>
                     <div>
                         <span class="c3 f3">详见</span>
-                        <p class="myLink c11 f3" onclick="lookProtocol(0)">《宝大夫儿童家庭重疾互助计划公约》</p>
-                        <p class="myLink c11 f3" onclick="lookProtocol(1)">《60种重大疾病名称及定义》</p>
-                        <p class="myLink c11 f3" onclick="lookProtocol(2)">《15种轻症名称及定义》</p>
-                        <p class="myLink c11 f3" onclick="lookProtocol(3)">《名词释义》</p>
+                        <p class="myLink c11 f3" onclick="lookProtocol(0)">《宝大夫儿童家庭重疾互助计划公约》</p><br>
+                        <p class="myLink c11 f3" onclick="lookProtocol(1)">《75种疾病名称及定义》</p><br>
+                        <p class="myLink c11 f3" onclick="lookProtocol(2)">《名词释义》</p>
                     </div>
                 </dd>
             </dl>
         </div>
-        <!-- 宣传语-->
-        <div class="slogan tc">
-            <img width="80%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/index_slogan.png">
+        <!-- 咨询-->
+        <div class="consult bg1 tc">
+            <span class="line"></span>
+            <a class="f8 c3" href="tel:4006237120">
+                <img class="my-img1" width="16" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/first/icon_tel.png">
+                电话咨询
+            </a>
+            <a class="f8 c3" onclick="lookOther(2)">
+                <img class="my-img1" width="20" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/first/icon_weixin.png">
+                微信咨询
+            </a>
+        </div>
+        <!-- 宝大夫协议-->
+        <div onclick="lookProtocol(0)" class="umbrellaProtocol bg1 tc f3 c3">
+            详情请见《宝护伞儿童家庭重疾互助计划公约》
+            <img class="" width="10" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/first/umbrellaProtocol_arr.png">
         </div>
         <br><br><br><br><br><br>
+    </div>
+    <!--底部按钮 未购买宝护伞 -->
+    <div class="first-myBottom-btn" id="NoShareDiv"  >
+        <button class="fl bg-blue button-share f3" onclick="goShare()">
+            <div class="bold f6"> 邀请好友</div>
+            （提升2万保额）
+        </button>
+        <button class="fl bg-white f6 bold" onclick="goJoin()" id="changeButton" >立即加入</button>
+    </div>
+    <!--底部按钮 购买过宝护伞 -->
+    <div class="first-myBottom-btn " id="shareDiv" hidden>
+        <button class="fl bg-blue f6 bold" onclick="myGuarantee()">我的保障</button>
+        <button class="fl bg-white button-share f3"  onclick="goShare()">
+            <div class="bold f6"> 邀请好友</div>
+            （提升2万保额）
+        </button>
+    </div>
 
-    </div>
-    <!--底部客服电话图标-->
-    <!--&lt;!&ndash; <a class="icon-tel" href="tel:4006237120">-->
-    <!--<img  width="68" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2Fhandfootmouth%2Fhfmindex_kefu.png">-->
-    <!--</a>&ndash;&gt;-->
-    <!-- 新的客服咨询图标-->
-    <a class="icon-tel icon-tel2" onclick="umbrellaConsult()"></a>
-    <!--<a href="#"  class="icon-tel" onclick="ysf.open();return false;"></a>-->
-    <!--底部按钮 第一种情况 首次进来-->
-    <div class="myBottom-btn tc" id="NoShareDiv" >
-        <div class="btn">
-            <button class="f8 c0" onclick="goShare()">邀请好友</button>
-            <button class="f8 c0" onclick="goJoin()" id="changeButton" >马上领取</button>
-        </div>
-    </div>
-    <!--底部按钮 第二种情况 领取之后-->
-    <div class="myBottom-btn tc" id="shareDiv" hidden>
-        <div class="btn">
-            <button class="f8 c0" onclick="myGuarantee()">我的保障</button>
-            <button class="f8 c0"  onclick="goShare()">邀请好友</button>
-        </div>
-    </div>
     <!--分享浮层-->
     <div class="c-shadow" hidden onclick="cancelRemind()"></div>
     <div class="shadow-content share tc" hidden onclick="cancelShare()">
@@ -370,16 +256,32 @@
             </div>
         </div>
     </div>
-    <!--关注浮层-->
-    <div class="shadow-content attention tc"  hidden>
-        <img onclick="cancelRemind()" class="close" width="20" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/attention_close.png">
-        <div class="code">
-            <img  class="" width="100%" id="QRCode" height="auto" data-tap-disabled="true"  src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/attention_code.png">
-            <img  class="logo" width="20" height="20" data-tap-disabled="true"  src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg">
-        </div>
 
-        <img  class="remind" width="80%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/attention_pic.png">
+    <!--第三方机构 浮层-->
+    <div class="shadow-content shadow-content2 third tc"  hidden>
+        <h3 class="f8 c3">上海商保通健康科技有限公司</h3>
+        <p class="f5 c3">专业第三方理赔案件调查公司，拥有10年以上服务于中国平安、中国人寿等大型保险公司的丰富经验。</p>
+        <a class="f5 c0" onclick="cancelRemind()">我知道了</a>
     </div>
+    <!--儿科专家 浮层-->
+    <div class="shadow-content shadow-content2 experts tc"  hidden>
+        <h3 class="f8 c3">专业儿科专家</h3>
+        <p class="f5 c3">权威儿科专家会诊团，<br>确保合理治疗，保证救助金使用高效</p>
+        <div class="doctor tc">
+            <img width="28%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/operation_doctor1.png">
+            <img width="28%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/operation_doctor2.png">
+            <img width="28%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/operation_doctor3.png">
+
+        </div>
+        <a class="f5 c0" onclick="cancelRemind()">我知道了</a>
+    </div>
+    <!--微信咨询 浮层-->
+    <div class="shadow-content shadow-content2 wechatConsult tc"  hidden>
+        <h3 class="f6 c3">识别下方二维码，随时咨询不等待</h3>
+        <p class=""><img class="selectable" data-tap-disabled="true" width="120" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/first/umbrellaCode_consult.jpg"></p>
+        <a class="f5 c0" onclick="cancelRemind()">我知道了</a>
+    </div>
+
     <!--宝大夫儿童家庭重疾互助计划公约 浮层-->
     <div class="shadow-content protocol  bg1" hidden >
         <h3 class="tc c3 f8">宝大夫儿童家庭重疾互助计划公约</h3>
@@ -393,11 +295,11 @@
                 </dd>
                 <dt>第二章 释义</dt>
                 <dd>
-                    <p>宝大夫平台：是指由北京晨星启明科技有限公司设立的宝大夫品牌旗下的互联网平台。</p>
+                    <p>宝大夫平台：是指由北京晨星启明科技有限公司设立的宝大夫品牌旗下专注于提供儿童医疗服务的互联网平台。</p>
                     <p>会员：是指符合本计划参与条件并确认参与本计划的会员</p>
                     <p>互助申请人：是指发生本计划约定的救助情形，需要获得其他会员救助的会员本人或其监护人。</p>
                     <p>互助计划：是指宝大夫平台针对各类风险或事项所制定的互助会员之间相互帮助的规则，互助会员遵照规则内容享受互助权利，履行互助义务。</p>
-                    <p>家庭保障金账户：会员定向捐助资金所存放的其在本计划的虚拟家庭互助账户，一般情况下，捐助后会员仅享有查看和继续捐助的权利。</p>
+                    <p>家庭保障金账户：会员定向捐助资金所存放的虚拟家庭互助账户，一般情况下，捐助后会员仅享有查看和继续捐助的权利。</p>
 
                 </dd>
                 <dt>第三章 公约效力</dt>
@@ -411,18 +313,17 @@
                 <dt>第四章 参与标准</dt>
                 <dd>
                     <p>1、会员加入：</p>
-                    <p>（1）0（出生满30天）-14周岁自然人及其父母；</p>
-                    <p>（2）加入本计划之时身体健康，无重大疾病史及相关症状就诊纪录，无慢性病史；</p>
-                    <p>（3）向本计划捐助，金额为家庭参与计划人数*5元，三口之家即为15元；；</p>
-                    <p>（4）认同并承诺遵守本公约。</p>
+                    <p>（1）0（出生满30天）-14周岁自然人及其父母</p>
+                    <p>（2）加入本项目之时身体健康，无重大疾病史及相关症状就诊纪录，无慢性病史；</p>
+                    <p>（3）认同并承诺遵守计划公约。</p>
                     <p>2、会员退出：</p>
-                    <p>（1）受到一次救助的会员，自动退出，家庭中其余成员需重新按剩余人数*5元缴费，方可留在计划中，否则自动退出；</p>
-                    <p>（2）孩子年满18周岁，自动退出；</p>
+                    <p>（1）受到一次救助的会员，自动退出；</p>
+                    <p> 2）孩子年满18周岁，自动退出；</p>
                     <p>（3）家庭中最后一个孩子退出，父母也自动退出；</p>
-                    <p>（4）家庭互助账户中人均余额不足3元，保障中断；在30日内未补足的，自动退出；</p>
+                    <p>（4）在其他会员发起求助事件时，7日内未履行救助义务的，自动退出；</p>
                     <p>（5）父母离异后，非监护人一方自动退出计划；</p>
                     <p>（6）计划公约所规定的其他情况；</p>
-                    <p>（7）丧失会员资格后，符合条件重新加入计划的，将重新计算180天等待期。</p>
+                    <p> 7）丧失会员资格后，符合条件重新加入计划的，将重新计算180天等待期。</p>
                 </dd>
                 <dt>第五章 互助内容</dt>
                 <dd>
@@ -487,14 +388,15 @@
 
         </div>
         <div class="read tc" onclick="cancelRemind()">
-            <a class="c0 f6" >已阅读并同意</a>
+            <a class="c0 f6" >我知道了</a>
         </div>
     </div >
 
-    <!--60种重大疾病名称及定义 浮层-->
+    <!--75疾病名称及定义 浮层-->
     <div class="shadow-content protocol  bg1"  hidden>
-        <h3 class="tc c3 f8">60种重大疾病名称及定义</h3>
+        <h3 class="tc c3 f8">75种疾病名称及定义</h3>
         <div class="main c3 f4" >
+            <h3 class="tc c3 f8">60种重大疾病</h3>
             <dl>
                 <dt>1、恶性肿瘤</dt>
                 <dd>
@@ -739,17 +641,7 @@
                 </dd>
 
             </dl>
-
-        </div>
-        <div class="read tc" onclick="cancelRemind()">
-            <a class="c0 f6">已阅读并同意</a>
-        </div>
-    </div>
-
-    <!--15种轻症名称及定义 浮层-->
-    <div class="shadow-content protocol  bg1" hidden  >
-        <h3 class="tc c3 f8">15种轻症名称及定义</h3>
-        <div class="main c3 f4" >
+            <h3 class="tc c3 f8">15种轻症</h3>
             <dl>
                 <dt>1、极早期恶性肿瘤或恶性病变</dt>
                 <dd>
@@ -824,13 +716,11 @@
                 </dd>
 
             </dl>
-
         </div>
-        <div class="read tc" onclick="cancelRemind()">
-            <a class="c0 f6">已阅读并同意</a>
+        <div class="read tc" >
+            <a onclick="cancelRemind()" class="c0 f6">我知道了</a>
         </div>
     </div>
-
     <!--名词释义 浮层-->
     <div class="shadow-content protocol  bg1" hidden >
         <h3 class="tc c3 f8">名词释义</h3>
@@ -906,51 +796,29 @@
 
         </div>
         <div class="read tc" onclick="cancelRemind()">
-            <a class="c0 f6" >已阅读并同意</a>
+            <a class="c0 f6" >我知道了</a>
         </div>
     </div>
 
-    <!--中国儿童少年基金会 浮层-->
-    <div class="shadow-content protocol erjihui bg1" hidden >
-        <h3 class="tc c3 f8">中国儿童少年基金会</h3>
-        <div class="main c3 f4" >
-            <dl>
-                <dd style="margin-bottom: 45px;">
-                    <p>中国儿童少年基金会是新中国成立后的第一家国家级公募基金会，隶属于全国妇联，在中国基金会序列中，被民政部评定为最高等级——<span class="bold">5A级</span>。彭丽媛同志担任中国儿童少年基金会“春蕾计划促进女童教育特使”。</p>
-                </dd>
-                <!-- <h3 class="tc c3 f8">基金会与我们</h3>
-                 <dd>
-                     <p>宝大夫与儿基会通力合作，为您的健康增加一份保障!</p>
-                 </dd>
-                 <dd>
-                     <img  class="my-img2" width="90%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/erjihui1.png">
-                     <img  class="my-img2" width="230" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/erjihui2.png">
-                     <img  class="my-img2" width="230" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/erjihui3.png">
-                 </dd>-->
-            </dl>
 
-        </div>
-        <div class="read tc" onclick="cancelRemind()">
-            <a class="c0 f6" >已阅读</a>
-        </div>
-    </div>
 
 </div>
 </body>
-<!--<link rel="stylesheet" href="styles/lib/ionic.min.css"/>-->
+<link rel="stylesheet" href="styles/lib/ionic.min.css"/>
 <link rel="stylesheet" href="styles/lib/ionicons.min.css"/>
 <link rel="stylesheet" href="styles/lib/animate.min.css"/>
 <link rel="stylesheet" href="styles/main.less"/>
 <script src="js/libs/jquery-2.1.3.min.js"></script>
 <script src="js/libs/jquery.scrollstop.min.js"></script>
-<script src="js/native/umbrellaFirstPage.js"></script>
+<script src="js/native/umbrellaFirstPage.js?ver=1.2"></script>
 <script src="js/libs/iscroll.js"></script>
 <script>
     var myScroll;
     function loaded(){
         setTimeout(function(){
                     myScroll = new iScroll('wrapper', {
-                        hideScrollbar: true
+                        hideScrollbar: true,
+                        checkDOMChanges:true
                       }) },
                 100 );
     }
