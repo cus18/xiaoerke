@@ -1,78 +1,62 @@
-<div ui-view class="container-fluid h100" ng-init="patientConsultFirst()">
-    <div class="consultTitle">
-        <span><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_2.png"
-                   alt=""/></span>
-        宝大夫
-        <span><img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_1.png"
-                   alt=""/></span>
-    </div>
-    <div class="consultDisplay h100">
-        <div class="consulChatList" scroll-glue-bottom="glued">
-            <div class="chatBox" ng-repeat="item in consultContent">
-                <div class="patientConsultContent" ng-if="item.senderId==patientId&&item.type!='4'">
-                    <div class="patientHeaderImg">
-                        <img width="25px" ng-src="{{item.avatar}}">
+<ion-view ng-init="patientConsultFirst()">
+    <ion-content>
+        <div class="container-fluid h100">
+            <div class="consultTitle">
+                <span>
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_2.png" alt=""/>
+                </span>
+                        宝大夫
+                <span>
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_1.png" alt=""/>
+                </span>
+            </div>
+            <div class="consultDisplay h100" ng-clcik='cancelFile()'>
+                <div class="consulChatList" scroll-glue-bottom="glued">
+                    <div class="chatBox" ng-repeat="item in consultContent">
+                        <div class="patientConsultContent" ng-if="item.senderId==patientId&&item.type!='4'">
+                            <div class="patientHeaderImg">
+                                <img width="25px" ng-src="{{item.avatar}}">
+                            </div>
+                            <div class="message" ng-if="item.type=='0'" ng-bind-html="item.content">
+                            </div>
+                            <div ng-if="item.type=='1'" class="message">
+                                <img width="100px" ng-src="{{item.content}}"
+                                     ng-click="tapImgButton('magnifyImg',item.content)">
+                            </div>
+                        </div>
+                        <div class="doctorReplyContent" ng-if="item.senderId!=patientId&&item.type!='4'">
+                            <div class="doctorHeaderImg">
+                                <img width="25px" ng-src="{{item.avatar}}">
+                            </div>
+                            <div class="message" ng-if="item.type=='0'" ng-bind-html="item.content">
+                            </div>
+                            <div class="message" ng-if="item.type=='1'">
+                                <img width="100px" ng-src="{{item.content}}"
+                                     ng-click="tapImgButton('magnifyImg',item.content)">
+                            </div>
+                        </div>
+                        <div ng-if="item.type=='4'&&item.notifyType=='1001'">
+                            亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^1001
+                        </div>
+                        <div ng-if="item.type=='4'&&item.notifyType=='1002'">
+                            亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^1002
+                        </div>
+                        <div ng-if="item.type=='4'&&item.notifyType=='1003'">
+                            亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^1003
+                        </div>
                     </div>
-                    <div class="message" ng-if="item.type=='0'" ng-bind-html="item.content">
+                    <div class="magnifyImg" ng-show='showFlag.magnifyImg' ng-click="tapShowButton('magnifyImg')">
+                        <img width="374px" ng-src="{{imageSrc}}">
                     </div>
-                    <div ng-if="item.type=='1'" class="message">
-                        <img width="100px" ng-src="{{item.content}}" ng-click="tapImgButton('magnifyImg',item.content)">
-                    </div>
-                </div>
-                <div class="doctorReplyContent" ng-if="item.senderId!=patientId&&item.type!='4'">
-                    <div class="doctorHeaderImg">
-                        <img width="25px" ng-src="{{item.avatar}}">
-                    </div>
-                    <div class="message" ng-if="item.type=='0'" ng-bind-html="item.content">
-                    </div>
-                    <div class="message" ng-if="item.type=='1'">
-                        <img width="100px" ng-src="{{item.content}}" ng-click="tapImgButton('magnifyImg',item.content)">
-                    </div>
-                </div>
-                <div ng-if="item.type=='4'&&item.notifyType=='1001'">
-                    亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^1001
-                </div>
-                <div ng-if="item.type=='4'&&item.notifyType=='1002'">
-                    亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^1002
-                </div>
-                <div ng-if="item.type=='4'&&item.notifyType=='1003'">
-                    亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^1003
                 </div>
             </div>
-            <div class="magnifyImg" ng-show='showFlag.magnifyImg' ng-click="tapShowButton('magnifyImg')">
-                <img width="374px" ng-src="{{imageSrc}}">
-            </div>
-        </div>
-    </div>
-    <div class="consultInput">
-        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_6.png" alt="表情符号" id="face" ng-click="getQQExpression()"/>
-        <textarea class="textInput" placeholder="请输入咨询内容" id="saytext" ng-model="info.consultInputValue"></textarea>
-        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_5.png" alt="打开文件"  ng-click="openFileList()"/>
-        <input ng-click="sendConsultContent()" type="button" value="发送">
-    </div>
-    <div ng-if="openFileListFlag&&!sendItem" id="fileInputList" class="fileInputList">
-        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_7.png" type="file"
-             ng-file-select="uploadFiles($files,'image')" accept="image/*" ng-file-max-height="2000"
-             ng-file-max-size="2MB">
-        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_8.png" type="file"
-             ng-file-select="uploadFiles($files,'audio')" accept="audio/*">
-        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_9.png" type="file"
-             ng-file-select="uploadFiles($files,'video')" accept="video/*">
-    </div>
-    <!--<div class="consultInput">
-        <div class="consultInputTop">
-            <div>
-                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_6.png" alt=""
+            <div class="consultInput">
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_6.png" alt="表情符号"
                      id="face" ng-click="getQQExpression()"/>
-            </div>
-            <div>
-                <textarea class="textInput" placeholder="请输入咨询内容" id="saytext" ng-model="info.consultInputValue"
-                          style="border-style:none"></textarea>
-            </div>
-            <div ng-click="openFileList()">
-                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_5.png" alt=""/>
-            </div>
-            <div class="sendConsultContent" id="sendConsultContent">
+                <textarea class="textInput" placeholder="请输入咨询内容" id="saytext"
+                          ng-model="info.consultInputValue"></textarea>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_5.png" alt="打开文件"
+                     ng-click="openFileList()"/>
                 <input ng-click="sendConsultContent()" type="button" value="发送">
             </div>
             <div ng-if="openFileListFlag&&!sendItem" id="fileInputList" class="fileInputList">
@@ -85,5 +69,6 @@
                      ng-file-select="uploadFiles($files,'video')" accept="video/*">
             </div>
         </div>
-    </div>-->
-</div>
+    </ion-content>
+
+</ion-view>
