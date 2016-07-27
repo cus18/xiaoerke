@@ -440,4 +440,29 @@
     union all
     select ceil(sum(redpacket)) countNumber from customerEvaluation where createtime like '${createDate}%' and redPacket is not null and redPacket !=''
   </select>
+  <!--有效咨询和差评人数-->
+  <select id="getValidateConsultAndFeedBackCounts" parameterType="java.util.Map" resultType="java.util.Map">
+    SELECT consult.date,consult.validateConsultCount,IFNULL(feedback.feedBackCount,0) feedBackCount FROM
+    (SELECT DATE_FORMAT(create_time,'%Y-%m-%d') date,COUNT(DISTINCT sys_user_id) validateConsultCount from consult_session where
+    DATE_FORMAT(create_time,'%Y-%m-%d') BETWEEN #{startDate} and #{endDate}
+    and flag IS NULL
+    GROUP BY DATE_FORMAT(create_time,'%Y-%m-%d')) consult
+    LEFT JOIN
+    (SELECT DATE_FORMAT(createtime,'%Y-%m-%d') date,COUNT(DISTINCT openid) feedBackCount from customerEvaluation
+    where serviceAttitude = '1'
+    and DATE_FORMAT(createtime,'%Y-%m-%d') BETWEEN #{startDate} and #{endDate}
+    GROUP BY DATE_FORMAT(createtime,'%Y-%m-%d')) feedback
+    on consult.date = feedback.date
+  </select>
+  <!--送心意人数和金额-->
+  <select id="getSendHeartPersonAndMoneyCounts" parameterType="java.util.Map" resultType="java.util.Map">
+    SELECT DATE_FORMAT(c.createtime,'%Y-%m-%d') date,COUNT(DISTINCT c.openid) sendHeartPersonCount,round(SUM(c.redPacket),2) sendHeartMoneyCount
+    FROM customerEvaluation c
+    INNER JOIN sys_user su ON c.doctorid = su.id
+    WHERE c.redPacket IS NOT NULL AND c.redPacket!=''
+    AND c.redPacket !=0
+    AND c.payStatus IS NOT NULL
+    and DATE_FORMAT(c.createtime,'%Y-%m-%d') BETWEEN #{startDate} and #{endDate}
+    GROUP BY DATE_FORMAT(c.createtime,'%Y-%m-%d')
+  </select>
 </mapper>

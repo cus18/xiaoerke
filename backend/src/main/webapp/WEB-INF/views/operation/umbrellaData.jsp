@@ -18,7 +18,9 @@
     </li>
     <li><a href="${ctx}/consultStatistic/consultStatisticBaseData"><font color="#006400">咨询数据统计</font></a>
     </li>
-    <li class="active"><a href="${ctx}/sys/BaseData/getUmbrellaDataStatistics"><font color="#8b0000">保护伞数据统计</font></a>
+    <li class="active"><a href="${ctx}/sys/BaseData/getUmbrellaDataStatistics"><font color="#006400">宝护伞数据统计</font></a>
+    </li>
+    <li><a href="${ctx}/sys/BaseData/getConsultDoctorDataStatistics"><font color="#006400">咨询大夫数据统计</font></a>
     </li>
 </ul>
 <form id="searchForm" modelAttribute="registerServiceVo" action="${ctx}/sys/BaseData/getUmbrellaDataStatistics" method="post" class="form-search">
