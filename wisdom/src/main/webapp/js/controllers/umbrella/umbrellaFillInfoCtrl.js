@@ -189,7 +189,6 @@
                         $scope.saveBabyInfo();
                     }
                 }else{
-
                     $scope.saveBabyInfo();
                 }
             };

@@ -356,31 +356,32 @@ public class UmbrellaController  {
         Map<String, Object> map=new HashMap<String, Object>();
         Map<String, Object> result=new HashMap<String, Object>();
         String openid= WechatUtil.getOpenId(session, request);
-//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
         List<Map<String, Object>> list=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
-            Map<String, Object> m=list.get(0);
-            if(m.get("pay_result")!=null&&m.get("pay_result").equals("fail")&& (m.get("baby_id") == null || m.get("baby_id").equals(""))) {
+            Map<String, Object> m = list.get(0);
+            if(m.get("pay_result")!=null&&m.get("pay_result").equals("fail")
+                    &&(m.get("baby_id")==null||m.get("baby_id").equals(""))) {
                 result.put("result",1);
                 result.put("type","pay");
                 return result;
             }
-                if (m.get("baby_id") != null && !m.get("baby_id").equals("") && ( m.get("pay_result")==null || m.get("pay_result").equals("success") )) {
-                    if (m.get("activation_time") != null && !m.get("activation_time").equals("")) {
-                        map.put("createTime",m.get("create_time"));
-                        map.put("openid",openid);
-                        result.put("rank", babyUmbrellaInfoSerivce.getUmbrellaRank(map));
-                    }
-                    result.put("result", 3);
-                    result.put("umbrella", m);
-                    return result;
+            if (m.get("baby_id") != null && !m.get("baby_id").equals("") &&
+                    ( m.get("pay_result")==null || m.get("pay_result").equals("success"))) {
+                if (m.get("activation_time") != null && !m.get("activation_time").equals("")) {
+                    map.put("createTime",m.get("create_time"));
+                    map.put("openid",openid);
+                    result.put("rank", babyUmbrellaInfoSerivce.getUmbrellaRank(map));
                 }
-                result.put("result", 2);
+                result.put("result", 3);
                 result.put("umbrella", m);
-                map.put("createTime",m.get("create_time"));
-                result.put("rank", babyUmbrellaInfoSerivce.getUmbrellaRank(map));
                 return result;
+            }
+            result.put("result", 2);
+            result.put("umbrella", m);
+            map.put("createTime",m.get("create_time"));
+            result.put("rank", babyUmbrellaInfoSerivce.getUmbrellaRank(map));
+            return result;
         }
         result.put("result",1);
         return result;
@@ -433,7 +434,6 @@ public class UmbrellaController  {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         Map<String, Object> map=new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session, request);
-//        openid="o3_NPwrrWyKRi8O_Hk8WrkOvvNOk";
         map.put("openid",openid);
         List<Map<String, Object>> list = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
         if(list.size()>0){
@@ -451,7 +451,6 @@ public class UmbrellaController  {
                 result.put("type","free");
                 return result;
             }
-
         }
         Map<String, Object> result=new HashMap<String, Object>();
         Map maps = new HashMap();
@@ -459,15 +458,15 @@ public class UmbrellaController  {
         SwitchConfigure switchConfigure = systemService.getUmbrellaSwitch(maps);
         String flag = switchConfigure.getFlag();
         System.out.println(flag+"flag=======================switchConfigure========================");
-//        flag为1是打开，0是关闭
+
+        //flag为1是打开，0是关闭
         double ram=0;
         if(flag.equals("1")) {
-            ram = Math.random() * 5;
             do {
                 ram = Math.random() * 5;
             } while (ram < 1);
         }
-            String res = String.format("%.0f", ram);
+        String res = String.format("%.0f", ram);
 
         BabyUmbrellaInfo babyUmbrellaInfo=new BabyUmbrellaInfo();
         babyUmbrellaInfo.setOpenid(openid);
@@ -479,7 +478,7 @@ public class UmbrellaController  {
         }else {
             babyUmbrellaInfo.setPayResult("fail");
         }
-        Integer ssss = babyUmbrellaInfoSerivce.saveBabyUmbrellaInfo(babyUmbrellaInfo);
+        babyUmbrellaInfoSerivce.saveBabyUmbrellaInfo(babyUmbrellaInfo);
         result.put("type","pay");
         result.put("result",res);
         result.put("id",babyUmbrellaInfo.getId());

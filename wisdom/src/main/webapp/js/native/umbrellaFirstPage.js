@@ -65,34 +65,6 @@ var umbrellaFirstPageInit = function() {
         },
         dataType: "json"
     });
-
-    // $.ajax({
-    //     type: 'POST',
-    //     url: "umbrella/firstPageDataTotalUmbrellaMoney",
-    //     contentType: "application/json; charset=utf-8",
-    //     success: function(result){
-    //         var totalUmbrellaMoney=result.totalUmbrellaMoney;
-    //         $("#totalUmbrellaMoney").html(totalUmbrellaMoney);
-    //     },
-    //     dataType: "json"
-    // });
-
-    //通过openid 获取当前用户是否关注
-    // $.ajax({
-    //     type: 'POST',
-    //     url: "umbrella/getOpenidStatus",
-    //     contentType: "application/json; charset=utf-8",
-    //     success: function(result){
-    //         var status=result.status;
-    //         if(status=="1"){
-    //             attentionLock=false;
-    //         }
-    //     },
-    //     dataType: "json"
-    // });
-    // scanQRCode();
-    // $("#readBuy").attr("disabled",false);
-    // $("#readLock").show();
 }
 
 function scanQRCode(){
@@ -198,7 +170,7 @@ function loadShare(){
     });
 }
 
-function  ifExistOrder(load){
+function ifExistOrder(load){
     $.ajax({
         type: 'POST',
         url: "umbrella/ifExistOrder",
@@ -221,7 +193,6 @@ function  ifExistOrder(load){
                 if(load=="1"){
                     loadShare();
                 }
-
             }else{
                 if(data.type=="pay"){
                     version="a";
@@ -235,7 +206,6 @@ function  ifExistOrder(load){
                     loadShare();
                 }
             }
-
         },
         dataType: "json"
     });
@@ -346,7 +316,7 @@ var myGuarantee = function() {
 var goJoin = function() {
     recordLogs("BHS_HDSY_LJLQ");
     var shareId = GetQueryString("id")==null?120000000:GetQueryString("id");
-    window.location.href = "http://s165.baodf.com/wisdom/umbrella#/umbrellaFillInfo/"+shareId+"/a";
+    window.location.href = "http://s201.xiaork.com/wisdom/umbrella#/umbrellaFillInfo/"+shareId+"/a";
 }
 
 var GetQueryString = function(name) {
