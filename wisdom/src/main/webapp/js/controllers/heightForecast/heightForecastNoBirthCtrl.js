@@ -1,12 +1,13 @@
 angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl', [
-    '$scope','$state','SaveHeightPredictionInfo','$ionicScrollDelegate',
-    function ($scope,$state,SaveHeightPredictionInfo,$ionicScrollDelegate) {
+    '$scope','$state','SaveHeightPredictionInfo','$ionicScrollDelegate','GetOpenidStatus',
+    function ($scope,$state,SaveHeightPredictionInfo,$ionicScrollDelegate,GetOpenidStatus) {
 
         $scope.title ="宝妈爱心接力";
         $scope.info = {
             dadHeight:'',
             mamHeight:''
         };
+        $scope.openId = '';
         $scope.dadBirthdaySelected = false;
         $scope.mamBirthdaySelected = false;
         $scope.numberB = Math.ceil(Math.random()*5);//随机数
@@ -18,6 +19,23 @@ angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl',
         };
         //初始化
         $scope.$on('$ionicView.enter', function(){
+            $.ajax({
+                url:"umbrella/getOpenid",// 跳转到 action
+                async:true,
+                type:'post',
+                cache:false,
+                dataType:'json',
+                success:function(data) {
+                    if(data.openid=="none"){
+                        window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=36";
+                    }
+                },
+                error : function() {
+                }
+            });
+            GetOpenidStatus.save({}, function (data) {
+                $scope.openId = data.status;
+            });
             loadShare();
             var date = new Date(+new Date()+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'');
             $("#dadBirthday").mobiscroll().date();
@@ -44,8 +62,19 @@ angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl',
             $("#dadBirthday").mobiscroll(opt);
             $("#mamBirthday").mobiscroll(opt);
         });
+
+        //出生日期
+        $scope.showInput = function (index) {
+            if(index=="dadBirthday"){
+                $("#dadBirthday").mobiscroll('show');
+                $scope.dadBirthdaySelected = true;
+            }
+            if(index=="mamBirthday"){
+                $("#mamBirthday").mobiscroll('show');
+                $scope.mamBirthdaySelected = true;
+            }
+        };
         $scope.checkName = function () {
-            console.log($("#mamBirthday").val());
             if($("#dadBirthday").val()==""){
                 alert("宝爸生日不能为空！");
                 return;
@@ -74,20 +103,12 @@ angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl',
             }, function (data) {
             });
             $ionicScrollDelegate.scrollTop();
-            $scope.lookResultFloat = true;
-            //$state.go("heightForecastResult",{resultBoy:$scope.resultBoy,resultGirl:$scope.resultGirl});
+            if($scope.openId == 0){
+                $scope.lookResultFloat = true;
+            }else{
+                $scope.lookResultFloatNo = true;
+            }
             recordLogs('YYHD_SG_WCS_WYKJG');
-        };
-        //出生日期
-        $scope.showInput = function (index) {
-            if(index=="dadBirthday"){
-                $("#dadBirthday").mobiscroll('show');
-                $scope.dadBirthdaySelected = true;
-            }
-            if(index=="mamBirthday"){
-                $("#mamBirthday").mobiscroll('show');
-                $scope.mamBirthdaySelected = true;
-            }
         };
         //分享到朋友圈或者微信
         var loadShare = function(){
