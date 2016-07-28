@@ -192,10 +192,12 @@ public class FieldworkWechatController {
             url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/lovePlan";
         }else if("33".equals(url)){
             url = ConstantUtil.WISDOM_WEB_URL + "wisdom/umbrella#/umbrellaInvite";
-        }else if("35".equals(url)){
-            url = ConstantUtil.KEEPER_WEB_URL + "keeper/wxPay/patientPay.do?serviceType=doctorConsultPay";
         }else if("34".equals(url)){
             url = ConstantUtil.ANGEL_WEB_URL + "angel/patient/consult#/customerService";
+        } else if("35".equals(url)){
+            url = ConstantUtil.KEEPER_WEB_URL + "keeper/wxPay/patientPay.do?serviceType=doctorConsultPay";
+        }else if("36".equals(url)){
+            url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/heightForecast";
         }
 
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
