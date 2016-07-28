@@ -16,10 +16,8 @@
                     "没什么好送的，40万的大病治疗费，送给你！",
                     "最美的妈妈你别走，送你40万，让孩子健康去成长！",
                     "如需江湖救急，这有40万的大病治疗费，速速来拿！"
-
                 ];
                 var randomNum=parseInt(9*Math.random());//分享文案随机数
-                /*   $(".share p").html( shareTextArray[randomNum]);*/
                 $scope.shareRandomText=shareTextArray[randomNum];
             };
             $scope.cancelShare=function(){
@@ -46,7 +44,6 @@
             };
             
             $scope.$on('$ionicView.enter', function(){
-
                 ifExistOrder.save(function (data) {
                     if(data.result=="1"){
                         window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa_"+$stateParams.id;
