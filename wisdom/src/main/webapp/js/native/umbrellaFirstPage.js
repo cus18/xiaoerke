@@ -309,7 +309,7 @@ var myGuarantee = function() {
 var goJoin = function() {
     recordLogs("BHS_HDSY_LJLQ");
     var shareId = GetQueryString("id")==null?120000000:GetQueryString("id");
-    window.location.href = "http://s165.baodf.com//wisdom/umbrella#/umbrellaFillInfo/"+shareId+"/a";
+    window.location.href = "http://s165.baodf.com/wisdom/umbrella#/umbrellaFillInfo/"+shareId+"/a";
 }
 
 var GetQueryString = function(name) {
