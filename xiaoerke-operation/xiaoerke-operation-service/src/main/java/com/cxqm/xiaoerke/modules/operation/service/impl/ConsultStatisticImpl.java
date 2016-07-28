@@ -41,4 +41,22 @@ public class ConsultStatisticImpl implements ConsultStatisticService {
         return consultStatisticDao.getConsultStatisticList(hashMap);
     }
 
+    @Override
+    public List<Map<String, Object>> getConsultDoctorDatalist(Map<String,Object> map){
+        List<Map<String, Object>> validateConsultAndFeedBackCountsList = consultStatisticDao.getValidateConsultAndFeedBackCounts(map);
+        List<Map<String, Object>> sendHeartPersonAndMoneyCountsList =  consultStatisticDao.getSendHeartPersonAndMoneyCounts(map);
+        for (int i = 0; i < validateConsultAndFeedBackCountsList.size(); i++) {
+            Map<String, Object> validateMap = validateConsultAndFeedBackCountsList.get(i);
+            for (int j = 0; j < sendHeartPersonAndMoneyCountsList.size(); j++) {
+                Map<String, Object> sendMap = sendHeartPersonAndMoneyCountsList.get(j);
+                if(sendMap.get("date").toString().equalsIgnoreCase(validateMap.get("date").toString())){
+                    validateMap.put("sendHeartPersonCount",sendMap.get("sendHeartPersonCount").toString());
+                    validateMap.put("sendHeartMoneyCount",sendMap.get("sendHeartMoneyCount").toString());
+                }
+            }
+        }
+
+        return validateConsultAndFeedBackCountsList;
+    }
+
 }

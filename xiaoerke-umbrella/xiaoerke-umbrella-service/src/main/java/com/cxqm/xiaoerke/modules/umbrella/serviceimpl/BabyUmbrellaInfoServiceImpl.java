@@ -285,12 +285,14 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
 
         List<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
         Map<String, Object> searchMap0 = new HashMap<String, Object>();
-        searchMap0.put("date", DateUtils.addDays(startDate,-1));
+        searchMap0.put("date", startDate);
         Integer totalUser0 = babyUmbrellaInfoDao.getBabyUmbrellaInfoTotalUser(searchMap0);
 
         Integer totalFamily0 = babyUmbrellaInfoDao.getBabyUmbrellaInfoTotalFamily(searchMap0);
 
-        while(startDate.getTime() < endDate.getTime()){
+        while(startDate.getTime() < DateUtils.addDays(endDate, 1).getTime()) {
+            startDate = DateUtils.addDays(startDate, 1);
+
             Map<String, Object> searchMap = new HashMap<String, Object>();
             searchMap.put("date", startDate);
             Integer totalUser = babyUmbrellaInfoDao.getBabyUmbrellaInfoTotalUser(searchMap);
@@ -299,14 +301,12 @@ public class BabyUmbrellaInfoServiceImpl implements BabyUmbrellaInfoService {
             Integer addFamily = totalFamily-totalFamily0;
 
             HashMap<String, Object> map = new HashMap<String, Object>();
-            map.put("date",DateUtils.formatDate(startDate));
+            map.put("date",DateUtils.formatDate(DateUtils.addDays(startDate, -1)));
             map.put("totalUser",totalUser);
             map.put("totalFamily",totalFamily);
             map.put("addUser",addUser);
             map.put("addFamily",addFamily);
             list.add(map);
-
-            startDate = DateUtils.addDays(startDate, 1);
             totalFamily0 = totalFamily;
             totalUser0 = totalUser;
         }

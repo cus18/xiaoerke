@@ -4,6 +4,7 @@ import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.operation.service.BaseDataService;
+import com.cxqm.xiaoerke.modules.operation.service.ConsultStatisticService;
 import com.cxqm.xiaoerke.modules.order.entity.RegisterServiceVo;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -16,10 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * 基础数据统计 Controller
@@ -35,6 +33,9 @@ public class BaseDataController extends BaseController {
 
     @Autowired
     BabyUmbrellaInfoService babyUmbrellaInfoService;
+
+    @Autowired
+    ConsultStatisticService consultStatisticService;
 
     /**
      * 获取渠道统计数据
@@ -113,5 +114,39 @@ public class BaseDataController extends BaseController {
         baseDataService.insertStatisticsTitle();
         r.put("Taylor", "OK");
         return r;
+    }
+
+    /**
+     * 咨询大夫数据统计
+     * @author guozengguang
+     * @param request
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequiresPermissions("user")
+    @RequestMapping(value = {"getConsultDoctorDataStatistics", ""})
+    public String getConsultDoctorDataStatistics(HttpServletRequest request, Model model) throws Exception {
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+        if (StringUtils.isNull(startDate)){
+            startDate = "2016-05-12";
+        }
+
+        if(StringUtils.isNull(endDate)){
+            endDate = DateUtils.formatDate(DateUtils.addDays(DateUtils.StrToDate(startDate, "date"), +4), "yyyy-MM-dd");
+
+        }
+
+        Map<String, Object> iniMap = new HashMap<String, Object>();
+        iniMap.put("startDate",startDate);
+        iniMap.put("endDate",endDate);
+        List<Map<String, Object>> consultDoctorDatalist = consultStatisticService.getConsultDoctorDatalist(iniMap);
+        model.addAttribute("consultDoctorDatalist", consultDoctorDatalist);
+
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+
+        return "operation/consultDoctorData";
     }
 }

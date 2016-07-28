@@ -597,7 +597,7 @@
         on sa.marketer=chi.marketer
         where chi.marketer IS NOT NULL and chi.marketer !=''
         and cs.flag IS NULL
-        and cs.create_time BETWEEN #{startDate} AND #{endDate}
+        and DATE_FORMAT(cs.create_time,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
         <if test="department!='all'">
             <if test="channel!='all'">
                 and chi.department = #{department} and chi.channel = #{channel}
@@ -624,8 +624,8 @@
         where chi.marketer IS NOT NULL and chi.marketer !=''
         and sa.status='0'
         and cs.flag IS NULL
-        and cs.create_time BETWEEN #{startDate} AND #{endDate}
-        and sa.date BETWEEN #{startDate} and #{endDate}
+        and DATE_FORMAT(cs.create_time,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
+        and DATE_FORMAT(sa.date,'%Y-%m-%d') BETWEEN #{startDate} and #{endDate}
         <if test="department!='all'">
             <if test="channel!='all'">
                 and chi.department = #{department} and chi.channel = #{channel}
@@ -651,7 +651,7 @@
         on sa.marketer=chi.marketer
         where chi.marketer IS NOT NULL and chi.marketer !=''
         and cs.flag IS NULL
-        and cs.create_time BETWEEN #{startDate} AND #{endDate}
+        and DATE_FORMAT(cs.create_time,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
         <if test="department!='all'">
             and chi.department = #{department}
         </if>
@@ -668,8 +668,8 @@
         where chi.marketer IS NOT NULL and chi.marketer !=''
         and sa.status='0'
         and cs.flag IS NULL
-        and cs.create_time BETWEEN #{startDate} AND #{endDate}
-        and sa.date BETWEEN #{startDate} and #{endDate}
+        and DATE_FORMAT(cs.create_time,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
+        and DATE_FORMAT(sa.date,'%Y-%m-%d') BETWEEN #{startDate} and #{endDate}
         <if test="department!='all'">
             and chi.department = #{department}
         </if>

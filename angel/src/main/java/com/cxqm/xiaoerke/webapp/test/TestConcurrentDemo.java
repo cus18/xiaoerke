@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.webapp.test;
 
+import com.cxqm.xiaoerke.common.utils.DateUtils;
+
 /**
  * Created by guozengguang on 2016/4/22.
  */
@@ -43,9 +45,12 @@ public class TestConcurrentDemo {
         //map2.put("b",2);
         //map1.putAll(map2);
         //System.out.println(map1);
-        String id = "99" + "120006306".substring(1);
-        System.out.println("begin:"+id);
-        System.out.println("还原:1"+id.substring(2));
+        //String id = "99" + "120006306".substring(1);
+        //System.out.println("begin:"+id);
+        //System.out.println("还原:1"+id.substring(2));
+        String startDate = "2016-05-12";
+        String endDate = DateUtils.formatDate(DateUtils.addDays(DateUtils.StrToDate(startDate, "date"), +5), "yyyy-MM-dd");
+        System.out.println(endDate);
     }
 
 }
