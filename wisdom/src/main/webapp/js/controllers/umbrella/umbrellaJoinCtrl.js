@@ -33,10 +33,12 @@
                     }
                 }
             };
+
             $scope.goActive=function(){
                 recordLogs("BHS_WDBZ_JH");
                 window.location.href = "/wisdom/umbrella#/umbrellaFillInfo/"+$scope.umbrellaId+"/a";
             };
+
             $scope.goShare=function(){
                 $scope.shareLock=true;
                 /* 随机分享文案*/
@@ -58,6 +60,7 @@
             $scope.cancelShare=function(){
                 $scope.shareLock=false;
             };
+
             //添加成员
             $scope.addMember=function(){
                 recordLogs("BHS_WDBZ_JTCY");
@@ -67,22 +70,18 @@
                 if(start==null||start.length==0||end==null||end.length==0){
                     return 0;
                 }
-
                 var arr=start.split("-");
                 var starttime=new Date(arr[0],parseInt(arr[1]-1),arr[2]);
                 var starttimes=starttime.getTime();
-
                 var arrs=end.split("-");
                 var endtime=new Date(arrs[0],parseInt(arrs[1]-1),arrs[2]);
                 var endtimes=endtime.getTime();
-
                 var intervalTime = endtimes-starttimes;//两个日期相差的毫秒数 一天86400000毫秒
                 var Inter_Days = ((intervalTime).toFixed(2)/86400000)+1;//加1，是让同一天的两个日期返回一天
-
                 return Inter_Days;
             }
-            $scope.$on('$ionicView.enter', function(){
 
+            $scope.$on('$ionicView.enter', function(){
                 $.ajax({
                     url:"umbrella/getOpenid",// 跳转到 action
                     async:true,

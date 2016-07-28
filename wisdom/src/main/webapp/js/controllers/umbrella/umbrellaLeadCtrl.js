@@ -33,14 +33,12 @@
         };
 
         //播放视频
-
         $scope.onTouch=function() {
             if($scope.touchLock&&music.paused){
                 music.play();
                 $scope.musicLock=true;
             }
             $scope.touchLock=false;
-
         };
 
         $scope.playMusic=function() {
@@ -106,7 +104,6 @@
                                         },
                                         dataType: "json"
                                     });
-
                                 },
                                 fail: function (res) {
                                 }

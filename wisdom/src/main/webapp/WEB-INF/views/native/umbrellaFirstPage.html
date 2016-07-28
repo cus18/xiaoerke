@@ -8,9 +8,9 @@
 <meta content="yes" name="apple-mobile-web-app-capable">
 <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
 <title>宝护伞-宝大夫儿童家庭重疾互助计划</title>
-<link rel="stylesheet" href="/wisdom/styles/umbrella/umbrellaCommon.less?ver=1.0" type="text/css" />
-<link rel="stylesheet" href="/wisdom/styles/native/firstPageCommon.less?ver=1.0" type="text/css" />
-<link rel="stylesheet" href="/wisdom/styles/native/umbrellaFirstPage.less?ver=1.0" type="text/css" />
+<link rel="stylesheet" href="/wisdom/styles/umbrella/umbrellaCommon.less?ver=1.2" type="text/css" />
+<link rel="stylesheet" href="/wisdom/styles/native/firstPageCommon.less?ver=1.2" type="text/css" />
+<link rel="stylesheet" href="/wisdom/styles/native/umbrellaFirstPage.less?ver=1.2" type="text/css" />
 <body onload="umbrellaFirstPageInit()">
 <div class="umbrellaFirstPage" id="wrapper">
     <div class="scroller">
@@ -222,7 +222,7 @@
         <br><br><br><br><br><br>
     </div>
     <!--底部按钮 未购买宝护伞 -->
-    <div class="first-myBottom-btn" id="NoShareDiv"  >
+    <div class="first-myBottom-btn" id="NoShareDiv"  hidden>
         <button class="fl bg-blue button-share f3" onclick="goShare()">
             <div class="bold f6"> 邀请好友</div>
             （提升2万保额）
@@ -799,9 +799,6 @@
             <a class="c0 f6" >我知道了</a>
         </div>
     </div>
-
-
-
 </div>
 </body>
 <link rel="stylesheet" href="styles/lib/ionic.min.css"/>
@@ -822,6 +819,7 @@
                       }) },
                 100 );
     }
-    window.addEventListener("load",loaded,false); </script>
+    window.addEventListener("load",loaded,false);
+</script>
 </html>
 </html>

@@ -21,8 +21,8 @@ define(['appUmbrella'], function(app){
                     });
                 };
 
-                $stateProvider
                 /* 宝护伞 */
+                $stateProvider
                     .state('umbrellaJoin', {
                         url: '/umbrellaJoin/:id/:shareid',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -85,7 +85,6 @@ define(['appUmbrella'], function(app){
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaMemberListCtrl',
                                     ['js/controllers/umbrella/umbrellaMemberListCtrl.js?ver='+umbrellaVersion,
-                                        'js/libs/moment.min.js',
                                         'styles/umbrella/umbrellaCommon.less?ver='+umbrellaVersion,
                                         'styles/umbrella/umbrellaMemberList.less?ver='+umbrellaVersion],
                                     'js/views/umbrella/umbrellaMemberList.html?ver='+umbrellaVersion);
