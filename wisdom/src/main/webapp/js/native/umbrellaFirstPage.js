@@ -254,7 +254,6 @@ var goShare = function() {
         "没什么好送的，40万的大病治疗费，送给你！",
         "最美的妈妈你别走，送你40万，让孩子健康去成长！",
         "如需江湖救急，这有40万的大病治疗费，速速来拿！"
-
     ];
     var randomNum=parseInt(9*Math.random());//分享文案随机数
     $(".share p").html( shareTextArray[randomNum]);
