@@ -4,7 +4,10 @@
         $scope.title="宝大夫儿童家庭重疾互助计划";
         $scope.musicLock=false;
         $scope.touchLock=true;
-        /*$scope.myActiveSlide =0;*/
+        var music = document.getElementById("music");//获取ID
+        if(!music.paused){
+            $scope.musicLock=true;
+        }
 
         /*立即加入*/
         $scope.goJoin=function(){
@@ -39,41 +42,19 @@
             $scope.touchLock=false;
 
         };
+
         $scope.playMusic=function() {
             if ($scope.musicLock) { //判读是否播放
                 music.pause();
                 $scope.musicLock=false;
-
             }
             else{
                 music.play();
                 $scope.musicLock=true;
-
             }
-
         };
-        $scope.$on('$ionicView.enter', function(){
 
-            // $.ajax({
-            //     url:"umbrella/getOpenid",// 跳转到 action
-            //     async:true,
-            //     type:'post',
-            //     cache:false,
-            //     dataType:'json',
-            //     success:function(data) {
-            //         if(data.openid=="none"){
-            //             // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
-            //             window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
-            //         }
-            //     },
-            //     error : function() {
-            //     }
-            // });
-            var music = document.getElementById("music");//获取ID
-            if(!music.paused){
-                $scope.musicLock=true;
-                console.log("111"+!music.paused)
-            }
+        $scope.$on('$ionicView.enter', function(){
 
             //页面swipe 初始化
             var arrObj=document.getElementById('array')
@@ -103,16 +84,12 @@
                     recordLogs("BHS_H5_LJJR_"+(mySwiper.activeIndex+1));
                     if(mySwiper.activeIndex==5){
                         arrObj.style.display="none";
-                    }
-                    else{
+                    } else{
                         arrObj.style.display="block";
                     }
-
                 },
                 onTransitionEnd: function(swiper){
                     swiperAnimate(swiper);
-
-
                 },
                 watchSlidesProgress: true,
                 onProgress: function(swiper){
@@ -125,17 +102,14 @@
                         slide.style.opacity = opacity;
                         es = slide.style;
                         es.webkitTransform = es.MsTransform = es.msTransform = es.MozTransform = es.OTransform = es.transform = 'translate3d(0,'+translate+'px,-'+translate+'px) scaleY(' + scale + ')';
-
                     }
                 },
                 onSetTransition: function(swiper, speed) {
                     for (var i = 0; i < swiper.slides.length; i++){
                         es = swiper.slides[i].style;
                         es.webkitTransitionDuration = es.MsTransitionDuration = es.msTransitionDuration = es.MozTransitionDuration = es.OTransitionDuration = es.transitionDuration = speed + 'ms';
-
                     }
                 },
-
             })
             recordLogs("BHS_H5_LJJR_1");
             recordLogs("UmbrellaShareLeadPage_"+ $stateParams.id);
@@ -210,7 +184,7 @@
                                         data:"{'id':'"+$stateParams.id+"'}",
                                         contentType: "application/json; charset=utf-8",
                                         success: function(result){
-                                            var todayCount=result.todayCount;
+                                            var todayCount = result.todayCount;
                                             $("#todayCount").html(todayCount);
                                         },
                                         dataType: "json"
@@ -227,6 +201,4 @@
                 }
             });
         });
-
-
     }]);
