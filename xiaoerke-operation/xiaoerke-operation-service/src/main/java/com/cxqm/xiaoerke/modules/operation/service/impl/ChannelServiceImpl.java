@@ -189,4 +189,18 @@ public class ChannelServiceImpl implements ChannelService {
         }
         return totalList;
     }
+
+    @Override
+    public boolean isExistSameMarketer(Map<String, Object> map){
+        List<Map<String, Object>> marketerList = sysStatisticsDao.getAllChannelsByMarketer(map);
+        if(marketerList !=null && marketerList.size() > 0){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int deleteChannelInfo(String channelId){
+        return sysStatisticsDao.deleteChannelInfo(channelId);
+    }
 }

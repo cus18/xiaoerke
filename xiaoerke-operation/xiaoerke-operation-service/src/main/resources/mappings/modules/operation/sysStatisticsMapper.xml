@@ -676,4 +676,13 @@
         GROUP BY chi.department
         ORDER BY chi.department
     </select>
+    <!--根据二维码查询所有该二维码的信息-->
+    <select id="getAllChannelsByMarketer" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * from channel_info where marketer = #{marketer}
+    </select>
+    <!--根据id删除渠道信息-->
+    <delete id="deleteChannelInfo" parameterType="java.lang.String">
+        delete from channel_info
+        where id = #{channelId,jdbcType=VARCHAR}
+    </delete>
 </mapper>

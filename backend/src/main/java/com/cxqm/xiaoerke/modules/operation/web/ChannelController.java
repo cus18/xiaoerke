@@ -16,10 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * 渠道统计 Controller
@@ -166,17 +163,29 @@ public class ChannelController extends BaseController {
         String marketer = request.getParameter("marker");
         String channel = request.getParameter("channel");
 
+        JSONObject cancleSameObject = new JSONObject();
+        Map<String,Object> searchMap = new HashMap<String, Object>();
+        searchMap.put("marketer",marketer);
+        //判断录入者录入的二维码是否有重复。如果有给予提示，如果没有则继续正常录入数据.
+        boolean flag = channelService.isExistSameMarketer(searchMap);
+        if(flag){
+            cancleSameObject.put("result","该二维码【" + marketer + "】已经录入,请不要重复录入!\n点击确定按钮您可以继续录入其他二维码数据,谢谢!");
+            cancleSameObject.put("status","1");
+            return cancleSameObject.toString();
+        }
+
         ChannelInfo channelInfo = new ChannelInfo();
         channelInfo.setOperater(operater);
         channelInfo.setDepartment(department);
         channelInfo.setMarketer(marketer);
         channelInfo.setChannel(channel);
 
-        channelService.insertChannel(channelInfo);
         JSONObject jsonObject = null;
         try {
+            channelService.insertChannel(channelInfo);
             jsonObject = new JSONObject();
             jsonObject.put("result","保存成功!");
+            jsonObject.put("status","0");
         } catch (Exception e) {
             jsonObject.put("result","保存失败!请重试");
             e.printStackTrace();
@@ -336,5 +345,28 @@ public class ChannelController extends BaseController {
         registerServiceVo.setDepartment(department);
         model.addAttribute("registerServiceVo", registerServiceVo);
         return "operation/departmentConsult";
+    }
+
+    /**
+     * 删除渠道信息(根据id删除)
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequiresPermissions("user")
+    @RequestMapping(value = {"deleteChannelInfo"})
+    public @ResponseBody String deleteChannelInfo(HttpServletRequest request) throws Exception{
+        String channelId = request.getParameter("channelId");
+        JSONObject jsonObject = null;
+        try {
+            channelService.deleteChannelInfo(channelId);
+            jsonObject = new JSONObject();
+            jsonObject.put("result","删除成功!");
+        } catch (Exception e) {
+            jsonObject.put("result","删除失败!请重试");
+            e.printStackTrace();
+        }
+
+        return jsonObject.toString();
     }
 }
