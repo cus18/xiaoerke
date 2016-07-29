@@ -14,9 +14,10 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
             $scope.source = "h5wjyUser";
             $scope.loseConnectionFlag = false;
             var heartBeatNum = 0;
-            $scope.lookMore = false;
+            $scope.lookMore = false;//查看更多
             var patientImg ;
-            $scope.fucengLock = true;
+            $scope.fucengLock = true;//第一次进入页面的浮层
+            $scope.alertFlag = false;
             /*$scope.openFileListFlag = false;
              $location.hash("fileInput");
              $anchorScroll();
@@ -298,7 +299,10 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                 $ionicScrollDelegate.scrollBottom();
                 $(".wjy_set").attr("src","http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_go2.png");
                 if($("#saytext").val()==""||$("#saytext").val()==undefined){
-                    alert("消息不能为空！");
+                    $scope.alertFlag = true;
+                    setTimeout(function () {
+                        $scope.alertFlag = false;
+                    },1000);
                     $(".wjy_set").attr("src","http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_go.png");
                 }else if($("#saytext").val().replace(/\s+/g,"")!=""){
                     var patientValMessage = {
