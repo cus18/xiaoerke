@@ -36,7 +36,6 @@ angular.module('controllers', ['ionic']).controller('heightForecastNoBirthCtrl',
             GetOpenidStatus.save({}, function (data) {
                 $scope.openId = data.status;
             });
-            loadShare();
             var date = new Date(+new Date()+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'');
             $("#dadBirthday").mobiscroll().date();
             $("#mamBirthday").mobiscroll().date();

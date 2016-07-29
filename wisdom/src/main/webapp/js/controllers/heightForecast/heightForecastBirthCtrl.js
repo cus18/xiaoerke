@@ -9,6 +9,8 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
         $scope.openId = '';
         $scope.babyDes = '哇塞，我家宝宝居然能长这么高？据说99.8%精准哦！';
         $scope.babyHeight = '';
+        $scope.sexItem = '';
+        $scope.babyAge = '';
         $scope.lookResultFloat = false;
         $scope.lookResultFloatNo = false;
         $scope.babyBirthdaySelected = false;
@@ -36,7 +38,6 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
             GetOpenidStatus.save({}, function (data) {
                 $scope.openId = data.status;
             });
-            loadShare();
             var date = new Date(+new Date()+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'');
             $("#babyBirthday").mobiscroll().date();
             $("#dadBirthday").mobiscroll().date();
@@ -84,7 +85,6 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
         //选择孩子性别
         $scope.selectSex = function(sex){
             $scope.sexItem=sex;
-            $scope.openId = sex;
             if($scope.sexItem == 0){
                 $scope.isSelectedB = true;
                 $scope.isSelectedG = false;
@@ -96,15 +96,22 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
         };
         //选择孩子年龄
         $scope.selectMon = function(index){
-            console.log(index);
             $scope.babyAge = $scope.babyAgeList[index];
             $scope.isSelected = index;
 
         };
         //判断问题是否为空
         $scope.checkName = function () {
+            if($scope.sexItem==""){
+                alert("宝宝性别不能为空！");
+                return;
+            }
             if($("#babyBirthday").val()==""){
                 alert("宝宝生日不能为空！");
+                return;
+            }
+            if($scope.babyAge==""){
+                alert("请选择宝宝的月份！");
                 return;
             }
             if($("#dadBirthday").val()==""){
@@ -113,6 +120,10 @@ angular.module('controllers', ['ionic']).controller('heightForecastBirthCtrl', [
             }
             if($scope.info.dadHeight==""||$scope.info.dadHeight > 300||$scope.info.dadHeight < 100){
                 alert("请重新输入宝爸的身高！");
+                return;
+            }
+            if($("#mamBirthday").val()==""){
+                alert("宝妈生日不能为空！");
                 return;
             }
             if($scope.info.mamHeight==""||$scope.info.mamHeight > 300||$scope.info.mamHeight <100 ){
