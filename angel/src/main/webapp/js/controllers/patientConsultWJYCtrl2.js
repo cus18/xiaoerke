@@ -425,5 +425,10 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                 val = val.replace(/\[em_73\]/g, '/:showlove');val = val.replace(/\[em_74\]/g, '/:love');val = val.replace(/\[em_75\]/g, '/<L>');
                 return val;
             };
+            
+            //让输入框在失去焦点的时候，重新获取焦点，输入键盘就会一直存在
+            $scope.getautoFocus = function () {
+                $("#saytext").focus();
+            }
 
         }]);
