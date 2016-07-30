@@ -77,6 +77,7 @@ public class NgRouteController extends BaseController {
         return "angular/baoFansCampIndex";
     }
 
+
     /**
      * insurance 类保险
      */
@@ -84,6 +85,15 @@ public class NgRouteController extends BaseController {
     @RequestMapping(value ="/insurance",method = {RequestMethod.POST, RequestMethod.GET})
     public String insuranceIndex() {
         return "angular/insuranceIndex";
+    }
+
+    /**
+     * olympicBaby 奥运宝贝
+     */
+    @SystemControllerLog(description = "00000079")
+    @RequestMapping(value ="/olympicBaby",method = {RequestMethod.POST, RequestMethod.GET})
+    public String olympicBabyIndex() {
+        return "angular/olympicBabyIndex";
     }
 
     /*

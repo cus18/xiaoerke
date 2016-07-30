@@ -74,6 +74,14 @@ public class RouteController extends BaseController {
         return "native/insuranceFirstPage";
     }
 
+    /**
+     * olympicBaby 奥运宝贝
+     */
+    @RequestMapping(value ="/olympicBaby",method = {RequestMethod.POST, RequestMethod.GET})
+    public String olympicBabyFirst() {
+        return "native/olympicBabyFirstPage";
+    }
+
      /*
         wisdom 项目
      */
