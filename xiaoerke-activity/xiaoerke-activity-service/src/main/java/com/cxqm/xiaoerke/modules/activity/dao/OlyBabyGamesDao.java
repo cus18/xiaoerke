@@ -15,4 +15,7 @@ public interface OlyBabyGamesDao {
     int updateByPrimaryKeySelective(OlyBabyGamesVo record);
 
     int updateByPrimaryKey(OlyBabyGamesVo record);
+
+    int updateByOpenId(OlyBabyGamesVo record);
+
 }

@@ -1,6 +1,7 @@
 package com.cxqm.xiaoerke.modules.olyGames.web;
 
 import com.cxqm.xiaoerke.common.web.BaseController;
+import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGameDetailVo;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +23,7 @@ import java.util.Map;
  * @version 2016-08-01
  */
 @Controller
-@RequestMapping(value = "olympicBaby/gameScore")
+@RequestMapping(value = "olympicBaby")
 public class OlyGamesController extends BaseController {
 
     @Autowired
@@ -31,13 +33,13 @@ public class OlyGamesController extends BaseController {
      * input:{openid:"fwefewfewf",gameLevel:3}
      * result: {gamePlayingTimes:2}
      ***/
-    @RequestMapping(value = "/GetGamePlayingTimes",method = {RequestMethod.POST,RequestMethod.GET})
+    @RequestMapping(value = "/gameScore/GetGamePlayingTimes",method = {RequestMethod.POST,RequestMethod.GET})
     public
     @ResponseBody
     Map<String,Object> GetGamePlayingTimes(@RequestBody Map<String, Object> params){
         Map<String,Object> responseMap = new HashMap<String, Object>();
         String openId = (String)params.get("openid");
-        Integer gameLevel = (Integer)params.get("gameLevel");
+        Integer gameLevel = Integer.valueOf((String)params.get("gameLevel"));
         OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
         olyBabyGamesVo.setOpenId(openId);
         OlyBabyGamesVo resultvo = olyGamesService.selectByOlyBabyGamesVo(olyBabyGamesVo);
@@ -54,6 +56,39 @@ public class OlyGamesController extends BaseController {
         }else if(gameLevel == 6){
             responseMap.put("gamePlayingTimes",resultvo.getLevel6CurrentTimes());
         }
+        return responseMap;
+    }
+
+    /**
+     * 将某关的游戏积分存入后台
+     * input:{openid:"fwefewfewf",gameLevel:3,gameScore:80}
+     * result: {result:"success"}
+     ***/
+    @RequestMapping(value = "/gameScore/SaveGameScore",method = {RequestMethod.POST,RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String,Object> SaveGameScore(@RequestBody Map<String, Object> params){
+        Map<String,Object> responseMap = new HashMap<String, Object>();
+        String openId = (String)params.get("openid");
+        Integer gameLevel = Integer.valueOf((String)params.get("gameLevel"));
+        Float gameScore = Float.valueOf((String)params.get("gameScore"));
+
+        OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
+        olyBabyGamesVo.setOpenId(openId);
+        olyBabyGamesVo.setGameScore(gameScore);
+        int updateFlag = olyGamesService.updateOlyBabyGamesByOpenId(olyBabyGamesVo);
+
+        OlyBabyGameDetailVo olyBabyGameDetailVo  = new OlyBabyGameDetailVo();
+        olyBabyGameDetailVo.setGameScore(gameScore);
+        olyBabyGameDetailVo.setGameLevel(gameLevel);
+        olyBabyGameDetailVo.setCreateBy(openId);
+        olyBabyGameDetailVo.setOpenId(openId);
+        olyBabyGameDetailVo.setCreateTime(new Date());
+        int insertFlag = olyGamesService.insertOlyBabyGameDetailVo(olyBabyGameDetailVo);
+
+        responseMap.put("result",updateFlag>0?"success":"failure");
+        responseMap.put("result",insertFlag>0?"success":"failure");
+
         return responseMap;
     }
 }
