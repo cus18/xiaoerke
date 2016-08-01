@@ -97,13 +97,6 @@ define(['appOlympicBaby'], function(app){
                             }
                         }
                     })
-
-
-
-
-
-
-
                 $urlRouterProvider.otherwise('olympicGameLevel2');
             }])
         .run(function ($rootScope){
