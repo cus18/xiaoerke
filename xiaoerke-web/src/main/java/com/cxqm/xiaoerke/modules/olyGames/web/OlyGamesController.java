@@ -28,33 +28,34 @@ public class OlyGamesController extends BaseController {
 
     @Autowired
     private OlyGamesService olyGamesService;
+
     /**
      * 获取某个游戏玩的次数
      * input:{openid:"fwefewfewf",gameLevel:3}
      * result: {gamePlayingTimes:2}
      ***/
-    @RequestMapping(value = "/gameScore/GetGamePlayingTimes",method = {RequestMethod.POST,RequestMethod.GET})
+    @RequestMapping(value = "/gameScore/GetGamePlayingTimes", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String,Object> GetGamePlayingTimes(@RequestBody Map<String, Object> params){
-        Map<String,Object> responseMap = new HashMap<String, Object>();
-        String openId = (String)params.get("openid");
-        Integer gameLevel = Integer.valueOf((String)params.get("gameLevel"));
+    Map<String, Object> GetGamePlayingTimes(@RequestBody Map<String, Object> params) {
+        Map<String, Object> responseMap = new HashMap<String, Object>();
+        String openId = (String) params.get("openid");
+        Integer gameLevel = Integer.valueOf((String) params.get("gameLevel"));
         OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
         olyBabyGamesVo.setOpenId(openId);
         OlyBabyGamesVo resultvo = olyGamesService.selectByOlyBabyGamesVo(olyBabyGamesVo);
-        if(gameLevel == 1 ){
-            responseMap.put("gamePlayingTimes",resultvo.getLevel1CurrentTimes());
-        }else if(gameLevel == 2){
-            responseMap.put("gamePlayingTimes",resultvo.getLevel2CurrentTimes());
-        }else if(gameLevel == 3){
-            responseMap.put("gamePlayingTimes",resultvo.getLevel3CurrentTimes());
-        }else if(gameLevel == 4){
-            responseMap.put("gamePlayingTimes",resultvo.getLevel4CurrentTimes());
-        }else if(gameLevel == 5){
-            responseMap.put("gamePlayingTimes",resultvo.getLevel5CurrentTimes());
-        }else if(gameLevel == 6){
-            responseMap.put("gamePlayingTimes",resultvo.getLevel6CurrentTimes());
+        if (gameLevel == 1) {
+            responseMap.put("gamePlayingTimes", resultvo.getLevel1CurrentTimes());
+        } else if (gameLevel == 2) {
+            responseMap.put("gamePlayingTimes", resultvo.getLevel2CurrentTimes());
+        } else if (gameLevel == 3) {
+            responseMap.put("gamePlayingTimes", resultvo.getLevel3CurrentTimes());
+        } else if (gameLevel == 4) {
+            responseMap.put("gamePlayingTimes", resultvo.getLevel4CurrentTimes());
+        } else if (gameLevel == 5) {
+            responseMap.put("gamePlayingTimes", resultvo.getLevel5CurrentTimes());
+        } else if (gameLevel == 6) {
+            responseMap.put("gamePlayingTimes", resultvo.getLevel6CurrentTimes());
         }
         return responseMap;
     }
@@ -64,21 +65,21 @@ public class OlyGamesController extends BaseController {
      * input:{openid:"fwefewfewf",gameLevel:3,gameScore:80}
      * result: {result:"success"}
      ***/
-    @RequestMapping(value = "/gameScore/SaveGameScore",method = {RequestMethod.POST,RequestMethod.GET})
+    @RequestMapping(value = "/gameScore/SaveGameScore", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String,Object> SaveGameScore(@RequestBody Map<String, Object> params){
-        Map<String,Object> responseMap = new HashMap<String, Object>();
-        String openId = (String)params.get("openid");
-        Integer gameLevel = Integer.valueOf((String)params.get("gameLevel"));
-        Float gameScore = Float.valueOf((String)params.get("gameScore"));
+    Map<String, Object> SaveGameScore(@RequestBody Map<String, Object> params) {
+        Map<String, Object> responseMap = new HashMap<String, Object>();
+        String openId = (String) params.get("openid");
+        Integer gameLevel = Integer.valueOf((String) params.get("gameLevel"));
+        Float gameScore = Float.valueOf((String) params.get("gameScore"));
 
         OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
         olyBabyGamesVo.setOpenId(openId);
         olyBabyGamesVo.setGameScore(gameScore);
         int updateFlag = olyGamesService.updateOlyBabyGamesByOpenId(olyBabyGamesVo);
 
-        OlyBabyGameDetailVo olyBabyGameDetailVo  = new OlyBabyGameDetailVo();
+        OlyBabyGameDetailVo olyBabyGameDetailVo = new OlyBabyGameDetailVo();
         olyBabyGameDetailVo.setGameScore(gameScore);
         olyBabyGameDetailVo.setGameLevel(gameLevel);
         olyBabyGameDetailVo.setCreateBy(openId);
@@ -86,8 +87,8 @@ public class OlyGamesController extends BaseController {
         olyBabyGameDetailVo.setCreateTime(new Date());
         int insertFlag = olyGamesService.insertOlyBabyGameDetailVo(olyBabyGameDetailVo);
 
-        responseMap.put("result",updateFlag>0?"success":"failure");
-        responseMap.put("result",insertFlag>0?"success":"failure");
+        responseMap.put("result", updateFlag > 0 ? "success" : "failure");
+        responseMap.put("result", insertFlag > 0 ? "success" : "failure");
 
         return responseMap;
     }
