@@ -111,4 +111,31 @@ public class OlyGamesController extends BaseController {
         responseMap.put("gameScore",resultvo.getGameScore());
         return responseMap;
     }
+
+    /**
+     * 用户进入游戏界面初始化
+     * input: {openid:"fwefwefewfw"}
+     * result: {result:"success"}
+     ***/
+    @RequestMapping(value = "/firstPage/InitOlyGame", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> InitOlyGame(@RequestBody Map<String, Object> params) {
+        Map<String, Object> responseMap = new HashMap<String, Object>();
+        String openId = (String) params.get("openid");
+
+        OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
+        olyBabyGamesVo.setOpenId(openId);
+        olyBabyGamesVo.setCreateTime(new Date());
+        olyBabyGamesVo.setGameLevel(1);
+
+        int insertFlag = olyGamesService.insertOlyBabyGamesVo(olyBabyGamesVo);
+
+//        responseMap.put("gameScore",resultvo.getGameScore());
+        return responseMap;
+    }
+
+
+
+
 }
