@@ -9,6 +9,7 @@ require.config({
         "angular-resource" : "libs/angular-resource.min",
         "angular-sanitize" : "libs/angular-sanitize.min",
         "angular-route" : "libs/angular-route.min",
+        "angular-ui-router": "libs/angular-ui-router.min",
         "ocLazyLoad":"libs/ocLazyLoad.require.min",
         "jquery":"libs/jquery-2.1.3.min",
         "olympicBabyFactory" : "services/olympicBabyFactory",
@@ -29,6 +30,10 @@ require.config({
             deps: ['angular'],   //依赖什么模块
             exports: 'angular-route'
         },
+        'angular-ui-router':{
+            deps: ['angular'],   //依赖什么模块
+            exports: 'angular-ui-router'
+        },
         'angular-sanitize':{
             deps: ['angular'],   //依赖什么模块
             exports: 'angular-sanitize'
@@ -38,7 +43,7 @@ require.config({
     }
 });
 
-require(['angular','angular-resource','angular-sanitize','angular-route',
+require(['angular','angular-resource','angular-sanitize','angular-route','angular-ui-router',
     'ocLazyLoad','jquery','olympicBabyFactory','olympicBabyDirective','appOlympicBabyRoute','appOlympicBaby'],
     function (angular){
         angular.bootstrap(document,["olympicBabyApp"]);
