@@ -1,4 +1,4 @@
-angular.module('controllers', ['ionic']).controller('olympicGameLevel1Ctrl', [
+angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
         '$scope','$state','$timeout',
         function ($scope,$state,$timeout) {
             $scope.title = "奥运宝贝游戏第一关";
@@ -25,7 +25,5 @@ angular.module('controllers', ['ionic']).controller('olympicGameLevel1Ctrl', [
             };
 
 
-            $scope.$on('$ionicView.enter', function(){
-
-            })
+            
     }])
