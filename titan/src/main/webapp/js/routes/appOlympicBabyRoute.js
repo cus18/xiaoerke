@@ -1,5 +1,5 @@
 /**
- * è·¯ç”±
+ * Â·ÓÉ
  */
 define(['appOlympicBaby'], function(app){
     return app
