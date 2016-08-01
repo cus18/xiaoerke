@@ -1,0 +1,33 @@
+<ion-view view-title={{title}} >
+	<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+	<div bdf-head="title"></div>
+	<ion-item class="order-classify f4 c4 bg4">
+		<div class="classifyWrap">
+			<div class="classifyItem  classifyItem2  border2" ng-class="{'cur':classifyItem==$index}" ng-repeat="item in classifyItemList" ng-click="selectClassify($index)">
+				{{item}}
+				<i></i>
+			</div>
+		</div>
+	</ion-item>
+	<ion-content class="appointOrder" overflow-scroll="true"  style="top:90px;">
+		<ion-scroll direction="y" has-bouncing="true">
+				<div class="doctor-info apart1 bg1 border1 border2"  ng-repeat="item in orderInfo" ng-click="orderDerail({{item}})">
+					<div  class="pic">
+						<img class="photo" width="62.5" height="62.5" src="images/a1.png">
+					</div>
+					<div class="intro">
+						<div class="name s"><span>{{item.doctorName}}</span>{{item.position}}</div>
+						<div class="hospital s">{{item.hospital}}</div>
+						<div class="time">{{item.date}}&nbsp;{{item.time}}</div>
+					</div>
+					<img class="classify"  width="45" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/order%2Forder_ap.png">
+					<span class="state f2 c2">{{item.status}}</span>
+				</div>
+			</div>
+
+		</ion-scroll>
+
+	</ion-content>
+
+</ion-view>
+
