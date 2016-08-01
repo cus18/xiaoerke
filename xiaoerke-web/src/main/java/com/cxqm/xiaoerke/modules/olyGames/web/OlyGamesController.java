@@ -1,8 +1,17 @@
 package com.cxqm.xiaoerke.modules.olyGames.web;
 
 import com.cxqm.xiaoerke.common.web.BaseController;
+import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
+import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -12,8 +21,39 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @version 2016-08-01
  */
 @Controller
-@RequestMapping(value = "olyGames")
+@RequestMapping(value = "olympicBaby/gameScore")
 public class OlyGamesController extends BaseController {
 
-
+    @Autowired
+    private OlyGamesService olyGamesService;
+    /**
+     * 获取某个游戏玩的次数
+     * input:{openid:"fwefewfewf",gameLevel:3}
+     * result: {gamePlayingTimes:2}
+     ***/
+    @RequestMapping(value = "/GetGamePlayingTimes",method = {RequestMethod.POST,RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String,Object> GetGamePlayingTimes(@RequestBody Map<String, Object> params){
+        Map<String,Object> responseMap = new HashMap<String, Object>();
+        String openId = (String)params.get("openid");
+        Integer gameLevel = (Integer)params.get("gameLevel");
+        OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
+        olyBabyGamesVo.setOpenId(openId);
+        OlyBabyGamesVo resultvo = olyGamesService.selectByOlyBabyGamesVo(olyBabyGamesVo);
+        if(gameLevel == 1 ){
+            responseMap.put("gamePlayingTimes",resultvo.getLevel1CurrentTimes());
+        }else if(gameLevel == 2){
+            responseMap.put("gamePlayingTimes",resultvo.getLevel2CurrentTimes());
+        }else if(gameLevel == 3){
+            responseMap.put("gamePlayingTimes",resultvo.getLevel3CurrentTimes());
+        }else if(gameLevel == 4){
+            responseMap.put("gamePlayingTimes",resultvo.getLevel4CurrentTimes());
+        }else if(gameLevel == 5){
+            responseMap.put("gamePlayingTimes",resultvo.getLevel5CurrentTimes());
+        }else if(gameLevel == 6){
+            responseMap.put("gamePlayingTimes",resultvo.getLevel6CurrentTimes());
+        }
+        return responseMap;
+    }
 }

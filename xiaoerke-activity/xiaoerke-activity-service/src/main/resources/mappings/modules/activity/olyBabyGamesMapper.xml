@@ -23,11 +23,17 @@
     level3_current_times, level4_current_times, level5_current_times, level6_current_times, 
     marketer, invite_friend_number, create_by, create_time, update_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByOlyBabyGamesVo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo" >
     select 
     <include refid="Base_Column_List" />
     from oly_baby_games
-    where id = #{id,jdbcType=INTEGER}
+    where 1=1
+    <if test="id != null" >
+     and id = #{id,jdbcType=INTEGER}
+    </if>
+    <if test="openId != null" >
+     and open_id #{openId,jdbcType=VARCHAR}
+    </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from oly_baby_games

@@ -10,7 +10,7 @@ public interface OlyBabyGamesDao {
 
     int insertSelective(OlyBabyGamesVo record);
 
-    OlyBabyGamesVo selectByPrimaryKey(Integer id);
+    OlyBabyGamesVo selectByOlyBabyGamesVo(OlyBabyGamesVo olyBabyGamesVo);
 
     int updateByPrimaryKeySelective(OlyBabyGamesVo record);
 
