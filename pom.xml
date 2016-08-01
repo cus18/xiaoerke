@@ -1063,6 +1063,7 @@
 		<module>xiaoerke-insurance</module>
 		<module>xiaoerke-umbrella</module>
         <module>xiaoerke-mutualHelp</module>
+		<module>xiaoerke-activity</module>
         <module>bdfApp</module>
     </modules>
 
