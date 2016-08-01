@@ -1,9 +1,9 @@
-<ion-view view-title={{title}} >
-	<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
-	<ion-content class="olympicGameLevel3"  overflow-scroll="true" >
-		<ion-scroll direction="y" has-bouncing="true">
-			游戏第三关
-		</ion-scroll>
-	</ion-content>
-</ion-view>
-
+<div ui-view class="olympicGameLevel3">
+	<img width="100%" height="auto" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2Fphoto_hejiong_png_03.png"
+		 alt=""/>
+	<img width="100%" height="auto" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2Fphoto_yijianlian_png_03.png"
+		 alt=""/>
+	<div class="button" ng-click="startTime()">
+		<input type="button" value="发力" ng-click="startRun()"/>
+	</div>
+</div>
