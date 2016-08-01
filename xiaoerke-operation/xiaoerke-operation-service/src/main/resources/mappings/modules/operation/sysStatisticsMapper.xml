@@ -514,8 +514,6 @@
         channel_info chi
         INNER JOIN sys_attention sa ON sa.marketer = chi.marketer
         where chi.marketer IS NOT NULL and chi.marketer !='' and sa.status='0'
-        and not exists(select 1 from sys_attention where openid= sa.openid
-        and date>sa.date )
         <if test="startDate != null and startDate != ''">
             and sa.date &gt;= #{startDate}
         </if>
