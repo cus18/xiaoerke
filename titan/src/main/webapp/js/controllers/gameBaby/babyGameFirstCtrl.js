@@ -1,4 +1,4 @@
-﻿angular.module('controllers', ['ionic']).controller('phoneConConnectCallCtrl', [
+﻿angular.module('controllers', ['ionic']).controller('babyGameFirstCtrl', [
         '$scope','$state','$stateParams','ConsultReconnection',
         function ($scope,$state,$stateParams,ConsultReconnection) {
             $scope.title = "连接通话";
