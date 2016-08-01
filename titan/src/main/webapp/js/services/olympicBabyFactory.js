@@ -48,7 +48,62 @@ define(['appOlympicBaby'], function (app) {
              ***/
             return $resource('olympicBaby/firstPage/GetUserGameScore');
         }])
-
+        .factory('GetUserOpenId',['$resource',function ($resource){
+            /**
+             * 获取用户openid
+             * result: {openid:"fwefwefewf"}
+             ***/
+            return $resource('util/GetUserOpenId');
+        }])
+        .factory('GetUserOpenId',['$resource',function ($resource){
+            /**
+             * 获取用户openid
+             * result: {openid:"fwefwefewf"}
+             ***/
+            return $resource('util/GetUserOpenId');
+        }])
+        .factory('SaveGameScore',['$resource',function ($resource){
+            /**
+             * 将某关的游戏积分存入后台
+             * input:{openid:"fwefewfewf",gameLevel:3,gameScore:80}
+             * result: {result:"success"}
+             ***/
+            return $resource('olympicBaby/gameScore/SaveGameScore');
+        }])
+        .factory('GetGamePlayingTimes',['$resource',function ($resource){
+            /**
+             * 获取某个游戏玩的次数
+             * input:{openid:"fwefewfewf",gameLevel:3}
+             * result: {gamePlayingTimes:2}
+             ***/
+            return $resource('olympicBaby/gameScore/GetGamePlayingTimes');
+        }])
+        .factory('GetGameScorePrize',['$resource',function ($resource){
+            /**
+             * 根据积分，进行奖品抽奖
+             * input:{openid:"fwefewfewf"}
+             * result: {leftTimes:2，prizeInfo:[{name:"电饭煲"},{name:"电饭煲"},{name:"电饭煲"}]}
+             * leftTimes为剩余的抽奖次数，如果为-1，表示积分不够抽奖，抽奖失败
+             ***/
+            return $resource('olympicBaby/gameScore/GetGameScorePrize');
+        }])
+        .factory('GetUserPrizeList',['$resource',function ($resource){
+            /**
+             * 获取用户抽到的奖品列表
+             * input:{openid:"fwefewfewf"}
+             * result: {prizeList:[{prizeName:"电饭煲"},{prizeName:"电饭煲"},{prizeName:"电饭煲"}]}
+             * leftTimes为剩余的抽奖次数，如果为-1，表示积分不够抽奖，抽奖失败
+             ***/
+            return $resource('olympicBaby/gameScore/GetUserPrizeList');
+        }])
+        .factory('SaveUserAddress',['$resource',function ($resource){
+            /**
+             * 保存用户领取奖品的地址
+             * input:{openid:"fwefewfewf"}
+             * result: {addressName:"海淀区",code:"100053"}
+             ***/
+            return $resource('olympicBaby/gameScore/SaveUserAddress');
+        }])
 
 
 
