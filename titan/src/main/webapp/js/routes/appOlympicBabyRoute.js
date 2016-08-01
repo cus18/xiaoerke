@@ -22,6 +22,21 @@ define(['appOlympicBaby'], function(app){
                 };
 
                 $stateProvider
+                    .state('olympicBabyFirst', {
+                        url: '/olympicBabyFirst',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'olympicBabyFirstCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.olympicBabyFirstCtrl',
+                                    [
+                                        'js/libs/lodash.min.js',
+                                        'js/controllers/olympicBaby/olympicBabyFirstCtrl.js?ver='+olympicBabyVersion,
+                                        'styles/olympicBaby/olympicBabyFirst.less?ver='+olympicBabyVersion],
+                                    'js/views/olympicBaby/olympicBabyFirst.html?ver='+olympicBabyVersion);
+                            }
+                        }
+                    })
                     .state('olympicGameLevel1', {
                         url: '/olympicGameLevel1',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -31,7 +46,7 @@ define(['appOlympicBaby'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.olympicGameLevel1Ctrl',
                                     [
                                         'js/libs/lodash.min.js',
-                                        'js/controllers/olympicBaby/olympicGameLevel1Ctrl.js',
+                                        'js/controllers/olympicBaby/olympicGameLevel1Ctrl.js?ver='+olympicBabyVersion,
                                         'styles/olympicBaby/olympicGameLevel1.less?ver='+olympicBabyVersion],
                                     'js/views/olympicBaby/olympicGameLevel1.html?ver='+olympicBabyVersion);
                             }
@@ -46,7 +61,7 @@ define(['appOlympicBaby'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.olympicGameLevel2Ctrl',
                                     [
                                         'js/libs/lodash.min.js',
-                                        'js/controllers/olympicBaby/olympicGameLevel2Ctrl.js',
+                                        'js/controllers/olympicBaby/olympicGameLevel2Ctrl.js?ver='+olympicBabyVersion,
                                         'styles/olympicBaby/olympicGameLevel2.less?ver='+olympicBabyVersion],
                                     'js/views/olympicBaby/olympicGameLevel2.html?ver='+olympicBabyVersion);
                             }
@@ -61,7 +76,7 @@ define(['appOlympicBaby'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.olympicGameLevel3Ctrl',
                                     [
                                         'js/libs/lodash.min.js',
-                                        'js/controllers/olympicBaby/olympicGameLevel3Ctrl.js',
+                                        'js/controllers/olympicBaby/olympicGameLevel3Ctrl.js?ver='+olympicBabyVersion,
                                         'styles/olympicBaby/olympicGameLevel3.less?ver='+olympicBabyVersion],
                                     'js/views/olympicBaby/olympicGameLevel3.html?ver='+olympicBabyVersion);
                             }
@@ -76,7 +91,7 @@ define(['appOlympicBaby'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.olympicBabyDrawPrizeCtrl',
                                     [
                                         'js/libs/lodash.min.js',
-                                        'js/controllers/olympicBaby/olympicBabyDrawPrizeCtrl.js',
+                                        'js/controllers/olympicBaby/olympicBabyDrawPrizeCtrl.js?ver='+olympicBabyVersion,
                                         'styles/olympicBaby/olympicBabyDrawPrize.less?ver='+olympicBabyVersion],
                                     'js/views/olympicBaby/olympicBabyDrawPrize.html?ver='+olympicBabyVersion);
                             }
@@ -91,7 +106,7 @@ define(['appOlympicBaby'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.olympicBabyMyPrizeCtrl',
                                     [
                                         'js/libs/lodash.min.js',
-                                        'js/controllers/olympicBaby/olympicBabyMyPrizeCtrl.js',
+                                        'js/controllers/olympicBaby/olympicBabyMyPrizeCtrl.js?ver='+olympicBabyVersion,
                                         'styles/olympicBaby/olympicBabyMyPrize.less?ver='+olympicBabyVersion],
                                     'js/views/olympicBaby/olympicBabyMyPrize.html?ver='+olympicBabyVersion);
                             }
@@ -104,7 +119,7 @@ define(['appOlympicBaby'], function(app){
 
 
 
-                $urlRouterProvider.otherwise('olympicGameLevel2');
+                $urlRouterProvider.otherwise('olympicBabyFirst');
             }])
         .run(function ($rootScope){
             $rootScope.unBindUserPhoneNum = '';
