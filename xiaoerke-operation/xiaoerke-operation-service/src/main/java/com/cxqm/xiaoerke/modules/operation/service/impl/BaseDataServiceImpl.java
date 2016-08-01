@@ -1,10 +1,13 @@
 package com.cxqm.xiaoerke.modules.operation.service.impl;
 
+import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.HttpRequestUtil;
+import com.cxqm.xiaoerke.modules.consult.dao.ConsultStatisticDao;
 import com.cxqm.xiaoerke.modules.operation.dao.StatisticsTitleDao;
 import com.cxqm.xiaoerke.modules.operation.entity.StatisticsTitle;
 import com.cxqm.xiaoerke.modules.operation.service.BaseDataService;
 
+import com.cxqm.xiaoerke.modules.umbrella.dao.BabyUmbrellaInfoDao;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -14,10 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * 基础数据统计 实现
@@ -32,6 +32,12 @@ public class BaseDataServiceImpl implements BaseDataService {
 
     @Autowired
     private StatisticsTitleDao statisticsTitleDao;
+
+	@Autowired
+	private BabyUmbrellaInfoDao babyUmbrellaInfoDao;
+
+	@Autowired
+	private ConsultStatisticDao consultStatisticDao;
 
     @Override
     public int insertStatisticsTitle() {
@@ -114,12 +120,61 @@ public class BaseDataServiceImpl implements BaseDataService {
     }
 
     @Override
-    public List<HashMap<String, Object>> findStatisticsTitleList(String startDate, String endDate) {
+    public List<HashMap<String, Object>> findStatisticsTitleList(String startDateStr, String endDateStr) {
+		Date startDate = DateUtils.StrToDate(startDateStr, "date");
+		Date endDate = DateUtils.StrToDate(endDateStr,"date");
 
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("startDate", startDate);
-        map.put("endDate", endDate);
-        return statisticsTitleDao.findStatisticsTitleList(map);
+		List<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+		Map<String, Object> searchMap0 = new HashMap<String, Object>();
+		searchMap0.put("date", startDate);
+		Integer totalUser0 = babyUmbrellaInfoDao.getBabyUmbrellaInfoTotalUser(searchMap0);
+
+		Integer totalFamily0 = babyUmbrellaInfoDao.getBabyUmbrellaInfoTotalFamily(searchMap0);
+
+		while(startDate.getTime() < DateUtils.addDays(endDate, 1).getTime()) {
+			startDate = DateUtils.addDays(startDate, 1);
+			Map<String, Object> searchMap = new HashMap<String, Object>();
+			searchMap.put("date", startDate);
+			Integer totalUser = babyUmbrellaInfoDao.getBabyUmbrellaInfoTotalUser(searchMap);
+			Integer totalFamily = babyUmbrellaInfoDao.getBabyUmbrellaInfoTotalFamily(searchMap);
+			Integer addUser = totalUser-totalUser0;
+			Integer addFamily = totalFamily-totalFamily0;
+
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("date",DateUtils.formatDate(DateUtils.addDays(startDate, -1)));
+			map.put("totalUser",totalUser);
+			map.put("totalFamily",totalFamily);
+			map.put("addUser",addUser);
+			map.put("addFamily",addFamily);
+
+
+			Map<String, Object> iniMap = new HashMap<String, Object>();
+			iniMap.put("startDate",DateUtils.formatDate(DateUtils.addDays(startDate, -1)));
+			iniMap.put("endDate",DateUtils.formatDate(DateUtils.addDays(startDate, -1)));
+			List<Map<String, Object>> validateConsultAndFeedBackCountsList = consultStatisticDao.getValidateConsultAndFeedBackCounts(iniMap);
+			List<Map<String, Object>> sendHeartPersonAndMoneyCountsList =  consultStatisticDao.getSendHeartPersonAndMoneyCounts(iniMap);
+			for (int i = 0; i < validateConsultAndFeedBackCountsList.size(); i++) {
+				Map<String, Object> validateMap = validateConsultAndFeedBackCountsList.get(i);
+				map.put("feedBackCount",validateMap.get("feedBackCount"));
+				map.put("validateConsultCount",validateMap.get("validateConsultCount"));
+				for (int j = 0; j < sendHeartPersonAndMoneyCountsList.size(); j++) {
+					Map<String, Object> sendMap = sendHeartPersonAndMoneyCountsList.get(j);
+					if(sendMap.get("date").toString().equalsIgnoreCase(validateMap.get("date").toString())){
+						map.put("sendHeartPersonCount",sendMap.get("sendHeartPersonCount").toString());
+						map.put("sendHeartMoneyCount",sendMap.get("sendHeartMoneyCount").toString());
+					}
+				}
+			}
+
+
+
+ 			list.add(map);
+			totalFamily0 = totalFamily;
+			totalUser0 = totalUser;
+		}
+
+
+        return list;
     }
 
     private void orderAndConsult(StatisticsTitle st, List<HashMap<String, Object>> order, String date) throws ParseException {
