@@ -135,7 +135,23 @@ public class OlyGamesController extends BaseController {
         return responseMap;
     }
 
+    /**
+     * 获取邀请卡
+     *
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "/GetInviteCard",method = {RequestMethod.POST,RequestMethod.GET})
+    @ResponseBody
+    public Map<String,Object> GetInviteCard(@RequestBody Map<String, Object> params){
+        Map<String,Object> response = new HashMap<String, Object>();
+        String openId = (String)params.get("openid");
 
+        String marketer = "";//根据openid获取邀请码
+        String userQRCode = olyGamesService.getUserQRCode(marketer);//二维码
+
+        return response;
+    }
 
 
 }

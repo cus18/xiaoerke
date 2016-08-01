@@ -15,4 +15,6 @@ public interface OlyGamesService {
     int insertOlyBabyGameDetailVo(OlyBabyGameDetailVo record);
 
     int updateOlyBabyGamesByOpenId(OlyBabyGamesVo record);
+
+    String getUserQRCode(String id);
 }
