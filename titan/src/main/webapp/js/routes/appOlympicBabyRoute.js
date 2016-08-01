@@ -1,5 +1,5 @@
 /**
- * б╥си
+ * б╥О©╫О©╫
  */
 define(['appOlympicBaby'], function(app){
     return app
@@ -109,6 +109,19 @@ define(['appOlympicBaby'], function(app){
                                         'js/controllers/olympicBaby/olympicBabyMyPrizeCtrl.js?ver='+olympicBabyVersion,
                                         'styles/olympicBaby/olympicBabyMyPrize.less?ver='+olympicBabyVersion],
                                     'js/views/olympicBaby/olympicBabyMyPrize.html?ver='+olympicBabyVersion);
+                            }
+                        }
+                    })
+                    .state('olympicBabyInvitationCard', {
+                        url: '/olympicBabyInvitationCard',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'olympicBabyInvitationCardCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.olympicBabyInvitationCardCtrl',
+                                    ['js/controllers/olympicBaby/olympicBabyInvitationCardCtrl.js?ver='+olympicBabyVersion,
+                                      'styles/olympicBaby/olympicBabyInvitationCard.less?ver='+olympicBabyVersion],
+                                    'js/views/olympicBaby/olympicBabyInvitationCard.html?ver='+olympicBabyVersion);
                             }
                         }
                     })
