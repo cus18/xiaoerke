@@ -92,4 +92,23 @@ public class OlyGamesController extends BaseController {
 
         return responseMap;
     }
+
+
+    /**
+     * 获取用户的游戏积分
+     * input: {openid:"fwefwefewfw"}
+     * result: {gameScore:8888}
+     ***/
+    @RequestMapping(value = "/firstPage/GetUserGameScore", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> GetUserGameScore(@RequestBody Map<String, Object> params) {
+        Map<String, Object> responseMap = new HashMap<String, Object>();
+        String openId = (String) params.get("openid");
+        OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
+        olyBabyGamesVo.setOpenId(openId);
+        OlyBabyGamesVo resultvo = olyGamesService.selectByOlyBabyGamesVo(olyBabyGamesVo);
+        responseMap.put("gameScore",resultvo.getGameScore());
+        return responseMap;
+    }
 }
