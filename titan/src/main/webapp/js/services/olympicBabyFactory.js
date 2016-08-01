@@ -15,7 +15,7 @@ define(['appOlympicBaby'], function (app) {
              * input: {openid:"fwefwefewfw"}
              * result: {gameLevel:2,gameAction:1，needInviteFriendNum:3,}
              * gameLevel 表示当前所处的管卡,0表示用户处于通关的状态
-             * gameAction 1表示需要邀请用户关注，2表示需要邀请好友
+             * gameAction 1表示需要关注，2表示需要邀请好友
              * needInviteFriendNum 表示还需要邀请加入的好友数
              ***/
             return $resource('olympicBaby/firstPage/GetGameMemberNum');
@@ -34,8 +34,8 @@ define(['appOlympicBaby'], function (app) {
         .factory('GetFirstPageSlideMessage',['$resource',function ($resource){
             /**
              * 获取奖品领取的轮播图消息
-             * result: {messageList:[{userName:孙晓,Content:"获得了微波炉大奖"},{userName:孙晓,Content:"获得了微波炉大奖"},
-             * {userName:孙晓,Content:"获得了微波炉大奖"},{userName:孙晓,Content:"获得了微波炉大奖"},
+             * result: {messageList:[{userName:孙晓,Content:"获得了微波炉大奖"},{userName:孙大奖"},晓,Content:"获得了微波炉大奖"},
+             * {userName:孙晓,Content:"获得了微波炉大奖"},{userName:孙晓,Content:"获得了微波炉
              * {userName:孙晓,Content:"获得了微波炉大奖"}]}
              ***/
             return $resource('olympicBaby/firstPage/GetFirstPageSlideMessage');
@@ -47,13 +47,6 @@ define(['appOlympicBaby'], function (app) {
              * result: {gameScore:8888}
              ***/
             return $resource('olympicBaby/firstPage/GetUserGameScore');
-        }])
-        .factory('GetUserOpenId',['$resource',function ($resource){
-            /**
-             * 获取用户openid
-             * result: {openid:"fwefwefewf"}
-             ***/
-            return $resource('util/GetUserOpenId');
         }])
         .factory('GetUserOpenId',['$resource',function ($resource){
             /**
@@ -82,7 +75,7 @@ define(['appOlympicBaby'], function (app) {
             /**
              * 根据积分，进行奖品抽奖
              * input:{openid:"fwefewfewf"}
-             * result: {leftTimes:2，prizeInfo:[{name:"电饭煲"},{name:"电饭煲"},{name:"电饭煲"}]}
+             * result: {leftTimes:2，prizeInfo:[{name:"电饭煲"},{describe:"电饭煲"},{XXX:"电饭煲"}]}
              * leftTimes为剩余的抽奖次数，如果为-1，表示积分不够抽奖，抽奖失败
              ***/
             return $resource('olympicBaby/gameScore/GetGameScorePrize');
@@ -91,8 +84,7 @@ define(['appOlympicBaby'], function (app) {
             /**
              * 获取用户抽到的奖品列表
              * input:{openid:"fwefewfewf"}
-             * result: {prizeList:[{prizeName:"电饭煲"},{prizeName:"电饭煲"},{prizeName:"电饭煲"}]}
-             * leftTimes为剩余的抽奖次数，如果为-1，表示积分不够抽奖，抽奖失败
+             * result: {prizeList:[{prizeName:"电饭煲",XXX:"XXXXX"},{prizeName:"电饭煲"},{prizeName:"电饭煲"}]}
              ***/
             return $resource('olympicBaby/gameScore/GetUserPrizeList');
         }])
@@ -100,7 +92,7 @@ define(['appOlympicBaby'], function (app) {
             /**
              * 保存用户领取奖品的地址
              * input:{openid:"fwefewfewf"}
-             * result: {addressName:"海淀区",code:"100053"}
+             * result: {addressName:"海淀区",code:"100053","phone":"13601025662","userName":"赵得良"}
              ***/
             return $resource('olympicBaby/gameScore/SaveUserAddress');
         }])
