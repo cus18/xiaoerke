@@ -10,6 +10,20 @@ document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.event.drag-1.5.mi
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.touchSlider.js"></scr'+'ipt>');
 
 var heightForecastFirstInit = function () {
+    $.ajax({
+        url:"umbrella/getOpenid",// 跳转到 action
+        async:true,
+        type:'post',
+        cache:false,
+        dataType:'json',
+        success:function(data) {
+            if(data.openid=="none"){
+                window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=36";
+            }
+        },
+        error : function() {
+        }
+    });
     recordLogs('YYHD_SG_YDY');
     loadShare();
 };

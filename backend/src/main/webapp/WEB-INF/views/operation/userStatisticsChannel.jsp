@@ -31,13 +31,13 @@
 	部  门 ：
 	<form:select name="department" path="department" id="txtDepartment">
 		<c:forEach items="${departs}" var="depart" step="1">
-			<option value="${depart}">${depart}</option>
+			<form:option value="${depart}">${depart}</form:option>
 		</c:forEach>
 	</form:select>
 	渠道：
 	<form:select name="channel" path="channel" id="txtChannel">
 		<c:forEach items="${channels}" var="channel" step="1">
-			<option value="${channel}">${channel}</option>
+			<form:option value="${channel}">${channel}</form:option>
 		</c:forEach>
 	</form:select>
 	<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
@@ -59,8 +59,8 @@
 	<tbody id="treeTableList">
 	<c:forEach items="${userChannelList}" var="channelVo">
 		<tr>
+			<td>${channelVo.marketer}</td>
 			<td>${channelVo.channel}</td>
-			<td>${channelVo.department}</td>
 			<td>
 				<c:if test="${empty channelVo.attentionCount}">0</c:if>
 				<c:if test="${not empty channelVo.attentionCount}">${channelVo.attentionCount}</c:if>
@@ -70,7 +70,7 @@
 				<c:if test="${not empty channelVo.cancleAttentionCount}">${channelVo.cancleAttentionCount}</c:if>
 			</td>
 			<td>${channelVo.leijiCancleAttentionCount}</td>
-			<td>${channelVo.attentionCount-channelVo.leijiCancleAttentionCount}</td>
+			<td>${channelVo.attentionCount-channelVo.cancleAttentionCount}</td>
 			<td>${channelVo.leijiAttentionCount}</td>
 		</tr>
 	</c:forEach>

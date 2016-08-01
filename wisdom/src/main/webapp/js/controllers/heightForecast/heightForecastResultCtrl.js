@@ -13,6 +13,20 @@ angular.module('controllers', ['ionic']).controller('heightForecastResultCtrl', 
         $scope.showDouble = false;
         $scope.showOne = false;
         $scope.$on('$ionicView.enter', function(){
+            $.ajax({
+                url:"umbrella/getOpenid",// 跳转到 action
+                async:true,
+                type:'post',
+                cache:false,
+                dataType:'json',
+                success:function(data) {
+                    if(data.openid=="none"){
+                        window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=36";
+                    }
+                },
+                error : function() {
+                }
+            });
             if($stateParams.resultGirl != 0 && $stateParams.resultBoy != 0){
                 $scope.heightImg = 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2Fbiaoti_bb_png_03.png';
                 $scope.showDouble = true;

@@ -5,8 +5,12 @@
 var public = '';
 define(['appHeightForecast'], function (app) {
     app
-        //保护伞照片墙
+        //保存数据
         .factory('SaveHeightPredictionInfo',['$resource',function ($resource){
             return $resource(public + 'marketing/saveHeightPredictionInfo');
+        }])
+        //获得openId
+        .factory('GetOpenidStatus',['$resource',function ($resource){
+            return $resource(public + 'umbrella/getOpenidStatus');
         }])
 })
