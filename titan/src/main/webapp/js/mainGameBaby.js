@@ -11,10 +11,10 @@ require.config({
         "angular-route" : "libs/angular-route.min",
         "ocLazyLoad":"libs/ocLazyLoad.require.min",
         "jquery":"libs/jquery-2.1.3.min",
-        "phoneConsultFactory" : "services/phoneConsultFactory",
-        "phoneConsultDirective" : "directives/phoneConsultDirective",
-        "appPhoneConsultRoute" : "routes/appPhoneConsultRoute",
-        "appPhoneConsult" : "modules/appPhoneConsult"
+        "gameBabyFactory" : "services/gameBabyFactory",
+        "gameBabyDirective" : "directives/gameBabyDirective",
+        "appGameBabyRoute" : "routes/appGameBabyRoute",
+        "appGameBaby" : "modules/appGameBaby"
     },
     waitSeconds: 0,
     shim: {
@@ -39,8 +39,8 @@ require.config({
 });
 
 require(['angular','angular-resource','angular-sanitize','angular-route',
-    'ocLazyLoad','jquery','phoneConsultFactory','phoneConsultDirective','appPhoneConsultRoute','appPhoneConsult'],
+    'ocLazyLoad','jquery','gameBabyFactory','gameBabyDirective','appGameBabyRoute','appGameBaby'],
     function (angular){
-        angular.bootstrap(document,["phoneConsultApp"]);
+        angular.bootstrap(document,["gameBabyApp"]);
     });
 
