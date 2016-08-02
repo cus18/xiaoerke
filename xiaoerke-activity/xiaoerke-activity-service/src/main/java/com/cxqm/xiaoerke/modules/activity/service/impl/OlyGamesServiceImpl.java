@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.activity.service.impl;
 
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.activity.dao.OlyBabyGameDetailDao;
 import com.cxqm.xiaoerke.modules.activity.dao.OlyBabyGamesDao;
 import com.cxqm.xiaoerke.modules.activity.dao.OlyGamePrizeDao;
@@ -11,14 +12,12 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -71,6 +70,41 @@ public class OlyGamesServiceImpl implements OlyGamesService {
     @Autowired
     SystemService systemService;
 
+    /**
+     * 获取微信头像url
+     * @param openId
+     * @return
+     */
+    @Override
+    public String getWechatMessage(String openId){
+        String headimgurl = null;
+
+        Map<String,Object> parameter = systemService.getWechatParameter();
+        String token = (String)parameter.get("token");
+
+        String strURL="https://api.weixin.qq.com/cgi-bin/user/info?access_token="+token+"&openid="+openId+"&lang=zh_CN";
+        String param="";
+        String json= WechatUtil.post(strURL, param, "GET");
+        JSONObject jasonObject = JSONObject.fromObject(json);
+        Map<String, Object> jsonMap = (Map) jasonObject;
+
+        if(jsonMap.get("subscribe")!=null && (Integer)jsonMap.get("subscribe") == 1){
+            headimgurl = (String) jsonMap.get("headimgurl");
+        }
+
+        return headimgurl;
+    }
+
+    @Override
+    public String getMarketerByOpenid(String openId) {
+        return olyBabyGamesDao.getMarketerByOpenid(openId);
+    }
+
+    /**
+     * 获取邀请卡二维码链接
+     * @param id
+     * @return
+     */
     @Override
     public String getUserQRCode(String id) {
         Map<String,Object> parameter = systemService.getWechatParameter();

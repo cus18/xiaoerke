@@ -18,4 +18,5 @@ public interface OlyBabyGamesDao {
 
     int updateByOpenId(OlyBabyGamesVo record);
 
+    String getMarketerByOpenid(String openId);
 }

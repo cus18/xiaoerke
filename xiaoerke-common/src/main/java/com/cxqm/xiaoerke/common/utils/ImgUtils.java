@@ -19,7 +19,6 @@ public class ImgUtils {
     /**
      * 合成邀请卡图片
      *
-     * @param fileSrc 背景图片
      * @param headUrl 头像
      * @param codeUrl 二维码
      * @param outSrc 暂存图片路径
@@ -28,7 +27,9 @@ public class ImgUtils {
      * @param width1 二维码偏移量
      * @param height1 二维码偏移量
      */
-    public void composePic(String fileSrc,String headUrl,String codeUrl,String outSrc,int width,int height,int width1,int height1) {
+    public static void composePic(String headUrl,String codeUrl,String outSrc,int width,int height,int width1,int height1) {
+        String fileSrc = "http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/olympicBaby_inviteBaseImg.png";
+
         try {
             URL url = new URL(fileSrc);
             HttpURLConnection httpUrl = (HttpURLConnection) url.openConnection();
@@ -76,30 +77,34 @@ public class ImgUtils {
      * @param path
      * @throws Exception
      */
-    private void uploadImage(String id , String path) throws Exception{
+    public static void uploadImage(String id , String path) {
+        try {
+            File file = new File(URLDecoder.decode(path, "utf-8"));
 
-        File file = new File(URLDecoder.decode(path, "utf-8"));
-                FileInputStream inputStream = new FileInputStream(file);
-        long length = file.length();
-        //上传图片至阿里云
-        OSSObjectTool.uploadFileInputStream(id, length, inputStream, OSSObjectTool.BUCKET_ARTICLE_PIC);
+            FileInputStream inputStream = new FileInputStream(file);
+            long length = file.length();
+            //上传图片至阿里云
+            OSSObjectTool.uploadFileInputStream(id, length, inputStream, OSSObjectTool.BUCKET_ARTICLE_PIC);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String args[]) {
         Long star = System.currentTimeMillis();
 
-        ImgUtils pic = new ImgUtils();
-        String fileSrc = "http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/olympicBaby_inviteBaseImg.png";
         String img1 = "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/other%2Fliangp.png";//头像、
         String img2 = "http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/%25E6%2580%258E%25E4%25B9%2588%25E8%25A1%25A5%25E9%2593%2581%25E6%259C%2580%25E5%25AE%2589%25E5%2585%25A8%281%29.jpg";//二维码
         String outPath = System.getProperty("user.dir").replace("bin", "webapps")+"\\image\\1.png";
-        pic.composePic(fileSrc,img1,img2, outPath, 78, 245,50,50);
+        ImgUtils.composePic(img1,img2, outPath, 78, 245,50,50);
 
-//        try {
-//            pic.uploadImage("olympicBaby_inviteBaseImg.png", "C:\\Users\\Administrator\\Desktop\\baseImg.png");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        try {
+            ImgUtils.uploadImage("olympicBaby_inviteBaseImg.png", "C:\\Users\\Administrator\\Desktop\\baseImg.png");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         Long end =System.currentTimeMillis();
         System.out.print("time====:"+(end-star));

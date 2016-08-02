@@ -1,7 +1,8 @@
 package com.cxqm.xiaoerke.modules.olyGames.web;
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
-import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.common.utils.ImgUtils;
+import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGameDetailVo;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
@@ -15,9 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.*;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -222,12 +220,28 @@ public class OlyGamesController extends BaseController {
     public Map<String,Object> GetInviteCard(@RequestBody Map<String, Object> params){
         Map<String,Object> response = new HashMap<String, Object>();
         String openId = (String)params.get("openid");
-
-        String marketer = "";//根据openid获取邀请码
+        String marketer = (String)params.get("marketer");
+        if(!StringUtils.isNotNull(marketer)){
+            marketer = olyGamesService.getMarketerByOpenid(openId);//根据openid获取邀请码
+        }
         String userQRCode = olyGamesService.getUserQRCode(marketer);//二维码
 
+        String headImgUrl = olyGamesService.getWechatMessage(openId);//头像
+
+        //生成图片暂存路径
+        String outPath = System.getProperty("user.dir").replace("bin", "uploadImg")+"\\image\\"+new Date().getTime()+".png";
+
+        //生成邀请卡图片
+        ImgUtils.composePic(headImgUrl, userQRCode, outPath, 50, 50, 400, 80);//TODO:cxq
+
+        //上传图片
+        ImgUtils.uploadImage("olympicBaby_invite_"+openId+".png", outPath);
+
+        String path = "http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/"+"olympicBaby_invite_"+openId+".png";
+        response.put("path",path);
         return response;
     }
+
 
 
 }

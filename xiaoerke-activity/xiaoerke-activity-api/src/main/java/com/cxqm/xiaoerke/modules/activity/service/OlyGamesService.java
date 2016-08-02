@@ -26,4 +26,10 @@ public interface OlyGamesService {
     int updateOlyBabyGamesByOpenId(OlyBabyGamesVo record);
 
     String getUserQRCode(String id);
+
+    String getWechatMessage(String openId);
+
+    String getMarketerByOpenid(String openId);
+
+
 }
