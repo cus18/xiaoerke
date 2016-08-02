@@ -9,10 +9,20 @@
 		<!-- ng-click="startTime()"  ng-click="startRun()"-->
 		<img id="buttonImg" ng-click="startRun()" width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2Fsprint%2Fjiasu_png_03.png" alt=""/>
 	</div>
-	<div class="boxShadow" ng-if="lookResultFloat" ng-click="cancelFloat()"></div>
-	<div class="shareImg" ng-if="lookResultFloat">
+	<div class="boxShadow" ng-if="shareFloat" ng-click="cancelFloat()"></div>
+	<div class="shareImg" ng-if="shareFloat">
 		<img width="10%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FprizePage%2FXicon_03.png" alt=""/>
 		<img width="80%" data-tap-disabled="true" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FprizePage%2Ferweima_png_03.png" alt=""/>
+	</div>
+	<div class="boxShadow" ng-if="lookResultFloat"></div>
+	<div class="resultImg" ng-if="lookResultFloat">
+		<div>{{totalNum}}</div>
+		<img width="50%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2Fsprint%2Fbutton_c_png_03.png" alt=""/>
+		<img width="50%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2Fsprint%2Fbutton_d_png_03.png" alt=""/>
+	</div>
+	<div class="boxShadow" ng-if="startFloat"></div>
+	<div class="startImg" ng-if="startFloat">
+		<img width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2Fsprint%2Fgif.gif" alt=""/>
 	</div>
 
 </div>
