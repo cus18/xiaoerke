@@ -1,13 +1,14 @@
 package com.cxqm.xiaoerke.modules.olyGames.web;
 
-import com.cxqm.xiaoerke.common.utils.DateUtils;
-import com.cxqm.xiaoerke.common.utils.ImgUtils;
-import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGameDetailVo;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
+import net.sf.json.JSONObject;
+import org.activiti.engine.runtime.Execution;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 
@@ -34,6 +39,7 @@ public class OlyGamesController extends BaseController {
     @Autowired
     private BabyUmbrellaInfoService babyUmbrellaInfoSerivce;
 
+    private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
 
     /**
      * 获取某个游戏玩的次数
@@ -239,6 +245,28 @@ public class OlyGamesController extends BaseController {
 
         String path = "http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/"+"olympicBaby_invite_"+openId+".png";
         response.put("path",path);
+
+
+        String filePath = "";
+        File wxFile=new File(filePath);
+        InputStream is = null;
+        try {
+            is = new FileInputStream(wxFile);
+            String upLoadUrl = "https://api.weixin.qq.com/cgi-bin/media/upload";
+            Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+            org.json.JSONObject jsonObject = WechatUtil.uploadNoTextMsgToWX((String) userWechatParam.get("token"), upLoadUrl, "image", wxFile.getName(), is);
+
+            WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"),openId,"新游戏需要邀请从未关注过“宝大夫”的好友助力方可解锁开启，赶紧把下方图片分享出去吧，大奖在等你哦！");
+            WechatUtil.sendNoTextMsgToWechat((String) userWechatParam.get("token"),openId,(String) jsonObject.get("media_id"),1);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         return response;
     }
 
