@@ -1,9 +1,12 @@
 package com.cxqm.xiaoerke.modules.olyGames.web;
 
+import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGameDetailVo;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
+import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.*;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +32,10 @@ public class OlyGamesController extends BaseController {
 
     @Autowired
     private OlyGamesService olyGamesService;
+
+    @Autowired
+    private BabyUmbrellaInfoService babyUmbrellaInfoSerivce;
+
 
     /**
      * 获取某个游戏玩的次数
@@ -57,6 +65,74 @@ public class OlyGamesController extends BaseController {
         } else if (gameLevel == 6) {
             responseMap.put("gamePlayingTimes", resultvo.getLevel6CurrentTimes());
         }
+        return responseMap;
+    }
+
+    /**
+     * 根据积分，进行奖品抽奖
+     * sunxiao
+     * input:{openid:"fwefewfewf"}
+     * result: {leftTimes:2，prizeInfo:[{name:"电饭煲"},{describe:"电饭煲"},{XXX:"电饭煲"}]}
+     * leftTimes为剩余的抽奖次数，如果为-1，表示积分不够抽奖，抽奖失败
+     ***/
+    @RequestMapping(value = "/GetGameScorePrize",method = {RequestMethod.POST,RequestMethod.GET})
+    public synchronized
+    @ResponseBody
+    Map<String,Object> GetGameScorePrize(@RequestBody Map<String, Object> params){
+        Map<String,Object> responseMap = new HashMap<String, Object>();
+        String openId = (String)params.get("openid");
+        int random = new Random().nextInt(100);
+        Map<String, Object> umbrellaMap=new HashMap<String, Object>();
+        umbrellaMap.put("openid",openId);
+        List<Map<String, Object>> umbrellaList = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(umbrellaMap);
+        String today = DateUtils.DateToStr(new Date(), "date");
+        Map<String, Object> prizeMap=new HashMap<String, Object>();
+        prizeMap.put("prizeDate",today);
+        List<Map<String, Object>> prizeList = olyGamesService.getOlyGamePrizeList(prizeMap);
+        int start = 0;
+        for(Map<String, Object> tempMap : prizeList){
+            int end = start+(Integer)tempMap.get("probability");
+            if(random>=start && random<end){
+                responseMap.put("prizeOrder",tempMap.get("prizeOrder"));
+                responseMap.put("prizeName",tempMap.get("prizeName"));
+                break;
+            }
+            start = end;
+        }
+        return responseMap;
+    }
+
+    /**
+     * 获取用户抽到的奖品列表
+     * sunxiao
+     * input:{openid:"fwefewfewf"}
+     * result: {prizeList:[{prizeName:"电饭煲",XXX:"XXXXX"},{prizeName:"电饭煲"},{prizeName:"电饭煲"}]}
+     ***/
+    @RequestMapping(value = "/GetUserPrizeList",method = {RequestMethod.POST,RequestMethod.GET})
+    public synchronized
+    @ResponseBody
+    Map<String,Object> GetUserPrizeList(@RequestBody Map<String, Object> params){
+        Map<String,Object> responseMap = new HashMap<String, Object>();
+        String openId = (String)params.get("openid");
+        int random = new Random().nextInt(100);
+
+        return responseMap;
+    }
+
+    /**
+     * 保存用户领取奖品的地址
+     * sunxiao
+     * input:{openid:"fwefewfewf"}
+     * result: {addressName:"海淀区",code:"100053","phone":"13601025662","userName":"赵得良"}
+     ***/
+    @RequestMapping(value = "/SaveUserAddress",method = {RequestMethod.POST,RequestMethod.GET})
+    public synchronized
+    @ResponseBody
+    Map<String,Object> SaveUserAddress(@RequestBody Map<String, Object> params){
+        Map<String,Object> responseMap = new HashMap<String, Object>();
+        String openId = (String)params.get("openid");
+        int random = new Random().nextInt(100);
+
         return responseMap;
     }
 

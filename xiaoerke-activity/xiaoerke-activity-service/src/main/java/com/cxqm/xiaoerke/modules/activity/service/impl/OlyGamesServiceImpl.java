@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.activity.service.impl;
 
 import com.cxqm.xiaoerke.modules.activity.dao.OlyBabyGameDetailDao;
 import com.cxqm.xiaoerke.modules.activity.dao.OlyBabyGamesDao;
+import com.cxqm.xiaoerke.modules.activity.dao.OlyGamePrizeDao;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGameDetailVo;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
@@ -9,6 +10,9 @@ import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,11 +32,25 @@ public class OlyGamesServiceImpl implements OlyGamesService {
     private OlyBabyGamesDao olyBabyGamesDao;
 
     @Autowired
+    private OlyGamePrizeDao olyGamePrizeDao;
+
+
+    @Autowired
     private OlyBabyGameDetailDao olyBabyGameDetailDao;
 
     @Override
     public OlyBabyGamesVo selectByOlyBabyGamesVo(OlyBabyGamesVo olyBabyGamesVo) {
         return olyBabyGamesDao.selectByOlyBabyGamesVo(olyBabyGamesVo);
+    }
+
+    /**
+     * 获取所有奖品列表
+     * sunxiao
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> getOlyGamePrizeList(Map<String, Object> prizeMap) {
+        return olyGamePrizeDao.getOlyGamePrizeList(prizeMap);
     }
 
     @Override
