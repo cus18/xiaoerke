@@ -1,8 +1,18 @@
-<div ui-view  class="olympicBabyMyPrize">
-	我的奖品
-	<div class="prizeIndex">
-		<div class="prizeList">
-
+<div ui-view title="我的奖品" class="olympicBabyMyPrize" >
+	<div class="top"></div>
+	<div class="prizeList" ng-show="showPrize">
+		<img width="80%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FprizePage%2Ff_03.png" alt=""/>
+		<div class="prize" ng-repeat="item in prizeList">
+			<div class="prizeContent">
+				<p>
+					<img width="42.5px" height="42.5px" src="{{item.src}}" alt=""/>
+				</p>
+				<p>{{item.prizeName}}</p>
+				<p>{{item.prize}}</p>
+			</div>
 		</div>
+	</div>
+	<div class="noPrize" ng-show="showNoPrize">
+		<img width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FprizePage%2Fwujiangping_03.png" alt=""/>
 	</div>
 </div>

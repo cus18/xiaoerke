@@ -1,9 +1,18 @@
-<div ui-view class="olympicGameLevel3">
-	<img width="100%" height="auto" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2Fphoto_hejiong_png_03.png"
-		 alt=""/>
-	<img width="100%" height="auto" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2Fphoto_yijianlian_png_03.png"
-		 alt=""/>
-	<div class="button" ng-click="startTime()">
-		<input type="button" value="发力" ng-click="startRun()"/>
+<div ui-view ng-init="olympicGameLevel3()" class="olympicGameLevel3">
+	<div class="top">
+		<div class="box time">{{time}}s倒计时</div>
+		<div class="box score">1000000</div>
 	</div>
+	<div class="runningBoy">
+	</div>
+	<div class="button">
+		<!-- ng-click="startTime()"-->
+		<img id="buttonImg" width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2Fsprint%2Fjiasu_png_03.png" alt=""/>
+	</div>
+	<div class="boxShadow" ng-if="lookResultFloat" ng-click="cancelFloat()"></div>
+	<div class="shareImg" ng-if="lookResultFloat">
+		<img width="10%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FprizePage%2FXicon_03.png" alt=""/>
+		<img width="80%" data-tap-disabled="true" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FprizePage%2Ferweima_png_03.png" alt=""/>
+	</div>
+
 </div>
