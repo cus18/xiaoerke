@@ -266,4 +266,8 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+    
+  <select id="getMarketerByOpenid" resultType="java.lang.String" parameterType="java.lang.String">
+    SELECT marketer FROM oly_baby_games where open_id=#{openId};
+  </select>
 </mapper>
