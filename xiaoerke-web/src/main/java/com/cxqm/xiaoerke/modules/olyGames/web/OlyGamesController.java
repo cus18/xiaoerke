@@ -245,8 +245,7 @@ public class OlyGamesController extends BaseController {
         response.put("path",path);
 
 
-        String filePath = "";
-        File wxFile=new File(filePath);
+        File wxFile=new File(outPath);
         InputStream is = null;
         try {
             is = new FileInputStream(wxFile);
