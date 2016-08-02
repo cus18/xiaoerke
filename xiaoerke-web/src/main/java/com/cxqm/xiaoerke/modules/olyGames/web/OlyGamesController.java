@@ -236,7 +236,7 @@ public class OlyGamesController extends BaseController {
         String outPath = System.getProperty("user.dir").replace("bin", "uploadImg")+"\\image\\"+new Date().getTime()+".png";
 
         //生成邀请卡图片
-        ImgUtils.composePic(headImgUrl, userQRCode, outPath, 71, 231,188,506);
+        ImgUtils.composePic(headImgUrl, userQRCode, outPath, 71, 231,185,500);
 
         //上传图片
         ImgUtils.uploadImage("olympicBaby_invite_"+openId+".png", outPath);
