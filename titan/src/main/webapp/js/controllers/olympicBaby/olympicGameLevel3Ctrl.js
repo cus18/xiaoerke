@@ -6,62 +6,65 @@
             $scope.totalNum = 0;
             $scope.time = 15;
             $scope.lookResultFloat = false;
-            /*$(document).ready(function(){
-                console.log( $scope.time);
-                $(".buttonImg").click(function(){
-                    //$scope.num++;
-                    var i = 0;
-                    console.log( $scope.time);
-                    var time = setInterval(function () {
-                        i++;
-                        var num = -100 - 350 * i;
-                        $('.runningBoy').css('background-position',num+'px');
-                        if(i == 8){
-                            clearInterval(time);
-                            i = 0;
-                            $('.runningBoy').css('background-position',-100+'px');
-                        }
-                        console.log(i);
-                    },100);
-                    $scope.totalNum = $scope.num;
-                });
-            });*/
             $scope.olympicGameLevel3 = function () {
                 startTime();
-                $('#buttonImg').click = function () {
-                    console.log( $scope.time);
-                    $scope.num++;
-                    var i = 0;
-                    var time = setInterval(function () {
-                        i++;
-                        var num = -100 - 350 * i;
-                        $('.runningBoy').css('background-position',num+'px');
-                        if(i == 8){
-                            clearInterval(time);
-                            i = 0;
-                            $('.runningBoy').css('background-position',-100+'px');
+            };
+            var timer1 = null;
+            var timer2 = null;
+            var timer3 = null;
+            var flag = true;
+            $scope.startRun = function(){
+                $scope.num++;
+                if(flag){
+                    startMoveBack();
+                }
+                startMoveBoy();
+
+                $scope.totalNum = $scope.num;
+            };
+            var startMoveBoy = function () {
+                var i = 0;
+                flag = false;
+                timer1 = setInterval(function () {
+                    i++;
+                    var num = -174 * i;
+                    $('.runningBoy').css('background-position',num+'px 0px');
+                    if(i == 7){
+                        clearInterval(timer1);
+                        i = 0;
+                        $('.runningBoy').css('background-position',0 + 'px 0px');
+                    }
+                },100);
+
+            };
+            var startMoveBack = function () {
+                var i = 110;
+                flag = false;
+                timer3 = setInterval(function () {
+                    i--;
+                    var num = -10 * i;
+                    $('.olympicGameLevel3').css('background-position',num+'px 0px');
+                    if(i == 0){
+                        $('.olympicGameLevel3').css('background-position',-1100+'px 0px');
+                        i = 110;
+                        if($scope.time == 0){
+                            clearInterval(timer3);
                         }
-                    },100);
-                    $scope.totalNum = $scope.num;
-                };
+                    }
+                },100);
             };
             //定时器
             var startTime = function () {
-                console.log('startTime',$scope.time);
-               var time = setInterval(function () {
+               timer2 = setInterval(function () {
                    $scope.time--;
-                   $scope.time =  $scope.time;
                    if($scope.time == 0){
-                       clearInterval(time);
-                       $scope.time = 15;
+                       clearInterval(timer2);
                    }
-               },100);
-                console.log( $scope.time);
-
+                   $scope.$digest();
+               },1000);
             };
             //取消浮层
             $scope.cancelFloat = function () {
                 $scope.lookResultFloat = false;
             };
-            //$(".buttonImg").click(function(){var i = 0;var time = setInterval(function () {i++;var num = -100 - 350 * i;('.runningBoy').css('background-position',num+'px');if(i == 8){clearInterval(time);i = 0;$('.runningBoy').css('background-position',-100+'px');}console.log(i);},100);});
     }])
