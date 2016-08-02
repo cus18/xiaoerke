@@ -7,8 +7,6 @@ import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
-import net.sf.json.JSONObject;
-import org.activiti.engine.runtime.Execution;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -238,7 +236,7 @@ public class OlyGamesController extends BaseController {
         String outPath = System.getProperty("user.dir").replace("bin", "uploadImg")+"\\image\\"+new Date().getTime()+".png";
 
         //生成邀请卡图片
-        ImgUtils.composePic(headImgUrl, userQRCode, outPath, 50, 50, 400, 80);//TODO:cxq
+        ImgUtils.composePic(headImgUrl, userQRCode, outPath, 71, 231,188,506);
 
         //上传图片
         ImgUtils.uploadImage("olympicBaby_invite_"+openId+".png", outPath);

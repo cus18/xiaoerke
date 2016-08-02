@@ -45,10 +45,6 @@ public class ImgUtils {
 
             int bg_width = bg_src.getWidth(null);
             int bg_height = bg_src.getHeight(null);
-            int logo_width = logo_src.getWidth(null);
-            int logo_height = logo_src.getHeight(null);
-            int code_width = logo_src.getWidth(null);
-            int code_height = logo_src.getHeight(null);
 
             BufferedImage tag = new BufferedImage(bg_width, bg_height, BufferedImage.TYPE_INT_RGB);
 
@@ -56,8 +52,8 @@ public class ImgUtils {
             g2d.drawImage(bg_src, 0, 0, bg_width, bg_height, null);
 
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP,1.0f)); //透明度设置开始 
-            g2d.drawImage(logo_src, width, height, logo_width, logo_height, null);
-            g2d.drawImage(code_src,width1,height1,code_width,code_height, null);
+            g2d.drawImage(logo_src, width, height, 126, 126, null);
+            g2d.drawImage(code_src, width1, height1, 204, 204, null);
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER)); //透明度设置 结束
 
             FileOutputStream out = new FileOutputStream(outSrc);
@@ -97,14 +93,14 @@ public class ImgUtils {
 
         String img1 = "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/other%2Fliangp.png";//头像、
         String img2 = "http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/%25E6%2580%258E%25E4%25B9%2588%25E8%25A1%25A5%25E9%2593%2581%25E6%259C%2580%25E5%25AE%2589%25E5%2585%25A8%281%29.jpg";//二维码
-        String outPath = System.getProperty("user.dir").replace("bin", "webapps")+"\\image\\1.png";
-        ImgUtils.composePic(img1,img2, outPath, 78, 245,50,50);
+        String outPath = System.getProperty("user.dir").replace("bin", "uploadImg")+"\\image\\xxx.png";
+        ImgUtils.composePic(img1,img2, outPath, 71, 231,188,506);
 
-        try {
-            ImgUtils.uploadImage("olympicBaby_inviteBaseImg.png", "C:\\Users\\Administrator\\Desktop\\baseImg.png");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            ImgUtils.uploadImage("olympicBaby_inviteBaseImg.png", "C:\\Users\\Administrator\\Desktop\\baseImg.png");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         Long end =System.currentTimeMillis();
         System.out.print("time====:"+(end-star));
