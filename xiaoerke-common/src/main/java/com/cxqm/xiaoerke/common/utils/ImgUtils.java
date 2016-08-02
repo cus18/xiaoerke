@@ -113,20 +113,18 @@ public class ImgUtils {
         BufferedImage bi2 = new BufferedImage(bi1.getWidth(), bi1.getHeight(),
                 BufferedImage.TYPE_INT_RGB);
 
-        Graphics2D g2d = bi2.createGraphics();
+        Graphics2D g2 = bi2.createGraphics();
 
-// ---------- 增加下面的代码使得背景透明 -----------------
+        // ---------- 增加下面的代码使得背景透明 -----------------
+        bi2 = g2.getDeviceConfiguration().createCompatibleImage(bi1.getWidth(), bi1.getHeight(), Transparency.TRANSLUCENT);
 
-        bi2 = g2d.getDeviceConfiguration().createCompatibleImage(bi1.getWidth(), bi1.getHeight(), Transparency.TRANSLUCENT);
+        g2.dispose();
 
-        g2d.dispose();
-
+        g2 = bi2.createGraphics();
         //
 
         Ellipse2D.Double shape = new Ellipse2D.Double(0, 0, bi1.getWidth(), bi1
                 .getHeight());
-
-        Graphics2D g2 = bi2.createGraphics();
 
         g2.setBackground(Color.red);
         g2.draw(new Rectangle(bi2.getWidth(), bi2.getHeight()));
