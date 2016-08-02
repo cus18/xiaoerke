@@ -91,7 +91,9 @@ define(['appOlympicBaby'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.olympicBabyDrawPrizeCtrl',
                                     [
                                         'js/libs/lodash.min.js',
+                                        'js/libs/iscroll.js',
                                         'js/controllers/olympicBaby/olympicBabyDrawPrizeCtrl.js?ver='+olympicBabyVersion,
+                                        'styles/olympicBaby/olympicBabyCommon.less?ver='+olympicBabyVersion,
                                         'styles/olympicBaby/olympicBabyDrawPrize.less?ver='+olympicBabyVersion],
                                     'js/views/olympicBaby/olympicBabyDrawPrize.html?ver='+olympicBabyVersion);
                             }

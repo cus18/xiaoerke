@@ -1,4 +1,195 @@
-<div ui-view class="olympicBabyDrawPrize">
-	抽奖
+<div ui-view class="olympicBabyDrawPrize" ng-init="olympicBabyDrawPrizeInit()">
+	<div class="top">
+		<img width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/banner.png">
+		<img ng-click="backHomePage()" class="back-home" width="67.5" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/back_home.png">
+	</div>
+
+	<div class="prize-wrapper" id="lottery">
+		<!--<div class="prize-list tc ">
+			<img ng-class="" class="lottery-unit lottery-unit-0" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/{{check ? 'prize1_y.png':'prize1_n.png'}}">
+			<img class="lottery-unit lottery-unit-1" width=20%" height="auto" ng-src="{{prizeArray[1].show}}">
+			<img class="lottery-unit lottery-unit-2" width=20%" height="auto" ng-src="{{prizeArray[2].show}}">
+			<img class="lottery-unit lottery-unit-3" width=20%" height="auto" ng-src="{{prizeArray[3].show}}">
+			<img class="lottery-unit lottery-unit-4" width=20%" height="auto" ng-src="{{prizeArray[4].show}}">
+			<a class="btn-drawPrize tc" >&lt;!&ndash;ng-click="startDrawPrize()"&ndash;&gt;
+				<img  width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/btn_drawPrize.png">
+				<span class="c0">（1）次机会</span>
+			</a>
+			<img class="lottery-unit lottery-unit-5" width=20%" height="auto" ng-src="{{prizeArray[5].show}}">
+			<img class="lottery-unit lottery-unit-6" width=20%" height="auto" ng-src="{{prizeArray[6].show}}">
+			<img class="lottery-unit lottery-unit-7" width=20%" height="auto" ng-src="{{prizeArray[7].show}}">
+			<img class="lottery-unit lottery-unit-8" width=20%" height="auto" ng-src="{{prizeArray[8].show}}">
+			<img class="lottery-unit lottery-unit-9" width=20%" height="auto" ng-src="{{prizeArray[9].show}}">
+		</div>-->
+		<div class="prize-list tc ">
+			<img class="lottery-unit lottery-unit-0" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/{{prizeArray[0] ? 'prize1_y.png':'prize1_n.png'}}">
+			<img class="lottery-unit lottery-unit-1" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/{{prizeArray[1] ? 'prize2_y.png':'prize2_n.png'}}">
+			<img class="lottery-unit lottery-unit-2" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/{{prizeArray[2] ? 'prize3_y.png':'prize3_n.png'}}">
+			<img class="lottery-unit lottery-unit-3" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/{{prizeArray[3] ? 'prize4_y.png':'prize4_n.png'}}">
+			<img class="lottery-unit lottery-unit-4" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/{{prizeArray[4] ? 'prize5_y.png':'prize5_n.png'}}">
+
+			<a class="btn-drawPrize tc" ng-click="startDrawPrize()">
+				<img  width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/btn_drawPrize.png">
+				<span class="c0">（1）次机会</span>
+			</a>
+			<img class="lottery-unit lottery-unit-5" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/{{prizeArray[5] ? 'prize6_y.png':'prize6_n.png'}}">
+			<img class="lottery-unit lottery-unit-6" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/{{prizeArray[6] ? 'prize7_y.png':'prize7_n.png'}}">
+			<img class="lottery-unit lottery-unit-7" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/{{prizeArray[7] ? 'prize8_y.png':'prize8_n.png'}}">
+			<img class="lottery-unit lottery-unit-8" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/{{prizeArray[8] ? 'prize9_y.png':'prize9_n.png'}}">
+			<img class="lottery-unit lottery-unit-9" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/{{prizeArray[9] ? 'prize10_y.png':'prize10_n.png'}}">
+
+		</div>
+		<p class="f5 c0 tc">您的奥运宝宝积分：555分</p>
+	</div>
+	<!--	<div class="prize-list tc ">
+			<img ng-class="" class="lottery-unit lottery-unit-0" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/prize1_n.png">
+			<img ng-class="" class="lottery-unit lottery-unit-0" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/prize2_n.png">
+			<img ng-class="" class="lottery-unit lottery-unit-0" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/prize3_n.png">
+			<img ng-class="" class="lottery-unit lottery-unit-0" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/prize4_n.png">
+			<img ng-class="" class="lottery-unit lottery-unit-0" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/prize5_n.png">
+
+			<a class="btn-drawPrize tc" >&lt;!&ndash;ng-click="startDrawPrize()"&ndash;&gt;
+				<img  width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/btn_drawPrize.png">
+				<span class="c0">（1）次机会</span>
+			</a>
+			<img ng-class="" class="lottery-unit lottery-unit-0" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/prize6_n.png">
+			<img ng-class="" class="lottery-unit lottery-unit-0" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/prize7_n.png">
+			<img ng-class="" class="lottery-unit lottery-unit-0" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/prize8_n.png">
+			<img ng-class="" class="lottery-unit lottery-unit-0" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/prize5_n.png">
+			<img ng-class="" class="lottery-unit lottery-unit-0" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/prize5_n.png">
+			<div class="prize-list tc ">
+				<img ng-class="" class="lottery-unit lottery-unit-0" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/{{check ? 'prize1_y.png':'prize1_n.png'}}">
+				<img class="lottery-unit lottery-unit-1" width=20%" height="auto" ng-src="{{prizeArray[1].show}}">
+				<img class="lottery-unit lottery-unit-2" width=20%" height="auto" ng-src="{{prizeArray[2].show}}">
+				<img class="lottery-unit lottery-unit-3" width=20%" height="auto" ng-src="{{prizeArray[3].show}}">
+				<img class="lottery-unit lottery-unit-4" width=20%" height="auto" ng-src="{{prizeArray[4].show}}">
+				<a class="btn-drawPrize tc" >&lt;!&ndash;ng-click="startDrawPrize()"&ndash;&gt;
+					<img  width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/btn_drawPrize.png">
+					<span class="c0">（1）次机会</span>
+				</a>
+				<img class="lottery-unit lottery-unit-5" width=20%" height="auto" ng-src="{{prizeArray[5].show}}">
+				<img class="lottery-unit lottery-unit-6" width=20%" height="auto" ng-src="{{prizeArray[6].show}}">
+				<img class="lottery-unit lottery-unit-7" width=20%" height="auto" ng-src="{{prizeArray[7].show}}">
+				<img class="lottery-unit lottery-unit-8" width=20%" height="auto" ng-src="{{prizeArray[8].show}}">
+				<img class="lottery-unit lottery-unit-9" width=20%" height="auto" ng-src="{{prizeArray[9].show}}">
+			</div><div class="prize-list tc ">
+			<img ng-class="" class="lottery-unit lottery-unit-0" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/{{check ? 'prize1_y.png':'prize1_n.png'}}">
+			<img class="lottery-unit lottery-unit-1" width=20%" height="auto" ng-src="{{prizeArray[1].show}}">
+			<img class="lottery-unit lottery-unit-2" width=20%" height="auto" ng-src="{{prizeArray[2].show}}">
+			<img class="lottery-unit lottery-unit-3" width=20%" height="auto" ng-src="{{prizeArray[3].show}}">
+			<img class="lottery-unit lottery-unit-4" width=20%" height="auto" ng-src="{{prizeArray[4].show}}">
+			<a class="btn-drawPrize tc" >&lt;!&ndash;ng-click="startDrawPrize()"&ndash;&gt;
+				<img  width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/btn_drawPrize.png">
+				<span class="c0">（1）次机会</span>
+			</a>
+			<img class="lottery-unit lottery-unit-5" width=20%" height="auto" ng-src="{{prizeArray[5].show}}">
+			<img class="lottery-unit lottery-unit-6" width=20%" height="auto" ng-src="{{prizeArray[6].show}}">
+			<img class="lottery-unit lottery-unit-7" width=20%" height="auto" ng-src="{{prizeArray[7].show}}">
+			<img class="lottery-unit lottery-unit-8" width=20%" height="auto" ng-src="{{prizeArray[8].show}}">
+			<img class="lottery-unit lottery-unit-9" width=20%" height="auto" ng-src="{{prizeArray[9].show}}">
+		</div>
+
+		</div>-->
+	<div class="bottom">
+		<img ng-click="lookMyPrize()" class="btn-lookPrize my-img2" width="80%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/btn_lookPrize.png">
+		<div ng-click="lookDrawPrizeRule()" class="rule fr">
+			<img class="my-img1" width="75.5" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/prize_rule.png">
+			<img class="my-img1" width="25" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/btn_prize_rule.png">
+		</div>
+	</div>
+    <!--	公用浮层-->
+	<div class="c-layer" ng-click="cancelLayer()"  ng-if="layerLock"></div>
+	<!--积分不够-->
+	<div class="layer-content no-enoughScore " ng-if="noScoreLock&&layerLock">
+		<div class="content tc">
+			<div  class="top tc">
+				<img class="my-img2 " width="70%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/top_no_score.png">
+			</div>
+			<p class="f7 c11">去玩游戏赚积分吧!</p>
+			<img ng-click="playGame()" class="my-img2" width="80%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/btn_noScore.png">
+		</div>
+	</div>
+	<!--未中奖-->
+	<div class="layer-content no-prize " ng-if="noPriseLock&&layerLock">
+		<div class="content tc">
+			<div  class="top tc">
+				<img class="my-img2 " width="70%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/top_no_prize.png">
+			</div>
+			<h3 class="fw0 c11">很遗憾</h3>
+			<p class="f7 c11">您与幸运之神擦肩而过，不要气馁，奖品多多，机会多多，要继续加油哦！</p>
+			<img ng-click="tryAgain()" class="my-img2" width="80%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/btn_noPrize.png">
+		</div>
+	</div>
+	<!--中奖-->
+	<div class="layer-content get-prize " ng-if="getPriseLock&&layerLock">
+		<div class="content tc">
+			<div  class="top tc">
+				<img class="my-img2 " width="70%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/top_get_prize.png">
+			</div>
+			<img class="pic my-img2" width="80" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/a_7.png">
+
+			<h3 class="fw0 c11">厉害！</h3>
+			<p class="f7 c11">
+				恭喜您抽中宝护伞价值20万元保障金，此奖项需要您填写家庭详细信息。<br>
+					（此奖品需要您支付20元的快递费）
+
+			</p>
+			<img ng-click="getPrize()" class="my-img2" width="80%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/btn_getPrize.png">
+		</div>
+	</div>
+	<div class="layer-content drawPrize-rule "ng-if="DrawPriseLock&&layerLock" >
+		<div class="content" >
+			<div  class="top tc">
+				<img class="my-img2 " width="70%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/top_drawPrize.png">
+			</div>
+			<div  class="scroller">
+				<div class="f2 c11">
+					<span>1、</span>
+					每80分可抽奖一次，抽奖次数不限，分数越高抽奖次数越多；</div>
+				<div class="f2 c11">
+					<span>2、</span>
+					奖品随机出现，开启你的好运吧，具体奖品如下：
+					<p>
+						<span class="bold">奖品</span>
+						1,宝护伞20万保障金<br>
+						2,爱奇艺VIP会员<br>
+						3,儿童洗手液<br>
+						4,超轻粘土橡皮泥<br>
+						5,便携磨砂杯<br>
+						6,宝宝小凉席<br>
+						7,迪士尼儿童卡通米奇汤碗<br>
+						8,儿童午睡夏凉被<br>
+						9,儿童益智积木玩具<br>
+						10,青花瓷便携餐具<br>
+						11,九阳家用煎烤机<br>
+						12,贝贝鸭宝宝辅食料理机<br>
+						13,乐普多种维生素加矿物质片<br>
+						14,火火兔儿童早教机<br>
+						15,柏翠自动撒果料面包机<br>
+						16,美的电烤箱<br>
+					</p>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+
+
+
 </div>
+<!--
+<script type="text/javascript">
+	var myScroll;
+	function loaded(){
+		setTimeout(function(){
+					myScroll = new iScroll('wrapper', {
+						hideScrollbar: true,
+						checkDOMChanges:true
+					}) },
+				100 );
+	}
+	window.addEventListener("load",loaded,false);
+</script>
+-->
 
