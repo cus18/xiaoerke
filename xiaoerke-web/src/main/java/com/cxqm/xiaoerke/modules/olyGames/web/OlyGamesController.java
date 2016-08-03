@@ -348,9 +348,10 @@ public class OlyGamesController extends BaseController {
 
         //生成图片网络路径
         String path = "http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/"+"olympicBaby_invite_"+openId+".png";
-        //生成图片暂存路径
-        String outPath = System.getProperty("user.dir").replace("bin", "uploadImg")+"\\image\\"+new Date().getTime()+".png";
         if(!ImgUtils.existHttpPath(path)){
+            //生成图片暂存路径
+            String outPath = System.getProperty("user.dir").replace("bin", "uploadImg")+"\\image\\"+new Date().getTime()+".png";
+
             if(!StringUtils.isNotNull(marketer)){
                 marketer = olyGamesService.getMarketerByOpenid(openId);//根据openid获取邀请码
             }
@@ -362,28 +363,29 @@ public class OlyGamesController extends BaseController {
 
             //上传图片
             ImgUtils.uploadImage("olympicBaby_invite_"+openId+".png", outPath);
+
+            File wxFile=new File(outPath);
+            InputStream is = null;
+            try {
+                is = new FileInputStream(wxFile);
+                String upLoadUrl = "https://api.weixin.qq.com/cgi-bin/media/upload";
+                Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                org.json.JSONObject jsonObject = WechatUtil.uploadNoTextMsgToWX((String) userWechatParam.get("token"), upLoadUrl, "image", wxFile.getName(), is);
+
+                WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"),openId,"新游戏需要邀请从未关注过“宝大夫”的好友助力方可解锁开启，赶紧把下方图片分享出去吧，大奖在等你哦！");
+                WechatUtil.sendNoTextMsgToWechat((String) userWechatParam.get("token"),openId,(String) jsonObject.get("media_id"),1);
+            }catch (Exception e){
+                e.printStackTrace();
+            }finally {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         response.put("path",path);
 
-        File wxFile=new File(outPath);
-        InputStream is = null;
-        try {
-            is = new FileInputStream(wxFile);
-            String upLoadUrl = "https://api.weixin.qq.com/cgi-bin/media/upload";
-            Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-            org.json.JSONObject jsonObject = WechatUtil.uploadNoTextMsgToWX((String) userWechatParam.get("token"), upLoadUrl, "image", wxFile.getName(), is);
-
-            WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"),openId,"新游戏需要邀请从未关注过“宝大夫”的好友助力方可解锁开启，赶紧把下方图片分享出去吧，大奖在等你哦！");
-            WechatUtil.sendNoTextMsgToWechat((String) userWechatParam.get("token"),openId,(String) jsonObject.get("media_id"),1);
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
         return response;
     }
 
