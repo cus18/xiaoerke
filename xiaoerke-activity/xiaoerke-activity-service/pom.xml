@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.cxqm</groupId>
-    <artifactId>xiaoerke-consult</artifactId>
+    <artifactId>xiaoerke-activity</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>xiaoerke-activity-service</artifactId>
@@ -32,6 +32,11 @@
     <dependency>
       <groupId>com.cxqm</groupId>
       <artifactId>xiaoerke-wechat-api</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.cxqm</groupId>
+      <artifactId>xiaoerke-activity-api</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
 
