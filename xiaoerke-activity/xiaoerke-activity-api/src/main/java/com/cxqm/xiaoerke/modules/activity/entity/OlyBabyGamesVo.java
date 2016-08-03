@@ -11,6 +11,8 @@ public class OlyBabyGamesVo {
 
     private Float gameScore;
 
+    private String nickName;
+
     private Integer level1CurrentTimes;
 
     private Integer level2CurrentTimes;
@@ -171,5 +173,13 @@ public class OlyBabyGamesVo {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 }
