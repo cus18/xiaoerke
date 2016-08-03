@@ -262,23 +262,6 @@ public class OlyGamesController extends BaseController {
 
 
     /**
-     * 获取某个游戏玩的次数
-     * input:{openid:"fwefewfewf",gameLevel:3}
-     * result: {gamePlayingTimes:2}
-     ***/
-    @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    Map<String, Object> test() {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("openid","111111");
-        params.put("gameLevel", 3);
-        params.put("gameScore",34.5);
-//        GetGamePlayingTimes(params);
-        SaveGameScore(params);
-        return params;
-    }
-    /**
      * 将某关的游戏积分存入后台
      * input:{openid:"fwefewfewf",gameLevel:3,gameScore:80}
      * result: {result:"success"}
@@ -325,6 +308,24 @@ public class OlyGamesController extends BaseController {
     }
 
 
+    /**
+     * 获取某个游戏玩的次数
+     * input:{openid:"fwefewfewf",gameLevel:3}
+     * result: {gamePlayingTimes:2}
+     ***/
+    @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> test() {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("openid","111111");
+        params.put("gameLevel", 3);
+        params.put("gameScore",34.5);
+//        GetGamePlayingTimes(params);
+//        SaveGameScore(params);
+        GetUserGameScore(params);
+        return params;
+    }
     /**
      * 获取用户的游戏积分
      * input: {openid:"fwefwefewfw"}
