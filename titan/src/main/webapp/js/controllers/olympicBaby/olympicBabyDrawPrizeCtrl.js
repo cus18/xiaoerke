@@ -7,6 +7,7 @@
             $scope.noPriseLock = false;//无奖品浮层开关
             $scope.getPriseLock = false;//有奖品浮层开关
             $scope.DrawPriseLock = false;//抽奖浮层开关
+            $scope.FillInfoLock = false;//领取奖品浮层开关
             $scope.prizeArray = [false,false,false,false,false,false,false,false,false,false];//奖品列表图片
             var click=false;
             var openid = "111111" ;
@@ -78,10 +79,8 @@
                     click=false;
                     if(prizIndex == 3){
                         $scope.noPriseLock = true;
-                        $scope.layerLock = true;
                     }else{
                         $scope.getPriseLock = true;
-                        $scope.layerLock = true;
                     }
                 }else{
                     if (lottery.times<lottery.cycle) {
@@ -117,7 +116,6 @@
 
             //点击 查看我的奖品
             $scope.lookMyPrize = function(){
-                // $scope.layerLock = true;
                 // $scope.getPriseLock = true;
                 $state.go("olympicBabyMyPrize");
             };
@@ -125,7 +123,6 @@
             //点击 查看抽奖规则
             var myScroll;
             $scope.lookDrawPrizeRule = function(){
-                $scope.layerLock = true;
                 $scope.DrawPriseLock = true;
                 loaded();
                 window.addEventListener("load",loaded,false);
@@ -142,11 +139,11 @@
 
             //点击 取消浮层
             $scope.cancelLayer = function(){
-                $scope.layerLock = false;
                 $scope.noScoreLock = false;//无积分浮层开关
                 $scope.noPriseLock = false;//无奖品浮层开关
                 $scope.getPriseLock = false;//有奖品浮层开关
                 $scope.DrawPriseLock = false;//抽奖浮层开关
+                $scope.FillInfoLock = false;
             };
 
             //点击 浮层下 玩游戏
@@ -163,6 +160,7 @@
             //点击 浮层下 领取奖品
             $scope.getPrize = function(){
                 $scope.cancelLayer();
+                $scope.FillInfoLock = true;
             };
 
             //根据openid获取奖品

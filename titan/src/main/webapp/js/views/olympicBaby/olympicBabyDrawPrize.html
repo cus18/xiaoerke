@@ -32,10 +32,10 @@
 			<img class="my-img1" width="25" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/btn_prize_rule.png">
 		</div>
 	</div>
-    <!--	公用浮层-->
-	<div class="c-layer" ng-click="cancelLayer()"  ng-if="layerLock"></div>
+    <!--浮层-->
 	<!--积分不够-->
-	<div class="layer-content no-enoughScore " ng-if="noScoreLock&&layerLock">
+	<div class="c-layer" ng-click="cancelLayer()"  ng-if="noScoreLock"></div>
+	<div class="layer-content no-enoughScore " ng-if="noScoreLock">
 		<div class="content tc">
 			<div  class="top tc">
 				<img class="my-img2 " width="70%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/top_no_score.png">
@@ -44,8 +44,10 @@
 			<img ng-click="playGame()" class="my-img2" width="80%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/btn_noScore.png">
 		</div>
 	</div>
+
 	<!--未中奖-->
-	<div class="layer-content no-prize " ng-if="noPriseLock&&layerLock">
+	<div class="c-layer" ng-click="cancelLayer()"  ng-if="noPriseLock"></div>
+	<div class="layer-content no-prize " ng-if="noPriseLock">
 		<div class="content tc">
 			<div  class="top tc">
 				<img class="my-img2 " width="70%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/top_no_prize.png">
@@ -55,8 +57,10 @@
 			<img ng-click="tryAgain()" class="my-img2" width="80%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/btn_noPrize.png">
 		</div>
 	</div>
+
 	<!--中奖-->
-	<div class="layer-content get-prize " ng-if="getPriseLock&&layerLock">
+	<div class="c-layer" ng-click="cancelLayer()"  ng-if="getPriseLock"></div>
+	<div class="layer-content get-prize " ng-if="getPriseLock">
 		<div class="content tc">
 			<div  class="top tc">
 				<img class="my-img2 " width="70%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/top_get_prize.png">
@@ -72,7 +76,36 @@
 			<img ng-click="getPrize()" class="my-img2" width="80%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/btn_getPrize.png">
 		</div>
 	</div>
-	<div class="layer-content drawPrize-rule "ng-if="DrawPriseLock&&layerLock" >
+
+	<!--领取奖品-->
+	<div class="c-layer" ng-click="cancelLayer()"  ng-if="FillInfoLock"></div>
+	<div class="layer-content FillInfo "ng-if="FillInfoLock" >
+		<div class="content" >
+			<div>
+				<img class="my-img2" width="70%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/fill_text.png">
+			</div>
+			<ul>
+				<li>
+					<img class="" width="23" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/fill_name.png">
+					<input type="text" class="" >
+				</li>
+				<li>
+					<img class="" width="34" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/fill_phone.png">
+					<input type="text" class="" >
+				</li>
+				<li>
+					<img class="" width="47" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/fill_address.png">
+					<textarea type="text" class="" ></textarea>
+				</li>
+			</ul>
+			<img class="my-img2" width="75%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/fill_sure.png">
+
+		</div>
+	</div>
+
+	<!--抽奖规则-->
+	<div class="c-layer" ng-click="cancelLayer()"  ng-if="DrawPriseLock"></div>
+	<div class="layer-content drawPrize-rule "ng-if="DrawPriseLock" >
 		<div class="content" >
 			<div  class="top tc">
 				<img class="my-img2 " width="70%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/top_drawPrize.png">
@@ -109,6 +142,7 @@
 
 		</div>
 	</div>
+
 
 
 
