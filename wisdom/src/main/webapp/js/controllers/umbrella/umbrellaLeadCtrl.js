@@ -204,34 +204,20 @@
 
                     recordLogs("BHS_H5_LJJR_"+(mySwiper.activeIndex+1));
 
-                    if(mySwiper.activeIndex==5){
-
+                    if(mySwiper.activeIndex==4){
                         arrObj.style.display="none";
-
                     }
-
                     else{
-
                         arrObj.style.display="block";
-
                     }
-
-
 
                 },
 
                 onTransitionEnd: function(swiper){
-
                     swiperAnimate(swiper);
-
-
-
-
-
                 },
 
                 watchSlidesProgress: true,
-
                 onProgress: function(swiper){
 
                     for (var i = 0; i < swiper.slides.length; i++){
