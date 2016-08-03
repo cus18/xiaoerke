@@ -1,3 +1,28 @@
 <div ui-view class="olympicGameLevel2">
-	游戏第二关
+	<div class="top">
+		<div class="box time" id="surplus"></div>
+		<div class="box score" id="score"></div>
+	</div>
+	<div class="hurdlesBox" id="hurdlesBox">
+		<div class="athlete" id="athlete"></div>
+		<div class="barrier" id="barrier"></div>
+		<div class="movingBackground" id="movingBackground"></div>
+		<div class="jumpBtn" id="jumpBtn" data-ng-init="olympicGameLevel2Init()">
+			<img src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2Fhurdles%2FhurdlesJump.png" alt="">
+		</div>
+	</div>
+	<div class="startAnimat" id="startAnimat">
+		<img src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2FstartAnimatThree.png" alt=""/>
+		<img src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2FstartAnimatTwo.png" alt=""/>
+		<img src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2FstartAnimatOne.png" alt=""/>
+		<img src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2FstartAnimatGo.png" alt=""/>
+	</div>
+	<div class="resultImg" id="resultImg">
+		<div id="spielergebnis"></div>
+		<img width="50%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2Fsprint%2Fbutton_c_png_03.png" alt=""/>
+		<img width="50%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2Fsprint%2Fbutton_d_png_03.png" alt=""/>
+	</div>
+	<div class="startImg" ng-if="startFloat">
+		<img width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2Fsprint%2Fgif.gif" alt=""/>
+	</div>
 </div>

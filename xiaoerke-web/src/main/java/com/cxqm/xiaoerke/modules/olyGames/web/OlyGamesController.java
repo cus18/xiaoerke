@@ -243,20 +243,24 @@ public class OlyGamesController extends BaseController {
         OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
         olyBabyGamesVo.setOpenId(openId);
         OlyBabyGamesVo vo = olyGamesService.selectByOlyBabyGamesVo(olyBabyGamesVo);
-        String[] prizes = vo.getPrize().split(",");
-        List<Map<String,Object>> prizeList = new ArrayList<Map<String, Object>>();
-        for(String temp : prizes){
-            Map<String,Object> prizeMap = new HashMap<String, Object>();
-            Map<String,Object> param = new HashMap<String, Object>();
-            param.put("prizeDate",DateUtils.DateToStr(new Date(),"date"));
-            param.put("prizeOrder",temp);
-            List<Map<String,Object>> pList = olyGamesService.getOlyGamePrizeList(param);
-            prizeMap.put("prizeName",pList.get(0).get("prizeName"));
-            prizeMap.put("prizeLink",pList.get(0).get("prizeLink"));
-            prizeMap.put("prizeOrder",temp);
-            prizeList.add(prizeMap);
+        if(vo!=null){
+            if(StringUtils.isNotNull(vo.getPrize())){
+                String[] prizes = vo.getPrize().split(",");
+                List<Map<String,Object>> prizeList = new ArrayList<Map<String, Object>>();
+                for(String temp : prizes){
+                    Map<String,Object> prizeMap = new HashMap<String, Object>();
+                    Map<String,Object> param = new HashMap<String, Object>();
+                    param.put("prizeDate",DateUtils.DateToStr(new Date(),"date"));
+                    param.put("prizeOrder",temp);
+                    List<Map<String,Object>> pList = olyGamesService.getOlyGamePrizeList(param);
+                    prizeMap.put("prizeName",pList.get(0).get("prizeName"));
+                    prizeMap.put("prizeLink",pList.get(0).get("prizeLink"));
+                    prizeMap.put("prizeOrder",temp);
+                    prizeList.add(prizeMap);
+                }
+                responseMap.put("prizeList", prizeList);
+            }
         }
-        responseMap.put("prizeList", prizeList);
         return responseMap;
     }
 
