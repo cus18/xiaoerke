@@ -345,25 +345,25 @@ public class OlyGamesController extends BaseController {
         Map<String,Object> response = new HashMap<String, Object>();
         String openId = (String)params.get("openid");
         String marketer = (String)params.get("marketer");
-        if(!StringUtils.isNotNull(marketer)){
-            marketer = olyGamesService.getMarketerByOpenid(openId);//根据openid获取邀请码
-        }
-        String userQRCode = olyGamesService.getUserQRCode(marketer);//二维码
 
-        String headImgUrl = olyGamesService.getWechatMessage(openId);//头像
-
+        //生成图片网络路径
+        String path = "http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/"+"olympicBaby_invite_"+openId+".png";
         //生成图片暂存路径
         String outPath = System.getProperty("user.dir").replace("bin", "uploadImg")+"\\image\\"+new Date().getTime()+".png";
+        if(!ImgUtils.existHttpPath(path)){
+            if(!StringUtils.isNotNull(marketer)){
+                marketer = olyGamesService.getMarketerByOpenid(openId);//根据openid获取邀请码
+            }
+            String userQRCode = olyGamesService.getUserQRCode(marketer);//二维码
+            String headImgUrl = olyGamesService.getWechatMessage(openId);//头像
 
-        //生成邀请卡图片
-        ImgUtils.composePic(headImgUrl, userQRCode, outPath, 71, 231,185,500);
+            //生成邀请卡图片
+            ImgUtils.composePic(headImgUrl, userQRCode, outPath, 71, 231,185,500);
 
-        //上传图片
-        ImgUtils.uploadImage("olympicBaby_invite_"+openId+".png", outPath);
-
-        String path = "http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/"+"olympicBaby_invite_"+openId+".png";
+            //上传图片
+            ImgUtils.uploadImage("olympicBaby_invite_"+openId+".png", outPath);
+        }
         response.put("path",path);
-
 
         File wxFile=new File(outPath);
         InputStream is = null;
@@ -386,7 +386,6 @@ public class OlyGamesController extends BaseController {
         }
         return response;
     }
-
 
 
 }
