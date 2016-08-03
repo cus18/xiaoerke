@@ -222,6 +222,19 @@ public class OlyGamesController extends BaseController {
         OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
         olyBabyGamesVo.setOpenId(openId);
         olyBabyGamesVo.setGameScore(gameScore);
+        if (gameLevel == 1) {
+            olyBabyGamesVo.setLevel1CurrentTimes(1);
+        } else if (gameLevel == 2) {
+            olyBabyGamesVo.setLevel2CurrentTimes(1);
+        } else if (gameLevel == 3) {
+            olyBabyGamesVo.setLevel3CurrentTimes(1);
+        } else if (gameLevel == 4) {
+            olyBabyGamesVo.setLevel4CurrentTimes(1);
+        } else if (gameLevel == 5) {
+            olyBabyGamesVo.setLevel5CurrentTimes(1);
+        } else if (gameLevel == 6) {
+            olyBabyGamesVo.setLevel6CurrentTimes(1);
+        }
         int updateFlag = olyGamesService.updateOlyBabyGamesByOpenId(olyBabyGamesVo);
 
         OlyBabyGameDetailVo olyBabyGameDetailVo = new OlyBabyGameDetailVo();
