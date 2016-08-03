@@ -15,6 +15,8 @@
     <result column="marketer" property="marketer" jdbcType="VARCHAR" />
     <result column="invite_friend_number" property="inviteFriendNumber" jdbcType="INTEGER" />
     <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="prize" property="prize" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="address" property="address" jdbcType="VARCHAR" />
@@ -312,5 +314,8 @@
     
   <select id="getMarketerByOpenid" resultType="java.lang.String" parameterType="java.lang.String">
     SELECT marketer FROM oly_baby_games where open_id=#{openId};
+  </select>
+  <select id="getUserPrizeList" resultMap="BaseResultMap">
+    select * from oly_baby_games where prize!=null and prize!='' ORDER BY create_time desc LIMIT 5
   </select>
 </mapper>
