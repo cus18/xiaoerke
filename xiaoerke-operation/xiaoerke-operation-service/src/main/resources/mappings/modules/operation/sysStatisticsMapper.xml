@@ -761,4 +761,24 @@
         delete from channel_info
         where id = #{channelId,jdbcType=VARCHAR}
     </delete>
+    <!--用户新关注与净留存统计-->
+    <select id="getNewUserAttentionAndRemainStatistics" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT newAttention.marketer marketer,IFNULL(newAttention.newAttentionCount,0) newAttentionCount,IFNULL(newLeft.newLeftCount,0) newLeftCount FROM
+        (SELECT marketer,COUNT(DISTINCT openid) newAttentionCount
+        FROM sys_attention
+        WHERE status='0'
+        AND DATE_FORMAT(date,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
+        and marketer is NOT NULL and marketer!=''
+        GROUP BY marketer) newAttention
+        LEFT JOIN
+        (SELECT marketer,COUNT(*) newLeftCount
+        FROM sys_attention
+        WHERE status='0'
+        AND openid not IN(SELECT DISTINCT openid FROM sys_attention WHERE status='1'AND DATE_FORMAT(date,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate})
+        AND DATE_FORMAT(date,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
+        and marketer is NOT NULL and marketer!=''
+        GROUP BY marketer) newLeft
+        ON newAttention.marketer=newLeft.marketer
+        where newAttention.marketer NOT REGEXP '1200|last_trade_no_|1300'
+    </select>
 </mapper>

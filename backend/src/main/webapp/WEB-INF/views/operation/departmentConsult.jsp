@@ -22,6 +22,7 @@
     <li><a href="${ctx}/sys/Channel/userStatisticsDepartment"><font color="#006400">用户统计(部门)</font></a></li>
     <li><a href="${ctx}/sys/Channel/ChannelConsultStatistics"><font color="#006400">咨询统计(渠道)</font></a></li>
     <li class="active"><a href="${ctx}/sys/Channel/DepartmentConsultStatistics"><font color="#006400">咨询统计(部门)</font></a></li>
+    <li><a href="${ctx}/sys/Channel/newUserAttentionAndRemainStatistics"><font color="#006400">用户新关注与净留存统计</font></a></li>
 </ul>
 
 <form:form id="searchForm" modelAttribute="registerServiceVo" action="${ctx}/sys/Channel/DepartmentConsultStatistics" method="post" class="form-search">

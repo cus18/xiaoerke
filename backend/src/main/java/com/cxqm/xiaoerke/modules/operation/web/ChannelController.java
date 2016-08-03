@@ -369,4 +369,40 @@ public class ChannelController extends BaseController {
 
         return jsonObject.toString();
     }
+
+    /**
+     * 用户新关注与净留存统计
+     *@author guozengguang
+     * @return
+     */
+    @RequiresPermissions("user")
+    @RequestMapping(value = {"newUserAttentionAndRemainStatistics", ""})
+    public String newUserAttentionAndRemainStatistics(HttpServletRequest request,  Model model) throws Exception{
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+
+
+        if (StringUtils.isNull(startDate)) {//默认查看最近5天的
+            Calendar ca = Calendar.getInstance();
+            ca.set(ca.get(Calendar.YEAR), ca.get(Calendar.MONTH), ca.get(Calendar.DATE) - 2);
+            Date start = ca.getTime();
+            startDate = DateUtils.formatDate(start, "yyyy-MM-dd");
+            ca.set(ca.get(Calendar.YEAR), ca.get(Calendar.MONTH), ca.get(Calendar.DATE) + 2);
+            Date end = ca.getTime();
+            endDate = DateUtils.formatDate(end, "yyyy-MM-dd");
+        }
+
+
+        HashMap<String, Object> iniMap = new HashMap<String, Object>();
+        iniMap.put("startDate",startDate);
+        iniMap.put("endDate",endDate);
+        List<HashMap<String, Object>> listQdData = channelService.getNewUserAttentionAndRemainStatistics(iniMap);
+        model.addAttribute("resultList", listQdData);
+
+        RegisterServiceVo registerServiceVo = new RegisterServiceVo();
+        registerServiceVo.setStartDate(startDate);
+        registerServiceVo.setEndDate(endDate);
+        model.addAttribute("registerServiceVo", registerServiceVo);
+        return "operation/newUserAttentionAndRemain";
+    }
 }

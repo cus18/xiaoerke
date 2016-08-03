@@ -203,4 +203,9 @@ public class ChannelServiceImpl implements ChannelService {
     public int deleteChannelInfo(String channelId){
         return sysStatisticsDao.deleteChannelInfo(channelId);
     }
+
+    @Override
+    public List<HashMap<String, Object>> getNewUserAttentionAndRemainStatistics(Map<String, Object> map){
+        return sysStatisticsDao.getNewUserAttentionAndRemainStatistics(map);
+    }
 }
