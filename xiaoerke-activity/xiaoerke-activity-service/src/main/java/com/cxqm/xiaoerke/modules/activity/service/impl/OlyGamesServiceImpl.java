@@ -52,6 +52,23 @@ public class OlyGamesServiceImpl implements OlyGamesService {
         return olyGamePrizeDao.getOlyGamePrizeList(prizeMap);
     }
 
+    /**
+     * 获取日期最近的5个用户的奖品列表
+     * sunxiao
+     * @return
+     */
+    public List<OlyBabyGamesVo> getUserPrizeList(){
+        return olyGamePrizeDao.getUserPrizeList();
+    }
+    /**
+     * 更新奖品信息
+     * sunxiao
+     * @return
+     */
+    public void updateOlyGamePrizeInfo(Map<String, Object> prizeMap){
+        olyGamePrizeDao.updateOlyGamePrizeInfo(prizeMap);
+    }
+
     @Override
     public int insertOlyBabyGamesVo(OlyBabyGamesVo record) {
         return olyBabyGamesDao.insertSelective(record);
