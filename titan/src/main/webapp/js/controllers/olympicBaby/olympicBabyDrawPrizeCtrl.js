@@ -10,24 +10,12 @@
             $scope.prizeArray = [false,false,false,false,false,false,false,false,false,false];//奖品列表图片
             var click=false;
             var openid = "111111" ;
-            var prizIndex;
+            var prizIndex = 3;
 
             //页面初始化
             $scope.olympicBabyDrawPrizeInit = function(){
                 lottery.init('lottery');
                 //获取用户抽奖内容
-                /*GetGameScorePrize.save({"openid":openid},function (data) {
-                    console.log("data",data);
-                    var index = parseInt(data.prizeOrder);
-                    if(index==3){
-                        prizIndex = 3;
-                    }else if(index>9){
-                        prizIndex = 5;
-                    }else{
-                        prizIndex = index;
-                    }
-                });*/
-
             };
 
             var lottery={
@@ -70,6 +58,7 @@
                 if (click) {
                     return false;
                 }else{
+                    getPrizeIndex();
                     lottery.speed=100;
                     roll();
                     click=true;
@@ -87,20 +76,20 @@
                     lottery.prize=-1;
                     lottery.times=0;
                     click=false;
-                    /*if(prizIndex == 3){
+                    if(prizIndex == 3){
                         $scope.noPriseLock = true;
                         $scope.layerLock = true;
                     }else{
                         $scope.getPriseLock = true;
                         $scope.layerLock = true;
-                    }*/
+                    }
                 }else{
                     if (lottery.times<lottery.cycle) {
                         lottery.speed -= 10;
                     }else if(lottery.times==lottery.cycle) {
-                         var index = Math.random()*(lottery.count)|0;
-                         lottery.prize = index;
-                        //lottery.prize = prizIndex;
+                         // var index = Math.random()*(lottery.count)|0;
+                         // lottery.prize = index;
+                        lottery.prize = prizIndex;
                         console.log("我的奖品"+ lottery.prize );
                     }else{
                         if (lottery.times > lottery.cycle+10 && ((lottery.prize==0 && lottery.index==7) || lottery.prize==lottery.index+1)) {
@@ -173,7 +162,24 @@
 
             //点击 浮层下 领取奖品
             $scope.getPrize = function(){
-
+                $scope.cancelLayer();
             };
+
+            //根据openid获取奖品
+            var getPrizeIndex = function () {
+                GetGameScorePrize.save({"openid":openid},function (data) {
+                    console.log("data",data);
+                    var index = parseInt(data.prizeOrder);
+                    $scope.prizeName = data.prizeName;
+                    if(index==3){
+                        prizIndex = 3;
+                    }else if(index>9){
+                        prizIndex = 5;
+                    }else{
+                        prizIndex = index;
+                    }
+                    console.log("prizIndex",prizIndex);
+                });
+            }
 
     }]);
