@@ -6,10 +6,8 @@ import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGameDetailVo;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
-import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
-import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,6 +47,22 @@ public class OlyGamesController extends BaseController {
     @Autowired
     private WechatAttentionService wechatAttentionService;
 
+
+    /**
+     * 获取某个游戏玩的次数
+     * input:{openid:"fwefewfewf",gameLevel:3}
+     * result: {gamePlayingTimes:2}
+     ***/
+    @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> test() {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("openid","111111");
+        params.put("gameLevel",3);
+        GetGamePlayingTimes(params);
+        return params;
+    }
     /**
      * 获取某个游戏玩的次数
      * input:{openid:"fwefewfewf",gameLevel:3}
@@ -60,7 +74,7 @@ public class OlyGamesController extends BaseController {
     Map<String, Object> GetGamePlayingTimes(@RequestBody Map<String, Object> params) {
         Map<String, Object> responseMap = new HashMap<String, Object>();
         String openId = (String) params.get("openid");
-        Integer gameLevel = Integer.valueOf((String) params.get("gameLevel"));
+        int gameLevel = Integer.valueOf((Integer) params.get("gameLevel"));
         OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
         olyBabyGamesVo.setOpenId(openId);
         OlyBabyGamesVo resultvo = olyGamesService.selectByOlyBabyGamesVo(olyBabyGamesVo);
@@ -76,6 +90,8 @@ public class OlyGamesController extends BaseController {
             responseMap.put("gamePlayingTimes", resultvo.getLevel5CurrentTimes());
         } else if (gameLevel == 6) {
             responseMap.put("gamePlayingTimes", resultvo.getLevel6CurrentTimes());
+        }else {
+            responseMap.put("gamePlayingTimes", 0);
         }
         return responseMap;
     }
@@ -90,14 +106,14 @@ public class OlyGamesController extends BaseController {
     @RequestMapping(value = "/gameScore/GetGameScorePrize",method = {RequestMethod.POST,RequestMethod.GET})
     public synchronized
     @ResponseBody
-    Map<String,Object> GetGameScorePrize(@RequestBody Map<String, Object> params){
+    Map<String,Object> GetGameScorePrize(@RequestBody  Map<String, Object> params){
         Map<String,Object> responseMap = new HashMap<String, Object>();
         String openId = (String)params.get("openid");
         OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
         olyBabyGamesVo.setOpenId(openId);
         OlyBabyGamesVo vo = olyGamesService.selectByOlyBabyGamesVo(olyBabyGamesVo);
         String prizes = vo.getPrize();//获取用户的抽奖信息
-        int gameLevel = vo.getGameLevel();
+        int gameLevel = 0;
         prizes = prizes==null?"":prizes;
         if(!prizes.contains(",")){//没有得过奖品和只得一次奖品的可以抽奖
             int random = new Random().nextInt(100);
@@ -149,7 +165,7 @@ public class OlyGamesController extends BaseController {
                 responseMap.put("prizeOrder",3);
                 responseMap.put("prizeName","谢谢参与");
             }
-            if(3 != (Integer) responseMap.get("prizeOrder")){//抽到奖品
+            if(3 != responseMap.get("prizeOrder")){//抽到奖品
                 if("".equals(prizes)){
                     prizes = responseMap.get("prizeOrder").toString();
                 }else{
@@ -160,7 +176,7 @@ public class OlyGamesController extends BaseController {
                 param.put("prizeNumber",(Integer)responseMap.get("prizeNumber")-1);
                 param.put("prizeDate",today);
                 olyGamesService.updateOlyGamePrizeInfo(param);//更新奖品数量
-            }else if(3 == (Integer)responseMap.get("prizeOrder")&&prizeOrder == 4&&!prizes.contains("4")){//抽到保护伞且返回谢谢参与且没有抽中过保护伞
+            }else if(3 == responseMap.get("prizeOrder")&&prizeOrder == 4&&!prizes.contains("4")){//抽到保护伞且返回谢谢参与且没有抽中过保护伞
                 if("".equals(prizes)){
                     prizes = "4";
                 }else{
@@ -186,43 +202,16 @@ public class OlyGamesController extends BaseController {
      * result: {prizeList:[{prizeName:"电饭煲",XXX:"XXXXX"},{prizeName:"电饭煲"},{prizeName:"电饭煲"}]}
      ***/
     @RequestMapping(value = "/gameScore/GetUserPrizeList",method = {RequestMethod.POST,RequestMethod.GET})
-    public
+    public synchronized
     @ResponseBody
-    Map<String,Object> GetUserPrizeList(@RequestBody Map<String, Object> params){
-        Map<String,String> prizesMap = new HashMap<String, String>();//奖品列表
-        String today = DateUtils.DateToStr(new Date(), "date");
-        Map<String, Object> param=new HashMap<String, Object>();
-        param.put("prizeDate",today);
-        List<Map<String, Object>> prizeList = olyGamesService.getOlyGamePrizeList(param);
-        for(Map<String, Object> temp : prizeList){
-            prizesMap.put((String)temp.get("prizeOrder"),(String)temp.get("prizeName"));
-        }
+    Map<String,Object> GetUserPrizeList(@RequestBody  Map<String, Object> params){
         Map<String,Object> responseMap = new HashMap<String, Object>();
+        String openId = (String)params.get("openid");
+        int random = new Random().nextInt(100);
         List<OlyBabyGamesVo> list = olyGamesService.getUserPrizeList();//取日期最近的5个用户的奖品列表
-        Map<String,Object> prizeMap = new HashMap<String, Object>();
         for(OlyBabyGamesVo vo : list){
-            String[] prizes = vo.getPrize().split(",");
-            String nickName = vo.getNickName();
-            if(StringUtils.isNull(nickName)){
-                WechatAttention wa = wechatAttentionService.getAttentionByOpenId(vo.getOpenId());
-                Map parameter = systemService.getWechatParameter();
-                String token = (String)parameter.get("token");
-                if(wa!=null){
-                    if(StringUtils.isNotNull(wa.getNickname())){
-                        nickName = wa.getNickname();
-                    }else{
-                        WechatBean userinfo = WechatUtil.getWechatName(token, vo.getOpenId());
-                        nickName = StringUtils.isNotNull(userinfo.getNickname())?userinfo.getNickname():"";
-                    }
-                }
-            }
-            StringBuffer sb = new StringBuffer("");
-            for(String prize:prizes){
-                sb.append(prizesMap.get(prize)).append(",");
-            }
-            prizeMap.put(nickName,sb.toString());
+
         }
-        responseMap.put("prizeMap",prizeMap);
         return responseMap;
     }
 
@@ -233,16 +222,13 @@ public class OlyGamesController extends BaseController {
      * result: {addressName:"海淀区",code:"100053","phone":"13601025662","userName":"赵得良"}
      ***/
     @RequestMapping(value = "/gameScore/SaveUserAddress",method = {RequestMethod.POST,RequestMethod.GET})
-    public
+    public synchronized
     @ResponseBody
-    Map<String,Object> SaveUserAddress(@RequestBody Map<String, Object> params){
+    Map<String,Object> SaveUserAddress(@RequestBody  Map<String, Object> params){
         Map<String,Object> responseMap = new HashMap<String, Object>();
         String openId = (String)params.get("openid");
-        String address = (String)params.get("address");
-        OlyBabyGamesVo param = new OlyBabyGamesVo();
-        param.setOpenId(openId);
-        param.setAddress(address);
-        olyGamesService.updateOlyBabyGamesByOpenId(param);
+        int random = new Random().nextInt(100);
+
         return responseMap;
     }
 
@@ -255,7 +241,7 @@ public class OlyGamesController extends BaseController {
     @RequestMapping(value = "/gameScore/GetUserPrizes",method = {RequestMethod.POST,RequestMethod.GET})
     public
     @ResponseBody
-    Map<String,Object> GetUserPrizes(@RequestBody Map<String, Object> params){
+    Map<String,Object> GetUserPrizes(@RequestBody  Map<String, Object> params){
         Map<String,Object> responseMap = new HashMap<String, Object>();
         String openId = (String)params.get("openid");
         OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
@@ -286,7 +272,7 @@ public class OlyGamesController extends BaseController {
     @RequestMapping(value = "/gameScore/SaveGameScore", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> SaveGameScore(@RequestBody Map<String, Object> params) {
+    Map<String, Object> SaveGameScore(@RequestBody  Map<String, Object> params) {
         Map<String, Object> responseMap = new HashMap<String, Object>();
         String openId = (String) params.get("openid");
         Integer gameLevel = Integer.valueOf((String) params.get("gameLevel"));
@@ -333,7 +319,7 @@ public class OlyGamesController extends BaseController {
     @RequestMapping(value = "/firstPage/GetUserGameScore", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> GetUserGameScore(@RequestBody Map<String, Object> params) {
+    Map<String, Object> GetUserGameScore( @RequestBody Map<String, Object> params) {
         Map<String, Object> responseMap = new HashMap<String, Object>();
         String openId = (String) params.get("openid");
         OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
@@ -351,7 +337,7 @@ public class OlyGamesController extends BaseController {
     @RequestMapping(value = "/firstPage/InitOlyGame", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> InitOlyGame(@RequestBody Map<String, Object> params) {
+    Map<String, Object> InitOlyGame( @RequestBody Map<String, Object> params) {
         Map<String, Object> responseMap = new HashMap<String, Object>();
         String openId = (String) params.get("openid");
 
@@ -374,7 +360,7 @@ public class OlyGamesController extends BaseController {
      */
     @RequestMapping(value = "/GetInviteCard",method = {RequestMethod.POST,RequestMethod.GET})
     @ResponseBody
-    public Map<String,Object> GetInviteCard(@RequestBody Map<String, Object> params){
+    public Map<String,Object> GetInviteCard(@RequestBody  Map<String, Object> params){
         Map<String,Object> response = new HashMap<String, Object>();
         String openId = (String)params.get("openid");
         String marketer = (String)params.get("marketer");
