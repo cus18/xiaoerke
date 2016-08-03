@@ -10,7 +10,7 @@
     <include refid="BaseColumn" />
     from oly_game_prize where prizeDate = #{prizeDate}
     <if test="prizeOrder != null" >
-      prizeOrder = #{prizeOrder}
+      and prizeOrder = #{prizeOrder}
     </if>
     order by prizeOrder
   </select>
