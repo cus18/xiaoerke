@@ -332,7 +332,7 @@ public class OlyGamesController extends BaseController {
         int updateFlag = olyGamesService.updateOlyBabyGamesByOpenId(olyBabyGamesVo);
 
         OlyBabyGameDetailVo olyBabyGameDetailVo = new OlyBabyGameDetailVo();
-        olyBabyGameDetailVo.setGameScore((float)gameScore);
+        olyBabyGameDetailVo.setGameScore((float) gameScore);
         olyBabyGameDetailVo.setGameLevel(gameLevel);
         olyBabyGameDetailVo.setCreateBy(openId);
         olyBabyGameDetailVo.setOpenId(openId);
@@ -341,7 +341,8 @@ public class OlyGamesController extends BaseController {
 
         responseMap.put("result", updateFlag > 0 ? "success" : "failure");
         responseMap.put("result", insertFlag > 0 ? "success" : "failure");
-
+        Map<String, Object> playTimes = GetGamePlayingTimes(params);
+        responseMap.put("gamePlayingTimes",playTimes.get("gamePlayingTimes"));
         return responseMap;
     }
 
