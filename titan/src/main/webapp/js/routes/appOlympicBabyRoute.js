@@ -47,6 +47,7 @@ define(['appOlympicBaby'], function(app){
                                     [
                                         'js/libs/lodash.min.js',
                                         'js/controllers/olympicBaby/olympicGameLevel1Ctrl.js?ver='+olympicBabyVersion,
+                                        'styles/olympicBaby/olympicBabyCommon.less?ver='+olympicBabyVersion,
                                         'styles/olympicBaby/olympicGameLevel1.less?ver='+olympicBabyVersion],
                                     'js/views/olympicBaby/olympicGameLevel1.html?ver='+olympicBabyVersion);
                             }

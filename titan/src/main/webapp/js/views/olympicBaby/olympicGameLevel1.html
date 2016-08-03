@@ -16,17 +16,16 @@
 		<img  width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/swimming/start_cutdown.gif">
 	</div>
 
-	<div class="c-layer" ng-if="getScoreLock" ng-click="cancelLayer()"></div>
+	<div class="c-layer" ng-if="getScoreLock" ></div>
 	<div class="layer-content get-Score" ng-if="getScoreLock">
 		<div class="content tc" >
 			<div  class="top">
 				<img class="my-img2 " width="70%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/swimming/top_gameScore.png">
 			</div>
 			<img class="my-img2 " width="40%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/swimming/gama_score.png">
-			<div class="score tc c0">222</div>
-			<img class="my-img2 " width="60%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/swimming/btn_challengeAgain.png">
-			<img class="my-img2 " width="60%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/swimming/btn_challengeMore.png">
-
+			<div class="score tc c0">{{score}}</div>
+			<img ng-click="challengeAgain()" class="my-img2 " width="60%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/swimming/btn_challengeAgain.png">
+			<img ng-click="challengeMore()"  class="my-img2 " width="60%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/swimming/btn_challengeMore.png">
 
 		</div>
 	</div>

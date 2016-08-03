@@ -11,49 +11,32 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
         $scope.totalNum=0;
         $scope.getScoreLock=false;
         $scope.playTimes=1;
-
-        // 取消浮层 得分情况
-        $scope.cancelLayer=function(){
-            $scope.getScoreLock=false;
-        };
-        var flag = true;
-
-        /* $scope.startSwim = function(num){
-         $scope.playCutdownLock =true;
-         if( $scope.playCutdownLock){
-         $scope.score=num;
-         $scope.score++;
-         $scope.totalNum+= $scope.score;
-         $("#swimmer").animate({bottom:$scope.totalNum/10+"px"},0);
-         }
-         var timer1 = setInterval(function() {
-         $scope.playTime--;
-         $scope.$digest(); // 通知视图模型的变化
-         console.log("playTime"+$scope.playTime);
-         }, 1000);
-
-         if(flag){
-         flag = false;
-         var timer = setInterval(function() {
-         $scope.playTime--;
-         if($scope.playTime==0){
-         $scope.playTime=0;
-         clearInterval(timer);
-         $scope.playCutdownLock =false;
-         console.log("playTime 0");
-         }
-         $scope.$digest(); // 通知视图模型的变化
-         console.log("playTime"+$scope.playTime);
-         }, 1000);
-         }
-
-         };*/
-        var speed=2000;
-        var times=100;
-        var top=0;
-        var myTimer;
-        var lock = false;
+        var pageHeight;//页面高度
+        var speed=2000;//回调速度
+        var times=100;//点击次数基数
+        var bottom=0;// 距离页面底部距离
+        var myTimer;//定时器
+        var timerLock = false;// 定时器锁
         var counterTimer;
+        // 重新挑战
+        $scope.challengeAgain=function(){
+            $scope.getScoreLock=false;
+            $scope.score =0;
+            $scope.playTime =15;
+            speed=2000;
+            times=100;
+            bottom=0;
+            $("#swimmer").animate({bottom: bottom+"px"},0);
+            timerLock = false;
+            clearTimeout(myTimer);
+        };
+        // 挑战更多
+        $scope.challengeMore=function(){
+            $state.go("olympicBabyFirst");
+        };
+
+
+
         $scope.startSwim = function(num){
             $scope.playCutdownLock =true;
             $scope.score =num;
@@ -63,14 +46,16 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
             }
             clearTimeout(myTimer);
             mySpeed();
-            if(!lock){
-                lock = !lock;
+            if(!timerLock){
+                timerLock = !timerLock;
                     counterTimer = setInterval(function() {
                     $scope.playTime--;
                     if($scope.playTime==0){
                         $scope.playTime=0;
+                        console.log("$scope.playTime "+$scope.playTime);
                         clearInterval(counterTimer);
                         $scope.playCutdownLock =false;
+                        $scope.getScoreLock=true;
                     }
                     $scope.$digest(); // 通知视图模型的变化
                 }, 1000);
@@ -78,21 +63,48 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
 
         };
         var mySpeed=function(){
-            top++;
-            $("#swimmer").animate({bottom: top+"px"},0);
-            console.log("top"+top);
+            if(bottom<pageHeight/7){
+                bottom=bottom+0.2;
+
+            }
+            else if(bottom<2*pageHeight/7){
+                bottom=bottom+0.3;
+            }
+            else if(bottom<3*pageHeight/7){
+                bottom=bottom+0.4;
+
+            }
+            else if(bottom<4*pageHeight/7){
+                bottom=bottom+0.3;
+
+            }
+            else if(bottom<5*pageHeight/7){
+                bottom=bottom+0.2;
+
+            }
+            else if(bottom<6*pageHeight/7){
+                bottom=bottom+0.1;
+            }
+            else if(bottom<pageHeight){
+                bottom=bottom+0.1;
+            }
+            else{
+                bottom=pageHeight;
+            }
+            $("#swimmer").animate({bottom: bottom+"px"},0);
             myTimer = setTimeout(mySpeed,speed);
             if($scope.playTime==0){
                 clearTimeout(myTimer);
             }
-        }
+        };
+
         $scope.olympicGameLevel1Init = function(num){
             /*  $scope.startCutdownLock =true;
              $timeout(function() {
              $scope.startCutdownLock =false;
              $scope.playCutdownLock =true;
              }, 4000);*/
-
+           pageHeight=document.body.clientHeight-200;//获取页面高度
         };
 
 
