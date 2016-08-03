@@ -1,4 +1,195 @@
-.olympicBabyFirst{
-  background-color: #fff;
+* {
+  padding: 0;
+  margin: 0;
 }
 
+.indexBox {
+  background: url("http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2FindexBackground.png") no-repeat;
+  background-size: 100% 100%;
+  height: 100%;
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.indexBox .top {
+  width: 100%;
+  position: relative;
+}
+
+.indexBox .top img {
+  width: 70%;
+  margin: 0 auto;
+  display: block;
+}
+
+.indexBox .top .ruleBtn {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  display: block;
+  width: 15%;
+  height: 15%;
+  background: url('http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2FindexRuleBtn.png') no-repeat;
+  background-size: 100% 100%;
+}
+
+.indexBox .ruleBox {
+  background: rgba(0, 0, 0, .3);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  display: none;
+}
+
+.indexBox .ruleBox img {
+  margin: 5% auto 0 auto;
+  width: 80%;
+  display: block;
+}
+
+.indexBox .content {
+  width: 100%;
+  margin-top: 20px;
+  position: relative;
+}
+
+.indexBox .content img {
+  width: 100%;
+  margin: 0 auto;
+  display: block;
+}
+
+.indexBox .content>div {
+  position: absolute;
+  width: 15%;
+  height: 26%;
+}
+
+.indexBox .content .fourthPass,
+.indexBox .content .fifthPass,
+.indexBox .content .sixthPass {
+  background: url("http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2FindexLockPass.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+.indexBox .content .firstPass {
+  background: url("http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2FindexFirstPass.png") no-repeat;
+  background-size: 100% 100%;
+  top: 66%;
+  right: 72%;
+}
+
+.indexBox .content .secondPass {
+  background: url("http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2FindexSecondPass.png") no-repeat;
+  background-size: 100% 100%;
+  top: 52%;
+  right: 50%;
+}
+
+.indexBox .content .thirdPass {
+  background: url("http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2FindexThirdPass.png") no-repeat;
+  background-size: 100% 100%;
+  top: 62%;
+  right: 26%;
+}
+
+.indexBox .content .fourthPass {
+  top: 40%;
+  left: 75%;
+}
+
+.indexBox .content .fifthPass {
+  transform: rotate(-30deg);
+  -ms-transform: rotate(-30deg);
+  /* IE 9 */
+  -moz-transform: rotate(-30deg);
+  /* Firefox */
+  -webkit-transform: rotate(-30deg);
+  /* Safari 和 Chrome */
+  -o-transform: rotate(-30deg);
+  /* Opera */
+  top: 17%;
+  left: 52%;
+}
+
+.indexBox .content .sixthPass {
+  transform: rotate(20deg);
+  -ms-transform: rotate(20deg);
+  /* IE 9 */
+  -moz-transform: rotate(20deg);
+  /* Firefox */
+  -webkit-transform: rotate(20deg);
+  /* Safari 和 Chrome */
+  -o-transform: rotate(20deg);
+  /* Opera */
+  top: 10%;
+  left: 25%;
+}
+
+.indexBox .integral {
+  width: 100%;
+  position: fixed;
+  bottom: 13%;
+}
+
+.indexBox .integral img {
+  width: 70%;
+  margin: 0 auto;
+  display: block;
+}
+
+.indexBox .lottery {
+  width: 100%;
+  position: fixed;
+  bottom: 3%;
+}
+
+.indexBox .lottery img {
+  width: 70%;
+  margin: 0 auto;
+  display: block;
+}
+
+#gongao {
+  overflow: hidden;
+}
+
+#gongao .scroll_div {
+  width: 900px;
+  height: 30px;
+  margin: 0 auto;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+#gongao #scroll_begin,
+#gongao #scroll_end {
+  display: inline;
+}
+
+#gongao #scroll_begin .barrage,
+#gongao #scroll_end .barrage {
+  display: inline;
+  list-style-type: none;
+  color: #fff;
+  background: rgba(0, 0, 0, .3);
+  font: 400 16px/36px "Microsoft Yahei";
+  border-radius: 18px 18px 18px 18px;
+  margin-left: 20px;
+  padding-right: 6px;
+}
+
+#gongao #scroll_begin .barrage img,
+#gongao #scroll_end .barrage img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin: 3px;
+}

@@ -1,3 +1,53 @@
-<div ui-view class="olympicBabyFirst">
-	奥运宝贝首页
+<div ui-view class="olympicBabyFirst" data-ng-init="olympicBabyFirstInit()">
+	<div class="indexBox">
+		<div class="top">
+			<img src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2FindexTop.png" alt="">
+			<span class="ruleBtn" id="ruleBtn"></span>
+		</div>
+		<div class="ruleBox" id="ruleBox">
+			<img class="ruleBoxContent" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2FindexRule.png" alt="">
+		</div>
+		<div class="content">
+			<img src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2FindexContent.png" alt="">
+			<div class="firstPass"></div>
+			<div class="secondPass"></div>
+			<div class="thirdPass"></div>
+			<div class="fourthPass"></div>
+			<div class="fifthPass"></div>
+			<div class="sixthPass"></div>
+		</div>
+		<div id="gongao">
+			<div id="scroll_div" class="scroll_div" data-ng-init="load()">
+				<div id="scroll_begin">
+					<div class="barrage">
+						<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/branchAnswer%2Frentou.png" alt="">
+						<span>1212343124</span>
+					</div>
+					<div class="barrage">
+						<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/branchAnswer%2Frentou.png" alt="">
+						<span>121232341234</span>
+					</div>
+					<div class="barrage">
+						<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/branchAnswer%2Frentou.png" alt="">
+						<span>121231234234132</span>
+					</div>
+					<div class="barrage">
+						<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/branchAnswer%2Frentou.png" alt="">
+						<span>12123421341234</span>
+					</div>
+					<div class="barrage">
+						<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/branchAnswer%2Frentou.png" alt="">
+						<span>1212341234321</span>
+					</div>
+				</div>
+				<div id="scroll_end"></div>
+			</div>
+		</div>
+		<div class="integral">
+			<img src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2FindexIntegral.png" alt="">
+		</div>
+		<div class="lottery">
+			<img src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2FindexLottery.png" alt="">
+		</div>
+	</div>
 </div>
