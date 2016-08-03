@@ -1,14 +1,20 @@
 <div ui-view title="我的奖品" class="olympicBabyMyPrize" >
 	<div class="top"></div>
 	<div class="prizeList" ng-show="showPrize">
-		<img width="80%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FprizePage%2Ff_03.png" alt=""/>
+		<div class="prize_title">
+			<img  width="80%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FprizePage%2Ff_03.png" alt=""/>
+		</div>
 		<div class="prize" ng-repeat="item in prizeList">
-			<div class="prizeContent">
+			<!--<div class="prizeContent">
 				<p>
 					<img width="42.5px" height="42.5px" src="{{item.src}}" alt=""/>
 				</p>
 				<p>{{item.prizeName}}</p>
-				<p>{{item.prize}}</p>
+				&lt;!&ndash;<p>{{item.prize}}</p>&ndash;&gt;
+			</div>-->
+			<img class="prize_img" src="{{item.src}}" width="42.5px" height="42.5px" />
+			<div class="prize_name">
+				{{item.prizeName}}
 			</div>
 		</div>
 	</div>
