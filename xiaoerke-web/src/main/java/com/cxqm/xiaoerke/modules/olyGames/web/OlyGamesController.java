@@ -153,7 +153,7 @@ public class OlyGamesController extends BaseController {
                 if("".equals(prizes)){
                     prizes = responseMap.get("prizeOrder").toString();
                 }else{
-                    prizes = prizes + "," + (Integer)responseMap.get("prizeOrder");
+                    prizes = prizes + "," + responseMap.get("prizeOrder");
                 }
                 Map<String,Object> param = new HashMap<String, Object>();
                 param.put("prizeOrder",responseMap.get("prizeOrder"));
@@ -170,6 +170,7 @@ public class OlyGamesController extends BaseController {
             OlyBabyGamesVo olyVo = new OlyBabyGamesVo();
             olyVo.setOpenId(openId);
             olyVo.setPrize(prizes);
+            olyVo.setGameScore(vo.getGameScore()-80);
             olyGamesService.updateOlyBabyGamesByOpenId(olyVo);//更新用户抽奖信息
         }else{//抽中两次的只能显示谢谢参与
             responseMap.put("prizeOrder",3);
@@ -179,7 +180,7 @@ public class OlyGamesController extends BaseController {
     }
 
     /**
-     * 获取用户抽到的奖品列表
+     * 获取最近日期前5名用户抽到的奖品列表
      * sunxiao
      * input:{openid:"fwefewfewf"}
      * result: {prizeList:[{prizeName:"电饭煲",XXX:"XXXXX"},{prizeName:"电饭煲"},{prizeName:"电饭煲"}]}
@@ -242,6 +243,38 @@ public class OlyGamesController extends BaseController {
         param.setOpenId(openId);
         param.setAddress(address);
         olyGamesService.updateOlyBabyGamesByOpenId(param);
+        return responseMap;
+    }
+
+    /**
+     * 获取用户抽到的奖品
+     * sunxiao
+     * input:{openid:"fwefewfewf"}
+     * result: {prizeList:[{prizeName:"电饭煲",XXX:"XXXXX"},{prizeName:"电饭煲"},{prizeName:"电饭煲"}]}
+     ***/
+    @RequestMapping(value = "/gameScore/GetUserPrizes",method = {RequestMethod.POST,RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String,Object> GetUserPrizes(@RequestBody Map<String, Object> params){
+        Map<String,Object> responseMap = new HashMap<String, Object>();
+        String openId = (String)params.get("openid");
+        OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
+        olyBabyGamesVo.setOpenId(openId);
+        OlyBabyGamesVo vo = olyGamesService.selectByOlyBabyGamesVo(olyBabyGamesVo);
+        String[] prizes = vo.getPrize().split(",");
+        List<Map<String,Object>> prizeList = new ArrayList<Map<String, Object>>();
+        for(String temp : prizes){
+            Map<String,Object> prizeMap = new HashMap<String, Object>();
+            Map<String,Object> param = new HashMap<String, Object>();
+            param.put("prizeDate",DateUtils.DateToStr(new Date(),"date"));
+            param.put("prizeOrder",temp);
+            List<Map<String,Object>> pList = olyGamesService.getOlyGamePrizeList(param);
+            prizeMap.put("prizeName",pList.get(0).get("prizeName"));
+            prizeMap.put("prizeLink",pList.get(0).get("prizeLink"));
+            prizeMap.put("prizeOrder",temp);
+            prizeList.add(prizeMap);
+        }
+        responseMap.put("prizeList",prizeList);
         return responseMap;
     }
 

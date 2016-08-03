@@ -8,7 +8,11 @@
   <select id="getOlyGamePrizeList" parameterType="java.util.Map" resultType="java.util.Map">
     select 
     <include refid="BaseColumn" />
-    from oly_game_prize where prizeDate = #{prizeDate} order by prizeOrder
+    from oly_game_prize where prizeDate = #{prizeDate}
+    <if test="prizeOrder != null" >
+      prizeOrder = #{prizeOrder}
+    </if>
+    order by prizeOrder
   </select>
   <update id="updateOlyGamePrizeInfo" parameterType="java.util.Map">
     update oly_game_prize set prizeNumber=#{prizeNumber} where prizeOrder=#{prizeOrder} and prizeDate=#{prizeDate}
