@@ -221,10 +221,10 @@
       address = #{address,jdbcType=VARCHAR},
     </if>
     <if test="prize != null" >
-      #{prize,jdbcType=VARCHAR},
+      prize = #{prize,jdbcType=VARCHAR},
     </if>
     <if test="nickName != null" >
-      #{nickName,jdbcType=VARCHAR},
+      nickName = #{nickName,jdbcType=VARCHAR},
     </if>
   </set>
   where id = #{id,jdbcType=INTEGER}
@@ -279,10 +279,10 @@
         address = #{address,jdbcType=VARCHAR},
       </if>
       <if test="prize != null" >
-        #{prize,jdbcType=VARCHAR},
+        prize = #{prize,jdbcType=VARCHAR},
       </if>
       <if test="nickName != null" >
-        #{nickName,jdbcType=VARCHAR},
+        nickName = #{nickName,jdbcType=VARCHAR},
       </if>
     </set>
     where  open_id = #{openId,jdbcType=VARCHAR}
