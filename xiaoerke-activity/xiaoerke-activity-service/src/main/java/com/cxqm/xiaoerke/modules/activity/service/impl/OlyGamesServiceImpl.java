@@ -99,6 +99,11 @@ public class OlyGamesServiceImpl implements OlyGamesService {
        return olyBabyGamesDao.updateByOpenId(record);
     }
 
+    @Override
+    public int updateInviteFriendNumber(String marketer) {
+        return olyBabyGamesDao.updateInviteFriendNumber(marketer);
+    }
+
     @Autowired
     SystemService systemService;
 
@@ -130,6 +135,11 @@ public class OlyGamesServiceImpl implements OlyGamesService {
     @Override
     public String getMarketerByOpenid(String openId) {
         return olyBabyGamesDao.getMarketerByOpenid(openId);
+    }
+
+    @Override
+    public OlyBabyGamesVo getBaseByMarketer(String marketer) {
+        return olyBabyGamesDao.getBaseByMarketer(marketer);
     }
 
     /**
