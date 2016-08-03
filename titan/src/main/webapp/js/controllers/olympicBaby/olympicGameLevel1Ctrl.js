@@ -3,7 +3,7 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
         function ($scope,$state,$timeout) {
             $scope.title = "奥运宝贝游戏第一关";
             $scope.btnLock =false;
-        $scope.startCutdownLock =false;//3秒倒计时开关
+        $scope.startCutdownLock =true;//3秒倒计时开关
         $scope.playCutdownLock =false;//15秒游戏倒计时开关
         $scope.playTime =15;//15秒游戏倒计时
         $scope.num =0;//
@@ -99,11 +99,9 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
         };
 
         $scope.olympicGameLevel1Init = function(num){
-            /*  $scope.startCutdownLock =true;
              $timeout(function() {
              $scope.startCutdownLock =false;
-             $scope.playCutdownLock =true;
-             }, 4000);*/
+             }, 4000);
            pageHeight=document.body.clientHeight-200;//获取页面高度
         };
 
