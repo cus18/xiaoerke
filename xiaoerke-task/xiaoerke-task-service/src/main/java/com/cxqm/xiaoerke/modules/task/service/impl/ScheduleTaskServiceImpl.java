@@ -363,4 +363,8 @@ public class ScheduleTaskServiceImpl implements ScheduleTaskService {
         return scheduledTaskDao.getOrderInfoByDate(map);
     }
 
+	@Override
+	public List<String> getOrderInfoByDate() {
+		return scheduledTaskDao.olympicShareRemind();
+	}
 }

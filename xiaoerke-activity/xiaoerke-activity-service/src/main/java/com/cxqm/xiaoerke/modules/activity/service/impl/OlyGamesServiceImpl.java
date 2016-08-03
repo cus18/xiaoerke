@@ -42,6 +42,21 @@ public class OlyGamesServiceImpl implements OlyGamesService {
         return olyBabyGamesDao.selectByOlyBabyGamesVo(olyBabyGamesVo);
     }
 
+    @Override
+    public int getGameMemberNum() {
+        return olyBabyGamesDao.getGameMemberNum();
+    }
+
+    @Override
+    public int addGamePlayerInfo(OlyBabyGamesVo olyBabyGamesVo) {
+        return olyBabyGamesDao.insert(olyBabyGamesVo);
+    }
+
+    @Override
+    public int getNewAttentionByOpenId(String userId) {
+        return olyBabyGamesDao.getNewAttentionByOpenId(userId);
+    }
+
     /**
      * 获取所有奖品列表
      * sunxiao
@@ -84,6 +99,11 @@ public class OlyGamesServiceImpl implements OlyGamesService {
        return olyBabyGamesDao.updateByOpenId(record);
     }
 
+    @Override
+    public int updateInviteFriendNumber(String marketer) {
+        return olyBabyGamesDao.updateInviteFriendNumber(marketer);
+    }
+
     @Autowired
     SystemService systemService;
 
@@ -115,6 +135,11 @@ public class OlyGamesServiceImpl implements OlyGamesService {
     @Override
     public String getMarketerByOpenid(String openId) {
         return olyBabyGamesDao.getMarketerByOpenid(openId);
+    }
+
+    @Override
+    public OlyBabyGamesVo getBaseByMarketer(String marketer) {
+        return olyBabyGamesDao.getBaseByMarketer(marketer);
     }
 
     /**

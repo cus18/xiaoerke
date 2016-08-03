@@ -5,6 +5,8 @@ import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 @MyBatisDao
 public interface OlyBabyGamesDao {
     int deleteByPrimaryKey(Integer id);
@@ -29,4 +31,12 @@ public interface OlyBabyGamesDao {
      * @return
      */
     List<OlyBabyGamesVo> getUserPrizeList();
+
+    int getGameMemberNum();
+
+    int getNewAttentionByOpenId(@Param("userId") String userId);
+
+    int updateInviteFriendNumber(String marketer);
+
+    OlyBabyGamesVo getBaseByMarketer(String marketer);
 }

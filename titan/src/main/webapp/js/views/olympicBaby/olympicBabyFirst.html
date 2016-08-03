@@ -3,15 +3,18 @@
 		<div class="top">
 			<img src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2FindexTop.png" alt="">
 			<span class="ruleBtn" id="ruleBtn"></span>
+			<div class="headcount">
+				已有<span>{{headcount}}</span>名宝宝参与
+			</div>
 		</div>
 		<div class="ruleBox" id="ruleBox">
 			<img class="ruleBoxContent" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2FindexRule.png" alt="">
 		</div>
 		<div class="content">
 			<img src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2FindexContent.png" alt="">
-			<div class="firstPass"></div>
-			<div class="secondPass"></div>
-			<div class="thirdPass"></div>
+			<div class="firstPass" ng-click="goFirstPass()"></div>
+			<div class="secondPass" ng-click="goSecondPass()"></div>
+			<div class="thirdPass" ng-click="goThirdPass()"></div>
 			<div class="fourthPass"></div>
 			<div class="fifthPass"></div>
 			<div class="sixthPass"></div>
@@ -19,25 +22,13 @@
 		<div id="gongao">
 			<div id="scroll_div" class="scroll_div" data-ng-init="bulletScreen()">
 				<div id="scroll_begin">
-					<div class="barrage">
-						<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/branchAnswer%2Frentou.png" alt="">
-						<span>1212343124</span>
+					<div class="barrage" ng-repeat="item in scroll">
+						<img ng-src="{{item.url}}" alt="">
+						<span>{{item.nickName}}</span>
 					</div>
 					<div class="barrage">
 						<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/branchAnswer%2Frentou.png" alt="">
-						<span>121232341234</span>
-					</div>
-					<div class="barrage">
-						<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/branchAnswer%2Frentou.png" alt="">
-						<span>121231234234132</span>
-					</div>
-					<div class="barrage">
-						<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/branchAnswer%2Frentou.png" alt="">
-						<span>12123421341234</span>
-					</div>
-					<div class="barrage">
-						<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/branchAnswer%2Frentou.png" alt="">
-						<span>1212341234321</span>
+						<span>zzzzzzz</span>
 					</div>
 				</div>
 				<div id="scroll_end"></div>
@@ -45,9 +36,20 @@
 		</div>
 		<div class="integral">
 			<img src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2FindexIntegral.png" alt="">
+			<span>{{score}}</span>
 		</div>
 		<div class="lottery">
-			<img src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2FindexLottery.png" alt="">
+			<img ng-click="lottery()" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2FindexLottery.png" alt="">
+		</div>
+		<div class="boxShadow" ng-if="shareFloat||withoutCount"></div>
+		<div class="shareImg" ng-if="shareFloat">
+			<img width="10%" ng-click="cancelFloat()" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FprizePage%2FXicon_03.png" alt=""/>
+			<img width="80%" data-tap-disabled="true" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FprizePage%2Ferweima_png_03.png" alt=""/>
+		</div>
+		<!--<div class="boxShadow" ng-if="withoutCount"></div>-->
+		<div class="countImg" ng-if="withoutCount">
+			<img width="80%"  height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2Ffuceng_png_03.png" alt=""/>
+			<img width="40%"ng-click="cancelFloat()" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2Fbutton_e_png_03.png" alt=""/>
 		</div>
 	</div>
 </div>
