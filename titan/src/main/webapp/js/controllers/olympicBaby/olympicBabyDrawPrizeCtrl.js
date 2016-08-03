@@ -1,6 +1,6 @@
 ﻿angular.module('controllers', []).controller('olympicBabyDrawPrizeCtrl', [
-        '$scope','$state','$timeout','GetGameScorePrize',
-        function ($scope,$state,$timeout,GetGameScorePrize) {
+        '$scope','$state','$timeout','GetGameScorePrize','GetUserOpenId','SaveUserAddress','GetUserGameScore',
+        function ($scope,$state,$timeout,GetGameScorePrize,GetUserOpenId,SaveUserAddress,GetUserGameScore) {
             $scope.title = "奥运宝贝-抽奖";
             $scope.layerLock = false;//浮层总开关
             $scope.noScoreLock = false;//无积分浮层开关
@@ -8,15 +8,33 @@
             $scope.getPriseLock = false;//有奖品浮层开关
             $scope.DrawPriseLock = false;//抽奖浮层开关
             $scope.FillInfoLock = false;//领取奖品浮层开关
+            $scope.info = {};//存放姓名，电话，家庭地址
             $scope.prizeArray = [false,false,false,false,false,false,false,false,false,false];//奖品列表图片
             var click=false;
-            var openid = "111111" ;
+            var openid ;
             var prizIndex = 3;
 
             //页面初始化
             $scope.olympicBabyDrawPrizeInit = function(){
                 lottery.init('lottery');
-                //获取用户抽奖内容
+                //获取用户openid
+                GetUserOpenId.get(function (data) {
+                    if(data.openid!="none"){
+                        openid = data.openid;
+                        GetUserGameScore.save({"openid":data.openid},function (data) {
+                            console.log("fenshu",data);
+                            var score = parseInt(data.gameScore);
+                            if(score>80){
+                                $scope.scoreNumber = parseInt(score/80);
+                            }else{
+                                $scope.scoreNumber = 0;
+                            }
+                            $scope.score = score;
+                        })
+                    }else{
+                        openid = "none";
+                    }
+                });
             };
 
             var lottery={
@@ -56,16 +74,21 @@
 
             //点击 我要抽奖
             $scope.startDrawPrize = function(){
-                if (click) {
-                    return false;
+                if(openid!="none"&&($scope.score>=80)){
+                    if (click) {
+                        return false;
+                    }else{
+                        $scope.score = $scope.score - 80;
+                        $scope.scoreNumber = parseInt($scope.score/80);
+                        getPrizeIndex();//获取奖品
+                        lottery.speed=100;
+                        roll();
+                        click=true;
+                        return false;
+                    }
                 }else{
-                    getPrizeIndex();
-                    lottery.speed=100;
-                    roll();
-                    click=true;
-                    return false;
+                    $scope.noScoreLock = true;
                 }
-
             };
 
             var roll=function (){
@@ -116,7 +139,6 @@
 
             //点击 查看我的奖品
             $scope.lookMyPrize = function(){
-                // $scope.getPriseLock = true;
                 $state.go("olympicBabyMyPrize");
             };
 
@@ -153,22 +175,49 @@
 
             //点击 浮层下 再玩一次
             $scope.tryAgain = function(){
-                //$state.go("olympicBabyFirst");
                 $scope.cancelLayer();
             };
 
             //点击 浮层下 领取奖品
             $scope.getPrize = function(){
-                $scope.cancelLayer();
-                $scope.FillInfoLock = true;
+                $scope.getPriseLock = false;
+                if($scope.prizeLink!=""){
+                    window.location.href = $scope.prizeLink;
+                }else{
+                    $scope.FillInfoLock = true;
+                }
             };
 
+            //保存用户邮寄地址
+            $scope.saveMess = function () {
+                if($scope.info.name==""||$scope.info.name==undefined||$scope.info.phone==""||
+                    $scope.info.phone==undefined||$scope.info.address==""||$scope.info.address==undefined){
+                    alert("信息不能为空！");
+                }else{
+                    SaveUserAddress.save({"openid":openid,"address":$scope.info.name+","+$scope.info.phone+","+$scope.info.address},
+                    function (data) {
+                        console.log("save",data);
+                        if(data.resolved == true){
+                            $scope.FillInfoLock = false;
+                        }
+                    });
+                }
+            }
+            
             //根据openid获取奖品
             var getPrizeIndex = function () {
                 GetGameScorePrize.save({"openid":openid},function (data) {
                     console.log("data",data);
                     var index = parseInt(data.prizeOrder);
-                    $scope.prizeName = data.prizeName;
+                    $scope.prizeOrder = index;
+                    $scope.postage = data.postage==""?"":"(此奖品需要您支付"+data.postage+"元的快递费)";
+                    if(data.prizeLink!=""){
+                        $scope.prizeLink = data.prizeLink;
+                        $scope.prizeName = data.prizeName;
+                    }else{
+                        $scope.prizeLink = "";
+                        $scope.prizeName = data.prizeName+"此奖项需要您填写家庭详细信息。";
+                    }
                     if(index==3){
                         prizIndex = 3;
                     }else if(index>9){
