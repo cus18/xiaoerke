@@ -4,7 +4,7 @@
 		<div class="prize_title">
 			<img  width="80%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FprizePage%2Ff_03.png" alt=""/>
 		</div>
-		<div class="prize" ng-repeat="item in prizeList">
+		<div class="prize" ng-repeat="item in prizeList" ng-click="goLink($index)">
 			<!--<div class="prizeContent">
 				<p>
 					<img width="42.5px" height="42.5px" src="{{item.src}}" alt=""/>
@@ -12,7 +12,7 @@
 				<p>{{item.prizeName}}</p>
 				&lt;!&ndash;<p>{{item.prize}}</p>&ndash;&gt;
 			</div>-->
-			<img class="prize_img" src="{{item.src}}" width="42.5px" height="42.5px" />
+			<img class="prize_img" ng-src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/olympicBaby/{{item.prizeOrder}}" width="42.5px" height="42.5px" />
 			<div class="prize_name">
 				{{item.prizeName}}
 			</div>
