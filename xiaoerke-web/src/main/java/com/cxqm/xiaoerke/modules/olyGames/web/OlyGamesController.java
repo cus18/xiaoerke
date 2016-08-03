@@ -151,9 +151,9 @@ public class OlyGamesController extends BaseController {
             }
             if(3 != (Integer) responseMap.get("prizeOrder")){//抽到奖品
                 if("".equals(prizes)){
-                    prizes = (String)responseMap.get("prizeOrder");
+                    prizes = responseMap.get("prizeOrder").toString();
                 }else{
-                    prizes = prizes + "," + (String)responseMap.get("prizeOrder");
+                    prizes = prizes + "," + (Integer)responseMap.get("prizeOrder");
                 }
                 Map<String,Object> param = new HashMap<String, Object>();
                 param.put("prizeOrder",responseMap.get("prizeOrder"));

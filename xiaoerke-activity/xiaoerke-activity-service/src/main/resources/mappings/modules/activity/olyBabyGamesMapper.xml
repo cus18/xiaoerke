@@ -235,9 +235,6 @@
   <update id="updateByOpenId" parameterType="com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo" >
     update oly_baby_games
     <set >
-      <if test="openId != null" >
-        open_id = #{openId,jdbcType=VARCHAR},
-      </if>
       <if test="gameLevel != null" >
         game_level = #{gameLevel,jdbcType=INTEGER},
       </if>
