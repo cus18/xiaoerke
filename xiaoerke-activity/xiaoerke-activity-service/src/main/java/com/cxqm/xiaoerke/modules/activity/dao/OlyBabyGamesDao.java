@@ -35,4 +35,8 @@ public interface OlyBabyGamesDao {
     int getGameMemberNum();
 
     int getNewAttentionByOpenId(@Param("userId") String userId);
+
+    int updateInviteFriendNumber(String marketer);
+
+    OlyBabyGamesVo getBaseByMarketer(String marketer);
 }
