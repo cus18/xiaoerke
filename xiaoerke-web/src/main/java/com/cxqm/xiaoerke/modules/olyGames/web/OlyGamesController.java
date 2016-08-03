@@ -157,6 +157,8 @@ public class OlyGamesController extends BaseController {
                     }
                     responseMap.put("prizeOrder",tempMap.get("prizeOrder"));
                     responseMap.put("prizeName",tempMap.get("prizeName"));
+                    responseMap.put("prizeLink",tempMap.get("prizeLink"));
+                    responseMap.put("postage",tempMap.get("postage"));
                     break;
                 }
                 start = end;
@@ -204,7 +206,15 @@ public class OlyGamesController extends BaseController {
     @RequestMapping(value = "/gameScore/GetUserPrizeList",method = {RequestMethod.POST,RequestMethod.GET})
     public synchronized
     @ResponseBody
-    Map<String,Object> GetUserPrizeList(@RequestBody  Map<String, Object> params){
+    Map<String,Object> GetUserPrizeList(@RequestBody Map<String, Object> params){
+        Map<String,String> prizesMap = new HashMap<String, String>();//奖品列表
+        String today = DateUtils.DateToStr(new Date(), "date");
+        Map<String, Object> param=new HashMap<String, Object>();
+        param.put("prizeDate", today);
+        List<Map<String, Object>> prizeList = olyGamesService.getOlyGamePrizeList(param);
+        for(Map<String, Object> temp : prizeList){
+            prizesMap.put(temp.get("prizeOrder").toString(),(String)temp.get("prizeName"));
+        }
         Map<String,Object> responseMap = new HashMap<String, Object>();
         String openId = (String)params.get("openid");
         int random = new Random().nextInt(100);
@@ -260,7 +270,7 @@ public class OlyGamesController extends BaseController {
             prizeMap.put("prizeOrder",temp);
             prizeList.add(prizeMap);
         }
-        responseMap.put("prizeList",prizeList);
+        responseMap.put("prizeList", prizeList);
         return responseMap;
     }
 
@@ -392,7 +402,7 @@ public class OlyGamesController extends BaseController {
                 org.json.JSONObject jsonObject = WechatUtil.uploadNoTextMsgToWX((String) userWechatParam.get("token"), upLoadUrl, "image", wxFile.getName(), is);
 
                 WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"),openId,"新游戏需要邀请从未关注过“宝大夫”的好友助力方可解锁开启，赶紧把下方图片分享出去吧，大奖在等你哦！");
-                WechatUtil.sendNoTextMsgToWechat((String) userWechatParam.get("token"),openId,(String) jsonObject.get("media_id"),1);
+                WechatUtil.sendNoTextMsgToWechat((String) userWechatParam.get("token"), openId, (String) jsonObject.get("media_id"), 1);
             }catch (Exception e){
                 e.printStackTrace();
             }finally {

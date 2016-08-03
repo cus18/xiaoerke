@@ -3,7 +3,7 @@
 <mapper namespace="com.cxqm.xiaoerke.modules.activity.dao.OlyGamePrizeDao" >
 
   <sql id="BaseColumn" >
-    id, prizeName,prizeOrder,levelLimit, prizeNumber, probability,prizeDate
+    id, prizeName,prizeOrder,levelLimit, prizeNumber, probability,prizeDate,prizeLink,postage
   </sql>
   <select id="getOlyGamePrizeList" parameterType="java.util.Map" resultType="java.util.Map">
     select 
