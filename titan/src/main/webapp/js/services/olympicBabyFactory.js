@@ -96,6 +96,14 @@ define(['appOlympicBaby'], function (app) {
              ***/
             return $resource('olympicBaby/gameScore/SaveUserAddress');
         }])
+        .factory('GetInviteCard',['$resource',function ($resource){
+            /**
+             * 生成邀请卡
+             * * input:{openid:"fwefewfewf"}
+             * result: {path:图片地址}
+             ***/
+            return $resource('olympicBaby/GetInviteCard');
+        }])
 
 
 
