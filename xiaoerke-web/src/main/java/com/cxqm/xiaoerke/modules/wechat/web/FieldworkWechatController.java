@@ -198,6 +198,8 @@ public class FieldworkWechatController {
             url = ConstantUtil.KEEPER_WEB_URL + "keeper/wxPay/patientPay.do?serviceType=doctorConsultPay";
         }else if("36".equals(url)){
             url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/heightForecast";
+        }else if("37".equals(url)){
+            url = ConstantUtil.TITAN_WEB_URL + "titan/olympicBaby#/olympicBabyFirst";
         }
 
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +

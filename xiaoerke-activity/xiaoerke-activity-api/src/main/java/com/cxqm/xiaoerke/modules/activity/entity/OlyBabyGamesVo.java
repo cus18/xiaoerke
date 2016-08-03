@@ -33,6 +33,12 @@ public class OlyBabyGamesVo {
 
     private Date updateTime;
 
+    private String address;
+
+    private String prize;
+
+    private String nickName;
+
     public Integer getId() {
         return id;
     }
@@ -151,5 +157,29 @@ public class OlyBabyGamesVo {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPrize() {
+        return prize;
+    }
+
+    public void setPrize(String prize) {
+        this.prize = prize;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 }

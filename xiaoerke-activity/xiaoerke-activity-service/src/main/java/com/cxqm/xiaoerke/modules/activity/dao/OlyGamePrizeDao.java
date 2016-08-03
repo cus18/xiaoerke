@@ -20,4 +20,11 @@ public interface OlyGamePrizeDao {
      * @return
      */
     List<Map<String,Object>> getOlyGamePrizeList(Map<String, Object> prizeMap);
+
+    /**
+     * 更新奖品信息
+     * sunxiao
+     * @return
+     */
+    void updateOlyGamePrizeInfo(Map<String, Object> prizeMap);
 }

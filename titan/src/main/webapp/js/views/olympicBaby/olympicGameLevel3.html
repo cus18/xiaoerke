@@ -1,12 +1,11 @@
 <div ui-view ng-init="olympicGameLevel3()" class="olympicGameLevel3">
 	<div class="top">
 		<div class="box time">{{time}}s倒计时</div>
-		<div class="box score">1000000</div>
+		<div class="box score">{{score}}</div>
 	</div>
 	<div class="runningBoy">
 	</div>
 	<div class="button">
-		<!-- ng-click="startTime()"  ng-click="startRun()"-->
 		<img id="buttonImg" ng-click="startRun()" width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2Fsprint%2Fjiasu_png_03.png" alt=""/>
 	</div>
 	<div class="boxShadow" ng-if="shareFloat" ng-click="cancelFloat()"></div>
@@ -16,9 +15,12 @@
 	</div>
 	<div class="boxShadow" ng-if="lookResultFloat"></div>
 	<div class="resultImg" ng-if="lookResultFloat">
-		<div>{{totalNum}}</div>
-		<img width="50%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2Fsprint%2Fbutton_c_png_03.png" alt=""/>
-		<img width="50%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2Fsprint%2Fbutton_d_png_03.png" alt=""/>
+		<div>{{score}}</div>
+		<img width="50%" height="auto" ng-if="challengeAgainImg" ng-click="challengeMore()" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2Fsprint%2Fbutton_c_png_03.png" alt=""/>
+		<img width="50%" height="auto" ng-if="challengeAgainImg" ng-click="challengeAgain()" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2Fsprint%2Fbutton_d_png_03.png" alt=""/>
+		<div class="challengeMore" ng-if="challengeMoreImg">
+			<img width="50%" height="auto" ng-click="challengeAgain()" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2Fsprint%2Fbutton_d_png_03.png" alt=""/>
+		</div>
 	</div>
 	<div class="boxShadow" ng-if="startFloat"></div>
 	<div class="startImg" ng-if="startFloat">
