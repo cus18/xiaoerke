@@ -15,6 +15,7 @@
     <result column="marketer" property="marketer" jdbcType="VARCHAR" />
     <result column="invite_friend_number" property="inviteFriendNumber" jdbcType="INTEGER" />
     <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="nickName" property="nickName" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -275,5 +276,11 @@
     
   <select id="getMarketerByOpenid" resultType="java.lang.String" parameterType="java.lang.String">
     SELECT marketer FROM oly_baby_games where open_id=#{openId};
+  </select>
+
+  <select id="getBaseByMarketer" resultType="java.lang.String" parameterType="com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo">
+    SELECT
+    <include refid="Base_Column_List" />
+     FROM oly_baby_games where marketer=#{marketer};
   </select>
 </mapper>
