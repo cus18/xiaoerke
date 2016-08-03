@@ -31,14 +31,14 @@ define(['appOlympicBaby'], function (app) {
              ***/
             return $resource('olympicBaby/firstPage/GetGameMemberNum');
         }])
-        .factory('GetFirstPageSlideMessage',['$resource',function ($resource){
+        .factory('GetUserPrizeList',['$resource',function ($resource){
             /**
              * 获取奖品领取的轮播图消息
              * result: {messageList:[{userName:孙晓,Content:"获得了微波炉大奖"},{userName:孙大奖"},晓,Content:"获得了微波炉大奖"},
              * {userName:孙晓,Content:"获得了微波炉大奖"},{userName:孙晓,Content:"获得了微波炉
              * {userName:孙晓,Content:"获得了微波炉大奖"}]}
              ***/
-            return $resource('olympicBaby/firstPage/GetFirstPageSlideMessage');
+            return $resource('olympicBaby/gameScore/GetUserPrizeList');
         }])
         .factory('GetUserGameScore',['$resource',function ($resource){
             /**
@@ -51,9 +51,9 @@ define(['appOlympicBaby'], function (app) {
         .factory('GetUserOpenId',['$resource',function ($resource){
             /**
              * 获取用户openid
-             * result: {openid:"fwefwefewf"}
+             * result: 没有openid的返回值{ openid=none}
              ***/
-            return $resource('util/GetUserOpenId');
+            return $resource('util/getOpenid');
         }])
         .factory('SaveGameScore',['$resource',function ($resource){
             /**
@@ -80,13 +80,13 @@ define(['appOlympicBaby'], function (app) {
              ***/
             return $resource('olympicBaby/gameScore/GetGameScorePrize');
         }])
-        .factory('GetUserPrizeList',['$resource',function ($resource){
+        .factory('GetUserPrizes',['$resource',function ($resource){
             /**
              * 获取用户抽到的奖品列表
              * input:{openid:"fwefewfewf"}
              * result: {prizeList:[{prizeName:"电饭煲",XXX:"XXXXX"},{prizeName:"电饭煲"},{prizeName:"电饭煲"}]}
              ***/
-            return $resource('olympicBaby/gameScore/GetUserPrizeList');
+            return $resource('olympicBaby/gameScore/GetUserPrizes');
         }])
         .factory('SaveUserAddress',['$resource',function ($resource){
             /**

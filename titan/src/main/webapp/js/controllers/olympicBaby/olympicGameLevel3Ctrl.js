@@ -1,9 +1,9 @@
 ﻿angular.module('controllers', []).controller('olympicGameLevel3Ctrl', [
-        '$scope','$state','$timeout',
-        function ($scope,$state,$timeout) {
+        '$scope','$state','$timeout','GetGamePlayingTimes','GetUserOpenId',
+        function ($scope,$state,$timeout,GetGamePlayingTimes,GetUserOpenId) {
             $scope.title = "奥运宝贝-游戏第三关";
             $scope.score = 0;
-            $scope.time = 5;
+            $scope.time = 15;
             $scope.lookResultFloat = false;
             $scope.challengeAgainImg = true;
             $scope.challengeMoreImg = false;
@@ -13,14 +13,33 @@
                 $scope.startFloat =false;
             }, 4000);
             $scope.olympicGameLevel3 = function () {
+                //获取openId
+                GetUserOpenId.get({},function (data) {
+                    console.log(data.openid);
+                    $scope.openid = data.openid;
+                });
+                getGamePlayingTimes();
+                if($scope.playCount > 0){
+
+                }
+
+            };
+
+            var getGamePlayingTimes = function () {
+                //获取玩游戏的次数
+                GetGamePlayingTimes.get({openid:$scope.openid,gameLevel:3},function (data) {
+                    console.log(data);
+                    $scope.playCount = data;
+                });
             };
             $scope.challengeAgain = function () {
                 $scope.lookResultFloat = false;
                 $scope.score = 0;
-                $scope.time = 5;
+                $scope.time = 15;
+                $scope.playCount--;
             };
             $scope.challengeMore = function () {
-                window.location.href="olympicBaby#/olympicBabyFirst"
+                $state.go("olympicBabyFirst",{});
             };
             var timer1 = null;
             var timer2 = null;
@@ -69,7 +88,6 @@
                     }
                 },100);
             };
-
             //倒计时
             var startTime = function () {
                timer2 = setInterval(function () {
@@ -87,7 +105,6 @@
             $scope.cancelFloat = function () {
                 $scope.lookResultFloat = false;
             };
-
             /*var startMoveBoy = function () {
              var i = 0;
              flag = false;

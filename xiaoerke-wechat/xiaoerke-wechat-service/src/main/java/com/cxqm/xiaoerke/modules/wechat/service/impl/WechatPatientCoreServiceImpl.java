@@ -2,6 +2,8 @@ package com.cxqm.xiaoerke.modules.wechat.service.impl;
 
 import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.*;
+import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
+import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
@@ -23,6 +25,7 @@ import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatPatientCoreService;
 import com.cxqm.xiaoerke.modules.wechat.service.util.MessageUtil;
+import com.drew.metadata.exif.OlympusMakernoteDescriptor;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -34,10 +37,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
+import java.net.*;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -67,10 +67,10 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 	@Autowired
 	private MongoDBService<MongoLog> mongoLogService;
 
-    @Autowired
-    private MongoDBService<HealthRecordMsgVo> healthRecordMsgVoMongoDBService;
+	@Autowired
+	private MongoDBService<HealthRecordMsgVo> healthRecordMsgVoMongoDBService;
 
-    @Autowired
+	@Autowired
 	private MemberService memberService;
 
 	private String mongoEnabled = Global.getConfig("mongo.enabled");
@@ -92,6 +92,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
 	@Autowired
 	private BabyUmbrellaInfoThirdPartyService babyUmbrellaInfoThirdPartyService;
+
+	@Autowired
+	private OlyGamesService olyGamesService;
 
 	private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
@@ -146,7 +149,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				threadExecutor.execute(thread);
 				return "";
 			}else if("true".equals(customerService)){
-			  respMessage = transferToCustomer(xmlEntity);
+				respMessage = transferToCustomer(xmlEntity);
 			}
 		}
 		return respMessage;
@@ -165,13 +168,13 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				if(xmlEntity.getMsgType().equals("text")){
 					this.sendPost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/conversation",
 							"openId=" + xmlEntity.getFromUserName() +
-							"&messageType=" + xmlEntity.getMsgType() +
-							"&messageContent=" + URLEncoder.encode(xmlEntity.getContent(), "UTF-8"));
+									"&messageType=" + xmlEntity.getMsgType() +
+									"&messageContent=" + URLEncoder.encode(xmlEntity.getContent(), "UTF-8"));
 				}else{
 					this.sendPost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/conversation",
 							"openId=" + xmlEntity.getFromUserName() +
-							"&messageType=" + xmlEntity.getMsgType() +
-							"&mediaId=" + xmlEntity.getMediaId());
+									"&messageType=" + xmlEntity.getMsgType() +
+									"&mediaId=" + xmlEntity.getMediaId());
 				}
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
@@ -413,39 +416,39 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setUrl(ConstantUtil.TITAN_WEB_URL + "/titan/firstPage/phoneConsult");
 			articleList.add(article);
 		}else if(EventKey.indexOf("qrscene_12")>-1 || EventKey.indexOf("qrscene_13")>-1){//扫码分享
-            String toOpenId = xmlEntity.getFromUserName();//扫码者openid
-            Map<String, Object> param1 = new HashMap<String, Object>();
-            param1.put("openid",toOpenId);
-            List<Map<String,Object>> list1 = babyUmbrellaInfoService.getBabyUmbrellaInfo(param1);
+			String toOpenId = xmlEntity.getFromUserName();//扫码者openid
+			Map<String, Object> param1 = new HashMap<String, Object>();
+			param1.put("openid",toOpenId);
+			List<Map<String,Object>> list1 = babyUmbrellaInfoService.getBabyUmbrellaInfo(param1);
 
-            System.out.println(list1.size()+"list1.size()++++++++++++++++++++++++++++++++++++++++++++++");
-            boolean sendsucmes = false;
-            if(list1.size()==0){//用户第一次加入保护伞
-                Runnable thread = new sendUBWechatMessage(toOpenId,EventKey);
-                threadExecutor.execute(thread);
-            }else{
-                if("success".equals(list1.get(0).get("pay_result"))){
-                    sendsucmes = true;
-                }
-            }
-            System.out.println(sendsucmes+"sendsucmes=============sendsucmes============================");
-            if(sendsucmes){
-                article.setTitle("恭喜您");
-                article.setDescription("您已成功领到20万保障，分享1个好友，提升2万保障，最高可享受40万保障。\n\n点击进入，立即分享！");
-                article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
-                article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31");
-                articleList.add(article);
-            }
+			System.out.println(list1.size()+"list1.size()++++++++++++++++++++++++++++++++++++++++++++++");
+			boolean sendsucmes = false;
+			if(list1.size()==0){//用户第一次加入保护伞
+				Runnable thread = new sendUBWechatMessage(toOpenId,EventKey);
+				threadExecutor.execute(thread);
+			}else{
+				if("success".equals(list1.get(0).get("pay_result"))){
+					sendsucmes = true;
+				}
+			}
+			System.out.println(sendsucmes+"sendsucmes=============sendsucmes============================");
+			if(sendsucmes){
+				article.setTitle("恭喜您");
+				article.setDescription("您已成功领到20万保障，分享1个好友，提升2万保障，最高可享受40万保障。\n\n点击进入，立即分享！");
+				article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
+				article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31");
+				articleList.add(article);
+			}
 
-            if("oldUser".equals(userType)&&!sendsucmes){//老用户扫码发送保护伞信息
-                int count = babyUmbrellaInfoService.getUmbrellaCount();
-                article.setTitle("宝大夫送你一份见面礼");
-                article.setDescription("专属于宝宝的40万高额保障金5元即送，目前已有" + count + "位妈妈们领取，你也赶紧加入吧，运气好还能免单哦！");
-                article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
-                article.setUrl("http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000000/a");
-                articleList.add(article);
-            }
-        }else if(EventKey.indexOf("qrscene_99")>-1){
+			if("oldUser".equals(userType)&&!sendsucmes){//老用户扫码发送保护伞信息
+				int count = babyUmbrellaInfoService.getUmbrellaCount();
+				article.setTitle("宝大夫送你一份见面礼");
+				article.setDescription("专属于宝宝的40万高额保障金5元即送，目前已有" + count + "位妈妈们领取，你也赶紧加入吧，运气好还能免单哦！");
+				article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella");
+				article.setUrl("http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000000/a");
+				articleList.add(article);
+			}
+		}else if(EventKey.indexOf("qrscene_99")>-1){
 			//如果扫码者来自非微信平台
 			String openId = xmlEntity.getFromUserName();//扫码者openid
 			String marketer = EventKey.replace("qrscene_", "");//渠道
@@ -506,22 +509,62 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				article.setUrl("http://s165.baodf.com/wisdom/umbrella#/umbrellaJoin/1467962511697/130000002");
 				articleList.add(article);
 			}
+		}else if(EventKey.indexOf("qrscene_15")>-1){//扫码分享
+//			奥运宝宝扫码
+			if(EventKey.indexOf("150100000")>-1){
+				String st = "欢迎聪明的你来到“宝大夫”，向你推荐宝宝奥运大闯关游戏，" +
+						"<a href='http://s68.baodf.com/titan/appoint#/userEvaluate'>赶紧玩起来吧！</a>";
+				Map parameter = systemService.getWechatParameter();
+				String token = (String)parameter.get("token");
+				WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
+			}else{
+
+//				如果是新用户推广者加一
+				if(olyGamesService.getNewAttentionByOpenId(xmlEntity.getFromUserName())>0){
+					olyGamesService.updateInviteFriendNumber(EventKey);
+				};
+
+				OlyBabyGamesVo olyBabyGamesVo = olyGamesService.getBaseByMarketer(EventKey);
+
+				String st = "感谢你的倾情助力，"+olyBabyGamesVo.getNickName()+"为“宝大夫”带盐，向您推荐宝宝奥运大闯关游戏，" +
+						"<a href='http://s68.baodf.com/titan/appoint#/userEvaluate'>赶紧玩起来吧！</a>";
+				Map parameter = systemService.getWechatParameter();
+				String token = (String)parameter.get("token");
+				WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
+
+				String msg = "";
+				Integer gemeLevel = olyBabyGamesVo.getGameLevel();
+				Integer alreadyInviteNum = olyBabyGamesVo.getInviteFriendNumber();
+				Integer needInviteNum = 0;
+				for(int i=0;i<alreadyInviteNum;i++){
+					needInviteNum += i;
+				}
+				needInviteNum -=alreadyInviteNum;
+
+				Integer openLevel = Integer.parseInt(Global.getConfig("OPEN_LEVEL"));
+				if(alreadyInviteNum>=15&&1>openLevel){
+					msg = "满六关：您已成功开通所有关卡";
+				}else{
+					msg = "已开通第"+gemeLevel+"关，还需邀请"+needInviteNum+"位好友开通下一关";
+				}
+				WechatMessageUtil.templateModel("游戏首页", "恭喜您，已经有"+alreadyInviteNum+"位好友在宝宝奥运大闯关游戏中为你助力，赶紧继续闯关吧！", msg, "", "", "快去闯关玩游戏抽奖吧！", token, "www.baidu.com",  xmlEntity.getFromUserName(),"f5KyEUJG4sS4CEsSKx3pPCYyhlnMOmeUO8Ew_8kXOXc");
+			}
 		}
 
-        String toOpenId = xmlEntity.getFromUserName();//扫码者openid
-        Map<String, Object> param1 = new HashMap<String, Object>();
-        param1.put("openid", toOpenId);
-        List<Map<String,Object>> list1 = babyUmbrellaInfoService.getBabyUmbrellaInfo(param1);
+		String toOpenId = xmlEntity.getFromUserName();//扫码者openid
+		Map<String, Object> param1 = new HashMap<String, Object>();
+		param1.put("openid", toOpenId);
+		List<Map<String,Object>> list1 = babyUmbrellaInfoService.getBabyUmbrellaInfo(param1);
 
-        if(list1.size()==0){//用户第一次加入保护伞
-            Runnable thread = new sendUBWechatMessage(toOpenId,EventKey);
-            threadExecutor.execute(thread);
-        }else{
-            if("success".equals(list1.get(0).get("pay_result"))){
-                Runnable thread = new addUserType(toOpenId);
-                threadExecutor.execute(thread);
-            }
-        }
+		if(list1.size()==0){//用户第一次加入保护伞
+			Runnable thread = new sendUBWechatMessage(toOpenId,EventKey);
+			threadExecutor.execute(thread);
+		}else{
+			if("success".equals(list1.get(0).get("pay_result"))){
+				Runnable thread = new addUserType(toOpenId);
+				threadExecutor.execute(thread);
+			}
+		}
 
 		if(articleList.size() == 0){
 			return "";
@@ -535,157 +578,157 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		return respMessage;
 	}
 
-    public class sendUBWechatMessage extends Thread {
-        private String toOpenId;
-        private String EventKey;
+	public class sendUBWechatMessage extends Thread {
+		private String toOpenId;
+		private String EventKey;
 
-        public sendUBWechatMessage(String toOpenId,String EventKey) {
-            this.toOpenId = toOpenId;
-            this.EventKey = EventKey;
-        }
+		public sendUBWechatMessage(String toOpenId,String EventKey) {
+			this.toOpenId = toOpenId;
+			this.EventKey = EventKey;
+		}
 
-        @Override
-        public void run() {
-            sendUBWechatMessage(toOpenId, EventKey);
-        }
-    }
+		@Override
+		public void run() {
+			sendUBWechatMessage(toOpenId, EventKey);
+		}
+	}
 
-    private void sendUBWechatMessage(String toOpenId,String EventKey){
-        Map<String, Object> param = new HashMap<String, Object>();
-        String id = EventKey.split("_")[1];
-        param.put("id",id);
-        List<Map<String,Object>> list = babyUmbrellaInfoService.getBabyUmbrellaInfo(param);
-        if(list.size()!=0){//有分享者时，修改分享者信息并发送给分享者信息
-            String fromOpenId = (String)list.get(0).get("openid");//分享者openid
-            String babyId = (String)list.get(0).get("baby_id");
-            Map parameter = systemService.getWechatParameter();
-            String token = (String)parameter.get("token");
-            int oldUmbrellaMoney = (Integer) list.get(0).get("umbrella_money");
-            int newUmbrellaMoney = (Integer) list.get(0).get("umbrella_money")+20000;
-            int friendJoinNum = (Integer) list.get(0).get("friendJoinNum");
-            WechatAttention wa = wechatAttentionService.getAttentionByOpenId(toOpenId);
-            String nickName = "";
-            if(wa!=null){
-                if(StringUtils.isNotNull(wa.getNickname())){
-                    nickName = wa.getNickname();
-                }else{
-                    WechatBean userinfo = WechatUtil.getWechatName(token, toOpenId);
-                    nickName = StringUtils.isNotNull(userinfo.getNickname())?userinfo.getNickname():"";
-                }
-            }
-            String title = "恭喜您，您的好友"+nickName+"已成功加入。您既帮助了朋友，也提升了2万保障金！";
-            String templateId = "b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg";
-            String keyword1 = "您已拥有"+newUmbrellaMoney/10000+"万的保障金，还需邀请"+(400000-newUmbrellaMoney)/20000+"位好友即可获得最高40万保障金。";
-            String remark = "邀请一位好友，增加2万保额，最高可享受40万保障！";
-            if(oldUmbrellaMoney<400000){
-                BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
-                babyUmbrellaInfo.setId(Integer.parseInt(id));
-                babyUmbrellaInfo.setUmberllaMoney(newUmbrellaMoney);
-                babyUmbrellaInfoService.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
-            }
-            if (newUmbrellaMoney>=400000){
-                title = "感谢您的爱心，第"+(friendJoinNum+1)+"位好友"+nickName+"已成功加入，一次分享，一份关爱，汇聚微小力量，传递大爱精神！";
-                templateId = "b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg";
-                keyword1 = "您已成功拥有40万的最高保障金。";
-                remark = "您还可以继续邀请好友，传递关爱精神，让更多的家庭拥有爱的保障！";
-            }
-            BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
-            babyUmbrellaInfo.setId(Integer.parseInt(id));
-            babyUmbrellaInfo.setFriendJoinNum(friendJoinNum+1);
-            babyUmbrellaInfoService.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
+	private void sendUBWechatMessage(String toOpenId,String EventKey){
+		Map<String, Object> param = new HashMap<String, Object>();
+		String id = EventKey.split("_")[1];
+		param.put("id",id);
+		List<Map<String,Object>> list = babyUmbrellaInfoService.getBabyUmbrellaInfo(param);
+		if(list.size()!=0){//有分享者时，修改分享者信息并发送给分享者信息
+			String fromOpenId = (String)list.get(0).get("openid");//分享者openid
+			String babyId = (String)list.get(0).get("baby_id");
+			Map parameter = systemService.getWechatParameter();
+			String token = (String)parameter.get("token");
+			int oldUmbrellaMoney = (Integer) list.get(0).get("umbrella_money");
+			int newUmbrellaMoney = (Integer) list.get(0).get("umbrella_money")+20000;
+			int friendJoinNum = (Integer) list.get(0).get("friendJoinNum");
+			WechatAttention wa = wechatAttentionService.getAttentionByOpenId(toOpenId);
+			String nickName = "";
+			if(wa!=null){
+				if(StringUtils.isNotNull(wa.getNickname())){
+					nickName = wa.getNickname();
+				}else{
+					WechatBean userinfo = WechatUtil.getWechatName(token, toOpenId);
+					nickName = StringUtils.isNotNull(userinfo.getNickname())?userinfo.getNickname():"";
+				}
+			}
+			String title = "恭喜您，您的好友"+nickName+"已成功加入。您既帮助了朋友，也提升了2万保障金！";
+			String templateId = "b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg";
+			String keyword1 = "您已拥有"+newUmbrellaMoney/10000+"万的保障金，还需邀请"+(400000-newUmbrellaMoney)/20000+"位好友即可获得最高40万保障金。";
+			String remark = "邀请一位好友，增加2万保额，最高可享受40万保障！";
+			if(oldUmbrellaMoney<400000){
+				BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
+				babyUmbrellaInfo.setId(Integer.parseInt(id));
+				babyUmbrellaInfo.setUmberllaMoney(newUmbrellaMoney);
+				babyUmbrellaInfoService.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
+			}
+			if (newUmbrellaMoney>=400000){
+				title = "感谢您的爱心，第"+(friendJoinNum+1)+"位好友"+nickName+"已成功加入，一次分享，一份关爱，汇聚微小力量，传递大爱精神！";
+				templateId = "b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg";
+				keyword1 = "您已成功拥有40万的最高保障金。";
+				remark = "您还可以继续邀请好友，传递关爱精神，让更多的家庭拥有爱的保障！";
+			}
+			BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
+			babyUmbrellaInfo.setId(Integer.parseInt(id));
+			babyUmbrellaInfo.setFriendJoinNum(friendJoinNum+1);
+			babyUmbrellaInfoService.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
 
-            String keyword2 = StringUtils.isNotNull(babyId)?"观察期":"待激活";
-            String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31";
-            WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, fromOpenId, templateId);
-        }
+			String keyword2 = StringUtils.isNotNull(babyId)?"观察期":"待激活";
+			String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=31";
+			WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, fromOpenId, templateId);
+		}
 
-    }
-
-
-    //为保护伞用户,更改用户标签,匹配个性化菜单。
-
-    public class addUserType extends Thread {
-        private String toOpenId;
-
-        public addUserType(String toOpenId) {
-            this.toOpenId = toOpenId;
-        }
-
-        @Override
-        public void run() {
-            addUserType(toOpenId);
-        }
-    }
-
-    public String addUserType(String id) {
-        Map<String,Object> parameter = systemService.getWechatParameter();
-        String token = (String)parameter.get("token");
-        String url= "https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging?access_token="+token;
-        String jsonData="{\"openid_list\":[\""+id+"\"],\"tagid\" : 105}";
-        String reJson=this.post(url, jsonData,"POST");
-        System.out.println(reJson);
-        JSONObject jb=JSONObject.fromObject(reJson);
-        String errmsg=jb.getString("errmsg");
-        if(errmsg.equals("ok")){
-            return "ok";
-        }else {
-            return errmsg;
-        }
-    }
+	}
 
 
-    /**
-     * 发送HttpPost请求
-     *
-     * @param strURL
-     *            服务地址
-     * @param params
-     *            json字符串,例如: "{ \"id\":\"12345\" }" ;其中属性名必须带双引号<br/>
-     *            type (请求方式：POST,GET)
-     * @return 成功:返回json字符串<br/>
-     */
-    public String post(String strURL, String params,String type) {
-        System.out.println(strURL);
-        System.out.println(params);
-        try {
-            URL url = new URL(strURL);// 创建连接
-            HttpURLConnection connection = (HttpURLConnection) url
-                    .openConnection();
-            connection.setDoOutput(true);
-            connection.setDoInput(true);
-            connection.setUseCaches(false);
-            connection.setInstanceFollowRedirects(true);
-            connection.setRequestMethod(type); // 设置请求方式
-            connection.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式
-            connection.setRequestProperty("Content-Type", "application/json"); // 设置发送数据的格式
-            connection.connect();
-            OutputStreamWriter out = new OutputStreamWriter(
-                    connection.getOutputStream(), "UTF-8"); // utf-8编码
-            out.append(params);
-            out.flush();
-            out.close();
-            // 读取响应
-            int length = (int) connection.getContentLength();// 获取长度
-            InputStream is = connection.getInputStream();
-            if (length != -1) {
-                byte[] data = new byte[length];
-                byte[] temp = new byte[512];
-                int readLen = 0;
-                int destPos = 0;
-                while ((readLen = is.read(temp)) > 0) {
-                    System.arraycopy(temp, 0, data, destPos, readLen);
-                    destPos += readLen;
-                }
-                String result = new String(data, "UTF-8"); // utf-8编码
-                System.out.println(result);
-                return result;
-            }
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return null; // 自定义错误信息
-    }
+	//为保护伞用户,更改用户标签,匹配个性化菜单。
+
+	public class addUserType extends Thread {
+		private String toOpenId;
+
+		public addUserType(String toOpenId) {
+			this.toOpenId = toOpenId;
+		}
+
+		@Override
+		public void run() {
+			addUserType(toOpenId);
+		}
+	}
+
+	public String addUserType(String id) {
+		Map<String,Object> parameter = systemService.getWechatParameter();
+		String token = (String)parameter.get("token");
+		String url= "https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging?access_token="+token;
+		String jsonData="{\"openid_list\":[\""+id+"\"],\"tagid\" : 105}";
+		String reJson=this.post(url, jsonData,"POST");
+		System.out.println(reJson);
+		JSONObject jb=JSONObject.fromObject(reJson);
+		String errmsg=jb.getString("errmsg");
+		if(errmsg.equals("ok")){
+			return "ok";
+		}else {
+			return errmsg;
+		}
+	}
+
+
+	/**
+	 * 发送HttpPost请求
+	 *
+	 * @param strURL
+	 *            服务地址
+	 * @param params
+	 *            json字符串,例如: "{ \"id\":\"12345\" }" ;其中属性名必须带双引号<br/>
+	 *            type (请求方式：POST,GET)
+	 * @return 成功:返回json字符串<br/>
+	 */
+	public String post(String strURL, String params,String type) {
+		System.out.println(strURL);
+		System.out.println(params);
+		try {
+			URL url = new URL(strURL);// 创建连接
+			HttpURLConnection connection = (HttpURLConnection) url
+					.openConnection();
+			connection.setDoOutput(true);
+			connection.setDoInput(true);
+			connection.setUseCaches(false);
+			connection.setInstanceFollowRedirects(true);
+			connection.setRequestMethod(type); // 设置请求方式
+			connection.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式
+			connection.setRequestProperty("Content-Type", "application/json"); // 设置发送数据的格式
+			connection.connect();
+			OutputStreamWriter out = new OutputStreamWriter(
+					connection.getOutputStream(), "UTF-8"); // utf-8编码
+			out.append(params);
+			out.flush();
+			out.close();
+			// 读取响应
+			int length = (int) connection.getContentLength();// 获取长度
+			InputStream is = connection.getInputStream();
+			if (length != -1) {
+				byte[] data = new byte[length];
+				byte[] temp = new byte[512];
+				int readLen = 0;
+				int destPos = 0;
+				while ((readLen = is.read(temp)) > 0) {
+					System.arraycopy(temp, 0, data, destPos, readLen);
+					destPos += readLen;
+				}
+				String result = new String(data, "UTF-8"); // utf-8编码
+				System.out.println(result);
+				return result;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null; // 自定义错误信息
+	}
 
 	private String processSubscribeEvent(ReceiveXmlEntity xmlEntity,HttpServletRequest request,HttpServletResponse response)
 	{
@@ -744,11 +787,11 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			mongoLog.setOpen_id(openId);
 			mongoLog.setMarketer(marketer);
 			mongoLog.setStatus((String) map.get("status"));
-            mongoLogService.insert(mongoLog);
-        }
-    }
+			mongoLogService.insert(mongoLog);
+		}
+	}
 
-    private void updateAttentionInfo(ReceiveXmlEntity xmlEntity)
+	private void updateAttentionInfo(ReceiveXmlEntity xmlEntity)
 	{
 		String EventKey = xmlEntity.getEventKey();
 		Date updateDate = new Date();
@@ -922,21 +965,21 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		String openId=xmlEntity.getFromUserName();
 		Map<String,Object> params=new HashMap<String,Object>();
 		params.put("openid", openId);
-		 params.put("uuid", UUID.randomUUID().toString().replaceAll("-", ""));
-		 params.put("starNum1", 0);
-		 params.put("starNum2", 0);
-		 params.put("starNum3", 0);
-		 params.put("doctorId", xmlEntity.getKfAccount());
-		 params.put("content", "");
-		 params.put("dissatisfied", null);
-		 params.put("redPacket", null);
-		 patientRegisterPraiseDao.saveCustomerEvaluation(params);
-		 String st = "感谢您对我们的信任与支持，为了以后能更好的为您服务，请对本次服务做出评价！【" +
-			"<a href='http://s68.baodf.com/titan/appoint#/userEvaluate/"+params.get("uuid")+"'>我要评价</a>】";
-		 Map parameter = systemService.getWechatParameter();
-		 String token = (String)parameter.get("token");
-		 WechatUtil.sendMsgToWechat(token, openId, st);
-		 LogUtils.saveLog(request, "00000004");//注：00000004表示“客服评价”
+		params.put("uuid", UUID.randomUUID().toString().replaceAll("-", ""));
+		params.put("starNum1", 0);
+		params.put("starNum2", 0);
+		params.put("starNum3", 0);
+		params.put("doctorId", xmlEntity.getKfAccount());
+		params.put("content", "");
+		params.put("dissatisfied", null);
+		params.put("redPacket", null);
+		patientRegisterPraiseDao.saveCustomerEvaluation(params);
+		String st = "感谢您对我们的信任与支持，为了以后能更好的为您服务，请对本次服务做出评价！【" +
+				"<a href='http://s68.baodf.com/titan/appoint#/userEvaluate/"+params.get("uuid")+"'>我要评价</a>】";
+		Map parameter = systemService.getWechatParameter();
+		String token = (String)parameter.get("token");
+		WechatUtil.sendMsgToWechat(token, openId, st);
+		LogUtils.saveLog(request, "00000004");//注：00000004表示“客服评价”
 
 		return respMessage;
 	}
@@ -1030,43 +1073,43 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 //		}
 
 
-			return "<xml><ToUserName><![CDATA[" + xmlEntity.getFromUserName()  +
-					"]]></ToUserName><FromUserName><![CDATA[" + xmlEntity.getToUserName() +
-					"]]></FromUserName><CreateTime><![CDATA[" + new Date().getTime() +
-					"]]></CreateTime><MsgType><![CDATA[transfer_customer_service]]></MsgType>" +
-					"</xml>";
+		return "<xml><ToUserName><![CDATA[" + xmlEntity.getFromUserName()  +
+				"]]></ToUserName><FromUserName><![CDATA[" + xmlEntity.getToUserName() +
+				"]]></FromUserName><CreateTime><![CDATA[" + new Date().getTime() +
+				"]]></CreateTime><MsgType><![CDATA[transfer_customer_service]]></MsgType>" +
+				"</xml>";
 
 	}
 
-    /***
-     * 根据openid查询消息发送记录
-     * @param openid type
-     * @return 有记录 true 无记录 false
-     */
+	/***
+	 * 根据openid查询消息发送记录
+	 * @param openid type
+	 * @return 有记录 true 无记录 false
+	 */
 	@Override
-    public boolean findHealthRecordMsgByOpenid(String openid, String type) {
-        HealthRecordMsgVo healthRecordMsgVo = new HealthRecordMsgVo();
-        healthRecordMsgVo.setOpenId(openid);
-        Query queryRecord = new Query();
-        Date date = new Date();
-        date.setHours(0);
-        queryRecord.addCriteria(Criteria.where("open_id").is(openid).and("create_date").gte(date));
-        Long RecordCount = healthRecordMsgVoMongoDBService.queryCount(queryRecord);
-        return RecordCount != 0l ? true : false;
-    }
+	public boolean findHealthRecordMsgByOpenid(String openid, String type) {
+		HealthRecordMsgVo healthRecordMsgVo = new HealthRecordMsgVo();
+		healthRecordMsgVo.setOpenId(openid);
+		Query queryRecord = new Query();
+		Date date = new Date();
+		date.setHours(0);
+		queryRecord.addCriteria(Criteria.where("open_id").is(openid).and("create_date").gte(date));
+		Long RecordCount = healthRecordMsgVoMongoDBService.queryCount(queryRecord);
+		return RecordCount != 0l ? true : false;
+	}
 
-    /***
-     * 插入消息发送记录
-     *
-     * @param
-     * @return
-     */
+	/***
+	 * 插入消息发送记录
+	 *
+	 * @param
+	 * @return
+	 */
 	@Override
-    public int insertHealthRecordMsg(HealthRecordMsgVo healthRecordMsgVo) {
+	public int insertHealthRecordMsg(HealthRecordMsgVo healthRecordMsgVo) {
 		healthRecordMsgVo.setId(IdGen.uuid());
-        healthRecordMsgVo.setCreate_date(new Date());
-        healthRecordMsgVo.setOpen_id(healthRecordMsgVo.getOpenId());
+		healthRecordMsgVo.setCreate_date(new Date());
+		healthRecordMsgVo.setOpen_id(healthRecordMsgVo.getOpenId());
 		healthRecordMsgVo.setOpenId(null);
-        return  healthRecordMsgVoMongoDBService.insert(healthRecordMsgVo);
-    }
+		return  healthRecordMsgVoMongoDBService.insert(healthRecordMsgVo);
+	}
 }

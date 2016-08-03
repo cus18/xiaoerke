@@ -6,15 +6,15 @@ import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGameDetailVo;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
+import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
+import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -101,56 +101,56 @@ public class OlyGamesController extends BaseController {
      * result: {leftTimes:2，prizeInfo:[{name:"电饭煲"},{describe:"电饭煲"},{XXX:"电饭煲"}]}
      * leftTimes为剩余的抽奖次数，如果为-1，表示积分不够抽奖，抽奖失败
      ***/
-    @RequestMapping(value = "/gameScore/GetGameScorePrize",method = {RequestMethod.POST,RequestMethod.GET})
+    @RequestMapping(value = "/gameScore/GetGameScorePrize", method = {RequestMethod.POST, RequestMethod.GET})
     public synchronized
     @ResponseBody
-    Map<String,Object> GetGameScorePrize(@RequestBody  Map<String, Object> params){
-        Map<String,Object> responseMap = new HashMap<String, Object>();
-        String openId = (String)params.get("openid");
+    Map<String, Object> GetGameScorePrize(@RequestBody Map<String, Object> params) {
+        Map<String, Object> responseMap = new HashMap<String, Object>();
+        String openId = (String) params.get("openid");
         OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
         olyBabyGamesVo.setOpenId(openId);
         OlyBabyGamesVo vo = olyGamesService.selectByOlyBabyGamesVo(olyBabyGamesVo);
         String prizes = vo.getPrize();//获取用户的抽奖信息
-        int gameLevel = 0;
+        int gameLevel = vo.getGameLevel();
         prizes = prizes==null?"":prizes;
         if(!prizes.contains(",")){//没有得过奖品和只得一次奖品的可以抽奖
             int random = new Random().nextInt(100);
-            Map<String, Object> umbrellaMap=new HashMap<String, Object>();
-            umbrellaMap.put("openid",openId);
+            Map<String, Object> umbrellaMap = new HashMap<String, Object>();
+            umbrellaMap.put("openid", openId);
             List<Map<String, Object>> umbrellaList = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(umbrellaMap);
             String today = DateUtils.DateToStr(new Date(), "date");
-            Map<String, Object> prizeMap=new HashMap<String, Object>();
-            prizeMap.put("prizeDate",today);
+            Map<String, Object> prizeMap = new HashMap<String, Object>();
+            prizeMap.put("prizeDate", today);
             List<Map<String, Object>> prizeList = olyGamesService.getOlyGamePrizeList(prizeMap);
             int start = 0;
             int prizeOrder = 3;
-            for(Map<String, Object> tempMap : prizeList){
-                int end = start+(Integer)tempMap.get("probability");
-                if(random>=start && random<end){
-                    prizeOrder = (Integer)tempMap.get("prizeOrder");
-                    responseMap.put("prizeNumber",tempMap.get("prizeNumber"));
-                    if((Integer)tempMap.get("prizeNumber")<=0){//如果抽到的奖品个数为0，则返回谢谢参与
-                        responseMap.put("prizeOrder",3);
-                        responseMap.put("prizeName","谢谢参与");
+            for (Map<String, Object> tempMap : prizeList) {
+                int end = start + (Integer) tempMap.get("probability");
+                if (random >= start && random < end) {
+                    prizeOrder = (Integer) tempMap.get("prizeOrder");
+                    responseMap.put("prizeNumber", tempMap.get("prizeNumber"));
+                    if ((Integer) tempMap.get("prizeNumber") <= 0) {//如果抽到的奖品个数为0，则返回谢谢参与
+                        responseMap.put("prizeOrder", 3);
+                        responseMap.put("prizeName", "谢谢参与");
                         break;
                     }
-                    if(gameLevel<(Integer)tempMap.get("levelLimit")){//等级不够，不能抽到该奖品
-                        responseMap.put("prizeOrder",3);
-                        responseMap.put("prizeName","谢谢参与");
+                    if (gameLevel < (Integer) tempMap.get("levelLimit")) {//等级不够，不能抽到该奖品
+                        responseMap.put("prizeOrder", 3);
+                        responseMap.put("prizeName", "谢谢参与");
                         break;
                     }
-                    if(4 == prizeOrder){//抽中保护伞
-                        if(umbrellaList.size()>0){//如果是保护伞用户则不能抽中保护伞
-                            if("success".equals(umbrellaList.get(0).get("pay_result"))){
-                                responseMap.put("prizeOrder",3);
-                                responseMap.put("prizeName","谢谢参与");
+                    if (4 == prizeOrder) {//抽中保护伞
+                        if (umbrellaList.size() > 0) {//如果是保护伞用户则不能抽中保护伞
+                            if ("success".equals(umbrellaList.get(0).get("pay_result"))) {
+                                responseMap.put("prizeOrder", 3);
+                                responseMap.put("prizeName", "谢谢参与");
                                 break;
                             }
                         }
                     }
-                    if((4 == prizeOrder&&prizes.contains("4"))||(4 != prizeOrder&&!prizes.contains("4")&&!"".equals(prizes))){//抽中保护伞但已经抽过保护伞，或已经抽中过b组奖品
-                        responseMap.put("prizeOrder",3);
-                        responseMap.put("prizeName","谢谢参与");
+                    if ((4 == prizeOrder && prizes.contains("4")) || (4 != prizeOrder && !prizes.contains("4") && !"".equals(prizes))) {//抽中保护伞但已经抽过保护伞，或已经抽中过b组奖品
+                        responseMap.put("prizeOrder", 3);
+                        responseMap.put("prizeName", "谢谢参与");
                         break;
                     }
                     responseMap.put("prizeOrder",tempMap.get("prizeOrder"));
@@ -161,25 +161,25 @@ public class OlyGamesController extends BaseController {
                 }
                 start = end;
             }
-            if(responseMap.get("prizeOrder")==null){//没抽中奖品
-                responseMap.put("prizeOrder",3);
-                responseMap.put("prizeName","谢谢参与");
+            if (responseMap.get("prizeOrder") == null) {//没抽中奖品
+                responseMap.put("prizeOrder", 3);
+                responseMap.put("prizeName", "谢谢参与");
             }
-            if(3 != responseMap.get("prizeOrder")){//抽到奖品
+            if(3 != (Integer) responseMap.get("prizeOrder")){//抽到奖品
                 if("".equals(prizes)){
                     prizes = responseMap.get("prizeOrder").toString();
                 }else{
                     prizes = prizes + "," + responseMap.get("prizeOrder");
                 }
-                Map<String,Object> param = new HashMap<String, Object>();
-                param.put("prizeOrder",responseMap.get("prizeOrder"));
-                param.put("prizeNumber",(Integer)responseMap.get("prizeNumber")-1);
-                param.put("prizeDate",today);
+                Map<String, Object> param = new HashMap<String, Object>();
+                param.put("prizeOrder", responseMap.get("prizeOrder"));
+                param.put("prizeNumber", (Integer) responseMap.get("prizeNumber") - 1);
+                param.put("prizeDate", today);
                 olyGamesService.updateOlyGamePrizeInfo(param);//更新奖品数量
-            }else if(3 == responseMap.get("prizeOrder")&&prizeOrder == 4&&!prizes.contains("4")){//抽到保护伞且返回谢谢参与且没有抽中过保护伞
+            }else if(3 == (Integer)responseMap.get("prizeOrder")&&prizeOrder == 4&&!prizes.contains("4")){//抽到保护伞且返回谢谢参与且没有抽中过保护伞
                 if("".equals(prizes)){
                     prizes = "4";
-                }else{
+                } else {
                     prizes = prizes + ",4";
                 }
             }
@@ -188,9 +188,9 @@ public class OlyGamesController extends BaseController {
             olyVo.setPrize(prizes);
             olyVo.setGameScore(vo.getGameScore()-80);
             olyGamesService.updateOlyBabyGamesByOpenId(olyVo);//更新用户抽奖信息
-        }else{//抽中两次的只能显示谢谢参与
-            responseMap.put("prizeOrder",3);
-            responseMap.put("prizeName","谢谢参与");
+        } else {//抽中两次的只能显示谢谢参与
+            responseMap.put("prizeOrder", 3);
+            responseMap.put("prizeName", "谢谢参与");
         }
         return responseMap;
     }
@@ -202,24 +202,43 @@ public class OlyGamesController extends BaseController {
      * result: {prizeList:[{prizeName:"电饭煲",XXX:"XXXXX"},{prizeName:"电饭煲"},{prizeName:"电饭煲"}]}
      ***/
     @RequestMapping(value = "/gameScore/GetUserPrizeList",method = {RequestMethod.POST,RequestMethod.GET})
-    public synchronized
+    public
     @ResponseBody
     Map<String,Object> GetUserPrizeList(@RequestBody Map<String, Object> params){
         Map<String,String> prizesMap = new HashMap<String, String>();//奖品列表
         String today = DateUtils.DateToStr(new Date(), "date");
-        Map<String, Object> param=new HashMap<String, Object>();
+        Map<String, Object> param = new HashMap<String, Object>();
         param.put("prizeDate", today);
         List<Map<String, Object>> prizeList = olyGamesService.getOlyGamePrizeList(param);
         for(Map<String, Object> temp : prizeList){
             prizesMap.put(temp.get("prizeOrder").toString(),(String)temp.get("prizeName"));
         }
         Map<String,Object> responseMap = new HashMap<String, Object>();
-        String openId = (String)params.get("openid");
-        int random = new Random().nextInt(100);
         List<OlyBabyGamesVo> list = olyGamesService.getUserPrizeList();//取日期最近的5个用户的奖品列表
+        Map<String, Object> prizeMap = new HashMap<String, Object>();
         for(OlyBabyGamesVo vo : list){
-
+            String[] prizes = vo.getPrize().split(",");
+            String nickName = vo.getNickName();
+            if(StringUtils.isNull(nickName)){
+                WechatAttention wa = wechatAttentionService.getAttentionByOpenId(vo.getOpenId());
+                Map parameter = systemService.getWechatParameter();
+                String token = (String)parameter.get("token");
+                if(wa!=null){
+                    if(StringUtils.isNotNull(wa.getNickname())){
+                        nickName = wa.getNickname();
+                    }else{
+                        WechatBean userinfo = WechatUtil.getWechatName(token, vo.getOpenId());
+                        nickName = StringUtils.isNotNull(userinfo.getNickname())?userinfo.getNickname():"";
+                    }
+                }
+            }
+            StringBuffer sb = new StringBuffer("");
+            for(String prize:prizes){
+                sb.append(prizesMap.get(prize)).append(",");
+            }
+            prizeMap.put(nickName,sb.toString());
         }
+        responseMap.put("prizeMap",prizeMap);
         return responseMap;
     }
 
@@ -230,13 +249,16 @@ public class OlyGamesController extends BaseController {
      * result: {addressName:"海淀区",code:"100053","phone":"13601025662","userName":"赵得良"}
      ***/
     @RequestMapping(value = "/gameScore/SaveUserAddress",method = {RequestMethod.POST,RequestMethod.GET})
-    public synchronized
+    public
     @ResponseBody
-    Map<String,Object> SaveUserAddress(@RequestBody  Map<String, Object> params){
+    Map<String,Object> SaveUserAddress(@RequestBody Map<String, Object> params){
         Map<String,Object> responseMap = new HashMap<String, Object>();
         String openId = (String)params.get("openid");
-        int random = new Random().nextInt(100);
-
+        String address = (String)params.get("address");
+        OlyBabyGamesVo param = new OlyBabyGamesVo();
+        param.setOpenId(openId);
+        param.setAddress(address);
+        olyGamesService.updateOlyBabyGamesByOpenId(param);
         return responseMap;
     }
 
@@ -336,7 +358,7 @@ public class OlyGamesController extends BaseController {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("openid","111111");
         params.put("gameLevel", 3);
-        params.put("gameScore",34.5);
+        params.put("gameScore", 34.5);
 //        GetGamePlayingTimes(params);
 //        SaveGameScore(params);
         GetUserGameScore(params);
@@ -358,6 +380,109 @@ public class OlyGamesController extends BaseController {
         OlyBabyGamesVo resultvo = olyGamesService.selectByOlyBabyGamesVo(olyBabyGamesVo);
         responseMap.put("gameScore",resultvo.getGameScore());
         return responseMap;
+    }
+
+    /**
+     * 获取参加奥运宝宝游戏的总人数
+     * inputParam: {}
+     * resultParam: {gameMemberNum:8888}
+     *
+     * @return
+     */
+    @RequestMapping(value = "/firstPage/GetGameMemberNum", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    HashMap<String, Object> getGameMemberNum() {
+        HashMap<String, Object> response = new HashMap<String, Object>();
+        int result = olyGamesService.getGameMemberNum();
+        if (result != 0) {
+            response.put("gameMemberNum", result);
+        } else {
+            response.put("gameMemberNum", 0);
+        }
+        return response;
+    }
+
+    /**
+     * 获取参加用户目前所处的游戏关数,已经要开启下一关，所要进行的操作
+     * input: {openid:"fwefwefewfw"}
+     * result: {gameLevel:2,gameAction:1，needInviteFriendNum:3,}
+     * gameLevel 表示当前所处的管卡,0表示用户处于通关的状态
+     * gameAction 1表示需要关注，2表示需要邀请好友
+     * needInviteFriendNum 表示还需要邀请加入的好友数
+     ***/
+    @RequestMapping(value = "/firstPage/GetGameMemberStatus", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    HashMap<String, Object> getGameMemberStatus(@RequestParam(required = true) String openid) {
+        HashMap<String, Object> response = new HashMap<String, Object>();
+        int needInviteFriendNum = 0;
+        OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
+        olyBabyGamesVo.setOpenId(openid);
+        OlyBabyGamesVo olyBabyGamesVo1 = olyGamesService.selectByOlyBabyGamesVo(olyBabyGamesVo);
+        if (olyBabyGamesVo1 != null) {
+            response.put("status", "success");
+            response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
+            needInviteFriendNum = olyBabyGamesVo1.getInviteFriendNumber();
+            SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
+            sysWechatAppintInfoVo.setOpen_id(openid);
+            SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
+            if (wechatAttentionVo != null) {
+                if (olyBabyGamesVo1.getGameLevel() != null && olyBabyGamesVo1.getGameLevel() == 1) {
+                    response.put("gameAction", 0);
+                    response.put("needInviteFriendNum", needInviteFriendNum);
+                    String nickname = wechatAttentionVo.getWechat_name();
+                    if(StringUtils.isNotNull(nickname)){
+                        olyBabyGamesVo1.setNickName(nickname);
+                    }else{
+                        olyBabyGamesVo1.setNickName("");
+                    }
+                    olyGamesService.updateOlyBabyGamesByOpenId(olyBabyGamesVo1);
+                }else{
+                    response.put("gameAction",0);
+                    response.put("needInviteFriendNum",needInviteFriendNum);
+                }
+            } else {
+                if (olyBabyGamesVo1.getGameLevel() != null && olyBabyGamesVo1.getGameLevel() == 1) {
+                    response.put("gameAction", 0);
+                    response.put("needInviteFriendNum", 0);
+                }else{
+                    response.put("gameAction",1);        //需要关注才能玩
+                    response.put("needInviteFriendNum",needInviteFriendNum);
+                }
+            }
+        } else {
+            olyBabyGamesVo.setCreateTime(new Date());
+            olyBabyGamesVo.setGameLevel(1);
+            olyBabyGamesVo.setGameScore(0.00f);
+            olyBabyGamesVo.setInviteFriendNumber(0);
+            olyBabyGamesVo.setLevel1CurrentTimes(0);
+            olyBabyGamesVo.setLevel2CurrentTimes(0);
+            olyBabyGamesVo.setLevel3CurrentTimes(0);
+            olyBabyGamesVo.setLevel4CurrentTimes(0);
+            olyBabyGamesVo.setLevel5CurrentTimes(0);
+            olyBabyGamesVo.setLevel6CurrentTimes(0);
+            olyBabyGamesVo.setAddress("");
+            olyBabyGamesVo.setNickName("");
+            olyBabyGamesVo.setPrize("");
+            int num = olyGamesService.getGameMemberNum() + 1;
+            String number = String.valueOf(num);
+            int len = number.length();
+            String marketer = "150000001";
+            int defaultLen = marketer.length();
+            marketer = marketer.substring(0, defaultLen - len) + number;
+            olyBabyGamesVo.setMarketer(marketer);
+            int result = olyGamesService.addGamePlayerInfo(olyBabyGamesVo);
+            if (result > 0) {
+                response.put("status", "addSuccess");
+                response.put("gameAction", 0);
+                response.put("gameLevel", 1);
+                response.put("needInviteFriendNum", 0);
+            } else {
+                response.put("status", "addFailure");
+            }
+        }
+        return response;
     }
 
     /**

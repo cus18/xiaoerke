@@ -68,4 +68,6 @@ public interface ScheduledTaskDao {
 
     List<HashMap<String,Object>> getOrderInfoByDate(HashMap<String, Object> map);
 
+    List<String> olympicShareRemind();
+
 }

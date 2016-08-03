@@ -26,6 +26,7 @@ import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
 import com.cxqm.xiaoerke.modules.sys.utils.DoctorMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
+import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
 import com.cxqm.xiaoerke.modules.task.service.ScheduleTaskService;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
@@ -1475,6 +1476,18 @@ public class ScheduledTask {
      ***/
     public void checkDoctorChannelStatusTask() {
         ConsultSessionManager.getSessionManager().checkDoctorChannelStatus();
+    }
+
+
+    //每天的两点提醒只玩了一关的用户
+    public void olympicShareRemind(){
+        //微信推送
+        Map tokenMap = systemService.getDoctorWechatParameter();
+        String token = (String) tokenMap.get("token");
+        List<String> remindUser = scheduleTaskService.getOrderInfoByDate();
+        for(String openid:remindUser){
+        WechatMessageUtil.templateModel("邀请卡", " 电烤箱、面包机、儿童被……众多大奖还在等你，赶紧邀请好友一起闯关赢豪礼吧！", "待办事项: 邀请好友玩游戏赢大奖\n优先级：很高哦", "", "", "马上去赚大奖", token, "url", openid, "tCQGoqfVSv_bCYVGUPbXzsJ2sxKzyoiDbKAKB1KO_Qg");
+        }
     }
 
 }

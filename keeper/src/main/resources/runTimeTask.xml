@@ -350,6 +350,19 @@
 		<property name="cronExpression" value="22 17 11 * * ?"/>
 	</bean>
 
+	<!-- 通知一天前只玩了奥运宝宝一关的用户 -->
+	<bean id="olympicShareRemindQuarzTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="scheduledQuarz"/>
+		<property name="targetMethod" value="olympicShareRemind"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+	<!--事件触发时间点 每天下午两点点执行一次  -->
+	<bean id="olympicShareRemindCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="olympicShareRemindQuarzTask"/>
+		<property name="cronExpression" value="00 00 14 * * ?"/>
+	</bean>
+
+
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
@@ -376,6 +389,7 @@
                 <!--<ref bean="sendMsgToDocAtMorningPhoneConsultCronTrigger"/>-->
                 <!--<ref bean="phoneConsultReminder2DocCronTrigger"/>-->
 				<!--<ref bean="umbrellaMessageCronTrigger"/>-->
+				<!--<ref bean="olympicShareRemindCronTrigger"/>-->
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>

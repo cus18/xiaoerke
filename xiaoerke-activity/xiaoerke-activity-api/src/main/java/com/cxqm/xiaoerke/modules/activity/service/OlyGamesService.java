@@ -40,11 +40,20 @@ public interface OlyGamesService {
 
     int updateOlyBabyGamesByOpenId(OlyBabyGamesVo record);
 
+    int updateInviteFriendNumber(String marketer);
+
     String getUserQRCode(String id);
 
     String getWechatMessage(String openId);
 
     String getMarketerByOpenid(String openId);
 
+    //姓名 openid 关注人数 多少关
+    OlyBabyGamesVo getBaseByMarketer(String marketer);
 
+    int getGameMemberNum();        //查询参与游戏总人数
+
+    int addGamePlayerInfo(OlyBabyGamesVo olyBabyGamesVo);    //新玩家第一次进入游戏页面，添加他的信息
+
+    int getNewAttentionByOpenId(String userId);
 }
