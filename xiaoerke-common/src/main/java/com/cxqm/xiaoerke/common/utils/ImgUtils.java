@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.util.Iterator;
 
@@ -138,7 +139,25 @@ public class ImgUtils {
     }
 
     /**
-     * 上传图片站至阿里云
+     * 判断远程图片是否存在
+     *
+     * @param httpPath
+     * @return
+     */
+    public static Boolean existHttpPath(String httpPath){
+        URL httpurl = null;
+        try {
+            httpurl = new URL(httpPath);
+            URLConnection rulConnection = httpurl.openConnection();
+            rulConnection.getInputStream();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * 上传图片至阿里云
      *
      * @param id
      * @param path
