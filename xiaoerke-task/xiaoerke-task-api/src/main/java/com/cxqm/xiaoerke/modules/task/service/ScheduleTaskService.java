@@ -66,4 +66,6 @@ public interface ScheduleTaskService {
 
     List<HashMap<String,Object>> getOrderInfoToDocConnect5minAfter();
 
+	List<String> getOrderInfoByDate();
+
 }
