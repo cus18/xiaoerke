@@ -48,6 +48,18 @@ public class OlyGamesController extends BaseController {
     @Autowired
     private WechatAttentionService wechatAttentionService;
 
+    public static void main(String[] args) {
+        float a = -32.121f;
+        System.out.println(Math.ceil(a));
+        String username="";
+        if(username.equals("zxx")){
+
+        }
+        int  x = 1;
+        boolean aa = x==1?true:false;
+        System.out.println("args = [" + aa + "]");
+    }
+
 
     /**
      * 获取某个游戏玩的次数
@@ -60,7 +72,7 @@ public class OlyGamesController extends BaseController {
     Map<String, Object> GetGamePlayingTimes(@RequestBody Map<String, Object> params) {
         Map<String, Object> responseMap = new HashMap<String, Object>();
         String openId = (String) params.get("openid");
-        int gameLevel = (Integer) params.get("gameLevel");
+        int gameLevel = Integer.parseInt((String)params.get("gameLevel")) ;
         OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
         olyBabyGamesVo.setOpenId(openId);
         OlyBabyGamesVo resultvo = olyGamesService.selectByOlyBabyGamesVo(olyBabyGamesVo);
@@ -276,8 +288,8 @@ public class OlyGamesController extends BaseController {
     Map<String, Object> SaveGameScore(@RequestBody  Map<String, Object> params) {
         Map<String, Object> responseMap = new HashMap<String, Object>();
         String openId = (String) params.get("openid");
-        int gameLevel = (Integer) params.get("gameLevel");
-        double gameScore = (Double)params.get("gameScore");
+        int gameLevel = Integer.parseInt((String)params.get("gameLevel")) ;
+        double gameScore = Double.parseDouble((String) params.get("gameScore"));
 
         OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
         olyBabyGamesVo.setOpenId(openId);
