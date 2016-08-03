@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.*;
 
 
@@ -53,28 +54,13 @@ public class OlyGamesController extends BaseController {
      * input:{openid:"fwefewfewf",gameLevel:3}
      * result: {gamePlayingTimes:2}
      ***/
-    @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    Map<String, Object> test() {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("openid","111111");
-        params.put("gameLevel",3);
-        GetGamePlayingTimes(params);
-        return params;
-    }
-    /**
-     * 获取某个游戏玩的次数
-     * input:{openid:"fwefewfewf",gameLevel:3}
-     * result: {gamePlayingTimes:2}
-     ***/
     @RequestMapping(value = "/gameScore/GetGamePlayingTimes", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> GetGamePlayingTimes(@RequestBody Map<String, Object> params) {
         Map<String, Object> responseMap = new HashMap<String, Object>();
         String openId = (String) params.get("openid");
-        int gameLevel = Integer.valueOf((Integer) params.get("gameLevel"));
+        int gameLevel = (Integer) params.get("gameLevel");
         OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
         olyBabyGamesVo.setOpenId(openId);
         OlyBabyGamesVo resultvo = olyGamesService.selectByOlyBabyGamesVo(olyBabyGamesVo);
@@ -274,6 +260,24 @@ public class OlyGamesController extends BaseController {
         return responseMap;
     }
 
+
+    /**
+     * 获取某个游戏玩的次数
+     * input:{openid:"fwefewfewf",gameLevel:3}
+     * result: {gamePlayingTimes:2}
+     ***/
+    @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> test() {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("openid","111111");
+        params.put("gameLevel", 3);
+        params.put("gameScore",34.5);
+//        GetGamePlayingTimes(params);
+        SaveGameScore(params);
+        return params;
+    }
     /**
      * 将某关的游戏积分存入后台
      * input:{openid:"fwefewfewf",gameLevel:3,gameScore:80}
@@ -285,12 +289,12 @@ public class OlyGamesController extends BaseController {
     Map<String, Object> SaveGameScore(@RequestBody  Map<String, Object> params) {
         Map<String, Object> responseMap = new HashMap<String, Object>();
         String openId = (String) params.get("openid");
-        Integer gameLevel = Integer.valueOf((String) params.get("gameLevel"));
-        Float gameScore = Float.valueOf((String) params.get("gameScore"));
+        int gameLevel = (Integer) params.get("gameLevel");
+        double gameScore = (Double)params.get("gameScore");
 
         OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
         olyBabyGamesVo.setOpenId(openId);
-        olyBabyGamesVo.setGameScore(gameScore);
+        olyBabyGamesVo.setGameScore((float)gameScore);
         if (gameLevel == 1) {
             olyBabyGamesVo.setLevel1CurrentTimes(1);
         } else if (gameLevel == 2) {
@@ -307,7 +311,7 @@ public class OlyGamesController extends BaseController {
         int updateFlag = olyGamesService.updateOlyBabyGamesByOpenId(olyBabyGamesVo);
 
         OlyBabyGameDetailVo olyBabyGameDetailVo = new OlyBabyGameDetailVo();
-        olyBabyGameDetailVo.setGameScore(gameScore);
+        olyBabyGameDetailVo.setGameScore((float)gameScore);
         olyBabyGameDetailVo.setGameLevel(gameLevel);
         olyBabyGameDetailVo.setCreateBy(openId);
         olyBabyGameDetailVo.setOpenId(openId);

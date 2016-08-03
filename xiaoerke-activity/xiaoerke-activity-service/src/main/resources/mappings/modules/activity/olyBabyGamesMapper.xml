@@ -239,25 +239,25 @@
         game_level = #{gameLevel,jdbcType=INTEGER},
       </if>
       <if test="gameScore != null" >
-        game_score = gameScore + #{gameScore,jdbcType=REAL},
+        game_score = game_score + #{gameScore,jdbcType=REAL},
       </if>
       <if test="level1CurrentTimes != null" >
-        level1_current_times = level1CurrentTimes + #{level1CurrentTimes,jdbcType=INTEGER},
+        level1_current_times = level1_current_times + #{level1CurrentTimes,jdbcType=INTEGER},
       </if>
       <if test="level2CurrentTimes != null" >
-        level2_current_times = level2CurrentTimes + #{level2CurrentTimes,jdbcType=INTEGER},
+        level2_current_times = level2_current_times + #{level2CurrentTimes,jdbcType=INTEGER},
       </if>
       <if test="level3CurrentTimes != null" >
-        level3_current_times = level3CurrentTimes + #{level3CurrentTimes,jdbcType=INTEGER},
+        level3_current_times = level3_current_times + #{level3CurrentTimes,jdbcType=INTEGER},
       </if>
       <if test="level4CurrentTimes != null" >
-        level4_current_times = level4CurrentTimes + #{level4CurrentTimes,jdbcType=INTEGER},
+        level4_current_times = level4_current_times + #{level4CurrentTimes,jdbcType=INTEGER},
       </if>
       <if test="level5CurrentTimes != null" >
-        level5_current_times = level5CurrentTimes + #{level5CurrentTimes,jdbcType=INTEGER},
+        level5_current_times = level5_current_times + #{level5CurrentTimes,jdbcType=INTEGER},
       </if>
       <if test="level6CurrentTimes != null" >
-        level6_current_times = level6CurrentTimes + #{level6CurrentTimes,jdbcType=INTEGER},
+        level6_current_times = level6_current_times + #{level6CurrentTimes,jdbcType=INTEGER},
       </if>
       <if test="marketer != null" >
         marketer = #{marketer,jdbcType=VARCHAR},
