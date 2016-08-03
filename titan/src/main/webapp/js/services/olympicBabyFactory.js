@@ -31,14 +31,14 @@ define(['appOlympicBaby'], function (app) {
              ***/
             return $resource('olympicBaby/firstPage/GetGameMemberNum');
         }])
-        .factory('GetFirstPageSlideMessage',['$resource',function ($resource){
+        .factory('GetUserPrizeList',['$resource',function ($resource){
             /**
              * 获取奖品领取的轮播图消息
              * result: {messageList:[{userName:孙晓,Content:"获得了微波炉大奖"},{userName:孙大奖"},晓,Content:"获得了微波炉大奖"},
              * {userName:孙晓,Content:"获得了微波炉大奖"},{userName:孙晓,Content:"获得了微波炉
              * {userName:孙晓,Content:"获得了微波炉大奖"}]}
              ***/
-            return $resource('olympicBaby/firstPage/GetFirstPageSlideMessage');
+            return $resource('olympicBaby/gameScore/GetUserPrizeList');
         }])
         .factory('GetUserGameScore',['$resource',function ($resource){
             /**
