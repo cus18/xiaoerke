@@ -11,8 +11,6 @@ public class OlyBabyGamesVo {
 
     private Float gameScore;
 
-    private String nickName;
-
     private Integer level1CurrentTimes;
 
     private Integer level2CurrentTimes;
@@ -35,9 +33,11 @@ public class OlyBabyGamesVo {
 
     private Date updateTime;
 
+    private String address;
+
     private String prize;
 
-    private String address;
+    private String nickName;
 
     public Integer getId() {
         return id;
@@ -49,22 +49,6 @@ public class OlyBabyGamesVo {
 
     public String getOpenId() {
         return openId;
-    }
-
-    public String getPrize() {
-        return prize;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setPrize(String prize) {
-        this.prize = prize;
     }
 
     public void setOpenId(String openId) {
@@ -173,6 +157,22 @@ public class OlyBabyGamesVo {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPrize() {
+        return prize;
+    }
+
+    public void setPrize(String prize) {
+        this.prize = prize;
     }
 
     public String getNickName() {

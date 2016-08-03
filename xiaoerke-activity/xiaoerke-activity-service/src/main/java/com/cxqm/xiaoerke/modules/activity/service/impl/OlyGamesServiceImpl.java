@@ -58,7 +58,7 @@ public class OlyGamesServiceImpl implements OlyGamesService {
      * @return
      */
     public List<OlyBabyGamesVo> getUserPrizeList(){
-        return olyGamePrizeDao.getUserPrizeList();
+        return olyBabyGamesDao.getUserPrizeList();
     }
     /**
      * 更新奖品信息
