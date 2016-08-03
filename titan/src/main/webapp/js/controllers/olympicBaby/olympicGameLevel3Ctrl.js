@@ -1,9 +1,9 @@
 ﻿angular.module('controllers', []).controller('olympicGameLevel3Ctrl', [
-        '$scope','$state','$timeout','GetGamePlayingTimes','GetUserOpenId',
-        function ($scope,$state,$timeout,GetGamePlayingTimes,GetUserOpenId) {
+        '$scope','$state','$timeout','GetGamePlayingTimes','GetUserOpenId','SaveGameScore',
+        function ($scope,$state,$timeout,GetGamePlayingTimes,GetUserOpenId,SaveGameScore) {
             $scope.title = "奥运宝贝-游戏第三关";
             $scope.score = 0;
-            $scope.time = 15;
+            $scope.time = 5;
             $scope.lookResultFloat = false;
             $scope.challengeAgainImg = true;
             $scope.challengeMoreImg = false;
@@ -19,24 +19,19 @@
                     $scope.openid = data.openid;
                 });
                 getGamePlayingTimes();
-                if($scope.playCount > 0){
-
-                }
-
             };
 
             var getGamePlayingTimes = function () {
                 //获取玩游戏的次数
-                GetGamePlayingTimes.get({openid:$scope.openid,gameLevel:3},function (data) {
+                GetGamePlayingTimes.save({openid:$scope.openid,gameLevel:3},function (data) {
                     console.log(data);
-                    $scope.playCount = data;
+                    $scope.playCount = data.gamePlayingTimes;
                 });
             };
             $scope.challengeAgain = function () {
                 $scope.lookResultFloat = false;
                 $scope.score = 0;
-                $scope.time = 15;
-                $scope.playCount--;
+                $scope.time = 5;
             };
             $scope.challengeMore = function () {
                 $state.go("olympicBabyFirst",{});
@@ -49,6 +44,12 @@
                 if(flag){
                     startTime();
                     startMoveBack();
+                    //$scope.playCount--;
+                    getGamePlayingTimes();
+                    if($scope.playCount == 3){
+                        $scope.challengeMoreImg = true;
+                        $scope.challengeAgainImg = false;
+                    }
                 }
                 startMoveBoy();
                 $scope.score++;
@@ -97,6 +98,10 @@
                        flag = true;
                        clearInterval(timer3);
                        clearInterval(timer2);
+                       console.log($scope.score);
+                       SaveGameScore.save({openid:$scope.openid,gameLevel:3,gameScore:$scope.score},function (data) {
+                           console.log(data);
+                       });
                    }
                    $scope.$digest();
                },1000);

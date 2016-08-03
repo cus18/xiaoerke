@@ -1,34 +1,17 @@
 ﻿angular.module('controllers', []).controller('olympicBabyFirstCtrl', [
-        '$scope','$state','$timeout','GetUserPrizeList','GetGameMemberNum','GetGamePlayingTimes','GetUserOpenId','GetUserGameScore',
-        function ($scope,$state,$timeout,GetUserPrizeList,GetGameMemberNum,GetGamePlayingTimes,GetUserOpenId,GetUserGameScore) {
+        '$scope','$state','$timeout','GetUserPrizeList','GetGameMemberNum','GetGamePlayingTimes','GetUserOpenId',
+            'GetUserGameScore','GetGameMemberStatus',
+        function ($scope,$state,$timeout,GetUserPrizeList,GetGameMemberNum,GetGamePlayingTimes,GetUserOpenId,
+                  GetUserGameScore,GetGameMemberStatus) {
             $scope.title = "奥运宝贝-首页";
             $scope.headcount = 0;//参与游戏的总人数
             $scope.shareFloat = false;
             $scope.openid = '';
             $scope.invitePeopleNum = 0;//邀请成功的人数
-            $scope.attentionOrNot = false;//是否关注宝大夫
             $scope.withoutCount = false;//游戏次数用完了
             $scope.playCount = 3;//游戏次数
             $scope.score = 300;//游戏积分
             $scope.scroll = [];
-            $scope.scroll = [
-                {
-                    url:'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/branchAnswer%2Frentou.png',
-                    nickName:'西瓜啊西瓜中了保护伞'
-                },{
-                    url:'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/branchAnswer%2Frentou.png',
-                    nickName:'里哈米星人中了电烤箱'
-                },{
-                    url:'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/branchAnswer%2Frentou.png',
-                    nickName:'超级大梅梅中了爱奇艺会员'
-                },{
-                    url:'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/branchAnswer%2Frentou.png',
-                    nickName:'大熊猫中了微波炉'
-                },{
-                    url:'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/branchAnswer%2Frentou.png',
-                    nickName:'陆州桥中了九阳豆浆机'
-                }
-            ];
             $scope.olympicBabyFirstInit = function(){
                 //获取openId
                 /** $.ajax({
@@ -65,6 +48,13 @@
                     console.log(data.openid);
                     $scope.openid = data.openid;
                 });
+                //获取游戏的状态
+                GetGameMemberStatus.save({openid:$scope.openid},function (data) {
+                    console.log(data);
+                    //gameLevel:2,gameAction:1，needInviteFriendNum:3,
+                    $scope.attentionOrNot = data.gameAction;
+                    $scope.gameLevel = data.gameLevel;
+                });
 
             };
             function ScrollImgLeft() {
@@ -96,9 +86,13 @@
             };
             var getGamePlayingTimes= function(num){
                 //获取玩游戏的次数
-                GetGamePlayingTimes.get({openid:$scope.openid,gameLevel:num},function (data) {
+                GetGamePlayingTimes.save({openid:$scope.openid,gameLevel:num},function (data) {
                     console.log(data);
                     $scope.playCount = data;
+                });
+                GetGameMemberStatus.save({openid:$scope.openid,gameLevel:num},function (data) {
+                    console.log(data);
+                    $scope.attentionOrNot = data;
                 });
             };
             $scope.goFirstPass= function(){
@@ -111,36 +105,26 @@
             };
             $scope.goSecondPass= function(){
                 getGamePlayingTimes(2);
-                if($scope.attentionOrNot){
-                    if($scope.invitePeopleNum >= 1){
-                        if($scope.playCount > 0){
-                            $state.go("olympicGameLevel2",{});
-                        }else{
-                            $scope.withoutCount = true;
-                        }
-                    }else{
-                        $state.go("olympicBabyInvitationCard",{});
-
-                    }
-                }else {
+                if($scope.attentionOrNot == 1){
                     $scope.shareFloat = true;
+                }else if($scope.attentionOrNot == 2){
+                    $state.go("olympicBabyInvitationCard",{});
+                }else if($scope.playCount > 0){
+                    $state.go("olympicGameLevel2",{});
+                }else{
+                    $scope.withoutCount = true;
                 }
             };
             $scope.goThirdPass= function(){
                 getGamePlayingTimes(3);
-                if($scope.attentionOrNot){
-                    if($scope.invitePeopleNum >= 3){
-                        if($scope.playCount > 0){
-                            $state.go("olympicGameLevel3",{});
-                        }else{
-                            $scope.withoutCount = true;
-                        }
-                    }else{
-                        $state.go("olympicBabyInvitationCard",{});
-
-                    }
-                }else {
+                if($scope.attentionOrNot == 1){
                     $scope.shareFloat = true;
+                }else if($scope.attentionOrNot == 2){
+                    $state.go("olympicBabyInvitationCard",{});
+                }else if($scope.playCount > 3){
+                    $state.go("olympicGameLevel3",{});
+                }else{
+                    $scope.withoutCount = true;
                 }
             };
             $scope.cancelFloat = function(){
