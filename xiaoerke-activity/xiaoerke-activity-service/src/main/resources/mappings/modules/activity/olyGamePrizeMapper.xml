@@ -5,7 +5,7 @@
   <sql id="Base_Column_List" >
     id, prizeName,prizeOrder,levelLimit, prizeNumber, probability,prizeDate
   </sql>
-  <select id="getOlyGamePrizeList"  >
+  <select id="getOlyGamePrizeList">
     select 
     <include refid="Base_Column_List" />
     from oly_game_prize where prizeDate = #{prizeDate} order by prizeOrder
