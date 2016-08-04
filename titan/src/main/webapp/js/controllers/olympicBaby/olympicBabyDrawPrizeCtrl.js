@@ -126,7 +126,7 @@
                     if (lottery.speed<40) {
                         lottery.speed=40;
                     }
-                    console.log(lottery.times+'^^^^^^'+lottery.speed+'^^^^^^^'+lottery.prize);
+                    //console.log(lottery.times+'^^^^^^'+lottery.speed+'^^^^^^^'+lottery.prize);
                     //lottery.timer = setTimeout(roll,lottery.speed);
                     lottery.timer = $timeout(function () {
                         roll();
