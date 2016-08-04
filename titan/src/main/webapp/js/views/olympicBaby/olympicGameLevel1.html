@@ -24,7 +24,7 @@
 			</div>
 			<img class="my-img2 " width="40%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/swimming/gama_score.png">
 			<div class="score tc c0">{{score}}</div>
-			<img ng-click="challengeAgain()" class="my-img2 " width="60%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/swimming/btn_challengeAgain.png">
+			<img ng-if="challengeAgainLock" ng-click="challengeAgain()" class="my-img2 " width="60%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/swimming/btn_challengeAgain.png">
 			<img ng-click="challengeMore()"  class="my-img2 " width="60%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/swimming/btn_challengeMore.png">
 
 		</div>
