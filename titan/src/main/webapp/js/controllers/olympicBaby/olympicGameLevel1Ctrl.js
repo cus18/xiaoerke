@@ -217,7 +217,7 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
                         });
                     }
                     else{
-                        alert("去微信关注微信宝大夫（BaodfWXf）吧");
+                        alert("去微信关注宝大夫（BaodfWXf）吧");
                     }
 
 
