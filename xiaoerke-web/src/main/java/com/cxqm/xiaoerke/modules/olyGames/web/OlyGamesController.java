@@ -73,7 +73,7 @@ public class OlyGamesController extends BaseController {
         //创建输入流
         InputStream stream;
         try {
-            String path = "C:\\Users\\Administrator\\Desktop\\123\\123.xlsx";
+            String path = "C:\\Users\\Administrator\\Desktop\\123\\663D9100.xls";
             stream = new FileInputStream(path);
             //获取Excel文件对象
             rwb = Workbook.getWorkbook(stream);
@@ -84,10 +84,13 @@ public class OlyGamesController extends BaseController {
         //获取文件的指定工作表 默认的第一个
         int rowTotalNumber = sheet.getRows();
         //行数(表头的目录不需要，从1开始)
-        for (int i = 1; i < rowTotalNumber; i++) {
-            int j = 0;
+        int count = 1;
+        for (int i = 1; i < rowTotalNumber+1; i++) {
+            int j = 1;
+            System.out.print(count+++"====================");
+            System.out.println(sheet.getCell(0, i).getContents());
             String a = "300位儿科专家每日严阵以待，为千万妈妈提供健康咨询。有疑问，随时问，无论是宝宝的吃喝拉撒、生长发育，还是智力启蒙、性格培养，这里全都有！ http://t.cn/RtX85Q9 点我加入。（微信公众号：宝大夫）【宝大夫】";
-            ChangzhuoMessageUtil.sendMsg(String.valueOf(sheet.getCell(++j, i)), a);
+//            ChangzhuoMessageUtil.sendMsg(String.valueOf(sheet.getCell(++j, i)), a);
         }
 
     }
