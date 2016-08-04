@@ -474,6 +474,7 @@ public class OlyGamesController extends BaseController {
                         response.put("gameLevel", 0);
                         response.put("gameAction", 0);
                         response.put("needInviteFriendNum", needInviteFriendNum);
+                        break;
                 }
             } else {
                 response.put("gameAction", 1);        //需要关注才能玩下一关
