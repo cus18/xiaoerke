@@ -3,6 +3,7 @@ package com.cxqm.xiaoerke.modules.activity.service;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGameDetailVo;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -56,4 +57,6 @@ public interface OlyGamesService {
     int addGamePlayerInfo(OlyBabyGamesVo olyBabyGamesVo);    //新玩家第一次进入游戏页面，添加他的信息
 
     int getNewAttentionByOpenId(String userId);
+
+    String uploadMedia(InputStream in);
 }
