@@ -43,7 +43,7 @@
             var timer2 = null;
             var timer3 = null;
             var flag = true;
-            $scope.startRun = function(){
+            var startRun = function(){
                 if(flag){
                     startTime();
                     startMoveBack();
@@ -94,6 +94,12 @@
                 },100);
             };
             //倒计时
+            var timeM = setInterval(function(){
+                if(document.getElementById('buttonImg') != null) {
+                    document.getElementById('buttonImg').addEventListener("touchstart", startRun);
+                    clearTimeout(timeM);
+                }
+            },100);
             var startTime = function () {
                timer2 = setInterval(function () {
                    $scope.time--;

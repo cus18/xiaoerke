@@ -140,7 +140,7 @@
                     };
                     recordLogs('action_olympic_baby_tiwce_visit');
                     recordLogs('action_olympic_baby_tiwce_share');
-                    $("#jumpBtn").bind("click", jump);
+                    document.getElementById('jumpBtn').addEventListener("touchstart", jump);
                     $('#challengeAgain').bind('click',function(){
                         location.reload();
                     });
