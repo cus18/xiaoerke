@@ -510,44 +510,67 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				articleList.add(article);
 			}
 		}else if(EventKey.indexOf("qrscene_15")>-1){//扫码分享
+
+			Integer openLevel = Integer.parseInt(Global.getConfig("OPEN_LEVEL"));
+			Map parameter = systemService.getWechatParameter();
+			String token = (String)parameter.get("token");
+
 //			奥运宝宝扫码
 			if(EventKey.indexOf("150100000")>-1){
 				String st = "欢迎聪明的你来到“宝大夫”，向你推荐宝宝奥运大闯关游戏，" +
 						"<a href='http://s68.baodf.com/titan/appoint#/userEvaluate'>赶紧玩起来吧！</a>";
-				Map parameter = systemService.getWechatParameter();
-				String token = (String)parameter.get("token");
 				WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
 			}else{
+				String userOpenid = EventKey.replace("qrscene_","");
 
-//				如果是新用户推广者加一
-				if(olyGamesService.getNewAttentionByOpenId(xmlEntity.getFromUserName())>0){
-					olyGamesService.updateInviteFriendNumber(EventKey);
+				OlyBabyGamesVo olyBabyGamesVo = olyGamesService.getBaseByMarketer(userOpenid);
+				Integer alreadyInviteNum = olyBabyGamesVo.getInviteFriendNumber();
+				if(alreadyInviteNum<1&&openLevel>=1){
+//					第一关
+					olyBabyGamesVo.setGameLevel(1);
+				}else if(alreadyInviteNum <3&&openLevel>=2){
+//					第二关
+					olyBabyGamesVo.setGameLevel(2);
+				}else if(alreadyInviteNum <6&&openLevel>=3){
+//						第三关
+					olyBabyGamesVo.setGameLevel(3);
+				}else if(alreadyInviteNum <10 &&openLevel>=4){
+//						第四关
+					olyBabyGamesVo.setGameLevel(4);
+				}else if(alreadyInviteNum <15 &&openLevel>=5){
+//						第五关
+					olyBabyGamesVo.setGameLevel(5);
+				}else if(alreadyInviteNum >=15 && openLevel>=6) {
+//						第六关
+					olyBabyGamesVo.setGameLevel(6);
+				}
+
+				//	如果是新用户推广者加一
+				if(olyGamesService.getNewAttentionByOpenId(xmlEntity.getFromUserName())== 0){
+					olyBabyGamesVo.setInviteFriendNumber(alreadyInviteNum+1);
+
+					String msg = "";
+					Integer gemeLevel = olyBabyGamesVo.getGameLevel();
+					Integer needInviteNum = 0;
+					for(int i=0;i<=gemeLevel;i++){
+						needInviteNum += i;
+					}
+					needInviteNum -=alreadyInviteNum;
+					if(alreadyInviteNum>=3){
+						msg = "已开通第"+gemeLevel+"关";
+						if(openLevel ==6)msg = "满六关：您已成功开通所有关卡";
+
+					}else{
+						msg = "已开通第"+gemeLevel+"关，还需邀请"+needInviteNum+"位好友开通下一关";
+					}
+					WechatMessageUtil.templateModel("游戏首页", "恭喜您，已经有"+alreadyInviteNum+"位好友在宝宝奥运大闯关游戏中为你助力，赶紧继续闯关吧！", msg, "", "", "快去闯关玩游戏抽奖吧！", token, "www.baidu.com",  olyBabyGamesVo.getOpenId(),"f5KyEUJG4sS4CEsSKx3pPCYyhlnMOmeUO8Ew_8kXOXc");
 				};
-
-				OlyBabyGamesVo olyBabyGamesVo = olyGamesService.getBaseByMarketer(EventKey);
+//				更新用户信息
+				olyGamesService.updateOlyBabyGamesByOpenId(olyBabyGamesVo);
 
 				String st = "感谢你的倾情助力，"+olyBabyGamesVo.getNickName()+"为“宝大夫”带盐，向您推荐宝宝奥运大闯关游戏，" +
 						"<a href='http://s68.baodf.com/titan/appoint#/userEvaluate'>赶紧玩起来吧！</a>";
-				Map parameter = systemService.getWechatParameter();
-				String token = (String)parameter.get("token");
 				WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
-
-				String msg = "";
-				Integer gemeLevel = olyBabyGamesVo.getGameLevel();
-				Integer alreadyInviteNum = olyBabyGamesVo.getInviteFriendNumber();
-				Integer needInviteNum = 0;
-				for(int i=0;i<alreadyInviteNum;i++){
-					needInviteNum += i;
-				}
-				needInviteNum -=alreadyInviteNum;
-
-				Integer openLevel = Integer.parseInt(Global.getConfig("OPEN_LEVEL"));
-				if(alreadyInviteNum>=15&&1>openLevel){
-					msg = "满六关：您已成功开通所有关卡";
-				}else{
-					msg = "已开通第"+gemeLevel+"关，还需邀请"+needInviteNum+"位好友开通下一关";
-				}
-				WechatMessageUtil.templateModel("游戏首页", "恭喜您，已经有"+alreadyInviteNum+"位好友在宝宝奥运大闯关游戏中为你助力，赶紧继续闯关吧！", msg, "", "", "快去闯关玩游戏抽奖吧！", token, "www.baidu.com",  xmlEntity.getFromUserName(),"f5KyEUJG4sS4CEsSKx3pPCYyhlnMOmeUO8Ew_8kXOXc");
 			}
 		}
 
