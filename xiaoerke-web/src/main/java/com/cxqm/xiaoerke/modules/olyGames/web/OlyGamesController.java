@@ -255,7 +255,7 @@ public class OlyGamesController extends BaseController {
             prizeMap.put("prizeName",sb.toString());
             prizeList.add(prizeMap);
         }
-        responseMap.put("prizeList",prizeList);
+        responseMap.put("prizeList", prizeList);
         return responseMap;
     }
 
@@ -396,7 +396,7 @@ public class OlyGamesController extends BaseController {
         OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
         olyBabyGamesVo.setOpenId(openId);
         OlyBabyGamesVo resultvo = olyGamesService.selectByOlyBabyGamesVo(olyBabyGamesVo);
-        responseMap.put("gameScore",resultvo.getGameScore());
+        responseMap.put("gameScore", resultvo.getGameScore());
         return responseMap;
     }
 
@@ -432,42 +432,53 @@ public class OlyGamesController extends BaseController {
     @RequestMapping(value = "/firstPage/GetGameMemberStatus", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    HashMap<String, Object> getGameMemberStatus(@RequestParam(required = true) String openid) {
+    HashMap<String, Object> getGameMemberStatus(@RequestBody Map<String,Object> param) {
         HashMap<String, Object> response = new HashMap<String, Object>();
         int needInviteFriendNum = 0;
+        String openid = (String)param.get("openid");
         OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
         olyBabyGamesVo.setOpenId(openid);
         OlyBabyGamesVo olyBabyGamesVo1 = olyGamesService.selectByOlyBabyGamesVo(olyBabyGamesVo);
         if (olyBabyGamesVo1 != null) {
             response.put("status", "success");
-            response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
             needInviteFriendNum = olyBabyGamesVo1.getInviteFriendNumber();
-            SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
-            sysWechatAppintInfoVo.setOpen_id(openid);
-            SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
-            if (wechatAttentionVo != null) {
-                if (olyBabyGamesVo1.getGameLevel() != null && olyBabyGamesVo1.getGameLevel() == 1) {
-                    response.put("gameAction", 0);
-                    response.put("needInviteFriendNum", needInviteFriendNum);
+            SysWechatAppintInfoVo wechatAttentionVo = null;
+            if (olyBabyGamesVo1.getGameLevel() == 1) {
+                SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
+                sysWechatAppintInfoVo.setOpen_id(openid);
+                wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
+                if (wechatAttentionVo != null) {
                     String nickname = wechatAttentionVo.getWechat_name();
-                    if(StringUtils.isNotNull(nickname)){
+                    if (StringUtils.isNotNull(nickname)) {
                         olyBabyGamesVo1.setNickName(nickname);
-                    }else{
+                    } else {
                         olyBabyGamesVo1.setNickName("");
                     }
                     olyGamesService.updateOlyBabyGamesByOpenId(olyBabyGamesVo1);
-                }else{
-                    response.put("gameAction",0);
-                    response.put("needInviteFriendNum",needInviteFriendNum);
+                }
+            }
+            int currentLevel = olyBabyGamesVo1.getGameLevel();
+            if (wechatAttentionVo != null) {
+                switch (currentLevel){
+                    case 1:
+                        response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
+                        response.put("gameAction", 2);
+                        response.put("needInviteFriendNum", 1 - needInviteFriendNum);
+                        break;
+                    case 2:
+                        response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
+                        response.put("gameAction", 2);
+                        response.put("needInviteFriendNum", 2 - needInviteFriendNum);
+                        break;
+                    default:
+                        response.put("gameLevel", 0);
+                        response.put("gameAction", 0);
+                        response.put("needInviteFriendNum", needInviteFriendNum);
                 }
             } else {
-                if (olyBabyGamesVo1.getGameLevel() != null && olyBabyGamesVo1.getGameLevel() == 1) {
-                    response.put("gameAction", 0);
-                    response.put("needInviteFriendNum", 0);
-                }else{
-                    response.put("gameAction",1);        //需要关注才能玩
-                    response.put("needInviteFriendNum",needInviteFriendNum);
-                }
+                response.put("gameAction", 1);        //需要关注才能玩下一关
+                response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
+                response.put("needInviteFriendNum", needInviteFriendNum);
             }
         } else {
             olyBabyGamesVo.setCreateTime(new Date());
@@ -504,47 +515,24 @@ public class OlyGamesController extends BaseController {
     }
 
     /**
-     * 用户进入游戏界面初始化
-     * input: {openid:"fwefwefewfw"}
-     * result: {result:"success"}
-     ***/
-    @RequestMapping(value = "/firstPage/InitOlyGame", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    Map<String, Object> InitOlyGame( @RequestBody Map<String, Object> params) {
-        Map<String, Object> responseMap = new HashMap<String, Object>();
-        String openId = (String) params.get("openid");
-
-        OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
-        olyBabyGamesVo.setOpenId(openId);
-        olyBabyGamesVo.setCreateTime(new Date());
-        olyBabyGamesVo.setGameLevel(1);
-
-        int insertFlag = olyGamesService.insertOlyBabyGamesVo(olyBabyGamesVo);
-
-//        responseMap.put("gameScore",resultvo.getGameScore());
-        return responseMap;
-    }
-
-    /**
      * 获取邀请卡
      *
      * @param params
      * @return
      */
-    @RequestMapping(value = "/GetInviteCard",method = {RequestMethod.POST,RequestMethod.GET})
+    @RequestMapping(value = "/GetInviteCard", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public Map<String,Object> GetInviteCard(@RequestBody  Map<String, Object> params){
-        Map<String,Object> response = new HashMap<String, Object>();
-        String openId = (String)params.get("openid");
-        String marketer = (String)params.get("marketer");
+    public Map<String, Object> GetInviteCard(@RequestBody Map<String, Object> params) {
+        Map<String, Object> response = new HashMap<String, Object>();
+        String openId = (String) params.get("openid");
+        String marketer = (String) params.get("marketer");
 
         //生成图片网络路径
         String path = "http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/"+"olympicBaby_invite_"+openId+".png";
         String fileName = new Date().getTime()+"";
         if(!ImgUtils.existHttpPath(path)){
             //生成图片暂存路径
-            String outPath = System.getProperty("user.dir").replace("bin", "uploadImg")+"\\"+fileName+".png";
+            String outPath = System.getProperty("user.dir").replace("bin", "uploadImg")+"\\image\\"+fileName+".png";
 
             if(!StringUtils.isNotNull(marketer)){
                 marketer = olyGamesService.getMarketerByOpenid(openId);//根据openid获取邀请码
