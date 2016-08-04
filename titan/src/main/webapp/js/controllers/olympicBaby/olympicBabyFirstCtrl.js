@@ -74,10 +74,8 @@
                     }
                 });
             };
-            var getGamePlayingTimes= function(num){
-                //获取玩游戏的次数
-                GetGamePlayingTimes.save({openid:$scope.openid,gameLevel:num.toString()},function (data) {
-                    console.log("data",data);
+            $scope.goFirstPass= function(){
+                GetGamePlayingTimes.save({openid:$scope.openid,gameLevel:"1"},function (data) {
                     $scope.playCount = data.gamePlayingTimes;
                     if($scope.playCount < 3){
                         recordLogs("action_olympic_baby_once_visit");
@@ -85,40 +83,46 @@
                     }else{
                         $scope.withoutCount = true;
                     }
-                    GetGameMemberStatus.save({openid:$scope.openid,gameLevel:num.toString()},function (data) {
+                });
+            };
+            $scope.goSecondPass= function(){
+                //获取玩游戏的次数
+                GetGamePlayingTimes.save({openid:$scope.openid,gameLevel:"2"},function (data) {
+                    $scope.playCount = data.gamePlayingTimes;
+                    GetGameMemberStatus.save({openid:$scope.openid,gameLevel:num},function (data) {
                         $scope.attentionOrNot = data.gameAction;
+                        if($scope.attentionOrNot == 1){
+                            $scope.shareFloat = true;
+                        }else if($scope.attentionOrNot == 2){
+                            $state.go("olympicBabyInvitationCard",{});
+                        }else if($scope.playCount < 3){
+                            recordLogs("action_olympic_baby_tiwce_visit");
+                            $state.go("olympicGameLevel2",{});
+                        }else{
+                            $scope.withoutCount = true;
+                        }
                     });
                 });
             };
-
-            $scope.goFirstPass= function(){
-                getGamePlayingTimes(1);
-            };
-            $scope.goSecondPass= function(){
-                getGamePlayingTimes(2);
-                if($scope.attentionOrNot == 1){
-                    $scope.shareFloat = true;
-                }else if($scope.attentionOrNot == 2){
-                    $state.go("olympicBabyInvitationCard",{});
-                }else if($scope.playCount > 0){
-                    recordLogs("action_olympic_baby_tiwce_visit");
-                    $state.go("olympicGameLevel2",{});
-                }else{
-                    $scope.withoutCount = true;
-                }
-            };
             $scope.goThirdPass= function(){
-                getGamePlayingTimes(3);
-                if($scope.attentionOrNot == 1){
-                    $scope.shareFloat = true;
-                }else if($scope.attentionOrNot == 2){
-                    $state.go("olympicBabyInvitationCard",{});
-                }else if($scope.playCount > 3){
-                    recordLogs("action_olympic_baby_thirth_visit");
-                    $state.go("olympicGameLevel3",{});
-                }else{
-                    $scope.withoutCount = true;
-                }
+                //获取玩游戏的次数
+                GetGamePlayingTimes.save({openid:$scope.openid,gameLevel:"3"},function (data) {
+                    $scope.playCount = data.gamePlayingTimes;
+                    GetGameMemberStatus.save({openid:$scope.openid,gameLevel:num},function (data) {
+                        $scope.attentionOrNot = data.gameAction;
+                        if($scope.attentionOrNot == 1){
+                            $scope.shareFloat = true;
+                        }else if($scope.attentionOrNot == 2){
+                            $state.go("olympicBabyInvitationCard",{});
+                        }else if($scope.playCount < 3){
+                            recordLogs("action_olympic_baby_thirth_visit");
+                            $state.go("olympicGameLevel3",{});
+                        }else{
+                            $scope.withoutCount = true;
+                        }
+                    });
+                });
+
             };
             $scope.cancelFloat = function(){
                 $scope.shareFloat = false;
