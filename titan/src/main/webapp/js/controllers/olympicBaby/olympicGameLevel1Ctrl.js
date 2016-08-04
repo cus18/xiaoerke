@@ -5,12 +5,12 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
             $scope.startCutdownLock =true;//3秒倒计时开关
             $scope.playCutdownLock =false;//15秒游戏倒计时开关 控制游泳的状态
             $scope.challengeAgainLock =true;//重新挑战游戏开关
+            $scope.noPlayTimesLock =false;//没玩游戏机会开关
             $scope.playTimes =0;//玩游戏次数
             $scope.playTime =15;//15秒游戏倒计时
            /* $scope.num =0;*/
             $scope.score =0;//得分
-            $scope.totalNum=0;
-            $scope.getScoreLock=false;
+            $scope.getScoreLock=false;//得分浮层开关
             $scope.playTimes=1;
             var pageHeight;//页面高度
             var speed=2000;//回调速度
@@ -60,10 +60,10 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
                                     if($scope.playTimes>=3){
                                         $scope.challengeAgainLock =false;
                                     }
-                                    $scope.getScoreLock=true;
                                 });
                             });
-                            
+
+                            $scope.getScoreLock=true;
                         }
                         $scope.$digest(); // 通知视图模型的变化
                     }, 1000);
@@ -197,20 +197,29 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
             $scope.olympicGameLevel1Init = function(){
                 document.title="第一关 游泳"; //修改页面title
                 pageHeight=document.body.clientHeight-200;//获取页面高度
-               /* 游戏开始3秒倒计时*/
-                 $timeout(function() {
-                 $scope.startCutdownLock =false;
-                 }, 4000);
                 GetUserOpenId.save({"openid":$scope.openid},function (data) {
                     console.log("openid ",data.openid);
                     $scope.openid = data.openid;
-                    GetGamePlayingTimes.save({"openid":$scope.openid,"gameLevel":"1"},function (data) {
-                        console.log("GetGamePlayingTimes ",data.gamePlayingTimes);
-                        $scope.playTimes=data.gamePlayingTimes;
-                        if($scope.playTimes>=3){
-                            $scope.challengeAgainLock =false;
-                        }
-                    });
+                    if( $scope.openid!="none"){
+                        GetGamePlayingTimes.save({"openid":$scope.openid,"gameLevel":"1"},function (data) {
+                            console.log("GetGamePlayingTimes ",data.gamePlayingTimes);
+                            if(data.gamePlayingTimes<3){
+                                /* 游戏开始3秒倒计时*/
+                                $scope.startCutdownLock =true;
+                                $timeout(function() {
+                                    $scope.startCutdownLock =false;
+                                }, 4000);
+                            }
+                            else{
+                                $scope.startCutdownLock =false;
+                                $scope.noPlayTimesLock =true;
+                            }
+                        });
+                    }
+                    else{
+                        alert("去微信关注微信宝大夫（BaodfWXf）吧");
+                    }
+
 
                 });
                 recordLogs("action_olympic_baby_once_visit");
