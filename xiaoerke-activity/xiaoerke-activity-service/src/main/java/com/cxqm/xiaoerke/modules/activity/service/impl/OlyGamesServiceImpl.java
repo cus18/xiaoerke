@@ -12,9 +12,7 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
@@ -214,4 +212,33 @@ public class OlyGamesServiceImpl implements OlyGamesService {
         return null; // 自定义错误信息
     }
 
+    public String uploadMedia(InputStream in){
+        // 1K的数据缓冲
+        byte[] bs = new byte[1024];
+        // 读取到的数据长度
+        int len;
+        // 输出的文件流
+        String picTitle = "/pic_"+System.currentTimeMillis()+".jpg";
+        String dirPath = System.getProperty("user.dir").replace("bin","wechatImg");;
+        File sf=new File(dirPath);
+        if(!sf.exists()){
+            sf.mkdirs();
+        }
+        OutputStream os = null;
+        try {
+            os = new FileOutputStream(dirPath+picTitle);
+            while ((len = in.read(bs)) != -1) {
+                os.write(bs, 0, len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                os.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return dirPath+picTitle;
+    }
 }
