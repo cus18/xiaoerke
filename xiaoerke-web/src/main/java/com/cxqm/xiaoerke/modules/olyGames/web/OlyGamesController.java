@@ -463,12 +463,12 @@ public class OlyGamesController extends BaseController {
                     case 1:
                         response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
                         response.put("gameAction", 2);
-                        response.put("needInviteFriendNum", 1 - needInviteFriendNum);
+                        response.put("needInviteFriendNum", needInviteFriendNum);
                         break;
                     case 2:
                         response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
                         response.put("gameAction", 2);
-                        response.put("needInviteFriendNum", 2 - needInviteFriendNum);
+                        response.put("needInviteFriendNum", needInviteFriendNum);
                         break;
                     default:
                         response.put("gameLevel", 0);
