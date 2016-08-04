@@ -100,7 +100,7 @@
                     function jump() {
                         bingo = true;
                         clearInterval(time1);
-                        document.getElementById('jumpBtn').addEventListener("touchstart", function(){});
+                        document.getElementById('jumpBtn').removeEventListener("touchstart", jump);
                         $('#athlete').css('background-position', (169.5 * 7) + 'px ' + (0) + 'px');
                         $("#athlete").animate({
                             top: '-=200px',
@@ -140,7 +140,6 @@
                         });
                     };
                     recordLogs('action_olympic_baby_tiwce_visit');
-                    recordLogs('action_olympic_baby_tiwce_share');
                     document.getElementById('jumpBtn').addEventListener("touchstart", jump);
                     $('#challengeAgain').bind('click',function(){
                         location.reload();
@@ -201,7 +200,7 @@
                                     link: share, // 分享链接
                                     imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2FheightForecast.png', // 分享图标
                                     success: function (res) {
-                                        recordLogs("action_olympic_baby_index_share");
+                                        recordLogs('action_olympic_baby_tiwce_share');
                                     },
                                     fail: function (res) {
                                     }
@@ -212,7 +211,7 @@
                                     link:share, // 分享链接
                                     imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2FheightForecast.png', // 分享图标
                                     success: function (res) {
-                                        recordLogs("action_olympic_baby_index_share");
+                                        recordLogs('action_olympic_baby_tiwce_share');
                                     },
                                     fail: function (res) {
                                     }
