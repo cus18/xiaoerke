@@ -116,20 +116,11 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
             };
 
             /*日志打点*/
-            var recordLogs = function(val){
-                    $.ajax({
-                        url:"util/recordLogs",// 跳转到 action
-                        async:true,
-                        type:'get',
-                        data:{logContent:encodeURI(val)},
-                        cache:false,
-                        dataType:'json',
-                        success:function(data) {
-                        },
-                        error : function() {
-                        }
-                    });
-                };
+            //记录日志
+            var setLog = function (content) {
+                var pData = {logContent:encodeURI(content)};
+                $http({method:'post',url:'util/recordLogs',params:pData});
+            };
             /*页面分享*/
             $scope.loadShare=function() {
                 var share = "http://s123.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s123.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=37";
@@ -169,7 +160,7 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
                                     link:  share,
                                     imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                     success: function (res) {
-                                        recordLogs("action_olympic_baby_once_share");
+                                        setLog("action_olympic_baby_once_share");
                                     },
                                     fail: function (res) {
                                     }
@@ -180,7 +171,7 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
                                     link:  share, // 分享链接
                                     imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                     success: function (res) {
-                                        recordLogs("action_olympic_baby_once_share");
+                                        setLog("action_olympic_baby_once_share");
                                     },
                                     fail: function (res) {
                                     }
@@ -222,7 +213,7 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
 
 
                 });
-                recordLogs("action_olympic_baby_once_visit");
+                setLog("action_olympic_baby_once_visit");
                 $scope.loadShare();
         };
     }])
