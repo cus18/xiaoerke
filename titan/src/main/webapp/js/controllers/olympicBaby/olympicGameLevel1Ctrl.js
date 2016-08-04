@@ -1,6 +1,6 @@
 angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
-        '$scope','$state','$timeout','GetUserOpenId','GetGamePlayingTimes','SaveGameScore',
-        function ($scope,$state,$timeout,GetUserOpenId,GetGamePlayingTimes,SaveGameScore) {
+        '$scope','$state','$http','$timeout','GetUserOpenId','GetGamePlayingTimes','SaveGameScore',
+        function ($scope,$state,$http,$timeout,GetUserOpenId,GetGamePlayingTimes,SaveGameScore) {
             $scope.btnLock =false;
             $scope.startCutdownLock =true;//3秒倒计时开关
             $scope.playCutdownLock =false;//15秒游戏倒计时开关 控制游泳的状态
