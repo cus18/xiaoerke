@@ -53,10 +53,10 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
                             $scope.playTime=0;
                             clearInterval(counterTimer);
                             $scope.playCutdownLock =false;
-                            SaveGameScore.save({"openid":$scope.openid,"gameLevel":1,"gameScore": $scope.score},function (data) {
+                            SaveGameScore.save({"openid":$scope.openid,"gameLevel":"1","gameScore": $scope.score.toString()},function (data) {
 
                             });
-                            GetGamePlayingTimes.save({"openid":$scope.openid,"gameLevel":1},function (data) {
+                            GetGamePlayingTimes.save({"openid":$scope.openid,"gameLevel":"1"},function (data) {
                                 console.log("GetGamePlayingTimes ",data.gamePlayingTimes);
                                 $scope.playTimes=data.gamePlayingTimes;
                                 if($scope.playTimes>2){
