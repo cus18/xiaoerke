@@ -103,11 +103,14 @@
                     lottery.prize=-1;
                     lottery.times=0;
                     click=false;
-                    if(prizIndex == 3){
-                        $scope.noPriseLock = true;
-                    }else{
-                        $scope.getPriseLock = true;
-                    }
+                    var showId = $timeout(function () {
+                        if(prizIndex == 3){
+                            $scope.noPriseLock = true;
+                        }else{
+                            $scope.getPriseLock = true;
+                        }
+                        $timeout.cancel(showId);
+                    },300);
                 }else{
                     if (lottery.times<lottery.cycle) {
                         lottery.speed -= 10;
