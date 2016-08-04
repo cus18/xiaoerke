@@ -31,7 +31,7 @@
                             $scope.headcount = data.gameMemberNum;
                         });
                         //获取游戏的状态
-                        GetGameMemberStatus.get({openid:$scope.openid},function (data) {
+                        GetGameMemberStatus.save({openid:$scope.openid},function (data) {
                             $scope.attentionOrNot = data.gameAction;
                             $scope.gameLevel = data.gameLevel;
                             //获得积分
