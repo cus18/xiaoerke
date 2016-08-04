@@ -24,7 +24,7 @@
                         GetUserGameScore.save({"openid":data.openid},function (data) {
                             console.log("fenshu",data);
                             var score = parseInt(data.gameScore);
-                            if(score>80){
+                            if(score>=80){
                                 $scope.scoreNumber = parseInt(score/80);
                             }else{
                                 $scope.scoreNumber = 0;
