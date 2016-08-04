@@ -18,7 +18,7 @@ define(['appOlympicBaby'], function (app) {
              * gameAction 1表示需要关注，2表示需要邀请好友
              * needInviteFriendNum 表示还需要邀请加入的好友数
              ***/
-            return $resource('olympicBaby/firstPage/GetGameMemberNum');
+            return $resource('olympicBaby/firstPage/GetGameMemberStatus');
         }])
         .factory('GetUserPrizeList',['$resource',function ($resource){
             /**
