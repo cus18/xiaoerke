@@ -58,7 +58,7 @@
       #{level3CurrentTimes,jdbcType=INTEGER}, #{level4CurrentTimes,jdbcType=INTEGER}, 
       #{level5CurrentTimes,jdbcType=INTEGER}, #{level6CurrentTimes,jdbcType=INTEGER}, 
       #{marketer,jdbcType=VARCHAR}, #{inviteFriendNumber,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},#{address,jdbcType=VARCHAR},#{prize,jdbcType=VARCHAR}),#{nickName,jdbcType=VARCHAR})
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},#{address,jdbcType=VARCHAR},#{prize,jdbcType=VARCHAR},#{nickName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo" >
     insert into oly_baby_games
