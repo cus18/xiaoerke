@@ -329,7 +329,7 @@
 
 
 
-  <select id="getBaseByMarketer" resultType="java.lang.String" parameterType="com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo">
+  <select id="getBaseByMarketer" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo">
     SELECT
     <include refid="Base_Column_List" />
     FROM oly_baby_games where marketer=#{marketer};
