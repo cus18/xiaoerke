@@ -100,7 +100,7 @@
                     function jump() {
                         bingo = true;
                         clearInterval(time1);
-                        $("#jumpBtn").unbind();
+                        document.getElementById('jumpBtn').addEventListener("touchstart", function(){});
                         $('#athlete').css('background-position', (169.5 * 7) + 'px ' + (0) + 'px');
                         $("#athlete").animate({
                             top: '-=200px',
@@ -111,7 +111,7 @@
                         setTimeout(function() {
                             time1 = setInterval(athleteRun, 150);
                             bingo = false;
-                            $("#jumpBtn").bind("click", jump);
+                            document.getElementById('jumpBtn').addEventListener("touchstart", jump);
                         }, 850)
                     };
 
