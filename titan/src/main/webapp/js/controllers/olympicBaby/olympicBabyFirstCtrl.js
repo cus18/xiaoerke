@@ -15,7 +15,7 @@
                 recordLogs("action_olympic_baby_index_visit");
                     //获取openId
                 GetUserOpenId.save({},function (data) {
-                    if(data.openid!="none"){
+                    if(data.openid == "none"){
                         window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=37";
                     }else{
                         $scope.openid = data.openid;
