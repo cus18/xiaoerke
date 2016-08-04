@@ -1,6 +1,6 @@
 ﻿angular.module('controllers', []).controller('olympicGameLevel2Ctrl', [
-        '$scope','$state','$timeout','GetUserOpenId',
-        function ($scope,$state,$timeout,GetUserOpenId) {
+        '$scope','$state','$timeout','GetUserOpenId','SaveGameScore',
+        function ($scope,$state,$timeout,GetUserOpenId,SaveGameScore) {
             $scope.title = "奥运宝贝-游戏第二关";
             $scope.olympicGameLevel2Init = function(){
                 (function(){
@@ -15,7 +15,6 @@
                         score = 0,
                         total = 20,
                         countDown = -1;
-
                     $('#score').html(score*5);
                     $('#surplus').html('还剩'+total+'个栏');
                     time4 = setInterval(function(){
@@ -34,6 +33,9 @@
                             $('#startAnimat').show()
                             $('#resultImg').show()
                             $('#spielergebnis').html(score*5);
+                            if(!submitScore()){
+                                $('#challengeAgain').remove();
+                            }
                         }
                         var barrierLeft = (parseInt($('#barrier').css('left')) / parseInt($('#hurdlesBox').css('width')) * 100);
                         if (barrierLeft > 5 && barrierLeft < 25) {
@@ -42,6 +44,9 @@
                                 $('#startAnimat').show()
                                 $('#resultImg').show()
                                 $('#spielergebnis').html(score*5);
+                                if(!submitScore()){
+                                    $('#challengeAgain').remove();
+                                }
                             }
                         };
                         if (barrierLeft < -25 || isNaN(barrierLeft)) {
@@ -108,24 +113,30 @@
                             $("#jumpBtn").bind("click", jump);
                         }, 850)
                     };
-                    $("#jumpBtn").bind("click", jump);
-                    $.ajax({
-                        url:"umbrella/getOpenid",// 跳转到 action
-                        async:true,
-                        type:'post',
-                        cache:false,
-                        dataType:'json',
-                        success:function(data) {
-                            if(data.openid=="none"){
-                                //window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=37";
+
+                    function submitScore() {
+                        SaveGameScore.save({'openid':''+$scope.openid,'gameLevel':'2','gameScore':''+score*5},function(data){
+                            if(data.gamePlayingTimes>=3){
+                                return false
+                            }else{
+                                return true
                             }
-                        },
-                        error : function() {
-                        }
+                        });
+                    };
+
+                    $("#jumpBtn").bind("click", jump);
+                    $('#challengeAgain').bind('click',function(){
+                        location.reload();
+                    });
+                    $('#challengeMore').bind('click',function(){
+                        window.location.href="olympicBaby#/olympicBabyFirst";
                     });
                     GetUserOpenId.get({},function (data) {
-                        console.log(data.openid);
-                        $scope.openid = data.openid;
+                        if(data.openid=="none"){
+                            window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=37";
+                        }else{
+                            $scope.openid = data.openid;
+                        }
                     });
                 }());
             };
