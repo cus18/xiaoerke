@@ -24,7 +24,7 @@
                         GetUserGameScore.save({"openid":data.openid},function (data) {
                             console.log("fenshu",data);
                             var score = parseInt(data.gameScore);
-                            if(score>80){
+                            if(score>=80){
                                 $scope.scoreNumber = parseInt(score/80);
                             }else{
                                 $scope.scoreNumber = 0;
@@ -74,20 +74,20 @@
 
             //点击 我要抽奖
             $scope.startDrawPrize = function(){
-                if(openid!="none"&&($scope.score>=80)){
                     if (click) {
                         return false;
                     }else{
-                        $scope.score = $scope.score - 80;
-                        $scope.scoreNumber = parseInt($scope.score/80);
-                        getPrizeIndex();//获取奖品
-                        lottery.speed=100;
-                        roll();
-                        click=true;
-                        return false;
+                        if(openid!="none"&&($scope.score>=80)) {
+                            $scope.score = $scope.score - 80;
+                            $scope.scoreNumber = parseInt($scope.score / 80);
+                            getPrizeIndex();//获取奖品
+                            lottery.speed = 100;
+                            roll();
+                            click = true;
+                            return false;
+                        }else{
+                            $scope.noScoreLock = true;
                     }
-                }else{
-                    $scope.noScoreLock = true;
                 }
             };
 
@@ -197,8 +197,10 @@
                     SaveUserAddress.save({"openid":openid,"address":$scope.info.name+","+$scope.info.phone+","+$scope.info.address},
                     function (data) {
                         console.log("save",data);
-                        if(data.resolved == true){
+                        if(data.$resolved == true){
                             $scope.FillInfoLock = false;
+                        }else{
+                            alert("信息保存失败！");
                         }
                     });
                 }
