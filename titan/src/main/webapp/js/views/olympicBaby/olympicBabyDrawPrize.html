@@ -14,7 +14,7 @@
 
 			<a class="btn-drawPrize tc" ng-click="startDrawPrize()">
 				<img  width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/btn_drawPrize.png">
-				<span class="c0">（1）次机会</span>
+				<span class="c0">（{{scoreNumber}}）次机会</span>
 			</a>
 			<img class="lottery-unit lottery-unit-5" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/{{prizeArray[4] ? 'prize6_y.png':'prize6_n.png'}}">
 			<img class="lottery-unit lottery-unit-6" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/{{prizeArray[8] ? 'prize7_y.png':'prize7_n.png'}}">
@@ -23,7 +23,7 @@
 			<img class="lottery-unit lottery-unit-9" width=20%" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/{{prizeArray[5] ? 'prize10_y.png':'prize10_n.png'}}">
 
 		</div>
-		<p class="f5 c0 tc">您的奥运宝宝积分：555分</p>
+		<p class="f5 c0 tc">您的奥运宝宝积分：{{score}}分</p>
 	</div>
 	<div class="bottom">
 		<img ng-click="lookMyPrize()" class="btn-lookPrize my-img2" width="80%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/btn_lookPrize.png">
@@ -65,12 +65,12 @@
 			<div  class="top tc">
 				<img class="my-img2 " width="70%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/top_get_prize.png">
 			</div>
-			<img class="pic my-img2" width="80" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/a_7.png">
+			<img class="pic my-img2" width="80" height="auto" ng-src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/olympicBaby/{{prizeOrder}}">
 
 			<h3 class="fw0 c11">厉害！</h3>
 			<p class="f7 c11">
-				恭喜您抽中{{prizeName}}此奖项需要您填写家庭详细信息。<br>
-					（此奖品需要您支付20元的快递费）
+				恭喜您抽中{{prizeName}}<br>
+					{{postage}}
 
 			</p>
 			<img ng-click="getPrize()" class="my-img2" width="80%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/btn_getPrize.png">
@@ -87,18 +87,18 @@
 			<ul>
 				<li>
 					<img class="" width="23" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/fill_name.png">
-					<input type="text" class="" >
+					<input type="text" class="" ng-model="info.name" >
 				</li>
 				<li>
 					<img class="" width="34" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/fill_phone.png">
-					<input type="text" class="" >
+					<input type="number" class="" ng-model="info.phone" maxlength="11" >
 				</li>
 				<li>
 					<img class="" width="47" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/fill_address.png">
-					<textarea type="text" class="" ></textarea>
+					<textarea type="text" class="" ng-model="info.address" ></textarea>
 				</li>
 			</ul>
-			<img class="my-img2" width="75%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/fill_sure.png">
+			<img class="my-img2" width="75%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/fill_sure.png" ng-click="saveMess()">
 
 		</div>
 	</div>

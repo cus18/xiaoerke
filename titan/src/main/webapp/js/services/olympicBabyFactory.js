@@ -20,17 +20,6 @@ define(['appOlympicBaby'], function (app) {
              ***/
             return $resource('olympicBaby/firstPage/GetGameMemberNum');
         }])
-        .factory('GetGameMemberStatus',['$resource',function ($resource){
-            /**
-             * 获取参加用户目前所处的游戏关数,已经要开启下一关，所要进行的操作
-             * input: {openid:"fwefwefewfw"}
-             * result: {gameLevel:2,gameAction:1，needInviteFriendNum:3,}
-             * gameLevel表示当前所处的管卡
-             * gameAction 1表示需要邀请用户关注，2表示需要邀请好友
-             * needInviteFriendNum 表示还需要邀请加入的好友数
-             ***/
-            return $resource('olympicBaby/firstPage/GetGameMemberNum');
-        }])
         .factory('GetUserPrizeList',['$resource',function ($resource){
             /**
              * 获取奖品领取的轮播图消息
