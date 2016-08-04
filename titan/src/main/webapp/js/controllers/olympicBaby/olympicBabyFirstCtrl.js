@@ -6,7 +6,6 @@
             $scope.title = "奥运宝贝-首页";
             $scope.headcount = 0;//参与游戏的总人数
             $scope.shareFloat = false;
-            $scope.openid = '';
             $scope.invitePeopleNum = 0;//邀请成功的人数
             $scope.withoutCount = false;//游戏次数用完了
             $scope.playCount = 3;//游戏次数
@@ -16,31 +15,30 @@
                 recordLogs("action_olympic_baby_index_visit");
                     //获取openId
                 GetUserOpenId.save({},function (data) {
-                    if(data.openid=="none"){
-                        //window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=37";
+                    if(data.openid!="none"){
+                        window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=37";
                     }else{
                         $scope.openid = data.openid;
+                        //获得奖品列表
+                        GetUserPrizeList.save({},function (data) {
+                            $scope.scroll = data.prizeList;
+                            //prizeName
+                        });
+                        //获得积分
+                        GetUserGameScore.save({openid:''+$scope.openid},function (data) {
+                            $scope.score = data.gameScore;
+                        });
+                        //获得参加游戏的人数
+                        GetGameMemberNum.save({},function (data) {
+                            $scope.headcount = data.gameMemberNum;
+                        });
+                        //获取游戏的状态
+                        GetGameMemberStatus.get({openid:$scope.openid},function (data) {
+                            $scope.attentionOrNot = data.gameAction;
+                            $scope.gameLevel = data.gameLevel;
+                        });
                     }
                 });
-                //获得奖品列表
-                GetUserPrizeList.save({},function (data) {
-                    $scope.scroll = data.prizeList;
-                    //prizeName
-                });
-                //获得积分
-                GetUserGameScore.save({openid:$scope.openid},function (data) {
-                    $scope.score = data.gameScore;
-                });
-                //获得参加游戏的人数
-                GetGameMemberNum.save({},function (data) {
-                    $scope.headcount = data.gameMemberNum;
-                });
-                //获取游戏的状态
-                GetGameMemberStatus.save({openid:$scope.openid},function (data) {
-                    $scope.attentionOrNot = data.gameAction;
-                    $scope.gameLevel = data.gameLevel;
-                });
-
             };
             var time = setInterval(function(){
                 if($('.bulletText').eq(3).text() != ''){
