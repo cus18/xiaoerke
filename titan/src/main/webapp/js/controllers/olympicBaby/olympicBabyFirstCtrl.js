@@ -13,51 +13,41 @@
             $scope.score = 300;//游戏积分
             $scope.scroll = [];
             $scope.olympicBabyFirstInit = function(){
-                //获取openId
-                /** $.ajax({
-                 url:"umbrella/getOpenid",// 跳转到 action
-                 async:true,
-                 type:'post',
-                 cache:false,
-                 dataType:'json',
-                 success:function(data) {
-                 if(data.openid=="none"){
-                 window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=37";
-                 }
-                 },
-                 error : function() {
-                 }
-                 });*/
                 recordLogs("action_olympic_baby_index_visit");
                     //获取openId
                 GetUserOpenId.save({},function (data) {
-                    console.log('openid',data.openid);
-                    $scope.openid = data.openid;
+                    if(data.openid=="none"){
+                        //window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=37";
+                    }else{
+                        $scope.openid = data.openid;
+                    }
                 });
                 //获得奖品列表
                 GetUserPrizeList.save({},function (data) {
-                    console.log('scroll',data);
                     $scope.scroll = data.prizeList;
                     //prizeName
                 });
                 //获得积分
                 GetUserGameScore.save({openid:$scope.openid},function (data) {
-                    console.log('score',data);
                     $scope.score = data.gameScore;
                 });
                 //获得参加游戏的人数
                 GetGameMemberNum.save({},function (data) {
-                    console.log('gameMemberNum',data.gameMemberNum);
                     $scope.headcount = data.gameMemberNum;
                 });
                 //获取游戏的状态
                 GetGameMemberStatus.save({openid:$scope.openid},function (data) {
-                    console.log('attentionOrNot',data);
                     $scope.attentionOrNot = data.gameAction;
                     $scope.gameLevel = data.gameLevel;
                 });
 
             };
+            var time = setInterval(function(){
+                if($('.bulletText').eq(3).text() != ''){
+                    ScrollImgLeft();
+                    clearTimeout(time);
+                }
+            },100)
             function ScrollImgLeft() {
                 var speed = 50;
                 var scroll_begin = document.getElementById("scroll_begin");
@@ -75,7 +65,6 @@
                 var MyMar = setInterval(Marquee, speed);
             };
             $scope.bulletScreen= function(){
-                ScrollImgLeft();
                 $('#ruleBtn').bind('click', function() {
                     $('#ruleBox').show();
                 });
@@ -88,14 +77,13 @@
             var getGamePlayingTimes= function(num){
                 //获取玩游戏的次数
                 GetGamePlayingTimes.save({openid:$scope.openid,gameLevel:num},function (data) {
-                    console.log('playCount',data);
                     $scope.playCount = data;
                 });
                 GetGameMemberStatus.save({openid:$scope.openid,gameLevel:num},function (data) {
-                    console.log('attentionOrNot',data);
                     $scope.attentionOrNot = data;
                 });
             };
+
             $scope.goFirstPass= function(){
                 getGamePlayingTimes(1);
                 if($scope.playCount < 3){

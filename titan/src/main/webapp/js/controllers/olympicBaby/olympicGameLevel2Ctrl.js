@@ -124,6 +124,22 @@
                         });
                     };
 
+                    var recordLogs = function(val){
+                        $.ajax({
+                            url:"util/recordLogs",// 跳转到 action
+                            async:true,
+                            type:'get',
+                            data:{logContent:encodeURI(val)},
+                            cache:false,
+                            dataType:'json',
+                            success:function(data) {
+                            },
+                            error : function() {
+                            }
+                        });
+                    };
+                    recordLogs('action_olympic_baby_tiwce_visit');
+                    recordLogs('action_olympic_baby_tiwce_share');
                     $("#jumpBtn").bind("click", jump);
                     $('#challengeAgain').bind('click',function(){
                         location.reload();
@@ -133,7 +149,7 @@
                     });
                     GetUserOpenId.get({},function (data) {
                         if(data.openid=="none"){
-                            window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=37";
+                            //window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=37";
                         }else{
                             $scope.openid = data.openid;
                         }
