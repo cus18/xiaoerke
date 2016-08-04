@@ -4,10 +4,10 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
             $scope.btnLock =false;
             $scope.startCutdownLock =true;//3秒倒计时开关
             $scope.playCutdownLock =false;//15秒游戏倒计时开关 控制游泳的状态
-            $scope.challengeAgainLock =true;//15秒游戏倒计时开关
+            $scope.challengeAgainLock =true;//重新挑战游戏开关
             $scope.playTimes =0;//玩游戏次数
             $scope.playTime =15;//15秒游戏倒计时
-           /* $scope.num =0;//*/
+           /* $scope.num =0;*/
             $scope.score =0;//得分
             $scope.totalNum=0;
             $scope.getScoreLock=false;
@@ -54,7 +54,7 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
                             clearInterval(counterTimer);
                             $scope.playCutdownLock =false;
                             SaveGameScore.save({"openid":$scope.openid,"gameLevel":1,"gameScore": $scope.score},function (data) {
-                                console.log("SaveGameScore ",data.gameScore);
+
                             });
                             GetGamePlayingTimes.save({"openid":$scope.openid,"gameLevel":1},function (data) {
                                 console.log("GetGamePlayingTimes ",data.gamePlayingTimes);
@@ -108,7 +108,7 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
                 }
             };
 
-            //日志打点
+            /*日志打点*/
             var recordLogs = function(val){
                     $.ajax({
                         url:"util/recordLogs",// 跳转到 action
@@ -123,6 +123,68 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
                         }
                     });
                 };
+            /*页面分享*/
+            $scope.loadShare=function() {
+                var timestamp;//时间戳
+                var nonceStr;//随机字符串
+                var signature;//得到的签名
+                var appid;//得到的签名
+                $.ajax({
+                    url:"wechatInfo/getConfig",// 跳转到 action
+                    async:true,
+                    type:'get',
+                    data:{url:location.href.split('#')[0]},//得到需要分享页面的url
+                    cache:false,
+                    dataType:'json',
+                    success:function(data) {
+                        if(data!=null ){
+                            timestamp=data.timestamp;//得到时间戳
+                            nonceStr=data.nonceStr;//得到随机字符串
+                            signature=data.signature;//得到签名
+                            appid=data.appid;//appid
+                            //微信配置
+                            wx.config({
+                                debug: false,
+                                appId: appid,
+                                timestamp:timestamp,
+                                nonceStr: nonceStr,
+                                signature: signature,
+                                jsApiList: [
+                                    'onMenuShareTimeline',
+                                    'onMenuShareAppMessage'
+                                ] // 功能列表
+                            });
+                            wx.ready(function () {
+                                // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
+                                wx.onMenuShareTimeline({
+                                    title: '赢个大奖居然这么简单……', // 分享标题
+                                    link:  "http://s165.baodf.com/wisdom/umbrell0a#/umbrellaLead/"+$scope.umbrellaId+"/"+$scope.status,
+                                    imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
+                                    success: function (res) {
+                                        recordLogs("action_olympic_baby_once_share");
+                                    },
+                                    fail: function (res) {
+                                    }
+                                });
+                                wx.onMenuShareAppMessage({
+                                    title: '赢个大奖居然这么简单……', // 分享标题
+                                    desc: "宝宝奥运大闯关”开始啦！玩游戏闯关卡，赢取超值豪礼！我已加入，你也赶紧一起来参与吧！", // 分享描述
+                                    link:  "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$scope.umbrellaId+"/"+$scope.status, // 分享链接
+                                    imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
+                                    success: function (res) {
+                                        recordLogs("action_olympic_baby_once_share");
+                                    },
+                                    fail: function (res) {
+                                    }
+                                });
+                            })
+                        }else{
+                        }
+                    },
+                    error : function() {
+                    }
+                });
+            }
             /*页面初始化*/
             $scope.olympicGameLevel1Init = function(){
                 document.title="第一关 游泳"; //修改页面title
@@ -136,6 +198,8 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
                     $scope.openid = data.openid;
 
                 });
+                recordLogs("action_olympic_baby_once_visit");
+                $scope.loadShare();
         };
 
 
