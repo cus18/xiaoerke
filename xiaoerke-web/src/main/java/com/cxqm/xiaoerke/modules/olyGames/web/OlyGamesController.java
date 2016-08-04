@@ -438,6 +438,7 @@ public class OlyGamesController extends BaseController {
                     } else {
                         olyBabyGamesVo1.setNickName("");
                     }
+                    olyBabyGamesVo1.setGameScore(null);
                     olyGamesService.updateOlyBabyGamesByOpenId(olyBabyGamesVo1);
                 }
             }
