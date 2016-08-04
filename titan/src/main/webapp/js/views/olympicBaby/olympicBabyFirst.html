@@ -23,12 +23,8 @@
 			<div id="scroll_div" class="scroll_div" data-ng-init="bulletScreen()">
 				<div id="scroll_begin">
 					<div class="barrage" ng-repeat="item in scroll">
-						<img ng-src="{{item.url}}" alt="">
-						<span>{{item.nickName}}</span>
-					</div>
-					<div class="barrage">
-						<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/branchAnswer%2Frentou.png" alt="">
-						<span>zzzzzzz</span>
+						<img ng-src="{{item.headImg}}" alt="">
+						<span>{{item.nickName}}{{item.prizeName}}</span>
 					</div>
 				</div>
 				<div id="scroll_end"></div>

@@ -5,7 +5,7 @@
             $scope.score = 0;
             $scope.time = 5;
             $scope.lookResultFloat = false;
-            $scope.challengeAgainImg = true;
+            $scope.challengeAgainImg = false;
             $scope.challengeMoreImg = false;
             $scope.shareFloat = false;
             $scope.startFloat = true;
@@ -13,21 +13,24 @@
                 $scope.startFloat =false;
             }, 4000);
             $scope.olympicGameLevel3 = function () {
+                recordLogs("action_olympic_baby_thirth_visit");
+                //第三关访问量
+                //recordLogs("action_olympic_baby_thirth_share");
                 //获取openId
                 GetUserOpenId.get({},function (data) {
                     console.log(data.openid);
                     $scope.openid = data.openid;
                 });
-                getGamePlayingTimes();
+                //getGamePlayingTimes();
             };
 
-            var getGamePlayingTimes = function () {
+            /*var getGamePlayingTimes = function () {
                 //获取玩游戏的次数
-                GetGamePlayingTimes.save({openid:$scope.openid,gameLevel:3},function (data) {
-                    console.log(data);
+                GetGamePlayingTimes.save({openid:"222222",gameLevel:"3"},function (data) {
+                    console.log('playCount',data);
                     $scope.playCount = data.gamePlayingTimes;
                 });
-            };
+            };*/
             $scope.challengeAgain = function () {
                 $scope.lookResultFloat = false;
                 $scope.score = 0;
@@ -44,11 +47,12 @@
                 if(flag){
                     startTime();
                     startMoveBack();
-                    //$scope.playCount--;
-                    getGamePlayingTimes();
-                    if($scope.playCount == 3){
+                    console.log('playCount',$scope.playCount);
+                    if($scope.playCount == 2){
                         $scope.challengeMoreImg = true;
                         $scope.challengeAgainImg = false;
+                    }else{
+                        $scope.challengeAgainImg = true;
                     }
                 }
                 startMoveBoy();
@@ -94,13 +98,17 @@
                timer2 = setInterval(function () {
                    $scope.time--;
                    if($scope.time == 0){
-                       $scope.lookResultFloat = true;
                        flag = true;
+                       $scope.lookResultFloat = true;
                        clearInterval(timer3);
                        clearInterval(timer2);
-                       console.log($scope.score);
-                       SaveGameScore.save({openid:$scope.openid,gameLevel:3,gameScore:$scope.score},function (data) {
-                           console.log(data);
+                       SaveGameScore.save({openid:"222222",gameLevel:"3",gameScore:$scope.score.toString()},function (data) {
+                           $scope.playCount = data.gamePlayingTimes;
+                           /*if($scope.playCount == 15){
+                               $scope.challengeMoreImg = true;
+                               $scope.challengeAgainImg = false;
+                           }*/
+                           console.log('playCount',$scope.playCount)
                        });
                    }
                    $scope.$digest();
@@ -109,6 +117,20 @@
             //取消浮层
             $scope.cancelFloat = function () {
                 $scope.lookResultFloat = false;
+            };
+            var recordLogs = function(val){
+                $.ajax({
+                    url:"util/recordLogs",// 跳转到 action
+                    async:true,
+                    type:'get',
+                    data:{logContent:encodeURI(val)},
+                    cache:false,
+                    dataType:'json',
+                    success:function(data) {
+                    },
+                    error : function() {
+                    }
+                });
             };
             /*var startMoveBoy = function () {
              var i = 0;

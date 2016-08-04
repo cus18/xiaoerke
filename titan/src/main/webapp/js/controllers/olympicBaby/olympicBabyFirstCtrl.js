@@ -28,30 +28,31 @@
                  error : function() {
                  }
                  });*/
+                recordLogs("action_olympic_baby_index_visit");
+                    //获取openId
+                GetUserOpenId.save({},function (data) {
+                    console.log('openid',data.openid);
+                    $scope.openid = data.openid;
+                });
                 //获得奖品列表
                 GetUserPrizeList.save({},function (data) {
-                    console.log(data);
-                    $scope.scroll = data;
+                    console.log('scroll',data);
+                    $scope.scroll = data.prizeList;
+                    //prizeName
                 });
                 //获得积分
-                GetUserGameScore.save({},function (data) {
-                    console.log(data);
+                GetUserGameScore.save({openid:$scope.openid},function (data) {
+                    console.log('score',data);
                     $scope.score = data.gameScore;
                 });
                 //获得参加游戏的人数
                 GetGameMemberNum.save({},function (data) {
-                    console.log(data.gameMemberNum);
+                    console.log('gameMemberNum',data.gameMemberNum);
                     $scope.headcount = data.gameMemberNum;
-                });
-                //获取openId
-                GetUserOpenId.save({},function (data) {
-                    console.log(data.openid);
-                    $scope.openid = data.openid;
                 });
                 //获取游戏的状态
                 GetGameMemberStatus.save({openid:$scope.openid},function (data) {
-                    console.log(data);
-                    //gameLevel:2,gameAction:1，needInviteFriendNum:3,
+                    console.log('attentionOrNot',data);
                     $scope.attentionOrNot = data.gameAction;
                     $scope.gameLevel = data.gameLevel;
                 });
@@ -87,17 +88,18 @@
             var getGamePlayingTimes= function(num){
                 //获取玩游戏的次数
                 GetGamePlayingTimes.save({openid:$scope.openid,gameLevel:num},function (data) {
-                    console.log(data);
+                    console.log('playCount',data);
                     $scope.playCount = data;
                 });
                 GetGameMemberStatus.save({openid:$scope.openid,gameLevel:num},function (data) {
-                    console.log(data);
+                    console.log('attentionOrNot',data);
                     $scope.attentionOrNot = data;
                 });
             };
             $scope.goFirstPass= function(){
                 getGamePlayingTimes(1);
-                if($scope.playCount > 0){
+                if($scope.playCount < 3){
+                    recordLogs("action_olympic_baby_once_visit");
                     $state.go("olympicGameLevel1",{playCount:$scope.playCount});
                 }else{
                     $scope.withoutCount = true;
@@ -110,6 +112,7 @@
                 }else if($scope.attentionOrNot == 2){
                     $state.go("olympicBabyInvitationCard",{});
                 }else if($scope.playCount > 0){
+                    recordLogs("action_olympic_baby_tiwce_visit");
                     $state.go("olympicGameLevel2",{});
                 }else{
                     $scope.withoutCount = true;
@@ -122,6 +125,7 @@
                 }else if($scope.attentionOrNot == 2){
                     $state.go("olympicBabyInvitationCard",{});
                 }else if($scope.playCount > 3){
+                    recordLogs("action_olympic_baby_thirth_visit");
                     $state.go("olympicGameLevel3",{});
                 }else{
                     $scope.withoutCount = true;
@@ -132,7 +136,22 @@
                 $scope.withoutCount = false;
             };
             $scope.lottery = function(){
+                recordLogs("action_olympic_baby_golottery");
                 $state.go("olympicBabyDrawPrize",{});
 
+            };
+            var recordLogs = function(val){
+                $.ajax({
+                    url:"util/recordLogs",// 跳转到 action
+                    async:true,
+                    type:'get',
+                    data:{logContent:encodeURI(val)},
+                    cache:false,
+                    dataType:'json',
+                    success:function(data) {
+                    },
+                    error : function() {
+                    }
+                });
             };
         }])

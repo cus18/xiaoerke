@@ -16,11 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.*;
 
 
@@ -113,6 +112,8 @@ public class OlyGamesController extends BaseController {
         String prizes = vo.getPrize();//获取用户的抽奖信息
         int gameLevel = vo.getGameLevel();
         prizes = prizes==null?"":prizes;
+        OlyBabyGamesVo olyVo = new OlyBabyGamesVo();
+        olyVo.setOpenId(openId);
         if(!prizes.contains(",")){//没有得过奖品和只得一次奖品的可以抽奖
             int random = new Random().nextInt(100);
             Map<String, Object> umbrellaMap = new HashMap<String, Object>();
@@ -139,11 +140,11 @@ public class OlyGamesController extends BaseController {
                         responseMap.put("prizeName", "谢谢参与");
                         break;
                     }
-                    if (4 == prizeOrder) {//抽中保护伞
-                        if (umbrellaList.size() > 0) {//如果是保护伞用户则不能抽中保护伞
-                            if ("success".equals(umbrellaList.get(0).get("pay_result"))) {
-                                responseMap.put("prizeOrder", 3);
-                                responseMap.put("prizeName", "谢谢参与");
+                    if(4 == prizeOrder){//抽中保护伞
+                        if(umbrellaList.size()>0){//如果是保护伞用户则不能抽中保护伞
+                            if("success".equals(umbrellaList.get(0).get("pay_result"))||umbrellaList.get(0).get("pay_result")==null){
+                                responseMap.put("prizeOrder",3);
+                                responseMap.put("prizeName","谢谢参与");
                                 break;
                             }
                         }
@@ -183,15 +184,13 @@ public class OlyGamesController extends BaseController {
                     prizes = prizes + ",4";
                 }
             }
-            OlyBabyGamesVo olyVo = new OlyBabyGamesVo();
-            olyVo.setOpenId(openId);
             olyVo.setPrize(prizes);
-            olyVo.setGameScore(vo.getGameScore()-80);
-            olyGamesService.updateOlyBabyGamesByOpenId(olyVo);//更新用户抽奖信息
-        } else {//抽中两次的只能显示谢谢参与
-            responseMap.put("prizeOrder", 3);
-            responseMap.put("prizeName", "谢谢参与");
+        }else{//抽中两次的只能显示谢谢参与
+            responseMap.put("prizeOrder",3);
+            responseMap.put("prizeName","谢谢参与");
         }
+        olyVo.setGameScore((float) -80);
+        olyGamesService.updateOlyBabyGamesByOpenId(olyVo);//更新用户抽奖信息
         return responseMap;
     }
 
@@ -205,17 +204,17 @@ public class OlyGamesController extends BaseController {
     public
     @ResponseBody
     Map<String,Object> GetUserPrizeList(@RequestBody Map<String, Object> params){
-        Map<String,String> prizesMap = new HashMap<String, String>();//奖品列表
+        Map<String,String> allPrizesMap = new HashMap<String, String>();//奖品列表
         String today = DateUtils.DateToStr(new Date(), "date");
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("prizeDate", today);
-        List<Map<String, Object>> prizeList = olyGamesService.getOlyGamePrizeList(param);
-        for(Map<String, Object> temp : prizeList){
-            prizesMap.put(temp.get("prizeOrder").toString(),(String)temp.get("prizeName"));
+        List<Map<String, Object>> allPrizeList = olyGamesService.getOlyGamePrizeList(param);
+        for(Map<String, Object> temp : allPrizeList){
+            allPrizesMap.put(temp.get("prizeOrder").toString(),(String)temp.get("prizeName"));
         }
         Map<String,Object> responseMap = new HashMap<String, Object>();
         List<OlyBabyGamesVo> list = olyGamesService.getUserPrizeList();//取日期最近的5个用户的奖品列表
-        Map<String, Object> prizeMap = new HashMap<String, Object>();
+        List<Map<String, Object>> prizeList = new ArrayList<Map<String, Object>>();
         for(OlyBabyGamesVo vo : list){
             String[] prizes = vo.getPrize().split(",");
             String nickName = vo.getNickName();
@@ -234,11 +233,22 @@ public class OlyGamesController extends BaseController {
             }
             StringBuffer sb = new StringBuffer("");
             for(String prize:prizes){
-                sb.append(prizesMap.get(prize)).append(",");
+                sb.append(allPrizesMap.get(prize) + ",");
             }
-            prizeMap.put(nickName,sb.toString());
+            Map<String, Object> prizeMap = new HashMap<String, Object>();
+            String headImg = null;
+            try{
+                headImg = olyGamesService.getWechatMessage(vo.getOpenId());
+            }catch (Exception e){
+                System.out.println(e);
+            }
+
+            prizeMap.put("nickname", nickName);
+            prizeMap.put("headImg", headImg==null?"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png":headImg);
+            prizeMap.put("prizeName",sb.toString());
+            prizeList.add(prizeMap);
         }
-        responseMap.put("prizeMap",prizeMap);
+        responseMap.put("prizeList",prizeList);
         return responseMap;
     }
 
@@ -524,9 +534,10 @@ public class OlyGamesController extends BaseController {
 
         //生成图片网络路径
         String path = "http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/"+"olympicBaby_invite_"+openId+".png";
+        String fileName = new Date().getTime()+"";
         if(!ImgUtils.existHttpPath(path)){
             //生成图片暂存路径
-            String outPath = System.getProperty("user.dir").replace("bin", "uploadImg")+"\\image\\"+new Date().getTime()+".png";
+            String outPath = System.getProperty("user.dir").replace("bin", "uploadImg")+"\\image\\"+fileName+".png";
 
             if(!StringUtils.isNotNull(marketer)){
                 marketer = olyGamesService.getMarketerByOpenid(openId);//根据openid获取邀请码
@@ -540,13 +551,14 @@ public class OlyGamesController extends BaseController {
             //上传图片
             ImgUtils.uploadImage("olympicBaby_invite_"+openId+".png", outPath);
 
-            File wxFile=new File(outPath);
             InputStream is = null;
             try {
-                is = new FileInputStream(wxFile);
+                URL url = new URL(path);
+                HttpURLConnection httpUrl = (HttpURLConnection) url.openConnection();
+                is = httpUrl.getInputStream();
                 String upLoadUrl = "https://api.weixin.qq.com/cgi-bin/media/upload";
                 Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-                org.json.JSONObject jsonObject = WechatUtil.uploadNoTextMsgToWX((String) userWechatParam.get("token"), upLoadUrl, "image", wxFile.getName(), is);
+                org.json.JSONObject jsonObject = WechatUtil.uploadNoTextMsgToWX((String) userWechatParam.get("token"), upLoadUrl, "image", fileName, is);
 
                 WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"),openId,"新游戏需要邀请从未关注过“宝大夫”的好友助力方可解锁开启，赶紧把下方图片分享出去吧，大奖在等你哦！");
                 WechatUtil.sendNoTextMsgToWechat((String) userWechatParam.get("token"), openId, (String) jsonObject.get("media_id"), 1);

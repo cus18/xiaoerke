@@ -1,7 +1,7 @@
 angular.module('controllers', []).controller('olympicBabyInvitationCardCtrl', [
     '$scope','$state','GetInviteCard','GetUserOpenId','GetGameMemberStatus',
     function ($scope,$state,GetInviteCard,GetUserOpenId,GetGameMemberStatus) {
-
+        document.title="我的邀请卡"; //修改页面title
         var imgList = [     "http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/invitationCard/olympic_yao1.png",
                             "http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/invitationCard/olympic_yao2.png",
                             "http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/invitationCard/olympic_yao3.png",
