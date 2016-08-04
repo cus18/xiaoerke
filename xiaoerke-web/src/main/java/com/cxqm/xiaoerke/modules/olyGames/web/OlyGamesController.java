@@ -544,13 +544,14 @@ public class OlyGamesController extends BaseController {
         String fileName = new Date().getTime()+"";
         if(!ImgUtils.existHttpPath(path)){
             //生成图片暂存路径
-            String outPath = System.getProperty("user.dir").replace("bin", "uploadImg")+"\\image\\"+fileName+".png";
+            String outPath = System.getProperty("user.dir").replace("bin", "uploadImg")+"\\"+fileName+".png";
 
             if(!StringUtils.isNotNull(marketer)){
                 marketer = olyGamesService.getMarketerByOpenid(openId);//根据openid获取邀请码
             }
             String userQRCode = olyGamesService.getUserQRCode(marketer);//二维码
             String headImgUrl = olyGamesService.getWechatMessage(openId);//头像
+           // headImgUrl = "http://wx.qlogo.cn/mmopen/tqRiaNianNl1kJWsfxu2EwSCbuViaXB5NSpKS7YBHDdVBeRD64LiamibjVKvtvBBNaNn2KfVbAicG91oJL7nK0t48CU952Rr4Z9lpY/0";
 
             //生成邀请卡图片
             ImgUtils.composePic(headImgUrl, userQRCode, outPath, 71, 231,185,500);
