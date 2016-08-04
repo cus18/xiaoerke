@@ -305,6 +305,20 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
       </profile>
+      <profile default="false" name="Annotation profile for xiaoerke-activity-api" enabled="true">
+        <sourceOutputDir name="target\generated-sources\annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="xiaoerke-activity-api" />
+      </profile>
+      <profile default="false" name="Annotation profile for xiaoerke-activity-service" enabled="true">
+        <sourceOutputDir name="target\generated-sources\annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="xiaoerke-activity-service" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="angel" target="1.6" />
@@ -317,6 +331,9 @@
       <module name="titan" target="1.6" />
       <module name="wisdom" target="1.6" />
       <module name="xiaoerke" target="1.6" />
+      <module name="xiaoerke-activity" target="1.6" />
+      <module name="xiaoerke-activity-api" target="1.6" />
+      <module name="xiaoerke-activity-service" target="1.6" />
       <module name="xiaoerke-cms" target="1.6" />
       <module name="xiaoerke-cms-api" target="1.6" />
       <module name="xiaoerke-cms-service" target="1.6" />
