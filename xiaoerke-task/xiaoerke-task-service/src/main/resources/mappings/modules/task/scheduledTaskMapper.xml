@@ -338,12 +338,10 @@
         srs.date
     </select>
 
-    <select id="olympicShareRemind" resultType="java.util.HashMap">
+    <select id="olympicShareRemind" resultType="java.lang.String">
         select obg.open_id from oly_baby_games obg
-        left join oly_baby_game_detail obgd
-        on obg.open_id = obgd.open_id
-        and obg.game_level = 1
-        and NOW()= (DATE_ADD((DATE_FORMAT(obgd.create_time,'%Y-%m-%d')),INTERVAL 1 DAY))
+        where obg.game_level = 1
+        and NOW()= (DATE_ADD((DATE_FORMAT(obg.create_time,'%Y-%m-%d')),INTERVAL -1 DAY))
     </select>
 
 </mapper>
