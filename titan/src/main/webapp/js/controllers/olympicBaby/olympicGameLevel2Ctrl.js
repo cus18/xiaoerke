@@ -100,7 +100,7 @@
                     function jump() {
                         bingo = true;
                         clearInterval(time1);
-                        document.getElementById('jumpBtn').addEventListener("touchstart", function(){});
+                        document.getElementById('jumpBtn').removeEventListener("touchstart", jump);
                         $('#athlete').css('background-position', (169.5 * 7) + 'px ' + (0) + 'px');
                         $("#athlete").animate({
                             top: '-=200px',
@@ -140,7 +140,6 @@
                         });
                     };
                     recordLogs('action_olympic_baby_tiwce_visit');
-                    recordLogs('action_olympic_baby_tiwce_share');
                     document.getElementById('jumpBtn').addEventListener("touchstart", jump);
                     $('#challengeAgain').bind('click',function(){
                         location.reload();
@@ -161,7 +160,7 @@
 
             //分享到朋友圈或者微信
             var loadShare = function(){
-                var share = '';
+                var share = 'http://s123.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s123.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=37';
                 var shareDes='“宝宝奥运大闯关”开始啦！玩游戏闯关卡，赢取超值豪礼！我已加入，你也赶紧一起来参与吧！';
                 var shareTitle='赢个大奖居然这么简单……';
                 version="a";
@@ -201,7 +200,7 @@
                                     link: share, // 分享链接
                                     imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2FheightForecast.png', // 分享图标
                                     success: function (res) {
-                                        recordLogs("action_olympic_baby_index_share");
+                                        recordLogs('action_olympic_baby_tiwce_share');
                                     },
                                     fail: function (res) {
                                     }
@@ -212,7 +211,7 @@
                                     link:share, // 分享链接
                                     imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2FheightForecast.png', // 分享图标
                                     success: function (res) {
-                                        recordLogs("action_olympic_baby_index_share");
+                                        recordLogs('action_olympic_baby_tiwce_share');
                                     },
                                     fail: function (res) {
                                     }

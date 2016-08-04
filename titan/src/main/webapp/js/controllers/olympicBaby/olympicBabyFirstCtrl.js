@@ -17,7 +17,7 @@
                     //获取openId
                 GetUserOpenId.save({},function (data) {
                     if(data.openid == "none"){
-                        window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=37";
+                        window.location.href = "http://s123.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s123.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=37";
                     }else{
                         $scope.openid = data.openid;
                         //获得奖品列表
@@ -25,18 +25,19 @@
                             $scope.scroll = data.prizeList;
                             //prizeName
                         });
-                        //获得积分
-                        GetUserGameScore.save({openid:''+$scope.openid},function (data) {
-                            $scope.score = data.gameScore;
-                        });
+
                         //获得参加游戏的人数
                         GetGameMemberNum.save({},function (data) {
                             $scope.headcount = data.gameMemberNum;
                         });
                         //获取游戏的状态
-                        GetGameMemberStatus.get({openid:$scope.openid},function (data) {
+                        GetGameMemberStatus.save({openid:$scope.openid},function (data) {
                             $scope.attentionOrNot = data.gameAction;
                             $scope.gameLevel = data.gameLevel;
+                            //获得积分
+                            GetUserGameScore.save({openid:''+$scope.openid},function (data) {
+                                $scope.score = data.gameScore;
+                            });
                         });
                     }
                 });
@@ -143,7 +144,7 @@
             };
             //分享到朋友圈或者微信
             var loadShare = function(){
-                var share = '';
+                var share = 'http://s123.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s123.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=37';
                 var shareDes='“宝宝奥运大闯关”开始啦！玩游戏闯关卡，赢取超值豪礼！我已加入，你也赶紧一起来参与吧！';
                 var shareTitle='赢个大奖居然这么简单……';
                 version="a";
