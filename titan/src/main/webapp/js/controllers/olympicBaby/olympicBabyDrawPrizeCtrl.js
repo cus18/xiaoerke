@@ -197,8 +197,10 @@
                     SaveUserAddress.save({"openid":openid,"address":$scope.info.name+","+$scope.info.phone+","+$scope.info.address},
                     function (data) {
                         console.log("save",data);
-                        if(data.resolved == true){
+                        if(data.$resolved == true){
                             $scope.FillInfoLock = false;
+                        }else{
+                            alert("信息保存失败！");
                         }
                     });
                 }
