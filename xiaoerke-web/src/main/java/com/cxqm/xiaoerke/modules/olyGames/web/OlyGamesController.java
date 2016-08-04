@@ -6,6 +6,7 @@ import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGameDetailVo;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.sys.entity.ReceiveXmlEntity;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
@@ -16,11 +17,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -46,6 +51,8 @@ public class OlyGamesController extends BaseController {
 
     @Autowired
     private WechatAttentionService wechatAttentionService;
+
+    private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
     public static void main(String[] args) {
         float a = -32.121f;
@@ -550,32 +557,50 @@ public class OlyGamesController extends BaseController {
 
             //上传图片
             ImgUtils.uploadImage("olympicBaby_invite_"+openId+".png", outPath);
+        }
+        Runnable thread = new inviteCardMessageThread(path,openId);
+        threadExecutor.execute(thread);
+        response.put("path",path);
+        return response;
+    }
 
+
+    public class inviteCardMessageThread extends Thread {
+        private String imgPath;
+        private String openid;
+
+        public inviteCardMessageThread(String imgPath,String openid) {
+          this.imgPath = imgPath;
+          this.openid = openid;
+        }
+
+        public void run() {
             InputStream is = null;
+            InputStream iso = null;
             try {
-                URL url = new URL(path);
+                URL url = new URL(imgPath);
                 HttpURLConnection httpUrl = (HttpURLConnection) url.openConnection();
                 is = httpUrl.getInputStream();
+                String localPath = olyGamesService.uploadMedia(is);
+                File wxFile=new File(localPath);
+                iso = new FileInputStream(wxFile);
                 String upLoadUrl = "https://api.weixin.qq.com/cgi-bin/media/upload";
                 Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-                org.json.JSONObject jsonObject = WechatUtil.uploadNoTextMsgToWX((String) userWechatParam.get("token"), upLoadUrl, "image", fileName, is);
-
-                WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"),openId,"新游戏需要邀请从未关注过“宝大夫”的好友助力方可解锁开启，赶紧把下方图片分享出去吧，大奖在等你哦！");
-                WechatUtil.sendNoTextMsgToWechat((String) userWechatParam.get("token"), openId, (String) jsonObject.get("media_id"), 1);
+                org.json.JSONObject jsonObject = WechatUtil.uploadNoTextMsgToWX((String) userWechatParam.get("token"), upLoadUrl, "image", wxFile.getName(), iso);
+                wxFile.delete();
+                WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"),openid,"新游戏需要邀请从未关注过“宝大夫”的好友助力方可解锁开启，赶紧把下方图片分享出去吧，大奖在等你哦！");
+                WechatUtil.sendNoTextMsgToWechat((String) userWechatParam.get("token"), openid, (String) jsonObject.get("media_id"), 1);
             }catch (Exception e){
                 e.printStackTrace();
             }finally {
                 try {
                     is.close();
+                    iso.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
+
         }
-        response.put("path",path);
-
-        return response;
     }
-
-
 }
