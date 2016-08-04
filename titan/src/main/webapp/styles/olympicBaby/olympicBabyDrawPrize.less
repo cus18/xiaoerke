@@ -3,6 +3,7 @@
   height:100%;
   background-color: #85ddf5;
   overflow: hidden;
+  position: relative;
 }
 .olympicBabyDrawPrize .top{
   position: relative;
@@ -13,10 +14,14 @@
   right:10px;
 }
 .olympicBabyDrawPrize .prize-wrapper{
+  position: absolute;
+  width: 80%;
+  left:10%;
+  top:30%;
+  margin-top:10px; ;
   background-color: #48b4d2;
   border-radius: 5px;
-  margin:5px 34px 39px;
-  padding:19px 12px;
+  padding:19px 0;
 }
 .olympicBabyDrawPrize .prize-list{
   margin-bottom:10px;
@@ -35,6 +40,11 @@
 }
 .olympicBabyDrawPrize .prize-wrapper p{
   margin-bottom: 0;
+}
+.olympicBabyDrawPrize .bottom{
+  position: absolute;
+  width:100%;
+  bottom:10px;
 }
 .olympicBabyDrawPrize .bottom .btn-lookPrize{
   margin-bottom:19px;
@@ -122,7 +132,7 @@
   height:87%;
   position: relative;
   line-height: 18px;
-  margin-top: 5%;
+  margin-top: 10%;
   margin-bottom: 10px;
   overflow-y: scroll;
 }

@@ -7,7 +7,7 @@
 		<img id="swimmer" class="swimmer" width="74" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/swimming/{{ playCutdownLock ? 'swimmer.gif':'swimmer.png'}}">
 
 	</div>
-	<div ng-disabled="btnLock" class="btn-start button" ng-click="startSwim(score)">
+	<div ng-disabled="btnLock" id="btn-start" class="btn-start button" ng-click="startSwim()">
 		<img  width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/swimming/btn_start.png">
 	</div>
 	<!--游戏开始倒计时-->
@@ -20,9 +20,9 @@
 	<div class="layer-content get-Score" ng-if="getScoreLock">
 		<div class="content tc" >
 			<div  class="top">
-				<img class="my-img2 " width="70%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/swimming/top_gameScore.png">
+				<img class="my-img2 " width="215" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/swimming/top_gameScore.png">
 			</div>
-			<img class="my-img2 " width="40%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/swimming/gama_score.png">
+			<img class="my-img2 " width="80" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/swimming/gama_score.png">
 			<div class="score tc c0">{{score}}</div>
 			<img ng-if="challengeAgainLock" ng-click="challengeAgain()" class="my-img2 " width="60%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/swimming/btn_challengeAgain.png">
 			<img ng-click="challengeMore()"  class="my-img2 " width="60%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/swimming/btn_challengeMore.png">

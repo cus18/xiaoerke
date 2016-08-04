@@ -36,9 +36,9 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
                 $state.go("olympicBabyFirst");
             };
             //点击发力
-            $scope.startSwim = function(num){
+           var startSwim = function(){
                 $scope.playCutdownLock =true;
-                $scope.score =num;
+                /*$scope.score =num;*/
                 $scope.score++;
                 if($scope.score<100){
                     speed=speed*(1-$scope.score/times);
@@ -70,6 +70,13 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
                 }
 
             };
+            //倒计时
+            var timeM = setInterval(function(){
+                if(document.getElementById('btn-start') != null) {
+                    document.getElementById('btn-start').addEventListener("touchstart",startSwim);
+                    clearTimeout(timeM);
+                }
+            },100);
 
            //控制游泳的速度
             var mySpeed=function(){
@@ -158,7 +165,7 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
                                 // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                                 wx.onMenuShareTimeline({
                                     title: '赢个大奖居然这么简单……', // 分享标题
-                                    link:  "http://s165.baodf.com/wisdom/umbrell0a#/umbrellaLead/"+$scope.umbrellaId+"/"+$scope.status,
+                                    link:  "http://s165.baodf.com/wisdom/firstPage/umbrella?status=&id=130000002&time=1470294237464",
                                     imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                     success: function (res) {
                                         recordLogs("action_olympic_baby_once_share");
@@ -169,7 +176,7 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
                                 wx.onMenuShareAppMessage({
                                     title: '赢个大奖居然这么简单……', // 分享标题
                                     desc: "宝宝奥运大闯关”开始啦！玩游戏闯关卡，赢取超值豪礼！我已加入，你也赶紧一起来参与吧！", // 分享描述
-                                    link:  "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$scope.umbrellaId+"/"+$scope.status, // 分享链接
+                                    link:  "http://s165.baodf.com/wisdom/firstPage/umbrella?status=&id=130000002&time=1470294237464", // 分享链接
                                     imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                     success: function (res) {
                                         recordLogs("action_olympic_baby_once_share");
