@@ -41,7 +41,7 @@ angular.module('controllers', []).controller('olympicBabyInvitationCardCtrl', [
         }
 
         $scope.Refresh = function(){
-            var share = "";
+            var share = "http://s123.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s123.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=37";
             var timestamp;//时间戳
             var nonceStr;//随机字符串
             var signature;//得到的签名
