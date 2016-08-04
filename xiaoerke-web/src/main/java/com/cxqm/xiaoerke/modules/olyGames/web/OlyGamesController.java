@@ -234,10 +234,18 @@ public class OlyGamesController extends BaseController {
             }
             StringBuffer sb = new StringBuffer("");
             for(String prize:prizes){
-                sb.append(allPrizesMap.get(prize)+",");
+                sb.append(allPrizesMap.get(prize) + ",");
             }
             Map<String, Object> prizeMap = new HashMap<String, Object>();
+            String headImg = null;
+            try{
+                headImg = olyGamesService.getWechatMessage(vo.getOpenId());
+            }catch (Exception e){
+                System.out.println(e);
+            }
+
             prizeMap.put("nickname", nickName);
+            prizeMap.put("headImg", headImg==null?"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png":headImg);
             prizeMap.put("prizeName",sb.toString());
             prizeList.add(prizeMap);
         }
