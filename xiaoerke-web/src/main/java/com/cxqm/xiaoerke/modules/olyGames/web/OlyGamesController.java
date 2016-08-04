@@ -9,10 +9,13 @@ import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.sys.entity.ReceiveXmlEntity;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
+import jxl.Sheet;
+import jxl.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -54,16 +57,39 @@ public class OlyGamesController extends BaseController {
 
     private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
-    public static void main(String[] args) {
-        float a = -32.121f;
-        System.out.println(Math.ceil(a));
-        String username="";
-        if(username.equals("zxx")){
+    /**
+     * 获取某个游戏玩的次数
+     * input:{openid:"fwefewfewf",gameLevel:3}
+     * result: {gamePlayingTimes:2}
+     ***/
+    @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    void test() {
 
+        Workbook rwb;
+        Sheet sheet =null;
+        List<HashMap<String, Object>> arrayList = new ArrayList<HashMap<String, Object>>();
+        //创建输入流
+        InputStream stream;
+        try {
+            String path = "C:\\Users\\Administrator\\Desktop\\123\\123.xlsx";
+            stream = new FileInputStream(path);
+            //获取Excel文件对象
+            rwb = Workbook.getWorkbook(stream);
+            sheet = rwb.getSheet(0);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        int  x = 1;
-        boolean aa = x==1?true:false;
-        System.out.println("args = [" + aa + "]");
+        //获取文件的指定工作表 默认的第一个
+        int rowTotalNumber = sheet.getRows();
+        //行数(表头的目录不需要，从1开始)
+        for (int i = 1; i < rowTotalNumber; i++) {
+            int j = 0;
+            String a = "300位儿科专家每日严阵以待，为千万妈妈提供健康咨询。有疑问，随时问，无论是宝宝的吃喝拉撒、生长发育，还是智力启蒙、性格培养，这里全都有！ http://t.cn/RtX85Q9 点我加入。（微信公众号：宝大夫）【宝大夫】";
+            ChangzhuoMessageUtil.sendMsg(String.valueOf(sheet.getCell(++j, i)), a);
+        }
+
     }
 
 
@@ -363,25 +389,6 @@ public class OlyGamesController extends BaseController {
         return responseMap;
     }
 
-
-    /**
-     * 获取某个游戏玩的次数
-     * input:{openid:"fwefewfewf",gameLevel:3}
-     * result: {gamePlayingTimes:2}
-     ***/
-    @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    Map<String, Object> test() {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("openid","111111");
-        params.put("gameLevel", 3);
-        params.put("gameScore", 34.5);
-//        GetGamePlayingTimes(params);
-//        SaveGameScore(params);
-        GetUserGameScore(params);
-        return params;
-    }
     /**
      * 获取用户的游戏积分
      * input: {openid:"fwefwefewfw"}
