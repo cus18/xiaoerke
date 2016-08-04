@@ -25,7 +25,7 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
                 $scope.score =0;
                 $scope.playTime =15;
                 speed=2000;
-                times=100;
+                times=200;
                 bottom=0;
                 $("#swimmer").animate({bottom: bottom+"px"},0);
                 timerLock = false;
