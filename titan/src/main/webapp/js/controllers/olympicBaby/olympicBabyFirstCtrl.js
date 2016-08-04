@@ -76,9 +76,16 @@
             };
             var getGamePlayingTimes= function(num){
                 //获取玩游戏的次数
-                GetGamePlayingTimes.save({openid:$scope.openid,gameLevel:num},function (data) {
-                    $scope.playCount = data;
-                    GetGameMemberStatus.save({openid:$scope.openid,gameLevel:num},function (data) {
+                GetGamePlayingTimes.save({openid:$scope.openid,gameLevel:num.toString()},function (data) {
+                    console.log("data",data);
+                    $scope.playCount = data.gamePlayingTimes;
+                    if($scope.playCount < 3){
+                        recordLogs("action_olympic_baby_once_visit");
+                        $state.go("olympicGameLevel1",{playCount:$scope.playCount});
+                    }else{
+                        $scope.withoutCount = true;
+                    }
+                    GetGameMemberStatus.save({openid:$scope.openid,gameLevel:num.toString()},function (data) {
                         $scope.attentionOrNot = data.gameAction;
                     });
                 });
@@ -86,12 +93,6 @@
 
             $scope.goFirstPass= function(){
                 getGamePlayingTimes(1);
-                if($scope.playCount < 3){
-                    recordLogs("action_olympic_baby_once_visit");
-                    $state.go("olympicGameLevel1",{playCount:$scope.playCount});
-                }else{
-                    $scope.withoutCount = true;
-                }
             };
             $scope.goSecondPass= function(){
                 getGamePlayingTimes(2);
