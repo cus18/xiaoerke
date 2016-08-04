@@ -47,18 +47,18 @@
   </delete>
   <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo" useGeneratedKeys="true"
           keyProperty="id">
-    insert into oly_baby_games (id, open_id, game_level, 
+    insert into oly_baby_games (open_id, game_level,
       game_score, level1_current_times, level2_current_times, 
       level3_current_times, level4_current_times, 
       level5_current_times, level6_current_times, 
       marketer, invite_friend_number, create_by, 
-      create_time, update_time,address,prize,nickName)
-    values (#{id,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{gameLevel,jdbcType=INTEGER}, 
+      create_time,address,prize,nickName)
+    values ( #{openId,jdbcType=VARCHAR}, #{gameLevel,jdbcType=INTEGER},
       #{gameScore,jdbcType=REAL}, #{level1CurrentTimes,jdbcType=INTEGER}, #{level2CurrentTimes,jdbcType=INTEGER}, 
       #{level3CurrentTimes,jdbcType=INTEGER}, #{level4CurrentTimes,jdbcType=INTEGER}, 
       #{level5CurrentTimes,jdbcType=INTEGER}, #{level6CurrentTimes,jdbcType=INTEGER}, 
       #{marketer,jdbcType=VARCHAR}, #{inviteFriendNumber,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},#{address,jdbcType=VARCHAR},#{prize,jdbcType=VARCHAR},#{nickName,jdbcType=VARCHAR})
+      #{createTime,jdbcType=TIMESTAMP},#{address,jdbcType=VARCHAR},#{prize,jdbcType=VARCHAR},#{nickName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo" >
     insert into oly_baby_games
