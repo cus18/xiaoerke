@@ -8,7 +8,6 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
             $scope.noPlayTimesLock =false;//没玩游戏机会开关
             $scope.playTimes =0;//玩游戏次数
             $scope.playTime =15;//15秒游戏倒计时
-           /* $scope.num =0;*/
             $scope.score =0;//得分
             $scope.getScoreLock=false;//得分浮层开关
             $scope.playTimes=1;
@@ -188,7 +187,7 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
             $scope.olympicGameLevel1Init = function(){
                 document.title="第一关 游泳"; //修改页面title
                 pageHeight=document.body.clientHeight-200;//获取页面高度
-                GetUserOpenId.save({"openid":$scope.openid},function (data) {
+                GetUserOpenId.get({"openid":$scope.openid},function (data) {
                     console.log("openid ",data.openid);
                     $scope.openid = data.openid;
                     if( $scope.openid!="none"){
