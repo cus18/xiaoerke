@@ -3,7 +3,7 @@
         function ($scope,$state,GetUserPrizes,GetUserOpenId) {
             $scope.showPrize = false;
             $scope.showNoPrize = true;
-
+            document.title="我的奖品"; //修改页面title
             //获取用户的openid
             GetUserOpenId.get(function (data) {
                 if(data.openid!="none"){

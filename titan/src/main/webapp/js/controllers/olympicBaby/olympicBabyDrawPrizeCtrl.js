@@ -16,6 +16,7 @@
 
             //页面初始化
             $scope.olympicBabyDrawPrizeInit = function(){
+                document.title="积分抽奖"; //修改页面title
                 lottery.init('lottery');
                 //获取用户openid
                 GetUserOpenId.get(function (data) {
