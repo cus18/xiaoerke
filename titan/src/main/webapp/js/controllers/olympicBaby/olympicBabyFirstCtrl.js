@@ -78,9 +78,9 @@
                 //获取玩游戏的次数
                 GetGamePlayingTimes.save({openid:$scope.openid,gameLevel:num},function (data) {
                     $scope.playCount = data;
-                });
-                GetGameMemberStatus.save({openid:$scope.openid,gameLevel:num},function (data) {
-                    $scope.attentionOrNot = data;
+                    GetGameMemberStatus.save({openid:$scope.openid,gameLevel:num},function (data) {
+                        $scope.attentionOrNot = data.gameAction;
+                    });
                 });
             };
 

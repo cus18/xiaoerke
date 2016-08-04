@@ -54,16 +54,16 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
                             clearInterval(counterTimer);
                             $scope.playCutdownLock =false;
                             SaveGameScore.save({"openid":$scope.openid,"gameLevel":"1","gameScore": $scope.score.toString()},function (data) {
-
+                                GetGamePlayingTimes.save({"openid":$scope.openid,"gameLevel":"1"},function (data) {
+                                    console.log("GetGamePlayingTimes ",data.gamePlayingTimes);
+                                    $scope.playTimes=data.gamePlayingTimes;
+                                    if($scope.playTimes>=3){
+                                        $scope.challengeAgainLock =false;
+                                    }
+                                    $scope.getScoreLock=true;
+                                });
                             });
-                            GetGamePlayingTimes.save({"openid":$scope.openid,"gameLevel":"1"},function (data) {
-                                console.log("GetGamePlayingTimes ",data.gamePlayingTimes);
-                                $scope.playTimes=data.gamePlayingTimes;
-                                if($scope.playTimes>2){
-                                    $scope.challengeAgainLock =false;
-                                }
-                            });
-                            $scope.getScoreLock=true;
+                            
                         }
                         $scope.$digest(); // 通知视图模型的变化
                     }, 1000);
@@ -204,6 +204,13 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
                 GetUserOpenId.save({"openid":$scope.openid},function (data) {
                     console.log("openid ",data.openid);
                     $scope.openid = data.openid;
+                    GetGamePlayingTimes.save({"openid":$scope.openid,"gameLevel":"1"},function (data) {
+                        console.log("GetGamePlayingTimes ",data.gamePlayingTimes);
+                        $scope.playTimes=data.gamePlayingTimes;
+                        if($scope.playTimes>=3){
+                            $scope.challengeAgainLock =false;
+                        }
+                    });
 
                 });
                 recordLogs("action_olympic_baby_once_visit");
