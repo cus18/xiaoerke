@@ -14,7 +14,7 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
             $scope.playTimes=1;
             var pageHeight;//页面高度
             var speed=2000;//回调速度
-            var times=120;//点击次数基数
+            var times=200;//点击次数基数
             var bottom=0;// 距离页面底部距离
             var myTimer;//定时器
             var timerLock = false;// 定时器锁
