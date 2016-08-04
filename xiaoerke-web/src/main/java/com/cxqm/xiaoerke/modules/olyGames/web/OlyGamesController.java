@@ -149,7 +149,7 @@ public class OlyGamesController extends BaseController {
                             }
                         }
                     }
-                    if ((4 == prizeOrder && prizes.contains("4")) || (4 != prizeOrder && !prizes.contains("4") && !"".equals(prizes))) {//抽中保护伞但已经抽过保护伞，或已经抽中过b组奖品
+                    if ((4 == prizeOrder && "4".equals(prizes)) || (4 != prizeOrder && !"4".equals(prizes) && !"".equals(prizes))) {//抽中保护伞但已经抽过保护伞，或已经抽中过b组奖品
                         responseMap.put("prizeOrder", 3);
                         responseMap.put("prizeName", "谢谢参与");
                         break;
@@ -177,7 +177,7 @@ public class OlyGamesController extends BaseController {
                 param.put("prizeNumber", (Integer) responseMap.get("prizeNumber") - 1);
                 param.put("prizeDate", today);
                 olyGamesService.updateOlyGamePrizeInfo(param);//更新奖品数量
-            }else if(3 == (Integer)responseMap.get("prizeOrder")&&prizeOrder == 4&&!prizes.contains("4")){//抽到保护伞且返回谢谢参与且没有抽中过保护伞
+            }else if(3 == (Integer)responseMap.get("prizeOrder")&&prizeOrder == 4&&!"4".equals(prizes)){//抽到保护伞且返回谢谢参与且没有抽中过保护伞
                 if("".equals(prizes)){
                     prizes = "4";
                 } else {
