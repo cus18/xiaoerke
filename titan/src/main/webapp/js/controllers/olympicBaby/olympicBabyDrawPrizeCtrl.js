@@ -74,20 +74,20 @@
 
             //点击 我要抽奖
             $scope.startDrawPrize = function(){
-                if(openid!="none"&&($scope.score>=80)){
                     if (click) {
                         return false;
                     }else{
-                        $scope.score = $scope.score - 80;
-                        $scope.scoreNumber = parseInt($scope.score/80);
-                        getPrizeIndex();//获取奖品
-                        lottery.speed=100;
-                        roll();
-                        click=true;
-                        return false;
+                        if(openid!="none"&&($scope.score>=80)) {
+                            $scope.score = $scope.score - 80;
+                            $scope.scoreNumber = parseInt($scope.score / 80);
+                            getPrizeIndex();//获取奖品
+                            lottery.speed = 100;
+                            roll();
+                            click = true;
+                            return false;
+                        }else{
+                            $scope.noScoreLock = true;
                     }
-                }else{
-                    $scope.noScoreLock = true;
                 }
             };
 
