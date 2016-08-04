@@ -1,6 +1,6 @@
 ﻿angular.module('controllers', []).controller('olympicBabyDrawPrizeCtrl', [
-        '$scope','$state','$timeout','GetGameScorePrize','GetUserOpenId','SaveUserAddress','GetUserGameScore',
-        function ($scope,$state,$timeout,GetGameScorePrize,GetUserOpenId,SaveUserAddress,GetUserGameScore) {
+        '$scope','$state','$timeout','GetGameScorePrize','GetUserOpenId','SaveUserAddress','GetUserGameScore','$http',
+        function ($scope,$state,$timeout,GetGameScorePrize,GetUserOpenId,SaveUserAddress,GetUserGameScore,$http) {
             $scope.title = "奥运宝贝-抽奖";
             $scope.layerLock = false;//浮层总开关
             $scope.noScoreLock = false;//无积分浮层开关
@@ -18,6 +18,7 @@
             $scope.olympicBabyDrawPrizeInit = function(){
                 document.title="积分抽奖"; //修改页面title
                 lottery.init('lottery');
+                $scope.Refresh();
                 //获取用户openid
                 GetUserOpenId.get(function (data) {
                     if(data.openid!="none"){
@@ -85,6 +86,7 @@
                             lottery.speed = 100;
                             roll();
                             click = true;
+                            setLog("action_olympic_baby_golottery");
                             return false;
                         }else{
                             $scope.noScoreLock = true;
@@ -140,6 +142,7 @@
 
             //点击 查看我的奖品
             $scope.lookMyPrize = function(){
+                setLog("action_olympic_baby_openaward");
                 $state.go("olympicBabyMyPrize");
             };
 
@@ -182,6 +185,7 @@
             //点击 浮层下 领取奖品
             $scope.getPrize = function(){
                 $scope.getPriseLock = false;
+                setLog("action_olympic_baby_receive");
                 if($scope.prizeLink!=""){
                     window.location.href = $scope.prizeLink;
                 }else{
@@ -230,6 +234,79 @@
                     }
                     console.log("prizIndex",prizIndex);
                 });
+            }
+
+            //记录日志
+            var setLog = function (content) {
+                var pData = {logContent:encodeURI(content)};
+                $http({method:'post',url:'util/recordLogs',params:pData});
+            }
+
+            //分享
+            $scope.Refresh = function(){
+                var share = "";
+                var timestamp;//时间戳
+                var nonceStr;//随机字符串
+                var signature;//得到的签名
+                var appid;//得到的签名
+                $.ajax({
+                    url:"wechatInfo/getConfig",// 跳转到 action
+                    async:true,
+                    type:'get',
+                    data:{url:location.href.split('#')[0]},//得到需要分享页面的url
+                    cache:false,
+                    dataType:'json',
+                    success:function(data) {
+                        if(data!=null ){
+                            timestamp=data.timestamp;//得到时间戳
+                            nonceStr=data.nonceStr;//得到随机字符串
+                            signature=data.signature;//得到签名
+                            appid=data.appid;//appid
+                            //微信配置
+                            wx.config({
+                                debug: false,
+                                appId: appid,
+                                timestamp:timestamp,
+                                nonceStr: nonceStr,
+                                signature: signature,
+                                jsApiList: [
+                                    'onMenuShareTimeline',
+                                    'onMenuShareAppMessage'
+                                ] // 功能列表
+                            });
+                            wx.ready(function () {
+                                // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
+                                wx.onMenuShareTimeline({
+                                    title: '赢个大奖居然这么简单……', // 分享标题
+                                    link: share, // 分享链接
+                                    imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/common/sharePic.png', // 分享图标
+                                    success: function (res) {
+                                        setLog("action_olympic_baby_golottery_share");
+                                    },
+                                    fail: function (res) {
+                                    }
+                                });
+
+                                wx.onMenuShareAppMessage({
+                                    title: '赢个大奖居然这么简单……', // 分享标题
+                                    desc: '宝宝奥运大闯关”开始啦！玩游戏闯关卡，赢取超值豪礼！我已加入，你也赶紧一起来参与吧！', // 分享描述
+                                    link: share, // 分享链接
+                                    imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/common/sharePic.png', // 分享图标
+                                    success: function (res) {
+                                        setLog("action_olympic_baby_golottery_share");
+                                    },
+                                    fail: function (res) {
+                                    }
+                                });
+
+                            })
+                        }else{
+                        }
+                    },
+                    error : function() {
+                    }
+                });
+
             }
 
     }]);
