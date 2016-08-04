@@ -208,7 +208,4 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
                 recordLogs("action_olympic_baby_once_visit");
                 $scope.loadShare();
         };
-
-
-
     }])
