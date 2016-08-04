@@ -17,7 +17,7 @@
                     //获取openId
                 GetUserOpenId.save({},function (data) {
                     if(data.openid == "none"){
-                        window.location.href = "http://s123.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s123.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=37";
+                        //window.location.href = "http://s123.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s123.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=37";
                     }else{
                         $scope.openid = data.openid;
                         //获得奖品列表
@@ -89,7 +89,7 @@
                 //获取玩游戏的次数
                 GetGamePlayingTimes.save({openid:$scope.openid,gameLevel:"2"},function (data) {
                     $scope.playCount = data.gamePlayingTimes;
-                    GetGameMemberStatus.save({openid:$scope.openid,gameLevel:num},function (data) {
+                    GetGameMemberStatus.save({openid:$scope.openid,gameLevel:"3"},function (data) {
                         $scope.attentionOrNot = data.gameAction;
                         if($scope.attentionOrNot == 1){
                             $scope.shareFloat = true;
@@ -108,7 +108,7 @@
                 //获取玩游戏的次数
                 GetGamePlayingTimes.save({openid:$scope.openid,gameLevel:"3"},function (data) {
                     $scope.playCount = data.gamePlayingTimes;
-                    GetGameMemberStatus.save({openid:$scope.openid,gameLevel:num},function (data) {
+                    GetGameMemberStatus.save({openid:$scope.openid,gameLevel:"3"},function (data) {
                         $scope.attentionOrNot = data.gameAction;
                         if($scope.attentionOrNot == 1){
                             $scope.shareFloat = true;
