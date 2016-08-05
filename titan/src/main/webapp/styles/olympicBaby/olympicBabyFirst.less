@@ -39,8 +39,8 @@
 
 .indexBox .top .headcount {
   position: absolute;
-  bottom: 3%;
-  left: 50%;
+  bottom: 2%;
+  left: 52%;
   font-size: 16px;
   color: #fff;
   margin-left: -70px;
@@ -151,7 +151,7 @@
 .indexBox .integral {
   width: 100%;
   position: fixed;
-  bottom: 10%;
+  bottom: 14%;
 }
 
 .indexBox .integral img {
@@ -163,7 +163,7 @@
 .indexBox .lottery {
   width: 100%;
   position: fixed;
-  bottom: 3%;
+  bottom: 7%;
 }
 
 .indexBox .lottery img {
@@ -174,41 +174,35 @@
 
 #gongao {
   overflow: hidden;
-  margin-top: -10px;
-  position: relative;
-  z-index: 2;
+  line-height: 30px;
+  font-size: 13px;
+  font-family: '宋体';
+  color: #fff;
+  font-weight: bold;
+  position: fixed;
+  width: 100%;
+  bottom: 1%;
+}
+
+#gongao span {
+  display: inline-block;
+  background: rgba(0,0,0,.3);
+  font: 400 16px/24px "微软雅黑";
+  border-radius: 12px;
+  padding: 0 12px;
+  margin: 0 10px;
 }
 
 #gongao .scroll_div {
-  width: 900px;
-  margin: 0 auto;
+  height:30px;
+  margin:0 auto;
   white-space: nowrap;
-  overflow: hidden;
+  overflow:hidden;
 }
 
 #gongao #scroll_begin,
 #gongao #scroll_end {
-  display: inline;
-}
-
-#gongao #scroll_begin .barrage,
-#gongao #scroll_end .barrage {
-  display: inline;
-  list-style-type: none;
-  color: #fff;
-  background: rgba(0, 0, 0, .3);
-  font: 400 12px/36px "Microsoft Yahei";
-  border-radius: 18px 18px 18px 18px;
-  margin-left: 20px;
-  padding-right: 6px;
-}
-
-#gongao #scroll_begin .barrage img,
-#gongao #scroll_end .barrage img {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  margin: 3px;
+  display: inline
 }
 
 .boxShadow {
@@ -246,8 +240,55 @@
 }
 .integral span {
   position: absolute;
-  top: 6px;
+  top: 10px;
   left: 60%;
   color: #fff;
   font-size: 20px;
+}
+
+.drawPrize-rule{
+  top:10%;
+  height:80%;
+}
+.drawPrize-rule .ruleContent{
+  height:90%;
+  background:url("http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/drawPrize/bg_no_Prize.png") no-repeat;
+  background-size: 100% 100%;
+  padding:20px 15px;
+
+}
+.drawPrize-rule .ruleContent .top{
+  top:-20px;
+}
+.drawPrize-rule .ruleContent .scroller {
+  height:87%;
+  position: relative;
+  line-height: 18px;
+  margin: 10% 0 10px;
+  padding:0 10px;
+  overflow-y: scroll;
+}
+.drawPrize-rule .ruleContent .scroller div{
+  position: relative;
+  padding-left:20px;
+  line-height: 18px;
+  margin-top: 5%;
+  margin-bottom: 10px;
+}
+.drawPrize-rule .ruleContent .scroller div span{
+  position: absolute;
+  display: inline-block;
+  width:20px;
+  left:0;
+  top:0;
+}
+
+.drawPrize-rule .content .scroller p{
+  position: relative;
+  padding-left:40px;
+  margin-top: 5px;
+}
+.drawPrize-rule .content .scroller p span{
+  width:30px;
+  font-weight: bold;
 }
