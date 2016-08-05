@@ -338,4 +338,8 @@
   <update id="updateInviteFriendNumber" parameterType="java.lang.String">
     update oly_baby_games SET invite_friend_number = invite_friend_number+1 where marketer = #{marketer}
   </update>
+
+  <select id="getLastNewMarkter" resultType="java.lang.String">
+    SELECT marketer FROM oly_baby_games order by id desc limit 1;
+  </select>
 </mapper>

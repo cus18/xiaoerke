@@ -39,4 +39,6 @@ public interface OlyBabyGamesDao {
     int updateInviteFriendNumber(String marketer);
 
     OlyBabyGamesVo getBaseByMarketer(String marketer);
+
+    String getLastNewMarkter();
 }
