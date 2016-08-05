@@ -563,14 +563,14 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 					}else{
 						msg = "已开通第"+gemeLevel+"关，还需邀请"+needInviteNum+"位好友开通下一关";
 					}
-					WechatMessageUtil.templateModel("游戏首页", "恭喜您，已经有"+alreadyInviteNum+"位好友在宝宝奥运大闯关游戏中为你助力，赶紧继续闯关吧！", msg, "", "", "快去闯关玩游戏抽奖吧！", token, "www.baidu.com",  olyBabyGamesVo.getOpenId(),"b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg");
+					WechatMessageUtil.templateModel("游戏首页", "恭喜您，已经有"+alreadyInviteNum+"位好友在宝宝奥运大闯关游戏中为你助力，赶紧继续闯关吧！", msg, "", "", "快去闯关玩游戏抽奖吧！", token, "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=37",  olyBabyGamesVo.getOpenId(),"b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg");
 					//				更新用户信息
 					olyGamesService.updateByPrimaryKeySelective(olyBabyGamesVo);
 				};
 
 
 				String st = "感谢你的倾情助力，"+olyBabyGamesVo.getNickName()+"为“宝大夫”带盐，向您推荐宝宝奥运大闯关游戏，" +
-						"<a href='http://s68.baodf.com/titan/appoint#/userEvaluate'>赶紧玩起来吧！</a>";
+						"<a href='http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=37'>赶紧玩起来吧！</a>";
 				WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
 			}
 		}
