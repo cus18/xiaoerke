@@ -1,4 +1,4 @@
-﻿angular.module('controllers', []).controller('olympicGameLevel2Ctrl', [
+﻿﻿angular.module('controllers', []).controller('olympicGameLevel2Ctrl', [
         '$scope','$state','$timeout','GetUserOpenId','SaveGameScore',
         function ($scope,$state,$timeout,GetUserOpenId,SaveGameScore) {
             $scope.title = "奥运宝贝-游戏第二关";

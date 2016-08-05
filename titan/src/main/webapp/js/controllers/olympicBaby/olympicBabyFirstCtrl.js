@@ -1,4 +1,4 @@
-﻿angular.module('controllers', []).controller('olympicBabyFirstCtrl', [
+﻿﻿angular.module('controllers', []).controller('olympicBabyFirstCtrl', [
         '$scope','$state','$timeout','GetUserPrizeList','GetGameMemberNum','GetGamePlayingTimes','GetUserOpenId',
             'GetUserGameScore','GetGameMemberStatus',
         function ($scope,$state,$timeout,GetUserPrizeList,GetGameMemberNum,GetGamePlayingTimes,GetUserOpenId,
