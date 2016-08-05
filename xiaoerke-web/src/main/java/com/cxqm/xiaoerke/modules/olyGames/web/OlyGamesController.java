@@ -8,10 +8,13 @@ import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
+import jxl.Sheet;
+import jxl.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -65,8 +68,31 @@ public class OlyGamesController extends BaseController {
     public
     @ResponseBody
     void test() {
+        Workbook rwb;
+        Sheet sheet =null;
+        InputStream stream;
+        try {
+            String path = "C:\\Users\\Administrator\\Desktop\\123\\663D9100.xls";
+            stream = new FileInputStream(path);
+            rwb = Workbook.getWorkbook(stream);
+            sheet = rwb.getSheet(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        int rowTotalNumber = sheet.getRows();
+        int count = 1;
+        StringBuffer stringBuffer = new StringBuffer();
+        String str = "300位儿科专家每日严阵以待，为千万妈妈提供健康咨询。有疑问，随时问，无论是宝宝的吃喝拉撒、生长发育，还是智力启蒙、性格培养，这里全都有！（搜索微信公众号：宝大夫）";
+        for (int i = 0; i < rowTotalNumber+1; i++) {
+            System.out.print(count++ + "====================");
+            stringBuffer.append(sheet.getCell(0, i).getContents());
+            stringBuffer.append(",");
+        }
+        stringBuffer.append("\n");
+        ChangzhuoMessageUtil.sendMsg(stringBuffer.toString(), str, ChangzhuoMessageUtil.RECEIVER_TYPE_DOCTOR);
 
     }
+
 
 
     /**

@@ -40,5 +40,7 @@ public interface OlyBabyGamesDao {
 
     OlyBabyGamesVo getBaseByMarketer(String marketer);
 
+    void updateLevelCurrentTimes(OlyBabyGamesVo olyBabyGamesVo);
+
     String getLastNewMarkter();
 }
