@@ -440,39 +440,42 @@ public class OlyGamesController extends BaseController {
                     olyBabyGamesVo1.setLevel5CurrentTimes(null);
                     olyBabyGamesVo1.setLevel6CurrentTimes(null);
                     olyGamesService.updateOlyBabyGamesByOpenId(olyBabyGamesVo1);
+                }else{
+                    response.put("gameAction", 1);        //需要关注才能玩下一关
+                    response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
+                    response.put("needInviteFriendNum", needInviteFriendNum);
                 }
-            }
-            int currentLevel = olyBabyGamesVo1.getGameLevel();
-            if (wechatAttentionVo != null) {
-                switch (needInviteFriendNum){
+            } else {
+                int currentLevel = olyBabyGamesVo1.getGameLevel();
+                switch (needInviteFriendNum) {
                     case 0:
-                        if(currentLevel == 1){
+                        if (currentLevel == 1) {
                             response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
                             response.put("gameAction", 0);
                             response.put("needInviteFriendNum", needInviteFriendNum);
-                        }else{
+                        } else {
                             response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
                             response.put("gameAction", 2);
                             response.put("needInviteFriendNum", needInviteFriendNum);
                         }
                         break;
                     case 1:
-                        if(currentLevel <= 2){
+                        if (currentLevel <= 2) {
                             response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
                             response.put("gameAction", 0);
                             response.put("needInviteFriendNum", needInviteFriendNum);
-                        }else{
+                        } else {
                             response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
                             response.put("gameAction", 2);
                             response.put("needInviteFriendNum", needInviteFriendNum);
                         }
                         break;
                     case 2:
-                        if(currentLevel <= 2){
+                        if (currentLevel <= 2) {
                             response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
                             response.put("gameAction", 0);
                             response.put("needInviteFriendNum", needInviteFriendNum);
-                        }else{
+                        } else {
                             response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
                             response.put("gameAction", 2);
                             response.put("needInviteFriendNum", needInviteFriendNum);
@@ -484,10 +487,6 @@ public class OlyGamesController extends BaseController {
                         response.put("needInviteFriendNum", needInviteFriendNum);
                         break;
                 }
-            } else {
-                response.put("gameAction", 1);        //需要关注才能玩下一关
-                response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
-                response.put("needInviteFriendNum", needInviteFriendNum);
             }
         } else {
             olyBabyGamesVo.setCreateTime(new Date());
@@ -504,7 +503,7 @@ public class OlyGamesController extends BaseController {
             olyBabyGamesVo.setNickName("");
             olyBabyGamesVo.setPrize("");
             int result = 0;
-            synchronized(this){
+            synchronized (this) {
                 int num = olyGamesService.getGameMemberNum() + 1;
                 String number = String.valueOf(num);
                 int len = number.length();
