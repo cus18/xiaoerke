@@ -21,7 +21,7 @@ angular.module('controllers', []).controller('olympicBabyInvitationCardCtrl', [
                 GetInviteCard.save({"openid":data.openid},function (data) {
                      $scope.imgEwm = data.path;
                  });
-                GetGameMemberStatus.get({"openid":data.openid},function (data) {
+                GetGameMemberStatus.save({"openid":data.openid},function (data) {
                     console.log("data",data);
                    if(data.gameLevel<6){
                        $scope.imgIndex = imgList[parseInt(data.gameLevel)-1];
