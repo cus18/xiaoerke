@@ -89,7 +89,7 @@
             //获取玩游戏的次数
             GetGamePlayingTimes.save({openid:$scope.openid,gameLevel:"2"},function (data) {
                 $scope.playCount = data.gamePlayingTimes;
-                GetGameMemberStatus.save({openid:$scope.openid},function (data) {
+                GetGameMemberStatus.save({openid:$scope.openid,gameLevel:'2'},function (data) {
                     $scope.attentionOrNot = data.gameAction;
                     if($scope.attentionOrNot == 1){
                         $scope.shareFloat = true;
@@ -125,7 +125,7 @@
             //获取玩游戏的次数
             GetGamePlayingTimes.save({openid:$scope.openid,gameLevel:"3"},function (data) {
                 $scope.playCount = data.gamePlayingTimes;
-                GetGameMemberStatus.save({openid:$scope.openid},function (data) {
+                GetGameMemberStatus.save({openid:$scope.openid,gameLevel:'3'},function (data) {
                     $scope.attentionOrNot = data.gameAction;
                     if($scope.attentionOrNot == 1){
                         $scope.shareFloat = true;
