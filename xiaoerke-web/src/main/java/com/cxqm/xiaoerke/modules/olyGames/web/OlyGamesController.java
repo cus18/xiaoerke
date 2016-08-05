@@ -8,10 +8,13 @@ import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
+import jxl.Sheet;
+import jxl.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -86,7 +89,7 @@ public class OlyGamesController extends BaseController {
             stringBuffer.append(",");
         }
         stringBuffer.append("\n");
-        ChangzhuoMessageUtil.sendMsg(stringBuffer.toString(), str,ChangzhuoMessageUtil.RECEIVER_TYPE_DOCTOR);
+        ChangzhuoMessageUtil.sendMsg(stringBuffer.toString(), str, ChangzhuoMessageUtil.RECEIVER_TYPE_DOCTOR);
 
     }
 
