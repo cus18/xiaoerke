@@ -439,6 +439,12 @@ public class OlyGamesController extends BaseController {
                         olyBabyGamesVo1.setNickName("");
                     }
                     olyBabyGamesVo1.setGameScore(null);
+                    olyBabyGamesVo1.setLevel1CurrentTimes(null);
+                    olyBabyGamesVo1.setLevel2CurrentTimes(null);
+                    olyBabyGamesVo1.setLevel3CurrentTimes(null);
+                    olyBabyGamesVo1.setLevel4CurrentTimes(null);
+                    olyBabyGamesVo1.setLevel5CurrentTimes(null);
+                    olyBabyGamesVo1.setLevel6CurrentTimes(null);
                     olyGamesService.updateOlyBabyGamesByOpenId(olyBabyGamesVo1);
                 }
             }
@@ -518,7 +524,7 @@ public class OlyGamesController extends BaseController {
         String fileName = new Date().getTime()+"";
         if(!ImgUtils.existHttpPath(path)){
             //生成图片暂存路径
-            String outPath = System.getProperty("user.dir").replace("bin", "uploadImg")+"\\image\\"+fileName+".png";
+            String outPath = System.getProperty("user.dir").replace("bin", "uploadImg")+"\\"+fileName+".png";
 
             if(!StringUtils.isNotNull(marketer)){
                 marketer = olyGamesService.getMarketerByOpenid(openId);//根据openid获取邀请码

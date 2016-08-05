@@ -1,6 +1,6 @@
 <div ui-view class="olympicGameLevel1" ng-init="olympicGameLevel1Init()">
 	<div class="info">
-		<span class="cutdown tc fl f2 c0">{{playTime}}秒倒计时</span>
+		<span class="cutdown tc fl f2 c0">{{playTime}}s倒计时</span>
 		<span class="score tc fr f2 c0">{{score}}</span>
 	</div>
 	<div class=" swim-pool" ng-class="{'on': playCutdownLock}">
@@ -28,6 +28,12 @@
 			<img ng-click="challengeMore()"  class="my-img2 " width="60%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/swimming/btn_challengeMore.png">
 
 		</div>
+	</div>
+	<!--没玩游戏的机会t提示-->
+	<div class="c-layer" ng-if="noPlayTimesLock"></div>
+	<div class="layer-content noPlayTimes" ng-if="noPlayTimesLock">
+		<img class="my-img2" width="80%"  height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2Ffuceng_png_03.png" alt=""/>
+		<img class="back-first" width="40%" height="auto" ng-click="challengeMore()"  src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2Fbutton_e_png_03.png" alt=""/>
 	</div>
 </div>
 
