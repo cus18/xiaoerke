@@ -314,7 +314,7 @@
     SELECT marketer FROM oly_baby_games where open_id=#{openId};
   </select>
   <select id="getUserPrizeList" resultMap="BaseResultMap">
-    select * from oly_baby_games where prize is not null and prize!='' ORDER BY create_time desc LIMIT 5
+    select * from oly_baby_games where prize is not null and prize!='' and prize!='4' and nickName!='' and nickName is not null ORDER BY create_time desc LIMIT 5
   </select>
 
   <select id="getGameMemberNum" resultType="java.lang.Integer">

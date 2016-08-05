@@ -222,22 +222,12 @@ public class OlyGamesController extends BaseController {
         for(OlyBabyGamesVo vo : list){
             String[] prizes = vo.getPrize().split(",");
             String nickName = vo.getNickName();
-            if(StringUtils.isNull(nickName)){
-                WechatAttention wa = wechatAttentionService.getAttentionByOpenId(vo.getOpenId());
-                Map parameter = systemService.getWechatParameter();
-                String token = (String)parameter.get("token");
-                if(wa!=null){
-                    if(StringUtils.isNotNull(wa.getNickname())){
-                        nickName = wa.getNickname();
-                    }else{
-                        WechatBean userinfo = WechatUtil.getWechatName(token, vo.getOpenId());
-                        nickName = StringUtils.isNotNull(userinfo.getNickname())?userinfo.getNickname():"";
-                    }
-                }
-            }
             StringBuffer sb = new StringBuffer("");
             for(String prize:prizes){
-                sb.append(allPrizesMap.get(prize) + ",");
+                if("4".equals(prize)){
+                    continue;
+                }
+                sb.append(allPrizesMap.get(prize));
             }
             Map<String, Object> prizeMap = new HashMap<String, Object>();
             String headImg = null;
