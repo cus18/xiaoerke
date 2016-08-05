@@ -39,8 +39,7 @@
             if(flag){
                 startTime();
                 startMoveBack();
-                console.log('playCount',$scope.playCount);
-                if($scope.playCount == 2){
+                if($scope.playCount >= 2){
                     $scope.challengeMoreImg = true;
                     $scope.challengeAgainImg = false;
                 }else{
@@ -100,13 +99,8 @@
                     $scope.lookResultFloat = true;
                     clearInterval(timer3);
                     clearInterval(timer2);
-                    SaveGameScore.save({openid:"222222",gameLevel:"3",gameScore:$scope.score.toString()},function (data) {
+                    SaveGameScore.save({openid:$scope.openid,gameLevel:"3",gameScore:$scope.score.toString()},function (data) {
                         $scope.playCount = data.gamePlayingTimes;
-                        /*if($scope.playCount == 15){
-                         $scope.challengeMoreImg = true;
-                         $scope.challengeAgainImg = false;
-                         }*/
-                        console.log('playCount',$scope.playCount)
                     });
                 }
                 $scope.$digest();
