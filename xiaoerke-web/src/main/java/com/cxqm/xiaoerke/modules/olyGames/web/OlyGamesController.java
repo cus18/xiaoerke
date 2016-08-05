@@ -404,6 +404,11 @@ public class OlyGamesController extends BaseController {
         HashMap<String, Object> response = new HashMap<String, Object>();
         int needInviteFriendNum = 0;
         String openid = (String)param.get("openid");
+        int gameLevel = 0;
+        Object level = param.get("gameLevel");
+        if(level !=null && level !=""){
+            gameLevel = Integer.valueOf((String)level);
+        }
         OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
         olyBabyGamesVo.setOpenId(openid);
         OlyBabyGamesVo olyBabyGamesVo1 = olyGamesService.selectByOlyBabyGamesVo(olyBabyGamesVo);
@@ -430,9 +435,11 @@ public class OlyGamesController extends BaseController {
                     olyBabyGamesVo1.setLevel5CurrentTimes(null);
                     olyBabyGamesVo1.setLevel6CurrentTimes(null);
                     olyGamesService.updateOlyBabyGamesByOpenId(olyBabyGamesVo1);
-                    response.put("gameAction", 2);        //需要关注才能玩下一关
-                    response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
-                    response.put("needInviteFriendNum", needInviteFriendNum);
+                    if(needInviteFriendNum < 1){
+                        response.put("gameAction", 2);        //需要关注才能玩下一关
+                        response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
+                        response.put("needInviteFriendNum", needInviteFriendNum);
+                    }
                 }else{
                     response.put("gameAction", 1);        //需要关注才能玩下一关
                     response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
@@ -442,34 +449,34 @@ public class OlyGamesController extends BaseController {
                 int currentLevel = olyBabyGamesVo1.getGameLevel();
                 switch (needInviteFriendNum) {
                     case 0:
-                        if (currentLevel == 1) {
-                            response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
+                        if (gameLevel == 1) {
+                            response.put("gameLevel", currentLevel);
                             response.put("gameAction", 0);
                             response.put("needInviteFriendNum", needInviteFriendNum);
                         } else {
-                            response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
+                            response.put("gameLevel", currentLevel);
                             response.put("gameAction", 2);
                             response.put("needInviteFriendNum", needInviteFriendNum);
                         }
                         break;
                     case 1:
-                        if (currentLevel <= 2) {
-                            response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
+                        if (gameLevel <= 2) {
+                            response.put("gameLevel", currentLevel);
                             response.put("gameAction", 0);
                             response.put("needInviteFriendNum", needInviteFriendNum);
                         } else {
-                            response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
+                            response.put("gameLevel", currentLevel);
                             response.put("gameAction", 2);
                             response.put("needInviteFriendNum", needInviteFriendNum);
                         }
                         break;
                     case 2:
-                        if (currentLevel <= 2) {
-                            response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
+                        if (gameLevel <= 2) {
+                            response.put("gameLevel", currentLevel);
                             response.put("gameAction", 0);
                             response.put("needInviteFriendNum", needInviteFriendNum);
                         } else {
-                            response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
+                            response.put("gameLevel", currentLevel);
                             response.put("gameAction", 2);
                             response.put("needInviteFriendNum", needInviteFriendNum);
                         }
