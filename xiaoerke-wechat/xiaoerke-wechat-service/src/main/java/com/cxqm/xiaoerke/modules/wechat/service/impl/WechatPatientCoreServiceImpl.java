@@ -899,6 +899,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			WechatAttention attention = new WechatAttention();
 			attention.setId(id);
 			attention.setDate(new Date());
+			if(null !=wechatAttention)
 			attention.setMarketer(wechatAttention.getMarketer());
 			attention.setOpenid(openId);
 			attention.setStatus("1");
