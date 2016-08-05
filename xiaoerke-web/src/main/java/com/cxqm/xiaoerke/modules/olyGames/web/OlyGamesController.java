@@ -534,12 +534,13 @@ public class OlyGamesController extends BaseController {
             olyBabyGamesVo.setPrize("");
             int result = 0;
             synchronized (this) {
-                int num = olyGamesService.getGameMemberNum() + 1;
-                String number = String.valueOf(num);
-                int len = number.length();
+                String num = olyGamesService.getLastNewMarkter();
                 String marketer = "150000001";
-                int defaultLen = marketer.length();
-                marketer = marketer.substring(0, defaultLen - len) + number;
+                int number = 0 ;
+                if(StringUtils.isNotNull(num)){
+                    number = Integer.valueOf(num) + 1;
+                    marketer = String.valueOf(number);
+                }
                 olyBabyGamesVo.setMarketer(marketer);
                 result = olyGamesService.addGamePlayerInfo(olyBabyGamesVo);
             }
