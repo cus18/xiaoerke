@@ -98,9 +98,26 @@
                     }else if($scope.playCount < 3 && $scope.attentionOrNot == 0){
                         recordLogs("action_olympic_baby_tiwce_visit");
                         $state.go("olympicGameLevel2",{});
-                    }else if($scope.playCount == 3){
+                    }else if($scope.playCount >= 3){
                         $scope.withoutCount = true;
                     }
+                    /*if($scope.attentionOrNot == 0){
+                        if($scope.playCount < 3){
+                            recordLogs("action_olympic_baby_tiwce_visit");
+                            $state.go("olympicGameLevel2",{});
+                        }else if($scope.playCount == 3){
+                            $scope.withoutCount = true;
+                        }
+                    }else if($scope.attentionOrNot == 1){
+                        $scope.shareFloat = true;
+                    }else if($scope.attentionOrNot == 2){
+                        $state.go("olympicBabyInvitationCard",{gameLevel:'2'});
+                    }else if($scope.playCount < 3 && $scope.attentionOrNot == 0){
+                        recordLogs("action_olympic_baby_tiwce_visit");
+                        $state.go("olympicGameLevel2",{});
+                    }else if($scope.playCount == 3){
+                        $scope.withoutCount = true;
+                    }*/
                 });
             });
         };
@@ -117,7 +134,7 @@
                     }else if($scope.playCount < 3 && $scope.attentionOrNot == 0){
                         recordLogs("action_olympic_baby_thirth_visit");
                         $state.go("olympicGameLevel3",{});
-                    }else if($scope.playCount == 3){
+                    }else if($scope.playCount >= 3){
                         $scope.withoutCount = true;
                     }
                 });
