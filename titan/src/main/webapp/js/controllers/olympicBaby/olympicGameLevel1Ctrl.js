@@ -54,7 +54,6 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
                             $scope.playCutdownLock =false;
                             SaveGameScore.save({"openid":$scope.openid,"gameLevel":"1","gameScore": $scope.score.toString()},function (data) {
                                 GetGamePlayingTimes.save({"openid":$scope.openid,"gameLevel":"1"},function (data) {
-                                    console.log("GetGamePlayingTimes ",data.gamePlayingTimes);
                                     $scope.playTimes=data.gamePlayingTimes;
                                     if($scope.playTimes>=3){
                                         $scope.challengeAgainLock =false;
@@ -184,11 +183,9 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
                 document.title="第一关 游泳"; //修改页面title
                 pageHeight=document.body.clientHeight-200;//获取页面高度
                 GetUserOpenId.get({"openid":$scope.openid},function (data) {
-                    console.log("openid ",data.openid);
                     $scope.openid = data.openid;
                     if( $scope.openid!="none"){
                         GetGamePlayingTimes.save({"openid":$scope.openid,"gameLevel":"1"},function (data) {
-                            console.log("GetGamePlayingTimes ",data.gamePlayingTimes);
                             if(data.gamePlayingTimes<3){
                                 /* 游戏开始3秒倒计时*/
                                 $scope.startCutdownLock =true;

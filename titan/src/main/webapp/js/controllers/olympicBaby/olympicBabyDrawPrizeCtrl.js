@@ -24,7 +24,6 @@
                     if(data.openid!="none"){
                         openid = data.openid;
                         GetUserGameScore.save({"openid":data.openid},function (data) {
-                            console.log("fenshu",data);
                             var score = parseInt(data.gameScore);
                             if(score>=80){
                                 $scope.scoreNumber = parseInt(score/80);
@@ -118,7 +117,6 @@
                          // var index = Math.random()*(lottery.count)|0;
                          // lottery.prize = index;
                         lottery.prize = prizIndex;
-                        console.log("我的奖品"+ lottery.prize );
                     }else{
                         if (lottery.times > lottery.cycle+10 && ((lottery.prize==0 && lottery.index==7) || lottery.prize==lottery.index+1)) {
                             lottery.speed += 110;
@@ -129,7 +127,7 @@
                     if (lottery.speed<40) {
                         lottery.speed=40;
                     }
-                    //console.log(lottery.times+'^^^^^^'+lottery.speed+'^^^^^^^'+lottery.prize);
+                    
                     //lottery.timer = setTimeout(roll,lottery.speed);
                     lottery.timer = $timeout(function () {
                         roll();
@@ -204,7 +202,6 @@
                 }else{
                     SaveUserAddress.save({"openid":openid,"address":$scope.info.name+","+$scope.info.phone+","+$scope.info.address},
                     function (data) {
-                        console.log("save",data);
                         if(data.$resolved == true){
                             $scope.FillInfoLock = false;
                         }else{
@@ -217,7 +214,6 @@
             //根据openid获取奖品
             var getPrizeIndex = function () {
                 GetGameScorePrize.save({"openid":openid},function (data) {
-                    console.log("data",data);
                     var index = parseInt(data.prizeOrder);
                     $scope.prizeOrder = index;
                     $scope.postage = data.postage==""?"":"(此奖品需要您支付"+data.postage+"元的快递费)";
@@ -235,7 +231,6 @@
                     }else{
                         prizIndex = index;
                     }
-                    console.log("prizIndex",prizIndex);
                 });
             }
 

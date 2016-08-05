@@ -10,7 +10,6 @@
                 if(data.openid!="none"){
                     //获取用户获奖列表
                     GetUserPrizes.save({"openid":data.openid},function (data) {
-                        console.log("data",data);
                         if(data.prizeList!=undefined){
                             $scope.showPrize = true;
                             $scope.showNoPrize = false;

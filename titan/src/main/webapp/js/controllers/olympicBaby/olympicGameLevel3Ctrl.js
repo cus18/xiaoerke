@@ -18,7 +18,6 @@
 
             //获取openId
             GetUserOpenId.get({},function (data) {
-                console.log(data.openid);
                 $scope.openid = data.openid;
             });
         };
