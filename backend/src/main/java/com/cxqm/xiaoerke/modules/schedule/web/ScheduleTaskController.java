@@ -2,6 +2,8 @@ package com.cxqm.xiaoerke.modules.schedule.web;
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
+import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
+import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo;
 import com.cxqm.xiaoerke.modules.operation.service.ConsultStatisticService;
 import com.cxqm.xiaoerke.modules.sys.service.LogMongoDBServiceImpl;
@@ -29,6 +31,9 @@ public class ScheduleTaskController extends BaseController {
 
     @Autowired
     private LogMongoDBServiceImpl logMongoDBService;
+
+    @Autowired
+    private OlyGamesService olyGamesService;
 
     /**
      * 咨询统计信息
@@ -291,6 +296,10 @@ public class ScheduleTaskController extends BaseController {
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
+    }
+
+    public void updateOlyGames(){
+        olyGamesService.updateLevelCurrentTimes(new OlyBabyGamesVo());
     }
 
 }

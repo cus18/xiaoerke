@@ -54,6 +54,8 @@ public interface OlyGamesService {
 
     int getGameMemberNum();        //查询参与游戏总人数
 
+    void updateLevelCurrentTimes(OlyBabyGamesVo olyBabyGamesVo);
+
     int addGamePlayerInfo(OlyBabyGamesVo olyBabyGamesVo);    //新玩家第一次进入游戏页面，添加他的信息
 
     int getNewAttentionByOpenId(String userId);
@@ -61,4 +63,6 @@ public interface OlyGamesService {
     String uploadMedia(InputStream in);
 
     int updateByPrimaryKeySelective(OlyBabyGamesVo record);
+    //查询最新一条记录的markter值   
+    String getLastNewMarkter();
 }

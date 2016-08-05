@@ -288,6 +288,16 @@
     where  open_id = #{openId,jdbcType=VARCHAR}
   </update>
 
+  <update id="updateLevelCurrentTimes" parameterType="com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo" >
+    UPDATE oly_baby_games
+    SET level1_current_times = 0,
+        level2_current_times = 0,
+        level3_current_times = 0,
+        level4_current_times = 0,
+        level5_current_times = 0,
+        level6_current_times = 0
+  </update>
+
   <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo" >
     update oly_baby_games
     set open_id = #{openId,jdbcType=VARCHAR},
@@ -338,4 +348,8 @@
   <update id="updateInviteFriendNumber" parameterType="java.lang.String">
     update oly_baby_games SET invite_friend_number = invite_friend_number+1 where marketer = #{marketer}
   </update>
+
+  <select id="getLastNewMarkter" resultType="java.lang.String">
+     SELECT marketer FROM oly_baby_games order by id desc limit 1;
+  </select>
 </mapper>
