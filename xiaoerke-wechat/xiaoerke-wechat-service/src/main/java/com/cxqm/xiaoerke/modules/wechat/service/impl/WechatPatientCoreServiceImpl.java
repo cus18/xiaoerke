@@ -886,7 +886,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		WechatAttention wechatAttention = new WechatAttention();
 		wechatAttention.setOpenid(openId);
 		wechatAttention = wechatAttentionDao.findMarketerByOpeinid(wechatAttention);
-		map.put("marketer", wechatAttention.getMarketer());
+		if(null!=wechatAttention){
+			map.put("marketer", wechatAttention.getMarketer());
+		}
 		String id = UUID.randomUUID().toString().replaceAll("-", "");
 		map.put("id", id);
 		map.put("status", "1");
