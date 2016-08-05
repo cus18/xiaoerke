@@ -451,14 +451,26 @@ public class OlyGamesController extends BaseController {
             if (wechatAttentionVo != null) {
                 switch (currentLevel){
                     case 1:
-                        response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
-                        response.put("gameAction", 2);
-                        response.put("needInviteFriendNum", needInviteFriendNum);
+                        if(needInviteFriendNum >=1){
+                            response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
+                            response.put("gameAction", 0);
+                            response.put("needInviteFriendNum", needInviteFriendNum);
+                        }else{
+                            response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
+                            response.put("gameAction", 2);
+                            response.put("needInviteFriendNum", needInviteFriendNum);
+                        }
                         break;
                     case 2:
-                        response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
-                        response.put("gameAction", 2);
-                        response.put("needInviteFriendNum", needInviteFriendNum);
+                        if(needInviteFriendNum >=3){
+                            response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
+                            response.put("gameAction", 0);
+                            response.put("needInviteFriendNum", needInviteFriendNum);
+                        }else{
+                            response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
+                            response.put("gameAction", 2);
+                            response.put("needInviteFriendNum", needInviteFriendNum);
+                        }
                         break;
                     default:
                         response.put("gameLevel", 0);
