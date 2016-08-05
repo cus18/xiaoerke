@@ -1,6 +1,6 @@
 angular.module('controllers', []).controller('olympicBabyInvitationCardCtrl', [
-    '$scope','$state','GetInviteCard','GetUserOpenId','GetGameMemberStatus','$http',
-    function ($scope,$state,GetInviteCard,GetUserOpenId,GetGameMemberStatus,$http) {
+    '$scope','$state','$stateParams','GetInviteCard','GetUserOpenId','GetGameMemberStatus','$http',
+    function ($scope,$state,$stateParams,GetInviteCard,GetUserOpenId,GetGameMemberStatus,$http) {
         document.title="我的邀请卡"; //修改页面title
         var imgList = [     "http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/invitationCard/olympic_yao1.png",
                             "http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/invitationCard/olympic_yao2.png",
@@ -21,14 +21,27 @@ angular.module('controllers', []).controller('olympicBabyInvitationCardCtrl', [
                 GetInviteCard.save({"openid":data.openid},function (data) {
                      $scope.imgEwm = data.path;
                  });
-                GetGameMemberStatus.save({"openid":data.openid},function (data) {
+                /*GetGameMemberStatus.save({"openid":data.openid},function (data) {
                     console.log("data",data);
                    if(data.gameLevel<6){
                        $scope.imgIndex = imgList[parseInt(data.gameLevel)-1];
                    }else{
                        $scope.imgIndex = imgList[4];
                    }
-                });
+                });*/
+
+                if($stateParams.gameLevel==2){
+                    $scope.imgIndex = imgList[0];
+                }else if($stateParams.gameLevel==3){
+                    $scope.imgIndex = imgList[1];
+                }else if($stateParams.gameLevel==4){
+                    $scope.imgIndex = imgList[2];
+                }else if($stateParams.gameLevel==5){
+                    $scope.imgIndex = imgList[3];
+                }else if($stateParams.gameLevel==6){
+                    $scope.imgIndex = imgList[4];
+                }
+
             }else{
                 alert("请从宝大夫公众号进入游戏，谢谢！");
             }
