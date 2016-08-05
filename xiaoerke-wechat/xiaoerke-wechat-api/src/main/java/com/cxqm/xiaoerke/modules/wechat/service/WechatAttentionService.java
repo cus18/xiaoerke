@@ -5,11 +5,13 @@ import com.cxqm.xiaoerke.modules.wechat.entity.DoctorAttentionVo;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 
 import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 微信关注服务接口
@@ -36,5 +38,7 @@ public interface WechatAttentionService {
 			SysWechatAppintInfoVo sysWechatAppintInfoVo);
 
 	DoctorAttentionVo findDoctorAttentionVoInfoNoOpenId(HashMap<String,Object> hashMap);
+
+	Map findLastAttentionStatusByOpenId(String userId);
 
 }

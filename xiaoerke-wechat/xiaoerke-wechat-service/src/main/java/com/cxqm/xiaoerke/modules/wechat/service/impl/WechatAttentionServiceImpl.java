@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.wechat.service.impl;
 
+import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.wechat.dao.WechatAttentionDao;
 import com.cxqm.xiaoerke.modules.wechat.entity.DoctorAttentionVo;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author wangbaowei
@@ -71,6 +73,16 @@ public class WechatAttentionServiceImpl implements WechatAttentionService {
     @Override
     public DoctorAttentionVo findDoctorAttentionVoInfoNoOpenId(HashMap<String,Object> hashMap){
     	return wechatattentionDao.findDoctorAttentionVoInfoNoOpenId(hashMap);
+    }
+
+    @Override
+    public Map findLastAttentionStatusByOpenId(String userId) {
+        Map status = wechatattentionDao.findLastAttentionStatusByOpenId(userId);
+        if(status != null){
+            return status ;
+        }else{
+            return null;
+        }
     }
 
 }

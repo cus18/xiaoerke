@@ -242,4 +242,10 @@
         GROUP BY su.phone
     </select>
 
+    <select id="findLastAttentionStatusByOpenId" parameterType="java.lang.String" resultType="java.util.Map">
+        select sa.status as status, sa.nickname as nickname from sys_attention sa
+        where 1=1 and sa.openid=#{userId,jdbcType=VARCHAR}
+        order by date desc limit 1;
+    </select>
+
 </mapper>

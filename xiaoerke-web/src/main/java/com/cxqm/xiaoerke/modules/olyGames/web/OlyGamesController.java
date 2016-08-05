@@ -419,13 +419,11 @@ public class OlyGamesController extends BaseController {
         if (olyBabyGamesVo1 != null) {
             response.put("status", "success");
             needInviteFriendNum = olyBabyGamesVo1.getInviteFriendNumber();
-            SysWechatAppintInfoVo wechatAttentionVo = null;
+            Map userStatus = null;
             if (olyBabyGamesVo1.getGameLevel() == 1) {
-                SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
-                sysWechatAppintInfoVo.setOpen_id(openid);
-                wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
-                if (wechatAttentionVo != null) {
-                    String nickname = wechatAttentionVo.getWechat_name();
+                userStatus = wechatAttentionService.findLastAttentionStatusByOpenId(openid);
+                if(StringUtils.isNotNull((String)userStatus.get("status")) && "0".equals(userStatus.get("status"))){
+                    String nickname = (String)userStatus.get("nickname");
                     if (StringUtils.isNotNull(nickname)) {
                         olyBabyGamesVo1.setNickName(nickname);
                     } else {

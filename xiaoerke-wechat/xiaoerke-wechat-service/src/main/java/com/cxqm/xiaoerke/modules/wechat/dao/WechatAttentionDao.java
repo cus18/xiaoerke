@@ -5,11 +5,13 @@ import java.util.HashMap;
 
 
 import java.util.List;
+import java.util.Map;
 
 import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.wechat.entity.DoctorAttentionVo;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
+import org.apache.ibatis.annotations.Param;
 
 @MyBatisDao
 public interface WechatAttentionDao {
@@ -49,4 +51,6 @@ public interface WechatAttentionDao {
     //根据openid查询最近关注的marketer，防止取消关注的时候marketer总是为空
     WechatAttention findMarketerByOpeinid(WechatAttention wechatAttention);
 
+    //jiangzhongge add 根据用户openid查询用户最后一次关注的状态
+    Map findLastAttentionStatusByOpenId(@Param("userId") String userId);
 }
