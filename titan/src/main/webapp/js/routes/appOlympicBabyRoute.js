@@ -114,7 +114,7 @@ define(['appOlympicBaby'], function(app){
                         }
                     })
                     .state('olympicBabyInvitationCard', {
-                        url: '/olympicBabyInvitationCard',
+                        url: '/olympicBabyInvitationCard/:gameLevel',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'olympicBabyInvitationCardCtrl',
                         resolve: {
