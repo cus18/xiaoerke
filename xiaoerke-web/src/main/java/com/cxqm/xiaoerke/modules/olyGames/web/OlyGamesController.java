@@ -440,6 +440,9 @@ public class OlyGamesController extends BaseController {
                     olyBabyGamesVo1.setLevel5CurrentTimes(null);
                     olyBabyGamesVo1.setLevel6CurrentTimes(null);
                     olyGamesService.updateOlyBabyGamesByOpenId(olyBabyGamesVo1);
+                    response.put("gameAction", 2);        //需要关注才能玩下一关
+                    response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
+                    response.put("needInviteFriendNum", needInviteFriendNum);
                 }else{
                     response.put("gameAction", 1);        //需要关注才能玩下一关
                     response.put("gameLevel", olyBabyGamesVo1.getGameLevel());
