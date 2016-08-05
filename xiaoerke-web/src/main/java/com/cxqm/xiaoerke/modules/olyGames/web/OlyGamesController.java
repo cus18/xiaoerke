@@ -419,10 +419,9 @@ public class OlyGamesController extends BaseController {
         if (olyBabyGamesVo1 != null) {
             response.put("status", "success");
             needInviteFriendNum = olyBabyGamesVo1.getInviteFriendNumber();
-            Map userStatus = null;
             if (olyBabyGamesVo1.getGameLevel() == 1) {
-                userStatus = wechatAttentionService.findLastAttentionStatusByOpenId(openid);
-                if(StringUtils.isNotNull((String)userStatus.get("status")) && "0".equals(userStatus.get("status"))){
+                Map userStatus = wechatAttentionService.findLastAttentionStatusByOpenId(openid);
+                if(userStatus != null && StringUtils.isNotNull((String)userStatus.get("status")) && "0".equals(userStatus.get("status"))){
                     String nickname = (String)userStatus.get("nickname");
                     if (StringUtils.isNotNull(nickname)) {
                         olyBabyGamesVo1.setNickName(nickname);
