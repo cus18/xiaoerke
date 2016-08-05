@@ -89,7 +89,7 @@
                 //获取玩游戏的次数
                 GetGamePlayingTimes.save({openid:$scope.openid,gameLevel:"2"},function (data) {
                     $scope.playCount = data.gamePlayingTimes;
-                    GetGameMemberStatus.save({openid:$scope.openid,gameLevel:"3"},function (data) {
+                    GetGameMemberStatus.save({openid:$scope.openid},function (data) {
                         $scope.attentionOrNot = data.gameAction;
                         if($scope.attentionOrNot == 1){
                             $scope.shareFloat = true;
@@ -152,6 +152,7 @@
                 var share = 'http://s123.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s123.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=37';
                 var shareDes='“宝宝奥运大闯关”开始啦！玩游戏闯关卡，赢取超值豪礼！我已加入，你也赶紧一起来参与吧！';
                 var shareTitle='赢个大奖居然这么简单……';
+                var imgUrl='http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/common/sharePic.png';
                 version="a";
                 var timestamp;//时间戳
                 var nonceStr;//随机字符串
@@ -187,7 +188,7 @@
                                 wx.onMenuShareTimeline({
                                     title: shareTitle, // 分享标题
                                     link: share, // 分享链接
-                                    imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2FheightForecast.png', // 分享图标
+                                    imgUrl: imgUrl, // 分享图标
                                     success: function (res) {
                                         recordLogs("action_olympic_baby_index_share");
                                     },
@@ -198,7 +199,7 @@
                                     title: shareTitle, // 分享标题
                                     desc: shareDes, // 分享描述
                                     link:share, // 分享链接
-                                    imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/height%2FheightForecast.png', // 分享图标
+                                    imgUrl: imgUrl, // 分享图标
                                     success: function (res) {
                                         recordLogs("action_olympic_baby_index_share");
                                     },
