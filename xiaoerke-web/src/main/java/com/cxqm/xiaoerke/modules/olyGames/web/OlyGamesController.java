@@ -485,14 +485,17 @@ public class OlyGamesController extends BaseController {
             olyBabyGamesVo.setAddress("");
             olyBabyGamesVo.setNickName("");
             olyBabyGamesVo.setPrize("");
-            int num = olyGamesService.getGameMemberNum() + 1;
-            String number = String.valueOf(num);
-            int len = number.length();
-            String marketer = "150000001";
-            int defaultLen = marketer.length();
-            marketer = marketer.substring(0, defaultLen - len) + number;
-            olyBabyGamesVo.setMarketer(marketer);
-            int result = olyGamesService.addGamePlayerInfo(olyBabyGamesVo);
+            int result = 0;
+            synchronized(this){
+                int num = olyGamesService.getGameMemberNum() + 1;
+                String number = String.valueOf(num);
+                int len = number.length();
+                String marketer = "150000001";
+                int defaultLen = marketer.length();
+                marketer = marketer.substring(0, defaultLen - len) + number;
+                olyBabyGamesVo.setMarketer(marketer);
+                result = olyGamesService.addGamePlayerInfo(olyBabyGamesVo);
+            }
             if (result > 0) {
                 response.put("status", "addSuccess");
                 response.put("gameAction", 0);
