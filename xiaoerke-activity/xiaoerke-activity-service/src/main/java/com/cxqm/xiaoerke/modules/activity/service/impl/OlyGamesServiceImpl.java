@@ -102,6 +102,10 @@ public class OlyGamesServiceImpl implements OlyGamesService {
         return olyBabyGamesDao.updateInviteFriendNumber(marketer);
     }
 
+    @Override
+    public int updateByPrimaryKeySelective(OlyBabyGamesVo record){
+        return olyBabyGamesDao.updateByPrimaryKeySelective(record);
+    };
     @Autowired
     SystemService systemService;
 

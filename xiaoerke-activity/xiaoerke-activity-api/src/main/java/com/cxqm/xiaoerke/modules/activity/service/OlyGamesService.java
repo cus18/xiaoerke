@@ -59,4 +59,6 @@ public interface OlyGamesService {
     int getNewAttentionByOpenId(String userId);
 
     String uploadMedia(InputStream in);
+
+    int updateByPrimaryKeySelective(OlyBabyGamesVo record);
 }
