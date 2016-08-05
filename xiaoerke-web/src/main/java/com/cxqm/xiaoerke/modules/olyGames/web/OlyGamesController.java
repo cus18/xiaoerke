@@ -80,11 +80,11 @@ public class OlyGamesController extends BaseController {
             e.printStackTrace();
         }
         int rowTotalNumber = sheet.getRows();
-        int count = 1;
+        int count = 0;
         StringBuffer stringBuffer = new StringBuffer();
         String str = "300位儿科专家每日严阵以待，为千万妈妈提供健康咨询。有疑问，随时问，无论是宝宝的吃喝拉撒、生长发育，还是智力启蒙、性格培养，这里全都有！（搜索微信公众号：宝大夫）";
         for (int i = 0; i < rowTotalNumber; i++) {
-            System.out.print(count++ + "====================");
+            System.out.println("====================" + count++);
             stringBuffer.append(sheet.getCell(0, i).getContents());
 
             if(StringUtils.isNull(sheet.getCell(0, i+1).getContents())){
@@ -93,7 +93,7 @@ public class OlyGamesController extends BaseController {
             stringBuffer.append(",");
         }
         stringBuffer.append("\n");
-//        ChangzhuoMessageUtil.sendMsg(stringBuffer.toString(), str, ChangzhuoMessageUtil.RECEIVER_TYPE_DOCTOR);
+        ChangzhuoMessageUtil.sendMsg(stringBuffer.toString(), str, ChangzhuoMessageUtil.RECEIVER_TYPE_DOCTOR);
 
     }
 
