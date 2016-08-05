@@ -30,15 +30,15 @@ angular.module('controllers', []).controller('olympicBabyInvitationCardCtrl', [
                    }
                 });*/
 
-                if($stateParams.gameLevel==2){
+                if(parseInt($stateParams.gameLevel)==2){
                     $scope.imgIndex = imgList[0];
-                }else if($stateParams.gameLevel==3){
+                }else if(parseInt($stateParams.gameLevel)==3){
                     $scope.imgIndex = imgList[1];
-                }else if($stateParams.gameLevel==4){
+                }else if(parseInt($stateParams.gameLevel)==4){
                     $scope.imgIndex = imgList[2];
-                }else if($stateParams.gameLevel==5){
+                }else if(parseInt($stateParams.gameLevel)==5){
                     $scope.imgIndex = imgList[3];
-                }else if($stateParams.gameLevel==6){
+                }else if(parseInt($stateParams.gameLevel)==6){
                     $scope.imgIndex = imgList[4];
                 }
 
