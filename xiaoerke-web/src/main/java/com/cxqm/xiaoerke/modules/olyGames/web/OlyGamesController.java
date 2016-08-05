@@ -530,8 +530,10 @@ public class OlyGamesController extends BaseController {
             }
             String userQRCode = olyGamesService.getUserQRCode(marketer);//二维码
             String headImgUrl = olyGamesService.getWechatMessage(openId);//头像
-           // headImgUrl = "http://wx.qlogo.cn/mmopen/tqRiaNianNl1kJWsfxu2EwSCbuViaXB5NSpKS7YBHDdVBeRD64LiamibjVKvtvBBNaNn2KfVbAicG91oJL7nK0t48CU952Rr4Z9lpY/0";
 
+            if(headImgUrl==null){//还是没有图片的设为默认图片
+                headImgUrl = "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg";
+            }
             //生成邀请卡图片
             ImgUtils.composePic(headImgUrl, userQRCode, outPath, 71, 231,185,500);
 
@@ -539,9 +541,7 @@ public class OlyGamesController extends BaseController {
             ImgUtils.uploadImage("olympicBaby_invite_"+openId+".png", outPath);
         }
 
-        if(!ImgUtils.existHttpPath(path)){//还是没有图片的设为默认图片
-            path = "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg";
-        }
+
         Runnable thread = new inviteCardMessageThread(path,openId);
         threadExecutor.execute(thread);
         response.put("path",path);
