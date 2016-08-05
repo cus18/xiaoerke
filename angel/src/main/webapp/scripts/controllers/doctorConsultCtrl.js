@@ -936,7 +936,7 @@ angular.module('controllers', ['luegg.directives'])
             $scope.seeMoreConversationMessage = function(){
                 var mostFarCurrentConversationDateTime = moment().format("YYYY-MM-DD HH:mm:ss");
                 if($scope.currentUserConversation.consultValue[0]!=undefined){
-                    var mostFarCurrentConversationDateTime = $scope.currentUserConversation.consultValue[0].dateTime;
+                    mostFarCurrentConversationDateTime = $scope.currentUserConversation.consultValue[0].dateTime;
                 }
                 GetCurrentUserHistoryRecord.save({
                     userId:$scope.currentUserConversation.patientId,
@@ -1339,7 +1339,7 @@ angular.module('controllers', ['luegg.directives'])
                 });
             };
             /***回复操作区**/
-            /***咨询服务**/
+           /* /!***咨询服务**!/
             //根据openid获取历史咨询
             var getHistoryConsultContent = function () {
                 $scope.historyConsult = '';
@@ -1363,12 +1363,6 @@ angular.module('controllers', ['luegg.directives'])
             });
             //添加诊断记录
             $scope.addDiagnosisRecords = function () {
-                console.log($scope.info.result);
-                console.log($scope.info.show);
-                console.log($scope.info.illness);
-                console.log($scope.info.selectedIllnessList);
-                console.log($scope.todayTime);
-                console.log($scope.doctorId);
                 //添加诊断记录
                 SaveCustomerLog.save({
                     openid:$scope.currentUserConversation.patientId,
@@ -1437,7 +1431,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.historyTableMore = "查看更多";
                 }
             };
-            /***咨询服务**/
+            /!***咨询服务**!/*/
             var getIframeSrc = function(){
                 var newSrc = $(".advisory-content").attr("src");
                 $(".advisory-content").attr("src","");
