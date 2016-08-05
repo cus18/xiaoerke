@@ -157,7 +157,7 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
                                 wx.onMenuShareTimeline({
                                     title: '赢个大奖居然这么简单……', // 分享标题
                                     link:  share,
-                                    imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
+                                    imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/common/sharePic.png', // 分享图标
                                     success: function (res) {
                                         setLog("action_olympic_baby_once_share");
                                     },
@@ -168,7 +168,7 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
                                     title: '赢个大奖居然这么简单……', // 分享标题
                                     desc: "宝宝奥运大闯关”开始啦！玩游戏闯关卡，赢取超值豪礼！我已加入，你也赶紧一起来参与吧！", // 分享描述
                                     link:  share, // 分享链接
-                                    imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
+                                    imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/common/sharePic.png', // 分享图标
                                     success: function (res) {
                                         setLog("action_olympic_baby_once_share");
                                     },
