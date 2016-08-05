@@ -524,7 +524,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				String userOpenid = EventKey.replace("qrscene_","");
 
 				OlyBabyGamesVo olyBabyGamesVo = olyGamesService.getBaseByMarketer(userOpenid);
-				Integer alreadyInviteNum = olyBabyGamesVo.getInviteFriendNumber() ;
+				Integer alreadyInviteNum = olyBabyGamesVo.getInviteFriendNumber()+1 ;
 				if(alreadyInviteNum<1&&openLevel>=1){
 //					第一关
 					olyBabyGamesVo.setGameLevel(1);
@@ -547,7 +547,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
 				//	如果是新用户推广者加一
 				if(olyGamesService.getNewAttentionByOpenId(xmlEntity.getFromUserName())== 0){
-					olyBabyGamesVo.setInviteFriendNumber(alreadyInviteNum+1);
+					olyBabyGamesVo.setInviteFriendNumber(alreadyInviteNum);
 
 					String msg = "";
 					Integer gemeLevel = olyBabyGamesVo.getGameLevel();
@@ -564,9 +564,10 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 						msg = "已开通第"+gemeLevel+"关，还需邀请"+needInviteNum+"位好友开通下一关";
 					}
 					WechatMessageUtil.templateModel("游戏首页", "恭喜您，已经有"+alreadyInviteNum+"位好友在宝宝奥运大闯关游戏中为你助力，赶紧继续闯关吧！", msg, "", "", "快去闯关玩游戏抽奖吧！", token, "www.baidu.com",  olyBabyGamesVo.getOpenId(),"b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg");
+					//				更新用户信息
+					olyGamesService.updateByPrimaryKeySelective(olyBabyGamesVo);
 				};
-//				更新用户信息
-				olyGamesService.updateByPrimaryKeySelective(olyBabyGamesVo);
+
 
 				String st = "感谢你的倾情助力，"+olyBabyGamesVo.getNickName()+"为“宝大夫”带盐，向您推荐宝宝奥运大闯关游戏，" +
 						"<a href='http://s68.baodf.com/titan/appoint#/userEvaluate'>赶紧玩起来吧！</a>";
