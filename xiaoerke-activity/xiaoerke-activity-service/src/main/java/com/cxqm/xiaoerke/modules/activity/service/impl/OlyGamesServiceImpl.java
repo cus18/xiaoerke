@@ -114,7 +114,7 @@ public class OlyGamesServiceImpl implements OlyGamesService {
     }
 
     @Override
-    public String getLastNewMarkter() {
+    public String getLastNewMarkter(){
         String result = olyBabyGamesDao.getLastNewMarkter();
         if(StringUtils.isNotNull(result)){
             return result;

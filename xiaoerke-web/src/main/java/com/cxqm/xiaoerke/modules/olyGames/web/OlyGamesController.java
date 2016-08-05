@@ -532,7 +532,7 @@ public class OlyGamesController extends BaseController {
             synchronized (this) {
                 String num = olyGamesService.getLastNewMarkter();
                 String marketer = "150000001";
-                int number = 0;
+                int number = 0 ;
                 if(StringUtils.isNotNull(num)){
                     number = Integer.valueOf(num) + 1;
                     marketer = String.valueOf(number);

@@ -42,5 +42,6 @@ public interface OlyBabyGamesDao {
 
     void updateLevelCurrentTimes(OlyBabyGamesVo olyBabyGamesVo);
 
+
     String getLastNewMarkter();
 }

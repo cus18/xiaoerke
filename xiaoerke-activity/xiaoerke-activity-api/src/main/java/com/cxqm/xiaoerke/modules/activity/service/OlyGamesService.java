@@ -63,6 +63,6 @@ public interface OlyGamesService {
     String uploadMedia(InputStream in);
 
     int updateByPrimaryKeySelective(OlyBabyGamesVo record);
-    //查询最新一条记录的markter值
+    //查询最新一条记录的markter值   
     String getLastNewMarkter();
 }
