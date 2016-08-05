@@ -252,9 +252,9 @@ public class OlyGamesController extends BaseController {
                 System.out.println(e);
             }
 
-            prizeMap.put("nickname", nickName);
+            prizeMap.put("nickName", nickName);
             prizeMap.put("headImg", headImg==null?"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png":headImg);
-            prizeMap.put("prizeName",sb.toString());
+            prizeMap.put("prizeName", sb.toString());
             prizeList.add(prizeMap);
         }
         responseMap.put("prizeList", prizeList);
