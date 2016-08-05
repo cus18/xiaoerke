@@ -381,8 +381,8 @@ public class ConsultDoctorController extends BaseController {
                 Map parameter = systemService.getWechatParameter();
                 String token = (String)parameter.get("token");
                 int count = babyUmbrellaInfoService.getUmbrellaCount();
-                String title = "宝大夫医生郑重推荐，不看后悔！";
-                String description = "已经有"+count+"位宝妈机智的行动，用一根雪糕钱为宝宝换来了40万的健康保障。聪明的你，赶紧来看看吧！";
+                String title = "别让孩子的小问题变成大疾病";
+                String description = "已经有"+count+"位宝妈机智的行动，免费为宝宝领取了40万的大病治疗费。快来领吧！限时免费！手慢无！";
                 //String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellab";
                 String url = "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000003/a";
                 String picUrl = "http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella";
