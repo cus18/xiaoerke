@@ -569,7 +569,7 @@ public class OlyGamesController extends BaseController {
                 File wxFile=new File(localPath);
                 iso = new FileInputStream(wxFile);
                 String upLoadUrl = "https://api.weixin.qq.com/cgi-bin/media/upload";
-                Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                Map userWechatParam = systemService.getWechatParameter();;
                 org.json.JSONObject jsonObject = WechatUtil.uploadNoTextMsgToWX((String) userWechatParam.get("token"), upLoadUrl, "image", wxFile.getName(), iso);
                 wxFile.delete();
                 WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"),openid,"新游戏需要邀请从未关注过“宝大夫”的好友助力方可解锁开启，赶紧把下方图片分享出去吧，大奖在等你哦！");
