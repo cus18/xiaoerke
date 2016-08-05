@@ -43,11 +43,11 @@
             });
         };
         var time = setInterval(function(){
-            if($('.bulletText').eq(3).text() != ''){
+            if($('#scroll_begin span').eq(0).text() != ''){
                 ScrollImgLeft();
                 clearTimeout(time);
             }
-        },100)
+        },100);
         function ScrollImgLeft() {
             var speed = 50;
             var scroll_begin = document.getElementById("scroll_begin");

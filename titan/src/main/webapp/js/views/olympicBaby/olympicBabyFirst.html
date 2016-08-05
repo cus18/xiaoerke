@@ -19,17 +19,6 @@
 			<div class="fifthPass"></div>
 			<div class="sixthPass"></div>
 		</div>
-		<div id="gongao">
-			<div id="scroll_div" class="scroll_div" data-ng-init="bulletScreen()">
-				<div id="scroll_begin">
-					<div class="barrage" ng-repeat="item in scroll">
-						<img ng-src="{{item.headImg}}" alt="">
-						<span class="bulletText">{{item.nickName}}{{item.prizeName}}</span>
-					</div>
-				</div>
-				<div id="scroll_end"></div>
-			</div>
-		</div>
 		<div class="integral">
 			<img src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2FindexIntegral.png" alt="">
 			<span>{{score}}</span>
@@ -47,6 +36,14 @@
 		<div class="countImg" ng-if="withoutCount">
 			<img width="80%"  height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2Ffuceng_png_03.png" alt=""/>
 			<img width="40%"ng-click="cancelFloat()" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby%2FhomePage%2Fbutton_e_png_03.png" alt=""/>
+		</div>
+		<div id="gongao">
+			<div id="scroll_div" class="scroll_div" data-ng-init="bulletScreen()">
+				<div id="scroll_begin">
+					<span ng-repeat="item in scroll">{{item.nickName}}{{item.prizeName}}</span>
+				</div>
+				<div id="scroll_end"></div>
+			</div>
 		</div>
 	</div>
 </div>
