@@ -46,6 +46,11 @@ public class OlyGamesServiceImpl implements OlyGamesService {
     }
 
     @Override
+    public void updateLevelCurrentTimes(OlyBabyGamesVo olyBabyGamesVo){
+        olyBabyGamesDao.updateLevelCurrentTimes(olyBabyGamesVo);
+    }
+
+    @Override
     public int addGamePlayerInfo(OlyBabyGamesVo olyBabyGamesVo) {
         return olyBabyGamesDao.insert(olyBabyGamesVo);
     }

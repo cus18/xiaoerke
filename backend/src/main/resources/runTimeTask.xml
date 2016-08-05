@@ -24,10 +24,22 @@
 		<property name="cronExpression" value="0 0 1 * * ?"/>
 	</bean>
 
+	<bean id="updateOlyGamesQuarzTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="scheduledQuarz"/>
+		<property name="targetMethod" value="updateOlyGames"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+	<bean id="updateOlyGamesCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="updateOlyGamesQuarzTask"/>
+		<property name="cronExpression" value="0 0 0 * * ?"/>
+	</bean>
+
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
 				<ref bean="consultStatisticCronTrigger"/>
+
+				<ref bean="updateOlyGamesCronTrigger"/>
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>

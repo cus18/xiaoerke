@@ -83,6 +83,12 @@
           <artifactId>poi-ooxml-schemas</artifactId>
           <version>${poi.version}</version>
       </dependency>
+      <dependency>
+          <groupId>com.cxqm</groupId>
+          <artifactId>xiaoerke-activity-api</artifactId>
+          <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+
 
     </dependencies>
 
