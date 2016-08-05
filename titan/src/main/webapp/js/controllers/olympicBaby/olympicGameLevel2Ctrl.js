@@ -34,9 +34,7 @@
                         $('#startAnimat').show()
                         $('#resultImg').show()
                         $('#spielergebnis').html(score*5);
-                        if(!submitScore()){
-                            $('#challengeAgain').remove();
-                        }
+                        submitScore();
                     }
                     var barrierLeft = (parseInt($('#barrier').css('left')) / parseInt($('#hurdlesBox').css('width')) * 100);
                     if (barrierLeft > 5 && barrierLeft < 25) {
@@ -45,9 +43,7 @@
                             $('#startAnimat').show()
                             $('#resultImg').show()
                             $('#spielergebnis').html(score*5);
-                            if(!submitScore()){
-                                $('#challengeAgain').remove();
-                            }
+                            submitScore();
                         }
                     };
                     if (barrierLeft < -25 || isNaN(barrierLeft)) {
@@ -118,9 +114,7 @@
                 function submitScore() {
                     SaveGameScore.save({'openid':''+$scope.openid,'gameLevel':'2','gameScore':''+score*5},function(data){
                         if(data.gamePlayingTimes>=3){
-                            return false
-                        }else{
-                            return true
+                            $('#challengeAgain').remove();
                         }
                     });
                 };
