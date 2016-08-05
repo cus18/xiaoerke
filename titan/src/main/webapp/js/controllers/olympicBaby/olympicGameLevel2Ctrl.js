@@ -154,7 +154,7 @@
 
         //分享到朋友圈或者微信
         var loadShare = function(){
-            var share = 'http://s123.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s123.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=37';
+            var share = 'http://s68.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s68.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=37';
             var shareDes='“宝宝奥运大闯关”开始啦！玩游戏闯关卡，赢取超值豪礼！我已加入，你也赶紧一起来参与吧！';
             var shareTitle='赢个大奖居然这么简单……';
             var imgUrl='http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/olympicBaby/common/sharePic.png';

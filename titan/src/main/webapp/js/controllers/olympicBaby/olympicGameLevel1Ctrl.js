@@ -118,7 +118,7 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
             };
             /*页面分享*/
             $scope.loadShare=function() {
-                var share = "http://s123.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s123.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=37";
+                var share = "http://s68.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s68.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=37";
                 var timestamp;//时间戳
                 var nonceStr;//随机字符串
                 var signature;//得到的签名
