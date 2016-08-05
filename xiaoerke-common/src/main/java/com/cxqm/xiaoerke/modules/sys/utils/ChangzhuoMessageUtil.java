@@ -178,7 +178,7 @@ public class ChangzhuoMessageUtil {
 			if(RECEIVER_TYPE_DOCTOR.equals(receiverType) && !MSG_SWITCH_STATUS_ON.equals(msgSwitchStatus4Doctor))
 				return "";
 			System.out.print("短信发送："+phoneNum+"|"+content);
-			content = content+"【宝大夫】";
+//			content = content+"【宝大夫】";
 			String msgSendUrl_utf = "http://sms.chanzor.com:8001/sms.aspx";
 			String postData = "action=send&account=" + account + "&password="
 					+ password + "&mobile=" + phoneNum + "&content=" + content
