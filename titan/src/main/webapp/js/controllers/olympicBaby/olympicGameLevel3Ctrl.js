@@ -21,16 +21,8 @@
                 console.log(data.openid);
                 $scope.openid = data.openid;
             });
-            //getGamePlayingTimes();
         };
 
-        /*var getGamePlayingTimes = function () {
-         //获取玩游戏的次数
-         GetGamePlayingTimes.save({openid:"222222",gameLevel:"3"},function (data) {
-         console.log('playCount',data);
-         $scope.playCount = data.gamePlayingTimes;
-         });
-         };*/
         $scope.challengeAgain = function () {
             $scope.lookResultFloat = false;
             $scope.score = 0;
