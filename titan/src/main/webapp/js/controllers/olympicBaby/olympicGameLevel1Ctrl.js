@@ -80,26 +80,22 @@ angular.module('controllers', []).controller('olympicGameLevel1Ctrl', [
            //控制游泳的速度
             var mySpeed=function(){
                 if(bottom<pageHeight/7){
-                    bottom=bottom+0.2;
-
+                    bottom=bottom+1;
                 }
                 else if(bottom<2*pageHeight/7){
-                    bottom=bottom+0.3;
+                    bottom=bottom+0.7;
                 }
                 else if(bottom<3*pageHeight/7){
-                    bottom=bottom+0.4;
-
+                    bottom=bottom+0.6;
                 }
                 else if(bottom<4*pageHeight/7){
-                    bottom=bottom+0.3;
-
+                    bottom=bottom+0.5;
                 }
                 else if(bottom<5*pageHeight/7){
-                    bottom=bottom+0.2;
-
+                    bottom=bottom+0.3;
                 }
                 else if(bottom<6*pageHeight/7){
-                    bottom=bottom+0.1;
+                    bottom=bottom+0.2;
                 }
                 else if(bottom<pageHeight){
                     bottom=bottom+0.1;
