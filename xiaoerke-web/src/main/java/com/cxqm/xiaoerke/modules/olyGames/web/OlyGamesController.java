@@ -118,16 +118,23 @@ public class OlyGamesController extends BaseController {
         OlyBabyGamesVo olyBabyGamesVo = new OlyBabyGamesVo();
         olyBabyGamesVo.setOpenId(openId);
         OlyBabyGamesVo vo = olyGamesService.selectByOlyBabyGamesVo(olyBabyGamesVo);
+        Map<String, Object> umbrellaMap = new HashMap<String, Object>();
+        umbrellaMap.put("openid", openId);
+        List<Map<String, Object>> umbrellaList = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(umbrellaMap);
+        boolean umbrellaUser = false;
+        if(umbrellaList.size()>0){//如果是保护伞用户则不能抽中保护伞
+            if("success".equals(umbrellaList.get(0).get("pay_result"))||umbrellaList.get(0).get("pay_result")==null){
+                umbrellaUser = true;
+            }
+        }
         String prizes = vo.getPrize();//获取用户的抽奖信息
         int gameLevel = vo.getGameLevel();
         prizes = prizes==null?"":prizes;
         OlyBabyGamesVo olyVo = new OlyBabyGamesVo();
         olyVo.setOpenId(openId);
-        if(!prizes.contains(",")){//没有得过奖品和只得一次奖品的可以抽奖
+        boolean thanks = false;
+        if((umbrellaUser&&("".equals(prizes)||"4".equals(prizes)))||(!umbrellaUser&&!prizes.contains(","))){//是保护伞用户
             int random = new Random().nextInt(100);
-            Map<String, Object> umbrellaMap = new HashMap<String, Object>();
-            umbrellaMap.put("openid", openId);
-            List<Map<String, Object>> umbrellaList = babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(umbrellaMap);
             String today = DateUtils.DateToStr(new Date(), "date");
             Map<String, Object> prizeMap = new HashMap<String, Object>();
             prizeMap.put("prizeDate", today);
@@ -140,27 +147,19 @@ public class OlyGamesController extends BaseController {
                     prizeOrder = (Integer) tempMap.get("prizeOrder");
                     responseMap.put("prizeNumber", tempMap.get("prizeNumber"));
                     if ((Integer) tempMap.get("prizeNumber") <= 0) {//如果抽到的奖品个数为0，则返回谢谢参与
-                        responseMap.put("prizeOrder", 3);
-                        responseMap.put("prizeName", "谢谢参与");
+                        thanks = true;
                         break;
                     }
                     if (gameLevel < (Integer) tempMap.get("levelLimit")) {//等级不够，不能抽到该奖品
-                        responseMap.put("prizeOrder", 3);
-                        responseMap.put("prizeName", "谢谢参与");
+                        thanks = true;
                         break;
                     }
-                    if(4 == prizeOrder){//抽中保护伞
-                        if(umbrellaList.size()>0){//如果是保护伞用户则不能抽中保护伞
-                            if("success".equals(umbrellaList.get(0).get("pay_result"))||umbrellaList.get(0).get("pay_result")==null){
-                                responseMap.put("prizeOrder",3);
-                                responseMap.put("prizeName","谢谢参与");
-                                break;
-                            }
-                        }
+                    if(4 == prizeOrder && umbrellaUser){//加入保护伞的用户抽中保护伞
+                        thanks = true;
+                        break;
                     }
                     if ((4 == prizeOrder && "4".equals(prizes)) || (4 != prizeOrder && !"4".equals(prizes) && !"".equals(prizes))) {//抽中保护伞但已经抽过保护伞，或已经抽中过b组奖品
-                        responseMap.put("prizeOrder", 3);
-                        responseMap.put("prizeName", "谢谢参与");
+                        thanks = true;
                         break;
                     }
                     responseMap.put("prizeOrder",tempMap.get("prizeOrder"));
@@ -171,11 +170,10 @@ public class OlyGamesController extends BaseController {
                 }
                 start = end;
             }
-            if (responseMap.get("prizeOrder") == null) {//没抽中奖品
-                responseMap.put("prizeOrder", 3);
-                responseMap.put("prizeName", "谢谢参与");
+            if (!thanks && responseMap.get("prizeOrder") == null) {//没抽中奖品
+                thanks = true;
             }
-            if(3 != (Integer) responseMap.get("prizeOrder")){//抽到奖品
+            if(!thanks){//抽到奖品
                 if("".equals(prizes)){
                     prizes = responseMap.get("prizeOrder").toString();
                 }else{
@@ -186,15 +184,12 @@ public class OlyGamesController extends BaseController {
                 param.put("prizeNumber", (Integer) responseMap.get("prizeNumber") - 1);
                 param.put("prizeDate", today);
                 olyGamesService.updateOlyGamePrizeInfo(param);//更新奖品数量
-            }else if(3 == (Integer)responseMap.get("prizeOrder")&&prizeOrder == 4&&!"4".equals(prizes)){//抽到保护伞且返回谢谢参与且没有抽中过保护伞
-                if("".equals(prizes)){
-                    prizes = "4";
-                } else {
-                    prizes = prizes + ",4";
-                }
             }
             olyVo.setPrize(prizes);
         }else{//抽中两次的只能显示谢谢参与
+            thanks = true;
+        }
+        if(thanks){
             responseMap.put("prizeOrder",3);
             responseMap.put("prizeName","谢谢参与");
         }
