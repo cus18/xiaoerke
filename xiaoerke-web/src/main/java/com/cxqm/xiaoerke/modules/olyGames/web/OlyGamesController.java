@@ -545,7 +545,7 @@ public class OlyGamesController extends BaseController {
         String fileName = new Date().getTime()+"";
         if(!ImgUtils.existHttpPath(path)){
             //生成图片暂存路径
-            String outPath = System.getProperty("user.dir").replace("bin", "uploadImg")+"\\"+fileName+".png";
+            String outPath = System.getProperty("user.dir").replace("bin", "uploadImg")+"/"+fileName+".png";
 
             if(!StringUtils.isNotNull(marketer)){
                 marketer = olyGamesService.getMarketerByOpenid(openId);//根据openid获取邀请码
