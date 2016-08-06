@@ -60,8 +60,9 @@ public class ImgUtils {
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER)); //透明度设置 结束
 
             FileOutputStream out = new FileOutputStream(outSrc);
-            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-            encoder.encode(tag);
+//            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
+//            encoder.encode(tag);
+            ImageIO.write(tag,"png",out);
             out.close();
         }catch (Exception e) {
             e.printStackTrace();
