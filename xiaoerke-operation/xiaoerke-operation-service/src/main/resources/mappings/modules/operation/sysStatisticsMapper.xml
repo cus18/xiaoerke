@@ -483,22 +483,20 @@
         ORDER BY attention.marketer
     </select>
 
-    <!--查询用户（渠道）-->
+    <!--查询用户（渠道）sunxiao-->
     <select id="getUserStatisticsChannel" resultType="java.util.Map">
         SELECT attention.marketer,attention.attentionCount,attention.cancleAttentionCount,attention.leijiAttentionCount,attention.leijiCancleAttentionCount,attention.channel,attention.department
-        from (SELECT attentionLeiji1.marketer,attentionLeiji1.leijiAttentionCount,attentionLeiji1.leijiCancleAttentionCount,attentionLeiji2.attentionCount,attentionLeiji2.cancleAttentionCount
+        from (SELECT attentionLeiji1.marketer,attentionLeiji4.leijiAttentionCount,attentionLeiji1.leijiCancleAttentionCount,attentionLeiji2.attentionCount,attentionLeiji3.cancleAttentionCount
         ,attentionLeiji1.channel,attentionLeiji1.department
         from
-        (SELECT
-        chi.marketer,
+        (select chi.marketer,
         chi.channel,
         chi.department,
-        count(case sa.status when '0' then 1 end) as leijiAttentionCount,
-        count(case sa.status when '1' then 1 end) as leijiCancleAttentionCount
-        from
-        channel_info chi
-        INNER JOIN sys_attention sa ON sa.marketer = chi.marketer
-        where 1=1
+        count(case sa.status when '1' then 1 end) as leijiCancleAttentionCount from channel_info chi
+        INNER JOIN sys_attention sa  on chi.marketer=sa.marketer
+        where not exists(select 1 from sys_attention where openid= sa.openid
+        and date>sa.date ) and
+        chi.marketer IS NOT NULL and chi.marketer !=''
         <if test="startDate != null and startDate != ''">
             and sa.date &gt;= #{startDate}
         </if>
@@ -511,12 +509,11 @@
         chi.marketer,
         chi.channel,
         chi.department,
-        count(case sa.status when '0' then 1 end) as attentionCount,
-        count(case sa.status when '1' then 1 end) as cancleAttentionCount
+        count(DISTINCT sa.openid) as attentionCount
         from
         channel_info chi
         INNER JOIN sys_attention sa ON sa.marketer = chi.marketer
-        where 1=1
+        where chi.marketer IS NOT NULL and chi.marketer !='' and sa.status='0'
         <if test="startDate != null and startDate != ''">
             and sa.date &gt;= #{startDate}
         </if>
@@ -525,6 +522,47 @@
         </if>
         GROUP BY chi.marketer) attentionLeiji2
         on attentionLeiji1.marketer=attentionLeiji2.marketer
+        LEFT JOIN (
+        SELECT
+        chi.marketer,
+        chi.channel,
+        chi.department,
+        count(case sa.status when '1' then 1 end) as cancleAttentionCount
+        FROM
+        channel_info chi
+        INNER JOIN sys_attention sa ON sa.marketer = chi.marketer
+        where sa.openid in(select
+        openid from sys_attention sa where sa.status='0' and sa.marketer = chi.marketer
+        <if test="startDate != null and startDate != ''">
+            and sa.date &gt;= #{startDate}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            and sa.date &lt;= #{endDate}
+        </if>
+        ) and not exists(select 1 from sys_attention where openid= sa.openid
+        and date>sa.date )
+        and chi.marketer IS NOT NULL and chi.marketer !=''
+        <if test="startDate != null and startDate != ''">
+            and sa.date &gt;= #{startDate}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            and sa.date &lt;= #{endDate}
+        </if>
+        GROUP BY
+        chi.marketer
+        ) attentionLeiji3 ON attentionLeiji1.marketer = attentionLeiji3.marketer
+        LEFT JOIN (
+        select chi.marketer,
+        chi.channel,
+        chi.department,count(case sa.status when '0' then 1 end) as leijiAttentionCount from channel_info chi
+        INNER JOIN sys_attention sa  on chi.marketer=sa.marketer
+        where not exists(select 1 from sys_attention where openid= sa.openid
+        and date>sa.date ) and
+        chi.marketer IS NOT NULL and chi.marketer !=''
+        <if test="endDate != null and endDate != ''">
+            and sa.date &lt;= #{endDate}
+        </if>
+        GROUP BY chi.marketer) attentionLeiji4 on attentionLeiji4.marketer=attentionLeiji1.marketer
         ) attention
         where 1=1
         <if test="department != null and department != ''">
@@ -536,22 +574,20 @@
         ORDER BY attention.marketer
     </select>
 
-    <!--查询用户（部门）-->
+    <!--查询用户（部门）sunxiao-->
     <select id="getUserStatisticsDepartment" resultType="java.util.Map">
         SELECT attention.marketer,attention.attentionCount,attention.cancleAttentionCount,attention.leijiAttentionCount,attention.leijiCancleAttentionCount,attention.channel,attention.department
-        from (SELECT attentionLeiji1.marketer,attentionLeiji1.leijiAttentionCount,attentionLeiji1.leijiCancleAttentionCount,attentionLeiji2.attentionCount,attentionLeiji2.cancleAttentionCount
+        from (SELECT attentionLeiji1.marketer,attentionLeiji4.leijiAttentionCount,attentionLeiji1.leijiCancleAttentionCount,attentionLeiji2.attentionCount,attentionLeiji3.cancleAttentionCount
         ,attentionLeiji1.channel,attentionLeiji1.department
         from
-        (SELECT
-        chi.marketer,
+        (select chi.marketer,
         chi.channel,
         chi.department,
-        count(case sa.status when '0' then 1 end) as leijiAttentionCount,
-        count(case sa.status when '1' then 1 end) as leijiCancleAttentionCount
-        from
-        channel_info chi
-        INNER JOIN sys_attention sa ON sa.marketer = chi.marketer
-        where 1=1
+        count(case sa.status when '1' then 1 end) as leijiCancleAttentionCount from channel_info chi
+        INNER JOIN sys_attention sa  on chi.marketer=sa.marketer
+        where not exists(select 1 from sys_attention where openid= sa.openid
+        and date>sa.date ) and
+        chi.marketer IS NOT NULL and chi.marketer !=''
         <if test="startDate != null and startDate != ''">
             and sa.date &gt;= #{startDate}
         </if>
@@ -564,12 +600,11 @@
         chi.marketer,
         chi.channel,
         chi.department,
-        count(case sa.status when '0' then 1 end) as attentionCount,
-        count(case sa.status when '1' then 1 end) as cancleAttentionCount
+        count(DISTINCT sa.openid) as attentionCount
         from
         channel_info chi
         INNER JOIN sys_attention sa ON sa.marketer = chi.marketer
-        where 1=1
+        where chi.marketer IS NOT NULL and chi.marketer !='' and sa.status='0'
         <if test="startDate != null and startDate != ''">
             and sa.date &gt;= #{startDate}
         </if>
@@ -577,7 +612,48 @@
             and sa.date &lt;= #{endDate}
         </if>
         GROUP BY chi.department) attentionLeiji2
-        on attentionLeiji1.marketer=attentionLeiji2.marketer
+        on attentionLeiji1.department=attentionLeiji2.department
+        LEFT JOIN (
+        SELECT
+        chi.marketer,
+        chi.channel,
+        chi.department,
+        count(case sa.status when '1' then 1 end) as cancleAttentionCount
+        FROM
+        channel_info chi
+        INNER JOIN sys_attention sa ON sa.marketer = chi.marketer
+        where sa.openid in(select
+        openid from sys_attention sa where sa.status='0' and sa.marketer = chi.marketer
+        <if test="startDate != null and startDate != ''">
+            and sa.date &gt;= #{startDate}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            and sa.date &lt;= #{endDate}
+        </if>
+        ) and not exists(select 1 from sys_attention where openid= sa.openid
+        and date>sa.date )
+        and chi.marketer IS NOT NULL and chi.marketer !=''
+        <if test="startDate != null and startDate != ''">
+            and sa.date &gt;= #{startDate}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            and sa.date &lt;= #{endDate}
+        </if>
+        GROUP BY
+        chi.department
+        ) attentionLeiji3 ON attentionLeiji1.department = attentionLeiji3.department
+        LEFT JOIN (
+        select chi.marketer,
+        chi.channel,
+        chi.department,count(case sa.status when '0' then 1 end) as leijiAttentionCount from channel_info chi
+        INNER JOIN sys_attention sa  on chi.marketer=sa.marketer
+        where not exists(select 1 from sys_attention where openid= sa.openid
+        and date>sa.date ) and
+        chi.marketer IS NOT NULL and chi.marketer !=''
+        <if test="endDate != null and endDate != ''">
+            and sa.date &lt;= #{endDate}
+        </if>
+        GROUP BY chi.department) attentionLeiji4 on attentionLeiji4.department=attentionLeiji1.department
         ) attention
         where 1=1
         <if test="department != null and department != ''">
@@ -586,7 +662,7 @@
         <if test="channel != null and channel != ''">
             and attention.channel = #{channel}
         </if>
-        ORDER BY attention.marketer
+        ORDER BY attention.department
     </select>
     <!--所有用户咨询统计数据，根据渠道分组-->
     <select id="getTotalConsultCountsByChannel" parameterType="java.util.Map" resultType="java.util.Map">
@@ -685,4 +761,24 @@
         delete from channel_info
         where id = #{channelId,jdbcType=VARCHAR}
     </delete>
+    <!--用户新关注与净留存统计-->
+    <select id="getNewUserAttentionAndRemainStatistics" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT newAttention.marketer marketer,IFNULL(newAttention.newAttentionCount,0) newAttentionCount,IFNULL(newLeft.newLeftCount,0) newLeftCount FROM
+        (SELECT marketer,COUNT(DISTINCT openid) newAttentionCount
+        FROM sys_attention
+        WHERE status='0'
+        AND DATE_FORMAT(date,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
+        and marketer is NOT NULL and marketer!=''
+        GROUP BY marketer) newAttention
+        LEFT JOIN
+        (SELECT marketer,COUNT(*) newLeftCount
+        FROM sys_attention
+        WHERE status='0'
+        AND openid not IN(SELECT DISTINCT openid FROM sys_attention WHERE status='1'AND DATE_FORMAT(date,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate})
+        AND DATE_FORMAT(date,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
+        and marketer is NOT NULL and marketer!=''
+        GROUP BY marketer) newLeft
+        ON newAttention.marketer=newLeft.marketer
+        where newAttention.marketer NOT REGEXP '1200|last_trade_no_|1300'
+    </select>
 </mapper>

@@ -116,7 +116,7 @@ function loadShare(){
                 wx.ready(function () {
                     // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                     wx.onMenuShareTimeline({
-                        title: '没什么好送的，40万大病治疗费，送给你！', // 分享标题
+                        title: '我为孩子健康负责，免费领取了40万的大病治疗费，还有20万送给你！', // 分享标题
                         link: "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+shareUmbrellaId+"/"+version, // 分享链接
                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                         success: function (res) {
@@ -139,8 +139,8 @@ function loadShare(){
                         }
                     });
                     wx.onMenuShareAppMessage({
-                        title:  '没什么好送的，40万大病治疗费，送给你！', // 分享标题
-                        desc: "我已成为宝护伞互助公益爱心大使，领到了40万的健康保障，你也快来加入吧！", // 分享描述
+                        title: '我为孩子健康负责，免费领取了40万的大病治疗费，还有20万送给你！', // 分享标题
+                        desc: "限时免费，手慢无！讲真，这个东西好到让你想给我发红包！！！", // 分享描述
                         link: "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+shareUmbrellaId+"/"+version, // 分享链接
                         imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                         success: function (res) {

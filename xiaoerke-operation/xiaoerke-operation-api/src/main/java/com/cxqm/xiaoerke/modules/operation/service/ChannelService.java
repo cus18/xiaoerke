@@ -39,4 +39,5 @@ public interface ChannelService  {
     boolean isExistSameMarketer(Map<String, Object> map);
 
     int deleteChannelInfo(String channelId);
+    List<HashMap<String, Object>> getNewUserAttentionAndRemainStatistics(Map<String, Object> map);
 }
