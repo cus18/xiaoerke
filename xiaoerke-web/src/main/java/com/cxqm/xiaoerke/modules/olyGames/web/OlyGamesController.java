@@ -6,15 +6,9 @@ import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGameDetailVo;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
-import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
-import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
-import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
-import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
-import jxl.Sheet;
-import jxl.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -553,7 +547,7 @@ public class OlyGamesController extends BaseController {
             String userQRCode = olyGamesService.getUserQRCode(marketer);//二维码
             String headImgUrl = olyGamesService.getWechatMessage(openId);//头像
 
-            if(headImgUrl==null){//还是没有图片的设为默认图片
+            if(!StringUtils.isNotNull(headImgUrl)){//还是没有图片的设为默认图片
                 headImgUrl = "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg";
             }
             //生成邀请卡图片
