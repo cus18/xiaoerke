@@ -2,23 +2,21 @@
 <ion-view view-title="{{title}}">
     <ion-content class="umbrellaJoin bg1" overflow-scroll="true" style="top:0;">
         <ion-scroll direction="y" has-bouncing="true" >
-          <!--  顶部-->
-           <div class="top tc c0">
-               <a class="add-member f2 c0 " ng-if="addFamily" ng-click="addMember()">家庭成员</a>
-             <!-- 首次进来-->
-              <div ng-if="firstJoin">
-                  <img class="pic my-img2" width="80%" height="auto"
-                       src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/congratulate1.png" >
-                  <div class="f5 text text1 ">其他家庭成员也可共享保障哦</div>
-                  <img ng-click="addMember()" class="pic my-img2" width="150" height="auto"
-                       src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/btn_addMember.png" >
-               </div>
-               <!-- 待激活 和参与成功 -->
-               <div ng-if="!firstJoin">
-                  <div class="f5 text">已有互助保障金额</div>
-               </div>
-              <div class="money" ng-if="!firstJoin">{{umbrellaMoney}}元</div>
-           </div>
+            <!--  顶部-->
+            <div class="top tc c0">
+                <a class="add-member f2 c0 " ng-if="addFamily" ng-click="addMember()">家庭成员</a>
+                <!-- 首次进来-->
+                <div ng-if="firstJoin">
+                    <img class="pic my-img2" width="80%" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/congratulate1.png" >
+                    <div class="f5 text text1 ">其他家庭成员也可共享保障哦</div>
+                    <img ng-click="addMember()" class="pic my-img2" width="150" height="auto" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/btn_addMember.png" >
+                </div>
+                <!-- 待激活 和参与成功 -->
+                <div ng-if="!firstJoin">
+                    <div class="f5 text">已有互助保障金额</div>
+                </div>
+                <div class="money" ng-if="!firstJoin">{{umbrellaMoney}}元</div>
+            </div>
 
             <!-- 第二部分-->
 
@@ -62,7 +60,7 @@
                     已成功邀请<span class="c12">{{person}}</span>位好友<br>
                     享40万保障金
                 </p>
-                <img class="my-img2" width="80%" height="auto" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/pintu{{person>=10? '0':10-person}}.png" >
+                <img class="my-img2" width="80%" height="auto" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/pintu{{pintu}}.png" >
             </div>
 
             <br><br><br><br><br>
@@ -70,7 +68,7 @@
     </ion-content>
     <!--底部按钮-->
     <div class="myBottom-btn tc">
-        <div class="account f4 c4 ">家庭账户余额:<span class="bold">5</span>元</div>
+        <!-- <div class="account f4 c4 ">家庭账户余额:  <span class="bold">5</span>元</div>-->
         <div class="btn">
             <button class="f8 c0" ng-click="goDetail()">查看详情</button>
             <button class="f8 c0" ng-click="goShare()">邀请好友</button>

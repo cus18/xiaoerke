@@ -59,10 +59,8 @@ public class BaseDataController extends BaseController {
         }
         List<HashMap<String, Object>> list = baseDataService.findStatisticsTitleList(startDate, endDate);
         model.addAttribute("resultlist", list);
-        RegisterServiceVo registerServiceVo = new RegisterServiceVo();
-        registerServiceVo.setStartDate(startDate);
-        registerServiceVo.setEndDate(endDate);
-        model.addAttribute("registerServiceVo", registerServiceVo);
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
         return "operation/baseData";
     }
 

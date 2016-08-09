@@ -49,4 +49,6 @@ public interface SysStatisticsDao extends CrudDao<SysStatisticsDao> {
     List<Map<String, Object>> getAllChannelsByMarketer(Map<String, Object> map);
 
     int deleteChannelInfo(String channelId);
+
+    List<HashMap<String, Object>> getNewUserAttentionAndRemainStatistics(Map<String, Object> map);
 }
