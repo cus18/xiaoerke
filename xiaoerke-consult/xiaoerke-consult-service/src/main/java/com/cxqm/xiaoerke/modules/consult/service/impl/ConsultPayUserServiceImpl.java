@@ -98,8 +98,6 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
         //是否已经支付
         PayRecord payRecord = payRecordService.findRecordByOpenid(userId,"doctorConsultPay");
         //判断时间条件
-//        Integer morningStartTime = Integer.parseInt(Global.getConfig("consultMorningStartTime"));
-//        Integer consultMorningEndTime = Integer.parseInt(Global.getConfig("consultMorningEndTime"));
         Integer consultAfternoonStartTime = Integer.parseInt(Global.getConfig("consultAfternoonStartTime"));
         Integer consultAfternoonEndTime = Integer.parseInt(Global.getConfig("consultAfternoonEndTime"));
 

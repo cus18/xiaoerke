@@ -32,8 +32,8 @@ angular.module('controllers', ['luegg.directives'])
             $scope.loadingFlag = false;
             $scope.socketServerFirst = "";
             $scope.socketServerSecond = "";
-            $scope.firstAddress = "101.201.154.75";
-            $scope.secondAddress = "120.25.161.33";
+            //$scope.firstAddress = "101.201.154.75";
+            $scope.secondAddress = "101.201.154.201";
             $scope.alreadyJoinPatientConversation = []; //已经加入会话的用户数据，一个医生可以有多个对话的用户，这些用户的数据，都保存在此集合中 乱码
             $scope.currentUserConversation = {}; //医生与当前正在进行对话用户的聊天数据，医生在切换不同用户时，数据变更到切换的用户上来。
             $scope.waitJoinNum = 0; //医生待接入的用户数，是动态变化的数
@@ -89,15 +89,16 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.userType = data.userType;
 
                         //创建与平台的socket连接
-                        if($scope.socketServerFirst==""||$scope.socketServerFirst.readyState!=1){
-                            $scope.initConsultSocketFirst();
-                        }
+                        //if($scope.socketServerFirst==""||$scope.socketServerFirst.readyState!=1){
+                        //    $scope.initConsultSocketFirst();
+                        //}
                         if($scope.socketServerSecond==""||$scope.socketServerSecond.readyState!=1){
                             $scope.initConsultSocketSecond();
                         }
 
                         getIframeSrc();
                         getHistoryConsultContent();
+
                         //获取通用回复列表
                         GetAnswerValueList.save({"type": "commonAnswer"}, function (data) {
                             if(data.result=="success"){
@@ -126,6 +127,7 @@ angular.module('controllers', ['luegg.directives'])
                                 $scope.diagnosis = [];
                             }
                         });
+
                         /*GetCurrentDoctorDepartment.save({userId:$scope.doctorId},function(data){
                          if(data.status == 'success'){
                          $scope.department = data.department;
@@ -133,6 +135,7 @@ angular.module('controllers', ['luegg.directives'])
                          $scope.department = 'default';
                          }
                          });*/
+
                         //查找所属科室
                         SearchIllnessList.save(function (data) {
                             var addIllness = {
@@ -1338,6 +1341,7 @@ angular.module('controllers', ['luegg.directives'])
                 GetMyAnswerModify.save({answer: $scope.diagnosis, answerType: "diagnosis"}, function (data) {
                 });
             };
+
             /***回复操作区**/
            /* /!***咨询服务**!/
             //根据openid获取历史咨询
@@ -1348,6 +1352,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.historyConsult = data.logList;
                 });
             };
+
             //初始化宝宝的信息$scope.currentUserConversation.patientId
             $scope.babyNameList=[];
             SearchBabyInfo.save({openid:''}, function (data) {
@@ -1359,8 +1364,8 @@ angular.module('controllers', ['luegg.directives'])
                     data.babyList.push(addBabyName);
                 }
                 $scope.babyNameList = data.babyList;
-                console.log("$scope.babyNameList",$scope.babyNameList);
             });
+
             //添加诊断记录
             $scope.addDiagnosisRecords = function () {
                 //添加诊断记录
@@ -1389,8 +1394,6 @@ angular.module('controllers', ['luegg.directives'])
             $scope.todayTime = '';
             var newTime = function(){
                 var d = new Date();
-                var a = moment().format();
-                console.log('a',a);
                 $scope.todayTime = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
             };
 
@@ -1498,9 +1501,12 @@ angular.module('controllers', ['luegg.directives'])
             //启动一个监控消息状态的定时器
             var setIntervalTimers = function(){
                 $.each($scope.alreadyJoinPatientConversation,function(index,value){
-                   var flag = moment().subtract(5, 'minute').isAfter(value.dateTime);
+                    console.log(index);
+                    var date = new Date().getTime();
+                    var flag = moment().subtract(5, 'minute').isAfter(value.dateTime);
                     if(value.notifyType == 1002 && flag ){
                         value.notifyType = 1003;
+                        console.log('notifyType',value.notifyType);
                     }
                 });
             };

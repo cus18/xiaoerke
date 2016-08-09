@@ -4,6 +4,12 @@ package com.cxqm.xiaoerke.modules.umbrella.web;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
+import com.cxqm.xiaoerke.modules.account.service.PayRecordService;
+import com.cxqm.xiaoerke.modules.alipay.service.AlipayService;
+import com.cxqm.xiaoerke.modules.alipay.util.AlipayNotify;
+import com.cxqm.xiaoerke.modules.alipay.util.httpClient.HttpsUtil;
+import com.cxqm.xiaoerke.modules.alipay.util.httpClient.StringUtil;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
@@ -23,7 +29,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.ParseException;
@@ -32,6 +40,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+//import com.cxqm.xiaoerke.modules.alipay.service.AlipayService;
 
 /**@author guozengguang
  * @version 16/7/6
@@ -59,12 +69,15 @@ public class UmbrellaThirdPartyController  {
     @Autowired
     private HealthRecordsService healthRecordsService;
 
-    //@Autowired
-    //private AlipayService alipayService;
+    @Autowired
+    private AlipayService alipayService;
+
+    @Autowired
+    private PayRecordService payRecordService;
 
     /**
      *获取保护伞首页信息-已有多少人加入互助计划
-     */
+    */
     @RequestMapping(value = "/firstPageMutualHelpCount", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody Map<String, Object> firstPageData() {
@@ -176,8 +189,8 @@ public class UmbrellaThirdPartyController  {
         babyUmbrellaInfo.setUmberllaMoney(200000);
         babyUmbrellaInfo.setPayResult("fail");
         babyUmbrellaInfo.setVersion("a");
-        babyUmbrellaInfo.setTruePayMoneys("5");
-
+        babyUmbrellaInfo.setCreateTime(new Date());
+        babyUmbrellaInfoSerivce.newSaveBabyUmbrellaInfo(babyUmbrellaInfo);
 
         //插入家庭成员的信息
         //宝爸宝妈
@@ -190,7 +203,8 @@ public class UmbrellaThirdPartyController  {
         familyInfo.setBirthday(birthDay);
         int res = babyUmbrellaInfoSerivce.saveFamilyUmbrellaInfo(familyInfo);
 
-        result.put("status",res);
+        result.put("umbrellaid",babyUmbrellaInfo.getId());
+        result.put("userId",user.getId());
         return result;
     }
 
@@ -222,19 +236,140 @@ public class UmbrellaThirdPartyController  {
 
     /**
      * 非微信平台(第三方)支付宝支付
+     * @author guozengguang
      */
+    //@RequestMapping(value = "/alipayment", method = {RequestMethod.POST, RequestMethod.GET})
+    //public
+    //String  alipayment(@RequestBody Map<String, Object> params,HttpServletResponse response) {
+    //    DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+    //    String totleFee = params.get("totleFee").toString();//支付金额
+    //    String body = params.get("body").toString();//可以为空
+    //    String describe = params.get("describe").toString();//商品描述
+    //    String showUrl = params.get("showUrl").toString();//商品展示地址
+    //    String out_trade_no = params.get("umbrellaid").toString();//交易订单号,这里用宝护伞id
+    //    String userId = params.get("userId").toString();//保存宝护伞信息时带过去的userId
+    //
+    //    //先在数据库里生成一份订单数据(account_pay_record表)
+    //    PayRecord payRecord = new PayRecord();
+    //    payRecord.setId(IdGen.uuid());
+    //    payRecord.setAmount(Float.parseFloat(totleFee)*100);
+    //    payRecord.setCreatedBy(userId);
+    //    payRecord.setUserId(userId);
+    //    payRecord.setPayType("zfb");
+    //    payRecord.setStatus("wait");
+    //    payRecord.setPayDate(new Date());
+    //    payRecord.setOrderId(out_trade_no);
+    //    payRecord.setFeeType("umbrellaApp");
+    //    payRecordService.insertPayInfo(payRecord);
+    //
+    //
+    //    //调用支付
+    //    String result = alipayService.alipayment(totleFee, body, describe, showUrl,out_trade_no);
+    //    try {
+    //        StringUtil.writeToWeb(result, "html", response);
+    //    } catch (IOException e) {
+    //        e.printStackTrace();
+    //    }
+    //    return null;
+    //}
+
     @RequestMapping(value = "/alipayment", method = {RequestMethod.POST, RequestMethod.GET})
     public
+    String  alipayment(HttpServletRequest request,HttpServletResponse response) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+        String out_trade_no = request.getParameter("WIDout_trade_no");
+        String body = request.getParameter("WIDsubject");
+        String totleFee = request.getParameter("WIDtotal_fee");
+        String showUrl = request.getParameter("WIDshow_url");
+        String describe = request.getParameter("WIDbody");
+
+        //String totleFee = params.get("totleFee").toString();//支付金额
+        //String body = params.get("body").toString();//可以为空
+        //String describe = params.get("describe").toString();//商品描述
+        //String showUrl = params.get("showUrl").toString();//商品展示地址
+        //String out_trade_no = params.get("umbrellaid").toString();//交易订单号,这里用宝护伞id
+        //String userId = params.get("userId").toString();//保存宝护伞信息时带过去的userId
+
+        //先在数据库里生成一份订单数据(account_pay_record表)
+        //PayRecord payRecord = new PayRecord();
+        //payRecord.setId(IdGen.uuid());
+        //payRecord.setAmount(Float.parseFloat(totleFee)*100);
+        //payRecord.setCreatedBy(userId);
+        //payRecord.setUserId(userId);
+        //payRecord.setPayType("zfb");
+        //payRecord.setStatus("wait");
+        //payRecord.setPayDate(new Date());
+        //payRecord.setOrderId(out_trade_no);
+        //payRecord.setFeeType("umbrellaApp");
+        //payRecordService.insertPayInfo(payRecord);
+
+
+        //调用支付
+        String result = alipayService.alipayment(totleFee, body, describe, showUrl,out_trade_no);
+        try {
+            StringUtil.writeToWeb(result, "html", response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 支付宝异步返回通知(支付结果信息)
+     * @author guozengguang
+     */
+    @RequestMapping(value = "/notification",method = {RequestMethod.POST})
+    public String notification(HttpServletRequest request, HttpServletResponse response) {
+        // 获取请求数据
+        String reqText = null;
+        Map<String,String> map = new HashMap<String, String>();
+        try {
+            reqText = HttpsUtil.getInfoFromRequest(request);
+            String[] paramArr = reqText.split("&");
+            for (int i = 0; i <paramArr.length ; i++) {
+                String[] arr = paramArr[i].split("=");
+                map.put(arr[0],arr[1]);
+            }
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        String trade_status = map.get("trade_status").toString();
+        if(AlipayNotify.verify(map)){//验证成功
+            if("TRADE_FINISHED".equals(trade_status) || "TRADE_SUCCESS".equals(trade_status)) {
+                //支付成功,更改宝护伞的支付状态pay_result,更新支付结果表(account_pay_record)
+                PayRecord payRecord = new PayRecord();
+                Date receiveDate = DateUtils.StrToDate(map.get("notify_time").toString(),"datetime");
+                payRecord.setStatus("success");
+                payRecord.setOrderId(map.get("out_trade_no").toString());
+                payRecord.setReceiveDate(receiveDate);
+                payRecordService.updatePayRecordByOrderId(payRecord);
+            }
+            return "success";
+        }else{//验证失败
+            return "fail";
+        }
+    }
+
+
+    /**
+     * 根据宝护伞id更新支付状态pay_result
+     * 说明:只有支付成功时才调用该接口,保存信息的时候默认该状态为fail;
+     * @author guozengguang
+     */
+    @RequestMapping(value = "/updateBabyUmbrellaInfoById", method = {RequestMethod.POST, RequestMethod.GET})
+    public
     @ResponseBody
-    Map<String, Object>  alipayment(@RequestBody Map<String, Object> params) {
-        //DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
-        //String totleFee = params.get("totleFee").toString();
-        //String body = params.get("body").toString();
-        //String describe = params.get("describe").toString();
-        //String showUrl = params.get("showUrl").toString();
-        //String result = alipayService.alipayment(totleFee, body, describe, showUrl);
-        Map<String,Object> resultMap = new HashMap<String, Object>();
-        //resultMap.put("result",result);
+    Map<String, Object>  updateBabyUmbrellaInfoById(@RequestBody Map<String, Object> params) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+        String umbrellaid = params.get("umbrellaid").toString();
+        BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
+        babyUmbrellaInfo.setId(Integer.valueOf(umbrellaid));
+        babyUmbrellaInfo.setPayResult("success");
+        int result = babyUmbrellaInfoSerivce.updateBabyUmbrellaInfoById(babyUmbrellaInfo);
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("result",result);
         return resultMap;
     }
 

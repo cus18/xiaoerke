@@ -33,7 +33,6 @@ public class RpcHandler extends SimpleChannelInboundHandler<RpcRequest> {
 
 	private Object handle(RpcRequest request) throws Throwable {
 		String content = request.getContent();
-
 		return null;
 	}
 

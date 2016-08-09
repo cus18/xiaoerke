@@ -3,14 +3,47 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
         'GetSessionId','GetUserLoginStatus','$upload','$sce','$rootScope',
         function ($scope,$location,$anchorScroll,GetSessionId,GetUserLoginStatus,$upload,$sce,$rootScope) {
 
-            $scope.consultContent = [];
+            $scope.consultContent = [
+                {
+                    'type':0,
+                    'content':'你好吗？',
+                    'dateTime':20161111111111,
+                    'senderId':'',
+                    'senderName':"病人",
+                    'sessionId':'',
+                    "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png"
+                },{
+                    'type':0,
+                    'content':'你好吗？',
+                    'dateTime':20161111111111,
+                    'senderId':'',
+                    'senderName':"病人",
+                    'sessionId':'',
+                    "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png"
+                },{
+                    'type':0,
+                    'content':'你好吗？',
+                    'dateTime':20161111111111,
+                    'senderId':'',
+                    'senderName':"病人",
+                    'sessionId':'',
+                    "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png"
+                },{
+                    'type':0,
+                    'content':'你好吗？',
+                    'dateTime':20161111111111,
+                    'senderId':'',
+                    'senderName':"病人",
+                    'sessionId':'',
+                    "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png"
+                },
+            ];
             $scope.info={};
             $scope.upFile = {};
             $scope.sessionId = "";
             $scope.socketServer = "";
             $scope.glued = true;
             $scope.source = "h5cxqmUser";
-
             $scope.openFileListFlag = false;
             $location.hash("fileInput");
             $anchorScroll();
@@ -25,9 +58,12 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     $anchorScroll();
                 }
             };
+            $scope.cancelFile = function () {
+                $scope.openFileListFlag = false;
+            };
             //病人第一次咨询
             $scope.patientConsultFirst = function(){
-                var routePath = "/patient/consultBBBBBB" + $location.path();
+                /*var routePath = "/patient/consultBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath:routePath},function(data){
                     $scope.pageLoading = false;
                     if(data.status=="9") {
@@ -40,7 +76,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                         $scope.patientPhone = data.userPhone;
                         $scope.initConsultSocket();
                     }
-                })
+                })*/
             };
             //初始化接口
             $scope.initConsultSocket = function(){
