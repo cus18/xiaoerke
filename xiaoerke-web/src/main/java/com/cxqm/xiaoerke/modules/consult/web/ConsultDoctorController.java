@@ -336,10 +336,18 @@ public class ConsultDoctorController extends BaseController {
                     param.put("userId",richConsultSession.getCsUserId());
                     List<ConsultDoctorInfoVo> consultDoctorInfoVos = consultDoctorInfoService.getConsultDoctorByInfo(param);
                     Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                    /*if(consultDoctorInfoVos !=null && consultDoctorInfoVos.size() >0){
+                        if(null !=consultDoctorInfoVos.get(0).getSendMessage() && consultDoctorInfoVos.get(0).getSendMessage().equals("1")){
+                            String st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
+                                    "<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
+                                    params.get("uuid") +"&sessionId="+sessionId+ "'>点击这里去评价</a>】";
+                            WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
+                        }
+                    }*/
                     if(consultDoctorInfoVos !=null && consultDoctorInfoVos.size() >0){
                         if(null !=consultDoctorInfoVos.get(0).getSendMessage() && consultDoctorInfoVos.get(0).getSendMessage().equals("1")){
                             String st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
-                                    "<a href='http://120.25.161.33/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
+                                    "<a href='http://s147.xiaork.com:8083/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
                                     params.get("uuid") +"&sessionId="+sessionId+ "'>点击这里去评价</a>】";
                             WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
                         }
@@ -354,7 +362,24 @@ public class ConsultDoctorController extends BaseController {
                             }
                         }
                     }*/
-                }
+                }/*else if("h5wjyUser".equalsIgnoreCase(richConsultSession.getSource())){
+                    String patientId = richConsultSession.getUserId();
+                    Channel userChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(patientId);
+                    JSONObject obj = new JSONObject();
+                    if (userChannel != null && userChannel.isActive()) {
+                        obj.put("type", "4");
+                        obj.put("notifyType", "4001");
+                        TextWebSocketFrame csframe = new TextWebSocketFrame(obj.toJSONString());
+                        userChannel.writeAndFlush(csframe.retain());
+                    } else {
+                        String doctorId = richConsultSession.getCsUserId();
+                        Channel doctorChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(doctorId);
+                        obj.put("type", "4");
+                        obj.put("notifyType", "0015");
+                        TextWebSocketFrame csframe = new TextWebSocketFrame(obj.toJSONString());
+                        doctorChannel.writeAndFlush(csframe.retain());
+                    }
+                }*/
             }
             String result = consultSessionService.clearSession(sessionId, userId);
             response.put("result", result);

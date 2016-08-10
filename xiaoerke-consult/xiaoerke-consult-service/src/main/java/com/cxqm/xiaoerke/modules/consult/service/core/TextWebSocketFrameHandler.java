@@ -126,9 +126,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                 return;
             String csUserId = richConsultSession.getCsUserId();
             String userId = richConsultSession.getUserId();
-
             String senderId = (String) msgMap.get("senderId");
-
             if (senderId.equals(userId)) {
                 //如果是用户作为发送者，则发给医生接收
                 Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(csUserId);
@@ -151,7 +149,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                         StringBuilder stringBuilder = new StringBuilder();
                         //根据sessionId查询Evaluation表id
                         //jiangzg 暂时注掉，发消息带评价信息
-                       /* Map praiseParam = new HashMap();
+                        Map praiseParam = new HashMap();
                         praiseParam.put("consultSessionId", richConsultSession.getId());
                         praiseParam.put("doctorId", csUserId);
                         List<Map<String, Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParam);
@@ -160,24 +158,24 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             String newContent = content.substring(nameIndex + 1, content.toCharArray().length);
                             if (StringUtils.isNotNull(newContent) && !"\n".equalsIgnoreCase(newContent)) {
                                 if (newContent.endsWith("\n")) {
-                                    newContent = newContent.substring(0,newContent.lastIndexOf("\n"));
+                                    //newContent = newContent.substring(0,newContent.lastIndexOf("\n"));
                                     stringBuilder.append(newContent);
                                 } else {
-                                    // stringBuilder.append(newContent + "\n");
-                                    stringBuilder.append(newContent);
+                                    stringBuilder.append(newContent + "\n");
+                                    //stringBuilder.append(newContent);
                                 }
                             } else {
                                 return;
                             }
-                            *//* stringBuilder.append("------------------\n");
-							stringBuilder.append(content.substring(0,nameIndex));
-							stringBuilder.append(";【");
-							stringBuilder.append("<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
-							stringBuilder.append(praiseList.get(0).get("id"));
-							stringBuilder.append("'>评价医生</a>】");*//*
-                            sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());*/
+                            stringBuilder.append("------------------\n");
+                            stringBuilder.append(content.substring(0, nameIndex));
+                            stringBuilder.append(";【");
+                            stringBuilder.append("<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
+                            stringBuilder.append(praiseList.get(0).get("id"));
+                            stringBuilder.append("'>评价医生</a>】");
+                            sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());
                             //发送消息
-                            if(StringUtils.isNotNull(content) && !"\n".equalsIgnoreCase(content)){
+                            /*if(StringUtils.isNotNull(content) && !"\n".equalsIgnoreCase(content)){
                                 if (content.endsWith("\n")) {
                                     content = content.substring(0,content.lastIndexOf("\n"));
                                     stringBuilder.append(content);
@@ -188,11 +186,11 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             }else{
                                 return ;
                             }
-                            sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());
+                            sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());*/
                             if (sendResult.equals("tokenIsInvalid")) {
                                 updateWechatParameter();
                             }
-
+                        }
                     } else if (msgType != 0) {
                         //发送多媒体消息
                         String noTextMsg = (String) msgMap.get("wscontent");
