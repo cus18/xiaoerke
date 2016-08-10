@@ -97,7 +97,6 @@ angular.module('controllers', ['luegg.directives'])
                         }
 
                         getIframeSrc();
-                        getHistoryConsultContent();
                         //获取通用回复列表
                         GetAnswerValueList.save({"type": "commonAnswer"}, function (data) {
                             if(data.result=="success"){
