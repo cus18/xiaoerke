@@ -118,6 +118,7 @@ angular.module('controllers', ['luegg.directives'])
                                 $scope.myAnswer = [];
                             }
                         });
+
                         //获取我的诊断列表
                         GetAnswerValueList.save({"type":"diagnosis"},function(data){
                             if(data.result=="success"){
@@ -145,6 +146,7 @@ angular.module('controllers', ['luegg.directives'])
                             data.illnessList.push(addIllness);
                             $scope.illnessList = data.illnessList;
                         });
+
                         //查询专科列表
                         GetFindAllTransferSpecialist.save({}, function (data) {
                             $scope.selectedSpecialistType = data.data;
@@ -154,7 +156,8 @@ angular.module('controllers', ['luegg.directives'])
                         if($stateParams.action == "createUserSession"){
                             var patientId = $stateParams.userId;
                             var patientName = "";
-                            GetCurrentUserConsultListInfo.save({userType:$scope.userType,csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
+                            GetCurrentUserConsultListInfo.save({userType:$scope.userType,csUserId:$scope.doctorId,
+                                pageNo:1,pageSize:10000},function(data){
                                 if(data.alreadyJoinPatientConversation!=""&&data.alreadyJoinPatientConversation!=undefined){
                                     $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                                     $.each($scope.alreadyJoinPatientConversation,function(index,value){
@@ -171,7 +174,6 @@ angular.module('controllers', ['luegg.directives'])
                         }else if($stateParams.action == ""){
                             getAlreadyJoinConsultPatientList();
                         }
-
                         setInterval(sessionCheck,20000);
                     }
                 });
@@ -507,6 +509,7 @@ angular.module('controllers', ['luegg.directives'])
                     };
 
                     $scope.socketServerFirst.onclose = function (event) {
+                        console.log("onclose",event.data);
                     };
 
                 } else {
@@ -1348,7 +1351,6 @@ angular.module('controllers', ['luegg.directives'])
             var getHistoryConsultContent = function () {
                 $scope.historyConsult = '';
                 GetCustomerLogByOpenID.save({openid:$scope.currentUserConversation.patientId}, function (data) {
-                    console.log(data)
                     $scope.historyConsult = data.logList;
                 });
             };
@@ -1498,21 +1500,21 @@ angular.module('controllers', ['luegg.directives'])
                     getIframeSrc();
                 }
             };
+
             //启动一个监控消息状态的定时器
             var setIntervalTimers = function(){
                 $.each($scope.alreadyJoinPatientConversation,function(index,value){
-                    console.log(index);
                     var date = new Date().getTime();
                     var flag = moment().subtract(5, 'minute').isAfter(value.dateTime);
                     if(value.notifyType == 1002 && flag ){
                         value.notifyType = 1003;
-                        console.log('notifyType',value.notifyType);
                     }
                 });
             };
             var heartBeatCheckPay = function(){
                 $scope.heartBeatPay = setInterval(setIntervalTimers,6000);
             };
+
             //病人会话的内容的发送
             var updateAlreadyJoinPatientConversationFromPatient = function(conversationData){
                 var updateFlag = false;

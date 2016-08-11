@@ -64,13 +64,13 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                 $http.get('http://rest.ihiss.com:9000/user/current',{
                     headers : {'X-Access-Token':token}
                 }).success(function(data, status, headers, config) {
-                    console.log("data",data);
                     patientImg = data.avatar;
                     $scope.patientName = data.name==null?data.mobile:data.name;
                     CreateOrUpdateWJYPatientInfo.save({patientPhone:data.mobile,
                         patientName:$scope.patientName,patientSex:data.sex},function(data){
                         $scope.patientId = data.patientId;
                         GetSessionId.get({"userId":$scope.patientId},function(data){
+                            console.log("data",data);
                             if(data.status=="0"){
                                 $scope.sessionId = data.sessionId;
                                 $scope.lookMore = true;
@@ -82,8 +82,8 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                                  }
                                  $scope.consultContent.push(val);*/
                                 var now = moment().format("YYYY-MM-DD HH:mm:ss");
-                                GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,"pageSize":10,"token":$stateParams.token},function (data) {
-                                    console.log("dataxiaox",data);
+                                GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,
+                                    "pageSize":10,"token":$stateParams.token},function (data) {
                                     if(data.consultDataList.length!=0){
                                         $scope.lookMore = true;
                                     }else{
@@ -107,12 +107,11 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                     //$scope.socketServer = new ReconnectingWebSocket("ws://s202.xiaork.com/wsbackend/ws&user&"
                     //    + $scope.patientId +"&h5cxqm");//cs,user,distributor
                     //ws://s201.xiaork.com:2048;
-                    $scope.socketServer = new WebSocket("ws://101.201.154.75:2048/ws&user&"
+                    $scope.socketServer = new WebSocket("ws://101.201.154.201:2048/ws&user&"
                         + $scope.patientId +"&h5wjy");//cs,user,distributor*/
 
                     $scope.socketServer.onmessage = function(event) {
                         var consultData = JSON.parse(event.data);
-                        console.log("consultData",consultData);
                         if(consultData.type==4){
                             processNotifyMessage(consultData);
                         }else if(consultData.type==7){
@@ -275,10 +274,9 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                             "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                             "senderId": $scope.patientId,
                             "senderName": $scope.senderName,
-                            "sessionId":$scope.sessionId,
+                            "sessionId": parseInt($scope.sessionId),
                             "avatar":patientImg //"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
                         };
-                        console.log("patientValMessage",patientValMessage.content);
                         if (!window.WebSocket) {
                             return;
                         }
