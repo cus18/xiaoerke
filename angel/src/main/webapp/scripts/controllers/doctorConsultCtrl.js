@@ -39,6 +39,25 @@ angular.module('controllers', ['luegg.directives'])
             $scope.waitJoinNum = 0; //医生待接入的用户数，是动态变化的数
             $scope.glued = true; //angular滚动条的插件预制参数，让对话滚动条，每次都定位底部，当新的聊天数据到达时
             var umbrellaCustomerList = "75cefafe00364bbaaaf7b61089994e22,3b91fe8b7ce143918012ef3ab4baf1e0,00032bd90d724d0sa63a4d6esa0e8dbf";
+            /*$scope.alreadyJoinPatientConversation = [
+                {
+                    patientName:'大熊猫',
+                    dateTime:'12345',
+                    number:'3'
+                },{
+                    patientName:'大熊猫',
+                    dateTime:'12345',
+                    number:'3'
+                },{
+                    patientName:'大熊猫',
+                    dateTime:'12345',
+                    number:'3'
+                },{
+                    patientName:'大熊猫',
+                    dateTime:'12345',
+                    number:'3'
+                }
+            ]*/
 
             //各个子窗口的开关变量
             $scope.showFlag = {
