@@ -15,6 +15,8 @@ public class ConsultSessionStatusVo {
 
     private Date createDate;
 
+    private Date firstTransTime;
+
     private String status;
 
     private String userName;
@@ -27,6 +29,8 @@ public class ConsultSessionStatusVo {
 
     private String flag;
 
+    private String payFlag;
+
     public String getCsUserId() {
         return csUserId;
     }
@@ -37,6 +41,14 @@ public class ConsultSessionStatusVo {
 
     public Date getCreateDate() {
         return createDate;
+    }
+
+    public String getPayFlag() {
+        return payFlag;
+    }
+
+    public void setPayFlag(String payFlag) {
+        this.payFlag = payFlag;
     }
 
     public void setCreateDate(Date createDate) {
@@ -77,6 +89,14 @@ public class ConsultSessionStatusVo {
 
     public String getSessionId() {
         return sessionId;
+    }
+
+    public Date getFirstTransTime() {
+        return firstTransTime;
+    }
+
+    public void setFirstTransTime(Date firstTransTime) {
+        this.firstTransTime = firstTransTime;
     }
 
     public void setSessionId(String sessionId) {
