@@ -12,7 +12,7 @@ public interface ConsultSessionPropertyDao {
 
     int insertSelective(ConsultSessionPropertyVo record);
 
-    ConsultSessionPropertyVo selectByPrimaryKey(Integer id);
+    ConsultSessionPropertyVo selectByField(ConsultSessionPropertyVo consultSessionPropertyVo);
 
     int updateByPrimaryKeySelective(ConsultSessionPropertyVo record);
 

@@ -48,5 +48,5 @@ public class ConstantUtil {
 	public static String NO_PAY = "noPay";
 	public static String PAY_SUCCESS = "paySuccess";
 	public static String USE_TIMES = "useTimes";
-
+	public static String WITHIN_24HOURS = "within24Hours";
 }

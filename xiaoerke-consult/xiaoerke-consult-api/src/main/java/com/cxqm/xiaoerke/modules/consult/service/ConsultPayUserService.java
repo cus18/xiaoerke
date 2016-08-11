@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.consult.service;
 
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -25,6 +27,8 @@ public interface ConsultPayUserService {
 
     //查询需要付费的用户信息
     ConcurrentHashMap<String,Object> getneepPayConsultSession(String csuserId);
+
+    ConsultSessionPropertyVo selectUserSessionPropertyByVo(ConsultSessionPropertyVo consultSessionPropertyVo);
 
     //保存需要付费的用户信息
     void putneepPayConsultSession(String csuserId,  ConcurrentHashMap<String,Object> payInfo);

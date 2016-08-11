@@ -9,7 +9,17 @@ public class RichConsultSession extends ConsultSession {
 	private String userName;
 	
 	private String serverAddress;
-	
+
+	private String payStatus;
+
+	public String getPayStatus() {
+		return payStatus;
+	}
+
+	public void setPayStatus(String payStatus) {
+		this.payStatus = payStatus;
+	}
+
 	public RichConsultSession(){
 		this.setStatus(ConsultSession.STATUS_ONGOING);
 	}

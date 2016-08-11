@@ -173,7 +173,7 @@ public class ConsultUserController extends BaseController {
         }else if(!csUserId.equals("allCS")){
             query = new Query().addCriteria(new Criteria().where("csUserId").regex(csUserId).andOperator(Criteria.where("lastMessageTime").gte(date))).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
         } else {
-            query = new Query().addCriteria(Criteria.where("lastMessageTime").gte(date)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));;
+            query = new Query().addCriteria(Criteria.where("lastMessageTime").gte(date)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
         }
 
         PaginationVo<ConsultSessionStatusVo> pagination = consultRecordService.getUserMessageList(pageNo, pageSize, query);

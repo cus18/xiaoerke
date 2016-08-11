@@ -101,6 +101,11 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     }
 
     @Override
+    public List<ConsultSessionStatusVo> queryUserMessageList(Query query){
+        return consultRecordMongoDBService.queryUserMessageList(query);
+    }
+
+    @Override
     public int saveConsultRecord(ConsultRecordMongoVo consultRecordMongoVo) {
         return consultRecordMongoDBService.saveConsultRecord(consultRecordMongoVo);
     }
@@ -237,6 +242,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
         consultSessionStatusVo.setCsUserName(consultSession.getCsUserName());
         consultSessionStatusVo.setCsUserId(consultSession.getCsUserId());
         consultSessionStatusVo.setSource(consultSession.getSource());
+        consultSessionStatusVo.setPayStatus(consultSession.getPayStatus());
         consultRecordMongoDBService.upsertConsultSessionStatusVo(consultSessionStatusVo);
     }
 
