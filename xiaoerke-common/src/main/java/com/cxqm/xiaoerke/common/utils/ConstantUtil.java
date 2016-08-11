@@ -47,6 +47,6 @@ public class ConstantUtil {
 	//咨询支付
 	public static String NO_PAY = "noPay";
 	public static String PAY_SUCCESS = "paySuccess";
-	public static String USE_TIME = "useTime";
+	public static String USE_TIMES = "useTimes";
 
 }
