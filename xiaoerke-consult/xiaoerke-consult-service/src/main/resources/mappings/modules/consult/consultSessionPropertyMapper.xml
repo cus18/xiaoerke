@@ -120,4 +120,18 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <update id="updateByUserId" parameterType="java.lang.String">
+    update consult_session_property
+    set
+    <if test="">
+
+    </if>
+  </update>
+  <select id="findConsultSessionPropertyByUserId" parameterType="java.lang.String" resultMap="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo">
+    select
+    <include refid="Base_Column_List" />
+    from consult_session_property
+    where 1=1
+    and sys_user_id = #{userId,jdbcType=VARCHAR}
+  </select>
 </mapper>
