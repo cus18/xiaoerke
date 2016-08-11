@@ -213,16 +213,16 @@ public class ConsultWechatController extends BaseController {
                         ConsultSessionPropertyVo consultSessionPropertyVo = new ConsultSessionPropertyVo();
                         consultSessionPropertyVo.setSysUserId(consultSession.getUserId());
                         ConsultSessionPropertyVo propertyVo = consultPayUserService.selectUserSessionPropertyByVo(consultSessionPropertyVo);
-                        if(propertyVo.getMonthTimes()>0 || propertyVo.getPermTimes()>0){
+                        if (propertyVo.getMonthTimes() > 0 || propertyVo.getPermTimes() > 0) {
                             consultSession.setPayStatus(ConstantUtil.USE_TIMES);
-                        }else {
+                        } else {
                             consultSession.setPayStatus(ConstantUtil.NO_PAY);
                             Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
                             WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"),
                                     consultSession.getUserId(), "嗨，亲爱的，本次咨询医生需要支付9.9元，享受24小时咨询时间\n" +
-                                    ">>付费"+"<a href='http://120.25.161.33/keeper/wxPay/patientPay.do?serviceType=customerPay"+"&sessionId="+sessionId+ "'>点击这里去评价</a>"+"\n" +
-                                    "-----------\n" +
-                                    "求助客服请直接向分诊说明，不需付费\n");
+                                            ">>付费" + "<a href='http://120.25.161.33/keeper/wxPay/patientPay.do?serviceType=customerPay" + "&sessionId=" + sessionId + "'>点击这里去评价</a>" + "\n" +
+                                            "-----------\n" +
+                                            "求助客服请直接向分诊说明，不需付费\n");
                         }
                     }
                 }
