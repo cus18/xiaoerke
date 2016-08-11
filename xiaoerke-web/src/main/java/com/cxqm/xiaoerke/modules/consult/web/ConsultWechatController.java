@@ -209,20 +209,26 @@ public class ConsultWechatController extends BaseController {
                     if (pastGrainSecond < 24 * 60 * 60 * 1000) {
                         consultSession.setPayStatus(ConstantUtil.WITHIN_24HOURS);
                     } else {
+                        Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                        String token = (String) userWechatParam.get("token");
+                        String sysUserId = consultSession.getUserId();
                         //判断剩余次数,consultSessionStatusVo打标记
                         ConsultSessionPropertyVo consultSessionPropertyVo = new ConsultSessionPropertyVo();
                         consultSessionPropertyVo.setSysUserId(consultSession.getUserId());
                         ConsultSessionPropertyVo propertyVo = consultPayUserService.selectUserSessionPropertyByVo(consultSessionPropertyVo);
-                        if (propertyVo.getMonthTimes() > 0 || propertyVo.getPermTimes() > 0) {
+                        if (propertyVo != null && (propertyVo.getMonthTimes() > 0 || propertyVo.getPermTimes() > 0)) {
                             consultSession.setPayStatus(ConstantUtil.USE_TIMES);
+                            int time = propertyVo.getMonthTimes() + propertyVo.getPermTimes();
+                            String content = "嗨，亲爱的，你本月还剩"+time+"次免费咨询的机会" + "每次咨询24小时内有效^_^\n";
+                            WechatUtil.sendMsgToWechat(token, sysUserId, content);
                         } else {
                             consultSession.setPayStatus(ConstantUtil.NO_PAY);
-                            Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-                            WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"),
-                                    consultSession.getUserId(), "嗨，亲爱的，本次咨询医生需要支付9.9元，享受24小时咨询时间\n" +
-                                            ">>付费" + "<a href='http://120.25.161.33/keeper/wxPay/patientPay.do?serviceType=customerPay" + "&sessionId=" + sessionId + "'>点击这里去评价</a>" + "\n" +
-                                            "-----------\n" +
-                                            "求助客服请直接向分诊说明，不需付费\n");
+                            String content = "嗨，亲爱的，本次咨询医生需要支付9.9元，享受24小时咨询时间\n" +
+                                    ">>付费" + "<a href='http://120.25.161.33/keeper/wxPay/patientPay.do?serviceType=customerPay" + "&sessionId=" + sessionId + "'>点击这里去评价</a>" + "\n" +
+                                    "-----------\n" +
+                                    "求助客服请直接向分诊说明，不需付费\n";
+                            WechatUtil.sendMsgToWechat(token,
+                                    sysUserId, content);
                         }
                     }
                 }
