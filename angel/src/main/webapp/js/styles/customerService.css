@@ -26,8 +26,7 @@
     line-height: 36px;
     display: block;
 }
-
-.customerService .consultButton a:hover {
+.customerService .consultButton a:hover{
     border: none;
     color: #fff;
     background-color: #1FC3C5;

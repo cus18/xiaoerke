@@ -5,54 +5,58 @@
 require.config({
     baseUrl: "js/",
     paths: {
-        "angular" : "libs/angular.min",
-        "angular-resource" : "libs/angular-resource.min",
-        "angular-sanitize" : "libs/angular-sanitize.min",
+        "angular": "libs/angular.min",
+        "angular-resource": "libs/angular-resource.min",
+        "angular-sanitize": "libs/angular-sanitize.min",
+        "angular-route": "libs/angular-route.min",
         "angular-ui-router": "libs/angular-ui-router.min",
         "angular-file-upload": "libs/angular-file-upload.min",
-        "angular-file-upload-shim":"libs/angular-file-upload-shim.min",
-        "ocLazyLoad":"libs/ocLazyLoad.require.min",
-        "jquery":"libs/jquery-2.1.3.min",
-        "browser":"libs/jquery.browser.min",
-        "patientConsultFactory" : "services/patientConsultFactory",
-        "patientConsultDirective" : "directives/patientConsultDirective",
-        "patientConsultRoute" : "routes/patientConsultRoute",
-        "appPatientConsult" : "modules/appPatientConsult"
+        "angular-file-upload-shim": "libs/angular-file-upload-shim.min",
+        "ocLazyLoad": "libs/ocLazyLoad.require.min",
+        "jquery": "libs/jquery-2.1.3.min",
+        "patientConsultFactory": "services/patientConsultFactory",
+        "patientConsultDirective": "directives/patientConsultDirective",
+        "patientConsultRoute": "routes/patientConsultRoute",
+        "appPatientConsult": "modules/appPatientConsult"
     },
     shim: {
         'angular': {
             exports: 'angular'
         },
-        'angular-resource':{
+        'angular-resource': {
             deps: ["angular"],
             exports: 'angular-resource'
         },
-        'angular-ui-router':{
+        'angular-route': {
+            deps: ['angular'],   //依赖什么模块
+            exports: 'angular-route'
+        },
+        'angular-ui-router': {
             deps: ['angular'],   //依赖什么模块
             exports: 'angular-ui-router'
         },
-        'angular-file-upload':{
+        'angular-file-upload': {
             deps: ['angular'],   //依赖什么模块
             exports: 'angular-file-upload'
         },
-        'angular-file-upload-shim':{
+        'angular-file-upload-shim': {
             deps: ['angular'],   //依赖什么模块
             exports: 'angular-file-upload-shim'
         },
-        'angular-sanitize':{
+        'angular-sanitize': {
             deps: ['angular'],   //依赖什么模块
             exports: 'angular-sanitize'
         },
         'ocLazyLoad': ['angular'],
-        'appPatientConsult':['ocLazyLoad']
+        'appPatientConsult': ['ocLazyLoad']
     }
 });
 
-require(['angular','angular-resource','angular-sanitize','angular-ui-router',
-        'angular-file-upload','angular-file-upload-shim',
-        'ocLazyLoad', 'jquery','browser','patientConsultFactory','patientConsultDirective',
-        'patientConsultRoute','appPatientConsult'],
-    function (angular){
-        angular.bootstrap(document,["patientConsultApp"]);
+require(['angular', 'angular-resource', 'angular-sanitize', 'angular-route', 'angular-ui-router',
+        'angular-file-upload', 'angular-file-upload-shim',
+        'ocLazyLoad', 'jquery', 'patientConsultFactory', 'patientConsultDirective',
+        'patientConsultRoute', 'appPatientConsult'],
+    function (angular) {
+        angular.bootstrap(document, ["patientConsultApp"]);
     });
 

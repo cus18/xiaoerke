@@ -31,7 +31,7 @@ define(['appPatientConsult'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientConsultFirstCtrl',
                                     ['js/controllers/patientConsultFirstCtrl.js',
                                         'js/libs/scrollglue.js','js/libs/moment.min.js',
-                                        'js/libs/jquery.qqFace.js',
+                                        'js/libs/jquery.qqFace.js',"js/libs/jquery.browser.min.js",
                                         'js/styles/patientConsultFirst.css',
                                         'js/styles/main.css'],
                                     'js/views/patientConsultFirst.html?ver='+patientConsultVersion);
@@ -50,7 +50,7 @@ define(['appPatientConsult'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientConsultUmbrellaCtrl',
                                     ['js/controllers/patientConsultUmbrellaCtrl.js',
                                         'js/libs/scrollglue.js','js/libs/moment.min.js',
-                                        'js/libs/jquery.qqFace.js',
+                                        'js/libs/jquery.qqFace.js',"js/libs/jquery.browser.min.js",
                                         'js/styles/patientConsultUmbrella.css'],
                                     'js/views/patientConsultUmbrella.html?ver='+patientConsultVersion);
                             }
@@ -102,8 +102,27 @@ define(['appPatientConsult'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientConsultWJYCtrl',
                                     ['js/controllers/patientConsultWJYCtrl.js',
                                         'js/libs/scrollglue.js','js/libs/moment.min.js',
+                                        "js/libs/jquery.qqFace.js","js/libs/jquery.browser.min.js",
                                         'js/styles/patientConsultWJY.css'],
                                     'js/views/patientConsultWJY.html?ver='+patientConsultVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                    .state('patientConsultWJY2', {
+                        url: '/patientConsultWJY2/:token',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'patientConsultWJYCtrl2',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientConsultWJYCtrl2',
+                                    ['js/controllers/patientConsultWJYCtrl2.js',
+                                        'js/libs/scrollglue.js','js/libs/moment.min.js',
+                                        "js/libs/jquery.qqFace.js","js/libs/jquery.browser.min.js",
+                                        'js/styles/patientConsultWJY2.css'],
+                                    'js/views/patientConsultWJY2.html?ver='+patientConsultVersion);
                             }
                         },
                         data: {

@@ -51,6 +51,9 @@ public class ConsultSessionManager {
     //<cs-userId, ConnectionHeartTime>
     private final Map<String, Date> csUserConnectionTimeMapping = new ConcurrentHashMap<String, Date>();
 
+    //<userId, ConnectionHeartTime>
+    private final Map<String, Date> userConnectionTimeMapping = new ConcurrentHashMap<String, Date>();
+
     //<cs-userId, Channel>
     private final Map<String, Channel> distributors = new ConcurrentHashMap<String, Channel>();
 
@@ -84,8 +87,6 @@ public class ConsultSessionManager {
     private ConsultVoiceRecordMongoServiceImpl consultVoiceRecordMongoService = SpringContextHolder.getBean("consultVoiceRecordMongoServiceImpl");
 
     private ConsultSessionManager() {
-//        String distributorsStr = Global.getConfig("distributors.list");
-//        distributorsList = Arrays.asList(distributorsStr.split(";"));
         User user = new User();
         user.setUserType("distributor");
         List<User> users = systemService.findUserByUserType(user);
@@ -150,6 +151,7 @@ public class ConsultSessionManager {
     private void doCreateSocketInitiatedByUser(String userId, String source, Channel channel) {
         userChannelMapping.put(userId, channel);
         channelUserMapping.put(channel, userId);
+        userConnectionTimeMapping.put(userId, new Date());
     }
 
     public RichConsultSession createUserH5ConsultSession(String userId, Channel channel, String source) {
@@ -350,7 +352,7 @@ public class ConsultSessionManager {
             System.out.println("sessionId-----" + sessionId + "consultSession.getCsUserId()" + consultSession.getUserId());
             sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
             sessionRedisCache.putUserIdSessionIdPair(consultSession.getUserId(), sessionId);
-//            saveCustomerEvaluation(consultSession);
+            saveCustomerEvaluation(consultSession);
             response.put("csChannel", csChannel);
             response.put("sessionId", sessionId);
             response.put("consultSession", consultSession);
@@ -397,7 +399,7 @@ public class ConsultSessionManager {
         }
     }
     //记录评价信息
-   /* private void saveCustomerEvaluation(RichConsultSession consultSession) {
+    private void saveCustomerEvaluation(RichConsultSession consultSession) {
         Map<String, Object> evaluationMap = new HashMap<String, Object>();
         evaluationMap.put("openid", consultSession.getUserId());
         evaluationMap.put("uuid", IdGen.uuid());
@@ -410,7 +412,7 @@ public class ConsultSessionManager {
         evaluationMap.put("redPacket", null);
         evaluationMap.put("consultSessionId", consultSession.getId());
         patientRegisterPraiseService.saveCustomerEvaluation(evaluationMap);
-    }*/
+    }
 
     /**
      * @param sessionId
@@ -636,13 +638,13 @@ public class ConsultSessionManager {
                         }
                     }
                     //生成评价
-                    /*Map praiseParam = new HashMap();
+                    Map praiseParam = new HashMap();
                     praiseParam.put("consultSessionId", session.getId());
                     praiseParam.put("doctorId",forwardRecord.getToUserId());
                     List<Map<String,Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParam);
                     if(praiseList !=null && praiseList.size() == 0){
                         saveCustomerEvaluation(session);
-                    }*/
+                    }
                 } else {
                     forwardRecord.setStatus(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_REJECT);
                     consultSessionForwardRecordsService.updateRejectedTransfer(forwardRecord);
@@ -718,6 +720,39 @@ public class ConsultSessionManager {
         }
     }
 
+    public void checkH5UserChannelStatus(){
+        if (userConnectionTimeMapping != null) {
+            Iterator<Entry<String, Date>> it2 = userConnectionTimeMapping.entrySet().iterator();
+            while (it2.hasNext()) {
+                Entry<String, Date> entry = it2.next();
+                Date dateTime = entry.getValue();
+                long a = new Date().getTime();
+                long b = dateTime.getTime();
+                int c = (int) ((a - b) / 1000);
+                if (c > 140) {
+                    //超过2分钟，没有收到心跳回馈信息，清除此channel
+                    removeUserSession(entry.getKey());
+                    userConnectionTimeMapping.remove(entry.getKey());
+                }
+            }
+        }
+
+        Iterator<Entry<String, Channel>> it = userChannelMapping.entrySet().iterator();
+        while (it.hasNext()) {
+            Entry<String, Channel> entry = it.next();
+            if (entry.getValue().isActive()) {
+                //像patient端发送心跳包，如果2分钟内，没有得到回复，
+                // 则证明此patient已经掉线，将进行channel和已存在的会话清除处理工作
+                JSONObject jsonObj = new JSONObject();
+                jsonObj.put("type", "4");
+                jsonObj.put("notifyType", "0100");
+                TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
+                entry.getValue().writeAndFlush(frame.retain());
+                userConnectionTimeMapping.put(entry.getKey(), new Date());
+            }
+        }
+    }
+
     public Map<String, Channel> getUserChannelMapping() {
         return userChannelMapping;
     }
@@ -736,6 +771,10 @@ public class ConsultSessionManager {
 
     public Map<String, Date> getCsUserConnectionTimeMapping() {
         return csUserConnectionTimeMapping;
+    }
+
+    public Map<String, Date> getUserConnectionTimeMapping() {
+        return userConnectionTimeMapping;
     }
 
     public void removeUserSession(String userId) {
@@ -852,13 +891,13 @@ public class ConsultSessionManager {
             response.put("result", "success");
             response.put("userId", richConsultSession.getUserId());
             //生成评价
-            /*Map praiseParam = new HashMap();
+            Map praiseParam = new HashMap();
             praiseParam.put("consultSessionId", richConsultSession.getId());
             praiseParam.put("doctorId",richConsultSession.getCsUserId());
             List<Map<String,Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParam);
             if(praiseList !=null && praiseList.size() == 0){
                 saveCustomerEvaluation(richConsultSession);
-            }*/
+            }
         } else {
             response.put("result", "failure");
         }

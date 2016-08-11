@@ -17,6 +17,6 @@ public interface UtilService {
 
 	String bindUser(String num, String code, String openid);
 
-  PatientVo bindUserForThirdParty(String num, String openid);
+    PatientVo bindUserForThirdParty(String num, String openid);
 
 }
