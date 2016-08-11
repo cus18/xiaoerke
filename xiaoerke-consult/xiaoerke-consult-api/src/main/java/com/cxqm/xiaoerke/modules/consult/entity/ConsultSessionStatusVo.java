@@ -29,7 +29,7 @@ public class ConsultSessionStatusVo {
 
     private String flag;
 
-    private String payFlag;
+    private String payStatus;
 
     public String getCsUserId() {
         return csUserId;
@@ -43,12 +43,12 @@ public class ConsultSessionStatusVo {
         return createDate;
     }
 
-    public String getPayFlag() {
-        return payFlag;
+    public String getPayStatus() {
+        return payStatus;
     }
 
-    public void setPayFlag(String payFlag) {
-        this.payFlag = payFlag;
+    public void setPayStatus(String payStatus) {
+        this.payStatus = payStatus;
     }
 
     public void setCreateDate(Date createDate) {
