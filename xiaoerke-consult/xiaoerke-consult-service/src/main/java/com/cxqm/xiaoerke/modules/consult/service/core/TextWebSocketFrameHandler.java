@@ -89,8 +89,11 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
             Iterator<Map.Entry<String, Date>> it2 = ConsultSessionManager.getSessionManager().getCsUserConnectionTimeMapping().entrySet().iterator();
             while (it2.hasNext()) {
                 Map.Entry<String, Date> entry = it2.next();
-                if (csUserId.equals(entry.getKey())) {
-                    ConsultSessionManager.getSessionManager().getCsUserConnectionTimeMapping().put(entry.getKey(), new Date());
+                try{
+                    if (csUserId.equals(entry.getKey())) {
+                        ConsultSessionManager.getSessionManager().getUserConnectionTimeMapping().put(entry.getKey(), new Date());
+                    }
+                }catch (Exception e){
                 }
             }
             return;
@@ -108,12 +111,15 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
         }
 
         if(msgType==8){
-            String csUserId = (String) msgMap.get("csUserId");
+            String userId = (String) msgMap.get("userId");
             Iterator<Map.Entry<String, Date>> it2 = ConsultSessionManager.getSessionManager().getCsUserConnectionTimeMapping().entrySet().iterator();
             while (it2.hasNext()) {
                 Map.Entry<String, Date> entry = it2.next();
-                if (csUserId.equals(entry.getKey())) {
-                    ConsultSessionManager.getSessionManager().getUserConnectionTimeMapping().put(entry.getKey(), new Date());
+                try{
+                    if (userId.equals(entry.getKey())) {
+                        ConsultSessionManager.getSessionManager().getUserConnectionTimeMapping().put(entry.getKey(), new Date());
+                    }
+                }catch (Exception e){
                 }
             }
             return;
