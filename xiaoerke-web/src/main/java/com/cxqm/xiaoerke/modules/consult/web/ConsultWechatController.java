@@ -200,9 +200,7 @@ public class ConsultWechatController extends BaseController {
 //                } catch (Exception e) {
 //                    e.printStackTrace();
 //                }
-
-
-                //判断上次收费咨询是不是在24个小时以内
+                //判断上次收费咨询是不是在24个小时以内 zdl
                 Query query = new Query(new Criteria().where("userId").is(openId))
                         .with(new Sort(Sort.Direction.ASC, "firstTransTime")).limit(1);
                 List<ConsultSessionStatusVo> consultSessionStatusVos = consultRecordService.queryUserMessageList(query);
@@ -222,14 +220,12 @@ public class ConsultWechatController extends BaseController {
                             Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
                             WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"),
                                     consultSession.getUserId(), "嗨，亲爱的，本次咨询医生需要支付9.9元，享受24小时咨询时间\n" +
-                                    ">>付费\n" +
+                                    ">>付费"+"<a href='http://120.25.161.33/keeper/wxPay/patientPay.do?serviceType=customerPay"+"&sessionId="+sessionId+ "'>点击这里去评价</a>"+"\n" +
                                     "-----------\n" +
                                     "求助客服请直接向分诊说明，不需付费\n");
                         }
                     }
                 }
-
-
             }
 
             //会话创建成功，拿到了csChannel,给接诊员(或是医生)发送消息
