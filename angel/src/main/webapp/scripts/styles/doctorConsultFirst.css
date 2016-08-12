@@ -262,9 +262,6 @@ div#ddjr {
     overflow: hidden;
 }
 
-.jrhhpm-tb th:nth-child(3) {
-    width: 100px;
-}
 .jrhhpm-tb th:nth-child(4) {
     width: 80px;
 }
@@ -513,7 +510,7 @@ input[type="number"] {
 }
 
 .qqFace table td {
-    padding: 0;
+    padding: 0px;
 }
 
 .qqFace table td img {
