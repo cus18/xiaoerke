@@ -22,6 +22,10 @@ define(['appUmbrella2'], function (app) {
         .factory('GetUserQRCode', ['$resource', function ($resource) {
             return $resource(umbrella_app + 'getUserQRCode');
         }])
+        //调用支付宝支付
+        .factory('Goalipayment', ['$resource', function ($resource) {
+            return $resource(umbrella_app + 'alipayment');
+        }])
 
 })
 

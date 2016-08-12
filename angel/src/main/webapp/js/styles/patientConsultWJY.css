@@ -7,7 +7,7 @@ li{list-style:none}
 img{border:0;vertical-align:middle}
 table{border-collapse:collapse;border-spacing:0}
 p{word-wrap:break-word}
-.h100{height: 93%;}
+.h100{height: 100%;}
 a:focus,input:focus{-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-user-modify:read-write-plaintext-only;}
 .container-fluid{
     background-color: #fff;
@@ -37,7 +37,7 @@ a:focus,input:focus{-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-user-modif
     float: right;
 }
 .consultDisplay {
-    padding: 44px 0 100px 0;
+    padding: 0 0 106px 0;
     background-color: #f9f9f9;
 }
 .consultDisplay::-webkit-scrollbar {
@@ -74,19 +74,19 @@ a:focus,input:focus{-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-user-modif
     width: 70%;
     margin: 5px 0px 5px 5px;
 }
-.consultInput input{
-    font: 13px/25px 'Microsoft Yahei';
-    width: 20%;
-    display: inline-block;
-    float: right;
-    color:#fff;
-    background-color: #1FC3C5;
-    border: none;
-    padding: 1px 8px;
-    border-radius: 5px;
-    margin: 5px 5px 5px 0;
-}
-textarea {
+/*.consultInput input{*/
+    /*font: 13px/25px 'Microsoft Yahei';*/
+    /*width: 20%;*/
+    /*display: inline-block;*/
+    /*float: right;*/
+    /*color:#fff;*/
+    /*background-color: #1FC3C5;*/
+    /*border: none;*/
+    /*padding: 1px 8px;*/
+    /*border-radius: 5px;*/
+    /*margin: 5px 5px 5px 0;*/
+/*}*/
+input {
     overflow:auto;
     word-break:break-all;
     width: 90%;
@@ -124,6 +124,8 @@ textarea {
     position: relative;
     margin: 5px 10px;
     /*max-width: 75%;*/
+    word-wrap:break-word;
+    word-break:break-all;
 }
 .doctorReplyContent .wjy_doctor{
     position: relative;
@@ -207,11 +209,6 @@ textarea {
     height:60px;
     border:1px solid #ccc
 }
-.input{
-    width:99%;
-    height:60px;
-    border:1px solid #ccc
-}
 .com_form p{
     height:28px;
     line-height:28px;
@@ -258,18 +255,30 @@ textarea {
     border-radius: 5px;
     z-index: 555;
 }
-.wjy_input textarea{
+.wjy_input input{
     width: 97%;
     padding-left: 8px;
     margin-left: 8px;
     font-size: 17px;
 }
-.wjy_input div{
+.wjy_input .wjy_icon{
     margin: 15px 15px 0 15px;
 }
-.wjy_input div img:nth-child(1){
+.wjy_input .wjy_icon .wjy_icon_1{
     margin-right: 28px;
 }
-.wjy_input div img:nth-child(3){
+.wjy_input .wjy_icon .wjy_set{
     float: right;
+}
+.wjy_input .wjy_icon .qqFace table td img{
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    float: right;
+}
+.wjy_lookmore{
+    text-align: center;
+    margin-top: 25px;
+    font-size: 17px;
+    color: #08b7c2;
 }

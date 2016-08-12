@@ -149,6 +149,7 @@ textarea {
     border: none;
     vertical-align: top;
     resize: none;
+    float: left;
 }
 
 /*会话内容*/

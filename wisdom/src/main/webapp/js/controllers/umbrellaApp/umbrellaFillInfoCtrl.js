@@ -1,6 +1,6 @@
 angular.module('controllers', ['ionic']).controller('umbrellaFillInfoCtrl', [
-    '$scope','$state','CheckPhone','SaveMessage',
-    function ($scope,$state,CheckPhone,SaveMessage) {
+    '$scope','$state','CheckPhone','SaveMessage','GetUserQRCode',
+    function ($scope,$state,CheckPhone,SaveMessage,GetUserQRCode) {
         $scope.title="宝护伞-宝大夫儿童家庭重疾互助计划";
         $scope.sexItem = 1;//男孩
         $scope.parentItem = 3;//母亲
@@ -15,6 +15,7 @@ angular.module('controllers', ['ionic']).controller('umbrellaFillInfoCtrl', [
         $scope.pgbut = false;//关注宝大夫按钮
         $scope.pgbut2 = false;//确定按钮
         $scope.lgLock = false;//关注宝大夫
+        var umbrellaid ;//保护伞ID
 
         $scope.$on('$ionicView.enter', function(){
             var date = new Date(+new Date()+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'');
@@ -115,6 +116,7 @@ angular.module('controllers', ['ionic']).controller('umbrellaFillInfoCtrl', [
                         $scope.pgcontent = "您已经加入保护伞";
                         $scope.pgcontent2 = "可关注宝大夫查看";
                         $scope.pgbutton = "关注宝大夫";
+                        umbrellaid = data.umbrellaid;
                     }else if(data.result=="2"){//该用户已经购买过保护伞且关注宝大夫
                         $scope.pgLock = true;
                         $scope.pgbut2 = true;
@@ -142,11 +144,20 @@ angular.module('controllers', ['ionic']).controller('umbrellaFillInfoCtrl', [
             }
         }
 
-        //查看我的保障
+        //关注宝大夫,查看我的保障
         $scope.lookSafeguard = function () {
             $scope.pgbut = false;
             $scope.pgLock = false;
             $scope.lgLock = true;
+            getUserQRCode();
+        }
+
+        //生产临时二维码 http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/app/ls_erweima.png
+        var getUserQRCode = function () {
+            GetUserQRCode.save({"umbrellaid":umbrellaid},function (data) {
+                console.log("data",data);
+                $scope.codeImg = data.qrcode;
+            });
         }
         
         //校验身份证号
@@ -217,8 +228,8 @@ angular.module('controllers', ['ionic']).controller('umbrellaFillInfoCtrl', [
                                     console.log("data",data);
                                     if(data.result=="0"){
                                         alert("验证码有误，请重新输入！");
-                                    }else if(data.status==1&&data.result=="1"){
-                                        $state.go("umbrellaPay");
+                                    }else if(data.umbrellaid!=""&&data.result=="1"){
+                                        $state.go("umbrellaPay",{id:data.umbrellaid});
                                     }
                                 })
 

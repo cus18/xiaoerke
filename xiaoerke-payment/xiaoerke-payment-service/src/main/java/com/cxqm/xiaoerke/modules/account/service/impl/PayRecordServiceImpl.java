@@ -1,15 +1,13 @@
 package com.cxqm.xiaoerke.modules.account.service.impl;
 
-import java.util.List;
-
+import com.cxqm.xiaoerke.modules.account.dao.PayRecordDao;
+import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
 import com.cxqm.xiaoerke.modules.account.service.PayRecordService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cxqm.xiaoerke.modules.account.dao.PayRecordDao;
-import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
+import java.util.List;
 
 /**
  * Created by wangbaowei on 15/11/5.
@@ -61,5 +59,11 @@ public class PayRecordServiceImpl implements PayRecordService {
 	public PayRecord findPayRecordByOrder(String orderId) {
 		return payRecordDao.selectByOrder(orderId);
 	}
-	
+
+  /**
+   *
+   */
+    public int updatePayRecordByOrderId(PayRecord payRecord){
+        return payRecordDao.updatePayRecordByOrderId(payRecord);
+    }
 }

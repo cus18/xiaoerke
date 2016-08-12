@@ -1070,6 +1070,7 @@
         <module>xiaoerke-mutualHelp</module>
 		<module>xiaoerke-activity</module>
         <module>bdfApp</module>
+        <module>xiaoerke-alipay</module>
     </modules>
 
     <distributionManagement>
