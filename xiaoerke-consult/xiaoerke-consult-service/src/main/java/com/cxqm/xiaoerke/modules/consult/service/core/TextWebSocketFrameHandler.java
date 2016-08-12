@@ -160,7 +160,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                         praiseParam.put("doctorId", csUserId);
                         List<Map<String, Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParam);
                         if (praiseList != null && praiseList.size() > 0) {
-                            int nameIndex = content.indexOf(":");
+                            int nameIndex = content.indexOf("：");
                             String newContent = content.substring(nameIndex + 1, content.toCharArray().length);
                             if (StringUtils.isNotNull(newContent) && !"\n".equalsIgnoreCase(newContent)) {
                                 if (newContent.endsWith("\n")) {
@@ -176,9 +176,11 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             stringBuilder.append("------------------\n");
                             stringBuilder.append(content.substring(0, nameIndex));
                             stringBuilder.append(";【");
-                            stringBuilder.append("<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
+                            stringBuilder.append("<a href='http://s202.xiaork.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
                             stringBuilder.append(praiseList.get(0).get("id"));
                             stringBuilder.append("'>评价医生</a>】");
+                            stringBuilder.append("【<a href='http://s251.baodf.com/keeper/playtour#/playtourShare/6");
+                            stringBuilder.append("'>分享</a>】");
                             sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());
                             //发送消息
                             /*if(StringUtils.isNotNull(content) && !"\n".equalsIgnoreCase(content)){
