@@ -819,7 +819,20 @@ public class ConsultSessionManager {
                 if (consultSessions.get(0).getSource() != null && consultSessions.get(0).getSource().contains("h5")) {
                     response.put("result", "notOnLine");
                 } else {
-                    String doctorManagerStr = Global.getConfig("createConsult.list");
+                    String doctorManagerStr = "";
+                    StringBuffer sb = new StringBuffer();
+                    ConsultDoctorInfoVo consultDoctorInfoVo = new ConsultDoctorInfoVo();
+                    consultDoctorInfoVo.setGrabSession("1");
+                    List<ConsultDoctorInfoVo> doctorList = consultDoctorInfoService.findManagerDoctorInfoBySelective(consultDoctorInfoVo);
+                    if(doctorList != null && doctorList.size() > 0){
+                        for(ConsultDoctorInfoVo c : doctorList){
+                            sb.append(c.getId());
+                            sb.append(",");
+                        }
+                        doctorManagerStr = sb.toString()+"67b66b5bac5d41c1ab2274d09362f13b";
+                    }else{
+                        doctorManagerStr = Global.getConfig("doctorManager.list")+"67b66b5bac5d41c1ab2274d09362f13b";  //增加抢断会话功能doctorManager.list；createConsult.list
+                    }
                     String csUserId = UserUtils.getUser().getId();
                     if (doctorManagerStr.indexOf(csUserId) != -1) {
                         //此医生为管理员医生，有权限抢过会话，将会话抢过来

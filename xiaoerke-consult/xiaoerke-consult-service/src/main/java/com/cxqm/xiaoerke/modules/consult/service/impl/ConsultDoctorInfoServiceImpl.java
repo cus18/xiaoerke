@@ -155,4 +155,11 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
         }
         return result;
     }
+
+
+    @Override
+    public List<ConsultDoctorInfoVo> findManagerDoctorInfoBySelective(ConsultDoctorInfoVo consultDoctorInfoVo) {
+        List<ConsultDoctorInfoVo> result = consultDoctorInfoDao.findManagerDoctorInfoBySelective(consultDoctorInfoVo);
+        return result;
+    }
 }
