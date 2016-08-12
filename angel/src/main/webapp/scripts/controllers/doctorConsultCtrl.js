@@ -43,21 +43,25 @@ angular.module('controllers', ['luegg.directives'])
                 {
                     patientName:'大熊猫',
                     dateTime:'12345',
+                    patientId:'12345',
                     number:'3'
                 },{
                     patientName:'大熊猫',
                     dateTime:'12345',
+                    patientId:'1234',
                     number:'3'
                 },{
                     patientName:'大熊猫',
                     dateTime:'12345',
+                    patientId:'123',
                     number:'3'
                 },{
                     patientName:'大熊猫',
                     dateTime:'12345',
+                    patientId:'12',
                     number:'3'
                 }
-            ]*/
+            ];*/
 
             //各个子窗口的开关变量
             $scope.showFlag = {
@@ -116,7 +120,6 @@ angular.module('controllers', ['luegg.directives'])
                         }
 
                         getIframeSrc();
-                        getHistoryConsultContent();
                         //获取通用回复列表
                         GetAnswerValueList.save({"type": "commonAnswer"}, function (data) {
                             if(data.result=="success"){
@@ -145,13 +148,6 @@ angular.module('controllers', ['luegg.directives'])
                                 $scope.diagnosis = [];
                             }
                         });
-                        /*GetCurrentDoctorDepartment.save({userId:$scope.doctorId},function(data){
-                         if(data.status == 'success'){
-                         $scope.department = data.department;
-                         }else{
-                         $scope.department = 'default';
-                         }
-                         });*/
                         //查找所属科室
                         SearchIllnessList.save(function (data) {
                             var addIllness = {
@@ -1668,22 +1664,6 @@ angular.module('controllers', ['luegg.directives'])
                         }
                     });
                 }
-                /*//需要付款用户
-                else if(notifyData.notifyType=="1002"){
-                    $.each($scope.alreadyJoinPatientConversation, function (index, value) {
-                        if (value.patientId == notifyData.session.userId) {
-                            value.consultValue.push(notifyData);
-                        }
-                    });
-                }
-                //超时的用户
-                else if(notifyData.notifyType=="1003"){
-                    $.each($scope.alreadyJoinPatientConversation, function (index, value) {
-                        if (value.patientId == notifyData.session.userId) {
-                            value.consultValue.push(notifyData);
-                        }
-                    });
-                }*/
                 else if(notifyData.notifyType=="0015"){
                     //收到服务器发送过来的心跳消息
                     var heartBeatServerMessage = {
