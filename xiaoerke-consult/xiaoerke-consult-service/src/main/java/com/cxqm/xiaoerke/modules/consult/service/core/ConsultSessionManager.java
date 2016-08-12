@@ -5,6 +5,7 @@ import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.*;
+import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultSessionPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultVoiceRecordMongoServiceImpl;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
@@ -18,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
 import java.net.InetSocketAddress;
 import java.util.*;
@@ -82,6 +84,9 @@ public class ConsultSessionManager {
 
     //jiangzg add
     private ConsultVoiceRecordMongoServiceImpl consultVoiceRecordMongoService = SpringContextHolder.getBean("consultVoiceRecordMongoServiceImpl");
+
+    //jiangzg add
+    private ConsultSessionPropertyServiceImpl consultSessionPropertyService = SpringContextHolder.getBean("consultSessionPropertyServiceImpl");
 
     private ConsultSessionManager() {
 //        String distributorsStr = Global.getConfig("distributors.list");
@@ -618,6 +623,43 @@ public class ConsultSessionManager {
                             String source = session.getSource();
                             if (StringUtils.isNotNull(source) && "wxcxqm".equalsIgnoreCase(source)) {
                                 Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                                /**
+                                 * 接收转接的是医生，会免费次数减1
+                                 */
+                                String userId = session.getUserId();
+                                Query query = (new Query()).addCriteria(where("userId").is(userId)).with(new Sort(Sort.Direction.DESC, "createDate"));
+                                ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(query);
+                                if(consultSessionStatusVo != null){
+                                    if(consultSessionStatusVo.getFirstTransTime() == null || "".equals(consultSessionStatusVo.getFirstTransTime())){
+                                        /**
+                                         *  更新第一次转医生的时间
+                                         */
+                                        query = new Query().addCriteria(where("id_").is(consultSessionStatusVo.getId()));
+                                        Update update = new Update().set("firstTransTime", new Date());
+                                        consultRecordService.updateConsultSessionFirstTransferDate(query,update,ConsultSessionStatusVo.class);
+                                    }
+                                    if(ConstantUtil.WITHIN_24HOURS.equals(consultSessionStatusVo.getPayStatus())){
+                                        System.out.println("24小时之内咨询");
+                                    }else if(ConstantUtil.USE_TIMES.equals(consultSessionStatusVo.getPayStatus())){
+                                        ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(userId);
+                                        if(consultSessionPropertyVo != null){
+                                            int defaultTimes = consultSessionPropertyVo.getMonthTimes();
+                                            int additionalTimes = consultSessionPropertyVo.getPermTimes();
+                                            if(defaultTimes > 0){
+                                                defaultTimes--;
+                                                consultSessionPropertyVo.setMonthTimes(defaultTimes);
+                                            }else{
+                                                if(additionalTimes > 0){
+                                                    additionalTimes--;
+                                                    consultSessionPropertyVo.setPermTimes(additionalTimes);
+                                                }
+                                            }
+                                            consultSessionPropertyService.updateByPrimaryKey(consultSessionPropertyVo);
+                                            String content = "嗨，亲爱的，已为你接入医生，未来24小时内你都可以向医生提问。";
+                                            WechatUtil.sendMsgToWechat((String)userWechatParam.get("token"),userId,content);
+                                        }
+                                    }
+                                }
                                 WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), session.getUserId(), responseNews.toString());
                             } else if (StringUtils.isNotNull(source) && "h5cxqm".equalsIgnoreCase(source)) {
                                 //暂时注掉H5

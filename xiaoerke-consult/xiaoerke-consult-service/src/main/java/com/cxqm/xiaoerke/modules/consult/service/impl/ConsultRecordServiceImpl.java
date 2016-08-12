@@ -13,12 +13,14 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
+import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.mongodb.WriteResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,7 +46,7 @@ import java.util.concurrent.Executors;
  */
 @Service
 @Transactional(readOnly = false)
-public class ConsultRecordServiceImpl implements ConsultRecordService {
+public class ConsultRecordServiceImpl implements ConsultRecordService{
 
 
     @Autowired
@@ -283,5 +285,11 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     @Override
     public WriteResult removeConsultRankRecord(Query query) {
         return consultRecordMongoDBService.removeConsultRankRecord(query);
+    }
+
+    //jiangzg add 2016-8-11 18:32:02 更新mongo集合中字段
+    @Override
+    public int updateConsultSessionFirstTransferDate(Query query, Update update, Class t) {
+       return  consultRecordMongoDBService.updateConsultSessionFirstTransferDate(query,update,t);
     }
 }

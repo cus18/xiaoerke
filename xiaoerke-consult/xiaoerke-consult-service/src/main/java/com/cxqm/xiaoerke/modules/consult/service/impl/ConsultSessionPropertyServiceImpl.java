@@ -16,12 +16,6 @@ public class ConsultSessionPropertyServiceImpl implements ConsultSessionProperty
         private ConsultSessionPropertyDao consultSessionPropertyDao;
 
         @Override
-        public int updateByUserId(String userId) {
-                int result = consultSessionPropertyDao.updateByUserId(userId);
-                return result;
-        }
-
-        @Override
         public ConsultSessionPropertyVo findConsultSessionPropertyByUserId(String userId) {
                 ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyDao.findConsultSessionPropertyByUserId(userId);
                 if(consultSessionPropertyVo != null){
@@ -29,5 +23,10 @@ public class ConsultSessionPropertyServiceImpl implements ConsultSessionProperty
                 }else{
                         return null;
                 }
+        }
+
+        @Override
+        public int updateByPrimaryKey(ConsultSessionPropertyVo consultSessionPropertyVo) {
+                return consultSessionPropertyDao.updateByPrimaryKey(consultSessionPropertyVo);
         }
 }

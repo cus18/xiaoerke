@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.consult.service.impl;
 
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultCountTotal;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
@@ -203,5 +204,11 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 
 	public WriteResult removeConsultRankRecord(Query query) {
 		return mongoTemplate.remove(query, "consultRankRecord");
+	}
+
+	//jiangzg add 2016-8-11 18:37:50 修改集合中字段
+	public int updateConsultSessionFirstTransferDate(Query query,Update update ,Class t){
+		mongoTemplate.updateFirst(query, update,t);
+		return 0 ;
 	}
 }

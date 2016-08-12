@@ -7,8 +7,8 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo;
  */
 public interface ConsultSessionPropertyService {
 
-    int updateByUserId(String userId);
-
     ConsultSessionPropertyVo findConsultSessionPropertyByUserId(String userId);
+
+    int updateByPrimaryKey(ConsultSessionPropertyVo consultSessionPropertyVo);
 
 }

@@ -7,6 +7,17 @@ import java.util.Date;
  * @author deliang
  */
 public class ConsultSessionStatusVo {
+
+    private  String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     private String sessionId;
 
     private Date lastMessageTime;

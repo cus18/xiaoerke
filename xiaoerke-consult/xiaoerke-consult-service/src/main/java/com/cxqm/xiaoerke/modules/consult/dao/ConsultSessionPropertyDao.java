@@ -19,8 +19,6 @@ public interface ConsultSessionPropertyDao {
 
     int updateByPrimaryKey(ConsultSessionPropertyVo record);
 
-    int updateByUserId(@Param("userId") String userId);
-
     ConsultSessionPropertyVo findConsultSessionPropertyByUserId(@Param("userId") String userId);
 
 }

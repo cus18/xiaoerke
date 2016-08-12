@@ -8,7 +8,9 @@ import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.mongodb.WriteResult;
+import com.sun.java.util.jar.pack.*;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -69,4 +71,7 @@ public interface ConsultRecordService {
 
 
     WriteResult removeConsultRankRecord(Query query);
+
+    //jiangzg add 修改mongo中ConsultSessionStatusVo第一次接入医生时间
+    int updateConsultSessionFirstTransferDate(Query query ,Update update ,Class t);
 }
