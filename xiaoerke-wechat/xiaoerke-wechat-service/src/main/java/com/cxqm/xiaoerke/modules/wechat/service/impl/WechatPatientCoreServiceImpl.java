@@ -556,7 +556,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 						needInviteNum += i;
 					}
 					needInviteNum -=alreadyInviteNum;
-					if(alreadyInviteNum>=3){
+					if(gemeLevel>=openLevel){
 						msg = "已开通第"+gemeLevel+"关";
 						if(openLevel ==6)msg = "满六关：您已成功开通所有关卡";
 
