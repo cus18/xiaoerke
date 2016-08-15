@@ -362,7 +362,7 @@ public class ConsultDoctorController extends BaseController {
 //                    判断用户是否已评价,如果没有评价则推送评价消息
 
                     //分享的代码
-                    patientRegisterPraiseService.sendRemindMsgToUser(userId,sessionId);
+//                    patientRegisterPraiseService.sendRemindMsgToUser(userId,sessionId);
                 }
             }
             String result = consultSessionService.clearSession(sessionId, userId);
