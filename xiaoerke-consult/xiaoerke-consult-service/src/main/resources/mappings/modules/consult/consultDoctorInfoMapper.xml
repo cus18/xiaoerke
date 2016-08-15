@@ -257,7 +257,7 @@
   </select>
 
   <!-- jiangzg add 查询具有某种权限的医生信息 2016-8-12 10:55:20-->
-  <select id="findManagerDoctorInfoBySelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo" resultMap="">
+  <select id="findManagerDoctorInfoBySelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List" />
     from consult_doctor_info where 1=1
