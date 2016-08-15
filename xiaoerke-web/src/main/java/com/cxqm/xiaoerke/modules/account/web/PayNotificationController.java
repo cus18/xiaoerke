@@ -7,6 +7,7 @@ import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.account.service.PayRecordService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
 import com.cxqm.xiaoerke.modules.insurance.entity.InsuranceRegisterService;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
@@ -88,6 +89,9 @@ public class PayNotificationController {
 	private static Lock lock = new ReentrantLock();
 
 	private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
+
+	@Autowired
+	private ConsultSessionPropertyService consultSessionPropertyService;
 
 	/**
 	 * 接收支付成后微信notify_url参数中传来的参数
@@ -480,7 +484,7 @@ public class PayNotificationController {
 					Map parameter = systemService.getWechatParameter();
 					String token = (String)parameter.get("token");
 					WechatUtil.sendMsgToWechat(token,openid,"哇哦,这么大方,不赞你一下可惜了。医生正在闪电般赶来为您服务");
-
+					consultSessionPropertyService.addPermTimes(openid);
 					HttpRequestUtil.wechatpost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/notifyPayInfo2Distributor?openId="+openid,
 							"openId=" + openid);
 				}
