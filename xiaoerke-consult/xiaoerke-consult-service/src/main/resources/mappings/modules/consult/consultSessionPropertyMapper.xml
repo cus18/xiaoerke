@@ -129,7 +129,7 @@
     </if>
     where sys_user_id = #{userId,jdbcType=VARCHAR},
   </update>
-  <select id="findConsultSessionPropertyByUserId" parameterType="java.lang.String" resultMap="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo">
+  <select id="findConsultSessionPropertyByUserId" parameterType="java.lang.String" resultType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo">
     select
     <include refid="Base_Column_List" />
     from consult_session_property
