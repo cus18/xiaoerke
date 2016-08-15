@@ -223,32 +223,7 @@ public class ConsultWechatController extends BaseController {
                         //收到语音，发送通知给用户，提示为了更好地咨询，最好文字聊天
                         //根据mediaId，从微信服务器上，获取到媒体文件，再将媒体文件，放置阿里云服务器，获取URL
                         if (messageType.contains("voice") || messageType.contains("video") || messageType.contains("image")) {
-                            try {
-                                WechatUtil wechatUtil = new WechatUtil();
-                                Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-                                String mediaURL = wechatUtil.downloadMediaFromWx((String) userWechatParam.get("token"),
-                                        (String) this.param.get("mediaId"), messageType);
-                                obj.put("content", mediaURL);
-                                messageContent = mediaURL;
-                                if (messageType.contains("voice")) {
-                                    ConsultVoiceRecordMongoVo consultVoiceRecordMongoVo = new ConsultVoiceRecordMongoVo();
-                                    consultVoiceRecordMongoVo.setCsUserId(consultSession.getCsUserId());
-                                    consultVoiceRecordMongoVo.setSessionId(sessionId);
-                                    long consultCount = consultVoiceRecordMongoService.countConsultByVoice(consultVoiceRecordMongoVo);
-                                    if (consultCount < 1) {
-                                        consultVoiceRecordMongoVo.setCreateDate(new Date());
-                                        consultVoiceRecordMongoVo.setType(messageType);
-                                        consultVoiceRecordMongoVo.setUserId(consultSession.getUserId());
-                                        consultVoiceRecordMongoVo.setCsUserName(consultSession.getCsUserName());
-                                        consultVoiceRecordMongoVo.setUserName(consultSession.getUserName());
-                                        consultVoiceRecordMongoVo.setContent(mediaURL);
-                                        consultVoiceRecordMongoService.insert(consultVoiceRecordMongoVo);
-                                        WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(), "亲亲，语音会影响医生的判断哦，为了您的咨询更准确，要用文字提问呦~");
-                                    }
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                            messageContent = voiceHandle(messageType, messageContent, sessionId, consultSession, obj);
                         }
                     }
                     System.out.println("here csChannel is" + csChannel);
@@ -265,6 +240,36 @@ public class ConsultWechatController extends BaseController {
                 }
             }
 
+        }
+
+        private String voiceHandle(String messageType, String messageContent, Integer sessionId, RichConsultSession consultSession, JSONObject obj) {
+            try {
+                WechatUtil wechatUtil = new WechatUtil();
+                Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                String mediaURL = wechatUtil.downloadMediaFromWx((String) userWechatParam.get("token"),
+                        (String) this.param.get("mediaId"), messageType);
+                obj.put("content", mediaURL);
+                messageContent = mediaURL;
+                if (messageType.contains("voice")) {
+                    ConsultVoiceRecordMongoVo consultVoiceRecordMongoVo = new ConsultVoiceRecordMongoVo();
+                    consultVoiceRecordMongoVo.setCsUserId(consultSession.getCsUserId());
+                    consultVoiceRecordMongoVo.setSessionId(sessionId);
+                    long consultCount = consultVoiceRecordMongoService.countConsultByVoice(consultVoiceRecordMongoVo);
+                    if (consultCount < 1) {
+                        consultVoiceRecordMongoVo.setCreateDate(new Date());
+                        consultVoiceRecordMongoVo.setType(messageType);
+                        consultVoiceRecordMongoVo.setUserId(consultSession.getUserId());
+                        consultVoiceRecordMongoVo.setCsUserName(consultSession.getCsUserName());
+                        consultVoiceRecordMongoVo.setUserName(consultSession.getUserName());
+                        consultVoiceRecordMongoVo.setContent(mediaURL);
+                        consultVoiceRecordMongoService.insert(consultVoiceRecordMongoVo);
+                        WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(), "亲亲，语音会影响医生的判断哦，为了您的咨询更准确，要用文字提问呦~");
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return messageContent;
         }
 
         private void consultCharge(String openId, Integer sessionId, RichConsultSession consultSession) {
