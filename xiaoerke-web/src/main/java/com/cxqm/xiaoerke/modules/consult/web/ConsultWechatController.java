@@ -292,6 +292,7 @@ public class ConsultWechatController extends BaseController {
             List<ConsultSessionStatusVo> consultSessionStatusVos = consultRecordService.queryUserMessageList(query);
             ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(richConsultSession.getUserId());
             if(consultSessionPropertyVo == null){
+                consultSessionPropertyVo = new ConsultSessionPropertyVo();
                 consultSessionPropertyVo.setCreateTime(new Date());
                 consultSessionPropertyVo.setMonthTimes(4);
                 consultSessionPropertyVo.setPermTimes(0);
