@@ -420,7 +420,7 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("consultSessionId",sessionId);
 		String msg = "";
-		String nowDate = DateUtils.DateToStr(new Date(),"yyyy-MM");
+//		String nowDate = DateUtils.DateToStr(new Date(),"yyyy-MM");
 
 		List<Map<String,Object>>  evaluationList = patientRegisterPraiseDao.getCustomerEvaluationListByInfo(params);
 		if(null == evaluationList||evaluationList.size() == 0){
