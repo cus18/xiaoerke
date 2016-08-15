@@ -21,4 +21,6 @@ public interface ConsultSessionPropertyDao {
 
     ConsultSessionPropertyVo findConsultSessionPropertyByUserId(@Param("userId") String userId);
 
+    int addPermTimes(@Param("userId") String userId);
+
 }

@@ -26,6 +26,11 @@ public class ConsultSessionPropertyServiceImpl implements ConsultSessionProperty
         }
 
         @Override
+        public int addPermTimes(String userId) {
+                return consultSessionPropertyDao.addPermTimes(userId);
+        }
+
+        @Override
         public int updateByPrimaryKey(ConsultSessionPropertyVo consultSessionPropertyVo) {
                 return consultSessionPropertyDao.updateByPrimaryKey(consultSessionPropertyVo);
         }
