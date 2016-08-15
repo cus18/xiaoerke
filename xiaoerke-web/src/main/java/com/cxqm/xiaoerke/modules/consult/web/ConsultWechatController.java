@@ -199,7 +199,7 @@ public class ConsultWechatController extends BaseController {
                 Query query = new Query(new Criteria().where("userId").is(openId))
                         .with(new Sort(Sort.Direction.ASC, "firstTransTime")).limit(1);
                 List<ConsultSessionStatusVo> consultSessionStatusVos = consultRecordService.queryUserMessageList(query);
-                if (null != consultSessionStatusVos && consultSessionStatusVos.size() > 0) {
+                if (null != consultSessionStatusVos && consultSessionStatusVos.size() > 0 && consultSessionStatusVos.get(0).getFirstTransTime()!=null) {
                     long pastGrainSecond = DateUtils.pastGrainSecond(consultSessionStatusVos.get(0).getFirstTransTime());
                     if (pastGrainSecond < 24 * 60 * 60 * 1000) {
                         consultSession.setPayStatus(ConstantUtil.WITHIN_24HOURS);
