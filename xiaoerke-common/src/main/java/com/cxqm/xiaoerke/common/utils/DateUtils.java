@@ -155,7 +155,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	 * @param date
 	 * @return
 	 */
-	public static long pastGrainSecond(Date date) {
+	public static long pastMillisSecond(Date date) {
 		long t = new Date().getTime()-date.getTime();
 		return t;
 	}
