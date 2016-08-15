@@ -336,14 +336,18 @@ public class ConsultDoctorController extends BaseController {
                     param.put("userId",richConsultSession.getCsUserId());
                     List<ConsultDoctorInfoVo> consultDoctorInfoVos = consultDoctorInfoService.getConsultDoctorByInfo(param);
                     Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                    String st = "";
                     if(consultDoctorInfoVos !=null && consultDoctorInfoVos.size() >0){
                         if(null !=consultDoctorInfoVos.get(0).getSendMessage() && consultDoctorInfoVos.get(0).getSendMessage().equals("1")){
-                            String st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
+                             st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
                                     "<a href='http://120.25.161.33/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
                                     params.get("uuid") +"&sessionId="+sessionId+ "'>点击这里去评价</a>】";
-                            WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
+
                         }
+                    }else {
+                        st = "嗨，亲爱的,本次咨询已关闭。";
                     }
+                    WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
                     //jiangzg 2016年6月21日16:22:59 add ps:在线咨询仅供参考
                     /*String csUserId = richConsultSession.getCsUserId();
                     if(StringUtils.isNotNull(csUserId)){
