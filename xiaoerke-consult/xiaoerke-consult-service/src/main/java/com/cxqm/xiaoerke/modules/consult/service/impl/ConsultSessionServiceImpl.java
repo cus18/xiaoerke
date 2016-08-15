@@ -121,4 +121,11 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
     public List<ConsultSession> getConsultSessionListByInfo(Map map) {
         return consultSessionDao.getConsultSessionListByInfo(map);
     }
+
+    @Override
+    public ConsultSession selectByPrimaryKey(Integer id) {
+        return consultSessionDao.selectByPrimaryKey(id);
+    }
+
+
 }

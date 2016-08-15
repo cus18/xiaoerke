@@ -1180,6 +1180,23 @@ public class ScheduledTask {
         consultRecordService.removeConsultRankRecord(new Query());
     }
 
+    void test() {
+        List<Object> objectList = sessionRedisCache.getSessionIdByKey();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,0);
+        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.SECOND, 0);
+        for (Object o : objectList){
+            Integer sessionId = (Integer)o;
+            ConsultSession consultSession = consultSessionService.selectByPrimaryKey(sessionId);
+            if(consultSession!=null && consultSession.getCreateTime().getTime() < (calendar.getTimeInMillis())){
+                sessionRedisCache.removeConsultSessionBySessionId(consultSession.getId());
+                sessionRedisCache.removeUserIdSessionIdPair(consultSession.getUserId());
+            }
+        }
+
+    }
+
     public void testMappingTask() {
         //删除会话排名中的临时数据
         System.out.println("userChannelMapping的大小为：" + ConsultSessionManager.getSessionManager().userChannelMapping.size());

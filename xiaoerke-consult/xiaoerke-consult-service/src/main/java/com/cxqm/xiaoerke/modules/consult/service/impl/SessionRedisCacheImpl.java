@@ -92,6 +92,11 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 		Object sessionId = redisTemplate.opsForHash().get(USER_SESSIONID_KEY, userId);
 		return sessionId == null ? null : (Integer) sessionId;
 	}
+
+	@Override
+	public List<Object> getSessionIdByKey() {
+		return redisTemplate.opsForHash().values(USER_SESSIONID_KEY);
+	}
 	
 
 	@Override
