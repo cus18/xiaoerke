@@ -67,7 +67,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                     patientImg = data.avatar;
                     $scope.patientName = data.name==null?data.mobile:data.name;
                     CreateOrUpdateWJYPatientInfo.save({patientPhone:data.mobile,
-                        patientName:$scope.patientName,patientSex:data.sex},function(data){
+                        patientName:$scope.patientName,patientSex:data.sex,source:$scope.source,thirdId:data.id,token:token},function(data){
                         $scope.patientId = data.patientId;
                         GetSessionId.get({"userId":$scope.patientId},function(data){
                             console.log("data",data);
@@ -107,7 +107,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                     //$scope.socketServer = new ReconnectingWebSocket("ws://s202.xiaork.com/wsbackend/ws&user&"
                     //    + $scope.patientId +"&h5cxqm");//cs,user,distributor
                     //ws://s201.xiaork.com:2048;
-                    $scope.socketServer = new WebSocket("ws://101.201.154.201:2048/ws&user&"
+                    $scope.socketServer = new WebSocket("ws://s202.xiaork.com:2048/ws&user&"
                         + $scope.patientId +"&h5wjy");//cs,user,distributor*/
 
                     $scope.socketServer.onmessage = function(event) {

@@ -15,8 +15,10 @@ import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
+import com.cxqm.xiaoerke.modules.sys.entity.Office;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.UserInfoService;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import io.netty.channel.Channel;
@@ -480,10 +482,28 @@ public class ConsultUserController extends BaseController {
     Map<String, Object> createOrUpdateWJYPatientInfo(@RequestBody Map<String, Object> params) {
 
         Map<String, Object> response = new HashMap<String, Object>();
+        HashMap<String,Object> request = new HashMap<String, Object>();
         String userPhone = (String) params.get("patientPhone");
         String userName = (String) params.get("patientName");
         Integer userSex = (Integer) params.get("patientSex");
-        String patientId = userInfoService.createOrUpdateThirdPartPatientInfo(userPhone, userName,String.valueOf(userSex),"WJY");
+        String source = "";
+        String thirdId = "";
+        if(params.containsKey("source") ){
+            if(StringUtils.isNotNull((String)params.get("source"))){
+                source = (String)params.get("source") ;
+                if(source.contains("wjy")){
+                    thirdId = (String)params.get("thirdId");
+                    source = "WJY";
+                }
+            }
+        }
+        request.put("userPhone",userPhone);
+        request.put("userName",userName);
+        request.put("userSex",userSex);
+        request.put("source",source);
+        request.put("thirdId",thirdId);
+        request.put("token", params.get("token"));
+        String patientId = userInfoService.createOrUpdateThirdPartPatientInfo(request);
         response.put("patientId",patientId);
         return response;
     }

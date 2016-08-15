@@ -1,7 +1,11 @@
 package com.cxqm.xiaoerke.modules.sys.service.impl;
 
 import com.cxqm.xiaoerke.common.persistence.Page;
+import com.cxqm.xiaoerke.common.utils.CoopConsultUtil;
+import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.modules.consult.entity.CoopThirdBabyInfoVo;
+import com.cxqm.xiaoerke.modules.consult.service.impl.CoopThirdBabyInfoServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.dao.IllnessDao;
 import com.cxqm.xiaoerke.modules.sys.dao.PatientDao;
 import com.cxqm.xiaoerke.modules.sys.dao.UserDao;
@@ -12,11 +16,17 @@ import com.cxqm.xiaoerke.modules.sys.service.MessageService;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.UserInfoService;
 
+import net.sf.json.JSONObject;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Service
 @Transactional(readOnly = false)
@@ -33,6 +43,11 @@ public class UserInfoServiceImpl implements UserInfoService {
 	
 	@Autowired
 	private UserDao userDao;
+
+    @Autowired
+    private CoopThirdBabyInfoServiceImpl coopThirdBabyInfoService = SpringContextHolder.getBean("coopThirdBabyInfoServiceImpl");
+
+    private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
     //根据用户id获取当前用户的所有信息
     public HashMap<String, Object> findPersonDetailInfoByUserId(String userId) {
@@ -123,35 +138,110 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public String createOrUpdateThirdPartPatientInfo(String userPhone, String userName,String userSex,String source) {
+    public String createOrUpdateThirdPartPatientInfo(HashMap params) {
 
         User userNew = new User();
-        userNew.setLoginName(userPhone);
-        if (userdao.getUserByLoginName(new User(null,userPhone)) == null) {
-            String sys_user_id = UUID.randomUUID().toString().replaceAll("-", "");
-            userNew.setId(sys_user_id);
-            userNew.setLoginName(userPhone);
-            userNew.setCreateDate(new Date());
-            userNew.setPhone(userPhone);
-            userNew.setCompany(new Office("1"));
-            userNew.setOffice(new Office("3"));
-            userNew.setPassword(SystemService.entryptPassword("ILoveXiaoErKe"));
-            userNew.setUserType(User.USER_TYPE_USER);
-            userNew.setMarketer(source);
-            userNew.setName(userName);
-            int result = userDao.insert(userNew);
-            if (result == 1) {
-                PatientVo patientVo = new PatientVo();
-                String sys_patient_id = UUID.randomUUID().toString().replaceAll("-", "");
-                patientVo.setId(sys_patient_id);
-                patientVo.setSysUserId(sys_user_id);
-                patientVo.setStatus("0");
-                patientVo.setGender(userSex);
-                patientDao.insert(patientVo);
+        String response = "";
+        String source = (String)params.get("source");
+        if(StringUtils.isNotNull(source) && "wjy".equalsIgnoreCase(source)){
+            userNew.setLoginName((String)params.get("userPhone"));
+            if (userdao.getUserByLoginName(new User(null,(String)params.get("userPhone"))) == null) {
+                String sys_user_id = UUID.randomUUID().toString().replaceAll("-", "");
+                userNew.setId(sys_user_id);
+                userNew.setLoginName((String) params.get("userPhone"));
+                userNew.setCreateDate(new Date());
+                userNew.setPhone((String) params.get("userPhone"));
+                userNew.setCompany(new Office("1"));
+                userNew.setOffice(new Office("3"));
+                userNew.setPassword(SystemService.entryptPassword("ILoveXiaoErKe"));
+                userNew.setUserType(User.USER_TYPE_USER);
+                userNew.setMarketer(source);
+                userNew.setName((String) params.get("userName"));
+                userNew.setOpenid((String) params.get("thirdId"));
+                int result = userDao.insert(userNew);
+                if (result == 1) {
+                    params.put("sys_user_id",sys_user_id);
+                    params.put("remoteUrl","http://rest.ihiss.com:9000/user/children");
+                    Runnable thread = new saveCoopThirdBabyInfoThread(params);
+                    threadExecutor.execute(thread);
+                }
+                response = sys_user_id ;
+            }else{
+                response = (String) userdao.getUserByLoginName(new User(null, (String)params.get("userPhone"))).get("id");
             }
-            return sys_user_id;
         }else{
-            return (String) userdao.getUserByLoginName(new User(null, userPhone)).get("id");
+            userNew.setLoginName((String)params.get("userPhone"));
+            if (userdao.getUserByLoginName(new User(null,(String)params.get("userPhone"))) == null) {
+                String sys_user_id = UUID.randomUUID().toString().replaceAll("-", "");
+                userNew.setId(sys_user_id);
+                userNew.setLoginName((String) params.get("userPhone"));
+                userNew.setCreateDate(new Date());
+                userNew.setPhone((String) params.get("userPhone"));
+                userNew.setCompany(new Office("1"));
+                userNew.setOffice(new Office("3"));
+                userNew.setPassword(SystemService.entryptPassword("ILoveXiaoErKe"));
+                userNew.setUserType(User.USER_TYPE_USER);
+                userNew.setMarketer(source);
+                userNew.setName((String) params.get("userName"));
+                int result = userDao.insert(userNew);
+                if (result == 1) {
+                    PatientVo patientVo = new PatientVo();
+                    String sys_patient_id = UUID.randomUUID().toString().replaceAll("-", "");
+                    patientVo.setId(sys_patient_id);
+                    patientVo.setSysUserId(sys_user_id);
+                    patientVo.setStatus("0");
+                    patientVo.setGender((String)params.get("userSex"));
+                    patientDao.insert(patientVo);
+                }
+                response = sys_user_id ;
+            }else{
+                response = (String) userdao.getUserByLoginName(new User(null, (String)params.get("userPhone"))).get("id");
+            }
+        }
+        return response ;
+    }
+
+    public class saveCoopThirdBabyInfoThread implements Runnable {
+        private HashMap<String, Object> params ;
+        public saveCoopThirdBabyInfoThread(HashMap<String, Object> params) {
+            this.params = params;
+        }
+        @Override
+        public void run() {
+            String childrenUrl = (String)params.get("remoteUrl"); //获取当前登录人的孩子信息
+            String token = (String)params.get("token");
+            String access_token = "{'X-Access-Token':'" + token + "'}";
+            String method = "GET";
+            String dataType = "json";
+            String babyInfo = CoopConsultUtil.getCurrentUserInfo(childrenUrl, method, dataType, access_token, "", 2);
+            JSONObject jsonObject = null ;
+            if(StringUtils.isNotNull(babyInfo)){
+                JSONArray jsonArray = new JSONArray(babyInfo);
+                for(int i= 0; i<jsonArray.length();i++){
+                    jsonObject = JSONObject.fromObject(jsonArray.get(i).toString());
+                    CoopThirdBabyInfoVo coopThirdBabyInfoVo = new CoopThirdBabyInfoVo();
+                    coopThirdBabyInfoVo.setCreateDate(new Date());
+                    coopThirdBabyInfoVo.setDelFlag("0");
+                    coopThirdBabyInfoVo.setSource((String)params.get("source"));
+                    coopThirdBabyInfoVo.setSysUserId((String)params.get("sys_user_id"));
+                    try {
+                        coopThirdBabyInfoVo.setBirthday(new SimpleDateFormat("yyyy-mm-DD hh:MM:ss").parse((String) jsonObject.get("birthday")));
+                        coopThirdBabyInfoVo.setGender((String) jsonObject.get("sex"));
+                        coopThirdBabyInfoVo.setName((String) jsonObject.get("name"));
+                        coopThirdBabyInfoVo.setStatus((String) jsonObject.get("id"));
+                        coopThirdBabyInfoService.addCoopThirdBabyInfo(coopThirdBabyInfoVo);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            PatientVo patientVo = new PatientVo();
+            String sys_patient_id = UUID.randomUUID().toString().replaceAll("-", "");
+            patientVo.setId(sys_patient_id);
+            patientVo.setSysUserId((String)params.get("sys_user_id"));
+            patientVo.setStatus("0");
+            patientVo.setGender((String)params.get("userSex"));
+            patientDao.insert(patientVo);
         }
     }
 }
