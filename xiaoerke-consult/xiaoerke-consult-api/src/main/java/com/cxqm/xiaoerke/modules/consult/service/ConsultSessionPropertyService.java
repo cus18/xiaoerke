@@ -11,6 +11,8 @@ public interface ConsultSessionPropertyService {
 
     int updateByPrimaryKey(ConsultSessionPropertyVo consultSessionPropertyVo);
 
+    int insertUserConsultSessionProperty(ConsultSessionPropertyVo record);
+
     int addPermTimes(String userId);
 
 }

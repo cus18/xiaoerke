@@ -28,6 +28,12 @@ public class ConsultSessionPropertyServiceImpl implements ConsultSessionProperty
         }
 
         @Override
+        public int insertUserConsultSessionProperty(ConsultSessionPropertyVo record) {
+                return consultSessionPropertyDao.insertSelective(record);
+        }
+
+
+        @Override
         public int addPermTimes(String userId) {
                 return consultSessionPropertyDao.addPermTimes(userId);
         }
