@@ -5,11 +5,13 @@ import com.cxqm.xiaoerke.modules.consult.dao.ConsultSessionPropertyDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 
 /**
  * Created by jiangzhongge on 2016-8-11.
  */
+@Service
 public class ConsultSessionPropertyServiceImpl implements ConsultSessionPropertyService{
 
         @Autowired
