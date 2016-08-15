@@ -39,6 +39,11 @@ public class ConsultSessionPropertyServiceImpl implements ConsultSessionProperty
         }
 
         @Override
+        public int updateMonthTime() {
+            return consultSessionPropertyDao.updateMonthTime() ;
+        }
+
+        @Override
         public int updateByPrimaryKey(ConsultSessionPropertyVo consultSessionPropertyVo) {
                 return consultSessionPropertyDao.updateByPrimaryKey(consultSessionPropertyVo);
         }

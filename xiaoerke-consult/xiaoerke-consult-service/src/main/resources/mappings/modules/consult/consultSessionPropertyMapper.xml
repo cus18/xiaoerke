@@ -136,4 +136,9 @@
     where 1=1
     and sys_user_id = #{userId,jdbcType=VARCHAR}
   </select>
+
+  <update id="updateMonthTime">
+    update consult_session_property
+    set month_times = 4
+  </update>
 </mapper>

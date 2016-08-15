@@ -87,6 +87,18 @@
 		<property name="cronExpression" value="0 0/2 * * * ?"/>
 	</bean>
 
+	<!--每两分钟，检查一下医生的链接情况，发送心跳包-->
+	<bean id="updateMonthTimeStatusTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="scheduledQuarz"/>
+		<property name="targetMethod" value="updateMonthTime"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+	<bean id="updateMonthTimeTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="updateMonthTimeStatusTask"/>
+		<property name="cronExpression" value="0 1 0 0 * ?"/>
+	</bean>
+
+
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
@@ -96,6 +108,7 @@
 				<ref bean="consultRecordMongoTransMySqlCronTrigger"/>-->
 				<ref bean="checkDoctorChannelStatus"/>
 				<!--<ref bean="testMappingTrigger"/>-->
+				<!--<ref bean="updateMonthTimeTrigger"/>-->
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>

@@ -106,6 +106,9 @@ public class ScheduledTask {
     @Autowired
     private BabyUmbrellaInfoService babyUmbrellaInfoService;
 
+    @Autowired
+    private ConsultSessionPropertyService consultSessionPropertyService;
+
     //将所有任务放到一个定时器里，减少并发
     //@Scheduled(cron = "0 */1 * * * ?")
     public void letsGoReminder() {
@@ -1505,6 +1508,11 @@ public class ScheduledTask {
         for(String openid:remindUser){
             WechatMessageUtil.templateModel("邀请卡", " 电烤箱、面包机、儿童被……众多大奖还在等你，赶紧邀请好友一起闯关赢豪礼吧！", "待办事项: 邀请好友玩游戏赢大奖\n优先级：很高哦", "", "", "马上去赚大奖", token, "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=37", openid, "tCQGoqfVSv_bCYVGUPbXzsJ2sxKzyoiDbKAKB1KO_Qg");
         }
+    }
+
+    //每个月赠送给用户四次咨询机会
+    public void updateMonthTime(){
+        consultSessionPropertyService.updateMonthTime();
     }
 
 }
