@@ -23,4 +23,6 @@ public interface ConsultSessionPropertyDao {
 
     int addPermTimes(@Param("userId") String userId);
 
+    int updateMonthTime();
+
 }
