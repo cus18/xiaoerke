@@ -290,9 +290,8 @@ public class ConsultWechatController extends BaseController {
             Query query = new Query(new Criteria().where("userId").is(openId))
                     .with(new Sort(Sort.Direction.ASC, "firstTransTime")).limit(1);
             List<ConsultSessionStatusVo> consultSessionStatusVos = consultRecordService.queryUserMessageList(query);
-            if(consultSessionStatusVos == null){
-                ConsultSessionPropertyVo consultSessionPropertyVo = new ConsultSessionPropertyVo();
-                consultSessionPropertyVo.setSysUserId(richConsultSession.getUserId());
+            ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(richConsultSession.getUserId());
+            if(consultSessionPropertyVo == null){
                 consultSessionPropertyVo.setCreateBy(richConsultSession.getUserId());
                 consultSessionPropertyVo.setCreateTime(new Date());
                 consultSessionPropertyVo.setMonthTimes(4);
@@ -308,8 +307,6 @@ public class ConsultWechatController extends BaseController {
                     String token = (String) userWechatParam.get("token");
                     String sysUserId = richConsultSession.getUserId();
                     //判断剩余次数,consultSessionStatusVo打标记
-                    ConsultSessionPropertyVo consultSessionPropertyVo = new ConsultSessionPropertyVo();
-                    consultSessionPropertyVo.setSysUserId(richConsultSession.getUserId());
                     ConsultSessionPropertyVo propertyVo = consultPayUserService.selectUserSessionPropertyByVo(consultSessionPropertyVo);
                     if (propertyVo != null ) {
                         String content ;
