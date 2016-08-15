@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.consult.dao.CoopThirdBabyInfoDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.consult.entity.CoopThirdBabyInfoVo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
+    <result column="create_time" property="createDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, name, gender, birthday, source, sys_user_id, status, del_flag, create_time
+  </sql>
+
+  <select id="findCoopThirdBabyInfo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.CoopThirdBabyInfoVo" >
+    select 
+    <include refid="Base_Column_List" />
+    from coop_third_baby_info
+    where 1=1 and del_flag = '0'
+    <if test="sysUserId != null and sysUserId != ''">
+      and sys_user_id = #{sysUserId,jdbcType=VARCHAR}
+    </if>
+    order by create_time desc
+  </select>
+
+  <insert id="addCoopThirdBabyInfo" parameterType="com.cxqm.xiaoerke.modules.consult.entity.CoopThirdBabyInfoVo" useGeneratedKeys="true"
+          keyProperty="id">
+    insert into coop_third_baby_info(id, name, gender, birthday, source, sys_user_id, status, del_flag, create_time)
+    values (#{id,jdbcType=INTEGER},#{name,jdbcType=VARCHAR},#{gender,jdbcType=VARCHAR},
+    #{birthday,jdbcType=TIMESTAMP},#{source,jdbcType=VARCHAR},
+    #{sysUserId,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{delFlag,jdbcType=VARCHAR},
+    #{createDate,jdbcType=TIMESTAMP})
+  </insert>
+
+</mapper>
