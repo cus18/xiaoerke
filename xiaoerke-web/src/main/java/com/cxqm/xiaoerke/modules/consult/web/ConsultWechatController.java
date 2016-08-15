@@ -317,7 +317,7 @@ public class ConsultWechatController extends BaseController {
                         if(propertyVo.getMonthTimes()>0){
                             content = "嗨，亲爱的，你本月还剩"+propertyVo.getMonthTimes()+"次免费咨询的机会" + "每次咨询24小时内有效^_^\n";
                         }else if(propertyVo.getPermTimes()>0){
-                            content = "嗨，亲爱的，你还剩"+propertyVo.getMonthTimes()+"次永久免费咨询的机会" + "每次咨询24小时内有效^_^\n";
+                            content = "嗨，亲爱的，你还剩"+propertyVo.getPermTimes()+"次永久免费咨询的机会" + "每次咨询24小时内有效^_^\n";
                         }else{
                             richConsultSession.setPayStatus(ConstantUtil.NO_PAY);
                             content = "嗨，亲爱的，本次咨询医生需要支付9.9元，享受24小时咨询时间\n" +
