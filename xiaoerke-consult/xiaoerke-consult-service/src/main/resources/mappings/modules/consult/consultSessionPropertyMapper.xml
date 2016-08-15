@@ -37,7 +37,7 @@
       #{permTimes,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo" >
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo" useGeneratedKeys="true" keyProperty="planId">
     insert into consult_session_property
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
