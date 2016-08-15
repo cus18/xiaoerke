@@ -272,7 +272,7 @@ public class ConsultWechatController extends BaseController {
             return messageContent;
         }
 
-        private void consultCharge(String openId, Integer sessionId, RichConsultSession consultSession) {
+        private void consultCharge(String openId, Integer sessionId, RichConsultSession richConsultSession) {
             //检测用户是否是收费用户,1001 为正常用户(无标签) ,1002 需要付款用户(等待),1003 已付款用户;
 //                try {
 //                    if (consultPayUserService.angelChargeCheck(openId)) {
@@ -292,38 +292,41 @@ public class ConsultWechatController extends BaseController {
             List<ConsultSessionStatusVo> consultSessionStatusVos = consultRecordService.queryUserMessageList(query);
             if(consultSessionStatusVos == null){
                 ConsultSessionPropertyVo consultSessionPropertyVo = new ConsultSessionPropertyVo();
-                consultSessionPropertyVo.setSysUserId(consultSession.getUserId());
-                consultSessionPropertyVo.setCreateBy(consultSession.getUserId());
+                consultSessionPropertyVo.setSysUserId(richConsultSession.getUserId());
+                consultSessionPropertyVo.setCreateBy(richConsultSession.getUserId());
                 consultSessionPropertyVo.setCreateTime(new Date());
                 consultSessionPropertyVo.setMonthTimes(4);
                 consultSessionPropertyVo.setPermTimes(0);
                 consultSessionPropertyService.insertUserConsultSessionProperty(consultSessionPropertyVo);
             }
             if (null != consultSessionStatusVos && consultSessionStatusVos.size() > 0 && consultSessionStatusVos.get(0).getFirstTransTime()!=null) {
-                long pastGrainSecond = DateUtils.pastGrainSecond(consultSessionStatusVos.get(0).getFirstTransTime());
-                if (pastGrainSecond < 24 * 60 * 60 * 1000) {
-                    consultSession.setPayStatus(ConstantUtil.WITHIN_24HOURS);
+                long pastMillisSecond = DateUtils.pastMillisSecond(consultSessionStatusVos.get(0).getFirstTransTime());
+                if (pastMillisSecond < 24 * 60 * 60 * 1000) {
+                    richConsultSession.setPayStatus(ConstantUtil.WITHIN_24HOURS);
                 } else {
                     Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
                     String token = (String) userWechatParam.get("token");
-                    String sysUserId = consultSession.getUserId();
+                    String sysUserId = richConsultSession.getUserId();
                     //判断剩余次数,consultSessionStatusVo打标记
                     ConsultSessionPropertyVo consultSessionPropertyVo = new ConsultSessionPropertyVo();
-                    consultSessionPropertyVo.setSysUserId(consultSession.getUserId());
+                    consultSessionPropertyVo.setSysUserId(richConsultSession.getUserId());
                     ConsultSessionPropertyVo propertyVo = consultPayUserService.selectUserSessionPropertyByVo(consultSessionPropertyVo);
-                    if (propertyVo != null && (propertyVo.getMonthTimes() > 0 || propertyVo.getPermTimes() > 0)) {
-                        consultSession.setPayStatus(ConstantUtil.USE_TIMES);
-                        int time = propertyVo.getMonthTimes() + propertyVo.getPermTimes();
-                        String content = "嗨，亲爱的，你本月还剩"+time+"次免费咨询的机会" + "每次咨询24小时内有效^_^\n";
+                    if (propertyVo != null ) {
+                        String content ;
+                        richConsultSession.setPayStatus(ConstantUtil.USE_TIMES);
+                        if(propertyVo.getMonthTimes()>0){
+                            content = "嗨，亲爱的，你本月还剩"+propertyVo.getMonthTimes()+"次免费咨询的机会" + "每次咨询24小时内有效^_^\n";
+                        }else if(propertyVo.getPermTimes()>0){
+                            content = "嗨，亲爱的，你还剩"+propertyVo.getMonthTimes()+"次永久免费咨询的机会" + "每次咨询24小时内有效^_^\n";
+                        }else{
+                            richConsultSession.setPayStatus(ConstantUtil.NO_PAY);
+                            content = "嗨，亲爱的，本次咨询医生需要支付9.9元，享受24小时咨询时间\n" +
+                                    ">>付费" + "<a href='http://120.25.161.33/keeper/wxPay/patientPay.do?serviceType=customerPay" + "&sessionId=" + sessionId + "'>点击这里去评价</a>" + "\n" +
+                                    "-----------\n" +
+                                    "求助客服请直接向分诊说明，不需付费\n";
+                            WechatUtil.sendMsgToWechat(token,sysUserId, content);
+                        }
                         WechatUtil.sendMsgToWechat(token, sysUserId, content);
-                    } else {
-                        consultSession.setPayStatus(ConstantUtil.NO_PAY);
-                        String content = "嗨，亲爱的，本次咨询医生需要支付9.9元，享受24小时咨询时间\n" +
-                                ">>付费" + "<a href='http://120.25.161.33/keeper/wxPay/patientPay.do?serviceType=customerPay" + "&sessionId=" + sessionId + "'>点击这里去评价</a>" + "\n" +
-                                "-----------\n" +
-                                "求助客服请直接向分诊说明，不需付费\n";
-                        WechatUtil.sendMsgToWechat(token,
-                                sysUserId, content);
                     }
                 }
             }
