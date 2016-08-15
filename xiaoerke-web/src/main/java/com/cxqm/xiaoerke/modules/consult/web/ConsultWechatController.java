@@ -324,12 +324,14 @@ public class ConsultWechatController extends BaseController {
         //根据用户的openId，判断redis中，是否有用户正在进行的session
         Integer sessionId = sessionRedisCache.getSessionIdByUserId(openId);
         System.out.println("sessionId------" + sessionId);
-        HashMap<String, Object> createWechatConsultSessionMap = null;
-        RichConsultSession consultSession = new RichConsultSession();
-        consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
+//        HashMap<String, Object> createWechatConsultSessionMap = null;
+//        RichConsultSession consultSession = new RichConsultSession();
+        RichConsultSession consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
         csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
         System.out.println("csChannel------" + csChannel);
-        consultPayUserService.removePayConsultSession(consultSession.getCsUserId(), openId);
+//        consultPayUserService.removePayConsultSession(consultSession.getCsUserId(), openId);
+//更新最后一次会话
+        consultRecordService.updateConsultSessionStatusVo(new Query().addCriteria(new Criteria().where("sessionId").is(sessionId)), "complete");
 
         if (csChannel != null && csChannel.isActive()) {
             try {
