@@ -81,4 +81,6 @@ public interface PatientRegisterPraiseService {
      * @author sunxiao
      */
     List<Map<String,Object>> findDissatisfiedList(Map map);
+
+    public void sendRemindMsgToUser(String userId,String sessionId);
 }
