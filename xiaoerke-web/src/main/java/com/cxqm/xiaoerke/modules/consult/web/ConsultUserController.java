@@ -9,12 +9,16 @@ import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.FrontUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
+import com.cxqm.xiaoerke.modules.sys.entity.MongoLog;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
+import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -24,6 +28,9 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -52,7 +59,10 @@ public class ConsultUserController extends BaseController {
     private ConsultPayUserService consultPayUserService;
 
     @Autowired
-    private ConsultSessionForwardRecordsService consultSessionForwardRecordsService;
+    private ConsultSessionPropertyService consultSessionPropertyService;
+
+    @Autowired
+    private MongoDBService<MongoLog> mongoDBServiceLog;
 
     @RequestMapping(value = "/getCurrentSessions", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -437,5 +447,24 @@ public class ConsultUserController extends BaseController {
         }
 
         return response;
+    }
+
+    @RequestMapping(value = "/addMePermTimes", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> addMePermTimes2Users(HttpServletRequest request, HttpSession session,@RequestBody Map<String, Object> params){
+        String openid = WechatUtil.getOpenId(session,request);
+        String shareType = (String)params.get("shareType");
+        String nowDate = DateUtils.DateToStr(new Date(),"yyyy-MM");
+        Query queryInLog = new Query();
+        queryInLog.addCriteria(new Criteria("title").is(shareType).andOperator(
+                new Criteria("create_date").gte(nowDate)).andOperator(new Criteria("parameters").in(openid)));
+        long pushBaodfNum = mongoDBServiceLog.queryCount(queryInLog);
+        if(pushBaodfNum==0){
+            consultSessionPropertyService.addPermTimes(openid);
+            LogUtils.saveLog(shareType,openid);
+        }
+
+        return null;
     }
 }
