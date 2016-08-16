@@ -197,10 +197,10 @@ public class ConsultWechatController extends BaseController {
                     obj.put("senderId", userId);
                     obj.put("dateTime", DateUtils.DateToStr(new Date()));
                     obj.put("senderName", userName);
-                    if (consultTimes > 0) {
-                        obj.put("notifyType", "1002");
-                    } else {
+                    if(consultTimes>0){
                         obj.put("notifyType", "1001");
+                    }else{
+                        obj.put("notifyType", "1002");
                     }
 
                     obj.put("serverAddress", serverAddress);
@@ -280,7 +280,7 @@ public class ConsultWechatController extends BaseController {
             return messageContent;
         }
 
-        private void consultCharge(String openId, Integer sessionId, RichConsultSession richConsultSession, Integer consultTimes) {
+        private void consultCharge(String openId, Integer sessionId, RichConsultSession richConsultSession,Integer consultTimes) {
             //检测用户是否是收费用户,1001 为正常用户(无标签) ,1002 需要付款用户(等待),1003 已付款用户;
 //                try {
 //                    if (consultPayUserService.angelChargeCheck(openId)) {
@@ -313,10 +313,15 @@ public class ConsultWechatController extends BaseController {
                 String content = "嗨，亲爱的，你本月还剩" + consultSessionPropertyVo.getMonthTimes() + "次免费咨询的机会" + "每次咨询24小时内有效^_^\n";
                 WechatUtil.sendMsgToWechat(token, openId, content);
             }
-            if (null == consultSessionStatusVos || consultSessionStatusVos.size() == 0 || consultSessionStatusVos.get(0).getFirstTransTime() == null) {
+            if (null != consultSessionStatusVos && consultSessionStatusVos.size() > 0 && consultSessionStatusVos.get(0).getFirstTransTime() == null) {
                 String content = "嗨，亲爱的，你本月还剩" + consultSessionPropertyVo.getMonthTimes() + "次免费咨询的机会" + "每次咨询24小时内有效^_^\n";
                 WechatUtil.sendMsgToWechat(token, openId, content);
-            } else {
+            }
+            if (null == consultSessionStatusVos || consultSessionStatusVos.size() == 0) {
+                String content = "嗨，亲爱的，你本月还剩" + consultSessionPropertyVo.getMonthTimes() + "次免费咨询的机会" + "每次咨询24小时内有效^_^\n";
+                WechatUtil.sendMsgToWechat(token, openId, content);
+            }
+            if (null != consultSessionStatusVos && consultSessionStatusVos.size() > 0 && consultSessionStatusVos.get(0).getFirstTransTime() != null) {
                 long pastMillisSecond = DateUtils.pastMillisSecond(consultSessionStatusVos.get(0).getFirstTransTime());
                 if (pastMillisSecond < 24 * 60 * 60 * 1000) {
                     richConsultSession.setPayStatus(ConstantUtil.WITHIN_24HOURS);
