@@ -183,7 +183,7 @@ public class ConsultWechatController extends BaseController {
                     sessionId = consultSession.getId();
                 }
                 //咨询收费处理
-                consultCharge(openId, sessionId, consultSession);
+                Integer consultTimes = consultCharge(openId, sessionId, consultSession);
             }
 
             //会话创建成功，拿到了csChannel,给接诊员(或是医生)发送消息
@@ -272,7 +272,7 @@ public class ConsultWechatController extends BaseController {
             return messageContent;
         }
 
-        private void consultCharge(String openId, Integer sessionId, RichConsultSession richConsultSession) {
+        private Integer consultCharge(String openId, Integer sessionId, RichConsultSession richConsultSession) {
             //检测用户是否是收费用户,1001 为正常用户(无标签) ,1002 需要付款用户(等待),1003 已付款用户;
 //                try {
 //                    if (consultPayUserService.angelChargeCheck(openId)) {
@@ -293,7 +293,7 @@ public class ConsultWechatController extends BaseController {
                     .with(new Sort(Sort.Direction.ASC, "firstTransTime")).limit(1);
             List<ConsultSessionStatusVo> consultSessionStatusVos = consultRecordService.queryUserMessageList(query);
             ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(richConsultSession.getUserId());
-            if(consultSessionPropertyVo == null ){
+            if (consultSessionPropertyVo == null) {
                 consultSessionPropertyVo = new ConsultSessionPropertyVo();
                 consultSessionPropertyVo.setCreateTime(new Date());
                 consultSessionPropertyVo.setMonthTimes(4);
@@ -301,16 +301,16 @@ public class ConsultWechatController extends BaseController {
                 consultSessionPropertyVo.setSysUserId(openId);
                 consultSessionPropertyVo.setCreateBy(openId);
                 consultSessionPropertyService.insertUserConsultSessionProperty(consultSessionPropertyVo);
-                String content = "嗨，亲爱的，你本月还剩"+consultSessionPropertyVo.getMonthTimes()+"次免费咨询的机会" + "每次咨询24小时内有效^_^\n" ;
-                WechatUtil.sendMsgToWechat(token,openId, content);
+                String content = "嗨，亲爱的，你本月还剩" + consultSessionPropertyVo.getMonthTimes() + "次免费咨询的机会" + "每次咨询24小时内有效^_^\n";
+                WechatUtil.sendMsgToWechat(token, openId, content);
             }
-            if(null != consultSessionStatusVos && consultSessionStatusVos.size() > 0 && consultSessionStatusVos.get(0).getFirstTransTime() == null){
-                String content = "嗨，亲爱的，你本月还剩"+consultSessionPropertyVo.getMonthTimes()+"次免费咨询的机会" + "每次咨询24小时内有效^_^\n" ;
-                WechatUtil.sendMsgToWechat(token,openId, content);
+            if (null != consultSessionStatusVos && consultSessionStatusVos.size() > 0 && consultSessionStatusVos.get(0).getFirstTransTime() == null) {
+                String content = "嗨，亲爱的，你本月还剩" + consultSessionPropertyVo.getMonthTimes() + "次免费咨询的机会" + "每次咨询24小时内有效^_^\n";
+                WechatUtil.sendMsgToWechat(token, openId, content);
             }
-            if(null == consultSessionStatusVos || consultSessionStatusVos.size()==0){
-                String content = "嗨，亲爱的，你本月还剩"+consultSessionPropertyVo.getMonthTimes()+"次免费咨询的机会" + "每次咨询24小时内有效^_^\n" ;
-                WechatUtil.sendMsgToWechat(token,openId, content);
+            if (null == consultSessionStatusVos || consultSessionStatusVos.size() == 0) {
+                String content = "嗨，亲爱的，你本月还剩" + consultSessionPropertyVo.getMonthTimes() + "次免费咨询的机会" + "每次咨询24小时内有效^_^\n";
+                WechatUtil.sendMsgToWechat(token, openId, content);
             }
             if (null != consultSessionStatusVos && consultSessionStatusVos.size() > 0 && consultSessionStatusVos.get(0).getFirstTransTime() != null) {
                 long pastMillisSecond = DateUtils.pastMillisSecond(consultSessionStatusVos.get(0).getFirstTransTime());
@@ -320,25 +320,26 @@ public class ConsultWechatController extends BaseController {
                     String sysUserId = richConsultSession.getUserId();
                     //判断剩余次数,consultSessionStatusVo打标记
                     ConsultSessionPropertyVo propertyVo = consultPayUserService.selectUserSessionPropertyByVo(consultSessionPropertyVo);
-                    if (propertyVo != null ) {
-                        String content ;
+                    if (propertyVo != null) {
+                        String content;
                         richConsultSession.setPayStatus(ConstantUtil.USE_TIMES);
-                        if(propertyVo.getMonthTimes()>0){
-                            content = "嗨，亲爱的，你本月还剩"+propertyVo.getMonthTimes()+"次免费咨询的机会" + "每次咨询24小时内有效^_^\n";
-                        }else if(propertyVo.getPermTimes()>0){
-                            content = "嗨，亲爱的，你还剩"+propertyVo.getPermTimes()+"次永久免费咨询的机会" + "每次咨询24小时内有效^_^\n";
-                        }else{
+                        if (propertyVo.getMonthTimes() > 0) {
+                            content = "嗨，亲爱的，你本月还剩" + propertyVo.getMonthTimes() + "次免费咨询的机会" + "每次咨询24小时内有效^_^\n";
+                        } else if (propertyVo.getPermTimes() > 0) {
+                            content = "嗨，亲爱的，你还剩" + propertyVo.getPermTimes() + "次永久免费咨询的机会" + "每次咨询24小时内有效^_^\n";
+                        } else {
                             richConsultSession.setPayStatus(ConstantUtil.NO_PAY);
                             content = "嗨，亲爱的，本次咨询医生需要支付9.9元，享受24小时咨询时间\n" +
                                     ">>付费" + "<a href='http://120.25.161.33/keeper/wxPay/patientPay.do?serviceType=customerPay" + "&sessionId=" + sessionId + "'>点击这里去评价</a>" + "\n" +
                                     "-----------\n" +
                                     "求助客服请直接向分诊说明，不需付费\n";
-                            WechatUtil.sendMsgToWechat(token,sysUserId, content);
+                            WechatUtil.sendMsgToWechat(token, sysUserId, content);
                         }
                         WechatUtil.sendMsgToWechat(token, sysUserId, content);
                     }
                 }
             }
+            return consultSessionPropertyVo != null ? (consultSessionPropertyVo.getMonthTimes() + consultSessionPropertyVo.getPermTimes()) : null;
         }
     }
 
@@ -437,13 +438,13 @@ public class ConsultWechatController extends BaseController {
     void test() {
         List<Object> objectList = sessionRedisCache.getSessionIdByKey();
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY,0);
-        calendar.set(Calendar.MINUTE,0);
-        calendar.set(Calendar.SECOND,0);
-        for (Object o : objectList){
-           Integer sessionId = (Integer)o;
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        for (Object o : objectList) {
+            Integer sessionId = (Integer) o;
             ConsultSession consultSession = consultSessionService.selectByPrimaryKey(sessionId);
-            if(consultSession!=null && consultSession.getCreateTime().getTime() < (calendar.getTimeInMillis())){
+            if (consultSession != null && consultSession.getCreateTime().getTime() < (calendar.getTimeInMillis())) {
                 sessionRedisCache.removeConsultSessionBySessionId(consultSession.getId());
                 sessionRedisCache.removeUserIdSessionIdPair(consultSession.getUserId());
             }
