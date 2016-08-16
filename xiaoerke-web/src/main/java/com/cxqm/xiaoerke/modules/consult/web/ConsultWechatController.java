@@ -315,9 +315,11 @@ public class ConsultWechatController extends BaseController {
                 messageFlag = 1;
                 WechatUtil.sendMsgToWechat(token, openId, content);
             }
-            if (null == consultSessionStatusVos || consultSessionStatusVos.size() == 0 || consultSessionStatusVos.get(0).getFirstTransTime() == null && messageFlag == 0) {
-                String content = "嗨，亲爱的，你本月还剩" + consultSessionPropertyVo.getMonthTimes() + "次免费咨询的机会" + "每次咨询24小时内有效^_^\n";
-                WechatUtil.sendMsgToWechat(token, openId, content);
+            if (null == consultSessionStatusVos || consultSessionStatusVos.size() == 0 || consultSessionStatusVos.get(0).getFirstTransTime() == null) {
+                if(messageFlag == 0){
+                    String content = "嗨，亲爱的，你本月还剩" + consultSessionPropertyVo.getMonthTimes() + "次免费咨询的机会" + "每次咨询24小时内有效^_^\n";
+                    WechatUtil.sendMsgToWechat(token, openId, content);
+                }
             } else {
                 long pastMillisSecond = DateUtils.pastMillisSecond(consultSessionStatusVos.get(0).getFirstTransTime());
                 if (pastMillisSecond < 24 * 60 * 60 * 1000) {
