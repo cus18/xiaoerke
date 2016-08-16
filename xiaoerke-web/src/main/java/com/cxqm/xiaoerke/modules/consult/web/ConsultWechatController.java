@@ -296,6 +296,7 @@ public class ConsultWechatController extends BaseController {
                 consultSessionPropertyVo.setCreateTime(new Date());
                 consultSessionPropertyVo.setMonthTimes(4);
                 consultSessionPropertyVo.setPermTimes(0);
+                consultSessionPropertyVo.setSysUserId(openId);
                 consultSessionPropertyService.insertUserConsultSessionProperty(consultSessionPropertyVo);
             }
             if (null != consultSessionStatusVos && consultSessionStatusVos.size() > 0 && consultSessionStatusVos.get(0).getFirstTransTime()!=null) {
