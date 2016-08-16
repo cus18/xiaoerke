@@ -16,6 +16,7 @@ import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.service.UserInfoService;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
+import net.sf.json.JSONObject;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -518,9 +519,36 @@ public class ConsultUserController extends BaseController {
         request.put("remoteUrl", "http://rest.ihiss.com:9000/user/children");
         Map result = userInfoService.createOrUpdateThirdPartPatientInfo(request);
         if (result != null && result.size() > 0) {
-            if (result.get("result") == 1) {
-                Runnable thread = new saveCoopThirdBabyInfoThread(request);
-                threadExecutor.execute(thread);
+            if (String.valueOf(result.get("result")).equals("1")) {
+                /*Runnable thread = new saveCoopThirdBabyInfoThread(request);
+                threadExecutor.execute(thread);*/
+                String childrenUrl = (String) request.get("remoteUrl"); //获取当前登录人的孩子信息
+                String token = (String) request.get("token");
+                String access_token = "{'X-Access-Token':'" + token + "'}";
+                String method = "GET";
+                String dataType = "json";
+                String babyInfo = CoopConsultUtil.getCurrentUserInfo(childrenUrl, method, dataType, access_token, "", 2);
+                JSONObject jsonObject = null;
+                if (StringUtils.isNotNull(babyInfo)) {
+                    JSONArray jsonArray = new JSONArray(babyInfo);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        jsonObject = JSONObject.fromObject(jsonArray.get(i).toString());
+                        CoopThirdBabyInfoVo coopThirdBabyInfoVo = new CoopThirdBabyInfoVo();
+                        coopThirdBabyInfoVo.setCreateDate(new Date());
+                        coopThirdBabyInfoVo.setDelFlag("0");
+                        coopThirdBabyInfoVo.setSource((String) request.get("source"));
+                        coopThirdBabyInfoVo.setSysUserId((String) request.get("sys_user_id"));
+                        try {
+                            coopThirdBabyInfoVo.setBirthday(new SimpleDateFormat("yyyy-mm-DD").parse((String) jsonObject.get("birthday")));
+                            coopThirdBabyInfoVo.setGender((String) jsonObject.get("sex"));
+                            coopThirdBabyInfoVo.setName((String) jsonObject.get("name"));
+                            coopThirdBabyInfoVo.setStatus((String) jsonObject.get("id"));
+                            coopThirdBabyInfoService.addCoopThirdBabyInfo(coopThirdBabyInfoVo);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
             }
             response.put("patientId", result.get("sys_user_id"));
         }
@@ -528,7 +556,7 @@ public class ConsultUserController extends BaseController {
     }
 
 
-    public class saveCoopThirdBabyInfoThread implements Runnable {
+   /* public class saveCoopThirdBabyInfoThread implements Runnable {
         private HashMap<String, Object> params;
 
         public saveCoopThirdBabyInfoThread(HashMap<String, Object> params) {
@@ -554,7 +582,7 @@ public class ConsultUserController extends BaseController {
                     coopThirdBabyInfoVo.setSource((String) params.get("source"));
                     coopThirdBabyInfoVo.setSysUserId((String) params.get("sys_user_id"));
                     try {
-                        coopThirdBabyInfoVo.setBirthday(new SimpleDateFormat("yyyy-mm-DD hh:MM:ss").parse((String) jsonObject.get("birthday")));
+                        coopThirdBabyInfoVo.setBirthday(new SimpleDateFormat("yyyy-mm-DD").parse((String) jsonObject.get("birthday")));
                         coopThirdBabyInfoVo.setGender((String) jsonObject.get("sex"));
                         coopThirdBabyInfoVo.setName((String) jsonObject.get("name"));
                         coopThirdBabyInfoVo.setStatus((String) jsonObject.get("id"));
@@ -565,5 +593,5 @@ public class ConsultUserController extends BaseController {
                 }
             }
         }
-    }
+    }*/
 }
