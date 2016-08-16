@@ -293,7 +293,7 @@ public class ConsultWechatController extends BaseController {
                     .with(new Sort(Sort.Direction.ASC, "firstTransTime")).limit(1);
             List<ConsultSessionStatusVo> consultSessionStatusVos = consultRecordService.queryUserMessageList(query);
             ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(richConsultSession.getUserId());
-            if(consultSessionPropertyVo == null ){//|| consultSessionStatusVos.get(0).getFirstTransTime() == null
+            if(consultSessionPropertyVo == null ){
                 consultSessionPropertyVo = new ConsultSessionPropertyVo();
                 consultSessionPropertyVo.setCreateTime(new Date());
                 consultSessionPropertyVo.setMonthTimes(4);
