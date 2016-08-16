@@ -6,10 +6,7 @@ package com.cxqm.xiaoerke.modules.consult.web;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.persistence.Page;
-import com.cxqm.xiaoerke.common.utils.DateUtils;
-import com.cxqm.xiaoerke.common.utils.FrontUtils;
-import com.cxqm.xiaoerke.common.utils.StringUtils;
-import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.*;
@@ -253,10 +250,6 @@ public class ConsultUserController extends BaseController {
         String csUserId = String.valueOf(params.get("csUserId"));
         String csuserType =(String)params.get("userType");
         ConcurrentHashMap<String,Object> needPayList = new ConcurrentHashMap<String, Object>();
-        try{
-            needPayList = consultPayUserService.getneepPayConsultSession((String)params.get("csUserId"));
-        }catch (Exception e){e.printStackTrace();}
-
 
         if(StringUtils.isNotNull(csUserId)){
             int pageNo = (Integer) params.get("pageNo");
@@ -273,11 +266,8 @@ public class ConsultUserController extends BaseController {
                     HashMap<String,Object> searchMap = new HashMap<String, Object>();
                     RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(consultSession.getId());
 
-//                    RichConsultSession sessionInfo = new RichConsultSession();
-//                    sessionInfo = sessionRedisCache.getConsultSessionBySessionId(consultSession.getId());
-                    Query sessionquery = (new Query()).addCriteria(where("sessionId").is(consultSession.getId()));
+                    Query sessionquery = (new Query()).addCriteria(where("sessionId").is(""+consultSession.getId()+""));
                     ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(sessionquery);
-
 
                     if(richConsultSession !=null && StringUtils.isNotNull(richConsultSession.getUserId())){
                         String userId = richConsultSession.getUserId();
@@ -292,7 +282,13 @@ public class ConsultUserController extends BaseController {
                         searchMap.put("messageNotSee",true);
                         searchMap.put("dateTime",richConsultSession.getCreateTime());
                         searchMap.put("consultValue",ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
-                        searchMap.put("notifyType",consultSessionStatusVo.getPayStatus());
+
+                        if(null != consultSessionStatusVo&&(ConstantUtil.PAY_SUCCESS+ConstantUtil.USE_TIMES+ConstantUtil.WITHIN_24HOURS).indexOf(consultSessionStatusVo.getPayStatus())>-1){
+                            searchMap.put("notifyType","1001");
+                        } else{
+                            searchMap.put("notifyType","1002");
+                        }
+
 
 //                            if(null != needPayList&&consultPayUserService.angelChargeCheck(userId)){
 //
