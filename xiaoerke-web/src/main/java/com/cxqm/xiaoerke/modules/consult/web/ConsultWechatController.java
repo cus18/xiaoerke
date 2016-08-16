@@ -198,9 +198,9 @@ public class ConsultWechatController extends BaseController {
                     obj.put("dateTime", DateUtils.DateToStr(new Date()));
                     obj.put("senderName", userName);
                     if (consultTimes > 0) {
-                        obj.put("notifyType", "1002");
-                    } else {
                         obj.put("notifyType", "1001");
+                    } else {
+                        obj.put("notifyType", "1002");
                     }
 
                     obj.put("serverAddress", serverAddress);
@@ -337,7 +337,7 @@ public class ConsultWechatController extends BaseController {
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                         } else {
                             richConsultSession.setPayStatus(ConstantUtil.NO_PAY);
-                            content = "嗨，亲爱的，本次咨询医生需要支付9.9元，享受24小时咨询时间\n" +
+                            content = "嗨，亲爱的，你本月免费咨询次数已用完，本次咨询医生需要支付9.9元，享受24小时咨询时间\n" +
                                     ">>" + "<a href='http://120.25.161.33/keeper/wxPay/patientPay.do?serviceType=customerPay" + "&sessionId=" + sessionId + "'>付费</a>" + "\n" +
                                     "-----------\n" +
                                     "求助客服请直接向分诊说明，不需付费\n";
