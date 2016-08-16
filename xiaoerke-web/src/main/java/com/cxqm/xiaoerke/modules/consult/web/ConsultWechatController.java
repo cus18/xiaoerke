@@ -332,8 +332,10 @@ public class ConsultWechatController extends BaseController {
                         String content;
                         if (consultSessionPropertyVo.getMonthTimes() > 0) {
                             content = "嗨，亲爱的，你本月还剩" + consultSessionPropertyVo.getMonthTimes() + "次免费咨询的机会" + "每次咨询24小时内有效^_^\n";
+                            WechatUtil.sendMsgToWechat(token, sysUserId, content);
                         } else if (consultSessionPropertyVo.getPermTimes() > 0) {
                             content = "嗨，亲爱的，你还剩" + consultSessionPropertyVo.getPermTimes() + "次永久免费咨询的机会" + "每次咨询24小时内有效^_^\n";
+                            WechatUtil.sendMsgToWechat(token, sysUserId, content);
                         } else {
                             richConsultSession.setPayStatus(ConstantUtil.NO_PAY);
                             content = "嗨，亲爱的，本次咨询医生需要支付9.9元，享受24小时咨询时间\n" +
@@ -342,7 +344,6 @@ public class ConsultWechatController extends BaseController {
                                     "求助客服请直接向分诊说明，不需付费\n";
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                         }
-                        WechatUtil.sendMsgToWechat(token, sysUserId, content);
                     }
                 }
             }
