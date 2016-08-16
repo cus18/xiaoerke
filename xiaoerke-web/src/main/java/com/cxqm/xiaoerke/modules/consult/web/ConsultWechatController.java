@@ -295,7 +295,7 @@ public class ConsultWechatController extends BaseController {
             String token = (String) userWechatParam.get("token");
             //判断上次收费咨询是不是在24个小时以内 zdl
             Query query = new Query(new Criteria().where("userId").is(openId))
-                    .with(new Sort(Sort.Direction.ASC, "firstTransTime")).limit(1);
+                    .with(new Sort(Sort.Direction.DESC, "firstTransTime")).limit(1);
             List<ConsultSessionStatusVo> consultSessionStatusVos = consultRecordService.queryUserMessageList(query);
             ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(richConsultSession.getUserId());
             if (consultSessionPropertyVo == null) {
