@@ -136,7 +136,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                 userNew.setUserType(User.USER_TYPE_USER);
                 userNew.setMarketer(source);
                 userNew.setName((String) params.get("userName"));
-                userNew.setOpenid((String) params.get("thirdId"));
+                userNew.setOpenid(String.valueOf(params.get("thirdId")));
                 int result = userdao.insert(userNew);
                 if (result == 1) {
                     PatientVo patientVo = new PatientVo();
@@ -144,7 +144,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                     patientVo.setId(sys_patient_id);
                     patientVo.setSysUserId((String) params.get("sys_user_id"));
                     patientVo.setStatus("0");
-                    patientVo.setGender((String) params.get("userSex"));
+                    patientVo.setGender(String.valueOf(params.get("userSex")));
                     patientDao.insert(patientVo);
                 }
                 response.put("sys_user_id", sys_user_id);
@@ -175,7 +175,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                     patientVo.setId(sys_patient_id);
                     patientVo.setSysUserId(sys_user_id);
                     patientVo.setStatus("0");
-                    patientVo.setGender((String) params.get("userSex"));
+                    patientVo.setGender(String.valueOf(params.get("userSex")));
                     patientDao.insert(patientVo);
                 }
                 response.put("sys_user_id", sys_user_id);
