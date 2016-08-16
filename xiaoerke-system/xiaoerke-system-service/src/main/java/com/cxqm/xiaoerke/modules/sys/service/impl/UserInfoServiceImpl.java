@@ -4,6 +4,7 @@ import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.CoopConsultUtil;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.modules.consult.dao.CoopThirdBabyInfoDao;
 import com.cxqm.xiaoerke.modules.consult.entity.CoopThirdBabyInfoVo;
 import com.cxqm.xiaoerke.modules.consult.service.impl.CoopThirdBabyInfoServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.dao.IllnessDao;
@@ -40,12 +41,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@Autowired
 	private UserDao userdao;
-	
-	@Autowired
-	private UserDao userDao;
 
     @Autowired
-    private CoopThirdBabyInfoServiceImpl coopThirdBabyInfoService = SpringContextHolder.getBean("coopThirdBabyInfoServiceImpl");
+    private CoopThirdBabyInfoDao coopThirdBabyInfoDao;
 
     private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
@@ -158,10 +156,10 @@ public class UserInfoServiceImpl implements UserInfoService {
                 userNew.setMarketer(source);
                 userNew.setName((String) params.get("userName"));
                 userNew.setOpenid((String) params.get("thirdId"));
-                int result = userDao.insert(userNew);
+                int result = userdao.insert(userNew);
                 if (result == 1) {
-                    params.put("sys_user_id",sys_user_id);
-                    params.put("remoteUrl","http://rest.ihiss.com:9000/user/children");
+                    params.put("sys_user_id", sys_user_id);
+                    params.put("remoteUrl", "http://rest.ihiss.com:9000/user/children");
                     Runnable thread = new saveCoopThirdBabyInfoThread(params);
                     threadExecutor.execute(thread);
                 }
@@ -183,7 +181,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                 userNew.setUserType(User.USER_TYPE_USER);
                 userNew.setMarketer(source);
                 userNew.setName((String) params.get("userName"));
-                int result = userDao.insert(userNew);
+                int result = userdao.insert(userNew);
                 if (result == 1) {
                     PatientVo patientVo = new PatientVo();
                     String sys_patient_id = UUID.randomUUID().toString().replaceAll("-", "");
@@ -229,7 +227,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                         coopThirdBabyInfoVo.setGender((String) jsonObject.get("sex"));
                         coopThirdBabyInfoVo.setName((String) jsonObject.get("name"));
                         coopThirdBabyInfoVo.setStatus((String) jsonObject.get("id"));
-                        coopThirdBabyInfoService.addCoopThirdBabyInfo(coopThirdBabyInfoVo);
+                        coopThirdBabyInfoDao.addCoopThirdBabyInfo(coopThirdBabyInfoVo);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
