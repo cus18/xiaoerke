@@ -274,7 +274,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                             "content": data.showFile,
                             "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                             "senderId": $scope.patientId,
-                            "senderName": $scope.senderName,
+                            "senderName": "微家园"+$scope.patientName,
                             "sessionId": parseInt($scope.sessionId),
                             "avatar":patientImg //"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
                         };
@@ -309,7 +309,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                         "content": $("#saytext").val(),
                         "dateTime": moment().format("YYYY-MM-DD HH:mm:ss"),
                         "senderId":$scope.patientId,
-                        "senderName":$scope.patientName,
+                        "senderName":"微家园"+$scope.patientName,
                         "sessionId":parseInt($scope.sessionId),
                         "source":$scope.source,
                         "avatar":patientImg //"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
