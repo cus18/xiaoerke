@@ -338,7 +338,7 @@ public class ConsultWechatController extends BaseController {
                         } else {
                             richConsultSession.setPayStatus(ConstantUtil.NO_PAY);
                             content = "嗨，亲爱的，本次咨询医生需要支付9.9元，享受24小时咨询时间\n" +
-                                    ">>" + "<a href='http://120.25.161.33/keeper/wxPay/patientPay.do?serviceType=customerPay" + "&sessionId=" + sessionId + "'>付费</a>" + "\n" +
+                                    ">>" + "<a href='http://s120.xiaork.com/keeper/wxPay/patientPay.do?serviceType=customerPay" + "&sessionId=" + sessionId + "'>付费</a>" + "\n" +
                                     "-----------\n" +
                                     "求助客服请直接向分诊说明，不需付费\n";
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
