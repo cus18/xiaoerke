@@ -273,8 +273,11 @@ public class ConsultUserController extends BaseController {
                     HashMap<String,Object> searchMap = new HashMap<String, Object>();
                     RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(consultSession.getId());
 
-                    RichConsultSession sessionInfo = new RichConsultSession();
-                    sessionInfo = sessionRedisCache.getConsultSessionBySessionId(consultSession.getId());
+//                    RichConsultSession sessionInfo = new RichConsultSession();
+//                    sessionInfo = sessionRedisCache.getConsultSessionBySessionId(consultSession.getId());
+                    Query sessionquery = (new Query()).addCriteria(where("sessionId").is(consultSession.getId()));
+                    ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(sessionquery);
+
 
                     if(richConsultSession !=null && StringUtils.isNotNull(richConsultSession.getUserId())){
                         String userId = richConsultSession.getUserId();
@@ -289,7 +292,7 @@ public class ConsultUserController extends BaseController {
                         searchMap.put("messageNotSee",true);
                         searchMap.put("dateTime",richConsultSession.getCreateTime());
                         searchMap.put("consultValue",ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
-                        searchMap.put("notifyType",sessionInfo.getPayStatus());
+                        searchMap.put("notifyType",consultSessionStatusVo.getPayStatus());
 
 //                            if(null != needPayList&&consultPayUserService.angelChargeCheck(userId)){
 //
