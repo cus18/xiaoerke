@@ -2,13 +2,13 @@ package com.cxqm.xiaoerke.modules.sys.service;
 
 
 import com.cxqm.xiaoerke.common.persistence.Page;
+import com.cxqm.xiaoerke.modules.sys.entity.PatientVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cxqm.xiaoerke.modules.sys.entity.PatientVo;
-
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Transactional(readOnly = false)
 public interface UserInfoService {
@@ -32,5 +32,5 @@ public interface UserInfoService {
 	//根据条件查询用户信息sunxiao
 	List<User> getUserListByInfo(User user);
 
-	String createOrUpdateThirdPartPatientInfo(HashMap map);
+	Map createOrUpdateThirdPartPatientInfo(HashMap map);
 }
