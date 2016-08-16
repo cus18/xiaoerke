@@ -39,30 +39,6 @@ angular.module('controllers', ['luegg.directives'])
             $scope.waitJoinNum = 0; //医生待接入的用户数，是动态变化的数
             $scope.glued = true; //angular滚动条的插件预制参数，让对话滚动条，每次都定位底部，当新的聊天数据到达时
             var umbrellaCustomerList = "75cefafe00364bbaaaf7b61089994e22,3b91fe8b7ce143918012ef3ab4baf1e0,00032bd90d724d0sa63a4d6esa0e8dbf";
-            /*$scope.alreadyJoinPatientConversation = [
-                {
-                    patientName:'大熊猫',
-                    dateTime:'12345',
-                    patientId:'12345',
-                    number:'3'
-                },{
-                    patientName:'大熊猫',
-                    dateTime:'12345',
-                    patientId:'1234',
-                    number:'3'
-                },{
-                    patientName:'大熊猫',
-                    dateTime:'12345',
-                    patientId:'123',
-                    number:'3'
-                },{
-                    patientName:'大熊猫',
-                    dateTime:'12345',
-                    patientId:'12',
-                    number:'3'
-                }
-            ];*/
-
             //各个子窗口的开关变量
             $scope.showFlag = {
                 rankList: false,
@@ -1510,7 +1486,7 @@ angular.module('controllers', ['luegg.directives'])
                     getIframeSrc();
                 }
             };
-            //启动一个监控消息状态的定时器
+            /*//启动一个监控消息状态的定时器
             var setIntervalTimers = function(){
                 $.each($scope.alreadyJoinPatientConversation,function(index,value){
                    var flag = moment().subtract(5, 'minute').isAfter(value.dateTime);
@@ -1521,7 +1497,7 @@ angular.module('controllers', ['luegg.directives'])
             };
             var heartBeatCheckPay = function(){
                 $scope.heartBeatPay = setInterval(setIntervalTimers,6000);
-            };
+            };*/
             //病人会话的内容的发送
             var updateAlreadyJoinPatientConversationFromPatient = function(conversationData){
                 var updateFlag = false;
