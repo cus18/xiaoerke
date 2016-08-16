@@ -532,7 +532,6 @@ public class ConsultUserController extends BaseController {
 
     public class saveCoopThirdBabyInfoThread implements Runnable {
         private HashMap<String, Object> params;
-
         public saveCoopThirdBabyInfoThread(HashMap<String, Object> params) {
             this.params = params;
         }
