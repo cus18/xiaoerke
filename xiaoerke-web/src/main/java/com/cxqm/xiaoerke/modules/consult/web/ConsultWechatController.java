@@ -186,7 +186,7 @@ public class ConsultWechatController extends BaseController {
                     sessionId = consultSession.getId();
                 }
                 //咨询收费处理
-                consultCharge(openId, sessionId, consultSession, consultTimes);
+                consultTimes = consultCharge(openId, sessionId, consultSession);
             }
 
             //会话创建成功，拿到了csChannel,给接诊员(或是医生)发送消息
@@ -280,7 +280,7 @@ public class ConsultWechatController extends BaseController {
             return messageContent;
         }
 
-        private void consultCharge(String openId, Integer sessionId, RichConsultSession richConsultSession, Integer consultTimes) {
+        private Integer consultCharge(String openId, Integer sessionId, RichConsultSession richConsultSession) {
             //检测用户是否是收费用户,1001 为正常用户(无标签) ,1002 需要付款用户(等待),1003 已付款用户;
 //                try {
 //                    if (consultPayUserService.angelChargeCheck(openId)) {
@@ -342,7 +342,7 @@ public class ConsultWechatController extends BaseController {
                     }
                 }
             }
-            consultTimes = consultSessionPropertyVo != null ? (consultSessionPropertyVo.getMonthTimes() + consultSessionPropertyVo.getPermTimes()) : null;
+            return consultSessionPropertyVo != null ? (consultSessionPropertyVo.getMonthTimes() + consultSessionPropertyVo.getPermTimes()) : null;
         }
     }
 
