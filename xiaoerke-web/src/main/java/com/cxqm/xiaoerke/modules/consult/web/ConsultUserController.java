@@ -497,6 +497,7 @@ public class ConsultUserController extends BaseController {
         String userPhone = (String) params.get("patientPhone");
         String userName = (String) params.get("patientName");
         Integer userSex = (Integer) params.get("patientSex");
+        String remoteUrl = String.valueOf(params.get("remoteUrl"));
         String source = "";
         String thirdId = "";
         if (params.containsKey("source")) {
@@ -516,7 +517,7 @@ public class ConsultUserController extends BaseController {
         request.put("token", params.get("token"));
         String sys_user_id = UUID.randomUUID().toString().replaceAll("-", "");
         request.put("sys_user_id", sys_user_id);
-        request.put("remoteUrl", "http://rest.ihiss.com:9000/user/children");
+        request.put("remoteUrl", remoteUrl);
         Map result = userInfoService.createOrUpdateThirdPartPatientInfo(request);
         if (result != null && result.size() > 0) {
             if (String.valueOf(result.get("result")).equals("1") && "WJY".equalsIgnoreCase(source)) {

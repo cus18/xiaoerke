@@ -18,6 +18,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
             var patientImg ;
             $scope.fucengLock = true;//第一次进入页面的浮层
             $scope.alertFlag = false;
+            $scope.remoteBabyUrl = "http://rest.ihiss.com:9000/user/children";
             /*$scope.openFileListFlag = false;
              $location.hash("fileInput");
              $anchorScroll();
@@ -67,7 +68,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                     patientImg = data.avatar;
                     $scope.patientName = data.name==null?data.mobile:data.name;
                     CreateOrUpdateWJYPatientInfo.save({patientPhone:data.mobile,
-                        patientName:$scope.patientName,patientSex:data.sex,source:$scope.source,thirdId:data.id,token:token},function(data){
+                        patientName:$scope.patientName,patientSex:data.sex,source:$scope.source,thirdId:data.id,token:token,remoteUrl:$scope.remoteBabyUrl},function(data){
                         $scope.patientId = data.patientId;
                         GetSessionId.get({"userId":$scope.patientId},function(data){
                             console.log("data",data);
