@@ -231,7 +231,7 @@ public class OlyGamesController extends BaseController {
                 if("4".equals(prize)){
                     continue;
                 }
-                sb.append(allPrizesMap.get(prize)+"、");
+                sb.append(allPrizesMap.get(prize));
             }
             Map<String, Object> prizeMap = new HashMap<String, Object>();
             String headImg = null;
@@ -243,7 +243,7 @@ public class OlyGamesController extends BaseController {
 
             prizeMap.put("nickName", nickName);
             prizeMap.put("headImg", headImg==null?"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png":headImg);
-            prizeMap.put("prizeName", sb.toString().substring(0,sb.toString().length()-1));
+            prizeMap.put("prizeName", sb.toString());
             prizeList.add(prizeMap);
         }
         responseMap.put("prizeList", prizeList);
