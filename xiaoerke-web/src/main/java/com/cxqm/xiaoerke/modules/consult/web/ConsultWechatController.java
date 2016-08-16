@@ -303,7 +303,12 @@ public class ConsultWechatController extends BaseController {
                 consultSessionPropertyService.insertUserConsultSessionProperty(consultSessionPropertyVo);
                 String content = "嗨，亲爱的，你本月还剩"+consultSessionPropertyVo.getMonthTimes()+"次免费咨询的机会" + "每次咨询24小时内有效^_^\n" ;
                 WechatUtil.sendMsgToWechat(token,openId, content);
-            }else if(null != consultSessionStatusVos && consultSessionStatusVos.size() > 0 && consultSessionStatusVos.get(0).getFirstTransTime() == null){
+            }
+            if(null != consultSessionStatusVos && consultSessionStatusVos.size() > 0 && consultSessionStatusVos.get(0).getFirstTransTime() == null){
+                String content = "嗨，亲爱的，你本月还剩"+consultSessionPropertyVo.getMonthTimes()+"次免费咨询的机会" + "每次咨询24小时内有效^_^\n" ;
+                WechatUtil.sendMsgToWechat(token,openId, content);
+            }
+            if(null == consultSessionStatusVos || consultSessionStatusVos.size()==0){
                 String content = "嗨，亲爱的，你本月还剩"+consultSessionPropertyVo.getMonthTimes()+"次免费咨询的机会" + "每次咨询24小时内有效^_^\n" ;
                 WechatUtil.sendMsgToWechat(token,openId, content);
             }
