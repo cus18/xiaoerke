@@ -135,7 +135,7 @@ public class ConsultWechatController extends BaseController {
             // 是基于微信，还是H5，还是合作第三方的来源，以便按照不同的逻辑来处理。
             String source = "wxcxqm";
             Integer notifyType = 1001;
-
+            Integer consultTimes = 0;
             Channel csChannel = null;
             //根据用户的openId，判断redis中，是否有用户正在进行的session
             Integer sessionId = sessionRedisCache.getSessionIdByUserId(userId);
@@ -183,7 +183,7 @@ public class ConsultWechatController extends BaseController {
                     sessionId = consultSession.getId();
                 }
                 //咨询收费处理
-                Integer consultTimes = consultCharge(openId, sessionId, consultSession);
+                consultTimes = consultCharge(openId, sessionId, consultSession);
             }
 
             //会话创建成功，拿到了csChannel,给接诊员(或是医生)发送消息
@@ -194,7 +194,12 @@ public class ConsultWechatController extends BaseController {
                     obj.put("senderId", userId);
                     obj.put("dateTime", DateUtils.DateToStr(new Date()));
                     obj.put("senderName", userName);
-                    obj.put("notifyType", notifyType);
+                    if(consultTimes>0){
+                        obj.put("notifyType", "1002");
+                    }else{
+                        obj.put("notifyType", "1001");
+                    }
+
                     obj.put("serverAddress", serverAddress);
                     System.out.println("serverAddress------" + serverAddress);
                     obj.put("source", consultSession.getSource());
