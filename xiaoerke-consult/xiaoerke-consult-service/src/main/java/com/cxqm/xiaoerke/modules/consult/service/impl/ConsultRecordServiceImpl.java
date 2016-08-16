@@ -246,7 +246,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService{
         consultSessionStatusVo.setCsUserId(consultSession.getCsUserId());
         consultSessionStatusVo.setSource(consultSession.getSource());
         consultSessionStatusVo.setCreateDate(new Date());
-        consultSessionStatusVo.setPayStatus(ConstantUtil.NO_PAY);
+        consultSessionStatusVo.setPayStatus(consultSession.getPayStatus());
         consultSessionStatusVo.setFirstTransTime(null);
         consultRecordMongoDBService.upsertConsultSessionStatusVo(consultSessionStatusVo);
     }
