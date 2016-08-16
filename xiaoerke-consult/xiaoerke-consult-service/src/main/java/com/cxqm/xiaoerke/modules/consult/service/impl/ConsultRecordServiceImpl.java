@@ -3,6 +3,7 @@ package com.cxqm.xiaoerke.modules.consult.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
+import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.OSSObjectTool;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
@@ -244,7 +245,8 @@ public class ConsultRecordServiceImpl implements ConsultRecordService{
         consultSessionStatusVo.setCsUserName(consultSession.getCsUserName());
         consultSessionStatusVo.setCsUserId(consultSession.getCsUserId());
         consultSessionStatusVo.setSource(consultSession.getSource());
-        consultSessionStatusVo.setPayStatus(consultSession.getPayStatus());
+        consultSessionStatusVo.setCreateDate(new Date());
+        consultSessionStatusVo.setPayStatus(ConstantUtil.NO_PAY);
         consultSessionStatusVo.setFirstTransTime(null);
         consultRecordMongoDBService.upsertConsultSessionStatusVo(consultSessionStatusVo);
     }
