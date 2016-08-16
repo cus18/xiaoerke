@@ -286,6 +286,8 @@ public class ConsultWechatController extends BaseController {
 //                } catch (Exception e) {
 //                    e.printStackTrace();
 //                }
+            Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+            String token = (String) userWechatParam.get("token");
             //判断上次收费咨询是不是在24个小时以内 zdl
             Query query = new Query(new Criteria().where("userId").is(openId))
                     .with(new Sort(Sort.Direction.ASC, "firstTransTime")).limit(1);
@@ -299,14 +301,14 @@ public class ConsultWechatController extends BaseController {
                 consultSessionPropertyVo.setSysUserId(openId);
                 consultSessionPropertyVo.setCreateBy(openId);
                 consultSessionPropertyService.insertUserConsultSessionProperty(consultSessionPropertyVo);
+                String content = "嗨，亲爱的，你本月还剩"+4+"次免费咨询的机会" + "每次咨询24小时内有效^_^\n" ;
+                WechatUtil.sendMsgToWechat(token,openId, content);
             }
             if (null != consultSessionStatusVos && consultSessionStatusVos.size() > 0 && consultSessionStatusVos.get(0).getFirstTransTime()!=null) {
                 long pastMillisSecond = DateUtils.pastMillisSecond(consultSessionStatusVos.get(0).getFirstTransTime());
                 if (pastMillisSecond < 24 * 60 * 60 * 1000) {
                     richConsultSession.setPayStatus(ConstantUtil.WITHIN_24HOURS);
                 } else {
-                    Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-                    String token = (String) userWechatParam.get("token");
                     String sysUserId = richConsultSession.getUserId();
                     //判断剩余次数,consultSessionStatusVo打标记
                     ConsultSessionPropertyVo propertyVo = consultPayUserService.selectUserSessionPropertyByVo(consultSessionPropertyVo);
