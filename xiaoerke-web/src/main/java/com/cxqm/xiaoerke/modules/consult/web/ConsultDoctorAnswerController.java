@@ -140,7 +140,8 @@ public class ConsultDoctorAnswerController extends BaseController {
             tranMap.put("myAnswer",params.get("answer"));
         }else if(answerType.equals("commonAnswer") || answerType.equals("diagnosis")){
             String doctorManagerStr = Global.getConfig("doctorManager.list");
-            String csUserId = "8ab94e95afe448dab66403fc5407d0ca";// UserUtils.getUser().getId()
+        //    String csUserId = "8ab94e95afe448dab66403fc5407d0ca";// UserUtils.getUser().getId()
+            String csUserId = UserUtils.getUser().getId();
             if (doctorManagerStr.indexOf(csUserId) != -1) {
                 if(answerType.equals("diagnosis")){
                     tranMap.put("diagnosis",params.get("answer"));
