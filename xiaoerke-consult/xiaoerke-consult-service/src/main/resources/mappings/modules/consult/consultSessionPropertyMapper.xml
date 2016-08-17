@@ -120,10 +120,8 @@
   <update id="addPermTimes" parameterType="java.lang.String">
     update consult_session_property
     set
-    <if test="">
       perm_times = perm_times+1
-    </if>
-    where sys_user_id = #{userId,jdbcType=VARCHAR},
+    where sys_user_id = #{userId,jdbcType=VARCHAR}
   </update>
   <select id="findConsultSessionPropertyByUserId" parameterType="java.lang.String" resultType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo">
     select
