@@ -166,6 +166,23 @@ define(['appUmbrella'], function(app){
                             public: true
                         }
                     })
+                    .state('umbrellaPublicize', {
+                        url: '/umbrellaPublicize',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'umbrellaPublicizeCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.umbrellaPublicizeCtrl',
+                                    ['js/controllers/umbrella/umbrellaPublicizeCtrl.js?ver='+umbrellaVersion,
+                                        'styles/umbrella/umbrellaCommon.less?ver='+umbrellaVersion,
+                                        'styles/umbrella/umbrellaPublicize.less?ver='+umbrellaVersion],
+                                    'js/views/umbrella/umbrellaPublicize.html?ver='+umbrellaVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
                     .state('umbrellaDemo', {
                         url: '/umbrellaDemo',
                         templateProvider: function() { return lazyDeferred.promise;},
