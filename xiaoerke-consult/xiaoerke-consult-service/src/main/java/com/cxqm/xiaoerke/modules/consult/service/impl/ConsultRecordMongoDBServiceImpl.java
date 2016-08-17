@@ -133,7 +133,13 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		WriteResult writeResult = null;
 		ConsultSessionStatusVo  StatusVo = this.findOneConsultSessionStatusVo(query);
 		if(StatusVo != null){
-			writeResult = mongoTemplate.updateMulti(query,new Update().set("lastMessageTime", new Date()), ConsultSessionStatusVo.class);
+			String payStauts = consultSessionStatusVo.getPayStatus();
+			if(null != payStauts){
+				writeResult = mongoTemplate.updateMulti(query,new Update().set("lastMessageTime", new Date()).set("payStatus",consultSessionStatusVo.getPayStatus()), ConsultSessionStatusVo.class);
+			}else{
+				writeResult = mongoTemplate.updateMulti(query,new Update().set("lastMessageTime", new Date()), ConsultSessionStatusVo.class);
+			}
+
 		}else {
 			mongoTemplate.insert(consultSessionStatusVo, "consultSessionStatusVo");
 		}
