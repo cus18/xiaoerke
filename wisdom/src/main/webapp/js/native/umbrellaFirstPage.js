@@ -9,9 +9,9 @@ document.write('<scr'+'ipt src="' + webpath + '/js/libs/angular-route.min.js"></
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.event.drag-1.5.min.js"></scr'+'ipt>');
 document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.touchSlider.js"></scr'+'ipt>');
 
-var version="b"; /*·½°¸°æ±¾*/
+var version="b"; /*æ–¹æ¡ˆç‰ˆæœ¬*/
 var shareUmbrellaId = "0";
-var nickName="ÎÒÕæĞÄ";
+var nickName="æˆ‘çœŸå¿ƒ";
 var openid;
 
 $(document).ready(function() {
@@ -19,7 +19,7 @@ $(document).ready(function() {
     shareUmbrellaId = GetQueryString("id") == null?120000000:GetQueryString("id");
     recordLogs("UmbrellaShareFirstPage_"+ shareUmbrellaId);
     $.ajax({
-        url:"umbrella/getOpenid",// Ìø×ªµ½ action
+        url:"umbrella/getOpenid",// è·³è½¬åˆ° action
         async:true,
         type:'post',
         cache:false,
@@ -38,7 +38,7 @@ $(document).ready(function() {
                     type:'post',
                     data: "{'openid':'"+openid+"'}",
                     //data: "{'openid':'"+data.openid+"'}",
-                   // data: "{'openid':'o3_NPwlfeHYBUk3oFOuvhyrfKwDQ'}",
+                    // data: "{'openid':'o3_NPwlfeHYBUk3oFOuvhyrfKwDQ'}",
                     cache:false,
                     dataType:'json',
                     contentType: "application/json; charset=utf-8",
@@ -62,12 +62,12 @@ $(document).ready(function() {
 
 var umbrellaFirstPageInit = function() {
     $("#NoShareDiv").hide();
-    $(".shadow-content").hide();//Ã¿´ÎÒ³Ãæ¼ÓÔØÊ±ÏÈÒş²ØÌáÊ¾¸¡²ã
+    $(".shadow-content").hide();//æ¯æ¬¡é¡µé¢åŠ è½½æ—¶å…ˆéšè—æç¤ºæµ®å±‚
     ifExistOrder("2");
     recordLogs("BHS_HDSY");
     cancelRemind();
 
-    //»ñÈ¡Ê×Ò³Êı¾İ
+    //è·å–é¦–é¡µæ•°æ®
     $.ajax({
         type: 'POST',
         url: "umbrella/firstPageDataCount",
@@ -110,24 +110,24 @@ function scanQRCode(){
 
 function loadShare(){
     version="a";
-    var timestamp;//Ê±¼ä´Á
-    var nonceStr;//Ëæ»ú×Ö·û´®
-    var signature;//µÃµ½µÄÇ©Ãû
-    var appid;//µÃµ½µÄÇ©Ãû
+    var timestamp;//æ—¶é—´æˆ³
+    var nonceStr;//éšæœºå­—ç¬¦ä¸²
+    var signature;//å¾—åˆ°çš„ç­¾å
+    var appid;//å¾—åˆ°çš„ç­¾å
     $.ajax({
-        url:"wechatInfo/getConfig",// Ìø×ªµ½ action
+        url:"wechatInfo/getConfig",// è·³è½¬åˆ° action
         async:true,
         type:'get',
-        data:{url:location.href.split('#')[0]},//µÃµ½ĞèÒª·ÖÏíÒ³ÃæµÄurl
+        data:{url:location.href.split('#')[0]},//å¾—åˆ°éœ€è¦åˆ†äº«é¡µé¢çš„url
         cache:false,
         dataType:'json',
         success:function(data) {
             if(data!=null ){
-                timestamp=data.timestamp;//µÃµ½Ê±¼ä´Á
-                nonceStr=data.nonceStr;//µÃµ½Ëæ»ú×Ö·û´®
-                signature=data.signature;//µÃµ½Ç©Ãû
+                timestamp=data.timestamp;//å¾—åˆ°æ—¶é—´æˆ³
+                nonceStr=data.nonceStr;//å¾—åˆ°éšæœºå­—ç¬¦ä¸²
+                signature=data.signature;//å¾—åˆ°ç­¾å
                 appid=data.appid;//appid
-                //Î¢ĞÅÅäÖÃ
+                //å¾®ä¿¡é…ç½®
                 wx.config({
                     debug: false,
                     appId: appid,
@@ -137,17 +137,17 @@ function loadShare(){
                     jsApiList: [
                         'onMenuShareTimeline',
                         'onMenuShareAppMessage'
-                    ] // ¹¦ÄÜÁĞ±í
+                    ] // åŠŸèƒ½åˆ—è¡¨
                 });
                 wx.ready(function () {
-                    // 2.2 ¼àÌı¡°·ÖÏíµ½ÅóÓÑÈ¦¡±°´Å¥µã»÷¡¢×Ô¶¨Òå·ÖÏíÄÚÈİ¼°·ÖÏí½á¹û½Ó¿Ú
+                    // 2.2 ç›‘å¬â€œåˆ†äº«åˆ°æœ‹å‹åœˆâ€æŒ‰é’®ç‚¹å‡»ã€è‡ªå®šä¹‰åˆ†äº«å†…å®¹åŠåˆ†äº«ç»“æœæ¥å£
                     wx.onMenuShareTimeline({
-                        title: 'ÎªÁËÄãµÄº¢×Ó£¬'+nickName+'ÑûÇëÄã¼ÓÈë°®ĞÄ¹«Òæ£¬²¢ÔùËÍ40ÍòµÄÏÖ½ğ±£ÕÏ£¡', // ·ÖÏí±êÌâ
-                        link: "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+shareUmbrellaId+"/"+version, // ·ÖÏíÁ´½Ó
-                        imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // ·ÖÏíÍ¼±ê
+                        title: 'ä¸ºäº†ä½ çš„å­©å­ï¼Œ'+nickName+'é‚€è¯·ä½ åŠ å…¥çˆ±å¿ƒå…¬ç›Šï¼Œå¹¶èµ é€40ä¸‡çš„ç°é‡‘ä¿éšœï¼', // åˆ†äº«æ ‡é¢˜
+                        link: "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+shareUmbrellaId+"/"+version, // åˆ†äº«é“¾æ¥
+                        imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // åˆ†äº«å›¾æ ‡
                         success: function (res) {
                             recordLogs("BHS_HDSY_FXPYQ_"+shareUmbrellaId);
-                            //¼ÇÂ¼ÓÃ»§·ÖÏíÎÄÕÂ
+                            //è®°å½•ç”¨æˆ·åˆ†äº«æ–‡ç« 
                             $.ajax({
                                 type: 'POST',
                                 url: "umbrella/updateBabyUmbrellaInfoIfShare",
@@ -165,10 +165,10 @@ function loadShare(){
                         }
                     });
                     wx.onMenuShareAppMessage({
-                        title: 'ÎªÁËÄãµÄº¢×Ó£¬'+nickName+'ÑûÇëÄã¼ÓÈë°®ĞÄ¹«Òæ£¬²¢ÔùËÍ40ÍòµÄÏÖ½ğ±£ÕÏ£¡', // ·ÖÏí±êÌâ
-                        desc: "ÓÉ±¦´ó·òºÍÖĞ¹ú¶ùÍ¯ÉÙÄê»ù½ğ»áÁªºÏ·¢Æğ£¬¾ø¶ÔÖµµÃĞÅÀµ£¡", // ·ÖÏíÃèÊö
-                        link: "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+shareUmbrellaId+"/"+version, // ·ÖÏíÁ´½Ó
-                        imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // ·ÖÏíÍ¼±ê
+                        title: 'ä¸ºäº†ä½ çš„å­©å­ï¼Œ'+nickName+'é‚€è¯·ä½ åŠ å…¥çˆ±å¿ƒå…¬ç›Šï¼Œå¹¶èµ é€40ä¸‡çš„ç°é‡‘ä¿éšœï¼', // åˆ†äº«æ ‡é¢˜
+                        desc: "ç”±å®å¤§å¤«å’Œä¸­å›½å„¿ç«¥å°‘å¹´åŸºé‡‘ä¼šè”åˆå‘èµ·ï¼Œç»å¯¹å€¼å¾—ä¿¡èµ–ï¼", // åˆ†äº«æè¿°
+                        link: "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+shareUmbrellaId+"/"+version, // åˆ†äº«é“¾æ¥
+                        imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // åˆ†äº«å›¾æ ‡
                         success: function (res) {
                             $.ajax({
                                 type: 'POST',
@@ -231,7 +231,7 @@ function ifExistOrder(load){
     });
 }
 
-/*³£¼ûÎÊÌâ Õ¹¿ªÒş²Ø*/
+/*å¸¸è§é—®é¢˜ å±•å¼€éšè—*/
 var lookQuestion = function(index) {
     recordLogs("BHS_HDSY_CJWT");
     $(".questions dt").eq(index).siblings("dt").children("a").removeClass("show");
@@ -241,60 +241,60 @@ var lookQuestion = function(index) {
 
 }
 
-/*ÃªÁ´½ÓÌø×ª*/
+/*é”šé“¾æ¥è·³è½¬*/
 var skip=function(item){
     myScroll.scrollToElement('#'+item, 100)
 }
 
-/*µÚÈı·½»ú¹¹  ¶ù¿Æ×¨¼Ò Î¢ĞÅ×ÉÑ¯ */
+/*ç¬¬ä¸‰æ–¹æœºæ„  å„¿ç§‘ä¸“å®¶ å¾®ä¿¡å’¨è¯¢ */
 var lookOther = function(index) {
     $(".c-shadow").show();
     $(".shadow-content2").eq(index).show();
 }
 
-/*±¦´ó·ò¶ùÍ¯ÖØ¼²»¥Öú¼Æ»®¹«Ô¼  75ÖÖ¼²²¡Ãû³Æ¼°¶¨Òå Ãû´ÊÊÍÒå*/
+/*å®å¤§å¤«å„¿ç«¥é‡ç–¾äº’åŠ©è®¡åˆ’å…¬çº¦  75ç§ç–¾ç—…åç§°åŠå®šä¹‰ åè¯é‡Šä¹‰*/
 var lookProtocol = function(index) {
     recordLogs("BHS_HDSY_CJWT");
     $(".c-shadow").show();
     $(".protocol").eq(index).show();
 }
 
-/*·ÖÏíºÃÓÑ*/
+/*åˆ†äº«å¥½å‹*/
 var goShare = function() {
     $(".c-shadow").show();
     $(".shadow-content.share").show();
-    /* Ëæ»ú·ÖÏíÎÄ°¸*/
+    /* éšæœºåˆ†äº«æ–‡æ¡ˆ*/
     var shareTextArray=[
-        "ÓĞÁËÕâ¸öÏàµ±ÓÚ¶àÁË¸öÖØ¼²±£ÏÕ£¬Ãâ·Ñ¼ÓÈë¾ÍÄÜ»»À´40Íò£¬Ò»È·Õï¾ÍÄÜ¸øÇ®£¬±È±£ÏÕ¿ì¶àÁË£¡",
-        "Ç½ÁÑÍÆ¼ö£¬¾ø·Ç¹ã¸æ£¬Õâ¸öÕæµÄÊÇºÜĞèÒª¡£ÊÇ¶Ôº¢×ÓºÍ¼ÒÍ¥µÄ¸ºÔğ£¡ÎÒÒÑ¾­¼ÓÈëÀ²£¬Äã»¹²»¿ìÀ´£¡",
-        "ÎÒÎªº¢×Ó½¡¿µ¸ºÔğ£¬Ãâ·ÑÁìÈ¡ÁË40ÍòµÄ´ó²¡ÖÎÁÆ·Ñ£¬ÄãÒ²À´Áì°É£¡",
-        "ÎÒÎª±¦±¦½¡¿µ¸ºÔğ£¬¾¹È»Ãâ·Ñ»ñµÃÁË40ÍòµÄ´ó²¡ÖÎÁÆ·Ñ£¡ÄãĞèÒªÂğ£¿",
-        "ÁìÈ¡40ÍòµÄ´ó²¡ÖÎÁÆ·Ñ£¬ÍòÒ»¿´²¡²»ÓÃ³î£¬ÏŞÊ±Ãâ·Ñ£¬ÏÈµ½ÏÈµÃÀ²£¡",
-        "Ã¿Ìì¶¼ÓĞº¢×ÓÒòÃ»Ç®ÖÎ²¡¶øËÀ¡£ÏÖÔÚÓĞ40ÍòÖÎÁÆ·Ñ£¬ËÍ¸øÄã£¡",
-        "Ã»Ê²Ã´ºÃËÍµÄ£¬40ÍòµÄ´ó²¡ÖÎÁÆ·Ñ£¬ËÍ¸øÄã£¡",
-        "×îÃÀµÄÂèÂèÄã±ğ×ß£¬ËÍÄã40Íò£¬ÈÃº¢×Ó½¡¿µÈ¥³É³¤£¡",
-        "ÈçĞè½­ºş¾È¼±£¬ÕâÓĞ40ÍòµÄ´ó²¡ÖÎÁÆ·Ñ£¬ËÙËÙÀ´ÄÃ£¡"
+        "æœ‰äº†è¿™ä¸ªç›¸å½“äºå¤šäº†ä¸ªé‡ç–¾ä¿é™©ï¼Œå…è´¹åŠ å…¥å°±èƒ½æ¢æ¥40ä¸‡ï¼Œä¸€ç¡®è¯Šå°±èƒ½ç»™é’±ï¼Œæ¯”ä¿é™©å¿«å¤šäº†ï¼",
+        "å¢™è£‚æ¨èï¼Œç»éå¹¿å‘Šï¼Œè¿™ä¸ªçœŸçš„æ˜¯å¾ˆéœ€è¦ã€‚æ˜¯å¯¹å­©å­å’Œå®¶åº­çš„è´Ÿè´£ï¼æˆ‘å·²ç»åŠ å…¥å•¦ï¼Œä½ è¿˜ä¸å¿«æ¥ï¼",
+        "æˆ‘ä¸ºå­©å­å¥åº·è´Ÿè´£ï¼Œå…è´¹é¢†å–äº†40ä¸‡çš„å¤§ç—…æ²»ç–—è´¹ï¼Œä½ ä¹Ÿæ¥é¢†å§ï¼",
+        "æˆ‘ä¸ºå®å®å¥åº·è´Ÿè´£ï¼Œç«Ÿç„¶å…è´¹è·å¾—äº†40ä¸‡çš„å¤§ç—…æ²»ç–—è´¹ï¼ä½ éœ€è¦å—ï¼Ÿ",
+        "é¢†å–40ä¸‡çš„å¤§ç—…æ²»ç–—è´¹ï¼Œä¸‡ä¸€çœ‹ç—…ä¸ç”¨æ„ï¼Œé™æ—¶å…è´¹ï¼Œå…ˆåˆ°å…ˆå¾—å•¦ï¼",
+        "æ¯å¤©éƒ½æœ‰å­©å­å› æ²¡é’±æ²»ç—…è€Œæ­»ã€‚ç°åœ¨æœ‰40ä¸‡æ²»ç–—è´¹ï¼Œé€ç»™ä½ ï¼",
+        "æ²¡ä»€ä¹ˆå¥½é€çš„ï¼Œ40ä¸‡çš„å¤§ç—…æ²»ç–—è´¹ï¼Œé€ç»™ä½ ï¼",
+        "æœ€ç¾çš„å¦ˆå¦ˆä½ åˆ«èµ°ï¼Œé€ä½ 40ä¸‡ï¼Œè®©å­©å­å¥åº·å»æˆé•¿ï¼",
+        "å¦‚éœ€æ±Ÿæ¹–æ•‘æ€¥ï¼Œè¿™æœ‰40ä¸‡çš„å¤§ç—…æ²»ç–—è´¹ï¼Œé€Ÿé€Ÿæ¥æ‹¿ï¼"
     ];
-    var randomNum=parseInt(9*Math.random());//·ÖÏíÎÄ°¸Ëæ»úÊı
+    var randomNum=parseInt(9*Math.random());//åˆ†äº«æ–‡æ¡ˆéšæœºæ•°
     $(".share p").html( shareTextArray[randomNum]);
 
 }
 
-/*¹Ø±Õ·ÖÏíÌáÊ¾*/
+/*å…³é—­åˆ†äº«æç¤º*/
 var cancelRemind = function() {
     $(".c-shadow").hide();
     $(".shadow-content").hide();
 }
 
-/*Ìø×ªµ½²ÎÓë³É¹¦Ò³Ãæ*/
+/*è·³è½¬åˆ°å‚ä¸æˆåŠŸé¡µé¢*/
 var u = navigator.userAgent, app = navigator.appVersion;
 var isAndroid = u.indexOf('Android') > -1 || u.indexOf('linux') > -1; //g
-var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //iosÖÕ¶Ë
+var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //iosç»ˆç«¯
 var myGuaranteeLock = "true";
 var myGuarantee = function() {
     var shareId = GetQueryString("id")==null?120000000:GetQueryString("id");
     if(isAndroid){
-        //Í¨¹ıopenid »ñÈ¡µ±Ç°ÓÃ»§ÊÇ·ñ¹Ø×¢
+        //é€šè¿‡openid è·å–å½“å‰ç”¨æˆ·æ˜¯å¦å…³æ³¨
         $.ajax({
             type: 'POST',
             url: "umbrella/getOpenidStatus",
@@ -313,7 +313,7 @@ var myGuarantee = function() {
         if(myGuaranteeLock=="true"){
             myGuaranteeLock = "false";
         }else{
-            //Í¨¹ıopenid »ñÈ¡µ±Ç°ÓÃ»§ÊÇ·ñ¹Ø×¢
+            //é€šè¿‡openid è·å–å½“å‰ç”¨æˆ·æ˜¯å¦å…³æ³¨
             $.ajax({
                 type: 'POST',
                 url: "umbrella/getOpenidStatus",
@@ -346,7 +346,7 @@ var GetQueryString = function(name) {
 
 var recordLogs = function(val){
     $.ajax({
-        url:"util/recordLogs",// Ìø×ªµ½ action
+        url:"util/recordLogs",// è·³è½¬åˆ° action
         async:true,
         type:'get',
         data:{logContent:encodeURI(val)},
