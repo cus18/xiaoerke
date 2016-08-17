@@ -802,4 +802,47 @@ public class UmbrellaController  {
         return null; // 自定义错误信息
     }
 
+    /**
+     *  获取用户昵称和排名
+     */
+    @RequestMapping(value = "/getNickNameAndRanking", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object>  getNickNameAndRanking(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) throws UnsupportedEncodingException {
+        Map<String, Object> response=new HashMap<String, Object>();
+        String openid = (String)params.get("openid");
+        String result = "fail";
+        String nickName = "";
+        int rank = 0;
+        openid = StringUtils.isNotNull(openid)?openid:WechatUtil.getOpenId(session,request);
+        if(StringUtils.isNotNull(openid)){
+            Map<String, Object> map=new HashMap<String, Object>();
+            map.put("openid",openid);
+            List<Map<String, Object>> list=babyUmbrellaInfoSerivce.getBabyUmbrellaInfo(map);
+            if(list.size()>0){
+                String payResult = (String)list.get(0).get("pay_result");
+                if(StringUtils.isNull(payResult)||"success".equals(payResult)){
+                    map.put("createTime",list.get(0).get("create_time"));
+                    rank = babyUmbrellaInfoSerivce.getUmbrellaRank(map);
+                    Map parameter = systemService.getWechatParameter();
+                    String token = (String)parameter.get("token");
+                    WechatAttention wa = wechatAttentionService.getAttentionByOpenId(openid);
+                    if(wa!=null){
+                        if(StringUtils.isNotNull(wa.getNickname())){
+                            nickName = wa.getNickname();
+                        }else{
+                            WechatBean userinfo = WechatUtil.getWechatName(token, openid);
+                            nickName = StringUtils.isNotNull(userinfo.getNickname())?userinfo.getNickname():"";
+                        }
+                    }
+                    result = "suc";
+                }
+            }
+        }
+
+        response.put("result",result);
+        response.put("nickName",nickName);
+        response.put("rank",rank);
+        return response;
+    }
 }
