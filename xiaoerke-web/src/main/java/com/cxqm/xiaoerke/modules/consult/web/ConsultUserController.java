@@ -265,7 +265,6 @@ public class ConsultUserController extends BaseController {
             e.printStackTrace();
         }
 
-
         if (StringUtils.isNotNull(csUserId)) {
             int pageNo = (Integer) params.get("pageNo");
             int pageSize = (Integer) params.get("pageSize");
@@ -494,15 +493,18 @@ public class ConsultUserController extends BaseController {
 
         Map<String, Object> response = new HashMap<String, Object>();
         HashMap<String, Object> request = new HashMap<String, Object>();
-        String userPhone = (String) params.get("patientPhone");
-        String userName = (String) params.get("patientName");
-        Integer userSex = (Integer) params.get("patientSex");
+        String userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone")))?String.valueOf(params.get("patientPhone")):"";
+        String userName = StringUtils.isNotNull(String.valueOf(params.get("patientName")))?String.valueOf(params.get("patientName")):"";
+        Integer userSex = 0;
+        if(params.get("patientSex") != null && params.get("patientSex") != ""){
+            userSex = Integer.valueOf(String.valueOf(params.get("patientSex")));
+        }
         String remoteUrl = String.valueOf(params.get("remoteUrl"));
         String source = "";
         String thirdId = "";
         if (params.containsKey("source")) {
-            if (StringUtils.isNotNull((String) params.get("source"))) {
-                source = (String) params.get("source");
+            if (StringUtils.isNotNull(String.valueOf(params.get("source")))) {
+                source = String.valueOf(params.get("source"));
                 if (source.contains("wjy")) {
                     thirdId = String.valueOf(params.get("thirdId"));
                     source = "WJY";
@@ -514,11 +516,13 @@ public class ConsultUserController extends BaseController {
         request.put("userSex", userSex);
         request.put("source", source);
         request.put("thirdId", thirdId);
-        request.put("token", params.get("token"));
+        request.put("token", String.valueOf(params.get("token")));
         String sys_user_id = UUID.randomUUID().toString().replaceAll("-", "");
         request.put("sys_user_id", sys_user_id);
         request.put("remoteUrl", remoteUrl);
+//        System.out.println("========================userPhone="+userPhone+"=userName="+userName+"=userSex="+userSex+"=remoteUrl="+remoteUrl+"=source="+source+"=thirdId="+thirdId+"=sys_user_id="+sys_user_id);
         Map result = userInfoService.createOrUpdateThirdPartPatientInfo(request);
+        System.out.println("========================patientId="+result.get("sys_user_id")+"==result=="+result.get("result"));
         if (result != null && result.size() > 0) {
             if (String.valueOf(result.get("result")).equals("1") && "WJY".equalsIgnoreCase(source)) {
                 Runnable thread = new saveCoopThirdBabyInfoThread(request);
@@ -555,13 +559,19 @@ public class ConsultUserController extends BaseController {
                     coopThirdBabyInfoVo.setSource(String.valueOf(params.get("source")));
                     coopThirdBabyInfoVo.setSysUserId(String.valueOf(params.get("sys_user_id")));
                     try {
-                        coopThirdBabyInfoVo.setBirthday(new SimpleDateFormat("yyyy-mm-DD").parse((String) jsonObject.get("birthday")));
-                        coopThirdBabyInfoVo.setGender(String.valueOf(jsonObject.get("sex")));
-                        coopThirdBabyInfoVo.setName(StringUtils.isNotNull(String.valueOf(jsonObject.get("name")))?String.valueOf(jsonObject.get("name")):"");
-                        coopThirdBabyInfoVo.setStatus(String.valueOf(jsonObject.get("id")));
-                        coopThirdBabyInfoService.addCoopThirdBabyInfo(coopThirdBabyInfoVo);
+                        if(jsonObject.get("birthday") != null && jsonObject.get("birthday") != ""){
+                            coopThirdBabyInfoVo.setBirthday(new SimpleDateFormat("yyyy-mm-DD").parse(String.valueOf(jsonObject.get("birthday"))));
+                        }else{
+                            coopThirdBabyInfoVo.setBirthday(new SimpleDateFormat("yyyy-mm-DD").parse("0000-00-00"));
+                        }
+                        coopThirdBabyInfoVo.setGender(StringUtils.isNotNull(String.valueOf(jsonObject.get("sex"))) ? String.valueOf(jsonObject.get("sex")) : "");
+                        coopThirdBabyInfoVo.setName(StringUtils.isNotNull(String.valueOf(jsonObject.get("name"))) ? String.valueOf(jsonObject.get("name")) : "");
+                        coopThirdBabyInfoVo.setStatus(StringUtils.isNotNull(String.valueOf(jsonObject.get("id"))) ? String.valueOf(jsonObject.get("id")) : "");
+                        int num = coopThirdBabyInfoService.addCoopThirdBabyInfo(coopThirdBabyInfoVo);
+                        System.out.println("=====第"+i+"次============== num ==="+num);
                     } catch (Exception e) {
                         e.printStackTrace();
+                        System.out.println(e.getCause());
                     }
                 }
             }
