@@ -137,12 +137,14 @@ public class UserInfoServiceImpl implements UserInfoService {
                 userNew.setMarketer(source);
                 userNew.setName((String) params.get("userName"));
                 userNew.setOpenid(String.valueOf(params.get("thirdId")));
+//                System.out.println("========================userPhone=" + params.get("userPhone") + "=LoginName=" + params.get("userPhone")+"=source=" + source + "=thirdId=" + params.get("thirdId") + "=sys_user_id=" + sys_user_id);
                 int result = userdao.insert(userNew);
+                System.out.println("========================result="+result +"==sex=="+String.valueOf(params.get("userSex")));
                 if (result == 1) {
                     PatientVo patientVo = new PatientVo();
                     String sys_patient_id = UUID.randomUUID().toString().replaceAll("-", "");
                     patientVo.setId(sys_patient_id);
-                    patientVo.setSysUserId((String) params.get("sys_user_id"));
+                    patientVo.setSysUserId(sys_user_id);
                     patientVo.setStatus("0");
                     patientVo.setGender(String.valueOf(params.get("userSex")));
                     patientDao.insert(patientVo);
@@ -155,9 +157,10 @@ public class UserInfoServiceImpl implements UserInfoService {
                 response.put("result", 0);
             }
         } else {
+            System.out.println("======================= not WJY");
             userNew.setLoginName((String) params.get("userPhone"));
             if (userdao.getUserByLoginName(new User(null, (String) params.get("userPhone"))) == null) {
-                String sys_user_id = UUID.randomUUID().toString().replaceAll("-", "");
+                String sys_user_id = (String) params.get("sys_user_id");
                 userNew.setId(sys_user_id);
                 userNew.setLoginName((String) params.get("userPhone"));
                 userNew.setCreateDate(new Date());
@@ -169,6 +172,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                 userNew.setMarketer(source);
                 userNew.setName((String) params.get("userName"));
                 int result = userdao.insert(userNew);
+                System.out.println("======================= not WJY RESULT==="+result);
                 if (result == 1) {
                     PatientVo patientVo = new PatientVo();
                     String sys_patient_id = UUID.randomUUID().toString().replaceAll("-", "");
@@ -186,6 +190,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                 response.put("result", 0);
             }
         }
+        System.out.println("======================= response ==="+response.get("sys_user_id")+"===="+response.get("result"));
         return response;
     }
 }
