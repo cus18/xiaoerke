@@ -72,7 +72,7 @@ angular.module('controllers', ['luegg.directives'])
 
             //初始化医生端登录，建立socket链接，获取基本信息
             $scope.doctorConsultInit = function () {
-                heartBeatCheckPay();
+                // heartBeatCheckPay();
                 $scope.getQQExpression();
                 var routePath = "/doctor/consultBBBBBB" + $location.path();
                 GetUserLoginStatus.save({routePath: routePath}, function (data) {
