@@ -148,6 +148,12 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
     }
 
     @Override
+    public List<User> findUserByUserName(User user) {
+        List<User>	users = consultDoctorInfoDao.findUserByUserName(user);
+        return users;
+    }
+
+    @Override
     public List<Map> getDoctorInfoMoreByUserId(String userId) {
         List<Map> result = null;
         if(StringUtils.isNotNull(userId)){

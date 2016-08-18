@@ -256,6 +256,12 @@
     ORDER BY sdi.department
   </select>
 
+  <!-- 根据type查询用户 -->
+  <select id="findUserByUserName" resultType="User" parameterType="User" >
+    SELECT * from sys_user su where su.name like CONCAT('%',#{name},'%') and  su.del_flag ='0'
+  </select>
+
+
   <!-- jiangzg add 查询具有某种权限的医生信息 2016-8-12 10:55:20-->
   <select id="findManagerDoctorInfoBySelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo" resultMap="BaseResultMap">
     SELECT

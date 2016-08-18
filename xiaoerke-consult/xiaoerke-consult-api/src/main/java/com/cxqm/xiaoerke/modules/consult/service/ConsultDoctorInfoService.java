@@ -29,6 +29,8 @@ public interface ConsultDoctorInfoService {
 
     List<User> findUserOrderByDepartment(User user);
 
+    List<User> findUserByUserName(User user);
+
     List<Map> getDoctorInfoMoreByUserId(String userId);
 
     List<ConsultDoctorInfoVo> findManagerDoctorInfoBySelective(ConsultDoctorInfoVo consultDoctorInfoVo);

@@ -231,8 +231,8 @@ public class ConsultDoctorController extends BaseController {
      */
     @RequestMapping(value = "/GetCSDoctorList", method = {RequestMethod.POST, RequestMethod.GET})
     public
-    @ResponseBody
-    Map<String, Object> GetCSDoctorList(@RequestBody Map<String, Object> params) {
+    @ResponseBody//@RequestBody
+    Map<String, Object> GetCSDoctorList( Map<String, Object> params) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
         Map<String, Object> response = new HashMap<String, Object>();
@@ -243,7 +243,14 @@ public class ConsultDoctorController extends BaseController {
         if (StringUtils.isNotNull(userId)) {
             user.setId(userId);
         }
-        users = consultDoctorInfoService.findUserOrderByDepartment(user);
+        String userName = String.valueOf(params.get("userName"));
+        if (StringUtils.isNotNull(userName)) {
+            user.setName(userName);
+            users = consultDoctorInfoService.findUserByUserName(user);
+
+        }else{
+            users = consultDoctorInfoService.findUserOrderByDepartment(user);
+        }
         if (users != null && users.size() > 0) {
             response.put("CSList", users);
             response.put("status", "success");
