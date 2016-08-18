@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.consult.service.core;
 
+import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.*;
@@ -606,9 +607,14 @@ public class ConsultSessionManager {
                     //如果接收转接的是医生，那么给用户推送消息"我是XX科XX医生，希望能帮到您！"，其他不推送
                     List<Map> result = consultDoctorInfoService.getDoctorInfoMoreByUserId(toCsUserId);
                     if (result != null && result.size() > 0) {
+                        String source = session.getSource();
+                        Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(toCsUserId);
+                        JSONObject jsonObject = new JSONObject();
+                        jsonObj.put("type", "4");
                         if (StringUtils.isNotNull((String) result.get(0).get("userType")) && "consultDoctor".equalsIgnoreCase((String) result.get(0).get("userType"))) {
+                            String sendMsg = "";
                             StringBuffer responseNews = new StringBuffer();
-                            responseNews.append("我是");
+                            responseNews.append("嗨，亲爱的，已为您接入");
                             if (StringUtils.isNotNull((String) result.get(0).get("department"))) {
                                 responseNews.append(result.get(0).get("department"));
                             } else {
@@ -619,48 +625,104 @@ public class ConsultSessionManager {
                             } else {
                                 responseNews.append("特约");
                             }
-                            responseNews.append("医生，希望能帮到您O(∩_∩)O~");
-                            String source = session.getSource();
                             if (StringUtils.isNotNull(source) && "wxcxqm".equalsIgnoreCase(source)) {
                                 Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-                                /**
-                                 * 接收转接的是医生，会免费次数减1
-                                 */
                                 String userId = session.getUserId();
                                 Query query = (new Query()).addCriteria(where("userId").is(userId)).with(new Sort(Sort.Direction.DESC, "createDate"));
                                 ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(query);
                                 if(consultSessionStatusVo != null){
-                                    if(consultSessionStatusVo.getFirstTransTime() == null || "".equals(consultSessionStatusVo.getFirstTransTime())){
-                                        /**
-                                         *  更新第一次转医生的时间
-                                         */
-                                        query = new Query().addCriteria(where("id_").is(consultSessionStatusVo.getId()));
-                                        Update update = new Update().set("firstTransTime", new Date());
-                                        consultRecordService.updateConsultSessionFirstTransferDate(query,update,ConsultSessionStatusVo.class);
-                                    }
+                                    List<String> list = new ArrayList<String>();
+                                    list.add("useTimes");
+                                    list.add("paySuccess");
                                     if(ConstantUtil.WITHIN_24HOURS.equals(consultSessionStatusVo.getPayStatus())){
-                                        System.out.println("24小时之内咨询");
+                       //                 Query query2 = (new Query()).addCriteria(where("userId").is(userId).and("payStatus").in(list)).with(new Sort(Sort.Direction.DESC, "createDate"));
+                       //                 ConsultSessionStatusVo consultSessionStatusVo2 = consultRecordService.findOneConsultSessionStatusVo(query);
+                                        /**
+                                         * 剩余时间计算(暂不需要)
+                                         */
+                                        responseNews.append("医生，希望能帮到你O(∩_∩)O~");
+                                        sendMsg = responseNews.toString();
+                                        jsonObj.put("notifyType", "1001");
+                                        TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
+                                        csChannel.writeAndFlush(csUserMsg.retain());
                                     }else if(ConstantUtil.USE_TIMES.equals(consultSessionStatusVo.getPayStatus())){
-                                        ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(userId);
-                                        if(consultSessionPropertyVo != null){
-                                            int defaultTimes = consultSessionPropertyVo.getMonthTimes();
-                                            int additionalTimes = consultSessionPropertyVo.getPermTimes();
-                                            if(defaultTimes > 0){
-                                                defaultTimes--;
-                                                consultSessionPropertyVo.setMonthTimes(defaultTimes);
-                                            }else{
-                                                if(additionalTimes > 0){
-                                                    additionalTimes--;
-                                                    consultSessionPropertyVo.setPermTimes(additionalTimes);
+                       //                 Query query2 = (new Query()).addCriteria(where("userId").is(userId).and("payStatus").in(list)).with(new Sort(Sort.Direction.DESC, "createDate")).limit(2);
+                       //                 List<ConsultSessionStatusVo> consultSessionStatusVoList = consultRecordService.queryUserMessageList(query2);
+                                        /**
+                                         * 接收转接的是医生，会免费次数减1
+                                         */
+                                        if(consultSessionStatusVo.getFirstTransTime() == null || "".equals(consultSessionStatusVo.getFirstTransTime())){
+                                            /**
+                                             *  更新第一次转医生的时间
+                                             */
+                                            query = new Query().addCriteria(where("id_").is(consultSessionStatusVo.getId()));
+                                            Update update = new Update().set("firstTransTime", new Date());
+                                            consultRecordService.updateConsultSessionFirstTransferDate(query,update,ConsultSessionStatusVo.class);
+                                            ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(userId);
+                                            if(consultSessionPropertyVo != null){
+                                                int defaultTimes = consultSessionPropertyVo.getMonthTimes();
+                                                int additionalTimes = consultSessionPropertyVo.getPermTimes();
+                                                if(defaultTimes > 0){
+                                                    defaultTimes--;
+                                                    consultSessionPropertyVo.setMonthTimes(defaultTimes);
+                                                }else{
+                                                    if(additionalTimes > 0){
+                                                        additionalTimes--;
+                                                        consultSessionPropertyVo.setPermTimes(additionalTimes);
+                                                    }
                                                 }
+                                                consultSessionPropertyService.updateByPrimaryKey(consultSessionPropertyVo);
                                             }
-                                            consultSessionPropertyService.updateByPrimaryKey(consultSessionPropertyVo);
-                                            String content = "嗨，亲爱的，已为你接入医生，未来24小时内你都可以向医生提问。";
-                                            WechatUtil.sendMsgToWechat((String)userWechatParam.get("token"),userId,content);
                                         }
+                                        responseNews.append("医生，希望能帮到你O(∩_∩)O~");
+                                        sendMsg = responseNews.toString();
+                                        jsonObj.put("notifyType", "1001");
+                                        TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
+                                        csChannel.writeAndFlush(csUserMsg.retain());
+                                    }else if(ConstantUtil.PAY_SUCCESS.equals(consultSessionStatusVo.getPayStatus())){
+                                        responseNews.append("医生，希望能帮到你O(∩_∩)O~");
+                                        sendMsg = responseNews.toString();
+                                        jsonObj.put("notifyType", "1001");
+                                        TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
+                                        csChannel.writeAndFlush(csUserMsg.retain());
+                                    }else{
+                                        jsonObj.put("notifyType","1002");
+                                        TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
+                                        csChannel.writeAndFlush(csUserMsg.retain());
                                     }
                                 }
-                                WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), session.getUserId(), responseNews.toString());
+                                WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), session.getUserId(), sendMsg);
+                            } else if (StringUtils.isNotNull(source) && "h5cxqm".equalsIgnoreCase(source)) {
+                                //暂时注掉H5
+                                /*Channel userChannel = userChannelMapping.get(session.getUserId());
+                                if(userChannel != null && userChannel.isActive()){
+                                    JSONObject resToUser= new JSONObject();
+                                    resToUser.put("type", "4");
+                                    resToUser.put("notifyType", "1004");
+                                    resToUser.put("operation", operation);
+                                    resToUser.put("session", session);
+                                    resToUser.put("content", responseNews.toString());
+                                    TextWebSocketFrame resToUserFrame = new TextWebSocketFrame(resToUser.toJSONString());
+                                    userChannel.writeAndFlush(resToUserFrame.retain());
+                                }*/
+                            }
+                        }else{
+                            if (StringUtils.isNotNull(source) && "wxcxqm".equalsIgnoreCase(source)) {
+                                String userId = session.getUserId();
+                                Query query = (new Query()).addCriteria(where("userId").is(userId)).with(new Sort(Sort.Direction.DESC, "createDate"));
+                                ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(query);
+                                String status = ConstantUtil.WITHIN_24HOURS +","+ConstantUtil.PAY_SUCCESS+","+ConstantUtil.USE_TIMES;
+                                if(consultSessionStatusVo != null){
+                                    if(status.contains(consultSessionStatusVo.getPayStatus())){
+                                        jsonObj.put("notifyType", "1001");
+                                        TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
+                                        csChannel.writeAndFlush(csUserMsg.retain());
+                                    }else{
+                                        jsonObj.put("notifyType","1002");
+                                        TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
+                                        csChannel.writeAndFlush(csUserMsg.retain());
+                                    }
+                                }
                             } else if (StringUtils.isNotNull(source) && "h5cxqm".equalsIgnoreCase(source)) {
                                 //暂时注掉H5
                                 /*Channel userChannel = userChannelMapping.get(session.getUserId());
