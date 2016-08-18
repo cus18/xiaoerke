@@ -289,6 +289,7 @@ public class ConsultSessionManager {
                 HashMap<String, Channel> hashMap = (HashMap) currentDistributorChannel.get(number);
                 for (Map.Entry<String, Channel> entry : hashMap.entrySet()) {
                     consultSession.setCsUserId(entry.getKey());
+                    consultSession.setUserType(ConstantUtil.DISTRIBUTOR);
                     consultCountTotal.setCsUserId(entry.getKey());
                     User csUser = systemService.getUserById(entry.getKey());
                     consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
@@ -316,6 +317,7 @@ public class ConsultSessionManager {
                     if (nowChannel != null && nowChannel.isActive()) {
                         User csUser = systemService.getUserById(csUserId);
                         consultSession.setCsUserId(csUserId);
+                        consultSession.setUserType(ConstantUtil.CONSULTDOCTOR);
                         consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
                         csChannel = nowChannel;
                         break;
@@ -660,20 +662,7 @@ public class ConsultSessionManager {
                                             Update update = new Update().set("firstTransTime", new Date());
                                             consultRecordService.updateConsultSessionFirstTransferDate(query,update,ConsultSessionStatusVo.class);
                                             ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(userId);
-                                            if(consultSessionPropertyVo != null){
-                                                int defaultTimes = consultSessionPropertyVo.getMonthTimes();
-                                                int additionalTimes = consultSessionPropertyVo.getPermTimes();
-                                                if(defaultTimes > 0){
-                                                    defaultTimes--;
-                                                    consultSessionPropertyVo.setMonthTimes(defaultTimes);
-                                                }else{
-                                                    if(additionalTimes > 0){
-                                                        additionalTimes--;
-                                                        consultSessionPropertyVo.setPermTimes(additionalTimes);
-                                                    }
-                                                }
-                                                consultSessionPropertyService.updateByPrimaryKey(consultSessionPropertyVo);
-                                            }
+                                            minusConsultTimes(consultSessionPropertyVo);
                                         }
                                         responseNews.append("医生，希望能帮到你O(∩_∩)O~");
                                         sendMsg = responseNews.toString();
@@ -756,6 +745,23 @@ public class ConsultSessionManager {
             }
         }
 
+    }
+
+    public void minusConsultTimes(ConsultSessionPropertyVo consultSessionPropertyVo) {
+        if(consultSessionPropertyVo != null){
+            int defaultTimes = consultSessionPropertyVo.getMonthTimes();
+            int additionalTimes = consultSessionPropertyVo.getPermTimes();
+            if(defaultTimes > 0){
+                defaultTimes--;
+                consultSessionPropertyVo.setMonthTimes(defaultTimes);
+            }else{
+                if(additionalTimes > 0){
+                    additionalTimes--;
+                    consultSessionPropertyVo.setPermTimes(additionalTimes);
+                }
+            }
+            consultSessionPropertyService.updateByPrimaryKey(consultSessionPropertyVo);
+        }
     }
 
     public void putSessionIdConsultSessionPair(Integer sessionId, RichConsultSession session) {

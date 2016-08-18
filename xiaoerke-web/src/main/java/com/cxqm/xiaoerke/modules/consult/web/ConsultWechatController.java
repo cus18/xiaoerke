@@ -314,11 +314,17 @@ public class ConsultWechatController extends BaseController {
                 String content = "嗨，亲爱的，你本月还剩" + consultSessionPropertyVo.getMonthTimes() + "次免费咨询的机会，每次发起咨询后，24小时内有效^-^\n";
                 messageFlag = 1;
                 WechatUtil.sendMsgToWechat(token, openId, content);
+                if(richConsultSession.getUserType().equals(ConstantUtil.CONSULTDOCTOR)){
+                    ConsultSessionManager.getSessionManager().minusConsultTimes(consultSessionPropertyVo);
+                }
             }
             if (null == consultSessionStatusVos || consultSessionStatusVos.size() == 0 || consultSessionStatusVos.get(0).getFirstTransTime() == null) {
                 if(messageFlag == 0){
                     String content = "嗨，亲爱的，你本月还剩" + consultSessionPropertyVo.getMonthTimes() + "次免费咨询的机会，每次发起咨询后，24小时内有效^-^\n";
                     WechatUtil.sendMsgToWechat(token, openId, content);
+                    if(richConsultSession.getUserType().equals(ConstantUtil.CONSULTDOCTOR)){
+                        ConsultSessionManager.getSessionManager().minusConsultTimes(consultSessionPropertyVo);
+                    }
                 }
             } else {
                 long pastMillisSecond = DateUtils.pastMillisSecond(consultSessionStatusVos.get(0).getFirstTransTime());
@@ -332,9 +338,15 @@ public class ConsultWechatController extends BaseController {
                         if (consultSessionPropertyVo.getMonthTimes() > 0) {
                             content = "嗨，亲爱的，你本月还剩" + consultSessionPropertyVo.getMonthTimes() + "次免费咨询的机会，每次发起咨询后，24小时内有效^-^\n";
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
+                            if(richConsultSession.getUserType().equals(ConstantUtil.CONSULTDOCTOR)){
+                                ConsultSessionManager.getSessionManager().minusConsultTimes(consultSessionPropertyVo);
+                            }
                         } else if (consultSessionPropertyVo.getPermTimes() > 0) {
                             content = "嗨，亲爱的，你本月还剩" + consultSessionPropertyVo.getMonthTimes() + "次免费咨询的机会，每次发起咨询后，24小时内有效^-^\n";
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
+                            if(richConsultSession.getUserType().equals(ConstantUtil.CONSULTDOCTOR)){
+                                ConsultSessionManager.getSessionManager().minusConsultTimes(consultSessionPropertyVo);
+                            }
                         } else {
                             richConsultSession.setPayStatus(ConstantUtil.NO_PAY);
                             content = "嗨，亲爱的，你本月免费咨询次数已用完，本次咨询医生需要支付9.9元，享受24小时咨询时间\n" +

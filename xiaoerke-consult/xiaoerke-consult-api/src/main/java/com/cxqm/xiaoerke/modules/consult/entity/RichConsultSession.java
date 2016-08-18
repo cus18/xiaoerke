@@ -12,6 +12,16 @@ public class RichConsultSession extends ConsultSession {
 
 	private String payStatus;
 
+	private String userType;
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+
 	public String getPayStatus() {
 		return payStatus;
 	}

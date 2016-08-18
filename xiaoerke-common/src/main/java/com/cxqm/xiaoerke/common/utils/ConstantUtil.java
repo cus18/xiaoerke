@@ -49,4 +49,7 @@ public class ConstantUtil {
 	public static String PAY_SUCCESS = "paySuccess";
 	public static String USE_TIMES = "useTimes";
 	public static String WITHIN_24HOURS = "within24Hours";
+
+	public static String DISTRIBUTOR = "distributor";
+	public static String CONSULTDOCTOR = "consultDoctor";
 }
