@@ -1723,21 +1723,14 @@ angular.module('controllers', ['luegg.directives'])
                   GetCSDoctorList, GetMessageRecordInfo,GetUserLoginStatus,$location,CreateDoctorConsultSession) {
 
             $scope.info = {};
-
             $scope.searchMessageContent = "";
-
             $scope.recordDetailSkipNum = "";
-
             $scope.userConsultListInfoSkipNum = 0;
-
             $scope.messageType = "";
-
             $scope.currentClickUserName = "";
-
             $scope.currentClickUserId = "";
-
             $scope.loadingFlag = false;
-
+            $scope.selectedDoctorList = false;
             $scope.searchMessageType = [
                 {
                     searchType:"user",
@@ -1800,7 +1793,6 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 })
             };
-
             //获取用户的详细聊天记录
             $scope.getUserRecordDetail = function (userName,userId,index) {
                 $scope.doctorCreateConsultSessionChoosedUserId = userId;
@@ -1865,13 +1857,25 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.recordType = searchRecordType;
                 $scope.chooseUserRecordDetail("firstPage",$scope.recordType);
             };
-
+            //获取客服医生列表
+            $scope.getCSDoctorList = function (name) {
+                GetCSDoctorList.save({userName:name}, function (data) {
+                    $scope.CSList = [];
+                    $.each(data.CSList,function(index,value){
+                        $scope.CSList.push(value);
+                    });
+                });
+                $scope.selectedDoctorList = true;
+            };
             //查询某个客服信息位于某个时间段的信息
-            $scope.getCsInfoByUserAndDate = function(Object){
+            $scope.getCsInfoByUserAndDate = function(Object,name){
+                console.log(Object);
+                $scope.info.selectedDoctorName = name;
+                $scope.selectedDoctorList = false;
                 if (Object == 10000 || Object == 0 || Object == 7 || Object == 30) {
                     $scope.dateNumValue = angular.copy(Object);
                 } else {
-                    $scope.CSDoctorIdValue =angular.copy(Object);
+                    $scope.CSDoctorIdValue = angular.copy(Object);
                 }
                 $scope.loadingFlag = true;
                 GetUserConsultListInfo.save({dateNum: $scope.dateNumValue,

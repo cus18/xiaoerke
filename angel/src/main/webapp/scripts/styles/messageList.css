@@ -1,37 +1,216 @@
-.content{border-bottom: 1px solid #acacac;}
-.content .content-l {border-right: 1px solid #fff;}
-.chatbox div span {cursor:pointer;display: inline-block; padding: 13px 0 14px 30px;margin:0 0 0 20px;font: 14px/17px 'Microsoft Yahei';background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_11.png") left center no-repeat;}
-.chatbox div span:nth-child(2){background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_13.png") left center no-repeat;}
-.find {width: 293px;height: 18px;padding: 5px 10px;border:1px solid #08b7c2;float: right;margin: 8px 20px 13px 0;border-radius: 20px;}
-.find select{border:none;border-right: 1px solid #000;color:#333;font: 12px/28px 'Microsoft Yahei';background:transparent;padding: 0;margin: 0;}
-.find img {float: right;margin-top: -15px;}
-.find input{border:none;float:left;margin-left: 80px;margin-top:-15px;}
-.customerlist,.messagelistc {background-color: #08b7c2;font: 14px/14px 'Microsoft Yahei'; color:#fff;}
-.customerlist div,.messagelistc div{float: left;margin: 12px 20px 0 20px;}
-.customerlist div.fr,.messagelistc div.fr {float: right;margin-right: 45px;margin-left: -10px;line-height: 20px;}
-.messagelistc div.fr{padding-left: 25px;background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fb_03.png") left center no-repeat;}
-.customerlist div select {border:none;width: 80px;margin: 0;}
-.nicknamelist{background-color: #f6f6f6;}
-.nicknamelist div,.messagelistn div{float: left;color:#acacac;font: 12px/35px 'Microsoft Yahei';margin: 0 20px;}
-.nicknamelist .recently{margin-left: 125px;}
-.nicknamelist .insert{margin-right: 45px;margin-left: 93px;}
-.messagelistn div select {border:none;height: 20px;color:#acacac;margin:10px 0 0 0;}
-.messagelistn {border-bottom: 1px solid #ccc;height: 34px;}
-.messagelistn input {width: 30px;}
-.messagelistn img{margin:0 5px;}
-.messagelistn div {margin: 0 10px 0 5px;cursor: pointer;}
-.messagelistn div:nth-child(1){width: 105px;overflow: hidden;text-overflow: ellipsis;}
-.messagelistn div:nth-child(6){margin-right: 30px;float: right;}
-.nicknamecontentlist li{height: 35px;}
-.nicknamecontentlist li div {overflow: hidden;height: 35px;float: left;font: 12px/35px 'Microsoft Yahei';cursor: pointer;}
-.nicknamecontentlist li .nickname{width: 88px;margin-left: 20px;}
-.nicknamecontentlist li .recently{width: 120px;margin-left: 65px;}
-.nicknamecontentlist li .insert{width: 190px;text-align: center;}
-.examinecontent ul li {margin: 15px 0 0 20px;font: 12px/28px 'Microsoft Yahei';}
-.examinecontent ul li .name{color:#08b7c2;}
-.examinecontent ul li .chatcontent{color:#666;font: 12px/20px 'Microsoft Yahei';margin-top: 10px;display: inline-block;}
-.clientListPage{padding: 4px 20px;font-size: 12px;color: #acacac;}
-.clientListPage img{margin: 0 20px;}
-.clientListPage input{width: 60px;}
-.searchCss input:nth-child(1){width: 20px;margin: 0 5px;}
-.searchCss input:nth-child(2){width: 35px;margin: 0 0 0 5px;}
+.content {
+    border-bottom: 1px solid #acacac;
+}
+
+.content .content-l {
+    border-right: 1px solid #fff;
+}
+
+.chatbox div span {
+    cursor: pointer;
+    display: inline-block;
+    padding: 13px 0 14px 30px;
+    margin: 0 0 0 20px;
+    font: 14px/17px 'Microsoft Yahei';
+    background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_11.png") left center no-repeat;
+}
+
+.chatbox div span:nth-child(2) {
+    background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_13.png") left center no-repeat;
+}
+
+.find {
+    width: 293px;
+    height: 18px;
+    padding: 5px 10px;
+    border: 1px solid #08b7c2;
+    float: right;
+    margin: 8px 20px 13px 0;
+    border-radius: 20px;
+}
+
+.find select {
+    border: none;
+    border-right: 1px solid #000;
+    color: #333;
+    font: 12px/28px 'Microsoft Yahei';
+    background: transparent;
+    padding: 0;
+    margin: 0;
+}
+
+.find img {
+    float: right;
+    margin-top: -15px;
+}
+
+.find input {
+    border: none;
+    float: left;
+    margin-left: 80px;
+    margin-top: -15px;
+}
+
+.customerlist, .messagelistc {
+    background-color: #08b7c2;
+    font: 14px/14px 'Microsoft Yahei';
+    color: #fff;
+}
+
+.customerlist div, .messagelistc div {
+    float: left;
+    margin: 12px 20px 0 20px;
+}
+
+.customerlist div.fr, .messagelistc div.fr {
+    float: right;
+    margin-right: 45px;
+    margin-left: -10px;
+    line-height: 20px;
+}
+
+.messagelistc div.fr {
+    padding-left: 25px;
+    background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fb_03.png") left center no-repeat;
+}
+
+.customerlist div select {
+    border: none;
+    width: 80px;
+    margin: 0;
+}
+
+.nicknamelist {
+    background-color: #f6f6f6;
+}
+
+.nicknamelist div, .messagelistn div {
+    float: left;
+    color: #acacac;
+    font: 12px/35px 'Microsoft Yahei';
+    margin: 0 20px;
+}
+
+.nicknamelist .recently {
+    margin-left: 125px;
+}
+
+.nicknamelist .insert {
+    margin-right: 45px;
+    margin-left: 93px;
+}
+
+.messagelistn div select {
+    border: none;
+    height: 20px;
+    color: #acacac;
+    margin: 10px 0 0 0;
+}
+
+.messagelistn {
+    border-bottom: 1px solid #ccc;
+    height: 34px;
+}
+
+.messagelistn input {
+    width: 30px;
+}
+
+.messagelistn img {
+    margin: 0 5px;
+}
+
+.messagelistn div {
+    margin: 0 10px 0 5px;
+    cursor: pointer;
+}
+
+.messagelistn div:nth-child(1) {
+    width: 105px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.messagelistn div:nth-child(6) {
+    margin-right: 30px;
+    float: right;
+}
+
+.nicknamecontentlist li {
+    height: 35px;
+}
+
+.nicknamecontentlist li div {
+    overflow: hidden;
+    height: 35px;
+    float: left;
+    font: 12px/35px 'Microsoft Yahei';
+    cursor: pointer;
+}
+
+.nicknamecontentlist li .nickname {
+    width: 88px;
+    margin-left: 20px;
+}
+
+.nicknamecontentlist li .recently {
+    width: 120px;
+    margin-left: 65px;
+}
+
+.nicknamecontentlist li .insert {
+    width: 190px;
+    text-align: center;
+}
+
+.examinecontent ul li {
+    margin: 15px 0 0 20px;
+    font: 12px/28px 'Microsoft Yahei';
+}
+
+.examinecontent ul li .name {
+    color: #08b7c2;
+}
+
+.examinecontent ul li .chatcontent {
+    color: #666;
+    font: 12px/20px 'Microsoft Yahei';
+    margin-top: 10px;
+    display: inline-block;
+}
+
+.clientListPage {
+    padding: 4px 20px;
+    font-size: 12px;
+    color: #acacac;
+}
+
+.clientListPage img {
+    margin: 0 20px;
+}
+
+.clientListPage input {
+    width: 60px;
+}
+
+.searchCss input:nth-child(1) {
+    width: 20px;
+    margin: 0 5px;
+}
+
+.searchCss input:nth-child(2) {
+    width: 35px;
+    margin: 0 0 0 5px;
+}
+
+ul.selectedDoctorList {
+    max-height: 270px;
+    position: absolute;
+    overflow-y: scroll;
+}
+
+.selectedDoctorList li {
+    background-color: #FFF;
+    color: #000;
+    cursor: pointer;
+}
