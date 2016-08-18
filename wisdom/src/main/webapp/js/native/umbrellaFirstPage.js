@@ -11,7 +11,7 @@ document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.touchSlider.js"><
 
 var version="b"; /*方案版本*/
 var shareUmbrellaId = "0";
-var nickName="我真心";
+var nickName;
 var openid;
 
 $(document).ready(function() {
@@ -47,6 +47,10 @@ $(document).ready(function() {
                         if(data.nickName!=""){
                             nickName=data.nickName;
                         }
+                        else{
+                            nickName="我真心"
+                        }
+                        loadShare();
                         console.log("my nickName",nickName)
                     },
                     error : function() {
@@ -225,7 +229,7 @@ function ifExistOrder(load){
                 }
                 shareUmbrellaId=120000000;
             }
-            loadShare();
+           // loadShare();
         },
         dataType: "json"
     });

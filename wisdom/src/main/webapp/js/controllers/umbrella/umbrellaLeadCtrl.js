@@ -5,6 +5,7 @@
         $scope.musicLock=false;
         $scope.touchLock=true;
         /*$scope.myActiveSlide =0;*/
+        var nickName="我真心";
 
         /*立即加入*/
         $scope.goJoin=function(){
@@ -50,7 +51,7 @@
         };
 
         $scope.$on('$ionicView.enter', function(){
-            var nickName="我真心";
+
              $.ajax({
                  url:"umbrella/getOpenid",// 跳转到 action
                  async:true,

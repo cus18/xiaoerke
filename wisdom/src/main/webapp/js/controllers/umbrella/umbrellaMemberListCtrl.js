@@ -7,8 +7,9 @@
         $scope.title="宝护伞-宝大夫儿童家庭重疾互助计划";
 
         $scope.shareLock=false;
+        var nickName="我真心";
 
-        $scope.link=
+      /*  $scope.link=*/
 
 
 
@@ -179,7 +180,7 @@
 
 
         $scope.$on('$ionicView.enter', function(){
-            var nickName="我真心";
+
             $.ajax({
 
                 url:"umbrella/getOpenid",// 跳转到 action
