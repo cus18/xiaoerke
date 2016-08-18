@@ -8,6 +8,7 @@ import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.account.service.PayRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.insurance.entity.InsuranceRegisterService;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
@@ -85,6 +86,9 @@ public class PayNotificationController {
 
     @Autowired
     private MutualHelpDonationService mutualHelpDonationService;
+
+	@Autowired
+	private SessionRedisCache sessionRedisCache;
 
 	private static Lock lock = new ReentrantLock();
 
@@ -476,11 +480,16 @@ public class PayNotificationController {
 				PayRecord payRecord = new PayRecord();
 				payRecord.setId((String) map.get("out_trade_no"));
 				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
-				if(insuranceMap.get("fee_type").toString().equals("doctorConsultPay")){
+				String openid = (String)map.get("openid");
+				Integer sessionId = sessionRedisCache.getSessionIdByUserId(openid);
+//				判断当次的sessionid是否已经支付
+				payRecord.setOrderId(sessionId+"");
+
+				if(insuranceMap.get("fee_type").toString().equals("doctorConsultPay")&&!"success".equals(payRecord.getStatus())){
 					payRecord.setStatus("success");
 					payRecord.setReceiveDate(new Date());
 					payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
-					String openid = (String)map.get("openid");
+
 					Map parameter = systemService.getWechatParameter();
 					String token = (String)parameter.get("token");
 					WechatUtil.sendMsgToWechat(token,openid,"哇哦,这么大方,不赞你一下可惜了。医生正在闪电般赶来为您服务");

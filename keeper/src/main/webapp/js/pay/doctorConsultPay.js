@@ -1,5 +1,5 @@
-var payLock = false;
-var moneys = 8;
+var payLock = true;
+var moneys = 9.9;
 var leaveNotes = "reward";
 
 //页面初始化执行,用户初始化页面参数信息以及微信的支付接口
