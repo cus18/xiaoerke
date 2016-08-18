@@ -232,7 +232,7 @@ public class ConsultDoctorController extends BaseController {
     @RequestMapping(value = "/GetCSDoctorList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody//@RequestBody
-    Map<String, Object> GetCSDoctorList( Map<String, Object> params) {
+    Map<String, Object> GetCSDoctorList(@RequestBody Map<String, Object> params) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
         Map<String, Object> response = new HashMap<String, Object>();
@@ -255,6 +255,20 @@ public class ConsultDoctorController extends BaseController {
             response.put("CSList", users);
             response.put("status", "success");
         }
+        return response;
+    }
+
+    /**
+     * 获取客服医生列表
+     */
+    @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody//@RequestBody
+    Map<String, Object> test( Map<String, Object> params) {
+
+        Map<String, Object> response = new HashMap<String, Object>();
+        response.put("userName","李军");
+        GetCSDoctorList(response);
         return response;
     }
 
