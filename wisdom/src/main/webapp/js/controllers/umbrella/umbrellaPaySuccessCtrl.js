@@ -14,7 +14,7 @@
 
 
 
-           /* $.ajax({
+            $.ajax({
 
                 url:"umbrella/getOpenid",// 跳转到 action
 
@@ -49,7 +49,7 @@
 
                 }
 
-            });*/
+            });
 
 
 
