@@ -7,6 +7,7 @@ import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.account.service.PayRecordService;
+import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.insurance.entity.InsuranceRegisterService;
@@ -490,10 +491,14 @@ public class PayNotificationController {
 					payRecord.setReceiveDate(new Date());
 					payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
 
+					RichConsultSession consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
+
 					Map parameter = systemService.getWechatParameter();
 					String token = (String)parameter.get("token");
 					WechatUtil.sendMsgToWechat(token,openid,"哇哦,这么大方,不赞你一下可惜了。医生正在闪电般赶来为您服务");
-					consultSessionPropertyService.addPermTimes(openid);
+					if(!ConstantUtil.CONSULTDOCTOR.equals(consultSession.getUserType())){
+						consultSessionPropertyService.addPermTimes(openid);
+					}
 					HttpRequestUtil.wechatpost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/notifyPayInfo2Distributor?openId="+openid,
 							"openId=" + openid);
 				}
