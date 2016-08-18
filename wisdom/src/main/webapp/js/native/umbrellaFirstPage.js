@@ -11,7 +11,7 @@ document.write('<scr'+'ipt src="' + webpath + '/js/libs/jquery.touchSlider.js"><
 
 var version="b"; /*方案版本*/
 var shareUmbrellaId = "0";
-var nickName="我真心";
+var nickName;
 var openid;
 
 $(document).ready(function() {
@@ -43,11 +43,16 @@ $(document).ready(function() {
                     dataType:'json',
                     contentType: "application/json; charset=utf-8",
                     success:function(data) {
-                        console.log("my data",data)
+                        console.log("my data",data);
+
                         if(data.nickName!=""){
                             nickName=data.nickName;
+                        }else{
+                            nickName = "我真心";
                         }
+                        loadShare();
                         console.log("my nickName",nickName)
+                        alert("nickname22 ",nickName);
                     },
                     error : function() {
                     }
@@ -225,7 +230,7 @@ function ifExistOrder(load){
                 }
                 shareUmbrellaId=120000000;
             }
-            loadShare();
+
         },
         dataType: "json"
     });

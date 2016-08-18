@@ -18,7 +18,7 @@
         var isAndroid = u.indexOf('Android') > -1 || u.indexOf('linux') > -1; //g
         var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
         var detailLock = "true";
-
+        var nickName="我真心";
         $scope.shareid=$stateParams.shareid;
 
         $scope.goDetail=function(){
@@ -85,7 +85,6 @@
             return Inter_Days;
         }
         $scope.$on('$ionicView.enter', function(){
-            var nickName="我真心";
             $.ajax({
                 url:"umbrella/getOpenid",// 跳转到 action
                 async:true,
@@ -231,6 +230,7 @@
                 error : function() {
                 }
             });
+            $scope.loadShare();
         });
 
         var recordLogs = function(val){
