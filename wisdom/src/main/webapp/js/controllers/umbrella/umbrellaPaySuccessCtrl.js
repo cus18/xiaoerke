@@ -7,12 +7,12 @@
         $scope.title="宝大夫儿童家庭重疾互助计划";
 
         $scope.QRCodeURI="";
-
+        var nickName="我真心";
 
 
         $scope.$on('$ionicView.enter', function() {
 
-            var nickName="我真心";
+
 
            /* $.ajax({
 

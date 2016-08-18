@@ -13,6 +13,7 @@
         $scope.info = {}
 
         $scope.info.babyName = '';
+        var nickName="我真心";
 
 
 
@@ -151,7 +152,7 @@
 
 
         $scope.$on('$ionicView.enter', function(){
-            var nickName="我真心";
+
             $.ajax({
 
                 url:"umbrella/getOpenid",// 跳转到 action

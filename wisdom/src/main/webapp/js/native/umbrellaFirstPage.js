@@ -43,16 +43,15 @@ $(document).ready(function() {
                     dataType:'json',
                     contentType: "application/json; charset=utf-8",
                     success:function(data) {
-                        console.log("my data",data);
-
+                        console.log("my data",data)
                         if(data.nickName!=""){
                             nickName=data.nickName;
-                        }else{
-                            nickName = "我真心";
+                        }
+                        else{
+                            nickName="我真心"
                         }
                         loadShare();
                         console.log("my nickName",nickName)
-                        alert("nickname22 ",nickName);
                     },
                     error : function() {
                     }
@@ -230,7 +229,7 @@ function ifExistOrder(load){
                 }
                 shareUmbrellaId=120000000;
             }
-
+           // loadShare();
         },
         dataType: "json"
     });

@@ -1,4 +1,4 @@
-﻿angular.module('controllers', ['ionic']).controller('umbrellaJoinCtrl', [
+﻿﻿angular.module('controllers', ['ionic']).controller('umbrellaJoinCtrl', [
     '$scope','$state','$stateParams','JoinUs','updateActivationTime','ifExistOrder','getNickNameAndRanking',
     function ($scope,$state,$stateParams,JoinUs,updateActivationTime,ifExistOrder,getNickNameAndRanking) {
         $scope.title="宝护伞-宝大夫儿童家庭重疾互助计划";
@@ -19,6 +19,7 @@
         var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
         var detailLock = "true";
         var nickName="我真心";
+
         $scope.shareid=$stateParams.shareid;
 
         $scope.goDetail=function(){
@@ -230,7 +231,6 @@
                 error : function() {
                 }
             });
-            $scope.loadShare();
         });
 
         var recordLogs = function(val){
