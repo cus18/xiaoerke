@@ -95,7 +95,7 @@
 	</bean>
 	<bean id="updateMonthTimeTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="updateMonthTimeStatusTask"/>
-		<property name="cronExpression" value="0 1 0 0 * ?"/>
+		<property name="cronExpression" value="0 0 1 1 * ?"/>
 	</bean>
 
 
