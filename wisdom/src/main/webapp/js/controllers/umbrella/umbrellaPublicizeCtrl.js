@@ -26,7 +26,7 @@
                 });
 
                 //获取用户openid
-                $.ajax({
+              /*  $.ajax({
                     url:"umbrella/getOpenid",// 跳转到 action
                     async:true,
                     type:'post',
@@ -50,7 +50,7 @@
                     },
                     error : function() {
                     }
-                });
+                });*/
             });
 
             
