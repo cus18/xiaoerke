@@ -214,7 +214,7 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 
 	//jiangzg add 2016-8-11 18:37:50 修改集合中字段
 	public int updateConsultSessionFirstTransferDate(Query query,Update update ,Class t){
-		mongoTemplate.updateFirst(query, update,t);
+		mongoTemplate.updateMulti(query, update,t);
 		return 0 ;
 	}
 }
