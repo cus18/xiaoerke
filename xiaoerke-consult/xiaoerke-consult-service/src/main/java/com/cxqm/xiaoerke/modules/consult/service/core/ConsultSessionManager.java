@@ -642,6 +642,7 @@ public class ConsultSessionManager {
                                          */
                                         responseNews.append("医生，希望能帮到你O(∩_∩)O~");
                                         sendMsg = responseNews.toString();
+                                        WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), session.getUserId(), sendMsg);
                                         jsonObj.put("notifyType", "1001");
                                         TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
                                         csChannel.writeAndFlush(csUserMsg.retain());
@@ -676,12 +677,14 @@ public class ConsultSessionManager {
                                         }
                                         responseNews.append("医生，希望能帮到你O(∩_∩)O~");
                                         sendMsg = responseNews.toString();
+                                        WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), session.getUserId(), sendMsg);
                                         jsonObj.put("notifyType", "1001");
                                         TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
                                         csChannel.writeAndFlush(csUserMsg.retain());
                                     }else if(ConstantUtil.PAY_SUCCESS.equals(consultSessionStatusVo.getPayStatus())){
                                         responseNews.append("医生，希望能帮到你O(∩_∩)O~");
                                         sendMsg = responseNews.toString();
+                                        WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), session.getUserId(), sendMsg);
                                         jsonObj.put("notifyType", "1001");
                                         TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
                                         csChannel.writeAndFlush(csUserMsg.retain());
@@ -691,7 +694,6 @@ public class ConsultSessionManager {
                                         csChannel.writeAndFlush(csUserMsg.retain());
                                     }
                                 }
-                                WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), session.getUserId(), sendMsg);
                             } else if (StringUtils.isNotNull(source) && "h5cxqm".equalsIgnoreCase(source)) {
                                 //暂时注掉H5
                                 /*Channel userChannel = userChannelMapping.get(session.getUserId());
