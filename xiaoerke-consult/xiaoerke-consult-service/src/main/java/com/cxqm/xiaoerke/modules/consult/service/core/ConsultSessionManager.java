@@ -651,7 +651,7 @@ public class ConsultSessionManager {
                                         jsonObject.put("notifyType", "1001");
                                         TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
                                         csChannel.writeAndFlush(csUserMsg.retain());
-                                    }else if(ConstantUtil.USE_TIMES.equals(consultSessionStatusVo.getPayStatus())){
+                                    }else if(ConstantUtil.USE_TIMES.equals(consultSessionStatusVo.getPayStatus()) || ConstantUtil.PAY_SUCCESS.equals(consultSessionStatusVo.getPayStatus())){
                        //                 Query query2 = (new Query()).addCriteria(where("userId").is(userId).and("payStatus").in(list)).with(new Sort(Sort.Direction.DESC, "createDate")).limit(2);
                        //                 List<ConsultSessionStatusVo> consultSessionStatusVoList = consultRecordService.queryUserMessageList(query2);
                                         /**
@@ -665,15 +665,21 @@ public class ConsultSessionManager {
                                             Update update = new Update().set("firstTransTime", new Date());
                                             consultRecordService.updateConsultSessionFirstTransferDate(query,update,ConsultSessionStatusVo.class);
                                             ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(userId);
-                                            minusConsultTimes(consultSessionPropertyVo);
+                                            if(consultSessionPropertyVo != null){
+                                                int defaultTimes = consultSessionPropertyVo.getMonthTimes();
+                                                int additionalTimes = consultSessionPropertyVo.getPermTimes();
+                                                if(defaultTimes > 0){
+                                                    defaultTimes--;
+                                                    consultSessionPropertyVo.setMonthTimes(defaultTimes);
+                                                }else{
+                                                    if(additionalTimes > 0){
+                                                        additionalTimes--;
+                                                        consultSessionPropertyVo.setPermTimes(additionalTimes);
+                                                    }
+                                                }
+                                                consultSessionPropertyService.updateByPrimaryKey(consultSessionPropertyVo);
+                                            }
                                         }
-                                        responseNews.append("医生，希望能帮到你O(∩_∩)O~");
-                                        sendMsg = responseNews.toString();
-                                        WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), session.getUserId(), sendMsg);
-                                        jsonObject.put("notifyType", "1001");
-                                        TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
-                                        csChannel.writeAndFlush(csUserMsg.retain());
-                                    }else if(ConstantUtil.PAY_SUCCESS.equals(consultSessionStatusVo.getPayStatus())){
                                         responseNews.append("医生，希望能帮到你O(∩_∩)O~");
                                         sendMsg = responseNews.toString();
                                         WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), session.getUserId(), sendMsg);
@@ -747,7 +753,6 @@ public class ConsultSessionManager {
                 }
             }
         }
-
     }
 
     public void minusConsultTimes(ConsultSessionPropertyVo consultSessionPropertyVo) {
