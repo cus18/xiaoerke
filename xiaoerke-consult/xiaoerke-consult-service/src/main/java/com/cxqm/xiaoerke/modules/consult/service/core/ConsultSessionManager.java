@@ -902,7 +902,7 @@ public class ConsultSessionManager {
                     List<ConsultDoctorInfoVo> doctorList = consultDoctorInfoService.findManagerDoctorInfoBySelective(consultDoctorInfoVo);
                     if(doctorList != null && doctorList.size() > 0){
                         for(ConsultDoctorInfoVo c : doctorList){
-                            sb.append(c.getId());
+                            sb.append(c.getUserId());
                             sb.append(",");
                         }
                         doctorManagerStr = sb.toString()+"67b66b5bac5d41c1ab2274d09362f13b";
