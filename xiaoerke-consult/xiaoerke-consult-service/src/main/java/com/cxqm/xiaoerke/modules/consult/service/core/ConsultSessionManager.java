@@ -612,7 +612,7 @@ public class ConsultSessionManager {
                         String source = session.getSource();
                         Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(toCsUserId);
                         JSONObject jsonObject = new JSONObject();
-                        jsonObj.put("type", "4");
+                        jsonObject.put("type", "4");
                         if (StringUtils.isNotNull((String) result.get(0).get("userType")) && "consultDoctor".equalsIgnoreCase((String) result.get(0).get("userType"))) {
                             String sendMsg = "";
                             StringBuffer responseNews = new StringBuffer();
@@ -645,7 +645,7 @@ public class ConsultSessionManager {
                                         responseNews.append("医生，希望能帮到你O(∩_∩)O~");
                                         sendMsg = responseNews.toString();
                                         WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), session.getUserId(), sendMsg);
-                                        jsonObj.put("notifyType", "1001");
+                                        jsonObject.put("notifyType", "1001");
                                         TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
                                         csChannel.writeAndFlush(csUserMsg.retain());
                                     }else if(ConstantUtil.USE_TIMES.equals(consultSessionStatusVo.getPayStatus())){
@@ -667,18 +667,18 @@ public class ConsultSessionManager {
                                         responseNews.append("医生，希望能帮到你O(∩_∩)O~");
                                         sendMsg = responseNews.toString();
                                         WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), session.getUserId(), sendMsg);
-                                        jsonObj.put("notifyType", "1001");
+                                        jsonObject.put("notifyType", "1001");
                                         TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
                                         csChannel.writeAndFlush(csUserMsg.retain());
                                     }else if(ConstantUtil.PAY_SUCCESS.equals(consultSessionStatusVo.getPayStatus())){
                                         responseNews.append("医生，希望能帮到你O(∩_∩)O~");
                                         sendMsg = responseNews.toString();
                                         WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), session.getUserId(), sendMsg);
-                                        jsonObj.put("notifyType", "1001");
+                                        jsonObject.put("notifyType", "1001");
                                         TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
                                         csChannel.writeAndFlush(csUserMsg.retain());
                                     }else{
-                                        jsonObj.put("notifyType","1002");
+                                        jsonObject.put("notifyType","1002");
                                         TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
                                         csChannel.writeAndFlush(csUserMsg.retain());
                                     }
@@ -705,11 +705,11 @@ public class ConsultSessionManager {
                                 String status = ConstantUtil.WITHIN_24HOURS +","+ConstantUtil.PAY_SUCCESS+","+ConstantUtil.USE_TIMES;
                                 if(consultSessionStatusVo != null){
                                     if(status.contains(consultSessionStatusVo.getPayStatus())){
-                                        jsonObj.put("notifyType", "1001");
+                                        jsonObject.put("notifyType", "1001");
                                         TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
                                         csChannel.writeAndFlush(csUserMsg.retain());
                                     }else{
-                                        jsonObj.put("notifyType","1002");
+                                        jsonObject.put("notifyType","1002");
                                         TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
                                         csChannel.writeAndFlush(csUserMsg.retain());
                                     }
