@@ -495,7 +495,7 @@ public class PayNotificationController {
 
 					Map parameter = systemService.getWechatParameter();
 					String token = (String)parameter.get("token");
-					WechatUtil.sendMsgToWechat(token,openid,"哇哦,这么大方,不赞你一下可惜了。医生正在闪电般赶来为您服务");
+					WechatUtil.sendMsgToWechat(token,openid,"【支付成功通知】你已在宝大夫成功支付24小时咨询服务费，感谢你的信任和支持！");
 					if(!ConstantUtil.CONSULTDOCTOR.equals(consultSession.getUserType())){
 						consultSessionPropertyService.addPermTimes(openid);
 					}
