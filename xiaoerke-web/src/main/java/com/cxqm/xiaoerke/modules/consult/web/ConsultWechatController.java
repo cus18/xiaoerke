@@ -333,15 +333,15 @@ public class ConsultWechatController extends BaseController {
                 } else {
                     String sysUserId = richConsultSession.getUserId();
                     //判断剩余次数,consultSessionStatusVo打标记
-                    if (consultSessionPropertyVo != null) {
+                    if (consultSessionPropertyVo != null &&  messageFlag == 0) {
                         String content;
-                        if (consultSessionPropertyVo.getMonthTimes() > 0  &&  messageFlag == 0) {
+                        if (consultSessionPropertyVo.getMonthTimes() > 0  ) {
                             content = "嗨，亲爱的，你本月还剩" + consultSessionPropertyVo.getMonthTimes() + "次免费咨询的机会，每次发起咨询后，24小时内有效^-^\n";
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             if(richConsultSession.getUserType().equals(ConstantUtil.CONSULTDOCTOR)){
                                 ConsultSessionManager.getSessionManager().minusConsultTimes(consultSessionPropertyVo);
                             }
-                        } else if (consultSessionPropertyVo.getPermTimes() > 0  &&  messageFlag == 0) {
+                        } else if (consultSessionPropertyVo.getPermTimes() > 0 ) {
                             content = "嗨，亲爱的，你本月还剩" + consultSessionPropertyVo.getMonthTimes() + "次免费咨询的机会，每次发起咨询后，24小时内有效^-^\n";
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             if(richConsultSession.getUserType().equals(ConstantUtil.CONSULTDOCTOR)){
