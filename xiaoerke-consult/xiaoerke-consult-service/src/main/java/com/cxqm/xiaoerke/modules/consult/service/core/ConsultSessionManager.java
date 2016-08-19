@@ -613,6 +613,9 @@ public class ConsultSessionManager {
                         Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(toCsUserId);
                         JSONObject jsonObject = new JSONObject();
                         jsonObject.put("type", "4");
+                        jsonObject.put("sessionId", sessionId);
+                        jsonObject.put("source",source);
+                        jsonObject.put("senderId",session.getUserId());
                         if (StringUtils.isNotNull((String) result.get(0).get("userType")) && "consultDoctor".equalsIgnoreCase((String) result.get(0).get("userType"))) {
                             String sendMsg = "";
                             StringBuffer responseNews = new StringBuffer();
