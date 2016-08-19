@@ -335,7 +335,7 @@ public class ConsultWechatController extends BaseController {
                     //判断剩余次数,consultSessionStatusVo打标记
                     if (consultSessionPropertyVo != null) {
                         String content;
-                        if (consultSessionPropertyVo.getMonthTimes() > 0) {
+                        if (consultSessionPropertyVo.getMonthTimes() > 0 &&  messageFlag == 0) {
                             content = "嗨，亲爱的，你本月还剩" + consultSessionPropertyVo.getMonthTimes() + "次免费咨询的机会，每次发起咨询后，24小时内有效^-^\n";
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             if(richConsultSession.getUserType().equals(ConstantUtil.CONSULTDOCTOR)){
