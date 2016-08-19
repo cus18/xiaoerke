@@ -335,19 +335,19 @@ public class ConsultWechatController extends BaseController {
                     //判断剩余次数,consultSessionStatusVo打标记
                     if (consultSessionPropertyVo != null) {
                         String content;
-                        if (consultSessionPropertyVo.getMonthTimes() > 0 &&  messageFlag == 0) {
+                        if (consultSessionPropertyVo.getMonthTimes() > 0  &&  messageFlag == 0) {
                             content = "嗨，亲爱的，你本月还剩" + consultSessionPropertyVo.getMonthTimes() + "次免费咨询的机会，每次发起咨询后，24小时内有效^-^\n";
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             if(richConsultSession.getUserType().equals(ConstantUtil.CONSULTDOCTOR)){
                                 ConsultSessionManager.getSessionManager().minusConsultTimes(consultSessionPropertyVo);
                             }
-                        } else if (consultSessionPropertyVo.getPermTimes() > 0) {
+                        } else if (consultSessionPropertyVo.getPermTimes() > 0  &&  messageFlag == 0) {
                             content = "嗨，亲爱的，你本月还剩" + consultSessionPropertyVo.getMonthTimes() + "次免费咨询的机会，每次发起咨询后，24小时内有效^-^\n";
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             if(richConsultSession.getUserType().equals(ConstantUtil.CONSULTDOCTOR)){
                                 ConsultSessionManager.getSessionManager().minusConsultTimes(consultSessionPropertyVo);
                             }
-                        } else {
+                        } else if(messageFlag == 0){
                             richConsultSession.setPayStatus(ConstantUtil.NO_PAY);
                             content = "嗨，亲爱的，你本月免费咨询次数已用完，本次咨询医生需要支付9.9元，享受24小时咨询时间\n" +
                                     ">>" + "<a href='http://s120.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s120.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=35'>付费</a>" + "\n" +
