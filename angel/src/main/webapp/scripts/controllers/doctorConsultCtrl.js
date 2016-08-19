@@ -264,7 +264,8 @@ angular.module('controllers', ['luegg.directives'])
                                         'messageNotSee':true,
                                         'number':1,
                                         'patientName':value.userName,
-                                        'consultValue':[]
+                                        'consultValue':[],
+                                        "notifyType":value.notifyType
                                     };
                                     var consultValue = {
                                         'type':value.type,
@@ -272,7 +273,8 @@ angular.module('controllers', ['luegg.directives'])
                                         'dateTime':value.messageDateTime,
                                         'senderId':value.userId,
                                         'senderName':value.userName,
-                                        'sessionId':value.sessionId
+                                        'sessionId':value.sessionId,
+                                        "notifyType":value.notifyType
                                     };
                                     filterMediaData(consultValue);
                                     $scope.currentUserConversation.consultValue.push(consultValue);
