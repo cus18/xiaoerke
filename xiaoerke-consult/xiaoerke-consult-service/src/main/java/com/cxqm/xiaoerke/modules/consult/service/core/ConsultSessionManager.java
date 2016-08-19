@@ -658,7 +658,7 @@ public class ConsultSessionManager {
                                             /**
                                              *  更新第一次转医生的时间
                                              */
-                                            query = new Query().addCriteria(where("id_").is(consultSessionStatusVo.getId()));
+                                            query = new Query().addCriteria(where("_id").is(consultSessionStatusVo.getId()));
                                             Update update = new Update().set("firstTransTime", new Date());
                                             consultRecordService.updateConsultSessionFirstTransferDate(query,update,ConsultSessionStatusVo.class);
                                             ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(userId);
