@@ -354,34 +354,25 @@ public class ConsultDoctorController extends BaseController {
 
                     //判断是否有权限推送消息
                     Map param = new HashMap();
-                    param.put("userId",richConsultSession.getCsUserId());
-                    List<ConsultDoctorInfoVo> consultDoctorInfoVos = consultDoctorInfoService.getConsultDoctorByInfo(param);
+                    param.put("consultSessionId",richConsultSession.getId());
+                    List<Map<String,Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(param);
                     Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
                     String st = "";
-                    if(consultDoctorInfoVos !=null && consultDoctorInfoVos.size() >0){
-                        if(null !=consultDoctorInfoVos.get(0).getSendMessage() && consultDoctorInfoVos.get(0).getSendMessage().equals("1")){
-                             st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
-                                    "<a href='http://120.25.161.33/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
-                                    params.get("uuid") +"&sessionId="+sessionId+ "'>点击这里去评价</a>】";
-
+                    if(praiseList !=null && praiseList.size() >0){
+                        for(Map<String,Object> evaluationMap :praiseList){
+                            if(Integer.parseInt((String) evaluationMap.get("serviceAttitude"))==0){
+                                st = "嗨，亲爱的,本次咨询已关闭。";
+                            }else{
+                                st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
+                                        "<a href='http://120.25.161.33/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
+                                        params.get("uuid") +"&sessionId="+sessionId+ "'>点击这里去评价</a>】";
+                                break;
+                            }
                         }
                     }else {
                         st = "嗨，亲爱的,本次咨询已关闭。";
                     }
                     WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
-                    //jiangzg 2016年6月21日16:22:59 add ps:在线咨询仅供参考
-                    /*String csUserId = richConsultSession.getCsUserId();
-                    if(StringUtils.isNotNull(csUserId)){
-                        List<Map> consultDoctorInfo = consultDoctorInfoService.getDoctorInfoMoreByUserId(csUserId);
-                        if(consultDoctorInfo != null && consultDoctorInfo.size() > 0){
-                            if(consultDoctorInfo.get(0).get("userType") !=null && "consultDoctor".equalsIgnoreCase((String)consultDoctorInfo.get(0).get("userType"))){
-                                WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, "感谢您咨询宝大夫，因不能面诊，在线咨询回复仅供参考！");
-                            }
-                        }
-                    }*/
-
-//                    判断用户是否已评价,如果没有评价则推送评价消息
-
                     //分享的代码
 //                    patientRegisterPraiseService.sendRemindMsgToUser(userId,sessionId);
                 }
