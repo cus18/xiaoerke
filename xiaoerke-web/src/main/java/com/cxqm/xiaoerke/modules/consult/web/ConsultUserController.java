@@ -541,15 +541,6 @@ public class ConsultUserController extends BaseController {
         return response;
     }
 
-
-    public class saveCoopThirdBabyInfoThread implements Runnable {
-        private HashMap<String, Object> params;
-        public saveCoopThirdBabyInfoThread(HashMap<String, Object> params) {
-            this.params = params;
-        }
-
-
-
     @RequestMapping(value = "/addMePermTimes", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
@@ -568,6 +559,13 @@ public class ConsultUserController extends BaseController {
 
         return null;
     }
+
+    public class saveCoopThirdBabyInfoThread implements Runnable {
+        private HashMap<String, Object> params;
+        public saveCoopThirdBabyInfoThread(HashMap<String, Object> params) {
+            this.params = params;
+        }
+
         @Override
         public void run() {
             String childrenUrl = (String) params.get("remoteUrl"); //获取当前登录人的孩子信息
