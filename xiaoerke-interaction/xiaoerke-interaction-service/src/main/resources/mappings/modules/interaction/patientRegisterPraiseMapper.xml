@@ -386,6 +386,7 @@
         <if test="consultSessionId != null">
             and consult_session_id =#{consultSessionId}
         </if>
+        order by createtime desc
     </select>
 
 	<insert id="saveQuestionnaireSurvey" parameterType="java.util.List">
