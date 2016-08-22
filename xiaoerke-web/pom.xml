@@ -113,6 +113,17 @@
             <artifactId>xiaoerke-activity-service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.cxqm</groupId>
+            <artifactId>xiaoerke-alipay-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.cxqm</groupId>
+            <artifactId>xiaoerke-alipay-service</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
   
 </project>
