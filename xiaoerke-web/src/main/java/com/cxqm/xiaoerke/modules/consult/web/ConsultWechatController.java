@@ -345,7 +345,7 @@ public class ConsultWechatController extends BaseController {
                                 ConsultSessionManager.getSessionManager().minusConsultTimes(consultSessionPropertyVo);
                             }
                         } else if (consultSessionPropertyVo.getPermTimes() > 0 ) {
-                            content = "嗨，亲爱的，你还剩" + consultSessionPropertyVo.getPermTimes() + "次永久免费咨询的机会，每次发起咨询后，24小时内有效^-^\n";
+                            content = "嗨，亲爱的，你还剩" + consultSessionPropertyVo.getPermTimes() + "次免费咨询的机会，每次发起咨询后，24小时内有效^-^\n";
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             if(richConsultSession.getUserType().equals(ConstantUtil.CONSULTDOCTOR)){
                                 ConsultSessionManager.getSessionManager().minusConsultTimes(consultSessionPropertyVo);
