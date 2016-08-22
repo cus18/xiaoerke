@@ -13,6 +13,7 @@ import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultVoiceRecordMongoServiceImpl;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import io.netty.channel.Channel;
@@ -357,6 +358,7 @@ public class ConsultWechatController extends BaseController {
                                     "-----------\n" +
                                     "求助客服请直接向分诊说明，不需付费\n";
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
+                            LogUtils.saveLog("consult_charge_twice_information",sysUserId);
                         }
                     }
                 }
