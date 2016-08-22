@@ -262,6 +262,9 @@ div#ddjr {
     overflow: hidden;
 }
 
+.jrhhpm-tb th:nth-child(2) {
+    width: 80px;
+}
 .jrhhpm-tb th:nth-child(4) {
     width: 80px;
 }
