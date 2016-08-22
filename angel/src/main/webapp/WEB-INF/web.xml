@@ -10,7 +10,8 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			classpath*:/spring-context.xml
+			classpath*:applicationContext.xml
+			classpath*:/spring-mvc.xml
 			classpath*:/spring-context-mysql.xml
 			classpath*:/spring-context-redis.xml
 			classpath*:/spring-context-mongodb.xml

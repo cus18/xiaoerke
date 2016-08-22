@@ -7,6 +7,9 @@ import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.account.service.PayRecordService;
+import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.insurance.entity.InsuranceRegisterService;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
@@ -85,9 +88,15 @@ public class PayNotificationController {
     @Autowired
     private MutualHelpDonationService mutualHelpDonationService;
 
+	@Autowired
+	private SessionRedisCache sessionRedisCache;
+
 	private static Lock lock = new ReentrantLock();
 
 	private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
+
+	@Autowired
+	private ConsultSessionPropertyService consultSessionPropertyService;
 
 	/**
 	 * 接收支付成后微信notify_url参数中传来的参数
@@ -472,15 +481,24 @@ public class PayNotificationController {
 				PayRecord payRecord = new PayRecord();
 				payRecord.setId((String) map.get("out_trade_no"));
 				Map<String,Object> insuranceMap= insuranceService.getPayRecordById(payRecord.getId());
-				if(insuranceMap.get("fee_type").toString().equals("doctorConsultPay")){
+				String openid = (String)map.get("openid");
+				Integer sessionId = sessionRedisCache.getSessionIdByUserId(openid);
+//				判断当次的sessionid是否已经支付
+				payRecord.setOrderId(sessionId+"");
+
+				if(insuranceMap.get("fee_type").toString().equals("doctorConsultPay")&&!"success".equals(payRecord.getStatus())){
 					payRecord.setStatus("success");
 					payRecord.setReceiveDate(new Date());
 					payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
-					String openid = (String)map.get("openid");
+
+					RichConsultSession consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
+
 					Map parameter = systemService.getWechatParameter();
 					String token = (String)parameter.get("token");
-					WechatUtil.sendMsgToWechat(token,openid,"哇哦,这么大方,不赞你一下可惜了。医生正在闪电般赶来为您服务");
-
+					WechatUtil.sendMsgToWechat(token,openid,"【支付成功通知】你已在宝大夫成功支付24小时咨询服务费，感谢你的信任和支持！");
+					if(!ConstantUtil.CONSULTDOCTOR.equals(consultSession.getUserType())){
+						consultSessionPropertyService.addPermTimes(openid);
+					}
 					HttpRequestUtil.wechatpost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/notifyPayInfo2Distributor?openId="+openid,
 							"openId=" + openid);
 				}

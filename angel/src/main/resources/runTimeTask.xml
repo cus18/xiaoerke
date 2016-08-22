@@ -88,26 +88,27 @@
 	</bean>
 
 	<!--每两分钟，检查一下医生的链接情况，发送心跳包-->
-	<bean id="checkH5UserChannelStatusTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	<bean id="updateMonthTimeStatusTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="scheduledQuarz"/>
-		<property name="targetMethod" value="checkH5UserChannelStatusTask"/>
+		<property name="targetMethod" value="updateMonthTime"/>
 		<property name="concurrent" value="false"/>
 	</bean>
-	<bean id="checkH5UserChannelStatus" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="checkH5UserChannelStatusTask"/>
-		<property name="cronExpression" value="0 0/2 * * * ?"/>
+	<bean id="updateMonthTimeTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="updateMonthTimeStatusTask"/>
+		<property name="cronExpression" value="0 0 1 1 * ?"/>
 	</bean>
+
 
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-				<ref bean="consultManagementCronTrigger"/>
+				<!--<ref bean="consultManagementCronTrigger"/>
 				<ref bean="modifyConsultConversationForwardRecordsTrigger"/>
 				<ref bean="deleteTempRecordTrigger"/>
-				<ref bean="consultRecordMongoTransMySqlCronTrigger"/>
+				<ref bean="consultRecordMongoTransMySqlCronTrigger"/>-->
 				<ref bean="checkDoctorChannelStatus"/>
-				<ref bean="checkH5UserChannelStatus"/>
-				<ref bean="testMappingTrigger"/>
+				<!--<ref bean="testMappingTrigger"/>-->
+				<!--<ref bean="updateMonthTimeTrigger"/>-->
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>

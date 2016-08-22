@@ -149,6 +149,16 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		long t = new Date().getTime()-date.getTime();
 		return t/(60*60*1000);
 	}
+
+	/**
+	 * 获取过去时间
+	 * @param date
+	 * @return
+	 */
+	public static long pastMillisSecond(Date date) {
+		long t = new Date().getTime()-date.getTime();
+		return t;
+	}
 	
 	/**
 	 * 获取过去的分钟

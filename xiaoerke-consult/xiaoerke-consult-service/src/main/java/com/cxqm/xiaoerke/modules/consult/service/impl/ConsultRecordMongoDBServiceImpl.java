@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.consult.service.impl;
 
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultCountTotal;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
@@ -132,7 +133,13 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		WriteResult writeResult = null;
 		ConsultSessionStatusVo  StatusVo = this.findOneConsultSessionStatusVo(query);
 		if(StatusVo != null){
-			writeResult = mongoTemplate.updateMulti(query,new Update().set("lastMessageTime", new Date()), ConsultSessionStatusVo.class);
+			String payStauts = consultSessionStatusVo.getPayStatus();
+			if(null != payStauts){
+				writeResult = mongoTemplate.updateMulti(query,new Update().set("lastMessageTime", new Date()).set("payStatus",consultSessionStatusVo.getPayStatus()), ConsultSessionStatusVo.class);
+			}else{
+				writeResult = mongoTemplate.updateMulti(query,new Update().set("lastMessageTime", new Date()), ConsultSessionStatusVo.class);
+			}
+
 		}else {
 			mongoTemplate.insert(consultSessionStatusVo, "consultSessionStatusVo");
 		}
@@ -203,5 +210,11 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 
 	public WriteResult removeConsultRankRecord(Query query) {
 		return mongoTemplate.remove(query, "consultRankRecord");
+	}
+
+	//jiangzg add 2016-8-11 18:37:50 修改集合中字段
+	public int updateConsultSessionFirstTransferDate(Query query,Update update ,Class t){
+		mongoTemplate.updateMulti(query, update,t);
+		return 0 ;
 	}
 }

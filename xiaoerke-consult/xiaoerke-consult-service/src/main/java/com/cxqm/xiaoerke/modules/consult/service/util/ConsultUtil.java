@@ -22,6 +22,8 @@ public class ConsultUtil {
 		consultSession.setStatus((String) consultSessionMap.get("status"));
 		consultSession.setTitle((String) consultSessionMap.get("title"));
 		consultSession.setId((Integer) consultSessionMap.get("id"));
+		consultSession.setPayStatus((String) consultSessionMap.get("payStatus"));
+		consultSession.setNickName((String) consultSessionMap.get("nickName"));
 		return consultSession;
 	}
 
@@ -36,6 +38,8 @@ public class ConsultUtil {
 		consultSessionMap.put("csUserId", consultSession.getCsUserId());
 		consultSessionMap.put("status", consultSession.getStatus());
 		consultSessionMap.put("title", consultSession.getTitle());
+		consultSessionMap.put("payStatus", consultSession.getPayStatus());
+		consultSessionMap.put("nickName", consultSession.getNickName());
 		consultSessionMap.put("id", consultSession.getId());
 		return consultSessionMap;
 	}

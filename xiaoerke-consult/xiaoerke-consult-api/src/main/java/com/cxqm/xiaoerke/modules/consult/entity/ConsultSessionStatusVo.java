@@ -7,6 +7,17 @@ import java.util.Date;
  * @author deliang
  */
 public class ConsultSessionStatusVo {
+
+    private  String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     private String sessionId;
 
     private Date lastMessageTime;
@@ -14,6 +25,8 @@ public class ConsultSessionStatusVo {
     private String userId;
 
     private Date createDate;
+
+    private Date firstTransTime;
 
     private String status;
 
@@ -27,6 +40,8 @@ public class ConsultSessionStatusVo {
 
     private String flag;
 
+    private String payStatus;
+
     public String getCsUserId() {
         return csUserId;
     }
@@ -37,6 +52,14 @@ public class ConsultSessionStatusVo {
 
     public Date getCreateDate() {
         return createDate;
+    }
+
+    public String getPayStatus() {
+        return payStatus;
+    }
+
+    public void setPayStatus(String payStatus) {
+        this.payStatus = payStatus;
     }
 
     public void setCreateDate(Date createDate) {
@@ -77,6 +100,14 @@ public class ConsultSessionStatusVo {
 
     public String getSessionId() {
         return sessionId;
+    }
+
+    public Date getFirstTransTime() {
+        return firstTransTime;
+    }
+
+    public void setFirstTransTime(Date firstTransTime) {
+        this.firstTransTime = firstTransTime;
     }
 
     public void setSessionId(String sessionId) {

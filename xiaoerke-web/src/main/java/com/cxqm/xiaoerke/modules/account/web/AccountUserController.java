@@ -241,7 +241,7 @@ public class AccountUserController {
 	String doctorConsultPay(HttpServletRequest request,HttpSession session) throws Exception {
 		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 		//获取统一支付接口参数
-		String payType = (String)request.getAttribute("payType");
+		String payType ="doctorConsultPay";// (String)request.getAttribute("payType");
 		request.setAttribute("feeType", payType);
 		Map prepayInfo = accountService.getPrepayInfo(request, session, "doctorConsultPay");
 		prepayInfo.put("feeType",payType);

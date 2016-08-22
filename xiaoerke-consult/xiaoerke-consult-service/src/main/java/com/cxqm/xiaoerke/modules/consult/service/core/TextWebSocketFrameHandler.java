@@ -173,7 +173,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             stringBuilder.append("<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
                             stringBuilder.append(praiseList.get(0).get("id"));
                             stringBuilder.append("'>评价医生</a>】");
-                            sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());
+                            sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), content);
                             //发送消息
                             /*if(StringUtils.isNotNull(content) && !"\n".equalsIgnoreCase(content)){
                                 if (content.endsWith("\n")) {

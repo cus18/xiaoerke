@@ -7,17 +7,18 @@ import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.persistence.Page;
-import com.cxqm.xiaoerke.common.utils.DateUtils;
-import com.cxqm.xiaoerke.common.utils.FrontUtils;
-import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
+import com.cxqm.xiaoerke.modules.sys.entity.MongoLog;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.UserInfoService;
+import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
@@ -29,6 +30,9 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -59,6 +63,10 @@ public class ConsultUserController extends BaseController {
     private ConsultPayUserService consultPayUserService;
 
     @Autowired
+    private ConsultSessionPropertyService consultSessionPropertyService;
+
+    @Autowired
+    private MongoDBService<MongoLog> mongoDBServiceLog;
     private UserInfoService userInfoService;
 
     @RequestMapping(value = "/getCurrentSessions", method = {RequestMethod.POST, RequestMethod.GET})
@@ -180,7 +188,7 @@ public class ConsultUserController extends BaseController {
         }else if(!csUserId.equals("allCS")){
             query = new Query().addCriteria(new Criteria().where("csUserId").regex(csUserId).andOperator(Criteria.where("lastMessageTime").gte(date))).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
         } else {
-            query = new Query().addCriteria(Criteria.where("lastMessageTime").gte(date)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));;
+            query = new Query().addCriteria(Criteria.where("lastMessageTime").gte(date)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
         }
 
         PaginationVo<ConsultSessionStatusVo> pagination = consultRecordService.getUserMessageList(pageNo, pageSize, query);
@@ -250,10 +258,6 @@ public class ConsultUserController extends BaseController {
         String csUserId = String.valueOf(params.get("csUserId"));
         String csuserType =(String)params.get("userType");
         ConcurrentHashMap<String,Object> needPayList = new ConcurrentHashMap<String, Object>();
-        try{
-            needPayList = consultPayUserService.getneepPayConsultSession((String)params.get("csUserId"));
-        }catch (Exception e){e.printStackTrace();}
-
 
         if(StringUtils.isNotNull(csUserId)){
             int pageNo = (Integer) params.get("pageNo");
@@ -269,6 +273,10 @@ public class ConsultUserController extends BaseController {
                 for(ConsultSession consultSession :consultSessions){
                     HashMap<String,Object> searchMap = new HashMap<String, Object>();
                     RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(consultSession.getId());
+
+                    Query sessionquery = (new Query()).addCriteria(where("sessionId").is(""+consultSession.getId()+""));
+                    ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(sessionquery);
+
                     if(richConsultSession !=null && StringUtils.isNotNull(richConsultSession.getUserId())){
                         String userId = richConsultSession.getUserId();
                         Query query = new Query(where("userId").is(userId)).with(new Sort(Direction.ASC, "createDate"));
@@ -282,16 +290,25 @@ public class ConsultUserController extends BaseController {
                         searchMap.put("messageNotSee",true);
                         searchMap.put("dateTime",richConsultSession.getCreateTime());
                         searchMap.put("consultValue",ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
-                            if(null != needPayList&&consultPayUserService.angelChargeCheck(userId)){
-                                if("distributor".equals(csuserType)){
-                                    Date createTime =(Date) needPayList.get(userId);
-                                    if(null!=createTime&&createTime.getTime()+1000*60*5>new Date().getTime()){
-                                        searchMap.put("notifyType","1002");
-                                    }else{
-                                        searchMap.put("notifyType","1003");
-                                    }
-                                }
-                            }
+
+                        if(null != consultSessionStatusVo&&(ConstantUtil.PAY_SUCCESS+ConstantUtil.USE_TIMES+ConstantUtil.WITHIN_24HOURS).indexOf(consultSessionStatusVo.getPayStatus())>-1){
+                            searchMap.put("notifyType","1001");
+                        } else{
+                            searchMap.put("notifyType","1002");
+                        }
+
+
+//                            if(null != needPayList&&consultPayUserService.angelChargeCheck(userId)){
+//
+//                                if("distributor".equals(csuserType)){
+//                                    Date creatTime =(Date) needPayList.get(userId);
+//                                    if(null!=creatTime&&creatTime.getTime()+1000*60*5>new Date().getTime()){
+//                                        searchMap.put("notifyType","1002");
+//                                    }else{
+//                                        searchMap.put("notifyType","1003");
+//                                    }
+//                                }
+//                            }
                         responseList.add(searchMap);
                     }
                 }
@@ -381,8 +398,8 @@ public class ConsultUserController extends BaseController {
                 }
             }
             response.put("totalPage",consultSessionStatusVoPaginationVo.getTotalPage());
-            response.put("pageNo", pageNo);
-            response.put("pageSize", pageSize);
+            response.put("pageNo",pageNo);
+            response.put("pageSize",pageSize);
             response.put("userList",resultList);
         }else if(searchType.equals("message")){
             Query query = new Query(where("message").regex(searchInfo)).with(new Sort(Sort.Direction.DESC, "createDate"));
@@ -491,4 +508,23 @@ public class ConsultUserController extends BaseController {
 
 
 
+
+    @RequestMapping(value = "/addMePermTimes", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> addMePermTimes2Users(HttpServletRequest request, HttpSession session,@RequestBody Map<String, Object> params){
+        String openid = WechatUtil.getOpenId(session,request);
+        String shareType = (String)params.get("shareType");
+        String nowDate = DateUtils.DateToStr(new Date(),"yyyy-MM");
+        Query queryInLog = new Query();
+        queryInLog.addCriteria(new Criteria("title").is(shareType).andOperator(
+                new Criteria("create_date").gte(nowDate)).andOperator(new Criteria("parameters").in(openid)));
+        long pushBaodfNum = mongoDBServiceLog.queryCount(queryInLog);
+        if(pushBaodfNum==0){
+            consultSessionPropertyService.addPermTimes(openid);
+            LogUtils.saveLog(shareType,openid);
+        }
+
+        return null;
+    }
 }

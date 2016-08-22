@@ -39,4 +39,6 @@ public interface ConsultSessionService {
 
     //根据条件查询会话列表 sunxiao
     List<ConsultSession> getConsultSessionListByInfo(Map map);
+
+    ConsultSession selectByPrimaryKey(Integer id);
 }

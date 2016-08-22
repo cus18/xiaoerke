@@ -72,10 +72,10 @@
                      ng-repeat="item in alreadyJoinPatientConversation | orderBy:'dateTime':true"
                      ng-click="chooseAlreadyJoinConsultPatient(item.patientId,item.patientName,item.sessionId)"
                      alt="">
-                    <!--<div>
-                        <img ng-style="item.notifyType=='1003'?{'display':'block'}:{'display':'none'}" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fduokefu_06.png" alt=""/>
-                        <img ng-style="item.notifyType=='1002'?{'display':'block'}:{'display':'none'}" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fduokefu.png" alt=""/>
-                    </div>-->
+                    <div>
+                        <img ng-style="item.notifyType=='1001'?{'display':'block'}:{'display':'none'}" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fbiaoqian_03.png" alt=""/>
+                        <img ng-style="item.notifyType=='1002'?{'display':'block'}:{'display':'none'}" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fbiaoqian_06.png" alt=""/>
+                    </div>
                     <div><nobr>{{item.patientName|limitTo:6}}</nobr></div>
                     <div><nobr>{{transformDate(item.dateTime)}}</nobr></div>
                     <div ng-style="item.messageNotSee?{'display':'block'}:{'display':'none'}">

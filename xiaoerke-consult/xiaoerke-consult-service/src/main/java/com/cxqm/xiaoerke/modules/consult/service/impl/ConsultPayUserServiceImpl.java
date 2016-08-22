@@ -8,7 +8,9 @@ import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
 import com.cxqm.xiaoerke.modules.account.service.PayRecordService;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultPayUserDao;
+import com.cxqm.xiaoerke.modules.consult.dao.ConsultSessionPropertyDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultPayUserService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
@@ -38,6 +40,9 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
     private PayRecordService payRecordService;
 
     @Autowired
+    private ConsultSessionPropertyDao consultSessionPropertyDao;
+
+    @Autowired
     private SessionRedisCache sessionRedisCache;
 
     private RedisTemplate<String, Object> redisTemplate = SpringContextHolder.getBean("redisTemplate");
@@ -49,6 +54,11 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
     public  ConcurrentHashMap<String,Object> getneepPayConsultSession(String csuserId) {
         ConcurrentHashMap<String,Object> sessionMap = ( ConcurrentHashMap<String,Object>) redisTemplate.opsForHash().get(PAYINFO_CONSULTS_KEY, csuserId);
         return sessionMap;
+    }
+
+    @Override
+    public ConsultSessionPropertyVo selectUserSessionPropertyByVo(ConsultSessionPropertyVo consultSessionPropertyVo){
+        return consultSessionPropertyDao.selectByField(consultSessionPropertyVo);
     }
 
     @Override

@@ -202,3 +202,15 @@
     width: 35px;
     margin: 0 0 0 5px;
 }
+
+ul.selectedDoctorList {
+    max-height: 270px;
+    position: absolute;
+    overflow-y: scroll;
+}
+
+.selectedDoctorList li {
+    background-color: #FFF;
+    color: #000;
+    cursor: pointer;
+}

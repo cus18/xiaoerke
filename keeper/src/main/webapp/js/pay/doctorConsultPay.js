@@ -1,5 +1,5 @@
-var payLock = false;
-var moneys = 8;
+var payLock = true;
+var moneys = 9.9;
 var leaveNotes = "reward";
 
 //页面初始化执行,用户初始化页面参数信息以及微信的支付接口
@@ -79,7 +79,7 @@ function wechatPay() {
                         paySign: obj.paySign,  // 支付签名
                         success: function (res) {
                             if (res.errMsg == "chooseWXPay:ok") {
-                              window.location.href="http://s202.xiaork.com/angel/patient/consult#/doctorConsultPaySuccess";
+                              window.location.href="http://s120.xiaork.com/angel/patient/consult#/doctorConsultPaySuccess";
                             } else {
                                 alert("支付失败,请重新支付")
                             }

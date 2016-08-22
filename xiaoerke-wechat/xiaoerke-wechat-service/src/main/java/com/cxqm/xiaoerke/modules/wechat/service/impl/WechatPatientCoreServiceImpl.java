@@ -510,7 +510,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				article.setUrl("http://s165.baodf.com/wisdom/umbrella#/umbrellaJoin/1467962511697/130000002");
 				articleList.add(article);
 			}
-		}else if(EventKey.indexOf("qrscene_15")>-1){//扫码分享
+		}else if(EventKey.indexOf("qrscene_15")>-1||EventKey.startsWith("150")){//扫码分享
 
 			Integer openLevel = Integer.parseInt(Global.getConfig("OPEN_LEVEL"));
 			Map parameter = systemService.getWechatParameter();
@@ -547,7 +547,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				}
 
 				//	如果是新用户推广者加一
-				if(olyGamesService.getNewAttentionByOpenId(xmlEntity.getFromUserName())== 0){
+				if(olyGamesService.getNewAttentionByOpenId(xmlEntity.getFromUserName())== 0&&!EventKey.startsWith("150")){
 					olyBabyGamesVo.setInviteFriendNumber(alreadyInviteNum);
 
 					String msg = "";
@@ -557,7 +557,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 						needInviteNum += i;
 					}
 					needInviteNum -=alreadyInviteNum;
-					if(alreadyInviteNum>=3){
+					if(gemeLevel>=openLevel){
 						msg = "已开通第"+gemeLevel+"关";
 						if(openLevel ==6)msg = "满六关：您已成功开通所有关卡";
 

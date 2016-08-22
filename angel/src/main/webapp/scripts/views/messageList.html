@@ -65,10 +65,16 @@
                     </select>
                 </div>
                 <div class="fr">
-                    <select id="CSDoctorListInfoId" ng-model="selectedCsList"
+                    <!--ng-options="user.name for user in CSList"-->
+                    <!--<select id="CSDoctorListInfoId" ng-model="selectedCsList"
                             ng-options="user.name for user in CSList"
                             ng-change="getCsInfoByUserAndDate(selectedCsList.id)">
-                    </select>
+                        &lt;!&ndash;<option ng-repeat="item in CSList" value="{{item.id}}">{{item.name}}</option>&ndash;&gt;
+                    </select>-->
+                    <input class="selectedDoctor" type="text" ng-keyup="getCSDoctorList(info.selectedDoctorName)" ng-model="info.selectedDoctorName"/>
+                    <ul class="selectedDoctorList" ng-show="selectedDoctorList">
+                        <li ng-repeat="item in CSList" ng-click="getCsInfoByUserAndDate(item.id,item.name)">{{item.name}}</li>
+                    </ul>
                 </div>
             </div>
             <div class='w10 h7 nicknamelist '>

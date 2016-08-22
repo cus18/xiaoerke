@@ -255,4 +255,32 @@
     where (su.user_type = #{userType} or su.user_type = 'distributor') and  del_flag ='0'
     ORDER BY sdi.department
   </select>
+
+  <!-- 根据type查询用户 -->
+  <select id="findUserByUserName" resultType="User" parameterType="User" >
+    SELECT * from sys_user su where su.name like CONCAT('%',#{name},'%') and  su.del_flag ='0'
+  </select>
+
+
+  <!-- jiangzg add 查询具有某种权限的医生信息 2016-8-12 10:55:20-->
+  <select id="findManagerDoctorInfoBySelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from consult_doctor_info where 1=1
+    <if test="grabSession != null and grabSession != ''">
+      and grab_session = #{grabSession,jdbcType=VARCHAR}
+    </if>
+    <if test="sendMessage != null and sendMessage != ''">
+      and send_message = #{sendMessage,jdbcType=VARCHAR}
+    </if>
+    <if test="receiveDifferentialNotification != null and receiveDifferentialNotification != ''">
+      and receive_differential_notification = #{receiveDifferentialNotification,jdbcType=VARCHAR}
+    </if>
+    <if test="department != null and department != ''">
+      and department = #{department,jdbcType=VARCHAR}
+    </if>
+    <if test="type != null and type != ''">
+      and type = #{type,jdbcType=VARCHAR}
+    </if>
+  </select>
 </mapper>
