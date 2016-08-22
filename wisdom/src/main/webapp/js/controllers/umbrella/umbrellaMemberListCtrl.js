@@ -1,14 +1,15 @@
 ﻿angular.module('controllers', ['ionic']).controller('umbrellaMemberListCtrl', [
 
-    '$scope','$state','$stateParams','getFamilyList','ifExistOrder',
+    '$scope','$state','$stateParams','getFamilyList','ifExistOrder','getNickNameAndRanking',
 
-    function ($scope,$state,$stateParams,getFamilyList,ifExistOrder) {
+    function ($scope,$state,$stateParams,getFamilyList,ifExistOrder,getNickNameAndRanking) {
 
         $scope.title="宝护伞-宝大夫儿童家庭重疾互助计划";
 
         $scope.shareLock=false;
+        var nickName="我真心";
 
-        $scope.link=
+      /*  $scope.link=*/
 
 
 
@@ -146,7 +147,7 @@
 
             var shareTextArray=[
 
-                "有了这个相当于多了个重疾保险，5块钱就能换来40万，一确诊就能给钱，比保险快多了！",
+                "有了这个相当于多了个重疾保险，免费加入就能换来40万，一确诊就能给钱，比保险快多了！",
 
                 "墙裂推荐，绝非广告，这个真的是很需要。是对孩子和家庭的负责！我已经加入啦，你还不快来！",
 
@@ -195,9 +196,18 @@
                 success:function(data) {
 
                     if(data.openid=="none"){
-
                         window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+                    }
+                    else{
+                        $scope.openid=data.openid;
+                        console.log("my scope.openid", $scope.openid);
+                        getNickNameAndRanking.save({"openid":$scope.openid},function (data) {
+                            if(data.nickName!=""){
+                                nickName=data.nickName;
+                            }
+                            console.log("nickName",nickName);
 
+                        });
                     }
 
                 },
@@ -300,7 +310,7 @@
 
                             wx.onMenuShareTimeline({
 
-                                title: '我为孩子健康负责，免费领取了40万的大病治疗费，还有20万送给你！', // 分享标题
+                                title: '为了你的孩子，'+nickName+'邀请你加入爱心公益，并赠送40万的现金保障！', // 分享标题
 
                                 link: "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$stateParams.id+"/"+$stateParams.status, // 分享链接
 
@@ -344,9 +354,9 @@
 
                             wx.onMenuShareAppMessage({
 
-                                title: '我为孩子健康负责，免费领取了40万的大病治疗费，还有20万送给你！', // 分享标题
+                                title: '为了你的孩子，'+nickName+'邀请你加入爱心公益，并赠送40万的现金保障！', // 分享标题
+                                desc: "由宝大夫和中国儿童少年基金会联合发起，绝对值得信赖！", // 分享描述
 
-                                desc: "限时免费，手慢无！讲真，这个东西好到让你想给我发红包！！！", // 分享描述
 
                                 link:"http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$stateParams.id+"/"+$stateParams.status, // 分享链接
 

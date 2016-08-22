@@ -126,12 +126,12 @@ div#ddjr {
     text-align: center;
 }
 
-.consultNowList div:nth-child(1) {
+/*.consultNowList div:nth-child(1) {
     padding: 12px 0 12px 3px;
     width: 16px;
-}
+}*/
 
-.consultNowList div:nth-child(2) {
+.consultNowList div:nth-child(1) {
     width: 50px;
     overflow: hidden;
     text-overflow: ellipsis;

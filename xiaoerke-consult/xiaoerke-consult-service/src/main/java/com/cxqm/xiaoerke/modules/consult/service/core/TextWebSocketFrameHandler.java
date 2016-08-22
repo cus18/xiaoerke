@@ -89,8 +89,11 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
             Iterator<Map.Entry<String, Date>> it2 = ConsultSessionManager.getSessionManager().getCsUserConnectionTimeMapping().entrySet().iterator();
             while (it2.hasNext()) {
                 Map.Entry<String, Date> entry = it2.next();
-                if (csUserId.equals(entry.getKey())) {
-                    ConsultSessionManager.getSessionManager().getCsUserConnectionTimeMapping().put(entry.getKey(), new Date());
+                try{
+                    if (csUserId.equals(entry.getKey())) {
+                        ConsultSessionManager.getSessionManager().getUserConnectionTimeMapping().put(entry.getKey(), new Date());
+                    }
+                }catch (Exception e){
                 }
             }
             return;
@@ -108,12 +111,15 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
         }
 
         if(msgType==8){
-            String csUserId = (String) msgMap.get("csUserId");
+            String userId = (String) msgMap.get("userId");
             Iterator<Map.Entry<String, Date>> it2 = ConsultSessionManager.getSessionManager().getCsUserConnectionTimeMapping().entrySet().iterator();
             while (it2.hasNext()) {
                 Map.Entry<String, Date> entry = it2.next();
-                if (csUserId.equals(entry.getKey())) {
-                    ConsultSessionManager.getSessionManager().getUserConnectionTimeMapping().put(entry.getKey(), new Date());
+                try{
+                    if (userId.equals(entry.getKey())) {
+                        ConsultSessionManager.getSessionManager().getUserConnectionTimeMapping().put(entry.getKey(), new Date());
+                    }
+                }catch (Exception e){
                 }
             }
             return;
@@ -154,7 +160,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                         praiseParam.put("doctorId", csUserId);
                         List<Map<String, Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParam);
                         if (praiseList != null && praiseList.size() > 0) {
-                            int nameIndex = content.indexOf(":");
+                            int nameIndex = content.indexOf("：");
                             String newContent = content.substring(nameIndex + 1, content.toCharArray().length);
                             if (StringUtils.isNotNull(newContent) && !"\n".equalsIgnoreCase(newContent)) {
                                 if (newContent.endsWith("\n")) {
@@ -169,11 +175,13 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             }
                             stringBuilder.append("------------------\n");
                             stringBuilder.append(content.substring(0, nameIndex));
-                            stringBuilder.append(";【");
-                            stringBuilder.append("<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
+                            stringBuilder.append(";");
+                            stringBuilder.append("<a href='http://s202.xiaork.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
                             stringBuilder.append(praiseList.get(0).get("id"));
-                            stringBuilder.append("'>评价医生</a>】");
-                            sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), content);
+                            stringBuilder.append("'>评价医生</a>;");
+                            stringBuilder.append("<a href='http://s251.baodf.com/keeper/playtour#/playtourShare/6");
+                            stringBuilder.append("'>分享</a>");
+                            sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());
                             //发送消息
                             /*if(StringUtils.isNotNull(content) && !"\n".equalsIgnoreCase(content)){
                                 if (content.endsWith("\n")) {

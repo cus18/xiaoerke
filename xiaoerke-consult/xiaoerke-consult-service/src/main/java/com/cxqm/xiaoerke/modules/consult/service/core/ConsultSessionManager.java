@@ -187,16 +187,18 @@ public class ConsultSessionManager {
 
             if (distributors.size() > 0) {
                 for (int i = 0; i < distributorsList.size(); i++) {
-                    String distributorId = RandomUtils.getRandomKeyFromMap(distributors);
-                    distributorChannel = distributors.get(distributorId);
-                    if (distributorChannel.isActive()) {
-                        consultSession.setCsUserId(distributorId);
-                        User csUser = systemService.getUserById(distributorId);
-                        consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
-                        break;
-                    } else {
-                        distributors.remove(distributorId);
-                        csUserChannelMapping.remove(distributorId);
+                    if(distributors != null && distributors.size() > 0){
+                        String distributorId = RandomUtils.getRandomKeyFromMap(distributors);
+                        distributorChannel = distributors.get(distributorId);
+                        if (distributorChannel.isActive()) {
+                            consultSession.setCsUserId(distributorId);
+                            User csUser = systemService.getUserById(distributorId);
+                            consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
+                            break;
+                        } else {
+                            distributors.remove(distributorId);
+                            csUserChannelMapping.remove(distributorId);
+                        }
                     }
                 }
             }

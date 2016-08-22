@@ -32,7 +32,7 @@ angular.module('controllers', ['luegg.directives'])
             $scope.loadingFlag = false;
             $scope.socketServerFirst = "";
             $scope.socketServerSecond = "";
-            $scope.firstAddress = "localhost";
+            $scope.firstAddress = "101.201.154.75";
             $scope.secondAddress = "120.25.161.33";
             $scope.alreadyJoinPatientConversation = []; //已经加入会话的用户数据，一个医生可以有多个对话的用户，这些用户的数据，都保存在此集合中 乱码
             $scope.currentUserConversation = {}; //医生与当前正在进行对话用户的聊天数据，医生在切换不同用户时，数据变更到切换的用户上来。
@@ -96,6 +96,8 @@ angular.module('controllers', ['luegg.directives'])
                         }
 
                         getIframeSrc();
+                        getHistoryConsultContent();
+
                         //获取通用回复列表
                         GetAnswerValueList.save({"type": "commonAnswer"}, function (data) {
                             if(data.result=="success"){
@@ -115,6 +117,7 @@ angular.module('controllers', ['luegg.directives'])
                                 $scope.myAnswer = [];
                             }
                         });
+
                         //获取我的诊断列表
                         GetAnswerValueList.save({"type":"diagnosis"},function(data){
                             if(data.result=="success"){
@@ -133,6 +136,7 @@ angular.module('controllers', ['luegg.directives'])
                             data.illnessList.push(addIllness);
                             $scope.illnessList = data.illnessList;
                         });
+
                         //查询专科列表
                         GetFindAllTransferSpecialist.save({}, function (data) {
                             $scope.selectedSpecialistType = data.data;
@@ -142,7 +146,8 @@ angular.module('controllers', ['luegg.directives'])
                         if($stateParams.action == "createUserSession"){
                             var patientId = $stateParams.userId;
                             var patientName = "";
-                            GetCurrentUserConsultListInfo.save({userType:$scope.userType,csUserId:$scope.doctorId,pageNo:1,pageSize:10000},function(data){
+                            GetCurrentUserConsultListInfo.save({userType:$scope.userType,csUserId:$scope.doctorId,
+                                pageNo:1,pageSize:10000},function(data){
                                 if(data.alreadyJoinPatientConversation!=""&&data.alreadyJoinPatientConversation!=undefined){
                                     $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                                     $.each($scope.alreadyJoinPatientConversation,function(index,value){
@@ -159,7 +164,6 @@ angular.module('controllers', ['luegg.directives'])
                         }else if($stateParams.action == ""){
                             getAlreadyJoinConsultPatientList();
                         }
-
                         setInterval(sessionCheck,20000);
                     }
                 });
@@ -497,6 +501,7 @@ angular.module('controllers', ['luegg.directives'])
                     };
 
                     $scope.socketServerFirst.onclose = function (event) {
+                        console.log("onclose",event.data);
                     };
 
                 } else {
@@ -1725,14 +1730,21 @@ angular.module('controllers', ['luegg.directives'])
                   GetCSDoctorList, GetMessageRecordInfo,GetUserLoginStatus,$location,CreateDoctorConsultSession) {
 
             $scope.info = {};
+
             $scope.searchMessageContent = "";
+
             $scope.recordDetailSkipNum = "";
+
             $scope.userConsultListInfoSkipNum = 0;
+
             $scope.messageType = "";
+
             $scope.currentClickUserName = "";
+
             $scope.currentClickUserId = "";
+
             $scope.loadingFlag = false;
-            $scope.selectedDoctorList = false;
+
             $scope.searchMessageType = [
                 {
                     searchType:"user",

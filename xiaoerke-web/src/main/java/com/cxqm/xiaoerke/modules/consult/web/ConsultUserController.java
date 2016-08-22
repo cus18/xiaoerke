@@ -3,11 +3,13 @@
  */
 package com.cxqm.xiaoerke.modules.consult.web;
 
-import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.*;
+import com.cxqm.xiaoerke.common.utils.CoopConsultUtil;
+import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.*;
@@ -15,13 +17,12 @@ import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.sys.entity.MongoLog;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
-import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.UserInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
-import io.netty.channel.Channel;
-import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import net.sf.json.JSONObject;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -31,9 +32,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -69,10 +72,15 @@ public class ConsultUserController extends BaseController {
     private MongoDBService<MongoLog> mongoDBServiceLog;
     private UserInfoService userInfoService;
 
+    @Autowired
+    private CoopThirdBabyInfoService coopThirdBabyInfoService;
+
+    private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
+
     @RequestMapping(value = "/getCurrentSessions", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> getCurrentSessions(@RequestParam(required=true) String csUserId) {
+    Map<String, Object> getCurrentSessions(@RequestParam(required = true) String csUserId) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
         ConsultSession consultSession = new ConsultSession();
@@ -80,7 +88,7 @@ public class ConsultUserController extends BaseController {
         consultSession.setStatus(ConsultSession.STATUS_ONGOING);
         List<ConsultSession> consultSessions = consultSessionService.selectBySelective(consultSession);
         List<Object> sessionIds = new ArrayList<Object>();
-        for(ConsultSession session : consultSessions) {
+        for (ConsultSession session : consultSessions) {
             sessionIds.add(session.getId());
         }
 
@@ -95,6 +103,7 @@ public class ConsultUserController extends BaseController {
 
     /**
      * 获取会话接入次数
+     *
      * @param userId
      * @return
      */
@@ -188,7 +197,7 @@ public class ConsultUserController extends BaseController {
         }else if(!csUserId.equals("allCS")){
             query = new Query().addCriteria(new Criteria().where("csUserId").regex(csUserId).andOperator(Criteria.where("lastMessageTime").gte(date))).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
         } else {
-            query = new Query().addCriteria(Criteria.where("lastMessageTime").gte(date)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
+            query = new Query().addCriteria(Criteria.where("lastMessageTime").gte(date)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));;
         }
 
         PaginationVo<ConsultSessionStatusVo> pagination = consultRecordService.getUserMessageList(pageNo, pageSize, query);
@@ -217,18 +226,19 @@ public class ConsultUserController extends BaseController {
                 resultList.add(vo);
             }
         }
-        response.put("totalPage",pagination.getTotalPage());
-        response.put("currentPage",pagination.getPageNo());
-        response.put("userList",resultList);
+        response.put("totalPage", pagination.getTotalPage());
+        response.put("currentPage", pagination.getPageNo());
+        response.put("userList", resultList);
         return response;
     }
 
     /**
      * 数据去重，留作后用
-     * @author deliang
+     *
      * @param c
      * @param o
      * @return
+     * @author deliang
      */
     public int frequency(List<ConsultSessionStatusVo> c, ConsultSessionStatusVo o) {
         int result = 0;
@@ -290,34 +300,25 @@ public class ConsultUserController extends BaseController {
                         searchMap.put("messageNotSee",true);
                         searchMap.put("dateTime",richConsultSession.getCreateTime());
                         searchMap.put("consultValue",ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
-
-                        if(null != consultSessionStatusVo&&(ConstantUtil.PAY_SUCCESS+ConstantUtil.USE_TIMES+ConstantUtil.WITHIN_24HOURS).indexOf(consultSessionStatusVo.getPayStatus())>-1){
-                            searchMap.put("notifyType","1001");
-                        } else{
-                            searchMap.put("notifyType","1002");
-                        }
-
-
-//                            if(null != needPayList&&consultPayUserService.angelChargeCheck(userId)){
-//
-//                                if("distributor".equals(csuserType)){
-//                                    Date creatTime =(Date) needPayList.get(userId);
-//                                    if(null!=creatTime&&creatTime.getTime()+1000*60*5>new Date().getTime()){
-//                                        searchMap.put("notifyType","1002");
-//                                    }else{
-//                                        searchMap.put("notifyType","1003");
-//                                    }
-//                                }
-//                            }
+                            if(null != needPayList&&consultPayUserService.angelChargeCheck(userId)){
+                                if("distributor".equals(csuserType)){
+                                    Date createTime =(Date) needPayList.get(userId);
+                                    if(null!=createTime&&createTime.getTime()+1000*60*5>new Date().getTime()){
+                                        searchMap.put("notifyType","1002");
+                                    }else{
+                                        searchMap.put("notifyType","1003");
+                                    }
+                                }
+                            }
                         responseList.add(searchMap);
                     }
                 }
-                response.put("alreadyJoinPatientConversation",responseList);
-            }else{
+                response.put("alreadyJoinPatientConversation", responseList);
+            } else {
                 response.put("alreadyJoinPatientConversation", "");
             }
-        }else {
-            response.put("alreadyJoinPatientConversation","");
+        } else {
+            response.put("alreadyJoinPatientConversation", "");
         }
         return response;
     }
@@ -326,31 +327,30 @@ public class ConsultUserController extends BaseController {
      * 聊天记录查询接口（UserInfo 根据客户查找  message 根据聊天记录查找  分页  123
      *
      * @param
-     @return
-     {
-         "pageNo":"2",
-         "pageSize":"20",
-         "records": [
-             {
-             "id":123
-             "session_id": 456,
-             "openid": "3Wisdfsdflaksjfsd234234j",
-             "message":"聊天内容"
-             "message_type": "yuyin",
-             "toUserId": "fdasfa",
-             "fromUserId": "liutao"
-             },
-             {
-             "id":456
-             "session_id": 345534,
-             "openid": "3Wisdfsdsdfsfjfsd234234j",
-             "message":"聊天内容"
-             "message_type": "yuyin",
-             "toUserId": "fdasfa",
-             "fromUserId": "liutao"
-             }
-         ]
-     }
+     * @return {
+     * "pageNo":"2",
+     * "pageSize":"20",
+     * "records": [
+     * {
+     * "id":123
+     * "session_id": 456,
+     * "openid": "3Wisdfsdflaksjfsd234234j",
+     * "message":"聊天内容"
+     * "message_type": "yuyin",
+     * "toUserId": "fdasfa",
+     * "fromUserId": "liutao"
+     * },
+     * {
+     * "id":456
+     * "session_id": 345534,
+     * "openid": "3Wisdfsdsdfsfjfsd234234j",
+     * "message":"聊天内容"
+     * "message_type": "yuyin",
+     * "toUserId": "fdasfa",
+     * "fromUserId": "liutao"
+     * }
+     * ]
+     * }
      */
     @RequestMapping(value = "/recordSearchList", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -360,10 +360,10 @@ public class ConsultUserController extends BaseController {
 
         int pageNo = 0;
         int pageSize = 1;
-        Map<String,Object> response = new HashMap<String, Object>();
-        if(null != params.get("pageNo") && null != params.get("pageSize")){
+        Map<String, Object> response = new HashMap<String, Object>();
+        if (null != params.get("pageNo") && null != params.get("pageSize")) {
             pageNo = (Integer) params.get("pageNo");
-            pageSize = (Integer)params.get("pageSize");
+            pageSize = (Integer) params.get("pageSize");
         }
 
         PaginationVo<ConsultRecordMongoVo> pagination = null;
@@ -371,25 +371,25 @@ public class ConsultUserController extends BaseController {
         String searchType = String.valueOf(params.get("searchType"));  //user 根据客户查找  message 根据聊天记录查找
         String searchInfo = String.valueOf(params.get("searchInfo"));
         List<ConsultSessionStatusVo> resultList = new ArrayList<ConsultSessionStatusVo>();
-        if(searchType.equals("user")){
+        if (searchType.equals("user")) {
             Criteria cr = new Criteria();
             Query query = new Query();
             query.addCriteria(cr.orOperator(
-                    Criteria.where("userName").regex(searchInfo),Criteria.where("userId").regex(searchInfo))).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
+                    Criteria.where("userName").regex(searchInfo), Criteria.where("userId").regex(searchInfo))).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
             consultSessionStatusVoPaginationVo = consultRecordService.getUserMessageList(pageNo, pageSize, query);
 
-            if(consultSessionStatusVoPaginationVo.getDatas()!=null && consultSessionStatusVoPaginationVo.getDatas().size()>0){
-                for(ConsultSessionStatusVo consultSessionStatusVo :consultSessionStatusVoPaginationVo.getDatas()){
+            if (consultSessionStatusVoPaginationVo.getDatas() != null && consultSessionStatusVoPaginationVo.getDatas().size() > 0) {
+                for (ConsultSessionStatusVo consultSessionStatusVo : consultSessionStatusVoPaginationVo.getDatas()) {
                     ConsultSessionStatusVo vo = consultSessionStatusVo;
                     //根据userId查询CsUserId
-                    ConsultSession consultSession =new ConsultSession();
+                    ConsultSession consultSession = new ConsultSession();
                     consultSession.setId(Integer.valueOf(consultSessionStatusVo.getSessionId()));
                     List<ConsultSession> sessionList = consultSessionService.getCsUserByUserId(consultSession);
-                    if(sessionList!=null && sessionList.size() > 0){
+                    if (sessionList != null && sessionList.size() > 0) {
                         String csUserName = "";
-                        for(ConsultSession session :sessionList){
-                            if(session!=null){
-                                csUserName = csUserName + " " +session.getNickName();
+                        for (ConsultSession session : sessionList) {
+                            if (session != null) {
+                                csUserName = csUserName + " " + session.getNickName();
                             }
                         }
                         vo.setCsUserName(csUserName);
@@ -397,64 +397,65 @@ public class ConsultUserController extends BaseController {
                     resultList.add(vo);
                 }
             }
-            response.put("totalPage",consultSessionStatusVoPaginationVo.getTotalPage());
-            response.put("pageNo",pageNo);
-            response.put("pageSize",pageSize);
-            response.put("userList",resultList);
-        }else if(searchType.equals("message")){
+            response.put("totalPage", consultSessionStatusVoPaginationVo.getTotalPage());
+            response.put("pageNo", pageNo);
+            response.put("pageSize", pageSize);
+            response.put("userList", resultList);
+        } else if (searchType.equals("message")) {
             Query query = new Query(where("message").regex(searchInfo)).with(new Sort(Sort.Direction.DESC, "createDate"));
-            pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query,"permanent");
-            response.put("userList", pagination!=null?pagination.getDatas():"");
-            List<HashMap<String,Object>> responseList = new ArrayList<HashMap<String, Object>>();
-            if(pagination.getDatas()!=null && pagination.getDatas().size()>0){
-                for(ConsultRecordMongoVo consultRecordMongoVo : pagination.getDatas()){
-                    HashMap<String,Object> hashMap = new HashMap<String, Object>();
-                    consultRecordMongoVo.setInfoDate(DateUtils.DateToStr(consultRecordMongoVo.getCreateDate(),"datetime"));
-                    hashMap.put("currentRecord",consultRecordMongoVo);
+            pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "permanent");
+            response.put("userList", pagination != null ? pagination.getDatas() : "");
+            List<HashMap<String, Object>> responseList = new ArrayList<HashMap<String, Object>>();
+            if (pagination.getDatas() != null && pagination.getDatas().size() > 0) {
+                for (ConsultRecordMongoVo consultRecordMongoVo : pagination.getDatas()) {
+                    HashMap<String, Object> hashMap = new HashMap<String, Object>();
+                    consultRecordMongoVo.setInfoDate(DateUtils.DateToStr(consultRecordMongoVo.getCreateDate(), "datetime"));
+                    hashMap.put("currentRecord", consultRecordMongoVo);
 
                     Query beforeQuery = new Query(where("userId").is(consultRecordMongoVo.getUserId()).andOperator(Criteria.where("createDate").lt(consultRecordMongoVo.getCreateDate()))).with(new Sort(Direction.ASC, "createDate")).limit(5);
                     List<ConsultRecordMongoVo> beforeRecordList = consultRecordService.getCurrentUserHistoryRecord(beforeQuery);
                     modifyDate(beforeRecordList);
-                    hashMap.put("beforeRecord",beforeRecordList);
+                    hashMap.put("beforeRecord", beforeRecordList);
 
                     Query laterQuery = new Query(where("userId").is(consultRecordMongoVo.getUserId()).andOperator(Criteria.where("createDate").gt(consultRecordMongoVo.getCreateDate()))).with(new Sort(Sort.Direction.ASC, "createDate")).limit(5);
                     List<ConsultRecordMongoVo> laterRecordList = consultRecordService.getCurrentUserHistoryRecord(laterQuery);
                     modifyDate(laterRecordList);
-                    hashMap.put("laterRecord",laterRecordList);
+                    hashMap.put("laterRecord", laterRecordList);
                     responseList.add(hashMap);
                 }
-                response.put("totalPage",pagination.getTotalPage());
-                response.put("pageNo",pageNo);
-                response.put("pageSize",pageSize);
-                response.put("userList",responseList);
+                response.put("totalPage", pagination.getTotalPage());
+                response.put("pageNo", pageNo);
+                response.put("pageSize", pageSize);
+                response.put("userList", responseList);
             }
         }
         return response;
     }
 
     private void modifyDate(List<ConsultRecordMongoVo> laterRecordList) {
-        for(ConsultRecordMongoVo recordMongoVo : laterRecordList){
+        for (ConsultRecordMongoVo recordMongoVo : laterRecordList) {
             recordMongoVo.setInfoDate(DateUtils.DateToStr(recordMongoVo.getCreateDate(), "datetime"));
         }
     }
 
     /**
      * 根据userId查询会话sessionId
-     * @author guozengguang
+     *
      * @param userId
      * @return response 返回前台的响应数据
+     * @author guozengguang
      */
     @RequestMapping(value = "/getSessionId", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> getSessionId(@RequestParam(required=true) String userId) {
+    Map<String, Object> getSessionId(@RequestParam(required = true) String userId) {
 
         Map<String, Object> response = new HashMap<String, Object>();
         Integer sessionId = sessionRedisCache.getSessionIdByUserId(userId);
-        if(sessionId != null){
+        if (sessionId != null) {
             response.put("status", 0);
             response.put("sessionId", String.valueOf(sessionId));
-        }else{
+        } else {
             response.put("status", 1);
             response.put("sessionId", "");
         }
@@ -464,8 +465,9 @@ public class ConsultUserController extends BaseController {
 
     /**
      * 根据userId查询会话sessionId
-     * @author guozengguang
+     *
      * @return response 返回前台的响应数据
+     * @author guozengguang
      */
     @RequestMapping(value = "/getUserCurrentConsultContent", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -488,8 +490,9 @@ public class ConsultUserController extends BaseController {
 
     /**
      * 根据userId查询会话sessionId
-     * @author guozengguang
+     *
      * @return response 返回前台的响应数据
+     * @author guozengguang
      */
     @RequestMapping(value = "/createOrUpdateWJYPatientInfo", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -497,15 +500,53 @@ public class ConsultUserController extends BaseController {
     Map<String, Object> createOrUpdateWJYPatientInfo(@RequestBody Map<String, Object> params) {
 
         Map<String, Object> response = new HashMap<String, Object>();
-        String userPhone = (String) params.get("patientPhone");
-        String userName = (String) params.get("patientName");
-        Integer userSex = (Integer) params.get("patientSex");
-        String patientId = userInfoService.createOrUpdateThirdPartPatientInfo(userPhone, userName,String.valueOf(userSex),"WJY");
-        response.put("patientId",patientId);
+        HashMap<String, Object> request = new HashMap<String, Object>();
+        String userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone")))?String.valueOf(params.get("patientPhone")):"";
+        String userName = StringUtils.isNotNull(String.valueOf(params.get("patientName")))?String.valueOf(params.get("patientName")):"";
+        Integer userSex = 0;
+        if(params.get("patientSex") != null && params.get("patientSex") != ""){
+            userSex = Integer.valueOf(String.valueOf(params.get("patientSex")));
+        }
+        String remoteUrl = String.valueOf(params.get("remoteUrl"));
+        String source = "";
+        String thirdId = "";
+        if (params.containsKey("source")) {
+            if (StringUtils.isNotNull(String.valueOf(params.get("source")))) {
+                source = String.valueOf(params.get("source"));
+                if (source.contains("wjy")) {
+                    thirdId = String.valueOf(params.get("thirdId"));
+                    source = "WJY";
+                }
+            }
+        }
+        request.put("userPhone", userPhone);
+        request.put("userName", userName);
+        request.put("userSex", userSex);
+        request.put("source", source);
+        request.put("thirdId", thirdId);
+        request.put("token", String.valueOf(params.get("token")));
+        String sys_user_id = UUID.randomUUID().toString().replaceAll("-", "");
+        request.put("sys_user_id", sys_user_id);
+        request.put("remoteUrl", remoteUrl);
+//        System.out.println("========================userPhone="+userPhone+"=userName="+userName+"=userSex="+userSex+"=remoteUrl="+remoteUrl+"=source="+source+"=thirdId="+thirdId+"=sys_user_id="+sys_user_id);
+        Map result = userInfoService.createOrUpdateThirdPartPatientInfo(request);
+        System.out.println("========================patientId="+result.get("sys_user_id")+"==result=="+result.get("result"));
+        if (result != null && result.size() > 0) {
+            if (String.valueOf(result.get("result")).equals("1") && "WJY".equalsIgnoreCase(source)) {
+                Runnable thread = new saveCoopThirdBabyInfoThread(request);
+                threadExecutor.execute(thread);
+            }
+            response.put("patientId", result.get("sys_user_id"));
+        }
         return response;
     }
 
 
+    public class saveCoopThirdBabyInfoThread implements Runnable {
+        private HashMap<String, Object> params;
+        public saveCoopThirdBabyInfoThread(HashMap<String, Object> params) {
+            this.params = params;
+        }
 
 
 
@@ -526,5 +567,42 @@ public class ConsultUserController extends BaseController {
         }
 
         return null;
+    }
+        @Override
+        public void run() {
+            String childrenUrl = (String) params.get("remoteUrl"); //获取当前登录人的孩子信息
+            String token = (String) params.get("token");
+            String access_token = "{'X-Access-Token':'" + token + "'}";
+            String method = "GET";
+            String dataType = "json";
+            String babyInfo = CoopConsultUtil.getCurrentUserInfo(childrenUrl, method, dataType, access_token, "", 2);
+            JSONObject jsonObject = null;
+            if (StringUtils.isNotNull(babyInfo)) {
+                JSONArray jsonArray = new JSONArray(babyInfo);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    jsonObject = JSONObject.fromObject(jsonArray.get(i).toString());
+                    CoopThirdBabyInfoVo coopThirdBabyInfoVo = new CoopThirdBabyInfoVo();
+                    coopThirdBabyInfoVo.setCreateDate(new Date());
+                    coopThirdBabyInfoVo.setDelFlag("0");
+                    coopThirdBabyInfoVo.setSource(String.valueOf(params.get("source")));
+                    coopThirdBabyInfoVo.setSysUserId(String.valueOf(params.get("sys_user_id")));
+                    try {
+                        if(jsonObject.get("birthday") != null && jsonObject.get("birthday") != ""){
+                            coopThirdBabyInfoVo.setBirthday(new SimpleDateFormat("yyyy-mm-DD").parse(String.valueOf(jsonObject.get("birthday"))));
+                        }else{
+                            coopThirdBabyInfoVo.setBirthday(new SimpleDateFormat("yyyy-mm-DD").parse("0000-00-00"));
+                        }
+                        coopThirdBabyInfoVo.setGender(StringUtils.isNotNull(String.valueOf(jsonObject.get("sex"))) ? String.valueOf(jsonObject.get("sex")) : "");
+                        coopThirdBabyInfoVo.setName(StringUtils.isNotNull(String.valueOf(jsonObject.get("name"))) ? String.valueOf(jsonObject.get("name")) : "");
+                        coopThirdBabyInfoVo.setStatus(StringUtils.isNotNull(String.valueOf(jsonObject.get("id"))) ? String.valueOf(jsonObject.get("id")) : "");
+                        int num = coopThirdBabyInfoService.addCoopThirdBabyInfo(coopThirdBabyInfoVo);
+                        System.out.println("=====第"+i+"次============== num ==="+num);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        System.out.println(e.getCause());
+                    }
+                }
+            }
+        }
     }
 }

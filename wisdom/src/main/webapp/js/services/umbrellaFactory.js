@@ -79,4 +79,8 @@ define(['appUmbrella'], function (app) {
         .factory('getUserQRCode',['$resource',function ($resource){
             return $resource(user_h5 + 'umbrella/getUserQRCode');
         }])
+        //获取用户昵称和排名
+        .factory('getNickNameAndRanking',['$resource',function ($resource){
+            return $resource(user_h5 + 'umbrella/getNickNameAndRanking');
+        }])
 })

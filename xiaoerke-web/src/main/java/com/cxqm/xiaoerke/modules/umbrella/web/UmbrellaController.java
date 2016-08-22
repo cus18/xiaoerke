@@ -802,4 +802,33 @@ public class UmbrellaController  {
         return null; // 自定义错误信息
     }
 
+    /**
+     *  获取用户昵称和排名
+     */
+    @RequestMapping(value = "/getNickNameAndRanking", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object>  getNickNameAndRanking(@RequestBody Map<String, Object> params,HttpServletRequest request,HttpSession session) throws UnsupportedEncodingException {
+        Map<String, Object> response=new HashMap<String, Object>();
+        String openid = (String)params.get("openid");
+        String result = "fail";
+        String nickName = "";
+        if(StringUtils.isNotNull(openid)){
+            WechatAttention wa = wechatAttentionService.getAttentionByOpenId(openid);
+            if(wa!=null){
+                if(StringUtils.isNotNull(wa.getNickname())){
+                    nickName = wa.getNickname();
+                }else{
+                    Map parameter = systemService.getWechatParameter();
+                    String token = (String)parameter.get("token");
+                    WechatBean userinfo = WechatUtil.getWechatName(token, openid);
+                    nickName = StringUtils.isNotNull(userinfo.getNickname())?userinfo.getNickname():"";
+                }
+            }
+            result = "suc";
+        }
+        response.put("result",result);
+        response.put("nickName",nickName);
+        return response;
+    }
 }

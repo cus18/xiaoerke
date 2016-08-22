@@ -1,12 +1,11 @@
 ﻿angular.module('controllers', ['ionic']).controller('umbrellaJoinCtrl', [
-    '$scope','$state','$stateParams','JoinUs','updateActivationTime','ifExistOrder',
-    function ($scope,$state,$stateParams,JoinUs,updateActivationTime,ifExistOrder) {
+    '$scope','$state','$stateParams','JoinUs','updateActivationTime','ifExistOrder','getNickNameAndRanking',
+    function ($scope,$state,$stateParams,JoinUs,updateActivationTime,ifExistOrder,getNickNameAndRanking) {
         $scope.title="宝护伞-宝大夫儿童家庭重疾互助计划";
         $scope.shareLock=false;
 
         $scope.firstJoin=false;
         $scope.updateJoin=false;
-        $scope.finally=false;
         $scope.addFamily=false;
         $scope.umbrellaMoney=0;
         $scope.num=0;
@@ -14,10 +13,12 @@
         $scope.umbrellaId=0;
         $scope.status="b";
         $scope.pintu=0;
+
         var u = navigator.userAgent, app = navigator.appVersion;
         var isAndroid = u.indexOf('Android') > -1 || u.indexOf('linux') > -1; //g
         var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
         var detailLock = "true";
+        var nickName="我真心";
 
         $scope.shareid=$stateParams.shareid;
 
@@ -42,7 +43,7 @@
             $scope.shareLock=true;
             /* 随机分享文案*/
             var shareTextArray=[
-                "有了这个相当于多了个重疾保险，5块钱就能换来40万，一确诊就能给钱，比保险快多了！",
+                "有了这个相当于多了个重疾保险，免费加入就能换来40万，一确诊就能给钱，比保险快多了！",
                 "墙裂推荐，绝非广告，这个真的是很需要。是对孩子和家庭的负责！我已经加入啦，你还不快来！",
                 "我为孩子健康负责，免费领取了40万的大病治疗费，你也来领吧！",
                 "我为宝宝健康负责，竟然免费获得了40万的大病治疗费！你需要吗？",
@@ -85,7 +86,6 @@
             return Inter_Days;
         }
         $scope.$on('$ionicView.enter', function(){
-
             $.ajax({
                 url:"umbrella/getOpenid",// 跳转到 action
                 async:true,
@@ -97,6 +97,15 @@
                         // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
                         window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa_"+$stateParams.id;
                     }else{
+                        $scope.openid=data.openid;
+                        console.log("my scope.openid", $scope.openid);
+                        getNickNameAndRanking.save({"openid":$scope.openid},function (data) {
+                            if(data.nickName!=""){
+                                nickName=data.nickName;
+                            }
+                            console.log("nickName",nickName);
+
+                        });
                         recordLogs("UmbrellaShareJoinPage_"+ $stateParams.id);
 
                         ifExistOrder.save(function (data) {
@@ -273,7 +282,7 @@
                         wx.ready(function () {
                             // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                             wx.onMenuShareTimeline({
-                                title: '我为孩子健康负责，免费领取了40万的大病治疗费，还有20万送给你！', // 分享标题
+                                title: '为了你的孩子，'+nickName+'邀请你加入爱心公益，并赠送40万的现金保障！', // 分享标题
                                 link:  "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$scope.umbrellaId+"/"+$scope.status,
                                 imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                 success: function (res) {
@@ -296,8 +305,8 @@
                                 }
                             });
                             wx.onMenuShareAppMessage({
-                                title: '我为孩子健康负责，免费领取了40万的大病治疗费，还有20万送给你！', // 分享标题
-                                desc: "限时免费，手慢无！讲真，这个东西好到让你想给我发红包！！！", // 分享描述
+                                title: '为了你的孩子，'+nickName+'邀请你加入爱心公益，并赠送40万的现金保障！', // 分享标题
+                                desc: "由宝大夫和中国儿童少年基金会联合发起，绝对值得信赖！", // 分享描述
                                 link:  "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$scope.umbrellaId+"/"+$scope.status, // 分享链接
                                 imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                 success: function (res) {
