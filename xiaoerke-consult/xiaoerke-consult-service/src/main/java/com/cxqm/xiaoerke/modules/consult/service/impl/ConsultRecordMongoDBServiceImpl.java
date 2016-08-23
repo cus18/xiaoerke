@@ -135,7 +135,7 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		ConsultSessionStatusVo  StatusVo = this.findOneConsultSessionStatusVo(query);
 		if(StatusVo != null){
 			String payStauts = consultSessionStatusVo.getPayStatus();
-			if(null != payStauts|| ConstantUtil.NO_PAY.equals(payStauts)){
+			if(null != payStauts){
 				writeResult = mongoTemplate.updateMulti(query,new Update().set("lastMessageTime", new Date()).set("payStatus",consultSessionStatusVo.getPayStatus()), ConsultSessionStatusVo.class);
 			}else{
 				writeResult = mongoTemplate.updateMulti(query,new Update().set("lastMessageTime", new Date()), ConsultSessionStatusVo.class);
