@@ -361,11 +361,11 @@ public class ConsultDoctorController extends BaseController {
                     if(praiseList !=null && praiseList.size() >0){
                         for(Map<String,Object> evaluationMap :praiseList){
                             if(Integer.parseInt((String) evaluationMap.get("serviceAttitude"))==0){
-                                st = "嗨，亲爱的,本次咨询已关闭。";
-                            }else{
                                 st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
                                         "<a href='http://120.25.161.33/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
                                         params.get("uuid") +"&sessionId="+sessionId+ "'>点击这里去评价</a>】";
+                            }else{
+                                st = "嗨，亲爱的,本次咨询已关闭。";
                                 break;
                             }
                         }
