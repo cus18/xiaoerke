@@ -1,7 +1,7 @@
 var babyList = [];
 var babySex = 1;//男孩
 var parentSex = 0;//妈妈
-var needPayMoney = 26.8;//手足口保险
+var needPayMoney =68;//手足口保险
 var babyID;
 var Ip = "s68.baodf.com";
 
@@ -74,7 +74,7 @@ var isHaveInsurance = function (object) {
     $.ajax({
         type: 'POST',
         url: "insurance/getInsuranceRegisterServiceIfValid",
-        data: "{'babyId':'"+object.id+"','insuranceType':'2'}",
+        data: "{'babyId':'"+object.id+"','insuranceType':'3'}",
         contentType: "application/json; charset=utf-8",
         success: function(data){
             getBaby(object);
@@ -103,7 +103,7 @@ var selectedBaby = function (index) {
 
 //添加宝宝
 var addBaby =function(){
-    window.location.href = "http://"+Ip+"/titan/insurance#/handfootmouthAddBaby";
+    window.location.href = "http://"+Ip+"/titan/insurance#/insuranceAddBaby/pneumonia";
 }
 
 //取消选择宝宝
@@ -113,27 +113,13 @@ var cancelSelectBaby = function(){
 
 //孩子性别
 var selectSex = function (item) {
-    if(item=="boy"){
-        babySex = 1;
-        $('.sex a').eq(0).addClass('select');
-        $('.sex a').eq(1).removeClass('select');
-    }else{
-        babySex = 0;
-        $('.sex a').eq(1).addClass('select');
-        $('.sex a').eq(0).removeClass('select');
-    }
+    babySex=item;
+    $('.sex a').removeClass('select').eq(1-item).addClass('select');
 }
 //父母性别
 var selectParent = function (item) {
-    if(item=="father"){
-        parentSex = 1;
-        $('.parent a').eq(0).addClass('select');
-        $('.parent a').eq(1).removeClass('select');
-    }else{
-        parentSex = 0;
-        $('.parent a').eq(1).addClass('select');
-        $('.parent a').eq(0).removeClass('select');
-    }
+    parentSex=item;
+    $('.parent a').removeClass('select').eq(1-item).addClass('select');
 }
 
 //显示宝宝信息
@@ -141,13 +127,8 @@ var getBaby = function (object) {
     $('#babyName').val(object.name);
     $('#birthday').val(changeDate(object.birthday));
     babyID = object.id;
-    if(object.sex=="1"){
-        $('.sex a').eq(0).addClass('select');
-        $('.sex a').eq(1).removeClass('select');
-    }else{
-        $('.sex a').eq(1).addClass('select');
-        $('.sex a').eq(0).removeClass('select');
-    }
+    $('.sex a').removeClass('select').eq(1-parseInt(object.sex)).addClass('select');
+
 }
 //查看订单
 var lookOrderInfo = function () {
@@ -216,13 +197,12 @@ var payLast = function (id,babySex,babyBirthday,card,phone,parentname,parentSex)
         type: 'POST',
         async:false,
         url: "insurance/saveInsuranceRegisterService",
-        data: "{'babyId':'"+id+"','sex':'"+babySex+"','birthday':'"+babyBirthday+"','idCard':'"+card+"','parentPhone':'"+phone+"','insuranceType':'2','parentName':'"+parentname+"','parentType':'"+parentSex+"'}",
+        data: "{'babyId':'"+id+"','sex':'"+babySex+"','birthday':'"+babyBirthday+"','idCard':'"+card+"','parentPhone':'"+phone+"','insuranceType':'3','parentName':'"+parentname+"','parentType':'"+parentSex+"'}",
         contentType: "application/json; charset=utf-8",
         success: function(result){
             if(result.id!=""){
                 var insuranceId=result.id;
                 $('#payButton').attr('disabled',"true");//添加disabled属性
-                //window.location.href="http://"+Ip+"/titan/insurance#/handfootmouthPaySuccess/"+insuranceId;
                 $.ajax({
                     url:"account/user/antiDogPay",// 跳转到 action
                     async:true,
@@ -246,7 +226,7 @@ var payLast = function (id,babySex,babyBirthday,card,phone,parentname,parentSex)
                             paySign:obj.paySign,  // 支付签名
                             success: function (res) {
                                 if(res.errMsg == "chooseWXPay:ok" ) {
-                                    window.location.href="http://"+Ip+"/titan/insurance#/handfootmouthPaySuccess/"+insuranceId;
+                                    window.location.href="http://"+Ip+"/titan/insurance#/insurancePaySuccess/"+insuranceId;
                                 }else{
                                     alert("支付失败,请重新支付")
                                 }
@@ -291,6 +271,9 @@ var recordLogs = function(val){
 //初始化时间控件
 var initDate = function () {
     var date = new Date(+new Date()+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'');
+    var myYear=date.substring(0,4);
+    var myMonth=date.substring(5,7);
+    var myDay=date.substring(8,10);
     $("#birthday").mobiscroll().date();
     //初始化日期控件
     var opt = {
@@ -308,14 +291,10 @@ var initDate = function () {
         nowText: "今",
         // startYear:1980, //开始年份
         // endYear:currYear //结束年份
-        minDate: new Date(1980,0,1),
-        maxDate: new Date(date.substring(0,4), date.substring(5,7)-1, date.substring(8,10)),
+        minDate: new Date(myYear-14,myMonth-1,myDay),
+        maxDate: new Date(myYear, myMonth-1, myDay),
         onSelect: function (valueText) {
-           var day = compareDate(valueText,moment().format("YYYY-MM-DD"));
-            if(day>365*14){
-                alert("目前还只服务于0-14岁的宝宝哦~");
-                $("#birthday").val("");
-            }
+
         },
         onCancel: function () {
         }
@@ -323,25 +302,7 @@ var initDate = function () {
     $("#birthday").mobiscroll(opt);
 }
 
- //计算两个日期的时间间隔
-var compareDate = function (start,end){
-    if(start==null||start.length==0||end==null||end.length==0){
-        return 0;
-    }
 
-    var arr=start.split("-");
-    var starttime=new Date(arr[0],parseInt(arr[1]-1),arr[2]);
-    var starttimes=starttime.getTime();
-
-    var arrs=end.split("-");
-    var endtime=new Date(arrs[0],parseInt(arrs[1]-1),arrs[2]);
-    var endtimes=endtime.getTime();
-
-    var intervalTime = endtimes-starttimes;//两个日期相差的毫秒数 一天86400000毫秒
-    var Inter_Days = ((intervalTime).toFixed(2)/86400000)+1;//加1，是让同一天的两个日期返回一天
-
-    return Inter_Days;
-}
 
 
 //初始化微信

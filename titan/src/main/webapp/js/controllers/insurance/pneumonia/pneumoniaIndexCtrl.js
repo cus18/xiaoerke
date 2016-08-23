@@ -15,8 +15,8 @@ angular.module('controllers', ['ionic']).controller('pneumoniaIndexCtrl', [
         //支付
         $scope.goPay = function(){
             setLog("SZKB_FWXQ_LJGM_");
-            //window.location.href = "http://"+Ip+"/keeper/wxPay/patientPay.do?serviceType=pneumonia";
-            window.location.href = "/keeper/wxPay/patientPay.do?serviceType=pneumonia";
+            window.location.href = "http://"+Ip+"/keeper/wxPay/patientPay.do?serviceType=pneumonia";
+            //window.location.href = "/keeper/wxPay/patientPay.do?serviceType=pneumonia";
         }
 
         //日志

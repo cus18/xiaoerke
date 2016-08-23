@@ -1,5 +1,5 @@
 
-var doRefresh = function () {
+var pageInit = function () {
     setLog("FWLB");
     share();
 }

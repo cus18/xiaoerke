@@ -12,7 +12,6 @@
 <script src="js/libs/moment.min.js"></script>
 <script src="js/libs/mobiscroll.custom-2.17.0.min.js"></script>
 <link rel="stylesheet" href="/keeper/styles/lib/mobiscroll.custom-2.17.0.min.css" type="text/css" />
-<link rel="stylesheet" href="http://s68.baodf.com/titan/styles/antiDog/antiDogCommon.less" type="text/css" />
 <link rel="stylesheet" href="/keeper/styles/insurance/insuranceCommonPay.less" type="text/css" />
 <body onload="doRefresh()" >
 <!--一年购买过此服务，再次购买提醒 -->
@@ -58,8 +57,8 @@
                 <div class="f-in">
                     <span>性别：</span>
                     <div class="selectItem sex" >
-                        <a  onclick="selectSex('boy')" >男</a>
-                        <a  onclick="selectSex('girl')" >女</a>
+                        <a  onclick="selectSex(1)" >男</a>
+                        <a  onclick="selectSex(0)" >女</a>
                     </div>
                 </div>
                 <label class="f-in" for="birthday">
@@ -69,27 +68,27 @@
             </div>
             <div>
                 <h3 class="hd">家长信息</h3>
-                <label class="f-in" for="parentName">
+                <label class="f-in" for="parentName" onclick="skip('parentName')">
                     <span>姓名：</span>
                     <input type="text" id="parentName"  placeholder="家长的真实姓名" >
                 </label>
                 <div class="f-in">
                     <span>您是孩子的：</span>
                     <div class="selectItem parent" >
-                        <a onclick="selectParent('father')" >宝爸</a>
-                        <a onclick="selectParent('mother')" class="select" >宝妈</a>
+                        <a onclick="selectParent(1)" >宝爸</a>
+                        <a onclick="selectParent(0)" class="select" >宝妈</a>
                     </div>
                 </div>
-                <label class="f-in" for="phone">
+                <label class="f-in" for="phone" >
                     <span>手机号：</span>
                     <input type="text" id="phone"  disabled="true" placeholder="" maxlength="11"  onblur="checkPhone();" >
                 </label>
-                <label class="f-in" for="IdCard" style="margin-bottom: 10px;">
+                <label class="f-in" for="IdCard" style="margin-bottom: 10px;" onclick="skip('IdCard')">
                     <span>身份证号：</span>
                     <input type="text" id="IdCard" placeholder="填写正确的身份证号" maxlength="18"  onblur="checkIdCard();"  >
                 </label>
             </div>
-            <div class="tips" ng-hide="IdCardLock">
+            <div class="tips" >
                 <img class="my-img" width="12.5" height="auto" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fremind_icon.png">
                 <span>身份证号有误</span>
             </div>
@@ -99,8 +98,8 @@
 
     </div>
 </div>
-<button onclick="payInsurance()" id="payButton" class="button btn-bottom" >
-    微信支付  ￥26.8
+<button onclick="payInsurance()" id="payButton" style="background-color: #fe5071;" class="button btn-bottom" >
+    微信支付  ￥68
 </button>
 </body>
 <script src="js/insurance/pneumoniaPay.js"></script>
