@@ -40,7 +40,7 @@ public class ConsultSessionStatusVo {
 
     private String flag;
 
-    private String payStatus;
+    private String payStatus = "";
 
     public String getCsUserId() {
         return csUserId;
