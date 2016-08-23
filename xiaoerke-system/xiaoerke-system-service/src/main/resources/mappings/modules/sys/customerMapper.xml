@@ -108,7 +108,7 @@
   </update>
 
 	<select id="getNickName" resultType="java.lang.String">
-		SELECT DISTINCT sa.nickname from sys_attention sa  where sa.openid=#{openid} and nickname is not null
+		SELECT sa.nickname from sys_attention sa  where sa.openid=#{openid} and nickname is not null  group by sa.openid
 	</select>
 
 	<select id="getOrderInfoByOpenid" resultType="java.util.HashMap">
