@@ -5,7 +5,7 @@ angular.module('controllers', ['ionic']).controller('pneumoniaIndexCtrl', [
         var Ip = "s251.baodf.com";
 
         $scope.$on('$ionicView.enter', function(){
-            setLog("SZKB_FWXQ");
+            setLog("FYB_SY");
         });
         //阅读
         $scope.read = function () {
@@ -14,7 +14,7 @@ angular.module('controllers', ['ionic']).controller('pneumoniaIndexCtrl', [
 
         //支付
         $scope.goPay = function(){
-            setLog("SZKB_FWXQ_LJGM_");
+            setLog("FYB_SY_LJGM");
             window.location.href = "http://"+Ip+"/keeper/wxPay/patientPay.do?serviceType=pneumonia";
             //window.location.href = "/keeper/wxPay/patientPay.do?serviceType=pneumonia";
         }
@@ -25,7 +25,7 @@ angular.module('controllers', ['ionic']).controller('pneumoniaIndexCtrl', [
             $http({method:'post',url:'util/recordLogs',params:pData});
         }
         
-        $scope.doRefresh = function(){
+        $scope.shareInit = function(){
             var share = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=30";
             var timestamp;//时间戳
             var nonceStr;//随机字符串
@@ -61,10 +61,10 @@ angular.module('controllers', ['ionic']).controller('pneumoniaIndexCtrl', [
                             wx.onMenuShareTimeline({
                                 title: '妈妈要当心，儿童最高发的传染病——手足口病又来了，预防和保障一个不能少！', // 分享标题
                                 link: share, // 分享链接
-                                imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2Fhandfootmouth.jpg', // 分享图标
+                                imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/orderList/insuranceList3.png', // 分享图标
                                 success: function (res) {
 
-                                    setLog("SZKB_FXPPQ");
+                                    setLog("FYB_SY_FX");
                                 },
                                 fail: function (res) {
                                 }
@@ -74,10 +74,10 @@ angular.module('controllers', ['ionic']).controller('pneumoniaIndexCtrl', [
                                 title: '小儿手足口宝', // 分享标题
                                 desc: '妈妈要当心，儿童最高发的传染病——手足口病又来了，预防和保障一个不能少！', // 分享描述
                                 link:share, // 分享链接
-                                imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2Fhandfootmouth.jpg', // 分享图标
+                                imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/orderList/insuranceList3.png', // 分享图标
                                 success: function (res) {
 
-                                    setLog("SZKB_FXPP");
+                                    setLog("FYB_SY_FX");
                                 },
                                 fail: function (res) {
                                 }

@@ -6,12 +6,8 @@ angular.module('controllers', ['ionic']).controller('insurancePaySuccessCtrl', [
 
         $scope.$on('$ionicView.enter', function(){
             var routePath = "/insuranceBBBBBB" + $location.path();
-            console.log("id",$stateParams.id);
-            getInsuranceRegisterServiceById.save({"id":$stateParams.id}, function (data){
-                $scope.insurance=data.InsuranceRegisterService;
-                console.log("data",data.InsuranceRegisterService);
-            });
-          /*  GetUserLoginStatus.save({routePath:routePath},function(data){
+
+            GetUserLoginStatus.save({routePath:routePath},function(data){
                 if(data.status=="9") {
                     window.location.href = data.redirectURL;000000000000000
                 } else if(data.status=="8"){
@@ -21,7 +17,7 @@ angular.module('controllers', ['ionic']).controller('insurancePaySuccessCtrl', [
                         $scope.insurance=data.InsuranceRegisterService;
                     });
                 }
-            });*/
+            });
         });
 
         $scope.goFirstPage = function (){

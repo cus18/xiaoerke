@@ -15,7 +15,7 @@
             <div class="info-list">
                 <ul ng-if="service=='current'">
                     <li ng-repeat="item in insuranceViedList" ng-click="lookDetail(item.id)">
-                        <img ng-if="item.Insurance_type==1" class="my-img-block" width="64" height="64" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/orderList/insuranceList{{item.Insurance_type}}.jpg">
+                        <img ng-if="item.Insurance_type==1" class="my-img-block" width="64" height="64" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/orderList/insuranceList{{item.Insurance_type}}.png">
                         <div class="text">
                             <span>{{item.Insurance_type==1?'宝大夫小儿防犬宝':''}}{{item.Insurance_type==2?'宝大夫小儿手足口宝':''}}{{item.Insurance_type==1?'宝大夫小儿肺炎宝':''}}</span>
                             <span>宝宝姓名：{{item.name}}</span>

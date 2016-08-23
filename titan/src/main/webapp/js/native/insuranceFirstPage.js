@@ -73,10 +73,10 @@ var share = function(){
                     wx.onMenuShareTimeline({
                         title: '妈妈要当心，儿童最高发的传染病——手足口病又来了，预防和保障一个不能少！', // 分享标题
                         link: share, // 分享链接
-                        imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2Fhandfootmouth.jpg', // 分享图标
+                        imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/orderList/insuranceList3.png', // 分享图标
                         success: function (res) {
 
-                            setLog("手足口朋");
+                            setLog("FYB_LB_FX");
                         },
                         fail: function (res) {
                         }
@@ -86,10 +86,10 @@ var share = function(){
                         title: '小儿手足口宝', // 分享标题
                         desc: '妈妈要当心，儿童最高发的传染病——手足口病又来了，预防和保障一个不能少！', // 分享描述
                         link:share, // 分享链接
-                        imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2Fhandfootmouth.jpg', // 分享图标
+                        imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/orderList/insuranceList3.png', // 分享图标
                         success: function (res) {
 
-                            setLog("手足口友");
+                            setLog("FYB_LB_FX");
                         },
                         fail: function (res) {
                         }

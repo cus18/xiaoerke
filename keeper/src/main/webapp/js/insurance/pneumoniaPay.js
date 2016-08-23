@@ -7,39 +7,34 @@ var Ip = "s68.baodf.com";
 
 $(function(){
     var param = '{routePath:"/wxPay/patientPay.do?serviceType=pneumonia"}';
-    //$.ajax({
-    //    type: "POST",
-    //    url: "auth/info/loginStatus",
-    //    contentType: 'application/json',
-    //    data: param,
-    //    dataType: 'json',
-    //    success: function (data) {
-    //        if (data.status == "9") {
-    //            window.location.href = data.redirectURL;
-    //        } else if (data.status == "8") {
-    //            window.location.href = data.redirectURL;
-    //        } else if (data.status == "20") {
-    //            if(data.openId=="noOpenId"){
-    //             /*   window.location.href = "http://s251.baodf.com/keeper/wechatInfo/" +
-    //                    "fieldwork/wechat/author?url=http://s251.baodf.com/" +
-    //                    "keeper/wechatInfo/getUserWechatMenId?url=30";*/
-    //            }else{
-    //                initWx();//初始化微信
-    //                getBabyInfo();//获取宝宝信息
-    //            }
-    //        }
-    //    }
-    //});
-    initWx();//初始化微信
-    getBabyInfo();//获取宝宝信息
+    $.ajax({
+        type: "POST",
+        url: "auth/info/loginStatus",
+        contentType: 'application/json',
+        data: param,
+        dataType: 'json',
+        success: function (data) {
+            if (data.status == "9") {
+                window.location.href = data.redirectURL;
+            } else if (data.status == "8") {
+                window.location.href = data.redirectURL;
+            } else if (data.status == "20") {
+                if(data.openId=="noOpenId"){
+                    window.location.href = "http://s251.baodf.com/keeper/wechatInfo/" +
+                        "fieldwork/wechat/author?url=http://s251.baodf.com/" +
+                        "keeper/wechatInfo/getUserWechatMenId?url=30";
+                }else{
+                    initWx();//初始化微信
+                    getBabyInfo();//获取宝宝信息
+                }
+            }
+        }
+    });
+
+    initDate();
+    setLog("FYB_XX");
 });
 
-var doRefresh = function(){
-    $('#getShadow').hide();
-    $('#getRemind').hide();
-    $('#getBaby').hide();
-    initDate();
-}
 /*锚链接跳转*/
 var skip=function(item){
     myScroll.scrollToElement('#'+item, 100)
@@ -253,19 +248,9 @@ var changeDate = function (time) {
 }
 
 //记录日志
-var recordLogs = function(val){
-    $.ajax({
-        url:"util/recordLogs",// 跳转到 action
-        async:true,
-        type:'get',
-        data:{logContent:encodeURI(val)},
-        cache:false,
-        dataType:'json',
-        success:function(data) {
-        },
-        error : function() {
-        }
-    });
+var setLog = function (item) {
+    var pData = {logContent:encodeURI(item)};
+    $http({method:'post',url:'util/recordLogs',params:pData});
 }
 
 //初始化时间控件

@@ -13,10 +13,10 @@
 <script src="js/libs/mobiscroll.custom-2.17.0.min.js"></script>
 <link rel="stylesheet" href="/keeper/styles/lib/mobiscroll.custom-2.17.0.min.css" type="text/css" />
 <link rel="stylesheet" href="/keeper/styles/insurance/insuranceCommonPay.less" type="text/css" />
-<body onload="doRefresh()" >
+<body  >
 <!--一年购买过此服务，再次购买提醒 -->
-<div class="c-shadow" id="getShadow"  onclick="cancelRemind()"> </div>
-<div class="c-remind" id="getRemind" >
+<div class="c-shadow" id="getShadow"  onclick="cancelRemind()" hidden> </div>
+<div class="c-remind" id="getRemind" hidden>
     <div class="remind-main">
         <img class="close" onclick="cancelRemind()" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fclose.png" width="31" height="31">
         <p >
@@ -29,9 +29,9 @@
             <span class="line"></span>
         </div>
     </div>
-</div>
+</div >
 
-<div class="baby-list" id="getBaby">
+<div class="baby-list" id="getBaby" hidden>
     <dl>
         <dt id="selectBabyTitle">
             <i class="line"></i>
