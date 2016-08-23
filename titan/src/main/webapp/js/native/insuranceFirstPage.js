@@ -3,7 +3,10 @@ var doRefresh = function () {
     setLog("FWLB");
     share();
 }
-
+//肺炎宝
+var goPneumonia = function () {
+    window.location.href = "insurance#/pneumoniaIndex";
+}
 
 //手足口
 var goHandfootmouth = function () {

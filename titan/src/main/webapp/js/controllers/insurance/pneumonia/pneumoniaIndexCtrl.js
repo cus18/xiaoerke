@@ -2,24 +2,21 @@ angular.module('controllers', ['ionic']).controller('pneumoniaIndexCtrl', [
     '$scope','$state','$stateParams','$location','$http',
     function ($scope,$state,$stateParams,$location,$http) {
         $scope.readLock = true;
-        $scope.readFlag = false;
         var Ip = "s251.baodf.com";
-
 
         $scope.$on('$ionicView.enter', function(){
             setLog("SZKB_FWXQ");
-
         });
-
         //阅读
         $scope.read = function () {
-            $scope.readLock==true?($scope.readLock=false,$scope.readFlag = true):($scope.readLock=true,$scope.readFlag = false);
+            $scope.readLock=!$scope.readLock;
         }
 
         //支付
         $scope.goPay = function(){
             setLog("SZKB_FWXQ_LJGM_");
-            window.location.href = "http://"+Ip+"/keeper/wxPay/patientPay.do?serviceType=handfootmouth";
+            //window.location.href = "http://"+Ip+"/keeper/wxPay/patientPay.do?serviceType=pneumonia";
+            window.location.href = "/keeper/wxPay/patientPay.do?serviceType=pneumonia";
         }
 
         //日志

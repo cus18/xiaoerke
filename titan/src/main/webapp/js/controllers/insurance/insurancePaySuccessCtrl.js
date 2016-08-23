@@ -1,14 +1,19 @@
-angular.module('controllers', ['ionic']).controller('pneumoniaPaySuccessCtrl', [
+angular.module('controllers', ['ionic']).controller('insurancePaySuccessCtrl', [
     '$scope','$state','$stateParams','$http','getInsuranceRegisterServiceById','$location','GetUserLoginStatus',
     function ($scope,$state,$stateParams,$http,getInsuranceRegisterServiceById,$location,GetUserLoginStatus) {
 
         $scope.insurance={};
 
         $scope.$on('$ionicView.enter', function(){
-           /* var routePath = "/insuranceBBBBBB" + $location.path();
-            GetUserLoginStatus.save({routePath:routePath},function(data){
+            var routePath = "/insuranceBBBBBB" + $location.path();
+            console.log("id",$stateParams.id);
+            getInsuranceRegisterServiceById.save({"id":$stateParams.id}, function (data){
+                $scope.insurance=data.InsuranceRegisterService;
+                console.log("data",data.InsuranceRegisterService);
+            });
+          /*  GetUserLoginStatus.save({routePath:routePath},function(data){
                 if(data.status=="9") {
-                    window.location.href = data.redirectURL;
+                    window.location.href = data.redirectURL;000000000000000
                 } else if(data.status=="8"){
                     window.location.href = ata.redirectURL+"?targeturl="+routePath;
                 }else {

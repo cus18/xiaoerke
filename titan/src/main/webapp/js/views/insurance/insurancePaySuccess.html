@@ -1,10 +1,10 @@
 <ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
 <ion-view view-title="购买成功" ng-init="doRefresh()">
-    <ion-content class="pneumoniaPaySuccess" style="top:0;">
+    <ion-content class="insurancePaySuccess" style="top:0;">
         <ion-scroll direction="y" has-bouncing="true">
             <div class="buy-success">
                 <img class="my-img-block" width="96.5" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Fpay_success.png">
-                <div>
+                <div ng-if="insurance.insuranceType==3">
                     您已成功购买“宝大夫小儿肺炎宝”服务
                 </div>
                 <p>
@@ -27,7 +27,7 @@
                 </ul>
             </div>
             <div class="code">
-                <img data-tap-disabled="true" width="108" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Fanti_code.jpg" >
+                <img ng-if="insurance.insuranceType==3" data-tap-disabled="true" width="108" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Fanti_code.jpg" >
                 <p>
                     关注宝大夫 <br>
                     随时随地咨询宝宝健康  <br>

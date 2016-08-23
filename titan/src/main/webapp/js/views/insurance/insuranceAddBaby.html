@@ -1,0 +1,29 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="添加宝宝" ng-init="doRefresh()">
+    <ion-content class="insuranceAddBaby bg1" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="baby-info">
+                <ul>
+                    <li>
+                        <span class="key">姓名：</span>
+                        <input type="text" ng-model='baby.name' placeholder="填写宝宝姓名" >
+                    </li>
+                    <li>
+                        <span class="key">性别：</span>
+						<span class="sex">
+							<a ng-class="{'cur':sex==1}" ng-click="selectSex(1)">男</a>
+							<a ng-class="{'cur':sex==0}" ng-click="selectSex(0)">女</a>
+						</span>
+                    </li>
+                    <li>
+                        <span class="key">出生日期：</span>
+                        <input type="text" placeholder='选择宝宝出生日期'  ng-model='baby.birthday' id="birthday" name="birthday" readonly="true">
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <button class="button foot-btn" ng-click='saveBabyInfo()'>保存</button>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>
